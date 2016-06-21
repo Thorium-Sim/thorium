@@ -40,4 +40,6 @@ rethinkdb
 mix phoenix.server
 ```
 
-That should be all you need. Eventually, rethink will get started with the phoenix server, but not yet.
+That should be all you need. Navigate to http://localhost:4000 to see the site. Click the seed button to add some stub simulators and click the graphql button to test it out.
+
+Eventually, rethink will get started with the phoenix server, but not yet.
