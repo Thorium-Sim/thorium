@@ -1,7 +1,7 @@
 # Thorium
 
 [![Join the chat at https://gitter.im/alexanderson1993/thorium](https://badges.gitter.im/alexanderson1993/thorium.svg)](https://gitter.im/alexanderson1993/thorium?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![See the feature roadmap at https://huboard.com/alexanderson1993/thorium/](https://img.shields.io/badge/Roadmap on-HuBoard-blue.svg)](https://huboard.com/alexanderson1993/thorium/)
+[![See the feature roadmap at https://huboard.com/alexanderson1993/thorium/](https://img.shields.io/badge/roadmap-On HuBoard-blue.svg)](https://huboard.com/alexanderson1993/thorium/)
 
 A simulator controls platform
 
