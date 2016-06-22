@@ -1,4 +1,8 @@
 # Thorium
+
+[![Join the chat at https://gitter.im/alexanderson1993/thorium](https://badges.gitter.im/alexanderson1993/thorium.svg)](https://gitter.im/alexanderson1993/thorium?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![See the feature roadmap at https://huboard.com/alexanderson1993/thorium/](https://img.shields.io/badge/Roadmap on-HuBoard-blue.svg)](https://huboard.com/alexanderson1993/thorium/)
+
 A simulator controls platform
 
 Thorium is built with the following technologies:
@@ -7,6 +11,12 @@ Thorium is built with the following technologies:
 * [GraphQL](http://graphql.org/) for the transmission layer
 * [Phoenix Framework](http://phoenixframework.org/) for the server
 * [RethinkDB](https://www.rethinkdb.com/) for the database
+
+
+### Useful Links
+* [Elixir School](http://elixirschool.com/) - online school for the server language
+* [Elixir Koans](https://github.com/elixirkoans/elixir-koans) - Exercizes for Elixir
+
 
 ## Getting Started
 
