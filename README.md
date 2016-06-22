@@ -12,6 +12,12 @@ Thorium is built with the following technologies:
 * [Phoenix Framework](http://phoenixframework.org/) for the server
 * [RethinkDB](https://www.rethinkdb.com/) for the database
 
+
+### Useful Links
+* [Elixir School](http://elixirschool.com/) - online school for the server language
+* [Elixir Koans](https://github.com/elixirkoans/elixir-koans) - Exercizes for Elixir
+
+
 ## Getting Started
 
 ### 1. Install Phoenix Framework (with NodeJS, NPM, and Elixir), and RethinkDB
