@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 
 export default class Button extends Component {
 	render() {
-		debugger;
 		let classNames = this.props.classNames;
 		let type = this.props.type || 'default';
 		let href = this.props.href || '#';
@@ -10,13 +10,13 @@ export default class Button extends Component {
 		let label = this.props.label || 'Button';
 		let title = this.props.title || label;
 		classNames += ` btn-${type}`;
-		if (this.props.type === 'link'){
+		if (this.props.href){
 			return (
-				<a href={href}
+				<Link to={href}
 				className={`btn ${classNames}`}
 				title={title}>
 				{ label }
-				</a>
+				</Link>
 				);
 		}
 		return (
