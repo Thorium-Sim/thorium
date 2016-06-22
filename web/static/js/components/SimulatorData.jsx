@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-apollo';
-import { Button, LoadingWidget } from './generic';
+import { Button, LoadingWidget, Row, Col, Container } from './generic';
 
 class SimulatorLink extends Component {
 	render(){
 		let simulator = this.props.simulator || {};
-		return (<div>
+		return (
 			<Button
-			type="default"
+			type="primary"
 			label={simulator.name}
+			href={`/simulator/${simulator.id}`}
 			/>
-			</div>
 			);
 	}
 }
@@ -20,13 +20,27 @@ class Simulators extends Component {
 		let simulators = this.props.data.simulators || [];
 		let loading = this.props.data.loading;
 		return (
-			<div>
+			<Container>
+			<Row>
+			<Col className="col-sm-12">
+			<h1>Station Picker</h1>
+			<h2>Select Simulator</h2>
+			<div className="btn-group">
 			{(loading) ? <LoadingWidget /> :
 				simulators.map((simulator)=>{
 					return <SimulatorLink key={simulator.id} simulator={simulator} />;
 				})
 			}
-			</div>);
+			</div>
+			</Col>
+			</Row>
+			<Row>
+			<Col className="col-sm-12">
+			<a className="btn btn-info btn-sm" href="/graphql">GraphQL Console</a>
+			</Col>
+			</Row>
+			</Container>
+			);
 	}
 }
 const SimulatorData = connect({

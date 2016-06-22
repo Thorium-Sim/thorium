@@ -6,6 +6,8 @@ import { registerGqlTag } from 'apollo-client/gql';
 import { ApolloProvider } from 'react-apollo';
 
 import SimulatorData from '../components/SimulatorData.jsx';
+import {StationData} from '../components/StationData.jsx';
+import CardContainer from './Card.jsx';
 registerGqlTag();
 
 const client = new ApolloClient({
@@ -21,24 +23,38 @@ const client = new ApolloClient({
   },
 });
 
+const Dev = () => (
+  <div className="jumbotron">
+  <h2>Welcome to Thorium</h2>
+  <p className="lead"></p>
+  <p className="lead">
+  <span>
+  Seed/Reset RethinkDB: <a href="/reset">Click Here</a>
+  </span>
+  <br />
+  <span>
+  Try out GraphiQL: <a href="/graphql">Click Here</a>
+  </span>
+  </p>
+  </div>
+  );
+
+const NoMatch = () => (<div>No route matches your request. <a href="/">Go Home.</a></div>);
+
 class App extends Component {
   render() {
     return (
       <ApolloProvider client={client}>
-      <div className="jumbotron">
-        <h2>Welcome to Thorium</h2>
-        <p className="lead"></p>
-        <p className="lead">
-          <span>
-            Seed/Reset RethinkDB: <a href="http://localhost:4000/reset">Click Here</a>
-          </span>
-          <br />
-          <span>
-            Try out GraphiQL: <a href="http://localhost:4000/graphql">Click Here</a>
-          </span>
-        </p>
-                <SimulatorData />
-      </div>
+      <Router history={browserHistory}>
+          <Route path="/" components={SimulatorData} />
+          <Route path="simulator">
+            <Route path=":simulatorId" component={StationData} />
+              <Route path=":simulatorId/station/:stationId/card">
+                <Route path=":cardIndex" component={CardContainer} />
+              </Route>
+            </Route>
+          <Route path="*" components={NoMatch}/>
+      </Router>
       </ApolloProvider>
       );
   }
