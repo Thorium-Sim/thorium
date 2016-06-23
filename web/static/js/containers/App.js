@@ -1,27 +1,26 @@
 import React, { Component } from 'react';
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router';
-import ApolloClient, { createNetworkInterface } from 'apollo-client';
-import { addTypenameToSelectionSet } from 'apollo-client/queries/queryTransform';
-import { registerGqlTag } from 'apollo-client/gql';
-import { ApolloProvider } from 'react-apollo';
+import { compose, createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import createLogger from 'redux-logger';
+import thunkMiddleware from 'redux-thunk';
 
+import { devTools, persistState, DevTools, DebugPanel, LogMonitor } from 'redux-devtools';
+
+import thoriumApp from '../reducers';
 import SimulatorData from '../components/SimulatorData.jsx';
 import {StationData} from '../components/StationData.jsx';
 import CardContainer from './Card.jsx';
-registerGqlTag();
 
-const client = new ApolloClient({
-  networkInterface: createNetworkInterface('/graphql', {
-    credentials: 'same-origin',
-  }),
-  queryTransformer: addTypenameToSelectionSet,
-  dataIdFromObject: (result) => {
-    if (result.id && result.__typename) {
-      return result.__typename + result.id;
-    }
-    return null;
-  },
-});
+const loggerMiddleware = createLogger();
+const createStoreWithMiddleware = compose(
+  applyMiddleware(
+    thunkMiddleware, // lets us dispatch() functions
+    loggerMiddleware // neat middleware that logs actions
+  )
+  )(createStore);
+
+let store = createStoreWithMiddleware(thoriumApp);
 
 const Dev = () => (
   <div className="jumbotron">
@@ -32,19 +31,22 @@ const Dev = () => (
   Seed/Reset RethinkDB: <a href="/reset">Click Here</a>
   </span>
   <br />
-  <span>
-  Try out GraphiQL: <a href="/graphql">Click Here</a>
-  </span>
+
   </p>
   </div>
   );
 
-const NoMatch = () => (<div>No route matches your request. <a href="/">Go Home.</a></div>);
+class NoMatch extends Component {
+  render(){
+    return (<div>No route matches your request. <a href="/">Go Home.</a></div>);
+  }
+};
 
 class App extends Component {
   render() {
     return (
-      <ApolloProvider client={client}>
+      <div>
+      <Provider store={store}>
       <Router history={browserHistory}>
           <Route path="/" components={SimulatorData} />
           <Route path="simulator">
@@ -55,7 +57,8 @@ class App extends Component {
             </Route>
           <Route path="*" components={NoMatch}/>
       </Router>
-      </ApolloProvider>
+      </Provider>
+      </div>
       );
   }
 }

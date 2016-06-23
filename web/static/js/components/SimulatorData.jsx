@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from 'react-apollo';
 import { Button, LoadingWidget, Row, Col, Container } from './generic';
+import { connect } from 'react-redux';
+import actions from '../actions';
+const {simulators} = actions;
+const {fetchSimulators} = simulators;
 
 class SimulatorLink extends Component {
 	render(){
@@ -16,6 +19,11 @@ class SimulatorLink extends Component {
 }
 
 class Simulators extends Component {
+	componentDidMount() {
+		let { dispatch } = this.props;
+
+		dispatch(fetchSimulators());
+	}
 	render() {
 		let simulators = this.props.data.simulators || [];
 		let loading = this.props.data.loading;
@@ -43,19 +51,44 @@ class Simulators extends Component {
 			);
 	}
 }
-const SimulatorData = connect({
-	mapQueriesToProps: () => ({
+
+function select(state){
+	return {
 		data: {
-			query: gql`
-			query Simulators {
-				simulators {
-					id
-					name
-				}
-			}
-			`,
-		},
-	}),
-})(Simulators);
+			simulators: state.simulators
+		}
+	};
+}
+const SimulatorData = connect(select)(Simulators);
 
 export default SimulatorData;
+
+/*class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      channel: socket.channel("simulators:voyager", {}),
+      messages: []
+    };
+  }
+  componentDidMount() {
+    let messages = this.state.messages;
+    this.state.channel.join()
+    .receive("ok", resp => { console.log("Joined successfully", resp);})
+    .receive("error", resp => { console.log("Unable to join", resp);});
+    this.state.channel.on("new:simulator", payload => {
+      console.log('payload:',payload)
+      messages.push(`${payload.name}`);
+      this.setState({
+        messages:messages
+      });
+    });
+  }
+  render() {
+    return(<div>
+      {this.state.messages.map((message) => (<p>{message}</p>))}
+      <input type="text" className="form-input" onKeyPress={this._keypress.bind(this)} />
+      </div>
+      );
+  }
+}*/

@@ -2,7 +2,8 @@ defmodule Thorium.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "rooms:*", Thorium.RoomChannel
+  channel "rooms:*", Thorium.RoomChannel
+  channel "simulators:*", Thorium.SimulatorsChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
