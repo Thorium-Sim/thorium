@@ -17,7 +17,7 @@ defmodule Thorium.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {Thorium, []},
-     applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext, :plug_graphql]]
+     applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext, :plug_graphql, :rethinkdb_changefeed]]
   end
 
   # Specifies which paths to compile per environment.
@@ -34,6 +34,10 @@ defmodule Thorium.Mixfile do
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
      {:plug_graphql, "~> 0.1.5"},
-     {:rethinkdb, "~> 0.3.2"},]
+     {:rethinkdb, "~> 0.4.0"},
+     {:rethinkdb_changefeed, "~> 0.0.1"},
+     {:credo, "~> 0.3", only: [:dev, :test]},
+     {:dialyxir, "~> 0.3.3", only: [:dev, :test]},
+  ]
   end
 end

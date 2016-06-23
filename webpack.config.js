@@ -3,7 +3,7 @@ var CopyWebpackPlugin = require("copy-webpack-plugin");
 var path = require("path");
 
 module.exports = {
-	entry: ["./web/static/less/app.less", "./web/static/js/app.js"],
+	entry: ["./web/static/scss/app.scss", "./web/static/js/app.js"],
 	output: {
 		path: "./priv/static/js",
 		filename: "app.js",
@@ -15,8 +15,8 @@ module.exports = {
 			loaders: ["babel"],
 			include: path.resolve("./web/static/js")
 		},{
-			test: /\.less$/,
-			loader: "style!css!less"
+			test: /\.scss$/,
+        	loaders: ["style", "css", "sass"]
 		}]
 	},
 	plugins: [

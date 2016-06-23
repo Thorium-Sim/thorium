@@ -9,6 +9,8 @@ defmodule App.PublicSchema do
         name: "PublicQueries",
         fields: %{
           simulators: App.Query.Simulators.get,
+          stations: App.Query.Stations.get,
+          cards: App.Query.Cards.get,
         }
       },
 

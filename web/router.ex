@@ -13,14 +13,15 @@ defmodule Thorium.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", Thorium do
-    pipe_through :browser
-    get "/", PageController, :index
-    get "/reset", PageController, :reset_db
-  end
-
   scope "/graphql" do
     pipe_through :api
     forward "/", GraphQL.Plug, schema: {App.PublicSchema, :get}
   end
+  
+  scope "/", Thorium do
+    pipe_through :browser
+    get "/reset", PageController, :reset_db
+    get "/*path", PageController, :index
+  end
+
 end

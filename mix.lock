@@ -1,6 +1,9 @@
-%{"connection": {:hex, :connection, "1.0.3", "3145f7416be3df248a4935f24e3221dc467c1e3a158d62015b35bd54da365786", [:mix], []},
+%{"bunt": {:hex, :bunt, "0.1.6", "5d95a6882f73f3b9969fdfd1953798046664e6f77ec4e486e6fafc7caad97c6f", [:mix], []},
+  "connection": {:hex, :connection, "1.0.3", "3145f7416be3df248a4935f24e3221dc467c1e3a158d62015b35bd54da365786", [:mix], []},
   "cowboy": {:hex, :cowboy, "1.0.4", "a324a8df9f2316c833a470d918aaf73ae894278b8aa6226ce7a9bf699388f878", [:rebar, :make], [{:cowlib, "~> 1.0.0", [hex: :cowlib, optional: false]}, {:ranch, "~> 1.0", [hex: :ranch, optional: false]}]},
   "cowlib": {:hex, :cowlib, "1.0.2", "9d769a1d062c9c3ac753096f868ca121e2730b9a377de23dec0f7e08b1df84ee", [:make], []},
+  "credo": {:hex, :credo, "0.4.5", "5c5daaf50a2a96068c0f21b6fbd382d206702efa8836a946eeab0b8ac25f5f22", [:mix], [{:bunt, "~> 0.1.6", [hex: :bunt, optional: false]}]},
+  "dialyxir": {:hex, :dialyxir, "0.3.3", "2f8bb8ab4e17acf4086cae847bd385c0f89296d3e3448dc304c26bfbe4b46cb4", [:mix], []},
   "fs": {:hex, :fs, "0.9.2", "ed17036c26c3f70ac49781ed9220a50c36775c6ca2cf8182d123b6566e49ec59", [:rebar], []},
   "gettext": {:hex, :gettext, "0.11.0", "80c1dd42d270482418fa158ec5ba073d2980e3718bacad86f3d4ad71d5667679", [:mix], []},
   "graphql": {:hex, :graphql, "0.1.2", "e8dae0681097bfd1535e32efa133ee5c623afe55a7d866f6829291bc003fc2b8", [:mix], []},
@@ -11,4 +14,5 @@
   "plug_graphql": {:hex, :plug_graphql, "0.1.5", "ec00fc7aa4444445270c3807ae5da635df80cf00a6fc7fbf3cd39c0a81ac9f12", [:mix], [{:poison, "~> 1.5", [hex: :poison, optional: false]}, {:plug, "~> 0.14 or ~> 1.0", [hex: :plug, optional: false]}, {:graphql, "~> 0.1.2", [hex: :graphql, optional: false]}, {:cowboy, "~> 1.0", [hex: :cowboy, optional: false]}]},
   "poison": {:hex, :poison, "1.5.2", "560bdfb7449e3ddd23a096929fb9fc2122f709bcc758b2d5d5a5c7d0ea848910", [:mix], []},
   "ranch": {:hex, :ranch, "1.2.1", "a6fb992c10f2187b46ffd17ce398ddf8a54f691b81768f9ef5f461ea7e28c762", [:make], []},
-  "rethinkdb": {:hex, :rethinkdb, "0.3.2", "057cea5c3371ac5726cee4943d3eb03bf10c3a77cac93bb72ac61a52b3b03153", [:mix], [{:poison, "~> 1.5 or ~> 2.0", [hex: :poison, optional: false]}, {:connection, "~> 1.0.1", [hex: :connection, optional: false]}]}}
+  "rethinkdb": {:hex, :rethinkdb, "0.4.0", "287714c2c7683a1f327ea83bf7a1c4eaaf8141ddf52e785632ef289d3851bc4e", [:mix], [{:poison, "~> 1.5 or ~> 2.0", [hex: :poison, optional: false]}, {:connection, "~> 1.0.1", [hex: :connection, optional: false]}]},
+  "rethinkdb_changefeed": {:hex, :rethinkdb_changefeed, "0.0.1", "b9db545259c1f4a2bc615c4eb1fe56eedbcf71d6ba4bec0be0ecb286967f191d", [:mix], [{:rethinkdb, "~> 0.4.0", [hex: :rethinkdb, optional: false]}, {:connection, "~> 1.0.1", [hex: :connection, optional: false]}]}}
