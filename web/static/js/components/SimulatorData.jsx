@@ -42,11 +42,6 @@ class Simulators extends Component {
 			</div>
 			</Col>
 			</Row>
-			<Row>
-			<Col className="col-sm-12">
-			<a className="btn btn-info btn-sm" href="/graphql">GraphQL Console</a>
-			</Col>
-			</Row>
 			</Container>
 			);
 	}
@@ -62,33 +57,3 @@ function select(state){
 const SimulatorData = connect(select)(Simulators);
 
 export default SimulatorData;
-
-/*class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      channel: socket.channel("simulators:voyager", {}),
-      messages: []
-    };
-  }
-  componentDidMount() {
-    let messages = this.state.messages;
-    this.state.channel.join()
-    .receive("ok", resp => { console.log("Joined successfully", resp);})
-    .receive("error", resp => { console.log("Unable to join", resp);});
-    this.state.channel.on("new:simulator", payload => {
-      console.log('payload:',payload)
-      messages.push(`${payload.name}`);
-      this.setState({
-        messages:messages
-      });
-    });
-  }
-  render() {
-    return(<div>
-      {this.state.messages.map((message) => (<p>{message}</p>))}
-      <input type="text" className="form-input" onKeyPress={this._keypress.bind(this)} />
-      </div>
-      );
-  }
-}*/

@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { connect } from 'react-apollo';
 import { Button, LoadingWidget, Row, Col, Container } from './generic';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
+import actions from '../actions';
 
+const {stations, cards} = actions;
+const {fetchStations} = stations;
+const {flushCards} = cards;
 class StationLink extends Component {
 	render(){
 		let station = this.props.station || {};
@@ -17,8 +21,13 @@ class StationLink extends Component {
 }
 
 class Stations extends Component {
+	componentDidMount() {
+		let { dispatch } = this.props;
+		dispatch(fetchStations({simulatorId:this.props.params.simulatorId}));
+		//dispatch(flushCards());
+	}
 	render() {
-		let stations = this.props.data.stations || [];
+		let stationsData = this.props.data.stations || [];
 		let loading = this.props.data.loading;
 		return (
 			<Container>
@@ -27,9 +36,9 @@ class Stations extends Component {
 			<h1>Station Picker</h1>
 			<Link to="/">&laquo; Go Back</Link>
 			<h2>Select Station</h2>
-			<div className="btn-group">			
+			<div className="btn-group">		
 			{(loading) ? <LoadingWidget /> :
-				stations.map((station)=>{
+				stationsData.map((station)=>{
 					return <StationLink key={station.id} station={station} />;
 				})
 			}
@@ -41,20 +50,14 @@ class Stations extends Component {
 	}
 }
 
-export const StationData = connect({
-	mapQueriesToProps: (arg) => ({
+function select(state, props){
+	let stationsData = state.stations.filter((station) => (station.simulatorId === props.params.simulatorId));
+	return {
 		data: {
-			query: gql`
-			query Stations {
-				stations (simulatorId: "${arg.ownProps.params.simulatorId}"){
-					id
-					name
-					simulatorId
-				}
-			}
-			`,
-		},
-	}),
-})(Stations);
+			stations: stationsData
+		}
+	};
+}
+const StationData = connect(select)(Stations);
 
-
+export default StationData;

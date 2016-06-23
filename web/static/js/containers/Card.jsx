@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
-import { connect } from 'react-apollo';
+import { connect } from 'react-redux';
 import Cards from '../components/views';
 import { Link } from 'react-router';
 import TransitionGroup from 'react-addons-transition-group';
 import {TweenMax} from 'gsap';
+import actions from '../actions';
+
+const {cards, stations, simulators} = actions;
+const {fetchSimulators} = simulators;
+const {fetchStations} = stations;
+const {fetchCards} = cards;
 
 class CardContainer extends Component {
 	componentWillEnter (callback) {
@@ -26,10 +32,18 @@ class CardContainer extends Component {
 }
 
 class CardFrame extends Component {
+	componentDidMount() {
+		let { dispatch } = this.props;
+		dispatch(fetchSimulators(this.props.params.simulatorId));
+		dispatch(fetchStations(this.props.params.stationId));
+		dispatch(fetchCards(this.props.params.stationId));
+	}
 	render() {
-		const {cards,loading} = this.props.data;
+		let {cards} = this.props.data;
 		const {simulatorId, stationId, cardIndex} = this.props.params;
 		let componentName;
+		cards = cards || [];
+		let loading = cards.length === 0;
 		if (!loading){
 			componentName = cards[cardIndex].component;
 		}
@@ -57,29 +71,18 @@ class CardFrame extends Component {
 	}
 }
 
-const CardData = connect({
-	mapQueriesToProps: (arg) => ({
+function select(state,props){
+	let cardsData = state.cards.filter((card) => (card.stationId === props.params.stationId));
+	let stationsData = state.stations.filter((station) => (station.id === props.params.stationId));
+	let simulatorsData = state.simulators.filter((simulator) => (simulator.simulatorId === props.params.simulatorId));
+	return {
 		data: {
-			query: gql`
-			query Simulators {
-				simulators(id: "${arg.ownProps.params.simulatorId}") {
-					id
-					name
-				}
-				stations(id: "${arg.ownProps.params.stationId}") {
-					id
-					name
-				}
-				cards(stationId: "${arg.ownProps.params.stationId}") {
-					id
-					name
-					component
-					order
-				}
-			}
-			`,
-		},
-	}),
-})(CardFrame);
+			simulators: simulatorsData,
+			stations: stationsData,
+			cards: cardsData,
+		}
+	};
+}
+const CardData = connect(select)(CardFrame);
 
 export default CardData;

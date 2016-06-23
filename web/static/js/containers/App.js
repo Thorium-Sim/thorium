@@ -9,7 +9,7 @@ import { devTools, persistState, DevTools, DebugPanel, LogMonitor } from 'redux-
 
 import thoriumApp from '../reducers';
 import SimulatorData from '../components/SimulatorData.jsx';
-import {StationData} from '../components/StationData.jsx';
+import StationData from '../components/StationData.jsx';
 import CardContainer from './Card.jsx';
 
 const loggerMiddleware = createLogger();
