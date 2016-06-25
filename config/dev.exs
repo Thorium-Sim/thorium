@@ -11,7 +11,7 @@ config :thorium, Thorium.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  watchers: [npm: ["start"]]
+  watchers: [npm: ["start", cd: Path.expand("../", __DIR__)]]
 
 # Watch static and templates for browser reloading.
 config :thorium, Thorium.Endpoint,

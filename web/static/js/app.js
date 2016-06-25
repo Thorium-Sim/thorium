@@ -16,10 +16,27 @@ import "phoenix_html";
 // Import local files
 import React from 'react';
 import { render } from 'react-dom';
+import { Provider, connect } from 'react-redux';
+import createLogger from 'redux-logger';
+import thunkMiddleware from 'redux-thunk';
+import { compose, createStore, applyMiddleware } from 'redux';
+import thoriumApp from './reducers';
 
 import App from './containers/App';
 
+const loggerMiddleware = createLogger();
+const createStoreWithMiddleware = compose(
+  applyMiddleware(
+    thunkMiddleware // lets us dispatch() functions
+   // loggerMiddleware // neat middleware that logs actions
+    )
+  )(createStore);
+
+  let store = createStoreWithMiddleware(thoriumApp);
+
 render(
-    <App />,
-  document.getElementById('app')
-);
+	(<Provider store={store}>
+		<App />
+		</Provider>),
+	document.getElementById('app')
+	);

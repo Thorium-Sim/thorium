@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 export default class Button extends Component {
 	render() {
-		let classNames = this.props.classNames;
+		let classNames = this.props.className || '';
 		let type = this.props.type || 'default';
 		let href = this.props.href || '#';
 		let action = this.props.onClick || function(){};
@@ -20,7 +20,7 @@ export default class Button extends Component {
 				);
 		}
 		return (
-			<button classNames={classNames}
+			<button className={`btn ${classNames}`}
 			onClick={action}
 			type="button"
 			title={title}>

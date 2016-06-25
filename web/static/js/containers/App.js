@@ -1,52 +1,42 @@
 import React, { Component } from 'react';
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router';
-import { compose, createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import createLogger from 'redux-logger';
-import thunkMiddleware from 'redux-thunk';
+import { Provider, connect } from 'react-redux';
 
-import { devTools, persistState, DevTools, DebugPanel, LogMonitor } from 'redux-devtools';
-
-import thoriumApp from '../reducers';
 import SimulatorData from '../components/SimulatorData.jsx';
 import StationData from '../components/StationData.jsx';
 import CardContainer from './Card.jsx';
+import actions from '../actions';
+const {presence} = actions;
+const {fetchPresence} = presence;
 
-const loggerMiddleware = createLogger();
-const createStoreWithMiddleware = compose(
-  applyMiddleware(
-    thunkMiddleware, // lets us dispatch() functions
-    loggerMiddleware // neat middleware that logs actions
-  )
-  )(createStore);
+  const Dev = () => (
+    <div className="jumbotron">
+    <h2>Welcome to Thorium</h2>
+    <p className="lead"></p>
+    <p className="lead">
+    <span>
+    Seed/Reset RethinkDB: <a href="/reset">Click Here</a>
+    </span>
+    <br />
 
-let store = createStoreWithMiddleware(thoriumApp);
+    </p>
+    </div>
+    );
 
-const Dev = () => (
-  <div className="jumbotron">
-  <h2>Welcome to Thorium</h2>
-  <p className="lead"></p>
-  <p className="lead">
-  <span>
-  Seed/Reset RethinkDB: <a href="/reset">Click Here</a>
-  </span>
-  <br />
-
-  </p>
-  </div>
-  );
-
-class NoMatch extends Component {
-  render(){
-    return (<div>No route matches your request. <a href="/">Go Home.</a></div>);
+  class NoMatch extends Component {
+    render(){
+      return (<div>No route matches your request. <a href="/">Go Home.</a></div>);
+    }
   }
-};
 
-class App extends Component {
+  class App extends Component {
+    componentDidMount() {
+      let { dispatch } = this.props;
+      //dispatch(fetchPresence());
+  }
   render() {
     return (
       <div>
-      <Provider store={store}>
       <Router history={browserHistory}>
           <Route path="/" components={SimulatorData} />
           <Route path="simulator">
@@ -57,10 +47,19 @@ class App extends Component {
             </Route>
           <Route path="*" components={NoMatch}/>
       </Router>
-      </Provider>
-      </div>
-      );
+      {this.props.data.presence.map((p) => (
+        <p key={p.clientId}>{`${p.clientId} [${p.metas.length}]`}</p>
+      ))}
+    </div>
+    );
   }
 }
 
-export default App;
+function select(state){
+  return {
+    data: state
+  };
+}
+const AppData = connect(select)(App);
+
+export default AppData;

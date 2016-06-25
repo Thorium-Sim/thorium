@@ -9,8 +9,11 @@ defmodule Thorium do
     children = [
       # Start the endpoint when the application starts
       supervisor(Thorium.Endpoint, []),
+      # Get presence monitoring going
+      supervisor(Thorium.Presence, []),
       # Here you could define other workers and supervisors as children
-      worker(DB, [])
+      worker(DB, []),
+      worker(Thorium.Subscriptions, [])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

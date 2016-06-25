@@ -37,18 +37,24 @@ function updateStation(station) {
 	return { type: UPDATE_STATION, station };
 }
 
-export function fetchStations(id){
+export function fetchStations(filter){
 	return dispatch => {
-    dispatch(fetchStationsRequest());
-    let channelName = "stations:all";
-    if (id){
-      if (typeof id === "number" || typeof id === "string"){
-        channelName = `stations:id:${id}`;
-      } if (typeof id === "object"){
-        channelName = `stations:simulatorId:${id.simulatorId}`;
+    let filterString = "";
+    //Set up my channelName with the filter params
+    for (let key in filter) {
+      if (filter.hasOwnProperty(key)){
+        filterString += `${key}?${filter[key]};`;
       }
     }
-    let channel = socket.channel(channelName, {});
+    //Remove the trailing ;
+    filterString = filterString.substr(0,filterString.length - 1);
+    dispatch(fetchStationsRequest());
+    let channel;
+    if (filterString.length > 0){
+      channel = socket.channel(`generic:stations:${filterString}`);
+    } else {
+      channel = socket.channel(`generic:stations`);
+    }
     channel.join()
     .receive('ok', station => {
       console.log('catching up', station);
@@ -59,15 +65,15 @@ export function fetchStations(id){
       dispatch(fetchStationsFailure(reason));
     });
 
-    channel.on('new:station', station => {
+    channel.on('new:stations', station => {
       console.log('new:station', station);
       dispatch(fetchStationsSuccess(station));
     });
-    channel.on('remove:station', station => {
+    channel.on('remove:stations', station => {
       console.log('remvoe:station', station);
       dispatch(removeStation(station));
     });
-    channel.on('update:station', changes => {
+    channel.on('update:stations', changes => {
       console.log('update:station', changes);
       dispatch(updateStation(changes));
     });

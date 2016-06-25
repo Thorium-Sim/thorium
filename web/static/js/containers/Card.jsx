@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
-import Cards from '../components/views';
+import Views from '../components/views';
 import { Link } from 'react-router';
 import TransitionGroup from 'react-addons-transition-group';
 import {TweenMax} from 'gsap';
 import actions from '../actions';
+import socket from '../socket';
 
 const {cards, stations, simulators} = actions;
 const {fetchSimulators} = simulators;
 const {fetchStations} = stations;
 const {fetchCards} = cards;
+const operationChannel = socket.channel('operations');
+operationChannel.join();
 
 class CardContainer extends Component {
 	componentWillEnter (callback) {
@@ -24,33 +27,33 @@ class CardContainer extends Component {
 	}
 	render(){
 		return (
-		<div className="cardContainer" style={{position:'absolute'}}>
-		{this.props.component(this.props)}
-		</div>
-		);
+			<div className="cardContainer container" style={{width: '100%', position:'absolute', alignSelf:'center'}}>
+			<this.props.component {...this.props} />
+			</div>
+			);
 	}
 }
 
 class CardFrame extends Component {
 	componentDidMount() {
 		let { dispatch } = this.props;
-		dispatch(fetchSimulators(this.props.params.simulatorId));
-		dispatch(fetchStations(this.props.params.stationId));
-		dispatch(fetchCards(this.props.params.stationId));
+		dispatch(fetchSimulators({id:this.props.params.simulatorId}));
+		dispatch(fetchStations({id:this.props.params.stationId}));
+		dispatch(fetchCards({stationId:this.props.params.stationId}));
 	}
 	render() {
-		let {cards} = this.props.data;
+		let {cardsData} = this.props.data;
 		const {simulatorId, stationId, cardIndex} = this.props.params;
 		let componentName;
-		cards = cards || [];
-		let loading = cards.length === 0;
+		cardsData = cardsData || [];
+		let loading = cardsData.length === 0;
 		if (!loading){
-			componentName = cards[cardIndex].component;
+			componentName = cardsData[cardIndex].component;
 		}
 		return (
-			<div>
+			<div style={{display:'flex'}}>
 			<ul>
-			{(loading) ? <div></div> : cards.map((card,index) => (
+			{(loading) ? <div></div> : cardsData.map((card,index) => (
 				<li key={card.id}>
 				<Link to={`/simulator/${simulatorId}/station/${stationId}/card/${index}`}>
 				{card.name}
@@ -58,11 +61,10 @@ class CardFrame extends Component {
 				</li>
 				))}
 			</ul>
-			Hello! {simulatorId} {stationId} {cardIndex}
 			<TransitionGroup>
-			{(loading) ? <div></div> :
-				cards.map((card, index) => {
-					return ((index === parseInt(cardIndex,10)) && <CardContainer key={card.id} component={Cards[componentName]} params={this.props.params} data={this.props.data} />);
+			{
+				cardsData.map((card, index) => {
+					return <CardContainer key={card.id} component={Views[componentName]} params={this.props.params} data={this.props.data} operationChannel={operationChannel} />;
 				})
 			}
 			</TransitionGroup>
@@ -79,7 +81,7 @@ function select(state,props){
 		data: {
 			simulators: simulatorsData,
 			stations: stationsData,
-			cards: cardsData,
+			cardsData: cardsData,
 		}
 	};
 }

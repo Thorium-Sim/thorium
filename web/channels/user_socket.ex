@@ -2,10 +2,9 @@ defmodule Thorium.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  channel "rooms:*", Thorium.RoomChannel
-  channel "simulators:*", Thorium.SimulatorsChannel
-  channel "stations:*", Thorium.StationsChannel
-  channel "cards:*", Thorium.CardsChannel
+  channel "generic:*", Thorium.GenericChannel
+  channel "operations", Thorium.OperationsChannel
+
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
   # transport :longpoll, Phoenix.Transports.LongPoll
@@ -21,9 +20,15 @@ defmodule Thorium.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
+  def connect(%{"client_id" => id}, socket) do
+    {:ok, assign(socket, :client_id, id)}
+  end
+
   def connect(_params, socket) do
     {:ok, socket}
   end
+
+  
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
   #

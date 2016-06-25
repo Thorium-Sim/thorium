@@ -32,7 +32,7 @@ class Stations extends Component {
 		return (
 			<Container>
 			<Row>
-			<Col className="col-sm-12">
+			<Col className="col-sm-12 selected">
 			<h1>Station Picker</h1>
 			<Link to="/">&laquo; Go Back</Link>
 			<h2>Select Station</h2>

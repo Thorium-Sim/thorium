@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {Component} from 'react';
 
-const ShortRangeComm = (props) => {
-	console.log(props);
-	return (
-		<div>
-		This is the short range comm card!		
-		</div>
-		);
-};
+class ShortRangeComm extends Component {
+	render(){
+		console.log(this.props);
+		return (
+			<div>
+			This is the short range comm card!		
+			</div>
+			);
+	}
+}
 
 export default ShortRangeComm;

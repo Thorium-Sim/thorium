@@ -42,11 +42,24 @@ export function flushCards() {
   return {type: FLUSH_CARDS };
 }
 
-export function fetchCards(stationId){
+export function fetchCards(filter){
 	return dispatch => {
+    let filterString = "";
+    //Set up my channelName with the filter params
+    for (let key in filter) {
+      if (filter.hasOwnProperty(key)){
+        filterString += `${key}?${filter[key]};`;
+      }
+    }
+    //Remove the trailing ;
+    filterString = filterString.substr(0,filterString.length - 1);
     dispatch(fetchCardsRequest());
-    let channel = socket.channel(`cards:stationId:${stationId}`, {});
-    debugger;
+    let channel;
+    if (filterString.length > 0){
+      channel = socket.channel(`generic:cards:${filterString}`);
+    } else {
+      channel = socket.channel(`generic:cards`);
+    }
     channel.join()
       .receive('ok', card => {
         console.log('catching up', card);
@@ -57,15 +70,15 @@ export function fetchCards(stationId){
         dispatch(fetchCardsFailure(reason));
       });
 
-    channel.on('new:card', card => {
+    channel.on('new:cards', card => {
       console.log('new:card', card);
       dispatch(fetchCardsSuccess(card));
     });
-    channel.on('remove:card', card => {
+    channel.on('remove:cards', card => {
       console.log('remvoe:card', card);
       dispatch(removeCard(card));
     });
-    channel.on('update:card', changes => {
+    channel.on('update:cards', changes => {
       console.log('update:card', changes);
       dispatch(updateCard(changes));
     });

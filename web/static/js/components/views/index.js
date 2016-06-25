@@ -1,5 +1,6 @@
 import ShortRangeComm from './ShortRangeComm';
 import LongRangeComm from './LongRangeComm';
+import AdminStations from './AdminStations';
 
-const Cards = {ShortRangeComm,LongRangeComm};
-export default Cards;
+const Views = {ShortRangeComm,LongRangeComm,AdminStations};
+export default Views;

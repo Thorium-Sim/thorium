@@ -1,0 +1,27 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'start' ]
+2 info using npm@3.6.0
+3 info using node@v5.6.0
+4 verbose run-script [ 'prestart', 'start', 'poststart' ]
+5 info lifecycle @~prestart: @
+6 silly lifecycle @~prestart: no script for prestart, continuing
+7 info lifecycle @~start: @
+8 verbose lifecycle @~start: unsafe-perm in lifecycle true
+9 verbose lifecycle @~start: PATH: /usr/local/lib/node_modules/npm/bin/node-gyp-bin:/Users/alexanderson/Projects/thorium/node_modules/.bin:/usr/local/lib/erlang/erts-7.3/bin:/usr/local/lib/erlang/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+10 verbose lifecycle @~start: CWD: /Users/alexanderson/Projects/thorium
+11 silly lifecycle @~start: Args: [ '-c', 'webpack --watch-stdin --progress --color' ]
+12 verbose stack Error: write EPIPE
+12 verbose stack     at exports._errnoException (util.js:856:11)
+12 verbose stack     at WriteWrap.afterWrite (net.js:763:14)
+13 verbose cwd /Users/alexanderson/Projects/thorium
+14 error Darwin 16.0.0
+15 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "start"
+16 error node v5.6.0
+17 error npm  v3.6.0
+18 error code EPIPE
+19 error errno EPIPE
+20 error syscall write
+21 error write EPIPE
+22 error If you need help, you may report this error at:
+22 error     <https://github.com/npm/npm/issues>
+23 verbose exit [ 1, true ]
