@@ -6,6 +6,7 @@ defmodule Thorium.PageController do
   def reset_db(conn, _params) do
     table_drop("simulators") |> DB.run
     table_drop("stations") |> DB.run
+    table_drop("cards") |> DB.run
 
     table_create("simulators") |> DB.run
     table_create("stations") |> DB.run
@@ -15,16 +16,17 @@ defmodule Thorium.PageController do
     	id: "voyager",
     	name: "Voyager"
     	}) |> DB.run
-    table("simulators") |> insert(%{
-    	id: "phoenix",
-    	name: "Phoenix"
-    	}) |> DB.run
     table("stations") |> insert(%{
-      id: "voyager-captain",
-      name: "Captain",
+      id: "voyager-admin",
+      name: "Admin",
       simulatorId: "voyager"
       }) |> DB.run
-
+    table("cards") |> insert(%{
+      name: "Station Admin",
+      component: "AdminStations",
+      stationId: "voyager-admin",
+      order: 0
+      }) |> DB.run
     text conn, "Database Reset"
   end
 

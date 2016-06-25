@@ -42,6 +42,12 @@ class Simulators extends Component {
 			</div>
 			</Col>
 			</Row>
+			<br /><br />
+			<Row>
+			<Col className="col-sm-12">
+			<h4>First time here? Be sure to <a href="/reset">reset your database.</a></h4>
+			</Col>
+			</Row>
 			</Container>
 			);
 	}
