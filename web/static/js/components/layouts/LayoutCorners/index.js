@@ -28,16 +28,16 @@ class CardHolder extends Component {
 	}
 }
 
-class LayoutCorner extends Component {
+class LayoutCorners extends Component {
 	render() {
 		const {simulatorId, stationId, cardIndex} = this.props.params;
 		let {stationsData, simulatorsData} = this.props.data;
 		let currentStation = stationsData[0] || {};
 		let currentSimulator = simulatorsData[0] || {};
-		let alertClass = "alert5";
 		let {cardsData} = this.props.data;
 		cardsData = cardsData || [];
 		let loading = cardsData.length === 0;
+		let alertClass = `alertColor${currentSimulator.alertLevel || 5}`;
 		return (<div>
 			<div className={`card-container card-area`} >
 			<TransitionGroup>
@@ -71,10 +71,10 @@ class LayoutCorner extends Component {
 			<h1 className="simulator-name">{currentSimulator.name}</h1>
 			<h2 className="station-name">{currentStation.name}</h2>
 			</div>
-						{/*<span class="login-name" style="{{usernameStyle}}">{{username}}</span>*/}
-			</div>
-			</div>);
+		{/*<span class="login-name" style="{{usernameStyle}}">{{username}}</span>*/}
+		</div>
+		</div>);
 	}
 }
 
-export default LayoutCorner;
+export default LayoutCorners;
