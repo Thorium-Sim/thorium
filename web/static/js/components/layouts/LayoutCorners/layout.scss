@@ -1,0 +1,420 @@
+$alert5: #233F7A;
+$alert3: #4D4D16;
+$alert2: #804D19;
+$alert1: #801919;
+$alertp: #4D1980;
+$url: '/js/images/background-blue.svg';
+
+body{
+	overflow:hidden;
+	margin:0;
+	font-family: 'Open Sans';
+}
+
+//Card area
+.card-container{
+	position: absolute;
+	top: 115px;
+	left: 180px;
+	width: 87vw;
+	height: 84vh;
+	.transitioner{
+		overflow: visible;
+	}
+}
+ 
+
+ #curve-frame {
+ 	height: 100vh;
+ }
+
+ .alertColor5 .frame-color div, .alertColor4 .frame-color div{
+	background-color:saturate(darken($alert5, 1%), 5%);
+	&.active{
+		background-color:saturate(lighten($alert5, 10%), 5%);
+	}
+}
+.alertColor3 .frame-color div{
+	background-color:saturate(darken($alert3, 1%), 5%);
+	&.active{
+		background-color:saturate(lighten($alert3, 10%), 5%);
+	}
+}
+.alertColor2 .frame-color div{
+	background-color:saturate(darken($alert2, 1%), 5%);
+	&.active{
+		background-color:saturate(lighten($alert2, 10%), 5%);
+	}
+}
+.alertColor1 .frame-color div{
+	background-color:saturate(darken($alert1, 1%), 5%);
+	&.active{
+		background-color:saturate(lighten($alert1, 10%), 5%);
+	}
+}
+.alertColorp .frame-color div{
+	background-color:saturate(darken($alertp, 1%), 5%);
+	&.active{
+		background-color:saturate(lighten($alertp, 10%), 5%);
+	}
+}
+
+ 
+@mixin alertColor($color,$url) {
+	background:radial-gradient(ellipse at center, rgba(0,0,0,0) 0%,rgba(0,0,0,.9) 100%), url($url), linear-gradient(165deg, #000000 0%, rgba(0, 0, 0, 0) 50%, #000000 100%);
+	background-color:$color;
+	background-size: 100vw 100vh, 50px, 100vw 100vh;
+	.frame-color div{
+		background-color:saturate(darken($color, 1%), 5%);
+	}
+	.card-icon-container .card-icon-item .card-button-background{
+		background: linear-gradient(to bottom, saturate(darken($color, 4%), 5%) 0%, saturate(darken($color, 1%), 5%) 50%, saturate(darken($color, 4%), 5%) 100%);
+	}
+}
+
+.alertColor5 .frame-color div, .alertColor4 .frame-color div{
+	background-color:saturate(darken($alert5, 1%), 5%);
+	&.active{
+		background-color:saturate(lighten($alert5, 10%), 5%);
+	}
+}
+.alertColor3 .frame-color div{
+	background-color:saturate(darken($alert3, 1%), 5%);
+	&.active{
+		background-color:saturate(lighten($alert3, 10%), 5%);
+	}
+}
+.alertColor2 .frame-color div{
+	background-color:saturate(darken($alert2, 1%), 5%);
+	&.active{
+		background-color:saturate(lighten($alert2, 10%), 5%);
+	}
+}
+.alertColor1 .frame-color div{
+	background-color:saturate(darken($alert1, 1%), 5%);
+	&.active{
+		background-color:saturate(lighten($alert1, 10%), 5%);
+	}
+}
+.alertColorp .frame-color div{
+	background-color:saturate(darken($alertp, 1%), 5%);
+	&.active{
+		background-color:saturate(lighten($alertp, 10%), 5%);
+	}
+}
+
+#curve-frame{
+	transition: background-color 0.5s ease-in-out;
+	height:100vh;
+	//Alert Classes
+	&.alertColor5, &.alertColor4{
+		@include alertColor($alert5,'/js/images/background-blue.svg');
+	}
+	&.alertColor3{
+		@include alertColor($alert3,'/js/images/background-yellow.svg');
+	}
+	&.alertColor2{
+		@include alertColor($alert2,'/js/images/background-orange.svg');
+	}
+	&.alertColor1{
+		@include alertColor($alert1,'/js/images/background-red.svg');
+	}
+	&.alertColorp{
+		@include alertColor($alertp,'/js/images/background-purple.svg')
+	}
+	.simulator-image{
+		img{
+			position: absolute;
+			top: 72px;
+			left: 30px;
+			width: 162px;
+			height: 162px;
+			border-radius: 50%;
+		}
+		@media screen and (min-width: 1700px) {
+			img{
+				top: 85px;
+				left: 35px;
+				width: 196px;
+				height: 196px;
+			}
+		}
+	}
+	.card-icon-container{
+		width: 80px;
+		position: absolute;
+		top: 320px;
+		left: 10px;
+		z-index: 10;
+		&:hover {
+			.card-icon-item {
+				.card-button-background{
+					left: 105px;
+				}
+				.card-button-mask{
+					width: 410px;
+					transition: width 0s linear;
+				}
+			}
+		}
+
+		@for $i from 1 through 9 {
+			.card-icon-item:nth-child($i) {
+				.card-button-background{
+					transition-delay:(0.05s * $i);
+				}
+			}
+		}
+
+		.card-icon-item{
+			position:relative;
+			margin-bottom:90px;
+			&:hover{
+				-webkit-filter: brightness(1.2);
+			}
+			.card-icon-background{
+				width:70px;
+				height:70px;
+				margin-top:-85px;
+				background: #ccc;
+				border-radius: 50%;
+			}
+			.card-icon-color{
+				position: absolute;
+				top: 4px;
+				left: 4px;
+				padding: 6px;
+				width: 62px;
+				height: 62px;
+				border-radius: 50%;
+				background-color: #f00;
+			}
+			.card-icon{
+				position: absolute;
+				top: 4px;
+				left: 4px;
+				padding: 6px;
+				width: 62px;
+				height: 62px;
+				box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+				border-radius: 50%;
+				background-color: #000;
+			}
+			.card-button-mask{
+				overflow: hidden;
+				left:50px;
+				height:100px;
+				position:absolute;
+				width: 0px;
+				transition: width 0s linear 1s;
+			}
+			.card-button{
+				font-weight: 700;
+				text-transform: capitalize;
+				height: 40px;
+				font-size: 25px;
+				line-height: 33px;
+				text-align: right;
+				padding-right: 20px;
+				padding-left:30px;
+				margin-top: 3px;
+				margin-right: -20px;
+				white-space: nowrap;
+				border: solid 1px #777;
+				background: radial-gradient(ellipse at center, #888888 0%, #aaaaaa 50%, #bbbbbb 100%);
+				border-radius: 15px;
+			}
+			.card-button-background{
+				position: absolute;
+				height: 48px;
+				margin-left: -100px;
+				margin-top: 13px;
+				background: linear-gradient(to bottom, #1c3f6d 0%, #2462b3 50%, #1c3f6d 100%);
+				border: solid 1px #949495;
+				border-radius: 15px;
+				transition: left 0.5s ease-in-out;
+				left:-410px;
+			}
+		}
+	}
+	.frame-text{
+		-webkit-user-select: none;
+		user-select: none; 
+		.simulator-name{
+			font-family: 'Open Sans';
+			text-transform: uppercase;
+			top: -35px;
+			left: 30px;
+			font-weight: 700;
+			position: absolute;
+			font-size: 50px;
+			background: -webkit-linear-gradient(#ddd, #999, #ddd);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			-webkit-text-stroke: 1px #9C9DA0;
+			-webkit-font-smoothing: subpixel-antialiased;
+			letter-spacing: 5px;
+		}
+		.station-name{
+			font-family: 'Play', cursive;
+			font-weight:700;
+			position: absolute;
+			width:470px;
+			text-align: center;
+			top: -53px;
+			right: 0px;
+			font-size: 60px;
+			background: -webkit-linear-gradient(#ddd, #999, #ddd);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			-webkit-text-stroke: 1px #9C9DA0;
+			-webkit-font-smoothing: subpixel-antialiased;
+			letter-spacing: -3px;
+		}
+		.login-name{
+			font-family: 'Play', cursive;
+			font-weight:700;
+			position: absolute;
+			top: 50px;
+			left: 220px;
+			font-size: 30px;
+			color: #000;
+			letter-spacing: 1px;
+			-webkit-font-smoothing: subpixel-antialiased;
+		}
+		@media (min-width: 1700px) {
+			.simulator-name{
+				top: -45px;
+				left: 70px;
+				font-size: 60px;
+			}
+			.station-name{
+				top: -60px;
+				right: 10px;
+				font-size: 70px;
+			}
+			.login-name{
+				top: 60px;
+				left: 260px;
+				font-size: 40px;
+			}
+		}
+	}
+	.frame-image{
+		div{
+			position: absolute;
+		}
+		.frame-1{
+			width: 593px;
+			height: 127px;
+			background-image: url(/js/images/slice1-900.png);
+		}
+		.frame-2{
+			width: 126px;
+			height: 767px;
+			top: 127px;
+			background-image: url(/js/images/slice2-900.png);
+		}
+		.frame-3{
+			width: 533px;
+			height: 77px;
+			right: 0px;
+			background-image: url(/js/images/slice3-900.png);
+		}
+		@media (min-width: 1700px) {
+			.frame-1{
+				width: 723px;
+				height: 169px;
+				background-image: url(/js/images/slice1.png);
+			}
+			.frame-2{
+				width: 160px;
+				height: 909px;
+				top: 169px;
+				background-image: url(/js/images/slice2.png);
+			}
+			.frame-3{
+				width: 603px;
+				height: 139px;
+				right: 0px;
+				background-image: url(/js/images/slice3.png);
+			}
+		}
+	}
+	.frame-color{
+		div{
+			position: absolute;
+			transition: background-color 0.5s ease-in-out;
+		}
+		.part-1-1{
+			top:0px;
+			width:52px;
+			height:227px;
+			-webkit-clip-path: polygon(0 0, 50px 0px, 50px 95px, 45px 105px, 40px 110px, 38px 118px, 36px 120px, 35px 120px, 30px 140px, 30px 165px, 38px 188px, 0px 188px);
+		}
+		.part-1-2{
+			top:0px;
+			left:50px;
+			height: 130px;
+			width: 660px;
+			-webkit-clip-path: polygon(0 0, 538px 0px,  520px 35px, 517px 35px, 510px 38px, 384px 38px, 373px 50px, 367px 56px, 170px 56px, 155px 63px, 128px 105px, 116px 91px, 80px 73px, 76px 73px, 56px 72px, 28px 77px, 15px 85px, 0px 95px);
+		}
+		.part-c{
+			width: 350px;
+			height: 60px;
+			left: 163px;
+			top: 28px;
+			background-color: #C27A32 !important;
+			-webkit-clip-path: polygon(0 0, 350px 0, 324px 52px, 312px 59px, 0 60px);
+		}
+		.part-2{
+			width: 105px;
+			height: 770px;
+			top: 193px;
+			-webkit-clip-path: polygon(0 0, 40px 0, 63px 26px, 87px 38px, 87px 485px, 0 570px, 0 585px, 87px 497px, 87px 528px, 85px 558px, 0 645px);
+		}
+		.part-3{
+			width: 464px;
+			height: 72px;
+			top: 0px;
+			right: 0px;
+			-webkit-clip-path: polygon(0 0, 557px 0, 557px 75px, 44px 75px, 33px 65px);
+		}
+		@media (min-width: 1700px) {
+			.part-1-1{
+				top:0px;
+				width:50px;
+				height:227px;
+				-webkit-clip-path: polygon(0 0, 50px 0px, 50px 130px, 45px 140px, 40px 150px, 38px 160px, 36px 170px, 35px 180px, 35px 190px, 37px 200px, 45px 227px, 0px 227px);
+			}
+			.part-1-2{
+				top:0px;
+				left:50px;
+				height: 130px;
+				width: 660px;
+				-webkit-clip-path: polygon(0 0, 655px 0px, 637px 38px, 635px 39px, 634px 40px, 627px 45px, 625px 46px, 468px 46px, 455px 65px, 450px 67px, 213px 67px, 207px 70px, 203px 72px, 200px 74px, 165px 127px, 148px 110px, 116px 91px, 80px 85px, 76px 87px, 56px 90px, 28px 100px, 15px 110px, 0px 130px);
+			}
+			.part-c{
+				width: 380px;
+				height: 60px;
+				left: 230px;
+				top:45px;
+				background-color:#C27A32 !important;
+				-webkit-clip-path: polygon(0 0, 380px 0, 355px 50px, 338px 60px, 0 60px);
+			}
+			.part-2{
+				width:105px;
+				height: 770px;
+				top: 232px;
+				-webkit-clip-path: polygon(0 0, 45px 0, 85px 37px, 105px 44px, 105px 580px, 0 687px, 0 700px, 105px 595px, 105px 658px, 95px 680px, 0 770px);
+			}
+			.part-3{
+				width: 557px;
+				height: 85px;
+				top: 0px;
+				right: 0px;
+				-webkit-clip-path: polygon(0 0, 557px 0, 557px 85px, 44px 85px, 40px 80px);
+			}
+		}
+	}
+}

@@ -21,22 +21,29 @@ import createLogger from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import { compose, createStore, applyMiddleware } from 'redux';
 import thoriumApp from './reducers';
-
+import guid from './helpers/guid';
 import App from './containers/App';
+
+//Set a clientId for the client
+let clientId = localStorage.getItem('thorium_clientId');
+if (!clientId) {
+  clientId = guid();
+  localStorage.setItem('thorium_clientId',clientId);
+}
 
 const loggerMiddleware = createLogger();
 const createStoreWithMiddleware = compose(
   applyMiddleware(
     thunkMiddleware // lets us dispatch() functions
    // loggerMiddleware // neat middleware that logs actions
-    )
+   )
   )(createStore);
 
   let store = createStoreWithMiddleware(thoriumApp);
 
-render(
-	(<Provider store={store}>
-		<App />
-		</Provider>),
-	document.getElementById('app')
-	);
+  render(
+   (<Provider store={store}>
+    <App />
+    </Provider>),
+   document.getElementById('app')
+   );
