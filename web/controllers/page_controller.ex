@@ -7,11 +7,13 @@ defmodule Thorium.PageController do
     table_drop("simulators") |> DB.run
     table_drop("stations") |> DB.run
     table_drop("cards") |> DB.run
+    table_drop("systems") |> DB.run
 
     table_create("simulators") |> DB.run
     table_create("stations") |> DB.run
     table_create("cards") |> DB.run
-    
+    table_create("systems") |> DB.run
+
     table("simulators") |> insert(%{
     	id: "voyager",
     	name: "Voyager"
@@ -27,6 +29,25 @@ defmodule Thorium.PageController do
       stationId: "voyager-admin",
       order: 0
       }) |> DB.run
+    table("systems") |> insert(%{
+      name: "Thrusters",
+      simulatorId: "voyager",
+      attitude: %{
+        yaw: 0,
+        pitch: 0,
+        roll: 0
+      },
+      attitudeAdjust: %{
+        yaw: 0,
+        pitch: 0,
+        roll: 0
+      },
+      direction: %{
+        x: 0, #Port and Starboard
+        y: 0, #Up and Down
+        z: 0  #Forward and back
+      }
+      }) |> DB.run()
     text conn, "Database Reset"
   end
 
