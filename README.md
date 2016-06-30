@@ -1,3 +1,4 @@
+![Thorium](github-banner.png)
 # Thorium
 
 [![Join the chat at https://gitter.im/alexanderson1993/thorium](https://badges.gitter.im/alexanderson1993/thorium.svg)](https://gitter.im/alexanderson1993/thorium?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -47,6 +48,7 @@ npm install
 ### 4. Start RethinkDB from the Thorium folder
 ```
 rethinkdb
+# alternatively, you could use a docker container
 ```
 
 ### 5. Start the Phoenix framework
