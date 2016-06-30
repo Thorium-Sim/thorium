@@ -1,7 +1,8 @@
 const viewList = [
 	"ShortRangeComm",
 	"LongRangeComm",
-	"AdminStations"
+	"AdminStations",
+	"EngineControl",
 ];
 
 export default viewList;
