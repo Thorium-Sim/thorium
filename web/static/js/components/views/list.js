@@ -3,6 +3,7 @@ const viewList = [
 	"LongRangeComm",
 	"AdminStations",
 	"EngineControl",
+	"Thrusters",
 ];
 
 export default viewList;
