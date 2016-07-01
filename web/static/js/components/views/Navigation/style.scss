@@ -1,0 +1,28 @@
+.cardNavigation{
+  .keypadButtons{
+    text-align: center;
+  }
+  .keypadButtons .keypad, .keypadButtons .enter{
+    position: static;
+    padding: none;
+    font-size: 36px;
+    height: 30%;
+    width: 28%;
+    margin: 5px;
+    display: inline-block;
+    background-color: rgba(55,55,60,0.7);
+    transition: background-color 0.25s ease-in-out;
+    background-image: none;
+    box-shadow: inset 0px 0px 10px rgba(255,255,255,0.5);
+    border-radius: 4px;
+  }
+  .keypadButtons .keypad:hover, .keypadButtons .enter:hover{
+    background-color: rgba(255,255,255,0.5);
+  }
+  .keypad:before, .keypad:after{
+    visibility: hidden;
+  }
+  .keypadButtons .enter{
+    width: 95%;
+  }
+}
