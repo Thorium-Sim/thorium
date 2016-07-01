@@ -7,7 +7,9 @@ import { Link } from 'react-router';
 
 import Views from '../../views';
 
+import CardSwitcher from './CardSwitcher';
 import './layout.scss';
+import './theme.scss';
 
 class CardHolder extends Component {
 	componentWillEnter (callback) {
@@ -72,6 +74,7 @@ class LayoutCorners extends Component {
 			<h2 className="station-name">{currentStation.name}</h2>
 			</div>
 		{/*<span class="login-name" style="{{usernameStyle}}">{{username}}</span>*/}
+		<CardSwitcher cards={cardsData} {...this.props} />
 		</div>
 		</div>);
 	}

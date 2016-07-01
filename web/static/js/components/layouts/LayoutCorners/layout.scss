@@ -22,13 +22,13 @@ body{
 		overflow: visible;
 	}
 }
- 
 
- #curve-frame {
- 	height: 100vh;
- }
 
- .alertColor5 .frame-color div, .alertColor4 .frame-color div{
+#curve-frame {
+	height: 100vh;
+}
+
+.alertColor5 .frame-color div, .alertColor4 .frame-color div{
 	background-color:saturate(darken($alert5, 1%), 5%);
 	&.active{
 		background-color:saturate(lighten($alert5, 10%), 5%);
@@ -59,7 +59,7 @@ body{
 	}
 }
 
- 
+
 @mixin alertColor($color,$url) {
 	background:radial-gradient(ellipse at center, rgba(0,0,0,0) 0%,rgba(0,0,0,.9) 100%), url($url), linear-gradient(165deg, #000000 0%, rgba(0, 0, 0, 0) 50%, #000000 100%);
 	background-color:$color;
@@ -158,11 +158,54 @@ body{
 			}
 		}
 
-		@for $i from 1 through 9 {
-			.card-icon-item:nth-child($i) {
-				.card-button-background{
-					transition-delay:(0.05s * $i);
-				}
+		.card-icon-item:nth-child(1) {
+			.card-button-background{
+				transition-delay:(0.05s * 0);
+			}
+		}
+		.card-icon-item:nth-child(2) {
+			.card-button-background{
+				transition-delay:(0.05s * 1);
+			}
+		}
+		.card-icon-item:nth-child(3) {
+			.card-button-background{
+				transition-delay:(0.05s * 2);
+			}
+		}
+		.card-icon-item:nth-child(4) {
+			.card-button-background{
+				transition-delay:(0.05s * 3);
+			}
+		}
+		.card-icon-item:nth-child(5) {
+			.card-button-background{
+				transition-delay:(0.05s * 4);
+			}
+		}
+		.card-icon-item:nth-child(6) {
+			.card-button-background{
+				transition-delay:(0.05s * 5);
+			}
+		}
+		.card-icon-item:nth-child(7) {
+			.card-button-background{
+				transition-delay:(0.05s * 6);
+			}
+		}
+		.card-icon-item:nth-child(8) {
+			.card-button-background{
+				transition-delay:(0.05s * 7);
+			}
+		}
+		.card-icon-item:nth-child(9) {
+			.card-button-background{
+				transition-delay:(0.05s * 8);
+			}
+		}
+		.card-icon-item:nth-child(10) {
+			.card-button-background{
+				transition-delay:(0.05s * 9);
 			}
 		}
 
@@ -202,11 +245,12 @@ body{
 			}
 			.card-button-mask{
 				overflow: hidden;
+				background-color: transparent;
 				left:50px;
 				height:100px;
 				position:absolute;
 				width: 0px;
-				transition: width 0s linear 1s;
+				transition: width 0.5s ease-in-out 0.2s;
 			}
 			.card-button{
 				font-weight: 700;
