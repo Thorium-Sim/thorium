@@ -4,6 +4,7 @@ const viewList = [
 	"AdminStations",
 	"EngineControl",
 	"Navigation",
+	"Thrusters",
 ];
 
 export default viewList;

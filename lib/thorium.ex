@@ -12,7 +12,7 @@ defmodule Thorium do
       # Get presence monitoring going
       supervisor(Thorium.Presence, []),
       # Here you could define other workers and supervisors as children
-      worker(DB, []),
+      worker(DB, [[host: "localhost", port: 28015]]),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

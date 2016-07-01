@@ -29,6 +29,25 @@ defmodule Thorium.PageController do
       stationId: "voyager-admin",
       order: 0
       }) |> DB.run
+    table("systems") |> insert(%{
+      name: "Thrusters",
+      simulatorId: "voyager",
+      attitude: %{
+        yaw: 0,
+        pitch: 0,
+        roll: 0
+      },
+      attitudeAdjust: %{
+        yaw: 0,
+        pitch: 0,
+        roll: 0
+      },
+      direction: %{
+        x: 0, #Port and Starboard
+        y: 0, #Up and Down
+        z: 0  #Forward and back
+      }
+      }) |> DB.run()
     text conn, "Database Reset"
   end
 
