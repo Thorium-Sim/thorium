@@ -7,36 +7,88 @@ const {fetchSystems} = systems;
 import './style.scss';
 
 class NavigationContent extends Component {
+	constructor(props){
+		super(props);
+		this.state = {
+			lineX:50,
+			lineY:50,
+			backX:0,
+			backY:0,
+		};
+	}
 	componentDidMount() {
 		let { dispatch } = this.props;
 		dispatch(fetchSystems({name:'Navigation'}));
+		setInterval(() => {
+			this.setState({
+				lineX:Math.random() * 100,
+				lineY:Math.random() * 100,
+				backX:(Math.random() - 0.5) * 1000,
+				backY:(Math.random() - 0.5) * 1000,
+			});
+		},5000);
 	}
 	render(){
 		return (
 			<div className="cardNavigation">
 			<Row>
-			<Col className="col-sm-5">
-			<div className="keypad">
-			<div class="keypad">7</div>
-			<div class="keypad">8</div>
-			<div class="keypad">9</div>
-			<div class="keypad">4</div>
-			<div class="keypad">5</div>
-			<div class="keypad">6</div>
-			<div class="keypad">1</div>
-			<div class="keypad">2</div>
-			<div class="keypad">3</div>
-			<div class="keypad">.</div>
-			<div class="keypad">0</div>
-			<div class="keypad clearButton">C</div>
-			<div class=" btn-block enter">Enter</div>¨
+			<Col className="col-sm-3">
+			<div className="keypadButtons card">
+			<div className="keypad">7</div>
+			<div className="keypad">8</div>
+			<div className="keypad">9</div>
+			<div className="keypad">4</div>
+			<div className="keypad">5</div>
+			<div className="keypad">6</div>
+			<div className="keypad">1</div>
+			<div className="keypad">2</div>
+			<div className="keypad">3</div>
+			<div className="keypad">.</div>
+			<div className="keypad">0</div>
+			<div className="keypad clearButton">C</div>
+			<div className=" btn-block enter">Enter</div>
 			</div>
 			</Col>
-			<Col className="col-sm-2">
+			<Col className="col-sm-3">
+			<div className="currentCourse card">
+			<label>Current Course</label>
+			<Row>
+			<Col className="col-sm-3">
+			X:
+			</Col>
+			<Col className="col-sm-8 numBox">
 
 			</Col>
-			<Col className="5">
+			</Row>
+			<Row>
+			<Col className="col-sm-3">
+			Y:
+			</Col>
+			<Col className="col-sm-8 numBox">
 
+			</Col>
+			</Row>
+			<Row>
+			<Col className="col-sm-3">
+			Z:
+			</Col>
+			<Col className="col-sm-8 numBox">
+
+			</Col>
+			</Row>
+			</div>
+			</Col>
+			<Col className="col-sm-6">
+			<div className="starsBox" style={{backgroundPosition:`${this.state.backX}px ${this.state.backY}px`}}>
+			<div className="barVert" style={{left:`${this.state.lineX}%`}}></div>
+			<div className="barHoriz" style={{top:`${this.state.lineY}%`}}>></div>
+			<div className="crosshair" style={{left:`calc(${this.state.lineX}% - 18px)`,top:`calc(${this.state.lineY}% - 18px)`}}>>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			</div>
+			</div>
 			</Col>
 			</Row>
 			</div>);
