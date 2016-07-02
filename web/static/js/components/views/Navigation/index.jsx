@@ -34,19 +34,19 @@ class NavigationContent extends Component {
 			<Row>
 			<Col className="col-sm-3">
 			<div className="keypadButtons card">
-			<div className="keypad">7</div>
-			<div className="keypad">8</div>
-			<div className="keypad">9</div>
-			<div className="keypad">4</div>
-			<div className="keypad">5</div>
-			<div className="keypad">6</div>
-			<div className="keypad">1</div>
-			<div className="keypad">2</div>
-			<div className="keypad">3</div>
-			<div className="keypad">.</div>
-			<div className="keypad">0</div>
-			<div className="keypad clearButton">C</div>
-			<div className=" btn-block enter">Enter</div>
+			<div className="keypad alertBack">7</div>
+			<div className="keypad alertBack">8</div>
+			<div className="keypad alertBack">9</div>
+			<div className="keypad alertBack">4</div>
+			<div className="keypad alertBack">5</div>
+			<div className="keypad alertBack">6</div>
+			<div className="keypad alertBack">1</div>
+			<div className="keypad alertBack">2</div>
+			<div className="keypad alertBack">3</div>
+			<div className="keypad alertBack">.</div>
+			<div className="keypad alertBack">0</div>
+			<div className="keypad alertBack clearButton">C</div>
+			<div className=" btn-block alertBack enter">Enter</div>
 			</div>
 			</Col>
 			<Col className="col-sm-3">

@@ -13,6 +13,7 @@ defmodule Thorium do
       supervisor(Thorium.Presence, []),
       # Here you could define other workers and supervisors as children
       worker(DB, [[host: "localhost", port: 28015]]),
+      worker(Thorium.ThrusterRotation, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

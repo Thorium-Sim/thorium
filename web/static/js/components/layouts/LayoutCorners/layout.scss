@@ -70,6 +70,9 @@ body{
 	.card-icon-container .card-icon-item .card-button-background{
 		background: linear-gradient(to bottom, saturate(darken($color, 4%), 5%) 0%, saturate(darken($color, 1%), 5%) 50%, saturate(darken($color, 4%), 5%) 100%);
 	}
+	.alertBack{
+		background-color:$color;
+	}
 }
 
 .alertColor5 .frame-color div, .alertColor4 .frame-color div{
@@ -100,6 +103,27 @@ body{
 	background-color:saturate(darken($alertp, 1%), 5%);
 	&.active{
 		background-color:saturate(lighten($alertp, 10%), 5%);
+	}
+}
+
+.card-container{
+	.alertBack{
+		transition: background-color 0.5s ease-in-out;
+	}
+	&.alertColor5 .alertBack, &.alertColor4 .alertBack{
+		background-color: $alert5;
+	}
+	&.alertColor3 .alertBack{
+		background-color: $alert3;
+	}
+	&.alertColor2 .alertBack{
+		background-color: $alert2;
+	}
+	&.alertColor1 .alertBack{
+		background-color: $alert1;
+	}
+	&.alertColorp .alertBack{
+		background-color: $alertp;
 	}
 }
 

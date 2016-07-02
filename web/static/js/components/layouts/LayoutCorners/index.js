@@ -41,7 +41,7 @@ class LayoutCorners extends Component {
 		let loading = cardsData.length === 0;
 		let alertClass = `alertColor${currentSimulator.alertLevel || 5}`;
 		return (<div>
-			<div className={`card-container card-area`} >
+			<div className={`card-container card-area ${alertClass}`} >
 			<TransitionGroup>
 			{
 				cardsData.map((card, index) => {
