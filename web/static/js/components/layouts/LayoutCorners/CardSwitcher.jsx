@@ -24,7 +24,7 @@ class CardSwitcher extends Component {
 		return (<div className="card-icon-container">
 		{
 			this.props.cards.map((card,index) => {
-				return <CardButton cardNum={index} name={card.name} {...this.props} />;
+				return <CardButton key={index} cardNum={index} name={card.name} {...this.props} />;
 			})
 		}
 		</div>);

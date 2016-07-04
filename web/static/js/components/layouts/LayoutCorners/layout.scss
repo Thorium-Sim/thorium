@@ -5,12 +5,17 @@ $alert1: #801919;
 $alertp: #4D1980;
 $url: '/js/images/background-blue.svg';
 
+@import url('https://fonts.googleapis.com/css?family=Sarpanch:400,500,600,700');
+
 body{
 	overflow:hidden;
 	margin:0;
-	font-family: 'Open Sans';
+	font-family: 'Sarpanch', sans-serif;
+	text-transform: uppercase;
 }
-
+button {
+    outline: none !important;
+}
 //Card area
 .card-container{
 	position: absolute;
@@ -291,6 +296,7 @@ body{
 				border: solid 1px #777;
 				background: radial-gradient(ellipse at center, #888888 0%, #aaaaaa 50%, #bbbbbb 100%);
 				border-radius: 15px;
+				color: #000;
 			}
 			.card-button-background{
 				position: absolute;
@@ -309,9 +315,8 @@ body{
 		-webkit-user-select: none;
 		user-select: none; 
 		.simulator-name{
-			font-family: 'Open Sans';
 			text-transform: uppercase;
-			top: -35px;
+			top: -3px;
 			left: 30px;
 			font-weight: 700;
 			position: absolute;
@@ -324,14 +329,12 @@ body{
 			letter-spacing: 5px;
 		}
 		.station-name{
-			font-family: 'Play', cursive;
 			font-weight:700;
 			position: absolute;
 			width:470px;
 			text-align: center;
-			top: -53px;
 			right: 0px;
-			font-size: 60px;
+			font-size: 50px;
 			background: -webkit-linear-gradient(#ddd, #999, #ddd);
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;
@@ -446,7 +449,7 @@ body{
 			height: 72px;
 			top: 0px;
 			right: 0px;
-			-webkit-clip-path: polygon(0 0, 557px 0, 557px 75px, 44px 75px, 33px 65px);
+			-webkit-clip-path: polygon(10px 0, 557px 0, 557px 75px, 54px 75px, 43px 65px);
 		}
 		@media (min-width: 1700px) {
 			.part-1-1{
