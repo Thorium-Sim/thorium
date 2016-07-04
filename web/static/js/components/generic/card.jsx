@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Card = (props) => (
-	<div className="card" style={props.style || {}}>
+	<div className={`card ${props.className || ''}`} style={props.style || {}}>
 	{(() => {
 		if (props.image) {
 		return <img className="card-img-top" data-src={props.image} />;
