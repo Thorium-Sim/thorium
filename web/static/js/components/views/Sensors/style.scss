@@ -1,0 +1,78 @@
+.cardSensors{
+	textarea {
+		resize: none;
+	}
+	.array{
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 50px;
+		right: 50px;
+		border: 3px solid #545555;
+		box-shadow: inset 0px 0px 30px 10px rgba(0, 0, 0, 0.5);
+		border-radius:50%;
+		overflow: hidden;
+		background:radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%,rgba(0,0,0,.9) 100%), linear-gradient(165deg, #000000 0%, rgba(0, 0, 0, 0.4) 50%, #000000 100%);
+		.lines{
+			div{
+				width: 2px;
+				height: 100%;
+				background-color: rgba(128,128,128,0.3);
+				position: absolute;
+				left: calc(50% - 1px);
+				&:nth-child(1){
+					transform: rotate(15deg);
+				}
+				&:nth-child(2){
+					transform: rotate(45deg);
+				}
+				&:nth-child(3){
+					transform: rotate(75deg);
+				}
+				&:nth-child(4){
+					transform: rotate(105deg);
+				}
+				&:nth-child(5){
+					transform: rotate(135deg);
+				}
+				&:nth-child(6){
+					transform: rotate(165deg);
+				}
+			}
+		}
+		.circles{
+			div{
+				border: solid 2px rgba(128,128,128,0.3);
+				position: absolute;
+				border-radius: 50%;
+				&:nth-child(1){
+					left: calc(50% - 33% / 2);
+					top: calc(50% - 33% / 2);
+					width: 33%;
+					height: 33%;
+				}
+				&:nth-child(2){
+					left: calc(50% - 66% / 2);
+					top: calc(50% - 66% / 2);
+					width: 66%;
+					height: 66%;
+				}
+			}
+		}
+	}
+	.arrayContainer{
+		display: inline-block;
+		position: relative;
+		.spacer{
+			margin-top: 89.483%;
+		}
+	}
+	.contactPicture{
+		height: 17vh;
+		margin-bottom: 10px;
+		background-size: cover;
+	}
+	.processedData{
+		height: 40vh;
+	}
+}
