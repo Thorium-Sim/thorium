@@ -9,6 +9,26 @@ import actions from '../actions';
 const {presence} = actions;
 const {fetchPresence} = presence;
 
+const routes = [
+{
+  path:'/simulator/:simulatorId/station/:stationId/card/:cardIndex',
+  component:CardContainer,
+},
+{
+  path: '/simulator/:simulatorId',
+  component: StationData,
+},
+{
+  path: '/',
+  component: SimulatorData,
+},
+{
+  path: '*',
+  component:NoMatch
+}
+];
+
+
 const Dev = () => (
   <div className="jumbotron">
   <h2>Welcome to Thorium</h2>
@@ -37,16 +57,7 @@ class App extends Component {
   render() {
     return (
       <div>
-      <Router history={browserHistory}>
-      <Route path="/" components={SimulatorData} />
-      <Route path="simulator">
-      <Route path=":simulatorId" component={StationData} />
-      <Route path=":simulatorId/station/:stationId/card">
-      <Route path=":cardIndex" component={CardContainer} />
-      </Route>
-      </Route>
-      <Route path="*" components={NoMatch}/>
-      </Router>
+      <Router routes={routes} history={browserHistory} />
       {this.props.data.presence.map((p) => (
         <p key={p.clientId}>{`${p.clientId} [${p.metas.length}]`}</p>
         ))}
