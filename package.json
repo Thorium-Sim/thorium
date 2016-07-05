@@ -4,6 +4,7 @@
     "apollo-client": "^0.3.13",
     "babel-preset-react": "^6.5.0",
     "bootstrap": "^4.0.0-alpha.2",
+    "fabric": "^1.6.3",
     "gsap": "^1.18.5",
     "phoenix": "^1.2.0",
     "phoenix_html": "file:deps/phoenix_html",

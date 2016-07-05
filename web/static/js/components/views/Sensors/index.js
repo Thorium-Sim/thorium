@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Button, LoadingWidget, Row, Col, Container, Card } from '../../generic';
 import './style.scss';
 import actions from '../../../actions';
+import SensorGrid from './SensorGrid.js';
 const {systems} = actions;
 const {fetchSystems} = systems;
 
@@ -132,6 +133,7 @@ class Sensors extends Component{
 			<div></div>
 			<div></div>
 			</div>
+			<SensorGrid />
 			</div>
 			</Col>
 			<Col className="col-sm-3 data">
