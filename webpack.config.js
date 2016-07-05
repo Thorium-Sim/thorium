@@ -16,11 +16,21 @@ module.exports = {
 			include: path.resolve("./web/static/js")
 		},{
 			test: /\.scss$/,
-        	loaders: ["style", "css", "sass"]
+			loaders: ["style", "css", "sass"]
 		},
-   { test: /\.(png|jpg)$/, 
-      loader: 'file-loader?name=images/[name].[ext]' }
-  ]
+		{
+			test: /\.(png|jpg)$/,
+			loader: 'file-loader?name=images/[name].[ext]'
+		},
+		{
+			test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+			loader: "url-loader?limit=10000&mimetype=application/font-woff"
+		},
+		{
+			test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+			loader: "file-loader"
+		},
+		]
 	},
 	plugins: [
 	new ExtractTextPlugin("css/app.css"),
