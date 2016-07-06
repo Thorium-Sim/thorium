@@ -3,6 +3,7 @@
 /db
 /deps
 /*.ez
+run.sh
 
 # Generate on crash by the VM
 erl_crash.dump
