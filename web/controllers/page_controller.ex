@@ -32,6 +32,20 @@ defmodule Thorium.PageController do
     text conn, "Database Reset"
   end
 
+  def assets_upload(conn, params) do
+    assetData = %{
+      "folderPath" => params["folderPath"],
+      "containerId" => params["containerId"], 
+      "containerPath" => params["containerPath"], 
+      "fullPath" => params["fullPath"], 
+      "simulatorId" => params["simulatorId"], 
+    }
+    #Upload the asset to S3
+    {:ok, fileName} = Thorium.Asset.store({params["asset"], assetData})
+    assetRecord = Map.put(assetData,"url",Thorium.Asset.url({fileName, assetData}))
+    table("assetobjects") |> insert(assetRecord) |> DB.run
+    text conn, "Asset record uploaded"
+  end
 
   def index(conn, _params) do
     render conn, "index.html"
