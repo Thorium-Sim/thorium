@@ -1,3 +1,4 @@
+var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
 var path = require("path");
@@ -34,7 +35,11 @@ module.exports = {
 	},
 	plugins: [
 	new ExtractTextPlugin("css/app.css"),
-	new CopyWebpackPlugin([{ from: "./web/static/assets" }])
+	new CopyWebpackPlugin([{ from: "./web/static/assets" }]),
+	new webpack.ProvidePlugin({
+		'Promise': 'es6-promise',
+		'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+	})
 	],
 	devtool: 'eval-source-map',
 	resolve: {

@@ -39,7 +39,7 @@ defmodule Thorium.Asset do
   #    :content_encoding, :content_length, :content_type,
   #    :expect, :expires, :storage_class, :website_redirect_location]
   #
-  # def s3_object_headers(version, {file, scope}) do
-  #   [content_type: Plug.MIME.path(file.file_name)]
-  # end
+   def s3_object_headers(version, {file, scope}) do
+     [content_type: Plug.MIME.path(file.file_name)]
+   end
 end
