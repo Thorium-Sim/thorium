@@ -25,7 +25,6 @@
   <meta name="msapplication-TileImage" content="/mstile-144x144.png">
   <meta name="theme-color" content="#ffffff">
   <title>Thorium</title>
-  <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
 </head>
 
 <body>

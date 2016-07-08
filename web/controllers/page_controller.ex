@@ -1,4 +1,4 @@
-import RethinkDB.Query, only: [table_create: 1, table_drop: 1, table: 1, insert: 2]
+import RethinkDB.Query, only: [table_create: 1, table_drop: 1, table: 1, insert: 2, filter: 2]
 
 defmodule Thorium.PageController do
   use Thorium.Web, :controller
@@ -51,7 +51,41 @@ defmodule Thorium.PageController do
     text conn, "Database Reset"
   end
 
+  def assets_upload(conn, params) do
+    assetData = %{
+      "folderPath" => params["folderPath"],
+      "containerId" => params["containerId"], 
+      "containerPath" => params["containerPath"], 
+      "fullPath" => params["fullPath"], 
+      "simulatorId" => params["simulatorId"], 
+    }
+    #Upload the asset to S3
+    {:ok, fileName} = Thorium.Asset.store({params["asset"], assetData})
+    assetRecord = Map.put(assetData,"url",Thorium.Asset.url({fileName, assetData}))
+    table("assetobjects") |> insert(assetRecord) |> DB.run
+    text conn, "Asset record uploaded"
+  end
 
+  def assets_get(conn, %{"asset_key" => asset_key, "simulator" => simulatorId}) do
+    q = table("assetobjects")
+    |> filter(%{"containerPath" => asset_key, "simulatorId" => simulatorId})
+    result = DB.run(q)
+    case result.data do
+      [output] -> text conn, output["url"]
+      [] -> text conn, "Error"
+    end 
+  end
+
+  def assets_get(conn, %{"asset_key" => asset_key}) do
+    q = table("assetobjects")
+    |> filter(%{"containerPath" => asset_key, "simulatorId" => "default"})
+    result = DB.run(q)
+    case result.data do
+      [output] -> text conn, output["url"]
+      [] -> text conn, "Error"
+    end 
+  end
+  
   def index(conn, _params) do
     render conn, "index.html"
   end

@@ -5,7 +5,10 @@
     "babel-preset-react": "^6.5.0",
     "bootstrap": "^4.0.0-alpha.2",
     "fabric": "^1.6.3",
+    "exports-loader": "^0.6.3",
+    "fetch-polyfill": "^0.8.2",
     "gsap": "^1.18.5",
+    "imports-loader": "^0.6.5",
     "phoenix": "^1.2.0",
     "phoenix_html": "file:deps/phoenix_html",
     "react": "^15.1.0",
@@ -13,10 +16,13 @@
     "react-apollo": "^0.3.9",
     "react-dom": "^15.1.0",
     "react-dragula": "^1.1.16",
+    "react-fontawesome": "^1.1.0",
+    "react-redux": "^4.4.5",
     "react-router": "^2.4.1",
     "redux": "^3.5.2",
     "redux-logger": "^2.6.1",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "whatwg-fetch": "^1.0.0"
   },
   "scripts": {
     "start": "webpack --watch-stdin --progress --color",
@@ -29,13 +35,16 @@
     "babel-preset-react": "^6.5.0",
     "copy-webpack-plugin": "^3.0.1",
     "css-loader": "^0.23.1",
+    "es6-promise": "^3.2.1",
     "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "node-sass": "^3.8.0",
     "redux-devtools": "^3.3.1",
     "sass-loader": "^3.2.1",
     "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
     "webpack": "^1.13.1"
   }
 }
