@@ -1,0 +1,11 @@
+.cardAdminAssets{
+	.selectable::selection {
+		background: #ffb7b7; /* Safari */
+	}
+	.selectable::-moz-selection {
+		background: #ffb7b7; /* Firefox */
+	}
+	ul li{
+		list-style: none;
+	}
+}
