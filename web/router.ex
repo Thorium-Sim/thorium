@@ -19,6 +19,7 @@ defmodule Thorium.Router do
   scope "/", Thorium do
     pipe_through :browser
     post "/assets", PageController, :assets_upload
+    get "/assets", PageController, :assets_get
     get "/reset", PageController, :reset_db
     get "/*path", PageController, :index
   end

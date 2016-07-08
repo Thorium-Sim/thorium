@@ -20,9 +20,8 @@ defmodule Thorium.Asset do
   # end
 
   # Override the persisted filenames:
-  # def filename(version, _) do
-  #   version
-  # end
+  def filename(version,  {file, scope}), do: "#{scope["fullPath"]}-#{round(:random.uniform() * 100000000)}-#{file.file_name}"
+
 
   # Override the storage directory:
   def storage_dir(version, {file, scope}) do
