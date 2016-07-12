@@ -42,7 +42,9 @@ defmodule Thorium.Mixfile do
     {:arc, "~> 0.5.2"},
     {:ex_aws, "~> 0.4.10"},
     {:httpoison, "~> 0.7"},
-    {:poison, "~> 1.2"}
+    {:poison, "~> 1.2"},
+    {:fsm, "~> 0.2.0"},
+    {:exactor, "~> 2.2.0", warn_missing: false},
   ]
 end
 end
