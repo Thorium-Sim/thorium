@@ -5,29 +5,10 @@ import { Provider, connect } from 'react-redux';
 import SimulatorData from '../components/SimulatorData.jsx';
 import StationData from '../components/StationData.jsx';
 import CardContainer from './Card.jsx';
+import Lobby from './Lobby.jsx';
 import actions from '../actions';
 const {presence} = actions;
 const {fetchPresence} = presence;
-
-const routes = [
-{
-  path:'/simulator/:simulatorId/station/:stationId/card/:cardIndex',
-  component:CardContainer,
-},
-{
-  path: '/simulator/:simulatorId',
-  component: StationData,
-},
-{
-  path: '/',
-  component: SimulatorData,
-},
-{
-  path: '*',
-  component:NoMatch
-}
-];
-
 
 const Dev = () => (
   <div className="jumbotron">
@@ -49,19 +30,35 @@ class NoMatch extends Component {
   }
 }
 
+
+const routes = [
+{
+  path:'/app/simulator/:simulatorId/station/:stationId/card/:cardIndex',
+  component:CardContainer,
+},
+{
+  path: '/app/simulator/:simulatorId',
+  component: StationData,
+},
+{
+  path: '/app',
+  component: SimulatorData,
+},
+{
+  path: '/',
+  component: Lobby,
+},
+{
+  path: '*',
+  component:NoMatch
+}
+];
+
+
 class App extends Component {
-  componentDidMount() {
-    let { dispatch } = this.props;
-    //dispatch(fetchPresence());
-  }
   render() {
     return (
-      <div>
       <Router routes={routes} history={browserHistory} />
-      {this.props.data.presence.map((p) => (
-        <p key={p.clientId}>{`${p.clientId} [${p.metas.length}]`}</p>
-        ))}
-      </div>
       );
   }
 }

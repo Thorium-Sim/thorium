@@ -14,8 +14,8 @@ defmodule Thorium do
       #supervisor(Thorium.ProcessRegistry, []),
       # Here you could define other workers and supervisors as children
       worker(DB, [[host: "localhost", port: 28015]]),
-      worker(State, [Flights, %{}]),
-      worker(Thorium.FlightsInit, []),
+      #worker(State, [Flights, %{}]),
+      #worker(Thorium.FlightsInit, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

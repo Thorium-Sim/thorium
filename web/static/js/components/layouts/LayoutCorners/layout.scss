@@ -6,15 +6,9 @@ $alertp: #4D1980;
 $url: '/js/images/background-blue.svg';
 
 @import url('https://fonts.googleapis.com/css?family=Sarpanch:400,500,600,700');
-
 body{
 	overflow:hidden;
 	margin:0;
-	font-family: 'Sarpanch', sans-serif;
-	text-transform: uppercase;
-}
-button {
-    outline: none !important;
 }
 //Card area
 .card-container{
@@ -31,6 +25,11 @@ button {
 
 #curve-frame {
 	height: 100vh;
+	font-family: 'Sarpanch', sans-serif;
+	text-transform: uppercase;
+	button {
+		outline: none !important;
+	}
 }
 
 .alertColor5 .frame-color div, .alertColor4 .frame-color div{

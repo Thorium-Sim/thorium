@@ -12,7 +12,7 @@ class SimulatorLink extends Component {
 			<Button
 			type="primary"
 			label={simulator.name}
-			href={`/simulator/${simulator.id}`}
+			href={`/app/simulator/${simulator.id}`}
 			/>
 			);
 	}

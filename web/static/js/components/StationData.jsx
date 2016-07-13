@@ -14,7 +14,7 @@ class StationLink extends Component {
 			<Button
 			type="primary"
 			label={station.name}
-			href={`/simulator/${station.simulatorId}/station/${station.id}/card/0`}
+			href={`/app/simulator/${station.simulatorId}/station/${station.id}/card/0`}
 			/>
 			);
 	}

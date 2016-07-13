@@ -31,7 +31,7 @@ export function fetchPresence(){
     }
     let socket = new Socket('/socket',  {params: {client_id: clientId}});
     socket.connect();
-    let presence = socket.channel("presence:topic");
+    let presence = socket.channel("session",{client_id: clientId});
     presence.join();
     presence.on("presence_state", state => {
       dispatch(presenceState(state));

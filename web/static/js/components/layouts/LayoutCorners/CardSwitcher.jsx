@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 const CardButton = (props) => {
 	return(
 		<div className="card-icon-item">
-		<Link to={`/simulator/${props.params.simulatorId}/station/${props.params.stationId}/card/${props.cardNum}`} className={(props.cardNum === props.params.cardIndex) ? "active" : ""}>
+		<Link to={`/app/simulator/${props.params.simulatorId}/station/${props.params.stationId}/card/${props.cardNum}`} className={(props.cardNum === props.params.cardIndex) ? "active" : ""}>
 		<div className="card-button-mask">
 		<div className="card-button-background">
 		<div className="card-button">{props.name}</div>
