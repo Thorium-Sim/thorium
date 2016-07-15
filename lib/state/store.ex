@@ -23,19 +23,38 @@ defmodule Store do
 		Agent.start_link(fn -> %{} end, name: @store)
 	end
 
-	def to_map([head | tail], state) do
+	defp to_map([head | tail], state) do
 		to_map(tail, Map.put(state, head.id, head))
 	end
 
-	def to_map([], state) do
+	defp to_map([], state) do
 		{:ok, state}
 	end
 
+	def add_flight(flight) do
+		key = flight["id"]
+		Agent.update(@store, &Map.put(&1, key, flight))
+	end
+
+	def remove_flight(flight) do
+		key = flight["id"]
+		Agent.update(@store, &Map.delete(&1, key))
+	end
+
+	def update_flight(id, flight) do
+		key = flight["id"]
+		Agent.update(@store, &Map.put(&1, key, flight))
+		
+	end
 	@doc """
 	Gets a value from the `store` by `key`.
 	"""
 	def get(key) do
 		Agent.get(@store, &Map.get(&1, key))
+	end
+
+	def getAll do
+		Agent.get(@store, fn state -> state end)
 	end
 	@doc """
 	Puts the `value` for the given `key` in the `store`.

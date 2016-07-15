@@ -7,9 +7,10 @@ import guid from '../helpers/guid.js';
 import './style.scss';
 
 import actions from '../actions';
-const {presence, missions} = actions;
+const {presence, missions, flights} = actions;
 const {fetchPresence} = presence;
 const {fetchMissions} = missions;
+const {fetchFlights} = flights;
 const operationChannel = socket.channel('operations');
 
 class Lobby extends Component {
@@ -18,17 +19,17 @@ class Lobby extends Component {
 		this.state = {
 			modal: false,
 			selectedMission: undefined,
-		}
+		};
 		this.toggle = this.toggle.bind(this);
 	}
 	componentDidMount() {
 		let { dispatch } = this.props;
 		dispatch(fetchPresence());
 		dispatch(fetchMissions());
+		dispatch(fetchFlights());
 		operationChannel.join();
 	}
 	loadFlight(){
-		debugger;
 		//Use the operation channel to insert the new flight into the database.
 		let mission = this.props.data.missions.filter((e) => {
 			if (e.id === this.state.selectedMission){
@@ -40,8 +41,8 @@ class Lobby extends Component {
 			id: mission.id,
 			name: mission.name,
 		};
+		mission.timestamp = Date.now();
 		delete mission.id;
-		delete mission.name;
 		mission.id = guid();
 
 		let insertObj = {
@@ -71,6 +72,7 @@ class Lobby extends Component {
 		}
 	}
 	render(){
+		console.log('State',this.props.data);
 		return (
 			<Container>
 			<Row>

@@ -5,6 +5,7 @@ import presence from './presence';
 import systems from './systems';
 import assets from './assets';
 import missions from './missions';
+import flights from './flights';
 
 import { combineReducers } from 'redux';
 
@@ -16,6 +17,7 @@ const thoriumApp = combineReducers({
   systems,
   assets,
   missions,
+  flights,
 });
 
 export default thoriumApp;

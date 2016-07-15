@@ -27,16 +27,15 @@ defmodule Thorium.FlightsInit do
 
 	@doc "Flight Object Removed"
 	def handle_changes(%{"new_val" => nil,"old_val" => old_val}) do
-		#Flights.Registry.delete(Flights.Registry, old_val['id'])
+		Store.remove_flight(old_val)
 	end
 	@doc "Flight object created"
 	def handle_changes(%{"new_val" => new_val,"old_val" => nil}) do
-		Flights.start_link(new_val)
-		#Flights.Registry.create(Flights.Registry, new_val['id'], new_val)
+		Store.add_flight(new_val)
 	end
 	@doc "Flight object changed"
-	def handle_changes(%{"new_val" => _new_val,"old_val" => _old_val}) do
-		#I don't know if this will ever actually happen.
+	def handle_changes(%{"new_val" => new_val,"old_val" => old_val}) do
+		Store.update_flight(old_val["id"], new_val)
 	end
 
 	# Server API for Supervisor
