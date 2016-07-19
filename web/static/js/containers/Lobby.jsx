@@ -74,7 +74,7 @@ class Lobby extends Component {
 	render(){
 		console.log('State',this.props.data);
 		return (
-			<Container>
+			<Container className="lobby">
 			<Row>
 			<h2>Lobby</h2>
 			<table className="table table-striped table-hover table-sm">

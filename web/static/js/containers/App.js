@@ -5,6 +5,7 @@ import { Provider, connect } from 'react-redux';
 import SimulatorData from '../components/SimulatorData.jsx';
 import StationData from '../components/StationData.jsx';
 import CardContainer from './Card.jsx';
+import Config from './Config.jsx';
 import Lobby from './Lobby.jsx';
 import actions from '../actions';
 const {presence} = actions;
@@ -39,6 +40,10 @@ const routes = [
 {
   path: '/app/simulator/:simulatorId',
   component: StationData,
+},
+{
+  path: '/config',
+  component: Config,
 },
 {
   path: '/app',
