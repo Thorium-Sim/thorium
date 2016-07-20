@@ -7,9 +7,7 @@ import StationData from '../components/StationData.jsx';
 import CardContainer from './Card.jsx';
 import Config from './Config.jsx';
 import Lobby from './Lobby.jsx';
-import actions from '../actions';
-const {presence} = actions;
-const {fetchPresence} = presence;
+import Client from '../components/Client.jsx';
 
 const Dev = () => (
   <div className="jumbotron">
@@ -47,7 +45,7 @@ const routes = [
 },
 {
   path: '/app',
-  component: SimulatorData,
+  component: Client,
 },
 {
   path: '/',

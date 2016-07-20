@@ -97,11 +97,11 @@ class Config extends Component {
 			})}
 			</Card>
 			<ButtonGroup>
+			<Button onClick={this._createSimulator.bind(this)} size="sm" color="success">Add</Button>
 			{this.state.selectedSimulator.id ?
-				<Button onClick={this._createSimulator.bind(this)} size="sm" color="success">Add</Button>
+				<Button onClick={this._deleteSimulator.bind(this)} size="sm" color="danger">Remove</Button>
 				: <div></div>
 			}
-			<Button onClick={this._deleteSimulator.bind(this)} size="sm" color="danger">Remove</Button>
 			</ButtonGroup>
 
 			</Col>

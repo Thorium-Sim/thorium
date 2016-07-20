@@ -23,21 +23,23 @@ function flightsReducer(state = [], action){
 			return flight;
 		});
 		case FETCH_FLIGHTS_SUCCESS:
+		//Replace wholesale;
+		const newState = [];
 		keys.forEach((flightId) => {
 			if(flightId){
 				//Make sure we don't have any duplicate flights
-				let filterRes = state.filter((flight) => {
+				let filterRes = newState.filter((flight) => {
 					if (flight.id === flightId){
 						return true;
 					}
 					return false;
 				});
 				if (filterRes.length === 0){
-					return state.push(action.flight[flightId]);
+					return newState.push(action.flight[flightId]);
 				}
 			}
 		});
-		return state;
+		return newState;
 		default:
 		return state;
 	}

@@ -34,17 +34,19 @@ defmodule Store do
 	def add_flight(flight) do
 		key = flight["id"]
 		Agent.update(@store, &Map.put(&1, key, flight))
+		send_update
 	end
 
 	def remove_flight(flight) do
 		key = flight["id"]
 		Agent.update(@store, &Map.delete(&1, key))
+		send_update
 	end
 
 	def update_flight(id, flight) do
 		key = flight["id"]
 		Agent.update(@store, &Map.put(&1, key, flight))
-		
+		send_update
 	end
 	@doc """
 	Gets a value from the `store` by `key`.
@@ -61,5 +63,10 @@ defmodule Store do
 	"""
 	def put(key, value) do
 		Agent.update(@store, &Map.put(&1, key, value))
+	end
+
+	def send_update do
+		IO.puts "Sending Flight Update"
+		Thorium.Endpoint.broadcast("flights", "init:flights", Store.getAll)
 	end
 end

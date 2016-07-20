@@ -2,29 +2,25 @@ import actions from '../actions';
 const {presence} = actions;
 const { PRESENCE_STATE, PRESENCE_DIFF } = presence;
 
-function presenceReducer(state = [], action){
-	let newState = state.concat();
+function presenceReducer(state = {}, action){
+	let newState = Object.assign({}, state);
 	switch (action.type){
 		case PRESENCE_STATE:
 		let actionState = action.state;
-		newState = Object.keys(actionState);
-		//I'm not going to worry about multiple connections.		
-		return newState;
+		//I'm not going to worry about multiple connections.
+		return actionState;
 		case PRESENCE_DIFF:
 		//Handle joins.
 		let joinsKeys = Object.keys(action.diff.joins);
 		joinsKeys.forEach((e) => {
-			if (newState.indexOf(e) < 0){
-				newState.push(e);
+			if (newState[e] < 0){
+				newState[e] = action.diff.joins[e];
 			}
 		});
 		//Handle leaves.
 		let leavesKeys = Object.keys(action.diff.leaves);
-		newState = newState.filter((e) => {
-			if (leavesKeys.indexOf(e) >= 0){
-				return false;
-			}
-			return true;
+		leavesKeys.forEach((e) => {
+			delete newState[e];
 		});
 		return newState;
 		default:

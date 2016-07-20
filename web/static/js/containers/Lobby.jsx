@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, LoadingWidget, Row, Col, Container } from '../components/generic';
-import { Modal, ModalHeader, ModalBody, ModalFooter, ButtonGroup } from 'reactstrap';
+import { Button, LoadingWidget,  } from '../components/generic';
+import { Row, Col, Container, Modal, ModalHeader, ModalBody, ModalFooter, ButtonGroup } from 'reactstrap';
 import socket from '../socket';
 import guid from '../helpers/guid.js';
 import './style.scss';
 
 import actions from '../actions';
-const {presence, missions, flights} = actions;
-const {fetchPresence} = presence;
+const {presence, missions, flights, simulators, stations} = actions;
+const {fetchPresence, updatePresence} = presence;
 const {fetchMissions} = missions;
 const {fetchFlights} = flights;
+const {fetchSimulators} = simulators;
+const {fetchStations} = stations;
+
 const operationChannel = socket.channel('operations');
 
 class Lobby extends Component {
@@ -18,7 +21,10 @@ class Lobby extends Component {
 		super(props);
 		this.state = {
 			modal: false,
-			selectedMission: undefined,
+			selectedMission: {},
+			presences: {},
+			simulatorSelect: {},
+			stationSelect: {},
 		};
 		this.toggle = this.toggle.bind(this);
 	}
@@ -27,12 +33,15 @@ class Lobby extends Component {
 		dispatch(fetchPresence());
 		dispatch(fetchMissions());
 		dispatch(fetchFlights());
+		dispatch(fetchSimulators());
+		dispatch(fetchStations());
+
 		operationChannel.join();
 	}
 	loadFlight(){
 		//Use the operation channel to insert the new flight into the database.
 		let mission = this.props.data.missions.filter((e) => {
-			if (e.id === this.state.selectedMission){
+			if (e.id === this.state.selectedMission.id){
 				return true;
 			}
 			return false;
@@ -45,14 +54,27 @@ class Lobby extends Component {
 		delete mission.id;
 		mission.id = guid();
 
+
+		Object.keys(this.state.simulatorSelect).map((e) => {
+			return this.state.simulatorSelect[e];
+		}).forEach((e, index) => {
+			mission.simulators[index].id = e;
+		});
+
+		Object.keys(this.state.stationSelect).map((e) => {
+			return this.state.stationSelect[e];
+		}).forEach((e, index) => {
+			mission.simulators[index].stationSet = e;
+		});
+
 		let insertObj = {
 			table:"flights",
-			data: mission
+			data: mission,
 		};
 		operationChannel.push("insert",insertObj);
 		this.setState({
 			modal: false,
-			selectedMission: undefined,
+			selectedMission: {},
 		});
 	}
 	toggle(){
@@ -61,18 +83,67 @@ class Lobby extends Component {
 		});
 	}
 	selectMission(mission){
-		if (this.state.selectedMission === mission.id){
+		if (this.state.selectedMission.id === mission.id){
 			this.setState({
 				selectedMission: undefined,
 			});
 		} else {
 			this.setState({
-				selectedMission: mission.id,
+				selectedMission: mission,
 			});
 		}
 	}
+	_selectMissionSimulator(index, e){
+		let obj = this.state.simulatorSelect;
+		obj[[`simulator-${index}`]] = e.target.value;
+		this.setState({
+			simulatorSelect: obj
+		});
+	}
+	_selectMissionStation(index, e){
+		let obj = this.state.stationSelect;
+		obj[[`station-${index}`]] = e.target.value;
+		this.setState({
+			stationSelect: obj
+		});
+	}
+	_selectFlight(p,e){
+		let obj = this.state.presences || {};
+		obj[p] = {
+			flight: e.target.value,
+			simulator: null,
+			station: null,
+		};
+		this.setState({
+			presences:obj
+		});
+		updatePresence({clientId:p, params:obj[p]});
+	}
+	_selectSimulator(p,e){
+		let obj = this.state.presences || {};
+		obj[p] = {
+			flight: obj[p].flight,
+			simulator: e.target.value,
+			station: null,
+		};
+		this.setState({
+			presences:obj
+		});
+		updatePresence({clientId:p, params:obj[p]});
+	}
+	_selectStation(p,e){
+		let obj = this.state.presences || {};
+		obj[p] = {
+			flight: obj[p].flight,
+			simulator: obj[p].simulator,
+			station: e.target.value,
+		};
+		this.setState({
+			presences:obj
+		});
+		updatePresence({clientId:p, params:obj[p]});
+	}
 	render(){
-		console.log('State',this.props.data);
 		return (
 			<Container className="lobby">
 			<Row>
@@ -88,32 +159,55 @@ class Lobby extends Component {
 			</tr>
 			</thead>
 			<tbody>
-			{this.props.data.presence.map((p) => (
-				<tr key={p}>
+			{Object.keys(this.props.data.presence).map((p,index) => (
+				<tr key={`flight-${p}-${index}`}>
 				<td>{`${p}`}</td>
 				<td>
-				<select className="form-control-sm c-select">
-				<option>Open this select menu</option>
-				<option value="1">One</option>
-				<option value="2">Two</option>
-				<option value="3">Three</option>
+				<select onChange={this._selectFlight.bind(this,p)} className="c-select form-control-sm">
+				<option>Select a flight</option>
+				{this.props.data.flights.map((e,index) => {
+					return <option key={`flight-${p}-${e.id}-${index}`} value={e.id}>{e.name}</option>;
+				})}
 				</select>
 				</td>
 				<td>
-				<select className="form-control-sm c-select">
-				<option>Open this select menu</option>
-				<option value="1">One</option>
-				<option value="2">Two</option>
-				<option value="3">Three</option>
-				</select>
+				{(() => {
+					const presenceInst = this.state.presences[p] || {};
+					if (presenceInst.flight){
+						return (<select onChange={this._selectSimulator.bind(this,p)} className="form-control-sm c-select">
+							<option>Select a simulator</option>
+							{(() => {
+								const flight = this.props.data.flights.filter((flightObj) => {
+									return flightObj.id === this.state.presences[p].flight;
+								})[0];
+								return flight.simulators.map((e, index) => {
+									return <option key={`simulators-presence-${p}-id-${e.id}-${index}`} value={e.id}>{e.name}</option>;
+								});
+							})()}
+							</select>);
+					}
+				})()}
 				</td>
 				<td>
-				<select className="form-control-sm c-select">
-				<option>Open this select menu</option>
-				<option value="1">One</option>
-				<option value="2">Two</option>
-				<option value="3">Three</option>
-				</select>
+				{(() => {
+					const presenceInst = this.state.presences[p] || {};
+					if (presenceInst.simulator){
+						return (<select onChange={this._selectStation.bind(this,p)} className="form-control-sm c-select">
+							<option>Select a station</option>
+							{(() => {
+								const flight = this.props.data.flights.filter((flightObj) => {
+									return flightObj.id === this.state.presences[p].flight;
+								})[0];
+								const simulator = flight.simulators.filter((simObj) => {
+									return simObj.id === presenceInst.simulator;
+								})[0];
+								return simulator.stations.map((e, index) => {
+									return <option key={`station-${p}-${e.name}-${index}`} value={e.name}>{e.name}</option>;
+								});
+							})()}
+							</select>);
+					}
+				})()}
 				</td>
 				<td>
 				<Button type="primary" title="This saves the current simulator and station setting and persists it for future flights." className="btn-sm" label="Save" />
@@ -131,7 +225,7 @@ class Lobby extends Component {
 			<ModalHeader toggle={this.toggle}>Create A New Flight</ModalHeader>
 			<ModalBody>
 			<Row>
-			<Col className="col-sm-6">
+			<Col sm="6">
 			<h4>Choose a mission</h4>
 			<table className="table table-striped table-hover table-sm">
 			<thead>
@@ -142,17 +236,15 @@ class Lobby extends Component {
 			</thead>
 			<tbody>
 			{this.props.data.missions.map((mission) => {
-				return (<tr onClick={this.selectMission.bind(this,mission)} className={this.state.selectedMission === mission.id ? 'table-success' : ''} key={mission.id}>
+				return (<tr onClick={this.selectMission.bind(this,mission)} className={this.state.selectedMission.id === mission.id ? 'table-success' : ''} key={mission.id}>
 					<td>{mission.name}</td>
-					<td>{mission.simulators.map((simulator) => {
-						return <p key={`${mission.id}-${simulator.id}`}>{simulator.id}</p>;
-					})}</td>
+					<td>{mission.simulators.length}</td>
 					</tr>);
 			})}
 			</tbody>
 			</table>
 			</Col>
-			<Col className="col-sm-6">
+			<Col sm="6">
 			<h4>Or reload a saved flight</h4>
 			<table className="table table-striped table-hover table-sm">
 			<thead>
@@ -168,15 +260,47 @@ class Lobby extends Component {
 			</table>
 			</Col>
 			</Row>
-			</ModalBody>
-			<ModalFooter>
-			<Button type="secondary" onClick={this.toggle} label="Cancel" />
-			<Button type="primary" onClick={this.loadFlight.bind(this)} label="Load Flight" />
-			</ModalFooter>
-			</Modal>
-			</Container>
-			);
-	}
+			<Row>
+			{this.state.selectedMission.id ?
+				this.state.selectedMission.simulators.map((e,index) => {
+					return (
+						<div>
+						<Col sm="6">
+						<select key={index} onChange={this._selectMissionSimulator.bind(this,index)} ref={`simulatorSelect-${index}`} className="c-select form-control">
+						<option value={null}>Select a simulator</option>
+						{this.props.data.simulators.map((sim) => {
+							return <option key={sim.id} value={sim.id}>{sim.name}</option>;
+						})}
+						</select>
+						</Col>
+						<Col sm="6">
+						{
+							this.state.simulatorSelect[`simulator-${index}`] ?
+							<select key={`station-${index}`} onChange={this._selectMissionStation.bind(this,index)} className="c-select form-control">
+							<option value={null}>Select a station</option>
+							{this.props.data.stations.filter((stat) => {
+								return stat.simulatorId === this.state.simulatorSelect[`simulator-${index}`];
+							}).map((stat) => {
+								return <option key={stat.id} value={stat.id}>{stat.name}</option>;
+							})}
+							</select>
+							: <div style={{width:'100%',height:'40px'}} />
+						}
+						</Col>
+						</div>
+						);
+				})
+				: <div />}
+				</Row>
+				</ModalBody>
+				<ModalFooter>
+				<Button type="secondary" onClick={this.toggle} label="Cancel" />
+				<Button type="primary" onClick={this.loadFlight.bind(this)} label="Load Flight" />
+				</ModalFooter>
+				</Modal>
+				</Container>
+				);
+}
 }
 
 function select(state){

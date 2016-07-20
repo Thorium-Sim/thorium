@@ -17,6 +17,7 @@
     "react-dom": "^15.1.0",
     "react-dragula": "^1.1.16",
     "react-fontawesome": "^1.1.0",
+    "react-range": "0.0.7",
     "react-redux": "^4.4.5",
     "react-router": "^2.4.1",
     "reactstrap": "^1.6.0",
