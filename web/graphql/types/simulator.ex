@@ -7,7 +7,7 @@ defmodule App.Type.Simulator do
   def get do
     %GraphQL.Type.ObjectType{
       name: "Simulator",
-      description: "A simulator. The root object of any simulation",
+      description: "A simulator.",
       fields: %{
         id: @type_string,
         name: @type_string,
