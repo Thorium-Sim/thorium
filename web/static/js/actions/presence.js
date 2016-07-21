@@ -19,7 +19,7 @@ presence.join();
 
  export const PRESENCE_STATE = "PRESENCE_STATE";
  export const PRESENCE_DIFF = "PRESENCE_DIFF";
-
+ export const CLIENT_STATE = "CLIENT_STATE";
 /*
  * action creators
  */
@@ -32,6 +32,9 @@ function presenceDiff(diff) {
   return { type: PRESENCE_DIFF, diff };
 }
 
+function clientState(clients) {
+  return { type: CLIENT_STATE, clients};
+}
 export function updatePresence(client){
   presence.push("updateClient",client);
 }
@@ -44,5 +47,8 @@ export function fetchPresence(){
     presence.on("presence_diff", diff => {
       dispatch(presenceDiff(diff));
     });
+    presence.on("clients", clients => {
+      dispatch(clientState(clients));
+    })
   };
 }

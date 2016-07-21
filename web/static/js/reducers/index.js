@@ -6,6 +6,8 @@ import systems from './systems';
 import assets from './assets';
 import missions from './missions';
 import flights from './flights';
+import clients from './clients';
+
 
 import { combineReducers } from 'redux';
 
@@ -18,6 +20,7 @@ const thoriumApp = combineReducers({
   assets,
   missions,
   flights,
+  clients,
 });
 
 export default thoriumApp;

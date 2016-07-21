@@ -17,8 +17,19 @@ defmodule Thorium.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {Thorium, []},
-    applications: [:phoenix, :phoenix_html, :phoenix_pubsub, :cowboy, :logger, :gettext, :plug_graphql, :rethinkdb_changefeed, :ex_aws, :httpoison]]
-  end
+    applications: [
+      :phoenix, 
+      :phoenix_html, 
+      :phoenix_pubsub, 
+      :cowboy, 
+      :logger, 
+      :gettext, 
+      :graphql,
+      :plug_graphql, 
+      :rethinkdb_changefeed, 
+      :ex_aws, 
+      :httpoison]]
+    end
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
@@ -34,7 +45,7 @@ defmodule Thorium.Mixfile do
     {:phoenix_live_reload, "~> 1.0", only: :dev},
     {:gettext, "~> 0.9"},
     {:cowboy, "~> 1.0"},
-    {:plug_graphql, "~> 0.1.5"},
+    {:plug_graphql, "~> 0.3.1"},
     {:rethinkdb, "~> 0.4.0"},
     {:rethinkdb_changefeed, "~> 0.0.1"},
     {:credo, "~> 0.3", only: [:dev, :test]},

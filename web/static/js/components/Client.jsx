@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import { Row, Col, Container, Modal, ModalHeader, ModalBody, ModalFooter, ButtonGroup } from 'reactstrap';
 import { connect } from 'react-redux';
 import actions from '../actions';
@@ -22,6 +23,13 @@ class Client extends Component {
 		let {dispatch} = this.props;
 		dispatch(fetchPresence());
 	}
+	componentWillUpdate(props){
+		if (props.data){
+			if (props.data.flight && props.data.simulator && props.data.station){
+				location = (`/app/simulator/${props.data.simulator}/station/${props.data.station}/card/0`);
+			}
+		}
+	}
 	render(){
 		console.log(this.props.data);
 		return <Credits />;
@@ -29,8 +37,9 @@ class Client extends Component {
 }
 
 function select(state){
+	const clientId = localStorage.getItem('thorium_clientId');
 	return {
-		data: state.flights
+		data: state.clients[clientId]
 	};
 }
 const ClientData = connect(select)(Client);

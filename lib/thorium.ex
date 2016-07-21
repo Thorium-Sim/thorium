@@ -15,6 +15,7 @@ defmodule Thorium do
       # Here you could define other workers and supervisors as children
       worker(DB, [[host: "localhost", port: 28015]]),
       worker(Store, []),
+      worker(ClientStore, []),
       worker(Thorium.FlightsInit, []),
     ]
 
