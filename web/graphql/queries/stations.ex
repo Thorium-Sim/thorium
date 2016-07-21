@@ -8,7 +8,7 @@ defmodule App.Query.Stations do
       args: %{
         id: %{
           type: %GraphQL.Type.String{},
-          description: "Return a single station by ID"
+          description: "Return a single station by ID."
         },
         simulatorId: %{
           type: %GraphQL.Type.String{},

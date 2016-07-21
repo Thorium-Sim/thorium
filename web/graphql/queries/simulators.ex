@@ -8,7 +8,7 @@ defmodule App.Query.Simulators do
       args: %{
         id: %{
           type: %GraphQL.Type.String{},
-          description: "Return a single simulator by ID"
+          description: "Return a single simulator by ID."
         }
       },
       resolve: {App.Query.Simulators, :simulators}

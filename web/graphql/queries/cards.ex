@@ -8,7 +8,7 @@ defmodule App.Query.Cards do
       args: %{
         id: %{
           type: %GraphQL.Type.String{},
-          description: "Return a single card by ID"
+          description: "Return a single card by ID."
         },
         stationId: %{
           type: %GraphQL.Type.String{},
