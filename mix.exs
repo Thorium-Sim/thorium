@@ -33,7 +33,7 @@ defmodule Thorium.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
-     {:plug_graphql, "~> 0.1.5"},
+     {:plug_graphql, "~> 0.3.1"},
      {:rethinkdb, "~> 0.4.0"},
      {:rethinkdb_changefeed, "~> 0.0.1"},
      {:credo, "~> 0.3", only: [:dev, :test]},

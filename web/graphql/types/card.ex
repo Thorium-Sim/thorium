@@ -4,7 +4,7 @@ defmodule App.Type.Card do
   def get do
     %GraphQL.Type.ObjectType{
       name: "Card",
-      description: "A single card object attached to a station",
+      description: "A single card object attached to a station.",
       fields: %{
         id: @type_string,
         name: @type_string,
