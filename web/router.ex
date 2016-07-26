@@ -16,6 +16,7 @@ defmodule Thorium.Router do
     plug :accepts, ["json"]
   end
   
+  #Binding for GraphQL
   scope "/graphql" do
     pipe_through :api
     forward "/", GraphQL.Plug, schema: {App.PublicSchema, :get}
