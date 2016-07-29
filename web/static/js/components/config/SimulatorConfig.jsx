@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import LayoutList from '../layouts';
+import gql from 'graphql-tag';
+import { connect } from 'react-apollo';
+
 const Layouts = Object.keys(LayoutList);
 
 class SimulatorConfig extends Component {
 	_handleChange(e){
-		let obj = {};
+		let obj = this.props.selectedSimulator;
 		obj[e.target.name] = e.target.value;
-		this.props.operationChannel.push("update",{table:"simulators",filter:{id:this.props.selectedSimulator.id}, data:obj});
+		this.props.mutations.updateSimulator(obj);
 	}
 	render(){
 		return(
@@ -27,7 +30,7 @@ class SimulatorConfig extends Component {
 			</fieldset>
 			<fieldset className="form-group">
 			<label>Alert Level</label>
-			<select onChange={this._handleChange} defaultValue={this.props.selectedSimulator.alertLevel} name="alertLevel" className="c-select form-control">
+			<select onChange={this._handleChange.bind(this)} defaultValue={this.props.selectedSimulator.alertLevel} name="alertLevel" className="c-select form-control">
 			<option value="5">5</option>
 			<option value="4">4</option>
 			<option value="3">3</option>
@@ -42,4 +45,31 @@ class SimulatorConfig extends Component {
 	}
 }
 
-export default SimulatorConfig;
+function mapMutationsToProps({ ownProps, state }) {
+	return {
+		updateSimulator: (args) => ({
+			mutation: gql`
+			mutation updateSimulator($id: String!, $name: String, $alertLevel: String, $layout: String) {
+				simulator_update(id: $id, name: $name, layout: $layout, alertLevel: $alertLevel){
+					id
+					name,
+					alertLevel,
+					layout
+				}
+			}
+			`,
+			variables: args,
+			updateQueries: {
+				simulators: (previousQueryResult, { mutationResult, queryVariables }) => {
+					debugger;
+				}
+			},
+			optimisticResponse: ownProps.selectedSimulator
+		}),
+	};
+}
+const SimulatorData = connect({
+	mapMutationsToProps
+})(SimulatorConfig);
+
+export default SimulatorData;

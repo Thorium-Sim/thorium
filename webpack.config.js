@@ -36,10 +36,6 @@ module.exports = {
 	plugins: [
 	new ExtractTextPlugin("css/app.css"),
 	new CopyWebpackPlugin([{ from: "./web/static/assets" }]),
-	new webpack.ProvidePlugin({
-		'Promise': 'es6-promise',
-		'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
-	})
 	],
 	devtool: 'eval-source-map',
 	resolve: {

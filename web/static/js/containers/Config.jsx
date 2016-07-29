@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
 import { Col, Row, Container, Card, CardBlock, Button, ButtonGroup } from 'reactstrap';
-import actions from '../actions';
-import { connect } from 'react-redux';
-import socket from '../socket';
+import { connect } from 'react-apollo';
 
 import uuid from '../helpers/guid';
 import Configs from '../components/config';
-const {cards, stations, simulators} = actions;
-const {fetchSimulators} = simulators;
-const {fetchStations} = stations;
-const {fetchCards} = cards;
-const operationChannel = socket.channel('operations');
-operationChannel.join();
 
 import './config.scss';
 
@@ -22,10 +14,6 @@ class Config extends Component {
 			selectedSimObject: null,
 			selectedSimulator: {},
 		};
-	}
-	componentDidMount() {
-		let { dispatch } = this.props;
-		dispatch(fetchSimulators());
 	}
 	_setSelectedSimObject(simObj) {
 		this.setState({selectedSimObject:simObj.name});
@@ -92,7 +80,8 @@ class Config extends Component {
 			<Col sm="2">
 			<h4>Simulators</h4>
 			<Card className="scroll">
-			{this.props.data.simulators.map((e) => {
+
+			{this.props.data.loading ? <div /> : this.props.data.simulators.map((e) => {
 				return <li key={e.id} onClick={this._setSelectedSimulator.bind(this,e)} className={`${(e.id === this.state.selectedSimulator.id) ? 'selected' : ''} list-group-item`}>{e.name}</li>;
 			})}
 			</Card>
@@ -122,7 +111,10 @@ class Config extends Component {
 			</Col>
 			<Col sm="8">
 			<h4>Config</h4>
-			<ConfigComponent {...this.props} selectedSimulator={this.state.selectedSimulator} operationChannel={operationChannel} />
+			{this.state.selectedSimObject ?
+				<ConfigComponent {...this.props} selectedSimulator={this.state.selectedSimulator} />
+				: <div />
+			}
 			</Col>
 			</Row>
 			</Container>
@@ -130,11 +122,21 @@ class Config extends Component {
 	}
 }
 
-function select(state){
-	return {
-		data: state
-	};
-}
-const ConfigContainer = connect(select)(Config);
+const ConfigData = connect({
+	mapQueriesToProps: () => ({
+		data: {
+			query: gql`
+			query simulators {
+				simulators (template: "true"){
+					id,
+					name,
+					alertLevel,
+					layout
+				},
 
-export default ConfigContainer;
+			}`
+		},
+	}),
+})(Config);
+
+export default ConfigData;

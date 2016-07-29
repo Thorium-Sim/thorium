@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router';
-import { Provider, connect } from 'react-redux';
 
 import SimulatorData from '../components/SimulatorData.jsx';
 import StationData from '../components/StationData.jsx';
@@ -31,14 +30,14 @@ class NoMatch extends Component {
 
 
 const routes = [
-{
+/*{
   path:'/app/simulator/:simulatorId/station/:stationId/card/:cardIndex',
   component:CardContainer,
 },
 {
   path: '/app/simulator/:simulatorId',
   component: StationData,
-},
+},*/
 {
   path: '/config',
   component: Config,
@@ -66,11 +65,4 @@ class App extends Component {
   }
 }
 
-function select(state){
-  return {
-    data: state
-  };
-}
-const AppData = connect(select)(App);
-
-export default AppData;
+export default App;

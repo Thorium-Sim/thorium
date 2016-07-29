@@ -10,17 +10,19 @@ defmodule App.PublicSchema do
         fields: %{
           simulators: App.Query.Simulators.get,
           stations: App.Query.Stations.get,
-          cards: App.Query.Cards.get,
           sessions: App.Query.Session.get,
+          flights: App.Query.Flights.get,
         }
       },
 
-      #mutation: %GraphQL.Type.ObjectType{
-        #name: "PublicMutations",
-        #fields: %{
-          #save_greeting: App.Mutation.Greeting.get,
-        #}
-      #}
+      mutation: %GraphQL.Type.ObjectType{
+        name: "PublicMutations",
+        fields: %{
+          simulator_create: App.Mutation.Simulators.create,
+          simulator_update: App.Mutation.Simulators.update,
+          simulator_delete: App.Mutation.Simulators.delete,
+        }
+      }
 
     }
   end
