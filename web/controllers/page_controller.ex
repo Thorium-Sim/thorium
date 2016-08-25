@@ -8,11 +8,15 @@ defmodule Thorium.PageController do
     table_drop("stations") |> DB.run
     table_drop("cards") |> DB.run
     table_drop("systems") |> DB.run
-    
+    table_drop("users") |> DB.run
+    table_drop("roles") |> DB.run
+
     table_create("simulators") |> DB.run
     table_create("stations") |> DB.run
     table_create("cards") |> DB.run
     table_create("systems") |> DB.run
+    table_create("users") |> DB.run
+    table_create("roles") |> DB.run
 
     table("simulators") |> insert(%{
     	id: "voyager",

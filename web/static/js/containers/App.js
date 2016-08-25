@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router';
 import { Provider, connect } from 'react-redux';
+import {Signin, Register, Forgot, PasswordReset} from '../components/Accounts.jsx';
+import UserAdmin from '../components/admin/Users.jsx';
 
 import SimulatorData from '../components/SimulatorData.jsx';
 import StationData from '../components/StationData.jsx';
@@ -21,6 +23,26 @@ const routes = [
 {
   path: '/',
   component: SimulatorData,
+},
+{
+  path: '/login',
+  component: Signin
+},
+{
+  path: '/register',
+  component: Register
+},
+{
+  path: '/forgot',
+  component: Forgot
+},
+{
+  path: '/admin/users',
+  component: UserAdmin
+},
+{
+  path: "/reset_password/:resetLink",
+  component: PasswordReset
 },
 {
   path: '*',
@@ -49,28 +71,10 @@ class NoMatch extends Component {
   }
 }
 
-class App extends Component {
-  componentDidMount() {
-    let { dispatch } = this.props;
-    //dispatch(fetchPresence());
-  }
+export default class App extends Component {
   render() {
     return (
-      <div>
       <Router routes={routes} history={browserHistory} />
-      {this.props.data.presence.map((p) => (
-        <p key={p.clientId}>{`${p.clientId} [${p.metas.length}]`}</p>
-        ))}
-      </div>
       );
   }
 }
-
-function select(state){
-  return {
-    data: state
-  };
-}
-const AppData = connect(select)(App);
-
-export default AppData;
