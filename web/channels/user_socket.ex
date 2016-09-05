@@ -4,7 +4,8 @@ defmodule Thorium.UserSocket do
   ## Channels
   channel "generic:*", Thorium.GenericChannel
   channel "operations", Thorium.OperationsChannel
-
+  channel "session", Thorium.SessionChannel
+  channel "flights", Thorium.FlightsChannel
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
   # transport :longpoll, Phoenix.Transports.LongPoll

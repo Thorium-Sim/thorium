@@ -8,8 +8,8 @@ A simulator controls platform
 
 Thorium is built with the following technologies:
 * [React](https://facebook.github.io/react/) for the frontend
-* [Redux](http://redux.js.org/) for the data layer
-* Websockets for the transmission layer
+* [Apollo Client](http://www.apollostack.com/) for the data layer
+* [GraphQL](http://graphql.org) for the transmission layer
 * [Phoenix Framework](http://phoenixframework.org/) for the server
 * [RethinkDB](https://www.rethinkdb.com/) for the database
 
@@ -18,13 +18,31 @@ Thorium is built with the following technologies:
 * [Elixir School](http://elixirschool.com/) - online school for the server language
 * [Elixir Koans](https://github.com/elixirkoans/elixir-koans) - Exercizes for Elixir
 
+## What is Thorium?
+Thorium is a simulator controls platform which eventually hopes to encapsulate the following features (and maybe more):
+* Multiple simulators in the same framework
+* Multiple stations and cards
+* Arbitrary card assignments that can update in realtime
+* Realtime data sharing across devices
+* Federated architecture for supporting satellite devices (e.g. lighting control, Arduino panels, etc.)
+* Lighting Control
+* Sound Control
+* Video Control
+* 3D Rendering
+* Physics Simulations
+* Pre-recorded macros
+* Timelines
+
+And more. The above merely scratches the surface.
+
+Thorium is flexible enough to provide a system for creating an integrated, distributed, fault-tolerant show-control system that can power lights, sound, video, and take input and provide output to a wide variety of devices.
 
 ## Getting Started
 
 ### 1. Install Phoenix Framework (with NodeJS, NPM, and Elixir), and RethinkDB
 Follow the following instructions
 
-1. Phoenix Framework (http://www.phoenixframework.org/docs/installation
+1. Phoenix Framework (http://www.phoenixframework.org/docs/installation)
 
 *Don't worry about installing Postgres. You just need NodeJS, NPM, and Elixir*
 
@@ -49,6 +67,7 @@ npm install
 ```
 rethinkdb
 # alternatively, you could use a docker container
+docker run -d -P -p 8080:8080 -p 28015:28015 -p 29015:29015 --name rethink rethinkdb
 ```
 
 ### 5. Start the Phoenix framework

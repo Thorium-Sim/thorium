@@ -11,8 +11,12 @@ defmodule Thorium do
       supervisor(Thorium.Endpoint, []),
       # Get presence monitoring going
       supervisor(Thorium.Presence, []),
+      #supervisor(Thorium.ProcessRegistry, []),
       # Here you could define other workers and supervisors as children
-      worker(DB, []),
+      worker(DB, [[host: "localhost", port: 28015]]),
+      worker(Store, []),
+      worker(ClientStore, []),
+      #worker(Thorium.FlightsInit, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

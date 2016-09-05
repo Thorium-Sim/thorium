@@ -3,6 +3,9 @@ const viewList = [
 	"LongRangeComm",
 	"AdminStations",
 	"EngineControl",
+	"Navigation",
+	"Thrusters",
+	"Sensors",
 	"AdminAssets",
 ];
 

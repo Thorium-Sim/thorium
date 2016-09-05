@@ -36,7 +36,7 @@ class LayoutDefault extends Component {
 			<ul>
 			{(loading) ? <div></div> : cardsData.map((card,index) => (
 				<li key={card.id}>
-				<Link to={`/simulator/${simulatorId}/station/${stationId}/card/${index}`}>
+				<Link to={`/app/simulator/${simulatorId}/station/${stationId}/card/${index}`}>
 				{card.name}
 				</Link>
 				</li>

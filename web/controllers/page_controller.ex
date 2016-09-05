@@ -8,11 +8,15 @@ defmodule Thorium.PageController do
     table_drop("stations") |> DB.run
     table_drop("cards") |> DB.run
     table_drop("systems") |> DB.run
-    
+    table_drop("users") |> DB.run
+    table_drop("roles") |> DB.run
+
     table_create("simulators") |> DB.run
     table_create("stations") |> DB.run
     table_create("cards") |> DB.run
     table_create("systems") |> DB.run
+    table_create("users") |> DB.run
+    table_create("roles") |> DB.run
 
     table("simulators") |> insert(%{
     	id: "voyager",
@@ -29,16 +33,35 @@ defmodule Thorium.PageController do
       stationId: "voyager-admin",
       order: 0
       }) |> DB.run
+    table("systems") |> insert(%{
+      name: "Thrusters",
+      simulatorId: "voyager",
+      attitude: %{
+        yaw: 0,
+        pitch: 0,
+        roll: 0
+      },
+      attitudeAdjust: %{
+        yaw: 0,
+        pitch: 0,
+        roll: 0
+      },
+      direction: %{
+        x: 0, #Port and Starboard
+        y: 0, #Up and Down
+        z: 0  #Forward and back
+      }
+      }) |> DB.run()
     text conn, "Database Reset"
   end
 
   def assets_upload(conn, params) do
     assetData = %{
       "folderPath" => params["folderPath"],
-      "containerId" => params["containerId"], 
-      "containerPath" => params["containerPath"], 
-      "fullPath" => params["fullPath"], 
-      "simulatorId" => params["simulatorId"], 
+      "containerId" => params["containerId"],
+      "containerPath" => params["containerPath"],
+      "fullPath" => params["fullPath"],
+      "simulatorId" => params["simulatorId"],
     }
     #Upload the asset to S3
     {:ok, fileName} = Thorium.Asset.store({params["asset"], assetData})
@@ -54,7 +77,7 @@ defmodule Thorium.PageController do
     case result.data do
       [output] -> text conn, output["url"]
       [] -> text conn, "Error"
-    end 
+    end
   end
 
   def assets_get(conn, %{"asset_key" => asset_key}) do
@@ -64,9 +87,9 @@ defmodule Thorium.PageController do
     case result.data do
       [output] -> text conn, output["url"]
       [] -> text conn, "Error"
-    end 
+    end
   end
-  
+
   def index(conn, _params) do
     render conn, "index.html"
   end

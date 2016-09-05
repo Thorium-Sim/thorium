@@ -16,6 +16,8 @@ web
 │   
 ├───controllers ── Phoenix controllers. One renders the HTML page, one resets the database.
 │   
+├───graphql     ── GraphQL Schema and endpoint data.
+│
 ├───static      ── Houses all clientside code. See folder README.
 │   
 ├───templates
