@@ -1,43 +1,18 @@
 import React, { Component } from 'react';
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router';
-
+import {Signin, Register, Forgot, PasswordReset} from '../components/Accounts.jsx';
+//import UserAdmin from '../components/admin/Users.jsx';
 import SimulatorData from '../components/SimulatorData.jsx';
 import StationData from '../components/StationData.jsx';
 import CardContainer from './Card.jsx';
 import Config from './Config.jsx';
 import Lobby from './Lobby.jsx';
 import Client from '../components/Client.jsx';
-
-const Dev = () => (
-  <div className="jumbotron">
-  <h2>Welcome to Thorium</h2>
-  <p className="lead"></p>
-  <p className="lead">
-  <span>
-  Seed/Reset RethinkDB: <a href="/reset">Click Here</a>
-  </span>
-  <br />
-
-  </p>
-  </div>
-  );
-
-class NoMatch extends Component {
-  render(){
-    return (<div>No route matches your request. <a href="/">Go Home.</a></div>);
-  }
-}
-
+import actions from '../actions';
+const {presence} = actions;
+const {fetchPresence} = presence;
 
 const routes = [
-/*{
-  path:'/app/simulator/:simulatorId/station/:stationId/card/:cardIndex',
-  component:CardContainer,
-},
-{
-  path: '/app/simulator/:simulatorId',
-  component: StationData,
-},*/
 {
   path: '/config',
   component: Config,
@@ -51,18 +26,42 @@ const routes = [
   component: Lobby,
 },
 {
+  path: '/login',
+  component: Signin
+},
+{
+  path: '/register',
+  component: Register
+},
+{
+  path: '/forgot',
+  component: Forgot
+},
+/* This component is currently broken. Needs fixed.
+{
+  path: '/admin/users',
+  component: UserAdmin
+},*/
+{
+  path: "/reset_password/:resetLink",
+  component: PasswordReset
+},
+{
   path: '*',
   component:NoMatch
 }
 ];
 
+class NoMatch extends Component {
+  render(){
+    return (<div>No route matches your request. <a href="/">Go Home.</a></div>);
+  }
+}
 
-class App extends Component {
+export default class App extends Component {
   render() {
     return (
       <Router routes={routes} history={browserHistory} />
       );
   }
 }
-
-export default App;

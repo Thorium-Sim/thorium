@@ -16,7 +16,7 @@ defmodule Thorium do
       worker(DB, [[host: "localhost", port: 28015]]),
       worker(Store, []),
       worker(ClientStore, []),
-      worker(Thorium.FlightsInit, []),
+      #worker(Thorium.FlightsInit, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

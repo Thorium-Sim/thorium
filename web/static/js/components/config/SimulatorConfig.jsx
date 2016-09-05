@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import LayoutList from '../layouts';
 import gql from 'graphql-tag';
-import { connect } from 'react-apollo';
+import {withRouter} from 'react-router';
+import { graphql } from 'react-apollo';
 
 const Layouts = Object.keys(LayoutList);
 
-class SimulatorConfig extends Component {
+class SimulatorConfigView extends Component {
 	_handleChange(e){
 		let obj = this.props.selectedSimulator;
 		obj[e.target.name] = e.target.value;
@@ -45,31 +46,27 @@ class SimulatorConfig extends Component {
 	}
 }
 
-function mapMutationsToProps({ ownProps, state }) {
-	return {
-		updateSimulator: (args) => ({
-			mutation: gql`
-			mutation updateSimulator($id: String!, $name: String, $alertLevel: String, $layout: String) {
-				simulator_update(id: $id, name: $name, layout: $layout, alertLevel: $alertLevel){
-					id
-					name,
-					alertLevel,
-					layout
-				}
-			}
-			`,
-			variables: args,
-			updateQueries: {
-				simulators: (previousQueryResult, { mutationResult, queryVariables }) => {
-					debugger;
-				}
-			},
-			optimisticResponse: ownProps.selectedSimulator
-		}),
-	};
-}
-const SimulatorData = connect({
-	mapMutationsToProps
-})(SimulatorConfig);
+const simulatorMutation = gql `mutation updateSimulator($id: String!, $name: String, $alertLevel: String, $layout: String) {
+	simulator_update(id: $id, name: $name, layout: $layout, alertLevel: $alertLevel){
+		id
+		name,
+		alertLevel,
+		layout
+	}
+}`;
 
-export default SimulatorData;
+export const SimulatorConfig = withRouter(graphql(simulatorMutation, {
+    props({mutate}) {
+        return {
+            updateSimulator(args) {
+                return mutate({
+                    variables: args,
+										updateQueries: {
+										},
+										optimisticResponse: {
+										}
+                })
+            }
+        }
+    }
+})(SimulatorConfigView))

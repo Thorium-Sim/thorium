@@ -28,7 +28,9 @@ defmodule Thorium.Mixfile do
       :plug_graphql, 
       :rethinkdb_changefeed, 
       :ex_aws, 
-      :httpoison]]
+      :httpoison,
+      :comeonin,
+      :bamboo]]
     end
 
   # Specifies which paths to compile per environment.
@@ -54,6 +56,9 @@ defmodule Thorium.Mixfile do
     {:ex_aws, "~> 0.4.10"},
     {:httpoison, "~> 0.7"},
     {:poison, "~> 1.2"},
+    {:comeonin, "~> 2.5"},
+    {:bamboo, "~> 0.7"},
+    { :uuid, "~> 1.1" },
     {:fsm, "~> 0.2.0"},
     {:exactor, "~> 2.2.0", warn_missing: false},
   ]

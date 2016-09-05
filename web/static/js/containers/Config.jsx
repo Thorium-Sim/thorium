@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Col, Row, Container, Card, CardBlock, Button, ButtonGroup } from 'reactstrap';
-import { connect } from 'react-apollo';
-
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+import {Link, withRouter} from 'react-router';
 import uuid from '../helpers/guid';
 import Configs from '../components/config';
 
 import './config.scss';
 
-class Config extends Component {
+class ConfigView extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
@@ -122,21 +123,14 @@ class Config extends Component {
 	}
 }
 
-const ConfigData = connect({
-	mapQueriesToProps: () => ({
-		data: {
-			query: gql`
-			query simulators {
-				simulators (template: "true"){
-					id,
-					name,
-					alertLevel,
-					layout
-				},
 
-			}`
-		},
-	}),
-})(Config);
+const ConfigData = gql `query simulators {
+	simulators (template: "true"){
+		id,
+		name,
+		alertLevel,
+		layout
+	},
+}`;
 
-export default ConfigData;
+export default graphql(ConfigData)(ConfigView);;

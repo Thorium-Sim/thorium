@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {fromTo} from 'gsap';
-import Draggable from 'gsap/src/uncompressed/utils/Draggable.js';
+import {Draggable} from 'gsap';
 import { Button, LoadingWidget, Row, Col, Container, Card } from '../../generic';
 import actions from '../../../actions';
 import { connect } from 'react-redux';
@@ -11,7 +11,7 @@ const {fetchSystems} = systems;
 
 function newPoints(pos, parent) {
     var x = 0; // your center point
-    var y = 0; // your center point 
+    var y = 0; // your center point
     var radius = parent.clientWidth / 2;
     var scale = radius / Math.sqrt(Math.pow(pos.x - x, 2) + Math.pow(pos.y - y, 2)); // distance formula ratio
     if (scale < 1) {

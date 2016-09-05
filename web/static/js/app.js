@@ -5,10 +5,8 @@ import guid from './helpers/guid';
 import App from './containers/App';
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import { addTypenameToSelectionSet } from 'apollo-client/queries/queryTransform';
-import { registerGqlTag } from 'apollo-client/gql';
+import gql from 'graphql-tag';
 import { ApolloProvider } from 'react-apollo';
-
-registerGqlTag();
 
 const client = new ApolloClient({
   networkInterface: createNetworkInterface('/graphql', {
@@ -23,6 +21,7 @@ const client = new ApolloClient({
   },
 });
 
+
 //Set a clientId for the client
 let clientId = localStorage.getItem('thorium_clientId');
 if (!clientId) {
@@ -30,11 +29,10 @@ if (!clientId) {
   localStorage.setItem('thorium_clientId',clientId);
 }
 
-render(
- (
-  <ApolloProvider client={client}>
-  <App />
-  </ApolloProvider>
-  ),
- document.getElementById('app')
- );
+
+  render(
+   (<ApolloProvider client={client}>
+    <App />
+    </ApolloProvider>),
+   document.getElementById('app')
+   );

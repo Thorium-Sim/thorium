@@ -5,13 +5,13 @@ defmodule Thorium.FlightsInit do
 	@moduledoc """
 	This modules purpose is to initialize all flight objects and ensure that their processes get created, updated
 	and destroyed. This is speciically to modify the processes themselves, not necessarily to update information on the flight itself.
-	"""	
+	"""
 	def start_link do
 		#Start the flight registry process
 		#Get the flight objects from the database, initialize the 'Change' function
 		q = table("flights")
 		result = DB.run(q)
-		Enum.each(result.data, fn flight -> 
+		Enum.each(result.data, fn flight ->
 			change = %{"new_val" => flight, "old_val" => nil}
 			handle_changes(change)
 		 end)
@@ -34,7 +34,7 @@ defmodule Thorium.FlightsInit do
 		#Create the simulator tree by pulling in all of the objects which
 		#Reference the simulator id of each simulator.
 		simulators = Enum.map(new_val["simulators"], fn simulator ->
-			simResult = table("simulators") 
+			simResult = table("simulators")
 			|> filter(%{"id" => simulator["id"]})
 			|> DB.run
 			statResult = table("stations")
