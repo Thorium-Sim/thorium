@@ -8,9 +8,6 @@ import CardContainer from './Card.jsx';
 import Config from './Config.jsx';
 import Lobby from './Lobby.jsx';
 import Client from '../components/Client.jsx';
-import actions from '../actions';
-const {presence} = actions;
-const {fetchPresence} = presence;
 
 const routes = [
 {

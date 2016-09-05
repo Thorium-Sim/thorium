@@ -3,7 +3,7 @@
   "dependencies": {
     "apollo-client": "^0.4.14",
     "babel-preset-react": "^6.5.0",
-    "bootstrap": "^4.0.0-alpha.2",
+    "bootstrap": "^4.0.0-alpha.4",
     "exports-loader": "^0.6.3",
     "fabric": "^1.6.3",
     "fetch-polyfill": "^0.8.2",

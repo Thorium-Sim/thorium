@@ -58,10 +58,10 @@ defmodule Thorium.PageController do
   def assets_upload(conn, params) do
     assetData = %{
       "folderPath" => params["folderPath"],
-      "containerId" => params["containerId"], 
-      "containerPath" => params["containerPath"], 
-      "fullPath" => params["fullPath"], 
-      "simulatorId" => params["simulatorId"], 
+      "containerId" => params["containerId"],
+      "containerPath" => params["containerPath"],
+      "fullPath" => params["fullPath"],
+      "simulatorId" => params["simulatorId"],
     }
     #Upload the asset to S3
     {:ok, fileName} = Thorium.Asset.store({params["asset"], assetData})
@@ -77,7 +77,7 @@ defmodule Thorium.PageController do
     case result.data do
       [output] -> text conn, output["url"]
       [] -> text conn, "Error"
-    end 
+    end
   end
 
   def assets_get(conn, %{"asset_key" => asset_key}) do
@@ -87,9 +87,9 @@ defmodule Thorium.PageController do
     case result.data do
       [output] -> text conn, output["url"]
       [] -> text conn, "Error"
-    end 
+    end
   end
-  
+
   def index(conn, _params) do
     render conn, "index.html"
   end

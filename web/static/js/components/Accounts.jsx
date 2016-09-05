@@ -45,7 +45,7 @@ export class SigninView extends Component {
     }
     _handleSignin() {
         let self = this;
-        this.props.mutations.signin({email: this.refs.signupEmail.value, password: this.refs.signupPassword.value}).then((res) => {
+        this.props.signin({email: this.refs.signupEmail.value, password: this.refs.signupPassword.value}).then((res) => {
             const login_user = res.data.login_user;
             localStorage.setItem('login_token', login_user.token);
             localStorage.setItem('login_tokenExpire', login_user.tokenExpire);
@@ -146,7 +146,7 @@ export class ForgotView extends Component {
     }
     _handleForgot() {
         let self = this;
-        this.props.mutations.forgot({email: this.refs.forgotEmail.value}).then((res) => {
+        this.props.forgot({email: this.refs.forgotEmail.value}).then((res) => {
             const login_user = res.data.register_user;
             localStorage.setItem('login_token', login_user.token);
             localStorage.setItem('login_tokenExpire', login_user.tokenExpire);
@@ -249,7 +249,7 @@ export class RegisterView extends Component {
     }
     _handleRegister() {
         let self = this;
-        this.props.mutations.register({email: this.refs.signupEmail.value, password: this.refs.signupPassword.value}).then((res) => {
+        this.props.register({email: this.refs.signupEmail.value, password: this.refs.signupPassword.value}).then((res) => {
             const login_user = res.data.register_user;
             localStorage.setItem('login_token', login_user.token);
             localStorage.setItem('login_tokenExpire', login_user.tokenExpire);
@@ -359,7 +359,7 @@ export class PasswordResetView extends Component {
     _handleReset() {
         let self = this;
         debugger;
-        this.props.mutations.reset({resetLink: this.state.resetLink, password: this.refs.signupPassword.value}).then((res) => {
+        this.props.reset({resetLink: this.state.resetLink, password: this.refs.signupPassword.value}).then((res) => {
             const login_user = res.data.reset;
             localStorage.setItem('login_token', login_user.token);
             localStorage.setItem('login_tokenExpire', login_user.tokenExpire);

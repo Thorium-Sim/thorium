@@ -34,8 +34,8 @@ defmodule App.Mutation.Users do
 
 				def create_user args do
 					obj = %{
-						email: args.email,
-						password: hashpwsalt(args.password),
+						email: args["email"],
+						password: hashpwsalt(args["password"]),
 						token: gen_salt,
 						tokenExpire: :os.system_time(:milli_seconds) + (1000 * 60 * 15)
 					}
@@ -78,7 +78,7 @@ defmodule App.Mutation.Users do
 								false ->
 									GraphQL.Errors.new([%GraphQL.Error{message: "Invalid password combination"}])
 								end
-							end							
+							end
 						end
 						def forgot do
 							%{
@@ -124,7 +124,7 @@ defmodule App.Mutation.Users do
 								%{data: response} = table("users")
 								|> filter(%{"resetLink" => resetLink})
 								|> update(updateObj)
-								|> DB.run 
+								|> DB.run
 								updateObj
 							end
 						end

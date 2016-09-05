@@ -35,7 +35,7 @@ class Client extends Component {
 		return <Credits />;
 	}
 }
-
+/*
 function select(state){
 	const clientId = localStorage.getItem('thorium_clientId');
 	return {
@@ -43,5 +43,5 @@ function select(state){
 	};
 }
 const ClientData = connect(select)(Client);
-
-export default ClientData;
+*/
+export default Credits;
