@@ -8,7 +8,7 @@ A simulator controls platform
 
 Thorium is built with the following technologies:
 * [React](https://facebook.github.io/react/) for the frontend
-* [Redux](http://redux.js.org/) for the data layer
+* [Apollo Client](http://www.apollostack.com/) for the data layer
 * [GraphQL](http://graphql.org) for the transmission layer
 * [Phoenix Framework](http://phoenixframework.org/) for the server
 * [RethinkDB](https://www.rethinkdb.com/) for the database
@@ -42,7 +42,7 @@ Thorium is flexible enough to provide a system for creating an integrated, distr
 ### 1. Install Phoenix Framework (with NodeJS, NPM, and Elixir), and RethinkDB
 Follow the following instructions
 
-1. Phoenix Framework (http://www.phoenixframework.org/docs/installation
+1. Phoenix Framework (http://www.phoenixframework.org/docs/installation)
 
 *Don't worry about installing Postgres. You just need NodeJS, NPM, and Elixir*
 
@@ -67,7 +67,7 @@ npm install
 ```
 rethinkdb
 # alternatively, you could use a docker container
-docker run -d -P -p 8080:8080 -p 28015:28015 -p 29015:29015 --name rethink rethinkdb 
+docker run -d -P -p 8080:8080 -p 28015:28015 -p 29015:29015 --name rethink rethinkdb
 ```
 
 ### 5. Start the Phoenix framework
