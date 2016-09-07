@@ -3,8 +3,7 @@
 /db
 /deps
 /*.ez
-run.sh
-
+settings.env
 # Generate on crash by the VM
 erl_crash.dump
 

@@ -12,6 +12,7 @@ services:
       - .:/var/www
     links:
       - rethink
+    env_file: settings.env
   rethink:
     image: rethinkdb
     expose: 
