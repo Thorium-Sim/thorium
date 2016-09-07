@@ -1,0 +1,22 @@
+version: '2'
+services:
+  web:
+    build: 
+      context: ./
+    image: thorium_server
+    ports:
+      - "80:80"
+      - "443:443"
+      - "4000:4000"
+    volumes:
+      - .:/var/www
+    links:
+      - rethink
+  rethink:
+    image: rethinkdb
+    expose: 
+    - "8080"
+    - "28015"
+    - "29015"
+    ports:
+      - "8080:8080"

@@ -26,6 +26,7 @@ const client = new ApolloClient({
 let clientId = localStorage.getItem('thorium_clientId');
 if (!clientId) {
   clientId = guid();
+  //Just to test out the webpack
   localStorage.setItem('thorium_clientId',clientId);
 }
 
