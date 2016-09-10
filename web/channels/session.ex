@@ -10,7 +10,12 @@ defmodule Thorium.SessionChannel do
   end
 
   def handle_in("updateClient", %{"clientId" => clientId, "params" => params}, socket) do
-    ClientStore.update_client(clientId, params)
+    # Not worrying about ClientStore right now; save to the Database
+    # ClientStore.update_client(clientId, params)
+    table("clients")
+    |> get(clientId)
+    |> update(params)
+    |> DB.run
     push socket, "presence_state", Presence.list(socket)
     {:noreply, socket}
   end
@@ -24,7 +29,7 @@ defmodule Thorium.SessionChannel do
       "simulator" => nil,
       "station" => nil
     }
-    ClientStore.add_client(key, init)
+    
     #Push the presence information
     push socket, "presence_state", Presence.list(socket)
     {:noreply, socket}

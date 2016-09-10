@@ -11,7 +11,9 @@ defmodule App.Type.Presence do
       description: "Presence of clients attached to the simulator",
       fields: %{
         id: @type_string,
-        #metas: %{type: GraphQL.Type.List{ofType: %GraphQL.Type.String}}
+        metas: %{
+          type: %List{ofType: %GraphQL.Type.String{}},
+        }
       }
     }
   end

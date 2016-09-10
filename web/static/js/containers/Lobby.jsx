@@ -298,4 +298,4 @@ const LobbyData = gql `
 				}
 }`;
 
-export default graphql(LobbyData)(Lobby);;
+export default graphql(LobbyData)(Lobby);

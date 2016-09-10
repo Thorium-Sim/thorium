@@ -5,6 +5,7 @@ import {Signin, Register, Forgot, PasswordReset} from '../components/Accounts.js
 import SimulatorData from '../components/SimulatorData.jsx';
 import StationData from '../components/StationData.jsx';
 import CardContainer from './Card.jsx';
+import ComponentView from '../components/Component.jsx';
 import Config from './Config.jsx';
 import Lobby from './Lobby.jsx';
 import Client from '../components/Client.jsx';
@@ -17,6 +18,10 @@ const routes = [
 {
   path: '/app',
   component: Client,
+},
+{
+  path: '/component/:component',
+  component: ComponentView,
 },
 {
   path: '/',

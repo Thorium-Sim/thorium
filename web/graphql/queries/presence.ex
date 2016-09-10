@@ -14,13 +14,11 @@ defmodule App.Query.Session do
       }
     end
 
-    def session(_, %{id: id}, _) do
-      :ok
+    def session(_, %{id: sessionId}, _) do
+      Enum.filter_map(Thorium.Presence.list("session"), fn{id, %{metas: metas}} -> id == sessionId end, fn{id, %{metas: metas}} -> %{id: id, metas: metas}  end)
     end
 
     def session(_, _args, _) do
-      output = Enum.map(Thorium.Presence.list("session"), fn{id, %{metas: metas}} -> %{id: id, metas: metas}  end)
-      IO.inspect output
-      output
+      Enum.map(Thorium.Presence.list("session"), fn{id, %{metas: metas}} -> %{id: id, metas: metas}  end)
     end
   end
