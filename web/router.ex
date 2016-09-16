@@ -9,19 +9,19 @@ defmodule Thorium.Router do
   end
 
   pipeline :csrf do
-        plug :protect_from_forgery
+    plug :protect_from_forgery
   end
   
   pipeline :api do
     plug :accepts, ["json"]
   end
-  
-  #Binding for GraphQL
-  scope "/graphql" do
-    pipe_through :api
-    forward "/", GraphQL.Plug, schema: {App.PublicSchema, :get}
-  end
 
+  scope "/" do
+    if Mix.env == :dev do
+      get "/graphiql", Absinthe.Plug.GraphiQL, schema: Thorium.Schema
+      post "/graphiql", Absinthe.Plug.GraphiQL, schema: Thorium.Schema
+    end
+  end
 
   scope "/", Thorium do
     pipe_through :browser
@@ -31,4 +31,9 @@ defmodule Thorium.Router do
     get "/*path", PageController, :index
   end
 
+  scope "/graphql" do
+    pipe_through :api
+
+    forward "/", Absinthe.Plug, schema: Thorium.Schema
+  end
 end

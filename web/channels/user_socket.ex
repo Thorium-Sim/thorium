@@ -21,11 +21,20 @@ defmodule Thorium.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
+  def connect(%{"client_id" => id, "otherClient" => other}, socket) do
+    IO.inspect "Other"
+    IO.inspect socket
+    {:ok, assign(socket, :client_id, id)}
+  end
+
   def connect(%{"client_id" => id}, socket) do
+    IO.inspect socket
     {:ok, assign(socket, :client_id, id)}
   end
 
   def connect(_params, socket) do
+    IO.inspect "Connected:"
+    IO.inspect _params
     {:ok, socket}
   end
 

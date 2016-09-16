@@ -2,14 +2,8 @@ import React, {Component} from 'react';
 import { findDOMNode } from 'react-dom';
 import { Button, LoadingWidget, Row, Col, Container, Card } from '../../generic';
 import dragula from 'react-dragula';
-import { connect } from 'react-redux';
 import viewList from '../list.js';
-import actions from '../../../actions';
 import './style.scss';
-
-const {cards, stations} = actions;
-const {fetchStations} = stations;
-const {fetchCards} = cards;
 
 class AdminStationsContent extends Component {
 	constructor(props) {
@@ -21,9 +15,6 @@ class AdminStationsContent extends Component {
 		};
 	}
 	componentDidMount() {
-		let { dispatch } = this.props;
-		dispatch(fetchStations());
-		dispatch(fetchCards());
 		let container = findDOMNode(this.refs.cardSort);
 		dragula([container]);
 	}
@@ -177,6 +168,6 @@ function select(state,props){
 		}
 	};
 }
-const AdminStations = connect(select)(AdminStationsContent);
+const AdminStations = AdminStationsContent;
 
 export default AdminStations;

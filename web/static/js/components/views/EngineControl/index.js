@@ -1,10 +1,5 @@
 import React, {Component} from 'react';
 import { Button, LoadingWidget, Row, Col, Container, Card } from '../../generic';
-import actions from '../../../actions';
-const {systems} = actions;
-const {fetchSystems} = systems;
-import { connect } from 'react-redux';
-
 import './style.scss';
 
 const HeatBar = (props) => {
@@ -18,8 +13,6 @@ const HeatBar = (props) => {
 
 class EngineControlContent extends Component {
 	componentDidMount() {
-		let { dispatch } = this.props;
-		dispatch(fetchSystems({type:"Engine"}));
 	}
 	speedBarStyle(array,speed){
 		let width = speed / array.length * 100;
@@ -166,6 +159,6 @@ function select(state,props){
 		}
 	};
 }
-const EngineControl = connect(select)(EngineControlContent);
+const EngineControl = EngineControlContent;
 
 export default EngineControl;

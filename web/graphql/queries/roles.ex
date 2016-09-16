@@ -1,3 +1,4 @@
+"""
 alias GraphQL.Type.List
 import RethinkDB.Query, only: [table: 1, get_all: 3]
 defmodule App.Query.Roles do
@@ -21,3 +22,4 @@ defmodule App.Query.Roles do
 		|> DB.handle_graphql_resp
 	end
 end
+"""

@@ -1,3 +1,4 @@
+"""
 alias GraphQL.Type.List
 
 defmodule App.Query.Session do
@@ -22,3 +23,4 @@ defmodule App.Query.Session do
       Enum.map(Thorium.Presence.list("session"), fn{id, %{metas: metas}} -> %{id: id, metas: metas}  end)
     end
   end
+"""

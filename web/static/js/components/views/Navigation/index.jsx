@@ -1,9 +1,5 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
 import { Button, LoadingWidget, Row, Col, Container, Card } from '../../generic';
-import actions from '../../../actions';
-const {systems} = actions;
-const {fetchSystems} = systems;
 import './style.scss';
 
 class NavigationContent extends Component {
@@ -106,6 +102,6 @@ function select(state,props){
 		}
 	};
 }
-const Navigation = connect(select)(NavigationContent);
+const Navigation = NavigationContent;
 
 export default Navigation;

@@ -4,7 +4,8 @@ defmodule DB do
   # database helpers
 
   def handle_graphql_resp(data) do
-    data |> strip_wrapper |> convert_to_symbol_map
+    res = data |> strip_wrapper |> convert_to_symbol_map
+    {:ok, res}
   end
 
   def handle_resp(data) do

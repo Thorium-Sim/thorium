@@ -1,17 +1,8 @@
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
-import { connect } from 'react-redux';
 import Layouts from '../components/layouts';
 import { Link } from 'react-router';
-import actions from '../actions';
-import socket from '../socket';
 
-const {cards, stations, simulators} = actions;
-const {fetchSimulators} = simulators;
-const {fetchStations} = stations;
-const {fetchCards} = cards;
-const operationChannel = socket.channel('operations');
-operationChannel.join();
 
 class CardFrame extends Component {
 	componentDidMount() {
@@ -43,6 +34,6 @@ function select(state,props){
 		}
 	};
 }
-const CardData = connect(select)(CardFrame);
+const CardData = CardFrame;
 
 export default CardData;

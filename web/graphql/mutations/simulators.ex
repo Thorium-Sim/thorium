@@ -1,3 +1,4 @@
+"""
 import RethinkDB.Query, only: [table: 1, get: 2, filter: 2, insert: 2, update: 2, delete: 1]
 
 defmodule App.Mutation.Simulators do
@@ -72,3 +73,5 @@ defmodule App.Mutation.Simulators do
 					%{id: args.id}
 				end
 			end
+
+			"""

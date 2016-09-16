@@ -1,3 +1,4 @@
+"""
 alias GraphQL.Type.List
 import RethinkDB.Query, only: [table: 1, filter: 2]
 
@@ -27,3 +28,4 @@ defmodule App.Query.Assets do
     |> DB.handle_graphql_resp
   end
 end
+"""

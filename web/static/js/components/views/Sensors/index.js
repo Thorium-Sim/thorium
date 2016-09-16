@@ -1,11 +1,7 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
 import { Button, LoadingWidget, Row, Col, Container, Card } from '../../generic';
 import './style.scss';
-import actions from '../../../actions';
 import SensorGrid from './SensorGrid.js';
-const {systems} = actions;
-const {fetchSystems} = systems;
 
 class Sensors extends Component{
 	constructor(props){
@@ -17,8 +13,7 @@ class Sensors extends Component{
 		};
 	}
 	componentWillMount(){
-		const {dispatch} = this.props;
-		dispatch(fetchSystems({simulatorId:this.props.params.simulatorId,name:"Sensors"}));
+	
 	}
 	_startScan() {
 		let obj = {
@@ -180,6 +175,6 @@ function select(state){
 		}
 	};
 }
-const SensorsData = connect(select)(Sensors);
+const SensorsData = Sensors;
 
 export default SensorsData;

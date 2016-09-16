@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
 import { Col, Row, Container, Card, CardBlock, Button, ButtonGroup } from 'reactstrap';
-import { connect } from 'react-redux';
-import actions from '../../actions';
 import uuid from '../../helpers/guid';
 import viewList from '../views/list.js';
 import FontAwesome from 'react-fontawesome';
-
-const {stations} = actions;
-const {fetchStations} = stations;
 
 class StationsConfig extends Component {
 	constructor(params){
@@ -18,8 +13,6 @@ class StationsConfig extends Component {
 		};
 	}
 	componentDidMount() {
-		let { dispatch } = this.props;
-		dispatch(fetchStations({simulatorId: this.props.selectedSimulator.id}));
 	}
 	_setSelectedStationConfig(station){
 		this.setState({
@@ -207,6 +200,6 @@ function select(state){
 		data: state
 	};
 }
-const StationsContainer = connect(select)(StationsConfig);
+const StationsContainer = StationsConfig;
 
 export default StationsContainer;

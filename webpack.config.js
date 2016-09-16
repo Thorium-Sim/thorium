@@ -20,6 +20,10 @@ module.exports = {
 			loaders: ["style", "css", "sass"]
 		},
 		{
+			test: /\.json$/,
+			loader: 'json-loader'
+		},
+		{
 			test: /\.(png|jpg)$/,
 			loader: 'file-loader?name=images/[name].[ext]'
 		},

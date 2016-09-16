@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 import { Button, LoadingWidget, Row, Col, Container } from './generic';
-import { connect } from 'react-redux';
-import actions from '../actions';
-const {simulators} = actions;
-const {fetchSimulators} = simulators;
 
 class SimulatorLink extends Component {
 	render(){
@@ -20,9 +16,6 @@ class SimulatorLink extends Component {
 
 class Simulators extends Component {
 	componentDidMount() {
-		let { dispatch } = this.props;
-
-		dispatch(fetchSimulators());
 	}
 	render() {
 		let simulators = this.props.data.simulators || [];
@@ -60,6 +53,6 @@ function select(state){
 		}
 	};
 }
-const SimulatorData = connect(select)(Simulators);
+const SimulatorData = Simulators;
 
 export default SimulatorData;

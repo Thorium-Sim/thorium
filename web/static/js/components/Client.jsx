@@ -41,6 +41,11 @@ query Sessions($ClientId: String) {
 	sessions(id: $ClientId) {
 		id
 	}
+	flights{
+		name
+		id
+		date
+	}
 }`;
 
 export default withRouter(graphql(ClientQuery, {

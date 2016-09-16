@@ -1,3 +1,4 @@
+"""
 import Comeonin.Bcrypt
 import RethinkDB.Query, only: [table: 1, get: 2, get_all: 3, filter: 2, insert: 2, update: 2, delete: 1]
 
@@ -128,3 +129,4 @@ defmodule App.Mutation.Users do
 								updateObj
 							end
 						end
+						"""
