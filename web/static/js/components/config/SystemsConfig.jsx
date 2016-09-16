@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import { Col, Row, Container, Card, CardBlock, Button, ButtonGroup } from 'reactstrap';
-import { connect } from 'react-redux';
 import systemsList from '../systems';
 import uuid from '../../helpers/guid';
 
 const systemsKeys = Object.keys(systemsList);
-import actions from '../../actions';
-const {systems} = actions;
-const {fetchSystems} = systems;
 class SystemsConfig extends Component {
 	constructor(params){
 		super(params);
@@ -17,8 +13,6 @@ class SystemsConfig extends Component {
 		};
 	}
 	componentDidMount() {
-		let { dispatch } = this.props;
-		dispatch(fetchSystems(/*{simulatorId: this.props.selectedSimulator.id}*/));
 	}
 	_setSelectedSystemConfig(system){
 		const systemsList2 = systemsList;
@@ -103,6 +97,6 @@ function select(state){
 		data: state
 	};
 }
-const SystemsContainer = connect(select)(SystemsConfig);
+const SystemsContainer = SystemsConfig;
 
 export default SystemsContainer;

@@ -10,6 +10,7 @@
     "graphql-tag": "^0.1.11",
     "gsap": "^1.18.5",
     "imports-loader": "^0.6.5",
+    "json-loader": "^0.5.4",
     "phoenix": "^1.2.0",
     "phoenix_html": "file:deps/phoenix_html",
     "react": "^15.1.0",
@@ -25,7 +26,9 @@
     "redux": "^3.5.2",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0",
-    "whatwg-fetch": "^1.0.0"
+    "subscriptions-transport-ws": "^0.2.2",
+    "whatwg-fetch": "^1.0.0",
+    "ws-graphql": "^0.1.6"
   },
   "scripts": {
     "start": "webpack --watch-stdin --progress --color",

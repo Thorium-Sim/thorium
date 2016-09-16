@@ -7,19 +7,9 @@ import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import { addTypenameToSelectionSet } from 'apollo-client/queries/queryTransform';
 import gql from 'graphql-tag';
 import { ApolloProvider } from 'react-apollo';
-
-const client = new ApolloClient({
-  networkInterface: createNetworkInterface('/graphql', {
-    credentials: 'same-origin',
-  }),
-  queryTransformer: addTypenameToSelectionSet,
-  dataIdFromObject: (result) => {
-    if (result.id && result.__typename) {
-      return result.__typename + result.id;
-    }
-    return null;
-  },
-});
+import {Socket} from 'phoenix';
+import { Client } from 'subscriptions-transport-ws';
+import addGraphQLSubscriptions from './subscription';
 
 
 //Set a clientId for the client
@@ -30,10 +20,44 @@ if (!clientId) {
   localStorage.setItem('thorium_clientId',clientId);
 }
 
+const wsClient = new Client('ws://localhost:4000/socket/websocket?vsn=1.0.0&otherClient=true&client_id=' + clientId);
 
-  render(
-   (<ApolloProvider client={client}>
-    <App />
-    </ApolloProvider>),
-   document.getElementById('app')
-   );
+const networkInterface = createNetworkInterface({
+  uri: '/graphql',
+  opts: {
+    credentials: 'same-origin',
+  }
+});
+
+const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
+  networkInterface,
+  wsClient,
+  );
+
+const client = new ApolloClient({
+  networkInterface: networkInterfaceWithSubscriptions,
+  queryTransformer: addTypenameToSelectionSet,
+  dataIdFromObject: (result) => {
+    if (result.id && result.__typename) {
+      return result.__typename + result.id;
+    }
+    return null;
+  },
+});
+
+
+
+
+
+let socket = new Socket('/socket',  {params: {client_id: clientId}});
+socket.connect();
+let presence = socket.channel("session",{client_id: clientId});
+presence.join();
+
+
+render(
+ (<ApolloProvider client={client}>
+  <App />
+  </ApolloProvider>),
+ document.getElementById('app')
+ );

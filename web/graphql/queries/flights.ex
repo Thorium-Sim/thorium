@@ -1,3 +1,4 @@
+"""
 alias GraphQL.Type.List
 import RethinkDB.Query, only: [table: 1, filter: 2]
 
@@ -29,3 +30,4 @@ defmodule App.Query.Flights do
 end
 
 
+"""

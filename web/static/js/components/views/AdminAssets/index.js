@@ -1,13 +1,8 @@
 import React, {Component} from 'react';
 import { Button, LoadingWidget, Row, Col, Container, Card } from '../../generic';
-import { connect } from 'react-redux';
 import 'whatwg-fetch';
-import actions from '../../../actions';
 import FontAwesome from 'react-fontawesome';
 import './style.scss';
-
-const {assets} = actions;
-const {fetchFolders, fetchContainers, fetchObjects} = assets;
 
 class AdminAssetsContent extends Component {
 	constructor(props){
@@ -18,10 +13,6 @@ class AdminAssetsContent extends Component {
 		};
 	}
 	componentDidMount() {
-		let { dispatch } = this.props;
-		dispatch(fetchFolders());
-		dispatch(fetchContainers());
-		dispatch(fetchObjects());
 	}
 	_setDirectory(directory){
 		this.setState({currentDirectory:directory});
@@ -189,7 +180,7 @@ function select(state,props){
 		}
 	};
 }
-const AdminAssets = connect(select)(AdminAssetsContent);
+const AdminAssets = AdminAssetsContent;
 
 export default AdminAssets;
 

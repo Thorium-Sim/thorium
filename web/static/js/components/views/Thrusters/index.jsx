@@ -2,12 +2,7 @@ import React, {Component} from 'react';
 import {fromTo} from 'gsap';
 import {Draggable} from 'gsap';
 import { Button, LoadingWidget, Row, Col, Container, Card } from '../../generic';
-import actions from '../../../actions';
-import { connect } from 'react-redux';
 import './style.scss';
-
-const {systems} = actions;
-const {fetchSystems} = systems;
 
 function newPoints(pos, parent) {
     var x = 0; // your center point
@@ -470,6 +465,6 @@ function select(state){
 		}
 	};
 }
-const ThrustersData = connect(select)(Thrusters);
+const ThrustersData = Thrusters;
 
 export default ThrustersData;
