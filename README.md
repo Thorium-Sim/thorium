@@ -1,11 +1,13 @@
 ![Thorium](github-banner.png)
-# Thorium
 
 [![Slack Status](https://slack.ralexanderson.com/badge.svg)](https://slack.ralexanderson.com)
-[![Join the chat at https://gitter.im/alexanderson1993/thorium](https://badges.gitter.im/alexanderson1993/thorium.svg)](https://gitter.im/alexanderson1993/thorium?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![See the feature roadmap at https://huboard.com/alexanderson1993/thorium/](https://img.shields.io/badge/roadmap-On HuBoard-blue.svg)](https://huboard.com/alexanderson1993/thorium/)
 
-A simulator controls platform
+*New here? Check out the [Wiki](https://github.com/alexanderson1993/thorium/wiki) and the [Presentation](http://class.ralexanderson.com/thorium/)*
+
+# Thorium
+
+#### A simulator controls platform
 
 Thorium is built with the following technologies:
 * [React](https://facebook.github.io/react/) for the frontend
@@ -13,11 +15,6 @@ Thorium is built with the following technologies:
 * [GraphQL](http://graphql.org) for the transmission layer
 * [Phoenix Framework](http://phoenixframework.org/) for the server
 * [RethinkDB](https://www.rethinkdb.com/) for the database
-
-
-### Useful Links
-* [Elixir School](http://elixirschool.com/) - online school for the server language
-* [Elixir Koans](https://github.com/elixirkoans/elixir-koans) - Exercizes for Elixir
 
 ## What is Thorium?
 Thorium is a simulator controls platform which eventually hopes to encapsulate the following features (and maybe more):
@@ -39,6 +36,30 @@ And more. The above merely scratches the surface.
 Thorium is flexible enough to provide a system for creating an integrated, distributed, fault-tolerant show-control system that can power lights, sound, video, and take input and provide output to a wide variety of devices.
 
 ## Getting Started
+
+### The Semi-Easy Way
+
+### 1. Install Docker [https://www.docker.com](https://www.docker.com) and Docker-Compose [https://docs.docker.com/compose/](https://docs.docker.com/compose/)
+
+### 2. Clone this repository
+```
+git clone https://github.com/alexanderson1993/thorium.git
+cd thorium
+```
+### 3. Make sure that your database connection is set up to link with the docker container
+```
+ ### Edit this line in ./lib/thorium.ex so the host is 'rethink'
+ # Here you could define other workers and supervisors as children
+      worker(DB, [[host: "rethink", port: 28015]]),
+      worker(Store, []),
+      worker(ClientStore, []),
+```
+
+### 4. Run 'docker-compose up'
+
+### 5. Pray that it actually works
+
+### The harder but more reliable method (Only tested on MacOS. Might work on Linux)
 
 ### 1. Install Phoenix Framework (with NodeJS, NPM, and Elixir), and RethinkDB
 Follow the following instructions
@@ -67,7 +88,7 @@ npm install
 ### 4. Start RethinkDB from the Thorium folder
 ```
 rethinkdb
-# alternatively, you could use a docker container
+# alternatively, you could use a docker container. On MacOS the docker container is faster.
 docker run -d -P -p 8080:8080 -p 28015:28015 -p 29015:29015 --name rethink rethinkdb
 ```
 
@@ -76,9 +97,9 @@ docker run -d -P -p 8080:8080 -p 28015:28015 -p 29015:29015 --name rethink rethi
 mix phoenix.server
 ```
 
-That should be all you need. Navigate to http://localhost:4000 to see the site. Click the seed button to add some stub simulators and click the graphql button to test it out.
+That should be all you need. Navigate to http://localhost:4000 to see the site. You should be able to access GraphiQL at http://localhost:4000/graphiql
 
-Eventually, Rethink will get started with the Phoenix server, but not yet.
+Eventually, Rethink will get started with the Phoenix server, but not yet. (It does get started if you use the Docker method)
 
 ## Folder Structure
 
