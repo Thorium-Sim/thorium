@@ -33,6 +33,8 @@ Thorium is a simulator controls platform which eventually hopes to encapsulate t
 
 And more. The above merely scratches the surface.
 
+[Data Model Diagram](https://www.lucidchart.com/invitations/accept/6283bfd5-06ef-4dd5-8668-738ddf3e08ed)
+
 Thorium is flexible enough to provide a system for creating an integrated, distributed, fault-tolerant show-control system that can power lights, sound, video, and take input and provide output to a wide variety of devices.
 
 ## Getting Started
