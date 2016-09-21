@@ -3,6 +3,8 @@ import { Col, Row, Container, Card, CardBlock, Button, ButtonGroup } from 'react
 import uuid from '../../helpers/guid';
 import viewList from '../views/list.js';
 import FontAwesome from 'react-fontawesome';
+import gql from 'graphql-tag';
+import { graphql, withApollo } from 'react-apollo';
 
 class StationsConfig extends Component {
 	constructor(params){
@@ -23,28 +25,64 @@ class StationsConfig extends Component {
 		let name  = prompt('What is the station set name? eg. 12-Standard, 8-School, etc.');
 		if (name){
 			let obj = {
-				id: uuid(),
 				name: name,
-				simulatorId:this.props.selectedSimulator.id,
 				stations:[]
 			};
-			this.setState({
-				selectedStationConfig: obj
+			this.props.client.mutate({
+				mutation: gql`
+				mutation AddStationSet($name: String!, $stations: [Stationsetinput]) {
+					addstationset(name: $name, stations: []) {
+						id
+						name
+						stations {
+							name
+							cards {
+								name
+								component
+								icon
+							}
+						}
+					}
+				}
+				`,
+				variables: obj,
+				updateQueries: {
+					StationSets:(previousQueryResults, {mutationResult, queryVariables}) => {
+						previousQueryResults.stations.push(mutationResult.data.addstationset);
+						return previousQueryResults;
+					}
+				}
 			});
-			this.props.operationChannel.push("insert",{table:"stations",data:obj});
 		}
 	}
 	_showImportModal(){
-
 	}
 	_removeStationSet(){
 		let station = this.state.selectedStationConfig;
-		if (confirm("Are you sure you want to delete that station set?")){
-			//TODO: Delete all of the objects associated with the simulator;
-			let obj = {
-				id: station.id,
-			};
-			this.props.operationChannel.push("delete",{table:"stations",filter:obj});
+		if (station.id){
+			if (confirm("Are you sure you want to delete that station set?")){
+				let obj = {
+					id: station.id,
+				};
+				this.props.client.mutate({
+					mutation: gql`
+					mutation RemoveStationSet($id: String!) {
+						removestationset(id: $id) {
+							id
+						}
+					}
+					`,
+					variables: obj,
+					updateQueries: {
+						StationSets:(previousQueryResults, {mutationResult, queryVariables}) => {
+							previousQueryResults.stations = previousQueryResults.stations.filter((stationIt) => {
+								return stationIt.id !== mutationResult.data.removestationset.id;
+							});
+							return previousQueryResults;
+						}
+					}
+				});
+			}
 		}
 	}
 	_addStation(){
@@ -56,28 +94,76 @@ class StationsConfig extends Component {
 				cards: [],
 			};
 			let obj = {
-				id: stationSet.id
+				id: stationSet.id,
+				station: station
 			};
-			stationSet.stations.push(station);
-			this.props.operationChannel.push("update",{table:"stations",filter:obj,data:stationSet});
+			this.props.client.mutate({
+				mutation: gql`
+				mutation AddStation($id: String!, $station: Stationinput!) {
+					addstation(id: $id, station: $station) {
+						id
+						name
+						stations {
+							name
+							cards {
+								name
+								component
+								icon
+							}
+						}
+					}
+				}
+				`,
+				variables: obj,
+				updateQueries: {
+					StationSets:(previousQueryResults, {mutationResult, queryVariables}) => {
+						//previousQueryResults.stations.push(mutationResult.data.addstationset);
+						debugger;
+						return previousQueryResults;
+					}
+				}
+			});
 		}
 	}
 	_removeStation(station){
 		if (confirm("Are you sure you want to delete that station?")){
 			let stationSet =  Object.assign({}, this.state.selectedStationConfig);
-			stationSet.stations = stationSet.stations.filter((e) => {
-				if (e.name === station.name){
-					return false;
-				}
-				return true;
-			});
 			let obj = {
-				id: stationSet.id
+				id: stationSet.id,
+				station: station.name
 			};
-			this.setState({
-				selectedStationConfig:stationSet,
+			this.props.client.mutate({
+				mutation: gql`
+				mutation RemoveStation($id: String!, $station: String!) {
+					removestation(id: $id, station: $station) {
+						id
+						name
+						stations {
+							name
+							cards {
+								name
+								component
+								icon
+							}
+						}
+					}
+				}
+				`,
+				variables: obj,
+				updateQueries: {
+					StationSets:(previousQueryResults, {mutationResult, queryVariables}) => {
+						console.log(previousQueryResults)
+						previousQueryResults.stations = previousQueryResults.stations.map((station) => {
+							if (station.id === mutationResult.data.removestation.id){
+								return mutationResult.data.removestation;
+							}
+							return station;
+						});
+						console.log(previousQueryResults)
+						return previousQueryResults;
+					}
+				}
 			});
-			this.props.operationChannel.push("update",{table:"stations",filter:obj,data:stationSet});
 		}
 	}
 	_addCard(station,stationIndex,e){
@@ -126,7 +212,7 @@ class StationsConfig extends Component {
 			<Col sm="3">
 			<h5>Station Configs</h5>
 			<Card className="scroll">
-			{this.props.data.stations.map((e) => {
+			{this.props.data.loading ? <li>Loading... </li> : this.props.data.stations.map((e) => {
 				return <li key={e.id} onClick={this._setSelectedStationConfig.bind(this,e)} className={`${(e.id === this.state.selectedStationConfig.id) ? 'selected' : ''} list-group-item`}>{e.name}</li>;
 			})}
 			</Card>
@@ -137,7 +223,7 @@ class StationsConfig extends Component {
 			</ButtonGroup>
 			</Col>
 			<Col sm="9">
-			{this.state.selectedStationConfig.id ?
+			{this.state.selectedStationConfig.name ?
 				<div>
 				<h5>Stations</h5>
 				<div className="scroll">
@@ -195,11 +281,21 @@ class StationsConfig extends Component {
 	}
 }
 
-function select(state){
-	return {
-		data: state
-	};
+const StationsConfigData = gql `
+query StationSets{
+	stations{
+		id
+		name
+		stations {
+			name
+			cards {
+				component
+				icon
+				name
+			}
+		}
+	}
 }
-const StationsContainer = StationsConfig;
+`;
 
-export default StationsContainer;
+export default graphql(StationsConfigData, {})(withApollo(StationsConfig));

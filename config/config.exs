@@ -19,11 +19,11 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+#config :absinthe,
+ # adapter: Absinthe.Adapter.Passthrough
+
 config :arc,
   bucket: "thorium-assets"
-
-config :absinthe,
-  adapter: Absinthe.Adapter.Passthrough
   
 config :ex_aws,
   access_key_id: [{:system, "AWS_ACCESS_KEY_ID"}, :instance_role],

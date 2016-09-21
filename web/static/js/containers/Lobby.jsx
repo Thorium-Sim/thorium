@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, LoadingWidget} from '../components/generic';
+import {LoadingWidget} from '../components/generic';
 import {
     Row,
     Col,
@@ -8,8 +8,15 @@ import {
     ModalHeader,
     ModalBody,
     ModalFooter,
-    ButtonGroup
+    Button,
+    ButtonGroup,
+    Nav,
+    NavItem,
+    NavLink,
+    TabContent,
+    TabPane,
 } from 'reactstrap';
+import Config from './Config.jsx';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import guid from '../helpers/guid.js';
@@ -109,13 +116,13 @@ class MissionModalView extends Component {
         </Row>
         </ModalBody>
         <ModalFooter>
-        <Button type="secondary" onClick={this.props.toggle} label="Cancel"/>
-        <Button type="primary" onClick={this.props.loadFlight.bind(this)} label="Load Flight"/>
+        <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+        <Button color="primary" onClick={this.props.loadFlight.bind(this)}>Load Flight</Button>
         </ModalFooter>
         </Modal>
         );
     }
-};
+}
 
 const MissionsData = gql `
 query Missions {
@@ -138,11 +145,20 @@ class Lobby extends Component {
             selectedMission: {},
             presences: {},
             simulatorSelect: {},
-            stationSelect: {}
+            stationSelect: {},
+            activeTab: '3'
         };
+        this.toggleTab = this.toggleTab.bind(this);
         this.toggle = this.toggle.bind(this);
     }
-    loadFlight() {
+    toggleTab(tab) {
+        if (this.state.activeTab !== tab) {
+          this.setState({
+            activeTab: tab
+        });
+      }
+  }
+  loadFlight() {
         //Use the operation channel to insert the new flight into the database.
         let mission = this.props.data.missions.filter((e) => {
             if (e.id === this.state.selectedMission.id) {
@@ -227,12 +243,31 @@ class Lobby extends Component {
         updatePresence({clientId: p, params: obj[p]});
     }
     render() {
-        debugger;
         return (
             <Container className="lobby">
             <Row>
             <h2>Lobby</h2>
-            <h3>Flights</h3>
+            <Nav tabs>
+            <NavItem>
+            <NavLink className={this.state.activeTab === '1' && 'active'} onClick={() => { this.toggleTab('1'); }} >
+            Flights
+            </NavLink>
+            </NavItem>
+            <NavItem>
+            <NavLink className={this.state.activeTab === '2' && 'active'} onClick={() => { this.toggleTab('2'); }} >
+            Clients
+            </NavLink>
+            </NavItem>
+            <NavItem>
+            <NavLink className={this.state.activeTab === '3' && 'active'} onClick={() => { this.toggleTab('3'); }} >
+            Config
+            </NavLink>
+            </NavItem>
+            </Nav>
+            <TabContent activeTab={this.state.activeTab}>
+            <TabPane tabId="1">
+            <h4>Flights
+            <Button color="success" size="sm" onClick={this.toggle}>Create Flight</Button></h4>
             {this.props.data.loading ? <h4>Loading...</h4>
                 : this.props.data.flights.map((flight, index) => {
                     return <Row key={flight.id}>
@@ -258,7 +293,8 @@ class Lobby extends Component {
                     </Row>;
                 })
             }
-
+            </TabPane>
+            <TabPane tabId="2">
             <h4>Clients</h4>
             <table className="table table-striped table-hover table-sm">
             <thead>
@@ -327,18 +363,19 @@ class Lobby extends Component {
                     })()}
                     </td>
                     <td>
-                    <Button type="primary" title="This saves the current simulator and station setting and persists it for future flights." className="btn-sm" label="Save"/>
-                    <Button type="danger" title="This removes the saved state." className="btn-sm" label="Reset"/>
+                    <Button color="primary" title="This saves the current simulator and station setting and persists it for future flights." size="sm">Save</Button>
+                    <Button color="danger" title="This removes the saved state." size="sm">Reset</Button>
                     </td>
                     </tr>
                     ))
                 : <tr></tr>}
                 </tbody>
                 </table>
-                </Row>
-                <Row>
-                <h2>Flights Manager
-                <Button type="success" label="Create Flight" onClick={this.toggle}/></h2>
+                </TabPane>
+                <TabPane tabId="3">
+                <Config />
+                </TabPane>
+                </TabContent>
                 </Row>
                 {
                     this.state.modal ?
@@ -381,11 +418,12 @@ query Sessions {
             }
         }
     }
-    }
+}
 }`;
 
 export default graphql(LobbyData, {
     options: (props) => {
-        return { pollInterval: 2000 };
+        return {};
+        //return { pollInterval: 2000 };
     },
 })(Lobby);
