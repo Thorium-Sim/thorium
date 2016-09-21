@@ -12,13 +12,41 @@ class ConfigView extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			selectedSimObject: null,
-			selectedSimulator: {},
+			selectedConfigObject: null,
 		};
 	}
-	_setSelectedSimObject(simObj) {
-		this.setState({selectedSimObject:simObj.name});
+	_setSelectedConfigObject(configObj) {
+		this.setState({selectedConfigObject:configObj});
 	}
+	render(){
+		const ConfigComponent = (this.state.selectedConfigObject ? Configs[`${this.state.selectedConfigObject}Config`] : "div") || "div";
+		return (
+			<Container className="ConfigView" fluid>
+			<Row>
+			{this.state.selectedConfigObject ?
+				<Col sm="12">
+				<a href="#back" onClick={this._setSelectedConfigObject.bind(this, null)}>Go Back</a>
+				<ConfigComponent {...this.props} />
+				</Col>
+				:
+				<Col sm="3">
+				<h4>Configurations</h4>
+				<Card className="scroll">
+				<li className="list-group-item" onClick={this._setSelectedConfigObject.bind(this, 'Simulator')}>Template Simulators</li>
+				<li className="list-group-item" onClick={this._setSelectedConfigObject.bind(this, 'Stations')}>Station Sets</li>
+				<li className="list-group-item" onClick={this._setSelectedConfigObject.bind(this, 'Missions')}>Missions</li>
+				</Card>
+				</Col>
+			}
+			</Row>
+			</Container>
+			);
+	}
+}
+
+export default ConfigView;
+
+/*
 	_setSelectedSimulator(sim) {
 		this.setState({selectedSimulator:sim});
 	}
@@ -26,12 +54,12 @@ class ConfigView extends Component {
 		let name = prompt('What is the simulator\'s name?');
 		if (name){
 			let obj = {
-				id: uuid(),
 				name: name,
 				layout: 'LayoutDefault',
-				alertLevel: 5
+				alertLevel: 5,
+				template: true
 			};
-			operationChannel.push("insert",{table:"simulators",data:obj});
+
 		}
 	}
 	_deleteSimulator(){
@@ -46,7 +74,7 @@ class ConfigView extends Component {
 			}
 		}
 	}
-	render(){
+
 		let simObjs = [
 		{
 			name: "Simulator",
@@ -73,12 +101,7 @@ class ConfigView extends Component {
 			name: "Crew",
 		},
 		];
-		const ConfigComponent = (this.state.selectedSimObject ? Configs[`${this.state.selectedSimObject}Config`] : "div") || "div";
-		return (
-			<Container className="ConfigView" fluid>
-			<h2>Simulator Config</h2>
-			<Row>
-			<Col sm="2">
+<Col sm="2">
 			<h4>Simulators</h4>
 			<Card className="scroll">
 
@@ -117,20 +140,4 @@ class ConfigView extends Component {
 				: <div />
 			}
 			</Col>
-			</Row>
-			</Container>
-			);
-	}
-}
-
-
-const ConfigData = gql `query simulators {
-	simulators (template: "true"){
-		id,
-		name,
-		alertLevel,
-		layout
-	},
-}`;
-
-export default graphql(ConfigData)(ConfigView);;
+			*/

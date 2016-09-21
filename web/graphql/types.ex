@@ -94,6 +94,24 @@ defmodule Thorium.Schema.Types do
     end
   end
 
+  input_object :stationsetinput do
+    field :name, :string
+    field :stations, list_of(:stationinput)
+  end
+
+  @desc "The station input object. Allows you to input an array of stations"
+  input_object :stationinput do
+    field :name, :string
+    field :cards, list_of(:cardinput)
+  end
+
+  @desc "The card input object. Allows you to input an array of cards"
+  input_object :cardinput do
+    field :name, :string
+    field :component, :string
+    field :icon, :string
+  end
+
   @desc "The station object. Specific to a simulator."
   object :station do
     field :name, :string

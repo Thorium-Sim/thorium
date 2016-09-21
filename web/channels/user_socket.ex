@@ -33,8 +33,6 @@ defmodule Thorium.UserSocket do
   end
 
   def connect(_params, socket) do
-    IO.inspect "Connected:"
-    IO.inspect _params
     {:ok, socket}
   end
 

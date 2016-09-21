@@ -12,6 +12,12 @@ defmodule DB do
     data |> strip_wrapper  
   end
 
+
+  def handle_graphql(data) do
+    res = data |> convert_to_symbol_map
+    {:ok, res}
+  end
+
   defp strip_wrapper(%{data: nil}), do: %{}
   defp strip_wrapper(%{data: doc}), do: doc
   defp strip_wrapper(_anything), do: %{}
