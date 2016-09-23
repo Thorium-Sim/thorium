@@ -70,12 +70,32 @@ defmodule Thorium.Schema do
       arg :station, non_null(:stationinput)
       resolve &Thorium.StationResolver.addStation/2
     end
-    @desc "Remove a statin from a station set"
+    @desc "Remove a station from a station set"
     field :removestation, type: :stationSet do
       @desc "The id of the station set"
       arg :id, non_null(:string)
       arg :station, non_null(:string)
       resolve &Thorium.StationResolver.removeStation/2
+    end
+    @desc "Add a card to a station in a station set"
+    field :addcard, type: :stationSet do
+      @desc "The id of the station set"
+      arg :id, non_null(:string)
+      @desc "The name of the station"
+      arg :name, non_null(:string)
+      @desc "The card object"
+      arg :card, type: non_null(:cardinput)
+      resolve &Thorium.StationResolver.addCard/2
+    end
+    @desc "Remove a card from a station in a station set"
+    field :addcard, type: :stationSet do
+      @desc "The id of the station set"
+      arg :id, non_null(:string)
+      @desc "The name of the station"
+      arg :name, non_null(:string)
+      @desc "The card name"
+      arg :cardname, type: non_null(:string)
+      resolve &Thorium.StationResolver.removeCard/2
     end
     @desc "Edit a station set"
     field :editstation, type: list_of(:stationSet) do

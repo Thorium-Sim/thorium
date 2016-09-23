@@ -36,7 +36,8 @@ defmodule Thorium.StationResolver do
     %{data: stationSet} = table("stations")
     |> get(id)
     |>  DB.run()
-    stations = stationSet["stations"] ++ [station]
+    stationKeyMap = for {key, val} <- station, into: %{}, do: {Atom.to_string(key), val}
+    stations = stationSet["stations"] ++ [stationKeyMap]
     updatedStationSet = Map.put(stationSet, "stations", stations)
     table("stations")
     |> get(id)
@@ -56,6 +57,17 @@ defmodule Thorium.StationResolver do
     |> update(updatedStationSet)
     |> DB.run()
     updatedStationSet |> DB.handle_graphql
+  end
+
+  def addCard(%{id: id, name: name, card: card}, _info) do
+    IO.inspect id
+    IO.inspect name
+    IO.inspect card
+    {:ok, %{}}
+  end
+
+  def removeCard(%{id: id, name: name, card: card}, _info) do
+    
   end
 
   def editStation(args, _info) do
