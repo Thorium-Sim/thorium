@@ -36,7 +36,8 @@ defmodule Thorium.StationResolver do
     %{data: stationSet} = table("stations")
     |> get(id)
     |>  DB.run()
-    stations = stationSet["stations"] ++ [station]
+    stationKeyMap = for {key, val} <- station, into: %{}, do: {Atom.to_string(key), val}
+    stations = stationSet["stations"] ++ [stationKeyMap]
     updatedStationSet = Map.put(stationSet, "stations", stations)
     table("stations")
     |> get(id)
@@ -55,6 +56,43 @@ defmodule Thorium.StationResolver do
     |> get(id)
     |> update(updatedStationSet)
     |> DB.run()
+    updatedStationSet |> DB.handle_graphql
+  end
+  def addCard(%{id: id, name: name, card: card}, _info) do
+    %{data: stationSet} = table("stations")
+    |> get(id)
+    |>  DB.run()
+    cardKeyMap = for {key, val} <- card, into: %{}, do: {Atom.to_string(key), val}
+    stations = Enum.map(stationSet["stations"], fn(stationIt) ->
+      case stationIt["name"] do
+        name -> Map.put(stationIt, "cards", stationIt["cards"] ++ [cardKeyMap])
+        _ -> stationIt
+      end
+    end)
+    updatedStationSet = Map.put(stationSet, "stations", stations)
+    table("stations")
+    |> get(id)
+    |> update(updatedStationSet)
+    |> DB.run()
+    updatedStationSet |> DB.handle_graphql
+  end
+
+  def removeCard(%{id: id, name: name, cardname: card}, _info) do
+    %{data: stationSet} = table("stations")
+    |> get(id)
+    |>  DB.run()
+    stations = Enum.map(stationSet["stations"], fn(stationIt) ->
+      case stationIt["name"] do
+        name -> Map.put(stationIt, "cards", Enum.filter(stationIt["cards"], fn(cardIt) -> cardIt["name"] != card end))
+        _ -> stationIt
+      end
+    end)
+    updatedStationSet = Map.put(stationSet, "stations", stations)
+    table("stations")
+    |> get(id)
+    |> update(updatedStationSet)
+    |> DB.run()
+    IO.inspect updatedStationSet |> DB.handle_graphql
     updatedStationSet |> DB.handle_graphql
   end
 
