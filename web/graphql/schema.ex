@@ -88,7 +88,7 @@ defmodule Thorium.Schema do
       resolve &Thorium.StationResolver.addCard/2
     end
     @desc "Remove a card from a station in a station set"
-    field :addcard, type: :stationSet do
+    field :removecard, type: :stationSet do
       @desc "The id of the station set"
       arg :id, non_null(:string)
       @desc "The name of the station"

@@ -187,18 +187,15 @@ class StationsConfig extends Component {
 				icon: null,
 			};
 			let stationSet = Object.assign({}, this.state.selectedStationConfig);
-			station.cards.push(card);
 			let obj = {
 				id: stationSet.id,
 				name: station.name,
 				card: card
 			};
-			delete stationSet.id;
-			stationSet.stations[stationIndex] = station;
 			this.props.client.mutate({
 				mutation: gql`
 				mutation AddCard($id: String!, $name: String!, $card: Cardinput!) {
-					addcard(id: $id, station: $station, card: $card) {
+					addcard(id: $id, name: $name, card: $card) {
 						id
 						name
 						stations {
@@ -234,22 +231,45 @@ class StationsConfig extends Component {
 	_removeCard(card,station){
 		if (confirm("Are you sure you want to delete that card?")){
 			let stationSet = Object.assign({}, this.state.selectedStationConfig);
-			station.cards = station.cards.filter((e) => {
-				if (card.name === e.name){
-					return false;
+			let obj = {
+				id: stationSet.id,
+				name: station.name,
+				card: card.name
+			};
+			this.props.client.mutate({
+				mutation: gql`
+				mutation RemoveCard($id: String!, $name: String!, $card: String!) {
+					removecard(id: $id, name: $name, cardname: $card) {
+						id
+						name
+						stations {
+							name
+							cards {
+								name
+								component
+								icon
+							}
+						}
+					}
 				}
-				return true;
-			});
-			stationSet.stations = stationSet.stations.map((e) => {
-				if (station.name === e.name){
-					return station;
+				`,
+				variables: obj,
+				updateQueries: {
+					StationSets:(previousQueryResults, {mutationResult, queryVariables}) => {
+						let returnVal = Object.assign({}, previousQueryResults);
+						this.setState({
+							selectedStationConfig: mutationResult.data.removecard
+						});
+						returnVal.stations = returnVal.stations.map((station) => {
+							if (station.id === mutationResult.data.removecard.id){
+								return mutationResult.data.removecard;
+							}
+							return station;
+						});
+						return returnVal;
+					}
 				}
-				return e;
 			});
-			this.setState({
-				selectedStationConfig:stationSet,
-			});
-			this.props.operationChannel.push("update",{table:"stations",filter:obj,data:stationSet});
 		}
 	}
 	render(){
