@@ -9,7 +9,6 @@ defmodule Thorium.Schema do
       arg :id, :string
       arg :token, :string
       arg :email, :string
-
       resolve &Thorium.UserResolver.get/2
     end
     field :sessions, list_of(:session) do
@@ -45,8 +44,8 @@ defmodule Thorium.Schema do
     end
 
     @desc "A super simple mutation"
-    field :simplemutate, type: :string do
-      arg :return, non_null(:string)
+    field :simplemutate, type: :object do
+      arg :return, non_null(:object)
       resolve fn args, _info ->
         IO.inspect args
         {:ok, args.return} 
@@ -102,6 +101,15 @@ defmodule Thorium.Schema do
       arg :name, non_null(:string)
       arg :stations, list_of(:stationsetinput)
       resolve &Thorium.StationResolver.editStation/2
+    end
+    @desc "Create a new simulator"
+    field :addsimulator, type: :simulator do
+      arg :name, non_null(:string)
+      arg :layout, :string
+      arg :template, :boolean
+      arg :alertlevel, :string
+      arg :timeline, list_of(:timelinestepinput)
+      resolve &Thorium.SimulatorResolver.create/2
     end
   end
 
