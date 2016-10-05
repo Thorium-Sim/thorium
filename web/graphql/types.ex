@@ -73,7 +73,7 @@ defmodule Thorium.Schema.Types do
 		field :name, :string
 		field :date, :float
 		field :simulators, list_of(:simulator) do
-			resolve &Thorium.SimulatorResolver.get/2
+			resolve &Thorium.SimulatorResolver.getSim/2
     end
   end
 

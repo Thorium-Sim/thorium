@@ -6,6 +6,9 @@ import FontAwesome from 'react-fontawesome';
 import gql from 'graphql-tag';
 import update from 'react-addons-update';
 import { graphql, withApollo } from 'react-apollo';
+import LayoutList from '../layouts';
+
+const Layouts = Object.keys(LayoutList);
 
 class SimulatorConfig extends Component {
 	constructor(params){
@@ -48,7 +51,7 @@ class SimulatorConfig extends Component {
 				`,
 				variables: obj,
 				updateQueries: {
-					StationSets:(previousQueryResults, {mutationResult, queryVariables}) => {
+					Simulators:(previousQueryResults, {mutationResult}) => {
 						previousQueryResults.simulators.push(mutationResult.data.addsimulator);
 						return previousQueryResults;
 					}
@@ -57,12 +60,110 @@ class SimulatorConfig extends Component {
 		}
 	}
 	_removeSimulator(){
-
+		let station = this.state.selectedSimulator;
+		if (station){
+			if (confirm("Are you sure you want to delete that simulator?")){
+				let obj = {
+					id: station,
+				};
+				this.props.client.mutate({
+					mutation: gql`
+					mutation RemoveSimulator($id: String!) {
+						removesimulator(id: $id) {
+							id
+						}
+					}
+					`,
+					variables: obj,
+					updateQueries: {
+						Simulators:(previousQueryResults, {mutationResult}) => {
+							previousQueryResults.simulators = previousQueryResults.simulators.filter((stationIt) => {
+								return stationIt.id !== mutationResult.data.removesimulator.id;
+							});
+							return previousQueryResults;
+						}
+					}
+				});
+			}
+		}
 	}
 	_showImportModal(){
 
 	}
+	_handleChange(e){
+		let mutation;
+		let obj = {
+			id: this.state.selectedSimulator
+		};
+		switch (e.target.name){
+			case 'name':
+			mutation = gql`
+			mutation UpdateName($id: String!, $name: String!) {
+				simupdatename(id: $id, name: $name) {
+					id
+					name
+				}
+			}
+			`;
+			obj.name = e.target.value;
+			break;
+			case 'layout':
+			mutation = gql`
+			mutation UpdateLayout($id: String!, $layout: String!) {
+				simupdatelayout(id: $id, layout: $layout) {
+					id
+					layout
+				}
+			}
+			`;
+			obj.layout = e.target.value;
+			break;
+			case 'alertLevel':
+			mutation = gql`
+			mutation UpdateAlertLevel($id: String!, $alertlevel: String!) {
+				simupdatealertlevel(id: $id, alertlevel: $alertlevel) {
+					id
+					alertlevel
+				}
+			}
+			`;
+			obj.alertlevel = e.target.value;
+			break;
+			default:
+			break;
+		}
+		this.props.client.mutate({
+			mutation: mutation,
+			variables: obj,
+			updateQueries: {
+				Simulators:(previousQueryResults, {mutationResult}) => {
+					let returnData = Object.assign({}, previousQueryResults);
+					Object.keys(mutationResult.data).forEach((mut) => {
+						const data = mutationResult.data[mut];
+						returnData.simulators = returnData.simulators.map((simulator) => {
+							if (simulator.id === data.id){
+								Object.keys(data).forEach((key) => {
+									simulator[key] = data[key];
+								});
+							}
+							return simulator;
+						});
+					});
+					return returnData;
+				}
+			}
+		});
+	}
 	render(){
+		let selectedSimulator;
+		if (this.state.selectedSimulator){
+			selectedSimulator = this.props.data.simulators.reduce((prev, next) => {
+				if (next.id === this.state.selectedSimulator){
+					return next;
+				}
+				return prev;
+			},{});
+		}
 		return (
 			<Row>
 			<Col sm="3">
@@ -79,7 +180,36 @@ class SimulatorConfig extends Component {
 			</ButtonGroup>
 			</Col>
 			<Col sm="9">
-			
+			{
+				this.state.selectedSimulator && <div>
+				<small>These values represent the properties of the simulator itself.</small>
+				<form>
+				<fieldset className="form-group">
+				<label>Name</label>
+				<input onChange={this._handleChange.bind(this)} defaultValue={selectedSimulator.name} type="text" name="name" className="form-control" placeholder="USS Voyager" />
+				</fieldset>
+				<fieldset className="form-group">
+				<label>Layout</label>
+				<select onChange={this._handleChange.bind(this)} defaultValue={selectedSimulator.layout} name="layout" className="c-select form-control">
+				{Layouts.map((e) => {
+					return <option key={e} value={e}>{e}</option>;
+				})}
+				</select>
+				</fieldset>
+				<fieldset className="form-group">
+				<label>Alert Level</label>
+				<select onChange={this._handleChange.bind(this)} defaultValue={selectedSimulator.alertlevel} name="alertLevel" className="c-select form-control">
+				<option value="5">5</option>
+				<option value="4">4</option>
+				<option value="3">3</option>
+				<option value="2">2</option>
+				<option value="2">1</option>
+				<option value="p">P</option>
+				</select>
+				</fieldset>
+				</form>
+				</div>
+			}
 			</Col>
 			</Row>
 			);
@@ -90,7 +220,7 @@ query Simulators{
 	simulators(template: true){
 		id
 		name
-		alertLevel
+		alertlevel
 		layout
 		template
 	}

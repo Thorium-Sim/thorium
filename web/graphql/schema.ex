@@ -19,7 +19,7 @@ defmodule Thorium.Schema do
     end
     field :simulators, list_of(:simulator) do
       arg :template, :boolean
-      resolve &Thorium.SimulatorResolver.get/2
+      resolve &Thorium.SimulatorResolver.getSim/2
     end
     field :stations, list_of(:stationSet) do
       resolve &Thorium.StationResolver.getStation/2
@@ -110,6 +110,29 @@ defmodule Thorium.Schema do
       arg :alertlevel, :string
       arg :timeline, list_of(:timelinestepinput)
       resolve &Thorium.SimulatorResolver.create/2
+    end
+    @desc "Remove a template simulator"
+    field :removesimulator, type: :simulator do
+      arg :id, non_null(:string)
+      resolve &Thorium.SimulatorResolver.delete/2
+    end
+    @desc "Change the name of a simulator"
+    field :simupdatename, type: :simulator do
+      arg :id, non_null(:string)
+      arg :name, non_null(:string)
+      resolve &Thorium.SimulatorResolver.updateSim/2
+    end
+    @desc "Change the alert level of a simulator"
+    field :simupdatealertlevel, type: :simulator do
+      arg :id, non_null(:string)
+      arg :alertlevel, non_null(:string)
+      resolve &Thorium.SimulatorResolver.updateSim/2
+    end
+    @desc "Change the layout of a simulator"
+    field :simupdatelayout, type: :simulator do
+      arg :id, non_null(:string)
+      arg :layout, non_null(:string)
+      resolve &Thorium.SimulatorResolver.updateSim/2
     end
   end
 
