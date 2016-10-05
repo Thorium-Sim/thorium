@@ -1,6 +1,13 @@
 import RethinkDB.Query, only: [table: 1, filter: 2, get_all: 3, get: 2]
 defmodule Thorium.Schema.Types do
 	use Absinthe.Schema.Notation
+
+  @desc "A generic object scalar"
+  scalar :object, description: "JSON Object" do
+    parse &({:ok, &1})
+    serialize &(&1)
+  end
+
 	@desc "Permissions assigned to a user"
 	object :role do
 		field :id, :id
@@ -66,21 +73,35 @@ defmodule Thorium.Schema.Types do
 		field :name, :string
 		field :date, :float
 		field :simulators, list_of(:simulator) do
-			resolve &Thorium.SimulatorResolver.get/2
+			resolve &Thorium.SimulatorResolver.getSim/2
     end
   end
 
   @desc "A simulator is a single entity in the flight universe. It could be comprised of a single set, multiple sets, or even several remote computers."  
   object :simulator do
     field :id, :id
-    field :flightId, :string
     field :name, :string
-    field :alertLevel, :string
+    field :alertlevel, :string
     field :layout, :string
     field :template, :boolean
-    field :stationSet, :stationSet do
-      resolve &Thorium.StationResolver.getStation/2
-    end
+    field :timeline, list_of(:timelinestep)
+  end
+
+  @desc "A step in a mission or init timeline"
+  object :timelinestep do
+    field :name, :string
+    field :description, :string
+    field :order, :integer
+    field :timelineitems, list_of(:timelineitem)  
+  end
+
+  @desc "A single operation in a step of a timeline"
+  object :timelineitem do
+    field :name, :string
+    field :type, :string
+    field :mutation, :string
+    field :args, :object
+    field :delay, :integer
   end
 
   @desc "A set of stations."
@@ -92,6 +113,13 @@ defmodule Thorium.Schema.Types do
         {:ok, Enum.map(source.stations, fn(val) -> for {key, val} <- val, into: %{}, do: {String.to_atom(key), val} end)} 
       end
     end
+  end
+
+  @desc "An input for a timeline step"
+  input_object :timelinestepinput do
+    field :name, :string
+    field :description, :string
+    field :order, :integer
   end
 
   input_object :stationsetinput do

@@ -9,7 +9,6 @@ defmodule Thorium.Schema do
       arg :id, :string
       arg :token, :string
       arg :email, :string
-
       resolve &Thorium.UserResolver.get/2
     end
     field :sessions, list_of(:session) do
@@ -20,7 +19,7 @@ defmodule Thorium.Schema do
     end
     field :simulators, list_of(:simulator) do
       arg :template, :boolean
-      resolve &Thorium.SimulatorResolver.get/2
+      resolve &Thorium.SimulatorResolver.getSim/2
     end
     field :stations, list_of(:stationSet) do
       resolve &Thorium.StationResolver.getStation/2
@@ -45,8 +44,8 @@ defmodule Thorium.Schema do
     end
 
     @desc "A super simple mutation"
-    field :simplemutate, type: :string do
-      arg :return, non_null(:string)
+    field :simplemutate, type: :object do
+      arg :return, non_null(:object)
       resolve fn args, _info ->
         IO.inspect args
         {:ok, args.return} 
@@ -102,6 +101,38 @@ defmodule Thorium.Schema do
       arg :name, non_null(:string)
       arg :stations, list_of(:stationsetinput)
       resolve &Thorium.StationResolver.editStation/2
+    end
+    @desc "Create a new simulator"
+    field :addsimulator, type: :simulator do
+      arg :name, non_null(:string)
+      arg :layout, :string
+      arg :template, :boolean
+      arg :alertlevel, :string
+      arg :timeline, list_of(:timelinestepinput)
+      resolve &Thorium.SimulatorResolver.create/2
+    end
+    @desc "Remove a template simulator"
+    field :removesimulator, type: :simulator do
+      arg :id, non_null(:string)
+      resolve &Thorium.SimulatorResolver.delete/2
+    end
+    @desc "Change the name of a simulator"
+    field :simupdatename, type: :simulator do
+      arg :id, non_null(:string)
+      arg :name, non_null(:string)
+      resolve &Thorium.SimulatorResolver.updateSim/2
+    end
+    @desc "Change the alert level of a simulator"
+    field :simupdatealertlevel, type: :simulator do
+      arg :id, non_null(:string)
+      arg :alertlevel, non_null(:string)
+      resolve &Thorium.SimulatorResolver.updateSim/2
+    end
+    @desc "Change the layout of a simulator"
+    field :simupdatelayout, type: :simulator do
+      arg :id, non_null(:string)
+      arg :layout, non_null(:string)
+      resolve &Thorium.SimulatorResolver.updateSim/2
     end
   end
 
