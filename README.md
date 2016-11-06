@@ -31,7 +31,7 @@ and hit the play button (cmd-return), then you should get this on the right side
 ```json
 {
   "data": {
-    "testString": "It works!"
+    "testString": "It works! =D"
   }
 }
 ```  
