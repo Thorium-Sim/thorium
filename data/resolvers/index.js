@@ -1,11 +1,21 @@
-import { simulators, clients } from '../../app.js';
-import Simulator from '../classes/simulator.js';
-import Client from '../classes/client.js';
+import { simulators, clients, systems } from '../../app.js';
+import Simulator from '../classes/simulator';
+import Client from '../classes/client';
+import Shield from '../classes/shield';
 import { es } from '../../store.js';
 import { pubsub } from '../subscriptionManager.js';
+
+systems.push(new Shield({
+  simulatorId: 'test',
+  type: 'Shield',
+  position: 'full',
+  frequency: 257.4,
+  state: false,
+  integrity: 1,
+}));
+
 const queryMap = {
   clients: (root, args, context) => {
-    console.log('Clients Query', clients);
     return clients;
   },
   simulators: (root, args, context, info) => {
@@ -20,30 +30,28 @@ const queryMap = {
   stations() {
     return [];
   },
+  shields(root, { simulatorId }) {
+    return systems.filter(system => {
+      return system.type === 'Shield' && system.simulatorId === simulatorId;
+    });
+  },
 };
 
 const mutationMap = {
   clientConnect: (root, args, context) => {
     // Skip the event stream for now - just connect the client.
-    console.log('Clients Old', clients);
-    Promise.resolve((() => {
-      if (!clients.find((client) => client.id === args.id)) {
-        clients.push(new Client(args));
-      }
-      console.log('Clients New', clients);
-    })()).then(() => {
+    const newClient = new Client(args);
+    if (!clients.find((client) => client.id === args.id)) {
+      clients.push(newClient);
       pubsub.publish('clientChanged', clients);
-    });
+    }
     return '';
   },
   clientDisconnect: (root, args, context) => {
     // Skip the event stream for now - just connect the client.
-    console.log('ArgsD', args);
-    console.log('Clients Old', clients);
     const index = clients.findIndex((client) => client.id === args.id);
     clients.splice(index, 1);
-    console.log('Clients New', clients);
-    pubsub.publish('clientChanged', args.id);
+    pubsub.publish('clientChanged', clients);
     return '';
   },
   addSimulator: (root, args, context, info) => {
@@ -60,11 +68,45 @@ const mutationMap = {
     return [];
     // return simulators;
   },
+  shieldRaised(root, { id }) {
+    let outerIndex = 0;
+    systems.forEach((system, index) => {
+      if (system.id === id) {
+        outerIndex = index;
+      }
+    });
+    systems[outerIndex].state = true;
+    pubsub.publish('shieldRaised', systems[outerIndex]);
+    return '';
+  },
+  shieldLowered(root, { id }) {
+    let outerIndex = 0;
+    systems.forEach((system, index) => {
+      if (system.id === id) {
+        outerIndex = index;
+      }
+    });
+    systems[outerIndex].state = false;
+    pubsub.publish('shieldLowered', systems[outerIndex]);
+    return '';
+  },
+  shieldIntegritySet(root, { id, integrity }){
+    return '';
+  },
+  shieldFrequencySet(root, { id, frequency }){
+    return '';
+  },
 };
 
 const subscriptionMap = {
   simulator: () => {
     return 'Simulator Update';
+  },
+  clientConnect(rootValue) {
+    return rootValue;
+  },
+  clientDisconnect(rootValue) {
+    return rootValue;
   },
   clientChanged: () => {
     console.log('Client Subscription', clients);
@@ -72,6 +114,12 @@ const subscriptionMap = {
   },
   postUpvoted: () => {
     return 'Post Upvoted';
+  },
+  shieldRaised(rootValue) {
+    return rootValue;
+  },
+  shieldLowered(rootValue) {
+    return rootValue;
   },
 };
 

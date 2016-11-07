@@ -1,3 +1,6 @@
+export power from './power';
+export shields from './shields';
+
 export const role = `
 type role {
   id: ID
