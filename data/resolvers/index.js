@@ -2,6 +2,7 @@ import { simulators, clients, systems } from '../../app.js';
 import Simulator from '../classes/simulator';
 import Client from '../classes/client';
 import Shield from '../classes/shield';
+import Engine from '../classes/engine';
 import { es } from '../../store.js';
 import { pubsub } from '../subscriptionManager.js';
 
@@ -12,6 +13,26 @@ systems.push(new Shield({
   frequency: 257.4,
   state: false,
   integrity: 1,
+}));
+
+systems.push(new Engine({
+  simulatorId: 'test',
+  name: 'Impulse',
+  type: 'Engine',
+  speeds: [{ text: '1/4 Impulse', number: 0.25 }, { text: '1/2 Impulse', number: 0.5 }, { text: '3/4 Impulse', number: 0.75 }, { text: 'Full Impulse', number: 1 }, { text: 'Destructive Impulse', number: 1.25 }],
+  speed: -1,
+  heat: 0,
+  coolant: 0,
+}));
+
+systems.push(new Engine({
+  simulatorId: 'test',
+  name: 'Warp',
+  type: 'Engine',
+  speeds: [{ text: 'Warp 1', number: 1 }, { text: 'Warp 2', number: 2 }, { text: 'Warp 3', number: 3 }, { text: 'Warp 4', number: 4 }, { text: 'Warp 5', number: 5 }, { text: 'Warp 6', number: 6 }, { text: 'Warp 7', number: 7 }, { text: 'Warp 8', number: 8 }, { text: 'Warp 9', number: 9 }, { text: 'Destructive Warp', number: 9.54 }],
+  speed: -1,
+  heat: 0,
+  coolant: 0,
 }));
 
 const queryMap = {
@@ -33,6 +54,11 @@ const queryMap = {
   shields(root, { simulatorId }) {
     return systems.filter(system => {
       return system.type === 'Shield' && system.simulatorId === simulatorId;
+    });
+  },
+  engines(root, { simulatorId }) {
+    return systems.filter(system => {
+      return system.type === 'Engine' && system.simulatorId === simulatorId;
     });
   },
 };
