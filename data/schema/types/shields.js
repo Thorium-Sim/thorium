@@ -1,13 +1,13 @@
 export default `
 type Shields {
   id: ID
-  simulatorID: ID
+  simulatorId: ID
   type: String
-  power: Int
-  powerLevels: [Int]
   position: String
+  power: Power
   frequency: Float
   state: Boolean 
   integrity: Float
+  damage: Float
 }
 `;
