@@ -4,7 +4,6 @@ import { print } from 'graphql-tag/printer';
 export default function addGraphQLSubscriptions(networkInterface, wsClient) {
   return Object.assign(networkInterface, {
     subscribe(request, handler) {
-      console.log(request, handler.toString());
       return wsClient.subscribe({
         query: print(request.query),
         variables: request.variables,

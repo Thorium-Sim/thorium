@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import { Button, Row, Col } from '../../generic';
+import { Button, Row, Col } from 'reactstrap';
+import gql from 'graphql-tag';
+import { graphql, compose } from 'react-apollo';
 import './style.scss';
 
 const HeatBar = (props) => {
@@ -11,8 +13,57 @@ const HeatBar = (props) => {
 		</div>);
 };
 
-class EngineControlContent extends Component {
-	componentDidMount() {
+const SPEEDCHANGE_SUB = gql`
+subscription SpeedChanged{
+	speedChange{
+		id
+		speed
+	}
+}`;
+
+const HEATCHANGE_SUB = gql`
+subscription HeatChanged{
+	heatChange{
+		id
+		heat
+	}
+}`;
+class EngineControl extends Component {
+	constructor(props){
+		super(props);
+		this.setSpeedSubscription = null;
+		this.heatChangeSubscription = null;
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (!this.setSpeedSubscription && !nextProps.data.loading) {
+			this.setSpeedSubscription = nextProps.data.subscribeToMore({
+				document: SPEEDCHANGE_SUB,
+				updateQuery: (previousResult, {subscriptionData}) => {
+					previousResult.engines = previousResult.engines.map(engine => {
+						if (engine.id === subscriptionData.data.speedChange.id){
+							engine.speed = subscriptionData.data.speedChange.speed
+						} 
+						return engine;
+					})
+					return previousResult;
+				},
+			});
+		}
+		if (!this.heatChangeSubscription && !nextProps.data.loading) {
+			this.heatChangeSubscription = nextProps.data.subscribeToMore({
+				document: HEATCHANGE_SUB,
+				updateQuery: (previousResult, {subscriptionData}) => {
+					previousResult.engines = previousResult.engines.map(engine => {
+						if (engine.id === subscriptionData.data.heatChange.id){
+							engine.heat = subscriptionData.data.heatChange.heat
+						} 
+						return engine;
+					})
+					return previousResult;
+				},
+			});
+		}
 	}
 	speedBarStyle(array,speed){
 		let width = speed / array.length * 100;
@@ -21,24 +72,25 @@ class EngineControlContent extends Component {
 		})
 	}
 	setSpeed(engine,speed,engines,index){
-		let obj = {speed:speed + 1};
-		this.props.operationChannel.push("update",{table:"systems",filter:{simulatorId:this.props.params.simulatorId,name:engine.name},data:obj});
+		this.props.setSpeed({id: engine.id, speed:speed + 1, on: true})
 		if (index >= 1){
 			//More than one engine, update the previous;
 			for (let i = 0; i < index; i++){
-				let newObj = {speed: engines[i].speeds.length};
 				let newEngine = engines[i];
-				this.props.operationChannel.push("update",{table:"systems",filter:{simulatorId:this.props.params.simulatorId,name:newEngine.name},data:newObj});
+				this.props.setSpeed({id: newEngine.id, speed:engines[i].speeds.length, on: false})
 			}
 		}
 		if (index < engines.length - 1){
 			//More than one engine, update the next ones to be zero
 			for (let i = index + 1; i <= engines.length - 1; i++){
-				let newObj = {speed: -1};
-				let newEngine = engines[i];
-				this.props.operationChannel.push("update",{table:"systems",filter:{simulatorId:this.props.params.simulatorId,name:newEngine.name},data:newObj});
+				this.props.setSpeed({id: engines[i].id, speed:-1, on: false})
 			}
 		}
+	}
+	fullStop(){
+		this.props.data.engines.forEach((engine) => {
+			this.props.setSpeed({id: engine.id, speed: -1, on: false});
+		});
 	}
 	render(){
 		const engines = this.props.data.engines || [];
@@ -68,6 +120,10 @@ class EngineControlContent extends Component {
 				});
 			})()}
 			</Col>
+			<Col className="col-sm-4 offset-sm-4">
+			<Button color="warning" block onClick={this.fullStop.bind(this)}>Full Stop</Button>
+			</Col>
+
 			</Row>
 			<Row>
 			<Col className="col-sm-12">
@@ -81,7 +137,7 @@ class EngineControlContent extends Component {
 							if (typeof speed === "object"){
 								speedWord = speed.text;
 							}
-							return <button class="btn btn-primary speedBtn">{speedWord}</button>;
+							return <Button color="primary" className="speedBtn">{speedWord}</Button>;
 						})}
 						</Col>
 						<Col className="col-sm-2">
@@ -107,7 +163,7 @@ class EngineControlContent extends Component {
 							if (typeof speed === "object"){
 								speedWord = speed.text;
 							}
-							return <Button type="primary" className="btn-block speedBtn" onClick={() => {this.setSpeed(engines[0],speedIndex,engines,0);}} label={speedWord} />;
+							return <Button key={`speed-${speedIndex}`} color="primary" block className="speedBtn" onClick={() => {this.setSpeed(engines[0],speedIndex,engines,0);}}>{speedWord}</Button>;
 						})}
 						</Col>
 						<Col className="col-sm-2">
@@ -135,7 +191,7 @@ class EngineControlContent extends Component {
 							if (typeof speed === "object"){
 								speedWord = speed.text;
 							}
-							return <Button type="primary" className="btn-block speedBtn" onClick={() => {this.setSpeed(engines[1],speedIndex,engines,1);}} label={speedWord} />;
+							return <Button key={`speed-${speedIndex}`} color="primary" block className="speedBtn" onClick={() => {this.setSpeed(engines[1],speedIndex,engines,1);}}>{speedWord}</Button>;
 						})}
 						</Col>
 						</div>
@@ -149,6 +205,43 @@ class EngineControlContent extends Component {
 	}
 }
 
-const EngineControl = EngineControlContent;
+const ENGINE_QUERY = gql`
+query getEngines($simulatorId: ID!){
+	engines(simulatorId: $simulatorId) {
+		id,
+		name
+		speeds {
+			text
+			number
+		}
+		heat
+		coolant
+		speed
+	}
+}
+`;
 
-export default EngineControl;
+const SET_SPEED = gql`
+mutation setSpeed($id: ID!, $speed: Int!, $on: Boolean){
+	setSpeed(id: $id, speed: $speed, on: $on)
+}
+`;
+export default compose(
+	graphql(ENGINE_QUERY, {
+		options: (props) => {console.log('PROPS', props); return ({ variables: { simulatorId: 'test' } })},
+	}),
+	graphql(SET_SPEED, {name: 'setSpeed',
+		props: ({setSpeed}) => ({
+			setSpeed: (props) => setSpeed({
+				variables: Object.assign(props)
+			})
+		})
+  })/*,
+  graphql(LOWER_SHIELDS, {name: 'lowerShields',
+    props: ({lowerShields}) => ({
+      lowerShields: (props) => lowerShields({
+        variables: Object.assign(props)
+      })
+    })
+  }),*/
+  )(EngineControl);

@@ -3,10 +3,6 @@ import {
     Row,
     Col,
     Container,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
     Button,
     Nav,
     NavItem,
@@ -18,9 +14,11 @@ import Config from './Config.jsx';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import guid from '../helpers/guid.js';
+import MissionModal from './MissionModal';
+
 import './style.scss';
 
-const SUBSCRIPTION_QUERY = gql`
+const CLIENT_CHANGE_QUERY = gql`
 subscription onClientChange{
     clientChanged {
         id
@@ -31,121 +29,6 @@ subscription onClientChange{
 }
 `;
 
-class MissionModalView extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedMission: {},
-            simulatorSelect: {},
-            stationSelect: {}
-        };
-    }
-    selectMission(mission) {
-        if (this.state.selectedMission.id === mission.id) {
-            this.setState({selectedMission: undefined});
-        } else {
-            this.setState({selectedMission: mission});
-        }
-    }
-    render(){
-        return (
-            <Modal isOpen={this.props.modal} toggle={this.props.toggle} size="large">
-            <ModalHeader toggle={this.props.toggle}>Create A New Flight</ModalHeader>
-            <ModalBody>
-            <Row>
-            <Col sm="6">
-            <h4>Choose a mission</h4>
-            <table className="table table-striped table-hover table-sm">
-            <thead>
-            <tr>
-            <th>Name</th>
-            <th>Simulators</th>
-            </tr>
-            </thead>
-            <tbody>
-            {this.props.data.loading ? <tr><td>Loading...</td><td></td></tr>
-                : this.props.data.missions.map((mission) => {
-                    return (<tr onClick={this.selectMission.bind(this,mission)} className={this.state.selectedMission.id === mission.id ? 'table-success' : ''} key={mission.id}>
-                        <td>{mission.name}</td>
-                        <td>{mission.simulators.length}</td>
-                        </tr>);
-                })
-            }
-            </tbody>
-            </table>
-            </Col>
-            <Col sm="6">
-            <h4>Or reload a saved flight</h4>
-            <table className="table table-striped table-hover table-sm">
-            <thead>
-            <tr>
-            <th>Date</th>
-            <th>Mission</th>
-            <th>Simulators</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-            </table>
-            </Col>
-            </Row>
-            <Row>
-            {
-          /*  this.state.selectedMission.id
-            ? this.state.selectedMission.simulators.map((e, index) => {
-                return (
-                    <div>
-                    <Col sm="6">
-                    <select key={index} onChange={this._selectMissionSimulator.bind(this, index)} ref={`simulatorSelect-${index}`} className="c-select form-control">
-                    <option value={null}>Select a simulator</option>
-                    {this.props.data.simulators.map((sim) => {
-                        return <option key={sim.id} value={sim.id}>{sim.name}</option>;
-                    })}
-                    </select>
-                    </Col>
-                    <Col sm="6">
-                    {this.state.simulatorSelect[`simulator-${index}`]
-                    ? <select key={`station-${index}`} onChange={this._selectMissionStation.bind(this, index)} className="c-select form-control">
-                    <option value={null}>Select a station</option>
-                    {this.props.data.stations.filter((stat) => {
-                        return stat.simulatorId === this.state.simulatorSelect[`simulator-${index}`];
-                    }).map((stat) => {
-                        return <option key={stat.id} value={stat.id}>{stat.name}</option>;
-                    })}
-                    </select>
-                    : <div style={{
-                        width: '100%',
-                        height: '40px'
-                    }}/>
-                }
-                </Col>
-                </div>
-                );
-            })
-        : <div/>*/}
-        </Row>
-        </ModalBody>
-        <ModalFooter>
-        <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
-        <Button color="primary" onClick={this.props.loadFlight.bind(this)}>Load Flight</Button>
-        </ModalFooter>
-        </Modal>
-        );
-    }
-}
-
-const MissionsData = gql `
-query Missions {
-    missions {
-        id
-        name
-        simulators{
-            name
-        }
-    }
-}`;
-
-const MissionModal = graphql(MissionsData, {})(MissionModalView);
-
 class Lobby extends Component {
     constructor(props) {
         super(props);
@@ -155,10 +38,11 @@ class Lobby extends Component {
             presences: {},
             simulatorSelect: {},
             stationSelect: {},
-            activeTab: '3'
+            activeTab: '2'
         };
         this.toggleTab = this.toggleTab.bind(this);
         this.toggle = this.toggle.bind(this);
+        this.connectSub = null;
         this.subscription = null;
     }
     toggleTab(tab) {
@@ -170,15 +54,14 @@ class Lobby extends Component {
     }
     componentWillReceiveProps(nextProps) {
         if (!this.subscription && !nextProps.data.loading) {
-            debugger;
             this.subscription = nextProps.data.subscribeToMore({
-                document: SUBSCRIPTION_QUERY,
+                document: CLIENT_CHANGE_QUERY,
                 updateQuery: (previousResult, {subscriptionData}) => {
-                    debugger;
-                   // previousResult.clients[0].id = Math.random().toString();
-                   return previousResult;
-               },
-           });
+                    const returnResult = Object.assign({}, previousResult);
+                    returnResult.clients = subscriptionData.data.clientChange;
+                    return returnResult;
+                },
+            });
         }
     }
     loadFlight() {
@@ -326,7 +209,7 @@ class Lobby extends Component {
             </thead>
             <tbody>
             {!this.props.data.loading
-                ? () => {} /*this.props.data.clients.map((p, index) => (
+                ? this.props.data.clients.map((p, index) => (
                     <tr key={`flight-${p.id}-${index}`}>
                     <td>{`${p.id}`}</td>
                     <td>
@@ -347,7 +230,7 @@ class Lobby extends Component {
                     <Button color="danger" title="This removes the saved state." size="sm">Reset</Button>
                     </td>
                     </tr>
-                    ))*/
+                    ))
                 : <tr></tr>
             }
             </tbody>

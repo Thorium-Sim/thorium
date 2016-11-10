@@ -61,6 +61,7 @@
     "react-addons-update": "^15.3.2",
     "react-apollo": "^0.5.16",
     "react-dom": "^15.3.2",
+    "react-draggable": "^2.2.2",
     "react-dragula": "^1.1.17",
     "react-fontawesome": "^1.2.0",
     "react-range": "0.0.7",

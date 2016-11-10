@@ -48,6 +48,7 @@ query Sessions($ClientId: String) {
 	}
 }`;
 
+
 export default withRouter(graphql(ClientQuery, {
 	options: {
 		variables: {
