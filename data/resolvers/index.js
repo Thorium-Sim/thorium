@@ -6,6 +6,14 @@ import Engine from '../classes/engine';
 import { es } from '../../store.js';
 import { pubsub } from '../subscriptionManager.js';
 
+simulators.push(new Simulator({
+  id: 'test',
+  name: 'Test',
+  layout: 'LayoutCorners',
+  alertLevel: 5,
+  timeline: [],
+}));
+
 systems.push(new Shield({
   simulatorId: 'test',
   type: 'Shield',
@@ -19,9 +27,11 @@ systems.push(new Engine({
   simulatorId: 'test',
   name: 'Impulse',
   type: 'Engine',
+  on: false,
   speeds: [{ text: '1/4 Impulse', number: 0.25 }, { text: '1/2 Impulse', number: 0.5 }, { text: '3/4 Impulse', number: 0.75 }, { text: 'Full Impulse', number: 1 }, { text: 'Destructive Impulse', number: 1.25 }],
   speed: -1,
   heat: 0,
+  heatRate: 0.005,
   coolant: 0,
 }));
 
@@ -29,9 +39,11 @@ systems.push(new Engine({
   simulatorId: 'test',
   name: 'Warp',
   type: 'Engine',
+  on: false,
   speeds: [{ text: 'Warp 1', number: 1 }, { text: 'Warp 2', number: 2 }, { text: 'Warp 3', number: 3 }, { text: 'Warp 4', number: 4 }, { text: 'Warp 5', number: 5 }, { text: 'Warp 6', number: 6 }, { text: 'Warp 7', number: 7 }, { text: 'Warp 8', number: 8 }, { text: 'Warp 9', number: 9 }, { text: 'Destructive Warp', number: 9.54 }],
   speed: -1,
   heat: 0,
+  heatRate: 0.02,
   coolant: 0,
 }));
 
@@ -85,7 +97,7 @@ const mutationMap = {
     es.getEventStream({
       aggregateId: 'myAggregateId',
       aggregate: 'person',          // optional
-      context: 'hr'                 // optional
+      context: 'hr',                // optional
     }, (err, stream) => {
       stream.addEvent({ my: 'event' });
 
@@ -122,6 +134,31 @@ const mutationMap = {
   shieldFrequencySet(root, { id, frequency }){
     return '';
   },
+  setSpeed(root, { id, speed, on }) {
+    let outerIndex = -1;
+    systems.forEach((system, index) => {
+      if (system.id === id) {
+        outerIndex = index;
+      }
+    });
+    systems[outerIndex].speed = speed;
+    systems[outerIndex].on = on;
+    pubsub.publish('speedChange', systems[outerIndex]);
+    return '';
+  },
+  addHeat(root, { id, heat }) {
+    let outerIndex = -1;
+    systems.forEach((system, index) => {
+      if (system.id === id) {
+        outerIndex = index;
+      }
+    });
+    systems[outerIndex].heat += heat;
+    if (systems[outerIndex].heat < 0) systems[outerIndex].heat = 0;
+    if (systems[outerIndex].heat >= 100) systems[outerIndex].heat = 100;
+    pubsub.publish('heatChange', systems[outerIndex]);
+    return '';
+  },
 };
 
 const subscriptionMap = {
@@ -145,6 +182,12 @@ const subscriptionMap = {
     return rootValue;
   },
   shieldLowered(rootValue) {
+    return rootValue;
+  },
+  speedChange(rootValue) {
+    return rootValue;
+  },
+  heatChange(rootValue) {
     return rootValue;
   },
 };

@@ -45,6 +45,20 @@ subManager.subscribe({
   callback: (err, data) => console.log('SUB RESULTS', err, data.data.clientChanged),
 });
 
+subManager.subscribe({
+  query: `
+  subscription SpeedChanged{
+    speedChange {
+      id
+      speed
+    }
+  }
+  `,
+  context: {},
+  callback: (err, data) => console.log('SUB RESULTS', err, data.data.speedChange),
+});
+
+
 // addMockFunctionsToSchema({ schema, preserveResolvers: true });
 
 export const subscriptionManager = subManager;
