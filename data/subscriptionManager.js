@@ -6,7 +6,7 @@ import resolvers from './resolvers';
 
 const pubsub = new RedisPubSub({
   connection: {
-    host: 'redis',
+    host: 'localhost',
     port: 6379,
   },
 });
