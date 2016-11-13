@@ -1,6 +1,7 @@
 import Shield from './data/classes/shield';
 import Engine from './data/classes/engine';
 import Simulator from './data/classes/simulator';
+import Thruster from './data/classes/thruster';
 
 export const simulators = [];
 export const clients = [];
@@ -50,4 +51,8 @@ systems.push(new Engine({
   heat: 0,
   heatRate: 0.02,
   coolant: 0,
+}));
+
+systems.push(new Thruster({
+  simulatorId: 'test',
 }));

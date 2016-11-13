@@ -1,6 +1,7 @@
 export power from './power';
 export shields from './shields';
 export engine from './engine';
+export thrusters from './thrusters';
 
 export const role = `
 type role {
