@@ -8,6 +8,9 @@ class CardFrame extends Component {
     if (this.props.data.loading){
       return <div />;
     }
+    if (this.props.data.error){
+      console.log('ERROR',this.props.data.error)
+    }
     let { simulators} = this.props.data;
     let currentStation// = stationsData[0] || {};
     let currentSimulator = simulators[0] || {};
@@ -21,10 +24,10 @@ class CardFrame extends Component {
         cardIndex: 0,
       }
       data.cardsData = [
-        {id: 'test',
-        name:'Test',
-        component: (this.props.params.component || 'Navigation')}
-        ]
+      {id: 'test',
+      name:'Test',
+      component: (this.props.params.component || 'Navigation')}
+      ]
     }
     const layoutName = currentStation.layout || currentSimulator.layout || 'LayoutCorners';
     let LayoutComponent = Layouts[layoutName];
