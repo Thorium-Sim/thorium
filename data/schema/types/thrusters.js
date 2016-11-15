@@ -18,4 +18,9 @@ type Rotation {
   pitch: Float
   roll: Float
 }
+input RotationInput {
+  yaw: Float,
+  pitch: Float,
+  roll: Float
+}
 `;
