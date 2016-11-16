@@ -3,6 +3,7 @@ import React3 from 'react-three-renderer';
 import * as THREE from 'three';
 import OBJLoader from 'three-obj-loader';
 import ParsedModel from './parser';
+import Arrow from './arrow';
 
 OBJLoader(THREE);
 const ObjURL = 'https://s3.amazonaws.com/dynamo-star/_1.obj';
@@ -40,7 +41,6 @@ export default class ThreeThrusters extends Component {
   constructor(props){
     super(props);
     this.cameraPosition = new THREE.Vector3(0, 1, 3);
-    console.log(props);
     this.state = {
       width: props.dimensions.width,
       height: props.dimensions.height,
@@ -63,7 +63,6 @@ export default class ThreeThrusters extends Component {
         object.scale.set(0.2,0.2,0.2)
         // Look up your actual geometry object
         object.children[0].geometry = new THREE.Geometry().fromBufferGeometry( object.children[0].geometry );
-        debugger;
         const parser = new ParsedModel();
         const meshData = parser.parse(object.children[0])
         self.setState({
@@ -82,14 +81,18 @@ export default class ThreeThrusters extends Component {
       this.setState({
         thrusterRotation: new THREE.Euler(
           degtorad(thruster.pitch),
-          degtorad(thruster.yaw),
+          degtorad(thruster.yaw * -1),
           degtorad(thruster.roll)
           ),
       })
     }
   }
   render() {
+    //Do some quaternion logic
+    const finalAngle = this.state.thrusterRotation;
     const { width, height } = this.props.dimensions;
+    const arrowScaleVector = new THREE.Vector3(0.4,0.4,0.4);
+    const direction = this.props.direction;
     return (
       <React3
       alpha
@@ -101,25 +104,48 @@ export default class ThreeThrusters extends Component {
       <scene>
       <perspectiveCamera
       name="camera"
-      fov={75}
+      fov={45}
       aspect={width/height}
       near={0.1}
       far={1000}
       lookAt={new THREE.Vector3(0,0,0)}
       position={this.cameraPosition}
       />
-      <group rotation={this.state.thrusterRotation}>
-      <IndicatorCircle name="yaw" rotation={new THREE.Euler(Math.PI/2, 0, 0 )} color={0xff0000}/>
-      <IndicatorCircle name="pitch" rotation={new THREE.Euler(0, Math.PI/2, 0)} color={0x0000ff}/>
-      <IndicatorCircle name="roll" color={0x00ff00}/>
+      <directionalLight 
+      color={0xffffff}
+      intensity={2.5}
+      lookAt={new THREE.Vector3(0,0,0)} 
+      position={new THREE.Vector3(0,0,1)} />
+      <directionalLight 
+      color={0xffffff}
+      intensity={2.5}
+      lookAt={new THREE.Vector3(0,0,0)} 
+      position={new THREE.Vector3(0,0,-1)} />
+      {/*<ambientLight
+      color={0x505050}
+      />*/}
+      <group rotation={finalAngle}>
+      <IndicatorCircle name="yaw" rotation={new THREE.Euler(Math.PI/2, 0, finalAngle.y )} color={0xff0000}/>
+      <IndicatorCircle name="pitch" rotation={new THREE.Euler(finalAngle.x, Math.PI/2, 0)} color={0x0000ff}/>
+      <IndicatorCircle name="roll" color={0x00ff00} rotation={new THREE.Euler(0, 0, finalAngle.z)} />
       {this.state.spaceship.vertices &&
-        <mesh scale={new THREE.Vector3(0.2,0.2,0.2)}>
+        <mesh scale={new THREE.Vector3(0.2,0.2,0.2)}
+        >
         <geometry {...this.state.spaceship} />
         <meshBasicMaterial>
         <texture url={TxURL} />
         </meshBasicMaterial>
         </mesh>
       }
+      <Arrow visible={direction.x < -0.2} rotation={new THREE.Euler(Math.PI/2,0,0)} position={new THREE.Vector3(1.2,0,0)} scale={arrowScaleVector}/>
+      <Arrow visible={direction.x > 0.2} rotation={new THREE.Euler(Math.PI/2,Math.PI,0)} position={new THREE.Vector3(-1.2,0,0)} scale={arrowScaleVector}/>
+
+      <Arrow visible={direction.z > 0.2} rotation={new THREE.Euler(Math.PI/2,0,Math.PI/2)} position={new THREE.Vector3(0,0,1.3)} scale={arrowScaleVector}/>
+      <Arrow visible={direction.z < -0.2} rotation={new THREE.Euler(Math.PI/-2,0,Math.PI/2)} position={new THREE.Vector3(0,0,-1.3)} scale={arrowScaleVector}/>
+
+      <Arrow visible={direction.y < -0.2} rotation={new THREE.Euler(0,0,Math.PI/2)} position={new THREE.Vector3(0,1,0)} scale={arrowScaleVector}/>
+      <Arrow visible={direction.y > 0.2} rotation={new THREE.Euler(0,0,Math.PI/-2)} position={new THREE.Vector3(0,-1,0)} scale={arrowScaleVector}/>
+
       </group>
       </scene>
       </React3>

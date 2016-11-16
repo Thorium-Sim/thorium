@@ -22,21 +22,6 @@ subscription RotationChanged{
   }
 }`;
 
-function newPoints(pos, parent) {
-  var x = 0; // your center point
-  var y = 0; // your center point
-  var radius = parent.clientWidth / 2;
-  var scale = radius / Math.sqrt(Math.pow(pos.x - x, 2) + Math.pow(pos.y - y, 2)); // distance formula ratio
-  if (scale < 1) {
-    return {
-      y: Math.round((pos.y - y) * scale + y),
-      x: Math.round((pos.x - x) * scale + x)
-    };
-  } else {
-    return pos;
-  }
-}
-
 function distance(points1 = {x: 0, y:0}, points2){
   return Math.sqrt(Math.pow(points2.x-points1.x,2)+Math.pow(points2.y-points1.y,2));
 }
@@ -107,234 +92,23 @@ componentWillReceiveProps(nextProps) {
     });
   }
 }
-	/*componentDidMount(){
-		let self = this;
-		this.setState({
-			request: requestAnimationFrame(this.tick.bind(this))
-		});
-		Draggable.create(this.refs.directionDragger,{
-			type: "x,y",
-			edgeResistance: 0.95,
-			onDragStart: function(){
-				self.setState({
-					dragging:true
-				})
-			},
-			onDrag: function () {
-				let parent = this.target.parentElement;
-				let pos = {
-					x:this.x,
-					y:this.y
-				};
-				let newPos = newPoints(pos, parent);
-				let transformSet = 'translate3d(' + newPos.x + 'px, ' + newPos.y + 'px, 0px)';
-				this.target.style.transform = transformSet;
-
-            	//Now to calculate the magnitude
-            	let magnitude = {x:(newPos.x / (parent.clientWidth / 2)),y:(newPos.y / ( parent.clientHeight / 2))};
-            	this.newPos = newPos;
-            	if (self.props.data && magnitude){
-            		let obj = {
-            			direction:{
-            				x: magnitude.x,
-            				y: magnitude.y,
-            				z: self.props.data.thrusters.direction.z,
-            			}
-            		};
-            		//self.props.operationChannel.push("update",{table:"systems",filter:{simulatorId:self.props.params.simulatorId,name:'Thrusters'},data:obj});
-            	}
-            },
-            onDragEnd: function () {
-            	var joystick = self.refs.directionDragger;
-            	fromTo(joystick, 0.1, {
-            		transform: `translate3d(${this.newPos.x}px,${this.newPos.y}px,0px)`
-            	},{
-            		transform: 'translate3d(0px,0px,0px)'
-            	});
-            	if (self.props.data){
-            		let obj = {
-            			direction:{
-            				x: 0,
-            				y: 0,
-            				z: self.props.data.thrusters.direction.z,
-            			}
-            		};
-            		//self.props.operationChannel.push("update",{table:"systems",filter:{simulatorId:self.props.params.simulatorId,name:'Thrusters'},data:obj});
-            	}
-            	self.setState({
-            		dragging:false
-            	})
-            }
-        });
-		Draggable.create(this.refs.rotationDragger,{
-			type: "x,y",
-			edgeResistance: 0.95,
-			onDragStart: function(){
-				self.setState({
-					dragging:true
-				})
-			},
-			onDrag: function () {
-				let parent = this.target.parentElement;
-				let pos = {
-					x:this.x,
-					y:this.y
-				};
-				let newPos = newPoints(pos, parent);
-				let transformSet = 'translate3d(' + newPos.x + 'px, ' + newPos.y + 'px, 0px)';
-				this.target.style.transform = transformSet;
-
-            	//Now to calculate the magnitude
-            	let magnitude = {x:(newPos.x / (parent.clientWidth / 2)),y:(newPos.y / ( parent.clientHeight / 2))};
-            	this.newPos = newPos;
-            	if (self.props.data && magnitude){
-            		let obj = {
-            			attitudeAdjust:{
-            				roll: magnitude.x,
-            				pitch: magnitude.y,
-            				yaw: self.props.data.thrusters.attitudeAdjust.yaw,
-            			}
-            		};
-            		//self.props.operationChannel.push("update",{table:"systems",filter:{simulatorId:self.props.params.simulatorId,name:'Thrusters'},data:obj});
-            	}
-            },
-            onDragEnd: function () {
-            	var joystick = self.refs.rotationDragger;
-            	fromTo(joystick, 0.1, {
-            		transform: `translate3d(${this.newPos.x}px,${this.newPos.y}px,0px)`
-            	},{
-            		transform: 'translate3d(0px,0px,0px)'
-            	});
-            	if (self.props.data){
-            		let obj = {
-            			attitudeAdjust:{
-            				roll: 0,
-            				pitch: 0,
-            				yaw: self.props.data.thrusters.attitudeAdjust.yaw,
-            			}
-            		};
-            		//self.props.operationChannel.push("update",{table:"systems",filter:{simulatorId:self.props.params.simulatorId,name:'Thrusters'},data:obj});
-            	}
-            	self.setState({
-            		dragging:false
-            	})
-            }
-        });
-		Draggable.create(this.refs.foreDragger,{
-			type: "x",
-			bounds: this.refs.foreDragger.parentElement,
-			edgeResistance: 0.95,
-			onDragStart: function(){
-				self.setState({
-					dragging:true
-				})
-			},
-			onDrag: function () {
-				let parent = this.target.parentElement;
-				let pos = {
-					x:this.x,
-					y:this.y
-				};
-
-            	//Now to calculate the magnitude
-            	let magnitude = {x:(pos.x / (parent.clientWidth / 2)),y:(pos.y / ( parent.clientHeight / 2))};
-            	if (self.props.data && magnitude){
-            		let obj = {
-            			direction:{
-            				x: self.props.data.thrusters.direction.x,
-            				y: self.props.data.thrusters.direction.y,
-            				z: magnitude.x,
-            			}
-            		};
-            		//self.props.operationChannel.push("update",{table:"systems",filter:{simulatorId:self.props.params.simulatorId,name:'Thrusters'},data:obj});
-            	}
-            	this.newPos = pos;
-            },
-            onDragEnd: function () {
-            	var joystick = self.refs.foreDragger;
-            	fromTo(joystick, 0.1, {
-            		transform: `translate3d(${this.newPos.x}px,${this.newPos.y}px,0px)`
-            	},{
-            		transform: 'translate3d(0px,0px,0px)'
-            	});
-            	if (self.props.data){
-            		let obj = {
-            			direction:{
-            				x: self.props.data.thrusters.direction.x,
-            				y: self.props.data.thrusters.direction.y,
-            				z: 0,
-            			}
-            		};
-            		//self.props.operationChannel.push("update",{table:"systems",filter:{simulatorId:self.props.params.simulatorId,name:'Thrusters'},data:obj});
-            	}
-            	self.setState({
-            		dragging:false
-            	})
-            }
-        });
-		Draggable.create(this.refs.yawDragger,{
-			type: "x",
-			bounds: this.refs.yawDragger.parentElement,
-			edgeResistance: 0.95,
-			onDragStart: function(){
-				self.setState({
-					dragging:true
-				})
-			},
-			onDrag: function () {
-				let parent = this.target.parentElement;
-				let pos = {
-					x:this.x,
-					y:this.y
-				};
-
-            	//Now to calculate the magnitude
-            	let magnitude = {x:(pos.x / (parent.clientWidth / 2)),y:(pos.y / ( parent.clientHeight / 2))};
-            	if (self.props.data && magnitude){
-            		let obj = {
-            			attitudeAdjust:{
-            				roll: self.props.data.thrusters.attitudeAdjust.roll,
-            				pitch: self.props.data.thrusters.attitudeAdjust.pitch,
-            				yaw: magnitude.x,
-            			}
-            		};
-            		//self.props.operationChannel.push("update",{table:"systems",filter:{simulatorId:self.props.params.simulatorId,name:'Thrusters'},data:obj});
-            	}
-            	this.newPos = pos;
-            },
-            onDragEnd: function () {
-            	var joystick = self.refs.yawDragger;
-            	fromTo(joystick, 0.1, {
-            		transform: `translate3d(${this.newPos.x}px,${this.newPos.y}px,0px)`
-            	},{
-            		transform: 'translate3d(0px,0px,0px)'
-            	});
-            	if (self.props.data){
-            		let obj = {
-            			attitudeAdjust:{
-            				roll: self.props.data.thrusters.attitudeAdjust.roll,
-            				pitch: self.props.data.thrusters.attitudeAdjust.pitch,
-            				yaw: 0,
-            			}
-            		};
-            		//self.props.operationChannel.push("update",{table:"systems",filter:{simulatorId:self.props.params.simulatorId,name:'Thrusters'},data:obj});
-            	}
-            	self.setState({
-            		dragging:false
-            	})
-            }
-        });
-      }*/
-      tick() {
-        this.gamepadLoop();
-        this.setState({
-         lastTimeMsec: Date.now(),
-         request: requestAnimationFrame(this.tick.bind(this))
-       });
-      }
-      gamepadLoop(){
-        const gamepad = navigator.getGamepads()[0];
-        if (gamepad && this.state.control){
+/*
+componentDidMount(){
+  let self = this;
+  this.setState({
+   request: requestAnimationFrame(this.tick.bind(this))
+ });
+}
+tick() {
+  this.gamepadLoop();
+  this.setState({
+   lastTimeMsec: Date.now(),
+   request: requestAnimationFrame(this.tick.bind(this))
+ });
+}
+gamepadLoop(){
+  const gamepad = navigator.getGamepads()[0];
+  if (gamepad && this.state.control){
 			//Create a custom object to store.
 			let direction = {x:0,y:0,z:0};
 			switch(Math.round(gamepad.axes[9] * 100) / 100) {
@@ -399,9 +173,10 @@ componentWillReceiveProps(nextProps) {
 			Draggable.get(this.refs.rotationDragger).enable();
 			Draggable.get(this.refs.foreDragger).enable();
 			Draggable.get(this.refs.yawDragger).enable();
-		}*/
+		}
 		this.setState({control:!this.state.control});
 	}
+  */
   onDragHandler(handlerName:string,which) {
     return (e, {node, deltaX, deltaY}) => {
       const self = this;
@@ -409,6 +184,9 @@ componentWillReceiveProps(nextProps) {
       // Get new XY
       const parentRect = node.offsetParent.getBoundingClientRect();
       const obj = {};
+      const id = this.props.data.thrusters[0].id;
+      const rotation = {yaw: 0, pitch: 0, roll: 0};
+      const direction = {x: 0, y: 0, z: 0};
       switch (handlerName) {
         case 'onDragStart':
         obj[which] = newPosition;
@@ -433,12 +211,38 @@ componentWillReceiveProps(nextProps) {
           }
         }
         obj[which] = newPosition;
+        switch (which){
+          case 'rotation':
+          rotation.pitch = newPosition.top;
+          rotation.roll = newPosition.left;
+          this.props.rotationUpdate({id: id, rotation: rotation, on: true});
+          break;
+          case 'yaw':
+          rotation.yaw = newPosition.left;
+          this.props.rotationUpdate({id: id, rotation: rotation, on: true});
+          break;
+          case 'directionFore':
+          direction.z = newPosition.left;
+          this.props.directionUpdate({id: id, direction: direction});
+          break
+          case 'direction':
+          direction.x = newPosition.left;
+          direction.y = newPosition.top;
+          this.props.directionUpdate({id: id, direction: direction});
+          break
+          default:
+          this.props.rotationUpdate({id: id, rotation: rotation, on: false});
+          this.props.directionUpdate({id: id, direction: direction});
+          break;
+        }
         this.setState(obj);
         break;
         case 'onDragStop':
         if (!this.state[which]) throw new Error('onDragEnd called before onDragStart.');
         newPosition.left = this.state[which].left;
         newPosition.top = this.state[which].top;
+        this.props.rotationUpdate({id: id, rotation: rotation, on: false});
+        this.props.directionUpdate({id: id, direction: direction});
         fromTo(this.state[which], 0.1, this.state[which], {
           left: 0, top: 0, 
           onUpdate:function() {obj.which = {left:this.target.left, top: this.target.top}; self.setState(obj);}
@@ -460,6 +264,11 @@ componentWillReceiveProps(nextProps) {
       width = this.refs.dirCirc.getBoundingClientRect().width;
       height = this.refs.dirCirc.getBoundingClientRect().height;
     }
+    const direction = {
+      x: this.state.direction.left,
+      y: this.state.direction.top,
+      z: this.state.directionFore.left
+    };
     return (
      <div className="cardThrusters">
      <Row>
@@ -498,9 +307,9 @@ componentWillReceiveProps(nextProps) {
      <Measure>
      { dimensions => (
       <div id="threeThruster" style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
-      {(() => console.log(dimensions))()}
+      {(() => console.log(dimensions) /*This is apparently necessary*/)()}
       {dimensions.width > 0 &&
-        <ThrusterThree dimensions={dimensions} rotation={thruster.rotation} /> 
+        <ThrusterThree dimensions={dimensions} direction={direction} rotation={thruster.rotation} /> 
       }
       </div>
       ) }
@@ -585,10 +394,35 @@ query Thrusters($simulatorId: ID){
 }
 `;
 
+const ROTATION_UPDATE = gql`
+mutation ThrusterDelta($id: ID!, $rotation: RotationInput, $on: Boolean) {
+  rotationUpdate(id: $id, rotation:$rotation, on: $on)
+}`;
+
+
+const DIRECTION_UPDATE = gql`
+mutation ThrusterDirection($id: ID!, $direction: DirectionInput) {
+  directionUpdate(id: $id, direction:$direction,)
+}`;
+
 export default compose(
   graphql(THRUSTER_QUERY, {
     options: (props) => ({
       variables: { simulatorId: 'test' }
+    })
+  }),
+  graphql(ROTATION_UPDATE, {name: 'rotationUpdate',
+    props: ({rotationUpdate}) => ({
+      rotationUpdate: (props) => rotationUpdate({
+        variables: Object.assign(props)
+      })
+    })
+  }),
+  graphql(DIRECTION_UPDATE, {name: 'directionUpdate',
+    props: ({directionUpdate}) => ({
+      directionUpdate: (props) => directionUpdate({
+        variables: Object.assign(props)
+      })
     })
   })
   )(Thrusters);

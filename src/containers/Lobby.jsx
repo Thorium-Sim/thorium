@@ -15,7 +15,8 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import guid from '../helpers/guid.js';
 import MissionModal from './MissionModal';
-
+import DebugList from './DebugList';
+import Core from './Core';
 import './style.scss';
 
 const CLIENT_CHANGE_QUERY = gql`
@@ -38,7 +39,7 @@ class Lobby extends Component {
             presences: {},
             simulatorSelect: {},
             stationSelect: {},
-            activeTab: '2'
+            activeTab: '4'
         };
         this.toggleTab = this.toggleTab.bind(this);
         this.toggle = this.toggle.bind(this);
@@ -166,6 +167,16 @@ class Lobby extends Component {
             Config
             </NavLink>
             </NavItem>
+            <NavItem>
+            <NavLink className={this.state.activeTab === '4' ? 'active' : ''} onClick={() => { this.toggleTab('4'); }} >
+            Debug
+            </NavLink>
+            </NavItem>
+            <NavItem>
+            <NavLink className={this.state.activeTab === '5' ? 'active' : ''} onClick={() => { this.toggleTab('5'); }} >
+            Core
+            </NavLink>
+            </NavItem>
             </Nav>
             <TabContent activeTab={this.state.activeTab}>
             <TabPane tabId="1">
@@ -238,6 +249,12 @@ class Lobby extends Component {
             </TabPane>
             <TabPane tabId="3">
             <Config />
+            </TabPane>
+            <TabPane tabId="4">
+            <DebugList />
+            </TabPane>
+            <TabPane tabId="5">
+            <Core />
             </TabPane>
             </TabContent>
             </Row>

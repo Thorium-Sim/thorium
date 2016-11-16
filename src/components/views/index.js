@@ -8,6 +8,10 @@ import Sensors from './Sensors';
 import AdminAssets from './AdminAssets';
 import ShieldControl from './ShieldControl';
 
+import EngineControlCore from './EngineControl/core';
+
 const Views = {ShortRangeComm,LongRangeComm,AdminStations,AdminAssets,Thrusters,EngineControl,Navigation,Sensors, ShieldControl};
+
+export const Cores = {EngineControlCore};
 
 export default Views;

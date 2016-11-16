@@ -38,7 +38,6 @@ class Thrusters extends Component {
 		this.props.updateSystem(object,updateVal);
 		let obj = {};
 		obj[object] = updateVal;
-		console.log(obj);
 		this.setState(obj);
 	}
 	render(){

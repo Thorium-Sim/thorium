@@ -236,12 +236,5 @@ export default compose(
 				variables: Object.assign(props)
 			})
 		})
-  })/*,
-  graphql(LOWER_SHIELDS, {name: 'lowerShields',
-    props: ({lowerShields}) => ({
-      lowerShields: (props) => lowerShields({
-        variables: Object.assign(props)
-      })
-    })
-  }),*/
+  })
   )(EngineControl);
