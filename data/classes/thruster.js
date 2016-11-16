@@ -10,8 +10,17 @@ export default class Thrusters {
     this.rotationDelta = params.rotationDelta || { yaw: 0, pitch: 0, roll: 0 };
     this.rotationRequired = params.rotationRequired || { yaw: 0, pitch: 0, roll: 0 };
     this.manualThrusters = params.manualThrusters || false;
+    this.thrusting = params.thrusting || false;
   }
-  updateRotation(rotation) {
+  updateRotation(rotation, thrusting = false) {
+    this.thrusting = thrusting;
+    this.rotationDelta = rotation;
+  }
+  updateDirection(direction) {
+    this.direction = direction;
+    console.log(direction);
+  }
+  setRotation(rotation) {
     this.rotation = rotation;
   }
 }

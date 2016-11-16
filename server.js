@@ -7,7 +7,8 @@ import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { printSchema } from 'graphql/utilities/schemaPrinter';
 import cors from 'cors';
 
-import processes from './processes/engines';
+import './processes/engines';
+import './processes/thrusters';
 
 const GRAPHQL_PORT = 3001;
 const WS_PORT = 3002;

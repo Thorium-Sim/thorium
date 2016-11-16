@@ -23,4 +23,9 @@ input RotationInput {
   pitch: Float,
   roll: Float
 }
+input DirectionInput {
+  x: Float
+  y: Float
+  z: Float
+}
 `;

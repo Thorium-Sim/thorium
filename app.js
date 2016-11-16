@@ -55,6 +55,4 @@ systems.push(new Engine({
 
 systems.push(new Thruster({
   simulatorId: 'test',
-  rotation: { yaw: 55, pitch: 15, roll: 300 },
-
 }));
