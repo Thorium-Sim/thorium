@@ -10,6 +10,7 @@ type Engine {
   heat: Float
   coolant: Float
   damage: Float
+  on: Boolean
 }
 type Speed {
   text: String

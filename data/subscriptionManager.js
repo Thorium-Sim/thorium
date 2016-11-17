@@ -6,10 +6,11 @@ import resolvers from './resolvers';
 
 const pubsub = new RedisPubSub({
   connection: {
-    host: 'redis',
+    host: 'redis.ralexanderson.com',
     port: 6379,
   },
 });
+
 
 
 //addMockFunctionsToSchema({ schema, preserveResolvers: true });

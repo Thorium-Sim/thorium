@@ -1,7 +1,7 @@
 import eventstore from 'eventstore';
 export const es = eventstore({
   type: 'redis',
-  host: 'redis',                          // optional
+  host: 'redis.ralexanderson.com',                          // optional
   port: 6379,                                 // optional
   db: 0,                                      // optional
   prefix: 'eventstore',                       // optional

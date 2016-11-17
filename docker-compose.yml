@@ -1,0 +1,10 @@
+redis:
+  image: redis
+
+server:
+  image: alexanderson1993/thorium-node
+  links:
+    - redis
+  ports:
+    - "3001:3001"
+    - "3002:3002"
