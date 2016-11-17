@@ -4,6 +4,7 @@ export default class Engine {
   constructor(params) {
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId || null;
+    this.name = params.name || null;
     this.on = params.on || false;
     this.type = params.type || null;
     this.speeds = params.speeds || [];
