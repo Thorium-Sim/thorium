@@ -23,4 +23,3 @@ export default class Engine {
     if (this.heat >= 100) this.heat = 100;
   }
 }
-
