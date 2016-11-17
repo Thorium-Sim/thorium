@@ -1,14 +1,14 @@
 export default `
-type Engine {
+type Navigation {
   id: ID
   simulatorId: ID
   type: String
   power: Power
   destination: Location
   calculated: Location
-  power: Power
   damage: Float
 }
+
 type Location {
   name: String
   xCoord: Float
