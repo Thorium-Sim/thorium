@@ -1,5 +1,5 @@
 export default `
-type Engine {
+type Ship {
   id: ID
   simulatorId: ID
   name: String
