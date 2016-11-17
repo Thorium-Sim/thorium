@@ -8,7 +8,7 @@ import './Core.scss';
 export default () => {
   var layout = [
   {i: 'a', x: 0, y: 0, w: 20, h: 5},
-  {i: 'b', x: 1, y: 0, w: 20, h: 5, minW: 2, maxW: 4},
+  {i: 'b', x: 1, y: 0, w: 20, h: 5},
   {i: 'c', x: 4, y: 0, w: 20, h: 5}
   ];
   return (

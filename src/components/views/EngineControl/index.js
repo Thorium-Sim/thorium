@@ -73,19 +73,6 @@ class EngineControl extends Component {
 	}
 	setSpeed(engine,speed,engines,index){
 		this.props.setSpeed({id: engine.id, speed:speed + 1, on: true})
-		if (index >= 1){
-			//More than one engine, update the previous;
-			for (let i = 0; i < index; i++){
-				let newEngine = engines[i];
-				this.props.setSpeed({id: newEngine.id, speed:engines[i].speeds.length, on: false})
-			}
-		}
-		if (index < engines.length - 1){
-			//More than one engine, update the next ones to be zero
-			for (let i = index + 1; i <= engines.length - 1; i++){
-				this.props.setSpeed({id: engines[i].id, speed:-1, on: false})
-			}
-		}
 	}
 	fullStop(){
 		this.props.data.engines.forEach((engine) => {
@@ -101,7 +88,7 @@ class EngineControl extends Component {
 			{(() => {
 				return engines.map((engine, index, array) => {
 					return (
-						<div className="engineGroup">
+						<div key={engine.id} className="engineGroup">
 						<h4>{engine.name}</h4>
 						<ul className="engine">
 						{ engine.speeds.map((speed, speedIndex) => {
@@ -110,7 +97,7 @@ class EngineControl extends Component {
 								speedWord = speed.number;
 							}
 							return (
-								<li className="speedNums speedBtn" onClick={() => {this.setSpeed(engine,speedIndex,engines,index);}}>{speedWord}</li>
+								<li key={`${engine.id}-${speedWord}`} className="speedNums speedBtn" onClick={() => {this.setSpeed(engine,speedIndex,engines,index);}}>{speedWord}</li>
 								);
 						})}
 						</ul>
@@ -137,7 +124,7 @@ class EngineControl extends Component {
 							if (typeof speed === "object"){
 								speedWord = speed.text;
 							}
-							return <Button color="primary" className="speedBtn">{speedWord}</Button>;
+							return <Button key={`${speed.text}-${speedIndex}`} block color="primary" className="speedBtn">{speedWord}</Button>;
 						})}
 						</Col>
 						<Col className="col-sm-2">
