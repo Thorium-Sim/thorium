@@ -3,7 +3,7 @@ import uuid from 'uuid';
 export class AssetObject {
   constructor(params) {
     this.id = params.id || uuid.v4();
-    this.folderPath = params.folderPath || null;
+    this.containerPath = params.containerPath || null;
     this.containerId = params.containerId || null;
     this.fullPath = params.fullPath || null;
     this.url = params.url || null;

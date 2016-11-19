@@ -2,6 +2,7 @@ import uuid from 'uuid';
 
 export default class Engine {
   constructor(params) {
+    super(params);
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || null;
