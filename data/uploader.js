@@ -1,5 +1,5 @@
 import s3 from 's3';
-import {secretAccessKey, accessKeyId, bucket} from '../secrets';
+import { secretAccessKey, accessKeyId, bucket } from '../secrets';
 
 const options = {
   secretAccessKey,

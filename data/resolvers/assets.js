@@ -1,11 +1,12 @@
 import s3 from 's3';
+import fs from 'fs';
 import client from '../uploader';
 import uuid from 'uuid';
 import { pubsub } from '../subscriptionManager.js';
 import { es } from '../../store.js';
 import { AssetObject, AssetFolder, AssetContainer } from '../classes/assets';
 import { assets } from '../../app.js';
-
+import { bucket } from '../../secrets.js';
 function processPayload(payload) {
   switch (payload.type) {
     case 'addAssetFolder':
@@ -53,7 +54,25 @@ es.useEventPublisher((evt, callback) => {
 });
 
 export const AssetsQueries = {
-  asset(root, { assetKey }) {
+  asset(root, { assetKey, simulatorId = 'default' }) {
+    const returnObj = assets.objects.find(obj => {
+      return (obj.simulatorId === simulatorId && obj.fullPath === assetKey);
+    });
+    if (returnObj) {
+      return { assetKey, url: returnObj.url };
+    }
+    return {};
+  },
+  assets(root, { assetKeys, simulatorId = 'default' }) {
+    return assetKeys.map((key) => {
+      const returnObj = assets.objects.find(obj => {
+        return (obj.simulatorId === simulatorId && obj.fullPath === key);
+      });
+      if (returnObj) {
+        return { assetKey: key, url: returnObj.url };
+      }
+      return {};
+    });
   },
   assetFolders() {
     return assets.folders;
@@ -116,7 +135,19 @@ export const AssetsMutations = {
       });
       stream.commit();
     });
-    // TODO: Remove from S3 too.
+    // Remove from S3 too.
+    // Get the object
+    const obj = assets.objects.find((object) => object.id === id);
+    const extension = obj.url.substr(obj.url.lastIndexOf('.'));
+
+    client.deleteObjects({
+      Bucket: bucket,
+      Delete: {
+        Objects: [{
+          Key: (obj.fullPath.substr(1) + extension),
+        }],
+      },
+    });
     return '';
   },
   async uploadAsset(root, { files, simulatorId, containerId }) {
@@ -128,13 +159,16 @@ export const AssetsMutations = {
       const params = {
         localFile: file.path,
         s3Params: {
-          Bucket: 'thorium-assets',
+          Bucket: bucket,
           Key: key,
           ACL: 'public-read',
         },
       };
       const uploader = client.uploadFile(params);
       uploader.on('end', () => {
+        // Delete the temp file
+        fs.unlink(file.path, () => {});
+        // Add to the event store
         es.getEventStream('assets', (err, stream) => {
           stream.addEvent({
             type: 'addAssetObject',
@@ -155,6 +189,7 @@ export const AssetsMutations = {
 
 export const AssetsSubscriptions = {
   assetFolderChange(rootValue) {
+    console.log("SUB");
     return rootValue;
   },
 };

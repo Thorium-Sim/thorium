@@ -1,4 +1,9 @@
 export default `
+type Asset {
+  assetKey: String
+  url: String
+}
+
 type AssetObject {
   id: ID
   folderPath: String
