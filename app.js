@@ -2,10 +2,21 @@ import Shield from './data/classes/shield';
 import Engine from './data/classes/engine';
 import Simulator from './data/classes/simulator';
 import Thruster from './data/classes/thruster';
+import { AssetFolder } from './data/classes/assets';
 
 export const simulators = [];
 export const clients = [];
 export const systems = [];
+export const assets = {
+  folders: [new AssetFolder({
+    id: 'c7235894-5917-4c7d-bff9-095c8d5f523c',
+    folderPath: '',
+    fullPath: '/',
+    name: '/',
+  })],
+  containers: [],
+  objects: [],
+};
 
 /**
 * DEFAULT VALUES

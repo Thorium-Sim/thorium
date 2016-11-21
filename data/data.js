@@ -30,34 +30,6 @@ const subManager = new SubscriptionManager({
 });
 
 
-subManager.subscribe({
-  query: `
-  subscription onClientChange{
-    clientChanged {
-      id
-      flight
-      simulators
-      station
-    }
-  }
-  `,
-  context: {},
-  callback: (err, data) => console.log('SUB RESULTS', err, data.data.clientChanged),
-});
-
-subManager.subscribe({
-  query: `
-  subscription SpeedChanged{
-    speedChange {
-      id
-      speed
-    }
-  }
-  `,
-  context: {},
-  callback: (err, data) => console.log('SUB RESULTS', err, data.data.speedChange),
-});
-
 
 // addMockFunctionsToSchema({ schema, preserveResolvers: true });
 

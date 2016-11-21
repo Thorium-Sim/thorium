@@ -5,6 +5,9 @@ import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import { schema, subscriptionManager } from './data/data.js';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { printSchema } from 'graphql/utilities/schemaPrinter';
+import graphqlExpressUpload from 'graphql-server-express-upload';
+import multer from 'multer';
+
 import cors from 'cors';
 
 import './processes/engines';
@@ -16,6 +19,10 @@ const WS_PORT = 3002;
 const GraphQLOptions = {
   schema,
 };
+
+const upload = multer({
+  dest: 'temp',
+});
 
 const options = {
   endpointURL: '/graphql', // URL for the GraphQL endpoint this instance of GraphiQL serves
@@ -40,7 +47,10 @@ graphQLServer.use('/schema', (req, res) => {
   res.send(printSchema(schema));
 });
 
-graphQLServer.use('/graphql', bodyParser.json(),
+graphQLServer.use('/graphql',
+  upload.array('files'),
+  graphqlExpressUpload({ endpointURL: '/graphql' }),
+  bodyParser.json(),
   graphqlExpress(GraphQLOptions));
 
 graphQLServer.use('/graphiql', graphiqlExpress(options));

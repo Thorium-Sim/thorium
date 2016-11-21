@@ -2,6 +2,7 @@ export power from './power';
 export shields from './shields';
 export engine from './engine';
 export thrusters from './thrusters';
+export assets from './assets';
 
 export const role = `
 type role {
@@ -39,36 +40,6 @@ type client {
   station: String
   loginName: String
   loginState: Boolean
-}
-`;
-
-export const assetobject = `
-type assetobject {
-  id: ID
-  folderpath: String
-  containerid: String
-  containerpath: String
-  fullpath: String
-  url: String
-  simulatorid: String
-}
-`;
-
-export const assetcontainer = `
-type assetcontainer {
-  id: ID
-  folderpath: String
-  fullpath: String
-  name: String
-}
-`;
-
-export const assetfolder = `
-type assetfolder {
-  id: ID
-  name: String
-  folderpath: String
-  fullpath: String
 }
 `;
 
