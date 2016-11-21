@@ -40,6 +40,7 @@ type client {
   station: String
   loginName: String
   loginState: Boolean
+  lockedOutState: Boolean
 }
 `;
 
