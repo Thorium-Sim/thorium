@@ -77,7 +77,8 @@
       "no-use-before-define": 0,
       "arrow-body-style": 0,
       "dot-notation": 0,
-      "no-console": 0
+      "no-console": 0,
+      "indent": 0
     },
     "env": {
       "mocha": true

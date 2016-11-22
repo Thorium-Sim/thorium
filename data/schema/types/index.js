@@ -1,3 +1,4 @@
+export cooland from './coolant';
 export power from './power';
 export shields from './shields';
 export engine from './engine';
