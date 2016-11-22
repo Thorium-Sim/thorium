@@ -4,7 +4,7 @@ export default class Shield {
   constructor(params) {
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId || null;
-    this.type = params.type || null;
+    this.type = 'Shield';
     this.position = params.position || null;
     this.frequency = params.frequency || 260.5;
     this.state = params.state || false;

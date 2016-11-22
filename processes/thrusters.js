@@ -35,4 +35,4 @@ const updateThrusters = () => {
   });
   setTimeout(updateThrusters, 100);
 };
-updateThrusters();
+//updateThrusters();

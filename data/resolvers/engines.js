@@ -1,7 +1,6 @@
 import Engine from '../classes/engine';
-import { systems } from '../../app.js';
+import { systems, Events } from '../../app.js';
 import { pubsub } from '../subscriptionManager.js';
-import { es } from '../../store.js';
 
 function processPayload(payload) {
   const engines = systems.filter(sys => sys.type === 'Engine');
@@ -40,41 +39,6 @@ function processPayload(payload) {
   }
 }
 
-
-
-es.init(() => {
-  es.getEventStream('simulator', (err, stream) => {
-    const history = stream.events;
-    history.forEach(({ payload }) => {
-      processPayload(payload);
-    });
-  });
-});
-
-
-es.getEventStream('simulator', (err, stream) => {
-  stream.addEvent({
-    eventType: 'engineAdded',
-    simulatorId: 'test',
-    name: 'Impulse',
-    type: 'Engine',
-    on: false,
-    speeds: [{ text: '1/4 Impulse', number: 0.25 }, { text: '1/2 Impulse', number: 0.5 }, { text: '3/4 Impulse', number: 0.75 }, { text: 'Full Impulse', number: 1 }, { text: 'Destructive Impulse', number: 1.25 }],
-    speed: -1,
-    heat: 0,
-    heatRate: 0.005,
-    coolant: 0,
-  });
-  stream.commit();
-});
-
-
-es.useEventPublisher((evt, callback) => {
-  console.log('Speed Changed:', evt);
-  processPayload(evt);
-  callback();
-});
-
 export const EngineQueries = {
   engines(root, { simulatorId }) {
     return systems.filter(system => {
@@ -85,16 +49,7 @@ export const EngineQueries = {
 
 export const EngineMutations = {
   setSpeed(root, { id, speed, on }) {
-    console.log('Speed Changed:', speed);
-    es.getEventStream('simulator', (err, stream) => {
-      stream.addEvent({
-        eventType: 'speedChanged',
-        id,
-        speed,
-        on,
-      });
-      stream.commit();
-    });
+    Events.speedChange({ id, speed, on });
     return '';
   },
   addHeat(root, { id, heat }) {

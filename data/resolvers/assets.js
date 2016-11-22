@@ -3,7 +3,7 @@ import fs from 'fs';
 import client from '../uploader';
 import uuid from 'uuid';
 import { pubsub } from '../subscriptionManager.js';
-import { es } from '../../store.js';
+//import { es } from '../../store.js';
 import { AssetObject, AssetFolder, AssetContainer } from '../classes/assets';
 import { assets } from '../../app.js';
 import { bucket } from '../../secrets.js';
@@ -38,6 +38,7 @@ function processPayload(payload) {
   }
 }
 
+/*
 es.init(() => {
   es.getEventStream('assets', (err, stream) => {
     const history = stream.events;
@@ -52,6 +53,7 @@ es.useEventPublisher((evt, callback) => {
   pubsub.publish('assetFolderChange', assets.folders);
   callback();
 });
+*/
 
 export const AssetsQueries = {
   asset(root, { assetKey, simulatorId = 'default' }) {
@@ -81,7 +83,7 @@ export const AssetsQueries = {
 
 export const AssetsMutations = {
   addAssetFolder(root, { name, folderPath, fullPath }) {
-    es.getEventStream('assets', (err, stream) => {
+    /*es.getEventStream('assets', (err, stream) => {
       stream.addEvent({
         type: 'addAssetFolder',
         id: uuid.v4(),
@@ -90,21 +92,21 @@ export const AssetsMutations = {
         name,
       });
       stream.commit();
-    });
+    });*/
     return '';
   },
   removeAssetFolder(root, { id }) {
-    es.getEventStream('assets', (err, stream) => {
+   /* es.getEventStream('assets', (err, stream) => {
       stream.addEvent({
         type: 'removeAssetFolder',
         id,
       });
       stream.commit();
-    });
+    });*/
     return '';
   },
   addAssetContainer(root, { name, folderId, folderPath, fullPath }) {
-    es.getEventStream('assets', (err, stream) => {
+   /* es.getEventStream('assets', (err, stream) => {
       stream.addEvent({
         type: 'addAssetContainer',
         id: uuid.v4(),
@@ -114,27 +116,27 @@ export const AssetsMutations = {
         name,
       });
       stream.commit();
-    });
+    });*/
     return '';
   },
   removeAssetContainer(root, { id }) {
-    es.getEventStream('assets', (err, stream) => {
+   /* es.getEventStream('assets', (err, stream) => {
       stream.addEvent({
         type: 'removeAssetContainer',
         id,
       });
       stream.commit();
-    });
+    });*/
     return '';
   },
   removeAssetObject(root, { id }) {
-    es.getEventStream('assets', (err, stream) => {
+   /* es.getEventStream('assets', (err, stream) => {
       stream.addEvent({
         type: 'removeAssetObject',
         id,
       });
       stream.commit();
-    });
+    });*/
     // Remove from S3 too.
     // Get the object
     const obj = assets.objects.find((object) => object.id === id);
@@ -169,7 +171,7 @@ export const AssetsMutations = {
         // Delete the temp file
         fs.unlink(file.path, () => {});
         // Add to the event store
-        es.getEventStream('assets', (err, stream) => {
+        /*es.getEventStream('assets', (err, stream) => {
           stream.addEvent({
             type: 'addAssetObject',
             id: uuid.v4(),
@@ -180,7 +182,7 @@ export const AssetsMutations = {
             simulatorId,
           });
           stream.commit();
-        });
+        });*/
       });
     });
     return '';

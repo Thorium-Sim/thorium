@@ -6,7 +6,7 @@ export default class Engine {
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || null;
     this.on = params.on || false;
-    this.type = params.type || null;
+    this.type = 'Engine';
     this.speeds = params.speeds || [];
     this.speed = params.speed || -1;
     this.heat = params.heat || 0;

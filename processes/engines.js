@@ -30,4 +30,4 @@ const updateHeat = () => {
   });
   setTimeout(updateHeat, 100);
 };
-updateHeat();
+//updateHeat();

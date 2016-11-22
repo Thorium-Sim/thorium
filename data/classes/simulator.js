@@ -1,8 +1,8 @@
 import uuid from 'uuid';
+import { Entity } from 'sourced';
 
 export default class Simulator {
   constructor(params) {
-    console.log(params);
     this.id = params.id || uuid.v4();
     this.name = params.name;
     this.layout = params.layout;
@@ -21,6 +21,11 @@ export default class Simulator {
     // To the server
     this.layout = layout;
   }
+  test(param) {
+    this.digest('test', param);
+    this.emit('tested', param, this);
+  }
+
 }
 /* {
     id = ,
