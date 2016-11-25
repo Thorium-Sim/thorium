@@ -1,10 +1,10 @@
 import { pubsub } from '../subscriptionManager.js';
 import Client from '../classes/client';
-import { clients } from '../../app.js';
+import App from '../../app';
 
 export const ClientQueries = {
   clients: () => {
-    return clients;
+    return App.clients;
   },
 };
 
@@ -12,17 +12,17 @@ export const ClientMutations = {
   clientConnect: (root, args) => {
     // Skip the event stream for now - just connect the client.
     const newClient = new Client(args);
-    if (!clients.find((client) => client.id === args.id)) {
-      clients.push(newClient);
-      pubsub.publish('clientChanged', clients);
+    if (!App.lients.find((client) => client.id === args.id)) {
+      App.clients.push(newClient);
+      pubsub.publish('clientChanged', App.clients);
     }
     return '';
   },
   clientDisconnect: (root, args) => {
     // Skip the event stream for now - just connect the client.
-    const index = clients.findIndex((client) => client.id === args.id);
-    clients.splice(index, 1);
-    pubsub.publish('clientChanged', clients);
+    const index = App.clients.findIndex((client) => client.id === args.id);
+    App.clients.splice(index, 1);
+    pubsub.publish('clientChanged', App.clients);
     return '';
   },
 };
@@ -35,7 +35,7 @@ export const ClientSubscriptions = {
     return rootValue;
   },
   clientChanged: () => {
-    console.log('Client Subscription', clients);
-    return clients;
+    console.log('Client Subscription', App.clients);
+    return App.clients;
   },
 };

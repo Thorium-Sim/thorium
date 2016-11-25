@@ -1,9 +1,9 @@
-import { simulators } from '../../app.js';
+import App from '../../app.js';
 
 export const SimulatorQueries = {
   simulators: (root, args, context, info) => {
    
-    return simulators;
+    return App.simulators;
   },
   flights() {
     return [];
@@ -14,8 +14,8 @@ export const SimulatorQueries = {
 };
 
 export const SimulatorMutations = {
-  test:(root, args) => {
-    simulators[0].test(args);
+  test(root, args) {
+    App.test(args);
     return '';
   },
   addSimulator: (root, args) => {

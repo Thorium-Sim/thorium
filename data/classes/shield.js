@@ -9,6 +9,7 @@ export default class Shield {
     this.frequency = params.frequency || 260.5;
     this.state = params.state || false;
     this.integrity = params.integrity || 1;
+    this.class = 'Shield';
   }
   shieldState(state) {
     this.state = state;

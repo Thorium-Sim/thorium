@@ -1,7 +1,7 @@
 import uuid from 'uuid';
 
 export default class Engine {
-  constructor(params) {
+  constructor(params = {}) {
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || null;
@@ -12,6 +12,7 @@ export default class Engine {
     this.heat = params.heat || 0;
     this.heatRate = params.heatRate || 1;
     this.coolant = params.coolant || 0;
+    this.class = "Engine";
   }
   setSpeed(speed, on) {
     this.speed = speed;

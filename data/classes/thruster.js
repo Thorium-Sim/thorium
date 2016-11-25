@@ -11,6 +11,7 @@ export default class Thrusters {
     this.rotationRequired = params.rotationRequired || { yaw: 0, pitch: 0, roll: 0 };
     this.manualThrusters = params.manualThrusters || false;
     this.thrusting = params.thrusting || false;
+    this.class = 'Thrusters';
   }
   updateRotation(rotation, thrusting = false) {
     this.thrusting = thrusting;

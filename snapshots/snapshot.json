@@ -1,0 +1,155 @@
+{
+	"snapshotVersion": 1,
+	"timestamp": 1480037381105,
+	"version": 1,
+	"_eventsCount": 9,
+	"simulators": [
+		{
+			"id": "test",
+			"name": "Test",
+			"layout": "LayoutCorners",
+			"timeline": [],
+			"class": "Simulator"
+		}
+	],
+	"clients": [],
+	"systems": [
+		{
+			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb3d",
+			"simulatorId": "test",
+			"type": "Shield",
+			"position": "full",
+			"frequency": 257.4,
+			"state": false,
+			"integrity": 1,
+			"class": "Shield"
+		},
+		{
+			"id": "1b8c9a95-4b6d-47d9-92d2-e419bd291f61",
+			"simulatorId": "test",
+			"type": "Thruster",
+			"direction": {
+				"x": 0,
+				"y": 0,
+				"z": 0
+			},
+			"rotation": {
+				"yaw": 0,
+				"pitch": 0,
+				"roll": 0
+			},
+			"rotationDelta": {
+				"yaw": 0,
+				"pitch": 0,
+				"roll": 0
+			},
+			"rotationRequired": {
+				"yaw": 0,
+				"pitch": 0,
+				"roll": 0
+			},
+			"manualThrusters": false,
+			"thrusting": false,
+			"class": "Thrusters"
+		},
+		{
+			"id": "test-engine-impulse",
+			"simulatorId": "test",
+			"name": "Impulse",
+			"on": false,
+			"type": "Engine",
+			"speeds": [
+				{
+					"text": "1/4 Impulse",
+					"number": 0.25
+				},
+				{
+					"text": "1/2 Impulse",
+					"number": 0.5
+				},
+				{
+					"text": "3/4 Impulse",
+					"number": 0.75
+				},
+				{
+					"text": "Full Impulse",
+					"number": 1
+				},
+				{
+					"text": "Destructive Impulse",
+					"number": 1.25
+				}
+			],
+			"speed": 5,
+			"heat": 0,
+			"heatRate": 0.005,
+			"coolant": 0,
+			"class": "Engine"
+		},
+		{
+			"id": "test-engine-warp",
+			"simulatorId": "test",
+			"name": "Warp",
+			"on": true,
+			"type": "Engine",
+			"speeds": [
+				{
+					"text": "Warp 1",
+					"number": 1
+				},
+				{
+					"text": "Warp 2",
+					"number": 2
+				},
+				{
+					"text": "Warp 3",
+					"number": 3
+				},
+				{
+					"text": "Warp 4",
+					"number": 4
+				},
+				{
+					"text": "Warp 5",
+					"number": 5
+				},
+				{
+					"text": "Warp 6",
+					"number": 6
+				},
+				{
+					"text": "Warp 7",
+					"number": 7
+				},
+				{
+					"text": "Warp 8",
+					"number": 8
+				},
+				{
+					"text": "Warp 9",
+					"number": 9
+				},
+				{
+					"text": "Destructive Warp",
+					"number": 9.54
+				}
+			],
+			"speed": 3,
+			"heat": 0,
+			"heatRate": 0.02,
+			"coolant": 0,
+			"class": "Engine"
+		}
+	],
+	"assetFolders": [
+		{
+			"id": "c7235894-5917-4c7d-bff9-095c8d5f523c",
+			"folderPath": null,
+			"fullPath": "/",
+			"name": "/",
+			"class": "AssetFolder"
+		}
+	],
+	"assetContainers": [],
+	"assetObjects": []
+}

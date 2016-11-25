@@ -1,5 +1,4 @@
 import uuid from 'uuid';
-import { Entity } from 'sourced';
 
 export default class Simulator {
   constructor(params) {
@@ -8,6 +7,7 @@ export default class Simulator {
     this.layout = params.layout;
     this.alertlevel = params.alertlevel;
     this.timeline = params.timeline;
+    this.class = 'Simulator';
   }
   setAlertlevel(alertlevel) {
     if (['5', '4', '3', '2', '1', 'p'].indexOf(alertlevel) === -1) {
@@ -27,6 +27,8 @@ export default class Simulator {
   }
 
 }
+
+
 /* {
     id = ,
     name = 'Voyager',
