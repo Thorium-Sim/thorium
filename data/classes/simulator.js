@@ -5,7 +5,7 @@ export default class Simulator {
     this.id = params.id || uuid.v4();
     this.name = params.name;
     this.layout = params.layout;
-    this.alertlevel = params.alertlevel;
+    this.alertlevel = params.alertlevel || '5';
     this.timeline = params.timeline;
     this.class = 'Simulator';
   }

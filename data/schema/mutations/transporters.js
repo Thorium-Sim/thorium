@@ -1,0 +1,11 @@
+export default `
+  setTransportDestination(transporter: ID!, destination: String!): String
+  setTransportTarget(transporter: ID!, target: String!): String
+  beginTransportScan(transporter: ID!): String
+  cancelTransportScan(transporter: ID!): String
+  clearTransportTargets(transporter: ID!): String
+  setTransportCharge(transporter: ID!): String
+  completeTransport(transporter: ID!, target: ID!): String
+  #Core Mutations
+  setTransporterTargets(transporter: ID!, targets: Int!): String
+`;
