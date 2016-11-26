@@ -6,7 +6,7 @@ import Client from './data/classes/client';
 import jsonfile from 'jsonfile';
 import { writeFile } from './helpers/json-format';
 import { Entity } from 'sourced';
-import { pubsub } from './data/subscriptionManager.js';
+import { pubsub } from './helpers/subscriptionManager.js';
 import { AssetObject, AssetFolder, AssetContainer } from './data/classes/assets';
 
 const Classes = {

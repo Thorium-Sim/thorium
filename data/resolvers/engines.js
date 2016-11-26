@@ -1,5 +1,4 @@
 import App from '../../app.js';
-import { pubsub } from '../subscriptionManager.js';
 
 export const EngineQueries = {
   engines(root, { simulatorId }) {

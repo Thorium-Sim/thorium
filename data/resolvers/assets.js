@@ -1,6 +1,6 @@
 import s3 from 's3';
 import fs from 'fs';
-import client from '../uploader';
+import client from '../../helpers/uploader';
 import uuid from 'uuid';
 import App from '../../app';
 import { bucket } from '../../secrets.js';

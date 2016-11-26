@@ -1,4 +1,4 @@
-import { pubsub } from '../subscriptionManager.js';
+import { pubsub } from '../../helpers/subscriptionManager.js';
 import Client from '../classes/client';
 import App from '../../app';
 
