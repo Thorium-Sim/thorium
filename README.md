@@ -1,8 +1,12 @@
 # Thorium Server
 
+[![Slack Status](https://slack.ralexanderson.com/badge.svg)](https://slack.ralexanderson.com)
+[![Code Climate](https://codeclimate.com/github/Thorium-Sim/thorium-node/badges/gpa.svg)](https://codeclimate.com/github/Thorium-Sim/thorium-node)
+[![Issue Count](https://codeclimate.com/github/Thorium-Sim/thorium-node/badges/issue_count.svg)](https://codeclimate.com/github/Thorium-Sim/thorium-node)
+
 A GraphQL endpoint server for Thorium. Built with [Apollo-Server](http://www.apollodata.com/) and ❤ by [Alex Anderson](http://ralexanderson.com).
 
-## Getting started
+## Getting Started
 
 ```sh
 npm install
