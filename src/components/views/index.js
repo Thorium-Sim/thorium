@@ -7,10 +7,11 @@ import Navigation from './Navigation';
 import Sensors from './Sensors';
 import AdminAssets from './AdminAssets';
 import ShieldControl from './ShieldControl';
+import Transporters from './Transporters';
 
 import EngineControlCore from './EngineControl/core';
 
-const Views = {ShortRangeComm,LongRangeComm,AdminStations,AdminAssets,Thrusters,EngineControl,Navigation,Sensors, ShieldControl};
+const Views = {ShortRangeComm,LongRangeComm,AdminStations,AdminAssets,Thrusters,EngineControl,Navigation,Sensors, ShieldControl, Transporters};
 
 export const Cores = {EngineControlCore};
 

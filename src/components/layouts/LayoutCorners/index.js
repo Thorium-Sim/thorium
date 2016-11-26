@@ -43,6 +43,8 @@ class LayoutCorners extends Component {
 				<TransitionGroup>
 				{
 					cardsData.map((card, index) => {
+						console.log(card.component);
+						console.log(Views);
 						const component = Views[card.component];
 						if (index === parseInt(cardIndex, 10)){
 							return <CardHolder component={component} {...this.props} key={card.id} />;
