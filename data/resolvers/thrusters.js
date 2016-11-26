@@ -1,5 +1,5 @@
 import App from '../../app.js';
-import { pubsub } from '../subscriptionManager.js';
+import { pubsub } from '../../helpers/subscriptionManager.js';
 
 export const ThrustersQueries = {
   thrusters(root, { simulatorId }) {

@@ -2,7 +2,7 @@ import schemaString from './schema';
 import resolvers from './resolvers';
 import { SubscriptionManager } from 'graphql-subscriptions';
 import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools';
-import { pubsub } from './subscriptionManager';
+import { pubsub } from '../helpers/subscriptionManager';
 
 export const schema = makeExecutableSchema({
   typeDefs: schemaString,

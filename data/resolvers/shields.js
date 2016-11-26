@@ -1,4 +1,4 @@
-import { pubsub } from '../subscriptionManager.js';
+import { pubsub } from '../../helpers/subscriptionManager.js';
 
 export const ShieldQueries = {
   shields(root, { simulatorId }) {
