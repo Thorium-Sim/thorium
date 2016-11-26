@@ -14,13 +14,9 @@ export const EngineMutations = {
     App.speedChange({ id, speed, on });
     return '';
   },
+  // This mutation applies to all systems
   addHeat(root, { id, heat }) {
-    App.systems.forEach((system) => {
-      if (system.id === id) {
-        system.addHeat(heat);
-        pubsub.publish('heatChange', system);
-      }
-    });
+    App.addHeat({ id, heat });
     return '';
   },
 };

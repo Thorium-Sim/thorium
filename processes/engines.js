@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import request from 'request';
-import { systems } from '../app';
+import App from '../app';
 
 const mutation = gql`
 mutation HeatIncrement($id: ID, $heat: Float){
@@ -8,7 +8,7 @@ mutation HeatIncrement($id: ID, $heat: Float){
 }
 `;
 const updateHeat = () => {
-  systems.forEach((sys) => {
+  App.systems.forEach((sys) => {
     if (sys.type === 'Engine') {
       const speedVal = sys.on ? sys.speed : -10;
       const heatAdd = speedVal * sys.heatRate;
@@ -30,4 +30,4 @@ const updateHeat = () => {
   });
   setTimeout(updateHeat, 100);
 };
-//updateHeat();
+updateHeat();

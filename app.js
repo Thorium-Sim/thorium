@@ -80,6 +80,10 @@ class Events extends Repo {
     this.digest('speedChange', param);
     this.emit('speedChanged', param, this);
   }
+  addHeat(param) {
+    this.digest('addHeat', param);
+    this.emit('addedHeat', param, this);
+  }
   addAssetFolder(param) {
     this.digest('addAssetFolder', param);
     this.emit('addedAssetFolder', param, this);
@@ -140,6 +144,14 @@ App.on('speedChanged', (param) => {
         engine.setSpeed(-1, false);
         pubsub.publish('speedChange', engine);
       }
+    }
+  });
+});
+App.on('addedHeat', ({ id, heat }) => {
+  App.systems.forEach((system) => {
+    if (system.id === id) {
+      system.addHeat(heat);
+      pubsub.publish('heatChange', system);
     }
   });
 });
