@@ -2,13 +2,13 @@ export default `
 type Thruster {
   id: ID
   simulatorId: ID
-  direction: Direction
+  direction: Coordinates
   rotation: Rotation
   rotationDelta: Rotation
   rotationRequired: Rotation
   manualThrusters: Boolean
 }
-type Direction {
+type Coordinates {
   x: Float
   y: Float
   z: Float

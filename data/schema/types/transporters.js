@@ -13,6 +13,7 @@ type TransporterTarget {
   id: ID
   icon: String
   moving: Boolean
+  position: Coordinates
 }
 input TransporterInput {
   id: ID

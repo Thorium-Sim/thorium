@@ -20,6 +20,11 @@ export default class Transporters {
         id: uuid.v4(),
         icon,
         moving,
+        coordinates: {
+          x: Math.random(),
+          y: Math.random(),
+          z: Math.random(),
+        },
       });
     }
   }
