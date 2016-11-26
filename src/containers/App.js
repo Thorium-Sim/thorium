@@ -3,7 +3,6 @@ import { Router, browserHistory } from 'react-router';
 import {Signin, Register, Forgot, PasswordReset} from '../components/Accounts.jsx';
 //import UserAdmin from '../components/admin/Users.jsx';
 import CardContainer from './Card.jsx';
-import ComponentView from '../components/Component.jsx';
 import Config from './Config.jsx';
 import Lobby from './Lobby.jsx';
 import Client from '../components/Client.jsx';
@@ -25,10 +24,6 @@ const routes = [
 {
   path: '/app',
   component: Client,
-},
-{
-  path: '/component/:component',
-  component: ComponentView,
 },
 {
   path: '/',
