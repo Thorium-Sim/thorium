@@ -2,13 +2,23 @@ import Shield from './data/classes/shield';
 import Simulator from './data/classes/simulator';
 import Engine from './data/classes/engine';
 import Thrusters from './data/classes/thruster';
+import Client from './data/classes/client';
 import jsonfile from 'jsonfile';
 import { writeFile } from './helpers/json-format';
 import { Entity } from 'sourced';
 import { pubsub } from './data/subscriptionManager.js';
 import { AssetObject, AssetFolder, AssetContainer } from './data/classes/assets';
 
-const Classes = { Shield, Engine, Thrusters, Simulator, AssetObject, AssetFolder, AssetContainer };
+const Classes = {
+  Client,
+  Shield,
+  Engine,
+  Thrusters,
+  Simulator,
+  AssetObject,
+  AssetFolder,
+  AssetContainer,
+};
 
 class Repo extends Entity {
   constructor(params = {}) {

@@ -12,7 +12,7 @@ export const ClientMutations = {
   clientConnect: (root, args) => {
     // Skip the event stream for now - just connect the client.
     const newClient = new Client(args);
-    if (!App.lients.find((client) => client.id === args.id)) {
+    if (!App.clients.find((client) => client.id === args.id)) {
       App.clients.push(newClient);
       pubsub.publish('clientChanged', App.clients);
     }

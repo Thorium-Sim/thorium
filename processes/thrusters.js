@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import request from 'request';
-import { systems } from '../app';
+import App from '../app';
 
 const mutation = gql`
 mutation SetRotation($id: ID, $rotation: RotationInput){
@@ -8,7 +8,7 @@ mutation SetRotation($id: ID, $rotation: RotationInput){
 }
 `;
 const updateThrusters = () => {
-  systems.forEach((sys) => {
+  App.systems.forEach((sys) => {
     if (sys.type === 'Thruster' && sys.thrusting === true) {
       const rotationAdd = Object.assign({}, sys.rotation);
       rotationAdd.yaw += sys.rotationDelta.yaw*3;
@@ -35,4 +35,5 @@ const updateThrusters = () => {
   });
   setTimeout(updateThrusters, 100);
 };
-//updateThrusters();
+
+updateThrusters();
