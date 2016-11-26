@@ -1,3 +1,6 @@
-export default function(assetKey){
-	return fetch('/assets?asset_key=' + assetKey);
+import React, {Component} from 'react';
+import { graphql, withApollo } from 'react-apollo';
+
+export default (assetKey, simulatorId) => {
+
 }

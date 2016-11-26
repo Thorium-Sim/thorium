@@ -111,11 +111,16 @@ class AdminAssetsView extends Component {
 			//this.props.operationChannel.push("delete",{table:"assetobjects",filter:{id:object.id}});
 		});*/
 		//Now delete the container
+		if (this.state.currentContainer.id === container.id){
+			this.setState({
+				currentContainer: {}
+			});
+		}
 		this.props.removeAssetContainer({id:container.id});
 	}
 	_deleteObject(object){
 		//Just delete the object
-		//this.props.operationChannel.push("delete",{table:"assetobjects",filter:{id:object.id}});
+		this.props.removeAssetObject({id:object.id});
 	}
 	_massUpload(e){
 		//let files = e.target.files;
@@ -247,6 +252,7 @@ query GetAssetFolders{
 				id
 				containerId
 				containerPath
+				fullPath
 				simulatorId
 				fullPath
 				url
@@ -281,6 +287,10 @@ mutation UploadAsset($id: Int!, $files: [UploadedFile!]!, $simulatorId: ID, $con
 	uploadAsset(id: $id, files: $files, simulatorId: $simulatorId, containerId: $containerId) 
 }`
 
+const REMOVE_ASSET_OBJECT = gql`
+mutation RemoveAssetObject($id: ID!){
+	removeAssetObject(id:$id)
+}`;
 
 export default compose(
 	graphql(ASSET_FOLDER_QUERY),
@@ -318,5 +328,12 @@ export default compose(
 				variables: Object.assign(props)
 			})
 		})
-	})
+	}),
+	graphql(REMOVE_ASSET_OBJECT, {name: 'removeAssetObject',
+		props: ({removeAssetObject}) => ({
+			removeAssetObject: (props) => removeAssetObject({
+				variables: Object.assign(props)
+			})
+		})
+	}),
 	)(AdminAssetsView);
