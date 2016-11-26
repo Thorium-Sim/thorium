@@ -1,4 +1,5 @@
 export default `
+  createTransporter(transporter: TransporterInput): String
   setTransportDestination(transporter: ID!, destination: String!): String
   setTransportTarget(transporter: ID!, target: String!): String
   beginTransportScan(transporter: ID!): String

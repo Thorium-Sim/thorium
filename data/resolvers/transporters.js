@@ -9,6 +9,11 @@ export const TransporterQueries = {
 };
 
 export const TransporterMutations = {
+  createTransporter(_, { transporter }) {
+    console.log(transporter);
+    App.createTransporter(transporter);
+    return '';
+  },
   setTransportDestination(_, { transporter, destination }) {
     App.setTransportDestination({ transporter, destination });
     return '';

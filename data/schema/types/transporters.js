@@ -14,4 +14,12 @@ type TransporterTarget {
   icon: String
   moving: Boolean
 }
+input TransporterInput {
+  id: ID
+  simulatorId: ID
+  requestedTarget: String
+  destination: String
+  charge: Float
+  state: String
+}
 `;

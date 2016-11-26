@@ -3,6 +3,7 @@ import Simulator from './data/classes/simulator';
 import Engine from './data/classes/engine';
 import Thrusters from './data/classes/thruster';
 import Client from './data/classes/client';
+import Transporters from './data/classes/transporters';
 import jsonfile from 'jsonfile';
 import { writeFile } from './helpers/json-format';
 import { Entity } from 'sourced';
@@ -14,6 +15,7 @@ const Classes = {
   Shield,
   Engine,
   Thrusters,
+  Transporters,
   Simulator,
   AssetObject,
   AssetFolder,
@@ -90,6 +92,9 @@ class Events extends Repo {
 
   // Transporters
   // I know Setted isn't a word. Deal with it.
+  createTransporter(param) {
+    this.handleEvent(param, 'createTransporter', 'createdTransporter');
+  }
   setTransportDestination(param) {
     this.handleEvent(param, 'setTransportDestination', 'settedTransportDestination');
   }
@@ -185,6 +190,14 @@ App.on('addedHeat', ({ id, heat }) => {
 });
 
 // Transporters
+App.on('createdTransporter', (params) => {
+  const transporter = new Transporters(params);
+  App.systems.push(transporter);
+  console.log(transporter);
+});
+App.on('removedTransporter', (params) => {
+  
+});
 App.on('settedTransportDestination', (params) => {
   const transporter = App.systems.find((sys) => sys.id === params.transporter);
   transporter.setDestination(params.destination);
