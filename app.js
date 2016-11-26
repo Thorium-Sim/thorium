@@ -1,69 +1,187 @@
 import Shield from './data/classes/shield';
-import Engine from './data/classes/engine';
 import Simulator from './data/classes/simulator';
-import Thruster from './data/classes/thruster';
-import { AssetFolder } from './data/classes/assets';
+import Engine from './data/classes/engine';
+import Thrusters from './data/classes/thruster';
+import Client from './data/classes/client';
+import jsonfile from 'jsonfile';
+import { writeFile } from './helpers/json-format';
+import { Entity } from 'sourced';
+import { pubsub } from './data/subscriptionManager.js';
+import { AssetObject, AssetFolder, AssetContainer } from './data/classes/assets';
 
-export const simulators = [];
-export const clients = [];
-export const systems = [];
-export const assets = {
-  folders: [new AssetFolder({
-    id: 'c7235894-5917-4c7d-bff9-095c8d5f523c',
-    folderPath: '',
-    fullPath: '/',
-    name: '/',
-  })],
-  containers: [],
-  objects: [],
+const Classes = {
+  Client,
+  Shield,
+  Engine,
+  Thrusters,
+  Simulator,
+  AssetObject,
+  AssetFolder,
+  AssetContainer,
 };
 
-/**
-* DEFAULT VALUES
-* USED FOR DEBUGGING ONLY
-**/
+class Repo extends Entity {
+  constructor(params = {}) {
+    super(params);
+    setTimeout(this.init.bind(this), 0);
+  }
+  init() {
+    const snapshot = jsonfile.readFileSync('./snapshots/snapshot.json');
+    this.merge(snapshot);
+  }
+  merge(snapshot) {
+    // Initialize the snapshot with the object constructors
+    Object.keys(snapshot)
+    .forEach(key => {
+      if (key === 'snapshotVersion' ||
+        key === 'timestamp' ||
+        key === 'version' ||
+        key === '_eventsCount') return;
+        if (snapshot[key] instanceof Array) {
+          snapshot[key].forEach(obj => {
+            this[key].push(new Classes[obj.class](obj));
+          });
+        }
+      });
+  }
+  snapshot(save) {
+    const snapshot = super.snapshot();
+    // Todo: give it a timestamp
+    if (save) {
+      writeFile('./snapshots/snapshot.json', snapshot, (err) => {console.log(err);});
+    }
+    return snapshot;
+  }
+}
+class Events extends Repo {
+  constructor(params) {
+    super(params);
+    this.simulators = [];
+    this.clients = [];
+    this.systems = [];
+    this.assetFolders = [];
+    this.assetContainers = [];
+    this.assetObjects = [];
+  }
+  test(param) {
+    console.log(this);
+    this.digest('test', param);
+    this.emit('tested', param, this);
+  }
+  addSimulator(param) {
+    this.digest('addSimulator', param);
+    this.emit('addedSimulator', param, this);
+  }
+  addSystem(param) {
+    this.digest('addSystem', param);
+    this.emit('addedSystem', param, this);
+  }
+  speedChange(param) {
+    this.digest('speedChange', param);
+    this.emit('speedChanged', param, this);
+  }
+  addHeat(param) {
+    this.digest('addHeat', param);
+    this.emit('addedHeat', param, this);
+  }
+  addAssetFolder(param) {
+    this.digest('addAssetFolder', param);
+    this.emit('addedAssetFolder', param, this);
+  }
+  addAssetContainer(param) {
+    this.digest('addAssetContainer', param);
+    this.emit('addedAssetContainer', param, this);
+  }
+  addAssetObject(param) {
+    this.digest('addAssetObject', param);
+    this.emit('addedAssetObject', param, this);
+  }
+  removeAssetFolder(param) {
+    this.digest('removeAssetFolder', param);
+    this.emit('removedAssetFolder', param, this);
+  }
+  removeAssetContainer(param) {
+    this.digest('removeAssetContainer', param);
+    this.emit('removedAssetContainer', param, this);
+  }
+  removeAssetObject(param) {
+    this.digest('removeAssetObject', param);
+    this.emit('removedAssetObject', param, this);
+  }
+}
 
-simulators.push(new Simulator({
-  id: 'test',
-  name: 'Test',
-  layout: 'LayoutCorners',
-  alertLevel: 5,
-  timeline: [],
-}));
+const App = new Events();
 
-systems.push(new Shield({
-  simulatorId: 'test',
-  type: 'Shield',
-  position: 'full',
-  frequency: 257.4,
-  state: false,
-  integrity: 1,
-}));
+export default App;
 
-systems.push(new Engine({
-  simulatorId: 'test',
-  name: 'Impulse',
-  type: 'Engine',
-  on: false,
-  speeds: [{ text: '1/4 Impulse', number: 0.25 }, { text: '1/2 Impulse', number: 0.5 }, { text: '3/4 Impulse', number: 0.75 }, { text: 'Full Impulse', number: 1 }, { text: 'Destructive Impulse', number: 1.25 }],
-  speed: -1,
-  heat: 0,
-  heatRate: 0.005,
-  coolant: 0,
-}));
+App.on('addedSimulator', (param) => {
+  // TODO: Check to make sure the simulator doesn't exist
+  App.simulators.push(new Simulator(param));
+});
 
-systems.push(new Engine({
-  simulatorId: 'test',
-  name: 'Warp',
-  type: 'Engine',
-  on: false,
-  speeds: [{ text: 'Warp 1', number: 1 }, { text: 'Warp 2', number: 2 }, { text: 'Warp 3', number: 3 }, { text: 'Warp 4', number: 4 }, { text: 'Warp 5', number: 5 }, { text: 'Warp 6', number: 6 }, { text: 'Warp 7', number: 7 }, { text: 'Warp 8', number: 8 }, { text: 'Warp 9', number: 9 }, { text: 'Destructive Warp', number: 9.54 }],
-  speed: -1,
-  heat: 0,
-  heatRate: 0.02,
-  coolant: 0,
-}));
-
-systems.push(new Thruster({
-  simulatorId: 'test',
-}));
+App.on('addedSystem', (param) => {
+  // TODO: Check to make sure the system doesn't exist
+  App.systems.push(new Classes[param.type](param));
+});
+App.on('speedChanged', (param) => {
+  const system = App.systems.find((sys) => sys.id === param.id);
+  const engineIndex = App.systems.findIndex((sys) => sys.id === param.id) || -1;
+  system.setSpeed(param.speed, param.on);
+  pubsub.publish('speedChange', system);
+  // Now stop the other engines
+  // If speed is -1 (full stop), stop them all
+  App.systems.forEach((engine, index) => {
+    if (engine.simulatorId === App.systems[engineIndex].simulatorId && engine.type === 'Engine') {
+      if (index < engineIndex) {
+        if (param.speed === -1) {
+          engine.setSpeed(-1, false);
+        } else {
+          engine.setSpeed(engine.speeds.length, false);
+        }
+        pubsub.publish('speedChange', engine);
+      }
+      if (index > engineIndex) {
+        engine.setSpeed(-1, false);
+        pubsub.publish('speedChange', engine);
+      }
+    }
+  });
+});
+App.on('addedHeat', ({ id, heat }) => {
+  App.systems.forEach((system) => {
+    if (system.id === id) {
+      system.addHeat(heat);
+      pubsub.publish('heatChange', system);
+    }
+  });
+});
+App.on('addedAssetFolder', (params) => {
+  App.assetFolders.push(new AssetFolder(params));
+  pubsub.publish('assetFolderChange', App.assetFolders);
+});
+App.on('removedAssetFolder', (params) => {
+  App.assetFolders = App.assetFolders.filter((folder) => {
+    return (folder.id !== params.id);
+  });
+  pubsub.publish('assetFolderChange', App.assetFolders);
+});
+App.on('addedAssetContainer', (params) => {
+  App.assetContainers.push(new AssetContainer(params));
+  pubsub.publish('assetFolderChange', App.assetFolders);
+});
+App.on('removedAssetContainer', (params) => {
+  App.assetContainers = App.assetContainers.filter((container) => {
+    return (container.id !== params.id);
+  });
+  pubsub.publish('assetFolderChange', App.assetFolders);
+});
+App.on('addedAssetObject', (params) => {
+  App.assetObjects.push(new AssetObject(params));
+  pubsub.publish('assetFolderChange', App.assetFolders);
+});
+App.on('removedAssetObject', (params) => {
+  App.assetObjects = App.assetObjects.filter((object) => {
+    return (object.id !== params.id);
+  });
+  pubsub.publish('assetFolderChange', App.assetFolders);
+});

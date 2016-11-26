@@ -1,9 +1,9 @@
-import { systems } from '../../app.js';
+import App from '../../app.js';
 import { pubsub } from '../subscriptionManager.js';
 
 export const ThrustersQueries = {
   thrusters(root, { simulatorId }) {
-    return systems.filter(system => {
+    return App.systems.filter(system => {
       return system.type === 'Thruster' && system.simulatorId === simulatorId;
     });
   },
@@ -11,7 +11,7 @@ export const ThrustersQueries = {
 
 export const ThrustersMutations = {
   rotationUpdate(root, { id, rotation, on }) {
-    systems.forEach((system) => {
+    App.systems.forEach((system) => {
       if (system.id === id) {
         system.updateRotation(rotation, on);
       }
@@ -19,7 +19,7 @@ export const ThrustersMutations = {
     return '';
   },
   rotationSet(root, { id, rotation }) {
-    systems.forEach((system) => {
+    App.systems.forEach((system) => {
       if (system.id === id) {
         system.setRotation(rotation);
         pubsub.publish('rotationChange', system);
@@ -27,7 +27,7 @@ export const ThrustersMutations = {
     });
   },
   directionUpdate(root, { id, direction }) {
-    systems.forEach((system) => {
+    App.systems.forEach((system) => {
       if (system.id === id) {
         system.updateDirection(direction);
       }

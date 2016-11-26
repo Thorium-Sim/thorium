@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "description": "Minimal set of code to write a GraphQL server with Apollo graphql-tools",
   "scripts": {
-    "start": "nodemon ./server.js --exec babel-node",
+    "start": "nodemon ./server.js --ignore snapshots/ --exec babel-node",
+    "debug": "nodemon --debug ./server.js --exec babel-node",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ."
   },
@@ -25,31 +26,6 @@
     "url": "https://github.com/apollostack/apollo-starter-kit/issues"
   },
   "homepage": "https://github.com/apollostack/apollo-starter-kit#readme",
-  "dependencies": {
-    "body-parser": "^1.15.2",
-    "cors": "^2.8.1",
-    "eventstore": "^1.8.2",
-    "express": "4.13.4",
-    "graphql": "^0.7.0",
-    "graphql-redis-subscriptions": "^1.1.3",
-    "graphql-server-express": "^0.4.3",
-    "graphql-server-express-upload": "^1.0.0",
-    "graphql-subscriptions": "^0.2.0",
-    "graphql-tag": "^0.1.16",
-    "graphql-tools": "^0.8.0",
-    "install": "^0.8.2",
-    "kind-of": "^3.0.4",
-    "multer": "^1.2.0",
-    "node-fetch": "^1.6.3",
-    "node-fetch-polyfill": "^2.0.6",
-    "npm": "^3.10.9",
-    "realm": "^0.15.0",
-    "redis": "^2.6.2",
-    "request": "^2.78.0",
-    "s3": "^4.4.0",
-    "subscriptions-transport-ws": "^0.3.0",
-    "uuid": "^2.0.3"
-  },
   "devDependencies": {
     "babel-cli": "6.5.1",
     "babel-core": "^6.5.2",
@@ -64,7 +40,6 @@
     "eslint-config-airbnb": "^6.1.0",
     "eslint-plugin-import": "^1.1.0",
     "eslint-plugin-react": "^4.2.3",
-    "graphql": "^0.6.0",
     "nodemon": "^1.9.1"
   },
   "eslintConfig": {
@@ -77,10 +52,29 @@
       "no-use-before-define": 0,
       "arrow-body-style": 0,
       "dot-notation": 0,
-      "no-console": 0
+      "no-console": 0,
+      "indent": 0,
+      "import/namespace": 0
     },
     "env": {
       "mocha": true
     }
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cors": "^2.8.1",
+    "express": "^4.14.0",
+    "graphql": "^0.7.0",
+    "graphql-redis-subscriptions": "^1.1.3",
+    "graphql-server-express": "^0.4.3",
+    "graphql-server-express-upload": "^1.0.0",
+    "graphql-tag": "^1.0.0",
+    "graphql-tools": "^0.8.3",
+    "jsonfile": "^2.4.0",
+    "multer": "^1.2.0",
+    "s3": "^4.4.0",
+    "sourced": "^0.1.4",
+    "subscriptions-transport-ws": "^0.3.1",
+    "webpack": "^1.13.3"
   }
 }

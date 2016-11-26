@@ -8,6 +8,7 @@ export class AssetObject {
     this.fullPath = params.fullPath || null;
     this.url = params.url || null;
     this.simulatorId = params.simulatorId || null;
+    this.class = 'AssetObject';
   }
 }
 
@@ -17,6 +18,7 @@ export class AssetFolder {
     this.folderPath = props.folderPath || null;
     this.fullPath = props.fullPath || null;
     this.name = props.name || null;
+    this.class = 'AssetFolder';
   }
 }
 
@@ -27,5 +29,6 @@ export class AssetContainer {
     this.fullPath = props.fullPath || null;
     this.folderId = props.folderId || null;
     this.name = props.name || null;
+    this.class = 'AssetContainer';
   }
 }

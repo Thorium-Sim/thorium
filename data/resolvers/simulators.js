@@ -1,12 +1,9 @@
-import { simulators } from '../../app.js';
-import { es } from '../../store.js';
+import App from '../../app.js';
 
 export const SimulatorQueries = {
   simulators: (root, args, context, info) => {
-    es.getEventStream('simulator', (err, stream) => {
-      console.log(stream.events);
-    });
-    return simulators;
+   
+    return App.simulators;
   },
   flights() {
     return [];
@@ -17,17 +14,13 @@ export const SimulatorQueries = {
 };
 
 export const SimulatorMutations = {
+  test(root, args) {
+    App.test(args);
+    return '';
+  },
   addSimulator: (root, args) => {
     // simulators.push(new Simulator(args));
-    es.getEventStream({
-      aggregateId: 'myAggregateId',
-      aggregate: 'person',          // optional
-      context: 'hr',                // optional
-    }, (err, stream) => {
-      stream.addEvent({ my: 'event' });
-
-      stream.commit();
-    });
+   
     return [];
     // return simulators;
   },

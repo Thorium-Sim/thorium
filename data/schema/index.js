@@ -28,6 +28,7 @@ type Query {
 
 #Mutations definition
 type Mutation {
+  snapshot: String
   addSimulator(id: String, 
   name: String, 
   alertlevel: String, 

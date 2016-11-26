@@ -1,9 +1,9 @@
-import { systems } from '../../app.js';
+import App from '../../app.js';
 import { pubsub } from '../subscriptionManager.js';
 
 export const EngineQueries = {
   engines(root, { simulatorId }) {
-    return systems.filter(system => {
+    return App.systems.filter(system => {
       return system.type === 'Engine' && system.simulatorId === simulatorId;
     });
   },
@@ -11,43 +11,12 @@ export const EngineQueries = {
 
 export const EngineMutations = {
   setSpeed(root, { id, speed, on }) {
-    let engineIndex = -1;
-    const engines = systems.filter(sys => sys.type === 'Engine');
-    engines.forEach((system, index) => {
-      if (system.id === id) {
-        console.log('working');
-        engineIndex = index;
-        system.setSpeed(speed, on);
-        pubsub.publish('speedChange', system);
-      }
-    });
-    // Now stop the other engines
-    // If speed is -1 (full stop), stop them all
-    engines.forEach((system, index) => {
-      if (system.simulatorId === systems[engineIndex].simulatorId) {
-        if (index < engineIndex) {
-          if (speed === -1) {
-            system.setSpeed(-1, false);
-          } else {
-            system.setSpeed(system.speeds.length, false);
-          }
-          pubsub.publish('speedChange', system);
-        }
-        if (index > engineIndex) {
-          system.setSpeed(-1, false);
-          pubsub.publish('speedChange', system);
-        }
-      }
-    });
+    App.speedChange({ id, speed, on });
     return '';
   },
+  // This mutation applies to all systems
   addHeat(root, { id, heat }) {
-    systems.forEach((system) => {
-      if (system.id === id) {
-        system.addHeat(heat);
-        pubsub.publish('heatChange', system);
-      }
-    });
+    App.addHeat({ id, heat });
     return '';
   },
 };
