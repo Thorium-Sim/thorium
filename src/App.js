@@ -1,7 +1,8 @@
 import React from 'react';
 import guid from './helpers/guid';
 import App from './containers/App';
-import ApolloClient, { createNetworkInterface } from 'apollo-client';
+import ApolloClient from 'apollo-client';
+import createNetworkInterface from 'apollo-upload-network-interface'
 import { Client } from 'subscriptions-transport-ws';
 import { addTypenameToSelectionSet } from 'apollo-client/queries/queryTransform';
 import addGraphQLSubscriptions from './helpers/subscriptions.js';
@@ -10,8 +11,6 @@ import gql from 'graphql-tag';
 import './app.scss';
 
 const wsClient = new Client('ws://localhost:3002');
-
-
 
 //Set a clientId for the client
 let clientId = localStorage.getItem('thorium_clientId');
@@ -32,8 +31,6 @@ const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
   networkInterface,
   wsClient,
   );
-
-
 
 const client = new ApolloClient({
   networkInterface: networkInterfaceWithSubscriptions,
@@ -69,7 +66,6 @@ window.onbeforeunload = () => {
 })
  return null;
 }
-
 
 export default () => (<ApolloProvider client={client}>
   <App />

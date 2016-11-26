@@ -136,6 +136,10 @@ module.exports = {
         test: /\.json$/,
         loader: 'json'
       },
+      {
+        test: /\.scss$/,
+        loaders: ["style", "css", "sass"]
+      },
       // "file" loader makes sure those assets end up in the `build` folder.
       // When you `import` an asset, you get its filename.
       {
