@@ -44,6 +44,9 @@ export default class Transporters {
   }
   clearTargets() {
     this.state = 'Inactive';
+    this.destination = null;
+    this.charge = 0;
+    this.requestedTarget = 0;
     this.targets = [];
   }
   beginScan() {
