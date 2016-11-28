@@ -83,7 +83,6 @@ query getEngines($simulatorId: ID!){
       number
     }
     heat
-    coolant
     speed
     on
   }

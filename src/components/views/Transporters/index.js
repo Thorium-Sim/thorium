@@ -18,6 +18,10 @@ subscription TransportersSub{
       id
       icon
       moving
+      position {
+        x
+        y
+      }
     }
     requestedTarget
     destination
@@ -134,10 +138,10 @@ class Transporters extends Component {
   render() {
     // Assume that there is only one transporter
     let transporter = {};
+    console.log(this.props.data);
     if (!this.props.data.loading){
       transporter = this.props.data.transporters[0] || {};
     }
-    console.log(this.props.data);
     return (
       <Row>
       {
@@ -165,6 +169,10 @@ query GetTransporters($simulatorId: ID){
       id
       icon
       moving
+      position {
+        x
+        y
+      }
     }
     requestedTarget
     destination

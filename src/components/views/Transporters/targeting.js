@@ -24,12 +24,13 @@ export default class Target extends Component {
       <Row>
       <Col className="targetBox" sm={{size: 4, offset: 1}}>
       {this.props.targets.map((target) => {
+        console.log(target);
         return <img
         key={target.id}
         draggable="false"
         role="presentation"
         src={require('./crosstarget.svg')}
-        style={{position: 'absolute', left: `${target.coordinates.x * 90}%`, top: `${target.coordinates.y * 90}%`}} />
+        style={{position: 'absolute', left: `${target.position.x * 90}%`, top: `${target.position.y * 90}%`}} />
       })}
       <Draggable
       bounds=".targetBox"
@@ -38,7 +39,7 @@ export default class Target extends Component {
         const {x, y} = obj;
         let selectedTarget = null
         this.props.targets.forEach((target) => {
-          const {x: objX, y: objY} = this.props.targets[0].coordinates;
+          const {x: objX, y: objY} = target.position;
           if (Math.round((objX - x/clientWidth*1.11111) * 100) === 0 && Math.round((objY - y/clientHeight*1.11111) * 100) === 0){
             // The crosshair is on top of a target
             selectedTarget = target;

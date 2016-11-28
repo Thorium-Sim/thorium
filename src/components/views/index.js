@@ -10,9 +10,9 @@ import ShieldControl from './ShieldControl';
 import Transporters from './Transporters';
 
 import EngineControlCore from './EngineControl/core';
-
+import TransporterCore from './Transporters/core';
 const Views = {ShortRangeComm,LongRangeComm,AdminStations,AdminAssets,Thrusters,EngineControl,Navigation,Sensors, ShieldControl, Transporters};
 
-export const Cores = {EngineControlCore};
+export const Cores = {EngineControlCore, TransporterCore};
 
 export default Views;
