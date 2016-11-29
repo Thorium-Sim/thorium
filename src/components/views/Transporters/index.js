@@ -101,8 +101,19 @@ class Transporters extends Component {
       }
     })
   }
+  setCharge(transporter, charge){
+    this.props.client.mutate({
+      mutation: gql`
+      mutation SetTransportCharge($transporter: ID!, $charge: Float!){
+        setTransportCharge(transporter: $transporter, charge: $charge)
+      }`,
+      variables: {
+        transporter: transporter.id,
+        charge
+      }
+    })
+  }
   beginScan(transporter){
-    console.log(transporter);
     this.props.client.mutate({
       mutation: gql`
       mutation BeginTransportScan($transporter: ID!){
@@ -135,10 +146,21 @@ class Transporters extends Component {
       }
     })
   }
+  completeTransport(transporter, target){
+    this.props.client.mutate({
+      mutation: gql`
+      mutation CompleteTransport($transporter: ID!, $target: ID!){
+        completeTransport(transporter: $transporter, target: $target)
+      }`,
+      variables: {
+        transporter: transporter.id,
+        target: target.id,
+      }
+    })
+  }
   render() {
     // Assume that there is only one transporter
     let transporter = {};
-    console.log(this.props.data);
     if (!this.props.data.loading){
       transporter = this.props.data.transporters[0] || {};
     }
@@ -149,7 +171,7 @@ class Transporters extends Component {
         <div>
         {transporter.state === 'Inactive' && <TargetSelect beginScan={this.beginScan.bind(this, transporter)} updateTarget={this.updateTarget.bind(this, transporter)} updateDestination={this.updateDestination.bind(this, transporter)} target={transporter.requestedTarget} destination={transporter.destination} />}
         {transporter.state === 'Scanning' && <Scanning cancelScan={this.cancelScan.bind(this, transporter)} />}
-        {(transporter.state === 'Targeting' || transporter.state === 'Charging') && <Target cancelTransport={this.cancelTransport.bind(this, transporter)} targets={transporter.targets} />}
+        {(transporter.state === 'Targeting' || transporter.state === 'Charging') && <Target completeTransport={this.completeTransport.bind(this, transporter)} cancelTransport={this.cancelTransport.bind(this, transporter)} setCharge={this.setCharge.bind(this, transporter)} targets={transporter.targets} />}
         </div>
       }
       </Row>

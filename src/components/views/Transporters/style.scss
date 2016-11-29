@@ -32,7 +32,8 @@
   background-color: yellow;
   background-image: linear-gradient(0deg, transparent 0%, rgba(0,0,0,0.5) 24%, rgba(0,0,0,0.5) 30%, transparent 100%);
   background-size: 1px;
-  border: solid 2px #C0BC3D;
+  box-sizing: border-box;
+  border: solid 1px #C0BC3D;
   border-radius: 10px;
   margin-left: 10px;
   margin-right: 10px;

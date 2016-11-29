@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Draggable from 'react-draggable';
 import { Button, Row, Col } from 'reactstrap';
+import _ from 'lodash';
 
 const ChargeBar = (props) => {
   return (
@@ -13,6 +14,52 @@ export default class Target extends Component {
     super(props);
     this.state = {
       selectedTarget: null,
+      charge: props.charge || 0,
+      mouseCharge: 0
+    }
+    this.updateCharge = _.throttle(props.setCharge, 1000);
+  }
+  componentDidMount() {
+    this.tick();
+  }
+  tick(){
+    const {selectedTarget, mouseCharge, charge} = this.state;
+    if ((selectedTarget && mouseCharge > charge && mouseCharge < charge + 0.08) || charge > 0.98){
+      this.setState({
+        charge: charge + 0.0025,
+      })
+      if (charge > 1.5){
+        this.props.completeTransport(selectedTarget);
+        this.setState({
+          charge: 0.97,
+          mouseCharge: 0,
+          selectedTarget: null,
+        })
+      }
+    }
+    if ((!selectedTarget || mouseCharge < charge - 0.01 || mouseCharge > charge + 0.09) && charge < 0.98){
+      let chargeNum = charge - 0.0075;
+      if (chargeNum < 0) chargeNum = 0;
+      this.setState({
+        charge: chargeNum
+      })
+    }
+    if (selectedTarget && charge > 0){
+      if (charge > 1){
+        this.updateCharge(1);
+      } else {
+        this.updateCharge(charge);
+      }
+    }
+    window.requestAnimationFrame(this.tick.bind(this));
+  }
+  powerUp(e){
+    const {clientHeight: height} = e.currentTarget;
+    const {top} = e.currentTarget.getBoundingClientRect();
+    if (this.state.selectedTarget){
+      this.setState({
+        mouseCharge: Math.round(((height - (e.clientY - top)) / height) * 1000) / 1000,
+      })
     }
   }
   render(){
@@ -24,7 +71,6 @@ export default class Target extends Component {
       <Row>
       <Col className="targetBox" sm={{size: 4, offset: 1}}>
       {this.props.targets.map((target) => {
-        console.log(target);
         return <img
         key={target.id}
         draggable="false"
@@ -54,10 +100,10 @@ export default class Target extends Component {
       </Draggable>
 
       </Col>
-      <Col className="chargeBox" sm={{size: 4, offset: 2}}>
-      <ChargeBar charge={0.5} />
-      <ChargeBar charge={0.5} />
-      <ChargeBar charge={0.5} />
+      <Col onMouseMove={this.powerUp.bind(this)} className="chargeBox" sm={{size: 4, offset: 2}}>
+      <ChargeBar charge={this.state.charge < 1 ? this.state.charge : 1} />
+      <ChargeBar charge={this.state.charge < 1 ? this.state.charge : 1} />
+      <ChargeBar charge={this.state.charge < 1 ? this.state.charge : 1} />
       </Col>
       </Row>
       <Row>

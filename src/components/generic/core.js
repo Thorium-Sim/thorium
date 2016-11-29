@@ -19,6 +19,10 @@ export const OutputField = (props) => {
     border: 'solid 1px #2586D8',
     height: '16px',
   }
+  if (props.alert) {
+    style.backgroundColor = '#f00';
+    style.borderColor = '#a00';
+  }
   return <div style={style}>{props.children}</div>
 }
 

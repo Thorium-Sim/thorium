@@ -64,7 +64,7 @@ class TransporterCore extends Component {
       <p>Transporters</p>
       {this.props.data.loading ? <span>Loading...</span> : 
         <div>
-        <OutputField>{transporter.state}</OutputField>
+        <OutputField alert={transporter.state === 'Scanning'}>{transporter.state} {transporter.state === 'Charging' && `- ${Math.round(transporter.charge * 100)}%`}</OutputField>
         <OutputField>{transporter.requestedTarget}</OutputField>
         <OutputField>{transporter.destination}</OutputField>
         <InputField prompt="How many transporter targets?" onClick={this.targets.bind(this, transporter)}>{transporter.targets.length}</InputField>
