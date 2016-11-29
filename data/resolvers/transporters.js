@@ -34,8 +34,8 @@ export const TransporterMutations = {
     App.clearTransportTargets({ transporter });
     return '';
   },
-  setTransportCharge(_, { transporter }) {
-    App.setTransportCharge({ transporter });
+  setTransportCharge(_, { transporter, charge }) {
+    App.setTransportCharge({ transporter, charge });
     return '';
   },
   completeTransport(_, { transporter, target }) {

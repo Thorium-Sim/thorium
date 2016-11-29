@@ -56,7 +56,7 @@ export default class Transporters {
     this.state = 'Inactive';
   }
   setCharge(charge) {
-    if (charge > 0) {
+    if (charge > 0 && this.targets.length > 0) {
       this.state = 'Charging';
     }
     this.charge = charge;
@@ -68,5 +68,11 @@ export default class Transporters {
       return false;
     });
     this.targets.splice(targetIndex, 1);
+    this.state = 'Targeting';
+    if (this.targets.length === 0) {
+      this.state = 'Inactive';
+      this.requestedTarget = null;
+      this.destination = null;
+    }
   }
 }
