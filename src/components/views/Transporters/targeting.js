@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Draggable from 'react-draggable';
 import { Button, Row, Col } from 'reactstrap';
 import _ from 'lodash';
+import Measure from 'react-measure';
 
 const ChargeBar = (props) => {
   return (
@@ -63,56 +64,71 @@ export default class Target extends Component {
     }
   }
   render(){
+    let defaultPosition = {x: 0, y: 0};
+    if (document.querySelector('.targetBox')){
+      defaultPosition = {
+        x: document.querySelector('.targetBox').clientWidth / 2,
+        y: document.querySelector('.targetBox').clientHeight / 2
+      };
+    }
     return (
       <div>
       <Row>
       <h2 style={{color: 'yellow', width: '100%', textAlign: 'center', opacity:this.state.selectedTarget ? 1 : 0}}>Transport Possible</h2>
       </Row>
       <Row>
-      <Col className="targetBox" sm={{size: 4, offset: 1}}>
-      {this.props.targets.map((target) => {
-        return <img
-        key={target.id}
-        draggable="false"
-        role="presentation"
-        src={require('./crosstarget.svg')}
-        style={{position: 'absolute', left: `${target.position.x * 90}%`, top: `${target.position.y * 90}%`}} />
-      })}
-      <Draggable
-      bounds=".targetBox"
-      onDrag={(event,obj) => {
-        const {clientWidth, clientHeight} = event.target.parentElement;
-        const {x, y} = obj;
-        let selectedTarget = null
-        this.props.targets.forEach((target) => {
-          const {x: objX, y: objY} = target.position;
-          if (Math.round((objX - x/clientWidth*1.11111) * 100) === 0 && Math.round((objY - y/clientHeight*1.11111) * 100) === 0){
+      <Measure>
+      { dimensions => (
+        <Col className="targetBox" sm={{size: 4, offset: 1}}>
+        {this.props.targets.map((target) => {
+          return <img
+          key={target.id}
+          draggable="false"
+          role="presentation"
+          src={require('./crosstarget.svg')}
+          style={{position: 'absolute', left: `${target.position.x * 90}%`, top: `${target.position.y * 90}%`}} />
+        })}
+        <Draggable
+        bounds=".targetBox"
+        defaultPosition={{
+          x: dimensions.width / 2,
+          y: dimensions.height /2
+        }}
+        onDrag={(event,obj) => {
+          const {clientWidth, clientHeight} = event.target.parentElement;
+          const {x, y} = obj;
+          let selectedTarget = null
+          this.props.targets.forEach((target) => {
+            const {x: objX, y: objY} = target.position;
+            if (Math.round((objX - x/clientWidth*1.11111) * 100) === 0 && Math.round((objY - y/clientHeight*1.11111) * 100) === 0){
             // The crosshair is on top of a target
             selectedTarget = target;
           }
         })
-        this.setState({
-          selectedTarget,
-        })
-      }}
-      >
-      <img draggable="false" role="presentation" src={require('./crosshairs.svg')} />
-      </Draggable>
+          this.setState({
+            selectedTarget,
+          })
+        }}
+        >
+        <img draggable="false" role="presentation" src={require('./crosshairs.svg')} />
+        </Draggable>
 
-      </Col>
-      <Col onMouseMove={this.powerUp.bind(this)} className="chargeBox" sm={{size: 4, offset: 2}}>
-      <ChargeBar charge={this.state.charge < 1 ? this.state.charge : 1} />
-      <ChargeBar charge={this.state.charge < 1 ? this.state.charge : 1} />
-      <ChargeBar charge={this.state.charge < 1 ? this.state.charge : 1} />
-      </Col>
-      </Row>
-      <Row>
-      <Col sm={{size: 4, offset: 4}}>
-      <div style={{height: '30px'}} />
-      <Button block color={'warning'} onClick={this.props.cancelTransport}>Cancel Transport</Button>
-      </Col>
-      </Row>
-      </div>
-      );
+        </Col>)
+    }
+    </Measure>
+    <Col onMouseMove={this.powerUp.bind(this)} className="chargeBox" sm={{size: 4, offset: 2}}>
+    <ChargeBar charge={this.state.charge < 1 ? this.state.charge : 1} />
+    <ChargeBar charge={this.state.charge < 1 ? this.state.charge : 1} />
+    <ChargeBar charge={this.state.charge < 1 ? this.state.charge : 1} />
+    </Col>
+    </Row>
+    <Row>
+    <Col sm={{size: 4, offset: 4}}>
+    <div style={{height: '30px'}} />
+    <Button block color={'warning'} onClick={this.props.cancelTransport}>Cancel Transport</Button>
+    </Col>
+    </Row>
+    </div>
+    );
   }
 }

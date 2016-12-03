@@ -162,6 +162,7 @@ class Transporters extends Component {
     // Assume that there is only one transporter
     let transporter = {};
     if (!this.props.data.loading){
+      if (this.props.data.error) console.log(this.props.data.error);
       transporter = this.props.data.transporters[0] || {};
     }
     return (
