@@ -1,0 +1,79 @@
+$resolution: 20;
+$spinner-size: 60vh;
+$vortex-speed: 3.5s;
+$vortex-delay: 0.05s;
+$hue-speed: 7s;
+
+$rainbow: #00ccff #0044cc #00aaff blue indigo rebeccapurple;
+.transporterScan {
+  height: 60vh;
+  position: relative;
+  width: 100%;
+// Generate the classes
+@for $i from 1 through $resolution {
+  .ring_#{$i} {
+    animation: spin infinite $vortex-speed linear, rainbow infinite $hue-speed linear;
+    $size: ($spinner-size/$resolution) * $i;
+    animation-delay: $vortex-delay * $i;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -($size/2);
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: $size;
+    height: $size;
+    box-shadow: 0px 0px 30px 5px rgba(0,0,0,0.25);
+  }
+}
+}
+@keyframes rainbow {
+  @each $current-color in $rainbow {
+    $i: index($rainbow, $current-color);
+    #{(100/length($rainbow))*$i}% { 
+      border-color: $current-color;
+    }
+  }
+  100% {
+    border-color: transparent;
+  }
+}
+
+@-webkit-keyframes rainbow {
+  @each $current-color in $rainbow {
+    $i: index($rainbow, $current-color);
+    #{(100/length($rainbow))*$i}% { 
+      border-color: $current-color;
+    }
+  }
+  100% {
+    border-color: transparent;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// unrelated DOM styles
+body {
+  background-color: rgb(12, 12, 12);
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
