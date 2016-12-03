@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import gql from 'graphql-tag';
+import { graphql, withApollo } from 'react-apollo';
 import { Button, Row, Col, Card } from '../../generic';
 import './style.scss';
 import SensorGrid from './SensorGrid.js';
@@ -6,11 +8,12 @@ import SensorGrid from './SensorGrid.js';
 class Sensors extends Component{
 	constructor(props){
 		super(props);
-		this.state = {
+		this.state = {};
+		/*this.state = {
 			scanResults: props.data.sensors.scanResult,
 			processedData: props.data.sensors.processedData,
 			scanRequest: props.data.sensors.scanRequest,
-		};
+		};*/
 	}
 
 	_startScan() {
@@ -18,10 +21,10 @@ class Sensors extends Component{
 			scanning: true,
 			scanRequest: this.refs.scanRequest.value,
 		};
-		this.props.operationChannel.push("update",{table:"systems",filter:{simulatorId:this.props.params.simulatorId,name:'Sensors'},data:obj});
+		//this.props.operationChannel.push("update",{table:"systems",filter:{simulatorId:this.props.params.simulatorId,name:'Sensors'},data:obj});
 	}
 	_stopScan() {
-		this.props.operationChannel.push("update",{table:"systems",filter:{simulatorId:this.props.params.simulatorId,name:'Sensors'},data:{scanning:false}});
+		//this.props.operationChannel.push("update",{table:"systems",filter:{simulatorId:this.props.params.simulatorId,name:'Sensors'},data:{scanning:false}});
 	}
 	typeIn(text,chars,stateProp){
 		let currentState = this.state;
@@ -34,7 +37,7 @@ class Sensors extends Component{
 		}
 	}
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.data.sensors.scanResults !== this.state.scanResults){
+		/*if (nextProps.data.sensors.scanResults !== this.state.scanResults){
 			if (this.state.scanResults === undefined){
 				this.setState({
 					scanResults: nextProps.data.sensors.scanResults
@@ -51,7 +54,7 @@ class Sensors extends Component{
 			} else {
 				this.typeIn(nextProps.data.sensors.processedData,0,"processedData");
 			}
-		}
+		}*/
 	}
 	render() {
 		return (
@@ -72,7 +75,7 @@ class Sensors extends Component{
 			<Row>
 			<Col className="col-sm-12">
 			<div className="scanEntry">
-			{this.props.data.sensors.scanning ?
+			{/*this.props.data.sensors.scanning ?
 				<div>
 				<video ref={'ReactVideo'} autoPlay loop>
 				<source src={'/js/images/scansvid.mov'} type="video/mp4" />
@@ -84,7 +87,7 @@ class Sensors extends Component{
 				<textarea ref="scanRequest" className="form-control btn-block" rows="6">{this.state.scanRequest}</textarea>
 				<Button type="primary" className="btn-block" onClick={this._startScan.bind(this)} label="Begin Scan" />
 				</div>
-			}
+			*/}
 			</div>
 			</Col>
 			</Row>
@@ -157,4 +160,35 @@ class Sensors extends Component{
 	}
 }
 
-export default Sensors;
+const THRUSTER_QUERY = gql`
+query Thrusters($simulatorId: ID){
+  thrusters(simulatorId: $simulatorId){
+    id
+    direction {
+      x
+      y
+      z
+    }
+    rotation {
+      yaw
+      pitch
+      roll
+    }
+    rotationDelta {
+      yaw
+      pitch
+      roll
+    }
+    rotationRequired {
+      yaw
+      pitch
+      roll
+    }
+    manualThrusters
+  }
+}
+`;
+
+export default  graphql(THRUSTER_QUERY, {
+  options: (props) => ({ variables: { simulatorId: 'test' } }),
+})(withApollo(Sensors));
