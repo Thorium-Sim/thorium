@@ -2,13 +2,13 @@ export default `
 type Thruster {
   id: ID
   simulatorId: ID
-  direction: Direction
+  direction: Coordinates
   rotation: Rotation
   rotationDelta: Rotation
   rotationRequired: Rotation
   manualThrusters: Boolean
 }
-type Direction {
+type Coordinates {
   x: Float
   y: Float
   z: Float
@@ -19,8 +19,8 @@ type Rotation {
   roll: Float
 }
 input RotationInput {
-  yaw: Float,
-  pitch: Float,
+  yaw: Float
+  pitch: Float
   roll: Float
 }
 input DirectionInput {

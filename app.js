@@ -3,6 +3,7 @@ import Simulator from './data/classes/simulator';
 import Engine from './data/classes/engine';
 import Thrusters from './data/classes/thruster';
 import Client from './data/classes/client';
+import Transporters from './data/classes/transporters';
 import jsonfile from 'jsonfile';
 import { writeFile } from './helpers/json-format';
 import { Entity } from 'sourced';
@@ -14,6 +15,7 @@ const Classes = {
   Shield,
   Engine,
   Thrusters,
+  Transporters,
   Simulator,
   AssetObject,
   AssetFolder,
@@ -63,50 +65,79 @@ class Events extends Repo {
     this.assetContainers = [];
     this.assetObjects = [];
   }
+  handleEvent(param, pres, past) {
+    this.digest(pres, param);
+    this.emit(past, param, this);
+  }
   test(param) {
     console.log(this);
-    this.digest('test', param);
-    this.emit('tested', param, this);
+    this.handleEvent(param, 'test', 'tested');
   }
+
+  // Generic
   addSimulator(param) {
-    this.digest('addSimulator', param);
-    this.emit('addedSimulator', param, this);
+    this.handleEvent(param, 'addSimulator', 'addedSimulator');
   }
   addSystem(param) {
-    this.digest('addSystem', param);
-    this.emit('addedSystem', param, this);
+    this.handleEvent(param, 'addSystem', 'addedSystem');
   }
+
+  // Engines
   speedChange(param) {
-    this.digest('speedChange', param);
-    this.emit('speedChanged', param, this);
+    this.handleEvent(param, 'speedChange', 'speedChanged');
   }
   addHeat(param) {
-    this.digest('addHeat', param);
-    this.emit('addedHeat', param, this);
+    this.handleEvent(param, 'addHeat', 'addedHeat');
   }
+
+  // Transporters
+  // I know Setted isn't a word. Deal with it.
+  createTransporter(param) {
+    this.handleEvent(param, 'createTransporter', 'createdTransporter');
+  }
+  setTransportDestination(param) {
+    this.handleEvent(param, 'setTransportDestination', 'settedTransportDestination');
+  }
+  setTransportTarget(param) {
+    this.handleEvent(param, 'setTransportTarget', 'settedTransportTarget');
+  }
+  beginTransportScan(param) {
+    this.handleEvent(param, 'beginTransportScan', 'beganTransportScan');
+  }
+  cancelTransportScan(param) {
+    this.handleEvent(param, 'cancelTransportScan', 'canceledTransportScan');
+  }
+  clearTransportTargets(param) {
+    this.handleEvent(param, 'clearTransportTargets', 'clearedTransportTargets');
+  }
+  setTransportCharge(param) {
+    this.handleEvent(param, 'setTransportCharge', 'settedTransportCharge');
+  }
+  completeTransport(param) {
+    this.handleEvent(param, 'completeTransport', 'completedTransport');
+  }
+  setTransporterTargets(param) {
+    this.handleEvent(param, 'setTransporterTargets', 'settedTransporterTargets');
+  }
+
+  // Assets
   addAssetFolder(param) {
-    this.digest('addAssetFolder', param);
-    this.emit('addedAssetFolder', param, this);
+    this.handleEvent(param, 'addAssetFolder', 'addedAssetFolder');
   }
   addAssetContainer(param) {
-    this.digest('addAssetContainer', param);
-    this.emit('addedAssetContainer', param, this);
+    this.handleEvent(param, 'addAssetContainer', 'addedAssetContainer');
   }
   addAssetObject(param) {
-    this.digest('addAssetObject', param);
-    this.emit('addedAssetObject', param, this);
+    this.handleEvent(param, 'addAssetObject', 'addedAssetObject');
   }
   removeAssetFolder(param) {
-    this.digest('removeAssetFolder', param);
-    this.emit('removedAssetFolder', param, this);
+    this.handleEvent(param, 'removeAssetFolder', 'removedAssetFolder');
   }
   removeAssetContainer(param) {
-    this.digest('removeAssetContainer', param);
-    this.emit('removedAssetContainer', param, this);
+    this.handleEvent(param, 'removeAssetContainer', 'removedAssetContainer');
   }
   removeAssetObject(param) {
-    this.digest('removeAssetObject', param);
-    this.emit('removedAssetObject', param, this);
+    this.handleEvent(param, 'removeAssetObject', 'removedAssetObject');
   }
 }
 
@@ -114,15 +145,17 @@ const App = new Events();
 
 export default App;
 
+// Generic
 App.on('addedSimulator', (param) => {
   // TODO: Check to make sure the simulator doesn't exist
   App.simulators.push(new Simulator(param));
 });
-
 App.on('addedSystem', (param) => {
   // TODO: Check to make sure the system doesn't exist
   App.systems.push(new Classes[param.type](param));
 });
+
+// Engines
 App.on('speedChanged', (param) => {
   const system = App.systems.find((sys) => sys.id === param.id);
   const engineIndex = App.systems.findIndex((sys) => sys.id === param.id) || -1;
@@ -155,6 +188,64 @@ App.on('addedHeat', ({ id, heat }) => {
     }
   });
 });
+
+// Transporters
+App.on('createdTransporter', (params) => {
+  const transporter = new Transporters(params);
+  App.systems.push(transporter);
+  console.log(transporter);
+});
+App.on('removedTransporter', (params) => {
+  
+});
+App.on('settedTransportDestination', (params) => {
+  const transporter = App.systems.find((sys) => sys.id === params.transporter);
+  transporter.setDestination(params.destination);
+  pubsub.publish('transporterUpdate', transporter);
+});
+App.on('settedTransportTarget', (params) => {
+  const transporter = App.systems.find((sys) => sys.id === params.transporter);
+  transporter.setRequestedTarget(params.target);
+  pubsub.publish('transporterUpdate', transporter);
+});
+App.on('beganTransportScan', (params) => {
+  const transporter = App.systems.find((sys) => sys.id === params.transporter);
+  transporter.beginScan();
+  pubsub.publish('transporterUpdate', transporter);
+});
+App.on('canceledTransportScan', (params) => {
+  const transporter = App.systems.find((sys) => sys.id === params.transporter);
+  transporter.cancelScan();
+  transporter.clearTargets();
+  pubsub.publish('transporterUpdate', transporter);
+});
+App.on('clearedTransportTargets', (params) => {
+  const transporter = App.systems.find((sys) => sys.id === params.transporter);
+  transporter.clearTargets();
+  pubsub.publish('transporterUpdate', transporter);
+});
+App.on('settedTransportCharge', (params) => {
+  const transporter = App.systems.find((sys) => sys.id === params.transporter);
+  transporter.setCharge(params.charge);
+  pubsub.publish('transporterUpdate', transporter);
+});
+App.on('completedTransport', (params) => {
+  const transporter = App.systems.find((sys) => sys.id === params.transporter);
+  transporter.completeTransport(params.target);
+  pubsub.publish('transporterUpdate', transporter);
+});
+App.on('settedTransporterTargets', (params) => {
+  const transporter = App.systems.find((sys) => sys.id === params.transporter);
+  if (transporter.targets.length < params.targets) {
+    transporter.addTargets(params.targets - transporter.targets.length);
+  }
+  if (transporter.targets.length > params.targets) {
+    transporter.removeTargets(transporter.targets.length - params.targets);
+  }
+  pubsub.publish('transporterUpdate', transporter);
+});
+
+// Assets
 App.on('addedAssetFolder', (params) => {
   App.assetFolders.push(new AssetFolder(params));
   pubsub.publish('assetFolderChange', App.assetFolders);

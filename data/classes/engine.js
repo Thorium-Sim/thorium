@@ -12,7 +12,7 @@ export default class Engine {
     this.heat = params.heat || 0;
     this.heatRate = params.heatRate || 1;
     this.coolant = params.coolant || 0;
-    this.class = "Engine";
+    this.class = 'Engine';
   }
   setSpeed(speed, on) {
     this.speed = speed;

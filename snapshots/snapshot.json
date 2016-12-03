@@ -1,13 +1,14 @@
 {
-	"snapshotVersion": 7,
-	"timestamp": 1480115213008,
-	"version": 7,
-	"_eventsCount": 9,
+	"snapshotVersion": 250,
+	"timestamp": 1480185022988,
+	"version": 250,
+	"_eventsCount": 20,
 	"simulators": [
 		{
 			"id": "test",
 			"name": "Test",
 			"layout": "LayoutCorners",
+			"alertlevel": "5",
 			"timeline": [],
 			"class": "Simulator"
 		}
@@ -145,10 +146,21 @@
 				}
 			],
 			"speed": 3,
-			"heat": 0,
+			"heat": 14.940000000000035,
 			"heatRate": 0.02,
 			"coolant": 0,
 			"class": "Engine"
+		},
+		{
+			"id": "6fdc098f-d4b3-4bbf-a312-0f6b9bfc558e",
+			"simulatorId": "test",
+			"type": "Transporter",
+			"class": "Transporters",
+			"targets": [],
+			"requestedTarget": null,
+			"destination": null,
+			"charge": 0,
+			"state": "Inactive"
 		}
 	],
 	"assetFolders": [
