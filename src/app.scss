@@ -5,6 +5,9 @@
   max-width: 100%;
 }
 
+.clickable:hover {
+  cursor: pointer;
+}
 * {
   user-select: none;
   -moz-user-select: none;
