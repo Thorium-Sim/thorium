@@ -1,8 +1,8 @@
 {
-	"snapshotVersion": 250,
-	"timestamp": 1480185022988,
-	"version": 250,
-	"_eventsCount": 20,
+	"snapshotVersion": 1448,
+	"timestamp": 1480956937760,
+	"version": 1448,
+	"_eventsCount": 23,
 	"simulators": [
 		{
 			"id": "test",
@@ -146,7 +146,7 @@
 				}
 			],
 			"speed": 3,
-			"heat": 14.940000000000035,
+			"heat": 99.96000000000227,
 			"heatRate": 0.02,
 			"coolant": 0,
 			"class": "Engine"
@@ -229,6 +229,30 @@
 			"url": "https://s3.amazonaws.com/thorium-assets/3D/Texture/Simulator/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
+		}
+	],
+	"coreLayouts": [
+		{
+			"id": "9d21fa85-d919-4a39-a27e-23524adc1a03",
+			"simulatorId": "test",
+			"name": "default",
+			"x": 0,
+			"y": 0,
+			"w": 9,
+			"h": 3,
+			"component": "EngineControlCore",
+			"class": "CoreLayout"
+		},
+		{
+			"id": "f74dabc7-fd1b-4101-9ea2-18e6d6de30d2",
+			"simulatorId": "test",
+			"name": "default",
+			"x": 9,
+			"y": 0,
+			"w": 10,
+			"h": 5,
+			"component": "TransporterCore",
+			"class": "CoreLayout"
 		}
 	]
 }

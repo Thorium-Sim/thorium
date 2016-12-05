@@ -4,6 +4,7 @@ import Engine from './data/classes/engine';
 import Thrusters from './data/classes/thruster';
 import Client from './data/classes/client';
 import Transporters from './data/classes/transporters';
+import CoreLayout from './data/classes/coreLayout';
 import jsonfile from 'jsonfile';
 import { writeFile } from './helpers/json-format';
 import { Entity } from 'sourced';
@@ -20,6 +21,7 @@ const Classes = {
   AssetObject,
   AssetFolder,
   AssetContainer,
+  CoreLayout,
 };
 
 class Repo extends Entity {
@@ -64,6 +66,7 @@ class Events extends Repo {
     this.assetFolders = [];
     this.assetContainers = [];
     this.assetObjects = [];
+    this.coreLayouts = [];
   }
   handleEvent(param, pres, past) {
     this.digest(pres, param);
@@ -80,6 +83,17 @@ class Events extends Repo {
   }
   addSystem(param) {
     this.handleEvent(param, 'addSystem', 'addedSystem');
+  }
+  
+  // Core
+  updateCoreLayout(param){
+    this.handleEvent(param, 'updateCoreLayout', 'updatedCoreLayout');
+  }
+  addCoreLayout(param){
+    this.handleEvent(param, 'addCoreLayout', 'addedCoreLayout');
+  }
+  removeCoreLayout(param){
+    this.handleEvent(param, 'removeCoreLayout', 'removedCoreLayout');
   }
 
   // Engines
@@ -155,6 +169,31 @@ App.on('addedSystem', (param) => {
   App.systems.push(new Classes[param.type](param));
 });
 
+// Core
+App.on('updatedCoreLayout', (param) => {
+  param.layout.forEach(layout => {
+    const appLayout = App.coreLayouts.find(l => layout.id === l.id);
+    if (appLayout) {
+      appLayout.x = layout.x;
+      appLayout.y = layout.y;
+      appLayout.w = layout.w;
+      appLayout.h = layout.h;
+    }
+  });
+  console.log(App.coreLayouts);
+  
+  pubsub.publish('coreLayoutChange', App.coreLayouts);
+});
+App.on('addedCoreLayout', ({ layout }) => {
+  App.coreLayouts.push(new CoreLayout(layout));
+  pubsub.publish('coreLayoutChange', App.coreLayouts);
+});
+App.on('removedCoreLayout', (param) => {
+  App.coreLayouts = App.coreLayouts.filter((layout) => {
+    return (layout.id !== param.id);
+  });
+  pubsub.publish('coreLayoutChange', App.coreLayouts);
+});
 // Engines
 App.on('speedChanged', (param) => {
   const system = App.systems.find((sys) => sys.id === param.id);
@@ -196,7 +235,7 @@ App.on('createdTransporter', (params) => {
   console.log(transporter);
 });
 App.on('removedTransporter', (params) => {
-  
+
 });
 App.on('settedTransportDestination', (params) => {
   const transporter = App.systems.find((sys) => sys.id === params.transporter);

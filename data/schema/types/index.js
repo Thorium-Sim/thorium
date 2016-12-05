@@ -5,6 +5,7 @@ export engine from './engine';
 export thrusters from './thrusters';
 export assets from './assets';
 export transporters from './transporters';
+export coreLayout from './coreLayout';
 
 export const role = `
 type role {

@@ -5,6 +5,8 @@ import { SimulatorQueries, SimulatorMutations, SimulatorSubscriptions } from './
 import { ThrustersQueries, ThrustersMutations, ThrustersSubscriptions } from './thrusters';
 import { AssetsQueries, AssetsMutations, AssetsSubscriptions, AssetsTypes } from './assets';
 import { TransporterQueries, TransporterMutations, TransporterSubscriptions } from './transporters';
+import { CoreLayoutQueries, CoreLayoutMutations, CoreLayoutSubscriptions } from './coreLayouts';
+
 import App from '../../app';
 
 function parseJSONLiteral(ast) {
@@ -37,7 +39,8 @@ function parseJSONLiteral(ast) {
     EngineQueries,
     ThrustersQueries,
     AssetsQueries,
-    TransporterQueries
+    TransporterQueries,
+    CoreLayoutQueries
     );
 
   const mutationMap = Object.assign({
@@ -51,7 +54,8 @@ function parseJSONLiteral(ast) {
     EngineMutations,
     ThrustersMutations,
     AssetsMutations,
-    TransporterMutations
+    TransporterMutations,
+    CoreLayoutMutations
     );
 
   const subscriptionMap = Object.assign({},
@@ -61,7 +65,8 @@ function parseJSONLiteral(ast) {
     EngineSubscriptions,
     ThrustersSubscriptions,
     AssetsSubscriptions,
-    TransporterSubscriptions
+    TransporterSubscriptions,
+    CoreLayoutSubscriptions
     );
 
   export default Object.assign({
