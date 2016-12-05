@@ -39,7 +39,7 @@ class Lobby extends Component {
             presences: {},
             simulatorSelect: {},
             stationSelect: {},
-            activeTab: '4'
+            activeTab: '5'
         };
         this.toggleTab = this.toggleTab.bind(this);
         this.toggle = this.toggle.bind(this);
