@@ -84,18 +84,57 @@ class Events extends Repo {
   addSystem(param) {
     this.handleEvent(param, 'addSystem', 'addedSystem');
   }
-  
+
   // Core
-  updateCoreLayout(param){
+  updateCoreLayout(param) {
     this.handleEvent(param, 'updateCoreLayout', 'updatedCoreLayout');
   }
-  addCoreLayout(param){
+  addCoreLayout(param) {
     this.handleEvent(param, 'addCoreLayout', 'addedCoreLayout');
   }
-  removeCoreLayout(param){
+  removeCoreLayout(param) {
     this.handleEvent(param, 'removeCoreLayout', 'removedCoreLayout');
   }
-
+  // Sensors
+  addSensorsArray(param) {
+    this.handleEvent(param, 'addSensorsArray', 'addedSensorsArray');
+  }
+  removeSensorsArray(param) {
+    this.handleEvent(param, 'removeSensorsArray', 'removedSensorsArray');
+  }
+  sensorScanRequest(param) {
+    this.handleEvent(param, 'sensorScanRequest', 'sensorScanRequested');
+  }
+  sensorScanResult(param) {
+    this.handleEvent(param, 'sensorScanResult', 'sensorScanResulted');
+  }
+  processedData(param) {
+    this.handleEvent(param, 'processedData', 'processedDatad');
+  }
+  createSensorContact(param) {
+    this.handleEvent(param, 'createSensorContact', 'createdSensorContact');
+  }
+  moveSensorContact(param) {
+    this.handleEvent(param, 'moveSensorContact', 'movedSensorContact');
+  }
+  removeSensorContact(param) {
+    this.handleEvent(param, 'removeSensorContact', 'removedSensorContact');
+  }
+  destroySensorContact(param) {
+    this.handleEvent(param, 'destroyeSensorContact', 'destroyedSensorContact');
+  }
+  updateSensorContactInfrared(param) {
+    this.handleEvent(param, 'updateSensorContactInfrared', 'updatedSensorContactInfrared');
+  }
+  updateSensorContactIcon(param) {
+    this.handleEvent(param, 'updateSensorContactIcon', 'updatedSensorContactIcon');
+  }
+  updateSensorContactName(param) {
+    this.handleEvent(param, 'updateSensorContactName', 'updatedSensorContactName');
+  }
+  updateSensorContactPicture(param) {
+    this.handleEvent(param, 'updateSensorContactPicture', 'updatedSensorContactPicture');
+  }
   // Engines
   speedChange(param) {
     this.handleEvent(param, 'speedChange', 'speedChanged');
@@ -181,7 +220,7 @@ App.on('updatedCoreLayout', (param) => {
     }
   });
   console.log(App.coreLayouts);
-  
+
   pubsub.publish('coreLayoutChange', App.coreLayouts);
 });
 App.on('addedCoreLayout', ({ layout }) => {
@@ -194,6 +233,20 @@ App.on('removedCoreLayout', (param) => {
   });
   pubsub.publish('coreLayoutChange', App.coreLayouts);
 });
+// Sensors
+App.on('addedSensorsArray');
+App.on('removedSensorsArray');
+App.on('sensorScanRequested');
+App.on('sensorScanResulted');
+App.on('processedDatad');
+App.on('createdSensorContact');
+App.on('movedSensorContact');
+App.on('removedSensorContact');
+App.on('destroyedSensorContact');
+App.on('updatedSensorContactInfrared');
+App.on('updatedSensorContactIcon');
+App.on('updatedSensorContactName');
+App.on('updatedSensorContactPicture');
 // Engines
 App.on('speedChanged', (param) => {
   const system = App.systems.find((sys) => sys.id === param.id);
