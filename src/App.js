@@ -10,7 +10,7 @@ import { ApolloProvider } from 'react-apollo';
 import gql from 'graphql-tag';
 import './app.scss';
 
-const wsClient = new Client('ws://localhost:3002');
+const wsClient = new Client('ws://apple.local:3002');
 
 //Set a clientId for the client
 let clientId = localStorage.getItem('thorium_clientId');
@@ -21,7 +21,7 @@ if (!clientId) {
 }
 
 const networkInterface = createNetworkInterface({
-  uri: 'http://localhost:3001/graphql',
+  uri: 'http://apple.local:3001/graphql',
   opts: {
     mode: 'cors',
   }
