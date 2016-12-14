@@ -7,7 +7,6 @@ import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { printSchema } from 'graphql/utilities/schemaPrinter';
 import graphqlExpressUpload from 'graphql-server-express-upload';
 import multer from 'multer';
-
 import cors from 'cors';
 
 import './processes/engines';
@@ -40,6 +39,7 @@ new SubscriptionServer(
   );
 
 const graphQLServer = express();
+graphQLServer.use(require('express-status-monitor')());
 graphQLServer.use('*', cors());
 
 graphQLServer.use('/schema', (req, res) => {
