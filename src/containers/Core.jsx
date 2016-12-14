@@ -159,7 +159,6 @@ class Core extends Component {
       onLayoutChange={this.changeLayout.bind(this)}>
       {
         renderLayout.map(l => {
-          console.log('L',l);
           const Component = Cores[l.component];
           return (
             <div key={l.i}>

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {fabric} from 'fabric';
 
 class SensorGrid extends Component{
 	constructor(props){
@@ -9,7 +8,7 @@ class SensorGrid extends Component{
 		};
 	}
 	componentDidMount(){
-		const canvas = new fabric.Canvas('canvas');
+		/*const canvas = new fabric.Canvas('canvas');
 		let rect = new fabric.Rect({
 			top: 100,
 			left: 100,
@@ -21,7 +20,7 @@ class SensorGrid extends Component{
 		canvas.add(rect);
 		this.setState({
 			canvas:canvas
-		});
+		});*/
 	}
 	render(){
 		return <canvas id="canvas" style={{width: '100%', height: '100%'}} ref="sensorGrid"></canvas>;
