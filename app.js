@@ -76,7 +76,9 @@ class Events extends Repo {
     console.log(this);
     this.handleEvent(param, 'test', 'tested');
   }
-
+  
+  // TODO: Improve this section with Mix-ins
+  // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Mix-ins
   // Generic
   addSimulator(param) {
     this.handleEvent(param, 'addSimulator', 'addedSimulator');
@@ -198,6 +200,8 @@ const App = new Events();
 
 export default App;
 
+// TODO: Explore improving this section by splitting it out by system
+
 // Generic
 App.on('addedSimulator', (param) => {
   // TODO: Check to make sure the simulator doesn't exist
@@ -234,19 +238,45 @@ App.on('removedCoreLayout', (param) => {
   pubsub.publish('coreLayoutChange', App.coreLayouts);
 });
 // Sensors
-App.on('addedSensorsArray');
-App.on('removedSensorsArray');
-App.on('sensorScanRequested');
-App.on('sensorScanResulted');
-App.on('processedDatad');
-App.on('createdSensorContact');
-App.on('movedSensorContact');
-App.on('removedSensorContact');
-App.on('destroyedSensorContact');
-App.on('updatedSensorContactInfrared');
-App.on('updatedSensorContactIcon');
-App.on('updatedSensorContactName');
-App.on('updatedSensorContactPicture');
+App.on('addedSensorsArray', ({ simulatorId }) => {
+
+});
+App.on('removedSensorsArray', ({ id }) => {
+
+});
+App.on('sensorScanRequested', ({ id, request }) => {
+
+});
+App.on('sensorScanResulted', ({ id, result }) => {
+
+});
+App.on('processedDatad', ({ id, data }) => {
+
+});
+App.on('createdSensorContact', ({ id, contact }) => {
+
+});
+App.on('movedSensorContact', ({ id, contact }) => {
+
+});
+App.on('removedSensorContact', ({ id, contact }) => {
+
+});
+App.on('destroyedSensorContact', ({ id, contact }) => {
+
+});
+App.on('updatedSensorContactInfrared', ({ id, contact }) => {
+
+});
+App.on('updatedSensorContactIcon', ({ id, contact }) => {
+
+});
+App.on('updatedSensorContactName', ({ id, contact }) => {
+
+});
+App.on('updatedSensorContactPicture', ({ id, contact }) => {
+
+});
 // Engines
 App.on('speedChanged', (param) => {
   const system = App.systems.find((sys) => sys.id === param.id);

@@ -1,50 +1,73 @@
+import App from '../../app.js';
 
 export const TemplateQueries = {
-
+  sensors(root, { simulatorId }) {
+    return App.systems.filter(system => {
+      return system.type === 'Sensors' && system.simulatorId === simulatorId;
+    });
+  },
 };
 
 export const TemplateMutations = {
-  addSensorsArray(root, { }) {
-
+  addSensorsArray(root, { simulatorId }) {
+    App.addSensorsArray({ simulatorId });
+    return '';
   },
-  removeSensorsArray(root, { }) {
-
+  removeSensorsArray(root, { id }) {
+    App.removeSensorsArray({ id });
+    return '';
   },
-  sensorScanRequest(root, { }) {
-
+  sensorScanRequest(root, { id, request }) {
+    App.sensorScanRequest({ id, request });
+    return '';
   },
-  sensorScanResult(root, { }) {
-
+  sensorScanResult(root, { id, result }) {
+    App.sensorScanResult({ id, result });
+    return '';
   },
-  processedData(root, { }) {
-
+  processedData(root, { id, data }) {
+    App.processedData({ id, data });
+    return '';
   },
-  createSensorContact(root, { }) {
-
+  createSensorContact(root, { id, contact }) {
+    App.createSensorContact({ id, contact });
+    return '';
   },
-  moveSensorContact(root, { }) {
-
+  moveSensorContact(root, { id, contact }) {
+    App.moveSensorContact({ id, contact });
+    return '';
   },
-  removeSensorContact(root, { }) {
-
+  removeSensorContact(root, { id, contact }) {
+    App.removeSensorContact({ id, contact });
+    return '';
   },
-  destroySensorContact(root, { }) {
-
+  destroySensorContact(root, { id, contact }) {
+    App.destroySensorContact({ id, contact });
+    return '';
   },
-  updateSensorContactInfrared(root, { }) {
-
+  updateSensorContactInfrared(root, { id, contact }) {
+    App.updateSensorContactInfrared({ id, contact });
+    return '';
   },
-  updateSensorContactIcon(root, { }) {
-
+  updateSensorContactIcon(root, { id, contact }) {
+    App.updateSensorContactIcon({ id, contact });
+    return '';
   },
-  updateSensorContactName(root, { }) {
-
+  updateSensorContactName(root, { id, contact }) {
+    App.updateSensorContactName({ id, contact });
+    return '';
   },
-  updateSensorContactPicture(root, { }) {
-
+  updateSensorContactPicture(root, { id, contact }) {
+    App.updateSensorContactPicture({ id, contact });
+    return '';
   },
 };
 
 export const TemplateSubscriptions = {
-
+  sensorsUpdate(root) {
+    return root;
+  },
+  sensorContactUpdate(root, { sensorId }) {
+    return root.filter(contact => contact.sensorId === sensorId);
+  },
 };

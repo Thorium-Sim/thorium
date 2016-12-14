@@ -1,9 +1,12 @@
 import uuid from 'uuid';
 
+// TODO: Extend this with different types of sensor contacts
+// Ex: Ship has crew count, weapons, etc.
+
 export default class SensorContact {
   constructor(params) {
     this.id = params.id || uuid.v4();
-    this.simulatorId = params.simulatorId || null;
+    this.sensorId = params.sensorId || null;
     this.class = 'SensorContact';
     this.name = params.name || 'Contact';
     this.size = params.size || 1; // Float - Scale percentage
@@ -22,6 +25,23 @@ export default class SensorContact {
     };
     this.infrared = params.infrared || false;
     this.cloaked = params.cloaked || false;
+    this.destroyed = false;
   }
-
+  move(coordinates, speed, stop) {
+    this.speed = stop ? 0 : speed;
+    if (stop) { this.destination = this.location; }
+    this.destination = coordinates;
+  }
+  updateInfrared(tf) {
+    this.infrared = tf;
+  }
+  updateIcon(icon) {
+    this.icon = icon;
+  }
+  updateName(name) {
+    this.name = name;
+  }
+  updatePicture(picture) {
+    this.picture = picture;
+  }
 }
