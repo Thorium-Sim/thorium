@@ -9,6 +9,7 @@ import graphqlExpressUpload from 'graphql-server-express-upload';
 import multer from 'multer';
 import cors from 'cors';
 
+import './events';
 import './processes/engines';
 import './processes/thrusters';
 

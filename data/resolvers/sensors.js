@@ -1,6 +1,6 @@
 import App from '../../app.js';
 
-export const TemplateQueries = {
+export const SensorsQueries = {
   sensors(root, { simulatorId }) {
     return App.systems.filter(system => {
       return system.type === 'Sensors' && system.simulatorId === simulatorId;
@@ -8,7 +8,7 @@ export const TemplateQueries = {
   },
 };
 
-export const TemplateMutations = {
+export const SensorsMutations = {
   addSensorsArray(root, { simulatorId }) {
     App.addSensorsArray({ simulatorId });
     return '';
@@ -63,7 +63,7 @@ export const TemplateMutations = {
   },
 };
 
-export const TemplateSubscriptions = {
+export const SensorsSubscriptions = {
   sensorsUpdate(root) {
     return root;
   },

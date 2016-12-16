@@ -21,6 +21,11 @@ type SensorContact {
   cloaked: Boolean
   destroyed: Boolean
 }
+input CoordinatesInput {
+  x: Float
+  y: Float
+  z: Float
+}
 input SensorContactInput {
   id: ID
   name: String
@@ -28,8 +33,8 @@ input SensorContactInput {
   icon: String
   picture: String
   speed: Float
-  location: Coordinates
-  destination: Coordinates
+  location: CoordinatesInput
+  destination: CoordinatesInput
   infrared: Boolean
   cloaked: Boolean
   destroyed: Boolean
