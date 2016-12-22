@@ -1,21 +1,33 @@
 import React, {Component} from 'react';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
-import { Button, Row, Col, Card } from '../../generic';
+import { Button, Row, Col, Card } from 'reactstrap';
 import './style.scss';
 import SensorGrid from './SensorGrid.js';
+import Measure from 'react-measure';
 
 class Sensors extends Component{
 	constructor(props){
 		super(props);
-		this.state = {};
+		this.state = {
+			weaponsRangePulse: 0
+		};
 		/*this.state = {
 			scanResults: props.data.sensors.scanResult,
 			processedData: props.data.sensors.processedData,
 			scanRequest: props.data.sensors.scanRequest,
 		};*/
 	}
-
+	showWeaponsRange(){
+		this.setState({
+			weaponsRangePulse: 1
+		})
+		setTimeout(() => {
+			this.setState({
+				weaponsRangePulse: 0
+			})
+		},1000)
+	}
 	_startScan() {
 		let obj = {
 			scanning: true,
@@ -113,82 +125,78 @@ class Sensors extends Component{
 			</Card>
 			</Col>
 			</Row>
+			<Button onClick={this.showWeaponsRange.bind(this)} block>Show Weapons Range</Button>
 			</Col>
 			<Col className="col-sm-6 arrayContainer">
 			<div className="spacer"></div>
-			<div className="array">
-			<div className="circles">
-			<div></div>
-			<div></div>
-			</div>
-			<div className="lines">
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-			</div>
-			<SensorGrid />
-			</div>
-			</Col>
-			<Col className="col-sm-3 data">
-			<Row>
-			<Col className="col-sm-12 contactPictureContainer">
-			<div className="card contactPicture"></div>
-			</Col>
-			<Col className="col-sm-12 contactNameContainer">
-			<div className="card contactName">
-			USS Valiant
-			</div>
-			</Col>
-			</Row>
-			<Row>
-			<Col className="col-sm-12">
-			<h3>Processed Data</h3>
-			</Col>
-			<Col className="col-sm-12">
-			<Card className="processedData">
-			{this.state.processedData}
-			</Card>
-			</Col>
-			</Row>
-			</Col>
-			</Row>
-			</div>
-			);
+			<Measure>
+			{ dimensions => (
+				<div id="threeSensors" className='array'>
+				{(() => console.log(dimensions) /*This is apparently necessary*/)()}
+				{dimensions.width > 0 &&
+					<SensorGrid dimensions={dimensions} weaponsRangePulse={this.state.weaponsRangePulse} /> 
+				}
+				</div>
+				) }
+			</Measure>
+		</Col>
+		<Col className="col-sm-3 data">
+		<Row>
+		<Col className="col-sm-12 contactPictureContainer">
+		<div className="card contactPicture"></div>
+		</Col>
+		<Col className="col-sm-12 contactNameContainer">
+		<div className="card contactName">
+		USS Valiant
+		</div>
+		</Col>
+		</Row>
+		<Row>
+		<Col className="col-sm-12">
+		<h3>Processed Data</h3>
+		</Col>
+		<Col className="col-sm-12">
+		<Card className="processedData">
+		{this.state.processedData}
+		</Card>
+		</Col>
+		</Row>
+		</Col>
+		</Row>
+		</div>
+		);
 	}
 }
 
 const THRUSTER_QUERY = gql`
 query Thrusters($simulatorId: ID){
-  thrusters(simulatorId: $simulatorId){
-    id
-    direction {
-      x
-      y
-      z
-    }
-    rotation {
-      yaw
-      pitch
-      roll
-    }
-    rotationDelta {
-      yaw
-      pitch
-      roll
-    }
-    rotationRequired {
-      yaw
-      pitch
-      roll
-    }
-    manualThrusters
-  }
+	thrusters(simulatorId: $simulatorId){
+		id
+		direction {
+			x
+			y
+			z
+		}
+		rotation {
+			yaw
+			pitch
+			roll
+		}
+		rotationDelta {
+			yaw
+			pitch
+			roll
+		}
+		rotationRequired {
+			yaw
+			pitch
+			roll
+		}
+		manualThrusters
+	}
 }
 `;
 
 export default  graphql(THRUSTER_QUERY, {
-  options: (props) => ({ variables: { simulatorId: 'test' } }),
+	options: (props) => ({ variables: { simulatorId: 'test' } }),
 })(withApollo(Sensors));

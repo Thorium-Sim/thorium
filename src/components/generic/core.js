@@ -27,10 +27,10 @@ export const OutputField = (props) => {
 }
 
 export const TypingField = (props) => {
-  const style = {
+  const style = Object.assign(props.style, {
     backgroundColor: '#B4B4B4',
     border: 'solid 1px #434343',
     height: '16px',
-  }
+  })
   return <input type="text" onChange={props.onChange} onBlur={props.onBlur} style={style} defaultValue={props.value} />
 }
