@@ -45,20 +45,20 @@ export const SensorsMutations = {
     App.destroySensorContact({ id, contact });
     return '';
   },
-  updateSensorContactInfrared(root, { id, contact }) {
-    App.updateSensorContactInfrared({ id, contact });
+  updateSensorContact(root, { id, contact }) {
+    App.updateSensorContact({ id, contact });
     return '';
   },
-  updateSensorContactIcon(root, { id, contact }) {
-    App.updateSensorContactIcon({ id, contact });
+  createSensorArmyContact(root, { id, contact }) {
+    App.createSensorArmyContact({ id, contact });
     return '';
   },
-  updateSensorContactName(root, { id, contact }) {
-    App.updateSensorContactName({ id, contact });
+  removeSensorArmyContact(root, { id, contact }) {
+    App.removeSensorArmyContact({ id, contact });
     return '';
   },
-  updateSensorContactPicture(root, { id, contact }) {
-    App.updateSensorContactPicture({ id, contact });
+  updateSensorArmyContact(root, { id, contact }) {
+    App.updateSensorArmyContact({ id, contact });
     return '';
   },
 };
@@ -69,5 +69,31 @@ export const SensorsSubscriptions = {
   },
   sensorContactUpdate(root, { sensorId }) {
     return root.filter(contact => contact.sensorId === sensorId);
+  },
+};
+
+function getAsset(assetKey, simulatorId) {
+  let returnObj = App.assetObjects.find(obj => {
+    return (obj.simulatorId === simulatorId && obj.fullPath === assetKey);
+  });
+  if (returnObj) {
+    return returnObj.url;
+  }
+  returnObj = App.assetObjects.find(obj => {
+    return (obj.simulatorId === 'default' && obj.fullPath === assetKey);
+  });
+  if (returnObj) {
+    return returnObj.url;
+  }
+  return '';
+}
+export const SensorsTypes = {
+  SensorContact: {
+    iconUrl({ icon: assetKey, simulatorId }) {
+      return getAsset(assetKey, simulatorId);
+    },
+    pictureUrl({ picture: assetKey, simulatorId }) {
+      return getAsset(assetKey, simulatorId);
+    },
   },
 };

@@ -7,13 +7,16 @@ type Sensors {
   scanRequest: String
   processedData: String
   contacts: [SensorContact]
+  armyContacts: [SensorContact]
 }
 type SensorContact {
   id: ID
   name: String
   size: Float
   icon: String
+  iconUrl: String
   picture: String
+  pictureUrl: String
   speed: Float
   location: Coordinates
   destination: Coordinates

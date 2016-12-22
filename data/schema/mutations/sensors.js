@@ -8,8 +8,8 @@ createSensorContact(id: ID!, contact: SensorContactInput!): String
 moveSensorContact(id: ID!, contact: SensorContactInput!): String
 removeSensorContact(id: ID!, contact: SensorContactInput!): String
 destroySensorContact(id: ID!, contact: SensorContactInput!): String
-updateSensorContactInfrared(id: ID!, contact: SensorContactInput!): String
-updateSensorContactIcon(id: ID!, contact: SensorContactInput!): String
-updateSensorContactName(id: ID!, contact: SensorContactInput!): String
-updateSensorContactPicture(id: ID!, contact: SensorContactInput!): String
+updateSensorContact(id: ID!, contact: SensorContactInput!): String
+createSensorArmyContact(id: ID!, contact: SensorContactInput!): String
+removeSensorArmyContact(id: ID!, contact: SensorContactInput!): String
+updateSensorArmyContact(id: ID!, contact: SensorContactInput!): String
 `;

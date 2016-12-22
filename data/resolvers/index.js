@@ -6,7 +6,7 @@ import { ThrustersQueries, ThrustersMutations, ThrustersSubscriptions } from './
 import { AssetsQueries, AssetsMutations, AssetsSubscriptions, AssetsTypes } from './assets';
 import { TransporterQueries, TransporterMutations, TransporterSubscriptions } from './transporters';
 import { CoreLayoutQueries, CoreLayoutMutations, CoreLayoutSubscriptions } from './coreLayouts';
-import { SensorsQueries, SensorsMutations, SensorsSubscriptions } from './sensors';
+import { SensorsQueries, SensorsMutations, SensorsSubscriptions, SensorsTypes } from './sensors';
 
 import App from '../../app';
 
@@ -82,4 +82,5 @@ function parseJSONLiteral(ast) {
       __serialize: value => value,
       __parseValue: value => value,
     },
-  }, AssetsTypes);
+  }, AssetsTypes,
+  SensorsTypes);

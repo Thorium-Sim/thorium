@@ -1,8 +1,175 @@
 {
-	"snapshotVersion": 1448,
-	"timestamp": 1480956937760,
-	"version": 1448,
-	"_eventsCount": 23,
+	"snapshotVersion": 1,
+	"timestamp": 1482366233423,
+	"version": 1,
+	"_eventsCount": 36,
+	"coreLayouts": [
+		{
+			"id": "9d21fa85-d919-4a39-a27e-23524adc1a03",
+			"simulatorId": "test",
+			"name": "default",
+			"x": 0,
+			"y": 0,
+			"w": 9,
+			"h": 3,
+			"component": "EngineControlCore",
+			"class": "CoreLayout"
+		},
+		{
+			"id": "f74dabc7-fd1b-4101-9ea2-18e6d6de30d2",
+			"simulatorId": "test",
+			"name": "default",
+			"x": 9,
+			"y": 0,
+			"w": 10,
+			"h": 5,
+			"component": "TransporterCore",
+			"class": "CoreLayout"
+		},
+		{
+			"id": "4ec82f9c-76bc-4cd4-ba35-fe5e45262018",
+			"simulatorId": "test",
+			"name": "default",
+			"x": 19,
+			"y": 0,
+			"w": 21,
+			"h": 13,
+			"component": "SensorsGridCore",
+			"class": "CoreLayout"
+		}
+	],
+	"assetFolders": [
+		{
+			"id": "c7235894-5917-4c7d-bff9-095c8d5f523c",
+			"folderPath": null,
+			"fullPath": "/",
+			"name": "/",
+			"class": "AssetFolder"
+		},
+		{
+			"id": "2ada4dd3-8748-4f62-8f50-f265701d87d8",
+			"folderPath": "/",
+			"fullPath": "/3D",
+			"name": "3D",
+			"class": "AssetFolder"
+		},
+		{
+			"id": "406439c6-a177-4221-ac35-b3f60a1d15e0",
+			"folderPath": "/3D",
+			"fullPath": "/3D/Mesh",
+			"name": "Mesh",
+			"class": "AssetFolder"
+		},
+		{
+			"id": "6262ab8c-5cff-42f0-91b1-30c9192f0441",
+			"folderPath": "/3D",
+			"fullPath": "/3D/Texture",
+			"name": "Texture",
+			"class": "AssetFolder"
+		},
+		{
+			"id": "29eb3f02-1e32-4708-b6d1-bca3a4e77659",
+			"folderPath": "/",
+			"fullPath": "/Sensor Contacts",
+			"name": "Sensor Contacts",
+			"class": "AssetFolder"
+		},
+		{
+			"id": "bb31641b-2957-446c-bf30-9f7253114018",
+			"folderPath": "/Sensor Contacts",
+			"fullPath": "/Sensor Contacts/Icons",
+			"name": "Icons",
+			"class": "AssetFolder"
+		},
+		{
+			"id": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
+			"folderPath": "/Sensor Contacts",
+			"fullPath": "/Sensor Contacts/Pictures",
+			"name": "Pictures",
+			"class": "AssetFolder"
+		}
+	],
+	"assetContainers": [
+		{
+			"id": "5875f4b7-93d1-49aa-a334-ba4e5999c540",
+			"folderPath": "/3D/Mesh",
+			"fullPath": "/3D/Mesh/Simulator",
+			"folderId": "406439c6-a177-4221-ac35-b3f60a1d15e0",
+			"name": "Simulator",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "04d1a4d4-49dd-4bbb-9a90-cc2638bf0240",
+			"folderPath": "/3D/Texture",
+			"fullPath": "/3D/Texture/Simulator",
+			"folderId": "6262ab8c-5cff-42f0-91b1-30c9192f0441",
+			"name": "Simulator",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "fc58cd61-db63-43a5-ba97-45e34aef18e9",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/N",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "N",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "1f6c94a2-3e2e-4558-b0f5-4a44ba90767d",
+			"folderPath": "/Sensor Contacts/Pictures",
+			"fullPath": "/Sensor Contacts/Pictures/N",
+			"folderId": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
+			"name": "N",
+			"class": "AssetContainer"
+		}
+	],
+	"assetObjects": [
+		{
+			"id": "dcfa935a-8857-42d2-8632-ca024dc1ee59",
+			"containerPath": "/3D/Mesh",
+			"containerId": "5875f4b7-93d1-49aa-a334-ba4e5999c540",
+			"fullPath": "/3D/Mesh/Simulator",
+			"url": "https://s3.amazonaws.com/thorium-assets/3D/Mesh/Simulator/default.obj",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "ab640015-cf18-4de8-9600-7166c3485ab4",
+			"containerPath": "/3D/Texture",
+			"containerId": "04d1a4d4-49dd-4bbb-9a90-cc2638bf0240",
+			"fullPath": "/3D/Texture/Simulator",
+			"url": "https://s3.amazonaws.com/thorium-assets/3D/Texture/Simulator/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "3243664c-7299-4c43-a050-3d5f2ad09da9",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "fc58cd61-db63-43a5-ba97-45e34aef18e9",
+			"fullPath": "/Sensor Contacts/Icons/N",
+			"url": "https://s3.amazonaws.com/thorium-assets/Sensor%20Contacts/Icons/N/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "85c51339-9c39-4cab-af01-804cf3d0a651",
+			"containerPath": "/Sensor Contacts/Pictures",
+			"containerId": "1f6c94a2-3e2e-4558-b0f5-4a44ba90767d",
+			"fullPath": "/Sensor Contacts/Pictures/N",
+			"url": "https://s3.amazonaws.com/thorium-assets/Sensor%20Contacts/Pictures/N/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "b26725b1-7824-41e6-8700-dda84f77b51a",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "fc58cd61-db63-43a5-ba97-45e34aef18e9",
+			"fullPath": "/Sensor Contacts/Icons/N",
+			"url": "https://s3.amazonaws.com/thorium-assets/Sensor%20Contacts/Icons/N/test.svg",
+			"simulatorId": "test",
+			"class": "AssetObject"
+		}
+	],
 	"simulators": [
 		{
 			"id": "test",
@@ -11,17 +178,6 @@
 			"alertlevel": "5",
 			"timeline": [],
 			"class": "Simulator"
-		}
-	],
-	"clients": [
-		{
-			"id": "64afb5eb-dce1-dafe-168d-c85fe7eb0bda",
-			"flightId": null,
-			"simulatorId": null,
-			"station": null,
-			"loginName": null,
-			"loginState": false,
-			"class": "Client"
 		}
 	],
 	"systems": [
@@ -161,98 +317,37 @@
 			"destination": null,
 			"charge": 0,
 			"state": "Inactive"
-		}
-	],
-	"assetFolders": [
-		{
-			"id": "c7235894-5917-4c7d-bff9-095c8d5f523c",
-			"folderPath": null,
-			"fullPath": "/",
-			"name": "/",
-			"class": "AssetFolder"
 		},
 		{
-			"id": "2ada4dd3-8748-4f62-8f50-f265701d87d8",
-			"folderPath": "/",
-			"fullPath": "/3D",
-			"name": "3D",
-			"class": "AssetFolder"
-		},
-		{
-			"id": "406439c6-a177-4221-ac35-b3f60a1d15e0",
-			"folderPath": "/3D",
-			"fullPath": "/3D/Mesh",
-			"name": "Mesh",
-			"class": "AssetFolder"
-		},
-		{
-			"id": "6262ab8c-5cff-42f0-91b1-30c9192f0441",
-			"folderPath": "/3D",
-			"fullPath": "/3D/Texture",
-			"name": "Texture",
-			"class": "AssetFolder"
-		}
-	],
-	"assetContainers": [
-		{
-			"id": "5875f4b7-93d1-49aa-a334-ba4e5999c540",
-			"folderPath": "/3D/Mesh",
-			"fullPath": "/3D/Mesh/Simulator",
-			"folderId": "406439c6-a177-4221-ac35-b3f60a1d15e0",
-			"name": "Simulator",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "04d1a4d4-49dd-4bbb-9a90-cc2638bf0240",
-			"folderPath": "/3D/Texture",
-			"fullPath": "/3D/Texture/Simulator",
-			"folderId": "6262ab8c-5cff-42f0-91b1-30c9192f0441",
-			"name": "Simulator",
-			"class": "AssetContainer"
-		}
-	],
-	"assetObjects": [
-		{
-			"id": "dcfa935a-8857-42d2-8632-ca024dc1ee59",
-			"containerPath": "/3D/Mesh",
-			"containerId": "5875f4b7-93d1-49aa-a334-ba4e5999c540",
-			"fullPath": "/3D/Mesh/Simulator",
-			"url": "https://s3.amazonaws.com/thorium-assets/3D/Mesh/Simulator/default.obj",
-			"simulatorId": "default",
-			"class": "AssetObject"
-		},
-		{
-			"id": "ab640015-cf18-4de8-9600-7166c3485ab4",
-			"containerPath": "/3D/Texture",
-			"containerId": "04d1a4d4-49dd-4bbb-9a90-cc2638bf0240",
-			"fullPath": "/3D/Texture/Simulator",
-			"url": "https://s3.amazonaws.com/thorium-assets/3D/Texture/Simulator/default.png",
-			"simulatorId": "default",
-			"class": "AssetObject"
-		}
-	],
-	"coreLayouts": [
-		{
-			"id": "9d21fa85-d919-4a39-a27e-23524adc1a03",
+			"id": "c230c51b-c2fe-4c1b-9b19-5323cfd6b2b6",
 			"simulatorId": "test",
-			"name": "default",
-			"x": 0,
-			"y": 0,
-			"w": 9,
-			"h": 3,
-			"component": "EngineControlCore",
-			"class": "CoreLayout"
+			"type": "Sensors",
+			"class": "Sensors",
+			"scanResults": "",
+			"scanRequest": "",
+			"processedData": "",
+			"contacts": [],
+			"armyContacts": []
+		}
+	],
+	"clients": [
+		{
+			"id": "64afb5eb-dce1-dafe-168d-c85fe7eb0bda",
+			"flightId": null,
+			"simulatorId": null,
+			"station": null,
+			"loginName": null,
+			"loginState": false,
+			"class": "Client"
 		},
 		{
-			"id": "f74dabc7-fd1b-4101-9ea2-18e6d6de30d2",
-			"simulatorId": "test",
-			"name": "default",
-			"x": 9,
-			"y": 0,
-			"w": 10,
-			"h": 5,
-			"component": "TransporterCore",
-			"class": "CoreLayout"
+			"id": "a457ba53-35b7-ecd1-6bc2-3925ff4b4832",
+			"flightId": null,
+			"simulatorId": null,
+			"station": null,
+			"loginName": null,
+			"loginState": false,
+			"class": "Client"
 		}
 	]
 }

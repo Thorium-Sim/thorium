@@ -26,16 +26,16 @@ export default (Base) => class extends Base {
   destroySensorContact(param) {
     this.handleEvent(param, 'destroyeSensorContact', 'destroyedSensorContact');
   }
-  updateSensorContactInfrared(param) {
-    this.handleEvent(param, 'updateSensorContactInfrared', 'updatedSensorContactInfrared');
+  updateSensorContact(param) {
+    this.handleEvent(param, 'updateSensorContact', 'updatedSensorContact');
   }
-  updateSensorContactIcon(param) {
-    this.handleEvent(param, 'updateSensorContactIcon', 'updatedSensorContactIcon');
+  createSensorArmyContact(param) {
+    this.handleEvent(param, 'createSensorArmyContact', 'createdSensorArmyContact');
   }
-  updateSensorContactName(param) {
-    this.handleEvent(param, 'updateSensorContactName', 'updatedSensorContactName');
+  removeSensorArmyContact(param) {
+    this.handleEvent(param, 'removeSensorArmyContact', 'removedSensorArmyContact');
   }
-  updateSensorContactPicture(param) {
-    this.handleEvent(param, 'updateSensorContactPicture', 'updatedSensorContactPicture');
+  updateSensorArmyContact(param) {
+    this.handleEvent(param, 'updateSensorArmyContact', 'updatedSensorArmyContact');
   }
 };

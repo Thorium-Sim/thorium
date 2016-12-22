@@ -11,6 +11,7 @@ export default class Sensors {
     this.scanRequest = '';
     this.processedData = '';
     this.contacts = [];
+    this.armyContacts = [];
   }
   scanRequested(request) {
     this.scanResquest = request;
@@ -23,6 +24,29 @@ export default class Sensors {
   }
   createContact(contact) {
     this.contacts.push(new SensorContact(contact));
+  }
+  createArmyContact(contact) {
+    this.armyContacts.push(new SensorContact(contact));
+  }
+  updateContact({ id, icon, picture, size, name, infrared }) {
+    const myContact = this.contacts.find((contact) => contact.id === id);
+    if (icon) myContact.updateIcon(icon);
+    if (picture) myContact.updatePicture(picture);
+    if (size) myContact.updateSize(size);
+    if (name) myContact.updateName(name);
+    if (infrared) myContact.updateInfrared(infrared);
+  }
+  updateArmyContact({ id, icon, picture, size, name, infrared }) {
+    const myContact = this.armyContacts.find((contact) => contact.id === id);
+    if (icon) myContact.updateIcon(icon);
+    if (picture) myContact.updatePicture(picture);
+    if (size) myContact.updateSize(size);
+    if (name) myContact.updateName(name);
+    if (infrared) myContact.updateInfrared(infrared);
+  }
+  removeArmyContact({ id }) {
+    const contactIndex = this.armyContacts.findIndex((contact) => contact.id === id);
+    this.armyContacts.splice(contactIndex, 1);
   }
   moveContact({ id, destination, speed, stop }) {
     const myContact = this.contacts.find((contact) => contact.id === id);

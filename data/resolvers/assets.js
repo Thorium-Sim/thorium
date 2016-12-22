@@ -77,6 +77,7 @@ export const AssetsMutations = {
           Bucket: bucket,
           Key: key,
           ACL: 'public-read',
+          ContentType: file.mimetype,
         },
       };
       const uploader = client.uploadFile(params);
