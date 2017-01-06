@@ -6,6 +6,8 @@ type Sensors {
   scanResults: String
   scanRequest: String
   processedData: String
+  scanning: Boolean
+  power: Power
   contacts: [SensorContact]
   armyContacts: [SensorContact]
 }

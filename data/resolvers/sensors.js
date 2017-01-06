@@ -6,6 +6,12 @@ export const SensorsQueries = {
       return system.type === 'Sensors' && system.simulatorId === simulatorId;
     });
   },
+  sensorContacts(root, { sensorsId }) {
+    const sensors = App.systems.find(system => {
+      return system.type === 'Sensors' && system.id === sensorsId;
+    });
+    return sensors ? sensors.contacts : [];
+  },
 };
 
 export const SensorsMutations = {
@@ -27,6 +33,10 @@ export const SensorsMutations = {
   },
   processedData(root, { id, data }) {
     App.processedData({ id, data });
+    return '';
+  },
+  sensorScanCancel(root, { id }) {
+    App.sensorScanCancel({ id });
     return '';
   },
   createSensorContact(root, { id, contact }) {
@@ -65,6 +75,7 @@ export const SensorsMutations = {
 
 export const SensorsSubscriptions = {
   sensorsUpdate(root) {
+    console.log('UPDATE', root);
     return root;
   },
   sensorContactUpdate(root, { sensorId }) {

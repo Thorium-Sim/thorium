@@ -14,6 +14,9 @@ export default (Base) => class extends Base {
   processedData(param) {
     this.handleEvent(param, 'processedData', 'processedDatad');
   }
+  sensorScanCancel(param) {
+    this.handleEvent(param, 'sensorScanCancel', 'sensorScanCanceled');
+  }
   createSensorContact(param) {
     this.handleEvent(param, 'createSensorContact', 'createdSensorContact');
   }

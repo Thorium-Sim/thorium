@@ -8,6 +8,7 @@ type Transporter {
   destination: String
   charge: Float
   state: String
+  power: Power
 }
 type TransporterTarget {
   id: ID

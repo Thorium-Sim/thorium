@@ -1,22 +1,39 @@
-import uuid from 'uuid';
 import SensorContact from './sensorContact';
+import { System } from './generic';
 
-export default class Sensors {
+export default class Sensors extends System {
   constructor(params) {
-    this.id = params.id || uuid.v4();
-    this.simulatorId = params.simulatorId || null;
+    super(params);
     this.type = 'Sensors';
     this.class = 'Sensors';
-    this.scanResults = '';
-    this.scanRequest = '';
-    this.processedData = '';
+    this.scanResults = params.scanResults || '';
+    this.scanRequest = params.scanRequest || '';
+    this.processedData = params.processedData || '';
+    this.scanning = params.scanning || false;
+    // Initialize the contacts and army contacts;
     this.contacts = [];
     this.armyContacts = [];
+    if (params.contacts) {
+      params.contacts.forEach((contact) => {
+        this.contacts.push(new SensorContact(contact));
+      });
+    }
+    if (params.armyContacts) {
+      params.armyContacts.forEach((contact) => {
+        this.armyContacts.push(new SensorContact(contact));
+      });
+    }
   }
   scanRequested(request) {
+    this.scanning = true;
     this.scanResquest = request;
   }
+  // TODO: Add Scan Canceled
+  scanCanceled() {
+    this.scanning = false;
+  }
   scanResulted(result) {
+    this.scanning = false;
     this.scanResults = result;
   }
   processedDatad(data) {

@@ -1,9 +1,9 @@
 import uuid from 'uuid';
+import { System } from './generic';
 
-export default class Transporters {
+export default class Transporters extends System {
   constructor(params) {
-    this.id = params.id || uuid.v4();
-    this.simulatorId = params.simulatorId || null;
+    super(params);
     this.type = 'Transporter';
     this.class = 'Transporters';
     this.targets = params.targets || [];

@@ -27,6 +27,12 @@ App.on('processedDatad', ({ id, data }) => {
   system.processedDatad(data);
   pubsub.publish('sensorsUpdate', system);
 });
+App.on('sensorScanCanceled', ({ id }) => {
+  console.log('Canceled', id);
+  const system = App.systems.find((sys) => sys.id === id);
+  system.scanCanceled();
+  pubsub.publish('sensorsUpdate', system);
+});
 App.on('createdSensorContact', ({ id, contact }) => {
   const system = App.systems.find((sys) => sys.id === id);
   system.createContact(contact);

@@ -7,6 +7,7 @@ type Thruster {
   rotationDelta: Rotation
   rotationRequired: Rotation
   manualThrusters: Boolean
+  power: Power
 }
 type Coordinates {
   x: Float

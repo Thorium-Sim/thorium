@@ -1,18 +1,16 @@
-import uuid from 'uuid';
+import { System } from './generic';
 
-export default class Engine {
+export default class Engine extends System {
   constructor(params = {}) {
-    this.id = params.id || uuid.v4();
-    this.simulatorId = params.simulatorId || null;
-    this.name = params.name || null;
-    this.on = params.on || false;
+    super(params);
+    this.class = 'Engine';
     this.type = 'Engine';
+    this.on = params.on || false;
     this.speeds = params.speeds || [];
     this.speed = params.speed || -1;
     this.heat = params.heat || 0;
     this.heatRate = params.heatRate || 1;
     this.coolant = params.coolant || 0;
-    this.class = 'Engine';
   }
   setSpeed(speed, on) {
     this.speed = speed;

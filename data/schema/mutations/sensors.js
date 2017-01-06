@@ -4,6 +4,7 @@ removeSensorsArray(id: ID!): String
 sensorScanRequest(id: ID!, request: String!): String
 sensorScanResult(id: ID!, result: String!): String
 processedData(id: ID!, data: String!): String
+sensorScanCancel(id: ID!): String
 createSensorContact(id: ID!, contact: SensorContactInput!): String
 moveSensorContact(id: ID!, contact: SensorContactInput!): String
 removeSensorContact(id: ID!, contact: SensorContactInput!): String
