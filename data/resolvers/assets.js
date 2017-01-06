@@ -33,23 +33,24 @@ export const AssetsQueries = {
 
 export const AssetsMutations = {
   addAssetFolder(root, { name, folderPath, fullPath }) {
-    App.addAssetFolder({ name, folderPath, fullPath });
+    App.handleEvent({ name, folderPath, fullPath }, 'addAssetFolder', 'addedAssetFolder');
     return '';
   },
   removeAssetFolder(root, { id }) {
-    App.removeAssetFolder({ id });
+    App.handleEvent({ id }, 'removeAssetFolder', 'removedAssetFolder');
     return '';
   },
   addAssetContainer(root, { name, folderId, folderPath, fullPath }) {
-    App.addAssetContainer({ name, folderId, folderPath, fullPath });
+    App.handleEvent({ name, folderId, folderPath, fullPath },
+      'addAssetContainer', 'addedAssetContainer');
     return '';
   },
   removeAssetContainer(root, { id }) {
-    App.removeAssetContainer({ id });
+    App.handleEvent({ id }, 'removeAssetContainer', 'removedAssetContainer');
     return '';
   },
   removeAssetObject(root, { id }) {
-   App.removeAssetObject({ id });
+    App.handleEvent({ id }, 'removeAssetObject', 'removedAssetObject');
     // Remove from S3 too.
     // Get the object
     const obj = App.assetObjects.find((object) => object.id === id);
@@ -85,14 +86,14 @@ export const AssetsMutations = {
         // Delete the temp file
         fs.unlink(file.path, () => {});
         // Add to the event store
-        App.addAssetObject({
+        App.handleEvent({
           id: uuid.v4(),
           containerPath: folderPath,
           containerId,
           fullPath,
           url: s3.getPublicUrl('thorium-assets', key),
           simulatorId,
-        });
+        }, 'addAssetObject', 'addedAssetObject');
       });
     });
     return '';

@@ -9,13 +9,13 @@ export const CoreLayoutQueries = {
 
 export const CoreLayoutMutations = {
   updateCoreLayout(_, { layout }) {
-    App.updateCoreLayout({ layout });
+    App.handleEvent({ layout }, 'updateCoreLayout', 'updatedCoreLayout');
   },
   addCoreLayout(_, { layout }) {
-    App.addCoreLayout({ layout });
+    App.handleEvent({ layout }, 'addCoreLayout', 'addedCoreLayout');
   },
   removeCoreLayout(_, { id }) {
-    App.removeCoreLayout({ id });
+    App.handleEvent({ id }, 'removeCoreLayout', 'removedCoreLayout');
   },
 };
 

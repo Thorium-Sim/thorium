@@ -16,59 +16,59 @@ export const SensorsQueries = {
 
 export const SensorsMutations = {
   addSensorsArray(root, { simulatorId }) {
-    App.addSensorsArray({ simulatorId });
+    App.handleEvent({ simulatorId }, 'addSensorsArray', 'addedSensorsArray');
     return '';
   },
   removeSensorsArray(root, { id }) {
-    App.removeSensorsArray({ id });
+    App.handleEvent({ id }, 'removeSensorsArray', 'removedSensorsArray');
     return '';
   },
   sensorScanRequest(root, { id, request }) {
-    App.sensorScanRequest({ id, request });
+    App.handleEvent({ id, request }, 'sensorScanRequest', 'sensorScanRequested');
     return '';
   },
   sensorScanResult(root, { id, result }) {
-    App.sensorScanResult({ id, result });
+    App.handleEvent({ id, result }, 'sensorScanResult', 'sensorScanResulted');
     return '';
   },
   processedData(root, { id, data }) {
-    App.processedData({ id, data });
+    App.handleEvent({ id, data }, 'processedData', 'processedDatad');
     return '';
   },
   sensorScanCancel(root, { id }) {
-    App.sensorScanCancel({ id });
+    App.handleEvent({ id }, 'sensorScanCancel', 'sensorScanCanceled');
     return '';
   },
   createSensorContact(root, { id, contact }) {
-    App.createSensorContact({ id, contact });
+    App.handleEvent({ id, contact }, 'createSensorContact', 'createdSensorContact');
     return '';
   },
   moveSensorContact(root, { id, contact }) {
-    App.moveSensorContact({ id, contact });
+    App.handleEvent({ id, contact }, 'moveSensorContact', 'movedSensorContact');
     return '';
   },
   removeSensorContact(root, { id, contact }) {
-    App.removeSensorContact({ id, contact });
+    App.handleEvent({ id, contact }, 'removeSensorContact', 'removedSensorContact');
     return '';
   },
   destroySensorContact(root, { id, contact }) {
-    App.destroySensorContact({ id, contact });
+    App.handleEvent({ id, contact }, 'destroyeSensorContact', 'destroyedSensorContact');
     return '';
   },
   updateSensorContact(root, { id, contact }) {
-    App.updateSensorContact({ id, contact });
+    App.handleEvent({ id, contact }, 'updateSensorContact', 'updatedSensorContact');
     return '';
   },
   createSensorArmyContact(root, { id, contact }) {
-    App.createSensorArmyContact({ id, contact });
+    App.handleEvent({ id, contact }, 'createSensorArmyContact', 'createdSensorArmyContact');
     return '';
   },
   removeSensorArmyContact(root, { id, contact }) {
-    App.removeSensorArmyContact({ id, contact });
+    App.handleEvent({ id, contact }, 'removeSensorArmyContact', 'removedSensorArmyContact');
     return '';
   },
   updateSensorArmyContact(root, { id, contact }) {
-    App.updateSensorArmyContact({ id, contact });
+    App.handleEvent({ id, contact }, 'updateSensorArmyContact', 'updatedSensorArmyContact');
     return '';
   },
 };
