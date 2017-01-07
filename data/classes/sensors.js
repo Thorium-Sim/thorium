@@ -26,7 +26,7 @@ export default class Sensors extends System {
   }
   scanRequested(request) {
     this.scanning = true;
-    this.scanResquest = request;
+    this.scanRequest = request;
   }
   // TODO: Add Scan Canceled
   scanCanceled() {

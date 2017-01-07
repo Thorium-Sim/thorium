@@ -75,7 +75,6 @@ export const SensorsMutations = {
 
 export const SensorsSubscriptions = {
   sensorsUpdate(root) {
-    console.log('UPDATE', root);
     return root;
   },
   sensorContactUpdate(root, { sensorId }) {
