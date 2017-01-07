@@ -6,17 +6,77 @@ import './style.scss';
 import SensorGrid from './SensorGrid.js';
 import Measure from 'react-measure';
 
+const SENSOR_SUB = gql`
+subscription SensorsChanged {
+	sensorsUpdate {
+		id
+		simulatorId
+		scanResults
+		scanRequest
+		processedData
+		scanning
+	}
+}`;
+
 class Sensors extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
 			weaponsRangePulse: 0
 		};
-		/*this.state = {
-			scanResults: props.data.sensors.scanResult,
-			processedData: props.data.sensors.processedData,
-			scanRequest: props.data.sensors.scanRequest,
-		};*/
+		this.sensorsSubscription = null;
+		this.state = {
+			scanResults: '',
+			processedData: '',
+			scanRequest: '',
+		};
+	}
+	componentWillReceiveProps(nextProps) {
+		if (!this.sensorsSubscription && !nextProps.data.loading) {
+			this.sensorsSubscription = nextProps.data.subscribeToMore({
+				document: SENSOR_SUB,
+				updateQuery: (previousResult, {subscriptionData}) => {
+					previousResult.sensors = previousResult.sensors.map(sensor => {
+						if (sensor.id === subscriptionData.data.sensorsUpdate.id){
+							return subscriptionData.data.sensorsUpdate;
+						} 
+						return sensor;
+					})
+					return previousResult;
+				},
+			});
+		}
+		const nextSensors = nextProps.data.sensors[0];
+		if (!nextProps.data.loading){
+			if (this.props.data.loading){
+				//First time load
+				this.setState({
+					scanResults:nextSensors.scanResults,
+					processedData:nextSensors.processedData,
+					scanRequest:nextSensors.scanRequest,
+				})
+			} else {
+				//Every other load
+				if (nextSensors.scanResults !== this.state.scanResults){
+					if (this.state.scanResults === undefined){
+						this.setState({
+							scanResults: nextSensors.scanResults
+						});
+					} else {
+						this.typeIn(nextSensors.scanResults,0,"scanResults");
+					}
+				}
+				if (nextSensors.processedData !== this.state.processedData){
+					if (this.state.scanResults === undefined){
+						this.setState({
+							processedData: nextSensors.processedData
+						});
+					} else {
+						this.typeIn(nextSensors.processedData,0,"processedData");
+					}
+				}
+			}
+		}
 	}
 	showWeaponsRange(){
 		this.setState({
@@ -30,13 +90,28 @@ class Sensors extends Component{
 	}
 	_startScan() {
 		let obj = {
-			scanning: true,
-			scanRequest: this.refs.scanRequest.value,
+			id: this.props.data.sensors[0].id,
+			request: this.refs.scanRequest.value,
 		};
-		//this.props.operationChannel.push("update",{table:"systems",filter:{simulatorId:this.props.params.simulatorId,name:'Sensors'},data:obj});
+		this.props.client.mutate({
+			mutation: gql`
+			mutation SensorScanRequest($id: ID!, $request:String!){
+				sensorScanRequest(id:$id, request:$request)
+			}`,
+			variables: obj
+		})
 	}
 	_stopScan() {
-		//this.props.operationChannel.push("update",{table:"systems",filter:{simulatorId:this.props.params.simulatorId,name:'Sensors'},data:{scanning:false}});
+		let obj = {
+			id: this.props.data.sensors[0].id,
+		};
+		this.props.client.mutate({
+			mutation: gql`
+			mutation CancelScan($id: ID!){
+				sensorScanCancel(id:$id)
+			}`,
+			variables: obj
+		})
 	}
 	typeIn(text,chars,stateProp){
 		let currentState = this.state;
@@ -48,29 +123,13 @@ class Sensors extends Component{
 			}
 		}
 	}
-	componentWillReceiveProps(nextProps) {
-		/*if (nextProps.data.sensors.scanResults !== this.state.scanResults){
-			if (this.state.scanResults === undefined){
-				this.setState({
-					scanResults: nextProps.data.sensors.scanResults
-				});
-			} else {
-				this.typeIn(nextProps.data.sensors.scanResults,0,"scanResults");
-			}
-		}
-		if (nextProps.data.sensors.processedData !== this.state.processedData){
-			if (this.state.scanResults === undefined){
-				this.setState({
-					processedData: nextProps.data.sensors.processedData
-				});
-			} else {
-				this.typeIn(nextProps.data.sensors.processedData,0,"processedData");
-			}
-		}*/
-	}
 	render() {
+		if (this.props.data.error) console.error(this.props.data.error);
+		const sensors = !this.props.data.loading ? this.props.data.sensors[0] : {armyContacts: []}
 		return (
 			<div className="cardSensors">
+			{        this.props.data.loading ? 'Loading...' : 
+			<div>
 			<Row>
 			<Col className="col-sm-3 scans">
 			<Row>
@@ -87,19 +146,19 @@ class Sensors extends Component{
 			<Row>
 			<Col className="col-sm-12">
 			<div className="scanEntry">
-			{/*this.props.data.sensors.scanning ?
+			{this.props.data.sensors[0].scanning ?
 				<div>
 				<video ref={'ReactVideo'} autoPlay loop>
 				<source src={'/js/images/scansvid.mov'} type="video/mp4" />
 				</video>
-				<Button type="danger" className="btn-block" onClick={this._stopScan.bind(this)} label="Cancel Scan" />
+				<Button color="danger" block onClick={this._stopScan.bind(this)}>Cancel Scan</Button>
 				</div>
 				:
 				<div>
-				<textarea ref="scanRequest" className="form-control btn-block" rows="6">{this.state.scanRequest}</textarea>
-				<Button type="primary" className="btn-block" onClick={this._startScan.bind(this)} label="Begin Scan" />
+				<textarea ref="scanRequest" className="form-control btn-block" rows="6" defaultValue={this.state.scanRequest} />
+				<Button color="primary" block onClick={this._startScan.bind(this)}>Begin Scan</Button>
 				</div>
-			*/}
+			}
 			</div>
 			</Col>
 			</Row>
@@ -134,69 +193,54 @@ class Sensors extends Component{
 				<div id="threeSensors" className='array'>
 				{(() => console.log(dimensions) /*This is apparently necessary*/)()}
 				{dimensions.width > 0 &&
-					<SensorGrid dimensions={dimensions} weaponsRangePulse={this.state.weaponsRangePulse} /> 
+					<SensorGrid sensor={sensors.id} dimensions={dimensions} weaponsRangePulse={this.state.weaponsRangePulse} /> 
 				}
 				</div>
 				) }
 			</Measure>
-		</Col>
-		<Col className="col-sm-3 data">
-		<Row>
-		<Col className="col-sm-12 contactPictureContainer">
-		<div className="card contactPicture"></div>
-		</Col>
-		<Col className="col-sm-12 contactNameContainer">
-		<div className="card contactName">
-		USS Valiant
-		</div>
-		</Col>
-		</Row>
-		<Row>
-		<Col className="col-sm-12">
-		<h3>Processed Data</h3>
-		</Col>
-		<Col className="col-sm-12">
-		<Card className="processedData">
-		{this.state.processedData}
-		</Card>
-		</Col>
-		</Row>
-		</Col>
-		</Row>
+			</Col>
+			<Col className="col-sm-3 data">
+			<Row>
+			<Col className="col-sm-12 contactPictureContainer">
+			<div className="card contactPicture"></div>
+			</Col>
+			<Col className="col-sm-12 contactNameContainer">
+			<div className="card contactName">
+			USS Valiant
+			</div>
+			</Col>
+			</Row>
+			<Row>
+			<Col className="col-sm-12">
+			<h3>Processed Data</h3>
+			</Col>
+			<Col className="col-sm-12">
+			<Card className="processedData">
+			{this.state.processedData}
+			</Card>
+			</Col>
+			</Row>
+			</Col>
+			</Row>
+			</div>
+		}
 		</div>
 		);
 	}
 }
 
-const THRUSTER_QUERY = gql`
-query Thrusters($simulatorId: ID){
-	thrusters(simulatorId: $simulatorId){
+const SENSOR_QUERY = gql`
+query GetSensors($simulatorId: ID){
+	sensors (simulatorId: $simulatorId){
 		id
-		direction {
-			x
-			y
-			z
-		}
-		rotation {
-			yaw
-			pitch
-			roll
-		}
-		rotationDelta {
-			yaw
-			pitch
-			roll
-		}
-		rotationRequired {
-			yaw
-			pitch
-			roll
-		}
-		manualThrusters
+		simulatorId
+		scanResults
+		scanRequest
+		scanning
+		processedData
 	}
-}
-`;
+}`;
 
-export default  graphql(THRUSTER_QUERY, {
+export default  graphql(SENSOR_QUERY, {
 	options: (props) => ({ variables: { simulatorId: 'test' } }),
 })(withApollo(Sensors));

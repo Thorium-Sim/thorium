@@ -13,24 +13,25 @@ export const InputField = (props) => {
   return <div onClick={onClick} style={style}>{props.children}</div>
 }
 
-export const OutputField = (props) => {
-  const style = {
+export const OutputField = ({style = {}, children, alert}) => {
+  const compStyle = Object.assign({
     backgroundColor: '#188EFB',
     border: 'solid 1px #2586D8',
     height: '16px',
+  }, style)
+  if (alert) {
+    compStyle.backgroundColor = '#f00';
+    compStyle.borderColor = '#a00';
   }
-  if (props.alert) {
-    style.backgroundColor = '#f00';
-    style.borderColor = '#a00';
-  }
-  return <div style={style}>{props.children}</div>
+  return <div style={compStyle}>{children}</div>
 }
 
-export const TypingField = (props) => {
-  const style = Object.assign(props.style, {
+export const TypingField = ({style = {}, onChange, onBlur, value}) => {
+  const compStyle = Object.assign({
     backgroundColor: '#B4B4B4',
     border: 'solid 1px #434343',
     height: '16px',
-  })
-  return <input type="text" onChange={props.onChange} onBlur={props.onBlur} style={style} defaultValue={props.value} />
+    resize: 'none',
+  }, style)
+  return <textarea type="text" onChange={onChange} onBlur={onBlur} style={compStyle} defaultValue={value} />
 }

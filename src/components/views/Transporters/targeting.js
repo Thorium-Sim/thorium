@@ -64,13 +64,6 @@ export default class Target extends Component {
     }
   }
   render(){
-    let defaultPosition = {x: 0, y: 0};
-    if (document.querySelector('.targetBox')){
-      defaultPosition = {
-        x: document.querySelector('.targetBox').clientWidth / 2,
-        y: document.querySelector('.targetBox').clientHeight / 2
-      };
-    }
     return (
       <div>
       <Row>

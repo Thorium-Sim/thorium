@@ -65,6 +65,7 @@ $color: $alert5;
 		backdrop-filter: blur(10px);
 		box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
 		color: white;
+		padding: 10px;
 	}
 	.well{
 		border: 1px solid #9C9DA0;
@@ -143,10 +144,18 @@ $color: $alert5;
 		-webkit-backdrop-filter: blur(10px);
 		box-shadow: 0px 0px 5px rgba(255,255,255,.75), 5px 5px 10px rgba(0, 0, 0, 0.3);
 		margin: 0 0 10px 0; 
+		transition: all 0.5s ease;
 	}
 	input[type="text"]:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="password"]:focus, textarea:focus, textarea:focus {
 		box-shadow: 0px 0px 5px $alert5, 5px 5px 10px rgba(0, 0, 0, 0.3);
+		color: #fff;
+		border: 0px solid rgba(255,255,255,0.5); 
+		background-color: rgba(255,255,255,0.05);
 		transition: all 0.5s ease;
+		outline: none;
+	}
+	.btn {
+		outline: none;
 	}
 	.textbox{
 		box-shadow: rgba(255, 255, 255, 0.74902) 0px 0px 5px 0px, 5px 5px 10px rgba(0, 0, 0, 0.3);
