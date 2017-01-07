@@ -80,7 +80,11 @@ class GridCore extends Component {
           <div id="threeSensors" className='array' style={{position:'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
           {(() => console.log(dimensions) /*This is apparently necessary*/)()}
           {dimensions.width > 0 &&
-            <SensorGrid sensor={sensors.id} dimensions={dimensions} /> 
+            <SensorGrid
+            sensor={sensors.id}
+            dimensions={dimensions}
+            hoverContact={() => {}}
+            /> 
           }
           </div>
           ) }

@@ -9,6 +9,8 @@ import svgMesh3d from 'svg-mesh-3d';
 import MouseInput from '../../../helpers/threeMouseInput';
 
 const createGeom = require('three-simplicial-complex')(THREE)
+const dragPlane = new THREE.Plane();
+const backVector = new THREE.Vector3(0, 0, -1);
 
 function degtorad(deg){
   return deg *(Math.PI/180);
@@ -51,10 +53,10 @@ class SensorGrid extends Component{
       camera: null,
       hovering: false,
       dragging: false,
-      contactGeometries: {}
+      contacts: {},
+      draggingContact:{}
     }
     this.contacts = [];
-    this.asyncCount = null;
     this._cursor = {
       hovering: false,
       dragging: false,
@@ -66,12 +68,11 @@ class SensorGrid extends Component{
         mouseInput,
         camera,
       } = this.refs;
-      if (!mouseInput.isReady() && this.asyncCount === 0) {
+      if (!mouseInput.isReady()) {
         const {
           scene,
           container,
         } = this.refs;
-        console.log(this.contacts);
         mouseInput.ready(scene, container, camera);
         mouseInput.restrictIntersections(this.contacts);
         mouseInput.setActive(false);
@@ -109,6 +110,69 @@ class SensorGrid extends Component{
         })
       }
     };
+    this._onDocumentMouseMove = (event) => {
+      event.preventDefault();
+
+      const {
+        mouseInput,
+      } = this.state;
+
+      const ray:THREE.Ray = mouseInput.getCameraRay(new THREE
+        .Vector2(event.clientX, event.clientY));
+
+      const intersection = dragPlane.intersectLine(new THREE.Line3(
+        ray.origin,
+        ray.origin.clone()
+        .add(ray.direction.clone().multiplyScalar(10000))
+        ));
+
+      if (intersection) {
+        const obj = {};
+        const contact = this.state.draggingContact;
+        contact.destination = JSON.parse(JSON.stringify(intersection.sub(this._offset)));
+        obj[contact.id] = contact;
+        this.setState({
+          contacts: Object.assign(this.state.contacts, obj)
+        })
+      }
+    };
+
+    this._onDocumentMouseUp = (event) => {
+      event.preventDefault();
+
+      document.removeEventListener('mouseup', this._onDocumentMouseUp);
+      document.removeEventListener('mousemove', this._onDocumentMouseMove);
+      const contact = this.state.draggingContact;
+
+      this.props.client.mutate({
+        mutation: gql`
+        mutation MoveSensorContact($id: ID!, $contact: SensorContactInput!){
+          moveSensorContact(id:$id, contact: $contact)
+        }`,
+        variables: {
+          id: this.props.sensor,
+          // Gotta construct it manually because 
+          // GraphQL rejects if it has the wrong fields
+          contact: {
+            id: contact.id,
+            location: {
+              x:contact.location.x,
+              y:contact.location.y,
+              z:contact.location.z,
+            },
+            destination: {
+              x:contact.destination.x,
+              y:contact.destination.y,
+              z:contact.destination.z,
+            },
+          }
+        }
+      })
+      this.setState({
+        dragging: false,
+        draggingContact: {}
+      });
+    };
   }
   componentDidMount() {
     this.setState({
@@ -119,10 +183,6 @@ class SensorGrid extends Component{
     if (!this.props.data.loading){
       window.scene = this.refs.scene
     }
-    console.log('Contacts:', this.contacts, this.asyncCount);
-    if (this.asyncCount === 0){
-      console.log('Working');
-    }
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.weaponsRangePulse !== this.state.weaponsRangePulse){
@@ -130,7 +190,48 @@ class SensorGrid extends Component{
         weaponsRangePulse: 1
       })
     }
-
+    //Load the geometries async
+    //Loop through the contacts to make sure it isn't in the array already
+    Promise.all(nextProps.data.sensorContacts.filter((contact) => {
+      if (!this.state.contacts[contact.id]){
+        //There's a new one that needs to be added.
+        return true;
+      }
+      //Make sure the contact doesn't need to be updated
+      if (contact.icon !== this.state.contacts[contact.id].iconUrl){
+        return true;
+      }
+      return false;
+    }).map((contact) => {
+      return fetch(contact.iconUrl).then((res) => res.text())
+      .then((val) => {
+        // Process the response
+        var div = document.createElement('div');
+        div.innerHTML = val;
+        const svg = div.querySelector('svg');
+        const svgPath = parsePath(svg);
+        const complex = svgMesh3d(svgPath, {
+          delaunay: true,
+          scale: 4,
+          simplify: 1,
+          randomization: 10,
+        });
+        //const mesh = reindex(unindex(complex.positions, complex.cells));
+        contact.geometry = new createGeom(complex);
+        return contact;
+      })
+    })
+    ).then((contacts) => {
+      //Turn it from an array into an object
+      return contacts.reduce((prev, next) => {
+        prev[next.id] = next;
+        return prev;
+      },{})
+    }).then((contacts) => {
+      this.setState({
+        contacts: Object.assign(this.state.contacts, contacts)
+      })
+    });
     //Subscribe
     if (!this.sensorsSubscription && !nextProps.data.loading) {
       this.sensorsSubscription = nextProps.data.subscribeToMore({
@@ -143,39 +244,53 @@ class SensorGrid extends Component{
       });
     }
   }
-  _onHoverStart(a, b, c, d) {
-    //debugger;
+  _onHoverStart(e, threeObj) {
     this.setState({
       hovering: true,
     });
+    this.props.hoverContact(this.state.contacts[threeObj.object.name])
   };
 
   _onHoverEnd() {
     this.setState({
       hovering: false,
     });
+    this.props.hoverContact()
   };
 
-  _onDragStart() {
+  _onDragStart(e, intersection) {
+    const contactId = intersection.object.name;
+    const contact = this.state.contacts[contactId];
+    const position = new THREE.Vector3(contact.location.x, contact.location.y, contact.location.z);
     this.setState({
       dragging: true,
+      draggingContact: contact,
     });
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const {
+      camera,
+    } = this.state;
+
+    dragPlane.setFromNormalAndCoplanarPoint(backVector.clone()
+      .applyQuaternion(camera.quaternion), intersection.point);
+
+    this._offset = intersection.point.clone().sub(position);
+
+    document.addEventListener('mouseup', this._onDocumentMouseUp);
+    document.addEventListener('mousemove', this._onDocumentMouseMove);
   };
 
-  _onDragEnd() {
-    this.setState({
-      dragging: false,
-    });
-  };
   _ref(mesh) {
-    console.log('Mesh:', mesh);
     if (mesh){
-      this.asyncCount -= 1;
       this.contacts.push(mesh);
+      const {
+        mouseInput,
+      } = this.refs;
+      mouseInput.restrictIntersections(this.contacts);
     }
-  }
-  _asyncCount(){
-    this.asyncCount += 1;
   }
   render(){
     const {
@@ -258,39 +373,40 @@ class SensorGrid extends Component{
           })
         }
         {
-          !this.props.data.loading && this.props.data.sensorContacts.map((contact) => {
+          !this.props.data.loading && Object.keys(this.state.contacts).map((id) => {
+            const contact = this.state.contacts[id];
             // Sensor Contacts
-            this.asyncCount = 0;
-            const prom = fetch(contact.iconUrl).then((res) => res.text())
             return (
-              <Async key={`test-${contact.id}`} promise={prom} ref={this._asyncCount.bind(this)} pendingRender={<object3D />} then={(val) => {
-                // Process the response
-                var div = document.createElement('div');
-                div.innerHTML = val;
-                const svg = div.querySelector('svg');
-                const svgPath = parsePath(svg);
-                const complex = svgMesh3d(svgPath, {
-                  delaunay: true,
-                  scale: 4,
-                  simplify: 1,
-                  randomization: 10,
-                });
-                //const mesh = reindex(unindex(complex.positions, complex.cells));
-                const geometry = new createGeom(complex);
-                return (<mesh name={contact.name} ref={this._ref.bind(this)}
-                  position={new THREE.Vector3(contact.location.x, contact.location.y, contact.location.z)}
-                  scale={new THREE.Vector3(contact.size/20, contact.size/20, contact.size/20)}
-                  onMouseEnter={this._onHoverStart.bind(this)}
-                  onMouseLeave={this._onHoverEnd.bind(this)}
-                  >
-                  <geometry vertices={geometry.vertices} faces={geometry.faces} />
-                  <meshBasicMaterial 
-                  color={0xffff00}
-                  side={THREE.DoubleSide}
-                  />
-                  </mesh>)
-              }} />
-              )
+              <object3D key={contact.id}>
+              <mesh key={`${contact.id}-real`} name={contact.id} ref={this._ref.bind(this)}
+              position={new THREE.Vector3(contact.destination.x, contact.destination.y, contact.destination.z)}
+              scale={new THREE.Vector3(contact.size/20, contact.size/20, contact.size/20)}
+              onMouseEnter={this._onHoverStart.bind(this)}
+              onMouseLeave={this._onHoverEnd.bind(this)}
+              onMouseDown={this._onDragStart.bind(this)}
+              >
+              <geometry vertices={contact.geometry.vertices} faces={contact.geometry.faces} />
+              <meshBasicMaterial 
+              color={0xffff00}
+              side={THREE.DoubleSide}
+              />
+              </mesh>
+              <mesh key={`${contact.id}-ghost`} name={contact.id} ref={this._ref.bind(this)}
+              position={new THREE.Vector3(contact.location.x, contact.location.y, contact.location.z)}
+              scale={new THREE.Vector3(contact.size/20, contact.size/20, contact.size/20)}
+              onMouseEnter={this._onHoverStart.bind(this)}
+              onMouseLeave={this._onHoverEnd.bind(this)}
+              onMouseDown={this._onDragStart.bind(this)}
+              >
+              <geometry vertices={contact.geometry.vertices} faces={contact.geometry.faces} />
+              <meshBasicMaterial 
+              color={0xffff00}
+              transparent={true}
+              opacity={0.5}
+              side={THREE.DoubleSide}
+              />
+              </mesh>
+              </object3D>)
           })
         }
         </scene>

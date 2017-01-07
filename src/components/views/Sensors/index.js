@@ -21,14 +21,13 @@ subscription SensorsChanged {
 class Sensors extends Component{
 	constructor(props){
 		super(props);
-		this.state = {
-			weaponsRangePulse: 0
-		};
 		this.sensorsSubscription = null;
 		this.state = {
 			scanResults: '',
 			processedData: '',
 			scanRequest: '',
+			weaponsRangePulse: 0,
+			hoverContact: {name:'', pictureUrl: ''}
 		};
 	}
 	componentWillReceiveProps(nextProps) {
@@ -123,9 +122,16 @@ class Sensors extends Component{
 			}
 		}
 	}
+	_hoverContact(contact = {}){
+		this.setState({
+			hoverContact: contact
+		});
+	}
 	render() {
 		if (this.props.data.error) console.error(this.props.data.error);
 		const sensors = !this.props.data.loading ? this.props.data.sensors[0] : {armyContacts: []}
+		const {hoverContact} = this.state;
+		console.log('Hover',hoverContact);
 		return (
 			<div className="cardSensors">
 			{        this.props.data.loading ? 'Loading...' : 
@@ -193,7 +199,12 @@ class Sensors extends Component{
 				<div id="threeSensors" className='array'>
 				{(() => console.log(dimensions) /*This is apparently necessary*/)()}
 				{dimensions.width > 0 &&
-					<SensorGrid sensor={sensors.id} dimensions={dimensions} weaponsRangePulse={this.state.weaponsRangePulse} /> 
+					<SensorGrid 
+					sensor={sensors.id}
+					dimensions={dimensions}
+					weaponsRangePulse={this.state.weaponsRangePulse}
+					hoverContact={this._hoverContact.bind(this)}
+					/> 
 				}
 				</div>
 				) }
@@ -202,11 +213,11 @@ class Sensors extends Component{
 			<Col className="col-sm-3 data">
 			<Row>
 			<Col className="col-sm-12 contactPictureContainer">
-			<div className="card contactPicture"></div>
+			<div className="card contactPicture" style={{backgroundSize: '100% 100%', backgroundImage:`url('${hoverContact.pictureUrl}')`}}></div>
 			</Col>
 			<Col className="col-sm-12 contactNameContainer">
 			<div className="card contactName">
-			USS Valiant
+			{hoverContact.name}
 			</div>
 			</Col>
 			</Row>
