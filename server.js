@@ -13,7 +13,7 @@ import request from 'request';
 import './events';
 import './processes/engines';
 import './processes/thrusters';
-
+import './processes/sensorContacts';
 const GRAPHQL_PORT = 3001;
 const WS_PORT = 3002;
 

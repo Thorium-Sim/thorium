@@ -20,6 +20,7 @@ type SensorContact {
   picture: String
   pictureUrl: String
   speed: Float
+  velocity: Coordinates
   location: Coordinates
   destination: Coordinates
   infrared: Boolean

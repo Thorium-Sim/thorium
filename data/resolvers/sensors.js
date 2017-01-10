@@ -1,4 +1,5 @@
 import App from '../../app.js';
+import moveSensorContact from '../../processes/sensorContacts.js';
 
 export const SensorsQueries = {
   sensors(root, { simulatorId }) {
@@ -70,6 +71,9 @@ export const SensorsMutations = {
   updateSensorArmyContact(root, { id, contact }) {
     App.handleEvent({ id, contact }, 'updateSensorArmyContact', 'updatedSensorArmyContact');
     return '';
+  },
+  animateSensorContacact(root) {
+    moveSensorContact();
   },
 };
 

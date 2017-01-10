@@ -28,7 +28,6 @@ export default class Sensors extends System {
     this.scanning = true;
     this.scanRequest = request;
   }
-  // TODO: Add Scan Canceled
   scanCanceled() {
     this.scanning = false;
   }
@@ -40,7 +39,9 @@ export default class Sensors extends System {
     this.processedData = data;
   }
   createContact(contact) {
-    this.contacts.push(new SensorContact(contact));
+    const newContact = contact;
+    newContact.sensorId = this.id;
+    this.contacts.push(new SensorContact(newContact));
   }
   createArmyContact(contact) {
     this.armyContacts.push(new SensorContact(contact));

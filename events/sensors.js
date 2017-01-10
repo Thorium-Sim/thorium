@@ -41,18 +41,27 @@ App.on('createdSensorContact', ({ id, contact }) => {
 App.on('movedSensorContact', ({ id, contact }) => {
   const system = App.systems.find((sys) => sys.id === id);
   system.moveContact(contact);
+  pubsub.publish('sensorContactUpdate', system.contacts);
+});
+App.on('updatedSensorContactLocation', ({ id, contact }) => {
+  const system = App.systems.find((sys) => sys.id === id);
+  system.updateContact(contact);
+  pubsub.publish('sensorContactUpdate', system.contacts);
 });
 App.on('removedSensorContact', ({ id, contact }) => {
   const system = App.systems.find((sys) => sys.id === id);
   system.removeContact(contact);
+  pubsub.publish('sensorContactUpdate', system.contacts);
 });
 App.on('destroyedSensorContact', ({ id, contact }) => {
   const system = App.systems.find((sys) => sys.id === id);
   system.destroyContact(contact);
+  pubsub.publish('sensorContactUpdate', system.contacts);
 });
 App.on('updatedSensorContact', ({ id, contact }) => {
   const system = App.systems.find((sys) => sys.id === id);
   system.updateContact(contact);
+  pubsub.publish('sensorContactUpdate', system.contacts);
 });
 App.on('createdSensorArmyContact', ({ id, contact }) => {
   const system = App.systems.find((sys) => sys.id === id);
