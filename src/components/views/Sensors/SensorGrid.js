@@ -25,7 +25,12 @@ subscription SensorContactsChanged($sensorId: ID) {
     size
     iconUrl
     pictureUrl
-    speed
+    speed 
+    velocity {
+      x
+      y
+      z
+    }
     location {
       x
       y
@@ -143,7 +148,7 @@ class SensorGrid extends Component{
       document.removeEventListener('mouseup', this._onDocumentMouseUp);
       document.removeEventListener('mousemove', this._onDocumentMouseMove);
       const contact = this.state.draggingContact;
-
+      const speed = 1; //TODO: Replace with selected speed
       this.props.client.mutate({
         mutation: gql`
         mutation MoveSensorContact($id: ID!, $contact: SensorContactInput!){
@@ -155,6 +160,7 @@ class SensorGrid extends Component{
           // GraphQL rejects if it has the wrong fields
           contact: {
             id: contact.id,
+            speed: speed,
             location: {
               x:contact.location.x,
               y:contact.location.y,
@@ -190,6 +196,7 @@ class SensorGrid extends Component{
         weaponsRangePulse: 1
       })
     }
+    const simpleUpdateContacts = [];
     //Load the geometries async
     //Loop through the contacts to make sure it isn't in the array already
     Promise.all(nextProps.data.sensorContacts.filter((contact) => {
@@ -201,6 +208,8 @@ class SensorGrid extends Component{
       if (contact.icon !== this.state.contacts[contact.id].iconUrl){
         return true;
       }
+      //It means the contact either has little or no changes
+      simpleUpdateContacts.push(contact);
       return false;
     }).map((contact) => {
       return fetch(contact.iconUrl).then((res) => res.text())
@@ -232,6 +241,16 @@ class SensorGrid extends Component{
         contacts: Object.assign(this.state.contacts, contacts)
       })
     });
+    //Now handle the simple update contacts
+    const newContacts = this.state.contacts;
+    simpleUpdateContacts.forEach((contact) => {
+      const geometry = newContacts[contact.id].geometry;
+      newContacts[contact.id] = contact;
+      newContacts[contact.id].geometry = geometry;
+    })
+    this.setState({
+      contacts: Object.assign(this.state.contacts, newContacts)
+    })
     //Subscribe
     if (!this.sensorsSubscription && !nextProps.data.loading) {
       this.sensorsSubscription = nextProps.data.subscribeToMore({
@@ -429,7 +448,12 @@ query Contacts($sensorsId: ID) {
     size
     iconUrl
     pictureUrl
-    speed
+    speed 
+    velocity {
+      x
+      y
+      z
+    }
     location {
       x
       y

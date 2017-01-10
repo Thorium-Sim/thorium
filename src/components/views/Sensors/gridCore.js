@@ -126,7 +126,12 @@ query GetSensors($simulatorId: ID){
       size
       icon
       picture
-      speed
+      speed 
+      velocity {
+        x
+        y
+        z
+      }
       location {
         x
         y
