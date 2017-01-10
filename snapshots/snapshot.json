@@ -1,8 +1,8 @@
 {
-	"snapshotVersion": 1448,
-	"timestamp": 1480956937760,
-	"version": 1448,
-	"_eventsCount": 23,
+	"snapshotVersion": 2,
+	"timestamp": 1484069764994,
+	"version": 2,
+	"_eventsCount": 38,
 	"simulators": [
 		{
 			"id": "test",
@@ -13,31 +13,35 @@
 			"class": "Simulator"
 		}
 	],
-	"clients": [
-		{
-			"id": "64afb5eb-dce1-dafe-168d-c85fe7eb0bda",
-			"flightId": null,
-			"simulatorId": null,
-			"station": null,
-			"loginName": null,
-			"loginState": false,
-			"class": "Client"
-		}
-	],
 	"systems": [
 		{
 			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb3d",
 			"simulatorId": "test",
+			"name": null,
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"class": "Shield",
 			"type": "Shield",
 			"position": "full",
 			"frequency": 257.4,
 			"state": false,
-			"integrity": 1,
-			"class": "Shield"
+			"integrity": 1
 		},
 		{
 			"id": "1b8c9a95-4b6d-47d9-92d2-e419bd291f61",
 			"simulatorId": "test",
+			"name": null,
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"class": "Thrusters",
 			"type": "Thruster",
 			"direction": {
 				"x": 0,
@@ -60,15 +64,25 @@
 				"roll": 0
 			},
 			"manualThrusters": false,
-			"thrusting": false,
-			"class": "Thrusters"
+			"thrusting": false
 		},
 		{
 			"id": "test-engine-impulse",
 			"simulatorId": "test",
 			"name": "Impulse",
-			"on": false,
+			"power": {
+				"power": 8,
+				"powerLevels": [
+					6,
+					8,
+					10,
+					12,
+					15
+				]
+			},
+			"class": "Engine",
 			"type": "Engine",
+			"on": false,
 			"speeds": [
 				{
 					"text": "1/4 Impulse",
@@ -94,15 +108,31 @@
 			"speed": 5,
 			"heat": 0,
 			"heatRate": 0.005,
-			"coolant": 0,
-			"class": "Engine"
+			"coolant": 0
 		},
 		{
 			"id": "test-engine-warp",
 			"simulatorId": "test",
 			"name": "Warp",
-			"on": true,
+			"power": {
+				"power": 10,
+				"powerLevels": [
+					10,
+					13,
+					16,
+					19,
+					22,
+					25,
+					28,
+					31,
+					35,
+					38,
+					40
+				]
+			},
+			"class": "Engine",
 			"type": "Engine",
+			"on": true,
 			"speeds": [
 				{
 					"text": "Warp 1",
@@ -148,12 +178,18 @@
 			"speed": 3,
 			"heat": 99.96000000000227,
 			"heatRate": 0.02,
-			"coolant": 0,
-			"class": "Engine"
+			"coolant": 0
 		},
 		{
 			"id": "6fdc098f-d4b3-4bbf-a312-0f6b9bfc558e",
 			"simulatorId": "test",
+			"name": null,
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
 			"type": "Transporter",
 			"class": "Transporters",
 			"targets": [],
@@ -161,6 +197,129 @@
 			"destination": null,
 			"charge": 0,
 			"state": "Inactive"
+		},
+		{
+			"id": "c230c51b-c2fe-4c1b-9b19-5323cfd6b2b6",
+			"simulatorId": "test",
+			"name": null,
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"type": "Sensors",
+			"class": "Sensors",
+			"scanResults": "",
+			"scanRequest": "",
+			"processedData": "",
+			"scanning": false,
+			"contacts": [
+				{
+					"id": "87629e49-391c-4e69-9331-c11da95d3b0a",
+					"sensorId": "c230c51b-c2fe-4c1b-9b19-5323cfd6b2b6",
+					"class": "SensorContact",
+					"name": "USS Voyager",
+					"size": 1,
+					"icon": "/Sensor Contacts/Icons/N",
+					"picture": "/Sensor Contacts/Pictures/N",
+					"speed": 0,
+					"velocity": {
+						"x": 0,
+						"y": 0,
+						"z": 0
+					},
+					"location": {
+						"x": 0.0307777777777776,
+						"y": 0.6489223946784929,
+						"z": 0
+					},
+					"destination": {
+						"x": 0.031,
+						"y": 0.649,
+						"z": 0
+					},
+					"infrared": false,
+					"cloaked": false,
+					"destroyed": false
+				}
+			],
+			"armyContacts": [
+				{
+					"id": "97a5bb54-2201-4db9-a28e-5f43e5b32c81",
+					"sensorId": null,
+					"class": "SensorContact",
+					"name": "USS Voyager",
+					"size": 1,
+					"icon": "/Sensor Contacts/Icons/N",
+					"picture": "/Sensor Contacts/Pictures/N",
+					"speed": 0,
+					"velocity": {
+						"x": 0,
+						"y": 0,
+						"z": 0
+					},
+					"location": {
+						"x": 0,
+						"y": 0,
+						"z": 0
+					},
+					"destination": {
+						"x": 0,
+						"y": 0,
+						"z": 0
+					},
+					"infrared": false,
+					"cloaked": false,
+					"destroyed": false
+				}
+			]
+		}
+	],
+	"clients": [
+		{
+			"id": "64afb5eb-dce1-dafe-168d-c85fe7eb0bda",
+			"flightId": null,
+			"simulatorId": null,
+			"station": null,
+			"loginName": null,
+			"loginState": false,
+			"class": "Client"
+		}
+	],
+	"coreLayouts": [
+		{
+			"id": "9d21fa85-d919-4a39-a27e-23524adc1a03",
+			"simulatorId": "test",
+			"name": "default",
+			"x": 0,
+			"y": 0,
+			"w": 9,
+			"h": 3,
+			"component": "EngineControlCore",
+			"class": "CoreLayout"
+		},
+		{
+			"id": "f74dabc7-fd1b-4101-9ea2-18e6d6de30d2",
+			"simulatorId": "test",
+			"name": "default",
+			"x": 9,
+			"y": 0,
+			"w": 10,
+			"h": 5,
+			"component": "TransporterCore",
+			"class": "CoreLayout"
+		},
+		{
+			"id": "4ec82f9c-76bc-4cd4-ba35-fe5e45262018",
+			"simulatorId": "test",
+			"name": "default",
+			"x": 0,
+			"y": 5,
+			"w": 80,
+			"h": 21,
+			"component": "SensorsGridCore",
+			"class": "CoreLayout"
 		}
 	],
 	"assetFolders": [
@@ -191,6 +350,27 @@
 			"fullPath": "/3D/Texture",
 			"name": "Texture",
 			"class": "AssetFolder"
+		},
+		{
+			"id": "29eb3f02-1e32-4708-b6d1-bca3a4e77659",
+			"folderPath": "/",
+			"fullPath": "/Sensor Contacts",
+			"name": "Sensor Contacts",
+			"class": "AssetFolder"
+		},
+		{
+			"id": "bb31641b-2957-446c-bf30-9f7253114018",
+			"folderPath": "/Sensor Contacts",
+			"fullPath": "/Sensor Contacts/Icons",
+			"name": "Icons",
+			"class": "AssetFolder"
+		},
+		{
+			"id": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
+			"folderPath": "/Sensor Contacts",
+			"fullPath": "/Sensor Contacts/Pictures",
+			"name": "Pictures",
+			"class": "AssetFolder"
 		}
 	],
 	"assetContainers": [
@@ -209,6 +389,22 @@
 			"folderId": "6262ab8c-5cff-42f0-91b1-30c9192f0441",
 			"name": "Simulator",
 			"class": "AssetContainer"
+		},
+		{
+			"id": "fc58cd61-db63-43a5-ba97-45e34aef18e9",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/N",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "N",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "1f6c94a2-3e2e-4558-b0f5-4a44ba90767d",
+			"folderPath": "/Sensor Contacts/Pictures",
+			"fullPath": "/Sensor Contacts/Pictures/N",
+			"folderId": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
+			"name": "N",
+			"class": "AssetContainer"
 		}
 	],
 	"assetObjects": [
@@ -217,7 +413,7 @@
 			"containerPath": "/3D/Mesh",
 			"containerId": "5875f4b7-93d1-49aa-a334-ba4e5999c540",
 			"fullPath": "/3D/Mesh/Simulator",
-			"url": "https://s3.amazonaws.com/thorium-assets/3D/Mesh/Simulator/default.obj",
+			"url": "http://localhost:3001/assets/3D/Mesh/Simulator/default.obj",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		},
@@ -226,33 +422,36 @@
 			"containerPath": "/3D/Texture",
 			"containerId": "04d1a4d4-49dd-4bbb-9a90-cc2638bf0240",
 			"fullPath": "/3D/Texture/Simulator",
-			"url": "https://s3.amazonaws.com/thorium-assets/3D/Texture/Simulator/default.png",
+			"url": "http://localhost:3001/assets/3D/Texture/Simulator/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
-		}
-	],
-	"coreLayouts": [
-		{
-			"id": "9d21fa85-d919-4a39-a27e-23524adc1a03",
-			"simulatorId": "test",
-			"name": "default",
-			"x": 0,
-			"y": 0,
-			"w": 9,
-			"h": 3,
-			"component": "EngineControlCore",
-			"class": "CoreLayout"
 		},
 		{
-			"id": "f74dabc7-fd1b-4101-9ea2-18e6d6de30d2",
+			"id": "3243664c-7299-4c43-a050-3d5f2ad09da9",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "fc58cd61-db63-43a5-ba97-45e34aef18e9",
+			"fullPath": "/Sensor Contacts/Icons/N",
+			"url": "http://localhost:3001/assets/Sensor%20Contacts/Icons/N/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "85c51339-9c39-4cab-af01-804cf3d0a651",
+			"containerPath": "/Sensor Contacts/Pictures",
+			"containerId": "1f6c94a2-3e2e-4558-b0f5-4a44ba90767d",
+			"fullPath": "/Sensor Contacts/Pictures/N",
+			"url": "http://localhost:3001/assets/Sensor%20Contacts/Pictures/N/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "b26725b1-7824-41e6-8700-dda84f77b51a",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "fc58cd61-db63-43a5-ba97-45e34aef18e9",
+			"fullPath": "/Sensor Contacts/Icons/N",
+			"url": "http://localhost:3001/assets/Sensor%20Contacts/Icons/N/test.svg",
 			"simulatorId": "test",
-			"name": "default",
-			"x": 9,
-			"y": 0,
-			"w": 10,
-			"h": 5,
-			"component": "TransporterCore",
-			"class": "CoreLayout"
+			"class": "AssetObject"
 		}
 	]
 }

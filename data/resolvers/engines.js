@@ -10,12 +10,12 @@ export const EngineQueries = {
 
 export const EngineMutations = {
   setSpeed(root, { id, speed, on }) {
-    App.speedChange({ id, speed, on });
+    App.handleEvent({ id, speed, on }, 'speedChange', 'speedChanged');
     return '';
   },
   // This mutation applies to all systems
   addHeat(root, { id, heat }) {
-    App.addHeat({ id, heat });
+    App.handleEvent({ id, heat }, 'addHeat', 'addedHeat');
     return '';
   },
 };

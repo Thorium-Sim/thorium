@@ -10,40 +10,41 @@ export const TransporterQueries = {
 
 export const TransporterMutations = {
   createTransporter(_, { transporter }) {
-    console.log(transporter);
-    App.createTransporter(transporter);
+    App.handleEvent({ transporter }, 'createTransporter', 'createdTransporter');
     return '';
   },
   setTransportDestination(_, { transporter, destination }) {
-    App.setTransportDestination({ transporter, destination });
+    App.handleEvent({ transporter, destination },
+      'setTransportDestination',
+      'settedTransportDestination');
     return '';
   },
   setTransportTarget(_, { transporter, target }) {
-    App.setTransportTarget({ transporter, target });
+    App.handleEvent({ transporter, target }, 'setTransportTarget', 'settedTransportTarget');
     return '';
   },
   beginTransportScan(_, { transporter }) {
-    App.beginTransportScan({ transporter });
+    App.handleEvent({ transporter }, 'beginTransportScan', 'beganTransportScan');
     return '';
   },
   cancelTransportScan(_, { transporter }) {
-    App.cancelTransportScan({ transporter });
+    App.handleEvent({ transporter }, 'cancelTransportScan', 'canceledTransportScan');
     return '';
   },
   clearTransportTargets(_, { transporter }) {
-    App.clearTransportTargets({ transporter });
+    App.handleEvent({ transporter }, 'clearTransportTargets', 'clearedTransportTargets');
     return '';
   },
   setTransportCharge(_, { transporter, charge }) {
-    App.setTransportCharge({ transporter, charge });
+    App.handleEvent({ transporter, charge }, 'setTransportCharge', 'settedTransportCharge');
     return '';
   },
   completeTransport(_, { transporter, target }) {
-    App.completeTransport({ transporter, target });
+    App.handleEvent({ transporter, target }, 'completeTransport', 'completedTransport');
     return '';
   },
   setTransporterTargets(_, { transporter, targets }) {
-    App.setTransporterTargets({ transporter, targets });
+    App.handleEvent({ transporter, targets }, 'setTransporterTargets', 'settedTransporterTargets');
     return '';
   },
 };

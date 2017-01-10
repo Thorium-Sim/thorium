@@ -32,7 +32,8 @@ type Mutation {
   addSimulator(id: String, 
   name: String, 
   alertlevel: String, 
-  layout: String, timeline:String): [simulator]
+  layout: String, timeline:String): String
+  addSystem(simulatorId: ID): String
   clientConnect(id: ID!, flightId: ID, simulatorId: ID, station: ID, loginName: String, loginState: Boolean): String
   clientDisconnect(id: ID!): String
   ${Object.keys(mutations).map(mutation => mutations[mutation])}

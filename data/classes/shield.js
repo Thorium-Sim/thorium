@@ -1,15 +1,15 @@
 import uuid from 'uuid';
+import { System } from './generic';
 
-export default class Shield {
+export default class Shield extends System {
   constructor(params) {
-    this.id = params.id || uuid.v4();
-    this.simulatorId = params.simulatorId || null;
+    super(params);
+    this.class = 'Shield';
     this.type = 'Shield';
     this.position = params.position || null;
     this.frequency = params.frequency || 260.5;
     this.state = params.state || false;
     this.integrity = params.integrity || 1;
-    this.class = 'Shield';
   }
   shieldState(state) {
     this.state = state;
