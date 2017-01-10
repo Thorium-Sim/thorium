@@ -11,8 +11,11 @@ import Transporters from './Transporters';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
+import SensorsGridCore from './Sensors/gridCore';
+import SensorsCore from './Sensors/core';
+
 const Views = {ShortRangeComm,LongRangeComm,AdminStations,AdminAssets,Thrusters,EngineControl,Navigation,Sensors, ShieldControl, Transporters};
 
-export const Cores = {EngineControlCore, TransporterCore};
+export const Cores = {EngineControlCore, TransporterCore, SensorsGridCore, SensorsCore};
 
 export default Views;

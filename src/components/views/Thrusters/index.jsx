@@ -6,6 +6,7 @@ import { graphql, compose } from 'react-apollo';
 import {DraggableCore} from 'react-draggable';
 import { Button, Row, Col } from '../../generic';
 import ThrusterThree from './three';
+import distance from '../../../helpers/distance';
 import Measure from 'react-measure';
 import './style.scss';
 
@@ -21,10 +22,6 @@ subscription RotationChanged{
     }
   }
 }`;
-
-function distance(points1 = {x: 0, y:0}, points2){
-  return Math.sqrt(Math.pow(points2.x-points1.x,2)+Math.pow(points2.y-points1.y,2));
-}
 
 const IndicatorCircle = (props) => {
  return  (

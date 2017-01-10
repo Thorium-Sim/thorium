@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ReactGridLayout from 'react-grid-layout';
-import { Button } from 'reactstrap';
 import { graphql, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import FontAwesome from 'react-fontawesome';
@@ -51,7 +50,7 @@ class Core extends Component {
     // TODO: Make it so the 'layout' state is set from localStorage
     this.state = {
       layout: 'default',
-      editable: true,
+      editable: false,
     };
     this.coreSubscription = null;
   }
