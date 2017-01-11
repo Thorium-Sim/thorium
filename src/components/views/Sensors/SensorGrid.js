@@ -133,11 +133,14 @@ class SensorGrid extends Component{
 
       if (intersection) {
         const obj = {};
-        const contact = this.state.draggingContact;
+
+        const contact = this.props.data.sensorContacts.find((contact) => contact.id === this.state.draggingContact.id);
         contact.destination = JSON.parse(JSON.stringify(intersection.sub(this._offset)));
+
         obj[contact.id] = contact;
         this.setState({
-          contacts: Object.assign(this.state.contacts, obj)
+          contacts: Object.assign(this.state.contacts, obj),
+          draggingContact: contact,
         })
       }
     };
@@ -148,7 +151,7 @@ class SensorGrid extends Component{
       document.removeEventListener('mouseup', this._onDocumentMouseUp);
       document.removeEventListener('mousemove', this._onDocumentMouseMove);
       const contact = this.state.draggingContact;
-      const speed = 1; //TODO: Replace with selected speed
+      const speed = 0.5; //TODO: Replace with selected speed
       this.props.client.mutate({
         mutation: gql`
         mutation MoveSensorContact($id: ID!, $contact: SensorContactInput!){
@@ -205,7 +208,7 @@ class SensorGrid extends Component{
         return true;
       }
       //Make sure the contact doesn't need to be updated
-      if (contact.icon !== this.state.contacts[contact.id].iconUrl){
+      if (contact.iconUrl !== this.state.contacts[contact.id].iconUrl){
         return true;
       }
       //It means the contact either has little or no changes
@@ -237,15 +240,22 @@ class SensorGrid extends Component{
         return prev;
       },{})
     }).then((contacts) => {
-      this.setState({
-        contacts: Object.assign(this.state.contacts, contacts)
-      })
+      if (Object.keys(contacts).length > 0){
+        console.log('Updating State');
+        this.setState({
+          contacts: Object.assign(this.state.contacts, contacts)
+        })
+      }
     });
     //Now handle the simple update contacts
     const newContacts = this.state.contacts;
     simpleUpdateContacts.forEach((contact) => {
       const geometry = newContacts[contact.id].geometry;
+      const destination = this.state.draggingContact.destination;
       newContacts[contact.id] = contact;
+      if (this.state.dragging) {
+        newContacts[contact.id].destination = destination;
+      }
       newContacts[contact.id].geometry = geometry;
     })
     this.setState({
@@ -280,7 +290,10 @@ class SensorGrid extends Component{
   _onDragStart(e, intersection) {
     const contactId = intersection.object.name;
     const contact = this.state.contacts[contactId];
-    const position = new THREE.Vector3(contact.location.x, contact.location.y, contact.location.z);
+    // Use the materials transparency to decide wether to use location or destination as the origin
+    const position = intersection.object.material.transparent ? 
+    new THREE.Vector3(contact.location.x, contact.location.y, contact.location.z) :
+    new THREE.Vector3(contact.destination.x, contact.destination.y, contact.destination.z);
     this.setState({
       dragging: true,
       draggingContact: contact,
