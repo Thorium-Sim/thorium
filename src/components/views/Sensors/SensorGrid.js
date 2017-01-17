@@ -16,7 +16,12 @@ function degtorad(deg){
   return deg *(Math.PI/180);
 }
 
-//TODO: Cache the sensor icon geometry so it can be reused without flickering the sensor contacts on re-render
+function distance3d(coord2, coord1) {
+  const { x: x1, y: y1, z: z1 } = coord1;
+  let { x: x2, y: y2, z: z2 } = coord2;
+  return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
+}
+
 const SENSORCONTACT_SUB = gql`
 subscription SensorContactsChanged($sensorId: ID) {
   sensorContactUpdate(sensorId: $sensorId){
@@ -66,9 +71,12 @@ class SensorGrid extends Component{
       hovering: false,
       dragging: false,
     };
+    this.animationTime = Date.now()
+    this.animationInterval = 16; // 60 frames a second as default
     this.sensorContactsSubscription = null;
     this._onAnimate = () => {
       // we will get this callback every frame
+      // Setup the mouse hovering
       const {
         mouseInput,
         camera,
@@ -94,6 +102,8 @@ class SensorGrid extends Component{
           camera,
         });
       }
+
+      // Animate the weapons range pulse
       let {weaponsRangePulse, weaponsRangeOpacity} = this.state;
       if (weaponsRangePulse !== 0){
         weaponsRangeOpacity += weaponsRangePulse * 0.05;
@@ -113,6 +123,47 @@ class SensorGrid extends Component{
           weaponsRangePulse,
           weaponsRangeOpacity
         })
+      }
+
+      // Animate moving the contacts
+      let { contacts } = this.state;
+      const currentTime = Date.now();
+      this.animationInterval = currentTime - this.animationTime; 
+      this.animationTime = currentTime;
+      if (Object.keys(contacts).length > 0){
+        Object.keys(contacts).forEach((contactKey) => {
+          const contact = contacts[contactKey];
+          const { location, destination, speed } = contact;
+          const newContact = contact;
+          if (contact.speed > 0) {
+            // Update the velocity
+            const locationVector = new THREE.Vector3(location.x, location.y, location.z);
+            const destinationVector = new THREE.Vector3(destination.x, destination.y, destination.z);
+            const velocity = destinationVector.sub(locationVector).normalize().multiplyScalar(speed);
+
+            // Update the location
+            location.x += Math.round(velocity.x / (10000 / this.animationInterval) * 10000) / 10000;
+            location.y += Math.round(velocity.y / (10000 / this.animationInterval) * 10000) / 10000;
+            location.z += Math.round(velocity.z / (10000 / this.animationInterval) * 10000) / 10000;
+            
+            // Why not clean up the destination while we're at it?
+            destination.x = Math.round(destination.x * 10000) / 10000;
+            destination.y = Math.round(destination.y * 10000) / 10000;
+            destination.z = Math.round(destination.z * 10000) / 10000;
+
+            // Check to see if it is close enough to the destination
+            newContact.location = location;
+            newContact.velocity = velocity;
+          if (distance3d(destination, location) < 0.005) { // A magic number
+            newContact.velocity = { x: 0, y: 0, z: 0 };
+            newContact.speed = 0;
+          }
+        }
+        contacts[contactKey] = newContact;
+      });
+        this.setState({
+          contacts
+        });
       }
     };
     this._onDocumentMouseMove = (event) => {
@@ -253,7 +304,7 @@ class SensorGrid extends Component{
       const geometry = newContacts[contact.id].geometry;
       const destination = this.state.draggingContact.destination;
       newContacts[contact.id] = contact;
-      if (this.state.dragging) {
+      if (this.state.dragging && contact.id === this.state.draggingContact.id) {
         newContacts[contact.id].destination = destination;
       }
       newContacts[contact.id].geometry = geometry;
@@ -410,19 +461,22 @@ class SensorGrid extends Component{
             // Sensor Contacts
             return (
               <object3D key={contact.id}>
-              <mesh key={`${contact.id}-real`} name={contact.id} ref={this._ref.bind(this)}
-              position={new THREE.Vector3(contact.destination.x, contact.destination.y, contact.destination.z)}
-              scale={new THREE.Vector3(contact.size/20, contact.size/20, contact.size/20)}
-              onMouseEnter={this._onHoverStart.bind(this)}
-              onMouseLeave={this._onHoverEnd.bind(this)}
-              onMouseDown={this._onDragStart.bind(this)}
-              >
-              <geometry vertices={contact.geometry.vertices} faces={contact.geometry.faces} />
-              <meshBasicMaterial 
-              color={0xffff00}
-              side={THREE.DoubleSide}
-              />
-              </mesh>
+              {
+                this.props.core &&
+                <mesh key={`${contact.id}-real`} name={contact.id} ref={this._ref.bind(this)}
+                position={new THREE.Vector3(contact.destination.x, contact.destination.y, contact.destination.z)}
+                scale={new THREE.Vector3(contact.size/20, contact.size/20, contact.size/20)}
+                onMouseEnter={this._onHoverStart.bind(this)}
+                onMouseLeave={this._onHoverEnd.bind(this)}
+                onMouseDown={this._onDragStart.bind(this)}
+                >
+                <geometry vertices={contact.geometry.vertices} faces={contact.geometry.faces} />
+                <meshBasicMaterial 
+                color={0xffff00}
+                side={THREE.DoubleSide}
+                />
+                </mesh>
+              }
               <mesh key={`${contact.id}-ghost`} name={contact.id} ref={this._ref.bind(this)}
               position={new THREE.Vector3(contact.location.x, contact.location.y, contact.location.z)}
               scale={new THREE.Vector3(contact.size/20, contact.size/20, contact.size/20)}
@@ -434,7 +488,7 @@ class SensorGrid extends Component{
               <meshBasicMaterial 
               color={0xffff00}
               transparent={true}
-              opacity={0.5}
+              opacity={this.props.core ? 0.5 : 1.0}
               side={THREE.DoubleSide}
               />
               </mesh>
@@ -446,7 +500,7 @@ class SensorGrid extends Component{
       }
 
       </div>)
-  }
+}
 }
 
 SensorGrid.defaultProps = {

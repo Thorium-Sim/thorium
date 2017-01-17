@@ -81,6 +81,7 @@ class GridCore extends Component {
           {(() => console.log(dimensions) /*This is apparently necessary*/)()}
           {dimensions.width > 0 &&
             <SensorGrid
+            core={true}
             sensor={sensors.id}
             dimensions={dimensions}
             hoverContact={() => {}}
