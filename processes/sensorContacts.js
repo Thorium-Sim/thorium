@@ -2,8 +2,8 @@ import App from '../app';
 import { pubsub } from '../helpers/subscriptionManager.js';
 import * as THREE from 'three';
 
-const interval = 100; // 1 tenth of a second
-
+const animationInterval = 100; // 1 tenth of a second
+const updateInterval = 1000;
 function distance3d(coord2, coord1) {
   const { x: x1, y: y1, z: z1 } = coord1;
   let { x: x2, y: y2, z: z2 } = coord2;
@@ -25,19 +25,18 @@ const moveSensorContact = () => {
           const velocity = destinationVector.sub(locationVector).normalize().multiplyScalar(speed);
 
           // Update the location
-          location.x += Math.round(velocity.x / (10000 / interval) * 1000) / 1000;
-          location.y += Math.round(velocity.y / (10000 / interval) * 1000) / 1000;
-          location.z += Math.round(velocity.z / (10000 / interval) * 1000) / 1000;
+          location.x += Math.round(velocity.x / (10000 / animationInterval) * 10000) / 10000;
+          location.y += Math.round(velocity.y / (10000 / animationInterval) * 10000) / 10000;
+          location.z += Math.round(velocity.z / (10000 / animationInterval) * 10000) / 10000;
 
           // Why not clean up the destination while we're at it?
-          destination.x = Math.round(destination.x * 1000) / 1000;
-          destination.y = Math.round(destination.y * 1000) / 1000;
-          destination.z = Math.round(destination.z * 1000) / 1000;
+          destination.x = Math.round(destination.x * 10000) / 10000;
+          destination.y = Math.round(destination.y * 10000) / 10000;
+          destination.z = Math.round(destination.z * 10000) / 10000;
 
           // Check to see if it is close enough to the destination
           newContact.location = location;
           newContact.velocity = velocity;
-          console.log(distance3d(destination, location));
           if (distance3d(destination, location) < 0.005) { // A magic number
             newContact.velocity = { x: 0, y: 0, z: 0 };
             newContact.speed = 0;
@@ -45,13 +44,22 @@ const moveSensorContact = () => {
         }
         return newContact;
       });
-              pubsub.publish('sensorContactUpdate', sensors.contacts);
-              return sensors;
-            }
-            return sys;
-          });
-            setTimeout(moveSensorContact, interval);
-          };
-          moveSensorContact();
+      return sensors;
+    }
+    return sys;
+  });
+  setTimeout(moveSensorContact, animationInterval);
+};
+const updateSensorGrids = () => {
+  App.systems.forEach((sys) => {
+    if (sys.type === 'Sensors') {
+      const sensors = sys;
+      pubsub.publish('sensorContactUpdate', sensors.contacts);
+    }
+  });
+  setTimeout(updateSensorGrids, updateInterval);
+};
+updateSensorGrids();
+moveSensorContact();
 
-          export default moveSensorContact;
+export default moveSensorContact;
