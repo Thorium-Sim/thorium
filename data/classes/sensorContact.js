@@ -3,6 +3,12 @@ import * as THREE from 'three';
 // TODO: Extend this with different types of sensor contacts
 // Ex: Ship has crew count, weapons, etc.
 
+function distance3d(coord2, coord1) {
+  const { x: x1, y: y1, z: z1 } = coord1;
+  let { x: x2, y: y2, z: z2 } = coord2;
+  return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
+}
+
 export default class SensorContact {
   constructor(params) {
     this.id = params.id || uuid.v4();
@@ -35,6 +41,14 @@ export default class SensorContact {
     const destinationVector = new THREE.Vector3(this.destination.x, this.destination.y, this.destination.z);
     this.velocity = destinationVector.sub(locationVector).normalize().multiplyScalar(speed);
     if (stop) { this.destination = this.location; }
+  }
+  updateLocation(coordinates) {
+    this.location = coordinates;
+    // Reset the velocity and speed if it is at it's destination
+    if (distance3d(this.destination, this.location) < 0.005) { // A magic number
+      this.velocity = { x: 0, y: 0, z: 0 };
+      this.speed = 0;
+    }
   }
   updateInfrared(tf) {
     this.infrared = tf;
