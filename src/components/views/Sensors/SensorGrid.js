@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Async from 'react-promise';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import React3 from 'react-three-renderer';
@@ -378,9 +377,6 @@ class SensorGrid extends Component{
   }
   render(){
     const {
-      mouseInput,
-      camera,
-
       hovering,
       dragging,
     } = this.state;

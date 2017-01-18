@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { InputField, OutputField, TypingField } from '../../generic/core';
+import { TypingField } from '../../generic/core';
 import gql from 'graphql-tag';
-import { fromTo } from 'gsap';
 import { graphql, withApollo } from 'react-apollo';
 import SensorGrid from './SensorGrid.js';
-import distance from '../../../helpers/distance';
 import Measure from 'react-measure';
 import Draggable from 'react-draggable';
 import {
