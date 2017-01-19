@@ -44,7 +44,9 @@ export default class Sensors extends System {
     this.contacts.push(new SensorContact(newContact));
   }
   createArmyContact(contact) {
-    this.armyContacts.push(new SensorContact(contact));
+    const newContact = contact;
+    newContact.sensorId = this.id;
+    this.armyContacts.push(new SensorContact(newContact));
   }
   updateContact({ id, icon, picture, size, name, infrared }) {
     const myContact = this.contacts.find((contact) => contact.id === id);

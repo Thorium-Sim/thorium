@@ -72,7 +72,7 @@ export const SensorsMutations = {
     App.handleEvent({ id, contact }, 'updateSensorArmyContact', 'updatedSensorArmyContact');
     return '';
   },
-  animateSensorContacact(root) {
+  animateSensorContacact() {
     moveSensorContact();
   },
 };
