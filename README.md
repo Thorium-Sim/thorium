@@ -3,7 +3,7 @@
 [![Slack Status](https://slack.ralexanderson.com/badge.svg)](https://slack.ralexanderson.com)
 [![Code Climate](https://codeclimate.com/github/Thorium-Sim/thorium-react/badges/gpa.svg)](https://codeclimate.com/github/Thorium-Sim/thorium-react)
 [![Issue Count](https://codeclimate.com/github/Thorium-Sim/thorium-react/badges/issue_count.svg)](https://codeclimate.com/github/Thorium-Sim/thorium-react)
-[![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/alexanderson1993/thorium)
+[![StackShare](https://img.shields.io/badge/teck-stack-blue.svg?style=flat)](https://stackshare.io/alexanderson1993/thorium)
 
 A client webserver for Thorium. Built with [Create React App](https://github.com/facebookincubator/create-react-app), [Apollo-Client](http://www.apollodata.com/) and ❤ by [Alex Anderson](http://ralexanderson.com).
 
