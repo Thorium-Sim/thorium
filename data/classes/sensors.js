@@ -64,7 +64,7 @@ export default class Sensors extends System {
     if (name) myContact.updateName(name);
     if (infrared) myContact.updateInfrared(infrared);
   }
-  removeArmyContact({ id }) {
+  removeArmyContact(id) {
     const contactIndex = this.armyContacts.findIndex((contact) => contact.id === id);
     this.armyContacts.splice(contactIndex, 1);
   }

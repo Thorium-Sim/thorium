@@ -11,7 +11,7 @@ removeSensorContact(id: ID!, contact: SensorContactInput!): String
 destroySensorContact(id: ID!, contact: SensorContactInput!): String
 updateSensorContact(id: ID!, contact: SensorContactInput!): String
 createSensorArmyContact(id: ID!, contact: SensorContactInput!): String
-removeSensorArmyContact(id: ID!, contact: SensorContactInput!): String
+removeSensorArmyContact(id: ID!, contact: ID!): String
 updateSensorArmyContact(id: ID!, contact: SensorContactInput!): String
 animateSensorContacact:String
 `;

@@ -1,7 +1,9 @@
 import App from '../app';
 import * as THREE from 'three';
+import { pubsub } from '../helpers/subscriptionManager.js';
 
 const interval = 100; // 1 tenth of a second
+const updateInterval = 1000;
 
 function distance3d(coord2, coord1) {
   const { x: x1, y: y1, z: z1 } = coord1;
@@ -50,6 +52,16 @@ const moveSensorContact = () => {
   });
   setTimeout(moveSensorContact, interval);
 };
+const updateSensorGrids = () => {
+  App.systems.forEach((sys) => {
+    if (sys.type === 'Sensors') {
+      const sensors = sys;
+      pubsub.publish('sensorContactUpdate', sensors.contacts);
+    }
+  });
+  setTimeout(updateSensorGrids, updateInterval);
+};
+updateSensorGrids();
 moveSensorContact();
 
 export default moveSensorContact;

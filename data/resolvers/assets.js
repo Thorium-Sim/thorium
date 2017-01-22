@@ -26,7 +26,17 @@ export const AssetsQueries = {
       return {};
     });
   },
-  assetFolders() {
+  assetFolders(root, { name, names }) {
+    if (name) {
+      return App.assetFolders.filter((f) => {
+        return f.name === name;
+      });
+    }
+    if (names) {
+      return App.assetFolders.filter((f) => {
+        return names.indexOf(f.name) > -1;
+      });
+    }
     return App.assetFolders;
   },
 };
@@ -102,7 +112,6 @@ export const AssetsMutations = {
 
 export const AssetsSubscriptions = {
   assetFolderChange(rootValue) {
-    console.log("SUB");
     return rootValue;
   },
 };

@@ -1,7 +1,7 @@
 {
-	"snapshotVersion": 2,
-	"timestamp": 1484069764994,
-	"version": 2,
+	"snapshotVersion": 7,
+	"timestamp": 1485036159696,
+	"version": 7,
 	"_eventsCount": 38,
 	"simulators": [
 		{
@@ -276,17 +276,7 @@
 			]
 		}
 	],
-	"clients": [
-		{
-			"id": "64afb5eb-dce1-dafe-168d-c85fe7eb0bda",
-			"flightId": null,
-			"simulatorId": null,
-			"station": null,
-			"loginName": null,
-			"loginState": false,
-			"class": "Client"
-		}
-	],
+	"clients": [],
 	"coreLayouts": [
 		{
 			"id": "9d21fa85-d919-4a39-a27e-23524adc1a03",
@@ -316,8 +306,8 @@
 			"name": "default",
 			"x": 0,
 			"y": 5,
-			"w": 80,
-			"h": 21,
+			"w": 37,
+			"h": 24,
 			"component": "SensorsGridCore",
 			"class": "CoreLayout"
 		}
@@ -405,6 +395,14 @@
 			"folderId": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
 			"name": "N",
 			"class": "AssetContainer"
+		},
+		{
+			"id": "fbe3ae88-698b-4974-a9b8-9a150abaa01c",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/G",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "G",
+			"class": "AssetContainer"
 		}
 	],
 	"assetObjects": [
@@ -445,12 +443,12 @@
 			"class": "AssetObject"
 		},
 		{
-			"id": "b26725b1-7824-41e6-8700-dda84f77b51a",
+			"id": "befc68b4-a404-4ee7-be4b-aaf1a5e97af1",
 			"containerPath": "/Sensor Contacts/Icons",
-			"containerId": "fc58cd61-db63-43a5-ba97-45e34aef18e9",
-			"fullPath": "/Sensor Contacts/Icons/N",
-			"url": "http://localhost:3001/assets/Sensor%20Contacts/Icons/N/test.svg",
-			"simulatorId": "test",
+			"containerId": "fbe3ae88-698b-4974-a9b8-9a150abaa01c",
+			"fullPath": "/Sensor Contacts/Icons/G",
+			"url": "https://s3.amazonaws.com/thorium-assets/Sensor%20Contacts/Icons/G/default.svg",
+			"simulatorId": "default",
 			"class": "AssetObject"
 		}
 	]

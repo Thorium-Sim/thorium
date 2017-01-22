@@ -38,7 +38,7 @@ export default class SensorContact {
     this.speed = stop ? 0 : speed;
     this.destination = coordinates;
     const locationVector = new THREE.Vector3(this.location.x, this.location.y, this.location.z);
-    const destinationVector = new THREE.Vector3(this.destination.x, this.destination.y, this.destination.z);
+    const destinationVector = new THREE.Vector3(coordinates.x, coordinates.y, coordinates.z);
     this.velocity = destinationVector.sub(locationVector).normalize().multiplyScalar(speed);
     if (stop) { this.destination = this.location; }
   }
@@ -58,6 +58,9 @@ export default class SensorContact {
   }
   updateName(name) {
     this.name = name;
+  }
+  updateSize(size) {
+    this.size = size;
   }
   updatePicture(picture) {
     this.picture = picture;
