@@ -124,7 +124,7 @@ class SensorGrid extends Component{
           weaponsRangeOpacity
         })
       }
-      
+
       // Animate moving the contacts
       let { contacts } = this.state;
       const currentTime = Date.now();
