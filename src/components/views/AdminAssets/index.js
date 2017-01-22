@@ -122,14 +122,14 @@ class AdminAssetsView extends Component {
 		//Just delete the object
 		this.props.removeAssetObject({id:object.id});
 	}
-	_massUpload(e){
+	_massUpload(){
 		//let files = e.target.files;
 	}
 	openModal(object){
 		this.setState({
 			imageModal: {
-			  name: object.fullPath,
-			  image: object.url,
+				name: object.fullPath,
+				image: object.url,
 			}
 		})
 	}
@@ -225,7 +225,7 @@ class AdminAssetsView extends Component {
 			: <div></div> }
 			</Row>
 			{this.state.imageModal && 
-			<ImageViewer isOpen={this.state.imageModal} toggle={this.closeModal.bind(this)} name={this.state.imageModal.name} image={this.state.imageModal.image} />
+				<ImageViewer isOpen={this.state.imageModal} toggle={this.closeModal.bind(this)} name={this.state.imageModal.name} image={this.state.imageModal.image} />
 			}
 			</div>
 			);
@@ -335,5 +335,5 @@ export default compose(
 				variables: Object.assign(props)
 			})
 		})
-	}),
+	})
 	)(AdminAssetsView);

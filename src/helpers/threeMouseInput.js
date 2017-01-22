@@ -139,7 +139,7 @@ class MouseInput extends Module {
     });
   }
 
-  _onMouseDown = (callbackName, mouseEvent) => {
+  _onMouseDown(callbackName, mouseEvent){
     ReactUpdates.batchedUpdates(() => {
       const {
         event,
@@ -152,9 +152,9 @@ class MouseInput extends Module {
         this._intersectionsForClick = intersections;
       }
     });
-  };
+  }
 
-  _onMouseUp = (callbackName, mouseEvent) => {
+  _onMouseUp(callbackName, mouseEvent){
     ReactUpdates.batchedUpdates(() => {
       const {
         event,
@@ -199,7 +199,7 @@ class MouseInput extends Module {
     });
 
     this._intersectionsForClick = null;
-  };
+  }
 
   _createSyntheticMouseEvent(eventType, prototype) {
     return SyntheticMouseEvent.getPooled(null, null,
@@ -295,10 +295,7 @@ class MouseInput extends Module {
 
   _updateEnterLeave() {
     const intersections = this._getIntersections(this._mouse);
-  //debugger;
-    const hoverMapToUpdate = {
-      ...this._hoverObjectMap,
-    };
+    const hoverMapToUpdate = Object.assign({}, this._hoverObjectMap);
 
     const mouseEnterEvent = this._createSyntheticMouseEvent('mouseEnter', {
       target: this._container,

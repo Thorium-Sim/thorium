@@ -65,7 +65,7 @@ class MissionCreateModalView extends Component {
     </Modal>
     );
   }
-};
+}
 
 const MissionsSimQuery = gql`
 query Simulators{

@@ -26,12 +26,13 @@ export const OutputField = ({style = {}, children, alert}) => {
   return <div style={compStyle}>{children}</div>
 }
 
-export const TypingField = ({style = {}, onChange, onBlur, value}) => {
+export const TypingField = ({style = {}, onChange, onBlur, value, input}) => {
   const compStyle = Object.assign({
     backgroundColor: '#B4B4B4',
     border: 'solid 1px #434343',
     height: '16px',
     resize: 'none',
   }, style)
-  return <textarea type="text" onChange={onChange} onBlur={onBlur} style={compStyle} defaultValue={value} />
+  return input ? <input type="text" onChange={onChange} onBlur={onBlur} style={compStyle} defaultValue={value}/> :
+  <textarea type="text" onChange={onChange} onBlur={onBlur} style={compStyle} defaultValue={value} />
 }

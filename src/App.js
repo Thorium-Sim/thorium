@@ -29,7 +29,7 @@ const networkInterface = createNetworkInterface({
 
 const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
   networkInterface,
-  wsClient,
+  wsClient
   );
 
 const client = new ApolloClient({
@@ -67,6 +67,8 @@ window.onbeforeunload = () => {
  return null;
 }
 
-export default () => (<ApolloProvider client={client}>
+const ApolloApp = () => (<ApolloProvider client={client}>
   <App />
   </ApolloProvider>);
+
+export default ApolloApp;

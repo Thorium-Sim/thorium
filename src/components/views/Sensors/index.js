@@ -128,10 +128,9 @@ class Sensors extends Component{
 		});
 	}
 	render() {
-		if (this.props.data.error) console.error(this.props.data.error);
+		//if (this.props.data.error) console.error(this.props.data.error);
 		const sensors = !this.props.data.loading ? this.props.data.sensors[0] : {armyContacts: []}
 		const {hoverContact} = this.state;
-		console.log('Hover',hoverContact);
 		return (
 			<div className="cardSensors">
 			{        this.props.data.loading ? 'Loading...' : 
@@ -197,7 +196,7 @@ class Sensors extends Component{
 			<Measure>
 			{ dimensions => (
 				<div id="threeSensors" className='array'>
-				{(() => console.log(dimensions) /*This is apparently necessary*/)()}
+				{(() => console.log(dimensions) /*This is apparently necessary*/)()} 
 				{dimensions.width > 0 &&
 					<SensorGrid 
 					sensor={sensors.id}
@@ -253,5 +252,5 @@ query GetSensors($simulatorId: ID){
 }`;
 
 export default  graphql(SENSOR_QUERY, {
-	options: (props) => ({ variables: { simulatorId: 'test' } }),
+	options: () => ({ variables: { simulatorId: 'test' } }),
 })(withApollo(Sensors));

@@ -174,8 +174,8 @@ gamepadLoop(){
 		this.setState({control:!this.state.control});
 	}
   */
-  onDragHandler(handlerName:string,which) {
-    return (e, {node, deltaX, deltaY}) => {
+  onDragHandler(handlerName,which) {
+    return (e, {node}) => {
       const self = this;
       const newPosition = {top: 0, left: 0};
       // Get new XY
@@ -184,6 +184,7 @@ gamepadLoop(){
       const id = this.props.data.thrusters[0].id;
       const rotation = {yaw: 0, pitch: 0, roll: 0};
       const direction = {x: 0, y: 0, z: 0};
+      const { width } = node.offsetParent.getBoundingClientRect();
       switch (handlerName) {
         case 'onDragStart':
         obj[which] = newPosition;
@@ -191,7 +192,6 @@ gamepadLoop(){
         break;
         case 'onDrag':
         if (!this.state[which]) throw new Error('onDrag called before onDragStart.');
-        const { width } = node.offsetParent.getBoundingClientRect();
         newPosition.left = (parentRect.left + parentRect.width/2 - e.clientX) / width * -1 * 2;
         newPosition.top = (parentRect.top + parentRect.height/2 - e.clientY) / width * -1 * 2;
         if (distance(undefined, {x: newPosition.left, y: newPosition.top}) > 1){
@@ -304,7 +304,7 @@ gamepadLoop(){
      <Measure>
      { dimensions => (
       <div id="threeThruster" style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
-      {(() => console.log(dimensions) /*This is apparently necessary*/)()}
+      {(() => console.log(dimensions) /*This is apparently necessary*/)()} // eslint-disable-next-line no-console
       {dimensions.width > 0 &&
         <ThrusterThree dimensions={dimensions} direction={direction} rotation={thruster.rotation} /> 
       }
@@ -404,7 +404,7 @@ mutation ThrusterDirection($id: ID!, $direction: DirectionInput) {
 
 export default compose(
   graphql(THRUSTER_QUERY, {
-    options: (props) => ({
+    options: () => ({
       variables: { simulatorId: 'test' }
     })
   }),

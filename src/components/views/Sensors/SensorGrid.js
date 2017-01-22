@@ -6,8 +6,8 @@ import * as THREE from 'three';
 import {parse as parsePath} from 'extract-svg-path';
 import svgMesh3d from 'svg-mesh-3d';
 import MouseInput from '../../../helpers/threeMouseInput';
-
-const createGeom = require('three-simplicial-complex')(THREE)
+import complex from 'three-simplicial-complex';
+const createGeom = complex(THREE);
 const dragPlane = new THREE.Plane();
 const backVector = new THREE.Vector3(0, 0, -1);
 
@@ -173,8 +173,7 @@ class SensorGrid extends Component{
         mouseInput,
       } = this.state;
 
-      const ray:THREE.Ray = mouseInput.getCameraRay(new THREE
-        .Vector2(event.clientX, event.clientY));
+      const ray = mouseInput.getCameraRay(new THREE.Vector2(event.clientX, event.clientY));
 
       const intersection = dragPlane.intersectLine(new THREE.Line3(
         ray.origin,
@@ -239,7 +238,7 @@ class SensorGrid extends Component{
       weaponsRangePulse: 0
     })
   }
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate() {
     if (!this.props.data.loading){
       window.scene = this.refs.scene
     }
@@ -329,14 +328,14 @@ class SensorGrid extends Component{
       hovering: true,
     });
     this.props.hoverContact(this.state.contacts[threeObj.object.name])
-  };
+  }
 
   _onHoverEnd() {
     this.setState({
       hovering: false,
     });
     this.props.hoverContact()
-  };
+  }
 
   _onDragStart(e, intersection) {
     const contactId = intersection.object.name;
@@ -364,7 +363,7 @@ class SensorGrid extends Component{
 
     document.addEventListener('mouseup', this._onDocumentMouseUp);
     document.addEventListener('mousemove', this._onDocumentMouseMove);
-  };
+  }
 
   _ref(mesh) {
     if (mesh){

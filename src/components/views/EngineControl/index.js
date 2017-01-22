@@ -71,7 +71,7 @@ class EngineControl extends Component {
 			width: `calc(${width}% - ${40/array.length * speed}px)`
 		})
 	}
-	setSpeed(engine,speed,engines,index){
+	setSpeed(engine,speed){
 		this.props.setSpeed({id: engine.id, speed:speed + 1, on: true})
 	}
 	fullStop(){
@@ -86,7 +86,7 @@ class EngineControl extends Component {
 			<Row>
 			<Col className="col-sm-12 enginesBar">
 			{(() => {
-				return engines.map((engine, index, array) => {
+				return engines.map((engine, index) => {
 					return (
 						<div key={engine.id} className="engineGroup">
 						<h4>{engine.name}</h4>
@@ -214,7 +214,7 @@ mutation setSpeed($id: ID!, $speed: Int!, $on: Boolean){
 `;
 export default compose(
 	graphql(ENGINE_QUERY, {
-		options: (props) => ({ variables: { simulatorId: 'test' } }),
+		options: () => ({ variables: { simulatorId: 'test' } }),
 	}),
 	graphql(SET_SPEED, {name: 'setSpeed',
 		props: ({setSpeed}) => ({

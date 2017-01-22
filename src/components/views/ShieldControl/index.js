@@ -110,5 +110,5 @@ export default compose(
         variables: Object.assign(props)
       })
     })
-  }),
+  })
   )(ShieldControl);

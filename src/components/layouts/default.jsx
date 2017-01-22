@@ -44,7 +44,7 @@ class LayoutDefault extends Component {
 			</ul>
 			<TransitionGroup>
 			{
-				cardsData.map((card, index) => {
+				cardsData.map((card) => {
 					const component = Views[card.component];
 					return <CardHolder component={component} {...this.props} key={card.id} />;
 				})

@@ -1,7 +1,7 @@
 import React from 'react';
 import './transporterScan.scss';
 
-export default () => {
+const TransporterScan = () => {
   return (<div className="transporterScan">
     <div className="ring_1"></div>
     <div className="ring_2"></div>
@@ -24,4 +24,6 @@ export default () => {
     <div className="ring_19"></div>
     <div className="ring_20"></div>
     </div>);
-}
+};
+
+export default TransporterScan; 

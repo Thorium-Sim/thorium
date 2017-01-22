@@ -21,7 +21,6 @@ class EngineCoreView extends Component {
       this.setSpeedSubscription = nextProps.data.subscribeToMore({
         document: SPEEDCHANGE_SUB,
         updateQuery: (previousResult, {subscriptionData}) => {
-          debugger;
           previousResult.engines = previousResult.engines.map(engine => {
             if (engine.id === subscriptionData.data.speedChange.id){
               engine.speed = subscriptionData.data.speedChange.speed;
@@ -97,7 +96,7 @@ mutation setSpeed($id: ID!, $speed: Int!, $on: Boolean){
 
 export default compose(
   graphql(ENGINE_QUERY, {
-    options: (props) => ({ variables: { simulatorId: 'test' } }),
+    options: () => ({ variables: { simulatorId: 'test' } }),
   }),
   graphql(SET_SPEED, {name: 'setSpeed',
     props: ({setSpeed}) => ({

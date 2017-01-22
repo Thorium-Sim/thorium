@@ -1,7 +1,7 @@
 import React from 'react';
 import * as THREE from 'three';
 
-export default (props) => {
+const Arrow = (props) => {
   const arrowVertices = [
     new THREE.Vector3(0,0,0.1), //0
     new THREE.Vector3(-0.5,-0.5,0.1), //1
@@ -68,4 +68,6 @@ export default (props) => {
       <meshBasicMaterial color={0xff0} opacity={0.01} />
       </mesh>
       );
-  }
+};
+
+export default Arrow;

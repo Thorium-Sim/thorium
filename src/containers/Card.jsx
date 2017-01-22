@@ -9,7 +9,7 @@ class CardFrame extends Component {
       return <div />;
     }
     if (this.props.data.error){
-      console.log('ERROR',this.props.data.error)
+      //console.log('ERROR',this.props.data.error)
     }
     let { simulators} = this.props.data;
     let currentStation// = stationsData[0] || {};

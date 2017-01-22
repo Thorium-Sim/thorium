@@ -13,3 +13,31 @@
 .core .react-grid-item .sensorGridCore div{
   height: initial;
 }
+
+img.armyContact{
+  height: 16px;
+  width: 16px;
+}
+.flex-container {
+  display: flex;
+}
+
+.contextMenu {
+  position: fixed;
+  width: 250px;
+
+  label{
+    padding: 0;
+    padding-left: 1.25rem;
+  }
+  .row{
+    margin-bottom: 2px;
+  }
+  select.form-control:not([size]):not([multiple]) {
+    height: calc(1.25rem - 2px);
+  }
+  .card-block{
+    padding-top: 0;
+        padding-bottom: 0;
+  }
+}

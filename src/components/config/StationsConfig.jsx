@@ -46,7 +46,7 @@ class StationsConfig extends Component {
 				`,
 				variables: obj,
 				updateQueries: {
-					StationSets:(previousQueryResults, {mutationResult, queryVariables}) => {
+					StationSets:(previousQueryResults, {mutationResult}) => {
 						previousQueryResults.stations.push(mutationResult.data.addstationset);
 						return previousQueryResults;
 					}
@@ -73,7 +73,7 @@ class StationsConfig extends Component {
 					`,
 					variables: obj,
 					updateQueries: {
-						StationSets:(previousQueryResults, {mutationResult, queryVariables}) => {
+						StationSets:(previousQueryResults, {mutationResult}) => {
 							previousQueryResults.stations = previousQueryResults.stations.filter((stationIt) => {
 								return stationIt.id !== mutationResult.data.removestationset.id;
 							});
@@ -115,7 +115,7 @@ class StationsConfig extends Component {
 				`,
 				variables: obj,
 				updateQueries: {
-					StationSets:(previousQueryResults, {mutationResult, queryVariables}) => {
+					StationSets:(previousQueryResults, {mutationResult}) => {
 						let returnVal = JSON.parse(JSON.stringify(previousQueryResults));
 						this.setState({
 							selectedStationConfig: mutationResult.data.addstation
@@ -158,7 +158,7 @@ class StationsConfig extends Component {
 				`,
 				variables: obj,
 				updateQueries: {
-					StationSets:(previousQueryResults, {mutationResult, queryVariables}) => {
+					StationSets:(previousQueryResults, {mutationResult}) => {
 						let returnVal = Object.assign({}, previousQueryResults);
 						this.setState({
 							selectedStationConfig: mutationResult.data.removestation
@@ -209,7 +209,7 @@ class StationsConfig extends Component {
 				`,
 				variables: obj,
 				updateQueries: {
-					StationSets:(previousQueryResults, {mutationResult, queryVariables}) => {
+					StationSets:(previousQueryResults, {mutationResult}) => {
 						let returnVal = Object.assign({}, previousQueryResults);
 						this.setState({
 							selectedStationConfig: mutationResult.data.addcard
@@ -253,7 +253,7 @@ class StationsConfig extends Component {
 				`,
 				variables: obj,
 				updateQueries: {
-					StationSets:(previousQueryResults, {mutationResult, queryVariables}) => {
+					StationSets:(previousQueryResults, {mutationResult}) => {
 						let returnVal = Object.assign({}, previousQueryResults);
 						this.setState({
 							selectedStationConfig: mutationResult.data.removecard

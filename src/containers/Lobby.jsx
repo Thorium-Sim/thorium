@@ -183,7 +183,7 @@ class Lobby extends Component {
             <h4>Flights
             <Button color="success" size="sm" onClick={this.toggle}>Create Flight</Button></h4>
             {this.props.data.loading || !this.props.data.flights ? <h4>Loading...</h4>
-                : this.props.data.flights.map((flight, index) => {
+                : this.props.data.flights.map((flight) => {
                     return <Row key={flight.id}>
                     <Col sm="12">
                     <h4>{flight.name} - {flight.date}</h4>
@@ -298,7 +298,7 @@ query Sessions {
 }`;
 
 export default graphql(LobbyData, {
-    options: (props) => {
+    options: () => {
         return {};
     },
 })(Lobby);

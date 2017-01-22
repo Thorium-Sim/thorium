@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {
     Col,
     Row,
@@ -100,6 +100,9 @@ export class SigninView extends Component {
     }
 }
 
+SigninView.propTypes = {
+    signin: PropTypes.func,
+}
 const signInMutation = gql `mutation signin($email: String! $password: String!) {
 	login_user(email: $email, password: $password) {
 		id,
@@ -151,7 +154,7 @@ export class ForgotView extends Component {
             localStorage.setItem('login_tokenExpire', login_user.tokenExpire);
             localStorage.setItem('login_id', login_user.id);
             self.props.history.push('/');
-        }, (err) => {});
+        }, () => {});
     }
     _handleReturn(event) {
         if (event.which === 13) {
@@ -191,6 +194,10 @@ export class ForgotView extends Component {
         );
     }
 }
+
+ForgotView.propTypes = {
+    forgot: PropTypes.func
+};
 
 const forgotMutation = gql `
 mutation forgot($email: String!){
@@ -237,7 +244,7 @@ export class RegisterView extends Component {
             this.setState({emailInvalid: null, email: x});
         }
     }
-    _handlePasswordChange(event) {
+    _handlePasswordChange() {
         if (this.refs.signupPassword.value.length < 8) {
             this.setState({passwordInvalid: "Password must be 8 or more characters.", password: this.refs.signupPassword.value});
         } else if (this.refs.signupPassword.value !== this.refs.signupPasswordRepeat.value) {
@@ -254,7 +261,7 @@ export class RegisterView extends Component {
             localStorage.setItem('login_tokenExpire', login_user.tokenExpire);
             localStorage.setItem('login_id', login_user.id);
             self.props.history.push('/');
-        }, (err) => {});
+        }, () => {});
     }
     _handleReturn(event) {
         if (event.which === 13) {
@@ -310,6 +317,10 @@ export class RegisterView extends Component {
     }
 }
 
+RegisterView.propTypes = {
+    register: PropTypes.func,
+};
+
 const RegisterMutation = gql `
 mutation register($email: String! $password: String!) {
 	register_user(email: $email, password: $password) {
@@ -346,7 +357,7 @@ export class PasswordResetView extends Component {
             resetLink: props.params.resetLink
         };
     }
-    _handlePasswordChange(event) {
+    _handlePasswordChange() {
         if (this.refs.signupPassword.value.length < 8) {
             this.setState({passwordInvalid: "Password must be 8 or more characters.", password: this.refs.signupPassword.value});
         } else if (this.refs.signupPassword.value !== this.refs.signupPasswordRepeat.value) {
@@ -357,14 +368,13 @@ export class PasswordResetView extends Component {
     }
     _handleReset() {
         let self = this;
-        debugger;
         this.props.reset({resetLink: this.state.resetLink, password: this.refs.signupPassword.value}).then((res) => {
             const login_user = res.data.reset;
             localStorage.setItem('login_token', login_user.token);
             localStorage.setItem('login_tokenExpire', login_user.tokenExpire);
             localStorage.setItem('login_id', login_user.id);
             self.props.history.push('/');
-        }, (err) => {});
+        }, () => {});
     }
     _handleReturn(event) {
         if (event.which === 13) {
@@ -409,6 +419,11 @@ export class PasswordResetView extends Component {
             </Container>
         );
     }
+}
+
+PasswordResetView.propTypes = {
+    params: PropTypes.object,
+    reset: PropTypes.func,
 }
 
 const ResetMutation = gql `

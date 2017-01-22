@@ -1,7 +1,6 @@
 import React from 'react';
 
-const LongRangeComm = (props) => {
-	console.log(props);
+const LongRangeComm = () => {
 	return (
 		<div>
 		This is the long range comm card!	Wooot Woot!

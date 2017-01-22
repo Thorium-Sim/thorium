@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Router, browserHistory } from 'react-router';
 import {Signin, Register, Forgot, PasswordReset} from '../components/Accounts.jsx';
 //import UserAdmin from '../components/admin/Users.jsx';
@@ -10,6 +10,10 @@ import Client from '../components/Client.jsx';
 const TestCard = (props) => {
   return <CardContainer test={true} params={props.params} />
 };
+TestCard.propTypes = {
+  params: PropTypes.object,
+};
+
 class NoMatch extends Component {
   render(){
     return (<div>No route matches your request. <a href="/">Go Home.</a></div>);

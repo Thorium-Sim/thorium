@@ -1,8 +1,7 @@
 import React from 'react';
 import viewList from '../components/views/list.js';
 import { Link } from 'react-router';
-
-export default () => {
+const DebugList = () => {
   return (
     <ul>
     {viewList.map((v) => {
@@ -11,3 +10,5 @@ export default () => {
     </ul>
     );
 }
+
+export default DebugList;

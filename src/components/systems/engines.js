@@ -90,6 +90,6 @@ class Engines extends Component {
 			</div>
 			);
 	}
-};
+}
 
 export default Engines;
