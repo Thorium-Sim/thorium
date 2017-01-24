@@ -1,33 +1,33 @@
 import App from '../../app.js';
 
-export const SimulatorQueries = {
+export const FlightStructureQueries = {
   simulators: (root, args) => {
     return App.simulators;
   },
   flights() {
-    return [];
+    return App.flights;
   },
   stations() {
-    return [];
+    return App.stationSets;
+  },
+  missions() {
+    return App.missions;
   },
 };
 
-export const SimulatorMutations = {
+export const FlightStructureMutations = {
   test(root, args) {
     App.test(args);
     return '';
   },
-  addSimulator: (root, args) => {
+  /*addSimulator: (root, args) => {
     App.handleEvent(args, 'addSimulator', 'addedSimulator');
     return '';
-  },
+  },*/
   addSystem: (root, args) => {
     App.handleEvent(args, 'addSystem', 'addedSystem');
   },
 };
 
-export const SimulatorSubscriptions = {
-  simulator: () => {
-    return 'Simulator Update';
-  },
+export const FlightStructureSubscriptions = {
 };

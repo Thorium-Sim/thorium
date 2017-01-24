@@ -1,6 +1,6 @@
 {
 	"snapshotVersion": 7,
-	"timestamp": 1485036159696,
+	"timestamp": 1485056034254,
 	"version": 7,
 	"_eventsCount": 38,
 	"simulators": [
@@ -361,6 +361,20 @@
 			"fullPath": "/Sensor Contacts/Pictures",
 			"name": "Pictures",
 			"class": "AssetFolder"
+		},
+		{
+			"id": "f6960518-00a1-414e-ac36-bcb29553464c",
+			"folderPath": "/",
+			"fullPath": "/Ship Views",
+			"name": "Ship Views",
+			"class": "AssetFolder"
+		},
+		{
+			"id": "5930638f-9fcb-452d-8504-b882641b59d8",
+			"folderPath": "/",
+			"fullPath": "/Misc",
+			"name": "Misc",
+			"class": "AssetFolder"
 		}
 	],
 	"assetContainers": [
@@ -402,6 +416,22 @@
 			"fullPath": "/Sensor Contacts/Icons/G",
 			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
 			"name": "G",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "bbcc1500-7301-4e2f-8623-2ea2afed97b5",
+			"folderPath": "/Misc",
+			"fullPath": "/Misc/Login Logo",
+			"folderId": "5930638f-9fcb-452d-8504-b882641b59d8",
+			"name": "Login Logo",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "8a48e30d-2c03-419a-a18f-794e0bd2a815",
+			"folderPath": "/Ship Views",
+			"fullPath": "/Ship Views/Right",
+			"folderId": "f6960518-00a1-414e-ac36-bcb29553464c",
+			"name": "Right",
 			"class": "AssetContainer"
 		}
 	],
@@ -448,6 +478,24 @@
 			"containerId": "fbe3ae88-698b-4974-a9b8-9a150abaa01c",
 			"fullPath": "/Sensor Contacts/Icons/G",
 			"url": "https://s3.amazonaws.com/thorium-assets/Sensor%20Contacts/Icons/G/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "1be123ea-e65d-4efc-93b2-57ce7fdfe125",
+			"containerPath": "/Misc",
+			"containerId": "bbcc1500-7301-4e2f-8623-2ea2afed97b5",
+			"fullPath": "/Misc/Login Logo",
+			"url": "https://s3.amazonaws.com/thorium-assets/Misc/Login%20Logo/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "53caa4e7-77fe-4b02-b141-95c06e2d09b5",
+			"containerPath": "/Ship Views",
+			"containerId": "8a48e30d-2c03-419a-a18f-794e0bd2a815",
+			"fullPath": "/Ship Views/Right",
+			"url": "https://s3.amazonaws.com/thorium-assets/Ship%20Views/Right/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		}

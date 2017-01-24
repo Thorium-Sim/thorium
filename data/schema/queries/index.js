@@ -5,3 +5,5 @@ export assets from './assets';
 export transporters from './transporters';
 export coreLayout from './coreLayout';
 export sensors from './sensors';
+export clients from './clients';
+export flightStructure from './flightStructure';

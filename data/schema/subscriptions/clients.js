@@ -1,5 +1,6 @@
 export default `
-  clientConnect: client
-  clientDisconnect: client
-  clientChanged: [client]
+  clientConnect: Client
+  clientDisconnect: Client
+  clientChanged(client: ID): [Client]
+  clientPing(client: ID!): String
 `;

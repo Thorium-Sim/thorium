@@ -16,33 +16,19 @@ ${Object.keys(types).map((type) => {
 
 #Queries definition
 type Query {
-  simulators(template: Boolean, id: String): [simulator]
-  stations(name: String): [stationset]
-  missions: [mission]
-  flights: [flight]
-  sessions: [session]
   users(id: String, token: String, email: String): [user]
-  clients: [client]
   ${Object.keys(queries).map(query => queries[query])}
 }
 
 #Mutations definition
 type Mutation {
   snapshot: String
-  addSimulator(id: String, 
-  name: String, 
-  alertlevel: String, 
-  layout: String, timeline:String): String
   addSystem(simulatorId: ID): String
-  clientConnect(id: ID!, flightId: ID, simulatorId: ID, station: ID, loginName: String, loginState: Boolean): String
-  clientDisconnect(id: ID!): String
   ${Object.keys(mutations).map(mutation => mutations[mutation])}
 }
 
 #Subscriptions definition
 type Subscription {
-  simulator: String
-  postUpvoted: String
   ${Object.keys(subscriptions).map(subscription => subscriptions[subscription])}
 }
 

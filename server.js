@@ -9,11 +9,14 @@ import graphqlExpressUpload from 'graphql-server-express-upload';
 import multer from 'multer';
 import cors from 'cors';
 import request from 'request';
+import path from 'path';
 
 import './events';
 import './processes/engines';
 import './processes/thrusters';
 import './processes/sensorContacts';
+import './processes/clientPing';
+
 const GRAPHQL_PORT = 3001;
 const WS_PORT = 3002;
 
@@ -60,7 +63,17 @@ graphQLServer.use('/graphiql', graphiqlExpress(options));
 graphQLServer.use('/assets', (req, res) => {
   console.log(req.url);
   const baseUrl = 'https://s3.amazonaws.com/thorium-assets';
-  request(baseUrl + req.url).pipe(res);
+  request(baseUrl + req.url)
+  .on('response', (response) => {
+    console.log(response.statusCode);
+    if (response.statusCode !== 200) {
+      // Replace the simulator with 'default';
+      const assetPath = path.parse(req.url);
+      request(`${baseUrl}${assetPath.dir}/default${assetPath.ext}`).pipe(res);
+      return false;
+    }
+    response.pipe(res);
+  });
 });
 
 graphQLServer.listen(GRAPHQL_PORT, () => console.log(

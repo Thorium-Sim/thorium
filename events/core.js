@@ -12,8 +12,6 @@ App.on('updatedCoreLayout', (param) => {
       appLayout.h = layout.h;
     }
   });
-  console.log(App.coreLayouts);
-
   pubsub.publish('coreLayoutChange', App.coreLayouts);
 });
 App.on('addedCoreLayout', ({ layout }) => {
