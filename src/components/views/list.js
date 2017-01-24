@@ -8,6 +8,7 @@ const viewList = [
 	"Sensors",
 	"AdminAssets",
   "Transporters",
+  "Login"
 ];
 
 export default viewList;

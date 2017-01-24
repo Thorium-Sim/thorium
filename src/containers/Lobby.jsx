@@ -20,13 +20,31 @@ import Core from './Core';
 import './style.scss';
 
 const CLIENT_CHANGE_QUERY = gql`
-subscription onClientChange{
-    clientChanged {
+subscription ClientChanged {
+  clientChanged {
+    id
+    flight {
         id
-        flight
-        simulators
-        station
+        name
+        date
     }
+    simulator {
+        id
+        name
+        alertlevel
+        layout
+    }
+    station {
+        name
+        cards{
+            name
+            component
+            icon
+        }
+    }
+    loginName
+    loginState
+}
 }
 `;
 
@@ -59,7 +77,8 @@ class Lobby extends Component {
                 document: CLIENT_CHANGE_QUERY,
                 updateQuery: (previousResult, {subscriptionData}) => {
                     const returnResult = Object.assign({}, previousResult);
-                    returnResult.clients = subscriptionData.data.clientChange;
+                    console.log('CLIENT CHANGE',subscriptionData.data.clientChanged)
+                    returnResult.clients = subscriptionData.data.clientChanged;
                     return returnResult;
                 },
             });
@@ -227,10 +246,12 @@ class Lobby extends Component {
                     <select onChange={this._selectStation.bind(this, p)} className="form-control-sm c-select">
                     <option>Select a station</option>
                     {(() => {
-                        if (this.props.data.stations[0]){
-                            return this.props.data.stations[0].stations.map((e, index) => {
-                                return <option key={`station-${p}-${e.name}-${index}`} value={e.name}>{e.name}</option>;
-                            });
+                        if (this.props.data.stations){
+                            if (this.props.data.stations[0]){
+                                return this.props.data.stations[0].stations.map((e, index) => {
+                                    return <option key={`station-${p}-${e.name}-${index}`} value={e.name}>{e.name}</option>;
+                                });
+                            }
                         }
                         return <option disabled>No Stations</option>
                     })()}
@@ -273,25 +294,37 @@ class Lobby extends Component {
 }
 
 const LobbyData = gql `
-query Sessions {
+query Clients {
     clients {
         id
-        flight
-        simulators
-        station
+        flight {
+            id
+            name
+            date
+        }
+        simulator {
+            id
+            name
+            alertlevel
+            layout
+        }
+        station {
+            name
+            cards{
+                name
+                component
+                icon
+            }
+        }
+        loginName
+        loginState
     }
     flights {
         id
         name
+        date
         simulators {
-            id
-            name
-        }
-    }
-    stations(name: "default") {
-        id
-        name
-        stations {
+          id
           name
       }
   }

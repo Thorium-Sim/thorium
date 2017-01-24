@@ -7,7 +7,6 @@ import { Client } from 'subscriptions-transport-ws';
 import { addTypenameToSelectionSet } from 'apollo-client/queries/queryTransform';
 import addGraphQLSubscriptions from './helpers/subscriptions.js';
 import { ApolloProvider } from 'react-apollo';
-import gql from 'graphql-tag';
 import './app.scss';
 
 const wsClient = new Client('ws://apple.local:3002');
@@ -42,30 +41,6 @@ const client = new ApolloClient({
     return null;
   },
 });
-
-const ADD_CLIENT = gql`
-mutation AddClient($id: ID!){
-  clientConnect(id: $id)
-}
-`;
-const REMOVE_CLIENT = gql`
-mutation RemoveClient($id: ID!){
-  clientDisconnect(id: $id)
-}
-`;
-
-client.mutate({
-  mutation:ADD_CLIENT,
-  variables: {id: clientId}
-});
-
-window.onbeforeunload = () => {
- client.mutate({
-  mutation: REMOVE_CLIENT,
-  variables: {id: clientId}
-})
- return null;
-}
 
 const ApolloApp = () => (<ApolloProvider client={client}>
   <App />

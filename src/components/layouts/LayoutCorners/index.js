@@ -27,6 +27,20 @@ class CardHolder extends Component {
 	}
 }
 
+const Settings = (props) => {
+	return (
+		<div className={`settingsBall`}>
+		<div className={`icon ${props.className}`} />
+      <ul className="options">
+        <li>Help</li>
+        <li>Lock Screen</li>
+        <li>Reset Terminal</li>
+        <li>Diagnostic</li>
+        <li>Logout</li>
+      </ul>
+		</div>);
+}
+
 class LayoutCorners extends Component {
 	render() {
 		if (!this.props.data.loading){
@@ -73,6 +87,7 @@ class LayoutCorners extends Component {
 				</div>
 			{/*<span class="login-name" style="{{usernameStyle}}">{{username}}</span>*/}
 			<CardSwitcher cards={cardsData} {...this.props} />
+			<Settings className={alertClass} />
 			</div>
 			</div>);
 		} 
