@@ -57,7 +57,7 @@ class Lobby extends Component {
             presences: {},
             simulatorSelect: {},
             stationSelect: {},
-            activeTab: '5'
+            activeTab: '3'
         };
         this.toggleTab = this.toggleTab.bind(this);
         this.toggle = this.toggle.bind(this);
@@ -210,7 +210,7 @@ class Lobby extends Component {
                     {flight.simulators.map((simulator) => {
                         return <Col key={simulator.id} sm="12">
                         <h5>{simulator.name}</h5>
-                        {/*simulator.stationSet.stations.map((station) => {
+                        {simulator.stationSet.stations.map((station) => {
                            return <Col key={`${simulator.id}-${station.name}`} sm="6">
                            <label>{station.name}</label>
                            <select>
@@ -220,7 +220,7 @@ class Lobby extends Component {
                         })}
                            </select>
                            </Col>;
-                       })*/}
+                       })}
                        </Col>;
                    })}
                     </Row>;
