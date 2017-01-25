@@ -7,6 +7,9 @@ class Events extends Entity {
   constructor(params) {
     super(params);
     this.simulators = [];
+    this.stationSets = [];
+    this.flights = [];
+    this.missions = [];
     this.systems = [];
     this.clients = [];
     this.coreLayouts = [];

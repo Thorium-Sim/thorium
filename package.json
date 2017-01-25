@@ -54,7 +54,8 @@
       "dot-notation": 0,
       "no-console": 0,
       "indent": 0,
-      "import/namespace": 0
+      "import/namespace": 0,
+      "max-len": 0
     },
     "env": {
       "mocha": true

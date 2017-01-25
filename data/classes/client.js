@@ -1,5 +1,7 @@
 import uuid from 'uuid';
 
+// TODO: Add the ability to sort clients into groups
+
 export default class Client {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();

@@ -1,12 +1,12 @@
 import uuid from 'uuid';
 
 export class StationSet {
-  constructor(params) {
+  constructor({ id, name, stations = [] }) {
     this.class = 'StationSet';
-    this.id = params.id || uuid.v4();
-    this.name = params.name || 'StationSet';
+    this.id = id || uuid.v4();
+    this.name = name || 'StationSet';
     this.stations = [];
-    params.stations.forEach((station) => {
+    stations.forEach((station) => {
       this.addStation(station);
     });
   }
@@ -15,6 +15,18 @@ export class StationSet {
   }
   removeStation(stationName) {
     this.stations = this.stations.filter(s => s.name !== stationName);
+  }
+  renameStation(station, newName) {
+    const renameStation = this.stations.find(s => s.name === station);
+    renameStation.rename(newName);
+  }
+  addStationCard(station, card) {
+    const cardStation = this.stations.find(s => s.name === station);
+    cardStation.addCard(card);
+  }
+  removeStationCard(station, cardName) {
+    const cardStation = this.stations.find(s => s.name === station);
+    cardStation.removeCard(cardName);
   }
 }
 
@@ -27,6 +39,9 @@ export class Station {
       this.addCard(card);
     });
     this.cards = params.cards || [];
+  }
+  rename(name) {
+    this.name = name;
   }
   addCard(card) {
     this.cards.push(new Card(card));

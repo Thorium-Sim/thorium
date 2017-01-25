@@ -3,6 +3,7 @@ export default `
 type Mission {
   id: ID
   name: String
+  description: String
   simulators: [Simulator]
 }
 
@@ -24,6 +25,7 @@ type Simulator {
 }
 
 type Timelinestep {
+  id: ID!
   name: String
   description: String
   order: Int
@@ -31,6 +33,14 @@ type Timelinestep {
 }
 
 type Timelineitem {
+  name: String
+  type: String
+  command: String
+  args: String
+  delay: Int
+}
+
+input TimelineitemInput {
   name: String
   type: String
   command: String
