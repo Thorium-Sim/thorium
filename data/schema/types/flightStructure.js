@@ -35,7 +35,7 @@ type Timelinestep {
 type Timelineitem {
   name: String
   type: String
-  command: String
+  mutation: String
   args: String
   delay: Int
 }

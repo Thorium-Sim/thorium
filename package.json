@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Minimal set of code to write a GraphQL server with Apollo graphql-tools",
   "scripts": {
-    "start": "nodemon ./server.js --ignore snapshots/ --exec babel-node",
+    "start": "nodemon ./server.js -e graphql --ignore snapshots/ --exec babel-node",
     "debug": "nodemon --debug ./server.js --exec babel-node",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ."

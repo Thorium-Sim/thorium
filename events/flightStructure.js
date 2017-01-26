@@ -29,7 +29,6 @@ App.on('removedTemplateSimulator', ({ simulatorId }) => {
 App.on('createdStationSet', ({ name }) => {
   const station = new Classes.StationSet({ name });
   App.stationSets.push(station);
-  console.log(App.stationSets);
   pubsub.publish('stationSetUpdate', App.stationSets);
 });
 App.on('removedStationSet', ({ stationSetID }) => {
@@ -39,6 +38,7 @@ App.on('removedStationSet', ({ stationSetID }) => {
 App.on('addedStationToStationSet', ({ stationSetID, stationName }) => {
   const stationSet = App.stationSets.find(ss => ss.id === stationSetID);
   stationSet.addStation({ name: stationName });
+  console.log(App.stationSets);
   pubsub.publish('stationSetUpdate', App.stationSets);
 });
 App.on('removedStationFromStationSet', ({ stationSetID, stationName }) => {

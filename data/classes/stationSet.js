@@ -31,14 +31,13 @@ export class StationSet {
 }
 
 export class Station {
-  constructor(params) {
+  constructor({ name, cards = [] }) {
     this.class = 'Station';
-    this.name = params.name || 'Station';
+    this.name = name || 'Station';
     this.cards = [];
-    params.cards.forEach((card) => {
+    cards.forEach((card) => {
       this.addCard(card);
     });
-    this.cards = params.cards || [];
   }
   rename(name) {
     this.name = name;

@@ -3,7 +3,6 @@ import * as mutations from './mutations';
 import * as subscriptions from './subscriptions';
 import * as types from './types';
 
-
 export default `
 scalar UploadedFile
 
@@ -22,8 +21,20 @@ type Query {
 
 #Mutations definition
 type Mutation {
+  #Macro: Add a system to a simulator
   snapshot: String
-  addSystem(simulatorId: ID): String
+  #Macro: Add a system to a simulator
+  addSystem(
+  #{
+    #   "content":"Simulator",
+    #   "type":"select",
+    #   "query": "simulators(template: false){id, name}",
+    #   "queryName": "simulators",
+    #   "key":"id",
+    #   "value":"name"
+    #
+    #}
+  simulatorId: ID): String
   ${Object.keys(mutations).map(mutation => mutations[mutation])}
 }
 
