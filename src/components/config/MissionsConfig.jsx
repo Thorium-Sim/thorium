@@ -158,6 +158,7 @@ class ArgItem extends Component {
   }
   render(){
     const arg = this.props.arg;
+    console.log(arg)
     switch(arg.type){
       case "select":
       if (arg.enum){
@@ -176,36 +177,43 @@ class ArgItem extends Component {
           );
       }
       if (arg.varName){
-       return ( <FormGroup>
+        return ( <FormGroup>
+          <Label>{arg.content}</Label>
+          <Input type="select" onChange={this._handleArg.bind(this)} className="c-select form-control">
+          <option value={null}>Select An Option</option>
+          {
+            this[arg.varName].map((data) => {
+              return <option key={data} value={data}>{data}</option>;
+            })
+          }
+          </Input>
+          </FormGroup>
+          );
+      }
+      return (
+        <FormGroup>
         <Label>{arg.content}</Label>
         <Input type="select" onChange={this._handleArg.bind(this)} className="c-select form-control">
         <option value={null}>Select An Option</option>
         {
-          this[arg.varName].map((data) => {
-            return <option key={data} value={data}>{data}</option>;
+          this.state.data[arg.queryName] && this.state.data[arg.queryName].map((data) => {
+            return <option key={data[arg.key]} value={data[arg.key]}>{data[arg.value]}</option>;
           })
         }
         </Input>
         </FormGroup>
         );
-     }
-     return (
-      <FormGroup>
-      <Label>{arg.content}</Label>
-      <Input type="select" onChange={this._handleArg.bind(this)} className="c-select form-control">
-      <option value={null}>Select An Option</option>
-      {
-        this.state.data[arg.queryName] && this.state.data[arg.queryName].map((data) => {
-          return <option key={data[arg.key]} value={data[arg.key]}>{data[arg.value]}</option>;
-        })
-      }
-      </Input>
-      </FormGroup>
-      );
-     default:
-     return <p key={arg.name}>{`${arg.name} - ${arg.content}`}</p>;
-   }
- }
+      case "text":
+      return (
+        <FormGroup>
+        <Label>{arg.content}</Label>
+        <Input type="text" onChange={this._handleArg.bind(this)} />
+        </FormGroup>
+        );
+      default:
+      return <p key={arg.name}>{`${arg.name} - ${arg.content}`}</p>;
+    }
+  }
 }
 
 class MacroConfig extends Component {
@@ -241,8 +249,9 @@ class MacroConfig extends Component {
   render(){
     let data;
     if (!this.props.data.loading){
-      data = this.props.data.__type.fields;
+      data = this.props.data.__schema.mutationType.fields;
     }
+    console.log(data);
     return <Row>
     <Col sm="9">
     {this.props.data.loading ? "Loading..." :
@@ -286,14 +295,20 @@ class MacroConfig extends Component {
 
 const MacroConfigQuery = gql `
 query IntrospectionQuery {
-  __type(name: "RootMutationType") {
-    name
-    fields {
+  __schema {
+    mutationType {
       name
       description
-      args {
+      fields {
         name
         description
+        isDeprecated
+        deprecationReason
+        args {
+          name
+          description
+          defaultValue
+        }
       }
     }
   }

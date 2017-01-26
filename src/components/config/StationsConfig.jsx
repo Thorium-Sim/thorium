@@ -25,8 +25,7 @@ class StationsConfig extends Component {
 	constructor(params){
 		super(params);
 		this.state = {
-			selectedStationConfig:{},
-			selectedStation:{},
+			selectedStationConfig:null,
 		};
 		this.stationSubscription = null;
 	}
@@ -35,6 +34,7 @@ class StationsConfig extends Component {
 			this.stationSubscription = nextProps.data.subscribeToMore({
 				document: STATION_SUB,
 				updateQuery: (previousResult, {subscriptionData}) => {
+					debugger;
 					previousResult.stations = subscriptionData.data.stationSetUpdate
 					return previousResult;
 				},
@@ -43,7 +43,7 @@ class StationsConfig extends Component {
 	}
 	_setSelectedStationConfig(station){
 		this.setState({
-			selectedStationConfig: station
+			selectedStationConfig: station.id
 		});
 	}
 	_createStationSet(){
@@ -70,23 +70,25 @@ class StationsConfig extends Component {
 						removeStationSet(stationSetID: $id)
 					}
 					`,
-					variables: {id: station.id},
+					variables: {id: station},
 				});
 			}
 			this.setState({
-				selectedStationConfig: {}
+				selectedStationConfig: null
 			});
 		}
 	}
 	_renameStationSet(){
 		// TODO
 	}
+	_editCard(){
+		// TODO
+	}
 	_addStation(){
 		let name  = prompt('What is the station name?');
 		if (name){
-			let stationSet =  Object.assign({}, this.state.selectedStationConfig);
 			let obj = {
-				id: stationSet.id,
+				id: this.state.selectedStationConfig,
 				station: name
 			};
 			this.props.client.mutate({
@@ -100,9 +102,8 @@ class StationsConfig extends Component {
 	}
 	_removeStation(station){
 		if (confirm("Are you sure you want to delete that station?")){
-			let stationSet =  Object.assign({}, this.state.selectedStationConfig);
 			let obj = {
-				id: stationSet.id,
+				id: this.state.selectedStationConfig,
 				station: station.name
 			};
 			this.props.client.mutate({
@@ -118,9 +119,8 @@ class StationsConfig extends Component {
 		let component = e.target.value;
 		let name  = prompt('What is the card name?');
 		if (name){
-			let stationSet = Object.assign({}, this.state.selectedStationConfig);
 			let obj = {
-				id: stationSet.id,
+				id: this.state.selectedStationConfig,
 				name: station.name,
 				cardName: name,
 				cardComponent: component,
@@ -137,46 +137,47 @@ class StationsConfig extends Component {
 	}
 	_removeCard(card,station){
 		if (confirm("Are you sure you want to delete that card?")){
-			let stationSet = Object.assign({}, this.state.selectedStationConfig);
 			let obj = {
-				id: stationSet.id,
+				id: this.state.selectedStationConfig,
 				name: station.name,
 				card: card.name
 			};
 			this.props.client.mutate({
 				mutation: gql`
-				mutation RemoveCard($stationSetID: ID!, $stationName: String!, $cardName: String!) {
-					removeCardFromStation(stationSetID: $stationSetID, stationName: $stationName, cardName: $cardName) 
+				mutation RemoveCard($id: ID!, $stationName: String!, $cardName: String!) {
+					removeCardFromStation(stationSetID: $id, stationName: $stationName, cardName: $cardName) 
 				}`,
 				variables: obj,
 			});
 		}
 	}
 	render(){
+		const selectedStation = this.props.data.loading ? {} : (this.props.data.stations.find(s => s.id === this.state.selectedStationConfig) || {});
+		console.log(selectedStation)
 		return (
 			<Row>
 			<Col sm="3">
 			<h5>Station Configs</h5>
 			<Card className="scroll">
 			{this.props.data.loading ? <li>Loading... </li> : this.props.data.stations.map((e) => {
-				return <li key={e.id} onClick={this._setSelectedStationConfig.bind(this,e)} className={`${(e.id === this.state.selectedStationConfig.id) ? 'selected' : ''} list-group-item`}>{e.name}</li>;
+				return <li key={e.id} onClick={this._setSelectedStationConfig.bind(this,e)} className={`${(e.id === this.state.selectedStationConfig) ? 'selected' : ''} list-group-item`}>{e.name}</li>;
 			})}
 			</Card>
 			<ButtonGroup>
 			<Button onClick={this._createStationSet.bind(this)} size="sm" color="success">Add</Button>
 			<Button onClick={this._showImportModal.bind(this)} size="sm" color="info">Import</Button>
-			{this.state.selectedStationConfig.id && <Button onClick={this._renameStationSet.bind(this)} size="sm" color="warning">Rename</Button>}
-			{this.state.selectedStationConfig.id && <Button onClick={this._removeStationSet.bind(this)} size="sm" color="danger">Remove</Button>}
+			{this.state.selectedStationConfig && <Button onClick={this._renameStationSet.bind(this)} size="sm" color="warning">Rename</Button>}
+			{this.state.selectedStationConfig && <Button onClick={this._removeStationSet.bind(this)} size="sm" color="danger">Remove</Button>}
 			</ButtonGroup>
 			</Col>
 			<Col sm="9">
-			{this.state.selectedStationConfig.name ?
+			{selectedStation.name ?
 				<div>
 				<h5>Stations</h5>
 				<div className="scroll">
-				{this.state.selectedStationConfig.stations.map((station,stationIndex) => {
+				{selectedStation.stations.map((station,stationIndex) => {
 					return (
-						<div key={`${this.state.selectedStationConfig.id}-${station.name}-${stationIndex}`} style={{marginBottom: '15px'}}>
+						<div key={`${this.state.selectedStationConfig}-${station.name}-${stationIndex}`} style={{marginBottom: '15px'}}>
 						<table className="table table-sm table-striped table-hover">
 						<thead className="thead-default">
 						<tr>
@@ -195,7 +196,7 @@ class StationsConfig extends Component {
 						<tbody>
 						{station.cards.map((card) => {
 							return (
-								<tr key={`${this.state.selectedStationConfig.id}-${station.name}-${card.name}`}>
+								<tr key={`${this.state.selectedStationConfig}-${station.name}-${card.name}`}>
 								<td>{card.name}</td>
 								<td>{card.component}</td>
 								<td>{card.icon}</td>
