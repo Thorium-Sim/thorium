@@ -1,4 +1,4 @@
-
+export default `
   clientConnect(client: ID!):String
   clientDisconnect(client: ID!):String
   clientPing(client: ID!, ping: String!):String
@@ -11,3 +11,4 @@
   clientReset(client: ID!):String
   clientLockScreen(client: ID!):String
   clientUnlockScreen(client: ID!):String
+`;

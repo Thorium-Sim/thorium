@@ -1,4 +1,4 @@
-
+export default `
 addSensorsArray(simulatorId: ID!): String
 removeSensorsArray(id: ID!): String
 sensorScanRequest(id: ID!, request: String!): String
@@ -14,3 +14,4 @@ createSensorArmyContact(id: ID!, contact: SensorContactInput!): String
 removeSensorArmyContact(id: ID!, contact: ID!): String
 updateSensorArmyContact(id: ID!, contact: SensorContactInput!): String
 animateSensorContacact:String
+`;

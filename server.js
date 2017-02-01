@@ -61,11 +61,9 @@ graphQLServer.use('/graphql',
 graphQLServer.use('/graphiql', graphiqlExpress(options));
 
 graphQLServer.use('/assets', (req, res) => {
-  console.log(req.url);
   const baseUrl = 'https://s3.amazonaws.com/thorium-assets';
   request(baseUrl + req.url)
   .on('response', (response) => {
-    console.log(response.statusCode);
     if (response.statusCode !== 200) {
       // Replace the simulator with 'default';
       const assetPath = path.parse(req.url);

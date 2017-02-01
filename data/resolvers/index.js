@@ -1,7 +1,7 @@
 import { EngineQueries, EngineMutations, EngineSubscriptions } from './engines';
 import { ShieldQueries, ShieldMutations, ShieldSubscriptions } from './shields';
 import { ClientQueries, ClientMutations, ClientSubscriptions } from './clients';
-import { FlightStructureQueries, FlightStructureMutations, FlightStructureSubscriptions } from './flightStructure';
+import { FlightStructureQueries, FlightStructureMutations, FlightStructureSubscriptions, FlightStructureTypes } from './flightStructure';
 import { ThrustersQueries, ThrustersMutations, ThrustersSubscriptions } from './thrusters';
 import { AssetsQueries, AssetsMutations, AssetsSubscriptions, AssetsTypes } from './assets';
 import { TransporterQueries, TransporterMutations, TransporterSubscriptions } from './transporters';
@@ -82,4 +82,5 @@ function parseJSONLiteral(ast) {
       __parseValue: value => value,
     },
   }, AssetsTypes,
-  SensorsTypes);
+  SensorsTypes,
+  FlightStructureTypes);

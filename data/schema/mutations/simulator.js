@@ -1,4 +1,4 @@
-
+export default `
 #Macro: Rename Simulator
 renameSimulator(
 # {
@@ -72,3 +72,4 @@ simulatorId: ID!,
 #   "type":"text"
 # }
 crewCount: String!): String
+`;

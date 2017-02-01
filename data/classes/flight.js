@@ -6,6 +6,8 @@ export default class Flight {
     this.id = params.id || uuid.v4();
     this.name = params.name || 'Flight';
     this.date = params.date || new Date();
+    this.timelineStep = params.timelineStep || -1; // 0 is the init step, so -1 is before that.
+    this.mission = params.mission || null;
     this.simulators = [];
   }
   addSimulator(simulator, stationSet) {

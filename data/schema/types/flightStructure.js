@@ -4,6 +4,7 @@ type Mission {
   id: ID
   name: String
   description: String
+  timeline: [TimelineStep]
   simulators: [Simulator]
 }
 
@@ -11,6 +12,8 @@ type Flight {
   id: ID
   name: String
   date: Float
+  timelineStep: Int
+  mission: Mission
   simulators: [Simulator]
 }
 
@@ -20,32 +23,15 @@ type Simulator {
   alertlevel: String
   layout: String
   template: Boolean
-  timeline: [Timelinestep]
+  timelineStep: Int
   stations: [Station]
+  timeline: [TimelineStep]
 }
 
-type Timelinestep {
-  id: ID!
+type TemplateSimulator {
+  id: ID
   name: String
-  description: String
-  order: Int
-  timelineitems: [Timelineitem]
-}
-
-type Timelineitem {
-  name: String
-  type: String
-  mutation: String
-  args: String
-  delay: Int
-}
-
-input TimelineitemInput {
-  name: String
-  type: String
-  command: String
-  args: String
-  delay: Int
+  timeline: [TimelineStep]
 }
 
 type Stationset {

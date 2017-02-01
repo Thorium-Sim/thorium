@@ -1,8 +1,11 @@
 import App from '../../app.js';
 
 export const FlightStructureQueries = {
-  simulators: (root, args) => {
-    return App.simulators;
+  simulators: (root, { template, id }) => {
+    let returnVal = App.simulators;
+    if (id) returnVal = returnVal.filter(s => s.id === id);
+    if (template) returnVal = returnVal.filter(s => s.template);
+    return returnVal;
   },
   flights() {
     return App.flights;
@@ -20,6 +23,9 @@ export const FlightStructureMutations = {
     App.test(args);
     return '';
   },
+
+
+  // Mission
   createMission(root, args) {
     App.handleEvent(args, 'createMission', 'createdMission');
   },
@@ -29,21 +35,54 @@ export const FlightStructureMutations = {
   editMission(root, args) {
     App.handleEvent(args, 'editMission', 'editedMission');
   },
+  addSimulatorToMission(root, args) {
+    App.handleEvent(args, 'addSimulatorToMission', 'addedSimulatorToMission');
+  },
+  removeSimulatorFromMission(root, args) {
+    App.handleEvent(args, 'removeSimulatorToMission', 'removedSimulatorToMission');
+  },
+
+
+  // Flight
   startFlight(root, args) {
     App.handleEvent(args, 'startFlight', 'startedFlight');
   },
-  createTemplateSimulator(root, args) {
+
+
+  // Simulator
+  createSimulator(root, args) {
     App.handleEvent(args, 'createTemplateSimulator', 'createdTemplateSimulator');
   },
-  addTimelineStepToSimulator(root, args) {
-    App.handleEvent(args, 'addTimelineStepToSimulator', 'addedTimelineStepToSimulator');
+  removeSimulator(root, args) {
+    App.handleEvent(args, 'removeTemplateSimulator', 'removedTemplateSimulator');
+  },
+
+
+  // Timeline
+  addTimelineStep(root, args) {
+    App.handleEvent(args, 'addTimelineStep', 'addedTimelineStep');
+  },
+  removeTimelineStep(root, args) {
+    App.handleEvent(args, 'removeTimelineStep', 'removedTimelineStep');
+  },
+  reorderTimelineStep(root, args) {
+    App.handleEvent(args, 'reorderTimelineStep', 'reorderedTimelineStep');
+  },
+  updateTimelineStep(root, args) {
+    App.handleEvent(args, 'updateTimelineStep', 'updatedTimelineStep');
   },
   addTimelineItemToTimelineStep(root, args) {
     App.handleEvent(args, 'addTimelineItemToTimelineStep', 'addedTimelineItemToTimelineStep');
   },
-  removeTemplateSimulator(root, args) {
-    App.handleEvent(args, 'removeTemplateSimulator', 'removedTemplateSimulator');
+  removeTimelineStepItem(root, args) {
+    App.handleEvent(args, 'removeTimelineStepItem', 'removedTimelineStepItem');
   },
+  updateTimelineStepItem(root, args) {
+    App.handleEvent(args, 'updateTimelineStepItem', 'updatedTimelineStepItem');
+  },
+
+
+  // Station
   createStationSet(root, args) {
     App.handleEvent(args, 'createStationSet', 'createdStationSet');
   },
@@ -76,5 +115,23 @@ export const FlightStructureMutations = {
 export const FlightStructureSubscriptions = {
   stationSetUpdate: (rootValue) => {
     return rootValue;
+  },
+  missionsUpdate: (rootValue) => {
+    return rootValue;
+  },
+};
+
+export const FlightStructureTypes = {
+  Mission: {
+    simulators(rootValue) {
+      return rootValue.simulators.map(sId => App.simulators.find(s => s.id === sId));
+    },
+    timeline(rootValue) {
+      return Object.keys(rootValue.timeline).sort().map(k => {
+        const value = rootValue.timeline[k];
+        value.order = k;
+        return value;
+      });
+    },
   },
 };

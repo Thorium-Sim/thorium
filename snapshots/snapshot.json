@@ -1,16 +1,86 @@
 {
-	"snapshotVersion": 7,
-	"timestamp": 1485056034254,
-	"version": 7,
-	"_eventsCount": 38,
+	"snapshotVersion": 3,
+	"timestamp": 1485888366316,
+	"version": 3,
+	"_eventsCount": 73,
 	"simulators": [
 		{
+			"timeline": [],
 			"id": "test",
 			"name": "Test",
 			"layout": "LayoutCorners",
 			"alertlevel": "5",
-			"timeline": [],
+			"template": false,
 			"class": "Simulator"
+		},
+		{
+			"timeline": [
+				{
+					"id": "565a5cb1-c95e-432d-a6bf-58283355e6b7",
+					"class": "TimelineStep",
+					"name": "Initialize",
+					"description": "Initializes the mission",
+					"order": 0,
+					"timelineItems": []
+				}
+			],
+			"id": "96023c80-f26d-4299-ba73-821f1b01c1d3",
+			"name": "Stormfront : USS Voyager",
+			"layout": "LayoutDefault",
+			"alertlevel": "5",
+			"template": false,
+			"class": "Simulator"
+		},
+		{
+			"timeline": [
+				{
+					"id": "c2bd6554-dc4f-4f04-b1a9-a36d0c185da0",
+					"class": "TimelineStep",
+					"name": "Initialize",
+					"description": "Initializes the mission",
+					"order": 0,
+					"timelineItems": []
+				}
+			],
+			"id": "6c9a39e2-169b-4f60-b535-3b8f4a555887",
+			"name": "Stormfront : USS Voyager",
+			"layout": "LayoutDefault",
+			"alertlevel": "5",
+			"template": false,
+			"class": "Simulator"
+		}
+	],
+	"templateSimulators": [],
+	"stationSets": [],
+	"flights": [],
+	"missions": [
+		{
+			"timeline": [
+				{
+					"id": "390fe111-f299-4d9e-894e-dcc77eed03c9",
+					"class": "TimelineStep",
+					"name": "Initialize",
+					"description": "Initializes the mission",
+					"order": "0",
+					"timelineItems": [
+						{
+							"id": "6ee5ad7b-376e-4ef0-9ae3-22db12ae6089",
+							"name": "Create Simulator: 6c9a39e2-169b-4f60-b535-3b8f4a555887",
+							"type": "event",
+							"event": "createSimulator",
+							"args": "{\"id\":\"4a6c9ff2-bc65-4167-aa63-e307151a0622-6c9a39e2-169b-4f60-b535-3b8f4a555887\"}",
+							"delay": 0
+						}
+					]
+				}
+			],
+			"class": "Mission",
+			"id": "4a6c9ff2-bc65-4167-aa63-e307151a0622",
+			"name": "Stormfront",
+			"description": "",
+			"simulators": [
+				"6c9a39e2-169b-4f60-b535-3b8f4a555887"
+			]
 		}
 	],
 	"systems": [
