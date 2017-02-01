@@ -34,7 +34,6 @@ class StationsConfig extends Component {
 			this.stationSubscription = nextProps.data.subscribeToMore({
 				document: STATION_SUB,
 				updateQuery: (previousResult, {subscriptionData}) => {
-					debugger;
 					previousResult.stations = subscriptionData.data.stationSetUpdate
 					return previousResult;
 				},
