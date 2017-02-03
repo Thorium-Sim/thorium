@@ -10,6 +10,9 @@ export class StationSet {
       this.addStation(station);
     });
   }
+  rename(name) {
+    this.name = name;
+  }
   addStation(station) {
     this.stations.push(new Station(station));
   }

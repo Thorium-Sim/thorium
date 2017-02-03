@@ -39,11 +39,12 @@ updateTimelineStepItem(simulatorId: ID, missionId: ID, timelineStepId: ID!, time
 
 createStationSet(name: String!):String
 removeStationSet(stationSetID: ID!):String
+renameStationSet(stationSetID: ID!, name: String!):String
 addStationToStationSet(stationSetID: ID!, stationName: String!):String
 removeStationFromStationSet(stationSetID: ID!, stationName: String!):String
-#editStationInStationSet(stationSetID: ID!, stationName: String!, newStationName: String!):String
+editStationInStationSet(stationSetID: ID!, stationName: String!, newStationName: String!):String
 addCardToStation(stationSetID: ID!, stationName: String!, cardName: String!, cardComponent: String!, cardIcon: String):String
 #Macro: Removes the card from the station
 removeCardFromStation(stationSetID: ID!, stationName: String!, cardName: String!):String
-#editCardInStationSet(stationSetID: ID!, stationName: String!, cardName: String!, newCardName: String!, cardComponent: String, cardIcon: String):String
+editCardInStationSet(stationSetID: ID!, stationName: String!, cardName: String!, newCardName: String, cardComponent: String, cardIcon: String):String
 `;

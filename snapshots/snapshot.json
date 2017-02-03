@@ -1,8 +1,8 @@
 {
-	"snapshotVersion": 3,
-	"timestamp": 1485888366316,
-	"version": 3,
-	"_eventsCount": 73,
+	"snapshotVersion": 2,
+	"timestamp": 1486062462814,
+	"version": 2,
+	"_eventsCount": 74,
 	"simulators": [
 		{
 			"timeline": [],
@@ -444,6 +444,13 @@
 			"folderPath": "/",
 			"fullPath": "/Misc",
 			"name": "Misc",
+			"class": "AssetFolder"
+		},
+		{
+			"id": "6d9a1815-2b26-4d64-8e8a-bd9c4100db89",
+			"folderPath": "/",
+			"fullPath": "/Card Icons",
+			"name": "Card Icons",
 			"class": "AssetFolder"
 		}
 	],

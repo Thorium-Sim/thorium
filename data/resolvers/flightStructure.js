@@ -89,24 +89,27 @@ export const FlightStructureMutations = {
   removeStationSet(root, args) {
     App.handleEvent(args, 'removeStationSet', 'removedStationSet');
   },
+  renameStationSet(root, args) {
+    App.handleEvent(args, 'renameStationSet', 'renamedStationSet');
+  },
   addStationToStationSet(root, args) {
     App.handleEvent(args, 'addStationToStationSet', 'addedStationToStationSet');
   },
   removeStationFromStationSet(root, args) {
     App.handleEvent(args, 'removeStationFromStationSet', 'removedStationFromStationSet');
   },
-  /*editStationInStationSet(root, args) {
+  editStationInStationSet(root, args) {
     App.handleEvent(args, 'editStationInStationSet', 'editedStationInStationSet');
-  },*/
+  },
   addCardToStation(root, args) {
     App.handleEvent(args, 'addCardToStation', 'addedCardToStation');
   },
   removeCardFromStation(root, args) {
     App.handleEvent(args, 'removeCardFromStation', 'removedCardFromStation');
   },
-  /*editCardInStationSet(root, args) {
+  editCardInStationSet(root, args) {
     App.handleEvent(args, 'editCardInStationSet', 'editedCardInStationSet');
-  },*/
+  },
   addSystem: (root, args) => {
     App.handleEvent(args, 'addSystem', 'addedSystem');
   },

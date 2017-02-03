@@ -88,7 +88,6 @@ export class TimelineStep {
 
 export class TimelineItem {
   constructor(params) {
-    console.log('constructed', params);
     this.id = params.id || uuid.v4();
     this.name = params.name || 'Item';
     this.type = params.type || null;

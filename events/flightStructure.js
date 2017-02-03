@@ -55,7 +55,6 @@ App.on('removedSimulator', ({ simulatorId }) => {
 
 // Timeline
 App.on('addedTimelineStep', ({ simulatorId, missionId, name, description }) => {
-  console.log(missionId, name, description);
   const object = getTimelineObject(simulatorId, missionId);
   object.addTimelineStep({ name, description });
   pubsub.publish('missionsUpdate', App.missions);
@@ -66,9 +65,9 @@ App.on('removedTimelineStep', ({ simulatorId, missionId, timelineStepId }) => {
   pubsub.publish('missionsUpdate', App.missions);
 });
 App.on('reorderedTimelineStep', ({ simulatorId, missionId, timelineStepId, order }) => {
-   const object = getTimelineObject(simulatorId, missionId);
-  object.reorderTimelineStep(timelineStepId, order);
-  pubsub.publish('missionsUpdate', App.missions);
+ const object = getTimelineObject(simulatorId, missionId);
+ object.reorderTimelineStep(timelineStepId, order);
+ pubsub.publish('missionsUpdate', App.missions);
 });
 App.on('updatedTimelineStep', ({ simulatorId, missionId, timelineStepId, name, description }) => {
   const object = getTimelineObject(simulatorId, missionId);
@@ -100,6 +99,11 @@ App.on('createdStationSet', ({ name }) => {
 });
 App.on('removedStationSet', ({ stationSetID }) => {
   App.stationSets = App.stationSets.filter(s => s.id !== stationSetID);
+  pubsub.publish('stationSetUpdate', App.stationSets);
+});
+App.on('renamedStationSet', ({ stationSetID, name }) => {
+  const stationSet = App.stationSets.find(ss => ss.id === stationSetID);
+  stationSet.rename(name);
   pubsub.publish('stationSetUpdate', App.stationSets);
 });
 App.on('addedStationToStationSet', ({ stationSetID, stationName }) => {
