@@ -18,6 +18,7 @@ import MissionModal from './MissionModal';
 import DebugList from './DebugList';
 import Core from './Core';
 import './style.scss';
+import Assets from '../components/views/AdminAssets'
 
 const CLIENT_CHANGE_QUERY = gql`
 subscription ClientChanged {
@@ -196,6 +197,11 @@ class Lobby extends Component {
             Core
             </NavLink>
             </NavItem>
+            <NavItem>
+            <NavLink className={this.state.activeTab === '6' ? 'active' : ''} onClick={() => { this.toggleTab('6'); }} >
+            Assets
+            </NavLink>
+            </NavItem>
             </Nav>
             <TabContent activeTab={this.state.activeTab}>
             <TabPane tabId="1">
@@ -276,6 +282,9 @@ class Lobby extends Component {
             </TabPane>
             <TabPane tabId="5">
             <Core />
+            </TabPane>
+            <TabPane tabId="6">
+            <Assets />
             </TabPane>
             </TabContent>
             </Row>

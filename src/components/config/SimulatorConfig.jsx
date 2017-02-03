@@ -26,12 +26,11 @@ class SimulatorConfig extends Component {
 				alertlevel: 5,
 				layout: 'LayoutDefault',
 				template: true,
-				timeline: []
 			};
 			this.props.client.mutate({
 				mutation: gql`
-				mutation AddSimulator($name: String!, $alertlevel: String, $layout: String, $template: Boolean, $timeline: [Timelinestepinput]) {
-					addsimulator(name: $name, alertlevel: $alertlevel, layout: $layout, template:$template, timeline:$timeline){
+				mutation AddSimulator($name: String!, $alertlevel: String, $layout: String, $template: Boolean) {
+					addsimulator(name: $name, alertlevel: $alertlevel, layout: $layout, template:$template){
 						id
 						name
 						alertlevel

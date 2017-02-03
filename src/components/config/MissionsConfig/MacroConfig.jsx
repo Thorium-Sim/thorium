@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, Row, Button, FormGroup, Label } from 'reactstrap';
+import { Col, Row, FormGroup, Label } from 'reactstrap';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import ArgItem from './ArgItem';

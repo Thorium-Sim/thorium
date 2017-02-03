@@ -33,7 +33,6 @@ export default class ArgItem extends Component {
       }
       render(){
         const arg = this.props.arg;
-        console.log(arg);
         if (!arg.type) return null;
         switch(arg.type){
           case "select":

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, Row, Card, Button, ButtonGroup } from 'reactstrap';
+import { Col, Row, Card, Button, ButtonGroup, Input } from 'reactstrap';
 import viewList from '../views/list.js';
 import FontAwesome from 'react-fontawesome';
 import gql from 'graphql-tag';
@@ -78,7 +78,31 @@ class StationsConfig extends Component {
 		}
 	}
 	_renameStationSet(){
-		// TODO
+		const name = prompt('What is the new name of the station set?');
+		let station = this.state.selectedStationConfig;
+		if (name){
+			this.props.client.mutate({
+				mutation: gql`
+				mutation RenameStationSet($id: ID!, $name: String!) {
+					renameStationSet(stationSetID: $id, name: $name)
+				}
+				`,
+				variables: {id: station, name},
+			});
+		}
+	}
+	_renameStation(station) {
+		const name = prompt('What is the new name of the station?');
+		let stationId = this.state.selectedStationConfig;
+		const mutation = gql`mutation RenameStation($id: ID!, $name: String!, $newName: String!){
+			editStationInStationSet(stationSetID: $id, stationName: $name, newStationName: $newName)
+		}`;
+		if (name) {
+			this.props.client.mutate({
+				mutation: mutation,
+				variables: {id: stationId, name: station.name, newName: name},
+			});
+		}
 	}
 	_editCard(){
 		// TODO
@@ -103,12 +127,12 @@ class StationsConfig extends Component {
 		if (confirm("Are you sure you want to delete that station?")){
 			let obj = {
 				id: this.state.selectedStationConfig,
-				station: station.name
+				stationName: station.name
 			};
 			this.props.client.mutate({
 				mutation: gql`
-				mutation RemoveStation($id: ID!, $station: String!) {
-					removeStationFromStationSet(stationSetID: $id, stationName: $station)
+				mutation RemoveStation($id: ID!, $stationName: String!) {
+					removeStationFromStationSet(stationSetID: $id, stationName: $stationName)
 				}`,
 				variables: obj,
 			});
@@ -138,8 +162,8 @@ class StationsConfig extends Component {
 		if (confirm("Are you sure you want to delete that card?")){
 			let obj = {
 				id: this.state.selectedStationConfig,
-				name: station.name,
-				card: card.name
+				stationName: station.name,
+				cardName: card.name
 			};
 			this.props.client.mutate({
 				mutation: gql`
@@ -149,6 +173,21 @@ class StationsConfig extends Component {
 				variables: obj,
 			});
 		}
+	}
+	_updateStationCard(type, card, station, e) {
+		const mutation = gql`mutation EditCard($stationSetId: ID!, $stationName: String!, $cardName: String!, $name: String, $component: String, $icon: String){
+			editCardInStationSet(stationSetID: $stationSetId, stationName: $stationName, cardName: $cardName, newCardName: $name, cardComponent: $component, cardIcon: $icon)
+		}`;
+		const obj = {
+			stationSetId: this.state.selectedStationConfig,
+			stationName: station.name,
+			cardName: card.name,
+		}
+		obj[type] = e.target.value;
+		this.props.client.mutate({
+			mutation: mutation,
+			variables: obj,
+		});
 	}
 	render(){
 		const selectedStation = this.props.data.loading ? {} : (this.props.data.stations.find(s => s.id === this.state.selectedStationConfig) || {});
@@ -181,7 +220,7 @@ class StationsConfig extends Component {
 						<thead className="thead-default">
 						<tr>
 						<th colSpan="3">{station.name}</th>
-						<th><FontAwesome name="ban" className="text-danger" onClick={this._removeStation.bind(this,station)} /></th>
+						<th><FontAwesome name="pencil-square-o" className="text-warning" onClick={this._renameStation.bind(this,station)} /> <FontAwesome name="ban" className="text-danger" onClick={this._removeStation.bind(this,station)} /></th>
 						</tr>
 						</thead>
 						<thead>
@@ -196,9 +235,26 @@ class StationsConfig extends Component {
 						{station.cards.map((card) => {
 							return (
 								<tr key={`${this.state.selectedStationConfig}-${station.name}-${card.name}`}>
-								<td>{card.name}</td>
-								<td>{card.component}</td>
-								<td>{card.icon}</td>
+								<td><Input type="text" value={card.name} onChange={this._updateStationCard.bind(this, 'name', card, station)} /></td>
+								<td>
+								<Input type="select" value={card.component} onChange={this._updateStationCard.bind(this, 'component', card, station)}>
+								{
+									viewList.map((e) => {
+										return <option key={e} value={e}>{e}</option>;
+									})
+								}
+								</Input>
+								</td>
+								<td>
+								<Input type="select" value={card.icon} onChange={this._updateStationCard.bind(this, 'icon', card, station)}>
+								<option>Select an icon</option>
+								{
+									this.props.data.assetFolders[0].containers.map((e) => {
+										return <option key={e.name} value={e.name}>{e.name}</option>;
+									})
+								}
+								</Input>
+								</td>
 								<td><FontAwesome name="ban" className="text-danger" onClick={this._removeCard.bind(this,card,station)} /></td>
 								</tr>
 								);
@@ -240,6 +296,11 @@ query StationSets{
 				icon
 				name
 			}
+		}
+	}
+	assetFolders(name: "Card Icons") {
+		containers {
+			name
 		}
 	}
 }

@@ -1,7 +1,31 @@
 import React, { Component } from 'react';
-import { Col, Row, Card, Button, CardBlock, FormGroup, Label, Input } from 'reactstrap';
+import { Col, Row, Card, Button, ButtonGroup, CardBlock, FormGroup, Label, Input } from 'reactstrap';
 import MacroWrapper from './MacroConfig';
 import gql from 'graphql-tag';
+import FontAwesome from 'react-fontawesome';
+import {SortableContainer, SortableElement} from 'react-sortable-hoc';
+
+const SortableItem = SortableElement(({item, selectedTimelineStep, setSelectedTimelineStep, removeTimelineStep}) => (
+  <li key={ `${item.id}-timelineStep` } onClick={ setSelectedTimelineStep.bind(this, item) } className={ `${(item.id === selectedTimelineStep) ? 'selected' : ''} list-group-item` }>
+  { item.name }
+  </li>));
+
+const SortableList = SortableContainer(({items, setSelectedTimelineStep, removeTimelineStep, selectedTimelineStep}) => {
+  return (
+    <ul style={{padding: 0}}>
+    {items.map((item, index) =>
+      <SortableItem 
+      key={`${item.id}-timelineStep`}
+      index={index}
+      item={item}
+      selectedTimelineStep={selectedTimelineStep}
+      setSelectedTimelineStep={setSelectedTimelineStep}
+      removeTimelineStep={removeTimelineStep}
+      />
+      )}
+    </ul>
+    );
+});
 
 export default class TimelineConfig extends Component {
   constructor(props) {
@@ -47,6 +71,23 @@ export default class TimelineConfig extends Component {
         updateTimelineItem: $timelineItem)
       }`,
       variables: obj,
+    });
+  }
+  _updateStep(type, e) {
+    let obj = {
+      timelineStepId: this.state.selectedTimelineStep,
+    };
+    if (this.props.type === 'mission') {
+      obj.missionId = this.props.object.id;
+    } else {
+      obj.simulatorId = this.props.object.id;
+    }
+    obj[type] = e.target.value;
+    this.props.client.mutate({
+      mutation: gql`mutation UpdateTimelineStep($simulatorId: ID, $missionId: ID, $timelineStepId: ID!, $name: String, $description: String){
+        updateTimelineStep(simulatorId: $simulatorId, missionId: $missionId, timelineStepId: $timelineStepId, name: $name, description: $description)
+      }`,
+      variables: obj
     });
   }
   _updateItem(type, e) {
@@ -126,59 +167,152 @@ export default class TimelineConfig extends Component {
       }) 
     }
   }
+  _removeTimelineStep(timelineStep, e) {
+    e.stopPropagation();
+    if (confirm('Are you sure you want to remove this timeline step?')){
+      if (timelineStep === this.state.selectedTimelineStep) {
+        this.setState({
+          selectedTimelineStep: null,
+          selectedTimelineItem: null
+        })
+      }
+      const mutation = gql`mutation RemoveTimelineStep($simulatorId: ID, $missionId: ID, $timelineStepId: ID!) {
+        removeTimelineStep(simulatorId: $simulatorId, missionId: $missionId, timelineStepId: $timelineStepId)
+      }`;
+      const obj = {
+        timelineStepId: timelineStep
+      };
+      if (this.props.type === 'mission') {
+        obj.missionId = this.props.object.id;
+      } else {
+        obj.simulatorId = this.props.object.id;
+      }
+      this.props.client.mutate({
+        mutation: mutation,
+        variables: obj
+      })
+    }
+  }
+  _removeTimelineItem(timelineItem, e) {
+    e.stopPropagation();
+    if (confirm('Are you sure you want to remove this timeline item?')){
+      if (timelineItem.id === this.state.selectedTimelineItem) {
+        this.setState({
+          selectedTimelineItem: null
+        })
+      }
+      const mutation = gql`mutation RemoveTimelineItem($simulatorId: ID, $missionId: ID, $timelineStepId: ID!, $timelineItemId: ID!) {
+        removeTimelineStepItem(simulatorId: $simulatorId, missionId: $missionId, timelineStepId: $timelineStepId, timelineItemId: $timelineItemId)
+      }`;
+      const obj = {
+        timelineStepId: this.state.selectedTimelineStep,
+        timelineItemId: timelineItem.id
+      };
+      if (this.props.type === 'mission') {
+        obj.missionId = this.props.object.id;
+      } else {
+        obj.simulatorId = this.props.object.id;
+      }
+      this.props.client.mutate({
+        mutation: mutation,
+        variables: obj
+      })
+    }
+  }
+  onSortEnd({oldIndex, newIndex}) {
+    if (oldIndex === newIndex){
+      this.setState({
+        selectedTimelineStep: this.props.object.timeline[oldIndex].id
+      })
+    } else {
+      const obj = {
+        timelineStepId: this.props.object.timeline[oldIndex].id,
+        order: newIndex
+      }
+      const mutation = gql`mutation ReorderTimelineStep($simulatorId: ID, $missionId: ID, $timelineStepId: ID!, $order: Int!){
+        reorderTimelineStep(simulatorId: $simulatorId, missionId: $missionId, timelineStepId: $timelineStepId, order: $order)
+      }`;
+      if (this.props.type === 'mission') {
+        obj.missionId = this.props.object.id;
+      } else {
+        obj.simulatorId = this.props.object.id;
+      }
+      this.props.client.mutate({
+        mutation: mutation,
+        variables: obj
+      })
+    }
+  }
   render() {
     const {object} = this.props;
     return <Row>
     <Col sm="6" style={ { maxHeight: '27vh' } }>
     <h4>Timeline</h4>
-    <Card className="scroll">
-    { object.timeline.map((e) => {
-     return <li key={ `${e.id}-timelineStep` } onClick={ this._setSelectedTimelineStep.bind(this, e) } className={ `${(e.id === this.state.selectedTimelineStep) ? 'selected' : ''} list-group-item` }>
-     { e.name }
-     </li>;
-   }) }
-    <Button color="success" size="sm" block onClick={this._addTimelineStep.bind(this)} >Add Timeline Step</Button>
+    <Card className="scroll" style={{ maxHeight: '20vh'}}>
+    <SortableList 
+    items={object.timeline} 
+    onSortEnd={this.onSortEnd.bind(this)}
+    selectedTimelineStep={this.state.selectedTimelineStep}
+    setSelectedTimelineStep={this._setSelectedTimelineStep.bind(this)}
+    removeTimelineStep={this._removeTimelineStep.bind(this)} />
+    <ButtonGroup>
+    <Button color="success" size="sm" onClick={this._addTimelineStep.bind(this)} >Add Timeline Step</Button>
+    {this.state.selectedTimelineStep && <Button color="danger" size="sm" onClick={this._removeTimelineStep.bind(this, this.state.selectedTimelineStep)} >Remove Timeline Step</Button>}
+    </ButtonGroup>
     </Card>
     </Col>
     { this.state.selectedTimelineStep &&
      <Col sm="6" style={ { maxHeight: '27vh' } }>
      <h4>{ object.timeline.find(e => e.id === this.state.selectedTimelineStep).name }</h4>
      <Card className="scroll">
+     <li onClick={this._setSelectedTimelineItem.bind(this, {id: 'step'})} className={ `${('step' === this.state.selectedTimelineItem) ? 'selected' : ''} list-group-item` }>Edit Step</li>
      { object.timeline.find(e => e.id === this.state.selectedTimelineStep).timelineItems.map((e) => {
        return <li key={ `${object.timeline.find(e => e.id === this.state.selectedTimelineStep)}-${e.id}` } onClick={ this._setSelectedTimelineItem.bind(this, e) } className={ `${(e.name === this.state.selectedTimelineItem) ? 'selected' : ''} list-group-item` }>
-       { e.name }
+       { e.name } <FontAwesome name="ban" className="text-danger pull-right" onClick={this._removeTimelineItem.bind(this,e)} />
        </li>;
      }) }
      <Button color="success" size="sm" block onClick={this._addTimelineItem.bind(this)} >Add Timeline Item</Button>
      </Card>
      </Col> }
      { (() => {
-       if (this.state.selectedTimelineItem) {
-         const item = object.timeline.find(e => e.id === this.state.selectedTimelineStep)
-         .timelineItems.find(t => t.id === this.state.selectedTimelineItem)
-         console.log(item, this.state.selectedTimelineItem);
-         return (<Col sm="12">
-           <h4>{ item.name }</h4>
-           <Card className="scroll" style={ { maxHeight: '27vh' } }>
-           <CardBlock>
-           <FormGroup>
-           <Label>Item Name</Label>
-           <Input type="text" value={ item.name } onChange={ this._updateItem.bind(this, 'name') } />
-           </FormGroup>
-           <FormGroup>
-           <Label>Item Type</Label>
-           <Input type="text" value={ item.type } onChange={ this._updateItem.bind(this, 'type') } />
-           </FormGroup>
-           <FormGroup>
-           <Label>Item Delay</Label>
-           <Input type="number" value={ item.delay } onChange={ this._updateItem.bind(this, 'delay') } />
-           </FormGroup>
-           <MacroWrapper event={item.event} args={item.args} updateMacro={this._updateMacro.bind(this)} />
-           </CardBlock>
-           </Card>
-           </Col>);
-       }
-     })() }
-     </Row>
-   }
+       if (this.state.selectedTimelineItem === 'step') {
+        const step = object.timeline.find(e => e.id === this.state.selectedTimelineStep)
+        return (<Col sm="12">
+         <FormGroup>
+         <Label>Step Name</Label>
+         <Input type="text" value={ step.name } onChange={ this._updateStep.bind(this, 'name') } />
+         </FormGroup>
+         <FormGroup>
+         <Label>Step Description</Label>
+         <Input type="textarea" value={ step.description } onChange={ this._updateStep.bind(this, 'description') } />
+         </FormGroup>
+         </Col>
+         )
+      } else if (this.state.selectedTimelineItem) {
+       const item = object.timeline.find(e => e.id === this.state.selectedTimelineStep)
+       .timelineItems.find(t => t.id === this.state.selectedTimelineItem)
+       return (<Col sm="12">
+         <h4>{ item.name }</h4>
+         <Card className="scroll" style={ { maxHeight: '20vh' } }>
+         <CardBlock>
+         <FormGroup>
+         <Label>Item Name</Label>
+         <Input type="text" value={ item.name } onChange={ this._updateItem.bind(this, 'name') } />
+         </FormGroup>
+         <FormGroup>
+         <Label>Item Type</Label>
+         <Input type="text" value={ item.type } onChange={ this._updateItem.bind(this, 'type') } />
+         </FormGroup>
+         <FormGroup>
+         <Label>Item Delay</Label>
+         <Input type="number" value={ item.delay } onChange={ this._updateItem.bind(this, 'delay') } />
+         </FormGroup>
+         <MacroWrapper event={item.event} args={item.args} updateMacro={this._updateMacro.bind(this)} />
+         </CardBlock>
+         </Card>
+         </Col>);
+     }
+   })() }
+   </Row>
  }
+}
