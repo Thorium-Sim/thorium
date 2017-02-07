@@ -1,6 +1,6 @@
 import { EngineQueries, EngineMutations, EngineSubscriptions } from './engines';
 import { ShieldQueries, ShieldMutations, ShieldSubscriptions } from './shields';
-import { ClientQueries, ClientMutations, ClientSubscriptions } from './clients';
+import { ClientQueries, ClientMutations, ClientSubscriptions, ClientTypes } from './clients';
 import { FlightStructureQueries, FlightStructureMutations, FlightStructureSubscriptions, FlightStructureTypes } from './flightStructure';
 import { ThrustersQueries, ThrustersMutations, ThrustersSubscriptions } from './thrusters';
 import { AssetsQueries, AssetsMutations, AssetsSubscriptions, AssetsTypes } from './assets';
@@ -44,7 +44,7 @@ function parseJSONLiteral(ast) {
     SensorsQueries
     );
 
-  const mutationMap = Object.assign({
+  export const mutationMap = Object.assign({
     snapshot() {
       App.snapshot(true);
     },
@@ -83,4 +83,5 @@ function parseJSONLiteral(ast) {
     },
   }, AssetsTypes,
   SensorsTypes,
-  FlightStructureTypes);
+  FlightStructureTypes,
+  ClientTypes);

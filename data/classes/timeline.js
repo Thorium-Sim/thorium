@@ -1,8 +1,11 @@
 import uuid from 'uuid';
+import { mutationMap } from '../resolvers';
+
 
 export class TimelineObject {
   constructor(params) {
     this.timeline = [];
+    this.timelineStep = params.timelineStep || -1; // 0 is the init step, so -1 is before that.
     if (params.timeline) {
       params.timeline.forEach(t => {
         this.timeline.push(new TimelineStep(t));
@@ -16,8 +19,8 @@ export class TimelineObject {
       });
     }
   }
-  addTimelineStep({ name, description, order }) {
-    this.timeline.push(new TimelineStep({ name, description, order }));
+  addTimelineStep({ name, description, order, timelineItems }) {
+    this.timeline.push(new TimelineStep({ name, description, order, timelineItems }));
   }
   removeTimelineStep(timelineStepId) {
     this.timeline = this.timeline.filter(t => t.id !== timelineStepId);
@@ -53,6 +56,33 @@ export class TimelineObject {
   updateTimelineStepItem(timelineStepId, timelineItemId, timelineItem) {
     const timeline = this.timeline.find(t => t.id === timelineStepId);
     timeline.updateTimelineItem(timelineItemId, timelineItem);
+  }
+  nextTimeline(noExecute) {
+    this.timelineStep += 1;
+    if (!noExecute) {
+      if (this.timeline[this.timelineStep]) {
+        this.triggerTimelineStep(this.timeline[this.timelineStep].id);
+      }
+    }
+  }
+  triggerTimelineStep(timelineStepId) {
+    // Trigger the event for the timeline step id.
+    // We'll use the resolver functions for this.
+    const timelineStep = this.timeline.find(t => t.id === timelineStepId);
+    timelineStep.timelineItems.forEach(i => {
+      // Execute the timeline item.
+      const args = JSON.parse(i.args);
+      if (this.class === 'Simulator') {
+        args.simulatorId = this.id;
+      }
+      if (this.class === 'Mission') {
+        args.missionId = this.id;
+      }
+      if (this.class === 'Flight') {
+        args.flightId = this.id;
+      }
+      mutationMap[i.event]({}, args);
+    });
   }
 }
 

@@ -24,4 +24,33 @@ export default class Client {
   setPing(ping) {
     this.sentPing = ping;
   }
+  setFlight(flightId) {
+    this.flightId = flightId;
+  }
+  setSimulator(simulatorId) {
+    this.simulatorId = simulatorId;
+  }
+  setStation(station) {
+    this.station = station;
+  }
+  login(name) {
+    this.loginName = name;
+    this.loginState = 'login';
+  }
+  logout() {
+    this.loginName = null;
+    this.loginState = 'logout';
+  }
+  diagnostic() {
+
+  }
+  reset() {
+
+  }
+  lockScreen() {
+
+  }
+  unlockScreen() {
+
+  }
 }

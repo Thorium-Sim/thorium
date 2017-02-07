@@ -31,6 +31,10 @@ export class StationSet {
     const cardStation = this.stations.find(s => s.name === station);
     cardStation.removeCard(cardName);
   }
+  editStationCard(station, cardName, cardUpdate) {
+    const cardStation = this.stations.find(s => s.name === station);
+    cardStation.updateCard(cardName, cardUpdate);
+  }
 }
 
 export class Station {
@@ -51,6 +55,10 @@ export class Station {
   removeCard(cardName) {
     this.cards = this.cards.filter(c => c.name !== cardName);
   }
+  updateCard(cardName, cardUpdate) {
+    const card = this.cards.find(c => c.name === cardName);
+    card.update(cardUpdate);
+  }
 }
 
 export class Card {
@@ -59,5 +67,10 @@ export class Card {
     this.icon = params.icon || null;
     this.component = params.component || 'Login';
     this.class = 'Card';
+  }
+  update({ name, icon, component }) {
+    if (name) this.name = name;
+    if (icon) this.icon = icon;
+    if (component) this.component = component;
   }
 }

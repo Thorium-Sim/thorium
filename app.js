@@ -7,7 +7,6 @@ class Events extends Entity {
   constructor(params) {
     super(params);
     this.simulators = [];
-    this.templateSimulators = [];
     this.stationSets = [];
     this.flights = [];
     this.missions = [];
@@ -51,7 +50,7 @@ class Events extends Entity {
     this.emit(past, param, this);
   }
   test(param) {
-    console.log(JSON.stringify(this.missions));
+    console.log(this);
     this.handleEvent(param, 'test', 'tested');
   }
 }

@@ -17,6 +17,12 @@ type Flight {
   simulators: [Simulator]
 }
 
+input FlightSimulatorInput {
+  missionSim: ID
+  simulator: ID
+  stationSet: ID
+}
+
 type Simulator {
   id: ID
   name: String

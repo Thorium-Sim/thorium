@@ -15,20 +15,21 @@ export default class Mission extends TimelineObject {
       this.addSimulator(s, true);
     });
   }
-  addSimulator(simulatorId, constructing) {
+  addSimulator(simulatorId, name) {
     this.simulators.push(simulatorId);
     // Add it to the timeline for the mission.
     // Get the initialize timeline step item
-    if (!constructing) {
+    if (name !== true) {
       const timelineStep = this.timeline[0];
       this.addTimelineStepItem(timelineStep.id, {
+        id: simulatorId,
         name: `Create Simulator: ${simulatorId}`,
         type: 'event', // No idea what this field is for.
         event: 'createSimulator',
         args: JSON.stringify({
-          id: `${this.id}-${simulatorId}`,
           // The rest of the parameters will be set by the
           // Template simulator
+          name,
         }),
         delay: 0,
       });

@@ -10,11 +10,14 @@ export default class Simulator extends TimelineObject {
     this.alertlevel = params.alertlevel || '5';
     this.template = params.template || false;
     this.class = 'Simulator';
+    this.crewCount = params.crewCount || 50;
+    // Initialize the simulator async
+    setTimeout(() => {this.nextTimeline();}, 100);
   }
   rename(name) {
     this.name = name;
   }
-  setAlertlevel(alertlevel) {
+  setAlertLevel(alertlevel) {
     if (['5', '4', '3', '2', '1', 'p'].indexOf(alertlevel) === -1) {
       throw "Invalid Alert Level. Must be one of '5','4','3','2','1','p'";
     }
@@ -25,5 +28,8 @@ export default class Simulator extends TimelineObject {
     // This would require the front-end modules being available
     // To the server
     this.layout = layout;
+  }
+  setCrewCount(count) {
+    this.crewCount = count;
   }
 }

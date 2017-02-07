@@ -51,10 +51,22 @@ export const FlightStructureMutations = {
 
   // Simulator
   createSimulator(root, args) {
-    App.handleEvent(args, 'createTemplateSimulator', 'createdTemplateSimulator');
+    App.handleEvent(args, 'createSimulator', 'createdSimulator');
   },
   removeSimulator(root, args) {
-    App.handleEvent(args, 'removeTemplateSimulator', 'removedTemplateSimulator');
+    App.handleEvent(args, 'removeSimulator', 'removedSimulator');
+  },
+  renameSimulator(root, args) {
+    App.handleEvent(args, 'renameSimulator', 'renamedSimulator');
+  },
+  changeSimulatorLayout(root, args) {
+    App.handleEvent(args, 'changeSimulatorLayout', 'changedSimulatorLayout');
+  },
+  changeSimulatorAlertLevel(root, args) {
+    App.handleEvent(args, 'changeSimulatorAlertLevel', 'changedSimulatorAlertLevel');
+  },
+  changeSimulatorCrewCount(root, args) {
+    App.handleEvent(args, 'changeSimulatorCrewCount', 'changedSimulatorCrewCount');
   },
 
 
@@ -122,9 +134,28 @@ export const FlightStructureSubscriptions = {
   missionsUpdate: (rootValue) => {
     return rootValue;
   },
+  simulatorsUpdate: (rootValue, { template }) => {
+    if (template) return rootValue.filter(s => s.template);
+    return rootValue;
+  },
+  flightsUpdate: (rootValue) => {
+    return rootValue;
+  },
 };
 
 export const FlightStructureTypes = {
+  Flight: {
+    mission(rootValue) {
+      return App.missions.find(m => m.id === rootValue.mission);
+    },
+    simulators(rootValue) {
+      return rootValue.simulators.map(s => {
+        const simulator = App.simulators.find(sId => sId.id === s.id);
+        simulator.stations = App.stationSets.find(sId => sId.id === s.stationSet).stations;
+        return simulator;
+      });
+    },
+  },
   Mission: {
     simulators(rootValue) {
       return rootValue.simulators.map(sId => App.simulators.find(s => s.id === sId));

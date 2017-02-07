@@ -30,48 +30,46 @@ App.on('clientPinged', ({ client, ping }) => {
 
 App.on('clientSetedFlight', ({ client, flightId }) => {
   const clientObj = App.clients.find((c) => c.id === client);
-  clientObj.flightId = flightId;
+  clientObj.setFlight(flightId);
   pubsub.publish('clientChanged', App.clients);
 });
 App.on('clientSetedSimulator', ({ client, simulatorId }) => {
   const clientObj = App.clients.find((c) => c.id === client);
-  clientObj.simulatorId = simulatorId;
+  clientObj.setSimulator(simulatorId);
   pubsub.publish('clientChanged', App.clients);
 });
-App.on('clientSetedStation', ({ client, station }) => {
+App.on('clientSetedStation', ({ client, stationName }) => {
   const clientObj = App.clients.find((c) => c.id === client);
-  clientObj.station = station;
+  clientObj.setStation(stationName);
   pubsub.publish('clientChanged', App.clients);
 });
 App.on('clientLogined', ({ client, loginName }) => {
   const clientObj = App.clients.find((c) => c.id === client);
-  clientObj.loginName = loginName;
-  clientObj.loginState = 'login';
+  clientObj.login(loginName);
   pubsub.publish('clientChanged', App.clients);
 });
 App.on('clientLogouted', ({ client }) => {
   const clientObj = App.clients.find((c) => c.id === client);
-  clientObj.loginName = null;
-  clientObj.loginState = 'logout';
+  clientObj.logout();
   pubsub.publish('clientChanged', App.clients);
 });
 App.on('clientDiagnosticed', ({ client }) => {
   const clientObj = App.clients.find((c) => c.id === client);
-  clientObj.loginState = 'diagnostic';
+  clientObj.diagnostic();
   pubsub.publish('clientChanged', App.clients);
 });
 App.on('clientReseted', ({ client }) => {
   const clientObj = App.clients.find((c) => c.id === client);
-  clientObj.loginState = 'reset';
+  clientObj.reset();
   pubsub.publish('clientChanged', App.clients);
 });
 App.on('clientLockScreened', ({ client }) => {
   const clientObj = App.clients.find((c) => c.id === client);
-  clientObj.loginState = 'locked';
+  clientObj.lockScreen();
   pubsub.publish('clientChanged', App.clients);
 });
 App.on('clientUnlockScreened', ({ client }) => {
   const clientObj = App.clients.find((c) => c.id === client);
-  clientObj.loginState = 'login';
+  clientObj.unlockScreen();
   pubsub.publish('clientChanged', App.clients);
 });

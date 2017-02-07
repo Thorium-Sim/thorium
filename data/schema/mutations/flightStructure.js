@@ -5,7 +5,7 @@ editMission(missionId: ID!, name: String, description: String, simulators: [Stri
 addSimulatorToMission(missionId: ID!, simulatorName: String!):String
 removeSimulatorFromMission(missionId: ID!, simulatorId: ID!):String
 
-startFlight(missionID: ID!, stationSets:[ID]):String
+startFlight(missionId: ID!, simulators:[FlightSimulatorInput]):String
 
 #Macro: Create a simulator
 createSimulator(
