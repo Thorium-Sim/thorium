@@ -1,16 +1,20 @@
-FROM node:boron
+FROM node:latest
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+# Setup Yarn package manager
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
-COPY package.json /usr/src/app/
-RUN npm install
+RUN npm install -g yarn
 
-COPY . /usr/src/app
+WORKDIR /var/www
+
+COPY package.json yarn.lock /var/www/
+
+RUN yarn # Install all dependencies
+
+COPY . /var/www
 
 EXPOSE 3001
 EXPOSE 3002
 
-ENV NODE_ENV=production
-
-CMD [ "npm", "start" ]
+CMD ["npm", "start"]

@@ -1,13 +1,12 @@
 import { EngineQueries, EngineMutations, EngineSubscriptions } from './engines';
 import { ShieldQueries, ShieldMutations, ShieldSubscriptions } from './shields';
-import { ClientQueries, ClientMutations, ClientSubscriptions } from './clients';
-import { SimulatorQueries, SimulatorMutations, SimulatorSubscriptions } from './simulators';
+import { ClientQueries, ClientMutations, ClientSubscriptions, ClientTypes } from './clients';
+import { FlightStructureQueries, FlightStructureMutations, FlightStructureSubscriptions, FlightStructureTypes } from './flightStructure';
 import { ThrustersQueries, ThrustersMutations, ThrustersSubscriptions } from './thrusters';
 import { AssetsQueries, AssetsMutations, AssetsSubscriptions, AssetsTypes } from './assets';
 import { TransporterQueries, TransporterMutations, TransporterSubscriptions } from './transporters';
 import { CoreLayoutQueries, CoreLayoutMutations, CoreLayoutSubscriptions } from './coreLayouts';
 import { SensorsQueries, SensorsMutations, SensorsSubscriptions, SensorsTypes } from './sensors';
-
 import App from '../../app';
 
 function parseJSONLiteral(ast) {
@@ -34,7 +33,7 @@ function parseJSONLiteral(ast) {
   }
 
   const queryMap = Object.assign({},
-    SimulatorQueries,
+    FlightStructureQueries,
     ClientQueries,
     ShieldQueries,
     EngineQueries,
@@ -45,12 +44,12 @@ function parseJSONLiteral(ast) {
     SensorsQueries
     );
 
-  const mutationMap = Object.assign({
+  export const mutationMap = Object.assign({
     snapshot() {
       App.snapshot(true);
     },
   },
-    SimulatorMutations,
+    FlightStructureMutations,
     ClientMutations,
     ShieldMutations,
     EngineMutations,
@@ -62,7 +61,7 @@ function parseJSONLiteral(ast) {
     );
 
   const subscriptionMap = Object.assign({},
-    SimulatorSubscriptions,
+    FlightStructureSubscriptions,
     ClientSubscriptions,
     ShieldSubscriptions,
     EngineSubscriptions,
@@ -83,4 +82,6 @@ function parseJSONLiteral(ast) {
       __parseValue: value => value,
     },
   }, AssetsTypes,
-  SensorsTypes);
+  SensorsTypes,
+  FlightStructureTypes,
+  ClientTypes);

@@ -1,16 +1,268 @@
 {
-	"snapshotVersion": 7,
-	"timestamp": 1485036159696,
-	"version": 7,
-	"_eventsCount": 38,
+	"snapshotVersion": 21,
+	"timestamp": 1486429813344,
+	"version": 21,
+	"_eventsCount": 78,
 	"simulators": [
 		{
+			"timeline": [],
+			"timelineStep": 0,
 			"id": "test",
 			"name": "Test",
 			"layout": "LayoutCorners",
 			"alertlevel": "5",
-			"timeline": [],
-			"class": "Simulator"
+			"template": false,
+			"class": "Simulator",
+			"crewCount": 50
+		},
+		{
+			"timeline": [
+				{
+					"id": "be8faa6b-986e-4002-9545-31f37eb4b4c3",
+					"class": "TimelineStep",
+					"name": "Initialize",
+					"description": "Initializes the mission",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "d7045024-b69a-49ff-8ee8-2876e8feb981",
+							"name": "Layout",
+							"type": "event",
+							"event": "changeSimulatorLayout",
+							"args": "{\"layout\":\"LayoutCorners\"}",
+							"delay": 0
+						},
+						{
+							"id": "0b60c1d8-fd71-45d7-bc5a-cc397ee98c2a",
+							"name": "Alert Level",
+							"type": "event",
+							"event": "changeSimulatorAlertLevel",
+							"args": "{\"alertLevel\":\"3\"}",
+							"delay": 0
+						}
+					]
+				}
+			],
+			"timelineStep": 0,
+			"id": "c151bf83-9078-445e-aea0-2fcda4c40937",
+			"name": "Big Ship",
+			"layout": "LayoutCorners",
+			"alertlevel": "3",
+			"template": true,
+			"class": "Simulator",
+			"crewCount": 50
+		},
+		{
+			"timeline": [
+				{
+					"id": "c797337d-801e-46e0-9ec9-ea0db3909c2f",
+					"class": "TimelineStep",
+					"name": "Initialize",
+					"description": "Initializes the mission",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "d7045024-b69a-49ff-8ee8-2876e8feb981",
+							"name": "Layout",
+							"type": "event",
+							"event": "changeSimulatorLayout",
+							"args": "{\"layout\":\"LayoutCorners\"}",
+							"delay": 0
+						},
+						{
+							"id": "0b60c1d8-fd71-45d7-bc5a-cc397ee98c2a",
+							"name": "Alert Level",
+							"type": "event",
+							"event": "changeSimulatorAlertLevel",
+							"args": "{\"alertLevel\":\"3\"}",
+							"delay": 0
+						},
+						{
+							"id": "67099840-d22e-4820-bf9d-435d90092190",
+							"name": "Change Alert Level",
+							"type": "event",
+							"event": "changeSimulatorAlertLevel",
+							"args": "{\"alertLevel\":\"p\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "6ea47318-00d4-4943-9ebb-acc0a935faf3",
+					"class": "TimelineStep",
+					"name": "Launch",
+					"description": "A timeline step",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "762cd17d-9f2a-4edb-a310-a9f8c1bce3cf",
+							"name": "Change crew count",
+							"type": "event",
+							"event": "changeSimulatorCrewCount",
+							"args": "{\"crewCount\":\"50\"}",
+							"delay": 0
+						}
+					]
+				}
+			],
+			"timelineStep": 0,
+			"id": "3e2a6732-37bc-4fc9-b149-f3114290e7dc",
+			"name": "Stormfront : USS Voyager",
+			"layout": "LayoutDefault",
+			"alertlevel": "p",
+			"template": false,
+			"class": "Simulator",
+			"crewCount": 50
+		},
+		{
+			"timeline": [
+				{
+					"id": "c797337d-801e-46e0-9ec9-ea0db3909c2f",
+					"class": "TimelineStep",
+					"name": "Initialize",
+					"description": "Initializes the mission",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "d7045024-b69a-49ff-8ee8-2876e8feb981",
+							"name": "Layout",
+							"type": "event",
+							"event": "changeSimulatorLayout",
+							"args": "{\"layout\":\"LayoutCorners\"}",
+							"delay": 0
+						},
+						{
+							"id": "0b60c1d8-fd71-45d7-bc5a-cc397ee98c2a",
+							"name": "Alert Level",
+							"type": "event",
+							"event": "changeSimulatorAlertLevel",
+							"args": "{\"alertLevel\":\"3\"}",
+							"delay": 0
+						},
+						{
+							"id": "67099840-d22e-4820-bf9d-435d90092190",
+							"name": "Change Alert Level",
+							"type": "event",
+							"event": "changeSimulatorAlertLevel",
+							"args": "{\"alertLevel\":\"p\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "6ea47318-00d4-4943-9ebb-acc0a935faf3",
+					"class": "TimelineStep",
+					"name": "Launch",
+					"description": "A timeline step",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "762cd17d-9f2a-4edb-a310-a9f8c1bce3cf",
+							"name": "Change crew count",
+							"type": "event",
+							"event": "changeSimulatorCrewCount",
+							"args": "{\"crewCount\":\"50\"}",
+							"delay": 0
+						}
+					]
+				}
+			],
+			"timelineStep": 1,
+			"id": "41c2b4ab-1bb4-40a4-8530-aa9ca8c662c1",
+			"name": "USS Voyager",
+			"layout": "LayoutCorners",
+			"alertlevel": "p",
+			"template": false,
+			"class": "Simulator",
+			"crewCount": "50",
+			"stations": [
+				{
+					"class": "Station",
+					"name": "Captain",
+					"cards": []
+				}
+			]
+		}
+	],
+	"stationSets": [
+		{
+			"class": "StationSet",
+			"id": "dfa8ebf6-e133-46d5-b1fc-f20a66ec8edf",
+			"name": "Standard-12",
+			"stations": [
+				{
+					"class": "Station",
+					"name": "Captain",
+					"cards": []
+				}
+			]
+		}
+	],
+	"flights": [
+		{
+			"timeline": [
+				{
+					"id": "168e86c9-dcf2-41bc-a16b-791310ce443e",
+					"class": "TimelineStep",
+					"name": "Initialize",
+					"description": "Initializes the mission",
+					"order": "0",
+					"timelineItems": [
+						{
+							"id": "3e2a6732-37bc-4fc9-b149-f3114290e7dc",
+							"name": "Create Simulator: 3e2a6732-37bc-4fc9-b149-f3114290e7dc",
+							"type": "event",
+							"event": "createSimulator",
+							"args": "{\"name\":\"USS Voyager\",\"timeline\":[{\"id\":\"c797337d-801e-46e0-9ec9-ea0db3909c2f\",\"class\":\"TimelineStep\",\"name\":\"Initialize\",\"description\":\"Initializes the mission\",\"order\":0,\"timelineItems\":[{\"id\":\"d7045024-b69a-49ff-8ee8-2876e8feb981\",\"name\":\"Layout\",\"type\":\"event\",\"event\":\"changeSimulatorLayout\",\"args\":\"{\\\"layout\\\":\\\"LayoutCorners\\\"}\",\"delay\":0},{\"id\":\"0b60c1d8-fd71-45d7-bc5a-cc397ee98c2a\",\"name\":\"Alert Level\",\"type\":\"event\",\"event\":\"changeSimulatorAlertLevel\",\"args\":\"{\\\"alertLevel\\\":\\\"3\\\"}\",\"delay\":0},{\"id\":\"67099840-d22e-4820-bf9d-435d90092190\",\"name\":\"Change Alert Level\",\"type\":\"event\",\"event\":\"changeSimulatorAlertLevel\",\"args\":\"{\\\"alertLevel\\\":\\\"p\\\"}\",\"delay\":0}]},{\"id\":\"6ea47318-00d4-4943-9ebb-acc0a935faf3\",\"class\":\"TimelineStep\",\"name\":\"Launch\",\"description\":\"A timeline step\",\"order\":0,\"timelineItems\":[{\"id\":\"762cd17d-9f2a-4edb-a310-a9f8c1bce3cf\",\"name\":\"Change crew count\",\"type\":\"event\",\"event\":\"changeSimulatorCrewCount\",\"args\":\"{\\\"crewCount\\\":\\\"50\\\"}\",\"delay\":0}]}],\"flightId\":\"3aa01f75-c27e-4dec-888c-987fdeea3670\",\"stationSet\":\"dfa8ebf6-e133-46d5-b1fc-f20a66ec8edf\"}",
+							"delay": 0
+						}
+					]
+				}
+			],
+			"timelineStep": 0,
+			"class": "Flight",
+			"id": "3aa01f75-c27e-4dec-888c-987fdeea3670",
+			"name": "Stormfront",
+			"date": "1486430124395",
+			"mission": "297c4aa8-da9e-48be-8117-cfaed0d5e80c",
+			"simulators": [
+				{
+					"class": "FlightSimulator",
+					"id": "41c2b4ab-1bb4-40a4-8530-aa9ca8c662c1",
+					"stationSet": "dfa8ebf6-e133-46d5-b1fc-f20a66ec8edf"
+				}
+			]
+		}
+	],
+	"missions": [
+		{
+			"timeline": [
+				{
+					"id": "168e86c9-dcf2-41bc-a16b-791310ce443e",
+					"class": "TimelineStep",
+					"name": "Initialize",
+					"description": "Initializes the mission",
+					"order": "0",
+					"timelineItems": [
+						{
+							"id": "3e2a6732-37bc-4fc9-b149-f3114290e7dc",
+							"name": "Create Simulator: 3e2a6732-37bc-4fc9-b149-f3114290e7dc",
+							"type": "event",
+							"event": "createSimulator",
+							"args": "{\"name\":\"USS Voyager\"}",
+							"delay": 0
+						}
+					]
+				}
+			],
+			"timelineStep": -1,
+			"class": "Mission",
+			"id": "297c4aa8-da9e-48be-8117-cfaed0d5e80c",
+			"name": "Stormfront",
+			"description": "",
+			"simulators": [
+				"3e2a6732-37bc-4fc9-b149-f3114290e7dc"
+			]
 		}
 	],
 	"systems": [
@@ -276,7 +528,20 @@
 			]
 		}
 	],
-	"clients": [],
+	"clients": [
+		{
+			"id": "a457ba53-35b7-ecd1-6bc2-3925ff4b4832",
+			"flightId": "3aa01f75-c27e-4dec-888c-987fdeea3670",
+			"simulatorId": null,
+			"station": null,
+			"loginName": null,
+			"loginState": "logout",
+			"sentPing": null,
+			"ping": null,
+			"connected": false,
+			"class": "Client"
+		}
+	],
 	"coreLayouts": [
 		{
 			"id": "9d21fa85-d919-4a39-a27e-23524adc1a03",
@@ -361,6 +626,27 @@
 			"fullPath": "/Sensor Contacts/Pictures",
 			"name": "Pictures",
 			"class": "AssetFolder"
+		},
+		{
+			"id": "f6960518-00a1-414e-ac36-bcb29553464c",
+			"folderPath": "/",
+			"fullPath": "/Ship Views",
+			"name": "Ship Views",
+			"class": "AssetFolder"
+		},
+		{
+			"id": "5930638f-9fcb-452d-8504-b882641b59d8",
+			"folderPath": "/",
+			"fullPath": "/Misc",
+			"name": "Misc",
+			"class": "AssetFolder"
+		},
+		{
+			"id": "6d9a1815-2b26-4d64-8e8a-bd9c4100db89",
+			"folderPath": "/",
+			"fullPath": "/Card Icons",
+			"name": "Card Icons",
+			"class": "AssetFolder"
 		}
 	],
 	"assetContainers": [
@@ -402,6 +688,22 @@
 			"fullPath": "/Sensor Contacts/Icons/G",
 			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
 			"name": "G",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "bbcc1500-7301-4e2f-8623-2ea2afed97b5",
+			"folderPath": "/Misc",
+			"fullPath": "/Misc/Login Logo",
+			"folderId": "5930638f-9fcb-452d-8504-b882641b59d8",
+			"name": "Login Logo",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "8a48e30d-2c03-419a-a18f-794e0bd2a815",
+			"folderPath": "/Ship Views",
+			"fullPath": "/Ship Views/Right",
+			"folderId": "f6960518-00a1-414e-ac36-bcb29553464c",
+			"name": "Right",
 			"class": "AssetContainer"
 		}
 	],
@@ -448,6 +750,24 @@
 			"containerId": "fbe3ae88-698b-4974-a9b8-9a150abaa01c",
 			"fullPath": "/Sensor Contacts/Icons/G",
 			"url": "https://s3.amazonaws.com/thorium-assets/Sensor%20Contacts/Icons/G/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "1be123ea-e65d-4efc-93b2-57ce7fdfe125",
+			"containerPath": "/Misc",
+			"containerId": "bbcc1500-7301-4e2f-8623-2ea2afed97b5",
+			"fullPath": "/Misc/Login Logo",
+			"url": "https://s3.amazonaws.com/thorium-assets/Misc/Login%20Logo/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "53caa4e7-77fe-4b02-b141-95c06e2d09b5",
+			"containerPath": "/Ship Views",
+			"containerId": "8a48e30d-2c03-419a-a18f-794e0bd2a815",
+			"fullPath": "/Ship Views/Right",
+			"url": "https://s3.amazonaws.com/thorium-assets/Ship%20Views/Right/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		}

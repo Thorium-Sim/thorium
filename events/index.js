@@ -4,3 +4,5 @@ import './engines';
 import './generic';
 import './sensors';
 import './transporters';
+import './clients';
+import './flightStructure';

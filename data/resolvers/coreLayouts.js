@@ -2,7 +2,6 @@ import App from '../../app';
 
 export const CoreLayoutQueries = {
   coreLayouts(_, { name = 'default' }) {
-    console.log(name, App.coreLayouts);
     return App.coreLayouts.filter(layout => (layout.name === name));
   },
 };

@@ -1,15 +1,23 @@
 import uuid from 'uuid';
+import { TimelineObject } from './timeline';
 
-export default class Simulator {
+export default class Simulator extends TimelineObject {
   constructor(params) {
+    super(params);
     this.id = params.id || uuid.v4();
-    this.name = params.name;
-    this.layout = params.layout;
+    this.name = params.name || 'Simulator';
+    this.layout = params.layout || 'LayoutDefault';
     this.alertlevel = params.alertlevel || '5';
-    this.timeline = params.timeline;
+    this.template = params.template || false;
     this.class = 'Simulator';
+    this.crewCount = params.crewCount || 50;
+    // Initialize the simulator async
+    setTimeout(() => {this.nextTimeline();}, 100);
   }
-  setAlertlevel(alertlevel) {
+  rename(name) {
+    this.name = name;
+  }
+  setAlertLevel(alertlevel) {
     if (['5', '4', '3', '2', '1', 'p'].indexOf(alertlevel) === -1) {
       throw "Invalid Alert Level. Must be one of '5','4','3','2','1','p'";
     }
@@ -21,18 +29,7 @@ export default class Simulator {
     // To the server
     this.layout = layout;
   }
-  test(param) {
-    this.digest('test', param);
-    this.emit('tested', param, this);
+  setCrewCount(count) {
+    this.crewCount = count;
   }
-
 }
-
-
-/* {
-    id = ,
-    name = 'Voyager',
-    layout = 'LayoutDefault',
-    alertlevel = '5',
-    timeline: [],
-  }*/
