@@ -1,56 +1,59 @@
 import React, { Component } from 'react';
-import { Col, Row, Card, Button, ButtonGroup } from 'reactstrap';
+import { Col, Row, Card, Button, ButtonGroup, Input } from 'reactstrap';
 import viewList from '../views/list.js';
 import FontAwesome from 'react-fontawesome';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 
+const STATION_SUB = gql`
+subscription StationSub {
+	stationSetUpdate {
+		id
+		name
+		stations {
+			name
+			cards {
+				name
+				component
+				icon
+			}
+		}
+	}
+}`;
+
 class StationsConfig extends Component {
 	constructor(params){
 		super(params);
 		this.state = {
-			selectedStationConfig:{},
-			selectedStation:{},
+			selectedStationConfig:null,
 		};
+		this.stationSubscription = null;
 	}
-	componentDidMount() {
+	componentWillReceiveProps(nextProps) {
+		if (!this.stationSubscription && !nextProps.data.loading) {
+			this.stationSubscription = nextProps.data.subscribeToMore({
+				document: STATION_SUB,
+				updateQuery: (previousResult, {subscriptionData}) => {
+					previousResult.stations = subscriptionData.data.stationSetUpdate
+					return previousResult;
+				},
+			});
+		}
 	}
 	_setSelectedStationConfig(station){
 		this.setState({
-			selectedStationConfig: station
+			selectedStationConfig: station.id
 		});
 	}
 	_createStationSet(){
 		let name  = prompt('What is the station set name? eg. 12-Standard, 8-School, etc.');
 		if (name){
-			let obj = {
-				name: name,
-				stations:[]
-			};
 			this.props.client.mutate({
 				mutation: gql`
-				mutation AddStationSet($name: String!, $stations: [Stationsetinput]) {
-					addstationset(name: $name, stations: []) {
-						id
-						name
-						stations {
-							name
-							cards {
-								name
-								component
-								icon
-							}
-						}
-					}
-				}
-				`,
-				variables: obj,
-				updateQueries: {
-					StationSets:(previousQueryResults, {mutationResult}) => {
-						previousQueryResults.stations.push(mutationResult.data.addstationset);
-						return previousQueryResults;
-					}
-				}
+				mutation AddStationSet($name: String!) {
+					createStationSet(name: $name)
+				}`,
+				variables: {name},
 			});
 		}
 	}
@@ -60,118 +63,78 @@ class StationsConfig extends Component {
 		let station = this.state.selectedStationConfig;
 		if (station.id){
 			if (confirm("Are you sure you want to delete that station set?")){
-				let obj = {
-					id: station.id,
-				};
 				this.props.client.mutate({
 					mutation: gql`
-					mutation RemoveStationSet($id: String!) {
-						removestationset(id: $id) {
-							id
-						}
+					mutation RemoveStationSet($id: ID!) {
+						removeStationSet(stationSetID: $id)
 					}
 					`,
-					variables: obj,
-					updateQueries: {
-						StationSets:(previousQueryResults, {mutationResult}) => {
-							previousQueryResults.stations = previousQueryResults.stations.filter((stationIt) => {
-								return stationIt.id !== mutationResult.data.removestationset.id;
-							});
-							return previousQueryResults;
-						}
-					}
+					variables: {id: station},
 				});
 			}
+			this.setState({
+				selectedStationConfig: null
+			});
 		}
+	}
+	_renameStationSet(){
+		const name = prompt('What is the new name of the station set?');
+		let station = this.state.selectedStationConfig;
+		if (name){
+			this.props.client.mutate({
+				mutation: gql`
+				mutation RenameStationSet($id: ID!, $name: String!) {
+					renameStationSet(stationSetID: $id, name: $name)
+				}
+				`,
+				variables: {id: station, name},
+			});
+		}
+	}
+	_renameStation(station) {
+		const name = prompt('What is the new name of the station?');
+		let stationId = this.state.selectedStationConfig;
+		const mutation = gql`mutation RenameStation($id: ID!, $name: String!, $newName: String!){
+			editStationInStationSet(stationSetID: $id, stationName: $name, newStationName: $newName)
+		}`;
+		if (name) {
+			this.props.client.mutate({
+				mutation: mutation,
+				variables: {id: stationId, name: station.name, newName: name},
+			});
+		}
+	}
+	_editCard(){
+		// TODO
 	}
 	_addStation(){
 		let name  = prompt('What is the station name?');
 		if (name){
-			let stationSet =  Object.assign({}, this.state.selectedStationConfig);
-			let station = {
-				name: name,
-				cards: [],
-			};
 			let obj = {
-				id: stationSet.id,
-				station: station
+				id: this.state.selectedStationConfig,
+				station: name
 			};
 			this.props.client.mutate({
 				mutation: gql`
-				mutation AddStation($id: String!, $station: Stationinput!) {
-					addstation(id: $id, station: $station) {
-						id
-						name
-						stations {
-							name
-							cards {
-								name
-								component
-								icon
-							}
-						}
-					}
-				}
-				`,
+				mutation AddStation($id: ID!, $station: String!) {
+					addStationToStationSet(stationSetID: $id, stationName: $station)
+				}`,
 				variables: obj,
-				updateQueries: {
-					StationSets:(previousQueryResults, {mutationResult}) => {
-						let returnVal = JSON.parse(JSON.stringify(previousQueryResults));
-						this.setState({
-							selectedStationConfig: mutationResult.data.addstation
-						});
-						returnVal.stations = returnVal.stations.map((stationSet) => {
-							if (stationSet.id === mutationResult.data.addstation.id){
-								return mutationResult.data.addstation;
-							}
-							return stationSet;
-						});
-						return returnVal;
-					}
-				}
 			});
 		}
 	}
 	_removeStation(station){
 		if (confirm("Are you sure you want to delete that station?")){
-			let stationSet =  Object.assign({}, this.state.selectedStationConfig);
 			let obj = {
-				id: stationSet.id,
-				station: station.name
+				id: this.state.selectedStationConfig,
+				stationName: station.name
 			};
 			this.props.client.mutate({
 				mutation: gql`
-				mutation RemoveStation($id: String!, $station: String!) {
-					removestation(id: $id, station: $station) {
-						id
-						name
-						stations {
-							name
-							cards {
-								name
-								component
-								icon
-							}
-						}
-					}
-				}
-				`,
+				mutation RemoveStation($id: ID!, $stationName: String!) {
+					removeStationFromStationSet(stationSetID: $id, stationName: $stationName)
+				}`,
 				variables: obj,
-				updateQueries: {
-					StationSets:(previousQueryResults, {mutationResult}) => {
-						let returnVal = Object.assign({}, previousQueryResults);
-						this.setState({
-							selectedStationConfig: mutationResult.data.removestation
-						});
-						returnVal.stations = returnVal.stations.map((station) => {
-							if (station.id === mutationResult.data.removestation.id){
-								return mutationResult.data.removestation;
-							}
-							return station;
-						});
-						return returnVal;
-					}
-				}
 			});
 		}
 	}
@@ -179,126 +142,85 @@ class StationsConfig extends Component {
 		let component = e.target.value;
 		let name  = prompt('What is the card name?');
 		if (name){
-			let card = {
-				name: name,
-				component: component,
-				icon: null,
-			};
-			let stationSet = Object.assign({}, this.state.selectedStationConfig);
 			let obj = {
-				id: stationSet.id,
+				id: this.state.selectedStationConfig,
 				name: station.name,
-				card: card
+				cardName: name,
+				cardComponent: component,
+				cardIcon: null
 			};
 			this.props.client.mutate({
 				mutation: gql`
-				mutation AddCard($id: String!, $name: String!, $card: Cardinput!) {
-					addcard(id: $id, name: $name, card: $card) {
-						id
-						name
-						stations {
-							name
-							cards {
-								name
-								component
-								icon
-							}
-						}
-					}
-				}
-				`,
+				mutation AddCard($id: ID!, $name: String!, $cardName: String!, $cardComponent: String!, $cardIcon: String) {
+					addCardToStation(stationSetID: $id, stationName: $name, cardName: $cardName, cardComponent: $cardComponent, cardIcon: $cardIcon) 
+				}`,
 				variables: obj,
-				updateQueries: {
-					StationSets:(previousQueryResults, {mutationResult}) => {
-						let returnVal = Object.assign({}, previousQueryResults);
-						this.setState({
-							selectedStationConfig: mutationResult.data.addcard
-						});
-						returnVal.stations = returnVal.stations.map((station) => {
-							if (station.id === mutationResult.data.addcard.id){
-								return mutationResult.data.addcard;
-							}
-							return station;
-						});
-						return returnVal;
-					}
-				}
 			});
 		}
 	}
 	_removeCard(card,station){
 		if (confirm("Are you sure you want to delete that card?")){
-			let stationSet = Object.assign({}, this.state.selectedStationConfig);
 			let obj = {
-				id: stationSet.id,
-				name: station.name,
-				card: card.name
+				id: this.state.selectedStationConfig,
+				stationName: station.name,
+				cardName: card.name
 			};
 			this.props.client.mutate({
 				mutation: gql`
-				mutation RemoveCard($id: String!, $name: String!, $card: String!) {
-					removecard(id: $id, name: $name, cardname: $card) {
-						id
-						name
-						stations {
-							name
-							cards {
-								name
-								component
-								icon
-							}
-						}
-					}
-				}
-				`,
+				mutation RemoveCard($id: ID!, $stationName: String!, $cardName: String!) {
+					removeCardFromStation(stationSetID: $id, stationName: $stationName, cardName: $cardName) 
+				}`,
 				variables: obj,
-				updateQueries: {
-					StationSets:(previousQueryResults, {mutationResult}) => {
-						let returnVal = Object.assign({}, previousQueryResults);
-						this.setState({
-							selectedStationConfig: mutationResult.data.removecard
-						});
-						returnVal.stations = returnVal.stations.map((station) => {
-							if (station.id === mutationResult.data.removecard.id){
-								return mutationResult.data.removecard;
-							}
-							return station;
-						});
-						return returnVal;
-					}
-				}
 			});
 		}
 	}
+	_updateStationCard(type, card, station, e) {
+		const mutation = gql`mutation EditCard($stationSetId: ID!, $stationName: String!, $cardName: String!, $name: String, $component: String, $icon: String){
+			editCardInStationSet(stationSetID: $stationSetId, stationName: $stationName, cardName: $cardName, newCardName: $name, cardComponent: $component, cardIcon: $icon)
+		}`;
+		const obj = {
+			stationSetId: this.state.selectedStationConfig,
+			stationName: station.name,
+			cardName: card.name,
+		}
+		obj[type] = e.target.value;
+		this.props.client.mutate({
+			mutation: mutation,
+			variables: obj,
+		});
+	}
 	render(){
+		const selectedStation = this.props.data.loading ? {} : (this.props.data.stations.find(s => s.id === this.state.selectedStationConfig) || {});
+		console.log(selectedStation)
 		return (
 			<Row>
 			<Col sm="3">
 			<h5>Station Configs</h5>
 			<Card className="scroll">
 			{this.props.data.loading ? <li>Loading... </li> : this.props.data.stations.map((e) => {
-				return <li key={e.id} onClick={this._setSelectedStationConfig.bind(this,e)} className={`${(e.id === this.state.selectedStationConfig.id) ? 'selected' : ''} list-group-item`}>{e.name}</li>;
+				return <li key={e.id} onClick={this._setSelectedStationConfig.bind(this,e)} className={`${(e.id === this.state.selectedStationConfig) ? 'selected' : ''} list-group-item`}>{e.name}</li>;
 			})}
 			</Card>
 			<ButtonGroup>
 			<Button onClick={this._createStationSet.bind(this)} size="sm" color="success">Add</Button>
-			<Button onClick={this._showImportModal.bind(this)} size="sm" color="warning">Import</Button>
-			<Button onClick={this._removeStationSet.bind(this)} size="sm" color="danger">Remove</Button>
+			<Button onClick={this._showImportModal.bind(this)} size="sm" color="info">Import</Button>
+			{this.state.selectedStationConfig && <Button onClick={this._renameStationSet.bind(this)} size="sm" color="warning">Rename</Button>}
+			{this.state.selectedStationConfig && <Button onClick={this._removeStationSet.bind(this)} size="sm" color="danger">Remove</Button>}
 			</ButtonGroup>
 			</Col>
 			<Col sm="9">
-			{this.state.selectedStationConfig.name ?
+			{selectedStation.name ?
 				<div>
 				<h5>Stations</h5>
 				<div className="scroll">
-				{this.state.selectedStationConfig.stations.map((station,stationIndex) => {
+				{selectedStation.stations.map((station,stationIndex) => {
 					return (
-						<div key={`${this.state.selectedStationConfig.id}-${station.name}-${stationIndex}`} style={{marginBottom: '15px'}}>
+						<div key={`${this.state.selectedStationConfig}-${station.name}-${stationIndex}`} style={{marginBottom: '15px'}}>
 						<table className="table table-sm table-striped table-hover">
 						<thead className="thead-default">
 						<tr>
 						<th colSpan="3">{station.name}</th>
-						<th><FontAwesome name="ban" className="text-danger" onClick={this._removeStation.bind(this,station)} /></th>
+						<th><FontAwesome name="pencil-square-o" className="text-warning" onClick={this._renameStation.bind(this,station)} /> <FontAwesome name="ban" className="text-danger" onClick={this._removeStation.bind(this,station)} /></th>
 						</tr>
 						</thead>
 						<thead>
@@ -310,12 +232,29 @@ class StationsConfig extends Component {
 						</tr>
 						</thead>
 						<tbody>
-						{station.cards.map((card) => {
+						{station.cards.map((card, index) => {
 							return (
-								<tr key={`${this.state.selectedStationConfig.id}-${station.name}-${card.name}`}>
-								<td>{card.name}</td>
-								<td>{card.component}</td>
-								<td>{card.icon}</td>
+								<tr key={`${this.state.selectedStationConfig}-${station.name}-${index}`}>
+								<td><Input type="text" value={card.name} onChange={this._updateStationCard.bind(this, 'name', card, station)} /></td>
+								<td>
+								<Input type="select" value={card.component} onChange={this._updateStationCard.bind(this, 'component', card, station)}>
+								{
+									viewList.map((e) => {
+										return <option key={e} value={e}>{e}</option>;
+									})
+								}
+								</Input>
+								</td>
+								<td>
+								<Input type="select" value={card.icon} onChange={this._updateStationCard.bind(this, 'icon', card, station)}>
+								<option>Select an icon</option>
+								{
+									this.props.data.assetFolders[0].containers.map((e) => {
+										return <option key={e.name} value={e.name}>{e.name}</option>;
+									})
+								}
+								</Input>
+								</td>
 								<td><FontAwesome name="ban" className="text-danger" onClick={this._removeCard.bind(this,card,station)} /></td>
 								</tr>
 								);
@@ -357,6 +296,11 @@ query StationSets{
 				icon
 				name
 			}
+		}
+	}
+	assetFolders(name: "Card Icons") {
+		containers {
+			name
 		}
 	}
 }

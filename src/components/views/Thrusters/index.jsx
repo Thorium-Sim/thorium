@@ -404,9 +404,7 @@ mutation ThrusterDirection($id: ID!, $direction: DirectionInput) {
 
 export default compose(
   graphql(THRUSTER_QUERY, {
-    options: () => ({
-      variables: { simulatorId: 'test' }
-    })
+    options: (ownProps) => ({ variables: { simulatorId: ownProps.simulator.id } }),
   }),
   graphql(ROTATION_UPDATE, {name: 'rotationUpdate',
     props: ({rotationUpdate}) => ({

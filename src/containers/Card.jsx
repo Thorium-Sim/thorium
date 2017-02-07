@@ -1,53 +1,37 @@
 import React, { Component } from 'react';
 import Layouts from '../components/layouts';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
 
-class CardFrame extends Component {
-  render() {
-    if (this.props.data.loading){
-      return <div />;
-    }
-    if (this.props.data.error){
-      //console.log('ERROR',this.props.data.error)
-    }
-    let { simulators} = this.props.data;
-    let currentStation// = stationsData[0] || {};
-    let currentSimulator = simulators[0] || {};
-    let params;
-    let data = this.props.data;
-    if (this.props.test){
-      currentStation = {};
-      params = {
-        simulatorId: 'test',
-        stationId: 0,
-        cardIndex: 0,
+export default class CardFrame extends Component {
+  constructor(props) {
+    super(props);
+    if (props.test){
+      this.state = {
+        card: 'Test'
       }
-      data.cardsData = [
+    } else {
+      this.state = {
+        card: this.props.station.cards[0].name
+      }
+    }
+  }
+  _changeCard(name) {
+    this.setState({
+      card: name
+    });
+  }
+  render() {
+    const { simulator, station, flight } = this.props.test ? {
+      simulator: {id: 'test', name: 'Test', alertLevel: '5', layout: 'LayoutCorners'},
+      station: {name: 'Test', cards: [
       {id: 'test',
       name:'Test',
-      component: (this.props.params.component || 'Navigation')}
-      ]
-    }
-    const layoutName = currentStation.layout || currentSimulator.layout || 'LayoutCorners';
-    let LayoutComponent = Layouts[layoutName];
-    if (!LayoutComponent) LayoutComponent = Layouts.LayoutDefault;
-    return <LayoutComponent {...this.props} params={params} data={data}  />;
+      component: (this.props.component || 'Navigation')}
+      ]},
+      flight: {}
+    } : this.props;
+    const layoutName = station.layout || simulator.layout || 'LayoutCorners';
+    let LayoutComponent = Layouts[layoutName] || Layouts.LayoutDefault;
+    return <LayoutComponent clientObj={this.props.client} flight={flight} simulator={simulator} station={station} cardName={this.state.card} changeCard={this._changeCard.bind(this)} />;
   }
 }
 
-const CardData = gql`
-query GetCardData($id: String){
-  simulators(id: $id){
-    id
-    name
-    alertlevel
-    layout
-  }
-}`;
-
-export default graphql(CardData, {
-  options: (ownProps) => ({
-    variables: {id: ownProps.test ? 'test' : ownProps.simulator}
-  })
-})(CardFrame);

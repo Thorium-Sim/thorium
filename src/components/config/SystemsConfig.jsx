@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Col, Row, Card, Button, ButtonGroup } from 'reactstrap';
 import systemsList from '../systems';
-import uuid from '../../helpers/guid';
+import uuid from 'uuid';
 
 const systemsKeys = Object.keys(systemsList);
 class SystemsConfig extends Component {
@@ -29,7 +29,7 @@ class SystemsConfig extends Component {
 		let defaultObject = system.defaultObject();
 		let name  = prompt('What is the station set name? eg. 12-Standard, 8-School, etc.');
 		if (name){
-			defaultObject.id = uuid();
+			defaultObject.id = uuid.v4();
 			defaultObject.simulatorId = this.props.selectedSimulator.id;
 			defaultObject.name = name;
 			this.setState({

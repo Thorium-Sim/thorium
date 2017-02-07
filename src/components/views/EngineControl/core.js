@@ -96,7 +96,7 @@ mutation setSpeed($id: ID!, $speed: Int!, $on: Boolean){
 
 export default compose(
   graphql(ENGINE_QUERY, {
-    options: () => ({ variables: { simulatorId: 'test' } }),
+    options: (ownProps) => ({ variables: { simulatorId: ownProps.simulator.id } }),
   }),
   graphql(SET_SPEED, {name: 'setSpeed',
     props: ({setSpeed}) => ({

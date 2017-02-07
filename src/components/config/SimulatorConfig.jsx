@@ -1,10 +1,31 @@
 import React, { Component } from 'react';
-import { Col, Row, Card, Button, ButtonGroup } from 'reactstrap';
+import { Col, Row, Card, Button, ButtonGroup, FormGroup, Label, Input } from 'reactstrap';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
-import LayoutList from '../layouts';
+import TimelineConfig from './MissionsConfig/TimelineConfig';
 
-const Layouts = Object.keys(LayoutList);
+const SIMULATOR_SUB = gql`
+subscription SimulatorSub {
+	simulatorsUpdate(template: true) {
+		id
+		name
+		template
+		timeline {
+			id
+			name
+			description
+			order
+			timelineItems {
+				id
+				name
+				type
+				event
+				args
+				delay
+			}
+		}
+	}
+}`;
 
 class SimulatorConfig extends Component {
 	constructor(params){
@@ -12,6 +33,19 @@ class SimulatorConfig extends Component {
 		this.state = {
 			selectedSimulator: null
 		};
+		this.simulatorSubscription = null;
+
+	}
+	componentWillReceiveProps(nextProps) {
+		if (!this.simulatorSubscription && !nextProps.data.loading) {
+			this.simulatorSubscription = nextProps.data.subscribeToMore({
+				document: SIMULATOR_SUB,
+				updateQuery: (previousResult, {subscriptionData}) => {
+					previousResult.simulators = subscriptionData.data.simulatorsUpdate
+					return previousResult;
+				},
+			});
+		}
 	}
 	_setSelectedSimulator(e){
 		this.setState({
@@ -23,35 +57,14 @@ class SimulatorConfig extends Component {
 		if (name){
 			let obj = {
 				name: name,
-				alertlevel: 5,
-				layout: 'LayoutDefault',
 				template: true,
-				timeline: []
 			};
 			this.props.client.mutate({
 				mutation: gql`
-				mutation AddSimulator($name: String!, $alertlevel: String, $layout: String, $template: Boolean, $timeline: [Timelinestepinput]) {
-					addsimulator(name: $name, alertlevel: $alertlevel, layout: $layout, template:$template, timeline:$timeline){
-						id
-						name
-						alertlevel
-						layout
-						template
-						timeline {
-							description
-							name
-							order
-						}
-					}
-				}
-				`,
-				variables: obj,
-				updateQueries: {
-					Simulators:(previousQueryResults, {mutationResult}) => {
-						previousQueryResults.simulators.push(mutationResult.data.addsimulator);
-						return previousQueryResults;
-					}
-				}
+				mutation AddSimulator($name: String!, $template: Boolean) {
+					createSimulator(name: $name, template:$template)
+				}`,
+				variables: obj
 			});
 		}
 	}
@@ -63,22 +76,10 @@ class SimulatorConfig extends Component {
 					id: station,
 				};
 				this.props.client.mutate({
-					mutation: gql`
-					mutation RemoveSimulator($id: String!) {
-						removesimulator(id: $id) {
-							id
-						}
-					}
-					`,
-					variables: obj,
-					updateQueries: {
-						Simulators:(previousQueryResults, {mutationResult}) => {
-							previousQueryResults.simulators = previousQueryResults.simulators.filter((stationIt) => {
-								return stationIt.id !== mutationResult.data.removesimulator.id;
-							});
-							return previousQueryResults;
-						}
-					}
+					mutation: gql`mutation RemoveSimulator($id: String!) {
+						removesimulator(simulatorId: $id)
+					}`,
+					variables: obj
 				});
 			}
 		}
@@ -86,80 +87,10 @@ class SimulatorConfig extends Component {
 	_showImportModal(){
 
 	}
-	_handleChange(e){
-		let mutation;
-		let obj = {
-			id: this.state.selectedSimulator
-		};
-		switch (e.target.name){
-			case 'name':
-			mutation = gql`
-			mutation UpdateName($id: String!, $name: String!) {
-				simupdatename(id: $id, name: $name) {
-					id
-					name
-				}
-			}
-			`;
-			obj.name = e.target.value;
-			break;
-			case 'layout':
-			mutation = gql`
-			mutation UpdateLayout($id: String!, $layout: String!) {
-				simupdatelayout(id: $id, layout: $layout) {
-					id
-					layout
-				}
-			}
-			`;
-			obj.layout = e.target.value;
-			break;
-			case 'alertLevel':
-			mutation = gql`
-			mutation UpdateAlertLevel($id: String!, $alertlevel: String!) {
-				simupdatealertlevel(id: $id, alertlevel: $alertlevel) {
-					id
-					alertlevel
-				}
-			}
-			`;
-			obj.alertlevel = e.target.value;
-			break;
-			default:
-			break;
-		}
-		this.props.client.mutate({
-			mutation: mutation,
-			variables: obj,
-			updateQueries: {
-				Simulators:(previousQueryResults, {mutationResult}) => {
-					let returnData = Object.assign({}, previousQueryResults);
-					Object.keys(mutationResult.data).forEach((mut) => {
-						const data = mutationResult.data[mut];
-						returnData.simulators = returnData.simulators.map((simulator) => {
-							if (simulator.id === data.id){
-								Object.keys(data).forEach((key) => {
-									simulator[key] = data[key];
-								});
-							}
-							return simulator;
-						});
-					});
-					return returnData;
-				}
-			}
-		});
+	_updateSimulator(type, e) {
+
 	}
 	render(){
-		let selectedSimulator;
-		if (this.state.selectedSimulator){
-			selectedSimulator = this.props.data.simulators.reduce((prev, next) => {
-				if (next.id === this.state.selectedSimulator){
-					return next;
-				}
-				return prev;
-			},{});
-		}
 		return (
 			<Row>
 			<Col sm="3">
@@ -177,34 +108,22 @@ class SimulatorConfig extends Component {
 			</Col>
 			<Col sm="9">
 			{
-				this.state.selectedSimulator && <div>
-				<small>These values represent the properties of the simulator itself.</small>
-				<form>
-				<fieldset className="form-group">
-				<label>Name</label>
-				<input onChange={this._handleChange.bind(this)} defaultValue={selectedSimulator.name} type="text" name="name" className="form-control" placeholder="USS Voyager" />
-				</fieldset>
-				<fieldset className="form-group">
-				<label>Layout</label>
-				<select onChange={this._handleChange.bind(this)} defaultValue={selectedSimulator.layout} name="layout" className="c-select form-control">
-				{Layouts.map((e) => {
-					return <option key={e} value={e}>{e}</option>;
-				})}
-				</select>
-				</fieldset>
-				<fieldset className="form-group">
-				<label>Alert Level</label>
-				<select onChange={this._handleChange.bind(this)} defaultValue={selectedSimulator.alertlevel} name="alertLevel" className="c-select form-control">
-				<option value="5">5</option>
-				<option value="4">4</option>
-				<option value="3">3</option>
-				<option value="2">2</option>
-				<option value="2">1</option>
-				<option value="p">P</option>
-				</select>
-				</fieldset>
-				</form>
-				</div>
+				(() => {
+					if (this.state.selectedSimulator){
+						const sim = this.props.data.simulators.find(s => s.id === this.state.selectedSimulator);
+						return (<div>
+							<FormGroup>
+							<Label>Simulator Name</Label>
+							<Input type="text" value={ sim.name } onChange={ this._updateSimulator.bind(this, 'name') } />
+							</FormGroup>
+							<TimelineConfig
+							type="simulator"
+							object={sim}
+							client={this.props.client}
+							/>
+							</div>);
+					}
+				})()
 			}
 			</Col>
 			</Row>
@@ -216,9 +135,21 @@ query Simulators{
 	simulators(template: true){
 		id
 		name
-		alertlevel
-		layout
 		template
+		timeline {
+			id
+			name
+			description
+			order
+			timelineItems {
+				id
+				name
+				type
+				event
+				args
+				delay
+			}
+		}
 	}
 }
 `;

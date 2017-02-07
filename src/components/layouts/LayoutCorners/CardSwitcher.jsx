@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import { Link } from 'react-router';
 
 const CardButton = (props) => {
 	return(
 		<div className="card-icon-item">
-		<Link to={`/app/simulator/${props.params.simulatorId}/station/${props.params.stationId}/card/${props.cardNum}`} className={(props.cardNum === props.params.cardIndex) ? "active" : ""}>
+		<a href="#" onClick={props.changeCard.bind(this, props.name)} className={(props.name === props.currentCard) ? "active" : ""}>
 		<div className="card-button-mask">
 		<div className="card-button-background">
 		<div className="card-button">{props.name}</div>
@@ -13,7 +12,7 @@ const CardButton = (props) => {
 		<div className="card-icon-color"></div>
 		<img role="presentation" className="card-icon" src="http://www.iconsplace.com/download/lime-phone-128.png" draggable="false" />
 		<div className="card-icon-background"></div>
-		</Link>
+		</a>
 		</div>
 		);
 };
