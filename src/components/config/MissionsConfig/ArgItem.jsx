@@ -72,7 +72,6 @@ export default class ArgItem extends Component {
             <option value={null}>Select An Option</option>
             {
               this.state.data[arg.queryName] && this.state.data[arg.queryName].map((data) => {
-                console.log('ARG VALUE', arg.value, data ,data[arg.value]);
                 return <option key={data[arg.key]} value={data[arg.key]}>{data[arg.value]}</option>;
               })
             }

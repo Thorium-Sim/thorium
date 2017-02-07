@@ -95,7 +95,7 @@ mutation LowerShields($id: ID!){
 `;
 export default compose(
   graphql(SHIELD_QUERY, {
-    options: (props) => {console.log('PROPS', props); return ({ variables: { simulatorId:'test' } })},
+    options: (ownProps) => ({ variables: { simulatorId: ownProps.simulator.id } }),
   }),
   graphql(RAISE_SHIELDS, {name: 'raiseShields',
     props: ({raiseShields}) => ({

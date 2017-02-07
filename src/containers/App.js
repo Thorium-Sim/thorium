@@ -3,12 +3,12 @@ import { Router, browserHistory } from 'react-router';
 import {Signin, Register, Forgot, PasswordReset} from '../components/Accounts.jsx';
 //import UserAdmin from '../components/admin/Users.jsx';
 import CardContainer from './Card.jsx';
-import Config from './Config.jsx';
-import Lobby from './Lobby.jsx';
+import Config from './Config';
+import Lobby from './Lobby';
 import Client from '../components/Client.jsx';
 
 const TestCard = (props) => {
-  return <CardContainer test={true} params={props.params} />
+  return <CardContainer test={true} component={props.params.component} />
 };
 TestCard.propTypes = {
   params: PropTypes.object,

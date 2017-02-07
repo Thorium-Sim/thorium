@@ -252,5 +252,5 @@ query GetSensors($simulatorId: ID){
 }`;
 
 export default  graphql(SENSOR_QUERY, {
-	options: () => ({ variables: { simulatorId: 'test' } }),
+		options: (ownProps) => ({ variables: { simulatorId: ownProps.simulator.id } }),
 })(withApollo(Sensors));

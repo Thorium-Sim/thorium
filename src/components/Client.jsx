@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { Container } from 'reactstrap';
+import CardContainer from '../containers/Card.jsx';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import './client.scss';
@@ -10,10 +11,12 @@ const Credits = (props) => {
 	let client = {};
 	let flight = {};
 	let simulator = {};
+	let station = {};
 	if (!props.data.loading) {
 		client = props.data.clients.length > 0 ? props.data.clients[0] : {};
 		simulator = client.simulator || {};
 		flight = client.flight || {};
+		station = client.station || {};
 	}
 	return (
 		<div className="credit-bg">
@@ -23,6 +26,7 @@ const Credits = (props) => {
 		<h4>{client.id}</h4>
 		<h5>{flight.id}</h5>
 		<h5>{simulator.name}</h5>
+		<h5>{station.name}</h5>
 		<h5>{client.loginName}</h5>
 		</Container>
 		</div>
@@ -113,16 +117,20 @@ class ClientView extends Component {
 			variables: {client: clientId}
 		})
 	}
-	componentWillUpdate(props){
-		if (props.data){
-			if (props.data.flight && props.data.simulator && props.data.station){
-				// const location = (`/app/simulator/${props.data.simulator}/station/${props.data.station}/card/0`);
-			}
-		}
-	}
 	render(){
-		console.log(this.props);
-		return <Credits  {...this.props} />;
+		let flight, simulator, station, client = {};
+		if (!this.props.data.loading) {
+			 client = this.props.data.clients[0];
+			flight = client.flight;
+			simulator = client.simulator;
+			station = client.station;
+		}
+		return (<div>
+		{ (flight && simulator && station) ?
+			<CardContainer flight={flight} simulator={simulator} station={station} client={client} />
+			: <Credits  {...this.props} />
+		}
+		</div>);
 	}
 }
 

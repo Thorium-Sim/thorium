@@ -203,5 +203,5 @@ query GetTransporters($simulatorId: ID){
 }
 `;
 export default  graphql(TRANSPORTERS_QUERY, {
-  options: () => ({ variables: { simulatorId: 'test' } }),
+  options: (ownProps) => ({ variables: { simulatorId: ownProps.simulator.id } }),
 })(withApollo(Transporters));

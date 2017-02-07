@@ -109,6 +109,14 @@ body{
 	&:hover .icon{
 		transform: rotate(0deg);
 	}
+	&.logout {
+		.options{
+			display: none;
+		}
+		&:hover .icon {
+			transform: rotate(180deg);
+		}
+	}
 }
 #curve-frame {
 	height: 100vh;

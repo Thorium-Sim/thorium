@@ -232,9 +232,9 @@ class StationsConfig extends Component {
 						</tr>
 						</thead>
 						<tbody>
-						{station.cards.map((card) => {
+						{station.cards.map((card, index) => {
 							return (
-								<tr key={`${this.state.selectedStationConfig}-${station.name}-${card.name}`}>
+								<tr key={`${this.state.selectedStationConfig}-${station.name}-${index}`}>
 								<td><Input type="text" value={card.name} onChange={this._updateStationCard.bind(this, 'name', card, station)} /></td>
 								<td>
 								<Input type="select" value={card.component} onChange={this._updateStationCard.bind(this, 'component', card, station)}>

@@ -58,6 +58,7 @@
     "gsap": "^1.19.0",
     "load-svg": "^1.0.0",
     "mesh-reindex": "^1.0.0",
+    "moment": "^2.17.1",
     "node-sass": "^3.10.1",
     "react": "^15.4.1",
     "react-addons-css-transition-group": "^15.3.2",

@@ -1,5 +1,5 @@
 import React from 'react';
-import guid from './helpers/guid';
+import uuid from 'uuid';
 import App from './containers/App';
 import ApolloClient from 'apollo-client';
 import createNetworkInterface from 'apollo-upload-network-interface'
@@ -14,7 +14,7 @@ const wsClient = new Client('ws://apple.local:3002');
 //Set a clientId for the client
 let clientId = localStorage.getItem('thorium_clientId');
 if (!clientId) {
-  clientId = guid();
+  clientId = uuid.v4();
   //Just to test out the webpack
   localStorage.setItem('thorium_clientId',clientId);
 }
