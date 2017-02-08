@@ -1,9 +1,0 @@
-languages:
-  Ruby: false
-  JavaScript: true
-  PHP: false
-  Python: false
-exclude_paths:
-- "scripts/build.js"
-- "scripts/test.js"
-- "scripts/start.js"
