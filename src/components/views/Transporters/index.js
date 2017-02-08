@@ -30,7 +30,8 @@ subscription TransportersSub{
 
 const TargetSelect = (props) => {
   return (
-    <Col sm={{size:6, offset:3}}>
+    <Row>
+    <Col sm={{size:6, push:3}}>
     <div style={{height: '60px'}} />
     <h3>Enter Target:</h3>
     <Input defaultValue={props.target} onBlur={props.updateTarget} placeholder="Enter Target..." size="lg" />
@@ -38,14 +39,16 @@ const TargetSelect = (props) => {
     <h3>Enter Destination:</h3>
     <Input defaultValue={props.destination} onBlur={props.updateDestination} placeholder="Enter Destination..." size="lg" />
     <div style={{height: '30px'}} />
-    <Col sm={{size: 6, offset: 3}}>
+    <Col sm={{size: 6, push: 3}}>
     <Button block color={'primary'} onClick={props.beginScan}>Begin Scan</Button>
     </Col>
     </Col>
+    </Row>
     );
 }
 const Scanning = (props) => {
   return (
+    <Row>
     <Col sm={{size: 6, offset: 3}}>
     <Scan />
     <h3 style={{textAlign: 'center', width: '100%'}}>Scanning...</h3>
@@ -53,6 +56,7 @@ const Scanning = (props) => {
     <Button block color={'primary'} size="lg" onClick={props.cancelScan}>Cancel Scan</Button>
     </Col>
     </Col>
+    </Row>
     );
 }
 
@@ -166,7 +170,7 @@ class Transporters extends Component {
       transporter = this.props.data.transporters[0] || {};
     }
     return (
-      <Row>
+      <div>
       {
         this.props.data.loading ? "Loading..." :
         <div>
@@ -175,7 +179,7 @@ class Transporters extends Component {
         {(transporter.state === 'Targeting' || transporter.state === 'Charging') && <Target completeTransport={this.completeTransport.bind(this, transporter)} cancelTransport={this.cancelTransport.bind(this, transporter)} setCharge={this.setCharge.bind(this, transporter)} targets={transporter.targets} />}
         </div>
       }
-      </Row>
+      </div>
       );
   }
 }

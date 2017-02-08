@@ -20,18 +20,19 @@ export default class CardFrame extends Component {
     });
   }
   render() {
-    const { simulator, station, flight } = this.props.test ? {
+    const { simulator, station, flight, client} = this.props.test ? {
       simulator: {id: 'test', name: 'Test', alertLevel: '5', layout: 'LayoutCorners'},
       station: {name: 'Test', cards: [
       {id: 'test',
       name:'Test',
       component: (this.props.component || 'Navigation')}
       ]},
-      flight: {}
+      flight: {},
+      client: {loginState: 'login', loginName: 'Test'}
     } : this.props;
     const layoutName = station.layout || simulator.layout || 'LayoutCorners';
     let LayoutComponent = Layouts[layoutName] || Layouts.LayoutDefault;
-    return <LayoutComponent clientObj={this.props.client} flight={flight} simulator={simulator} station={station} cardName={this.state.card} changeCard={this._changeCard.bind(this)} />;
+    return <LayoutComponent clientObj={client} flight={flight} simulator={simulator} station={station} cardName={this.state.card} changeCard={this._changeCard.bind(this)} />;
   }
 }
 

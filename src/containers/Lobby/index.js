@@ -45,6 +45,8 @@ export default class Lobby extends Component {
                 })
             }
             </Nav>
+            </Row>
+            <Row>
             <TabContent activeTab={this.state.activeTab}>
             {
                 Object.keys(Comps).map((Comp, index) => {

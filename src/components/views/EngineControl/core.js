@@ -59,6 +59,7 @@ class EngineCoreView extends Component {
       this.props.data.loading ? <span>"Loading..."</span> :
       <div>
       <p>Engine Control</p>
+      { speedList.length > 0 ?
       <select value={onEngine} onChange={this.updateSpeed.bind(this)}>
       <option>Full Stop</option>
       { 
@@ -67,6 +68,8 @@ class EngineCoreView extends Component {
         }) 
       }
       </select>
+      : "No engines"
+      }
       </div>
       )
   }

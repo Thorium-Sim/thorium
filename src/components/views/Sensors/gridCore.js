@@ -199,7 +199,7 @@ class GridCore extends Component {
       <p>Sensor Grid</p>
       {
         this.props.data.loading ? 'Loading...' : 
-        <Container fluid>
+        (this.props.data.sensors.length > 0 ? <Container fluid>
         <Row>
         <Col sm={8} style={{backgroundColor: 'gray'}}>
         <div className="heightPlaceholder"></div>
@@ -246,7 +246,7 @@ class GridCore extends Component {
         }
         </Col>
         </Row>
-        </Container>
+        </Container> : "No Sensors")
       }
       </div>
       )

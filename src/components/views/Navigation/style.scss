@@ -4,6 +4,9 @@
     padding: 50px;
     top: 90px;
     position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
   .keypadButtons .keypad, .keypadButtons .enter{
     color: #BABABA;
@@ -11,7 +14,7 @@
     padding: none;
     font-size: 36px;
     height: 30%;
-    width: 28%;
+    width: 29%;
     margin: 5px;
     display: inline-block;
     background-color: #233F7A;
@@ -20,12 +23,13 @@
     border-radius: 4px;
     user-select: none;
     -webkit-user-select: none;
+    transition: background-color 0.1s ease-in-out;
   }
   .keypadButtons .keypad:hover, .keypadButtons .enter:hover{
-    background-color: #3259AD;
+    background-color: rgba(200,200,200,0.2);
   }
   .keypadButtons .keypad:active, .keypadButtons .enter:active{
-    background-color: #4D5D80;
+    background-color: rgba(128,128,128,0.2);
   }
   .keypad:before, .keypad:after{
     visibility: hidden;

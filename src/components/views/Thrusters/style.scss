@@ -65,6 +65,7 @@
 		width: 100%;
 		height: 100%;
 		display: inline-block;
+		padding: 0px 20px;
 	}
 	.pointer{
 		width: 4px;
@@ -94,6 +95,7 @@
 			left: 0;
 			right: 0;
 			top: 0;
+			text-align: center;
 		}
 		&.right{
 			right: 0;
@@ -104,6 +106,7 @@
 			left: 0;
 			right: 0;
 			bottom: 0;
+			text-align: center;
 		}
 		&.left{
 			left: 0;
