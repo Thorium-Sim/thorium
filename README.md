@@ -1,8 +1,6 @@
 # Thorium Server
 
 [![Slack Status](https://slack.ralexanderson.com/badge.svg)](https://slack.ralexanderson.com)
-[![Code Climate](https://codeclimate.com/github/Thorium-Sim/thorium-node/badges/gpa.svg)](https://codeclimate.com/github/Thorium-Sim/thorium-node)
-[![Issue Count](https://codeclimate.com/github/Thorium-Sim/thorium-node/badges/issue_count.svg)](https://codeclimate.com/github/Thorium-Sim/thorium-node)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/alexanderson1993/thorium)
 
 A GraphQL endpoint server for Thorium. Built with [Apollo-Server](http://www.apollodata.com/) and ❤ by [Alex Anderson](http://ralexanderson.com).
@@ -65,7 +63,6 @@ If the event store is accessible, the consumers don't even have to be on this se
 ```
 .
 ├── Dockerfile // Dockerized and ready to run in the cloud
-├── LICENSE //MIT Licensed
 ├── README.md
 ├── app.js // Where the magic happens. This is where the event store lives
 ├── data

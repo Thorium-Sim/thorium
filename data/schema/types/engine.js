@@ -16,4 +16,8 @@ type Speed {
   text: String
   number: Float
 }
+input SpeedInput {
+  text: String
+  number: Float
+}
 `;

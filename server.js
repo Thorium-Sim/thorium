@@ -2,15 +2,15 @@ import express from 'express';
 import { createServer } from 'http';
 import bodyParser from 'body-parser';
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
-import { schema, subscriptionManager } from './data/data.js';
-import { SubscriptionServer } from 'subscriptions-transport-ws';
-import { printSchema } from 'graphql/utilities/schemaPrinter';
-import graphqlExpressUpload from 'graphql-server-express-upload';
 import multer from 'multer';
 import cors from 'cors';
 import request from 'request';
 import path from 'path';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
+import { printSchema } from 'graphql/utilities/schemaPrinter';
+import graphqlExpressUpload from 'graphql-server-express-upload';
 
+import { schema, subscriptionManager } from './data/data';
 import './events';
 import './processes/engines';
 import './processes/thrusters';
@@ -32,19 +32,24 @@ const options = {
   endpointURL: '/graphql', // URL for the GraphQL endpoint this instance of GraphiQL serves
 };
 
-const websocketServer = createServer((request, response) => {
+const websocketServer = createServer((req, response) => {
   response.writeHead(404);
   response.end();
 });
 
 // eslint-disable-next-line
 new SubscriptionServer(
-  { subscriptionManager },
-  websocketServer
-  );
+{
+  subscriptionManager,
+},
+{
+  server: websocketServer,
+},
+);
 
 const graphQLServer = express();
 graphQLServer.use(require('express-status-monitor')());
+
 graphQLServer.use('*', cors());
 
 graphQLServer.use('/schema', (req, res) => {
@@ -71,13 +76,14 @@ graphQLServer.use('/assets', (req, res) => {
       return false;
     }
     response.pipe(res);
+    return null;
   });
 });
 
 graphQLServer.listen(GRAPHQL_PORT, () => console.log(
-  `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}/graphql`
+  `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}/graphql`,
   ));
 
 websocketServer.listen(WS_PORT, () => console.log(
-  `Websocket Server is now running on http://localhost:${WS_PORT}`
+  `Websocket Server is now running on http://localhost:${WS_PORT}`,
   ));

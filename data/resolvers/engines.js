@@ -9,6 +9,12 @@ export const EngineQueries = {
 };
 
 export const EngineMutations = {
+  createEngine(root, {}) {
+
+  },
+  removeEngine(root, {}) {
+
+  },
   setSpeed(root, { id, speed, on }) {
     App.handleEvent({ id, speed, on }, 'speedChange', 'speedChanged');
     return '';

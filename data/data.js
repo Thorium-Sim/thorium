@@ -1,7 +1,7 @@
+import { SubscriptionManager } from 'graphql-subscriptions';
+import { makeExecutableSchema } from 'graphql-tools';
 import schemaString from './schema';
 import resolvers from './resolvers';
-import { SubscriptionManager } from 'graphql-subscriptions';
-import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools';
 import { pubsub } from '../helpers/subscriptionManager';
 
 export const schema = makeExecutableSchema({
@@ -29,10 +29,6 @@ const subManager = new SubscriptionManager({
   },
 });
 
-
-
 // addMockFunctionsToSchema({ schema, preserveResolvers: true });
 
 export const subscriptionManager = subManager;
-
-

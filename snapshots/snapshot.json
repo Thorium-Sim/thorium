@@ -1,7 +1,7 @@
 {
-	"snapshotVersion": 21,
-	"timestamp": 1486429813344,
-	"version": 21,
+	"snapshotVersion": 25,
+	"timestamp": 1486514143542,
+	"version": 25,
 	"_eventsCount": 78,
 	"simulators": [
 		{
@@ -38,6 +38,14 @@
 							"type": "event",
 							"event": "changeSimulatorAlertLevel",
 							"args": "{\"alertLevel\":\"3\"}",
+							"delay": 0
+						},
+						{
+							"id": "0c777d75-a654-415f-b32b-68b3cca1ccea",
+							"name": "Add Engines",
+							"type": "event",
+							"event": "createEngine",
+							"args": "{\"name\":\"Impulse Engines\",\"speeds\":[{\"text\":\"1/4 Impulse\",\"number\":0.25},{\"text\":\"1/2 Impulse\",\"number\":0.5},{\"text\":\"3/4 Impulse\",\"number\":0.75},{\"text\":\"Full Impulse\",\"number\":1},{\"text\":\"Destructive Impulse\",\"number\":1.25}]}",
 							"delay": 0
 						}
 					]
@@ -108,7 +116,7 @@
 			"timelineStep": 0,
 			"id": "3e2a6732-37bc-4fc9-b149-f3114290e7dc",
 			"name": "Stormfront : USS Voyager",
-			"layout": "LayoutDefault",
+			"layout": "LayoutCorners",
 			"alertlevel": "p",
 			"template": false,
 			"class": "Simulator",
@@ -167,7 +175,7 @@
 					]
 				}
 			],
-			"timelineStep": 1,
+			"timelineStep": 2,
 			"id": "41c2b4ab-1bb4-40a4-8530-aa9ca8c662c1",
 			"name": "USS Voyager",
 			"layout": "LayoutCorners",
@@ -219,7 +227,7 @@
 					]
 				}
 			],
-			"timelineStep": 0,
+			"timelineStep": -1,
 			"class": "Flight",
 			"id": "3aa01f75-c27e-4dec-888c-987fdeea3670",
 			"name": "Stormfront",

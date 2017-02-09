@@ -1,4 +1,5 @@
 export default `
+#Macro: Add sensors system to simulator TODO: ADD ARGS
 addSensorsArray(simulatorId: ID!): String
 removeSensorsArray(id: ID!): String
 sensorScanRequest(id: ID!, request: String!): String
