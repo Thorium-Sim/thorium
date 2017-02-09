@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Row, Col } from '../../generic';
+import { Row, Col, Container } from 'reactstrap';
 import './style.scss';
 
 class NavigationScanner extends Component {
@@ -65,9 +65,9 @@ class NavigationContent extends Component {
 	}
 	render(){
 		return (
-			<div className="cardNavigation">
+			<Container fluid className="cardNavigation">
 			<Row>
-			<Col className="col-sm-3">
+			<Col sm={3}>
 			<div className="keypadButtons card">
 			<div className="keypad alertBack">7</div>
 			<div className="keypad alertBack">8</div>
@@ -117,7 +117,7 @@ class NavigationContent extends Component {
 			<NavigationScanner scanning={this.state.scanning} />
 			</Col>
 			</Row>
-			</div>);
+			</Container>);
 	}
 }
 

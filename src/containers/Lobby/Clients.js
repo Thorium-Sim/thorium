@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
+import { Button, Col, Row, Container } from 'reactstrap';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import moment from 'moment';
@@ -70,7 +70,7 @@ class Clients extends Component {
   }
   render() {
     console.log('PROPS:',this.props.data);
-    return (<div>
+    return (<Container><Row className="justify-content-md-center"><Col xs="12">
       <h4>Clients</h4>
       <table className="table table-striped table-hover table-sm">
       <thead>
@@ -130,7 +130,7 @@ class Clients extends Component {
         : <tr></tr> }
         </tbody>
         </table>
-        </div>)
+        </Col></Row></Container>)
   }
 }
 

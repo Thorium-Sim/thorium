@@ -3,13 +3,14 @@ import uuid from 'uuid';
 import App from './containers/App';
 import ApolloClient from 'apollo-client';
 import createNetworkInterface from 'apollo-upload-network-interface'
-import { Client } from 'subscriptions-transport-ws';
+import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 import { addTypenameToSelectionSet } from 'apollo-client/queries/queryTransform';
-import addGraphQLSubscriptions from './helpers/subscriptions.js';
 import { ApolloProvider } from 'react-apollo';
 import './app.scss';
 
-const wsClient = new Client('ws://apple.local:3002');
+const wsClient = new SubscriptionClient('ws://apple.local:3002', {
+  reconnect: true,
+});
 
 //Set a clientId for the client
 let clientId = localStorage.getItem('thorium_clientId');

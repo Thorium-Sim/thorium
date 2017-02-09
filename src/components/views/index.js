@@ -1,6 +1,6 @@
 import ShortRangeComm from './ShortRangeComm';
 import LongRangeComm from './LongRangeComm';
-import AdminStations from './AdminStations';
+//import AdminStations from './AdminStations';
 import EngineControl from './EngineControl';
 import Thrusters from './Thrusters';
 import Navigation from './Navigation';
@@ -14,7 +14,7 @@ import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
 import SensorsGridCore from './Sensors/gridCore';
 import SensorsCore from './Sensors/core';
-const Views = {Login, ShortRangeComm,LongRangeComm,AdminStations,AdminAssets,Thrusters,EngineControl,Navigation,Sensors, ShieldControl, Transporters};
+const Views = {Login, ShortRangeComm,LongRangeComm,AdminAssets,Thrusters,EngineControl,Navigation,Sensors, ShieldControl, Transporters};
 
 export const Cores = {EngineControlCore, TransporterCore, SensorsGridCore, SensorsCore};
 

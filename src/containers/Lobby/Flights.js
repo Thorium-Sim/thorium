@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { Row, Col, Button } from 'reactstrap';
+import { Row, Col, Button, Container } from 'reactstrap';
 import MissionModal from './MissionModal';
 
 const FLIGHT_SUB = gql`subscription FlightsChanged {
@@ -49,7 +49,7 @@ class Flights extends Component {
     });
   }
   render() {
-    return (<div>
+    return (<Container>
       <h4>Flights
       <Button color="success" size="sm" onClick={this.toggle}>Create Flight</Button></h4>
       {this.props.data.loading || !this.props.data.flights ? <h4>Loading...</h4>
@@ -85,7 +85,7 @@ class Flights extends Component {
         />
         : <span />
       }
-      </div>);
+      </Container>);
   }
 }
 

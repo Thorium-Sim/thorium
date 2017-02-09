@@ -17,7 +17,7 @@ class ConfigView extends Component {
 	render(){
 		const ConfigComponent = (this.state.selectedConfigObject ? Configs[`${this.state.selectedConfigObject}Config`] : "div") || "div";
 		return (
-			<Container className="ConfigView" fluid>
+			<Container className="ConfigView">
 			<Row>
 			{this.state.selectedConfigObject ?
 				<Col sm="12">

@@ -4,7 +4,7 @@ import { fromTo } from 'gsap';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
 import {DraggableCore} from 'react-draggable';
-import { Button, Row, Col } from '../../generic';
+import { Button, Row, Col } from 'reactstrap';
 import ThrusterThree from './three';
 import distance from '../../../helpers/distance';
 import Measure from 'react-measure';
@@ -25,7 +25,7 @@ subscription RotationChanged{
 
 const IndicatorCircle = (props) => {
  return  (
-  <Col className="col-sm-4">
+  <Col sm={4}>
   <div className="indicatorContainer">
   <div className="spacer"></div>
   <div className="rotationIndicator yaw">
@@ -304,7 +304,7 @@ gamepadLoop(){
      <Measure>
      { dimensions => (
       <div id="threeThruster" style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
-      {(() => console.log(dimensions) /*This is apparently necessary*/)()} // eslint-disable-next-line no-console
+      {(() => console.log(dimensions) /*This is apparently necessary*/)()}
       {dimensions.width > 0 &&
         <ThrusterThree dimensions={dimensions} direction={direction} rotation={thruster.rotation} /> 
       }
@@ -352,9 +352,11 @@ gamepadLoop(){
     <Row>
     {!this.props.data.loading && (
       <div className="col-sm-6 offset-sm-3">
+      <Row>
       <IndicatorCircle name={`Yaw: ${Math.round(thruster.rotation.yaw)}`} required={thruster.rotationRequired.yaw} current={thruster.rotation.yaw} />
       <IndicatorCircle name={`Pitch: ${Math.round(thruster.rotation.pitch)}`} required={thruster.rotationRequired.pitch} current={thruster.rotation.pitch} />
       <IndicatorCircle name={`Roll: ${Math.round(thruster.rotation.roll)}`} required={thruster.rotationRequired.roll} current={thruster.rotation.roll} />
+      </Row>
       </div>
       )}
     </Row>

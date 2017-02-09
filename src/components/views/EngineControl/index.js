@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Button, Row, Col } from 'reactstrap';
+import { Button, Row, Col, Container } from 'reactstrap';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
 import './style.scss';
@@ -82,7 +82,7 @@ class EngineControl extends Component {
 	render(){
 		const engines = this.props.data.engines || [];
 		return (
-			<div className="EngineControl">
+			<Container fluid className="EngineControl">
 			<Row>
 			<Col className="col-sm-12 enginesBar">
 			{(() => {
@@ -113,12 +113,12 @@ class EngineControl extends Component {
 
 			</Row>
 			<Row>
-			<Col className="col-sm-12">
+			<Col>
 			{(() => {
 				if (engines.length === 1){
 					return (
 						<div>
-						<Col className="col-sm-4">
+						<Col>
 						{engines[0].speeds.map((speed, speedIndex) => {
 							let speedWord = speed;
 							if (typeof speed === "object"){
@@ -127,15 +127,15 @@ class EngineControl extends Component {
 							return <Button key={`${speed.text}-${speedIndex}`} block color="primary" className="speedBtn">{speedWord}</Button>;
 						})}
 						</Col>
-						<Col className="col-sm-2">
-						<Col className="col-sm-6">
+						<Col>
+						<Col>
 						<HeatBar label="Heat" background="linear-gradient(to bottom, #440000 0%,#ff0000 50%,#440000 100%)" level={engines[0].heat}/>
 						</Col>
-						<Col className="col-sm-6">
+						<Col>
 						<HeatBar label="Coolant" background="linear-gradient(to bottom, #004400 0%,#00ff00 50%,#004400 100%)" level={engines[0].coolant}/>
 						</Col>
 						</Col>
-						<Col className="col-sm-6">
+						<Col>
 
 						</Col>
 						</div>
@@ -143,8 +143,8 @@ class EngineControl extends Component {
 				}
 				if (engines.length === 2){
 					return (
-						<div>
-						<Col className="col-sm-2">
+						<Row>
+						<Col>
 						{engines[0].speeds.map((speed, speedIndex) => {
 							let speedWord = speed;
 							if (typeof speed === "object"){
@@ -153,26 +153,30 @@ class EngineControl extends Component {
 							return <Button key={`speed-${speedIndex}`} color="primary" block className="speedBtn" onClick={() => {this.setSpeed(engines[0],speedIndex,engines,0);}}>{speedWord}</Button>;
 						})}
 						</Col>
-						<Col className="col-sm-2">
-						<Col className="col-sm-6">
+						<Col sm={2}>
+						<Row>
+						<Col sm={6}>
 						<HeatBar label="Heat" background="linear-gradient(to bottom, #440000 0%,#ff0000 50%,#440000 100%)" level={engines[0].heat}/>
 						</Col>
-						<Col className="col-sm-6">
+						<Col sm={6}>
 						<HeatBar label="Coolant" background="linear-gradient(to bottom, #004400 0%,#00ff00 50%,#004400 100%)" level={engines[0].coolant}/>
 						</Col>
+						</Row>
 						</Col>
-						<Col className="col-sm-4">
+						<Col>
 
 						</Col>
-						<Col className="col-sm-2">
-						<Col className="col-sm-6">
+						<Col sm={2}>
+						<Row>
+						<Col sm={6}>
 						<HeatBar label="Heat" background="linear-gradient(to bottom, #440000 0%,#ff0000 50%,#440000 100%)" level={engines[1].heat}/>
 						</Col>
-						<Col className="col-sm-6">
+						<Col sm={6}>
 						<HeatBar label="Coolant" background="linear-gradient(to bottom, #004400 0%,#00ff00 50%,#004400 100%)" level={engines[1].coolant}/>
 						</Col>
+						</Row>
 						</Col>
-						<Col className="col-sm-2">
+						<Col>
 						{engines[1].speeds.map((speed, speedIndex) => {
 							let speedWord = speed;
 							if (typeof speed === "object"){
@@ -181,13 +185,13 @@ class EngineControl extends Component {
 							return <Button key={`speed-${speedIndex}`} color="primary" block className="speedBtn" onClick={() => {this.setSpeed(engines[1],speedIndex,engines,1);}}>{speedWord}</Button>;
 						})}
 						</Col>
-						</div>
+						</Row>
 						);
 				}
 			})()}
 			</Col>
 			</Row>
-			</div>
+			</Container>
 			);
 	}
 }
