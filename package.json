@@ -1,7 +1,7 @@
 {
-  "name": "apollo-starter-kit",
+  "name": "thorium-node",
   "version": "0.1.0",
-  "description": "Minimal set of code to write a GraphQL server with Apollo graphql-tools",
+  "description": "GraphQL Backend for Thorium simulator controls",
   "scripts": {
     "start": "nodemon ./server.js -e js,graphql --ignore snapshots/ --exec babel-node",
     "debug": "nodemon --debug ./server.js --exec babel-node",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/apollostack/apollo-starter-kit.git"
+    "url": "git+https://github.com/Thorium-Sim/thorium-node.git"
   },
   "keywords": [
     "Node.js",
@@ -20,12 +20,12 @@
     "Apollo",
     "Meteor"
   ],
-  "author": "Jonas Helfer <jonas@helfer.email>",
-  "license": "MIT",
+  "author": "Alex Anderson <alexanderson1993@gmail.com>",
+  "license": "Unlicensed",
   "bugs": {
-    "url": "https://github.com/apollostack/apollo-starter-kit/issues"
+    "url": "https://github.com/Thorium-Sim/thorium-node/issues"
   },
-  "homepage": "https://github.com/apollostack/apollo-starter-kit#readme",
+  "homepage": "https://github.com/Thorium-Sim/thorium-node#readme",
   "devDependencies": {
     "babel-cli": "^6.5.1",
     "babel-core": "^6.5.2",
