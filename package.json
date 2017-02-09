@@ -2,6 +2,17 @@
   "name": "thorium-react",
   "version": "0.1.0",
   "private": true,
+  "description": "React + Apollo Client Front End for Thorium simulator controls",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Thorium-Sim/thorium-react.git"
+  },
+  "author": "Alex Anderson <alexanderson1993@gmail.com>",
+  "license": "Unlicensed",
+  "bugs": {
+    "url": "https://github.com/Thorium-Sim/thorium-react/issues"
+  },
+  "homepage": "https://github.com/Thorium-Sim/thorium-react#readme",
   "devDependencies": {
     "babel-core": "^6.22.1",
     "babel-eslint": "^7.1.1",
