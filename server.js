@@ -60,7 +60,7 @@ graphQLServer.use('/schema', (req, res) => {
 graphQLServer.use('/graphql',
   upload.array('files'),
   graphqlExpressUpload({ endpointURL: '/graphql' }),
-  bodyParser.json(),
+  bodyParser.json({ limit: '1mb' }),
   graphqlExpress(GraphQLOptions));
 
 graphQLServer.use('/graphiql', graphiqlExpress(options));

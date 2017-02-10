@@ -10,13 +10,15 @@ export default class Flight extends TimelineObject {
     this.date = params.date || Date.now();
     this.mission = params.mission || null;
     this.simulators = [];
-    if (params.simulators.length) {
-      params.simulators.forEach(s => {
-        this.simulators.push(new FlightSimulator({
-          simulatorId: s.id,
-          stationSet: s.stationSet,
-        }));
-      });
+    if(params.simulators){
+      if (params.simulators.length) {
+        params.simulators.forEach(s => {
+          this.simulators.push(new FlightSimulator({
+            simulatorId: s.id,
+            stationSet: s.stationSet,
+          }));
+        });
+      }
     }
   }
   addSimulator(simulator, stationSet) {

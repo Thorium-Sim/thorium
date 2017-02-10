@@ -78,7 +78,7 @@ App.on('startedFlight', ({ missionId, simulators }) => {
 
 // Simulator
 App.on('createdSimulator', ({ name, template, flightId, timeline, stationSet }) => {
-  const simulator = new Classes.Simulator({ name, template, timeline });
+  const simulator = new Classes.Simulator({ name, template, timeline, launch: true });
   if (flightId) {
     const flight = App.flights.find(f => f.id === flightId);
     flight.addSimulator(simulator, stationSet);

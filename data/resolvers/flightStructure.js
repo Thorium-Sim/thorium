@@ -1,4 +1,4 @@
-import App from '../../app.js';
+import App from '../../app';
 
 export const FlightStructureQueries = {
   simulators: (root, { template, id }) => {
@@ -144,12 +144,20 @@ export const FlightStructureSubscriptions = {
 };
 
 export const FlightStructureTypes = {
+  Simulator: {
+    decks(rootValue) {
+      return App.decks.filter(d => d.simulatorId === rootValue.id);
+    },
+    rooms(rootValue) {
+      return App.rooms.filter(r => r.simulatorId === rootValue.id);
+    },
+  },
   Flight: {
     mission(rootValue) {
       return App.missions.find(m => m.id === rootValue.mission);
     },
     simulators(rootValue) {
-      return rootValue.simulators.map(s => {
+      return rootValue.simulators.map((s) => {
         const simulator = App.simulators.find(sId => sId.id === s.id);
         simulator.stations = App.stationSets.find(sId => sId.id === s.stationSet).stations;
         return simulator;
@@ -161,7 +169,7 @@ export const FlightStructureTypes = {
       return rootValue.simulators.map(sId => App.simulators.find(s => s.id === sId));
     },
     timeline(rootValue) {
-      return Object.keys(rootValue.timeline).sort().map(k => {
+      return Object.keys(rootValue.timeline).sort().map((k) => {
         const value = rootValue.timeline[k];
         value.order = k;
         return value;

@@ -7,3 +7,4 @@ export coreLayout from './coreLayout';
 export sensors from './sensors';
 export clients from './clients';
 export flightStructure from './flightStructure';
+export shipStructure from './shipStructure';

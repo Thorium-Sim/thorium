@@ -7,3 +7,4 @@ export transporters from './transporters';
 export coreLayout from './coreLayout';
 export sensors from './sensors';
 export flightStructure from './flightStructure';
+export shipStructure from './shipStructure';

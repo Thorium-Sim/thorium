@@ -7,11 +7,12 @@ import { AssetsQueries, AssetsMutations, AssetsSubscriptions, AssetsTypes } from
 import { TransporterQueries, TransporterMutations, TransporterSubscriptions } from './transporters';
 import { CoreLayoutQueries, CoreLayoutMutations, CoreLayoutSubscriptions } from './coreLayouts';
 import { SensorsQueries, SensorsMutations, SensorsSubscriptions, SensorsTypes } from './sensors';
+import { ShipStructureQueries, ShipStructureMutations, ShipStructureSubscriptions, ShipStructureTypes } from './shipStructure';
 import App from '../../app';
 
 function parseJSONLiteral(ast) {
   console.log(ast);
-  /*switch (ast.kind) {
+  /* switch (ast.kind) {
     case Kind.STRING:
     case Kind.BOOLEAN:
       return ast.value;
@@ -41,7 +42,8 @@ function parseJSONLiteral(ast) {
     AssetsQueries,
     TransporterQueries,
     CoreLayoutQueries,
-    SensorsQueries
+    SensorsQueries,
+    ShipStructureQueries,
     );
 
   export const mutationMap = Object.assign({
@@ -57,7 +59,8 @@ function parseJSONLiteral(ast) {
     AssetsMutations,
     TransporterMutations,
     CoreLayoutMutations,
-    SensorsMutations
+    SensorsMutations,
+    ShipStructureMutations,
     );
 
   const subscriptionMap = Object.assign({},
@@ -69,7 +72,8 @@ function parseJSONLiteral(ast) {
     AssetsSubscriptions,
     TransporterSubscriptions,
     CoreLayoutSubscriptions,
-    SensorsSubscriptions
+    SensorsSubscriptions,
+    ShipStructureSubscriptions,
     );
 
   export default Object.assign({
@@ -84,4 +88,6 @@ function parseJSONLiteral(ast) {
   }, AssetsTypes,
   SensorsTypes,
   FlightStructureTypes,
-  ClientTypes);
+  ClientTypes,
+  ShipStructureTypes,
+  );

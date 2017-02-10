@@ -6,3 +6,4 @@ import './sensors';
 import './transporters';
 import './clients';
 import './flightStructure';
+import './shipStructure';

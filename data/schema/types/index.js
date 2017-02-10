@@ -10,6 +10,7 @@ export sensors from './sensors';
 export clients from './clients';
 export flightStructure from './flightStructure';
 export timeline from './timeline';
+export shipStructure from './shipStructure';
 
 export const role = `
 type role {

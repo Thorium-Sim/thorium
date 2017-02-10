@@ -12,7 +12,9 @@ export default class Simulator extends TimelineObject {
     this.class = 'Simulator';
     this.crewCount = params.crewCount || 50;
     // Initialize the simulator async
-    setTimeout(() => {this.nextTimeline();}, 100);
+    if (params.launch) {
+      setTimeout(() => { this.nextTimeline(); }, 100);
+    }
   }
   rename(name) {
     this.name = name;

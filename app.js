@@ -12,6 +12,9 @@ class Events extends Entity {
     this.missions = [];
     this.systems = [];
     this.clients = [];
+    this.decks = [];
+    this.rooms = [];
+    this.crew = [];
     this.coreLayouts = [];
     this.assetFolders = [];
     this.assetContainers = [];
@@ -25,13 +28,13 @@ class Events extends Entity {
   merge(snapshot) {
     // Initialize the snapshot with the object constructors
     Object.keys(snapshot)
-    .forEach(key => {
+    .forEach((key) => {
       if (key === 'snapshotVersion' ||
         key === 'timestamp' ||
         key === 'version' ||
         key === '_eventsCount') return;
         if (snapshot[key] instanceof Array) {
-          snapshot[key].forEach(obj => {
+          snapshot[key].forEach((obj) => {
             this[key].push(new Classes[obj.class](obj));
           });
         }
@@ -41,7 +44,7 @@ class Events extends Entity {
     const snapshot = super.snapshot();
     // Todo: give it a timestamp
     if (save) {
-      writeFile('./snapshots/snapshot.json', snapshot, (err) => {console.log(err);});
+      writeFile('./snapshots/snapshot.json', snapshot, (err) => { console.log(err); });
     }
     return snapshot;
   }

@@ -32,6 +32,8 @@ type Simulator {
   timelineStep: Int
   stations: [Station]
   timeline: [TimelineStep]
+  decks: [Deck]
+  rooms: [Room]
 }
 
 type TemplateSimulator {
