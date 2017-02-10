@@ -140,9 +140,9 @@ class MissionsConfig extends Component {
 
   }
   render(){
-    return <Row>
+    return <div>
     {this.props.data.loading ? <p>Loading...</p> :
-      <div>
+      <Row>
       <Col sm="2">
       <h5>Missions Config</h5>
       <Card className="scroll">
@@ -209,9 +209,9 @@ class MissionsConfig extends Component {
           })()}
           </Col>
         }
-        </div>
+        </Row>
       }
-      </Row>;
+      </div>;
     }
   }
 

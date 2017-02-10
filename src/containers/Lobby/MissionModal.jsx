@@ -110,11 +110,10 @@ class MissionModalView extends Component {
       </table>
       </Col>
       </Row>
-      <Row>
       {
         this.state.selectedMission.id ? this.state.selectedMission.simulators.map((e, index) => {
           return (
-            <div key={e.id}>
+            <Row key={e.id}>
             <Col sm="4">
             <small>{e.name}</small>
             </Col>
@@ -146,13 +145,12 @@ class MissionModalView extends Component {
               }}/>
             }
             </Col>
-            </div>
+            </Row>
             );
         })
         : 
         <div/>
       }
-      </Row>
       </ModalBody>
       <ModalFooter>
       <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
