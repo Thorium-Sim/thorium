@@ -3,6 +3,7 @@ import uuid from 'uuid';
 export class Deck {
   constructor(params) {
     this.id = params.id || uuid.v4();
+    this.class = 'Deck';
     this.simulatorId = params.simulatorId || null;
     this.number = params.number || 1;
     this.svgPath = params.svgPath || '';
@@ -27,6 +28,7 @@ export class Deck {
 export class Room {
   constructor(params) {
     if (!params.deck) return false;
+    this.class = 'Room';
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId || null;
     this.deck = params.deck;
