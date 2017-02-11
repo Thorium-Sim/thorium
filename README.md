@@ -1,7 +1,7 @@
 ![Thorium](github-banner.png)
 
 [![Slack Status](https://slack.ralexanderson.com/badge.svg)](https://slack.ralexanderson.com)
-[![See the feature roadmap at https://huboard.com/alexanderson1993/thorium/](https://img.shields.io/badge/roadmap-On HuBoard-blue.svg)](https://huboard.com/alexanderson1993/thorium/)
+[![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/alexanderson1993/thorium)
 
 *New here? Check out the [Wiki](https://github.com/alexanderson1993/thorium/wiki) and the [Presentation](http://class.ralexanderson.com/thorium/)*
 
@@ -13,7 +13,6 @@ Thorium is built with the following technologies:
 * [React](https://facebook.github.io/react/) for the frontend
 * [Apollo Client](http://www.apollostack.com/) for the data layer
 * [GraphQL](http://graphql.org) for the transmission layer
-* [Phoenix Framework](http://phoenixframework.org/) for the server
 * [RethinkDB](https://www.rethinkdb.com/) for the database
 
 ## What is Thorium?
@@ -37,94 +36,84 @@ And more. The above merely scratches the surface.
 
 Thorium is flexible enough to provide a system for creating an integrated, distributed, fault-tolerant show-control system that can power lights, sound, video, and take input and provide output to a wide variety of devices.
 
+Created with ❤ by [Alex Anderson](http://ralexanderson.com).
+
 ## Getting Started
 
-### The Semi-Easy Way
-
-### 1. Install Docker [https://www.docker.com](https://www.docker.com) and Docker-Compose [https://docs.docker.com/compose/](https://docs.docker.com/compose/)
-
-### 2. Clone this repository
-```
-git clone https://github.com/alexanderson1993/thorium.git
-cd thorium
-```
-### 3. Make sure that your database connection is set up to link with the docker container
-```
- ### Edit this line in ./lib/thorium.ex so the host is 'rethink'
- # Here you could define other workers and supervisors as children
-      worker(DB, [[host: "rethink", port: 28015]]),
-      worker(Store, []),
-      worker(ClientStore, []),
-```
-
-### 4. Run 'docker-compose up'
-
-### 5. Pray that it actually works
-
-### The harder but more reliable method (Only tested on MacOS. Might work on Linux)
-
-### 1. Install Phoenix Framework (with NodeJS, NPM, and Elixir), and RethinkDB
-Follow the following instructions
-
-1. Phoenix Framework (http://www.phoenixframework.org/docs/installation)
-
-*Don't worry about installing Postgres. You just need NodeJS, NPM, and Elixir*
-
-2. RethinkDB (https://www.rethinkdb.com/docs/install/)
-
-3. That's it!
-
-### 2. Clone this repository
-```
-git clone https://github.com/alexanderson1993/thorium.git
-cd thorium
-```
-
-### 3. Download dependencies
-```
-mix deps.get
-#Grab npm dependencies
+```sh
 npm install
+npm run start
 ```
 
-### 4. Start RethinkDB from the Thorium folder
-```
-rethinkdb
-# alternatively, you could use a docker container. On MacOS the docker container is faster.
-docker run -d -P -p 8080:8080 -p 28015:28015 -p 29015:29015 --name rethink rethinkdb
-```
+Then open [http://localhost:3001/graphiql](http://localhost:3001/graphiql)
 
-### 5. Start the Phoenix framework
-```
-mix phoenix.server
-```
+## Event Sourcing
 
-That should be all you need. Navigate to http://localhost:4000 to see the site. You should be able to access GraphiQL at http://localhost:4000/graphiql
+Thorium Server is built on an event sourcing model coupled with CQRS. GraphQL serves this purpose well. Queries are normal GraphQL queries. Commands are mutations which return an empty string. When a command is fired, it dispatches an event which is stored in an event store. Event consumers detect the new event and trigger based on that event.
 
-Eventually, Rethink will get started with the Phoenix server, but not yet. (It does get started if you use the Docker method)
+If the event store is accessible, the consumers don't even have to be on this server - they can be any number of microprocesses across any number of computers and environments. 
+
+```
+               +------------+
+               |            |
+               |   Client   |
+               |            |
+               +-----+------+
+                     |
+                     |
+                     |
+              +------+-----+
+              |            |
+              |  Mutation  |
+              |            |
+              +-----+------+
+                    |
+                    |
+                    |
+              +-----v------+
+              |            |
+              |  Event     |
+              |  Emitter   |
+        +-----+------+-----+--------+
+        |            |              |
+        |            |              |
++-------v---+ +------v-----+  +-----v------+
+|           | |            |  |            |
+| Event     ^ |  Event     |  |  Event     |
+| Consumers | |  Consumers |  |  Consumers |
++-----+-----+ +-----+------+  +------+-----+
+      |             |                |
+      |             |                |
++-----v-----+ +-----v------+  +------v-----+
+| Update    | |               |  Trigger   |
+| Database  | |Fire        |  |  Effect    |
+|           | |Subscription|  |            |
++-----------+ +------------+  +------------+
+```
 
 ## Folder Structure
 
 ```
-web
-├─README.md
-│
-├─config ── Phoenix configuration files.
-│
-├─deps ── Elixir dependencies, installed with `mix deps.get`. Don't edit, but useful for referencing specific deps.
-│
-├─lib ── Base modules for the app, including the endpoint, database setup, and supervisor/worker initialization
-│
-├─node_modules ── Modules downloaded and installed from NPM with `npm install`. Add new modules from npmjs.com with `npm install --save ***moduleName***` Don't edit, but useful for referencing specific packages
-│
-├─test ── Elixir tests. I'll eventually implement these, but not yet.
-│
-├─web ── See folder README
-│
-├─mix.exs ── Project initialization and information.
-│
-├─package.json ── NPM package list and information. Don't edit by hand - use `npm install --save ***package***`, unless you are removing a package.
-│
-└─webpack.config.js ── Client-side module bundler. You probably don't want to mess with this.
-
+.
+├── Dockerfile // Dockerized and ready to run in the cloud
+├── README.md
+├── app.js // Where the magic happens. This is where the event store lives
+├── data
+│   ├── classes // Object classes for all of the major parts of the simulator. Systems have their own class. When writing classes, be sure to include a 'class' propterty so the snapshot restore knows what class to instantiate data with
+│   ├── data.js //Brings the schema and resovlers together
+│   ├── resolvers //Resolver functions, split out. A template is available. Be sure to combine any new resolvers in the 'index.js' file
+│   └── schema //GraphQL schema, split out.
+│       ├── index.js //Combine any schemata together here
+│       ├── mutations //Mutations schema. Mutations should follow a command structure, in that they only return an empty string.
+│       ├── queries //Queries schema
+│       ├── subscriptions //Subscription schema
+│       └── types //Types schema
+├── docker-compose.yml // Compose this together someday?
+├── helpers // Helper functions and files
+├── package.json
+├── processes // Recurrently running processes
+├── secrets.js // Secrets file, not checked into git
+├── server.js // Sets up and runs the server based on the schema supplied by 'data.js'
+├── snapshots // File stored snapshots here
+└── yarn.lock
 ```
