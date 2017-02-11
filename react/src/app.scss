@@ -1,0 +1,17 @@
+@import "~bootstrap/scss/bootstrap.scss";
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css");
+
+.cardContainer.container{
+  max-width: 100%;
+}
+
+.clickable:hover {
+  cursor: pointer;
+}
+* {
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}

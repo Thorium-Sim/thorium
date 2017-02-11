@@ -1,0 +1,14 @@
+.loginCard {
+  padding-top: 100px;
+  h1, h2{
+    width: 100%;
+    text-align: center;
+  }
+  input{
+    width: 100%;
+  }
+  img {
+    margin-bottom: 70px;
+    filter: drop-shadow(16px 16px 10px rgba(0,0,0,0.6))
+  }
+}

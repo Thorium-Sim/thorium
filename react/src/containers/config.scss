@@ -1,0 +1,15 @@
+.ConfigView{
+	.list-group-item:hover{
+		background-color: #eee;
+	}
+	.list-group-item.selected{
+		background-color: #ddd;
+	}
+	.scroll{
+		max-height: 70vh;
+		overflow-y: scroll;
+	}
+	.slider{
+		width: 100%;
+	}
+}

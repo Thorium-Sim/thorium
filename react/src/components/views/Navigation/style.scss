@@ -1,0 +1,130 @@
+.cardNavigation{
+  .keypadButtons{
+    text-align: center;
+    padding: 50px;
+    top: 90px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .keypadButtons .keypad, .keypadButtons .enter{
+    color: #BABABA;
+    position: static;
+    padding: none;
+    font-size: 36px;
+    height: 30%;
+    width: 29%;
+    margin: 5px;
+    display: inline-block;
+    background-color: #233F7A;
+    border: 2px solid #545555;
+    box-shadow: inset 0px 0px 30px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: background-color 0.1s ease-in-out;
+  }
+  .keypadButtons .keypad:hover, .keypadButtons .enter:hover{
+    background-color: rgba(200,200,200,0.2);
+  }
+  .keypadButtons .keypad:active, .keypadButtons .enter:active{
+    background-color: rgba(128,128,128,0.2);
+  }
+  .keypad:before, .keypad:after{
+    visibility: hidden;
+  }
+  .keypadButtons .enter{
+    width: 95%;
+  }
+  .calculatedCourse, .currentCourse{
+    margin-top: 70px;
+    padding: 10px;
+  }
+  .currentCourse{
+    position:relative;
+    top: 80px;
+    font-size: 20px;
+    .row{
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    .col-sm-3{
+      text-align: center;
+    }
+    .numBox{
+      background-color: #333;
+      border: solid 1px #454545;
+      border-radius: 4px;
+      color: #fff;
+      height: 36px;
+    }
+  }
+  .starsBox{
+    height: 60vh;
+    position: relative;
+    top: 30px;
+    border: 1px solid #9C9DA0;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 0.25rem;
+    background-image: url(/js/images/stars.png);
+    position: relative;
+    transition: background-position 5s linear;
+    overflow: hidden;
+    .barVert{
+      width: 3px;
+      height: 100%;
+      background-color: gray;
+      position: absolute;
+      top: 0px;
+      left: 200px;
+      transition: left 5s linear;
+    }
+    .barHoriz{
+      height: 3px;
+      width: 100%;
+      background-color: gray;
+      position: absolute;
+      top: 200px;
+      left: 0px;
+      transition: top 5s linear;
+    }
+    .crosshair{
+      width: 40px;
+      height: 40px;
+      left: calc(200px - 18px);
+      top: calc(200px - 18px);
+      position: absolute;
+      transition: left 5s linear, top 5s linear;
+      div{
+        width: 40%;
+        height: 40%;
+        position: absolute;
+        &:nth-child(1){
+          border-top: solid 3px gray;
+          border-right: solid 3px gray;
+          right: 0;
+          top: 0;
+        }
+        &:nth-child(2){
+          border-top: solid 3px gray;
+          border-left: solid 3px gray;
+          left: 0;
+          top: 0;
+        }
+        &:nth-child(3){
+          border-bottom: solid 3px gray;
+          border-left: solid 3px gray;
+          left: 0;
+          bottom: 0;
+        }
+        &:nth-child(4){
+          border-bottom: solid 3px gray;
+          border-right: solid 3px gray;
+          right: 0;
+          bottom: 0;
+        }
+      }
+    }
+  }
+}
