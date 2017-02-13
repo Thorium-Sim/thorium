@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import LayoutList from '../../layouts';
-import { FormGroup, Label, Input, Card, CardBlock } from 'reactstrap';
+import { Button, FormGroup, Label, Input, Card, CardBlock } from 'reactstrap';
 import gql from 'graphql-tag';
+import FontAwesome from 'react-fontawesome';
+import LayoutList from '../../layouts';
 
 export default class ArgItem extends Component {
   constructor(props){
@@ -30,6 +31,21 @@ export default class ArgItem extends Component {
   }
   _handleArg(e){
     this.props.handleArg(e.target.value);
+  }
+  _handleArrayObj(key, i, e){
+    const arr = [].concat(this.props.arg.argument);
+    arr[i][key] = e.target.value;
+    this.props.handleArg(arr);
+  }
+  _removeArgItem(i){
+    const arr = [].concat(this.props.arg.argument);
+    arr.splice(0,i);
+    this.props.handleArg(arr);
+  }
+  _addArgItem(){
+    const arr = [].concat(this.props.arg.argument);
+    arr.push(this.props.arg.object);
+    this.props.handleArg(arr);
   }
   render(){
     const arg = this.props.arg;
@@ -85,22 +101,31 @@ export default class ArgItem extends Component {
         <Input type="text" value={arg.argument} onChange={this._handleArg.bind(this)} />
         </FormGroup>
         );
+      case "number":
+      return (
+        <FormGroup>
+        <Label>{arg.content}</Label>
+        <Input type="number" value={arg.argument} onChange={this._handleArg.bind(this)} />
+        </FormGroup>
+        );
       case "objectarray":
       arg.argument = arg.argument || [];
       return (
         <div>
         <label>{arg.content}</label>
-        {arg.argument.map(a => 
+        {arg.argument.map((a, i) => 
           <Card>
           <CardBlock>
-          {Object.keys(arg.object).map(key => (
+          <FontAwesome name="ban" className="text-danger" onClick={this._removeArgItem.bind(this, i)} />
+          {Object.keys(arg.object).map((key) => (
             <FormGroup>
             <Label>{key}</Label>
-            <Input type="text" value={a[key]} onChange={this._handleArg.bind(this)} />
+            <Input type="text" value={a[key]} onChange={this._handleArrayObj.bind(this, key, i)} />
             </FormGroup>
             ))}
           </CardBlock>
           </Card>)}
+        <Button color="success" onClick={this._addArgItem.bind(this)}>Add Item</Button>
         </div>
         );
       default:

@@ -246,7 +246,7 @@ export default class TimelineConfig extends Component {
   render() {
     const {object} = this.props;
     return <Row>
-    <Col sm="6" style={ { maxHeight: '27vh' } }>
+    <Col sm="3" style={ { maxHeight: '27vh' } }>
     <h4>Timeline</h4>
     <Card className="scroll" style={{ maxHeight: '20vh'}}>
     <SortableList 
@@ -262,7 +262,7 @@ export default class TimelineConfig extends Component {
     </Card>
     </Col>
     { this.state.selectedTimelineStep &&
-     <Col sm="6" style={ { maxHeight: '27vh' } }>
+     <Col sm="3" style={ { maxHeight: '27vh' } }>
      <h4>{ object.timeline.find(e => e.id === this.state.selectedTimelineStep).name }</h4>
      <Card className="scroll">
      <li onClick={this._setSelectedTimelineItem.bind(this, {id: 'step'})} className={ `${('step' === this.state.selectedTimelineItem) ? 'selected' : ''} list-group-item` }>Edit Step</li>
@@ -277,7 +277,7 @@ export default class TimelineConfig extends Component {
      { (() => {
        if (this.state.selectedTimelineItem === 'step') {
         const step = object.timeline.find(e => e.id === this.state.selectedTimelineStep)
-        return (<Col sm="12">
+        return (<Col sm="6">
          <FormGroup>
          <Label>Step Name</Label>
          <Input type="text" value={ step.name } onChange={ this._updateStep.bind(this, 'name') } />
@@ -291,9 +291,9 @@ export default class TimelineConfig extends Component {
       } else if (this.state.selectedTimelineItem) {
        const item = object.timeline.find(e => e.id === this.state.selectedTimelineStep)
        .timelineItems.find(t => t.id === this.state.selectedTimelineItem)
-       return (<Col sm="12">
+       return (<Col sm="6">
          <h4>{ item.name }</h4>
-         <Card className="scroll" style={ { maxHeight: '20vh' } }>
+         <Card className="scroll" style={ { maxHeight: '60vh' } }>
          <CardBlock>
          <FormGroup>
          <Label>Item Name</Label>

@@ -93,39 +93,43 @@ class SimulatorConfig extends Component {
 	render(){
 		return (
 			<Row>
-			<Col sm="3">
-			<h5>Simulator Configs</h5>
-			<Card className="scroll">
-			{this.props.data.loading ? <li>Loading... </li> : this.props.data.simulators.map((e) => {
-				return <li key={e.id} onClick={this._setSelectedSimulator.bind(this,e)} className={`${(e.id === this.state.selectedSimulator) ? 'selected' : ''} list-group-item`}>{e.name}</li>;
-			})}
-			</Card>
-			<ButtonGroup>
-			<Button onClick={this._createSimulator.bind(this)} size="sm" color="success">Add</Button>
-			<Button onClick={this._showImportModal.bind(this)} size="sm" color="warning">Import</Button>
-			<Button onClick={this._removeSimulator.bind(this)} size="sm" color="danger">Remove</Button>
-			</ButtonGroup>
-			</Col>
-			<Col sm="9">
-			{
-				(() => {
-					if (this.state.selectedSimulator){
-						const sim = this.props.data.simulators.find(s => s.id === this.state.selectedSimulator);
-						return (<div>
-							<FormGroup>
-							<Label>Simulator Name</Label>
-							<Input type="text" value={ sim.name } onChange={ this._updateSimulator.bind(this, 'name') } />
-							</FormGroup>
-							<TimelineConfig
-							type="simulator"
-							object={sim}
-							client={this.props.client}
-							/>
-							</div>);
-					}
-				})()
+			{ !this.state.selectedSimulator ?
+				<Col sm="3">
+				<h5>Simulator Configs</h5>
+				<Card className="scroll">
+				{this.props.data.loading ? <li>Loading... </li> : this.props.data.simulators.map((e) => {
+					return <li key={e.id} onClick={this._setSelectedSimulator.bind(this,e)} className={`${(e.id === this.state.selectedSimulator) ? 'selected' : ''} list-group-item`}>{e.name}</li>;
+				})}
+				</Card>
+				<ButtonGroup>
+				<Button onClick={this._createSimulator.bind(this)} size="sm" color="success">Add</Button>
+				<Button onClick={this._showImportModal.bind(this)} size="sm" color="warning">Import</Button>
+				<Button onClick={this._removeSimulator.bind(this)} size="sm" color="danger">Remove</Button>
+				</ButtonGroup>
+				</Col>
+				:
+				<Col sm="12">
+				<a href="#" onClick={() => {this.setState({selectedSimulator: null})}}>Go Back To Simulator list</a>
+				{
+					(() => {
+						if (this.state.selectedSimulator){
+							const sim = this.props.data.simulators.find(s => s.id === this.state.selectedSimulator);
+							return (<div>
+								<FormGroup>
+								<Label>Simulator Name</Label>
+								<Input type="text" value={ sim.name } onChange={ this._updateSimulator.bind(this, 'name') } />
+								</FormGroup>
+								<TimelineConfig
+								type="simulator"
+								object={sim}
+								client={this.props.client}
+								/>
+								</div>);
+						}
+					})()
+				}
+				</Col>
 			}
-			</Col>
 			</Row>
 			);
 	}
