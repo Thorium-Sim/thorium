@@ -35,7 +35,6 @@ class Events extends Entity {
         key === '_eventsCount') return;
         if (snapshot[key] instanceof Array) {
           snapshot[key].forEach((obj) => {
-            console.log(obj);
             this[key].push(new Classes[obj.class](obj));
           });
         }

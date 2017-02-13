@@ -92,6 +92,7 @@ class LayoutCorners extends Component {
 			<div className="frame-text">
 			<h1 className="simulator-name">{simulator.name}</h1>
 			<h2 className="station-name">{station.name}</h2>
+			<h2 className="login-name">{clientObj.loginName}</h2>
 			</div>
 			<CardSwitcher cards={station.cards} currentCard={cardName} changeCard={changeCard} {...this.props} />
 			<Settings client={this.props.client} clientObj={this.props.clientObj} className={alertClass} />

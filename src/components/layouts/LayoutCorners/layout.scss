@@ -438,12 +438,15 @@ body{
 			letter-spacing: -3px;
 		}
 		.login-name{
-			font-family: 'Play', cursive;
 			font-weight:700;
 			position: absolute;
 			top: 50px;
 			left: 220px;
 			font-size: 30px;
+			background: -webkit-linear-gradient(#ddd, #999, #ddd);
+			-webkit-text-stroke: 1px #777;
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
 			color: #000;
 			letter-spacing: 1px;
 			-webkit-font-smoothing: subpixel-antialiased;
