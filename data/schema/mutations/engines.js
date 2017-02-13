@@ -7,6 +7,12 @@ export default `
   #   "type":"text"
   # }
   name: String!, 
+  
+  # {
+  #   "content":"HeatRate",
+  #   "type":"number"
+  # }
+  heatRate: Int,
 
   # {
   #   "content":"Speeds",
@@ -16,11 +22,19 @@ export default `
   #     "number":"number"
   #   }
   # }
-  speeds: [SpeedInput]!): String
+  speeds: [SpeedInput]!,
+  ): String
   
   #Macro: Remove engine system from simulator  TODO: ADD ARGS
-  removeEngine(id: ID, simulatorId: ID, name: String): String
-
+  removeEngine(id: ID, simulatorId: ID, 
+  # {
+  #   "content":"Name",
+  #   "type":"text"
+  # }
+  name: String): String
+  
+  #Macro: Add speed to engine TODO: ADD ARGS
+  addSpeed(id: ID, name: String, speed: [SpeedInput]!): String 
   setSpeed(id: ID!, speed: Int!, on: Boolean): String
   addHeat(id: ID!, heat: Float): String
 `;

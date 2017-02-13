@@ -9,11 +9,11 @@ export const EngineQueries = {
 };
 
 export const EngineMutations = {
-  createEngine(root, {}) {
-
+  createEngine(root, {simulatorId, name, speeds, heatRate}) {
+    App.handleEvent({ simulatorId, name, speeds, heatRate }, 'createEngine', 'createdEngine');
   },
-  removeEngine(root, {}) {
-
+  removeEngine(root, {id, simulatorId, name}) {
+    App.handleEvent({ id, simulatorId, name }, 'removeEngine', 'removedEngine');
   },
   setSpeed(root, { id, speed, on }) {
     App.handleEvent({ id, speed, on }, 'speedChange', 'speedChanged');

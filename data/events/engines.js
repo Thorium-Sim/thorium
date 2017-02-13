@@ -1,6 +1,26 @@
 import App from '../../app';
 import { pubsub } from '../helpers/subscriptionManager.js';
+import * as Classes from '../classes';
 
+App.on('createdEngine', (param) => {
+  const engine = new Classes.Engine(param);
+  App.systems.push(engine);
+  pubsub.publish('engineChange', App.systems);
+});
+App.on('removedEngine', (param) => {
+  App.systems = App.systems.filter((e) => {
+    if (e.type === 'Engine') {
+      if (param.id) {
+        return e.id !== param.id;
+      }
+      if (param.simulatorId && param.name) {
+        return (e.simulatorId !== param.simulatorId && e.name !== param.name);
+      }
+    }
+    return true;
+  });
+  pubsub.publish('engineChange', App.engines);
+})
 App.on('speedChanged', (param) => {
   const system = App.systems.find((sys) => sys.id === param.id);
   const engineIndex = App.systems.findIndex((sys) => sys.id === param.id) || -1;

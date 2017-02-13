@@ -1,8 +1,9 @@
+import App from '../../app.js';
 import { pubsub } from '../helpers/subscriptionManager.js';
 
 export const ShieldQueries = {
   shields(root, { simulatorId }) {
-    return systems.filter(system => {
+    return App.systems.filter(system => {
       return system.type === 'Shield' && system.simulatorId === simulatorId;
     });
   },
