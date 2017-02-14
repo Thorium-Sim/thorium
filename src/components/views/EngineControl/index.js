@@ -65,8 +65,13 @@ class EngineControl extends Component {
 			});
 		}
 	}
-	speedBarStyle(array,speed){
+	speedBarStyle(array,speed, engineCount, index){
 		let width = speed / array.length * 100;
+		if (engineCount - 1 === index){
+			return ({
+				width: `calc(${width}%)`
+			})
+		}
 		return ({
 			width: `calc(${width}% - ${40/array.length * speed}px)`
 		})
@@ -101,7 +106,7 @@ class EngineControl extends Component {
 								);
 						})}
 						</ul>
-						<div className="speedBar" style={this.speedBarStyle(engine.speeds,engine.speed)}></div>
+						<div className="speedBar" style={this.speedBarStyle(engine.speeds,engine.speed, engines.length, index)}></div>
 						</div>
 						);
 				});
@@ -129,10 +134,10 @@ class EngineControl extends Component {
 						</Col>
 						<Col>
 						<Col>
-						<HeatBar label="Heat" background="linear-gradient(to bottom, #440000 0%,#ff0000 50%,#440000 100%)" level={engines[0].heat}/>
+						<HeatBar label="Heat" background="linear-gradient(to bottom, #440000 0%,#AA0000 50%,#440000 100%)" level={engines[0].heat}/>
 						</Col>
 						<Col>
-						<HeatBar label="Coolant" background="linear-gradient(to bottom, #004400 0%,#00ff00 50%,#004400 100%)" level={engines[0].coolant}/>
+						<HeatBar label="Coolant" background="linear-gradient(to bottom, #004400 0%,#00AA00 50%,#004400 100%)" level={engines[0].coolant}/>
 						</Col>
 						</Col>
 						<Col>
@@ -156,10 +161,10 @@ class EngineControl extends Component {
 						<Col sm={2}>
 						<Row>
 						<Col sm={6}>
-						<HeatBar label="Heat" background="linear-gradient(to bottom, #440000 0%,#ff0000 50%,#440000 100%)" level={engines[0].heat}/>
+						<HeatBar label="Heat" background="linear-gradient(to bottom, #440000 0%,#aa0000 50%,#440000 100%)" level={engines[0].heat}/>
 						</Col>
 						<Col sm={6}>
-						<HeatBar label="Coolant" background="linear-gradient(to bottom, #004400 0%,#00ff00 50%,#004400 100%)" level={engines[0].coolant}/>
+						<HeatBar label="Coolant" background="linear-gradient(to bottom, #004400 0%,#00aa00 50%,#004400 100%)" level={engines[0].coolant}/>
 						</Col>
 						</Row>
 						</Col>
@@ -169,10 +174,10 @@ class EngineControl extends Component {
 						<Col sm={2}>
 						<Row>
 						<Col sm={6}>
-						<HeatBar label="Heat" background="linear-gradient(to bottom, #440000 0%,#ff0000 50%,#440000 100%)" level={engines[1].heat}/>
+						<HeatBar label="Heat" background="linear-gradient(to bottom, #440000 0%,#aa0000 50%,#440000 100%)" level={engines[1].heat}/>
 						</Col>
 						<Col sm={6}>
-						<HeatBar label="Coolant" background="linear-gradient(to bottom, #004400 0%,#00ff00 50%,#004400 100%)" level={engines[1].coolant}/>
+						<HeatBar label="Coolant" background="linear-gradient(to bottom, #004400 0%,#00aa00 50%,#004400 100%)" level={engines[1].coolant}/>
 						</Col>
 						</Row>
 						</Col>
@@ -226,5 +231,5 @@ export default compose(
 				variables: Object.assign(props)
 			})
 		})
-  })
-  )(EngineControl);
+	})
+	)(EngineControl);

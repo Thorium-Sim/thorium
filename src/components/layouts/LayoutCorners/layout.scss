@@ -14,8 +14,8 @@ body{
 .card-container{
 	position: absolute;
 	top: 115px;
-	left: 180px;
-	width: 87vw;
+	left: 122px;
+	width: 90vw;
 	height: 84vh;
 	.transitioner{
 		overflow: visible;
@@ -476,19 +476,19 @@ body{
 		.frame-1{
 			width: 593px;
 			height: 127px;
-			background-image: url(/js/images/slice1-900.png);
+			background-image: url(/js/images/slice1.png);
 		}
 		.frame-2{
 			width: 126px;
 			height: 767px;
 			top: 127px;
-			background-image: url(/js/images/slice2-900.png);
+			background-image: url(/js/images/slice2.png);
 		}
 		.frame-3{
 			width: 533px;
 			height: 77px;
 			right: 0px;
-			background-image: url(/js/images/slice3-900.png);
+			background-image: url(/js/images/slice3.png);
 		}
 		@media (min-width: 1700px) {
 			.frame-1{
@@ -519,14 +519,14 @@ body{
 			top:0px;
 			width:52px;
 			height:227px;
-			-webkit-clip-path: polygon(0 0, 50px 0px, 50px 95px, 45px 105px, 40px 110px, 38px 118px, 36px 120px, 35px 120px, 30px 140px, 30px 165px, 38px 188px, 0px 188px);
+			-webkit-clip-path: polygon(0 0, 50px 0px, 72px 90px, 42px 120px, 39px 188px, 38px 188px, 0px 188px);
 		}
 		.part-1-2{
 			top:0px;
 			left:50px;
 			height: 130px;
 			width: 660px;
-			-webkit-clip-path: polygon(0 0, 538px 0px,  520px 35px, 517px 35px, 510px 38px, 384px 38px, 373px 50px, 367px 56px, 170px 56px, 155px 63px, 128px 105px, 116px 91px, 80px 73px, 76px 73px, 56px 72px, 28px 77px, 15px 85px, 0px 95px);
+			-webkit-clip-path: polygon(0 0, 538px 0px, 520px 35px, 517px 35px, 510px 38px, 382px 38px, 373px 50px, 367px 56px, 170px 56px, 157px 63px, 132px 99px, 123px 105px, 15px 105px, 0px 109px);
 		}
 		.part-c{
 			width: 350px;

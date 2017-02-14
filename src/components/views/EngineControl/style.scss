@@ -10,12 +10,14 @@
 		list-style: none;
 		color: white;
 		flex: 1;
+		&:not(:last-child) ul.engine{
+			margin-right: 40px;
+		}
 	}
 	ul.engine{
 		display: flex;
 		justify-content: space-around;
 		padding: 0;
-		margin-right: 40px;
 	}
 	li.speedNums{
 		list-style: none;
