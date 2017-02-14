@@ -40,7 +40,8 @@ App.on('updatedHallwaySvg', ({ deckId, svg }) => {
   pubsub.publish('decksUpdate', App.decks);
 });
 App.on('addedRoom', ({ simulatorId, deckId, name, svgPath }) => {
-  const room = new Classes.Deck({ simulatorId, deckId, name, svgPath });
+  const room = new Classes.Room({ simulatorId, deckId, name, svgPath });
+  console.log(room);
   App.rooms.push(room);
   pubsub.publish('roomsUpdate', App.rooms);
 });
@@ -68,3 +69,8 @@ App.on('updatedRoomSvg', ({ roomId, svg }) => {
   room.updateSvg(svg);
   pubsub.publish('roomsUpdate', App.rooms);
 });
+App.on('roomGassed', ({roomId, gas}) => {
+  const room = App.rooms.find(r => r.id === roomId);
+  room.setGas(gas);
+  pubsub.publish('roomsUpdate', App.rooms);
+})

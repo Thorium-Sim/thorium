@@ -15,6 +15,7 @@ type Room {
   simulatorId: ID
   deck: Deck
   name: String
+  gas: Boolean
   svgPath: String
 }
 `;

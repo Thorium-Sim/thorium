@@ -1,0 +1,22 @@
+.security-decks {
+  .list-group {
+    .list-group-item {
+      cursor: pointer;
+      &.selected {
+        background-color: rgba(255,255,255,0.1);
+      }
+      &.assigned {
+        color: #ffff00;
+        font-style: italic;
+      }
+    }
+  }
+  .card {
+    margin-top: 25px;
+    .card-block {
+      select, button, p{
+      margin-top: 25px;
+      }
+    }
+  }
+}

@@ -26,4 +26,5 @@ addRoomsBulk(simulatorId: ID!,
   rooms: String!): String
 renameRoom(roomId: ID!, name: String!): String
 updateRoomSvg(roomId: ID!, svg: String!): String
+roomGas(roomId: ID!, gas: Boolean): String
 `;

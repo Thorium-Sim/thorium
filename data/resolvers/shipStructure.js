@@ -17,7 +17,7 @@ export const ShipStructureQueries = {
       rooms = rooms.filter(r => r.simulatorId === simulatorId);
     }
     if (deck) {
-      rooms = rooms.filter(r => r.deck === deck);
+      rooms = rooms.filter(r => r.deckId === deck);
     }
     if (name) {
       rooms = rooms.filter(r => r.name === name);
@@ -63,6 +63,9 @@ export const ShipStructureMutations = {
   updateRoomSvg(root, args) {
     App.handleEvent(args, 'updateRoomSvg', 'updatedRoomSvg');
   },
+  roomGas(root, args) {
+    App.handleEvent(args, 'roomGas', 'roomGassed');
+  }
 };
 
 export const ShipStructureSubscriptions = {
@@ -83,12 +86,12 @@ export const ShipStructureSubscriptions = {
 export const ShipStructureTypes = {
   Deck: {
     rooms(deck) {
-      return App.rooms.filter(r => r.deck === deck.id);
+      return App.rooms.filter(r => r.deckId === deck.id);
     },
   },
   Room: {
     deck(room) {
-      return App.deck.find(d => d.id === room.deck);
+      return App.deck.find(d => d.id === room.deckId);
     },
   },
 };

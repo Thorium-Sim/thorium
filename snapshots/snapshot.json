@@ -1,8 +1,8 @@
 {
-	"snapshotVersion": 180,
-	"timestamp": 1487005220036,
-	"version": 180,
-	"_eventsCount": 92,
+	"snapshotVersion": 2,
+	"timestamp": 1487093015577,
+	"version": 2,
+	"_eventsCount": 93,
 	"simulators": [
 		{
 			"timeline": [],
@@ -452,8 +452,29 @@
 			"class": "Client"
 		}
 	],
-	"decks": [],
-	"rooms": [],
+	"decks": [
+		{
+			"id": "d5e57556-80b5-4bb1-9372-35d578591eb0",
+			"class": "Deck",
+			"simulatorId": "test",
+			"number": 1,
+			"svgPath": "",
+			"doors": false,
+			"evac": false,
+			"hallway": ""
+		}
+	],
+	"rooms": [
+		{
+			"class": "Room",
+			"id": "257fb45e-ac29-4313-a1b9-7e9530a37f83",
+			"simulatorId": "test",
+			"deckId": "d5e57556-80b5-4bb1-9372-35d578591eb0",
+			"name": "Room A",
+			"gas": false,
+			"svgPath": ""
+		}
+	],
 	"crew": [],
 	"coreLayouts": [
 		{

@@ -8,7 +8,10 @@ const viewList = [
 	"Sensors",
 	"AdminAssets",
   "Transporters",
-  "Login"
+  "Login",
+  "SecurityDecks",
+"SecurityTeams",
+"SecurityScans",
 ];
 
 export default viewList;

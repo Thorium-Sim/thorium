@@ -25,15 +25,20 @@ export class Deck {
   }
 }
 
+
 export class Room {
   constructor(params) {
-    if (!params.deck) return false;
+    if (!params.deckId) return false;
     this.class = 'Room';
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId || null;
-    this.deck = params.deck;
+    this.deckId = params.deckId;
     this.name = params.name || 'Vic\'s Lounge';
+    this.gas = params.gas || false;
     this.svgPath = params.svgPath || '';
+  }
+  setGas(gas) {
+    this.gas = gas;
   }
   rename(name) {
     this.name = name;
