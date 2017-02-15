@@ -70,13 +70,13 @@ export const ShipStructureMutations = {
 
 export const ShipStructureSubscriptions = {
   decksUpdate(rootValue, { simulatorId }) {
-    if (simulatorId) {
+    if (simulatorId && rootValue) {
       return rootValue.filter(r => r.simulatorId === simulatorId);
     }
     return rootValue;
   },
   roomsUpdate(rootValue, { simulatorId }) {
-    if (simulatorId) {
+    if (simulatorId && rootValue) {
       return rootValue.filter(r => r.simulatorId === simulatorId);
     }
     return rootValue;
@@ -91,7 +91,7 @@ export const ShipStructureTypes = {
   },
   Room: {
     deck(room) {
-      return App.deck.find(d => d.id === room.deckId);
+      return App.decks.find(d => d.id === room.deckId);
     },
   },
 };

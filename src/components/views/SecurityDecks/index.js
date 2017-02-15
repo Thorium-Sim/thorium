@@ -25,17 +25,12 @@ class SecurityTeams extends Component {
       selectedDeck: null,
       selectedRoom: null
     }
-    this.deckSubscription = null
+    this.deckSubscription = null;
   }
   componentWillReceiveProps(nextProps) {
     if (!this.deckSubscription && !nextProps.data.loading) {
       this.deckSubscription = nextProps.data.subscribeToMore({
         document: DECK_SUB,
-        /*updateQuery: (previousResult, {subscriptionData}) => {
-          let returnResult = Object.assign(previousResult);
-          returnResult.decks = subscriptionData.data.decksUpdate
-          return returnResult;
-        },*/
         variables: {
           simulatorId: this.props.simulator.id
         }

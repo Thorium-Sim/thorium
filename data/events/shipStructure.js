@@ -73,4 +73,5 @@ App.on('roomGassed', ({roomId, gas}) => {
   const room = App.rooms.find(r => r.id === roomId);
   room.setGas(gas);
   pubsub.publish('roomsUpdate', App.rooms);
+  pubsub.publish('decksUpdate', App.decks);
 })
