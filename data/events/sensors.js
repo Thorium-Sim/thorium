@@ -4,8 +4,8 @@ import * as Classes from '../classes';
 
 // id always represents the ID of the sensor system
 
-App.on('addedSensorsArray', ({ simulatorId }) => {
-  const system = new Classes.Sensors({ simulatorId });
+App.on('addedSensorsArray', ({ simulatorId, domain }) => {
+  const system = new Classes.Sensors({ simulatorId, domain });
   App.systems.push(system);
   pubsub.publish('sensorsUpdate', system);
 });

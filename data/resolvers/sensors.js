@@ -2,10 +2,15 @@ import App from '../../app.js';
 import moveSensorContact from '../processes/sensorContacts.js';
 
 export const SensorsQueries = {
-  sensors(root, { simulatorId }) {
-    return App.systems.filter(system => {
-      return system.type === 'Sensors' && system.simulatorId === simulatorId;
-    });
+  sensors(root, { simulatorId, domain='external' }) {
+    let returnVal = App.systems.filter(s => s.type === 'Sensors');
+    if (domain) {
+      returnVal = returnVal.filter(s => s.domain === domain);
+    }
+    if (simulatorId){
+      returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
+    }
+    return returnVal;
   },
   sensorContacts(root, { sensorsId }) {
     const sensors = App.systems.find(system => {
@@ -16,8 +21,8 @@ export const SensorsQueries = {
 };
 
 export const SensorsMutations = {
-  addSensorsArray(root, { simulatorId }) {
-    App.handleEvent({ simulatorId }, 'addSensorsArray', 'addedSensorsArray');
+  addSensorsArray(root, { simulatorId, domain }) {
+    App.handleEvent({ simulatorId, domain }, 'addSensorsArray', 'addedSensorsArray');
     return '';
   },
   removeSensorsArray(root, { id }) {

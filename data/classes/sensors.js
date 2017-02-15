@@ -6,6 +6,7 @@ export default class Sensors extends System {
     super(params);
     this.type = 'Sensors';
     this.class = 'Sensors';
+    this.domain = params.domain || 'external';
     this.scanResults = params.scanResults || '';
     this.scanRequest = params.scanRequest || '';
     this.processedData = params.processedData || '';

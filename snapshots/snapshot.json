@@ -1,7 +1,7 @@
 {
-	"snapshotVersion": 2,
-	"timestamp": 1487093015577,
-	"version": 2,
+	"snapshotVersion": 8,
+	"timestamp": 1487118863063,
+	"version": 8,
 	"_eventsCount": 93,
 	"simulators": [
 		{
@@ -70,6 +70,22 @@
 							"type": "event",
 							"event": "createEngine",
 							"args": "{\"name\":\"Warp Engines\",\"heatRate\":\".01\",\"speeds\":[{\"text\":\"Warp 1\",\"number\":\"1\"},{\"text\":\"Warp 2\",\"number\":\"2\"},{\"text\":\"Warp 3\",\"number\":\"3\"},{\"text\":\"Warp 4\",\"number\":\"4\"},{\"text\":\"Warp 5\",\"number\":\"5\"},{\"text\":\"Warp 6\",\"number\":\"6\"},{\"text\":\"Warp 7\",\"number\":\"7\"},{\"text\":\"Warp 8\",\"number\":\"8\"},{\"text\":\"Warp 9\",\"number\":\"9\"},{\"text\":\"Emergency Warp\",\"number\":\"9.22\"},{\"text\":\"Destructive Warp\",\"number\":\"9.54\"}]}",
+							"delay": 0
+						},
+						{
+							"id": "40e173ff-c2b5-4a58-a01b-d681fad96d42",
+							"name": "Add External Sensors",
+							"type": "event",
+							"event": "addSensorsArray",
+							"args": "{\"domain\":\"external\"}",
+							"delay": 0
+						},
+						{
+							"id": "3f0abfbe-4f04-4b67-ab5e-def5618b5377",
+							"name": "Add Internal Sensors",
+							"type": "event",
+							"event": "addSensorsArray",
+							"args": "{\"domain\":\"internal\"}",
 							"delay": 0
 						}
 					]
@@ -372,6 +388,7 @@
 			},
 			"type": "Sensors",
 			"class": "Sensors",
+			"domain": "external",
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -436,6 +453,26 @@
 					"destroyed": false
 				}
 			]
+		},
+		{
+			"id": "f4c8c9be-bb8e-4ec2-a7d1-718df91aa7f7",
+			"simulatorId": "test",
+			"name": null,
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"type": "Sensors",
+			"class": "Sensors",
+			"domain": "internal",
+			"scanResults": "",
+			"scanRequest": "",
+			"processedData": "",
+			"scanning": false,
+			"contacts": [],
+			"armyContacts": []
 		}
 	],
 	"clients": [
