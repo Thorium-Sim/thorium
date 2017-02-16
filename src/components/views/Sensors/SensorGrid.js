@@ -183,14 +183,13 @@ class SensorGrid extends Component{
         ));
 
       if (intersection) {
-        const obj = {};
-
-        const contact = this.props.data.sensorContacts.find((contact) => contact.id === this.state.draggingContact.id);
-        contact.destination = JSON.parse(JSON.stringify(intersection.sub(this._offset)));
-
-        obj[contact.id] = contact;
+        let contact = this.state.contacts[this.state.draggingContact.id];
+        let immutableContact = Immutable.Map(contact);
+        immutableContact = immutableContact.set('destination', JSON.parse(JSON.stringify(intersection.sub(this._offset))));
+        let newContacts = Immutable.Map(this.state.contacts);
+        newContacts = newContacts.set(this.state.draggingContact.id, immutableContact);
         this.setState({
-          contacts: Object.assign(this.state.contacts, obj),
+          contacts: newContacts.toJS(),
           draggingContact: contact,
         })
       }
@@ -280,7 +279,9 @@ class SensorGrid extends Component{
           randomization: 10,
         });
         //const mesh = reindex(unindex(complex.positions, complex.cells));
-        return Object.assign(contact, {geometry: new createGeom(complex)});
+        const returnContact = Immutable.Map(contact);
+        const output = returnContact.merge({geometry: new createGeom(complex)}).toJS();
+        return output;
       })
     })
     ).then((contacts) => {
@@ -291,25 +292,25 @@ class SensorGrid extends Component{
       },{})
     }).then((contacts) => {
       if (Object.keys(contacts).length > 0){
-        console.log('Updating State');
         this.setState({
           contacts: Object.assign(this.state.contacts, contacts)
         })
       }
     });
     //Now handle the simple update contacts
-    const newContacts = this.state.contacts;
+    const newContacts = Immutable.Map(this.state.contacts);
     simpleUpdateContacts.forEach((contact) => {
-      const geometry = newContacts[contact.id].geometry;
+      const geometry = this.state.contacts[contact.id].geometry;
       const destination = this.state.draggingContact.destination;
-      newContacts[contact.id] = contact;
+      let updateContact = Immutable.Map(contact);
       if (this.state.dragging && contact.id === this.state.draggingContact.id) {
-        newContacts[contact.id].destination = destination;
+        updateContact = updateContact.merge({destination});
       }
-      newContacts[contact.id].geometry = geometry;
+      updateContact = updateContact.merge({geometry});
+      newContacts.set(contact.id, updateContact);
     })
     this.setState({
-      contacts: Object.assign(this.state.contacts, newContacts)
+      contacts: newContacts.toJS()
     })
     //Subscribe
     if (!this.sensorsSubscription && !nextProps.data.loading) {

@@ -63,8 +63,8 @@ class Core extends Component {
     super(props);
     // TODO: Make it so the 'layout' state is set from localStorage
     this.state = {
-      flight: localStorage.getItem('thorium_coreFlight') || null,
-      simulator: localStorage.getItem('thorium_coreSimulator') || null,
+      flight: localStorage.getItem('thorium_coreFlight') || '',
+      simulator: localStorage.getItem('thorium_coreSimulator') || '',
       layout: localStorage.getItem('thorium_coreLayout') || 'default',
       editable: false,
     };
