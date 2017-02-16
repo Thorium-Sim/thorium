@@ -20,7 +20,7 @@ class SensorsCore extends Component {
   constructor(props){
     super(props);
     this.sensorsSubscription = null;
-    this.props = {
+    this.state = {
       dataField: ''
     }
   }
@@ -86,7 +86,7 @@ class SensorsCore extends Component {
         <div>
         <div style={fieldStyle}>
         <OutputField style={{flexGrow: 2}} alert={sensors.scanning}>{sensors.scanRequest}</OutputField>
-        <TypingField style={{flexGrow: 6}} onChange={(e) => {this.setState({dataField: e.target.value})}} value={this.props.dataField} />
+        <TypingField style={{flexGrow: 6}} onChange={(e) => {this.setState({dataField: e.target.value})}} value={this.state.dataField} />
         </div>
         <div style={buttonStyle}>
         <Button onClick={this.sendScanResult.bind(this, sensors)} style={{flexGrow: 2}} size={'sm'}>Send</Button>

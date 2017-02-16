@@ -13,14 +13,16 @@ import './style.scss';
 export default class Lobby extends Component {
     constructor(props) {
         super(props);
+        const coreTab = localStorage.getItem('thorium_coreTab') || '1';
         this.state = {
             modal: false,
-            activeTab: '2'
+            activeTab: coreTab
         };
         this.toggleTab = this.toggleTab.bind(this);
     }
     toggleTab(tab) {
         if (this.state.activeTab !== tab) {
+            localStorage.setItem('thorium_coreTab',tab);
             this.setState({
                 activeTab: tab
             });

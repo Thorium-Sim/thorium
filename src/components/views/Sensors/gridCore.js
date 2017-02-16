@@ -6,6 +6,7 @@ import SensorGrid from './SensorGrid.js';
 import Measure from 'react-measure';
 import Draggable from 'react-draggable';
 import FontAwesome from 'react-fontawesome';
+import Immutable from 'immutable';
 import ContactContextMenu from './contactContextMenu';
 import {
   Row,
@@ -67,13 +68,8 @@ class GridCore extends Component {
       this.sensorsSubscription = nextProps.data.subscribeToMore({
         document: SENSOR_SUB,
         updateQuery: (previousResult, {subscriptionData}) => {
-          previousResult.sensors = previousResult.sensors.map(sensor => {
-            if (sensor.id === subscriptionData.data.sensorsUpdate.id){
-              return subscriptionData.data.sensorsUpdate;
-            } 
-            return sensor;
-          })
-          return previousResult;
+          const returnResult = Immutable.Map(previousResult);
+          return returnResult.merge({sensors: subscriptionData.data.sensorsUpdate}).toJS();
         },
       });
     }
@@ -200,53 +196,53 @@ class GridCore extends Component {
       {
         this.props.data.loading ? 'Loading...' : 
         (this.props.data.sensors.length > 0 ? <Container fluid>
-        <Row>
-        <Col sm={8} style={{backgroundColor: 'gray'}}>
-        <div className="heightPlaceholder"></div>
-        <div className="spacer"></div>
-        <Measure>
-        { dimensions => (
-          <div id="threeSensors" className='array' style={{position:'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
-          {(() => console.log(dimensions) /*This is apparently necessary*/)()}
-          {dimensions.width > 0 &&
-            <SensorGrid
-            core={true}
-            sensor={sensors.id}
-            dimensions={dimensions}
-            hoverContact={() => {}}
-            /> 
-          }
-          </div>
-          ) }
-        </Measure>
-        </Col>
-        <Col sm={4}>
-        <p>Contacts:</p>
-        {
-          sensors.armyContacts.map((contact) => {
-            return <Col key={contact.id} className={'flex-container'} sm={12}>
-            <Draggable
-            onStart={this.dragStart.bind(this, contact)}
-            onStop={this.dragStop.bind(this, contact)}
-            position={this.state.movingContact[contact.id]}
-            >
-            <img onContextMenu={this._contextMenu.bind(this, contact)} draggable="false" role="presentation" className="armyContact" src={contact.iconUrl} />
-            </Draggable>
-            <TypingField input={true} value={contact.name} onChange={(e) => {contact.name = e.target.value; this._updateArmyContact(contact)}} /> 
-            {this.state.removeContacts && 
-              <FontAwesome name="ban" className="text-danger pull-right clickable" onClick={this._removeArmyContact.bind(this, contact)} />
+          <Row>
+          <Col sm={8} style={{backgroundColor: 'gray'}}>
+          <div className="heightPlaceholder"></div>
+          <div className="spacer"></div>
+          <Measure>
+          { dimensions => (
+            <div id="threeSensors" className='array' style={{position:'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
+            {(() => console.log(dimensions) /*This is apparently necessary*/)()}
+            {dimensions.width > 0 &&
+              <SensorGrid
+              core={true}
+              sensor={sensors.id}
+              dimensions={dimensions}
+              hoverContact={() => {}}
+              /> 
             }
-            </Col>
-          })
-        }
-        <Button size="sm" color="success" onClick={this._addArmyContact.bind(this)}>Add Contact</Button>
-        <label><input type="checkbox" onChange={(e) => {this.setState({removeContacts: e.target.checked})}} /> Remove</label>
-        { this.state.contextContact && 
-          <ContactContextMenu updateArmyContact={this._updateArmyContact.bind(this)} contact={this.state.contextContact.contact} x={this.state.contextContact.left} y={this.state.contextContact.top}/>
-        }
-        </Col>
-        </Row>
-        </Container> : "No Sensors")
+            </div>
+            ) }
+          </Measure>
+          </Col>
+          <Col sm={4}>
+          <p>Contacts:</p>
+          {
+            sensors.armyContacts.map((contact) => {
+              return <Col key={contact.id} className={'flex-container'} sm={12}>
+              <Draggable
+              onStart={this.dragStart.bind(this, contact)}
+              onStop={this.dragStop.bind(this, contact)}
+              position={this.state.movingContact[contact.id]}
+              >
+              <img onContextMenu={this._contextMenu.bind(this, contact)} draggable="false" role="presentation" className="armyContact" src={contact.iconUrl} />
+              </Draggable>
+              <TypingField input={true} value={contact.name} onChange={(e) => {contact.name = e.target.value; this._updateArmyContact(contact)}} /> 
+              {this.state.removeContacts && 
+                <FontAwesome name="ban" className="text-danger pull-right clickable" onClick={this._removeArmyContact.bind(this, contact)} />
+              }
+              </Col>
+            })
+          }
+          <Button size="sm" color="success" onClick={this._addArmyContact.bind(this)}>Add Contact</Button>
+          <label><input type="checkbox" onChange={(e) => {this.setState({removeContacts: e.target.checked})}} /> Remove</label>
+          { this.state.contextContact && 
+            <ContactContextMenu updateArmyContact={this._updateArmyContact.bind(this)} contact={this.state.contextContact.contact} x={this.state.contextContact.left} y={this.state.contextContact.top}/>
+          }
+          </Col>
+          </Row>
+          </Container> : "No Sensors")
       }
       </div>
       )
@@ -300,5 +296,5 @@ query GetSensors($simulatorId: ID){
 }`;
 
 export default  graphql(GRID_QUERY, {
-    options: (ownProps) => ({ variables: { simulatorId: ownProps.simulator.id } }),
+  options: (ownProps) => ({ variables: { simulatorId: ownProps.simulator.id } }),
 })(withApollo(GridCore));

@@ -5,6 +5,7 @@ import React3 from 'react-three-renderer';
 import * as THREE from 'three';
 import {parse as parsePath} from 'extract-svg-path';
 import svgMesh3d from 'svg-mesh-3d';
+import Immutable from 'immutable';
 import MouseInput from '../../../helpers/threeMouseInput';
 import complex from 'three-simplicial-complex';
 const createGeom = complex(THREE);
@@ -279,8 +280,7 @@ class SensorGrid extends Component{
           randomization: 10,
         });
         //const mesh = reindex(unindex(complex.positions, complex.cells));
-        contact.geometry = new createGeom(complex);
-        return contact;
+        return Object.assign(contact, {geometry: new createGeom(complex)});
       })
     })
     ).then((contacts) => {
@@ -317,8 +317,8 @@ class SensorGrid extends Component{
         document: SENSORCONTACT_SUB,
         variables: {sensorId: this.props.sensor},
         updateQuery: (previousResult, {subscriptionData}) => {
-          previousResult.sensorContacts = subscriptionData.data.sensorContactUpdate
-          return previousResult;
+          const returnResult = Immutable.Map(previousResult);
+          return returnResult.merge({sensorContacts: subscriptionData.data.sensorContactUpdate}).toJS();
         },
       });
     }

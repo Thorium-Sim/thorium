@@ -4,6 +4,7 @@ import { graphql, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import FontAwesome from 'react-fontawesome';
 import moment from 'moment';
+import Immutable from 'immutable';
 import { Cores } from '../components/views';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -62,9 +63,9 @@ class Core extends Component {
     super(props);
     // TODO: Make it so the 'layout' state is set from localStorage
     this.state = {
-      flight: null,
-      simulator: null,
-      layout: 'default',
+      flight: localStorage.getItem('thorium_coreFlight') || null,
+      simulator: localStorage.getItem('thorium_coreSimulator') || null,
+      layout: localStorage.getItem('thorium_coreLayout') || 'default',
       editable: false,
     };
     this.coreSubscription = null;
@@ -75,8 +76,8 @@ class Core extends Component {
       this.coreSubscription = nextProps.data.subscribeToMore({
         document: CORE_SUB,
         updateQuery: (previousResult, {subscriptionData}) => {
-          previousResult.coreLayouts = subscriptionData.data.coreLayoutChange;
-          return previousResult;
+          const returnResult = Immutable.Map(previousResult);
+          return returnResult.merge({coreLayouts: subscriptionData.data.coreLayoutChange}).toJS();
         },
       });
     }
@@ -84,9 +85,8 @@ class Core extends Component {
       this.flightSubscription = nextProps.data.subscribeToMore({
         document: FLIGHT_SUB,
         updateQuery: (previousResult, {subscriptionData}) => {
-          const returnResult = Object.assign({}, previousResult);
-          returnResult.flights = subscriptionData.data.flightsUpdate;
-          return returnResult;
+          const returnResult = Immutable.Map(previousResult);
+          return returnResult.merge({flights: subscriptionData.data.flightsUpdate}).toJS();
         },
       });
     }
@@ -95,16 +95,19 @@ class Core extends Component {
     this.setState({
       layout: e.target.value
     });
+    localStorage.setItem('thorium_coreLayout', e.target.value);
   }
   pickFlight(e) {
     this.setState({
       flight: e.target.value
-    })
+    });
+    localStorage.setItem('thorium_coreFlight', e.target.value);
   }
   pickSimulator(e) {
     this.setState({
       simulator : e.target.value
     })
+    localStorage.setItem('thorium_coreSimulator', e.target.value);
   }
   changeLayout(layout){
     this.props.client.mutate({
@@ -155,23 +158,25 @@ class Core extends Component {
   render(){
     const {coreLayouts, flights} = this.props.data.loading ? {coreLayouts: [], flights: []} : this.props.data;
     const layout = coreLayouts.map(l => {
-      l.i = l.id;
-      return l;
+      const ret = Immutable.Map(l);
+
+      return ret.merge({i: l.id}).toObject();
     });
+    console.log('LAYOUT', layout);
     const simulators = this.state.flight ? flights.find(f => f.id === this.state.flight).simulators : [];
     const renderLayout = layout.filter(l => {
       return l.name === this.state.layout;
     });
     return (
       <div className="core">
-      <select className="btn btn-success btn-sm" onChange={this.pickFlight.bind(this)}>
+      <select className="btn btn-success btn-sm" onChange={this.pickFlight.bind(this)} value={this.state.flight}>
       <option>Pick a flight</option>
       <option disabled>-----------</option>
       {
         flights.map(f => (<option key={f.id} value={f.id}>{ `${f.name}: ${moment(f.date).format('MM/DD/YY hh:mma')}` }</option>))
       }
       </select>
-      <select className="btn btn-info btn-sm" onChange={this.pickSimulator.bind(this)}>
+      <select className="btn btn-info btn-sm" onChange={this.pickSimulator.bind(this)} value={this.state.simulator}>
       <option>Pick a simulator</option>
       <option disabled>-----------</option>
       <option value="test">Test</option>
@@ -179,7 +184,7 @@ class Core extends Component {
         simulators.map(s => (<option key={s.id} value={s.id}>{s.name}</option>))
       }
       </select>
-      <select className="btn btn-primary btn-sm" onChange={this.pickLayout.bind(this)}>
+      <select className="btn btn-primary btn-sm" onChange={this.pickLayout.bind(this)} value={this.state.layout}>
       <option>Pick a layout</option>
       <option disabled>-----------</option>
       {
