@@ -7,6 +7,7 @@ type CoreLayout {
   y: Int
   h: Int
   w: Int
+  objectId: ID
   component: String
 }
 input CoreLayoutInput {
@@ -17,6 +18,7 @@ input CoreLayoutInput {
   y: Int
   w: Int
   h: Int
+  objectId: ID
   component: String
 }
 `;

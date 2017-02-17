@@ -128,18 +128,26 @@ class SensorGrid extends Component{
 
       // Animate moving the contacts
       let { contacts } = this.state;
+      let immutableContacts = Immutable.Map(contacts);
       const currentTime = Date.now();
       this.animationInterval = currentTime - this.animationTime; 
       this.animationTime = currentTime;
       if (Object.keys(contacts).length > 0){
         Object.keys(contacts).forEach((contactKey) => {
           const contact = contacts[contactKey];
-          const { location, destination, speed } = contact;
-          const newContact = contact;
-          if (contact.speed > 0) {
+          if (contact.speed === 0) return;
+          let immutableContact = Immutable.Map(contact);
+          const { location: contactLocation, destination:contactDestination, speed } = contact;
+          const location = {
+            x: contactLocation.x,
+            y: contactLocation.y,
+            z: contactLocation.z
+          }
+          const destination = {};
+          if (speed > 0) {
             // Update the velocity
             const locationVector = new THREE.Vector3(location.x, location.y, location.z);
-            const destinationVector = new THREE.Vector3(destination.x, destination.y, destination.z);
+            const destinationVector = new THREE.Vector3(contactDestination.x, contactDestination.y, contactDestination.z);
             const velocity = destinationVector.sub(locationVector).normalize().multiplyScalar(speed);
 
             // Update the location
@@ -148,22 +156,22 @@ class SensorGrid extends Component{
             location.z += Math.round(velocity.z / (10000 / this.animationInterval) * 10000) / 10000;
             
             // Why not clean up the destination while we're at it?
-            destination.x = Math.round(destination.x * 10000) / 10000;
-            destination.y = Math.round(destination.y * 10000) / 10000;
-            destination.z = Math.round(destination.z * 10000) / 10000;
+            destination.x = Math.round(contactDestination.x * 10000) / 10000;
+            destination.y = Math.round(contactDestination.y * 10000) / 10000;
+            destination.z = Math.round(contactDestination.z * 10000) / 10000;
 
             // Check to see if it is close enough to the destination
-            newContact.location = location;
-            newContact.velocity = velocity;
-          if (distance3d(destination, location) < 0.005) { // A magic number
-            newContact.velocity = { x: 0, y: 0, z: 0 };
-            newContact.speed = 0;
+            immutableContact = immutableContact.set('location', location);
+            immutableContact = immutableContact.set('velocity', velocity);
+            if (distance3d(destination, location) < 0.005) { // A magic number
+              immutableContact = immutableContact.set('velocity', { x: 0, y: 0, z: 0 });
+              immutableContact = immutableContact.set('speed', 0);
+            }
           }
-        }
-        contacts[contactKey] = newContact;
-      });
+          immutableContacts = immutableContacts.set(contactKey, immutableContact);
+        });
         this.setState({
-          contacts
+          contacts: immutableContacts.toJS()
         });
       }
     };
@@ -298,7 +306,7 @@ class SensorGrid extends Component{
       }
     });
     //Now handle the simple update contacts
-    const newContacts = Immutable.Map(this.state.contacts);
+    let newContacts = Immutable.Map(this.state.contacts);
     simpleUpdateContacts.forEach((contact) => {
       const geometry = this.state.contacts[contact.id].geometry;
       const destination = this.state.draggingContact.destination;
@@ -307,7 +315,7 @@ class SensorGrid extends Component{
         updateContact = updateContact.merge({destination});
       }
       updateContact = updateContact.merge({geometry});
-      newContacts.set(contact.id, updateContact);
+      newContacts = newContacts.set(contact.id, updateContact);
     })
     this.setState({
       contacts: newContacts.toJS()
@@ -319,7 +327,7 @@ class SensorGrid extends Component{
         variables: {sensorId: this.props.sensor},
         updateQuery: (previousResult, {subscriptionData}) => {
           const returnResult = Immutable.Map(previousResult);
-          return returnResult.merge({sensorContacts: subscriptionData.data.sensorContactUpdate}).toJS();
+          return returnResult.mergeDeep({sensorContacts: subscriptionData.data.sensorContactUpdate}).toJS();
         },
       });
     }

@@ -1,4 +1,4 @@
 export default `
-  sensorsUpdate: Sensors
+  sensorsUpdate: [Sensors]
   sensorContactUpdate(sensorId: ID): [SensorContact]
 `;

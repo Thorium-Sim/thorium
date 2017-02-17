@@ -10,6 +10,7 @@ export default class CoreLayout {
     this.w = params.w || 10;
     this.h = params.h || 10;
     this.component = params.component || 'CounterCore';
+    this.objectId = params.objectId || null;
     this.class = 'CoreLayout';
   }
 }

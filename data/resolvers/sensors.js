@@ -2,7 +2,7 @@ import App from '../../app.js';
 import moveSensorContact from '../processes/sensorContacts.js';
 
 export const SensorsQueries = {
-  sensors(root, { simulatorId, domain='external' }) {
+  sensors(root, { simulatorId, domain }) {
     let returnVal = App.systems.filter(s => s.type === 'Sensors');
     if (domain) {
       returnVal = returnVal.filter(s => s.domain === domain);

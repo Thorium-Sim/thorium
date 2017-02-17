@@ -10,10 +10,12 @@ App.on('updatedCoreLayout', (param) => {
       appLayout.y = layout.y;
       appLayout.w = layout.w;
       appLayout.h = layout.h;
+      if (layout.objectId) appLayout.objectId = layout.objectId;
     }
   });
   pubsub.publish('coreLayoutChange', App.coreLayouts);
 });
+
 App.on('addedCoreLayout', ({ layout }) => {
   App.coreLayouts.push(new Classes.CoreLayout(layout));
   pubsub.publish('coreLayoutChange', App.coreLayouts);

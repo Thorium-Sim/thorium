@@ -241,7 +241,7 @@ class Sensors extends Component{
 
 const SENSOR_QUERY = gql`
 query GetSensors($simulatorId: ID){
-	sensors (simulatorId: $simulatorId){
+	sensors (simulatorId: $simulatorId, domain:"external"){
 		id
 		simulatorId
 		scanResults

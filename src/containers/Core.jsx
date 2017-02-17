@@ -21,6 +21,7 @@ subscription CoreSub {
     component
     simulatorId
     name
+    objectId
   }
 }`;
 
@@ -61,7 +62,6 @@ const CoreComponent = (props) => {
 class Core extends Component {
   constructor(props){
     super(props);
-    // TODO: Make it so the 'layout' state is set from localStorage
     this.state = {
       flight: localStorage.getItem('thorium_coreFlight') || '',
       simulator: localStorage.getItem('thorium_coreSimulator') || '',
@@ -155,6 +155,30 @@ class Core extends Component {
       })
     }
   }
+  _updateObjectId(core, layout, objectId){
+    layout.find(l => l.i === core.i).objectId = objectId;
+    this.props.client.mutate({
+      mutation: gql`
+      mutation UpdateCoreLayout ($layout: [CoreLayoutInput]){
+        updateCoreLayout(layout: $layout)
+      }`,
+      variables: {
+        layout: layout.map(l => {
+          return {
+            id: l.i,
+            x: l.x,
+            y: l.y,
+            w: l.w,
+            h: l.h,
+            objectId: l.objectId
+          }
+        })
+        .filter(l => {
+          return l.w > 1;
+        })
+      }
+    });
+  }
   render(){
     const {coreLayouts, flights} = this.props.data.loading ? {coreLayouts: [], flights: []} : this.props.data;
     const layout = coreLayouts.map(l => {
@@ -162,7 +186,6 @@ class Core extends Component {
 
       return ret.merge({i: l.id}).toObject();
     });
-    console.log('LAYOUT', layout);
     const simulators = this.state.flight ? flights.find(f => f.id === this.state.flight).simulators : [];
     const renderLayout = layout.filter(l => {
       return l.name === this.state.layout;
@@ -216,11 +239,12 @@ class Core extends Component {
         onLayoutChange={this.changeLayout.bind(this)}>
         {
           renderLayout.map(l => {
+            console.log(l.objectId);
             const Component = Cores[l.component];
             return (
               <div key={l.i}>
               <CoreComponent id={l.id} client={this.props.client} editable={this.state.editable}>
-              <Component simulator={{id: this.state.simulator}} />
+              <Component simulator={{id: this.state.simulator}} objectId={l.objectId} updateObjectId={this._updateObjectId.bind(this,l, layout)} />
               </CoreComponent>
               </div>
               )
@@ -244,6 +268,7 @@ query CoreLayouts{
     h
     w
     component
+    objectId
   }
   flights {
     id

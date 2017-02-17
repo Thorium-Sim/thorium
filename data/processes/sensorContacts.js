@@ -61,7 +61,7 @@ const updateSensorGrids = () => {
   });
   setTimeout(updateSensorGrids, updateInterval);
 };
-updateSensorGrids();
+//updateSensorGrids();
 moveSensorContact();
 
 export default moveSensorContact;

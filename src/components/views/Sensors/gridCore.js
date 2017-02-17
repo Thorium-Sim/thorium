@@ -68,6 +68,7 @@ class GridCore extends Component {
       this.sensorsSubscription = nextProps.data.subscribeToMore({
         document: SENSOR_SUB,
         updateQuery: (previousResult, {subscriptionData}) => {
+          debugger;
           const returnResult = Immutable.Map(previousResult);
           return returnResult.merge({sensors: subscriptionData.data.sensorsUpdate}).toJS();
         },
@@ -187,7 +188,6 @@ class GridCore extends Component {
     });
   }
   render(){
-    console.log(this.state);
     if (this.props.data.error) console.error(this.props.data.error);
     const sensors = !this.props.data.loading ? this.props.data.sensors[0] : {armyContacts: []}
     return (
