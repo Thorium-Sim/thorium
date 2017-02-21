@@ -204,7 +204,7 @@
 			},
 			"class": "Shield",
 			"type": "Shield",
-			"position": "full",
+			"position": 0,
 			"frequency": 257.4,
 			"state": false,
 			"integrity": 1

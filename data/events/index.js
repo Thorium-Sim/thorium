@@ -7,3 +7,4 @@ import './transporters';
 import './clients';
 import './flightStructure';
 import './shipStructure';
+import './shields';

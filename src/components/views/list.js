@@ -12,6 +12,7 @@ const viewList = [
   "SecurityDecks",
 "SecurityTeams",
 "SecurityScans",
+"ShieldControl"
 ];
 
 export default viewList;

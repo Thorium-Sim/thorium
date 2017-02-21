@@ -3,7 +3,8 @@ type Shields {
   id: ID
   simulatorId: ID
   type: String
-  position: String
+  name: String
+  position: Int
   power: Power
   frequency: Float
   state: Boolean 
