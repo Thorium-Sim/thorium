@@ -1,8 +1,8 @@
 {
-	"snapshotVersion": 8,
-	"timestamp": 1487118863063,
-	"version": 8,
-	"_eventsCount": 93,
+	"snapshotVersion": 91,
+	"timestamp": 1487785351407,
+	"version": 91,
+	"_eventsCount": 98,
 	"simulators": [
 		{
 			"timeline": [],
@@ -195,7 +195,7 @@
 		{
 			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb3d",
 			"simulatorId": "test",
-			"name": null,
+			"name": "Fore",
 			"power": {
 				"power": 5,
 				"powerLevels": [
@@ -204,11 +204,97 @@
 			},
 			"class": "Shield",
 			"type": "Shield",
-			"position": 0,
-			"frequency": 257.4,
-			"state": false,
+			"position": 1,
+			"frequency": 161.50000000000506,
+			"state": true,
 			"integrity": 1
 		},
+		{
+			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb3c",
+			"simulatorId": "test",
+			"name": "Aft",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"class": "Shield",
+			"type": "Shield",
+			"position": 2,
+			"frequency": 161.50000000000506,
+			"state": true,
+			"integrity": 1
+		},
+		{
+			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb3e",
+			"simulatorId": "test",
+			"name": "Port",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"class": "Shield",
+			"type": "Shield",
+			"position": 3,
+			"frequency": 161.50000000000506,
+			"state": true,
+			"integrity": 1
+		},
+		{
+			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb3f",
+			"simulatorId": "test",
+			"name": "Starboard",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"class": "Shield",
+			"type": "Shield",
+			"position": 4,
+			"frequency": 161.50000000000506,
+			"state": true,
+			"integrity": 1
+		},
+		{
+			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb31",
+			"simulatorId": "test",
+			"name": "Ventral",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"class": "Shield",
+			"type": "Shield",
+			"position": 4,
+			"frequency": 161.50000000000506,
+			"state": true,
+			"integrity": 1
+		},
+				{
+			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb32",
+			"simulatorId": "test",
+			"name": "Dorsal",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"class": "Shield",
+			"type": "Shield",
+			"position": 4,
+			"frequency": 161.50000000000506,
+			"state": true,
+			"integrity": 1
+		},
+
 		{
 			"id": "1b8c9a95-4b6d-47d9-92d2-e419bd291f61",
 			"simulatorId": "test",
@@ -523,6 +609,7 @@
 			"w": 9,
 			"h": 3,
 			"component": "EngineControlCore",
+			"objectId": null,
 			"class": "CoreLayout"
 		},
 		{
@@ -534,6 +621,7 @@
 			"w": 10,
 			"h": 5,
 			"component": "TransporterCore",
+			"objectId": null,
 			"class": "CoreLayout"
 		},
 		{
@@ -545,6 +633,19 @@
 			"w": 37,
 			"h": 24,
 			"component": "SensorsGridCore",
+			"objectId": null,
+			"class": "CoreLayout"
+		},
+		{
+			"id": "af22b5da-d700-489d-beaa-866742eef719",
+			"simulatorId": "test",
+			"name": "default",
+			"x": 19,
+			"y": 0,
+			"w": 13,
+			"h": 4,
+			"component": "ShieldControlCore",
+			"objectId": null,
 			"class": "CoreLayout"
 		}
 	],
@@ -676,6 +777,38 @@
 			"folderId": "f6960518-00a1-414e-ac36-bcb29553464c",
 			"name": "Right",
 			"class": "AssetContainer"
+		},
+		{
+			"id": "7f74b781-c8cc-421e-9912-610e732ef7c3",
+			"folderPath": "/Ship Views",
+			"fullPath": "/Ship Views/Top",
+			"folderId": "f6960518-00a1-414e-ac36-bcb29553464c",
+			"name": "Top",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "2f3f13ab-56e7-48fc-86d6-ce46401590b4",
+			"folderPath": "/Ship Views",
+			"fullPath": "/Ship Views/Front",
+			"folderId": "f6960518-00a1-414e-ac36-bcb29553464c",
+			"name": "Front",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "cf7e524a-79cd-42da-8ef8-7dce4786cdcc",
+			"folderPath": "/Ship Views",
+			"fullPath": "/Ship Views/Back",
+			"folderId": "f6960518-00a1-414e-ac36-bcb29553464c",
+			"name": "Back",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "016007c1-7551-4643-94f6-e8ccad83eb4b",
+			"folderPath": "/Ship Views",
+			"fullPath": "/Ship Views/Left",
+			"folderId": "f6960518-00a1-414e-ac36-bcb29553464c",
+			"name": "Left",
+			"class": "AssetContainer"
 		}
 	],
 	"assetObjects": [
@@ -734,11 +867,47 @@
 			"class": "AssetObject"
 		},
 		{
-			"id": "53caa4e7-77fe-4b02-b141-95c06e2d09b5",
+			"id": "916baab7-c096-4f97-a7fb-04dbaddec623",
 			"containerPath": "/Ship Views",
 			"containerId": "8a48e30d-2c03-419a-a18f-794e0bd2a815",
 			"fullPath": "/Ship Views/Right",
 			"url": "https://s3.amazonaws.com/thorium-assets/Ship%20Views/Right/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "0ebc5477-baa9-491e-ae19-0f483c5aef1d",
+			"containerPath": "/Ship Views",
+			"containerId": "2f3f13ab-56e7-48fc-86d6-ce46401590b4",
+			"fullPath": "/Ship Views/Front",
+			"url": "https://s3.amazonaws.com/thorium-assets/Ship%20Views/Front/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "49151948-6b76-494e-bf2f-c9a7f7d98b63",
+			"containerPath": "/Ship Views",
+			"containerId": "cf7e524a-79cd-42da-8ef8-7dce4786cdcc",
+			"fullPath": "/Ship Views/Back",
+			"url": "https://s3.amazonaws.com/thorium-assets/Ship%20Views/Back/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "257c19bb-52bf-4b1b-a3d3-3fcac401c7ba",
+			"containerPath": "/Ship Views",
+			"containerId": "016007c1-7551-4643-94f6-e8ccad83eb4b",
+			"fullPath": "/Ship Views/Left",
+			"url": "https://s3.amazonaws.com/thorium-assets/Ship%20Views/Left/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "83b5896e-75b2-4124-9b78-f662d9cf5d91",
+			"containerPath": "/Ship Views",
+			"containerId": "7f74b781-c8cc-421e-9912-610e732ef7c3",
+			"fullPath": "/Ship Views/Top",
+			"url": "https://s3.amazonaws.com/thorium-assets/Ship%20Views/Top/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		}
