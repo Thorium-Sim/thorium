@@ -3,7 +3,7 @@
 [![Slack Status](https://slack.ralexanderson.com/badge.svg)](https://slack.ralexanderson.com)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/alexanderson1993/thorium)
 
-*New here? Check out the [Wiki](https://github.com/alexanderson1993/thorium/wiki) and the [Presentation](http://class.ralexanderson.com/thorium/)*
+*New here? Check out the [Wiki](https://github.com/alexanderson1993/thorium/wiki) and the [Project](https://github.com/orgs/Thorium-Sim/projects/1)*
 
 # Thorium
 
