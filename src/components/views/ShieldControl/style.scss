@@ -1,0 +1,17 @@
+.shields {
+  h1 {
+    margin-bottom: 50px;
+  }
+  .shieldImage {
+    transition: filter 2s ease-in-out;
+  }
+  .shieldControlBox {
+    margin-top: 50px;
+  }
+  .shieldBubble {
+    padding: 50px;
+    margin: 10px;
+    border-radius: 50%;
+    transition: box-shadow 2s ease-in-out;
+  }
+}

@@ -144,7 +144,7 @@ class AdminAssetsView extends Component {
 			this.props.data.loading ? <span>Loading...</span> :
 			<div className="cardAdminAssets">
 			<Row>
-			<Col className="col-sm-4">
+			<Col sm="4">
 			<div className="btn-group">
 			<Button type="primary" onClick={this._createFolder.bind(this)} label={<FontAwesome name="folder-open" />} />
 			<Button type="primary" onClick={this._createContainer.bind(this)} label={<FontAwesome name="file" />} />

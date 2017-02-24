@@ -1,5 +1,4 @@
 import App from '../../app.js';
-import { pubsub } from '../helpers/subscriptionManager.js';
 
 export const ShieldQueries = {
   shields(root, { simulatorId }) {
@@ -10,49 +9,25 @@ export const ShieldQueries = {
 };
 
 export const ShieldMutations = {
-  shieldRaised(root, { id }) {
-    systems.forEach((system) => {
-      if (system.id === id) {
-        system.shieldState(true);
-        pubsub.publish('shieldRaised', system);
-      }
-    });
-    return '';
-  },
-  shieldLowered(root, { id }) {
-    systems.forEach((system) => {
-      if (system.id === id) {
-        system.shieldState(false);
-        pubsub.publish('shieldLowered', system);
-      }
-    });
-    return '';
-  },
-  shieldIntegritySet(root, { id, integrity }) {
-    systems.forEach((system) => {
-      if (system.id === id) {
-        system.setIntegrity(integrity);
-        pubsub.publish('shieldIntegrity', system);
-      }
-    });
-    return '';
-  },
-  shieldFrequencySet(root, { id, frequency }) {
-    systems.forEach((system) => {
-      if (system.id === id) {
-        system.setFrequency(frequency);
-        pubsub.publish('shieldFrequency', system);
-      }
-    });
-    return '';
-  },
+  createShield(root, args) {
+   App.handleEvent(args, 'createShield', 'createdShield')
+ },
+ shieldRaised(root, args) {
+   App.handleEvent(args, 'shieldRaised', 'shieldRaiseded')
+ },
+ shieldLowered(root, args) {
+   App.handleEvent(args, 'shieldLowered', 'shieldLowereded')
+ },
+ shieldIntegritySet(root, args) {
+   App.handleEvent(args, 'shieldIntegritySet', 'shieldIntegritySetted')
+ },
+ shieldFrequencySet(root, args) {
+   App.handleEvent(args, 'shieldFrequencySet', 'shieldFrequencySetted')
+ },
 };
 
 export const ShieldSubscriptions = {
-  shieldRaised(rootValue) {
-    return rootValue;
-  },
-  shieldLowered(rootValue) {
+  shieldsUpdate(rootValue) {
     return rootValue;
   },
 };

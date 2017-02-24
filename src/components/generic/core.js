@@ -1,12 +1,12 @@
 import React from 'react';
 
 export const InputField = (props) => {
-  const style = {
+  const style = Object.assign({
     backgroundColor: '#FBFE3D',
     border: 'solid 1px #D2CB43',
     height: '16px',
     whiteSpace: 'pre'
-  }
+  }, props.style);
   const onClick = () => {
     const value = prompt(props.prompt);
     props.onClick(value);

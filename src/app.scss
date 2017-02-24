@@ -15,3 +15,18 @@
   -webkit-user-select: none;
   -o-user-select: none;
 }
+
+// Rotation Helpers
+
+.ccw-90{
+  transform: rotate(270deg);
+}
+
+.cw-90{
+transform: rotate(90deg);
+}
+
+.cw-180{
+transform: rotate(180deg);
+
+}
