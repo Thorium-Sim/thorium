@@ -272,7 +272,7 @@
 			},
 			"class": "Shield",
 			"type": "Shield",
-			"position": 4,
+			"position": 6,
 			"frequency": 161.50000000000506,
 			"state": true,
 			"integrity": 1
@@ -289,7 +289,7 @@
 			},
 			"class": "Shield",
 			"type": "Shield",
-			"position": 4,
+			"position": 5,
 			"frequency": 161.50000000000506,
 			"state": true,
 			"integrity": 1

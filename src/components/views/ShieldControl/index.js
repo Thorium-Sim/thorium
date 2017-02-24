@@ -23,7 +23,7 @@ class ShieldControl extends Component {
   constructor(props){
     super(props);
     this.state = {
-      frequency: 258.0,
+      frequency: {},
       frequencyAdder: 0.1,
       frequencySpeed: 250
     }
@@ -41,19 +41,30 @@ class ShieldControl extends Component {
       });
     }
     if (nextProps.data.shields) {
-      if (nextProps.data.shields[0]){
-        if (nextProps.data.shields[0].frequency) {
-          this.setState({
-            frequency: nextProps.data.shields[0].frequency
-          })
-        }
+      if (nextProps.data.shields){
+        const freq = this.state.frequency;
+        nextProps.data.shields.forEach(s => {
+          freq[s.id] = s.frequency || 200;
+        })
+        this.setState({
+          frequency: freq
+        })
       }
     }
   }
-  _toggleShields(){
+  _toggleShields(shields){
+    let state;
+    if (shields === 'down'){
+      state = true;
+    }
+    if (shields === 'up'){
+      state = false;
+    }
+    if (typeof shields === 'object'){
+      state = shields.state;
+    }
     let mutation;
-    let variables = {id: this.props.data.shields[0].id};
-    if (this.props.data.shields[0].state){
+    if (state){
       mutation = gql`
       mutation ToggleShields($id: ID!){
         shieldLowered(id: $id)
@@ -64,18 +75,31 @@ class ShieldControl extends Component {
         shieldRaised(id: $id)
       }`;
     }
-    this.props.client.mutate({
-      mutation,
-      variables
-    })
+    if (shields === 'down' || shields === 'up'){
+      this.props.data.shields.forEach(s => {
+        let variables = {id: s.id};
+        this.props.client.mutate({
+          mutation,
+          variables
+        })
+      })
+    } else {
+      let variables = {id: shields.id};
+      this.props.client.mutate({
+        mutation,
+        variables
+      })
+    }
   }
   shieldColor({state, integrity}) {
-    if (!state) return 'rgb(0,0,0)';
+    if (!state) return 'rgba(0,0,0,0)';
     let red = 0;
     let green = 0;
     let blue = 0;
+    let alpha = 1;
     if (integrity <= 0.33){
       red = integrity * 3 * 255;
+      alpha = 255 - (integrity * 3 * 255);
     }
     if (integrity > 0.33 && integrity <= 0.66) {
       red = 255;
@@ -86,9 +110,41 @@ class ShieldControl extends Component {
       green = (255 - (integrity * 128));
       blue = integrity * 255;
     }
-    return `rgb(${Math.round(red)},${Math.round(green)},${Math.round(blue)})`;
+    return `rgba(${Math.round(red)},${Math.round(green)},${Math.round(blue)},${Math.round(alpha)})`;
   }
-  _loop(which){
+  shieldStyle(shields, extra=false) {
+    // Creates the styles for multiple shields
+    const output = [];
+    shields.forEach(s => {
+      if (s.position === 1){
+        output.push(`20px 0px 20px -15px ${this.shieldColor(s)}`);
+        output.push(`inset -20px 0px 20px -15px ${this.shieldColor(s)}`);
+      }
+      if (s.position === 2){
+        output.push(`-20px 0px 20px -15px ${this.shieldColor(s)}`);
+        output.push(`inset 20px 0px 20px -15px ${this.shieldColor(s)}`);
+      }
+      if (s.position === 3 && !extra){
+        output.push(`0px -20px 20px -15px ${this.shieldColor(s)}`);
+        output.push(`inset 0px 20px 20px -15px ${this.shieldColor(s)}`);
+      }
+      if (s.position === 4 && !extra){
+        output.push(`0px 20px 20px -15px ${this.shieldColor(s)}`);
+        output.push(`inset 0px -20px 20px -15px ${this.shieldColor(s)}`);
+      }
+      if (s.position === 5 && extra){
+        output.push(`0px 20px 20px -15px ${this.shieldColor(s)}`);
+        output.push(`inset 0px -20px 20px -15px ${this.shieldColor(s)}`);
+      }
+      if (s.position === 6 && extra){
+        output.push(`0px -20px 20px -15px ${this.shieldColor(s)}`);
+        output.push(`inset 0px 20px 20px -15px ${this.shieldColor(s)}`);
+      }
+    })
+    console.log(output.length);
+    return output.join(',');
+  }
+  _loop(which, shields){
     let {frequency,frequencyAdder, frequencySpeed} = this.state;
     if (which === 'down') {
       frequencyAdder *= -1;
@@ -96,30 +152,28 @@ class ShieldControl extends Component {
     if (frequencySpeed > 10){
       frequencySpeed -= 5;
     }
-    frequency += frequencyAdder;
-    if (frequency <= 100){
-      this.setState({
-        frequency: 100,
-      })
+    frequency[shields.id] += frequencyAdder;
+    if (frequency[shields.id] <= 100){
+      frequency[shields.id] = 100;
     } else if (frequency >= 350){
-      this.setState({
-        frequency: 350,
-      })
+      frequency[shields.id] = 350;
     } else {
-      this.setState({
-        frequency,
-        frequencySpeed
-      })
-      this.freqLoop = setTimeout(this._loop.bind(this, which),this.state.frequencySpeed);
+      this.freqLoop = setTimeout(this._loop.bind(this, which, shields),this.state.frequencySpeed);
     }
+    this.setState({
+      frequency,
+      frequencySpeed
+    })
   }
   startLoop(which, shields){
+    const frequency = this.state.frequency
+    frequency[shields.id] = shields.frequency;
     this.setState({
-      frequency: shields.frequency,
+      frequency,
       frequencySpeed: 250
     })
     document.addEventListener('mouseup', this.stopLoop.bind(this, shields));
-    this.freqLoop = setTimeout(this._loop.bind(this, which),this.state.frequencySpeed);
+    this.freqLoop = setTimeout(this._loop.bind(this, which, shields),this.state.frequencySpeed);
   }
   stopLoop(shields){
     clearTimeout(this.freqLoop);
@@ -129,7 +183,7 @@ class ShieldControl extends Component {
     }`;
     const variables = {
       id: shields.id,
-      freq: this.state.frequency
+      freq: this.state.frequency[shields.id]
     }
     this.props.client.mutate({
       mutation,
@@ -161,29 +215,31 @@ class ShieldControl extends Component {
       </Col>
       <Col sm="7">
       <h2 className="text-center">
-      {`${Math.round(this.state.frequency * 100)/100} MHz`}</h2>
+      {`${Math.round(this.state.frequency[s.id] * 100)/100} MHz`}</h2>
       </Col>
       <Col sm="auto">
       <h1>
       <FontAwesome name="arrow-up" onMouseDown={this.startLoop.bind(this, 'up', s)} /></h1>
       </Col>
       </Row>
-      <Button color="success" size="lg" block onClick={this._toggleShields.bind(this)}>{`${s.state ? "Lower" : "Raise"} Shields`}</Button>
+      <Button color="success" size="lg" block onClick={this._toggleShields.bind(this, s)}>{`${s.state ? "Lower" : "Raise"} Shields`}</Button>
       </Col>
       </Row>
       </Container>
     }
     if (shields.length === 4) {
-            const color = this.shieldColor(shields[0]);
+      const color = this.shieldColor(shields[0]);
       return <Container fluid className="shields">
       <Row>
       <Col sm="6">
+      <div className="shieldBubble" style={{boxShadow: this.shieldStyle(shields)}}>
       <img role="presentation" className="mw-100 ccw-90 shieldImage" style={{filter: `drop-shadow(${color} 0px 0px 30px)`}} draggable="false" src={assetPath('/Ship Views/Top', 'default', 'png', false)} />
+      </div>
       </Col>
       <Col style={{marginTop: '50px'}} sm={{size: 5, offset: 1}}>
       <Row>
       {shields.map(s => {
-        return <Col sm="6" className="shieldControlBox">
+        return <Col sm="6" key={s.id} className="shieldControlBox">
         <h4>{s.name}</h4>
         <h5>Integrity: {`${Math.round(s.integrity * 100)}%`}</h5>
         <h5>Frequency:</h5>
@@ -193,41 +249,52 @@ class ShieldControl extends Component {
         <FontAwesome name="arrow-down" onMouseDown={this.startLoop.bind(this, 'down', s)} /></h4>
         </Col>
         <Col sm="6">
-        <h5 className="text-center">{`${Math.round(this.state.frequency * 100)/100} MHz`}</h5>
+        <h5 className="text-center">{`${Math.round(this.state.frequency[s.id] * 100)/100} MHz`}</h5>
         </Col>
         <Col sm="auto">
         <h4>
         <FontAwesome name="arrow-up" onMouseDown={this.startLoop.bind(this, 'up', s)} /></h4>
         </Col>
         </Row>
-        <Button color="success" block onClick={this._toggleShields.bind(this)}>{`${s.state ? "Lower" : "Raise"} ${name} Shields`}</Button>
+        <Button color="success" block onClick={this._toggleShields.bind(this, s)}>{`${s.state ? "Lower" : "Raise"} ${s.name} Shields`}</Button>
         </Col>
       })}
+      <Row style={{marginTop: '20px'}}>
+      <Col sm={{size: 6}}>
+      <Button color="success" block onClick={this._toggleShields.bind(this, 'down')}>Lower All Shields</Button>
+      </Col>
+      <Col sm={{size: 6}}>
+      <Button color="success" block onClick={this._toggleShields.bind(this, 'up')}>Raise All Shields</Button>
+      </Col>
+      </Row>
       </Row>
       </Col>
       </Row>
       </Container>
     }
     if (shields.length === 6) {
-      const color = this.shieldColor(shields[0]);
       return <Container fluid className="shields">
       <Row>
       <Col sm="6">
       <Row>
-      <Col sm={{size: 9, offset: 2}}>
-      <img role="presentation" className="mw-100 shieldImage" style={{filter: `drop-shadow(${color} 0px 0px 30px)`}} draggable="false" src={assetPath('/Ship Views/Top', 'default', 'png', false)} />
+      <Col sm={{size: 9, offset: 2}} style={{maxHeight: '50vh'}}>
+      <div className="shieldBubble" style={{boxShadow: this.shieldStyle(shields)}}>
+      <img role="presentation" className="mw-100 shieldImage" draggable="false" src={assetPath('/Ship Views/Top', 'default', 'png', false)} />
+      </div>
       </Col>
       </Row>
       <Row>
-      <Col sm="12">
-            <img role="presentation" className="mw-100 shieldImage" style={{filter: `drop-shadow(${color} 0px 0px 30px)`}} draggable="false" src={assetPath('/Ship Views/Right', 'default', 'png', false)} />
+      <Col sm={{size: 10, offset: 2}} style={{marginTop: '50px'}}>
+      <div className="shieldBubble" style={{boxShadow: this.shieldStyle(shields, true)}}>
+      <img role="presentation" className="mw-100 shieldImage" draggable="false" src={assetPath('/Ship Views/Right', 'default', 'png', false)} />
+      </div>
       </Col>
       </Row>
       </Col>
       <Col style={{marginTop: '10px'}} sm={{size: 5, offset: 1}}>
       <Row>
       {shields.map(s => {
-        return <Col sm="6" className="shieldControlBox">
+        return <Col sm="6" key={s.id} className="shieldControlBox">
         <h4>{s.name}</h4>
         <h5>Integrity: {`${Math.round(s.integrity * 100)}%`}</h5>
         <h5>Frequency:</h5>
@@ -237,23 +304,31 @@ class ShieldControl extends Component {
         <FontAwesome name="arrow-down" onMouseDown={this.startLoop.bind(this, 'down', s)} /></h4>
         </Col>
         <Col sm="6">
-        <h5 className="text-center">{`${Math.round(this.state.frequency * 100)/100} MHz`}</h5>
+        <h5 className="text-center">{`${Math.round(this.state.frequency[s.id] * 100)/100} MHz`}</h5>
         </Col>
         <Col sm="auto">
         <h4>
         <FontAwesome name="arrow-up" onMouseDown={this.startLoop.bind(this, 'up', s)} /></h4>
         </Col>
         </Row>
-        <Button color="success" block onClick={this._toggleShields.bind(this)}>{`${s.state ? "Lower" : "Raise"} ${name} Shields`}</Button>
+        <Button color="success" block onClick={this._toggleShields.bind(this, s)}>{`${s.state ? "Lower" : "Raise"} ${s.name} Shields`}</Button>
         </Col>
       })}
+      </Row>
+      <Row style={{marginTop: '20px'}}>
+      <Col sm={{size: 6}}>
+      <Button color="success" block onClick={this._toggleShields.bind(this, 'down')}>Lower All Shields</Button>
+      </Col>
+      <Col sm={{size: 6}}>
+      <Button color="success" block onClick={this._toggleShields.bind(this, 'up')}>Raise All Shields</Button>
+      </Col>
       </Row>
       </Col>
       </Row>
       </Container>
-   }
-   return 'Invalid Shield Configuration';
- }
+    }
+    return 'Invalid Shield Configuration';
+  }
 }
 
 const SHIELD_QUERY = gql`
