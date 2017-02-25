@@ -1,7 +1,7 @@
 import { Entity } from 'sourced';
 import jsonfile from 'jsonfile';
-import { writeFile } from './data/helpers/json-format';
-import * as Classes from './data/classes';
+import { writeFile } from './server/helpers/json-format';
+import * as Classes from './server/classes';
 
 class Events extends Entity {
   constructor(params) {

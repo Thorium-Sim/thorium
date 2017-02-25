@@ -10,12 +10,12 @@ import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { printSchema } from 'graphql/utilities/schemaPrinter';
 import graphqlExpressUpload from 'graphql-server-express-upload';
 
-import { schema, subscriptionManager } from './data/data';
-import './data/events';
-import './data/processes/engines';
-import './data/processes/thrusters';
-import './data/processes/sensorContacts';
-import './data/processes/clientPing';
+import { schema, subscriptionManager } from './server/data';
+import './server/events';
+import './server/processes/engines';
+import './server/processes/thrusters';
+import './server/processes/sensorContacts';
+import './server/processes/clientPing';
 
 const GRAPHQL_PORT = 3001;
 const WS_PORT = 3002;
