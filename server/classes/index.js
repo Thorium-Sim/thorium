@@ -12,3 +12,4 @@ export { StationSet, Station, Card } from './stationSet.js';
 export Flight from './flight.js';
 export Mission from './mission.js';
 export { Deck, Room } from './shipStructure';
+export LongRangeComm from './longRangeComm';

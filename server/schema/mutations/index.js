@@ -9,3 +9,4 @@ export sensors from './sensors';
 export clients from './clients';
 export flightStructure from './flightStructure';
 export shipStructure from './shipStructure';
+export lrComm from './lrComm';

@@ -8,3 +8,4 @@ import './clients';
 import './flightStructure';
 import './shipStructure';
 import './shields';
+import './lrComm';
