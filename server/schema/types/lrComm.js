@@ -21,3 +21,10 @@ type LRMessage {
   rf: Int
 }
 `;
+
+/*
+  #Messages from the crew to the control room
+  outgoingMessages: [LRMessage]
+  #Messages from the control room to the crew
+  incomingMessages: [LRMessage]
+  */
