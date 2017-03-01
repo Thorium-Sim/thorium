@@ -81,6 +81,7 @@
     "react-konva": "^1.1.1",
     "react-measure": "^1.4.5",
     "react-range": "0.0.7",
+    "react-rangeslider": "^2.0.1",
     "react-resizable": "^1.6.0",
     "react-router": "^3.0.2",
     "react-sortable-hoc": "^0.4.12",

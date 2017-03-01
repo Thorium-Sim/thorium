@@ -7,7 +7,7 @@ const stardate = () => {
   return Math.floor(finalDate) / 10;
 }
 
-export class LongRangeComm {
+export default class LongRangeComm {
   constructor(params) {
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId || null;
@@ -17,8 +17,8 @@ export class LongRangeComm {
     this.messages = [];
     params.messages.forEach(m => this.messages.push(new LRMessage(m)));
   }
-  createMessage(message, crew, decoded, sender){
-    const params = {message, crew, sender};
+  createMessage(message, crew, decoded, sender) {
+    const params = { message, crew, sender };
     if (decoded) {
       params.decodedMessage = message;
       params.a = (Math.round(Math.random() * 20 - 1) * 5 + 10);
