@@ -28,8 +28,8 @@ export default class LongRangeComm {
     }
     this.messages.push(new LRMessage(params));
   }
-  updateDecodedMessage(id, decodedMessage) {
-    this.messages.find(m => m.id === id).updateDecodedMessage(decodedMessage);
+  updateDecodedMessage(id, messageId, decodedMessage, a, f) {
+    this.messages.find(m => m.id === messageId).updateDecodedMessage(decodedMessage, a, f);
   }
 }
 
@@ -46,7 +46,9 @@ class LRMessage {
     this.ra = params.ra || (Math.round(Math.random() * 20 - 1) * 5 + 10);
     this.rf = params.rf || (Math.round(Math.random() * 10 - 1) * 5 + 5);
   }
-  updateDecodedMessage(decodedMessage) {
+  updateDecodedMessage(decodedMessage, a, f) {
     this.decodedMessage = decodedMessage;
+    this.a = a;
+    this.f = f;
   }
 }

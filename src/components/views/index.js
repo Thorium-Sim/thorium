@@ -18,9 +18,9 @@ import TransporterCore from './Transporters/core';
 import SensorsGridCore from './Sensors/gridCore';
 import SensorsCore from './Sensors/core';
 import ShieldControlCore from './ShieldControl/core';
+import LRCommCore from './CommDecoding/core';
+const Views = { Login, ShortRangeComm, LongRangeComm, AdminAssets, Thrusters, EngineControl, Navigation, Sensors, ShieldControl, Transporters, SecurityDecks, SecurityTeams, SecurityScans, CommDecoding };
 
-const Views = {Login, ShortRangeComm,LongRangeComm,AdminAssets,Thrusters,EngineControl,Navigation,Sensors, ShieldControl, Transporters, SecurityDecks, SecurityTeams, SecurityScans, CommDecoding};
-
-export const Cores = {EngineControlCore, TransporterCore, SensorsGridCore, SensorsCore, ShieldControlCore};
+export const Cores = { EngineControlCore, TransporterCore, SensorsGridCore, SensorsCore, ShieldControlCore, LRCommCore };
 
 export default Views;

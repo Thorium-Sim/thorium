@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Layer, Line, Stage } from 'react-konva';
-import { Container, Row, Col, Card, Button } from 'reactstrap';
+import { Container, Row, Col, Card, CardBlock, Button, Label } from 'reactstrap';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
@@ -31,9 +31,8 @@ subscription LRDecoding($simulatorId: ID!) {
 }
 `;
 
-const height = 300;
-const width = 700;
-const sinPoints = ({ a, f, p, animate }) => {
+const height = 250;
+const sinPoints = ({ a, f, p, animate, width }) => {
   let sinWidth = width * 2 * 2;
   if (animate) {
     sinWidth = width / 4 * 2
@@ -50,7 +49,7 @@ const sinPoints = ({ a, f, p, animate }) => {
       return Math.sin(i / 2 / f) * a + (height / 2);
     })
 }
-const decodePoints = ({ message, decodeProgress, ra, rf }) => {
+const decodePoints = ({ message, decodeProgress, ra, rf, width }) => {
   const newDecodeProgress = width / message.length * 2 * decodeProgress;
   let sinWidth = width / 8 * 2;
   return Array(sinWidth)
@@ -79,24 +78,22 @@ class Decoding extends Component {
       decodeProgress: null
     }
     this.decodeSubscription = null;
+    this.decodeTimeout = null;
   }
   componentWillReceiveProps(nextProps) {
     if (!this.decodeSubscription && !nextProps.data.loading) {
-      this.decodeSubscription = nextProps
-        .data
-        .subscribeToMore({
-          document: DECODING_SUB,
-          updateQuery: (previousResult, { subscriptionData }) => {
-            const returnResult = Immutable.Map(previousResult);
-            return returnResult
-              .merge({ longRangeCommunications: subscriptionData.data.longRangeCommunicationsUpdate })
-              .toJS();
-          }
-        });
+      this.decodeSubscription = nextProps.data.subscribeToMore({
+        document: DECODING_SUB,
+        updateQuery: (previousResult, { subscriptionData }) => {
+          const returnResult = Immutable.Map(previousResult);
+          return returnResult.merge({ longRangeCommunications: subscriptionData.data.longRangeCommunicationsUpdate }).toJS();
+        }
+      });
     }
   }
   decode() {
     let {
+      selectedMessage,
       decodeProgress,
       decodedMessage,
       message,
@@ -124,22 +121,32 @@ class Decoding extends Component {
         decodedMessage: decodedMessage.join(''),
         decodeProgress
       });
-      setTimeout(this.decode.bind(this), 50)
+      clearTimeout(this.decodeTimeout);
+      this.decodeTimeout = setTimeout(this.decode.bind(this), 50)
     } else {
+      // Update the server
+      const mutation = gql `mutation UpdateDecodedMessage($id: ID!, $messageId: ID!, $decodedMessage: String!, $a: Int!, $f: Int!) {
+        updateLongRangeDecodedMessage(id: $id, messageId: $messageId, decodedMessage: $decodedMessage, a: $a, f: $f)
+      }`;
+      const variables = {
+        id: this.props.data.longRangeCommunications[0].id,
+        messageId: selectedMessage,
+        decodedMessage: this.state.decodedMessage,
+        a,
+        f
+      }
+      this.props.client.mutate({
+        mutation,
+        variables
+      });
       this.setState({ decodeProgress: null })
     }
   }
-  randomMessage() {
-    //Create a random number within the needed bounds
-    this.setState({
-      ra: (Math.round(Math.random() * 20 - 1) * 5 + 10),
-      rf: (Math.round(Math.random() * 10 - 1) * 5 + 5)
-    })
-  }
   _selectMessage(message) {
-    debugger;
     this.setState({
-      selectedMessage: message
+      selectedMessage: message.id,
+      a: message.a,
+      f: message.f,
     });
   }
   _handleOnChange(which, e) {
@@ -147,45 +154,13 @@ class Decoding extends Component {
     obj[which] = e;
     this.setState(obj);
   }
-  _formatLabels(e) {
-    return `${e * 0.14 + 300} MHz`;
-  }
   render() {
+    let alertClass = `alertColor${this.props.simulator.alertLevel || 5}`;
     if (this.props.data.loading) return null;
     const sys = this.props.data.longRangeCommunications[0];
-    let selectedMessage = {};
+    let selectedMessage = { a: 20, f: 20 };
     if (this.state.selectedMessage) selectedMessage = sys.messages.find(m => m.id === this.state.selectedMessage);
     return <Container fluid className="lrComm">
-      {/*<Row>
-        <input
-          min={10}
-          step={5}
-          max={100}
-          value={this.state.a}
-          type="range"
-          onChange={(e) => {
-          this.setState({
-            a: parseInt(e.target.value, 10)
-          })
-        }}/>
-        <input
-          min={5}
-          step={5}
-          max={50}
-          value={this.state.f}
-          type="range"
-          onChange={(e) => {
-          this.setState({
-            f: parseInt(e.target.value, 10)
-          })
-        }}/>
-        <button onClick={this
-          .randomMessage
-          .bind(this)}>Random</button>
-        <button onClick={this
-          .decode
-          .bind(this)}>decode</button>
-          </Row>*/}
           <Row>
           <Col sm={8}>
           <Card style={{padding: 0}}>
@@ -193,7 +168,7 @@ class Decoding extends Component {
       { dimensions => (
       <div>
         <DecodingCanvas
-                dimensions={dimensions}
+        dimensions={dimensions}
         decodeProgress={this.state.decodeProgress}
         ra={selectedMessage.ra}
         rf={selectedMessage.rf}
@@ -204,30 +179,47 @@ class Decoding extends Component {
       ) }
       </Measure>
       </Card>
-      <Button color="secondary" onClick={() => {this.setState({decodedMessage:'', message:selectedMessage.message, ra:selectedMessage.ra, rf:selectedMessage.rf}); this.decode()}}>Decode</Button>
+      <Button className="decode-button" disabled={!this.state.selectedMessage} color="secondary" onClick={() => {this.setState({decodedMessage:'', message:selectedMessage.message, ra:selectedMessage.ra, rf:selectedMessage.rf}); this.decode()}}>Decode</Button>
+            <Row>
+            <Col>
+            <Label>Frequency</Label>
             <Slider
-        value={this.state.f}
-        orientation="horizontal"
-        onChange={this._handleOnChange.bind(this, 'f')}
-        format={this._formatLabels.bind(this)}
-        min={5}
-        step={5}
-        max={50}
-      />
+            className={`frequency-slider ${alertClass}`}
+            value={this.state.f}
+            orientation="horizontal"
+            onChange={this._handleOnChange.bind(this, 'f')}
+            tooltip={false}
+            min={5}
+            step={5}
+            max={50}
+            />
+      <Label>Amplitude</Label>
        <Slider
+        className={`amplitude-slider ${alertClass}`}
         value={this.state.a}
         orientation="horizontal"
         onChange={this._handleOnChange.bind(this, 'a')}
-        format={this._formatLabels.bind(this)}
+        tooltip={false}
         min={10}
         step={5}
         max={100}
       />
       </Col>
+      </Row>
+      <Row>
+      <Card className="message-field">
+      <CardBlock>
+      <pre>
+        {this.state.decodedMessage}
+        </pre>
+        </CardBlock>
+      </Card>
+      </Row>
+      </Col>
       <Col sm={4}>
       <Card>
       { sys.messages.map(m => (
-        <li key={m.id} onClick={this._selectMessage.bind(this, m.id)}
+        <li key={m.id} onClick={this._selectMessage.bind(this, m)}
         className={m.id === this.state.selectedMessage ? 'active' : ''}>
         {m.datestamp} - {m.sender}
         </li>
@@ -241,6 +233,7 @@ class Decoding extends Component {
 
 class DecodingCanvas extends Component {
   constructor(props) {
+    const width = props.dimensions.width;
     super(props);
     this.state = {
       p: width / 2 * -1,
@@ -252,6 +245,7 @@ class DecodingCanvas extends Component {
     });
   }
   loop() {
+    const width = this.props.dimensions.width;
     const newP = this.state.p + 20;
     if (newP < width * 2) {
       this.setState({ p: newP })
@@ -272,13 +266,13 @@ class DecodingCanvas extends Component {
       <Stage width={this.props.dimensions.width} height={height}>
         <Layer>
           <Line
-            points={sinPoints({f, a, message})}
+            points={sinPoints({f, a, message, width: this.props.dimensions.width})}
             stroke='red'
             strokeWidth={2}
             lineJoin="round"
             lineCap="round"/>
           <Line
-            points={decodeProgress ? decodePoints({rf, ra, message, decodeProgress}) : sinPoints({f: rf, a: ra, p: p, animate: true})}
+            points={decodeProgress ? decodePoints({rf, ra, message, decodeProgress, width: this.props.dimensions.width}) : sinPoints({f: rf, a: ra, p: p, animate: true, width: this.props.dimensions.width})}
             stroke={decodeProgress ? 'magenta' : 'yellow'}
             strokeWidth={2}
             lineJoin="round"
