@@ -71,7 +71,7 @@ export class TimelineObject {
     const timelineStep = this.timeline.find(t => t.id === timelineStepId);
     timelineStep.timelineItems.forEach(i => {
       // Execute the timeline item.
-      const args = JSON.parse(i.args);
+      const args = JSON.parse(i.args) || {};
       if (this.class === 'Simulator') {
         args.simulatorId = this.id;
       }
