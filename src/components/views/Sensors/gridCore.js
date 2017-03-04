@@ -68,7 +68,6 @@ class GridCore extends Component {
       this.sensorsSubscription = nextProps.data.subscribeToMore({
         document: SENSOR_SUB,
         updateQuery: (previousResult, {subscriptionData}) => {
-          debugger;
           const returnResult = Immutable.Map(previousResult);
           return returnResult.merge({sensors: subscriptionData.data.sensorsUpdate}).toJS();
         },

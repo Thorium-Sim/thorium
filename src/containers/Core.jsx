@@ -186,7 +186,8 @@ class Core extends Component {
 
       return ret.merge({i: l.id}).toObject();
     });
-    const simulators = this.state.flight ? flights.find(f => f.id === this.state.flight).simulators : [];
+    const flight = this.state.flight ? flights.find(f => f.id === this.state.flight) : {};
+    const simulators = flight ? flight.simulators : [];
     const renderLayout = layout.filter(l => {
       return l.name === this.state.layout;
     });

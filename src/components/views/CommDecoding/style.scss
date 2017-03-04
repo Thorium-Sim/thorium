@@ -1,0 +1,90 @@
+$alert5: #233F7A;
+$alert3: #4D4D16;
+$alert2: #804D19;
+$alert1: #801919;
+$alertp: #4D1980;
+.lrComm {
+    .message-field {
+        width: 100%;
+        height: 20vh;
+        margin-top: 25px;
+        overflow-y: scroll;
+    }
+    .card {
+        list-style: none;
+        li {
+            padding: 2px;
+            padding-left: 5px;
+        }
+        .active {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 5px;
+        }
+    }
+    .decode-button {
+        margin: 20px 0;
+    }
+    .rangeslider {
+        margin: 2px 0px;
+        background-color: #333;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+        .rangeslider__handle {
+            border: solid 1px #333;
+        }
+        &.alertColor5,
+        &.alertColor4 {
+            .rangeslider__handle {
+                background-color: $alert5;
+                &::after {
+                    background-color: darken($alert5, 10%);
+                }
+            }
+        }
+        &.alertColor3 {
+            .rangeslider__handle {
+                background-color: $alert3;
+                &::after {
+                    background-color: darken($alert3, 10%);
+                }
+            }
+        }
+        &.alertColor2 {
+            .rangeslider__handle {
+                background-color: $alert2;
+                &::after {
+                    background-color: darken($alert2, 10%);
+                }
+            }
+        }
+        &.alertColor1 {
+            .rangeslider__handle {
+                background-color: $alert1;
+                &::after {
+                    background-color: darken($alert1, 10%);
+                }
+            }
+        }
+        &.alertColorp {
+            .rangeslider__handle {
+                background-color: $alertp;
+                &::after {
+                    background-color: darken($alertp, 10%);
+                }
+            }
+        }
+    }
+    .frequency-slider {
+        .rangeslider__fill {
+            background-color: #922110
+        }
+    }
+}
+
+.comm-core {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    textarea {
+        width: 100%;
+    }
+}

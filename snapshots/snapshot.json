@@ -1,8 +1,8 @@
 {
-	"snapshotVersion": 91,
-	"timestamp": 1487785351407,
-	"version": 91,
-	"_eventsCount": 98,
+	"snapshotVersion": 3,
+	"timestamp": 1488469520898,
+	"version": 3,
+	"_eventsCount": 102,
 	"simulators": [
 		{
 			"timeline": [],
@@ -86,6 +86,14 @@
 							"type": "event",
 							"event": "addSensorsArray",
 							"args": "{\"domain\":\"internal\"}",
+							"delay": 0
+						},
+						{
+							"id": "5387c69d-a435-4fb2-93b0-00610c4a47cd",
+							"name": "Add Long Range Comm",
+							"type": "event",
+							"event": "createLongRange",
+							"args": null,
 							"delay": 0
 						}
 					]
@@ -193,6 +201,33 @@
 	],
 	"systems": [
 		{
+			"id": "long-range-comm",
+			"simulatorId": "test",
+			"type": "LongRangeCommunications",
+			"class": "LongRangeComm",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"name": "Long Range Communications",
+			"messages": [
+				{
+					"id": "message-1",
+					"message": "This is my test message. It is testing the messaging system.",
+					"decodedMessage": "",
+					"datestamp": 476,
+					"crew": true,
+					"sender": "Alex",
+					"a": 45,
+					"f": 45,
+					"ra": 30,
+					"rf": 30
+				}
+			]
+		},
+		{
 			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb3d",
 			"simulatorId": "test",
 			"name": "Fore",
@@ -277,7 +312,7 @@
 			"state": true,
 			"integrity": 1
 		},
-				{
+		{
 			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb32",
 			"simulatorId": "test",
 			"name": "Dorsal",
@@ -294,7 +329,6 @@
 			"state": true,
 			"integrity": 1
 		},
-
 		{
 			"id": "1b8c9a95-4b6d-47d9-92d2-e419bd291f61",
 			"simulatorId": "test",
@@ -629,7 +663,7 @@
 			"simulatorId": "test",
 			"name": "default",
 			"x": 0,
-			"y": 5,
+			"y": 12,
 			"w": 37,
 			"h": 24,
 			"component": "SensorsGridCore",
@@ -642,9 +676,21 @@
 			"name": "default",
 			"x": 19,
 			"y": 0,
-			"w": 13,
-			"h": 4,
+			"w": 16,
+			"h": 11,
 			"component": "ShieldControlCore",
+			"objectId": null,
+			"class": "CoreLayout"
+		},
+		{
+			"id": "2b7081be-773a-422f-abe5-31119d8de1a0",
+			"simulatorId": "test",
+			"name": "default",
+			"x": 0,
+			"y": 5,
+			"w": 19,
+			"h": 7,
+			"component": "LRCommCore",
 			"objectId": null,
 			"class": "CoreLayout"
 		}
