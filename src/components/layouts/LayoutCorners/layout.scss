@@ -109,7 +109,7 @@ body{
 	&:hover .icon{
 		transform: rotate(0deg);
 	}
-	&.logout {
+	&.logout, &.offline {
 		.options{
 			display: none;
 		}
@@ -281,7 +281,9 @@ body{
 				}
 			}
 		}
-
+		&.offline, &.logout {
+			pointer-events: none;
+		}
 		.card-icon-item:nth-child(1) {
 			.card-button-background{
 				transition-delay:(0.05s * 0);

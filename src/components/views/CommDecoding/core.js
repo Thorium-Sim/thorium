@@ -52,10 +52,9 @@ class LRCommCore extends Component {
     let value = e.target.value;
     const regex = /.*(?= out| out\.)/gi;
     const match = value.match(regex);
-    console.log(value, match)
     if (match) {
       this.setState({
-        messageSender: match[0]
+        messageSender: match[match.length - 2]
       });
     }
     this.setState({

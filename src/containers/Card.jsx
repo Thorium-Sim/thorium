@@ -1,6 +1,20 @@
 import React, { Component } from 'react';
 import Layouts from '../components/layouts';
 
+const Blackout = () => {
+  return <div style={{
+    width: '100vw',
+    height: '100vh',
+    position: 'fixed',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    zIndex: 10000,
+    backgroundColor: 'black',
+  }} />
+}
+
 export default class CardFrame extends Component {
   constructor(props) {
     super(props);
@@ -32,6 +46,9 @@ export default class CardFrame extends Component {
     } : this.props;
     const layoutName = station.layout || simulator.layout || 'LayoutCorners';
     let LayoutComponent = Layouts[layoutName] || Layouts.LayoutDefault;
+    if (client.offlineState === 'blackout') {
+      return <Blackout />
+    }
     return <LayoutComponent clientObj={client} flight={flight} simulator={simulator} station={station} cardName={this.state.card} changeCard={this._changeCard.bind(this)} />;
   }
 }

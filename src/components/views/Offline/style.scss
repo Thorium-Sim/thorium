@@ -1,0 +1,25 @@
+.blackout-back {
+  z-index: 1000000;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: black;
+}
+
+p.offline-title, p.offline-message {
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow: 10px 10px 10px rgba(0,0,0,0.75)
+}
+.offline-title {
+  font-size: 76px;
+  font-weight: 800;
+  color: red;
+}
+
+.offline-message{
+  font-size: 60px;
+  font-weight: 600;
+}

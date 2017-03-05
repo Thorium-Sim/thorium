@@ -58,6 +58,10 @@ export const ClientMutations = {
     App.handleEvent(args, 'clientUnlockScreen', 'clientUnlockScreened');
     return '';
   },
+  clientOfflineState: (root, args) => {
+    App.handleEvent(args, 'clientOfflineState', 'clientOfflinedState');
+    return '';
+  }
 };
 
 export const ClientSubscriptions = {

@@ -43,7 +43,7 @@ const Settings = (props) => {
 		});
 	}
 	return (
-		<div className={`settingsBall ${props.clientObj.loginState}`}>
+		<div className={`settingsBall ${props.clientObj.loginState} ${props.clientObj.offlineState ? 'offline' : ''}`}>
 		<div className={`icon ${props.className}`} />
 		<ul className="options">
 		<li>Help</li>
@@ -62,11 +62,15 @@ class LayoutCorners extends Component {
 		if (clientObj.loginState === 'logout'){
 			cardName = 'Login';
 		}
+		if (clientObj.offlineState) {
+			cardName = 'Offline';
+		}
 		return (<div>
 			<div className={`card-container card-area ${alertClass}`} >
 			<TransitionGroup>
 			{
-				station.cards.concat({name: 'Login', component: 'Login', icon: 'Login'}).map(card => {
+				station.cards.concat({name: 'Login', component: 'Login', icon: 'Login'})
+				.concat({name: 'Offline', component: 'Offline', icon: 'Offline'}).map(card => {
 					const component = Views[card.component];
 					if (card.name === cardName) {
 						return <CardHolder component={component} {...this.props} key={card.name} />
@@ -94,7 +98,7 @@ class LayoutCorners extends Component {
 			<h2 className="station-name">{station.name}</h2>
 			<h2 className="login-name">{clientObj.loginName}</h2>
 			</div>
-			<CardSwitcher cards={station.cards} currentCard={cardName} changeCard={changeCard} {...this.props} />
+			<CardSwitcher clientObj={this.props.clientObj} cards={station.cards} currentCard={cardName} changeCard={changeCard} {...this.props} />
 			<Settings client={this.props.client} clientObj={this.props.clientObj} className={alertClass} />
 			</div>
 			</div>);

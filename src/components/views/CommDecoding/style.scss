@@ -4,10 +4,14 @@ $alert2: #804D19;
 $alert1: #801919;
 $alertp: #4D1980;
 .lrComm {
+    pre {
+        white-space: pre-line;
+    }
     .message-field {
         width: 100%;
         height: 20vh;
         margin-top: 25px;
+        white-space: pre;
         overflow-y: scroll;
     }
     .card {

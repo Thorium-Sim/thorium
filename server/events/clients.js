@@ -73,3 +73,8 @@ App.on('clientUnlockScreened', ({ client }) => {
   clientObj.unlockScreen();
   pubsub.publish('clientChanged', App.clients);
 });
+App.on('clientOfflinedState', ({ client, state}) => {
+  const clientObj = App.clients.find((c) => c.id === client);
+  clientObj.setOfflineState(state);
+  pubsub.publish('clientChanged', App.clients);
+});
