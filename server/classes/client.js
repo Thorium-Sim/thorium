@@ -13,6 +13,7 @@ export default class Client {
     this.sentPing = null;
     this.ping = null;
     this.connected = params.connected || false;
+    this.offlineState = params.offlineState || null;
     this.class = 'Client';
   }
   connect() {
@@ -40,6 +41,10 @@ export default class Client {
   logout() {
     this.loginName = null;
     this.loginState = 'logout';
+  }
+  setOfflineState(state) {
+    // Allow one of null, 'blackout', 'offline', 'power', 'lockdown', and 'maintenance'
+    this.offlineState = state;
   }
   diagnostic() {
 

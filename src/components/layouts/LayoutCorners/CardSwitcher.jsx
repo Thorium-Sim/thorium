@@ -20,7 +20,7 @@ const CardButton = (props) => {
 
 class CardSwitcher extends Component {
 	render(){
-		return (<div className="card-icon-container">
+		return (<div className={`card-icon-container ${this.props.clientObj.offlineState ? 'offline' : ''} ${this.props.clientObj.loginState}`}>
 		{
 			this.props.cards.map((card,index) => {
 				return <CardButton key={index} cardNum={index} name={card.name} {...this.props} />;

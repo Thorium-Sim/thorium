@@ -23,15 +23,17 @@ export default class LongRangeComm {
     const params = { message, crew, sender };
     if (decoded) {
       params.decodedMessage = message;
-      params.a = (Math.round(Math.random() * 20 - 1) * 5 + 10);
+      params.a = (Math.round(Math.random() * 20 - 2) * 5 + 10);
       params.f = (Math.round(Math.random() * 10 - 1) * 5 + 5);
+      if (params.a === 0) params.a = 10;
+      if (params.f === 0) params.f = 5;
       params.ra = params.a;
       params.rf = params.rf;
     }
     this.messages.push(new LRMessage(params));
   }
   updateDecodedMessage(id, messageId, decodedMessage, a, f) {
-    const m = this.messages.find(m =>{console.log(messageId, m); return m.id === messageId});
+    const m = this.messages.find(m => m.id === messageId);
     m.updateDecodedMessage(decodedMessage, a, f);
   }
 }
@@ -46,8 +48,13 @@ class LRMessage {
     this.sender = params.sender || '';
     this.a = params.a || 20;
     this.f = params.f || 10;
-    this.ra = params.ra || (Math.round(Math.random() * 20 - 1) * 5 + 10);
+    this.ra = params.ra || (Math.round(Math.random() * 20 - 2) * 5 + 10);
     this.rf = params.rf || (Math.round(Math.random() * 10 - 1) * 5 + 5);
+    if (this.a === 0) this.a = 10;
+    if (this.f === 0) this.f = 5;
+    if (this.ra === 0) this.ra = 10;
+    if (this.rf === 0) this.rf = 5;
+
   }
   updateDecodedMessage(decodedMessage, a, f) {
     if (decodedMessage) this.decodedMessage = decodedMessage;

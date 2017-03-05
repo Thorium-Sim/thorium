@@ -11,4 +11,5 @@ export default `
   clientReset(client: ID!):String
   clientLockScreen(client: ID!):String
   clientUnlockScreen(client: ID!):String
+  clientOfflineState(client: ID!, state: String): String
 `;

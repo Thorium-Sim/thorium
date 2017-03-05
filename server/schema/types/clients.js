@@ -8,5 +8,6 @@ type Client {
   loginName: String
   loginState: String
   ping: String
+  offlineState: String
 }
 `;

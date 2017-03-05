@@ -58,6 +58,7 @@ subscription ClientChanged($client: ID!) {
 		}
 		loginName
 		loginState
+		offlineState
 	}
 }`;
 
@@ -159,6 +160,7 @@ query Clients($clientId: ID) {
 		}
 		loginName
 		loginState
+		offlineState
 	}
 }`;
 
