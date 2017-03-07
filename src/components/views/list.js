@@ -14,7 +14,8 @@ const viewList = [
 "SecurityScans",
 "ShieldControl",
 "CommDecoding",
-"Offline"
+"Offline",
+"ComposerWidget"
 ];
 
 export default viewList;

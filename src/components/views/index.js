@@ -21,6 +21,9 @@ import SensorsCore from './Sensors/core';
 import ShieldControlCore from './ShieldControl/core';
 import LRCommCore from './CommDecoding/core';
 
+import ComposerWidget from './LongRangeComm/Composer';
+
+
 const Views = { Login,
   ShortRangeComm,
   LongRangeComm,
@@ -36,6 +39,10 @@ const Views = { Login,
   SecurityScans,
   CommDecoding,
   Offline,
+};
+
+export const Widgets = {
+  composer: {widget: ComposerWidget, icon: 'pencil-square'},
 };
 
 export const Cores = { EngineControlCore,
