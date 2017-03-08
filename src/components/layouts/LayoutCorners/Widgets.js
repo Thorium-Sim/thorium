@@ -8,7 +8,7 @@ const WidgetsContainer = (props) => {
     <div className="widgets">
     {Object.keys(Widgets).map(key => {
       const widget = Widgets[key];
-      return <Widget widget={widget} wkey={key} key={key} />
+      return <Widget simulator={props.simulator} widget={widget} wkey={key} key={key} />
     })}
     </div>
     );
@@ -47,7 +47,7 @@ class Widget extends Component {
     { this.state.modal && <Modal className="modal-themed" isOpen={this.state.modal} toggle={this.toggleModal}>
     <ModalHeader toggle={this.toggleModal}>{widget.name}</ModalHeader>
     <ModalBody>
-    <Component />
+    <Component simulator={this.props.simulator}/>
     </ModalBody>
     </Modal>
   }
