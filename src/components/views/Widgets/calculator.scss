@@ -1,0 +1,55 @@
+
+$buttonSize: 117px;
+$black: #343838;
+$transBlack: rgba(0, 0, 0, 0.3);
+$gold: #CDB380;
+$cloud: #5E6F8C;
+$purp: #542437;
+
+.calculator {
+  button{
+    width: $buttonSize;
+    height: $buttonSize;
+    &[name="0"]{
+      width: 351px;
+    }
+    font:{
+      family: 'Roboto Mono';
+      size: 16px;
+    }
+    background: rgba(255,255,255,0.25);
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: background 100ms ease-in-out;
+    &:hover{
+      background: $cloud;
+    }
+    &:focus{
+      outline: none;
+    }
+  }
+  .calculator {
+    width: calc(4 * #{$buttonSize});
+    background: $black;
+    box-shadow: 0 0 $buttonSize 0 $transBlack;
+  }
+  .calc-display{
+    font-size: 26px;
+    padding: 26px 20px;
+    text-align: right;
+    color: white;
+    border-bottom: 3px solid $cloud;
+    box-shadow: 0 5px 21px -5px $transBlack;
+  }
+  .calc-numbers{
+    width: calc(3 * #{$buttonSize});
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    float: left;
+  }
+  .calc-functions{
+    float: left;
+  }
+}

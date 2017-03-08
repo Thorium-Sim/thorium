@@ -8,7 +8,7 @@ import createNetworkInterface from 'apollo-upload-network-interface';
 import App from './containers/App';
 import './app.scss';
 
-const wsClient = new SubscriptionClient('ws://138.68.192.142:3002', {
+const wsClient = new SubscriptionClient('ws://apple.local:3002', {
   reconnect: true,
 });
 
@@ -21,7 +21,7 @@ if (!clientId) {
 }
 
 const networkInterface = createNetworkInterface({
-  uri: 'http://138.68.192.142:3001/graphql',
+  uri: 'http://apple.local:3001/graphql',
   opts: {
     mode: 'cors',
   }

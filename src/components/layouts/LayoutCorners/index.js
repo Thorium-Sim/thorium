@@ -6,6 +6,7 @@ import Views from '../../views';
 import gql from 'graphql-tag'; 
 import { withApollo } from 'react-apollo';
 import CardSwitcher from './CardSwitcher';
+import Widgets from './Widgets';
 import './layout.scss';
 import './theme.scss';
 
@@ -100,6 +101,7 @@ class LayoutCorners extends Component {
 			</div>
 			<CardSwitcher clientObj={this.props.clientObj} cards={station.cards} currentCard={cardName} changeCard={changeCard} {...this.props} />
 			<Settings client={this.props.client} clientObj={this.props.clientObj} className={alertClass} />
+			<Widgets />
 			</div>
 			</div>);
 	}

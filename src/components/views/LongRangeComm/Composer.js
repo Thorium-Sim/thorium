@@ -6,10 +6,10 @@ const MessageComposer = () => {
   return (
     <Container fluid>
     <Row>
-    <Col sm={1}>
-    <h1>To:</h1>
+    <Col sm={2}>
+    <h2>To:</h2>
     </Col>
-    <Col sm={11}>
+    <Col sm={10}>
     <Input />
     </Col>
     </Row>
@@ -23,10 +23,10 @@ const MessageComposer = () => {
     </Col>
     </Row>
     <Row>
-    <Col sm={{size: 3, offset: 6}}>
+    <Col sm={{size: 6}}>
     <Button color="danger" block>Clear</Button>
     </Col>
-    <Col sm={3}>
+    <Col sm={6}>
     <Button block>Queue for Sending</Button>
     </Col>
     </Row>

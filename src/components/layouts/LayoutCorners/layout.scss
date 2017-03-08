@@ -22,6 +22,18 @@ body{
 	}
 }
 
+.widgets {
+	position: absolute;
+	left: 460px;
+	top: 5px;
+	.widget-item {
+		float: left;
+		margin: 4px;
+	}
+	.widget-icon {
+		transition: color 0.25s ease-in-out;
+	}
+}
 .settingsBall {
 	position: absolute;
 	bottom: 10px;
