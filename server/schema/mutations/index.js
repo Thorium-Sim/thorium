@@ -10,3 +10,4 @@ export clients from './clients';
 export flightStructure from './flightStructure';
 export shipStructure from './shipStructure';
 export lrComm from './lrComm';
+export internalComm from './internalComm';

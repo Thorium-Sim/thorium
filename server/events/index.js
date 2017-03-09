@@ -9,3 +9,4 @@ import './flightStructure';
 import './shipStructure';
 import './shields';
 import './lrComm';
+import './internalComm';

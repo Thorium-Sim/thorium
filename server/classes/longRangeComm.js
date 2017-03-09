@@ -1,4 +1,5 @@
 import uuid from 'uuid';
+// TODO: Make it so the stardate is stored separate from the timestamp
 
 const stardate = () => {
   var calculatedDate = new Date().getTime() / 1000 / 60 / 60 / 30 / 2;
