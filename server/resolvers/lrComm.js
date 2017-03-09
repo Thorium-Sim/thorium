@@ -18,6 +18,15 @@ export const LRCommQueries = {
         return sys;
       })
     }
+    if (typeof sent !== "undefined" && typeof crew !== "undefined") {
+      if (sent !== true && crew === false){
+        lrComm = lrComm.map(s => {
+          const sys = Object.assign({},s);
+          sys.messages = sys.messages.filter(m => m.deleted === false);
+          return sys;
+        })
+      }
+    }
     return lrComm;
   }
 };
@@ -34,6 +43,9 @@ export const LRCommMutations = {
   },
   longRangeMessageSend(root, args){
     App.handleEvent(args, 'longRangeMessageSend', 'longRangeMessageSent');
+  },
+  deleteLongRangeMessage(root, args){
+    App.handleEvent(args, 'deleteLongRangeMessage', 'deletedLongRangeMessage');
   },
   updateLongRangeDecodedMessage(root, args){
     App.handleEvent(args, 'updateLongRangeDecodedMessage', 'updatedLongRangeDecodedMessage');
@@ -56,6 +68,15 @@ export const LRCommSubscriptions = {
         sys.messages = sys.messages.filter(m => m.sent === sent);
         return sys;
       })
+    }
+    if (typeof sent !== "undefined" && typeof crew !== "undefined") {
+      if (sent !== true && crew === false){
+        rootValue = rootValue.map(s => {
+          const sys = Object.assign({},s);
+          sys.messages = sys.messages.filter(m => m.deleted === false);
+          return sys;
+        })
+      }
     }
     return rootValue;
   }

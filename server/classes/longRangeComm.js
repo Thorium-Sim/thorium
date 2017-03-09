@@ -35,6 +35,9 @@ export default class LongRangeComm {
   sendMessage(message){
     this.messages.find(m => m.id === message).sendMessage();
   }
+  deleteMessage(message){
+    this.messages.find(m => m.id === message).deleteMessage();
+  }
   updateDecodedMessage(id, messageId, decodedMessage, a, f) {
     const m = this.messages.find(m => m.id === messageId);
     m.updateDecodedMessage(decodedMessage, a, f);
@@ -53,6 +56,7 @@ class LRMessage {
     this.f = params.f || 10;
     this.ra = params.ra || (Math.round(Math.random() * 20 - 2) * 5 + 10);
     this.rf = params.rf || (Math.round(Math.random() * 10 - 1) * 5 + 5);
+    this.deleted = false;
     this.sent = params.sent || false;
     if (this.a === 0) this.a = 10;
     if (this.f === 0) this.f = 5;
@@ -61,6 +65,9 @@ class LRMessage {
   }
   sendMessage(){
     this.sent = true;
+  }
+  deleteMessage(){
+    this.deleted = true;
   }
   updateDecodedMessage(decodedMessage, a, f) {
     if (decodedMessage) this.decodedMessage = decodedMessage;

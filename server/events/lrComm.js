@@ -27,6 +27,10 @@ App.on('longRangeMessageSent', ({ id, message }) => {
   App.systems.find(s => s.id === id).sendMessage(message);
   pubsub.publish('longRangeCommunicationsUpdate', App.systems.filter(s => s.type === 'LongRangeCommunications'));
 });
+App.on('deletedLongRangeMessage', ({ id, message }) => {
+  App.systems.find(s => s.id === id).deleteMessage(message);
+  pubsub.publish('longRangeCommunicationsUpdate', App.systems.filter(s => s.type === 'LongRangeCommunications'));
+})
 App.on('updatedLongRangeDecodedMessage', ({ id, messageId, decodedMessage, a, f }) => {
   console.log(id, messageId, App.systems.find(s => s.id === id))
   App.systems.find(s => s.id === id).updateDecodedMessage(id, messageId, decodedMessage, a, f);
