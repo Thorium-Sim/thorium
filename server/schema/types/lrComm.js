@@ -13,6 +13,8 @@ type LRMessage {
   decodedMessage: String
   # True: This is a message to the crew, else a message to the control room
   crew: Boolean
+  sent: Boolean
+  deleted: Boolean
   sender: String
   datestamp: String
   a: Int

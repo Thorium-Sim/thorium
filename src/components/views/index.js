@@ -19,7 +19,11 @@ import TransporterCore from './Transporters/core';
 import SensorsGridCore from './Sensors/gridCore';
 import SensorsCore from './Sensors/core';
 import ShieldControlCore from './ShieldControl/core';
-import LRCommCore from './CommDecoding/core';
+import DecodingCore from './CommDecoding/core';
+import LRCommCore from './LongRangeComm/core';
+
+import ComposerWidget from './LongRangeComm/Composer';
+import CalculatorWidget from './Widgets/calculator';
 
 const Views = { Login,
   ShortRangeComm,
@@ -38,11 +42,17 @@ const Views = { Login,
   Offline,
 };
 
+export const Widgets = {
+  composer: {widget: ComposerWidget, icon: 'pencil-square-o', name:'Long Range Message Composer', color: 'rgb(200,150,255)'},
+  calculator: {widget: CalculatorWidget, icon: 'calculator', name:'Calculator', color: 'rgb(255,200,100)'},
+};
+
 export const Cores = { EngineControlCore,
   TransporterCore,
   SensorsGridCore,
   SensorsCore,
   ShieldControlCore,
+  DecodingCore,
   LRCommCore,
 };
 
