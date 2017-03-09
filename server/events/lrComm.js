@@ -11,6 +11,7 @@ App.on('removedLongRange', ({ id }) => {
   App.systems = App.systems.filter(s => s.id !== id);
   pubsub.publish('longRangeCommunicationsUpdate', App.systems.filter(s => s.type === 'LongRangeCommunications'));
 });
+//Creating a new long range message
 App.on('sentLongRangeMessage', ({ id, simulatorId, message, crew, decoded, sender }) => {
   if (id){
     App.systems.find(s => s.id === id).createMessage(message, crew, decoded, sender);
@@ -19,6 +20,11 @@ App.on('sentLongRangeMessage', ({ id, simulatorId, message, crew, decoded, sende
     App.systems.find(s => s.simulatorId === simulatorId && s.type === 'LongRangeCommunications')
     .createMessage(message, crew, decoded, sender);
   }
+  pubsub.publish('longRangeCommunicationsUpdate', App.systems.filter(s => s.type === 'LongRangeCommunications'));
+});
+//Queued messages are sent
+App.on('longRangeMessageSent', ({ id, message }) => {
+  App.systems.find(s => s.id === id).sendMessage(message);
   pubsub.publish('longRangeCommunicationsUpdate', App.systems.filter(s => s.type === 'LongRangeCommunications'));
 });
 App.on('updatedLongRangeDecodedMessage', ({ id, messageId, decodedMessage, a, f }) => {

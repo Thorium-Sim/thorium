@@ -1,0 +1,55 @@
+.comm-messages {
+  overflow: scroll;
+  background-color: lightgray;
+  font-size: 10px;
+  pre {
+    white-space: pre-line;
+    border-top: solid 0.5px gray;
+  }
+  pre:first-child{
+    border-top: none;
+  }
+}
+.long-range-comm {
+  .message-list {
+    list-style: none;
+    margin: 5px;
+    padding: 2px;
+    &.active{
+      background-color: gray;
+      border-radius: 5px;
+    }
+  }
+  pre {
+    white-space: pre-line;
+  }
+  .sat-container {
+    height: 40vh;
+    width: 100%;
+    padding: 1px;
+  }
+
+  .starfield {
+    background-color: #222;
+    border: solid 2px rgba(255,255,255,0.25);
+    position: relative;
+    margin: 0 auto;
+  }
+  .gridlines {
+    position: absolute;
+    background-color: transparent;
+    background-image:       linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .1) 25%, rgba(255, 255, 255, .1) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .1) 75%, rgba(255, 255, 255, .1) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .1) 25%, rgba(255, 255, 255, .1) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .1) 75%, rgba(255, 255, 255, .1) 76%, transparent 77%, transparent);
+    height:100%;
+    width: 100%;
+    background-size:50px 50px;
+  }
+  .sat{
+    position: absolute;
+    width: 48px;
+    height: 48px;
+  }
+  .strength {
+    height: 2px;
+    background-color: white;
+  }
+}
