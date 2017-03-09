@@ -75,7 +75,6 @@ class SensorsCore extends Component {
   }
   render() {
     const {objectId} = this.props; 
-    console.log(this.props.data.sensors)
     const sensors = this.props.data.loading ? {} : 
     (objectId ? this.props.data.sensors.find(s => s.id === objectId) : this.props.data.sensors[0]);
     const fieldStyle = {

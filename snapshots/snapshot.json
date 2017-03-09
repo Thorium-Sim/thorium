@@ -659,18 +659,6 @@
 			"class": "CoreLayout"
 		},
 		{
-			"id": "4ec82f9c-76bc-4cd4-ba35-fe5e45262018",
-			"simulatorId": "test",
-			"name": "default",
-			"x": 0,
-			"y": 12,
-			"w": 37,
-			"h": 24,
-			"component": "SensorsGridCore",
-			"objectId": null,
-			"class": "CoreLayout"
-		},
-		{
 			"id": "af22b5da-d700-489d-beaa-866742eef719",
 			"simulatorId": "test",
 			"name": "default",

@@ -5,7 +5,6 @@ import * as Classes from '../classes';
 App.on('createdTransporter', (params) => {
   const transporter = new Classes.Transporters(params);
   App.systems.push(transporter);
-  console.log(transporter);
 });
 App.on('removedTransporter', (params) => {
 

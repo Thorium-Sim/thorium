@@ -44,7 +44,6 @@ export default class ParsedModel{
         this.geometries.set(uuid, child.geometry);
       }
     });
-    //console.log('number of geometries merged', index);
 
     // create multimaterial
     this.material = new THREE.MeshFaceMaterial(this.materialsArray);

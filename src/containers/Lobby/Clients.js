@@ -62,14 +62,12 @@ class Clients extends Component {
       client: p.id,
       id: e.target.value
     }
-    console.log(obj);
     this.props.client.mutate({
       mutation: mutation,
       variables: obj
     })
   }
   render() {
-    console.log('PROPS:',this.props.data);
     return (<Container><Row className="justify-content-md-center"><Col xs="12">
       <h4>Clients</h4>
       <table className="table table-striped table-hover table-sm">
