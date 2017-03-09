@@ -13,6 +13,7 @@ import SecurityTeams from './SecurityTeams';
 import SecurityScans from './SecurityScans';
 import CommDecoding from './CommDecoding';
 import Offline from './Offline';
+import CommInternal from './CommInternal';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -21,6 +22,7 @@ import SensorsCore from './Sensors/core';
 import ShieldControlCore from './ShieldControl/core';
 import DecodingCore from './CommDecoding/core';
 import LRCommCore from './LongRangeComm/core';
+import InternalCommCore from './CommInternal/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -40,6 +42,7 @@ const Views = { Login,
   SecurityScans,
   CommDecoding,
   Offline,
+  CommInternal,
 };
 
 export const Widgets = {
@@ -54,6 +57,7 @@ export const Cores = { EngineControlCore,
   ShieldControlCore,
   DecodingCore,
   LRCommCore,
+  InternalCommCore
 };
 
 export default Views;

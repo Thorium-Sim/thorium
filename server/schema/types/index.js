@@ -12,6 +12,7 @@ export flightStructure from './flightStructure';
 export timeline from './timeline';
 export shipStructure from './shipStructure';
 export lrComm from './lrComm';
+export internalComm from './internalComm';
 
 export const role = `
 type role {

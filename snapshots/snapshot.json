@@ -1,8 +1,8 @@
 {
-	"snapshotVersion": 3,
-	"timestamp": 1488469520898,
-	"version": 3,
-	"_eventsCount": 102,
+	"snapshotVersion": 2,
+	"timestamp": 1489093236146,
+	"version": 2,
+	"_eventsCount": 113,
 	"simulators": [
 		{
 			"timeline": [],
@@ -223,7 +223,9 @@
 					"a": 45,
 					"f": 45,
 					"ra": 30,
-					"rf": 30
+					"rf": 30,
+					"deleted": false,
+					"sent": false
 				}
 			]
 		},
@@ -593,6 +595,17 @@
 			"scanning": false,
 			"contacts": [],
 			"armyContacts": []
+		},
+		{
+			"id": "32973f59-c28d-4eb4-b370-da0548b0ba0a",
+			"simulatorId": "test",
+			"type": "InternalCommunications",
+			"class": "InternalComm",
+			"power": {},
+			"name": "Internal Communications",
+			"state": "idle",
+			"outgoing": null,
+			"incoming": null
 		}
 	],
 	"clients": [
@@ -606,6 +619,7 @@
 			"sentPing": null,
 			"ping": null,
 			"connected": false,
+			"offlineState": null,
 			"class": "Client"
 		}
 	],
@@ -655,18 +669,6 @@
 			"w": 10,
 			"h": 5,
 			"component": "TransporterCore",
-			"objectId": null,
-			"class": "CoreLayout"
-		},
-		{
-			"id": "4ec82f9c-76bc-4cd4-ba35-fe5e45262018",
-			"simulatorId": "test",
-			"name": "default",
-			"x": 0,
-			"y": 12,
-			"w": 37,
-			"h": 24,
-			"component": "SensorsGridCore",
 			"objectId": null,
 			"class": "CoreLayout"
 		},

@@ -41,7 +41,6 @@ App.on('updatedHallwaySvg', ({ deckId, svg }) => {
 });
 App.on('addedRoom', ({ simulatorId, deckId, name, svgPath }) => {
   const room = new Classes.Room({ simulatorId, deckId, name, svgPath });
-  console.log(room);
   App.rooms.push(room);
   pubsub.publish('roomsUpdate', App.rooms);
 });

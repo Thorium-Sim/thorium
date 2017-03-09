@@ -199,10 +199,12 @@ class GridCore extends Component {
           <Col sm={8} style={{backgroundColor: 'gray'}}>
           <div className="heightPlaceholder"></div>
           <div className="spacer"></div>
-          <Measure>
+          <Measure
+          useClone={true}
+          includeMargin={false}>
+          >
           { dimensions => (
             <div id="threeSensors" className='array' style={{position:'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
-            {(() => console.log(dimensions) /*This is apparently necessary*/)()}
             {dimensions.width > 0 &&
               <SensorGrid
               core={true}

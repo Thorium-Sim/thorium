@@ -193,10 +193,11 @@ class Sensors extends Component{
 			</Col>
 			<Col className="col-sm-6 arrayContainer">
 			<div className="spacer"></div>
-			<Measure>
+			<Measure
+			    useClone={true}
+    includeMargin={false}>
 			{ dimensions => (
 				<div id="threeSensors" className='array'>
-				{(() => console.log(dimensions) /*This is apparently necessary*/)()} 
 				{dimensions.width > 0 &&
 					<SensorGrid 
 					sensor={sensors.id}

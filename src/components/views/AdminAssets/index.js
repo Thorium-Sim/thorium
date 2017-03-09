@@ -139,7 +139,6 @@ class AdminAssetsView extends Component {
 		})
 	}
 	render(){
-		console.log(this.props.data)
 		return (
 			this.props.data.loading ? <span>Loading...</span> :
 			<div className="cardAdminAssets">

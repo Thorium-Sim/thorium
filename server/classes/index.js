@@ -13,3 +13,4 @@ export Flight from './flight.js';
 export Mission from './mission.js';
 export { Deck, Room } from './shipStructure';
 export LongRangeComm from './longRangeComm';
+export InternalComm from './internalComm';
