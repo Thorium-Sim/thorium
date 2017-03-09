@@ -15,7 +15,7 @@ const viewList = [
 "ShieldControl",
 "CommDecoding",
 "Offline",
-"ComposerWidget"
+"CommInternal"
 ];
 
 export default viewList;

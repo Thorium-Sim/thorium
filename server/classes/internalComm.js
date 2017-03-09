@@ -8,32 +8,32 @@ export default class InternalComm {
     this.class = 'InternalComm';
     this.power = params.power || {};
     this.name = params.name || 'Internal Communications';
-    this.state = params.state || 'idle'; //One of 'idle', 'calling', 'connected'
+    this.state = params.state || 'idle'; //One of 'idle', 'connected'
     this.outgoing = params.outgoing || null;
     this.incoming = params.incoming || null;
   }
   connectOutgoing(){
     this.state = 'connected';
-    this.incoming = null;
+    this.incoming = this.outgoing;
   }
   connectIncoming(){
     this.state = 'connected';
-    this.outgoing = null;
+    this.outgoing = this.incoming;
   }
   callIncoming(incoming){
     this.incoming = incoming;
-    this.state = 'calling';
   }
   callOutgoing(outgoing){
     this.outgoing = outgoing;
-    this.state = 'calling';
   }
   cancelIncomingCall(){
     this.state = 'idle';
+    if (this.outgoing === this.incoming) this.outgoing = null;
     this.incoming = null;
   }
   cancelOutgoingCall(){
     this.state = 'idle';
+    if (this.incoming === this.outgoing) this.incoming = null;
     this.outgoing = null;
   }
 }

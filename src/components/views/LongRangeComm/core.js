@@ -54,8 +54,8 @@ class LRCommCore extends Component {
     return (<div className="comm-core">
       <p>Long Range Messages - Receiving</p>
       {
-        (this.props.data.longRangeCommunications.length > 0 ? <Container>
-          <Row className="comm-messages">
+        (this.props.data.longRangeCommunications.length > 0 ? <Container  style={{height: 'calc(100% - 16px)'}}>
+          <Row className="comm-messages" style={{height: '100%'}}>
           <Col sm={3}>
           <ul>
           {

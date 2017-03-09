@@ -50,12 +50,12 @@ const CoreComponent = (props) => {
     })
   }
   return (
-    <div>
+    <span>
     {
       props.editable && <FontAwesome name="ban" className="text-danger pull-right clickable" onClick={_removeCore.bind(this)} />
     }
     {props.children}
-    </div>
+    </span>
     );
 }
 

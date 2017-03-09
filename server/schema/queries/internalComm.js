@@ -1,3 +1,3 @@
 export default `
-internalComm(simulatorId: ID!): InternalComm
+internalComm(simulatorId: ID!): [InternalComm]
 `;
