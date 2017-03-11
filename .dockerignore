@@ -11,3 +11,4 @@ config
 build
 logo.png
 github-banner.png
+logs

@@ -9,8 +9,9 @@ import path from 'path';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { printSchema } from 'graphql/utilities/schemaPrinter';
 import graphqlExpressUpload from 'graphql-server-express-upload';
-
 import { schema, subscriptionManager } from './server/data';
+import scribe from './server/helpers/logging';
+
 import './server/events';
 import './server/processes/engines';
 import './server/processes/thrusters';
@@ -49,7 +50,7 @@ new SubscriptionServer(
 
 const graphQLServer = express();
 graphQLServer.use(require('express-status-monitor')());
-
+graphQLServer.use('/logs', scribe.webPanel());
 graphQLServer.use('*', cors());
 
 graphQLServer.use('/schema', (req, res) => {
@@ -80,10 +81,10 @@ graphQLServer.use('/assets', (req, res) => {
   });
 });
 
-graphQLServer.listen(GRAPHQL_PORT, () => console.log(
+graphQLServer.listen(GRAPHQL_PORT, () => log.log(
   `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}/graphql`,
   ));
 
-websocketServer.listen(WS_PORT, () => console.log(
+websocketServer.listen(WS_PORT, () => log.log(
   `Websocket Server is now running on http://localhost:${WS_PORT}`,
   ));

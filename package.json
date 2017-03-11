@@ -95,6 +95,7 @@
     "reactstrap": "^4.1.1",
     "request": "^2.79.0",
     "s3": "^4.4.0",
+    "scribe-js": "^2.0.4",
     "sourced": "^0.1.4",
     "subscriptions-transport-ws": "^0.5.0",
     "svg-mesh-3d": "^1.1.0",
@@ -137,6 +138,10 @@
     "extends": [
       "react-app"
     ],
+    "globals": {
+      "window": true,
+      "log": true
+    },
     "rules": {
       "no-use-before-define": 0,
       "arrow-body-style": 0,
