@@ -11,6 +11,7 @@ type Sensors {
   power: Power
   contacts: [SensorContact]
   armyContacts: [SensorContact]
+  damage: Damage
 }
 type SensorContact {
   id: ID

@@ -9,6 +9,6 @@ type Shields {
   frequency: Float
   state: Boolean 
   integrity: Float
-  damage: Float
+  damage: Damage
 }
 `;

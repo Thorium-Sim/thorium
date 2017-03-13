@@ -1,4 +1,5 @@
-import uuid from 'uuid';
+import { System } from './generic';
+
 // TODO: Make it so the stardate is stored separate from the timestamp
 
 const stardate = () => {
@@ -8,13 +9,11 @@ const stardate = () => {
   return Math.floor(finalDate) / 10;
 }
 
-export default class LongRangeComm {
+export default class LongRangeComm extends System {
   constructor(params) {
-    this.id = params.id || uuid.v4();
-    this.simulatorId = params.simulatorId || null;
+    super(params);
     this.type = 'LongRangeCommunications';
     this.class = 'LongRangeComm';
-    this.power = params.power || {};
     this.name = params.name || 'Long Range Communications';
     this.messages = [];
     const messages = params.messages || [];

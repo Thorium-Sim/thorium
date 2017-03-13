@@ -8,6 +8,7 @@ type Thruster {
   rotationRequired: Rotation
   manualThrusters: Boolean
   power: Power
+  damage: Damage
 }
 type Coordinates {
   x: Float

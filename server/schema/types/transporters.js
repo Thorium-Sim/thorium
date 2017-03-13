@@ -9,6 +9,7 @@ type Transporter {
   charge: Float
   state: String
   power: Power
+  damage: Damage
 }
 type TransporterTarget {
   id: ID

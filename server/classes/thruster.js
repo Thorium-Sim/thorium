@@ -1,4 +1,3 @@
-import uuid from 'uuid';
 import { System } from './generic';
 export default class Thrusters extends System {
   constructor(params) {
