@@ -18,6 +18,12 @@ subscription SensorsChanged {
 	}
 }`;
 
+const DamageOverlay = (props) => {
+	return <div className="damageOverlay">
+	<h1>{props.message || 'Damaged'}</h1>
+	</div>
+}
+
 class Sensors extends Component{
 	constructor(props){
 		super(props);
@@ -129,14 +135,15 @@ class Sensors extends Component{
 	}
 	render() {
 		//if (this.props.data.error) console.error(this.props.data.error);
-		const sensors = !this.props.data.loading ? this.props.data.sensors[0] : {armyContacts: []}
+		if (this.props.data.loading) return null;
+		const sensors = this.props.data.sensors[0];
 		const {hoverContact} = this.state;
 		return (
 			<div className="cardSensors">
-			{        this.props.data.loading ? 'Loading...' : 
 			<div>
 			<Row>
 			<Col className="col-sm-3 scans">
+						{sensors.damage.damaged && <DamageOverlay message="External Sensors Damaged" />}
 			<Row>
 			<Col className="col-sm-6">
 			<label>Scan for:</label>
@@ -194,11 +201,11 @@ class Sensors extends Component{
 			<Col className="col-sm-6 arrayContainer">
 			<div className="spacer"></div>
 			<Measure
-			    useClone={true}
-    includeMargin={false}>
+			useClone={true}
+			includeMargin={false}>
 			{ dimensions => (
 				<div id="threeSensors" className='array'>
-				{dimensions.width > 0 &&
+				{(dimensions.width > 0 && !sensors.damage.damaged) &&
 					<SensorGrid 
 					sensor={sensors.id}
 					dimensions={dimensions}
@@ -209,6 +216,7 @@ class Sensors extends Component{
 				</div>
 				) }
 			</Measure>
+			{sensors.damage.damaged && <DamageOverlay message="External Sensors Damaged" />}
 			</Col>
 			<Col className="col-sm-3 data">
 			<Row>
@@ -234,7 +242,6 @@ class Sensors extends Component{
 			</Col>
 			</Row>
 			</div>
-		}
 		</div>
 		);
 	}
@@ -249,9 +256,17 @@ query GetSensors($simulatorId: ID){
 		scanRequest
 		scanning
 		processedData
+		damage {
+			damaged
+			report
+		}
+		power {
+			power
+			powerLevels
+		}
 	}
 }`;
 
 export default  graphql(SENSOR_QUERY, {
-		options: (ownProps) => ({ variables: { simulatorId: ownProps.simulator.id } }),
+	options: (ownProps) => ({ variables: { simulatorId: ownProps.simulator.id } }),
 })(withApollo(Sensors));
