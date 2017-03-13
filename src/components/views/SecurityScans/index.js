@@ -17,6 +17,12 @@ subscription SensorsChanged {
 }`;
 
 
+const DamageOverlay = (props) => {
+  return <div className="damageOverlay">
+  <h1>{props.message || 'Damaged'}</h1>
+  </div>
+}
+
 class SecurityScans extends Component {
   constructor(props){
     super(props);
@@ -141,13 +147,14 @@ class SecurityScans extends Component {
   }
   render(){
     if (this.props.data.loading) return null;
-    const {scanning} = this.props.data.sensors[0];
+    const {scanning, damage} = this.props.data.sensors[0];
     const decks = this.props.data.decks;
     let rooms;
     if (this.state.selectedDeck && this.state.selectedDeck !== 'All Decks'){
       rooms = decks.find(d => d.id === this.state.selectedDeck).rooms;
     }
     return (<Row className="security-scans">
+      {damage.damaged && <DamageOverlay message="Internal Sensors Damaged" />}
       <Col sm={{size: 6, offset:2}}>
       <Row>
       <h4>Location Select:</h4>
@@ -243,6 +250,14 @@ query GetSensors($simulatorId: ID!){
     scanResults
     scanRequest
     scanning
+    damage {
+      damaged
+      report
+    }
+    power {
+      power
+      powerLevels
+    }
   }
   decks(simulatorId: $simulatorId) {
     id
