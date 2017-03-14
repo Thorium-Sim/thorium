@@ -21,7 +21,7 @@ export class System {
   setPower(powerLevel) {
     this.power.power = powerLevel;
   }
-  damage(report) {
+  break(report) {
     this.damage.damaged = true;
     this.damage.report = report;
   }

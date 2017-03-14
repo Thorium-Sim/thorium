@@ -12,10 +12,10 @@ export default class Engine extends System {
     this.heatRate = params.heatRate || 1;
     this.coolant = params.coolant || 0;
   }
-  damage(report) {
+  break(report) {
     this.on = false;
     this.speed = -1;
-    super.damage(report);
+    super.break(report);
   }
   setSpeed(speed, on) {
     this.speed = speed;

@@ -12,8 +12,14 @@ export default class Shield extends System {
     this.state = params.state || false;
     this.integrity = params.integrity || 1;
   }
+  break(report) {
+    this.state = false;
+    super.break(report);
+  }
   shieldState(state) {
-    this.state = state;
+    if (!this.damage.damaged){
+      this.state = state;
+    }
   }
   setIntegrity(integrity) {
     this.integrity = integrity;
