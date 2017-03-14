@@ -1,3 +1,4 @@
+import uuid from 'uuid';
 import { System } from './generic';
 
 // TODO: Make it so the stardate is stored separate from the timestamp
