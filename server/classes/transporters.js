@@ -28,6 +28,10 @@ export default class Transporters extends System {
       });
     }
   }
+  damage(report) {
+    this.clearTargets();
+    super.damage(report);
+  }
   removeTargets(number) {
     // Remove targets at random
     // Number represents the remaining targets
