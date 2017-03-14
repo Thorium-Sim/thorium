@@ -5,6 +5,32 @@ import Immutable from 'immutable';
 import {Container, Row, Col, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import assetPath from '../../../helpers/assets';
 
+const DamageOverlay = ({engine}) => {
+  const overlayStyle = {
+    width: '100%',
+    height: '100%',
+    top: '-11px',
+    left: '0px',
+    position: 'absolute',
+    backgroundColor: 'rgba(0,0,0,0.75)',
+    border: 'solid 1px rgba(255,255,255,0.5)',
+    zIndex: '1000',
+    display:'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  };
+  const textStyle = {
+    color: 'red',
+    width: '100%',
+    textAlign: 'center',
+  }
+  return <div style={overlayStyle} className="damageOverlay">
+  <h1 style={textStyle}>Internal Communications Damaged</h1>
+  </div>
+}
+
+
+
 const INTERNAL_SUB = gql`
 subscription InternalCommUpdate($simulatorId: ID!) {
   internalCommUpdate(simulatorId: $simulatorId) {
@@ -13,6 +39,14 @@ subscription InternalCommUpdate($simulatorId: ID!) {
     state
     outgoing
     incoming
+    damage {
+      damaged
+      report
+    }
+    power {
+      power
+      powerLevels
+    }
   }
 }`;
 
@@ -92,6 +126,7 @@ class InternalComm extends Component {
     const buttonStyle = {width: '50%', margin: '0 auto'};
     return (
       <Container className="internal-comm">
+      {internalComm.damage.damaged && <DamageOverlay />}
       <Row>
       <Col sm={{size: 2, offset: 1}}>
       <Button block disabled={(internalComm.state !== 'connected' && internalComm.outgoing) || internalComm.state === 'connected'}
@@ -167,6 +202,14 @@ query InternalComm($simulatorId: ID!) {
     state
     outgoing
     incoming
+    damage {
+      damaged
+      report
+    }
+    power {
+      power
+      powerLevels
+    }
   }
   decks(simulatorId: $simulatorId) {
     id
