@@ -3,6 +3,7 @@ type Sensors {
   id: ID
   simulatorId: ID
   type: String
+  name: String
   domain: String
   scanResults: String
   scanRequest: String

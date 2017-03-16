@@ -3,6 +3,7 @@ type Transporter {
   id: ID
   simulatorId: ID
   type: String
+  name: String
   targets: [TransporterTarget]
   requestedTarget: String
   destination: String

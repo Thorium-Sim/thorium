@@ -8,4 +8,7 @@ type System {
   damage: Damage
   power: Power
 }
+
+# Generic system type. Query any system by type.
+union SystemUnion = LRCommunications | Shield | Thruster | Engine | Transporter | Sensors | InternalComm
 `;

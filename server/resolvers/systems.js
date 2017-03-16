@@ -43,3 +43,11 @@ export const SystemsSubscriptions = {
     return returnSystems;
   }
 };
+
+export const SystemsTypes = {
+  SystemUnion: {
+    __resolveType(obj, context, info) {
+      return obj.type || null;
+    }
+  }
+}

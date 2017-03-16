@@ -3,7 +3,7 @@ import { System } from './generic';
 export default class InternalComm extends System {
   constructor(params) {
     super(params);
-    this.type = 'InternalCommunications';
+    this.type = 'InternalComm';
     this.class = 'InternalComm';
     this.name = params.name || 'Internal Communications';
     this.state = params.state || 'idle'; //One of 'idle', 'connected'

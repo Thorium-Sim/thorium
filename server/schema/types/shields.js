@@ -1,5 +1,5 @@
 export default `
-type Shields {
+type Shield {
   id: ID
   simulatorId: ID
   type: String

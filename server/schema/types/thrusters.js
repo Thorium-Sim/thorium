@@ -1,6 +1,8 @@
 export default `
 type Thruster {
   id: ID
+  name: String
+  type: String
   simulatorId: ID
   direction: Coordinates
   rotation: Rotation

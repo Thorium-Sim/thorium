@@ -10,7 +10,7 @@ import { SensorsQueries, SensorsMutations, SensorsSubscriptions, SensorsTypes } 
 import { ShipStructureQueries, ShipStructureMutations, ShipStructureSubscriptions, ShipStructureTypes } from './shipStructure';
 import { LRCommQueries, LRCommMutations, LRCommSubscriptions } from './lrComm';
 import { InternalCommQueries, InternalCommMutations, InternalCommSubscriptions } from './internalComm';
-import { SystemsQueries, SystemsMutations, SystemsSubscriptions } from './systems';
+import { SystemsQueries, SystemsMutations, SystemsSubscriptions, SystemsTypes } from './systems';
 
 import App from '../../app';
 
@@ -103,4 +103,5 @@ function parseJSONLiteral(ast) {
   FlightStructureTypes,
   ClientTypes,
   ShipStructureTypes,
+  SystemsTypes
   );

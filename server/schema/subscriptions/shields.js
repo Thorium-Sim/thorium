@@ -1,3 +1,3 @@
 export default `
-  shieldsUpdate: [Shields]
+  shieldsUpdate: [Shield]
 `;

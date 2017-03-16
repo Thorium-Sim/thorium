@@ -13,7 +13,7 @@ const stardate = () => {
 export default class LongRangeComm extends System {
   constructor(params) {
     super(params);
-    this.type = 'LongRangeCommunications';
+    this.type = 'LRCommunications';
     this.class = 'LongRangeComm';
     this.name = params.name || 'Long Range Communications';
     this.messages = [];
