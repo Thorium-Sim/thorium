@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Button, Row, Col, Container } from 'reactstrap';
 import gql from 'graphql-tag';
+import Immutable from 'immutable';
 import { graphql, compose } from 'react-apollo';
 import Engine1 from './engine-1';
 import Engine2 from './engine-2';
@@ -21,11 +22,27 @@ subscription HeatChanged{
 		heat
 	}
 }`;
+
+const SYSTEMS_SUB = gql`subscription SystemsUpdate($simulatorId: ID, $type: String){
+	systemsUpdate(simulatorId: $simulatorId, type: $type) {
+		id
+		power {
+			power
+			powerLevels
+		}
+		damage {
+			damaged
+			report
+		}
+	}
+}`;
+
 class EngineControl extends Component {
 	constructor(props){
 		super(props);
 		this.setSpeedSubscription = null;
 		this.heatChangeSubscription = null;
+		this.systemSub = null;
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -55,6 +72,20 @@ class EngineControl extends Component {
 					})
 					return previousResult;
 				},
+			});
+		}
+		if (!this.systemSub && !nextProps.data.loading) {
+			this.systemSub = nextProps.data.subscribeToMore({
+				document: SYSTEMS_SUB,
+				variables: {
+					simulatorId: nextProps.simulator.id,
+					type: "Engine"
+				},
+				updateQuery: (previousResult, { subscriptionData }) => {
+					return Immutable.Map(previousResult).mergeWith((oldVal, newVal, key) => {
+						return newVal.map((e, index) => Immutable.Map(oldVal[index]).merge({damage: e.get('damage'), power: e.get('power')}))
+					},{ engines: subscriptionData.data.systemsUpdate }).toJS()
+				}
 			});
 		}
 	}

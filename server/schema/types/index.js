@@ -14,6 +14,7 @@ export shipStructure from './shipStructure';
 export lrComm from './lrComm';
 export internalComm from './internalComm';
 export damage from './damage';
+export system from './system';
 
 export const role = `
 type role {

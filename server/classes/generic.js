@@ -6,7 +6,7 @@ const defaultPower = {
 };
 
 const defaultDamage = {
-  damaged: true,
+  damaged: false,
   report: null
 };
 
@@ -22,6 +22,8 @@ export class System {
     this.power.power = powerLevel;
   }
   break(report) {
+    // TODO: Generate the damage report if
+    // The report is null or blank.
     this.damage.damaged = true;
     this.damage.report = report;
   }
