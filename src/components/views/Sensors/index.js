@@ -2,27 +2,31 @@ import React, {Component} from 'react';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import { Button, Row, Col, Card } from 'reactstrap';
+import Immutable from 'immutable';
 import './style.scss';
 import SensorGrid from './SensorGrid.js';
 import Measure from 'react-measure';
+import DamageOverlay from '../helpers/DamageOverlay';
 
 const SENSOR_SUB = gql`
-subscription SensorsChanged {
-	sensorsUpdate {
+subscription SensorsChanged($simulatorId: ID) {
+	sensorsUpdate (simulatorId: $simulatorId, domain:"external"){
 		id
 		simulatorId
 		scanResults
 		scanRequest
 		processedData
 		scanning
+		damage {
+			damaged
+			report
+		}
+		power {
+			power
+			powerLevels
+		}
 	}
 }`;
-
-const DamageOverlay = (props) => {
-	return <div className="damageOverlay">
-	<h1>{props.message || 'Damaged'}</h1>
-	</div>
-}
 
 class Sensors extends Component{
 	constructor(props){
@@ -40,14 +44,10 @@ class Sensors extends Component{
 		if (!this.sensorsSubscription && !nextProps.data.loading) {
 			this.sensorsSubscription = nextProps.data.subscribeToMore({
 				document: SENSOR_SUB,
+				variables: {simulatorId: this.props.simulator.id},
 				updateQuery: (previousResult, {subscriptionData}) => {
-					previousResult.sensors = previousResult.sensors.map(sensor => {
-						if (sensor.id === subscriptionData.data.sensorsUpdate.id){
-							return subscriptionData.data.sensorsUpdate;
-						} 
-						return sensor;
-					})
-					return previousResult;
+					const returnResult = Immutable.Map(previousResult);
+					return returnResult.merge({ sensors: subscriptionData.data.sensorsUpdate }).toJS();
 				},
 			});
 		}
@@ -143,7 +143,7 @@ class Sensors extends Component{
 			<div>
 			<Row>
 			<Col className="col-sm-3 scans">
-						{sensors.damage.damaged && <DamageOverlay message="External Sensors Damaged" />}
+			<DamageOverlay message="External Sensors Offline" system={sensors} />
 			<Row>
 			<Col className="col-sm-6">
 			<label>Scan for:</label>
@@ -216,7 +216,7 @@ class Sensors extends Component{
 				</div>
 				) }
 			</Measure>
-			{sensors.damage.damaged && <DamageOverlay message="External Sensors Damaged" />}
+			<DamageOverlay message="External Sensors Offline" system={sensors} />
 			</Col>
 			<Col className="col-sm-3 data">
 			<Row>
@@ -242,8 +242,8 @@ class Sensors extends Component{
 			</Col>
 			</Row>
 			</div>
-		</div>
-		);
+			</div>
+			);
 	}
 }
 

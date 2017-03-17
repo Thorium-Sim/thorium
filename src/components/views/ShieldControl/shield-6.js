@@ -3,11 +3,11 @@ import { Container, Row, Col, Button } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import assetPath from '../../../helpers/assets';
 import shieldStyle from './shieldStyle';
-import DamageOverlay from './DamageOverlay';
+import DamageOverlay from '../helpers/DamageOverlay';
 
 const ShieldData = ({s, startLoop, state, _toggleShields}) => {
   return <Col sm="6" key={s.id} className="shieldControlBox">
-  {s.damage.damaged && <DamageOverlay shield={s} />}
+  <DamageOverlay system={s} message={`${s.name} Shields Offline`} style={{fontSize: '30px'}} />
   <h4>{s.name}</h4>
   <h5>Integrity: {`${Math.round(s.integrity * 100)}%`}</h5>
   <h5>Frequency:</h5>

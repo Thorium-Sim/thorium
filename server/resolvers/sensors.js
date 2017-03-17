@@ -83,8 +83,11 @@ export const SensorsMutations = {
 };
 
 export const SensorsSubscriptions = {
-  sensorsUpdate(root) {
-    return root;
+  sensorsUpdate(root, {simulatorId, domain}) {
+    let returnRes = root;
+    if (simulatorId) returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
+    if (domain) returnRes = returnRes.filter(s => s.domain === domain);
+    return returnRes;
   },
   sensorContactUpdate(root, { sensorId }) {
     return root.filter(contact => contact.sensorId === sensorId);

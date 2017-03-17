@@ -2,13 +2,13 @@ import React from 'react';
 import { Container, Row, Col, Button } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import assetPath from '../../../helpers/assets';
-import DamageOverlay from './DamageOverlay';
+import DamageOverlay from '../helpers/DamageOverlay';
 
 export default ({shields, startLoop, state, _toggleShields}) => {
       const s = shields[0];
       const color = this.shieldColor(s);
       return <Container className="shields">
-      {s.damage.damaged && <DamageOverlay shield={s} />}
+      <DamageOverlay system={s} message={`${s.name} Shields Offline`} />
       <Row>
       <Col sm="7">
       <img role="presentation" className="mw-100 ccw-90 shieldImage" style={{filter: `drop-shadow(${color} 0px 0px 30px)`}} draggable="false" src={assetPath('/Ship Views/Top', 'default', 'png', false)} />

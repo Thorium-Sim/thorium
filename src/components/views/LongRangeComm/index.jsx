@@ -5,32 +5,8 @@ import {Row, Col, Card, Button} from 'reactstrap';
 import Immutable from 'immutable';
 import Measure from 'react-measure';
 import Satellites from './Satellites';
+import DamageOverlay from '../helpers/DamageOverlay';
 import './style.scss';
-
-const DamageOverlay = ({engine}) => {
-  const overlayStyle = {
-    width: '100%',
-    minHeight: '400px',
-    height: 'calc(100% + 40px)',
-    top: '-11px',
-    left: '0px',
-    position: 'absolute',
-    backgroundColor: 'rgba(0,0,0,0.75)',
-    border: 'solid 1px rgba(255,255,255,0.5)',
-    zIndex: '1000',
-    display:'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  };
-  const textStyle = {
-    color: 'red',
-    width: '100%',
-    textAlign: 'center',
-  }
-  return <div style={overlayStyle} className="damageOverlay">
-  <h1 style={textStyle}>Long Range Communications Damaged</h1>
-  </div>
-}
 
 const MESSAGES_SUB = gql `
 subscription LRQueueingSub($simulatorId: ID) {
@@ -174,7 +150,6 @@ class LongRangeComm extends Component {
       setTimeout(messageHide, 2000);
     }
     const messageHide = () => {
-      debugger;
       this.setState({
         messageText: null,
         messageLoc: messageLoc()
@@ -199,7 +174,7 @@ class LongRangeComm extends Component {
     const messages = this.props.data.longRangeCommunications[0].messages;
     return (
       <Row className="long-range-comm">
-      {this.props.data.longRangeCommunications[0].damage.damaged && <DamageOverlay />}
+      <DamageOverlay system={this.props.data.longRangeCommunications[0]} message={"Long Range Communications Offline"} style={{minHeight: '400px' ,height: 'calc(100% + 40px)'}}/>
       <Col sm={3}>
       <Card>
       {messages.map(m => <li onClick={() => {this.setState({selectedMessage: m.id, selectedSat: null})}} className={`message-list ${m.id === this.state.selectedMessage ? 'active' : ''}`} key={m.id}>

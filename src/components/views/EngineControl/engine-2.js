@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Button, Col } from 'reactstrap';
 import HeatBar from './heatbar';
-import DamageOverlay from './damage';
+import DamageOverlay from '../helpers/DamageOverlay';
 
 export default (props) => {
     const {engines, setSpeed} = props;
@@ -14,7 +14,7 @@ export default (props) => {
     }
     return <Button disabled={engines[0].damage.damaged} key={`speed-${speedIndex}`} color="primary" block className="speedBtn" onClick={() => {setSpeed(engines[0],speedIndex,engines,0);}}>{speedWord}</Button>;
 })}
-        {(engines[0].damage.damaged) && <DamageOverlay engine={engines[0]} />}
+    <DamageOverlay system={engines[0]} message={`${engines[0].name} Engines Offline`} />
     </Col>
     <Col sm={2}>
     <Row>
@@ -47,7 +47,7 @@ export default (props) => {
     }
     return <Button disabled={engines[1].damage.damaged} key={`speed-${speedIndex}`} color="primary" block className="speedBtn" onClick={() => {setSpeed(engines[1],speedIndex,engines,1);}}>{speedWord}</Button>;
 })}
-    {(engines[1].damage.damaged) && <DamageOverlay engine={engines[1]} />}
+    <DamageOverlay system={engines[1]} message={`${engines[1].name} Engines Offline`} />
     </Col>
     </Row>;
 }

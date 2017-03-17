@@ -2,7 +2,7 @@ import App from '../../app';
 
 export const InternalCommQueries = {
   internalComm(root, {simulatorId}){
-    let comm = App.systems.filter(s => s.type === 'InternalCommunications');
+    let comm = App.systems.filter(s => s.type === 'InternalComm');
     if (simulatorId) comm = comm.filter(s => s.simulatorId === simulatorId);
     return comm;
   }

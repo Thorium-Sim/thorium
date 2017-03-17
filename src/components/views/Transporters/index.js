@@ -4,13 +4,8 @@ import { Button, Row, Col, Input } from 'reactstrap';
 import { graphql, withApollo } from 'react-apollo';
 import Target from './targeting';
 import Scan from './transporterScan';
+import DamageOverlay from '../helpers/DamageOverlay';
 import './style.scss';
-
-const DamageOverlay = () => {
-  return <div className="damageOverlay">
-  <h1>Transporters Damaged</h1>
-  </div>
-}
 
 const TRANSPORTER_SUB = gql`
 subscription TransportersSub{
@@ -183,7 +178,7 @@ class Transporters extends Component {
     const transporter = this.props.data.transporters[0] || {};
     return (
       <div className="transporter-control">
-      {transporter.damage.damaged && <DamageOverlay />}
+      <DamageOverlay system={transporter} message="Transporters Offline" />
       {transporter.state === 'Inactive' && <TargetSelect beginScan={this.beginScan.bind(this, transporter)} updateTarget={this.updateTarget.bind(this, transporter)} updateDestination={this.updateDestination.bind(this, transporter)} target={transporter.requestedTarget} destination={transporter.destination} />}
       {transporter.state === 'Scanning' && <Scanning cancelScan={this.cancelScan.bind(this, transporter)} />}
       {(transporter.state === 'Targeting' || transporter.state === 'Charging') && <Target completeTransport={this.completeTransport.bind(this, transporter)} cancelTransport={this.cancelTransport.bind(this, transporter)} setCharge={this.setCharge.bind(this, transporter)} targets={transporter.targets} />}

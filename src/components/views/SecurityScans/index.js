@@ -1,35 +1,39 @@
 import React, {Component} from 'react';
 import { graphql, withApollo } from 'react-apollo';
-import { Row, Col, Button, Input, Card, CardBlock } from 'reactstrap';
+import { Row, Col, Button, Input, Card, CardBlock, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import gql from 'graphql-tag';
 import moment from 'moment';
+import Immutable from 'immutable';
+import DamageOverlay from '../helpers/DamageOverlay';
 import './style.scss';
 
 const SENSOR_SUB = gql`
-subscription SensorsChanged {
-  sensorsUpdate {
+subscription SensorsChanged($simulatorId: ID) {
+  sensorsUpdate (simulatorId: $simulatorId, domain:"internal"){
     id
     simulatorId
     scanResults
     scanRequest
+    processedData
     scanning
+    damage {
+      damaged
+      report
+    }
+    power {
+      power
+      powerLevels
+    }
   }
 }`;
-
-
-const DamageOverlay = (props) => {
-  return <div className="damageOverlay">
-  <h1>{props.message || 'Damaged'}</h1>
-  </div>
-}
 
 class SecurityScans extends Component {
   constructor(props){
     super(props);
     this.sensorsSubscription = null;
     this.state = {
-      selectedDeck: 'All Decks',
-      selectedRoom: '',
+      selectedDeck: null,
+      selectedRoom: null,
       selectedScanType: 'Standard',
       scanResults: '',
       scanRequest: '',
@@ -40,14 +44,8 @@ class SecurityScans extends Component {
       this.sensorsSubscription = nextProps.data.subscribeToMore({
         document: SENSOR_SUB,
         updateQuery: (previousResult, {subscriptionData}) => {
-          let returnResult = Object.assign(previousResult);
-          returnResult.sensors = returnResult.sensors.map(sensor => {
-            if (sensor.id === subscriptionData.data.sensorsUpdate.id){
-              return subscriptionData.data.sensorsUpdate;
-            } 
-            return sensor;
-          })
-          return returnResult;
+          const returnResult = Immutable.Map(previousResult);
+          return returnResult.merge({ sensors: subscriptionData.data.sensorsUpdate }).toJS();
         },
       });
     }
@@ -147,99 +145,112 @@ class SecurityScans extends Component {
   }
   render(){
     if (this.props.data.loading) return null;
-    const {scanning, damage} = this.props.data.sensors[0];
-    const decks = this.props.data.decks;
+    const {scanning} = this.props.data.sensors[0];
+    const decks = [{id:null}].concat(this.props.data.decks);
     let rooms;
     if (this.state.selectedDeck && this.state.selectedDeck !== 'All Decks'){
-      rooms = decks.find(d => d.id === this.state.selectedDeck).rooms;
+      rooms = [{id:null}].concat(decks.find(d => d.id === this.state.selectedDeck).rooms);
     }
     return (<Row className="security-scans">
-      {damage.damaged && <DamageOverlay message="Internal Sensors Damaged" />}
+      <DamageOverlay message="Internal Sensors Offline" system={this.props.data.sensors[0]} />
       <Col sm={{size: 6, offset:2}}>
       <Row>
       <h4>Location Select:</h4>
       </Row>
       <Row>
       <Col sm={'auto'}>
-      <Input type="select" value={this.state.selectedDeck} onChange={this._selectDeck.bind(this)}>
-      <option value="All Decks">All Decks</option>
+      
+    <UncontrolledDropdown>
+    <DropdownToggle block caret>
+    {this.state.selectedDeck ? `Deck ${decks.find(d => d.id === this.state.selectedDeck).number}` : 'All Decks'}
+    </DropdownToggle>
+    <DropdownMenu>
+    {
+      decks.map(d => <DropdownItem key={d.id} onClick={() => {
+        this.setState({selectedDeck: d.id, selectedRoom: null})
+      }}>{d.number ? `Deck ${d.number}` : `All Decks`}</DropdownItem>)
+    }
+    </DropdownMenu>
+    </UncontrolledDropdown>
+    </Col>
+    <Col>
+    
+    <UncontrolledDropdown>
+    <DropdownToggle disabled={!this.state.selectedDeck || this.state.selectedDeck === 'All Decks'} block caret>
+    {this.state.selectedRoom ? decks.find(d => d.id === this.state.selectedDeck).rooms.find(r => r.id === this.state.selectedRoom).name : 'Entire Deck'}
+    </DropdownToggle>
+    { this.state.selectedDeck && 
+      <DropdownMenu>
+      <DropdownItem onClick={() => {
+        this.setState({selectedRoom: null})
+      }}>Deck {decks.find(d => d.id === this.state.selectedDeck).number}</DropdownItem>
       {
-        decks.map(d => (
-          <option 
-          key={d.id} 
-          value={d.id}>{`Deck ${d.number}`}</option>))
+        rooms.map(r => <DropdownItem key={r.id} onClick={() => {
+          this.setState({selectedRoom: r.id})
+        }}>{r.name}</DropdownItem>)
       }
-      </Input>
-      </Col>
-      <Col>
-      <Input disabled={!this.state.selectedDeck || this.state.selectedDeck === 'All Decks'} value={this.state.selectedRoom} type="select" onChange={this._selectRoom.bind(this)}>
-      <option value="">Entire Deck</option>
-      {
-        rooms && rooms.map(r => (
-          <option 
-          key={r.id} 
-          value={r.id}>{r.name}</option>))
-      }
-      </Input>
+      </DropdownMenu>
+    }
+    </UncontrolledDropdown>
+    </Col>
+    </Row>
+    <Row style={{marginTop: "20px"}}>
+    <h4>Scan Input:</h4>
+    </Row>
+    <Row>
+    <Col>
+    <Input type="text" onChange={this._setScanRequest.bind(this)} value={this.state.scanRequest} />
+    </Col>
+    </Row>
+    { scanning ?
+      <div>
+      <Row>
+      <Col sm="auto">
+      <Button size="lg" color="danger" onClick={this._stopScan.bind(this)}>Cancel Scan</Button>
       </Col>
       </Row>
-      <Row style={{marginTop: "20px"}}>
-      <h4>Scan Input:</h4>
+      <Row style={{marginTop: "50px"}}>
+      <h4 className="text-center">Scan in progress...</h4>
+      <Card className="scannerBox">
+      <div className="scanner"></div>
+      </Card>
+      </Row>
+      </div>
+      :
+      <div>
+      <Row>
+      <Col sm="auto">
+      <Button size="lg" onClick={this._scanRequest.bind(this)}>Begin Scan</Button>
+      </Col>
+      <Col sm="auto">
+      <Button color="warning" size="lg">Clear</Button>
+      </Col>
+      </Row>
+      <Row style={{marginTop: "50px"}}>
+      <h4>Scan Results:</h4>
       </Row>
       <Row>
       <Col>
-      <Input type="text" onChange={this._setScanRequest.bind(this)} value={this.state.scanRequest} />
+      <Card className="results">
+      <CardBlock>
+      <p>{this.state.scanResults}</p>
+      </CardBlock>
+      </Card>
       </Col>
       </Row>
-      { scanning ?
-        <div>
-        <Row>
-        <Col sm="auto">
-        <Button size="lg" color="danger" onClick={this._stopScan.bind(this)}>Cancel Scan</Button>
-        </Col>
-        </Row>
-        <Row style={{marginTop: "50px"}}>
-        <h4 className="text-center">Scan in progress...</h4>
-        <Card className="scannerBox">
-        <div className="scanner"></div>
-        </Card>
-        </Row>
-        </div>
-        :
-        <div>
-        <Row>
-        <Col sm="auto">
-        <Button size="lg" onClick={this._scanRequest.bind(this)}>Begin Scan</Button>
-        </Col>
-        <Col sm="auto">
-        <Button color="warning" size="lg">Clear</Button>
-        </Col>
-        </Row>
-        <Row style={{marginTop: "50px"}}>
-        <h4>Scan Results:</h4>
-        </Row>
-        <Row>
-        <Col>
-        <Card className="results">
-        <CardBlock>
-        <p>{this.state.scanResults}</p>
-        </CardBlock>
-        </Card>
-        </Col>
-        </Row>
-        </div>
-      }
-      </Col>
-      <Col sm={{size: 2, offset: 1}}>
-      <h4>Scan Type:</h4>
-      <Button block onClick={this._setSelectedScan.bind(this, 'Standard')} className={this.state.selectedScanType === 'Standard' ? 'active' : ''}>Standard</Button>
-      <Button block onClick={this._setSelectedScan.bind(this, 'Organic')} className={this.state.selectedScanType === 'Organic' ? 'active' : ''}>Organic</Button>
-      <Button block onClick={this._setSelectedScan.bind(this, 'Inorganic')} className={this.state.selectedScanType === 'Inorganic' ? 'active' : ''}>Inorganic</Button>
-      <Button block onClick={this._setSelectedScan.bind(this, 'Infrared')} className={this.state.selectedScanType === 'Infrared' ? 'active' : ''}>Infrared</Button>
-      <Button block onClick={this._setSelectedScan.bind(this, 'Subspace')} className={this.state.selectedScanType === 'Subspace' ? 'active' : ''}>Subspace</Button>
-      </Col>
-      </Row>)
-  }
+      </div>
+    }
+    </Col>
+    <Col sm={{size: 2, offset: 1}}>
+    <h4>Scan Type:</h4>
+    <Button block onClick={this._setSelectedScan.bind(this, 'Standard')} className={this.state.selectedScanType === 'Standard' ? 'active' : ''}>Standard</Button>
+    <Button block onClick={this._setSelectedScan.bind(this, 'Organic')} className={this.state.selectedScanType === 'Organic' ? 'active' : ''}>Organic</Button>
+    <Button block onClick={this._setSelectedScan.bind(this, 'Inorganic')} className={this.state.selectedScanType === 'Inorganic' ? 'active' : ''}>Inorganic</Button>
+    <Button block onClick={this._setSelectedScan.bind(this, 'Infrared')} className={this.state.selectedScanType === 'Infrared' ? 'active' : ''}>Infrared</Button>
+    <Button block onClick={this._setSelectedScan.bind(this, 'Subspace')} className={this.state.selectedScanType === 'Subspace' ? 'active' : ''}>Subspace</Button>
+    </Col>
+    </Row>)
+}
 }
 
 const SENSOR_QUERY = gql`

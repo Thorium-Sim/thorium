@@ -70,7 +70,17 @@ class DamageControlCore extends Component {
     return sys.name;
   }
   setPower(system, power) {
-
+    const mutation = gql`mutation SetPower($systemId: ID!, $power: Int!){
+      changePower(systemId: $systemId, power: $power)
+    }`;
+    const variables = {
+      systemId: system.id,
+      power
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
   }
   toggleDamage(system) {
     const variables = {
