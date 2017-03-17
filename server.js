@@ -29,7 +29,7 @@ OpticsAgent.instrumentSchema(schema);
 
 const GraphQLOptions = (req) => ({
   schema,
-  opticsContext: OpticsAgent.context(req),
+  context:{opticsContext: OpticsAgent.context(req)},
 });
 
 const upload = multer({
