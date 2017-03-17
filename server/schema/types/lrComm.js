@@ -5,6 +5,7 @@ type LRCommunications {
   type: String
   power: Power
   name: String
+  damage: Damage
   messages: [LRMessage]
 }
 type LRMessage {

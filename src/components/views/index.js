@@ -23,6 +23,7 @@ import ShieldControlCore from './ShieldControl/core';
 import DecodingCore from './CommDecoding/core';
 import LRCommCore from './LongRangeComm/core';
 import InternalCommCore from './CommInternal/core';
+import DamageControlCore from './DamageControl/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -57,7 +58,8 @@ export const Cores = { EngineControlCore,
   ShieldControlCore,
   DecodingCore,
   LRCommCore,
-  InternalCommCore
+  InternalCommCore,
+  DamageControlCore
 };
 
 export default Views;

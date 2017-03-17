@@ -2,19 +2,29 @@ import React, {Component} from 'react';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import { Button, Row, Col, Card } from 'reactstrap';
+import Immutable from 'immutable';
 import './style.scss';
 import SensorGrid from './SensorGrid.js';
 import Measure from 'react-measure';
+import DamageOverlay from '../helpers/DamageOverlay';
 
 const SENSOR_SUB = gql`
-subscription SensorsChanged {
-	sensorsUpdate {
+subscription SensorsChanged($simulatorId: ID) {
+	sensorsUpdate (simulatorId: $simulatorId, domain:"external"){
 		id
 		simulatorId
 		scanResults
 		scanRequest
 		processedData
 		scanning
+		damage {
+			damaged
+			report
+		}
+		power {
+			power
+			powerLevels
+		}
 	}
 }`;
 
@@ -34,14 +44,10 @@ class Sensors extends Component{
 		if (!this.sensorsSubscription && !nextProps.data.loading) {
 			this.sensorsSubscription = nextProps.data.subscribeToMore({
 				document: SENSOR_SUB,
+				variables: {simulatorId: this.props.simulator.id},
 				updateQuery: (previousResult, {subscriptionData}) => {
-					previousResult.sensors = previousResult.sensors.map(sensor => {
-						if (sensor.id === subscriptionData.data.sensorsUpdate.id){
-							return subscriptionData.data.sensorsUpdate;
-						} 
-						return sensor;
-					})
-					return previousResult;
+					const returnResult = Immutable.Map(previousResult);
+					return returnResult.merge({ sensors: subscriptionData.data.sensorsUpdate }).toJS();
 				},
 			});
 		}
@@ -129,14 +135,15 @@ class Sensors extends Component{
 	}
 	render() {
 		//if (this.props.data.error) console.error(this.props.data.error);
-		const sensors = !this.props.data.loading ? this.props.data.sensors[0] : {armyContacts: []}
+		if (this.props.data.loading) return null;
+		const sensors = this.props.data.sensors[0];
 		const {hoverContact} = this.state;
 		return (
 			<div className="cardSensors">
-			{        this.props.data.loading ? 'Loading...' : 
 			<div>
 			<Row>
 			<Col className="col-sm-3 scans">
+			<DamageOverlay message="External Sensors Offline" system={sensors} />
 			<Row>
 			<Col className="col-sm-6">
 			<label>Scan for:</label>
@@ -194,11 +201,11 @@ class Sensors extends Component{
 			<Col className="col-sm-6 arrayContainer">
 			<div className="spacer"></div>
 			<Measure
-			    useClone={true}
-    includeMargin={false}>
+			useClone={true}
+			includeMargin={false}>
 			{ dimensions => (
 				<div id="threeSensors" className='array'>
-				{dimensions.width > 0 &&
+				{(dimensions.width > 0 && !sensors.damage.damaged) &&
 					<SensorGrid 
 					sensor={sensors.id}
 					dimensions={dimensions}
@@ -209,6 +216,7 @@ class Sensors extends Component{
 				</div>
 				) }
 			</Measure>
+			<DamageOverlay message="External Sensors Offline" system={sensors} />
 			</Col>
 			<Col className="col-sm-3 data">
 			<Row>
@@ -234,9 +242,8 @@ class Sensors extends Component{
 			</Col>
 			</Row>
 			</div>
-		}
-		</div>
-		);
+			</div>
+			);
 	}
 }
 
@@ -249,9 +256,17 @@ query GetSensors($simulatorId: ID){
 		scanRequest
 		scanning
 		processedData
+		damage {
+			damaged
+			report
+		}
+		power {
+			power
+			powerLevels
+		}
 	}
 }`;
 
 export default  graphql(SENSOR_QUERY, {
-		options: (ownProps) => ({ variables: { simulatorId: ownProps.simulator.id } }),
+	options: (ownProps) => ({ variables: { simulatorId: ownProps.simulator.id } }),
 })(withApollo(Sensors));

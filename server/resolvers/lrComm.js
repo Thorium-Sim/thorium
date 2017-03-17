@@ -2,7 +2,7 @@ import App from '../../app';
 
 export const LRCommQueries = {
   longRangeCommunications(root, {simulatorId, crew, sent}){
-    let lrComm = App.systems.filter(s => s.type === 'LongRangeCommunications');
+    let lrComm = App.systems.filter(s => s.type === 'LRCommunications');
     if (simulatorId) lrComm = lrComm.filter(s => s.simulatorId === simulatorId);
     if (typeof crew !== "undefined") {
       lrComm = lrComm.map(s => {

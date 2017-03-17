@@ -8,5 +8,6 @@ type InternalComm {
   state: String
   outgoing: String
   incoming: String
+  damage: Damage
 }
 `

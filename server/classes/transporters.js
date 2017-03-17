@@ -6,6 +6,7 @@ export default class Transporters extends System {
     super(params);
     this.type = 'Transporter';
     this.class = 'Transporters';
+    this.name = params.name || 'Transporters';
     this.targets = params.targets || [];
     this.requestedTarget = params.requestedTarget || null;
     this.destination = params.destination || null;
@@ -27,6 +28,10 @@ export default class Transporters extends System {
         },
       });
     }
+  }
+  break(report) {
+    this.clearTargets();
+    super.break(report);
   }
   removeTargets(number) {
     // Remove targets at random

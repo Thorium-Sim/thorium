@@ -3,6 +3,7 @@ type Sensors {
   id: ID
   simulatorId: ID
   type: String
+  name: String
   domain: String
   scanResults: String
   scanRequest: String
@@ -11,6 +12,7 @@ type Sensors {
   power: Power
   contacts: [SensorContact]
   armyContacts: [SensorContact]
+  damage: Damage
 }
 type SensorContact {
   id: ID

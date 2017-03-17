@@ -10,3 +10,4 @@ import './shipStructure';
 import './shields';
 import './lrComm';
 import './internalComm';
+import './systems';

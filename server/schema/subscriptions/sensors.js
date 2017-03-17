@@ -1,4 +1,4 @@
 export default `
-  sensorsUpdate: [Sensors]
+  sensorsUpdate(simulatorId: ID, domain:String): [Sensors]
   sensorContactUpdate(sensorId: ID): [SensorContact]
 `;

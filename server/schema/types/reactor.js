@@ -6,7 +6,7 @@ type Reactor {
   name: String
   heat: Float
   coolant: Coolant
-  damage: Float
+  damage: Damage
   ejected: Boolean
   powerOutput: Int
   efficiency: Float
