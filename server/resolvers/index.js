@@ -10,6 +10,7 @@ import { SensorsQueries, SensorsMutations, SensorsSubscriptions, SensorsTypes } 
 import { ShipStructureQueries, ShipStructureMutations, ShipStructureSubscriptions, ShipStructureTypes } from './shipStructure';
 import { LRCommQueries, LRCommMutations, LRCommSubscriptions } from './lrComm';
 import { InternalCommQueries, InternalCommMutations, InternalCommSubscriptions } from './internalComm';
+import { SystemsQueries, SystemsMutations, SystemsSubscriptions, SystemsTypes } from './systems';
 
 import App from '../../app';
 
@@ -48,7 +49,8 @@ function parseJSONLiteral(ast) {
     SensorsQueries,
     ShipStructureQueries,
     LRCommQueries,
-    InternalCommQueries
+    InternalCommQueries,
+    SystemsQueries
     );
 
   export const mutationMap = Object.assign({
@@ -67,7 +69,8 @@ function parseJSONLiteral(ast) {
     SensorsMutations,
     ShipStructureMutations,
     LRCommMutations,
-    InternalCommMutations
+    InternalCommMutations,
+    SystemsMutations
     );
 
   const subscriptionMap = Object.assign({},
@@ -82,7 +85,8 @@ function parseJSONLiteral(ast) {
     SensorsSubscriptions,
     ShipStructureSubscriptions,
     LRCommSubscriptions,
-    InternalCommSubscriptions
+    InternalCommSubscriptions,
+    SystemsSubscriptions
     );
 
   export default Object.assign({
@@ -99,4 +103,5 @@ function parseJSONLiteral(ast) {
   FlightStructureTypes,
   ClientTypes,
   ShipStructureTypes,
+  SystemsTypes
   );

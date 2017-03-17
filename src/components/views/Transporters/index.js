@@ -4,6 +4,7 @@ import { Button, Row, Col, Input } from 'reactstrap';
 import { graphql, withApollo } from 'react-apollo';
 import Target from './targeting';
 import Scan from './transporterScan';
+import DamageOverlay from '../helpers/DamageOverlay';
 import './style.scss';
 
 const TRANSPORTER_SUB = gql`
@@ -25,6 +26,14 @@ subscription TransportersSub{
     }
     requestedTarget
     destination
+    damage {
+      damaged
+      report
+    }
+    power {
+      power
+      powerLevels
+    }
   }
 }`;
 
@@ -164,21 +173,15 @@ class Transporters extends Component {
   }
   render() {
     // Assume that there is only one transporter
-    let transporter = {};
-    if (!this.props.data.loading){
-      if (this.props.data.error) console.log(this.props.data.error);
-      transporter = this.props.data.transporters[0] || {};
-    }
+    if (this.props.data.loading) return null;
+    if (this.props.data.error) console.log(this.props.data.error);
+    const transporter = this.props.data.transporters[0] || {};
     return (
-      <div>
-      {
-        this.props.data.loading ? "Loading..." :
-        <div>
-        {transporter.state === 'Inactive' && <TargetSelect beginScan={this.beginScan.bind(this, transporter)} updateTarget={this.updateTarget.bind(this, transporter)} updateDestination={this.updateDestination.bind(this, transporter)} target={transporter.requestedTarget} destination={transporter.destination} />}
-        {transporter.state === 'Scanning' && <Scanning cancelScan={this.cancelScan.bind(this, transporter)} />}
-        {(transporter.state === 'Targeting' || transporter.state === 'Charging') && <Target completeTransport={this.completeTransport.bind(this, transporter)} cancelTransport={this.cancelTransport.bind(this, transporter)} setCharge={this.setCharge.bind(this, transporter)} targets={transporter.targets} />}
-        </div>
-      }
+      <div className="transporter-control">
+      <DamageOverlay system={transporter} message="Transporters Offline" />
+      {transporter.state === 'Inactive' && <TargetSelect beginScan={this.beginScan.bind(this, transporter)} updateTarget={this.updateTarget.bind(this, transporter)} updateDestination={this.updateDestination.bind(this, transporter)} target={transporter.requestedTarget} destination={transporter.destination} />}
+      {transporter.state === 'Scanning' && <Scanning cancelScan={this.cancelScan.bind(this, transporter)} />}
+      {(transporter.state === 'Targeting' || transporter.state === 'Charging') && <Target completeTransport={this.completeTransport.bind(this, transporter)} cancelTransport={this.cancelTransport.bind(this, transporter)} setCharge={this.setCharge.bind(this, transporter)} targets={transporter.targets} />}
       </div>
       );
   }
@@ -203,6 +206,14 @@ query GetTransporters($simulatorId: ID){
     }
     requestedTarget
     destination
+    damage {
+      damaged
+      report
+    }
+    power {
+      power
+      powerLevels
+    }
   }
 }
 `;

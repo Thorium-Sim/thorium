@@ -4,6 +4,7 @@ import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
 import {Container, Row, Col, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import assetPath from '../../../helpers/assets';
+import DamageOverlay from '../helpers/DamageOverlay';
 
 const INTERNAL_SUB = gql`
 subscription InternalCommUpdate($simulatorId: ID!) {
@@ -13,6 +14,14 @@ subscription InternalCommUpdate($simulatorId: ID!) {
     state
     outgoing
     incoming
+    damage {
+      damaged
+      report
+    }
+    power {
+      power
+      powerLevels
+    }
   }
 }`;
 
@@ -92,6 +101,7 @@ class InternalComm extends Component {
     const buttonStyle = {width: '50%', margin: '0 auto'};
     return (
       <Container className="internal-comm">
+      <DamageOverlay message="Internal Communications Offline" system={internalComm} />
       <Row>
       <Col sm={{size: 2, offset: 1}}>
       <Button block disabled={(internalComm.state !== 'connected' && internalComm.outgoing) || internalComm.state === 'connected'}
@@ -167,6 +177,14 @@ query InternalComm($simulatorId: ID!) {
     state
     outgoing
     incoming
+    damage {
+      damaged
+      report
+    }
+    power {
+      power
+      powerLevels
+    }
   }
   decks(simulatorId: $simulatorId) {
     id

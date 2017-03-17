@@ -1,17 +1,11 @@
 import React, {Component} from 'react';
 import { Button, Row, Col, Container } from 'reactstrap';
 import gql from 'graphql-tag';
+import Immutable from 'immutable';
 import { graphql, compose } from 'react-apollo';
+import Engine1 from './engine-1';
+import Engine2 from './engine-2';
 import './style.scss';
-
-const HeatBar = (props) => {
-	return (<div>
-		<label className="heatBox-Label">{props.label}</label>
-		<div className="heatBox">
-		<div className="heatBar" style={{height:`${props.level}%`,backgroundImage:props.background}}></div>
-		</div>
-		</div>);
-};
 
 const SPEEDCHANGE_SUB = gql`
 subscription SpeedChanged{
@@ -28,11 +22,27 @@ subscription HeatChanged{
 		heat
 	}
 }`;
+
+const SYSTEMS_SUB = gql`subscription SystemsUpdate($simulatorId: ID, $type: String){
+	systemsUpdate(simulatorId: $simulatorId, type: $type) {
+		id
+		power {
+			power
+			powerLevels
+		}
+		damage {
+			damaged
+			report
+		}
+	}
+}`;
+
 class EngineControl extends Component {
 	constructor(props){
 		super(props);
 		this.setSpeedSubscription = null;
 		this.heatChangeSubscription = null;
+		this.systemSub = null;
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -64,6 +74,20 @@ class EngineControl extends Component {
 				},
 			});
 		}
+		if (!this.systemSub && !nextProps.data.loading) {
+			this.systemSub = nextProps.data.subscribeToMore({
+				document: SYSTEMS_SUB,
+				variables: {
+					simulatorId: nextProps.simulator.id,
+					type: "Engine"
+				},
+				updateQuery: (previousResult, { subscriptionData }) => {
+					return Immutable.Map(previousResult).mergeWith((oldVal, newVal, key) => {
+						return newVal.map((e, index) => Immutable.Map(oldVal[index]).merge({damage: e.get('damage'), power: e.get('power')}))
+					},{ engines: subscriptionData.data.systemsUpdate }).toJS()
+				}
+			});
+		}
 	}
 	speedBarStyle(array,speed, engineCount, index){
 		let width = speed / array.length * 100;
@@ -77,7 +101,9 @@ class EngineControl extends Component {
 		})
 	}
 	setSpeed(engine,speed){
-		this.props.setSpeed({id: engine.id, speed:speed + 1, on: true})
+		if (!engine.damage.damaged) {
+			this.props.setSpeed({id: engine.id, speed:speed + 1, on: true})
+		}
 	}
 	fullStop(){
 		this.props.data.engines.forEach((engine) => {
@@ -119,81 +145,8 @@ class EngineControl extends Component {
 			</Row>
 			<Row>
 			<Col>
-			{(() => {
-				if (engines.length === 1){
-					return (
-						<div>
-						<Col>
-						{engines[0].speeds.map((speed, speedIndex) => {
-							let speedWord = speed;
-							if (typeof speed === "object"){
-								speedWord = speed.text;
-							}
-							return <Button key={`${speed.text}-${speedIndex}`} block color="primary" className="speedBtn">{speedWord}</Button>;
-						})}
-						</Col>
-						<Col>
-						<Col>
-						<HeatBar label="Heat" background="linear-gradient(to bottom, #440000 0%,#AA0000 50%,#440000 100%)" level={engines[0].heat}/>
-						</Col>
-						<Col>
-						<HeatBar label="Coolant" background="linear-gradient(to bottom, #004400 0%,#00AA00 50%,#004400 100%)" level={engines[0].coolant}/>
-						</Col>
-						</Col>
-						<Col>
-
-						</Col>
-						</div>
-						);
-				}
-				if (engines.length === 2){
-					return (
-						<Row>
-						<Col>
-						{engines[0].speeds.map((speed, speedIndex) => {
-							let speedWord = speed;
-							if (typeof speed === "object"){
-								speedWord = speed.text;
-							}
-							return <Button key={`speed-${speedIndex}`} color="primary" block className="speedBtn" onClick={() => {this.setSpeed(engines[0],speedIndex,engines,0);}}>{speedWord}</Button>;
-						})}
-						</Col>
-						<Col sm={2}>
-						<Row>
-						<Col sm={6}>
-						<HeatBar label="Heat" background="linear-gradient(to bottom, #440000 0%,#aa0000 50%,#440000 100%)" level={engines[0].heat}/>
-						</Col>
-						<Col sm={6}>
-						<HeatBar label="Coolant" background="linear-gradient(to bottom, #004400 0%,#00aa00 50%,#004400 100%)" level={engines[0].coolant}/>
-						</Col>
-						</Row>
-						</Col>
-						<Col>
-
-						</Col>
-						<Col sm={2}>
-						<Row>
-						<Col sm={6}>
-						<HeatBar label="Heat" background="linear-gradient(to bottom, #440000 0%,#aa0000 50%,#440000 100%)" level={engines[1].heat}/>
-						</Col>
-						<Col sm={6}>
-						<HeatBar label="Coolant" background="linear-gradient(to bottom, #004400 0%,#00aa00 50%,#004400 100%)" level={engines[1].coolant}/>
-						</Col>
-						</Row>
-						</Col>
-						<Col>
-						{engines[1].speeds.map((speed, speedIndex) => {
-							let speedWord = speed;
-							if (typeof speed === "object"){
-								speedWord = speed.text;
-							}
-							return <Button key={`speed-${speedIndex}`} color="primary" block className="speedBtn" onClick={() => {this.setSpeed(engines[1],speedIndex,engines,1);}}>{speedWord}</Button>;
-						})}
-						</Col>
-						</Row>
-						);
-				}
-			})()}
+			{engines.length === 1 && <Engine1 engines={engines} setSpeed={this.setSpeed.bind(this)}/>}
+			{engines.length === 2 && <Engine2 engines={engines} setSpeed={this.setSpeed.bind(this)}/>}
 			</Col>
 			</Row>
 			</Container>
@@ -206,6 +159,14 @@ query getEngines($simulatorId: ID!){
 	engines(simulatorId: $simulatorId) {
 		id,
 		name
+		power {
+			power
+			powerLevels
+		}
+		damage {
+			damaged
+			report
+		}
 		speeds {
 			text
 			number

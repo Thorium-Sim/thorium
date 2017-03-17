@@ -7,6 +7,14 @@ export default class Sensors extends System {
     this.type = 'Sensors';
     this.class = 'Sensors';
     this.domain = params.domain || 'external';
+    if (this.domain === 'external') {
+      this.name = 'External Sensors';
+    } else {
+      this.name = 'Internal Sensors';
+    }
+    if (params.name) {
+      this.name = params.name;
+    }
     this.scanResults = params.scanResults || '';
     this.scanRequest = params.scanRequest || '';
     this.processedData = params.processedData || '';

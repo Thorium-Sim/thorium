@@ -10,7 +10,7 @@ const Offline = (props) => {
     lockdown:{'title': 'Lockdown', 'message':'This station has been locked down by the central computer. No access permitted.'},
     maintenance:{'title': 'Maintenance', 'message':'This station is down for maintenance. Please contact yoru system administrator for more information.'},
   };
-  const message = messages[props.clientObj.offlineState] || {}
+  const message = props.message || messages[props.clientObj.offlineState] || {}
   return (
     <div>
     {props.clientObj.offlineState === 'blackout' && <div className="blackout-back"></div>}

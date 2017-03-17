@@ -5,7 +5,8 @@ export const InputField = (props) => {
     backgroundColor: '#FBFE3D',
     border: 'solid 1px #D2CB43',
     height: '16px',
-    whiteSpace: 'pre'
+    whiteSpace: 'pre',
+    textAlign: 'center'
   }, props.style);
   const onClick = () => {
     const value = prompt(props.prompt);
@@ -19,7 +20,8 @@ export const OutputField = ({style = {}, children, alert}) => {
     backgroundColor: '#188EFB',
     border: 'solid 1px #2586D8',
     height: '16px',
-    whiteSpace: 'pre'
+    whiteSpace: 'pre',
+    textAlign: 'center'
   }, style)
   if (alert) {
     compStyle.backgroundColor = '#f00';
@@ -34,6 +36,7 @@ export const TypingField = ({style = {}, onChange, onBlur, value, input}) => {
     border: 'solid 1px #434343',
     height: '16px',
     resize: 'none',
+    textAlign: 'center'
   }, style)
   return input ? <input type="text" onChange={onChange} onBlur={onBlur} style={compStyle} defaultValue={value}/> :
   <textarea type="text" onChange={onChange} onBlur={onBlur} style={compStyle} defaultValue={value} />
