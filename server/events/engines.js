@@ -2,12 +2,12 @@ import App from '../../app';
 import { pubsub } from '../helpers/subscriptionManager.js';
 import * as Classes from '../classes';
 
-App.on('createdEngine', (param) => {
+App.on('createEngine', (param) => {
   const engine = new Classes.Engine(param);
   App.systems.push(engine);
   pubsub.publish('engineChange', App.systems);
 });
-App.on('removedEngine', (param) => {
+App.on('removeEngine', (param) => {
   App.systems = App.systems.filter((e) => {
     if (e.type === 'Engine') {
       if (param.id) {
@@ -21,7 +21,7 @@ App.on('removedEngine', (param) => {
   });
   pubsub.publish('engineChange', App.engines);
 })
-App.on('speedChanged', (param) => {
+App.on('speedChange', (param) => {
   const system = App.systems.find((sys) => sys.id === param.id);
   const engineIndex = App.systems.findIndex((sys) => sys.id === param.id) || -1;
   system.setSpeed(param.speed, param.on);
@@ -45,7 +45,7 @@ App.on('speedChanged', (param) => {
     }
   });
 });
-App.on('addedHeat', ({ id, heat }) => {
+App.on('addHeat', ({ id, heat }) => {
   App.systems.forEach((system) => {
     if (system.id === id) {
       system.addHeat(heat);

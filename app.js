@@ -30,8 +30,20 @@ class Events extends EventEmitter {
     setTimeout(this.init.bind(this), 0);
   }
   init() {
-    const snapshot = jsonfile.readFileSync('./snapshots/snapshot.json');
-    //this.merge(snapshot);
+    if (!config.db){
+      const snapshot = jsonfile.readFileSync('./snapshots/snapshot.json');
+      this.merge(snapshot);
+    } else {
+      query(`SELECT id, method, data, timestamp, version FROM events`)
+      .then(({rows}) => {
+        rows.forEach(r => {
+          this.emit(r.method, r.data);
+          this.version = r.version;
+          this.timestamp = r.timestamp;
+        })
+      })
+      .catch(e => console.error(e));
+    }
   }
   merge(snapshot) {
     // Initialize the snapshot with the object constructors
@@ -51,11 +63,13 @@ class Events extends EventEmitter {
     this.snapshotVersion = this.version;
     var snap = cloneDeep(this, true);
     const snapshot = this.trimSnapshot(snap);
-    // Todo: give it a timestamp
-    if (save) {
-      writeFile('./snapshots/snapshot.json', snapshot, (err) => {
-        console.log(err);
-      });
+    if (config.db){
+
+      if (save) {
+        writeFile('./snapshots/snapshot.json', snapshot, (err) => {
+          console.log(err);
+        });
+      }
     }
     return snapshot;
   }
@@ -68,12 +82,12 @@ class Events extends EventEmitter {
     delete snapshot.domain;
     return snapshot;
   }
-  handleEvent(param, pres, past) {
+  handleEvent(param, pres) {
     if (config.db){
-      const timestamp = new Date();
-      const version = this.version + 1;
+      this.timestamp = new Date();
+      this.version = this.version + 1;
       query(`INSERT INTO events (method, data, timestamp, version)
-        VALUES ($1, $2, $3, $4)`, [pres, param, timestamp, version])
+        VALUES ($1, $2, $3, $4)`, [pres, param, this.timestamp, this.version])
       .catch(err => {
         console.log(err);
       })
@@ -81,12 +95,14 @@ class Events extends EventEmitter {
     if (!config.db) { 
       // We need to fire the events directly
       // Because the database isn't triggering them
+      this.timestamp = new Date();
+      this.version = this.version + 1;
       this.emit(pres, param);
     }
   }
   test(param) {
     console.log(util.inspect(this, false, null));
-    this.handleEvent(param, 'test', 'tested');
+    //this.handleEvent(param, 'test', 'tested');
   }
 }
 

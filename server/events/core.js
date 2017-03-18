@@ -2,7 +2,7 @@ import App from '../../app';
 import { pubsub } from '../helpers/subscriptionManager.js';
 import * as Classes from '../classes';
 
-App.on('updatedCoreLayout', (param) => {
+App.on('updateCoreLayout', (param) => {
   param.layout.forEach(layout => {
     const appLayout = App.coreLayouts.find(l => layout.id === l.id);
     if (appLayout) {
@@ -16,11 +16,11 @@ App.on('updatedCoreLayout', (param) => {
   pubsub.publish('coreLayoutChange', App.coreLayouts);
 });
 
-App.on('addedCoreLayout', ({ layout }) => {
+App.on('addCoreLayout', ({ layout }) => {
   App.coreLayouts.push(new Classes.CoreLayout(layout));
   pubsub.publish('coreLayoutChange', App.coreLayouts);
 });
-App.on('removedCoreLayout', (param) => {
+App.on('removeCoreLayout', (param) => {
   App.coreLayouts = App.coreLayouts.filter((layout) => {
     return (layout.id !== param.id);
   });

@@ -1,4 +1,5 @@
 import config from './config';
+import App from '../../app.js';
 
 let query = () => {log.warn('Database is not configured in ./config.js')}
 
@@ -24,14 +25,16 @@ if (config.db){
   subClient.connect();
 
   subClient.on('notification', function({channel, name, payload}) {
-    const start = Date.now();
     if (name === 'notification' && channel === 'table_update') {
       var pl = JSON.parse(payload);
       //Get the record.
       query(`SELECT * FROM ${pl.table} WHERE id = $1 LIMIT 1`, [pl.id])
       .then(({rows}) => {
-        console.log(rows);
-        console.log(`${Date.now() - start}ms`);
+        rows.forEach(r => {
+          App.emit(r.method, r.data);
+          App.version = r.version;
+          App.timestamp = r.timestamp;
+        });
       })
       .catch(e => console.error(e))
     }
