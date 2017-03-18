@@ -1,4 +1,5 @@
 import App from '../../app';
+import uuid from 'uuid';
 
 export const FlightStructureQueries = {
   simulators: (root, { template, id }) => {
@@ -51,7 +52,7 @@ export const FlightStructureMutations = {
 
   // Simulator
   createSimulator(root, args) {
-    App.handleEvent(args, 'createSimulator', 'createdSimulator');
+    App.handleEvent(Object.assign(args,{id: uuid.v4()}), 'createSimulator', 'createdSimulator');
   },
   removeSimulator(root, args) {
     App.handleEvent(args, 'removeSimulator', 'removedSimulator');

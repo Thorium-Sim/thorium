@@ -80,6 +80,7 @@ query(`DROP SCHEMA IF EXISTS ${db.database} CASCADE`)
   crew json
   )`))
 .catch(e => console.error(e))
+// Create notifications for the table updates.
 .then(() => query(`
   CREATE OR REPLACE FUNCTION table_update_notify() RETURNS trigger AS $$
 DECLARE
@@ -96,10 +97,26 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER stationsets_notify_update AFTER UPDATE ON stationsets FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
-
 CREATE TRIGGER stationsets_notify_insert AFTER INSERT ON stationsets FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
-
 CREATE TRIGGER stationsets_notify_delete AFTER DELETE ON stationsets FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER events_notify_update AFTER UPDATE ON events FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER events_notify_insert AFTER INSERT ON events FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER events_notify_delete AFTER DELETE ON events FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER missions_notify_update AFTER UPDATE ON missions FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER missions_notify_insert AFTER INSERT ON missions FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER missions_notify_delete AFTER DELETE ON missions FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER assetObject_notify_update AFTER UPDATE ON assetObject FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER assetObject_notify_insert AFTER INSERT ON assetObject FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER assetObject_notify_delete AFTER DELETE ON assetObject FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER assetFolder_notify_update AFTER UPDATE ON assetFolder FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER assetFolder_notify_insert AFTER INSERT ON assetFolder FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER assetFolder_notify_delete AFTER DELETE ON assetFolder FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER assetContainer_notify_update AFTER UPDATE ON assetContainer FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER assetContainer_notify_insert AFTER INSERT ON assetContainer FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER assetContainer_notify_delete AFTER DELETE ON assetContainer FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER templateSimulator_notify_update AFTER UPDATE ON templateSimulator FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER templateSimulator_notify_insert AFTER INSERT ON templateSimulator FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+CREATE TRIGGER templateSimulator_notify_delete AFTER DELETE ON templateSimulator FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
 `))
 .catch(e => console.error(e))
 .then(() => console.log('Done'))

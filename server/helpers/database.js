@@ -19,17 +19,21 @@ if (config.db){
     idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
   };
 
+  // Subscribe to table update notifications. Trigger the correct response based on the table and type of update.
   const subClient = new pg.Client(pgconfig);
   subClient.connect();
 
-  subClient.on('notification', function(msg) {
-    if (msg.name === 'notification' && msg.channel === 'table_update') {
-      var pl = JSON.parse(msg.payload);
-      console.log("*========*");
-      Object.keys(pl).forEach(function (key) {
-        console.log(key, pl[key]);
-      });
-      console.log("-========-");
+  subClient.on('notification', function({channel, name, payload}) {
+    const start = Date.now();
+    if (name === 'notification' && channel === 'table_update') {
+      var pl = JSON.parse(payload);
+      //Get the record.
+      query(`SELECT * FROM ${pl.table} WHERE id = $1 LIMIT 1`, [pl.id])
+      .then(({rows}) => {
+        console.log(rows);
+        console.log(`${Date.now() - start}ms`);
+      })
+      .catch(e => console.error(e))
     }
   });
   subClient.query("LISTEN table_update");
