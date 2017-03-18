@@ -1,5 +1,6 @@
 import express from 'express';
 import { createServer } from 'http';
+import OpticsAgent from 'optics-agent';
 import bodyParser from 'body-parser';
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import multer from 'multer';
@@ -22,9 +23,15 @@ import './server/processes/clientPing';
 const GRAPHQL_PORT = 3001;
 const WS_PORT = 3002;
 
-const GraphQLOptions = {
+OpticsAgent.configureAgent({
+  apiKey: "service:Thorium-Sim-thorium:MgowiP-58yawz17Pvtx0DQ"
+});
+OpticsAgent.instrumentSchema(schema);
+
+const GraphQLOptions = (req) => ({
   schema,
-};
+  context:{opticsContext: OpticsAgent.context(req)},
+});
 
 const upload = multer({
   dest: 'temp',
@@ -53,6 +60,7 @@ const graphQLServer = express();
 graphQLServer.use(require('express-status-monitor')());
 graphQLServer.use('/logs', scribe.webPanel());
 graphQLServer.use('*', cors());
+graphQLServer.use(OpticsAgent.middleware());
 
 graphQLServer.use('/schema', (req, res) => {
   res.set('Content-Type', 'text/plain');

@@ -6,7 +6,7 @@ type Navigation {
   power: Power
   destination: Location
   calculated: Location
-  damage: Float
+  damage: Damage 
 }
 
 type Location {

@@ -5,6 +5,7 @@ import {Row, Col, Card, Button} from 'reactstrap';
 import Immutable from 'immutable';
 import Measure from 'react-measure';
 import Satellites from './Satellites';
+import DamageOverlay from '../helpers/DamageOverlay';
 import './style.scss';
 
 const MESSAGES_SUB = gql `
@@ -19,6 +20,14 @@ subscription LRQueueingSub($simulatorId: ID) {
       message
       datestamp
       sent
+    }
+    damage {
+      damaged
+      report
+    }
+    power {
+      power
+      powerLevels
     }
   }
 }
@@ -141,7 +150,6 @@ class LongRangeComm extends Component {
       setTimeout(messageHide, 2000);
     }
     const messageHide = () => {
-      debugger;
       this.setState({
         messageText: null,
         messageLoc: messageLoc()
@@ -166,6 +174,7 @@ class LongRangeComm extends Component {
     const messages = this.props.data.longRangeCommunications[0].messages;
     return (
       <Row className="long-range-comm">
+      <DamageOverlay system={this.props.data.longRangeCommunications[0]} message={"Long Range Communications Offline"} style={{minHeight: '400px' ,height: 'calc(100% + 40px)'}}/>
       <Col sm={3}>
       <Card>
       {messages.map(m => <li onClick={() => {this.setState({selectedMessage: m.id, selectedSat: null})}} className={`message-list ${m.id === this.state.selectedMessage ? 'active' : ''}`} key={m.id}>
@@ -219,9 +228,16 @@ query LRQueuing($simulatorId: ID){
       datestamp
       sent
     }
+    damage {
+      damaged
+      report
+    }
+    power {
+      power
+      powerLevels
+    }
   }
-}
-`;
+}`;
 export default graphql(QUEUING_QUERY, {
   options: (ownProps) => ({
     variables: {

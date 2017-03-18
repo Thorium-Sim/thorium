@@ -8,7 +8,7 @@ type Engine {
   speeds: [Speed]
   speed: Int
   heat: Float
-  damage: Float
+  damage: Damage
   on: Boolean
   #coolant: Coolant
 }

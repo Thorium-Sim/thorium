@@ -1,8 +1,8 @@
 {
-	"snapshotVersion": 2,
-	"timestamp": 1489093236146,
-	"version": 2,
-	"_eventsCount": 113,
+	"snapshotVersion": 13,
+	"timestamp": 1489632532831,
+	"version": 13,
+	"_eventsCount": 118,
 	"simulators": [
 		{
 			"timeline": [],
@@ -203,15 +203,19 @@
 		{
 			"id": "long-range-comm",
 			"simulatorId": "test",
-			"type": "LongRangeCommunications",
-			"class": "LongRangeComm",
+			"name": "Long Range Communications",
 			"power": {
 				"power": 5,
 				"powerLevels": [
 					5
 				]
 			},
-			"name": "Long Range Communications",
+			"damage": {
+				"damaged": false,
+				"report": null
+			},
+			"type": "LongRangeCommunications",
+			"class": "LongRangeComm",
 			"messages": [
 				{
 					"id": "message-1",
@@ -239,6 +243,10 @@
 					5
 				]
 			},
+			"damage": {
+				"damaged": false,
+				"report": null
+			},
 			"class": "Shield",
 			"type": "Shield",
 			"position": 1,
@@ -255,6 +263,10 @@
 				"powerLevels": [
 					5
 				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
 			},
 			"class": "Shield",
 			"type": "Shield",
@@ -273,6 +285,10 @@
 					5
 				]
 			},
+			"damage": {
+				"damaged": false,
+				"report": null
+			},
 			"class": "Shield",
 			"type": "Shield",
 			"position": 3,
@@ -289,6 +305,10 @@
 				"powerLevels": [
 					5
 				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
 			},
 			"class": "Shield",
 			"type": "Shield",
@@ -307,6 +327,10 @@
 					5
 				]
 			},
+			"damage": {
+				"damaged": false,
+				"report": null
+			},
 			"class": "Shield",
 			"type": "Shield",
 			"position": 6,
@@ -324,6 +348,10 @@
 					5
 				]
 			},
+			"damage": {
+				"damaged": false,
+				"report": null
+			},
 			"class": "Shield",
 			"type": "Shield",
 			"position": 5,
@@ -334,12 +362,16 @@
 		{
 			"id": "1b8c9a95-4b6d-47d9-92d2-e419bd291f61",
 			"simulatorId": "test",
-			"name": null,
+			"name": "Thrusters",
 			"power": {
 				"power": 5,
 				"powerLevels": [
 					5
 				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
 			},
 			"class": "Thrusters",
 			"type": "Thruster",
@@ -379,6 +411,10 @@
 					12,
 					15
 				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
 			},
 			"class": "Engine",
 			"type": "Engine",
@@ -429,6 +465,10 @@
 					38,
 					40
 				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
 			},
 			"class": "Engine",
 			"type": "Engine",
@@ -483,12 +523,16 @@
 		{
 			"id": "6fdc098f-d4b3-4bbf-a312-0f6b9bfc558e",
 			"simulatorId": "test",
-			"name": null,
+			"name": "Transporters",
 			"power": {
 				"power": 5,
 				"powerLevels": [
 					5
 				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
 			},
 			"type": "Transporter",
 			"class": "Transporters",
@@ -501,12 +545,16 @@
 		{
 			"id": "c230c51b-c2fe-4c1b-9b19-5323cfd6b2b6",
 			"simulatorId": "test",
-			"name": null,
+			"name": "External Sensors",
 			"power": {
 				"power": 5,
 				"powerLevels": [
 					5
 				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
 			},
 			"type": "Sensors",
 			"class": "Sensors",
@@ -579,12 +627,16 @@
 		{
 			"id": "f4c8c9be-bb8e-4ec2-a7d1-718df91aa7f7",
 			"simulatorId": "test",
-			"name": null,
+			"name": "Internal Sensors",
 			"power": {
 				"power": 5,
 				"powerLevels": [
 					5
 				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
 			},
 			"type": "Sensors",
 			"class": "Sensors",
@@ -599,10 +651,19 @@
 		{
 			"id": "32973f59-c28d-4eb4-b370-da0548b0ba0a",
 			"simulatorId": "test",
+			"name": "Internal Communications",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
+			},
 			"type": "InternalCommunications",
 			"class": "InternalComm",
-			"power": {},
-			"name": "Internal Communications",
 			"state": "idle",
 			"outgoing": null,
 			"incoming": null
@@ -679,7 +740,7 @@
 			"x": 19,
 			"y": 0,
 			"w": 16,
-			"h": 11,
+			"h": 10,
 			"component": "ShieldControlCore",
 			"objectId": null,
 			"class": "CoreLayout"
@@ -693,6 +754,18 @@
 			"w": 19,
 			"h": 7,
 			"component": "LRCommCore",
+			"objectId": null,
+			"class": "CoreLayout"
+		},
+		{
+			"id": "2598bf1d-3ff4-4868-9239-9dfb7879bf94",
+			"simulatorId": "test",
+			"name": "default",
+			"x": 35,
+			"y": 0,
+			"w": 12,
+			"h": 14,
+			"component": "DamageControlCore",
 			"objectId": null,
 			"class": "CoreLayout"
 		}

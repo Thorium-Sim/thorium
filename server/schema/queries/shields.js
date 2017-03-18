@@ -1,3 +1,3 @@
 export default `
-  shields(simulatorId: ID): [Shields]
+  shields(simulatorId: ID): [Shield]
 `;

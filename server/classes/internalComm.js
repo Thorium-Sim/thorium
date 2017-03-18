@@ -1,16 +1,18 @@
-import uuid from 'uuid';
+import { System } from './generic';
 
-export default class InternalComm {
+export default class InternalComm extends System {
   constructor(params) {
-    this.id = params.id || uuid.v4();
-    this.simulatorId = params.simulatorId || null;
-    this.type = 'InternalCommunications';
+    super(params);
+    this.type = 'InternalComm';
     this.class = 'InternalComm';
-    this.power = params.power || {};
     this.name = params.name || 'Internal Communications';
     this.state = params.state || 'idle'; //One of 'idle', 'connected'
     this.outgoing = params.outgoing || null;
     this.incoming = params.incoming || null;
+  }
+  break(report){
+    this.state = 'idle';
+    super.break(report);
   }
   connectOutgoing(){
     this.state = 'connected';

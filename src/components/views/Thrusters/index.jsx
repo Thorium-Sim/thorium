@@ -23,6 +23,31 @@ subscription RotationChanged{
   }
 }`;
 
+const DamageOverlay = ({engine}) => {
+  const overlayStyle = {
+    width: '100%',
+    minHeight: '400px',
+    height: 'calc(100% + 40px)',
+    top: '-11px',
+    left: '0px',
+    position: 'absolute',
+    backgroundColor: 'rgba(0,0,0,0.75)',
+    border: 'solid 1px rgba(255,255,255,0.5)',
+    zIndex: '1000',
+    display:'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  };
+  const textStyle = {
+    color: 'red',
+    width: '100%',
+    textAlign: 'center',
+  }
+  return <div style={overlayStyle} className="damageOverlay">
+  <h1 style={textStyle}>Thrusters Damaged</h1>
+  </div>
+}
+
 const IndicatorCircle = (props) => {
  return  (
   <Col sm={4}>
@@ -251,6 +276,7 @@ gamepadLoop(){
     };
   }
   render(){
+    if (this.props.data.loading) return null;
     const gamepad = navigator.getGamepads()[0];
     let thruster = {};
     if (this.props.data.thrusters){
@@ -268,6 +294,7 @@ gamepadLoop(){
     };
     return (
      <div className="cardThrusters">
+     {thruster.damage.damaged && <DamageOverlay />}
      <Row>
      <Col className="col-sm-3 draggerContainer">
      <label>Direction</label>
@@ -390,9 +417,16 @@ query Thrusters($simulatorId: ID){
       roll
     }
     manualThrusters
+    damage {
+      damaged
+      report
+    }
+    power {
+      power
+      powerLevels
+    }
   }
-}
-`;
+}`;
 
 const ROTATION_UPDATE = gql`
 mutation ThrusterDelta($id: ID!, $rotation: RotationInput, $on: Boolean) {

@@ -1,5 +1,5 @@
 export default `
-type Shields {
+type Shield {
   id: ID
   simulatorId: ID
   type: String
@@ -9,6 +9,6 @@ type Shields {
   frequency: Float
   state: Boolean 
   integrity: Float
-  damage: Float
+  damage: Damage
 }
 `;
