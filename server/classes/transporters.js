@@ -4,7 +4,7 @@ import { System } from './generic';
 export default class Transporters extends System {
   constructor(params) {
     super(params);
-    this.type = 'Transporter';
+    this.type = 'Transporters';
     this.class = 'Transporters';
     this.name = params.name || 'Transporters';
     this.targets = params.targets || [];

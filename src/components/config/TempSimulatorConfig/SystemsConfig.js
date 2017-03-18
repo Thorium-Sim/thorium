@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
-import { Col, Row, Card, Container, Input, Button, ButtonGroup, FormGroup, Label } from 'reactstrap';
+import { Col, Row, Card, Container, Input } from 'reactstrap';
 import systems from '../../systems';
+
+const ADD_SYSTEM = gql`
+mutation AddSystem($id: ID!, $class: String!, $params: String!) {
+  addSystemToSimulator(simulatorId:$id, className:$class, params: $params )
+}`;
 
 export default class SystemsConfig extends Component {
   constructor(params){
@@ -10,6 +15,7 @@ export default class SystemsConfig extends Component {
     }
   }
   render() {
+    const sim = this.props.selectedSimulator;
     const SelectedSystem = systems[this.state.selectedSystem] || null;
     return <Container>
     <Row>
@@ -24,18 +30,18 @@ export default class SystemsConfig extends Component {
       })
     }
     </Input>
-        {/*<Input type="select">
+    <Card className="scroll">
     {
-      Object.keys(systems).map(s => {
-        return <option key={`${s}-system`}
+      sim.systems.length > 0 ? sim.systems.map(s => {
+        return <option key={`${s.id}`}
         value={s}
-        onClick={() => {this.setState({selectedSystem: s})}}  
-        className={`${(s === this.state.selectedSystem) ? 'selected' : ''} list-group-item`}>
+        onClick={() => {this.setState({selectedSystem: s.id})}}  
+        className={`${(s.id === this.state.selectedSystem) ? 'selected' : ''} list-group-item`}>
         {s}
         </option>
-      })
+      }) : <p> No systems</p>
     }
-    </Input>*/}
+    </Card>
     </Col>
     <Col sm="8">
       {SelectedSystem && <SelectedSystem />}

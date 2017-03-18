@@ -152,6 +152,9 @@ export const FlightStructureTypes = {
     rooms(rootValue) {
       return App.rooms.filter(r => r.simulatorId === rootValue.id);
     },
+    systems(rootValue) {
+      return App.systems.filter(s => s.simulatorId === rootValue.id);
+    }
   },
   Flight: {
     mission(rootValue) {

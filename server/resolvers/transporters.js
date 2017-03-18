@@ -3,7 +3,7 @@ import App from '../../app.js';
 export const TransporterQueries = {
   transporters(_, { simulatorId }) {
     return App.systems.filter((sys) => {
-      return (sys.type === 'Transporter' && sys.simulatorId === simulatorId);
+      return (sys.type === 'Transporters' && sys.simulatorId === simulatorId);
     });
   },
 };

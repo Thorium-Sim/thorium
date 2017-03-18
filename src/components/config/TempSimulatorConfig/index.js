@@ -93,6 +93,11 @@ query Simulators{
     alertlevel
     layout
     template
+    systems {
+      id
+      name
+      type
+    }
   }
 }
 `;

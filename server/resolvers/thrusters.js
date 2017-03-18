@@ -4,7 +4,7 @@ import { pubsub } from '../helpers/subscriptionManager.js';
 export const ThrustersQueries = {
   thrusters(root, { simulatorId }) {
     return App.systems.filter(system => {
-      return system.type === 'Thruster' && system.simulatorId === simulatorId;
+      return system.type === 'Thrusters' && system.simulatorId === simulatorId;
     });
   },
 };
