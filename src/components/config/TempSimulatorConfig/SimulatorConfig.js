@@ -1,16 +1,32 @@
 import React, { Component } from 'react';
-import LayoutList from '../layouts';
+import LayoutList from '../../layouts';
 import gql from 'graphql-tag';
-import {withRouter} from 'react-router';
-import { graphql } from 'react-apollo';
+import { withApollo } from 'react-apollo';
 
 const Layouts = Object.keys(LayoutList);
 
+const ops = {
+	name:gql`mutation ChangeName($id: ID!, $value: String!){
+		renameSimulator(simulatorId: $id, name:$value)
+	}`,
+	layout:gql`mutation ChangeLayout($id: ID!, $value: String!){
+		changeSimulatorLayout(simulatorId: $id, layout:$value)
+	}`,
+	alertLevel:gql`mutation ChangeAlert($id: ID!, $value: String!){
+		changeSimulatorAlertLevel(simulatorId: $id, alertLevel:$value)
+	}`,
+}
 class SimulatorConfigView extends Component {
 	_handleChange(e){
-		let obj = this.props.selectedSimulator;
-		obj[e.target.name] = e.target.value;
-		this.props.mutations.updateSimulator(obj);
+		const variables = {
+			id: this.props.selectedSimulator.id,
+			value: e.target.value
+		};
+		const mutation = ops[e.target.name]
+		this.props.client.mutate({
+			mutation,
+			variables
+		})
 	}
 	render(){
 		return(
@@ -31,7 +47,7 @@ class SimulatorConfigView extends Component {
 			</fieldset>
 			<fieldset className="form-group">
 			<label>Alert Level</label>
-			<select onChange={this._handleChange.bind(this)} defaultValue={this.props.selectedSimulator.alertLevel} name="alertLevel" className="c-select form-control">
+			<select onChange={this._handleChange.bind(this)} defaultValue={this.props.selectedSimulator.alertlevel} name="alertLevel" className="c-select form-control">
 			<option value="5">5</option>
 			<option value="4">4</option>
 			<option value="3">3</option>
@@ -46,27 +62,4 @@ class SimulatorConfigView extends Component {
 	}
 }
 
-const simulatorMutation = gql `mutation updateSimulator($id: String!, $name: String, $alertLevel: String, $layout: String) {
-	simulator_update(id: $id, name: $name, layout: $layout, alertLevel: $alertLevel){
-		id
-		name,
-		alertLevel,
-		layout
-	}
-}`;
-
-export const SimulatorConfig = withRouter(graphql(simulatorMutation, {
-    props({mutate}) {
-        return {
-            updateSimulator(args) {
-                return mutate({
-                    variables: args,
-										updateQueries: {
-										},
-										optimisticResponse: {
-										}
-                })
-            }
-        }
-    }
-})(SimulatorConfigView))
+export default  withApollo(SimulatorConfigView)

@@ -1,7 +1,6 @@
 import App from '../../app.js';
 import { pubsub } from '../helpers/subscriptionManager.js';
 import * as Classes from '../classes';
-import uuid from 'uuid';
 
 function getTimelineObject(simulatorId, missionId) {
   let object;
@@ -10,8 +9,8 @@ function getTimelineObject(simulatorId, missionId) {
   return object;
 }
 // Mission
-App.on('createMission', ({ name }) => {
-  const mission = new Classes.Mission({ name });
+App.on('createMission', ({ id, name }) => {
+  const mission = new Classes.Mission({ id, name });
   App.missions.push(mission);
   pubsub.publish('missionsUpdate', App.missions);
 });
@@ -40,11 +39,10 @@ App.on('removeSimulatorToMission', ({ missionId, simulatorId }) => {
 
 
 // Flight
-App.on('startFlight', ({ missionId, simulators }) => {
+App.on('startFlight', ({ flightId, missionId, simulators }) => {
   // First things first, clone the mission object.
   const mission = new Classes.Mission(App.missions.find(m => m.id === missionId));
   // Construct the flights timeline.
-  const flightId = uuid.v4();
 
   const missionTimeline = mission.timeline;
   simulators.forEach(s => {
@@ -121,9 +119,9 @@ App.on('changeSimulatorCrewCount', ({ simulatorId, crewCount }) => {
 
 
 // Timeline
-App.on('addTimelineStep', ({ simulatorId, missionId, name, description }) => {
+App.on('addTimelineStep', ({ simulatorId, missionId, timelineStepId, name, description }) => {
   const object = getTimelineObject(simulatorId, missionId);
-  object.addTimelineStep({ name, description });
+  object.addTimelineStep({ timelineStepId, name, description });
   pubsub.publish('missionsUpdate', App.missions);
   pubsub.publish('simulatorsUpdate', App.simulators);
 });
@@ -145,9 +143,9 @@ App.on('updateTimelineStep', ({ simulatorId, missionId, timelineStepId, name, de
   pubsub.publish('missionsUpdate', App.missions);
   pubsub.publish('simulatorsUpdate', App.simulators);
 });
-App.on('addTimelineItemToTimelineStep', ({ simulatorId, missionId, timelineStepId, timelineItem }) => {
+App.on('addTimelineItemToTimelineStep', ({ simulatorId, missionId, timelineStepId, timelineItemId, timelineItem }) => {
   const object = getTimelineObject(simulatorId, missionId);
-  object.addTimelineStepItem(timelineStepId, timelineItem);
+  object.addTimelineStepItem(timelineStepId, timelineItemId, timelineItem);
   pubsub.publish('missionsUpdate', App.missions);
   pubsub.publish('simulatorsUpdate', App.simulators);
 });
@@ -166,8 +164,8 @@ App.on('updateTimelineStepItem', ({ simulatorId, missionId, timelineStepId, time
 
 
 // StationSet
-App.on('createStationSet', ({ name }) => {
-  const station = new Classes.StationSet({ name });
+App.on('createStationSet', ({ id, name }) => {
+  const station = new Classes.StationSet({ id, name });
   App.stationSets.push(station);
   pubsub.publish('stationSetUpdate', App.stationSets);
 });

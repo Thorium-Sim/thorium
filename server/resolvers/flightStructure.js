@@ -28,7 +28,7 @@ export const FlightStructureMutations = {
 
   // Mission
   createMission(root, args) {
-    App.handleEvent(args, 'createMission', 'createdMission');
+    App.handleEvent(Object.assign(args,{id: uuid.v4()}), 'createMission', 'createdMission');
   },
   removeMission(root, args) {
     App.handleEvent(args, 'removeMission', 'removedMission');
@@ -46,7 +46,7 @@ export const FlightStructureMutations = {
 
   // Flight
   startFlight(root, args) {
-    App.handleEvent(args, 'startFlight', 'startedFlight');
+    App.handleEvent(Object.assign(args,{flightId: uuid.v4()}), 'startFlight', 'startedFlight');
   },
 
 
@@ -73,7 +73,7 @@ export const FlightStructureMutations = {
 
   // Timeline
   addTimelineStep(root, args) {
-    App.handleEvent(args, 'addTimelineStep', 'addedTimelineStep');
+    App.handleEvent(Object.assign(args,{timelineStepId: uuid.v4()}), 'addTimelineStep', 'addedTimelineStep');
   },
   removeTimelineStep(root, args) {
     App.handleEvent(args, 'removeTimelineStep', 'removedTimelineStep');
@@ -85,7 +85,7 @@ export const FlightStructureMutations = {
     App.handleEvent(args, 'updateTimelineStep', 'updatedTimelineStep');
   },
   addTimelineItemToTimelineStep(root, args) {
-    App.handleEvent(args, 'addTimelineItemToTimelineStep', 'addedTimelineItemToTimelineStep');
+    App.handleEvent(Object.assign(args,{timelineItemId: uuid.v4()}), 'addTimelineItemToTimelineStep', 'addedTimelineItemToTimelineStep');
   },
   removeTimelineStepItem(root, args) {
     App.handleEvent(args, 'removeTimelineStepItem', 'removedTimelineStepItem');
