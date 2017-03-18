@@ -19,7 +19,20 @@ if (config.db){
     idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
   };
 
+  const subClient = new pg.Client(pgconfig);
+  subClient.connect();
 
+  subClient.on('notification', function(msg) {
+    if (msg.name === 'notification' && msg.channel === 'table_update') {
+      var pl = JSON.parse(msg.payload);
+      console.log("*========*");
+      Object.keys(pl).forEach(function (key) {
+        console.log(key, pl[key]);
+      });
+      console.log("-========-");
+    }
+  });
+  subClient.query("LISTEN table_update");
   //this initializes a connection pool
   //it will keep idle connections open for a 30 seconds
   //and set a limit of maximum 10 idle clients

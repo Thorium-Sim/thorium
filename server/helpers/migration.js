@@ -19,10 +19,11 @@ query(`DROP SCHEMA IF EXISTS ${db.database} CASCADE`)
 .catch(e => console.error(e))
 //Now create the tables that we need.
 .then(() => query(`CREATE TABLE snapshots (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   data json)`))
 .catch(e => console.error(e))
 .then(() => query(`CREATE TABLE events(
-  id integer CONSTRAINT event_key PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   method varchar(40) NOT NULL,
   data json,
   timestamp date,
@@ -31,15 +32,17 @@ query(`DROP SCHEMA IF EXISTS ${db.database} CASCADE`)
 .catch(e => console.error(e))
 .then(() => query(`
   CREATE TABLE stationSets(
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   data json)`))
 .catch(e => console.error(e))
 .then(() => query(`
   CREATE TABLE missions(
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   data json)`))
 .catch(e => console.error(e))
 .then(() => query(`
   CREATE TABLE assetObject(
-  id integer CONSTRAINT assetObject_key PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   containerPath varchar(127),
   conatinerId varchar(127),
   fullPath varchar(127),
@@ -49,7 +52,7 @@ query(`DROP SCHEMA IF EXISTS ${db.database} CASCADE`)
 .catch(e => console.error(e))
 .then(() => query(`
   CREATE TABLE assetFolder(
-  id integer CONSTRAINT assetFolder_key PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   folderPath varchar(127),
   fullPath varchar(127),
   name varchar(127)
@@ -57,7 +60,7 @@ query(`DROP SCHEMA IF EXISTS ${db.database} CASCADE`)
 .catch(e => console.error(e))
 .then(() => query(`
   CREATE TABLE assetContainer(
-  id integer CONSTRAINT assetContainer_key PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   folderPath varchar(127),
   folderId varchar(127),
   fullPath varchar(127),
@@ -67,7 +70,7 @@ query(`DROP SCHEMA IF EXISTS ${db.database} CASCADE`)
 .catch(e => console.error(e))
 .then(() => query(`
   CREATE TABLE templateSimulator(
-  id integer CONSTRAINT templateSimulator_key PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name varchar(127),
   layout varchar(127),
   alertlevel varchar(1),
@@ -77,5 +80,29 @@ query(`DROP SCHEMA IF EXISTS ${db.database} CASCADE`)
   crew json
   )`))
 .catch(e => console.error(e))
+.then(() => query(`
+  CREATE OR REPLACE FUNCTION table_update_notify() RETURNS trigger AS $$
+DECLARE
+  id UUID;
+BEGIN
+  IF TG_OP = 'INSERT' OR TG_OP = 'UPDATE' THEN
+    id = NEW.id;
+  ELSE
+    id = OLD.id;
+  END IF;
+  PERFORM pg_notify('table_update', json_build_object('table', TG_TABLE_NAME, 'id', id, 'type', TG_OP)::text);
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER stationsets_notify_update AFTER UPDATE ON stationsets FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER stationsets_notify_insert AFTER INSERT ON stationsets FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+
+CREATE TRIGGER stationsets_notify_delete AFTER DELETE ON stationsets FOR EACH ROW EXECUTE PROCEDURE table_update_notify();
+`))
+.catch(e => console.error(e))
+.then(() => console.log('Done'))
+
 
 

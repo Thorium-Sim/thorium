@@ -11,6 +11,7 @@ import { printSchema } from 'graphql/utilities/schemaPrinter';
 import graphqlExpressUpload from 'graphql-server-express-upload';
 import { schema, subscriptionManager } from './server/data';
 import scribe from './server/helpers/logging';
+import database from './server/helpers/database';
 
 import './server/events';
 import './server/processes/engines';
