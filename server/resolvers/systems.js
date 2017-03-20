@@ -15,19 +15,19 @@ export const SystemsQueries = {
 
 export const SystemsMutations = {
   addSystemToSimulator(rootValue, params) {
-    App.handleEvent(params, 'addSystemToSimulator', 'addedSystemToSimulator');
+    App.handleEvent(params, 'addSystemToSimulator');
   },
   removeSystemFromSimulator(rootValue, params) {
-    App.handleEvent(params, 'removeSystemFromSimulator', 'removedSystemFromSimulator');
+    App.handleEvent(params, 'removeSystemFromSimulator');
   },
   damageSystem(rootValue, params) {
-    App.handleEvent(params, 'damageSystem', 'damagedSystem');
+    App.handleEvent(params, 'damageSystem');
   },
   repairSystem(rootValue, params) {
-    App.handleEvent(params, 'repairSystem', 'repairedSystem');
+    App.handleEvent(params, 'repairSystem');
   },
   changePower(rootValue, params) {
-    App.handleEvent(params, 'changePower', 'changedPower');
+    App.handleEvent(params, 'changePower');
   }
 };
 

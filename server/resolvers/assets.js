@@ -43,24 +43,24 @@ export const AssetsQueries = {
 
 export const AssetsMutations = {
   addAssetFolder(root, { name, folderPath, fullPath }) {
-    App.handleEvent({ name, folderPath, fullPath }, 'addAssetFolder', 'addedAssetFolder');
+    App.handleEvent({ name, folderPath, fullPath }, 'addAssetFolder');
     return '';
   },
   removeAssetFolder(root, { id }) {
-    App.handleEvent({ id }, 'removeAssetFolder', 'removedAssetFolder');
+    App.handleEvent({ id }, 'removeAssetFolder');
     return '';
   },
   addAssetContainer(root, { name, folderId, folderPath, fullPath }) {
     App.handleEvent({ name, folderId, folderPath, fullPath },
-      'addAssetContainer', 'addedAssetContainer');
+      'addAssetContainer');
     return '';
   },
   removeAssetContainer(root, { id }) {
-    App.handleEvent({ id }, 'removeAssetContainer', 'removedAssetContainer');
+    App.handleEvent({ id }, 'removeAssetContainer');
     return '';
   },
   removeAssetObject(root, { id }) {
-    App.handleEvent({ id }, 'removeAssetObject', 'removedAssetObject');
+    App.handleEvent({ id }, 'removeAssetObject');
     // Remove from S3 too.
     // Get the object
     const obj = App.assetObjects.find((object) => object.id === id);
@@ -103,7 +103,7 @@ export const AssetsMutations = {
           fullPath,
           url: s3.getPublicUrl('thorium-assets', key),
           simulatorId,
-        }, 'addAssetObject', 'addedAssetObject');
+        }, 'addAssetObject');
       });
     });
     return '';

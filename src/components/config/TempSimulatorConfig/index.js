@@ -74,7 +74,7 @@ class TempSimulatorConfig extends Component {
       })}
       </Card>
       </Col>
-      <Col sm="6">
+      <Col sm="9">
       {SimObjComp === 'div' ? <SimObjComp /> :
       <SimObjComp selectedSimulator={this.props.data.simulators.find(s => s.id === this.state.selectedSimulator) || {}}/>
     }

@@ -16,7 +16,7 @@ App.on('addSystemToSimulator', ({simulatorId, className, params}) => {
   init.simulatorId = simulatorId;
   const ClassObj = Classes[className];
   const obj = new ClassObj(init);
-  App.systems.insert(obj);
+  App.systems.push(obj);
   pubsub.publish('systemsUpdate', App.systems);
 });
 App.on('removeSystemFromSimulator', ({systemId}) => {
