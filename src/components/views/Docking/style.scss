@@ -1,0 +1,126 @@
+@import "../helpers/math";
+
+.docking {
+  .flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 60vh;
+    margin-top: 10vh;
+  }
+}
+
+.graphics {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  height: 80vh;
+  svg {
+    fill-rule:evenodd;
+    clip-rule:evenodd;
+    stroke-linejoin:round;
+    stroke-miterlimit:1.41421;
+  }
+  g path {
+    fill:rgb(122,122,122);
+  }
+  .left-clamp, .right-clamp {
+    will-change: transform;
+  }
+  .left-clamp {
+    transition: transform 4s ease 2s;
+    transform: scaleX(1) translateY(-50%);
+    .inner {
+      transition: transform 2s ease;
+      transform: translateX(44%);
+    }
+  }
+  .right-clamp {
+    transition: transform 4s ease 2s;
+    transform: scaleX(-1) translateY(-50%);
+    .inner {
+      transition: transform 2s ease;
+      transform: translateX(-321%);
+    }
+  }
+  #door-left, #door-right {
+    transition: transform 1s ease-in-out;
+    transform: translate(0);
+  }
+
+  #ramp {
+    transition: transform 1s ease-in-out;
+    transform: translate(0, 200%);
+  }
+  .open {
+    #door-left {
+      transform: translate(-90%, 0);
+    }
+
+    #door-right {
+      transform: translate(90%, 0)
+    }
+    #ramp {
+      transform: translate(0, 0%);
+    }
+  }
+  $radius: -200px;
+  $rot: -250deg;
+  @for $i from 1 through 12 {
+    svg.open {
+      g {
+        transition: transform 1s ease-in-out;
+        transform-origin: 50% 50%;
+      }
+      g.tri-#{$i} {
+        transform: rotate($rot) translate(cos(2 * pi() * ($i/12))*$radius, sin(2 * pi() * ($i/12))*$radius);
+      }
+    }
+  }
+
+  svg {
+    g {
+      transition: transform 1s ease-in-out;
+      transform: rotate(0deg);
+      transform-origin: 50% 50%;
+    }
+  }
+
+  @for $i from 1 through 12 {
+    g.tri-#{$i} {
+      transform: origin;
+      path {
+        fill: rgb(84, 84, 84);
+        stroke: rgb(38, 38, 38);
+        stroke-width: 10px;
+        transform-origin: bottom right;
+        transform: rotate($i * 30deg);
+      }
+    }
+  }
+}
+
+@keyframes translateRight {
+  0% {
+    transform: scaleX(-1) translateX(-321%) translateY(-50%);
+  }
+  75% {
+    transform: scaleX(-1) translateX(-321%) translateY(11.7%);
+  }
+  100% {
+    transform: scaleX(-1) translateX(-343%) translateY(11.7%);
+  }
+}
+
+@keyframes translateLeft {
+  0% {
+    transform: scaleX(1) translateX(44%) translateY(-50%);
+  }
+  75% {
+    transform: scaleX(1) translateX(44%) translateY(11.7%);
+  }
+  100% {
+    transform: scaleX(1) translateX(22%) translateY(11.7%);
+  }
+}

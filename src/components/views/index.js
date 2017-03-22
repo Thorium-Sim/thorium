@@ -14,6 +14,7 @@ import SecurityScans from './SecurityScans';
 import CommDecoding from './CommDecoding';
 import Offline from './Offline';
 import CommInternal from './CommInternal';
+import Docking from './Docking';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -44,6 +45,7 @@ const Views = { Login,
   CommDecoding,
   Offline,
   CommInternal,
+  Docking,
 };
 
 export const Widgets = {
