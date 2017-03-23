@@ -8,13 +8,13 @@ export const CoreLayoutQueries = {
 
 export const CoreLayoutMutations = {
   updateCoreLayout(_, { layout }) {
-    App.handleEvent({ layout }, 'updateCoreLayout', 'updatedCoreLayout');
+    App.handleEvent({ layout }, 'updateCoreLayout');
   },
   addCoreLayout(_, { layout }) {
-    App.handleEvent({ layout }, 'addCoreLayout', 'addedCoreLayout');
+    App.handleEvent({ layout }, 'addCoreLayout');
   },
   removeCoreLayout(_, { id }) {
-    App.handleEvent({ id }, 'removeCoreLayout', 'removedCoreLayout');
+    App.handleEvent({ id }, 'removeCoreLayout');
   },
 };
 

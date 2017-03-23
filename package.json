@@ -78,6 +78,7 @@
     "moment": "^2.17.1",
     "multer": "^1.3.0",
     "optics-agent": "^1.1.1",
+    "pg": "^6.1.4",
     "react": "^15.4.2",
     "react-addons-css-transition-group": "^15.4.2",
     "react-addons-transition-group": "^15.4.2",
@@ -109,7 +110,8 @@
     "start": "node scripts/start.js & nodemon ./server.js -e js,graphql --ignore snapshots/ --ignore src/ --exec babel-node",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "migrate": "nodemon ./server/helpers/migration.js --exec babel-node"
   },
   "jest": {
     "moduleFileExtensions": [

@@ -1,0 +1,10 @@
+{
+  "_comment":"Where the event store is. 'file' uses a JSON file in the 'snapshots' folder 'db' takes an object with the required settings for postgres. Change it to not be underscored to activate it",
+  "storage":"file",
+  "_db" : {
+    "user": "thorium", 
+    "database": "thorium", 
+    "password": "rommel1942", 
+    "host": "localhost" 
+  }
+}

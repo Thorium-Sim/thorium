@@ -9,7 +9,7 @@ mutation SetRotation($id: ID, $rotation: RotationInput){
 `;
 const updateThrusters = () => {
   App.systems.forEach((sys) => {
-    if (sys.type === 'Thruster' && sys.thrusting === true) {
+    if (sys.type === 'Thrusters' && sys.thrusting === true) {
       const rotationAdd = Object.assign({}, sys.rotation);
       rotationAdd.yaw += sys.rotationDelta.yaw * 3;
       rotationAdd.pitch += sys.rotationDelta.pitch * 3;
