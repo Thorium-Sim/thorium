@@ -10,3 +10,4 @@ import './shields';
 import './lrComm';
 import './internalComm';
 import './systems';
+import './navigation';

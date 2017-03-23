@@ -14,8 +14,8 @@ type Navigation {
 }
 
 type NavLoc {
-  xCoord: String
-  yCoord: String
-  zCoord: String
+  x: String
+  y: String
+  z: String
 }
 `;

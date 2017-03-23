@@ -151,6 +151,21 @@ $color: $alert5;
             @include button-variant($alert1);
         }
     }
+    .input-group-btn {
+        .btn{
+            margin-top: -10px;
+            top: 0px;
+            flex: none;
+            height: 50px;
+            border-left: none;
+            &:before {
+                border-left: none;
+                border-radius: 0px 15px 15px 0px;
+                width: calc(100% + 10px);
+                margin-left: 0px;
+            }
+        }
+    }
     input[type="email"],
     input[type="text"],
     input[type="password"],

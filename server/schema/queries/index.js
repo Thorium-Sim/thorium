@@ -11,3 +11,4 @@ export shipStructure from './shipStructure';
 export lrComm from './lrComm';
 export internalComm from './internalComm';
 export systems from './systems';
+export navigation from './navigation';

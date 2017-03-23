@@ -23,21 +23,12 @@ export default class Navigation extends System {
   calculateCourse(destination) {
     this.destination = destination;
     this.scanning = true;
-    this.calculatedCourse = {
-      x: null,
-      y: null,
-      z: null
-    }
   }
   cancelCalculation(){
     this.scanning = false;
-    this.calculatedCourse = {
-      x: null,
-      y: null,
-      z: null
-    }
   }
   courseResponse(x, y, z) {
+    this.scanning = false;
     this.calculatedCourse = {
       x,
       y,
