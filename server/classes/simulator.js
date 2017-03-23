@@ -36,13 +36,13 @@ export default class Simulator extends TimelineObject {
     this.crewCount = count;
   }
   clamps(tf) {
-
+    this.ship.clamps = tf;
   }
   ramps(tf) {
-
+    this.ship.ramps = tf;
   }
   airlock(tf) {
-    
+    this.ship.airlock = tf;
   }
 }
 

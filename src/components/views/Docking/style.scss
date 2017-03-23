@@ -10,117 +10,229 @@
   }
 }
 
+.docking-graphic {
+  width: 600px;
+  height: 600px;
+  background-color: black;
+  border: solid 1px rgba(255, 255, 255, 0.5);
+  overflow: hidden;
+
+  // Clamps
+  .clamps {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    .xtransform {
+      top: 0;
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      transform: translateX(-6%);
+      transition: transform 1s ease-in-out;
+    }
+    .clamp {
+      transition: transform 2s ease-in-out 1s;
+      transform: translateY(-60%);
+      div {
+        position: absolute;
+        background-color: gray;
+      }
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      right: 36%;
+      top: 0px;
+      .stem {
+        height: 80%;
+        width: 7%;
+        top: 0;
+        right: 0;
+      }
+      .branch {
+        height: 7%;
+        width: 15%;
+        top: 73%;
+        right: -15%;
+      }
+      .hook {
+        width: 7%;
+        height: 7%;
+        right: -15%;
+        top: 67%;
+      }
+    }
+    .leftClamp {
+      height: 100%;
+      transform: scaleX(-1);
+    }
+    .bracket {
+      div {
+        position: absolute;
+        background-color: gray;
+      }
+      width: 100%;
+      height: 100%;
+      .bottom {
+        width: 90%;
+        height: 10%;
+        bottom: 5%;
+        left: 5%;
+      }
+      .left,
+      .right {
+        width: 10%;
+        height: 30%;
+        bottom: 15%;
+      }
+      .left {
+        left: 5%;
+      }
+      .right {
+        right: 5%;
+      }
+      .left-brack,
+      .right-brack {
+        width: 20%;
+        height: 10%;
+        bottom: 35%;
+      }
+      .left-brack {
+        left: 5%
+      }
+      .right-brack {
+        right: 5%
+      }
+    }
+    &.on {
+      .xtransform {
+        transform: translateX(2%);
+        transition: transform 1s ease-in-out 2s;
+      }
+      .clamp {
+       transform: translateY(1%);
+       transition: transform 2s ease-in-out;
+     }
+   }
+ }
+
+  //Ramps
+  .ramps {
+    position: relative;
+    height: 100%;
+    .background {
+      position: absolute;
+      background-color: #555;
+      height: 100%;
+      width: 60%;
+      left: 20%;
+      border-radius: 1000px 1000px 0 0;
+    }
+    .floor {
+      position: absolute;
+      background-color: #333;
+      height: 20%;
+      width: 60%;
+      left: 20%;
+      bottom: 0%;
+    }
+    .ramp {
+      position: absolute;
+      width: 100%;
+      z-index: 100;
+      border-bottom: 100px solid #484848;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      top: 100%;
+      transition: transform 1s ease-in-out;
+    }
+    .left-door {
+      position: absolute;
+      height: 100%;
+      width: 30%;
+      left: 15%;
+      background-color: gray;
+      border-radius: 1000px 0 0 0;
+      border: solid 5px #444;
+      transition: transform 1s ease-in-out;
+      transform: translateX(16%);
+    }
+    .right-door {
+      position: absolute;
+      height: 100%;
+      width: 30%;
+      right: 15%;
+      background-color: gray;
+      border-radius: 0 1000px 0 0;
+      border: solid 5px #444;
+      transition: transform 1s ease-in-out;
+      transform: translateX(-16%);
+      .handle1 {
+        position: absolute;
+        width: 50%;
+        height: 20%;
+        top: 20%;
+        left: 20%;
+        border: solid 7px #333;
+        border-radius: 0 15px 15px 0;
+      }
+      .handle2 {
+        position: absolute;
+        width: 50%;
+        height: 20%;
+        top: 50%;
+        left: 20%;
+        border: solid 7px #333;
+        border-radius: 0 15px 15px 0;
+      }
+    }
+    &.on {
+      .left-door {
+        transform: translateX(-80%);
+      }
+      .right-door {
+        transform: translateX(80%);
+      }
+      .ramp {
+        transform: translateY(-100%);
+      }
+    }
+  }
+  //Airlock
+  .airlock {
+    position: relative;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #222;
+    @for $i from 1 through 12 {
+      div.tri-#{$i} {
+        position: absolute;
+        left: 0%;
+        top: 50%;
+        width: 300px;
+        height: 300px;
+        background: linear-gradient(to right, #4c4c4c 0%,#595959 12%,#666666 25%,#474747 39%,#2b2b2b 76%,#1c1c1c 91%,#131313 100%);
+        transform-origin: top right;
+        transition: all 2s ease-in-out;
+        -webkit-clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+        clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+        transform: rotate($i * 30deg);
+      }
+    }
+    &.on {
+      div {
+       -webkit-clip-path: polygon(0% 25%, 100% 100%, 25% 75%);
+       clip-path: polygon(0% 25%, 100% 100%, 25% 75%);
+     }
+   }
+ }
+}
+
 .graphics {
   display: flex;
   justify-content: center;
   align-content: center;
   flex-direction: column;
   height: 80vh;
-  svg {
-    fill-rule:evenodd;
-    clip-rule:evenodd;
-    stroke-linejoin:round;
-    stroke-miterlimit:1.41421;
-  }
-  g path {
-    fill:rgb(122,122,122);
-  }
-  .left-clamp, .right-clamp {
-    will-change: transform;
-  }
-  .left-clamp {
-    transition: transform 4s ease 2s;
-    transform: scaleX(1) translateY(-50%);
-    .inner {
-      transition: transform 2s ease;
-      transform: translateX(44%);
-    }
-  }
-  .right-clamp {
-    transition: transform 4s ease 2s;
-    transform: scaleX(-1) translateY(-50%);
-    .inner {
-      transition: transform 2s ease;
-      transform: translateX(-321%);
-    }
-  }
-  #door-left, #door-right {
-    transition: transform 1s ease-in-out;
-    transform: translate(0);
-  }
-
-  #ramp {
-    transition: transform 1s ease-in-out;
-    transform: translate(0, 200%);
-  }
-  .open {
-    #door-left {
-      transform: translate(-90%, 0);
-    }
-
-    #door-right {
-      transform: translate(90%, 0)
-    }
-    #ramp {
-      transform: translate(0, 0%);
-    }
-  }
-  $radius: -200px;
-  $rot: -250deg;
-  @for $i from 1 through 12 {
-    svg.open {
-      g {
-        transition: transform 1s ease-in-out;
-        transform-origin: 50% 50%;
-      }
-      g.tri-#{$i} {
-        transform: rotate($rot) translate(cos(2 * pi() * ($i/12))*$radius, sin(2 * pi() * ($i/12))*$radius);
-      }
-    }
-  }
-
-  svg {
-    g {
-      transition: transform 1s ease-in-out;
-      transform: rotate(0deg);
-      transform-origin: 50% 50%;
-    }
-  }
-
-  @for $i from 1 through 12 {
-    g.tri-#{$i} {
-      transform: origin;
-      path {
-        fill: rgb(84, 84, 84);
-        stroke: rgb(38, 38, 38);
-        stroke-width: 10px;
-        transform-origin: bottom right;
-        transform: rotate($i * 30deg);
-      }
-    }
-  }
-}
-
-@keyframes translateRight {
-  0% {
-    transform: scaleX(-1) translateX(-321%) translateY(-50%);
-  }
-  75% {
-    transform: scaleX(-1) translateX(-321%) translateY(11.7%);
-  }
-  100% {
-    transform: scaleX(-1) translateX(-343%) translateY(11.7%);
-  }
-}
-
-@keyframes translateLeft {
-  0% {
-    transform: scaleX(1) translateX(44%) translateY(-50%);
-  }
-  75% {
-    transform: scaleX(1) translateX(44%) translateY(11.7%);
-  }
-  100% {
-    transform: scaleX(1) translateX(22%) translateY(11.7%);
-  }
+  
 }
