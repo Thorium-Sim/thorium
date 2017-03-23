@@ -40,4 +40,7 @@ simulatorId: ID!,
 #   "type":"text"
 # }
 crewCount: Int!): String
+
+shipDockingChange(simulatorId: ID!, which: String!, state: Boolean!): String
 `;
+

@@ -116,7 +116,13 @@ App.on('changeSimulatorCrewCount', ({ simulatorId, crewCount }) => {
   }
   pubsub.publish('simulatorsUpdate', App.simulators);
 });
-
+App.on('shipDockingChanged', ({ simulatorId, which, state}) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  if (simulator) {
+    simulator[which](state);
+  }
+  pubsub.publish('simulatorsUpdate', App.simulators);
+})
 
 // Timeline
 App.on('addTimelineStep', ({ simulatorId, missionId, timelineStepId, name, description }) => {

@@ -11,6 +11,7 @@ export default class Simulator extends TimelineObject {
     this.template = params.template || false;
     this.class = 'Simulator';
     this.crewCount = params.crewCount || 50;
+    this.ship = new Ship(params.ship)
     // Initialize the simulator async
     if (params.launch) {
       setTimeout(() => { this.nextTimeline(); }, 100);
@@ -21,7 +22,7 @@ export default class Simulator extends TimelineObject {
   }
   setAlertLevel(alertlevel) {
     if (['5', '4', '3', '2', '1', 'p'].indexOf(alertlevel) === -1) {
-      throw "Invalid Alert Level. Must be one of '5','4','3','2','1','p'";
+      throw new Error("Invalid Alert Level. Must be one of '5','4','3','2','1','p'");
     }
     this.alertlevel = alertlevel;
   }
@@ -33,5 +34,23 @@ export default class Simulator extends TimelineObject {
   }
   setCrewCount(count) {
     this.crewCount = count;
+  }
+  clamps(tf) {
+    this.ship.clamps = tf;
+  }
+  ramps(tf) {
+    this.ship.ramps = tf;
+  }
+  airlock(tf) {
+    this.ship.airlock = tf;
+  }
+}
+
+// A separate object for vestigial parts of the ship
+class Ship {
+  constructor(params = {}) {
+    this.clamps = params.clamps || false; // Detached
+    this.ramps = params.ramps || false; // Retracted
+    this.airlock = params.airlock || false; // Closed
   }
 }
