@@ -34,6 +34,7 @@ type Simulator {
   timeline: [TimelineStep]
   decks: [Deck]
   rooms: [Room]
+  ship: Ship
 }
 
 type TemplateSimulator {

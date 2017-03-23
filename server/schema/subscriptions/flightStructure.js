@@ -1,6 +1,6 @@
 export default `
 stationSetUpdate: [Stationset]
 missionsUpdate: [Mission]
-simulatorsUpdate(template: Boolean): [Simulator]
+simulatorsUpdate(simulatorId: ID, template: Boolean): [Simulator]
 flightsUpdate: [Flight]
 `;

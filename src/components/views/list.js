@@ -15,7 +15,8 @@ const viewList = [
 "ShieldControl",
 "CommDecoding",
 "Offline",
-"CommInternal"
+"CommInternal",
+"Docking",
 ];
 
 export default viewList;

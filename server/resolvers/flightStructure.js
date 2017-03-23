@@ -68,7 +68,9 @@ export const FlightStructureMutations = {
   changeSimulatorCrewCount(root, args) {
     App.handleEvent(args, 'changeSimulatorCrewCount', 'changedSimulatorCrewCount');
   },
-
+  shipDockingChange(root, args) {
+    App.handleEvent(args, 'shipDockingChange', 'shipDockingChanged');
+  },
 
   // Timeline
   addTimelineStep(root, args) {
@@ -134,9 +136,11 @@ export const FlightStructureSubscriptions = {
   missionsUpdate: (rootValue) => {
     return rootValue;
   },
-  simulatorsUpdate: (rootValue, { template }) => {
-    if (template) return rootValue.filter(s => s.template);
-    return rootValue;
+  simulatorsUpdate: (rootValue, { simulatorId, template }) => {
+    let returnVal = rootValue;
+    if (template) returnVal = returnVal.filter(s => s.template);
+    if (simulatorId) returnVal = returnVal.filter(s => s.id === simulatorId);
+    return returnVal;
   },
   flightsUpdate: (rootValue) => {
     return rootValue;
