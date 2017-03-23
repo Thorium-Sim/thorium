@@ -2,6 +2,23 @@ import React, {Component} from 'react';
 import { Row, Col, Container } from 'reactstrap';
 import './style.scss';
 
+const Keypad = (props) => {
+	return <div className="keypadButtons card">
+	<div className="keypad alertBack">7</div>
+	<div className="keypad alertBack">8</div>
+	<div className="keypad alertBack">9</div>
+	<div className="keypad alertBack">4</div>
+	<div className="keypad alertBack">5</div>
+	<div className="keypad alertBack">6</div>
+	<div className="keypad alertBack">1</div>
+	<div className="keypad alertBack">2</div>
+	<div className="keypad alertBack">3</div>
+	<div className="keypad alertBack">.</div>
+	<div className="keypad alertBack">0</div>
+	<div className="keypad alertBack clearButton">C</div>
+	<div className=" btn-block alertBack enter">Enter</div>
+	</div>
+}
 class NavigationScanner extends Component {
 	constructor(props){
 		super(props);
@@ -64,25 +81,13 @@ class NavigationContent extends Component {
 		}
 	}
 	render(){
+		//if (!this.props.data.loading) return null;
+		
 		return (
 			<Container fluid className="cardNavigation">
 			<Row>
-			<Col sm={3}>
-			<div className="keypadButtons card">
-			<div className="keypad alertBack">7</div>
-			<div className="keypad alertBack">8</div>
-			<div className="keypad alertBack">9</div>
-			<div className="keypad alertBack">4</div>
-			<div className="keypad alertBack">5</div>
-			<div className="keypad alertBack">6</div>
-			<div className="keypad alertBack">1</div>
-			<div className="keypad alertBack">2</div>
-			<div className="keypad alertBack">3</div>
-			<div className="keypad alertBack">.</div>
-			<div className="keypad alertBack">0</div>
-			<div className="keypad alertBack clearButton">C</div>
-			<div className=" btn-block alertBack enter">Enter</div>
-			</div>
+			<Col className="col-sm-6">
+			<NavigationScanner scanning={this.state.scanning} />
 			</Col>
 			<Col className="col-sm-3">
 			<div className="currentCourse card">
@@ -113,8 +118,8 @@ class NavigationContent extends Component {
 			</Row>
 			</div>
 			</Col>
-			<Col className="col-sm-6">
-			<NavigationScanner scanning={this.state.scanning} />
+			<Col sm={3}>
+			<Keypad />
 			</Col>
 			</Row>
 			</Container>);
