@@ -10,28 +10,28 @@ export const InternalCommQueries = {
 
 export const InternalCommMutations = {
   createInternalComm(root, args){
-    App.handleEvent(args, 'createInternalComm', 'createdInternalComm');
+    App.handleEvent(args, 'createInternalComm');
   },
   removeInternalComm(root, args){
-    App.handleEvent(args, 'removeInternalComm', 'removedInternalComm');
+    App.handleEvent(args, 'removeInternalComm');
   },
   internalCommConnectOutgoing(root, args){
-    App.handleEvent(args, 'internalCommConnectOutgoing', 'internalCommConnectedOutgoing')
+    App.handleEvent(args, 'internalCommConnectOutgoing')
   },
   internalCommConnectIncoming(root, args){
-    App.handleEvent(args, 'internalCommConnectIncoming', 'internalCommConnectedIncoming')
+    App.handleEvent(args, 'internalCommConnectIncoming')
   },
   internalCommCancelIncoming(root, args){
-    App.handleEvent(args, 'internalCommCancelIncoming', 'internalCommCanceledIncoming')
+    App.handleEvent(args, 'internalCommCancelIncoming')
   },
   internalCommCancelOutgoing(root, args){
-    App.handleEvent(args, 'internalCommCancelOutgoing', 'internalCommCanceledOutgoing')
+    App.handleEvent(args, 'internalCommCancelOutgoing')
   },
   internalCommCallIncoming(root, args){
-    App.handleEvent(args, 'internalCommCallIncoming', 'internalCommCalledIncoming')
+    App.handleEvent(args, 'internalCommCallIncoming')
   },
   internalCommCallOutgoing(root, args){
-    App.handleEvent(args, 'internalCommCallOutgoing', 'internalCommCalledOutgoing')
+    App.handleEvent(args, 'internalCommCallOutgoing')
   },
 };
 

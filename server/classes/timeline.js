@@ -8,10 +8,11 @@ export class TimelineObject {
     this.timelineStep = params.timelineStep || -1; // 0 is the init step, so -1 is before that.
     if (params.timeline) {
       params.timeline.forEach(t => {
-        this.timeline.push(new TimelineStep(t));
+        this.timeline.push(new TimelineStep(t.id, t));
       });
     } else {
-      this.timeline[0] = new TimelineStep({
+      console.log(params)
+      this.timeline[0] = new TimelineStep(`${params.id}-initial`, {
         name: 'Initialize',
         description: 'Initializes the mission',
         order: 0,
@@ -19,8 +20,9 @@ export class TimelineObject {
       });
     }
   }
-  addTimelineStep({ name, description, order, timelineItems }) {
-    this.timeline.push(new TimelineStep({ name, description, order, timelineItems }));
+
+  addTimelineStep({ name, description, order, timelineStepId, timelineItems }) {
+    this.timeline.push(new TimelineStep(timelineStepId, { name, description, order, timelineItems }));
   }
   removeTimelineStep(timelineStepId) {
     this.timeline = this.timeline.filter(t => t.id !== timelineStepId);
@@ -45,9 +47,9 @@ export class TimelineObject {
     const timeline = this.timeline.find(t => t.id === timelineStepId);
     timeline.update(timelineStep);
   }
-  addTimelineStepItem(timelineStepId, timelineItem) {
+  addTimelineStepItem(timelineStepId, timelineItemId, timelineItem) {
     const timeline = this.timeline.find(t => t.id === timelineStepId);
-    timeline.addTimelineItem(timelineItem);
+    timeline.addTimelineItem(timelineItemId, timelineItem);
   }
   removeTimelineStepItem(timelineStepId, timelineItemId) {
     const timeline = this.timeline.find(t => t.id === timelineStepId);
@@ -87,8 +89,8 @@ export class TimelineObject {
 }
 
 export class TimelineStep {
-  constructor(params) {
-    this.id = params.id || uuid.v4();
+  constructor(timelineStepId, params) {
+    this.id = timelineStepId || uuid.v4();
     this.class = 'TimelineStep';
     this.name = params.name || 'Step';
     this.description = params.description || 'A timeline step';
@@ -96,7 +98,7 @@ export class TimelineStep {
     this.timelineItems = [];
     if (params.timelineItems) {
       params.timelineItems.forEach(t => {
-        this.timelineItems.push(new TimelineItem(t));
+        this.timelineItems.push(new TimelineItem(t.id, t));
       });
     }
   }
@@ -104,8 +106,8 @@ export class TimelineStep {
     if (name) this.name = name;
     if (description) this.description = description;
   }
-  addTimelineItem({ id, name, type, event, args, delay }) {
-    this.timelineItems.push(new TimelineItem({ id, name, type, event, args, delay }));
+  addTimelineItem(id, { name, type, event, args, delay }) {
+    this.timelineItems.push(new TimelineItem(id, { name, type, event, args, delay }));
   }
   removeTimelineItem(id) {
     this.timelineItems = this.timelineItems.filter(t => t.id !== id);
@@ -117,8 +119,8 @@ export class TimelineStep {
 }
 
 export class TimelineItem {
-  constructor(params) {
-    this.id = params.id || uuid.v4();
+  constructor(timelineItemId, params) {
+    this.id = timelineItemId || uuid.v4();
     this.name = params.name || 'Item';
     this.type = params.type || null;
     this.event = params.event || null;

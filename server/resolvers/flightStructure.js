@@ -1,4 +1,5 @@
 import App from '../../app';
+import uuid from 'uuid';
 
 export const FlightStructureQueries = {
   simulators: (root, { template, id }) => {
@@ -27,46 +28,46 @@ export const FlightStructureMutations = {
 
   // Mission
   createMission(root, args) {
-    App.handleEvent(args, 'createMission', 'createdMission');
+    App.handleEvent(Object.assign(args,{id: uuid.v4()}), 'createMission');
   },
   removeMission(root, args) {
-    App.handleEvent(args, 'removeMission', 'removedMission');
+    App.handleEvent(args, 'removeMission');
   },
   editMission(root, args) {
-    App.handleEvent(args, 'editMission', 'editedMission');
+    App.handleEvent(args, 'editMission');
   },
   addSimulatorToMission(root, args) {
-    App.handleEvent(args, 'addSimulatorToMission', 'addedSimulatorToMission');
+    App.handleEvent(args, 'addSimulatorToMission');
   },
   removeSimulatorFromMission(root, args) {
-    App.handleEvent(args, 'removeSimulatorToMission', 'removedSimulatorToMission');
+    App.handleEvent(args, 'removeSimulatorToMission');
   },
 
 
   // Flight
   startFlight(root, args) {
-    App.handleEvent(args, 'startFlight', 'startedFlight');
+    App.handleEvent(Object.assign(args,{flightId: uuid.v4()}), 'startFlight');
   },
 
 
   // Simulator
   createSimulator(root, args) {
-    App.handleEvent(args, 'createSimulator', 'createdSimulator');
+    App.handleEvent(Object.assign(args,{id: uuid.v4()}), 'createSimulator');
   },
   removeSimulator(root, args) {
-    App.handleEvent(args, 'removeSimulator', 'removedSimulator');
+    App.handleEvent(args, 'removeSimulator');
   },
   renameSimulator(root, args) {
-    App.handleEvent(args, 'renameSimulator', 'renamedSimulator');
+    App.handleEvent(args, 'renameSimulator');
   },
   changeSimulatorLayout(root, args) {
-    App.handleEvent(args, 'changeSimulatorLayout', 'changedSimulatorLayout');
+    App.handleEvent(args, 'changeSimulatorLayout');
   },
   changeSimulatorAlertLevel(root, args) {
-    App.handleEvent(args, 'changeSimulatorAlertLevel', 'changedSimulatorAlertLevel');
+    App.handleEvent(args, 'changeSimulatorAlertLevel');
   },
   changeSimulatorCrewCount(root, args) {
-    App.handleEvent(args, 'changeSimulatorCrewCount', 'changedSimulatorCrewCount');
+    App.handleEvent(args, 'changeSimulatorCrewCount');
   },
   shipDockingChange(root, args) {
     App.handleEvent(args, 'shipDockingChange', 'shipDockingChanged');
@@ -74,58 +75,58 @@ export const FlightStructureMutations = {
 
   // Timeline
   addTimelineStep(root, args) {
-    App.handleEvent(args, 'addTimelineStep', 'addedTimelineStep');
+    App.handleEvent(Object.assign(args,{timelineStepId: uuid.v4()}), 'addTimelineStep');
   },
   removeTimelineStep(root, args) {
-    App.handleEvent(args, 'removeTimelineStep', 'removedTimelineStep');
+    App.handleEvent(args, 'removeTimelineStep');
   },
   reorderTimelineStep(root, args) {
-    App.handleEvent(args, 'reorderTimelineStep', 'reorderedTimelineStep');
+    App.handleEvent(args, 'reorderTimelineStep');
   },
   updateTimelineStep(root, args) {
-    App.handleEvent(args, 'updateTimelineStep', 'updatedTimelineStep');
+    App.handleEvent(args, 'updateTimelineStep');
   },
   addTimelineItemToTimelineStep(root, args) {
-    App.handleEvent(args, 'addTimelineItemToTimelineStep', 'addedTimelineItemToTimelineStep');
+    App.handleEvent(Object.assign(args,{timelineItemId: uuid.v4()}), 'addTimelineItemToTimelineStep');
   },
   removeTimelineStepItem(root, args) {
-    App.handleEvent(args, 'removeTimelineStepItem', 'removedTimelineStepItem');
+    App.handleEvent(args, 'removeTimelineStepItem');
   },
   updateTimelineStepItem(root, args) {
-    App.handleEvent(args, 'updateTimelineStepItem', 'updatedTimelineStepItem');
+    App.handleEvent(args, 'updateTimelineStepItem');
   },
 
 
   // Station
   createStationSet(root, args) {
-    App.handleEvent(args, 'createStationSet', 'createdStationSet');
+    App.handleEvent(args, 'createStationSet');
   },
   removeStationSet(root, args) {
-    App.handleEvent(args, 'removeStationSet', 'removedStationSet');
+    App.handleEvent(args, 'removeStationSet');
   },
   renameStationSet(root, args) {
-    App.handleEvent(args, 'renameStationSet', 'renamedStationSet');
+    App.handleEvent(args, 'renameStationSet');
   },
   addStationToStationSet(root, args) {
-    App.handleEvent(args, 'addStationToStationSet', 'addedStationToStationSet');
+    App.handleEvent(args, 'addStationToStationSet');
   },
   removeStationFromStationSet(root, args) {
-    App.handleEvent(args, 'removeStationFromStationSet', 'removedStationFromStationSet');
+    App.handleEvent(args, 'removeStationFromStationSet');
   },
   editStationInStationSet(root, args) {
-    App.handleEvent(args, 'editStationInStationSet', 'editedStationInStationSet');
+    App.handleEvent(args, 'editStationInStationSet');
   },
   addCardToStation(root, args) {
-    App.handleEvent(args, 'addCardToStation', 'addedCardToStation');
+    App.handleEvent(args, 'addCardToStation');
   },
   removeCardFromStation(root, args) {
-    App.handleEvent(args, 'removeCardFromStation', 'removedCardFromStation');
+    App.handleEvent(args, 'removeCardFromStation');
   },
   editCardInStationSet(root, args) {
-    App.handleEvent(args, 'editCardInStationSet', 'editedCardInStationSet');
+    App.handleEvent(args, 'editCardInStationSet');
   },
   addSystem: (root, args) => {
-    App.handleEvent(args, 'addSystem', 'addedSystem');
+    App.handleEvent(args, 'addSystem');
   },
 };
 
@@ -155,6 +156,9 @@ export const FlightStructureTypes = {
     rooms(rootValue) {
       return App.rooms.filter(r => r.simulatorId === rootValue.id);
     },
+    systems(rootValue) {
+      return App.systems.filter(s => s.simulatorId === rootValue.id);
+    }
   },
   Flight: {
     mission(rootValue) {

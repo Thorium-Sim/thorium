@@ -28,43 +28,43 @@ export const ShipStructureQueries = {
 
 export const ShipStructureMutations = {
   addDeck(root, args) {
-    App.handleEvent(args, 'addDeck', 'addedDeck');
+    App.handleEvent(args, 'addDeck');
   },
   removeDeck(root, args) {
-    App.handleEvent(args, 'removeDeck', 'removedDeck');
+    App.handleEvent(args, 'removeDeck');
   },
   addDecksBulk(root, args) {
-    App.handleEvent(args, 'addDecksBulk', 'addedDecksBulk');
+    App.handleEvent(args, 'addDecksBulk');
   },
   updateDeckSvg(root, args) {
-    App.handleEvent(args, 'updateDeckSvg', 'updatedDeckSvg');
+    App.handleEvent(args, 'updateDeckSvg');
   },
   deckDoors(root, args) {
-    App.handleEvent(args, 'deckDoors', 'deckDoorsd');
+    App.handleEvent(args, 'deckDoors');
   },
   deckEvac(root, args) {
-    App.handleEvent(args, 'deckEvac', 'deckEvacd');
+    App.handleEvent(args, 'deckEvac');
   },
   updateHallwaySvg(root, args) {
-    App.handleEvent(args, 'updateHallwaySvg', 'updatedHallwaySvg');
+    App.handleEvent(args, 'updateHallwaySvg');
   },
   addRoom(root, args) {
-    App.handleEvent(args, 'addRoom', 'addedRoom');
+    App.handleEvent(args, 'addRoom');
   },
   removeRoom(root, args) {
-    App.handleEvent(args, 'removeRoom', 'removedRoom');
+    App.handleEvent(args, 'removeRoom');
   },
   addRoomsBulk(root, args) {
-    App.handleEvent(args, 'addRoomsBulk', 'addedRoomsBulk');
+    App.handleEvent(args, 'addRoomsBulk');
   },
   renameRoom(root, args) {
-    App.handleEvent(args, 'renameRoom', 'renamedRoom');
+    App.handleEvent(args, 'renameRoom');
   },
   updateRoomSvg(root, args) {
-    App.handleEvent(args, 'updateRoomSvg', 'updatedRoomSvg');
+    App.handleEvent(args, 'updateRoomSvg');
   },
   roomGas(root, args) {
-    App.handleEvent(args, 'roomGas', 'roomGassed');
+    App.handleEvent(args, 'roomGas');
   }
 };
 

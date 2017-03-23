@@ -30,6 +30,8 @@ type Simulator {
   layout: String
   template: Boolean
   timelineStep: Int
+  systems: [System]
+  systemsFull: [SystemUnion]
   stations: [Station]
   timeline: [TimelineStep]
   decks: [Deck]

@@ -6,27 +6,27 @@ const sendUpdate = () => {
   const shields = App.systems.filter((sys) => sys.type === 'Shield');
   pubsub.publish('shieldsUpdate', shields);
 }
-App.on('createdShield', ({simulatorId, name, position}) => {
+App.on('createShield', ({simulatorId, name, position}) => {
   const system = new Classes.Shield({ simulatorId, name, position});
   App.systems.push(system);
   sendUpdate();
 });
-App.on('shieldRaiseded', ({id}) => {
+App.on('shieldRaised', ({id}) => {
   const system = App.systems.find((sys) => sys.id === id);
   system.shieldState(true);
   sendUpdate();
 });
-App.on('shieldLowereded', ({id}) => {
+App.on('shieldLowered', ({id}) => {
   const system = App.systems.find((sys) => sys.id === id);
   system.shieldState(false);
   sendUpdate();
 });
-App.on('shieldIntegritySetted', ({id, integrity}) => {
+App.on('shieldIntegritySet', ({id, integrity}) => {
   const system = App.systems.find((sys) => sys.id === id);
   system.setIntegrity(integrity);
   sendUpdate();
 });
-App.on('shieldFrequencySetted', ({id, frequency}) => {
+App.on('shieldFrequencySet', ({id, frequency}) => {
   const system = App.systems.find((sys) => sys.id === id);
   system.setFrequency(frequency);
   sendUpdate();

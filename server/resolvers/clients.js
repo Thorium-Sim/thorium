@@ -11,55 +11,55 @@ export const ClientQueries = {
 
 export const ClientMutations = {
   clientConnect: (root, args) => {
-    App.handleEvent(args, 'clientConnect', 'clientConnected');
+    App.handleEvent(args, 'clientConnect');
     return '';
   },
   clientDisconnect: (root, args) => {
-    App.handleEvent(args, 'clientDisconnect', 'clientDisconnected');
+    App.handleEvent(args, 'clientDisconnect');
     return '';
   },
   clientPing: (root, args) => {
-    App.handleEvent(args, 'clientPing', 'clientPinged');
+    App.handleEvent(args, 'clientPing');
     return '';
   },
   clientSetFlight: (root, args) => {
-    App.handleEvent(args, 'clientSetFlight', 'clientSetedFlight');
+    App.handleEvent(args, 'clientSetFlight');
     return '';
   },
   clientSetSimulator: (root, args) => {
-    App.handleEvent(args, 'clientSetSimulator', 'clientSetedSimulator');
+    App.handleEvent(args, 'clientSetSimulator');
     return '';
   },
   clientSetStation: (root, args) => {
-    App.handleEvent(args, 'clientSetStation', 'clientSetedStation');
+    App.handleEvent(args, 'clientSetStation');
     return '';
   },
   clientLogin: (root, args) => {
-    App.handleEvent(args, 'clientLogin', 'clientLogined');
+    App.handleEvent(args, 'clientLogin');
     return '';
   },
   clientLogout: (root, args) => {
-    App.handleEvent(args, 'clientLogout', 'clientLogouted');
+    App.handleEvent(args, 'clientLogout');
     return '';
   },
   clientDiagnostic: (root, args) => {
-    App.handleEvent(args, 'clientDiagnostic', 'clientDiagnosticed');
+    App.handleEvent(args, 'clientDiagnostic');
     return '';
   },
   clientReset: (root, args) => {
-    App.handleEvent(args, 'clientReset', 'clientReseted');
+    App.handleEvent(args, 'clientReset');
     return '';
   },
   clientLockScreen: (root, args) => {
-    App.handleEvent(args, 'clientLockScreen', 'clientLockScreened');
+    App.handleEvent(args, 'clientLockScreen');
     return '';
   },
   clientUnlockScreen: (root, args) => {
-    App.handleEvent(args, 'clientUnlockScreen', 'clientUnlockScreened');
+    App.handleEvent(args, 'clientUnlockScreen');
     return '';
   },
   clientOfflineState: (root, args) => {
-    App.handleEvent(args, 'clientOfflineState', 'clientOfflinedState');
+    App.handleEvent(args, 'clientOfflineState');
     return '';
   }
 };

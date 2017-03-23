@@ -7,8 +7,11 @@ import Flights from './Flights';
 import DebugList from '../DebugList';
 import Core from '../Core';
 import Assets from '../../components/views/AdminAssets'
-
+import Configs from '../../components/config'
 import './style.scss';
+
+const {TempSimulatorConfig} = Configs;
+console.log(TempSimulatorConfig);
 
 export default class Lobby extends Component {
     constructor(props) {
@@ -29,7 +32,7 @@ export default class Lobby extends Component {
         }
     }
     render() {
-        const Comps = {Flights: Flights, Clients: Clients, Config: Config, DebugList: DebugList, Core: Core, Assets: Assets};
+        const Comps = {Flights: Flights, Clients: Clients, TempSimConfig: TempSimulatorConfig, Config: Config, DebugList: DebugList, Core: Core, Assets: Assets};
         return (
             <Container className="lobby">
             <Row>
