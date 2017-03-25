@@ -23,6 +23,9 @@ export const NavigationMutations = {
   navCourseEntry(rootValue, args){
     App.handleEvent(args, 'navCourseEntry');
   },
+  navToggleCalculate(rootValue, args){
+    App.handleEvent(args, 'navToggleCalculate');
+  }
 };
 
 export const NavigationSubscriptions = {

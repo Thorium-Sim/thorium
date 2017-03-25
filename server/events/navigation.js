@@ -21,3 +21,8 @@ App.on('navCourseEntry', ({id, x, y, z}) => {
   system.courseEntry(x, y, z)
   pubsub.publish('navigationUpdate', App.systems.filter(s => s.type === 'Navigation'));
 })
+App.on('navToggleCalculate', ({id, which}) => {
+  const system = App.systems.find((sys) => sys.id === id);
+  system.toggleCalculate(which);
+  pubsub.publish('navigationUpdate', App.systems.filter(s => s.type === 'Navigation'));
+})

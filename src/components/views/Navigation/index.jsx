@@ -4,23 +4,24 @@ import gql from 'graphql-tag';
 import { InputGroup, InputGroupButton, Button, Input } from 'reactstrap';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
+import DamageOverlay from '../helpers/DamageOverlay';
 import './style.scss';
 
 const Keypad = (props) => {
 	return <div className="keypadButtons card">
-	<div className="keypad alertBack">7</div>
-	<div className="keypad alertBack">8</div>
-	<div className="keypad alertBack">9</div>
-	<div className="keypad alertBack">4</div>
-	<div className="keypad alertBack">5</div>
-	<div className="keypad alertBack">6</div>
-	<div className="keypad alertBack">1</div>
-	<div className="keypad alertBack">2</div>
-	<div className="keypad alertBack">3</div>
-	<div className="keypad alertBack">.</div>
-	<div className="keypad alertBack">0</div>
-	<div className="keypad alertBack clearButton">C</div>
-	<div className=" btn-block alertBack enter">Enter</div>
+	<div onClick={props.keydown.bind(this, 7)} className="keypad alertBack">7</div>
+	<div onClick={props.keydown.bind(this, 8)} className="keypad alertBack">8</div>
+	<div onClick={props.keydown.bind(this, 9)} className="keypad alertBack">9</div>
+	<div onClick={props.keydown.bind(this, 4)} className="keypad alertBack">4</div>
+	<div onClick={props.keydown.bind(this, 5)} className="keypad alertBack">5</div>
+	<div onClick={props.keydown.bind(this, 6)} className="keypad alertBack">6</div>
+	<div onClick={props.keydown.bind(this, 1)} className="keypad alertBack">1</div>
+	<div onClick={props.keydown.bind(this, 2)} className="keypad alertBack">2</div>
+	<div onClick={props.keydown.bind(this, 3)} className="keypad alertBack">3</div>
+	<div onClick={props.keydown.bind(this, '.')} className="keypad alertBack">.</div>
+	<div onClick={props.keydown.bind(this, 0)} className="keypad alertBack">0</div>
+	<div onClick={props.clear} className="keypad alertBack clearButton">C</div>
+	<div onClick={props.enter} className=" btn-block alertBack enter">Enter</div>
 	</div>
 }
 class NavigationScanner extends Component {
@@ -106,7 +107,10 @@ class Navigation extends Component {
 		super(props);
 		this.state = {
 			destination: null,
-			calculatedCourse: {}
+			calculatedCourse: {},
+			selectedField: null,
+			enteredCourse: {},
+			scanning: false
 		}
 		this.scanning = null;
 		this.subscription = null;
@@ -136,7 +140,8 @@ class Navigation extends Component {
 				}
 				this.setState({
 					destination:navigation.destination,
-					calculatedCourse: navigation.calculatedCourse
+					calculatedCourse: navigation.calculatedCourse,
+					enteredCourse: navigation.currentCourse
 				})
 			}
 		}
@@ -155,6 +160,72 @@ class Navigation extends Component {
 		this.setState({
 			destination: e.target.value
 		})
+	}
+	keydown(e){
+		let key;
+		let enteredCourse = Object.assign({},this.state.enteredCourse);
+		let selectedField = this.state.selectedField;
+		if (selectedField === null) {
+			selectedField = 'x';
+			enteredCourse = {
+				x:'',
+				y:'',
+				z:''
+			};
+		};
+		if (e.which){
+
+		} else {
+			key = e.toString();
+		}
+		if (enteredCourse[selectedField] === null || enteredCourse[selectedField] === undefined) enteredCourse[selectedField] = '';
+		if (key === '.' && enteredCourse[selectedField].indexOf('.') > -1) return;
+		enteredCourse[selectedField] += key;
+		this.setState({
+			enteredCourse,
+			selectedField
+		})
+	}
+	clear(){
+		const {enteredCourse, selectedField} = this.state;
+		if (selectedField === null || enteredCourse[selectedField] === null || enteredCourse[selectedField] === '') {
+			this.setState({
+				enteredCourse: {}
+			});
+			return;
+		}
+		enteredCourse[selectedField] = '';
+		this.setState({
+			enteredCourse
+		})
+	}
+	enter(){
+		const {enteredCourse, selectedField} = this.state;
+		if (selectedField === null) {
+			this.setState({
+				selectedField: 'x'
+			})
+			return;
+		}
+		if (enteredCourse[selectedField] === null || enteredCourse[selectedField] === ''){
+			return;
+		}
+		if (selectedField === 'z' && (enteredCourse[selectedField] !== null && enteredCourse[selectedField] !== '')){
+			this.inputDestination();
+			return;
+		}
+		if (selectedField === 'x'){
+			this.setState({
+				selectedField: 'y',
+			})
+			return;
+		}
+		if (selectedField === 'y'){
+			this.setState({
+				selectedField: 'z',
+			})
+			return;
+		}
 	}
 	calc(){
 		const navigation = this.props.data.navigation[0];
@@ -187,18 +258,54 @@ class Navigation extends Component {
 		})
 	}
 	inputDestination(){
+		const navigation = this.props.data.navigation[0];
 		const mutation = gql`
 		mutation CourseEntry($id: ID!, $x: String!, $y: String!, $z: String!,){
 			navCourseEntry(id: $id, x: $x, y: $y, z: $z)
 		}`;
+		const course = this.state.enteredCourse;
+		const variables = {
+			id: navigation.id,
+			x: course.x,
+			y: course.y,
+			z: course.z
+		}
+		this.props.client.mutate({
+			mutation,
+			variables
+		})
+
+		// Do a little entering effect.
+		this.setState({
+			scanning: true,
+			selectedField: 'x'
+		})
+		setTimeout(() => {
+			this.setState({
+				scanning: false,
+				selectedField: 'y'
+			})
+		},250)
+		setTimeout(() => {
+			this.setState({
+				selectedField: 'z'
+			})
+		},500)
+		setTimeout(() => {
+			this.setState({
+				selectedField: null
+			})
+		},750)
 	}
 	render(){
 		if (this.props.data.loading) return null;
-		const {calculatedCourse} = this.state;
+		const {calculatedCourse, enteredCourse, selectedField} = this.state;
 		const navigation = this.props.data.navigation[0];
+		const scanning = this.state.scanning || navigation.scanning;
 		if (!navigation) return <p>No Navigation System</p>;
 		return (
 			<Container fluid className="cardNavigation">
+			<DamageOverlay system={navigation} message={`Navigation System Offline`} />
 			<Row>
 			<Col className="col-sm-6">
 			{navigation.calculate && <Row>
@@ -218,7 +325,7 @@ class Navigation extends Component {
 			}
 			<Row>
 			<Col className="col-sm-12">
-			<NavigationScanner scanning={navigation.scanning} />
+			<NavigationScanner scanning={scanning} />
 			</Col>
 			</Row>
 			</Col>
@@ -258,30 +365,32 @@ class Navigation extends Component {
 			<Col className="col-sm-3">
 			X:
 			</Col>
-			<Col className="col-sm-8 numBox">
-			{navigation.currentCourse.x}
+			<Col className={`col-sm-8 numBox ${selectedField === 'x' ? 'selected' : ''}`}>
+			{enteredCourse.x}
 			</Col>
 			</Row>
 			<Row>
 			<Col className="col-sm-3">
 			Y:
 			</Col>
-			<Col className="col-sm-8 numBox">
-			{navigation.currentCourse.y}
+			<Col className={`col-sm-8 numBox ${selectedField === 'y' ? 'selected' : ''}`}>
+			{enteredCourse.y}
 			</Col>
 			</Row>
 			<Row>
 			<Col className="col-sm-3">
 			Z:
 			</Col>
-			<Col className="col-sm-8 numBox">
-			{navigation.currentCourse.z}
+			<Col className={`col-sm-8 numBox ${selectedField === 'z' ? 'selected' : ''}`}>
+			{enteredCourse.z}
 			</Col>
 			</Row>
 			</div>
 			</Col>
 			<Col sm={3}>
-			<Keypad />
+			<Keypad keydown={this.keydown.bind(this)}
+			clear={this.clear.bind(this)}
+			enter={this.enter.bind(this)}/>
 			</Col>
 			</Row>
 			</Container>);

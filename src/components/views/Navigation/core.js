@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
-import { Row, Col, Button, Input } from 'reactstrap';
+import { Row, Col, Button } from 'reactstrap';
 import { graphql, withApollo } from 'react-apollo';
 import { OutputField } from '../../generic/core';
 import Immutable from 'immutable';
@@ -100,13 +100,31 @@ class NavigationCore extends Component {
       variables
     })
   }
+  toggleCalculate(e){
+    const mutation = gql`
+    mutation ToggleCalculate($id: ID!, $which: Boolean!){
+      navToggleCalculate(id: $id, which: $which)
+    }`;
+    const navigation = this.props.data.navigation[0];
+    const variables = {
+      id: navigation.id,
+      which: e.target.checked
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
+  }
   render(){
     if (this.props.data.loading) return null;
     const navigation = this.props.data.navigation[0];
     if (!navigation) return <p>No Navigation Systems</p>
       return <div className="docking-core">
-    <p>Navigation</p>
-    <Input type="checkbox" />
+    <p>Navigation    <label>
+    <input type="checkbox" checked={navigation.calculate} onChange={this.toggleCalculate.bind(this)} />
+    Calculate
+    </label>
+    </p>
     <Row>
     <Col sm="1">
 
@@ -118,7 +136,6 @@ class NavigationCore extends Component {
     New
     </Col>
     <Col sm="3">
-
     </Col>
     </Row>
     <Row>

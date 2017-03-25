@@ -20,6 +20,9 @@ export default class Navigation extends System {
     this.destination = params.destination || null;
     this.scanning = params.scanning || false;
   }
+  toggleCalculate(which){
+    this.calculate = which;
+  }
   calculateCourse(destination) {
     this.destination = destination;
     this.scanning = true;
