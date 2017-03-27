@@ -117,6 +117,25 @@ class Navigation extends Component {
 		if (props.scanning) {
 			this.scanning = setTimeout(this._scan.bind(this),100);
 		}
+
+	}
+	handleKeydown(e){
+		console.log(e.which, e.key);
+		if (e.which === 8){//Delete key
+      this.clear();
+		}
+		if (e.which === 13){//Enter key
+      this.enter();
+		}
+		if (!isNaN(parseInt(e.key, 10)) || e.key === '.'){
+      this.keydown(e.key)
+		}
+	}
+	componentDidMount() {
+		document.addEventListener('keydown', this.handleKeydown.bind(this), false)
+	}
+	componentWillUnmount() {
+		document.removeEventListener('keydown', this.handleKeydown.bind(this), false)
 	}
 	componentWillReceiveProps(nextProps){
 		if (!this.subscription && !nextProps.data.loading) {
@@ -190,7 +209,8 @@ class Navigation extends Component {
 		const {enteredCourse, selectedField} = this.state;
 		if (selectedField === null || enteredCourse[selectedField] === null || enteredCourse[selectedField] === '') {
 			this.setState({
-				enteredCourse: {}
+				enteredCourse: {},
+				selectedField: null
 			});
 			return;
 		}
