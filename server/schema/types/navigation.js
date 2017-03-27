@@ -1,18 +1,21 @@
 export default `
 type Navigation {
-  id: ID
+    id: ID
   simulatorId: ID
   type: String
+  name: String
   power: Power
-  destination: Location
-  calculated: Location
-  damage: Damage 
+  damage: Damage
+  calculate: Boolean
+  currentCourse: NavLoc
+  calculatedCourse: NavLoc
+  destination: String
+  scanning: Boolean
 }
 
-type Location {
-  name: String
-  xCoord: Float
-  yCoord: Float
-  zCoord: Float
+type NavLoc {
+  x: String
+  y: String
+  z: String
 }
 `;

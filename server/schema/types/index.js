@@ -16,6 +16,7 @@ export internalComm from './internalComm';
 export damage from './damage';
 export system from './system';
 export ship from './ship';
+export navigation from './navigation';
 
 export const role = `
 type role {

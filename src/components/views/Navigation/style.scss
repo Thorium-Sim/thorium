@@ -37,11 +37,12 @@
   .keypadButtons .enter{
     width: 95%;
   }
+
   .calculatedCourse, .currentCourse{
     margin-top: 70px;
     padding: 10px;
   }
-  .currentCourse{
+  .currentCourse, .calculated{
     position:relative;
     top: 80px;
     font-size: 20px;
@@ -58,6 +59,9 @@
       border-radius: 4px;
       color: #fff;
       height: 36px;
+      &.selected {
+        background-color: #777777;
+      }
     }
   }
   .starsBox{
