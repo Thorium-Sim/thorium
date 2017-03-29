@@ -70,4 +70,28 @@ type CommRange {
   lower: Float
   upper: Float
 }
+
+input RangeInput {
+  upper: Float
+  lower: Float
+}
+input CommSignalInput {
+  image: String
+  name: String
+  range: RangeInput
+}
+
+input CommArrowInput {
+  id: ID
+  signal: ID
+  frequency: Float
+  connected: Boolean
+}
+
+input CommUpdateInput {
+  state: String
+  frequency: Float
+  amplitude: Float
+}
+
 `

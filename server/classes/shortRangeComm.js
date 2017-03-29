@@ -31,6 +31,7 @@ export default class ShortRangeComm extends System {
     this.arrows = this.arrows.filter(a => a.id !== arrowId);
   }
   connectArrow(arrowId) {
+    this.state = 'idle';
     this.arrows.find(a => a.id === arrowId).connect();
   }
   disconnectArrow(arrowId) {
@@ -41,6 +42,22 @@ export default class ShortRangeComm extends System {
     if (state) this.state = state;
     if (frequency) this.frequency = frequency;
     if (amplitude) this.amplitude = amplitude;
+  }
+  hail(){
+    this.state = 'hailing';
+  }
+  cancelHail(){
+    this.state = 'idle';
+  }
+  connectHail() {
+    this.state = 'idle';
+    //Loop through the signals to find
+    //which signal we are hailing.
+    const signalId = this.signals.reduce((prev, next) => {
+      if (next.range.lower <= this.frequency && next.range.upper >= this.frequency) return next.id;
+      return prev;
+    }, null);
+    this.addArrow({signal: signalId, frequency: this.frequency, connected: true});
   }
 }
 
@@ -65,7 +82,8 @@ class Arrow {
   constructor(params) {
     this.id = params.id || uuid.v4();
     this.signal = params.signal || uuid.v4(); //Useless arrow
-    this.frequency = params.frequency || 0.5;
+    // TODO: Set a random frequency within the range of the signal
+    this.frequency = params.frequency;
     this.connected = params.connected || false;
   }
   connect() {
