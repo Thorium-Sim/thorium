@@ -10,6 +10,50 @@ body{
 	overflow:hidden;
 	margin:0;
 }
+
+.alertBackground-5 {
+	background-color: $alert5;
+}
+.alertFill-5 {
+	fill: $alert5;
+	stroke: lighten($alert5, 20%);
+}
+.alertBackground-4 {
+	background-color: $alert5;
+}
+.alertFill-4 {
+	fill: $alert5;
+	stroke: lighten($alert5, 20%);
+}
+.alertBackground-3 {
+	background-color: $alert3;
+}
+.alertFill-3 {
+	fill: $alert3;
+	stroke: lighten($alert3, 20%);
+}
+.alertBackground-2 {
+	background-color: $alert2;
+}
+.alertFill-2 {
+	fill: $alert2;
+	stroke: lighten($alert2, 20%);
+}
+.alertBackground-1 {
+	background-color: $alert1;
+}
+.alertFill-1 {
+	fill: $alert1;
+	stroke: lighten($alert1, 20%);
+}
+.alertBackground-p {
+	background-color: $alertp;
+}
+.alertFill-p {
+	fill: $alertp;
+	stroke: lighten($alertp, 20%);
+}
+
 //Card area
 .card-container{
 	position: absolute;
