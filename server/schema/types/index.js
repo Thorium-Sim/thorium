@@ -17,7 +17,7 @@ export damage from './damage';
 export system from './system';
 export ship from './ship';
 export navigation from './navigation';
-
+export shortRangeComm from './shortRangeComm';
 export const role = `
 type role {
   id: ID

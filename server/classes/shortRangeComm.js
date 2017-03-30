@@ -12,8 +12,10 @@ export default class ShortRangeComm extends System {
     this.state = params.state || 'idle';
     this.arrows = [];
     this.signals = [];
-    params.arrows.forEach(a => this.arrows.push(new Arrow(a)));
-    params.signals.forEach(s => this.signals.push(new Signal(s)));
+   const arrows = params.arrows || [];
+   arrows.forEach(a => this.arrows.push(new Arrow(a)));
+   const signals = params.signals || [];
+   signals.forEach(s => this.signals.push(new Signal(s)));
   }
   addCommSignal(commSignalInput) {
     this.signals.push(new Signal(commSignalInput));
