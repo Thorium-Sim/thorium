@@ -126,9 +126,8 @@ class CommShortRange extends Component {
   }
   render(){
     if (this.props.data.loading) return null;
-    const {pointerArrow} = this.state;
     const ShortRange = this.props.data.shortRangeComm[0];
-    if (!ShortRange) return 'No short range comm';
+    if (!ShortRange) return <p>No short range comm</p>;
     return (
       <Container fluid className="shortRangeComm">
       <Row>

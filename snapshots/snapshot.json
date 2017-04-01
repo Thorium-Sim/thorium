@@ -1,8 +1,5 @@
 {
-	"snapshotVersion": 13,
-	"timestamp": 1489632532831,
-	"version": 13,
-	"_eventsCount": 118,
+	"_eventsCount": 134,
 	"simulators": [
 		{
 			"timeline": [],
@@ -13,7 +10,12 @@
 			"alertlevel": "5",
 			"template": false,
 			"class": "Simulator",
-			"crewCount": 50
+			"crewCount": 50,
+			"ship": {
+				"clamps": false,
+				"ramps": false,
+				"airlock": false
+			}
 		},
 		{
 			"timeline": [
@@ -106,7 +108,12 @@
 			"alertlevel": "3",
 			"template": true,
 			"class": "Simulator",
-			"crewCount": 50
+			"crewCount": 50,
+			"ship": {
+				"clamps": false,
+				"ramps": false,
+				"airlock": false
+			}
 		},
 		{
 			"timeline": [
@@ -143,7 +150,12 @@
 			"alertlevel": "p",
 			"template": false,
 			"class": "Simulator",
-			"crewCount": 50
+			"crewCount": 50,
+			"ship": {
+				"clamps": false,
+				"ramps": false,
+				"airlock": false
+			}
 		}
 	],
 	"stationSets": [
@@ -214,7 +226,7 @@
 				"damaged": false,
 				"report": null
 			},
-			"type": "LongRangeCommunications",
+			"type": "LongRangeComm",
 			"class": "LongRangeComm",
 			"messages": [
 				{
@@ -374,7 +386,7 @@
 				"report": null
 			},
 			"class": "Thrusters",
-			"type": "Thruster",
+			"type": "Thrusters",
 			"direction": {
 				"x": 0,
 				"y": 0,
@@ -534,7 +546,7 @@
 				"damaged": false,
 				"report": null
 			},
-			"type": "Transporter",
+			"type": "Transporters",
 			"class": "Transporters",
 			"targets": [],
 			"requestedTarget": null,
@@ -662,7 +674,7 @@
 				"damaged": false,
 				"report": null
 			},
-			"type": "InternalCommunications",
+			"type": "InternalComm",
 			"class": "InternalComm",
 			"state": "idle",
 			"outgoing": null,
@@ -1032,5 +1044,8 @@
 			"simulatorId": "default",
 			"class": "AssetObject"
 		}
-	]
+	],
+	"snapshotVersion": 1,
+	"version": 1,
+	"timestamp": "2017-04-01T18:15:21.439Z"
 }
