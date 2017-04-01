@@ -41,6 +41,7 @@ type CommSignal {
   image: String
   name: String
   range: CommRange  
+  color: String
 }
 
 type CommArrowExtended {
@@ -79,6 +80,7 @@ input CommSignalInput {
   image: String
   name: String
   range: RangeInput
+  color: String
 }
 
 input CommArrowInput {

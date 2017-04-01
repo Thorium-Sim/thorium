@@ -68,15 +68,17 @@ class Signal {
     this.id = params.id || uuid.v4();
     this.image = params.image || 'Generic';
     this.name = params.name || 'General Use';
+    this.color = params.color || '#888888';
     this.range = params.range || {
       lower: 0.4,
       upper: 0.6
     }
   }
-  update({image, name, range}){
+  update({image, name, range, color}){
     if (image) this.image = image;
     if (name) this.name = name;
     if (range) this.range = range;
+    if (color) this.color = color;
   }
 }
 

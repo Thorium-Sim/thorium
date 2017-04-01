@@ -104,6 +104,7 @@
     "three": "^0.82.1",
     "three-obj-loader": "^1.0.2",
     "three-simplicial-complex": "^69.0.6",
+    "tinycolor2": "^1.4.1",
     "uuid": "^3.0.1"
   },
   "scripts": {

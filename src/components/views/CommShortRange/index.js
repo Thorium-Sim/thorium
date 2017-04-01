@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Layer, Line, Stage } from 'react-konva';
 import { Card, CardImg, CardBlock, Container, Row, Col, Button } from 'reactstrap';
 import gql from 'graphql-tag';
+import tinycolor from 'tinycolor2';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
 import Measure from 'react-measure';
@@ -24,6 +25,7 @@ subscription ShortRangeCommSub($simulatorId: ID!){
       id
       name
       image
+      color
       range {
         lower
         upper
@@ -42,6 +44,11 @@ subscription ShortRangeCommSub($simulatorId: ID!){
     }
   }
 }`;
+function transparentColor(col){
+  var color = tinycolor(col);
+  color.setAlpha(.1);
+  return color.toRgbString();
+}
 class CommShortRange extends Component {
   constructor(props){
     super(props);
@@ -66,6 +73,14 @@ class CommShortRange extends Component {
           return returnResult.merge({ shortRangeComm: subscriptionData.data.shortRangeCommUpdate }).toJS();
         }
       });
+    }
+    //Update the state based on the props
+    if (!nextProps.data.loading){
+      const ShortRange = nextProps.data.shortRangeComm[0];
+      this.setState({
+        frequency: ShortRange.frequency,
+        amplitude: ShortRange.amplitude
+      })
     }
   }
   mouseDown(which, dimensions, e){
@@ -108,6 +123,10 @@ class CommShortRange extends Component {
   mouseUp = (e) => {
     document.removeEventListener('mousemove', this.mouseMove);
     document.removeEventListener('mouseup', this.mouseUp);
+    this.commUpdate({
+      frequency: this.state.frequency,
+      amplitude: this.state.amplitude
+    })
   }
   getSignal(){
     const ShortRange = this.props.data.shortRangeComm[0];
@@ -123,6 +142,60 @@ class CommShortRange extends Component {
       return `Connect ${pointerArrow.name}`;
     }
     return `Hail ${this.getSignal().name || ''}`;
+  }
+  commUpdate(updateObj){
+    const ShortRange = this.props.data.shortRangeComm[0];
+    const mutation = gql`mutation CommUpdate($id: ID!, $commUpdateInput: CommUpdateInput!) {
+      commUpdate(id:$id, commUpdateInput:$commUpdateInput)
+    }`;
+    const variables = {
+      id: ShortRange.id,
+      commUpdateInput: updateObj
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  }
+  commHail(){
+    const ShortRange = this.props.data.shortRangeComm[0];
+    const mutation = gql`mutation CommHail($id: ID!) {
+      commHail(id:$id)
+    }`;
+    const variables = {
+      id: ShortRange.id,
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  }
+  cancelHail(){
+    const ShortRange = this.props.data.shortRangeComm[0];
+    const mutation = gql`mutation CancelHail($id: ID!) {
+      cancelHail(id:$id)
+    }`;
+    const variables = {
+      id: ShortRange.id,
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  }
+  connectArrow(){
+    const ShortRange = this.props.data.shortRangeComm[0];
+    const mutation = gql`  mutation CommHail($id: ID!, $arrowId: ID!) {
+      commConnectArrow(id:$id, arrowId: $arrowId)
+    }`;
+    const variables = {
+      id: ShortRange.id,
+      arrowId: this.state.pointerArrow.id
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
   }
   render(){
     if (this.props.data.loading) return null;
@@ -159,7 +232,8 @@ class CommShortRange extends Component {
           <div key={s.id} className="signal"
           style={{
             height: `${(s.range.upper - s.range.lower) * 100}%`,
-            top: `${s.range.lower * 100}%`
+            top: `${s.range.lower * 100}%`,
+            backgroundColor: transparentColor(s.color)
           }}>
           {s.name}
           </div>))
@@ -245,6 +319,7 @@ query ShortRangeComm($simulatorId: ID!){
       id
       name
       image
+      color
       range {
         lower
         upper
