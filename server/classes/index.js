@@ -15,3 +15,4 @@ export { Deck, Room } from './shipStructure';
 export LongRangeComm from './longRangeComm';
 export InternalComm from './internalComm';
 export Navigation from './navigation';
+export ShortRangeComm from './shortRangeComm';

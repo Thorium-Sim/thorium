@@ -17,6 +17,7 @@ const viewList = [
 "Offline",
 "CommInternal",
 "Docking",
+"CommShortRange"
 ];
 
 export default viewList;

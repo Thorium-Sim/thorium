@@ -63,7 +63,7 @@ class Events extends EventEmitter {
     this.snapshotVersion = this.version;
     var snap = cloneDeep(this, true);
     const snapshot = this.trimSnapshot(snap);
-    if (config.db){
+    if (!config.db){
       writeFile('./snapshots/snapshot.json', snapshot, (err) => {
         console.log(err);
       });

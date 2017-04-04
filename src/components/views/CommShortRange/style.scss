@@ -1,0 +1,103 @@
+.shortRangeComm-core {
+  .row {
+    height: 100%;
+  }
+  .commList {
+    background-color:lightgray;
+    height: calc(100% - 110px);
+
+  }
+}
+
+.shortRangeComm {
+  .connected {
+    fill: darkgreen;
+    stroke: green;
+  }
+  .commControls{
+    padding: 5vh 0;
+    min-height: 70vh;
+  }
+  .frequencyContainer {
+    height: 100%;
+  }
+  .arrows {
+    position: absolute;
+    height: 100%;
+    right: 40%;
+    div {
+      position: absolute;
+      right: 40%;
+    }
+  }
+  .arrowHolder-right {
+    position: absolute;
+    right: 9%;
+    width: 9%;
+    height: 100%;
+  }
+  .arrowHolder-amplitude {
+    position: absolute;
+    left: 55%;
+    width: 9%;
+    height: 100%;
+  }
+  .signalCanvas {
+    height: 70vh;
+    position: relative;
+  }
+  .img-container {
+    width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.2s ease-in-out;
+    &.selected{
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  .signalName{
+    min-height: 1.5em;
+  }
+  .spacer {
+    margin-top: 100%;
+  }
+  .signals {
+    width: 60%;
+    height: 100%;
+    position: relative;
+    .signal {
+      width: 100%;
+      position: absolute;
+      text-align: center;
+      border-top: solid 1px rgba(255,255,255,0.5);
+      border-bottom: solid 1px rgba(255,255,255,0.5);
+      display: flex;
+      padding-right: 20px;
+      justify-content: flex-end;
+      align-items: center;
+      font-size: 24px;
+      background-color: rgba(255, 255,255,0.1);
+    }
+  }
+  .bar {
+    position: absolute;
+    right: 20%;
+    height: 100%;
+    width: 20%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 100%), linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
+    background-size: 5px 3px, 100%;
+    &.frequencyBar {
+      background-color: #00ff00;
+    }
+    &.amplitudeBar {
+      width: 50%;
+      right: 50%;
+      background-color: #ff0000;
+    }
+  }
+}

@@ -12,6 +12,8 @@ import { LRCommQueries, LRCommMutations, LRCommSubscriptions } from './lrComm';
 import { InternalCommQueries, InternalCommMutations, InternalCommSubscriptions } from './internalComm';
 import { SystemsQueries, SystemsMutations, SystemsSubscriptions, SystemsTypes } from './systems';
 import { NavigationQueries, NavigationMutations, NavigationSubscriptions} from './navigation';
+import { ShortRangeCommQueries, ShortRangeCommMutations, ShortRangeCommSubscriptions} from './shortRangeComm';
+
 import App from '../../app';
 
 function parseJSONLiteral(ast) {
@@ -51,7 +53,8 @@ function parseJSONLiteral(ast) {
     LRCommQueries,
     InternalCommQueries,
     SystemsQueries,
-    NavigationQueries
+    NavigationQueries,
+    ShortRangeCommQueries
     );
 
   export const mutationMap = Object.assign({
@@ -72,7 +75,8 @@ function parseJSONLiteral(ast) {
     LRCommMutations,
     InternalCommMutations,
     SystemsMutations,
-    NavigationMutations
+    NavigationMutations,
+    ShortRangeCommMutations
     );
 
   const subscriptionMap = Object.assign({},
@@ -89,7 +93,8 @@ function parseJSONLiteral(ast) {
     LRCommSubscriptions,
     InternalCommSubscriptions,
     SystemsSubscriptions,
-    NavigationSubscriptions
+    NavigationSubscriptions,
+    ShortRangeCommSubscriptions
     );
 
   export default Object.assign({

@@ -1,8 +1,5 @@
 {
-	"snapshotVersion": 13,
-	"timestamp": 1489632532831,
-	"version": 13,
-	"_eventsCount": 118,
+	"_eventsCount": 134,
 	"simulators": [
 		{
 			"timeline": [],
@@ -13,7 +10,12 @@
 			"alertlevel": "5",
 			"template": false,
 			"class": "Simulator",
-			"crewCount": 50
+			"crewCount": 50,
+			"ship": {
+				"clamps": false,
+				"ramps": false,
+				"airlock": false
+			}
 		},
 		{
 			"timeline": [
@@ -106,7 +108,12 @@
 			"alertlevel": "3",
 			"template": true,
 			"class": "Simulator",
-			"crewCount": 50
+			"crewCount": 50,
+			"ship": {
+				"clamps": false,
+				"ramps": false,
+				"airlock": false
+			}
 		},
 		{
 			"timeline": [
@@ -143,7 +150,12 @@
 			"alertlevel": "p",
 			"template": false,
 			"class": "Simulator",
-			"crewCount": 50
+			"crewCount": 50,
+			"ship": {
+				"clamps": false,
+				"ramps": false,
+				"airlock": false
+			}
 		}
 	],
 	"stationSets": [
@@ -214,7 +226,7 @@
 				"damaged": false,
 				"report": null
 			},
-			"type": "LongRangeCommunications",
+			"type": "LongRangeComm",
 			"class": "LongRangeComm",
 			"messages": [
 				{
@@ -374,7 +386,7 @@
 				"report": null
 			},
 			"class": "Thrusters",
-			"type": "Thruster",
+			"type": "Thrusters",
 			"direction": {
 				"x": 0,
 				"y": 0,
@@ -534,7 +546,7 @@
 				"damaged": false,
 				"report": null
 			},
-			"type": "Transporter",
+			"type": "Transporters",
 			"class": "Transporters",
 			"targets": [],
 			"requestedTarget": null,
@@ -662,11 +674,104 @@
 				"damaged": false,
 				"report": null
 			},
-			"type": "InternalCommunications",
+			"type": "InternalComm",
 			"class": "InternalComm",
 			"state": "idle",
 			"outgoing": null,
 			"incoming": null
+		},
+		{
+			"id": "43123433-40d3-49f2-a111-ab0cc3286608",
+			"simulatorId": "test",
+			"name": "Short Range Communications",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
+			},
+			"type": "ShortRangeComm",
+			"class": "ShortRangeComm",
+			"frequency": 0.5,
+			"amplitude": 0.5,
+			"state": "idle",
+			"arrows": [],
+			"signals": [
+				{
+					"id": "81b449ed-e4ca-4c98-bc28-b24b4a2d4bd0",
+					"image": "Romulan",
+					"name": "Romulan",
+					"color": "#00ff00",
+					"range": {
+						"upper": 1,
+						"lower": 0.85
+					}
+				},
+				{
+					"id": "8de8cbf3-78cd-425c-acd9-3e17a53425d5",
+					"image": "Cardassian",
+					"name": "Cardassian",
+					"color": "#ffaa00",
+					"range": {
+						"upper": 0.85,
+						"lower": 0.75
+					}
+				},
+				{
+					"id": "119136f4-1a30-4918-aa7a-586cf0842708",
+					"image": "General Use",
+					"name": "General Use",
+					"color": "#ffffff",
+					"range": {
+						"upper": 0.75,
+						"lower": 0.58
+					}
+				},
+				{
+					"id": "1a94b993-918f-497d-a7a2-c77d79899ebf",
+					"image": "Starfleet",
+					"name": "Starfleet",
+					"color": "#0088ff",
+					"range": {
+						"upper": 0.58,
+						"lower": 0.4
+					}
+				},
+				{
+					"id": "f2b9ea0c-d091-401c-b962-ccceb8bb5f38",
+					"image": "Klingon",
+					"name": "Klingon",
+					"color": "#ff0000",
+					"range": {
+						"upper": 0.4,
+						"lower": 0.3
+					}
+				},
+				{
+					"id": "df6705ba-1981-4d09-8d7b-5c5d5b3a400b",
+					"image": "Orion",
+					"name": "Orion",
+					"color": "#888888",
+					"range": {
+						"upper": 0.3,
+						"lower": 0.22
+					}
+				},
+				{
+					"id": "95ee55d1-8ca8-495e-86a4-cbee1eaa17b9",
+					"image": "Ferengi",
+					"name": "Ferengi",
+					"color": "#ffff00",
+					"range": {
+						"upper": 0.22,
+						"lower": 0
+					}
+				}
+			]
 		}
 	],
 	"clients": [
@@ -840,6 +945,13 @@
 			"fullPath": "/Card Icons",
 			"name": "Card Icons",
 			"class": "AssetFolder"
+		},
+		{
+			"id": "d208ff4a-f81a-4757-be99-87b58224422e",
+			"folderPath": "/",
+			"fullPath": "/Comm Images",
+			"name": "Comm Images",
+			"class": "AssetFolder"
 		}
 	],
 	"assetContainers": [
@@ -929,6 +1041,54 @@
 			"fullPath": "/Ship Views/Left",
 			"folderId": "f6960518-00a1-414e-ac36-bcb29553464c",
 			"name": "Left",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "417e2ff0-706e-4b71-b899-bdaa5e0a6c88",
+			"folderPath": "/Comm Images",
+			"fullPath": "/Comm Images/Starfleet",
+			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
+			"name": "Starfleet",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "42e6e4bc-9cc1-4f81-9138-6c9cf42c19b7",
+			"folderPath": "/Comm Images",
+			"fullPath": "/Comm Images/Romulan",
+			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
+			"name": "Romulan",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "65d4c881-f088-415f-b3b3-04ac73980794",
+			"folderPath": "/Comm Images",
+			"fullPath": "/Comm Images/Klingon",
+			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
+			"name": "Klingon",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "e8a9839f-3ad7-4c7a-8aa8-dccd4b2e1cc5",
+			"folderPath": "/Comm Images",
+			"fullPath": "/Comm Images/Cardassian",
+			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
+			"name": "Cardassian",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "09abf5af-5cef-4535-a4b0-5a25ff64a5bd",
+			"folderPath": "/Comm Images",
+			"fullPath": "/Comm Images/Ferengi",
+			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
+			"name": "Ferengi",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "446fdffc-1aa1-4670-8e3f-08a78afcad54",
+			"folderPath": "/Comm Images",
+			"fullPath": "/Comm Images/Orion",
+			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
+			"name": "Orion",
 			"class": "AssetContainer"
 		}
 	],
@@ -1031,6 +1191,63 @@
 			"url": "https://s3.amazonaws.com/thorium-assets/Ship%20Views/Top/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
+		},
+		{
+			"id": "c5977b43-c7fe-44f4-b277-540be5621a1d",
+			"containerPath": "/Comm Images",
+			"containerId": "417e2ff0-706e-4b71-b899-bdaa5e0a6c88",
+			"fullPath": "/Comm Images/Starfleet",
+			"url": "https://s3.amazonaws.com/thorium-assets/Comm%20Images/Starfleet/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "f58fb74f-2dd0-4011-b10b-3c544160f903",
+			"containerPath": "/Comm Images",
+			"containerId": "42e6e4bc-9cc1-4f81-9138-6c9cf42c19b7",
+			"fullPath": "/Comm Images/Romulan",
+			"url": "https://s3.amazonaws.com/thorium-assets/Comm%20Images/Romulan/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "031d207c-b260-4343-abb9-1aeded0b7ffc",
+			"containerPath": "/Comm Images",
+			"containerId": "65d4c881-f088-415f-b3b3-04ac73980794",
+			"fullPath": "/Comm Images/Klingon",
+			"url": "https://s3.amazonaws.com/thorium-assets/Comm%20Images/Klingon/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "597f9700-b140-464f-8b35-93d75b426f21",
+			"containerPath": "/Comm Images",
+			"containerId": "e8a9839f-3ad7-4c7a-8aa8-dccd4b2e1cc5",
+			"fullPath": "/Comm Images/Cardassian",
+			"url": "https://s3.amazonaws.com/thorium-assets/Comm%20Images/Cardassian/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "1488186c-3ac8-491a-ade9-cefc012b2d14",
+			"containerPath": "/Comm Images",
+			"containerId": "09abf5af-5cef-4535-a4b0-5a25ff64a5bd",
+			"fullPath": "/Comm Images/Ferengi",
+			"url": "https://s3.amazonaws.com/thorium-assets/Comm%20Images/Ferengi/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "b4471dfb-d2e8-418e-baf8-1a5add3a7567",
+			"containerPath": "/Comm Images",
+			"containerId": "446fdffc-1aa1-4670-8e3f-08a78afcad54",
+			"fullPath": "/Comm Images/Orion",
+			"url": "https://s3.amazonaws.com/thorium-assets/Comm%20Images/Orion/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
 		}
-	]
+	],
+	"snapshotVersion": 25,
+	"version": 25,
+	"timestamp": "2017-04-01T19:13:23.040Z"
 }

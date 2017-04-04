@@ -11,3 +11,4 @@ import './lrComm';
 import './internalComm';
 import './systems';
 import './navigation';
+import './shortRangeComm';
