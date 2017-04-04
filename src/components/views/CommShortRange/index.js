@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Layer, Line, Stage } from 'react-konva';
-import { Card, CardImg, CardBlock, Container, Row, Col, Button } from 'reactstrap';
+import { Card, CardBlock, Container, Row, Col, Button } from 'reactstrap';
 import gql from 'graphql-tag';
 import tinycolor from 'tinycolor2';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
 import Measure from 'react-measure';
 import assetPath from '../../../helpers/assets';
+import DamageOverlay from '../helpers/DamageOverlay';
 import './style.scss';
 
 const SHORTRANGE_SUB = gql`
@@ -57,7 +58,6 @@ class CommShortRange extends Component {
       amplitude: 1,
       mouseY: 0,
       which: null,
-      pointerArrow: {}
     }
     this.subscription = null;
   }
@@ -99,29 +99,10 @@ class CommShortRange extends Component {
     if (ShortRange.state === 'hailing') {
       return;
     }
-    const {height, top, frequency} = this.state;
+    const {height, top} = this.state;
     const obj = {}
-    //Check to see if the arrow is within a range of a frequency;
-    const threshold = 0.009;
-    const arrow = ShortRange.arrows.reduce((prev, next) => {
-      if (prev) return prev;
-      if (next.frequency + threshold > frequency && next.frequency - threshold < frequency) {
-        const signal = ShortRange.signals.find(s => s.id === next.signal);
-        return {
-          id: next.id,
-          name: signal.name,
-          image: signal.image
-        }
-      };
-      return false;
-    }, false)
-    if (arrow){
-      obj['pointerArrow'] = arrow;
-    } else {
-      obj['pointerArrow'] = {};
-    }
     obj[this.state.which] = Math.max(Math.min((e.pageY - top)/height, 1), 0)
-    this.setState(obj)
+    this.setState(obj);
   }
   mouseUp = (e) => {
     document.removeEventListener('mousemove', this.mouseMove);
@@ -131,6 +112,35 @@ class CommShortRange extends Component {
       amplitude: this.state.amplitude
     })
   }
+  getPointerArrow(nextProps){
+    //Check to see if the arrow is within a range of a frequency;
+    let ShortRange;
+    if (nextProps) {
+      ShortRange = nextProps.data.shortRangeComm[0];
+    } else {
+      ShortRange = this.props.data.shortRangeComm[0];
+    }
+    const {frequency} = this.state;
+    const threshold = 0.009;
+    const arrow = ShortRange.arrows.reduce((prev, next) => {
+      if (prev) return prev;
+      if (next.frequency + threshold > frequency && next.frequency - threshold < frequency) {
+        const signal = ShortRange.signals.find(s => s.id === next.signal);
+        return {
+          id: next.id,
+          connected: next.connected,
+          name: signal.name,
+          image: signal.image
+        }
+      };
+      return false;
+    }, false)
+    if (arrow){
+      return arrow;
+    } else {
+      return {};
+    }
+  }
   getSignal(){
     const ShortRange = this.props.data.shortRangeComm[0];
     const {frequency} = this.state;
@@ -138,16 +148,6 @@ class CommShortRange extends Component {
       if (next.range.upper > frequency && next.range.lower < frequency) return next;
       return prev;
     },{})
-  }
-  getHailLabel(){
-    const {pointerArrow} = this.state;
-    const ShortRange = this.props.data.shortRangeComm[0];
-    if (pointerArrow.id){
-      return `Connect ${pointerArrow.name}`;
-    } else if (ShortRange.state === 'hailing') {
-      return `Cancel Hail`;
-    }
-    return `Hail ${this.getSignal().name || ''}`;
   }
   commUpdate(updateObj){
     const ShortRange = this.props.data.shortRangeComm[0];
@@ -164,21 +164,26 @@ class CommShortRange extends Component {
     });
   }
   commHail(){
-    const {pointerArrow} = this.state;
+    const pointerArrow = this.getPointerArrow();
     const ShortRange = this.props.data.shortRangeComm[0];
     let variables = {
       id: ShortRange.id,
     }
     let mutation;
     if (pointerArrow.id){
-      mutation = gql`  mutation CommHail($id: ID!, $arrowId: ID!) {
-        commConnectArrow(id:$id, arrowId: $arrowId)
-      }`;
       variables = {
         id: ShortRange.id,
         arrowId: pointerArrow.id
       }
-      return 
+      if (pointerArrow.connected){
+        mutation = gql`  mutation CommDisconnectArrow($id: ID!, $arrowId: ID!) {
+          commDisconnectArrow(id:$id, arrowId: $arrowId)
+        }`;
+      } else {
+        mutation = gql`  mutation CommConnectArrow($id: ID!, $arrowId: ID!) {
+          commConnectArrow(id:$id, arrowId: $arrowId)
+        }`;
+      }
     }
     else if (ShortRange.state === 'hailing'){
       mutation = gql`mutation CancelHail($id: ID!) {
@@ -196,11 +201,25 @@ class CommShortRange extends Component {
     });
   }
   render(){
+    const getHailLabel = () => {
+      const pointerArrow = this.getPointerArrow();
+      const ShortRange = this.props.data.shortRangeComm[0];
+      if (pointerArrow.id){
+        if (pointerArrow.connected){
+          return `Disconnect ${pointerArrow.name}`;
+        }
+        return `Connect ${pointerArrow.name}`;
+      } else if (ShortRange.state === 'hailing') {
+        return `Cancel Hail`;
+      }
+      return `Hail ${this.getSignal().name || ''}`;
+    }
     if (this.props.data.loading) return null;
     const ShortRange = this.props.data.shortRangeComm[0];
     if (!ShortRange) return <p>No short range comm</p>;
     return (
       <Container fluid className="shortRangeComm">
+            <DamageOverlay message="Short Range Communications Offline" system={ShortRange} style={{left: '-2.5%', width: '105%', height:'105%'}} />
       <Row>
       <Col sm="3" className="commControls">
       <Card>
@@ -218,8 +237,7 @@ class CommShortRange extends Component {
       <div className="signalName">{this.getSignal.apply(this).name}</div>
       </CardBlock>
       </Card>
-      <Button onClick={this.commHail.bind(this)} block color="primary">{this.getHailLabel()}</Button>
-      <Button block color="default">Mute</Button>
+      <Button size="lg" onClick={this.commHail.bind(this)} block color="primary">{getHailLabel()}</Button>
       </Col>
       <Col sm={{size: 4, offset:1}}>
       <Card className="frequencyContainer">
@@ -245,6 +263,7 @@ class CommShortRange extends Component {
           alertLevel={this.props.simulator.alertLevel}
           level={a.frequency}
           flop={true}
+          connected={a.connected}
           />
           ))
       }
@@ -337,13 +356,13 @@ query ShortRangeComm($simulatorId: ID!){
   }
 }`;
 
-const Arrow = ({alertLevel, level = 1, mouseDown = () => {}, dimensions, flop}) => {
+const Arrow = ({alertLevel, level = 1, mouseDown = () => {}, dimensions, flop, connected}) => {
   return <div onMouseDown={mouseDown.bind(this, dimensions)} 
   style={{height: '100%', transform: `translateY(${level * 97}%) ${flop ? 'scaleX(-1)' : ''}`}}>
   <svg version="1.1" x="0px" y="0px"
   width="45px" height="20px" viewBox="0 0 45 20" enableBackground="new 0 0 45 20">
-  <polygon className={`alertFill-${alertLevel || '5'}`} points="45,11 45,20 10,20 0,11 "/>
-  <polygon className={`alertFill-${alertLevel || '5'}`} points="0,9 10,0 45,0 45,9 "/>
+  <polygon className={`alertFill-${alertLevel || '5'} ${connected ? 'connected' : ''}`} points="45,11 45,20 10,20 0,11 "/>
+  <polygon className={`alertFill-${alertLevel || '5'} ${connected ? 'connected' : ''}`} points="0,9 10,0 45,0 45,9 "/>
   </svg>
   </div>
 }

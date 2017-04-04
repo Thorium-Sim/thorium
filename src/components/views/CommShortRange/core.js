@@ -97,6 +97,26 @@ class CommShortRange extends Component {
       selectedArrow: null
     })
   }
+  _commConnect(){
+    const ShortRange = this.props.data.shortRangeComm[0];
+    const mutation = gql`mutation CommConnectHail($id: ID!){
+      connectHail(id: $id)
+    }`;
+    const variables = {
+      id: ShortRange.id,
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
+  }
+  getSignal(){
+    const ShortRange = this.props.data.shortRangeComm[0];
+    return ShortRange.signals.reduce((prev, next) => {
+      if (next.range.upper > ShortRange.frequency && next.range.lower < ShortRange.frequency) return next;
+      return prev;
+    },{})
+  }
   render(){
     if (this.props.data.loading) return null;
     const {selectedCall, selectedArrow} = this.state;
@@ -107,8 +127,9 @@ class CommShortRange extends Component {
       <p>Short Range Comm</p>
       <Row>
       <Col sm="12">
-      <p>Freq: {Math.round(ShortRange.frequency * 37700 + 37700)/100} MHz - Amp: {Math.round(ShortRange.amplitude * 100)/100}</p>
-      <p>External Call</p>
+      <p>Freq: {Math.round(ShortRange.frequency * 37700 + 37700)/100} MHz - Amp: {Math.round(ShortRange.amplitude * 100)/100} - {this.getSignal().name}</p>
+      <div>External Call 
+      {ShortRange.state === 'hailing' ? <Button onClick={this._commConnect.bind(this)} size="sm" color="info">Hailing - Connect</Button> : null}</div>
       <select value={selectedCall} onChange={(e) => {this.setState({selectedCall: e.target.value})}}>
       <option value={null}>---</option>
       {ShortRange.signals.map(s => {

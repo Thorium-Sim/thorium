@@ -10,6 +10,10 @@
 }
 
 .shortRangeComm {
+  .connected {
+    fill: darkgreen;
+    stroke: green;
+  }
   .commControls{
     padding: 5vh 0;
     min-height: 70vh;
