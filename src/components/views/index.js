@@ -28,6 +28,7 @@ import InternalCommCore from './CommInternal/core';
 import DamageControlCore from './DamageControl/core';
 import DockingCore from './Docking/core';
 import NavigationCore from './Navigation/core';
+import CommShortRangeCore from './CommShortRange/core';
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
 
@@ -66,7 +67,8 @@ export const Cores = { EngineControlCore,
   InternalCommCore,
   DamageControlCore,
   DockingCore,
-  NavigationCore
+  NavigationCore,
+  CommShortRangeCore
 };
 
 export default Views;

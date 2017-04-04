@@ -95,9 +95,12 @@ class CommShortRange extends Component {
     })
   }
   mouseMove = (e) =>{
+    const ShortRange = this.props.data.shortRangeComm[0];
+    if (ShortRange.state === 'hailing') {
+      return;
+    }
     const {height, top, frequency} = this.state;
     const obj = {}
-    const ShortRange = this.props.data.shortRangeComm[0];
     //Check to see if the arrow is within a range of a frequency;
     const threshold = 0.009;
     const arrow = ShortRange.arrows.reduce((prev, next) => {
@@ -138,8 +141,11 @@ class CommShortRange extends Component {
   }
   getHailLabel(){
     const {pointerArrow} = this.state;
+    const ShortRange = this.props.data.shortRangeComm[0];
     if (pointerArrow.id){
       return `Connect ${pointerArrow.name}`;
+    } else if (ShortRange.state === 'hailing') {
+      return `Cancel Hail`;
     }
     return `Hail ${this.getSignal().name || ''}`;
   }
@@ -158,39 +164,31 @@ class CommShortRange extends Component {
     });
   }
   commHail(){
+    const {pointerArrow} = this.state;
     const ShortRange = this.props.data.shortRangeComm[0];
-    const mutation = gql`mutation CommHail($id: ID!) {
-      commHail(id:$id)
-    }`;
-    const variables = {
+    let variables = {
       id: ShortRange.id,
     }
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-  }
-  cancelHail(){
-    const ShortRange = this.props.data.shortRangeComm[0];
-    const mutation = gql`mutation CancelHail($id: ID!) {
-      cancelHail(id:$id)
-    }`;
-    const variables = {
-      id: ShortRange.id,
+    let mutation;
+    if (pointerArrow.id){
+      mutation = gql`  mutation CommHail($id: ID!, $arrowId: ID!) {
+        commConnectArrow(id:$id, arrowId: $arrowId)
+      }`;
+      variables = {
+        id: ShortRange.id,
+        arrowId: pointerArrow.id
+      }
+      return 
     }
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-  }
-  connectArrow(){
-    const ShortRange = this.props.data.shortRangeComm[0];
-    const mutation = gql`  mutation CommHail($id: ID!, $arrowId: ID!) {
-      commConnectArrow(id:$id, arrowId: $arrowId)
-    }`;
-    const variables = {
-      id: ShortRange.id,
-      arrowId: this.state.pointerArrow.id
+    else if (ShortRange.state === 'hailing'){
+      mutation = gql`mutation CancelHail($id: ID!) {
+        cancelHail(id:$id)
+      }`;
+
+    } else {
+      mutation = gql`mutation CommHail($id: ID!) {
+        commHail(id:$id)
+      }`;
     }
     this.props.client.mutate({
       mutation,
@@ -220,7 +218,7 @@ class CommShortRange extends Component {
       <div className="signalName">{this.getSignal.apply(this).name}</div>
       </CardBlock>
       </Card>
-      <Button block color="primary">{this.getHailLabel()}</Button>
+      <Button onClick={this.commHail.bind(this)} block color="primary">{this.getHailLabel()}</Button>
       <Button block color="default">Mute</Button>
       </Col>
       <Col sm={{size: 4, offset:1}}>

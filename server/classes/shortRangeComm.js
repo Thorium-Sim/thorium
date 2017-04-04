@@ -12,10 +12,10 @@ export default class ShortRangeComm extends System {
     this.state = params.state || 'idle';
     this.arrows = [];
     this.signals = [];
-   const arrows = params.arrows || [];
-   arrows.forEach(a => this.arrows.push(new Arrow(a)));
-   const signals = params.signals || [];
-   signals.forEach(s => this.signals.push(new Signal(s)));
+    const signals = params.signals || [];
+    signals.forEach(s => this.signals.push(new Signal(s)));
+    const arrows = params.arrows || [];
+    arrows.forEach(a => this.arrows.push(new Arrow(a, this.signals)));
   }
   addCommSignal(commSignalInput) {
     this.signals.push(new Signal(commSignalInput));
@@ -27,7 +27,7 @@ export default class ShortRangeComm extends System {
     this.signals.find(s => s.id === signalId).update(commSignalInput);
   }
   addArrow(commArrowInput) {
-    this.arrows.push(new Arrow(commArrowInput));
+    this.arrows.push(new Arrow(commArrowInput, this.signals));
   }
   removeArrow(arrowId) {
     this.arrows = this.arrows.filter(a => a.id !== arrowId);
@@ -83,11 +83,20 @@ class Signal {
 }
 
 class Arrow {
-  constructor(params) {
+  constructor(params, signals) {
     this.id = params.id || uuid.v4();
     this.signal = params.signal || uuid.v4(); //Useless arrow
     // TODO: Set a random frequency within the range of the signal
-    this.frequency = params.frequency;
+    const signal = signals.find(s => s.id === params.signal)
+    if (params.frequency){
+      this.frequency = params.frequency;
+    } else if (signal){
+        // Get random frequency with the range of the signal
+        this.frequency = Math.round((Math.random() * (signal.range.upper - signal.range.lower) + signal.range.lower) * 100) / 100;
+    } else {
+      this.frequency = Math.round(Math.random() * 100) / 100;
+    }
+    console.log(this.frequency, params.frequency)
     this.connected = params.connected || false;
   }
   connect() {
