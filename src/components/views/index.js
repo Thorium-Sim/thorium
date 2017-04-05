@@ -29,8 +29,11 @@ import DamageControlCore from './DamageControl/core';
 import DockingCore from './Docking/core';
 import NavigationCore from './Navigation/core';
 import CommShortRangeCore from './CommShortRange/core';
+import RemoteCore from './RemoteAccess/core';
+
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
+import RemoteWidget from './RemoteAccess/widget';
 
 const Views = { Login,
   ShortRangeComm,
@@ -55,6 +58,7 @@ const Views = { Login,
 export const Widgets = {
   composer: {widget: ComposerWidget, icon: 'pencil-square-o', name:'Long Range Message Composer', color: 'rgb(200,150,255)'},
   calculator: {widget: CalculatorWidget, icon: 'calculator', name:'Calculator', color: 'rgb(255,200,100)'},
+  remote: {widget: RemoteWidget, icon: 'rss', name: 'Remote Access', color: 'rgb(100,200,100)'},
 };
 
 export const Cores = { EngineControlCore,
@@ -68,7 +72,8 @@ export const Cores = { EngineControlCore,
   DamageControlCore,
   DockingCore,
   NavigationCore,
-  CommShortRangeCore
+  CommShortRangeCore,
+  RemoteCore
 };
 
 export default Views;

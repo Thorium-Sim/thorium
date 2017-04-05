@@ -176,12 +176,15 @@ body{
 }
 #curve-frame {
 	height: 100vh;
-	font-family: 'Sarpanch', sans-serif;
-	text-transform: uppercase;
+	.simulator-name, .station-name, .login-name {
+		font-family: 'Sarpanch', sans-serif;
+		text-transform: uppercase;
+	}
 	button {
 		outline: none !important;
 	}
 }
+
 
 .alertColor5 .frame-color div, .alertColor4 .frame-color div, 
 .settingsBall .icon.alertColor5, .settingsBall .icon.alertColor4{
@@ -286,6 +289,32 @@ body{
 #curve-frame{
 	transition: background-color 0.5s ease-in-out;
 	height:100vh;
+	//Notify alerts
+	.alert {
+		border: solid 2px rgba(88,88,88,0.9);
+		background-color: rgba(0,0,0,0.75);
+		color: white;
+	}
+	.alert-info {
+		background-color: rgba($alert5, .7);
+		color: lighten($alert5, 70%);
+	}
+	.alert-success {
+		background-color: rgba(#164D16, .7);
+		color: lighten(#164D16, 70%);
+	}
+	.alert-danger {
+		background-color: rgba($alert1, .7);
+		color: lighten($alert1, 70%);
+	}
+	.alert-warning {
+		background-color: rgba($alert2, .7);
+		color: lighten($alert2, 70%);
+	}
+	.alert-primary {
+		background-color: rgba($alert5, .7);
+		color: lighten($alert5, 70%);
+	}
 	//Alert Classes
 	&.alertColor5, &.alertColor4{
 		@include alertColor($alert5,'/js/images/background-blue.svg');
