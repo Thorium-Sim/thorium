@@ -70,9 +70,14 @@ export const FlightStructureMutations = {
     App.handleEvent(args, 'changeSimulatorCrewCount');
   },
   shipDockingChange(root, args) {
-    App.handleEvent(args, 'shipDockingChange', 'shipDockingChanged');
+    App.handleEvent(args, 'shipDockingChange');
   },
-
+  remoteAccessSendCode(root, args) {
+    App.handleEvent(args, 'remoteAccessSendCode');
+  },
+  remoteAccessUpdateCode(root, args) {
+    App.handleEvent(args, 'remoteAccessUpdateCode');
+  },
   // Timeline
   addTimelineStep(root, args) {
     App.handleEvent(Object.assign(args,{timelineStepId: uuid.v4()}), 'addTimelineStep');

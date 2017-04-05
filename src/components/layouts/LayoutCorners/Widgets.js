@@ -47,7 +47,7 @@ class Widget extends Component {
     { this.state.modal && <Modal className="modal-themed" isOpen={this.state.modal} toggle={this.toggleModal}>
     <ModalHeader toggle={this.toggleModal}>{widget.name}</ModalHeader>
     <ModalBody>
-    <Component simulator={this.props.simulator} station={this.props.station} />
+    <Component toggle={this.toggleModal} simulator={this.props.simulator} station={this.props.station} />
     </ModalBody>
     </Modal>
   }

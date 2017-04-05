@@ -61,4 +61,13 @@ type Card {
   component: String
   icon: String
 }
+
+type Notification {
+  id: ID
+  title: String
+  body: String
+  color: String
+  trigger: String
+  duration: Int
+}
 `;

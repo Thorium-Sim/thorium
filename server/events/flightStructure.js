@@ -123,7 +123,20 @@ App.on('shipDockingChanged', ({ simulatorId, which, state}) => {
   }
   pubsub.publish('simulatorsUpdate', App.simulators);
 })
-
+App.on('remoteAccessSendCode', ({ simulatorId, code, station }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  if (simulator) {
+    simulator.sendCode(code, station);
+  }
+  pubsub.publish('simulatorsUpdate', App.simulators);
+})
+App.on('remoteAccessUpdateCode', ({ simulatorId, codeId, state }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  if (simulator) {
+    simulator.updateCode(codeId, state);
+  }
+  pubsub.publish('simulatorsUpdate', App.simulators);
+})
 // Timeline
 App.on('addTimelineStep', ({ simulatorId, missionId, timelineStepId, name, description }) => {
   const object = getTimelineObject(simulatorId, missionId);

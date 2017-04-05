@@ -44,6 +44,12 @@ export default class Simulator extends TimelineObject {
   airlock(tf) {
     this.ship.airlock = tf;
   }
+  sendCode(code, station) {
+    this.ship.remoteAccessCodes.push(new RemoteAccess({code, station}))
+  }
+  updateCode(codeId, state) {
+    this.ship.remoteAccessCodes.find(c => c.id === codeId).state = state;
+  }
 }
 
 // A separate object for vestigial parts of the ship
@@ -52,5 +58,18 @@ class Ship {
     this.clamps = params.clamps || false; // Detached
     this.ramps = params.ramps || false; // Retracted
     this.airlock = params.airlock || false; // Closed
+    this.remoteAccessCodes = [];
+    const codes = params.remoteAccessCodes || []
+    codes.forEach(c => this.remoteAccessCodes.push(new RemoteAccess(c)));
+  }
+}
+
+class RemoteAccess {
+  constructor(params = {}) {
+    this.id = params.id || uuid.v4();
+    this.code = params.code || '';
+    this.state = params.state || 'sent';
+    this.station = params.station || '';
+    this.timestamp = params.timestamp || new Date().toISOString();
   }
 }
