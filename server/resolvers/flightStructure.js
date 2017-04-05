@@ -151,6 +151,19 @@ export const FlightStructureSubscriptions = {
   flightsUpdate: (rootValue) => {
     return rootValue;
   },
+  notify: (rootValue, {simulatorId, station, trigger}) => {
+    let returnVal = rootValue;
+    if (simulatorId) {
+      returnVal = returnVal.simulatorId === simulatorId && returnVal;
+    }
+    if (station) {
+      returnVal = returnVal.station === station && returnVal;
+    }
+    if (trigger) {
+      returnVal = returnVal.trigger === trigger && returnVal;
+    }
+    return returnVal;
+  }
 };
 
 export const FlightStructureTypes = {

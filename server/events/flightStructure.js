@@ -1,6 +1,7 @@
 import App from '../../app.js';
 import { pubsub } from '../helpers/subscriptionManager.js';
 import * as Classes from '../classes';
+import uuid from 'uuid';
 
 function getTimelineObject(simulatorId, missionId) {
   let object;
@@ -136,7 +137,18 @@ App.on('remoteAccessUpdateCode', ({ simulatorId, codeId, state }) => {
     simulator.updateCode(codeId, state);
   }
   pubsub.publish('simulatorsUpdate', App.simulators);
+  //Send the notification
+  //Get the code
+  const code = simulator.ship.remoteAccessCodes.find(c => c.id === codeId);
+  pubsub.publish('notify', {id: uuid.v4(), 
+    simulatorId: simulator.id,
+    station: code.station,
+    title: 'Remote Access Code',
+    body: `Remote Access Code ${code.code} was ${state}`,
+    color: state === 'Accepted' ? 'success' : 'danger',
+  });
 })
+
 // Timeline
 App.on('addTimelineStep', ({ simulatorId, missionId, timelineStepId, name, description }) => {
   const object = getTimelineObject(simulatorId, missionId);
