@@ -50,6 +50,9 @@ export default class Simulator extends TimelineObject {
   updateCode(codeId, state) {
     this.ship.remoteAccessCodes.find(c => c.id === codeId).state = state;
   }
+  powerMode(powerMode){
+    this.ship.powerMode = powerMode;
+  }
 }
 
 // A separate object for vestigial parts of the ship
@@ -59,6 +62,11 @@ class Ship {
     this.ramps = params.ramps || false; // Retracted
     this.airlock = params.airlock || false; // Closed
     this.remoteAccessCodes = [];
+    // One of 'internal', 'external', 'offline'
+    // Could expand to old Odyssey: 'Cruise', 'Reduced', 
+    // 'Silent Running', 'Emergency', 'Auxilliary', 
+    // 'External', 'Minimal', 'Offline'
+    this.powerMode = params.powerMode || 'internal';
     const codes = params.remoteAccessCodes || []
     codes.forEach(c => this.remoteAccessCodes.push(new RemoteAccess(c)));
   }

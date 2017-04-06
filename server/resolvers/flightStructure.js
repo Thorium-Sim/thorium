@@ -69,15 +69,7 @@ export const FlightStructureMutations = {
   changeSimulatorCrewCount(root, args) {
     App.handleEvent(args, 'changeSimulatorCrewCount');
   },
-  shipDockingChange(root, args) {
-    App.handleEvent(args, 'shipDockingChange');
-  },
-  remoteAccessSendCode(root, args) {
-    App.handleEvent(args, 'remoteAccessSendCode');
-  },
-  remoteAccessUpdateCode(root, args) {
-    App.handleEvent(args, 'remoteAccessUpdateCode');
-  },
+
   // Timeline
   addTimelineStep(root, args) {
     App.handleEvent(Object.assign(args,{timelineStepId: uuid.v4()}), 'addTimelineStep');
@@ -151,19 +143,6 @@ export const FlightStructureSubscriptions = {
   flightsUpdate: (rootValue) => {
     return rootValue;
   },
-  notify: (rootValue, {simulatorId, station, trigger}) => {
-    let returnVal = rootValue;
-    if (simulatorId) {
-      returnVal = returnVal.simulatorId === simulatorId && returnVal;
-    }
-    if (station) {
-      returnVal = returnVal.station === station && returnVal;
-    }
-    if (trigger) {
-      returnVal = returnVal.trigger === trigger && returnVal;
-    }
-    return returnVal;
-  }
 };
 
 export const FlightStructureTypes = {

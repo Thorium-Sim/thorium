@@ -13,6 +13,7 @@ import { InternalCommQueries, InternalCommMutations, InternalCommSubscriptions }
 import { SystemsQueries, SystemsMutations, SystemsSubscriptions, SystemsTypes } from './systems';
 import { NavigationQueries, NavigationMutations, NavigationSubscriptions} from './navigation';
 import { ShortRangeCommQueries, ShortRangeCommMutations, ShortRangeCommSubscriptions} from './shortRangeComm';
+import { ShipQueries, ShipMutations, ShipSubscriptions } from './ship';
 
 import App from '../../app';
 
@@ -54,7 +55,8 @@ function parseJSONLiteral(ast) {
     InternalCommQueries,
     SystemsQueries,
     NavigationQueries,
-    ShortRangeCommQueries
+    ShortRangeCommQueries,
+    ShipQueries
     );
 
   export const mutationMap = Object.assign({
@@ -76,7 +78,8 @@ function parseJSONLiteral(ast) {
     InternalCommMutations,
     SystemsMutations,
     NavigationMutations,
-    ShortRangeCommMutations
+    ShortRangeCommMutations,
+    ShipMutations
     );
 
   const subscriptionMap = Object.assign({},
@@ -94,7 +97,8 @@ function parseJSONLiteral(ast) {
     InternalCommSubscriptions,
     SystemsSubscriptions,
     NavigationSubscriptions,
-    ShortRangeCommSubscriptions
+    ShortRangeCommSubscriptions,
+    ShipSubscriptions
     );
 
   export default Object.assign({

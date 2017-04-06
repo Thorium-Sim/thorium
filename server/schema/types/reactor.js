@@ -12,7 +12,6 @@ type Reactor {
   ejected: Boolean
   powerOutput: Int
   efficiency: Float
-  powerMode: String
   batteryChargeLevel: Float
   batteryChargeRate: Float
 }

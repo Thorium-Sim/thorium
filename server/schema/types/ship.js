@@ -3,6 +3,7 @@ type Ship {
   clamps: Boolean
   ramps: Boolean
   airlock: Boolean
+  powerMode: String
   remoteAccessCodes: [RemoteAccessCode]
 }
 
