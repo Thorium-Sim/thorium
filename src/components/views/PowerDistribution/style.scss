@@ -1,0 +1,36 @@
+.powerLevels {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  h5 {
+    float: left;
+  }
+  .powerLine {
+    margin: 10px;
+    height: 20px;
+    position: relative;
+    display: flex;
+    .powerLevel{
+      height: 100%;
+      width: 3px;
+      position: absolute;
+      background-color: yellow;
+      border-radius: 50px;
+    }
+    .powerBox {
+      margin-right: 4px;
+      height: 100%;
+      width: 15px;
+      border: solid 2px #0b0;
+      background-color: green;
+      &.zero{
+        background-color: gray;
+        border-color: darkgray;
+      }
+      &.hidden {
+      display: none;
+      }
+    }
+  }
+}
