@@ -14,3 +14,4 @@ export internalComm from './internalComm';
 export systems from './systems';
 export navigation from './navigation';
 export shortRangeComm from './shortRangeComm';
+export reactor from './reactor';

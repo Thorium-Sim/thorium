@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 134,
+	"_eventsCount": 136,
 	"simulators": [
 		{
 			"timeline": [],
@@ -14,7 +14,9 @@
 			"ship": {
 				"clamps": false,
 				"ramps": false,
-				"airlock": false
+				"airlock": false,
+				"remoteAccessCodes": [],
+				"powerMode": "internal"
 			}
 		},
 		{
@@ -112,7 +114,9 @@
 			"ship": {
 				"clamps": false,
 				"ramps": false,
-				"airlock": false
+				"airlock": false,
+				"remoteAccessCodes": [],
+				"powerMode": "internal"
 			}
 		},
 		{
@@ -154,7 +158,9 @@
 			"ship": {
 				"clamps": false,
 				"ramps": false,
-				"airlock": false
+				"airlock": false,
+				"remoteAccessCodes": [],
+				"powerMode": "internal"
 			}
 		}
 	],
@@ -772,6 +778,28 @@
 					}
 				}
 			]
+		},
+		{
+			"id": "5fa743ea-850c-4d54-ae27-d15d10b15b10",
+			"simulatorId": "test",
+			"name": "Reactor",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
+			},
+			"class": "Reactor",
+			"model": "battery",
+			"ejected": false,
+			"powerOutput": 120,
+			"efficiency": 1,
+			"batteryChargeLevel": 1,
+			"batteryChargeRate": 0.001
 		}
 	],
 	"clients": [
@@ -1247,7 +1275,7 @@
 			"class": "AssetObject"
 		}
 	],
-	"snapshotVersion": 25,
-	"version": 25,
-	"timestamp": "2017-04-01T19:13:23.040Z"
+	"snapshotVersion": 1,
+	"version": 1,
+	"timestamp": "2017-04-09T02:07:51.048Z"
 }

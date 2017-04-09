@@ -28,6 +28,18 @@ subscription SystemsUpdate($simulatorId: ID){
       power
       powerLevels
     }
+    damage {
+      damaged
+    }
+  }
+}`;
+
+const REACTOR_SUB = gql`
+subscription ReactorUpdate($simulatorId: ID){
+  reactorUpdate(simulatorId: $simulatorId) {
+    id
+    model
+    batteryChargeLevel
   }
 }`;
 
@@ -72,6 +84,8 @@ class PowerDistribution extends Component {
         sysId: null
       })
     }
+    this.systemSub = null;
+    this.reactorSub = null;
   }
   componentWillReceiveProps(nextProps) {
     if (!nextProps.data.loading) {
@@ -90,6 +104,16 @@ class PowerDistribution extends Component {
           return returnResult.merge({ systems: subscriptionData.data.systemsUpdate }).toJS();
         }
       });
+      this.reactorSub = nextProps.data.subscribeToMore({
+        document: REACTOR_SUB,
+        variables: {
+          simulatorId: nextProps.simulator.id
+        },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          const returnResult = Immutable.Map(previousResult);
+          return returnResult.merge({ reactors: subscriptionData.data.reactorUpdate }).toJS();
+        }
+      });
     }
   }
   mouseDown(sysId, dimensions, e){
@@ -102,6 +126,9 @@ class PowerDistribution extends Component {
   }
   render() {
     if (this.props.data.loading) return null;
+    // Get the batteries, get just the first one.
+    const battery = this.props.data.reactors.find(r => r.model === 'battery');
+    const charge = battery.batteryChargeLevel
     const powerTotal = this.state.systems.reduce((prev, next) => {
       return next.power.power + prev;
     },0);
@@ -120,10 +147,10 @@ class PowerDistribution extends Component {
     <Col sm="4">
     <Card>
     <div className="battery-container">
-    <Battery />
-    <Battery />
-    <Battery />
-    <Battery />
+    <Battery level={Math.min(1, Math.max(0, (charge - 0.75) * 4))}/>
+    <Battery level={Math.min(1, Math.max(0, (charge - 0.5) * 4))}/>
+    <Battery level={Math.min(1, Math.max(0, (charge - 0.25) * 4))}/>
+    <Battery level={Math.min(1, Math.max(0, (charge) * 4))}/>
     </div>
     </Card>
     </Col>
@@ -132,10 +159,10 @@ class PowerDistribution extends Component {
   }
 }
 
-const SystemPower = ({ id,name, power:{power, powerLevels}, mouseDown}) => {
+const SystemPower = ({ id,name, damage:{damaged}, power:{power, powerLevels}, mouseDown}) => {
   return <Row>
   <Col sm="4">
-  <h5>{name}: {power}</h5>
+  <h5 className={damaged ? 'text-danger' : ''} >{name}: {power}</h5>
   </Col>
   <Col sm="8">
   <Measure>
@@ -162,7 +189,7 @@ const SystemPower = ({ id,name, power:{power, powerLevels}, mouseDown}) => {
 const Battery = ({level = 1}) => {
  return <div className="battery">
  <div className="battery-bar" style={{height: `${level * 100}%`}}></div>
- <div className="battery-level">{level * 100}</div>
+ <div className="battery-level">{Math.round(level * 100)}</div>
  </div>
 }
 const SYSTEMS_QUERY = gql`
@@ -175,6 +202,14 @@ query Systems($simulatorId: ID) {
       power
       powerLevels
     }
+    damage {
+      damaged
+    }
+  }
+  reactors(simulatorId: $simulatorId) {
+    id
+    model
+    batteryChargeLevel
   }
 }`;
 

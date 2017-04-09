@@ -8,7 +8,7 @@ type Reactor {
   coolant: Coolant
   damage: Damage
   #One of 'reactor' or 'battery'
-  type: String
+  model: String
   ejected: Boolean
   powerOutput: Int
   efficiency: Float

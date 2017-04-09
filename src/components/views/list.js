@@ -18,6 +18,7 @@ const viewList = [
 "CommInternal",
 "Docking",
 "CommShortRange",
+"PowerDistribution",
 "PowerDistribution"
 ];
 

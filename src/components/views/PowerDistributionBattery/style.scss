@@ -45,6 +45,9 @@
     flex-direction: row;
     justify-content: space-between;
     .battery {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
       height: 70vh;
       width: 100%;
       margin: 15px;
