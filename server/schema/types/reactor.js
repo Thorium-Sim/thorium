@@ -7,10 +7,12 @@ type Reactor {
   heat: Float
   coolant: Coolant
   damage: Damage
+  #One of 'reactor' or 'battery'
+  model: String
   ejected: Boolean
   powerOutput: Int
   efficiency: Float
-  powerMode: String
   batteryChargeLevel: Float
+  batteryChargeRate: Float
 }
 `;

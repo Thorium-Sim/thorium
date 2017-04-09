@@ -12,3 +12,5 @@ import './internalComm';
 import './systems';
 import './navigation';
 import './shortRangeComm';
+import './ship';
+import './reactor';

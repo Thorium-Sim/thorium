@@ -16,3 +16,4 @@ export LongRangeComm from './longRangeComm';
 export InternalComm from './internalComm';
 export Navigation from './navigation';
 export ShortRangeComm from './shortRangeComm';
+export Reactor from './Reactor';

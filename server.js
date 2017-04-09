@@ -15,10 +15,7 @@ import scribe from './server/helpers/logging';
 import database from './server/helpers/database';
 
 import './server/events';
-import './server/processes/engines';
-import './server/processes/thrusters';
-import './server/processes/sensorContacts';
-import './server/processes/clientPing';
+import './server/processes';
 
 const GRAPHQL_PORT = 3001;
 const WS_PORT = 3002;
