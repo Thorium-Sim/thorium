@@ -7,7 +7,7 @@ type Targeting {
   power: Power
   damage: Damage
   contacts: [TargetingContact]
-  
+  quadrants: Boolean
 }
 
 type TargetingContact {
