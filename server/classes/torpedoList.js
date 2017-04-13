@@ -1,11 +1,11 @@
 import { System } from './generic';
 import uuid from 'uuid';
 
-export default class ListTorpedo extends System {
+export default class Torpedo extends System {
   constructor(params) {
     super(params);
-    this.class = 'ListTorpedo';
-    this.type = 'ListTorpedo';
+    this.class = 'Torpedo';
+    this.type = 'Torpedo';
     this.name = params.name || 'Torpedo';
     this.loaded = params.loaded || false;
     this.state = params.state || 'idle';

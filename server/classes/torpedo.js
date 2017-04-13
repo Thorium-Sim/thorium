@@ -1,5 +1,5 @@
 import { System } from './generic';
-export default class Torpedo extends System {
+export default class NotTorpedo extends System {
   constructor(params) {
     super(params);
     this.class = 'Torpedo';

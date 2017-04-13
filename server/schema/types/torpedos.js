@@ -1,5 +1,5 @@
 export default `
-type Torpedo {
+type OldTorpedo {
   id: ID
   simulatorId: ID
   type: String
@@ -14,7 +14,7 @@ type Torpedo {
   state: String
 }
 
-type ListTorpedo {
+type Torpedo {
   id: ID
   simulatorId: ID
   type: String

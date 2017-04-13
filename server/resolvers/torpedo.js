@@ -2,7 +2,7 @@ import App from '../../app.js';
 
 export const TorpedoQueries = {
   torpedos(root, {simulatorId}){
-    let returnVal = App.systems.filter(s => s.type === 'ListTorpedo');
+    let returnVal = App.systems.filter(s => s.type === 'Torpedo');
     if (simulatorId){
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
     }
