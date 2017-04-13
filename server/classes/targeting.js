@@ -1,34 +1,34 @@
 import { System } from './generic';
 import uuid from 'uuid';
 export default class Targeting extends System {
- constructor(params) {
-  super(params);
-  this.class = 'Targeting';
-  this.type = 'Targeting';
-  this.name = params.name || 'Targeting';
-  this.contacts = [];
-  this.quadrants = false;
-  const contacts = params.contacts || [];
-  contacts.forEach(c => this.contacts.push(new Target(c)));
-}
-createTarget(target){
-  this.contacts.push(new Target(target));
-}
-targetTarget(targetId){
-  this.contacts.find(c => c.id === targetId).target();
-}
-untargetTarget(targetId){
-  this.contacts.find(c => c.id === targetId).untarget();
-}
-targetSystem(targetId, system){
-  this.contacts.find(c => c.id === targetId).untarget();
-}
-updateTarget(target){
-  this.contacts.find(c => c.id === target.id).update(target);
-}
-removeTarget(id){
-  this.contacts = this.contacts.filter(c => c.id !== id);
-}
+  constructor(params) {
+    super(params);
+    this.class = 'Targeting';
+    this.type = 'Targeting';
+    this.name = params.name || 'Targeting';
+    this.contacts = [];
+    this.quadrants = false;
+    const contacts = params.contacts || [];
+    contacts.forEach(c => this.contacts.push(new Target(c)));
+  }
+  createTarget(target){
+    this.contacts.push(new Target(target));
+  }
+  targetTarget(targetId){
+    this.contacts.find(c => c.id === targetId).target();
+  }
+  untargetTarget(targetId){
+    this.contacts.find(c => c.id === targetId).untarget();
+  }
+  targetSystem(targetId, system){
+    this.contacts.find(c => c.id === targetId).untarget();
+  }
+  updateTarget(target){
+    this.contacts.find(c => c.id === target.id).update(target);
+  }
+  removeTarget(id){
+    this.contacts = this.contacts.filter(c => c.id !== id);
+  }
 }
 
 class Target {
