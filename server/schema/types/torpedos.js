@@ -35,6 +35,11 @@ type Warhead {
   probe: ID
 }
 
+input WarheadInput {
+  type: String
+  probe: ID
+}
+
 type TorpedoInventory {
   photon: Int
   quantum: Int

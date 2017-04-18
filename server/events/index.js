@@ -14,3 +14,6 @@ import './navigation';
 import './shortRangeComm';
 import './ship';
 import './reactor';
+import './targeting';
+import './torpedo';
+import './phasers';
