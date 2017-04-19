@@ -5,3 +5,16 @@
 .media-object{
   max-width: 72px;
 }
+
+.targeting-core {
+  img{
+    width: 28px;
+    height: 28px;
+  }
+  .pictureSelect {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    opacity: 0;
+  }
+}

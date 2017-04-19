@@ -1,5 +1,7 @@
 import { System } from './generic';
 import uuid from 'uuid';
+//TODO: Also make it so you can do sensors targeting
+//As well as quadrant targeting
 export default class Targeting extends System {
   constructor(params) {
     super(params);
@@ -7,12 +9,15 @@ export default class Targeting extends System {
     this.type = 'Targeting';
     this.name = params.name || 'Targeting';
     this.contacts = [];
+    this.classes = [];
     this.quadrants = false;
     const contacts = params.contacts || [];
+    const classes = params.classes || [];
     contacts.forEach(c => this.contacts.push(new Target(c)));
+    classes.forEach(c => this.classes.push(new TargetClass(c)));
   }
-  createTarget(target){
-    this.contacts.push(new Target(target));
+  createTarget(targetClass){
+    this.contacts.push(new Target({class:targetClass}, this.id));
   }
   targetTarget(targetId){
     this.contacts.find(c => c.id === targetId).target();
@@ -23,25 +28,67 @@ export default class Targeting extends System {
   targetSystem(targetId, system){
     this.contacts.find(c => c.id === targetId).untarget();
   }
-  updateTarget(target){
-    this.contacts.find(c => c.id === target.id).update(target);
-  }
   removeTarget(id){
     this.contacts = this.contacts.filter(c => c.id !== id);
   }
+  setTargetClassCount(classId, count){
+    const classContacts = this.contacts.filter(c => c.class === classId);
+    if (classContacts.length === count) return;
+    if (classContacts < 0) return;
+    if (classContacts.length > count){
+      //Add some more
+      for(let i = classContacts.length - count; i > 0; i--){
+        this.createTarget(classId);
+      }
+    } else {
+      //Remove some
+      for(let i = count - classContacts.length; i > 0; i--){
+        this.removeTarget(this.contacts[i]);
+      }
+    }
+  }
+  addTargetClass(classInput){
+    this.classes.push(new TargetClass(classInput, this.id));
+  }
+  removeTargetClass(classId){
+    this.classes = this.classes.filter(c => c.id !== classId);
+    //Remove the targets too
+    this.contacts = this.contacts.filter(c => c.class !== classId);
+  }
+  updateTargetClass(classInput){
+    this.classes.find(c => c.id === classInput.id).update(classInput);
+  }
 }
 
-class Target {
-  constructor(params){
+class TargetClass {
+  constructor(params, systemId){
     this.id = params.id || uuid.v4();
+    this.systemId = systemId || '';
     this.name = params.name || 'Target';
     this.size = params.size || 1;
-    this.targeted = params.targeted || false;
-    this.system = params.system || 'General';
     this.icon = params.icon || 'Generic';
     this.picture = params.picture || 'Generic';
     this.speed = params.speed || 1;
     this.quadrant = params.quadrant || 1;
+  }
+  update({name, size, system, icon, picture, speed, quadrant, count}){
+    if (name) this.name = name;
+    if (size) this.size = size;
+    if (system) this.system = system;
+    if (icon) this.icon = icon;
+    if (picture) this.picture = picture;
+    if (speed) this.speed = speed;
+    if (quadrant) this.quadrant = quadrant;
+  }
+}
+
+class Target {
+  constructor(params, systemId){
+    this.id = params.id || uuid.v4();
+    this.systemId = systemId || '';
+    this.targeted = params.targeted || false;
+    this.system = params.system || 'General';
+    this.class = params.class || '';
   }
   target(){
     this.targeted = true;
@@ -51,15 +98,5 @@ class Target {
   }
   system(sys){
     this.system = sys;
-  }
-  update({name, size, targeted, system, icon, picture, speed, quadrant}){
-    if (name) this.name = name;
-    if (size) this.size = size;
-    if (targeted) this.targeted = targeted;
-    if (system) this.system = system;
-    if (icon) this.icon = icon;
-    if (picture) this.picture = picture;
-    if (speed) this.speed = speed;
-    if (quadrant) this.quadrant = quadrant;
   }
 }

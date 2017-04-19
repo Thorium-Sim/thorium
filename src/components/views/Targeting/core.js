@@ -1,0 +1,199 @@
+import React, { Component } from 'react';
+import gql from 'graphql-tag';
+import { Container, Row, Col, Button, InputGroup, InputGroupButton, Input } from 'reactstrap';
+import { graphql, withApollo } from 'react-apollo';
+import { InputField } from '../../generic/core';
+import Immutable from 'immutable';
+import FontAwesome from 'react-fontawesome';
+
+import './style.scss';
+
+const TARGETING_SUB = gql`
+subscription TargetingUpdate($simulatorId: ID){
+  targetingUpdate(simulatorId: $simulatorId){
+    id
+    type
+    name
+    quadrants
+    power {
+      power
+      powerLevels
+    }
+    damage {
+      damaged
+      report
+    }
+    contacts {
+      id
+      class
+      targeted
+    }
+    classes {
+      id
+      name
+      size
+      icon
+      speed
+      picture
+      quadrant
+      iconUrl
+      pictureUrl
+    }
+  }
+}`;
+
+class TargetingCore extends Component {
+  constructor(props){
+    super(props);
+    this.subscription = null;
+  }
+  componentWillReceiveProps(nextProps) {
+    if (!this.subscription && !nextProps.data.loading) {
+      this.subscription = nextProps.data.subscribeToMore({
+        document: TARGETING_SUB,
+        variables: {
+          simulatorId: nextProps.simulator.id
+        },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          const returnResult = Immutable.Map(previousResult);
+          return returnResult.merge({ navigation: subscriptionData.data.navigationUpdate }).toJS();
+        }
+      });
+    }
+  }
+  _addTargetClass(){
+    const targeting = this.props.data.targeting[0];
+    const {assetFolders} = this.props.data;
+    const mutation = gql`
+    mutation AddTargetClass($id: ID!, $classInput: TargetClassInput!){
+      addTargetClass(id:$id, classInput: $classInput)
+    }`;
+    const variables = {
+      id: targeting.id,
+      classInput: {
+        name:"Target",
+        size:1,
+        icon:assetFolders.find(a => a.name === 'Icons').containers[0].fullPath,
+        speed:1,
+        picture:assetFolders.find(a => a.name === 'Pictures').containers[0].fullPath,
+        quadrant:1
+      }
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
+  }
+  _removeTargetClass(){
+
+  }
+  render(){
+    if (this.props.data.loading) return null;
+    const targeting = this.props.data.targeting[0];
+    const {assetFolders} = this.props.data;
+    if (!targeting) return <p>No Targeting Systems</p>
+      return <Container className="targeting-core">
+    <p>Targeting</p>
+    <Row>
+    <Col sm={3}>Count</Col>
+    <Col sm={2}>Move</Col>
+    <Col sm={1}>Icon</Col>
+    <Col sm={1}>Pic</Col>
+    <Col sm={4}>Label</Col>
+    <Col sm={1}></Col>
+    </Row>
+    {
+      targeting.classes.map(t => {
+       return <Row>
+       <Col sm={3}>
+       <InputGroup size="sm">
+       <InputGroupButton><Button color="secondary">-</Button></InputGroupButton>
+       <Input placeholder="0" value={targeting.contacts.filter(c => c.class === t.id).length} />
+       <InputGroupButton><Button color="secondary">+</Button></InputGroupButton>
+       </InputGroup>
+       </Col>
+       <Col sm={2}>
+       <Button color="primary" size="sm">On</Button>
+       </Col>
+       <Col sm={1}>
+       <select className="pictureSelect" value={t.icon}>
+       {
+        assetFolders.find(a => a.name === 'Icons').containers.map(c => {
+          return <option key={c.fullPath}>{c.name}</option>
+        })
+      }
+      </select>
+      <img src={t.iconUrl} role="presentation" />
+      </Col>
+      <Col sm={1}>
+      <select className="pictureSelect" value={t.picture}>
+      {
+        assetFolders.find(a => a.name === 'Pictures').containers.map(c => {
+          return <option key={c.fullPath}>{c.name}</option>
+        })
+      }
+      </select>
+      <img src={t.pictureUrl} role="presentation" />
+      </Col>
+      <Col sm={4}>
+      <Input size="sm" value={t.name} />
+      </Col>
+      <Col sm={1}><FontAwesome name="ban" className="text-danger" onClick={this._removeTargetClass.bind(this)} /></Col>
+      </Row>
+    })
+    }
+    <Row>
+    <Col sm={12}>
+    <Button size={'sm'} block color="success" onClick={this._addTargetClass.bind(this)}>Add Targets</Button>
+    </Col>
+    </Row>
+    </Container>
+  }
+}
+
+const TARGETING_QUERY = gql`
+query Targeting($simulatorId: ID, $names: [String]){
+  targeting(simulatorId: $simulatorId){
+    id
+    type
+    name
+    quadrants
+    power {
+      power
+      powerLevels
+    }
+    damage {
+      damaged
+      report
+    }
+    contacts {
+      id
+      class
+      targeted
+    }
+    classes {
+      id
+      name
+      size
+      icon
+      speed
+      picture
+      quadrant
+      iconUrl
+      pictureUrl
+    }
+  }
+  assetFolders(names: $names) {
+    id
+    name
+    containers {
+      id
+      name
+      fullPath
+    }
+  }
+}`;
+
+export default graphql(TARGETING_QUERY, {
+  options: (ownProps) => ({variables: {simulatorId: ownProps.simulator.id, names: ['Icons', 'Pictures']}})
+})(withApollo(TargetingCore));

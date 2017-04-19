@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ReactKonva from 'react-konva';
+import {parse as parsePath} from 'extract-svg-path';
 import './style.scss';
 
 const {
@@ -18,32 +19,58 @@ const speedConstant2 = 1.5 / 200;
 class TargetingGrid extends Component {
   constructor(props) {
     super(props);
-
-    const {width} = props.dimensions;
+    this.state = {targets:[]}
+  }
+  componentWillReceiveProps(nextProps) {
+    //Merge the current state with the incoming props
+    const stateTargets = this.state.targets;
+    const {width} = this.props.dimensions;
     const height = width * 3/4;
-    this.state = {
-      targets: [{
-        id: "b",
-        data: "M15.27,22.479L13.944,19.718L14.654,19.718L13.33,18.061L7.174,18.189L6.076,17.091L7.987,17.091L9.099,14.102L4.557,14.033L0.677,11.872L2.331,11.872L0,9.935L11.626,11.297L14.044,13.715L17.941,13.715L20.359,11.297L31.985,9.935L29.654,11.872L31.308,11.872L27.428,14.033L22.885,14.103L23.998,17.091L25.908,17.091L24.811,18.189L18.655,18.061L17.331,19.718L18.041,19.718L16.751,22.479L15.27,22.479L15.27,22.479",
-        fill: '#0f0',
-        x: Math.random() * width,
-        y: Math.random() * height,
-        speedX: (Math.random() - 0.5) * 2,
-        speedY: (Math.random() - 0.5) * 2,
-        scale: 1,
-        hover: 0
-      }, {
-        id: "a",
-        data: "M15.27,22.479L13.944,19.718L14.654,19.718L13.33,18.061L7.174,18.189L6.076,17.091L7.987,17.091L9.099,14.102L4.557,14.033L0.677,11.872L2.331,11.872L0,9.935L11.626,11.297L14.044,13.715L17.941,13.715L20.359,11.297L31.985,9.935L29.654,11.872L31.308,11.872L27.428,14.033L22.885,14.103L23.998,17.091L25.908,17.091L24.811,18.189L18.655,18.061L17.331,19.718L18.041,19.718L16.751,22.479L15.27,22.479L15.27,22.479",
-        fill: '#0f0',
-        x: Math.random() * width,
-        y: Math.random() * height,
-        speedX: (Math.random() - 0.5) * 2,
-        speedY: (Math.random() - 0.5) * 2,
-        scale: 1,
-        hover: 0
-      }]
-    }
+    Promise.all(nextProps.targets.map(t => {
+      const stateTarget = stateTargets.find(s => s.id === t.id);
+      if (stateTarget){
+        //The target has a target in the state already;
+        //Transfer over the information necessary.
+        return Promise.resolve({
+          id: t.id,
+          data: stateTarget.data,
+          icon: t.icon,
+          speed: t.speed,
+          fill: stateTarget.fill,
+          x: stateTarget.x,
+          y: stateTarget.y,
+          speedX: stateTarget.speedX,
+          speedY: stateTarget.speedY,
+          scale: t.size,
+          hover: stateTarget.hover
+        })
+      } else {
+        //Get the SVG data
+        return fetch(t.iconUrl).then((res) => res.text())
+        .then((svg) => parsePath(svg))
+        .then((data) => {
+          //Return the new target; put it in a random place.
+          return Promise.resolve({
+            id: t.id,
+            data,
+            icon: t.icon,
+            speed: t.speed,
+            fill: '#0f0',
+            x: Math.random() * width,
+            y: Math.random() * height,
+            speedX: (Math.random() - 0.5) * 2,
+            speedY: (Math.random() - 0.5) * 2,
+            scale: t.size,
+            hover: 0
+          })
+        })
+      }
+    }).then(newTargets => {
+      this.setState({
+        targets: newTargets
+      })
+    })
+    );
   }
   componentDidMount() {
     requestAnimationFrame(() => {

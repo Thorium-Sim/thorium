@@ -15,7 +15,7 @@ import { NavigationQueries, NavigationMutations, NavigationSubscriptions} from '
 import { ShortRangeCommQueries, ShortRangeCommMutations, ShortRangeCommSubscriptions} from './shortRangeComm';
 import { ShipQueries, ShipMutations, ShipSubscriptions } from './ship';
 import { ReactorQueries, ReactorMutations, ReactorSubscriptions } from './reactor'
-import { TargetingQueries, TargetingMutations, TargetingSubscriptions } from './targeting'
+import { TargetingQueries, TargetingMutations, TargetingSubscriptions, TargetingTypes } from './targeting'
 import { TorpedoQueries, TorpedoMutations, TorpedoSubscriptions } from './torpedo'
 import { PhaserQueries, PhaserMutations, PhaserSubscriptions } from './phasers'
 
@@ -131,5 +131,6 @@ function parseJSONLiteral(ast) {
   FlightStructureTypes,
   ClientTypes,
   ShipStructureTypes,
-  SystemsTypes
+  SystemsTypes,
+  TargetingTypes
   );

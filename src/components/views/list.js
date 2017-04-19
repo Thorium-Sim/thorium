@@ -19,7 +19,7 @@ const viewList = [
 "Docking",
 "CommShortRange",
 "PowerDistribution",
-"PowerDistribution",
+"PowerDistributionBattery",
 "Targeting"
 ];
 

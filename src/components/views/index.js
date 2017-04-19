@@ -33,7 +33,7 @@ import DockingCore from './Docking/core';
 import NavigationCore from './Navigation/core';
 import CommShortRangeCore from './CommShortRange/core';
 import RemoteCore from './RemoteAccess/core';
-
+import TargetingCore from './Targeting/core';
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
 import RemoteWidget from './RemoteAccess/widget';
@@ -79,7 +79,8 @@ export const Cores = { EngineControlCore,
   DockingCore,
   NavigationCore,
   CommShortRangeCore,
-  RemoteCore
+  RemoteCore,
+  TargetingCore
 };
 
 export default Views;

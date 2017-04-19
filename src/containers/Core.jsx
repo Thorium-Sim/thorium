@@ -138,10 +138,10 @@ class Core extends Component {
       const layout = {
         simulatorId: 'test',
         name: name,
-        x: 1,
-        y: 1,
-        w: 10,
-        h: 5,
+        x: 0,
+        y: 0,
+        w: 30,
+        h: 20,
         component: e.target.value
       };
       this.props.client.mutate({
@@ -235,8 +235,8 @@ class Core extends Component {
         this.state.simulator && <ReactGridLayout 
         className="layout"
         layout={renderLayout}
-        cols={80}
-        rowHeight={10}
+        cols={120}
+        rowHeight={1}
         width={document.body.clientWidth - 250}
         isDraggable={this.state.editable}
         isResizable={this.state.editable}

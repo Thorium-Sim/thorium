@@ -136,66 +136,66 @@ class Targeting extends Component {
   render(){
     if (this.props.data.loading) return null;
     const targeting = this.props.data.targeting[0];
-   // if (!targeting) return <p>No Targeting</p>
-   // const targetedContact = targeting.targets.find(t => t.targeted);
-   return <Container fluid>
-   <Row>
-   <Col sm="5">
-   <Measure>
-   {dimensions => {
-    return dimensions.width !== 0 ? 
-    <Grid 
-    dimensions={dimensions} 
-    targetContact={this.targetContact.bind(this)}
-    targets={null} /> 
-    : <div></div>
-  }}
-  </Measure>
-  </Col>
-  </Row>
-  <Row>
-  <Col sm={3}>
-  <h4>Targeted Contact</h4>
-  <Media>
-  <Media left href="#">
-  <Media object src="http://placehold.it/64" alt="Generic placeholder image" />
-  </Media>
-  <Media body>
-  <Media heading>
-  Media heading Media heading Media heading
-  </Media>
-  </Media>
-  </Media>
-  <Button block color="warning">Unlock Target</Button>
-  </Col>
-  <Col sm={4}>
-  <Row>
-  <Col sm={12}>
-  <h4>Systems Targeting</h4>
-  </Col>
-  {
-    ["General", "Engines", "Sensors", "Tractor Beam", "Communications", "Weapons", "Shields"].map(s => {
-      return <Col key={`system-${s}`} sm={6}>
-      <label className="custom-control custom-radio">
-      <input id="radio1" name="system" type="radio" className="custom-control-input" />
-      <span className="custom-control-indicator"></span>
-      <span className="custom-control-description">{s}</span>
-      </label>
-      </Col>
-    })
+    if (!targeting) return <p>No Targeting</p>;
+    const targetedContact = targeting.contacts.find(t => t.targeted);
+    return <Container fluid>
+    <Row>
+    <Col sm="5">
+    <Measure>
+    {dimensions => {
+      return dimensions.width !== 0 ? 
+      <Grid 
+      dimensions={dimensions} 
+      targetContact={this.targetContact.bind(this)}
+      targets={null} /> 
+      : <div></div>
+    }}
+    </Measure>
+    </Col>
+    </Row>
+    <Row>
+    <Col sm={3}>
+    <h4>Targeted Contact</h4>
+    <Media>
+    <Media left href="#">
+    <Media object src="http://placehold.it/64" alt="Generic placeholder image" />
+    </Media>
+    <Media body>
+    <Media heading>
+    Media heading Media heading Media heading
+    </Media>
+    </Media>
+    </Media>
+    <Button block color="warning">Unlock Target</Button>
+    </Col>
+    <Col sm={4}>
+    <Row>
+    <Col sm={12}>
+    <h4>Systems Targeting</h4>
+    </Col>
+    {
+      ["General", "Engines", "Sensors", "Tractor Beam", "Communications", "Weapons", "Shields"].map(s => {
+        return <Col key={`system-${s}`} sm={6}>
+        <label className="custom-control custom-radio">
+        <input id="radio1" name="system" type="radio" className="custom-control-input" />
+        <span className="custom-control-indicator"></span>
+        <span className="custom-control-description">{s}</span>
+        </label>
+        </Col>
+      })
+    }
+    <Col sm={6}>
+    <label className="custom-control custom-radio">
+    <input id="radio1" name="system" type="radio" className="custom-control-input" />
+    <span className="custom-control-indicator"></span>
+    <span className="custom-control-description"><Input size="sm" /></span>
+    </label>
+    </Col>
+    </Row>
+    </Col>
+    </Row>
+    </Container>
   }
-  <Col sm={6}>
-  <label className="custom-control custom-radio">
-  <input id="radio1" name="system" type="radio" className="custom-control-input" />
-  <span className="custom-control-indicator"></span>
-  <span className="custom-control-description"><Input size="sm" /></span>
-  </label>
-  </Col>
-  </Row>
-  </Col>
-  </Row>
-  </Container>
-}
 }
 
 export default graphql(TARGETING_QUERY, {
