@@ -84,6 +84,44 @@ class TargetingCore extends Component {
       variables
     })
   }
+  _setTargetClassCount(targetId, count){
+    const targeting = this.props.data.targeting[0];
+    const mutation = gql`
+    mutation SetTargetClassCount($id: ID!, $classId: ID!, $count: Int!){
+      setTargetClassCount(id:$id, classId: $classId, count: $count)
+    }`;
+    const classId = targetId;
+    const variables = {
+      id: targeting.id,
+      classId,
+      count
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
+  }
+  _updateTargetClass(targetId, key, valueArg){
+    let value = valueArg;
+    if (value.target) {
+      value = value.target.value;
+    }
+    const targeting = this.props.data.targeting[0];
+    const mutation = gql`
+    mutation UpdateTargetClass($id: ID!, $classInput: TargetClassInput!){
+      updateTargetClass(id:$id, classInput: $classInput)
+    }`;
+    const classInput = {id: targetId};
+    classInput[key] = value;
+    const variables = {
+      id: targeting.id,
+      classInput
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
+  }
   _removeTargetClass(){
 
   }
@@ -104,39 +142,46 @@ class TargetingCore extends Component {
     </Row>
     {
       targeting.classes.map(t => {
+        const contactCount = targeting.contacts.filter(c => c.class === t.id).length;
        return <Row>
        <Col sm={3}>
        <InputGroup size="sm">
-       <InputGroupButton><Button color="secondary">-</Button></InputGroupButton>
-       <Input placeholder="0" value={targeting.contacts.filter(c => c.class === t.id).length} />
-       <InputGroupButton><Button color="secondary">+</Button></InputGroupButton>
+       <InputGroupButton><Button onClick={this._setTargetClassCount.bind(this, t.id, contactCount - 1)} color="secondary">-</Button></InputGroupButton>
+       <InputField 
+       style={{lineHeight: '28px',height: '28px', width: '100%'}}
+       prompt={'How many targets?'}
+       onClick={this._setTargetClassCount.bind(this, t.id)}>{contactCount}</InputField>
+       <InputGroupButton><Button onClick={this._setTargetClassCount.bind(this, t.id, contactCount + 1)} color="secondary">+</Button></InputGroupButton>
        </InputGroup>
        </Col>
        <Col sm={2}>
        <Button color="primary" size="sm">On</Button>
        </Col>
        <Col sm={1}>
-       <select className="pictureSelect" value={t.icon}>
+       <select className="pictureSelect" onChange={this._updateTargetClass.bind(this, t.id, 'icon')} value={t.icon}>
        {
         assetFolders.find(a => a.name === 'Icons').containers.map(c => {
-          return <option key={c.fullPath}>{c.name}</option>
+          return <option key={c.id} value={c.fullPath}>{c.name}</option>
         })
       }
       </select>
       <img src={t.iconUrl} role="presentation" />
       </Col>
       <Col sm={1}>
-      <select className="pictureSelect" value={t.picture}>
+      <select className="pictureSelect" onChange={this._updateTargetClass.bind(this, t.id, 'picture')} value={t.picture}>
       {
         assetFolders.find(a => a.name === 'Pictures').containers.map(c => {
-          return <option key={c.fullPath}>{c.name}</option>
+          return <option key={c.id} value={c.fullPath}>{c.name}</option>
         })
       }
       </select>
       <img src={t.pictureUrl} role="presentation" />
       </Col>
       <Col sm={4}>
-      <Input size="sm" value={t.name} />
+      <InputField 
+      style={{lineHeight: '28px',height: '28px', width: '100%'}}
+      prompt={'New target label?'}
+      onClick={this._updateTargetClass.bind(this, t.id, 'name')}>{t.name}</InputField>
       </Col>
       <Col sm={1}><FontAwesome name="ban" className="text-danger" onClick={this._removeTargetClass.bind(this)} /></Col>
       </Row>

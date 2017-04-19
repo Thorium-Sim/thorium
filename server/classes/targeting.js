@@ -34,18 +34,23 @@ export default class Targeting extends System {
   setTargetClassCount(classId, count){
     const classContacts = this.contacts.filter(c => c.class === classId);
     if (classContacts.length === count) return;
-    if (classContacts < 0) return;
-    if (classContacts.length > count){
+    if (count < 0) return;
+    if (count === 0){
+      classContacts.forEach(c => this.removeTarget(c.id));
+      return;
+    }
+    if (classContacts.length < count){
       //Add some more
-      for(let i = classContacts.length - count; i > 0; i--){
+      for(let i = count - classContacts.length; i > 0; i--){
         this.createTarget(classId);
       }
     } else {
       //Remove some
-      for(let i = count - classContacts.length; i > 0; i--){
-        this.removeTarget(this.contacts[i]);
+      for(let i = classContacts.length - count; i > 0; i--){
+        this.removeTarget(this.contacts[i].id);
       }
     }
+    console.log(this.contacts);
   }
   addTargetClass(classInput){
     this.classes.push(new TargetClass(classInput, this.id));

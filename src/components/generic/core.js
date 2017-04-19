@@ -9,7 +9,7 @@ export const InputField = (props) => {
     textAlign: 'center'
   }, props.style);
   const onClick = () => {
-    const value = prompt(props.prompt);
+    const value = prompt(props.prompt, props.children);
     props.onClick(value);
   }
   return <div onClick={onClick} style={style}>{props.children}</div>
