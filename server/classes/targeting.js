@@ -26,7 +26,7 @@ export default class Targeting extends System {
     this.contacts.find(c => c.id === targetId).untarget();
   }
   targetSystem(targetId, system){
-    this.contacts.find(c => c.id === targetId).untarget();
+    this.contacts.find(c => c.id === targetId).updateSystem(system);
   }
   removeTarget(id){
     this.contacts = this.contacts.filter(c => c.id !== id);
@@ -101,7 +101,7 @@ class Target {
   untarget(){
     this.targeted = false;
   }
-  system(sys){
+  updateSystem(sys){
     this.system = sys;
   }
 }

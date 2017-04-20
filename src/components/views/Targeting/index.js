@@ -120,7 +120,7 @@ class Targeting extends Component {
   targetSystem(targetId, system){
     const targeting = this.props.data.targeting[0];
     const mutation = gql`
-    mutation UntargetContact($systemId: ID!, $targetId: ID!, $system: String!){
+    mutation TargetContact($systemId: ID!, $targetId: ID!, $system: String!){
       targetSystem(id: $systemId, targetId: $targetId, system: $system)
     }`;
     const variables = {
@@ -138,7 +138,7 @@ class Targeting extends Component {
     const targeting = this.props.data.targeting[0];
     if (!targeting) return <p>No Targeting</p>;
     const targetedContact = targeting.contacts.find(t => t.targeted);
-    return <Container fluid>
+    return <Container fluid className="targeting-control">
     <Row>
     <Col sm="5">
     <Measure>
@@ -147,26 +147,29 @@ class Targeting extends Component {
       <Grid 
       dimensions={dimensions} 
       targetContact={this.targetContact.bind(this)}
+      untargetContact={this.untargetContact.bind(this)}
+      targetedContact={targetedContact}
       targets={targeting.contacts} /> 
       : <div></div>
     }}
     </Measure>
     </Col>
     </Row>
-    <Row>
+    {targetedContact && 
+    <Row className="target-area">
     <Col sm={3}>
     <h4>Targeted Contact</h4>
     <Media>
     <Media left href="#">
-    <Media object src="http://placehold.it/64" alt="Generic placeholder image" />
+    <Media object src={targetedContact.pictureUrl} alt="Generic placeholder image" />
     </Media>
     <Media body>
     <Media heading>
-    Media heading Media heading Media heading
+    {targetedContact.name}
     </Media>
     </Media>
     </Media>
-    <Button block color="warning">Unlock Target</Button>
+    <Button block color="warning" onClick={this.untargetContact.bind(this, targetedContact.id)}>Unlock Target</Button>
     </Col>
     <Col sm={4}>
     <Row>
@@ -177,23 +180,25 @@ class Targeting extends Component {
       ["General", "Engines", "Sensors", "Tractor Beam", "Communications", "Weapons", "Shields"].map(s => {
         return <Col key={`system-${s}`} sm={6}>
         <label className="custom-control custom-radio">
-        <input id="radio1" name="system" type="radio" className="custom-control-input" />
+        <input id="radio1" name="system" type="radio" onChange={this.targetSystem.bind(this, targetedContact.id, s)} checked={targetedContact.system === s} className="custom-control-input" />
         <span className="custom-control-indicator"></span>
         <span className="custom-control-description">{s}</span>
         </label>
         </Col>
       })
     }
+   {/* Uncomment for other targeting
     <Col sm={6}>
     <label className="custom-control custom-radio">
     <input id="radio1" name="system" type="radio" className="custom-control-input" />
     <span className="custom-control-indicator"></span>
     <span className="custom-control-description"><Input size="sm" /></span>
     </label>
-    </Col>
+    </Col>*/}
     </Row>
     </Col>
     </Row>
+  }
     </Container>
   }
 }

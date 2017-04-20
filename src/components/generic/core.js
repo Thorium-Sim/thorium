@@ -8,6 +8,10 @@ export const InputField = (props) => {
     whiteSpace: 'pre',
     textAlign: 'center'
   }, props.style);
+  if (props.alert){
+    style.backgroundColor = '#f00';
+    style.borderColor = '#a00';
+  }
   const onClick = () => {
     const value = prompt(props.prompt, props.children);
     props.onClick(value);

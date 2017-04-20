@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { Container, Row, Col, Button, InputGroup, InputGroupButton, Input } from 'reactstrap';
 import { graphql, withApollo } from 'react-apollo';
-import { InputField } from '../../generic/core';
+import { InputField, OutputField } from '../../generic/core';
 import Immutable from 'immutable';
 import FontAwesome from 'react-fontawesome';
 
@@ -122,16 +122,64 @@ class TargetingCore extends Component {
       variables
     })
   }
-  _removeTargetClass(){
-
+  _removeTargetClass(classId){
+    const targeting = this.props.data.targeting[0];
+    const mutation = gql`
+    mutation RemoveTargetClass($id: ID!, $classId: ID!) {
+      removeTargetClass(id: $id, classId: $classId)
+    }`;
+    const variables = {
+      id: targeting.id,
+      classId
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  }
+  _removeTargetedContact(targetId){
+    const targeting = this.props.data.targeting[0];
+    const mutation = gql`
+    mutation RemoveTarget($id: ID!, $targetId: ID!) {
+      removeTarget(id: $id, targetId: $targetId)
+    }`;
+    const variables = {
+      id: targeting.id,
+      targetId
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
   }
   render(){
     if (this.props.data.loading) return null;
     const targeting = this.props.data.targeting[0];
+    if (!targeting) return <p>No Targeting Systems</p>;
     const {assetFolders} = this.props.data;
-    if (!targeting) return <p>No Targeting Systems</p>
-      return <Container className="targeting-core">
+    const targetedContact = targeting.contacts.find(t => t.targeted);
+    let contactClass, contactId;
+    if (targetedContact){
+      contactClass = targetedContact.class;
+      contactId = targetedContact.id;
+    }
+    return <Container className="targeting-core">
     <p>Targeting</p>
+    <Row>
+    <Col sm={6}>
+    Targeted System
+    </Col>
+    <Col sm={6}>
+    </Col>
+    </Row>
+    <Row>
+    <Col sm={8}>
+    <OutputField alert={targetedContact}>{targetedContact && targetedContact.system}</OutputField>
+    </Col>
+    <Col sm={4}>
+    <Button color="danger" disabled={!targetedContact} size="sm" block onClick={this._removeTargetedContact.bind(this, contactId)}>Destroy</Button>
+    </Col>
+    </Row>
     <Row>
     <Col sm={3}>Count</Col>
     <Col sm={2}>Move</Col>
@@ -143,49 +191,50 @@ class TargetingCore extends Component {
     {
       targeting.classes.map(t => {
         const contactCount = targeting.contacts.filter(c => c.class === t.id).length;
-       return <Row>
-       <Col sm={3}>
-       <InputGroup size="sm">
-       <InputGroupButton><Button onClick={this._setTargetClassCount.bind(this, t.id, contactCount - 1)} color="secondary">-</Button></InputGroupButton>
-       <InputField 
-       style={{lineHeight: '28px',height: '28px', width: '100%'}}
-       prompt={'How many targets?'}
-       onClick={this._setTargetClassCount.bind(this, t.id)}>{contactCount}</InputField>
-       <InputGroupButton><Button onClick={this._setTargetClassCount.bind(this, t.id, contactCount + 1)} color="secondary">+</Button></InputGroupButton>
-       </InputGroup>
-       </Col>
-       <Col sm={2}>
-       <Button color="primary" size="sm">On</Button>
-       </Col>
-       <Col sm={1}>
-       <select className="pictureSelect" onChange={this._updateTargetClass.bind(this, t.id, 'icon')} value={t.icon}>
-       {
-        assetFolders.find(a => a.name === 'Icons').containers.map(c => {
-          return <option key={c.id} value={c.fullPath}>{c.name}</option>
-        })
-      }
-      </select>
-      <img src={t.iconUrl} role="presentation" />
-      </Col>
-      <Col sm={1}>
-      <select className="pictureSelect" onChange={this._updateTargetClass.bind(this, t.id, 'picture')} value={t.picture}>
-      {
-        assetFolders.find(a => a.name === 'Pictures').containers.map(c => {
-          return <option key={c.id} value={c.fullPath}>{c.name}</option>
-        })
-      }
-      </select>
-      <img src={t.pictureUrl} role="presentation" />
-      </Col>
-      <Col sm={4}>
-      <InputField 
-      style={{lineHeight: '28px',height: '28px', width: '100%'}}
-      prompt={'New target label?'}
-      onClick={this._updateTargetClass.bind(this, t.id, 'name')}>{t.name}</InputField>
-      </Col>
-      <Col sm={1}><FontAwesome name="ban" className="text-danger" onClick={this._removeTargetClass.bind(this)} /></Col>
-      </Row>
-    })
+        return <Row>
+        <Col sm={3}>
+        <InputGroup size="sm">
+        <InputGroupButton><Button onClick={this._setTargetClassCount.bind(this, t.id, contactCount - 1)} color="secondary">-</Button></InputGroupButton>
+        <InputField 
+        style={{lineHeight: '28px',height: '28px', width: '100%'}}
+        prompt={'How many targets?'}
+        onClick={this._setTargetClassCount.bind(this, t.id)}>{contactCount}</InputField>
+        <InputGroupButton><Button onClick={this._setTargetClassCount.bind(this, t.id, contactCount + 1)} color="secondary">+</Button></InputGroupButton>
+        </InputGroup>
+        </Col>
+        <Col sm={2}>
+        <Button color="primary" size="sm">On</Button>
+        </Col>
+        <Col sm={1}>
+        <select className="pictureSelect" onChange={this._updateTargetClass.bind(this, t.id, 'icon')} value={t.icon}>
+        {
+          assetFolders.find(a => a.name === 'Icons').containers.map(c => {
+            return <option key={c.id} value={c.fullPath}>{c.name}</option>
+          })
+        }
+        </select>
+        <img src={t.iconUrl} role="presentation" />
+        </Col>
+        <Col sm={1}>
+        <select className="pictureSelect" onChange={this._updateTargetClass.bind(this, t.id, 'picture')} value={t.picture}>
+        {
+          assetFolders.find(a => a.name === 'Pictures').containers.map(c => {
+            return <option key={c.id} value={c.fullPath}>{c.name}</option>
+          })
+        }
+        </select>
+        <img src={t.pictureUrl} role="presentation" />
+        </Col>
+        <Col sm={4}>
+        <InputField 
+        style={{lineHeight: '28px',height: '28px', width: '100%'}}
+        prompt={'New target label?'}
+        alert={contactClass === t.id}
+        onClick={this._updateTargetClass.bind(this, t.id, 'name')}>{t.name}</InputField>
+        </Col>
+        <Col sm={1}><FontAwesome name="ban" className="text-danger" onClick={this._removeTargetClass.bind(this, t.id)} /></Col>
+        </Row>
+      })
     }
     <Row>
     <Col sm={12}>

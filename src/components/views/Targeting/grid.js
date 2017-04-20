@@ -8,13 +8,14 @@ const {
   Line,
   Stage,
   Path,
-  Rect
+  Rect,
+  Group
 } = ReactKonva;
 
 const speedLimit = 20;
 const speedConstant1 = 2.5 / 200;
 const speedConstant2 = 1.5 / 200;
-
+const crosshairPath = 'M0,77.03L15,77.03L15,52.03L52.5,15L77.5,15L77.5,0L57.5,0L50,10L10,50L0,57.03L0,77.03Z';
 
 class TargetingGrid extends Component {
   constructor(props) {
@@ -51,7 +52,8 @@ class TargetingGrid extends Component {
             speedX: stateTarget.speedX,
             speedY: stateTarget.speedY,
             scale: t.size,
-            hover: stateTarget.hover
+            hover: stateTarget.hover,
+            targeted: t.targeted
           })
         } else {
           return fetch(t.iconUrl).then((res) => res.text())
@@ -68,7 +70,8 @@ class TargetingGrid extends Component {
               speedX: stateTarget.speedX,
               speedY: stateTarget.speedY,
               scale: t.size,
-              hover: stateTarget.hover
+              hover: stateTarget.hover,
+              targeted: t.targeted
             })
           });
         }
@@ -89,7 +92,8 @@ class TargetingGrid extends Component {
             speedX: (Math.random() - 0.5) * 2,
             speedY: (Math.random() - 0.5) * 2,
             scale: t.size,
-            hover: 0
+            hover: 0,
+            targeted: t.targeted
           })
         })
       }
@@ -116,7 +120,8 @@ class TargetingGrid extends Component {
       scale,
       fill,
       data,
-      hover
+      hover,
+      targeted
     }) => {
       const limit = {x: width - 32, y: height - 32};
       const speed = {x: speedX, y: speedY};
@@ -142,7 +147,7 @@ class TargetingGrid extends Component {
         loc[which] = Math.min(limit[which], Math.max(0, loc[which] + speed[which]));
       })
 
-      return {id, x: loc.x, y: loc.y, fill, speedX: speed.x, speedY: speed.y, data, icon, scale, hover};
+      return {id, x: loc.x, y: loc.y, fill, speedX: speed.x, speedY: speed.y, data, icon, scale, hover, targeted};
     })
     this.setState({
       targets: newTargets
@@ -154,23 +159,31 @@ class TargetingGrid extends Component {
   }
   _mouseMove(id, e){
     const {targets} = this.state;
-    this.setState({
-      targets: targets.map(t => {
-        if (t.id === id){
-          t.hover += 1;
-          if (t.hover >= 100) {
-            t.fill = 'red';
-          }
-        } else {
+    if (this.props.targetedContact) {
+      this.setState({
+        targets: targets.map(t => {
           t.hover = 0;
-          t.fill = "#0f0";
-        }
-        return t;
+          return t;
+        })
       })
+      return;
+    };
+    targets.forEach(t => {
+      if (t.id === id){
+        t.hover += 1;
+        if (t.hover >= 100) {
+          this.props.targetContact(t.id)
+        }
+      }
+      return t;
     })
   }
   render() {
     const {width} = this.props.dimensions;
+    let targetedContact;
+    if (this.props.targetedContact){
+      targetedContact = this.state.targets.find(t => t.id === this.props.targetedContact.id);
+    }
     const height = width * 3/4;
     return <div className="targetArea">
     <Stage width={width} height={height}>
@@ -209,16 +222,55 @@ class TargetingGrid extends Component {
     data={t.data}
     x={t.x}
     y={t.y}
-    fill={t.fill}
+    fill={t.targeted ? '#f00' : '#0f0'}
     scale={{
       x:t.scale,
       y:t.scale
     }} />
   })
 }
-</Layer>
-</Stage>
-</div>
+{targetedContact && <Group
+  x={targetedContact.x}
+  y={targetedContact.y}>
+  <Path data={crosshairPath}
+  fill='#f00'
+  x={-13}
+  y={-13}
+  scale={{
+    x: 0.3,
+    y: 0.3
+  }} />
+  <Path data={crosshairPath}
+  fill='#f00'
+  x={43}
+  y={-13}
+  rotation={90}
+  scale={{
+    x: 0.3,
+    y: 0.3
+  }} />
+  <Path data={crosshairPath}
+  fill='#f00'
+  x={43}
+  y={43}
+  rotation={180}
+  scale={{
+    x: 0.3,
+    y: 0.3
+  }} />
+  <Path data={crosshairPath}
+  fill='#f00'
+  x={-13}
+  y={43}
+  rotation={270}
+  scale={{
+    x: 0.3,
+    y: 0.3
+  }} />
+  </Group>}
+  </Layer>
+  </Stage>
+  </div>
 }
 }
 
