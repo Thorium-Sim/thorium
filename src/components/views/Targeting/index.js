@@ -147,7 +147,7 @@ class Targeting extends Component {
       <Grid 
       dimensions={dimensions} 
       targetContact={this.targetContact.bind(this)}
-      targets={null} /> 
+      targets={targeting.contacts} /> 
       : <div></div>
     }}
     </Measure>

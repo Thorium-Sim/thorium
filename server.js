@@ -4,6 +4,7 @@ import OpticsAgent from 'optics-agent';
 import bodyParser from 'body-parser';
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import multer from 'multer';
+import moment from 'moment';
 import cors from 'cors';
 import request from 'request';
 import path from 'path';
@@ -74,6 +75,11 @@ graphQLServer.use('/graphiql', graphiqlExpress(options));
 
 graphQLServer.use('/assets', (req, res) => {
   const baseUrl = 'https://s3.amazonaws.com/thorium-assets';
+  res.set({
+    "Cache-Control": "max-age=86400",
+    "Expires": moment().add(1, 'year').format('ddd, DD MMM YYYY HH:mm:ss G[M]T'),
+    "Last-Modified":moment().startOf('day').subtract(1, 'year').format('ddd, DD MMM YYYY HH:mm:ss G[M]T')
+  })
   request(baseUrl + req.url)
   .on('response', (response) => {
     if (response.statusCode !== 200) {

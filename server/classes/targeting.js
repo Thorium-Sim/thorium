@@ -68,7 +68,7 @@ export default class Targeting extends System {
 class TargetClass {
   constructor(params, systemId){
     this.id = params.id || uuid.v4();
-    this.systemId = systemId || '';
+    this.systemId = systemId || params.systemId || '';
     this.name = params.name || 'Target';
     this.size = params.size || 1;
     this.icon = params.icon || 'Generic';

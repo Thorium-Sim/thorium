@@ -799,7 +799,7 @@
 			"model": "battery",
 			"powerOutput": 120,
 			"efficiency": 1,
-			"batteryChargeLevel": 0.797330999999987,
+			"batteryChargeLevel": 0.7905419999999863,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -819,7 +819,18 @@
 			"class": "Targeting",
 			"type": "Targeting",
 			"contacts": [],
-			"classes": [],
+			"classes": [
+				{
+					"id": "7d0870a9-dfe5-445c-a316-e42406825acc",
+					"systemId": "1e66763f-70d7-4cc7-a385-f3fa4b008da4",
+					"name": "Target",
+					"size": 1,
+					"icon": "/Sensor Contacts/Icons/N",
+					"picture": "/Sensor Contacts/Pictures/N",
+					"speed": 1,
+					"quadrant": 1
+				}
+			],
 			"quadrants": false
 		}
 	],
@@ -1173,33 +1184,6 @@
 			"class": "AssetObject"
 		},
 		{
-			"id": "3243664c-7299-4c43-a050-3d5f2ad09da9",
-			"containerPath": "/Sensor Contacts/Icons",
-			"containerId": "fc58cd61-db63-43a5-ba97-45e34aef18e9",
-			"fullPath": "/Sensor Contacts/Icons/N",
-			"url": "http://localhost:3001/assets/Sensor%20Contacts/Icons/N/default.svg",
-			"simulatorId": "default",
-			"class": "AssetObject"
-		},
-		{
-			"id": "85c51339-9c39-4cab-af01-804cf3d0a651",
-			"containerPath": "/Sensor Contacts/Pictures",
-			"containerId": "1f6c94a2-3e2e-4558-b0f5-4a44ba90767d",
-			"fullPath": "/Sensor Contacts/Pictures/N",
-			"url": "http://localhost:3001/assets/Sensor%20Contacts/Pictures/N/default.png",
-			"simulatorId": "default",
-			"class": "AssetObject"
-		},
-		{
-			"id": "befc68b4-a404-4ee7-be4b-aaf1a5e97af1",
-			"containerPath": "/Sensor Contacts/Icons",
-			"containerId": "fbe3ae88-698b-4974-a9b8-9a150abaa01c",
-			"fullPath": "/Sensor Contacts/Icons/G",
-			"url": "https://s3.amazonaws.com/thorium-assets/Sensor%20Contacts/Icons/G/default.svg",
-			"simulatorId": "default",
-			"class": "AssetObject"
-		},
-		{
 			"id": "1be123ea-e65d-4efc-93b2-57ce7fdfe125",
 			"containerPath": "/Misc",
 			"containerId": "bbcc1500-7301-4e2f-8623-2ea2afed97b5",
@@ -1306,9 +1290,27 @@
 			"url": "https://s3.amazonaws.com/thorium-assets/Comm%20Images/Orion/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
+		},
+		{
+			"id": "100e4877-8df8-4eaf-b918-c0644c49aa89",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "fc58cd61-db63-43a5-ba97-45e34aef18e9",
+			"fullPath": "/Sensor Contacts/Icons/N/default.svg",
+			"url": "https://s3.amazonaws.com/thorium-assets/Sensor%20Contacts/Icons/N/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "b5bd0fe9-8f33-4f30-9610-0f2b37b415f0",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "fbe3ae88-698b-4974-a9b8-9a150abaa01c",
+			"fullPath": "/Sensor Contacts/Icons/G/default.svg",
+			"url": "https://s3.amazonaws.com/thorium-assets/Sensor%20Contacts/Icons/G/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
 		}
 	],
-	"snapshotVersion": 365,
-	"version": 365,
-	"timestamp": "2017-04-19T03:11:52.534Z"
+	"snapshotVersion": 79,
+	"version": 79,
+	"timestamp": "2017-04-20T03:25:39.403Z"
 }

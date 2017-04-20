@@ -20,9 +20,17 @@ class TargetingGrid extends Component {
   constructor(props) {
     super(props);
     this.state = {targets:[]}
+    this.refreshTargets(props);
   }
   componentWillReceiveProps(nextProps) {
-    //Merge the current state with the incoming props
+    this.refreshTargets(nextProps);
+  }
+  componentDidMount() {
+    requestAnimationFrame(() => {
+      this.loop()
+    });
+  }
+  refreshTargets(nextProps){
     const stateTargets = this.state.targets;
     const {width} = this.props.dimensions;
     const height = width * 3/4;
@@ -31,19 +39,39 @@ class TargetingGrid extends Component {
       if (stateTarget){
         //The target has a target in the state already;
         //Transfer over the information necessary.
-        return Promise.resolve({
-          id: t.id,
-          data: stateTarget.data,
-          icon: t.icon,
-          speed: t.speed,
-          fill: stateTarget.fill,
-          x: stateTarget.x,
-          y: stateTarget.y,
-          speedX: stateTarget.speedX,
-          speedY: stateTarget.speedY,
-          scale: t.size,
-          hover: stateTarget.hover
-        })
+        if (t.icon === stateTarget.icon){
+          return Promise.resolve({
+            id: t.id,
+            data: stateTarget.data,
+            icon: t.icon,
+            speed: t.speed,
+            fill: stateTarget.fill,
+            x: stateTarget.x,
+            y: stateTarget.y,
+            speedX: stateTarget.speedX,
+            speedY: stateTarget.speedY,
+            scale: t.size,
+            hover: stateTarget.hover
+          })
+        } else {
+          return fetch(t.iconUrl).then((res) => res.text())
+          .then((svg) => parsePath(svg))
+          .then((data) => {
+            return Promise.resolve({
+              id: t.id,
+              data: data,
+              icon: t.icon,
+              speed: t.speed,
+              fill: stateTarget.fill,
+              x: stateTarget.x,
+              y: stateTarget.y,
+              speedX: stateTarget.speedX,
+              speedY: stateTarget.speedY,
+              scale: t.size,
+              hover: stateTarget.hover
+            })
+          });
+        }
       } else {
         //Get the SVG data
         return fetch(t.iconUrl).then((res) => res.text())
@@ -65,16 +93,11 @@ class TargetingGrid extends Component {
           })
         })
       }
-    }).then(newTargets => {
+    })
+    ).then(newTargets => {
       this.setState({
         targets: newTargets
       })
-    })
-    );
-  }
-  componentDidMount() {
-    requestAnimationFrame(() => {
-      this.loop()
     });
   }
   loop() {
@@ -87,6 +110,7 @@ class TargetingGrid extends Component {
       id,
       x,
       y,
+      icon,
       speedX,
       speedY,
       scale,
@@ -118,7 +142,7 @@ class TargetingGrid extends Component {
         loc[which] = Math.min(limit[which], Math.max(0, loc[which] + speed[which]));
       })
 
-      return {id, x: loc.x, y: loc.y, fill, speedX: speed.x, speedY: speed.y, data, scale, hover};
+      return {id, x: loc.x, y: loc.y, fill, speedX: speed.x, speedY: speed.y, data, icon, scale, hover};
     })
     this.setState({
       targets: newTargets
