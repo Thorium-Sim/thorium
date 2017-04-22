@@ -1,7 +1,7 @@
 export default `
-  chargePhaser(id: ID!):String
-  dischargePhaser(id: ID!):String
-  firePhaser(id: ID!):String
+  chargePhaserBeam(id: ID!, beamId: ID!):String
+  dischargePhaserBeam(id: ID!, beamId: ID!):String
+  firePhaserBeam(id: ID!, beamId: ID!):String
   phaserArc(id: ID!, arc: Float!):String
-  setPhaserCharge(id: ID!, charge: Float!):String
+  setPhaserBeamCharge(id: ID!, beamId: ID!, charge: Float!):String
 `;

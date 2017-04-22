@@ -11,20 +11,20 @@ export const PhaserQueries = {
 };
 
 export const PhaserMutations = {
-  chargePhaser(root, args){
-    App.handleEvent(args, 'chargePhaser');
+  chargePhaserBeam(root, args){
+    App.handleEvent(args, 'chargePhaserBeam');
   },
-  dischargePhaser(root, args){
-    App.handleEvent(args, 'dischargePhaser');
+  dischargePhaserBeam(root, args){
+    App.handleEvent(args, 'dischargePhaserBeam');
   },
-  firePhaser(root, args){
-    App.handleEvent(args, 'firePhaser');
+  firePhaserBeam(root, args){
+    App.handleEvent(args, 'firePhaserBeam');
   },
   phaserArc(root, args){
     App.handleEvent(args, 'phaserArc');
   },
-  setPhaserCharge(root, args){
-    App.handleEvent(args, 'setPhaserCharge');
+  setPhaserBeamCharge(root, args){
+    App.handleEvent(args, 'setPhaserBeamCharge');
   },
 };
 
