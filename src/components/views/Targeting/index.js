@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Row, Col, Container, Input, Media, Button } from 'reactstrap';
+import { Row, Col, Container, Media, Button } from 'reactstrap';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import Measure from 'react-measure';

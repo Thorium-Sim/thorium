@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
-import { Container, Row, Col, Button, InputGroup, InputGroupButton, Input } from 'reactstrap';
+import { Container, Row, Col, Button, InputGroup, InputGroupButton } from 'reactstrap';
 import { graphql, withApollo } from 'react-apollo';
 import { InputField, OutputField } from '../../generic/core';
 import Immutable from 'immutable';

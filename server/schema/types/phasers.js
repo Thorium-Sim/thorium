@@ -15,7 +15,7 @@ type PhaserBeam {
   power: Power
   damage: Damage
   charge: Float
-  # One of 'idle', 'charging', 'firing'
+  # One of 'idle', 'discharging', charging', 'firing'
   state: String
 }
 `;

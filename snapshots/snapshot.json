@@ -799,7 +799,7 @@
 			"model": "battery",
 			"powerOutput": 120,
 			"efficiency": 1,
-			"batteryChargeLevel": 0.7905419999999863,
+			"batteryChargeLevel": 0.7893859999999859,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -832,6 +832,60 @@
 				}
 			],
 			"quadrants": false
+		},
+		{
+			"id": "194c8133-b341-4b9c-be86-a1cacfa9512b",
+			"simulatorId": "test",
+			"name": "Phaser",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
+			},
+			"class": "Phasers",
+			"type": "Phasers",
+			"arc": 0.5,
+			"beams": [
+				{
+					"id": "2f569e5d-3cec-445a-a858-0354680dd05b",
+					"simulatorId": null,
+					"name": null,
+					"power": {
+						"power": 5,
+						"powerLevels": [
+							5
+						]
+					},
+					"damage": {
+						"damaged": false,
+						"report": null
+					},
+					"state": "idle",
+					"charge": 0
+				},
+				{
+					"id": "4f20dcaf-2b59-4e26-ae8a-094ab90bff75",
+					"simulatorId": null,
+					"name": null,
+					"power": {
+						"power": 5,
+						"powerLevels": [
+							5
+						]
+					},
+					"damage": {
+						"damaged": false,
+						"report": null
+					},
+					"state": "idle",
+					"charge": 0
+				}
+			]
 		}
 	],
 	"clients": [
@@ -1310,7 +1364,7 @@
 			"class": "AssetObject"
 		}
 	],
-	"snapshotVersion": 79,
-	"version": 79,
-	"timestamp": "2017-04-20T03:25:39.403Z"
+	"snapshotVersion": 13,
+	"version": 13,
+	"timestamp": "2017-04-22T22:53:58.257Z"
 }

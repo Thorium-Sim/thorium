@@ -2,16 +2,25 @@ import App from '../../app';
 import { pubsub } from '../helpers/subscriptionManager.js';
 
 App.on('chargePhaserBeam', ({id, beamId}) => {
-  App.systems.find(s => s.id === id).updateBeamState(beamId, 'charging');
+  const sys = App.systems.find(s => s.id === id);
+  sys.updateBeamState(beamId, 'charging');
+  sys.updateBeamCharge(beamId, 1);
   pubsub.publish('phasersUpdate', App.systems.filter(s => s.type === 'Phasers'));
 });
 App.on('dischargePhaserBeam', ({id, beamId}) => {
-  App.systems.find(s => s.id === id).updateBeamState(beamId, 'discharging');
+  const sys = App.systems.find(s => s.id === id);
+  sys.updateBeamState(beamId, 'discharging');
+  sys.updateBeamCharge(beamId, 0);
   pubsub.publish('phasersUpdate', App.systems.filter(s => s.type === 'Phasers'));
 });
 App.on('firePhaserBeam', ({id, beamId}) => {
-  App.systems.find(s => s.id === id).updateBeamState(beamId, 'firing');
+  const sys = App.systems.find(s => s.id === id);
+  sys.fireBeam(beamId);
   pubsub.publish('phasersUpdate', App.systems.filter(s => s.type === 'Phasers'));
+  setTimeout(() => {
+    sys.updateBeamState(beamId, 'idle');
+    pubsub.publish('phasersUpdate', App.systems.filter(s => s.type === 'Phasers'));
+  },4000);
 });
 App.on('phaserArc', ({id, beamId, arc}) => {
   App.systems.find(s => s.id === id).updateArc(arc);

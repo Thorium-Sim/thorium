@@ -12,7 +12,7 @@ export default class Phasers extends System {
     if (typeof params.beams === 'number'){
       // Creating it for the first time
       for (let i = 0; i < params.beams; i++){
-        this.beams.push(new Beam());
+        this.beams.push(new Beam({}));
       }
     } else {
       params.beams.forEach(b => this.beams.push(new Beam(b)));
@@ -23,6 +23,9 @@ export default class Phasers extends System {
   }
   updateBeamCharge(beamId, charge){
     this.beams.find(b => b.id === beamId).updateCharge(charge);
+  }
+  fireBeam(beamId){
+    this.beams.find(b => b.id === beamId).fire();
   }
   //TODO: Add functions for updating the power level for the beams themselves
   // As well as damaging individual beams.
@@ -44,5 +47,13 @@ class Beam extends System{
   }
   updateCharge(charge){
     this.charge = Math.min(1, Math.max(0, charge));
+  }
+  fire(){
+    this.charge = Math.min(1, Math.max(0, this.charge - 0.25));
+    if (this.charge > 0){
+      this.state = 'firing';
+    } else {
+      this.state = 'idle';
+    }
   }
 }

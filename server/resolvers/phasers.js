@@ -28,9 +28,11 @@ export const PhaserMutations = {
   },
 };
 
+
 export const PhaserSubscriptions = {
   phasersUpdate(rootValue, {simulatorId}){
     let returnRes = rootValue;
+    console.log(returnRes, simulatorId);
     if (simulatorId) returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
     return returnRes;
   }
