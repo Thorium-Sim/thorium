@@ -96,7 +96,6 @@ class PhaserCharging extends Component {
     })
   }
   dischargeAll(){
-    let i = 0;
     const phasers = this.props.data.phasers[0];
     phasers.beams.forEach(b => {
       if (b.charge > 0){
@@ -224,7 +223,6 @@ class PhaserArc extends Component {
     })
   }
   render(){
-    const {id, client} = this.props;
     const {arc} = this.state;
     document.documentElement.style.setProperty('--phaserArcRotate', `${arc * 10}deg`);
     const lasers = document.querySelector('.lasers');

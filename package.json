@@ -112,7 +112,8 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "lint": "eslint .",
-    "migrate": "nodemon ./server/helpers/migration.js --exec babel-node"
+    "migrate": "nodemon ./server/helpers/migration.js --exec babel-node",
+    "cloc": "cloc . --exclude-dir=node_modules,config,scripts"
   },
   "jest": {
     "moduleFileExtensions": [
