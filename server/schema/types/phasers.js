@@ -6,9 +6,16 @@ type Phaser {
   name: String
   power: Power
   damage: Damage
+  arc: Float
+  beams: [PhaserBeam]
+}
+
+type PhaserBeam {
+  id: ID
+  power: Power
+  damage: Damage
   charge: Float
   # One of 'idle', 'charging', 'firing'
   state: String
-  arc: Float
 }
 `;
