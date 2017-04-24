@@ -59,7 +59,20 @@ class PhaserChargingCore extends Component {
     })
   }
   changePhaser(beamId, value){
-
+    const phasers = this.props.data.phasers[0];
+    const mutation = gql`
+    mutation SetBeamCharge ($id: ID!, $beamId: ID!, $charge: Float!){
+      setPhaserBeamCharge(id:$id, beamId:$beamId, charge: $charge)
+    }`;
+    const variables = {
+      id: phasers.id,
+      beamId,
+      charge: value/100
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
   }
   render(){
     if (this.props.data.loading) return null;
