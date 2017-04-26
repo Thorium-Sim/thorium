@@ -25,6 +25,18 @@
     overflow-x: scroll;
     -webkit-mask-image: linear-gradient(to right, transparent 0%,#fff 5%,#fff 95%,transparent 100%)
   }
+  .torpedoHolder {
+    width: 66px;
+    overflow: hidden;
+    height: 157px;
+    position: absolute;
+    left: 46px;
+    .torpedo {
+      width: 60px;
+      height: 20px;
+      position: absolute;
+    }
+  }
   .torpedoPicker{
     display: flex;
     flex-direction: row;

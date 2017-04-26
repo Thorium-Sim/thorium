@@ -28,6 +28,8 @@ export default class Torpedo extends System {
     this.state = 'idle';
   }
   fireWarhead(){
+    //Remove the loaded warhead from inventory
+    this.removeWarhead(this.loaded);
     this.loaded = false;
     this.state = 'fired';
   }

@@ -799,7 +799,7 @@
 			"model": "battery",
 			"powerOutput": 120,
 			"efficiency": 1,
-			"batteryChargeLevel": 0.7893859999999859,
+			"batteryChargeLevel": 0.7826829999999868,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -886,6 +886,26 @@
 					"charge": 0
 				}
 			]
+		},
+		{
+			"id": "b9067849-f8ce-41bd-bd83-3399e7552d7b",
+			"simulatorId": "test",
+			"name": "Torpedo",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
+			},
+			"class": "Torpedo",
+			"type": "Torpedo",
+			"loaded": false,
+			"state": "idle",
+			"inventory": []
 		}
 	],
 	"clients": [
@@ -1364,7 +1384,7 @@
 			"class": "AssetObject"
 		}
 	],
-	"snapshotVersion": 13,
-	"version": 13,
-	"timestamp": "2017-04-22T22:53:58.257Z"
+	"snapshotVersion": 68,
+	"version": 68,
+	"timestamp": "2017-04-26T22:20:34.358Z"
 }

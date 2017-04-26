@@ -18,6 +18,11 @@ App.on('torpedoUnload', ({id}) => {
   pubsub.publish('torpedosUpdate', App.systems.filter(s => s.type === 'Torpedo'));
 });
 App.on('torpedoFire', ({id}) => {
-  App.systems.find(s => s.id === id).fireWarhead();
+  const sys = App.systems.find(s => s.id === id);
+  sys.fireWarhead();
   pubsub.publish('torpedosUpdate', App.systems.filter(s => s.type === 'Torpedo'));
+  setTimeout(() => {
+    sys.unload();
+    pubsub.publish('torpedosUpdate', App.systems.filter(s => s.type === 'Torpedo'));
+  },4000)
 });
