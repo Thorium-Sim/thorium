@@ -5,6 +5,7 @@ import { graphql, withApollo } from 'react-apollo';
 import Measure from 'react-measure';
 import Immutable from 'immutable';
 import Grid from './grid';
+import TorpedoLoading from './torpedoLoading.js';
 
 const TARGETING_QUERY = gql`
 query Targeting($simulatorId: ID){
@@ -155,38 +156,42 @@ class Targeting extends Component {
     </Measure>
     </Col>
     </Row>
-    {targetedContact && 
     <Row className="target-area">
     <Col sm={3}>
-    <h4>Targeted Contact</h4>
-    <Media>
-    <Media left href="#">
-    <Media object src={targetedContact.pictureUrl} alt="Generic placeholder image" />
-    </Media>
-    <Media body>
-    <Media heading>
-    {targetedContact.name}
-    </Media>
-    </Media>
-    </Media>
-    <Button block color="warning" onClick={this.untargetContact.bind(this, targetedContact.id)}>Unlock Target</Button>
+    {targetedContact && 
+      <div>
+      <h4>Targeted Contact</h4>
+      <Media>
+      <Media left href="#">
+      <Media object src={targetedContact.pictureUrl} alt="Generic placeholder image" />
+      </Media>
+      <Media body>
+      <Media heading>
+      {targetedContact.name}
+      </Media>
+      </Media>
+      </Media>
+      <Button block color="warning" onClick={this.untargetContact.bind(this, targetedContact.id)}>Unlock Target</Button>
+      </div>
+    }
     </Col>
     <Col sm={4}>
-    <Row>
-    <Col sm={12}>
-    <h4>Systems Targeting</h4>
-    </Col>
-    {
-      ["General", "Engines", "Sensors", "Tractor Beam", "Communications", "Weapons", "Shields"].map(s => {
-        return <Col key={`system-${s}`} sm={6}>
-        <label className="custom-control custom-radio">
-        <input id="radio1" name="system" type="radio" onChange={this.targetSystem.bind(this, targetedContact.id, s)} checked={targetedContact.system === s} className="custom-control-input" />
-        <span className="custom-control-indicator"></span>
-        <span className="custom-control-description">{s}</span>
-        </label>
-        </Col>
-      })
-    }
+    {targetedContact && 
+      <Row>
+      <Col sm={12}>
+      <h4>Systems Targeting</h4>
+      </Col>
+      {
+        ["General", "Engines", "Sensors", "Tractor Beam", "Communications", "Weapons", "Shields"].map(s => {
+          return <Col key={`system-${s}`} sm={6}>
+          <label className="custom-control custom-radio">
+          <input id="radio1" name="system" type="radio" onChange={this.targetSystem.bind(this, targetedContact.id, s)} checked={targetedContact.system === s} className="custom-control-input" />
+          <span className="custom-control-indicator"></span>
+          <span className="custom-control-description">{s}</span>
+          </label>
+          </Col>
+        })
+      }
    {/* Uncomment for other targeting
     <Col sm={6}>
     <label className="custom-control custom-radio">
@@ -194,13 +199,16 @@ class Targeting extends Component {
     <span className="custom-control-indicator"></span>
     <span className="custom-control-description"><Input size="sm" /></span>
     </label>
-    </Col>*/}
-    </Row>
-    </Col>
-    </Row>
-  }
-    </Container>
-  }
+  </Col>*/}
+  </Row>
+}
+</Col>
+<Col sm={4}>
+<TorpedoLoading />
+</Col>
+</Row>
+</Container>
+}
 }
 
 export default graphql(TARGETING_QUERY, {
