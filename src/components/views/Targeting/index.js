@@ -5,7 +5,8 @@ import { graphql, withApollo } from 'react-apollo';
 import Measure from 'react-measure';
 import Immutable from 'immutable';
 import Grid from './grid';
-import TorpedoLoading from './torpedoLoading.js';
+import TorpedoLoading from '../TorpedoLoading';
+
 
 const TARGETING_QUERY = gql`
 query Targeting($simulatorId: ID){

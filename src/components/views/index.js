@@ -36,6 +36,7 @@ import CommShortRangeCore from './CommShortRange/core';
 import RemoteCore from './RemoteAccess/core';
 import TargetingCore from './Targeting/core';
 import PhaserCore from './PhaserCharging/core';
+import TorpedoCore from './TorpedoLoading/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -85,7 +86,8 @@ export const Cores = { EngineControlCore,
   CommShortRangeCore,
   RemoteCore,
   TargetingCore,
-  PhaserCore
+  PhaserCore,
+  TorpedoCore
 };
 
 export default Views;

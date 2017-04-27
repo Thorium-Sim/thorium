@@ -26,6 +26,9 @@ export const TorpedoMutations = {
   torpedoFire(root, args){
     App.handleEvent(args, 'torpedoFire');
   },
+  torpedoSetWarheadCount(root, args){
+    App.handleEvent(args, 'torpedoSetWarheadCount');
+  }
 };
 
 export const TorpedoSubscriptions = {

@@ -6,6 +6,7 @@ import { findDOMNode } from 'react-dom';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
+import './style.scss';
 
 const TORPEDO_SUB = gql`
 subscription TorpedosUpdate($simulatorId: ID!){
@@ -142,7 +143,8 @@ class TorpedoLoading extends Component {
     ];
     if (this.props.data.loading) return null;
     const torpedo = this.props.data.torpedos[0];
-    return <TransitionGroup>
+    return <div className="torpedo-loading">
+    <TransitionGroup>
     {
       components.map(Comp => {
         if (this.state.screen === Comp.name) return <Comp 
@@ -158,6 +160,7 @@ class TorpedoLoading extends Component {
       }).filter(a => a)
     }
     </TransitionGroup>
+    </div>
   }
 }
 

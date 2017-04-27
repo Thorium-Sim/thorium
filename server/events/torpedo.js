@@ -26,3 +26,7 @@ App.on('torpedoFire', ({id}) => {
     pubsub.publish('torpedosUpdate', App.systems.filter(s => s.type === 'Torpedo'));
   },4000)
 });
+App.on('torpedoSetWarheadCount', ({id, warheadType, count}) => {
+  App.systems.find(s => s.id === id).setWarheadCount(warheadType, count);
+  pubsub.publish('torpedosUpdate', App.systems.filter(s => s.type === 'Torpedo'));
+})

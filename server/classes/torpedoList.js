@@ -27,6 +27,20 @@ export default class Torpedo extends System {
     this.loaded = false;
     this.state = 'idle';
   }
+  setWarheadCount(type, count){
+    const torps = this.inventory.filter(i => i.type === type);
+    if (torps.length > count) {
+      const idList = torps.map(t => t.id);
+      for (let i = torps.length - count; i > 0; i--){
+        this.removeWarhead(idList[i-1]);
+      }
+    }
+    if (torps.length < count) {
+      for (let i = count - torps.length; i > 0; i--){
+        this.addWarhead({type: type})
+      }
+    }
+  }
   fireWarhead(){
     //Remove the loaded warhead from inventory
     this.removeWarhead(this.loaded);
