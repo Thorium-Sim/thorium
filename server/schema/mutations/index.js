@@ -15,3 +15,6 @@ export systems from './systems';
 export navigation from './navigation';
 export shortRangeComm from './shortRangeComm';
 export reactor from './reactor';
+export phasers from './phasers';
+export torpedo from './torpedo';
+export targeting from './targeting';

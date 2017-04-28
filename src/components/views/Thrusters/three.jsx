@@ -2,13 +2,12 @@ import React, {Component} from 'react';
 import React3 from 'react-three-renderer';
 import * as THREE from 'three';
 import OBJLoader from 'three-obj-loader';
-import ParsedModel from './parser';
+import ParsedModel from '../helpers/parser';
 import Arrow from './arrow';
 
 OBJLoader(THREE);
 const ObjURL = 'https://s3.amazonaws.com/dynamo-star/_1.obj';
 const TxURL = 'https://s3.amazonaws.com/dynamo-star/battleship_elements2_c.png';
-
 
 window.THREE = THREE;
 
@@ -123,32 +122,32 @@ export default class ThreeThrusters extends Component {
       position={new THREE.Vector3(0,0,-1)} />
       {/*<ambientLight
       color={0x505050}
-      />*/}
-      <group rotation={finalAngle}>
-      <IndicatorCircle name="yaw" rotation={new THREE.Euler(Math.PI/2, 0, finalAngle.y )} color={0xff0000}/>
-      <IndicatorCircle name="pitch" rotation={new THREE.Euler(finalAngle.x, Math.PI/2, 0)} color={0x0000ff}/>
-      <IndicatorCircle name="roll" color={0x00ff00} rotation={new THREE.Euler(0, 0, finalAngle.z)} />
-      {this.state.spaceship.vertices &&
-        <mesh scale={new THREE.Vector3(0.2,0.2,0.2)}
-        >
-        <geometry {...this.state.spaceship} />
-        <meshBasicMaterial>
-        <texture url={TxURL} />
-        </meshBasicMaterial>
-        </mesh>
-      }
-      <Arrow visible={direction.x < -0.2} rotation={new THREE.Euler(Math.PI/2,0,0)} position={new THREE.Vector3(1.2,0,0)} scale={arrowScaleVector}/>
-      <Arrow visible={direction.x > 0.2} rotation={new THREE.Euler(Math.PI/2,Math.PI,0)} position={new THREE.Vector3(-1.2,0,0)} scale={arrowScaleVector}/>
+    />*/}
+    <group rotation={finalAngle}>
+    <IndicatorCircle name="yaw" rotation={new THREE.Euler(Math.PI/2, 0, finalAngle.y )} color={0xff0000}/>
+    <IndicatorCircle name="pitch" rotation={new THREE.Euler(finalAngle.x, Math.PI/2, 0)} color={0x0000ff}/>
+    <IndicatorCircle name="roll" color={0x00ff00} rotation={new THREE.Euler(0, 0, finalAngle.z)} />
+    {this.state.spaceship.vertices &&
+      <mesh scale={new THREE.Vector3(0.2,0.2,0.2)}
+      >
+      <geometry {...this.state.spaceship} />
+      <meshBasicMaterial>
+      <texture url={TxURL} />
+      </meshBasicMaterial>
+      </mesh>
+    }
+    <Arrow visible={direction.x < -0.2} rotation={new THREE.Euler(Math.PI/2,0,0)} position={new THREE.Vector3(1.2,0,0)} scale={arrowScaleVector}/>
+    <Arrow visible={direction.x > 0.2} rotation={new THREE.Euler(Math.PI/2,Math.PI,0)} position={new THREE.Vector3(-1.2,0,0)} scale={arrowScaleVector}/>
 
-      <Arrow visible={direction.z > 0.2} rotation={new THREE.Euler(Math.PI/2,0,Math.PI/2)} position={new THREE.Vector3(0,0,1.3)} scale={arrowScaleVector}/>
-      <Arrow visible={direction.z < -0.2} rotation={new THREE.Euler(Math.PI/-2,0,Math.PI/2)} position={new THREE.Vector3(0,0,-1.3)} scale={arrowScaleVector}/>
+    <Arrow visible={direction.z > 0.2} rotation={new THREE.Euler(Math.PI/2,0,Math.PI/2)} position={new THREE.Vector3(0,0,1.3)} scale={arrowScaleVector}/>
+    <Arrow visible={direction.z < -0.2} rotation={new THREE.Euler(Math.PI/-2,0,Math.PI/2)} position={new THREE.Vector3(0,0,-1.3)} scale={arrowScaleVector}/>
 
-      <Arrow visible={direction.y < -0.2} rotation={new THREE.Euler(0,0,Math.PI/2)} position={new THREE.Vector3(0,1,0)} scale={arrowScaleVector}/>
-      <Arrow visible={direction.y > 0.2} rotation={new THREE.Euler(0,0,Math.PI/-2)} position={new THREE.Vector3(0,-1,0)} scale={arrowScaleVector}/>
+    <Arrow visible={direction.y < -0.2} rotation={new THREE.Euler(0,0,Math.PI/2)} position={new THREE.Vector3(0,1,0)} scale={arrowScaleVector}/>
+    <Arrow visible={direction.y > 0.2} rotation={new THREE.Euler(0,0,Math.PI/-2)} position={new THREE.Vector3(0,-1,0)} scale={arrowScaleVector}/>
 
-      </group>
-      </scene>
-      </React3>
-      );
+    </group>
+    </scene>
+    </React3>
+    );
   }
 }

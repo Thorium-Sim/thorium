@@ -21,7 +21,7 @@ const updateReactor = () => {
     batteries.forEach(batt => {
       const charge = level * (batt.batteryChargeRate / 1000);
       const newLevel = batt.batteryChargeLevel - charge;
-      console.log('Estimated Time to Depletion:', batt.batteryChargeLevel / charge);
+      //console.log('Estimated Time to Depletion:', batt.batteryChargeLevel / charge);
       //Trigger the event
       App.handleEvent({id: batt.id, level: newLevel}, 'reactorBatteryChargeLevel');
     })

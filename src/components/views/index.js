@@ -18,6 +18,9 @@ import Docking from './Docking';
 import CommShortRange from './CommShortRange';
 import PowerDistribution from './PowerDistribution';
 import PowerDistributionBattery from './PowerDistributionBattery';
+import Targeting from './Targeting';
+import PhaserCharging from './PhaserCharging';
+
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
 import SensorsGridCore from './Sensors/gridCore';
@@ -31,6 +34,9 @@ import DockingCore from './Docking/core';
 import NavigationCore from './Navigation/core';
 import CommShortRangeCore from './CommShortRange/core';
 import RemoteCore from './RemoteAccess/core';
+import TargetingCore from './Targeting/core';
+import PhaserCore from './PhaserCharging/core';
+import TorpedoCore from './TorpedoLoading/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -56,6 +62,8 @@ const Views = { Login,
   CommShortRange,
   PowerDistribution,
   PowerDistributionBattery,
+  Targeting,
+  PhaserCharging
 };
 
 export const Widgets = {
@@ -76,7 +84,10 @@ export const Cores = { EngineControlCore,
   DockingCore,
   NavigationCore,
   CommShortRangeCore,
-  RemoteCore
+  RemoteCore,
+  TargetingCore,
+  PhaserCore,
+  TorpedoCore
 };
 
 export default Views;

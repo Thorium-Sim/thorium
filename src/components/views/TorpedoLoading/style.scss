@@ -1,0 +1,39 @@
+.torpedo-loading{
+  .torpedoButton {
+    position: absolute;
+    right: 10%;
+    top: 10%;
+    width: 50%;
+  }
+  .torpedoPickScroll {
+    width: 100%;
+    overflow-x: scroll;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%,#fff 5%,#fff 95%,transparent 100%)
+  }
+  .torpedoHolder {
+    width: 66px;
+    overflow: hidden;
+    height: 157px;
+    position: absolute;
+    left: 46px;
+    .torpedo {
+      width: 60px;
+      height: 20px;
+      position: absolute;
+    }
+  }
+  .torpedoPicker{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+    .torpedoPick {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      img {
+        width: 50%;
+      }
+    }
+  }
+}
