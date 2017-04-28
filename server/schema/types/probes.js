@@ -6,24 +6,64 @@ type Probes {
   name: String
   power: Power
   damage: Damage
+  torpedo: Boolean
   probes: [Probe]
+  equipment: [ProbeEquipment]
+  types: [ProbeType]
 }
 
 type Probe {
   id: ID
+  name: String
+  type: ID
+  #Whether the probe is launched by tactical or not
   launched: Boolean
-  type: String
-  size: Float
-  destination: String
   equipment: [ProbeEquipment]
   engine: Engine
   phaser: Phaser
+  navigation: Navigation
+  query: String
+  response: String
 }
 
+input ProbeInput {
+  name: String
+  type: ID
+  equipment: [ID]
+}
+
+# For now, probe equipment will be static.
+# TODO: Make it so probe equipment is cargo based.
 type ProbeEquipment {
+  id: ID
+  description: String
+  name: String
+  size: Float
+  count: Int
+  damage: Damage
+  availableProbes: [String]
+}
+
+input ProbeEquipmentInput {
+  description: String
+  name: String
+  size: Float
+  count: Int
+}
+
+type ProbeType {
+  id: ID
+  name: String
+  description: String
+  size: Float
+  count: Int
+  availableEquipment: [ProbeEquipment]
+}
+
+input ProbeTypeInput {
   id: ID
   name: String
   size: Float
-  damage: Damage
+  count: Int
 }
 `;
