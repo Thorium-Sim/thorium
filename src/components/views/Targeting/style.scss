@@ -12,7 +12,28 @@
   .target-area {
     margin-top: 50px;
   }
-
+  .phaserText {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .phaserBeam{
+    .chargeHolder{
+      background-color: black;
+      border: solid 1px white;
+      height: 30px;
+      position: relative;
+      .charge{
+        position: absolute;
+        left: 0%;
+        height: 100%;
+        transition: width 0.5s ease-in-out;
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 100%), linear-gradient(to right, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
+        background-size: 5px 3px, 100%;
+        background-color: #ffff00;
+      }
+    }
+  }
 }
 
 .targeting-core {

@@ -154,22 +154,49 @@ class PhaserCharging extends Component {
   }
 }
 
-const PhaserBeam = ({index, id, charge, state, selectedBank, selectPhaserBank}) => {
+export const PhaserBeam = ({chargePhasers, dischargePhasers, firePhasers, targeting, index, id, charge, state, selectedBank = null, selectPhaserBank = () => {}}) => {
   const duration = state === 'charging' ? 2 : (state === 'discharging' ? 0.5 : 4);
-  return <Row className="phaserBeam">
-  <Col sm="2">
-  <Button color="warning" active={id === selectedBank} onClick={selectPhaserBank}block>Phaser Bank {index}</Button>
-  </Col>
-  <Col sm="10">
-  <div className="chargeHolder">
-  <div className="charge" style={{transitionDuration: `${duration}s`, width: `${charge * 100}%`}}></div>
-  </div>
-  </Col>
-  </Row>
+  if (targeting) {
+    return <div>
+    <Row className="phaserBeam">
+    <Col sm="8">
+    <div className="phaserText">
+    <p>Phaser Bank {index + 1}</p>
+    <p>Charge: {charge * 100}%</p>
+    </div>
+    <div className="chargeHolder">
+    <div className="charge" style={{transitionDuration: `${duration}s`, width: `${charge * 100}%`}}></div>
+    </div>
+    </Col>
+    <Col sm={"4"}>
+    <Button block color="danger"onClick={firePhasers.bind(this, id)}>Fire Phasers</Button>
+    </Col>
+    </Row>
+    <Row>
+    <Col sm="3">
+    <Button block color="primary"onClick={chargePhasers.bind(this, id)}>Charge</Button>
+    </Col>
+    <Col sm={3}>
+    <Button block color="warning"onClick={dischargePhasers.bind(this, id)}>Discharge</Button>
+    </Col>
+    </Row>
+    </div>
+  } else {
+    return <Row className="phaserBeam">
+    <Col sm="2">
+    <Button color="warning" active={id === selectedBank} onClick={selectPhaserBank}block>Phaser Bank {index}</Button>
+    </Col>
+    <Col sm="10">
+    <div className="chargeHolder">
+    <div className="charge" style={{transitionDuration: `${duration}s`, width: `${charge * 100}%`}}></div>
+    </div>
+    </Col>
+    </Row>
+  }
 }
 
 
-class PhaserArc extends Component {
+export class PhaserArc extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -233,12 +260,12 @@ class PhaserArc extends Component {
       },20);
     }
     return <Row style={{height: '200px'}} className="phaserArc">
-    <Col sm={{size: 2, offset: 2}} style={{marginTop: '50px'}}>
+    <Col sm={{size: 4}} style={{marginTop: '50px'}}>
     <Button onMouseDown={this.updateArc.bind(this, 'up')} block color="warning">Widen Arc</Button>
     <Button onMouseDown={this.updateArc.bind(this, 'down')} block color="warning">Tighten Arc</Button>
     <p>Beam Arc: {Math.round(arc * 90)} Degrees</p>
     </Col>
-    <Col sm={{size: 6}}>
+    <Col sm={{size: 8}}>
     <div className="lasers">
     <div className="laser-beam"></div>
     <div className="laser-beam red"></div>

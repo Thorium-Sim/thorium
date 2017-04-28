@@ -6,7 +6,7 @@ import Measure from 'react-measure';
 import Immutable from 'immutable';
 import Grid from './grid';
 import TorpedoLoading from '../TorpedoLoading';
-
+import {PhaserArc, PhaserBeam} from '../PhaserCharging';
 
 const TARGETING_QUERY = gql`
 query Targeting($simulatorId: ID){
@@ -36,6 +36,25 @@ query Targeting($simulatorId: ID){
       targeted
       pictureUrl
     }
+  }
+  phasers(simulatorId: $simulatorId){
+    id
+    simulatorId
+    power {
+      power
+      powerLevels
+    }
+    damage {
+      damaged
+      report
+    }
+    name
+    beams {
+      id
+      state
+      charge
+    }
+    arc
   }
 }`;
 
@@ -70,21 +89,53 @@ subscription TargetingUpdate($simulatorId: ID){
   }
 }`;
 
+const PHASERS_SUB = gql`
+subscription PhasersUpdate($simulatorId: ID!){
+  phasersUpdate(simulatorId: $simulatorId){
+    id
+    simulatorId
+    power {
+      power
+      powerLevels
+    }
+    damage {
+      damaged
+      report
+    }
+    name
+    beams {
+      id
+      state
+      charge
+    }
+    arc
+  }
+}`;
 
 class Targeting extends Component {
   constructor(props){
     super(props);
     this.state = {
     }
-    this.subscription = null;
+    this.targetingSubscription = null;
+    this.phasersSubscription = null;
   }
   componentWillReceiveProps(nextProps){
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
+    if (!this.targetingSubscription && !nextProps.data.loading) {
+      this.targetingSubscription = nextProps.data.subscribeToMore({
         document: TARGETING_SUB,
+        variables:{simulatorId: nextProps.simulator.id},
         updateQuery: (previousResult, {subscriptionData}) => {
           const returnResult = Immutable.Map(previousResult);
           return returnResult.merge({targeting: subscriptionData.data.targetingUpdate}).toJS();
+        }
+      });
+      this.phasersSubscription = nextProps.data.subscribeToMore({
+        document: PHASERS_SUB,
+        variables:{simulatorId: nextProps.simulator.id},
+        updateQuery: (previousResult, {subscriptionData}) => {
+          const returnResult = Immutable.Map(previousResult);
+          return returnResult.merge({phasers: subscriptionData.data.phasersUpdate}).toJS();
         }
       });
     }
@@ -135,9 +186,43 @@ class Targeting extends Component {
       variables
     });
   }
+  chargePhasers(beamId){
+    const phasers = this.props.data.phasers[0];
+    const mutation = gql`
+    mutation ChargePhaserBeam ($id: ID!, $beamId: ID!){
+      chargePhaserBeam(id:$id, beamId:$beamId)
+    }`;
+    const variables = {
+      id: phasers.id,
+      beamId
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
+  }
+  dischargePhasers(beamId){
+    const phasers = this.props.data.phasers[0];
+    const mutation = gql`
+    mutation DischargePhaserBeam ($id: ID!, $beamId: ID!){
+      dischargePhaserBeam(id:$id, beamId:$beamId)
+    }`;
+    const variables = {
+      id: phasers.id,
+      beamId
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
+  }
+  firePhasers(id) {
+
+  }
   render(){
     if (this.props.data.loading) return null;
     const targeting = this.props.data.targeting[0];
+    const phasers = this.props.data.phasers[0];
     if (!targeting) return <p>No Targeting</p>;
     const targetedContact = targeting.contacts.find(t => t.targeted);
     return <Container fluid className="targeting-control">
@@ -155,6 +240,18 @@ class Targeting extends Component {
       : <div></div>
     }}
     </Measure>
+    </Col>
+    <Col sm="7">
+    {phasers.beams.map((p, i) => <PhaserBeam 
+      key={p.id} 
+      {...p}
+      index={i + 1}
+      chargePhasers={this.chargePhasers.bind(this)}
+      dischargePhasers={this.dischargePhasers.bind(this)}
+      firePhasers={this.firePhasers.bind(this)}
+      targeting={true}
+      />)}
+    <PhaserArc client={this.props.client} phaserId={phasers.id} arc={phasers.arc} />
     </Col>
     </Row>
     <Row className="target-area">
