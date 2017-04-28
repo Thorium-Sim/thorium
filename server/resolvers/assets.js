@@ -100,7 +100,7 @@ export const AssetsMutations = {
           id: uuid.v4(),
           containerPath: folderPath,
           containerId,
-          fullPath,
+          fullPath: `${fullPath}/${simulatorId + extension}`,
           url: s3.getPublicUrl('thorium-assets', key),
           simulatorId,
         }, 'addAssetObject');

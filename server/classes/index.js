@@ -17,4 +17,7 @@ export InternalComm from './internalComm';
 export Navigation from './navigation';
 export ShortRangeComm from './shortRangeComm';
 export Reactor from './reactor';
+export Torpedo from './torpedoList';
+export Phasers from './phasers';
+export Targeting from './targeting';
 export Probes from './probes';
