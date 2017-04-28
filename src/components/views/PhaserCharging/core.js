@@ -94,7 +94,7 @@ class PhaserChargingCore extends Component {
           return <Row>
           <Col sm={4}>{i}:</Col> 
           <Col sm={8}>
-          <InputField prompt="What would you like to change the charge to?" onClick={this.changePhaser.bind(this, b.id)} alert={b.state === 'firing'}>{b.charge * 100}%</InputField>
+          <InputField prompt="What would you like to change the charge to?" onClick={this.changePhaser.bind(this, b.id)} alert={b.state === 'firing'}>{Math.round(b.charge * 100)}%</InputField>
           </Col>
           </Row>
         })

@@ -155,21 +155,21 @@ class PhaserCharging extends Component {
 }
 
 export const PhaserBeam = ({chargePhasers, dischargePhasers, firePhasers, targeting, index, id, charge, state, selectedBank = null, selectPhaserBank = () => {}}) => {
-  const duration = state === 'charging' ? 2 : (state === 'discharging' ? 0.5 : 4);
+  const duration = state === 'charging' ? 2 : 0.5;
   if (targeting) {
     return <div>
     <Row className="phaserBeam">
     <Col sm="8">
     <div className="phaserText">
-    <p>Phaser Bank {index + 1}</p>
-    <p>Charge: {charge * 100}%</p>
+    <p>Phaser Bank {index}</p>
+    <p>Charge: {Math.round(charge * 100)}%</p>
     </div>
     <div className="chargeHolder">
-    <div className="charge" style={{transitionDuration: `${duration}s`, width: `${charge * 100}%`}}></div>
+    <div className="charge" style={{transitionDuration: `${duration}s`, transitionTimingFunction: state === 'firing' ? 'linear' : 'ease-in-out', width: `${charge * 100}%`}}></div>
     </div>
     </Col>
-    <Col sm={"4"}>
-    <Button block color="danger"onClick={firePhasers.bind(this, id)}>Fire Phasers</Button>
+    <Col sm={"4"} style={{marginTop:'27px'}}>
+    <Button block color="danger" onMouseDown={firePhasers.bind(this, id)}>Fire Phasers</Button>
     </Col>
     </Row>
     <Row>

@@ -49,7 +49,7 @@ class Beam extends System{
     this.charge = Math.min(1, Math.max(0, charge));
   }
   fire(){
-    this.charge = Math.min(1, Math.max(0, this.charge - 0.25));
+    this.charge = Math.min(1, Math.max(0, this.charge - 0.1));
     if (this.charge > 0){
       this.state = 'firing';
     } else {

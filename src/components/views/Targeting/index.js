@@ -119,6 +119,10 @@ class Targeting extends Component {
     }
     this.targetingSubscription = null;
     this.phasersSubscription = null;
+    this.phaserLoopId = null;
+    this.mouseup = () => {
+      this.phaserLoopId = null;
+    }
   }
   componentWillReceiveProps(nextProps){
     if (!this.targetingSubscription && !nextProps.data.loading) {
@@ -216,8 +220,29 @@ class Targeting extends Component {
       variables
     })
   }
-  firePhasers(id) {
-
+  firePhasers(beamId) {
+    this.phaserLoopId = true;
+    this.phaserLoop.call(this, beamId);
+    document.addEventListener('mouseup', this.mouseup);
+  }
+  phaserLoop(beamId){
+    if (!this.phaserLoopId){
+      return false;
+    }
+    const phasers = this.props.data.phasers[0];
+    const mutation = gql`
+    mutation FirePhasers($id: ID!, $beamId: ID!){
+      firePhaserBeam(id: $id, beamId: $beamId)
+    }`;
+    const variables = {
+      id: phasers.id,
+      beamId
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
+    this.phaserLoopId = setTimeout(this.phaserLoop.bind(this, beamId), 500);
   }
   render(){
     if (this.props.data.loading) return null;
