@@ -16,8 +16,8 @@ export default class Probes extends System {
     this.types = [];
     
     // Load the probes
-    params.probes.forEach(p => this.probes.push(new Probe(p)));
-    probeData.forEach(p => this.types.push(new ProbeType(p)));
+    params.probes.forEach(p => this.probes.push(new Probe(p, this.id)));
+    probeData.forEach(p => this.types.push(new ProbeType(p, this.id)));
     equipmentData.forEach(e => this.equipment.push(new ProbeEquipment(e)));
   }
   destroyProbe(probeId) {
@@ -43,10 +43,12 @@ export default class Probes extends System {
     if (this.torpedo) {
       probe.launched = false;
       //Create a new torpedo linked to this probe
+      probe.id = uuid.v4();
+      App.handleEvent({type: 'probe', probe: probe.id},'torpedoAddWarhead');
     } else {
       probe.launched = true;
     }
-    this.probes.push(new Probe(probe));
+    this.probes.push(new Probe(probe, this.id));
   }
   fireProbe(probeId){
     //For when tactical fires the probe
@@ -59,7 +61,7 @@ export default class Probes extends System {
       type.update(probeType);
     } else {
       // Add a new one!
-      this.types.push(new ProbeType(probeType));
+      this.types.push(new ProbeType(probeType, this.id));
     }
   }
   updateProbeEquipment(probeEquipment) {
@@ -69,7 +71,7 @@ export default class Probes extends System {
       equipment.update(probeEquipment);
     } else {
       // Add a new one!
-      this.equipment.push(new ProbeType(probeEquipment));
+      this.equipment.push(new ProbeEquipment(probeEquipment));
     }
   }
   probeQuery(probeId, query) {
@@ -81,29 +83,34 @@ export default class Probes extends System {
 }
 
 class Probe {
-  constructor(params) {
+  constructor(params, parentId) {
     this.id = params.id || uuid.v4();
+    this.parentId = parentId;
     this.type = params.type || null;
     this.launched = params.launched || true;
     this.equipment = params.equipment || [];
     this.query = params.query || '';
+    this.querying = params.querying || false;
     this.response = params.query || '';
   }
   launch() {
     this.launched = true;
   }
   query(query){
-    this.query = query
+    this.query = query;
+    this.querying = true;
   }
   response(response){
     this.response = response;
+    this.querying = false;
   }
 }
 
 class ProbeType {
-  constructor(params) {
+  constructor(params, parentId) {
     this.id = params.id || uuid.v4();
     this.name = params.name || 'Probe';
+    this.parentId = parentId;
     this.description = params.description || 'This is a probe';
     this.size = params.size || 1;
     this.count = params.count || 0;

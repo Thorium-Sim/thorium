@@ -23,6 +23,7 @@ type Probe {
   phaser: Phaser
   navigation: Navigation
   query: String
+  querying: Boolean
   response: String
 }
 

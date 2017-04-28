@@ -18,6 +18,7 @@ import { ReactorQueries, ReactorMutations, ReactorSubscriptions } from './reacto
 import { TargetingQueries, TargetingMutations, TargetingSubscriptions, TargetingTypes } from './targeting'
 import { TorpedoQueries, TorpedoMutations, TorpedoSubscriptions } from './torpedo'
 import { PhaserQueries, PhaserMutations, PhaserSubscriptions } from './phasers'
+import { ProbesQueries, ProbesMutations, ProbesSubscriptions, ProbesTypes } from './phasers'
 
 import App from '../../app';
 
@@ -64,7 +65,8 @@ function parseJSONLiteral(ast) {
     ReactorQueries,
     TargetingQueries,
     TorpedoQueries,
-    PhaserQueries
+    PhaserQueries,
+    ProbesQueries
     );
 
   export const mutationMap = Object.assign({
@@ -91,7 +93,8 @@ function parseJSONLiteral(ast) {
     ReactorMutations,
     TargetingMutations,
     TorpedoMutations,
-    PhaserMutations
+    PhaserMutations,
+    ProbesMutations
     );
 
   const subscriptionMap = Object.assign({},
@@ -114,7 +117,8 @@ function parseJSONLiteral(ast) {
     ReactorSubscriptions,
     TargetingSubscriptions,
     TorpedoSubscriptions,
-    PhaserSubscriptions
+    PhaserSubscriptions,
+    ProbesSubscriptions
     );
 
   export default Object.assign({
@@ -132,5 +136,6 @@ function parseJSONLiteral(ast) {
   ClientTypes,
   ShipStructureTypes,
   SystemsTypes,
-  TargetingTypes
+  TargetingTypes,
+  ProbesTypes
   );
