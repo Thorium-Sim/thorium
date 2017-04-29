@@ -2,6 +2,7 @@ import App from '../../app';
 
 export const ProbesQueries = {
   probes(rootValue, {simulatorId}){
+    console.log(simulatorId);
     let returnVal = App.systems.filter(s => s.type === 'Probes');
     if (simulatorId){
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);

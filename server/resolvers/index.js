@@ -18,7 +18,7 @@ import { ReactorQueries, ReactorMutations, ReactorSubscriptions } from './reacto
 import { TargetingQueries, TargetingMutations, TargetingSubscriptions, TargetingTypes } from './targeting'
 import { TorpedoQueries, TorpedoMutations, TorpedoSubscriptions } from './torpedo'
 import { PhaserQueries, PhaserMutations, PhaserSubscriptions } from './phasers'
-import { ProbesQueries, ProbesMutations, ProbesSubscriptions, ProbesTypes } from './phasers'
+import { ProbesQueries, ProbesMutations, ProbesSubscriptions, ProbesTypes } from './probes'
 
 import App from '../../app';
 

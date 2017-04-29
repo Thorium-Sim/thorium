@@ -16,9 +16,13 @@ export default class Probes extends System {
     this.types = [];
     
     // Load the probes
+    params.probes = params.probes || [];
+    params.types = params.types || [];
+    params.equipment = params.equipment || [];
+
     params.probes.forEach(p => this.probes.push(new Probe(p, this.id)));
-    probeData.forEach(p => this.types.push(new ProbeType(p, this.id)));
-    equipmentData.forEach(e => this.equipment.push(new ProbeEquipment(e)));
+    probesTypes.forEach(p => this.types.push(new ProbeType(p, this.id)));
+    probesEquipment.forEach(e => this.equipment.push(new ProbeEquipment(e)));
   }
   destroyProbe(probeId) {
     this.probes = this.probes.filter(p => p.id !== probeId)
@@ -139,22 +143,22 @@ class ProbeEquipment {
   }
 }
 
-const probeData = [ {
-  id: 'class-i probe',
+const probesTypes = [ {
+  id: 'class-i',
   name: 'Class I Probe',
   description: 'The smallest probe; can only hold 4 units of equipment. Use for probe networks.',
   size: 4,
   count: 30,
 },
 {
-  id: 'class-ii probe',
+  id: 'class-ii',
   name: 'Class II Probe',
   description: 'This medium-sized probe can hold 10 units of equipment. Use for probe networks.',
   size: 10,
   count: 30,
 },
 {
-  id: 'class-iii probe',
+  id: 'class-iii',
   name: 'Class III Probe',
   description: 'This is the largest probe. It can hold up to 16 units of equipment. Use for probe networks.',
   size: 16,
@@ -175,7 +179,7 @@ const probeData = [ {
   count: 20,
 }
 ];
-const equipmentData = [
+const probesEquipment = [
 {
   id: 'probe-network package',
   name: 'Probe Network Package',
