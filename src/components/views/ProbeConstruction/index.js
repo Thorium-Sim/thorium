@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
 import gql from 'graphql-tag';
-import { Container, Button, Row, Col } from 'reactstrap';
+import { Container, Button, Row, Col, Card, CardBlock } from 'reactstrap';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import { TweenMax } from 'gsap';
+import { findDOMNode } from 'react-dom';
 
 import './style.scss';
 
@@ -43,7 +46,8 @@ class ProbeConstruction extends Component {
   constructor(props){
     super(props);
     this.state = {
-      selectedProbeType: null
+      selectedProbeType: null,
+      launching: false
     }
     this.subscription = null;
   }
@@ -67,36 +71,129 @@ class ProbeConstruction extends Component {
   render(){
     if (this.props.data.loading) return null;
     const probes = this.props.data.probes[0];
-    const {selectedProbeType} = this.state;
+    const {selectedProbeType, launching} = this.state;
     if (!probes) return <p>No Probe Launcher</p>;
     return <Container fluid className="probe-construction">
     <ProbeSelector 
     types={probes.types} 
     selectedProbeType={selectedProbeType}
     selectProbe={this.selectProbe.bind(this)} />
+    <TransitionGroup>
+    {      
+      [ProbeEquipment, ProbeAction].filter(Comp => {
+        console.log(Comp)
+        console.log(selectedProbeType)
+        console.log(launching)
+        if (Comp.name === 'ProbeEquipment' && selectedProbeType && !launching) return true;
+        if (Comp.name === 'ProbeAction' && selectedProbeType && launching) return true;
+        return false;
+      }).map(Comp => {
+        return <Comp 
+        key={Comp.name} 
+        {...this.state}
+        probes={probes}
+        />;
+      })
+    }
+    </TransitionGroup>
     </Container>
   }
 }
 
 const ProbeSelector = ({types, selectedProbeType, selectProbe}) => {
   return <Row>
-  <Col sm={12} className="probe-container">
+  <Col sm={12} className={`probe-container  ${selectedProbeType ? 'probeSelected' : ''}`}>
+  <div className="placeholder"></div>
   {types.map((t, i) => {
     const probeImage = require(`./probes/${t.id}.svg`);
-    const transformX = (i * 10) * (100/types.length); 
     return <div 
-    className={`probe-type ${selectedProbeType ? 'probeSelected' : ''} ${selectedProbeType === t.id ? 'selected' : ''}`}
+    className={`probe-type ${selectedProbeType === t.id ? 'selected' : ''}`}
     onClick={selectProbe.bind(this, t.id)}
-    style={{transform: selectedProbeType === t.id ? `translateX(500%)` : `translateX(${transformX}%)`}}
     >
     <p>{t.name}: {t.count}</p>
     <img draggable="false" src={probeImage} role="presentation" />
     </div>
   })}
+  <div className="placeholder"></div>
   </Col>
   </Row>
 }
 
+class Transitioner extends Component {
+  componentWillEnter (callback) {
+    const el = findDOMNode(this);
+    TweenMax.fromTo(el, 0.5, {z: 100, rotationY:0, opacity: 0, transformPerspective:200}, {z: 0, rotationY:0, opacity: 1, transformPerspective:200, onComplete: callback});
+  }
+  componentWillLeave (callback) {
+    const el = findDOMNode(this);
+    TweenMax.fromTo(el, 0.5, {z: 0, rotationY:0, opacity: 1, transformPerspective:200}, {z: -100, rotationY:0, opacity: 0, transformPerspective:200, onComplete: callback});
+  }
+}
+
+class ProbeEquipment extends Transitioner {
+  render() {
+    const {selectedProbeType, probes} = this.props;
+    const type = probes.types.find(p => p.id === selectedProbeType);
+    return (
+      <Row className="probeEquipment">
+      <Col sm="5">
+      <Card>
+      <CardBlock>
+      <Row>
+      <Col sm="6">
+      <strong>Name</strong>
+      </Col>
+      <Col sm="3">
+      <strong>Size</strong>
+      </Col>
+      <Col sm="3">
+      <strong>Qty</strong>
+      </Col>
+      </Row>
+      </CardBlock>
+      <CardBlock className="equipmentList">
+      {
+        type.availableEquipment.map(e => (
+          <Row className="equipmentItem">
+          <Col sm="6">
+          <p>{e.name}</p>
+          </Col>
+          <Col sm="3">
+          <p>{e.size}</p>
+          </Col>
+          <Col sm="3">
+          <p>{e.count}</p>
+          </Col>
+          </Row>
+          ))
+      }
+      </CardBlock>
+      </Card>
+      </Col>
+      <Col sm="2">
+      <p>Total Space: </p>
+      <p>Space Used:  </p>
+      <p>Space Remaining: </p>
+      <Button block color="primary">Prepare Probe</Button>
+      <Button block color="danger">Cancel Probe</Button>
+      </Col>
+      <Col sm="5">
+
+      </Col>
+      </Row>
+      );
+  }
+}
+
+class ProbeAction extends Transitioner {
+  render() {
+    return (
+      <Row>
+
+      </Row>
+      );
+  }
+}
 const PROBES_QUERY = gql`
 query Probes($simulatorId: ID!){
   probes(simulatorId: $simulatorId){

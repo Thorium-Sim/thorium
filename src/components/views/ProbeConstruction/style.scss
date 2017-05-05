@@ -1,31 +1,58 @@
 .probe-construction {
   .probe-container {
     display: flex;
+    justify-content: space-between;
     height: 40vh;
+    .placeholder {
+      flex-grow: 0;
+      transition: flex-grow 0.5s ease-in-out;
+    }
+    &.probeSelected {
+      .probe-type {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out, flex-grow 0.5s ease-in-out 0.5s;
+      }
+      .placeholder {
+        flex-grow: 100;
+        transition: flex-grow 0.5s ease-in-out 0.5s;
+      }
+    }
     .probe-type {
-      position: absolute;
-      flex: 1 1 10px;
+      flex: 1 1 0px;
       height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+      transition: opacity 0.5s ease-in-out 0.5s, flex-grow 0.5s ease-in-out;
       img {
-        transition: transform 0.5s ease-in-out;
+        transition: transform 0.5s ease-in-out 0.5s;
       }
-      &.probeSelected {
-        opacity: 0;
-        &.selected {
-          transform: transformX(500%) !important;
-          opacity: 1;
-          p {
-            opacity: 0;
-          }
-          img {
-            transform: rotate(90deg) scale(1.5);
-          }
+      &.selected {
+        opacity: 1;
+        flex-grow: 100;
+        p {
+          opacity: 0;
+        }
+        img {
+          transform: rotate(90deg) scale(1.5);
         }
       }
+    }
+
+  }
+  .probeEquipment {
+    .card{ 
+      max-height: 40vh;
+    }
+    .equipmentList {
+      padding-top: 0;
+      overflow: scroll;
+    }
+    .equipmentItem:nth-child(odd) {
+      background-color: rgba(255,255,255,0.1);
+    }
+    p {
+      margin: 0;
     }
   }
 }
