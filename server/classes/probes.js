@@ -181,7 +181,7 @@ const probesTypes = [ {
 ];
 const probesEquipment = [
 {
-  id: 'probe-network package',
+  id: 'probe-network-package',
   name: 'Probe Network Package',
   description: 'A probe network package instructs the probe to network with up to 7 other probes.',
   size: 0,

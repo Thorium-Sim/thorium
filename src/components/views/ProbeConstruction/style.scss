@@ -40,6 +40,19 @@
     }
 
   }
+  .probeAction, .probeDescription{
+    position: relative;
+    .col{
+      position: absolute;
+      top: 50px;
+      left: 0px;
+      right: 0px;
+      margin: 0 auto;
+    }
+    p {
+      font-size: 28px;
+    }
+  }
   .probeEquipment {
     .card{ 
       max-height: 40vh;
