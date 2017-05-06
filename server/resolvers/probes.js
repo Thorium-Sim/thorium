@@ -2,7 +2,6 @@ import App from '../../app';
 
 export const ProbesQueries = {
   probes(rootValue, {simulatorId}){
-    console.log(simulatorId);
     let returnVal = App.systems.filter(s => s.type === 'Probes');
     if (simulatorId){
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
@@ -48,7 +47,14 @@ export const ProbesTypes = {
     equipment(probe){
       const parent = App.systems.find(s => s.id === probe.parentId);
       return probe.equipment.map(e => {
-        return parent.equipment.find(eq => eq.id === e);
+      const eq = parent.equipment.find(eq => eq.id === e.id);
+      return {
+        id: e.id,
+        name: eq.name,
+        count: e.count,
+        description: eq.description,
+        size: eq.size
+      }
       })
     }
   },

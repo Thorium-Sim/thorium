@@ -49,7 +49,8 @@ class ProbeConstruction extends Component {
       selectedProbeType: null,
       launching: false,
       description: null,
-      equipment: []
+      equipment: [],
+      modal: false
     }
     this.subscription = null;
   }
@@ -108,7 +109,8 @@ class ProbeConstruction extends Component {
     this.setState({
       selectedProbeType: null,
       launching: false,
-      equipment: []
+      equipment: [],
+      modal: false
     })
   }
   render(){

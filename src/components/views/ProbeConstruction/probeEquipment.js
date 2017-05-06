@@ -26,7 +26,7 @@ export default class ProbeEquipment extends Transitioner {
       }
     } else {
       //Add the equipment to the list
-      if (used + e.size < type.size){
+      if (used + e.size <= type.size){
         equipment.push({
           id: e.id,
           name: e.name,

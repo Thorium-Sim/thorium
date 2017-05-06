@@ -33,16 +33,16 @@ export default class Probes extends System {
     const type = this.types.find(t => t.id === probe.type)
     if (type.count <= 0) throw new Error(`Insufficient quantity of ${type.name}`);
     probe.equipment.forEach(e => {
-      const eq = this.equipment.find(eq => eq.id === e);
-      if (eq.count <= 0) {
+      const eq = this.equipment.find(eq => eq.id === e.id);
+      if (eq.count - e.count < 0) {
         throw new Error(`Insufficient quantity of ${eq.name}`);
       }
     });
     // Now do the updates.
     type.update({count: type.count - 1});
     probe.equipment.forEach(e => {
-      const eq = this.equipment.find(eq => eq.id === e);
-      eq.update({count: eq.count-1})
+      const eq = this.equipment.find(eq => eq.id === e.id);
+      eq.update({count: eq.count - e.count})
     });
     if (this.torpedo) {
       probe.launched = false;
@@ -90,6 +90,7 @@ class Probe {
   constructor(params, parentId) {
     this.id = params.id || uuid.v4();
     this.parentId = parentId;
+    this.name = params.name || '';
     this.type = params.type || null;
     this.launched = params.launched || true;
     this.equipment = params.equipment || [];

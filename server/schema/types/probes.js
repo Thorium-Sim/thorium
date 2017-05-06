@@ -30,7 +30,12 @@ type Probe {
 input ProbeInput {
   name: String
   type: ID
-  equipment: [ID]
+  equipment: [EquipmentInput]
+}
+
+input EquipmentInput {
+  id: ID
+  count: Int
 }
 
 # For now, probe equipment will be static.
