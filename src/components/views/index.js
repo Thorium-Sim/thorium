@@ -18,6 +18,8 @@ import Docking from './Docking';
 import CommShortRange from './CommShortRange';
 import PowerDistribution from './PowerDistribution';
 import PowerDistributionBattery from './PowerDistributionBattery';
+import DamageControl from './DamageControl';
+
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
 import SensorsGridCore from './Sensors/gridCore';
@@ -56,6 +58,7 @@ const Views = { Login,
   CommShortRange,
   PowerDistribution,
   PowerDistributionBattery,
+  DamageControl,
 };
 
 export const Widgets = {

@@ -27,6 +27,9 @@ export class System {
     this.damage.damaged = true;
     this.damage.report = report;
   }
+  damageReport(report) {
+    this.damage.report = report;
+  }
   repair() {
     this.damage.damaged = false;
     this.damage.report = null;

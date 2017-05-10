@@ -19,7 +19,8 @@ const viewList = [
 "Docking",
 "CommShortRange",
 "PowerDistribution",
-"PowerDistribution"
+"PowerDistribution",
+"DamageControl"
 ];
 
 export default viewList;
