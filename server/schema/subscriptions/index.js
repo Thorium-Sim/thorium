@@ -17,3 +17,4 @@ export reactor from './reactor';
 export phasers from './phasers';
 export torpedo from './torpedo';
 export targeting from './targeting';
+export probes from './probes';

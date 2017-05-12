@@ -1,0 +1,71 @@
+.probe-construction {
+  .probe-container {
+    display: flex;
+    justify-content: space-between;
+    height: 40vh;
+    .placeholder {
+      flex-grow: 0;
+      transition: flex-grow 0.5s ease-in-out;
+    }
+    &.probeSelected {
+      .probe-type {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out, flex-grow 0.5s ease-in-out 0.5s;
+      }
+      .placeholder {
+        flex-grow: 100;
+        transition: flex-grow 0.5s ease-in-out 0.5s;
+      }
+    }
+    .probe-type {
+      flex: 1 1 0px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: opacity 0.5s ease-in-out 0.5s, flex-grow 0.5s ease-in-out;
+      img {
+        transition: transform 0.5s ease-in-out 0.5s;
+      }
+      &.selected {
+        opacity: 1;
+        flex-grow: 100;
+        p {
+          opacity: 0;
+        }
+        img {
+          transform: rotate(90deg) scale(1.5);
+        }
+      }
+    }
+
+  }
+  .probeAction, .probeDescription{
+    position: relative;
+    .col{
+      position: absolute;
+      top: 50px;
+      left: 0px;
+      right: 0px;
+      margin: 0 auto;
+    }
+    p {
+      font-size: 28px;
+    }
+  }
+  .probeEquipment {
+    .card{ 
+      max-height: 40vh;
+    }
+    .equipmentList {
+      padding-top: 0;
+      overflow: scroll;
+    }
+    .equipmentItem:nth-child(odd) {
+      background-color: rgba(255,255,255,0.1);
+    }
+    p {
+      margin: 0;
+    }
+  }
+}

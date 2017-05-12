@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 160,
+	"_eventsCount": 168,
 	"simulators": [
 		{
 			"timeline": [],
@@ -799,7 +799,7 @@
 			"model": "battery",
 			"powerOutput": 120,
 			"efficiency": 1,
-			"batteryChargeLevel": 0.7826829999999868,
+			"batteryChargeLevel": 0.7810729999999869,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -906,6 +906,27 @@
 			"loaded": false,
 			"state": "idle",
 			"inventory": []
+		},
+		{
+			"id": "5e22f218-e004-47fc-b09d-0d41e9bb85b4",
+			"simulatorId": "test",
+			"name": "Probe Launcher",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
+			},
+			"class": "Probes",
+			"type": "Probes",
+			"torpedo": false,
+			"probes": [],
+			"equipment": [],
+			"types": []
 		}
 	],
 	"clients": [
@@ -1384,7 +1405,7 @@
 			"class": "AssetObject"
 		}
 	],
-	"snapshotVersion": 68,
-	"version": 68,
-	"timestamp": "2017-04-26T22:20:34.358Z"
+	"snapshotVersion": 16,
+	"version": 16,
+	"timestamp": "2017-04-29T20:59:49.574Z"
 }

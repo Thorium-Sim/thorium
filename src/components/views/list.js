@@ -21,7 +21,8 @@ const viewList = [
 "PowerDistribution",
 "PowerDistributionBattery",
 "Targeting",
-"PhaserCharging"
+"PhaserCharging",
+"ProbeConstruction"
 ];
 
 export default viewList;

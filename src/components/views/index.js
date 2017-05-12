@@ -20,6 +20,7 @@ import PowerDistribution from './PowerDistribution';
 import PowerDistributionBattery from './PowerDistributionBattery';
 import Targeting from './Targeting';
 import PhaserCharging from './PhaserCharging';
+import ProbeConstruction from './ProbeConstruction';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -63,7 +64,8 @@ const Views = { Login,
   PowerDistribution,
   PowerDistributionBattery,
   Targeting,
-  PhaserCharging
+  PhaserCharging,
+  ProbeConstruction
 };
 
 export const Widgets = {

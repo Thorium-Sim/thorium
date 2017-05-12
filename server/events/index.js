@@ -17,3 +17,4 @@ import './reactor';
 import './targeting';
 import './torpedo';
 import './phasers';
+import './probes';
