@@ -20,7 +20,11 @@ const viewList = [
 "CommShortRange",
 "PowerDistribution",
 "PowerDistribution",
-"DamageControl"
+"DamageControl",
+"PowerDistributionBattery",
+"Targeting",
+"PhaserCharging",
+"ProbeConstruction"
 ];
 
 export default viewList;

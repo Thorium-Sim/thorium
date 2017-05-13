@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 136,
+	"_eventsCount": 168,
 	"simulators": [
 		{
 			"timeline": [],
@@ -794,12 +794,139 @@
 				"report": null
 			},
 			"class": "Reactor",
-			"model": "battery",
+			"type": "Reactor",
 			"ejected": false,
+			"model": "battery",
 			"powerOutput": 120,
 			"efficiency": 1,
-			"batteryChargeLevel": 1,
+			"batteryChargeLevel": 0.7810729999999869,
 			"batteryChargeRate": 0.001
+		},
+		{
+			"id": "1e66763f-70d7-4cc7-a385-f3fa4b008da4",
+			"simulatorId": "test",
+			"name": "Targeting",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
+			},
+			"class": "Targeting",
+			"type": "Targeting",
+			"contacts": [],
+			"classes": [
+				{
+					"id": "7d0870a9-dfe5-445c-a316-e42406825acc",
+					"systemId": "1e66763f-70d7-4cc7-a385-f3fa4b008da4",
+					"name": "Target",
+					"size": 1,
+					"icon": "/Sensor Contacts/Icons/N",
+					"picture": "/Sensor Contacts/Pictures/N",
+					"speed": 1,
+					"quadrant": 1
+				}
+			],
+			"quadrants": false
+		},
+		{
+			"id": "194c8133-b341-4b9c-be86-a1cacfa9512b",
+			"simulatorId": "test",
+			"name": "Phaser",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
+			},
+			"class": "Phasers",
+			"type": "Phasers",
+			"arc": 0.5,
+			"beams": [
+				{
+					"id": "2f569e5d-3cec-445a-a858-0354680dd05b",
+					"simulatorId": null,
+					"name": null,
+					"power": {
+						"power": 5,
+						"powerLevels": [
+							5
+						]
+					},
+					"damage": {
+						"damaged": false,
+						"report": null
+					},
+					"state": "idle",
+					"charge": 0
+				},
+				{
+					"id": "4f20dcaf-2b59-4e26-ae8a-094ab90bff75",
+					"simulatorId": null,
+					"name": null,
+					"power": {
+						"power": 5,
+						"powerLevels": [
+							5
+						]
+					},
+					"damage": {
+						"damaged": false,
+						"report": null
+					},
+					"state": "idle",
+					"charge": 0
+				}
+			]
+		},
+		{
+			"id": "b9067849-f8ce-41bd-bd83-3399e7552d7b",
+			"simulatorId": "test",
+			"name": "Torpedo",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
+			},
+			"class": "Torpedo",
+			"type": "Torpedo",
+			"loaded": false,
+			"state": "idle",
+			"inventory": []
+		},
+		{
+			"id": "5e22f218-e004-47fc-b09d-0d41e9bb85b4",
+			"simulatorId": "test",
+			"name": "Probe Launcher",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null
+			},
+			"class": "Probes",
+			"type": "Probes",
+			"torpedo": false,
+			"probes": [],
+			"equipment": [],
+			"types": []
 		}
 	],
 	"clients": [
@@ -848,8 +975,8 @@
 			"name": "default",
 			"x": 0,
 			"y": 0,
-			"w": 9,
-			"h": 3,
+			"w": 16,
+			"h": 5,
 			"component": "EngineControlCore",
 			"objectId": null,
 			"class": "CoreLayout"
@@ -858,10 +985,10 @@
 			"id": "f74dabc7-fd1b-4101-9ea2-18e6d6de30d2",
 			"simulatorId": "test",
 			"name": "default",
-			"x": 9,
-			"y": 0,
+			"x": 0,
+			"y": 5,
 			"w": 10,
-			"h": 5,
+			"h": 8,
 			"component": "TransporterCore",
 			"objectId": null,
 			"class": "CoreLayout"
@@ -872,8 +999,8 @@
 			"name": "default",
 			"x": 19,
 			"y": 0,
-			"w": 16,
-			"h": 10,
+			"w": 21,
+			"h": 17,
 			"component": "ShieldControlCore",
 			"objectId": null,
 			"class": "CoreLayout"
@@ -883,9 +1010,9 @@
 			"simulatorId": "test",
 			"name": "default",
 			"x": 0,
-			"y": 5,
+			"y": 13,
 			"w": 19,
-			"h": 7,
+			"h": 9,
 			"component": "LRCommCore",
 			"objectId": null,
 			"class": "CoreLayout"
@@ -894,11 +1021,23 @@
 			"id": "2598bf1d-3ff4-4868-9239-9dfb7879bf94",
 			"simulatorId": "test",
 			"name": "default",
-			"x": 35,
+			"x": 40,
 			"y": 0,
-			"w": 12,
-			"h": 14,
+			"w": 18,
+			"h": 29,
 			"component": "DamageControlCore",
+			"objectId": null,
+			"class": "CoreLayout"
+		},
+		{
+			"id": "b058299d-e0a7-4b34-992c-c4089c85ebf7",
+			"simulatorId": "test",
+			"name": "default",
+			"x": 0,
+			"y": 22,
+			"w": 29,
+			"h": 9,
+			"component": "TargetingCore",
 			"objectId": null,
 			"class": "CoreLayout"
 		}
@@ -1140,33 +1279,6 @@
 			"class": "AssetObject"
 		},
 		{
-			"id": "3243664c-7299-4c43-a050-3d5f2ad09da9",
-			"containerPath": "/Sensor Contacts/Icons",
-			"containerId": "fc58cd61-db63-43a5-ba97-45e34aef18e9",
-			"fullPath": "/Sensor Contacts/Icons/N",
-			"url": "http://localhost:3001/assets/Sensor%20Contacts/Icons/N/default.svg",
-			"simulatorId": "default",
-			"class": "AssetObject"
-		},
-		{
-			"id": "85c51339-9c39-4cab-af01-804cf3d0a651",
-			"containerPath": "/Sensor Contacts/Pictures",
-			"containerId": "1f6c94a2-3e2e-4558-b0f5-4a44ba90767d",
-			"fullPath": "/Sensor Contacts/Pictures/N",
-			"url": "http://localhost:3001/assets/Sensor%20Contacts/Pictures/N/default.png",
-			"simulatorId": "default",
-			"class": "AssetObject"
-		},
-		{
-			"id": "befc68b4-a404-4ee7-be4b-aaf1a5e97af1",
-			"containerPath": "/Sensor Contacts/Icons",
-			"containerId": "fbe3ae88-698b-4974-a9b8-9a150abaa01c",
-			"fullPath": "/Sensor Contacts/Icons/G",
-			"url": "https://s3.amazonaws.com/thorium-assets/Sensor%20Contacts/Icons/G/default.svg",
-			"simulatorId": "default",
-			"class": "AssetObject"
-		},
-		{
 			"id": "1be123ea-e65d-4efc-93b2-57ce7fdfe125",
 			"containerPath": "/Misc",
 			"containerId": "bbcc1500-7301-4e2f-8623-2ea2afed97b5",
@@ -1273,9 +1385,27 @@
 			"url": "https://s3.amazonaws.com/thorium-assets/Comm%20Images/Orion/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
+		},
+		{
+			"id": "100e4877-8df8-4eaf-b918-c0644c49aa89",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "fc58cd61-db63-43a5-ba97-45e34aef18e9",
+			"fullPath": "/Sensor Contacts/Icons/N/default.svg",
+			"url": "https://s3.amazonaws.com/thorium-assets/Sensor%20Contacts/Icons/N/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "b5bd0fe9-8f33-4f30-9610-0f2b37b415f0",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "fbe3ae88-698b-4974-a9b8-9a150abaa01c",
+			"fullPath": "/Sensor Contacts/Icons/G/default.svg",
+			"url": "https://s3.amazonaws.com/thorium-assets/Sensor%20Contacts/Icons/G/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
 		}
 	],
-	"snapshotVersion": 1,
-	"version": 1,
-	"timestamp": "2017-04-09T02:07:51.048Z"
+	"snapshotVersion": 16,
+	"version": 16,
+	"timestamp": "2017-04-29T20:59:49.574Z"
 }

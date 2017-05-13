@@ -12,7 +12,7 @@ const defaultDamage = {
 };
 
 export class System {
-  constructor(params) {
+  constructor(params = {}) {
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || null;

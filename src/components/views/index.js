@@ -19,6 +19,9 @@ import CommShortRange from './CommShortRange';
 import PowerDistribution from './PowerDistribution';
 import PowerDistributionBattery from './PowerDistributionBattery';
 import DamageControl from './DamageControl';
+import Targeting from './Targeting';
+import PhaserCharging from './PhaserCharging';
+import ProbeConstruction from './ProbeConstruction';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -34,6 +37,9 @@ import NavigationCore from './Navigation/core';
 import CommShortRangeCore from './CommShortRange/core';
 import RemoteCore from './RemoteAccess/core';
 import DamageReportsCore from './DamageControl/reportsCore';
+import TargetingCore from './Targeting/core';
+import PhaserCore from './PhaserCharging/core';
+import TorpedoCore from './TorpedoLoading/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -61,6 +67,9 @@ const Views = {
   PowerDistribution,
   PowerDistributionBattery,
   DamageControl,
+  Targeting,
+  PhaserCharging,
+  ProbeConstruction
 };
 
 export const Widgets = {
@@ -83,7 +92,10 @@ export const Cores = {
   NavigationCore,
   CommShortRangeCore,
   RemoteCore,
-  DamageReportsCore
+  DamageReportsCore,
+  TargetingCore,
+  PhaserCore,
+  TorpedoCore
 };
 
 export default Views;

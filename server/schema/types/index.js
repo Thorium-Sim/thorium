@@ -19,6 +19,10 @@ export ship from './ship';
 export navigation from './navigation';
 export shortRangeComm from './shortRangeComm';
 export reactor from './reactor';
+export phasers from './phasers';
+export torpedos from './torpedos';
+export targeting from './targeting';
+export probes from './probes';
 
 export const role = `
 type role {

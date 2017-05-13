@@ -15,6 +15,11 @@ import { NavigationQueries, NavigationMutations, NavigationSubscriptions} from '
 import { ShortRangeCommQueries, ShortRangeCommMutations, ShortRangeCommSubscriptions} from './shortRangeComm';
 import { ShipQueries, ShipMutations, ShipSubscriptions } from './ship';
 import { ReactorQueries, ReactorMutations, ReactorSubscriptions } from './reactor'
+import { TargetingQueries, TargetingMutations, TargetingSubscriptions, TargetingTypes } from './targeting'
+import { TorpedoQueries, TorpedoMutations, TorpedoSubscriptions } from './torpedo'
+import { PhaserQueries, PhaserMutations, PhaserSubscriptions } from './phasers'
+import { ProbesQueries, ProbesMutations, ProbesSubscriptions, ProbesTypes } from './probes'
+
 import App from '../../app';
 
 function parseJSONLiteral(ast) {
@@ -57,7 +62,11 @@ function parseJSONLiteral(ast) {
     NavigationQueries,
     ShortRangeCommQueries,
     ShipQueries,
-    ReactorQueries
+    ReactorQueries,
+    TargetingQueries,
+    TorpedoQueries,
+    PhaserQueries,
+    ProbesQueries
     );
 
   export const mutationMap = Object.assign({
@@ -81,7 +90,11 @@ function parseJSONLiteral(ast) {
     NavigationMutations,
     ShortRangeCommMutations,
     ShipMutations,
-    ReactorMutations
+    ReactorMutations,
+    TargetingMutations,
+    TorpedoMutations,
+    PhaserMutations,
+    ProbesMutations
     );
 
   const subscriptionMap = Object.assign({},
@@ -101,7 +114,11 @@ function parseJSONLiteral(ast) {
     NavigationSubscriptions,
     ShortRangeCommSubscriptions,
     ShipSubscriptions,
-    ReactorSubscriptions
+    ReactorSubscriptions,
+    TargetingSubscriptions,
+    TorpedoSubscriptions,
+    PhaserSubscriptions,
+    ProbesSubscriptions
     );
 
   export default Object.assign({
@@ -118,5 +135,7 @@ function parseJSONLiteral(ast) {
   FlightStructureTypes,
   ClientTypes,
   ShipStructureTypes,
-  SystemsTypes
+  SystemsTypes,
+  TargetingTypes,
+  ProbesTypes
   );
