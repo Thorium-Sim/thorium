@@ -33,12 +33,14 @@ import DockingCore from './Docking/core';
 import NavigationCore from './Navigation/core';
 import CommShortRangeCore from './CommShortRange/core';
 import RemoteCore from './RemoteAccess/core';
+import DamageReportsCore from './DamageControl/reportsCore';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
 import RemoteWidget from './RemoteAccess/widget';
 
-const Views = { Login,
+const Views = { 
+  Login,
   ShortRangeComm,
   LongRangeComm,
   AdminAssets,
@@ -67,7 +69,8 @@ export const Widgets = {
   remote: {widget: RemoteWidget, icon: 'rss', name: 'Remote Access', color: 'rgb(100,200,100)'},
 };
 
-export const Cores = { EngineControlCore,
+export const Cores = { 
+  EngineControlCore,
   TransporterCore,
   SensorsGridCore,
   SensorsCore,
@@ -79,7 +82,8 @@ export const Cores = { EngineControlCore,
   DockingCore,
   NavigationCore,
   CommShortRangeCore,
-  RemoteCore
+  RemoteCore,
+  DamageReportsCore
 };
 
 export default Views;

@@ -34,7 +34,7 @@ App.on('damageReport', ({systemId, report}) => {
   const sys = App.systems.find(s => s.id === systemId);
   sys.damageReport(report);
   sendUpdate(sys);
-})
+});
 App.on('repairSystem', ({systemId}) => {
   const sys = App.systems.find(s => s.id === systemId);
   sys.repair();
@@ -44,5 +44,10 @@ App.on('changePower', ({systemId, power}) => {
   const sys = App.systems.find(s => s.id === systemId);
   console.log(systemId, power, sys);
   sys.setPower(power);
+  sendUpdate(sys);
+});
+App.on('requestDamageReport', ({systemId}) => {
+  const sys = App.systems.find(s => s.id === systemId);
+  sys.requestReport();
   sendUpdate(sys);
 });

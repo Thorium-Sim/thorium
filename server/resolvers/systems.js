@@ -29,6 +29,9 @@ export const SystemsMutations = {
   repairSystem(rootValue, params) {
     App.handleEvent(params, 'repairSystem');
   },
+  requestDamageReport(rootValue, params) {
+    App.handleEvent(params, 'requestDamageReport');
+  },
   changePower(rootValue, params) {
     App.handleEvent(params, 'changePower');
   }

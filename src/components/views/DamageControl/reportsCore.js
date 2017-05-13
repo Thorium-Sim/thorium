@@ -1,33 +1,39 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
-import { Container, Row, Col, Button, Card, CardBlock } from 'reactstrap';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
+import { Container, Row, Col, Button, Input } from 'reactstrap';
+import { TypingField } from '../../generic/core';
 
-import './style.scss';
 
 const SYSTEMS_SUB = gql`
 subscription SystemsUpdate($simulatorId: ID){
   systemsUpdate(simulatorId: $simulatorId) {
     id
     name
+    power {
+      power
+      powerLevels
+    }
     damage {
       damaged
       report
-      requested
     }
     simulatorId
     type
   }
 }`;
 
-class DamageControl extends Component {
+class DamageReportCore extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedSystem: null
-    }
     this.systemSub = null;
+    this.state = {
+      deck: null,
+      room: null,
+      selectedSystem: null,
+      selectedReport: null
+    }
   }
   componentWillReceiveProps(nextProps) {
     if (!this.systemSub && !nextProps.data.loading) {
@@ -43,6 +49,27 @@ class DamageControl extends Component {
       });
     }
   }
+  selectSystem(id){
+    const systems = this.props.data.systems;
+    const selectedSystem = systems.find(s => s.id === id)
+    this.setState({
+      selectedSystem: id,
+      selectedReport: selectedSystem.report
+    })
+  }
+  systemStyle(sys){
+    const obj = {
+      listStyle: 'none',
+      cursor: 'pointer'
+    };
+    if (sys.damage.damaged) {
+      obj.color = 'red';
+    }
+    if (!sys.name) {
+      obj.color = 'purple';
+    }
+    return obj;
+  }
   systemName(sys) {
     if (sys.type === 'Shield'){
       return `${sys.name} Shields`;
@@ -52,33 +79,24 @@ class DamageControl extends Component {
     }
     return sys.name;
   }
-  selectSystem(id){
-    this.setState({
-      selectedSystem: id
-    })
-  }
-  requestReport(){
-    const mutation = gql`
-    mutation RequestReport ($systemId: ID!){
-      requestDamageReport(systemId: $systemId)
-    }`;
-    const variables = {
-      systemId: this.state.selectedSystem
+  loadReport(e) {
+    const self = this;
+    var reader = new FileReader();
+    reader.onload = function(theFile) {
+      self.setState({
+        selectedReport: this.result
+      })
     };
-    this.props.client.mutate({
-      mutation,
-      variables
-    })
+    reader.readAsText(e.target.files[0]);
   }
   render(){
     if (this.props.data.loading) return null;
     const systems = this.props.data.systems;
-    return <Container fluid className="damage-control">
-    <Row>
-    <Col sm="3" className="damage-list">
-    <h4>Damaged Systems</h4>
-    <Card>
-    <CardBlock>
+    const {selectedReport} = this.state;
+    return <Container fluid className="damageReport-core">
+    <p>Damage Report Request</p>
+    <Row style={{height: '100%'}}>
+    <Col sm={4} style={{overflow: 'scroll'}}>
     {
       systems.filter(s => s.damage.damaged)
       .map(s => <p key={s.id} 
@@ -90,20 +108,26 @@ class DamageControl extends Component {
           {this.systemName(s)}
           </p>)
     }
-    </CardBlock>
-    </Card>
-    <Button block 
-    disabled={!this.state.selectedSystem} 
-    onClick={this.requestReport.bind(this)} 
-    color="primary">Request Damage Report</Button>
     </Col>
-    <Col sm="9" className="damage-report">
-    <h4>Damage Report</h4>
-    <Card>
-    <CardBlock>
-    <p>{ this.state.selectedSystem ? systems.find(s => s.id === this.state.selectedSystem).report : "No system selected."}</p>
-    </CardBlock>
-    </Card>
+    <Col sm={8}>
+    <TypingField 
+    value={selectedReport}
+    style={{
+      textAlign: 'left', 
+      height: 'calc(100% - 44px)',
+      fontFamily: 'monospace',
+    }}
+    rows={5} 
+    controlled={true} />
+    <Row style={{margin: 0}} >
+    <Col sm={6}>
+    <Input onChange={this.loadReport.bind(this)} style={{position: 'absolute', opacity: 0}} type="file" name="file" id="exampleFile" />
+    <Button size={'sm'} block color="info">Load Report</Button>
+    </Col>
+    <Col sm={6}>
+    <Button size={'sm'} block color="primary">Send Report</Button>
+    </Col>
+    </Row>
     </Col>
     </Row>
     </Container>
@@ -126,4 +150,4 @@ query Systems($simulatorId: ID){
 
 export default graphql(SYSTEMS_QUERY, {
   options: (ownProps) => ({ variables: { simulatorId: ownProps.simulator.id } }),
-})(withApollo(DamageControl));
+})(withApollo(DamageReportCore));
