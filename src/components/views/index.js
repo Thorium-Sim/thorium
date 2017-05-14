@@ -18,6 +18,7 @@ import Docking from './Docking';
 import CommShortRange from './CommShortRange';
 import PowerDistribution from './PowerDistribution';
 import PowerDistributionBattery from './PowerDistributionBattery';
+import DamageControl from './DamageControl';
 import Targeting from './Targeting';
 import PhaserCharging from './PhaserCharging';
 import ProbeConstruction from './ProbeConstruction';
@@ -35,6 +36,7 @@ import DockingCore from './Docking/core';
 import NavigationCore from './Navigation/core';
 import CommShortRangeCore from './CommShortRange/core';
 import RemoteCore from './RemoteAccess/core';
+import DamageReportsCore from './DamageControl/reportsCore';
 import TargetingCore from './Targeting/core';
 import PhaserCore from './PhaserCharging/core';
 import TorpedoCore from './TorpedoLoading/core';
@@ -43,7 +45,8 @@ import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
 import RemoteWidget from './RemoteAccess/widget';
 
-const Views = { Login,
+const Views = { 
+  Login,
   ShortRangeComm,
   LongRangeComm,
   AdminAssets,
@@ -63,6 +66,7 @@ const Views = { Login,
   CommShortRange,
   PowerDistribution,
   PowerDistributionBattery,
+  DamageControl,
   Targeting,
   PhaserCharging,
   ProbeConstruction
@@ -74,7 +78,8 @@ export const Widgets = {
   remote: {widget: RemoteWidget, icon: 'rss', name: 'Remote Access', color: 'rgb(100,200,100)'},
 };
 
-export const Cores = { EngineControlCore,
+export const Cores = { 
+  EngineControlCore,
   TransporterCore,
   SensorsGridCore,
   SensorsCore,
@@ -87,6 +92,7 @@ export const Cores = { EngineControlCore,
   NavigationCore,
   CommShortRangeCore,
   RemoteCore,
+  DamageReportsCore,
   TargetingCore,
   PhaserCore,
   TorpedoCore

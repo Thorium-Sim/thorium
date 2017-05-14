@@ -9,7 +9,7 @@ const sendUpdate = (sys) => {
   if (sys.type === 'Sensors') pubsub.publish('sensorsUpdate', App.systems.filter(s => s.type === 'Sensors'));
   if (sys.type === 'LongRangeComm') pubsub.publish('longRangeCommunicationsUpdate', App.systems.filter(s => s.type === 'LRCommunications'));
   if (sys.type === 'InternalComm') pubsub.publish('internalCommUpdate', App.systems.filter(s => s.type === 'InternalComm'))
-  if (sys.type === 'Naivgation')   pubsub.publish('navigationUpdate', App.systems.filter(s => s.type === 'Navigation'));
+    if (sys.type === 'Naivgation')   pubsub.publish('navigationUpdate', App.systems.filter(s => s.type === 'Navigation'));
   if (sys.type === 'ShortRangeComm')   pubsub.publish('shortRangeCommUpdate', App.systems.filter(s => s.type === 'ShortRangeComm'));
   pubsub.publish('systemsUpdate', App.systems);
 }
@@ -27,8 +27,12 @@ App.on('removeSystemFromSimulator', ({systemId}) => {
 });
 App.on('damageSystem', ({systemId, report}) => {
   const sys = App.systems.find(s => s.id === systemId);
-  console.log(sys, systemId);
   sys.break(report);
+  sendUpdate(sys);
+});
+App.on('damageReport', ({systemId, report}) => {
+  const sys = App.systems.find(s => s.id === systemId);
+  sys.damageReport(report);
   sendUpdate(sys);
 });
 App.on('repairSystem', ({systemId}) => {
@@ -40,5 +44,10 @@ App.on('changePower', ({systemId, power}) => {
   const sys = App.systems.find(s => s.id === systemId);
   console.log(systemId, power, sys);
   sys.setPower(power);
+  sendUpdate(sys);
+});
+App.on('requestDamageReport', ({systemId}) => {
+  const sys = App.systems.find(s => s.id === systemId);
+  sys.requestReport();
   sendUpdate(sys);
 });

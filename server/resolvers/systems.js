@@ -23,8 +23,14 @@ export const SystemsMutations = {
   damageSystem(rootValue, params) {
     App.handleEvent(params, 'damageSystem');
   },
+  damageReport(rootValue, params) {
+    App.handleEvent(params, 'damageReport');
+  },
   repairSystem(rootValue, params) {
     App.handleEvent(params, 'repairSystem');
+  },
+  requestDamageReport(rootValue, params) {
+    App.handleEvent(params, 'requestDamageReport');
   },
   changePower(rootValue, params) {
     App.handleEvent(params, 'changePower');

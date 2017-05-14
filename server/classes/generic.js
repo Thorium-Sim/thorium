@@ -7,7 +7,8 @@ const defaultPower = {
 
 const defaultDamage = {
   damaged: false,
-  report: null
+  report: null,
+  requested: false
 };
 
 export class System {
@@ -26,9 +27,18 @@ export class System {
     // The report is null or blank.
     this.damage.damaged = true;
     this.damage.report = report;
+    this.damage.requested = false;
+  }
+  damageReport(report) {
+    this.damage.report = report;
+    this.damage.requested = false;
   }
   repair() {
     this.damage.damaged = false;
     this.damage.report = null;
+    this.damage.requested = false;
+  }
+  requestReport() {
+    this.damage.requested = true;
   }
 }

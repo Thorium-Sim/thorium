@@ -1,0 +1,25 @@
+.damage-control, .damageReport-core {
+  .card {
+    height: 60vh;
+    overflow: scroll;
+  }
+  p {
+    margin: 0;
+    padding: 4px;
+    &.selected {
+      background-color: rgba(128,128,128,0.5);
+      border-radius: 5px;
+    }
+    &.requested {
+      font-style: italic;
+    }
+    &.report {
+      font-weight: bold;
+    }
+  }
+  .damageReport-text {
+    white-space: pre-line;
+    font-family: monospace;
+    font-size: 18px;
+  }
+}
