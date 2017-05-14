@@ -101,7 +101,7 @@ class DamageControl extends Component {
     <h4>Damage Report</h4>
     <Card>
     <CardBlock>
-    <p>{ this.state.selectedSystem ? systems.find(s => s.id === this.state.selectedSystem).report : "No system selected."}</p>
+    <p className="damageReport-text">{ this.state.selectedSystem ? systems.find(s => s.id === this.state.selectedSystem).damage.report : "No system selected."}</p>
     </CardBlock>
     </Card>
     </Col>

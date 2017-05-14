@@ -32,7 +32,7 @@ class DamageReportCore extends Component {
       deck: null,
       room: null,
       selectedSystem: null,
-      selectedReport: null
+      selectedReport: ''
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -82,12 +82,27 @@ class DamageReportCore extends Component {
   loadReport(e) {
     const self = this;
     var reader = new FileReader();
-    reader.onload = function(theFile) {
+    reader.onload = function() {
+      const result = this.result;
       self.setState({
-        selectedReport: this.result
+        selectedReport: result
       })
     };
     reader.readAsText(e.target.files[0]);
+  }
+  sendReport() {
+    const mutation = gql`
+    mutation DamageReport ($systemId: ID!, $report: String!) {
+      damageReport(systemId: $systemId, report: $report)
+    }`;
+    const variables = {
+      systemId: this.state.selectedSystem,
+      report: this.state.selectedReport
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
   }
   render(){
     if (this.props.data.loading) return null;
@@ -118,14 +133,16 @@ class DamageReportCore extends Component {
       fontFamily: 'monospace',
     }}
     rows={5} 
-    controlled={true} />
+    controlled={true} onChange={(e) => {this.setState({
+      selectedReport: e.target.value
+    })}} />
     <Row style={{margin: 0}} >
     <Col sm={6}>
     <Input onChange={this.loadReport.bind(this)} style={{position: 'absolute', opacity: 0}} type="file" name="file" id="exampleFile" />
     <Button size={'sm'} block color="info">Load Report</Button>
     </Col>
     <Col sm={6}>
-    <Button size={'sm'} block color="primary">Send Report</Button>
+    <Button size={'sm'} block color="primary" onClick={this.sendReport.bind(this)}>Send Report</Button>
     </Col>
     </Row>
     </Col>
