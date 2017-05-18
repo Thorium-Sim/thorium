@@ -19,6 +19,9 @@ export class System {
     this.power = params.power || defaultPower;
     this.damage = params.damage || defaultDamage
   }
+  get stealthFactor() {
+    return 0;
+  }
   setPower(powerLevel) {
     this.power.power = powerLevel;
   }
