@@ -18,3 +18,4 @@ import './targeting';
 import './torpedo';
 import './phasers';
 import './probes';
+import './thrusters';
