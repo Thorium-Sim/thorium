@@ -1,3 +1,3 @@
 export default `
-steathFieldUpdate(simulatorId: ID): [StealthField]
+stealthFieldUpdate(simulatorId: ID): [StealthField]
 `;

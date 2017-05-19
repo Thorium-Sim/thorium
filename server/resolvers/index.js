@@ -19,6 +19,7 @@ import { TargetingQueries, TargetingMutations, TargetingSubscriptions, Targeting
 import { TorpedoQueries, TorpedoMutations, TorpedoSubscriptions } from './torpedo'
 import { PhaserQueries, PhaserMutations, PhaserSubscriptions } from './phasers'
 import { ProbesQueries, ProbesMutations, ProbesSubscriptions, ProbesTypes } from './probes'
+import { StealthFieldQueries, StealthFieldMutations, StealthFieldSubscriptions } from './stealthField'
 
 import App from '../../app';
 
@@ -66,7 +67,8 @@ function parseJSONLiteral(ast) {
     TargetingQueries,
     TorpedoQueries,
     PhaserQueries,
-    ProbesQueries
+    ProbesQueries,
+    StealthFieldQueries
     );
 
   export const mutationMap = Object.assign({
@@ -94,7 +96,8 @@ function parseJSONLiteral(ast) {
     TargetingMutations,
     TorpedoMutations,
     PhaserMutations,
-    ProbesMutations
+    ProbesMutations,
+    StealthFieldMutations
     );
 
   const subscriptionMap = Object.assign({},
@@ -118,7 +121,8 @@ function parseJSONLiteral(ast) {
     TargetingSubscriptions,
     TorpedoSubscriptions,
     PhaserSubscriptions,
-    ProbesSubscriptions
+    ProbesSubscriptions,
+    StealthFieldSubscriptions
     );
 
   export default Object.assign({

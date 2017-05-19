@@ -1,0 +1,10 @@
+.bar-container {
+  position: relative;
+  height: 22px;
+  width: 100%;
+}
+.bar {
+  background: linear-gradient(270deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8);
+  height: 100%;
+  position: absolute;
+}
