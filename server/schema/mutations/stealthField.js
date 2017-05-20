@@ -1,8 +1,8 @@
 export default `
-setActivated(id: ID, state: Boolean): String
-setCharge(id: ID, state: Boolean): String
-activate(id: ID): String
-deactivate(id: ID): String
-setQuadrant(id: ID, which: String, value: Float): String
-fluxQuadrants(id: ID): String
+setStealthActivated(id: ID, state: Boolean): String
+setStealthCharge(id: ID, state: Boolean): String
+activateStealth(id: ID): String
+deactivateStealth(id: ID): String
+setStealthQuadrant(id: ID, which: String, value: Float): String
+fluxStealthQuadrants(id: ID): String
 `;

@@ -22,6 +22,7 @@ import DamageControl from './DamageControl';
 import Targeting from './Targeting';
 import PhaserCharging from './PhaserCharging';
 import ProbeConstruction from './ProbeConstruction';
+import StealthField from './StealthField';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -69,7 +70,8 @@ const Views = {
   DamageControl,
   Targeting,
   PhaserCharging,
-  ProbeConstruction
+  ProbeConstruction,
+  StealthField
 };
 
 export const Widgets = {
