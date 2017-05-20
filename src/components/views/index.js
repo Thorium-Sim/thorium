@@ -22,6 +22,7 @@ import DamageControl from './DamageControl';
 import Targeting from './Targeting';
 import PhaserCharging from './PhaserCharging';
 import ProbeConstruction from './ProbeConstruction';
+import StealthField from './StealthField';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -40,6 +41,7 @@ import DamageReportsCore from './DamageControl/reportsCore';
 import TargetingCore from './Targeting/core';
 import PhaserCore from './PhaserCharging/core';
 import TorpedoCore from './TorpedoLoading/core';
+import StealthFieldCore from './StealthField/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -69,7 +71,8 @@ const Views = {
   DamageControl,
   Targeting,
   PhaserCharging,
-  ProbeConstruction
+  ProbeConstruction,
+  StealthField
 };
 
 export const Widgets = {
@@ -95,7 +98,8 @@ export const Cores = {
   DamageReportsCore,
   TargetingCore,
   PhaserCore,
-  TorpedoCore
+  TorpedoCore,
+  StealthFieldCore
 };
 
 export default Views;

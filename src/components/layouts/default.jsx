@@ -18,7 +18,7 @@ class CardHolder extends Component {
 	}
 	render(){
 		return (
-			<div className="cardContainer container" style={{width: '100%', position:'absolute', alignSelf:'center'}}>
+			<div className="cardContainer container">
 			<this.props.component {...this.props} />
 			</div>
 			);

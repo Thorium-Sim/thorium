@@ -3,11 +3,9 @@ import App from '../../app.js';
 export const ReactorQueries = {
   reactors(root, {simulatorId}){
     let returnVal = App.systems.filter(s => s.type === 'Reactor');
-    console.log(App.systems);
     if (simulatorId){
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
     }
-    console.log(returnVal);
     return returnVal;
   }
 };

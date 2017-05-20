@@ -12,6 +12,13 @@ export default class Engine extends System {
     this.heatRate = params.heatRate || 1;
     this.coolant = params.coolant || 0;
   }
+  get stealthFactor() {
+    const topSpeed = this.speeds.reduce((prev, next) => {
+      return next.number > prev ? next.number : prev;
+    },0);
+    const currentSpeed = this.speeds[this.speed] ? this.speeds[this.speed].number : 0;
+    return currentSpeed / topSpeed;
+  }
   break(report) {
     this.on = false;
     this.speed = -1;

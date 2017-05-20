@@ -5,6 +5,7 @@ import * as Classes from '../classes';
 const sendUpdate = () => {
   const shields = App.systems.filter((sys) => sys.type === 'Shield');
   pubsub.publish('shieldsUpdate', shields);
+  pubsub.publish('systemsUpdate', App.systems);
 }
 App.on('createShield', ({simulatorId, name, position}) => {
   const system = new Classes.Shield({ simulatorId, name, position});

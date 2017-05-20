@@ -7,6 +7,7 @@ type System {
   name: String
   damage: Damage
   power: Power
+  stealthFactor: Float
 }
 
 # Generic system type. Query any system by type.

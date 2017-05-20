@@ -12,6 +12,9 @@ export default class Shield extends System {
     this.state = params.state || false;
     this.integrity = params.integrity || 1;
   }
+  get stealthFactor() {
+    return this.state ? this.integrity : 0;
+  }
   break(report) {
     this.state = false;
     super.break(report);

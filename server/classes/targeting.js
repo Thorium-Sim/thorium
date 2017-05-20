@@ -50,7 +50,6 @@ export default class Targeting extends System {
         this.removeTarget(this.contacts[i].id);
       }
     }
-    console.log(this.contacts);
   }
   addTargetClass(classInput){
     this.classes.push(new TargetClass(classInput, this.id));

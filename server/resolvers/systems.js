@@ -55,5 +55,6 @@ export const SystemsTypes = {
     __resolveType(obj, context, info) {
       return obj.type || null;
     }
-  }
+  },
+
 }

@@ -19,7 +19,7 @@ export const InputField = (props) => {
   return <div onClick={onClick} style={style}>{props.children}</div>
 }
 
-export const OutputField = ({style = {}, children, alert}) => {
+export const OutputField = ({style = {}, children, alert, onClick, title, id}) => {
   const compStyle = Object.assign({
     backgroundColor: '#188EFB',
     border: 'solid 1px #2586D8',
@@ -31,7 +31,7 @@ export const OutputField = ({style = {}, children, alert}) => {
     compStyle.backgroundColor = '#f00';
     compStyle.borderColor = '#a00';
   }
-  return <div style={compStyle}>{children}</div>
+  return <div id={id} title={title} onClick={onClick} style={compStyle}>{children}</div>
 }
 
 export const TypingField = ({style = {}, onChange, onBlur, value, rows, input, controlled}) => {
