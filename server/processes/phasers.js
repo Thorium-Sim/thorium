@@ -11,7 +11,6 @@ const updatePhasers = () => {
       if (beam.state === 'discharging') rate = phaserDischargeRate;
       if (beam.state === 'firing') rate = phaserFireRate;
       const charge = beam.charge + (rate * 0.1);
-      console.log(charge, beam.charge, rate);
       App.handleEvent({id: sys.id, beamId: beam.id, charge}, 'setPhaserBeamCharge')
     })
   })

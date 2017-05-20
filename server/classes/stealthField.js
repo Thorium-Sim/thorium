@@ -6,9 +6,9 @@ export default class StealthField extends System {
     this.class = 'StealthField';
     this.type = 'StealthField';
     this.name = params.name || 'Stealth Field';
-    this.activated = params.activated || true;
     this.charge = params.charge || false;
-    this.state = params.state || false;
+    this.activated = params.activated || true;
+    this.state = params.state || !this.activated;
     this.quadrants = params.quadrants || {
       fore: 0,
       aft: 0,
@@ -18,6 +18,7 @@ export default class StealthField extends System {
   }
   setActivated(tf) {
     this.activated = tf;
+    this.state = !tf;
   }
   setCharge(tf) {
     this.charge = tf;

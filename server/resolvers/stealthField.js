@@ -3,11 +3,9 @@ import App from '../../app.js';
 export const StealthFieldQueries = {
   stealthField(root, {simulatorId}){
     let returnVal = App.systems.filter(s => s.type === 'StealthField');
-    console.log(App.systems);
     if (simulatorId){
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
     }
-    console.log(returnVal);
     return returnVal;
   }
 };

@@ -44,6 +44,7 @@ App.on('speedChange', (param) => {
       }
     }
   });
+  pubsub.publish('systemsUpdate', App.systems);
 });
 App.on('addHeat', ({ id, heat }) => {
   App.systems.forEach((system) => {

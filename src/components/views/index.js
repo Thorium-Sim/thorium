@@ -41,6 +41,7 @@ import DamageReportsCore from './DamageControl/reportsCore';
 import TargetingCore from './Targeting/core';
 import PhaserCore from './PhaserCharging/core';
 import TorpedoCore from './TorpedoLoading/core';
+import StealthFieldCore from './StealthField/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -97,7 +98,8 @@ export const Cores = {
   DamageReportsCore,
   TargetingCore,
   PhaserCore,
-  TorpedoCore
+  TorpedoCore,
+  StealthFieldCore
 };
 
 export default Views;

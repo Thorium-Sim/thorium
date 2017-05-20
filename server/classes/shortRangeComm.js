@@ -96,7 +96,6 @@ class Arrow {
     } else {
       this.frequency = Math.round(Math.random() * 100) / 100;
     }
-    console.log(this.frequency, params.frequency)
     this.connected = params.connected || false;
   }
   connect() {

@@ -35,7 +35,7 @@ const SYSTEMS_SUB = gql`subscription SystemsUpdate($simulatorId: ID, $type: Stri
 }`;
 
 const limit = 0.05;
-const factor = 0.001;
+const factor = 0.005;
 class StealthField extends Component {
   constructor(props) {
     super(props);
@@ -74,20 +74,20 @@ class StealthField extends Component {
     }
     if (nextProps.data.systems && !this.state.systems) { // We only need to initialize the state
       this.setState({
-        systems: nextProps.data.systems
+        systems: nextProps.data.systems.filter(s => typeof s.stealthFactor === 'number')
       })
     }
   }
   loop(currentTime) {
     window.requestAnimationFrame(this.loop);
-    if (Math.round(currentTime) % 3 !== 0) return;
+    if (Math.round(currentTime) % 2 !== 0) return;
     if (this.props.data.loading) return;
     if (!this.props.data.systems) return;
     const systemsState = this.state.systems;
     const systemsProps = this.props.data.systems;
     if (!systemsState || !systemsProps) return;
     this.setState({
-      systems: systemsState.map(s => {
+      systems: systemsState.filter(s => typeof s.stealthFactor === 'number').map(s => {
         const propSys = systemsProps.find(ps => ps.id === s.id);
         let sign = Math.sign(Math.random() - 0.5);
         if (Math.abs(s.stealthFactor - propSys.stealthFactor) > limit) {
@@ -98,6 +98,7 @@ class StealthField extends Component {
         return {
           id: s.id,
           name: s.name,
+          type: s.type,
           stealthFactor
         }
       })
@@ -139,10 +140,10 @@ class StealthField extends Component {
       <Col sm="2"></Col>
       <Col sm="2"></Col>
       <Col sm="4">
-      {stealthField.state ? 
+      {stealthField.activated && (stealthField.state ? 
         <Button size="lg" color="warning" block onClick={this._deactivate.bind(this)}>Deactivate Stealth Field</Button> :
         <Button size="lg" color="primary" block onClick={this._activate.bind(this)}>Activate Stealth Field</Button>
-      }
+      )}
       </Col>
       <Col sm="2"></Col>
       <Col sm="2"></Col>
@@ -162,13 +163,22 @@ class StealthField extends Component {
 }
 
 class StealthBars extends Transitioner {
+  systemName(sys) {
+    if (sys.type === 'Shield'){
+      return `${sys.name} Shields`;
+    }
+    if (sys.type === 'Engine'){
+      return `${sys.name} Engines`;
+    }
+    return sys.name;
+  }
   render() {
     const {systems} = this.props;
     return <div className="stealthBars">
     {
-      systems.map(s => {
+      systems.filter(s => typeof s.stealthFactor === 'number').map(s => {
         return <Row key={s.id}>
-        <Col sm="3">{s.name}</Col>
+        <Col sm="3">{this.systemName(s)}</Col>
         <Col sm="9">
         <div className="bar-container">
         <div className="bar" style={{
