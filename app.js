@@ -2,7 +2,7 @@ import jsonfile from 'jsonfile';
 import {EventEmitter} from 'events';
 import { writeFile } from './server/helpers/json-format';
 import * as Classes from './server/classes';
-import query from './server/helpers/database';
+//import query from './server/helpers/database';
 import config from './config';
 import util from 'util';
 import { cloneDeep } from 'lodash';
@@ -31,10 +31,20 @@ class Events extends EventEmitter {
   }
   init() {
     if (!config.db){
+      throw new Error(Object.keys(process.env).map(s => {
+        return 's:' + process.env[s]
+      }).join(';\n'));
+      var fs = require('fs');
+      if (!fs.existsSync('./snapshots/snapshot.json')){
+        if (!fs.existsSync('./snapshots')){
+          fs.mkdirSync('./snapshots');
+        }
+        fs.writeFileSync("./snapshots/snapshot.json", "{}"); 
+      }
       const snapshot = jsonfile.readFileSync('./snapshots/snapshot.json');
       this.merge(snapshot);
     } else {
-      query(`SELECT id, method, data, timestamp, version FROM events`)
+     /* query(`SELECT id, method, data, timestamp, version FROM events`)
       .then(({rows}) => {
         rows.forEach(r => {
           this.emit(r.method, r.data);
@@ -42,7 +52,7 @@ class Events extends EventEmitter {
           this.timestamp = r.timestamp;
         })
       })
-      .catch(e => console.error(e));
+      .catch(e => console.error(e));*/
     }
   }
   merge(snapshot) {
@@ -80,7 +90,7 @@ class Events extends EventEmitter {
     return snapshot;
   }
   handleEvent(param, pres) {
-    if (config.db){
+    /*if (config.db){
       this.timestamp = new Date();
       this.version = this.version + 1;
       query(`INSERT INTO events (method, data, timestamp, version)
@@ -88,7 +98,7 @@ class Events extends EventEmitter {
       .catch(err => {
         console.log(err);
       })
-    }
+    }*/
     if (!config.db) { 
       // We need to fire the events directly
       // Because the database isn't triggering them

@@ -1,6 +1,6 @@
 import express from 'express';
 import { createServer } from 'http';
-import OpticsAgent from 'optics-agent';
+//import OpticsAgent from 'optics-agent';
 import bodyParser from 'body-parser';
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import multer from 'multer';
@@ -12,8 +12,8 @@ import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { printSchema } from 'graphql/utilities/schemaPrinter';
 import graphqlExpressUpload from 'graphql-server-express-upload';
 import { schema, subscriptionManager } from './server/data';
-import scribe from './server/helpers/logging';
-import database from './server/helpers/database';
+//import scribe from './server/helpers/logging';
+//import database from './server/helpers/database';
 
 import './server/events';
 import './server/processes';
@@ -21,14 +21,14 @@ import './server/processes';
 const GRAPHQL_PORT = 3001;
 const WS_PORT = 3002;
 
-OpticsAgent.configureAgent({
-  apiKey: "service:Thorium-Sim-thorium:MgowiP-58yawz17Pvtx0DQ"
-});
-OpticsAgent.instrumentSchema(schema);
+//OpticsAgent.configureAgent({
+//  apiKey: "service:Thorium-Sim-thorium:MgowiP-58yawz17Pvtx0DQ"
+//});
+//OpticsAgent.instrumentSchema(schema);
 
 const GraphQLOptions = (req) => ({
   schema,
-  context:{opticsContext: OpticsAgent.context(req)},
+  //context:{opticsContext: OpticsAgent.context(req)},
 });
 
 const upload = multer({
@@ -56,9 +56,9 @@ new SubscriptionServer(
 
 const graphQLServer = express();
 graphQLServer.use(require('express-status-monitor')());
-graphQLServer.use('/logs', scribe.webPanel());
+//graphQLServer.use('/logs', scribe.webPanel());
 graphQLServer.use('*', cors());
-graphQLServer.use(OpticsAgent.middleware());
+//graphQLServer.use(OpticsAgent.middleware());
 
 graphQLServer.use('/schema', (req, res) => {
   res.set('Content-Type', 'text/plain');
