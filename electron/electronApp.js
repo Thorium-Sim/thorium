@@ -1,14 +1,12 @@
 process.env.APP_TYPE = 'electron';
+console.log(process.env.APP_TYPE);
+const server = require('../server');
+const {app, protocol, BrowserWindow, globalShortcut} = require('electron')
+const path = require('path');
 
-const server = require('./server');
-const electron = require('electron')
-
-const app = electron.app
 // Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
 const os = require('os');
 
-const dialog = electron.dialog
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
@@ -17,10 +15,24 @@ function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 800, height: 600,kiosk: false})
   let webContents = mainWindow.webContents;
+  webContents.once('did-start-loading', () => {
+    mainWindow.webContents.executeJavaScript("localStorage.setItem('thorium_clientId','" + os.hostname() + "');");
+  })
+  
+  protocol.registerFileProtocol('thorium', (request, callback) => {
+    const url = request.url.substr(7)
+    callback({path: path.normalize(`${__dirname}/${url}`)})
+  }, (error) => {
+    if (error) console.error('Failed to register protocol')
+  })
 
   // and load the index.html of the app.
-  mainWindow.loadURL(`file://${__dirname}/index.html`)
-  
+  mainWindow.loadURL(`file://${app.getPath('exe')}/../../Resources/app/index.html`)
+  globalShortcut.register('CommandOrControl+Alt+E', function () {
+    // Open the DevTools.
+    mainWindow.webContents.openDevTools();
+  });
+
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows

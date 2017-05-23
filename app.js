@@ -6,6 +6,8 @@ import * as Classes from './server/classes';
 import config from './config';
 import util from 'util';
 import { cloneDeep } from 'lodash';
+import electron from 'electron';
+var fs = require('fs');
 
 class Events extends EventEmitter {
   constructor(params) {
@@ -31,17 +33,17 @@ class Events extends EventEmitter {
   }
   init() {
     if (!config.db){
-      throw new Error(Object.keys(process.env).map(s => {
-        return 's:' + process.env[s]
-      }).join(';\n'));
-      var fs = require('fs');
-      if (!fs.existsSync('./snapshots/snapshot.json')){
-        if (!fs.existsSync('./snapshots')){
-          fs.mkdirSync('./snapshots');
-        }
-        fs.writeFileSync("./snapshots/snapshot.json", "{}"); 
+      let snapshotDir = './snapshots/';
+      if (electron.app) {
+        snapshotDir = electron.app.getPath('appData') + "/thorium/";
       }
-      const snapshot = jsonfile.readFileSync('./snapshots/snapshot.json');
+      if (!fs.existsSync(snapshotDir + 'snapshot.json')){
+        if (!fs.existsSync(snapshotDir)){
+          fs.mkdirSync(snapshotDir);
+        }
+        fs.writeFileSync(snapshotDir + "snapshot.json", "{}"); 
+      }
+      const snapshot = jsonfile.readFileSync(snapshotDir + 'snapshot.json');
       this.merge(snapshot);
     } else {
      /* query(`SELECT id, method, data, timestamp, version FROM events`)
@@ -73,8 +75,12 @@ class Events extends EventEmitter {
     this.snapshotVersion = this.version;
     var snap = cloneDeep(this, true);
     const snapshot = this.trimSnapshot(snap);
+    let snapshotDir = './snapshots/';
+    if (electron.app) {
+      snapshotDir = electron.app.getPath('appData') + "/thorium/";
+    }
     if (!config.db){
-      writeFile('./snapshots/snapshot.json', snapshot, (err) => {
+      writeFile(snapshotDir + 'snapshot.json', snapshot, (err) => {
         console.log(err);
       });
     }

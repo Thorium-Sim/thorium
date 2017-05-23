@@ -12,6 +12,7 @@ import { SubscriptionServer } from 'subscriptions-transport-ws';
 import { printSchema } from 'graphql/utilities/schemaPrinter';
 import graphqlExpressUpload from 'graphql-server-express-upload';
 import { schema, subscriptionManager } from './server/data';
+import electron from 'electron';
 //import scribe from './server/helpers/logging';
 //import database from './server/helpers/database';
 
@@ -31,8 +32,13 @@ const GraphQLOptions = (req) => ({
   //context:{opticsContext: OpticsAgent.context(req)},
 });
 
+let appDir = './';
+if (electron.app) {
+  appDir = electron.app.getPath('appData') + "/thorium/";
+}
+
 const upload = multer({
-  dest: 'temp',
+  dest: appDir + 'temp',
 });
 
 const options = {
@@ -75,6 +81,8 @@ graphQLServer.use('/graphiql', graphiqlExpress(options));
 
 graphQLServer.use('/assets', (req, res) => {
   const baseUrl = 'https://s3.amazonaws.com/thorium-assets';
+  res.end();
+  return;
   const headers = {
     "Cache-Control": "max-age=86400",
     "Expires": moment().add(1, 'day').startOf('day').format('ddd, DD MMM YYYY HH:mm:ss G[M]T'),
@@ -97,10 +105,10 @@ graphQLServer.use('/assets', (req, res) => {
   });
 });
 
-graphQLServer.listen(GRAPHQL_PORT, () => log.log(
+graphQLServer.listen(GRAPHQL_PORT, () => console.log(
   `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}/graphql`,
   ));
 
-websocketServer.listen(WS_PORT, () => log.log(
+websocketServer.listen(WS_PORT, () => console.log(
   `Websocket Server is now running on http://localhost:${WS_PORT}`,
   ));

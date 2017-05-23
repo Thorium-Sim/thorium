@@ -1,7 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
 var fs = require('fs');
-//var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ManifestPlugin = require('webpack-manifest-plugin');
 
 
@@ -25,7 +24,7 @@ module.exports = {
   // You can exclude the *.map files from the build during deployment.
   // In production, we only want to load the polyfills and the app code.
   entry: [
-    path.resolve(__dirname + '/../server.js')
+    path.resolve(__dirname + '/../electron/electronApp.js')
   ],
   output: {
     // The build folder.
@@ -70,24 +69,6 @@ module.exports = {
   },
   
   plugins: [
-    // Generates an `index.html` file with the <script> injected.
-    /*new HtmlWebpackPlugin({
-      inject: true,
-      template: paths.appHtml,
-      filename: '200.html',
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeRedundantAttributes: true,
-        useShortDoctype: true,
-        removeEmptyAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        keepClosingSlash: true,
-        minifyJS: true,
-        minifyCSS: true,
-        minifyURLs: true
-      }
-    }),*/
     // This helps ensure the builds are consistent if source hasn't changed:
     new webpack.optimize.OccurrenceOrderPlugin(),
     // Try to dedupe duplicated modules, if any:

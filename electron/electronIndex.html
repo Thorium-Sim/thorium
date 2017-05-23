@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Thorium Server</title>
+  <style>
+    body {
+      margin: 30px;
+      padding: 0;
+      background: url('background.jpeg');
+      background-size: cover;
+      color:  white;
+      font-family: sans-serif;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Thorium</h1>
+  <h3>By Alex Anderson</h3>
+  <p>Server address:  http://<script>document.write(require('os').hostname())</script>:3001</p>
+  <p>Server websocket:  http://<script>document.write(require('os').hostname())</script>:3002</p>
+
+  <p>Server IP: <script>
+    var os = require('os');
+    var ifaces = os.networkInterfaces();
+
+    Object.keys(ifaces).forEach(function (ifname) {
+      var alias = 0;
+
+      ifaces[ifname].forEach(function (iface) {
+        if ('IPv4' !== iface.family || iface.internal !== false) {
+          // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+          return;
+        }
+
+        if (alias >= 1) {
+          // this single interface has multiple ipv4 addresses
+          document.write(iface.address);
+        } else {
+          // this interface has only one ipv4 adress
+          document.write(iface.address);
+        }
+        ++alias;
+      });
+    });
+  </script>
+</p>
+</body>
+
+<script>
+  // You can also require other files to run in this process
+  require('./renderer.js')
+</script>
+</html>

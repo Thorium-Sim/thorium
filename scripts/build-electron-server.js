@@ -58,8 +58,11 @@ webpack(config).run((err, stats) => {
   console.log(chalk.green('Compiled successfully.'));
   console.log();
 
-  fs.createReadStream('package-lite.json').pipe(fs.createWriteStream(path.resolve(__dirname + "/../build-server/package.json")));
-  console.log(process.cwd())
+  //Copy some files over
+  fs.createReadStream('./electron/package-lite.json').pipe(fs.createWriteStream(path.resolve(__dirname + "/../build-server/package.json")));
+  fs.createReadStream('./electron/electronIndex.html').pipe(fs.createWriteStream(path.resolve(__dirname + "/../build-server/index.html")));
+  fs.createReadStream('./electron/background.jpeg').pipe(fs.createWriteStream(path.resolve(__dirname + "/../build-server/background.jpeg")));
+
   process.chdir('./build-server');
   console.log('Installing Deps');
   exec('npm install', function(){
