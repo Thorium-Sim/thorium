@@ -1,0 +1,33 @@
+#issues-tracker {
+  position: fixed;
+  top: calc(100vh - 35px);
+  right: 10%;
+  bottom: 0px;
+  width: 300px;
+  transition: all 0.5s ease-in-out;
+  &.shown {
+    top: unset;
+  }
+  .feedback-button {
+    cursor: pointer;
+    background-color: #ddd;
+    padding: 5px 10px;
+    display: inline-block;
+    border-radius: 5px 5px 0px 0px;
+  }
+  .issues-body {
+      background-color: #eee;
+      border: solid 1px #ddd;
+    border-radius: 0 5px 0 0;
+    padding: 5px;
+    .form-group {
+      margin-bottom: 4px;
+      label {
+        margin-bottom: 1px;
+      }
+    }
+    .submit-button {
+      margin-top: 10px;
+    }
+  }
+}
