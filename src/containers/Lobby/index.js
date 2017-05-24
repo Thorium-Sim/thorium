@@ -8,6 +8,7 @@ import DebugList from '../DebugList';
 import Core from '../Core';
 import Assets from '../../components/views/AdminAssets'
 import Configs from '../../components/config'
+import IssueTracker from '../../components/admin/IssueTracker';
 import './style.scss';
 
 const {TempSimulatorConfig} = Configs;
@@ -65,6 +66,7 @@ export default class Lobby extends Component {
             }
             </TabContent>
             </Row>
+            <IssueTracker />
             </Container>
             );
     }
