@@ -27,4 +27,10 @@ addRoomsBulk(simulatorId: ID!,
 renameRoom(roomId: ID!, name: String!): String
 updateRoomSvg(roomId: ID!, svg: String!): String
 roomGas(roomId: ID!, gas: Boolean): String
+
+### Inventory
+addInventory(inventory: InventoryInput): String
+moveInventory(): String
+updateInventoryCount(): String
+updateInventoryMetadata(): String
 `;

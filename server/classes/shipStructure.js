@@ -47,3 +47,23 @@ export class Room {
     this.svgPath = svg;
   }
 }
+
+export class InventoryItem {
+  constructor(params) {
+    this.class = 'Inventory';
+    this.id = params.id || uuid.v4();
+    this.simulatorId = params.simulatorId || null;
+    this.name = params.name || 'Generic Cargo';
+    this.roomCount = params.roomCount || {};
+    this.metadata = params.metadata || {};
+  }
+  move(fromRoom, toRoom, count) {
+    if (this.roomCount[fromRoom] >= count) {
+      this.roomCount[fromRoom] -= count;
+      this.roomCount[toRoom] += count;
+    }
+  }
+  updateCount(room, count) {
+    this.roomCount[room] = Math.max(0, count);
+  }
+}

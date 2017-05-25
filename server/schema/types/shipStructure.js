@@ -18,6 +18,32 @@ type Room {
   gas: Boolean
   svgPath: String
 }
+
+type InventoryItem {
+  id: ID
+  simulatorId: ID
+  name: String
+  metadata: InventoryMetadata
+  roomCount: [RoomCount] 
+}
+
+type InventoryMetadata {
+  type: String
+  size: Int
+  description: String
+  image: String
+
+  # For Probes
+  science: Boolean
+  # For Probes
+  defense: Boolean
+
+}
+
+type RoomCount {
+  room: Room
+  count: Int
+}
 `;
 
 // TODO: Maybe eventaully add edges to the hallway and room
