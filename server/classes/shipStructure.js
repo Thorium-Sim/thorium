@@ -54,10 +54,20 @@ export class InventoryItem {
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || 'Generic Cargo';
-    this.roomCount = params.roomCount || {};
+    this.roomCount = {};
+    if (Array.isArray(params.roomCount)) {
+      params.roomCount.forEach(r => {
+        this.roomCount[r.room] = r.count;
+      })
+    } else {
+      this.roomCount = params.roomCount;
+    }
     this.metadata = params.metadata || {};
   }
-  move(fromRoom, toRoom, count) {
+  move(fromRoom, toRoom, count, toSimulator) {
+    if (toSimulator) {
+      this.simulatorId = toSimulator;
+    }
     if (this.roomCount[fromRoom] >= count) {
       this.roomCount[fromRoom] -= count;
       this.roomCount[toRoom] += count;
@@ -65,5 +75,8 @@ export class InventoryItem {
   }
   updateCount(room, count) {
     this.roomCount[room] = Math.max(0, count);
+  }
+  updateMetadata(metadata) {
+    this.metadata = metadata;
   }
 }

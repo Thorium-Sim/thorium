@@ -27,6 +27,13 @@ type InventoryItem {
   roomCount: [RoomCount] 
 }
 
+input InventoryItemInput {
+  simulatorId: ID
+  name: String
+  metadata: InventoryMetadataInput
+  roomCount: [RoomCountInput] 
+}
+
 type InventoryMetadata {
   type: String
   size: Int
@@ -40,8 +47,25 @@ type InventoryMetadata {
 
 }
 
+input InventoryMetadataInput {
+  type: String
+  size: Int
+  description: String
+  image: String
+
+  # For Probes
+  science: Boolean
+  # For Probes
+  defense: Boolean
+
+}
 type RoomCount {
   room: Room
+  count: Int
+}
+
+input RoomCountInput {
+  room: ID,
   count: Int
 }
 `;

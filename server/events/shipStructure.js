@@ -2,6 +2,7 @@ import App from '../../app';
 import { pubsub } from '../helpers/subscriptionManager';
 import * as Classes from '../classes';
 
+// Decks
 App.on('addDeck', ({ simulatorId, number, svgPath, doors, evac }) => {
   const deck = new Classes.Deck({ simulatorId, number, svgPath, doors, evac });
   App.decks.push(deck);
@@ -39,6 +40,8 @@ App.on('updateHallwaySvg', ({ deckId, svg }) => {
   deck.updateHallwaySvg(svg);
   pubsub.publish('decksUpdate', App.decks);
 });
+
+// Rooms
 App.on('addRoom', ({ simulatorId, deckId, name, svgPath }) => {
   const room = new Classes.Room({ simulatorId, deckId, name, svgPath });
   App.rooms.push(room);
@@ -74,3 +77,43 @@ App.on('roomGas', ({roomId, gas}) => {
   pubsub.publish('roomsUpdate', App.rooms);
   pubsub.publish('decksUpdate', App.decks);
 })
+
+// Inventory
+App.on('addInventory', ({inventory}) => {
+  const {simulatorId, name, metadata, roomCount} = inventory;
+  // Check to see if an inventory item with the same name exists.
+  const dupInventory = App.inventory.find(i => i.simulatorId === simulatorId && i.name === name);
+  if (dupInventory) {
+    roomCount.forEach(r => {
+      dupInventory.updateCount(r.room, r.count);
+    })
+  } else {
+    // Add a new inventory item
+    App.inventory.push(new Classes.InventoryItem({
+      simulatorId,
+      name,
+      roomCount,
+      metadata
+    }));
+  }
+  pubsub.publish('inventoryUpdate', App.inventory);
+});
+App.on('removeInventory', ({id}) => {
+  App.inventory = App.inventory.filter(i => i.id !== id);
+  pubsub.publish('inventoryUpdate', App.inventory);
+});
+App.on('moveInventory', ({id, fromRoom, toRoom, count, toSimulator}) => {
+  const inv = App.inventory.find(i => i.id === id);
+  inv.move(fromRoom, toRoom, count, toSimulator);
+  pubsub.publish('inventoryUpdate', App.inventory);
+});
+App.on('updateInventoryCount', ({id, room, count}) => {
+  const inv = App.inventory.find(i => i.id === id);
+  inv.updateCount(room, count);
+  pubsub.publish('inventoryUpdate', App.inventory);
+});
+App.on('updateInventoryMetadata', ({id, metadata}) => {
+  const inv = App.inventory.find(i => i.id === id);
+  inv.updateMetadata(metadata);
+  pubsub.publish('inventoryUpdate', App.inventory);
+});

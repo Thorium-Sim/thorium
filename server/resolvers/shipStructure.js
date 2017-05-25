@@ -100,7 +100,21 @@ export const ShipStructureMutations = {
   },
 
   // Inventory
-  
+  addInventory(root, args) {
+    App.handleEvent(args, 'addInventory');
+  },
+  removeInventory(root, args) {
+    App.handleEvent(args, 'removeInventory');
+  },
+  moveInventory(root, args) {
+    App.handleEvent(args, 'moveInventory');
+  },
+  updateInventoryCount(root, args) {
+    App.handleEvent(args, 'updateInventoryCount');
+  },
+  updateInventoryMetadata(root, args) {
+    App.handleEvent(args, 'updateInventoryMetadata');
+  },
 };
 
 export const ShipStructureSubscriptions = {
