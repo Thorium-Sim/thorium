@@ -8,7 +8,7 @@ import createNetworkInterface from 'apollo-upload-network-interface';
 import App from './containers/App';
 import './app.scss';
 
-const hostname = 'localhost';
+const hostname = window.location.hostname;
 
 const wsClient = new SubscriptionClient(`ws://${hostname}:3002`, {
   reconnect: true,

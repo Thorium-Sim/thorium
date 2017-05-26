@@ -73,11 +73,5 @@ module.exports = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     // Try to dedupe duplicated modules, if any:
     new webpack.optimize.DedupePlugin(),
-    // Generate a manifest file which contains a mapping of all asset filenames
-    // to their corresponding output file so that tools can pick it up without
-    // having to parse `index.html`.
-    new ManifestPlugin({
-      fileName: 'asset-manifest.json'
-    })
   ],
 };
