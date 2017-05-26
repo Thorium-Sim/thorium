@@ -23,6 +23,7 @@ import Targeting from './Targeting';
 import PhaserCharging from './PhaserCharging';
 import ProbeConstruction from './ProbeConstruction';
 import StealthField from './StealthField';
+import CargoControl from './CargoControl';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -42,6 +43,7 @@ import TargetingCore from './Targeting/core';
 import PhaserCore from './PhaserCharging/core';
 import TorpedoCore from './TorpedoLoading/core';
 import StealthFieldCore from './StealthField/core';
+import DecksCore from './ShipStructure/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -72,7 +74,8 @@ const Views = {
   Targeting,
   PhaserCharging,
   ProbeConstruction,
-  StealthField
+  StealthField,
+  CargoControl
 };
 
 export const Widgets = {
@@ -99,7 +102,8 @@ export const Cores = {
   TargetingCore,
   PhaserCore,
   TorpedoCore,
-  StealthFieldCore
+  StealthFieldCore,
+  DecksCore
 };
 
 export default Views;

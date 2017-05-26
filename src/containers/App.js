@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Router, browserHistory } from 'react-router';
 import { Signin, Register, Forgot, PasswordReset } from '../components/Accounts.jsx';
 // import UserAdmin from '../components/admin/Users.jsx';

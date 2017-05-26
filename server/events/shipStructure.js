@@ -45,11 +45,13 @@ App.on('updateHallwaySvg', ({ deckId, svg }) => {
 App.on('addRoom', ({ simulatorId, deckId, name, svgPath }) => {
   const room = new Classes.Room({ simulatorId, deckId, name, svgPath });
   App.rooms.push(room);
+    pubsub.publish('decksUpdate', App.decks);
   pubsub.publish('roomsUpdate', App.rooms);
 });
 App.on('removeRoom', ({ roomId }) => {
   App.rooms = App.rooms.filter(r => r.id !== roomId);
   pubsub.publish('roomsUpdate', App.rooms);
+    pubsub.publish('decksUpdate', App.decks);
 });
 App.on('addRoomsBulk', ({ simulatorId, rooms }) => {
   const parsedRooms = JSON.parse(rooms);
@@ -60,11 +62,13 @@ App.on('addRoomsBulk', ({ simulatorId, rooms }) => {
     App.rooms.push(room);
   });
   pubsub.publish('roomsUpdate', App.rooms);
+  pubsub.publish('decksUpdate', App.decks);
 });
 App.on('renameRoom', ({ roomId, name }) => {
   const room = App.rooms.find(r => r.id === roomId);
   room.rename(name);
   pubsub.publish('roomsUpdate', App.rooms);
+  pubsub.publish('decksUpdate', App.decks);
 });
 App.on('updateRoomSvg', ({ roomId, svg }) => {
   const room = App.rooms.find(r => r.id === roomId);

@@ -1,0 +1,14 @@
+.decks-core {
+  .row {
+    height: calc(100% - 18px);
+  }
+  .deckList, .roomList {
+    overflow: scroll;
+  }
+  .deckList {
+    height: calc(100% - 40px);
+  }
+  .roomList {
+    height: calc(100% - 60px);
+  }
+}

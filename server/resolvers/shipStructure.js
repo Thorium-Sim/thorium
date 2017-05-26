@@ -149,7 +149,7 @@ export const ShipStructureTypes = {
       return App.decks.find(d => d.id === room.deckId);
     },
   },
-  Inventory: {
+  InventoryItem: {
     roomCount(inventory) {
       return Object.keys(inventory.roomCount).map(r => (
       {

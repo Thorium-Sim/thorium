@@ -29,7 +29,7 @@ updateRoomSvg(roomId: ID!, svg: String!): String
 roomGas(roomId: ID!, gas: Boolean): String
 
 ### Inventory
-addInventory(inventory: InventoryInput): String
+addInventory(inventory: InventoryItemInput): String
 removeInventory(id: ID): String
 moveInventory(id: ID!, fromRoom: ID!, toRoom: ID!, count: Int!, toSimulator: ID): String
 updateInventoryCount(id: ID!, room: ID!, count: Int!): String

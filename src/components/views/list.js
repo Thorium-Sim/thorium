@@ -25,7 +25,8 @@ const viewList = [
 "Targeting",
 "PhaserCharging",
 "ProbeConstruction",
-"StealthField"
+"StealthField",
+"CargoControl"
 ];
 
 export default viewList;
