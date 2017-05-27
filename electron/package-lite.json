@@ -15,6 +15,7 @@
   "homepage": "https://thorium.ralexanderson.com",
   "dependencies": {
     "apollo-upload-network-interface": "^1.0.4",
+    "babel-polyfill": "^6.23.0",
     "body-parser": "^1.16.1",
     "cors": "^2.8.1",
     "electron": "^1.6.8",
