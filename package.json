@@ -23,8 +23,11 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-react-app": "^2.0.1",
     "babel-preset-stage-0": "^6.5.0",
+    "babel-register": "^6.24.1",
     "case-sensitive-paths-webpack-plugin": "^1.1.4",
     "chalk": "^1.1.3",
+    "codacy-coverage": "^2.0.2",
+    "cross-env": "^5.0.0",
     "css-loader": "^0.26.1",
     "detect-port": "^1.1.0",
     "dotenv": "^4.0.0",
@@ -118,10 +121,16 @@
     "start": "npm run start-server & npm run start-client",
     "build": "node scripts/build.js",
     "build-server": "npm run build && node ./scripts/build-electron-server.js",
-    "test": "node scripts/test.js --env=jsdom",
     "lint": "eslint .",
     "migrate": "nodemon ./server/helpers/migration.js --exec babel-node",
-    "cloc": "cloc . --exclude-dir=node_modules,config,scripts"
+    "cloc": "cloc . --exclude-dir=node_modules,config,scripts",
+    "test-server": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha --require babel-register test/server/*.js test/server/**/*.js",
+    "coverage": "cat ./coverage/lcov.info | codacy-coverage && rm -rf ./coverage",
+    "test": "npm run test-server && npm run coverage"
+  },
+  "nyc": {
+    "sourceMap": false,
+    "instrument": false
   },
   "jest": {
     "moduleFileExtensions": [
