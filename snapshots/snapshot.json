@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 176,
+	"_eventsCount": 184,
 	"simulators": [
 		{
 			"timeline": [],
@@ -799,7 +799,7 @@
 			"model": "battery",
 			"powerOutput": 120,
 			"efficiency": 1,
-			"batteryChargeLevel": 0.7728199999999869,
+			"batteryChargeLevel": 0.7337219999999766,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -1325,8 +1325,8 @@
 			},
 			"class": "StealthField",
 			"type": "StealthField",
-			"activated": true,
 			"charge": false,
+			"activated": true,
 			"state": false,
 			"quadrants": {
 				"fore": 0,
@@ -1372,9 +1372,19 @@
 			"name": "Room A",
 			"gas": false,
 			"svgPath": ""
+		},
+		{
+			"class": "Room",
+			"id": "7a9c592f-7656-401e-95d5-9c98de183a95",
+			"simulatorId": "test",
+			"deckId": "d5e57556-80b5-4bb1-9372-35d578591eb0",
+			"name": "default",
+			"gas": false,
+			"svgPath": ""
 		}
 	],
 	"crew": [],
+	"inventory": [],
 	"coreLayouts": [
 		{
 			"id": "9d21fa85-d919-4a39-a27e-23524adc1a03",
@@ -1445,6 +1455,18 @@
 			"w": 29,
 			"h": 9,
 			"component": "TargetingCore",
+			"objectId": null,
+			"class": "CoreLayout"
+		},
+		{
+			"id": "3d21986d-e896-4fb8-9f98-df56fbcecf91",
+			"simulatorId": "test",
+			"name": "default",
+			"x": 58,
+			"y": 0,
+			"w": 30,
+			"h": 20,
+			"component": "DecksCore",
 			"objectId": null,
 			"class": "CoreLayout"
 		}
@@ -1812,7 +1834,7 @@
 			"class": "AssetObject"
 		}
 	],
-	"snapshotVersion": 77,
-	"version": 77,
-	"timestamp": "2017-05-19T01:28:17.312Z"
+	"snapshotVersion": 352,
+	"version": 352,
+	"timestamp": "2017-05-27T17:39:56.089Z"
 }

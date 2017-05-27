@@ -1,0 +1,15 @@
+.cargo-control {
+  .inventoryRow {
+    .card {
+      margin-top: 10px;
+      height: 70vh;
+    }
+    .readyCargo {
+      height: 300px;
+    }
+    .card-block {
+        height: 100%;
+        overflow: scroll;
+      }
+  }
+}
