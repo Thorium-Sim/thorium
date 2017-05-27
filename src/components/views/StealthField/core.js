@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
-import { Container, Row, Col, Popover, PopoverContent } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 import { graphql, withApollo } from 'react-apollo';
 import { OutputField } from '../../generic/core';
 import Immutable from 'immutable';

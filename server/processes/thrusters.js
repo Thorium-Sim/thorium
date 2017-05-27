@@ -1,12 +1,5 @@
-import gql from 'graphql-tag';
-import request from 'request';
 import App from '../../app';
 
-const mutation = gql`
-mutation SetRotation($id: ID, $rotation: RotationInput){
-  rotationSet(id: $id, rotation: $rotation)
-}
-`;
 const updateThrusters = () => {
   App.systems.forEach((sys) => {
     if (sys.type === 'Thrusters' && sys.thrusting === true) {

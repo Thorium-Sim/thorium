@@ -1,8 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
 var fs = require('fs');
-var ManifestPlugin = require('webpack-manifest-plugin');
-
 
 var nodeModules = {};
 fs.readdirSync('node_modules')

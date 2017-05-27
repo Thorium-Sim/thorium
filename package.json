@@ -127,7 +127,6 @@
     "build": "node scripts/build.js",
     "build-server": "npm run build && node ./scripts/build-electron-server.js",
     "lint": "eslint .",
-    "migrate": "nodemon ./server/helpers/migration.js --exec babel-node",
     "cloc": "cloc . --exclude-dir=node_modules,config,scripts",
     "test-server": "cross-env NODE_ENV=test ./node_modules/.bin/nyc --reporter=lcov --reporter=text mocha --require babel-register test/server/*.js test/server/**/*.js",
     "coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage && rm -rf ./coverage",
