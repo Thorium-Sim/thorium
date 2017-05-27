@@ -1,5 +1,6 @@
 ![Thorium](github-banner.png)
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/53c3c34f0752473383ba4341fa69cb55)](https://www.codacy.com/app/alexanderson1993/thorium?utm_source=github.com&utm_medium=referral&utm_content=Thorium-Sim/thorium&utm_campaign=badger)
 [![Slack Status](https://slack.ralexanderson.com/badge.svg)](https://slack.ralexanderson.com)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/alexanderson1993/thorium)
 
