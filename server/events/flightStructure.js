@@ -207,6 +207,6 @@ App.on('editCardInStationSet', ({ stationSetID, stationName, cardName, newCardNa
   stationSet.editStationCard(stationName, cardName, { name: newCardName, component: cardComponent, icon: cardIcon });
   pubsub.publish('stationSetUpdate', App.stationSets);
 });
-App.on('addedSystem', ({}) => {
+App.on('addedSystem', () => {
 
 });

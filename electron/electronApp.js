@@ -1,8 +1,10 @@
 process.env.APP_TYPE = 'electron';
 console.log(process.env.APP_TYPE);
-const server = require('../server');
+require('../server');
+require('./client-server');
 const {app, protocol, BrowserWindow, globalShortcut} = require('electron')
 const path = require('path');
+
 
 // Module to create native browser window.
 const os = require('os');
@@ -27,7 +29,7 @@ function createWindow () {
   })
 
   // and load the index.html of the app.
-  mainWindow.loadURL(`file://${app.getPath('exe')}/../../Resources/app/index.html`)
+  mainWindow.loadURL(`file://${process.resourcesPath}/app/index-server.html`)
   globalShortcut.register('CommandOrControl+Alt+E', function () {
     // Open the DevTools.
     mainWindow.webContents.openDevTools();

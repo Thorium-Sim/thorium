@@ -10,7 +10,7 @@ var electronOptions = {
   dir: path.resolve(__dirname + '/../build-server'),
   appCopyright: "Copyright 2017 Alex Anderson. All Rights Reserved",
   asar: false,
-  icon: path.resolve(__dirname + '/icon.icns'),
+  icon: path.resolve(__dirname + '/../electron/icon.icns'),
   name: 'Thorium Server',
   out: path.resolve(__dirname + '/..'),
   overwrite: true,
@@ -60,8 +60,9 @@ webpack(config).run((err, stats) => {
 
   //Copy some files over
   fs.createReadStream('./electron/package-lite.json').pipe(fs.createWriteStream(path.resolve(__dirname + "/../build-server/package.json")));
-  fs.createReadStream('./electron/electronIndex.html').pipe(fs.createWriteStream(path.resolve(__dirname + "/../build-server/index.html")));
+  fs.createReadStream('./electron/electronIndex.html').pipe(fs.createWriteStream(path.resolve(__dirname + "/../build-server/index-server.html")));
   fs.createReadStream('./electron/background.jpeg').pipe(fs.createWriteStream(path.resolve(__dirname + "/../build-server/background.jpeg")));
+
 
   process.chdir('./build-server');
   console.log('Installing Deps');

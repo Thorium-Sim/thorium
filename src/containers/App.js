@@ -27,7 +27,7 @@ const routes = [
   component: Config,
 },
 {
-  path: '/app',
+  path: '/client',
   component: Client,
 },
 {

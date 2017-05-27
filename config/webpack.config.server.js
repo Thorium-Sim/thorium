@@ -1,17 +1,15 @@
 var path = require('path');
 var webpack = require('webpack');
 var fs = require('fs');
-var ManifestPlugin = require('webpack-manifest-plugin');
-
 
 var nodeModules = {};
 fs.readdirSync('node_modules')
-  .filter(function(x) {
-    return ['.bin'].indexOf(x) === -1;
-  })
-  .forEach(function(mod) {
-    nodeModules[mod] = 'commonjs ' + mod;
-  });
+.filter(function(x) {
+  return ['.bin'].indexOf(x) === -1;
+})
+.forEach(function(mod) {
+  nodeModules[mod] = 'commonjs ' + mod;
+});
 
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
@@ -24,7 +22,8 @@ module.exports = {
   // You can exclude the *.map files from the build during deployment.
   // In production, we only want to load the polyfills and the app code.
   entry: [
-    path.resolve(__dirname + '/../electron/electronApp.js')
+  'babel-polyfill',
+  path.resolve(__dirname + '/../electron/electronApp.js')
   ],
   output: {
     // The build folder.
@@ -52,10 +51,10 @@ module.exports = {
     // First, run the linter.
     // It's important to do this before Babel processes the JS.
     loaders: [
-      {
-        enforce: 'pre',
-        test: /\.(js|jsx)$/,
-        loader: 'eslint-loader',
+    {
+      enforce: 'pre',
+      test: /\.(js|jsx)$/,
+      loader: 'eslint-loader',
         //include: path.resolve(__dirname + '../server/'),
       },
       // Process JS with Babel.
@@ -65,19 +64,13 @@ module.exports = {
         loader: 'babel-loader',
         
       },
-    ]
-  },
-  
-  plugins: [
+      ]
+    },
+    
+    plugins: [
     // This helps ensure the builds are consistent if source hasn't changed:
     new webpack.optimize.OccurrenceOrderPlugin(),
     // Try to dedupe duplicated modules, if any:
     new webpack.optimize.DedupePlugin(),
-    // Generate a manifest file which contains a mapping of all asset filenames
-    // to their corresponding output file so that tools can pick it up without
-    // having to parse `index.html`.
-    new ManifestPlugin({
-      fileName: 'asset-manifest.json'
-    })
-  ],
-};
+    ],
+  };

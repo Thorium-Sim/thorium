@@ -1,5 +1,3 @@
-var path = require('path');
-var autoprefixer = require('autoprefixer');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -186,7 +184,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       template: paths.appHtml,
-      filename: '200.html',
+      filename: 'index.html',
       minify: {
         removeComments: true,
         collapseWhitespace: true,
