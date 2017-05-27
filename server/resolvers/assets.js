@@ -1,8 +1,20 @@
-import s3 from 's3';
-// import fs from 'fs';
+import fs from 'fs';
+import path from 'path';
+import electron from 'electron';
 import uuid from 'uuid';
+import mkdirp from 'mkdirp';
 import App from '../../app';
-// TODO: Overhaul this file to use the file system
+
+let assetDir = path.resolve('./assets/');
+if (electron.app) {
+  assetDir = path.resolve(electron.app.getPath('appData') + "/thorium/assets");
+}
+
+// Ensure the asset folder exists
+if (!fs.existsSync(assetDir)){
+  fs.mkdirSync(assetDir);
+}
+
 export const AssetsQueries = {
   asset(root, { assetKey, simulatorId = 'default' }) {
     const returnObj = App.assetObjects.find(obj => {
@@ -59,11 +71,10 @@ export const AssetsMutations = {
   },
   removeAssetObject(root, { id }) {
     App.handleEvent({ id }, 'removeAssetObject');
-    // Remove from S3 too.
     // Get the object
-    // const obj = App.assetObjects.find((object) => object.id === id);
-    // const extension = obj.url.substr(obj.url.lastIndexOf('.'));
-
+    const obj = App.assetObjects.find((object) => object.id === id);
+    const extension = obj.url.substr(obj.url.lastIndexOf('.'));
+    fs.unlink(path.resolve(`${assetDir}/${(obj.fullPath.substr(1) + extension)}`), () => {});
 
     return '';
   },
@@ -73,18 +84,33 @@ export const AssetsMutations = {
     files.forEach((file) => {
       const extension = file.originalname.substr(file.originalname.lastIndexOf('.'));
       const key = `${fullPath.substr(1)}/${simulatorId + extension}`;
+      const filepath = path.resolve(assetDir + '/' + key);
+      const directorypath = filepath.substring(0, filepath.lastIndexOf("/"));
+      mkdirp.sync(directorypath);
 
-
-        // Add to the event store
-        App.handleEvent({
-          id: uuid.v4(),
-          containerPath: folderPath,
-          containerId,
-          fullPath: `${fullPath}/${simulatorId + extension}`,
-          url: s3.getPublicUrl('thorium-assets', key),
-          simulatorId,
-        }, 'addAssetObject');
+      //Move the file in
+      const writeStream = fs.createWriteStream(filepath);
+      const stream = fs.createReadStream(file.path).pipe(writeStream);
+      stream.on('error', function(err){
+        throw new Error(err);
       });
+      writeStream.on('error', function(err){
+        throw new Error(err);
+      });
+      stream.on('close', function(){
+        // Delete the temp file
+        fs.unlink(file.path, () => {});
+      });
+      // Add to the event store
+      App.handleEvent({
+        id: uuid.v4(),
+        containerPath: folderPath,
+        containerId,
+        fullPath: `${fullPath}/${simulatorId + extension}`,
+        url: `/assets${fullPath}/${simulatorId + extension}`,
+        simulatorId,
+      }, 'addAssetObject');
+    });
     return '';
   },
 };

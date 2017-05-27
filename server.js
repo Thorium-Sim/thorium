@@ -68,37 +68,10 @@ graphQLServer.use('/graphql',
 
 graphQLServer.use('/graphiql', graphiqlExpress(options));
 
-graphQLServer.use('/assets', (req, res) => {
-  const baseUrl = 'https://s3.amazonaws.com/thorium-assets';
-  res.end();
-  const headers = {
-    "Cache-Control": "max-age=86400",
-    "Expires": moment().add(1, 'day').startOf('day').format('ddd, DD MMM YYYY HH:mm:ss G[M]T'),
-    "Last-Modified":moment().startOf('day').format('ddd, DD MMM YYYY HH:mm:ss G[M]T'),
-  };
-  if (req.url.substr(-3) === 'svg'){
-    headers['Content-Type'] = 'image/svg+xml';
-  }
-  res.set(headers);
-  request(baseUrl + req.url)
-  .on('response', (response) => {
-    if (response.statusCode !== 200) {
-      // Replace the simulator with 'default';
-      const assetPath = path.parse(req.url);
-      request(`${baseUrl}${assetPath.dir}/default${assetPath.ext}`).pipe(res);
-      return false;
-    }
-    response.pipe(res);
-    return null;
-  });
-});
-
-// eslint-disable-next-line
 graphQLServer.listen(GRAPHQL_PORT, () => console.log(
   `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}/graphql`,
   ));
 
-// eslint-disable-next-line
 websocketServer.listen(WS_PORT, () => console.log(
   `Websocket Server is now running on http://localhost:${WS_PORT}`,
   ));
