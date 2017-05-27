@@ -1,10 +1,8 @@
 import s3 from 's3';
-import fs from 'fs';
-import client from '../helpers/uploader';
+// import fs from 'fs';
 import uuid from 'uuid';
 import App from '../../app';
-import { bucket } from '../../secrets.js';
-
+// TODO: Overhaul this file to use the file system
 export const AssetsQueries = {
   asset(root, { assetKey, simulatorId = 'default' }) {
     const returnObj = App.assetObjects.find(obj => {
@@ -63,17 +61,10 @@ export const AssetsMutations = {
     App.handleEvent({ id }, 'removeAssetObject');
     // Remove from S3 too.
     // Get the object
-    const obj = App.assetObjects.find((object) => object.id === id);
-    const extension = obj.url.substr(obj.url.lastIndexOf('.'));
+    // const obj = App.assetObjects.find((object) => object.id === id);
+    // const extension = obj.url.substr(obj.url.lastIndexOf('.'));
 
-    client.deleteObjects({
-      Bucket: bucket,
-      Delete: {
-        Objects: [{
-          Key: (obj.fullPath.substr(1) + extension),
-        }],
-      },
-    });
+
     return '';
   },
   async uploadAsset(root, { files, simulatorId, containerId }) {
@@ -82,19 +73,8 @@ export const AssetsMutations = {
     files.forEach((file) => {
       const extension = file.originalname.substr(file.originalname.lastIndexOf('.'));
       const key = `${fullPath.substr(1)}/${simulatorId + extension}`;
-      const params = {
-        localFile: file.path,
-        s3Params: {
-          Bucket: bucket,
-          Key: key,
-          ACL: 'public-read',
-          ContentType: file.mimetype,
-        },
-      };
-      const uploader = client.uploadFile(params);
-      uploader.on('end', () => {
-        // Delete the temp file
-        fs.unlink(file.path, () => {});
+
+
         // Add to the event store
         App.handleEvent({
           id: uuid.v4(),
@@ -105,7 +85,6 @@ export const AssetsMutations = {
           simulatorId,
         }, 'addAssetObject');
       });
-    });
     return '';
   },
 };
