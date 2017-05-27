@@ -7,5 +7,5 @@ describe('Truth', function() {
   });
   it('should work with arrays', function() {
     expect([]).to.be.instanceOf(Array);
-  })
+  });
 });
