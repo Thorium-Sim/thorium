@@ -1,7 +1,7 @@
 process.env.APP_TYPE = 'electron';
 console.log(process.env.APP_TYPE);
-const server = require('../server');
-const clientServer = require('./client-server');
+require('../server');
+require('./client-server');
 const {app, protocol, BrowserWindow, globalShortcut} = require('electron')
 const path = require('path');
 

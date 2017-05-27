@@ -5,7 +5,6 @@ var chalk = require('chalk');
 var config = require('../config/webpack.config.server');
 var fs = require('fs');
 var exec = require('child_process').exec;
-var mv = require('mv');
 
 var electronOptions = {
   dir: path.resolve(__dirname + '/../build-server'),

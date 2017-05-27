@@ -1,0 +1,24 @@
+{
+  "parser": "babel-eslint",
+  "extends": [
+  "react-app"
+  ],
+  "globals": {
+    "window": true,
+    "log": true
+  },
+  "rules": {
+    "no-use-before-define": 0,
+    "arrow-body-style": 0,
+    "dot-notation": 0,
+    "no-console": 0,
+    "indent": 0,
+    "import/namespace": 0,
+    "max-len": 0,
+    "comma-dangle": 0,
+    "no-underscore-dangle": 0
+  },
+  "env": {
+    "mocha": true
+  }
+}

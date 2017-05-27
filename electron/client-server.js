@@ -2,8 +2,6 @@ var express = require('express'),
 port = process.env.PORT || 3000,
 path = require('path'),
 server = express();
-const { app } = require('electron')
-
 
 server.use(express.static(path.resolve(process.resourcesPath)+'/app'));
 
