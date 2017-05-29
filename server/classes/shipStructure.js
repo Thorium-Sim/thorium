@@ -36,6 +36,7 @@ export class Room {
     this.name = params.name || 'Vic\'s Lounge';
     this.gas = params.gas || false;
     this.svgPath = params.svgPath || '';
+    this.metadata = params.metadata || {};
   }
   setGas(gas) {
     this.gas = gas;
@@ -45,5 +46,44 @@ export class Room {
   }
   updateSvg(svg) {
     this.svgPath = svg;
+  }
+    updateMetadata(metadata) {
+    this.metadata = metadata;
+  }
+}
+
+export class InventoryItem {
+  constructor(params) {
+    this.class = 'InventoryItem';
+    this.id = params.id || uuid.v4();
+    this.simulatorId = params.simulatorId || null;
+    this.name = params.name || 'Generic Cargo';
+    this.roomCount = {};
+    if (Array.isArray(params.roomCount)) {
+      params.roomCount.forEach(r => {
+        this.roomCount[r.room] = r.count;
+      })
+    } else {
+      this.roomCount = params.roomCount || {};
+    }
+    this.metadata = params.metadata || {};
+  }
+  move(fromRoom, toRoom, count, toSimulator) {
+    console.log('From:', this.roomCount[fromRoom]);
+    console.log('To:', this.roomCount[toRoom])
+    if (this.roomCount[fromRoom] >= count) {
+      if (!this.roomCount[toRoom]) this.roomCount[toRoom] = 0;
+      this.roomCount[fromRoom] -= count;
+      this.roomCount[toRoom] += count;
+      console.log('From:', this.roomCount[fromRoom]);
+    console.log('To:', this.roomCount[toRoom])
+    }
+    console.log('\n')
+  }
+  updateCount(room, count) {
+    this.roomCount[room] = Math.max(0, count);
+  }
+  updateMetadata(metadata) {
+    this.metadata = metadata;
   }
 }

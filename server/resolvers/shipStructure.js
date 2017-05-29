@@ -24,9 +24,43 @@ export const ShipStructureQueries = {
     }
     return rooms;
   },
+  inventory(root, { simulatorId, id, name, deck, room }) {
+    let inventory = App.inventory.concat();
+    if (simulatorId) {
+      inventory = inventory.filter(i => i.simulatorId === simulatorId);
+    }
+    if (id) {
+      inventory = inventory.filter(i => i.id === id);
+    }
+    if (room) {
+      inventory = inventory.filter(i => (i.roomCount[room] > 0));
+    }
+    if (deck) {
+      const rooms = App.rooms.filter(r => r.deckId === deck);
+      inventory = inventory.map(i => {
+        Object.keys(i.roomCount)
+        .filter(r => rooms.indexOf(r) === -1)
+        .forEach(r => delete i.roomCount[r]);
+        return i;
+      })
+    }
+    if (name) {
+      const regex = new RegExp(name, 'gui');
+      inventory = inventory.filter(i => i.name.match(regex));
+    }
+    // Remove any rooms that have no inventory of that inventory item.
+    inventory = inventory.map(i => {
+      Object.keys(i.roomCount)
+      .filter(r => i.roomCount[r] === 0)
+      .forEach(r => delete i.roomCount[r]);
+      return i
+    });
+    return inventory;
+  }
 };
 
 export const ShipStructureMutations = {
+  // Decks
   addDeck(root, args) {
     App.handleEvent(args, 'addDeck');
   },
@@ -48,6 +82,8 @@ export const ShipStructureMutations = {
   updateHallwaySvg(root, args) {
     App.handleEvent(args, 'updateHallwaySvg');
   },
+
+  // Rooms
   addRoom(root, args) {
     App.handleEvent(args, 'addRoom');
   },
@@ -65,7 +101,24 @@ export const ShipStructureMutations = {
   },
   roomGas(root, args) {
     App.handleEvent(args, 'roomGas');
-  }
+  },
+
+  // Inventory
+  addInventory(root, args) {
+    App.handleEvent(args, 'addInventory');
+  },
+  removeInventory(root, args) {
+    App.handleEvent(args, 'removeInventory');
+  },
+  moveInventory(root, args) {
+    App.handleEvent(args, 'moveInventory');
+  },
+  updateInventoryCount(root, args) {
+    App.handleEvent(args, 'updateInventoryCount');
+  },
+  updateInventoryMetadata(root, args) {
+    App.handleEvent(args, 'updateInventoryMetadata');
+  },
 };
 
 export const ShipStructureSubscriptions = {
@@ -81,6 +134,12 @@ export const ShipStructureSubscriptions = {
     }
     return rootValue;
   },
+  inventoryUpdate(rootValue, { simulatorId, }) {
+    if (simulatorId && rootValue) {
+      return rootValue.filter(r => r.simulatorId === simulatorId);
+    }
+    return rootValue;
+  }
 };
 
 export const ShipStructureTypes = {
@@ -93,6 +152,19 @@ export const ShipStructureTypes = {
     deck(room) {
       return App.decks.find(d => d.id === room.deckId);
     },
+    inventory(room) {
+      return App.inventory.filter(i => Object.keys(i.roomCount).indexOf(room.id) > -1)
+      .map(i => {i.count = i.roomCount[room.id]; return i;}) 
+    }
   },
+  InventoryItem: {
+    roomCount(inventory) {
+      return Object.keys(inventory.roomCount).map(r => (
+      {
+        room: r === 'ready' ? {id: 'ready', name: 'Ready Cargo'} : App.rooms.find(room => room.id === r),
+        count: inventory.roomCount[r]
+      }))
+    }
+  }
 };
 

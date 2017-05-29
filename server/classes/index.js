@@ -11,7 +11,7 @@ export { AssetObject, AssetFolder, AssetContainer } from './assets';
 export { StationSet, Station, Card } from './stationSet.js';
 export Flight from './flight.js';
 export Mission from './mission.js';
-export { Deck, Room } from './shipStructure';
+export { Deck, Room, InventoryItem } from './shipStructure';
 export LongRangeComm from './longRangeComm';
 export InternalComm from './internalComm';
 export Navigation from './navigation';

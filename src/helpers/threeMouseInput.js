@@ -6,7 +6,7 @@ import SyntheticMouseEvent from 'react-dom/lib/SyntheticMouseEvent';
 
 import Module from 'react-three-renderer/lib/Module';
 
-import PropTypes from 'react/lib/ReactPropTypes';
+import PropTypes from 'prop-types';
 
 const tempVector2 = new THREE.Vector2();
 
