@@ -129,7 +129,7 @@
     "build-server": "npm run build && node ./scripts/build-electron-server.js",
     "lint": "eslint .",
     "cloc": "cloc . --exclude-dir=node_modules,config,scripts",
-    "test-server": "cross-env NODE_ENV=test ./node_modules/.bin/nyc --reporter=lcov --reporter=text mocha --require babel-register --require babel-polyfill test/server/*.js test/server/**/*.js",
+    "test-server": "cross-env NODE_ENV=test ./node_modules/.bin/nyc -x=**/schema/** -x=**/test/** --reporter=lcov  mocha --require babel-register --require babel-polyfill test/server/*.js test/server/**/*.js",
     "coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage && rm -rf ./coverage",
     "test": "npm run test-server && npm run coverage"
   },

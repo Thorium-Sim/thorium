@@ -36,6 +36,7 @@ export class Room {
     this.name = params.name || 'Vic\'s Lounge';
     this.gas = params.gas || false;
     this.svgPath = params.svgPath || '';
+    this.metadata = params.metadata || {};
   }
   setGas(gas) {
     this.gas = gas;
@@ -46,11 +47,14 @@ export class Room {
   updateSvg(svg) {
     this.svgPath = svg;
   }
+    updateMetadata(metadata) {
+    this.metadata = metadata;
+  }
 }
 
 export class InventoryItem {
   constructor(params) {
-    this.class = 'Inventory';
+    this.class = 'InventoryItem';
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || 'Generic Cargo';
@@ -60,15 +64,16 @@ export class InventoryItem {
         this.roomCount[r.room] = r.count;
       })
     } else {
-      this.roomCount = params.roomCount;
+      this.roomCount = params.roomCount || {};
     }
     this.metadata = params.metadata || {};
   }
   move(fromRoom, toRoom, count, toSimulator) {
-    if (toSimulator) {
-      this.simulatorId = toSimulator;
-    }
+    // if (toSimulator) {
+    //   this.simulatorId = toSimulator;
+    // }
     if (this.roomCount[fromRoom] >= count) {
+      if (!this.roomCount[toRoom]) this.roomCount[toRoom] = 0;
       this.roomCount[fromRoom] -= count;
       this.roomCount[toRoom] += count;
     }

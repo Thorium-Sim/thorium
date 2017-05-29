@@ -148,6 +148,10 @@ export const ShipStructureTypes = {
     deck(room) {
       return App.decks.find(d => d.id === room.deckId);
     },
+    inventory(room) {
+      return App.inventory.filter(i => Object.keys(i.roomCount).indexOf(room.id) > -1)
+      .map(i => {i.count = i.roomCount[room.id]; return i;}) 
+    }
   },
   InventoryItem: {
     roomCount(inventory) {

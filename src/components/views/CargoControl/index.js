@@ -2,9 +2,7 @@ import React, {Component} from 'react';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
-import {Container, Row, Col, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Card, CardBlock, CardTitle} from 'reactstrap';
-import assetPath from '../../../helpers/assets';
-import DamageOverlay from '../helpers/DamageOverlay';
+import {Container, Row, Col, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Card, CardBlock} from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 
 import './style.scss';
@@ -44,30 +42,60 @@ class CargoControl extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult.merge({ inventory: subscriptionData.data.inventoryUpdate }).toJS();
-        }
-      });
+          // TODO: Needs to be updated
+         // const returnResult = Immutable.Map(previousResult);
+         // return returnResult.merge({ inventory: subscriptionData.data.inventoryUpdate }).toJS();
+       }
+     });
     }
   }
-  setSelectedTo({deck, room}) {
-    this.setState({
-      toDeck: deck,
-      toRoom: room
-    })
+  setSelected(which, {deck, room}) {
+    let setInventory = [];
+    const {decks} = this.props.data;
+    if (decks.length === 1) deck = decks[0].id;
+    if (deck && room) {
+      // Set the inventory
+      setInventory = decks.find(d => d.id === deck).rooms.find(r => r.id === room).inventory;
+
+    }
+    const obj = {};
+    obj[which + 'Deck'] = deck;
+    obj[which + 'Room'] = room;
+    obj[which + 'Inventory'] = setInventory
+    this.setState(obj)
   }
-  setSelectedFrom({deck, room}) {
-    this.setState({
-      fromDeck: deck,
-      fromRoom: room
-    })
+  toReady(which, {id, name}){
+    const inventory = this.state[which + 'Inventory'].map(i => {
+      if (i.count - 1 <= 0) return null;
+      if (i.id === id) return {
+        id: i.id,
+        name: i.name,
+        count: i.count - 1
+      }
+      return i;
+    }).filter(i => i);
+    const {readyInventory} = this.state;
+    if (readyInventory.find(i => i.id === id)) {
+      readyInventory.find(i => i.id === id).count += 1;
+    } else {
+      readyInventory.push({
+        id,
+        name,
+        count: 1
+      })
+    }
+    const obj = {readyInventory};
+    obj[which + 'Inventory'] = inventory;
+    this.setState(obj);
   }
   render(){
     if (this.props.data.loading) return null;
-    const {decks, inventory} = this.props.data;
-    let {toDeck, toRoom, fromDeck, fromRoom} = this.state;
-    if (decks.length <= 1) toDeck = decks[0].id;
-    if (decks.length <= 1) fromDeck = decks[0].id;
+    const {decks} = this.props.data;
+    let {toDeck, toRoom, fromDeck, fromRoom, toInventory, fromInventory, readyInventory} = this.state;
+    if (decks.length <= 1){
+      toDeck = decks[0].id
+      fromDeck = decks[0].id
+    };
     return (
       <Container fluid className="cargo-control">
       <Row>
@@ -76,15 +104,16 @@ class CargoControl extends Component {
         <DeckDropdown
         selectedDeck={toDeck}
         decks={decks}
-        setSelected={this.setSelectedTo.bind(this)} />
+        setSelected={this.setSelected.bind(this, 'to')} />
         </Col>
       }
       <Col sm={decks.length > 1 ? 2 : 4}>
       <RoomDropdown
       selectedDeck={toDeck}
       selectedRoom={toRoom}
+      otherSelected={fromRoom}
       decks={decks}
-      setSelected={this.setSelectedTo.bind(this)} />
+      setSelected={this.setSelected.bind(this, 'to')} />
       </Col>
 
       {decks.length > 1 &&
@@ -92,15 +121,16 @@ class CargoControl extends Component {
         <DeckDropdown
         selectedDeck={fromDeck}
         decks={decks}
-        setSelected={this.setSelectedTo.bind(this)} />
+        setSelected={this.setSelected.bind(this, 'from')} />
         </Col>
       }
       <Col sm={{size: decks.length > 1 ? 2 : 4, offset: 4}}>
       <RoomDropdown
       selectedDeck={fromDeck}
       selectedRoom={fromRoom}
+      otherSelected={toRoom}
       decks={decks}
-      setSelected={this.setSelectedFrom.bind(this)} />
+      setSelected={this.setSelected.bind(this, 'from')} />
       </Col>
       </Row>
       <Row className="inventoryRow">
@@ -108,9 +138,10 @@ class CargoControl extends Component {
       <Card>
       <CardBlock>
       {
-        toRoom && inventory.filter(i => i.roomCount.find(r => r.room.id === toRoom))
-        .map(i => <p key={i.id}>
-          {i.name} ({i.roomCount.find(r => r.room.id === toRoom).count})
+        toRoom && toInventory
+        .map(i => <p key={i.id}
+          onClick={this.toReady.bind(this, 'to', i)}>
+          {i.name} ({i.count})
           </p>)
       }
       </CardBlock>
@@ -120,7 +151,12 @@ class CargoControl extends Component {
       <h4>Ready Cargo</h4>
       <Card className="readyCargo">
       <CardBlock>
-
+      {
+        readyInventory
+        .map(i => <p key={i.id}>
+          {i.name} ({i.count})
+          </p>)
+      }
       </CardBlock>
       </Card>
       <Button block color="primary">Transfer <FontAwesome name="arrow-right" /></Button>
@@ -131,9 +167,10 @@ class CargoControl extends Component {
       <Card>
       <CardBlock>
       {
-        fromRoom && inventory.filter(i => i.roomCount.find(r => r.room.id === fromRoom))
-        .map(i => <p key={i.id}>
-          {i.name} ({i.roomCount.find(r => r.room.id === fromRoom).count})
+        fromRoom && fromInventory
+        .map(i => <p key={i.id}
+          onClick={this.toReady.bind(this, 'from', i)}>
+          {i.name} ({i.count})
           </p>)
       }
       </CardBlock>
@@ -159,7 +196,7 @@ const DeckDropdown = ({selectedDeck, decks, setSelected}) => {
   </UncontrolledDropdown>
 }
 
-const RoomDropdown = ({selectedDeck, selectedRoom, decks, setSelected}) => {
+const RoomDropdown = ({selectedDeck, otherSelected, selectedRoom, decks, setSelected}) => {
   return <UncontrolledDropdown>
   <DropdownToggle block caret>
   {selectedRoom ? decks.find(d => d.id === selectedDeck).rooms.find(r => r.id === selectedRoom).name : 'Select Room'}
@@ -168,7 +205,7 @@ const RoomDropdown = ({selectedDeck, selectedRoom, decks, setSelected}) => {
     <DropdownMenu>
     <DropdownItem header>Deck {decks.find(d => d.id === selectedDeck).number}</DropdownItem>
     {
-      decks.find(d => d.id === selectedDeck).rooms.map(r => <DropdownItem key={r.id} onClick={() => {
+      decks.find(d => d.id === selectedDeck).rooms.map(r => <DropdownItem key={r.id} disabled={r.id === otherSelected} onClick={() => {
         setSelected({room: r.id})
       }}>{r.name}</DropdownItem>)
     }
@@ -184,15 +221,11 @@ query InventoryQ($simulatorId: ID!) {
     rooms {
       id
       name
-    }
-  }
-  inventory(simulatorId: $simulatorId) {
-    name
-    roomCount {
-      room {
+      inventory {
         id
+        name
+        count
       }
-      count
     }
   }
 }`;

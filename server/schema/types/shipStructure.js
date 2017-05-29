@@ -17,12 +17,17 @@ type Room {
   name: String
   gas: Boolean
   svgPath: String
+  inventory: [InventoryItem]
+  metadata: RoomMetadata
 }
 
 type InventoryItem {
   id: ID
   simulatorId: ID
   name: String
+  
+  # Use only for subqueries with Room
+  count: Int
   metadata: InventoryMetadata
   roomCount: [RoomCount] 
 }
@@ -45,6 +50,20 @@ type InventoryMetadata {
   # For Probes
   defense: Boolean
 
+}
+
+type RoomMetadata {
+  inventory: Boolean
+  probeInventory: Boolean
+  torpedoInventory: Boolean
+  coolantInventory: Boolean
+}
+
+input RoomMetadataInput {
+  inventory: Boolean
+  probeInventory: Boolean
+  torpedoInventory: Boolean
+  coolantInventory: Boolean
 }
 
 input InventoryMetadataInput {

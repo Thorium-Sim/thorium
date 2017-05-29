@@ -3,6 +3,14 @@
     .card {
       margin-top: 10px;
       height: 70vh;
+      p {
+        padding: 0.25rem;
+        margin: 0px;
+        border-radius: 2px;
+        &:active {
+          background-color: rgba(255,255,255,0.25);
+        }
+      }
     }
     .readyCargo {
       height: 300px;
