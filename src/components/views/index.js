@@ -44,6 +44,7 @@ import PhaserCore from './PhaserCharging/core';
 import TorpedoCore from './TorpedoLoading/core';
 import StealthFieldCore from './StealthField/core';
 import DecksCore from './ShipStructure/core';
+import CargoCore from './CargoControl/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -103,7 +104,8 @@ export const Cores = {
   PhaserCore,
   TorpedoCore,
   StealthFieldCore,
-  DecksCore
+  DecksCore,
+  CargoCore
 };
 
 export default Views;

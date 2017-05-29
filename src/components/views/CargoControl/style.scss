@@ -23,3 +23,13 @@
     overflow: scroll;
   }
 }
+
+.cargo-core {
+  .find-overlay {
+    background-color: white;
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 40px);
+    list-style: disk;
+  }
+}

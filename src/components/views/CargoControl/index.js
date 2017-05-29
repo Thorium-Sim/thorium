@@ -40,7 +40,6 @@ class CargoControl extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-         // return {decks: subscriptionData.data.decksUpdate}
          const returnResult = Immutable.Map(previousResult);
          return returnResult.merge({ inventory: subscriptionData.data.inventoryUpdate }).toJS();
        }
@@ -153,14 +152,14 @@ class CargoControl extends Component {
       </Col>
 
       {decks.length > 1 &&
-        <Col sm={{size: 2, offset: 4}}>
+        <Col sm={{size: 2}}>
         <DeckDropdown
         selectedDeck={fromDeck}
         decks={decks}
         setSelected={this.setSelected.bind(this, 'from')} />
         </Col>
       }
-      <Col sm={{size: decks.length > 1 ? 2 : 4, offset: 4}}>
+      <Col sm={{size: decks.length > 1 ? 2 : 4}}>
       <RoomDropdown
       selectedDeck={fromDeck}
       selectedRoom={fromRoom}
@@ -188,24 +187,7 @@ class CargoControl extends Component {
       </CardBlock>
       </Card>
       </Col>
-      <Col sm={{size: 4}}>
-      <h3>Find Inventory: </h3>
-      <Input size="sm" onChange={this.findInv.bind(this)}/>
-      {this.state.findInventory &&
-        <Card className="search-container">
-        <CardBlock>
-        {
-          this.state.findInventory.map(i => <p key={`find-${i.id}`}>
-            {i.name}
-            <ul>
-            {i.locations.map((l, index) => <li key={`loc-${index}`}>{l}</li>)}
-            </ul>
-            </p>)
-        }
-        </CardBlock>
-        </Card>
-      }
-      </Col>
+      
       <Col sm={{size: 4}}>
       <Card>
       <CardBlock>
@@ -223,6 +205,24 @@ class CargoControl extends Component {
       }
       </CardBlock>
       </Card>
+      </Col>
+      <Col sm={{size: 4}}>
+      <h3>Find Inventory: </h3>
+      <Input size="sm" onChange={this.findInv.bind(this)}/>
+      {this.state.findInventory &&
+        <Card className="search-container">
+        <CardBlock>
+        {
+          this.state.findInventory.map(i => <div key={`find-${i.id}`}>
+            {i.name}
+            <ul>
+            {i.locations.map((l, index) => <li key={`loc-${index}`}>{l}</li>)}
+            </ul>
+            </div>)
+        }
+        </CardBlock>
+        </Card>
+      }
       </Col>
       </Row>
       </Container>)
