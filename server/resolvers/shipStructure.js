@@ -24,7 +24,7 @@ export const ShipStructureQueries = {
     }
     return rooms;
   },
-  inventory(root, { simulatorId, id, deck, room }) {
+  inventory(root, { simulatorId, id, name, deck, room }) {
     let inventory = App.inventory.concat();
     if (simulatorId) {
       inventory = inventory.filter(i => i.simulatorId === simulatorId);
@@ -43,6 +43,10 @@ export const ShipStructureQueries = {
         .forEach(r => delete i.roomCount[r]);
         return i;
       })
+    }
+    if (name) {
+      const regex = new RegExp(name, 'gui');
+      inventory = inventory.filter(i => i.name.match(regex));
     }
     // Remove any rooms that have no inventory of that inventory item.
     inventory = inventory.map(i => {
@@ -157,7 +161,7 @@ export const ShipStructureTypes = {
     roomCount(inventory) {
       return Object.keys(inventory.roomCount).map(r => (
       {
-        room: App.rooms.find(room => room.id === r),
+        room: r === 'ready' ? {id: 'ready', name: 'Ready Cargo'} : App.rooms.find(room => room.id === r),
         count: inventory.roomCount[r]
       }))
     }

@@ -1,23 +1,25 @@
 .cargo-control {
-  .inventoryRow {
-    .card {
-      margin-top: 10px;
-      height: 70vh;
-      p {
-        padding: 0.25rem;
-        margin: 0px;
-        border-radius: 2px;
-        &:active {
-          background-color: rgba(255,255,255,0.25);
-        }
+  .card {
+    margin-top: 10px;
+    height: 70vh;
+    &.search-container {
+      height: unset;
+      max-height: calc(70vh - 85px);
+    }
+    p {
+      padding: 0.25rem;
+      margin: 0px;
+      border-radius: 2px;
+      &:active {
+        background-color: rgba(255,255,255,0.25);
       }
     }
-    .readyCargo {
-      height: 300px;
-    }
-    .card-block {
-        height: 100%;
-        overflow: scroll;
-      }
+  }
+  .readyCargo {
+    height: 300px;
+  }
+  .card-block {
+    height: 100%;
+    overflow: scroll;
   }
 }

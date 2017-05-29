@@ -69,14 +69,16 @@ export class InventoryItem {
     this.metadata = params.metadata || {};
   }
   move(fromRoom, toRoom, count, toSimulator) {
-    // if (toSimulator) {
-    //   this.simulatorId = toSimulator;
-    // }
+    console.log('From:', this.roomCount[fromRoom]);
+    console.log('To:', this.roomCount[toRoom])
     if (this.roomCount[fromRoom] >= count) {
       if (!this.roomCount[toRoom]) this.roomCount[toRoom] = 0;
       this.roomCount[fromRoom] -= count;
       this.roomCount[toRoom] += count;
+      console.log('From:', this.roomCount[fromRoom]);
+    console.log('To:', this.roomCount[toRoom])
     }
+    console.log('\n')
   }
   updateCount(room, count) {
     this.roomCount[room] = Math.max(0, count);

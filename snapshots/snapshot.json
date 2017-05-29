@@ -799,7 +799,7 @@
 			"model": "battery",
 			"powerOutput": 120,
 			"efficiency": 1,
-			"batteryChargeLevel": 0.7337219999999766,
+			"batteryChargeLevel": 0.7270549999999748,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -1371,7 +1371,8 @@
 			"deckId": "d5e57556-80b5-4bb1-9372-35d578591eb0",
 			"name": "Room A",
 			"gas": false,
-			"svgPath": ""
+			"svgPath": "",
+			"metadata": {}
 		},
 		{
 			"class": "Room",
@@ -1380,11 +1381,35 @@
 			"deckId": "d5e57556-80b5-4bb1-9372-35d578591eb0",
 			"name": "default",
 			"gas": false,
-			"svgPath": ""
+			"svgPath": "",
+			"metadata": {}
 		}
 	],
 	"crew": [],
-	"inventory": [],
+	"inventory": [
+		{
+			"class": "InventoryItem",
+			"id": "57bfd1f9-7f89-4fe8-9b4f-ffe34cad2ad0",
+			"simulatorId": "test",
+			"name": "Communications Antenna",
+			"roomCount": {
+				"257fb45e-ac29-4313-a1b9-7e9530a37f83": 2
+			},
+			"metadata": {},
+			"count": 2
+		},
+		{
+			"class": "InventoryItem",
+			"id": "773948e4-5459-43fe-8c09-da4d9b1f6546",
+			"simulatorId": "test",
+			"name": "Coolant",
+			"roomCount": {
+				"257fb45e-ac29-4313-a1b9-7e9530a37f83": 2
+			},
+			"metadata": {},
+			"count": 2
+		}
+	],
 	"coreLayouts": [
 		{
 			"id": "9d21fa85-d919-4a39-a27e-23524adc1a03",
@@ -1834,7 +1859,7 @@
 			"class": "AssetObject"
 		}
 	],
-	"snapshotVersion": 352,
-	"version": 352,
-	"timestamp": "2017-05-27T17:39:56.089Z"
+	"snapshotVersion": 63,
+	"version": 63,
+	"timestamp": "2017-05-29T17:14:49.830Z"
 }

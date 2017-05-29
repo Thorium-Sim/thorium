@@ -2,17 +2,18 @@ import React, {Component} from 'react';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
-import {Container, Row, Col, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Card, CardBlock} from 'reactstrap';
-import FontAwesome from 'react-fontawesome';
+import {Container, Row, Col, Input, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Card, CardBlock} from 'reactstrap';
 
 import './style.scss';
 
 const INVENTORY_SUB = gql`
 subscription InventoryUpdate($simulatorId: ID!) {
-  inventoryUpdate(simulatorId: $simulatorId){
+  inventoryUpdate(simulatorId:$simulatorId) {
+    id
     name
     roomCount {
       room {
+        name
         id
       }
       count
@@ -29,9 +30,6 @@ class CargoControl extends Component {
       fromDeck: null,
       toRoom: null,
       fromRoom: null,
-      toInventory: [],
-      fromInventory: [],
-      readyInventory: [],
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -42,62 +40,100 @@ class CargoControl extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          // TODO: Needs to be updated
-         // const returnResult = Immutable.Map(previousResult);
-         // return returnResult.merge({ inventory: subscriptionData.data.inventoryUpdate }).toJS();
+         // return {decks: subscriptionData.data.decksUpdate}
+         const returnResult = Immutable.Map(previousResult);
+         return returnResult.merge({ inventory: subscriptionData.data.inventoryUpdate }).toJS();
        }
      });
     }
   }
   setSelected(which, {deck, room}) {
-    let setInventory = [];
     const {decks} = this.props.data;
     if (decks.length === 1) deck = decks[0].id;
-    if (deck && room) {
-      // Set the inventory
-      setInventory = decks.find(d => d.id === deck).rooms.find(r => r.id === room).inventory;
-
-    }
     const obj = {};
     obj[which + 'Deck'] = deck;
     obj[which + 'Room'] = room;
-    obj[which + 'Inventory'] = setInventory
     this.setState(obj)
   }
-  toReady(which, {id, name}){
-    const inventory = this.state[which + 'Inventory'].map(i => {
-      if (i.count - 1 <= 0) return null;
-      if (i.id === id) return {
-        id: i.id,
-        name: i.name,
-        count: i.count - 1
-      }
-      return i;
-    }).filter(i => i);
-    const {readyInventory} = this.state;
-    if (readyInventory.find(i => i.id === id)) {
-      readyInventory.find(i => i.id === id).count += 1;
+  transfer(which, {id}){
+    const mutation = gql`
+    mutation MoveInventory($id: ID!, $fromRoom: ID!, $toRoom: ID!, $count: Int!) {
+      moveInventory(id: $id, fromRoom: $fromRoom, toRoom: $toRoom, count: $count)
+    }`;
+    let toRoom;
+    let fromRoom;
+    if (which === 'to') {
+      toRoom = this.state.fromRoom;
+      fromRoom = this.state.toRoom;
     } else {
-      readyInventory.push({
-        id,
-        name,
-        count: 1
+      toRoom = this.state.toRoom;
+      fromRoom = this.state.fromRoom;
+    }
+    if (!toRoom || !fromRoom) return;
+    const variables = {
+      id,
+      toRoom,
+      fromRoom,
+      count: 1
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
+  }
+  findInv(e) {
+    const variables = {
+      name: e.target.value,
+      simulatorId: this.props.simulator.id
+    }
+    const query = gql`query InventorySearch($name: String, $simulatorId: ID) {
+      inventory(name: $name, simulatorId: $simulatorId) {
+        name
+        id
+        roomCount {
+          room {
+            deck {
+              number
+            }
+            id
+            name
+          }
+          count
+        }
+      }
+    }`
+    if (variables.name) {
+      this.props.client.query({
+        query,
+        variables
+      }).then((res) => {
+        if (res.data && res.data.inventory) {
+          this.setState({
+            findInventory: res.data.inventory.map(i => ({
+              id: i.id,
+              name: i.name,
+              locations: i.roomCount.filter(rc => rc.count > 0)
+              .map(rc => `${rc.room.name}, Deck ${rc.room.deck.number} (${rc.count})`)
+            }))
+          })
+        }
+      })
+    } else {
+      this.setState({
+        findInventory: null
       })
     }
-    const obj = {readyInventory};
-    obj[which + 'Inventory'] = inventory;
-    this.setState(obj);
   }
   render(){
     if (this.props.data.loading) return null;
-    const {decks} = this.props.data;
-    let {toDeck, toRoom, fromDeck, fromRoom, toInventory, fromInventory, readyInventory} = this.state;
+    const {decks, inventory} = this.props.data;
+    let {toDeck, toRoom, fromDeck, fromRoom} = this.state;
     if (decks.length <= 1){
       toDeck = decks[0].id
       fromDeck = decks[0].id
     };
     return (
-      <Container fluid className="cargo-control">
+      <Container className="cargo-control">
       <Row>
       {decks.length > 1 &&
         <Col sm="2">
@@ -138,38 +174,50 @@ class CargoControl extends Component {
       <Card>
       <CardBlock>
       {
-        toRoom && toInventory
-        .map(i => <p key={i.id}
-          onClick={this.toReady.bind(this, 'to', i)}>
+        toRoom && inventory.map(i => {
+          const roomCount = i.roomCount.find(r => r.room.id === toRoom);
+          if (!roomCount) return null;
+          if (roomCount.count === 0) return null;
+          return {id: i.id, name: i.name, count: roomCount.count}
+        }).filter(i => i)
+        .map(i => <p key={`to-${i.id}`}
+          onClick={this.transfer.bind(this, 'to', i)}>
           {i.name} ({i.count})
           </p>)
       }
       </CardBlock>
       </Card>
       </Col>
-      <Col sm={4}>
-      <h4>Ready Cargo</h4>
-      <Card className="readyCargo">
-      <CardBlock>
-      {
-        readyInventory
-        .map(i => <p key={i.id}>
-          {i.name} ({i.count})
-          </p>)
+      <Col sm={{size: 4}}>
+      <h3>Find Inventory: </h3>
+      <Input size="sm" onChange={this.findInv.bind(this)}/>
+      {this.state.findInventory &&
+        <Card className="search-container">
+        <CardBlock>
+        {
+          this.state.findInventory.map(i => <p key={`find-${i.id}`}>
+            {i.name}
+            <ul>
+            {i.locations.map((l, index) => <li key={`loc-${index}`}>{l}</li>)}
+            </ul>
+            </p>)
+        }
+        </CardBlock>
+        </Card>
       }
-      </CardBlock>
-      </Card>
-      <Button block color="primary">Transfer <FontAwesome name="arrow-right" /></Button>
-      <Button block color="primary"><FontAwesome name="arrow-left" /> Transfer</Button>
-      <Button block color="warning">Reset</Button>
       </Col>
-      <Col sm={4}>
+      <Col sm={{size: 4}}>
       <Card>
       <CardBlock>
       {
-        fromRoom && fromInventory
-        .map(i => <p key={i.id}
-          onClick={this.toReady.bind(this, 'from', i)}>
+        fromRoom && inventory.map(i => {
+          const roomCount = i.roomCount.find(r => r.room.id === fromRoom);
+          if (!roomCount) return null;
+          if (roomCount.count === 0) return null;
+          return {id: i.id, name: i.name, count: roomCount.count}
+        }).filter(i => i)
+        .map(i => <p key={`to-${i.id}`}
+          onClick={this.transfer.bind(this, 'from', i)}>
           {i.name} ({i.count})
           </p>)
       }
@@ -221,11 +269,17 @@ query InventoryQ($simulatorId: ID!) {
     rooms {
       id
       name
-      inventory {
-        id
+    }
+  }
+  inventory(simulatorId:$simulatorId) {
+    id
+    name
+    roomCount {
+      room {
         name
-        count
+        id
       }
+      count
     }
   }
 }`;
