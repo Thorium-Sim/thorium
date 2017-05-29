@@ -10,6 +10,8 @@
 
 # Thorium
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Thorium-Sim/thorium.svg)](https://greenkeeper.io/)
+
 #### A simulator controls platform
 
 Thorium is built with the following technologies:
