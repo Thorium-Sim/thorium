@@ -5,6 +5,7 @@
 [![Build Status](https://travis-ci.org/Thorium-Sim/thorium.svg?branch=master)](https://travis-ci.org/Thorium-Sim/thorium)
 [![Slack Status](https://slack.ralexanderson.com/badge.svg)](https://slack.ralexanderson.com)
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/alexanderson1993/thorium)
+[![Greenkeeper badge](https://badges.greenkeeper.io/Thorium-Sim/thorium.svg)](https://greenkeeper.io/)
 
 *New here? Check out the [Wiki](https://github.com/alexanderson1993/thorium/wiki) and the [Project](https://github.com/orgs/Thorium-Sim/projects/1)*
 
