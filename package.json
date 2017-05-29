@@ -92,6 +92,7 @@
     "moment": "^2.17.1",
     "multer": "^1.3.0",
     "optics-agent": "^1.1.1",
+    "prop-types": "^15.5.10",
     "react": "^15.4.2",
     "react-addons-css-transition-group": "^15.4.2",
     "react-addons-transition-group": "^15.4.2",
@@ -128,7 +129,7 @@
     "build-server": "npm run build && node ./scripts/build-electron-server.js",
     "lint": "eslint .",
     "cloc": "cloc . --exclude-dir=node_modules,config,scripts",
-    "test-server": "cross-env NODE_ENV=test ./node_modules/.bin/nyc --reporter=lcov --reporter=text mocha --require babel-register --require babel-polyfill test/server/*.js test/server/**/*.js",
+    "test-server": "cross-env NODE_ENV=test ./node_modules/.bin/nyc -x=**/schema/** -x=**/test/** --reporter=lcov  mocha --require babel-register --require babel-polyfill test/server/*.js test/server/**/*.js",
     "coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage && rm -rf ./coverage",
     "test": "npm run test-server && npm run coverage"
   },

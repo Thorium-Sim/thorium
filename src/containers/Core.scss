@@ -41,4 +41,7 @@
   .table-sm th, .table-sm td{
     padding: 0;
   }
+  .btn-block + .btn-block {
+    margin-top: 0;
+  }
 }
