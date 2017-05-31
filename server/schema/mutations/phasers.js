@@ -4,4 +4,5 @@ export default `
   firePhaserBeam(id: ID!, beamId: ID!):String
   phaserArc(id: ID!, arc: Float!):String
   setPhaserBeamCharge(id: ID!, beamId: ID!, charge: Float!):String
+  setPhaserBeamHeat(id: ID!, beamId: ID!, heat: Float!):String
 `;

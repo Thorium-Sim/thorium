@@ -24,6 +24,7 @@ subscription PhasersUpdate($simulatorId: ID!){
       id
       state
       charge
+      heat
     }
     arc
   }
@@ -154,7 +155,7 @@ class PhaserCharging extends Component {
   }
 }
 
-export const PhaserBeam = ({chargePhasers, dischargePhasers, firePhasers, targeting, index, id, charge, state, selectedBank = null, selectPhaserBank = () => {}}) => {
+export const PhaserBeam = ({chargePhasers, dischargePhasers, firePhasers, heat, targeting, index, id, charge, state, selectedBank = null, selectPhaserBank = () => {}}) => {
   const duration = state === 'charging' ? 2 : 0.5;
   if (targeting) {
     return <div>
@@ -170,6 +171,13 @@ export const PhaserBeam = ({chargePhasers, dischargePhasers, firePhasers, target
     </Col>
     <Col sm={"4"} style={{marginTop:'27px'}}>
     <Button block color="danger" onMouseDown={firePhasers.bind(this, id)}>Fire Phasers</Button>
+    </Col>
+    </Row>
+    <Row className="phaserBeam">
+    <Col sm="8">
+      <div className="chargeHolder">
+        <div className="heat" style={{width: `${heat * 100}%`}}></div>
+      </div>
     </Col>
     </Row>
     <Row>
@@ -294,6 +302,7 @@ query Phasers($simulatorId: ID!){
       id
       state
       charge
+      heat
     }
     arc
   }

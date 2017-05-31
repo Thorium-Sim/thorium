@@ -16,4 +16,15 @@ const updatePhasers = () => {
   })
   setTimeout(updatePhasers, 100);
 };
-updatePhasers();
+//updatePhasers();
+
+const phaserCool = () => {
+  App.systems.filter(p => p.type === 'Phasers').forEach(sys => {
+    sys.beams.filter(b => b.heat > 0).forEach(beam => {
+      console.log(beam.heat, beam.heat - 0.001);
+      App.handleEvent({id: sys.id, beamId: beam.id, heat: beam.heat - 0.005}, 'setPhaserBeamHeat');
+    })
+  })
+  setTimeout(phaserCool, 500);
+}
+phaserCool();
