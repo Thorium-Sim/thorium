@@ -30,3 +30,7 @@ App.on('setPhaserBeamCharge', ({id, beamId, charge}) => {
   App.systems.find(s => s.id === id).updateBeamCharge(beamId, charge);
   pubsub.publish('phasersUpdate', App.systems.filter(s => s.type === 'Phasers'));
 });
+App.on('setPhaserBeamHeat', ({id, beamId, heat}) => {
+  App.systems.find(s => s.id === id).updateBeamHeat(beamId, heat);
+  pubsub.publish('phasersUpdate', App.systems.filter(s => s.type === 'Phasers'));
+});

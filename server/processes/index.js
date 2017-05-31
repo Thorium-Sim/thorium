@@ -3,3 +3,4 @@ import './thrusters';
 import './sensorContacts';
 import './clientPing';
 import './reactor';
+import './phasers';
