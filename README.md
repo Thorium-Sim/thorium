@@ -7,11 +7,11 @@
 [![StackShare](https://img.shields.io/badge/tech-stack-0690fa.svg?style=flat)](https://stackshare.io/alexanderson1993/thorium)
 [![Greenkeeper badge](https://badges.greenkeeper.io/Thorium-Sim/thorium.svg)](https://greenkeeper.io/)
 
-*New here? Check out the [Wiki](https://github.com/alexanderson1993/thorium/wiki) and the [Project](https://github.com/orgs/Thorium-Sim/projects/1)*
-
 # Thorium
 
-#### A simulator controls platform
+## A simulator controls platform
+
+*New here? Check out the [Wiki](https://github.com/alexanderson1993/thorium/wiki) and the [Project](https://github.com/orgs/Thorium-Sim/projects/1)*
 
 Thorium is built with the following technologies:
 * [React](https://facebook.github.io/react/) for the frontend
@@ -19,19 +19,33 @@ Thorium is built with the following technologies:
 * [GraphQL](http://graphql.org) for the transmission layer
 * [RethinkDB](https://www.rethinkdb.com/) for the database
 
-## What is Thorium?
+## What is Thorium
+
 Thorium is a simulator controls platform which eventually hopes to encapsulate the following features (and maybe more):
+
 * Multiple simulators in the same framework
+
 * Multiple stations and cards
+
 * Arbitrary card assignments that can update in realtime
+
 * Realtime data sharing across devices
-* Federated architecture for supporting satellite devices (e.g. lighting control, Arduino panels, etc.)
+
+* Federated architecture for supporting satellite devices (e.g. lighting 
+control, Arduino panels, etc.)
+
 * Lighting Control
+
 * Sound Control
+
 * Video Control
+
 * 3D Rendering
+
 * Physics Simulations
+
 * Pre-recorded macros
+
 * Timelines
 
 And more. The above merely scratches the surface.
@@ -57,17 +71,17 @@ Then open [the app](http://localhost:3000) or [GraphiQL](http://localhost:3001/g
 npm run build
 ```
 
-Builds the app for production to the `build` folder.<br>
+Builds the app for production to the `build` folder.
+
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.
-
 
 ## Event Sourcing
 
 Thorium Server is built on an event sourcing model coupled with CQRS. GraphQL serves this purpose well. Queries are normal GraphQL queries. Commands are mutations which return an empty string. When a command is fired, it dispatches an event which is stored in an event store. Event consumers detect the new event and trigger based on that event.
 
-If the event store is accessible, the consumers don't even have to be on this server - they can be any number of microprocesses across any number of computers and environments. 
+If the event store is accessible, the consumers don't even have to be on this server - they can be any number of microprocesses across any number of computers and environments.
 
 ```
                +------------+

@@ -1,4 +1,4 @@
-## Macro Definintions
+# Macro Definintions
 
 Thorium supports macros, which are carefully defined mutations. The mutations need to have descriptions on them which are prefixed by `Macro:`. This lets the system know that it is a macro.
 
@@ -68,6 +68,7 @@ Arguments which can be configured also must have comments applied to them with J
 #   "varName":"Layouts"
 # }
 ```
+
 * `content` : The label that will be used for the argument
 
 * `type`: Defines the type of input that would be used. Only option is 'select'
