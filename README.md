@@ -31,8 +31,7 @@ Thorium is a simulator controls platform which eventually hopes to encapsulate t
 
 * Realtime data sharing across devices
 
-* Federated architecture for supporting satellite devices (e.g. lighting 
-control, Arduino panels, etc.)
+* Federated architecture for supporting satellite devices (e.g. lighting control, Arduino panels, etc.)
 
 * Lighting Control
 
