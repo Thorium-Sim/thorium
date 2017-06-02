@@ -8,9 +8,11 @@ import { withApollo } from 'react-apollo';
 import CardSwitcher from './CardSwitcher';
 import Widgets from './Widgets';
 import Alerts from './Alerts';
+import ActionsMixin from './Actions';
 
 import './layout.scss';
 import './theme.scss';
+
 
 class CardHolder extends Component {
 	componentWillEnter (callback) {
@@ -68,7 +70,7 @@ class LayoutCorners extends Component {
 		if (clientObj.offlineState) {
 			cardName = 'Offline';
 		}
-		return (<div>
+		return (<ActionsMixin {...this.props}>
 			<div className={`card-container card-area ${alertClass}`} >
 			<TransitionGroup>
 			{
@@ -106,7 +108,7 @@ class LayoutCorners extends Component {
 			<Widgets simulator={simulator} station={station}  />
 			<Alerts simulator={simulator} station={station} />
 			</div>
-			</div>);
+			</ActionsMixin>);
 	}
 }
 
