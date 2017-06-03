@@ -17,6 +17,12 @@ export default class ShortRangeComm extends System {
     const arrows = params.arrows || [];
     arrows.forEach(a => this.arrows.push(new Arrow(a, this.signals)));
   }
+  get stealthFactor() {
+    if (this.state === 'hailing') return 1;
+    return this.arrows.reduce((prev, next) => {
+      return prev + (next.connected ? 0.1 : 0);
+    },0)
+  }
   addCommSignal(commSignalInput) {
     this.signals.push(new Signal(commSignalInput));
   }
@@ -91,8 +97,8 @@ class Arrow {
     if (params.frequency){
       this.frequency = params.frequency;
     } else if (signal){
-        // Get random frequency with the range of the signal
-        this.frequency = Math.round((Math.random() * (signal.range.upper - signal.range.lower) + signal.range.lower) * 100) / 100;
+      // Get random frequency with the range of the signal
+      this.frequency = Math.round((Math.random() * (signal.range.upper - signal.range.lower) + signal.range.lower) * 100) / 100;
     } else {
       this.frequency = Math.round(Math.random() * 100) / 100;
     }

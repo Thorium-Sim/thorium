@@ -18,6 +18,13 @@ export default class Phasers extends System {
       params.beams.forEach(b => this.beams.push(new Beam(b)));
     }
   }
+  get stealthFactor() {
+    const length = this.beams.length;
+    return this.beams.map(b => b.charge + b.heat)
+    .reduce((prev, next) => {
+      return prev + next/length;
+    }, 0)
+  }
   updateBeamState(beamId, state){
     this.beams.find(b => b.id === beamId).updateState(state);
   }
