@@ -32,7 +32,7 @@ class CargoControlCore extends Component {
     }
   }
   componentWillReceiveProps(nextProps) {
-    if (!this.internalSub && !nextProps.data.loading) {
+    if (!this.inventorySub && !nextProps.data.loading) {
       this.inventorySub = nextProps.data.subscribeToMore({
         document: INVENTORY_SUB,
         variables: {

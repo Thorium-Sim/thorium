@@ -21,7 +21,7 @@ import { PhaserQueries, PhaserMutations, PhaserSubscriptions } from './phasers'
 import { ProbesQueries, ProbesMutations, ProbesSubscriptions, ProbesTypes } from './probes'
 import { StealthFieldQueries, StealthFieldMutations, StealthFieldSubscriptions } from './stealthField'
 import { IssueTrackerMutations } from './issueTracker';
-
+import {ActionsQueries, ActionsMutations, ActionsSubscriptions} from './actions';
 import App from '../../app';
 
 function parseJSONLiteral(ast) {
@@ -69,7 +69,8 @@ function parseJSONLiteral(ast) {
     TorpedoQueries,
     PhaserQueries,
     ProbesQueries,
-    StealthFieldQueries
+    StealthFieldQueries,
+    ActionsQueries
     );
 
   export const mutationMap = Object.assign({
@@ -77,30 +78,31 @@ function parseJSONLiteral(ast) {
       App.snapshot(true);
     },
   },
-    FlightStructureMutations,
-    ClientMutations,
-    ShieldMutations,
-    EngineMutations,
-    ThrustersMutations,
-    AssetsMutations,
-    TransporterMutations,
-    CoreLayoutMutations,
-    SensorsMutations,
-    ShipStructureMutations,
-    LRCommMutations,
-    InternalCommMutations,
-    SystemsMutations,
-    NavigationMutations,
-    ShortRangeCommMutations,
-    ShipMutations,
-    ReactorMutations,
-    TargetingMutations,
-    TorpedoMutations,
-    PhaserMutations,
-    ProbesMutations,
-    StealthFieldMutations,
-    IssueTrackerMutations
-    );
+  FlightStructureMutations,
+  ClientMutations,
+  ShieldMutations,
+  EngineMutations,
+  ThrustersMutations,
+  AssetsMutations,
+  TransporterMutations,
+  CoreLayoutMutations,
+  SensorsMutations,
+  ShipStructureMutations,
+  LRCommMutations,
+  InternalCommMutations,
+  SystemsMutations,
+  NavigationMutations,
+  ShortRangeCommMutations,
+  ShipMutations,
+  ReactorMutations,
+  TargetingMutations,
+  TorpedoMutations,
+  PhaserMutations,
+  ProbesMutations,
+  StealthFieldMutations,
+  IssueTrackerMutations,
+  ActionsMutations
+  );
 
   const subscriptionMap = Object.assign({},
     FlightStructureSubscriptions,
@@ -124,7 +126,8 @@ function parseJSONLiteral(ast) {
     TorpedoSubscriptions,
     PhaserSubscriptions,
     ProbesSubscriptions,
-    StealthFieldSubscriptions
+    StealthFieldSubscriptions,
+    ActionsSubscriptions
     );
 
   export default Object.assign({

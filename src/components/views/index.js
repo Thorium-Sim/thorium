@@ -45,6 +45,7 @@ import TorpedoCore from './TorpedoLoading/core';
 import StealthFieldCore from './StealthField/core';
 import DecksCore from './ShipStructure/core';
 import CargoCore from './CargoControl/core';
+import ActionsCore from './Actions/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -105,7 +106,8 @@ export const Cores = {
   TorpedoCore,
   StealthFieldCore,
   DecksCore,
-  CargoCore
+  CargoCore,
+  ActionsCore
 };
 
 export default Views;
