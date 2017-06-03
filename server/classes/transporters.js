@@ -13,6 +13,15 @@ export default class Transporters extends System {
     this.charge = params.charge || 0;
     // One of 'Inactive', 'Scanning', 'Targeting', 'Charging'
     this.state = params.state || 'Inactive';
+    this.stealthCompromised = false;
+  }
+  get stealthFactor() {
+    if (this.state === 'Scanning') return 0.6;
+    if (this.state === 'Charging') {
+      return this.charge;
+    }
+    if (this.stealthCompromised) return 1;
+    return 0;
   }
   addTargets(number, icon = 'Triangle', moving = false) {
     this.state = 'Targeting';
@@ -79,5 +88,7 @@ export default class Transporters extends System {
       this.requestedTarget = null;
       this.destination = null;
     }
+    this.stealthCompromised = true;
+    setTimeout((() => this.stealthCompromised = false), 4 * 1000);
   }
 }

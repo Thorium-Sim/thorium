@@ -14,7 +14,7 @@ export default class Probes extends System {
     this.probes = [];
     this.equipment = [];
     this.types = [];
-    
+    this.stealthCompromised = false;
     // Load the probes
     params.probes = params.probes || [];
     params.types = params.types || [];
@@ -23,6 +23,10 @@ export default class Probes extends System {
     params.probes.forEach(p => this.probes.push(new Probe(p, this.id)));
     probesTypes.forEach(p => this.types.push(new ProbeType(p, this.id)));
     probesEquipment.forEach(e => this.equipment.push(new ProbeEquipment(e)));
+  }
+  get stealthFactor() {
+    if (this.stealthCompromised) return 1;
+    return 0;
   }
   destroyProbe(probeId) {
     this.probes = this.probes.filter(p => p.id !== probeId)
@@ -51,12 +55,16 @@ export default class Probes extends System {
       App.handleEvent({type: 'probe', probe: probe.id},'torpedoAddWarhead');
     } else {
       probe.launched = true;
+      this.stealthCompromised = true;
+      setTimeout((() => this.stealthCompromised = false), 10 * 1000);
     }
     this.probes.push(new Probe(probe, this.id));
   }
   fireProbe(probeId){
     //For when tactical fires the probe
     this.probes.find(p => p.id === probeId).launch();
+    this.stealthCompromised = true;
+    setTimeout((() => this.stealthCompromised = false), 10 * 1000);
   }
   updateProbeType(probeType) {
     // Check to see if the type exists

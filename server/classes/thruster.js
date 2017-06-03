@@ -12,6 +12,10 @@ export default class Thrusters extends System {
     this.manualThrusters = params.manualThrusters || false;
     this.thrusting = params.thrusting || false;
   }
+  get stealthFactor() {
+    if (this.thrusting) return 0.2;
+    return 0;
+  }
   updateRotation(rotation, thrusting = false) {
     this.thrusting = thrusting;
     this.rotationDelta = rotation;

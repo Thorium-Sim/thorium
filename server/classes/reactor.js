@@ -13,6 +13,11 @@ export default class Reactor extends System {
     this.batteryChargeLevel = params.batteryChargeLevel || 1;
     this.batteryChargeRate = params.batteryChargeRate || 1 / 1000;
   }
+  get stealthFactor() {
+    if (this.ejected) return 0;
+    if (this.model === 'battery') return 0.1;
+    return Math.min(1, Math.max(this.efficiency - 1, 0));
+  }
   eject(tf = true){
     this.ejected = tf;
   }
