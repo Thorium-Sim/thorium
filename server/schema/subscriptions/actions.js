@@ -1,3 +1,3 @@
 export default `
-  actionsUpdate(stationId: ID, clientId: ID): Action
+  actionsUpdate(simulatorId: ID!, stationId: ID, clientId: ID): Action
 `

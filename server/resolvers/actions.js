@@ -1,3 +1,4 @@
+import App from '../../app';
 import { pubsub } from '../helpers/subscriptionManager.js';
 
 export const ActionsQueries = {
@@ -9,31 +10,31 @@ export const ActionsQueries = {
 
 // We aren't going to log these as events
 export const ActionsMutations = {
-  flash(root, {stationId, clientId, duration}) {
-    pubsub.publish('actionsUpdate', {action: 'flash', stationId, clientId, duration});
+  triggerAction(root, args) {
+    // In some cases, we need to change the client
+    switch(args.action) {
+      case "online":
+      App.clients.filter(c => (c.simulatorId === args.simulatorId && c.station === args.stationId) || c.id === args.clientId)
+      .forEach(c => App.handleEvent({client: c.id, state: null}, "clientOfflineState"))
+      break;
+      case "blackout":
+      case "offline":
+      case "power":
+      case "lockdown":
+      case "maintenance":
+      App.clients.filter(c => (c.simulatorId === args.simulatorId && c.station === args.stationId) || c.id === args.clientId)
+      .forEach(c => App.handleEvent({client: c.id, state: args.action}, "clientOfflineState"))
+      break;
+      default:
+      pubsub.publish('actionsUpdate', args);
+      break;
+    }
   },
-  spark(root, {stationId, clientId, duration}) {
-    pubsub.publish('actionsUpdate', {action: 'spark', stationId, clientId, duration});
-  },
-  freak(root, {stationId, clientId, duration}) {
-    pubsub.publish('actionsUpdate', {action: 'freak', stationId, clientId, duration});
-  },
-  beep(root, {stationId, clientId}) {
-    pubsub.publish('actionsUpdate', {action: 'beep', stationId, clientId});
-  },
-  shutdown(root, {stationId, clientId}) {
-    pubsub.publish('actionsUpdate', {action: 'shutdown', stationId, clientId});
-  },
-  restart(root, {stationId, clientId}) {
-    pubsub.publish('actionsUpdate', {action: 'restart', stationId, clientId});
-  },
-  quit(root, {stationId, clientId}) {
-    pubsub.publish('actionsUpdate', {action: 'quit', stationId, clientId});
-  }
 };
 
 export const ActionsSubscriptions = {
-  actionsUpdate({action, stationId:toStation, clientId:toClient, duration}, {stationId, clientId}) {
+  actionsUpdate({action, simulatorId:toSimulator, stationId:toStation, clientId:toClient, duration}, {simulatorId, stationId, clientId}) {
+    if (simulatorId !== toSimulator) return;
     if (toStation === 'all' || toClient === 'all' 
       || (toStation === stationId && toStation && stationId) 
       || (toClient === clientId && toClient && clientId)) {

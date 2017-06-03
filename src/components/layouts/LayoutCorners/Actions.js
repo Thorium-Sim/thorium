@@ -3,8 +3,8 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import Spark from '../../views/Actions/spark';
 const ACTIONS_SUB = gql`
-subscription ActionsSub($stationId: ID, $clientId: ID){
-  actionsUpdate(stationId: $stationId, clientId: $clientId){
+subscription ActionsSub($simulatorId: ID!, $stationId: ID, $clientId: ID){
+  actionsUpdate(simulatorId: $simulatorId, stationId: $stationId, clientId: $clientId){
     action
     duration
   }
@@ -33,6 +33,7 @@ class ActionsMixin extends Component {
       this.subscription = nextProps.data.subscribeToMore({
         document: ACTIONS_SUB,
         variables: {
+          simulatorId: this.props.simulator.id,
           stationId: this.props.station.name
         },
         updateQuery: (previousResult, { subscriptionData }) => {

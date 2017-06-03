@@ -1,3 +1,3 @@
 export default `
-  clients(clientId: ID): [Client]
+  clients(clientId: ID, simulatorId: ID, stationName: String): [Client]
 `;
