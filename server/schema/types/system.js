@@ -8,6 +8,8 @@ type System {
   damage: Damage
   power: Power
   stealthFactor: Float
+  heat: Float
+  coolant: Float
 }
 
 # Generic system type. Query any system by type.

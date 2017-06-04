@@ -1,6 +1,6 @@
-import { System } from './generic';
+import { System, HeatMixin } from './generic';
 
-export default class Engine extends System {
+export default class Engine extends HeatMixin(System) {
   constructor(params = {}) {
     super(params);
     this.class = 'Engine';
@@ -8,9 +8,6 @@ export default class Engine extends System {
     this.on = params.on || false;
     this.speeds = params.speeds || [];
     this.speed = params.speed || -1;
-    this.heat = params.heat || 0;
-    this.heatRate = params.heatRate || 1;
-    this.coolant = params.coolant || 0;
   }
   get stealthFactor() {
     const topSpeed = this.speeds.reduce((prev, next) => {
@@ -27,11 +24,6 @@ export default class Engine extends System {
   setSpeed(speed, on) {
     this.speed = speed;
     this.on = on;
-  }
-  addHeat(heat) {
-    this.heat += heat;
-    if (this.heat < 0) this.heat = 0;
-    if (this.heat >= 100) this.heat = 100;
   }
 }
 

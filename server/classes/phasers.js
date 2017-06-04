@@ -1,4 +1,4 @@
-import { System } from './generic';
+import { System, HeatMixin } from './generic';
 // It's easier to manage power if there is just one phaser system with multiple beams than 
 // If there are multiple phaser systems
 export default class Phasers extends System {
@@ -32,7 +32,10 @@ export default class Phasers extends System {
     this.beams.find(b => b.id === beamId).updateCharge(charge);
   }
   updateBeamHeat(beamId, heat) {
-    this.beams.find(b => b.id === beamId).updateHeat(heat);
+    this.beams.find(b => b.id === beamId).setHeat(heat);
+  }
+  updateBeamCoolant(beamId, coolant) {
+    this.beams.find(b => b.id === beamId).setCoolant(coolant);
   }
   fireBeam(beamId){
     this.beams.find(b => b.id === beamId).fire();
@@ -46,13 +49,12 @@ export default class Phasers extends System {
 
 //Extend system so we have access to damage and power management
 //Power for this is separate from systems proper.
-class Beam extends System{
+class Beam extends HeatMixin(System) {
   constructor(params){
     super(params);
     this.state = params.state || 'idle';
     this.charge = params.charge || 0;
-    this.heat = params.heat || 0;
-    this.heatRate = params.heatRate || 0.1;
+    this.heatRate = 0.01;
   }
   updateState(state){
     this.state = state;

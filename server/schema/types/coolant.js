@@ -11,8 +11,6 @@ type CoolantTank {
 	type: String
 	name: String
 	coolant: Coolant
-	damage: Float
-
 }
 
 type CoolantRegulator {
