@@ -166,7 +166,7 @@ export const PhaserBeam = ({chargePhasers, dischargePhasers, firePhasers, heat, 
     <p>Charge: {Math.round(charge * 100)}%</p>
     </div>
     <div className="chargeHolder">
-    <div className="charge" style={{transitionDuration: `${duration}s`, transitionTimingFunction: state === 'firing' ? 'linear' : 'ease-in-out', width: `${charge * 100}%`}}></div>
+    <div className="charge" style={{width: `${charge * 100}%`}}></div>
     </div>
     </Col>
     <Col sm={"4"} style={{marginTop:'27px'}}>
@@ -196,7 +196,7 @@ export const PhaserBeam = ({chargePhasers, dischargePhasers, firePhasers, heat, 
     </Col>
     <Col sm="10">
     <div className="chargeHolder">
-    <div className="charge" style={{transitionDuration: `${duration}s`, width: `${charge * 100}%`}}></div>
+    <div className="charge" style={{width: `${charge * 100}%`}}></div>
     </div>
     </Col>
     </Row>

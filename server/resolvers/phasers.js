@@ -20,6 +20,9 @@ export const PhaserMutations = {
   firePhaserBeam(root, args){
     App.handleEvent(args, 'firePhaserBeam');
   },
+  stopPhaserBeams(root, args) {
+    App.handleEvent(args, 'stopPhaserBeams');
+  },
   phaserArc(root, args){
     App.handleEvent(args, 'phaserArc');
   },

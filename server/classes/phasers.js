@@ -40,6 +40,9 @@ export default class Phasers extends System {
   fireBeam(beamId){
     this.beams.find(b => b.id === beamId).fire();
   }
+  stopBeams() {
+    this.beams.forEach(b => b.state = 'idle');
+  }
   //TODO: Add functions for updating the power level for the beams themselves
   // As well as damaging individual beams.
   updateArc(arc){
@@ -61,6 +64,10 @@ class Beam extends HeatMixin(System) {
   }
   updateCharge(charge){
     this.charge = Math.min(1, Math.max(0, charge));
+    if (charge <= 0 || charge >= 1) {
+      // Set the beam to 'idle'
+      this.state = "idle";
+    }
   }
   updateHeat(heat) {
     this.heat = Math.min(1, Math.max(0, heat));
@@ -69,15 +76,7 @@ class Beam extends HeatMixin(System) {
     this.heatRate = heatRate;
   }
   fire(){
-    if (this.heat > 0.9) return;
-    if (this.charge > 0){
-      this.charge = Math.min(1, Math.max(0, this.charge - 0.1));
-      this.heat = Math.min(1, Math.max(0, this.heat + 0.5 * this.heatRate))
-    }
-    if (this.charge > 0){
-      this.state = 'firing';
-    } else {
-      this.state = 'idle';
-    }
+    // Handle the rest of the functionality in the process
+    this.state = 'firing';
   }
 }
