@@ -15,7 +15,7 @@ export function HeatMixin(inheritClass) {
   return class Heat extends inheritClass {
     constructor(params) {
       super(params);
-      this.heat = params.heat || this.heatRate || 0;
+      this.heat = params.heat || this.heat || 0;
       this.heatRate = params.heatRate || this.heatRate || 1;
       this.coolant = params.coolant || this.coolant || 1;
     }
@@ -23,7 +23,7 @@ export function HeatMixin(inheritClass) {
       this.heat = Math.min(1, Math.max(0, heat));
     }
     setCoolant(coolant) {
-      this.heat = Math.min(1, Math.max(0, coolant));
+      this.coolant = Math.min(1, Math.max(0, coolant));
     }
     applyCoolant() {
       this.coolant = this.coolant - 0.037;

@@ -7,6 +7,40 @@ export const CoolantQueries = {
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
     }
     return returnVal;
+  },
+  systemCoolant(root, {simulatorId}) {
+    const returnSystems = [];
+    App.systems.filter(s => s.simulatorId === simulatorId)
+    .forEach(s => {
+      if (s.coolant && s.type !== 'Coolant') {
+        returnSystems.push({
+          systemId: s.id,
+          simulatorId: s.simulatorId,
+          subId: null,
+          subKey: null,
+          name: s.name,
+          coolant: s.coolant,
+        })
+      }
+      // Check for sub systems
+      Object.keys(s).forEach(key => {
+        if (s[key] instanceof Array) {
+          s[key].forEach(subsys => {
+            if (subsys.coolant) {
+              returnSystems.push({
+                systemId: s.id,
+                simulatorId: s.simulatorId,
+                subId: subsys.id,
+                subKey: key,
+                name: subsys.name || s.name,
+                coolant: subsys.coolant
+              })
+            }
+          });          
+        }
+      })
+    });
+    return returnSystems;
   }
 };
 

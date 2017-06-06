@@ -24,6 +24,7 @@ import PhaserCharging from './PhaserCharging';
 import ProbeConstruction from './ProbeConstruction';
 import StealthField from './StealthField';
 import CargoControl from './CargoControl';
+import CoolantControl from './CoolantControl';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -77,7 +78,8 @@ const Views = {
   PhaserCharging,
   ProbeConstruction,
   StealthField,
-  CargoControl
+  CargoControl,
+  CoolantControl
 };
 
 export const Widgets = {
