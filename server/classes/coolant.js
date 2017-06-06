@@ -11,11 +11,22 @@ export default class Coolant extends System {
     this.type = "Coolant";
     this.coolant = params.coolant || 1;
     this.coolantRate = params.coolantRate || 0.2; // Effectively 5 times as much coolant in the tank than in a system
+    this.transfer = params.transfer || null;
   }
   setCoolant(coolant) {
     this.coolant = Math.min(1, Math.max(0, coolant));
   }
   setCoolantRate(coolantRate) {
     this.coolantRate = coolantRate;
+  }
+  transferCoolant(sysId, subsysKey, subsysId) {
+    this.transfer = {
+      id: sysId,
+      key: subsysKey,
+      subsysId
+    }
+  }
+  cancelTransfer() {
+    this.transfer = null;
   }
 }

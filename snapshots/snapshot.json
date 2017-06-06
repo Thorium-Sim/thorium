@@ -437,7 +437,7 @@
 			},
 			"heat": 0,
 			"heatRate": 0.005,
-			"coolant": 1,
+			"coolant": 0.2,
 			"class": "Engine",
 			"type": "Engine",
 			"on": false,
@@ -491,7 +491,7 @@
 			},
 			"heat": 99.96000000000227,
 			"heatRate": 0.02,
-			"coolant": 1,
+			"coolant": 0.3,
 			"class": "Engine",
 			"type": "Engine",
 			"on": true,
@@ -869,7 +869,7 @@
 					},
 					"heat": 0,
 					"heatRate": 0.01,
-					"coolant": 1,
+					"coolant": 0.6,
 					"state": "idle",
 					"charge": 0
 				},
@@ -889,7 +889,7 @@
 					},
 					"heat": 0,
 					"heatRate": 0.01,
-					"coolant": 1,
+					"coolant": 0.4,
 					"state": "idle",
 					"charge": 0
 				}

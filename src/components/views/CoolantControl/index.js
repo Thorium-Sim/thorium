@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import gql from 'graphql-tag';
-import { Container, Row } from 'reactstrap';
+import { Container, Row, Button } from 'reactstrap';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
+import FontAwesome from 'react-fontawesome';
 
 import Tank from './tank';
 
@@ -57,12 +58,18 @@ class CoolantControl extends Component {
 }
 
 const CoolantBar = ({name, coolant}) => {
-  return <div className="coolant-bar">
+  return <div>
+  <div className="coolant-bar">
   <p>{name}</p>
   <CoolantLeftBracket />
   <CoolantMiddleBar />
   <div className="coolant-fill" style={{width: `calc(${coolant * 100}% - 15px)`}}></div>
   <CoolantRightBracket />
+  </div>
+  <div className="coolant-control-button">
+  <Button color="info"><FontAwesome name="arrow-left" /> Fill Reservoir</Button>
+  <Button color="primary">Fill Coolant <FontAwesome name="arrow-right" /></Button>
+  </div>
   </div>
 };
 
