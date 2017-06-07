@@ -9,7 +9,7 @@ const sendUpdate = (sys) => {
   if (sys.type === 'Sensors') pubsub.publish('sensorsUpdate', App.systems.filter(s => s.type === 'Sensors'));
   if (sys.type === 'LongRangeComm') pubsub.publish('longRangeCommunicationsUpdate', App.systems.filter(s => s.type === 'LRCommunications'));
   if (sys.type === 'InternalComm') pubsub.publish('internalCommUpdate', App.systems.filter(s => s.type === 'InternalComm'))
-  if (sys.type === 'Naivgation')   pubsub.publish('navigationUpdate', App.systems.filter(s => s.type === 'Navigation'));
+    if (sys.type === 'Naivgation')   pubsub.publish('navigationUpdate', App.systems.filter(s => s.type === 'Navigation'));
   if (sys.type === 'ShortRangeComm')   pubsub.publish('shortRangeCommUpdate', App.systems.filter(s => s.type === 'ShortRangeComm'));
   pubsub.publish('systemsUpdate', App.systems);
 }
@@ -48,5 +48,10 @@ App.on('changePower', ({systemId, power}) => {
 App.on('requestDamageReport', ({systemId}) => {
   const sys = App.systems.find(s => s.id === systemId);
   sys.requestReport();
+  sendUpdate(sys);
+});
+App.on('setCoolant', ({systemId, coolant}) => {
+  const sys = App.systems.find(s => s.id === systemId);
+  if (sys.setCoolant) sys.setCoolant(coolant);
   sendUpdate(sys);
 });

@@ -19,10 +19,38 @@ subscription CoolantUpdate($simulatorId: ID!){
   }
 }`;
 
+const COOLANT_SYSTEM_SUB = gql`
+subscription CoolanSystemtUpdate($simulatorId: ID!){
+  coolantSystemUpdate(simulatorId: $simulatorId) {
+    systemId
+    simulatorId
+    name
+    coolant
+    coolantRate
+  }
+}`;
+
+
 class CoolantControl extends Component {
   constructor(props){
     super(props);
     this.subscription = null;
+    this.coolantSystemSub = null;
+    this.mouseup = () => {
+      const coolant = this.props.data.coolant[0];
+      const mutation = gql`
+      mutation TransferCoolant($coolantId: ID!, $which: String){
+        transferCoolant(coolantId: $coolantId, which: $which)
+      }`;
+      const variables = {
+        coolantId: coolant.id,
+        which: "stop"
+      }
+      this.props.client.mutate({
+        mutation,
+        variables
+      })
+    }
   }
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
@@ -37,6 +65,35 @@ class CoolantControl extends Component {
         }
       });
     }
+    if (!this.coolantSystemSub && !nextProps.data.loading) {
+      this.coolantSystemSub = nextProps.data.subscribeToMore({
+        document: COOLANT_SYSTEM_SUB,
+        variables: {
+          simulatorId: nextProps.simulator.id
+        },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          const returnResult = Immutable.Map(previousResult);
+          return returnResult.merge({ systemCoolant: subscriptionData.data.coolantSystemUpdate }).toJS();
+        }
+      });
+    }
+  }
+  transferCoolant(systemId, which) {
+    const coolant = this.props.data.coolant[0];
+    const variables = {
+      coolantId: coolant.id,
+      systemId,
+      which
+    }
+    const mutation = gql`
+    mutation TransferCoolant($coolantId: ID!, $systemId: ID, $which: String){
+      transferCoolant(coolantId: $coolantId, systemId: $systemId, which: $which)
+    }`;
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+    document.addEventListener('mouseup', this.mouseup);
   }
   render(){
     if (this.props.data.loading) return null;
@@ -48,7 +105,7 @@ class CoolantControl extends Component {
     <div className="coolant-containers">
     {
       systemCoolant.map(s => {
-        return <CoolantBar {...s} />
+        return <CoolantBar {...s} transferCoolant={this.transferCoolant.bind(this)} />
       })
     }
     </div>
@@ -57,7 +114,7 @@ class CoolantControl extends Component {
   }
 }
 
-const CoolantBar = ({name, coolant}) => {
+const CoolantBar = ({systemId, name, coolant, transferCoolant}) => {
   return <div>
   <div className="coolant-bar">
   <p>{name}</p>
@@ -67,8 +124,8 @@ const CoolantBar = ({name, coolant}) => {
   <CoolantRightBracket />
   </div>
   <div className="coolant-control-button">
-  <Button color="info"><FontAwesome name="arrow-left" /> Fill Reservoir</Button>
-  <Button color="primary">Fill Coolant <FontAwesome name="arrow-right" /></Button>
+  <Button color="info" onMouseDown={transferCoolant.bind(this, systemId, "tank")}><FontAwesome name="arrow-left" /> Fill Reservoir</Button>
+  <Button color="primary" onMouseDown={transferCoolant.bind(this, systemId, "system")}>Fill Coolant <FontAwesome name="arrow-right" /></Button>
   </div>
   </div>
 };
@@ -101,8 +158,6 @@ query Coolant($simulatorId: ID!){
   systemCoolant(simulatorId: $simulatorId) {
     systemId
     simulatorId
-    subId
-    subKey
     name
     coolant
     coolantRate

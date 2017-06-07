@@ -26,8 +26,6 @@ type CoolantRegulator {
 type SystemCoolant {
 	systemId: ID
 	simulatorId: ID
-	subId: ID
-	subKey: String
 	name: String
 	coolant: Float
 	coolantRate: Float

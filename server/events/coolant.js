@@ -5,15 +5,13 @@ App.on('setCoolantTank', ({id, coolant}) => {
   App.systems.find(s => s.id === id).setCoolant(coolant);
   pubsub.publish('coolantUpdate', App.systems.filter(s => s.type === 'Coolant'));
 });
-App.on('transferCoolant', ({coolantId, systemId, subsystemId, amount}) => {
+App.on('transferCoolant', ({coolantId, systemId, which}) => {
   const coolant = App.systems.find(s => s.id === coolantId);
-  coolant.setCoolant(coolant.coolantRate * amount * -1);
-  // Then update the system
-  const system = App.systems.find(s => s.id === systemId);
-  if (system.type === 'Phaser') {
-    system.updateBeamCoolant(subsystemId, amount);
-  } else {
-    system.setCoolant(amount);
-  }
+  coolant.transferCoolant(systemId, which);
+  pubsub.publish('coolantUpdate', App.systems.filter(s => s.type === 'Coolant'));
+});
+App.on('cancelCoolantTransfer', ({coolantId}) => {
+  const coolant = App.systems.find(s => s.id === coolantId);
+  coolant.cancelTransfer();
   pubsub.publish('coolantUpdate', App.systems.filter(s => s.type === 'Coolant'));
 });

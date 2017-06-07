@@ -19,12 +19,13 @@ export default class Coolant extends System {
   setCoolantRate(coolantRate) {
     this.coolantRate = coolantRate;
   }
-  transferCoolant(sysId, subsysKey, subsysId) {
-    this.transfer = {
-      id: sysId,
-      key: subsysKey,
-      subsysId
+  transferCoolant(sysId, which) {
+    let sign = 1;
+    if (which === "tank") {
+      // Into the tank
+      sign = -1;
     }
+    this.transfer = {sysId, sign}
   }
   cancelTransfer() {
     this.transfer = null;
