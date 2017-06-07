@@ -155,7 +155,7 @@ class PhaserCharging extends Component {
   }
 }
 
-export const PhaserBeam = ({chargePhasers, dischargePhasers, firePhasers, heat, targeting, index, id, charge, state, selectedBank = null, selectPhaserBank = () => {}}) => {
+export const PhaserBeam = ({chargePhasers, dischargePhasers, coolPhasers, firePhasers, heat, targeting, index, id, charge, state, selectedBank = null, selectPhaserBank = () => {}}) => {
   const duration = state === 'charging' ? 2 : 0.5;
   if (targeting) {
     return <div>
@@ -181,11 +181,14 @@ export const PhaserBeam = ({chargePhasers, dischargePhasers, firePhasers, heat, 
     </Col>
     </Row>
     <Row>
-    <Col sm="3">
+    <Col sm="2">
     <Button block color="primary"onClick={chargePhasers.bind(this, id)}>Charge</Button>
     </Col>
-    <Col sm={3}>
+    <Col sm="2">
     <Button block color="warning"onClick={dischargePhasers.bind(this, id)}>Discharge</Button>
+    </Col>
+    <Col sm="2">
+    <Button block color="info" onMouseDown={coolPhasers.bind(this, id)}>Coolant</Button>
     </Col>
     </Row>
     </div>

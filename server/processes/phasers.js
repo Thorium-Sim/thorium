@@ -6,6 +6,10 @@ const updatePhasers = () => {
   const phaserFireRate = -0.5 / 5;
   const phaserDischargeRate = -0.7 / 5;
   App.systems.filter(p => p.type === 'Phasers').forEach(sys => {
+    // Apply Coolant
+    if (sys.cooling) {
+      App.handleEvent({id: sys.id, beamId: sys.cooling}, 'applyPhaserCoolant');
+    }
     sys.beams.filter(b => b.state !== 'idle').forEach(beam => {
       let rate = phaserChargeRate;
       if (beam.state === 'discharging') rate = phaserDischargeRate;

@@ -31,6 +31,9 @@ export const PhaserMutations = {
   },
   setPhaserBeamHeat(root, args) {
     App.handleEvent(args, 'setPhaserBeamHeat');
+  },
+  coolPhaserBeam(root, args) {
+    App.handleEvent(args, 'coolPhaserBeam');
   }
 };
 

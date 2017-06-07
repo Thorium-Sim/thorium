@@ -7,6 +7,7 @@ type Phaser {
   power: Power
   damage: Damage
   arc: Float
+  coolant: Float
   beams: [PhaserBeam]
 }
 

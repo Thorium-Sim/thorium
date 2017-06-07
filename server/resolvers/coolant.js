@@ -1,11 +1,12 @@
 import App from '../../app';
 
 export const CoolantQueries = {
-  coolant(root, {simulatorId}) {
+  coolant(root, {simulatorId, systemId}) {
     let returnVal = App.systems.filter(s => s.type === "Coolant");
     if (simulatorId) {
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
     }
+    if (systemId) returnVal = returnVal.filter(s => s.id === systemId);
     return returnVal;
   },
   systemCoolant(root, {simulatorId}) {
