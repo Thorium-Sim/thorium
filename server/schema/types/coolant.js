@@ -1,8 +1,8 @@
 export default `
 type Coolant {
 	temperature: Float
-	quantity: Int
-	max: Int
+	quantity: Float
+	rate: Float
 }
 
 type CoolantTank {
@@ -10,9 +10,8 @@ type CoolantTank {
 	simulatorId: ID
 	type: String
 	name: String
-	coolant: Coolant
-	damage: Float
-
+	coolant: Float
+	coolantRate: Float
 }
 
 type CoolantRegulator {
@@ -22,5 +21,13 @@ type CoolantRegulator {
 	name: String
 	coolant: Coolant
 	damage: Float
+}
+
+type SystemCoolant {
+	systemId: ID
+	simulatorId: ID
+	name: String
+	coolant: Float
+	coolantRate: Float
 }
 `;

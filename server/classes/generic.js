@@ -11,6 +11,27 @@ const defaultDamage = {
   requested: false
 };
 
+export function HeatMixin(inheritClass) {
+  return class Heat extends inheritClass {
+    constructor(params) {
+      super(params);
+      this.heat = params.heat || this.heat || 0;
+      this.heatRate = params.heatRate || this.heatRate || 1;
+      this.coolant = params.coolant || this.coolant || 1;
+    }
+    setHeat(heat) {
+      this.heat = Math.min(1, Math.max(0, heat));
+    }
+    setCoolant(coolant) {
+      this.coolant = Math.min(1, Math.max(0, coolant));
+    }
+    applyCoolant() {
+      this.coolant = this.coolant - 0.037;
+      this.heat = this.heat - 0.89;
+    }
+  }
+}
+
 export class System {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();

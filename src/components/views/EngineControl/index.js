@@ -20,6 +20,7 @@ subscription HeatChanged{
 	heatChange{
 		id
 		heat
+		coolant
 	}
 }`;
 
@@ -64,13 +65,12 @@ class EngineControl extends Component {
 			this.heatChangeSubscription = nextProps.data.subscribeToMore({
 				document: HEATCHANGE_SUB,
 				updateQuery: (previousResult, {subscriptionData}) => {
-					previousResult.engines = previousResult.engines.map(engine => {
-						if (engine.id === subscriptionData.data.heatChange.id){
-							engine.heat = subscriptionData.data.heatChange.heat
-						} 
-						return engine;
-					})
-					return previousResult;
+					const engineIndex = previousResult.engines.findIndex(e => e.id === subscriptionData.data.heatChange.id);
+					const engine = Immutable.Map(previousResult.engines[engineIndex]);
+					engine.set('heat', subscriptionData.data.heatChange.heat);
+					engine.set('coolant', subscriptionData.data.heatChange.coolant);
+					return {engines: Immutable.List(previousResult.engines).set(engineIndex, engine).toJS()}
+					
 				},
 			});
 		}
@@ -173,6 +173,7 @@ query getEngines($simulatorId: ID!){
 		}
 		heat
 		speed
+		coolant
 	}
 }
 `;

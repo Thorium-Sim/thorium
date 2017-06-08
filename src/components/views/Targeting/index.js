@@ -6,7 +6,7 @@ import Measure from 'react-measure';
 import Immutable from 'immutable';
 import Grid from './grid';
 import TorpedoLoading from '../TorpedoLoading';
-import {PhaserArc, PhaserBeam} from '../PhaserCharging';
+import {/*PhaserArc, */PhaserBeam} from '../PhaserCharging';
 
 const TARGETING_QUERY = gql`
 query Targeting($simulatorId: ID){
@@ -56,6 +56,7 @@ query Targeting($simulatorId: ID){
       heat
     }
     arc
+    coolant
   }
 }`;
 
@@ -111,6 +112,7 @@ subscription PhasersUpdate($simulatorId: ID!){
       heat
     }
     arc
+    coolant
   }
 }`;
 
@@ -123,7 +125,33 @@ class Targeting extends Component {
     this.phasersSubscription = null;
     this.phaserLoopId = null;
     this.mouseup = () => {
-      this.phaserLoopId = null;
+      const phasers = this.props.data.phasers[0];
+      const mutation = gql`
+      mutation StopFiring($id: ID!){
+        stopPhaserBeams(id: $id)
+      }`;
+      const variables = {
+        id: phasers.id,
+      }
+      this.props.client.mutate({
+        mutation,
+        variables
+      })
+    }
+    this.stopCoolant = () => {
+      const phasers = this.props.data.phasers[0];
+      const mutation = gql`
+      mutation PhaserCool($id: ID!, $beamId: ID){
+        coolPhaserBeam(id: $id, beamId:$beamId)
+      }`;
+      const variables = {
+        id: phasers.id,
+        beamId: null
+      }
+      this.props.client.mutate({
+        mutation,
+        variables
+      })
     }
   }
   componentWillReceiveProps(nextProps){
@@ -222,15 +250,23 @@ class Targeting extends Component {
       variables
     })
   }
-  firePhasers(beamId) {
-    this.phaserLoopId = true;
-    this.phaserLoop.call(this, beamId);
-    document.addEventListener('mouseup', this.mouseup);
-  }
-  phaserLoop(beamId){
-    if (!this.phaserLoopId){
-      return false;
+  coolPhasers(beamId) {
+    const phasers = this.props.data.phasers[0];
+    const mutation = gql`
+    mutation PhaserCool($id: ID!, $beamId: ID){
+      coolPhaserBeam(id: $id, beamId:$beamId)
+    }`;
+    const variables = {
+      id: phasers.id,
+      beamId
     }
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
+    document.addEventListener('mouseup', this.stopCoolant);
+  }
+  firePhasers(beamId) {
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
     mutation FirePhasers($id: ID!, $beamId: ID!){
@@ -243,8 +279,8 @@ class Targeting extends Component {
     this.props.client.mutate({
       mutation,
       variables
-    })
-    this.phaserLoopId = setTimeout(this.phaserLoop.bind(this, beamId), 500);
+    });
+    document.addEventListener('mouseup', this.mouseup);
   }
   render(){
     if (this.props.data.loading) return null;
@@ -275,48 +311,54 @@ class Targeting extends Component {
       index={i + 1}
       chargePhasers={this.chargePhasers.bind(this)}
       dischargePhasers={this.dischargePhasers.bind(this)}
+      coolPhasers={this.coolPhasers.bind(this)}
       firePhasers={this.firePhasers.bind(this)}
       targeting={true}
       />)}
-    <PhaserArc client={this.props.client} phaserId={phasers.id} arc={phasers.arc} />
+    <Row>
+    <Col sm="8">
+    <PhaserCoolant coolant={phasers.coolant} />
     </Col>
     </Row>
-    <Row className="target-area">
-    <Col sm={3}>
-    {targetedContact && 
-      <div>
-      <h4>Targeted Contact</h4>
-      <Media>
-      <Media left href="#">
-      <Media object src={targetedContact.pictureUrl} alt="Generic placeholder image" />
-      </Media>
-      <Media body>
-      <Media heading>
-      {targetedContact.name}
-      </Media>
-      </Media>
-      </Media>
-      <Button block color="warning" onClick={this.untargetContact.bind(this, targetedContact.id)}>Unlock Target</Button>
-      </div>
-    }
+  {/*<PhaserArc client={this.props.client} phaserId={phasers.id} arc={phasers.arc} />*/}
+  </Col>
+  </Row>
+  <Row className="target-area">
+  <Col sm={3}>
+  {targetedContact && 
+    <div>
+    <h4>Targeted Contact</h4>
+    <Media>
+    <Media left href="#">
+    <Media object src={targetedContact.pictureUrl} alt="Generic placeholder image" />
+    </Media>
+    <Media body>
+    <Media heading>
+    {targetedContact.name}
+    </Media>
+    </Media>
+    </Media>
+    <Button block color="warning" onClick={this.untargetContact.bind(this, targetedContact.id)}>Unlock Target</Button>
+    </div>
+  }
+  </Col>
+  <Col sm={4}>
+  {targetedContact && 
+    <Row>
+    <Col sm={12}>
+    <h4>Systems Targeting</h4>
     </Col>
-    <Col sm={4}>
-    {targetedContact && 
-      <Row>
-      <Col sm={12}>
-      <h4>Systems Targeting</h4>
-      </Col>
-      {
-        ["General", "Engines", "Sensors", "Tractor Beam", "Communications", "Weapons", "Shields"].map(s => {
-          return <Col key={`system-${s}`} sm={6}>
-          <label className="custom-control custom-radio">
-          <input id="radio1" name="system" type="radio" onChange={this.targetSystem.bind(this, targetedContact.id, s)} checked={targetedContact.system === s} className="custom-control-input" />
-          <span className="custom-control-indicator"></span>
-          <span className="custom-control-description">{s}</span>
-          </label>
-          </Col>
-        })
-      }
+    {
+      ["General", "Engines", "Sensors", "Tractor Beam", "Communications", "Weapons", "Shields"].map(s => {
+        return <Col key={`system-${s}`} sm={6}>
+        <label className="custom-control custom-radio">
+        <input id="radio1" name="system" type="radio" onChange={this.targetSystem.bind(this, targetedContact.id, s)} checked={targetedContact.system === s} className="custom-control-input" />
+        <span className="custom-control-indicator"></span>
+        <span className="custom-control-description">{s}</span>
+        </label>
+        </Col>
+      })
+    }
    {/* Uncomment for other targeting
     <Col sm={6}>
     <label className="custom-control custom-radio">
@@ -336,6 +378,14 @@ class Targeting extends Component {
 }
 }
 
+const PhaserCoolant = ({coolant}) => {
+  return <div>
+  <p>Coolant</p>
+  <div className="chargeHolder coolantHolder">
+  <div className="coolant" style={{width: `${coolant * 100}%`}}></div>
+  </div>
+  </div>
+}
 export default graphql(TARGETING_QUERY, {
   options: (ownProps) => ({ variables: { simulatorId: ownProps.simulator.id } }),
 })(withApollo(Targeting));

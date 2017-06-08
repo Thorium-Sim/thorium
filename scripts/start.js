@@ -186,6 +186,7 @@ function runDevServer(host, port, protocol) {
     // Silence WebpackDevServer's own logs since they're generally not useful.
     // It will still show compile warnings and errors with this setting.
     clientLogLevel: 'none',
+    disableHostCheck: true,
     // By default WebpackDevServer serves physical files from current directory
     // in addition to all the virtual build products that it serves from memory.
     // This is confusing because those files won’t automatically be available in

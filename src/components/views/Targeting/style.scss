@@ -8,7 +8,10 @@
     margin-right: 20px;
   }
 
-
+  p {
+    margin-top: 1rem;
+    margin-bottom: 0;
+  }
   .target-area {
     margin-top: 50px;
   }
@@ -17,31 +20,57 @@
     width: 100%;
     justify-content: space-between;
   }
-  .phaserBeam{
-    .chargeHolder{
-      background-color: black;
-      border: solid 1px white;
-      height: 30px;
-      position: relative;
-      .charge, .heat {
-        position: absolute;
-        left: 0%;
-        height: 100%;
-        background: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 100%), linear-gradient(to right, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
-        background-size: 5px 3px, 100%;
-      }
-      .charge {
-        transition: width 0.5s ease-in-out;
-        background-color: #ffff00;
-      }
-      .heat {
-        transition: width 0.5s linear;
-        background-color: #ff0000;
-      }
+  .coolantHolder {
+    margin-bottom: 20px;
+  }
+  .chargeHolder{
+    background-color: black;
+    border: solid 1px white;
+    height: 30px;
+    position: relative;
+    .charge, .heat, .coolant {
+      position: absolute;
+      left: 0%;
+      height: 100%;
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 100%), linear-gradient(to right, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
+      background-size: 5px 3px, 100%;
+    }
+    .charge {
+      //transition: width 0.5s ease-in-out;
+      background-color: #ffff00;
+    }
+    .heat {
+      //transition: width 0.5s linear;
+      background-color: #ff0000;
+    }
+    .coolant {
+      animation: 2s ease-in-out 0s infinite coolant_glow;
+          transition: width 0.2s ease-out;
+      background-color: #038;
     }
   }
 }
 
+@keyframes coolant_glow {
+  0% {
+    box-shadow:
+    inset 0 0 50px #3ff,
+    inset 20px 0 160px #30f,
+    inset -20px 0 160px #0ff
+  }
+  50% {
+    box-shadow:
+    inset 0 0 30px #9ff,
+    inset 20px 0 160px #30f,
+    inset -20px 0 160px #0ff
+  }
+  100% {
+    box-shadow:
+    inset 0 0 50px #3ff,
+    inset 20px 0 160px #30f,
+    inset -20px 0 160px #0ff
+  }
+}
 .targeting-core {
   img{
     width: 28px;

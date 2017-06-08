@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 184,
+	"_eventsCount": 187,
 	"simulators": [
 		{
 			"timeline": [],
@@ -249,7 +249,8 @@
 					"deleted": false,
 					"sent": false
 				}
-			]
+			],
+			"messageSent": false
 		},
 		{
 			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb3d",
@@ -434,6 +435,9 @@
 				"damaged": false,
 				"report": null
 			},
+			"heat": 0,
+			"heatRate": 0.05,
+			"coolant": 0.2,
 			"class": "Engine",
 			"type": "Engine",
 			"on": false,
@@ -459,10 +463,7 @@
 					"number": 1.25
 				}
 			],
-			"speed": 5,
-			"heat": 0,
-			"heatRate": 0.005,
-			"coolant": 0
+			"speed": 5
 		},
 		{
 			"id": "test-engine-warp",
@@ -488,6 +489,9 @@
 				"damaged": false,
 				"report": null
 			},
+			"heat": 99.96000000000227,
+			"heatRate": 0.02,
+			"coolant": 0.3,
 			"class": "Engine",
 			"type": "Engine",
 			"on": true,
@@ -533,10 +537,7 @@
 					"number": 9.54
 				}
 			],
-			"speed": 3,
-			"heat": 99.96000000000227,
-			"heatRate": 0.02,
-			"coolant": 0
+			"speed": 3
 		},
 		{
 			"id": "6fdc098f-d4b3-4bbf-a312-0f6b9bfc558e",
@@ -558,7 +559,8 @@
 			"requestedTarget": null,
 			"destination": null,
 			"charge": 0,
-			"state": "Inactive"
+			"state": "Inactive",
+			"stealthCompromised": false
 		},
 		{
 			"id": "c230c51b-c2fe-4c1b-9b19-5323cfd6b2b6",
@@ -799,7 +801,7 @@
 			"model": "battery",
 			"powerOutput": 120,
 			"efficiency": 1,
-			"batteryChargeLevel": 0.7270549999999748,
+			"batteryChargeLevel": 0.7202349999999736,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -865,6 +867,9 @@
 						"damaged": false,
 						"report": null
 					},
+					"heat": 0,
+					"heatRate": 0.01,
+					"coolant": 0.6,
 					"state": "idle",
 					"charge": 0
 				},
@@ -882,6 +887,9 @@
 						"damaged": false,
 						"report": null
 					},
+					"heat": 0,
+					"heatRate": 0.01,
+					"coolant": 0.4,
 					"state": "idle",
 					"charge": 0
 				}
@@ -905,7 +913,8 @@
 			"type": "Torpedo",
 			"loaded": false,
 			"state": "idle",
-			"inventory": []
+			"inventory": [],
+			"stealthCompromised": false
 		},
 		{
 			"id": "5e22f218-e004-47fc-b09d-0d41e9bb85b4",
@@ -1306,7 +1315,8 @@
 					"size": 12,
 					"count": 20
 				}
-			]
+			],
+			"stealthCompromised": false
 		},
 		{
 			"id": "1d38f989-e770-440c-ad86-52770caaf12b",
@@ -1334,6 +1344,26 @@
 				"port": 0,
 				"starboard": 0
 			}
+		},
+		{
+			"id": "ea8f37b6-f835-40c6-8dcb-a1422d11620a",
+			"simulatorId": "test",
+			"name": null,
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false
+			},
+			"class": "Coolant",
+			"type": "Coolant",
+			"coolant": 1,
+			"coolantRate": 0.2
 		}
 	],
 	"clients": [
@@ -1395,8 +1425,7 @@
 			"roomCount": {
 				"257fb45e-ac29-4313-a1b9-7e9530a37f83": 2
 			},
-			"metadata": {},
-			"count": 2
+			"metadata": {}
 		},
 		{
 			"class": "InventoryItem",
@@ -1406,8 +1435,7 @@
 			"roomCount": {
 				"257fb45e-ac29-4313-a1b9-7e9530a37f83": 2
 			},
-			"metadata": {},
-			"count": 2
+			"metadata": {}
 		}
 	],
 	"coreLayouts": [
@@ -1859,7 +1887,7 @@
 			"class": "AssetObject"
 		}
 	],
-	"snapshotVersion": 63,
-	"version": 63,
-	"timestamp": "2017-05-29T17:14:49.830Z"
+	"snapshotVersion": 61,
+	"version": 61,
+	"timestamp": "2017-06-05T23:22:37.506Z"
 }

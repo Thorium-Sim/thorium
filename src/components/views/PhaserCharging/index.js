@@ -155,7 +155,7 @@ class PhaserCharging extends Component {
   }
 }
 
-export const PhaserBeam = ({chargePhasers, dischargePhasers, firePhasers, heat, targeting, index, id, charge, state, selectedBank = null, selectPhaserBank = () => {}}) => {
+export const PhaserBeam = ({chargePhasers, dischargePhasers, coolPhasers, firePhasers, heat, targeting, index, id, charge, state, selectedBank = null, selectPhaserBank = () => {}}) => {
   const duration = state === 'charging' ? 2 : 0.5;
   if (targeting) {
     return <div>
@@ -166,7 +166,7 @@ export const PhaserBeam = ({chargePhasers, dischargePhasers, firePhasers, heat, 
     <p>Charge: {Math.round(charge * 100)}%</p>
     </div>
     <div className="chargeHolder">
-    <div className="charge" style={{transitionDuration: `${duration}s`, transitionTimingFunction: state === 'firing' ? 'linear' : 'ease-in-out', width: `${charge * 100}%`}}></div>
+    <div className="charge" style={{width: `${charge * 100}%`}}></div>
     </div>
     </Col>
     <Col sm={"4"} style={{marginTop:'27px'}}>
@@ -181,11 +181,14 @@ export const PhaserBeam = ({chargePhasers, dischargePhasers, firePhasers, heat, 
     </Col>
     </Row>
     <Row>
-    <Col sm="3">
+    <Col sm="2">
     <Button block color="primary"onClick={chargePhasers.bind(this, id)}>Charge</Button>
     </Col>
-    <Col sm={3}>
+    <Col sm="2">
     <Button block color="warning"onClick={dischargePhasers.bind(this, id)}>Discharge</Button>
+    </Col>
+    <Col sm="2">
+    <Button block color="info" onMouseDown={coolPhasers.bind(this, id)}>Coolant</Button>
     </Col>
     </Row>
     </div>
@@ -196,7 +199,7 @@ export const PhaserBeam = ({chargePhasers, dischargePhasers, firePhasers, heat, 
     </Col>
     <Col sm="10">
     <div className="chargeHolder">
-    <div className="charge" style={{transitionDuration: `${duration}s`, width: `${charge * 100}%`}}></div>
+    <div className="charge" style={{width: `${charge * 100}%`}}></div>
     </div>
     </Col>
     </Row>

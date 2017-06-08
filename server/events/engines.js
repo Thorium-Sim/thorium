@@ -49,8 +49,18 @@ App.on('speedChange', (param) => {
 App.on('addHeat', ({ id, heat }) => {
   App.systems.forEach((system) => {
     if (system.id === id) {
-      system.addHeat(heat);
+      system.setHeat(heat);
       pubsub.publish('heatChange', system);
     }
   });
+});
+App.on('engineCool', ({id, state}) => {
+  App.systems.find(s => s.id === id).cool(state);
+});
+App.on('applyEngineCoolant', ({id}) => {
+  const engine = App.systems.find(s => s.id === id);
+  engine.setCoolant(Math.min(1, Math.max(0, engine.coolant - 0.005)));
+  engine.setHeat(Math.min(1, Math.max(0, engine.heat - 0.01)));
+  if (engine.coolant === 0 || engine.heat === 0) engine.cool(false);
+  pubsub.publish('heatChange', engine);
 });

@@ -17,7 +17,9 @@
     "max-len": 0,
     "comma-dangle": 0,
     "no-underscore-dangle": 0,
-    "no-restricted-globals": 0
+    "no-restricted-globals": 0,
+    "jsx-a11y/alt-text": 0,
+    "jsx-a11y/href-no-hash": 0
   },
   "env": {
     "mocha": true
