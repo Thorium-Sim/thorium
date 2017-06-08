@@ -17,8 +17,13 @@ export default class LongRangeComm extends System {
     this.class = 'LongRangeComm';
     this.name = params.name || 'Long Range Communications';
     this.messages = [];
+    this.messageSent = false;
     const messages = params.messages || [];
     messages.forEach(m => this.messages.push(new LRMessage(m)));
+  }
+  get stealthFactor() {
+    if (this.messageSent) return 0.4;
+    return 0.1;
   }
   createMessage(message, crew, decoded, sender) {
     const params = { message, crew, sender, sent: false };
@@ -35,6 +40,8 @@ export default class LongRangeComm extends System {
   }
   sendMessage(message){
     this.messages.find(m => m.id === message).sendMessage();
+    this.messageSent = true;
+    setTimeout((() => (this.messageSent = false)), 2000);
   }
   deleteMessage(message){
     this.messages.find(m => m.id === message).deleteMessage();

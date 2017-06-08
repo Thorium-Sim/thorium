@@ -18,11 +18,21 @@ export default class Phasers extends System {
       params.beams.forEach(b => this.beams.push(new Beam(b)));
     }
   }
+  get stealthFactor() {
+    const length = this.beams.length;
+    return this.beams.map(b => b.charge + b.heat)
+    .reduce((prev, next) => {
+      return prev + next/length;
+    }, 0)
+  }
   updateBeamState(beamId, state){
     this.beams.find(b => b.id === beamId).updateState(state);
   }
   updateBeamCharge(beamId, charge){
     this.beams.find(b => b.id === beamId).updateCharge(charge);
+  }
+  updateBeamHeat(beamId, heat) {
+    this.beams.find(b => b.id === beamId).updateHeat(heat);
   }
   fireBeam(beamId){
     this.beams.find(b => b.id === beamId).fire();
@@ -41,6 +51,8 @@ class Beam extends System{
     super(params);
     this.state = params.state || 'idle';
     this.charge = params.charge || 0;
+    this.heat = params.heat || 0;
+    this.heatRate = params.heatRate || 0.1;
   }
   updateState(state){
     this.state = state;
@@ -48,8 +60,18 @@ class Beam extends System{
   updateCharge(charge){
     this.charge = Math.min(1, Math.max(0, charge));
   }
+  updateHeat(heat) {
+    this.heat = Math.min(1, Math.max(0, heat));
+  }
+  updateHeatRate(heatRate) {
+    this.heatRate = heatRate;
+  }
   fire(){
-    this.charge = Math.min(1, Math.max(0, this.charge - 0.1));
+    if (this.heat > 0.9) return;
+    if (this.charge > 0){
+      this.charge = Math.min(1, Math.max(0, this.charge - 0.1));
+      this.heat = Math.min(1, Math.max(0, this.heat + 0.5 * this.heatRate))
+    }
     if (this.charge > 0){
       this.state = 'firing';
     } else {

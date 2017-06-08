@@ -47,6 +47,12 @@ class StealthField extends Component {
     this.loop = this.loop.bind(this);
     window.requestAnimationFrame(this.loop);
   }
+  componentDidMount(){
+    this.props.data.startPolling(1000);
+  }
+  componentWillUnmount() {
+    this.props.data.stopPolling();
+  }
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
       this.subscription = nextProps.data.subscribeToMore({

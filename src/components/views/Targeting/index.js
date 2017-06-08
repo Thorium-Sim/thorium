@@ -53,6 +53,7 @@ query Targeting($simulatorId: ID){
       id
       state
       charge
+      heat
     }
     arc
   }
@@ -107,6 +108,7 @@ subscription PhasersUpdate($simulatorId: ID!){
       id
       state
       charge
+      heat
     }
     arc
   }

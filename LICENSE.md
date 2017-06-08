@@ -1,7 +1,6 @@
 Thorium
 Copyright (c) 2016 [R. Alex Anderson](http://ralexanderson.com)
 
-
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software with the following restrictions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.

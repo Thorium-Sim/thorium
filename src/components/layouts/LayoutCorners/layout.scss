@@ -11,6 +11,11 @@ body{
 	margin:0;
 }
 
+.actionsContainer {
+	&.flash {
+		filter: invert(1);
+	}
+}
 .alertBackground-5 {
 	background-color: $alert5;
 }

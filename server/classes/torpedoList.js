@@ -10,6 +10,7 @@ export default class Torpedo extends System {
     this.loaded = params.loaded || false;
     this.state = params.state || 'idle';
     this.inventory = []
+    this.stealthCompromised = false;
     const warheads = params.inventory || [];
     warheads.forEach(w => this.inventory.push(new Warhead(w)));
   }
@@ -46,6 +47,8 @@ export default class Torpedo extends System {
     this.removeWarhead(this.loaded);
     this.loaded = false;
     this.state = 'fired';
+    this.stealthCompromised = true;
+    setTimeout((() => this.stealthCompromised = false), 10 * 1000);
   }
 }
 

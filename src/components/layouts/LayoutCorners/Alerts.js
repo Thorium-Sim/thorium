@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import { Alert } from 'reactstrap';
+import gql from 'graphql-tag';
+import { withApollo } from 'react-apollo';
 
 const holderStyle = {
   position: 'absolute',
@@ -18,8 +20,6 @@ subscription Notifications($simulatorId: ID!, $station: String){
     duration
   }
 }`;
-import gql from 'graphql-tag';
-import { withApollo } from 'react-apollo';
 /*
    title: String
   body: String

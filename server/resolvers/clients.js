@@ -1,11 +1,18 @@
 import App from '../../app';
 
 export const ClientQueries = {
-  clients: (root, { clientId }) => {
+  clients: (root, { clientId, simulatorId, stationName }) => {
+    let returnVal = App.clients;
     if (clientId) {
-      return App.clients.filter(c => c.id === clientId);
+      returnVal = returnVal.filter(c => c.id === clientId);
     }
-    return App.clients.filter(c => c.connected);
+    if (simulatorId) {
+      returnVal = returnVal.filter(c => c.simulatorId === simulatorId);
+    }
+    if (stationName) {
+      returnVal = returnVal.filter(c => c.station === stationName);
+    }
+    return returnVal.filter(c => c.connected);
   },
 };
 

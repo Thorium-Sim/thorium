@@ -17,5 +17,6 @@ type PhaserBeam {
   charge: Float
   # One of 'idle', 'discharging', charging', 'firing'
   state: String
+  heat: Float
 }
 `;
