@@ -111,6 +111,7 @@ function parseJSONLiteral(ast) {
   TractorBeamMutations
   );
 
+
   const subscriptionMap = Object.assign({},
     FlightStructureSubscriptions,
     ClientSubscriptions,
