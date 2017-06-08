@@ -24,6 +24,9 @@ export const EngineMutations = {
     App.handleEvent({ id, heat }, 'addHeat');
     return '';
   },
+  engineCool(root, args) {
+    App.handleEvent(args, "engineCool");
+  }
 };
 
 export const EngineSubscriptions = {

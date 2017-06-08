@@ -45,6 +45,7 @@
     }
     .coolant {
       animation: 2s ease-in-out 0s infinite coolant_glow;
+          transition: width 0.2s ease-out;
       background-color: #038;
     }
   }

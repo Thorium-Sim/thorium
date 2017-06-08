@@ -436,7 +436,7 @@
 				"report": null
 			},
 			"heat": 0,
-			"heatRate": 0.005,
+			"heatRate": 0.05,
 			"coolant": 0.2,
 			"class": "Engine",
 			"type": "Engine",

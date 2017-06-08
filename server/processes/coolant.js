@@ -25,6 +25,6 @@ const updateCoolant = () => {
     }));
     pubsub.publish('coolantUpdate', App.systems.filter(s => s.type === 'Coolant'));
   });
-  setTimeout(updateCoolant, 40);
+  setTimeout(updateCoolant, 33); // 30 FPS
 };
 updateCoolant();

@@ -8,6 +8,7 @@ export default class Engine extends HeatMixin(System) {
     this.on = params.on || false;
     this.speeds = params.speeds || [];
     this.speed = params.speed || -1;
+    this.cooling = false;
   }
   get stealthFactor() {
     const topSpeed = this.speeds.reduce((prev, next) => {
@@ -25,5 +26,8 @@ export default class Engine extends HeatMixin(System) {
     this.speed = speed;
     this.on = on;
   }
+  cool(state = true) {
+    this.cooling = state;
+  } 
 }
 

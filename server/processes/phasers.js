@@ -32,7 +32,7 @@ const updatePhasers = () => {
       App.handleEvent({id: sys.id, beamId: beam.id, charge}, 'setPhaserBeamCharge');
     })
   })
-  setTimeout(updatePhasers, 20);
+  setTimeout(updatePhasers, 33); // 30 FPS
 };
 updatePhasers();
 

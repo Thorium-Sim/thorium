@@ -25,6 +25,7 @@
     bottom: 0;
     position: absolute;
     background-color: #038;
+    transition: height 0.2s ease-out;
     animation: 2s ease-in-out 0s infinite coolant_glow;
   }
   .coolant-bar {
@@ -47,6 +48,7 @@
     background-color: #038;
     height: 89%;
     z-index: -1;
+    transition: width 0.2s ease-out;
   }
   .coolant-bracket {
     height: 74px;
