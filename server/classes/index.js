@@ -22,3 +22,4 @@ export Phasers from './phasers';
 export Targeting from './targeting';
 export Probes from './probes';
 export StealthField from './stealthField';
+export TractorBeam from './tractorBeam';

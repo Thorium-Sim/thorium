@@ -21,3 +21,4 @@ export targeting from './targeting';
 export probes from './probes';
 export stealthField from './stealthField';
 export issueTracker from './issueTracker';
+export tractorBeam from './tractorBeam';

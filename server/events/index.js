@@ -20,3 +20,4 @@ import './phasers';
 import './probes';
 import './stealthField';
 import './thrusters';
+import './tractorBeam';

@@ -21,6 +21,7 @@ import { PhaserQueries, PhaserMutations, PhaserSubscriptions } from './phasers'
 import { ProbesQueries, ProbesMutations, ProbesSubscriptions, ProbesTypes } from './probes'
 import { StealthFieldQueries, StealthFieldMutations, StealthFieldSubscriptions } from './stealthField'
 import { IssueTrackerMutations } from './issueTracker';
+import { TractorBeamQueries, TractorBeamMutations, TractorBeamSubscriptions } from './tractorBeam';
 
 import App from '../../app';
 
@@ -69,7 +70,8 @@ function parseJSONLiteral(ast) {
     TorpedoQueries,
     PhaserQueries,
     ProbesQueries,
-    StealthFieldQueries
+    StealthFieldQueries,
+    TractorBeamQueries
     );
 
   export const mutationMap = Object.assign({
@@ -99,7 +101,8 @@ function parseJSONLiteral(ast) {
     PhaserMutations,
     ProbesMutations,
     StealthFieldMutations,
-    IssueTrackerMutations
+    IssueTrackerMutations,
+    TractorBeamMutations
     );
 
   const subscriptionMap = Object.assign({},
@@ -124,7 +127,8 @@ function parseJSONLiteral(ast) {
     TorpedoSubscriptions,
     PhaserSubscriptions,
     ProbesSubscriptions,
-    StealthFieldSubscriptions
+    StealthFieldSubscriptions,
+    TractorBeamSubscriptions
     );
 
   export default Object.assign({

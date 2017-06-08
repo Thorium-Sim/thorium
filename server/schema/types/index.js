@@ -24,6 +24,7 @@ export torpedos from './torpedos';
 export targeting from './targeting';
 export probes from './probes';
 export stealthField from './stealthField';
+export tractorBeam from './tractorBeam';
 
 export const role = `
 type role {
