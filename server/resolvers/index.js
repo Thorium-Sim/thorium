@@ -71,7 +71,7 @@ function parseJSONLiteral(ast) {
     PhaserQueries,
     ProbesQueries,
     StealthFieldQueries,
-    TractorBeamQueries
+    TractorBeamQueries,
     ActionsQueries
     );
 
@@ -103,7 +103,7 @@ function parseJSONLiteral(ast) {
     ProbesMutations,
     StealthFieldMutations,
     IssueTrackerMutations,
-    TractorBeamMutations
+    TractorBeamMutations,
     ActionsMutations
     );
 
@@ -130,7 +130,7 @@ function parseJSONLiteral(ast) {
     PhaserSubscriptions,
     ProbesSubscriptions,
     StealthFieldSubscriptions,
-    TractorBeamSubscriptions
+    TractorBeamSubscriptions,
     ActionsSubscriptions
     );
 
