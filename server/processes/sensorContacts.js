@@ -2,7 +2,7 @@ import App from '../../app';
 import * as THREE from 'three';
 import { pubsub } from '../helpers/subscriptionManager.js';
 
-const interval = 100; // 1 tenth of a second
+const interval = 30; // 1/30 of a second
 const updateInterval = 1000;
 
 function distance3d(coord2, coord1) {
@@ -19,7 +19,14 @@ const moveSensorContact = () => {
       sensors.contacts = sensors.contacts.map((contact) => {
         const { location, destination, speed } = contact;
         const newContact = contact;
-        if (contact.speed > 0) {
+        if (contact.speed > 100) {
+          location.x = destination.x;
+          location.y = destination.y;
+          location.z = destination.z;
+          newContact.location = location;
+          newContact.velocity = { x: 0, y: 0, z: 0 };
+          newContact.speed = 0;
+        } else if (contact.speed > 0) {
           // Update the velocity
           const locationVector = new THREE.Vector3(location.x, location.y, location.z);
           const destinationVector = new THREE.Vector3(destination.x, destination.y, destination.z);

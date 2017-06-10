@@ -17,6 +17,7 @@ export default class SensorContact {
     this.name = params.name || 'Contact';
     this.size = params.size || 1; // Float - Scale percentage
     this.icon = params.icon || 'Default'; // Added to '/Sensor Contacts/'
+    this.color = params.color || '#0f0';
     this.picture = params.picture || 'Default'; // Added to '/Sensor Pictures/'
     this.speed = params.speed || 0; // Float
     this.velocity = params.velocity || { x: 0, y: 0, z: 0 };
@@ -42,6 +43,11 @@ export default class SensorContact {
     this.velocity = destinationVector.sub(locationVector).normalize().multiplyScalar(speed);
     if (stop) { this.destination = this.location; }
   }
+  stop() {
+    this.destination = this.location;
+    this.speed = 0;
+    this.velocity = {x: 0, y: 0, z: 0};
+  }
   updateLocation(coordinates) {
     this.location = coordinates;
     // Reset the velocity and speed if it is at it's destination
@@ -64,5 +70,8 @@ export default class SensorContact {
   }
   updatePicture(picture) {
     this.picture = picture;
+  }
+  updateColor(color) {
+    this.color = color;
   }
 }

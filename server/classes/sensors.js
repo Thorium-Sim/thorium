@@ -62,21 +62,23 @@ export default class Sensors extends System {
     newContact.sensorId = this.id;
     this.armyContacts.push(new SensorContact(newContact));
   }
-  updateContact({ id, icon, picture, size, name, infrared }) {
+  updateContact({ id, icon, picture, size, name, infrared, color }) {
     const myContact = this.contacts.find((contact) => contact.id === id);
     if (icon) myContact.updateIcon(icon);
     if (picture) myContact.updatePicture(picture);
     if (size) myContact.updateSize(size);
     if (name) myContact.updateName(name);
     if (infrared) myContact.updateInfrared(infrared);
+    if (color) myContact.updateColor(color);
   }
-  updateArmyContact({ id, icon, picture, size, name, infrared }) {
+  updateArmyContact({ id, icon, picture, size, name, infrared, color }) {
     const myContact = this.armyContacts.find((contact) => contact.id === id);
     if (icon) myContact.updateIcon(icon);
     if (picture) myContact.updatePicture(picture);
     if (size) myContact.updateSize(size);
     if (name) myContact.updateName(name);
     if (infrared) myContact.updateInfrared(infrared);
+    if (color) myContact.updateColor(color);
   }
   removeArmyContact(id) {
     const contactIndex = this.armyContacts.findIndex((contact) => contact.id === id);
@@ -89,6 +91,10 @@ export default class Sensors extends System {
   removeContact({ id }) {
     const contactIndex = this.contacts.findIndex((contact) => contact.id === id);
     this.contacts.splice(contactIndex, 1);
+  }
+  stopContact({ id }) {
+    const myContact = this.contacts.find((contact) => contact.id === id);
+    myContact.stop();
   }
   destroyContact({ id }) {
     const myContact = this.contacts.find((contact) => contact.id === id);

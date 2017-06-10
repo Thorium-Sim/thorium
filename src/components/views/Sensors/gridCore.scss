@@ -1,43 +1,52 @@
-.sensorGridHolder{
-  background-color: #ccc;
-  border-radius: 50%;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-.heightPlaceholder {
-  margin-top: 100%;
-}
-.core .react-grid-item .sensorGridCore div{
-  height: initial;
-}
-
-img.armyContact{
-  height: 16px;
-  width: 16px;
-}
-.flex-container {
-  display: flex;
-}
-
-.contextMenu {
-  position: fixed;
-  width: 250px;
-
-  label{
-    padding: 0;
-    padding-left: 1.25rem;
+.sensorGridCore {
+  .sensorGridHolder{
+    background-color: #ccc;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
-  .row{
-    margin-bottom: 2px;
+  .heightPlaceholder {
+    margin-top: 100%;
   }
-  select.form-control:not([size]):not([multiple]) {
+  .core .react-grid-item .sensorGridCore div{
+    height: initial;
+  }
+
+  img.armyContact{
+    height: 16px;
+    width: 16px;
+  }
+  .flex-container {
+    display: flex;
+  }
+  select.form-control:not([size]):not([multiple]), input[type="text"] {
     height: calc(1.25rem - 2px);
   }
-  .card-block{
-    padding-top: 0;
-        padding-bottom: 0;
+  .contextMenu {
+    position: fixed;
+
+    .form-group {
+      margin-bottom: 0;
+    }
+    label {
+      padding: 0;
+    }
+    .row{
+      margin-bottom: 2px;
+    }
+    select.form-control:not([size]):not([multiple]) {
+      height: calc(1.25rem - 2px);
+    }
+    .form-check {
+      padding-left: 20px;
+    }
+    .card-block{
+      padding: 4px;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
   }
 }
