@@ -58,6 +58,14 @@ export const SensorsMutations = {
     App.handleEvent({ id, contact }, 'removeSensorContact');
     return '';
   },
+  removeAllSensorContacts(root, {id}) {
+    App.handleEvent({id}, 'removeAllSensorContacts');
+    return '';
+  },
+  stopAllSensorContacts(root, {id}) {
+    App.handleEvent({id}, 'stopAllSensorContacts');
+    return '';
+  },
   destroySensorContact(root, { id, contact }) {
     App.handleEvent({ id, contact }, 'destroyeSensorContact');
     return '';

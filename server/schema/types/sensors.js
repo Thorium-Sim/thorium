@@ -22,6 +22,7 @@ type SensorContact {
   iconUrl: String
   picture: String
   pictureUrl: String
+  color: String
   speed: Float
   velocity: Coordinates
   location: Coordinates
@@ -41,6 +42,7 @@ input SensorContactInput {
   size: Float
   icon: String
   picture: String
+  color: String
   speed: Float
   location: CoordinatesInput
   destination: CoordinatesInput

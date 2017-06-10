@@ -10,7 +10,7 @@ App.on('addSensorsArray', ({ simulatorId, domain }) => {
   pubsub.publish('sensorsUpdate', App.systems.filter(s => s.type === 'Sensors'));
 });
 App.on('removedSensorsArray', ({ id }) => {
- 
+
 });
 App.on('sensorScanRequest', ({ id, request }) => {
   const system = App.systems.find((sys) => sys.id === id);
@@ -55,6 +55,20 @@ App.on('removeSensorContact', ({ id, contact }) => {
   system.removeContact(contact);
   pubsub.publish('sensorContactUpdate', system.contacts);
 });
+App.on('removeAllSensorContacts', ({ id }) => {
+  const system = App.systems.find((sys) => sys.id === id);
+  system.contacts.concat().forEach(contact => {
+    system.removeContact(contact);
+  });
+  pubsub.publish('sensorContactUpdate', system.contacts);
+})
+App.on('stopAllSensorContacts', ({ id }) => {
+  const system = App.systems.find((sys) => sys.id === id);
+  system.contacts.concat().forEach(contact => {
+    system.stopContact(contact);
+  });
+  pubsub.publish('sensorContactUpdate', system.contacts);
+})
 App.on('destroySensorContact', ({ id, contact }) => {
   const system = App.systems.find((sys) => sys.id === id);
   system.destroyContact(contact);

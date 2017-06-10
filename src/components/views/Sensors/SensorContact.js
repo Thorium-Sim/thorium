@@ -35,25 +35,24 @@ class KonvaContact extends Component {
   componentWillReceiveProps(nextProps) {
     this.refreshContact(nextProps);
   }
-  refreshContact({id, data, location, icon, iconUrl, pictureUrl, speed, destination, velocity, size, radius}) {
+  refreshContact({id, data, location, icon, iconUrl, pictureUrl, speed, destination, velocity, size, radius, color}) {
     const {contact} = this.state;
     Promise.resolve().then(() => {
       if (contact){
         //Transfer over the information necessary.
-        debugger;
         if (icon === contact.icon){
           return Promise.resolve({
-            id: id,
+            id,
             data: contact.data,
-            icon: icon,
-            iconUrl: iconUrl,
-            pictureUrl: pictureUrl,
-            speed: speed,
-            fill: contact.fill,
-            location: location,
-            destination: destination,
-            velocity: velocity,
-            size: size,
+            icon,
+            iconUrl,
+            pictureUrl,
+            speed,
+            color,
+            location,
+            destination,
+            velocity,
+            size,
             selected: contact.selected
           })
         } else {
@@ -61,17 +60,17 @@ class KonvaContact extends Component {
           .then((svg) => parsePath(svg))
           .then((data) => {
             return Promise.resolve({
-              id: id,
-              data: data,
-              icon: icon,
-              iconUrl: iconUrl,
-              pictureUrl: pictureUrl,
-              speed: speed,
-              fill: contact.fill,
-              location: location,
-              destination: destination,
-              velocity: velocity,
-              size: size,
+              id,
+              data,
+              icon,
+              iconUrl,
+              pictureUrl,
+              speed,
+              color,
+              location,
+              destination,
+              velocity,
+              size,
               selected: contact.selected
             })
           });
@@ -83,17 +82,17 @@ class KonvaContact extends Component {
         .then((data) => {
           //Return the new target; put it in a random place.
           return Promise.resolve({
-            id: id,
+            id,
             data,
-            icon: icon,
-            iconUrl: iconUrl,
-            pictureUrl: pictureUrl,
-            speed: speed,
-            fill: '#0f0',
-            location: location,
-            destination: destination,
-            velocity: velocity,
-            size: size,
+            icon,
+            iconUrl,
+            pictureUrl,
+            speed,
+            color,
+            location,
+          destination,
+          velocity,
+          size,
             selected: false
           })
         })
@@ -126,7 +125,7 @@ class KonvaContact extends Component {
     document.removeEventListener('mousemove', this._moveMouse);
     document.removeEventListener('mouseup', this._upMouse);
     // Send the update to the server
-    const speed = 0.5;
+    const speed = this.props.speed;
     const {contact} = this.state;
     const distance = distance3d({x:0,y:0,z:0},contact.destination);
     let mutation;
@@ -165,13 +164,19 @@ class KonvaContact extends Component {
     })
   }
   _moveContact() {
-    const interval = 100;
+    const interval = 30;
     this.setState(({contact}) => {
       this.moveTimeout = setTimeout(this._moveContact.bind(this), interval);
       if (!contact) return {};
       let { location, destination, speed } = contact;
       const newContact = Immutable.Map(contact);
-      if (speed > 0) {
+      if (speed > 100) {
+        return {
+          contact: newContact
+          .set('location', destination)
+          .set('speed',0).toJS()
+        };
+      } else if (speed > 0) {
         // Update the velocity
         const locationVector = new THREE.Vector3(location.x, location.y, location.z);
         const destinationVector = new THREE.Vector3(destination.x, destination.y, destination.z);
@@ -208,7 +213,7 @@ class KonvaContact extends Component {
     const {contact} = this.state;
     if (!contact) return <Group></Group>;
     const {radius, padding, core, mouseover = (() => {console.log('mouseover')})} = this.props;
-    const {id, data, location, destination, size} = contact;
+    const {id, data, location, destination, size, color} = contact;
     return <Group
     x={radius}
     y={radius}>
@@ -218,7 +223,7 @@ class KonvaContact extends Component {
     onMouseout={mouseover.bind(this, {})}
     x={location.x * radius + padding}
     y={location.y * radius + padding}
-    fill={'#0f0'}
+    fill={color}
     opacity={core ? 0.5 : 1}
     scale={{
       x: size*(radius/400),
@@ -231,7 +236,7 @@ class KonvaContact extends Component {
       data={data}
       x={destination.x * radius + padding}
       y={destination.y * radius + padding}
-      fill={'#0f0'}
+      fill={color}
       scale={{
         x: size*(radius/400),
         y: size*(radius/400)

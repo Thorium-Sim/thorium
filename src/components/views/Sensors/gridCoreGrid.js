@@ -26,6 +26,7 @@ subscription SensorContactsChanged($sensorId: ID) {
     id
     name
     size
+    color
     iconUrl
     pictureUrl
     speed 
@@ -66,7 +67,7 @@ class GridCoreGrid extends Component {
   }
   render(){
     if (this.props.data.loading) return null;
-    const {dimensions, data, core} = this.props;
+    const {dimensions, data, core, speed} = this.props;
     const {sensorContacts: contacts} = data;
     const {width} = dimensions;
     const padding = core ? 15 : 0;
@@ -74,6 +75,14 @@ class GridCoreGrid extends Component {
     return <div id="sensorGrid">
     <Stage width={width} height={width}>
     <Layer>
+    {core && <Circle
+      radius={radius * 1.08} 
+      x={radius + padding}
+      y={radius + padding}
+      stroke={'gray'}
+      fill={'gray'}
+      strokeWidth={1}/>
+    }
     <Circle
     radius={radius} 
     x={radius + padding}
@@ -116,7 +125,7 @@ class GridCoreGrid extends Component {
     </Layer>
     <Layer>
     {
-      contacts.map(contact => <SensorContact key={contact.id} core={core} sensor={this.props.sensor} {...contact} dimensions={dimensions} radius={radius} padding={padding} mouseover={this.props.hoverContact} />)
+      contacts.map(contact => <SensorContact key={contact.id} core={core} sensor={this.props.sensor} {...contact} speed={speed} dimensions={dimensions} radius={radius} padding={padding} mouseover={this.props.hoverContact} />)
     }
     </Layer>
     </Stage>
@@ -132,6 +141,7 @@ query Contacts($sensorsId: ID) {
     size
     iconUrl
     pictureUrl
+    color
     speed 
     velocity {
       x

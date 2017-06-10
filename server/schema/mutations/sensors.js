@@ -17,6 +17,8 @@ sensorScanCancel(id: ID!): String
 createSensorContact(id: ID!, contact: SensorContactInput!): String
 moveSensorContact(id: ID!, contact: SensorContactInput!): String
 removeSensorContact(id: ID!, contact: SensorContactInput!): String
+removeAllSensorContacts(id: ID!): String
+stopAllSensorContacts(id: ID!): String
 destroySensorContact(id: ID!, contact: SensorContactInput!): String
 updateSensorContact(id: ID!, contact: SensorContactInput!): String
 createSensorArmyContact(id: ID!, contact: SensorContactInput!): String

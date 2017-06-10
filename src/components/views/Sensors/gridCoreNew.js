@@ -11,7 +11,8 @@ import {
   Row,
   Col,
   Container,
-  Button
+  Button,
+  Input
 } from 'reactstrap';
 import GridCoreGrid from './gridCoreGrid';
 
@@ -48,6 +49,7 @@ subscription SensorsChanged {
       iconUrl
       picture
       pictureUrl
+      color
       infrared
       cloaked
       destroyed
@@ -62,6 +64,7 @@ class GridCore extends Component {
       movingContact: {},
       removeContacts: false,
       contextContact: null,
+      speed: 0.6
     }
     this.sensorsSubscription = null;
   }
@@ -87,17 +90,17 @@ class GridCore extends Component {
     const grid = document.querySelector('#sensorGrid');
     const gridRect = grid.getClientRects()[0];
     const x = (a.node.getBoundingClientRect().left - gridRect.left - gridRect.width/2 + 10) / (gridRect.width/2)
-    const y = (a.node.getBoundingClientRect().top  - gridRect.top - gridRect.height/2 + 10) / (gridRect.height/2) * -1
+    const y = (a.node.getBoundingClientRect().top  - gridRect.top - gridRect.height/2 + 10) / (gridRect.height/2)
     // Construct the new contact
     const newContact = Object.assign({}, contact, {
       location: {
         x,
-        y: y * -1,
+        y: y,
         z: 0
       },
       destination: {
         x,
-        y: y * -1,
+        y: y,
         z: 0
       }
     })
@@ -195,6 +198,42 @@ class GridCore extends Component {
       contextContact: null
     });
   }
+  _clearContacts() {
+    const mutation = gql`
+    mutation DeleteContact($id: ID!) {
+      removeAllSensorContacts(id: $id)
+    }`;
+    const {id} = this.props.data.sensors[0];
+    const variables = {
+      id
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
+  }
+  _stopContacts() {
+    const mutation = gql`
+    mutation StopContacts($id: ID!) {
+      stopAllSensorContacts(id: $id)
+    }`;
+    const {id} = this.props.data.sensors[0];
+    const variables = {
+      id
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
+  }
+  _freezeContacts() {
+
+  }
+  _changeSpeed(e){
+    this.setState({
+      speed: e.target.value
+    })
+  }
   render(){
     if (this.props.data.loading) return <p>Loading...</p>;
     if (!this.props.data.sensors[0]) return <p>No Sensor Grid</p>;
@@ -209,7 +248,7 @@ class GridCore extends Component {
     { dimensions => (
       <div id="threeSensors" className='array' style={{position:'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
       {dimensions.width > 0 &&
-        <GridCoreGrid mouseover={this.props.hoverContact} core dimensions={dimensions} sensor={sensors.id} />
+        <GridCoreGrid mouseover={this.props.hoverContact} core dimensions={dimensions} sensor={sensors.id} speed={this.state.speed}/>
       }
       </div>
       )}
@@ -227,7 +266,7 @@ class GridCore extends Component {
         >
         <img onContextMenu={this._contextMenu.bind(this, contact)} draggable="false" role="presentation" className="armyContact" src={contact.iconUrl} />
         </Draggable>
-        <TypingField input={true} value={contact.name} onChange={(e) => {contact.name = e.target.value; this._updateArmyContact(contact)}} /> 
+        <label onContextMenu={this._contextMenu.bind(this, contact)}>{contact.name}</label> 
         {this.state.removeContacts && 
           <FontAwesome name="ban" className="text-danger pull-right clickable" onClick={this._removeArmyContact.bind(this, contact)} />
         }
@@ -236,8 +275,23 @@ class GridCore extends Component {
     }
     <Button size="sm" color="success" onClick={this._addArmyContact.bind(this)}>Add Contact</Button>
     <label><input type="checkbox" onChange={(e) => {this.setState({removeContacts: e.target.checked})}} /> Remove</label>
+    <Input type="select" name="select" onChange={this._changeSpeed.bind(this)} defaultValue={this.state.speed}>
+    <option value="1000">Instant</option>
+    <option value="5">Warp</option>
+    <option value="2">Very Fast</option>
+    <option value="1">Fast</option>
+    <option value="0.6">Moderate</option>
+    <option value="0.4">Slow</option>
+    <option value="0.1">Very Slow</option>
+    <option disabled>─────────</option>
+    <option>Timed</option>
+    </Input>
+    <Button size="sm" color="danger" onClick={this._clearContacts.bind(this)}>Clear</Button>
+    <Button size="sm" color="warning" onClick={this._stopContacts.bind(this)}>Stop</Button>
+    <Button size="sm" color="info" disabled onClick={this._freezeContacts.bind(this)}>Freeze</Button>
+
     { this.state.contextContact && 
-      <ContactContextMenu closeMenu={this._closeContext.bind(this)} updateArmyContact={this._updateArmyContact.bind(this)} contact={this.state.contextContact.contact} x={this.state.contextContact.left} y={this.state.contextContact.top}/>
+      <ContactContextMenu closeMenu={this._closeContext.bind(this)} updateArmyContact={this._updateArmyContact.bind(this)} contact={this.state.contextContact.contact} x={this.state.contextContact.left} y={0}/>
     }
     </Col>
     </Row>
@@ -258,6 +312,7 @@ query GetSensors($simulatorId: ID){
       iconUrl
       picture
       pictureUrl
+      color
       infrared
       cloaked
       destroyed
