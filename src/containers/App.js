@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Router, browserHistory } from 'react-router';
-import { Signin, Register, Forgot, PasswordReset } from '../components/Accounts.jsx';
+//import { Signin, Register, Forgot, PasswordReset } from '../components/Accounts.jsx';
 // import UserAdmin from '../components/admin/Users.jsx';
 import CardContainer from './Card.jsx';
 import Config from './Config';
@@ -34,7 +34,7 @@ const routes = [
   path: '/',
   component: Lobby,
 },
-{
+/*{
   path: '/login',
   component: Signin
 },
@@ -43,9 +43,13 @@ const routes = [
   component: Register
 },
 {
+  path: "/reset_password/:resetLink",
+  component: PasswordReset
+},
+{
   path: '/forgot',
   component: Forgot
-},
+},*/
 {
   path: '/test',
   component: TestCard
@@ -59,10 +63,6 @@ const routes = [
   path: '/admin/users',
   component: UserAdmin
 },*/
-{
-  path: "/reset_password/:resetLink",
-  component: PasswordReset
-},
 {
   path: '*',
   component:NoMatch

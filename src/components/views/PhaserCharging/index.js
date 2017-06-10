@@ -156,7 +156,6 @@ class PhaserCharging extends Component {
 }
 
 export const PhaserBeam = ({chargePhasers, dischargePhasers, coolPhasers, firePhasers, heat, targeting, index, id, charge, state, selectedBank = null, selectPhaserBank = () => {}}) => {
-  const duration = state === 'charging' ? 2 : 0.5;
   if (targeting) {
     return <div>
     <Row className="phaserBeam">

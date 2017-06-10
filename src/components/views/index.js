@@ -28,7 +28,7 @@ import CoolantControl from './CoolantControl';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
-import SensorsGridCore from './Sensors/gridCore';
+import SensorsGridCore from './Sensors/gridCoreNew';
 import SensorsCore from './Sensors/core';
 import ShieldControlCore from './ShieldControl/core';
 import DecodingCore from './CommDecoding/core';

@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 187,
+	"_eventsCount": 194,
 	"simulators": [
 		{
 			"timeline": [],
@@ -463,7 +463,8 @@
 					"number": 1.25
 				}
 			],
-			"speed": 5
+			"speed": 5,
+			"cooling": false
 		},
 		{
 			"id": "test-engine-warp",
@@ -489,7 +490,7 @@
 				"damaged": false,
 				"report": null
 			},
-			"heat": 99.96000000000227,
+			"heat": 1,
 			"heatRate": 0.02,
 			"coolant": 0.3,
 			"class": "Engine",
@@ -537,7 +538,8 @@
 					"number": 9.54
 				}
 			],
-			"speed": 3
+			"speed": 3,
+			"cooling": false
 		},
 		{
 			"id": "6fdc098f-d4b3-4bbf-a312-0f6b9bfc558e",
@@ -801,7 +803,7 @@
 			"model": "battery",
 			"powerOutput": 120,
 			"efficiency": 1,
-			"batteryChargeLevel": 0.7202349999999736,
+			"batteryChargeLevel": 0.7176389999999747,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -849,6 +851,9 @@
 				"damaged": false,
 				"report": null
 			},
+			"heat": 0,
+			"heatRate": 1,
+			"coolant": 1,
 			"class": "Phasers",
 			"type": "Phasers",
 			"arc": 0.5,
@@ -867,11 +872,10 @@
 						"damaged": false,
 						"report": null
 					},
-					"heat": 0,
-					"heatRate": 0.01,
-					"coolant": 0.6,
 					"state": "idle",
-					"charge": 0
+					"charge": 0,
+					"heat": 0,
+					"heatRate": 0.01
 				},
 				{
 					"id": "4f20dcaf-2b59-4e26-ae8a-094ab90bff75",
@@ -887,13 +891,13 @@
 						"damaged": false,
 						"report": null
 					},
-					"heat": 0,
-					"heatRate": 0.01,
-					"coolant": 0.4,
 					"state": "idle",
-					"charge": 0
+					"charge": 0,
+					"heat": 0,
+					"heatRate": 0.01
 				}
-			]
+			],
+			"cooling": null
 		},
 		{
 			"id": "b9067849-f8ce-41bd-bd83-3399e7552d7b",
@@ -1363,7 +1367,8 @@
 			"class": "Coolant",
 			"type": "Coolant",
 			"coolant": 1,
-			"coolantRate": 0.2
+			"coolantRate": 0.2,
+			"transfer": null
 		}
 	],
 	"clients": [
@@ -1520,6 +1525,18 @@
 			"w": 30,
 			"h": 20,
 			"component": "DecksCore",
+			"objectId": null,
+			"class": "CoreLayout"
+		},
+		{
+			"id": "45103322-d859-4b14-b617-6571e11c4782",
+			"simulatorId": "test",
+			"name": "default",
+			"x": 0,
+			"y": 31,
+			"w": 120,
+			"h": 29,
+			"component": "SensorsGridCore",
 			"objectId": null,
 			"class": "CoreLayout"
 		}
@@ -1747,7 +1764,7 @@
 			"containerPath": "/3D/Mesh",
 			"containerId": "5875f4b7-93d1-49aa-a334-ba4e5999c540",
 			"fullPath": "/3D/Mesh/Simulator",
-			"url": "http://localhost:3001/assets/3D/Mesh/Simulator/default.obj",
+			"url": "http://localhost:3000/assets/3D/Mesh/Simulator/default.obj",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		},
@@ -1756,7 +1773,7 @@
 			"containerPath": "/3D/Texture",
 			"containerId": "04d1a4d4-49dd-4bbb-9a90-cc2638bf0240",
 			"fullPath": "/3D/Texture/Simulator",
-			"url": "http://localhost:3001/assets/3D/Texture/Simulator/default.png",
+			"url": "http://localhost:3000/assets/3D/Texture/Simulator/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		},
@@ -1765,7 +1782,7 @@
 			"containerPath": "/Misc",
 			"containerId": "bbcc1500-7301-4e2f-8623-2ea2afed97b5",
 			"fullPath": "/Misc/Login Logo",
-			"url": "https://s3.amazonaws.com/thorium-assets/Misc/Login%20Logo/default.svg",
+			"url": "http://localhost:3000/assets/Misc/Login%20Logo/default.svg",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		},
@@ -1774,7 +1791,7 @@
 			"containerPath": "/Ship Views",
 			"containerId": "8a48e30d-2c03-419a-a18f-794e0bd2a815",
 			"fullPath": "/Ship Views/Right",
-			"url": "https://s3.amazonaws.com/thorium-assets/Ship%20Views/Right/default.png",
+			"url": "http://localhost:3000/assets/Ship%20Views/Right/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		},
@@ -1783,7 +1800,7 @@
 			"containerPath": "/Ship Views",
 			"containerId": "2f3f13ab-56e7-48fc-86d6-ce46401590b4",
 			"fullPath": "/Ship Views/Front",
-			"url": "https://s3.amazonaws.com/thorium-assets/Ship%20Views/Front/default.png",
+			"url": "http://localhost:3000/assets/Ship%20Views/Front/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		},
@@ -1792,7 +1809,7 @@
 			"containerPath": "/Ship Views",
 			"containerId": "cf7e524a-79cd-42da-8ef8-7dce4786cdcc",
 			"fullPath": "/Ship Views/Back",
-			"url": "https://s3.amazonaws.com/thorium-assets/Ship%20Views/Back/default.png",
+			"url": "http://localhost:3000/assets/Ship%20Views/Back/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		},
@@ -1801,7 +1818,7 @@
 			"containerPath": "/Ship Views",
 			"containerId": "016007c1-7551-4643-94f6-e8ccad83eb4b",
 			"fullPath": "/Ship Views/Left",
-			"url": "https://s3.amazonaws.com/thorium-assets/Ship%20Views/Left/default.png",
+			"url": "http://localhost:3000/assets/Ship%20Views/Left/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		},
@@ -1810,7 +1827,7 @@
 			"containerPath": "/Ship Views",
 			"containerId": "7f74b781-c8cc-421e-9912-610e732ef7c3",
 			"fullPath": "/Ship Views/Top",
-			"url": "https://s3.amazonaws.com/thorium-assets/Ship%20Views/Top/default.png",
+			"url": "http://localhost:3000/assets/Ship%20Views/Top/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		},
@@ -1819,7 +1836,7 @@
 			"containerPath": "/Comm Images",
 			"containerId": "417e2ff0-706e-4b71-b899-bdaa5e0a6c88",
 			"fullPath": "/Comm Images/Starfleet",
-			"url": "https://s3.amazonaws.com/thorium-assets/Comm%20Images/Starfleet/default.png",
+			"url": "http://localhost:3000/assets/Comm%20Images/Starfleet/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		},
@@ -1828,7 +1845,7 @@
 			"containerPath": "/Comm Images",
 			"containerId": "42e6e4bc-9cc1-4f81-9138-6c9cf42c19b7",
 			"fullPath": "/Comm Images/Romulan",
-			"url": "https://s3.amazonaws.com/thorium-assets/Comm%20Images/Romulan/default.png",
+			"url": "http://localhost:3000/assets/Comm%20Images/Romulan/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		},
@@ -1837,7 +1854,7 @@
 			"containerPath": "/Comm Images",
 			"containerId": "65d4c881-f088-415f-b3b3-04ac73980794",
 			"fullPath": "/Comm Images/Klingon",
-			"url": "https://s3.amazonaws.com/thorium-assets/Comm%20Images/Klingon/default.png",
+			"url": "http://localhost:3000/assets/Comm%20Images/Klingon/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		},
@@ -1846,7 +1863,7 @@
 			"containerPath": "/Comm Images",
 			"containerId": "e8a9839f-3ad7-4c7a-8aa8-dccd4b2e1cc5",
 			"fullPath": "/Comm Images/Cardassian",
-			"url": "https://s3.amazonaws.com/thorium-assets/Comm%20Images/Cardassian/default.png",
+			"url": "http://localhost:3000/assets/Comm%20Images/Cardassian/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		},
@@ -1855,7 +1872,7 @@
 			"containerPath": "/Comm Images",
 			"containerId": "09abf5af-5cef-4535-a4b0-5a25ff64a5bd",
 			"fullPath": "/Comm Images/Ferengi",
-			"url": "https://s3.amazonaws.com/thorium-assets/Comm%20Images/Ferengi/default.png",
+			"url": "http://localhost:3000/assets/Comm%20Images/Ferengi/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		},
@@ -1864,7 +1881,7 @@
 			"containerPath": "/Comm Images",
 			"containerId": "446fdffc-1aa1-4670-8e3f-08a78afcad54",
 			"fullPath": "/Comm Images/Orion",
-			"url": "https://s3.amazonaws.com/thorium-assets/Comm%20Images/Orion/default.png",
+			"url": "http://localhost:3000/assets/Comm%20Images/Orion/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		},
@@ -1873,7 +1890,7 @@
 			"containerPath": "/Sensor Contacts/Icons",
 			"containerId": "fc58cd61-db63-43a5-ba97-45e34aef18e9",
 			"fullPath": "/Sensor Contacts/Icons/N/default.svg",
-			"url": "https://s3.amazonaws.com/thorium-assets/Sensor%20Contacts/Icons/N/default.svg",
+			"url": "http://localhost:3000/assets/Sensor%20Contacts/Icons/N/default.svg",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		},
@@ -1882,12 +1899,12 @@
 			"containerPath": "/Sensor Contacts/Icons",
 			"containerId": "fbe3ae88-698b-4974-a9b8-9a150abaa01c",
 			"fullPath": "/Sensor Contacts/Icons/G/default.svg",
-			"url": "https://s3.amazonaws.com/thorium-assets/Sensor%20Contacts/Icons/G/default.svg",
+			"url": "http://localhost:3000/assets/Sensor%20Contacts/Icons/G/default.svg",
 			"simulatorId": "default",
 			"class": "AssetObject"
 		}
 	],
-	"snapshotVersion": 61,
-	"version": 61,
-	"timestamp": "2017-06-05T23:22:37.506Z"
+	"snapshotVersion": 1285,
+	"version": 1285,
+	"timestamp": "2017-06-09T23:28:23.240Z"
 }

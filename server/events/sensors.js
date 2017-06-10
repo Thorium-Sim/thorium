@@ -32,9 +32,12 @@ App.on('sensorScanCancel', ({ id }) => {
   system.scanCanceled();
   pubsub.publish('sensorsUpdate', App.systems.filter(s => s.type === 'Sensors'));
 });
+
+// Contacts
 App.on('createSensorContact', ({ id, contact }) => {
   const system = App.systems.find((sys) => sys.id === id);
   system.createContact(contact);
+  console.log('Created!', system.contacts);
   pubsub.publish('sensorContactUpdate', system.contacts);
 });
 App.on('moveSensorContact', ({ id, contact }) => {

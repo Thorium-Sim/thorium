@@ -11,3 +11,4 @@ const pubsub = new RedisPubSub({
 });*/
 
 export { pubsub };
+

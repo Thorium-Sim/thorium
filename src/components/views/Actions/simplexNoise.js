@@ -30,7 +30,6 @@
  *
  */
 (function () {
-"use strict";
 
 var F2 = 0.5 * (Math.sqrt(3.0) - 1.0),
     G2 = (3.0 - Math.sqrt(3.0)) / 6.0,
@@ -262,8 +261,7 @@ SimplexNoise.prototype = {
     },
     // 4D simplex noise, better simplex rank ordering method 2012-03-09
     noise4D: function (x, y, z, w) {
-        var permMod12 = this.permMod12,
-            perm = this.perm,
+        var perm = this.perm,
             grad4 = this.grad4;
 
         var n0, n1, n2, n3, n4; // Noise contributions from the five corners

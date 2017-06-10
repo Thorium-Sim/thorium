@@ -191,7 +191,7 @@ class TargetingCore extends Component {
     {
       targeting.classes.map(t => {
         const contactCount = targeting.contacts.filter(c => c.class === t.id).length;
-        return <Row>
+        return <Row key={t.id}>
         <Col sm={3}>
         <InputGroup size="sm">
         <InputGroupButton><Button onClick={this._setTargetClassCount.bind(this, t.id, contactCount - 1)} color="secondary">-</Button></InputGroupButton>

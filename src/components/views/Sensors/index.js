@@ -4,7 +4,7 @@ import { graphql, withApollo } from 'react-apollo';
 import { Button, Row, Col, Card } from 'reactstrap';
 import Immutable from 'immutable';
 import './style.scss';
-import SensorGrid from './SensorGrid.js';
+import GridCoreGrid from './gridCoreGrid';
 import Measure from 'react-measure';
 import DamageOverlay from '../helpers/DamageOverlay';
 
@@ -204,17 +204,12 @@ class Sensors extends Component{
 			useClone={true}
 			includeMargin={false}>
 			{ dimensions => (
-				<div id="threeSensors" className='array'>
-				{(dimensions.width > 0 && !sensors.damage.damaged) &&
-					<SensorGrid 
-					sensor={sensors.id}
-					dimensions={dimensions}
-					weaponsRangePulse={this.state.weaponsRangePulse}
-					hoverContact={this._hoverContact.bind(this)}
-					/> 
+				<div id="threeSensors" className='array' style={{position:'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
+				{dimensions.width > 0 &&
+					<GridCoreGrid dimensions={dimensions} sensor={sensors.id} />
 				}
 				</div>
-				) }
+				)}
 			</Measure>
 			<DamageOverlay message="External Sensors Offline" system={sensors} />
 			</Col>
