@@ -186,6 +186,11 @@ class GridCore extends Component {
       contextContact: obj
     });
   }
+  _closeContext() {
+    this.setState({
+      contextContact: null
+    });
+  }
   render(){
     if (this.props.data.error) console.error(this.props.data.error);
     const sensors = !this.props.data.loading ? this.props.data.sensors[0] : {armyContacts: []}
@@ -239,7 +244,7 @@ class GridCore extends Component {
           <Button size="sm" color="success" onClick={this._addArmyContact.bind(this)}>Add Contact</Button>
           <label><input type="checkbox" onChange={(e) => {this.setState({removeContacts: e.target.checked})}} /> Remove</label>
           { this.state.contextContact && 
-            <ContactContextMenu updateArmyContact={this._updateArmyContact.bind(this)} contact={this.state.contextContact.contact} x={this.state.contextContact.left} y={this.state.contextContact.top}/>
+            <ContactContextMenu closeMenu={this._closeContext.bind(this)} updateArmyContact={this._updateArmyContact.bind(this)} contact={this.state.contextContact.contact} x={this.state.contextContact.left} y={this.state.contextContact.top}/>
           }
           </Col>
           </Row>

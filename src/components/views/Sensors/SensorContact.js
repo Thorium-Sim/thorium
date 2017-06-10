@@ -35,17 +35,19 @@ class KonvaContact extends Component {
   componentWillReceiveProps(nextProps) {
     this.refreshContact(nextProps);
   }
-  refreshContact({id, data, location, icon, iconUrl, speed, destination, velocity, size, radius}) {
+  refreshContact({id, data, location, icon, iconUrl, pictureUrl, speed, destination, velocity, size, radius}) {
     const {contact} = this.state;
     Promise.resolve().then(() => {
       if (contact){
         //Transfer over the information necessary.
+        debugger;
         if (icon === contact.icon){
           return Promise.resolve({
             id: id,
             data: contact.data,
             icon: icon,
             iconUrl: iconUrl,
+            pictureUrl: pictureUrl,
             speed: speed,
             fill: contact.fill,
             location: location,
@@ -63,6 +65,7 @@ class KonvaContact extends Component {
               data: data,
               icon: icon,
               iconUrl: iconUrl,
+              pictureUrl: pictureUrl,
               speed: speed,
               fill: contact.fill,
               location: location,
@@ -84,6 +87,7 @@ class KonvaContact extends Component {
             data,
             icon: icon,
             iconUrl: iconUrl,
+            pictureUrl: pictureUrl,
             speed: speed,
             fill: '#0f0',
             location: location,
@@ -101,16 +105,18 @@ class KonvaContact extends Component {
     });
   }
   _moveMouse = (e) => {
-    const {radius} = this.props;
-    const contact = Immutable.Map(this.state.contact);
-    const destination = {
-      x: (e.offsetX - radius - (radius / 14.285))/ radius, // TODO: Factor in scale
-      y: (e.offsetY - radius - (radius / 14.285))/ radius,
-      z: 0
+    if (e.target.offsetParent.classList.contains('konvajs-content')){
+      const {radius, padding} = this.props;
+      const contact = Immutable.Map(this.state.contact);
+      const destination = {
+        x: (e.offsetX - radius - (radius / 14.285) - padding / 2)/ radius, // TODO: Factor in scale
+        y: (e.offsetY - radius - (radius / 14.285) - padding / 2)/ radius,
+        z: 0
+      }
+      this.setState({
+        contact: contact.set('destination', destination).toJS()
+      })
     }
-    this.setState({
-      contact: contact.set('destination', destination).toJS()
-    })
   }
   _downMouse(id,e,a,b) {
     document.addEventListener('mousemove', this._moveMouse)
@@ -122,10 +128,20 @@ class KonvaContact extends Component {
     // Send the update to the server
     const speed = 0.5;
     const {contact} = this.state;
-    const mutation = gql`
-    mutation MoveSensorContact($id: ID!, $contact: SensorContactInput!){
-      moveSensorContact(id:$id, contact: $contact)
-    }`;
+    const distance = distance3d({x:0,y:0,z:0},contact.destination);
+    let mutation;
+    if (distance > 1.08) {
+      // Delete the contact
+      mutation = gql`
+      mutation DeleteContact($id: ID!, $contact: SensorContactInput!) {
+        removeSensorContact(id: $id, contact: $contact)
+      }`;
+    } else {
+      mutation = gql`
+      mutation MoveSensorContact($id: ID!, $contact: SensorContactInput!){
+        moveSensorContact(id:$id, contact: $contact)
+      }`;
+    }
     const variables = {
       id: this.props.sensor,
       contact: {
@@ -191,15 +207,17 @@ class KonvaContact extends Component {
   render() {
     const {contact} = this.state;
     if (!contact) return <Group></Group>;
-    const {radius, core} = this.props;
+    const {radius, padding, core, mouseover = (() => {console.log('mouseover')})} = this.props;
     const {id, data, location, destination, size} = contact;
     return <Group
     x={radius}
     y={radius}>
     <Path
     data={data}
-    x={location.x * radius}
-    y={location.y * radius}
+    onMouseover={mouseover.bind(this, contact)}
+    onMouseout={mouseover.bind(this, {})}
+    x={location.x * radius + padding}
+    y={location.y * radius + padding}
     fill={'#0f0'}
     opacity={core ? 0.5 : 1}
     scale={{
@@ -211,8 +229,8 @@ class KonvaContact extends Component {
       <Path 
       onMouseDown={this._downMouse.bind(this, id)}
       data={data}
-      x={destination.x * radius}
-      y={destination.y * radius}
+      x={destination.x * radius + padding}
+      y={destination.y * radius + padding}
       fill={'#0f0'}
       scale={{
         x: size*(radius/400),

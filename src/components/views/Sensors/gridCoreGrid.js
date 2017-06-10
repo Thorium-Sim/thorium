@@ -17,7 +17,6 @@ const {
   Layer,
   Line,
   Stage,
-  Rect,
   Circle
 } = ReactKonva;
 
@@ -70,27 +69,39 @@ class GridCoreGrid extends Component {
     const {dimensions, data, core} = this.props;
     const {sensorContacts: contacts} = data;
     const {width} = dimensions;
-    const radius = width / 2;
+    const padding = core ? 15 : 0;
+    const radius = width / 2 - padding;
     return <div id="sensorGrid">
     <Stage width={width} height={width}>
     <Layer>
     <Circle
     radius={radius} 
-    x={radius}
-    y={radius}
+    x={radius + padding}
+    y={radius + padding}
+    fillRadialGradientStartPoint={{
+      x: 0,
+      y: 0,
+    }}
+    fillRadialGradientStartRadius={radius / 2}
+    fillRadialGradientEndPoint={{
+      x: 0,
+      y: 0,
+    }}
+    fillRadialGradientEndRadius={radius}
+    fillRadialGradientColorStops={[0, 'rgba(0,0,0,0.6)', 1, '#000']}
+    fill={core ? 'black' : null}
     stroke={'gray'}
-    fill={'black'}
     strokeWidth={2}/>
     <Circle
     radius={radius * 0.66} 
-    x={radius}
-    y={radius}
+    x={radius + padding}
+    y={radius + padding}
     stroke={'gray'}
     strokeWidth={1}/>
     <Circle
     radius={radius * 0.33} 
-    x={radius}
-    y={radius}
+    x={radius + padding}
+    y={radius + padding}
     stroke={'gray'}
     strokeWidth={1}/>
     {
@@ -98,16 +109,15 @@ class GridCoreGrid extends Component {
         return (<Line key={`line-${i}`}
           stroke={'gray'}
           strokeWidth={1}
-          points={[radius, radius, Math.cos(degtorad(i * 30 + 15)) * radius + radius, Math.sin(degtorad(i * 30 + 15)) * radius + radius]} />
+          points={[radius + padding, radius + padding, Math.cos(degtorad(i * 30 + 15)) * radius + radius + padding, Math.sin(degtorad(i * 30 + 15)) * radius + radius + padding]} />
           )
       })
     }
     </Layer>
     <Layer>
     {
-      contacts.map(contact => <SensorContact key={contact.id} core={core} sensor={this.props.sensor} {...contact} dimensions={dimensions} radius={radius} />)
+      contacts.map(contact => <SensorContact key={contact.id} core={core} sensor={this.props.sensor} {...contact} dimensions={dimensions} radius={radius} padding={padding} mouseover={this.props.hoverContact} />)
     }
-    <Rect fill={"red"} x={200} y={14} width={10} height={10} />
     </Layer>
     </Stage>
     </div>

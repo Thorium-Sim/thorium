@@ -24,11 +24,13 @@ img.armyContact{
 
 .contextMenu {
   position: fixed;
-  width: 250px;
+  //width: 250px;
 
-  label{
+  .form-group {
+    margin-bottom: 0;
+  }
+  label {
     padding: 0;
-    padding-left: 1.25rem;
   }
   .row{
     margin-bottom: 2px;
@@ -36,8 +38,12 @@ img.armyContact{
   select.form-control:not([size]):not([multiple]) {
     height: calc(1.25rem - 2px);
   }
+  .form-check {
+    padding-left: 20px;
+  }
   .card-block{
+    padding: 4px;
     padding-top: 0;
-        padding-bottom: 0;
+    padding-bottom: 0;
   }
 }

@@ -1,37 +1,34 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Col, Input, FormGroup, Form, Label, Card, CardBlock } from 'reactstrap';
+import { Input, FormGroup, Form, Label, Card, CardBlock, Button } from 'reactstrap';
 
 const ICON_QUERY = gql`
 query AssetFolders ($names: [String]){
     assetFolders(names: $names) {
-    id
-    name
-    containers {
-      id
-      name
-      fullPath
+        id
+        name
+        containers {
+          id
+          name
+          fullPath
+      }
   }
-}
 }`;
 
 const ContactContextMenu = (props) => {
   //Get the position
-  const {x, y, contact} = props;
+  const {x, y, contact, closeMenu} = props;
   return (
     <div className="contextMenu" style={{top: y, left: x}}>
     <Card>
-    <h5>Contact Edit</h5>
     <CardBlock>
     <Form>
-    <FormGroup row>
+    <FormGroup>
     <Label for="iconSelect" sm={2}>Icon</Label>
-    <Col sm={10}>
     <Input type="select" name="select" id="iconSelect" defaultValue={contact.icon} onChange={(e) => {
         const contact = props.contact;
-        contact.icon = `/Sensor Contacts/Icons/${e.target.value}`;
-        props.updateArmyContact(contact);
+        props.updateArmyContact(contact, 'icon', `/Sensor Contacts/Icons/${e.target.value}`);
     }} >
     {
         !props.data.loading && props.data.assetFolders.find((f) => f.name === 'Icons').containers.map((icon) => {
@@ -39,15 +36,12 @@ const ContactContextMenu = (props) => {
       })
     }
     </Input>
-    </Col>
     </FormGroup>
-    <FormGroup row>
+    <FormGroup >
     <Label for="pictureSelect" sm={2}>Picture</Label>
-    <Col sm={10}>
     <Input type="select" name="select" id="pictureSelect" defaultValue={contact.picture} onChange={(e) => {
         const contact = props.contact;
-        contact.picture = `/Sensor Contacts/Pictures/${e.target.value}`;
-        props.updateArmyContact(contact);
+        props.updateArmyContact(contact, 'picture', `/Sensor Contacts/Pictures/${e.target.value}`);
     }} >
     {
         !props.data.loading && props.data.assetFolders.find((f) => f.name === 'Pictures').containers.map((picture) => {
@@ -55,49 +49,40 @@ const ContactContextMenu = (props) => {
       })
     }
     </Input>
-    </Col>
     </FormGroup>
-    <FormGroup row>
+    <FormGroup>
     <Label for="sizeRange" sm={2}>Size</Label>
-    <Col sm={10}>
     <input type="range" id="sizeRange" min="0.1" defaultValue={contact.size} max="20" step="0.1"  onChange={(e) => {
         const contact = props.contact;
-        contact.size = e.target.value;
-        props.updateArmyContact(contact);
+        props.updateArmyContact(contact, 'size', e.target.value);
     }} />
-    </Col>
     </FormGroup>
-    <FormGroup row>
+    <FormGroup >
     <Label for="infraredCheckbox" sm={2}>Infrared</Label>
-    <Col sm={{ size: 10 }}>
     <FormGroup check>
     <Label check>
     <Input type="checkbox" id="infraredCheckbox" defaultChecked={contact.infrared} onChange={(e) => {
         const contact = props.contact;
-        contact.infrared = e.target.checked;
-        props.updateArmyContact(contact);
+        props.updateArmyContact(contact, 'cloaked', e.target.checked);
     }} />{' '}
     Shown
     </Label>
     </FormGroup>
-    </Col>
     </FormGroup>
-    <FormGroup row>
+    <FormGroup>
     <Label for="cloakedCheckbox" sm={2}>Cloaked</Label>
-    <Col sm={{ size: 10 }}>
     <FormGroup check>
     <Label check>
     <Input type="checkbox" id="cloakedCheckbox" defaultChecked={contact.cloaked} onChange={(e) => {
         const contact = props.contact;
-        contact.infrared = e.target.checked;
-        props.updateArmyContact(contact);
+        props.updateArmyContact(contact, 'cloaked', e.target.checked);
     }} />{' '}
     Invisible
     </Label>
     </FormGroup>
-    </Col>
     </FormGroup>
     </Form>
+    <Button color="info" size="sm" onClick={closeMenu}>Close</Button>
     </CardBlock>
     </Card>  
     </div>

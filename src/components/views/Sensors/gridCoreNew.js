@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { TypingField } from '../../generic/core';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
-import SensorGrid from './SensorGrid.js';
 import Measure from 'react-measure';
 import Draggable from 'react-draggable';
 import FontAwesome from 'react-fontawesome';
@@ -144,8 +143,19 @@ class GridCore extends Component {
       }, defaultContact)
     })
   }
-  _updateArmyContact(contact){
+  _updateArmyContact(contact, key, value){
     const { id } = this.props.data.sensors[0];
+    const newContact = {
+      id: contact.id,
+      name: contact.name,
+      size: contact.size,
+      icon: contact.icon,
+      picture: contact.picture,
+      speed: contact.speed,
+      infrared: contact.infrared,
+      cloaked: contact.cloaked,
+    }
+    newContact[key] = value;
     this.props.client.mutate({
       mutation: gql`
       mutation ($id:ID!, $contact: SensorContactInput!){
@@ -153,16 +163,7 @@ class GridCore extends Component {
       }`,
       variables: {
         id,
-        contact: {
-          id: contact.id,
-          name: contact.name,
-          size: contact.size,
-          icon: contact.icon,
-          picture: contact.picture,
-          speed: contact.speed,
-          infrared: contact.infrared,
-          cloaked: contact.cloaked,
-        }
+        contact: newContact
       }
     })
   }
@@ -189,11 +190,16 @@ class GridCore extends Component {
       contextContact: obj
     });
   }
+  _closeContext() {
+    this.setState({
+      contextContact: null
+    });
+  }
   render(){
     if (this.props.data.loading) return <p>Loading...</p>;
     if (!this.props.data.sensors[0]) return <p>No Sensor Grid</p>;
     const sensors = this.props.data.sensors[0];
-    return <Container fluid>
+    return <Container className="sensorGridCore" fluid>
     <p>Sensors</p>
     <Row>
     <Col sm={8}>
@@ -203,7 +209,7 @@ class GridCore extends Component {
     { dimensions => (
       <div id="threeSensors" className='array' style={{position:'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
       {dimensions.width > 0 &&
-        <GridCoreGrid core dimensions={dimensions} sensor={sensors.id} />
+        <GridCoreGrid mouseover={this.props.hoverContact} core dimensions={dimensions} sensor={sensors.id} />
       }
       </div>
       )}
@@ -231,7 +237,7 @@ class GridCore extends Component {
     <Button size="sm" color="success" onClick={this._addArmyContact.bind(this)}>Add Contact</Button>
     <label><input type="checkbox" onChange={(e) => {this.setState({removeContacts: e.target.checked})}} /> Remove</label>
     { this.state.contextContact && 
-      <ContactContextMenu updateArmyContact={this._updateArmyContact.bind(this)} contact={this.state.contextContact.contact} x={this.state.contextContact.left} y={this.state.contextContact.top}/>
+      <ContactContextMenu closeMenu={this._closeContext.bind(this)} updateArmyContact={this._updateArmyContact.bind(this)} contact={this.state.contextContact.contact} x={this.state.contextContact.left} y={this.state.contextContact.top}/>
     }
     </Col>
     </Row>

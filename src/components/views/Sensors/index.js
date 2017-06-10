@@ -206,7 +206,7 @@ class Sensors extends Component{
 			{ dimensions => (
 				<div id="threeSensors" className='array' style={{position:'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
 				{dimensions.width > 0 &&
-					<GridCoreGrid dimensions={dimensions} sensor={sensors.id} />
+					<GridCoreGrid dimensions={dimensions} sensor={sensors.id} hoverContact={this._hoverContact.bind(this)}/>
 				}
 				</div>
 				)}
