@@ -22,7 +22,7 @@ export default class Engine extends HeatMixin(System) {
     this.speed = -1;
     super.break(report);
   }
-  setSpeed(speed, on) {
+  setSpeed(speed = -1, on = false) {
     this.speed = speed;
     this.on = on;
   }

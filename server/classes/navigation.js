@@ -1,7 +1,7 @@
 import { System } from './generic';
 
 export default class Navigation extends System {
-  constructor(params) {
+  constructor(params = {}) {
     super(params);
     this.class = 'Navigation';
     this.type = 'Navigation';

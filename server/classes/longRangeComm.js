@@ -11,7 +11,7 @@ const stardate = () => {
 }
 
 export default class LongRangeComm extends System {
-  constructor(params) {
+  constructor(params = {}) {
     super(params);
     this.type = 'LongRangeComm';
     this.class = 'LongRangeComm';
@@ -53,7 +53,7 @@ export default class LongRangeComm extends System {
 }
 
 class LRMessage {
-  constructor(params) {
+  constructor(params = {}) {
     this.id = params.id || uuid.v4();
     this.message = params.message || '';
     this.decodedMessage = params.decodedMessage || '';
