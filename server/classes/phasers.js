@@ -2,7 +2,7 @@ import { System, HeatMixin } from './generic';
 // It's easier to manage power if there is just one phaser system with multiple beams than 
 // If there are multiple phaser systems
 export default class Phasers extends HeatMixin(System) {
-  constructor(params) {
+  constructor(params = {}) {
     super(params);
     this.class = 'Phasers';
     this.type = 'Phasers';

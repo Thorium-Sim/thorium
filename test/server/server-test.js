@@ -51,12 +51,4 @@ describe('Server', function() {
       done();
     });
   });
-  it.skip('should provide an /assets endpoint', function(done){
-    chai.request(server)
-    .get('/assets')
-    .end(function(err, res){
-      expect(res).to.have.status(200);
-      done();
-    });
-  });
 });

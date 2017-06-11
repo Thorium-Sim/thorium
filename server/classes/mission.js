@@ -1,7 +1,7 @@
 import uuid from 'uuid';
 import { TimelineObject } from './timeline';
 export default class Mission extends TimelineObject {
-  constructor(params) {
+  constructor(params = {}) {
     super(params);
     const simulators = params.simulators || [];
     this.class = 'Mission';

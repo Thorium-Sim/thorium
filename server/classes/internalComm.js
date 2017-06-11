@@ -1,7 +1,7 @@
 import { System } from './generic';
 
 export default class InternalComm extends System {
-  constructor(params) {
+  constructor(params = {}) {
     super(params);
     this.type = 'InternalComm';
     this.class = 'InternalComm';
