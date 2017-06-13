@@ -19,7 +19,7 @@ export default ({shields, startLoop, state, _toggleShields}) => {
       <h2>Frequency:</h2>
       <Row>
       <Col sm="auto">
-      <h1>
+      <h1 className="arrow">
       <FontAwesome name="arrow-down" onMouseDown={startLoop.bind(this, 'down', s)} /></h1>
       </Col>
       <Col sm="7">
@@ -27,7 +27,7 @@ export default ({shields, startLoop, state, _toggleShields}) => {
       {`${Math.round(state.frequency[s.id] * 100)/100} MHz`}</h2>
       </Col>
       <Col sm="auto">
-      <h1>
+      <h1 className="arrow">
       <FontAwesome name="arrow-up" onMouseDown={startLoop.bind(this, 'up', s)} /></h1>
       </Col>
       </Row>

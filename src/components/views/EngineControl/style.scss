@@ -73,6 +73,11 @@
 		backdrop-filter: blur(10px);
 		background-color: rgba(0, 0, 0, 0.25);
 	}
+	@media (width: 1024px) {
+    .heatBox {
+    	height: 45vh;
+    }
+	}
 	.heatBox-Label{
 		width: 100%;
 		text-align: center;

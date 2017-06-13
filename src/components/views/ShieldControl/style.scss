@@ -32,4 +32,19 @@
       color: red;
     }
   }
+  @media (width: 1024px) {
+    h5 {
+      font-size: 1rem;
+    }
+    h4.arrow {
+      font-size: 1.1rem;
+      line-height: 2rem;
+    }
+    .shieldControlBox {
+      margin-top: 20px;
+    }
+    button {
+      font-size: 0.8rem;
+    }
+  }
 }

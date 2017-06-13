@@ -1,4 +1,7 @@
 .card-coolant {
+  @media (width: 1024px) {
+    margin-top: 50px;
+  }
   .coolant-containers {
     width: 70%;
     height: 70vh;
@@ -8,7 +11,12 @@
     flex-direction: column;
     justify-content: space-between;
   }
-
+  
+  @media (width: 1024px) {
+    .coolant-containers {
+      height: 60vh;
+    }
+  }
   .coolant-level-holder {
     width: 73.5%;
     height: 100%;

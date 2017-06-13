@@ -104,7 +104,8 @@ class SecurityTeams extends Component {
       room = deck.rooms.find(r => r.id === this.state.selectedRoom);
     }
     return (<Row className="security-decks">
-      <Col sm={2}>
+      <Col sm={3}>
+      <h4>Decks</h4>
       <ListGroup>
       {
         decks.map(d => (
@@ -117,7 +118,7 @@ class SecurityTeams extends Component {
       </ListGroup>
       </Col>
       { this.state.selectedDeck && 
-        <Col sm={{size: 6, offset: 2}}>
+        <Col sm={{size: 6, offset: 1}}>
         <h1>Deck {deck.number} Status:</h1>
         <h2>Bulkhead Doors: {deck.doors ? 'Closed' : 'Open'}</h2>
         <h2>Crew Status: {deck.evac ? 'Evacuated' : 'On Duty'}</h2>
