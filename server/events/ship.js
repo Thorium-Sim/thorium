@@ -2,7 +2,7 @@ import App from '../../app.js';
 import { pubsub } from '../helpers/subscriptionManager.js';
 import uuid from 'uuid';
 
-App.on('shipDockingChanged', ({ simulatorId, which, state}) => {
+App.on('shipDockingChange', ({ simulatorId, which, state}) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   if (simulator) {
     simulator[which](state);

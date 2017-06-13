@@ -16,7 +16,10 @@
   background-color: black;
   border: solid 1px rgba(255, 255, 255, 0.5);
   overflow: hidden;
-
+  @media (width: 1024px) {
+    width: 300px;
+    height: 300px;
+  }
   // Clamps
   .clamps {
     position: relative;
@@ -144,6 +147,10 @@
       border-right: 50px solid transparent;
       top: 100%;
       transition: transform 1s ease-in-out;
+      @media (width: 1024px) {
+        border-bottom: 60px solid #484848;
+
+      }
     }
     .left-door {
       position: absolute;
@@ -217,6 +224,10 @@
         -webkit-clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
         clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
         transform: rotate($i * 30deg);
+        @media (width: 1024px) {
+          width: 150px;
+          height: 150px;
+        }
       }
     }
     &.on {
