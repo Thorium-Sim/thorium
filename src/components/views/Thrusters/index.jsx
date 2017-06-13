@@ -377,15 +377,15 @@ gamepadLoop(){
     </div>
     </Col>
     </Row>
-    <Row>
+    <Row className="indicatorCircles">
     {!this.props.data.loading && (
-      <div className="col-sm-6 offset-sm-3">
+      <Col lg={{size: 6, offset: 3}}>
       <Row>
       <IndicatorCircle name={`Yaw: ${Math.round(thruster.rotation.yaw)}`} required={thruster.rotationRequired.yaw} current={thruster.rotation.yaw} />
       <IndicatorCircle name={`Pitch: ${Math.round(thruster.rotation.pitch)}`} required={thruster.rotationRequired.pitch} current={thruster.rotation.pitch} />
       <IndicatorCircle name={`Roll: ${Math.round(thruster.rotation.roll)}`} required={thruster.rotationRequired.roll} current={thruster.rotation.roll} />
       </Row>
-      </div>
+      </Col>
       )}
     </Row>
     </div>

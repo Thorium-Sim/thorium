@@ -119,4 +119,12 @@
 			top: 40%;
 		}
 	}
+	@media (width: 1024px) {
+		.indicatorCircles {
+			margin-top: 90px;
+		}
+		.spacer {
+			margin-top: calc(100% + 10px);
+		}
+	}
 }
