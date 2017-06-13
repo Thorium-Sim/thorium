@@ -97,6 +97,7 @@ class LayoutCorners extends Component {
 			<div className="frame-1"></div>
 			<div className="frame-2"></div>
 			<div className="frame-3"></div>
+			<div className="frame-4"></div>
 			</div>
 			<div className="frame-text">
 			<h1 className="simulator-name">{simulator.name}</h1>

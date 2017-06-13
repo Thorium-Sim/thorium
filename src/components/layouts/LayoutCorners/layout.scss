@@ -679,3 +679,120 @@ body{
 		}
 	}
 }
+
+@media (width: 1024px) {
+	.card-container {
+	}
+	#curve-frame {
+		.frame-image {
+			.frame-1 {
+				background-image: url(/js/images/slice4.png);
+				height: 116px;
+				width: 363px;
+			}
+			.frame-2 {
+				background-image: url(/js/images/slice7.png);
+				height: 652px;
+				width: 98px;
+				top: 116px;
+			}
+			.frame-3 {
+				background-image: url(/js/images/slice6.png);
+				height: 86px;
+				width: 448px;
+			}
+			.frame-4 {
+				background-image: url(/js/images/slice5.png);
+				height: 71px;
+				width: 213px;
+				left: 363px;
+			}
+		}
+		.frame-color{
+			.part-c {
+				width: 350px;
+				height: 32px;
+				left: 17px;
+				top: 56px;
+				background-color: #C27A32 !important;
+				-webkit-clip-path: polygon(0 0, 87.5% 0, 85% 60%, 83% 87%, 79% 102%, 0 60px);
+				border-radius: 26px 0 0 0;
+			}
+			.part-1-1 {
+				width: 578px;
+				height: 88px;
+				-webkit-clip-path: polygon(0 0, 100% 0, 100% 45%, 59% 45%, 57% 63%, 6% 64%, 3% 100%, 0 100%);
+			}
+			.part-1-2 {
+				display: none;
+			}
+			.part-2 {
+				width: 64px;
+				height: 630px;
+				top: 94px;
+				-webkit-clip-path: polygon(0 0, 26% 0, 60% 4%, 100% 6%, 100% 74%,  0 88%, 0 89.5%, 100% 76%, 97% 85%, 0 100%);
+			}
+			.part-3 {
+				-webkit-clip-path: polygon(0% 0, 100% 0, 100% 100%, 9% 100%, 7% 93%);
+			}
+		}
+		.frame-text {
+			.simulator-name{
+				top: 0px;
+				left: 20px;
+				font-size: 40px;
+			}
+			.station-name{
+				top: 5px;
+				right: 10px;
+				font-size: 50px;
+				width: 430px;
+			}
+			.login-name{
+				top: 55px;
+				left: 46px;
+				font-size: 30px;
+			}
+		}
+		.card-icon-container {
+			top: 230px;
+			.card-icon-item {
+				.card-icon{
+					width: 50px;
+					height: 50px;
+				}
+				.card-icon-color {
+					width: 50px;
+					height: 50px;
+				}
+				.card-icon-background {
+					width: 58px;
+					height: 58px;
+				}
+				.card-button-background {
+					margin-top: 6px;
+				}
+			}
+		}
+		.widgets {
+			left: 360px;
+			width: 200px;
+			display: flex;
+			justify-content: space-around;
+		}
+	}
+	.settingsBall {
+		.icon {
+			width: 50px;
+			height: 50px;
+			background-size: 100%, 35px;
+		}
+	}
+	.card-container {
+		top: 93px;
+		left: 77px;
+		width: 92vw;
+		height: 83vh;
+	}
+}
+
