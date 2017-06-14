@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { TypingField } from '../../generic/core';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import Measure from 'react-measure';
