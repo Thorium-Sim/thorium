@@ -72,7 +72,7 @@ export default class Target extends Component {
       <Row>
       <Measure>
       { dimensions => (
-        <Col className="targetBox" sm={{size: 4, offset: 1}}>
+        <Col className="targetBox" lg={{size: 6}} xl={{size: 4, offset: 1}}>
         {this.props.targets.map((target) => {
           return <img
           key={target.id}
@@ -109,7 +109,7 @@ export default class Target extends Component {
         </Col>)
     }
     </Measure>
-    <Col onMouseMove={this.powerUp.bind(this)} className="chargeBox" sm={{size: 4, offset: 2}}>
+    <Col onMouseMove={this.powerUp.bind(this)} className="chargeBox" lg={{size: 5, offset: 1}} xl={{size: 4, offset: 2}}>
     <ChargeBar charge={this.state.charge < 1 ? this.state.charge : 1} />
     <ChargeBar charge={this.state.charge < 1 ? this.state.charge : 1} />
     <ChargeBar charge={this.state.charge < 1 ? this.state.charge : 1} />

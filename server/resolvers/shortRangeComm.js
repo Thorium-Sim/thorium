@@ -9,38 +9,38 @@ export const ShortRangeCommQueries = {
 };
 
 export const ShortRangeCommMutations = {
-  commAddSignal(root, args) {
-    App.handleEvent(args, 'commAddSignal');
+  commAddSignal(root, args, context) {
+    App.handleEvent(args, 'commAddSignal', context.clientId);
   },
-  commUpdateSignal(root, args) {
-    App.handleEvent(args, 'commUpdateSignal');
+  commUpdateSignal(root, args, context) {
+    App.handleEvent(args, 'commUpdateSignal', context.clientId);
   },
-  commRemoveSignal(root, args) {
-    App.handleEvent(args, 'commRemoveSignal');
+  commRemoveSignal(root, args, context) {
+    App.handleEvent(args, 'commRemoveSignal', context.clientId);
   },
-  commAddArrow(root, args) {
-    App.handleEvent(args, 'commAddArrow');
+  commAddArrow(root, args, context) {
+    App.handleEvent(args, 'commAddArrow', context.clientId);
   },
-  commRemoveArrow(root, args) {
-    App.handleEvent(args, 'commRemoveArrow');
+  commRemoveArrow(root, args, context) {
+    App.handleEvent(args, 'commRemoveArrow', context.clientId);
   },
-  commConnectArrow(root, args) {
-    App.handleEvent(args, 'commConnectArrow');
+  commConnectArrow(root, args, context) {
+    App.handleEvent(args, 'commConnectArrow', context.clientId);
   },
-  commDisconnectArrow(root, args) {
-    App.handleEvent(args, 'commDisconnectArrow');
+  commDisconnectArrow(root, args, context) {
+    App.handleEvent(args, 'commDisconnectArrow', context.clientId);
   },
-  commUpdate(root, args) {
-    App.handleEvent(args, 'commUpdate');
+  commUpdate(root, args, context) {
+    App.handleEvent(args, 'commUpdate', context.clientId);
   },
-  commHail(root, args) {
-    App.handleEvent(args, 'commHail');
+  commHail(root, args, context) {
+    App.handleEvent(args, 'commHail', context.clientId);
   },
-  cancelHail(root, args) {
-    App.handleEvent(args, 'cancelHail');
+  cancelHail(root, args, context) {
+    App.handleEvent(args, 'cancelHail', context.clientId);
   },
-  connectHail(root, args) {
-    App.handleEvent(args, 'connectHail');
+  connectHail(root, args, context) {
+    App.handleEvent(args, 'connectHail', context.clientId);
   },
 };
 

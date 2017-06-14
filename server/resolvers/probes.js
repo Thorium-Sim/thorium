@@ -11,26 +11,26 @@ export const ProbesQueries = {
 };
 
 export const ProbesMutations = {
-  destroyProbe(rootValue, args){
-    App.handleEvent(args, 'destroyProbe');
+  destroyProbe(rootValue, args, context){
+    App.handleEvent(args, 'destroyProbe', context.clientId);
   },
-  launchProbe(rootValue, args){
-    App.handleEvent(args, 'launchProbe');
+  launchProbe(rootValue, args, context){
+    App.handleEvent(args, 'launchProbe', context.clientId);
   },
-  fireProbe(rootValue, args) {
-    App.handleEvent(args, 'fireProbe');
+  fireProbe(rootValue, args, context) {
+    App.handleEvent(args, 'fireProbe', context.clientId);
   },
-  updateProbeType(rootValue, args){
-    App.handleEvent(args, 'updateProbeType');
+  updateProbeType(rootValue, args, context){
+    App.handleEvent(args, 'updateProbeType', context.clientId);
   },
-  updateProbeEquipment(rootValue, args){
-    App.handleEvent(args, 'updateProbeEquipment');
+  updateProbeEquipment(rootValue, args, context){
+    App.handleEvent(args, 'updateProbeEquipment', context.clientId);
   },
-  probeQuery(rootValue, args){
-    App.handleEvent(args, 'probeQuery');
+  probeQuery(rootValue, args, context){
+    App.handleEvent(args, 'probeQuery', context.clientId);
   },
-  probeQueryResponse(rootValue, args){
-    App.handleEvent(args, 'probeQueryResponse');
+  probeQueryResponse(rootValue, args, context){
+    App.handleEvent(args, 'probeQueryResponse', context.clientId);
   },
 };
 

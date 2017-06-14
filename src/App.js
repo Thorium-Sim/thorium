@@ -24,6 +24,7 @@ if (!clientId) {
 
 const networkInterface = createNetworkInterface({
   uri: `http://${hostname}:3001/graphql`,
+  headers: {clientId},
   opts: {
     mode: 'cors',
   }

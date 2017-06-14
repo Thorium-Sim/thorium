@@ -10,7 +10,7 @@ export const ActionsQueries = {
 
 // We aren't going to log these as events
 export const ActionsMutations = {
-  triggerAction(root, args) {
+  triggerAction(root, args, context) {
     // In some cases, we need to change the client
     switch(args.action) {
       case "online":
@@ -26,7 +26,7 @@ export const ActionsMutations = {
       .forEach(c => App.handleEvent({client: c.id, state: args.action}, "clientOfflineState"))
       break;
       default:
-      pubsub.publish('actionsUpdate', args);
+      pubsub.publish('actionsUpdate', args, context.clientId);
       break;
     }
   },

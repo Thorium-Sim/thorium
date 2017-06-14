@@ -142,7 +142,7 @@ class Sensors extends Component{
 			<div className="cardSensors">
 			<div>
 			<Row>
-			<Col className="col-sm-3 scans">
+			<Col sm={3} className="csol-sm-3 scans">
 			<DamageOverlay message="External Sensors Offline" system={sensors} />
 			<Row>
 			<Col className="col-sm-6">
@@ -184,7 +184,7 @@ class Sensors extends Component{
 			</Card>
 			</Col>
 			</Row>
-			<Row>
+			{/*<Row>
 			<Col className="col-sm-12">
 			<h4>Contact Coordinates</h4>
 			</Col>
@@ -196,9 +196,9 @@ class Sensors extends Component{
 			</Card>
 			</Col>
 			</Row>
-			<Button onClick={this.showWeaponsRange.bind(this)} block>Show Weapons Range</Button>
+			<Button onClick={this.showWeaponsRange.bind(this)} block>Show Weapons Range</Button>*/}
 			</Col>
-			<Col className="col-sm-6 arrayContainer">
+			<Col sm={6} className="arrayContainer">
 			<div className="spacer"></div>
 			<Measure
 			useClone={true}

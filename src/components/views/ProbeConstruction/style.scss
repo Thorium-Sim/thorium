@@ -52,6 +52,11 @@
     p {
       font-size: 28px;
     }
+    @media (width: 1024px) {
+      p {
+        font-size: 1.2rem;
+      }
+    }
   }
   .probeEquipment {
     .card{ 
@@ -66,6 +71,12 @@
     }
     p {
       margin: 0;
+      font-size: 0.8rem;
+    }
+  }
+  @media (width: 1024px) {
+    button {
+      font-size: 0.8rem;
     }
   }
 }

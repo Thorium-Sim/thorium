@@ -13,14 +13,14 @@ const ShieldData = ({shields, startLoop, state, _toggleShields}) => {
   <h5>Frequency:</h5>
   <Row>
   <Col sm="auto">
-  <h4>
+  <h4 className="arrow">
   <FontAwesome name="arrow-down" onMouseDown={startLoop.bind(this, 'down', shields)} /></h4>
   </Col>
   <Col sm="6">
   <h5 className="text-center">{`${Math.round(state.frequency[shields.id] * 100)/100} MHz`}</h5>
   </Col>
   <Col sm="auto">
-  <h4>
+  <h4 className="arrow">
   <FontAwesome name="arrow-up" onMouseDown={startLoop.bind(this, 'up', shields)} /></h4>
   </Col>
   </Row>

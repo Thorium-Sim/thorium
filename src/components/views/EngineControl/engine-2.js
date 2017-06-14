@@ -57,7 +57,7 @@ export default withApollo((props) => {
   </Col>
   </Row>
   <Row>
-  <Col sm={{size: 8, offset: 2}}>
+  <Col lg={{size: 10, offset: 1}} xl={{size: 8, offset: 2}}>
   <Button block color="info" onMouseDown={applyCoolant.bind(this, engines[0].id)} >Coolant</Button>
   </Col>
   </Row>
@@ -75,7 +75,7 @@ export default withApollo((props) => {
   </Col>
   </Row>
   <Row>
-  <Col sm={{size: 8, offset: 2}}>
+  <Col lg={{size: 10, offset: 1}} xl={{size: 8, offset: 2}}>
   <Button block color="info" onMouseDown={applyCoolant.bind(this, engines[1].id)} >Coolant</Button>
   </Col>
   </Row>

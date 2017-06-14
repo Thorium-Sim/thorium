@@ -8,6 +8,11 @@
     flex-direction: row;
     flex-wrap: wrap;
   }
+  @media (width: 1024px) {
+    .keypadButtons {
+      padding: 20px;
+    }
+  }
   .keypadButtons .keypad, .keypadButtons .enter{
     color: #BABABA;
     position: static;
@@ -38,11 +43,11 @@
     width: 95%;
   }
 
-  .calculatedCourse, .currentCourse{
+  .currentCourse{
     margin-top: 70px;
-    padding: 10px;
   }
   .currentCourse, .calculated{
+    padding: 10px;
     position:relative;
     top: 80px;
     font-size: 20px;

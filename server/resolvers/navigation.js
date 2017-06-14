@@ -11,20 +11,20 @@ export const NavigationQueries = {
 };
 
 export const NavigationMutations = {
-  navCalculateCourse(rootValue, args){
-    App.handleEvent(args, 'navCalculateCourse');
+  navCalculateCourse(rootValue, args, context){
+    App.handleEvent(args, 'navCalculateCourse', context.clientId);
   },
-  navCancelCalculation(rootValue, args){
-    App.handleEvent(args, 'navCancelCalculation');
+  navCancelCalculation(rootValue, args, context){
+    App.handleEvent(args, 'navCancelCalculation', context.clientId);
   },
-  navCourseResponse(rootValue, args){
-    App.handleEvent(args, 'navCourseResponse');
+  navCourseResponse(rootValue, args, context){
+    App.handleEvent(args, 'navCourseResponse', context.clientId);
   },
-  navCourseEntry(rootValue, args){
-    App.handleEvent(args, 'navCourseEntry');
+  navCourseEntry(rootValue, args, context){
+    App.handleEvent(args, 'navCourseEntry', context.clientId);
   },
-  navToggleCalculate(rootValue, args){
-    App.handleEvent(args, 'navToggleCalculate');
+  navToggleCalculate(rootValue, args, context){
+    App.handleEvent(args, 'navToggleCalculate', context.clientId);
   }
 };
 

@@ -5,14 +5,14 @@ export const ShipQueries = {
 };
 
 export const ShipMutations = {
-  shipDockingChange(root, args) {
-    App.handleEvent(args, 'shipDockingChange');
+  shipDockingChange(root, args, context) {
+    App.handleEvent(args, 'shipDockingChange', context.clientId);
   },
-  remoteAccessSendCode(root, args) {
-    App.handleEvent(args, 'remoteAccessSendCode');
+  remoteAccessSendCode(root, args, context) {
+    App.handleEvent(args, 'remoteAccessSendCode', context.clientId);
   },
-  remoteAccessUpdateCode(root, args) {
-    App.handleEvent(args, 'remoteAccessUpdateCode');
+  remoteAccessUpdateCode(root, args, context) {
+    App.handleEvent(args, 'remoteAccessUpdateCode', context.clientId);
   },
 };
 

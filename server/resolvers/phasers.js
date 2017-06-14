@@ -11,29 +11,29 @@ export const PhaserQueries = {
 };
 
 export const PhaserMutations = {
-  chargePhaserBeam(root, args){
-    App.handleEvent(args, 'chargePhaserBeam');
+  chargePhaserBeam(root, args, context){
+    App.handleEvent(args, 'chargePhaserBeam', context.clientId);
   },
-  dischargePhaserBeam(root, args){
-    App.handleEvent(args, 'dischargePhaserBeam');
+  dischargePhaserBeam(root, args, context){
+    App.handleEvent(args, 'dischargePhaserBeam', context.clientId);
   },
-  firePhaserBeam(root, args){
-    App.handleEvent(args, 'firePhaserBeam');
+  firePhaserBeam(root, args, context){
+    App.handleEvent(args, 'firePhaserBeam', context.clientId);
   },
-  stopPhaserBeams(root, args) {
-    App.handleEvent(args, 'stopPhaserBeams');
+  stopPhaserBeams(root, args, context) {
+    App.handleEvent(args, 'stopPhaserBeams', context.clientId);
   },
-  phaserArc(root, args){
-    App.handleEvent(args, 'phaserArc');
+  phaserArc(root, args, context){
+    App.handleEvent(args, 'phaserArc', context.clientId);
   },
-  setPhaserBeamCharge(root, args){
-    App.handleEvent(args, 'setPhaserBeamCharge');
+  setPhaserBeamCharge(root, args, context){
+    App.handleEvent(args, 'setPhaserBeamCharge', context.clientId);
   },
-  setPhaserBeamHeat(root, args) {
-    App.handleEvent(args, 'setPhaserBeamHeat');
+  setPhaserBeamHeat(root, args, context) {
+    App.handleEvent(args, 'setPhaserBeamHeat', context.clientId);
   },
-  coolPhaserBeam(root, args) {
-    App.handleEvent(args, 'coolPhaserBeam');
+  coolPhaserBeam(root, args, context) {
+    App.handleEvent(args, 'coolPhaserBeam', context.clientId);
   }
 };
 

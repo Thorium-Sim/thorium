@@ -221,7 +221,7 @@ class CommShortRange extends Component {
       <Container fluid className="shortRangeComm">
             <DamageOverlay message="Short Range Communications Offline" system={ShortRange} style={{left: '-2.5%', width: '105%', height:'105%'}} />
       <Row>
-      <Col sm="3" className="commControls">
+      <Col lg="4" xl="3" className="commControls">
       <Card>
       <div className="spacer"></div>
       {
@@ -239,7 +239,7 @@ class CommShortRange extends Component {
       </Card>
       <Button size="lg" onClick={this.commHail.bind(this)} block color="primary">{getHailLabel()}</Button>
       </Col>
-      <Col sm={{size: 4, offset:1}}>
+      <Col lg={{size: 4, offset:1}}>
       <Card className="frequencyContainer">
 
       <div className="signals">
@@ -284,7 +284,7 @@ class CommShortRange extends Component {
       </Measure>
       </Card>
       </Col>
-      <Col sm="1">
+      {/*<Col sm="1">
       <div className="bar amplitudeBar"></div>
       <Measure
       includeMargin={true}>
@@ -299,7 +299,7 @@ class CommShortRange extends Component {
         </div>
         ) }
       </Measure>
-      </Col>
+      </Col>*/}
       <Col sm="3">
       <Card className="signalCanvas">
       <Measure
@@ -379,7 +379,7 @@ const sinPoints = ({frequency = 0, amplitude = 0, width, height}) => {
 
 const FrequencySignals = ({dimensions, frequency, amplitude}) => {
   if (dimensions.width === 0) return <div></div>;
-  return <Stage width={dimensions.width} height={630}>
+  return <Stage width={dimensions.width} height={535}>
   <Layer>
   <Line
   points={sinPoints({frequency: Math.pow(10,1 - frequency) + 2, amplitude: amplitude * dimensions.width / 3 + 10, height: 630, width: dimensions.width})}

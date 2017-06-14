@@ -4,11 +4,9 @@ import * as THREE from 'three';
 import OBJLoader from 'three-obj-loader';
 import ParsedModel from '../helpers/parser';
 import Arrow from './arrow';
+import assetPath from '../../../helpers/assets';
 
 OBJLoader(THREE);
-const ObjURL = 'https://s3.amazonaws.com/dynamo-star/_1.obj';
-const TxURL = 'https://s3.amazonaws.com/dynamo-star/battleship_elements2_c.png';
-
 window.THREE = THREE;
 
 function degtorad(deg){
@@ -56,6 +54,7 @@ export default class ThreeThrusters extends Component {
   componentDidMount() {
     const self = this;
     var objLoader = new THREE.OBJLoader();
+    const ObjURL = assetPath('/Ship Views/Model', 'default', 'obj', false);
     objLoader.load(// resource URL
       ObjURL,
       function ( object ) {
@@ -92,6 +91,7 @@ export default class ThreeThrusters extends Component {
     const { width, height } = this.props.dimensions;
     const arrowScaleVector = new THREE.Vector3(0.4,0.4,0.4);
     const direction = this.props.direction;
+    const TxURL = assetPath('/Ship Views/Texture', 'default', 'png', false);
     return (
       <React3
       alpha

@@ -122,13 +122,13 @@ class Navigation extends Component {
 	handleKeydown(e){
 		console.log(e.which, e.key);
 		if (e.which === 8){//Delete key
-      this.clear();
+			this.clear();
 		}
 		if (e.which === 13){//Enter key
-      this.enter();
+			this.enter();
 		}
 		if (!isNaN(parseInt(e.key, 10)) || e.key === '.'){
-      this.keydown(e.key)
+			this.keydown(e.key)
 		}
 	}
 	componentDidMount() {
@@ -327,7 +327,7 @@ class Navigation extends Component {
 			<Container fluid className="cardNavigation">
 			<DamageOverlay system={navigation} message={`Navigation System Offline`} />
 			<Row>
-			<Col className="col-sm-6">
+			<Col xl={6} lg={5}>
 			{navigation.calculate && <Row>
 				{navigation.scanning ?
 					<Col sm="12">
@@ -407,7 +407,7 @@ class Navigation extends Component {
 			</Row>
 			</div>
 			</Col>
-			<Col sm={3}>
+			<Col xl={3} lg={4}>
 			<Keypad keydown={this.keydown.bind(this)}
 			clear={this.clear.bind(this)}
 			enter={this.enter.bind(this)}/>

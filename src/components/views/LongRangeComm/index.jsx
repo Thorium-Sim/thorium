@@ -176,7 +176,8 @@ class LongRangeComm extends Component {
       <Row className="long-range-comm">
       <DamageOverlay system={this.props.data.longRangeCommunications[0]} message={"Long Range Communications Offline"} style={{minHeight: '400px' ,height: 'calc(100% + 40px)'}}/>
       <Col sm={3}>
-      <Card>
+      <h4>Message Queue</h4>
+      <Card style={{minHeight: '60px'}}>
       {messages.map(m => <li onClick={() => {this.setState({selectedMessage: m.id, selectedSat: null})}} className={`message-list ${m.id === this.state.selectedMessage ? 'active' : ''}`} key={m.id}>
         {`${m.datestamp}: ${m.sender}`}
         </li>)}
@@ -200,10 +201,10 @@ class LongRangeComm extends Component {
         </Measure>
         </div>
         <Row style={{marginTop: '10px'}}>
-        <Col sm={{size: 3, offset: 2}}>
+        <Col lg={{size: 4, offset: 1}} xl={{size: 3, offset: 2}}>
         <Button onClick={this.deleteMessage.bind(this)} size="lg" block color="danger">Delete Message</Button>
         </Col>
-        <Col sm={{size: 3, offset: 2}}>
+        <Col lg={{size: 4, offset: 2}} xl={{size: 3, offset: 2}}>
         <Button onClick={this.sendMessage.bind(this)} disabled={!this.state.selectedSat} size="lg" block color="success">Send Message</Button>
         </Col>
         </Row>

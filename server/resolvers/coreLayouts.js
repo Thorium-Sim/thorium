@@ -7,14 +7,14 @@ export const CoreLayoutQueries = {
 };
 
 export const CoreLayoutMutations = {
-  updateCoreLayout(_, { layout }) {
-    App.handleEvent({ layout }, 'updateCoreLayout');
+  updateCoreLayout(_, { layout }, context) {
+    App.handleEvent({ layout }, 'updateCoreLayout', context.clientId);
   },
-  addCoreLayout(_, { layout }) {
-    App.handleEvent({ layout }, 'addCoreLayout');
+  addCoreLayout(_, { layout }, context) {
+    App.handleEvent({ layout }, 'addCoreLayout', context.clientId);
   },
-  removeCoreLayout(_, { id }) {
-    App.handleEvent({ id }, 'removeCoreLayout');
+  removeCoreLayout(_, { id }, context) {
+    App.handleEvent({ id }, 'removeCoreLayout', context.clientId);
   },
 };
 

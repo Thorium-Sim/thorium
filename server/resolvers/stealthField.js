@@ -11,23 +11,23 @@ export const StealthFieldQueries = {
 };
 
 export const StealthFieldMutations = {
-  setStealthActivated(rootValue, args) {
-    App.handleEvent(args, 'setStealthActivated');
+  setStealthActivated(rootValue, args, context) {
+    App.handleEvent(args, 'setStealthActivated', context.clientId);
   },
-  setStealthCharge(rootValue, args) {
-    App.handleEvent(args, 'setStealthCharge');
+  setStealthCharge(rootValue, args, context) {
+    App.handleEvent(args, 'setStealthCharge', context.clientId);
   },
-  activateStealth(rootValue, args) {
-    App.handleEvent(args, 'activateStealth');
+  activateStealth(rootValue, args, context) {
+    App.handleEvent(args, 'activateStealth', context.clientId);
   },
-  deactivateStealth(rootValue, args) {
-    App.handleEvent(args, 'deactivateStealth');
+  deactivateStealth(rootValue, args, context) {
+    App.handleEvent(args, 'deactivateStealth', context.clientId);
   },
-  setStealthQuadrant(rootValue, args) {
-    App.handleEvent(args, 'setStealthQuadrant');
+  setStealthQuadrant(rootValue, args, context) {
+    App.handleEvent(args, 'setStealthQuadrant', context.clientId);
   },
-  fluxStealthQuadrants(rootValue, args) {
-    App.handleEvent(args, 'fluxStealthQuadrants');
+  fluxStealthQuadrants(rootValue, args, context) {
+    App.handleEvent(args, 'fluxStealthQuadrants', context.clientId);
   },
 };
 

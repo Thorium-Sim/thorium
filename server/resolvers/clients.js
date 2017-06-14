@@ -17,56 +17,56 @@ export const ClientQueries = {
 };
 
 export const ClientMutations = {
-  clientConnect: (root, args) => {
-    App.handleEvent(args, 'clientConnect');
+  clientConnect: (root, args, context) => {
+    App.handleEvent(args, 'clientConnect', context.clientId);
     return '';
   },
-  clientDisconnect: (root, args) => {
-    App.handleEvent(args, 'clientDisconnect');
+  clientDisconnect: (root, args, context) => {
+    App.handleEvent(args, 'clientDisconnect', context.clientId);
     return '';
   },
-  clientPing: (root, args) => {
-    App.handleEvent(args, 'clientPing');
+  clientPing: (root, args, context) => {
+    App.handleEvent(args, 'clientPing', context.clientId);
     return '';
   },
-  clientSetFlight: (root, args) => {
-    App.handleEvent(args, 'clientSetFlight');
+  clientSetFlight: (root, args, context) => {
+    App.handleEvent(args, 'clientSetFlight', context.clientId);
     return '';
   },
-  clientSetSimulator: (root, args) => {
-    App.handleEvent(args, 'clientSetSimulator');
+  clientSetSimulator: (root, args, context) => {
+    App.handleEvent(args, 'clientSetSimulator', context.clientId);
     return '';
   },
-  clientSetStation: (root, args) => {
-    App.handleEvent(args, 'clientSetStation');
+  clientSetStation: (root, args, context) => {
+    App.handleEvent(args, 'clientSetStation', context.clientId);
     return '';
   },
-  clientLogin: (root, args) => {
-    App.handleEvent(args, 'clientLogin');
+  clientLogin: (root, args, context) => {
+    App.handleEvent(args, 'clientLogin', context.clientId);
     return '';
   },
-  clientLogout: (root, args) => {
-    App.handleEvent(args, 'clientLogout');
+  clientLogout: (root, args, context) => {
+    App.handleEvent(args, 'clientLogout', context.clientId);
     return '';
   },
-  clientDiagnostic: (root, args) => {
-    App.handleEvent(args, 'clientDiagnostic');
+  clientDiagnostic: (root, args, context) => {
+    App.handleEvent(args, 'clientDiagnostic', context.clientId);
     return '';
   },
-  clientReset: (root, args) => {
-    App.handleEvent(args, 'clientReset');
+  clientReset: (root, args, context) => {
+    App.handleEvent(args, 'clientReset', context.clientId);
     return '';
   },
-  clientLockScreen: (root, args) => {
-    App.handleEvent(args, 'clientLockScreen');
+  clientLockScreen: (root, args, context) => {
+    App.handleEvent(args, 'clientLockScreen', context.clientId);
     return '';
   },
-  clientUnlockScreen: (root, args) => {
-    App.handleEvent(args, 'clientUnlockScreen');
+  clientUnlockScreen: (root, args, context) => {
+    App.handleEvent(args, 'clientUnlockScreen', context.clientId);
     return '';
   },
-  clientOfflineState: (root, args) => {
-    App.handleEvent(args, 'clientOfflineState');
+  clientOfflineState: (root, args, context) => {
+    App.handleEvent(args, 'clientOfflineState', context.clientId);
     return '';
   }
 };

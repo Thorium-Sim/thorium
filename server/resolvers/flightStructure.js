@@ -20,110 +20,110 @@ export const FlightStructureQueries = {
 };
 
 export const FlightStructureMutations = {
-  test(root, args) {
+  test(root, args, context) {
     App.test(args);
     return '';
   },
 
 
   // Mission
-  createMission(root, args) {
-    App.handleEvent(Object.assign(args,{id: uuid.v4()}), 'createMission');
+  createMission(root, args, context) {
+    App.handleEvent(Object.assign(args,{id: uuid.v4()}), 'createMission', context.clientId);
   },
-  removeMission(root, args) {
-    App.handleEvent(args, 'removeMission');
+  removeMission(root, args, context) {
+    App.handleEvent(args, 'removeMission', context.clientId);
   },
-  editMission(root, args) {
-    App.handleEvent(args, 'editMission');
+  editMission(root, args, context) {
+    App.handleEvent(args, 'editMission', context.clientId);
   },
-  addSimulatorToMission(root, args) {
-    App.handleEvent(args, 'addSimulatorToMission');
+  addSimulatorToMission(root, args, context) {
+    App.handleEvent(args, 'addSimulatorToMission', context.clientId);
   },
-  removeSimulatorFromMission(root, args) {
-    App.handleEvent(args, 'removeSimulatorToMission');
+  removeSimulatorFromMission(root, args, context) {
+    App.handleEvent(args, 'removeSimulatorToMission', context.clientId);
   },
 
 
   // Flight
-  startFlight(root, args) {
-    App.handleEvent(Object.assign(args,{flightId: uuid.v4()}), 'startFlight');
+  startFlight(root, args, context) {
+    App.handleEvent(Object.assign(args,{flightId: uuid.v4()}), 'startFlight', context.clientId);
   },
 
 
   // Simulator
-  createSimulator(root, args) {
-    App.handleEvent(Object.assign(args,{id: uuid.v4()}), 'createSimulator');
+  createSimulator(root, args, context) {
+    App.handleEvent(Object.assign(args,{id: uuid.v4()}), 'createSimulator', context.clientId);
   },
-  removeSimulator(root, args) {
-    App.handleEvent(args, 'removeSimulator');
+  removeSimulator(root, args, context) {
+    App.handleEvent(args, 'removeSimulator', context.clientId);
   },
-  renameSimulator(root, args) {
-    App.handleEvent(args, 'renameSimulator');
+  renameSimulator(root, args, context) {
+    App.handleEvent(args, 'renameSimulator', context.clientId);
   },
-  changeSimulatorLayout(root, args) {
-    App.handleEvent(args, 'changeSimulatorLayout');
+  changeSimulatorLayout(root, args, context) {
+    App.handleEvent(args, 'changeSimulatorLayout', context.clientId);
   },
-  changeSimulatorAlertLevel(root, args) {
-    App.handleEvent(args, 'changeSimulatorAlertLevel');
+  changeSimulatorAlertLevel(root, args, context) {
+    App.handleEvent(args, 'changeSimulatorAlertLevel', context.clientId);
   },
-  changeSimulatorCrewCount(root, args) {
-    App.handleEvent(args, 'changeSimulatorCrewCount');
+  changeSimulatorCrewCount(root, args, context) {
+    App.handleEvent(args, 'changeSimulatorCrewCount', context.clientId);
   },
 
   // Timeline
-  addTimelineStep(root, args) {
-    App.handleEvent(Object.assign(args,{timelineStepId: uuid.v4()}), 'addTimelineStep');
+  addTimelineStep(root, args, context) {
+    App.handleEvent(Object.assign(args,{timelineStepId: uuid.v4()}), 'addTimelineStep', context.clientId);
   },
-  removeTimelineStep(root, args) {
-    App.handleEvent(args, 'removeTimelineStep');
+  removeTimelineStep(root, args, context) {
+    App.handleEvent(args, 'removeTimelineStep', context.clientId);
   },
-  reorderTimelineStep(root, args) {
-    App.handleEvent(args, 'reorderTimelineStep');
+  reorderTimelineStep(root, args, context) {
+    App.handleEvent(args, 'reorderTimelineStep', context.clientId);
   },
-  updateTimelineStep(root, args) {
-    App.handleEvent(args, 'updateTimelineStep');
+  updateTimelineStep(root, args, context) {
+    App.handleEvent(args, 'updateTimelineStep', context.clientId);
   },
-  addTimelineItemToTimelineStep(root, args) {
-    App.handleEvent(Object.assign(args,{timelineItemId: uuid.v4()}), 'addTimelineItemToTimelineStep');
+  addTimelineItemToTimelineStep(root, args, context) {
+    App.handleEvent(Object.assign(args,{timelineItemId: uuid.v4()}), 'addTimelineItemToTimelineStep', context.clientId);
   },
-  removeTimelineStepItem(root, args) {
-    App.handleEvent(args, 'removeTimelineStepItem');
+  removeTimelineStepItem(root, args, context) {
+    App.handleEvent(args, 'removeTimelineStepItem', context.clientId);
   },
-  updateTimelineStepItem(root, args) {
-    App.handleEvent(args, 'updateTimelineStepItem');
+  updateTimelineStepItem(root, args, context) {
+    App.handleEvent(args, 'updateTimelineStepItem', context.clientId);
   },
 
 
   // Station
-  createStationSet(root, args) {
-    App.handleEvent(args, 'createStationSet');
+  createStationSet(root, args, context) {
+    App.handleEvent(args, 'createStationSet', context.clientId);
   },
-  removeStationSet(root, args) {
-    App.handleEvent(args, 'removeStationSet');
+  removeStationSet(root, args, context) {
+    App.handleEvent(args, 'removeStationSet', context.clientId);
   },
-  renameStationSet(root, args) {
-    App.handleEvent(args, 'renameStationSet');
+  renameStationSet(root, args, context) {
+    App.handleEvent(args, 'renameStationSet', context.clientId);
   },
-  addStationToStationSet(root, args) {
-    App.handleEvent(args, 'addStationToStationSet');
+  addStationToStationSet(root, args, context) {
+    App.handleEvent(args, 'addStationToStationSet', context.clientId);
   },
-  removeStationFromStationSet(root, args) {
-    App.handleEvent(args, 'removeStationFromStationSet');
+  removeStationFromStationSet(root, args, context) {
+    App.handleEvent(args, 'removeStationFromStationSet', context.clientId);
   },
-  editStationInStationSet(root, args) {
-    App.handleEvent(args, 'editStationInStationSet');
+  editStationInStationSet(root, args, context) {
+    App.handleEvent(args, 'editStationInStationSet', context.clientId);
   },
-  addCardToStation(root, args) {
-    App.handleEvent(args, 'addCardToStation');
+  addCardToStation(root, args, context) {
+    App.handleEvent(args, 'addCardToStation', context.clientId);
   },
-  removeCardFromStation(root, args) {
-    App.handleEvent(args, 'removeCardFromStation');
+  removeCardFromStation(root, args, context) {
+    App.handleEvent(args, 'removeCardFromStation', context.clientId);
   },
-  editCardInStationSet(root, args) {
-    App.handleEvent(args, 'editCardInStationSet');
+  editCardInStationSet(root, args, context) {
+    App.handleEvent(args, 'editCardInStationSet', context.clientId);
   },
-  addSystem: (root, args) => {
-    App.handleEvent(args, 'addSystem');
+  addSystem: (root, args, context) => {
+    App.handleEvent(args, 'addSystem', context.clientId);
   },
 };
 
