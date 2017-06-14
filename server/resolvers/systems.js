@@ -14,26 +14,26 @@ export const SystemsQueries = {
 };
 
 export const SystemsMutations = {
-  addSystemToSimulator(rootValue, params) {
-    App.handleEvent(params, 'addSystemToSimulator');
+  addSystemToSimulator(rootValue, params, context) {
+    App.handleEvent(params, 'addSystemToSimulator', context.clientId);
   },
-  removeSystemFromSimulator(rootValue, params) {
-    App.handleEvent(params, 'removeSystemFromSimulator');
+  removeSystemFromSimulator(rootValue, params, context) {
+    App.handleEvent(params, 'removeSystemFromSimulator', context.clientId);
   },
-  damageSystem(rootValue, params) {
-    App.handleEvent(params, 'damageSystem');
+  damageSystem(rootValue, params, context) {
+    App.handleEvent(params, 'damageSystem', context.clientId);
   },
-  damageReport(rootValue, params) {
-    App.handleEvent(params, 'damageReport');
+  damageReport(rootValue, params, context) {
+    App.handleEvent(params, 'damageReport', context.clientId);
   },
-  repairSystem(rootValue, params) {
-    App.handleEvent(params, 'repairSystem');
+  repairSystem(rootValue, params, context) {
+    App.handleEvent(params, 'repairSystem', context.clientId);
   },
-  requestDamageReport(rootValue, params) {
-    App.handleEvent(params, 'requestDamageReport');
+  requestDamageReport(rootValue, params, context) {
+    App.handleEvent(params, 'requestDamageReport', context.clientId);
   },
-  changePower(rootValue, params) {
-    App.handleEvent(params, 'changePower');
+  changePower(rootValue, params, context) {
+    App.handleEvent(params, 'changePower', context.clientId);
   }
 };
 

@@ -11,23 +11,23 @@ export const TorpedoQueries = {
 };
 
 export const TorpedoMutations = {
-  torpedoAddWarhead(root, args){
-    App.handleEvent(args, 'torpedoAddWarhead');
+  torpedoAddWarhead(root, args, context){
+    App.handleEvent(args, 'torpedoAddWarhead', context.clientId);
   },
-  torpedoRemoveWarhead(root, args){
-    App.handleEvent(args, 'torpedoRemoveWarhead');
+  torpedoRemoveWarhead(root, args, context){
+    App.handleEvent(args, 'torpedoRemoveWarhead', context.clientId);
   },
-  torpedoLoadWarhead(root, args){
-    App.handleEvent(args, 'torpedoLoadWarhead');
+  torpedoLoadWarhead(root, args, context){
+    App.handleEvent(args, 'torpedoLoadWarhead', context.clientId);
   },
-  torpedoUnload(root, args){
-    App.handleEvent(args, 'torpedoUnload');
+  torpedoUnload(root, args, context){
+    App.handleEvent(args, 'torpedoUnload', context.clientId);
   },
-  torpedoFire(root, args){
-    App.handleEvent(args, 'torpedoFire');
+  torpedoFire(root, args, context){
+    App.handleEvent(args, 'torpedoFire', context.clientId);
   },
-  torpedoSetWarheadCount(root, args){
-    App.handleEvent(args, 'torpedoSetWarheadCount');
+  torpedoSetWarheadCount(root, args, context){
+    App.handleEvent(args, 'torpedoSetWarheadCount', context.clientId);
   }
 };
 

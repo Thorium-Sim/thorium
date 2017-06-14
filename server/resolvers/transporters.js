@@ -9,41 +9,41 @@ export const TransporterQueries = {
 };
 
 export const TransporterMutations = {
-  createTransporter(_, { transporter }) {
-    App.handleEvent({ transporter }, 'createTransporter');
+  createTransporter(_, { transporter }, context) {
+    App.handleEvent({ transporter }, 'createTransporter', context.clientId);
     return '';
   },
-  setTransportDestination(_, { transporter, destination }) {
+  setTransportDestination(_, { transporter, destination }, context) {
     App.handleEvent({ transporter, destination },
-      'setTransportDestination');
+      'setTransportDestination', context.clientId);
     return '';
   },
-  setTransportTarget(_, { transporter, target }) {
-    App.handleEvent({ transporter, target }, 'setTransportTarget');
+  setTransportTarget(_, { transporter, target }, context) {
+    App.handleEvent({ transporter, target }, 'setTransportTarget', context.clientId);
     return '';
   },
-  beginTransportScan(_, { transporter }) {
-    App.handleEvent({ transporter }, 'beginTransportScan');
+  beginTransportScan(_, { transporter }, context) {
+    App.handleEvent({ transporter }, 'beginTransportScan', context.clientId);
     return '';
   },
-  cancelTransportScan(_, { transporter }) {
-    App.handleEvent({ transporter }, 'cancelTransportScan');
+  cancelTransportScan(_, { transporter }, context) {
+    App.handleEvent({ transporter }, 'cancelTransportScan', context.clientId);
     return '';
   },
-  clearTransportTargets(_, { transporter }) {
-    App.handleEvent({ transporter }, 'clearTransportTargets');
+  clearTransportTargets(_, { transporter }, context) {
+    App.handleEvent({ transporter }, 'clearTransportTargets', context.clientId);
     return '';
   },
-  setTransportCharge(_, { transporter, charge }) {
-    App.handleEvent({ transporter, charge }, 'setTransportCharge');
+  setTransportCharge(_, { transporter, charge }, context) {
+    App.handleEvent({ transporter, charge }, 'setTransportCharge', context.clientId);
     return '';
   },
-  completeTransport(_, { transporter, target }) {
-    App.handleEvent({ transporter, target }, 'completeTransport');
+  completeTransport(_, { transporter, target }, context) {
+    App.handleEvent({ transporter, target }, 'completeTransport', context.clientId);
     return '';
   },
-  setTransporterTargets(_, { transporter, targets }) {
-    App.handleEvent({ transporter, targets }, 'setTransporterTargets');
+  setTransporterTargets(_, { transporter, targets }, context) {
+    App.handleEvent({ transporter, targets }, 'setTransporterTargets', context.clientId);
     return '';
   },
 };

@@ -6,7 +6,7 @@ import config from './config';
 import util from 'util';
 import { cloneDeep } from 'lodash';
 import electron from 'electron';
-var fs = require('fs');
+import fs from 'fs';
 
 class Events extends EventEmitter {
   constructor(params) {
@@ -25,6 +25,7 @@ class Events extends EventEmitter {
     this.assetFolders = [];
     this.assetContainers = [];
     this.assetObjects = [];
+    this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;
     this.version = 0;
@@ -87,12 +88,20 @@ class Events extends EventEmitter {
     delete snapshot.domain;
     return snapshot;
   }
-  handleEvent(param, pres) {
+  handleEvent(param, pres, clientId) {
     if (!config.db) { 
       // We need to fire the events directly
       // Because the database isn't triggering them
       this.timestamp = new Date();
       this.version = this.version + 1;
+      if (clientId) {
+        this.events.push({
+          event: pres,
+          params: param,
+          clientId: clientId,
+          timestamp: new Date()
+        });
+      }
       this.emit(pres, param);
     }
   }

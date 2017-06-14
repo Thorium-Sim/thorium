@@ -52,25 +52,25 @@ export const AssetsQueries = {
 };
 
 export const AssetsMutations = {
-  addAssetFolder(root, { name, folderPath, fullPath }) {
-    App.handleEvent({ name, folderPath, fullPath }, 'addAssetFolder');
+  addAssetFolder(root, { name, folderPath, fullPath }, context) {
+    App.handleEvent({ name, folderPath, fullPath }, 'addAssetFolder', context.clientId);
     return '';
   },
-  removeAssetFolder(root, { id }) {
-    App.handleEvent({ id }, 'removeAssetFolder');
+  removeAssetFolder(root, { id }, context) {
+    App.handleEvent({ id }, 'removeAssetFolder', context.clientId);
     return '';
   },
   addAssetContainer(root, { name, folderId, folderPath, fullPath }) {
     App.handleEvent({ name, folderId, folderPath, fullPath },
-      'addAssetContainer');
+      'addAssetContainer', context.clientId);
     return '';
   },
-  removeAssetContainer(root, { id }) {
-    App.handleEvent({ id }, 'removeAssetContainer');
+  removeAssetContainer(root, { id }, context) {
+    App.handleEvent({ id }, 'removeAssetContainer', context.clientId);
     return '';
   },
-  removeAssetObject(root, { id }) {
-    App.handleEvent({ id }, 'removeAssetObject');
+  removeAssetObject(root, { id }, context) {
+    App.handleEvent({ id }, 'removeAssetObject', context.clientId);
     // Get the object
     const obj = App.assetObjects.find((object) => object.id === id);
     const extension = obj.url.substr(obj.url.lastIndexOf('.'));
@@ -78,7 +78,7 @@ export const AssetsMutations = {
 
     return '';
   },
-  async uploadAsset(root, { files, simulatorId, containerId }) {
+  async uploadAsset(root, { files, simulatorId, containerId }, context) {
     const { folderPath, fullPath } = App.assetContainers
     .find(container => containerId === container.id);
     files.forEach((file) => {
@@ -109,7 +109,7 @@ export const AssetsMutations = {
         fullPath: `${fullPath}/${simulatorId + extension}`,
         url: `/assets${fullPath}/${simulatorId + extension}`,
         simulatorId,
-      }, 'addAssetObject');
+      }, 'addAssetObject', context.clientId);
     });
     return '';
   },

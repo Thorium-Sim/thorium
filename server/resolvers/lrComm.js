@@ -32,23 +32,23 @@ export const LRCommQueries = {
 };
 
 export const LRCommMutations = {
-  createLongRange(root, args){
-    App.handleEvent(args, 'createLongRange');
+  createLongRange(root, args, context){
+    App.handleEvent(args, 'createLongRange', context.clientId);
   },
-  removeLongRange(root, args){
-    App.handleEvent(args, 'removeLongRange');
+  removeLongRange(root, args, context){
+    App.handleEvent(args, 'removeLongRange', context.clientId);
   },
-  sendLongRangeMessage(root, args){
-    App.handleEvent(args, 'sendLongRangeMessage');
+  sendLongRangeMessage(root, args, context){
+    App.handleEvent(args, 'sendLongRangeMessage', context.clientId);
   },
-  longRangeMessageSend(root, args){
-    App.handleEvent(args, 'longRangeMessageSend');
+  longRangeMessageSend(root, args, context){
+    App.handleEvent(args, 'longRangeMessageSend', context.clientId);
   },
-  deleteLongRangeMessage(root, args){
-    App.handleEvent(args, 'deleteLongRangeMessage');
+  deleteLongRangeMessage(root, args, context){
+    App.handleEvent(args, 'deleteLongRangeMessage', context.clientId);
   },
-  updateLongRangeDecodedMessage(root, args){
-    App.handleEvent(args, 'updateLongRangeDecodedMessage');
+  updateLongRangeDecodedMessage(root, args, context){
+    App.handleEvent(args, 'updateLongRangeDecodedMessage', context.clientId);
   }
 };
 

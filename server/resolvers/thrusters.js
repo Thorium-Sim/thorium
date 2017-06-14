@@ -9,14 +9,14 @@ export const ThrustersQueries = {
 };
 
 export const ThrustersMutations = {
-  rotationUpdate(root, params) {
-    App.handleEvent(params, 'rotationUpdate');
+  rotationUpdate(root, params, context) {
+    App.handleEvent(params, 'rotationUpdate', context.clientId);
   },
-  rotationSet(root, params) {
-    App.handleEvent(params, 'rotationSet');
+  rotationSet(root, params, context) {
+    App.handleEvent(params, 'rotationSet', context.clientId);
   },
-  directionUpdate(root, params) {
-    App.handleEvent(params, 'directionUpdate');
+  directionUpdate(root, params, context) {
+    App.handleEvent(params, 'directionUpdate', context.clientId);
   },
 };
 

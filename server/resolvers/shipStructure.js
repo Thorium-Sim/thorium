@@ -61,63 +61,63 @@ export const ShipStructureQueries = {
 
 export const ShipStructureMutations = {
   // Decks
-  addDeck(root, args) {
-    App.handleEvent(args, 'addDeck');
+  addDeck(root, args, context) {
+    App.handleEvent(args, 'addDeck', context.clientId);
   },
-  removeDeck(root, args) {
-    App.handleEvent(args, 'removeDeck');
+  removeDeck(root, args, context) {
+    App.handleEvent(args, 'removeDeck', context.clientId);
   },
-  addDecksBulk(root, args) {
-    App.handleEvent(args, 'addDecksBulk');
+  addDecksBulk(root, args, context) {
+    App.handleEvent(args, 'addDecksBulk', context.clientId);
   },
-  updateDeckSvg(root, args) {
-    App.handleEvent(args, 'updateDeckSvg');
+  updateDeckSvg(root, args, context) {
+    App.handleEvent(args, 'updateDeckSvg', context.clientId);
   },
-  deckDoors(root, args) {
-    App.handleEvent(args, 'deckDoors');
+  deckDoors(root, args, context) {
+    App.handleEvent(args, 'deckDoors', context.clientId);
   },
-  deckEvac(root, args) {
-    App.handleEvent(args, 'deckEvac');
+  deckEvac(root, args, context) {
+    App.handleEvent(args, 'deckEvac', context.clientId);
   },
-  updateHallwaySvg(root, args) {
-    App.handleEvent(args, 'updateHallwaySvg');
+  updateHallwaySvg(root, args, context) {
+    App.handleEvent(args, 'updateHallwaySvg', context.clientId);
   },
 
   // Rooms
-  addRoom(root, args) {
-    App.handleEvent(args, 'addRoom');
+  addRoom(root, args, context) {
+    App.handleEvent(args, 'addRoom', context.clientId);
   },
-  removeRoom(root, args) {
-    App.handleEvent(args, 'removeRoom');
+  removeRoom(root, args, context) {
+    App.handleEvent(args, 'removeRoom', context.clientId);
   },
-  addRoomsBulk(root, args) {
-    App.handleEvent(args, 'addRoomsBulk');
+  addRoomsBulk(root, args, context) {
+    App.handleEvent(args, 'addRoomsBulk', context.clientId);
   },
-  renameRoom(root, args) {
-    App.handleEvent(args, 'renameRoom');
+  renameRoom(root, args, context) {
+    App.handleEvent(args, 'renameRoom', context.clientId);
   },
-  updateRoomSvg(root, args) {
-    App.handleEvent(args, 'updateRoomSvg');
+  updateRoomSvg(root, args, context) {
+    App.handleEvent(args, 'updateRoomSvg', context.clientId);
   },
-  roomGas(root, args) {
-    App.handleEvent(args, 'roomGas');
+  roomGas(root, args, context) {
+    App.handleEvent(args, 'roomGas', context.clientId);
   },
 
   // Inventory
-  addInventory(root, args) {
-    App.handleEvent(args, 'addInventory');
+  addInventory(root, args, context) {
+    App.handleEvent(args, 'addInventory', context.clientId);
   },
-  removeInventory(root, args) {
-    App.handleEvent(args, 'removeInventory');
+  removeInventory(root, args, context) {
+    App.handleEvent(args, 'removeInventory', context.clientId);
   },
-  moveInventory(root, args) {
-    App.handleEvent(args, 'moveInventory');
+  moveInventory(root, args, context) {
+    App.handleEvent(args, 'moveInventory', context.clientId);
   },
-  updateInventoryCount(root, args) {
-    App.handleEvent(args, 'updateInventoryCount');
+  updateInventoryCount(root, args, context) {
+    App.handleEvent(args, 'updateInventoryCount', context.clientId);
   },
-  updateInventoryMetadata(root, args) {
-    App.handleEvent(args, 'updateInventoryMetadata');
+  updateInventoryMetadata(root, args, context) {
+    App.handleEvent(args, 'updateInventoryMetadata', context.clientId);
   },
 };
 
