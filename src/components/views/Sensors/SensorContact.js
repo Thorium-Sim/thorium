@@ -35,7 +35,7 @@ class KonvaContact extends Component {
   componentWillReceiveProps(nextProps) {
     this.refreshContact(nextProps);
   }
-  refreshContact({id, data, location, icon, iconUrl, pictureUrl, speed, destination, velocity, size, radius, color}) {
+  refreshContact({id, data, name, location, icon, iconUrl, pictureUrl, speed, destination, velocity, size, radius, color}) {
     const {contact} = this.state;
     Promise.resolve().then(() => {
       if (contact){
@@ -44,6 +44,7 @@ class KonvaContact extends Component {
           return Promise.resolve({
             id,
             data: contact.data,
+            name,
             icon,
             iconUrl,
             pictureUrl,
@@ -62,6 +63,7 @@ class KonvaContact extends Component {
             return Promise.resolve({
               id,
               data,
+              name,
               icon,
               iconUrl,
               pictureUrl,
@@ -84,15 +86,16 @@ class KonvaContact extends Component {
           return Promise.resolve({
             id,
             data,
+            name,
             icon,
             iconUrl,
             pictureUrl,
             speed,
             color,
             location,
-          destination,
-          velocity,
-          size,
+            destination,
+            velocity,
+            size,
             selected: false
           })
         })

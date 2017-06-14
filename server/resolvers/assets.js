@@ -60,7 +60,7 @@ export const AssetsMutations = {
     App.handleEvent({ id }, 'removeAssetFolder', context.clientId);
     return '';
   },
-  addAssetContainer(root, { name, folderId, folderPath, fullPath }) {
+  addAssetContainer(root, { name, folderId, folderPath, fullPath }, context) {
     App.handleEvent({ name, folderId, folderPath, fullPath },
       'addAssetContainer', context.clientId);
     return '';
