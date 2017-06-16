@@ -61,6 +61,7 @@ class GridCore extends Component {
     super(props);
     this.state = {
       movingContact: {},
+      selectedContact: null,
       removeContacts: false,
       contextContact: null,
       speed: 0.6
@@ -169,6 +170,30 @@ class GridCore extends Component {
       }
     })
   }
+  _updateSensorContact(contact, key, value){
+    const { id } = this.props.data.sensors[0];
+    const newContact = {
+      id: contact.id,
+      name: contact.name,
+      size: contact.size,
+      icon: contact.icon,
+      picture: contact.picture,
+      speed: contact.speed,
+      infrared: contact.infrared,
+      cloaked: contact.cloaked,
+    }
+    newContact[key] = value;
+    this.props.client.mutate({
+      mutation: gql`
+      mutation ($id:ID!, $contact: SensorContactInput!){
+        updateSensorContact(id: $id, contact: $contact)
+      }`,
+      variables: {
+        id,
+        contact: newContact
+      }
+    })
+  }
   _removeArmyContact(contact){
     const { id } = this.props.data.sensors[0] || {armyContacts: []};
     this.props.client.mutate({
@@ -194,7 +219,8 @@ class GridCore extends Component {
   }
   _closeContext() {
     this.setState({
-      contextContact: null
+      contextContact: null,
+      selectedContact: null
     });
   }
   _clearContacts() {
@@ -233,6 +259,11 @@ class GridCore extends Component {
       speed: e.target.value
     })
   }
+  _setSelectedContact(selectedContact) {
+    this.setState({
+      selectedContact
+    })
+  }
   render(){
     if (this.props.data.loading) return <p>Loading...</p>;
     if (!this.props.data.sensors[0]) return <p>No Sensor Grid</p>;
@@ -240,21 +271,9 @@ class GridCore extends Component {
     return <Container className="sensorGridCore" fluid>
     <p>Sensors</p>
     <Row>
-    <Col sm={8}>
-    <Measure
-    useClone={true}
-    includeMargin={false}>
-    { dimensions => (
-      <div id="threeSensors" className='array' style={{position:'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
-      {dimensions.width > 0 &&
-        <GridCoreGrid mouseover={this.props.hoverContact} core dimensions={dimensions} sensor={sensors.id} speed={this.state.speed}/>
-      }
-      </div>
-      )}
-    </Measure>
-    </Col>
-    <Col sm={4}>
+    <Col sm={3} className="contacts-container">
     <p>Contacts:</p>
+    <div className="contact-scroll">
     {
       sensors.armyContacts.map((contact) => {
         return <Col key={contact.id} className={'flex-container'} sm={12}>
@@ -272,8 +291,38 @@ class GridCore extends Component {
         </Col>
       })
     }
+    </div>
     <Button size="sm" color="success" onClick={this._addArmyContact.bind(this)}>Add Contact</Button>
     <label><input type="checkbox" onChange={(e) => {this.setState({removeContacts: e.target.checked})}} /> Remove</label>
+    { this.state.contextContact && 
+      <ContactContextMenu closeMenu={this._closeContext.bind(this)} updateArmyContact={this._updateArmyContact.bind(this)} contact={this.state.contextContact.contact} x={this.state.contextContact.left} y={0}/>
+    }
+    { this.state.selectedContact && 
+      <ContactContextMenu closeMenu={this._closeContext.bind(this)} updateArmyContact={this._updateSensorContact.bind(this)} contact={this.state.selectedContact} x={0} y={0} />
+    }
+    </Col>
+    
+    <Col sm={{size: 6, offset: 0}}>
+    <Measure
+    useClone={true}
+    includeMargin={false}>
+    { dimensions => (
+      <div id="threeSensors" className='array' style={{position:'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
+      {dimensions.width > 0 &&
+        <GridCoreGrid
+        mouseover={this.props.hoverContact}
+        core
+        dimensions={dimensions}
+        sensor={sensors.id}
+        speed={this.state.speed}
+        setSelectedContact={this._setSelectedContact.bind(this)}
+        selectedContact={this.state.selectedContact} />
+      }
+      </div>
+      )}
+    </Measure>
+    </Col>
+    <Col sm={3}>
     <Input type="select" name="select" onChange={this._changeSpeed.bind(this)} defaultValue={this.state.speed}>
     <option value="1000">Instant</option>
     <option value="5">Warp</option>
@@ -288,10 +337,6 @@ class GridCore extends Component {
     <Button size="sm" color="danger" onClick={this._clearContacts.bind(this)}>Clear</Button>
     <Button size="sm" color="warning" onClick={this._stopContacts.bind(this)}>Stop</Button>
     <Button size="sm" color="info" disabled onClick={this._freezeContacts.bind(this)}>Freeze</Button>
-
-    { this.state.contextContact && 
-      <ContactContextMenu closeMenu={this._closeContext.bind(this)} updateArmyContact={this._updateArmyContact.bind(this)} contact={this.state.contextContact.contact} x={this.state.contextContact.left} y={0}/>
-    }
     </Col>
     </Row>
     </Container>

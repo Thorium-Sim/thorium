@@ -13,4 +13,5 @@ App.on('rotationSet', ({id, rotation}) => {
 App.on('directionUpdate', ({id, direction}) => {
   const sys = App.systems.find(s => s.id === id);
   sys.updateDirection(direction);
+  pubsub.publish('rotationChange', sys);
 })

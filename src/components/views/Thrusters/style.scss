@@ -128,3 +128,29 @@
 		}
 	}
 }
+
+.thrustersCore {
+	.core-title {
+		display: inline-block;
+	}
+	label {
+		margin-left: 10px;
+	}
+	.thruster-symbol {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		.fa {
+			text-shadow: 0px 0px 1px rgba(0,0,0,0.5);
+			&.on {
+				color: white;
+			}
+			&:hover {
+				color: #666;
+			}
+			&:active {
+				color: #aaa;
+			}
+		}
+	}
+}

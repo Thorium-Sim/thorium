@@ -8,7 +8,8 @@ import { withApollo } from 'react-apollo';
 
 const {
   Group,
-  Path
+  Path,
+  Rect
 } = ReactKonva;
 
 function distance3d(coord2, coord1) {
@@ -215,11 +216,65 @@ class KonvaContact extends Component {
   render() {
     const {contact} = this.state;
     if (!contact) return <Group></Group>;
-    const {radius, padding, core, mouseover = (() => {console.log('mouseover')})} = this.props;
+    const {radius, padding, core, setSelectedContact, selectedContact, mouseover = (() => {console.log('mouseover')})} = this.props;
     const {id, data, location, destination, size, color} = contact;
     return <Group
     x={radius}
     y={radius}>
+    {selectedContact && selectedContact.id === id &&
+      <Group
+      x={destination.x * radius + padding}
+      y={destination.y * radius + padding}>
+      <Rect
+      x={-5}
+      y={-5}
+      height={2}
+      width={7}
+      fill="lightblue" />
+      <Rect
+      x={-5}
+      y={-5}
+      height={7}
+      width={2}
+      fill="lightblue" />
+      <Rect
+      x={5 + (size - 1) * 6}
+      y={-5}
+      height={2}
+      width={7}
+      fill="lightblue" />
+      <Rect
+      x={5 + size * 6}
+      y={-5}
+      height={7}
+      width={2}
+      fill="lightblue" />
+      <Rect
+      x={-5}
+      y={5 + size * 6}
+      height={2}
+      width={7}
+      fill="lightblue" />
+      <Rect
+      x={-5}
+      y={5 + (size - 1) * 6}
+      height={7}
+      width={2}
+      fill="lightblue" />
+      <Rect
+      x={5 + (size - 1) * 6}
+      y={5 + size * 6}
+      height={2}
+      width={7}
+      fill="lightblue" />
+      <Rect
+      x={5 + size * 6}
+      y={5 + (size - 1) * 6}
+      height={7}
+      width={2}
+      fill="lightblue" />
+      </Group>
+    }
     <Path
     data={data}
     onMouseover={mouseover.bind(this, contact)}
@@ -235,6 +290,7 @@ class KonvaContact extends Component {
     />
     {core && 
       <Path 
+      onClick={setSelectedContact.bind(this, contact)}
       onMouseDown={this._downMouse.bind(this, id)}
       data={data}
       x={destination.x * radius + padding}

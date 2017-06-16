@@ -18,9 +18,9 @@ query AssetFolders ($names: [String]){
 
 const ContactContextMenu = (props) => {
   //Get the position
-  const {x, y, contact, closeMenu} = props;
+  const {contact, closeMenu} = props;
   return (
-    <div className="contextMenu" style={{top: y, left: x}}>
+    <div className="contextMenu">
     <Card>
     <CardBlock>
     <Form>

@@ -47,6 +47,7 @@ import StealthFieldCore from './StealthField/core';
 import DecksCore from './ShipStructure/core';
 import CargoCore from './CargoControl/core';
 import ActionsCore from './Actions/core';
+import ThrusterCore from './Thrusters/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -109,7 +110,8 @@ export const Cores = {
   StealthFieldCore,
   DecksCore,
   CargoCore,
-  ActionsCore
+  ActionsCore,
+  ThrusterCore
 };
 
 export default Views;
