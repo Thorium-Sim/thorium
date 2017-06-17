@@ -168,7 +168,7 @@ const Torpedo = ({state, type, updateScreen}) => {
 
   const style = {
     opacity: state !== 'loaded' ? 0 : 1,
-    top: (state === 'loaded' || state === 'fired') ? '136px' : '2px',
+    top: (state === 'loaded' || state === 'fired') ? '86%' : '2px',
     left: state === 'fired' ? '70px' : '3px',
     transition: `opacity 1s ease-in ${state === 'loaded' ? '' : '2s'}, top 3s ease-in-out, left 0.2s ease-in`
   };
@@ -222,7 +222,7 @@ class TorpedoTube extends Transitioner {
   }
   </div>
   <Torpedo state={torpedoState} type={torpedoType} />
-  <img role="presentation" draggable="false" src="/js/images/torpedo/torpedo.svg" />
+  <img role="presentation" className="torpedoImage" draggable="false" src="/js/images/torpedo/torpedo.svg" />
   </div>
 }
 }

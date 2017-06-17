@@ -291,7 +291,9 @@ class Targeting extends Component {
     return <Container fluid className="targeting-control">
     <Row>
     <Col sm="5">
-    <Measure>
+    <Measure
+    useClone={true}
+    includeMargin={false}>
     {dimensions => {
       return dimensions.width !== 0 ? 
       <Grid 
