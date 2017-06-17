@@ -133,18 +133,22 @@ class PowerDistribution extends Component {
       return next.power.power + prev;
     },0);
     return <Container fluid className="powerLevels">
-    <Row>
-    <Col sm="8" className="powerlevel-containers">
-    {
-      this.state.systems.slice(0).sort((a,b) => {
-        if (a.type > b.type) return 1;
-        if (a.type < b.type) return -1;
-        return 0;
-      }).map(sys => <SystemPower {...sys} mouseDown={this.mouseDown.bind(this)} />)
-    }
-    <h4 className="totalPowerText">Total Power Used: {powerTotal}</h4>
-    </Col>
-    <Col sm="4">
+    <Row className="powerlevel-row">
+    <Measure>
+    {dimensions => (
+      <Col lg="12" xl="8" className="powerlevel-containers">
+      {
+        this.state.systems.slice(0).sort((a,b) => {
+          if (a.type > b.type) return 1;
+          if (a.type < b.type) return -1;
+          return 0;
+        }).map(sys => <SystemPower {...sys} mouseDown={this.mouseDown.bind(this)} count={this.state.systems.length} height={dimensions.height}/>)
+      }
+      <h4 className="totalPowerText">Total Power Used: {powerTotal}</h4>
+      </Col>
+      )}
+    </Measure>
+    <Col sm="4" className="battery-holder">
     <Card>
     <div className="battery-container">
     <Battery level={Math.min(1, Math.max(0, (charge - 0.75) * 4))}/>
@@ -159,15 +163,15 @@ class PowerDistribution extends Component {
   }
 }
 
-const SystemPower = ({ id,name, damage:{damaged}, power:{power, powerLevels}, mouseDown}) => {
+const SystemPower = ({ id,name, displayName, damage:{damaged}, power:{power, powerLevels}, mouseDown, count, height}) => {
   return <Row>
   <Col sm="4">
-  <h5 className={damaged ? 'text-danger' : ''} >{name}: {power}</h5>
+  <h5 className={damaged ? 'text-danger' : ''} style={{padding: 0, margin: 0, marginTop: (height / count - 20)}}>{displayName}: {power}</h5>
   </Col>
   <Col sm="8">
   <Measure>
   {dimensions => (
-    <div className="powerLine">
+    <div className="powerLine" style={{margin: (height / count - 20)/2}}>
     {
       powerLevels.map((n) => {
         return <div className="powerLevel" key={`${id}-powerLine-${n}`} style={{left: `${(n+1)*(14) - 7}px`}}></div>
@@ -194,8 +198,9 @@ const Battery = ({level = 1}) => {
 }
 const SYSTEMS_QUERY = gql`
 query Systems($simulatorId: ID) {
-  systems(simulatorId: $simulatorId) {
+  systems(simulatorId: $simulatorId, power: true) {
     name
+    displayName
     type
     id
     power {

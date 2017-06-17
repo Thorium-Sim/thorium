@@ -4,7 +4,7 @@ const updateReactor = () => {
   //Loop through all of the simulators to isolate the systems
   App.simulators.forEach(sim => {
     const simId = sim.id;
-    let level = App.systems.filter(s => s.simulatorId === simId).reduce((prev, sys) => {
+    let level = App.systems.filter(s => s.simulatorId === simId).filter(s => s.power.power).reduce((prev, sys) => {
       return prev + sys.power.power;
     }, 0);
     const systems = App.systems.filter(s => s.type === 'Reactor' && s.simulatorId === simId);

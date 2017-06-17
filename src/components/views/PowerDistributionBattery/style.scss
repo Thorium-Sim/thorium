@@ -1,6 +1,6 @@
 .powerLevels {
   position: relative;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   h5 {
@@ -40,6 +40,12 @@
       }
     }
   }
+  .powerlevel-row {
+    height: 100%;
+  }
+  .powerlevel-containers {
+    height: calc(100% - 100px);
+  }
   .battery-container {
     display: flex;
     flex-direction: row;
@@ -62,6 +68,26 @@
       }
       .battery-level{
         text-align: center;
+      }
+    }
+  }
+  @media (width: 1024px) {
+    h5 {
+      float: left;
+      font-size: 14px;
+      padding-top: 0px;
+    }
+    .powerLine {
+      margin: 0px;
+    }
+    .battery-holder {
+      position: absolute;
+      top: 10vh;
+      right: 0;
+    }
+    .battery-container {
+      .battery {
+        height: 60vh;
       }
     }
   }
