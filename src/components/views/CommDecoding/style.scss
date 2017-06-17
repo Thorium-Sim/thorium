@@ -90,5 +90,9 @@ $alertp: #4D1980;
     align-items: stretch;
     textarea {
         width: 100%;
+        text-align: left;
+        font-family: monospace;
+        font-size: 11px;
+        line-height: 1;
     }
 }
