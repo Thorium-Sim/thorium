@@ -1,6 +1,8 @@
 language: node_js
 node_js:
   - "node"
+dist: trusty
+sudo: false
 addons:
   code_climate:
     repo_token: $CODECLIMATE_REPO_TOKEN
