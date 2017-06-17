@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 194,
+	"_eventsCount": 196,
 	"simulators": [
 		{
 			"timeline": [],
@@ -593,6 +593,7 @@
 					"name": "USS Voyager",
 					"size": 1,
 					"icon": "/Sensor Contacts/Icons/N",
+					"color": "#0f0",
 					"picture": "/Sensor Contacts/Pictures/N",
 					"speed": 0,
 					"velocity": {
@@ -623,6 +624,7 @@
 					"name": "USS Voyager",
 					"size": 1,
 					"icon": "/Sensor Contacts/Icons/N",
+					"color": "#0f0",
 					"picture": "/Sensor Contacts/Pictures/N",
 					"speed": 0,
 					"velocity": {
@@ -803,7 +805,7 @@
 			"model": "battery",
 			"powerOutput": 120,
 			"efficiency": 1,
-			"batteryChargeLevel": 0.7176389999999747,
+			"batteryChargeLevel": 0.7073729999999789,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -1534,8 +1536,8 @@
 			"name": "default",
 			"x": 0,
 			"y": 31,
-			"w": 120,
-			"h": 29,
+			"w": 38,
+			"h": 25,
 			"component": "SensorsGridCore",
 			"objectId": null,
 			"class": "CoreLayout"
@@ -1902,9 +1904,163 @@
 			"url": "http://localhost:3000/assets/Sensor%20Contacts/Icons/G/default.svg",
 			"simulatorId": "default",
 			"class": "AssetObject"
+		},
+		{
+			"id": "4e203fcc-fb24-486d-8173-1a72258958f4",
+			"containerPath": "/Sensor Contacts/Pictures",
+			"containerId": "1f6c94a2-3e2e-4558-b0f5-4a44ba90767d",
+			"fullPath": "/Sensor Contacts/Pictures/N/default.png",
+			"url": "/assets/Sensor Contacts/Pictures/N/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
 		}
 	],
-	"snapshotVersion": 1285,
-	"version": 1285,
-	"timestamp": "2017-06-09T23:28:23.240Z"
+	"events": [
+		{
+			"event": "updateCoreLayout",
+			"params": {
+				"layout": [
+					{
+						"id": "9d21fa85-d919-4a39-a27e-23524adc1a03",
+						"x": 0,
+						"y": 0,
+						"w": 16,
+						"h": 5
+					},
+					{
+						"id": "f74dabc7-fd1b-4101-9ea2-18e6d6de30d2",
+						"x": 0,
+						"y": 5,
+						"w": 10,
+						"h": 8
+					},
+					{
+						"id": "af22b5da-d700-489d-beaa-866742eef719",
+						"x": 19,
+						"y": 0,
+						"w": 21,
+						"h": 17
+					},
+					{
+						"id": "2b7081be-773a-422f-abe5-31119d8de1a0",
+						"x": 0,
+						"y": 13,
+						"w": 19,
+						"h": 9
+					},
+					{
+						"id": "2598bf1d-3ff4-4868-9239-9dfb7879bf94",
+						"x": 40,
+						"y": 0,
+						"w": 18,
+						"h": 29
+					},
+					{
+						"id": "b058299d-e0a7-4b34-992c-c4089c85ebf7",
+						"x": 0,
+						"y": 22,
+						"w": 29,
+						"h": 9
+					},
+					{
+						"id": "3d21986d-e896-4fb8-9f98-df56fbcecf91",
+						"x": 58,
+						"y": 0,
+						"w": 30,
+						"h": 20
+					},
+					{
+						"id": "45103322-d859-4b14-b617-6571e11c4782",
+						"x": 0,
+						"y": 31,
+						"w": 120,
+						"h": 29
+					}
+				]
+			},
+			"clientId": "548967ae-4d69-4175-ad72-6c93c1a97a80",
+			"timestamp": "2017-06-15T00:09:15.382Z"
+		},
+		{
+			"event": "updateCoreLayout",
+			"params": {
+				"layout": [
+					{
+						"id": "9d21fa85-d919-4a39-a27e-23524adc1a03",
+						"x": 0,
+						"y": 0,
+						"w": 16,
+						"h": 5
+					},
+					{
+						"id": "f74dabc7-fd1b-4101-9ea2-18e6d6de30d2",
+						"x": 0,
+						"y": 5,
+						"w": 10,
+						"h": 8
+					},
+					{
+						"id": "af22b5da-d700-489d-beaa-866742eef719",
+						"x": 19,
+						"y": 0,
+						"w": 21,
+						"h": 17
+					},
+					{
+						"id": "2b7081be-773a-422f-abe5-31119d8de1a0",
+						"x": 0,
+						"y": 13,
+						"w": 19,
+						"h": 9
+					},
+					{
+						"id": "2598bf1d-3ff4-4868-9239-9dfb7879bf94",
+						"x": 40,
+						"y": 0,
+						"w": 18,
+						"h": 29
+					},
+					{
+						"id": "b058299d-e0a7-4b34-992c-c4089c85ebf7",
+						"x": 0,
+						"y": 22,
+						"w": 29,
+						"h": 9
+					},
+					{
+						"id": "3d21986d-e896-4fb8-9f98-df56fbcecf91",
+						"x": 58,
+						"y": 0,
+						"w": 30,
+						"h": 20
+					},
+					{
+						"id": "45103322-d859-4b14-b617-6571e11c4782",
+						"x": 0,
+						"y": 31,
+						"w": 38,
+						"h": 25
+					}
+				]
+			},
+			"clientId": "548967ae-4d69-4175-ad72-6c93c1a97a80",
+			"timestamp": "2017-06-15T00:10:04.577Z"
+		},
+		{
+			"event": "addAssetObject",
+			"params": {
+				"id": "4e203fcc-fb24-486d-8173-1a72258958f4",
+				"containerPath": "/Sensor Contacts/Pictures",
+				"containerId": "1f6c94a2-3e2e-4558-b0f5-4a44ba90767d",
+				"fullPath": "/Sensor Contacts/Pictures/N/default.png",
+				"url": "/assets/Sensor Contacts/Pictures/N/default.png",
+				"simulatorId": "default"
+			},
+			"clientId": "548967ae-4d69-4175-ad72-6c93c1a97a80",
+			"timestamp": "2017-06-15T00:10:22.246Z"
+		}
+	],
+	"snapshotVersion": 5142,
+	"version": 5142,
+	"timestamp": "2017-06-15T00:10:24.639Z"
 }

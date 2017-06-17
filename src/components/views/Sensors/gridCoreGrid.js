@@ -67,7 +67,7 @@ class GridCoreGrid extends Component {
   }
   render(){
     if (this.props.data.loading) return null;
-    const {dimensions, data, core, speed} = this.props;
+    const {dimensions, data, core, speed, setSelectedContact, selectedContact} = this.props;
     const {sensorContacts: contacts} = data;
     const {width} = dimensions;
     const padding = core ? 15 : 0;
@@ -125,7 +125,18 @@ class GridCoreGrid extends Component {
     </Layer>
     <Layer>
     {
-      contacts.map(contact => <SensorContact key={contact.id} core={core} sensor={this.props.sensor} {...contact} speed={speed} dimensions={dimensions} radius={radius} padding={padding} mouseover={this.props.hoverContact} />)
+      contacts.map(contact => <SensorContact
+        key={contact.id}
+      core={core}
+      sensor={this.props.sensor}
+      {...contact}
+      speed={speed}
+      dimensions={dimensions}
+      radius={radius}
+      padding={padding}
+      mouseover={this.props.hoverContact}
+      setSelectedContact={setSelectedContact}
+      selectedContact={selectedContact} />)
     }
     </Layer>
     </Stage>

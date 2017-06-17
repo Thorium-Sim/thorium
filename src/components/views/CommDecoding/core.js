@@ -58,7 +58,7 @@ class LRCommCore extends Component {
           onClick={this._updateSender.bind(this)}
         >{this.state.messageSender}</InputField>
         <TypingField
-          style={{height: 'calc(100% - 40px)'}}
+          style={{height: 'calc(100% - 40px)', textAlign: 'left'}}
           onChange={this._lrmText.bind(this)}
         />
         <span>

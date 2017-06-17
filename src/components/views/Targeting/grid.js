@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ReactKonva from 'react-konva';
 import {parse as parsePath} from 'extract-svg-path';
 import './style.scss';
+import { findDOMNode } from 'react-dom';
 
 const {
   Layer,
@@ -30,6 +31,8 @@ class TargetingGrid extends Component {
     requestAnimationFrame(() => {
       this.loop()
     });
+    const el = findDOMNode(this);
+    this.height = el.getBoundingClientRect().height;
   }
   refreshTargets(nextProps){
     const stateTargets = this.state.targets;
@@ -184,7 +187,8 @@ class TargetingGrid extends Component {
     if (this.props.targetedContact){
       targetedContact = this.state.targets.find(t => t.id === this.props.targetedContact.id);
     }
-    const height = width * 3/4;
+    // Manually get the height
+    const height = this.height;
     return <div className="targetArea">
     <Stage width={width} height={height}>
     <Layer>
@@ -196,82 +200,85 @@ class TargetingGrid extends Component {
     height={height}
     stroke={'green'}
     strokeWidth={2} />
-    {Array(Math.round(width/16)).fill(width/16).map((x,i) => {
-      return <Line
-      key={`line-vertical-${i}`}
-      stroke={'green'}
-      strokeWidth={1}
-      dash={[5, 5]}
-      points={[x*i, 0, x*i, height]} />
-    })
+    {
+      Array(Math.round(width/16)).fill(width/16).map((x,i) => {
+        return <Line
+        key={`line-vertical-${i}`}
+        stroke={'green'}
+        strokeWidth={1}
+        dash={[5, 5]}
+        points={[x*i, 0, x*i, height]} />
+      })
+    }
+    {
+      Array(Math.round(width/16)).fill(width/16).map((y,i) => {
+        return <Line
+        key={`line-horizontal-${i}`}
+        stroke={'green'}
+        strokeWidth={1}
+        dash={[5, 5]}
+        points={[0, y*i, width, y*i]} />
+      })
+    }
+    {
+      this.state.targets.map(t => {
+        return <Path 
+        key={t.id}
+        onMousemove={this._mouseMove.bind(this, t.id)}
+        data={t.data}
+        x={t.x}
+        y={t.y}
+        fill={t.targeted ? '#f00' : '#0f0'}
+        scale={{
+          x:t.scale,
+          y:t.scale
+        }} />
+      })
+    }
+    {
+      targetedContact && <Group
+      x={targetedContact.x}
+      y={targetedContact.y}>
+      <Path data={crosshairPath}
+      fill='#f00'
+      x={-13}
+      y={-13}
+      scale={{
+        x: 0.3,
+        y: 0.3
+      }} />
+      <Path data={crosshairPath}
+      fill='#f00'
+      x={43}
+      y={-13}
+      rotation={90}
+      scale={{
+        x: 0.3,
+        y: 0.3
+      }} />
+      <Path data={crosshairPath}
+      fill='#f00'
+      x={43}
+      y={43}
+      rotation={180}
+      scale={{
+        x: 0.3,
+        y: 0.3
+      }} />
+      <Path data={crosshairPath}
+      fill='#f00'
+      x={-13}
+      y={43}
+      rotation={270}
+      scale={{
+        x: 0.3,
+        y: 0.3
+      }} />
+      </Group>}
+      </Layer>
+      </Stage>
+      </div>
+    }
   }
-  {Array(Math.round(width/16)).fill(width/16).map((y,i) => {
-    return <Line
-    key={`line-horizontal-${i}`}
-    stroke={'green'}
-    strokeWidth={1}
-    dash={[5, 5]}
-    points={[0, y*i, width, y*i]} />
-  })
-}
-{
-  this.state.targets.map(t => {
-    return <Path 
-    key={t.id}
-    onMousemove={this._mouseMove.bind(this, t.id)}
-    data={t.data}
-    x={t.x}
-    y={t.y}
-    fill={t.targeted ? '#f00' : '#0f0'}
-    scale={{
-      x:t.scale,
-      y:t.scale
-    }} />
-  })
-}
-{targetedContact && <Group
-  x={targetedContact.x}
-  y={targetedContact.y}>
-  <Path data={crosshairPath}
-  fill='#f00'
-  x={-13}
-  y={-13}
-  scale={{
-    x: 0.3,
-    y: 0.3
-  }} />
-  <Path data={crosshairPath}
-  fill='#f00'
-  x={43}
-  y={-13}
-  rotation={90}
-  scale={{
-    x: 0.3,
-    y: 0.3
-  }} />
-  <Path data={crosshairPath}
-  fill='#f00'
-  x={43}
-  y={43}
-  rotation={180}
-  scale={{
-    x: 0.3,
-    y: 0.3
-  }} />
-  <Path data={crosshairPath}
-  fill='#f00'
-  x={-13}
-  y={43}
-  rotation={270}
-  scale={{
-    x: 0.3,
-    y: 0.3
-  }} />
-  </Group>}
-  </Layer>
-  </Stage>
-  </div>
-}
-}
 
-export default TargetingGrid;
+  export default TargetingGrid;

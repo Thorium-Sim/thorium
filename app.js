@@ -55,7 +55,7 @@ class Events extends EventEmitter {
     Object
     .keys(snapshot)
     .forEach((key) => {
-      if (key === 'snapshotVersion' || key === 'timestamp' || key === 'version' || key === '_eventsCount')
+      if (key === 'events' || key === 'snapshotVersion' || key === 'timestamp' || key === 'version' || key === '_eventsCount')
         return;
       if (snapshot[key] instanceof Array) {
         snapshot[key].forEach((obj) => {

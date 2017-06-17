@@ -1,6 +1,6 @@
 .targeting-control {
   .targetArea {
-    max-height: 70vh;
+    height: 100%;
     background-color: rgba(0,0,0,0.5);
   }
   .media-object{
@@ -13,6 +13,7 @@
     margin-bottom: 0;
   }
   .target-area {
+    height: 100%;
     margin-top: 50px;
   }
   .phaserText {

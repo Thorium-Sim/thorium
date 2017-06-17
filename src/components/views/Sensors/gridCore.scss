@@ -25,8 +25,22 @@
   select.form-control:not([size]):not([multiple]), input[type="text"] {
     height: calc(1.25rem - 2px);
   }
+  .contacts-container {
+    //position: absolute;
+    left: 0;
+    height: 100%;
+  }
+  .contact-scroll {
+    max-height: calc(100% - 70px);
+    overflow-y: scroll;
+  }
   .contextMenu {
-    position: fixed;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 
     .form-group {
       margin-bottom: 0;

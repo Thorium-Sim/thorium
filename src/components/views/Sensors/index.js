@@ -216,7 +216,7 @@ class Sensors extends Component{
 			<Col className="col-sm-3 data">
 			<Row>
 			<Col className="col-sm-12 contactPictureContainer">
-			<div className="card contactPicture" style={{backgroundSize: '100% 100%', backgroundImage:`url('${hoverContact.pictureUrl}')`}}></div>
+			<div className="card contactPicture" style={{backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: 'black', backgroundImage:`url('${hoverContact.pictureUrl}')`}}></div>
 			</Col>
 			<Col className="col-sm-12 contactNameContainer">
 			<div className="card contactName">

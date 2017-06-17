@@ -180,13 +180,13 @@ export const PhaserBeam = ({chargePhasers, dischargePhasers, coolPhasers, firePh
     </Col>
     </Row>
     <Row>
-    <Col sm="2">
+    <Col lg="4" xl="2">
     <Button block color="primary"onClick={chargePhasers.bind(this, id)}>Charge</Button>
     </Col>
-    <Col sm="2">
+    <Col lg="4" xl="2">
     <Button block color="warning"onClick={dischargePhasers.bind(this, id)}>Discharge</Button>
     </Col>
-    <Col sm="2">
+    <Col lg="4" xl="2">
     <Button block color="info" onMouseDown={coolPhasers.bind(this, id)}>Coolant</Button>
     </Col>
     </Row>

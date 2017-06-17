@@ -8,6 +8,7 @@ import Immutable from 'immutable';
 import Measure from 'react-measure';
 import assetPath from '../../../helpers/assets';
 import DamageOverlay from '../helpers/DamageOverlay';
+import { findDOMNode } from 'react-dom';
 import './style.scss';
 
 const SHORTRANGE_SUB = gql`
@@ -219,7 +220,7 @@ class CommShortRange extends Component {
     if (!ShortRange) return <p>No short range comm</p>;
     return (
       <Container fluid className="shortRangeComm">
-            <DamageOverlay message="Short Range Communications Offline" system={ShortRange} style={{left: '-2.5%', width: '105%', height:'105%'}} />
+      <DamageOverlay message="Short Range Communications Offline" system={ShortRange} style={{left: '-2.5%', width: '105%', height:'105%'}} />
       <Row>
       <Col lg="4" xl="3" className="commControls">
       <Card>
@@ -299,24 +300,24 @@ class CommShortRange extends Component {
         </div>
         ) }
       </Measure>
-      </Col>*/}
-      <Col sm="3">
-      <Card className="signalCanvas">
-      <Measure
-      useClone={false}
-      includeMargin={false}>
-      { dimensions => (
-        <FrequencySignals 
-        dimensions={dimensions}
-        frequency={this.state.frequency}
-        amplitude={this.state.amplitude}/>
-        )}
-      </Measure>
-      </Card>
-      </Col>
-      </Row>
-      </Container>
-      );
+    </Col>*/}
+    <Col sm="3">
+    <Card className="signalCanvas">
+    <Measure
+    useClone={false}
+    includeMargin={false}>
+    { dimensions => (
+      <FrequencySignals 
+      dimensions={dimensions}
+      frequency={this.state.frequency}
+      amplitude={this.state.amplitude}/>
+      )}
+    </Measure>
+    </Card>
+    </Col>
+    </Row>
+    </Container>
+    );
   }
 }
 
@@ -377,19 +378,30 @@ const sinPoints = ({frequency = 0, amplitude = 0, width, height}) => {
   })
 };
 
-const FrequencySignals = ({dimensions, frequency, amplitude}) => {
-  if (dimensions.width === 0) return <div></div>;
-  return <Stage width={dimensions.width} height={535}>
-  <Layer>
-  <Line
-  points={sinPoints({frequency: Math.pow(10,1 - frequency) + 2, amplitude: amplitude * dimensions.width / 3 + 10, height: 630, width: dimensions.width})}
-  stroke='green'
-  strokeWidth={4}
-  lineJoin="round"
-  lineCap="round"
-  />
-  </Layer>
-  </Stage>
+class FrequencySignals extends Component {
+  state = {}
+  componentDidMount() {
+    const el = findDOMNode(this);
+    this.setState({
+      height: el.parentElement.getBoundingClientRect().height
+    });
+  }
+  render(){
+    const  {dimensions, frequency, amplitude} = this.props;
+    const height = this.state.height || 0;
+    if (dimensions.width === 0) return <div></div>;
+    return <Stage width={dimensions.width} height={height}>
+    <Layer>
+    <Line
+    points={sinPoints({frequency: Math.pow(10,1 - frequency) + 2, amplitude: amplitude * dimensions.width / 3 + 10, height: height, width: dimensions.width})}
+    stroke='green'
+    strokeWidth={4}
+    lineJoin="round"
+    lineCap="round"
+    />
+    </Layer>
+    </Stage>
+  }
 };
 
 export default graphql(SHORTRANGE_QUERY, {
