@@ -37,7 +37,6 @@ export default class LongRangeComm extends System {
       params.ra = params.a;
       params.rf = params.f;
     }
-    console.log(decoded, params);
     this.messages.push(new LRMessage(params));
   }
   sendMessage(message){
