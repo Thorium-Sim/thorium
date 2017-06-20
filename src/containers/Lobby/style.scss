@@ -6,7 +6,12 @@
     background-color: #bbb;
   }
 }
-
+.tab-content {
+  width: 100%;
+  .tab-pane {
+    width: 100%;
+  }
+}
 .modal-content{
   background-color: rgba(0,0,0,0.75);
   backdrop-filter: blur(10px);

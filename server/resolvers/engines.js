@@ -33,7 +33,10 @@ export const EngineSubscriptions = {
   speedChange(rootValue) {
     return rootValue;
   },
-  heatChange(rootValue) {
+  heatChange(rootValue, {simulatorId}) {
+    if (simulatorId) {
+      return rootValue.filter(s => s.simulatorId === simulatorId);
+    }
     return rootValue;
   },
 };

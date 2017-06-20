@@ -66,6 +66,9 @@ class EngineControl extends Component {
 				document: HEATCHANGE_SUB,
 				updateQuery: (previousResult, {subscriptionData}) => {
 					const engineIndex = previousResult.engines.findIndex(e => e.id === subscriptionData.data.heatChange.id);
+					if (engineIndex < 0) {
+						return previousResult;
+					}
 					const engine = Immutable.Map(previousResult.engines[engineIndex]);
 					engine.set('heat', subscriptionData.data.heatChange.heat);
 					engine.set('coolant', subscriptionData.data.heatChange.coolant);

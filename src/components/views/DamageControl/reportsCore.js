@@ -7,7 +7,7 @@ import { TypingField } from '../../generic/core';
 
 
 const SYSTEMS_SUB = gql`
-subscription SystemsUpdate($simulatorId: ID){
+subscription DamagedSystemsUpdate($simulatorId: ID){
   systemsUpdate(simulatorId: $simulatorId) {
     id
     name
@@ -110,7 +110,7 @@ class DamageReportCore extends Component {
     const {selectedReport} = this.state;
     return <Container fluid className="damageReport-core">
     <p>Damage Report Request</p>
-    <Row style={{height: '100%'}}>
+    <Row style={{height: 'calc(100% - 24px)'}}>
     <Col sm={4} style={{overflow: 'scroll'}}>
     {
       systems.filter(s => s.damage.damaged)
@@ -151,7 +151,7 @@ class DamageReportCore extends Component {
   }
 }
 const SYSTEMS_QUERY = gql`
-query Systems($simulatorId: ID){
+query DamagedSystems($simulatorId: ID){
   systems(simulatorId: $simulatorId) {
     id
     name
