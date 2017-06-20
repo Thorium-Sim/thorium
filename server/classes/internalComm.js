@@ -6,6 +6,7 @@ export default class InternalComm extends System {
     this.type = 'InternalComm';
     this.class = 'InternalComm';
     this.name = params.name || 'Internal Communications';
+    this.displayName = params.displayName || 'Internal Comm';
     this.state = params.state || 'idle'; //One of 'idle', 'connected'
     this.outgoing = params.outgoing || null;
     this.incoming = params.incoming || null;

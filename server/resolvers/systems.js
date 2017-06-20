@@ -1,13 +1,16 @@
 import App from '../../app.js';
 
 export const SystemsQueries = {
-  systems(rootValue, {simulatorId, type}){
+  systems(rootValue, {simulatorId, type, power}){
     let returnSystems = App.systems;
     if (simulatorId) {
       returnSystems = returnSystems.filter(s => s.simulatorId === simulatorId);
     }
     if (type) {
       returnSystems = returnSystems.filter(s => s.type === type);
+    }
+    if (power) {
+      returnSystems = returnSystems.filter(s => s.power.power);
     }
     return returnSystems;
   }

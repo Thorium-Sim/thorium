@@ -5,6 +5,7 @@ type System {
   simulatorId: ID
   type: String
   name: String
+  displayName: String
   damage: Damage
   power: Power
   stealthFactor: Float

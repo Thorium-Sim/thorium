@@ -83,7 +83,7 @@ export class TimelineObject {
       if (this.class === 'Flight') {
         args.flightId = this.id;
       }
-      mutationMap[i.event]({}, args);
+      mutationMap[i.event]({}, args, {clientId: 'timeline'});
     });
   }
 }

@@ -7,6 +7,7 @@ export default class ShortRangeComm extends System {
     this.type = 'ShortRangeComm';
     this.class = 'ShortRangeComm';
     this.name = params.name || 'Short Range Communications';
+    this.displayName = params.displayName || "Short Range Comm";
     this.frequency = params.frequency || 0.5;
     this.amplitude = params.amplitude || 0.5;
     this.state = params.state || 'idle';

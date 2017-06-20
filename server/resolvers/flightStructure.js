@@ -51,7 +51,7 @@ export const FlightStructureMutations = {
 
 
   // Simulator
-  createSimulator(root, args, context) {
+  createSimulator(root, args, context = {}) {
     App.handleEvent(Object.assign(args,{id: uuid.v4()}), 'createSimulator', context.clientId);
   },
   removeSimulator(root, args, context) {

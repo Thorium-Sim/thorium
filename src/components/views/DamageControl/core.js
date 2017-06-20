@@ -119,9 +119,9 @@ class DamageControlCore extends Component {
       .map(s => (
         <tr key={s.id}>
         <td onClick={this.toggleDamage.bind(this,s)} style={this.systemStyle(s)}>{this.systemName(s)}</td>
-        <td><InputField prompt="What is the power?" onClick={this.setPower.bind(this, s)}>{s.power.power}</InputField></td>
+        <td>{s.power.power && <InputField prompt="What is the power?" onClick={this.setPower.bind(this, s)}>{s.power.power}</InputField>}</td>
         <td>/</td>
-        <td><OutputField>{s.power.powerLevels[0]}</OutputField></td>
+        <td>{s.power.power && <OutputField>{s.power.powerLevels[0]}</OutputField>}</td>
         </tr>
         ))}
       </tbody>

@@ -9,6 +9,7 @@ export default class Engine extends HeatMixin(System) {
     this.speeds = params.speeds || [];
     this.speed = params.speed || -1;
     this.cooling = false;
+    this.displayName = params.displayName || this.name + " Engine"
   }
   get stealthFactor() {
     const topSpeed = this.speeds.reduce((prev, next) => {

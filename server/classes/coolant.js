@@ -13,6 +13,12 @@ export default class Coolant extends System {
     this.coolantRate = params.coolantRate || 0.2; // Effectively 5 times as much coolant in the tank than in a system
     this.transfer = params.transfer || null;
   }
+  get power () {
+    return {};
+  }
+  set power (a) {
+    return;
+  }
   setCoolant(coolant) {
     this.coolant = Math.min(1, Math.max(0, coolant));
   }

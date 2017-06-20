@@ -100,7 +100,7 @@ class ActionsCore extends Component {
     </select>
     <select onChange={this.handleDestChange} ref="actionDest">
     <option value="all">All Stations</option>
-    {!this.props.data.loading && this.props.data.simulators[0].stations
+    {!this.props.data.loading && this.props.data.simulators[0] && this.props.data.simulators[0].stations && this.props.data.simulators[0].stations
       .map(s => <option key={s.name} value={s.name}>{s.name}</option>)
     }
     </select>
