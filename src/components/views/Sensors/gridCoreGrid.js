@@ -27,8 +27,8 @@ subscription SensorContactsChanged($sensorId: ID) {
     name
     size
     color
-    iconUrl
-    pictureUrl
+    icon
+    picture
     speed 
     velocity {
       x
@@ -150,8 +150,8 @@ query Contacts($sensorsId: ID) {
     id
     name
     size
-    iconUrl
-    pictureUrl
+    icon
+    picture
     color
     speed 
     velocity {

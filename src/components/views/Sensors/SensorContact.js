@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactKonva from 'react-konva';
 import {parse as parsePath} from 'extract-svg-path';
 import Immutable from 'immutable';
+import assetPath from '../../../helpers/assets';
 import gql from 'graphql-tag';
 import * as THREE from 'three';
 import { withApollo } from 'react-apollo';
@@ -36,8 +37,11 @@ class KonvaContact extends Component {
   componentWillReceiveProps(nextProps) {
     this.refreshContact(nextProps);
   }
-  refreshContact({id, data, name, location, icon, iconUrl, pictureUrl, speed, destination, velocity, size, radius, color}) {
+  refreshContact({id, data, name, location, icon, picture, speed, destination, velocity, size, radius, color}) {
     const {contact} = this.state;
+    console.log(icon, contact && contact.icon)
+    const iconUrl = assetPath(icon, 'default', 'svg', false);
+    const pictureUrl = assetPath(picture, 'default', 'svg', false)
     Promise.resolve().then(() => {
       if (contact){
         //Transfer over the information necessary.
@@ -47,6 +51,7 @@ class KonvaContact extends Component {
             data: contact.data,
             name,
             icon,
+            picture,
             iconUrl,
             pictureUrl,
             speed,
