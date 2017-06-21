@@ -11,19 +11,19 @@ export default class TractorBeam extends System {
     this.strength = params.strength || 0.0;
     this.stress = params.stress || 0.15;
   }
-  get stealthFactor() {
+  get stealthTractorBeamFactor() {
     return (this.stress / 5 + .8);
   }
-  setState(tf) {
+  setTractorBeamState(tf) {
     this.state = tf;
   }
-  setTarget(tf) {
+  setTractorBeamTarget(tf) {
     this.target = tf;
   }
-  setStrength(perc) {
+  setTractorBeamStrength(perc) {
     this.strength = perc;
   }
-  setStress(perc) {
+  setTractorBeamStress(perc) {
     this.stress = perc;
   }
 }
