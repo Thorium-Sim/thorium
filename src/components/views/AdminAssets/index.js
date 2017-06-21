@@ -24,6 +24,7 @@ subscription AssetFolderSubscription{
 				containerId
 				containerPath
 				simulatorId
+				fullPath
 				url
 			}
 		}
@@ -46,8 +47,7 @@ class AdminAssetsView extends Component {
 			this.assetFolderSubscription = nextProps.data.subscribeToMore({
 				document: ASSET_FOLDER_SUB,
 				updateQuery: (previousResult, {subscriptionData}) => {
-					previousResult.assetFolders = subscriptionData.data.assetFolderChange;
-					return previousResult;
+					return {assetFolders: subscriptionData.data.assetFolderChange};
 				},
 			});
 		}
@@ -251,7 +251,6 @@ query GetAssetFolders{
 				id
 				containerId
 				containerPath
-				fullPath
 				simulatorId
 				fullPath
 				url

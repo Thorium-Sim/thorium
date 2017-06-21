@@ -72,9 +72,9 @@ export const AssetsMutations = {
   removeAssetObject(root, { id }, context) {
     App.handleEvent({ id }, 'removeAssetObject', context.clientId);
     // Get the object
-    const obj = App.assetObjects.find((object) => object.id === id);
-    const extension = obj.url.substr(obj.url.lastIndexOf('.'));
-    fs.unlink(path.resolve(`${assetDir}/${(obj.fullPath.substr(1) + extension)}`), () => {});
+    //const obj = App.assetObjects.find((object) => object.id === id);
+    //const extension = obj.url.substr(obj.url.lastIndexOf('.'));
+    //fs.unlink(path.resolve(`${assetDir}/${(obj.fullPath.substr(1) + extension)}`), () => {});
 
     return '';
   },
