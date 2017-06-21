@@ -11,13 +11,10 @@ subscription DamagedSystemsUpdate($simulatorId: ID){
   systemsUpdate(simulatorId: $simulatorId) {
     id
     name
-    power {
-      power
-      powerLevels
-    }
     damage {
       damaged
       report
+      requested
     }
     simulatorId
     type
@@ -54,7 +51,7 @@ class DamageReportCore extends Component {
     const selectedSystem = systems.find(s => s.id === id)
     this.setState({
       selectedSystem: id,
-      selectedReport: selectedSystem.report
+      selectedReport: selectedSystem.damage.report || ''
     })
   }
   systemStyle(sys){
