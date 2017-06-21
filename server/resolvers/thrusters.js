@@ -18,6 +18,9 @@ export const ThrustersMutations = {
   directionUpdate(root, params, context) {
     App.handleEvent(params, 'directionUpdate', context.clientId);
   },
+  requiredRotationSet(root, params, context) {
+    App.handleEvent(params, 'requiredRotationSet', context.clientId);
+  },
 };
 
 export const ThrustersSubscriptions = {
