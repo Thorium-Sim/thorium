@@ -7,7 +7,7 @@ const holderStyle = {
   position: 'absolute',
   right: '20px',
   top: '20px',
-  width: '20vw',
+  width: '30vw',
   zIndex: '100000',
 }
 const NOTIFY_SUB = gql`

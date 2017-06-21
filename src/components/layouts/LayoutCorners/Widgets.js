@@ -5,7 +5,7 @@ import FontAwesome from 'react-fontawesome';
 
 const WidgetsContainer = (props) => {
   return (
-    <div className="widgets">
+    <div className={`widgets ${props.clientObj.loginState} ${props.clientObj.offlineState ? 'offline' : ''}`}>
     {Object.keys(Widgets).map(key => {
       const widget = Widgets[key];
       return <Widget simulator={props.simulator} station={props.station}  widget={widget} wkey={key} key={key} />
