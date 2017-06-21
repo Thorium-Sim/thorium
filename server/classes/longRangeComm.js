@@ -35,7 +35,7 @@ export default class LongRangeComm extends System {
       if (params.a === 0) params.a = 10;
       if (params.f === 0) params.f = 5;
       params.ra = params.a;
-      params.rf = params.rf;
+      params.rf = params.f;
     }
     this.messages.push(new LRMessage(params));
   }

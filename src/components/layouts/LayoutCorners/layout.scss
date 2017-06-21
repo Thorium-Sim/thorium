@@ -75,6 +75,12 @@ body{
 	position: absolute;
 	left: 460px;
 	top: 5px;
+	text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+	&.offline, &.offline * {
+		pointer-events: none;
+		-webkit-filter: brightness(0.7);
+		filter: brightness(0.7);
+	}
 	.widget-item {
 		float: left;
 		margin: 4px;

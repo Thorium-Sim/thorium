@@ -12,7 +12,7 @@ import './style.scss';
 
 const DECODING_SUB = gql `
 subscription LRDecoding($simulatorId: ID!) {
-  longRangeCommunicationsUpdate(simulatorId: $simulatorId) {
+  longRangeCommunicationsUpdate(simulatorId: $simulatorId, crew: true) {
     id
     simulatorId
     name

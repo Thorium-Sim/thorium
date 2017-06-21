@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { graphql, withApollo } from 'react-apollo';
 import { Container, Row, Col } from 'reactstrap';
 import { InputField, OutputField } from '../../generic/core';
+import Immutable from 'immutable';
 import FontAwesome from 'react-fontawesome';
 
 const ROTATION_CHANGE_SUB = gql`
@@ -35,14 +36,15 @@ class ThrusterCore extends Component {
       this.rotationSubscription = nextProps.data.subscribeToMore({
         document: ROTATION_CHANGE_SUB,
         updateQuery: (previousResult, {subscriptionData}) => {
-          console.log(subscriptionData.data);
-          previousResult.thrusters = previousResult.thrusters.map(thruster => {
-            if (thruster.id === subscriptionData.data.rotationChange.id){
-              thruster.rotation = subscriptionData.data.rotationChange.rotation
-            } 
-            return thruster;
-          })
-          return previousResult;
+          const thrusters = Immutable.List(previousResult.thrusters);
+          const thrusterIndex = previousResult.thrusters.findIndex(t => t.id === subscriptionData.data.rotationChange.id);
+          const thruster = Immutable.Map(previousResult.thrusters[thrusterIndex])
+          .set('rotation', subscriptionData.data.rotationChange.rotation)
+          .set('rotationRequired', subscriptionData.data.rotationChange.rotationRequired)
+          .set('direction', subscriptionData.data.rotationChange.direction)
+          return {
+            thrusters: thrusters.set(thrusterIndex, thruster).toJS()
+          };
         },
       });
     }
@@ -50,8 +52,27 @@ class ThrusterCore extends Component {
   toggleManualThrusters = () => {
 
   }
-  setRequiredRotation = (which) => {
-
+  setRequiredRotation = (which, value) => {
+    const mutation = gql`
+    mutation SetRequiredThrusters($id: ID!, $rotation: RotationInput){
+      requiredRotationSet(id: $id, rotation: $rotation)
+    }`;
+    const thrusters = this.props.data.thrusters[0];
+    const rotation = Object.assign({}, {
+      yaw: thrusters.rotationRequired.yaw,
+      pitch: thrusters.rotationRequired.pitch,
+      roll: thrusters.rotationRequired.roll
+    });
+    rotation[which] = value;
+    const variables = {
+      id: thrusters.id,
+      rotation
+    }
+    console.log(variables);
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
   }
   render() {
     if (this.props.data.loading) return null;
@@ -71,7 +92,7 @@ class ThrusterCore extends Component {
   <InputField 
   alert={Math.round(thrusters.rotation.yaw) !== Math.round(thrusters.rotationRequired.yaw)}
   prompt="What is the required yaw?" 
-  onClick={() => {this.setRequiredRotation('yaw')}}>
+  onClick={(value) => {this.setRequiredRotation('yaw', value)}}>
   {Math.round(thrusters.rotationRequired.yaw)}
   </InputField>
   </Col>
@@ -79,14 +100,14 @@ class ThrusterCore extends Component {
   <InputField 
   alert={Math.round(thrusters.rotation.pitch) !== Math.round(thrusters.rotationRequired.pitch)}
   prompt="What is the required pitch?"
-  onClick={() => {this.setRequiredRotation('pitch')}}>
+  onClick={(value) => {this.setRequiredRotation('pitch',value)}}>
   {Math.round(thrusters.rotationRequired.pitch)}
   </InputField>
   </Col>
   <Col sm={4}>
   <InputField alert={Math.round(thrusters.rotation.roll) !== Math.round(thrusters.rotationRequired.roll)}
   prompt="What is the required roll?"
-  onClick={() => {this.setRequiredRotation('roll')}}>
+  onClick={(value) => {this.setRequiredRotation('roll',value)}}>
   {Math.round(thrusters.rotationRequired.roll)}
   </InputField>
   </Col>
@@ -102,7 +123,6 @@ class ThrusterCore extends Component {
 }
 
 const ThrusterArrow = ({name, value}) => {
-  console.log(value);
   return <Col sm={4} className="thruster-symbol">
   <FontAwesome name={name} style={{color: `rgb(${Math.round(value * 255)},${Math.round(value * 255)},${Math.round(value * 255)})`}} />
   </Col>
@@ -147,4 +167,4 @@ query Thrusters($simulatorId: ID){
 
 export default graphql(THRUSTER_QUERY, {
   options: (ownProps) => ({ variables: { simulatorId: ownProps.simulator.id } }),
-})(ThrusterCore);
+})(withApollo(ThrusterCore));
