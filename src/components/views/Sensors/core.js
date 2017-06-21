@@ -94,7 +94,7 @@ class SensorsCore extends Component {
         <Button key={s.id} onClick={this.props.updateObjectId.bind(this, s.id)} className={sensors.id === s.id ? 'active' : ''} size={'sm'}>{s.domain === 'external' ? 'Sensor Scans' : 'Internal Scans'}</Button>
         )
     }
-    <div>
+    <div style={{height: '100%'}}>
     <div style={fieldStyle}>
     <OutputField style={{flexGrow: 2}} alert={sensors.scanning}>{sensors.scanRequest}</OutputField>
     <TypingField style={{flexGrow: 6}} onChange={(e) => {this.setState({dataField: e.target.value})}} value={this.state.dataField} />
@@ -102,11 +102,11 @@ class SensorsCore extends Component {
     <div style={buttonStyle}>
     <Button onClick={this.sendScanResult.bind(this, sensors)} style={{flexGrow: 2}} size={'sm'}>Send</Button>
     <Button onClick={this.flash.bind(this)} style={{flexGrow: 1}} size={'sm'}>Flash</Button>
-    <select style={{flexGrow: 4}}>
-    <option>Scan Answers</option>
+    <select disabled style={{flexGrow: 4}}>
+    <option>Answers</option>
     </select>
-    <select style={{flexGrow: 4}}>
-    <option>Sensor Info</option>
+    <select disabled style={{flexGrow: 4}}>
+    <option>Info</option>
     </select>
     <Button onClick={this.sendProcessedData.bind(this, sensors)} style={{flexGrow: 4}} size={'sm'}>Processed Data</Button>
     </div>

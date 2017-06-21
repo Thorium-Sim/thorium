@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
-import { Button, Row, Col, Card } from 'reactstrap';
+import { Button, Row, Col, Card, CardBlock } from 'reactstrap';
 import Immutable from 'immutable';
 import './style.scss';
 import GridCoreGrid from './gridCoreGrid';
@@ -180,7 +180,9 @@ class Sensors extends Component{
 			</Col>
 			<Col className="col-sm-12">
 			<Card style={{height: '200px'}}>
+			<CardBlock>
 			{this.state.scanResults}
+			</CardBlock>
 			</Card>
 			</Col>
 			</Row>
@@ -196,49 +198,51 @@ class Sensors extends Component{
 			</Card>
 			</Col>
 			</Row>
-			<Button onClick={this.showWeaponsRange.bind(this)} block>Show Weapons Range</Button>*/}
-			</Col>
-			<Col sm={6} className="arrayContainer">
-			<div className="spacer"></div>
-			<Measure
-			useClone={true}
-			includeMargin={false}>
-			{ dimensions => (
-				<div id="threeSensors" className='array' style={{position:'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
-				{dimensions.width > 0 &&
-					<GridCoreGrid dimensions={dimensions} sensor={sensors.id} hoverContact={this._hoverContact.bind(this)}/>
-				}
-				</div>
-				)}
-			</Measure>
-			<DamageOverlay message="External Sensors Offline" system={sensors} />
-			</Col>
-			<Col className="col-sm-3 data">
-			<Row>
-			<Col className="col-sm-12 contactPictureContainer">
-			<div className="card contactPicture" style={{backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: 'black', backgroundImage:`url('${hoverContact.pictureUrl}')`}}></div>
-			</Col>
-			<Col className="col-sm-12 contactNameContainer">
-			<div className="card contactName">
-			{hoverContact.name}
+		<Button onClick={this.showWeaponsRange.bind(this)} block>Show Weapons Range</Button>*/}
+		</Col>
+		<Col sm={6} className="arrayContainer">
+		<div className="spacer"></div>
+		<Measure
+		useClone={true}
+		includeMargin={false}>
+		{ dimensions => (
+			<div id="threeSensors" className='array' style={{position:'absolute', top: 0, left: 0, right: 0, bottom: 0}}>
+			{dimensions.width > 0 &&
+				<GridCoreGrid dimensions={dimensions} sensor={sensors.id} hoverContact={this._hoverContact.bind(this)}/>
+			}
 			</div>
-			</Col>
-			</Row>
-			<Row>
-			<Col className="col-sm-12">
-			<h3>Processed Data</h3>
-			</Col>
-			<Col className="col-sm-12">
-			<Card className="processedData">
-			{this.state.processedData}
-			</Card>
-			</Col>
-			</Row>
-			</Col>
-			</Row>
-			</div>
-			</div>
-			);
+			)}
+		</Measure>
+		<DamageOverlay message="External Sensors Offline" system={sensors} />
+		</Col>
+		<Col className="col-sm-3 data">
+		<Row>
+		<Col className="col-sm-12 contactPictureContainer">
+		<div className="card contactPicture" style={{backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: 'black', backgroundImage:`url('${hoverContact.pictureUrl}')`}}></div>
+		</Col>
+		<Col className="col-sm-12 contactNameContainer">
+		<div className="card contactName">
+		{hoverContact.name}
+		</div>
+		</Col>
+		</Row>
+		<Row>
+		<Col className="col-sm-12">
+		<h3>Processed Data</h3>
+		</Col>
+		<Col className="col-sm-12">
+		<Card className="processedData">
+		<CardBlock>
+		{this.state.processedData}
+		</CardBlock>
+		</Card>
+		</Col>
+		</Row>
+		</Col>
+		</Row>
+		</div>
+		</div>
+		);
 	}
 }
 
