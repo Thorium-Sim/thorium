@@ -39,7 +39,6 @@ class KonvaContact extends Component {
   }
   refreshContact({id, data, name, location, icon, picture, speed, destination, velocity, size, radius, color}) {
     const {contact} = this.state;
-    console.log(icon, contact && contact.icon)
     const iconUrl = assetPath(icon, 'default', 'svg', false);
     const pictureUrl = assetPath(picture, 'default', 'svg', false)
     Promise.resolve().then(() => {

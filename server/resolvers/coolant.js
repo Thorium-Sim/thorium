@@ -27,7 +27,6 @@ export const CoolantMutations = {
     App.handleEvent(args, "setCoolantTank", context.clientId);
   },
   transferCoolant(root, args, context) {
-    console.log(args);
     if (args.which === 'stop'){
       App.handleEvent(args, "cancelCoolantTransfer", context.clientId);
     } else {

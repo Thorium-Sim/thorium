@@ -48,7 +48,6 @@ const shieldStyle = (shields, extra=false) =>{
       output.push(`inset 0px 20px 20px -15px ${shieldColor(s)}`);
     }
   })
-  console.log(output.length);
   return output.join(',');
 }
 

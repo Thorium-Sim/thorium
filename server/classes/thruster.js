@@ -27,7 +27,6 @@ export default class Thrusters extends System {
     this.rotation = rotation;
   }
   updateRequired(rotation) {
-    console.log(rotation);
     this.rotationRequired = rotation;
   }
 }

@@ -120,7 +120,6 @@ class Navigation extends Component {
 
 	}
 	handleKeydown(e){
-		console.log(e.which, e.key);
 		if (e.which === 8){//Delete key
 			this.clear();
 		}

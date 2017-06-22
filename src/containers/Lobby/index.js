@@ -12,7 +12,6 @@ import IssueTracker from '../../components/admin/IssueTracker';
 import './style.scss';
 
 const {TempSimulatorConfig} = Configs;
-console.log(TempSimulatorConfig);
 
 export default class Lobby extends Component {
     constructor(props) {
