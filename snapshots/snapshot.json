@@ -1622,6 +1622,30 @@
 			}
 		},
 		{
+			"id": "3abbdf89-1299-4bd8-9311-f358124ab224",
+			"simulatorId": "test",
+			"name": "Tractor Beam",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false
+			},
+			"class": "TractorBeam",
+			"type": "TractorBeam",
+			"state": false,
+			"target": false,
+			"strength": 0,
+			"stress": 0.15
+		}
+	],
+	"clients": [
+		{
 			"id": "ea8f37b6-f835-40c6-8dcb-a1422d11620a",
 			"simulatorId": "test",
 			"name": null,

@@ -25,6 +25,7 @@ import ProbeConstruction from './ProbeConstruction';
 import StealthField from './StealthField';
 import CargoControl from './CargoControl';
 import CoolantControl from './CoolantControl';
+import TractorBeam from './TractorBeam';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -48,6 +49,7 @@ import DecksCore from './ShipStructure/core';
 import CargoCore from './CargoControl/core';
 import ActionsCore from './Actions/core';
 import ThrusterCore from './Thrusters/core';
+import TractorBeamCore from './TractorBeam/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -80,7 +82,8 @@ const Views = {
   ProbeConstruction,
   StealthField,
   CargoControl,
-  CoolantControl
+  CoolantControl,
+  TractorBeam
 };
 
 export const Widgets = {
@@ -111,7 +114,8 @@ export const Cores = {
   DecksCore,
   CargoCore,
   ActionsCore,
-  ThrusterCore
+  ThrusterCore,
+  TractorBeamCore
 };
 
 export default Views;
