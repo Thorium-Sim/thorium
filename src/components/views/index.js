@@ -25,6 +25,7 @@ import ProbeConstruction from './ProbeConstruction';
 import StealthField from './StealthField';
 import CargoControl from './CargoControl';
 import CoolantControl from './CoolantControl';
+import TractorBeam from './TractorBeam';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -80,7 +81,8 @@ const Views = {
   ProbeConstruction,
   StealthField,
   CargoControl,
-  CoolantControl
+  CoolantControl,
+  TractorBeam
 };
 
 export const Widgets = {

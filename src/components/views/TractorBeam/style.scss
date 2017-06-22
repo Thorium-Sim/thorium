@@ -1,0 +1,65 @@
+.tractor-beam {
+  height: 100%;
+  .ship-side {
+    position: absolute;
+    right: 10%;
+    top: 10%;
+    width: 60%;
+
+  }
+  #tractorEffect{
+    position: absolute;
+    top: 35%;
+    right: 45%;
+    -webkit-transition: opacity 1s ease-in-out;
+    -webkit-mask-size: 400px 400px;
+    -webkit-mask-image: -webkit-gradient(linear, left bottom, right top, 
+      color-stop(0.40,  rgba(0,0,0,0)),
+      color-stop(0.60, rgba(0,0,0,1)),
+      color-stop(1.00,  rgba(0,0,0,1)));
+    opacity: 0;
+    &.shown {
+      opacity: 1;
+    }
+  }
+  .target {
+    position: absolute;
+    width: 8%;
+    top: 52%;
+    right: 71%;
+    -webkit-transition: opacity 1s ease-in-out;
+    opacity: 0;
+    &.shown {
+      opacity: 1;
+    }
+  }
+  .activate {
+    position: absolute;
+    width: 30%;
+    top: 80%;
+  }
+  .bar-container {
+    position: relative;
+  }
+  .bar-holder {
+    width: 300px;
+    position: relative;
+    left: 50px;
+  }
+  .arrow-container {
+    position: absolute;
+    height: 100%;
+  }
+  .bar {
+    background-color: red;
+    height: 4px;
+    border-radius: 50px;
+    margin: 3px;
+  }
+  @media (width: 1024px) {
+    .target {
+      top: 52%;
+      right: 75%;
+    }
+  }
+}

@@ -3,16 +3,21 @@ import { Container, Row, Col, Button } from 'reactstrap';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
+import assetPath from '../../../helpers/assets';
+import Beam from './beam';
+import Target from './target';
+import Bars from './bars';
+import './style.scss';
 
 const TRACTORBEAM_SUB = gql`
 subscription TractorBeamUpdate($simulatorId: ID!) {
-   tractorBeamUpdate(simulatorId: $simulatorId) {
-    id
-    state
-    target
-    strength
-    stress
-  }
+ tractorBeamUpdate(simulatorId: $simulatorId) {
+  id
+  state
+  target
+  strength
+  stress
+}
 }`;
 
 class TractorBeam extends Component {
@@ -38,7 +43,22 @@ class TractorBeam extends Component {
     if (this.props.data.loading) return null;
     const tractorBeam = this.props.data.tractorBeam[0];
     if (!tractorBeam) return <p>No Tractor Beam</p>;
-    return <div>This is a template</div>
+    return <Container className="tractor-beam">
+    <Beam shown={tractorBeam.state} />
+    <img className="ship-side" src={assetPath('/Ship Views/Right', 'default', 'png', false)} draggable="false" />
+    <Target shown={tractorBeam.target} />
+    <Bars
+    color={'blue'}
+    simulator={this.props.simulator}
+    level={0.5}
+    />
+    <Bars
+    arrow
+    simulator={this.props.simulator}
+    level={0.5}
+    />
+    <Button size="lg" className="activate" disabled={!tractorBeam.target}>{tractorBeam.state ? 'Deactivate' : 'Activate'} Tractor Beam</Button>
+    </Container>
   }
 }
 
