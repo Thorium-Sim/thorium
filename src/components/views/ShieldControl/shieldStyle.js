@@ -1,4 +1,4 @@
-const shieldColor = ({state, integrity}) => {
+export const shieldColor = ({state, integrity}) => {
   if (!state) return 'rgba(0,0,0,0)';
   let red = 0;
   let green = 0;
