@@ -25,6 +25,7 @@ export targeting from './targeting';
 export probes from './probes';
 export stealthField from './stealthField';
 export actions from './actions';
+export tractorBeam from './tractorBeam';
 
 export const role = `
 type role {

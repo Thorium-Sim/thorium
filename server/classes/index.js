@@ -23,3 +23,4 @@ export Targeting from './targeting';
 export Probes from './probes';
 export StealthField from './stealthField';
 export Coolant from './coolant';
+export TractorBeam from './tractorBeam';

@@ -21,3 +21,4 @@ import './probes';
 import './stealthField';
 import './thrusters';
 import './coolant';
+import './tractorBeam';

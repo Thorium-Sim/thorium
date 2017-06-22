@@ -9,8 +9,9 @@ const sendUpdate = (sys) => {
   if (sys.type === 'Sensors') pubsub.publish('sensorsUpdate', App.systems.filter(s => s.type === 'Sensors'));
   if (sys.type === 'LongRangeComm') pubsub.publish('longRangeCommunicationsUpdate', App.systems.filter(s => s.type === 'LRCommunications'));
   if (sys.type === 'InternalComm') pubsub.publish('internalCommUpdate', App.systems.filter(s => s.type === 'InternalComm'))
-    if (sys.type === 'Naivgation')   pubsub.publish('navigationUpdate', App.systems.filter(s => s.type === 'Navigation'));
+  if (sys.type === 'Naivgation')   pubsub.publish('navigationUpdate', App.systems.filter(s => s.type === 'Navigation'));
   if (sys.type === 'ShortRangeComm')   pubsub.publish('shortRangeCommUpdate', App.systems.filter(s => s.type === 'ShortRangeComm'));
+  if (sys.type === 'TractorBeam')   pubsub.publish('tractorBeamUpdate', App.systems.filter(s => s.type === 'TractorBeam'));
   pubsub.publish('systemsUpdate', App.systems);
 }
 App.on('addSystemToSimulator', ({simulatorId, className, params}) => {
