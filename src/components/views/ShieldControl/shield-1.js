@@ -3,10 +3,11 @@ import { Container, Row, Col, Button } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import assetPath from '../../../helpers/assets';
 import DamageOverlay from '../helpers/DamageOverlay';
+import {shieldColor} from './shieldStyle';
 
 export default ({shields, startLoop, state, _toggleShields}) => {
       const s = shields[0];
-      const color = this.shieldColor(s);
+      const color = shieldColor(s);
       return <Container className="shields">
       <DamageOverlay system={s} message={`${s.name} Shields Offline`} />
       <Row>

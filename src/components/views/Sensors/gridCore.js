@@ -8,6 +8,7 @@ import Draggable from 'react-draggable';
 import FontAwesome from 'react-fontawesome';
 import Immutable from 'immutable';
 import ContactContextMenu from './contactContextMenu';
+import assetPath from '../../../helpers/assets';
 import {
   Row,
   Col,
@@ -43,9 +44,7 @@ subscription SensorsChanged {
       name
       size
       icon
-      iconUrl
       picture
-      pictureUrl
       infrared
       cloaked
       destroyed
@@ -87,8 +86,6 @@ class GridCore extends Component {
     const x = (a.node.getBoundingClientRect().left - gridRect.left - gridRect.width/2 + 10) / (gridRect.width/2)
     const y = (a.node.getBoundingClientRect().top  - gridRect.top - gridRect.height/2 + 10) / (gridRect.height/2)
     // Construct the new contact
-    delete contact.iconUrl;
-    delete contact.pictureUrl;
     delete contact.id;
     delete contact.__typename;
     const newContact = Object.assign(contact, {
@@ -232,7 +229,7 @@ class GridCore extends Component {
               onStop={this.dragStop.bind(this, contact)}
               position={this.state.movingContact[contact.id]}
               >
-              <img onContextMenu={this._contextMenu.bind(this, contact)} draggable="false" role="presentation" className="armyContact" src={contact.iconUrl} />
+              <img onContextMenu={this._contextMenu.bind(this, contact)} draggable="false" role="presentation" className="armyContact" src={assetPath(contact.icon, 'default', 'svg', false);} />
               </Draggable>
               <TypingField input={true} value={contact.name} onChange={(e) => {contact.name = e.target.value; this._updateArmyContact(contact)}} /> 
               {this.state.removeContacts && 
@@ -291,9 +288,7 @@ query GetSensors($simulatorId: ID){
       name
       size
       icon
-      iconUrl
       picture
-      pictureUrl
       infrared
       cloaked
       destroyed
