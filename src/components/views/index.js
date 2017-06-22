@@ -49,6 +49,7 @@ import DecksCore from './ShipStructure/core';
 import CargoCore from './CargoControl/core';
 import ActionsCore from './Actions/core';
 import ThrusterCore from './Thrusters/core';
+import TractorBeamCore from './TractorBeam/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -113,7 +114,8 @@ export const Cores = {
   DecksCore,
   CargoCore,
   ActionsCore,
-  ThrusterCore
+  ThrusterCore,
+  TractorBeamCore
 };
 
 export default Views;

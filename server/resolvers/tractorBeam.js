@@ -12,16 +12,16 @@ export const TractorBeamQueries = {
 
 export const TractorBeamMutations = {
   setTractorBeamState(rootValue, args) {
-    App.handleEvent(args, 'setState');
+    App.handleEvent(args, 'setTractorBeamState');
   },
   setTractorBeamTarget(rootValue, args) {
-    App.handleEvent(args, 'setTarget');
+    App.handleEvent(args, 'setTractorBeamTarget');
   },
   setTractorBeamStrength(rootValue, args) {
-    App.handleEvent(args, 'setStrength');
+    App.handleEvent(args, 'setTractorBeamStrength');
   },
   setTractorBeamStress(rootValue, args) {
-    App.handleEvent(args, 'setStress');
+    App.handleEvent(args, 'setTractorBeamStress');
   },
 };
 

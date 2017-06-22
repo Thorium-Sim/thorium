@@ -40,6 +40,11 @@
   }
   .bar-container {
     position: relative;
+    opacity: 0;
+    -webkit-transition: opacity 1s ease-in-out;
+    &.shown {
+      opacity: 1
+    }
   }
   .bar-holder {
     width: 300px;
@@ -56,10 +61,36 @@
     border-radius: 50px;
     margin: 3px;
   }
+  .stressBar {
+    position: absolute;
+    top: 60%;
+    right: 33%;
+  }
+  .strengthBar {
+    position: absolute;
+    top: 60%;
+    right: 0%;
+  }
+  .barLabel {
+    font-size: 24px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    bottom: 50%;
+    left: 50%;
+    right: 50%;
+  }
   @media (width: 1024px) {
     .target {
       top: 52%;
       right: 75%;
     }
+  }
+}
+.tractor-beam-core {
+  label {
+    display: block;
+    float: left;
+    width: 100%;
   }
 }

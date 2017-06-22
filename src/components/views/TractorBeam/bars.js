@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Arrow from './arrow';
 import Measure from 'react-measure';
+import gql from 'graphql-tag';
 import { withApollo } from 'react-apollo';
 
 class Bars extends Component {
@@ -19,7 +20,6 @@ class Bars extends Component {
     })
   }
   mouseDown = (dimensions, evt) => {
-    console.log(dimensions);
     this.setState({
       height: dimensions.height,
       top: dimensions.top,
@@ -37,11 +37,24 @@ class Bars extends Component {
     document.removeEventListener('mousemove', this.mouseMove);
     document.removeEventListener('mouseup', this.mouseUp);
     // mutate to update
+    const {id} = this.props;
+    const mutation = gql`
+    mutation TractorBeamStrength ($id: ID!, $strength: Float!){
+      setTractorBeamStrength(id: $id, strength: $strength)
+    }`;
+    const variables = {
+      id,
+      strength: Math.abs(this.state.level - 1)
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
   }
   render() {
-    const {color, simulator, arrow} = this.props;
+    const {color, simulator, arrow, flop, className, label, active} = this.props;
     const {level} = this.state;
-    return <div className="bar-container">
+    return <div className={`bar-container ${className} ${active ? 'shown' : ''}`}>
     {arrow && <Measure
       includeMargin={true}>
       { dimensions => (
@@ -57,13 +70,15 @@ class Bars extends Component {
         ) }
       </Measure>
     }
+    <p className="barLabel">{label && label + ": "}{Math.round(Math.abs(level-1)*100) + "%"}</p>
     <div className="bar-holder">
     {
       Array(30).fill(0).map((_, index, array) => {
         return <div className="bar" style={{
           opacity: (index / array.length) >= level ? 1 : 0.3,
           backgroundColor: color || null,
-          width: (array.length / (index + 2) * (100 / array.length)) + "%"
+          width: (array.length / (index + 2) * (100 / array.length)) + "%",
+          marginLeft: flop ? Math.abs((array.length / (index + 2) * (100 / array.length)) - 100) + "%" : 0
         }}></div>  
       })
     }  
