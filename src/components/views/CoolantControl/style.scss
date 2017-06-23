@@ -32,8 +32,9 @@
     width: 100%;
     bottom: 0;
     position: absolute;
-    background-color: #038;
-    transition: height 0.2s ease-out;
+    background: radial-gradient(ellipse at center, #5ea0d6 0%,#207cca 100%);
+    background-position: center;
+    transition: height 0.5s ease-out;
     animation: 2s ease-in-out 0s infinite coolant_glow;
   }
   .coolant-bar {
@@ -53,7 +54,8 @@
     margin-top: 4px;
     position: absolute;
     animation: 2s ease-in-out 0s infinite coolant_glow;
-    background-color: #038;
+    background: radial-gradient(ellipse at center, #5ea0d6 0%,#207cca 100%);
+    background-position: center;
     height: 89%;
     z-index: -1;
     transition: width 0.2s ease-out;
@@ -79,22 +81,13 @@
   }
   @keyframes coolant_glow {
     0% {
-      box-shadow:
-      inset 0 0 50px #3ff,
-      inset 20px 0 160px #30f,
-      inset -20px 0 160px #0ff
+      background-size: 150%
     }
     50% {
-      box-shadow:
-      inset 0 0 30px #9ff,
-      inset 20px 0 160px #30f,
-      inset -20px 0 160px #0ff
+      background-size: 100%
     }
     100% {
-      box-shadow:
-      inset 0 0 50px #3ff,
-      inset 20px 0 160px #30f,
-      inset -20px 0 160px #0ff
+      background-size: 150%
     }
   }
 }
