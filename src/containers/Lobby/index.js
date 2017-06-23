@@ -5,7 +5,7 @@ import Config from '../Config';
 import Clients from './Clients';
 import Flights from './Flights';
 import DebugList from '../DebugList';
-import Core from '../Core';
+import Core from '../CoreLayout';
 import Assets from '../../components/views/AdminAssets'
 import Configs from '../../components/config'
 import IssueTracker from '../../components/admin/IssueTracker';
@@ -34,7 +34,7 @@ export default class Lobby extends Component {
     render() {
         const Comps = {Flights: Flights, Clients: Clients, TempSimConfig: TempSimulatorConfig, Config: Config, DebugList: DebugList, Core: Core, Assets: Assets};
         return (
-            <Container className="lobby">
+            <Container fluid className="lobby">
             <Row>
             <h2>Lobby</h2>
             <Nav tabs>
