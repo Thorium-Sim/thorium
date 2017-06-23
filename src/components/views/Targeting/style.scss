@@ -46,8 +46,9 @@
     }
     .coolant {
       animation: 2s ease-in-out 0s infinite coolant_glow;
-          transition: width 0.2s ease-out;
-      background-color: #038;
+      transition: width 0.2s ease-out;
+      background: radial-gradient(ellipse at center, #0061B1 0%,#2072C9 100%);
+      background-position: center;
     }
   }
 }
@@ -74,13 +75,17 @@
 }
 .targeting-core {
   img{
-    width: 28px;
-    height: 28px;
+    width: 16px;
+    height: 16px;
   }
   .pictureSelect {
     position: absolute;
-    width: 28px;
-    height: 28px;
+    width: 16px;
+    height: 16px;
     opacity: 0;
+  }
+  .input-group-btn button {
+    height: 16px;
+    line-height: 0px;
   }
 }

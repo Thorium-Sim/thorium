@@ -1642,9 +1642,7 @@
 			"target": false,
 			"strength": 0,
 			"stress": 0.15
-		}
-	],
-	"clients": [
+		},
 		{
 			"id": "ea8f37b6-f835-40c6-8dcb-a1422d11620a",
 			"simulatorId": "test",

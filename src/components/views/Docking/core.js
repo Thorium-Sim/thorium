@@ -38,7 +38,6 @@ class DockingCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          console.log(subscriptionData.data.simulatorsUpdate);
           const returnResult = Immutable.Map(previousResult);
           return returnResult.merge({ simulators: subscriptionData.data.simulatorsUpdate }).toJS();
         }

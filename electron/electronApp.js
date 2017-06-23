@@ -1,5 +1,4 @@
 process.env.APP_TYPE = 'electron';
-console.log(process.env.APP_TYPE);
 require('../server');
 require('./client-server');
 const {app, protocol, BrowserWindow, globalShortcut} = require('electron')
