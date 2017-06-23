@@ -27,6 +27,7 @@ subscription TargetingUpdate($simulatorId: ID){
       id
       class
       targeted
+      system
     }
     classes {
       id
@@ -163,6 +164,7 @@ class TargetingCore extends Component {
       contactClass = targetedContact.class;
       contactId = targetedContact.id;
     }
+    console.log(targetedContact);
     return <Container className="targeting-core">
     <p>Targeting</p>
     <Row>
@@ -181,29 +183,25 @@ class TargetingCore extends Component {
     </Col>
     </Row>
     <Row>
-    <Col sm={3}>Count</Col>
-    <Col sm={2}>Move</Col>
+    <Col sm={4}>Count</Col>
     <Col sm={1}>Icon</Col>
     <Col sm={1}>Pic</Col>
-    <Col sm={4}>Label</Col>
+    <Col sm={5}>Label</Col>
     <Col sm={1}></Col>
     </Row>
     {
       targeting.classes.map(t => {
         const contactCount = targeting.contacts.filter(c => c.class === t.id).length;
         return <Row key={t.id}>
-        <Col sm={3}>
+        <Col sm={4}>
         <InputGroup size="sm">
         <InputGroupButton><Button onClick={this._setTargetClassCount.bind(this, t.id, contactCount - 1)} color="secondary">-</Button></InputGroupButton>
         <InputField 
-        style={{lineHeight: '28px',height: '28px', width: '100%'}}
+        style={{lineHeight: '16px',height: '16px', width: '100%'}}
         prompt={'How many targets?'}
         onClick={this._setTargetClassCount.bind(this, t.id)}>{contactCount}</InputField>
         <InputGroupButton><Button onClick={this._setTargetClassCount.bind(this, t.id, contactCount + 1)} color="secondary">+</Button></InputGroupButton>
         </InputGroup>
-        </Col>
-        <Col sm={2}>
-        <Button color="primary" size="sm">On</Button>
         </Col>
         <Col sm={1}>
         <select className="pictureSelect" onChange={this._updateTargetClass.bind(this, t.id, 'icon')} value={t.icon}>
@@ -225,9 +223,9 @@ class TargetingCore extends Component {
         </select>
         <img src={t.pictureUrl} role="presentation" />
         </Col>
-        <Col sm={4}>
+        <Col sm={5}>
         <InputField 
-        style={{lineHeight: '28px',height: '28px', width: '100%'}}
+        style={{lineHeight: '16px',height: '16px', width: '100%'}}
         prompt={'New target label?'}
         alert={contactClass === t.id}
         onClick={this._updateTargetClass.bind(this, t.id, 'name')}>{t.name}</InputField>
@@ -264,6 +262,7 @@ query Targeting($simulatorId: ID, $names: [String]){
       id
       class
       targeted
+      system
     }
     classes {
       id

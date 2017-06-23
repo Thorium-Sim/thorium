@@ -1,12 +1,8 @@
 import React, {Component} from 'react';
-import { Container, Row, Col, Button } from 'reactstrap';
+import { Container } from 'reactstrap';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
-import assetPath from '../../../helpers/assets';
-import Beam from './beam';
-import Target from './target';
-import Bars from './bars';
 import './style.scss';
 
 const TRACTORBEAM_SUB = gql`

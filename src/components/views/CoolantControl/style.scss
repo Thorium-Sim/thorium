@@ -32,7 +32,7 @@
     width: 100%;
     bottom: 0;
     position: absolute;
-    background: radial-gradient(ellipse at center, #5ea0d6 0%,#207cca 100%);
+    background: radial-gradient(ellipse at center, #0061B1 0%,#2072C9 100%);
     background-position: center;
     transition: height 0.5s ease-out;
     animation: 2s ease-in-out 0s infinite coolant_glow;
@@ -54,7 +54,7 @@
     margin-top: 4px;
     position: absolute;
     animation: 2s ease-in-out 0s infinite coolant_glow;
-    background: radial-gradient(ellipse at center, #5ea0d6 0%,#207cca 100%);
+    background: radial-gradient(ellipse at center, #0061B1 0%,#2072C9 100%);
     background-position: center;
     height: 89%;
     z-index: -1;
@@ -84,7 +84,7 @@
       background-size: 150%
     }
     50% {
-      background-size: 100%
+      background-size: 75%
     }
     100% {
       background-size: 150%
