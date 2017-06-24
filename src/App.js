@@ -35,7 +35,7 @@ const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
   wsClient
   );
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
   networkInterface: networkInterfaceWithSubscriptions,
   queryTransformer: addTypenameToSelectionSet,
   dataIdFromObject: (result) => {
