@@ -8,7 +8,5 @@ describe('Core Layout', function() {
   it('should construct without params', function() {
     const layout = new this.System();
     expect(layout.class).to.equal('CoreLayout');
-    expect(layout.x).to.equal(0);
-    expect(layout.objectId).to.equal(null);
   });
 });
