@@ -12,7 +12,8 @@ import { client } from '../App';
 import './CoreLayout.scss';
 window.ReactDOM = ReactDOM;
 window.React = React;
-var config = JSON.stringify({
+
+/*var config = JSON.stringify({
   settings:{
     hasHeaders: true,
     constrainDragToContainer: true,
@@ -29,7 +30,7 @@ var config = JSON.stringify({
     type: 'row',
     content: []
   }]
-});
+});*/
 
 const CORE_SUB = gql`
 subscription CoreSub {
