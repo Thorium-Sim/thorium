@@ -22,3 +22,4 @@ import './stealthField';
 import './thrusters';
 import './coolant';
 import './tractorBeam';
+import './crew';

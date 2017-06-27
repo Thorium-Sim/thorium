@@ -22,3 +22,5 @@ export stealthField from './stealthField';
 export actions from './actions';
 export coolant from './coolant';
 export tractorBeam from './tractorBeam';
+
+export crew from './crew';
