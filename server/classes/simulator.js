@@ -1,4 +1,5 @@
 import uuid from 'uuid';
+import Team from './teams'
 import { TimelineObject } from './timeline';
 
 export default class Simulator extends TimelineObject {
@@ -11,11 +12,17 @@ export default class Simulator extends TimelineObject {
     this.template = params.template || false;
     this.class = 'Simulator';
     this.crewCount = params.crewCount || 50;
+    this.teams = [];
     this.ship = new Ship(params.ship)
+    // Set up the teams
+    if (params.teams) {
+      params.teams.forEach(t => this.teams.push(new Team(t)))
+    }
     // Initialize the simulator async
     if (params.launch) {
       setTimeout(() => { this.nextTimeline(); }, 100);
     }
+
   }
   rename(name) {
     this.name = name;

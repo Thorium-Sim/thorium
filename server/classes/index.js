@@ -26,3 +26,4 @@ export Coolant from './coolant';
 export TractorBeam from './tractorBeam';
 
 export Crew from './crew';
+export Teams from './teams';

@@ -3,9 +3,10 @@ import gql from 'graphql-tag';
 import {Table} from 'reactstrap';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
+import ReactDataGrid from 'react-data-grid';
 
 const INTERNAL_SUB = gql`
-query CrewUpdate($id: ID){
+subscription CrewUpdate($id: ID){
   crewUpdate(simulatorId: $id) {
     id
     firstName
@@ -17,9 +18,12 @@ query CrewUpdate($id: ID){
   }
 }`;
 
-class InternalComm extends Component {
+class CrewCore extends Component {
   constructor(props){
     super(props);
+    this.state = {
+      editable: false
+    }
     this.sub = null;
   }
   componentWillReceiveProps(nextProps) {
@@ -74,38 +78,75 @@ class InternalComm extends Component {
     }
     reader.readAsText(files[0]);
   }
+  _editable = (evt) => {
+    this.setState({
+      editable: evt.target.checked
+    })
+  }
+   rowGetter = (i) => {
+    const crew = this.props.data.crew || [];
+    return crew[i];
+  }
+  _updateCrew = (updateObj) => {
+    const variables = {
+      crew: {...updateObj.updated, id: updateObj.fromRowId}
+    }
+    const mutation = gql`
+    mutation UpdateCrew($crew: CrewInput){
+      updateCrewmember(crew: $crew)
+    }`;
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  }
   render(){
     if (this.props.data.loading) return null;
     const crew = this.props.data.crew || [];
+    const {editable} = this.state;
+    const columns = [{
+      key: 'firstName',
+      name: 'First',
+      editable
+    },
+    {
+      key: 'lastName',
+      name: 'Start Date',
+      editable
+    },
+    {
+      key: 'age',
+      name: 'Age',
+      editable
+    },
+    {
+      key: 'gender',
+      name: 'Sex',
+      editable
+    },
+    {
+      key: 'position',
+      name: 'Position',
+      editable
+    },
+    {
+      key: 'rank',
+      name: 'Rank',
+      editable
+    }]
+    
     return <div className="crew-core" style={{height: '100%', position: 'relative'}}>
+    <label> <input type="checkbox" onClick={this._editable} /> Editable</label>
     <input type="file" onChange={this._importCrew} />
     {crew.length > 0 && 
-      <Table style={{height: 'calc(100% - 24px)', overflow: 'scroll', display: 'block', position: 'relative'}}>
-      <thead>
-      <tr>
-      <th>First</th>
-      <th>Last</th>
-      <th>Age</th>
-      <th>Sex</th>
-      <th>Position</th>
-      <th>Rank</th>
-      </tr>
-      </thead>
-      <tbody>
-      {
-        crew.map(c => (
-          <tr key={c.id}>
-          <td>{c.firstName}</td>
-          <td>{c.lastName}</td>
-          <td>{c.age}</td>
-          <td>{c.gender}</td>
-          <td>{c.position}</td>
-          <td>{c.rank}</td>
-          </tr>
-          ))
-      }
-      </tbody>
-      </Table>
+      <ReactDataGrid
+      enableCellSelect={true}
+      columns={columns}
+      rowGetter={this.rowGetter}
+      rowsCount={crew.length}
+      minHeight={500}
+      enableDragAndDrop={false}
+      onGridRowsUpdated={this._updateCrew.bind(this)} />
     }
     </div>
   }
@@ -129,4 +170,4 @@ export default graphql(CREW_QUERY, {
       simulatorId: ownProps.simulator.id
     }
   })
-})(withApollo(InternalComm));
+})(withApollo(CrewCore));

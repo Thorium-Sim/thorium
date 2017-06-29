@@ -20,6 +20,7 @@ class Events extends EventEmitter {
     this.decks = [];
     this.rooms = [];
     this.crew = [];
+    this.teams = [];
     this.inventory = [];
     this.coreLayouts = [];
     this.assetFolders = [];

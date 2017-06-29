@@ -9,7 +9,8 @@ export const CrewQueries = {
     if (position) {
       // Special considerations for the security and damage
       if (position === 'security') {
-
+        const regex = /security/gi;
+        returnVal = returnVal.filter(c => regex.test(c.position));
       } else if (position === 'damage') {
         const damagePositions = [
         "Computer Specialist",

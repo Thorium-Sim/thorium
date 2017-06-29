@@ -23,3 +23,4 @@ import './thrusters';
 import './coolant';
 import './tractorBeam';
 import './crew';
+import './teams';
