@@ -78,3 +78,11 @@ export const CrewSubscriptions = {
     return returnVal;
   }
 };
+
+export const CrewTypes = {
+  Crew: {
+    name(crew) {
+      return crew.firstName + ' ' + crew.lastName;
+    }
+  }
+}

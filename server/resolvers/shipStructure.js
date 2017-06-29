@@ -165,6 +165,11 @@ export const ShipStructureTypes = {
         count: inventory.roomCount[r]
       }))
     }
-  }
+  },
+  Location: {
+    __resolveType(obj, context, info) {
+      return obj.type || null;
+    }
+  },
 };
 

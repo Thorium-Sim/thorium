@@ -2,5 +2,23 @@
   .card {
     max-height: 60vh;
     overflow: scroll;
+    p {
+      cursor: pointer;
+      margin: 0;
+      padding: 5px;
+      border-radius: 5px;
+      &:active {
+        background-color: rgba(255,255,255,0.4);
+      }
+      &.selected {
+        background-color: rgba(255,255,255,0.2);
+      }
+    }
+  }
+  .officers {
+    .card {
+      max-height: 25vh;
+      overflow: scroll;
+    }
   }
 }

@@ -13,9 +13,9 @@ export default class Team {
     this.officers = params.officers || [];
   }
   update({name, location, orders}) {
-    if (name) this.name = name;
+    if (name || name === '') this.name = name;
     if (location) this.location = location;
-    if (orders) this.orders = orders;
+    if (orders || orders === '') this.orders = orders;
   }
   addOfficer(officerId) {
     this.officers.push(officerId);

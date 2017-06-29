@@ -69,7 +69,6 @@ const Views = {
   ShieldControl,
   Transporters,
   SecurityDecks,
-  SecurityTeams,
   SecurityScans,
   CommDecoding,
   Offline,

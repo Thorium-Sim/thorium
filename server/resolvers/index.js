@@ -25,7 +25,7 @@ import {ActionsQueries, ActionsMutations, ActionsSubscriptions} from './actions'
 import { CoolantQueries, CoolantMutations, CoolantSubscriptions } from './coolant'
 import { TractorBeamQueries, TractorBeamMutations, TractorBeamSubscriptions } from './tractorBeam';
 
-import { CrewQueries, CrewMutations, CrewSubscriptions } from './crew';
+import { CrewQueries, CrewMutations, CrewSubscriptions, CrewTypes } from './crew';
 import { TeamsQueries, TeamsMutations, TeamsSubscriptions } from './teams';
 
 import App from '../../app';
@@ -165,5 +165,6 @@ function parseJSONLiteral(ast) {
   ShipStructureTypes,
   SystemsTypes,
   TargetingTypes,
-  ProbesTypes
+  ProbesTypes,
+  CrewTypes
   );

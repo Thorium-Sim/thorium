@@ -39,3 +39,18 @@ export const TeamsSubscriptions = {
     return returnVal;
   }
 };
+
+export const TeamsTypes = {
+  Teams: {
+    location(team) {
+      const deck = App.decks.find(d => d.id === team.location);
+      if (deck) {
+        return deck;
+      }
+      return App.rooms.find(r => r.id === team.location);
+    },
+    officers(team) {
+      return team.officers.map(t => App.crew.find(c => c.id === t));
+    }
+  }
+}

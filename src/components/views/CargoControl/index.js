@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
-import {Container, Row, Col, Input, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Card, CardBlock} from 'reactstrap';
-
+import {Container, Row, Col, Input, Card, CardBlock} from 'reactstrap';
+import {DeckDropdown, RoomDropdown} from '../helpers/shipStructure';
 import './style.scss';
 
 const INVENTORY_SUB = gql`
@@ -229,38 +229,6 @@ class CargoControl extends Component {
   }
 }
 
-const DeckDropdown = ({selectedDeck, decks, setSelected}) => {
-  return <UncontrolledDropdown>
-  <DropdownToggle block caret>
-  {selectedDeck ? `Deck ${decks.find(d => d.id === selectedDeck).number}` : 'Select Deck'}
-  </DropdownToggle>
-  <DropdownMenu>
-  {
-    decks.map(d => <DropdownItem key={d.id} onClick={() => {
-      setSelected({deck: d.id, room: null})
-    }}>{`Deck ${d.number}`}</DropdownItem>)
-  }
-  </DropdownMenu>
-  </UncontrolledDropdown>
-}
-
-const RoomDropdown = ({selectedDeck, otherSelected, selectedRoom, decks, setSelected}) => {
-  return <UncontrolledDropdown>
-  <DropdownToggle block caret>
-  {selectedRoom ? decks.find(d => d.id === selectedDeck).rooms.find(r => r.id === selectedRoom).name : 'Select Room'}
-  </DropdownToggle>
-  { selectedDeck && 
-    <DropdownMenu>
-    <DropdownItem header>Deck {decks.find(d => d.id === selectedDeck).number}</DropdownItem>
-    {
-      decks.find(d => d.id === selectedDeck).rooms.map(r => <DropdownItem key={r.id} disabled={r.id === otherSelected} onClick={() => {
-        setSelected({room: r.id})
-      }}>{r.name}</DropdownItem>)
-    }
-    </DropdownMenu>
-  }
-  </UncontrolledDropdown>
-}
 const INVENTORY_QUERY = gql`
 query InventoryQ($simulatorId: ID!) {
   decks(simulatorId: $simulatorId) {

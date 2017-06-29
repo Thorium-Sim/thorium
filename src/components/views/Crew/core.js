@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import gql from 'graphql-tag';
-import {Table} from 'reactstrap';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
 import ReactDataGrid from 'react-data-grid';
@@ -153,8 +152,8 @@ class CrewCore extends Component {
 }
 
 const CREW_QUERY = gql`
-query Crew($id: ID){
-  crew(simulatorId: $id) {
+query Crew($simulatorId: ID){
+  crew(simulatorId: $simulatorId) {
     id
     firstName
     lastName
