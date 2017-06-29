@@ -9,7 +9,6 @@ import ShieldControl from './ShieldControl';
 import Transporters from './Transporters';
 import Login from './Login';
 import SecurityDecks from './SecurityDecks';
-import SecurityTeams from './SecurityTeams';
 import SecurityScans from './SecurityScans';
 import CommDecoding from './CommDecoding';
 import Offline from './Offline';
@@ -26,6 +25,8 @@ import StealthField from './StealthField';
 import CargoControl from './CargoControl';
 import CoolantControl from './CoolantControl';
 import TractorBeam from './TractorBeam';
+
+import SecurityTeams from './SecurityTeams';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -84,7 +85,8 @@ const Views = {
   StealthField,
   CargoControl,
   CoolantControl,
-  TractorBeam
+  TractorBeam,
+  SecurityTeams
 };
 
 export const Widgets = {

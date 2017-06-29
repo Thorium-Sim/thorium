@@ -6,7 +6,7 @@ export default class Team {
     this.class = 'Team';
     this.simulatorId = params.simulatorId || null;
     this.type = params.type || 'generic'
-    this.name = params.name || this.type.toUpperCase() + ' Team';
+    this.name = params.name || `New ${this.type.substr(0,1).toUpperCase() + this.type.substr(1).toLowerCase()} Team`;
     // Location is either a deckID or a roomID
     this.location = params.location || null;
     this.orders = params.orders || '';
