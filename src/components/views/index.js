@@ -27,6 +27,7 @@ import CoolantControl from './CoolantControl';
 import TractorBeam from './TractorBeam';
 
 import SecurityTeams from './SecurityTeams';
+import DamageTeams from './DamageTeams';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -53,6 +54,7 @@ import ThrusterCore from './Thrusters/core';
 import TractorBeamCore from './TractorBeam/core';
 import CrewCore from './Crew/core';
 import SecurityTeamsCore from './SecurityTeams/core';
+import DamageTeamsCore from './DamageTeams/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -86,7 +88,8 @@ const Views = {
   CargoControl,
   CoolantControl,
   TractorBeam,
-  SecurityTeams
+  SecurityTeams,
+  DamageTeams
 };
 
 export const Widgets = {
@@ -120,7 +123,8 @@ export const Cores = {
   ThrusterCore,
   TractorBeamCore,
   CrewCore,
-  SecurityTeamsCore
+  SecurityTeamsCore,
+  DamageTeamsCore
 };
 
 export default Views;
