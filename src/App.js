@@ -6,6 +6,7 @@ import { addTypenameToSelectionSet } from 'apollo-client/queries/queryTransform'
 import { ApolloProvider } from 'react-apollo';
 import createNetworkInterface from 'apollo-upload-network-interface';
 import App from './containers/App';
+import fragmentMatcher from './helpers/fragmentMatcher';
 import './app.scss';
 
 const hostname = window.location.hostname;
@@ -38,6 +39,7 @@ const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
 export const client = new ApolloClient({
   networkInterface: networkInterfaceWithSubscriptions,
   queryTransformer: addTypenameToSelectionSet,
+  fragmentMatcher,
   dataIdFromObject: (result) => {
     if (result.id && result.__typename) {
       return result.__typename + result.id;

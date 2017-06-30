@@ -52,6 +52,7 @@ import ActionsCore from './Actions/core';
 import ThrusterCore from './Thrusters/core';
 import TractorBeamCore from './TractorBeam/core';
 import CrewCore from './Crew/core';
+import SecurityTeamsCore from './SecurityTeams/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -118,7 +119,8 @@ export const Cores = {
   ActionsCore,
   ThrusterCore,
   TractorBeamCore,
-  CrewCore
+  CrewCore,
+  SecurityTeamsCore
 };
 
 export default Views;

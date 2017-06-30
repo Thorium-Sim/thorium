@@ -168,7 +168,7 @@ export const ShipStructureTypes = {
   },
   Location: {
     __resolveType(obj, context, info) {
-      return obj.type || null;
+      return obj.class || null;
     }
   },
 };

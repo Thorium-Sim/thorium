@@ -30,6 +30,7 @@ subscription SecurityTeamsUpdate($simulatorId: ID) {
         id
         name
         deck {
+          id
           number
         }
       }
@@ -108,10 +109,58 @@ class SecurityTeams extends Component {
       variables
     });
   }
+  assignOfficer = ({id}, teamId) => {
+    const mutation = gql`
+    mutation AddOfficer($teamId: ID!, $crewId: ID!){
+      addCrewToTeam(teamId: $teamId, crewId: $crewId)
+    }`;
+    const variables = {
+      teamId,
+      crewId: id
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
+  }
+  removeOfficer = ({id}, teamId) => {
+    const mutation = gql`
+    mutation removeOfficer($teamId: ID!, $crewId: ID!){
+      removeCrewFromTeam(teamId: $teamId, crewId: $crewId)
+    }`;
+    const variables = {
+      teamId,
+      crewId: id
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
+  }
+  removeTeam = (teamId) => {
+    this.setState({
+      selectedTeam: null
+    }, () => {
+      const mutation = gql`
+      mutation RemoveTeam($teamId: ID!){
+        removeTeam(teamId: $teamId)
+      }`;
+      const variables = {
+        teamId,
+      };
+      this.props.client.mutate({
+        mutation,
+        variables
+      })
+    })
+  }
   render(){
     if (this.props.data.loading) return null;
     const {teams, crew, decks} = this.props.data;
     const {selectedTeam} = this.state;
+    const assignedOfficers = teams.reduce((prev, next) => {
+      return prev.concat(next.officers);
+    },[]).map(o => o.id);
     if (crew.length === 0) return <p>Need crew for teams</p>
       return <Container fluid className="security-teams">
     <Row>
@@ -132,8 +181,16 @@ class SecurityTeams extends Component {
     {(() => {
       if (!selectedTeam) return null;
       const team = teams.find(t => t.id === selectedTeam);
+      let deck = {}, room = {};
+      if (team.location) {
+        deck = decks.find(d => d.id === team.location.id);
+        if (!deck) {
+          room = team.location;
+          deck = room.deck;
+        }
+      }
       return <Row>
-      <Col sm={5}>
+      <Col xl={5} lg={6}>
       <FormGroup row>
       <Label for="teamName" size="lg">Name</Label>
       <Input onChange={(evt) => this.updateSecurityTeam({id: team.id, key: "name", value: evt.target.value})} type="text" id="teamName" placeholder="New Security Team" size="lg" value={team.name} />
@@ -142,47 +199,49 @@ class SecurityTeams extends Component {
       <Label for="teamOrders" size="lg">Orders</Label>
       <Input onChange={(evt) => this.updateSecurityTeam({id: team.id, key: "orders", value: evt.target.value})} type="textarea" id="teamOrders" placeholder="" size="lg" value={team.orders} />
       </FormGroup>
-      <FormGroup row>
+      <FormGroup className="location-label" row>
       <Label size="lg">Location</Label>
       </FormGroup>
       <Row>
       <Col sm={5}>
       <DeckDropdown 
-      selectedDeck={null}
+      selectedDeck={deck.id}
       decks={decks}
-      setSelected={() => {}}/>
+      setSelected={(a) => this.updateSecurityTeam({id: team.id, key: "location", value: a.deck})}/>
       </Col>
       <Col sm={7}>
       <RoomDropdown
-      selectedDeck={null}
-      selectedRoom={null}
+      selectedDeck={deck.id}
+      selectedRoom={room.id}
       decks={decks}
-      setSelected={() => {}} />
+      setSelected={(a) => this.updateSecurityTeam({id: team.id, key: "location", value: a.room})} />
       </Col>
       </Row>
+      <Button block size="lg" color="danger" className="recall-button" onClick={() => {this.removeTeam(team.id)}}>Recall Security Team</Button>
       </Col>
-      <Col sm={{size: 5, offset: 2}} className="officers">
+      <Col xl={{size: 5, offset: 2}} lg={{size: 6}} className="officers">
       <Label for="teamName" size="lg">Available Officers</Label>
       <Card>
       <CardBlock>
-      {crew.map(c => <p key={c.id}>{c.name}</p>)}
-      </CardBlock>
-      </Card>
-      <Label for="teamName" size="lg">Assigned Officers</Label>
-      <Card>
-      <CardBlock>
-      {team.officers.map(c => <p key={c.id}>{c.name}</p>)}
-      </CardBlock>
-      </Card>
-      </Col>
-      </Row>
-    })()
+      {crew.filter(c => assignedOfficers.indexOf(c.id) === -1)
+        .map(c => <p key={c.id} onClick={() => {this.assignOfficer(c, team.id)}} >{c.name}</p>)}
+        </CardBlock>
+        </Card>
+        <Label for="teamName" size="lg">Assigned Officers</Label>
+        <Card>
+        <CardBlock>
+        {team.officers.map(c => <p key={c.id} onClick={() => {this.removeOfficer(c, team.id)}} >{c.name}</p>)}
+        </CardBlock>
+        </Card>
+        </Col>
+        </Row>
+      })()
 
+    }
+    </Col>
+    </Row>
+    </Container>
   }
-  </Col>
-  </Row>
-  </Container>
-}
 }
 
 const SECURITY_QUERY = gql`
@@ -204,6 +263,7 @@ query SecurityTeams($simulatorId: ID, $simId: ID!) {
         id
         name
         deck {
+          id
           number
         }
       }
