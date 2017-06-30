@@ -101,6 +101,7 @@
     "react-addons-css-transition-group": "^15.4.2",
     "react-addons-transition-group": "^15.4.2",
     "react-apollo": "^1.2.0",
+    "react-data-grid": "^2.0.49",
     "react-dom": "^15.4.2",
     "react-fontawesome": "^1.5.0",
     "react-grid-layout": "^0.14.6",

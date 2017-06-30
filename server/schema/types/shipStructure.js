@@ -21,6 +21,8 @@ type Room {
   metadata: RoomMetadata
 }
 
+union Location = Deck | Room
+
 type InventoryItem {
   id: ID
   simulatorId: ID

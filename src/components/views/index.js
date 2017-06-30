@@ -9,7 +9,6 @@ import ShieldControl from './ShieldControl';
 import Transporters from './Transporters';
 import Login from './Login';
 import SecurityDecks from './SecurityDecks';
-import SecurityTeams from './SecurityTeams';
 import SecurityScans from './SecurityScans';
 import CommDecoding from './CommDecoding';
 import Offline from './Offline';
@@ -26,6 +25,8 @@ import StealthField from './StealthField';
 import CargoControl from './CargoControl';
 import CoolantControl from './CoolantControl';
 import TractorBeam from './TractorBeam';
+
+import SecurityTeams from './SecurityTeams';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -50,6 +51,8 @@ import CargoCore from './CargoControl/core';
 import ActionsCore from './Actions/core';
 import ThrusterCore from './Thrusters/core';
 import TractorBeamCore from './TractorBeam/core';
+import CrewCore from './Crew/core';
+import SecurityTeamsCore from './SecurityTeams/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -67,7 +70,6 @@ const Views = {
   ShieldControl,
   Transporters,
   SecurityDecks,
-  SecurityTeams,
   SecurityScans,
   CommDecoding,
   Offline,
@@ -83,7 +85,8 @@ const Views = {
   StealthField,
   CargoControl,
   CoolantControl,
-  TractorBeam
+  TractorBeam,
+  SecurityTeams
 };
 
 export const Widgets = {
@@ -115,7 +118,9 @@ export const Cores = {
   CargoCore,
   ActionsCore,
   ThrusterCore,
-  TractorBeamCore
+  TractorBeamCore,
+  CrewCore,
+  SecurityTeamsCore
 };
 
 export default Views;

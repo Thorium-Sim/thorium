@@ -20,6 +20,7 @@ class Events extends EventEmitter {
     this.decks = [];
     this.rooms = [];
     this.crew = [];
+    this.teams = [];
     this.inventory = [];
     this.coreLayouts = [];
     this.assetFolders = [];
@@ -106,7 +107,11 @@ class Events extends EventEmitter {
     }
   }
   test(param) {
-    console.log(util.inspect(this, false, null));
+    if (param.key) {
+      console.log(util.inspect(this[param.key], false, null));
+    } else {
+      console.log(util.inspect(this, false, null));
+    }
     //this.handleEvent(param, 'test', 'tested');
   }
 }

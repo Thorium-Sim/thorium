@@ -27,6 +27,9 @@ export stealthField from './stealthField';
 export actions from './actions';
 export tractorBeam from './tractorBeam';
 
+export crew from './crew';
+export teams from './teams';
+
 export const role = `
 type role {
   id: ID
