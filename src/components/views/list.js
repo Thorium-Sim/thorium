@@ -26,7 +26,8 @@ const viewList = [
 "StealthField",
 "CargoControl",
 "CoolantControl",
-"TractorBeam"
+"TractorBeam",
+"DamageTeams"
 ];
 
 export default viewList;

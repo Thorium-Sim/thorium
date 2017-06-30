@@ -8,15 +8,15 @@ import './style.scss';
 
 const CREW_SUB = gql`
 subscription CrewUpdate($simulatorId: ID) {
-  crewUpdate(simulatorId: $simulatorId, position: "security") {
+  crewUpdate(simulatorId: $simulatorId, position: "damage") {
     id
     name
   }
 }`;
 
-const SECURITY_SUB = gql`
-subscription SecurityTeamsUpdate($simulatorId: ID) {
-  teamsUpdate(simulatorId: $simulatorId, type: "security") {
+const DAMAGE_SUB = gql`
+subscription DamageTeamsUpdate($simulatorId: ID) {
+  teamsUpdate(simulatorId: $simulatorId, type: "damage") {
     id
     name
     orders
@@ -42,7 +42,7 @@ subscription SecurityTeamsUpdate($simulatorId: ID) {
 }
 `;
 
-class SecurityTeams extends Component {
+class DamageTeams extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -54,7 +54,7 @@ class SecurityTeams extends Component {
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
       this.subscription = nextProps.data.subscribeToMore({
-        document: SECURITY_SUB,
+        document: DAMAGE_SUB,
         variables: {
           simulatorId: nextProps.simulator.id
         },
@@ -82,7 +82,7 @@ class SecurityTeams extends Component {
     const {teams, crew, decks} = this.props.data;
     const {selectedTeam} = this.state;
     if (crew.length === 0) return <p>Need crew for teams</p>
-      return <Container fluid className="security-teams-core">
+      return <Container fluid className="damage-teams-core">
     <Row>
     <Col sm={6} className="scroller">
     {teams.map(t => <p 
@@ -131,13 +131,13 @@ class SecurityTeams extends Component {
 }
 }
 
-const SECURITY_QUERY = gql`
-query SecurityTeams($simulatorId: ID, $simId: ID!) {
-  crew(simulatorId: $simulatorId, position: "security") {
+const DAMAGE_QUERY = gql`
+query DamageTeams($simulatorId: ID, $simId: ID!) {
+  crew(simulatorId: $simulatorId, position: "damage") {
     id
     name
   }
-  teams(simulatorId: $simulatorId, type: "security") {
+  teams(simulatorId: $simulatorId, type: "damage") {
     id
     name
     orders
@@ -170,11 +170,11 @@ query SecurityTeams($simulatorId: ID, $simId: ID!) {
   }
 }
 `;
-export default graphql(SECURITY_QUERY, {
+export default graphql(DAMAGE_QUERY, {
   options: (ownProps) => ({
     variables: {
       simulatorId: ownProps.simulator.id,
       simId: ownProps.simulator.id
     }
   })
-})(withApollo(SecurityTeams));
+})(withApollo(DamageTeams));

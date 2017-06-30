@@ -25,19 +25,19 @@ $color: $alert5;
     &:active,
     &.active,
     .open>.dropdown-toggle {
-        background: linear-gradient(to bottom, saturate(darken($background, 10%), 5%) 0%, saturate(darken($background, 5%), 5%) 50%, saturate(darken($background, 10%), 5%) 100%);
-        border-color: darken($background, 12%);
+        background: linear-gradient(to bottom, saturate(lighten($background, 10%), 5%) 0%, saturate(lighten($background, 5%), 5%) 50%, saturate(lighten($background, 10%), 5%) 100%);
+        border-color: lighten($background, 12%);
         &:hover,
         &:focus,
         &.focus {
-            background: linear-gradient(to bottom, saturate(darken($background, 17%), 5%) 0%, saturate(darken($background, 9%), 5%) 50%, saturate(darken($background, 17%), 5%) 100%);
-            border-color: darken($background, 25%);
+            //background: linear-gradient(to bottom, saturate(darken($background, 17%), 5%) 0%, saturate(darken($background, 9%), 5%) 50%, saturate(darken($background, 17%), 5%) 100%);
+            //border-color: lighten($background, 25%);
         }
     }
     &:active,
     &.active,
     .open>.dropdown-toggle {
-        background-image: none;
+        //background-image: none;
     }
     &.disabled,
     &[disabled],

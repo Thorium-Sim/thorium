@@ -1,0 +1,79 @@
+.damage-teams {
+  .card {
+    max-height: 60vh;
+    overflow: scroll;
+    p {
+      cursor: pointer;
+      margin: 0;
+      padding: 5px;
+      border-radius: 5px;
+      &:active {
+        background-color: rgba(255,255,255,0.4);
+      }
+      &.selected {
+        background-color: rgba(255,255,255,0.2);
+      }
+    }
+  }
+  .officers {
+    .card {
+      height: 25vh;
+      overflow: scroll;
+      .officer {
+        border-radius: 5px;
+        padding: 5px;
+        &:active {
+          background-color: rgba(255,255,255,0.4);
+        }
+        &.selected {
+          background-color: rgba(255,255,255,0.2);
+        }
+      }
+      p {
+        padding: 0;
+        &:active {
+          background-color: transparent;
+        }
+        &.selected {
+          background-color: transparent;
+        }
+      }
+      small {
+       display: block;
+       margin-top: -5px;
+     }
+   }
+ }
+ .location-label, .location-label label  {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.row .recall-button {
+  margin-top: 50px;
+}
+.form-control-lg {
+  font-size: 14px;
+}
+}
+.damage-teams-core {
+  height: 100%;
+  .row {
+    height: 100%;
+  }
+  label {
+    display: block;
+    margin: 0;
+    font-weight: 800;
+  }
+  .scroller {
+    max-height: 100%;
+    overflow: scroll;
+  }
+  .label-section {
+    margin-bottom: 5px;
+  }
+  p {
+    margin: 0;
+    margin-bottom: 5px;
+  }
+}
