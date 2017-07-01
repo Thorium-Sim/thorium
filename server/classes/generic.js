@@ -160,3 +160,50 @@ function splice(str, start, delCount, newSubStr) {
   return str.slice(0, start) + newSubStr + str.slice(start + Math.abs(delCount));
 }
 
+function processReport(report) {
+  if (!report) return;
+  let returnReport = report;
+  // #PART
+  const partMatches = report.match(/#PART/ig) || [];
+  partMatches.forEach(m => {
+    const index = returnReport.indexOf(m);
+    returnReport = returnReport.replace(m, '');
+    const part = randomFromList(partsList);
+    returnReport = splice(returnReport, index, 0, part);
+  });
+  
+  // #COLOR
+  const colorMatches = report.match(/#COLOR/ig) || [];
+  colorMatches.forEach(m => {
+    const index = returnReport.indexOf(m);
+    returnReport = returnReport.replace(m, '');
+    returnReport = splice(returnReport, index, 0, randomFromList(['red','blue','green','yellow']));
+  });
+
+  // #[1 - 2]
+  const matches = returnReport.match(/#\[ ?([0-9]+) ?- ?([0-9]+) ?\]/ig) || [];
+  matches.forEach(m => {
+    const index = returnReport.indexOf(m);
+    returnReport = returnReport.replace(m, '');
+    const numbers = m.replace(/[ [\]#]/gi, '').split('-');
+    const num = Math.round(Math.random() * numbers[1] + numbers[0]);
+    returnReport = splice(returnReport, index, 0, num);
+  })  
+
+  // #["String1", "String2", "String3", etc.]
+  const stringMatches = returnReport.match(/#\[ ?("|')[^\]]*("|') ?]/ig) || [];
+  stringMatches.forEach(m => {
+    const index = returnReport.indexOf(m);
+    returnReport = returnReport.replace(m, '');
+    const strings = m.match(/"(.*?)"/gi);
+    returnReport = splice(returnReport, index, 0, randomFromList(strings).replace(/"/gi, ""));
+  })
+  
+  // #REACTIVATIONCODE
+  if (report.indexOf('#REACTIVATIONCODE') > -1) {
+    const reactivationCode = Array(8).fill('').map(_ => randomFromList(['¥','Ω','∏','-','§','∆','£','∑','∂'])).join('');
+    returnReport = returnReport.replace(/#REACTIVATIONCODE/ig, reactivationCode);
+  }
+
+  return returnReport;
+}
