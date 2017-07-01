@@ -51,11 +51,11 @@ export class System {
     // TODO: Generate the damage report if
     // The report is null or blank.
     this.damage.damaged = true;
-    this.damage.report = report;
+    this.damage.report = processReport(report);
     this.damage.requested = false;
   }
   damageReport(report) {
-    this.damage.report = report;
+    this.damage.report = processReport(report);
     this.damage.requested = false;
   }
   repair() {
@@ -66,4 +66,90 @@ export class System {
   requestReport() {
     this.damage.requested = true;
   }
+}
+
+const partsList = [
+"Field Generator",
+"Isolinear Rods",
+"Eps Step-down Conduit",
+"Fuel Regulator",
+"Field Emitter",
+"Sensor Pallet",
+"EPS Power Node",
+"Isolinear Chips",
+"Network Adapter",
+"Fusion Generator",
+"Magnetic Coil",
+"Analog Buffer",
+"Coaxial Servo",
+"CASM Generator",
+"Computer Interface",
+"Digital Sequence Encoder",
+"Fiberoptic Wire Linkage",
+"Fusion Welder",
+"Holographic Servo Display",
+"IDC Power Cable",
+"Integrated Fluid Sensor",
+"Magnetic Bolt Fastener",
+"Power Coupling",
+"Power Splitter",
+"Prefire Chamber",
+"Residual Power Store",
+"Subspace Transceiver",
+]
+
+function randomFromList(list) {
+  const length = list.length;
+  const index = Math.floor(Math.random() * length);
+  return list[index];
+}
+function splice(str, start, delCount, newSubStr) {
+  return str.slice(0, start) + newSubStr + str.slice(start + Math.abs(delCount));
+}
+function processReport(report) {
+  let returnReport = report;
+  // #PART
+  const partMatches = report.match(/#PART/ig);
+  partMatches.forEach(m => {
+    const index = returnReport.indexOf(m);
+    returnReport = returnReport.replace(m, '');
+    const part = randomFromList(partsList);
+    returnReport = splice(returnReport, index, 0, part);
+  });
+  
+  // #COLOR
+  const colorMatches = report.match(/#COLOR/ig);
+  colorMatches.forEach(m => {
+    const index = returnReport.indexOf(m);
+    returnReport = returnReport.replace(m, '');
+    returnReport = splice(returnReport, index, 0, randomFromList(['red','blue','green','yellow']));
+  });
+
+  // #[1 - 10]
+  const regex = /#\[ ?([0-9]+) ?- ?([0-9]+) ?\]/ig;
+  const matches = returnReport.match(regex);
+  matches.forEach(m => {
+    const index = returnReport.indexOf(m);
+    returnReport = returnReport.replace(m, '');
+    const numbers = m.replace(/[ [\]#]/gi, '').split('-');
+    const num = Math.round(Math.random() * numbers[1] + numbers[0]);
+    returnReport = splice(returnReport, index, 0, num);
+  })  
+
+  // #["String1", "String2", "String3", etc.]
+  const stringMatches = returnReport.match(/#\[ ?("|')[^\]]*("|') ?]/ig);
+  stringMatches.forEach(m => {
+    const index = returnReport.indexOf(m);
+    returnReport = returnReport.replace(m, '');
+    const strings = m.replace(/[ [\]#"']/gi, '').replace(',', '#').split('#');
+    returnReport = splice(returnReport, index, 0, randomFromList(strings));
+  })
+  
+  // #REACTIVATIONCODE
+  if (report.indexOf('#REACTIVATIONCODE') > -1) {
+    const reactivationCode = Array(8).fill('').map(_ => randomFromList(['¥','Ω','∏','-','§','∆','£','∑','∂'])).join('');
+    returnReport = returnReport.replace(/#REACTIVATIONCODE/ig, reactivationCode);
+  }
+
+  return returnReport;
 }
