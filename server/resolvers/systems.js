@@ -35,6 +35,12 @@ export const SystemsMutations = {
   requestDamageReport(rootValue, params, context) {
     App.handleEvent(params, 'requestDamageReport', context.clientId);
   },
+  systemReactivationCode(rootValue, params, context) {
+    App.handleEvent(params, 'systemReactivationCode', context.clientId);
+  },
+  systemReactivationCodeResponse(rootValue, params, context) {
+    App.handleEvent(params, 'systemReactivationCodeResponse', context.clientId);
+  },
   changePower(rootValue, params, context) {
     App.handleEvent(params, 'changePower', context.clientId);
   }

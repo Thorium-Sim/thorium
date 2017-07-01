@@ -1,4 +1,5 @@
 import App from '../../app.js';
+import uuid from 'uuid';
 import { pubsub } from '../helpers/subscriptionManager';
 import * as Classes from '../classes';
 
@@ -9,7 +10,7 @@ const sendUpdate = (sys) => {
   if (sys.type === 'Sensors') pubsub.publish('sensorsUpdate', App.systems.filter(s => s.type === 'Sensors'));
   if (sys.type === 'LongRangeComm') pubsub.publish('longRangeCommunicationsUpdate', App.systems.filter(s => s.type === 'LRCommunications'));
   if (sys.type === 'InternalComm') pubsub.publish('internalCommUpdate', App.systems.filter(s => s.type === 'InternalComm'))
-  if (sys.type === 'Naivgation')   pubsub.publish('navigationUpdate', App.systems.filter(s => s.type === 'Navigation'));
+  if (sys.type === 'Navigation')   pubsub.publish('navigationUpdate', App.systems.filter(s => s.type === 'Navigation'));
   if (sys.type === 'ShortRangeComm')   pubsub.publish('shortRangeCommUpdate', App.systems.filter(s => s.type === 'ShortRangeComm'));
   if (sys.type === 'TractorBeam')   pubsub.publish('tractorBeamUpdate', App.systems.filter(s => s.type === 'TractorBeam'));
   pubsub.publish('systemsUpdate', App.systems);
@@ -51,6 +52,16 @@ App.on('requestDamageReport', ({systemId}) => {
   sys.requestReport();
   sendUpdate(sys);
 });
+App.on('systemReactivationCode', ({systemId, code}) => {
+  const sys = App.systems.find(s => s.id === systemId);
+  sys.checkReactivationCode(code);
+  sendUpdate(sys);
+})
+App.on('systemReactivationCodeResponse', ({systemId, response}) => {
+  const sys = App.systems.find(s => s.id === systemId);
+  sys.setReactivationCodeResponse(response);
+  sendUpdate(sys);
+})
 App.on('setCoolant', ({systemId, coolant}) => {
   const sys = App.systems.find(s => s.id === systemId);
   if (sys.setCoolant) sys.setCoolant(coolant);
