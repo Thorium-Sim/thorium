@@ -125,7 +125,7 @@ function processReport(report) {
     returnReport = splice(returnReport, index, 0, randomFromList(['red','blue','green','yellow']));
   });
 
-  // #[1 - 10]
+  // #[1 - 2]
   const regex = /#\[ ?([0-9]+) ?- ?([0-9]+) ?\]/ig;
   const matches = returnReport.match(regex);
   matches.forEach(m => {
@@ -137,12 +137,12 @@ function processReport(report) {
   })  
 
   // #["String1", "String2", "String3", etc.]
-  const stringMatches = returnReport.match(/#\[ ?("|')[^\]]*("|') ?]/ig);
+    const stringMatches = returnReport.match(/#\[ ?("|')[^\]]*("|') ?]/ig);
   stringMatches.forEach(m => {
     const index = returnReport.indexOf(m);
     returnReport = returnReport.replace(m, '');
-    const strings = m.replace(/[ [\]#"']/gi, '').replace(',', '#').split('#');
-    returnReport = splice(returnReport, index, 0, randomFromList(strings));
+    const strings = m.match(/"(.*?)"/gi);
+    returnReport = splice(returnReport, index, 0, randomFromList(strings).replace(/"/gi, ""));
   })
   
   // #REACTIVATIONCODE
