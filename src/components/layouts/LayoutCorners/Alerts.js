@@ -30,7 +30,7 @@ subscription Notifications($simulatorId: ID!, $station: String){
     constructor(props){
       super(props);
       this.state = {
-        alerts: []
+        alerts: [],
       }
       const self = this;
       this.subscription = this.props.client.subscribe({
@@ -53,6 +53,17 @@ subscription Notifications($simulatorId: ID!, $station: String){
         error(err) { console.error('err', err); },
       });
 
+    }
+    trigger({title, body, color, duration, id}) {
+      const alerts = this.state.alerts;
+      alerts.push(Object.assign({title, body, color}, {visible:true}));
+      this.setState({
+        alerts
+      })
+      const timeoutDuration = duration ? duration : 5000
+      setTimeout(() => {
+        this.onDismiss(id);
+      }, timeoutDuration)
     }
     onDismiss(id){
       const alerts = this.state.alerts;

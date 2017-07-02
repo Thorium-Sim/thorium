@@ -15,6 +15,8 @@ subscription DamagedSystemsUpdate($simulatorId: ID){
       damaged
       report
       requested
+      reactivationCode
+      neededReactivationCode
     }
     simulatorId
     type
@@ -101,21 +103,36 @@ class DamageReportCore extends Component {
       variables
     });
   }
+  reactivationCodeResponse = (response) => {
+    const mutation = gql`
+    mutation ReactivationCodeResponse($systemId: ID!, $response: Boolean!) {
+      systemReactivationCodeResponse(systemId: $systemId, response: $response)
+    }`;
+    const variables = {
+      systemId: this.state.selectedSystem,
+      response: response
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    })
+  }
   render(){
     if (this.props.data.loading) return null;
     const systems = this.props.data.systems;
-    const {selectedReport} = this.state;
+    const {selectedReport, selectedSystem} = this.state;
+    const selectedSystemObj = systems.find(s => s.id === selectedSystem);
     return <Container fluid className="damageReport-core">
-    <p>Damage Report Request</p>
-    <Row style={{height: 'calc(100% - 24px)'}}>
+    <Row>
     <Col sm={4} style={{overflow: 'scroll'}}>
     {
       systems.filter(s => s.damage.damaged)
       .map(s => <p key={s.id} 
-        className={`${this.state.selectedSystem === s.id ? 
+        className={`${selectedSystem === s.id ? 
           'selected' : ''} 
           ${s.damage.requested ? 'requested' : ''}
-          ${s.damage.report ? 'report' : ''}`} 
+          ${s.damage.report ? 'report' : ''}
+          ${s.damage.reactivationCode ? 'reactivation' : ''}`} 
           onClick={this.selectSystem.bind(this, s.id)}>
           {this.systemName(s)}
           </p>)
@@ -126,22 +143,40 @@ class DamageReportCore extends Component {
     value={selectedReport}
     style={{
       textAlign: 'left', 
-      height: 'calc(100% - 44px)',
+      height: 'calc(100% - 80px)',
       fontFamily: 'monospace',
     }}
     rows={5} 
     controlled={true} onChange={(e) => {this.setState({
       selectedReport: e.target.value
     })}} />
-    <Row style={{margin: 0}} >
-    <Col sm={6}>
-    <Input onChange={this.loadReport.bind(this)} style={{position: 'absolute', opacity: 0}} type="file" name="file" id="exampleFile" />
-    <Button size={'sm'} block color="info">Load Report</Button>
-    </Col>
-    <Col sm={6}>
-    <Button size={'sm'} block color="primary" onClick={this.sendReport.bind(this)}>Send Report</Button>
-    </Col>
-    </Row>
+    {
+      (selectedSystemObj && selectedSystemObj.damage.reactivationCode) ?
+      <div>
+      <Row style={{margin: 0}}>
+      <Col sm={3}>Code:</Col>
+      <Col sm={9}>{selectedSystemObj.damage.reactivationCode}</Col>
+      </Row>
+      <Row style={{margin: 0}}>
+      <Col sm={3}>Actual:</Col>
+      <Col sm={9}>{selectedSystemObj.damage.neededReactivationCode}</Col>
+      </Row>
+      <Row style={{margin: 0}}>
+      <Col sm={8}><Button onClick={() => {this.reactivationCodeResponse(true)}} size={'sm'} color="success" block>Accept & Fix</Button></Col>
+      <Col sm={4}><Button onClick={() => {this.reactivationCodeResponse(false)}} size={'sm'} color="danger" block>Deny</Button></Col>
+      </Row>
+      </div>
+      :
+      <Row style={{margin: 0}}>
+      <Col sm={6}>
+      <Input onChange={this.loadReport.bind(this)} style={{position: 'absolute', opacity: 0}} type="file" name="file" id="exampleFile" />
+      <Button size={'sm'} block color="info">Load Report</Button>
+      </Col>
+      <Col sm={6}>
+      <Button size={'sm'} block color="primary" onClick={this.sendReport.bind(this)}>Send Report</Button>
+      </Col>
+      </Row>
+    }
     </Col>
     </Row>
     </Container>
@@ -156,6 +191,8 @@ query DamagedSystems($simulatorId: ID){
       damaged
       report
       requested
+      reactivationCode
+      neededReactivationCode
     }
     simulatorId
     type
