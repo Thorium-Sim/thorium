@@ -4,5 +4,6 @@ type Damage {
   report: String
   requested: Boolean
   reactivationCode: String
+  neededReactivationCode: String 
 }
 `;

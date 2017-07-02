@@ -9,7 +9,9 @@ const defaultDamage = {
   damaged: false,
   report: null,
   requested: false,
-  reactivationCode: null
+  reactivationCode: null,
+  reactivationRequester: null,
+  neededReactivationCode: null
 };
 
 export function HeatMixin(inheritClass) {
@@ -63,18 +65,29 @@ export class System {
     this.damage.damaged = false;
     this.damage.report = null;
     this.damage.requested = false;
+    this.damage.neededReactivationCode = null;
     this.damage.reactivationCode = null;
+    this.damage.reactivationRequester = null;
   }
   requestReport() {
     this.damage.requested = true;
   }
-  processReport(report) {
-    // Reset the reactivation code in case there isn't
-    // A new one set
+  reactivationCode(code, station) {
+    this.damage.reactivationCode = code;
+    this.damage.reactivationRequester = station;
+  }
+  reactivationCodeResponse(response) {
     this.damage.reactivationCode = null;
+    this.damage.reactivationRequester = null;
+    // For now, lets repair the station when it is accepted
+    if (response) this.repair();
+  }
+  processReport(report) {
+    this.damage.neededReactivationCode = null;
+    if (!report) return;
     let returnReport = report;
     // #PART
-    const partMatches = report.match(/#PART/ig);
+    const partMatches = report.match(/#PART/ig) || [];
     partMatches.forEach(m => {
       const index = returnReport.indexOf(m);
       returnReport = returnReport.replace(m, '');
@@ -83,7 +96,7 @@ export class System {
     });
     
     // #COLOR
-    const colorMatches = report.match(/#COLOR/ig);
+    const colorMatches = report.match(/#COLOR/ig) || [];
     colorMatches.forEach(m => {
       const index = returnReport.indexOf(m);
       returnReport = returnReport.replace(m, '');
@@ -91,8 +104,7 @@ export class System {
     });
 
     // #[1 - 2]
-    const regex = /#\[ ?([0-9]+) ?- ?([0-9]+) ?\]/ig;
-    const matches = returnReport.match(regex);
+    const matches = returnReport.match(/#\[ ?([0-9]+) ?- ?([0-9]+) ?\]/ig) || [];
     matches.forEach(m => {
       const index = returnReport.indexOf(m);
       returnReport = returnReport.replace(m, '');
@@ -102,7 +114,7 @@ export class System {
     })  
 
     // #["String1", "String2", "String3", etc.]
-      const stringMatches = returnReport.match(/#\[ ?("|')[^\]]*("|') ?]/ig);
+    const stringMatches = returnReport.match(/#\[ ?("|')[^\]]*("|') ?]/ig) || [];
     stringMatches.forEach(m => {
       const index = returnReport.indexOf(m);
       returnReport = returnReport.replace(m, '');
@@ -113,7 +125,7 @@ export class System {
     // #REACTIVATIONCODE
     if (report.indexOf('#REACTIVATIONCODE') > -1) {
       const reactivationCode = Array(8).fill('').map(_ => randomFromList(['¥','Ω','∏','-','§','∆','£','∑','∂'])).join('');
-      this.damage.reactivationCode = reactivationCode;
+      this.damage.neededReactivationCode = reactivationCode;
       returnReport = returnReport.replace(/#REACTIVATIONCODE/ig, reactivationCode);
     }
 
@@ -160,50 +172,3 @@ function splice(str, start, delCount, newSubStr) {
   return str.slice(0, start) + newSubStr + str.slice(start + Math.abs(delCount));
 }
 
-function processReport(report) {
-  if (!report) return;
-  let returnReport = report;
-  // #PART
-  const partMatches = report.match(/#PART/ig) || [];
-  partMatches.forEach(m => {
-    const index = returnReport.indexOf(m);
-    returnReport = returnReport.replace(m, '');
-    const part = randomFromList(partsList);
-    returnReport = splice(returnReport, index, 0, part);
-  });
-  
-  // #COLOR
-  const colorMatches = report.match(/#COLOR/ig) || [];
-  colorMatches.forEach(m => {
-    const index = returnReport.indexOf(m);
-    returnReport = returnReport.replace(m, '');
-    returnReport = splice(returnReport, index, 0, randomFromList(['red','blue','green','yellow']));
-  });
-
-  // #[1 - 2]
-  const matches = returnReport.match(/#\[ ?([0-9]+) ?- ?([0-9]+) ?\]/ig) || [];
-  matches.forEach(m => {
-    const index = returnReport.indexOf(m);
-    returnReport = returnReport.replace(m, '');
-    const numbers = m.replace(/[ [\]#]/gi, '').split('-');
-    const num = Math.round(Math.random() * numbers[1] + numbers[0]);
-    returnReport = splice(returnReport, index, 0, num);
-  })  
-
-  // #["String1", "String2", "String3", etc.]
-  const stringMatches = returnReport.match(/#\[ ?("|')[^\]]*("|') ?]/ig) || [];
-  stringMatches.forEach(m => {
-    const index = returnReport.indexOf(m);
-    returnReport = returnReport.replace(m, '');
-    const strings = m.match(/"(.*?)"/gi);
-    returnReport = splice(returnReport, index, 0, randomFromList(strings).replace(/"/gi, ""));
-  })
-  
-  // #REACTIVATIONCODE
-  if (report.indexOf('#REACTIVATIONCODE') > -1) {
-    const reactivationCode = Array(8).fill('').map(_ => randomFromList(['¥','Ω','∏','-','§','∆','£','∑','∂'])).join('');
-    returnReport = returnReport.replace(/#REACTIVATIONCODE/ig, reactivationCode);
-  }
-
-  return returnReport;
-}

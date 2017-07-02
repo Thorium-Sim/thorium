@@ -15,6 +15,8 @@ subscription SystemsUpdate($simulatorId: ID){
       damaged
       report
       requested
+      reactivationCode
+      neededReactivationCode
     }
     simulatorId
     type
@@ -25,7 +27,9 @@ class DamageControl extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedSystem: null
+      selectedSystem: null,
+      reactivationCodeModal: false,
+      codeEntry: ''
     }
     this.systemSub = null;
   }
@@ -42,6 +46,14 @@ class DamageControl extends Component {
         }
       });
     }
+    if (!nextProps.data.loading) {
+      const selectedSystem = nextProps.data.systems.find(s => s.id === this.state.selectedSystem);
+      if (selectedSystem) {
+        this.setState({
+          codeEntry: selectedSystem.damage.reactivationCode || ''
+        });
+      }
+    }
   }
   systemName(sys) {
     if (sys.type === 'Shield'){
@@ -53,8 +65,10 @@ class DamageControl extends Component {
     return sys.name;
   }
   selectSystem(id){
+    const selectedSystem = this.props.data.systems.find(s => s.id === id);
     this.setState({
-      selectedSystem: id
+      selectedSystem: id,
+      codeEntry: selectedSystem.damage.reactivationCode || ''
     })
   }
   requestReport(){
@@ -70,16 +84,70 @@ class DamageControl extends Component {
       variables
     })
   }
+  toggle = () => {
+    this.setState({
+      reactivationCodeModal: !this.state.reactivationCodeModal
+    });
+  }
+  cancelReactivationCode = () => {
+    this.setState({
+      reactivationCodeModal: false,
+      codeEntry: ''
+    });
+  }
+  setCodeEntry = (c) => {
+    if ((this.state.codeEntry + c).length <= 8) {
+      this.setState({
+        codeEntry: this.state.codeEntry + c
+      })
+    }
+  }
+  clearCodeEntry = () => {
+    this.setState({
+      codeEntry: ''
+    })
+  }
+  reactivateCode = () => {
+    this.toggle();
+    const mutation = gql`
+    mutation SendReactivationCode($systemId: ID!, $station: String!, $code: String!){
+      systemReactivationCode(systemId: $systemId, station: $station, code: $code)
+    }`;
+    const variables = {
+      systemId: this.state.selectedSystem,
+      code: this.state.codeEntry,
+      station: this.props.station.name
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  }
   render(){
     if (this.props.data.loading) return null;
     const systems = this.props.data.systems;
+    const damagedSystem = systems.find(s => this.state.selectedSystem === s.id) || {damage: {}};
     return <Container fluid className="damage-control">
     <Row>
-    <Col sm="3" className="damage-list">
+    <Col sm="3" className={`damage-list ${damagedSystem.damage.neededReactivationCode ? 'reactivation-code' : ''}`}>
     <h4>Damaged Systems</h4>
     <Card>
     <CardBlock>
-    {
+    { 
+      this.state.reactivationCodeModal ? 
+      <div className="reactivation-modal">
+      <ul className="flex-boxes">
+      {['¥','Ω','∏','§','-','∆','£','∑','∂'].map((c, i)=> <li key={i} onClick={() => this.setCodeEntry(c)}>{c}</li>)}
+      </ul>
+      <Row>
+      <Col sm={5}>
+      <Button block color="danger" onClick={this.cancelReactivationCode}>Cancel</Button>
+      </Col>
+      <Col sm={{size:5, offset: 2}}>
+      <Button block color="warning" onClick={this.clearCodeEntry}>Clear</Button>
+      </Col>
+      </Row>
+      </div> :
       systems.filter(s => s.damage.damaged)
       .map(s => <p key={s.id} 
         className={`${this.state.selectedSystem === s.id ? 
@@ -92,10 +160,28 @@ class DamageControl extends Component {
     }
     </CardBlock>
     </Card>
-    <Button block 
-    disabled={!this.state.selectedSystem} 
-    onClick={this.requestReport.bind(this)} 
-    color="primary">Request Damage Report</Button>
+    {
+      this.state.reactivationCodeModal ?
+      <Button block size="lg" color="primary" onClick={this.reactivateCode}>Reactivate</Button>
+      :
+      <Button block 
+      disabled={!this.state.selectedSystem} 
+      onClick={this.requestReport.bind(this)} 
+      color="primary">Request Damage Report</Button>
+    }
+    {
+      damagedSystem.damage.neededReactivationCode &&
+      <Card className="reactivation-code-entry" onClick={this.state.reactivationCodeModal ? () => {} : this.toggle}>
+      <CardBlock>
+      <p className={`${this.state.codeEntry ? 'code-entry' : ''}`}>
+      {
+        this.state.codeEntry ? 
+        this.state.codeEntry : "Enter Reactivation Code..."
+      }
+      </p>
+      </CardBlock>
+      </Card>
+    }
     </Col>
     <Col sm="9" className="damage-report">
     <h4>Damage Report</h4>
@@ -118,6 +204,8 @@ query Systems($simulatorId: ID){
       damaged
       report
       requested
+      reactivationCode
+      neededReactivationCode
     }
     simulatorId
     type

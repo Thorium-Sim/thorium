@@ -61,9 +61,6 @@ const Settings = (props) => {
 }
 
 class LayoutCorners extends Component {
-	componentDidMount() {
-		debugger;
-	}
 	render() {
 		let {simulator, station, cardName, changeCard, clientObj} = this.props;
 		let alertClass = `alertColor${simulator.alertLevel || 5}`;
