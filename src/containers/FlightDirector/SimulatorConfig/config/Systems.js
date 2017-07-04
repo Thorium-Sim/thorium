@@ -10,7 +10,7 @@ const properties = [
 {name: 'Engine', config: true},
 {name: 'Thrusters'},
 {name: 'Navigation'},
-{name: 'Sensors', config: true},
+{name: 'Sensors'},
 {name: 'Probes'},
 {name: 'TractorBeam'},
 {name: 'Transporters'},
@@ -24,8 +24,8 @@ const properties = [
 ]
 
 const ops = {
-  addSystem: gql`mutation AddSystemToSimulator($id: ID!, $type: String!) {
-    addSystemToSimulator(simulatorId: $id, className: $type, params: "{}")
+  addSystem: gql`mutation AddSystemToSimulator($id: ID!, $type: String!, $params: String = "{}") {
+    addSystemToSimulator(simulatorId: $id, className: $type, params: $params)
   }`,
   removeSystem: gql`mutation RemoveSystem($id: ID, $type: String) {
     removeSystemFromSimulator(simulatorId: $id, type: $type)
@@ -40,15 +40,33 @@ class Systems extends Component {
   }
   toggleSystem = (e, {name}) => {
     const mutation = e.target.checked ? ops.addSystem : ops.removeSystem;
-    const variables = {
-      id: this.props.selectedSimulator.id,
-      type: name
+    if (name === 'Sensors') {
+      // Create both Internal and External sensors
+      const variables = {
+        id: this.props.selectedSimulator.id,
+        type: name
+      }
+      this.props.client.mutate({
+        mutation,
+        variables,
+      })
+      variables.params = JSON.stringify({domain: 'internal'})
+      this.props.client.mutate({
+        mutation,
+        variables,
+        refetchQueries: ['System', 'ShortRangeComm', 'Phasers', 'Reactor']
+      })
+    } else {
+      const variables = {
+        id: this.props.selectedSimulator.id,
+        type: name
+      }
+      this.props.client.mutate({
+        mutation,
+        variables,
+        refetchQueries: ['System', 'ShortRangeComm', 'Phasers', 'Reactor']
+      })
     }
-    this.props.client.mutate({
-      mutation,
-      variables,
-      refetchQueries: ['System', 'ShortRangeComm', 'Phasers']
-    })
   }
   render() {
     const {selectedProperty} = this.state;

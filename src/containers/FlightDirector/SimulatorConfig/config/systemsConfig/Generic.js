@@ -38,7 +38,7 @@ export class GenericSystemConfig extends Component {
     this.props.client.mutate({
       mutation: ops.updatePowerLevels,
       variables,
-      refetchQueries: ['System', 'Engines', 'ShortRangeComm']
+      refetchQueries: ['System', 'Engines', 'ShortRangeComm', 'Reactor', 'Phasers', 'Shields']
     })
   }
   updateName = ({id}, name, displayName) => {
@@ -50,7 +50,7 @@ export class GenericSystemConfig extends Component {
     this.props.client.mutate({
       mutation: ops.updateName,
       variables,
-      refetchQueries: ['System', 'Engines', 'ShortRangeComm']
+      refetchQueries: ['System', 'Engines', 'ShortRangeComm', 'Reactor', 'Phasers', 'Shields']
     })
   }
   render() {

@@ -23,10 +23,11 @@ const Shields = ({data, client, simulatorId, type}) => {
     shields.forEach(s => {
       client.mutate({
         mutation: ops.removeSystem,
-        variables:{id: s.id}
+        variables:{id: s.id},
+        refetchQueries: ['Shields']
       })
     })
-
+    if (num === 0) return;
     // Add in enough shields for our purposes.
     if (num === 1) {
       // Default is sufficient
@@ -56,6 +57,7 @@ const Shields = ({data, client, simulatorId, type}) => {
   }
 
   return <div className="shield scroll">
+  <Button onClick={() => reconfigureShields(0)}>No Shield</Button>
   <Button onClick={() => reconfigureShields(1)}>1 Shield</Button>
   <Button onClick={() => reconfigureShields(4)}>4 Shields</Button>
   <Button onClick={() => reconfigureShields(6)}>6 Shields</Button>
