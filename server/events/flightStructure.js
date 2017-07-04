@@ -39,44 +39,8 @@ App.on('removeSimulatorToMission', ({ missionId, simulatorId }) => {
 
 
 // Flight
-App.on('startFlight', ({ flightId, missionId, simulators }) => {
-  // First things first, clone the mission object.
-  const mission = new Classes.Mission(App.missions.find(m => m.id === missionId));
-  // Construct the flights timeline.
-
-  const missionTimeline = mission.timeline;
-  simulators.forEach(s => {
-    const init = missionTimeline[0].timelineItems.find(t => t.id === s.missionSim);
-    const args = JSON.parse(init.args);
-    const missionSim = Object.assign(App.simulators.find(sim => sim.id === s.missionSim));
-    // We only worry about the first timeline item of the template sim.
-    const templateSim = Object.assign(App.simulators.find(sim => sim.id === s.simulator));
-    const templateInit = templateSim.timeline[0].timelineItems;
-    const missionSimTimeline = missionSim.timeline;
-    missionSimTimeline[0].timelineItems = [].concat(templateInit, missionSimTimeline[0].timelineItems);
-    // Update the args to include the timeline for the simulator.
-    args.timeline = missionSimTimeline;
-    args.flightId = flightId;
-    args.stationSet = s.stationSet;
-
-    init.update({ args: JSON.stringify(args) });
-  });
-
-  const flight = new Classes.Flight({
-    id: flightId,
-    mission: missionId,
-    name: mission.name,
-    timeline: missionTimeline,
-  });
-  App.flights.push(flight);
-  flight.nextTimeline();
-  pubsub.publish('flightsUpdate', App.flights);
-});
-
-App.on('newFlight', () => {
-
-});
-App.on('addSimulatorToFlight', () => {
+App.on('startFlight', ({ name, simulators}) => {
+  
 
 });
 

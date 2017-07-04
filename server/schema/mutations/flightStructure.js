@@ -2,10 +2,8 @@ export default `
 createMission(name: String!):String
 removeMission(missionId: ID!):String
 editMission(missionId: ID!, name: String, description: String, simulators: [String]):String
-addSimulatorToMission(missionId: ID!, simulatorName: String!):String
-removeSimulatorFromMission(missionId: ID!, simulatorId: ID!):String
 
-startFlight(missionId: ID!, simulators:[FlightSimulatorInput]):String
+startFlight(name: String, simulators: [SimulatorInput!]!):String
 
 #Macro: Create a simulator
 createSimulator(

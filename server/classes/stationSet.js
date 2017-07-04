@@ -5,7 +5,6 @@ export class StationSet {
     this.class = 'StationSet';
     this.id = id || uuid.v4();
     this.simulatorId = simulatorId || null;
-    console.log(simulatorId);
     this.name = name || 'StationSet';
     this.stations = [];
     stations.forEach((station) => {

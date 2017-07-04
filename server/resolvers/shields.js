@@ -10,19 +10,19 @@ export const ShieldQueries = {
 
 export const ShieldMutations = {
   createShield(root, args, context) {
-   App.handleEvent(args, 'createShield', context.clientId)
+   App.handleEvent(args, 'createShield', context)
  },
  shieldRaised(root, args, context) {
-   App.handleEvent(args, 'shieldRaised', context.clientId)
+   App.handleEvent(args, 'shieldRaised', context)
  },
  shieldLowered(root, args, context) {
-   App.handleEvent(args, 'shieldLowered', context.clientId)
+   App.handleEvent(args, 'shieldLowered', context)
  },
  shieldIntegritySet(root, args, context) {
-   App.handleEvent(args, 'shieldIntegritySet', context.clientId)
+   App.handleEvent(args, 'shieldIntegritySet', context)
  },
  shieldFrequencySet(root, args, context) {
-   App.handleEvent(args, 'shieldFrequencySet', context.clientId)
+   App.handleEvent(args, 'shieldFrequencySet', context)
  },
 };
 

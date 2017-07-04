@@ -10,25 +10,25 @@ export const EngineQueries = {
 
 export const EngineMutations = {
   createEngine(root, {simulatorId, name, speeds, heatRate}, context) {
-    App.handleEvent({ simulatorId, name, speeds, heatRate }, 'createEngine', context.clientId);
+    App.handleEvent({ simulatorId, name, speeds, heatRate }, 'createEngine', context);
   },
   removeEngine(root, {id, simulatorId, name}, context) {
-    App.handleEvent({ id, simulatorId, name }, 'removeEngine', context.clientId);
+    App.handleEvent({ id, simulatorId, name }, 'removeEngine', context);
   },
   setSpeed(root, { id, speed, on }, context) {
-    App.handleEvent({ id, speed, on }, 'speedChange', context.clientId);
+    App.handleEvent({ id, speed, on }, 'speedChange', context);
     return '';
   },
   setEngineSpeeds(root, params, context) {
-    App.handleEvent(params, 'setEngineSpeeds', context.clientId);
+    App.handleEvent(params, 'setEngineSpeeds', context);
   },
   // This mutation applies to all systems
   addHeat(root, { id, heat }, context) {
-    App.handleEvent({ id, heat }, 'addHeat', context.clientId);
+    App.handleEvent({ id, heat }, 'addHeat', context);
     return '';
   },
   engineCool(root, args, context) {
-    App.handleEvent(args, "engineCool", context.clientId);
+    App.handleEvent(args, "engineCool", context);
   }
 };
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, FormGroup, Label, Input, Card, CardBlock } from 'reactstrap';
 import gql from 'graphql-tag';
 import FontAwesome from 'react-fontawesome';
-import LayoutList from '../../layouts';
+import LayoutList from '../../../components/layouts';
 
 export default class ArgItem extends Component {
   constructor(props){

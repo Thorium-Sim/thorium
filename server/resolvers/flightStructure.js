@@ -31,102 +31,98 @@ export const FlightStructureMutations = {
 
   // Mission
   createMission(root, args, context) {
-    App.handleEvent(Object.assign(args,{id: uuid.v4()}), 'createMission', context.clientId);
+    App.handleEvent(Object.assign(args,{id: uuid.v4()}), 'createMission', context);
   },
   removeMission(root, args, context) {
-    App.handleEvent(args, 'removeMission', context.clientId);
+    App.handleEvent(args, 'removeMission', context);
   },
   editMission(root, args, context) {
-    App.handleEvent(args, 'editMission', context.clientId);
-  },
-  addSimulatorToMission(root, args, context) {
-    App.handleEvent(args, 'addSimulatorToMission', context.clientId);
-  },
-  removeSimulatorFromMission(root, args, context) {
-    App.handleEvent(args, 'removeSimulatorToMission', context.clientId);
+    App.handleEvent(args, 'editMission', context);
   },
 
 
   // Flight
   startFlight(root, args, context) {
-    App.handleEvent(Object.assign(args,{flightId: uuid.v4()}), 'startFlight', context.clientId);
+    const flightId = uuid.v4();
+    App.handleEvent(Object.assign(args, {id: flightId}), 'startFlight', context);
+    return flightId;
   },
 
 
   // Simulator
   createSimulator(root, args, context = {}) {
-    App.handleEvent(Object.assign(args,{id: uuid.v4()}), 'createSimulator', context.clientId);
+    App.handleEvent(Object.assign(args,{id: uuid.v4()}), 'createSimulator', context);
   },
   removeSimulator(root, args, context) {
-    App.handleEvent(args, 'removeSimulator', context.clientId);
+    App.handleEvent(args, 'removeSimulator', context);
   },
   renameSimulator(root, args, context) {
-    App.handleEvent(args, 'renameSimulator', context.clientId);
+    App.handleEvent(args, 'renameSimulator', context);
   },
   changeSimulatorLayout(root, args, context) {
-    App.handleEvent(args, 'changeSimulatorLayout', context.clientId);
+    App.handleEvent(args, 'changeSimulatorLayout', context);
   },
   changeSimulatorAlertLevel(root, args, context) {
-    App.handleEvent(args, 'changeSimulatorAlertLevel', context.clientId);
+    App.handleEvent(args, 'changeSimulatorAlertLevel', context);
   },
   changeSimulatorCrewCount(root, args, context) {
-    App.handleEvent(args, 'changeSimulatorCrewCount', context.clientId);
+    App.handleEvent(args, 'changeSimulatorCrewCount', context);
   },
 
   // Timeline
   addTimelineStep(root, args, context) {
-    App.handleEvent(Object.assign(args,{timelineStepId: uuid.v4()}), 'addTimelineStep', context.clientId);
+    App.handleEvent(Object.assign(args,{timelineStepId: uuid.v4()}), 'addTimelineStep', context);
   },
   removeTimelineStep(root, args, context) {
-    App.handleEvent(args, 'removeTimelineStep', context.clientId);
+    App.handleEvent(args, 'removeTimelineStep', context);
   },
   reorderTimelineStep(root, args, context) {
-    App.handleEvent(args, 'reorderTimelineStep', context.clientId);
+    App.handleEvent(args, 'reorderTimelineStep', context);
   },
   updateTimelineStep(root, args, context) {
-    App.handleEvent(args, 'updateTimelineStep', context.clientId);
+    App.handleEvent(args, 'updateTimelineStep', context);
   },
   addTimelineItemToTimelineStep(root, args, context) {
-    App.handleEvent(Object.assign(args,{timelineItemId: uuid.v4()}), 'addTimelineItemToTimelineStep', context.clientId);
+    App.handleEvent(Object.assign(args,{timelineItemId: uuid.v4()}), 'addTimelineItemToTimelineStep', context);
   },
   removeTimelineStepItem(root, args, context) {
-    App.handleEvent(args, 'removeTimelineStepItem', context.clientId);
+    App.handleEvent(args, 'removeTimelineStepItem', context);
   },
   updateTimelineStepItem(root, args, context) {
-    App.handleEvent(args, 'updateTimelineStepItem', context.clientId);
+    App.handleEvent(args, 'updateTimelineStepItem', context);
   },
 
 
   // Station
   createStationSet(root, args, context) {
-    App.handleEvent(args, 'createStationSet', context.clientId);
+    App.handleEvent(args, 'createStationSet', context);
   },
   removeStationSet(root, args, context) {
-    App.handleEvent(args, 'removeStationSet', context.clientId);
+    App.handleEvent(args, 'removeStationSet', context);
   },
   renameStationSet(root, args, context) {
-    App.handleEvent(args, 'renameStationSet', context.clientId);
+    App.handleEvent(args, 'renameStationSet', context);
   },
   addStationToStationSet(root, args, context) {
-    App.handleEvent(args, 'addStationToStationSet', context.clientId);
+    App.handleEvent(args, 'addStationToStationSet', context);
   },
   removeStationFromStationSet(root, args, context) {
-    App.handleEvent(args, 'removeStationFromStationSet', context.clientId);
+    App.handleEvent(args, 'removeStationFromStationSet', context);
   },
   editStationInStationSet(root, args, context) {
-    App.handleEvent(args, 'editStationInStationSet', context.clientId);
+    App.handleEvent(args, 'editStationInStationSet', context);
   },
   addCardToStation(root, args, context) {
-    App.handleEvent(args, 'addCardToStation', context.clientId);
+    App.handleEvent(args, 'addCardToStation', context);
   },
   removeCardFromStation(root, args, context) {
-    App.handleEvent(args, 'removeCardFromStation', context.clientId);
+    App.handleEvent(args, 'removeCardFromStation', context);
   },
   editCardInStationSet(root, args, context) {
-    App.handleEvent(args, 'editCardInStationSet', context.clientId);
+    App.handleEvent(args, 'editCardInStationSet', context);
   },
   addSystem: (root, args, context) => {
-    App.handleEvent(args, 'addSystem', context.clientId);
+    App.handleEvent(args, 'addSystem', context);
   },
 };
 
@@ -158,6 +154,13 @@ export const FlightStructureTypes = {
     },
     systems(rootValue) {
       return App.systems.filter(s => s.simulatorId === rootValue.id);
+    },
+    stations(rootValue) {
+      const stations = App.stationSets.find(s => s.id === rootValue.stationSet);
+      if (stations) {
+        return stations.stations;
+      }
+      return [];
     },
     stationSets(rootValue) {
       return App.stationSets.filter(s => s.simulatorId === rootValue.id);

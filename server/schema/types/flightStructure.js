@@ -17,10 +17,10 @@ type Flight {
   simulators: [Simulator]
 }
 
-input FlightSimulatorInput {
-  missionSim: ID
-  simulator: ID
-  stationSet: ID
+input SimulatorInput {
+  simulatorId: ID!,
+  stationSet: ID!,
+  missionId: ID
 }
 
 type Simulator {

@@ -24,7 +24,6 @@ App.on('addSystemToSimulator', ({simulatorId, className, params}) => {
   pubsub.publish('systemsUpdate', App.systems);
 });
 App.on('removeSystemFromSimulator', ({systemId, simulatorId, type}) => {
-  console.log(systemId, simulatorId, type)
   if (systemId) {
     App.systems = App.systems.filter(s => s.id !== systemId);
   } else if (simulatorId && type) {

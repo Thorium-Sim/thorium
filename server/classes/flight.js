@@ -1,54 +1,21 @@
 import uuid from 'uuid';
-import { TimelineObject } from './timeline';
-
-export default class Flight extends TimelineObject {
+import randomWords from 'random-words';
+export default class Flight {
   constructor(params) {
-    super(params);
     this.class = 'Flight';
     this.id = params.id || uuid.v4();
-    this.name = params.name || 'Flight';
+    this.name = params.name || randomWords(3).join('-');
     this.date = params.date || Date.now();
-    this.mission = params.mission || null;
     this.running = params.running || true;
-    this.simulators = [];
-    if(params.simulators){
-      if (params.simulators.length) {
-        params.simulators.forEach(s => {
-          this.simulators.push(new FlightSimulator({
-            simulatorId: s.id,
-            stationSet: s.stationSet,
-          }));
-        });
-      }
-    }
+    this.simulators = params.simulators || [];
   }
   addSimulator(simulator, stationSet) {
-    // Add the simulator to a flight simulator
-    // Add that to the simulators array
-    const flightSimulator = new FlightSimulator({
-      simulatorId: simulator.id,
-      stationSet,
-    });
-    this.simulators.push(flightSimulator);
+    this.simulators.push(simulator.id);
   }
   removeSimulator(simulatorId) {
     this.simulators = this.simulators.filter(s => s.id !== simulatorId);
   }
-  updateSimulatorStationSet(simulatorId, stationSet) {
-    this.simulators = this.simulators.map(s => {
-      const returnVal = s;
-      if (returnVal.id === simulatorId) {
-        returnVal.stationSet = stationSet;
-      }
-      return returnVal;
-    });
-  }
-}
-
-class FlightSimulator {
-  constructor(params) {
-    this.class = 'FlightSimulator';
-    this.id = params.simulatorId;
-    this.stationSet = params.stationSet;
+  stopFlight() {
+    this.running = false;
   }
 }

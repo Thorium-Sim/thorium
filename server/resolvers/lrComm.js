@@ -33,22 +33,22 @@ export const LRCommQueries = {
 
 export const LRCommMutations = {
   createLongRange(root, args, context){
-    App.handleEvent(args, 'createLongRange', context.clientId);
+    App.handleEvent(args, 'createLongRange', context);
   },
   removeLongRange(root, args, context){
-    App.handleEvent(args, 'removeLongRange', context.clientId);
+    App.handleEvent(args, 'removeLongRange', context);
   },
   sendLongRangeMessage(root, args, context){
-    App.handleEvent(args, 'sendLongRangeMessage', context.clientId);
+    App.handleEvent(args, 'sendLongRangeMessage', context);
   },
   longRangeMessageSend(root, args, context){
-    App.handleEvent(args, 'longRangeMessageSend', context.clientId);
+    App.handleEvent(args, 'longRangeMessageSend', context);
   },
   deleteLongRangeMessage(root, args, context){
-    App.handleEvent(args, 'deleteLongRangeMessage', context.clientId);
+    App.handleEvent(args, 'deleteLongRangeMessage', context);
   },
   updateLongRangeDecodedMessage(root, args, context){
-    App.handleEvent(args, 'updateLongRangeDecodedMessage', context.clientId);
+    App.handleEvent(args, 'updateLongRangeDecodedMessage', context);
   }
 };
 

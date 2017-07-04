@@ -3,6 +3,7 @@ import { Col, Row, Container, Button, Card, CardBlock } from 'reactstrap';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Link } from 'react-router';
+import { browserHistory } from 'react-router'
 
 import './welcome.scss';
 
@@ -37,6 +38,9 @@ class Welcome extends Component {
       });
     }
   }
+  newFlight() {
+    
+  }
   render(){
     if (this.props.data.loading) return null;
     const flights = this.props.data.flights;
@@ -52,9 +56,9 @@ class Welcome extends Component {
       <h3>Pick a running Flight</h3>
       <Card>
       <CardBlock>
-      { flights.map(f => <div key={f.id} className="flight-picker">
+      { flights.map(f => <Link to={`/flight/${f.id}`} key={f.id} className="flight-picker">
       <p>{f.name}</p> <small>{formatDate(new Date(f.date))}</small>
-      </div>)}
+      </Link>)}
       </CardBlock>
       </Card>
       </div>
@@ -63,7 +67,7 @@ class Welcome extends Component {
       </div>
       <div>
       <h3>Start a new Flight</h3>
-      <Button color="success" block size="lg">New Flight</Button>
+      <Button tag={Link} to="/flightConfig" color="success" block size="lg">New Flight</Button>
       </div>
       </Row>
       <Row className="config-row">
@@ -75,6 +79,9 @@ class Welcome extends Component {
         </Col>
         <Col sm={4}>
         <Button tag={Link} to="/missionConfig" color="primary" block>Configure Missions</Button>
+        </Col>
+        <Col sm={{size: 4, offset: 4}}>
+        <Button tag={Link} to="/debug" color="primary" block>Debug</Button>
         </Col>
       </Row>
       </Container>

@@ -7,7 +7,7 @@ import Flights from './Flights';
 import DebugList from '../DebugList';
 import Core from '../CoreLayout';
 import Assets from '../../components/views/AdminAssets'
-import Configs from '../../components/config'
+//import Configs from '../../components/config'
 import IssueTracker from '../../components/admin/IssueTracker';
 import './style.scss';
 

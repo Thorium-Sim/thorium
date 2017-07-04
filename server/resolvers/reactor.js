@@ -12,19 +12,19 @@ export const ReactorQueries = {
 
 export const ReactorMutations = {
   reactorEject(root, args, context){
-    App.handleEvent(args, 'reactorEject', context.clientId);
+    App.handleEvent(args, 'reactorEject', context);
   },
   reactorChangeOutput(root, args, context){
-    App.handleEvent(args, 'reactorChangeOutput', context.clientId);
+    App.handleEvent(args, 'reactorChangeOutput', context);
   },
   reactorChangeEfficiency(root, args, context){
-    App.handleEvent(args, 'reactorChangeEfficiency', context.clientId);
+    App.handleEvent(args, 'reactorChangeEfficiency', context);
   },
   reactorBatteryChargeLevel(root, args, context){
-    App.handleEvent(args, 'reactorBatteryChargeLevel', context.clientId);
+    App.handleEvent(args, 'reactorBatteryChargeLevel', context);
   },
   reactorBatteryChargeRate(root, args, context){
-    App.handleEvent(args, 'reactorBatteryChargeRate', context.clientId);
+    App.handleEvent(args, 'reactorBatteryChargeRate', context);
   },
 };
 

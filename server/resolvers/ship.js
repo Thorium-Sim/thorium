@@ -6,13 +6,13 @@ export const ShipQueries = {
 
 export const ShipMutations = {
   shipDockingChange(root, args, context) {
-    App.handleEvent(args, 'shipDockingChange', context.clientId);
+    App.handleEvent(args, 'shipDockingChange', context);
   },
   remoteAccessSendCode(root, args, context) {
-    App.handleEvent(args, 'remoteAccessSendCode', context.clientId);
+    App.handleEvent(args, 'remoteAccessSendCode', context);
   },
   remoteAccessUpdateCode(root, args, context) {
-    App.handleEvent(args, 'remoteAccessUpdateCode', context.clientId);
+    App.handleEvent(args, 'remoteAccessUpdateCode', context);
   },
 };
 

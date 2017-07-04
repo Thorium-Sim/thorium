@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Col, Row, Container, Button, ButtonGroup, Card, CardBlock } from 'reactstrap';
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { graphql, withApollo } from 'react-apollo';
 import { Link } from 'react-router';
 
 import SimulatorProperties from './SimulatorProperties';
@@ -17,6 +17,17 @@ const SIMULATOR_SUB = gql`subscription SimulatorsUpdate {
     systems {
       id
       type
+    }
+    stationSets {
+      id
+      name
+      stations {
+        name
+        cards {
+          name
+          component
+        }
+      }
     }
   }
 }`;
@@ -78,16 +89,60 @@ class SimulatorConfig extends Component {
     })
   }
   createSimulator = () => {
-
+    const name  = prompt('What is the simulator name? eg. Voyager');
+    if (name){
+      const variables = {
+        name: name,
+        template: true,
+      };
+      this.props.client.mutate({
+        mutation: gql`
+        mutation AddSimulator($name: String!, $template: Boolean) {
+          createSimulator(name: $name, template:$template)
+        }`,
+        variables
+      });
+    }
   }
   showImportModal = () => {
 
   }
   renameSimulator = () => {
-
+    const name  = prompt('What is the simulator name? eg. Voyager');
+    const simulator = this.state.selectedSimulator;
+    if (name && simulator){
+      let variables = {
+        name: name,
+        id: simulator,
+      };
+      this.props.client.mutate({
+        mutation: gql`
+        mutation RenameSimulator($id: ID!, $name: String!) {
+          renameSimulator(simulatorId: $id, name: $name)
+        }`,
+        variables
+      });
+    }
   }
   removeSimulator = () => {
-
+    const simulator = this.state.selectedSimulator;
+    if (simulator){
+      if (confirm("Are you sure you want to delete that simulator?")){
+        let obj = {
+          id: simulator,
+        };
+        this.props.client.mutate({
+          mutation: gql`mutation RemoveSimulator($id: ID!) {
+            removeSimulator(simulatorId: $id)
+          }`,
+          variables: obj
+        });
+        this.setState({
+          selectedSimulator: null,
+          selectedProperty: null,
+        })
+      }
+    }
   }
   render() {
     const {data} = this.props
@@ -102,7 +157,7 @@ class SimulatorConfig extends Component {
     {
       simulators.map(s => <li key={s.id}
         className={`list-group-item simulator-item ${selectedSimulator && selectedSimulator === s.id ? 'selected' : ''}`}
-        onClick={() => this.setState({selectedSimulator: s.id})}
+        onClick={() => this.setState({selectedSimulator: s.id, selectedProperty:null})}
         >{s.name}</li>)
     }
     </Card>
@@ -159,4 +214,4 @@ query Simulators {
   }
 }`;
 
-export default graphql(SIMULATOR_QUERY)(SimulatorConfig);
+export default graphql(SIMULATOR_QUERY)(withApollo(SimulatorConfig));

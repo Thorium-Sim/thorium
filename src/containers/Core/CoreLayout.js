@@ -5,10 +5,10 @@ import React, {Component} from 'react';
 import ReactDOM, { findDOMNode } from 'react-dom';
 import moment from 'moment';
 import Immutable from 'immutable';
-import { Cores } from '../components/views';
+import { Cores } from '../../components/views';
 import { graphql, withApollo, ApolloProvider } from 'react-apollo';
 import gql from 'graphql-tag';
-import { client } from '../App';
+import { client } from '../../App';
 import './CoreLayout.scss';
 window.ReactDOM = ReactDOM;
 window.React = React;
@@ -41,17 +41,6 @@ subscription CoreSub {
   }
 }`;
 
-const FLIGHT_SUB = gql`subscription FlightsChanged {
-  flightsUpdate {
-    id
-    name
-    date
-    simulators {
-      id
-      name
-    }
-  }
-}`;
 
 class CoreWrapper  extends Component  {
   render() {
@@ -66,13 +55,12 @@ class CoreLayout extends Component {
   constructor(props){
     super(props);
     this.state = {
-      flight: localStorage.getItem('thorium_coreFlight') || '',
+      flight: props.flightId,
       simulator: localStorage.getItem('thorium_coreSimulator') || '',
       layout: localStorage.getItem('thorium_coreLayout') || 'default',
       editable: false,
     };
     this.coreSubscription = null;
-    this.flightSubscription = null;
     this.layout = null;
   }
   componentWillReceiveProps(nextProps) {
@@ -82,15 +70,6 @@ class CoreLayout extends Component {
         updateQuery: (previousResult, {subscriptionData}) => {
           const returnResult = Immutable.Map(previousResult);
           return returnResult.merge({coreLayouts: subscriptionData.data.coreLayoutChange}).toJS();
-        },
-      });
-    }
-    if (!this.flightSubscription && !nextProps.data.loading) {
-      this.flightSubscription = nextProps.data.subscribeToMore({
-        document: FLIGHT_SUB,
-        updateQuery: (previousResult, {subscriptionData}) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult.merge({flights: subscriptionData.data.flightsUpdate}).toJS();
         },
       });
     }
@@ -105,14 +84,6 @@ class CoreLayout extends Component {
       this.initLayout(this.props.data.coreLayouts);
     });
     localStorage.setItem('thorium_coreLayout', e.target.value);
-  }
-  pickFlight(e) {
-    this.setState({
-      flight: e.target.value
-    },() => {
-      this.initLayout(this.props.data.coreLayouts);
-    });
-    localStorage.setItem('thorium_coreFlight', e.target.value);
   }
   pickSimulator = (e, done) => {
     e.persist();
@@ -230,13 +201,6 @@ class CoreLayout extends Component {
       simulators = flight.id ? flight.simulators : [];
     }
     return <div className="core">
-    <select className="btn btn-success btn-sm" onChange={this.pickFlight.bind(this)} value={this.state.flight}>
-    <option>Pick a flight</option>
-    <option disabled>-----------</option>
-    {
-      flights.map(f => (<option key={f.id} value={f.id}>{ `${f.name}: ${moment(f.date).format('MM/DD/YY hh:mma')}` }</option>))
-    }
-    </select>
     <select className="btn btn-info btn-sm" onChange={this.pickSimulator.bind(this)} value={this.state.simulator}>
     <option>Pick a simulator</option>
     <option disabled>-----------</option>

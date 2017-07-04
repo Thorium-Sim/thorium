@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Router, browserHistory } from 'react-router';
-//import { Signin, Register, Forgot, PasswordReset } from '../components/Accounts.jsx';
-// import UserAdmin from '../components/admin/Users.jsx';
 import CardContainer from './Card.jsx';
-//import Config from './Config';
-import Lobby from './Lobby';
 import Client from '../components/Client.jsx';
-import {FlightConfig, FlightDirector, MissionConfig, SimulatorConfig, Welcome} from './FlightDirector';
+import DebugList from './DebugList';
+import {FlightConfig, FlightDirector, MissionConfig, SimulatorConfig, AssetConfig, Welcome} from './FlightDirector';
 
 const TestCard = (props) => {
   return <CardContainer test={true} component={props.params.component} />;
@@ -28,15 +25,11 @@ const routes = [
   component: Client,
 },
 {
-  path: '/lobby',
-  component: Lobby,
-},
-{
   path: '/',
   component: Welcome
 }, 
 {
-  path: '/flight/config/:flightId',
+  path: '/flightConfig',
   component: FlightConfig
 },
 {
@@ -48,25 +41,17 @@ const routes = [
   component: SimulatorConfig
 },
 {
+  path: '/assetConfig',
+  component: AssetConfig
+},
+{
   path: '/flight/:flightId',
   component: FlightDirector
 },
-/*{
-  path: '/login',
-  component: Signin
-},
 {
-  path: '/register',
-  component: Register
+  path: '/debug',
+  component: DebugList
 },
-{
-  path: "/reset_password/:resetLink",
-  component: PasswordReset
-},
-{
-  path: '/forgot',
-  component: Forgot
-},*/
 {
   path: '/test',
   component: TestCard
@@ -75,11 +60,6 @@ const routes = [
   path: '/test/:component',
   component: TestCard
 },
-/* This component is currently broken. Needs fixed.
-{
-  path: '/admin/users',
-  component: UserAdmin
-},*/
 {
   path: '*',
   component:NoMatch
