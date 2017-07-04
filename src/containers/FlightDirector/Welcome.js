@@ -67,10 +67,13 @@ class Welcome extends Component {
       </div>
       </Row>
       <Row className="config-row">
-        <Col sm={{size: 3, offset: 2}}>
+        <Col sm={4}>
         <Button tag={Link} to="/simulatorConfig" color="info" block>Configure Simulators</Button>
         </Col>
-        <Col sm={{size: 3, offset: 2}}>
+        <Col sm={4}>
+        <Button tag={Link} to="/assetConfig" color="secondary" block>Configure Generic Assets</Button>
+        </Col>
+        <Col sm={4}>
         <Button tag={Link} to="/missionConfig" color="primary" block>Configure Missions</Button>
         </Col>
       </Row>

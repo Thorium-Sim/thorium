@@ -7,7 +7,8 @@ const properties = [
 'Systems',
 'Decks',
 'Inventory',
-'Crew'
+'Crew',
+'Assets'
 ]
 export default ({selectProperty, selectedProperty}) => {
   return <Card>
