@@ -49,6 +49,7 @@ type TemplateSimulator {
 type Stationset {
   id: ID
   name: String
+  simulator: Simulator
   stations: [Station]
 }
 

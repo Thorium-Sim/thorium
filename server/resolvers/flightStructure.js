@@ -158,16 +158,20 @@ export const FlightStructureTypes = {
     },
     systems(rootValue) {
       return App.systems.filter(s => s.simulatorId === rootValue.id);
+    },
+    stationSets(rootValue) {
+      return App.stationSets.filter(s => s.simulatorId === rootValue.id);
+    }
+  },
+  Stationset: {
+    simulator(rootValue) {
+      return App.simulators.find(s => s.id === rootValue.simulatorId);
     }
   },
   Flight: {
     date(rootValue) {
-      console.log(rootValue.date);
       const date = new Date(rootValue.date);
       return date.toISOString();
-    },
-    mission(rootValue) {
-      return App.missions.find(m => m.id === rootValue.mission);
     },
     simulators(rootValue) {
       return rootValue.simulators.map((s) => {

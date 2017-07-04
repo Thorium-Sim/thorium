@@ -170,8 +170,8 @@ App.on('updateTimelineStepItem', ({ simulatorId, missionId, timelineStepId, time
 
 
 // StationSet
-App.on('createStationSet', ({ id, name }) => {
-  const station = new Classes.StationSet({ id, name });
+App.on('createStationSet', ({ id, name, simulatorId }) => {
+  const station = new Classes.StationSet({ id, name, simulatorId });
   App.stationSets.push(station);
   pubsub.publish('stationSetUpdate', App.stationSets);
 });

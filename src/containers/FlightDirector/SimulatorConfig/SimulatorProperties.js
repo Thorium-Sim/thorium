@@ -6,8 +6,6 @@ const properties = [
 'Stations',
 'Systems',
 'Decks',
-'Rooms',
-'Hallways',
 'Inventory',
 'Crew'
 ]

@@ -1,7 +1,6 @@
 import uuid from 'uuid';
 import Team from './teams'
 import { TimelineObject } from './timeline';
-import StationSet from './stationSet';
 
 export default class Simulator extends TimelineObject {
   constructor(params) {
@@ -12,19 +11,14 @@ export default class Simulator extends TimelineObject {
     this.alertlevel = params.alertlevel || '5';
     this.template = params.template || false;
     this.class = 'Simulator';
-    this.stationSets = [];
     this.mission = params.mission || null;
-    this.crewCount = params.crewCount || 50;
     this.teams = [];
     this.ship = new Ship(params.ship)
     // Set up the teams
     if (params.teams) {
       params.teams.forEach(t => this.teams.push(new Team(t)))
     }
-    // Set up the stationSets 
-    if (params.stationSets) {
-      params.stationSets.forEach(s => this.stationSets.push(new StationSet(s)));
-    }
+
     // Initialize the simulator async
     if (params.launch) {
       setTimeout(() => { this.nextTimeline(); }, 100);
@@ -46,9 +40,8 @@ export default class Simulator extends TimelineObject {
     // To the server
     this.layout = layout;
   }
-  setCrewCount(count) {
-    this.crewCount = count;
-  }
+
+  // Ship 
   clamps(tf) {
     this.ship.clamps = tf;
   }

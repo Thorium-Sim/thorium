@@ -37,7 +37,7 @@ addTimelineItemToTimelineStep(simulatorId: ID, missionId: ID, timelineStepId: ID
 removeTimelineStepItem(simulatorId: ID, missionId: ID, timelineStepId: ID!, timelineItemId: ID!): String
 updateTimelineStepItem(simulatorId: ID, missionId: ID, timelineStepId: ID!, timelineItemId: ID!, updateTimelineItem: TimelineitemInput!): String
 
-createStationSet(name: String!):String
+createStationSet(name: String!, simulatorId: ID!):String
 removeStationSet(stationSetID: ID!):String
 renameStationSet(stationSetID: ID!, name: String!):String
 addStationToStationSet(stationSetID: ID!, stationName: String!):String
