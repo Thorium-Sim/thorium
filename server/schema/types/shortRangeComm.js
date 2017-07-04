@@ -81,6 +81,7 @@ input RangeInput {
   lower: Float
 }
 input CommSignalInput {
+  id: ID
   image: String
   name: String
   range: RangeInput
