@@ -8,9 +8,13 @@ interface SystemInterface {
   damage: Damage
   power: Power
   stealthFactor: Float
+}
+
+interface HeatInterface {
   heat: Float
   coolant: Float
 }
+
 # Generic system type. Give information available to all systems.
 type System implements SystemInterface {
   id: ID

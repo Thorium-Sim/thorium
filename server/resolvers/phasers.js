@@ -34,6 +34,9 @@ export const PhaserMutations = {
   },
   coolPhaserBeam(root, args, context) {
     App.handleEvent(args, 'coolPhaserBeam', context.clientId);
+  },
+  setPhaserBeamCount(root, args, context) {
+    App.handleEvent(args, 'setPhaserBeamCount', context.clientId);
   }
 };
 

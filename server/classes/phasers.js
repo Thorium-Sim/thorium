@@ -28,6 +28,12 @@ export default class Phasers extends HeatMixin(System) {
       return prev + next/length;
     }, 0)
   }
+  setBeams(count = 0) {
+    this.beams = [];
+    for (let i = 0; i < count; i++){
+      this.beams.push(new Beam({}));
+    }
+  }
   updateBeamState(beamId, state){
     this.beams.find(b => b.id === beamId).updateState(state);
   }

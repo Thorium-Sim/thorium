@@ -1,9 +1,11 @@
 export default `
-type Phaser {
+type Phaser implements SystemInterface {
   id: ID
   simulatorId: ID
   type: String
   name: String
+  displayName: String
+  stealthFactor: Float
   power: Power
   damage: Damage
   arc: Float
