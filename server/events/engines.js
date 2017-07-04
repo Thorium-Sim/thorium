@@ -57,6 +57,9 @@ App.on('addHeat', ({ id, heat }) => {
 App.on('engineCool', ({id, state}) => {
   App.systems.find(s => s.id === id).cool(state);
 });
+App.on('setEngineSpeeds', ({id, speeds}) => {
+  App.systems.find(s => s.id === id).setSpeeds(speeds);
+});
 App.on('applyEngineCoolant', ({id}) => {
   const engine = App.systems.find(s => s.id === id);
   engine.setCoolant(Math.min(1, Math.max(0, engine.coolant - 0.005)));

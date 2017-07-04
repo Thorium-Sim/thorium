@@ -11,10 +11,12 @@
   }
   .system-checkbox {
     position: static;
-    margin: 0 10px;
+    margin-top:0;
+    margin-right: 2px;
     margin-left: -0.75rem;
   }
   label {
+    display: block;
     margin-bottom: 0;
   }
 }

@@ -19,6 +19,9 @@ export const EngineMutations = {
     App.handleEvent({ id, speed, on }, 'speedChange', context.clientId);
     return '';
   },
+  setEngineSpeeds(root, params, context) {
+    App.handleEvent(params, 'setEngineSpeeds', context.clientId);
+  },
   // This mutation applies to all systems
   addHeat(root, { id, heat }, context) {
     App.handleEvent({ id, heat }, 'addHeat', context.clientId);

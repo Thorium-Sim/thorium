@@ -23,6 +23,9 @@ export const SystemsMutations = {
   removeSystemFromSimulator(rootValue, params, context) {
     App.handleEvent(params, 'removeSystemFromSimulator', context.clientId);
   },
+  updateSystemName(rootValue, params, context) {
+    App.handleEvent(params, 'updateSystemName', context.clientId);
+  },
   damageSystem(rootValue, params, context) {
     App.handleEvent(params, 'damageSystem', context.clientId);
   },
@@ -43,6 +46,9 @@ export const SystemsMutations = {
   },
   changePower(rootValue, params, context) {
     App.handleEvent(params, 'changePower', context.clientId);
+  },
+  changeSystemPowerLevels(rootValue, params, context) {
+    App.handleEvent(params, 'changeSystemPowerLevels', context.clientId);
   }
 };
 

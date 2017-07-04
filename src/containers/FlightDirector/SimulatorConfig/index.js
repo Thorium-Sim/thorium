@@ -14,6 +14,10 @@ const SIMULATOR_SUB = gql`subscription SimulatorsUpdate {
     id
     name
     layout
+    systems {
+      id
+      type
+    }
   }
 }`;
 
@@ -137,6 +141,10 @@ query Simulators {
     id
     name
     layout
+    systems {
+      id
+      type
+    }
     stationSets {
       id
       name

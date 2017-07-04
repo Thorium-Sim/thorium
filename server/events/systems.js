@@ -23,9 +23,20 @@ App.on('addSystemToSimulator', ({simulatorId, className, params}) => {
   App.systems.push(obj);
   pubsub.publish('systemsUpdate', App.systems);
 });
-App.on('removeSystemFromSimulator', ({systemId}) => {
-  App.systems = App.systems.filter(s => s.id !== systemId);
+App.on('removeSystemFromSimulator', ({systemId, simulatorId, type}) => {
+  console.log(systemId, simulatorId, type)
+  if (systemId) {
+    App.systems = App.systems.filter(s => s.id !== systemId);
+  } else if (simulatorId && type) {
+    const sys = App.systems.find(s => s.simulatorId === simulatorId && s.type === type);
+    App.systems = App.systems.filter(s => s.id !== sys.id);
+  }
   pubsub.publish('systemsUpdate', App.systems);
+});
+App.on('updateSystemName', ({systemId, name, displayName}) => {
+  const sys = App.systems.find(s => s.id === systemId);
+  sys.updateName({name, displayName});
+  sendUpdate(sys);
 });
 App.on('damageSystem', ({systemId, report}) => {
   const sys = App.systems.find(s => s.id === systemId);
@@ -45,6 +56,11 @@ App.on('repairSystem', ({systemId}) => {
 App.on('changePower', ({systemId, power}) => {
   const sys = App.systems.find(s => s.id === systemId);
   sys.setPower(power);
+  sendUpdate(sys);
+});
+App.on('changeSystemPowerLevels', ({systemId, powerLevels}) => {
+  const sys = App.systems.find(s => s.id === systemId);
+  sys.setPowerLevels(powerLevels);
   sendUpdate(sys);
 });
 App.on('requestDamageReport', ({systemId}) => {

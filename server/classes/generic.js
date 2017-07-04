@@ -47,8 +47,17 @@ export class System {
   get stealthFactor() {
     return null;
   }
+  updateName({name, displayName}) {
+    console.log(name, displayName)
+    if (name || name === '') this.name = name;
+    if (displayName || displayName === '') this.displayName = displayName;
+    console.log(this.name, this.displayName);
+  }
   setPower(powerLevel) {
     this.power.power = powerLevel;
+  }
+  setPowerLevels(levels) {
+    this.power.powerLevels = levels;
   }
   break(report) {
     // TODO: Generate the damage report if
