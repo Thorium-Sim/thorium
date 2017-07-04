@@ -97,6 +97,7 @@
     "pouchdb-adapter-leveldb": "^6.2.0",
     "pouchdb-adapter-node-websql": "^6.2.0",
     "prop-types": "^15.5.10",
+    "random-words": "0.0.1",
     "react": "^15.4.2",
     "react-addons-css-transition-group": "^15.4.2",
     "react-addons-transition-group": "^15.4.2",

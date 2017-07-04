@@ -9,6 +9,7 @@ export default class Flight extends TimelineObject {
     this.name = params.name || 'Flight';
     this.date = params.date || Date.now();
     this.mission = params.mission || null;
+    this.running = params.running || true;
     this.simulators = [];
     if(params.simulators){
       if (params.simulators.length) {

@@ -73,6 +73,13 @@ App.on('startFlight', ({ flightId, missionId, simulators }) => {
   pubsub.publish('flightsUpdate', App.flights);
 });
 
+App.on('newFlight', () => {
+
+});
+App.on('addSimulatorToFlight', () => {
+
+});
+
 
 // Simulator
 App.on('createSimulator', ({ id, name, template, flightId, timeline, stationSet }) => {

@@ -4,9 +4,10 @@ import { Router, browserHistory } from 'react-router';
 //import { Signin, Register, Forgot, PasswordReset } from '../components/Accounts.jsx';
 // import UserAdmin from '../components/admin/Users.jsx';
 import CardContainer from './Card.jsx';
-import Config from './Config';
+//import Config from './Config';
 import Lobby from './Lobby';
 import Client from '../components/Client.jsx';
+import {FlightConfig, FlightDirector, MissionConfig, SimulatorConfig, Welcome} from './FlightDirector';
 
 const TestCard = (props) => {
   return <CardContainer test={true} component={props.params.component} />;
@@ -23,16 +24,32 @@ class NoMatch extends Component {
 
 const routes = [
 {
-  path: '/config',
-  component: Config,
-},
-{
   path: '/client',
   component: Client,
 },
 {
-  path: '/',
+  path: '/lobby',
   component: Lobby,
+},
+{
+  path: '/',
+  component: Welcome
+}, 
+{
+  path: '/flight/config/:flightId',
+  component: FlightConfig
+},
+{
+  path: '/missionConfig',
+  component: MissionConfig
+},
+{
+  path: '/simulatorConfig',
+  component: SimulatorConfig
+},
+{
+  path: '/flight/:flightId',
+  component: FlightDirector
 },
 /*{
   path: '/login',

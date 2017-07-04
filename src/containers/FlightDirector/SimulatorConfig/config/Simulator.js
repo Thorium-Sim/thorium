@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LayoutList from '../../layouts';
+import LayoutList from '../../../../components/layouts';
 import gql from 'graphql-tag';
 import { withApollo } from 'react-apollo';
 

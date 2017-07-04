@@ -8,7 +8,10 @@ export const FlightStructureQueries = {
     if (template) returnVal = returnVal.filter(s => s.template);
     return returnVal;
   },
-  flights() {
+  flights(root, {running}) {
+    if (running) {
+      return App.flights.filter(f => running);
+    }
     return App.flights;
   },
   stations() {
@@ -158,6 +161,11 @@ export const FlightStructureTypes = {
     }
   },
   Flight: {
+    date(rootValue) {
+      console.log(rootValue.date);
+      const date = new Date(rootValue.date);
+      return date.toISOString();
+    },
     mission(rootValue) {
       return App.missions.find(m => m.id === rootValue.mission);
     },

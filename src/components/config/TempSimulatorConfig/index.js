@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Container, Row, Col, Card } from 'reactstrap';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
-import SimulatorConfig from './SimulatorConfig';
+//import SimulatorConfig from './SimulatorConfig';
 //import StationsConfig from './StationsConfig';
 import SystemsConfig from './SystemsConfig';
 let simObjs = [
 {
   name: "Simulator",
-  component: SimulatorConfig
+ // component: SimulatorConfig
 },
 {
   name: "Stations",
