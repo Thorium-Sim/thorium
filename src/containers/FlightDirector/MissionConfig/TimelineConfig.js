@@ -256,8 +256,8 @@ export default class TimelineConfig extends Component {
     setSelectedTimelineStep={this._setSelectedTimelineStep.bind(this)}
     removeTimelineStep={this._removeTimelineStep.bind(this)} />
     <ButtonGroup>
-    <Button color="success" size="sm" onClick={this._addTimelineStep.bind(this)} >Add Timeline Step</Button>
-    {this.state.selectedTimelineStep && <Button color="danger" size="sm" onClick={this._removeTimelineStep.bind(this, this.state.selectedTimelineStep)} >Remove Timeline Step</Button>}
+    <Button color="success" size="sm" onClick={this._addTimelineStep.bind(this)} >Add Step</Button>
+    {this.state.selectedTimelineStep && <Button color="danger" size="sm" onClick={this._removeTimelineStep.bind(this, this.state.selectedTimelineStep)} >Remove Step</Button>}
     </ButtonGroup>
     </Card>
     </Col>
@@ -271,7 +271,7 @@ export default class TimelineConfig extends Component {
        { e.name } <FontAwesome name="ban" className="text-danger pull-right" onClick={this._removeTimelineItem.bind(this,e)} />
        </li>;
      }) }
-     <Button color="success" size="sm" block onClick={this._addTimelineItem.bind(this)} >Add Timeline Item</Button>
+     <Button color="success" size="sm" block onClick={this._addTimelineItem.bind(this)} >Add Item</Button>
      </Card>
      </Col> }
      { (() => {

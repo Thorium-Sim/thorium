@@ -1,9 +1,10 @@
 import uuid from 'uuid';
 
 export class StationSet {
-  constructor({ id, name, stations = [] }) {
+  constructor({ id, name, simulatorId, stations = [] }) {
     this.class = 'StationSet';
     this.id = id || uuid.v4();
+    this.simulatorId = simulatorId || null;
     this.name = name || 'StationSet';
     this.stations = [];
     stations.forEach((station) => {

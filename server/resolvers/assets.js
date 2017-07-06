@@ -53,24 +53,24 @@ export const AssetsQueries = {
 
 export const AssetsMutations = {
   addAssetFolder(root, { name, folderPath, fullPath }, context) {
-    App.handleEvent({ name, folderPath, fullPath }, 'addAssetFolder', context.clientId);
+    App.handleEvent({ name, folderPath, fullPath }, 'addAssetFolder', context);
     return '';
   },
   removeAssetFolder(root, { id }, context) {
-    App.handleEvent({ id }, 'removeAssetFolder', context.clientId);
+    App.handleEvent({ id }, 'removeAssetFolder', context);
     return '';
   },
   addAssetContainer(root, { name, folderId, folderPath, fullPath }, context) {
     App.handleEvent({ name, folderId, folderPath, fullPath },
-      'addAssetContainer', context.clientId);
+      'addAssetContainer', context);
     return '';
   },
   removeAssetContainer(root, { id }, context) {
-    App.handleEvent({ id }, 'removeAssetContainer', context.clientId);
+    App.handleEvent({ id }, 'removeAssetContainer', context);
     return '';
   },
   removeAssetObject(root, { id }, context) {
-    App.handleEvent({ id }, 'removeAssetObject', context.clientId);
+    App.handleEvent({ id }, 'removeAssetObject', context);
     // Get the object
     //const obj = App.assetObjects.find((object) => object.id === id);
     //const extension = obj.url.substr(obj.url.lastIndexOf('.'));
@@ -109,7 +109,7 @@ export const AssetsMutations = {
         fullPath: `${fullPath}/${simulatorId + extension}`,
         url: `/assets${fullPath}/${simulatorId + extension}`,
         simulatorId,
-      }, 'addAssetObject', context.clientId);
+      }, 'addAssetObject', context);
     });
     return '';
   },

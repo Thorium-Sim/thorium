@@ -62,62 +62,62 @@ export const ShipStructureQueries = {
 export const ShipStructureMutations = {
   // Decks
   addDeck(root, args, context) {
-    App.handleEvent(args, 'addDeck', context.clientId);
+    App.handleEvent(args, 'addDeck', context);
   },
   removeDeck(root, args, context) {
-    App.handleEvent(args, 'removeDeck', context.clientId);
+    App.handleEvent(args, 'removeDeck', context);
   },
   addDecksBulk(root, args, context) {
-    App.handleEvent(args, 'addDecksBulk', context.clientId);
+    App.handleEvent(args, 'addDecksBulk', context);
   },
   updateDeckSvg(root, args, context) {
-    App.handleEvent(args, 'updateDeckSvg', context.clientId);
+    App.handleEvent(args, 'updateDeckSvg', context);
   },
   deckDoors(root, args, context) {
-    App.handleEvent(args, 'deckDoors', context.clientId);
+    App.handleEvent(args, 'deckDoors', context);
   },
   deckEvac(root, args, context) {
-    App.handleEvent(args, 'deckEvac', context.clientId);
+    App.handleEvent(args, 'deckEvac', context);
   },
   updateHallwaySvg(root, args, context) {
-    App.handleEvent(args, 'updateHallwaySvg', context.clientId);
+    App.handleEvent(args, 'updateHallwaySvg', context);
   },
 
   // Rooms
   addRoom(root, args, context) {
-    App.handleEvent(args, 'addRoom', context.clientId);
+    App.handleEvent(args, 'addRoom', context);
   },
   removeRoom(root, args, context) {
-    App.handleEvent(args, 'removeRoom', context.clientId);
+    App.handleEvent(args, 'removeRoom', context);
   },
   addRoomsBulk(root, args, context) {
-    App.handleEvent(args, 'addRoomsBulk', context.clientId);
+    App.handleEvent(args, 'addRoomsBulk', context);
   },
   renameRoom(root, args, context) {
-    App.handleEvent(args, 'renameRoom', context.clientId);
+    App.handleEvent(args, 'renameRoom', context);
   },
   updateRoomSvg(root, args, context) {
-    App.handleEvent(args, 'updateRoomSvg', context.clientId);
+    App.handleEvent(args, 'updateRoomSvg', context);
   },
   roomGas(root, args, context) {
-    App.handleEvent(args, 'roomGas', context.clientId);
+    App.handleEvent(args, 'roomGas', context);
   },
 
   // Inventory
   addInventory(root, args, context) {
-    App.handleEvent(args, 'addInventory', context.clientId);
+    App.handleEvent(args, 'addInventory', context);
   },
   removeInventory(root, args, context) {
-    App.handleEvent(args, 'removeInventory', context.clientId);
+    App.handleEvent(args, 'removeInventory', context);
   },
   moveInventory(root, args, context) {
-    App.handleEvent(args, 'moveInventory', context.clientId);
+    App.handleEvent(args, 'moveInventory', context);
   },
   updateInventoryCount(root, args, context) {
-    App.handleEvent(args, 'updateInventoryCount', context.clientId);
+    App.handleEvent(args, 'updateInventoryCount', context);
   },
   updateInventoryMetadata(root, args, context) {
-    App.handleEvent(args, 'updateInventoryMetadata', context.clientId);
+    App.handleEvent(args, 'updateInventoryMetadata', context);
   },
 };
 

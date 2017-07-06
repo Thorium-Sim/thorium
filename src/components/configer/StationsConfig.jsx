@@ -215,11 +215,11 @@ class StationsConfig extends Component {
 				<div className="scroll">
 				{selectedStation.stations.map((station,stationIndex) => {
 					return (
-						<div key={`${this.state.selectedStationConfig}-${station.name}-${stationIndex}`} style={{marginBottom: '15px'}}>
+						<div key={`${this.state.selectedStationConfig}-${station.name}-${stationIndex}`} style={{marginBottom: '15px', border: 'solid 1px rgba(0,0,0,0.5)'}}>
 						<table className="table table-sm table-striped table-hover">
 						<thead className="thead-default">
 						<tr>
-						<th colSpan="3">{station.name}</th>
+						<th colSpan="2">{station.name}</th>
 						<th><FontAwesome name="pencil-square-o" className="text-warning" onClick={this._renameStation.bind(this,station)} /> <FontAwesome name="ban" className="text-danger" onClick={this._removeStation.bind(this,station)} /></th>
 						</tr>
 						</thead>

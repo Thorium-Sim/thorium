@@ -39,38 +39,22 @@ App.on('removeSimulatorToMission', ({ missionId, simulatorId }) => {
 
 
 // Flight
-App.on('startFlight', ({ flightId, missionId, simulators }) => {
-  // First things first, clone the mission object.
-  const mission = new Classes.Mission(App.missions.find(m => m.id === missionId));
-  // Construct the flights timeline.
-
-  const missionTimeline = mission.timeline;
-  simulators.forEach(s => {
-    const init = missionTimeline[0].timelineItems.find(t => t.id === s.missionSim);
-    const args = JSON.parse(init.args);
-    const missionSim = Object.assign(App.simulators.find(sim => sim.id === s.missionSim));
-    // We only worry about the first timeline item of the template sim.
-    const templateSim = Object.assign(App.simulators.find(sim => sim.id === s.simulator));
-    const templateInit = templateSim.timeline[0].timelineItems;
-    const missionSimTimeline = missionSim.timeline;
-    missionSimTimeline[0].timelineItems = [].concat(templateInit, missionSimTimeline[0].timelineItems);
-    // Update the args to include the timeline for the simulator.
-    args.timeline = missionSimTimeline;
-    args.flightId = flightId;
-    args.stationSet = s.stationSet;
-
-    init.update({ args: JSON.stringify(args) });
+App.on('startFlight', ({ id, name, simulators}) => {
+  // Loop through all of the simulators
+  const simIds = simulators.map(s => {
+    const template = Object.assign({}, App.simulators.find(sim => sim.id === s.simulatorId));
+    template.id = null;
+    const sim = new Classes.Simulator(template);
+    sim.template = false;
+    sim.templateId = s.simulatorId;
+    sim.mission = s.missionid;
+    const stationSet = App.stationSets.find(ss => ss.id === s.stationSet);
+    sim.stations = stationSet.stations;
+    sim.stationSet = stationSet.id;
+    App.simulators.push(sim);
+    return sim.id;
   });
-
-  const flight = new Classes.Flight({
-    id: flightId,
-    mission: missionId,
-    name: mission.name,
-    timeline: missionTimeline,
-  });
-  App.flights.push(flight);
-  flight.nextTimeline();
-  pubsub.publish('flightsUpdate', App.flights);
+  App.flights.push(new Classes.Flight({id, name, simulators: simIds}));
 });
 
 
@@ -163,8 +147,8 @@ App.on('updateTimelineStepItem', ({ simulatorId, missionId, timelineStepId, time
 
 
 // StationSet
-App.on('createStationSet', ({ id, name }) => {
-  const station = new Classes.StationSet({ id, name });
+App.on('createStationSet', ({ id, name, simulatorId }) => {
+  const station = new Classes.StationSet({ id, name, simulatorId });
   App.stationSets.push(station);
   pubsub.publish('stationSetUpdate', App.stationSets);
 });

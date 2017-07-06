@@ -124,7 +124,7 @@ export const Cores = {
   TractorBeamCore,
   CrewCore,
   SecurityTeamsCore,
-  DamageTeamsCore
+  DamageTeamsCore,
 };
 
 export default Views;

@@ -11,7 +11,6 @@ export class TimelineObject {
         this.timeline.push(new TimelineStep(t.id, t));
       });
     } else {
-      console.log(params)
       this.timeline[0] = new TimelineStep(`${params.id}-initial`, {
         name: 'Initialize',
         description: 'Initializes the mission',

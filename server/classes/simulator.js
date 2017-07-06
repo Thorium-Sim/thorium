@@ -10,14 +10,18 @@ export default class Simulator extends TimelineObject {
     this.layout = params.layout || 'LayoutDefault';
     this.alertlevel = params.alertlevel || '5';
     this.template = params.template || false;
+    this.templateId = params.templateId || null;
     this.class = 'Simulator';
-    this.crewCount = params.crewCount || 50;
+    this.stationSet = params.stationSet || null;
+    this.stations = params.stations || [];
+    this.mission = params.mission || null;
     this.teams = [];
     this.ship = new Ship(params.ship)
     // Set up the teams
     if (params.teams) {
       params.teams.forEach(t => this.teams.push(new Team(t)))
     }
+
     // Initialize the simulator async
     if (params.launch) {
       setTimeout(() => { this.nextTimeline(); }, 100);
@@ -39,9 +43,8 @@ export default class Simulator extends TimelineObject {
     // To the server
     this.layout = layout;
   }
-  setCrewCount(count) {
-    this.crewCount = count;
-  }
+
+  // Ship 
   clamps(tf) {
     this.ship.clamps = tf;
   }

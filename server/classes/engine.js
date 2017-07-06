@@ -18,6 +18,9 @@ export default class Engine extends HeatMixin(System) {
     const currentSpeed = this.speeds[this.speed] ? this.speeds[this.speed].number : 0;
     return currentSpeed / topSpeed;
   }
+  setSpeeds(speeds) {
+    this.speeds = speeds;
+  }
   break(report) {
     this.on = false;
     this.speed = -1;

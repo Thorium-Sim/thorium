@@ -17,6 +17,7 @@ class Events extends EventEmitter {
     this.missions = [];
     this.systems = [];
     this.clients = [];
+    this.sets = [];
     this.decks = [];
     this.rooms = [];
     this.crew = [];
@@ -89,7 +90,8 @@ class Events extends EventEmitter {
     delete snapshot.domain;
     return snapshot;
   }
-  handleEvent(param, pres, clientId) {
+  handleEvent(param, pres, context = {}) {
+    const {clientId} = context;
     if (!config.db) { 
       // We need to fire the events directly
       // Because the database isn't triggering them

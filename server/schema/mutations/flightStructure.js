@@ -2,10 +2,8 @@ export default `
 createMission(name: String!):String
 removeMission(missionId: ID!):String
 editMission(missionId: ID!, name: String, description: String, simulators: [String]):String
-addSimulatorToMission(missionId: ID!, simulatorName: String!):String
-removeSimulatorFromMission(missionId: ID!, simulatorId: ID!):String
 
-startFlight(missionId: ID!, simulators:[FlightSimulatorInput]):String
+startFlight(name: String, simulators: [SimulatorInput!]!):String
 
 #Macro: Create a simulator
 createSimulator(
@@ -37,7 +35,7 @@ addTimelineItemToTimelineStep(simulatorId: ID, missionId: ID, timelineStepId: ID
 removeTimelineStepItem(simulatorId: ID, missionId: ID, timelineStepId: ID!, timelineItemId: ID!): String
 updateTimelineStepItem(simulatorId: ID, missionId: ID, timelineStepId: ID!, timelineItemId: ID!, updateTimelineItem: TimelineitemInput!): String
 
-createStationSet(name: String!):String
+createStationSet(name: String!, simulatorId: ID!):String
 removeStationSet(stationSetID: ID!):String
 renameStationSet(stationSetID: ID!, name: String!):String
 addStationToStationSet(stationSetID: ID!, stationName: String!):String

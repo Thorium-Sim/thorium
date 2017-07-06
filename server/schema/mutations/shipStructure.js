@@ -14,7 +14,7 @@ deckDoors(deckId: ID!, doors: Boolean): String
 deckEvac(deckId: ID!, evac: Boolean): String
 updateHallwaySvg(deckId: ID!, svg: String): String
 
-addRoom(simulatorId: ID!, deckId: ID! name: String!, svgPath: String): String
+addRoom(simulatorId: ID!, deckId: ID, deckNumber: Int, name: String!, svgPath: String): String
 removeRoom(roomId: ID!): String
 
 #Macro: Add rooms

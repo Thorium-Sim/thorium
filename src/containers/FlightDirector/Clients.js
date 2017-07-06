@@ -12,20 +12,22 @@ subscription ClientChanged {
       id
       name
       date
+      simulators {
+        id
+        name
+      }
     }
     simulator {
       id
       name
       alertlevel
       layout
+      stations {
+        name
+      }
     }
     station {
       name
-      cards{
-        name
-        component
-        icon
-      }
     }
     loginName
     loginState
@@ -156,11 +158,6 @@ query Clients {
     }
     station {
       name
-      cards{
-        name
-        component
-        icon
-      }
     }
     loginName
     loginState
@@ -169,9 +166,6 @@ query Clients {
     id
     name
     date
-    mission {
-      name
-    }
     simulators {
       id
       name

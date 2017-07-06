@@ -292,6 +292,7 @@ gamepadLoop(){
       y: this.state.direction.top,
       z: this.state.directionFore.left
     };
+    if (!thruster) return <h1>No thruster system</h1>;
     return (
      <div className="cardThrusters">
      {thruster.damage.damaged && <DamageOverlay />}

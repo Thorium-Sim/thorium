@@ -11,16 +11,16 @@ type Mission {
 type Flight {
   id: ID
   name: String
-  date: Float
+  date: String
+  running: Boolean
   timelineStep: Int
-  mission: Mission
   simulators: [Simulator]
 }
 
-input FlightSimulatorInput {
-  missionSim: ID
-  simulator: ID
-  stationSet: ID
+input SimulatorInput {
+  simulatorId: ID!,
+  stationSet: ID!,
+  missionId: ID
 }
 
 type Simulator {
@@ -33,7 +33,8 @@ type Simulator {
   systems: [System]
   systemsFull: [SystemUnion]
   stations: [Station]
-  timeline: [TimelineStep]
+  mission: Mission
+  stationSets: [Stationset]
   decks: [Deck]
   rooms: [Room]
   ship: Ship
@@ -48,6 +49,7 @@ type TemplateSimulator {
 type Stationset {
   id: ID
   name: String
+  simulator: Simulator
   stations: [Station]
 }
 
@@ -59,7 +61,6 @@ type Station {
 type Card {
   name: String
   component: String
-  icon: String
 }
 
 type Notification {

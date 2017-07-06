@@ -3,9 +3,8 @@ import ReactGridLayout from 'react-grid-layout';
 import { graphql, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import FontAwesome from 'react-fontawesome';
-import moment from 'moment';
 import Immutable from 'immutable';
-import { Cores } from '../components/views';
+import { Cores } from '../../components/views';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './Core.scss';
@@ -25,17 +24,6 @@ subscription CoreSub {
   }
 }`;
 
-const FLIGHT_SUB = gql`subscription FlightsChanged {
-  flightsUpdate {
-    id
-    name
-    date
-    simulators {
-      id
-      name
-    }
-  }
-}`;
 
 const CoreComponent = (props) => {
   const _removeCore = () => {
@@ -63,7 +51,7 @@ class Core extends Component {
   constructor(props){
     super(props);
     this.state = {
-      flight: localStorage.getItem('thorium_coreFlight') || '',
+      flight: props.flightId,
       simulator: localStorage.getItem('thorium_coreSimulator') || '',
       layout: localStorage.getItem('thorium_coreLayout') || 'default',
       editable: false,
@@ -81,27 +69,12 @@ class Core extends Component {
         },
       });
     }
-    if (!this.flightSubscription && !nextProps.data.loading) {
-      this.flightSubscription = nextProps.data.subscribeToMore({
-        document: FLIGHT_SUB,
-        updateQuery: (previousResult, {subscriptionData}) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult.merge({flights: subscriptionData.data.flightsUpdate}).toJS();
-        },
-      });
-    }
   }
   pickLayout(e){
     this.setState({
       layout: e.target.value
     });
     localStorage.setItem('thorium_coreLayout', e.target.value);
-  }
-  pickFlight(e) {
-    this.setState({
-      flight: e.target.value
-    });
-    localStorage.setItem('thorium_coreFlight', e.target.value);
   }
   pickSimulator(e) {
     this.setState({
@@ -196,13 +169,6 @@ class Core extends Component {
     });
     return (
       <div className="core">
-      <select className="btn btn-success btn-sm" onChange={this.pickFlight.bind(this)} value={this.state.flight}>
-      <option>Pick a flight</option>
-      <option disabled>-----------</option>
-      {
-        flights.map(f => (<option key={f.id} value={f.id}>{ `${f.name}: ${moment(f.date).format('MM/DD/YY hh:mma')}` }</option>))
-      }
-      </select>
       <select className="btn btn-info btn-sm" onChange={this.pickSimulator.bind(this)} value={this.state.simulator}>
       <option>Pick a simulator</option>
       <option disabled>-----------</option>

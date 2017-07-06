@@ -10,37 +10,37 @@ export const ShortRangeCommQueries = {
 
 export const ShortRangeCommMutations = {
   commAddSignal(root, args, context) {
-    App.handleEvent(args, 'commAddSignal', context.clientId);
+    App.handleEvent(args, 'commAddSignal', context);
   },
   commUpdateSignal(root, args, context) {
-    App.handleEvent(args, 'commUpdateSignal', context.clientId);
+    App.handleEvent(args, 'commUpdateSignal', context);
   },
   commRemoveSignal(root, args, context) {
-    App.handleEvent(args, 'commRemoveSignal', context.clientId);
+    App.handleEvent(args, 'commRemoveSignal', context);
   },
   commAddArrow(root, args, context) {
-    App.handleEvent(args, 'commAddArrow', context.clientId);
+    App.handleEvent(args, 'commAddArrow', context);
   },
   commRemoveArrow(root, args, context) {
-    App.handleEvent(args, 'commRemoveArrow', context.clientId);
+    App.handleEvent(args, 'commRemoveArrow', context);
   },
   commConnectArrow(root, args, context) {
-    App.handleEvent(args, 'commConnectArrow', context.clientId);
+    App.handleEvent(args, 'commConnectArrow', context);
   },
   commDisconnectArrow(root, args, context) {
-    App.handleEvent(args, 'commDisconnectArrow', context.clientId);
+    App.handleEvent(args, 'commDisconnectArrow', context);
   },
   commUpdate(root, args, context) {
-    App.handleEvent(args, 'commUpdate', context.clientId);
+    App.handleEvent(args, 'commUpdate', context);
   },
   commHail(root, args, context) {
-    App.handleEvent(args, 'commHail', context.clientId);
+    App.handleEvent(args, 'commHail', context);
   },
   cancelHail(root, args, context) {
-    App.handleEvent(args, 'cancelHail', context.clientId);
+    App.handleEvent(args, 'cancelHail', context);
   },
   connectHail(root, args, context) {
-    App.handleEvent(args, 'connectHail', context.clientId);
+    App.handleEvent(args, 'connectHail', context);
   },
 };
 

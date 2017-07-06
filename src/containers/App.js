@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Router, browserHistory } from 'react-router';
-//import { Signin, Register, Forgot, PasswordReset } from '../components/Accounts.jsx';
-// import UserAdmin from '../components/admin/Users.jsx';
 import CardContainer from './Card.jsx';
-import Config from './Config';
-import Lobby from './Lobby';
 import Client from '../components/Client.jsx';
+import DebugList from './DebugList';
+import {FlightConfig, FlightDirector, SetConfig, MissionConfig, SimulatorConfig, AssetConfig, Welcome, ClientsLobby} from './FlightDirector';
 
 const TestCard = (props) => {
   return <CardContainer test={true} component={props.params.component} />;
@@ -23,33 +21,45 @@ class NoMatch extends Component {
 
 const routes = [
 {
-  path: '/config',
-  component: Config,
-},
-{
   path: '/client',
   component: Client,
 },
 {
   path: '/',
-  component: Lobby,
-},
-/*{
-  path: '/login',
-  component: Signin
+  component: Welcome
+}, 
+{
+  path: '/flightConfig',
+  component: FlightConfig
 },
 {
-  path: '/register',
-  component: Register
+  path: '/missionConfig',
+  component: MissionConfig
 },
 {
-  path: "/reset_password/:resetLink",
-  component: PasswordReset
+  path: '/simulatorConfig',
+  component: SimulatorConfig
 },
 {
-  path: '/forgot',
-  component: Forgot
-},*/
+  path: '/assetConfig',
+  component: AssetConfig
+},
+{
+  path: '/setConfig',
+  component: SetConfig
+},
+{
+  path: '/flight/:flightId',
+  component: ClientsLobby
+},
+{
+  path: '/flight/:flightId/core',
+  component: FlightDirector
+},
+{
+  path: '/debug',
+  component: DebugList
+},
 {
   path: '/test',
   component: TestCard
@@ -58,11 +68,6 @@ const routes = [
   path: '/test/:component',
   component: TestCard
 },
-/* This component is currently broken. Needs fixed.
-{
-  path: '/admin/users',
-  component: UserAdmin
-},*/
 {
   path: '*',
   component:NoMatch

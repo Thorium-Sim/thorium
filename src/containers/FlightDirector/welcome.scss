@@ -1,0 +1,22 @@
+.WelcomeView {
+  .flight-picker {
+    p {
+      margin: 0;
+    }
+  }
+  .content-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    .card {
+      height: 40vh;
+      overflow: scroll;
+    }
+  }
+  .title-row {
+    margin: 5% 0;
+  }
+  .config-row {
+    margin-top: 5%;
+  }
+}

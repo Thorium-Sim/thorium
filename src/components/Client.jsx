@@ -53,7 +53,6 @@ subscription ClientChanged($client: ID!) {
 			cards{
 				name
 				component
-				icon
 			}
 		}
 		loginName
@@ -155,7 +154,6 @@ query Clients($clientId: ID) {
 			cards{
 				name
 				component
-				icon
 			}
 		}
 		loginName
