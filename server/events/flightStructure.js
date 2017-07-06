@@ -46,9 +46,11 @@ App.on('startFlight', ({ id, name, simulators}) => {
     template.id = null;
     const sim = new Classes.Simulator(template);
     sim.template = false;
+    sim.templateId = s.simulatorId;
     sim.mission = s.missionid;
     const stationSet = App.stationSets.find(ss => ss.id === s.stationSet);
     sim.stations = stationSet.stations;
+    sim.stationSet = stationSet.id;
     App.simulators.push(sim);
     return sim.id;
   });

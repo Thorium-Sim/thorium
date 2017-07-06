@@ -17,6 +17,7 @@ class Events extends EventEmitter {
     this.missions = [];
     this.systems = [];
     this.clients = [];
+    this.sets = [];
     this.decks = [];
     this.rooms = [];
     this.crew = [];

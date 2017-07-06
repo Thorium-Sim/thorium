@@ -4,7 +4,7 @@ import { Router, browserHistory } from 'react-router';
 import CardContainer from './Card.jsx';
 import Client from '../components/Client.jsx';
 import DebugList from './DebugList';
-import {FlightConfig, FlightDirector, MissionConfig, SimulatorConfig, AssetConfig, Welcome, ClientsLobby} from './FlightDirector';
+import {FlightConfig, FlightDirector, SetConfig, MissionConfig, SimulatorConfig, AssetConfig, Welcome, ClientsLobby} from './FlightDirector';
 
 const TestCard = (props) => {
   return <CardContainer test={true} component={props.params.component} />;
@@ -43,6 +43,10 @@ const routes = [
 {
   path: '/assetConfig',
   component: AssetConfig
+},
+{
+  path: '/setConfig',
+  component: SetConfig
 },
 {
   path: '/flight/:flightId',

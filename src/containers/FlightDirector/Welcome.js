@@ -66,6 +66,9 @@ class Welcome extends Component {
         <Col sm={4}>
         <Button tag={Link} to="/missionConfig" color="primary" block>Configure Missions</Button>
         </Col>
+        <Col sm={{size: 4}}>
+        <Button tag={Link} to="/setConfig" color="warning" block>Configure Sets</Button>
+        </Col>
         <Col sm={{size: 4, offset: 4}}>
         <Button tag={Link} to="/debug" color="primary" block>Debug</Button>
         </Col>

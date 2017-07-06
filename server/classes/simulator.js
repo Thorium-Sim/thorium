@@ -10,6 +10,7 @@ export default class Simulator extends TimelineObject {
     this.layout = params.layout || 'LayoutDefault';
     this.alertlevel = params.alertlevel || '5';
     this.template = params.template || false;
+    this.templateId = params.templateId || null;
     this.class = 'Simulator';
     this.stationSet = params.stationSet || null;
     this.stations = params.stations || [];
