@@ -3,7 +3,6 @@ import 'golden-layout/src/css/goldenlayout-base.css';
 import 'golden-layout/src/css/goldenlayout-light-theme.css';
 import React, {Component} from 'react';
 import ReactDOM, { findDOMNode } from 'react-dom';
-import moment from 'moment';
 import Immutable from 'immutable';
 import { Cores } from '../../components/views';
 import { graphql, withApollo, ApolloProvider } from 'react-apollo';

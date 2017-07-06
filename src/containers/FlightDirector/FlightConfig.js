@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import { Link } from 'react-router';
-import { Jumbotron, Col, Row, Container, Button, Card, Tooltip, FormGroup, Label, Input } from 'reactstrap';
+import { Col, Row, Container, Button, Card, Tooltip, FormGroup, Label, Input } from 'reactstrap';
 import { browserHistory } from 'react-router'
 
 import randomWords from 'random-words';
