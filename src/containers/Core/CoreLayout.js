@@ -235,13 +235,13 @@ class CoreLayout extends Component {
 }
 
 const CORE_LAYOUT = gql`
-query CoreLayouts{
+query CoreLayouts($id: ID){
   coreLayouts {
     id
     name
     config
   }
-  flights {
+  flights(id: $id) {
     id
     name
     date
@@ -252,4 +252,10 @@ query CoreLayouts{
   }
 }
 `;
-export default graphql(CORE_LAYOUT)(withApollo(CoreLayout));
+export default graphql(CORE_LAYOUT, {
+  options: (ownProps) => ({
+    variables: {
+      id: ownProps.flightId
+    }
+  })
+})(withApollo(CoreLayout));

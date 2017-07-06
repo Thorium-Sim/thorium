@@ -39,9 +39,20 @@ App.on('removeSimulatorToMission', ({ missionId, simulatorId }) => {
 
 
 // Flight
-App.on('startFlight', ({ name, simulators}) => {
-  
-
+App.on('startFlight', ({ id, name, simulators}) => {
+  // Loop through all of the simulators
+  const simIds = simulators.map(s => {
+    const template = Object.assign({}, App.simulators.find(sim => sim.id === s.simulatorId));
+    template.id = null;
+    const sim = new Classes.Simulator(template);
+    sim.template = false;
+    sim.mission = s.missionid;
+    const stationSet = App.stationSets.find(ss => ss.id === s.stationSet);
+    sim.stations = stationSet.stations;
+    App.simulators.push(sim);
+    return sim.id;
+  });
+  App.flights.push(new Classes.Flight({id, name, simulators: simIds}));
 });
 
 

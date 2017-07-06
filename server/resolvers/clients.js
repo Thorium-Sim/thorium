@@ -101,17 +101,8 @@ export const ClientTypes = {
       return App.simulators.find(s => s.id === rootValue.simulatorId);
     },
     station(rootValue) {
-      const flight = App.flights.find(f => f.id === rootValue.flightId);
-      if (flight) {
-        const flightSimulator = flight.simulators.find(f => f.id === rootValue.simulatorId);
-        if (flightSimulator) {
-          const stationSet = App.stationSets.find(s => s.id === flightSimulator.stationSet);
-          if (stationSet) {
-            return stationSet.stations.find(s => s.name === rootValue.station);
-          }
-        }
-      }
-      return {};
+      const simulator = App.simulators.find(s => s.id === rootValue.simulatorId) || {};
+      return simulator.stations.find(s => s.name === rootValue.station);
     },
   },
 };

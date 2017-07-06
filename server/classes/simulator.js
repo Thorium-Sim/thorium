@@ -12,6 +12,7 @@ export default class Simulator extends TimelineObject {
     this.template = params.template || false;
     this.class = 'Simulator';
     this.stationSet = params.stationSet || null;
+    this.stations = params.stations || [];
     this.mission = params.mission || null;
     this.teams = [];
     this.ship = new Ship(params.ship)

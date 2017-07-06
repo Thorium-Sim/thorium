@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import { Link } from 'react-router';
-import { Col, Row, Container, Button, Card, Tooltip, FormGroup, Label, Input } from 'reactstrap';
+import { Jumbotron, Col, Row, Container, Button, Card, Tooltip, FormGroup, Label, Input } from 'reactstrap';
 import { browserHistory } from 'react-router'
 
 import randomWords from 'random-words';
@@ -43,7 +43,9 @@ class FlightConfig extends Component {
       mutation,
       variables
     }).then(({data: {startFlight: flightId}}) => {
-      browserHistory.push(`/flight/${flightId}`)
+      setTimeout(() => {
+        browserHistory.push(`/flight/${flightId}`)
+      }, 500)
     })
   }
   render() {
@@ -61,7 +63,7 @@ class FlightConfig extends Component {
     <Row>
     <Col sm={3}>
     <h5>Pick a simulator</h5>
-    <Card class="scroll">
+    <Card className="scroll">
     {simulators.map(s => <li key={s.id}
       onClick={() => this.setState({selectedStation: null, selectedSimulator: s.id})}
       className={`list-group-item ${s.id === selectedSimulator ? 'selected' : ''}`}>{s.name}</li>)}
@@ -71,7 +73,7 @@ class FlightConfig extends Component {
     {selectedSimulator &&
       <div>
       <h5>Pick a station set</h5>
-      <Card class="scroll">
+      <Card className="scroll">
       {selectedSimObj.stationSets.map(s => <TooltipList onClick={() => this.setState({selectedStation: s.id})} selected={s.id === selectedStation} key={s.id} id={s.id} content={s.name} tooltip={s.stations.map(st => st.name).join(', ')} />)}
       </Card>
       </div>
@@ -81,7 +83,7 @@ class FlightConfig extends Component {
     {selectedStation && 
       <div>
       <h5>Pick a mission</h5>
-      <Card class="scroll">
+      <Card className="scroll">
       {missions.map(m => <TooltipList onClick={() => this.setState({selectedMission: m.id})} selected={m.id === selectedMission} key={m.id} id={m.id} content={m.name} tooltip={m.description} />)}
       </Card>
       {selectedMission ? <Button size="sm" block color="info" onClick={this.addToFlight}>Continue</Button>

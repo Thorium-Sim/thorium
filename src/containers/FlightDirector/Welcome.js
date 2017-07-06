@@ -3,7 +3,6 @@ import { Col, Row, Container, Button, Card, CardBlock } from 'reactstrap';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Link } from 'react-router';
-import { browserHistory } from 'react-router'
 
 import './welcome.scss';
 
@@ -12,16 +11,6 @@ const FLIGHT_SUB = gql`subscription FlightsChanged {
     id
     name
     date
-    mission {
-      name
-    }
-    simulators {
-      id
-      name
-      stations {
-        name
-      }
-    }
   }
 }`;
 
@@ -37,9 +26,6 @@ class Welcome extends Component {
         },
       });
     }
-  }
-  newFlight() {
-    
   }
   render(){
     if (this.props.data.loading) return null;

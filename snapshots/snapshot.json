@@ -538,22 +538,7 @@
 			]
 		}
 	],
-	"flights": [
-		{
-			"class": "Flight",
-			"id": "af5ffc18-25fa-43db-9d9c-b88b1c4009a6",
-			"name": "Stormfront",
-			"date": 1497921993696,
-			"running": true,
-			"simulators": [
-				{
-					"class": "FlightSimulator",
-					"id": "e4961d14-4aac-4252-9039-a7bc172e4773",
-					"stationSet": "dfa8ebf6-e133-46d5-b1fc-f20a66ec8edf"
-				}
-			]
-		}
-	],
+	"flights": [],
 	"missions": [
 		{
 			"timeline": [

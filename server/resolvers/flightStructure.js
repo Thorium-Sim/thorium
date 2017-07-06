@@ -8,11 +8,15 @@ export const FlightStructureQueries = {
     if (template) returnVal = returnVal.filter(s => s.template);
     return returnVal;
   },
-  flights(root, {running}) {
+  flights(root, {running, id}) {
+    let returnRes = App.flights;
     if (running) {
-      return App.flights.filter(f => running);
+      returnRes =  returnRes.filter(f => f.running);
     }
-    return App.flights;
+    if (id) {
+      returnRes = returnRes.filter(f => f.id === id)
+    }
+    return returnRes;
   },
   stations() {
     return App.stationSets;
@@ -155,13 +159,6 @@ export const FlightStructureTypes = {
     systems(rootValue) {
       return App.systems.filter(s => s.simulatorId === rootValue.id);
     },
-    stations(rootValue) {
-      const stations = App.stationSets.find(s => s.id === rootValue.stationSet);
-      if (stations) {
-        return stations.stations;
-      }
-      return [];
-    },
     stationSets(rootValue) {
       return App.stationSets.filter(s => s.simulatorId === rootValue.id);
     }
@@ -177,11 +174,7 @@ export const FlightStructureTypes = {
       return date.toISOString();
     },
     simulators(rootValue) {
-      return rootValue.simulators.map((s) => {
-        const simulator = App.simulators.find(sId => sId.id === s.id);
-        simulator.stations = App.stationSets.find(sId => sId.id === s.stationSet).stations;
-        return simulator;
-      });
+      return rootValue.simulators.map(s => App.simulators.find(sim => sim.id === s));
     },
   },
   Mission: {
