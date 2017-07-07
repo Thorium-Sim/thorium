@@ -27,3 +27,4 @@ export TractorBeam from './tractorBeam';
 
 export Crew from './crew';
 export Team from './teams';
+export Set from './set';

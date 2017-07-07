@@ -19,17 +19,18 @@ export const SetMutations = {
     App.sets.filter(s => s.id !== id);
     pubsub.publish('setsUpdate', App.sets);
   },
-  setSimulatorId(rootValue, {id, simulatorId}, context) {
-    App.sets.find(s => s.id === id).setSimulatorId(simulatorId);
-  },
-  addClientToSet(rootValue, {id, clientId}, context) {
-    App.sets.find(s => s.id === id).addClient(clientId);
+  addClientToSet(rootValue, {id, client}, context) {
+    App.sets.find(s => s.id === id).addClient(client);
     pubsub.publish('setsUpdate', App.sets);
   },
   removeClientFromSet(rootValue, {id, clientId}, context) {
     App.sets.find(s => s.id === id).removeClient(clientId);
     pubsub.publish('setsUpdate', App.sets);
   },
+  updateSetClient(rootValue, {id, client}, context) {
+    App.sets.find(s => s.id === id).updateClient(client);
+    pubsub.publish('setsUpdate', App.sets);
+  }
 };
 
 export const SetSubscriptions = {
@@ -39,10 +40,16 @@ export const SetSubscriptions = {
 };
 
 export const SetTypes = {
-  Set: {
-    clients(rootValue) {
-      return rootValue.map(c => App.clients.find(cli => cli.id === c))
-    }
+  SetClient: {
+    client(rootValue) {
+      return rootValue.find(c => App.clients.find(cli => cli.id === c.clientId));
+    },
+    simulator(rootValue) {
+      return rootValue.find(c => App.simulators.find(s => s.template === true && s.id === c.simulatorId));
+    },
+    stationSet(rootValue) {
+      return rootValue.find(c => App.stationSets.find(s => s.id === c.stationSet));
+    },
   }
 };
 

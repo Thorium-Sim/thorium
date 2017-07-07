@@ -29,6 +29,7 @@ export tractorBeam from './tractorBeam';
 
 export crew from './crew';
 export teams from './teams';
+export set from './set';
 
 export const role = `
 type role {
