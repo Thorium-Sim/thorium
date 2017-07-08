@@ -42,13 +42,14 @@ export const SetSubscriptions = {
 export const SetTypes = {
   SetClient: {
     client(rootValue) {
-      return rootValue.find(c => App.clients.find(cli => cli.id === c.clientId));
+      console.log(App.clients, rootValue);
+      return App.clients.find(c => c.id === rootValue.clientId);
     },
     simulator(rootValue) {
-      return rootValue.find(c => App.simulators.find(s => s.template === true && s.id === c.simulatorId));
+      return App.simulators.find(c => c.id === rootValue.simulatorId);
     },
     stationSet(rootValue) {
-      return rootValue.find(c => App.stationSets.find(s => s.id === c.stationSet));
+      return App.stationSets.find(c => c.id === rootValue.stationSet);
     },
   }
 };

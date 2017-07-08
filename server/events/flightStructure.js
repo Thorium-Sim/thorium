@@ -52,10 +52,21 @@ App.on('startFlight', ({ id, name, simulators}) => {
     sim.stations = stationSet.stations;
     sim.stationSet = stationSet.id;
     App.simulators.push(sim);
+    // Duplicate all of the other stuff attached to the simulator too.
+    ["systems", "decks", "rooms", "crew", "teams", "inventory"].forEach(aspect => {
+      const filterAspect = App[aspect].filter(a => a.simulatorId === s.simulatorId)
+      filterAspect.forEach(a => {
+        const newAspect = Object.assign({}, a);
+        newAspect.id = null;
+        newAspect.simulatorId = sim.id;
+        App[aspect].push(new Classes[newAspect.class](newAspect));
+      })
+    })
     return sim.id;
   });
   App.flights.push(new Classes.Flight({id, name, simulators: simIds}));
 });
+
 
 
 // Simulator

@@ -1,8 +1,25 @@
 import React, { Component } from 'react';
-import { Button, Col, Row, Container } from 'reactstrap';
+import { Col, Row, Container } from 'reactstrap';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import moment from 'moment';
+
+const FLIGHTS_SUB = gql`
+subscription FlightsSub {
+  flightsUpdate {
+    id
+    name
+    date
+    running
+    simulators {
+      id
+      name
+      stations {
+        name
+      }
+    }
+  }
+}`;
 
 const CLIENT_CHANGE_QUERY = gql`
 subscription ClientChanged {
@@ -39,6 +56,7 @@ class Clients extends Component {
   constructor(props) {
     super(props);
     this.subscription = null;
+    this.flightsSub = null
   }
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
@@ -48,6 +66,14 @@ class Clients extends Component {
           const returnResult = Object.assign({}, previousResult);
           returnResult.clients = subscriptionData.data.clientChanged;
           return returnResult;
+        },
+      });
+    }
+    if (!this.flightsSub && !nextProps.data.loading) {
+      this.flightsSub = nextProps.data.subscribeToMore({
+        document: FLIGHTS_SUB,
+        updateQuery: (previousResult, {subscriptionData}) => {
+          return Object.assign({}, previousResult, {flights: subscriptionData.data.flightsUpdate});
         },
       });
     }
@@ -79,7 +105,6 @@ class Clients extends Component {
       <th>Flight</th>
       <th>Simulator</th>
       <th>Station</th>
-      <th>Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -90,11 +115,11 @@ class Clients extends Component {
           { `${p.id}` }
           </td>
           <td>
-          <select value={p.flight && p.flight.id} onChange={ this._select.bind(this, p, 'flight') } className="form-control-sm c-select">
+          <select value={(p.flight && p.flight.id) || ''} onChange={ this._select.bind(this, p, 'flight') } className="form-control-sm c-select">
           <option>Select a flight</option>
           { this.props.data.flights ?
             this.props.data.flights.map(f => {
-              return <option key={ `flight-${p.id}-${f}` } value={ f.id }>
+              return <option key={ `flight-${p.id}-${f.id}` } value={ f.id }>
               { `${f.name}: ${moment(f.date).format('MM/DD/YY hh:mma')}` }
               </option>;
             })
@@ -102,17 +127,17 @@ class Clients extends Component {
             </select>
             </td>
             <td>
-            <select value={p.simulator && p.simulator.id} onChange={ this._select.bind(this, p, 'simulator') } className="form-control-sm c-select">
+            <select value={(p.simulator && p.simulator.id) || ''} onChange={ this._select.bind(this, p, 'simulator') } className="form-control-sm c-select">
             <option>Select a simulator</option>
             { p.flight ?
               p.flight.simulators.map(s => (
-                <option key={s.id} value={s.id}>{s.name}</option>
+                <option key={`${p.id}-simulator-${s.id}`} value={s.id}>{s.name}</option>
                 )) : <option disabled>No Simulators</option>
             }
             </select>
             </td>
             <td>
-            <select value={p.station && p.station.name} onChange={ this._select.bind(this, p, 'station') } className="form-control-sm c-select">
+            <select value={(p.station && p.station.name) || ''} onChange={ this._select.bind(this, p, 'station') } className="form-control-sm c-select">
             <option>Select a station</option>
             { p.simulator ?
               p.simulator.stations.map(s => (
@@ -120,10 +145,6 @@ class Clients extends Component {
               : <option disabled>No Stations</option>
             }
             </select>
-            </td>
-            <td>
-            <Button color="primary" title="This saves the current simulator and station setting and persists it for future flights." size="sm">Save</Button>
-            <Button color="danger" title="This removes the saved state." size="sm">Reset</Button>
             </td>
             </tr>
             ))
@@ -166,6 +187,7 @@ query Clients {
     id
     name
     date
+    running
     simulators {
       id
       name

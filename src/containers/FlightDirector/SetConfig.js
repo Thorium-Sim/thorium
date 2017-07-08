@@ -42,7 +42,7 @@ class SetConfig extends Component {
       });
     }
   }*/
-  addClient = () => {
+  addSet = () => {
     const name = prompt('What is the name of the set?');
     if (name) {
       const mutation = gql`mutation AddSet($name: String!) {
@@ -58,30 +58,76 @@ class SetConfig extends Component {
       })
     }
   }
+  updateClient = ({target: {checked}}, clientId) => {
+    const {selectedSet, selectedSimulator, selectedStationSet, selectedStation } = this.state;
+    let mutation, variables = {
+      id: selectedSet
+    };
+    if (checked) {
+      mutation = gql`mutation AddClient ($id: ID!, $client: SetClientInput!){
+        addClientToSet(id: $id, client: $client)
+      }`;
+      variables.client = {
+        clientId,
+        simulatorId: selectedSimulator,
+        stationSet: selectedStationSet,
+        station: selectedStation,
+      }
+    } else {
+      mutation = gql`mutation RemoveClient ($id: ID!, $client: ID!){
+        removeClientFromSet(id: $id, clientId: $client)
+      }`
+      // Gotta figure out if there is a setClient
+      const client = this.getCurrentClient(clientId);
+      variables.client = client.id;
+    }
+    this.props.client.mutate({
+      mutation,
+      variables,
+      refetchQueries: ['Sets']
+    })
+  }
+  getCurrentClient = (clientId) => {
+    const {selectedSet, selectedSimulator, selectedStationSet, selectedStation } = this.state;
+    return this.props.data.sets.find(s => s.id === selectedSet)
+    .clients.find(c => c.simulator.id === selectedSimulator &&
+      c.client.id === clientId &&
+      c.stationSet.id === selectedStationSet &&
+      c.station === selectedStation) || {};
+  }
+  getClientAssignedStation = (clientId) => {
+    const {selectedSet, selectedSimulator, selectedStationSet } = this.state;
+    const clientSet = this.props.data.sets.find(s => s.id === selectedSet)
+    .clients.find(c => c.simulator.id === selectedSimulator &&
+      c.client.id === clientId &&
+      c.stationSet.id === selectedStationSet) || {};
+    return clientSet.station || true;
+  }
   render() {
     const {data} = this.props;
     if (data.loading) return null;
-    const {selectedSet, selectedClient, selectedSimulator, selectedStationSet, selectedStation} = this.state;
+    const {selectedSet, selectedSimulator, selectedStationSet, selectedStation} = this.state;
     const {clients, simulators, sets} = data;
     return <Container fluid className="set-config">
     <h4>Set Config <small><Link to="/">Return to Main</Link></small></h4>
+    <small>Be sure to connect all of your clients before configuring this</small>
     <Row>
     <Col>
     <h5>Sets</h5>
     <Card>
     {sets.map(s => <li key={s.id}
-      className={`list-group-item ${selectedSet ? 'selected' : ''}`}
-      onClick={() => this.setState({selectedSet: s.id})}>{s.name}</li>)}
+      className={`list-group-item ${s.id === selectedSet ? 'selected' : ''}`}
+      onClick={() => this.setState({selectedSet: s.id, selectedSimulator: null, selectedStationSet: null, selectedStation: null})}>{s.name}</li>)}
     </Card>
-    <Button block color="primary" onClick={this.addClient}>Add Set</Button>
+    <Button block color="primary" onClick={this.addSet}>Add Set</Button>
     </Col>
     <Col>
     <h5>Simulators</h5>
     {
       selectedSet && <Card>
       {simulators.map(s => <li key={s.id}
-        className={`list-group-item ${selectedSimulator ? 'selected' : ''}`}
-        onClick={() => this.setState({selectedSimulator: s.id})}>{s.name}</li>)}
+        className={`list-group-item ${s.id === selectedSimulator ? 'selected' : ''}`}
+        onClick={() => this.setState({selectedSimulator: s.id, selectedStationSet: null, selectedStation: null})}>{s.name}</li>)}
       </Card>
     }
     </Col>
@@ -91,8 +137,8 @@ class SetConfig extends Component {
       selectedSimulator && <Card>
       {
         simulators.find(s => s.id === selectedSimulator).stationSets.map(s => <li key={s.id}
-          className={`list-group-item ${selectedStationSet ? 'selected' : ''}`}
-          onClick={() => this.setState({selectedStationSet: s.id})}>{s.name}</li>)
+          className={`list-group-item ${s.id === selectedStationSet ? 'selected' : ''}`}
+          onClick={() => this.setState({selectedStationSet: s.id, selectedStation: null})}>{s.name}</li>)
       }
       </Card>
     }
@@ -103,7 +149,7 @@ class SetConfig extends Component {
       selectedSimulator && selectedStationSet && <Card>
       {
         simulators.find(s => s.id === selectedSimulator).stationSets.find(s => s.id === selectedStationSet).stations.map(s => <li key={`station-${s.name}`}
-          className={`list-group-item ${selectedStation ? 'selected' : ''}`}
+          className={`list-group-item ${s.name === selectedStation ? 'selected' : ''}`}
           onClick={() => this.setState({selectedStation: s.name})}>{s.name}</li>)
       }
       </Card>
@@ -114,9 +160,8 @@ class SetConfig extends Component {
     {
       selectedSimulator && selectedStationSet && selectedStation &&  <Card>
       {clients.map(s => <li key={s.id}
-        className={`list-group-item ${selectedClient ? 'selected' : ''}`}
-        onClick={() => this.setState({selectedSet: s.id})}>
-        <label disabled><Input type="checkbox" />
+        className={`list-group-item`}>
+        <label><Input checked={this.getCurrentClient(s.id).id} onChange={(e) => this.updateClient(e, s.id)} disabled={this.getClientAssignedStation(s.id) !== selectedStation && this.getClientAssignedStation(s.id) !== true} type="checkbox" />
         {s.id}</label>
         </li>)}
       </Card>

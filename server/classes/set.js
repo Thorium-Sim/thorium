@@ -23,6 +23,7 @@ export default class Set {
 class SetClient {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
+    this.clientId = params.clientId || null;
     this.simulatorId = params.simulatorId || null;
     this.stationSet = params.stationSet || null;
     this.station = params.station || null;

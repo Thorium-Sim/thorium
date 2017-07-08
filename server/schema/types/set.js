@@ -14,8 +14,8 @@ type SetClient {
 }
 
 input SetClientInput {
-  id: ID!
-  clientId: ID!
+  id: ID
+  clientId: ID
   simulatorId: ID
   stationSet: ID
   station: ID
