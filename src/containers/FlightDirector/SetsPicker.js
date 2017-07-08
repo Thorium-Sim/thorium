@@ -35,7 +35,6 @@ class SetsPicker extends Component {
     }
   }
   applyClientSet = ({clients}, {id: simulatorId, templateId, stationSet: {id: stationSetId}}, {id: flightId}) => {
-    debugger;
     const applyClients = clients.filter(c => c.simulator.id === templateId && c.stationSet.id === stationSetId);
     applyClients.forEach(c => {
       const variables = {client: c.client.id};

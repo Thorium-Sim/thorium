@@ -7,6 +7,7 @@ import Immutable from 'immutable';
 import { Cores } from '../../components/views';
 import { graphql, withApollo, ApolloProvider } from 'react-apollo';
 import gql from 'graphql-tag';
+import { Link } from 'react-router';
 import { client } from '../../App';
 import './CoreLayout.scss';
 window.ReactDOM = ReactDOM;
@@ -228,6 +229,7 @@ class CoreLayout extends Component {
         }
         </select>)
     }
+    <Link to={`/flight/${this.props.flightId}`}>Client Config</Link>
     <div id="core-layout" style={{height: 'calc(100vh - 80px)'}}></div>
     </div>
   }

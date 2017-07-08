@@ -6,7 +6,10 @@ import { Container } from 'reactstrap';
 
 export default (props) => {
   return <Container className="asset-config">
+  <span>
   <h4>Flight Lobby <small><Link to="/">Return to Main</Link></small></h4>
+  <h5 className="text-right"><Link to={`/flight/${props.params.flightId}/core`}>Go to Core</Link></h5>
+  </span>
   <SetsPicker {...props}/>
   <Clients />
   </Container>

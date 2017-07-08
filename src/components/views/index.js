@@ -1,4 +1,3 @@
-import ShortRangeComm from './ShortRangeComm';
 import LongRangeComm from './LongRangeComm';
 import EngineControl from './EngineControl';
 import Thrusters from './Thrusters';
@@ -62,7 +61,6 @@ import RemoteWidget from './RemoteAccess/widget';
 
 const Views = { 
   Login,
-  ShortRangeComm,
   LongRangeComm,
   AdminAssets,
   Thrusters,
