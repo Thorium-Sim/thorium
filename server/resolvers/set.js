@@ -42,7 +42,6 @@ export const SetSubscriptions = {
 export const SetTypes = {
   SetClient: {
     client(rootValue) {
-      console.log(App.clients, rootValue);
       return App.clients.find(c => c.id === rootValue.clientId);
     },
     simulator(rootValue) {

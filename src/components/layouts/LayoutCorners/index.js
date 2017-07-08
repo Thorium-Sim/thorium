@@ -104,7 +104,7 @@ class LayoutCorners extends Component {
 			<h2 className="station-name">{station.name}</h2>
 			<h2 className="login-name">{clientObj.loginName}</h2>
 			</div>
-			<CardSwitcher clientObj={this.props.clientObj} cards={station.cards} currentCard={cardName} changeCard={changeCard} {...this.props} />
+			<CardSwitcher className={alertClass} clientObj={this.props.clientObj} cards={station.cards} currentCard={cardName} changeCard={changeCard} {...this.props} />
 			<Settings client={this.props.client} clientObj={this.props.clientObj} className={alertClass} />
 			<Widgets clientObj={this.props.clientObj} simulator={simulator} station={station}  />
 			<Alerts ref="alert-widget" simulator={simulator} station={station} />
