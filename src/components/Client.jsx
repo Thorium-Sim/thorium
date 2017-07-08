@@ -7,7 +7,7 @@ import { graphql, withApollo } from 'react-apollo';
 import './client.scss';
 
 const clientId = localStorage.getItem('thorium_clientId');
-const Credits = (props) => {
+const Credits = props => {
 	let client = {};
 	let flight = {};
 	let simulator = {};
@@ -20,153 +20,230 @@ const Credits = (props) => {
 	}
 	return (
 		<div className="credit-bg">
-		<Container>
-		<img role="presentation" src="/js/images/logo.png" draggable="false" />
-		<h1>Thorium</h1>
-		<h4>{client.id}</h4>
-		<h5>{flight.id}</h5>
-		<h5>{simulator.name}</h5>
-		<h5>{station.name}</h5>
-		<h5>{client.loginName}</h5>
-		</Container>
+			<Container>
+				<img role="presentation" src="/js/images/logo.png" draggable="false" />
+				<h1>Thorium</h1>
+				<h4>
+					{client.id}
+				</h4>
+				<h5>
+					{flight.id}
+				</h5>
+				<h5>
+					{simulator.name}
+				</h5>
+				<h5>
+					{station.name}
+				</h5>
+				<h5>
+					{client.loginName}
+				</h5>
+			</Container>
 		</div>
-		);
+	);
 };
 
 const CLIENT_SUB = gql`
-subscription ClientChanged($client: ID!) {
-	clientChanged(client: $client) {
-		id
-		flight {
+	subscription ClientChanged($client: ID!) {
+		clientChanged(client: $client) {
 			id
-			name
-			date
+			flight {
+				id
+				name
+				date
+			}
+			simulator {
+				id
+				name
+				alertlevel
+				layout
+			}
+			station {
+				name
+				cards {
+					name
+					component
+				}
+			}
+			loginName
+			loginState
+			offlineState
 		}
-		simulator {
+	}
+`;
+
+const SIMULATOR_SUB = gql`
+	subscription SimulatorUpdate($id: ID!) {
+		simulatorsUpdate(simulatorId: $id) {
 			id
 			name
 			alertlevel
 			layout
 		}
-		station {
-			name
-			cards{
-				name
-				component
-			}
-		}
-		loginName
-		loginState
-		offlineState
 	}
-}`;
-
+`;
 const PING_SUB = gql`
-subscription ClientPing($client: ID!){
-	clientPing(client: $client)
-}`;
+	subscription ClientPing($client: ID!) {
+		clientPing(client: $client)
+	}
+`;
 
 class ClientView extends Component {
-	constructor(props){
+	constructor(props) {
 		super(props);
 		this.clientSubscription = null;
 		this.clientPingSubscription = null;
+		this.simulatorSub = null;
 		window.onbeforeunload = () => {
 			props.client.mutate({
 				mutation: gql`
-				mutation RemoveClient($id: ID!){
-					clientDisconnect(client: $id)
-				}`,
-				variables: {id: clientId}
-			})
+					mutation RemoveClient($id: ID!) {
+						clientDisconnect(client: $id)
+					}
+				`,
+				variables: { id: clientId }
+			});
 			return null;
-		}
+		};
 	}
 	componentWillReceiveProps(nextProps) {
 		if (!this.clientSubscription && !nextProps.data.loading) {
 			this.clientSubscription = nextProps.data.subscribeToMore({
 				document: CLIENT_SUB,
-				variables: {client: clientId}
+				variables: { client: clientId }
+			});
+		}
+		if (!this.simulatorSub && !nextProps.data.loading) {
+			const client = nextProps.data.clients[0];
+			this.simulatorSub = nextProps.data.subscribeToMore({
+				document: SIMULATOR_SUB,
+				variables: { id: client.simulator.id },
+				updateQuery: (previousResult, { subscriptionData }) => {
+					const sim = subscriptionData.data.simulatorsUpdate[0];
+					return Object.assign({}, previousResult, {
+						clients: previousResult.clients.map(
+							({
+								flight,
+								id,
+								loginName,
+								loginState,
+								offlineState,
+								station,
+								__typename
+							}) => ({
+								flight,
+								id,
+								loginName,
+								loginState,
+								offlineState,
+								station,
+								__typename,
+								simulator: {
+									__typename: 'Simulator',
+									id: sim.id,
+									alertlevel: sim.alertlevel,
+									layout: sim.layout,
+									name: sim.name
+								}
+							})
+						)
+					});
+				}
 			});
 		}
 		if (!this.clientPingSubscription && !nextProps.data.loading) {
 			this.clientPingSubscription = nextProps.data.subscribeToMore({
 				document: PING_SUB,
-				variables: {client: clientId},
-				updateQuery: (previousResult, {subscriptionData}) => {
+				variables: { client: clientId },
+				updateQuery: (previousResult, { subscriptionData }) => {
 					//Respond with the ping that was recieved
 					this.props.client.mutate({
-						mutation: gql`mutation pingRes($client: ID!, $ping: String!){
-							clientPing(client: $client, ping: $ping)
-						}`,
+						mutation: gql`
+							mutation pingRes($client: ID!, $ping: String!) {
+								clientPing(client: $client, ping: $ping)
+							}
+						`,
 						variables: {
 							client: clientId,
 							ping: subscriptionData.data.clientPing
 						}
-					})
+					});
 					return previousResult;
-				},
+				}
 			});
 		}
 	}
-	componentDidMount(){
+	componentDidMount() {
 		this.props.client.mutate({
-			mutation: gql`mutation RegisterClient ($client: ID!){
-				clientConnect(client: $client)
-			}`,
-			variables: {client: clientId}
-		})
+			mutation: gql`
+				mutation RegisterClient($client: ID!) {
+					clientConnect(client: $client)
+				}
+			`,
+			variables: { client: clientId }
+		});
 	}
-	render(){
-		let flight, simulator, station, client = {};
+	render() {
+		let flight,
+			simulator,
+			station,
+			client = {};
 		if (!this.props.data.loading) {
-			 client = this.props.data.clients[0];
+			client = this.props.data.clients[0];
 			flight = client.flight;
 			simulator = client.simulator;
 			station = client.station;
 		}
-		return (<div>
-		{ (flight && simulator && station) ?
-			<CardContainer flight={flight} simulator={simulator} station={station} client={client} />
-			: <Credits  {...this.props} />
-		}
-		</div>);
+		return (
+			<div>
+				{flight && simulator && station
+					? <CardContainer
+							flight={flight}
+							simulator={simulator}
+							station={station}
+							client={client}
+						/>
+					: <Credits {...this.props} />}
+			</div>
+		);
 	}
 }
 
-const ClientQuery = gql `
-query Clients($clientId: ID) {
-	clients(clientId: $clientId) {
-		id
-		flight {
+const ClientQuery = gql`
+	query Clients($clientId: ID) {
+		clients(clientId: $clientId) {
 			id
-			name
-			date
-		}
-		simulator {
-			id
-			name
-			alertlevel
-			layout
-		}
-		station {
-			name
-			cards{
+			flight {
+				id
 				name
-				component
+				date
+			}
+			simulator {
+				id
+				name
+				alertlevel
+				layout
+			}
+			station {
+				name
+				cards {
+					name
+					component
+				}
+			}
+			loginName
+			loginState
+			offlineState
+		}
+	}
+`;
+
+export default withRouter(
+	graphql(ClientQuery, {
+		options: {
+			variables: {
+				clientId: clientId
 			}
 		}
-		loginName
-		loginState
-		offlineState
-	}
-}`;
-
-
-export default withRouter(graphql(ClientQuery, {
-	options: {
-		variables: {
-			clientId: clientId
-		}
-	}
-})(withApollo(ClientView)));
+	})(withApollo(ClientView))
+);
