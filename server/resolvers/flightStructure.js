@@ -143,7 +143,8 @@ export const FlightStructureSubscriptions = {
     if (simulatorId) returnVal = returnVal.filter(s => s.id === simulatorId);
     return returnVal;
   },
-  flightsUpdate: (rootValue) => {
+  flightsUpdate: (rootValue, {id}) => {
+    if (id) return rootValue.filter(s => s.id === id);
     return rootValue;
   },
 };
@@ -161,6 +162,9 @@ export const FlightStructureTypes = {
     },
     stationSets(rootValue) {
       return App.stationSets.filter(s => s.simulatorId === rootValue.id);
+    },
+    stationSet(rootValue) {
+      return App.stationSets.find(s => s.id === rootValue.stationSet);
     }
   },
   Stationset: {

@@ -101,8 +101,10 @@ export const ClientTypes = {
       return App.simulators.find(s => s.id === rootValue.simulatorId);
     },
     station(rootValue) {
-      const simulator = App.simulators.find(s => s.id === rootValue.simulatorId) || {};
-      return simulator.stations.find(s => s.name === rootValue.station);
+      const simulator = App.simulators.find(s => s.id === rootValue.simulatorId);
+      if (simulator) {
+        return simulator.stations.find(s => s.name === rootValue.station);
+      }
     },
   },
 };

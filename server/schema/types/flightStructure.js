@@ -29,12 +29,14 @@ type Simulator {
   alertlevel: String
   layout: String
   template: Boolean
+  templateId: ID
   timelineStep: Int
   systems: [System]
   systemsFull: [SystemUnion]
   stations: [Station]
   mission: Mission
   stationSets: [Stationset]
+  stationSet: Stationset
   decks: [Deck]
   rooms: [Room]
   ship: Ship

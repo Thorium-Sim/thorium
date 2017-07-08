@@ -27,7 +27,7 @@ import { TractorBeamQueries, TractorBeamMutations, TractorBeamSubscriptions } fr
 
 import { CrewQueries, CrewMutations, CrewSubscriptions, CrewTypes } from './crew';
 import { TeamsQueries, TeamsMutations, TeamsSubscriptions, TeamsTypes } from './teams';
-
+import {SetQueries, SetMutations, SetSubscriptions, SetTypes} from './set';
 import App from '../../app';
 
 function parseJSONLiteral(ast) {
@@ -80,7 +80,8 @@ function parseJSONLiteral(ast) {
     CoolantQueries,
     TractorBeamQueries,
     CrewQueries,
-    TeamsQueries
+    TeamsQueries,
+    SetQueries
     );
 
   export const mutationMap = Object.assign({
@@ -115,7 +116,8 @@ function parseJSONLiteral(ast) {
   CoolantMutations,
   TractorBeamMutations,
   CrewMutations,
-  TeamsMutations
+  TeamsMutations,
+  SetMutations
   );
 
 
@@ -146,7 +148,8 @@ function parseJSONLiteral(ast) {
     CoolantSubscriptions,
     TractorBeamSubscriptions,
     CrewSubscriptions,
-    TeamsSubscriptions
+    TeamsSubscriptions,
+    SetSubscriptions
     );
 
   export default Object.assign({
@@ -167,5 +170,6 @@ function parseJSONLiteral(ast) {
   TargetingTypes,
   ProbesTypes,
   CrewTypes,
-  TeamsTypes
+  TeamsTypes,
+  SetTypes
   );
