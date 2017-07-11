@@ -93,7 +93,6 @@ const Settings = props => {
 class LayoutCorners extends Component {
 	render() {
 		let { simulator, station, cardName, changeCard, clientObj } = this.props;
-		console.log(simulator);
 		let alertClass = `alertColor${simulator.alertlevel || 5}`;
 		if (clientObj.loginState === 'logout') {
 			cardName = 'Login';
