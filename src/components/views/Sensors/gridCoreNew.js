@@ -7,7 +7,7 @@ import FontAwesome from 'react-fontawesome';
 import Immutable from 'immutable';
 import ContactContextMenu from './contactContextMenu';
 import { Row, Col, Container, Button, Input } from 'reactstrap';
-import GridCoreGrid from './gridCoreGrid';
+import Grid from './GridKonva';
 
 import './gridCore.scss';
 
@@ -350,7 +350,7 @@ class GridCore extends Component {
                     bottom: 0
                   }}>
                   {dimensions.width > 0 &&
-                    <GridCoreGrid
+                    <Grid
                       mouseover={this.props.hoverContact}
                       core
                       dimensions={dimensions}

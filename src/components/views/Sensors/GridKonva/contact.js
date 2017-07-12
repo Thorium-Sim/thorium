@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { parse as parsePath } from 'extract-svg-path';
-import assetPath from '../../../helpers/assets';
+import assetPath from '../../../../helpers/assets';
 
 export default class Contact extends Component {
   constructor(props) {

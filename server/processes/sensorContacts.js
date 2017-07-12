@@ -12,11 +12,11 @@ function distance3d(coord2, coord1) {
 }
 
 const moveSensorContact = () => {
-  App.systems.forEach((sys) => {
+  App.systems.forEach(sys => {
     if (sys.type === 'Sensors') {
       // Loop through all of the sensor contacts
       const sensors = sys;
-      sensors.contacts = sensors.contacts.map((contact) => {
+      sensors.contacts = sensors.contacts.map(contact => {
         const { location, destination, speed } = contact;
         const newContact = contact;
         if (contact.speed > 100) {
@@ -28,14 +28,28 @@ const moveSensorContact = () => {
           newContact.speed = 0;
         } else if (contact.speed > 0) {
           // Update the velocity
-          const locationVector = new THREE.Vector3(location.x, location.y, location.z);
-          const destinationVector = new THREE.Vector3(destination.x, destination.y, destination.z);
-          const velocity = destinationVector.sub(locationVector).normalize().multiplyScalar(speed);
+          const locationVector = new THREE.Vector3(
+            location.x,
+            location.y,
+            location.z
+          );
+          const destinationVector = new THREE.Vector3(
+            destination.x,
+            destination.y,
+            destination.z
+          );
+          const velocity = destinationVector
+            .sub(locationVector)
+            .normalize()
+            .multiplyScalar(speed);
 
           // Update the location
-          location.x += Math.round(velocity.x / (10000 / interval) * 10000) / 10000;
-          location.y += Math.round(velocity.y / (10000 / interval) * 10000) / 10000;
-          location.z += Math.round(velocity.z / (10000 / interval) * 10000) / 10000;
+          location.x +=
+            Math.round(velocity.x / (10000 / interval) * 10000) / 10000;
+          location.y +=
+            Math.round(velocity.y / (10000 / interval) * 10000) / 10000;
+          location.z +=
+            Math.round(velocity.z / (10000 / interval) * 10000) / 10000;
 
           // Why not clean up the destination while we're at it?
           destination.x = Math.round(destination.x * 10000) / 10000;
@@ -45,7 +59,8 @@ const moveSensorContact = () => {
           // Check to see if it is close enough to the destination
           newContact.location = location;
           newContact.velocity = velocity;
-          if (distance3d(destination, location) < 0.005) { // A magic number
+          if (distance3d(destination, location) < 0.005) {
+            // A magic number
             newContact.velocity = { x: 0, y: 0, z: 0 };
             newContact.speed = 0;
           }
@@ -60,7 +75,7 @@ const moveSensorContact = () => {
   setTimeout(moveSensorContact, interval);
 };
 const updateSensorGrids = () => {
-  App.systems.forEach((sys) => {
+  App.systems.forEach(sys => {
     if (sys.type === 'Sensors') {
       const sensors = sys;
       pubsub.publish('sensorContactUpdate', sensors.contacts);

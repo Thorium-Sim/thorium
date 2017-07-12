@@ -38,11 +38,13 @@ const { Group, Path, Rect } = ReactKonva;
 
 class ArmyContact extends Contact {
   _moveMouse = e => {
+    const { contact } = this.state;
+    const { size } = contact;
     const { x, y } = this.props;
     if (e.target.offsetParent.classList.contains('konvajs-content')) {
       this.setState({
-        x: e.offsetX - x,
-        y: e.offsetY - y
+        x: e.offsetX - x + size * 25 / 2,
+        y: e.offsetY - y + size * 25 / 2
       });
     }
   };
@@ -62,18 +64,10 @@ class ArmyContact extends Contact {
       sensor,
       padding,
       radius,
-      x: xProp,
-      y: yProp
+      x: xProp
     } = this.props;
     const { x, y } = this.state;
     document.removeEventListener('mousemove', this._moveMouse);
-    console.log(x, y, {
-      destination: {
-        x: (x + xProp / 2 + padding) / radius,
-        y: (y - yProp - radius + padding) / radius,
-        z: 0
-      }
-    });
     this.props.client.mutate({
       mutation: gql`
         mutation CreateContact($id: ID!, $contact: SensorContactInput!) {
@@ -92,12 +86,12 @@ class ArmyContact extends Contact {
           cloaked,
           destination: {
             x: (x + xProp / 2 + padding) / radius,
-            y: (y - yProp - radius + padding) / radius,
+            y: (y - radius + padding) / radius,
             z: 0
           },
           location: {
             x: (x + xProp / 2 + padding) / radius,
-            y: (y - yProp - radius + padding) / radius,
+            y: (y - radius + padding) / radius,
             z: 0
           }
         }

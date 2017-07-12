@@ -1,0 +1,31 @@
+#sensorGrid {
+  position: absolute;
+  align-items: center;
+  border: solid 4px rgba(255, 255, 255, 0.4);
+  .grid {
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .ring {
+      border: solid 1px rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      position: absolute;
+    }
+    .line {
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    img {
+      z-index: 1;
+      width: 5%;
+      height: 5%;
+      transform: translate(-100%, 0);
+    }
+  }
+}

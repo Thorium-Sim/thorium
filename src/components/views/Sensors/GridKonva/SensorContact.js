@@ -4,6 +4,7 @@ import Immutable from 'immutable';
 import gql from 'graphql-tag';
 import { withApollo } from 'react-apollo';
 import Contact from './contact';
+import * as THREE from 'three';
 
 const { Group, Path, Rect } = ReactKonva;
 
@@ -42,6 +43,9 @@ class KonvaContact extends Contact {
   _downMouse(id, e, a, b) {
     document.addEventListener('mousemove', this._moveMouse);
     document.addEventListener('mouseup', this._upMouse.bind(this));
+    this.setState({
+      movingContact: true
+    });
   }
   _upMouse = () => {
     document.removeEventListener('mousemove', this._moveMouse);
@@ -49,6 +53,9 @@ class KonvaContact extends Contact {
     // Send the update to the server
     const speed = this.props.moveSpeed;
     const { contact } = this.state;
+    this.setState({
+      movingContact: false
+    });
     const distance = distance3d({ x: 0, y: 0, z: 0 }, contact.destination);
     let mutation;
     if (distance > 1.08) {
@@ -89,7 +96,7 @@ class KonvaContact extends Contact {
   };
   _moveContact() {
     const interval = 30;
-    this.setState(({ contact }) => {
+    this.setState(({ contact, movingContact }) => {
       this.moveTimeout = setTimeout(this._moveContact.bind(this), interval);
       if (!contact) return {};
       let { location, destination, speed, velocity } = contact;
@@ -102,6 +109,24 @@ class KonvaContact extends Contact {
             .toJS()
         };
       } else if (speed > 0) {
+        // Update the velocity
+        const locationVector = new THREE.Vector3(
+          location.x,
+          location.y,
+          location.z
+        );
+        const destinationVector = new THREE.Vector3(
+          destination.x,
+          destination.y,
+          destination.z
+        );
+        if (!movingContact) {
+          velocity = destinationVector
+            .sub(locationVector)
+            .normalize()
+            .multiplyScalar(speed);
+        }
+
         // Update the location
         const newLocation = {
           x:
@@ -123,7 +148,7 @@ class KonvaContact extends Contact {
         };
         // Check to see if it is close enough to the destination
         // A magic number
-        if (distance3d(destination, location) < 0.005) {
+        if (distance3d(destination, location) < 0.01) {
           speed = 0;
         }
         return {
