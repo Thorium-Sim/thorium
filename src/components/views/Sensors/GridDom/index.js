@@ -3,13 +3,14 @@ import SensorContact from './SensorContact';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
-import { findDOMNode } from 'react-dom';
-import assetPath from '../../../../helpers/assets';
+import * as THREE from 'three';
 
 import './style.scss';
 
-function degtorad(deg) {
-  return deg * (Math.PI / 180);
+function distance3d(coord2, coord1) {
+  const { x: x1, y: y1, z: z1 } = coord1;
+  let { x: x2, y: y2, z: z2 } = coord2;
+  return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
 }
 
 // Implement The following:
@@ -48,6 +49,12 @@ const SENSORCONTACT_SUB = gql`
 `;
 
 class GridDom extends Component {
+  state = {
+    locations: {},
+    movingContact: null,
+    iconWidth: null
+  };
+  interval = 30;
   sensorContactsSubscription = null;
   componentWillReceiveProps(nextProps) {
     if (!this.sensorsSubscription && !nextProps.data.loading) {
@@ -64,7 +71,176 @@ class GridDom extends Component {
         }
       });
     }
+    if (!nextProps.data.loading) {
+      this.setState(({ locations: stateLocations }) => {
+        const locations = {};
+        nextProps.data.sensorContacts.forEach(c => {
+          locations[c.id] = {
+            location: stateLocations[c.id]
+              ? stateLocations[c.id].location
+              : c.location,
+            speed: c.speed,
+            destination: c.destination
+          };
+        });
+        return { locations };
+      });
+    }
   }
+  componentDidMount() {
+    this.contactLoop();
+  }
+  componentWillUnmount() {
+    clearTimeout(this.contactTimeout);
+  }
+  contactLoop = () => {
+    this.contactTimeout = setTimeout(this.contactLoop, this.interval);
+    if (!this.props.data.loading) {
+      const { data: { sensorContacts: contacts } } = this.props;
+      const locations = {};
+      contacts.forEach(c => {
+        const location = this.state.locations[c.id];
+        let { speed, destination } = Object.assign({}, c);
+        if (location) {
+          speed = location.speed;
+          destination = location.destination;
+        }
+        const moveResult = this.moveContact(c, location.location, speed);
+        moveResult.destination = destination;
+        locations[c.id] = moveResult;
+      });
+      console.log(locations[contacts[0].id].location);
+      this.setState({ locations });
+    }
+  };
+  moveContact = ({ destination, velocity }, location, speed) => {
+    const { movingContact } = this.state;
+    if (speed > 100) {
+      return {
+        location: {
+          x: location.x,
+          y: location.y,
+          z: location.z
+        },
+        speed: 0
+      };
+    } else if (speed > 0) {
+      const locationVector = new THREE.Vector3(
+        location.x,
+        location.y,
+        location.z
+      );
+      const destinationVector = new THREE.Vector3(
+        destination.x,
+        destination.y,
+        destination.z
+      );
+      if (!movingContact) {
+        velocity = destinationVector
+          .sub(locationVector)
+          .normalize()
+          .multiplyScalar(speed);
+      }
+      // Update the location
+      const newLocation = {
+        x:
+          location.x +
+          Math.round(velocity.x / (10000 / this.interval) * 10000) / 10000,
+        y:
+          location.y +
+          Math.round(velocity.y / (10000 / this.interval) * 10000) / 10000,
+        z:
+          location.z +
+          Math.round(velocity.z / (10000 / this.interval) * 10000) / 10000
+      };
+      // Why not clean up the destination while we're at it?
+      if (distance3d(destination, newLocation) < 0.005) {
+        speed = 0;
+      }
+      return {
+        location: newLocation,
+        speed: speed
+      };
+    }
+    return {
+      location,
+      speed
+    };
+  };
+  _moveMouse = e => {
+    const { dimensions } = this.props;
+    const { movingContact, locations, iconWidth } = this.state;
+    if (!movingContact) return;
+    const { width: dimWidth, height: dimHeight } = dimensions;
+    const width = Math.min(dimWidth, dimHeight);
+    const destination = {
+      x:
+        (e.clientX - dimensions.left - iconWidth / 2 - width / 2) / (width / 2),
+      y: (e.clientY - dimensions.top - iconWidth / 2 - width / 2) / (width / 2),
+      z: 0
+    };
+
+    const obj = {};
+    obj[movingContact] = locations[movingContact];
+    obj[movingContact].destination = destination;
+
+    this.setState({
+      locations: Object.assign(locations, obj)
+    });
+  };
+  _downMouse(e, id) {
+    const width = e.target.getBoundingClientRect().width;
+    document.addEventListener('mousemove', this._moveMouse);
+    document.addEventListener('mouseup', this._upMouse.bind(this));
+    this.setState({
+      movingContact: id,
+      iconWidth: width
+    });
+  }
+  _upMouse = () => {
+    document.removeEventListener('mousemove', this._moveMouse);
+    document.removeEventListener('mouseup', this._upMouse);
+    // Send the update to the server
+    const speed = this.props.moveSpeed;
+    const { movingContact, locations } = this.state;
+    const { destination } = locations[movingContact];
+    this.setState({
+      movingContact: false,
+      iconWidth: null
+    });
+    const distance = distance3d({ x: 0, y: 0, z: 0 }, destination);
+    let mutation;
+    if (distance > 1.08) {
+      // Delete the contact
+      mutation = gql`
+        mutation DeleteContact($id: ID!, $contact: SensorContactInput!) {
+          removeSensorContact(id: $id, contact: $contact)
+        }
+      `;
+    } else {
+      mutation = gql`
+        mutation MoveSensorContact($id: ID!, $contact: SensorContactInput!) {
+          moveSensorContact(id: $id, contact: $contact)
+        }
+      `;
+    }
+    const variables = {
+      id: this.props.sensor,
+      contact: {
+        id: movingContact,
+        speed: speed,
+        destination: {
+          x: destination.x,
+          y: destination.y,
+          z: destination.z
+        }
+      }
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading) return null;
     const {
@@ -76,8 +252,10 @@ class GridDom extends Component {
       selectedContact,
       armyContacts,
       rings = 3,
-      lines = 12
+      lines = 12,
+      hoverContact
     } = this.props;
+    const { locations } = this.state;
     const { sensorContacts: contacts } = data;
     const { width: dimWidth, height: dimHeight } = dimensions;
     const width = Math.min(dimWidth, dimHeight);
@@ -109,13 +287,16 @@ class GridDom extends Component {
               }}
             />
           )}
-          {contacts.map(({ icon, destination: { x, y } }) =>
-            <img
-              draggable="false"
-              src={assetPath(icon, 'default', 'svg', false)}
-              style={{
-                transform: `translate(${width / 2 * x}px, ${width / 2 * y}px)`
-              }}
+          {contacts.map(contact =>
+            <SensorContact
+              key={contact.id}
+              width={width}
+              core={core}
+              {...contact}
+              mousedown={e => this._downMouse(e, contact.id)}
+              location={locations[contact.id].location}
+              destination={locations[contact.id].destination}
+              mouseover={hoverContact}
             />
           )}
         </div>

@@ -7,7 +7,7 @@ import FontAwesome from 'react-fontawesome';
 import Immutable from 'immutable';
 import ContactContextMenu from './contactContextMenu';
 import { Row, Col, Container, Button, Input } from 'reactstrap';
-import Grid from './GridKonva';
+import Grid from './GridDom';
 
 import './gridCore.scss';
 

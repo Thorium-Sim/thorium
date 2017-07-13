@@ -10,6 +10,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 50%;
     .ring {
       border: solid 1px rgba(255, 255, 255, 0.2);
       border-radius: 50%;
@@ -25,6 +26,7 @@
       z-index: 1;
       width: 5%;
       height: 5%;
+      position: absolute;
       transform: translate(-100%, 0);
     }
   }
