@@ -6,27 +6,26 @@ import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
 import './style.scss';
 
-
 const PHASERS_SUB = gql`
-subscription PhasersUpdate($simulatorId: ID!){
-  phasersUpdate(simulatorId: $simulatorId){
-    id
-    simulatorId
-    name
-    beams {
+  subscription PhasersUpdate($simulatorId: ID!) {
+    phasersUpdate(simulatorId: $simulatorId) {
       id
-      state
-      charge
+      simulatorId
+      name
+      beams {
+        id
+        state
+        charge
+      }
+      arc
     }
-    arc
   }
-}`;
+`;
 
 class PhaserChargingCore extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state = {
-    }
+    this.state = {};
     this.subscription = null;
   }
   componentWillReceiveProps(nextProps) {
@@ -38,90 +37,103 @@ class PhaserChargingCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           const returnResult = Immutable.Map(previousResult);
-          return returnResult.merge({ phasers: subscriptionData.data.phasersUpdate }).toJS();
+          return returnResult
+            .merge({ phasers: subscriptionData.data.phasersUpdate })
+            .toJS();
         }
       });
     }
   }
-  changeArc(value){
+  changeArc(value) {
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
-    mutation PhaserArc($id: ID!, $arc: Float!) {
-      phaserArc(id: $id, arc: $arc)
-    }`;
+      mutation PhaserArc($id: ID!, $arc: Float!) {
+        phaserArc(id: $id, arc: $arc)
+      }
+    `;
     const variables = {
       id: phasers.id,
-      arc: value/90
-    }
+      arc: value / 90
+    };
     this.props.client.mutate({
       mutation,
       variables
-    })
+    });
   }
-  changePhaser(beamId, value){
+  changePhaser(beamId, value) {
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
-    mutation SetBeamCharge ($id: ID!, $beamId: ID!, $charge: Float!){
-      setPhaserBeamCharge(id:$id, beamId:$beamId, charge: $charge)
-    }`;
+      mutation SetBeamCharge($id: ID!, $beamId: ID!, $charge: Float!) {
+        setPhaserBeamCharge(id: $id, beamId: $beamId, charge: $charge)
+      }
+    `;
     const variables = {
       id: phasers.id,
       beamId,
-      charge: value/100
-    }
+      charge: value / 100
+    };
     this.props.client.mutate({
       mutation,
       variables
-    })
+    });
   }
-  render(){
+  render() {
     if (this.props.data.loading) return null;
     const phasers = this.props.data.phasers[0];
     if (!phasers) return <p>No phasers</p>;
     return (
       <Container fluid className="phasers-core">
-      <p>Phasers</p> 
-      <Row>
-      <Col sm={4}>
-      Arc: 
-      </Col>
-      <Col sm={8}>
-      <InputField prompt="What would you like to change the arc to?" onClick={this.changeArc.bind(this)}>{Math.round(phasers.arc * 90)}˚</InputField>
-      </Col>
-      </Row>
-      {
-        phasers.beams.map((b, i) => {
-          return <Row>
-          <Col sm={4}>{i}:</Col> 
+        <p>Phasers</p>
+        <Row>
+          <Col sm={4}>Arc:</Col>
           <Col sm={8}>
-          <InputField prompt="What would you like to change the charge to?" onClick={this.changePhaser.bind(this, b.id)} alert={b.state === 'firing'}>{Math.round(b.charge * 100)}%</InputField>
+            <InputField
+              prompt="What would you like to change the arc to?"
+              onClick={this.changeArc.bind(this)}>
+              {Math.round(phasers.arc * 90)}˚
+            </InputField>
           </Col>
-          </Row>
-        })
-      }
+        </Row>
+        {phasers.beams.map((b, i) => {
+          return (
+            <Row key={`${b.id}-${i}`}>
+              <Col sm={4}>
+                {i}:
+              </Col>
+              <Col sm={8}>
+                <InputField
+                  prompt="What would you like to change the charge to?"
+                  onClick={this.changePhaser.bind(this, b.id)}
+                  alert={b.state === 'firing'}>
+                  {Math.round(b.charge * 100)}%
+                </InputField>
+              </Col>
+            </Row>
+          );
+        })}
       </Container>
-      );
+    );
   }
 }
 
 const PHASERS_QUERY = gql`
-query Phasers($simulatorId: ID!){
-  phasers(simulatorId: $simulatorId){
-    id
-    simulatorId
-    name
-    beams {
+  query Phasers($simulatorId: ID!) {
+    phasers(simulatorId: $simulatorId) {
       id
-      state
-      charge
+      simulatorId
+      name
+      beams {
+        id
+        state
+        charge
+      }
+      arc
     }
-    arc
   }
-}`;
-
+`;
 
 export default graphql(PHASERS_QUERY, {
-  options: (ownProps) => ({
+  options: ownProps => ({
     variables: {
       simulatorId: ownProps.simulator.id
     }

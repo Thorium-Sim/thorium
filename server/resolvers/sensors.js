@@ -8,7 +8,7 @@ export const SensorsQueries = {
     if (domain) {
       returnVal = returnVal.filter(s => s.domain === domain);
     }
-    if (simulatorId){
+    if (simulatorId) {
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
     }
     return returnVal;
@@ -18,7 +18,7 @@ export const SensorsQueries = {
       return system.type === 'Sensors' && system.id === sensorsId;
     });
     return sensors ? sensors.contacts : [];
-  },
+  }
 };
 
 export const SensorsMutations = {
@@ -58,12 +58,12 @@ export const SensorsMutations = {
     App.handleEvent({ id, contact }, 'removeSensorContact', context);
     return '';
   },
-  removeAllSensorContacts(root, {id}, context) {
-    App.handleEvent({id}, 'removeAllSensorContacts', context);
+  removeAllSensorContacts(root, { id }, context) {
+    App.handleEvent({ id }, 'removeAllSensorContacts', context);
     return '';
   },
-  stopAllSensorContacts(root, {id}, context) {
-    App.handleEvent({id}, 'stopAllSensorContacts', context);
+  stopAllSensorContacts(root, { id }, context) {
+    App.handleEvent({ id }, 'stopAllSensorContacts', context);
     return '';
   },
   destroySensorContact(root, { id, contact }, context) {
@@ -88,19 +88,20 @@ export const SensorsMutations = {
   },
   animateSensorContacact() {
     moveSensorContact();
-  },
+  }
 };
 
 export const SensorsSubscriptions = {
-  sensorsUpdate(root, {simulatorId, domain}) {
+  sensorsUpdate(root, { simulatorId, domain }) {
     let returnRes = root;
-    if (simulatorId) returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
+    if (simulatorId)
+      returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
     if (domain) returnRes = returnRes.filter(s => s.domain === domain);
     return returnRes;
   },
   sensorContactUpdate(root, { sensorId }) {
     return root.filter(contact => contact.sensorId === sensorId);
-  },
+  }
 };
 
 export const SensorsTypes = {
@@ -110,6 +111,6 @@ export const SensorsTypes = {
     },
     pictureUrl({ picture: assetKey, simulatorId }) {
       return getAsset(assetKey, simulatorId);
-    },
-  },
+    }
+  }
 };
