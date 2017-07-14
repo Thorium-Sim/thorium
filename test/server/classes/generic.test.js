@@ -1,13 +1,13 @@
 var chai = require('chai');
 var expect = chai.expect;
 
-let system
+const System = require('../../../server/classes/generic').System;
+
+let system;
 describe('System', function() {
-  before(function() {
-    this.System = require('../../../server/classes/generic').System;
-  });
+  beforeAll(function() {});
   it('should construct without params', function() {
-    system = new this.System();
+    system = new System();
     expect(system.name).to.equal(null);
     expect(system.simulatorId).to.equal(null);
   });
@@ -21,7 +21,7 @@ describe('System', function() {
     expect(system.power.powerLevels).to.be.instanceOf(Array);
     expect(system.power.powerLevels[0]).to.equal(5);
   });
-  it('should have a getter `stealthFactor` which is null', function(){
+  it('should have a getter `stealthFactor` which is null', function() {
     expect(system.stealthFactor).to.equal(null);
   });
   it('should have a method break', function() {
@@ -31,7 +31,7 @@ describe('System', function() {
     expect(system.damage.report).to.equal('My Report');
   });
   it('should have a method damageReport', function() {
-    system.damageReport('My new report')
+    system.damageReport('My new report');
     expect(system.damage.report).to.equal('My new report');
   });
   it('should have a method requestReport', function() {

@@ -1,10 +1,8 @@
 import uuid from 'uuid';
-import Team from './teams'
-import { TimelineObject } from './timeline';
+import Team from './teams';
 
-export default class Simulator extends TimelineObject {
+export default class Simulator {
   constructor(params) {
-    super(params);
     this.id = params.id || uuid.v4();
     this.name = params.name || 'Simulator';
     this.layout = params.layout || 'LayoutDefault';
@@ -16,24 +14,27 @@ export default class Simulator extends TimelineObject {
     this.stations = params.stations || [];
     this.mission = params.mission || null;
     this.teams = [];
-    this.ship = new Ship(params.ship)
+    this.ship = new Ship(params.ship);
     // Set up the teams
     if (params.teams) {
-      params.teams.forEach(t => this.teams.push(new Team(t)))
+      params.teams.forEach(t => this.teams.push(new Team(t)));
     }
 
     // Initialize the simulator async
     if (params.launch) {
-      setTimeout(() => { this.nextTimeline(); }, 100);
+      setTimeout(() => {
+        this.nextTimeline();
+      }, 100);
     }
-
   }
   rename(name) {
     this.name = name;
   }
   setAlertLevel(alertlevel) {
     if (['5', '4', '3', '2', '1', 'p'].indexOf(alertlevel) === -1) {
-      throw new Error("Invalid Alert Level. Must be one of '5','4','3','2','1','p'");
+      throw new Error(
+        "Invalid Alert Level. Must be one of '5','4','3','2','1','p'"
+      );
     }
     this.alertlevel = alertlevel;
   }
@@ -44,7 +45,7 @@ export default class Simulator extends TimelineObject {
     this.layout = layout;
   }
 
-  // Ship 
+  // Ship
   clamps(tf) {
     this.ship.clamps = tf;
   }
@@ -55,12 +56,12 @@ export default class Simulator extends TimelineObject {
     this.ship.airlock = tf;
   }
   sendCode(code, station) {
-    this.ship.remoteAccessCodes.push(new RemoteAccess({code, station}))
+    this.ship.remoteAccessCodes.push(new RemoteAccess({ code, station }));
   }
   updateCode(codeId, state) {
     this.ship.remoteAccessCodes.find(c => c.id === codeId).state = state;
   }
-  powerMode(powerMode){
+  powerMode(powerMode) {
     this.ship.powerMode = powerMode;
   }
 }
@@ -73,11 +74,11 @@ class Ship {
     this.airlock = params.airlock || false; // Closed
     this.remoteAccessCodes = [];
     // One of 'internal', 'external', 'offline'
-    // Could expand to old Odyssey: 'Cruise', 'Reduced', 
-    // 'Silent Running', 'Emergency', 'Auxilliary', 
+    // Could expand to old Odyssey: 'Cruise', 'Reduced',
+    // 'Silent Running', 'Emergency', 'Auxilliary',
     // 'External', 'Minimal', 'Offline'
     this.powerMode = params.powerMode || 'internal';
-    const codes = params.remoteAccessCodes || []
+    const codes = params.remoteAccessCodes || [];
     codes.forEach(c => this.remoteAccessCodes.push(new RemoteAccess(c)));
   }
 }
