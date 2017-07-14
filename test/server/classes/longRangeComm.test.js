@@ -1,14 +1,13 @@
 var chai = require('chai');
 var expect = chai.expect;
+const LongRangeComm = require('../../../server/classes/longRangeComm').default;
 
 let comm;
 let messageId;
 describe('Long Range Comm', function() {
-  before(function() {
-    this.LongRangeComm = require('../../../server/classes/longRangeComm').default;
-  });
+  beforeAll(function() {});
   it('should construct without params', function() {
-    comm = new this.LongRangeComm();
+    comm = new LongRangeComm();
     expect(comm.class).to.equal('LongRangeComm');
     expect(comm.messages).to.be.instanceOf(Array);
     expect(comm.stealthFactor).to.equal(0.1);

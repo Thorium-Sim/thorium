@@ -4,7 +4,7 @@ var expect = chai.expect;
 let Coolant = require('../../../server/classes/coolant').default;
 let coolant;
 describe('Coolant', function() {
-  before(function() {
+  beforeAll(function() {
   });
   it('should construct without params', function() {
     coolant = new Coolant();

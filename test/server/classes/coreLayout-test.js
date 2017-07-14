@@ -2,7 +2,7 @@ var chai = require('chai');
 var expect = chai.expect;
 
 describe('Core Layout', function() {
-  before(function() {
+  beforeAll(function() {
     this.System = require('../../../server/classes/coreLayout').default;
   });
   it('should construct without params', function() {

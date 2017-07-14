@@ -13,7 +13,7 @@ export default class Flight {
     this.simulators.push(simulator.id);
   }
   removeSimulator(simulatorId) {
-    this.simulators = this.simulators.filter(s => s.id !== simulatorId);
+    this.simulators = this.simulators.filter(s => s !== simulatorId);
   }
   stopFlight() {
     this.running = false;

@@ -16,22 +16,22 @@ import './server/processes';
 const GRAPHQL_PORT = 3001;
 const WS_PORT = 3002;
 
-const GraphQLOptions = (request) => ({
+const GraphQLOptions = request => ({
   schema,
-  context: {clientId: request.headers.clientid}
+  context: { clientId: request.headers.clientid }
 });
 
 let appDir = './';
 if (electron.app) {
-  appDir = electron.app.getPath('appData') + "/thorium/";
+  appDir = electron.app.getPath('appData') + '/thorium/';
 }
 
 const upload = multer({
-  dest: appDir + 'temp',
+  dest: appDir + 'temp'
 });
 
 const options = {
-  endpointURL: '/graphql', // URL for the GraphQL endpoint this instance of GraphiQL serves
+  endpointURL: '/graphql' // URL for the GraphQL endpoint this instance of GraphiQL serves
 };
 
 export const websocketServer = createServer((req, response) => {
@@ -41,12 +41,12 @@ export const websocketServer = createServer((req, response) => {
 
 // eslint-disable-next-line
 new SubscriptionServer(
-{
-  subscriptionManager,
-},
-{
-  server: websocketServer,
-},
+  {
+    subscriptionManager
+  },
+  {
+    server: websocketServer
+  }
 );
 
 export const graphQLServer = express();
@@ -58,19 +58,23 @@ graphQLServer.use('/schema', (req, res) => {
   res.send(printSchema(schema));
 });
 
-graphQLServer.use('/graphql',
+graphQLServer.use(
+  '/graphql',
   upload.array('files'),
   graphqlExpressUpload({ endpointURL: '/graphql' }),
   bodyParser.json({ limit: '1mb' }),
-  graphqlExpress(GraphQLOptions),
-  );
+  graphqlExpress(GraphQLOptions)
+);
 
 graphQLServer.use('/graphiql', graphiqlExpress(options));
 
-graphQLServer.listen(GRAPHQL_PORT, () => console.log(
-  `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}/graphql`,
-  ));
+export const graphQLserverInstance = graphQLServer.listen(GRAPHQL_PORT, () =>
+  console.log(
+    `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}/graphql`
+  )
+);
 
-websocketServer.listen(WS_PORT, () => console.log(
-  `Websocket Server is now running on http://localhost:${WS_PORT}`,
-  ));
+export const websocketServerInstance = websocketServer.listen(WS_PORT, () =>
+  console.log(`Websocket Server is now running on http://localhost:${WS_PORT}`)
+);
+
