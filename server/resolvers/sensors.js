@@ -51,7 +51,6 @@ export const SensorsMutations = {
     return '';
   },
   moveSensorContact(root, { id, contact }, context) {
-    console.log(contact);
     App.handleEvent({ id, contact }, 'moveSensorContact', context);
     return '';
   },

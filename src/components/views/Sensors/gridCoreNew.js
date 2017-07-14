@@ -4,12 +4,17 @@ import { graphql, withApollo } from 'react-apollo';
 import Measure from 'react-measure';
 import Draggable from 'react-draggable';
 import FontAwesome from 'react-fontawesome';
-import Immutable from 'immutable';
 import ContactContextMenu from './contactContextMenu';
 import { Row, Col, Container, Button, Input } from 'reactstrap';
 import Grid from './GridDom';
 
 import './gridCore.scss';
+
+function distance3d(coord2, coord1) {
+  const { x: x1, y: y1, z: z1 } = coord1;
+  let { x: x2, y: y2, z: z2 } = coord2;
+  return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
+}
 
 const ADD_ARMY_CONTACT = gql`
   mutation(
@@ -42,10 +47,10 @@ const REMOVE_ARMY_CONTACT = gql`
 `;
 
 const SENSOR_SUB = gql`
-  subscription SensorsChanged {
-    sensorsUpdate {
+  subscription SensorsChanged($id: ID) {
+    sensorsUpdate(simulatorId: $id, domain: "external") {
       id
-      simulatorId
+      type
       armyContacts {
         id
         name
@@ -79,67 +84,91 @@ class GridCore extends Component {
     if (!this.sensorsSubscription && !nextProps.data.loading) {
       this.sensorsSubscription = nextProps.data.subscribeToMore({
         document: SENSOR_SUB,
+        variables: {
+          id: nextProps.simulator.id
+        },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ sensors: subscriptionData.data.sensorsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            sensors: subscriptionData.data.sensorsUpdate
+          });
         }
       });
     }
   }
-  dragStart(contact) {
-    const obj = {};
-    obj[contact.id] = { x: 0, y: 0 };
+  dragStart = movingContact => {
+    const self = this;
     this.setState({
-      movingContact: obj
+      movingContact: Object.assign({}, movingContact, {
+        location: { x: 0, y: 0, z: 0 }
+      })
     });
-  }
-  dragStop(contact, e, a) {
-    const grid = document.querySelector('#sensorGrid');
-    const gridRect = grid.getClientRects()[0];
-    const x =
-      (a.node.getBoundingClientRect().left -
-        gridRect.left -
-        gridRect.width / 2 +
-        10) /
-      (gridRect.width / 2);
-    const y =
-      (a.node.getBoundingClientRect().top -
-        gridRect.top -
-        gridRect.height / 2 +
-        10) /
-      (gridRect.height / 2);
-    // Construct the new contact
-    const newContact = Object.assign({}, contact, {
-      location: {
-        x,
-        y: y,
-        z: 0
-      },
-      destination: {
-        x,
-        y: y,
-        z: 0
+    document.addEventListener('mousemove', this.moveMouse);
+    document.addEventListener('mouseup', _mouseUp);
+    function _mouseUp() {
+      document.removeEventListener('mousemove', self.moveMouse);
+      document.removeEventListener('mouseup', _mouseUp);
+      self.dragStop();
+    }
+  };
+  moveMouse = evt => {
+    const { dimensions } = this;
+    const { movingContact } = this.state;
+    const { width: dimWidth, height: dimHeight } = dimensions;
+    const padding = 15;
+    const width = Math.min(dimWidth, dimHeight) - padding;
+    const destination = {
+      x:
+        (evt.clientX - dimensions.left - padding / 2 - width / 2) / (width / 2),
+      y: (evt.clientY - dimensions.top - padding / 2 - width / 2) / (width / 2),
+      z: 0
+    };
+    this.setState({
+      movingContact: Object.assign({}, movingContact, { location: destination })
+    });
+  };
+  dragStop = () => {
+    const { movingContact } = this.state;
+    this.setState({
+      movingContact: null
+    });
+    const {
+      location,
+      icon,
+      size,
+      name,
+      color,
+      picture,
+      cloaked,
+      infrared
+    } = movingContact;
+    const distance = distance3d({ x: 0, y: 0, z: 0 }, location);
+    if (distance > 1.08) {
+      return;
+    }
+    const mutation = gql`
+      mutation CreateContact($id: ID!, $contact: SensorContactInput!) {
+        createSensorContact(id: $id, contact: $contact)
       }
-    });
-    delete newContact.iconUrl;
-    delete newContact.pictureUrl;
-    delete newContact.id;
-    delete newContact.__typename;
-    // Add the contact
+    `;
+    const variables = {
+      id: this.props.data.sensors[0].id,
+      contact: {
+        icon,
+        size,
+        name,
+        color,
+        picture,
+        cloaked,
+        location,
+        infrared,
+        destination: location
+      }
+    };
     this.props.client.mutate({
-      mutation: gql`
-        mutation CreateContact($id: ID!, $contact: SensorContactInput!) {
-          createSensorContact(id: $id, contact: $contact)
-        }
-      `,
-      variables: {
-        id: this.props.data.sensors[0].id,
-        contact: newContact
-      }
+      mutation,
+      variables
     });
-  }
+  };
   _addArmyContact() {
     const { armyContacts, id } = this.props.data.sensors[0] || {
       armyContacts: []
@@ -336,31 +365,36 @@ class GridCore extends Component {
               Freeze
             </Button>
           </Col>
-          <Col sm={9} style={{ height: '100%' }}>
+          <Col sm={6} style={{ height: '100%' }}>
             <Measure useClone={true} includeMargin={false}>
-              {dimensions =>
-                <div
-                  id="threeSensors"
-                  className="array"
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0
-                  }}>
-                  {dimensions.width > 0 &&
-                    <Grid
-                      mouseover={this.props.hoverContact}
-                      core
-                      dimensions={dimensions}
-                      sensor={sensors.id}
-                      moveSpeed={this.state.speed}
-                      setSelectedContact={this._setSelectedContact.bind(this)}
-                      selectedContact={this.state.selectedContact}
-                      armyContacts={sensors.armyContacts}
-                    />}
-                </div>}
+              {dimensions => {
+                this.dimensions = dimensions;
+                return (
+                  <div
+                    id="threeSensors"
+                    className="array"
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0
+                    }}>
+                    {dimensions.width > 0 &&
+                      <Grid
+                        mouseover={this.props.hoverContact}
+                        core
+                        dimensions={dimensions}
+                        sensor={sensors.id}
+                        moveSpeed={this.state.speed}
+                        setSelectedContact={this._setSelectedContact.bind(this)}
+                        selectedContact={this.state.selectedContact}
+                        armyContacts={sensors.armyContacts}
+                        movingContact={this.state.movingContact}
+                      />}
+                  </div>
+                );
+              }}
             </Measure>
           </Col>
           <Col sm={3} className="contacts-container">
@@ -369,18 +403,14 @@ class GridCore extends Component {
               {sensors.armyContacts.map(contact => {
                 return (
                   <Col key={contact.id} className={'flex-container'} sm={12}>
-                    <Draggable
-                      onStart={this.dragStart.bind(this, contact)}
-                      onStop={this.dragStop.bind(this, contact)}
-                      position={this.state.movingContact[contact.id]}>
-                      <img
-                        onContextMenu={this._contextMenu.bind(this, contact)}
-                        draggable="false"
-                        role="presentation"
-                        className="armyContact"
-                        src={contact.iconUrl}
-                      />
-                    </Draggable>
+                    <img
+                      onMouseDown={() => this.dragStart(contact)}
+                      onContextMenu={this._contextMenu.bind(this, contact)}
+                      draggable="false"
+                      role="presentation"
+                      className="armyContact"
+                      src={contact.iconUrl}
+                    />
                     <label
                       onContextMenu={this._contextMenu.bind(this, contact)}>
                       {contact.name}
@@ -435,7 +465,7 @@ class GridCore extends Component {
 
 const GRID_QUERY = gql`
   query GetSensors($simulatorId: ID) {
-    sensors(simulatorId: $simulatorId) {
+    sensors(simulatorId: $simulatorId, domain: "external") {
       id
       type
       armyContacts {

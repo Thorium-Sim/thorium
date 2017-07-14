@@ -109,7 +109,6 @@ class GridDom extends Component {
         moveResult.destination = destination;
         locations[c.id] = moveResult;
       });
-      console.log(locations[contacts[0].id].location);
       this.setState({ locations });
     }
   };
@@ -168,15 +167,19 @@ class GridDom extends Component {
     };
   };
   _moveMouse = e => {
-    const { dimensions } = this.props;
+    const { dimensions, core } = this.props;
     const { movingContact, locations, iconWidth } = this.state;
     if (!movingContact) return;
     const { width: dimWidth, height: dimHeight } = dimensions;
-    const width = Math.min(dimWidth, dimHeight);
+    const padding = core ? 15 : 0;
+    const width = Math.min(dimWidth, dimHeight) - padding;
     const destination = {
       x:
-        (e.clientX - dimensions.left - iconWidth / 2 - width / 2) / (width / 2),
-      y: (e.clientY - dimensions.top - iconWidth / 2 - width / 2) / (width / 2),
+        (e.clientX - dimensions.left - padding - iconWidth / 2 - width / 2) /
+        (width / 2),
+      y:
+        (e.clientY - dimensions.top - padding - iconWidth / 2 - width / 2) /
+        (width / 2),
       z: 0
     };
 
@@ -189,65 +192,66 @@ class GridDom extends Component {
     });
   };
   _downMouse(e, id) {
+    const self = this;
     const width = e.target.getBoundingClientRect().width;
     document.addEventListener('mousemove', this._moveMouse);
-    document.addEventListener('mouseup', this._upMouse.bind(this));
+    document.addEventListener('mouseup', _upMouse);
     this.setState({
       movingContact: id,
       iconWidth: width
     });
-  }
-  _upMouse = () => {
-    document.removeEventListener('mousemove', this._moveMouse);
-    document.removeEventListener('mouseup', this._upMouse);
-    // Send the update to the server
-    const speed = this.props.moveSpeed;
-    const { movingContact, locations } = this.state;
-    const { destination } = locations[movingContact];
-    this.setState({
-      movingContact: false,
-      iconWidth: null
-    });
-    const distance = distance3d({ x: 0, y: 0, z: 0 }, destination);
-    let mutation;
-    if (distance > 1.08) {
-      // Delete the contact
-      mutation = gql`
-        mutation DeleteContact($id: ID!, $contact: SensorContactInput!) {
-          removeSensorContact(id: $id, contact: $contact)
-        }
-      `;
-    } else {
-      mutation = gql`
-        mutation MoveSensorContact($id: ID!, $contact: SensorContactInput!) {
-          moveSensorContact(id: $id, contact: $contact)
-        }
-      `;
-    }
-    const variables = {
-      id: this.props.sensor,
-      contact: {
-        id: movingContact,
-        speed: speed,
-        destination: {
-          x: destination.x,
-          y: destination.y,
-          z: destination.z
-        }
+    function _upMouse() {
+      document.removeEventListener('mousemove', self._moveMouse);
+      document.removeEventListener('mouseup', _upMouse);
+      // Send the update to the server
+      const speed = self.props.moveSpeed;
+      const { movingContact, locations } = self.state;
+      const { destination } = locations[movingContact];
+      self.setState({
+        movingContact: false,
+        iconWidth: null
+      });
+      const distance = distance3d({ x: 0, y: 0, z: 0 }, destination);
+      let mutation;
+      if (distance > 1.08) {
+        // Delete the contact
+        mutation = gql`
+          mutation DeleteContact($id: ID!, $contact: SensorContactInput!) {
+            removeSensorContact(id: $id, contact: $contact)
+          }
+        `;
+      } else {
+        mutation = gql`
+          mutation MoveSensorContact($id: ID!, $contact: SensorContactInput!) {
+            moveSensorContact(id: $id, contact: $contact)
+          }
+        `;
       }
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-  };
+      const variables = {
+        id: self.props.sensor,
+        contact: {
+          id: movingContact,
+          speed: speed,
+          destination: {
+            x: destination.x,
+            y: destination.y,
+            z: destination.z
+          }
+        }
+      };
+      self.props.client.mutate({
+        mutation,
+        variables
+      });
+    }
+  }
   render() {
     if (this.props.data.loading) return null;
     const {
       dimensions,
       data,
       core,
-      moveSpeed,
+      movingContact,
       setSelectedContact,
       selectedContact,
       armyContacts,
@@ -258,13 +262,13 @@ class GridDom extends Component {
     const { locations } = this.state;
     const { sensorContacts: contacts } = data;
     const { width: dimWidth, height: dimHeight } = dimensions;
-    const width = Math.min(dimWidth, dimHeight);
-    const gridStyle = {
-      width: width,
-      height: width
-    };
     const padding = core ? 15 : 0;
-    const radius = width / 2 - padding;
+    const width = Math.min(dimWidth, dimHeight) - padding;
+    const gridStyle = {
+      width: `${width}px`,
+      height: `${width}px`,
+      borderWidth: core ? `${padding}px` : '4px'
+    };
     return (
       <div id="sensorGrid" style={gridStyle}>
         <div className="grid">
@@ -299,6 +303,10 @@ class GridDom extends Component {
               mouseover={hoverContact}
             />
           )}
+          {movingContact &&
+            <div id="movingContact">
+              <SensorContact width={width} {...movingContact} />{' '}
+            </div>}
         </div>
       </div>
     );

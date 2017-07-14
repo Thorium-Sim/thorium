@@ -4,8 +4,8 @@ import assetPath from '../../../../helpers/assets';
 export default class SensorContact extends Component {
   render() {
     const {
-      location: { x, y },
-      destination: { x: dx, y: dy },
+      location,
+      destination = {},
       icon,
       width,
       size,
@@ -13,6 +13,9 @@ export default class SensorContact extends Component {
       mouseover = () => {},
       mousedown
     } = this.props;
+    if (!location) return null;
+    const { x, y } = location;
+    const { x: dx = 0, y: dy = 0 } = destination;
     return (
       <div>
         <img
@@ -22,9 +25,9 @@ export default class SensorContact extends Component {
           src={assetPath(icon, 'default', 'svg', false)}
           style={{
             opacity: core ? 0.5 : 1,
-            transform: `scale(${size})translate(${width / 2 * x}px, ${width /
+            transform: `translate(${width / 2 * x}px, ${width /
               2 *
-              y}px)`
+              y}px) scale(${size})`
           }}
         />
         {core &&
@@ -33,9 +36,9 @@ export default class SensorContact extends Component {
             onMouseDown={mousedown}
             src={assetPath(icon, 'default', 'svg', false)}
             style={{
-              transform: `scale(${size})translate(${width / 2 * dx}px, ${width /
+              transform: `translate(${width / 2 * dx}px, ${width /
                 2 *
-                dy}px)`
+                dy}px) scale(${size})`
             }}
           />}
       </div>
