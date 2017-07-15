@@ -24,13 +24,13 @@ export const CoolantQueries = {
 
 export const CoolantMutations = {
   setCoolantTank(root, args, context) {
-    App.handleEvent(args, "setCoolantTank", context.clientId);
+    App.handleEvent(args, "setCoolantTank", context);
   },
   transferCoolant(root, args, context) {
     if (args.which === 'stop'){
-      App.handleEvent(args, "cancelCoolantTransfer", context.clientId);
+      App.handleEvent(args, "cancelCoolantTransfer", context);
     } else {
-      App.handleEvent(args, "transferCoolant", context.clientId);
+      App.handleEvent(args, "transferCoolant", context);
     }
   }
 };

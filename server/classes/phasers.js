@@ -9,13 +9,14 @@ export default class Phasers extends HeatMixin(System) {
     this.name = params.name || 'Phaser';
     this.arc = params.arc || 0.5;
     this.beams = [];
-    if (typeof params.beams === 'number'){
+    const beamConfig = params.beams || 2;
+    if (typeof beamConfig === 'number'){
       // Creating it for the first time
-      for (let i = 0; i < params.beams; i++){
+      for (let i = 0; i < beamConfig; i++){
         this.beams.push(new Beam({}));
       }
     } else {
-      params.beams.forEach(b => this.beams.push(new Beam(b)));
+      beamConfig.forEach(b => this.beams.push(new Beam(b)));
     }
     //The phaser which is being cooled
     this.cooling = params.cooling || null;
@@ -26,6 +27,12 @@ export default class Phasers extends HeatMixin(System) {
     .reduce((prev, next) => {
       return prev + next/length;
     }, 0)
+  }
+  setBeams(count = 0) {
+    this.beams = [];
+    for (let i = 0; i < count; i++){
+      this.beams.push(new Beam({}));
+    }
   }
   updateBeamState(beamId, state){
     this.beams.find(b => b.id === beamId).updateState(state);

@@ -18,25 +18,37 @@ export const SystemsQueries = {
 
 export const SystemsMutations = {
   addSystemToSimulator(rootValue, params, context) {
-    App.handleEvent(params, 'addSystemToSimulator', context.clientId);
+    App.handleEvent(params, 'addSystemToSimulator', context);
   },
   removeSystemFromSimulator(rootValue, params, context) {
-    App.handleEvent(params, 'removeSystemFromSimulator', context.clientId);
+    App.handleEvent(params, 'removeSystemFromSimulator', context);
+  },
+  updateSystemName(rootValue, params, context) {
+    App.handleEvent(params, 'updateSystemName', context);
   },
   damageSystem(rootValue, params, context) {
-    App.handleEvent(params, 'damageSystem', context.clientId);
+    App.handleEvent(params, 'damageSystem', context);
   },
   damageReport(rootValue, params, context) {
-    App.handleEvent(params, 'damageReport', context.clientId);
+    App.handleEvent(params, 'damageReport', context);
   },
   repairSystem(rootValue, params, context) {
-    App.handleEvent(params, 'repairSystem', context.clientId);
+    App.handleEvent(params, 'repairSystem', context);
   },
   requestDamageReport(rootValue, params, context) {
-    App.handleEvent(params, 'requestDamageReport', context.clientId);
+    App.handleEvent(params, 'requestDamageReport', context);
+  },
+  systemReactivationCode(rootValue, params, context) {
+    App.handleEvent(params, 'systemReactivationCode', context);
+  },
+  systemReactivationCodeResponse(rootValue, params, context) {
+    App.handleEvent(params, 'systemReactivationCodeResponse', context);
   },
   changePower(rootValue, params, context) {
-    App.handleEvent(params, 'changePower', context.clientId);
+    App.handleEvent(params, 'changePower', context);
+  },
+  changeSystemPowerLevels(rootValue, params, context) {
+    App.handleEvent(params, 'changeSystemPowerLevels', context);
   }
 };
 

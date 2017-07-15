@@ -1,11 +1,15 @@
 export default `
-type ShortRangeComm {
+type ShortRangeComm implements SystemInterface {
   id: ID
   simulatorId: ID
   type: String
   power: Power
   damage: Damage
   name: String
+  displayName: String
+  stealthFactor: Float
+  heat: Float
+  coolant: Float
   frequency: Float
   amplitude: Float
   #One of 'idle', 'hailing', 'connected'
@@ -77,6 +81,7 @@ input RangeInput {
   lower: Float
 }
 input CommSignalInput {
+  id: ID
   image: String
   name: String
   range: RangeInput

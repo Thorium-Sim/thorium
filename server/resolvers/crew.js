@@ -36,13 +36,13 @@ export const CrewQueries = {
 
 export const CrewMutations = {
   addCrewmember(rootValue, params, context) {
-    App.handleEvent(params, 'addCrewmember', context.clientId);
+    App.handleEvent(params, 'addCrewmember', context);
   },
   removeCrewmember(rootValue, params, context) {
-    App.handleEvent(params, 'removeCrewmember', context.clientId);
+    App.handleEvent(params, 'removeCrewmember', context);
   },
   updateCrewmember(rootValue, params, context) {
-    App.handleEvent(params, 'updateCrewmember', context.clientId);
+    App.handleEvent(params, 'updateCrewmember', context);
   }
 };
 

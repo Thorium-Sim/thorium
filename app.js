@@ -1,5 +1,5 @@
 import jsonfile from 'jsonfile';
-import {EventEmitter} from 'events';
+import { EventEmitter } from 'events';
 import { writeFile } from './server/helpers/json-format';
 import * as Classes from './server/classes';
 import config from './config';
@@ -17,6 +17,7 @@ class Events extends EventEmitter {
     this.missions = [];
     this.systems = [];
     this.clients = [];
+    this.sets = [];
     this.decks = [];
     this.rooms = [];
     this.crew = [];
@@ -34,16 +35,16 @@ class Events extends EventEmitter {
     setTimeout(this.init.bind(this), 0);
   }
   init() {
-    if (!config.db){
+    if (!config.db) {
       let snapshotDir = './snapshots/';
       if (electron.app) {
-        snapshotDir = electron.app.getPath('appData') + "/thorium/";
+        snapshotDir = electron.app.getPath('appData') + '/thorium/';
       }
-      if (!fs.existsSync(snapshotDir + 'snapshot.json')){
-        if (!fs.existsSync(snapshotDir)){
+      if (!fs.existsSync(snapshotDir + 'snapshot.json')) {
+        if (!fs.existsSync(snapshotDir)) {
           fs.mkdirSync(snapshotDir);
         }
-        fs.writeFileSync(snapshotDir + "snapshot.json", "{}"); 
+        fs.writeFileSync(snapshotDir + 'snapshot.json', '{}');
       }
       const snapshot = jsonfile.readFileSync(snapshotDir + 'snapshot.json');
       this.merge(snapshot);
@@ -53,13 +54,17 @@ class Events extends EventEmitter {
   }
   merge(snapshot) {
     // Initialize the snapshot with the object constructors
-    Object
-    .keys(snapshot)
-    .forEach((key) => {
-      if (key === 'events' || key === 'snapshotVersion' || key === 'timestamp' || key === 'version' || key === '_eventsCount')
+    Object.keys(snapshot).forEach(key => {
+      if (
+        key === 'events' ||
+        key === 'snapshotVersion' ||
+        key === 'timestamp' ||
+        key === 'version' ||
+        key === '_eventsCount'
+      )
         return;
       if (snapshot[key] instanceof Array) {
-        snapshot[key].forEach((obj) => {
+        snapshot[key].forEach(obj => {
           this[key].push(new Classes[obj.class](obj));
         });
       }
@@ -71,16 +76,16 @@ class Events extends EventEmitter {
     const snapshot = this.trimSnapshot(snap);
     let snapshotDir = './snapshots/';
     if (electron.app) {
-      snapshotDir = electron.app.getPath('appData') + "/thorium/";
+      snapshotDir = electron.app.getPath('appData') + '/thorium/';
     }
-    if (!config.db){
-      writeFile(snapshotDir + 'snapshot.json', snapshot, (err) => {
+    if (!config.db) {
+      writeFile(snapshotDir + 'snapshot.json', snapshot, err => {
         console.log(err);
       });
     }
     return snapshot;
   }
-  trimSnapshot (snapshot) {
+  trimSnapshot(snapshot) {
     delete snapshot.eventsToEmit;
     delete snapshot.newEvents;
     delete snapshot.replaying;
@@ -89,8 +94,9 @@ class Events extends EventEmitter {
     delete snapshot.domain;
     return snapshot;
   }
-  handleEvent(param, pres, clientId) {
-    if (!config.db) { 
+  handleEvent(param, pres, context = {}) {
+    const { clientId } = context;
+    if (!config.db) {
       // We need to fire the events directly
       // Because the database isn't triggering them
       this.timestamp = new Date();

@@ -12,25 +12,25 @@ export const ProbesQueries = {
 
 export const ProbesMutations = {
   destroyProbe(rootValue, args, context){
-    App.handleEvent(args, 'destroyProbe', context.clientId);
+    App.handleEvent(args, 'destroyProbe', context);
   },
   launchProbe(rootValue, args, context){
-    App.handleEvent(args, 'launchProbe', context.clientId);
+    App.handleEvent(args, 'launchProbe', context);
   },
   fireProbe(rootValue, args, context) {
-    App.handleEvent(args, 'fireProbe', context.clientId);
+    App.handleEvent(args, 'fireProbe', context);
   },
   updateProbeType(rootValue, args, context){
-    App.handleEvent(args, 'updateProbeType', context.clientId);
+    App.handleEvent(args, 'updateProbeType', context);
   },
   updateProbeEquipment(rootValue, args, context){
-    App.handleEvent(args, 'updateProbeEquipment', context.clientId);
+    App.handleEvent(args, 'updateProbeEquipment', context);
   },
   probeQuery(rootValue, args, context){
-    App.handleEvent(args, 'probeQuery', context.clientId);
+    App.handleEvent(args, 'probeQuery', context);
   },
   probeQueryResponse(rootValue, args, context){
-    App.handleEvent(args, 'probeQueryResponse', context.clientId);
+    App.handleEvent(args, 'probeQueryResponse', context);
   },
 };
 

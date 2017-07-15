@@ -9,8 +9,8 @@ const CardButton = (props) => {
 		<div className="card-button">{props.name}</div>
 		</div>
 		</div>
-		<div className="card-icon-color"></div>
-		<img role="presentation" className="card-icon" src="http://www.iconsplace.com/download/lime-phone-128.png" draggable="false" />
+		<div className={`card-icon-color ${props.className}`}></div>
+		<img role="presentation" className="card-icon" src={require(`./icons/${props.component}.svg`)} draggable="false" />
 		<div className="card-icon-background"></div>
 		</a>
 		</div>
@@ -23,7 +23,7 @@ class CardSwitcher extends Component {
 		return (<div className={`card-icon-container ${this.props.clientObj.offlineState ? 'offline' : ''} ${this.props.clientObj.loginState}`}>
 		{
 			this.props.cards.map((card,index) => {
-				return <CardButton key={index} cardNum={index} name={card.name} {...this.props} />;
+				return <CardButton key={index} cardNum={index} name={card.name} component={card.component} {...this.props} />;
 			})
 		}
 		</div>);

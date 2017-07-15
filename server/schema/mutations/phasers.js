@@ -7,4 +7,5 @@ export default `
   phaserArc(id: ID!, arc: Float!):String
   setPhaserBeamCharge(id: ID!, beamId: ID!, charge: Float!):String
   setPhaserBeamHeat(id: ID!, beamId: ID!, heat: Float!):String
+  setPhaserBeamCount(id: ID!, beamCount: Int!): String
 `;

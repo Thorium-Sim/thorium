@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
-import { Container, Row, Col, Card, CardBlock, Button, Input, Label, FormGroup } from 'reactstrap'
+import { Container, Row, Col, Label } from 'reactstrap'
 import Immutable from 'immutable';
-import {DeckDropdown, RoomDropdown} from '../helpers/shipStructure';
 
 import './style.scss';
 
@@ -82,9 +81,6 @@ class SecurityTeams extends Component {
     if (this.props.data.loading) return null;
     const {teams, crew, decks} = this.props.data;
     const {selectedTeam} = this.state;
-    const assignedOfficers = teams.reduce((prev, next) => {
-      return prev.concat(next.officers);
-    },[]).map(o => o.id);
     if (crew.length === 0) return <p>Need crew for teams</p>
       return <Container fluid className="security-teams-core">
     <Row>

@@ -4,6 +4,7 @@ export default `
     type: TEAM_TYPES
     simulatorId: ID
     name: String
+    priority: PRIORITIES
     location: Location
     orders: String
     officers: [Crew]
@@ -14,6 +15,7 @@ export default `
     type: TEAM_TYPES
     simulatorId: ID
     name: String
+    priority: PRIORITIES
     location: String
     orders: String
     officers: [ID]
@@ -22,5 +24,11 @@ export default `
     security
     damage
     medical
+  }
+  enum PRIORITIES {
+    low
+    normal
+    critical
+    emergency
   }
 `;

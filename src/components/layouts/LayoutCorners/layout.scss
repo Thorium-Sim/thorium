@@ -276,24 +276,49 @@ body{
 	}
 }
 
-.card-container{
+#curve-frame {
 	.alertBack{
 		transition: background-color 0.5s ease-in-out;
 	}
-	&.alertColor5 .alertBack, &.alertColor4 .alertBack{
-		background-color: $alert5;
+	&.alertColor5, &.alertColor4 {
+		.alertBack{
+			background-color: $alert5;
+		}
+		.card-icon-color {
+			background-color: lighten($alert5, 25%);
+		}
 	}
-	&.alertColor3 .alertBack{
-		background-color: $alert3;
+	&.alertColor3 {
+		.alertBack{
+			background-color: $alert3;
+		}
+		.card-icon-color {
+			background-color: lighten($alert3, 25%);
+		}
 	}
-	&.alertColor2 .alertBack{
-		background-color: $alert2;
+	&.alertColor2 {
+		.alertBack{
+			background-color: $alert2;
+		}
+		.card-icon-color {
+			background-color: lighten($alert2, 25%);
+		}
 	}
-	&.alertColor1 .alertBack{
-		background-color: $alert1;
+	&.alertColor1 {
+		.alertBack{
+			background-color: $alert1;
+		}
+		.card-icon-color {
+			background-color: lighten($alert1, 25%);
+		}
 	}
-	&.alertColorp .alertBack{
-		background-color: $alertp;
+	&.alertColorp {
+		.alertBack{
+			background-color: $alertp;
+		}
+		.card-icon-color {
+			background-color: lighten($alertp, 25%);
+		}
 	}
 }
 
@@ -452,18 +477,17 @@ body{
 				width: 62px;
 				height: 62px;
 				border-radius: 50%;
-				background-color: #f00;
+				//background-color: #f00;
 			}
 			.card-icon{
 				position: absolute;
 				top: 4px;
 				left: 4px;
-				padding: 6px;
+				//padding: 6px;
 				width: 62px;
 				height: 62px;
 				box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
 				border-radius: 50%;
-				background-color: #000;
 			}
 			.card-button-mask{
 				overflow: hidden;

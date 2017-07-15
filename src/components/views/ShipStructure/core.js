@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
-import { Container, Row, Col, Button } from 'reactstrap';
+import { Container, Row, Col, Button, Input } from 'reactstrap';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
 
@@ -81,7 +81,7 @@ class DecksCore extends Component {
     const name = prompt("What is the room name?");
     if (!name) return;
     const mutation = gql`
-    mutation AddRoom($simulatorId: ID!, $deckId: ID!, $name: String!){
+    mutation AddRoom($simulatorId: ID!, $deckId: ID, $name: String!){
       addRoom(simulatorId: $simulatorId, deckId: $deckId, name: $name)
     }`;
     const variables = {
@@ -122,12 +122,63 @@ class DecksCore extends Component {
       variables
     });
   }
+  _exportDecks = () => {
+    // Create an element to download with.
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    var json = JSON.stringify(this.props.data.decks.map(d => {
+      return {number: d.number, rooms: d.rooms.map(r => ({name: r.name}))}
+    })),
+    blob = new Blob([json], {type: "octet/stream"}),
+    url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = 'deckExport.json';
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+  _importDecks = (e) => {
+    const deckAdd = gql`
+    mutation AddDeck ($simulatorId: ID!, $number: Int!){
+      addDeck(simulatorId: $simulatorId, number: $number)
+    }`;
+    const roomAdd = gql`
+    mutation AddRoom($simulatorId: ID!, $deckNum: Int, $name: String!){
+      addRoom(simulatorId: $simulatorId, deckNumber: $deckNum, name: $name)
+    }`;
+    var reader = new FileReader();
+    const self = this;
+    reader.onload = function() {
+      const result = JSON.parse(this.result);
+      result.forEach(d => {
+        const variables = {
+          simulatorId: self.props.simulator.id,
+          number: d.number
+        };
+        self.props.client.mutate({
+          mutation: deckAdd,
+          variables
+        });
+        d.rooms.forEach(r => {
+          const variables = {
+            simulatorId: self.props.simulator.id,
+            deckNum: d.number,
+            name: r.name
+          }
+          self.props.client.mutate({
+            mutation: roomAdd,
+            variables
+          });
+        })
+      })
+    };
+    reader.readAsText(e.target.files[0]);
+  }
   render(){
     if (this.props.data.loading) return null;
     const {decks} = this.props.data;
     const {selectedDeck, selectedRoom} = this.state;
     return <Container className="decks-core">
-    <p>Decks</p>
     <Row>
     <Col sm="6" className="decks-columns">
     <ul className="deckList">
@@ -149,6 +200,10 @@ class DecksCore extends Component {
     <div className="buttons">
     <Button block size="sm" color="primary" onClick={this._addDeck.bind(this)}>Add Deck</Button>
     <Button disabled={!selectedDeck} block size="sm" color="danger" onClick={this._removeDeck.bind(this)}>Remove Deck</Button>
+    <Button block size="sm" color="primary" onClick={this._exportDecks}>Export</Button>
+    <label> Import:
+    <Input  type="file" onChange={this._importDecks} />
+    </label>
     </div>
     </Col>
     <Col sm="6" className="decks-columns">

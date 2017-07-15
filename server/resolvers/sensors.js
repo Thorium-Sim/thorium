@@ -8,7 +8,7 @@ export const SensorsQueries = {
     if (domain) {
       returnVal = returnVal.filter(s => s.domain === domain);
     }
-    if (simulatorId){
+    if (simulatorId) {
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
     }
     return returnVal;
@@ -18,89 +18,90 @@ export const SensorsQueries = {
       return system.type === 'Sensors' && system.id === sensorsId;
     });
     return sensors ? sensors.contacts : [];
-  },
+  }
 };
 
 export const SensorsMutations = {
   addSensorsArray(root, { simulatorId, domain }, context) {
-    App.handleEvent({ simulatorId, domain }, 'addSensorsArray', context.clientId);
+    App.handleEvent({ simulatorId, domain }, 'addSensorsArray', context);
     return '';
   },
   removeSensorsArray(root, { id }, context) {
-    App.handleEvent({ id }, 'removeSensorsArray', context.clientId);
+    App.handleEvent({ id }, 'removeSensorsArray', context);
     return '';
   },
   sensorScanRequest(root, { id, request }, context) {
-    App.handleEvent({ id, request }, 'sensorScanRequest', context.clientId);
+    App.handleEvent({ id, request }, 'sensorScanRequest', context);
     return '';
   },
   sensorScanResult(root, { id, result }, context) {
-    App.handleEvent({ id, result }, 'sensorScanResult', context.clientId);
+    App.handleEvent({ id, result }, 'sensorScanResult', context);
     return '';
   },
   processedData(root, { id, data }, context) {
-    App.handleEvent({ id, data }, 'processedData', context.clientId);
+    App.handleEvent({ id, data }, 'processedData', context);
     return '';
   },
   sensorScanCancel(root, { id }, context) {
-    App.handleEvent({ id }, 'sensorScanCancel', context.clientId);
+    App.handleEvent({ id }, 'sensorScanCancel', context);
     return '';
   },
   createSensorContact(root, { id, contact }, context) {
-    App.handleEvent({ id, contact }, 'createSensorContact', context.clientId);
+    App.handleEvent({ id, contact }, 'createSensorContact', context);
     return '';
   },
   moveSensorContact(root, { id, contact }, context) {
-    App.handleEvent({ id, contact }, 'moveSensorContact', context.clientId);
+    App.handleEvent({ id, contact }, 'moveSensorContact', context);
     return '';
   },
   removeSensorContact(root, { id, contact }, context) {
-    App.handleEvent({ id, contact }, 'removeSensorContact', context.clientId);
+    App.handleEvent({ id, contact }, 'removeSensorContact', context);
     return '';
   },
-  removeAllSensorContacts(root, {id}, context) {
-    App.handleEvent({id}, 'removeAllSensorContacts', context.clientId);
+  removeAllSensorContacts(root, { id }, context) {
+    App.handleEvent({ id }, 'removeAllSensorContacts', context);
     return '';
   },
-  stopAllSensorContacts(root, {id}, context) {
-    App.handleEvent({id}, 'stopAllSensorContacts', context.clientId);
+  stopAllSensorContacts(root, { id }, context) {
+    App.handleEvent({ id }, 'stopAllSensorContacts', context);
     return '';
   },
   destroySensorContact(root, { id, contact }, context) {
-    App.handleEvent({ id, contact }, 'destroyeSensorContact, context.clientId');
+    App.handleEvent({ id, contact }, 'destroyeSensorContact, context');
     return '';
   },
   updateSensorContact(root, { id, contact }, context) {
-    App.handleEvent({ id, contact }, 'updateSensorContact', context.clientId);
+    App.handleEvent({ id, contact }, 'updateSensorContact', context);
     return '';
   },
   createSensorArmyContact(root, { id, contact }, context) {
-    App.handleEvent({ id, contact }, 'createSensorArmyContact', context.clientId);
+    App.handleEvent({ id, contact }, 'createSensorArmyContact', context);
     return '';
   },
   removeSensorArmyContact(root, { id, contact }, context) {
-    App.handleEvent({ id, contact }, 'removeSensorArmyContact', context.clientId);
+    App.handleEvent({ id, contact }, 'removeSensorArmyContact', context);
     return '';
   },
   updateSensorArmyContact(root, { id, contact }, context) {
-    App.handleEvent({ id, contact }, 'updateSensorArmyContact', context.clientId);
+    App.handleEvent({ id, contact }, 'updateSensorArmyContact', context);
     return '';
   },
   animateSensorContacact() {
     moveSensorContact();
-  },
+  }
 };
 
 export const SensorsSubscriptions = {
-  sensorsUpdate(root, {simulatorId, domain}) {
+  sensorsUpdate(root, { simulatorId, domain }) {
     let returnRes = root;
-    if (simulatorId) returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
+    if (simulatorId)
+      returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
     if (domain) returnRes = returnRes.filter(s => s.domain === domain);
     return returnRes;
   },
   sensorContactUpdate(root, { sensorId }) {
     return root.filter(contact => contact.sensorId === sensorId);
-  },
+  }
 };
 
 export const SensorsTypes = {
@@ -110,6 +111,6 @@ export const SensorsTypes = {
     },
     pictureUrl({ picture: assetKey, simulatorId }) {
       return getAsset(assetKey, simulatorId);
-    },
-  },
+    }
+  }
 };

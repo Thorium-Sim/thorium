@@ -47,3 +47,7 @@ App.on('applyPhaserCoolant', ({id, beamId}) => {
   if (phaser.coolant === 0 || beam.heat === 0) phaser.coolBeam(null);
   pubsub.publish('phasersUpdate', App.systems.filter(s => s.type === 'Phasers'));
 })
+App.on('setPhaserBeamCount', ({id, beamCount}) => {
+  App.systems.find(s => s.id === id).setBeams(beamCount);
+  pubsub.publish('phasersUpdate', App.systems.filter(s => s.type === 'Phasers'));
+})

@@ -30,8 +30,8 @@ export default class ShortRangeComm extends System {
   removeCommSignal(signalId) {
     this.signals = this.signals.filter(s => s.id !== signalId);
   }
-  updateCommSignal(signalId, commSignalInput) {
-    this.signals.find(s => s.id === signalId).update(commSignalInput);
+  updateCommSignal(commSignalInput) {
+    this.signals.find(s => s.id === commSignalInput.id).update(commSignalInput);
   }
   addArrow(commArrowInput) {
     this.arrows.push(new Arrow(commArrowInput, this.signals));

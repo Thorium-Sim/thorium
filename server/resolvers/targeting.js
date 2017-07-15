@@ -13,31 +13,31 @@ export const TargetingQueries = {
 
 export const TargetingMutations = {
   createTargetingContact(root, args, context){
-    App.handleEvent(args, "createTargetingContact", context.clientId);
+    App.handleEvent(args, "createTargetingContact", context);
   },
   targetTargetingContact(root, args, context){
-    App.handleEvent(args, "targetTargetingContact", context.clientId);
+    App.handleEvent(args, "targetTargetingContact", context);
   },
   untargetTargetingContact(root, args, context){
-    App.handleEvent(args, "untargetTargetingContact", context.clientId);
+    App.handleEvent(args, "untargetTargetingContact", context);
   },
   targetSystem(root, args, context){
-    App.handleEvent(args, "targetSystem", context.clientId);
+    App.handleEvent(args, "targetSystem", context);
   },
   removeTarget(root, args, context){
-    App.handleEvent(args, "removeTarget", context.clientId);
+    App.handleEvent(args, "removeTarget", context);
   },
   addTargetClass(root, args, context){
-    App.handleEvent(args, "addTargetClass", context.clientId);
+    App.handleEvent(args, "addTargetClass", context);
   },
   removeTargetClass(root, args, context){
-    App.handleEvent(args, "removeTargetClass", context.clientId);
+    App.handleEvent(args, "removeTargetClass", context);
   },
   updateTargetClass(root, args, context){
-    App.handleEvent(args, "updateTargetClass", context.clientId);
+    App.handleEvent(args, "updateTargetClass", context);
   },
   setTargetClassCount(root, args, context){
-    App.handleEvent(args, "setTargetClassCount", context.clientId);
+    App.handleEvent(args, "setTargetClassCount", context);
   }
 };
 

@@ -18,55 +18,55 @@ export const ClientQueries = {
 
 export const ClientMutations = {
   clientConnect: (root, args, context) => {
-    App.handleEvent(args, 'clientConnect', context.clientId);
+    App.handleEvent(args, 'clientConnect', context);
     return '';
   },
   clientDisconnect: (root, args, context) => {
-    App.handleEvent(args, 'clientDisconnect', context.clientId);
+    App.handleEvent(args, 'clientDisconnect', context);
     return '';
   },
   clientPing: (root, args, context) => {
-    App.handleEvent(args, 'clientPing', context.clientId);
+    App.handleEvent(args, 'clientPing', context);
     return '';
   },
   clientSetFlight: (root, args, context) => {
-    App.handleEvent(args, 'clientSetFlight', context.clientId);
+    App.handleEvent(args, 'clientSetFlight', context);
     return '';
   },
   clientSetSimulator: (root, args, context) => {
-    App.handleEvent(args, 'clientSetSimulator', context.clientId);
+    App.handleEvent(args, 'clientSetSimulator', context);
     return '';
   },
   clientSetStation: (root, args, context) => {
-    App.handleEvent(args, 'clientSetStation', context.clientId);
+    App.handleEvent(args, 'clientSetStation', context);
     return '';
   },
   clientLogin: (root, args, context) => {
-    App.handleEvent(args, 'clientLogin', context.clientId);
+    App.handleEvent(args, 'clientLogin', context);
     return '';
   },
   clientLogout: (root, args, context) => {
-    App.handleEvent(args, 'clientLogout', context.clientId);
+    App.handleEvent(args, 'clientLogout', context);
     return '';
   },
   clientDiagnostic: (root, args, context) => {
-    App.handleEvent(args, 'clientDiagnostic', context.clientId);
+    App.handleEvent(args, 'clientDiagnostic', context);
     return '';
   },
   clientReset: (root, args, context) => {
-    App.handleEvent(args, 'clientReset', context.clientId);
+    App.handleEvent(args, 'clientReset', context);
     return '';
   },
   clientLockScreen: (root, args, context) => {
-    App.handleEvent(args, 'clientLockScreen', context.clientId);
+    App.handleEvent(args, 'clientLockScreen', context);
     return '';
   },
   clientUnlockScreen: (root, args, context) => {
-    App.handleEvent(args, 'clientUnlockScreen', context.clientId);
+    App.handleEvent(args, 'clientUnlockScreen', context);
     return '';
   },
   clientOfflineState: (root, args, context) => {
-    App.handleEvent(args, 'clientOfflineState', context.clientId);
+    App.handleEvent(args, 'clientOfflineState', context);
     return '';
   }
 };
@@ -101,17 +101,10 @@ export const ClientTypes = {
       return App.simulators.find(s => s.id === rootValue.simulatorId);
     },
     station(rootValue) {
-      const flight = App.flights.find(f => f.id === rootValue.flightId);
-      if (flight) {
-        const flightSimulator = flight.simulators.find(f => f.id === rootValue.simulatorId);
-        if (flightSimulator) {
-          const stationSet = App.stationSets.find(s => s.id === flightSimulator.stationSet);
-          if (stationSet) {
-            return stationSet.stations.find(s => s.name === rootValue.station);
-          }
-        }
+      const simulator = App.simulators.find(s => s.id === rootValue.simulatorId);
+      if (simulator) {
+        return simulator.stations.find(s => s.name === rootValue.station);
       }
-      return {};
     },
   },
 };

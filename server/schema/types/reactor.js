@@ -1,18 +1,26 @@
 export default `
-type Reactor {
+type Reactor implements SystemInterface{
   id: ID
   simulatorId: ID
   type: String
   name: String
+  displayName: String
+  stealthFactor: Float
+  power: Power
   heat: Float
   coolant: Coolant
   damage: Damage
   #One of 'reactor' or 'battery'
-  model: String
+  model: REACTOR_MODELS
   ejected: Boolean
   powerOutput: Int
   efficiency: Float
   batteryChargeLevel: Float
   batteryChargeRate: Float
+}
+
+enum REACTOR_MODELS {
+  reactor
+  battery
 }
 `;

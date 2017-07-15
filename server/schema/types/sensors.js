@@ -1,9 +1,11 @@
 export default `
-type Sensors {
+type Sensors implements SystemInterface{
   id: ID
   simulatorId: ID
   type: String
   name: String
+  displayName: String
+  stealthFactor: Float
   domain: String
   scanResults: String
   scanRequest: String

@@ -42,8 +42,12 @@ App.on('updateHallwaySvg', ({ deckId, svg }) => {
 });
 
 // Rooms
-App.on('addRoom', ({ simulatorId, deckId, name, svgPath }) => {
-  const room = new Classes.Room({ simulatorId, deckId, name, svgPath });
+App.on('addRoom', ({ simulatorId, deckId, deckNumber, name, svgPath }) => {
+  let deck;
+  if (deckNumber) {
+    deck = App.decks.find(d => d.simulatorId === simulatorId && d.number === deckNumber) || {};
+  }
+  const room = new Classes.Room({ simulatorId, deckId: (deckId ? deckId : deck.id), name, svgPath });
   App.rooms.push(room);
     pubsub.publish('decksUpdate', App.decks);
   pubsub.publish('roomsUpdate', App.rooms);

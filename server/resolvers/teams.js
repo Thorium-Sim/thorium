@@ -45,10 +45,8 @@ export const TeamsTypes = {
     location(team) {
       const deck = App.decks.find(d => d.id === team.location);
       if (deck) {
-        console.log('Deck', deck);
         return deck;
       }
-      console.log('Room', App.rooms.find(r => r.id === team.location))
       return App.rooms.find(r => r.id === team.location);
     },
     officers(team) {

@@ -26,7 +26,7 @@ export const ActionsMutations = {
       .forEach(c => App.handleEvent({client: c.id, state: args.action}, "clientOfflineState"))
       break;
       default:
-      pubsub.publish('actionsUpdate', args, context.clientId);
+      pubsub.publish('actionsUpdate', args, context);
       break;
     }
   },
