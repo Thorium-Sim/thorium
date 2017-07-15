@@ -203,48 +203,56 @@ class GridDom extends Component {
     function _upMouse() {
       document.removeEventListener('mousemove', self._moveMouse);
       document.removeEventListener('mouseup', _upMouse);
-      // Send the update to the server
-      const speed = self.props.moveSpeed;
-      const { movingContact, locations } = self.state;
-      const { destination } = locations[movingContact];
-      self.setState({
-        movingContact: false,
-        iconWidth: null
-      });
-      const distance = distance3d({ x: 0, y: 0, z: 0 }, destination);
-      let mutation;
-      if (distance > 1.08) {
-        // Delete the contact
-        mutation = gql`
-          mutation DeleteContact($id: ID!, $contact: SensorContactInput!) {
-            removeSensorContact(id: $id, contact: $contact)
-          }
-        `;
+      if (self.state.askForSpeed) {
+        self.setState({
+          speedAsking: true
+        });
       } else {
-        mutation = gql`
-          mutation MoveSensorContact($id: ID!, $contact: SensorContactInput!) {
-            moveSensorContact(id: $id, contact: $contact)
-          }
-        `;
+        self.triggerUpdate(self.props.moveSpeed);
       }
-      const variables = {
-        id: self.props.sensor,
-        contact: {
-          id: movingContact,
-          speed: speed,
-          destination: {
-            x: destination.x,
-            y: destination.y,
-            z: destination.z
-          }
-        }
-      };
-      self.props.client.mutate({
-        mutation,
-        variables
-      });
     }
   }
+  triggerUpdate = speed => {
+    // Send the update to the server
+    const { movingContact, locations } = self.state;
+    const { destination } = locations[movingContact];
+    self.setState({
+      movingContact: false,
+      iconWidth: null
+    });
+    const distance = distance3d({ x: 0, y: 0, z: 0 }, destination);
+    let mutation;
+    if (distance > 1.08) {
+      // Delete the contact
+      mutation = gql`
+        mutation DeleteContact($id: ID!, $contact: SensorContactInput!) {
+          removeSensorContact(id: $id, contact: $contact)
+        }
+      `;
+    } else {
+      mutation = gql`
+        mutation MoveSensorContact($id: ID!, $contact: SensorContactInput!) {
+          moveSensorContact(id: $id, contact: $contact)
+        }
+      `;
+    }
+    const variables = {
+      id: self.props.sensor,
+      contact: {
+        id: movingContact,
+        speed: speed,
+        destination: {
+          x: destination.x,
+          y: destination.y,
+          z: destination.z
+        }
+      }
+    };
+    self.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading) return null;
     const {
