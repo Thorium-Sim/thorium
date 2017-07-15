@@ -34,6 +34,7 @@
     "s3": "^4.4.0",
     "scribe-js": "^2.0.4",
     "subscriptions-transport-ws": "^0.6.0",
-    "three": "^0.85.2"
+    "three": "^0.85.2",
+    "random-words": "0.0.1"
   }
 }
