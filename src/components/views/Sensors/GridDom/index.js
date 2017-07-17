@@ -200,12 +200,15 @@ class GridDom extends Component {
       movingContact: id,
       iconWidth: width
     });
-    function _upMouse() {
+    function _upMouse(evt) {
       document.removeEventListener('mousemove', self._moveMouse);
       document.removeEventListener('mouseup', _upMouse);
-      if (self.state.askForSpeed) {
+      if (self.props.askForSpeed) {
         self.setState({
-          speedAsking: true
+          speedAsking: {
+            x: evt.clientX,
+            y: evt.clientY
+          }
         });
       } else {
         self.triggerUpdate(self.props.moveSpeed);
@@ -214,11 +217,12 @@ class GridDom extends Component {
   }
   triggerUpdate = speed => {
     // Send the update to the server
-    const { movingContact, locations } = self.state;
+    const { movingContact, locations } = this.state;
     const { destination } = locations[movingContact];
-    self.setState({
+    this.setState({
       movingContact: false,
-      iconWidth: null
+      iconWidth: null,
+      speedAsking: null
     });
     const distance = distance3d({ x: 0, y: 0, z: 0 }, destination);
     let mutation;
@@ -237,7 +241,7 @@ class GridDom extends Component {
       `;
     }
     const variables = {
-      id: self.props.sensor,
+      id: this.props.sensor,
       contact: {
         id: movingContact,
         speed: speed,
@@ -248,9 +252,20 @@ class GridDom extends Component {
         }
       }
     };
-    self.props.client.mutate({
+    this.props.client.mutate({
       mutation,
       variables
+    });
+  };
+  cancelMove = () => {
+    const { movingContact: id, locations } = this.state;
+    const obj = {};
+    obj[id] = locations[id];
+    obj[id].destination = obj[id].location;
+    this.setState({
+      locations: Object.assign(locations, obj),
+      movingContact: null,
+      speedAsking: null
     });
   };
   render() {
@@ -260,6 +275,7 @@ class GridDom extends Component {
       data,
       core,
       movingContact,
+      speeds,
       setSelectedContact,
       selectedContact,
       armyContacts,
@@ -267,7 +283,7 @@ class GridDom extends Component {
       lines = 12,
       hoverContact
     } = this.props;
-    const { locations } = this.state;
+    const { locations, speedAsking } = this.state;
     const { sensorContacts: contacts } = data;
     const { width: dimWidth, height: dimHeight } = dimensions;
     const padding = core ? 15 : 0;
@@ -314,6 +330,19 @@ class GridDom extends Component {
           {movingContact &&
             <div id="movingContact">
               <SensorContact width={width} {...movingContact} />{' '}
+            </div>}
+          {speedAsking &&
+            <div
+              className="speed-container"
+              style={{
+                transform: `translate(${speedAsking.x}px, ${speedAsking.y}px)`
+              }}>
+              {speeds.map(s =>
+                <p key={s.value} onClick={() => this.triggerUpdate(s.value)}>
+                  {s.label}
+                </p>
+              )}
+              <p onClick={this.cancelMove}>Stop</p>
             </div>}
         </div>
       </div>

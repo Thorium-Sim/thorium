@@ -35,4 +35,22 @@
       transform: translate(-100%, 0);
     }
   }
+  .speed-container {
+    z-index: 1000;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    font-size: 8px;
+    background-color: gainsboro;
+    border: solid 1px gray;
+    p {
+      border-top: solid 1px gray;
+      line-height: 1;
+      padding: 1px;
+      cursor: pointer;
+      &:hover {
+        background-color: lightgray;
+      }
+    }
+  }
 }

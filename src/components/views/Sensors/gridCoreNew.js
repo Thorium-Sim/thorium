@@ -77,7 +77,10 @@ class GridCore extends Component {
       removeContacts: false,
       contextContact: null,
       speed: 0.6,
-      askForSpeed: false
+      askForSpeed:
+        localStorage.getItem('thorium-core-sensors-askforspeed') === 'yes'
+          ? true
+          : false
     };
     this.sensorsSubscription = null;
   }
@@ -393,8 +396,13 @@ class GridCore extends Component {
               <Input
                 type="checkbox"
                 checked={this.state.askForSpeed}
-                onClick={evt =>
-                  this.setState({ askForSpeed: evt.target.checked })}
+                onClick={evt => {
+                  this.setState({ askForSpeed: evt.target.checked });
+                  localStorage.setItem(
+                    'thorium-core-sensors-askforspeed',
+                    evt.target.checked ? 'yes' : 'no'
+                  );
+                }}
               />
             </Label>
           </Col>
