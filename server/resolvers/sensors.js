@@ -86,6 +86,9 @@ export const SensorsMutations = {
     App.handleEvent({ id, contact }, 'updateSensorArmyContact', context);
     return '';
   },
+  nudgeSensorContacts(root, args, context) {
+    App.handleEvent(args, 'nudgeSensorContacts', context);
+  },
   animateSensorContacact() {
     moveSensorContact();
   }

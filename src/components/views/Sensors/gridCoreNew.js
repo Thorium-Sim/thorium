@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import Measure from 'react-measure';
-import Draggable from 'react-draggable';
 import FontAwesome from 'react-fontawesome';
 import ContactContextMenu from './contactContextMenu';
 import { Row, Col, Container, Button, Input } from 'reactstrap';
 import Grid from './GridDom';
+import Nudge from './nudge';
 
 import './gridCore.scss';
 
@@ -326,6 +326,13 @@ class GridCore extends Component {
     if (this.props.data.loading) return <p>Loading...</p>;
     if (!this.props.data.sensors[0]) return <p>No Sensor Grid</p>;
     const sensors = this.props.data.sensors[0];
+    const {
+      speed,
+      selectedContact,
+      movingContact,
+      removeContacts,
+      contextContact
+    } = this.state;
     return (
       <Container className="sensorGridCore" fluid style={{ height: '100%' }}>
         <Row style={{ height: '100%' }}>
@@ -334,7 +341,7 @@ class GridCore extends Component {
               type="select"
               name="select"
               onChange={this._changeSpeed.bind(this)}
-              defaultValue={this.state.speed}>
+              defaultValue={speed}>
               <option value="1000">Instant</option>
               <option value="5">Warp</option>
               <option value="2">Very Fast</option>
@@ -364,6 +371,11 @@ class GridCore extends Component {
               onClick={this._freezeContacts.bind(this)}>
               Freeze
             </Button>
+            <Nudge
+              sensor={sensors.id}
+              client={this.props.client}
+              speed={speed}
+            />
           </Col>
           <Col sm={6} style={{ height: '100%' }}>
             <Measure useClone={true} includeMargin={false}>
@@ -386,11 +398,11 @@ class GridCore extends Component {
                         core
                         dimensions={dimensions}
                         sensor={sensors.id}
-                        moveSpeed={this.state.speed}
+                        moveSpeed={speed}
                         setSelectedContact={this._setSelectedContact.bind(this)}
-                        selectedContact={this.state.selectedContact}
+                        selectedContact={selectedContact}
                         armyContacts={sensors.armyContacts}
-                        movingContact={this.state.movingContact}
+                        movingContact={movingContact}
                       />}
                   </div>
                 );
@@ -415,7 +427,7 @@ class GridCore extends Component {
                       onContextMenu={this._contextMenu.bind(this, contact)}>
                       {contact.name}
                     </label>
-                    {this.state.removeContacts &&
+                    {removeContacts &&
                       <FontAwesome
                         name="ban"
                         className="text-danger pull-right clickable"
@@ -440,19 +452,19 @@ class GridCore extends Component {
               />{' '}
               Remove
             </label>
-            {this.state.contextContact &&
+            {contextContact &&
               <ContactContextMenu
                 closeMenu={this._closeContext.bind(this)}
                 updateArmyContact={this._updateArmyContact.bind(this)}
-                contact={this.state.contextContact.contact}
-                x={this.state.contextContact.left}
+                contact={contextContact.contact}
+                x={contextContact.left}
                 y={0}
               />}
-            {this.state.selectedContact &&
+            {selectedContact &&
               <ContactContextMenu
                 closeMenu={this._closeContext.bind(this)}
                 updateArmyContact={this._updateSensorContact.bind(this)}
-                contact={this.state.selectedContact}
+                contact={selectedContact}
                 x={0}
                 y={0}
               />}
