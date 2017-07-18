@@ -4,7 +4,7 @@ import { graphql, withApollo } from 'react-apollo';
 import Measure from 'react-measure';
 import FontAwesome from 'react-fontawesome';
 import ContactContextMenu from './contactContextMenu';
-import { Row, Col, Container, Button, Input } from 'reactstrap';
+import { Row, Col, Container, Button, Input, Label } from 'reactstrap';
 import Grid from './GridDom';
 import Nudge from './nudge';
 
@@ -76,7 +76,11 @@ class GridCore extends Component {
       selectedContact: null,
       removeContacts: false,
       contextContact: null,
-      speed: 0.6
+      speed: 0.6,
+      askForSpeed:
+        localStorage.getItem('thorium-core-sensors-askforspeed') === 'yes'
+          ? true
+          : false
     };
     this.sensorsSubscription = null;
   }
@@ -331,8 +335,18 @@ class GridCore extends Component {
       selectedContact,
       movingContact,
       removeContacts,
-      contextContact
+      contextContact,
+      askForSpeed
     } = this.state;
+    const speeds = [
+      { value: '1000', label: 'Instant' },
+      { value: '5', label: 'Warp' },
+      { value: '2', label: 'Very Fast' },
+      { value: '1', label: 'Fast' },
+      { value: '0.6', label: 'Moderate' },
+      { value: '0.4', label: 'Slow' },
+      { value: '0.1', label: 'Very Slow' }
+    ];
     return (
       <Container className="sensorGridCore" fluid style={{ height: '100%' }}>
         <Row style={{ height: '100%' }}>
@@ -342,25 +356,25 @@ class GridCore extends Component {
               name="select"
               onChange={this._changeSpeed.bind(this)}
               defaultValue={speed}>
-              <option value="1000">Instant</option>
-              <option value="5">Warp</option>
-              <option value="2">Very Fast</option>
-              <option value="1">Fast</option>
-              <option value="0.6">Moderate</option>
-              <option value="0.4">Slow</option>
-              <option value="0.1">Very Slow</option>
+              {speeds.map(s =>
+                <option key={s.value} value={s.value}>
+                  {s.label}
+                </option>
+              )}
               <option disabled>─────────</option>
-              <option>Timed</option>
+              <option disabled>Timed</option>
             </Input>
             <Button
               size="sm"
               color="danger"
+              block
               onClick={this._clearContacts.bind(this)}>
               Clear
             </Button>
             <Button
               size="sm"
               color="warning"
+              block
               onClick={this._stopContacts.bind(this)}>
               Stop
             </Button>
@@ -368,6 +382,7 @@ class GridCore extends Component {
               size="sm"
               color="info"
               disabled
+              block
               onClick={this._freezeContacts.bind(this)}>
               Freeze
             </Button>
@@ -376,6 +391,20 @@ class GridCore extends Component {
               client={this.props.client}
               speed={speed}
             />
+            <Label>
+              Ask for speed
+              <Input
+                type="checkbox"
+                checked={this.state.askForSpeed}
+                onClick={evt => {
+                  this.setState({ askForSpeed: evt.target.checked });
+                  localStorage.setItem(
+                    'thorium-core-sensors-askforspeed',
+                    evt.target.checked ? 'yes' : 'no'
+                  );
+                }}
+              />
+            </Label>
           </Col>
           <Col sm={6} style={{ height: '100%' }}>
             <Measure useClone={true} includeMargin={false}>
@@ -399,6 +428,8 @@ class GridCore extends Component {
                         dimensions={dimensions}
                         sensor={sensors.id}
                         moveSpeed={speed}
+                        speeds={speeds}
+                        askForSpeed={askForSpeed}
                         setSelectedContact={this._setSelectedContact.bind(this)}
                         selectedContact={selectedContact}
                         armyContacts={sensors.armyContacts}
