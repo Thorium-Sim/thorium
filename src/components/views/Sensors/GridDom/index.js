@@ -279,6 +279,7 @@ class GridDom extends Component {
       setSelectedContact,
       selectedContact,
       armyContacts,
+      ping,
       rings = 3,
       lines = 12,
       hoverContact
@@ -295,7 +296,7 @@ class GridDom extends Component {
     };
     return (
       <div id="sensorGrid" style={gridStyle}>
-        <div className="grid">
+        <div className={`grid ${ping ? 'ping' : ''}`}>
           {Array(rings).fill(0).map((_, i, array) =>
             <div
               key={`ring-${i}`}

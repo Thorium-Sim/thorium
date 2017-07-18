@@ -138,11 +138,19 @@ class Sensors extends Component {
 			hoverContact: contact
 		});
 	}
+	ping = () => {
+		this.setState({
+			ping: true
+		});
+		setTimeout(() => {
+			this.setState({ ping: false });
+		});
+	};
 	render() {
 		//if (this.props.data.error) console.error(this.props.data.error);
 		if (this.props.data.loading) return null;
 		const sensors = this.props.data.sensors[0];
-		const { hoverContact } = this.state;
+		const { hoverContact, ping } = this.state;
 		return (
 			<div className="cardSensors">
 				<div>
@@ -210,6 +218,13 @@ class Sensors extends Component {
 									</Card>
 								</Col>
 							</Row>
+							<Row>
+								<Col sm={12}>
+									<Button block disabled={ping} onClick={this.ping}>
+										Manual
+									</Button>
+								</Col>
+							</Row>
 							{/*<Row>
 			<Col className="col-sm-12">
 			<h4>Contact Coordinates</h4>
@@ -245,6 +260,7 @@ class Sensors extends Component {
 												dimensions={dimensions}
 												sensor={sensors.id}
 												hoverContact={this._hoverContact.bind(this)}
+												ping={ping}
 											/>}
 									</div>}
 							</Measure>
