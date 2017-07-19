@@ -14,7 +14,6 @@ export default class SensorContact extends Component {
       mouseover = () => {},
       mousedown
     } = this.props;
-    console.log(opacity);
     if (!location) return null;
     const { x, y } = location;
     const { x: dx = 0, y: dy = 0 } = destination;
