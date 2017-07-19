@@ -7,6 +7,7 @@ import './style.scss';
 import Grid from './GridDom';
 import Measure from 'react-measure';
 import DamageOverlay from '../helpers/DamageOverlay';
+import SensorScans from './SensorScans';
 
 const SENSOR_SUB = gql`
 	subscription SensorsChanged($simulatorId: ID) {
@@ -44,9 +45,7 @@ class Sensors extends Component {
 		this.sensorsSubscription = null;
 		this.pingSub = null;
 		this.state = {
-			scanResults: '',
 			processedData: '',
-			scanRequest: '',
 			weaponsRangePulse: 0,
 			hoverContact: { name: '', pictureUrl: '' }
 		};
@@ -78,23 +77,12 @@ class Sensors extends Component {
 			if (this.props.data.loading) {
 				//First time load
 				this.setState({
-					scanResults: nextSensors.scanResults,
 					processedData: nextSensors.processedData,
-					scanRequest: nextSensors.scanRequest,
 					pingTime: Date.now() - nextSensors.timeSincePing,
 					ping: false
 				});
 			} else {
 				//Every other load
-				if (nextSensors.scanResults !== this.state.scanResults) {
-					if (this.state.scanResults === undefined) {
-						this.setState({
-							scanResults: nextSensors.scanResults
-						});
-					} else {
-						this.typeIn(nextSensors.scanResults, 0, 'scanResults');
-					}
-				}
 				if (nextSensors.processedData !== this.state.processedData) {
 					if (this.state.scanResults === undefined) {
 						this.setState({
@@ -117,33 +105,7 @@ class Sensors extends Component {
 			});
 		}, 1000);
 	}
-	_startScan() {
-		let obj = {
-			id: this.props.data.sensors[0].id,
-			request: this.refs.scanRequest.value
-		};
-		this.props.client.mutate({
-			mutation: gql`
-				mutation SensorScanRequest($id: ID!, $request: String!) {
-					sensorScanRequest(id: $id, request: $request)
-				}
-			`,
-			variables: obj
-		});
-	}
-	_stopScan() {
-		let obj = {
-			id: this.props.data.sensors[0].id
-		};
-		this.props.client.mutate({
-			mutation: gql`
-				mutation CancelScan($id: ID!) {
-					sensorScanCancel(id: $id)
-				}
-			`,
-			variables: obj
-		});
-	}
+
 	typeIn(text, chars, stateProp) {
 		let currentState = this.state;
 		if (text) {
@@ -215,69 +177,12 @@ class Sensors extends Component {
 			<div className="cardSensors">
 				<div>
 					<Row>
-						<Col sm={3} className="csol-sm-3 scans">
+						<Col sm={3}>
 							<DamageOverlay
 								message="External Sensors Offline"
 								system={sensors}
 							/>
-							<Row>
-								<Col className="col-sm-6">
-									<label>Scan for:</label>
-								</Col>
-								<Col className="col-sm-6 padding">
-									<select className="btn-block c-select">
-										<option>Internal</option>
-										<option>External</option>
-									</select>
-								</Col>
-							</Row>
-							<Row>
-								<Col className="col-sm-12">
-									<div className="scanEntry">
-										{this.props.data.sensors[0].scanning
-											? <div>
-													<video ref={'ReactVideo'} autoPlay loop>
-														<source
-															src={'/js/images/scansvid.mov'}
-															type="video/mp4"
-														/>
-													</video>
-													<Button
-														color="danger"
-														block
-														onClick={this._stopScan.bind(this)}>
-														Cancel Scan
-													</Button>
-												</div>
-											: <div>
-													<textarea
-														ref="scanRequest"
-														className="form-control btn-block"
-														rows="6"
-														defaultValue={this.state.scanRequest}
-													/>
-													<Button
-														color="primary"
-														block
-														onClick={this._startScan.bind(this)}>
-														Begin Scan
-													</Button>
-												</div>}
-									</div>
-								</Col>
-							</Row>
-							<Row>
-								<Col className="col-sm-12">
-									<label>Scan Results:</label>
-								</Col>
-								<Col className="col-sm-12">
-									<Card style={{ height: '200px' }}>
-										<CardBlock>
-											{this.state.scanResults}
-										</CardBlock>
-									</Card>
-								</Col>
-							</Row>
+							<SensorScans sensors={sensors} client={this.props.client} />
 							{pings &&
 								<Row>
 									<Col sm="12">
