@@ -7,6 +7,8 @@ type Sensors implements SystemInterface{
   displayName: String
   stealthFactor: Float
   domain: String
+  pings: Boolean
+  timeSincePing: Int
   pingMode: PING_MODES
   scanResults: String
   scanRequest: String

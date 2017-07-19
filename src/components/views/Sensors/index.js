@@ -17,7 +17,9 @@ const SENSOR_SUB = gql`
 			scanRequest
 			processedData
 			scanning
+			pings
 			pingMode
+			timeSincePing
 			damage {
 				damaged
 				report
@@ -78,7 +80,9 @@ class Sensors extends Component {
 				this.setState({
 					scanResults: nextSensors.scanResults,
 					processedData: nextSensors.processedData,
-					scanRequest: nextSensors.scanRequest
+					scanRequest: nextSensors.scanRequest,
+					pingTime: Date.now() - nextSensors.timeSincePing,
+					ping: false
 				});
 			} else {
 				//Every other load
@@ -156,12 +160,21 @@ class Sensors extends Component {
 		});
 	}
 	ping = () => {
-		this.setState({
-			ping: true
-		});
-		setTimeout(() => {
-			this.setState({ ping: false });
-		}, 1000 * 5);
+		// Reset the state
+		this.setState(
+			{
+				ping: false
+			},
+			() => {
+				this.setState({
+					ping: true,
+					pingTime: Date.now()
+				});
+				setTimeout(() => {
+					this.setState({ ping: false });
+				}, 1000 * 5);
+			}
+		);
 	};
 	triggerPing = () => {
 		const mutation = gql`
@@ -196,8 +209,8 @@ class Sensors extends Component {
 		//if (this.props.data.error) console.error(this.props.data.error);
 		if (this.props.data.loading) return null;
 		const sensors = this.props.data.sensors[0];
-		const { pingMode } = sensors;
-		const { hoverContact, ping } = this.state;
+		const { pingMode, pings } = sensors;
+		const { hoverContact, ping, pingTime } = this.state;
 		return (
 			<div className="cardSensors">
 				<div>
@@ -265,39 +278,48 @@ class Sensors extends Component {
 									</Card>
 								</Col>
 							</Row>
-							<Row>
-								<Col sm="12">
-									<label>Sensor Options:</label>
-								</Col>
-								<Col sm={12}>
-									<Card>
-										<li
-											onClick={() => this.selectPing('active')}
-											className={`list-group-item ${pingMode === 'active'
-												? 'selected'
-												: ''}`}>
-											Active Scan
-										</li>
-										<li
-											onClick={() => this.selectPing('passive')}
-											className={`list-group-item ${pingMode === 'passive'
-												? 'selected'
-												: ''}`}>
-											Passive Scan
-										</li>
-										<li
-											onClick={() => this.selectPing('manual')}
-											className={`list-group-item ${pingMode === 'manual'
-												? 'selected'
-												: ''}`}>
-											Manual Scan
-										</li>
-									</Card>
-									<Button block disabled={ping} onClick={this.triggerPing}>
-										Ping
-									</Button>
-								</Col>
-							</Row>
+							{pings &&
+								<Row>
+									<Col sm="12">
+										<label>Sensor Options:</label>
+									</Col>
+									<Col sm={12}>
+										<Card>
+											<li
+												onClick={() => this.selectPing('active')}
+												className={`list-group-item ${pingMode === 'active'
+													? 'selected'
+													: ''}`}>
+												Active Scan
+											</li>
+											<li
+												onClick={() => this.selectPing('passive')}
+												className={`list-group-item ${pingMode === 'passive'
+													? 'selected'
+													: ''}`}>
+												Passive Scan
+											</li>
+											<li
+												onClick={() => this.selectPing('manual')}
+												className={`list-group-item ${pingMode === 'manual'
+													? 'selected'
+													: ''}`}>
+												Manual Scan
+											</li>
+										</Card>
+										<Button
+											block
+											disabled={ping}
+											className="pingButton"
+											style={{
+												opacity: pingMode === 'manual' ? 1 : 0,
+												pointerEvents: pingMode === 'manual' ? 'auto' : 'none'
+											}}
+											onClick={this.triggerPing}>
+											Ping
+										</Button>
+									</Col>
+								</Row>}
 							{/*<Row>
 			<Col className="col-sm-12">
 			<h4>Contact Coordinates</h4>
@@ -334,6 +356,8 @@ class Sensors extends Component {
 												sensor={sensors.id}
 												hoverContact={this._hoverContact.bind(this)}
 												ping={ping}
+												pings={sensors.pings}
+												pingTime={pingTime}
 											/>}
 									</div>}
 							</Measure>
@@ -391,7 +415,9 @@ const SENSOR_QUERY = gql`
 			scanRequest
 			scanning
 			processedData
+			pings
 			pingMode
+			timeSincePing
 			damage {
 				damaged
 				report

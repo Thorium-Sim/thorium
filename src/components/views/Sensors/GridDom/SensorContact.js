@@ -10,9 +10,11 @@ export default class SensorContact extends Component {
       width,
       size,
       core,
+      opacity,
       mouseover = () => {},
       mousedown
     } = this.props;
+    console.log(opacity);
     if (!location) return null;
     const { x, y } = location;
     const { x: dx = 0, y: dy = 0 } = destination;
@@ -24,7 +26,7 @@ export default class SensorContact extends Component {
           onMouseOut={() => mouseover({})}
           src={assetPath(icon, 'default', 'svg', false)}
           style={{
-            opacity: core ? 0.5 : 1,
+            opacity: core ? 0.5 : opacity,
             transform: `translate(${width / 2 * x}px, ${width /
               2 *
               y}px) scale(${size})`
