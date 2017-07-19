@@ -25,5 +25,7 @@ createSensorArmyContact(id: ID!, contact: SensorContactInput!): String
 removeSensorArmyContact(id: ID!, contact: ID!): String
 updateSensorArmyContact(id: ID!, contact: SensorContactInput!): String
 nudgeSensorContacts(id: ID!, amount: CoordinatesInput!, speed: Float!): String
+setSensorPingMode(id: ID!, mode: PING_MODES):String
+pingSensors(id: ID!):String
 animateSensorContacact:String
 `;

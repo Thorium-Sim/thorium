@@ -17,6 +17,7 @@ const SENSOR_SUB = gql`
 			scanRequest
 			processedData
 			scanning
+			pingMode
 			damage {
 				damaged
 				report
@@ -29,10 +30,17 @@ const SENSOR_SUB = gql`
 	}
 `;
 
+const PING_SUB = gql`
+	subscription SensorPing($id: ID) {
+		sensorsPing(sensorId: $id)
+	}
+`;
+
 class Sensors extends Component {
 	constructor(props) {
 		super(props);
 		this.sensorsSubscription = null;
+		this.pingSub = null;
 		this.state = {
 			scanResults: '',
 			processedData: '',
@@ -51,6 +59,15 @@ class Sensors extends Component {
 					return returnResult
 						.merge({ sensors: subscriptionData.data.sensorsUpdate })
 						.toJS();
+				}
+			});
+		}
+		if (!this.pingSub && !nextProps.data.loading) {
+			this.pingSub = nextProps.data.subscribeToMore({
+				document: PING_SUB,
+				variables: { id: nextProps.data.sensors[0] },
+				updateQuery: () => {
+					this.ping();
 				}
 			});
 		}
@@ -144,12 +161,42 @@ class Sensors extends Component {
 		});
 		setTimeout(() => {
 			this.setState({ ping: false });
+		}, 1000 * 5);
+	};
+	triggerPing = () => {
+		const mutation = gql`
+			mutation SendPing($id: ID!) {
+				pingSensors(id: $id)
+			}
+		`;
+		const variables = {
+			id: this.props.data.sensors[0].id
+		};
+		this.props.client.mutate({
+			mutation,
+			variables
 		});
 	};
+	selectPing(which) {
+		const mutation = gql`
+			mutation SetPingMode($id: ID!, $mode: PING_MODES) {
+				setSensorPingMode(id: $id, mode: $mode)
+			}
+		`;
+		const variables = {
+			id: this.props.data.sensors[0].id,
+			mode: which
+		};
+		this.props.client.mutate({
+			mutation,
+			variables
+		});
+	}
 	render() {
 		//if (this.props.data.error) console.error(this.props.data.error);
 		if (this.props.data.loading) return null;
 		const sensors = this.props.data.sensors[0];
+		const { pingMode } = sensors;
 		const { hoverContact, ping } = this.state;
 		return (
 			<div className="cardSensors">
@@ -219,9 +266,35 @@ class Sensors extends Component {
 								</Col>
 							</Row>
 							<Row>
+								<Col sm="12">
+									<label>Sensor Options:</label>
+								</Col>
 								<Col sm={12}>
-									<Button block disabled={ping} onClick={this.ping}>
-										Manual
+									<Card>
+										<li
+											onClick={() => this.selectPing('active')}
+											className={`list-group-item ${pingMode === 'active'
+												? 'selected'
+												: ''}`}>
+											Active Scan
+										</li>
+										<li
+											onClick={() => this.selectPing('passive')}
+											className={`list-group-item ${pingMode === 'passive'
+												? 'selected'
+												: ''}`}>
+											Passive Scan
+										</li>
+										<li
+											onClick={() => this.selectPing('manual')}
+											className={`list-group-item ${pingMode === 'manual'
+												? 'selected'
+												: ''}`}>
+											Manual Scan
+										</li>
+									</Card>
+									<Button block disabled={ping} onClick={this.triggerPing}>
+										Ping
 									</Button>
 								</Col>
 							</Row>
@@ -318,6 +391,7 @@ const SENSOR_QUERY = gql`
 			scanRequest
 			scanning
 			processedData
+			pingMode
 			damage {
 				damaged
 				report
