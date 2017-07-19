@@ -4,7 +4,7 @@ import { pubsub } from '../helpers/subscriptionManager.js';
 
 const interval = 30; // 1/30 of a second
 const updateInterval = 1000;
-
+const pingInterval = 100;
 function distance3d(coord2, coord1) {
   const { x: x1, y: y1, z: z1 } = coord1;
   let { x: x2, y: y2, z: z2 } = coord2;
@@ -83,7 +83,30 @@ const updateSensorGrids = () => {
   });
   setTimeout(updateSensorGrids, updateInterval);
 };
+
+const activePingInterval = 6000;
+const passivePingInterval = 15000;
+const pingSensors = () => {
+  App.systems.forEach(sys => {
+    if (sys.type === 'Sensors' && sys.pings === true) {
+      const sensors = sys;
+      // Increment the timeSincePing
+      sensors.timeSincePing = sensors.timeSincePing + pingInterval;
+      if (
+        (sensors.pingMode === 'active' &&
+          sensors.timeSincePing >= activePingInterval) ||
+        (sensors.pingMode === 'passive' &&
+          sensors.timeSincePing >= passivePingInterval)
+      ) {
+        App.handleEvent({ id: sensors.id }, 'pingSensors', {});
+      }
+    }
+  });
+  setTimeout(pingSensors, pingInterval);
+};
+
 //updateSensorGrids();
 moveSensorContact();
+pingSensors();
 
 export default moveSensorContact;

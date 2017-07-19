@@ -7,6 +7,9 @@ type Sensors implements SystemInterface{
   displayName: String
   stealthFactor: Float
   domain: String
+  pings: Boolean
+  timeSincePing: Int
+  pingMode: PING_MODES
   scanResults: String
   scanRequest: String
   processedData: String
@@ -51,5 +54,10 @@ input SensorContactInput {
   infrared: Boolean
   cloaked: Boolean
   destroyed: Boolean
+}
+enum PING_MODES {
+  active
+  passive
+  manual
 }
 `;

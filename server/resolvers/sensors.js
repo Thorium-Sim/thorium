@@ -89,6 +89,12 @@ export const SensorsMutations = {
   nudgeSensorContacts(root, args, context) {
     App.handleEvent(args, 'nudgeSensorContacts', context);
   },
+  setSensorPingMode(root, args, context) {
+    App.handleEvent(args, 'setSensorPingMode', context);
+  },
+  pingSensors(root, args, context) {
+    App.handleEvent(args, 'pingSensors', context);
+  },
   animateSensorContacact() {
     moveSensorContact();
   }
@@ -104,6 +110,9 @@ export const SensorsSubscriptions = {
   },
   sensorContactUpdate(root, { sensorId }) {
     return root.filter(contact => contact.sensorId === sensorId);
+  },
+  sensorsPing(root, { sensorId }) {
+    if (root === sensorId) return true;
   }
 };
 

@@ -80,6 +80,7 @@ class GridDom extends Component {
               ? stateLocations[c.id].location
               : c.location,
             speed: c.speed,
+            opacity: this.contactPing(c, Date.now() - nextProps.pingTime),
             destination: c.destination
           };
         });
@@ -96,7 +97,11 @@ class GridDom extends Component {
   contactLoop = () => {
     this.contactTimeout = setTimeout(this.contactLoop, this.interval);
     if (!this.props.data.loading) {
-      const { data: { sensorContacts: contacts } } = this.props;
+      const {
+        data: { sensorContacts: contacts },
+        pingTime,
+        pings
+      } = this.props;
       const locations = {};
       contacts.forEach(c => {
         const location = this.state.locations[c.id];
@@ -107,10 +112,32 @@ class GridDom extends Component {
         }
         const moveResult = this.moveContact(c, location.location, speed);
         moveResult.destination = destination;
+        if (pings) {
+          moveResult.opacity = this.contactPing(c, Date.now() - pingTime);
+        } else {
+          moveResult.opacity = 1;
+        }
         locations[c.id] = moveResult;
       });
       this.setState({ locations });
     }
+  };
+  contactPing = ({ location }, delta) => {
+    //If the ping happened too long ago, just return 0
+    if (delta > 7000) {
+      return 0;
+    }
+    // Fade out the icon
+    if (delta > 4000) {
+      return Math.abs(1 - (delta - 4000) / (7000 - 4000));
+    }
+    // Get the distance
+    const distance = distance3d(location, { x: 0, y: 0, z: 0 });
+    const multiplier = 1500;
+    if (delta > distance * multiplier) {
+      return 1;
+    }
+    return 0;
   };
   moveContact = ({ destination, velocity }, location, speed) => {
     const { movingContact } = this.state;
@@ -279,6 +306,7 @@ class GridDom extends Component {
       setSelectedContact,
       selectedContact,
       armyContacts,
+      ping,
       rings = 3,
       lines = 12,
       hoverContact
@@ -295,7 +323,7 @@ class GridDom extends Component {
     };
     return (
       <div id="sensorGrid" style={gridStyle}>
-        <div className="grid">
+        <div className={`grid ${ping ? 'ping' : ''}`}>
           {Array(rings).fill(0).map((_, i, array) =>
             <div
               key={`ring-${i}`}
@@ -324,6 +352,7 @@ class GridDom extends Component {
               mousedown={e => this._downMouse(e, contact.id)}
               location={locations[contact.id].location}
               destination={locations[contact.id].destination}
+              opacity={locations[contact.id].opacity}
               mouseover={hoverContact}
             />
           )}

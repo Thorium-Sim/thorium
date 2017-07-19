@@ -15,6 +15,9 @@ export default class Sensors extends System {
     if (params.name) {
       this.name = params.name;
     }
+    this.pings = params.pings || true;
+    this.pingMode = params.pingMode || 'manual';
+    this.timeSincePing = params.timeSincePing || 0;
     this.scanResults = params.scanResults || '';
     this.scanRequest = params.scanRequest || '';
     this.processedData = params.processedData || '';
@@ -105,5 +108,8 @@ export default class Sensors extends System {
   }
   nudgeContacts(amount, speed) {
     this.contacts.forEach(c => c.nudge(amount, speed));
+  }
+  setPingMode(mode) {
+    this.pingMode = mode;
   }
 }

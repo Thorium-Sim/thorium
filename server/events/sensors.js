@@ -120,3 +120,16 @@ App.on('nudgeSensorContacts', ({ id, amount, speed }) => {
   system.nudgeContacts(amount, speed);
   pubsub.publish('sensorContactUpdate', system.contacts);
 });
+App.on('setSensorPingMode', ({ id, mode }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  system.setPingMode(mode);
+  pubsub.publish(
+    'sensorsUpdate',
+    App.systems.filter(s => s.type === 'Sensors')
+  );
+});
+App.on('pingSensors', ({ id }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  system.timeSincePing = 0;
+  pubsub.publish('sensorsPing', id);
+});
