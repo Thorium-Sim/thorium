@@ -115,9 +115,9 @@ App.on('updateSensorArmyContact', ({ id, contact }) => {
     App.systems.filter(s => s.type === 'Sensors')
   );
 });
-App.on('nudgeSensorContacts', ({ id, amount, speed }) => {
+App.on('nudgeSensorContacts', ({ id, amount, speed, yaw }) => {
   const system = App.systems.find(sys => sys.id === id);
-  system.nudgeContacts(amount, speed);
+  system.nudgeContacts(amount, speed, yaw);
   pubsub.publish('sensorContactUpdate', system.contacts);
 });
 App.on('setSensorPingMode', ({ id, mode }) => {

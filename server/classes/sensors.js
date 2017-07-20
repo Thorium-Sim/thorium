@@ -106,8 +106,8 @@ export default class Sensors extends System {
     myContact.destroyed = true;
     setTimeout(this.removeContact.bind(this, { id }), 1000);
   }
-  nudgeContacts(amount, speed) {
-    this.contacts.forEach(c => c.nudge(amount, speed));
+  nudgeContacts(amount, speed, yaw) {
+    this.contacts.forEach(c => c.nudge(amount, speed, yaw));
   }
   setPingMode(mode) {
     this.pingMode = mode;

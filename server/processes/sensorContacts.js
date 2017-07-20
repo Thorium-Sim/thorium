@@ -38,10 +38,15 @@ const moveSensorContact = () => {
             destination.y,
             destination.z
           );
+
           const velocity = destinationVector
             .sub(locationVector)
             .normalize()
             .multiplyScalar(speed);
+
+          console.log('Location', location);
+          console.log('destinat', destination);
+          console.log('Velocity', velocity);
 
           // Update the location
           location.x +=
@@ -55,7 +60,7 @@ const moveSensorContact = () => {
           destination.x = Math.round(destination.x * 10000) / 10000;
           destination.y = Math.round(destination.y * 10000) / 10000;
           destination.z = Math.round(destination.z * 10000) / 10000;
-
+          console.log('End  ', location);
           // Check to see if it is close enough to the destination
           newContact.location = location;
           newContact.velocity = velocity;

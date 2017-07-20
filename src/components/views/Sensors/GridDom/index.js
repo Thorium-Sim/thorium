@@ -75,10 +75,12 @@ class GridDom extends Component {
       this.setState(({ locations: stateLocations }) => {
         const locations = {};
         nextProps.data.sensorContacts.forEach(c => {
+          console.log(c.location, c.speed, c.destination);
           locations[c.id] = {
-            location: stateLocations[c.id]
+            location:
+              c.location /* stateLocations[c.id]
               ? stateLocations[c.id].location
-              : c.location,
+              : c.location,*/,
             speed: c.speed,
             opacity: this.contactPing(c, Date.now() - nextProps.pingTime),
             destination: c.destination
