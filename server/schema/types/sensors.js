@@ -35,6 +35,7 @@ type SensorContact {
   infrared: Boolean
   cloaked: Boolean
   destroyed: Boolean
+  forceUpdate: Boolean
 }
 input CoordinatesInput {
   x: Float

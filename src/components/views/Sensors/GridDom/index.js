@@ -44,6 +44,7 @@ const SENSORCONTACT_SUB = gql`
       infrared
       cloaked
       destroyed
+      forceUpdate
     }
   }
 `;
@@ -75,12 +76,12 @@ class GridDom extends Component {
       this.setState(({ locations: stateLocations }) => {
         const locations = {};
         nextProps.data.sensorContacts.forEach(c => {
-          console.log(c.location, c.speed, c.destination);
           locations[c.id] = {
-            location:
-              c.location /* stateLocations[c.id]
-              ? stateLocations[c.id].location
-              : c.location,*/,
+            location: c.forceUpdate
+              ? c.location
+              : stateLocations[c.id]
+                ? stateLocations[c.id].location
+                : c.location,
             speed: c.speed,
             opacity: this.contactPing(c, Date.now() - nextProps.pingTime),
             destination: c.destination
@@ -305,9 +306,6 @@ class GridDom extends Component {
       core,
       movingContact,
       speeds,
-      setSelectedContact,
-      selectedContact,
-      armyContacts,
       ping,
       rings = 3,
       lines = 12,
@@ -409,6 +407,7 @@ const CONTACTS_QUERY = gql`
       infrared
       cloaked
       destroyed
+      forceUpdate
     }
   }
 `;
