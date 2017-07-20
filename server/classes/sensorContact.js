@@ -9,6 +9,18 @@ function distance3d(coord2, coord1) {
   return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
 }
 
+function calculateRotatedPoint({ x, y }, angle) {
+  const rad = degreeToRadian(angle);
+  return {
+    x: x * Math.cos(rad) - y * Math.sin(rad),
+    y: x * Math.sin(rad) + y * Math.cos(rad)
+  };
+}
+
+function degreeToRadian(deg) {
+  return deg * Math.PI / 180;
+}
+
 export default class SensorContact {
   constructor(params) {
     this.id = params.id || uuid.v4();
@@ -56,20 +68,31 @@ export default class SensorContact {
       this.destination = this.location;
     }
   }
-  nudge(coordinates, speed) {
+  nudge(coordinates, speed, yaw) {
     this.speed = speed;
-    this.destination.x = Math.max(
-      -1.08,
-      Math.min(1.08, this.destination.x + coordinates.x)
-    );
-    this.destination.y = Math.max(
-      -1.08,
-      Math.min(1.08, this.destination.y + coordinates.y)
-    );
-    this.destination.z = Math.max(
-      -1.08,
-      Math.min(1.08, this.destination.z + coordinates.z)
-    );
+    if (yaw) {
+      // Rotate the contact about the center
+      const destinationPoints = calculateRotatedPoint(this.destination, yaw);
+      const locationPoints = calculateRotatedPoint(this.location, yaw);
+      this.destination.x = destinationPoints.x;
+      this.destination.y = destinationPoints.y;
+      this.location.x = locationPoints.x;
+      this.location.y = locationPoints.y;
+    } else {
+      this.destination.x = Math.max(
+        -1.08,
+        Math.min(1.08, this.destination.x + coordinates.x)
+      );
+      this.destination.y = Math.max(
+        -1.08,
+        Math.min(1.08, this.destination.y + coordinates.y)
+      );
+      this.destination.z = Math.max(
+        -1.08,
+        Math.min(1.08, this.destination.z + coordinates.z)
+      );
+    }
+    // Recalculate the velocity
     const locationVector = new THREE.Vector3(
       this.location.x,
       this.location.y,
@@ -84,7 +107,6 @@ export default class SensorContact {
       .sub(locationVector)
       .normalize()
       .multiplyScalar(speed);
-    console.log(this.velocity, this.destination);
   }
   stop() {
     this.destination = this.location;

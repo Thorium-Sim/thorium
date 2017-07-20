@@ -115,10 +115,13 @@ App.on('updateSensorArmyContact', ({ id, contact }) => {
     App.systems.filter(s => s.type === 'Sensors')
   );
 });
-App.on('nudgeSensorContacts', ({ id, amount, speed }) => {
+App.on('nudgeSensorContacts', ({ id, amount, speed, yaw }) => {
   const system = App.systems.find(sys => sys.id === id);
-  system.nudgeContacts(amount, speed);
-  pubsub.publish('sensorContactUpdate', system.contacts);
+  system.nudgeContacts(amount, speed, yaw);
+  pubsub.publish(
+    'sensorContactUpdate',
+    system.contacts.map(c => Object.assign({}, c, { forceUpdate: true }))
+  );
 });
 App.on('setSensorPingMode', ({ id, mode }) => {
   const system = App.systems.find(sys => sys.id === id);

@@ -38,10 +38,15 @@ const moveSensorContact = () => {
             destination.y,
             destination.z
           );
+
           const velocity = destinationVector
             .sub(locationVector)
             .normalize()
             .multiplyScalar(speed);
+
+          velocity.x = velocity.x || 0;
+          velocity.y = velocity.y || 0;
+          velocity.z = velocity.z || 0;
 
           // Update the location
           location.x +=

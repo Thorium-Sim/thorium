@@ -7,7 +7,7 @@ export default class Nudge extends Component {
   state = {
     nudge: localStorage.getItem('thorium-core-sensors-nudge')
   };
-  nudgeContacts = ({ x, y }) => {
+  nudgeContacts = ({ x = 0, y = 0, yaw = 0 }) => {
     const { nudge } = this.state;
     const { speed, client, sensor } = this.props;
     const mutation = gql`
@@ -15,18 +15,23 @@ export default class Nudge extends Component {
         $id: ID!
         $amount: CoordinatesInput!
         $speed: Float!
+        $yaw: Float
       ) {
-        nudgeSensorContacts(id: $id, amount: $amount, speed: $speed)
+        nudgeSensorContacts(id: $id, amount: $amount, speed: $speed, yaw: $yaw)
       }
     `;
+    const amount = yaw
+      ? {}
+      : {
+          x: x * 0.01 * nudge,
+          y: y * 0.01 * nudge,
+          z: 0
+        };
     const variables = {
       id: sensor,
-      amount: {
-        x: x * 0.01 * nudge,
-        y: y * 0.01 * nudge,
-        z: 0
-      },
-      speed
+      amount,
+      speed,
+      yaw: yaw * nudge
     };
     client.mutate({
       mutation,
@@ -50,24 +55,24 @@ export default class Nudge extends Component {
             );
           }}
           defaultValue={nudge}>
-          <option value="100">100</option>
-          <option value="85">85</option>
-          <option value="75">75</option>
-          <option value="60">60</option>
-          <option value="50">50</option>
-          <option value="40">40</option>
-          <option value="30">30</option>
-          <option value="20">20</option>
-          <option value="10">10</option>
-          <option value="5">5</option>
-          <option value="2">2</option>
-          <option value="1">1</option>
+          {[100, 90, 75, 60, 50, 45, 30, 20, 15, 10, 5, 2, 1].map(n =>
+            <option key={`nudge-${n}`} value={n}>
+              {n}
+            </option>
+          )}
         </Input>
         <div className="buttons">
           <FontAwesome
+            onClick={() => this.nudgeContacts({ yaw: -1 })}
+            name="rotate-left"
+          />
+          <FontAwesome
             onClick={() => this.nudgeContacts({ x: 0, y: -1 })}
-            className="up"
             name="arrow-up"
+          />
+          <FontAwesome
+            onClick={() => this.nudgeContacts({ yaw: 1 })}
+            name="rotate-right"
           />
           <FontAwesome
             onClick={() => this.nudgeContacts({ x: -1, y: 0 })}
