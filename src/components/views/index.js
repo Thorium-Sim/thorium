@@ -28,6 +28,7 @@ import TractorBeam from './TractorBeam';
 import SecurityTeams from './SecurityTeams';
 import DamageTeams from './DamageTeams';
 import AlertCondition from './AlertCondition';
+import ProbeNetwork from './ProbeNetwork';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -89,7 +90,8 @@ const Views = {
   TractorBeam,
   SecurityTeams,
   DamageTeams,
-  AlertCondition
+  AlertCondition,
+  ProbeNetwork
 };
 
 export const Widgets = {

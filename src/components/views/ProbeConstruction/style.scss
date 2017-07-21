@@ -38,11 +38,11 @@
         }
       }
     }
-
   }
-  .probeAction, .probeDescription{
+  .probeAction,
+  .probeDescription {
     position: relative;
-    .col{
+    .col {
       position: absolute;
       top: 50px;
       left: 0px;
@@ -59,7 +59,7 @@
     }
   }
   .probeEquipment {
-    .card{ 
+    .card {
       max-height: 40vh;
     }
     .equipmentList {
@@ -67,7 +67,7 @@
       overflow: scroll;
     }
     .equipmentItem:nth-child(odd) {
-      background-color: rgba(255,255,255,0.1);
+      background-color: rgba(255, 255, 255, 0.1);
     }
     p {
       margin: 0;
