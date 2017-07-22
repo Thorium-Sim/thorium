@@ -1,33 +1,58 @@
-.grid {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.6);
-  .ring {
-    border: solid 1px rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    position: absolute;
+.probe-network {
+  .processedData {
+    height: 60vh;
   }
-  .line {
-    position: absolute;
+  .card-block {
+    overflow: scroll;
+    height: 100%;
+  }
+  .grid {
+    height: 100%;
     width: 100%;
-    height: 1px;
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-  .box {
-    width: 20px;
-    height: 20px;
     position: absolute;
-    border: solid 3px white;
-    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.6);
+    .ring {
+      border: solid 1px rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      position: absolute;
+    }
+    .line {
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    .box {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      border: solid 3px white;
+      background-color: black;
+    }
+    .probe {
+      width: 10px;
+      height: 10px;
+      background-color: white;
+      border-radius: 50%;
+      position: absolute;
+    }
+    .datagram {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+    }
   }
-  .datagram {
-    width: 20px;
-    height: 20px;
-    position: absolute;
+}
+
+.probe-network-core {
+  p {
+    background-color: #2288ff;
+    border: solid 1px white;
+    border-radius: 5px;
+    text-align: center;
   }
 }

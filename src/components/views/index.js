@@ -56,7 +56,7 @@ import TractorBeamCore from './TractorBeam/core';
 import CrewCore from './Crew/core';
 import SecurityTeamsCore from './SecurityTeams/core';
 import DamageTeamsCore from './DamageTeams/core';
-
+import ProbeNetworkCore from './ProbeNetwork/core';
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
 import RemoteWidget from './RemoteAccess/widget';
@@ -141,7 +141,8 @@ export const Cores = {
   TractorBeamCore,
   CrewCore,
   SecurityTeamsCore,
-  DamageTeamsCore
+  DamageTeamsCore,
+  ProbeNetworkCore
 };
 
 export default Views;

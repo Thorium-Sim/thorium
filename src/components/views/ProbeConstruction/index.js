@@ -16,8 +16,13 @@ import Immutable from 'immutable';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Transitioner from '../helpers/transitioner';
 import ProbeEquipment from './probeEquipment';
+import Measure from 'react-measure';
 
 import './style.scss';
+
+function d2r(deg) {
+  return deg * Math.PI / 180;
+}
 
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
@@ -37,6 +42,13 @@ const PROBES_SUB = gql`
           size
           count
           description
+        }
+      }
+      probes {
+        id
+        name
+        equipment {
+          id
         }
       }
       name
@@ -79,11 +91,11 @@ class ProbeConstruction extends Component {
       });
     }
   }
-  toggle() {
+  toggle = () => {
     this.setState({
       modal: !this.state.modal
     });
-  }
+  };
   selectProbe(id) {
     this.setState({
       selectedProbeType: id,
@@ -97,7 +109,7 @@ class ProbeConstruction extends Component {
       launching: true
     });
   }
-  launchProbe(name) {
+  launchProbe = name => {
     const probes = this.props.data.probes[0];
     const { selectedProbeType, equipment } = this.state;
     const mutation = gql`
@@ -126,7 +138,7 @@ class ProbeConstruction extends Component {
       equipment: [],
       modal: false
     });
-  }
+  };
   render() {
     if (this.props.data.loading) return null;
     const probes = this.props.data.probes[0];
@@ -172,10 +184,15 @@ class ProbeConstruction extends Component {
         </TransitionGroup>
         {this.state.modal &&
           <ProbeName
+            network={probes.probes
+              .filter(p =>
+                p.equipment.find(e => e.id === 'probe-network-package')
+              )
+              .map(p => parseInt(p.name, 10))}
             modal={this.state.modal}
-            toggle={this.toggle.bind(this)}
+            toggle={() => this.toggle()}
             equipment={this.state.equipment}
-            launchProbe={this.launchProbe.bind(this)}
+            launchProbe={this.launchProbe}
           />}
       </Container>
     );
@@ -262,12 +279,76 @@ class ProbeName extends Component {
     name: ''
   };
   render() {
-    const { modal, toggle, launchProbe, network } = this.props;
+    const { modal, toggle, launchProbe, equipment, network } = this.props;
+    console.log(network);
     const { name } = this.state;
     return (
-      <Modal className="modal-themed" isOpen={modal} toggle={toggle}>
-        {network
-          ? <div />
+      <Modal className="modal-themed probe-name" isOpen={modal} toggle={toggle}>
+        {equipment.find(e => e.id === 'probe-network-package')
+          ? <div>
+              <ModalHeader toggle={toggle}>
+                Please select a destination for the probe
+              </ModalHeader>
+              <ModalBody>
+                <Measure>
+                  {({ height, width }) =>
+                    <div style={{ height: width }}>
+                      <div
+                        className={`grid`}
+                        style={{
+                          width: width,
+                          height: width
+                        }}>
+                        {Array(8).fill(0).map((_, i, array) =>
+                          <div
+                            key={`line-${i}`}
+                            className="line"
+                            style={{
+                              transform: `rotate(${(i + 0.5) /
+                                array.length *
+                                360}deg)`
+                            }}
+                          />
+                        )}
+                        {Array(3).fill(0).map((_, i, array) =>
+                          <div
+                            key={`ring-${i}`}
+                            className="ring"
+                            style={{
+                              width: `${(i + 1) / array.length * 100}%`,
+                              height: `${(i + 1) / array.length * 100}%`,
+                              backgroundColor: i < 2 ? 'black' : 'transparent'
+                            }}
+                          />
+                        )}
+                        {Array(8).fill(0).map(
+                          (_, i, array) =>
+                            network.indexOf(i + 1) === -1 &&
+                            <p
+                              key={`label-${i}`}
+                              className="label"
+                              onClick={() => {
+                                launchProbe(i + 1);
+                              }}
+                              style={{
+                                transform: `translate(${Math.cos(
+                                  d2r((i - 2) / array.length * 360)
+                                ) *
+                                  height /
+                                  2.5}px, ${Math.sin(
+                                  d2r((i - 2) / array.length * 360)
+                                ) *
+                                  height /
+                                  2.5}px)`
+                              }}>
+                              {i + 1}
+                            </p>
+                        )}
+                      </div>
+                    </div>}
+                </Measure>
+              </ModalBody>
+            </div>
           : <div>
               <ModalHeader toggle={toggle}>
                 Please enter a name for the probe
@@ -319,6 +400,13 @@ const PROBES_QUERY = gql`
           count
           description
         }
+      }
+      probes {
+        id
+        equipment {
+          id
+        }
+        name
       }
       name
       power {

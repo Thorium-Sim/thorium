@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Button } from 'reactstrap';
+import { Container, Row, Col, Card, CardBlock } from 'reactstrap';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
@@ -7,44 +7,39 @@ import Measure from 'react-measure';
 
 import './style.scss';
 
-function degreeToRadian(deg) {
+function d2r(deg) {
   return deg * Math.PI / 180;
-}
-
-function distance(coord2, coord1) {
-  const { x: x1, y: y1 } = coord1;
-  let { x: x2, y: y2 } = coord2;
-  return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2);
 }
 
 const datagramImage = require(`./datagram.svg`);
 
-const DOCKING_SUB = gql`
-  subscription SimulatorSub($simulatorId: ID) {
-    simulatorsUpdate(simulatorId: $simulatorId) {
+const PROBES_SUB = gql`
+  subscription ProbesSub($simulatorId: ID!) {
+    probesUpdate(simulatorId: $simulatorId) {
       id
-      ship {
-        clamps
-        ramps
-        airlock
+      processedData
+      probes(network: true) {
+        id
+        name
+        launched
       }
     }
   }
 `;
 
-class Docking extends Component {
+class ProbeNetwork extends Component {
   subscription = null;
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
       this.subscription = nextProps.data.subscribeToMore({
-        document: DOCKING_SUB,
+        document: PROBES_SUB,
         variables: {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           const returnResult = Immutable.Map(previousResult);
           return returnResult
-            .merge({ simulators: subscriptionData.data.simulatorsUpdate })
+            .merge({ probes: subscriptionData.data.probesUpdate })
             .toJS();
         }
       });
@@ -52,16 +47,26 @@ class Docking extends Component {
   }
   render() {
     if (this.props.data.loading) return null;
+    const probes = this.props.data.probes[0];
+    const { processedData, probes: network } = probes;
     return (
-      <Container fluid className="docking" style={{ height: '100%' }}>
+      <Container fluid className="probe-network" style={{ height: '100%' }}>
         <Row style={{ height: '100%' }}>
           <Col sm={9} style={{ height: '100%' }}>
             <Measure>
               {dimensions =>
                 <div style={{ width: '100%', height: '100%' }}>
-                  <Grid dimensions={dimensions} />
+                  <Grid dimensions={dimensions} network={network} />
                 </div>}
             </Measure>
+          </Col>
+          <Col sm={3}>
+            <h3>Processed Data</h3>
+            <Card className="processedData">
+              <CardBlock>
+                {processedData}
+              </CardBlock>
+            </Card>
           </Col>
         </Row>
       </Container>
@@ -69,43 +74,47 @@ class Docking extends Component {
   }
 }
 
-const DOCKING_QUERY = gql`
-  query Simulator($simulatorId: String) {
-    simulators(id: $simulatorId) {
+const PROBE_NETWORK_QUERY = gql`
+  query Probes($simulatorId: ID!) {
+    probes(simulatorId: $simulatorId) {
       id
-      ship {
-        clamps
-        ramps
-        airlock
+      processedData
+      probes(network: true) {
+        id
+        name
+        launched
       }
     }
   }
 `;
 
-export default graphql(DOCKING_QUERY, {
+export default graphql(PROBE_NETWORK_QUERY, {
   options: ownProps => ({
     variables: {
       simulatorId: ownProps.simulator.id
     }
   })
-})(withApollo(Docking));
+})(withApollo(ProbeNetwork));
 
 class Grid extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      datagrams: Array(props.lines || 12).fill(0).map((_, i, array) => ({
-        angle: degreeToRadian((i + 0.5) / array.length * 360),
+      datagrams: Array(props.lines || 8).fill(0).map((_, i, array) => ({
+        angle: d2r(i / array.length * 360),
         x: 0,
         y: 0
       }))
     };
   }
   loop = () => {
-    const totalFrames = 100;
-    const datagrams = this.state.datagrams.map(({ angle, x, y }) => {
-      const speedX = Math.cos(angle) / totalFrames;
-      const speedY = Math.sin(angle) / totalFrames;
+    const totalFrames = 200;
+    const speedyFrames = 100;
+    const datagrams = this.state.datagrams.map(({ angle, x, y }, i) => {
+      const speedX =
+        Math.cos(angle) / (i % 2 === 1 ? totalFrames : speedyFrames);
+      const speedY =
+        Math.sin(angle) / (i % 2 === 1 ? totalFrames : speedyFrames);
       let distX = x + speedX;
       let distY = y + speedY;
       if (
@@ -131,22 +140,15 @@ class Grid extends Component {
     this.loop();
   }
   render() {
-    const { dimensions, rings = 3, lines = 12 } = this.props;
+    const { dimensions, rings = 3, lines = 8, network } = this.props;
+    const connected =
+      network.filter((p, i, a) => a.findIndex(e => e.name === p.name) === i)
+        .length >= 8;
     const { datagrams } = this.state;
     return (
       <div
         className={`grid`}
         style={{ width: dimensions.height, height: dimensions.height }}>
-        {Array(rings).fill(0).map((_, i, array) =>
-          <div
-            key={`ring-${i}`}
-            className="ring"
-            style={{
-              width: `${(i + 1) / array.length * 100}%`,
-              height: `${(i + 1) / array.length * 100}%`
-            }}
-          />
-        )}
         {Array(lines).fill(0).map((_, i, array) =>
           <div
             key={`line-${i}`}
@@ -156,35 +158,70 @@ class Grid extends Component {
             }}
           />
         )}
+        {Array(rings).fill(0).map((_, i, array) =>
+          <div
+            key={`ring-${i}`}
+            className="ring"
+            style={{
+              width: `${(i + 1) / array.length * 100}%`,
+              height: `${(i + 1) / array.length * 100}%`,
+              backgroundColor: i < 2 ? 'black' : 'transparent'
+            }}
+          />
+        )}
         {Array(lines).fill(0).map((_, i, array) =>
           <div
             key={`box-${i}`}
             className="box"
             style={{
-              transform: `translate(${Math.cos(
-                degreeToRadian((i + 0.5) / array.length * 360)
-              ) *
+              transform: `translate(${Math.cos(d2r(i / array.length * 360)) *
                 dimensions.height /
-                2}px, ${Math.sin(
-                degreeToRadian((i + 0.5) / array.length * 360)
-              ) *
+                2}px, ${Math.sin(d2r(i / array.length * 360)) *
                 dimensions.height /
                 2}px)`
             }}
           />
         )}
-        {datagrams.map((d, i) =>
-          <img
-            key={`datagram-${i}`}
-            className="datagram"
-            src={datagramImage}
-            style={{
-              transform: `translate(
+        {network.map(({ name, launched }) => {
+          if (launched) {
+            console.log(name);
+            const i = parseInt(name, 10);
+            if (i) {
+              return (
+                <div
+                  key={`probe-${i}`}
+                  className="probe"
+                  style={{
+                    transform: `translate(${Math.cos(
+                      d2r((i - 3) / lines * 360)
+                    ) *
+                      dimensions.height /
+                      2}px, ${Math.sin(d2r((i - 3) / lines * 360)) *
+                      dimensions.height /
+                      2}px)`
+                  }}
+                />
+              );
+            }
+          }
+        })}
+        {connected &&
+          datagrams.map((d, i) =>
+            <img
+              key={`datagram-${i}`}
+              className="datagram"
+              src={datagramImage}
+              style={{
+                transform: `translate(
               ${d.x * dimensions.height / 2}px,
               ${d.y * dimensions.height / 2}px)`
-            }}
-          />
-        )}
+              }}
+            />
+          )}
+        <img
+          src={require('./star.svg')}
+          style={{ position: 'absolute', width: '40px' }}
+        />
       </div>
     );
   }
