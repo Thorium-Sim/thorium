@@ -1,0 +1,15 @@
+.probe-control {
+  .probe-name {
+    margin-bottom: 0;
+  }
+  small {
+    margin-top: 0;
+  }
+  .probe-list {
+    padding: 2px;
+    &.selected {
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 5px;
+    }
+  }
+}

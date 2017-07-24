@@ -29,6 +29,7 @@ import SecurityTeams from './SecurityTeams';
 import DamageTeams from './DamageTeams';
 import AlertCondition from './AlertCondition';
 import ProbeNetwork from './ProbeNetwork';
+import ProbeControl from './ProbeControl';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -91,7 +92,8 @@ const Views = {
   SecurityTeams,
   DamageTeams,
   AlertCondition,
-  ProbeNetwork
+  ProbeNetwork,
+  ProbeControl
 };
 
 export const Widgets = {
