@@ -7,7 +7,8 @@ type Probes {
   power: Power
   damage: Damage
   torpedo: Boolean
-  probes: [Probe]
+  processedData: String
+  probes(network: Boolean): [Probe]
   equipment: [ProbeEquipment]
   types: [ProbeType]
 }

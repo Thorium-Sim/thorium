@@ -72,21 +72,34 @@ class SensorsCore extends Component {
     let dataField = evt.target.value;
     if (dataField === 'omnicourse') {
       dataField = `Course Calculated:
-X: ${Math.round(Math.random() * 100000) / 100}
-Y: ${Math.round(Math.random() * 100000) / 100}
-Z: ${Math.round(Math.random() * 100000) / 100}`;
+      X: ${Math.round(Math.random() * 100000) / 100}
+      Y: ${Math.round(Math.random() * 100000) / 100}
+      Z: ${Math.round(Math.random() * 100000) / 100}`;
     }
     this.setState({
       dataField
     });
   };
+  probeData = probe => {
+    const mutation = gql`
+      mutation ProbeData($id: ID!, $data: String!) {
+        probeProcessedData(id: $id, data: $data)
+      }
+    `;
+    const variables = {
+      id: probe.id,
+      data: this.state.dataField
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
-    const { objectId } = this.props;
-    const sensors = this.props.data.loading
-      ? {}
-      : objectId
-        ? this.props.data.sensors.find(s => s.id === objectId)
-        : this.props.data.sensors[0];
+    if (this.props.data.loading) return null;
+    const external = this.props.data.sensors.find(s => s.domain === 'external');
+    //const internal = this.props.data.sensors.find(s => s.domain === 'internal');
+    const probes = this.props.data.probes[0];
     const fieldStyle = {
       display: 'flex',
       flexDirection: 'column',
@@ -98,12 +111,11 @@ Z: ${Math.round(Math.random() * 100000) / 100}`;
       height: 22
     };
     if (this.props.data.loading) return <span>Loading...</span>;
-    console.log(this.state.dataField);
     return (
       <div style={{ height: '100%' }}>
         <div style={fieldStyle}>
-          <OutputField style={{ flexGrow: 2 }} alert={sensors.scanning}>
-            {sensors.scanRequest}
+          <OutputField style={{ flexGrow: 2 }} alert={external.scanning}>
+            {external.scanRequest}
           </OutputField>
           <TypingField
             style={{ flexGrow: 6 }}
@@ -116,7 +128,7 @@ Z: ${Math.round(Math.random() * 100000) / 100}`;
         </div>
         <div style={buttonStyle}>
           <Button
-            onClick={this.sendScanResult.bind(this, sensors)}
+            onClick={this.sendScanResult.bind(this, external)}
             style={{ flexGrow: 2 }}
             size={'sm'}>
             Send
@@ -144,10 +156,18 @@ Z: ${Math.round(Math.random() * 100000) / 100}`;
             <option>Info</option>
           </select>
           <Button
-            onClick={this.sendProcessedData.bind(this, sensors)}
+            onClick={this.sendProcessedData.bind(this, external)}
             style={{ flexGrow: 4 }}
             size={'sm'}>
             Data
+          </Button>
+        </div>
+        <div style={buttonStyle}>
+          <Button
+            onClick={this.probeData(probes)}
+            style={{ flexGrow: 2 }}
+            size={'sm'}>
+            Probe Data
           </Button>
         </div>
       </div>
@@ -156,7 +176,7 @@ Z: ${Math.round(Math.random() * 100000) / 100}`;
 }
 
 const SENSOR_QUERY = gql`
-  query GetSensors($simulatorId: ID) {
+  query GetSensors($simulatorId: ID!) {
     sensors(simulatorId: $simulatorId) {
       id
       domain
@@ -165,6 +185,9 @@ const SENSOR_QUERY = gql`
       scanRequest
       scanning
       processedData
+    }
+    probes(simulatorId: $simulatorId) {
+      id
     }
   }
 `;

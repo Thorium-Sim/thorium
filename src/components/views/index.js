@@ -28,6 +28,7 @@ import TractorBeam from './TractorBeam';
 import SecurityTeams from './SecurityTeams';
 import DamageTeams from './DamageTeams';
 import AlertCondition from './AlertCondition';
+import ProbeNetwork from './ProbeNetwork';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -55,7 +56,7 @@ import TractorBeamCore from './TractorBeam/core';
 import CrewCore from './Crew/core';
 import SecurityTeamsCore from './SecurityTeams/core';
 import DamageTeamsCore from './DamageTeams/core';
-
+import ProbeNetworkCore from './ProbeNetwork/core';
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
 import RemoteWidget from './RemoteAccess/widget';
@@ -89,7 +90,8 @@ const Views = {
   TractorBeam,
   SecurityTeams,
   DamageTeams,
-  AlertCondition
+  AlertCondition,
+  ProbeNetwork
 };
 
 export const Widgets = {
@@ -139,7 +141,8 @@ export const Cores = {
   TractorBeamCore,
   CrewCore,
   SecurityTeamsCore,
-  DamageTeamsCore
+  DamageTeamsCore,
+  ProbeNetworkCore
 };
 
 export default Views;

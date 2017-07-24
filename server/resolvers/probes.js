@@ -1,9 +1,9 @@
 import App from '../../app';
 
 export const ProbesQueries = {
-  probes(rootValue, {simulatorId}){
+  probes(rootValue, { simulatorId }) {
     let returnVal = App.systems.filter(s => s.type === 'Probes');
-    if (simulatorId){
+    if (simulatorId) {
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
     }
     return returnVal;
@@ -11,51 +11,65 @@ export const ProbesQueries = {
 };
 
 export const ProbesMutations = {
-  destroyProbe(rootValue, args, context){
+  destroyProbe(rootValue, args, context) {
     App.handleEvent(args, 'destroyProbe', context);
   },
-  launchProbe(rootValue, args, context){
+  launchProbe(rootValue, args, context) {
     App.handleEvent(args, 'launchProbe', context);
   },
   fireProbe(rootValue, args, context) {
     App.handleEvent(args, 'fireProbe', context);
   },
-  updateProbeType(rootValue, args, context){
+  updateProbeType(rootValue, args, context) {
     App.handleEvent(args, 'updateProbeType', context);
   },
-  updateProbeEquipment(rootValue, args, context){
+  updateProbeEquipment(rootValue, args, context) {
     App.handleEvent(args, 'updateProbeEquipment', context);
   },
-  probeQuery(rootValue, args, context){
+  probeQuery(rootValue, args, context) {
     App.handleEvent(args, 'probeQuery', context);
   },
-  probeQueryResponse(rootValue, args, context){
+  probeQueryResponse(rootValue, args, context) {
     App.handleEvent(args, 'probeQueryResponse', context);
   },
+  probeProcessedData(rootValue, args, context) {
+    App.handleEvent(args, 'probeProcessedData', context);
+  }
 };
 
 export const ProbesSubscriptions = {
-  probesUpdate(rootValue, {simulatorId}){
+  probesUpdate(rootValue, { simulatorId }) {
     let returnRes = rootValue;
-    if (simulatorId) returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
+    if (simulatorId)
+      returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
     return returnRes;
   }
 };
 
 export const ProbesTypes = {
+  Probes: {
+    probes(launcher, { network }) {
+      if (network) {
+        return launcher.probes.filter(p => {
+          return p.equipment.find(e => e.id === 'probe-network-package');
+        });
+      }
+      return launcher.probes;
+    }
+  },
   Probe: {
-    equipment(probe){
+    equipment(probe) {
       const parent = App.systems.find(s => s.id === probe.parentId);
       return probe.equipment.map(e => {
-      const eq = parent.equipment.find(eq => eq.id === e.id);
-      return {
-        id: e.id,
-        name: eq.name,
-        count: e.count,
-        description: eq.description,
-        size: eq.size
-      }
-      })
+        const eq = parent.equipment.find(eq => eq.id === e.id);
+        return {
+          id: e.id,
+          name: eq.name,
+          count: e.count,
+          description: eq.description,
+          size: eq.size
+        };
+      });
     }
   },
   ProbeType: {
@@ -65,7 +79,7 @@ export const ProbesTypes = {
         if (e.availableProbes.length === 0) return true;
         if (e.availableProbes.indexOf(probeType.id) > 0) return true;
         return false;
-      })
+      });
     }
   }
 };
