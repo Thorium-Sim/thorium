@@ -50,9 +50,12 @@
 
 .probe-network-core {
   p {
-    background-color: #2288ff;
     border: solid 1px white;
     border-radius: 5px;
     text-align: center;
+    background-color: gray;
+    &.on {
+      background-color: #2288ff;
+    }
   }
 }
