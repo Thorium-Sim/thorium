@@ -14,6 +14,15 @@ export const ShipMutations = {
   remoteAccessUpdateCode(root, args, context) {
     App.handleEvent(args, 'remoteAccessUpdateCode', context);
   },
+  setSelfDestructTime(root, args, context) {
+    App.handleEvent(args, 'setSelfDestructTime', context);
+  },
+  setSelfDestructCode(root, args, context) {
+    App.handleEvent(args, 'setSelfDestructCode', context);
+  },
+  setSelfDestructAuto(root, args, context) {
+    App.handleEvent(args, 'setSelfDestructAuto', context);
+  },
 };
 
 export const ShipSubscriptions = {

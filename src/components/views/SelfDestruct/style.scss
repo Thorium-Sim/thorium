@@ -1,0 +1,23 @@
+.self-destruct {
+  .self-destruct-button {
+    height: 100%;
+    border-radius: 50%;
+    border: solid 10px gray;
+    background: linear-gradient(
+            to bottom,
+            saturate(darken(#f00, 20%), 5%) 0%,
+            saturate(darken(#f00, 5%), 5%) 50%,
+            saturate(darken(#f00, 30%), 5%) 100%
+        );;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 60px;
+    position: absolute;
+  }
+  .spacer {
+    margin-top: 100%;
+  }
+}
