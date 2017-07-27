@@ -1,23 +1,68 @@
 .self-destruct {
-  .self-destruct-button {
+  .holder {
     height: 100%;
+    width: 100%;
+    background-size: 40px;
+    border-radius: 50%;
+    position: relative;
+&.on {
+  background: linear-gradient(
+      45deg,
+      black 25%,
+      #ff0 25%,
+      #ff0 50%,
+      black 50%,
+      black 75%,
+      #ff0 75%
+    );
+        animation: dangerAnimation 1s infinite ; /* IE 10+ */
+            animation-timing-function: linear;
+}
+  }
+  .self-destruct-button {
+    cursor: pointer;
+    position: absolute;
+    height: 90%;
+    width: 90%;
+    left: 5%;
+    top: 5%;
     border-radius: 50%;
     border: solid 10px gray;
     background: linear-gradient(
-            to bottom,
-            saturate(darken(#f00, 20%), 5%) 0%,
-            saturate(darken(#f00, 5%), 5%) 50%,
-            saturate(darken(#f00, 30%), 5%) 100%
-        );;
+      to bottom,
+      saturate(darken(#f00, 20%), 5%) 0%,
+      saturate(darken(#f00, 5%), 5%) 50%,
+      saturate(darken(#f00, 30%), 5%) 100%
+    );
     display: flex;
     justify-content: center;
     align-content: center;
     align-items: center;
     text-align: center;
     font-size: 60px;
-    position: absolute;
+    &:hover {
+      background: linear-gradient(
+      to bottom,
+      saturate(darken(#f00, 25%), 5%) 0%,
+      saturate(darken(#f00, 10%), 5%) 50%,
+      saturate(darken(#f00, 35%), 5%) 100%
+    );
+    }
+  &:active {
+      background: linear-gradient(
+      to bottom,
+      saturate(darken(#f00, 35%), 5%) 0%,
+      saturate(darken(#f00, 20%), 5%) 50%,
+      saturate(darken(#f00, 45%), 5%) 100%
+    );
+    }
   }
   .spacer {
     margin-top: 100%;
   }
+}
+
+@keyframes dangerAnimation {
+  0%   { background-position: 0px 0px; }
+  100% { background-position: 40px 0px; }
 }
