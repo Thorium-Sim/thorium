@@ -56,7 +56,8 @@ class SelfDestruct extends Component {
   }
   toggle = () => {
     this.setState({
-      modal: !this.state.modal
+      modal: !this.state.modal,
+      setCode: false
     });
   };
   activate = time => {
@@ -78,9 +79,29 @@ class SelfDestruct extends Component {
       modal: false
     });
   };
+  setCode = code => {
+    const mutation = gql`
+      mutation SetSelfDestructCode($id: ID!, $code: String) {
+        setSelfDestructCode(simulatorId: $id, code: $code)
+      }
+    `;
+    const sim = this.props.data.simulators[0];
+    const variables = {
+      id: sim.id,
+      code
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+    this.setState({modal: false, setCode: false})
+  };
+  openCodeModal = () => {
+    this.setState({modal: true, setCode: true})
+  }
   render() {
     if (this.props.data.loading) return null;
-    const { modal } = this.state;
+    const { modal, setCode } = this.state;
     const {
       selfDestructTime,
       selfDestructCode
@@ -103,13 +124,21 @@ class SelfDestruct extends Component {
                 2
               )}:${padDigits(duration.seconds(), 2)}`}
             </div>
-          : <div />}
+          : <div className="set-code">
+              <Button block color="warning" size="lg" onClick={this.openCodeModal}>
+                Set Self-Destruct Code
+              </Button>
+            </div>}
+            {modal &&
         <SelfDestructModal
           modal={modal}
           toggle={this.toggle}
           activate={this.activate}
           code={selfDestructCode}
+          setCode={setCode}
+          setCodeFunc={this.setCode}
         />
+        }
       </Container>
     );
   }
@@ -137,7 +166,7 @@ export default graphql(SELF_DESTRUCT_QUERY, {
 class SelfDestructModal extends Component {
   state = {};
   render() {
-    const { modal, toggle, activate, code } = this.props;
+    const { modal, toggle, activate, code, setCode, setCodeFunc } = this.props;
     const { inputCode, hours = 0, minutes = 0, seconds = 0 } = this.state;
     const time = hours * 1000 * 60 * 60 + minutes * 1000 * 60 + seconds * 1000;
     return (
@@ -147,7 +176,9 @@ class SelfDestructModal extends Component {
         toggle={toggle}
         size="large"
       >
-        <ModalHeader toggle={toggle}>Activate Self-Destruct</ModalHeader>
+        <ModalHeader toggle={toggle}>
+          {setCode ? "Set Self-Destruct Code" : "Activate Self-Destruct"}
+        </ModalHeader>
         <ModalBody>
           {code &&
             <div>
@@ -159,7 +190,8 @@ class SelfDestructModal extends Component {
                 onChange={evt => this.setState({ inputCode: evt.target.value })}
               />
             </div>}
-          {(code ? code === inputCode : true) &&
+          {!setCode &&
+            (code ? code === inputCode : true) &&
             <div>
               <h3>Enter Countdown Time:</h3>
               <div className="countdown-input">
@@ -195,10 +227,12 @@ class SelfDestructModal extends Component {
           <Col sm={3}>
             <Button
               color="danger"
-              disabled={!((code ? code === inputCode : true) && time)}
-              onClick={() => activate(time)}
+              disabled={!setCode && !((code ? code === inputCode : true) && time)}
+              onClick={
+                setCode ? () => setCodeFunc(inputCode) : () => activate(time)
+              }
             >
-              Activate
+              {setCode ? "Set Code" : "Activate"}
             </Button>
           </Col>
         </ModalFooter>

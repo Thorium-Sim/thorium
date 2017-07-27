@@ -58,6 +58,8 @@ import CrewCore from './Crew/core';
 import SecurityTeamsCore from './SecurityTeams/core';
 import DamageTeamsCore from './DamageTeams/core';
 import ProbeNetworkCore from './ProbeNetwork/core';
+import SelfDestructCore from './SelfDestruct/core';
+
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
 import RemoteWidget from './RemoteAccess/widget';
@@ -144,7 +146,8 @@ export const Cores = {
   CrewCore,
   SecurityTeamsCore,
   DamageTeamsCore,
-  ProbeNetworkCore
+  ProbeNetworkCore,
+  SelfDestructCore
 };
 
 export default Views;
