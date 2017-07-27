@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import {
   Container,
-  Row,
   Col,
   Modal,
   ModalHeader,
@@ -11,10 +10,16 @@ import {
   Button,
   Input
 } from "reactstrap";
-
+import Moment from "moment";
 import { graphql, withApollo } from "react-apollo";
 import Immutable from "immutable";
 import "./style.scss";
+
+function padDigits(number, digits) {
+  return (
+    Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number
+  );
+}
 
 const SELF_DESTRUCT_SUB = gql`
   subscription SelfDestructUpdate($id: ID) {
@@ -54,7 +59,7 @@ class SelfDestruct extends Component {
       modal: !this.state.modal
     });
   };
-  activate = (time) => {
+  activate = time => {
     const mutation = gql`
       mutation ActivateSelfDestruct($id: ID!, $time: Float) {
         setSelfDestructTime(simulatorId: $id, time: $time)
@@ -69,6 +74,9 @@ class SelfDestruct extends Component {
       mutation,
       variables
     });
+    this.setState({
+      modal: false
+    });
   };
   render() {
     if (this.props.data.loading) return null;
@@ -77,27 +85,31 @@ class SelfDestruct extends Component {
       selfDestructTime,
       selfDestructCode
     } = this.props.data.simulators[0].ship;
+    const duration = Moment.duration(selfDestructTime);
     return (
       <Container className="self-destruct">
-        <Row>
-          <Col sm={{ size: 6, offset: 3 }}>
-            <div className="holder">
-              <div className="self-destruct-button" onClick={this.toggle}>
-                {selfDestructTime ? "Deactivate" : "Activate"} Self-Destruct
-              </div>
+        <div className={`holder  ${selfDestructTime ? "on" : ""}`}>
+          <div
+            className="self-destruct-button"
+            onClick={selfDestructTime ? this.activate : this.toggle}
+          >
+            {selfDestructTime ? "Deactivate" : "Activate"} Self-Destruct
+          </div>
+        </div>
+        {selfDestructTime && selfDestructTime > 0
+          ? <div className="counter">
+              {`${padDigits(duration.hours(), 2)}:${padDigits(
+                duration.minutes(),
+                2
+              )}:${padDigits(duration.seconds(), 2)}`}
             </div>
-            <div className="spacer" />
-            <div className="counter">
-              {selfDestructTime}
-            </div>
-            <SelfDestructModal
-              modal={modal}
-              toggle={this.modal}
-              activate={this.activate}
-              code={selfDestructCode}
-            />
-          </Col>
-        </Row>
+          : <div />}
+        <SelfDestructModal
+          modal={modal}
+          toggle={this.toggle}
+          activate={this.activate}
+          code={selfDestructCode}
+        />
       </Container>
     );
   }
@@ -123,20 +135,25 @@ export default graphql(SELF_DESTRUCT_QUERY, {
 })(withApollo(SelfDestruct));
 
 class SelfDestructModal extends Component {
-  state = {}
+  state = {};
   render() {
     const { modal, toggle, activate, code } = this.props;
-    const { inputCode, time } = this.state;
-    console.log(this.state);
+    const { inputCode, hours = 0, minutes = 0, seconds = 0 } = this.state;
+    const time = hours * 1000 * 60 * 60 + minutes * 1000 * 60 + seconds * 1000;
     return (
-      <Modal className="modal-themed" isOpen={modal} toggle={toggle} size="large">
+      <Modal
+        className="modal-themed self-destruct-modal"
+        isOpen={modal}
+        toggle={toggle}
+        size="large"
+      >
         <ModalHeader toggle={toggle}>Activate Self-Destruct</ModalHeader>
         <ModalBody>
           {code &&
             <div>
               <h3>Enter Self-Destruct Code:</h3>
               <Input
-                type="text"
+                type="password"
                 value={inputCode}
                 disabled={inputCode === code}
                 onChange={evt => this.setState({ inputCode: evt.target.value })}
@@ -145,27 +162,44 @@ class SelfDestructModal extends Component {
           {(code ? code === inputCode : true) &&
             <div>
               <h3>Enter Countdown Time:</h3>
-              <Input
-                type="number"
-                value={time}
-                onChange={evt => this.setState({ time: evt.target.value })}
-              />
+              <div className="countdown-input">
+                <Input
+                  type="text"
+                  value={hours}
+                  onChange={evt => this.setState({ hours: evt.target.value })}
+                  maxLength={2}
+                />
+                <span className="divider">:</span>
+                <Input
+                  type="text"
+                  value={minutes}
+                  onChange={evt => this.setState({ minutes: evt.target.value })}
+                  maxLength={2}
+                />
+                <span className="divider">:</span>
+                <Input
+                  type="text"
+                  value={seconds}
+                  onChange={evt => this.setState({ seconds: evt.target.value })}
+                  maxLength={2}
+                />
+              </div>
             </div>}
         </ModalBody>
         <ModalFooter>
           <Col sm={3}>
-          <Button color="secondary" onClick={toggle}>
-            Cancel
-          </Button>
+            <Button color="secondary" onClick={toggle}>
+              Cancel
+            </Button>
           </Col>
           <Col sm={3}>
-          <Button
-            color="danger"
-            disabled={!((code ? code === inputCode : true) && time)}
-            onClick={() => activate(time)}
-          >
-            Activate
-          </Button>
+            <Button
+              color="danger"
+              disabled={!((code ? code === inputCode : true) && time)}
+              onClick={() => activate(time)}
+            >
+              Activate
+            </Button>
           </Col>
         </ModalFooter>
       </Modal>

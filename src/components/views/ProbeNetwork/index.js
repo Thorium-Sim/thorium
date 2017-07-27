@@ -204,6 +204,7 @@ class Grid extends Component {
               );
             }
           }
+          return null;
         })}
         {connected &&
           datagrams.map((d, i) =>
