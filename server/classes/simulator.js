@@ -44,7 +44,6 @@ export default class Simulator {
     // To the server
     this.layout = layout;
   }
-
   // Ship
   clamps(tf) {
     this.ship.clamps = tf;
@@ -64,6 +63,15 @@ export default class Simulator {
   powerMode(powerMode) {
     this.ship.powerMode = powerMode;
   }
+  setSelfDestructTime(time) {
+    this.ship.selfDestructTime = time;
+  }
+  setSelfDestructCode(code) {
+    this.ship.selfDestructCode = code;
+  }
+  setSelfDestructAuto(tf) {
+    this.ship.selfDestructAuto = tf;
+  }
 }
 
 // A separate object for vestigial parts of the ship
@@ -72,6 +80,9 @@ class Ship {
     this.clamps = params.clamps || false; // Detached
     this.ramps = params.ramps || false; // Retracted
     this.airlock = params.airlock || false; // Closed
+    this.selfDestructTime = params.selfDestructTime || null;
+    this.selfDestructCode = params.selfDestructCode || null;
+    this.selfDestructAuto = params.selfDestructAuto || false; // Automatically black out stations when self destructed
     this.remoteAccessCodes = [];
     // One of 'internal', 'external', 'offline'
     // Could expand to old Odyssey: 'Cruise', 'Reduced',

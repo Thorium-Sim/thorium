@@ -5,6 +5,9 @@ type Ship {
   airlock: Boolean
   powerMode: String
   remoteAccessCodes: [RemoteAccessCode]
+  selfDestructTime: Float
+  selfDestructCode: String
+  selfDestructAuto: Boolean
 }
 
 type RemoteAccessCode {

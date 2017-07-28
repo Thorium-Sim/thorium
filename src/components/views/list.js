@@ -26,6 +26,7 @@ const viewList = [
   'DamageTeams',
   'AlertCondition',
   'ProbeNetwork',
+  'SelfDestruct',
   'ProbeControl'
 ];
 

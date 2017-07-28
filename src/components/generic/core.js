@@ -13,7 +13,7 @@ export const InputField = (props) => {
     style.borderColor = '#a00';
   }
   const onClick = () => {
-    const value = prompt(props.prompt, props.children);
+    const value = prompt(props.prompt, props.children || '');
     props.onClick(value);
   }
   return <div onClick={onClick} style={style}>{props.children}</div>
