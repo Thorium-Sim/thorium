@@ -25,7 +25,8 @@ const viewList = [
   'TractorBeam',
   'DamageTeams',
   'AlertCondition',
-  'ProbeNetwork'
+  'ProbeNetwork',
+  'ProbeControl'
 ];
 
 export default viewList;

@@ -29,6 +29,7 @@ import SecurityTeams from './SecurityTeams';
 import DamageTeams from './DamageTeams';
 import AlertCondition from './AlertCondition';
 import ProbeNetwork from './ProbeNetwork';
+import ProbeControl from './ProbeControl';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -57,6 +58,7 @@ import CrewCore from './Crew/core';
 import SecurityTeamsCore from './SecurityTeams/core';
 import DamageTeamsCore from './DamageTeams/core';
 import ProbeNetworkCore from './ProbeNetwork/core';
+import ProbeControlCore from './ProbeControl/core';
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
 import RemoteWidget from './RemoteAccess/widget';
@@ -91,7 +93,8 @@ const Views = {
   SecurityTeams,
   DamageTeams,
   AlertCondition,
-  ProbeNetwork
+  ProbeNetwork,
+  ProbeControl
 };
 
 export const Widgets = {
@@ -142,7 +145,8 @@ export const Cores = {
   CrewCore,
   SecurityTeamsCore,
   DamageTeamsCore,
-  ProbeNetworkCore
+  ProbeNetworkCore,
+  ProbeControlCore
 };
 
 export default Views;

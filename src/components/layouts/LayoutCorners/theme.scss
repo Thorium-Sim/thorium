@@ -312,4 +312,13 @@ $color: $alert5;
         background-color: transparent;
         border-color: rgba(255, 255, 255, 0.125);
     }
+    .nav-tabs {
+        .nav-link {
+            &.active {
+                color: white;
+                background-color: rgba(0, 0, 0, 0.5);
+                border-color: rgba(255, 255, 255, 0.5);
+            }
+        }
+    }
 }
