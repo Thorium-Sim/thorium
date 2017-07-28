@@ -12,4 +12,19 @@
       border-radius: 5px;
     }
   }
+  .equipment {
+    height: 60vh;
+    overflow: scroll;
+  }
+  .results {
+    white-space: pre-line;
+    border-radius: 10px;
+    background-color: rgba(0,0,0,0.5);
+    border: solid 1px rgba(255,255,255,0.5);
+    padding: 20px;
+    margin: 20px 0;
+    height: 30vh;
+    width: 100%;
+    overflow: scroll;
+  }
 }

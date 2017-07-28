@@ -1,21 +1,23 @@
-import React, { Component } from 'react';
-import gql from 'graphql-tag';
+import React, { Component } from "react";
+import gql from "graphql-tag";
 import {
   Container,
   Row,
   Col,
   Card,
   CardBlock,
+  Input,
+  Button /*
   TabContent,
   TabPane,
   Nav,
   NavItem,
-  NavLink
-} from 'reactstrap';
-import { graphql, withApollo } from 'react-apollo';
-import Immutable from 'immutable';
+  NavLink*/
+} from "reactstrap";
+import { graphql, withApollo } from "react-apollo";
+import Immutable from "immutable";
 
-import './style.scss';
+import "./style.scss";
 
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
@@ -78,8 +80,9 @@ class ProbeControl extends Component {
                     key={p.id}
                     onClick={() => this.setState({ selectedProbe: p.id })}
                     className={`probe-list ${selectedProbe === p.id
-                      ? 'selected'
-                      : ''}`}>
+                      ? "selected"
+                      : ""}`}
+                  >
                     <p className="probe-name">
                       {p.name}
                     </p>
@@ -92,7 +95,12 @@ class ProbeControl extends Component {
             </Card>
           </Col>
           <Col sm={9}>
-            {selectedProbe && <ProbeControlWrapper />}
+            {selectedProbe &&
+              <ProbeControlWrapper
+                {...probes.probes.find(p => p.id === selectedProbe)}
+                probeId={probes.id}
+                client={this.props.client}
+              />}
           </Col>
         </Row>
       </Container>
@@ -130,16 +138,102 @@ export default graphql(PROBES_QUERY, {
 })(withApollo(ProbeControl));
 
 class ProbeControlWrapper extends Component {
-  state = { activeTab: '1' };
+  constructor(props) {
+    super(props);
+    this.state = { activeTab: "1", queryText: props.queryText };
+  }
   toggle = tab => {
     if (this.state.activeTab === tab) return;
     this.setState({ activeTab: tab });
   };
+  queryProbe = () => {
+    const mutation = gql`
+      mutation ProbeQuery($id: ID!, $probeId: ID!, $query: String!) {
+        probeQuery(id: $id, probeId: $probeId, query: $query)
+      }
+    `;
+    const variables = {
+      id: this.props.probeId,
+      probeId: this.props.id,
+      query: this.state.queryText
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  cancelQuery = () => {
+    const mutation = gql`
+      mutation ProbeQuery($id: ID!, $probeId: ID!, $query: String!) {
+        probeQuery(id: $id, probeId: $probeId, query: $query)
+      }
+    `;
+    const variables = {
+      id: this.props.probeId,
+      probeId: this.props.id,
+      query: ''
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
-    const { activeTab } = this.state;
+    const { name, equipment, response, querying, client } = this.props;
+    const { queryText } = this.state;
+    //const { activeTab } = this.state;
     return (
-      <div>
-        <Nav tabs>
+      <Container>
+        <h1>
+          {name}
+        </h1>
+        <Row>
+          <Col sm={4}>
+            <h3>Equipment</h3>
+            <Card className="equipment">
+              <CardBlock>
+                {equipment.map(e =>
+                  <p key={e.id}>
+                    {e.name}
+                  </p>
+                )}
+              </CardBlock>
+            </Card>
+          </Col>
+          <Col sm={8}>
+            <h3>Query</h3>
+            <Row>
+              <Col sm={9}>
+                {querying
+                  ? <p className="querying">Querying...</p>
+                  : <Input
+                      size="lg"
+                      type="text"
+                      value={queryText}
+                      onChange={evt =>
+                        this.setState({ queryText: evt.target.value })}
+                    />}
+              </Col>
+              <Col sm={3}>
+                {querying
+                  ? <Button size="lg" color="danger" onClick={this.cancelQuery}>
+                      Cancel
+                    </Button>
+                  : <Button size="lg" color="primary" onClick={this.queryProbe}>
+                      Query
+                    </Button>}
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={12}>
+                <pre className="results">
+                  {response}
+                </pre>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+        {/*<Nav tabs>
           <NavItem>
             <NavLink
               className={activeTab === '1' ? 'active' : ''}
@@ -177,8 +271,8 @@ class ProbeControlWrapper extends Component {
               </Col>
             </Row>
           </TabPane>
-        </TabContent>
-      </div>
+        </TabContent>*/}
+      </Container>
     );
   }
 }
