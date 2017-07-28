@@ -179,7 +179,7 @@ class ProbeControlWrapper extends Component {
     });
   };
   render() {
-    const { name, equipment, response, querying, client } = this.props;
+    const { name, equipment, response, querying } = this.props;
     const { queryText } = this.state;
     //const { activeTab } = this.state;
     return (

@@ -4,11 +4,9 @@ import {
   Container,
   Row,
   Col,
-  Card,
-  CardBlock,
-  Input,
   Button
 } from "reactstrap";
+import { OutputField, TypingField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
 import Immutable from "immutable";
 
@@ -58,6 +56,22 @@ class ProbeControl extends Component {
       });
     }
   }
+  response = () => {
+    const variables = {
+      id: this.props.data.probes[0].id,
+      probeId: this.state.selectedProbe,
+      response: this.state.responseString
+    };
+    const mutation = gql`
+      mutation ProbeQueryResponse($id: ID!, $probeId: ID!, $response: String!) {
+        probeQueryResponse(id: $id, probeId: $probeId, response: $response)
+      }
+    `;
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  }
   render() {
     if (this.props.data.loading) return null;
     const probes = this.props.data.probes[0];
@@ -65,7 +79,50 @@ class ProbeControl extends Component {
     if (!probes) return <p>No Probe Launcher</p>;
     return (
       <Container fluid className="probe-control-core">
-
+        <Row style={{ height: "100%" }}>
+          <Col sm={3} style={{ height: "100%" }}>
+            <div className="scroll probelist">
+              {probes.probes.map(p =>
+                <p
+                  key={p}
+                  className={`probe ${p.querying ? "querying" : ""}
+                  ${p.id === selectedProbe ? "selected" : ""}`}
+                  onClick={() => this.setState({ selectedProbe: p.id })}
+                >
+                  {p.name}
+                </p>
+              )}
+            </div>
+          </Col>
+          {selectedProbe &&
+            <Col sm={9} style={{ height: "100%" }}>
+              <Row>
+                <Col sm={12}>
+                  <OutputField
+                    alert={
+                      probes.probes.find(p => p.id === selectedProbe).querying
+                    }
+                  >
+                    {probes.probes.find(p => p.id === selectedProbe).query}
+                  </OutputField>
+                </Col>
+              </Row>
+              <Row style={{ height: "100%" }}>
+                <Col sm={12} style={{ height: "100%" }}>
+                  <TypingField
+                    style={{ height: "calc(100% - 60px)", textAlign: "left" }}
+                    controlled
+                    value={this.state.responseString}
+                    onChange={evt =>
+                      this.setState({ responseString: evt.target.value })}
+                  />
+                  <Button size="sm" onClick={this.response}>
+                    Send Response
+                  </Button>
+                </Col>
+              </Row>
+            </Col>}
+        </Row>
       </Container>
     );
   }
@@ -100,18 +157,3 @@ export default graphql(PROBES_QUERY, {
   options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })
 })(withApollo(ProbeControl));
 
-class ProbeControlWrapper extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { activeTab: "1", queryText: props.queryText };
-  }
-  render() {
-    const { name, equipment, response, querying, client } = this.props;
-    const { queryText } = this.state;
-    return (
-      <Container>
-
-      </Container>
-    );
-  }
-}
