@@ -30,6 +30,7 @@ import DamageTeams from './DamageTeams';
 import AlertCondition from './AlertCondition';
 import ProbeNetwork from './ProbeNetwork';
 import SelfDestruct from './SelfDestruct';
+import ProbeControl from './ProbeControl';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -59,6 +60,7 @@ import SecurityTeamsCore from './SecurityTeams/core';
 import DamageTeamsCore from './DamageTeams/core';
 import ProbeNetworkCore from './ProbeNetwork/core';
 import SelfDestructCore from './SelfDestruct/core';
+import ProbeControlCore from './ProbeControl/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -95,7 +97,8 @@ const Views = {
   DamageTeams,
   AlertCondition,
   ProbeNetwork,
-  SelfDestruct
+  SelfDestruct,
+  ProbeControl
 };
 
 export const Widgets = {
@@ -147,7 +150,8 @@ export const Cores = {
   SecurityTeamsCore,
   DamageTeamsCore,
   ProbeNetworkCore,
-  SelfDestructCore
+  SelfDestructCore,
+  ProbeControlCore
 };
 
 export default Views;

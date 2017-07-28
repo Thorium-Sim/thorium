@@ -94,10 +94,10 @@ export default class Probes extends System {
     }
   }
   probeQuery(probeId, query) {
-    this.probes.find(p => p.id === probeId).query(query);
+    this.probes.find(p => p.id === probeId).setQuery(query);
   }
   probeQueryResponse(probeId, response) {
-    this.probes.find(p => p.id === probeId).response(response);
+    this.probes.find(p => p.id === probeId).setResponse(response);
   }
 }
 
@@ -116,11 +116,11 @@ class Probe {
   launch() {
     this.launched = true;
   }
-  query(query) {
+  setQuery(query) {
     this.query = query;
-    this.querying = true;
+    this.querying = !!query;
   }
-  response(response) {
+  setResponse(response) {
     this.response = response;
     this.querying = false;
   }
