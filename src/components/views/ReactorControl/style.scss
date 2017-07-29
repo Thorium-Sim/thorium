@@ -50,3 +50,16 @@
     }
   }
 }
+
+.reactor-control-core {
+  .col {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .input-field, select {
+    width: 60%;
+  }
+  p {
+    width: 40%;
+  }
+}

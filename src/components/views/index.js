@@ -62,6 +62,7 @@ import DamageTeamsCore from './DamageTeams/core';
 import ProbeNetworkCore from './ProbeNetwork/core';
 import SelfDestructCore from './SelfDestruct/core';
 import ProbeControlCore from './ProbeControl/core';
+import ReactorControlCore from './ReactorControl/core';
 
 import ComposerWidget from './LongRangeComm/Composer';
 import CalculatorWidget from './Widgets/calculator';
@@ -153,7 +154,8 @@ export const Cores = {
   DamageTeamsCore,
   ProbeNetworkCore,
   SelfDestructCore,
-  ProbeControlCore
+  ProbeControlCore,
+  ReactorControlCore
 };
 
 export default Views;

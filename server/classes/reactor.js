@@ -37,6 +37,7 @@ export default class Reactor extends System {
     this.batteryChargeLevel = Math.min(1, Math.max(0, level));
   }
   changeBatteryChargeRate(rate){
+    console.log(rate);
     this.batteryChargeRate = rate;
   }
 }
