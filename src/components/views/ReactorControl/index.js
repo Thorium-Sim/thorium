@@ -81,7 +81,7 @@ class ReactorControl extends Component {
     const { reactors } = this.props.data;
     const reactor = reactors.find(r => r.model === "reactor");
     const mutation = gql`
-      mutation SetReactorEfficiency($id: ID!, $e: Float!) {
+      mutation SetReactorEfficiency($id: ID!, $e: Float) {
         reactorChangeEfficiency(id: $id, efficiency: $e)
       }
     `;

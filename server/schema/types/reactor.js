@@ -13,6 +13,7 @@ type Reactor implements SystemInterface{
   #One of 'reactor' or 'battery'
   model: REACTOR_MODELS
   ejected: Boolean
+  externalPower: Boolean
   powerOutput: Int
   efficiency: Float
   batteryChargeLevel: Float

@@ -10,6 +10,7 @@ export default class Reactor extends System {
     this.model = params.model || 'reactor';
     this.powerOutput = params.powerOutput || 120;
     this.efficiency = params.efficiency || 1;
+    this.externalPower = params.externalPower || true;
     this.batteryChargeLevel = params.batteryChargeLevel || 1;
     this.batteryChargeRate = params.batteryChargeRate || 1 / 1000;
   }
@@ -25,7 +26,12 @@ export default class Reactor extends System {
     this.powerOutput = output;
   }
   changeEfficiency(efficiency){
-    this.efficiency = efficiency;
+    if (!efficiency && efficiency !== 0) {
+      this.externalPower = true;
+      this.efficiency = 1.5;
+    } else {
+      this.efficiency = efficiency;
+    }
   }
   changeBatteryChargeLevel(level){
     this.batteryChargeLevel = Math.min(1, Math.max(0, level));
