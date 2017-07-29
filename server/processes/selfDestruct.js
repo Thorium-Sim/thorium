@@ -16,11 +16,11 @@ const selfDestructCountdown = () => {
         });
         pubsub.publish('clientChanged', App.clients);
       } 
+      pubsub.publish('simulatorsUpdate', [s]);
     } else {
       s.setSelfDestructTime(null);
     }
   })
-  pubsub.publish('simulatorsUpdate', App.simulators);
   setTimeout(selfDestructCountdown, interval);
 }
 

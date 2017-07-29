@@ -60,9 +60,6 @@ export default class Simulator {
   updateCode(codeId, state) {
     this.ship.remoteAccessCodes.find(c => c.id === codeId).state = state;
   }
-  powerMode(powerMode) {
-    this.ship.powerMode = powerMode;
-  }
   setSelfDestructTime(time) {
     this.ship.selfDestructTime = time;
   }
@@ -84,11 +81,6 @@ class Ship {
     this.selfDestructCode = params.selfDestructCode || null;
     this.selfDestructAuto = params.selfDestructAuto || false; // Automatically black out stations when self destructed
     this.remoteAccessCodes = [];
-    // One of 'internal', 'external', 'offline'
-    // Could expand to old Odyssey: 'Cruise', 'Reduced',
-    // 'Silent Running', 'Emergency', 'Auxilliary',
-    // 'External', 'Minimal', 'Offline'
-    this.powerMode = params.powerMode || 'internal';
     const codes = params.remoteAccessCodes || [];
     codes.forEach(c => this.remoteAccessCodes.push(new RemoteAccess(c)));
   }

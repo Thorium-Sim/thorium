@@ -3,7 +3,6 @@ type Ship {
   clamps: Boolean
   ramps: Boolean
   airlock: Boolean
-  powerMode: String
   remoteAccessCodes: [RemoteAccessCode]
   selfDestructTime: Float
   selfDestructCode: String

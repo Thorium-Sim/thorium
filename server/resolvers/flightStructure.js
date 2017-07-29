@@ -141,7 +141,7 @@ export const FlightStructureSubscriptions = {
     let returnVal = rootValue;
     if (template) returnVal = returnVal.filter(s => s.template);
     if (simulatorId) returnVal = returnVal.filter(s => s.id === simulatorId);
-    return returnVal;
+    return returnVal.length > 0 ? returnVal : null;
   },
   flightsUpdate: (rootValue, {id}) => {
     if (id) return rootValue.filter(s => s.id === id);

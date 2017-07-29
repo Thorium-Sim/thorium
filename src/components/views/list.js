@@ -27,7 +27,8 @@ const viewList = [
   'AlertCondition',
   'ProbeNetwork',
   'SelfDestruct',
-  'ProbeControl'
+  'ProbeControl',
+  'ReactorControl'
 ];
 
 export default viewList;

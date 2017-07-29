@@ -183,6 +183,9 @@ $color: $alert5;
         &.btn-warning {
             @include button-variant($alert2);
         }
+        &.btn-cloak {
+            @include button-variant($alertp);
+        }
         &.btn-danger {
             @include button-variant($alert1);
         }

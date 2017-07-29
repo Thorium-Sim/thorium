@@ -16,7 +16,7 @@ export const InputField = (props) => {
     const value = prompt(props.prompt, props.children || '');
     props.onClick(value);
   }
-  return <div onClick={onClick} style={style}>{props.children}</div>
+  return <div className="input-field" onClick={onClick} style={style}>{props.children}</div>
 }
 
 export const OutputField = ({style = {}, children, alert, onClick, title, id}) => {
@@ -44,10 +44,10 @@ export const TypingField = ({style = {}, onChange, className, onBlur, value, row
     width: '100%'
   }, style)
   if (input) {
-    return <input type="text" className={className} onChange={onChange} onBlur={onBlur} style={compStyle} defaultValue={value}/>
+    return <input type="text" className={`typing-field ${className}`} onChange={onChange} onBlur={onBlur} style={compStyle} defaultValue={value}/>
   }
   if (controlled) {
-    return <textarea type="text" className={className} rows={rows} onChange={onChange} onBlur={onBlur} style={compStyle} value={value} />
+    return <textarea type="text" className={`typing-field ${className}`} rows={rows} onChange={onChange} onBlur={onBlur} style={compStyle} value={value} />
   }
-  return <textarea type="text" className={className} rows={rows} onChange={onChange} onBlur={onBlur} style={compStyle} defaultValue={value} />
+  return <textarea type="text" className={`typing-field ${className}`} rows={rows} onChange={onChange} onBlur={onBlur} style={compStyle} defaultValue={value} />
 }

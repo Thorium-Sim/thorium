@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import gql from 'graphql-tag';
-import { Row, Col, Container } from 'reactstrap';
-import { graphql, withApollo } from 'react-apollo';
-import Measure from 'react-measure';
-import Immutable from 'immutable';
-import './style.scss';
+import React, { Component } from "react";
+import gql from "graphql-tag";
+import { Row, Col, Container } from "reactstrap";
+import { graphql, withApollo } from "react-apollo";
+import Measure from "react-measure";
+import Immutable from "immutable";
+import "./style.scss";
 /* TODO
 
 Some improvements:
@@ -14,64 +14,85 @@ Some improvements:
 */
 
 const mutation = gql`
-mutation ChangePower($id: ID!, $level: Int!){
-  changePower(systemId: $id, power: $level)
-}`;
+  mutation ChangePower($id: ID!, $level: Int!) {
+    changePower(systemId: $id, power: $level)
+  }
+`;
 
 const SYSTEMS_SUB = gql`
-subscription SystemsUpdate($simulatorId: ID){
-  systemsUpdate(simulatorId: $simulatorId) {
-    name
-    type
-    id
-    power {
-      power
-      powerLevels
+  subscription SystemsUpdate($simulatorId: ID) {
+    systemsUpdate(simulatorId: $simulatorId) {
+      name
+      type
+      id
+      power {
+        power
+        powerLevels
+      }
+      damage {
+        damaged
+      }
     }
   }
-}`;
+`;
+
+const REACTOR_SUB = gql`
+  subscription ReactorUpdate($simulatorId: ID) {
+    reactorUpdate(simulatorId: $simulatorId) {
+      id
+      model
+      efficiency
+      powerOutput
+    }
+  }
+`;
 
 class PowerDistribution extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       systems: [],
-      offset:null,
+      offset: null,
       sysId: null
     };
-    this.mouseMove = (e) => {
+    this.mouseMove = e => {
       const mouseX = e.pageX;
-      const level = Math.max(0,Math.min(40,(Math.round((mouseX - this.state.offset - 10)/19))));
-      const {systems, sysId} = this.state;
+      const level = Math.max(
+        0,
+        Math.min(40, Math.round((mouseX - this.state.offset - 10) / 14))
+      );
+      const { systems, sysId } = this.state;
       const newSystems = systems.map(s => {
-        if (s.id === sysId){
+        if (s.id === sysId) {
           const newSys = JSON.parse(JSON.stringify(s));
           newSys.power.power = level;
           return newSys;
         }
         return s;
-      })
+      });
       this.setState({
         systems: newSystems
-      })
-    }
+      });
+    };
     this.mouseUp = () => {
-      document.removeEventListener('mousemove', this.mouseMove);
-      document.removeEventListener('mouseup', this.mouseUp);
+      document.removeEventListener("mousemove", this.mouseMove);
+      document.removeEventListener("mouseup", this.mouseUp);
       const system = this.state.systems.find(s => s.id === this.state.sysId);
       const variables = {
         id: system.id,
         level: system.power.power
-      }
+      };
       this.props.client.mutate({
         mutation,
         variables
-      })
+      });
       this.setState({
-        offset:null,
+        offset: null,
         sysId: null
-      })
-    }
+      });
+    };
+    this.systemSub = null;
+    this.reactorSub = null;
   }
   componentWillReceiveProps(nextProps) {
     if (!nextProps.data.loading) {
@@ -87,76 +108,155 @@ class PowerDistribution extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           const returnResult = Immutable.Map(previousResult);
-          return returnResult.merge({ systems: subscriptionData.data.systemsUpdate }).toJS();
+          return returnResult
+            .merge({ systems: subscriptionData.data.systemsUpdate })
+            .toJS();
+        }
+      });
+      this.reactorSub = nextProps.data.subscribeToMore({
+        document: REACTOR_SUB,
+        variables: {
+          simulatorId: nextProps.simulator.id
+        },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          const returnResult = Immutable.Map(previousResult);
+          return returnResult
+            .merge({ reactors: subscriptionData.data.reactorUpdate })
+            .toJS();
         }
       });
     }
   }
-  mouseDown(sysId, dimensions, e){
+  mouseDown(sysId, dimensions, e) {
     this.setState({
       sysId,
-      offset: dimensions.left,
-    })
-    document.addEventListener('mousemove', this.mouseMove);
-    document.addEventListener('mouseup', this.mouseUp);
+      offset: dimensions.left
+    });
+    document.addEventListener("mousemove", this.mouseMove);
+    document.addEventListener("mouseup", this.mouseUp);
   }
   render() {
     if (this.props.data.loading) return null;
-    return <Container fluid className="powerLevels">
-    {
-      this.state.systems.slice(0).sort((a,b) => {
-        if (a.type > b.type) return 1;
-        if (a.type < b.type) return -1;
-        return 0;
-      }).map(sys => <SystemPower {...sys} mouseDown={this.mouseDown.bind(this)} />)
-    }
-    </Container>
+    // Get the batteries, get just the first one.
+    const powerTotal = this.state.systems.reduce((prev, next) => {
+      return next.power.power + prev;
+    }, 0);
+    const { reactors } = this.props.data;
+    const reactor = reactors.find(r => r.model === "reactor");
+    const reactorOutput = Math.round(reactor.efficiency * reactor.powerOutput);
+    return (
+      <Container className="powerLevels">
+        <Row className="powerlevel-row">
+          <Measure>
+            {dimensions =>
+              <Col lg={{size: 10, offset: 1}} className="powerlevel-containers">
+                {this.state.systems
+                  .slice(0)
+                  .sort((a, b) => {
+                    if (a.type > b.type) return 1;
+                    if (a.type < b.type) return -1;
+                    return 0;
+                  })
+                  .map(sys =>
+                    <SystemPower
+                      {...sys}
+                      mouseDown={this.mouseDown.bind(this)}
+                      count={this.state.systems.length}
+                      height={dimensions.height}
+                    />
+                  )}
+                <h4 className="totalPowerText">
+                  <span>Total Power Used: {powerTotal}</span> <span style={{paddingLeft: '20px'}}>Total Power Available: {reactorOutput}</span>
+                </h4>
+              </Col>}
+          </Measure>
+        </Row>
+      </Container>
+    );
   }
 }
 
-const SystemPower = ({ id,name, power:{power, powerLevels}, mouseDown}) => {
-  return <Row>
-  <Col sm="2">
-  <h5>{name}: {power}</h5>
-  </Col>
-  <Col sm="10">
-  <Measure>
-  {dimensions => (
-    <div className="powerLine">
-    {
-      powerLevels.map((n) => {
-        return <div className="powerLevel" key={`${id}-powerLine-${n}`} style={{left: `${(n+1)*(19) - 7}px`}}></div>
-      })
-    }
-    <div className="powerBox zero" onMouseDown={mouseDown.bind(this, id, dimensions)} key={`${id}-${-1}`}></div>
-    {     
-      Array(40).fill(0).map((n, i) => {
-        return <div className={`powerBox ${i >= power ? 'hidden' : ''}`} onMouseDown={mouseDown.bind(this, id, dimensions)} key={`${id}-${i}`}></div>
-      })
-    }
-    </div>
-    )}
-  </Measure>
-  </Col>
-  </Row>
-}
+const SystemPower = ({
+  id,
+  name,
+  displayName,
+  damage: { damaged },
+  power: { power, powerLevels },
+  mouseDown,
+  count,
+  height
+}) => {
+  return (
+    <Row>
+      <Col sm="4">
+        <h5
+          className={damaged ? "text-danger" : ""}
+          style={{ padding: 0, margin: 0, marginTop: height / count - 20 }}
+        >
+          {displayName}: {power}
+        </h5>
+      </Col>
+      <Col sm="8">
+        <Measure>
+          {dimensions =>
+            <div
+              className="powerLine"
+              style={{ margin: (height / count - 20) / 2 }}
+            >
+              {powerLevels.map(n => {
+                return (
+                  <div
+                    className="powerLevel"
+                    key={`${id}-powerLine-${n}`}
+                    style={{ left: `${(n + 1) * 14 - 7}px` }}
+                  />
+                );
+              })}
+              <div
+                className="powerBox zero"
+                onMouseDown={mouseDown.bind(this, id, dimensions)}
+                key={`${id}-${-1}`}
+              />
+              {Array(40).fill(0).map((n, i) => {
+                return (
+                  <div
+                    className={`powerBox ${i >= power ? "hidden" : ""}`}
+                    onMouseDown={mouseDown.bind(this, id, dimensions)}
+                    key={`${id}-${i}`}
+                  />
+                );
+              })}
+            </div>}
+        </Measure>
+      </Col>
+    </Row>
+  );
+};
 
 const SYSTEMS_QUERY = gql`
-query Systems($simulatorId: ID) {
-  systems(simulatorId: $simulatorId) {
-    name
-    type
-    id
-    power {
-      power
-      powerLevels
+  query Systems($simulatorId: ID) {
+    systems(simulatorId: $simulatorId, power: true) {
+      name
+      displayName
+      type
+      id
+      power {
+        power
+        powerLevels
+      }
+      damage {
+        damaged
+      }
+    }
+    reactors(simulatorId: $simulatorId) {
+      id
+      model
+      efficiency
+      powerOutput
     }
   }
-}`;
+`;
 
 export default graphql(SYSTEMS_QUERY, {
-  options: (ownProps) => ({ variables: { simulatorId: ownProps.simulator.id } }),
-})(withApollo(PowerDistribution))
-
-
-
+  options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })
+})(withApollo(PowerDistribution));

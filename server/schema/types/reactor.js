@@ -8,11 +8,12 @@ type Reactor implements SystemInterface{
   stealthFactor: Float
   power: Power
   heat: Float
-  coolant: Coolant
+  coolant: Float
   damage: Damage
   #One of 'reactor' or 'battery'
   model: REACTOR_MODELS
   ejected: Boolean
+  externalPower: Boolean
   powerOutput: Int
   efficiency: Float
   batteryChargeLevel: Float
