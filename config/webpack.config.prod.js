@@ -149,7 +149,7 @@ module.exports = {
       // "url" loader works just like "file" loader but it also embeds
       // assets smaller than specified size as data URLs to avoid requests.
       {
-        test: /\.(mp4|webm|wav|mp3|m4a|aac|oga)(\?.*)?$/,
+        test: /\.(mp4|webm|wav|mp3|m4a|aac|oga|obj)(\?.*)?$/,
         loader: 'url-loader',
         query: {
           limit: 10000,

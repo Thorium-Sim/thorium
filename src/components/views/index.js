@@ -31,6 +31,7 @@ import AlertCondition from './AlertCondition';
 import ProbeNetwork from './ProbeNetwork';
 import SelfDestruct from './SelfDestruct';
 import ProbeControl from './ProbeControl';
+import ReactorControl from './ReactorControl';
 
 import EngineControlCore from './EngineControl/core';
 import TransporterCore from './Transporters/core';
@@ -98,7 +99,8 @@ const Views = {
   AlertCondition,
   ProbeNetwork,
   SelfDestruct,
-  ProbeControl
+  ProbeControl,
+  ReactorControl
 };
 
 export const Widgets = {
