@@ -74,7 +74,7 @@
     "cors": "^2.8.1",
     "electron": "^1.6.8",
     "express": "^4.14.1",
-    "express-status-monitor": "^0.1.9",
+    "express-status-monitor": "^1.0.0",
     "extract-svg-path": "^2.1.0",
     "fs-extra": "^3.0.1",
     "golden-layout": "^1.5.8",
@@ -144,24 +144,39 @@
     "instrument": false
   },
   "jest": {
-    "moduleFileExtensions": ["jsx", "js", "json"],
+    "moduleFileExtensions": [
+      "jsx",
+      "js",
+      "json"
+    ],
     "moduleNameMapper": {
       "^.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/config/jest/FileStub.js",
       "^.+\\.css$": "<rootDir>/config/jest/CSSStub.js"
     },
-    "setupFiles": ["<rootDir>/config/polyfills.js"],
-    "testPathIgnorePatterns": ["<rootDir>/(build|docs|node_modules)/"],
+    "setupFiles": [
+      "<rootDir>/config/polyfills.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/(build|docs|node_modules)/"
+    ],
     "testEnvironment": "node",
     "collectCoverage": true,
     "coverageDirectory": "coverage",
-    "coverageReporters": ["lcov", "text-summary"]
+    "coverageReporters": [
+      "lcov",
+      "text-summary"
+    ]
   },
   "babel": {
-    "presets": ["react-app"]
+    "presets": [
+      "react-app"
+    ]
   },
   "eslintConfig": {
     "parser": "babel-eslint",
-    "extends": ["react-app"],
+    "extends": [
+      "react-app"
+    ],
     "globals": {
       "window": true,
       "log": true
