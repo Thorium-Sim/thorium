@@ -27,7 +27,8 @@ export const ShieldMutations = {
 };
 
 export const ShieldSubscriptions = {
-  shieldsUpdate(rootValue) {
+  shieldsUpdate(rootValue, {simulatorId}) {
+    if (simulatorId) return rootValue.filter(s => s.simulatorId === simulatorId);
     return rootValue;
   },
 };
