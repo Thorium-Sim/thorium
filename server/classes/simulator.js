@@ -19,13 +19,6 @@ export default class Simulator {
     if (params.teams) {
       params.teams.forEach(t => this.teams.push(new Team(t)));
     }
-
-    // Initialize the simulator async
-    if (params.launch) {
-      setTimeout(() => {
-        this.nextTimeline();
-      }, 100);
-    }
   }
   rename(name) {
     this.name = name;
