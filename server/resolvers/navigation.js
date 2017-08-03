@@ -32,6 +32,7 @@ export const NavigationSubscriptions = {
   navigationUpdate(rootValue, {simulatorId}){
     let returnRes = rootValue;
     if (simulatorId) returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
+    console.log(simulatorId, returnRes.length);
     return returnRes;
   }
 };
