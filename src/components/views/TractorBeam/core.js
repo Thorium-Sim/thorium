@@ -95,8 +95,8 @@ class TractorBeamCore extends Component {
     if (!tractorBeam) return <p>No Tractor Beam</p>;
     return <Container className="tractor-beam-core">
     <p>Tractor Beam</p>
-    <label>Target: <input type="checkbox" onClick={(evt) => this.toggleTractor('target', evt)} checked={tractorBeam.target} /></label>
-    <label>Active: <input type="checkbox" onClick={(evt) => this.toggleTractor('state', evt)} checked={tractorBeam.state} /></label>
+    <label>Target: <input type="checkbox" onChange={(evt) => this.toggleTractor('target', evt)} checked={tractorBeam.target} /></label>
+    <label>Active: <input type="checkbox" onChange={(evt) => this.toggleTractor('state', evt)} checked={tractorBeam.state} /></label>
     <label>Strength: {Math.round(tractorBeam.strength * 100)}</label>
     <label>Stress: {Math.round(this.state.stress * 100)} <input style={{width: '50%', float: 'right'}} onChange={this.setStress} onMouseUp={this.updateStress} value={this.state.stress} type="range" min="0" max="1" step="0.01" /></label>
     </Container>

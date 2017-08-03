@@ -147,7 +147,7 @@ class TorpedoLoadingCore extends Component {
         Object.keys(types)
         .filter(t => ['photon', 'quantum', 'probe'].indexOf(t) < 0)
         .map((t) => {
-          return <Row style={{margin: 0}}>
+          return <Row key={`torpedo-${t}`} style={{margin: 0}}>
           <Col sm={6}>
           {t}:
           </Col>

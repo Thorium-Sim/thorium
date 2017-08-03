@@ -130,10 +130,10 @@ class CommShortRange extends Component {
       <p>Freq: {Math.round(ShortRange.frequency * 37700 + 37700)/100} MHz - Amp: {Math.round(ShortRange.amplitude * 100)/100} - {this.getSignal().name}</p>
       <div>External Call 
       {ShortRange.state === 'hailing' ? <Button onClick={this._commConnect.bind(this)} size="sm" color="info">Hailing - Connect</Button> : null}</div>
-      <select value={selectedCall} onChange={(e) => {this.setState({selectedCall: e.target.value})}}>
+      <select value={selectedCall || ''} onChange={(e) => {this.setState({selectedCall: e.target.value})}}>
       <option value={null}>---</option>
       {ShortRange.signals.map(s => {
-        return <option value={s.id}>{s.name}</option>
+        return <option key={s.id} value={s.id}>{s.name}</option>
       })}
       </select>
       <Button size="sm" color="default" disabled={!selectedCall} onClick={this._commHail.bind(this)}>Hail</Button>
@@ -142,7 +142,7 @@ class CommShortRange extends Component {
       {
         ShortRange.arrows.map(a => {
           const signal = ShortRange.signals.find(s => s.id === a.signal);
-          return <p onClick={() => {this.setState({selectedArrow: a.id})}} className={`${a.connected ? 'text-success' : ''} ${a.id === selectedArrow ? 'selected' : ''}`}>{signal.name} - {Math.round(a.frequency * 37700 + 37700)/100} MHz</p>
+          return <p key={a.id} onClick={() => {this.setState({selectedArrow: a.id})}} className={`${a.connected ? 'text-success' : ''} ${a.id === selectedArrow ? 'selected' : ''}`}>{signal.name} - {Math.round(a.frequency * 37700 + 37700)/100} MHz</p>
         })
       }
       </div>
