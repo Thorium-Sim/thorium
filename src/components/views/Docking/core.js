@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
-import { Row, Col, Button } from 'reactstrap';
+import { Container, Row, Col, Button } from 'reactstrap';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
 import './style.scss';
@@ -58,8 +58,7 @@ class DockingCore extends Component {
   render(){
     if (this.props.data.loading) return null;
     const {ship} = this.props.data.simulators[0];
-    return <div className="docking-core">
-    <p>Docking</p>
+    return <Container className="docking-core">
     <Row>
     <Col sm={4}>
     <Button onClick={this.toggle.bind(this, 'clamps')} size="sm" color={ship.clamps ? 'danger' : 'success'}>Clamps</Button>
@@ -71,7 +70,7 @@ class DockingCore extends Component {
     <Button onClick={this.toggle.bind(this, 'airlock')} size="sm" color={ship.airlock ? 'danger' : 'success'}>Doors</Button>
     </Col>
     </Row>
-    </div>
+    </Container>
   }
 }
 

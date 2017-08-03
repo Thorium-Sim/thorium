@@ -5,7 +5,7 @@ import { InputGroup, InputGroupButton, Button, Input } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import Immutable from "immutable";
 import DamageOverlay from "../helpers/DamageOverlay";
-import Keypad from './keypad';
+import Keypad from "./keypad";
 
 import "./style.scss";
 
@@ -139,14 +139,14 @@ class Navigation extends Component {
       "keydown",
       this.handleKeydown.bind(this),
       false
-		);
-		this.subscription();
+    );
+    this.subscription();
   }
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
       this.subscription = nextProps.data.subscribeToMore({
-				document: NAVIGATION_SUB,
-				variables: {simulatorId: nextProps.simulator.id},
+        document: NAVIGATION_SUB,
+        variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           const returnResult = Immutable.Map(previousResult);
           return returnResult
@@ -343,7 +343,7 @@ class Navigation extends Component {
     }, 750);
   }
   render() {
-		if (this.props.data.loading) return null;
+    if (this.props.data.loading) return null;
     const { calculatedCourse, enteredCourse, selectedField } = this.state;
     const navigation = this.props.data.navigation[0];
     const scanning = this.state.scanning || navigation.scanning;
