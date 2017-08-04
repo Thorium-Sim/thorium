@@ -24,7 +24,11 @@ export const ThrustersMutations = {
 };
 
 export const ThrustersSubscriptions = {
-  rotationChange(root) {
+  rotationChange(root, {simulatorId}) {
+    console.log(root);
+    if (simulatorId) {
+      return root.simulatorId === simulatorId && root;
+    }
     return root;
   },
 };

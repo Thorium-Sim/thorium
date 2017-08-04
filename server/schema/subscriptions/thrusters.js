@@ -1,3 +1,3 @@
 export default `
-rotationChange: Thruster
+rotationChange(simulatorId: ID): Thruster
 `;
