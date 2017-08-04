@@ -196,7 +196,7 @@ class DamageTeams extends Component {
       <Col xl={5} lg={6}>
       <FormGroup row>
       <Label for="teamName" size="lg">Name</Label>
-      <Input onChange={(evt) => this.updateDamageTeam({id: team.id, key: "name", value: evt.target.value})} type="text" id="teamName" placeholder="New Security Team" size="lg" value={team.name} />
+      <Input onChange={(evt) => this.updateDamageTeam({id: team.id, key: "name", value: evt.target.value})} type="text" id="teamName" placeholder="New Damage Team" size="lg" value={team.name} />
       </FormGroup>
       <FormGroup row>
       <Label for="teamOrders" size="lg">Orders</Label>
