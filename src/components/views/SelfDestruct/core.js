@@ -1,14 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import {
-  Container,
-  Col,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Input
+  Container
 } from "reactstrap";
 import Moment from "moment";
 import { graphql, withApollo } from "react-apollo";
