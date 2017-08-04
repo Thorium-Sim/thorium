@@ -64,7 +64,9 @@ class ProbeNetwork extends Component {
             <h3>Processed Data</h3>
             <Card className="processedData">
               <CardBlock>
+                <pre>
                 {processedData}
+                </pre>
               </CardBlock>
             </Card>
           </Col>

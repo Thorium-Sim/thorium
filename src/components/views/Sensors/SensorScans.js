@@ -1,12 +1,15 @@
-import React, { Component } from 'react';
-import { Button, Row, Col, Card, CardBlock } from 'reactstrap';
-import gql from 'graphql-tag';
+import React, { Component } from "react";
+import { Button, Row, Col, Card, CardBlock } from "reactstrap";
+import gql from "graphql-tag";
 
 export default class SensorScans extends Component {
-  state = {
-    scanRequest: '',
-    scanResults: ''
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      scanRequest: props.sensors.scanRequest,
+      scanResults: props.sensors.scanResults
+    };
+  }
   componentWillReceiveProps(nextProps) {
     const nextSensors = nextProps.sensors;
     if (!this.state.scanResults) {
@@ -22,7 +25,7 @@ export default class SensorScans extends Component {
             scanResults: nextSensors.scanResults
           });
         } else {
-          this.typeIn(nextSensors.scanResults, 0, 'scanResults');
+          this.typeIn(nextSensors.scanResults, 0, "scanResults");
         }
       }
     }
@@ -74,9 +77,9 @@ export default class SensorScans extends Component {
             <div className="scanEntry">
               {scanning
                 ? <div>
-                    <video ref={'ReactVideo'} autoPlay loop>
+                    <video ref={"ReactVideo"} autoPlay loop>
                       <source
-                        src={'/js/images/scansvid.mov'}
+                        src={"/js/images/scansvid.mov"}
                         type="video/mp4"
                       />
                     </video>
@@ -103,9 +106,11 @@ export default class SensorScans extends Component {
             <label>Scan Results:</label>
           </Col>
           <Col className="col-sm-12">
-            <Card style={{ height: '200px' }}>
+            <Card style={{ height: "200px" }}>
               <CardBlock>
-                {this.state.scanResults}
+                <pre>
+                  {this.state.scanResults}
+                </pre>
               </CardBlock>
             </Card>
           </Col>

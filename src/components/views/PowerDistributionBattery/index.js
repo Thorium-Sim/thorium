@@ -22,6 +22,7 @@ const SYSTEMS_SUB = gql`
 subscription SystemsUpdate($simulatorId: ID){
   systemsUpdate(simulatorId: $simulatorId) {
     name
+    displayName
     type
     id
     power {
@@ -142,7 +143,7 @@ class PowerDistribution extends Component {
           if (a.type > b.type) return 1;
           if (a.type < b.type) return -1;
           return 0;
-        }).map(sys => <SystemPower {...sys} mouseDown={this.mouseDown.bind(this)} count={this.state.systems.length} height={dimensions.height}/>)
+        }).map(sys => <SystemPower key={sys.id} {...sys} mouseDown={this.mouseDown.bind(this)} count={this.state.systems.length} height={dimensions.height}/>)
       }
       <h4 className="totalPowerText">Total Power Used: {powerTotal}</h4>
       </Col>

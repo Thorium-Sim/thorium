@@ -33,6 +33,9 @@
 		overflow: scroll;
 		height: 100%;
 	}
+	pre {
+		white-space: pre-wrap;
+	}
 	.array {
 		position: absolute;
 		top: 0;

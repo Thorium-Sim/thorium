@@ -164,7 +164,7 @@ class SensorsCore extends Component {
         </div>
         <div style={buttonStyle}>
           <Button
-            onClick={this.probeData(probes)}
+            onClick={() => this.probeData(probes)}
             style={{ flexGrow: 2 }}
             size={'sm'}>
             Probe Data
