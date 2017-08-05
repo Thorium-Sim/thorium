@@ -6,6 +6,7 @@
 .*/node_modules/sourced/*
 .*/node_modules/react-grid-layout/*
 .*/node_modules/electron-packager/*
+./**/*.scss
 
 [include]
 ./src/*.js
@@ -19,3 +20,5 @@
 
 [options]
 unsafe.enable_getters_and_setters=true
+module.name_mapper='.*\(.scss\)' -> 'empty/object'
+module.system=haste
