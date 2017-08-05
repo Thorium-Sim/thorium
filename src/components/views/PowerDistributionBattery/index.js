@@ -21,7 +21,7 @@ const mutation = gql`
 
 const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
-    systemsUpdate(simulatorId: $simulatorId) {
+    systemsUpdate(simulatorId: $simulatorId, power: true) {
       name
       displayName
       type
