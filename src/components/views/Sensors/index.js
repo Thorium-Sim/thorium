@@ -54,7 +54,7 @@ class Sensors extends Component {
 		if (!this.sensorsSubscription && !nextProps.data.loading) {
 			this.sensorsSubscription = nextProps.data.subscribeToMore({
 				document: SENSOR_SUB,
-				variables: { simulatorId: this.props.simulator.id },
+				variables: { simulatorId: nextProps.simulator.id },
 				updateQuery: (previousResult, { subscriptionData }) => {
 					const returnResult = Immutable.Map(previousResult);
 					return returnResult
@@ -298,7 +298,9 @@ class Sensors extends Component {
 								<Col className="col-sm-12">
 									<Card className="processedData">
 										<CardBlock>
-											{this.state.processedData}
+											<pre>
+												{this.state.processedData}
+											</pre>
 										</CardBlock>
 									</Card>
 								</Col>

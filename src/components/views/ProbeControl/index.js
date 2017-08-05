@@ -68,6 +68,9 @@ class ProbeControl extends Component {
     const probes = this.props.data.probes[0];
     const { selectedProbe } = this.state;
     if (!probes) return <p>No Probe Launcher</p>;
+    // Check to see if we have a probe network
+    const network =
+      probes.probes.filter(p => /[1-8]/.test(p.name)).length === 8;
     return (
       <Container fluid className="probe-control">
         <Row>
@@ -75,7 +78,23 @@ class ProbeControl extends Component {
             <h3>Probes</h3>
             <Card>
               <CardBlock>
-                {probes.probes.map(p =>
+                {network &&
+                  <div
+                    onClick={() =>
+                      this.setState({
+                        selectedProbe: probes.probes.filter(p =>
+                          /[1-8]/.test(p.name)
+                        )[0].id
+                      })}
+                    className={`probe-list ${selectedProbe ===
+                    probes.probes.filter(p => /[1-8]/.test(p.name))[0].id
+                      ? "selected"
+                      : ""}`}
+                  >
+                    <p className="probe-name">Probe Network</p>
+                    <small />
+                  </div>}
+                {probes.probes.filter(p => !/[1-8]/.test(p.name)).map(p =>
                   <div
                     key={p.id}
                     onClick={() => this.setState({ selectedProbe: p.id })}
@@ -171,7 +190,7 @@ class ProbeControlWrapper extends Component {
     const variables = {
       id: this.props.probeId,
       probeId: this.props.id,
-      query: ''
+      query: ""
     };
     this.props.client.mutate({
       mutation,

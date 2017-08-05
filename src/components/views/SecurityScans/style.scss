@@ -24,6 +24,9 @@
     animation-iteration-count: infinite;
     animation-timing-function: ease-in;
   }
+  .ship-image {
+    margin: 20px;
+  }
   .damageOverlay {
     z-index: 10000;
     position: absolute;

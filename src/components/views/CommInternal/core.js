@@ -122,7 +122,7 @@ class InternalCommCore extends Component {
             </Row> :
             <Row>
             <Col sm={4}>
-            <Input value={deck} style={inputStyle} size="sm" type="select" onChange={(e) => this.setState({deck: e.target.value, room: null})}>
+            <Input value={deck || ''} style={inputStyle} size="sm" type="select" onChange={(e) => this.setState({deck: e.target.value, room: null})}>
             <option value={null}>Select Deck</option>
             {
               decks.map(d => <option key={d.id} value={d.id}>{`Deck ${d.number}`}</option>)
@@ -130,7 +130,7 @@ class InternalCommCore extends Component {
             </Input>
             </Col>
             <Col sm={6}>
-            <Input value={room} style={inputStyle} size="sm" disabled={!deck || deck === 'Select Deck'} type="select" onChange={(e) => this.setState({room: e.target.value})}>
+            <Input value={room || ''} style={inputStyle} size="sm" disabled={!deck || deck === 'Select Deck'} type="select" onChange={(e) => this.setState({room: e.target.value})}>
             <option value="">Select Room</option>
             {
               rooms.map(r => <option key={r.id} value={r.id}>{r.name}</option>)

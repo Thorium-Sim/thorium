@@ -31,7 +31,7 @@ export const OutputField = ({style = {}, children, alert, onClick, title, id}) =
     compStyle.backgroundColor = '#f00';
     compStyle.borderColor = '#a00';
   }
-  return <div id={id} title={title} onClick={onClick} style={compStyle}>{children}</div>
+  return <div id={id} className="output-field" title={title} onClick={onClick} style={compStyle}>{children}</div>
 }
 
 export const TypingField = ({style = {}, onChange, className, onBlur, value, rows, input, controlled}) => {

@@ -78,7 +78,6 @@ App.on('createSimulator', ({ id, name, template, flightId, timeline, stationSet 
   }
   App.simulators.push(simulator);
   // Initialize the simulator.
-  simulator.nextTimeline();
   pubsub.publish('simulatorsUpdate', App.simulators);
 });
 App.on('removeSimulator', ({ simulatorId }) => {

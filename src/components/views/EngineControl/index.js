@@ -92,6 +92,11 @@ class EngineControl extends Component {
 			});
 		}
 	}
+	componentWillUnmount() {
+		this.heatChangeSubscription();
+		this.setSpeedSubscription();
+		this.systemSub();
+	}
 	speedBarStyle(array,speed, engineCount, index){
 		let width = speed / array.length * 100;
 		if (engineCount - 1 === index){
