@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { OutputField, TypingField } from '../../generic/core';
-import { Button } from 'reactstrap';
-import { graphql, withApollo } from 'react-apollo';
-import gql from 'graphql-tag';
-import Immutable from 'immutable';
-import ScanPresets from './ScanPresets';
+import React, { Component } from "react";
+import { OutputField, TypingField } from "../../generic/core";
+import { Button } from "reactstrap";
+import { graphql, withApollo } from "react-apollo";
+import gql from "graphql-tag";
+import Immutable from "immutable";
+import ScanPresets from "./ScanPresets";
 
 const SENSOR_SUB = gql`
   subscription SensorsChanged {
@@ -25,7 +25,8 @@ class SensorsCore extends Component {
     super(props);
     this.sensorsSubscription = null;
     this.state = {
-      dataField: ''
+      dataField: "",
+      domain: localStorage.getItem("sensorCore-domain") || "external"
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -70,7 +71,7 @@ class SensorsCore extends Component {
   flash() {}
   scanPreset = evt => {
     let dataField = evt.target.value;
-    if (dataField === 'omnicourse') {
+    if (dataField === "omnicourse") {
       dataField = `Course Calculated:
       X: ${Math.round(Math.random() * 100000) / 100}
       Y: ${Math.round(Math.random() * 100000) / 100}
@@ -95,27 +96,54 @@ class SensorsCore extends Component {
       variables
     });
   };
+  setDomain = which => {
+    this.setState({
+      domain: which
+    });
+    localStorage.setItem("sensorCore-domain", which);
+  };
   render() {
     if (this.props.data.loading) return null;
-    const external = this.props.data.sensors.find(s => s.domain === 'external');
-    //const internal = this.props.data.sensors.find(s => s.domain === 'internal');
+    const external = this.props.data.sensors.find(s => s.domain === "external");
+    const internal = this.props.data.sensors.find(s => s.domain === "internal");
+    const sensor = this.state.domain === "external" ? external : internal;
     const probes = this.props.data.probes[0];
     const fieldStyle = {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'stretch',
-      height: 'calc(100% - 40px)'
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "stretch",
+      height: "calc(100% - 60px)"
     };
     const buttonStyle = {
-      display: 'flex',
+      display: "flex",
       height: 22
     };
     if (this.props.data.loading) return <span>Loading...</span>;
     return (
-      <div style={{ height: '100%' }}>
+      <div style={{ height: "100%" }}>
+        <div>
+          <Button
+            size="sm"
+            className={`${this.state.domain === "external"
+              ? "focus"
+              : ""} ${external.scanning ? "btn-danger" : ""}`}
+            onClick={() => this.setDomain("external")}
+          >
+            External
+          </Button>
+          <Button
+            size="sm"
+            className={`${this.state.domain === "internal"
+              ? "focus"
+              : ""} ${internal.scanning ? "btn-danger" : ""}`}
+            onClick={() => this.setDomain("internal")}
+          >
+            Internal
+          </Button>
+        </div>
         <div style={fieldStyle}>
-          <OutputField style={{ flexGrow: 2 }} alert={external.scanning}>
-            {external.scanRequest}
+          <OutputField style={{ flexGrow: 2 }} alert={sensor.scanning}>
+            {sensor.scanRequest}
           </OutputField>
           <TypingField
             style={{ flexGrow: 6 }}
@@ -128,22 +156,25 @@ class SensorsCore extends Component {
         </div>
         <div style={buttonStyle}>
           <Button
-            onClick={this.sendScanResult.bind(this, external)}
+            onClick={this.sendScanResult.bind(this, sensor)}
             style={{ flexGrow: 2 }}
-            size={'sm'}>
+            size={"sm"}
+          >
             Send
           </Button>
           <Button
             onClick={this.flash.bind(this)}
             style={{ flexGrow: 1 }}
-            size={'sm'}>
+            size={"sm"}
+          >
             Flash
           </Button>
           <select
-            value={'answers'}
+            value={"answers"}
             onChange={this.scanPreset}
-            style={{ flexGrow: 4, maxWidth: 100 }}>
-            <option value={'answers'} disabled>
+            style={{ flexGrow: 4, maxWidth: 100 }}
+          >
+            <option value={"answers"} disabled>
               Answers
             </option>
             {ScanPresets.map(p =>
@@ -158,7 +189,8 @@ class SensorsCore extends Component {
           <Button
             onClick={this.sendProcessedData.bind(this, external)}
             style={{ flexGrow: 4 }}
-            size={'sm'}>
+            size={"sm"}
+          >
             Data
           </Button>
         </div>
@@ -166,7 +198,8 @@ class SensorsCore extends Component {
           <Button
             onClick={() => this.probeData(probes)}
             style={{ flexGrow: 2 }}
-            size={'sm'}>
+            size={"sm"}
+          >
             Probe Data
           </Button>
         </div>
