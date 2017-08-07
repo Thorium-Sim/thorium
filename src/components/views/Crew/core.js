@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import gql from 'graphql-tag';
+import React from "react";
+/*import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
 import ReactDataGrid from 'react-data-grid';
@@ -170,3 +170,6 @@ export default graphql(CREW_QUERY, {
     }
   })
 })(withApollo(CrewCore));
+*/
+
+export default () => <div>Crew Core</div>;
