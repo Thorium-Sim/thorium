@@ -56,6 +56,7 @@ export default class Client {
     this.simulatorId = simulatorId;
   }
   setStation(station: string) {
+    console.log(station);
     this.station = station;
   }
   login(name: string) {

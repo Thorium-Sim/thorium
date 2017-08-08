@@ -1,12 +1,12 @@
-import jsonfile from 'jsonfile';
-import { EventEmitter } from 'events';
-import { writeFile } from './server/helpers/json-format';
-import * as Classes from './server/classes';
-import config from './config';
-import util from 'util';
-import { cloneDeep } from 'lodash';
-import electron from 'electron';
-import fs from 'fs';
+import jsonfile from "jsonfile";
+import { EventEmitter } from "events";
+import { writeFile } from "./server/helpers/json-format";
+import * as Classes from "./server/classes";
+import config from "./config";
+import util from "util";
+import { cloneDeep } from "lodash";
+import electron from "electron";
+import fs from "fs";
 
 class Events extends EventEmitter {
   constructor(params) {
@@ -27,6 +27,7 @@ class Events extends EventEmitter {
     this.assetFolders = [];
     this.assetContainers = [];
     this.assetObjects = [];
+    this.viewscreens = [];
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;
@@ -36,17 +37,17 @@ class Events extends EventEmitter {
   }
   init() {
     if (!config.db) {
-      let snapshotDir = './snapshots/';
+      let snapshotDir = "./snapshots/";
       if (electron.app) {
-        snapshotDir = electron.app.getPath('appData') + '/thorium/';
+        snapshotDir = electron.app.getPath("appData") + "/thorium/";
       }
-      if (!fs.existsSync(snapshotDir + 'snapshot.json')) {
+      if (!fs.existsSync(snapshotDir + "snapshot.json")) {
         if (!fs.existsSync(snapshotDir)) {
           fs.mkdirSync(snapshotDir);
         }
-        fs.writeFileSync(snapshotDir + 'snapshot.json', '{}');
+        fs.writeFileSync(snapshotDir + "snapshot.json", "{}");
       }
-      const snapshot = jsonfile.readFileSync(snapshotDir + 'snapshot.json');
+      const snapshot = jsonfile.readFileSync(snapshotDir + "snapshot.json");
       this.merge(snapshot);
     } else {
       // Add DB config here.
@@ -56,11 +57,11 @@ class Events extends EventEmitter {
     // Initialize the snapshot with the object constructors
     Object.keys(snapshot).forEach(key => {
       if (
-        key === 'events' ||
-        key === 'snapshotVersion' ||
-        key === 'timestamp' ||
-        key === 'version' ||
-        key === '_eventsCount'
+        key === "events" ||
+        key === "snapshotVersion" ||
+        key === "timestamp" ||
+        key === "version" ||
+        key === "_eventsCount"
       )
         return;
       if (snapshot[key] instanceof Array) {
@@ -74,12 +75,12 @@ class Events extends EventEmitter {
     this.snapshotVersion = this.version;
     var snap = cloneDeep(this, true);
     const snapshot = this.trimSnapshot(snap);
-    let snapshotDir = './snapshots/';
+    let snapshotDir = "./snapshots/";
     if (electron.app) {
-      snapshotDir = electron.app.getPath('appData') + '/thorium/';
+      snapshotDir = electron.app.getPath("appData") + "/thorium/";
     }
     if (!config.db) {
-      writeFile(snapshotDir + 'snapshot.json', snapshot, err => {
+      writeFile(snapshotDir + "snapshot.json", snapshot, err => {
         console.log(err);
       });
     }
