@@ -32,6 +32,7 @@ import ProbeNetwork from "./ProbeNetwork";
 import SelfDestruct from "./SelfDestruct";
 import ProbeControl from "./ProbeControl";
 import ReactorControl from "./ReactorControl";
+import Viewscreen from "./Viewscreen";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -101,7 +102,8 @@ const Views = {
   ProbeNetwork,
   SelfDestruct,
   ProbeControl,
-  ReactorControl
+  ReactorControl,
+  Viewscreen
 };
 
 export const Widgets = {

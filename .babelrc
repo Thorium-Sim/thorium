@@ -10,6 +10,7 @@
     "flow"
   ],
   "plugins": [
-    "babel-plugin-inline-import"
+    "babel-plugin-inline-import",
+    "preval"
   ]
 }
