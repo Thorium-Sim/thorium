@@ -1,5 +1,6 @@
 import App from "../../app";
 import Client from "../classes/client";
+import Viewscreen from "../classes/viewscreen";
 import { pubsub } from "../helpers/subscriptionManager.js";
 
 App.on("clientConnect", ({ client }) => {
@@ -49,10 +50,12 @@ App.on("clientSetStation", ({ client, stationName }) => {
       v => v.id === clientObj.id && v.simulatorId === clientObj.simulatorId
     )
   ) {
-    App.viewscreens.push({
-      id: clientObj.id,
-      simulatorId: clientObj.simulatorId
-    });
+    App.viewscreens.push(
+      new Viewscreen({
+        id: clientObj.id,
+        simulatorId: clientObj.simulatorId
+      })
+    );
     pubsub.publish("viewscreensUpdate", App.viewscreens);
   }
 });
