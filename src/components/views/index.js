@@ -32,6 +32,7 @@ import ProbeNetwork from "./ProbeNetwork";
 import SelfDestruct from "./SelfDestruct";
 import ProbeControl from "./ProbeControl";
 import ReactorControl from "./ReactorControl";
+import Viewscreen from "./Viewscreen";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -63,6 +64,7 @@ import ProbeNetworkCore from "./ProbeNetwork/core";
 import SelfDestructCore from "./SelfDestruct/core";
 import ProbeControlCore from "./ProbeControl/core";
 import ReactorControlCore from "./ReactorControl/core";
+import ViewscreenCore from "./Viewscreen/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -101,7 +103,8 @@ const Views = {
   ProbeNetwork,
   SelfDestruct,
   ProbeControl,
-  ReactorControl
+  ReactorControl,
+  Viewscreen
 };
 
 export const Widgets = {
@@ -155,7 +158,8 @@ export const Cores = {
   ProbeNetworkCore,
   SelfDestructCore,
   ProbeControlCore,
-  ReactorControlCore
+  ReactorControlCore,
+  ViewscreenCore
 };
 
 export default Views;

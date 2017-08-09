@@ -1,4 +1,4 @@
-import App from '../../app';
+import App from "../../app";
 
 export const ClientQueries = {
   clients: (root, { clientId, simulatorId, stationName }) => {
@@ -13,61 +13,61 @@ export const ClientQueries = {
       returnVal = returnVal.filter(c => c.station === stationName);
     }
     return returnVal.filter(c => c.connected);
-  },
+  }
 };
 
 export const ClientMutations = {
   clientConnect: (root, args, context) => {
-    App.handleEvent(args, 'clientConnect', context);
-    return '';
+    App.handleEvent(args, "clientConnect", context);
+    return "";
   },
   clientDisconnect: (root, args, context) => {
-    App.handleEvent(args, 'clientDisconnect', context);
-    return '';
+    App.handleEvent(args, "clientDisconnect", context);
+    return "";
   },
   clientPing: (root, args, context) => {
-    App.handleEvent(args, 'clientPing', context);
-    return '';
+    App.handleEvent(args, "clientPing", context);
+    return "";
   },
   clientSetFlight: (root, args, context) => {
-    App.handleEvent(args, 'clientSetFlight', context);
-    return '';
+    App.handleEvent(args, "clientSetFlight", context);
+    return "";
   },
   clientSetSimulator: (root, args, context) => {
-    App.handleEvent(args, 'clientSetSimulator', context);
-    return '';
+    App.handleEvent(args, "clientSetSimulator", context);
+    return "";
   },
   clientSetStation: (root, args, context) => {
-    App.handleEvent(args, 'clientSetStation', context);
-    return '';
+    App.handleEvent(args, "clientSetStation", context);
+    return "";
   },
   clientLogin: (root, args, context) => {
-    App.handleEvent(args, 'clientLogin', context);
-    return '';
+    App.handleEvent(args, "clientLogin", context);
+    return "";
   },
   clientLogout: (root, args, context) => {
-    App.handleEvent(args, 'clientLogout', context);
-    return '';
+    App.handleEvent(args, "clientLogout", context);
+    return "";
   },
   clientDiagnostic: (root, args, context) => {
-    App.handleEvent(args, 'clientDiagnostic', context);
-    return '';
+    App.handleEvent(args, "clientDiagnostic", context);
+    return "";
   },
   clientReset: (root, args, context) => {
-    App.handleEvent(args, 'clientReset', context);
-    return '';
+    App.handleEvent(args, "clientReset", context);
+    return "";
   },
   clientLockScreen: (root, args, context) => {
-    App.handleEvent(args, 'clientLockScreen', context);
-    return '';
+    App.handleEvent(args, "clientLockScreen", context);
+    return "";
   },
   clientUnlockScreen: (root, args, context) => {
-    App.handleEvent(args, 'clientUnlockScreen', context);
-    return '';
+    App.handleEvent(args, "clientUnlockScreen", context);
+    return "";
   },
   clientOfflineState: (root, args, context) => {
-    App.handleEvent(args, 'clientOfflineState', context);
-    return '';
+    App.handleEvent(args, "clientOfflineState", context);
+    return "";
   }
 };
 
@@ -80,7 +80,7 @@ export const ClientSubscriptions = {
   },
   clientChanged: (rootValue, { client }) => {
     if (client) {
-      return rootValue.filter((c) => c.id === client);
+      return rootValue.filter(c => c.id === client);
     }
     return rootValue.filter(c => c.connected);
   },
@@ -89,7 +89,7 @@ export const ClientSubscriptions = {
       return rootValue.sentPing;
     }
     return null;
-  },
+  }
 };
 
 export const ClientTypes = {
@@ -101,10 +101,23 @@ export const ClientTypes = {
       return App.simulators.find(s => s.id === rootValue.simulatorId);
     },
     station(rootValue) {
-      const simulator = App.simulators.find(s => s.id === rootValue.simulatorId);
+      if (rootValue.station === "Viewscreen") {
+        return {
+          name: "Viewscreen",
+          cards: [
+            {
+              name: "Viewscreen",
+              component: "Viewscreen"
+            }
+          ]
+        };
+      }
+      const simulator = App.simulators.find(
+        s => s.id === rootValue.simulatorId
+      );
       if (simulator) {
         return simulator.stations.find(s => s.name === rootValue.station);
       }
-    },
-  },
+    }
+  }
 };
