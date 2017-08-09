@@ -5,4 +5,10 @@ export default class Viewscreen {
     this.name = params.name || params.id;
     this.component = params.component || "ShipLogo";
   }
+  updateName(name) {
+    if (name) this.name = name;
+  }
+  updateComponent(component = "ShipLogo") {
+    this.component = component;
+  }
 }

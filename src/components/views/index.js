@@ -64,6 +64,7 @@ import ProbeNetworkCore from "./ProbeNetwork/core";
 import SelfDestructCore from "./SelfDestruct/core";
 import ProbeControlCore from "./ProbeControl/core";
 import ReactorControlCore from "./ReactorControl/core";
+import ViewscreenCore from "./Viewscreen/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -157,7 +158,8 @@ export const Cores = {
   ProbeNetworkCore,
   SelfDestructCore,
   ProbeControlCore,
-  ReactorControlCore
+  ReactorControlCore,
+  ViewscreenCore
 };
 
 export default Views;

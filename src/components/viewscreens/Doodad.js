@@ -2,7 +2,7 @@ import React from "react";
 import "./Doodad.scss";
 
 export default () =>
-  <figure>
+  <figure className="doodad">
     <div className="c" />
     <div className="c2">
       <i />

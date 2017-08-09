@@ -8,6 +8,7 @@ module.exports = fs.readdirSync('./src/components/viewscreens').filter(p => p.in
 
 viewscreens.forEach(p => {
   const viewscreen = require("./" + p);
+  console.log(p, viewscreen);
   if (viewscreen.default) {
     module.exports[p] = viewscreen.default;
   }

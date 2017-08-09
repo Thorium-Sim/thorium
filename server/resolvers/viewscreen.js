@@ -11,14 +11,21 @@ export const ViewscreenQueries = {
   }
 };
 
-export const ViewscreenMutations = {};
+export const ViewscreenMutations = {
+  updateViewscreenName(_, params, context) {
+    App.handleEvent(params, "updateViewscreenName", context);
+  },
+  updateViewscreenComponent(_, params, context) {
+    App.handleEvent(params, "updateViewscreenComponent", context);
+  }
+};
 
 export const ViewscreenSubscriptions = {
   viewscreensUpdate(rootValue, { simulatorId }) {
-    let viewscreens = App.clients.filter(s => s.stationName === "Viewscreen");
+    let viewscreens = App.clients.filter(s => s.station === "Viewscreen");
     if (simulatorId) {
       viewscreens = viewscreens.filter(v => v.simulatorId === simulatorId);
     }
-    return viewscreens.map(v => rootValue.find(av => av.id === v.clientId));
+    return viewscreens.map(v => rootValue.find(av => av.id === v.id));
   }
 };

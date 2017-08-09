@@ -2,30 +2,35 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import ViewscreenCards from "../../viewscreens";
-import Immutable from "immutable";
 
 import "./style.scss";
 
-//const INTERNAL_SUB = gql``;
+const VIEWSCREEN_SUB = gql`
+  subscription ViewscreenSub($simulatorId: ID) {
+    viewscreensUpdate(simulatorId: $simulatorId) {
+      id
+      name
+      component
+    }
+  }
+`;
 
 class Viewscreen extends Component {
-  constructor(props) {
-    super(props);
-    this.internalSub = null;
-  }
+  sub = null;
   componentWillReceiveProps(nextProps) {
-    /*if (!this.internalSub && !nextProps.data.loading) {
+    if (!this.sub && !nextProps.data.loading) {
       this.internalSub = nextProps.data.subscribeToMore({
-        document: INTERNAL_SUB,
+        document: VIEWSCREEN_SUB,
         variables: {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult.merge({ longRangeCommunications: subscriptionData.data.longRangeCommunicationsUpdate }).toJS();
+          return Object.assign({}, previousResult, {
+            viewscreens: subscriptionData.data.viewscreensUpdate
+          });
         }
       });
-    }*/
+    }
   }
   render() {
     if (this.props.data.loading) return null;
