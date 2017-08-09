@@ -4,6 +4,8 @@ import { graphql, withApollo } from "react-apollo";
 import ViewscreenCards from "../../viewscreens";
 import Immutable from "immutable";
 
+import "./style.scss";
+
 //const INTERNAL_SUB = gql``;
 
 class Viewscreen extends Component {
@@ -33,7 +35,7 @@ class Viewscreen extends Component {
     if (!viewscreen) return <div>No Viewscreen</div>;
     if (ViewscreenCards[viewscreen.component]) {
       const ViewscreenComponent = ViewscreenCards[viewscreen.component];
-      return <ViewscreenComponent />;
+      return <ViewscreenComponent {...this.props} />;
     }
     if (!viewscreen)
       return (
