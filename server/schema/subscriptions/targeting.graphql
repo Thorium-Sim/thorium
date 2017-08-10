@@ -1,0 +1,3 @@
+
+  targetingUpdate(simulatorId: ID): [Targeting]
+

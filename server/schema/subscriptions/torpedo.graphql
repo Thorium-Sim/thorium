@@ -1,0 +1,3 @@
+
+  torpedosUpdate(simulatorId: ID): [Torpedo]
+

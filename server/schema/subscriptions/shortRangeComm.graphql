@@ -1,0 +1,2 @@
+
+shortRangeCommUpdate(simulatorId: ID!): [ShortRangeComm]

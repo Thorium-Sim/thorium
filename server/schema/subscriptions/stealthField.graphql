@@ -1,0 +1,2 @@
+
+stealthFieldUpdate(simulatorId: ID): [StealthField]
