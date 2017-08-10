@@ -1,0 +1,2 @@
+
+probesUpdate(simulatorId: ID!): [Probes]

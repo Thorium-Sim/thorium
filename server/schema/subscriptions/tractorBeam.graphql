@@ -1,0 +1,2 @@
+
+tractorBeamUpdate(simulatorId: ID): [TractorBeam]
