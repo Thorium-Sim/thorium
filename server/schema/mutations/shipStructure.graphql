@@ -1,7 +1,6 @@
 
 addDeck(simulatorId: ID!, number: Int!, svgPath: String, doors: Boolean, evac: Boolean): String
 removeDeck(deckId: ID!): String
-#Macro: Add decks
 addDecksBulk(simulatorId: ID!, 
 
   # {
@@ -17,7 +16,6 @@ updateHallwaySvg(deckId: ID!, svg: String): String
 addRoom(simulatorId: ID!, deckId: ID, deckNumber: Int, name: String!, svgPath: String): String
 removeRoom(roomId: ID!): String
 
-#Macro: Add rooms
 addRoomsBulk(simulatorId: ID!, 
   # {
   #   "content":"Rooms (JSON Array)",
