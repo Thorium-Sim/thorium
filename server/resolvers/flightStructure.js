@@ -1,5 +1,5 @@
-import App from '../../app';
-import uuid from 'uuid';
+import App from "../../app";
+import uuid from "uuid";
 
 export const FlightStructureQueries = {
   simulators: (root, { template, id }) => {
@@ -8,13 +8,13 @@ export const FlightStructureQueries = {
     if (template) returnVal = returnVal.filter(s => s.template);
     return returnVal;
   },
-  flights(root, {running, id}) {
+  flights(root, { running, id }) {
     let returnRes = App.flights;
     if (running) {
-      returnRes =  returnRes.filter(f => f.running);
+      returnRes = returnRes.filter(f => f.running);
     }
     if (id) {
-      returnRes = returnRes.filter(f => f.id === id)
+      returnRes = returnRes.filter(f => f.id === id);
     }
     return returnRes;
   },
@@ -23,130 +23,140 @@ export const FlightStructureQueries = {
   },
   missions() {
     return App.missions;
-  },
+  }
 };
 
 export const FlightStructureMutations = {
   test(root, args, context) {
     App.test(args);
-    return '';
+    return "";
   },
-
 
   // Mission
   createMission(root, args, context) {
-    App.handleEvent(Object.assign(args,{id: uuid.v4()}), 'createMission', context);
+    App.handleEvent(
+      Object.assign(args, { id: uuid.v4() }),
+      "createMission",
+      context
+    );
   },
   removeMission(root, args, context) {
-    App.handleEvent(args, 'removeMission', context);
+    App.handleEvent(args, "removeMission", context);
   },
   editMission(root, args, context) {
-    App.handleEvent(args, 'editMission', context);
+    App.handleEvent(args, "editMission", context);
   },
-
 
   // Flight
   startFlight(root, args, context) {
     const flightId = uuid.v4();
-    App.handleEvent(Object.assign(args, {id: flightId}), 'startFlight', context);
+    App.handleEvent(
+      Object.assign(args, { id: flightId }),
+      "startFlight",
+      context
+    );
     return flightId;
   },
 
-
   // Simulator
   createSimulator(root, args, context = {}) {
-    App.handleEvent(Object.assign(args,{id: uuid.v4()}), 'createSimulator', context);
+    App.handleEvent(
+      Object.assign(args, { id: uuid.v4() }),
+      "createSimulator",
+      context
+    );
   },
   removeSimulator(root, args, context) {
-    App.handleEvent(args, 'removeSimulator', context);
+    App.handleEvent(args, "removeSimulator", context);
   },
   renameSimulator(root, args, context) {
-    App.handleEvent(args, 'renameSimulator', context);
+    App.handleEvent(args, "renameSimulator", context);
   },
   changeSimulatorLayout(root, args, context) {
-    App.handleEvent(args, 'changeSimulatorLayout', context);
+    App.handleEvent(args, "changeSimulatorLayout", context);
   },
   changeSimulatorAlertLevel(root, args, context) {
-    App.handleEvent(args, 'changeSimulatorAlertLevel', context);
-  },
-  changeSimulatorCrewCount(root, args, context) {
-    App.handleEvent(args, 'changeSimulatorCrewCount', context);
+    App.handleEvent(args, "changeSimulatorAlertLevel", context);
   },
 
   // Timeline
   addTimelineStep(root, args, context) {
-    App.handleEvent(Object.assign(args,{timelineStepId: uuid.v4()}), 'addTimelineStep', context);
+    App.handleEvent(
+      Object.assign(args, { timelineStepId: uuid.v4() }),
+      "addTimelineStep",
+      context
+    );
   },
   removeTimelineStep(root, args, context) {
-    App.handleEvent(args, 'removeTimelineStep', context);
+    App.handleEvent(args, "removeTimelineStep", context);
   },
   reorderTimelineStep(root, args, context) {
-    App.handleEvent(args, 'reorderTimelineStep', context);
+    App.handleEvent(args, "reorderTimelineStep", context);
   },
   updateTimelineStep(root, args, context) {
-    App.handleEvent(args, 'updateTimelineStep', context);
+    App.handleEvent(args, "updateTimelineStep", context);
   },
   addTimelineItemToTimelineStep(root, args, context) {
-    App.handleEvent(Object.assign(args,{timelineItemId: uuid.v4()}), 'addTimelineItemToTimelineStep', context);
+    App.handleEvent(
+      Object.assign(args, { timelineItemId: uuid.v4() }),
+      "addTimelineItemToTimelineStep",
+      context
+    );
   },
   removeTimelineStepItem(root, args, context) {
-    App.handleEvent(args, 'removeTimelineStepItem', context);
+    App.handleEvent(args, "removeTimelineStepItem", context);
   },
   updateTimelineStepItem(root, args, context) {
-    App.handleEvent(args, 'updateTimelineStepItem', context);
+    App.handleEvent(args, "updateTimelineStepItem", context);
   },
-
 
   // Station
   createStationSet(root, args, context) {
-    App.handleEvent(args, 'createStationSet', context);
+    App.handleEvent(args, "createStationSet", context);
   },
   removeStationSet(root, args, context) {
-    App.handleEvent(args, 'removeStationSet', context);
+    App.handleEvent(args, "removeStationSet", context);
   },
   renameStationSet(root, args, context) {
-    App.handleEvent(args, 'renameStationSet', context);
+    App.handleEvent(args, "renameStationSet", context);
   },
   addStationToStationSet(root, args, context) {
-    App.handleEvent(args, 'addStationToStationSet', context);
+    App.handleEvent(args, "addStationToStationSet", context);
   },
   removeStationFromStationSet(root, args, context) {
-    App.handleEvent(args, 'removeStationFromStationSet', context);
+    App.handleEvent(args, "removeStationFromStationSet", context);
   },
   editStationInStationSet(root, args, context) {
-    App.handleEvent(args, 'editStationInStationSet', context);
+    App.handleEvent(args, "editStationInStationSet", context);
   },
   addCardToStation(root, args, context) {
-    App.handleEvent(args, 'addCardToStation', context);
+    App.handleEvent(args, "addCardToStation", context);
   },
   removeCardFromStation(root, args, context) {
-    App.handleEvent(args, 'removeCardFromStation', context);
+    App.handleEvent(args, "removeCardFromStation", context);
   },
   editCardInStationSet(root, args, context) {
-    App.handleEvent(args, 'editCardInStationSet', context);
-  },
-  addSystem: (root, args, context) => {
-    App.handleEvent(args, 'addSystem', context);
-  },
+    App.handleEvent(args, "editCardInStationSet", context);
+  }
 };
 
 export const FlightStructureSubscriptions = {
-  stationSetUpdate: (rootValue) => {
+  stationSetUpdate: rootValue => {
     return rootValue;
   },
-  missionsUpdate: (rootValue) => {
+  missionsUpdate: rootValue => {
     return rootValue;
   },
   simulatorsUpdate: (rootValue, { simulatorId, template }) => {
     let returnVal = rootValue;
     if (template) returnVal = returnVal.filter(s => s.template);
     if (simulatorId) returnVal = returnVal.filter(s => s.id === simulatorId);
-    return returnVal;
+    return returnVal.length > 0 ? returnVal : null;
   },
-  flightsUpdate: (rootValue, {id}) => {
+  flightsUpdate: (rootValue, { id }) => {
     if (id) return rootValue.filter(s => s.id === id);
     return rootValue;
-  },
+  }
 };
 
 export const FlightStructureTypes = {
@@ -178,19 +188,18 @@ export const FlightStructureTypes = {
       return date.toISOString();
     },
     simulators(rootValue) {
-      return rootValue.simulators.map(s => App.simulators.find(sim => sim.id === s));
-    },
+      return rootValue.simulators.map(s =>
+        App.simulators.find(sim => sim.id === s)
+      );
+    }
   },
   Mission: {
-    simulators(rootValue) {
-      return rootValue.simulators.map(sId => App.simulators.find(s => s.id === sId));
-    },
     timeline(rootValue) {
-      return Object.keys(rootValue.timeline).sort().map((k) => {
+      return Object.keys(rootValue.timeline).sort().map(k => {
         const value = rootValue.timeline[k];
         value.order = k;
         return value;
       });
-    },
-  },
+    }
+  }
 };

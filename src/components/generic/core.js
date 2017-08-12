@@ -13,10 +13,10 @@ export const InputField = (props) => {
     style.borderColor = '#a00';
   }
   const onClick = () => {
-    const value = prompt(props.prompt, props.children);
+    const value = prompt(props.prompt, props.children || '');
     props.onClick(value);
   }
-  return <div onClick={onClick} style={style}>{props.children}</div>
+  return <div className="input-field" onClick={onClick} style={style}>{props.children}</div>
 }
 
 export const OutputField = ({style = {}, children, alert, onClick, title, id}) => {
@@ -31,10 +31,10 @@ export const OutputField = ({style = {}, children, alert, onClick, title, id}) =
     compStyle.backgroundColor = '#f00';
     compStyle.borderColor = '#a00';
   }
-  return <div id={id} title={title} onClick={onClick} style={compStyle}>{children}</div>
+  return <div id={id} className="output-field" title={title} onClick={onClick} style={compStyle}>{children}</div>
 }
 
-export const TypingField = ({style = {}, onChange, onBlur, value, rows, input, controlled}) => {
+export const TypingField = ({style = {}, onChange, className, onBlur, value, rows, input, controlled}) => {
   const compStyle = Object.assign({
     backgroundColor: '#B4B4B4',
     border: 'solid 1px #434343',
@@ -44,10 +44,10 @@ export const TypingField = ({style = {}, onChange, onBlur, value, rows, input, c
     width: '100%'
   }, style)
   if (input) {
-    return <input type="text" onChange={onChange} onBlur={onBlur} style={compStyle} defaultValue={value}/>
+    return <input type="text" className={`typing-field ${className}`} onChange={onChange} onBlur={onBlur} style={compStyle} defaultValue={value}/>
   }
   if (controlled) {
-    return <textarea type="text" rows={rows} onChange={onChange} onBlur={onBlur} style={compStyle} value={value} />
+    return <textarea type="text" className={`typing-field ${className}`} rows={rows} onChange={onChange} onBlur={onBlur} style={compStyle} value={value} />
   }
-  return <textarea type="text" rows={rows} onChange={onChange} onBlur={onBlur} style={compStyle} defaultValue={value} />
+  return <textarea type="text" className={`typing-field ${className}`} rows={rows} onChange={onChange} onBlur={onBlur} style={compStyle} defaultValue={value} />
 }

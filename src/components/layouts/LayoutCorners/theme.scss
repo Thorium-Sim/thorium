@@ -1,31 +1,51 @@
-$alert5: #233F7A;
-$alert3: #7A7A23;
-$alert2: #804D19;
+$alert5: #233f7a;
+$alert3: #7a7a23;
+$alert2: #804d19;
 $alert1: #801919;
-$alertp: #4D1980;
+$alertp: #4d1980;
 $color: $alert5;
 .modal {
     z-index: 5000;
 }
 
 @mixin button-variant($background) {
-    background: linear-gradient(to bottom, saturate(darken($background, 4%), 5%) 0%, saturate(darken($background, 1%), 5%) 50%, saturate(darken($background, 4%), 5%) 100%);
+    background: linear-gradient(
+        to bottom,
+        saturate(darken($background, 4%), 5%) 0%,
+        saturate(darken($background, 1%), 5%) 50%,
+        saturate(darken($background, 4%), 5%) 100%
+    );
     border-color: darken($background, 3%);
     &:focus,
     &.focus {
-        background: linear-gradient(to bottom, saturate(darken($background, 10%), 5%) 0%, saturate(darken($background, 5%), 5%) 50%, saturate(darken($background, 10%), 5%) 100%);
+        background: linear-gradient(
+            to bottom,
+            saturate(darken($background, 10%), 5%) 0%,
+            saturate(darken($background, 5%), 5%) 50%,
+            saturate(darken($background, 10%), 5%) 100%
+        );
         border: solid 1px #949495;
         background-color: darken($background, 10%);
         border-color: darken($background, 25%);
     }
     &:hover {
-        background: linear-gradient(to bottom, saturate(darken($background, 10%), 5%) 0%, saturate(darken($background, 5%), 5%) 50%, saturate(darken($background, 10%), 5%) 100%);
+        background: linear-gradient(
+            to bottom,
+            saturate(darken($background, 10%), 5%) 0%,
+            saturate(darken($background, 5%), 5%) 50%,
+            saturate(darken($background, 10%), 5%) 100%
+        );
         border-color: darken($background, 12%);
     }
     &:active,
     &.active,
-    .open>.dropdown-toggle {
-        background: linear-gradient(to bottom, saturate(lighten($background, 10%), 5%) 0%, saturate(lighten($background, 5%), 5%) 50%, saturate(lighten($background, 10%), 5%) 100%);
+    .open > .dropdown-toggle {
+        background: linear-gradient(
+            to bottom,
+            saturate(lighten($background, 10%), 5%) 0%,
+            saturate(lighten($background, 5%), 5%) 50%,
+            saturate(lighten($background, 10%), 5%) 100%
+        );
         border-color: lighten($background, 12%);
         &:hover,
         &:focus,
@@ -36,7 +56,7 @@ $color: $alert5;
     }
     &:active,
     &.active,
-    .open>.dropdown-toggle {
+    .open > .dropdown-toggle {
         //background-image: none;
     }
     &.disabled,
@@ -48,24 +68,30 @@ $color: $alert5;
         &.focus,
         &:active,
         &.active {
-            background: linear-gradient(to bottom, saturate(darken($background, 4%), 5%) 0%, saturate(darken($background, 1%), 5%) 50%, saturate(darken($background, 4%), 5%) 100%);
+            background: linear-gradient(
+                to bottom,
+                saturate(darken($background, 4%), 5%) 0%,
+                saturate(darken($background, 1%), 5%) 50%,
+                saturate(darken($background, 4%), 5%) 100%
+            );
             border-color: $background;
         }
     }
 }
 
-.card-container, .modal-themed {
+.card-container,
+.modal-themed {
     color: white;
     .modal-content {
-        background-color: rgba(0,0,0,0.5);
-        border: solid 1px rgba(255,255,255,0.5);
+        background-color: rgba(0, 0, 0, 0.5);
+        border: solid 1px rgba(255, 255, 255, 0.5);
         color: white;
         .close {
             color: white;
         }
     }
     .card {
-        border: 1px solid #9C9DA0;
+        border: 1px solid #9c9da0;
         background-color: rgba(0, 0, 0, 0.2);
         -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
@@ -85,7 +111,7 @@ $color: $alert5;
         }
     }
     .well {
-        border: 1px solid #9C9DA0;
+        border: 1px solid #9c9da0;
         background-color: rgba(0, 0, 0, 0.2);
         color: #999;
         -webkit-backdrop-filter: blur(10px);
@@ -96,10 +122,10 @@ $color: $alert5;
         border: solid 1px #888;
         border-radius: 15px;
         color: #fff;
-        &.table-striped>tbody>tr:nth-child(odd) {
+        &.table-striped > tbody > tr:nth-child(odd) {
             background-color: rgba(255, 255, 255, 0.1);
         }
-        &.table-hover>tbody>tr:hover {
+        &.table-hover > tbody > tr:hover {
             background-color: rgba(255, 255, 255, 0.2);
         }
     }
@@ -111,7 +137,12 @@ $color: $alert5;
         overflow: none;
         color: #111;
         margin-top: 5px;
-        background: linear-gradient(to bottom, saturate(darken($color, 4%), 5%) 0%, saturate(darken($color, 1%), 5%) 50%, saturate(darken($color, 4%), 5%) 100%);
+        background: linear-gradient(
+            to bottom,
+            saturate(darken($color, 4%), 5%) 0%,
+            saturate(darken($color, 1%), 5%) 50%,
+            saturate(darken($color, 4%), 5%) 100%
+        );
         border: solid 1px #949495;
         border-radius: 15px;
         box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
@@ -129,7 +160,12 @@ $color: $alert5;
             height: 80%;
             z-index: -20;
             border: solid 1px #777;
-            background: radial-gradient(ellipse at center, #888888 0%, #aaaaaa 50%, #bbbbbb 100%);
+            background: radial-gradient(
+                ellipse at center,
+                #888888 0%,
+                #aaaaaa 50%,
+                #bbbbbb 100%
+            );
             border-radius: 15px;
         }
         &.btn-default {
@@ -147,12 +183,15 @@ $color: $alert5;
         &.btn-warning {
             @include button-variant($alert2);
         }
+        &.btn-cloak {
+            @include button-variant($alertp);
+        }
         &.btn-danger {
             @include button-variant($alert1);
         }
     }
     .input-group-btn {
-        .btn{
+        .btn {
             margin-top: -10px;
             top: 0px;
             flex: none;
@@ -176,7 +215,8 @@ $color: $alert5;
         border-radius: 2px;
         background: rgba(255, 255, 255, .10);
         -webkit-backdrop-filter: blur(10px);
-        box-shadow: 0px 0px 5px rgba(255, 255, 255, .75), 5px 5px 10px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 0px 5px rgba(255, 255, 255, .75),
+            5px 5px 10px rgba(0, 0, 0, 0.3);
         margin: 0 0 10px 0;
         transition: all 0.5s ease;
     }
@@ -202,8 +242,10 @@ $color: $alert5;
         outline: none;
     }
     .textbox {
-        box-shadow: rgba(255, 255, 255, 0.74902) 0px 0px 5px 0px, 5px 5px 10px rgba(0, 0, 0, 0.3);
-        -webkit-box-shadow: rgba(255, 255, 255, 0.74902) 0px 0px 5px 0px, 5px 5px 10px rgba(0, 0, 0, 0.3);
+        box-shadow: rgba(255, 255, 255, 0.74902) 0px 0px 5px 0px,
+            5px 5px 10px rgba(0, 0, 0, 0.3);
+        -webkit-box-shadow: rgba(255, 255, 255, 0.74902) 0px 0px 5px 0px,
+            5px 5px 10px rgba(0, 0, 0, 0.3);
         background-attachment: scroll;
         -webkit-backdrop-filter: blur(10px);
         background-color: rgba(255, 255, 255, 0.0980392);
@@ -233,7 +275,8 @@ $color: $alert5;
         border-radius: 2px;
         background: rgba(255, 255, 255, 0.1);
         -webkit-backdrop-filter: blur(10px);
-        box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.75), 5px 5px 10px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.75),
+            5px 5px 10px rgba(0, 0, 0, 0.3);
         margin: 0 0 10px 0;
     }
     .border-left {
@@ -249,7 +292,7 @@ $color: $alert5;
         border-bottom: solid 1px rgba(255, 255, 255, 0.1);
     }
     .c-select {
-        border: 1px solid #9C9DA0;
+        border: 1px solid #9c9da0;
         background-color: rgba(0, 0, 0, 0.2);
         -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
@@ -258,12 +301,26 @@ $color: $alert5;
         border-radius: 4px;
     }
     .dropdown-menu {
-        background-color: rgba(0,0,0,0.5);
-        border: solid 1px rgba(255,255,255,0.5);
+        background-color: rgba(0, 0, 0, 0.5);
+        border: solid 1px rgba(255, 255, 255, 0.5);
         .dropdown-item {
             color: white;
-            &:hover, &:focus {
-                background-color: rgba(255,255,255,0.2);
+            &:hover,
+            &:focus {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+        }
+    }
+    .list-group-item {
+        background-color: transparent;
+        border-color: rgba(255, 255, 255, 0.125);
+    }
+    .nav-tabs {
+        .nav-link {
+            &.active {
+                color: white;
+                background-color: rgba(0, 0, 0, 0.5);
+                border-color: rgba(255, 255, 255, 0.5);
             }
         }
     }

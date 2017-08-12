@@ -32,6 +32,13 @@ export default class CardFrame extends Component {
       };
     }
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.station.name !== this.props.station.name) {
+      this.setState({
+        card: nextProps.station.cards[0].name
+      })
+    }
+  }
   _changeCard(name) {
     this.setState({
       card: name
@@ -61,7 +68,11 @@ export default class CardFrame extends Component {
         }
       : this.props;
     const layoutName = station.layout || simulator.layout || 'LayoutCorners';
+
     let LayoutComponent = Layouts[layoutName] || Layouts.LayoutDefault;
+    if (station.name === 'Viewscreen') {
+      LayoutComponent = Layouts[layoutName + 'Viewscreen'] || LayoutComponent;
+    }
     if (client.offlineState === 'blackout') {
       return <Blackout />;
     }

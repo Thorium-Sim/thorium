@@ -1,0 +1,3 @@
+
+  torpedos(simulatorId: ID): [Torpedo]
+

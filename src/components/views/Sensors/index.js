@@ -7,6 +7,7 @@ import './style.scss';
 import Grid from './GridDom';
 import Measure from 'react-measure';
 import DamageOverlay from '../helpers/DamageOverlay';
+import SensorScans from './SensorScans';
 
 const SENSOR_SUB = gql`
 	subscription SensorsChanged($simulatorId: ID) {
@@ -17,6 +18,9 @@ const SENSOR_SUB = gql`
 			scanRequest
 			processedData
 			scanning
+			pings
+			pingMode
+			timeSincePing
 			damage {
 				damaged
 				report
@@ -29,14 +33,19 @@ const SENSOR_SUB = gql`
 	}
 `;
 
+const PING_SUB = gql`
+	subscription SensorPing($id: ID) {
+		sensorsPing(sensorId: $id)
+	}
+`;
+
 class Sensors extends Component {
 	constructor(props) {
 		super(props);
 		this.sensorsSubscription = null;
+		this.pingSub = null;
 		this.state = {
-			scanResults: '',
 			processedData: '',
-			scanRequest: '',
 			weaponsRangePulse: 0,
 			hoverContact: { name: '', pictureUrl: '' }
 		};
@@ -45,7 +54,7 @@ class Sensors extends Component {
 		if (!this.sensorsSubscription && !nextProps.data.loading) {
 			this.sensorsSubscription = nextProps.data.subscribeToMore({
 				document: SENSOR_SUB,
-				variables: { simulatorId: this.props.simulator.id },
+				variables: { simulatorId: nextProps.simulator.id },
 				updateQuery: (previousResult, { subscriptionData }) => {
 					const returnResult = Immutable.Map(previousResult);
 					return returnResult
@@ -54,26 +63,26 @@ class Sensors extends Component {
 				}
 			});
 		}
+		if (!this.pingSub && !nextProps.data.loading) {
+			this.pingSub = nextProps.data.subscribeToMore({
+				document: PING_SUB,
+				variables: { id: nextProps.data.sensors[0] },
+				updateQuery: () => {
+					this.ping();
+				}
+			});
+		}
 		const nextSensors = nextProps.data.sensors[0];
 		if (!nextProps.data.loading) {
 			if (this.props.data.loading) {
 				//First time load
 				this.setState({
-					scanResults: nextSensors.scanResults,
 					processedData: nextSensors.processedData,
-					scanRequest: nextSensors.scanRequest
+					pingTime: Date.now() - nextSensors.timeSincePing,
+					ping: false
 				});
 			} else {
 				//Every other load
-				if (nextSensors.scanResults !== this.state.scanResults) {
-					if (this.state.scanResults === undefined) {
-						this.setState({
-							scanResults: nextSensors.scanResults
-						});
-					} else {
-						this.typeIn(nextSensors.scanResults, 0, 'scanResults');
-					}
-				}
 				if (nextSensors.processedData !== this.state.processedData) {
 					if (this.state.scanResults === undefined) {
 						this.setState({
@@ -96,33 +105,7 @@ class Sensors extends Component {
 			});
 		}, 1000);
 	}
-	_startScan() {
-		let obj = {
-			id: this.props.data.sensors[0].id,
-			request: this.refs.scanRequest.value
-		};
-		this.props.client.mutate({
-			mutation: gql`
-				mutation SensorScanRequest($id: ID!, $request: String!) {
-					sensorScanRequest(id: $id, request: $request)
-				}
-			`,
-			variables: obj
-		});
-	}
-	_stopScan() {
-		let obj = {
-			id: this.props.data.sensors[0].id
-		};
-		this.props.client.mutate({
-			mutation: gql`
-				mutation CancelScan($id: ID!) {
-					sensorScanCancel(id: $id)
-				}
-			`,
-			variables: obj
-		});
-	}
+
 	typeIn(text, chars, stateProp) {
 		let currentState = this.state;
 		if (text) {
@@ -138,78 +121,110 @@ class Sensors extends Component {
 			hoverContact: contact
 		});
 	}
+	ping = () => {
+		// Reset the state
+		this.setState(
+			{
+				ping: false
+			},
+			() => {
+				this.setState({
+					ping: true,
+					pingTime: Date.now()
+				});
+				setTimeout(() => {
+					this.setState({ ping: false });
+				}, 1000 * 5);
+			}
+		);
+	};
+	triggerPing = () => {
+		const mutation = gql`
+			mutation SendPing($id: ID!) {
+				pingSensors(id: $id)
+			}
+		`;
+		const variables = {
+			id: this.props.data.sensors[0].id
+		};
+		this.props.client.mutate({
+			mutation,
+			variables
+		});
+	};
+	selectPing(which) {
+		const mutation = gql`
+			mutation SetPingMode($id: ID!, $mode: PING_MODES) {
+				setSensorPingMode(id: $id, mode: $mode)
+			}
+		`;
+		const variables = {
+			id: this.props.data.sensors[0].id,
+			mode: which
+		};
+		this.props.client.mutate({
+			mutation,
+			variables
+		});
+	}
 	render() {
 		//if (this.props.data.error) console.error(this.props.data.error);
 		if (this.props.data.loading) return null;
 		const sensors = this.props.data.sensors[0];
-		const { hoverContact } = this.state;
+		const { pingMode, pings } = sensors;
+		const { hoverContact, ping, pingTime } = this.state;
 		return (
 			<div className="cardSensors">
 				<div>
 					<Row>
-						<Col sm={3} className="csol-sm-3 scans">
+						<Col sm={3}>
 							<DamageOverlay
 								message="External Sensors Offline"
 								system={sensors}
 							/>
-							<Row>
-								<Col className="col-sm-6">
-									<label>Scan for:</label>
-								</Col>
-								<Col className="col-sm-6 padding">
-									<select className="btn-block c-select">
-										<option>Internal</option>
-										<option>External</option>
-									</select>
-								</Col>
-							</Row>
-							<Row>
-								<Col className="col-sm-12">
-									<div className="scanEntry">
-										{this.props.data.sensors[0].scanning
-											? <div>
-													<video ref={'ReactVideo'} autoPlay loop>
-														<source
-															src={'/js/images/scansvid.mov'}
-															type="video/mp4"
-														/>
-													</video>
-													<Button
-														color="danger"
-														block
-														onClick={this._stopScan.bind(this)}>
-														Cancel Scan
-													</Button>
-												</div>
-											: <div>
-													<textarea
-														ref="scanRequest"
-														className="form-control btn-block"
-														rows="6"
-														defaultValue={this.state.scanRequest}
-													/>
-													<Button
-														color="primary"
-														block
-														onClick={this._startScan.bind(this)}>
-														Begin Scan
-													</Button>
-												</div>}
-									</div>
-								</Col>
-							</Row>
-							<Row>
-								<Col className="col-sm-12">
-									<label>Scan Results:</label>
-								</Col>
-								<Col className="col-sm-12">
-									<Card style={{ height: '200px' }}>
-										<CardBlock>
-											{this.state.scanResults}
-										</CardBlock>
-									</Card>
-								</Col>
-							</Row>
+							<SensorScans sensors={sensors} client={this.props.client} />
+							{pings &&
+								<Row>
+									<Col sm="12">
+										<label>Sensor Options:</label>
+									</Col>
+									<Col sm={12}>
+										<Card>
+											<li
+												onClick={() => this.selectPing('active')}
+												className={`list-group-item ${pingMode === 'active'
+													? 'selected'
+													: ''}`}>
+												Active Scan
+											</li>
+											<li
+												onClick={() => this.selectPing('passive')}
+												className={`list-group-item ${pingMode === 'passive'
+													? 'selected'
+													: ''}`}>
+												Passive Scan
+											</li>
+											<li
+												onClick={() => this.selectPing('manual')}
+												className={`list-group-item ${pingMode === 'manual'
+													? 'selected'
+													: ''}`}>
+												Manual Scan
+											</li>
+										</Card>
+										<Button
+											block
+											disabled={ping}
+											className="pingButton"
+											style={{
+												opacity: pingMode === 'manual' ? 1 : 0,
+												pointerEvents: pingMode === 'manual' ? 'auto' : 'none'
+											}}
+											onClick={this.triggerPing}>
+											Ping
+										</Button>
+									</Col>
+								</Row>}
 							{/*<Row>
 			<Col className="col-sm-12">
 			<h4>Contact Coordinates</h4>
@@ -245,6 +260,9 @@ class Sensors extends Component {
 												dimensions={dimensions}
 												sensor={sensors.id}
 												hoverContact={this._hoverContact.bind(this)}
+												ping={ping}
+												pings={sensors.pings}
+												pingTime={pingTime}
 											/>}
 									</div>}
 							</Measure>
@@ -280,7 +298,9 @@ class Sensors extends Component {
 								<Col className="col-sm-12">
 									<Card className="processedData">
 										<CardBlock>
-											{this.state.processedData}
+											<pre>
+												{this.state.processedData}
+											</pre>
 										</CardBlock>
 									</Card>
 								</Col>
@@ -302,6 +322,9 @@ const SENSOR_QUERY = gql`
 			scanRequest
 			scanning
 			processedData
+			pings
+			pingMode
+			timeSincePing
 			damage {
 				damaged
 				report

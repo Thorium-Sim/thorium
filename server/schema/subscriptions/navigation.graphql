@@ -1,0 +1,2 @@
+
+navigationUpdate(simulatorId: ID): [Navigation]

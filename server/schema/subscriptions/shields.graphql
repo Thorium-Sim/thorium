@@ -1,0 +1,3 @@
+
+  shieldsUpdate(simulatorId: ID): [Shield]
+

@@ -9,6 +9,18 @@ function distance3d(coord2, coord1) {
   return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
 }
 
+function calculateRotatedPoint({ x, y }, angle) {
+  const rad = degreeToRadian(angle);
+  return {
+    x: x * Math.cos(rad) - y * Math.sin(rad),
+    y: x * Math.sin(rad) + y * Math.cos(rad)
+  };
+}
+
+function degreeToRadian(deg) {
+  return deg * Math.PI / 180;
+}
+
 export default class SensorContact {
   constructor(params) {
     this.id = params.id || uuid.v4();
@@ -24,12 +36,12 @@ export default class SensorContact {
     this.location = params.location || {
       x: 0,
       y: 0,
-      z: 0,
+      z: 0
     };
     this.destination = params.destination || {
       x: 0,
       y: 0,
-      z: 0,
+      z: 0
     };
     this.infrared = params.infrared || false;
     this.cloaked = params.cloaked || false;
@@ -38,20 +50,74 @@ export default class SensorContact {
   move(coordinates, speed, stop) {
     this.speed = stop ? 0 : speed;
     this.destination = coordinates;
-    const locationVector = new THREE.Vector3(this.location.x, this.location.y, this.location.z);
-    const destinationVector = new THREE.Vector3(coordinates.x, coordinates.y, coordinates.z);
-    this.velocity = destinationVector.sub(locationVector).normalize().multiplyScalar(speed);
-    if (stop) { this.destination = this.location; }
+    const locationVector = new THREE.Vector3(
+      this.location.x,
+      this.location.y,
+      this.location.z
+    );
+    const destinationVector = new THREE.Vector3(
+      coordinates.x,
+      coordinates.y,
+      coordinates.z
+    );
+    this.velocity = destinationVector
+      .sub(locationVector)
+      .normalize()
+      .multiplyScalar(speed);
+    if (stop) {
+      this.destination = this.location;
+    }
+  }
+  nudge(coordinates, speed, yaw) {
+    this.speed = speed;
+    if (yaw) {
+      // Rotate the contact about the center
+      const destinationPoints = calculateRotatedPoint(this.destination, yaw);
+      const locationPoints = calculateRotatedPoint(this.location, yaw);
+      this.destination.x = destinationPoints.x;
+      this.destination.y = destinationPoints.y;
+      this.location.x = locationPoints.x;
+      this.location.y = locationPoints.y;
+    } else {
+      this.destination.x = Math.max(
+        -1.08,
+        Math.min(1.08, this.destination.x + coordinates.x)
+      );
+      this.destination.y = Math.max(
+        -1.08,
+        Math.min(1.08, this.destination.y + coordinates.y)
+      );
+      this.destination.z = Math.max(
+        -1.08,
+        Math.min(1.08, this.destination.z + coordinates.z)
+      );
+    }
+    // Recalculate the velocity
+    const locationVector = new THREE.Vector3(
+      this.location.x,
+      this.location.y,
+      this.location.z
+    );
+    const destinationVector = new THREE.Vector3(
+      this.destination.x,
+      this.destination.y,
+      this.destination.z
+    );
+    this.velocity = destinationVector
+      .sub(locationVector)
+      .normalize()
+      .multiplyScalar(speed);
   }
   stop() {
     this.destination = this.location;
     this.speed = 0;
-    this.velocity = {x: 0, y: 0, z: 0};
+    this.velocity = { x: 0, y: 0, z: 0 };
   }
   updateLocation(coordinates) {
     this.location = coordinates;
     // Reset the velocity and speed if it is at it's destination
-    if (distance3d(this.destination, this.location) < 0.005) { // A magic number
+    if (distance3d(this.destination, this.location) < 0.005) {
+      // A magic number
       this.velocity = { x: 0, y: 0, z: 0 };
       this.speed = 0;
     }

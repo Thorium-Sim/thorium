@@ -15,6 +15,9 @@ export default class Sensors extends System {
     if (params.name) {
       this.name = params.name;
     }
+    this.pings = params.pings || true;
+    this.pingMode = params.pingMode || 'manual';
+    this.timeSincePing = params.timeSincePing || 0;
     this.scanResults = params.scanResults || '';
     this.scanRequest = params.scanRequest || '';
     this.processedData = params.processedData || '';
@@ -23,12 +26,12 @@ export default class Sensors extends System {
     this.contacts = [];
     this.armyContacts = [];
     if (params.contacts) {
-      params.contacts.forEach((contact) => {
+      params.contacts.forEach(contact => {
         this.contacts.push(new SensorContact(contact));
       });
     }
     if (params.armyContacts) {
-      params.armyContacts.forEach((contact) => {
+      params.armyContacts.forEach(contact => {
         this.armyContacts.push(new SensorContact(contact));
       });
     }
@@ -63,7 +66,7 @@ export default class Sensors extends System {
     this.armyContacts.push(new SensorContact(newContact));
   }
   updateContact({ id, icon, picture, size, name, infrared, color }) {
-    const myContact = this.contacts.find((contact) => contact.id === id);
+    const myContact = this.contacts.find(contact => contact.id === id);
     if (icon) myContact.updateIcon(icon);
     if (picture) myContact.updatePicture(picture);
     if (size) myContact.updateSize(size);
@@ -72,7 +75,7 @@ export default class Sensors extends System {
     if (color) myContact.updateColor(color);
   }
   updateArmyContact({ id, icon, picture, size, name, infrared, color }) {
-    const myContact = this.armyContacts.find((contact) => contact.id === id);
+    const myContact = this.armyContacts.find(contact => contact.id === id);
     if (icon) myContact.updateIcon(icon);
     if (picture) myContact.updatePicture(picture);
     if (size) myContact.updateSize(size);
@@ -81,24 +84,32 @@ export default class Sensors extends System {
     if (color) myContact.updateColor(color);
   }
   removeArmyContact(id) {
-    const contactIndex = this.armyContacts.findIndex((contact) => contact.id === id);
+    const contactIndex = this.armyContacts.findIndex(
+      contact => contact.id === id
+    );
     this.armyContacts.splice(contactIndex, 1);
   }
   moveContact({ id, destination, speed, stop }) {
-    const myContact = this.contacts.find((contact) => contact.id === id);
+    const myContact = this.contacts.find(contact => contact.id === id);
     myContact.move(destination, speed, stop);
   }
   removeContact({ id }) {
-    const contactIndex = this.contacts.findIndex((contact) => contact.id === id);
+    const contactIndex = this.contacts.findIndex(contact => contact.id === id);
     this.contacts.splice(contactIndex, 1);
   }
   stopContact({ id }) {
-    const myContact = this.contacts.find((contact) => contact.id === id);
+    const myContact = this.contacts.find(contact => contact.id === id);
     myContact.stop();
   }
   destroyContact({ id }) {
-    const myContact = this.contacts.find((contact) => contact.id === id);
+    const myContact = this.contacts.find(contact => contact.id === id);
     myContact.destroyed = true;
     setTimeout(this.removeContact.bind(this, { id }), 1000);
+  }
+  nudgeContacts(amount, speed, yaw) {
+    this.contacts.forEach(c => c.nudge(amount, speed, yaw));
+  }
+  setPingMode(mode) {
+    this.pingMode = mode;
   }
 }

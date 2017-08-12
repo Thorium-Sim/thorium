@@ -69,7 +69,10 @@ class Welcome extends Component {
         <Col sm={{size: 4}}>
         <Button tag={Link} to="/setConfig" color="warning" block>Configure Sets</Button>
         </Col>
-        <Col sm={{size: 4, offset: 4}}>
+        <Col sm={{size:4}}>
+<Button tag={Link} to="/flight/c/core" color="secondary" block>Debug Core</Button>
+        </Col>
+        <Col sm={{size: 4}}>
         <Button tag={Link} to="/debug" color="primary" block>Debug</Button>
         </Col>
       </Row>

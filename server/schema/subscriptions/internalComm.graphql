@@ -1,0 +1,2 @@
+
+  internalCommUpdate(simulatorId: ID): [InternalComm]

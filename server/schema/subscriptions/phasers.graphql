@@ -1,0 +1,3 @@
+
+  phasersUpdate(simulatorId: ID): [Phaser]
+

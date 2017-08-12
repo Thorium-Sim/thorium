@@ -1,5 +1,5 @@
 .sensorGridCore {
-  .sensorGridHolder{
+  .sensorGridHolder {
     background-color: #ccc;
     border-radius: 50%;
     position: absolute;
@@ -11,18 +11,19 @@
   .heightPlaceholder {
     margin-top: 100%;
   }
-  .core .react-grid-item .sensorGridCore div{
+  .core .react-grid-item .sensorGridCore div {
     height: initial;
   }
 
-  img.armyContact{
+  img.armyContact {
     height: 16px;
     width: 16px;
   }
   .flex-container {
     display: flex;
   }
-  select.form-control:not([size]):not([multiple]), input[type="text"] {
+  select.form-control:not([size]):not([multiple]),
+  input[type="text"] {
     height: calc(1.25rem - 2px);
   }
   .contacts-container {
@@ -48,7 +49,7 @@
     label {
       padding: 0;
     }
-    .row{
+    .row {
       margin-bottom: 2px;
     }
     select.form-control:not([size]):not([multiple]) {
@@ -57,10 +58,32 @@
     .form-check {
       padding-left: 20px;
     }
-    .card-block{
+    .card-block {
       padding: 4px;
       padding-top: 0;
       padding-bottom: 0;
+    }
+  }
+  .nudge {
+    width: 100%;
+    select {
+      width: 60%;
+      float: left;
+    }
+    .buttons {
+      width: 40%;
+      float: left;
+      span {
+        text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        width: 33%;
+        &.up {
+          width: 100%;
+        }
+        &:active {
+          color: white;
+        }
+      }
     }
   }
 }

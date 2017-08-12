@@ -1,0 +1,6 @@
+# Actions are things which can be sent to a specific station or to all stations
+
+type Action {
+  action: String,
+  duration: Float
+}

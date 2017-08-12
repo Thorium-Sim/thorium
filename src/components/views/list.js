@@ -24,7 +24,11 @@ const viewList = [
   'CoolantControl',
   'TractorBeam',
   'DamageTeams',
-  'AlertCondition'
+  'AlertCondition',
+  'ProbeNetwork',
+  'SelfDestruct',
+  'ProbeControl',
+  'ReactorControl'
 ];
 
 export default viewList;

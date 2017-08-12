@@ -27,7 +27,7 @@ const Credits = props => {
 					{client.id}
 				</h4>
 				<h5>
-					{flight.id}
+					{flight.name}
 				</h5>
 				<h5>
 					{simulator.name}

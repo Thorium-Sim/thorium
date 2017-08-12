@@ -1,55 +1,54 @@
-import App from '../../app.js';
+import App from "../../app.js";
 
 export const TransporterQueries = {
   transporters(_, { simulatorId }) {
-    return App.systems.filter((sys) => {
-      return (sys.type === 'Transporters' && sys.simulatorId === simulatorId);
+    return App.systems.filter(sys => {
+      return sys.type === "Transporters" && sys.simulatorId === simulatorId;
     });
-  },
+  }
 };
 
 export const TransporterMutations = {
-  createTransporter(_, { transporter }, context) {
-    App.handleEvent({ transporter }, 'createTransporter', context);
-    return '';
-  },
   setTransportDestination(_, { transporter, destination }, context) {
-    App.handleEvent({ transporter, destination },
-      'setTransportDestination', context);
-    return '';
+    App.handleEvent(
+      { transporter, destination },
+      "setTransportDestination",
+      context
+    );
+    return "";
   },
   setTransportTarget(_, { transporter, target }, context) {
-    App.handleEvent({ transporter, target }, 'setTransportTarget', context);
-    return '';
+    App.handleEvent({ transporter, target }, "setTransportTarget", context);
+    return "";
   },
   beginTransportScan(_, { transporter }, context) {
-    App.handleEvent({ transporter }, 'beginTransportScan', context);
-    return '';
+    App.handleEvent({ transporter }, "beginTransportScan", context);
+    return "";
   },
   cancelTransportScan(_, { transporter }, context) {
-    App.handleEvent({ transporter }, 'cancelTransportScan', context);
-    return '';
+    App.handleEvent({ transporter }, "cancelTransportScan", context);
+    return "";
   },
   clearTransportTargets(_, { transporter }, context) {
-    App.handleEvent({ transporter }, 'clearTransportTargets', context);
-    return '';
+    App.handleEvent({ transporter }, "clearTransportTargets", context);
+    return "";
   },
   setTransportCharge(_, { transporter, charge }, context) {
-    App.handleEvent({ transporter, charge }, 'setTransportCharge', context);
-    return '';
+    App.handleEvent({ transporter, charge }, "setTransportCharge", context);
+    return "";
   },
   completeTransport(_, { transporter, target }, context) {
-    App.handleEvent({ transporter, target }, 'completeTransport', context);
-    return '';
+    App.handleEvent({ transporter, target }, "completeTransport", context);
+    return "";
   },
   setTransporterTargets(_, { transporter, targets }, context) {
-    App.handleEvent({ transporter, targets }, 'setTransporterTargets', context);
-    return '';
-  },
+    App.handleEvent({ transporter, targets }, "setTransporterTargets", context);
+    return "";
+  }
 };
 
 export const TransporterSubscriptions = {
   transporterUpdate(rootValue) {
     return rootValue;
-  },
+  }
 };

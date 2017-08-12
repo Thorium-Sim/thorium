@@ -23,5 +23,8 @@
   },
   "env": {
     "mocha": true
-  }
+  },
+  "ignore" : [
+    "*/test/*"
+  ]
 }

@@ -78,7 +78,7 @@ App.on('systemReactivationCodeResponse', ({systemId, response}) => {
     simulatorId: sys.simulatorId,
     station: sys.damage.reactivationRequester,
     title: 'Reactivation Code',
-    body: `Reactivation Code for ${sys.name} was ${response ? 'Accepted' : 'Denied'}`,
+    body: `Reactivation Code for ${sys.displayName || sys.name} was ${response ? 'Accepted' : 'Denied'}`,
     color: response ? 'success' : 'danger',
   });
   sys.reactivationCodeResponse(response);
