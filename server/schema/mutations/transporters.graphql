@@ -1,6 +1,4 @@
 
-#Macro: Add transporter system to simulator TODO: ADD ARGS
-createTransporter(transporter: TransporterInput): String
 setTransportDestination(transporter: ID!, destination: String!): String
 setTransportTarget(transporter: ID!, target: String!): String
 beginTransportScan(transporter: ID!): String

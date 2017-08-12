@@ -1,8 +1,4 @@
 
-# Macro: Add an internal communications system
-createInternalComm(simulatorId: ID!): String
-# Macro: Remove an internal communications system
-removeInternalComm(id: ID!): String
 internalCommConnectOutgoing(id: ID!):String
 internalCommConnectIncoming(id: ID!):String
 internalCommCancelIncoming(id: ID!):String

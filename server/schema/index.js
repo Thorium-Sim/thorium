@@ -30,20 +30,8 @@ type Query {
 
 #Mutations definition
 type Mutation {
-  #Macro: Add a system to a simulator
+  #Macro: Trigger a snapshot
   snapshot: String
-  #Macro: Add a system to a simulator
-  addSystem(
-  #{
-    #   "content":"Simulator",
-    #   "type":"select",
-    #   "query": "simulators(template: false){id, name}",
-    #   "queryName": "simulators",
-    #   "key":"id",
-    #   "value":"name"
-    #
-    #}
-  simulatorId: ID): String
   ${mutations}
 }
 

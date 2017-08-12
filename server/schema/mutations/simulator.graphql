@@ -31,16 +31,6 @@ simulatorId: ID!,
 # }
 alertLevel: String!): String
 
-#Macro: Change Simulator Crew Count
-changeSimulatorCrewCount(
-simulatorId: ID!, 
-
-# {
-#   "content":"Crew Count",
-#   "type":"text"
-# }
-crewCount: Int!): String
-
 shipDockingChange(simulatorId: ID!, which: String!, state: Boolean!): String
 
 remoteAccessSendCode(simulatorId: ID!, code: String!, station: String!): String

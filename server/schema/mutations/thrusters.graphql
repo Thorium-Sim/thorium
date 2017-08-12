@@ -1,6 +1,4 @@
 
-#Macro: Add thruster system to simulator TODO: ADD ARGS
-createThrusters(simulatorId: ID!):String
 rotationUpdate(id: ID!, rotation: RotationInput, on: Boolean): String
 rotationSet(id: ID!, rotation: RotationInput): String
 requiredRotationSet(id: ID!, rotation: RotationInput): String

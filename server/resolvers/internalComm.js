@@ -1,45 +1,38 @@
-import App from '../../app';
+import App from "../../app";
 
 export const InternalCommQueries = {
-  internalComm(root, {simulatorId}){
-    let comm = App.systems.filter(s => s.type === 'InternalComm');
+  internalComm(root, { simulatorId }) {
+    let comm = App.systems.filter(s => s.type === "InternalComm");
     if (simulatorId) comm = comm.filter(s => s.simulatorId === simulatorId);
     return comm;
   }
 };
 
 export const InternalCommMutations = {
-  createInternalComm(root, args, context){
-    App.handleEvent(args, 'createInternalComm', context);
+  internalCommConnectOutgoing(root, args, context) {
+    App.handleEvent(args, "internalCommConnectOutgoing", context);
   },
-  removeInternalComm(root, args, context){
-    App.handleEvent(args, 'removeInternalComm', context);
+  internalCommConnectIncoming(root, args, context) {
+    App.handleEvent(args, "internalCommConnectIncoming", context);
   },
-  internalCommConnectOutgoing(root, args, context){
-    App.handleEvent(args, 'internalCommConnectOutgoing', context)
+  internalCommCancelIncoming(root, args, context) {
+    App.handleEvent(args, "internalCommCancelIncoming", context);
   },
-  internalCommConnectIncoming(root, args, context){
-    App.handleEvent(args, 'internalCommConnectIncoming', context)
+  internalCommCancelOutgoing(root, args, context) {
+    App.handleEvent(args, "internalCommCancelOutgoing", context);
   },
-  internalCommCancelIncoming(root, args, context){
-    App.handleEvent(args, 'internalCommCancelIncoming', context)
+  internalCommCallIncoming(root, args, context) {
+    App.handleEvent(args, "internalCommCallIncoming", context);
   },
-  internalCommCancelOutgoing(root, args, context){
-    App.handleEvent(args, 'internalCommCancelOutgoing', context)
-  },
-  internalCommCallIncoming(root, args, context){
-    App.handleEvent(args, 'internalCommCallIncoming', context)
-  },
-  internalCommCallOutgoing(root, args, context){
-    App.handleEvent(args, 'internalCommCallOutgoing', context)
-  },
-};
-
-export const InternalCommSubscriptions = {
-  internalCommUpdate(rootValue, {simulatorId}){
-    if (simulatorId) rootValue = rootValue.filter(s => s.simulatorId === simulatorId);
-    return rootValue;
+  internalCommCallOutgoing(root, args, context) {
+    App.handleEvent(args, "internalCommCallOutgoing", context);
   }
 };
 
-
+export const InternalCommSubscriptions = {
+  internalCommUpdate(rootValue, { simulatorId }) {
+    if (simulatorId)
+      rootValue = rootValue.filter(s => s.simulatorId === simulatorId);
+    return rootValue;
+  }
+};
