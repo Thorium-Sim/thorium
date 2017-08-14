@@ -1,6 +1,7 @@
 import jsonfile from "jsonfile";
 import { EventEmitter } from "events";
 import { writeFile } from "./server/helpers/json-format";
+import "./server/helpers/copyAssets";
 import * as Classes from "./server/classes";
 import config from "./config";
 import util from "util";
