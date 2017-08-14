@@ -25,7 +25,8 @@ export default class Client {
     sentPing: ?boolean,
     ping: ?string,
     connected: ?boolean,
-    offlineState: ?string
+    offlineState: ?string,
+    training: boolean
   }) {
     params = params || {};
     this.id = params.id || uuid.v4();
@@ -38,6 +39,7 @@ export default class Client {
     this.ping = null;
     this.connected = params.connected || false;
     this.offlineState = params.offlineState || null;
+    this.training = params.training || false;
     this.class = "Client";
   }
   connect() {
@@ -65,6 +67,9 @@ export default class Client {
   logout() {
     this.loginName = null;
     this.loginState = "logout";
+  }
+  setTraining(training) {
+    this.training = training;
   }
   setOfflineState(state: string) {
     // Allow one of null, 'blackout', 'offline', 'power', 'lockdown', and 'maintenance'

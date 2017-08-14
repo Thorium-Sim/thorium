@@ -12,4 +12,5 @@ export default `
   clientLockScreen(client: ID!):String
   clientUnlockScreen(client: ID!):String
   clientOfflineState(client: ID!, state: String): String
+  clientSetTraining(client: ID!, training: Boolean!):String
 `;

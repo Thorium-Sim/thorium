@@ -73,6 +73,22 @@ const Settings = props => {
       variables: obj
     });
   };
+  const startTraining = () => {
+    const client = props.clientObj.id;
+    const variables = {
+      client,
+      training: true
+    };
+    const mutation = gql`
+      mutation ClientSetTraining($client: ID!, $training: Boolean!) {
+        clientSetTraining(client: $client, training: $training)
+      }
+    `;
+    props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   return (
     <div
       className={`settingsBall ${props.clientObj.loginState} ${props.clientObj
@@ -82,7 +98,7 @@ const Settings = props => {
     >
       <div className={`icon ${props.className}`} />
       <ul className="options">
-        <li>Help</li>
+        <li onClick={startTraining}>Help</li>
         <li>Lock Screen</li>
         <li>Reset Terminal</li>
         <li>Diagnostic</li>
@@ -93,6 +109,22 @@ const Settings = props => {
 };
 
 class LayoutCorners extends Component {
+  stopTraining = () => {
+    const client = this.props.clientObj.id;
+    const variables = {
+      client,
+      training: false
+    };
+    const mutation = gql`
+      mutation ClientSetTraining($client: ID!, $training: Boolean!) {
+        clientSetTraining(client: $client, training: $training)
+      }
+    `;
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     let { simulator, station, cardName, changeCard, clientObj } = this.props;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
@@ -120,6 +152,7 @@ class LayoutCorners extends Component {
                     <CardHolder
                       component={component}
                       {...this.props}
+                      stopTraining={this.stopTraining}
                       key={card.name}
                     />
                   );

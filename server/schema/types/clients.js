@@ -9,5 +9,6 @@ type Client {
   loginState: String
   ping: String
   offlineState: String
+  training: Boolean
 }
 `;

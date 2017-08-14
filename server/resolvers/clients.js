@@ -68,6 +68,9 @@ export const ClientMutations = {
   clientOfflineState: (root, args, context) => {
     App.handleEvent(args, "clientOfflineState", context);
     return "";
+  },
+  clientSetTraining: (root, args, context) => {
+    App.handleEvent(args, "clientSetTraining", context);
   }
 };
 

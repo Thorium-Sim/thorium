@@ -68,6 +68,7 @@ const CLIENT_SUB = gql`
 			loginName
 			loginState
 			offlineState
+			training
 		}
 	}
 `;
@@ -234,6 +235,7 @@ const ClientQuery = gql`
 			loginName
 			loginState
 			offlineState
+			training
 		}
 	}
 `;

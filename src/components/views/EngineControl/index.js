@@ -206,8 +206,8 @@ class EngineControl extends Component {
         </Row>
         <Tour
           steps={trainingSteps}
-          isOpen={true}
-          onRequestClose={this.closeTour}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
         />
       </Container>
     );

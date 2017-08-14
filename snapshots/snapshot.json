@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 224,
+	"_eventsCount": 225,
 	"simulators": [
 		{
 			"id": "test",
@@ -1127,7 +1127,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 7950800,
+			"timeSincePing": 9138600,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -1215,7 +1215,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 7950800,
+			"timeSincePing": 9138600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -1360,7 +1360,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.9695119999999695,
+			"batteryChargeLevel": 0.9599119999999599,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2131,7 +2131,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 7950800,
+			"timeSincePing": 9138600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2160,7 +2160,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 7950800,
+			"timeSincePing": 9138600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3321,7 +3321,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 7950800,
+			"timeSincePing": 9138600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3351,7 +3351,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 7950800,
+			"timeSincePing": 9138600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3839,7 +3839,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.26861999999986336,
+			"batteryChargeLevel": 0.16061999999986099,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -4415,7 +4415,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 3133800,
+			"timeSincePing": 4321600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4445,7 +4445,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 3133800,
+			"timeSincePing": 4321600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5554,7 +5554,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 1908700,
+			"timeSincePing": 3096500,
 			"scanResults": "",
 			"scanRequest": "Course!",
 			"processedData": "",
@@ -5702,7 +5702,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 3133800,
+			"timeSincePing": 4321600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6648,6 +6648,7 @@
 			"ping": null,
 			"connected": false,
 			"offlineState": null,
+			"training": false,
 			"class": "Client"
 		},
 		{
@@ -6661,19 +6662,21 @@
 			"ping": null,
 			"connected": true,
 			"offlineState": null,
+			"training": false,
 			"class": "Client"
 		},
 		{
 			"id": "local-client",
 			"flightId": "4197a7c9-1a46-45b3-8462-ee91ec8583d4",
 			"simulatorId": "171c1832-85c3-4053-bc2a-b326f2892805",
-			"station": "Engineer",
+			"station": "Flight",
 			"loginName": "Alex",
 			"loginState": "login",
 			"sentPing": null,
 			"ping": null,
 			"connected": true,
 			"offlineState": null,
+			"training": false,
 			"class": "Client"
 		}
 	],
@@ -11883,7 +11886,7 @@
 		}
 	],
 	"viewscreens": [],
-	"snapshotVersion": 4425,
-	"version": 4425,
-	"timestamp": "2017-08-14T14:09:39.137Z"
+	"snapshotVersion": 134160,
+	"version": 134160,
+	"timestamp": "2017-08-14T19:18:55.826Z"
 }
