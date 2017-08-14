@@ -94,3 +94,8 @@ App.on("clientOfflineState", ({ client, state }) => {
   clientObj.setOfflineState(state);
   pubsub.publish("clientChanged", App.clients);
 });
+App.on("clientSetTraining", ({ client, training }) => {
+  const clientObj = App.clients.find(c => c.id === client);
+  clientObj.setTraining(training);
+  pubsub.publish("clientChanged", App.clients);
+});

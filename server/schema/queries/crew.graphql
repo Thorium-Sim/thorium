@@ -1,2 +1,0 @@
-
-  crew(simulatorId: ID, position: String): [Crew]

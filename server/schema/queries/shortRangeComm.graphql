@@ -1,3 +1,0 @@
-
-shortRangeComm(simulatorId: ID!): [ShortRangeComm]
-

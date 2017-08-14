@@ -1,3 +1,0 @@
-
-thrusters(simulatorId: ID): [Thruster]
-

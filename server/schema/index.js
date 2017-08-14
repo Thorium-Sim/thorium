@@ -1,43 +1,36 @@
-import queries from "./queries";
-import mutations from "./mutations";
-import subscriptions from "./subscriptions";
-import types from "./types";
+import * as queries from "./queries";
+import * as mutations from "./mutations";
+import * as subscriptions from "./subscriptions";
+import * as types from "./types";
 
-const schema = `
+export default `
 scalar UploadedFile
 
 #Types definition
-${types}
-
-type role {
-  id: ID
-  userId: String
-  name: String
-}
-type user {
-  id: ID
-  email: String
-  token: String
-  tokenexpire: Int
-  roles: [role]
-}
+${Object.keys(types)
+  .map(type => {
+    return types[type];
+  })
+  .reduce((prev, next) => {
+    return prev + next;
+  }, "")}
 
 #Queries definition
 type Query {
   users(id: String, token: String, email: String): [user]
-  ${queries}
+  ${Object.keys(queries).map(query => queries[query])}
 }
 
 #Mutations definition
 type Mutation {
   #Macro: Trigger a snapshot
   snapshot: String
-  ${mutations}
+  ${Object.keys(mutations).map(mutation => mutations[mutation])}
 }
 
 #Subscriptions definition
 type Subscription {
-  ${subscriptions}
+  ${Object.keys(subscriptions).map(subscription => subscriptions[subscription])}
 }
 
 schema {
@@ -46,5 +39,3 @@ schema {
   subscription: Subscription
 }
 `;
-
-export default schema;

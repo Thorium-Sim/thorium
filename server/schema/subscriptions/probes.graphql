@@ -1,2 +1,0 @@
-
-probesUpdate(simulatorId: ID!): [Probes]

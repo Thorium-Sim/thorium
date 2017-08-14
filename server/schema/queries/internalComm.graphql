@@ -1,2 +1,0 @@
-
-internalComm(simulatorId: ID!): [InternalComm]
