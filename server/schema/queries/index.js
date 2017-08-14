@@ -1,7 +1,8 @@
 import fs from "fs";
 import path from "path";
 
-const dir = "./server/schema/queries/";
+const dir = __dirname + "/";
+
 module.exports = "";
 fs
   .readdirSync(path.resolve(dir))

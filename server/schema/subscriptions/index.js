@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-const dir = "./server/schema/subscriptions/";
+const dir = __dirname + "/";
 module.exports = "";
 fs
   .readdirSync(path.resolve(dir))

@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-const dir = "./server/schema/mutations/";
+const dir = __dirname + "/";
 module.exports = "";
 fs
   .readdirSync(path.resolve(dir))
