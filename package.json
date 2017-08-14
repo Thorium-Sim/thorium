@@ -143,7 +143,7 @@
     "build-server": "npm run build && node ./scripts/build-electron-server.js",
     "lint": "eslint .",
     "cloc": "cloc . --exclude-dir=node_modules,config,scripts",
-    "test": "npm run lint && npm run flow && jest",
+    "test": "npm run lint && jest",
     "flow": "flow",
     "precommit": "lint-staged"
   },
