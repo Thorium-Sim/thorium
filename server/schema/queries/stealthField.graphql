@@ -1,2 +1,0 @@
-
-stealthField(simulatorId: ID): [StealthField]

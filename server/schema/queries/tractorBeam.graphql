@@ -1,2 +1,0 @@
-
-tractorBeam(simulatorId: ID): [TractorBeam]

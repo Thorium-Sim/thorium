@@ -1,3 +1,0 @@
-
-transporters(simulatorId: ID): [Transporter]
-

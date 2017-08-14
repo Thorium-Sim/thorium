@@ -1,2 +1,0 @@
-
-  crewUpdate(simulatorId: ID, position: String): [Crew]

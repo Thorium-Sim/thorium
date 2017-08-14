@@ -1,2 +1,0 @@
-
-  teamsUpdate(simulatorId: ID, type: String!): [Team]

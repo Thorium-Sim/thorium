@@ -1,3 +1,0 @@
-
-  viewscreens(simulatorId: ID): [Viewscreen]
-
