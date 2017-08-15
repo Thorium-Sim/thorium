@@ -101,6 +101,7 @@ export default graphql(PROBE_NETWORK_QUERY, {
 class Grid extends Component {
   constructor(props) {
     super(props);
+    this.looping = true;
     this.state = {
       datagrams: Array(props.lines || 8).fill(0).map((_, i, array) => ({
         angle: d2r(i / array.length * 360),
@@ -109,7 +110,11 @@ class Grid extends Component {
       }))
     };
   }
+  componentWillUnmount() {
+    this.looping = false;
+  }
   loop = () => {
+    if (!this.looping) return;
     const totalFrames = 200;
     const speedyFrames = 100;
     const datagrams = this.state.datagrams.map(({ angle, x, y }, i) => {
@@ -139,6 +144,7 @@ class Grid extends Component {
     setTimeout(this.loop, 30);
   };
   componentDidMount() {
+    this.looping = true;
     this.loop();
   }
   render() {

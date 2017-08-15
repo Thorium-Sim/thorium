@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import gql from 'graphql-tag';
+import React, { Component } from "react";
+import gql from "graphql-tag";
 import {
   Container,
   Button,
@@ -10,15 +10,15 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter
-} from 'reactstrap';
-import { graphql, withApollo } from 'react-apollo';
-import Immutable from 'immutable';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
-import Transitioner from '../helpers/transitioner';
-import ProbeEquipment from './probeEquipment';
-import Measure from 'react-measure';
+} from "reactstrap";
+import { graphql, withApollo } from "react-apollo";
+import Immutable from "immutable";
+import TransitionGroup from "react-transition-group/TransitionGroup";
+import Transitioner from "../helpers/transitioner";
+import ProbeEquipment from "./probeEquipment";
+import Measure from "react-measure";
 
-import './style.scss';
+import "./style.scss";
 
 function d2r(deg) {
   return deg * Math.PI / 180;
@@ -155,15 +155,15 @@ class ProbeConstruction extends Component {
         <TransitionGroup>
           {[ProbeDescription, ProbeEquipment, ProbeAction]
             .filter(Comp => {
-              if (Comp.name === 'ProbeDescription' && !selectedProbeType)
+              if (Comp.name === "ProbeDescription" && !selectedProbeType)
                 return true;
               if (
-                Comp.name === 'ProbeEquipment' &&
+                Comp.name === "ProbeEquipment" &&
                 selectedProbeType &&
                 !launching
               )
                 return true;
-              if (Comp.name === 'ProbeAction' && selectedProbeType && launching)
+              if (Comp.name === "ProbeAction" && selectedProbeType && launching)
                 return true;
               return false;
             })
@@ -186,7 +186,7 @@ class ProbeConstruction extends Component {
           <ProbeName
             network={probes.probes
               .filter(p =>
-                p.equipment.find(e => e.id === 'probe-network-package')
+                p.equipment.find(e => e.id === "probe-network-package")
               )
               .map(p => parseInt(p.name, 10))}
             modal={this.state.modal}
@@ -210,19 +210,22 @@ const ProbeSelector = ({
       <Col
         sm={12}
         className={`probe-container  ${selectedProbeType
-          ? 'probeSelected'
-          : ''}`}>
+          ? "probeSelected"
+          : ""}`}
+      >
         <div className="placeholder" />
         {types.map((t, i) => {
           const probeImage = require(`./probes/${t.id}.svg`);
           return (
             <div
+              key={t.id}
               onMouseOut={setDescription.bind(this, null)}
               onMouseOver={setDescription.bind(this, t.description)}
               className={`probe-type ${selectedProbeType === t.id
-                ? 'selected'
-                : ''}`}
-              onClick={selectProbe.bind(this, t.id)}>
+                ? "selected"
+                : ""}`}
+              onClick={selectProbe.bind(this, t.id)}
+            >
               <p>
                 {t.name}: {t.count}
               </p>
@@ -262,7 +265,8 @@ class ProbeAction extends Transitioner {
           <Button
             block
             color="warning"
-            onClick={selectProbe.bind(this, selectedProbeType)}>
+            onClick={selectProbe.bind(this, selectedProbeType)}
+          >
             Reconfigure Probe
           </Button>
           <Button block color="danger" onClick={cancelProbe}>
@@ -276,7 +280,7 @@ class ProbeAction extends Transitioner {
 
 class ProbeName extends Component {
   state = {
-    name: ''
+    name: ""
   };
   render() {
     const { modal, toggle, launchProbe, equipment, network } = this.props;
@@ -284,7 +288,7 @@ class ProbeName extends Component {
     const { name } = this.state;
     return (
       <Modal className="modal-themed probe-name" isOpen={modal} toggle={toggle}>
-        {equipment.find(e => e.id === 'probe-network-package')
+        {equipment.find(e => e.id === "probe-network-package")
           ? <div>
               <ModalHeader toggle={toggle}>
                 Please select a destination for the probe
@@ -298,7 +302,8 @@ class ProbeName extends Component {
                         style={{
                           width: width,
                           height: width
-                        }}>
+                        }}
+                      >
                         {Array(8).fill(0).map((_, i, array) =>
                           <div
                             key={`line-${i}`}
@@ -317,7 +322,7 @@ class ProbeName extends Component {
                             style={{
                               width: `${(i + 1) / array.length * 100}%`,
                               height: `${(i + 1) / array.length * 100}%`,
-                              backgroundColor: i < 2 ? 'black' : 'transparent'
+                              backgroundColor: i < 2 ? "black" : "transparent"
                             }}
                           />
                         )}
@@ -340,7 +345,8 @@ class ProbeName extends Component {
                                 ) *
                                   height /
                                   2.5}px)`
-                              }}>
+                              }}
+                            >
                               {i + 1}
                             </p>
                         )}
@@ -372,7 +378,8 @@ class ProbeName extends Component {
               block
               disabled={!name}
               color="primary"
-              onClick={launchProbe.bind(this, this.state.name)}>
+              onClick={launchProbe.bind(this, this.state.name)}
+            >
               Launch Probe
             </Button>
           </Col>
