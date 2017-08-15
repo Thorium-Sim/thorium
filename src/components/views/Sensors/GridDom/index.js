@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import SensorContact from './SensorContact';
-import gql from 'graphql-tag';
-import { graphql, withApollo } from 'react-apollo';
-import Immutable from 'immutable';
-import * as THREE from 'three';
+import React, { Component } from "react";
+import SensorContact from "./SensorContact";
+import gql from "graphql-tag";
+import { graphql, withApollo } from "react-apollo";
+import Immutable from "immutable";
+import * as THREE from "three";
 
-import './style.scss';
+import "./style.scss";
 
 function distance3d(coord2, coord1) {
   const { x: x1, y: y1, z: z1 } = coord1;
@@ -224,15 +224,15 @@ class GridDom extends Component {
   _downMouse(e, id) {
     const self = this;
     const width = e.target.getBoundingClientRect().width;
-    document.addEventListener('mousemove', this._moveMouse);
-    document.addEventListener('mouseup', _upMouse);
+    document.addEventListener("mousemove", this._moveMouse);
+    document.addEventListener("mouseup", _upMouse);
     this.setState({
       movingContact: id,
       iconWidth: width
     });
     function _upMouse(evt) {
-      document.removeEventListener('mousemove', self._moveMouse);
-      document.removeEventListener('mouseup', _upMouse);
+      document.removeEventListener("mousemove", self._moveMouse);
+      document.removeEventListener("mouseup", _upMouse);
       if (self.props.askForSpeed) {
         self.setState({
           speedAsking: {
@@ -319,11 +319,11 @@ class GridDom extends Component {
     const gridStyle = {
       width: `${width}px`,
       height: `${width}px`,
-      borderWidth: core ? `${padding}px` : '4px'
+      borderWidth: core ? `${padding}px` : "4px"
     };
     return (
       <div id="sensorGrid" style={gridStyle}>
-        <div className={`grid ${ping ? 'ping' : ''}`}>
+        <div className={`grid ${ping ? "ping" : ""}`}>
           {Array(rings).fill(0).map((_, i, array) =>
             <div
               key={`ring-${i}`}
@@ -343,29 +343,32 @@ class GridDom extends Component {
               }}
             />
           )}
-          {contacts.map(contact =>
-            <SensorContact
-              key={contact.id}
-              width={width}
-              core={core}
-              {...contact}
-              mousedown={e => this._downMouse(e, contact.id)}
-              location={locations[contact.id].location}
-              destination={locations[contact.id].destination}
-              opacity={locations[contact.id].opacity}
-              mouseover={hoverContact}
-            />
+          {contacts.map(
+            contact =>
+              locations[contact.id] &&
+              <SensorContact
+                key={contact.id}
+                width={width}
+                core={core}
+                {...contact}
+                mousedown={e => this._downMouse(e, contact.id)}
+                location={locations[contact.id].location}
+                destination={locations[contact.id].destination}
+                opacity={locations[contact.id].opacity}
+                mouseover={hoverContact}
+              />
           )}
           {movingContact &&
             <div id="movingContact">
-              <SensorContact width={width} {...movingContact} />{' '}
+              <SensorContact width={width} {...movingContact} />{" "}
             </div>}
           {speedAsking &&
             <div
               className="speed-container"
               style={{
                 transform: `translate(${speedAsking.x}px, ${speedAsking.y}px)`
-              }}>
+              }}
+            >
               {speeds.map(s =>
                 <p key={s.value} onClick={() => this.triggerUpdate(s.value)}>
                   {s.label}

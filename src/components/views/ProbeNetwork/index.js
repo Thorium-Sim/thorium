@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Container, Row, Col, Card, CardBlock } from 'reactstrap';
-import gql from 'graphql-tag';
-import { graphql, withApollo } from 'react-apollo';
-import Immutable from 'immutable';
-import Measure from 'react-measure';
+import React, { Component } from "react";
+import { Container, Row, Col, Card, CardBlock } from "reactstrap";
+import gql from "graphql-tag";
+import { graphql, withApollo } from "react-apollo";
+import Immutable from "immutable";
+import Measure from "react-measure";
 
-import './style.scss';
+import "./style.scss";
 
 function d2r(deg) {
   return deg * Math.PI / 180;
@@ -50,22 +50,22 @@ class ProbeNetwork extends Component {
     const probes = this.props.data.probes[0];
     const { processedData, probes: network } = probes;
     return (
-      <Container fluid className="probe-network" style={{ height: '100%' }}>
-        <Row style={{ height: '100%' }}>
-          <Col sm={9} style={{ height: '100%' }}>
+      <Container className="probe-network" style={{ height: "100%" }}>
+        <Row style={{ height: "100%" }}>
+          <Col sm={8} style={{ height: "100%" }}>
             <Measure>
               {dimensions =>
-                <div style={{ width: '100%', height: '100%' }}>
+                <div>
                   <Grid dimensions={dimensions} network={network} />
                 </div>}
             </Measure>
           </Col>
-          <Col sm={3}>
+          <Col sm={{ size: 3, offset: 1 }}>
             <h3>Processed Data</h3>
             <Card className="processedData">
               <CardBlock>
                 <pre>
-                {processedData}
+                  {processedData}
                 </pre>
               </CardBlock>
             </Card>
@@ -101,6 +101,7 @@ export default graphql(PROBE_NETWORK_QUERY, {
 class Grid extends Component {
   constructor(props) {
     super(props);
+    this.looping = true;
     this.state = {
       datagrams: Array(props.lines || 8).fill(0).map((_, i, array) => ({
         angle: d2r(i / array.length * 360),
@@ -109,7 +110,11 @@ class Grid extends Component {
       }))
     };
   }
+  componentWillUnmount() {
+    this.looping = false;
+  }
   loop = () => {
+    if (!this.looping) return;
     const totalFrames = 200;
     const speedyFrames = 100;
     const datagrams = this.state.datagrams.map(({ angle, x, y }, i) => {
@@ -139,6 +144,7 @@ class Grid extends Component {
     setTimeout(this.loop, 30);
   };
   componentDidMount() {
+    this.looping = true;
     this.loop();
   }
   render() {
@@ -147,10 +153,9 @@ class Grid extends Component {
       network.filter((p, i, a) => a.findIndex(e => e.name === p.name) === i)
         .length >= 8;
     const { datagrams } = this.state;
+    const radius = dimensions.width;
     return (
-      <div
-        className={`grid`}
-        style={{ width: dimensions.height, height: dimensions.height }}>
+      <div className={`grid`} style={{ width: radius, height: radius }}>
         {Array(lines).fill(0).map((_, i, array) =>
           <div
             key={`line-${i}`}
@@ -167,7 +172,7 @@ class Grid extends Component {
             style={{
               width: `${(i + 1) / array.length * 100}%`,
               height: `${(i + 1) / array.length * 100}%`,
-              backgroundColor: i < 2 ? 'black' : 'transparent'
+              backgroundColor: i < 2 ? "black" : "transparent"
             }}
           />
         )}
@@ -177,16 +182,13 @@ class Grid extends Component {
             className="box"
             style={{
               transform: `translate(${Math.cos(d2r(i / array.length * 360)) *
-                dimensions.height /
-                2}px, ${Math.sin(d2r(i / array.length * 360)) *
-                dimensions.height /
-                2}px)`
+                radius /
+                2}px, ${Math.sin(d2r(i / array.length * 360)) * radius / 2}px)`
             }}
           />
         )}
         {network.map(({ name, launched }) => {
           if (launched) {
-            console.log(name);
             const i = parseInt(name, 10);
             if (i) {
               return (
@@ -197,9 +199,9 @@ class Grid extends Component {
                     transform: `translate(${Math.cos(
                       d2r((i - 3) / lines * 360)
                     ) *
-                      dimensions.height /
+                      radius /
                       2}px, ${Math.sin(d2r((i - 3) / lines * 360)) *
-                      dimensions.height /
+                      radius /
                       2}px)`
                   }}
                 />
@@ -216,14 +218,14 @@ class Grid extends Component {
               src={datagramImage}
               style={{
                 transform: `translate(
-              ${d.x * dimensions.height / 2}px,
-              ${d.y * dimensions.height / 2}px)`
+              ${d.x * radius / 2}px,
+              ${d.y * radius / 2}px)`
               }}
             />
           )}
         <img
-          src={require('./star.svg')}
-          style={{ position: 'absolute', width: '40px' }}
+          src={require("./star.svg")}
+          style={{ position: "absolute", width: "40px" }}
         />
       </div>
     );

@@ -140,6 +140,8 @@ class Navigation extends Component {
       this.handleKeydown.bind(this),
       false
     );
+    clearTimeout(this.scanning);
+    this.scanning = null;
     this.subscription();
   }
   componentWillReceiveProps(nextProps) {

@@ -51,7 +51,10 @@ class Events extends EventEmitter {
     }
     const snapshot = jsonfile.readFileSync(snapshotDir + "snapshot.json");
     this.merge(snapshot);
-    setTimeout(() => this.autoSave(), 5000);
+    if (electron.app) {
+      // Only auto save in the built version
+      setTimeout(() => this.autoSave(), 5000);
+    }
   }
   merge(snapshot) {
     // Initialize the snapshot with the object constructors

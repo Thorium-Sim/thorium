@@ -147,35 +147,32 @@ class PowerDistribution extends Component {
     return (
       <Container fluid className="powerLevels">
         <Row className="powerlevel-row">
-          <Measure>
-            {dimensions =>
-              <Col lg="12" xl="8" className="powerlevel-containers">
-                {this.state.systems
-                  .slice(0)
-                  .sort((a, b) => {
-                    if (a.type > b.type) return 1;
-                    if (a.type < b.type) return -1;
-                    return 0;
-                  })
-                  .filter(
-                    sys =>
-                      (sys.power.power || sys.power.power === 0) &&
-                      sys.power.powerLevels
-                  )
-                  .map(sys =>
-                    <SystemPower
-                      key={sys.id}
-                      {...sys}
-                      mouseDown={this.mouseDown.bind(this)}
-                      count={this.state.systems.length}
-                      height={dimensions.height}
-                    />
-                  )}
-                <h4 className="totalPowerText">
-                  Total Power Used: {powerTotal}
-                </h4>
-              </Col>}
-          </Measure>
+          <Col lg="12" xl="8" className="powerlevel-containers">
+            {this.state.systems
+              .slice(0)
+              .sort((a, b) => {
+                if (a.type > b.type) return 1;
+                if (a.type < b.type) return -1;
+                return 0;
+              })
+              .filter(
+                sys =>
+                  (sys.power.power || sys.power.power === 0) &&
+                  sys.power.powerLevels
+              )
+              .map(sys =>
+                <SystemPower
+                  key={sys.id}
+                  {...sys}
+                  mouseDown={this.mouseDown.bind(this)}
+                  count={this.state.systems.length}
+                  height={window.innerHeight * 0.74}
+                />
+              )}
+            <h4 className="totalPowerText">
+              Total Power Used: {powerTotal}
+            </h4>
+          </Col>
           <Col sm="4" className="battery-holder">
             <Card>
               <div className="battery-container">
