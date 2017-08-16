@@ -109,7 +109,11 @@ class Events extends EventEmitter {
     this.version = this.version + 1;
     if (clientId) {
       // Get the current flight of the client
-      const { flightId } = this.clients.find(c => c.id === clientId);
+      const client = this.clients.find(c => c.id === clientId);
+      let flightId = null;
+      if (client) {
+        flightId = client.flightId;
+      }
       const event = {
         event: pres,
         params: param,
