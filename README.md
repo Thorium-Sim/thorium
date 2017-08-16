@@ -1,4 +1,5 @@
 ![Thorium](github-banner.png)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/53c3c34f0752473383ba4341fa69cb55)](https://www.codacy.com/app/alexanderson1993/thorium?utm_source=github.com&utm_medium=referral&utm_content=Thorium-Sim/thorium&utm_campaign=badger)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/53c3c34f0752473383ba4341fa69cb55)](https://www.codacy.com/app/alexanderson1993/thorium?utm_source=github.com&utm_medium=referral&utm_content=Thorium-Sim/thorium&utm_campaign=Badge_Coverage)
@@ -109,3 +110,14 @@ A list of the most important folders. (You can pretty much ignore everything els
 ├── snapshots // File stored snapshots here
 └── yarn.lock
 ```
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+| [<img src="https://avatars1.githubusercontent.com/u/6558157?v=4" width="100px;"/><br /><sub>Alex</sub>](http://ralexanderson.com)<br />[💻](https://github.com/Fyreworks/Thorium/commits?author=alexanderson1993 "Code") [📖](https://github.com/Fyreworks/Thorium/commits?author=alexanderson1993 "Documentation") [🎨](#design-alexanderson1993 "Design") | [<img src="https://avatars0.githubusercontent.com/u/1387836?v=4" width="100px;"/><br /><sub>Emrix</sub>](https://github.com/Emrix)<br />[💻](https://github.com/Fyreworks/Thorium/commits?author=Emrix "Code") [👀](#review-Emrix "Reviewed Pull Requests") [🤔](#ideas-Emrix "Ideas, Planning, & Feedback") | [<img src="https://avatars3.githubusercontent.com/u/30132958?v=4" width="100px;"/><br /><sub>ctolley6</sub>](https://github.com/ctolley6)<br />[🤔](#ideas-ctolley6 "Ideas, Planning, & Feedback") [✅](#tutorial-ctolley6 "Tutorials") | [<img src="https://avatars0.githubusercontent.com/u/22157796?v=4" width="100px;"/><br /><sub>Todd Rasband</sub>](https://github.com/Rasbandit)<br />[🎨](#design-Rasbandit "Design") | [<img src="https://avatars0.githubusercontent.com/u/45031?v=4" width="100px;"/><br /><sub>Brent Anderson</sub>](http://www.brentjanderson.com)<br />[🤔](#ideas-brentjanderson "Ideas, Planning, & Feedback") |
+| :---: | :---: | :---: | :---: | :---: |
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!

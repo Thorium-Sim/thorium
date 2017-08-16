@@ -13,6 +13,7 @@
   },
   "homepage": "https://thorium.ralexanderson.com",
   "devDependencies": {
+    "all-contributors-cli": "^4.4.0",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.1.1",
@@ -145,7 +146,9 @@
     "cloc": "cloc . --exclude-dir=node_modules,config,scripts",
     "test": "npm run lint && jest",
     "flow": "flow",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "add": "all-contributors add",
+    "generate": "all-contributors generate"
   },
   "lint-staged": {
     "*.js": [
