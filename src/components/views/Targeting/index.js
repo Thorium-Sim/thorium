@@ -314,7 +314,6 @@ class Targeting extends Component {
                       dimensions={dimensions}
                       targetContact={this.targetContact.bind(this)}
                       untargetContact={this.untargetContact.bind(this)}
-                      targetedContact={targetedContact}
                       targets={targeting.contacts}
                     />
                   : <div />;
