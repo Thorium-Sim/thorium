@@ -1,0 +1,61 @@
+{
+  "projectName": "Thorium",
+  "projectOwner": "Fyreworks",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "contributors": [
+    {
+      "login": "alexanderson1993",
+      "name": "Alex",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/6558157?v=4",
+      "profile": "http://ralexanderson.com",
+      "contributions": [
+        "code",
+        "doc",
+        "design"
+      ]
+    },
+    {
+      "login": "Emrix",
+      "name": "Emrix",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1387836?v=4",
+      "profile": "https://github.com/Emrix",
+      "contributions": [
+        "code",
+        "review",
+        "ideas"
+      ]
+    },
+    {
+      "login": "ctolley6",
+      "name": "ctolley6",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/30132958?v=4",
+      "profile": "https://github.com/ctolley6",
+      "contributions": [
+        "ideas",
+        "tutorial"
+      ]
+    },
+    {
+      "login": "Rasbandit",
+      "name": "Todd Rasband",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/22157796?v=4",
+      "profile": "https://github.com/Rasbandit",
+      "contributions": [
+        "design"
+      ]
+    },
+    {
+      "login": "brentjanderson",
+      "name": "Brent Anderson",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/45031?v=4",
+      "profile": "http://www.brentjanderson.com",
+      "contributions": [
+        "ideas"
+      ]
+    }
+  ]
+}
