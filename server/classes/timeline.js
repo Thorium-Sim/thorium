@@ -4,7 +4,6 @@ import { mutationMap } from "../resolvers";
 export class TimelineObject {
   constructor(params) {
     this.timeline = [];
-    this.timelineStep = params.timelineStep || -1; // 0 is the init step, so -1 is before that.
     if (params.timeline) {
       params.timeline.forEach(t => {
         this.timeline.push(new TimelineStep(t.id, t));

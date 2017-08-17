@@ -5,6 +5,8 @@ import { Container, Row, Col, Button, ButtonGroup } from "reactstrap";
 import Immutable from "immutable";
 import FontAwesome from "react-fontawesome";
 
+import "./style.scss";
+
 const TIMELINE_SUB = gql`
   subscription TimelineSub($missionId: ID) {
     missionsUpdate(missionId: $missionId) {
@@ -54,9 +56,8 @@ class InternalComm extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { mission } = this.props.data.simulators[0];
-    console.log(mission);
     return (
-      <Container>
+      <Container className="core-timeline">
         <Row>
           <Col>
             <h4>
@@ -80,7 +81,7 @@ class InternalComm extends Component {
         </Row>
         <Row>
           {mission.timeline.map(t =>
-            <div key={t.id}>
+            <Col key={t.id}>
               <h5>
                 {t.name}
               </h5>
@@ -103,7 +104,7 @@ class InternalComm extends Component {
                   </li>
                 )}
               </ul>
-            </div>
+            </Col>
           )}
         </Row>
       </Container>

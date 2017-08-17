@@ -5,7 +5,7 @@ import "./server/helpers/copyAssets";
 import * as Classes from "./server/classes";
 import config from "./config";
 import util from "util";
-import { cloneDeep } from "lodash/cloneDeep";
+import { cloneDeep } from "lodash";
 //import { collections } from "./server/helpers/database";
 import electron from "electron";
 import fs from "fs";

@@ -9,7 +9,7 @@ export default class Mission extends TimelineObject {
     this.description = params.description || "";
   }
   update({ name, description }) {
-    this.name = name || "";
-    this.description = description || "";
+    if (name || name === "") this.name = name;
+    if (description || description === "") this.description = description;
   }
 }

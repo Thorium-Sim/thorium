@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 225,
+	"_eventsCount": 226,
 	"simulators": [
 		{
 			"id": "test",
@@ -747,6 +747,32 @@
 			"id": "6f5ccc75-59d8-4da3-95fc-5a14f423d02f",
 			"name": "Intolerance",
 			"description": "A mission about an escaped slave."
+		},
+		{
+			"timeline": [
+				{
+					"id": "ecf57e57-ac90-4f00-bc21-e9b68afffc4b-initial",
+					"class": "TimelineStep",
+					"name": "Initialize",
+					"description": "Initializes the mission",
+					"order": "0",
+					"timelineItems": [
+						{
+							"id": "965735ca-d88b-43c9-bcdc-35dd2e6d5706",
+							"name": "Sensor Presets",
+							"type": "event",
+							"event": "setPresetAnswers",
+							"args": "{\"presetAnswers\":[{\"label\":\"CLEAR SPACE\",\"value\":\"THIS VESSEL IS CURRENTLY WITHIN CLEAR SPACE.\"},{\"label\":\"APPROCHING BORDER\",\"value\":\"THIS VESSEL IS APPROCHING THE NEW EARTH BORDER RECOMMEND FULL STOP.\"},{\"label\":\"STOPEPD AT BORDER\",\"value\":\"THIS VESSEL HAS STOPED AT THE NEW EARTH BORDER, FOREWARD SCANS PROGRESSING.\"},{\"label\":\"USS SEWARD COMING\",\"value\":\"DETECTING THE USS SEWARD APROCHNIG THIS VESSEL, ETA 3 MINUTES.\"},{\"label\":\"ANOTHER SHIP?\",\"value\":\"DECTECING A NEW EARTH SHIP DECLOAKING, REGESTRY NUMBER 062458 THE SHIP IS MATCHING SPEED WITH THE USS SEWARD.\"},{\"label\":\"SHIP FIRING...\",\"value\":\"NEW EARTH SHIP 062458 IS ARMING AND FIREING WEAPONS ON THE USS SEWARD.\"},{\"label\":\"SEWARD DESTROIED\",\"value\":\"USS SEWARD HAS BEEN DESTROED.\"},{\"label\":\"CLEAR SPACE\",\"value\":\"CLEAR SPACE AHEAD. \"},{\"label\":\"NEW EARTH SHIP\",\"value\":\"NEW EARTH CRUSER DECLOAKING. SHIP'S REGESTRAY NUMBER IS 062458.\"},{\"label\":\"NEW EARTH LEAVES\",\"value\":\"THE NEW EARTH SHIP IS TURNING AND LEAVING THE AREA.\"},{\"label\":\"KLINGON SHIPS DECLOAKING\",\"value\":\"WARRNING! 3 KLINGON WAR SHIPS HAVE DECLOAKED ON THE OTHER SIDE OF THE NEW EARTH BORDER.\"},{\"label\":\"KLINGON SHIPS LEAVES\",\"value\":\"KLINGON SHIP ARE CLOAKING AND LEAVING THE AREA.\"},{\"label\":\"SATELLITES DECTING\",\"value\":\"WARRNING! THIS VESSEL IS ABOUT TO CROSS INTO THE SCANING RANGE OF A THOR 88 SATELLITE.\"},{\"label\":\"CLEAR SPACE\",\"value\":\"CLEAR SPACE AHEAD\"},{\"label\":\"ORBIT OF NEW EARTH\",\"value\":\"THIS VESSEL IS IN STABLE ORBIT OF NEW EARTH.\"},{\"label\":\"EMBASSY FOUND\",\"value\":\"FEDERATION EMBASY FOUND, CONN OFFICER MUST PUT IN THE FOLLOWING CORDANATES IN ORDER TO BE IN TRANSPORTER RANGE:  X: 928.33 Y: 591.12 Z: 110.09\"},{\"label\":\"TRANSPORTS IN PROGRESS\",\"value\":\"FEDERATION EMBASY IS NOW IN TRASNSPORTER RANGE, TRANSPORTS MAY BEGIN.\"},{\"label\":\"NEW EARTH FIGHTER\",\"value\":\"NEW EARTH FIGHTER ON APPROCH, THIS VESSEL WILL BE DECTCED IN APPROX. 60 SECONDS\"},{\"label\":\"FIGHTER SCANS\",\"value\":\"NEW EATH FIGHTER IS SCANING THIS VESSEL\"},{\"label\":\"FIGHTER FLEES\",\"value\":\"NEW EARTH FIGHTER IS CHANGING COURSE TO AVOID THIS VESSEL\"},{\"label\":\"FIGHTERS LAUNCHING.\",\"value\":\"WARNING! MANY NEW EARTH FIGHTERS ARE LAUNCING FROM THE SURFACE.\"},{\"label\":\"INCOMMING TORPEDOS\",\"value\":\"WARNING! INCOMMING TORPEDOS, TORPEDOS WILL IMPACT THIS VESSEL IN APPROX. 10 SECONDS\"},{\"label\":\"BORDER ZONE\",\"value\":\"THIS VESSEL IS APPROCING THE FEDERATION BORDER\"},{\"label\":\"FEDERATION SPACE\",\"value\":\"THIS VESSEL HAS ENTERED FEDERATION SPACE\"}],\"domain\":\"external\"}",
+							"delay": 0
+						}
+					]
+				}
+			],
+			"timelineStep": -1,
+			"class": "Mission",
+			"id": "ecf57e57-ac90-4f00-bc21-e9b68afffc4b",
+			"name": "Midnight Rescue",
+			"description": "A mission about evacuating an embassy"
 		}
 	],
 	"systems": [
@@ -1127,10 +1153,11 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9138600,
+			"timeSincePing": 9233100,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
+			"presetAnswers": [],
 			"scanning": false,
 			"contacts": [
 				{
@@ -1215,10 +1242,11 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9138600,
+			"timeSincePing": 9233100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
+			"presetAnswers": [],
 			"scanning": false,
 			"contacts": [],
 			"armyContacts": []
@@ -1360,7 +1388,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.9599119999999599,
+			"batteryChargeLevel": 0.9591519999999591,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -1383,28 +1411,28 @@
 			"contacts": [
 				{
 					"id": "8db6421b-8aa5-4c55-8215-eacb4c5e7097",
-					"systemId": "",
+					"systemId": "1e66763f-70d7-4cc7-a385-f3fa4b008da4",
 					"targeted": false,
 					"system": "General",
 					"class": "7d0870a9-dfe5-445c-a316-e42406825acc"
 				},
 				{
 					"id": "b5f7ef3f-5b24-46e6-9393-b93c79b712a8",
-					"systemId": "",
+					"systemId": "1e66763f-70d7-4cc7-a385-f3fa4b008da4",
 					"targeted": false,
 					"system": "General",
 					"class": "7d0870a9-dfe5-445c-a316-e42406825acc"
 				},
 				{
 					"id": "aae9de0f-df8e-426d-b860-17056702e060",
-					"systemId": "",
+					"systemId": "1e66763f-70d7-4cc7-a385-f3fa4b008da4",
 					"targeted": false,
 					"system": "General",
 					"class": "74bdbf0a-773e-4894-9c16-cac21dd17df2"
 				},
 				{
 					"id": "2e05af96-7d65-49ea-a870-014e8a312ebc",
-					"systemId": "",
+					"systemId": "1e66763f-70d7-4cc7-a385-f3fa4b008da4",
 					"targeted": false,
 					"system": "General",
 					"class": "74bdbf0a-773e-4894-9c16-cac21dd17df2"
@@ -2131,10 +2159,11 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9138600,
+			"timeSincePing": 9233100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
+			"presetAnswers": [],
 			"scanning": false,
 			"contacts": [],
 			"armyContacts": []
@@ -2160,10 +2189,11 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9138600,
+			"timeSincePing": 9233100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
+			"presetAnswers": [],
 			"scanning": false,
 			"contacts": [],
 			"armyContacts": []
@@ -3321,10 +3351,11 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9138600,
+			"timeSincePing": 9233100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
+			"presetAnswers": [],
 			"scanning": false,
 			"contacts": [],
 			"armyContacts": []
@@ -3351,10 +3382,11 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9138600,
+			"timeSincePing": 9233100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
+			"presetAnswers": [],
 			"scanning": false,
 			"contacts": [],
 			"armyContacts": []
@@ -3839,7 +3871,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.16061999999986099,
+			"batteryChargeLevel": 0.15206999999986034,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -4415,10 +4447,11 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 4321600,
+			"timeSincePing": 4416100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
+			"presetAnswers": [],
 			"scanning": false,
 			"contacts": [],
 			"armyContacts": []
@@ -4445,10 +4478,11 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 4321600,
+			"timeSincePing": 4416100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
+			"presetAnswers": [],
 			"scanning": false,
 			"contacts": [],
 			"armyContacts": []
@@ -5554,10 +5588,11 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 3096500,
+			"timeSincePing": 3191000,
 			"scanResults": "",
 			"scanRequest": "Course!",
 			"processedData": "",
+			"presetAnswers": [],
 			"scanning": false,
 			"contacts": [
 				{
@@ -5702,10 +5737,11 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 4321600,
+			"timeSincePing": 4416100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
+			"presetAnswers": [],
 			"scanning": false,
 			"contacts": [],
 			"armyContacts": []
@@ -6424,28 +6460,28 @@
 			"contacts": [
 				{
 					"id": "e1802a79-10ef-4867-a860-ae55d3c503a6",
-					"systemId": "",
+					"systemId": "1a6d4e8d-60fd-418b-bc0c-34cd237af64e",
 					"targeted": false,
 					"system": "General",
 					"class": "55f92a08-35c0-403c-b521-f6865a1f98fc"
 				},
 				{
 					"id": "e7e60473-e03d-483e-af44-892270ccb922",
-					"systemId": "",
+					"systemId": "1a6d4e8d-60fd-418b-bc0c-34cd237af64e",
 					"targeted": true,
 					"system": "General",
 					"class": "55f92a08-35c0-403c-b521-f6865a1f98fc"
 				},
 				{
 					"id": "a10dd3e6-5729-4933-934a-4b8b0f5b4dff",
-					"systemId": "",
+					"systemId": "1a6d4e8d-60fd-418b-bc0c-34cd237af64e",
 					"targeted": false,
 					"system": "General",
 					"class": "e9119742-1452-40bc-8d51-2c368d81e501"
 				},
 				{
 					"id": "46108594-24a1-4b00-9fb9-b2c3277678ec",
-					"systemId": "",
+					"systemId": "1a6d4e8d-60fd-418b-bc0c-34cd237af64e",
 					"targeted": false,
 					"system": "General",
 					"class": "e9119742-1452-40bc-8d51-2c368d81e501"
@@ -11886,7 +11922,7 @@
 		}
 	],
 	"viewscreens": [],
-	"snapshotVersion": 134160,
-	"version": 134160,
-	"timestamp": "2017-08-14T19:18:55.826Z"
+	"snapshotVersion": 28311,
+	"version": 28311,
+	"timestamp": "2017-08-17T23:10:24.936Z"
 }

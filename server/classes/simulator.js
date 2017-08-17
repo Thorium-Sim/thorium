@@ -1,18 +1,19 @@
-import uuid from 'uuid';
-import Team from './teams';
+import uuid from "uuid";
+import Team from "./teams";
 
 export default class Simulator {
   constructor(params) {
     this.id = params.id || uuid.v4();
-    this.name = params.name || 'Simulator';
-    this.layout = params.layout || 'LayoutDefault';
-    this.alertlevel = params.alertlevel || '5';
+    this.name = params.name || "Simulator";
+    this.layout = params.layout || "LayoutDefault";
+    this.alertlevel = params.alertlevel || "5";
     this.template = params.template || false;
     this.templateId = params.templateId || null;
-    this.class = 'Simulator';
+    this.class = "Simulator";
     this.stationSet = params.stationSet || null;
     this.stations = params.stations || [];
     this.mission = params.mission || null;
+    this.currentTimelineStep = params.currentTimelineStep || 0;
     this.teams = [];
     this.ship = new Ship(params.ship);
     // Set up the teams
@@ -24,7 +25,7 @@ export default class Simulator {
     this.name = name;
   }
   setAlertLevel(alertlevel) {
-    if (['5', '4', '3', '2', '1', 'p'].indexOf(alertlevel) === -1) {
+    if (["5", "4", "3", "2", "1", "p"].indexOf(alertlevel) === -1) {
       throw new Error(
         "Invalid Alert Level. Must be one of '5','4','3','2','1','p'"
       );
@@ -37,6 +38,10 @@ export default class Simulator {
     // To the server
     this.layout = layout;
   }
+  setTimelineStep(step) {
+    this.currentTimelineStep = step;
+  }
+
   // Ship
   clamps(tf) {
     this.ship.clamps = tf;
@@ -82,9 +87,9 @@ class Ship {
 class RemoteAccess {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
-    this.code = params.code || '';
-    this.state = params.state || 'sent';
-    this.station = params.station || '';
+    this.code = params.code || "";
+    this.state = params.state || "sent";
+    this.station = params.station || "";
     this.timestamp = params.timestamp || new Date().toISOString();
   }
 }

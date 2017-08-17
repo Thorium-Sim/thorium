@@ -123,10 +123,10 @@ App.on("changeSimulatorAlertLevel", ({ simulatorId, alertLevel }) => {
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
-App.on("changeSimulatorCrewCount", ({ simulatorId, crewCount }) => {
+App.on("setSimulatorTimelineStep", ({ simulatorId, step }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   if (simulator) {
-    simulator.setCrewCount(crewCount);
+    simulator.setTimelineStep(step);
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
