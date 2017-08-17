@@ -13,6 +13,7 @@ type Sensors implements SystemInterface{
   scanResults: String
   scanRequest: String
   processedData: String
+  presetAnswers: [PresetAnswer]
   scanning: Boolean
   power: Power
   contacts: [SensorContact]
@@ -36,6 +37,14 @@ type SensorContact {
   cloaked: Boolean
   destroyed: Boolean
   forceUpdate: Boolean
+}
+type PresetAnswer {
+  label: String
+  value: String
+}
+input PresetAnswerInput {
+  label: String
+  value: String
 }
 input CoordinatesInput {
   x: Float

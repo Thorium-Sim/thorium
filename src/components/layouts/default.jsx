@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { Container } from '../generic';
+import { Container } from 'reactstrap';
 import { findDOMNode } from 'react-dom';
 import TransitionGroup from 'react-addons-transition-group';
 import {TweenMax} from 'gsap';

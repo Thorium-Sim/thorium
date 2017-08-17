@@ -1,26 +1,27 @@
-import SensorContact from './sensorContact';
-import { System } from './generic';
+import SensorContact from "./sensorContact";
+import { System } from "./generic";
 
 export default class Sensors extends System {
   constructor(params) {
     super(params);
-    this.type = 'Sensors';
-    this.class = 'Sensors';
-    this.domain = params.domain || 'external';
-    if (this.domain === 'external') {
-      this.name = 'External Sensors';
+    this.type = "Sensors";
+    this.class = "Sensors";
+    this.domain = params.domain || "external";
+    if (this.domain === "external") {
+      this.name = "External Sensors";
     } else {
-      this.name = 'Internal Sensors';
+      this.name = "Internal Sensors";
     }
     if (params.name) {
       this.name = params.name;
     }
     this.pings = params.pings || true;
-    this.pingMode = params.pingMode || 'manual';
+    this.pingMode = params.pingMode || "manual";
     this.timeSincePing = params.timeSincePing || 0;
-    this.scanResults = params.scanResults || '';
-    this.scanRequest = params.scanRequest || '';
-    this.processedData = params.processedData || '';
+    this.scanResults = params.scanResults || "";
+    this.scanRequest = params.scanRequest || "";
+    this.processedData = params.processedData || "";
+    this.presetAnswers = params.presetAnswers || [];
     this.scanning = params.scanning || false;
     // Initialize the contacts and army contacts;
     this.contacts = [];
@@ -54,6 +55,9 @@ export default class Sensors extends System {
   }
   processedDatad(data) {
     this.processedData = data;
+  }
+  setPresetAnswers(presetAnswers) {
+    this.presetAnswers = presetAnswers;
   }
   createContact(contact) {
     const newContact = contact;
