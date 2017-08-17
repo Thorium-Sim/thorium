@@ -1,6 +1,5 @@
-import uuid from 'uuid';
-import { mutationMap } from '../resolvers';
-
+import uuid from "uuid";
+import { mutationMap } from "../resolvers";
 
 export class TimelineObject {
   constructor(params) {
@@ -12,16 +11,23 @@ export class TimelineObject {
       });
     } else {
       this.timeline[0] = new TimelineStep(`${params.id}-initial`, {
-        name: 'Initialize',
-        description: 'Initializes the mission',
+        name: "Initialize",
+        description: "Initializes the mission",
         order: 0,
-        timelineitems: [],
+        timelineitems: []
       });
     }
   }
 
   addTimelineStep({ name, description, order, timelineStepId, timelineItems }) {
-    this.timeline.push(new TimelineStep(timelineStepId, { name, description, order, timelineItems }));
+    this.timeline.push(
+      new TimelineStep(timelineStepId, {
+        name,
+        description,
+        order,
+        timelineItems
+      })
+    );
   }
   removeTimelineStep(timelineStepId) {
     this.timeline = this.timeline.filter(t => t.id !== timelineStepId);
@@ -31,16 +37,18 @@ export class TimelineObject {
     // If it is less than newOrder, do nothing
     // If it is greater than newOrder, add 1 to the order.
     // Then sort it.
-    this.timeline = this.timeline.map(t => {
-      const newT = t;
-      if (newT.order >= newOrder) newT.order += 1;
-      if (newT.id === timelineStepId) newT.order = newOrder;
-      return newT;
-    }).sort((a, b) => {
-      if (a.order > b.order) return 1;
-      if (b.order > a.order) return -1;
-      return 0;
-    });
+    this.timeline = this.timeline
+      .map(t => {
+        const newT = t;
+        if (newT.order >= newOrder) newT.order += 1;
+        if (newT.id === timelineStepId) newT.order = newOrder;
+        return newT;
+      })
+      .sort((a, b) => {
+        if (a.order > b.order) return 1;
+        if (b.order > a.order) return -1;
+        return 0;
+      });
   }
   updateTimelineStep(timelineStepId, timelineStep) {
     const timeline = this.timeline.find(t => t.id === timelineStepId);
@@ -73,16 +81,16 @@ export class TimelineObject {
     timelineStep.timelineItems.forEach(i => {
       // Execute the timeline item.
       const args = JSON.parse(i.args) || {};
-      if (this.class === 'Simulator') {
+      if (this.class === "Simulator") {
         args.simulatorId = this.id;
       }
-      if (this.class === 'Mission') {
+      if (this.class === "Mission") {
         args.missionId = this.id;
       }
-      if (this.class === 'Flight') {
+      if (this.class === "Flight") {
         args.flightId = this.id;
       }
-      mutationMap[i.event]({}, args, {clientId: 'timeline'});
+      mutationMap[i.event]({}, args, { clientId: "timeline" });
     });
   }
 }
@@ -90,9 +98,9 @@ export class TimelineObject {
 export class TimelineStep {
   constructor(timelineStepId, params) {
     this.id = timelineStepId || uuid.v4();
-    this.class = 'TimelineStep';
-    this.name = params.name || 'Step';
-    this.description = params.description || 'A timeline step';
+    this.class = "TimelineStep";
+    this.name = params.name || "Step";
+    this.description = params.description || "A timeline step";
     this.order = params.order || 0;
     this.timelineItems = [];
     if (params.timelineItems) {
@@ -102,11 +110,13 @@ export class TimelineStep {
     }
   }
   update({ name, description }) {
-    if (name) this.name = name;
-    if (description) this.description = description;
+    if (name || name === "") this.name = name;
+    if (description || description === "") this.description = description;
   }
   addTimelineItem(id, { name, type, event, args, delay }) {
-    this.timelineItems.push(new TimelineItem(id, { name, type, event, args, delay }));
+    this.timelineItems.push(
+      new TimelineItem(id, { name, type, event, args, delay })
+    );
   }
   removeTimelineItem(id) {
     this.timelineItems = this.timelineItems.filter(t => t.id !== id);
@@ -120,13 +130,14 @@ export class TimelineStep {
 export class TimelineItem {
   constructor(timelineItemId, params) {
     this.id = timelineItemId || uuid.v4();
-    this.name = params.name || 'Item';
+    this.name = params.name || "Item";
     this.type = params.type || null;
     this.event = params.event || null;
     this.args = params.args || null;
     this.delay = params.delay || 0;
   }
   update({ name, type, event, delay, args }) {
+    console.log(name, type, event, delay, args);
     if (name) this.name = name;
     if (type) this.type = type;
     if (event) this.event = event;

@@ -5,7 +5,7 @@ processedData(id: ID!, data: String!): String
 sensorScanCancel(id: ID!): String
 
 #Macro: Set a list of preset scan answers and processed data
-setPresetAnswers(id: ID!, presetAnswers: [PresetAnswerInput]!): String
+setPresetAnswers(simulatorId: ID!, domain: String!, presetAnswers: [PresetAnswerInput]!): String
 
 # Sensor Contacts
 createSensorContact(id: ID!, contact: SensorContactInput!): String
