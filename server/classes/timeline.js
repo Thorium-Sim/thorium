@@ -100,7 +100,7 @@ export class TimelineStep {
     this.id = timelineStepId || uuid.v4();
     this.class = "TimelineStep";
     this.name = params.name || "Step";
-    this.description = params.description || "A timeline step";
+    this.description = params.description || "";
     this.order = params.order || 0;
     this.timelineItems = [];
     if (params.timelineItems) {

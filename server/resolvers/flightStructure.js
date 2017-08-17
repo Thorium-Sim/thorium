@@ -144,7 +144,10 @@ export const FlightStructureSubscriptions = {
   stationSetUpdate: rootValue => {
     return rootValue;
   },
-  missionsUpdate: rootValue => {
+  missionsUpdate: (rootValue, { missionId }) => {
+    if (missionId) {
+      return rootValue.filter(m => m.id === missionId);
+    }
     return rootValue;
   },
   simulatorsUpdate: (rootValue, { simulatorId, template }) => {
@@ -194,9 +197,30 @@ export const FlightStructureTypes = {
     }
   },
   Mission: {
+    id(rootValue) {
+      const mission = rootValue.timeline
+        ? rootValue
+        : App.missions.find(m => m.id === rootValue);
+      return mission.id;
+    },
+    name(rootValue) {
+      const mission = rootValue.timeline
+        ? rootValue
+        : App.missions.find(m => m.id === rootValue);
+      return mission.name;
+    },
+    description(rootValue) {
+      const mission = rootValue.timeline
+        ? rootValue
+        : App.missions.find(m => m.id === rootValue);
+      return mission.description;
+    },
     timeline(rootValue) {
-      return Object.keys(rootValue.timeline).sort().map(k => {
-        const value = rootValue.timeline[k];
+      const mission = rootValue.timeline
+        ? rootValue
+        : App.missions.find(m => m.id === rootValue);
+      return Object.keys(mission.timeline).sort().map(k => {
+        const value = mission.timeline[k];
         value.order = k;
         return value;
       });

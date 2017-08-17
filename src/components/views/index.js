@@ -65,6 +65,7 @@ import SelfDestructCore from "./SelfDestruct/core";
 import ProbeControlCore from "./ProbeControl/core";
 import ReactorControlCore from "./ReactorControl/core";
 import ViewscreenCore from "./Viewscreen/core";
+import TimelineCore from "./Timeline";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -159,7 +160,8 @@ export const Cores = {
   SelfDestructCore,
   ProbeControlCore,
   ReactorControlCore,
-  ViewscreenCore
+  ViewscreenCore,
+  TimelineCore
 };
 
 export default Views;
