@@ -7,6 +7,11 @@ type Mission {
   timeline: [TimelineStep]
 }
 
+input MacroInput {
+  event: String,
+  args: String
+}
+
 type Flight {
   id: ID
   name: String

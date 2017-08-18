@@ -68,10 +68,12 @@ class TimelineCore extends Component {
         if (!mission) return;
         const currentStep = mission.timeline[newStep];
         this.setState({
-          steps: currentStep.timelineItems.reduce(
-            (prev, next) => Object.assign(prev, { [next.id]: true }),
-            {}
-          )
+          steps: currentStep
+            ? currentStep.timelineItems.reduce(
+                (prev, next) => Object.assign(prev, { [next.id]: true }),
+                {}
+              )
+            : []
         });
       }
     }
@@ -80,6 +82,27 @@ class TimelineCore extends Component {
     this.setState(state => ({
       steps: Object.assign(state.steps, { [step]: !state.steps[step] })
     }));
+  };
+  runMacro = next => {
+    const { mission, currentTimelineStep } = this.props.data.simulators[0];
+    const currentStep = mission.timeline[currentTimelineStep];
+    const { steps } = this.state;
+    const variables = {
+      simulatorId: this.props.simulator.id,
+      macros: currentStep.timelineItems
+        .filter(t => steps[t.id])
+        .map(t => ({ event: t.event, args: t.args }))
+    };
+    const mutation = gql`mutation ExecuteMacro($simulatorId: ID!, $macros: [MacroInput]!) {
+      triggerMacros(simulatorId: $simulatorId, macros: $macros)
+      ${next &&
+        `setSimulatorTimelineStep(simulatorId: $simulatorId, step: ${currentTimelineStep +
+          1})`}
+    }`;
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
   };
   updateStep = step => {
     const { mission } = this.props.data.simulators[0];
@@ -117,10 +140,18 @@ class TimelineCore extends Component {
               >
                 <FontAwesome fixedWidth name="arrow-left" />
               </Button>
-              <Button color="warning" title="Run Step & Stay">
+              <Button
+                color="warning"
+                title="Run Step & Stay"
+                onClick={this.runMacro}
+              >
                 <FontAwesome fixedWidth name="step-forward" />
               </Button>
-              <Button color="success" title="Run & Go Forward">
+              <Button
+                color="success"
+                title="Run & Go Forward"
+                onClick={() => this.runMacro(true)}
+              >
                 <FontAwesome fixedWidth name="play" />
               </Button>
               <Button
@@ -134,35 +165,39 @@ class TimelineCore extends Component {
           </Col>
         </Row>
         <Row>
-          <Col>
-            <h5>
-              {currentStep.name}
-            </h5>
-            <p>
-              {currentStep.description}
-            </p>
-            <ul>
-              {currentStep.timelineItems.map(i =>
-                <li key={i.id}>
-                  <input
-                    type="checkbox"
-                    checked={steps[i.id]}
-                    onChange={() => this.checkStep(i.id)}
-                  />{" "}
-                  {i.name}
-                  <details>
-                    <summary>Details</summary>
-                    <p>
-                      {i.event}
-                    </p>
-                    <pre>
-                      {i.args}
-                    </pre>
-                  </details>
-                </li>
-              )}
-            </ul>
-          </Col>
+          {currentStep
+            ? <Col>
+                <h5>
+                  {currentStep.name}
+                </h5>
+                <p>
+                  {currentStep.description}
+                </p>
+                <ul>
+                  {currentStep.timelineItems.map(i =>
+                    <li key={i.id}>
+                      <input
+                        type="checkbox"
+                        checked={steps[i.id]}
+                        onChange={() => this.checkStep(i.id)}
+                      />{" "}
+                      {i.name}
+                      <details>
+                        <summary>Details</summary>
+                        <p>
+                          {i.event}
+                        </p>
+                        <pre>
+                          {i.args}
+                        </pre>
+                      </details>
+                    </li>
+                  )}
+                </ul>
+              </Col>
+            : <Col>
+                <h5>End of Timeline</h5>
+              </Col>}
         </Row>
       </Container>
     );
