@@ -111,6 +111,11 @@ export const FlightStructureMutations = {
   updateTimelineStepItem(root, args, context) {
     App.handleEvent(args, "updateTimelineStepItem", context);
   },
+  triggerMacros(root, { simulatorId, macros }, context) {
+    macros.forEach(({ event, args }) => {
+      App.handleEvent(Object.assign({ simulatorId }, JSON.parse(args)), event);
+    });
+  },
 
   // Station
   createStationSet(root, args, context) {
