@@ -4,7 +4,7 @@ import "whatwg-fetch";
 import FontAwesome from "react-fontawesome";
 import "./style.scss";
 import gql from "graphql-tag";
-import { graphql, compose, withApollo } from "react-apollo";
+import { graphql, compose } from "react-apollo";
 import ImageViewer from "./imageViewer";
 
 const ASSET_FOLDER_SUB = gql`

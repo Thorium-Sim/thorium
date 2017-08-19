@@ -3,7 +3,6 @@ import { EventEmitter } from "events";
 import { writeFile } from "./server/helpers/json-format";
 import "./server/helpers/copyAssets";
 import * as Classes from "./server/classes";
-import config from "./config";
 import util from "util";
 import { cloneDeep } from "lodash";
 //import { collections } from "./server/helpers/database";
@@ -82,11 +81,9 @@ class Events extends EventEmitter {
     if (electron.app) {
       snapshotDir = electron.app.getPath("appData") + "/thorium/";
     }
-    if (!config.db) {
-      writeFile(snapshotDir + "snapshot.json", snapshot, err => {
-        err && console.log(err);
-      });
-    }
+    writeFile(snapshotDir + "snapshot.json", snapshot, err => {
+      err && console.log(err);
+    });
     return snapshot;
   }
   trimSnapshot(snapshot) {

@@ -1,28 +1,28 @@
-import React from "react";
-/*import gql from 'graphql-tag';
-import { graphql, withApollo } from 'react-apollo';
-import Immutable from 'immutable';
-import ReactDataGrid from 'react-data-grid';
+import React, { Component } from "react";
+import gql from "graphql-tag";
+import { graphql, withApollo } from "react-apollo";
+import Immutable from "immutable";
 
 const INTERNAL_SUB = gql`
-subscription CrewUpdate($id: ID){
-  crewUpdate(simulatorId: $id) {
-    id
-    firstName
-    lastName
-    position
-    age
-    rank
-    gender
+  subscription CrewUpdate($id: ID) {
+    crewUpdate(simulatorId: $id) {
+      id
+      firstName
+      lastName
+      position
+      age
+      rank
+      gender
+    }
   }
-}`;
+`;
 
 class CrewCore extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       editable: false
-    }
+    };
     this.sub = null;
   }
   componentWillReceiveProps(nextProps) {
@@ -34,24 +34,26 @@ class CrewCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           const returnResult = Immutable.Map(previousResult);
-          return returnResult.merge({ crew: subscriptionData.data.crewUpdate }).toJS();
+          return returnResult
+            .merge({ crew: subscriptionData.data.crewUpdate })
+            .toJS();
         }
       });
     }
   }
-  _importCrew = (evt) => {
+  _importCrew = evt => {
     const self = this;
     const simulatorId = this.props.simulator.id;
     const files = evt.target.files;
     const reader = new FileReader();
     reader.onload = function() {
-      const csv = this.result.split('\n');
-      if (csv[0] !== 'firstName,lastName,gender,age,rank,position') {
-        alert('Invalid CSV file.');
+      const csv = this.result.split("\n");
+      if (csv[0] !== "firstName,lastName,gender,age,rank,position") {
+        alert("Invalid CSV file.");
         return;
       }
       const crew = csv.slice(1).map(c => {
-        const obj = c.split(',');
+        const obj = c.split(",");
         return {
           simulatorId,
           firstName: obj[0],
@@ -60,50 +62,52 @@ class CrewCore extends Component {
           age: parseInt(obj[3], 10),
           rank: obj[4],
           position: obj[5]
-        }
-      })
+        };
+      });
       const mutation = gql`
-      mutation AddCrew($crew: CrewInput) {
-        addCrewmember(crew: $crew)
-      }`;
+        mutation AddCrew($crew: CrewInput) {
+          addCrewmember(crew: $crew)
+        }
+      `;
       crew.forEach(c => {
         self.props.client.mutate({
           mutation,
           variables: {
             crew: c
           }
-        })
-      })
-    }
+        });
+      });
+    };
     reader.readAsText(files[0]);
-  }
-  _editable = (evt) => {
+  };
+  _editable = evt => {
     this.setState({
       editable: evt.target.checked
-    })
-  }
-   rowGetter = (i) => {
+    });
+  };
+  rowGetter = i => {
     const crew = this.props.data.crew || [];
     return crew[i];
-  }
-  _updateCrew = (updateObj) => {
+  };
+  _updateCrew = updateObj => {
     const variables = {
-      crew: {...updateObj.updated, id: updateObj.fromRowId}
-    }
+      crew: { ...updateObj.updated, id: updateObj.fromRowId }
+    };
     const mutation = gql`
-    mutation UpdateCrew($crew: CrewInput){
-      updateCrewmember(crew: $crew)
-    }`;
+      mutation UpdateCrew($crew: CrewInput) {
+        updateCrewmember(crew: $crew)
+      }
+    `;
     this.props.client.mutate({
       mutation,
       variables
     });
-  }
-  render(){
+  };
+  render() {
     if (this.props.data.loading) return null;
-    const crew = this.props.data.crew || [];
-    const {editable} = this.state;
-    const columns = [{
+    //const crew = this.props.data.crew || [];
+    //const {editable} = this.state;
+    /*const columns = [{
       key: 'firstName',
       name: 'First',
       editable
@@ -132,12 +136,18 @@ class CrewCore extends Component {
       key: 'rank',
       name: 'Rank',
       editable
-    }]
-    
-    return <div className="crew-core" style={{height: '100%', position: 'relative'}}>
-    <label> <input type="checkbox" onClick={this._editable} /> Editable</label>
-    <input type="file" onChange={this._importCrew} />
-    {crew.length > 0 && 
+    }]*/
+
+    return (
+      <div
+        className="crew-core"
+        style={{ height: "100%", position: "relative" }}
+      >
+        <label>
+          {" "}<input type="checkbox" onClick={this._editable} /> Editable
+        </label>
+        <input type="file" onChange={this._importCrew} />
+        {/*crew.length > 0 && 
       <ReactDataGrid
       enableCellSelect={true}
       columns={columns}
@@ -146,30 +156,29 @@ class CrewCore extends Component {
       minHeight={500}
       enableDragAndDrop={false}
       onGridRowsUpdated={this._updateCrew.bind(this)} />
-    }
-    </div>
+    */}
+      </div>
+    );
   }
 }
 
 const CREW_QUERY = gql`
-query Crew($simulatorId: ID){
-  crew(simulatorId: $simulatorId) {
-    id
-    firstName
-    lastName
-    position
-    age
-    rank
-    gender
+  query Crew($simulatorId: ID) {
+    crew(simulatorId: $simulatorId) {
+      id
+      firstName
+      lastName
+      position
+      age
+      rank
+      gender
+    }
   }
-}`;
+`;
 export default graphql(CREW_QUERY, {
-  options: (ownProps) => ({
+  options: ownProps => ({
     variables: {
       simulatorId: ownProps.simulator.id
     }
   })
 })(withApollo(CrewCore));
-*/
-
-export default () => <div>Crew Core</div>;
