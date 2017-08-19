@@ -4,7 +4,7 @@ import "whatwg-fetch";
 import FontAwesome from "react-fontawesome";
 import "./style.scss";
 import gql from "graphql-tag";
-import { graphql, compose } from "react-apollo";
+import { graphql, compose, withApollo } from "react-apollo";
 import ImageViewer from "./imageViewer";
 
 const ASSET_FOLDER_SUB = gql`
@@ -47,7 +47,9 @@ class AdminAssetsView extends Component {
       this.assetFolderSubscription = nextProps.data.subscribeToMore({
         document: ASSET_FOLDER_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
-          return { assetFolders: subscriptionData.data.assetFolderChange };
+          return Object.assign({}, previousResult, {
+            assetFolders: subscriptionData.data.assetFolderChange
+          });
         }
       });
     }
@@ -84,7 +86,6 @@ class AdminAssetsView extends Component {
   }
   _createObject(e) {
     const obj = {
-      id: Math.round(Math.random() * 100),
       files: e.target.files,
       simulatorId: this.refs.simulatorSelect.value || "default",
       containerId: this.state.currentContainer.id
@@ -122,9 +123,18 @@ class AdminAssetsView extends Component {
     //Just delete the object
     this.props.removeAssetObject({ id: object.id });
   }
-  _massUpload() {
-    //let files = e.target.files;
-  }
+  _massUpload = e => {
+    let files = e.target.files;
+    const obj = {
+      files,
+      simulatorId: "default",
+      folderPath: this.state.currentDirectory
+    };
+    console.log(obj);
+    this.props.uploadAsset(obj).catch(error => {
+      console.error("error", error.message);
+    });
+  };
   openModal(object) {
     this.setState({
       imageModal: {
@@ -145,27 +155,38 @@ class AdminAssetsView extends Component {
           <Row>
             <Col sm="4">
               <div className="btn-group">
+                <Button color="primary" onClick={this._createFolder.bind(this)}>
+                  <FontAwesome name="folder-open" />
+                </Button>
                 <Button
-                  type="primary"
-                  onClick={this._createFolder.bind(this)}
-                  label={<FontAwesome name="folder-open" />}
-                />
-                <Button
-                  type="primary"
+                  color="primary"
                   onClick={this._createContainer.bind(this)}
-                  label={<FontAwesome name="file" />}
-                />
-                <Button type="warning" label={<FontAwesome name="upload" />} />
+                >
+                  <FontAwesome name="file" />
+                </Button>
+                <Button color="warning" style={{ position: "relative" }}>
+                  <div
+                    style={{
+                      opacity: 0,
+                      position: "absolute",
+                      left: 0,
+                      right: 0,
+                      top: 0,
+                      bottom: 0
+                    }}
+                  >
+                    <input
+                      ref="massUpload"
+                      type="file"
+                      id="mass-upload-folder"
+                      multiple
+                      onChange={this._massUpload}
+                    />
+                  </div>
+                  <FontAwesome name="upload" />
+                </Button>
               </div>
-              <div style={{ opacity: 0, width: "0px" }}>
-                <input
-                  ref="massUpload"
-                  type="file"
-                  id="mass-upload-folder"
-                  multiple
-                  onChange={this._massUpload.bind()}
-                />
-              </div>
+
               <p>
                 <strong>
                   Path: {this.state.currentDirectory}
@@ -228,9 +249,13 @@ class AdminAssetsView extends Component {
                       );
                     })}
                   {this.props.data.assetFolders
-                    .find(
-                      folder => folder.fullPath === this.state.currentDirectory
-                    )
+                    .find(folder => {
+                      console.log(folder, this.state.currentDirectory);
+                      if (folder.fullPath === this.state.currentDirectory) {
+                        console.log(folder);
+                      }
+                      return folder.fullPath === this.state.currentDirectory;
+                    })
                     .containers.map(container => {
                       return (
                         <li key={container.id}>
@@ -390,16 +415,16 @@ const REMOVE_ASSET_CONTAINER = gql`
 
 const UPLOAD_ASSET = gql`
   mutation UploadAsset(
-    $id: Int!
     $files: [UploadedFile!]!
     $simulatorId: ID
     $containerId: ID
+    $folderPath: String
   ) {
     uploadAsset(
-      id: $id
       files: $files
       simulatorId: $simulatorId
       containerId: $containerId
+      folderPath: $folderPath
     )
   }
 `;

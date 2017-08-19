@@ -1,6 +1,6 @@
-import App from '../../app';
-import * as THREE from 'three';
-import { pubsub } from '../helpers/subscriptionManager.js';
+import App from "../../app";
+import * as THREE from "three";
+import { pubsub } from "../helpers/subscriptionManager.js";
 
 const interval = 30; // 1/30 of a second
 const updateInterval = 1000;
@@ -13,7 +13,7 @@ function distance3d(coord2, coord1) {
 
 const moveSensorContact = () => {
   App.systems.forEach(sys => {
-    if (sys.type === 'Sensors') {
+    if (sys.type === "Sensors") {
       // Loop through all of the sensor contacts
       const sensors = sys;
       sensors.contacts = sensors.contacts.map(contact => {
@@ -81,29 +81,29 @@ const moveSensorContact = () => {
 };
 const updateSensorGrids = () => {
   App.systems.forEach(sys => {
-    if (sys.type === 'Sensors') {
+    if (sys.type === "Sensors") {
       const sensors = sys;
-      pubsub.publish('sensorContactUpdate', sensors.contacts);
+      pubsub.publish("sensorContactUpdate", sensors.contacts);
     }
   });
   setTimeout(updateSensorGrids, updateInterval);
 };
 
-const activePingInterval = 6000;
+const activePingInterval = 6500;
 const passivePingInterval = 15000;
 const pingSensors = () => {
   App.systems.forEach(sys => {
-    if (sys.type === 'Sensors' && sys.pings === true) {
+    if (sys.type === "Sensors" && sys.pings === true) {
       const sensors = sys;
       // Increment the timeSincePing
       sensors.timeSincePing = sensors.timeSincePing + pingInterval;
       if (
-        (sensors.pingMode === 'active' &&
+        (sensors.pingMode === "active" &&
           sensors.timeSincePing >= activePingInterval) ||
-        (sensors.pingMode === 'passive' &&
+        (sensors.pingMode === "passive" &&
           sensors.timeSincePing >= passivePingInterval)
       ) {
-        App.handleEvent({ id: sensors.id }, 'pingSensors', {});
+        App.handleEvent({ id: sensors.id }, "pingSensors", {});
       }
     }
   });

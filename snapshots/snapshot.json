@@ -12,6 +12,7 @@
 			"stationSet": null,
 			"stations": [],
 			"mission": null,
+			"currentTimelineStep": 0,
 			"teams": [],
 			"ship": {
 				"clamps": false,
@@ -34,6 +35,7 @@
 			"stationSet": null,
 			"stations": [],
 			"mission": null,
+			"currentTimelineStep": 0,
 			"teams": [],
 			"ship": {
 				"clamps": false,
@@ -56,6 +58,7 @@
 			"stationSet": null,
 			"stations": [],
 			"mission": null,
+			"currentTimelineStep": 0,
 			"teams": [],
 			"ship": {
 				"clamps": false,
@@ -78,6 +81,7 @@
 			"stationSet": null,
 			"stations": [],
 			"mission": null,
+			"currentTimelineStep": 0,
 			"teams": [],
 			"ship": {
 				"clamps": false,
@@ -100,6 +104,7 @@
 			"stationSet": null,
 			"stations": [],
 			"mission": null,
+			"currentTimelineStep": 0,
 			"teams": [],
 			"ship": {
 				"clamps": false,
@@ -309,6 +314,7 @@
 				}
 			],
 			"mission": null,
+			"currentTimelineStep": 0,
 			"teams": [],
 			"ship": {
 				"clamps": false,
@@ -716,7 +722,6 @@
 					]
 				}
 			],
-			"timelineStep": -1,
 			"class": "Mission",
 			"id": "297c4aa8-da9e-48be-8117-cfaed0d5e80c",
 			"name": "Stormfront",
@@ -742,7 +747,6 @@
 					]
 				}
 			],
-			"timelineStep": -1,
 			"class": "Mission",
 			"id": "6f5ccc75-59d8-4da3-95fc-5a14f423d02f",
 			"name": "Intolerance",
@@ -768,7 +772,6 @@
 					]
 				}
 			],
-			"timelineStep": -1,
 			"class": "Mission",
 			"id": "ecf57e57-ac90-4f00-bc21-e9b68afffc4b",
 			"name": "Midnight Rescue",
@@ -1153,7 +1156,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9233100,
+			"timeSincePing": 9421000,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -1242,7 +1245,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9233100,
+			"timeSincePing": 9421000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -1388,7 +1391,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.9591519999999591,
+			"batteryChargeLevel": 0.9576319999999576,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2159,7 +2162,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9233100,
+			"timeSincePing": 9421000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2189,7 +2192,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9233100,
+			"timeSincePing": 9421000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3351,7 +3354,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9233100,
+			"timeSincePing": 9421000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3382,7 +3385,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9233100,
+			"timeSincePing": 9421000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3871,7 +3874,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.15206999999986034,
+			"batteryChargeLevel": 0.13496999999985906,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -4447,7 +4450,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 4416100,
+			"timeSincePing": 4604000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4478,7 +4481,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 4416100,
+			"timeSincePing": 4604000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5576,8 +5579,8 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
-				"report": "firstName,lastName,gender,age,rank,position\nCourtney,Holt,F,20,Crewman,Air Pumping Controller\nGavin,Meyer,M,23,Cadet,Air Pumping Controller\nGloria,Roach,F,27,Warrant Officer,Air Pumping Supervisor\nAlex,Hicks,M,26,Crewman,Ambassador Secretary\nLeo,Monson,M,25,Petty Officer,Archaeologist\nMara,Hines,F,25,Crewman,Armory Attendant\nBodhi,Stark,F,28,Chief Petty Officer,Assistant Counselor\nJonas,Madden,M,26,Cadet,Astrophysicist\nLucian,Holland,M,20,Ensign,Atmospheric Monitor\nJulio,Castillo,F,22,Crewman,Bartender\nMoses,Cobb,M,37,Chief Petty Officer,Biologist\nAutumn,Nguyen,F,22,Crewman,Biologist\nHadley,Gallagher,F,29,Crewman,Botany Manager\nKimberly,Cannon,F,20,Crewman,Cargo Loader\nAmelia,Delgado,F,20,Crewman,Cargo Loader\nBrecken,Grooves,M,25,Crewman,Cargo Loader\nLaila,Kerr,F,21,Crewman,Cargo Loader\nLaurel,Massey,M,22,Crewman,Cargo Loader\nMarvin,Schneider,M,20,Crewman,Cargo Loader\nAlena,Warren,F,27,Crewman,Cargo Loader\nCamden,Grimes,M,40,Chief Petty Officer,Cargo Supervisor\nAnabelle,Caldwell,F,26,Chief Petty Officer,Cargobay Chief\nLillian,Webb,F,20,Cadet,Chaos Theory Specialist\nCody,Fields,M,29,Chaplain,Chaplain\nLarry,Marquez,M,28,Chaplain,Chaplain\nGreyson,Hunter,M,21,Crewman,Chaplain Aide\nJimmy,Rojas,M,23,Crewman,Chaplain Aide\nAlonzo,Carr,M,20,Crewman,Chef\nIndia,Dean,F,22,Crewman,Chef\nZachary,Knight,M,32,Chief Petty Officer,Chef\nSean,Mcguire,M,22,Crewman,Chef\nBrandon,Webster,M,35,Chief Petty Officer,Chef\nCaylee,Sosa,F,36,Chief Petty Officer,Chief Decryption Officer\nTravis,Beltran,M,29,Chief Petty Officer,Chief Phaser Specialist\nGwen,Lynch,F,28,Chief Petty Officer,Chief Probes Officer\nCollin,Mccall,M,25,Petty Officer,Chief Programmer\nMario,Gallagher,M,28,Chief Petty Officer,Chief Railgun Specialist\nJacob,Marshall,M,34,Chief Petty Officer,Chief Torpedo Specialist\nBrittany,Glenn,F,26,Yeoman,Clerk\nIvan,Gregory,M,25,Yeoman,Clerk\nDesiree,Powell,F,25,Yeoman,Clerk\nWyatt,Stanley,M,26,Petty Officer,Client / Server Manager\nOlivia,Novak,F,24,Petty Officer,Co2 Scrubber Control Officer\nJack,Fox,M,29,Chief Petty Officer,Communications Crew Department Head\nTeresa,Boone,F,20,Crewman,Communications Officer\nBarbara,Burnett,F,22,Crewman,Communications Officer\nKylee,Farrell,F,21,Cadet,Communications Officer\nDaisy,Flowers,F,21,Crewman,Communications Officer\nBenson,Perez,M,22,Ensign,Communications Officer\nDenise,Sharp,F,23,Crewman,Communications Officer\nMilo,Bass,M,27,Chief Petty Officer,Communications Specialist\nMatilda,Oneal,F,28,Chief Petty Officer,Communications Sub-department Head\nRuby,Noble,F,21,Petty Officer,Compressor Operator\nViolet,Young,F,33,Chief Petty Officer,Computer Core Chief\nCorinne,Bernard,F,29,Warrant Officer,Computer Specialist\nJasper,Gill,M,26,Warrant Officer,Computer Specialist\nRosemary,Whitaker,F,28,Warrant Officer,Computer Specialist\nTessa,Becker,F,28,Lieutenant Junior Grade,Counselor\nEmma,Donaldson,F,34,Lieutenant Junior Grade,Crew Development Officer\nKate,Mckinney,F,29,Chief Petty Officer,Crm-114 Chief\nDarius,Clarke,M,20,Ensign,Cryonic Specialist\nMartin,Eaton,M,27,Warrant Officer,Cultural Studies Attendant\nHector,Davidson,M,22,Crewman,Custodian\nRene,Dupont,M,23,Crewman,Custodian\nAlondra,Nicholson,F,25,Crewman,Custodian\nKendall,Daugherty,M,25,Petty Officer,Decoder\nAlfred,Dunlap,M,20,Crewman,Decoder\nRaphael,Mancini,M,27,Lieutenant Commander,Deputy Chief Engineer\nAarav,Ramsey,M,33,Lieutenant Commander,Deputy Chief Of Operations\nRichard Dean,Anderson,M,35,Senior Chief Petty Officer,Deputy Chief Of Security\nMichelle,Colon,F,29,Lieutenant Commander,Deputy Communications Officer\nNathan,West,M,29,Lieutenant,Deputy Maintenance Specialist\nMarcus,Frey,M,41,Lieutenant Commander,Deputy Navigations Officer\nJared,Key,M,48,Chief Petty Officer,Deputy Phaser Specialist\nAsia,Long,F,29,Chief Warrant Officer,Deputy Quartermaster\nChristian,Farmer,M,26,Chief Petty Officer,Deputy Railgun Specialist\nRachel,Rosario,F,29,Lieutenant Commander,Deputy Tactical Officer\nEva,Wolf,F,28,Chief Petty Officer,Deputy Torpedo Specialist\nOtto,Finley,M,28,Warrant Officer,Docking Port Chief\nGino,Gentry,M,23,Petty Officer,Docking Port Officer\nNikolai,Stokes,M,20,Crewman,Docking Port Officer\nDamien,Baird,M,45,Lieutenant Commander,Duty Medical Chief\nGenesis,Dixon,F,29,Lieutenant,Duty Navigations Officer\nMaddison,Dennis,F,29,Lieutenant,Duty Surviellance Officer\nAaron,Fuller,M,20,Crewman,Electrician\nEmily,Henson,F,20,Crewman,Electrician\nOwen,Little,M,22,Crewman,Electrician\nLorenzo,Atkins,M,20,Crewman,Engineer\nCorey,Hathaway,M,22,Crewman,Engineer\nKailyn,Hensley,F,23,Crewman,Engineer\nCeleste,Pace,F,23,Crewman,Engineer\nAddilyn,Ryan,F,25,Crewman,Engineer\nCindy,Sparks,F,28,Chief Petty Officer,Entertainment & Crew Morale Chief\nAce,Bartlett,M,28,Chief Petty Officer,Environmental Specialist\nLogan,Hulick,M,29,Chief Petty Officer,Environmental Specialist\nDax,Santos,M,27,Chief Petty Officer,Environmental Specialist\nZoe,Watson,F,36,Chief Petty Officer,Environmental Specialist\nMaverick,Ballard,M,20,Crewman,Explosive Expert\nAllison,Moran,F,24,Crewman,Explosive Expert\nAlec,Mercer,M,22,Crewman,Fire Control Officer\nGarrison,Schultz,M,23,Crewman,Fire Control Officer\nRoy,Church,M,39,Warrant Officer,Fire Suppression Systems Manager\nKaden,Chaney,M,20,Crewman,Food Preparation\nJanessa,Green,F,22,Crewman,Food Preparation\nDiego,Sexton,M,29,Chief Petty Officer,Forensics\nTaryn,Faulkner,F,26,Warrant Officer,Gamma Ray Specialist\nHayley,Wu,F,21,Crewman,Genetics Lab Researcher\nLamar,Mays,M,21,Crewman,Geologist\nT’Laren,#VALUE!,M,27,Warrant Officer,Gravity Control Chief\nTanner,Edwards,M,21,Crewman,Gravity Control Officer\nDevin,Wall,M,22,Crewman,Gravity Control Officer\nEdward,Parks,M,25,Crewman,Greenhouse Caretaker\nOrion,Sandoval,M,23,Crewman,Gymnasium Supervisor\nAshton,Drake,M,29,Crewman,Hazardous Waste Expert\nOwen,King,M,23,Ensign,Hazardous Waste Expert\nSawyer,Singleton,M,21,Crewman,Hazardous Waste Expert\nCurtis,Mcgrath,M,26,Crewman,Hull Monitoring Officer\nCameron,Carpenter,M,21,Crewman,Hydroponics\nNora,Horn,F,25,Cadet,Inorganic Chemist\nFabian,Deleon,M,22,Petty Officer,Intelligence Officer\nGustavo,Rocha,M,22,Petty Officer,Intelligence Officer\nCassandra,Bentley,F,28,Chief Petty Officer,Internal Communications Operator\nLayton,Ali,M,20,Crewman,Janitor\nJessie,Anderson,F,37,Crewman,Janitor\nIsaac,Decker,M,22,Crewman,Janitor\nHugo,Miller,M,20,Crewman,Janitor\nTony,Novak,M,22,Crewman,Janitor\nKenia,Palmer,F,21,Crewman,Janitor\nNico,Ritter,M,34,Chief Petty Officer,Janitor Crew Department Head\nEzra,Santana,M,20,Cadet,Lateral Sensors Array Control\nSandra,Cortez,F,20,Crewman,Launderer \nMegan,Nolan,F,26,Petty Officer,Librarian\nBreanna,Norris,F,21,Cadet,Librarian\nNoe,Tate,M,27,Chief Petty Officer,Librarian\nAhmed,Villanueva,M,24,Crewman,Lifeguard\nFrancesca,Delacruz,F,39,Chief Petty Officer,Long Range Sensors Specialist\nLionel,Logan,M,43,Lieutenant,Maintenance Manager\nIvy,Melton,F,25,Petty Officer,Maintenance Manager\nFelix,Carey,M,25,Cadet,Maintenance Officer\nDiana,Garner,F,20,Crewman,Maintenance Officer\nPayton,Hanson,F,21,Crewman,Maintenance Officer\nJenny,Mcguire,F,20,Cadet,Maintenance Officer\nOliver,Conley,M,26,Chief Petty Officer,Marconi Cube Attendant\nRaven,Lester,F,27,Chief Petty Officer,Marconi Cube Attendant\nCyrus,Tanner,M,36,Chief Petty Officer,Marconi Cube Attendant\nDominic,Kaufman,M,51,Chief Petty Officer,Marconi Radio Operator\nCamille,Merritt,F,27,Chief Petty Officer,Marconi Radio Operator\nConnor,Wheeler,M,32,Chief Petty Officer,Marconi Radio Operator\nSidney,Irwin,F,20,Crewman,Mechanic\nSavannah,Keller,F,25,Crewman,Mechanic\nAdrian,Stevens,F,20,Crewman,Mechanic\nCora,Bond,F,29,Lieutenant,Medical Officer\nFlynn,Dalton,M,27,Chief Petty Officer,Medical Officer\nGary,Davenport,M,48,Chief Petty Officer,Medical Officer\nRonald,Fowler,M,24,Ensign,Medical Officer\nAdrian,Gould,F,48,Chief Warrant Officer,Medical Officer\nBelen,Hardin,M,31,Lieutenant Junior Grade,Medical Officer\nVictoria,Harrell,F,32,Warrant Officer,Medical Officer\nAddison,Harvey,M,30,Senior Chief Petty Officer,Medical Officer\nLindsey,House,F,40,Chief Petty Officer,Medical Officer\nZane,Li,M,32,Warrant Officer,Medical Officer\nAlyssa,Little,F,21,Crewman,Medical Officer\nParis,Mcneil,M,26,Petty Officer,Medical Officer\nIsabella,Mendoza,F,49,Senior Chief Petty Officer,Medical Officer\nLevi,Moore,M,21,Ensign,Medical Officer\nSloan,Osborne,F,26,Petty Officer,Medical Officer\nSolomon,Ramos,M,30,Lieutenant Junior Grade,Medical Officer\nSullivan,Rice,M,26,Petty Officer,Medical Officer\nNicole,Sims,F,26,Crewman,Medical Officer\nVincent,Valencia,M,38,Chief Petty Officer,Medical Officer\nDavid,Berger,M,26,Chief Petty Officer,Mepcomm Assymetric Encryption Chief\nSamson,Reyes,M,41,Chief Petty Officer,Mepcomm Symmetric Encryption Chief\nAxel,Pace,M,22,Cadet,Metallurgist\nAleena,Stewart,F,21,Crewman,Metallurgist\nElaine,Burch,F,22,Crewman,Molecular Biologist\nStephanie,Drake,F,28,Warrant Officer,Morgue Attendant\nDerek,Terrell,M,28,Warrant Officer,Nano Technology Specialist\nJane,Hobbs,F,26,Petty Officer,Navigational Array Officer\nKora,Gray,F,24,Cadet,Navigational Deflector Control\nAurelia,Smith,F,24,Crewman,Navigational Deflector Control\nTabitha,Odom,F,24,Petty Officer,Network Administrator 1\nMallory,Oilver,F,26,Petty Officer,Network Administrator 2\nMitchell,Solis,M,38,Lieutenant Junior Grade,Nuclear Physicist\nQuentin,Own,M,26,Petty Officer,On-site Technician\nIris,Nash,F,23,Cadet,Orbital Trajectory Officer\nTrey,Rush,M,39,Lieutenant Junior Grade,Organic Chemist\nWinston,Woodard,M,21,Ensign,Oxygen Generator Operator\nPatricia,Francis,F,21,Petty Officer,Paralegal Assistant\nRyan,Rivers,M,23,Petty Officer,Paralegal Assistant\nNoah,Mccarthy,M,38,Lieutenant Junior Grade,Particle Physicist\nIvan,Camacho,M,38,Chief Petty Officer,Penetration Tester\nJohn,Morse,M,29,Chief Warrant Officer,Personnel Specialist\nDanielle,Holden,F,21,Crewman,Phaser Head Loader\nRiley,Mcewan,M,24,Ensign,Phaser Head Loader\nLeonard,Moss,M,24,Petty Officer,Phaser Inspector\nJeremy,Yates,M,33,Warrant Officer,Physics Specialist\nClaudia,Heath,F,23,Crewman,Plumber\nDaniel,Rogers,M,23,Crewman,Plumber\nHazel,Stone,F,24,Crewman,Plumber\nUriel,Suarez,M,23,Crewman,Plumber\nCarley,Harper,F,21,Crewman,Pool Hall Disk Jockey\nCedric,Lawrence,M,22,Crewman,Potions Master\nBridger,Mathews,M,28,Crewman,Power Distribution Control Officer\nErik,Moon,M,20,Crewman,Power Distribution Control Officer\nTruman,Patrick,M,21,Crewman,Power Distribution Control Officer\nAdan,Fuentes,M,26,Warrant Officer,Pro-javascript Writer\nRoxanne,Bauer,F,20,Cadet,Probes Officer\nSamuel,Dudley,M,24,Crewman,Probes Officer\nArtillery,Rowe,F,23,Crewman,Probes Officer\nMckenzie,Baldwin,F,20,Petty Officer,Quality Assurance\nAndrew,Cooke,M,24,Petty Officer,Quality Assurance\nDalilah,Sweeney,F,22,Petty Officer,Quality Assurance\nElias,Harrell,M,32,Lieutenant Junior Grade,Quantum Mechanic\nSaul,Armstrong,M,23,Crewman,Quartermaster\nJazmine,Mann,F,20,Crewman,Quartermaster\nRamon,Reid,M,23,Crewman,Quartermaster\nVivian,King,F,24,Petty Officer,Rcs Thruster Control\nNaomi,Olsen,F,24,Petty Officer,Rcs Thruster Control\nAleigha,Morse,F,29,Chief Petty Officer,Reactor Core Chief\nOmar,Holder,M,21,Crewman,Reactor Officer\nDrew,Patel,M,31,Petty Officer,Reactor Officer\nBrock,Robles,M,27,Warrant Officer,Recycling Chief\nJaden,Howe,M,26,Crewman,Recycling Specialist\nAnne,Lambert,F,26,Crewman,Recycling Specialist\nKiana,Barry,F,28,Chief Warrant Officer,Repair Teams Manager\nCarter,Ward,M,50,Lieutenant,Science Department Head\nAngelo,Golden,M,26,Ensign,Science Officer\nAriel,Henry,F,24,Petty Officer,Science Officer\nDeangelo,Riggs,M,20,Crewman,Science Officer\nBrenna,Turner,F,28,Crewman,Science Officer\nJake,Cummings,M,24,Petty Officer,Secondary Computer Core Chief\nChloe,Baird,F,24,Master-at-arms,Security\nSergio,Baldwin,M,23,Master-at-arms,Security\nMorgan,Bates,F,25,Master-at-arms,Security\nBrycen,Baxter,M,25,Master-at-arms,Security\nWarren,Becker,M,26,Master-at-arms,Security\nBianca,Black,F,49,Master-at-arms,Security\nMauricio,Brandt,M,28,Master-at-arms,Security\nAlexis,Byrd,F,28,Master-at-arms,Security\nMorgan,Callahan,M,24,Master-at-arms,Security\nCarmen,Carrillo,F,23,Master-at-arms,Security\nArthur,Castro,M,24,Master-at-arms,Security\nKeira,Castro,F,24,Master-at-arms,Security\nTaylor,Clark,M,25,Master-at-arms,Security\nMark,Clements,M,23,Master-at-arms,Security\nNatasha,Cooley,F,35,Master-at-arms,Security\nAlma,Davies,M,26,Master-at-arms,Security\nAndre,Farley,M,28,Master-at-arms,Security\nAlan,Fitzpatrick,M,29,Master-at-arms,Security\nRandy,Fleming,M,32,Master-at-arms,Security\nBethany,Guzman,F,37,Master-at-arms,Security\nSamara,Hartman,F,29,Master-at-arms,Security\nAlice,Ibarra,F,29,Master-at-arms,Security\nRocco,Landry,M,28,Master-at-arms,Security\nAmos,Lin,M,29,Master-at-arms,Security\nBobby,Lloyd,M,27,Master-at-arms,Security\nChris,Martin,M,41,Master-at-arms,Security\nMonica,Maxwell,F,27,Master-at-arms,Security\nJamal,Meza,M,41,Master-at-arms,Security\nMikaela,Neal,F,27,Master-at-arms,Security\nKyree,Ortega,F,28,Master-at-arms,Security\nFernanda,Pennington,F,33,Master-at-arms,Security\nReagan,Perry,F,34,Master-at-arms,Security\nSofia,Potter,F,28,Master-at-arms,Security\nAntoine,Preston,M,27,Master-at-arms,Security\nVanessa,Rudd,F,29,Master-at-arms,Security\nKaren,Tucker,F,35,Master-at-arms,Security\nCasey,Wilcox,M,28,Master-at-arms,Security\nFrances,Bowers,F,47,Senior Chief Petty Officer,Senior Construction Mechanic\nPierre,Dubois,M,29,Senior Chief Petty Officer,Senior Cryptologic Specialist\nAngel,Diaz,M,28,Senior Chief Petty Officer,Senior Equipment Operator\nGwyneth,Martin,F,40,Senior Chief Petty Officer,Senior Information Systems Specialist\nKyle,Haas,M,30,Senior Chief Petty Officer,Senior Intelligence Specialist\nKyson,Mcknight,F,52,Senior Chief Petty Officer,Senior Paralegal\nUlises,Rose,M,29,Senior Chief Petty Officer,Senior Quartermaster\nByron,Sheppard,M,27,Chief Petty Officer,Sensor Systems Manager\nNancy,Bowen,F,23,Crewman,Sensors Officer\nAmara,Chandler,F,21,Crewman,Sensors Officer\nMiranda,Roberts,F,21,Crewman,Sensors Officer\nMia,Stafford,F,36,Warrant Officer,Shield Control Chief\nLincoln,Bates,M,21,Crewman,Shield Control Officer\nClaire,Wise,F,22,Cadet,Shield Control Officer\nBreanna,Rhodes,F,21,Cadet,Ship Photographer\nWesley,Wilson,M,29,Chief Warrant Officer,Ship Serviceman\nDylan,Mills,M,28,Chief Petty Officer,Short Range Sensors Specialist\nAdrienne,Knight,F,31,Chief Petty Officer,Shuttlebay Chief\nShannon,Anthony,F,22,Crewman,Shuttlebay Control Officer\nLola,Proctor,F,23,Crewman,Shuttlebay Control Officer\nLeroy,Sellers,M,22,Ensign,Shuttlebay Control Officer\nCherish,Hodges,F,27,Petty Officer,Sous Chef\nXavi,Ingram,F,34,Lieutenant,Stellar Cartographer\nFrank,Crane,M,29,Petty Officer,Stellar Cartographer Assistant\nRussell,Curry,M,23,Petty Officer,Stellar Cartographer Assistant\nYousef,Kataan,M,23,Petty Officer,Stellar Cartographer Assistant\nVance,Levy,M,27,Chief Petty Officer,Strategic Operations Officer\nBraxton,Hess,M,24,Crewman,Structural Engineer\nParker,Hill,M,20,Crewman,Structural Engineer\nSeamus,Stone,M,23,Crewman,Structural Engineer\nMolly,Day,F,22,Crewman,Sub-light Engine Control\nJalen,Gardner,M,25,Petty Officer,Sub-light Engine Control\nMakenna,Ball,F,22,Crewman,Swim Instructor\nHolly,Collins,F,24,Crewman,Tailor\nVictor,Williamson,M,57,Civilian,Teacher\nEliza,Wells,F,25,Petty Officer,Temperature Control\nDonald,Pope,M,26,Crewman,Theater Projector Operator\nEmmett,Krueger,M,22,Crewman,Thermal Imaging\nGage,Vance,M,45,Petty Officer,Thruster Coolant Control\nGeorge,Austin,M,22,Crewman,Torpedo Loader\nRonnie,Ford,F,23,Crewman,Torpedo Loader\nHarley,Leon,F,26,Crewman,Torpedo Loader\nPablo,Rivas,M,21,Crewman,Torpedo Loader\nMack,Shannon,M,26,Petty Officer,Torpedo Loader\nNolan,Hayes,M,25,Petty Officer,Tractor Beam Control Officer\nAaden,Frost,M,22,Crewman,Tractor Beam Officer\nCesar,Ramirez,M,20,Crewman,Tractor Beam Officer\nJade,Barnes,F,28,Chief Petty Officer,Transporter Chief\nRosa,Kline,F,20,Crewman,Transporter Officer\nAaliyah,Valentine,F,22,Crewman,Transporter Officer\nAlvin,Marks,M,27,Chief Petty Officer,Turbolift Maintenance Officer\nRex,Carney,M,29,Crewman,Water Pumping\nRodrigo,Orr,M,20,Crewman,Water Pumping\nHadassah,Haddad,M,24,Crewman,Water Pumping Supervisor\nPhillip,Buck,M,21,Crewman,Weapons Control Understudy\nAspen,Coleman,F,23,Crewman,Weapons Control Understudy\nConrad,Huber,M,28,Warrant Officer,Weapons Crew Department Head\nMajor,Scott,M,21,Cadet,Weapons Crew Manager\nSkylar,Carson,M,22,Crewman,Weapons Manager\nCatherine,Mullen,F,22,Ensign,Weapons Sub-department Head\nDouglas,Blair,M,23,Ensign,Welder\nChristine,Nichols,F,27,Crewman,Welder\nBenjamin,Sloan,M,22,Crewman,Welder\nAtticus,Ewing,M,23,Petty Officer,Work Bee Control Room Officer\nLeland,Gannon,M,27,Petty Officer,Work Bee Control Room Officer\nJonathan,Howell,M,22,Petty Officer,Work Bee Control Room Officer\nMason,Mccormick,M,27,Chief Petty Officer,Wormhole Generator Operator\nJason,Beck,M,29,Lieutenant,Zoology Lab Technican",
+				"damaged": false,
+				"report": null,
 				"requested": false,
 				"reactivationCode": null,
 				"reactivationRequester": null,
@@ -5587,8 +5590,8 @@
 			"class": "Sensors",
 			"domain": "external",
 			"pings": true,
-			"pingMode": "manual",
-			"timeSincePing": 3191000,
+			"pingMode": "active",
+			"timeSincePing": 1100,
 			"scanResults": "",
 			"scanRequest": "Course!",
 			"processedData": "",
@@ -5652,6 +5655,35 @@
 					"infrared": false,
 					"cloaked": false,
 					"destroyed": false
+				},
+				{
+					"id": "ef97df39-88fd-4f14-afed-52893b1158ea",
+					"sensorId": "22a0bfdd-430a-4fd1-aedc-563830f49fc8",
+					"class": "SensorContact",
+					"name": "Contact",
+					"size": 2.1,
+					"icon": "/Sensor Contacts/Icons/Outlaw Star",
+					"color": "#0f0",
+					"picture": "/Sensor Contacts/Pictures/N",
+					"speed": 0,
+					"velocity": {
+						"x": 0,
+						"y": 0,
+						"z": 0
+					},
+					"location": {
+						"x": -0.41592950819672575,
+						"y": 0.4319442622950809,
+						"z": 0
+					},
+					"destination": {
+						"x": -0.4184,
+						"y": 0.4361,
+						"z": 0
+					},
+					"infrared": false,
+					"cloaked": false,
+					"destroyed": false
 				}
 			],
 			"armyContacts": [
@@ -5690,7 +5722,7 @@
 					"class": "SensorContact",
 					"name": "Contact",
 					"size": 2.1,
-					"icon": "/Sensor Contacts/Icons/N",
+					"icon": "/Sensor Contacts/Icons/Outlaw Star",
 					"color": "#0f0",
 					"picture": "/Sensor Contacts/Pictures/N",
 					"speed": 0,
@@ -5737,7 +5769,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 4416100,
+			"timeSincePing": 4604000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6705,7 +6737,7 @@
 			"id": "local-client",
 			"flightId": "4197a7c9-1a46-45b3-8462-ee91ec8583d4",
 			"simulatorId": "171c1832-85c3-4053-bc2a-b326f2892805",
-			"station": "Flight",
+			"station": "Sensors",
 			"loginName": "Alex",
 			"loginState": "login",
 			"sentPing": null,
@@ -11528,7 +11560,7 @@
 		{
 			"id": "9d21fa85-d919-4a39-a27e-23524adc1a03",
 			"name": "default",
-			"config": "{\"settings\":{\"hasHeaders\":true,\"constrainDragToContainer\":true,\"reorderEnabled\":true,\"selectionEnabled\":true,\"popoutWholeStack\":false,\"blockedPopoutsThrowError\":true,\"closePopoutsOnUnload\":true,\"showPopoutIcon\":false,\"showMaximiseIcon\":true,\"showCloseIcon\":true,\"responsiveMode\":\"onload\"},\"dimensions\":{\"borderWidth\":5,\"minItemHeight\":10,\"minItemWidth\":10,\"headerHeight\":20,\"dragProxyWidth\":300,\"dragProxyHeight\":200},\"labels\":{\"close\":\"close\",\"maximise\":\"maximise\",\"minimise\":\"minimise\",\"popout\":\"open in new window\",\"popin\":\"pop in\",\"tabDropdown\":\"additional tabs\"},\"content\":[{\"type\":\"row\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"content\":[{\"type\":\"column\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"width\":65.4079121711149,\"content\":[{\"type\":\"row\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"height\":47.59311131860152,\"content\":[{\"type\":\"column\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"width\":25,\"content\":[{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"width\":25,\"height\":30,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"EngineControlCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"EngineControlCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":70,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"NavigationCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"NavigationCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]}]},{\"type\":\"column\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"width\":25,\"content\":[{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"width\":25,\"height\":50,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"ThrusterCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"ThrusterCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":50,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"DockingCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"DockingCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]}]},{\"type\":\"stack\",\"width\":50,\"height\":50,\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"SensorsGridCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"SensorsGridCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]}]},{\"type\":\"row\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"height\":52.406888681398485,\"content\":[{\"type\":\"row\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"height\":100,\"width\":50,\"content\":[{\"type\":\"column\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"width\":50,\"content\":[{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"width\":50,\"height\":53.4938865414007,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"TargetingCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"TargetingCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":19.213793353787505,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"PhaserCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"PhaserCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":27.292320104811797,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"TorpedoCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"TorpedoCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]}]},{\"type\":\"column\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"width\":50,\"content\":[{\"type\":\"row\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"height\":29.37720954337646,\"content\":[{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":25,\"width\":50,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"TransporterCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"TransporterCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"width\":50,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"TractorBeamCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"TractorBeamCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":25.33794772107867,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"StealthFieldCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"StealthFieldCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":45.284842735544856,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"ShieldControlCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"ShieldControlCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]}]}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"width\":25,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"SensorsCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"SensorsCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"column\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"width\":25,\"content\":[{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"width\":25,\"height\":38.17204301075269,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"DecodingCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"DecodingCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true},{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"LRCommCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"LRCommCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":36.82795698924731,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"CommShortRangeCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"CommShortRangeCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":25,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"InternalCommCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"InternalCommCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]}]}]}]},{\"type\":\"column\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"width\":34.5920878288851,\"content\":[{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"width\":34.5920878288851,\"height\":50,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"DamageControlCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"DamageControlCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":50,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"DamageReportsCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"DamageReportsCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]}]}]}],\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"openPopouts\":[],\"maximisedItemId\":null}",
+			"config": "{\"settings\":{\"hasHeaders\":true,\"constrainDragToContainer\":true,\"reorderEnabled\":true,\"selectionEnabled\":true,\"popoutWholeStack\":false,\"blockedPopoutsThrowError\":true,\"closePopoutsOnUnload\":true,\"showPopoutIcon\":false,\"showMaximiseIcon\":true,\"showCloseIcon\":true,\"responsiveMode\":\"onload\",\"tabOverlapAllowance\":0,\"reorderOnTabMenuClick\":true,\"tabControlOffset\":10},\"dimensions\":{\"borderWidth\":5,\"borderGrabWidth\":15,\"minItemHeight\":10,\"minItemWidth\":10,\"headerHeight\":20,\"dragProxyWidth\":300,\"dragProxyHeight\":200},\"labels\":{\"close\":\"close\",\"maximise\":\"maximise\",\"minimise\":\"minimise\",\"popout\":\"open in new window\",\"popin\":\"pop in\",\"tabDropdown\":\"additional tabs\"},\"content\":[{\"type\":\"row\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"content\":[{\"type\":\"column\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"width\":65.4079121711149,\"content\":[{\"type\":\"row\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"height\":47.59311131860152,\"content\":[{\"type\":\"column\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"width\":25,\"content\":[{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"width\":25,\"height\":30,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"EngineControlCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"EngineControlCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":70,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"NavigationCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"NavigationCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]}]},{\"type\":\"column\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"width\":25,\"content\":[{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"width\":25,\"height\":50,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"ThrusterCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"ThrusterCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":50,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"DockingCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"DockingCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]}]},{\"type\":\"stack\",\"width\":50,\"height\":50,\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"SensorsGridCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"SensorsGridCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]}]},{\"type\":\"row\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"height\":52.406888681398485,\"content\":[{\"type\":\"row\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"height\":100,\"width\":50,\"content\":[{\"type\":\"column\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"width\":50,\"content\":[{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"width\":50,\"height\":53.4938865414007,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"TargetingCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"TargetingCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":19.213793353787505,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"PhaserCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"PhaserCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":27.292320104811797,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"TorpedoCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"TorpedoCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]}]},{\"type\":\"column\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"width\":50,\"content\":[{\"type\":\"row\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"height\":29.37720954337646,\"content\":[{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":25,\"width\":50,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"TransporterCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"TransporterCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"width\":50,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"TractorBeamCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"TractorBeamCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":25.33794772107867,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"StealthFieldCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"StealthFieldCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":45.284842735544856,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"ShieldControlCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"ShieldControlCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]}]}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"width\":25,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"SensorsCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"SensorsCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"column\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"width\":25,\"content\":[{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"width\":25,\"height\":38.17204301075269,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"DecodingCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"DecodingCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true},{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"LRCommCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"LRCommCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":36.82795698924731,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"CommShortRangeCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"CommShortRangeCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":25,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"InternalCommCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"InternalCommCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]}]}]}]},{\"type\":\"column\",\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"width\":34.5920878288851,\"content\":[{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"width\":34.5920878288851,\"height\":50,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"DamageControlCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"DamageControlCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]},{\"type\":\"stack\",\"header\":{},\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"activeItemIndex\":0,\"height\":50,\"content\":[{\"type\":\"component\",\"component\":\"core-wrapper\",\"props\":{\"comp\":\"DamageReportsCore\",\"editable\":false,\"simulator\":{\"id\":\"171c1832-85c3-4053-bc2a-b326f2892805\"}},\"title\":\"DamageReportsCore\",\"componentName\":\"lm-react-component\",\"isClosable\":true,\"reorderEnabled\":true}]}]}]}],\"isClosable\":true,\"reorderEnabled\":true,\"title\":\"\",\"openPopouts\":[],\"maximisedItemId\":null}",
 			"class": "CoreLayout"
 		}
 	],
@@ -11755,6 +11787,190 @@
 			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
 			"name": "Generic",
 			"class": "AssetContainer"
+		},
+		{
+			"id": "32950767-61ad-4a67-9bfb-09f4b4235cb0",
+			"folderPath": "/Comm Images",
+			"fullPath": "/Comm Images/Cheraan",
+			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
+			"name": "Cheraan",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "464220ac-7431-4101-ae18-cbcf79985718",
+			"folderPath": "/Comm Images",
+			"fullPath": "/Comm Images/DC",
+			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
+			"name": "DC",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "07458566-651f-4f58-b523-bcf42a497b2c",
+			"folderPath": "/Comm Images",
+			"fullPath": "/Comm Images/Dynarri",
+			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
+			"name": "Dynarri",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "d6252391-af92-4d90-bbdc-1cac9d72cefc",
+			"folderPath": "/Comm Images",
+			"fullPath": "/Comm Images/General Use",
+			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
+			"name": "General Use",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "3468c81e-47cd-4836-822f-4323fdc41e1b",
+			"folderPath": "/Comm Images",
+			"fullPath": "/Comm Images/GREENPEACE",
+			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
+			"name": "GREENPEACE",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "ed9ee759-6846-4281-8359-0334031551cc",
+			"folderPath": "/Comm Images",
+			"fullPath": "/Comm Images/New Earth",
+			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
+			"name": "New Earth",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "4494370e-659e-45d4-80fc-45f490953310",
+			"folderPath": "/Comm Images",
+			"fullPath": "/Comm Images/Orion",
+			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
+			"name": "Orion",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "29268816-f168-4abf-9a2a-a4823e27c815",
+			"folderPath": "/Comm Images",
+			"fullPath": "/Comm Images/Soviet",
+			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
+			"name": "Soviet",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "3eb5faa9-8bb7-4281-a853-0d8976f9ee58",
+			"folderPath": "/Comm Images",
+			"fullPath": "/Comm Images/Symbol",
+			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
+			"name": "Symbol",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "7a6e6a1c-6e8f-4f96-9b0d-6f1e03958a31",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Anomaly",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "177a0e60-aeca-4e01-bb8e-1ca7b33b7ef1",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Dot",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Dot",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "fa4c9c88-89e2-4091-bb6b-93faaac5dd1a",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Generic Target",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Generic Target",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "0ff16903-cf6c-44db-818b-70e395fae09e",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Generic X",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Generic X",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "399985a8-0e94-4a09-af58-998768a7c8ce",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Gunboat",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Gunboat",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "5e9aaf1c-8e8b-44d1-be02-b373fa0c62dc",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Infared",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Infared",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "c39cd0a9-7afd-47ab-854a-6c8f139cf85c",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/medical",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "medical",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "3a2c729b-1c41-4b96-bfca-09f46151c671",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Outlaw Star",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Outlaw Star",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "76a5b6b5-2f0a-4b48-8e1b-8d596ec7796c",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Peacekeeper",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Peacekeeper",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "4d79b541-8c81-4c11-85b9-584e880815b6",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Satellite",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Satellite",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "688e3cbc-ec06-470e-9f7e-f76da9d0576c",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Soviet",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Soviet",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "515fdbfc-3be5-45e7-bc53-11d78e9cdabe",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Star",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Star",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "1ef03090-8333-40df-92dd-6a15958c07aa",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Stazi",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Stazi",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "b824f9d6-01ef-4f83-b42b-8fde94eeaf9f",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Sword",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Sword",
+			"class": "AssetContainer"
 		}
 	],
 	"assetObjects": [
@@ -11919,10 +12135,194 @@
 			"url": "/assets/Comm Images/Generic/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
+		},
+		{
+			"id": "b329e514-e0d3-401e-9604-5c49b4717347",
+			"containerPath": "/Comm Images",
+			"fullPath": "/Comm Images/Cheraan/default.png",
+			"url": "/assets/Comm Images/Cheraan/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "9d23de6c-4203-4283-8b3d-d913e8926866",
+			"containerPath": "/Comm Images",
+			"fullPath": "/Comm Images/DC/default.png",
+			"url": "/assets/Comm Images/DC/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "7692656c-1f0e-41db-851b-f419e97efc46",
+			"containerPath": "/Comm Images",
+			"fullPath": "/Comm Images/Dynarri/default.png",
+			"url": "/assets/Comm Images/Dynarri/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "292c92bc-efd5-41e5-8adc-732a9d370af3",
+			"containerPath": "/Comm Images",
+			"fullPath": "/Comm Images/General Use/default.png",
+			"url": "/assets/Comm Images/General Use/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "558b3d75-83b6-404a-8675-90d092d090ce",
+			"containerPath": "/Comm Images",
+			"fullPath": "/Comm Images/GREENPEACE/default.png",
+			"url": "/assets/Comm Images/GREENPEACE/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "792b00c3-da5e-476e-9029-b7c28f0e8451",
+			"containerPath": "/Comm Images",
+			"fullPath": "/Comm Images/New Earth/default.png",
+			"url": "/assets/Comm Images/New Earth/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "9483b12b-a5fb-4951-943d-0e0512c9d061",
+			"containerPath": "/Comm Images",
+			"fullPath": "/Comm Images/Orion/default.png",
+			"url": "/assets/Comm Images/Orion/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "21ea4882-3355-40d0-a99c-5c29181740b3",
+			"containerPath": "/Comm Images",
+			"fullPath": "/Comm Images/Soviet/default.png",
+			"url": "/assets/Comm Images/Soviet/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "53c11692-30ef-48c9-b774-dcf67f9601e1",
+			"containerPath": "/Comm Images",
+			"fullPath": "/Comm Images/Symbol/default.png",
+			"url": "/assets/Comm Images/Symbol/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "0371e5cb-3dd5-4b66-a24e-dbd7f85c0b03",
+			"containerPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Anomaly/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "b8a0e975-e4db-4ce2-aa87-58b102a963ff",
+			"containerPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Dot/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Dot/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "ebc4037c-31ef-4c1d-84f9-2a135ed750a9",
+			"containerPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Generic Target/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Generic Target/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "6138dad6-003e-433e-9d06-de293427921f",
+			"containerPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Generic X/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Generic X/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "c061b2a9-37f7-4401-97fb-c3849def712f",
+			"containerPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Gunboat/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Gunboat/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "b7053079-b7f5-4589-b7cf-bc8e9cef3473",
+			"containerPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Infared/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Infared/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "ec9e0487-3b29-49c8-a9d1-e35a9a6b484a",
+			"containerPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/medical/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/medical/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "0679ef04-a3de-452c-8809-45d8b830b0b5",
+			"containerPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Outlaw Star/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Outlaw Star/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "a965f9c9-7607-4cae-ae79-ff805484ecc5",
+			"containerPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Peacekeeper/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Peacekeeper/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "665c0cf4-a396-4470-b67b-613cecdd2fc2",
+			"containerPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Satellite/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Satellite/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "ada2360a-648c-4e95-997d-62ad1a30ac5a",
+			"containerPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Soviet/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Soviet/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "33fb4e83-edd2-420c-b9eb-25dfc5a948bf",
+			"containerPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Star/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Star/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "28618e60-166c-48dc-a253-58276913a7ed",
+			"containerPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Stazi/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Stazi/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "0cc7bcc6-7692-434a-90f4-2341de8e0fbd",
+			"containerPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Sword/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Sword/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
 		}
 	],
 	"viewscreens": [],
-	"snapshotVersion": 28311,
-	"version": 28311,
-	"timestamp": "2017-08-17T23:10:24.936Z"
+	"snapshotVersion": 422,
+	"version": 422,
+	"timestamp": "2017-08-19T17:10:14.754Z"
 }

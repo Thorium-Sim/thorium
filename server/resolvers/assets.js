@@ -4,6 +4,8 @@ import electron from "electron";
 import uuid from "uuid";
 import mkdirp from "mkdirp";
 import App from "../../app";
+import * as Classes from "../classes";
+import { pubsub } from "../helpers/subscriptionManager.js";
 
 let assetDir = path.resolve("./assets/");
 if (electron.app) {
@@ -20,7 +22,6 @@ export const AssetsQueries = {
     const container = App.assetContainers.find(obj => {
       return obj.fullPath === assetKey;
     });
-    console.log(container);
     if (!container) return {};
     return (
       App.assetObjects.find(
@@ -88,11 +89,50 @@ export const AssetsMutations = {
 
     return "";
   },
-  async uploadAsset(root, { files, simulatorId, containerId }, context) {
-    const { folderPath, fullPath } = App.assetContainers.find(
+  async uploadAsset(root, args, context) {
+    const {
+      files,
+      simulatorId,
+      containerId,
+      folderPath: givenFolderPath
+    } = args;
+    console.log("Args", args);
+    let container = App.assetContainers.find(
       container => containerId === container.id
     );
+    let folderPath = givenFolderPath,
+      fullPath;
+    if (container) {
+      folderPath = container.folderPath;
+      fullPath = container.fullPath;
+    }
+    console.log(fullPath);
     files.forEach(file => {
+      // First, check to see if there is a container
+      let container = App.assetContainers.find(
+        container => containerId === container.id
+      );
+      if (!container) {
+        //Lets make a container for this asset
+        const name = file.originalname.replace(/(\..{3})/gi, "");
+        const folder = App.assetFolders.find(f => f.fullPath === folderPath);
+        const folderId = folder && folder.id;
+        console.log("FolderPath", folderPath, givenFolderPath, name, folderId);
+
+        const containerFullPath = folderPath + "/" + name;
+        const params = {
+          name,
+          folderId,
+          folderPath,
+          fullPath: containerFullPath
+        };
+        App.assetContainers.push(new Classes.AssetContainer(params));
+        container = App.assetContainers.find(
+          container => container.fullPath === containerFullPath
+        );
+        folderPath = container.folderPath;
+        fullPath = container.fullPath;
+      }
       const extension = file.originalname.substr(
         file.originalname.lastIndexOf(".")
       );
@@ -128,6 +168,7 @@ export const AssetsMutations = {
         context
       );
     });
+    pubsub.publish("assetFolderChange", App.assetFolders);
     return "";
   }
 };
