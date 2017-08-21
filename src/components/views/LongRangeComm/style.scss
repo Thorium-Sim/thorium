@@ -3,7 +3,7 @@
   font-size: 10px;
   ul {
     height: 100%;
-    overflow: scroll;
+    overflow-y: scroll;
     background-color: lightgray;
     .active {
       background-color: white;
@@ -15,7 +15,7 @@
     white-space: pre-wrap;
     border-top: solid 0.5px gray;
     height: 100%;
-    overflow: scroll;
+    overflow-y: scroll;
   }
   pre:first-child{
     border-top: none;
@@ -39,7 +39,7 @@
     padding: 20px;
     margin: 20px 0;
     height: 30vh;
-    overflow: scroll;
+    overflow-y: scroll;
   }
   .sat-container {
     height: 40vh;

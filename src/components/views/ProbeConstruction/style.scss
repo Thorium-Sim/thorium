@@ -64,7 +64,7 @@
     }
     .equipmentList {
       padding-top: 0;
-      overflow: scroll;
+      overflow-y: scroll;
     }
     .equipmentItem:nth-child(odd) {
       background-color: rgba(255, 255, 255, 0.1);

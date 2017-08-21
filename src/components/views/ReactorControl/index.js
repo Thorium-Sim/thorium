@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button, Card } from "reactstrap";
-import Immutable from "immutable";
 import Measure from "react-measure";
 
 import ReactorModel from "./model";
@@ -10,8 +9,9 @@ import "./style.scss";
 
 const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
-    systemsUpdate(simulatorId: $simulatorId) {
+    systemsUpdate(simulatorId: $simulatorId, power: true) {
       id
+      name
       power {
         power
       }
@@ -55,12 +55,9 @@ class ReactorControl extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({
-              reactors: subscriptionData.data.reactorUpdate
-            })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            reactors: subscriptionData.data.reactorUpdate
+          });
         }
       });
       this.systemSub = nextProps.data.subscribeToMore({
@@ -69,10 +66,9 @@ class ReactorControl extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ systems: subscriptionData.data.systemsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            systems: subscriptionData.data.systemsUpdate
+          });
         }
       });
     }
@@ -191,7 +187,7 @@ class ReactorControl extends Component {
                 </Row>
                 <Row>
                   {efficiencies.map(e =>
-                    <Col sm={6}>
+                    <Col sm={6} key={e.label}>
                       <Button
                         block
                         className={
@@ -209,9 +205,10 @@ class ReactorControl extends Component {
                   )}
                 </Row>
               </Col>
-            : <Col sm={{size: 4, offset: 2}}>
+            : <Col sm={{ size: 4, offset: 2 }}>
                 {efficiencies.map(e =>
                   <Button
+                    key={e.label}
                     block
                     className={
                       e.efficiency === reactor.efficiency ? "active" : ""
@@ -253,6 +250,7 @@ const REACTOR_QUERY = gql`
     }
     systems(simulatorId: $simulatorId, power: true) {
       id
+      name
       power {
         power
       }

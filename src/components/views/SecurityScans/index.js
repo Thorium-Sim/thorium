@@ -56,6 +56,7 @@ class SecurityScans extends Component {
     if (!this.sensorsSubscription && !nextProps.data.loading) {
       this.sensorsSubscription = nextProps.data.subscribeToMore({
         document: SENSOR_SUB,
+        variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           const returnResult = Immutable.Map(previousResult);
           return returnResult
@@ -64,8 +65,8 @@ class SecurityScans extends Component {
         }
       });
     }
-    const nextSensors = nextProps.data.sensors[0];
     if (!nextProps.data.loading) {
+      const nextSensors = nextProps.data.sensors[0];
       if (this.props.data.loading) {
         //First time load
         //Remove the first line of metadata;
@@ -197,8 +198,8 @@ class SecurityScans extends Component {
                   {decks
                     .concat()
                     .sort((a, b) => {
-                      if (a.number > b.number) return -1;
-                      if (b.number > a.number) return 1;
+                      if (a.number > b.number) return 1;
+                      if (b.number > a.number) return -1;
                       return 0;
                     })
                     .map(d =>

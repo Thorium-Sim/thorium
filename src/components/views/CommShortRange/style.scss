@@ -5,7 +5,7 @@
   .commList {
     background-color: gray;
     height: 50px;
-    overflow: scroll;
+    overflow-y: scroll;
     .selected {
       background-color: darkgray;
     }

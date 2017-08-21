@@ -96,9 +96,12 @@ class GridDom extends Component {
   }
   componentWillUnmount() {
     clearTimeout(this.contactTimeout);
+    this.contactTimeout = null;
   }
   contactLoop = () => {
-    this.contactTimeout = setTimeout(this.contactLoop, this.interval);
+    if (this.contactTimeout) {
+      this.contactTimeout = setTimeout(this.contactLoop, this.interval);
+    } else return;
     if (!this.props.data.loading) {
       const {
         data: { sensorContacts: contacts },

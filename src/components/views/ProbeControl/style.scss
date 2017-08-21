@@ -14,7 +14,7 @@
   }
   .equipment {
     height: 60vh;
-    overflow: scroll;
+    overflow-y: scroll;
   }
   .querying {
     font-size: 33px;
@@ -28,7 +28,7 @@
     margin: 20px 0;
     height: 30vh;
     width: 100%;
-    overflow: scroll;
+    overflow-y: scroll;
   }
 }
 
