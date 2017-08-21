@@ -49,6 +49,7 @@ class MissionsConfig extends Component {
       this.missionSubscription = nextProps.data.subscribeToMore({
         document: MISSION_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
+          console.log(previousResult, subscriptionData);
           return Object.assign({}, previousResult, {
             missions: subscriptionData.data.missionsUpdate
           });

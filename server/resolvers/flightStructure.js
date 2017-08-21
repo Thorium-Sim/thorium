@@ -78,7 +78,9 @@ export const FlightStructureMutations = {
   changeSimulatorAlertLevel(root, args, context) {
     App.handleEvent(args, "changeSimulatorAlertLevel", context);
   },
-
+  setSimulatorTimelineStep(root, args, context) {
+    App.handleEvent(args, "setSimulatorTimelineStep", context);
+  },
   // Timeline
   addTimelineStep(root, args, context) {
     App.handleEvent(
@@ -108,6 +110,11 @@ export const FlightStructureMutations = {
   },
   updateTimelineStepItem(root, args, context) {
     App.handleEvent(args, "updateTimelineStepItem", context);
+  },
+  triggerMacros(root, { simulatorId, macros }, context) {
+    macros.forEach(({ event, args }) => {
+      App.handleEvent(Object.assign({ simulatorId }, JSON.parse(args)), event);
+    });
   },
 
   // Station
@@ -144,7 +151,10 @@ export const FlightStructureSubscriptions = {
   stationSetUpdate: rootValue => {
     return rootValue;
   },
-  missionsUpdate: rootValue => {
+  missionsUpdate: (rootValue, { missionId }) => {
+    if (missionId) {
+      return rootValue.filter(m => m.id === missionId);
+    }
     return rootValue;
   },
   simulatorsUpdate: (rootValue, { simulatorId, template }) => {
@@ -194,9 +204,30 @@ export const FlightStructureTypes = {
     }
   },
   Mission: {
+    id(rootValue) {
+      const mission = rootValue.timeline
+        ? rootValue
+        : App.missions.find(m => m.id === rootValue);
+      return mission.id;
+    },
+    name(rootValue) {
+      const mission = rootValue.timeline
+        ? rootValue
+        : App.missions.find(m => m.id === rootValue);
+      return mission.name;
+    },
+    description(rootValue) {
+      const mission = rootValue.timeline
+        ? rootValue
+        : App.missions.find(m => m.id === rootValue);
+      return mission.description;
+    },
     timeline(rootValue) {
-      return Object.keys(rootValue.timeline).sort().map(k => {
-        const value = rootValue.timeline[k];
+      const mission = rootValue.timeline
+        ? rootValue
+        : App.missions.find(m => m.id === rootValue);
+      return Object.keys(mission.timeline).sort().map(k => {
+        const value = mission.timeline[k];
         value.order = k;
         return value;
       });

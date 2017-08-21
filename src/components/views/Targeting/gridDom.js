@@ -5,8 +5,6 @@ import { Asset } from "../../../helpers/assets";
 const speedLimit = 20;
 const speedConstant1 = 2.5 / 200;
 const speedConstant2 = 1.5 / 200;
-const crosshairPath =
-  "M0,77.03L15,77.03L15,52.03L52.5,15L77.5,15L77.5,0L57.5,0L50,10L10,50L0,57.03L0,77.03Z";
 
 class TargetingGridDom extends Component {
   constructor(props) {

@@ -45,6 +45,16 @@ App.on("sensorScanCancel", ({ id }) => {
     App.systems.filter(s => s.type === "Sensors")
   );
 });
+App.on("setPresetAnswers", ({ simulatorId, domain, presetAnswers }) => {
+  const system = App.systems.find(
+    sys => sys.simulatorId === simulatorId && sys.domain === domain
+  );
+  system && system.setPresetAnswers(presetAnswers);
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});
 
 // Contacts
 App.on("createSensorContact", ({ id, contact }) => {

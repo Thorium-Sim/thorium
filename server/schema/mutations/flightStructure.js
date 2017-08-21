@@ -15,6 +15,7 @@ updateTimelineStep(simulatorId: ID, missionId: ID, timelineStepId: ID!, name: St
 addTimelineItemToTimelineStep(simulatorId: ID, missionId: ID, timelineStepId: ID!, timelineItem: TimelineitemInput!):String
 removeTimelineStepItem(simulatorId: ID, missionId: ID, timelineStepId: ID!, timelineItemId: ID!): String
 updateTimelineStepItem(simulatorId: ID, missionId: ID, timelineStepId: ID!, timelineItemId: ID!, updateTimelineItem: TimelineitemInput!): String
+triggerMacros(simulatorId: ID!, macros: [MacroInput]!): String
 
 createStationSet(name: String!, simulatorId: ID!):String
 removeStationSet(stationSetID: ID!):String

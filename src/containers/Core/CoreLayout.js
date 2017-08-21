@@ -8,7 +8,15 @@ import { Cores } from "../../components/views";
 import { graphql, withApollo, ApolloProvider } from "react-apollo";
 import gql from "graphql-tag";
 import IssueTracker from "../../components/admin/IssueTracker";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ListGroup,
+  ListGroupItem
+} from "reactstrap";
 import { Link } from "react-router";
 import { client } from "../../App";
 import "./CoreLayout.scss";
@@ -60,7 +68,7 @@ class CoreLayout extends Component {
     super(props);
     this.state = {
       flight: props.flightId,
-      simulator: localStorage.getItem("thorium_coreSimulator") || "",
+      simulator: null,
       layout: localStorage.getItem("thorium_coreLayout") || "default",
       editable: false,
       issuesOpen: false
@@ -83,6 +91,30 @@ class CoreLayout extends Component {
     if (!this.layout && !nextProps.data.loading) {
       this.initLayout(nextProps.data.coreLayouts);
     }
+    if (!nextProps.data.loading) {
+      const { flights } = nextProps.data;
+      if (flights) {
+        const flight = this.state.flight
+          ? flights.find(f => f.id === this.state.flight)
+          : {};
+        const simulators = flight && flight.id ? flight.simulators : [];
+        if (simulators.length === 1) {
+          this.pickSimulator({
+            target: { value: simulators[0].id }
+          });
+        }
+        if (
+          simulators.indexOf(
+            s => s.id === localStorage.getItem("thorium_coreSimulator")
+          ) > -1
+        ) {
+          this.pickSimulator({
+            target: { value: localStorage.getItem("thorium_coreSimulator") }
+          });
+          return;
+        }
+      }
+    }
   }
   pickLayout(e) {
     this.setState(
@@ -96,20 +128,20 @@ class CoreLayout extends Component {
     localStorage.setItem("thorium_coreLayout", e.target.value);
   }
   pickSimulator = (e, done) => {
-    e.persist();
+    const simulator = e.target.value;
     this.setState(
       {
-        simulator: e.target.value
+        simulator
       },
       () => {
         this.initLayout(this.props.data.coreLayouts);
       }
     );
-    localStorage.setItem("thorium_coreSimulator", e.target.value);
+    localStorage.setItem("thorium_coreSimulator", simulator);
     // Trigger it again for good measure
     if (!done) {
       setTimeout(() => {
-        this.pickSimulator(e, true);
+        this.pickSimulator({ target: { value: simulator } }, true);
       }, 100);
     }
   };
@@ -131,6 +163,7 @@ class CoreLayout extends Component {
     return config;
   };
   initLayout(coreLayouts) {
+    if (!findDOMNode(this)) return;
     if (this.layout) {
       this.layout.destroy();
     }
@@ -222,16 +255,12 @@ class CoreLayout extends Component {
     });
   };
   render() {
-    const { coreLayouts, flights } = this.props.data.loading
-      ? { coreLayouts: [], flights: [] }
-      : this.props.data;
+    if (this.props.data.loading) return null;
+    const { coreLayouts, flights } = this.props.data;
     const flight = this.state.flight
       ? flights.find(f => f.id === this.state.flight)
       : {};
-    let simulators = [];
-    if (flight) {
-      simulators = flight.id ? flight.simulators : [];
-    }
+    const simulators = flight && flight.id ? flight.simulators : [];
     return (
       <div className="core">
         <select
@@ -299,7 +328,28 @@ class CoreLayout extends Component {
         >
           Bug Report/Issue Tracker
         </a>
-        <div id="core-layout" style={{ height: "calc(100vh - 26px)" }} />
+        <div
+          id="core-layout"
+          style={{
+            display: this.state.simulator ? "block" : "none",
+            height: "calc(100vh - 26px)"
+          }}
+        />
+        {!this.state.simulator &&
+          <ListGroup style={{ maxWidth: "500px" }}>
+            {simulators.map(s =>
+              <ListGroupItem
+                onClick={() => this.pickSimulator({ target: { value: s.id } })}
+                key={s.id}
+                style={{
+                  color: "black",
+                  fontSize: "24px"
+                }}
+              >
+                {s.name}
+              </ListGroupItem>
+            )}
+          </ListGroup>}
         <Modal isOpen={this.state.issuesOpen} toggle={this.toggleIssueTracker}>
           <ModalHeader toggle={this.toggleIssueTracker}>
             Submit a Feature/Bug Report

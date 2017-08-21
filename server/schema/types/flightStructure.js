@@ -7,6 +7,11 @@ type Mission {
   timeline: [TimelineStep]
 }
 
+input MacroInput {
+  event: String,
+  args: String
+}
+
 type Flight {
   id: ID
   name: String
@@ -29,11 +34,11 @@ type Simulator {
   layout: String
   template: Boolean
   templateId: ID
-  timelineStep: Int
   systems: [System]
   systemsFull: [SystemUnion]
   stations: [Station]
   mission: Mission
+  currentTimelineStep: Int
   stationSets: [Stationset]
   stationSet: Stationset
   decks: [Deck]

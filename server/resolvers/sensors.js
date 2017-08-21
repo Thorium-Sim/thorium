@@ -38,6 +38,9 @@ export const SensorsMutations = {
     App.handleEvent({ id }, "sensorScanCancel", context);
     return "";
   },
+  setPresetAnswers(root, params, context) {
+    App.handleEvent(params, "setPresetAnswers", context);
+  },
   createSensorContact(root, { id, contact }, context) {
     App.handleEvent({ id, contact }, "createSensorContact", context);
     return "";
