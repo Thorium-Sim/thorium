@@ -194,19 +194,26 @@ class SecurityScans extends Component {
                     : "All Decks"}
                 </DropdownToggle>
                 <DropdownMenu>
-                  {decks.map(d =>
-                    <DropdownItem
-                      key={d.id}
-                      onClick={() => {
-                        this.setState({
-                          selectedDeck: d.id,
-                          selectedRoom: null
-                        });
-                      }}
-                    >
-                      {d.number ? `Deck ${d.number}` : `All Decks`}
-                    </DropdownItem>
-                  )}
+                  {decks
+                    .concat()
+                    .sort((a, b) => {
+                      if (a.number > b.number) return -1;
+                      if (b.number > a.number) return 1;
+                      return 0;
+                    })
+                    .map(d =>
+                      <DropdownItem
+                        key={d.id}
+                        onClick={() => {
+                          this.setState({
+                            selectedDeck: d.id,
+                            selectedRoom: null
+                          });
+                        }}
+                      >
+                        {d.number ? `Deck ${d.number}` : `All Decks`}
+                      </DropdownItem>
+                    )}
                 </DropdownMenu>
               </UncontrolledDropdown>
             </Col>
