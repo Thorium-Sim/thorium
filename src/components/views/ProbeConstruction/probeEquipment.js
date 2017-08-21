@@ -1,6 +1,6 @@
-import React from 'react';
-import { Button, Row, Col, Card, CardBlock } from 'reactstrap';
-import Transitioner from '../helpers/transitioner';
+import React from "react";
+import { Button, Row, Col, Card, CardBlock } from "reactstrap";
+import Transitioner from "../helpers/transitioner";
 
 export default class ProbeEquipment extends Transitioner {
   constructor(props) {
@@ -81,18 +81,21 @@ export default class ProbeEquipment extends Transitioner {
               onMouseOut={() => {
                 this.setState({ shownDescription: null });
               }}
-              className="equipmentList">
+              className="equipmentList"
+            >
               {type.availableEquipment.map(e => {
                 const used = equipment.find(eq => eq.id === e.id) || {
                   count: 0
                 };
                 return (
                   <Row
+                    key={e.id}
                     onClick={this.addToProbe.bind(this, e)}
                     onMouseOver={() => {
                       this.setState({ shownDescription: e.description });
                     }}
-                    className="equipmentItem">
+                    className="equipmentItem"
+                  >
                     <Col sm="8">
                       <p>
                         {e.name}
@@ -127,7 +130,8 @@ export default class ProbeEquipment extends Transitioner {
           <Button
             block
             color="primary"
-            onClick={prepareProbe.bind(this, equipment)}>
+            onClick={prepareProbe.bind(this, equipment)}
+          >
             Prepare Probe
           </Button>
           <Button block color="danger" onClick={cancelProbe}>
@@ -157,14 +161,16 @@ export default class ProbeEquipment extends Transitioner {
               onMouseOut={() => {
                 this.setState({ shownDescription: null });
               }}
-              className="equipmentList">
+              className="equipmentList"
+            >
               {equipment.map(e =>
                 <Row
                   onClick={this.removeFromProbe.bind(this, e)}
                   onMouseOver={() => {
                     this.setState({ shownDescription: e.description });
                   }}
-                  className="equipmentItem">
+                  className="equipmentItem"
+                >
                   <Col sm="8">
                     <p>
                       {e.name}

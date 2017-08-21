@@ -100,6 +100,8 @@ class StealthField extends Component {
   loop(currentTime) {
     if (this.looping) {
       window.requestAnimationFrame(this.loop);
+    } else {
+      return;
     }
     if (Math.round(currentTime) % 2 !== 0) return;
     if (this.props.data.loading) return;
