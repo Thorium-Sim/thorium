@@ -45,6 +45,7 @@
     height: 40vh;
     width: 100%;
     padding: 1px;
+    overflow: hidden;
   }
 
   .starfield {
@@ -95,4 +96,15 @@
 @keyframes rotateSat {
   from {transform: rotate(0deg);}
   to {transform: rotate(360deg);}
+}
+
+.comm-core {
+  height: 100%;
+  .comm-messages li {
+    font-size: 16px;
+  }
+  pre {
+    text-align: left;
+    font-size: 12px;
+  }
 }
