@@ -154,7 +154,7 @@ class NavigationCore extends Component {
               {this.state.calculatedCourse.x}
             </OutputField>
           </Col>
-          <Col sm="4">
+          <Col sm="5">
             <Button
               onClick={this.randomNums.bind(this)}
               block
@@ -179,7 +179,7 @@ class NavigationCore extends Component {
               {this.state.calculatedCourse.y}
             </OutputField>
           </Col>
-          <Col sm="4">
+          <Col sm="5">
             <Button
               onClick={this.sendCourse.bind(this)}
               block
@@ -204,7 +204,7 @@ class NavigationCore extends Component {
               {this.state.calculatedCourse.z}
             </OutputField>
           </Col>
-          <Col sm="4">
+          <Col sm="5">
             <Button
               onClick={this.unknownCourse.bind(this)}
               block

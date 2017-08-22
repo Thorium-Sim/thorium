@@ -42,7 +42,7 @@ import ShieldControlCore from "./ShieldControl/core";
 import DecodingCore from "./CommDecoding/core";
 import LRCommCore from "./LongRangeComm/core";
 import InternalCommCore from "./CommInternal/core";
-import DamageControlCore from "./DamageControl/core";
+import SystemsCore from "./DamageControl/core";
 import DockingCore from "./Docking/core";
 import NavigationCore from "./Navigation/core";
 import CommShortRangeCore from "./CommShortRange/core";
@@ -138,7 +138,7 @@ export const Cores = {
   DecodingCore,
   LRCommCore,
   InternalCommCore,
-  DamageControlCore,
+  SystemsCore,
   DockingCore,
   NavigationCore,
   CommShortRangeCore,

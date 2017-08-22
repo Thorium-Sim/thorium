@@ -87,7 +87,6 @@ class ShieldsCore extends Component {
     if (this.props.data.loading) return null;
     return (
       <div>
-        <p>Shields</p>
         {this.props.data.shields.length > 0
           ? <div>
               <Table responsive size="sm">
