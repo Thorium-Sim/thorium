@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 const DebugList = () => {
   return (
     <ul>
-    {viewList.map((v) => {
+    {viewList.sort().map((v) => {
       return <li key={v}><Link to={`/test/${v}`}>{v}</Link></li>;
     })}
     </ul>

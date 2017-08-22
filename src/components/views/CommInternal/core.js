@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input, Button } from "reactstrap";
-import Immutable from "immutable";
 import gql from "graphql-tag";
 
 const INTERNAL_SUB = gql`
@@ -33,12 +32,9 @@ class InternalCommCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({
-              internalComm: subscriptionData.data.longRangeCommunicationsUpdate
-            })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            internalComm: subscriptionData.data.internalCommUpdate
+          });
         }
       });
     }
@@ -106,6 +102,7 @@ class InternalCommCore extends Component {
     const inputStyle = { height: "22px" };
     return (
       <div className="internal-comm-core">
+        <p>Internal Comm</p>
         {this.props.data.internalComm.length > 0
           ? <Container>
               <Row>
@@ -180,12 +177,19 @@ class InternalCommCore extends Component {
                           this.setState({ deck: e.target.value, room: null })}
                       >
                         <option value={null}>Select Deck</option>
-                        {decks.map(d =>
-                          <option
-                            key={d.id}
-                            value={d.id}
-                          >{`Deck ${d.number}`}</option>
-                        )}
+                        {decks
+                          .concat()
+                          .sort((a, b) => {
+                            if (a.number > b.number) return 1;
+                            if (b.number > a.number) return -1;
+                            return 0;
+                          })
+                          .map(d =>
+                            <option
+                              key={d.id}
+                              value={d.id}
+                            >{`Deck ${d.number}`}</option>
+                          )}
                       </Input>
                     </Col>
                     <Col sm={6}>

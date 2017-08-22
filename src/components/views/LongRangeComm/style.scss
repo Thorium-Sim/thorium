@@ -43,12 +43,13 @@
     padding: 20px;
     margin: 20px 0;
     height: 30vh;
-    overflow: scroll;
+    overflow-y: scroll;
   }
   .sat-container {
     height: 40vh;
     width: 100%;
     padding: 1px;
+    overflow: hidden;
   }
 
   .starfield {
@@ -86,7 +87,7 @@
     background-color: rgba(255,255,255,0.9);
     position: absolute;
     border-radius: 50%;
-    box-shadow: 0px 0px 8px 8px white;
+    box-shadow: 0px 0px 5px 10px white;
     transition: left 2s ease-in-out, top 2s ease-in-out, opacity 2s linear;
   }
   .message-text {
@@ -99,4 +100,15 @@
 @keyframes rotateSat {
   from {transform: rotate(0deg);}
   to {transform: rotate(360deg);}
+}
+
+.comm-core {
+  height: 100%;
+  .comm-messages li {
+    font-size: 16px;
+  }
+  pre {
+    text-align: left;
+    font-size: 12px;
+  }
 }

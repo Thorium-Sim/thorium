@@ -32,8 +32,12 @@ class NavigationScanner extends Component {
       this.scanning = null;
     }
   }
+  componentWillUnmount() {
+    clearTimeout(this.scanning);
+    this.scanning = null;
+  }
   _scan() {
-    if (this.props.scanning) {
+    if (this.props.scanning && this.scanning) {
       this.setState({
         lineX: Math.random() * 100,
         lineY: Math.random() * 100,
@@ -167,11 +171,13 @@ class Navigation extends Component {
           clearTimeout(this.scanning);
           this.scanning = null;
         }
-        this.setState({
-          destination: navigation.destination,
-          calculatedCourse: navigation.calculatedCourse,
-          enteredCourse: navigation.currentCourse
-        });
+        if (this.scanning) {
+          this.setState({
+            destination: navigation.destination,
+            calculatedCourse: navigation.calculatedCourse,
+            enteredCourse: navigation.currentCourse
+          });
+        }
       }
     }
   }

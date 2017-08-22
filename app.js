@@ -68,7 +68,9 @@ class Events extends EventEmitter {
         return;
       if (snapshot[key] instanceof Array) {
         snapshot[key].forEach(obj => {
-          this[key].push(new Classes[obj.class](obj));
+          if (Object.keys(obj).length !== 0) {
+            this[key].push(new Classes[obj.class](obj));
+          }
         });
       }
     });

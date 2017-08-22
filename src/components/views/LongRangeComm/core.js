@@ -85,8 +85,8 @@ class LRCommCore extends Component {
                 <Col sm={9}>
                   {selectedMessage &&
                     <pre>{`${selectedMessage.datestamp}
-            From: ${selectedMessage.sender}
-            ${selectedMessage.message}`}</pre>}
+From: ${selectedMessage.sender}
+${selectedMessage.message}`}</pre>}
                 </Col>
               </Row>
             </Container>
