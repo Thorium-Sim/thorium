@@ -91,7 +91,6 @@ class ThrusterCore extends Component {
     if (!thrusters) return <p>No Thrusters</p>;
     return (
       <Container className="thrustersCore" fluid>
-        <p className="core-title">Thrusters</p>
         {/*<label><input type="checkbox" onClick={this.toggleManualThrusters} /> Manual Thrusters</label>*/}
         <Row>
           <Col sm={4}>Yaw</Col>

@@ -1,13 +1,13 @@
-import { System } from './generic';
-import uuid from 'uuid';
-import App from '../../app.js';
+import { System } from "./generic";
+import uuid from "uuid";
+import App from "../../app.js";
 
 export default class Probes extends System {
   constructor(params) {
     super(params);
-    this.class = 'Probes';
-    this.type = 'Probes';
-    this.name = params.name || 'Probe Launcher';
+    this.class = "Probes";
+    this.type = "Probes";
+    this.name = params.name || "Probe Launcher";
     // Whether probes launching is handled by torpedos (Odyssey, Galileo)
     // Or by the probe launcher itself (Phoenix, Voyager, Magellan)
     this.torpedo = params.torpedo || false;
@@ -15,7 +15,7 @@ export default class Probes extends System {
     this.equipment = [];
     this.types = [];
     this.stealthCompromised = false;
-    this.processedData = params.processedData || '';
+    this.processedData = params.processedData || "";
     // Load the probes
     params.probes = params.probes || [];
     params.types = params.types || [];
@@ -59,7 +59,7 @@ export default class Probes extends System {
       probe.launched = false;
       //Create a new torpedo linked to this probe
       probe.id = uuid.v4();
-      App.handleEvent({ type: 'probe', probe: probe.id }, 'torpedoAddWarhead');
+      App.handleEvent({ type: "probe", probe: probe.id }, "torpedoAddWarhead");
     } else {
       probe.launched = true;
       this.stealthCompromised = true;
@@ -105,13 +105,13 @@ class Probe {
   constructor(params, parentId) {
     this.id = params.id || uuid.v4();
     this.parentId = parentId;
-    this.name = params.name || '';
+    this.name = params.name || "";
     this.type = params.type || null;
     this.launched = params.launched || true;
     this.equipment = params.equipment || [];
-    this.query = params.query || '';
+    this.query = params.query || "";
     this.querying = params.querying || false;
-    this.response = params.query || '';
+    this.response = params.query || "";
   }
   launch() {
     this.launched = true;
@@ -129,9 +129,9 @@ class Probe {
 class ProbeType {
   constructor(params, parentId) {
     this.id = params.id || uuid.v4();
-    this.name = params.name || 'Probe';
+    this.name = params.name || "Probe";
     this.parentId = parentId;
-    this.description = params.description || 'This is a probe';
+    this.description = params.description || "This is a probe";
     this.size = params.size || 1;
     this.count = params.count || 0;
   }
@@ -145,9 +145,9 @@ class ProbeType {
 class ProbeEquipment {
   constructor(params) {
     this.id = params.id || uuid.v4();
-    this.name = params.name || 'Equipment';
+    this.name = params.name || "Equipment";
     this.description =
-      params.description || 'This is a piece of probe equipment';
+      params.description || "This is a piece of probe equipment";
     this.size = params.size || 1;
     this.count = params.count || 0;
     this.availableProbes = params.availableProbes || [];
@@ -162,75 +162,75 @@ class ProbeEquipment {
 
 const probesTypes = [
   {
-    id: 'class-i',
-    name: 'Class I Probe',
+    id: "class-i",
+    name: "Class I Probe",
     description:
-      'The smallest probe; can only hold 4 units of equipment. Use for probe networks.',
+      "The smallest probe; can only hold 4 units of equipment. Use for probe networks and general purposes.",
     size: 4,
     count: 30
   },
   {
-    id: 'class-ii',
-    name: 'Class II Probe',
+    id: "class-ii",
+    name: "Class II Probe",
     description:
-      'This medium-sized probe can hold 10 units of equipment. Use for probe networks.',
+      "This medium-sized probe can hold 10 units of equipment. Use for probe networks and general purposes.",
     size: 10,
     count: 30
   },
   {
-    id: 'class-iii',
-    name: 'Class III Probe',
+    id: "class-iii",
+    name: "Class III Probe",
     description:
-      'This is the largest probe. It can hold up to 16 units of equipment. Use for probe networks.',
+      "This is the largest standard probe. It can hold up to 16 units of equipment. Use for probe networks and general purposes.",
     size: 16,
     count: 30
   },
   {
-    id: 'defense',
-    name: 'Defensive Probe',
+    id: "defense",
+    name: "Defensive Probe",
     description:
-      'This weapon-like probe can be used to attack. It holds 20 units of equipment.',
+      "This weapon-like probe has access to additional equipment. You can use it to defend your ship. It holds 20 units of equipment.",
     size: 4,
     count: 20
   },
   {
-    id: 'science',
-    name: 'Science Probe',
+    id: "science",
+    name: "Science Probe",
     description:
-      'This probe can use special emitters and detectors. It holds 12 units of equipment.',
+      "This probe can use special emitters and detectors for specific scientific experiments. It holds 12 units of equipment.",
     size: 12,
     count: 20
   }
 ];
 const probesEquipment = [
   {
-    id: 'probe-network-package',
-    name: 'Probe Network Package',
+    id: "probe-network-package",
+    name: "Probe Network Package",
     description:
-      'A probe network package instructs the probe to network with up to 7 other probes.',
+      "A probe network package instructs the probe to network with up to 7 other probes.",
     size: 0,
     count: 60,
     availableProbes: []
   },
   {
-    id: 'radio-transceiver',
-    name: 'Radio Transceiver',
-    description: 'A radio transceiver is used to let the probe communicate.',
+    id: "radio-transceiver",
+    name: "Radio Transceiver",
+    description: "A radio transceiver is used to let the probe communicate.",
     size: 1,
     count: 54,
     availableProbes: []
   },
   {
-    id: 'video-camera',
-    name: 'Video Camera',
-    description: 'A Video Camera can take still or moving pictures.',
+    id: "video-camera",
+    name: "Video Camera",
+    description: "A Video Camera can take still or moving pictures.",
     size: 1,
     count: 47,
     availableProbes: []
   },
   {
-    id: 'communications-signal-booster',
-    name: 'Communications Signal Booster',
+    id: "communications-signal-booster",
+    name: "Communications Signal Booster",
     description:
       "A Communications Signal Booster gives the probe's radio more range.",
     size: 2,
@@ -238,303 +238,303 @@ const probesEquipment = [
     availableProbes: []
   },
   {
-    id: 'encoding-sequencer',
-    name: 'Encoding Sequencer',
-    description: 'Encodes and encrypts signals, making them more secure.',
+    id: "encoding-sequencer",
+    name: "Encoding Sequencer",
+    description: "Encodes and encrypts signals, making them more secure.",
     size: 2,
     count: 25,
     availableProbes: []
   },
   {
-    id: 'extra-data-storage',
-    name: 'Extra Data Storage',
+    id: "extra-data-storage",
+    name: "Extra Data Storage",
     description:
-      'Increases the amount of on-board data storage, allowing the probe to store more data.',
+      "Increases the amount of on-board data storage, allowing the probe to store more data.",
     size: 2,
     count: 61,
     availableProbes: []
   },
   {
-    id: 'extra-fuel-cell',
-    name: 'Extra Fuel Cell',
+    id: "extra-fuel-cell",
+    name: "Extra Fuel Cell",
     description:
-      'An Extra Fuel Cell lets the probe travel further and perform longer.',
+      "An Extra Fuel Cell lets the probe travel further and perform longer.",
     size: 2,
     count: 79,
     availableProbes: []
   },
   {
-    id: 'sensor-array',
-    name: 'Sensor Array',
-    description: 'The Sensor Array gives the probe general scanning abilities.',
+    id: "sensor-array",
+    name: "Sensor Array",
+    description: "The Sensor Array gives the probe general scanning abilities.",
     size: 2,
     count: 120,
     availableProbes: []
   },
   {
-    id: 'chemical-analysis-package',
-    name: 'Chemical Analysis Package',
+    id: "chemical-analysis-package",
+    name: "Chemical Analysis Package",
     description:
-      'A Chemical Analysis Package lets the probe research what chemicals it has found.',
+      "A Chemical Analysis Package lets the probe research what chemicals it has found.",
     size: 3,
     count: 24,
     availableProbes: []
   },
   {
-    id: 'sample-retrieval-package',
-    name: 'Sample Retrieval Package',
+    id: "sample-retrieval-package",
+    name: "Sample Retrieval Package",
     description:
-      'A Sample Retrieval Package lets the probe get something and return it to the ship.',
+      "A Sample Retrieval Package lets the probe get something and return it to the ship.",
     size: 3,
     count: 22,
     availableProbes: []
   },
   {
-    id: 'radiation-shielding',
-    name: 'Radiation Shielding',
-    description: 'Protects the probe from moderate levels of radiaiton.',
+    id: "radiation-shielding",
+    name: "Radiation Shielding",
+    description: "Protects the probe from moderate levels of radiaiton.",
     size: 3,
     count: 16,
     availableProbes: []
   },
   {
-    id: 'ecm-package',
-    name: 'ECM Package',
+    id: "ecm-package",
+    name: "ECM Package",
     description:
-      'An ECM (Electronic Counter Measures) Package is used to jam electronics.',
+      "An ECM (Electronic Counter Measures) Package is used to jam electronics.",
     size: 4,
     count: 26,
     availableProbes: []
   },
   {
-    id: 'gas-giant-encounter-package',
-    name: 'Gas Giant Encounter Package',
+    id: "gas-giant-encounter-package",
+    name: "Gas Giant Encounter Package",
     description:
-      'A Gas Giant Encounter Package allows the probe to research a gas giant.',
+      "A Gas Giant Encounter Package allows the probe to research a gas giant.",
     size: 4,
     count: 11,
     availableProbes: []
   },
   {
-    id: 'nebula-encounter-package',
-    name: 'Nebula Encounter Package',
+    id: "nebula-encounter-package",
+    name: "Nebula Encounter Package",
     description:
-      'A Nebula Encounter Package allows the probe to research a nebula.',
+      "A Nebula Encounter Package allows the probe to research a nebula.",
     size: 4,
     count: 14,
     availableProbes: []
   },
   {
-    id: 'planetary-encounter-package',
-    name: 'Planetary Encounter Package',
+    id: "planetary-encounter-package",
+    name: "Planetary Encounter Package",
     description:
-      'A Planetary Encounter Package allows the probe to research a planet.',
+      "A Planetary Encounter Package allows the probe to research a planet.",
     size: 4,
     count: 14,
     availableProbes: []
   },
   {
-    id: 'decoy-package',
-    name: 'Decoy Package',
+    id: "decoy-package",
+    name: "Decoy Package",
     description:
-      'A Decoy Package sends out signals to make sensor devices detect the probe as a ship.',
+      "A Decoy Package sends out signals to make sensor devices detect the probe as a ship.",
     size: 4,
     count: 23,
     availableProbes: []
   },
   {
-    id: 'subspace-encounter-package',
-    name: 'Subspace Encounter Package',
+    id: "subspace-encounter-package",
+    name: "Subspace Encounter Package",
     description:
-      'A Subspace Encounter Package allows the probe to research subspace.',
+      "A Subspace Encounter Package allows the probe to research subspace.",
     size: 5,
     count: 6,
     availableProbes: []
   },
   {
-    id: 'solar-encounter-package',
-    name: 'Solar Encounter Package',
+    id: "solar-encounter-package",
+    name: "Solar Encounter Package",
     description:
-      'A Solar Encounter Package allows the probe to research a star.',
+      "A Solar Encounter Package allows the probe to research a star.",
     size: 5,
     count: 19,
     availableProbes: []
   },
   {
-    id: 'transporter-relay',
-    name: 'Transporter Relay',
+    id: "transporter-relay",
+    name: "Transporter Relay",
     description:
-      'A transporter relay extends the transporter range of this ship.',
+      "A transporter relay extends the transporter range of this ship.",
     size: 5,
     count: 15,
     availableProbes: []
   },
   {
-    id: 'hologram-projector-package',
-    name: 'Hologram Projector Package',
+    id: "hologram-projector-package",
+    name: "Hologram Projector Package",
     description:
-      'A Hologram Projector Package makes the probe look like a ship.',
+      "A Hologram Projector Package makes the probe look like a ship.",
     size: 5,
     count: 5,
     availableProbes: []
   },
   {
-    id: 'metaphasic-shield-generator',
-    name: 'Metaphasic Shield Generator',
+    id: "metaphasic-shield-generator",
+    name: "Metaphasic Shield Generator",
     description:
-      'Shield Generator that can construct a Shield Grid with other probes up to 2,500 Km protecting from radiation.',
+      "Shield Generator that can construct a Shield Grid with other probes up to 2,500 Km protecting from radiation.",
     size: 6,
     count: 7,
     availableProbes: []
   },
   {
-    id: 'self-destruct-kit',
-    name: 'Self-Destruct Kit',
+    id: "self-destruct-kit",
+    name: "Self-Destruct Kit",
     description:
-      'A Self-Destruct Kit allows the probe to receive a self-destruct signal from the station.',
+      "A Self-Destruct Kit allows the probe to receive a self-destruct signal from the station.",
     size: 1,
     count: 17,
-    availableProbes: ['defense']
+    availableProbes: ["defense"]
   },
   {
-    id: 'warp-nacelle',
-    name: 'Warp Nacelle',
+    id: "warp-nacelle",
+    name: "Warp Nacelle",
     description:
-      'A Warp Nacelle (warp core included) allows the probe to travel at warp speed.',
+      "A Warp Nacelle (warp core included) allows the probe to travel at warp speed.",
     size: 1,
     count: 20,
-    availableProbes: ['defense']
+    availableProbes: ["defense"]
   },
   {
-    id: 'targeting-sensors',
-    name: 'Targeting Sensors',
-    description: 'Targeting sensors extends the targeting range of the probe.',
+    id: "targeting-sensors",
+    name: "Targeting Sensors",
+    description: "Targeting sensors extends the targeting range of the probe.",
     size: 2,
     count: 21,
-    availableProbes: ['defense']
+    availableProbes: ["defense"]
   },
   {
-    id: 'proximity-destruct',
-    name: 'Proximity Destruct',
+    id: "proximity-destruct",
+    name: "Proximity Destruct",
     description:
-      'A Proximity Self-Destruct detector tells the probe to blow-up when an enemy is near.',
+      "A Proximity Self-Destruct detector tells the probe to blow-up when an enemy is near.",
     size: 2,
     count: 20,
-    availableProbes: ['defense']
+    availableProbes: ["defense"]
   },
   {
-    id: 'titanium-armor-alloy',
-    name: 'Titanium Armor Alloy',
+    id: "titanium-armor-alloy",
+    name: "Titanium Armor Alloy",
     description: "Titanium Armor Alloy increases the probe's defenses.",
     size: 2,
     count: 15,
-    availableProbes: ['defense']
+    availableProbes: ["defense"]
   },
   {
-    id: 'stealth-field',
-    name: 'Stealth Field',
-    description: 'A stealth field masks the probe making it harder to detect.',
+    id: "stealth-field",
+    name: "Stealth Field",
+    description: "A stealth field masks the probe making it harder to detect.",
     size: 3,
     count: 7,
-    availableProbes: ['defense']
+    availableProbes: ["defense"]
   },
   {
-    id: 'phaser-head',
-    name: 'Phaser Head',
+    id: "phaser-head",
+    name: "Phaser Head",
     description:
-      'A Phaser Head allows the probe to fire one phaser shot at an enemy ship.',
+      "A Phaser Head allows the probe to fire one phaser shot at an enemy ship.",
     size: 3,
     count: 27,
-    availableProbes: ['defense']
+    availableProbes: ["defense"]
   },
   {
-    id: 'tachyon-emitter',
-    name: 'Tachyon Emitter',
+    id: "tachyon-emitter",
+    name: "Tachyon Emitter",
     description:
-      'A Tachyon Emitter allows the probe to interact with tachyon particles.',
+      "A Tachyon Emitter allows the probe to interact with tachyon particles.",
     size: 3,
     count: 8,
-    availableProbes: ['science']
+    availableProbes: ["science"]
   },
   {
-    id: 'resonance-emitter',
-    name: 'Resonance Emitter',
+    id: "resonance-emitter",
+    name: "Resonance Emitter",
     description:
-      'A Resonance Emitter allows the probe to interact with resonating particles.',
+      "A Resonance Emitter allows the probe to interact with resonating particles.",
     size: 3,
     count: 8,
-    availableProbes: ['science']
+    availableProbes: ["science"]
   },
   {
-    id: 'lithium-emitter',
-    name: 'Lithium Emitter',
+    id: "lithium-emitter",
+    name: "Lithium Emitter",
     description:
-      'A Lithium Emitter allows the probe to interact with lithium particles.',
+      "A Lithium Emitter allows the probe to interact with lithium particles.",
     size: 3,
     count: 10,
-    availableProbes: ['science']
+    availableProbes: ["science"]
   },
   {
-    id: 'carbon-emitter',
-    name: 'Carbon Emitter',
+    id: "carbon-emitter",
+    name: "Carbon Emitter",
     description:
-      'A Carbon Emitter allows the probe to interact with carbon particles.',
+      "A Carbon Emitter allows the probe to interact with carbon particles.",
     size: 3,
     count: 8,
-    availableProbes: ['science']
+    availableProbes: ["science"]
   },
   {
-    id: 'radiation-emitter',
-    name: 'Radiation Emitter',
+    id: "radiation-emitter",
+    name: "Radiation Emitter",
     description:
-      'A Radiation Emitter allows the probe to interact with radioactive particles.',
+      "A Radiation Emitter allows the probe to interact with radioactive particles.",
     size: 3,
     count: 8,
-    availableProbes: ['science']
+    availableProbes: ["science"]
   },
   {
-    id: 'oxygen-emitter',
-    name: 'Oxygen Emitter',
+    id: "oxygen-emitter",
+    name: "Oxygen Emitter",
     description:
-      'An Oxygen Emitter allows the probe to interact with oxygen particles.',
+      "An Oxygen Emitter allows the probe to interact with oxygen particles.",
     size: 3,
     count: 8,
-    availableProbes: ['science']
+    availableProbes: ["science"]
   },
   {
-    id: 'hydrogen-emitter',
-    name: 'Hydrogen Emitter',
+    id: "hydrogen-emitter",
+    name: "Hydrogen Emitter",
     description:
-      'A Hydrogen Emitter allows the probe to interact with hydrogen particles.',
+      "A Hydrogen Emitter allows the probe to interact with hydrogen particles.",
     size: 3,
     count: 8,
-    availableProbes: ['science']
+    availableProbes: ["science"]
   },
   {
-    id: 'helium-emitter',
-    name: 'Helium Emitter',
+    id: "helium-emitter",
+    name: "Helium Emitter",
     description:
-      'A Helium Emitter allows the probe to interact with helium particles.',
+      "A Helium Emitter allows the probe to interact with helium particles.",
     size: 3,
     count: 8,
-    availableProbes: ['science']
+    availableProbes: ["science"]
   },
   {
-    id: 'graviton-emitter',
-    name: 'Graviton Emitter',
+    id: "graviton-emitter",
+    name: "Graviton Emitter",
     description:
-      'A Graviton Emitter allows the probe to interact with graviton particles.',
+      "A Graviton Emitter allows the probe to interact with graviton particles.",
     size: 3,
     count: 8,
-    availableProbes: ['science']
+    availableProbes: ["science"]
   },
   {
-    id: 'magnetic-emitter',
-    name: 'Magnetic Emitter',
+    id: "magnetic-emitter",
+    name: "Magnetic Emitter",
     description:
-      'A Magnetic Emitter allows the probe to interact with magnetic particles.',
+      "A Magnetic Emitter allows the probe to interact with magnetic particles.",
     size: 3,
     count: 8,
-    availableProbes: ['science']
+    availableProbes: ["science"]
   }
 ];

@@ -3,7 +3,7 @@
     height: calc(100% - 18px);
   }
   .deckList, .roomList {
-    overflow: scroll;
+    overflow-y: scroll;
   }
   .deckList {
     height: calc(100% - 40px);

@@ -42,7 +42,8 @@ class SensorsCore extends Component {
       });
     }
   }
-  sendScanResult(sensors) {
+  sendScanResult = sensors => {
+    console.log(sensors.domain, this.state.dataField);
     this.props.client.mutate({
       mutation: gql`
         mutation SensorScanResult($id: ID!, $result: String!) {
@@ -54,7 +55,7 @@ class SensorsCore extends Component {
         result: this.state.dataField
       }
     });
-  }
+  };
   sendProcessedData(sensors) {
     this.props.client.mutate({
       mutation: gql`
@@ -156,7 +157,7 @@ class SensorsCore extends Component {
         </div>
         <div style={buttonStyle}>
           <Button
-            onClick={this.sendScanResult.bind(this, sensor)}
+            onClick={() => this.sendScanResult(sensor)}
             style={{ flexGrow: 2 }}
             size={"sm"}
           >

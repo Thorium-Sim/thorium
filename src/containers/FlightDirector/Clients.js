@@ -91,7 +91,6 @@ class Clients extends Component {
         if (type === "station")
           return "clientSetStation(client: $client, stationName: $id)}";
       })()}`;
-    debugger;
     const obj = {
       client: p.id,
       id: e.target.value

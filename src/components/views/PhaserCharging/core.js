@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Container, Row, Col } from 'reactstrap';
-import gql from 'graphql-tag';
-import { InputField } from '../../generic/core';
-import { graphql, withApollo } from 'react-apollo';
-import Immutable from 'immutable';
-import './style.scss';
+import React, { Component } from "react";
+import { Container, Row, Col } from "reactstrap";
+import gql from "graphql-tag";
+import { InputField } from "../../generic/core";
+import { graphql, withApollo } from "react-apollo";
+import Immutable from "immutable";
+import "./style.scss";
 
 const PHASERS_SUB = gql`
   subscription PhasersUpdate($simulatorId: ID!) {
@@ -83,13 +83,13 @@ class PhaserChargingCore extends Component {
     if (!phasers) return <p>No phasers</p>;
     return (
       <Container fluid className="phasers-core">
-        <p>Phasers</p>
         <Row>
           <Col sm={4}>Arc:</Col>
           <Col sm={8}>
             <InputField
               prompt="What would you like to change the arc to?"
-              onClick={this.changeArc.bind(this)}>
+              onClick={this.changeArc.bind(this)}
+            >
               {Math.round(phasers.arc * 90)}˚
             </InputField>
           </Col>
@@ -104,7 +104,8 @@ class PhaserChargingCore extends Component {
                 <InputField
                   prompt="What would you like to change the charge to?"
                   onClick={this.changePhaser.bind(this, b.id)}
-                  alert={b.state === 'firing'}>
+                  alert={b.state === "firing"}
+                >
                   {Math.round(b.charge * 100)}%
                 </InputField>
               </Col>

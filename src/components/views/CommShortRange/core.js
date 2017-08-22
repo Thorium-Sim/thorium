@@ -139,7 +139,6 @@ class CommShortRange extends Component {
     if (!ShortRange) return <p>No short range comm</p>;
     return (
       <Container fluid className="shortRangeComm-core">
-        <p>Short Range Comm</p>
         <Row>
           <Col sm="12" style={{ height: "100%" }}>
             <p>

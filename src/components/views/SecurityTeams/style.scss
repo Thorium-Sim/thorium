@@ -1,7 +1,7 @@
 .security-teams {
   .card {
     max-height: 60vh;
-    overflow: scroll;
+    overflow-y: scroll;
     p {
       cursor: pointer;
       margin: 0;
@@ -18,7 +18,7 @@
   .officers {
     .card {
       height: 25vh;
-      overflow: scroll;
+      overflow-y: scroll;
     }
   }
   .location-label, .location-label label  {
@@ -44,7 +44,7 @@
   }
   .scroller {
     max-height: 100%;
-    overflow: scroll;
+    overflow-y: scroll;
   }
   .label-section {
         margin-bottom: 5px;

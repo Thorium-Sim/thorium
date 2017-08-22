@@ -72,6 +72,14 @@ App.on("startFlight", ({ id, name, simulators }) => {
         const newAspect = Object.assign({}, a);
         newAspect.id = null;
         newAspect.simulatorId = sim.id;
+        // Rooms need to reference their deck
+        if (aspect === "rooms") {
+          const oldDeck = App.decks.find(d => d.id === newAspect.deckId);
+          const deck = App.decks.find(
+            d => d.simulatorId === sim.id && d.number === oldDeck.number
+          );
+          newAspect.deckId = deck.id;
+        }
         App[aspect].push(new Classes[newAspect.class](newAspect));
       });
     });
