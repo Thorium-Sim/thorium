@@ -12,7 +12,8 @@ const exceptions = [
   "SecurityTeamsCore",
   "DamageTeamsCore",
   "CargoCore",
-  "ProbeControlCore"
+  "ProbeControlCore",
+  "ProbeNetworkCore"
 ];
 export default props => {
   return (

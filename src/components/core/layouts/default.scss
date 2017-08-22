@@ -1,13 +1,13 @@
 .core-default {
   display: grid;
   height: calc(100vh - 26px);
-  grid-template-columns: 120px 60px 180px 1fr 1fr 1fr 15%;
-  grid-template-rows: 40px 100px 40px 20% 125px 100px 100px, 1fr; 
+  grid-template-columns: 120px 60px 180px 1fr 1fr 300px 15%;
+  grid-template-rows: 40px 100px 40px 180px 1fr 100px 100px 120px; 
   grid-template-areas:
   "engineControl engineControl  navigation     sensors       sensors     shortRange            systems"
-  "thrusters     thrusters      docking     sensors       sensors     shortRange            systems"
-  "somethingElse somethingElse          probeNetwork     sensors       sensors     longRange            systems"
-  "targeting     targeting      targeting      something       something     longRange             systems"
+  "thrusters     thrusters      navigation     sensors       sensors     shortRange            systems"
+  "thrusters thrusters          docking     sensors       sensors     longRange            systems"
+  "targeting     targeting      targeting      sensors       sensors     longRange             systems"
   "phaser        torpedo        torpedo        sensorScans   messageSending     internalComm         systems"
   "shields       shields        shields        sensorScans   messageSending   damageReports   damageReports"
   "shields       shields        shields        sensorScans   actions   damageReports   damageReports"
