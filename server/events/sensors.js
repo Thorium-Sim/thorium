@@ -145,7 +145,6 @@ App.on("setSensorPingMode", ({ id, mode }) => {
 });
 App.on("pingSensors", ({ id }) => {
   const system = App.systems.find(sys => sys.id === id);
-  console.log(id);
   system.timeSincePing = 0;
   pubsub.publish("sensorsPing", id);
 });
