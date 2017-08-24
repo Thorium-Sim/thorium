@@ -13,7 +13,6 @@ if (!clientId) {
   // Just to test out the webpack
   localStorage.setItem("thorium_clientId", clientId);
 }
-console.log(clientId);
 const Credits = props => {
 	let client = {};
 	let flight = {};
@@ -125,7 +124,7 @@ class ClientView extends Component {
 			const client = nextProps.data.clients[0];
 			this.simulatorSub = nextProps.data.subscribeToMore({
 				document: SIMULATOR_SUB,
-				variables: { id: client.simulator.id },
+				variables: { id: client.simulator && client.simulator.id },
 				updateQuery: (previousResult, { subscriptionData }) => {
 					const sim = subscriptionData.data.simulatorsUpdate[0];
 					return Object.assign({}, previousResult, {

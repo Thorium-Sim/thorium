@@ -92,7 +92,7 @@ class GridDom extends Component {
     }
   }
   componentDidMount() {
-    this.contactLoop();
+    this.contactTimeout = setTimeout(this.contactLoop, this.interval);
   }
   componentWillUnmount() {
     clearTimeout(this.contactTimeout);
