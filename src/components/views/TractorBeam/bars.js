@@ -35,7 +35,7 @@ class Bars extends Component {
   mouseMove = e => {
     const { height, top } = this.state;
     this.setState({
-      level: Math.max(Math.min((e.pageY - top) / height, 1), 0)
+      level: Math.max(Math.min((e.pageY - top) / (height - 120) + 0.2, 1), 0)
     });
   };
   mouseUp = e => {
@@ -71,7 +71,7 @@ class Bars extends Component {
     return (
       <div className={`bar-container ${className} ${active ? "shown" : ""}`}>
         {arrow &&
-          <Measure includeMargin={true}>
+          <Measure includeMargin={false}>
             {dimensions =>
               <div className="arrow-container">
                 <Arrow
