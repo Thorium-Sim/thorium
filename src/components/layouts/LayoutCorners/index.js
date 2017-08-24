@@ -99,9 +99,9 @@ const Settings = props => {
       <div className={`icon ${props.className}`} />
       <ul className="options">
         <li onClick={startTraining}>Help</li>
-        <li>Lock Screen</li>
+        {/*<li>Lock Screen</li>
         <li>Reset Terminal</li>
-        <li>Diagnostic</li>
+        <li>Diagnostic</li>*/}
         <li onClick={logout}>Logout</li>
       </ul>
     </div>

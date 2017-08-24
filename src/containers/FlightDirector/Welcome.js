@@ -36,6 +36,7 @@ class Welcome extends Component {
       this.subscription = nextProps.data.subscribeToMore({
         document: FLIGHT_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
+          console.log("UPDATE", subscriptionData.data.flightsUpdate);
           return Object.assign({}, previousResult, {
             flights: subscriptionData.data.flightsUpdate
           });

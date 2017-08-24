@@ -364,9 +364,12 @@ export default class TimelineConfig extends Component {
     const { object } = this.props;
     return (
       <Row>
-        <Col sm="3" style={{ maxHeight: "27vh" }}>
+        <Col sm="3">
           <h4>Timeline</h4>
-          <Card className="scroll" style={{ maxHeight: "20vh" }}>
+          <Card
+            className="scroll"
+            style={{ maxHeight: "60vh", overflowY: "scroll" }}
+          >
             <SortableList
               items={object.timeline}
               onSortEnd={this.onSortEnd.bind(this)}
@@ -374,27 +377,27 @@ export default class TimelineConfig extends Component {
               setSelectedTimelineStep={this._setSelectedTimelineStep.bind(this)}
               removeTimelineStep={this._removeTimelineStep.bind(this)}
             />
-            <ButtonGroup>
-              <Button
-                color="success"
-                size="sm"
-                onClick={this._addTimelineStep.bind(this)}
-              >
-                Add Step
-              </Button>
-              {this.state.selectedTimelineStep &&
-                <Button
-                  color="danger"
-                  size="sm"
-                  onClick={this._removeTimelineStep.bind(
-                    this,
-                    this.state.selectedTimelineStep
-                  )}
-                >
-                  Remove Step
-                </Button>}
-            </ButtonGroup>
           </Card>
+          <ButtonGroup>
+            <Button
+              color="success"
+              size="sm"
+              onClick={this._addTimelineStep.bind(this)}
+            >
+              Add Step
+            </Button>
+            {this.state.selectedTimelineStep &&
+              <Button
+                color="danger"
+                size="sm"
+                onClick={this._removeTimelineStep.bind(
+                  this,
+                  this.state.selectedTimelineStep
+                )}
+              >
+                Remove Step
+              </Button>}
+          </ButtonGroup>
         </Col>
         {this.state.selectedTimelineStep &&
           <Col sm="3" style={{ maxHeight: "27vh" }}>
