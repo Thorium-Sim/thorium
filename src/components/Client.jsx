@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { Container } from 'reactstrap';
+import randomWords from "random-words";
 import CardContainer from '../containers/Card.jsx';
 import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import './client.scss';
 
-const clientId = localStorage.getItem('thorium_clientId');
+let clientId = localStorage.getItem("thorium_clientId");
+if (!clientId) {
+  clientId = randomWords(3).join("-");
+  // Just to test out the webpack
+  localStorage.setItem("thorium_clientId", clientId);
+}
+console.log(clientId);
 const Credits = props => {
 	let client = {};
 	let flight = {};
@@ -195,6 +202,7 @@ class ClientView extends Component {
 			simulator = client.simulator;
 			station = client.station;
 		}
+		console.log('PROPS!', this.props);
 		return (
 			<div>
 				{flight && simulator && station
