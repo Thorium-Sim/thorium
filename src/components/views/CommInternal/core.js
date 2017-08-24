@@ -102,7 +102,6 @@ class InternalCommCore extends Component {
     const inputStyle = { height: "22px" };
     return (
       <div className="internal-comm-core">
-        <p>Internal Comm</p>
         {this.props.data.internalComm.length > 0
           ? <Container>
               <Row>

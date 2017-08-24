@@ -1,27 +1,28 @@
-import React, {Component} from 'react';
-import { Container } from 'reactstrap';
-import gql from 'graphql-tag';
-import { graphql, withApollo } from 'react-apollo';
-import Immutable from 'immutable';
-import './style.scss';
+import React, { Component } from "react";
+import { Container } from "reactstrap";
+import gql from "graphql-tag";
+import { graphql, withApollo } from "react-apollo";
+import Immutable from "immutable";
+import "./style.scss";
 
 const TRACTORBEAM_SUB = gql`
-subscription TractorBeamUpdate($simulatorId: ID!) {
- tractorBeamUpdate(simulatorId: $simulatorId) {
-  id
-  state
-  target
-  strength
-  stress
-}
-}`;
+  subscription TractorBeamUpdate($simulatorId: ID!) {
+    tractorBeamUpdate(simulatorId: $simulatorId) {
+      id
+      state
+      target
+      strength
+      stress
+    }
+  }
+`;
 
 class TractorBeamCore extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       stress: 0
-    }
+    };
     this.tractorBeamSub = null;
   }
   componentWillReceiveProps(nextProps) {
@@ -33,7 +34,9 @@ class TractorBeamCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           const returnResult = Immutable.Map(previousResult);
-          return returnResult.merge({ tractorBeam: subscriptionData.data.tractorBeamUpdate }).toJS();
+          return returnResult
+            .merge({ tractorBeam: subscriptionData.data.tractorBeamUpdate })
+            .toJS();
         }
       });
     }
@@ -42,44 +45,48 @@ class TractorBeamCore extends Component {
       if (tractorBeam) {
         this.setState({
           stress: tractorBeam.stress
-        })
+        });
       }
     }
   }
   toggleTractor = (which, evt) => {
     const tractorBeam = this.props.data.tractorBeam[0];
-    let mutation, variables = {
-      id: tractorBeam.id,
-      state: evt.target.checked
-    };
-    if (which === 'target') {
+    let mutation,
+      variables = {
+        id: tractorBeam.id,
+        state: evt.target.checked
+      };
+    if (which === "target") {
       mutation = gql`
-      mutation TractorBeamTarget ($id: ID!, $state: Boolean!) {
-        setTractorBeamTarget(id: $id, target: $state)
-      }`;
+        mutation TractorBeamTarget($id: ID!, $state: Boolean!) {
+          setTractorBeamTarget(id: $id, target: $state)
+        }
+      `;
     }
-    if (which === 'state') {
+    if (which === "state") {
       mutation = gql`
-      mutation TractorBeamState ($id: ID!, $state: Boolean!) {
-        setTractorBeamState(id: $id, state: $state)
-      }`;
+        mutation TractorBeamState($id: ID!, $state: Boolean!) {
+          setTractorBeamState(id: $id, state: $state)
+        }
+      `;
     }
     this.props.client.mutate({
       mutation,
       variables
-    })
-  }
-  setStress = (evt) => {
+    });
+  };
+  setStress = evt => {
     this.setState({
       stress: evt.target.value
     });
-  }
+  };
   updateStress = () => {
     const tractorBeam = this.props.data.tractorBeam[0];
     const mutation = gql`
-    mutation TractorBeamStress ($id: ID!, $stress: Float!) {
-      setTractorBeamStress(id: $id, stress: $stress)
-    }`;
+      mutation TractorBeamStress($id: ID!, $stress: Float!) {
+        setTractorBeamStress(id: $id, stress: $stress)
+      }
+    `;
     const variables = {
       id: tractorBeam.id,
       stress: this.state.stress
@@ -87,35 +94,64 @@ class TractorBeamCore extends Component {
     this.props.client.mutate({
       mutation,
       variables
-    })
-  }
-  render(){
+    });
+  };
+  render() {
     if (this.props.data.loading) return null;
     const tractorBeam = this.props.data.tractorBeam[0];
     if (!tractorBeam) return <p>No Tractor Beam</p>;
-    return <Container className="tractor-beam-core">
-    <p>Tractor Beam</p>
-    <label>Target: <input type="checkbox" onChange={(evt) => this.toggleTractor('target', evt)} checked={tractorBeam.target} /></label>
-    <label>Active: <input type="checkbox" onChange={(evt) => this.toggleTractor('state', evt)} checked={tractorBeam.state} /></label>
-    <label>Strength: {Math.round(tractorBeam.strength * 100)}</label>
-    <label>Stress: {Math.round(this.state.stress * 100)} <input style={{width: '50%', float: 'right'}} onChange={this.setStress} onMouseUp={this.updateStress} value={this.state.stress} type="range" min="0" max="1" step="0.01" /></label>
-    </Container>
+    return (
+      <Container className="tractor-beam-core">
+        <label>
+          Target:{" "}
+          <input
+            type="checkbox"
+            onChange={evt => this.toggleTractor("target", evt)}
+            checked={tractorBeam.target}
+          />
+        </label>
+        <label>
+          Active:{" "}
+          <input
+            type="checkbox"
+            onChange={evt => this.toggleTractor("state", evt)}
+            checked={tractorBeam.state}
+          />
+        </label>
+        <label>
+          Strength: {Math.round(tractorBeam.strength * 100)}
+        </label>
+        <label>
+          Stress: {Math.round(this.state.stress * 100)}{" "}
+          <input
+            style={{ width: "50%", float: "right" }}
+            onChange={this.setStress}
+            onMouseUp={this.updateStress}
+            value={this.state.stress}
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+          />
+        </label>
+      </Container>
+    );
   }
 }
 
 const TRACTORBEAM_QUERY = gql`
-query TractorBeamInfo($simulatorId: ID!) {
-  tractorBeam(simulatorId: $simulatorId) {
-    id
-    state
-    target
-    strength
-    stress
+  query TractorBeamInfo($simulatorId: ID!) {
+    tractorBeam(simulatorId: $simulatorId) {
+      id
+      state
+      target
+      strength
+      stress
+    }
   }
-}
 `;
 export default graphql(TRACTORBEAM_QUERY, {
-  options: (ownProps) => ({
+  options: ownProps => ({
     variables: {
       simulatorId: ownProps.simulator.id
     }

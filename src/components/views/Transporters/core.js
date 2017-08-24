@@ -79,7 +79,6 @@ class TransporterCore extends Component {
       : this.props.data.transporters[0];
     return (
       <div>
-        <p>Transporters</p>
         {this.props.data.loading
           ? <span>Loading...</span>
           : this.props.data.transporters.length > 0

@@ -106,8 +106,10 @@ export const SensorsSubscriptions = {
   sensorContactUpdate(root, { sensorId }) {
     return root.filter(contact => contact.sensorId === sensorId);
   },
-  sensorsPing(root, { sensorId }) {
-    if (root === sensorId) return true;
+  sensorsPing(root, args) {
+    return root;
+    //console.log(root, args);
+    //if (root === sensorId) return sensorId;
   }
 };
 

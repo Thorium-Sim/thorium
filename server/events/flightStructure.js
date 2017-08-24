@@ -86,6 +86,7 @@ App.on("startFlight", ({ id, name, simulators }) => {
     return sim.id;
   });
   App.flights.push(new Classes.Flight({ id, name, simulators: simIds }));
+  pubsub.publish("flightsUpdate", App.flights);
 });
 
 // Simulator
