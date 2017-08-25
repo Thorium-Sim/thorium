@@ -7,8 +7,8 @@ import Immutable from "immutable";
 import ScanPresets from "./ScanPresets";
 
 const SENSOR_SUB = gql`
-  subscription SensorsChanged {
-    sensorsUpdate {
+  subscription SensorsChanged($simulatorId: ID) {
+    sensorsUpdate(simulatorId: $simulatorId) {
       id
       domain
       simulatorId
@@ -16,6 +16,10 @@ const SENSOR_SUB = gql`
       scanRequest
       processedData
       scanning
+      presetAnswers {
+        label
+        value
+      }
     }
   }
 `;
@@ -33,6 +37,7 @@ class SensorsCore extends Component {
     if (!this.sensorsSubscription && !nextProps.data.loading) {
       this.sensorsSubscription = nextProps.data.subscribeToMore({
         document: SENSOR_SUB,
+        variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           const returnResult = Immutable.Map(previousResult);
           return returnResult
@@ -113,7 +118,7 @@ class SensorsCore extends Component {
       display: "flex",
       flexDirection: "column",
       alignItems: "stretch",
-      height: "calc(100% - 60px)"
+      height: "calc(100% - 100px)"
     };
     const buttonStyle = {
       display: "flex",
@@ -184,8 +189,19 @@ class SensorsCore extends Component {
               </option>
             )}
           </select>
-          <select disabled style={{ flexGrow: 4 }}>
-            <option>Info</option>
+          <select
+            onChange={this.scanPreset}
+            value={"answers"}
+            style={{ flexGrow: 4, maxWidth: 50 }}
+          >
+            <option disabled value={"answers"}>
+              Info
+            </option>
+            {sensor.presetAnswers.map(p =>
+              <option key={`${p.label}-${p.value}`} value={p.value}>
+                {p.label}
+              </option>
+            )}
           </select>
           <Button
             onClick={this.sendProcessedData.bind(this, external)}
@@ -219,6 +235,10 @@ const SENSOR_QUERY = gql`
       scanRequest
       scanning
       processedData
+      presetAnswers {
+        label
+        value
+      }
     }
     probes(simulatorId: $simulatorId) {
       id

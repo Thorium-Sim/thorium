@@ -288,6 +288,7 @@ class SecurityTeams extends Component {
                         type="textarea"
                         id="teamOrders"
                         placeholder=""
+                        rows={10}
                         size="lg"
                         value={team.orders}
                       />

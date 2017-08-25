@@ -1,4 +1,7 @@
 .damage-teams {
+  textarea {
+    resize: none;
+  }
   .card {
     max-height: 60vh;
     overflow: scroll;

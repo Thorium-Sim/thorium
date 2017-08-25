@@ -2,20 +2,6 @@ import React from "react";
 import { Cores } from "../../views";
 import "./iifx.scss";
 
-const oldexceptions = [
-  "TractorBeamCore",
-  "TransporterCore",
-  "StealthFieldCore",
-  "CrewCore",
-  "DecksCore",
-  "TimelineCore",
-  "SecurityTeamsCore",
-  "DamageTeamsCore",
-  "CargoCore",
-  "ProbeControlCore",
-  "ProbeNetworkCore"
-];
-
 const exceptions = [
   "EngineControlCore",
   "SensorsGridCore",
@@ -26,7 +12,7 @@ const exceptions = [
   "PhaserCore",
   "TorpedoCore",
   "SelfDestructCore",
-  "TimelineCore",
+  //"TimelineCore",
   "DecksCore"
 ];
 export default props => {
