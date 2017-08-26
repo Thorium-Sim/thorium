@@ -132,6 +132,12 @@ import {
   ViewscreenSubscriptions
 } from "./viewscreen";
 
+import {
+  MessagesQueries,
+  MessagesMutations,
+  MessagesSubscriptions
+} from "./messages";
+
 import App from "../../app";
 
 function parseJSONLiteral(ast) {
@@ -186,7 +192,8 @@ const queryMap = Object.assign(
   CrewQueries,
   TeamsQueries,
   SetQueries,
-  ViewscreenQueries
+  ViewscreenQueries,
+  MessagesQueries
 );
 
 export const mutationMap = Object.assign(
@@ -224,7 +231,8 @@ export const mutationMap = Object.assign(
   CrewMutations,
   TeamsMutations,
   SetMutations,
-  ViewscreenMutations
+  ViewscreenMutations,
+  MessagesMutations
 );
 
 const subscriptionMap = Object.assign(
@@ -257,7 +265,8 @@ const subscriptionMap = Object.assign(
   CrewSubscriptions,
   TeamsSubscriptions,
   SetSubscriptions,
-  ViewscreenSubscriptions
+  ViewscreenSubscriptions,
+  MessagesSubscriptions
 );
 
 export default Object.assign(

@@ -1,13 +1,13 @@
-import uuid from 'uuid';
+import uuid from "uuid";
 
 export class StationSet {
   constructor({ id, name, simulatorId, stations = [] }) {
-    this.class = 'StationSet';
+    this.class = "StationSet";
     this.id = id || uuid.v4();
     this.simulatorId = simulatorId || null;
-    this.name = name || 'StationSet';
+    this.name = name || "StationSet";
     this.stations = [];
-    stations.forEach((station) => {
+    stations.forEach(station => {
       this.addStation(station);
     });
   }
@@ -39,11 +39,13 @@ export class StationSet {
 }
 
 export class Station {
-  constructor({ name, cards = [] }) {
-    this.class = 'Station';
-    this.name = name || 'Station';
+  constructor({ name, cards = [], login = false, messageGroups = [] }) {
+    this.class = "Station";
+    this.name = name || "Station";
+    this.login = login;
+    this.messageGroups = messageGroups;
     this.cards = [];
-    cards.forEach((card) => {
+    cards.forEach(card => {
       this.addCard(card);
     });
   }
@@ -64,10 +66,10 @@ export class Station {
 
 export class Card {
   constructor(params) {
-    this.name = params.name || 'Card';
+    this.name = params.name || "Card";
     this.icon = params.icon || null;
-    this.component = params.component || 'Login';
-    this.class = 'Card';
+    this.component = params.component || "Login";
+    this.class = "Card";
   }
   update({ name, icon, component }) {
     if (name) this.name = name;
