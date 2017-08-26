@@ -48,7 +48,6 @@ class SensorsCore extends Component {
     }
   }
   sendScanResult = sensors => {
-    console.log(sensors.domain, this.state.dataField);
     this.props.client.mutate({
       mutation: gql`
         mutation SensorScanResult($id: ID!, $result: String!) {

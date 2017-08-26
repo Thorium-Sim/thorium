@@ -108,8 +108,6 @@ export const SensorsSubscriptions = {
   },
   sensorsPing(root, args) {
     return root;
-    //console.log(root, args);
-    //if (root === sensorId) return sensorId;
   }
 };
 

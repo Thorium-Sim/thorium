@@ -201,7 +201,6 @@ class ClientView extends Component {
 			simulator = client.simulator;
 			station = client.station;
 		}
-		console.log('PROPS!', this.props);
 		return (
 			<div>
 				{flight && simulator && station

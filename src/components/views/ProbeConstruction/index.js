@@ -284,7 +284,6 @@ class ProbeName extends Component {
   };
   render() {
     const { modal, toggle, launchProbe, equipment, network } = this.props;
-    console.log(network);
     const { name } = this.state;
     return (
       <Modal className="modal-themed probe-name" isOpen={modal} toggle={toggle}>

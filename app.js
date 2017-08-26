@@ -37,7 +37,6 @@ class Events extends EventEmitter {
     setTimeout(this.init.bind(this), 0);
   }
   init() {
-    //collections.events.find({}).forEach((doc) => {console.log(doc)})
     let snapshotDir = "./snapshots/";
     if (electron.app) {
       snapshotDir = electron.app.getPath("appData") + "/thorium/";

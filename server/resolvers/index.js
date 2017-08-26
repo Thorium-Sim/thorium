@@ -135,7 +135,6 @@ import {
 import App from "../../app";
 
 function parseJSONLiteral(ast) {
-  console.log(ast);
   /* switch (ast.kind) {
     case Kind.STRING:
     case Kind.BOOLEAN:

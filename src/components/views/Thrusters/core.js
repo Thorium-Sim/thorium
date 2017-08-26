@@ -79,7 +79,6 @@ class ThrusterCore extends Component {
       id: thrusters.id,
       rotation
     };
-    console.log(variables);
     this.props.client.mutate({
       mutation,
       variables

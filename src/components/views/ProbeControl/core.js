@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import {
-  Container,
-  Row,
-  Col,
-  Button
-} from "reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 import { OutputField, TypingField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
 import Immutable from "immutable";
@@ -71,7 +66,7 @@ class ProbeControl extends Component {
       mutation,
       variables
     });
-  }
+  };
   render() {
     if (this.props.data.loading) return null;
     const probes = this.props.data.probes[0];
@@ -84,7 +79,7 @@ class ProbeControl extends Component {
             <div className="scroll probelist">
               {probes.probes.map(p =>
                 <p
-                  key={p}
+                  key={p.id}
                   className={`probe ${p.querying ? "querying" : ""}
                   ${p.id === selectedProbe ? "selected" : ""}`}
                   onClick={() => this.setState({ selectedProbe: p.id })}
@@ -156,4 +151,3 @@ const PROBES_QUERY = gql`
 export default graphql(PROBES_QUERY, {
   options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })
 })(withApollo(ProbeControl));
-

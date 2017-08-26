@@ -123,6 +123,7 @@ class TimelineCore extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { mission, currentTimelineStep } = this.props.data.simulators[0];
+    if (!mission) return <p>Simulator has no mission</p>;
     const currentStep = mission.timeline[currentTimelineStep];
     const { steps } = this.state;
     return (

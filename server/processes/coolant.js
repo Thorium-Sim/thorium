@@ -27,7 +27,6 @@ const updateCoolant = () => {
         s.transfer = null;
       App.handleEvent({ systemId: sysId, coolant: sysCoolant }, "setCoolant");
       App.handleEvent({ systemId: s.id, coolant: tankCoolant }, "setCoolant");
-      console.log(transferSystem.name);
       pubsub.publish(
         "coolantSystemUpdate",
         App.systems

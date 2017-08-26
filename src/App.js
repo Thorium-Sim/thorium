@@ -25,7 +25,6 @@ if (!clientId) {
   // Just to test out the webpack
   localStorage.setItem("thorium_clientId", clientId);
 }
-console.log("APP", clientId);
 const networkInterface = createNetworkInterface({
   uri: `http://${hostname}:3001/graphql`,
   headers: { clientId },

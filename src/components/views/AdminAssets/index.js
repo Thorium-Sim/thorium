@@ -130,7 +130,6 @@ class AdminAssetsView extends Component {
       simulatorId: "default",
       folderPath: this.state.currentDirectory
     };
-    console.log(obj);
     this.props.uploadAsset(obj).catch(error => {
       console.error("error", error.message);
     });
@@ -249,13 +248,9 @@ class AdminAssetsView extends Component {
                       );
                     })}
                   {this.props.data.assetFolders
-                    .find(folder => {
-                      console.log(folder, this.state.currentDirectory);
-                      if (folder.fullPath === this.state.currentDirectory) {
-                        console.log(folder);
-                      }
-                      return folder.fullPath === this.state.currentDirectory;
-                    })
+                    .find(
+                      folder => folder.fullPath === this.state.currentDirectory
+                    )
                     .containers.map(container => {
                       return (
                         <li key={container.id}>

@@ -96,7 +96,6 @@ export const AssetsMutations = {
       containerId,
       folderPath: givenFolderPath
     } = args;
-    console.log("Args", args);
     let container = App.assetContainers.find(
       container => containerId === container.id
     );
@@ -106,7 +105,6 @@ export const AssetsMutations = {
       folderPath = container.folderPath;
       fullPath = container.fullPath;
     }
-    console.log(fullPath);
     files.forEach(file => {
       // First, check to see if there is a container
       let container = App.assetContainers.find(
@@ -117,7 +115,6 @@ export const AssetsMutations = {
         const name = file.originalname.replace(/(\..{3})/gi, "");
         const folder = App.assetFolders.find(f => f.fullPath === folderPath);
         const folderId = folder && folder.id;
-        console.log("FolderPath", folderPath, givenFolderPath, name, folderId);
 
         const containerFullPath = folderPath + "/" + name;
         const params = {

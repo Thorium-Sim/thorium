@@ -50,11 +50,9 @@ export const CoolantSubscriptions = {
   },
   coolantSystemUpdate(rootValue, { simulatorId, systemId }) {
     let returnRes = rootValue;
-    console.log(rootValue, returnRes);
     if (simulatorId)
       returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
     if (systemId) returnRes = returnRes.filter(s => s.id === systemId);
-    console.log(rootValue, returnRes);
     return returnRes;
   }
 };

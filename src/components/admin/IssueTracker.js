@@ -77,9 +77,10 @@ class IssueTracker extends Component {
               <select
                 onChange={this._handleEvent.bind(this, "type")}
                 required
+                defaultValue={"select"}
                 className="form-control form-control-sm"
               >
-                <option disabled selected>
+                <option disabled value="select">
                   Select a Type
                 </option>
                 <option value="bug">Bug</option>
@@ -94,9 +95,10 @@ class IssueTracker extends Component {
               <select
                 onChange={this._handleEvent.bind(this, "priority")}
                 required
+                defaultValue={"select"}
                 className="form-control form-control-sm"
               >
-                <option disabled selected>
+                <option disabled value="select">
                   Select a Priority
                 </option>
                 <option value="3">High</option>

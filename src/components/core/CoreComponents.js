@@ -130,6 +130,7 @@ class CoreComponents extends Component {
           }}
         >
           {LayoutComponent &&
+            this.state.simulator &&
             <LayoutComponent
               {...this.props}
               simulator={{ id: this.state.simulator }}

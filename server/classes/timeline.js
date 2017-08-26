@@ -136,7 +136,6 @@ export class TimelineItem {
     this.delay = params.delay || 0;
   }
   update({ name, type, event, delay, args }) {
-    console.log(name, type, event, delay, args);
     if (name) this.name = name;
     if (type) this.type = type;
     if (event) this.event = event;
