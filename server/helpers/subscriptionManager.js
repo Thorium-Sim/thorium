@@ -1,5 +1,5 @@
 // import { RedisPubSub } from 'graphql-redis-subscriptions';
-import { PubSub } from 'graphql-subscriptions';
+import { PubSub } from "graphql-subscriptions";
 
 const pubsub = new PubSub();
 /*
@@ -10,5 +10,6 @@ const pubsub = new RedisPubSub({
   },
 });*/
 
-export { pubsub };
+pubsub.ee.setMaxListeners(150);
 
+export { pubsub };

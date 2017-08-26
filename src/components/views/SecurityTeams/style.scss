@@ -1,4 +1,7 @@
 .security-teams {
+  textarea {
+    resize: none;
+  }
   .card {
     max-height: 60vh;
     overflow-y: scroll;

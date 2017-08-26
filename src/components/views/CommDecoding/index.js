@@ -301,14 +301,15 @@ class Decoding extends Component {
             </Row>
           </Col>
           <Col sm={4}>
-            <Card>
+            <h3>Incoming Messages</h3>
+            <Card style={{ minHeight: "40px" }}>
               {sys.messages.map(m =>
                 <li
                   key={m.id}
                   onClick={this._selectMessage.bind(this, m)}
-                  className={
-                    m.id === this.state.selectedMessage ? "active" : ""
-                  }
+                  className={`${m.id === this.state.selectedMessage
+                    ? "active"
+                    : ""} list-group-item`}
                 >
                   {m.datestamp} - {m.sender}
                 </li>
