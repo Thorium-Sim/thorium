@@ -73,7 +73,7 @@ export default class CardFrame extends Component {
     if (station.name === 'Viewscreen') {
       LayoutComponent = Layouts[layoutName + 'Viewscreen'] || LayoutComponent;
     }
-    if (client.offlineState === 'blackout') {
+    if (client.offlineState === 'blackout' || station.name === 'Blackout') {
       return <Blackout />;
     }
     return (

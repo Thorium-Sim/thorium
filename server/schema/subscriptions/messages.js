@@ -1,4 +1,4 @@
 export default `
-subscription MessageUpdates(simulatorId: ID!, station: String): [Message]
-subscription SendMessage(simulatorId: ID!, station: String): Message
+messageUpdates(simulatorId: ID!, station: String): [Message]
+sendMessage(simulatorId: ID!, station: String): Message
 `;

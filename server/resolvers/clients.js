@@ -115,6 +115,17 @@ export const ClientTypes = {
           ]
         };
       }
+      if (rootValue.station === "Blackout") {
+        return {
+          name: "Blackout",
+          cards: [
+            {
+              name: "Blackout",
+              component: "Blackout"
+            }
+          ]
+        };
+      }
       const simulator = App.simulators.find(
         s => s.id === rootValue.simulatorId
       );

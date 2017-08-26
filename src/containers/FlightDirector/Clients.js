@@ -182,6 +182,7 @@ class Clients extends Component {
                                 )
                               : <option disabled>No Stations</option>}
                             <option value={"Viewscreen"}>Viewscreen</option>
+                            <option value={"Blackout"}>Blackout</option>
                           </select>
                         </td>
                       </tr>
