@@ -4,9 +4,16 @@
 	background-image: url('/js/images/credit-bg.jpg');
 	.container{
 		height: 100%;
-		overflow-y: scroll;
+		overflow-y: hidden;
 		padding: 50px; 
 		text-align: center;
+		.scroll {
+			height: calc(100% - 183px);
+			overflow: hidden;
+			.creditSection {
+				margin-top: 40px;
+			}
+		}
 		img{
 			width: 20%;
 			-webkit-filter: drop-shadow(16px 16px 20px black);
