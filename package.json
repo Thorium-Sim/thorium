@@ -129,7 +129,7 @@
     "request": "^2.79.0",
     "scribe-js": "^2.0.4",
     "sourced": "^0.1.4",
-    "subscriptions-transport-ws": "^0.7.3",
+    "subscriptions-transport-ws": "^0.8.2",
     "svg-mesh-3d": "^1.1.0",
     "three": "^0.85.2",
     "three-obj-loader": "^1.0.2",
