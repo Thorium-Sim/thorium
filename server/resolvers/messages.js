@@ -34,6 +34,7 @@ export const MessagesMutations = {
     App.handleEvent(args, "toggleStationMessageGroup", context);
   },
   sendMessage(root, args, context) {
+    console.log("sendMessage", args);
     App.handleEvent(args, "sendMessage", context);
   }
 };
@@ -63,6 +64,7 @@ export const MessagesSubscriptions = {
     return returnValue;
   },
   sendMessage(rootValue, { simulatorId, station }) {
+    console.log(rootValue, simulatorId, station);
     if (simulatorId) {
       if (rootValue.simulatorId !== simulatorId) return;
     }
@@ -74,10 +76,10 @@ export const MessagesSubscriptions = {
       // Get all of the messages which the station sent
       // And which are sent to the station
       if (
-        rootValue.sender === station &&
-        rootValue.destination === station &&
-        stationObj.messageGroups.indexOf(rootValue.sender) > -1 &&
-        stationObj.messageGroups.indexOf(rootValue.destination) > -1
+        rootValue.sender !== station &&
+        rootValue.destination !== station &&
+        stationObj.messageGroups.indexOf(rootValue.sender) === -1 &&
+        stationObj.messageGroups.indexOf(rootValue.destination) === -1
       )
         return;
     }

@@ -29,3 +29,4 @@ export Crew from "./crew";
 export Team from "./teams";
 export Set from "./set";
 export Viewscreen from "./viewscreen";
+export Message from "./message";

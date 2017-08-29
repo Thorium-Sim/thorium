@@ -36,6 +36,9 @@ export class StationSet {
     const cardStation = this.stations.find(s => s.name === station);
     cardStation.updateCard(cardName, cardUpdate);
   }
+  setStationMessageGroup(station, group, state) {
+    this.stations.find(s => s.name === station).setMessageGroup(group, state);
+  }
 }
 
 export class Station {
@@ -61,6 +64,15 @@ export class Station {
   updateCard(cardName, cardUpdate) {
     const card = this.cards.find(c => c.name === cardName);
     card.update(cardUpdate);
+  }
+  setMessageGroup(group, state) {
+    if (state) {
+      this.messageGroups = this.messageGroups
+        .concat(group)
+        .filter((g, i, arr) => arr.indexOf(g) === i);
+    } else {
+      this.messageGroups = this.messageGroups.filter(g => g !== group);
+    }
   }
 }
 

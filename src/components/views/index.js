@@ -33,6 +33,7 @@ import SelfDestruct from "./SelfDestruct";
 import ProbeControl from "./ProbeControl";
 import ReactorControl from "./ReactorControl";
 import Viewscreen from "./Viewscreen";
+import Messages from "./Messaging";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -105,7 +106,8 @@ const Views = {
   SelfDestruct,
   ProbeControl,
   ReactorControl,
-  Viewscreen
+  Viewscreen,
+  Messages
 };
 
 export const Widgets = {
