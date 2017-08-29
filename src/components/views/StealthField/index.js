@@ -217,8 +217,8 @@ class StealthBars extends Transitioner {
       <div className="stealthBars">
         {systems.filter(s => typeof s.stealthFactor === "number").map(s => {
           return (
-            <Row key={s.id}>
-              <Col sm="3">
+            <Row key={s.id} className="mt-1">
+              <Col sm="3" className="text-right">
                 {this.systemName(s)}
               </Col>
               <Col sm="9">

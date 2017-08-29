@@ -57,13 +57,15 @@ class EngineControl extends Component {
       this.setSpeedSubscription = nextProps.data.subscribeToMore({
         document: SPEEDCHANGE_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
-          previousResult.engines = previousResult.engines.map(engine => {
+          const engines = previousResult.engines.map(engine => {
             if (engine.id === subscriptionData.data.speedChange.id) {
-              engine.speed = subscriptionData.data.speedChange.speed;
+              return Object.assign({}, engine, {
+                speed: subscriptionData.data.speedChange.speed
+              });
             }
             return engine;
           });
-          return previousResult;
+          return Object.assign({}, previousResult, { engines });
         }
       });
     }

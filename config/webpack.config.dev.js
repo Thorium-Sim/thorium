@@ -7,7 +7,6 @@ var WatchMissingNodeModulesPlugin = require("react-dev-utils/WatchMissingNodeMod
 var getClientEnvironment = require("./env");
 var paths = require("./paths");
 const DashboardPlugin = require("webpack-dashboard/plugin");
-var LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -102,8 +101,7 @@ module.exports = {
           // https://github.com/facebookincubator/create-react-app/issues/483
           cacheDirectory: findCacheDir({
             name: "react-scripts"
-          }),
-          plugins: ["lodash"]
+          })
         }
       },
       // JSON is not enabled by default in Webpack but both Node and Browserify
@@ -164,9 +162,7 @@ module.exports = {
     // to restart the development server for Webpack to discover it. This plugin
     // makes the discovery automatic so you don't have to restart.
     // See https://github.com/facebookincubator/create-react-app/issues/186
-    new WatchMissingNodeModulesPlugin(paths.appNodeModules),
-    new DashboardPlugin(),
-    new LodashModuleReplacementPlugin()
+    new WatchMissingNodeModulesPlugin(paths.appNodeModules)
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

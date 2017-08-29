@@ -3,7 +3,6 @@ import { FormGroup, Label, Input } from "reactstrap";
 
 export default ({ updateArgs, args, client }) => {
   let answers = args.presetAnswers || [];
-  console.log(answers);
   answers = answers
     .map(a => `${a.label || ""}${a.value && ";" + a.value}`)
     .join("\n");

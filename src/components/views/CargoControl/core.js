@@ -136,8 +136,11 @@ class CargoControlCore extends Component {
               </div>
             )}
           </div>}
-        <select onChange={this.setSelected.bind(this, "deck")}>
-          <option disabled selected>
+        <select
+          defaultValue={"select"}
+          onChange={this.setSelected.bind(this, "deck")}
+        >
+          <option disabled value="select">
             Select Deck
           </option>
           {decks.map(d =>
@@ -146,8 +149,12 @@ class CargoControlCore extends Component {
             </option>
           )}
         </select>
-        <select disabled={!deck} onChange={this.setSelected.bind(this, "room")}>
-          <option disabled selected>
+        <select
+          defaultValue={"select"}
+          disabled={!deck}
+          onChange={this.setSelected.bind(this, "room")}
+        >
+          <option disabled value="select">
             Select Room
           </option>
           {deck &&

@@ -143,7 +143,6 @@ class PowerDistribution extends Component {
     const powerTotal = this.state.systems.reduce((prev, next) => {
       return next.power.power + prev;
     }, 0);
-    console.log(this.state.systems.length);
     return (
       <Container fluid className="powerLevels">
         <Row className="powerlevel-row">

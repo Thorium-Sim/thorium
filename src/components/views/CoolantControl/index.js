@@ -76,8 +76,6 @@ class CoolantControl extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          console.log(subscriptionData.data.coolantSystemUpdate);
-
           const returnResult = Immutable.Map(previousResult);
           return returnResult
             .merge({ systemCoolant: subscriptionData.data.coolantSystemUpdate })

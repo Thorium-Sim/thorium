@@ -180,7 +180,6 @@ class TargetingCore extends Component {
       contactClass = targetedContact.class;
       contactId = targetedContact.id;
     }
-    console.log(targetedContact);
     return (
       <Container className="targeting-core">
         <Row>

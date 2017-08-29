@@ -6,7 +6,6 @@ export const ViewscreenQueries = {
     if (simulatorId) {
       viewscreens = viewscreens.filter(v => v.simulatorId === simulatorId);
     }
-    console.log(viewscreens, App.viewscreens);
     return viewscreens.map(v => App.viewscreens.find(av => av.id === v.id));
   }
 };

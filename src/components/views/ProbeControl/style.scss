@@ -36,7 +36,12 @@
   height: 100%;
   .probelist {
     background-color: #eee;
+    color: #333;
+    padding: 2px;
     height: 100%;
+    .selected {
+      background-color: #aaa;
+    }
     p.querying {
       font-style: italic;
     }
