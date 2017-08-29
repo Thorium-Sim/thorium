@@ -215,8 +215,10 @@
       "no-underscore-dangle": 0
     }
   },
-  "bin":"./app.js",
-  "pkg":{
-    "assets":["./**/*"]
+  "bin": "./app.js",
+  "pkg": {
+    "assets": [
+      "./**/*"
+    ]
   }
 }

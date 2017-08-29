@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router";
 import { Container } from "reactstrap";
 import randomWords from "random-words";
-import CardContainer from "../containers/Card.jsx";
+import CardContainer from "../containers/Card";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import "./client.scss";
