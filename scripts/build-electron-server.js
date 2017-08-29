@@ -3,7 +3,8 @@ var webpack = require("webpack");
 var chalk = require("chalk");
 var config = require("../config/webpack.config.server");
 var fs = require("fs");
-var exec = require("child_process").exec;
+const { exec } = require("pkg");
+const { exec: execCommand } = require("child_process");
 
 var deleteFolderRecursive = function(path) {
   if (fs.existsSync(path)) {
@@ -31,6 +32,14 @@ function printErrors(summary, errors) {
   });
 }
 
+fs
+  .createReadStream("./package.json")
+  .pipe(
+    fs.createWriteStream(
+      path.resolve(__dirname + "/../build-server/package.json")
+    )
+  );
+
 console.log("Creating an optimized production server build...");
 webpack(config).run((err, stats) => {
   if (err) {
@@ -44,4 +53,13 @@ webpack(config).run((err, stats) => {
 
   console.log(chalk.green("Compiled successfully."));
   console.log();
+  console.log(chalk.cyan("Compiling PKG"));
+
+  exec(["build-server"]).then(() => {
+    if (process.platform === "darwin") {
+      console.log(chalk.cyan("Applying an icon to the PKG"));
+      // Apply the icon, just for fun
+      execCommand("npm run apply-icon");
+    }
+  });
 });

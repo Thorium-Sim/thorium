@@ -1,5 +1,5 @@
 {
-  "name": "thorium",
+  "name": "thorium-server",
   "version": "0.1.1",
   "private": true,
   "description": "React + GraphQL simulator controls",
@@ -49,6 +49,7 @@
     "eslint-plugin-react": "^7.1.0",
     "extract-text-webpack-plugin": "^2.1.2",
     "file-loader": "^0.11.2",
+    "fileicon": "^0.1.8",
     "filesize": "^3.5.5",
     "find-cache-dir": "^1.0.0",
     "flow-bin": "^0.52.0",
@@ -61,6 +62,7 @@
     "mv": "^2.1.1",
     "node-sass": "^4.5.0",
     "nodemon": "^1.9.1",
+    "pkg": "^4.2.4",
     "prettier": "^1.5.3",
     "promise": "^7.3.1",
     "react-dev-utils": "^3.0.2",
@@ -149,6 +151,7 @@
     "test": "npm run lint && jest",
     "flow": "flow",
     "precommit": "lint-staged",
+    "apply-icon": "fileicon set thorium-server-macos icon.icns",
     "add": "all-contributors add",
     "generate": "all-contributors generate"
   },
@@ -211,5 +214,9 @@
       "comma-dangle": 0,
       "no-underscore-dangle": 0
     }
+  },
+  "bin":"./app.js",
+  "pkg":{
+    "assets":["./**/*"]
   }
 }

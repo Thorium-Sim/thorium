@@ -54,3 +54,4 @@ logs
 assets
 *-rxdb-*
 temp
+thorium-server-*

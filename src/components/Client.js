@@ -99,7 +99,11 @@ class Credits extends Component {
     return (
       <div className="credit-bg" onClick={this.toggleDebug}>
         <Container>
-          <img role="presentation" src="./logo.png" draggable="false" />
+          <img
+            role="presentation"
+            src={require("./logo.png")}
+            draggable="false"
+          />
           <h1>Thorium</h1>
           {this.state.debug
             ? <div className="debug">
