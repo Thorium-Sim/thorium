@@ -1,6 +1,5 @@
 import fs from "fs";
 import path from "path";
-import electron from "electron";
 import uuid from "uuid";
 import mkdirp from "mkdirp";
 import App from "../../app";
@@ -8,10 +7,10 @@ import * as Classes from "../classes";
 import { pubsub } from "../helpers/subscriptionManager.js";
 
 let assetDir = path.resolve("./assets/");
-if (electron.app) {
-  assetDir = path.resolve(electron.app.getPath("appData") + "/thorium/assets");
-}
-
+//if (electron.app) {
+//  assetDir = path.resolve(electron.app.getPath("appData") + "/thorium/assets");
+//}
+//
 // Ensure the asset folder exists
 if (!fs.existsSync(assetDir)) {
   fs.mkdirSync(assetDir);

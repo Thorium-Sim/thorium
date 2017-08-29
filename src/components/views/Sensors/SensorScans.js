@@ -79,7 +79,7 @@ export default class SensorScans extends Component {
                 ? <div>
                     <video ref={"ReactVideo"} autoPlay loop>
                       <source
-                        src={"/js/images/scansvid.mov"}
+                        src={require("./scansvid.mov")}
                         type="video/mp4"
                       />
                     </video>

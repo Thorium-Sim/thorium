@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import Layouts from '../components/layouts';
+import React, { Component } from "react";
+import Layouts from "../components/layouts";
 
 const Blackout = () => {
   return (
     <div
       style={{
-        width: '100vw',
-        height: '100vh',
-        position: 'fixed',
+        width: "100vw",
+        height: "100vh",
+        position: "fixed",
         left: 0,
         right: 0,
         top: 0,
         bottom: 0,
         zIndex: 10000,
-        backgroundColor: 'black'
+        backgroundColor: "black"
       }}
     />
   );
@@ -24,7 +24,7 @@ export default class CardFrame extends Component {
     super(props);
     if (props.test) {
       this.state = {
-        card: 'Test'
+        card: "Test"
       };
     } else {
       this.state = {
@@ -36,7 +36,7 @@ export default class CardFrame extends Component {
     if (nextProps.station.name !== this.props.station.name) {
       this.setState({
         card: nextProps.station.cards[0].name
-      })
+      });
     }
   }
   _changeCard(name) {
@@ -48,32 +48,32 @@ export default class CardFrame extends Component {
     const { simulator, station, flight, client } = this.props.test
       ? {
           simulator: {
-            id: 'test',
-            name: 'Test',
-            alertLevel: '5',
-            layout: 'LayoutCorners'
+            id: "test",
+            name: "Test",
+            alertLevel: "5",
+            layout: "LayoutCorners"
           },
           station: {
-            name: 'Test',
+            name: "Test",
             cards: [
               {
-                id: 'test',
-                name: 'Test',
-                component: this.props.component || 'Navigation'
+                id: "test",
+                name: "Test",
+                component: this.props.component || "Navigation"
               }
             ]
           },
           flight: {},
-          client: { loginState: 'login', loginName: 'Test' }
+          client: { loginState: "login", loginName: "Test" }
         }
       : this.props;
-    const layoutName = station.layout || simulator.layout || 'LayoutCorners';
+    const layoutName = station.layout || simulator.layout || "LayoutCorners";
 
     let LayoutComponent = Layouts[layoutName] || Layouts.LayoutDefault;
-    if (station.name === 'Viewscreen') {
-      LayoutComponent = Layouts[layoutName + 'Viewscreen'] || LayoutComponent;
+    if (station.name === "Viewscreen") {
+      LayoutComponent = Layouts[layoutName + "Viewscreen"] || LayoutComponent;
     }
-    if (client.offlineState === 'blackout') {
+    if (client.offlineState === "blackout" || station.name === "Blackout") {
       return <Blackout />;
     }
     return (

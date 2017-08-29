@@ -61,6 +61,8 @@ type Stationset {
 
 type Station {
   name: String
+  login: Boolean
+  messageGroups: [String]
   cards: [Card]
 }
 

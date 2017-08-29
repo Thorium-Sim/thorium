@@ -1,43 +1,73 @@
-import React, { Component } from 'react';
-import { Col, Row, Container, Card } from 'reactstrap';
-import Configs from '../components/config';
+import React, { Component } from "react";
+import { Col, Row, Container, Card } from "reactstrap";
+import Configs from "../components/config";
 
-import './config.scss';
+import "./config.scss";
 
 class ConfigView extends Component {
-	constructor(props){
-		super(props);
-		this.state = {
-			selectedConfigObject: null,
-		};
-	}
-	_setSelectedConfigObject(configObj) {
-		this.setState({selectedConfigObject:configObj});
-	}
-	render(){
-		const ConfigComponent = (this.state.selectedConfigObject ? Configs[`${this.state.selectedConfigObject}Config`] : "div") || "div";
-		return (
-			<Container className="ConfigView">
-			<Row>
-			{this.state.selectedConfigObject ?
-				<Col sm="12">
-				<a href="#back" onClick={this._setSelectedConfigObject.bind(this, null)}>Go Back</a>
-				<ConfigComponent {...this.props} />
-				</Col>
-				:
-				<Col sm="3">
-				<h4>Configurations</h4>
-				<Card className="scroll">
-				<li className="list-group-item" onClick={this._setSelectedConfigObject.bind(this, 'Simulator')}>Template Simulators</li>
-				<li className="list-group-item" onClick={this._setSelectedConfigObject.bind(this, 'Stations')}>Station Sets</li>
-				<li className="list-group-item" onClick={this._setSelectedConfigObject.bind(this, 'Missions')}>Missions</li>
-				</Card>
-				</Col>
-			}
-			</Row>
-			</Container>
-			);
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedConfigObject: null
+    };
+  }
+  _setSelectedConfigObject(configObj) {
+    this.setState({ selectedConfigObject: configObj });
+  }
+  render() {
+    const ConfigComponent =
+      (this.state.selectedConfigObject
+        ? Configs[`${this.state.selectedConfigObject}Config`]
+        : "div") || "div";
+    return (
+      <Container className="ConfigView">
+        <Row>
+          {this.state.selectedConfigObject
+            ? <Col sm="12">
+                <a
+                  href="#back"
+                  onClick={this._setSelectedConfigObject.bind(this, null)}
+                >
+                  Go Back
+                </a>
+                <ConfigComponent {...this.props} />
+              </Col>
+            : <Col sm="3">
+                <h4>Configurations</h4>
+                <Card className="scroll">
+                  <li
+                    className="list-group-item"
+                    onClick={this._setSelectedConfigObject.bind(
+                      this,
+                      "Simulator"
+                    )}
+                  >
+                    Template Simulators
+                  </li>
+                  <li
+                    className="list-group-item"
+                    onClick={this._setSelectedConfigObject.bind(
+                      this,
+                      "Stations"
+                    )}
+                  >
+                    Station Sets
+                  </li>
+                  <li
+                    className="list-group-item"
+                    onClick={this._setSelectedConfigObject.bind(
+                      this,
+                      "Missions"
+                    )}
+                  >
+                    Missions
+                  </li>
+                </Card>
+              </Col>}
+        </Row>
+      </Container>
+    );
+  }
 }
 
 export default ConfigView;

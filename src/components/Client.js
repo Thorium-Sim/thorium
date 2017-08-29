@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router";
 import { Container } from "reactstrap";
 import randomWords from "random-words";
-import CardContainer from "../containers/Card.jsx";
+import CardContainer from "../containers/Card";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import "./client.scss";
@@ -60,33 +60,36 @@ class Credits extends Component {
   state = { debug: false, scroll: 0 };
   toggleDebug = () => {
     this.setState({
-			debug: !this.state.debug,
+      debug: !this.state.debug
     });
-	};
-	componentDidMount() {
-		this.looping = true;
-		this.loop();
-	}
-	componentWillUnmount() {
-		this.looping = false;
-	}
-	loop = () => {
-		if (!this.looping) return;
-		const el = this.refs.scroll;
-		this.setState({
-			scroll: (el && el.scrollTopMax === this.state.scroll) ? 0 : (this.state.scroll + 0.25 || 1)
-		})
-		requestAnimationFrame(this.loop)
-	}
+  };
+  componentDidMount() {
+    this.looping = true;
+    this.loop();
+  }
+  componentWillUnmount() {
+    this.looping = false;
+  }
+  loop = () => {
+    if (!this.looping) return;
+    const el = this.refs.scroll;
+    this.setState({
+      scroll:
+        el && el.scrollTopMax === this.state.scroll
+          ? 0
+          : this.state.scroll + 0.25 || 1
+    });
+    requestAnimationFrame(this.loop);
+  };
   render() {
     const { props } = this;
     let client = {};
     let flight = {};
     let simulator = {};
-		let station = {};
-		if (this.refs.scroll){
-			this.refs.scroll.scrollTop = this.state.scroll;
-		}
+    let station = {};
+    if (this.refs.scroll) {
+      this.refs.scroll.scrollTop = this.state.scroll;
+    }
     if (!props.data.loading) {
       client = props.data.clients.length > 0 ? props.data.clients[0] : {};
       simulator = client.simulator || {};
@@ -98,7 +101,7 @@ class Credits extends Component {
         <Container>
           <img
             role="presentation"
-            src="/js/images/logo.png"
+            src={require("./logo.png")}
             draggable="false"
           />
           <h1>Thorium</h1>

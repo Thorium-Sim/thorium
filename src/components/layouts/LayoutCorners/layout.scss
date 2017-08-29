@@ -3,7 +3,7 @@ $alert3: #4d4d16;
 $alert2: #804d19;
 $alert1: #801919;
 $alertp: #4d1980;
-$url: '/js/images/background-blue.svg';
+$url: './images/background-blue.svg';
 
 body {
   overflow: hidden;
@@ -177,7 +177,7 @@ body {
         rgba(0, 0, 0, 0) 0%,
         rgba(0, 0, 0, .9) 100%
       ),
-      url('/js/images/gear.svg');
+      url('./images/gear.svg');
     background-size: 100%, 55px;
     background-position: center, 4px 7px;
     background-repeat: no-repeat, no-repeat;
@@ -385,19 +385,19 @@ body {
   //Alert Classes
   &.alertColor5,
   &.alertColor4 {
-    @include alertColor($alert5,'/js/images/background-blue.svg');
+    @include alertColor($alert5,'./images/background-blue.svg');
   }
   &.alertColor3 {
-    @include alertColor($alert3,'/js/images/background-yellow.svg');
+    @include alertColor($alert3,'./images/background-yellow.svg');
   }
   &.alertColor2 {
-    @include alertColor($alert2,'/js/images/background-orange.svg');
+    @include alertColor($alert2,'./images/background-orange.svg');
   }
   &.alertColor1 {
-    @include alertColor($alert1,'/js/images/background-red.svg');
+    @include alertColor($alert1,'./images/background-red.svg');
   }
   &.alertColorp {
-    @include alertColor($alertp,'/js/images/background-purple.svg');
+    @include alertColor($alertp,'./images/background-purple.svg');
   }
   .simulator-image {
     img {
@@ -639,19 +639,19 @@ body {
     .frame-1 {
       width: 593px;
       height: 127px;
-      background-image: url(/js/images/slice1.png);
+      background-image: url(./images/slice1.png);
     }
     .frame-2 {
       width: 126px;
       height: 767px;
       top: 127px;
-      background-image: url(/js/images/slice2.png);
+      background-image: url(./images/slice2.png);
     }
     .frame-3 {
       width: 533px;
       height: 77px;
       right: 0px;
-      background-image: url(/js/images/slice3.png);
+      background-image: url(./images/slice3.png);
       &.opposite {
         left: 0px;
         right: auto;
@@ -662,21 +662,21 @@ body {
       .frame-1 {
         width: 723px;
         height: 169px;
-        background-image: url(/js/images/slice1.png);
+        background-image: url(./images/slice1.png);
         background-size: 723px 169px;
       }
       .frame-2 {
         width: 160px;
         height: 909px;
         top: 169px;
-        background-image: url(/js/images/slice2.png);
+        background-image: url(./images/slice2.png);
         background-size: 160px 909px;
       }
       .frame-3 {
         width: 603px;
         height: 139px;
         right: 0px;
-        background-image: url(/js/images/slice3.png);
+        background-image: url(./images/slice3.png);
         background-size: 603px 139px;
       }
     }
@@ -877,23 +877,23 @@ body {
   #curve-frame {
     .frame-image {
       .frame-1 {
-        background-image: url(/js/images/slice4.png);
+        background-image: url(./images/slice4.png);
         height: 116px;
         width: 363px;
       }
       .frame-2 {
-        background-image: url(/js/images/slice7.png);
+        background-image: url(./images/slice7.png);
         height: 652px;
         width: 98px;
         top: 116px;
       }
       .frame-3 {
-        background-image: url(/js/images/slice6.png);
+        background-image: url(./images/slice6.png);
         height: 86px;
         width: 448px;
       }
       .frame-4 {
-        background-image: url(/js/images/slice5.png);
+        background-image: url(./images/slice5.png);
         height: 71px;
         width: 213px;
         left: 363px;
