@@ -49,7 +49,6 @@
     "eslint-plugin-react": "^7.1.0",
     "extract-text-webpack-plugin": "^2.1.2",
     "file-loader": "^0.11.2",
-    "fileicon": "^0.1.8",
     "filesize": "^3.5.5",
     "find-cache-dir": "^1.0.0",
     "flow-bin": "^0.52.0",
