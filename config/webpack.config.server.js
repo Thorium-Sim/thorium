@@ -1,15 +1,16 @@
-var path = require('path');
-var webpack = require('webpack');
-var fs = require('fs');
+var path = require("path");
+var webpack = require("webpack");
+var fs = require("fs");
 
 var nodeModules = {};
-fs.readdirSync('node_modules')
-.filter(function(x) {
-  return ['.bin'].indexOf(x) === -1;
-})
-.forEach(function(mod) {
-  nodeModules[mod] = 'commonjs ' + mod;
-});
+fs
+  .readdirSync("node_modules")
+  .filter(function(x) {
+    return [".bin"].indexOf(x) === -1;
+  })
+  .forEach(function(mod) {
+    nodeModules[mod] = "commonjs " + mod;
+  });
 
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
@@ -17,21 +18,18 @@ fs.readdirSync('node_modules')
 module.exports = {
   // Don't attempt to continue if there are any errors.
   bail: true,
-  target: 'node',
+  target: "node",
   // We generate sourcemaps in production. This is slow but gives good results.
   // You can exclude the *.map files from the build during deployment.
   // In production, we only want to load the polyfills and the app code.
-  entry: [
-  'babel-polyfill',
-  path.resolve(__dirname + '/../electron/electronApp.js')
-  ],
+  entry: ["babel-polyfill", path.resolve(__dirname + "/../server.js")],
   output: {
     // The build folder.
-    path: path.resolve(__dirname + '/../build-server'),
+    path: path.resolve(__dirname + "/../build-server"),
     // Generated JS file names (with nested folders).
     // There will be one main bundle, and one file per asynchronous chunk.
     // We don't currently advertise code splitting but Webpack supports it.
-    filename: 'app.js',
+    filename: "app.js"
   },
   externals: nodeModules,
   resolve: {
@@ -44,33 +42,31 @@ module.exports = {
     // We also include JSX as a common component filename extension to support
     // some tools, although we do not recommend using it, see:
     // https://github.com/facebookincubator/create-react-app/issues/290
-    extensions: ['.js', '.json', '.jsx'],
+    extensions: [".js", ".json", ".jsx"]
   },
-  
+
   module: {
     // First, run the linter.
     // It's important to do this before Babel processes the JS.
     loaders: [
-    {
-      enforce: 'pre',
-      test: /\.(js|jsx)$/,
-      loader: 'eslint-loader',
-        //include: path.resolve(__dirname + '../server/'),
-      },
       // Process JS with Babel.
       {
         test: /\.(js|jsx)$/,
         //include: path.resolve(__dirname + '../server/'),
-        loader: 'babel-loader',
-        
-      },
-      ]
-    },
-    
-    plugins: [
+        loader: "babel-loader"
+      }
+    ]
+  },
+
+  plugins: [
     // This helps ensure the builds are consistent if source hasn't changed:
     new webpack.optimize.OccurrenceOrderPlugin(),
     // Try to dedupe duplicated modules, if any:
     new webpack.optimize.DedupePlugin(),
-    ],
-  };
+    new webpack.DefinePlugin({
+      "process.env": {
+        NODE_ENV: JSON.stringify("production")
+      }
+    })
+  ]
+};

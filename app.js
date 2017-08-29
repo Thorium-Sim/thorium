@@ -1,13 +1,19 @@
 import jsonfile from "jsonfile";
 import { EventEmitter } from "events";
 import { writeFile } from "./server/helpers/json-format";
-import "./server/helpers/copyAssets";
+import paths from "./server/helpers/paths";
+import path from "path";
 import * as Classes from "./server/classes";
 import util from "util";
 import { cloneDeep } from "lodash";
 //import { collections } from "./server/helpers/database";
-import electron from "electron";
 import fs from "fs";
+import { move } from "./server/helpers/init";
+
+let snapshotDir = "./snapshots/";
+if (process.env.NODE_ENV === "production") {
+  snapshotDir = paths.userData + "/";
+}
 
 class Events extends EventEmitter {
   constructor(params) {
@@ -38,19 +44,36 @@ class Events extends EventEmitter {
     setTimeout(this.init.bind(this), 0);
   }
   init() {
-    let snapshotDir = "./snapshots/";
-    if (electron.app) {
-      snapshotDir = electron.app.getPath("appData") + "/thorium/";
-    }
-    if (!fs.existsSync(snapshotDir + "snapshot.json")) {
-      if (!fs.existsSync(snapshotDir)) {
-        fs.mkdirSync(snapshotDir);
+    if (process.env.NODE_ENV) {
+      if (!fs.existsSync(snapshotDir + "snapshot.json")) {
+        move(
+          path.dirname(process.argv[1]) + "/snapshot.json",
+          snapshotDir + "snapshot.json",
+          function(err) {
+            if (err) {
+              throw new Error(err);
+            }
+            this.loadSnapshot();
+          }
+        );
+      } else {
+        this.loadSnapshot();
       }
-      fs.writeFileSync(snapshotDir + "snapshot.json", "{}");
+    } else {
+      if (
+        !fs.existsSync(snapshotDir + "snapshot.json") &&
+        !fs.existsSync(snapshotDir)
+      ) {
+        fs.mkdirSync(snapshotDir);
+        fs.writeFileSync(snapshotDir + "snapshot.json", "{}");
+      }
+      this.loadSnapshot();
     }
+  }
+  loadSnapshot() {
     const snapshot = jsonfile.readFileSync(snapshotDir + "snapshot.json");
     this.merge(snapshot);
-    if (electron.app) {
+    if (process.env.NODE_ENV === "production") {
       // Only auto save in the built version
       setTimeout(() => this.autoSave(), 5000);
     }
@@ -79,10 +102,6 @@ class Events extends EventEmitter {
     this.snapshotVersion = this.version;
     var snap = cloneDeep(this, true);
     const snapshot = this.trimSnapshot(snap);
-    let snapshotDir = "./snapshots/";
-    if (electron.app) {
-      snapshotDir = electron.app.getPath("appData") + "/thorium/";
-    }
     writeFile(snapshotDir + "snapshot.json", snapshot, err => {
       err && console.log(err);
     });
