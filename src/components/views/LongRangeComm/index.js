@@ -6,6 +6,8 @@ import Immutable from 'immutable';
 import Measure from 'react-measure';
 import Satellites from './Satellites';
 import DamageOverlay from '../helpers/DamageOverlay';
+import Tour from 'reactour';
+
 import './style.scss';
 
 const MESSAGES_SUB = gql `
@@ -186,7 +188,7 @@ class LongRangeComm extends Component {
       {
         this.state.selectedMessage &&
         <Col sm={9}>
-        <div className="sat-container"> 
+        <div className="sat-container">
         <Measure
         includeMargin={true}>
         { dimensions => (
@@ -211,10 +213,31 @@ class LongRangeComm extends Component {
         <MessageBox message={messages.find(m => m.id === this.state.selectedMessage).message}/>
         </Col>
       }
+      <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Row>
       );
   }
 };
+
+const trainingSteps = [
+  {
+    selector: ".enginesBar",
+    content:
+      "Anyone on the ship can write long-range messages, addressed to any individual or group. These outgoing messages appear here. To send a message, click on it."
+  },
+  {
+    selector: "button.speedBtn",
+    content: "To send the selected message, click on the satellite with the strongest signal. Stronger signals are represented by a longer line next to the satellite."
+  },
+  {
+    selector: ".full-stop",
+    content: "Click this button to send."
+  },
+];
 
 const QUEUING_QUERY = gql `
 query LRQueuing($simulatorId: ID){

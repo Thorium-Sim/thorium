@@ -4,6 +4,8 @@ import gql from 'graphql-tag';
 import { graphql, withApollo } from 'react-apollo';
 import { Clamps, Ramps, Doors } from './graphics';
 import Immutable from 'immutable';
+import Tour from "reactour";
+
 import './style.scss';
 
 const DOCKING_SUB = gql`
@@ -117,9 +119,30 @@ class Docking extends Component {
     {graphic === 'doors' && <Doors transform={airlock} />}
     </Col>
     </Row>
+    <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
     </Container>
   }
 }
+
+const trainingSteps = [
+  {
+    selector: ".enginesBar",
+    content:
+      "Use this button to attach or detach docking clamps when you land. These clamps will stabilize your ship for safe disembarking."
+  },
+  {
+    selector: "button.speedBtn",
+    content: "Use this button to extend and retract the boarding ramps in order to allow crew and other visitors to enter and exit the ship."
+  },
+  {
+    selector: ".full-stop",
+    content: "Use this button to open and close the airlock doors, effectively sealing off your ship from space. Because space is a vacuum--totally empty, even of oxygen and other gases--leaving these doors open when you launch may lead to deadly consequences. It also may cause precious oxygen to disappear into the vacuum of space."
+  },
+];
 
 const DOCKING_QUERY = gql`
 query Simulator($simulatorId: String){
