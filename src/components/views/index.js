@@ -128,6 +128,13 @@ export const Widgets = {
     icon: "rss",
     name: "Remote Access",
     color: "rgb(100,200,100)"
+  },
+  messages: {
+    widget: Messages,
+    icon: "comments-o",
+    name: "Messaging",
+    size: "lg",
+    color: "rgb(100,150,200)"
   }
 };
 

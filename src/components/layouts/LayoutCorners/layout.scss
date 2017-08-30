@@ -1014,6 +1014,9 @@ body {
   }
 }
 
+.modal .modal-lg {
+  max-width: 70vw;
+}
 // This is just for the viewscreen
 @media (width: 1920px) {
 }

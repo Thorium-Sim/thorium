@@ -65,6 +65,7 @@ class Widget extends Component {
         {this.state.modal &&
           <Modal
             className="modal-themed"
+            size={widget.size || ""}
             isOpen={this.state.modal}
             toggle={this.toggleModal}
           >
