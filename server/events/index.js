@@ -25,3 +25,4 @@ import "./tractorBeam";
 import "./crew";
 import "./teams";
 import "./viewscreen";
+import "./messages";

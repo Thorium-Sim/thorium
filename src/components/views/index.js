@@ -33,6 +33,7 @@ import SelfDestruct from "./SelfDestruct";
 import ProbeControl from "./ProbeControl";
 import ReactorControl from "./ReactorControl";
 import Viewscreen from "./Viewscreen";
+import Messages from "./Messaging";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -105,7 +106,8 @@ const Views = {
   SelfDestruct,
   ProbeControl,
   ReactorControl,
-  Viewscreen
+  Viewscreen,
+  Messages
 };
 
 export const Widgets = {
@@ -126,6 +128,13 @@ export const Widgets = {
     icon: "rss",
     name: "Remote Access",
     color: "rgb(100,200,100)"
+  },
+  messages: {
+    widget: Messages,
+    icon: "comments-o",
+    name: "Messaging",
+    size: "lg",
+    color: "rgb(100,150,200)"
   }
 };
 
