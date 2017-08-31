@@ -4,6 +4,7 @@ import { Row, Col, Container } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
 import Immutable from "immutable";
+import Tour from "reactour"
 import "./style.scss";
 /* TODO
 
@@ -171,10 +172,31 @@ class PowerDistribution extends Component {
               </Col>}
           </Measure>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
 }
+
+const trainingSteps = [
+  {
+    selector: ".enginesBar",
+    content:
+      "This list shows all of the systems on the ship that take power. Drag the green bars next to each system to add or remove power. (Is there a minimum required for each system to function?)"
+  },
+  {
+    selector: "button.speedBtn",
+    content: "This is the total amount of power being used by the ship."
+  },
+  {
+    selector: ".full-stop",
+    content: "These are the ship’s batteries. They show how much power is remaining in the batteries. If they run out of power, the ship will not work, and will need to be recharged. Don’t let these run out in the middle of space. That would be...problematic."
+  },
+];
 
 const SystemPower = ({
   id,

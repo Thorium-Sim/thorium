@@ -4,6 +4,7 @@ import { graphql, withApollo } from 'react-apollo';
 import { Container, Row, Col, Card, CardBlock, Button, Input, Label, FormGroup } from 'reactstrap'
 import Immutable from 'immutable';
 import {DeckDropdown, RoomDropdown} from '../helpers/shipStructure';
+import Tour from "reactour"
 
 import './style.scss';
 
@@ -170,9 +171,9 @@ class DamageTeams extends Component {
     <Col sm={3}>
     <Card>
     <CardBlock>
-    {teams.map(t => <p 
-      key={t.id} 
-      onClick={() => {this.setState({selectedTeam: t.id})}} 
+    {teams.map(t => <p
+      key={t.id}
+      onClick={() => {this.setState({selectedTeam: t.id})}}
       className={t.id === selectedTeam ? 'selected' : ''}>
       {t.name}
       </p>)}
@@ -207,7 +208,7 @@ class DamageTeams extends Component {
       </FormGroup>
       <Row>
       <Col sm={5}>
-      <DeckDropdown 
+      <DeckDropdown
       selectedDeck={deck.id}
       decks={decks}
       setSelected={(a) => this.updateDamageTeam({id: team.id, key: "location", value: a.deck})}/>
@@ -262,9 +263,29 @@ class DamageTeams extends Component {
     }
     </Col>
     </Row>
+    <Tour
+      steps={trainingSteps}
+      isOpen={this.props.clientObj.training}
+      onRequestClose={this.props.stopTraining}
+    />
     </Container>
   }
 }
+
+const trainingSteps = [
+  {
+    selector: ".enginesBar",
+    content: "When a system on the ship is damaged, click this button to assign a team to assess the damage and begin work to repair it."
+  },
+  {
+    selector: ".enginesBar",
+    content: "Type in the name of the team here, along with any specific instructions about what needs to be fixed and how."
+  },
+  {
+    selector: ".enginesBar",
+    content: "Use these buttons to select the area of the ship where they are needed, and the priority of the project."
+  },
+];
 
 const DAMAGE_QUERY = gql`
 query DamageTeams($simulatorId: ID, $simId: ID!) {

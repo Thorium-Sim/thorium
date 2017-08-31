@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import { Container, Row, Col, Button, Card, CardBlock } from 'reactstrap';
 import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
+import Tour from "reactour"
 
 import './style.scss';
 
@@ -133,8 +134,8 @@ class DamageControl extends Component {
     <h4>Damaged Systems</h4>
     <Card>
     <CardBlock>
-    { 
-      this.state.reactivationCodeModal ? 
+    {
+      this.state.reactivationCodeModal ?
       <div className="reactivation-modal">
       <ul className="flex-boxes">
       {['¥','Ω','∏','§','-','∆','£','∑','∂'].map((c, i)=> <li key={i} onClick={() => this.setCodeEntry(c)}>{c}</li>)}
@@ -149,11 +150,11 @@ class DamageControl extends Component {
       </Row>
       </div> :
       systems.filter(s => s.damage.damaged)
-      .map(s => <p key={s.id} 
-        className={`${this.state.selectedSystem === s.id ? 
-          'selected' : ''} 
+      .map(s => <p key={s.id}
+        className={`${this.state.selectedSystem === s.id ?
+          'selected' : ''}
           ${s.damage.requested ? 'requested' : ''}
-          ${s.damage.report ? 'report' : ''}`} 
+          ${s.damage.report ? 'report' : ''}`}
           onClick={this.selectSystem.bind(this, s.id)}>
           {this.systemName(s)}
           </p>)
@@ -164,9 +165,9 @@ class DamageControl extends Component {
       this.state.reactivationCodeModal ?
       <Button block size="lg" color="primary" onClick={this.reactivateCode}>Reactivate</Button>
       :
-      <Button block 
-      disabled={!this.state.selectedSystem} 
-      onClick={this.requestReport.bind(this)} 
+      <Button block
+      disabled={!this.state.selectedSystem}
+      onClick={this.requestReport.bind(this)}
       color="primary">Request Damage Report</Button>
     }
     {
@@ -175,7 +176,7 @@ class DamageControl extends Component {
       <CardBlock>
       <p className={`${this.state.codeEntry ? 'code-entry' : ''}`}>
       {
-        this.state.codeEntry ? 
+        this.state.codeEntry ?
         this.state.codeEntry : "Enter Reactivation Code..."
       }
       </p>
@@ -192,9 +193,22 @@ class DamageControl extends Component {
     </Card>
     </Col>
     </Row>
+    <Tour
+        steps={trainingSteps}
+        isOpen={this.props.clientObj.training}
+        onRequestClose={this.props.stopTraining}
+    />
     </Container>
   }
 }
+
+const trainingSteps = [
+  {
+    selector: ".enginesBar",
+    content: "The ship’s systems are intelligent enough to know when they’re damaged, and to understand (mostly) how they can be fixed. When a system is damaged, instructions to troubleshoot and repair the damaged system will appear here. Follow them exactly."
+  },
+];
+
 const SYSTEMS_QUERY = gql`
 query Systems($simulatorId: ID){
   systems(simulatorId: $simulatorId) {

@@ -5,6 +5,7 @@ import { graphql, withApollo } from "react-apollo";
 import Immutable from "immutable";
 import TransitionGroup from "react-transition-group/TransitionGroup";
 import Transitioner from "../helpers/transitioner";
+import Tour from "reactour"
 
 import "./style.scss";
 
@@ -196,10 +197,27 @@ class StealthField extends Component {
             .filter(s => stealthField.state)
             .map(Comp => <Comp key={Comp.name} systems={systems} />)}
         </TransitionGroup>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
 }
+
+const trainingSteps = [
+  {
+    selector: ".enginesBar",
+    content:
+      "The ship’s stealth field allows it to move through space without being detected by other starships. Use this button to activate or deactivate the stealth field."
+  },
+  {
+    selector: "button.speedBtn",
+    content: "This dashboard shows the way that the ship’s operations impact the stealth field. Use of some shp functionality may increase the ship’s probability of being detected. For example, sending out messages and other signals makes it obvious to other starships that this ship is around. They may not be able to see the ship, but they’ll notice that someone is there. If you start shooting at them, they will probably realize that something fishy is going on."
+  },
+];
 
 class StealthBars extends Transitioner {
   systemName(sys) {

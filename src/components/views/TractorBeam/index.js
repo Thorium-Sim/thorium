@@ -8,6 +8,8 @@ import Beam from './beam';
 import Target from './target';
 import Bars from './bars';
 import DamageOverlay from '../helpers/DamageOverlay';
+import Tour from "reactour"
+
 import './style.scss';
 
 const TRACTORBEAM_SUB = gql`
@@ -91,9 +93,26 @@ class TractorBeam extends Component {
     id={tractorBeam.id}
     />
     <Button size="lg" onClick={this.toggleBeam} className="activate" disabled={!tractorBeam.target}>{tractorBeam.state ? 'Deactivate' : 'Activate'} Tractor Beam</Button>
+    <Tour
+              steps={trainingSteps}
+              isOpen={this.props.clientObj.training}
+              onRequestClose={this.props.stopTraining}
+            />
     </Container>
   }
 }
+
+const trainingSteps = [
+  {
+    selector: ".enginesBar",
+    content:
+      "Once a target it in sight, it will appear below the ship. Press this button to activate the tractor beam."
+  },
+  {
+    selector: "button.speedBtn",
+    content: "The size and speed of the object will impact the stress on the tractor beam. If the object is large, fast, or dense, it will put more stress on our ship, and we will need to strengthen the tractor beam in order to pull in the object. If we pull it in too fast, the object may collide with our ship and cause damage. Use this tool to match the strength of the tractor beam to the stress being put on it."
+  },
+];
 
 const TRACTORBEAM_QUERY = gql`
 query TractorBeamInfo($simulatorId: ID!) {

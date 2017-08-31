@@ -5,6 +5,8 @@ import { graphql, withApollo } from 'react-apollo';
 import Target from './targeting';
 import Scan from './transporterScan';
 import DamageOverlay from '../helpers/DamageOverlay';
+import Tour from "reactour"
+
 import './style.scss';
 
 const TRANSPORTER_SUB = gql`
@@ -82,7 +84,7 @@ class Transporters extends Component {
           previousResult.transporters = previousResult.transporters.map(transporter => {
             if (transporter.id === subscriptionData.data.transporterUpdate.id){
               transporter = subscriptionData.data.transporterUpdate
-            } 
+            }
             return transporter;
           })
           return previousResult;
@@ -182,10 +184,31 @@ class Transporters extends Component {
       {transporter.state === 'Inactive' && <TargetSelect beginScan={this.beginScan.bind(this, transporter)} updateTarget={this.updateTarget.bind(this, transporter)} updateDestination={this.updateDestination.bind(this, transporter)} target={transporter.requestedTarget} destination={transporter.destination} />}
       {transporter.state === 'Scanning' && <Scanning cancelScan={this.cancelScan.bind(this, transporter)} />}
       {(transporter.state === 'Targeting' || transporter.state === 'Charging') && <Target completeTransport={this.completeTransport.bind(this, transporter)} cancelTransport={this.cancelTransport.bind(this, transporter)} setCharge={this.setCharge.bind(this, transporter)} targets={transporter.targets} />}
+      <Tour
+                steps={trainingSteps}
+                isOpen={this.props.clientObj.training}
+                onRequestClose={this.props.stopTraining}
+              />
       </div>
       );
   }
 }
+
+const trainingSteps = [
+  {
+    selector: ".enginesBar",
+    content:
+      "Input the name of the object you want to transport, as well as your target destination for transporting."
+  },
+  {
+    selector: "button.speedBtn",
+    content: "Drag your target sights over the object you are trying to transport until the “Transport Possible” message appears."
+  },
+  {
+    selector: ".full-stop",
+    content: "Once you have locked onto your target, slowly drag the yellow bars upward from the bottom of this box by hovering over the yellow bars and moving your mouse upward. This will maintaining the connection with the target until the transporters have fully engaged. If you reach the top, your target will successfully transport to your ship."
+  },
+];
 
 const TRANSPORTERS_QUERY = gql`
 query GetTransporters($simulatorId: ID){

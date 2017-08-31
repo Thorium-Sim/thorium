@@ -4,6 +4,7 @@ import { graphql, withApollo } from 'react-apollo';
 import Immutable from 'immutable';
 import {Container, Row, Col, Input, Card, CardBlock} from 'reactstrap';
 import {DeckDropdown, RoomDropdown} from '../helpers/shipStructure';
+import Tour from "reactour"
 import './style.scss';
 
 const INVENTORY_SUB = gql`
@@ -187,7 +188,7 @@ class CargoControl extends Component {
       </CardBlock>
       </Card>
       </Col>
-      
+
       <Col sm={{size: 4}}>
       <Card>
       <CardBlock>
@@ -225,9 +226,30 @@ class CargoControl extends Component {
       }
       </Col>
       </Row>
+      <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>)
   }
 }
+
+const trainingSteps = [
+  {
+    selector: ".enginesBar",
+    content:
+      "Use this search box to locate an object that you need from anywhere on the ship."
+  },
+  {
+    selector: "button.speedBtn",
+    content: "Use these dropdowns to select the part of the ship you want to search in. The items that are available in that part of the ship will show up here. Select the inventory that you would like to move."
+  },
+  {
+    selector: ".full-stop",
+    content: "Use these dropdowns to select the part of the ship you want to move the inventory to."
+  },
+];
 
 const INVENTORY_QUERY = gql`
 query InventoryQ($simulatorId: ID!) {

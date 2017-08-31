@@ -5,6 +5,7 @@ import Immutable from 'immutable';
 import {Container, Row, Col, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import assetPath from '../../../helpers/assets';
 import DamageOverlay from '../helpers/DamageOverlay';
+Import Tour from "reactour";
 
 const INTERNAL_SUB = gql`
 subscription InternalCommUpdate($simulatorId: ID!) {
@@ -52,7 +53,7 @@ class InternalComm extends Component {
     const internalComm = this.props.data.internalComm[0];
     const deck = this.props.data.decks.find(d => d.id === this.state.deck) || {rooms:[]};
     const room = deck.rooms.find(r => r.id === this.state.room);
-    const outgoing = (all ? 'All Decks' : 
+    const outgoing = (all ? 'All Decks' :
       (room ? `${room.name}, Deck ${deck.number}` : `Deck ${deck.number}`));
     const mutation = gql`
     mutation InitiateCall($id: ID!, $outgoing:String) {
@@ -126,7 +127,7 @@ class InternalComm extends Component {
       <DropdownToggle block disabled={deck === null || (internalComm.state !== 'connected' && internalComm.outgoing) || internalComm.state === 'connected'} caret>
       {room ? decks.find(d => d.id === deck).rooms.find(r => r.id === room).name : 'Select Room'}
       </DropdownToggle>
-      { deck && 
+      { deck &&
         <DropdownMenu>
         <DropdownItem header>Deck {decks.find(d => d.id === deck).number}</DropdownItem>
         {
@@ -165,9 +166,21 @@ class InternalComm extends Component {
       <img role="presentation" className="mw-100" draggable="false" src={assetPath('/Ship Views/Right', 'default', 'png', false)} />
       </Col>
       </Row>
+      <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>)
   }
 }
+
+const trainingSteps = [
+  {
+    selector: ".enginesBar",
+    content:
+      'Use these dropdowns to select the part of the ship you want to communicate with. Then press “Call.”'
+    ];
 
 const INTERNAL_QUERY = gql`
 query InternalComm($simulatorId: ID!) {
