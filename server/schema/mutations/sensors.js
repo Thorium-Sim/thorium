@@ -15,6 +15,10 @@ removeAllSensorContacts(id: ID!): String
 stopAllSensorContacts(id: ID!): String
 destroySensorContact(id: ID!, contact: SensorContactInput!): String
 updateSensorContact(id: ID!, contact: SensorContactInput!): String
+
+#Macro: Set a list of army contacts
+setArmyContacts(simulatorId: ID!, domain: String!, armyContacts: [SensorContactInput]!):String
+
 createSensorArmyContact(id: ID!, contact: SensorContactInput!): String
 removeSensorArmyContact(id: ID!, contact: ID!): String
 updateSensorArmyContact(id: ID!, contact: SensorContactInput!): String
