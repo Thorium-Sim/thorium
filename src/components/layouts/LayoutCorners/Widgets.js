@@ -6,21 +6,14 @@ import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 
 const WIDGET_NOTIFY = gql`
-  subscription Notifications($simulatorId: ID!, $station: String) {
-    widgetNotify(simulatorId: $simulatorId, station: $station) {
-      widgetName
-    }
+  subscription WidgetNotify($simulatorId: ID!, $station: String) {
+    widgetNotify(simulatorId: $simulatorId, station: $station)
   }
 `;
 
 class WidgetsContainer extends Component {
   state = {
-    widgetNotify: {
-      composer: true,
-      calculator: true,
-      remote: true,
-      messages: true
-    }
+    widgetNotify: {}
   };
   constructor(props) {
     super(props);
@@ -34,7 +27,9 @@ class WidgetsContainer extends Component {
         }
       })
       .subscribe({
-        next({ notify }) {},
+        next({ widgetNotify }) {
+          self.setNotify(widgetNotify, true);
+        },
         error(err) {
           console.error("err", err);
         }

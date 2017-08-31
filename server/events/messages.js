@@ -15,4 +15,9 @@ App.on("sendMessage", ({ message }) => {
   const messageClass = new Classes.Message(message);
   App.messages.push(messageClass);
   pubsub.publish("sendMessage", messageClass);
+  pubsub.publish("widgetNotify", {
+    widget: "messages",
+    simulatorId: messageClass.simulatorId,
+    station: messageClass.destination
+  });
 });
