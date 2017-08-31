@@ -34,7 +34,9 @@ class CardSwitcher extends Component {
       <div
         className={`card-icon-container ${this.props.clientObj.offlineState
           ? "offline"
-          : ""} ${this.props.clientObj.loginState}`}
+          : ""} ${this.props.station.login
+          ? ""
+          : this.props.clientObj.loginState}`}
       >
         {this.props.cards.map((card, index) => {
           return (

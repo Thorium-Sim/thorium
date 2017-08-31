@@ -288,3 +288,9 @@ App.on(
   }
 );
 App.on("addedSystem", () => {});
+App.on("setStationLogin", ({ stationSetID, stationName, login }) => {
+  App.stationSets
+    .find(s => s.id === stationSetID)
+    .setStationLogin(stationName, login);
+  pubsub.publish("stationSetUpdate", App.stationSets);
+});

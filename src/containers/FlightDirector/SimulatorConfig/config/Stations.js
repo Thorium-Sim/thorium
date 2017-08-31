@@ -98,6 +98,34 @@ const ops = {
         cardIcon: $icon
       )
     }
+  `,
+  toggleStationMessageGroup: gql`
+    mutation ToggleMessageGroup(
+      $stationSetId: ID!
+      $station: String!
+      $group: MESSAGE_GROUP!
+      $state: Boolean!
+    ) {
+      toggleStationMessageGroup(
+        stationSetId: $stationSetId
+        station: $station
+        group: $group
+        state: $state
+      )
+    }
+  `,
+  toggleStationLogin: gql`
+    mutation ToggleStationLogin(
+      $stationSetID: ID!
+      $stationName: String!
+      $login: Boolean!
+    ) {
+      setStationLogin(
+        stationSetID: $stationSetID
+        stationName: $stationName
+        login: $login
+      )
+    }
   `
 };
 class SimulatorConfigView extends Component {
@@ -282,7 +310,7 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
     }
   };
   const addCard = (station, e) => {
-    let name = prompt("What is the card name?");
+    let name = prompt("What is the card name?", e.target.value);
     if (name) {
       const variables = {
         id: selectedStationSet.id,
@@ -295,6 +323,29 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
         variables
       });
     }
+  };
+  const toggleStationMessageGroup = (evt, station, group) => {
+    const variables = {
+      stationSetId: selectedStationSet.id,
+      station: station.name,
+      group,
+      state: evt.target.checked
+    };
+    client.mutate({
+      mutation: ops.toggleStationMessageGroup,
+      variables
+    });
+  };
+  const setStationLogin = (evt, station) => {
+    const variables = {
+      stationSetID: selectedStationSet.id,
+      stationName: station.name,
+      login: evt.target.checked
+    };
+    client.mutate({
+      mutation: ops.toggleStationLogin,
+      variables
+    });
   };
   return (
     <div>
@@ -313,7 +364,17 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
                 <thead className="thead-default">
                   <tr>
                     <th colSpan="3">
-                      {station.name}
+                      <span>
+                        {station.name} |{" "}
+                        <label style={{ display: "inline" }}>
+                          <input
+                            checked={station.login}
+                            onChange={evt => setStationLogin(evt, station)}
+                            type="checkbox"
+                          />{" "}
+                          Auto-Login
+                        </label>
+                      </span>
                     </th>
                     <th>
                       <FontAwesome
@@ -392,6 +453,18 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
                   );
                 })}
               </select>
+              <label>Message Groups:</label>
+              {["Security", "Damage", "Medical"].map(group =>
+                <label style={{ display: "inline-block" }}>
+                  <input
+                    type="checkbox"
+                    checked={station.messageGroups.indexOf(group) > -1}
+                    onChange={evt =>
+                      toggleStationMessageGroup(evt, station, group)}
+                  />{" "}
+                  {group}
+                </label>
+              )}
             </div>
           );
         })}
