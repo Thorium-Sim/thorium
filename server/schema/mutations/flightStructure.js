@@ -26,4 +26,5 @@ editStationInStationSet(stationSetID: ID!, stationName: String!, newStationName:
 addCardToStation(stationSetID: ID!, stationName: String!, cardName: String!, cardComponent: String!, cardIcon: String):String
 removeCardFromStation(stationSetID: ID!, stationName: String!, cardName: String!):String
 editCardInStationSet(stationSetID: ID!, stationName: String!, cardName: String!, newCardName: String, cardComponent: String, cardIcon: String):String
+setStationLogin(stationSetID: ID!, stationName: String!, login: Boolean!):String
 `;

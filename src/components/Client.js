@@ -158,6 +158,8 @@ const CLIENT_SUB = gql`
       }
       station {
         name
+        login
+        messageGroups
         cards {
           name
           component
@@ -325,6 +327,8 @@ const ClientQuery = gql`
       }
       station {
         name
+        login
+        messageGroups
         cards {
           name
           component

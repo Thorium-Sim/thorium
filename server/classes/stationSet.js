@@ -39,6 +39,9 @@ export class StationSet {
   setStationMessageGroup(station, group, state) {
     this.stations.find(s => s.name === station).setMessageGroup(group, state);
   }
+  setStationLogin(station, login) {
+    this.stations.find(s => s.name === station).setLogin(login);
+  }
 }
 
 export class Station {
@@ -73,6 +76,9 @@ export class Station {
     } else {
       this.messageGroups = this.messageGroups.filter(g => g !== group);
     }
+  }
+  setLogin(login) {
+    this.login = login;
   }
 }
 

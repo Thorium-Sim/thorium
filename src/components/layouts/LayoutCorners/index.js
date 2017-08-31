@@ -91,8 +91,9 @@ const Settings = props => {
   };
   return (
     <div
-      className={`settingsBall ${props.clientObj.loginState} ${props.clientObj
-        .offlineState
+      className={`settingsBall ${props.station.login
+        ? ""
+        : props.clientObj.loginState} ${props.clientObj.offlineState
         ? "offline"
         : ""}`}
     >
@@ -102,7 +103,7 @@ const Settings = props => {
         {/*<li>Lock Screen</li>
         <li>Reset Terminal</li>
         <li>Diagnostic</li>*/}
-        <li onClick={logout}>Logout</li>
+        {!props.station.login && <li onClick={logout}>Logout</li>}
       </ul>
     </div>
   );
@@ -128,7 +129,7 @@ class LayoutCorners extends Component {
   render() {
     let { simulator, station, cardName, changeCard, clientObj } = this.props;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
-    if (clientObj.loginState === "logout") {
+    if (clientObj.loginState === "logout" && station.login === false) {
       cardName = "Login";
     }
     if (clientObj.offlineState) {
@@ -198,6 +199,7 @@ class LayoutCorners extends Component {
           <Settings
             client={this.props.client}
             clientObj={this.props.clientObj}
+            station={this.props.station}
             className={alertClass}
           />
           <Widgets

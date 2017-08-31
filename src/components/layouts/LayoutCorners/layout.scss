@@ -93,6 +93,18 @@ body {
   }
   .widget-icon {
     transition: color 0.25s ease-in-out;
+    &.notify {
+      color: goldenrod !important;
+      text-shadow: 0 0 5px goldenrod;
+      animation-name: flashNotify;
+      animation-duration: 0.5s;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+    }
+    @keyframes flashNotify {
+      from {opacity: 1;}
+      to {opacity: 0.5;}
+  }
   }
 }
 .settingsBall {

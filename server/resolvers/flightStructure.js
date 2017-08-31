@@ -144,6 +144,9 @@ export const FlightStructureMutations = {
   },
   editCardInStationSet(root, args, context) {
     App.handleEvent(args, "editCardInStationSet", context);
+  },
+  setStationLogin(root, args, context) {
+    App.handleEvent(args, "setStationLogin", context);
   }
 };
 
