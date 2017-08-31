@@ -69,6 +69,9 @@ export const SensorsMutations = {
     App.handleEvent({ id, contact }, "updateSensorContact", context);
     return "";
   },
+  setArmyContacts(root, params, context) {
+    App.handleEvent(params, "setArmyContacts", context);
+  },
   createSensorArmyContact(root, { id, contact }, context) {
     App.handleEvent({ id, contact }, "createSensorArmyContact", context);
     return "";

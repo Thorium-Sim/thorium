@@ -101,6 +101,18 @@ App.on("updateSensorContact", ({ id, contact }) => {
   system.updateContact(contact);
   pubsub.publish("sensorContactUpdate", system.contacts);
 });
+
+// Army Contacts
+App.on("setArmyContacts", ({ simulatorId, domain, armyContacts }) => {
+  const system = App.systems.find(
+    sys => sys.simulatorId === simulatorId && sys.domain === domain
+  );
+  system && system.setArmyContacts(armyContacts);
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});
 App.on("createSensorArmyContact", ({ id, contact }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.createArmyContact(contact);

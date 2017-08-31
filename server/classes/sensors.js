@@ -64,6 +64,10 @@ export default class Sensors extends System {
     newContact.sensorId = this.id;
     this.contacts.push(new SensorContact(newContact));
   }
+  setArmyContacts(armyContacts) {
+    this.armyContacts = [];
+    armyContacts.forEach(c => this.createArmyContact(c));
+  }
   createArmyContact(contact) {
     const newContact = contact;
     newContact.sensorId = this.id;

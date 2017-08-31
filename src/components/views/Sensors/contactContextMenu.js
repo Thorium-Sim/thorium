@@ -134,7 +134,7 @@ const ContactContextMenu = props => {
                   />
                 </FormGroup>
               </Col>
-              <Col sm={4}>
+              {/*<Col sm={4}>
                 <FormGroup>
                   <Label for="infraredCheckbox" sm={2}>
                     Infrared
@@ -208,7 +208,7 @@ const ContactContextMenu = props => {
                     </Label>
                   </FormGroup>
                 </FormGroup>
-              </Col>
+              </Col>*/}
             </Row>
           </Form>
           <Button color="info" size="sm" onClick={closeMenu}>
