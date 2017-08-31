@@ -2,34 +2,84 @@ import React, { Component } from "react";
 import { Tooltip, Modal, ModalHeader, ModalBody } from "reactstrap";
 import { Widgets } from "../../views";
 import FontAwesome from "react-fontawesome";
+import gql from "graphql-tag";
+import { withApollo } from "react-apollo";
 
-const WidgetsContainer = ({ simulator, clientObj, station }) => {
-  return (
-    <div
-      className={`widgets ${clientObj.loginState} ${clientObj.offlineState
-        ? "offline"
-        : ""}`}
-    >
-      {Object.keys(Widgets).map(key => {
-        const widget = Widgets[key];
-        return (
-          <Widget
-            simulator={simulator}
-            station={station}
-            widget={widget}
-            wkey={key}
-            key={key}
-          />
-        );
-      })}
-    </div>
-  );
-};
+const WIDGET_NOTIFY = gql`
+  subscription Notifications($simulatorId: ID!, $station: String) {
+    widgetNotify(simulatorId: $simulatorId, station: $station) {
+      widgetName
+    }
+  }
+`;
+
+class WidgetsContainer extends Component {
+  state = {
+    widgetNotify: {
+      composer: true,
+      calculator: true,
+      remote: true,
+      messages: true
+    }
+  };
+  constructor(props) {
+    super(props);
+    const self = this;
+    this.subscription = this.props.client
+      .subscribe({
+        query: WIDGET_NOTIFY,
+        variables: {
+          simulatorId: this.props.simulator.id,
+          station: this.props.station.name
+        }
+      })
+      .subscribe({
+        next({ notify }) {},
+        error(err) {
+          console.error("err", err);
+        }
+      });
+  }
+  setNotify = (widget, state) => {
+    this.setState({
+      widgetNotify: Object.assign({}, this.state.widgetNotify, {
+        [widget]: state
+      })
+    });
+  };
+  render() {
+    const { simulator, clientObj, station } = this.props;
+    const { widgetNotify } = this.state;
+    return (
+      <div
+        className={`widgets ${clientObj.loginState} ${clientObj.offlineState
+          ? "offline"
+          : ""}`}
+      >
+        {Object.keys(Widgets).map(key => {
+          const widget = Widgets[key];
+          return (
+            <Widget
+              simulator={simulator}
+              station={station}
+              widget={widget}
+              wkey={key}
+              notify={widgetNotify[key]}
+              setNotify={this.setNotify}
+              key={key}
+            />
+          );
+        })}
+      </div>
+    );
+  }
+}
 
 class Widget extends Component {
   state = {
     tooltipOpen: false,
-    modal: false
+    modal: false,
+    widgetNotifications: {}
   };
   toggle = () => {
     this.setState({
@@ -37,20 +87,22 @@ class Widget extends Component {
     });
   };
   toggleModal = () => {
+    this.props.setNotify(this.props.wkey, false);
     this.setState({
       modal: !this.state.modal
     });
   };
   render() {
-    const { widget, wkey } = this.props;
+    const { widget, wkey, notify } = this.props;
     const Component = widget.widget;
+    console.log(wkey);
     return (
       <div className="widget-item" onClick={this.toggleModal}>
         <FontAwesome
           size="lg"
           fixedWidth
           name={widget.icon}
-          className="widget-icon"
+          className={`widget-icon ${notify ? "notify" : ""}`}
           id={`widget-${wkey}`}
           style={{ color: widget.color || "rgb(200,150,255)" }}
         />
@@ -85,4 +137,4 @@ class Widget extends Component {
   }
 }
 
-export default WidgetsContainer;
+export default withApollo(WidgetsContainer);
