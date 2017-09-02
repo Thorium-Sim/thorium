@@ -90,7 +90,6 @@ class Widget extends Component {
   render() {
     const { widget, wkey, notify } = this.props;
     const Component = widget.widget;
-    console.log(wkey);
     return (
       <div className="widget-item" onClick={this.toggleModal}>
         <FontAwesome

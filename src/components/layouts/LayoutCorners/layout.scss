@@ -505,6 +505,7 @@ body {
       margin-bottom: 90px;
       &:hover {
         -webkit-filter: brightness(1.2);
+        filter: brightness(1.2);        
       }
       .card-icon-background {
         width: 70px;
@@ -596,6 +597,7 @@ body {
       -webkit-text-fill-color: transparent;
       -webkit-text-stroke: 1px #9c9da0;
       -webkit-font-smoothing: subpixel-antialiased;
+      background-clip: text;
       letter-spacing: 5px;
     }
     .station-name {
@@ -610,6 +612,7 @@ body {
       -webkit-text-fill-color: transparent;
       -webkit-text-stroke: 1px #9c9da0;
       -webkit-font-smoothing: subpixel-antialiased;
+      background-clip: text;      
       letter-spacing: -3px;
     }
     .login-name {
@@ -622,6 +625,7 @@ body {
       -webkit-text-stroke: 1px #777;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;      
       color: #000;
       letter-spacing: 1px;
       -webkit-font-smoothing: subpixel-antialiased;
@@ -711,6 +715,15 @@ body {
         38px 188px,
         0px 188px
       );
+      clip-path: polygon(
+        0 0,
+        50px 0px,
+        72px 90px,
+        42px 120px,
+        39px 188px,
+        38px 188px,
+        0px 188px
+      );
     }
     .part-1-2 {
       top: 0px;
@@ -718,6 +731,22 @@ body {
       height: 130px;
       width: 660px;
       -webkit-clip-path: polygon(
+        0 0,
+        538px 0px,
+        520px 35px,
+        517px 35px,
+        510px 38px,
+        382px 38px,
+        373px 50px,
+        367px 56px,
+        170px 56px,
+        157px 63px,
+        132px 99px,
+        123px 105px,
+        15px 105px,
+        0px 109px
+      );
+      clip-path:polygon(
         0 0,
         538px 0px,
         520px 35px,
@@ -741,12 +770,26 @@ body {
       top: 28px;
       background-color: #c27a32 !important;
       -webkit-clip-path: polygon(0 0, 350px 0, 324px 52px, 312px 59px, 0 60px);
+      clip-path: polygon(0 0, 350px 0, 324px 52px, 312px 59px, 0 60px);
     }
     .part-2 {
       width: 105px;
       height: 770px;
       top: 193px;
       -webkit-clip-path: polygon(
+        0 0,
+        40px 0,
+        63px 26px,
+        87px 38px,
+        87px 485px,
+        0 570px,
+        0 585px,
+        87px 497px,
+        87px 528px,
+        85px 558px,
+        0 645px
+      );
+      clip-path: polygon(
         0 0,
         40px 0,
         63px 26px,
@@ -772,6 +815,13 @@ body {
         54px 75px,
         43px 65px
       );
+      clip-path: polygon(
+        10px 0,
+        557px 0,
+        557px 75px,
+        54px 75px,
+        43px 65px
+      );
       &.opposite {
         left: 0px;
         right: auto;
@@ -784,6 +834,20 @@ body {
         width: 50px;
         height: 227px;
         -webkit-clip-path: polygon(
+          0 0,
+          50px 0px,
+          50px 130px,
+          45px 140px,
+          40px 150px,
+          38px 160px,
+          36px 170px,
+          35px 180px,
+          35px 190px,
+          37px 200px,
+          45px 227px,
+          0px 227px
+        );
+        clip-path: polygon(
           0 0,
           50px 0px,
           50px 130px,
@@ -828,6 +892,31 @@ body {
           15px 110px,
           0px 130px
         );
+        clip-path: polygon(
+          0 0,
+          655px 0px,
+          637px 38px,
+          635px 39px,
+          634px 40px,
+          627px 45px,
+          625px 46px,
+          468px 46px,
+          455px 65px,
+          450px 67px,
+          213px 67px,
+          207px 70px,
+          203px 72px,
+          200px 74px,
+          165px 127px,
+          148px 110px,
+          116px 91px,
+          80px 85px,
+          76px 87px,
+          56px 90px,
+          28px 100px,
+          15px 110px,
+          0px 130px
+        );
       }
       .part-c {
         width: 380px;
@@ -836,6 +925,13 @@ body {
         top: 45px;
         background-color: #c27a32 !important;
         -webkit-clip-path: polygon(
+          0 0,
+          380px 0,
+          355px 50px,
+          338px 60px,
+          0 60px
+        );
+        clip-path: polygon(
           0 0,
           380px 0,
           355px 50px,
@@ -860,6 +956,19 @@ body {
           95px 680px,
           0 770px
         );
+        clip-path: polygon(
+          0 0,
+          45px 0,
+          85px 37px,
+          105px 44px,
+          105px 580px,
+          0 687px,
+          0 700px,
+          105px 595px,
+          105px 658px,
+          95px 680px,
+          0 770px
+        );
       }
       .part-3 {
         width: 557px;
@@ -867,6 +976,13 @@ body {
         top: 0px;
         right: 0px;
         -webkit-clip-path: polygon(
+          40px 0,
+          557px 0,
+          557px 80px,
+          90px 80px,
+          82px 76px
+        );
+        clip-path: polygon(
           40px 0,
           557px 0,
           557px 80px,
@@ -926,12 +1042,30 @@ body {
           79% 102%,
           0 60px
         );
+        clip-path: polygon(
+          0 0,
+          87.5% 0,
+          85% 60%,
+          83% 87%,
+          79% 102%,
+          0 60px
+        );
         border-radius: 26px 0 0 0;
       }
       .part-1-1 {
         width: 578px;
         height: 88px;
         -webkit-clip-path: polygon(
+          0 0,
+          100% 0,
+          100% 45%,
+          59% 45%,
+          57% 63%,
+          6% 64%,
+          3% 100%,
+          0 100%
+        );
+        clip-path: polygon(
           0 0,
           100% 0,
           100% 45%,
@@ -961,9 +1095,22 @@ body {
           97% 85%,
           0 100%
         );
+        clip-path: polygon(
+          0 0,
+          26% 0,
+          60% 4%,
+          100% 6%,
+          100% 74%,
+          0 88%,
+          0 89.5%,
+          100% 76%,
+          97% 85%,
+          0 100%
+        );
       }
       .part-3 {
         -webkit-clip-path: polygon(0% 0, 100% 0, 100% 100%, 9% 100%, 7% 93%);
+        clip-path: polygon(0% 0, 100% 0, 100% 100%, 9% 100%, 7% 93%);
       }
     }
     .frame-text {

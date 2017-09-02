@@ -8,7 +8,6 @@ import {
   Button,
   Input,
   Card,
-  CardBlock,
   ButtonDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -58,9 +57,11 @@ class Messaging extends Component {
       });
     }
   }
-  componentDidMount() {
+  componentDidUpdate() {
     const el = this.refs.messageHolder;
-    el.scrollTop = el.scrollHeight;
+    if (el) {
+      el.scrollTop = el.scrollHeight;
+    }
   }
   sendMessage = () => {
     const mutation = gql`
@@ -96,10 +97,17 @@ class Messaging extends Component {
     const { messages, simulators } = this.props.data.loading
       ? { messages: [], simulators: [{ stations: [] }] }
       : this.props.data;
-    const stations = simulators[0].stations;
+    const stations = simulators[0].stations.filter(
+      s => s.name !== this.props.station.name
+    );
+    const messageGroups = this.props.station.messageGroups;
     const { messageInput, stationsShown, selectedConversation } = this.state;
     const convoObj = messages.reduce((prev, next) => {
       if (next.sender === this.props.station.name) {
+        prev[next.destination] = Object.assign({}, next, {
+          convo: next.destination
+        });
+      } else if (messageGroups.indexOf(next.destination) > -1) {
         prev[next.destination] = Object.assign({}, next, {
           convo: next.destination
         });
@@ -120,7 +128,7 @@ class Messaging extends Component {
         <Row>
           <Col sm={3}>
             <h4>Conversations</h4>
-            <Card style={{ height: "60vh" }}>
+            <Card className="convoList">
               {conversations.map(c =>
                 <li
                   className={`list-group-item ${c.convo === selectedConversation
@@ -162,14 +170,27 @@ class Messaging extends Component {
                     {s.name}
                   </DropdownItem>
                 )}
+                <DropdownItem disabled>⸺⸺⸺⸺⸺</DropdownItem>
+                {messageGroups.map(g =>
+                  <DropdownItem
+                    key={g}
+                    onClick={() => this.setState({ selectedConversation: g })}
+                  >
+                    {g}
+                  </DropdownItem>
+                )}
               </DropdownMenu>
             </ButtonDropdown>
           </Col>
           <Col sm={9}>
             <h4>Messages</h4>
 
-            <Card style={{ height: "60vh" }}>
+            <Card>
               <div className="message-holder" ref="messageHolder">
+                {selectedConversation &&
+                  <h2 className="convoHeader">
+                    Conversation with {selectedConversation}
+                  </h2>}
                 {messages
                   .filter(
                     m =>
@@ -186,7 +207,7 @@ class Messaging extends Component {
                       <strong>{m.sender}</strong>: {m.content}
                     </p>
                   )}
-              </div>
+              </div>}
             </Card>
             <form action="javascript:" onSubmit={this.sendMessage}>
               <InputGroup>

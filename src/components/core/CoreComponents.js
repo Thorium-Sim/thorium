@@ -87,7 +87,7 @@ class CoreComponents extends Component {
           value={this.state.simulator || ""}
         >
           <option>Pick a simulator</option>
-          <option disabled>-----------</option>
+          <option disabled>⸺⸺⸺⸺⸺</option>
           <option value="test">Test</option>
           {simulators.map(s =>
             <option key={s.id} value={s.id}>
@@ -101,7 +101,7 @@ class CoreComponents extends Component {
           value={this.state.layout}
         >
           <option>Pick a layout</option>
-          <option disabled>-----------</option>
+          <option disabled>⸺⸺⸺⸺⸺</option>
           {Object.keys(Layouts)
             .filter(function(item, index, a) {
               return a.indexOf(item) === index;

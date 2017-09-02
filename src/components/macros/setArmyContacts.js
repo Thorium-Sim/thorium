@@ -3,7 +3,7 @@ import { FormGroup, Label, Input } from "reactstrap";
 import ContactContextMenu from "../views/Sensors/contactContextMenu";
 export default class SetArmyContacts extends Component {
   render() {
-    const { updateArgs, args, client } = this.props;
+    const { updateArgs, args /*client*/ } = this.props;
     return (
       <FormGroup className="macro-setArmyContacts">
         <Label>Domain</Label>
