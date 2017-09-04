@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 228,
+	"_eventsCount": 230,
 	"simulators": [
 		{
 			"id": "test",
@@ -1691,7 +1691,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10558000,
+			"timeSincePing": 10698800,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -1780,7 +1780,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10558000,
+			"timeSincePing": 10698800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -1926,7 +1926,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.9484079999999484,
+			"batteryChargeLevel": 0.9472719999999473,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2697,7 +2697,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10558000,
+			"timeSincePing": 10698800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2727,7 +2727,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10558000,
+			"timeSincePing": 10698800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3889,7 +3889,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10558000,
+			"timeSincePing": 10698800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3920,7 +3920,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10558000,
+			"timeSincePing": 10698800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4409,7 +4409,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.031199999999853706,
+			"batteryChargeLevel": 0.018419999999853734,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -4985,7 +4985,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 5741000,
+			"timeSincePing": 5881800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5016,7 +5016,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 5741000,
+			"timeSincePing": 5881800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6126,7 +6126,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "active",
-			"timeSincePing": 600,
+			"timeSincePing": 4900,
 			"scanResults": "",
 			"scanRequest": "Course!",
 			"processedData": "",
@@ -6304,7 +6304,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 5741000,
+			"timeSincePing": 5881800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -7485,7 +7485,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 627900,
+			"timeSincePing": 768700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -7516,7 +7516,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 627900,
+			"timeSincePing": 768700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8651,7 +8651,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 5741000,
+			"timeSincePing": 5881800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8682,7 +8682,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 5741000,
+			"timeSincePing": 5881800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -19076,118 +19076,6 @@
 			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
 			"name": "Symbol",
 			"class": "AssetContainer"
-		},
-		{
-			"id": "7a6e6a1c-6e8f-4f96-9b0d-6f1e03958a31",
-			"folderPath": "/Sensor Contacts/Icons",
-			"fullPath": "/Sensor Contacts/Icons/Anomaly",
-			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
-			"name": "Anomaly",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "177a0e60-aeca-4e01-bb8e-1ca7b33b7ef1",
-			"folderPath": "/Sensor Contacts/Icons",
-			"fullPath": "/Sensor Contacts/Icons/Dot",
-			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
-			"name": "Dot",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "fa4c9c88-89e2-4091-bb6b-93faaac5dd1a",
-			"folderPath": "/Sensor Contacts/Icons",
-			"fullPath": "/Sensor Contacts/Icons/Generic Target",
-			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
-			"name": "Generic Target",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "0ff16903-cf6c-44db-818b-70e395fae09e",
-			"folderPath": "/Sensor Contacts/Icons",
-			"fullPath": "/Sensor Contacts/Icons/Generic X",
-			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
-			"name": "Generic X",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "399985a8-0e94-4a09-af58-998768a7c8ce",
-			"folderPath": "/Sensor Contacts/Icons",
-			"fullPath": "/Sensor Contacts/Icons/Gunboat",
-			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
-			"name": "Gunboat",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "5e9aaf1c-8e8b-44d1-be02-b373fa0c62dc",
-			"folderPath": "/Sensor Contacts/Icons",
-			"fullPath": "/Sensor Contacts/Icons/Infared",
-			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
-			"name": "Infared",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "c39cd0a9-7afd-47ab-854a-6c8f139cf85c",
-			"folderPath": "/Sensor Contacts/Icons",
-			"fullPath": "/Sensor Contacts/Icons/medical",
-			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
-			"name": "medical",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "3a2c729b-1c41-4b96-bfca-09f46151c671",
-			"folderPath": "/Sensor Contacts/Icons",
-			"fullPath": "/Sensor Contacts/Icons/Outlaw Star",
-			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
-			"name": "Outlaw Star",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "76a5b6b5-2f0a-4b48-8e1b-8d596ec7796c",
-			"folderPath": "/Sensor Contacts/Icons",
-			"fullPath": "/Sensor Contacts/Icons/Peacekeeper",
-			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
-			"name": "Peacekeeper",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "4d79b541-8c81-4c11-85b9-584e880815b6",
-			"folderPath": "/Sensor Contacts/Icons",
-			"fullPath": "/Sensor Contacts/Icons/Satellite",
-			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
-			"name": "Satellite",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "688e3cbc-ec06-470e-9f7e-f76da9d0576c",
-			"folderPath": "/Sensor Contacts/Icons",
-			"fullPath": "/Sensor Contacts/Icons/Soviet",
-			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
-			"name": "Soviet",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "515fdbfc-3be5-45e7-bc53-11d78e9cdabe",
-			"folderPath": "/Sensor Contacts/Icons",
-			"fullPath": "/Sensor Contacts/Icons/Star",
-			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
-			"name": "Star",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "1ef03090-8333-40df-92dd-6a15958c07aa",
-			"folderPath": "/Sensor Contacts/Icons",
-			"fullPath": "/Sensor Contacts/Icons/Stazi",
-			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
-			"name": "Stazi",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "b824f9d6-01ef-4f83-b42b-8fde94eeaf9f",
-			"folderPath": "/Sensor Contacts/Icons",
-			"fullPath": "/Sensor Contacts/Icons/Sword",
-			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
-			"name": "Sword",
-			"class": "AssetContainer"
 		}
 	],
 	"assetObjects": [
@@ -19536,11 +19424,137 @@
 			"url": "/assets/Sensor Contacts/Icons/Sword/default.svg",
 			"simulatorId": "default",
 			"class": "AssetObject"
+		},
+		{
+			"id": "7101ec18-b213-43ca-9fdc-580e07c91213",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "3aa49af4-11d7-4879-8744-42de163ebcdc",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Anomaly/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "711ad8c3-b026-40f2-aaaa-755508e34cfb",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "3aa49af4-11d7-4879-8744-42de163ebcdc",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Anomaly/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "461384a9-c230-42d6-8460-33378cabfd24",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "3aa49af4-11d7-4879-8744-42de163ebcdc",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Anomaly/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "7f01be34-cd4f-4d36-89ac-0fb115a64aa5",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "3aa49af4-11d7-4879-8744-42de163ebcdc",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Anomaly/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "31dd3940-8eb2-48e7-810d-b7254da50eed",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "3aa49af4-11d7-4879-8744-42de163ebcdc",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Anomaly/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "c96ae4a2-b988-4b69-9d27-bd7eeeb0a123",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "3aa49af4-11d7-4879-8744-42de163ebcdc",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Anomaly/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "38edca5c-5c7f-47c4-95f0-cb0cf68ba3e6",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "3aa49af4-11d7-4879-8744-42de163ebcdc",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Anomaly/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "ac51e5ba-d19b-4b34-bbf1-fa81412c2315",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "3aa49af4-11d7-4879-8744-42de163ebcdc",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Anomaly/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "67f4fdfd-58c6-457d-9d56-b898b9318e37",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "3aa49af4-11d7-4879-8744-42de163ebcdc",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Anomaly/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "18621f6a-493a-4075-a3f4-7d6584b3ceb0",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "3aa49af4-11d7-4879-8744-42de163ebcdc",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Anomaly/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "9a48a498-1381-4f96-801a-5323897c7881",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "3aa49af4-11d7-4879-8744-42de163ebcdc",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Anomaly/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "dc06b0d2-cd74-4e40-b147-8e92be171818",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "3aa49af4-11d7-4879-8744-42de163ebcdc",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Anomaly/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "03000699-dbfa-4882-85be-70ad8756f250",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "3aa49af4-11d7-4879-8744-42de163ebcdc",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Anomaly/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "93e60ce1-5d85-4010-b1ab-3fdc44e24709",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "3aa49af4-11d7-4879-8744-42de163ebcdc",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Anomaly/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
 		}
 	],
 	"viewscreens": [],
 	"messages": [],
-	"snapshotVersion": 116,
-	"version": 116,
-	"timestamp": "2017-08-29T23:20:43.811Z"
+	"snapshotVersion": 334,
+	"version": 334,
+	"timestamp": "2017-09-04T13:52:17.823Z"
 }

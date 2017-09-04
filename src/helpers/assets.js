@@ -34,6 +34,7 @@ class AssetComponent extends Component {
         variables
       })
       .then(res => {
+        console.log(res.data);
         this.setState({
           src: res.data.asset.url
         });
