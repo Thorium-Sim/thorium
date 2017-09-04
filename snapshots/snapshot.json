@@ -1303,6 +1303,14 @@
 							"event": "setPresetAnswers",
 							"args": "{\"presetAnswers\":[{\"label\":\"CLEAR SPACE\",\"value\":\"THIS VESSEL IS CURRENTLY WITHIN CLEAR SPACE.\"},{\"label\":\"APPROCHING BORDER\",\"value\":\"THIS VESSEL IS APPROCHING THE NEW EARTH BORDER RECOMMEND FULL STOP.\"},{\"label\":\"STOPEPD AT BORDER\",\"value\":\"THIS VESSEL HAS STOPED AT THE NEW EARTH BORDER, FOREWARD SCANS PROGRESSING.\"},{\"label\":\"USS SEWARD COMING\",\"value\":\"DETECTING THE USS SEWARD APROCHNIG THIS VESSEL, ETA 3 MINUTES.\"},{\"label\":\"ANOTHER SHIP?\",\"value\":\"DECTECING A NEW EARTH SHIP DECLOAKING, REGESTRY NUMBER 062458 THE SHIP IS MATCHING SPEED WITH THE USS SEWARD.\"},{\"label\":\"SHIP FIRING...\",\"value\":\"NEW EARTH SHIP 062458 IS ARMING AND FIREING WEAPONS ON THE USS SEWARD.\"},{\"label\":\"SEWARD DESTROIED\",\"value\":\"USS SEWARD HAS BEEN DESTROED.\"},{\"label\":\"CLEAR SPACE\",\"value\":\"CLEAR SPACE AHEAD. \"},{\"label\":\"NEW EARTH SHIP\",\"value\":\"NEW EARTH CRUSER DECLOAKING. SHIP'S REGESTRAY NUMBER IS 062458.\"},{\"label\":\"NEW EARTH LEAVES\",\"value\":\"THE NEW EARTH SHIP IS TURNING AND LEAVING THE AREA.\"},{\"label\":\"KLINGON SHIPS DECLOAKING\",\"value\":\"WARRNING! 3 KLINGON WAR SHIPS HAVE DECLOAKED ON THE OTHER SIDE OF THE NEW EARTH BORDER.\"},{\"label\":\"KLINGON SHIPS LEAVES\",\"value\":\"KLINGON SHIP ARE CLOAKING AND LEAVING THE AREA.\"},{\"label\":\"SATELLITES DECTING\",\"value\":\"WARRNING! THIS VESSEL IS ABOUT TO CROSS INTO THE SCANING RANGE OF A THOR 88 SATELLITE.\"},{\"label\":\"CLEAR SPACE\",\"value\":\"CLEAR SPACE AHEAD\"},{\"label\":\"ORBIT OF NEW EARTH\",\"value\":\"THIS VESSEL IS IN STABLE ORBIT OF NEW EARTH.\"},{\"label\":\"EMBASSY FOUND\",\"value\":\"FEDERATION EMBASY FOUND, CONN OFFICER MUST PUT IN THE FOLLOWING CORDANATES IN ORDER TO BE IN TRANSPORTER RANGE:  X: 928.33 Y: 591.12 Z: 110.09\"},{\"label\":\"TRANSPORTS IN PROGRESS\",\"value\":\"FEDERATION EMBASY IS NOW IN TRASNSPORTER RANGE, TRANSPORTS MAY BEGIN.\"},{\"label\":\"NEW EARTH FIGHTER\",\"value\":\"NEW EARTH FIGHTER ON APPROCH, THIS VESSEL WILL BE DECTCED IN APPROX. 60 SECONDS\"},{\"label\":\"FIGHTER SCANS\",\"value\":\"NEW EATH FIGHTER IS SCANING THIS VESSEL\"},{\"label\":\"FIGHTER FLEES\",\"value\":\"NEW EARTH FIGHTER IS CHANGING COURSE TO AVOID THIS VESSEL\"},{\"label\":\"FIGHTERS LAUNCHING.\",\"value\":\"WARNING! MANY NEW EARTH FIGHTERS ARE LAUNCING FROM THE SURFACE.\"},{\"label\":\"INCOMMING TORPEDOS\",\"value\":\"WARNING! INCOMMING TORPEDOS, TORPEDOS WILL IMPACT THIS VESSEL IN APPROX. 10 SECONDS\"},{\"label\":\"BORDER ZONE\",\"value\":\"THIS VESSEL IS APPROCING THE FEDERATION BORDER\"},{\"label\":\"FEDERATION SPACE\",\"value\":\"THIS VESSEL HAS ENTERED FEDERATION SPACE\"}],\"domain\":\"external\"}",
 							"delay": 0
+						},
+						{
+							"id": "7974d528-0137-4138-bec8-6b01aace5626",
+							"name": "Sensor Icons",
+							"type": "event",
+							"event": "setArmyContacts",
+							"args": "{\"domain\":\"external\",\"armyContacts\":[{\"id\":\"fb454b24-7a5e-43fa-bad0-1e7067077334\",\"name\":\"Army Contact\",\"icon\":\"/Sensor Contacts/Icons/Satellite\",\"picture\":\"/Sensor Contacts/Pictures/Default\",\"size\":1,\"color\":\"#0f0\",\"infrared\":false,\"cloaked\":false,\"destroyed\":false}]}",
+							"delay": 0
 						}
 					]
 				}
@@ -1691,7 +1699,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10698800,
+			"timeSincePing": 11252800,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -1780,7 +1788,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10698800,
+			"timeSincePing": 11252800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -1926,7 +1934,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.9472719999999473,
+			"batteryChargeLevel": 0.9427839999999428,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2697,7 +2705,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10698800,
+			"timeSincePing": 11252800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2727,7 +2735,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10698800,
+			"timeSincePing": 11252800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3889,7 +3897,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10698800,
+			"timeSincePing": 11252800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3920,7 +3928,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10698800,
+			"timeSincePing": 11252800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4409,7 +4417,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.018419999999853734,
+			"batteryChargeLevel": 0,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -4985,7 +4993,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 5881800,
+			"timeSincePing": 6435800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5016,7 +5024,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 5881800,
+			"timeSincePing": 6435800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6126,7 +6134,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "active",
-			"timeSincePing": 4900,
+			"timeSincePing": 6400,
 			"scanResults": "",
 			"scanRequest": "Course!",
 			"processedData": "",
@@ -6304,7 +6312,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 5881800,
+			"timeSincePing": 6435800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -7485,7 +7493,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 768700,
+			"timeSincePing": 1322700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -7516,7 +7524,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 768700,
+			"timeSincePing": 1322700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8651,7 +8659,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 5881800,
+			"timeSincePing": 6435800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8682,7 +8690,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 5881800,
+			"timeSincePing": 6435800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -19076,6 +19084,126 @@
 			"folderId": "d208ff4a-f81a-4757-be99-87b58224422e",
 			"name": "Symbol",
 			"class": "AssetContainer"
+		},
+		{
+			"id": "19fec421-4b7c-496e-bebf-1fbdb01547fe",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Anomaly",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "13ba4ea1-b06f-4307-b03b-cdfb36e98f0c",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Dot",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Dot",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "79ff722b-7a21-4770-ac5d-6200ed7a649b",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Generic Target",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Generic Target",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "d732fc00-2fff-4476-a032-bad78b51667f",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Generic X",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Generic X",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "83e40a86-6fa4-4bc5-a269-4c4898f2026c",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Gunboat",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Gunboat",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "2df9de04-4ddb-42da-b7af-f318459eb6f1",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Infared",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Infared",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "6ea09722-e060-4821-adc1-0f728c2a4201",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/medical",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "medical",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "7ce133bf-ad33-4a1f-b20d-e790f174159c",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Outlaw Star",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Outlaw Star",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "cde722fd-91fc-4b29-b30b-bf1b3773b21b",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Peacekeeper",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Peacekeeper",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "395c36c4-f100-4637-b397-b14cb6d0b929",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Satellite",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Satellite",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "ce3a3675-76cb-403b-af05-0215db23ca55",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Soviet",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Soviet",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "5c9d6ff7-7ac1-4923-82ef-d1505c6f7314",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Star",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Star",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "2fbee690-1f61-4855-989e-776a0af3272c",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Stazi",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Stazi",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "dd294bfb-3c88-4bba-9475-46165c5f7e68",
+			"folderPath": "/Sensor Contacts/Icons",
+			"fullPath": "/Sensor Contacts/Icons/Sword",
+			"folderId": "bb31641b-2957-446c-bf30-9f7253114018",
+			"name": "Sword",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "dbf07d2f-4253-4637-bd56-3a281cdf312e",
+			"folderPath": "/Sensor Contacts/Pictures",
+			"fullPath": "/Sensor Contacts/Pictures/Default",
+			"folderId": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
+			"name": "Default",
+			"class": "AssetContainer"
 		}
 	],
 	"assetObjects": [
@@ -19550,11 +19678,146 @@
 			"url": "/assets/Sensor Contacts/Icons/Anomaly/default.svg",
 			"simulatorId": "default",
 			"class": "AssetObject"
+		},
+		{
+			"id": "b60f3401-7911-4a7e-a960-37800d09677d",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "19fec421-4b7c-496e-bebf-1fbdb01547fe",
+			"fullPath": "/Sensor Contacts/Icons/Anomaly/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Anomaly/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "4bacfe78-cd1e-405c-a1ae-db6bcba72b83",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "13ba4ea1-b06f-4307-b03b-cdfb36e98f0c",
+			"fullPath": "/Sensor Contacts/Icons/Dot/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Dot/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "a88c8a0a-754a-464b-a25c-8e04f92817d3",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "79ff722b-7a21-4770-ac5d-6200ed7a649b",
+			"fullPath": "/Sensor Contacts/Icons/Generic Target/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Generic Target/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "ecfae952-be33-4031-99a2-8af364ab7a84",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "d732fc00-2fff-4476-a032-bad78b51667f",
+			"fullPath": "/Sensor Contacts/Icons/Generic X/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Generic X/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "665471aa-745d-48a0-8695-491444903318",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "83e40a86-6fa4-4bc5-a269-4c4898f2026c",
+			"fullPath": "/Sensor Contacts/Icons/Gunboat/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Gunboat/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "6f93eb45-cd0d-4ab4-a74f-6ad06aedb763",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "2df9de04-4ddb-42da-b7af-f318459eb6f1",
+			"fullPath": "/Sensor Contacts/Icons/Infared/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Infared/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "9f7f642b-35fb-491a-b9b9-c0058a26a2a5",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "6ea09722-e060-4821-adc1-0f728c2a4201",
+			"fullPath": "/Sensor Contacts/Icons/medical/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/medical/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "b83a2098-7962-470c-8754-e9e161c57ec2",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "7ce133bf-ad33-4a1f-b20d-e790f174159c",
+			"fullPath": "/Sensor Contacts/Icons/Outlaw Star/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Outlaw Star/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "e68a6954-2ea8-4984-affe-92118a47b887",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "cde722fd-91fc-4b29-b30b-bf1b3773b21b",
+			"fullPath": "/Sensor Contacts/Icons/Peacekeeper/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Peacekeeper/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "5a93ff65-add7-4b8e-98e7-039f8b4a5209",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "395c36c4-f100-4637-b397-b14cb6d0b929",
+			"fullPath": "/Sensor Contacts/Icons/Satellite/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Satellite/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "f47984e1-dc83-4141-b6bf-310edb44253c",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "ce3a3675-76cb-403b-af05-0215db23ca55",
+			"fullPath": "/Sensor Contacts/Icons/Soviet/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Soviet/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "47b7503e-9b7d-455e-9fc6-0452c34afefd",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "5c9d6ff7-7ac1-4923-82ef-d1505c6f7314",
+			"fullPath": "/Sensor Contacts/Icons/Star/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Star/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "30943439-3b8f-4c9b-a413-f83088ef239c",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "2fbee690-1f61-4855-989e-776a0af3272c",
+			"fullPath": "/Sensor Contacts/Icons/Stazi/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Stazi/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "ffc619be-c029-4d6b-be6d-1d60eb7d751d",
+			"containerPath": "/Sensor Contacts/Icons",
+			"containerId": "dd294bfb-3c88-4bba-9475-46165c5f7e68",
+			"fullPath": "/Sensor Contacts/Icons/Sword/default.svg",
+			"url": "/assets/Sensor Contacts/Icons/Sword/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "00404f92-0866-433b-92b1-8efac18ab5db",
+			"containerPath": "/Sensor Contacts/Pictures",
+			"containerId": "dbf07d2f-4253-4637-bd56-3a281cdf312e",
+			"fullPath": "/Sensor Contacts/Pictures/Default/default.svg",
+			"url": "/assets/Sensor Contacts/Pictures/Default/default.svg",
+			"simulatorId": "default",
+			"class": "AssetObject"
 		}
 	],
 	"viewscreens": [],
 	"messages": [],
-	"snapshotVersion": 334,
-	"version": 334,
-	"timestamp": "2017-09-04T13:52:17.823Z"
+	"snapshotVersion": 885,
+	"version": 885,
+	"timestamp": "2017-09-04T14:03:49.091Z"
 }

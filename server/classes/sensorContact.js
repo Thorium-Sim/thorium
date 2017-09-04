@@ -1,5 +1,5 @@
-import uuid from 'uuid';
-import * as THREE from 'three';
+import uuid from "uuid";
+import * as THREE from "three";
 // TODO: Extend this with different types of sensor contacts
 // Ex: Ship has crew count, weapons, etc.
 
@@ -25,12 +25,12 @@ export default class SensorContact {
   constructor(params) {
     this.id = params.id || uuid.v4();
     this.sensorId = params.sensorId || null;
-    this.class = 'SensorContact';
-    this.name = params.name || 'Contact';
+    this.class = "SensorContact";
+    this.name = params.name || "Contact";
     this.size = params.size || 1; // Float - Scale percentage
-    this.icon = params.icon || 'Default'; // Added to '/Sensor Contacts/'
-    this.color = params.color || '#0f0';
-    this.picture = params.picture || 'Default'; // Added to '/Sensor Pictures/'
+    this.icon = params.icon || "/Sensor Contacts/Icons/Default"; // Added to '/Sensor Contacts/'
+    this.color = params.color || "#0f0";
+    this.picture = params.picture || "/Sensor Contacts/Pictures/Default"; // Added to '/Sensor Pictures/'
     this.speed = params.speed || 0; // Float
     this.velocity = params.velocity || { x: 0, y: 0, z: 0 };
     this.location = params.location || {

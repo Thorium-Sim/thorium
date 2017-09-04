@@ -63,23 +63,17 @@ const ContactContextMenu = props => {
                     defaultValue={contact.icon}
                     onChange={e => {
                       const contact = props.contact;
-                      props.updateArmyContact(
-                        contact,
-                        "icon",
-                        `/Sensor Contacts/Icons/${e.target.value}`
-                      );
+                      props.updateArmyContact(contact, "icon", e.target.value);
                     }}
                   >
                     {!props.data.loading &&
                       props.data.assetFolders
                         .find(f => f.name === "Icons")
-                        .containers.map(icon => {
-                          return (
-                            <option key={icon.id} value={icon.name}>
-                              {icon.name}
-                            </option>
-                          );
-                        })}
+                        .containers.map(icon =>
+                          <option key={icon.id} value={icon.fullPath}>
+                            {icon.name}
+                          </option>
+                        )}
                   </Input>
                 </FormGroup>
               </Col>
@@ -98,20 +92,18 @@ const ContactContextMenu = props => {
                       props.updateArmyContact(
                         contact,
                         "picture",
-                        `/Sensor Contacts/Pictures/${e.target.value}`
+                        e.target.value
                       );
                     }}
                   >
                     {!props.data.loading &&
                       props.data.assetFolders
                         .find(f => f.name === "Pictures")
-                        .containers.map(picture => {
-                          return (
-                            <option key={picture.id} value={picture.name}>
-                              {picture.name}
-                            </option>
-                          );
-                        })}
+                        .containers.map(picture =>
+                          <option key={picture.id} value={picture.fullPath}>
+                            {picture.name}
+                          </option>
+                        )}
                   </Input>
                 </FormGroup>
               </Col>

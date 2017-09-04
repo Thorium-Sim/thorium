@@ -2,16 +2,52 @@ import React, { Component } from "react";
 import { FormGroup, Label, Input, Col, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import ContactContextMenu from "../views/Sensors/contactContextMenu";
+import uuid from "uuid";
+import { Asset } from "../../helpers/assets";
 
 export default class SetArmyContacts extends Component {
   state = { removeContacts: false };
-  selectContact = contact => {};
-  removeContact = contact => {};
-  addArmyContact = () => {};
+  selectContact = contact => {
+    this.setState({ selectedContact: contact });
+  };
+  removeContact = contact => {
+    this.props.updateArgs(
+      "armyContacts",
+      this.props.args.armyContacts.filter(c => c.id !== contact.id)
+    );
+  };
+  addArmyContact = () => {
+    const contact = {
+      id: uuid.v4(),
+      name: "Army Contact",
+      icon: "/Sensor Contacts/Icons/Default",
+      picture: "/Sensor Contacts/Pictures/Default",
+      size: 1,
+      color: "#0f0",
+      infrared: false,
+      cloaked: false,
+      destroyed: false
+    };
+    this.props.updateArgs(
+      "armyContacts",
+      (this.props.args.armyContacts || []).concat(contact)
+    );
+  };
+  updateArmyContact = (contact, name, value) => {
+    this.props.updateArgs(
+      "armyContacts",
+      this.props.args.armyContacts.map(c => {
+        if (c.id === contact.id) {
+          return Object.assign({}, c, { [name]: value });
+        }
+        return c;
+      })
+    );
+  };
   render() {
     const { updateArgs, args /*client*/ } = this.props;
-    const { removeContacts } = this.state;
-    const armyContacts = [];
+    const { removeContacts, selectedContact } = this.state;
+    const { armyContacts = [] } = args;
     return (
       <FormGroup className="macro-setArmyContacts">
         <Label>Domain</Label>
@@ -29,13 +65,28 @@ export default class SetArmyContacts extends Component {
           {armyContacts.map(contact => {
             return (
               <Col key={contact.id} className={"flex-container"}>
-                <img
-                  OnClick={() => this.selectContact(contact)}
-                  draggable="false"
-                  role="presentation"
-                  className="armyContact"
-                  src={contact.iconUrl}
-                />
+                <Asset asset={contact.icon}>
+                  {({ src }) =>
+                    <img
+                      onClick={() => this.selectContact(contact)}
+                      draggable="false"
+                      role="presentation"
+                      style={{ width: "30px" }}
+                      className="armyContact"
+                      src={src}
+                    />}
+                </Asset>
+                <Asset asset={contact.picture}>
+                  {({ src }) =>
+                    <img
+                      onClick={() => this.selectContact(contact)}
+                      draggable="false"
+                      role="presentation"
+                      style={{ width: "30px" }}
+                      className="armyContact"
+                      src={src}
+                    />}
+                </Asset>
                 <label onClick={() => this.selectContact(contact)}>
                   {contact.name}
                 </label>
@@ -61,7 +112,14 @@ export default class SetArmyContacts extends Component {
           />{" "}
           Remove
         </label>
-        <ContactContextMenu contact={{}} />
+        <div style={{ position: "fixed", right: "40%", bottom: "10%" }}>
+          {selectedContact &&
+            <ContactContextMenu
+              contact={selectedContact}
+              closeMenu={() => this.setState({ selectedContact: null })}
+              updateArmyContact={this.updateArmyContact}
+            />}
+        </div>
       </FormGroup>
     );
   }
