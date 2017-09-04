@@ -19,7 +19,8 @@
     "no-underscore-dangle": 0,
     "no-restricted-globals": 0,
     "jsx-a11y/alt-text": 0,
-    "jsx-a11y/href-no-hash": 0
+    "jsx-a11y/href-no-hash": 0,
+    "no-script-url":0
   },
   "env": {
     "mocha": true

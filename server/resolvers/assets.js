@@ -89,12 +89,7 @@ export const AssetsMutations = {
     return "";
   },
   async uploadAsset(root, args, context) {
-    const {
-      files,
-      simulatorId,
-      containerId,
-      folderPath: givenFolderPath
-    } = args;
+    let { files, simulatorId, containerId, folderPath: givenFolderPath } = args;
     let container = App.assetContainers.find(
       container => containerId === container.id
     );
@@ -109,6 +104,7 @@ export const AssetsMutations = {
       let container = App.assetContainers.find(
         container => containerId === container.id
       );
+      let clearContainer = false;
       if (!container) {
         //Lets make a container for this asset
         const name = file.originalname.replace(/(\..{3})/gi, "");
@@ -126,14 +122,19 @@ export const AssetsMutations = {
         container = App.assetContainers.find(
           container => container.fullPath === containerFullPath
         );
+        containerId = container.id;
         folderPath = container.folderPath;
         fullPath = container.fullPath;
+
+        // Clear the container variable when we are done so it can be reused for future files
+        clearContainer = true;
       }
       const extension = file.originalname.substr(
         file.originalname.lastIndexOf(".")
       );
       const key = `${fullPath.substr(1)}/${simulatorId + extension}`;
       const filepath = path.resolve(assetDir + "/" + key);
+      console.log(filepath);
       const directorypath = filepath.substring(0, filepath.lastIndexOf("/"));
       mkdirp.sync(directorypath);
 
@@ -163,6 +164,10 @@ export const AssetsMutations = {
         "addAssetObject",
         context
       );
+      if (clearContainer) {
+        container = {};
+        containerId = null;
+      }
     });
     pubsub.publish("assetFolderChange", App.assetFolders);
     return "";

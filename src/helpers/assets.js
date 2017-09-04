@@ -16,6 +16,12 @@ class AssetComponent extends Component {
   }
   state = { src: "http://unsplash.it/300" };
   componentWillMount() {
+    this.updateAsset(this.props);
+  }
+  componentWillReceiveProps(nextProps) {
+    this.updateAsset(nextProps);
+  }
+  updateAsset(props) {
     const query = gql`
       query GetAsset($assetKey: String!, $simulatorId: ID) {
         asset(assetKey: $assetKey, simulatorId: $simulatorId) {
@@ -25,10 +31,10 @@ class AssetComponent extends Component {
       }
     `;
     const variables = {
-      assetKey: this.props.asset,
-      simulatorId: this.props.simulatorId
+      assetKey: props.asset,
+      simulatorId: props.simulatorId
     };
-    this.props.client
+    props.client
       .query({
         query,
         variables

@@ -269,7 +269,7 @@ class CoreLayout extends Component {
           value={this.state.simulator}
         >
           <option>Pick a simulator</option>
-          <option disabled>-----------</option>
+          <option disabled>⸺⸺⸺⸺⸺</option>
           <option value="test">Test</option>
           {simulators.map(s =>
             <option key={s.id} value={s.id}>
@@ -283,7 +283,7 @@ class CoreLayout extends Component {
           value={this.state.layout}
         >
           <option>Pick a layout</option>
-          <option disabled>-----------</option>
+          <option disabled>⸺⸺⸺⸺⸺</option>
           {coreLayouts
             .map(l => l.name)
             .filter(function(item, index, a) {
@@ -313,7 +313,7 @@ class CoreLayout extends Component {
             onChange={this.addCore.bind(this)}
           >
             <option value="cancel">Pick a core</option>
-            <option disabled>-----------</option>
+            <option disabled>⸺⸺⸺⸺⸺</option>
             {Object.keys(Cores).map((core, index) =>
               <option value={core} key={`${core}-${index}`}>
                 {core}
