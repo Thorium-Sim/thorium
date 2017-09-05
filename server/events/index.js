@@ -26,3 +26,4 @@ import "./crew";
 import "./teams";
 import "./viewscreen";
 import "./messages";
+import "./isochips";

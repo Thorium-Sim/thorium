@@ -1,6 +1,7 @@
 import App from "../../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
+import uuid from "uuid";
 
 function getTimelineObject(simulatorId, missionId) {
   let object;
@@ -79,6 +80,18 @@ App.on("startFlight", ({ id, name, simulators }) => {
             d => d.simulatorId === sim.id && d.number === oldDeck.number
           );
           newAspect.deckId = deck.id;
+        }
+        if (aspect === "systems") {
+          // Create a new isochip for that system, if one exists
+          const isochip = App.isochips.find(i => i.system === a.id);
+          // Override the system ID
+          newAspect.id = uuid.v4();
+          if (isochip) {
+            isochip.id = uuid.v4();
+            isochip.system = newAspect.id;
+            isochip.simulatorId = sim.id;
+            App.isochips.push(new Classes.Isochip(isochip));
+          }
         }
         App[aspect].push(new Classes[newAspect.class](newAspect));
       });

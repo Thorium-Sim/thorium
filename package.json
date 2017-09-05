@@ -11,6 +11,7 @@
   "bugs": {
     "url": "https://github.com/Thorium-Sim/thorium/issues"
   },
+  "license":"Apache-2.0",
   "homepage": "https://thorium.ralexanderson.com",
   "devDependencies": {
     "all-contributors-cli": "^4.4.0",

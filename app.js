@@ -30,6 +30,7 @@ class Events extends EventEmitter {
     this.crew = [];
     this.teams = [];
     this.inventory = [];
+    this.isochips = [];
     this.coreLayouts = [];
     this.assetFolders = [];
     this.assetContainers = [];

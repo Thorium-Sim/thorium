@@ -1,40 +1,40 @@
-import React, {Component} from 'react';
-import gql from 'graphql-tag';
-import { graphql, withApollo } from 'react-apollo';
-import Immutable from 'immutable';
+import React, { Component } from "react";
+import gql from "graphql-tag";
+import { graphql, withApollo } from "react-apollo";
 
-const INTERNAL_SUB = gql``;
+import "./style.scss";
 
-class InternalComm extends Component {
-  constructor(props){
-    super(props);
-    this.internalSub = null;
-  }
+const TEMPLATE_SUB = gql``;
+
+class Template extends Component {
+  sub = null;
   componentWillReceiveProps(nextProps) {
     if (!this.internalSub && !nextProps.data.loading) {
       this.internalSub = nextProps.data.subscribeToMore({
-        document: INTERNAL_SUB,
+        document: TEMPLATE_SUB,
         variables: {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult.merge({ longRangeCommunications: subscriptionData.data.longRangeCommunicationsUpdate }).toJS();
+          return Object.assign({}, previousResult, {
+            template: subscriptionData.data.templateUpdate
+          });
         }
       });
     }
   }
-  render(){
-    return <div>This is a template</div>
+  render() {
+    if (this.props.data.loading) return null;
+    return <div className="template-card">This is a template</div>;
   }
 }
 
-const INTERNAL_QUERY = gql`
+const TEMPLATE_QUERY = gql`
 `;
-export default graphql(INTERNAL_QUERY, {
-  options: (ownProps) => ({
+export default graphql(TEMPLATE_QUERY, {
+  options: ownProps => ({
     variables: {
       simulatorId: ownProps.simulator.id
     }
   })
-})(withApollo(InternalComm));
+})(withApollo(Template));

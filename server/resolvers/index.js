@@ -138,6 +138,13 @@ import {
   MessagesSubscriptions
 } from "./messages";
 
+import {
+  IsochipsQueries,
+  IsochipsMutations,
+  IsochipsSubscriptions,
+  IsochipsTypes
+} from "./isochips";
+
 import App from "../../app";
 
 function parseJSONLiteral(ast) {
@@ -193,7 +200,8 @@ const queryMap = Object.assign(
   TeamsQueries,
   SetQueries,
   ViewscreenQueries,
-  MessagesQueries
+  MessagesQueries,
+  IsochipsQueries
 );
 
 export const mutationMap = Object.assign(
@@ -232,7 +240,8 @@ export const mutationMap = Object.assign(
   TeamsMutations,
   SetMutations,
   ViewscreenMutations,
-  MessagesMutations
+  MessagesMutations,
+  IsochipsMutations
 );
 
 const subscriptionMap = Object.assign(
@@ -266,7 +275,8 @@ const subscriptionMap = Object.assign(
   TeamsSubscriptions,
   SetSubscriptions,
   ViewscreenSubscriptions,
-  MessagesSubscriptions
+  MessagesSubscriptions,
+  IsochipsSubscriptions
 );
 
 export default Object.assign(
@@ -290,5 +300,6 @@ export default Object.assign(
   ProbesTypes,
   CrewTypes,
   TeamsTypes,
-  SetTypes
+  SetTypes,
+  IsochipsTypes
 );

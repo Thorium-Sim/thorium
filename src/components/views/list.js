@@ -29,7 +29,8 @@ const viewList = [
   "SelfDestruct",
   "ProbeControl",
   "ReactorControl",
-  "Messages"
+  "Messages",
+  "Isochips"
 ];
 
 export default viewList;

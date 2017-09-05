@@ -34,6 +34,7 @@ import ProbeControl from "./ProbeControl";
 import ReactorControl from "./ReactorControl";
 import Viewscreen from "./Viewscreen";
 import Messages from "./Messaging";
+import Isochips from "./Isochips";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -107,7 +108,8 @@ const Views = {
   ProbeControl,
   ReactorControl,
   Viewscreen,
-  Messages
+  Messages,
+  Isochips
 };
 
 export const Widgets = {
