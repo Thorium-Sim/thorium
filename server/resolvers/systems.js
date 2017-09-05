@@ -73,6 +73,11 @@ export const SystemsSubscriptions = {
 };
 
 export const SystemsTypes = {
+  System: {
+    isochips(rootValue) {
+      return App.isochips.filter(i => i.system === rootValue.id);
+    }
+  },
   SystemUnion: {
     __resolveType(obj, context, info) {
       return obj.type || null;
