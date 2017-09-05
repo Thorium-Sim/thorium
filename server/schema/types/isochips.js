@@ -5,7 +5,7 @@ type Isochip {
   simulator: Simulator
   slot: Int
   requiredChip: Int
-  currentChip: Int
+  chip: Int
   label: String
   state: ISOCHIP_STATES
 }
@@ -22,7 +22,7 @@ input IsochipInput {
   simulator: ID
   slot: Int
   requiredChip: Int
-  currentChip: Int
+  chip: Int
   label: String
 }
 `;

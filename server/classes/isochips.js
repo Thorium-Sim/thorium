@@ -32,36 +32,40 @@ const diagnosticChip = 31; // 11111
 export default class Isochip {
   constructor(params) {
     this.id = params.id || uuid.v4();
+    this.class = "Isochip";
     this.system = params.system || null;
     this.simulatorId = params.simulatorId || null;
     // Slot and chip numbers are based on the decimal
     // representation of the binary address
     this.slot = params.slot || -1;
     this.requiredChip = params.requiredChip || -1;
-    this.currentChip = params.currentChip || 0;
+    this.chip = params.chip || 0;
     this.label = params.label || labels[this.requiredChip];
   }
   get state() {
-    if (this.currentChip === 0) {
+    if (this.chip === 0) {
       return "empty";
     }
-    if (this.currentChip === diagnosticChip) {
+    if (this.chip === diagnosticChip) {
       return "diagnostic";
     }
-    if (this.currentChip === this.requiredChip) {
+    if (this.chip === this.requiredChip) {
       return "nominal";
     }
     return "invalid";
   }
   insertChip(chip) {
-    this.currentChip = chip;
+    this.chip = chip;
   }
-  updateIsochip({ slot, requiredChip, label }) {
+  updateIsochip({ slot, requiredChip, chip, label }) {
     if (slot || slot === 0) {
       this.slot = slot;
     }
     if (requiredChip || requiredChip === 0) {
       this.requiredChip = requiredChip;
+    }
+    if (chip || chip === 0) {
+      this.chip = chip;
     }
     if (label) this.label = label;
   }

@@ -137,6 +137,11 @@ import {
   MessagesMutations,
   MessagesSubscriptions
 } from "./messages";
+import {
+  IsochipsQueries,
+  IsochipsMutations,
+  IsochipsSubscriptions
+} from "./isochips";
 
 import App from "../../app";
 
@@ -193,7 +198,8 @@ const queryMap = Object.assign(
   TeamsQueries,
   SetQueries,
   ViewscreenQueries,
-  MessagesQueries
+  MessagesQueries,
+  IsochipsQueries
 );
 
 export const mutationMap = Object.assign(
@@ -232,7 +238,8 @@ export const mutationMap = Object.assign(
   TeamsMutations,
   SetMutations,
   ViewscreenMutations,
-  MessagesMutations
+  MessagesMutations,
+  IsochipsMutations
 );
 
 const subscriptionMap = Object.assign(
@@ -266,7 +273,8 @@ const subscriptionMap = Object.assign(
   TeamsSubscriptions,
   SetSubscriptions,
   ViewscreenSubscriptions,
-  MessagesSubscriptions
+  MessagesSubscriptions,
+  IsochipsSubscriptions
 );
 
 export default Object.assign(

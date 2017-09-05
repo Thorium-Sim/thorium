@@ -1,5 +1,41 @@
-export const IsochipsQueries = {};
+import App from "../../app";
 
-export const IsochipsMutations = {};
+export const IsochipsQueries = {
+  isochips(root, { simulatorId }) {
+    let returnVal = App.isochips;
+    if (simulatorId)
+      returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
+    return returnVal;
+  }
+};
 
-export const IsochipsSubscriptions = {};
+function timeout(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Events is tough to return data for mutations
+export const IsochipsMutations = {
+  insertIsochip(root, args, context) {
+    App.handleEvent(args, "insertIsochip", context);
+  },
+  updateIsochip(root, args, context) {
+    App.handleEvent(args, "updateIsochip", context);
+  },
+  async batchIsochipUpdate(root, args, context) {
+    App.handleEvent(args, "batchIsochipUpdate", context);
+    await timeout(100);
+    let isochips = App.isochips;
+    if (args.simulatorId)
+      isochips = isochips.filter(i => i.simulatorId === args.simulatorId);
+    return isochips;
+  }
+};
+
+export const IsochipsSubscriptions = {
+  isochipsUpdate(rootValue, { simulatorId }) {
+    let returnVal = rootValue;
+    if (simulatorId)
+      returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
+    return returnVal;
+  }
+};

@@ -1,3 +1,3 @@
 export default `
-  isochipUpdate(simulatorId: ID):[Isochip]
+  isochipsUpdate(simulatorId: ID):[Isochip]
 `;
