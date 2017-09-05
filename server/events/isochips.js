@@ -15,10 +15,11 @@ App.on("updateIsochip", ({ id, simulatorId, slot, isochip }) => {
   );
   if (!updateChip) {
     // Make sure it has prerequisite data
-    if (isochip.system) {
+    if (isochip && isochip.system) {
       const newChip = new Classes.Isochip(isochip);
       const system = App.systems.find(s => s.id === isochip.system);
       newChip.simulatorId = system.simulatorId;
+      App.isochips.push(newChip);
       updateChip = App.isochips.find(i => i.id === newChip.id);
     }
   }

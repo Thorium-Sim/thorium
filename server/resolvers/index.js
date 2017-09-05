@@ -137,10 +137,12 @@ import {
   MessagesMutations,
   MessagesSubscriptions
 } from "./messages";
+
 import {
   IsochipsQueries,
   IsochipsMutations,
-  IsochipsSubscriptions
+  IsochipsSubscriptions,
+  IsochipsTypes
 } from "./isochips";
 
 import App from "../../app";
@@ -298,5 +300,6 @@ export default Object.assign(
   ProbesTypes,
   CrewTypes,
   TeamsTypes,
-  SetTypes
+  SetTypes,
+  IsochipsTypes
 );

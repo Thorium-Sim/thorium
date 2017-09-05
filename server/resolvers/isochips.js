@@ -39,3 +39,14 @@ export const IsochipsSubscriptions = {
     return returnVal;
   }
 };
+
+export const IsochipsTypes = {
+  Isochip: {
+    system(rootValue) {
+      return App.systems.find(s => s.id === rootValue.system);
+    },
+    simulator(rootValue) {
+      return App.simulator.find(s => s.id === rootValue.simulator);
+    }
+  }
+};

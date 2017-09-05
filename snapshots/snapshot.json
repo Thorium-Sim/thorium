@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 230,
+	"_eventsCount": 233,
 	"simulators": [
 		{
 			"id": "test",
@@ -1699,7 +1699,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11252800,
+			"timeSincePing": 13615500,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -1788,7 +1788,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11252800,
+			"timeSincePing": 13615500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -1934,7 +1934,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.9427839999999428,
+			"batteryChargeLevel": 0.9236319999999236,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2705,7 +2705,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11252800,
+			"timeSincePing": 13615500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2735,7 +2735,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11252800,
+			"timeSincePing": 13615500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3897,7 +3897,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11252800,
+			"timeSincePing": 13615500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3928,7 +3928,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11252800,
+			"timeSincePing": 13615500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4417,7 +4417,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0,
+			"batteryChargeLevel": 0.7845399999999174,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -4993,7 +4993,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6435800,
+			"timeSincePing": 8798500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5024,7 +5024,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6435800,
+			"timeSincePing": 8798500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6134,7 +6134,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "active",
-			"timeSincePing": 6400,
+			"timeSincePing": 3100,
 			"scanResults": "",
 			"scanRequest": "Course!",
 			"processedData": "",
@@ -6312,7 +6312,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6435800,
+			"timeSincePing": 8798500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -7493,7 +7493,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 1322700,
+			"timeSincePing": 3685400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -7524,7 +7524,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 1322700,
+			"timeSincePing": 3685400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8659,7 +8659,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6435800,
+			"timeSincePing": 8798500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8690,7 +8690,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6435800,
+			"timeSincePing": 8798500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -18781,6 +18781,98 @@
 			"metadata": {}
 		}
 	],
+	"isochips": [
+		{
+			"id": "13f25b42-a9d9-4d6e-917c-d4161c4fb229",
+			"class": "Isochip",
+			"system": "long-range-comm",
+			"simulatorId": "test",
+			"slot": 3,
+			"requiredChip": 23,
+			"chip": 23,
+			"label": "DP-3403"
+		},
+		{
+			"id": "c7b80807-d6de-4f3a-afa4-1f2d2499435c",
+			"class": "Isochip",
+			"system": "test-engine-impulse",
+			"simulatorId": "test",
+			"slot": 28,
+			"requiredChip": 2,
+			"chip": 0,
+			"label": "YN-9128"
+		},
+		{
+			"id": "c23b3377-a4ac-4914-8869-0ed599a17237",
+			"class": "Isochip",
+			"system": "test-engine-impulse",
+			"simulatorId": "test",
+			"slot": 15,
+			"requiredChip": 3,
+			"chip": 0,
+			"label": "PN-4815"
+		},
+		{
+			"id": "fe766486-7797-4cf2-8f32-e764b4cb4451",
+			"class": "Isochip",
+			"system": "test-engine-warp",
+			"simulatorId": "test",
+			"slot": 20,
+			"requiredChip": 4,
+			"chip": 0,
+			"label": "UL-7720"
+		},
+		{
+			"id": "2a2db40f-58e6-4bf9-b41d-d887ce87e37c",
+			"class": "Isochip",
+			"system": "test-engine-warp",
+			"simulatorId": "test",
+			"slot": 7,
+			"requiredChip": 5,
+			"chip": 0,
+			"label": "HS-5807"
+		},
+		{
+			"id": "73c40370-6780-4c38-8b39-f71fb20d9572",
+			"class": "Isochip",
+			"system": "test-engine-warp",
+			"simulatorId": "test",
+			"slot": 26,
+			"requiredChip": 6,
+			"chip": 0,
+			"label": "IB-0826"
+		},
+		{
+			"id": "cba3da22-a49a-43a6-bf1b-180b150c01c9",
+			"class": "Isochip",
+			"system": "8dfbfcf3-51a0-4884-b1f6-18006278fb3c",
+			"simulatorId": "test",
+			"slot": 6,
+			"requiredChip": 8,
+			"chip": 0,
+			"label": "GT-9106"
+		},
+		{
+			"id": "4b83be30-7f01-4f64-ad5b-83d56feb8705",
+			"class": "Isochip",
+			"system": "8dfbfcf3-51a0-4884-b1f6-18006278fb3f",
+			"simulatorId": "test",
+			"slot": 19,
+			"requiredChip": 9,
+			"chip": 0,
+			"label": "TX-4219"
+		},
+		{
+			"id": "40382b32-2589-4beb-8f1a-f7b92c80802e",
+			"class": "Isochip",
+			"system": "8dfbfcf3-51a0-4884-b1f6-18006278fb3e",
+			"simulatorId": "test",
+			"slot": 10,
+			"requiredChip": 10,
+			"chip": 0,
+			"label": "KY-6210"
+		}
+	],
 	"coreLayouts": [
 		{
 			"id": "9d21fa85-d919-4a39-a27e-23524adc1a03",
@@ -19817,7 +19909,7 @@
 	],
 	"viewscreens": [],
 	"messages": [],
-	"snapshotVersion": 885,
-	"version": 885,
-	"timestamp": "2017-09-04T14:03:49.091Z"
+	"snapshotVersion": 5173,
+	"version": 5173,
+	"timestamp": "2017-09-05T22:36:06.737Z"
 }
