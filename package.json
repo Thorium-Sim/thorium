@@ -219,7 +219,8 @@
   "bin": "./app.js",
   "pkg": {
     "assets": [
-      "./**/*"
+      "assets/**/*",
+      "snapshot.json"
     ]
   }
 }
