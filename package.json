@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/Thorium-Sim/thorium/issues"
   },
-  "license":"Apache-2.0",
+  "license": "Apache-2.0",
   "homepage": "https://thorium.ralexanderson.com",
   "devDependencies": {
     "all-contributors-cli": "^4.4.0",
@@ -138,6 +138,7 @@
     "tingodb": "^0.5.1",
     "tinycolor2": "^1.4.1",
     "tslib": "^1.7.1",
+    "udp-discovery": "0.0.3",
     "uuid": "^3.1.0"
   },
   "scripts": {
@@ -218,7 +219,8 @@
   "bin": "./app.js",
   "pkg": {
     "assets": [
-      "./**/*"
+      "assets/**/*",
+      "snapshot.json"
     ]
   }
 }

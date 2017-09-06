@@ -5,6 +5,7 @@ var config = require("../config/webpack.config.server");
 var fs = require("fs");
 const { exec } = require("pkg");
 const { exec: execCommand } = require("child_process");
+const ncp = require("ncp").ncp;
 
 var deleteFolderRecursive = function(path) {
   if (fs.existsSync(path)) {
@@ -39,6 +40,24 @@ fs
       path.resolve(__dirname + "/../build-server/package.json")
     )
   );
+
+fs
+  .createReadStream("./snapshots/snapshot.json")
+  .pipe(
+    fs.createWriteStream(
+      path.resolve(__dirname + "/../build-server/snapshot.json")
+    )
+  );
+
+ncp(
+  path.resolve(__dirname + "/../assets"),
+  path.resolve(__dirname + "/../build-server/assets"),
+  function(err) {
+    if (err) {
+      throw new Error(err);
+    }
+  }
+);
 
 console.log("Creating an optimized production server build...");
 webpack(config).run((err, stats) => {

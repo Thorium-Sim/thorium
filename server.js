@@ -11,6 +11,7 @@ import { printSchema } from "graphql/utilities/schemaPrinter";
 import graphqlExpressUpload from "graphql-server-express-upload";
 import { schema, subscriptionManager } from "./server/data";
 import vanity from "./server/helpers/vanity";
+import "./server/helpers/broadcast";
 import ipaddress from "./server/helpers/ipaddress";
 import "./server/helpers/client-server.js";
 
