@@ -12,6 +12,8 @@
 
 *New here? Check out the [contributing document](CONTRIBUTING.md)*
 
+Want something to work on? Here's where [we need help](https://github.com/Thorium-Sim/thorium/labels/help%20wanted).
+
 Thorium is built with the following technologies:
 * [React](https://facebook.github.io/react/) for the frontend
 * [Apollo Client](http://www.apollostack.com/) for the data layer
