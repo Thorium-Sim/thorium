@@ -15,7 +15,6 @@ import CommInternal from "./CommInternal";
 import Docking from "./Docking";
 import CommShortRange from "./CommShortRange";
 import PowerDistribution from "./PowerDistribution";
-import PowerDistributionBattery from "./PowerDistributionBattery";
 import DamageControl from "./DamageControl";
 import Targeting from "./Targeting";
 import PhaserCharging from "./PhaserCharging";
@@ -91,7 +90,6 @@ const Views = {
   Docking,
   CommShortRange,
   PowerDistribution,
-  PowerDistributionBattery,
   DamageControl,
   Targeting,
   PhaserCharging,
