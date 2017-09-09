@@ -31,3 +31,4 @@ export Set from "./set";
 export Viewscreen from "./viewscreen";
 export Message from "./message";
 export Isochip from "./isochips";
+export DockingPort from "./docking";

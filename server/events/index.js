@@ -27,3 +27,4 @@ import "./teams";
 import "./viewscreen";
 import "./messages";
 import "./isochips";
+import "./docking";
