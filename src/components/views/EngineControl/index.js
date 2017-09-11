@@ -32,6 +32,7 @@ const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID, $type: String) {
     systemsUpdate(simulatorId: $simulatorId, type: $type) {
       id
+      coolant
       power {
         power
         powerLevels
@@ -104,7 +105,8 @@ class EngineControl extends Component {
                 return newVal.map((e, index) =>
                   Immutable.Map(oldVal[index]).merge({
                     damage: e.get("damage"),
-                    power: e.get("power")
+                    power: e.get("power"),
+                    coolant: e.get("coolant")
                   })
                 );
               },
