@@ -35,6 +35,12 @@ const updateCoolant = () => {
         App.handleEvent({ systemId: sysId, coolant: sysCoolant }, "setCoolant");
         App.handleEvent({ systemId: s.id, coolant: tankCoolant }, "setCoolant");
       }
+      if (transferSystem.type === "Phasers") {
+        pubsub.publish(
+          "phasersUpdate",
+          App.systems.filter(s => s.type === "Phasers")
+        );
+      }
       pubsub.publish(
         "coolantSystemUpdate",
         App.systems
