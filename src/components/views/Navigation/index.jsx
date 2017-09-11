@@ -171,13 +171,11 @@ class Navigation extends Component {
           clearTimeout(this.scanning);
           this.scanning = null;
         }
-        if (this.scanning) {
-          this.setState({
-            destination: navigation.destination,
-            calculatedCourse: navigation.calculatedCourse,
-            enteredCourse: navigation.currentCourse
-          });
-        }
+        this.setState({
+          destination: navigation.destination,
+          calculatedCourse: navigation.calculatedCourse,
+          enteredCourse: navigation.currentCourse
+        });
       }
     }
   }

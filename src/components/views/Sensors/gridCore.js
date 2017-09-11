@@ -68,6 +68,12 @@ const SENSOR_SUB = gql`
   }
 `;
 
+const PING_SUB = gql`
+  subscription SensorPing($id: ID) {
+    sensorsPing(sensorId: $id)
+  }
+`;
+
 class GridCore extends Component {
   constructor(props) {
     super(props);
@@ -98,7 +104,49 @@ class GridCore extends Component {
         }
       });
     }
+    if (!this.pingSub && !nextProps.data.loading) {
+      this.pingSub = nextProps.data.subscribeToMore({
+        document: PING_SUB,
+        variables: { id: nextProps.data.sensors[0] },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          if (
+            previousResult.sensors.find(
+              s => s.id === subscriptionData.data.sensorsPing
+            )
+          ) {
+            this.ping();
+          }
+        }
+      });
+    }
+    if (!nextProps.data.loading) {
+      const nextSensors = nextProps.data.sensors[0];
+      if (this.props.data.loading) {
+        //First time load
+        this.setState({
+          pingTime: Date.now() - nextSensors.timeSincePing,
+          ping: false
+        });
+      }
+    }
   }
+  ping = () => {
+    // Reset the state
+    this.setState(
+      {
+        ping: false
+      },
+      () => {
+        this.setState({
+          ping: true,
+          pingTime: Date.now()
+        });
+        setTimeout(() => {
+          this.setState({ ping: false });
+        }, 1000 * 5);
+      }
+    );
+  };
   dragStart = movingContact => {
     const self = this;
     this.setState({
@@ -347,6 +395,7 @@ class GridCore extends Component {
       { value: "0.4", label: "Slow" },
       { value: "0.1", label: "Very Slow" }
     ];
+    const { ping, pingTime } = this.state;
     return (
       <Container className="sensorGridCore" fluid style={{ height: "100%" }}>
         <Row style={{ height: "100%" }}>
@@ -439,6 +488,9 @@ class GridCore extends Component {
                         selectedContact={selectedContact}
                         armyContacts={sensors.armyContacts}
                         movingContact={movingContact}
+                        ping={ping}
+                        pings={sensors.pings}
+                        pingTime={pingTime}
                       />}
                   </div>
                 );
