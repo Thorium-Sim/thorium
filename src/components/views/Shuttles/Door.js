@@ -1,29 +1,8 @@
 import React, { Component } from "react";
 
 export default class Door extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: !props.open // Set it to the correct value on mounting
-    };
-  }
-  componentDidMount() {
-    setTimeout(
-      () =>
-        this.setState({
-          open: this.props.open
-        }),
-      100
-    );
-  }
-  componentWillReceiveProps(newProps) {
-    this.setState({
-      open: newProps.open
-    });
-  }
   render() {
-    const { number = "01" } = this.props;
-    const { open } = this.state;
+    const { number = "01", open = false } = this.props;
     return (
       <div className={`door`}>
         <div className="door-container">

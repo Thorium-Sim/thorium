@@ -80,22 +80,15 @@ class ShuttleBay extends Component {
   state = { animating: null };
   componentWillUpdate(newProps) {
     // Check to see if there is a change in any of the props
-    const { clamps, compress, doors } = this.props;
-    if (clamps !== newProps.clamps) {
-      this.setState({ animating: "clamps" });
-    }
-    if (compress !== newProps.compress) {
-      this.setState({ animating: "compress" });
-    }
-    if (doors !== newProps.doors) {
-      this.setState({ animating: "doors" });
-    }
+  }
+  toggleShuttle = (id, which) => {
+    this.setState({ animating: which });
     if (this.clearTimeoutId) clearTimeout(this.clearTimeoutId);
     this.clearTimeoutId = setTimeout(
       () => this.setState({ animating: null }),
       5000
     );
-  }
+  };
   render() {
     const {
       docked,
@@ -103,6 +96,7 @@ class ShuttleBay extends Component {
       name,
       simulatorId,
       i,
+      id,
       clamps,
       compress,
       doors
@@ -116,13 +110,28 @@ class ShuttleBay extends Component {
           </h3>
           <Row>
             <Col sm={6}>
-              <Button block disabled={!!animating} color="primary">
+              <Button
+                block
+                disabled={!!animating}
+                color="primary"
+                onClick={() => this.toggleShuttle(id, "clamps")}
+              >
                 Detach Clamps
               </Button>
-              <Button block disabled={!!animating} color="primary">
+              <Button
+                block
+                disabled={!!animating}
+                color="primary"
+                onClick={() => this.toggleShuttle(id, "compress")}
+              >
                 Decompress Bay
               </Button>
-              <Button block disabled={!!animating} color="primary">
+              <Button
+                block
+                disabled={!!animating}
+                color="primary"
+                onClick={() => this.toggleShuttle(id, "doors")}
+              >
                 Open Doors
               </Button>
             </Col>

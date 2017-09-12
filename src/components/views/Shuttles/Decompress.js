@@ -3,9 +3,6 @@ import React, { Component } from "react";
 export default class FizzleFade extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      on: !props.on
-    };
     this.ctx = null;
     this.pixels = null;
     this.screen_width = props.width || 256;
@@ -14,12 +11,8 @@ export default class FizzleFade extends Component {
     this.updatePixels = this.updatePixels.bind(this);
   }
   componentDidMount() {
-    setTimeout(() => this.setState({ on: this.props.on }), 100);
     this.init();
     this.updatePixels();
-  }
-  componentWillReceiveProps(nextProps) {
-    this.setState({ on: nextProps.on });
   }
   componentDidUpdate() {
     this.frame = 0;
@@ -31,7 +24,7 @@ export default class FizzleFade extends Component {
       this.screen_width,
       this.screen_height
     );
-    if (this.state.on) {
+    if (this.props.on) {
       for (let i = 0; i < this.screen_width; i++) {
         for (let j = 0; j < this.screen_height; j++) {
           this.setPixel(i, j);
@@ -52,7 +45,7 @@ export default class FizzleFade extends Component {
     return ((r << 8) | l) & 0xffff;
   }
   setPixel(x, y) {
-    var color = this.state.on ? "255" : "0";
+    var color = this.props.on ? "255" : "0";
     var offset = x * 4 + y * 4 * this.screen_width;
     this.pixels.data[offset + 3] = color;
     this.pixels.data[offset + 0] = 255;
