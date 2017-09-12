@@ -5,7 +5,7 @@ type DockingPort {
   name: String
   type: DOCKING_TYPES
   clamps: Boolean
-  ramps: Boolean
+  compress: Boolean
   doors: Boolean
   image: String
   docked: Boolean
@@ -18,7 +18,7 @@ input DockingPortInput {
   name: String
   type: String
   clamps: Boolean
-  ramps: Boolean
+  compress: Boolean
   doors: Boolean
   image: String
   docked: Boolean

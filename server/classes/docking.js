@@ -7,19 +7,19 @@ export default class DockingPort extends System {
     this.type = params.type || "shuttlebay";
     if (this.type === "shuttlebay") {
       this.clamps = params.clamps || true;
-      this.ramps = params.ramps || true;
+      this.compress = params.compress || true;
       this.doors = params.doors || true; // Doors are closed
       this.image = params.image || "/Docking Images/Default";
       this.docked = params.docked || true;
     } else {
       this.clamps = params.clamps || false;
-      this.ramps = params.ramps || false;
+      this.compress = params.compress || false;
       this.doors = params.doors || false; // Doors are closed
       this.image = params.image || "/Docking Images/Default";
       this.docked = params.docked || false;
     }
   }
-  updateDockingPort({ name, type, clamps, ramps, doors, image, docked }) {
+  updateDockingPort({ name, type, clamps, compress, doors, image, docked }) {
     if (name || name === "") {
       this.name = name;
     }
@@ -29,8 +29,8 @@ export default class DockingPort extends System {
     if (clamps || clamps === false) {
       this.clamps = clamps;
     }
-    if (ramps || ramps === false) {
-      this.ramps = ramps;
+    if (compress || compress === false) {
+      this.compress = compress;
     }
     if (doors || doors === false) {
       this.doors = doors;

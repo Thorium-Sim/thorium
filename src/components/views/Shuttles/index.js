@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Card, CardBlock } from "reactstrap";
+import { Container, Row, Col, Card, CardBlock, Button } from "reactstrap";
 import { Asset } from "../../../helpers/assets";
 import Decompress from "./Decompress";
 import Door from "./Door";
+import { Clamps } from "../Docking/graphics";
 import "./style.scss";
 
 const SHUTTLE_SUB = gql`
@@ -13,7 +14,7 @@ const SHUTTLE_SUB = gql`
       id
       name
       clamps
-      ramps
+      compress
       doors
       image
       docked
@@ -45,51 +46,111 @@ class Shuttles extends Component {
     if (this.props.data.loading) return null;
     const { docking } = this.props.data;
     return (
-      <Container className="shuttles-card">
+      <Container fluid className="shuttles-card">
         {
           <Row>
-            {docking.map(d =>
-              <Col sm={3} key={d.id}>
-                <ShuttleBay {...d} simulatorId={this.props.simulator.id} />
+            {docking.map((d, i) =>
+              <Col sm={4} key={d.id}>
+                <ShuttleBay
+                  {...d}
+                  i={i}
+                  simulatorId={this.props.simulator.id}
+                />
               </Col>
             )}
-            {docking.map(d =>
-              <Col sm={3} key={d.id}>
-                <ShuttleBay {...d} simulatorId={this.props.simulator.id} />
-              </Col>
+            {docking.map(
+              (d, i) =>
+                i < 2 &&
+                <Col sm={4} key={d.id}>
+                  <ShuttleBay
+                    {...d}
+                    i={i}
+                    simulatorId={this.props.simulator.id}
+                  />
+                </Col>
             )}
           </Row>
         }
-        <Row>
-          <Col sm={4}>
-            <Door />
-          </Col>
-          <Col sm={4}>
-            <Decompress />
-          </Col>
-        </Row>
       </Container>
     );
   }
 }
 
-const ShuttleBay = ({ docked, image, name, simulatorId }) => {
-  return (
-    <Card>
-      <CardBlock>
-        <h3 className="text-center">
-          {name}
-        </h3>
-        <div className="shuttle">
-          {docked &&
-            <Asset asset={image} simulatorId={simulatorId}>
-              {({ src }) => <img className="picture" src={src} />}
-            </Asset>}
-        </div>
-      </CardBlock>
-    </Card>
-  );
-};
+class ShuttleBay extends Component {
+  state = { animating: null };
+  componentWillUpdate(newProps) {
+    // Check to see if there is a change in any of the props
+    const { clamps, compress, doors } = this.props;
+    if (clamps !== newProps.clamps) {
+      this.setState({ animating: "clamps" });
+    }
+    if (compress !== newProps.compress) {
+      this.setState({ animating: "compress" });
+    }
+    if (doors !== newProps.doors) {
+      this.setState({ animating: "doors" });
+    }
+    if (this.clearTimeoutId) clearTimeout(this.clearTimeoutId);
+    this.clearTimeoutId = setTimeout(
+      () => this.setState({ animating: null }),
+      5000
+    );
+  }
+  render() {
+    const {
+      docked,
+      image,
+      name,
+      simulatorId,
+      i,
+      clamps,
+      compress,
+      doors
+    } = this.props;
+    const { animating } = this.state;
+    return (
+      <Card>
+        <CardBlock>
+          <h3 className="text-center">
+            {name}
+          </h3>
+          <Row>
+            <Col sm={6}>
+              <Button block disabled={!!animating} color="primary">
+                Detach Clamps
+              </Button>
+              <Button block disabled={!!animating} color="primary">
+                Decompress Bay
+              </Button>
+              <Button block disabled={!!animating} color="primary">
+                Open Doors
+              </Button>
+            </Col>
+            <Col sm={6}>
+              {animating === "clamps" && <Clamps transform={clamps} />}
+              {animating === "compress" && <Decompress on={compress} />}
+              {animating === "doors" &&
+                <Door open={!doors} number={"0" + (i + 1)} />}
+              {docked &&
+                <Asset asset={image} simulatorId={simulatorId}>
+                  {({ src }) =>
+                    <div
+                      className="picture shuttle"
+                      style={{
+                        backgroundImage: `url('${src}')`,
+                        display: !animating ? "flex" : "none"
+                      }}
+                    >
+                      <div className="spacer" />
+                    </div>}
+                </Asset>}
+            </Col>
+          </Row>
+        </CardBlock>
+      </Card>
+    );
+  }
+}
 
 const SHUTTLE_QUERY = gql`
   query Shuttles($simulatorId: ID) {
@@ -97,7 +158,7 @@ const SHUTTLE_QUERY = gql`
       id
       name
       clamps
-      ramps
+      compress
       doors
       image
       docked

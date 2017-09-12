@@ -3,9 +3,21 @@
     margin-top: 15px;
     margin-bottom: 15px;
   }
+  .spacer {
+    margin-top: 100%;
+  }
   .shuttle {
     display: flex;
     justify-content: center;
+    width: 100%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .docking-graphic {
+    width: 100%;
+    height:100%;
+    margin-bottom:100%
   }
   .door {
     background-color: #222;
