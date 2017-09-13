@@ -34,7 +34,7 @@
   "phaser        torpedo        torpedo        sensorScans   messageSending     internalComm         systems"
   "shields       shields        shields        sensorScans   messageSending   damageReports   damageReports"
   "shields       shields        shields        sensorScans   actions   damageReports   damageReports"
-  "reactor       reactor        selfDestruct   remoteAccess   viewscreen   damageReports   damageReports";
+  "reactor       reactor        heat   remoteAccess   viewscreen   damageReports   damageReports";
   
   
   & > div {
@@ -90,8 +90,8 @@
   .ReactorControlCore {
     grid-area: reactor;
   }
-  .SelfDestructCore {
-    grid-area: selfDestruct;
+  .HeatCore {
+    grid-area: heat;
   }
   .ActionsCore {
     grid-area: actions;

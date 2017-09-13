@@ -1549,7 +1549,7 @@
 				"report": null
 			},
 			"heat": 0,
-			"heatRate": 0.05,
+			"heatRate": 1,
 			"coolant": 0.2,
 			"class": "Engine",
 			"type": "Engine",
@@ -1605,7 +1605,7 @@
 				"report": null
 			},
 			"heat": 1,
-			"heatRate": 0.02,
+			"heatRate": 1,
 			"coolant": 0.3,
 			"class": "Engine",
 			"type": "Engine",
