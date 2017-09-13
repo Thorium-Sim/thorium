@@ -1,15 +1,5 @@
 import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
-import {
-  Row,
-  Col,
-  ListGroup,
-  ListGroupItem,
-  Button,
-  Card,
-  CardBlock,
-  Input
-} from "reactstrap";
 import gql from "graphql-tag";
 import "./style.scss";
 
@@ -46,17 +36,6 @@ class SecurityTeams extends Component {
         }
       });
     }
-  }
-  _selectDeck(deck) {
-    this.setState({
-      selectedDeck: deck,
-      selectedRoom: null
-    });
-  }
-  _selectRoom(e) {
-    this.setState({
-      selectedRoom: e.target.value
-    });
   }
   _toggleDoors = (deckId, doors) => {
     const mutation = gql`
@@ -109,14 +88,6 @@ class SecurityTeams extends Component {
   render() {
     if (this.props.data.loading) return null;
     const decks = this.props.data.decks;
-    let deck;
-    let room = {};
-    if (this.state.selectedDeck) {
-      deck = decks.find(d => d.id === this.state.selectedDeck);
-    }
-    if (this.state.selectedRoom) {
-      room = deck.rooms.find(r => r.id === this.state.selectedRoom);
-    }
     return (
       <div className="core-securityDecks">
         <table>
