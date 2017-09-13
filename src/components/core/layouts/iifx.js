@@ -13,6 +13,7 @@ const exceptions = [
   "TorpedoCore",
   "SelfDestructCore",
   //"TimelineCore",
+  "HeatCore",
   "DecksCore"
 ];
 export default props => {

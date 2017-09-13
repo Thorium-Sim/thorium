@@ -7,7 +7,7 @@ import ContactContextMenu from "./contactContextMenu";
 import { Row, Col, Container, Button, Input, Label } from "reactstrap";
 import Grid from "./GridDom";
 import Nudge from "./nudge";
-
+import { Asset } from "../../../helpers/assets";
 import "./gridCore.scss";
 
 function distance3d(coord2, coord1) {
@@ -503,14 +503,17 @@ class GridCore extends Component {
               {sensors.armyContacts.map(contact => {
                 return (
                   <Col key={contact.id} className={"flex-container"} sm={12}>
-                    <img
-                      onMouseDown={() => this.dragStart(contact)}
-                      onContextMenu={this._contextMenu.bind(this, contact)}
-                      draggable="false"
-                      role="presentation"
-                      className="armyContact"
-                      src={contact.iconUrl}
-                    />
+                    <Asset asset={contact.icon}>
+                      {({ src }) =>
+                        <img
+                          onMouseDown={() => this.dragStart(contact)}
+                          onContextMenu={this._contextMenu.bind(this, contact)}
+                          draggable="false"
+                          role="presentation"
+                          className="armyContact"
+                          src={src}
+                        />}
+                    </Asset>
                     <label
                       onContextMenu={this._contextMenu.bind(this, contact)}
                     >

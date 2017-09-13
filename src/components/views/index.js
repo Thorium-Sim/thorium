@@ -67,6 +67,8 @@ import ProbeControlCore from "./ProbeControl/core";
 import ReactorControlCore from "./ReactorControl/core";
 import ViewscreenCore from "./Viewscreen/core";
 import TimelineCore from "./Timeline";
+import SecurityDecksCore from "./SecurityDecks/core";
+import HeatCore from "./Heat/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -170,7 +172,9 @@ export const Cores = {
   ProbeControlCore,
   ReactorControlCore,
   ViewscreenCore,
-  TimelineCore
+  TimelineCore,
+  SecurityDecksCore,
+  HeatCore
 };
 
 export default Views;

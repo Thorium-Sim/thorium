@@ -220,7 +220,12 @@
   "pkg": {
     "assets": [
       "assets/**/*",
-      "snapshot.json"
+      "snapshot.json",
+      "index.html",
+      "css/**/*",
+      "fonts/**/*",
+      "js/**/*",
+      "static/**/*"
     ]
   }
 }
