@@ -101,8 +101,9 @@ class SecurityScans extends Component {
       );
       deckName = "Deck " + deck.number;
       roomName = "Entire Deck";
-      if (this.state.selectedRoom !== "") {
-        roomName = deck.rooms.find(r => r.id === this.state.selectedRoom).name;
+      if (!this.state.selectedRoom || this.state.selectedRoom !== "") {
+        const room = deck.rooms.find(r => r.id === this.state.selectedRoom);
+        roomName = room ? room.name : roomName;
       }
     }
     const request = `${moment().format("h:mm:ss a")} - ${this.state

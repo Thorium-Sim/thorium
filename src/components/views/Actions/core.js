@@ -53,7 +53,13 @@ class ActionsCore extends Component {
     });
   };
   triggerAction = () => {
-    const { actionName, actionDest } = this.state;
+    let { actionName, actionDest } = this.state;
+    if (actionDest === "random") {
+      const index = Math.floor(
+        Math.random() * this.props.data.simulators[0].stations
+      );
+      actionDest = this.props.data.simulators[0].stations[index].name;
+    }
     const mutation = gql`
       mutation TriggerAction(
         $action: String!
@@ -141,6 +147,7 @@ class ActionsCore extends Component {
           </select>
           <select onChange={this.handleDestChange} ref="actionDest">
             <option value="all">All Stations</option>
+            <option value="random">Random Station</option>
             {!this.props.data.loading &&
               this.props.data.simulators[0] &&
               this.props.data.simulators[0].stations &&

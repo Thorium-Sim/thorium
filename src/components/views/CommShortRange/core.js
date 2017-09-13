@@ -165,6 +165,8 @@ class CommShortRange extends Component {
               }}
             >
               <option value={null}>---</option>
+              {ShortRange.signals.length === 0 &&
+                <option value="random">Random</option>}
               {ShortRange.signals.map(s => {
                 return (
                   <option key={s.id} value={s.id}>
@@ -196,7 +198,7 @@ class CommShortRange extends Component {
                       ? "selected"
                       : ""}`}
                   >
-                    {signal.name} -{" "}
+                    {signal && signal.name} -{" "}
                     {Math.round(a.frequency * 37700 + 37700) / 100} MHz
                   </p>
                 );

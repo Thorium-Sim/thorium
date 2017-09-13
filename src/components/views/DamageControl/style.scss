@@ -12,9 +12,11 @@
     }
     &.requested {
       font-style: italic;
+      color: lightsalmon;
     }
     &.report {
       font-weight: bold;
+      color: greenyellow;
     }
   }
   .damageReport-text {

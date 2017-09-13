@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { Row, Col, Container } from "reactstrap";
+import { Row, Col, Container, Card } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
 import Immutable from "immutable";
@@ -21,8 +21,9 @@ const mutation = gql`
 
 const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
-    systemsUpdate(simulatorId: $simulatorId) {
+    systemsUpdate(simulatorId: $simulatorId, power: true) {
       name
+      displayName
       type
       id
       power {
@@ -41,8 +42,7 @@ const REACTOR_SUB = gql`
     reactorUpdate(simulatorId: $simulatorId) {
       id
       model
-      efficiency
-      powerOutput
+      batteryChargeLevel
     }
   }
 `;
@@ -95,7 +95,7 @@ class PowerDistribution extends Component {
     this.reactorSub = null;
   }
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.data.loading) {
+    if (!nextProps.data.loading && !this.state.sysId) {
       this.setState({
         systems: nextProps.data.systems
       });
@@ -138,38 +138,57 @@ class PowerDistribution extends Component {
   render() {
     if (this.props.data.loading) return null;
     // Get the batteries, get just the first one.
+    const battery = this.props.data.reactors.find(r => r.model === "battery");
+    const charge = battery && battery.batteryChargeLevel;
     const powerTotal = this.state.systems.reduce((prev, next) => {
       return next.power.power + prev;
     }, 0);
-    const { reactors } = this.props.data;
-    const reactor = reactors.find(r => r.model === "reactor");
-    const reactorOutput = Math.round(reactor.efficiency * reactor.powerOutput);
     return (
-      <Container className="powerLevels">
+      <Container fluid={battery} className="powerLevels">
         <Row className="powerlevel-row">
-          <Measure>
-            {dimensions =>
-              <Col lg={{size: 10, offset: 1}} className="powerlevel-containers">
-                {this.state.systems
-                  .slice(0)
-                  .sort((a, b) => {
-                    if (a.type > b.type) return 1;
-                    if (a.type < b.type) return -1;
-                    return 0;
-                  })
-                  .map(sys =>
-                    <SystemPower
-                      {...sys}
-                      mouseDown={this.mouseDown.bind(this)}
-                      count={this.state.systems.length}
-                      height={dimensions.height}
-                    />
-                  )}
-                <h4 className="totalPowerText">
-                  <span>Total Power Used: {powerTotal}</span> <span style={{paddingLeft: '20px'}}>Total Power Available: {reactorOutput}</span>
-                </h4>
-              </Col>}
-          </Measure>
+          <Col lg="12" xl={battery ? 8 : 12} className="powerlevel-containers">
+            {this.state.systems
+              .slice(0)
+              .sort((a, b) => {
+                if (a.type > b.type) return 1;
+                if (a.type < b.type) return -1;
+                return 0;
+              })
+              .filter(
+                sys =>
+                  (sys.power.power || sys.power.power === 0) &&
+                  sys.power.powerLevels
+              )
+              .map(sys =>
+                <SystemPower
+                  key={sys.id}
+                  {...sys}
+                  mouseDown={this.mouseDown.bind(this)}
+                  count={this.state.systems.length}
+                  height={window.innerHeight * 0.74}
+                />
+              )}
+            <h4 className="totalPowerText">
+              Total Power Used: {powerTotal}
+            </h4>
+          </Col>
+          {battery &&
+            <Col sm="4" className="battery-holder">
+              <Card>
+                <div className="battery-container">
+                  <Battery
+                    level={Math.min(1, Math.max(0, (charge - 0.75) * 4))}
+                  />
+                  <Battery
+                    level={Math.min(1, Math.max(0, (charge - 0.5) * 4))}
+                  />
+                  <Battery
+                    level={Math.min(1, Math.max(0, (charge - 0.25) * 4))}
+                  />
+                  <Battery level={Math.min(1, Math.max(0, charge * 4))} />
+                </div>
+              </Card>
+            </Col>}
         </Row>
       </Container>
     );
@@ -188,7 +207,7 @@ const SystemPower = ({
 }) => {
   return (
     <Row>
-      <Col sm="4">
+      <Col sm="3">
         <h5
           className={damaged ? "text-danger" : ""}
           style={{ padding: 0, margin: 0, marginTop: height / count - 20 }}
@@ -196,7 +215,7 @@ const SystemPower = ({
           {displayName}: {power}
         </h5>
       </Col>
-      <Col sm="8">
+      <Col sm="9">
         <Measure>
           {dimensions =>
             <div
@@ -233,6 +252,16 @@ const SystemPower = ({
   );
 };
 
+const Battery = ({ level = 1 }) => {
+  return (
+    <div className="battery">
+      <div className="battery-bar" style={{ height: `${level * 100}%` }} />
+      <div className="battery-level">
+        {Math.round(level * 100)}
+      </div>
+    </div>
+  );
+};
 const SYSTEMS_QUERY = gql`
   query Systems($simulatorId: ID) {
     systems(simulatorId: $simulatorId, power: true) {
@@ -251,8 +280,7 @@ const SYSTEMS_QUERY = gql`
     reactors(simulatorId: $simulatorId) {
       id
       model
-      efficiency
-      powerOutput
+      batteryChargeLevel
     }
   }
 `;

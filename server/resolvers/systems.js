@@ -1,7 +1,7 @@
 import App from "../../app.js";
 
 export const SystemsQueries = {
-  systems(rootValue, { simulatorId, type, power }) {
+  systems(rootValue, { simulatorId, type, power, heat }) {
     let returnSystems = App.systems;
     if (simulatorId) {
       returnSystems = returnSystems.filter(s => s.simulatorId === simulatorId);
@@ -13,6 +13,9 @@ export const SystemsQueries = {
       returnSystems = returnSystems.filter(
         s => s.power.power || s.power.power === 0
       );
+    }
+    if (heat) {
+      returnSystems = returnSystems.filter(s => s.heat || s.heat === 0);
     }
     return returnSystems;
   }
@@ -55,7 +58,7 @@ export const SystemsMutations = {
 };
 
 export const SystemsSubscriptions = {
-  systemsUpdate(rootValue, { simulatorId, type, power }) {
+  systemsUpdate(rootValue, { simulatorId, type, power, heat }) {
     let returnSystems = rootValue;
     if (simulatorId) {
       returnSystems = returnSystems.filter(s => s.simulatorId === simulatorId);
@@ -67,6 +70,9 @@ export const SystemsSubscriptions = {
       returnSystems = returnSystems.filter(
         s => s.power.power || s.power.power === 0
       );
+    }
+    if (heat) {
+      returnSystems = returnSystems.filter(s => s.heat || s.heat === 0);
     }
     return returnSystems;
   }

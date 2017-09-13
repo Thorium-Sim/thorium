@@ -15,7 +15,6 @@ const viewList = [
   "CommShortRange",
   "PowerDistribution",
   "DamageControl",
-  "PowerDistributionBattery",
   "Targeting",
   "PhaserCharging",
   "ProbeConstruction",

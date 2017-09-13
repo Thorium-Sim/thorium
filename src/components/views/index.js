@@ -15,7 +15,6 @@ import CommInternal from "./CommInternal";
 import Docking from "./Docking";
 import CommShortRange from "./CommShortRange";
 import PowerDistribution from "./PowerDistribution";
-import PowerDistributionBattery from "./PowerDistributionBattery";
 import DamageControl from "./DamageControl";
 import Targeting from "./Targeting";
 import PhaserCharging from "./PhaserCharging";
@@ -70,6 +69,8 @@ import ReactorControlCore from "./ReactorControl/core";
 import ViewscreenCore from "./Viewscreen/core";
 import TimelineCore from "./Timeline";
 import ShuttlesCore from "./Shuttles/core";
+import SecurityDecksCore from "./SecurityDecks/core";
+import HeatCore from "./Heat/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -93,7 +94,6 @@ const Views = {
   Docking,
   CommShortRange,
   PowerDistribution,
-  PowerDistributionBattery,
   DamageControl,
   Targeting,
   PhaserCharging,
@@ -176,7 +176,9 @@ export const Cores = {
   ReactorControlCore,
   ViewscreenCore,
   TimelineCore,
-  ShuttlesCore
+  ShuttlesCore,
+  SecurityDecksCore,
+  HeatCore
 };
 
 export default Views;

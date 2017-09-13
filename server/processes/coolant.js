@@ -10,23 +10,37 @@ const updateCoolant = () => {
       const { sysId, sign } = s.transfer;
       const transferSystem = App.systems.find(ts => ts.id === sysId);
       // Trigger Events
-      const sysCoolant = Math.min(
-        1,
-        Math.max(0, transferSystem.coolant + 0.004 * sign)
-      );
-      const tankCoolant = Math.min(
-        1,
-        Math.max(0, s.coolant - 0.004 * sign * s.coolantRate)
-      );
+      // Make sure that we don't have too much or too little coolant
       if (
-        sysCoolant === 0 ||
-        tankCoolant === 0 ||
-        sysCoolant === 1 ||
-        tankCoolant === 1
-      )
-        s.transfer = null;
-      App.handleEvent({ systemId: sysId, coolant: sysCoolant }, "setCoolant");
-      App.handleEvent({ systemId: s.id, coolant: tankCoolant }, "setCoolant");
+        !(
+          (sign === -1 && (transferSystem.coolant === 0 || s.coolant === 1)) ||
+          (sign === 1 && (transferSystem.coolant === 1 || s.coolant === 0))
+        )
+      ) {
+        const sysCoolant = Math.min(
+          1,
+          Math.max(0, transferSystem.coolant + 0.004 * sign)
+        );
+        const tankCoolant = Math.min(
+          1,
+          Math.max(0, s.coolant - 0.004 * sign * s.coolantRate)
+        );
+        if (
+          sysCoolant === 0 ||
+          tankCoolant === 0 ||
+          sysCoolant === 1 ||
+          tankCoolant === 1
+        )
+          s.transfer = null;
+        App.handleEvent({ systemId: sysId, coolant: sysCoolant }, "setCoolant");
+        App.handleEvent({ systemId: s.id, coolant: tankCoolant }, "setCoolant");
+      }
+      if (transferSystem.type === "Phasers") {
+        pubsub.publish(
+          "phasersUpdate",
+          App.systems.filter(s => s.type === "Phasers")
+        );
+      }
       pubsub.publish(
         "coolantSystemUpdate",
         App.systems

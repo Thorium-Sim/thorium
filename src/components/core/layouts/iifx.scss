@@ -9,9 +9,9 @@
   "thrusters     thrusters      tractorBeam     securityTeams       damageTeams     shortRange            systems"
   "transporters  transporters   cargo           timeline             shuttles         messageSending        systems"
   "stealthField  stealthField   crew            sensorScans          longRange      internalComm         systems"
-  "probeControl  probeControl   probeControl    sensorScans         longRange      damageReports   damageReports"
-  "probeControl  probeControl   probeControl    sensorScans         actions         damageReports   damageReports"
-  "reactor       reactor        probeNetwork    remoteAccess         viewscreen     damageReports   damageReports";
+  "probeControl  probeControl   probeControl    sensorScans         longRange      damageReports   securityDoors"
+  "probeControl  probeControl   probeControl    sensorScans         actions         damageReports   securityDoors"
+  "reactor       reactor        probeNetwork    remoteAccess         viewscreen     damageReports   securityDoors";
  & > div {
    overflow: hidden;
    border: solid 1px rgba(0,0,0,0.2);
@@ -89,5 +89,8 @@
  }
  .ShuttlesCore {
    grid-area: shuttles;
+ }
+ .SecurityDecksCore {
+   grid-area: securityDoors
  }
 }
