@@ -45,7 +45,7 @@ export default class Door extends Component {
                 x="44.821px"
                 y="65.459px"
               >
-                {number.split("").join(" ")}
+                {number}
               </text>
             </g>
           </svg>

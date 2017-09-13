@@ -1,10 +1,17 @@
 .shuttles-card {
-  .col {
+  .spacer {
+    margin-top: 103%;
+  }
+  .row {
+    justify-content: space-around;
+  }
+  .shuttleBay {
+    padding-right: 15px;
+    padding-left: 15px;
+    flex: 1 0 50%;
+    max-width: 33%;
     margin-top: 15px;
     margin-bottom: 15px;
-  }
-  .spacer {
-    margin-top: 100%;
   }
   .shuttle {
     display: flex;
@@ -13,6 +20,9 @@
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+    h2 {
+      align-self: center;
+    }
   }
   .docking-graphic {
     width: 100%;

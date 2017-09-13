@@ -1699,7 +1699,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 14329300,
+			"timeSincePing": 15434200,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -1788,7 +1788,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 14329300,
+			"timeSincePing": 15434200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -1934,7 +1934,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.9178719999999179,
+			"batteryChargeLevel": 0.9089439999999089,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2705,7 +2705,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 14329300,
+			"timeSincePing": 15434200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2735,7 +2735,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 14329300,
+			"timeSincePing": 15434200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3897,7 +3897,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 14329300,
+			"timeSincePing": 15434200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3928,7 +3928,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 14329300,
+			"timeSincePing": 15434200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4417,7 +4417,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7197399999998926,
+			"batteryChargeLevel": 0.6192999999998541,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -4993,7 +4993,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9512300,
+			"timeSincePing": 10617200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5024,7 +5024,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9512300,
+			"timeSincePing": 10617200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6134,7 +6134,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "active",
-			"timeSincePing": 1900,
+			"timeSincePing": 1800,
 			"scanResults": "",
 			"scanRequest": "Course!",
 			"processedData": "",
@@ -6312,7 +6312,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9512300,
+			"timeSincePing": 10617200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -7493,7 +7493,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 4399200,
+			"timeSincePing": 5504100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -7524,7 +7524,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 4399200,
+			"timeSincePing": 5504100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8659,7 +8659,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9512300,
+			"timeSincePing": 10617200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8690,7 +8690,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9512300,
+			"timeSincePing": 10617200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -18895,9 +18895,9 @@
 			},
 			"class": "DockingPort",
 			"type": "shuttlebay",
-			"clamps": true,
-			"ramps": true,
-			"doors": true,
+			"clamps": false,
+			"compress": false,
+			"doors": false,
 			"image": "/Docking Images/Default",
 			"docked": true
 		},
@@ -18922,8 +18922,8 @@
 			},
 			"class": "DockingPort",
 			"type": "shuttlebay",
-			"clamps": true,
-			"ramps": true,
+			"clamps": false,
+			"compress": true,
 			"doors": true,
 			"image": "/Docking Images/Default",
 			"docked": true
@@ -18949,8 +18949,8 @@
 			},
 			"class": "DockingPort",
 			"type": "shuttlebay",
-			"clamps": true,
-			"ramps": true,
+			"clamps": false,
+			"compress": false,
 			"doors": true,
 			"image": "/Docking Images/Default",
 			"docked": true
@@ -18976,9 +18976,9 @@
 			},
 			"class": "DockingPort",
 			"type": "shuttlebay",
-			"clamps": true,
-			"ramps": true,
-			"doors": true,
+			"clamps": false,
+			"compress": false,
+			"doors": false,
 			"image": "/Docking Images/Default",
 			"docked": true
 		}
@@ -19420,6 +19420,70 @@
 			"fullPath": "/Docking Images/Default",
 			"folderId": "3ee7185a-c23a-491d-b615-d84825df1aa0",
 			"name": "Default",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "671b8b37-606e-45ab-b328-5e6f4ad803cc",
+			"folderPath": "/Docking Images",
+			"fullPath": "/Docking Images/Aerie",
+			"folderId": "3ee7185a-c23a-491d-b615-d84825df1aa0",
+			"name": "Aerie",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "63f115cb-23c7-49c1-bece-6acfc1bb2e24",
+			"folderPath": "/Docking Images",
+			"fullPath": "/Docking Images/Blackbird",
+			"folderId": "3ee7185a-c23a-491d-b615-d84825df1aa0",
+			"name": "Blackbird",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "151a27c3-aae7-4dad-b189-3f7618b8dbf1",
+			"folderPath": "/Docking Images",
+			"fullPath": "/Docking Images/Boxwing",
+			"folderId": "3ee7185a-c23a-491d-b615-d84825df1aa0",
+			"name": "Boxwing",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "9b0e4b9e-f689-4b71-95d0-fe303a82df8a",
+			"folderPath": "/Docking Images",
+			"fullPath": "/Docking Images/Bug",
+			"folderId": "3ee7185a-c23a-491d-b615-d84825df1aa0",
+			"name": "Bug",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "f614f305-0a78-443d-a2bd-531fa08a7985",
+			"folderPath": "/Docking Images",
+			"fullPath": "/Docking Images/Lance",
+			"folderId": "3ee7185a-c23a-491d-b615-d84825df1aa0",
+			"name": "Lance",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "58f4f3bb-a519-4b5c-b291-25062aa0f34b",
+			"folderPath": "/Docking Images",
+			"fullPath": "/Docking Images/Mravene",
+			"folderId": "3ee7185a-c23a-491d-b615-d84825df1aa0",
+			"name": "Mravene",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "552331ed-7366-494a-b1c5-cb7b300d8581",
+			"folderPath": "/Docking Images",
+			"fullPath": "/Docking Images/Quicksilver",
+			"folderId": "3ee7185a-c23a-491d-b615-d84825df1aa0",
+			"name": "Quicksilver",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "8a1853a6-e469-4e57-bce5-2b6fcda06086",
+			"folderPath": "/Docking Images",
+			"fullPath": "/Docking Images/Teardrop",
+			"folderId": "3ee7185a-c23a-491d-b615-d84825df1aa0",
+			"name": "Teardrop",
 			"class": "AssetContainer"
 		}
 	],
@@ -20039,11 +20103,83 @@
 			"url": "/assets/Docking Images/Default/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
+		},
+		{
+			"id": "21dba458-9cdb-4141-a7df-818a55c89be4",
+			"containerPath": "/Docking Images",
+			"containerId": "671b8b37-606e-45ab-b328-5e6f4ad803cc",
+			"fullPath": "/Docking Images/Aerie/default.png",
+			"url": "/assets/Docking Images/Aerie/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "bba7e0c4-5174-4941-b6d8-f25641608010",
+			"containerPath": "/Docking Images",
+			"containerId": "63f115cb-23c7-49c1-bece-6acfc1bb2e24",
+			"fullPath": "/Docking Images/Blackbird/default.png",
+			"url": "/assets/Docking Images/Blackbird/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "cb5f2f37-7c01-41c2-bb92-edb48ee1a500",
+			"containerPath": "/Docking Images",
+			"containerId": "151a27c3-aae7-4dad-b189-3f7618b8dbf1",
+			"fullPath": "/Docking Images/Boxwing/default.png",
+			"url": "/assets/Docking Images/Boxwing/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "3693f83e-38d4-4b11-b592-80235957e44a",
+			"containerPath": "/Docking Images",
+			"containerId": "9b0e4b9e-f689-4b71-95d0-fe303a82df8a",
+			"fullPath": "/Docking Images/Bug/default.png",
+			"url": "/assets/Docking Images/Bug/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "22ca7904-6e6f-4fe3-8bf9-e03a1eeea61d",
+			"containerPath": "/Docking Images",
+			"containerId": "f614f305-0a78-443d-a2bd-531fa08a7985",
+			"fullPath": "/Docking Images/Lance/default.png",
+			"url": "/assets/Docking Images/Lance/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "ed7601ce-9cfb-4107-a77a-a7ad3225ec40",
+			"containerPath": "/Docking Images",
+			"containerId": "58f4f3bb-a519-4b5c-b291-25062aa0f34b",
+			"fullPath": "/Docking Images/Mravene/default.png",
+			"url": "/assets/Docking Images/Mravene/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "d3103ba1-56d7-48e4-b4f3-6e1b04926270",
+			"containerPath": "/Docking Images",
+			"containerId": "552331ed-7366-494a-b1c5-cb7b300d8581",
+			"fullPath": "/Docking Images/Quicksilver/default.png",
+			"url": "/assets/Docking Images/Quicksilver/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "c78786b3-815b-4359-8820-cf8f79bac9a9",
+			"containerPath": "/Docking Images",
+			"containerId": "8a1853a6-e469-4e57-bce5-2b6fcda06086",
+			"fullPath": "/Docking Images/Teardrop/default.png",
+			"url": "/assets/Docking Images/Teardrop/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
 		}
 	],
 	"viewscreens": [],
 	"messages": [],
-	"snapshotVersion": 1557,
-	"version": 1557,
-	"timestamp": "2017-09-11T23:50:10.635Z"
+	"snapshotVersion": 2455,
+	"version": 2455,
+	"timestamp": "2017-09-13T00:47:28.646Z"
 }

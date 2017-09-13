@@ -7,7 +7,7 @@
   "engineControl engineControl  tractorBeam     securityTeams       damageTeams     shortRange            systems"
   "thrusters     thrusters      tractorBeam     securityTeams       damageTeams     shortRange            systems"
   "thrusters     thrusters      tractorBeam     securityTeams       damageTeams     shortRange            systems"
-  "transporters  transporters   cargo           timeline             sensors         messageSending        systems"
+  "transporters  transporters   cargo           timeline             shuttles         messageSending        systems"
   "stealthField  stealthField   crew            sensorScans          longRange      internalComm         systems"
   "probeControl  probeControl   probeControl    sensorScans         longRange      damageReports   damageReports"
   "probeControl  probeControl   probeControl    sensorScans         actions         damageReports   damageReports"
@@ -86,5 +86,8 @@
  }
  .TimelineCore {
    grid-area: timeline;
+ }
+ .ShuttlesCore {
+   grid-area: shuttles;
  }
 }

@@ -49,25 +49,15 @@ class Shuttles extends Component {
       <Container fluid className="shuttles-card">
         {
           <Row>
-            {docking.map((d, i) =>
-              <Col sm={4} key={d.id}>
+            {docking.map((d, i, a) =>
+              <div className="shuttleBay" key={d.id}>
                 <ShuttleBay
                   {...d}
                   i={i}
+                  client={this.props.client}
                   simulatorId={this.props.simulator.id}
                 />
-              </Col>
-            )}
-            {docking.map(
-              (d, i) =>
-                i < 2 &&
-                <Col sm={4} key={d.id}>
-                  <ShuttleBay
-                    {...d}
-                    i={i}
-                    simulatorId={this.props.simulator.id}
-                  />
-                </Col>
+              </div>
             )}
           </Row>
         }
@@ -78,15 +68,25 @@ class Shuttles extends Component {
 
 class ShuttleBay extends Component {
   state = { animating: null };
-  componentWillUpdate(newProps) {
-    // Check to see if there is a change in any of the props
-  }
   toggleShuttle = (id, which) => {
     this.setState({ animating: which });
+    const mutation = gql`
+      mutation UpdateShuttleBay($port: DockingPortInput!) {
+        updateDockingPort(port: $port)
+      }
+    `;
+    const port = {
+      id
+    };
+    port[which] = !this.props[which];
+    this.props.client.mutate({
+      mutation,
+      variables: { port }
+    });
     if (this.clearTimeoutId) clearTimeout(this.clearTimeoutId);
     this.clearTimeoutId = setTimeout(
       () => this.setState({ animating: null }),
-      5000
+      4000
     );
   };
   render() {
@@ -116,23 +116,23 @@ class ShuttleBay extends Component {
                 color="primary"
                 onClick={() => this.toggleShuttle(id, "clamps")}
               >
-                Detach Clamps
+                {clamps ? "Detach" : "Attach"} Clamps
               </Button>
               <Button
                 block
-                disabled={!!animating}
+                disabled={!!animating || !doors}
                 color="primary"
                 onClick={() => this.toggleShuttle(id, "compress")}
               >
-                Decompress Bay
+                {compress ? "Decompress" : "Compress"} Bay
               </Button>
               <Button
                 block
-                disabled={!!animating}
+                disabled={!!animating || compress}
                 color="primary"
                 onClick={() => this.toggleShuttle(id, "doors")}
               >
-                Open Doors
+                {doors ? "Open" : "Close"} Doors
               </Button>
             </Col>
             <Col sm={6}>
@@ -140,19 +140,26 @@ class ShuttleBay extends Component {
               {animating === "compress" && <Decompress on={compress} />}
               {animating === "doors" &&
                 <Door open={!doors} number={"0" + (i + 1)} />}
-              {docked &&
-                <Asset asset={image} simulatorId={simulatorId}>
-                  {({ src }) =>
-                    <div
-                      className="picture shuttle"
-                      style={{
-                        backgroundImage: `url('${src}')`,
-                        display: !animating ? "flex" : "none"
-                      }}
-                    >
-                      <div className="spacer" />
-                    </div>}
-                </Asset>}
+              {docked
+                ? <Asset asset={image} simulatorId={simulatorId}>
+                    {({ src }) =>
+                      <div
+                        className="picture shuttle"
+                        style={{
+                          backgroundImage: `url('${src}')`,
+                          display: !animating ? "flex" : "none"
+                        }}
+                      >
+                        <div className="spacer" />
+                      </div>}
+                  </Asset>
+                : <div
+                    style={{ display: !animating ? "flex" : "none" }}
+                    className="shuttle"
+                  >
+                    <h2>No Shuttle</h2>
+                    <div className="spacer" />
+                  </div>}
             </Col>
           </Row>
         </CardBlock>
