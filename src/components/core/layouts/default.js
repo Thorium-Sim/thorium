@@ -15,7 +15,8 @@ const exceptions = [
   "ProbeControlCore",
   "ProbeNetworkCore",
   "SecurityDecksCore",
-  "SelfDestructCore"
+  "SelfDestructCore",
+  "ShuttlesCore"
 ];
 export default class CoreDefault extends Component {
   state = { timelineOpen: false };

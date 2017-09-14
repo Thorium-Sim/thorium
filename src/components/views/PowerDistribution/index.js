@@ -144,7 +144,7 @@ class PowerDistribution extends Component {
       return next.power.power + prev;
     }, 0);
     return (
-      <Container fluid={battery} className="powerLevels">
+      <Container fluid={!!battery} className="powerLevels">
         <Row className="powerlevel-row">
           <Col lg="12" xl={battery ? 8 : 12} className="powerlevel-containers">
             {this.state.systems
