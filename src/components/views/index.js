@@ -34,6 +34,7 @@ import ReactorControl from "./ReactorControl";
 import Viewscreen from "./Viewscreen";
 import Messages from "./Messaging";
 import Isochips from "./Isochips";
+import Shuttles from "./Shuttles";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -67,6 +68,7 @@ import ProbeControlCore from "./ProbeControl/core";
 import ReactorControlCore from "./ReactorControl/core";
 import ViewscreenCore from "./Viewscreen/core";
 import TimelineCore from "./Timeline";
+import ShuttlesCore from "./Shuttles/core";
 import SecurityDecksCore from "./SecurityDecks/core";
 import HeatCore from "./Heat/core";
 
@@ -109,7 +111,8 @@ const Views = {
   ReactorControl,
   Viewscreen,
   Messages,
-  Isochips
+  Isochips,
+  Shuttles
 };
 
 export const Widgets = {
@@ -173,6 +176,7 @@ export const Cores = {
   ReactorControlCore,
   ViewscreenCore,
   TimelineCore,
+  ShuttlesCore,
   SecurityDecksCore,
   HeatCore
 };

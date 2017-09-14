@@ -43,6 +43,16 @@ const creditList = [
     content: "BJ Warner 🎨 & Todd Rasband 🖌"
   },
   {
+    header: "Docking Images (Endless Sky)",
+    content: (
+      <div>
+        <p>Maximilian Korber (CC-BY-SA-4.0)</p>
+        <p>Iaz Poolar (CC-BY-SA-4.0)</p>
+        <p>Michael Zahniser (CC-BY-SA-4.0)</p>
+      </div>
+    )
+  },
+  {
     header: "Card Icons",
     content: (
       <div>
