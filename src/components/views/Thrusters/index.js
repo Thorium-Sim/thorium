@@ -8,31 +8,31 @@ import { Button, Row, Col } from "reactstrap";
 import ThrusterThree from "./three";
 import distance from "../../../helpers/distance";
 import Measure from "react-measure";
-import Immutable from 'immutable';
+import Immutable from "immutable";
 import "./style.scss";
 
 const ROTATION_CHANGE_SUB = gql`
-subscription RotationChanged($simulatorId: ID!){
-  rotationChange(simulatorId: $simulatorId){
-    id
-    rotation {
-      yaw
-      pitch
-      roll
-    }
-    rotationRequired{
-      yaw
-      pitch
-      roll
-    }
-    manualThrusters
-    direction {
-      x
-      y
-      z
+  subscription RotationChanged($simulatorId: ID!) {
+    rotationChange(simulatorId: $simulatorId) {
+      id
+      rotation {
+        yaw
+        pitch
+        roll
+      }
+      rotationRequired {
+        yaw
+        pitch
+        roll
+      }
+      manualThrusters
+      direction {
+        x
+        y
+        z
+      }
     }
   }
-}
 `;
 
 const DamageOverlay = ({ engine }) => {
@@ -129,11 +129,18 @@ class Thrusters extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           const thrusters = Immutable.List(previousResult.thrusters);
-          const thrusterIndex = previousResult.thrusters.findIndex(t => t.id === subscriptionData.data.rotationChange.id);
-          const thruster = Immutable.Map(previousResult.thrusters[thrusterIndex])
-          .set('rotation', subscriptionData.data.rotationChange.rotation)
-          .set('rotationRequired', subscriptionData.data.rotationChange.rotationRequired)
-          .set('direction', subscriptionData.data.rotationChange.direction)
+          const thrusterIndex = previousResult.thrusters.findIndex(
+            t => t.id === subscriptionData.data.rotationChange.id
+          );
+          const thruster = Immutable.Map(
+            previousResult.thrusters[thrusterIndex]
+          )
+            .set("rotation", subscriptionData.data.rotationChange.rotation)
+            .set(
+              "rotationRequired",
+              subscriptionData.data.rotationChange.rotationRequired
+            )
+            .set("direction", subscriptionData.data.rotationChange.direction);
           return {
             thrusters: thrusters.set(thrusterIndex, thruster).toJS()
           };
@@ -491,17 +498,26 @@ gamepadLoop(){
             <Col lg={{ size: 6, offset: 3 }}>
               <Row>
                 <IndicatorCircle
-                  name={`Yaw: ${Math.round(thruster.rotation.yaw)}`}
+                  name={`Yaw: ${Math.min(
+                    359,
+                    Math.max(0, Math.round(thruster.rotation.yaw))
+                  )}`}
                   required={thruster.rotationRequired.yaw}
                   current={thruster.rotation.yaw}
                 />
                 <IndicatorCircle
-                  name={`Pitch: ${Math.round(thruster.rotation.pitch)}`}
+                  name={`Pitch: ${Math.min(
+                    359,
+                    Math.max(0, Math.round(thruster.rotation.pitch))
+                  )}`}
                   required={thruster.rotationRequired.pitch}
                   current={thruster.rotation.pitch}
                 />
                 <IndicatorCircle
-                  name={`Roll: ${Math.round(thruster.rotation.roll)}`}
+                  name={`Roll: ${Math.min(
+                    359,
+                    Math.max(0, Math.round(thruster.rotation.roll))
+                  )}`}
                   required={thruster.rotationRequired.roll}
                   current={thruster.rotation.roll}
                 />
