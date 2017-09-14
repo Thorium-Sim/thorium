@@ -69,7 +69,7 @@
     font-weight: 800;
   }
   .scroller {
-    max-height: 100%;
+    max-height: calc(100% - 20px);
     overflow-y: scroll;
   }
   .label-section {
