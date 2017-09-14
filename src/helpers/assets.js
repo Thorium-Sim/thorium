@@ -19,7 +19,9 @@ class AssetComponent extends Component {
     this.updateAsset(this.props);
   }
   componentWillReceiveProps(nextProps) {
-    this.updateAsset(nextProps);
+    if (nextProps.asset !== this.props.asset) {
+      this.updateAsset(nextProps);
+    }
   }
   updateAsset(props) {
     const query = gql`
