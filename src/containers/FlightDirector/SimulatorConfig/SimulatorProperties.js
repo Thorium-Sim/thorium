@@ -1,19 +1,32 @@
-import React from 'react';
-import {  Card } from 'reactstrap';
+import React from "react";
+import { Card } from "reactstrap";
 
 const properties = [
-'Simulator',
-'Stations',
-'Systems',
-'Decks',
-'Inventory',
-'Crew',
-'Assets'
-]
-export default ({selectProperty, selectedProperty}) => {
-  return <Card>
-{properties.map(p => <li key={p} 
-  onClick={() => {selectProperty(p)}}
-  className={`list-group-item ${selectedProperty === p ? 'selected' : ''}`}>{p}</li>)}
-  </Card>
-}
+  "Simulator",
+  "Stations",
+  "Systems",
+  "Decks",
+  "Inventory",
+  "Crew",
+  "Assets",
+  "Docking"
+];
+export default ({ selectProperty, selectedProperty }) => {
+  return (
+    <Card>
+      {properties.map(p =>
+        <li
+          key={p}
+          onClick={() => {
+            selectProperty(p);
+          }}
+          className={`list-group-item ${selectedProperty === p
+            ? "selected"
+            : ""}`}
+        >
+          {p}
+        </li>
+      )}
+    </Card>
+  );
+};
