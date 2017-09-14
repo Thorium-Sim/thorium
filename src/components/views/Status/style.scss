@@ -1,0 +1,19 @@
+.status-card {
+  label {
+    font-size: 18px;
+  }
+  .statusDots {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .status-ship {
+    width: 100%;
+    transform: rotate(270deg);
+  }
+}

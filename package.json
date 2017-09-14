@@ -85,6 +85,7 @@
     "babel-plugin-preval": "^1.4.2",
     "body-parser": "^1.16.1",
     "bootstrap": "^4.0.0-alpha.6",
+    "color": "^2.0.0",
     "compose-function": "^3.0.3",
     "cors": "^2.8.4",
     "express": "^4.14.1",

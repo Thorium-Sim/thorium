@@ -35,6 +35,7 @@ import Viewscreen from "./Viewscreen";
 import Messages from "./Messaging";
 import Isochips from "./Isochips";
 import Shuttles from "./Shuttles";
+import Status from "./Status";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -112,7 +113,8 @@ const Views = {
   Viewscreen,
   Messages,
   Isochips,
-  Shuttles
+  Shuttles,
+  Status
 };
 
 export const Widgets = {
