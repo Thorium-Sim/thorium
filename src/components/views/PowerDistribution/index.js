@@ -127,14 +127,14 @@ class PowerDistribution extends Component {
       });
     }
   }
-  mouseDown(sysId, dimensions, e) {
+  mouseDown = (sysId, dimensions, e) => {
     this.setState({
       sysId,
       offset: dimensions.left
     });
     document.addEventListener("mousemove", this.mouseMove);
     document.addEventListener("mouseup", this.mouseUp);
-  }
+  };
   render() {
     if (this.props.data.loading) return null;
     // Get the batteries, get just the first one.
@@ -163,7 +163,7 @@ class PowerDistribution extends Component {
                 <SystemPower
                   key={sys.id}
                   {...sys}
-                  mouseDown={this.mouseDown.bind(this)}
+                  mouseDown={this.mouseDown}
                   count={this.state.systems.length}
                   height={window.innerHeight * 0.74}
                 />
@@ -233,14 +233,14 @@ const SystemPower = ({
               })}
               <div
                 className="powerBox zero"
-                onMouseDown={mouseDown.bind(this, id, dimensions)}
+                onMouseDown={() => mouseDown(id, dimensions)}
                 key={`${id}-${-1}`}
               />
               {Array(40).fill(0).map((n, i) => {
                 return (
                   <div
                     className={`powerBox ${i >= power ? "hidden" : ""}`}
-                    onMouseDown={mouseDown.bind(this, id, dimensions)}
+                    onMouseDown={() => mouseDown(id, dimensions)}
                     key={`${id}-${i}`}
                   />
                 );

@@ -7,6 +7,7 @@ import Immutable from "immutable";
 import Grid from "./gridDom";
 import TorpedoLoading from "../TorpedoLoading";
 import { /*PhaserArc, */ PhaserBeam } from "../PhaserCharging";
+import { Asset } from "../../../helpers/assets";
 
 const TARGETING_QUERY = gql`
   query Targeting($simulatorId: ID) {
@@ -348,11 +349,10 @@ class Targeting extends Component {
                 <h4>Targeted Contact</h4>
                 <Media>
                   <Media left href="#">
-                    <Media
-                      object
-                      src={targetedContact.pictureUrl}
-                      alt="Generic placeholder image"
-                    />
+                    <Asset asset={targetedContact.picture}>
+                      {({ src }) =>
+                        <Media object src={src} alt="Targeted Contact Image" />}
+                    </Asset>
                   </Media>
                   <Media body>
                     <Media heading>

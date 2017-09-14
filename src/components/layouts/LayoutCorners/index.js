@@ -19,12 +19,9 @@ class CardHolder extends Component {
     TweenMax.fromTo(
       el,
       0.5,
-      { z: 100, rotationY: 0, opacity: 0, transformPerspective: 200 },
+      { opacity: 0 },
       {
-        z: 0,
-        rotationY: 0,
         opacity: 1,
-        transformPerspective: 200,
         onComplete: callback
       }
     );

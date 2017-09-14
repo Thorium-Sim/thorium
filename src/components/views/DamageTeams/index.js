@@ -61,7 +61,7 @@ class DamageTeams extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTeam: null
+      selectedTeam: {}
     };
     this.subscription = null;
     this.crewSubscription = null;
@@ -102,61 +102,72 @@ class DamageTeams extends Component {
         createTeam(team: $team)
       }
     `;
-    const variables = {
-      team: {
+    const team = Object.assign(
+      {
         type: "damage",
         simulatorId: this.props.simulator.id
-      }
+      },
+      this.state.selectedTeam
+    );
+    team.officers = team.officers.reduce(
+      (prev, next) => prev.concat(next.id),
+      []
+    );
+    team.location = team.location && team.location.id;
+    delete team.id;
+    delete team.creating;
+    const variables = {
+      team
     };
     this.props.client.mutate({
       mutation,
       variables
     });
+    this.setState({
+      selectedTeam: {}
+    });
   };
-  updateDamageTeam = ({ id, key, value }) => {
+  commitTeam = ({ id, key, value }) => {
     const mutation = gql`
       mutation UpdateDamageTeam($team: TeamInput!) {
         updateTeam(team: $team)
       }
     `;
-    const obj = { id };
-    obj[key] = value;
+    const team = Object.assign(
+      {
+        type: "damage",
+        simulatorId: this.props.simulator.id
+      },
+      this.state.selectedTeam
+    );
+    team.officers = team.officers.reduce(
+      (prev, next) => prev.concat(next.id),
+      []
+    );
+    team.location = team.location && team.location.id;
+    delete team.__typename;
     const variables = {
-      team: obj
+      team: team
     };
     this.props.client.mutate({
       mutation,
       variables
     });
   };
-  assignOfficer = ({ id }, teamId) => {
-    const mutation = gql`
-      mutation AddOfficer($teamId: ID!, $crewId: ID!) {
-        addCrewToTeam(teamId: $teamId, crewId: $crewId)
-      }
-    `;
-    const variables = {
-      teamId,
-      crewId: id
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
+  assignOfficer = officer => {
+    const { selectedTeam } = this.state;
+    this.setState({
+      selectedTeam: Object.assign({}, selectedTeam, {
+        officers: selectedTeam.officers.concat(officer)
+      })
     });
   };
   removeOfficer = ({ id }, teamId) => {
-    const mutation = gql`
-      mutation removeOfficer($teamId: ID!, $crewId: ID!) {
-        removeCrewFromTeam(teamId: $teamId, crewId: $crewId)
-      }
-    `;
-    const variables = {
-      teamId,
-      crewId: id
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
+    const { selectedTeam } = this.state;
+    this.setState({
+      selectedTeam: Object.assign({}, selectedTeam, {
+        officers: selectedTeam.officers.filter(o => o.id !== id)
+      })
     });
   };
   removeTeam = teamId => {
@@ -185,8 +196,10 @@ class DamageTeams extends Component {
     const { teams, crew, decks } = this.props.data;
     const { selectedTeam } = this.state;
     const assignedOfficers = teams
+      .concat(selectedTeam)
       .reduce((prev, next) => {
-        return prev.concat(next.officers);
+        if (!next) return prev;
+        return prev.concat(next.officers || {});
       }, [])
       .map(o => o.id);
     if (crew.length === 0) return <p>Need crew for teams</p>;
@@ -200,23 +213,40 @@ class DamageTeams extends Component {
                   <p
                     key={t.id}
                     onClick={() => {
-                      this.setState({ selectedTeam: t.id });
+                      this.setState({ selectedTeam: t });
                     }}
-                    className={t.id === selectedTeam ? "selected" : ""}
+                    className={
+                      selectedTeam && t.id === selectedTeam.id ? "selected" : ""
+                    }
                   >
                     {t.name}
                   </p>
                 )}
               </CardBlock>
             </Card>
-            <Button block color="success" onClick={this.createDamageTeam}>
+            <Button
+              block
+              color="success"
+              onClick={() =>
+                this.setState({
+                  selectedTeam: {
+                    id: "newTeam",
+                    name: "",
+                    orders: "",
+                    location: null,
+                    officers: [],
+                    creating: true
+                  }
+                })}
+            >
               New Damage Team
             </Button>
           </Col>
           <Col sm={{ size: 8, offset: 1 }}>
             {(() => {
               if (!selectedTeam) return null;
-              const team = teams.find(t => t.id === selectedTeam);
+              if (!selectedTeam.id) return null;
+              const team = selectedTeam;
               let deck = {},
                 room = {};
               if (team.location) {
@@ -235,10 +265,10 @@ class DamageTeams extends Component {
                       </Label>
                       <Input
                         onChange={evt =>
-                          this.updateDamageTeam({
-                            id: team.id,
-                            key: "name",
-                            value: evt.target.value
+                          this.setState({
+                            selectedTeam: Object.assign({}, team, {
+                              name: evt.target.value
+                            })
                           })}
                         type="text"
                         id="teamName"
@@ -253,15 +283,15 @@ class DamageTeams extends Component {
                       </Label>
                       <Input
                         onChange={evt =>
-                          this.updateDamageTeam({
-                            id: team.id,
-                            key: "orders",
-                            value: evt.target.value
+                          this.setState({
+                            selectedTeam: Object.assign({}, team, {
+                              orders: evt.target.value
+                            })
                           })}
                         type="textarea"
                         id="teamOrders"
-                        rows={10}
                         placeholder=""
+                        rows={6}
                         size="lg"
                         value={team.orders}
                       />
@@ -275,10 +305,10 @@ class DamageTeams extends Component {
                           selectedDeck={deck.id}
                           decks={decks}
                           setSelected={a =>
-                            this.updateDamageTeam({
-                              id: team.id,
-                              key: "location",
-                              value: a.deck
+                            this.setState({
+                              selectedTeam: Object.assign({}, team, {
+                                location: { id: a.deck }
+                              })
                             })}
                         />
                       </Col>
@@ -288,25 +318,33 @@ class DamageTeams extends Component {
                           selectedRoom={room.id}
                           decks={decks}
                           setSelected={a =>
-                            this.updateDamageTeam({
-                              id: team.id,
-                              key: "location",
-                              value: a.room
+                            this.setState({
+                              selectedTeam: Object.assign({}, team, {
+                                location: {
+                                  deck: { id: team.location.id },
+                                  id: a.room
+                                }
+                              })
                             })}
                         />
                       </Col>
                     </Row>
                     <FormGroup className="priority-label" row>
-                      <Label size="lg">Priority</Label>
+                      <Label
+                        size="lg"
+                        style={{ marginBottom: 0, paddingBottom: 0 }}
+                      >
+                        Priority
+                      </Label>
                     </FormGroup>
                     <Row>
                       <Col sm={5}>
                         <Button
-                          onClick={() =>
-                            this.updateDamageTeam({
-                              id: team.id,
-                              key: "priority",
-                              value: "low"
+                          onClick={evt =>
+                            this.setState({
+                              selectedTeam: Object.assign({}, team, {
+                                priority: "low"
+                              })
                             })}
                           active={team.priority === "low"}
                           block
@@ -317,11 +355,11 @@ class DamageTeams extends Component {
                       </Col>
                       <Col sm={7}>
                         <Button
-                          onClick={() =>
-                            this.updateDamageTeam({
-                              id: team.id,
-                              key: "priority",
-                              value: "normal"
+                          onClick={evt =>
+                            this.setState({
+                              selectedTeam: Object.assign({}, team, {
+                                priority: "normal"
+                              })
                             })}
                           active={team.priority === "normal"}
                           block
@@ -334,11 +372,11 @@ class DamageTeams extends Component {
                     <Row>
                       <Col sm={6}>
                         <Button
-                          onClick={() =>
-                            this.updateDamageTeam({
-                              id: team.id,
-                              key: "priority",
-                              value: "critical"
+                          onClick={evt =>
+                            this.setState({
+                              selectedTeam: Object.assign({}, team, {
+                                priority: "critical"
+                              })
                             })}
                           active={team.priority === "critical"}
                           block
@@ -349,11 +387,11 @@ class DamageTeams extends Component {
                       </Col>
                       <Col sm={6}>
                         <Button
-                          onClick={() =>
-                            this.updateDamageTeam({
-                              id: team.id,
-                              key: "priority",
-                              value: "emergency"
+                          onClick={evt =>
+                            this.setState({
+                              selectedTeam: Object.assign({}, team, {
+                                priority: "emergency"
+                              })
                             })}
                           active={team.priority === "emergency"}
                           block
@@ -363,17 +401,55 @@ class DamageTeams extends Component {
                         </Button>
                       </Col>
                     </Row>
-                    <Button
-                      block
-                      size="lg"
-                      color="danger"
-                      className="recall-button"
-                      onClick={() => {
-                        this.removeTeam(team.id);
-                      }}
-                    >
-                      Recall Damage Team
-                    </Button>
+                    {team.creating
+                      ? <div>
+                          <Button
+                            block
+                            size="lg"
+                            color="success"
+                            className="recall-button"
+                            onClick={() => {
+                              this.createDamageTeam(team);
+                            }}
+                          >
+                            Create Damage Team
+                          </Button>
+                          <Button
+                            block
+                            size="lg"
+                            color="danger"
+                            onClick={() => {
+                              this.setState({
+                                selectedTeam: null
+                              });
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      : <div>
+                          <Button
+                            block
+                            size="lg"
+                            color="success"
+                            className="recall-button"
+                            onClick={() => {
+                              this.commitTeam(team);
+                            }}
+                          >
+                            Update Damage Team
+                          </Button>
+                          <Button
+                            block
+                            size="lg"
+                            color="danger"
+                            onClick={() => {
+                              this.removeTeam(team.id);
+                            }}
+                          >
+                            Recall Damage Team
+                          </Button>
+                        </div>}
                   </Col>
                   <Col
                     xl={{ size: 5, offset: 2 }}
@@ -392,7 +468,7 @@ class DamageTeams extends Component {
                               className="officer"
                               key={c.id}
                               onClick={() => {
-                                this.assignOfficer(c, team.id);
+                                this.assignOfficer(c);
                               }}
                             >
                               <p>
@@ -410,22 +486,24 @@ class DamageTeams extends Component {
                     </Label>
                     <Card>
                       <CardBlock>
-                        {team.officers.map(c =>
-                          <div
-                            className="officer"
-                            key={c.id}
-                            onClick={() => {
-                              this.removeOfficer(c, team.id);
-                            }}
-                          >
-                            <p>
-                              {c.name}
-                            </p>
-                            <small>
-                              {c.position}
-                            </small>
-                          </div>
-                        )}
+                        {team &&
+                          team.officers &&
+                          team.officers.map(c =>
+                            <div
+                              className="officer"
+                              key={c.id}
+                              onClick={() => {
+                                this.removeOfficer(c);
+                              }}
+                            >
+                              <p>
+                                {c.name}
+                              </p>
+                              <small>
+                                {c.position}
+                              </small>
+                            </div>
+                          )}
                       </CardBlock>
                     </Card>
                   </Col>
