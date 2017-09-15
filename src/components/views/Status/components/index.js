@@ -4,3 +4,6 @@ export Speed from "./speed";
 export Population from "./population";
 export Coolant from "./coolant";
 export Targeted from "./targeted";
+export Battery from "./battery";
+export Damaged from "./damaged";
+export AlertCondition from "./alertCondition";
