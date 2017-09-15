@@ -1,8 +1,6 @@
 import React from "react";
 import { Container, Row, Col, Label, Input } from "reactstrap";
-import { Asset } from "../../../helpers/assets";
 import {
-  Dots,
   Destination,
   Speed,
   Population,
@@ -10,7 +8,8 @@ import {
   Targeted,
   Battery,
   Damaged,
-  AlertCondition
+  AlertCondition,
+  Stealth
 } from "./components";
 import "./style.scss";
 
@@ -23,17 +22,16 @@ export default props => {
           <Speed {...props} />
           <Targeted {...props} />
           <Population {...props} />
-          <Label>Radiation</Label>
+          {/*<Label>Radiation</Label>
           <Dots level={0.5} />
           <Label>Water</Label>
-          <Dots level={0.5} color={"rgb(0,128,255)"} />
+          <Dots level={0.5} color={"rgb(0,128,255)"} />*/}
           <Battery {...props} />
           <Coolant {...props} />
         </Col>
         <Col sm={6}>
-          <Asset asset="/Ship Views/Top" simulatorId={props.simulator.id}>
-            {({ src }) => <img className="status-ship" src={src} />}
-          </Asset>
+          <Stealth {...props} />
+          {/**/}
         </Col>
         <Col sm={3}>
           <Damaged {...props} />

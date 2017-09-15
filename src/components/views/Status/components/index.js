@@ -7,3 +7,4 @@ export Targeted from "./targeted";
 export Battery from "./battery";
 export Damaged from "./damaged";
 export AlertCondition from "./alertCondition";
+export Stealth from "./stealth";

@@ -12,10 +12,6 @@
     height: 8px;
     border-radius: 50%;
   }
-  .status-ship {
-    width: 100%;
-    transform: rotate(270deg);
-  }
   .status-field {
     color: #fff;
     border: 0px solid rgba(255, 255, 255, 0.5);
@@ -75,4 +71,26 @@
     }
   }
 
+  .stealth {
+    width: 100%;
+    transform: rotate(270deg);   
+    .status-ship {
+      width: 100%;
+    } 
+  #stealth-canvas {
+    width: 100%;
+    height:100%;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: gray;
+    position:absolute;
+    mix-blend-mode: multiply;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+  }
+}
 }
