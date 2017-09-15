@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Label } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
-import Dot from "./dots";
 
 const SUB = gql`
   subscription DamagedSub($simulatorId: ID) {

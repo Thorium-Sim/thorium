@@ -40,7 +40,7 @@ class Stealth extends Component {
       <Asset asset="/Ship Views/Top" simulatorId={this.props.simulator.id}>
         {({ src }) =>
           <div className="stealth">
-            <img className="status-ship" src={src} />
+            <img className="status-ship" src={src} draggable="false" />
             <canvas
               id="stealth-canvas"
               style={{

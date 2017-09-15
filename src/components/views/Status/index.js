@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Label, Input } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 import {
   Destination,
   Speed,
