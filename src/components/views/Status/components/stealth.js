@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Asset } from "../../../../helpers/assets";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
+import shieldStyle from "../../ShieldControl/shieldStyle";
 
 const SUB = gql`
   subscription StealthUpdate($simulatorId: ID) {
@@ -13,6 +14,16 @@ const SUB = gql`
   }
 `;
 
+const SHIELD_SUB = gql`
+  subscription ShieldSub($simulatorId: ID) {
+    shieldsUpdate(simulatorId: $simulatorId) {
+      id
+      position
+      integrity
+      state
+    }
+  }
+`;
 class Stealth extends Component {
   scene = null;
   componentWillReceiveProps(nextProps) {
@@ -30,27 +41,46 @@ class Stealth extends Component {
         }
       });
     }
+    if (!this.shieldSub && !nextProps.data.loading) {
+      this.shieldSub = nextProps.data.subscribeToMore({
+        document: SHIELD_SUB,
+        variables: { simulatorId: nextProps.simulator.id },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          return Object.assign({}, previousResult, {
+            shields: subscriptionData.data.shieldsUpdate
+          });
+        }
+      });
+    }
   }
   render() {
     const stealth = this.props.data.loading
       ? {}
       : this.props.data.stealthField[0];
-    console.log(this.props.data.loading || !stealth);
+    const shields = this.props.data.loading ? [] : this.props.data.shields;
     return (
       <Asset asset="/Ship Views/Top" simulatorId={this.props.simulator.id}>
         {({ src }) =>
-          <div className="stealth">
-            <img className="status-ship" src={src} draggable="false" />
-            <canvas
-              id="stealth-canvas"
-              style={{
-                WebkitMaskImage: `url(${src})`,
-                display:
-                  stealth.id && (stealth.activated && stealth.state)
-                    ? "block"
-                    : "none"
-              }}
-            />
+          <div
+            className="shieldBubble"
+            style={{
+              transform: "rotate(270deg)",
+              boxShadow: shieldStyle(shields)
+            }}
+          >
+            <div className="stealth" style={{ transform: "rotate(360deg)" }}>
+              <img className="status-ship" src={src} draggable="false" />
+              <canvas
+                id="stealth-canvas"
+                style={{
+                  WebkitMaskImage: `url(${src})`,
+                  display:
+                    stealth.id && (stealth.activated && stealth.state)
+                      ? "block"
+                      : "none"
+                }}
+              />
+            </div>
           </div>}
       </Asset>
     );
@@ -63,6 +93,12 @@ const QUERY = gql`
       id
       state
       activated
+    }
+    shields(simulatorId: $simulatorId) {
+      id
+      position
+      integrity
+      state
     }
   }
 `;
