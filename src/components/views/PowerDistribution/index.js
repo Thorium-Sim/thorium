@@ -203,18 +203,18 @@ class PowerDistribution extends Component {
 
 const trainingSteps = [
   {
-    selector: ".enginesBar",
+    selector: ".powerlevel-containers",
     content:
-      "This list shows all of the systems on the ship that take power. Drag the green bars next to each system to add or remove power. (Is there a minimum required for each system to function?)"
+      "This list shows all of the systems on the ship that take power. Drag the green bars next to each system to add or remove power. You must ensure that there is enough power for the system to run. The yellow bars represent the amount of power necessary for the system to function at a certain level."
   },
   {
-    selector: "button.speedBtn",
+    selector: ".totalPowerText",
     content: "This is the total amount of power being used by the ship."
   },
   {
-    selector: ".full-stop",
+    selector: ".battery-holder",
     content:
-      "These are the ship’s batteries. They show how much power is remaining in the batteries. If they run out of power, the ship will not work, and will need to be recharged. Don’t let these run out in the middle of space. That would be...problematic."
+      "These are the ship’s batteries, if it has any. They show how much power is remaining in the batteries. If you use more power than is being outputted by your reactor, power will draw from the batteries. If they run out of power, you will have to balance your power, and the batteries will need to be recharged. You can recharge batteries from your reactor by using less power than the current reactor output. Don’t let these run out in the middle of space. That would be...problematic."
   }
 ];
 

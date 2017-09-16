@@ -137,11 +137,12 @@ class InternalComm extends Component {
                 internalComm.state === "connected"
               }
               onClick={this.call.bind(this, true)}
+              className="all-decks"
             >
               All Decks
             </Button>
           </Col>
-          <Col sm={{ size: 2 }}>
+          <Col sm={{ size: 2 }} className="room-select">
             <UncontrolledDropdown>
               <DropdownToggle
                 block
@@ -222,6 +223,7 @@ class InternalComm extends Component {
           <Col sm={{ size: 2 }}>
             <Button
               color="success"
+              className="call"
               block
               disabled={
                 !deck ||
@@ -234,7 +236,10 @@ class InternalComm extends Component {
             </Button>
           </Col>
         </Row>
-        <Row style={{ height: "10vh", margin: "10vh 0" }}>
+        <Row
+          style={{ height: "10vh", margin: "10vh 0" }}
+          className="buttons-section"
+        >
           <Col sm={{ size: 8, offset: 2 }}>
             {internalComm.state !== "connected" &&
               internalComm.incoming &&
@@ -306,9 +311,23 @@ class InternalComm extends Component {
 
 const trainingSteps = [
   {
-    selector: ".enginesBar",
+    selector: ".all-decks",
+    content: "Click this button to start calling all decks in intercom mode."
+  },
+  {
+    selector: ".room-select",
     content:
-      "Use these dropdowns to select the part of the ship you want to communicate with. Then press “Call.”"
+      "If you select a deck, you can talk to the entire deck over intercom mode. Selecting a room allows you to talk to an individual person inside of that room. If you are instructed to call a specific room, make sure you select both the deck and the room."
+  },
+  {
+    selector: ".call",
+    content:
+      "After you select a deck and/or a room, click this button to initiate the call. Once the call is connected, you can use your communicator to talk to whoever you called."
+  },
+  {
+    selector: ".buttons-section",
+    content:
+      "After you initiate a call, or if someone else calls you, buttons will appear in this area. You can use those buttons to cancel an outgoing call, connect an incoming call, or disconnect a connected call."
   }
 ];
 

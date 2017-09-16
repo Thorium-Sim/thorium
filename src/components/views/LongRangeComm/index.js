@@ -202,7 +202,7 @@ class LongRangeComm extends Component {
           message={"Long Range Communications Offline"}
           style={{ minHeight: "400px", height: "calc(100% + 40px)" }}
         />
-        <Col sm={3}>
+        <Col sm={3} className="message-queue">
           <h4>Message Queue</h4>
           <Card style={{ minHeight: "60px" }}>
             {messages.map(m =>
@@ -276,18 +276,14 @@ class LongRangeComm extends Component {
 
 const trainingSteps = [
   {
-    selector: ".enginesBar",
+    selector: ".message-queue",
     content:
-      "Anyone on the ship can write long-range messages, addressed to any individual or group. These outgoing messages appear here. To send a message, click on it."
+      "Other people on the ship can write long-range messages, addressed to any individual or group. These outgoing messages appear here. To send a message, click on it. Click on a message before continuing training."
   },
   {
-    selector: "button.speedBtn",
+    selector: ".sat-container",
     content:
-      "To send the selected message, click on the satellite with the strongest signal. Stronger signals are represented by a longer line next to the satellite."
-  },
-  {
-    selector: ".full-stop",
-    content: "Click this button to send."
+      "To send the selected message, click on the satellite with the strongest signal. Stronger signals are represented by a longer line next to the satellite. Click the button below to send the message, or to delete the message."
   }
 ];
 

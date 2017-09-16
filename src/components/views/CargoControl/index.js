@@ -166,7 +166,7 @@ class CargoControl extends Component {
                 setSelected={this.setSelected.bind(this, "to")}
               />
             </Col>}
-          <Col sm={decks.length > 1 ? 2 : 4}>
+          <Col className="to-room" sm={decks.length > 1 ? 2 : 4}>
             <RoomDropdown
               selectedDeck={toDeck}
               selectedRoom={toRoom}
@@ -184,7 +184,7 @@ class CargoControl extends Component {
                 setSelected={this.setSelected.bind(this, "from")}
               />
             </Col>}
-          <Col sm={{ size: decks.length > 1 ? 2 : 4 }}>
+          <Col className="from-room" sm={{ size: decks.length > 1 ? 2 : 4 }}>
             <RoomDropdown
               selectedDeck={fromDeck}
               selectedRoom={fromRoom}
@@ -195,7 +195,7 @@ class CargoControl extends Component {
           </Col>
         </Row>
         <Row className="inventoryRow">
-          <Col sm={4}>
+          <Col sm={4} className="to-cargo">
             <Card>
               <CardBlock>
                 {toRoom &&
@@ -248,7 +248,11 @@ class CargoControl extends Component {
           </Col>
           <Col sm={{ size: 4 }}>
             <h3>Find Inventory: </h3>
-            <Input size="sm" onChange={this.findInv.bind(this)} />
+            <Input
+              className="find-inventory"
+              size="sm"
+              onChange={this.findInv.bind(this)}
+            />
             {this.state.findInventory &&
               <Card className="search-container">
                 <CardBlock>
@@ -280,17 +284,22 @@ class CargoControl extends Component {
 
 const trainingSteps = [
   {
-    selector: ".enginesBar",
+    selector: ".find-inventory",
     content:
       "Use this search box to locate an object that you need from anywhere on the ship."
   },
   {
-    selector: "button.speedBtn",
+    selector: ".to-room",
     content:
-      "Use these dropdowns to select the part of the ship you want to search in. The items that are available in that part of the ship will show up here. Select the inventory that you would like to move."
+      "Use these dropdowns to select the part of the ship you want to search in."
   },
   {
-    selector: ".full-stop",
+    selector: ".to-cargo",
+    content:
+      "The items that are available in that part of the ship will show up here. Select the inventory that you would like to move."
+  },
+  {
+    selector: ".from-room",
     content:
       "Use these dropdowns to select the part of the ship you want to move the inventory to."
   }
