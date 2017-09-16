@@ -15,6 +15,7 @@ import Immutable from "immutable";
 import Measure from "react-measure";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
+import Tour from "reactour";
 
 import "./style.scss";
 
@@ -317,10 +318,32 @@ class Decoding extends Component {
             </Card>
           </Col>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
 }
+const trainingSteps = [
+  {
+    selector: ".enginesBar",
+    content:
+      "Use these two knobs to adjust the amplitude and frequency of the waves you are sending. Amplitude is the height of the wave and frequency is how close together the waves are, or how quickly you send out the waves."
+  },
+  {
+    selector: "button.speedBtn",
+    content:
+      "Once your yellow intercepting waves line up with the red waves you are receiving, press this button."
+  },
+  {
+    selector: ".full-stop",
+    content:
+      "The decoded message will appear here. If the message isn’t coming through in a language you understand, continue to refine your intercepting wavelength until the message comes through clearly."
+  }
+];
 
 class DecodingCanvas extends Component {
   constructor(props) {

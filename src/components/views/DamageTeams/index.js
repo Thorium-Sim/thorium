@@ -13,6 +13,7 @@ import {
   FormGroup
 } from "reactstrap";
 import Immutable from "immutable";
+import Tour from "reactour";
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
 
 import "./style.scss";
@@ -512,10 +513,33 @@ class DamageTeams extends Component {
             })()}
           </Col>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
 }
+
+const trainingSteps = [
+  {
+    selector: ".enginesBar",
+    content:
+      "When a system on the ship is damaged, click this button to assign a team to assess the damage and begin work to repair it."
+  },
+  {
+    selector: ".enginesBar",
+    content:
+      "Type in the name of the team here, along with any specific instructions about what needs to be fixed and how."
+  },
+  {
+    selector: ".enginesBar",
+    content:
+      "Use these buttons to select the area of the ship where they are needed, and the priority of the project."
+  }
+];
 
 const DAMAGE_QUERY = gql`
   query DamageTeams($simulatorId: ID, $simId: ID!) {

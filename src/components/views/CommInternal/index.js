@@ -14,6 +14,7 @@ import {
 } from "reactstrap";
 import assetPath from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
+import Tour from "reactour";
 
 const INTERNAL_SUB = gql`
   subscription InternalCommUpdate($simulatorId: ID!) {
@@ -293,10 +294,23 @@ class InternalComm extends Component {
             />
           </Col>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
 }
+
+const trainingSteps = [
+  {
+    selector: ".enginesBar",
+    content:
+      "Use these dropdowns to select the part of the ship you want to communicate with. Then press “Call.”"
+  }
+];
 
 const INTERNAL_QUERY = gql`
   query InternalComm($simulatorId: ID!) {
