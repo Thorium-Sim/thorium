@@ -6,6 +6,7 @@ import { graphql, withApollo } from "react-apollo";
 import Immutable from "immutable";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Keypad from "./keypad";
+import Tour from "reactour";
 
 import "./style.scss";
 
@@ -470,10 +471,27 @@ class Navigation extends Component {
             />
           </Col>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
 }
+const trainingSteps = [
+  {
+    selector: ".enginesBar",
+    content:
+      "Input your destination here to allow the ship’s computers to define an ideal course."
+  },
+  {
+    selector: "button.speedBtn",
+    content:
+      "Using the number pad, input the calculated course coordinates in the Current Course fields to set your course."
+  }
+];
 
 const NAVIGATION_QUERY = gql`
   query Navigation($simulatorId: ID) {

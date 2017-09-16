@@ -4,6 +4,7 @@ import { Container, Row, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import Immutable from "immutable";
 import FontAwesome from "react-fontawesome";
+import Tour from "reactour";
 
 import Tank from "./tank";
 
@@ -124,10 +125,33 @@ class CoolantControl extends Component {
             )}
           </div>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
 }
+
+const trainingSteps = [
+  {
+    selector: ".enginesBar",
+    content:
+      "This coolant tank is filled with ethylene glycol (C2H6O2), which looks like this:"
+  },
+  {
+    selector: "button.speedBtn",
+    content:
+      "Coolant is used to cool down the engines, which emit a lot of heat when running. It’s also used to cool down our phasers. CAUTION: Do NOT drink. May be administered to the bad guys."
+  },
+  {
+    selector: ".full-stop",
+    content:
+      "Use the “Fill coolant” and “Fill reservoir” buttons to redirect coolant from your tank to the other systems in the ship. You’ll need to make sure the engines and the phasers have enough coolant to continue running, while making sure to keep enough coolant in the tank to get the ship home safely at the end of the mission."
+  }
+];
 
 const CoolantBar = ({ systemId, name, coolant, transferCoolant }) => {
   return (

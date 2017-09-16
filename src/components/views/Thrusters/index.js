@@ -10,6 +10,7 @@ import distance from "../../../helpers/distance";
 import Measure from "react-measure";
 import Immutable from "immutable";
 import "./style.scss";
+import Tour from "reactour";
 
 const ROTATION_CHANGE_SUB = gql`
   subscription RotationChanged($simulatorId: ID!) {
@@ -524,10 +525,34 @@ gamepadLoop(){
               </Row>
             </Col>}
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </div>
     );
   }
 }
+
+const trainingSteps = [
+  {
+    selector: ".enginesBar",
+    content:
+      "These toggles manually steer your ship. Drag the toggle around and watch how it affects the model of your ship. Use the lower sideways toggle to move forward and backward in space."
+  },
+  {
+    selector: "button.speedBtn",
+    content:
+      "Use these toggles to rotate your ship in space. Steering in 3D space is different than driving a car on Earth, where you only have to navigate a 2D plane. Luckily, you also have auto-pilot functions on your ship for long-distance navigation. These manual controls are useful, however, for navigating tighter spaces, like landing docks and asteroid fields."
+  },
+  {
+    selector: ".full-stop",
+    content:
+      "These dials track your position in 3D space. When they all align at X, your ship is facing directly forward."
+  }
+];
+
 const THRUSTER_QUERY = gql`
   query Thrusters($simulatorId: ID) {
     thrusters(simulatorId: $simulatorId) {
