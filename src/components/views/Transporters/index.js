@@ -5,6 +5,8 @@ import { graphql, withApollo } from "react-apollo";
 import Target from "./targeting";
 import Scan from "./transporterScan";
 import DamageOverlay from "../helpers/DamageOverlay";
+import Tour from "reactour";
+
 import "./style.scss";
 
 const TRANSPORTER_SUB = gql`
@@ -228,10 +230,33 @@ class Transporters extends Component {
             setCharge={this.setCharge.bind(this, transporter)}
             targets={transporter.targets}
           />}
+        {/*<Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />*/}
       </div>
     );
   }
 }
+
+/*const trainingSteps = [
+  {
+    selector: ".destination",
+    content:
+      "Transporters move objects from one place to another by converting the atoms in the object to energy and reassembling the object on the other side. Input the name of the object you want to transport, as well as your target destination for transporting."
+  },
+  {
+    selector: ".targeting",
+    content:
+      "Drag your target sights over the object you are trying to transport until the “Transport Possible” message appears."
+  },
+  {
+    selector: ".power-up",
+    content:
+      "Once you have locked onto your target, slowly drag the yellow bars upward from the bottom of this box by hovering over the yellow bars and moving your mouse upward. This will maintaining the connection with the target until the transporters have fully engaged. If you reach the top, your target will successfully transport to your ship."
+  }
+];*/
 
 const TRANSPORTERS_QUERY = gql`
   query GetTransporters($simulatorId: ID) {

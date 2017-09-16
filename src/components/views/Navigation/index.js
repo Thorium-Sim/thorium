@@ -6,6 +6,7 @@ import { graphql, withApollo } from "react-apollo";
 import Immutable from "immutable";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Keypad from "./keypad";
+import Tour from "reactour";
 
 import "./style.scss";
 
@@ -462,7 +463,7 @@ class Navigation extends Component {
               </Row>
             </div>
           </Col>
-          <Col xl={3} lg={4}>
+          <Col xl={3} lg={4} className="number-pad">
             <Keypad
               keydown={this.keydown.bind(this)}
               clear={this.clear.bind(this)}
@@ -470,10 +471,22 @@ class Navigation extends Component {
             />
           </Col>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
 }
+const trainingSteps = [
+  {
+    selector: ".number-pad",
+    content:
+      "Using the number pad, input the calculated course coordinates in the Current Course fields to set your course."
+  }
+];
 
 const NAVIGATION_QUERY = gql`
   query Navigation($simulatorId: ID) {

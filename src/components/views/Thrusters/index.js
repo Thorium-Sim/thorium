@@ -10,6 +10,7 @@ import distance from "../../../helpers/distance";
 import Measure from "react-measure";
 import Immutable from "immutable";
 import "./style.scss";
+import Tour from "reactour";
 
 const ROTATION_CHANGE_SUB = gql`
   subscription RotationChanged($simulatorId: ID!) {
@@ -363,7 +364,7 @@ gamepadLoop(){
       <div className="cardThrusters">
         {thruster.damage.damaged && <DamageOverlay />}
         <Row>
-          <Col className="col-sm-3 draggerContainer">
+          <Col className="col-sm-3 draggerContainer direction-drag">
             <label>Direction</label>
             <div className="spacer" />
             <div className="draggerCircle" ref="dirCirc">
@@ -447,7 +448,7 @@ gamepadLoop(){
                 </Row>
               : <div />}
           </Col>
-          <Col className="col-sm-3 draggerContainer">
+          <Col className="col-sm-3 draggerContainer rotation-drag">
             <label>Rotation</label>
             <div className="spacer" />
             <div className="draggerCircle">
@@ -524,10 +525,34 @@ gamepadLoop(){
               </Row>
             </Col>}
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </div>
     );
   }
 }
+
+const trainingSteps = [
+  {
+    selector: ".direction-drag",
+    content:
+      "These toggles manually steer your ship. Drag the toggle around and watch how it affects the model of your ship. Use the lower sideways toggle to move forward and backward in space."
+  },
+  {
+    selector: ".rotation-drag",
+    content:
+      "Use these toggles to rotate your ship in space. Steering in 3D space is different than driving a car on Earth, where you only have to navigate a 2D plane. Luckily, you also have auto-pilot functions on your ship for long-distance navigation. These manual controls are useful, however, for navigating tighter spaces, like landing docks and asteroid fields."
+  },
+  {
+    selector: ".indicatorCircles",
+    content:
+      "These dials track your rotation in 3D space. The red line represents required thruster settings. Use the rotation controls to orient your ship so it is pointing in the right direction."
+  }
+];
+
 const THRUSTER_QUERY = gql`
   query Thrusters($simulatorId: ID) {
     thrusters(simulatorId: $simulatorId) {
