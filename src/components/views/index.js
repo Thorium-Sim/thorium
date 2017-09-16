@@ -72,6 +72,7 @@ import TimelineCore from "./Timeline";
 import ShuttlesCore from "./Shuttles/core";
 import SecurityDecksCore from "./SecurityDecks/core";
 import HeatCore from "./Heat/core";
+import ShipCore from "./Ship/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -180,7 +181,8 @@ export const Cores = {
   TimelineCore,
   ShuttlesCore,
   SecurityDecksCore,
-  HeatCore
+  HeatCore,
+  ShipCore
 };
 
 export default Views;

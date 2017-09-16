@@ -78,6 +78,12 @@ export const FlightStructureMutations = {
   changeSimulatorAlertLevel(root, args, context) {
     App.handleEvent(args, "changeSimulatorAlertLevel", context);
   },
+  changeSimulatorBridgeCrew(root, args, context) {
+    App.handleEvent(args, "changeSimulatorBridgeCrew", context);
+  },
+  changeSimulatorRadiation(root, args, context) {
+    App.handleEvent(args, "changeSimulatorRadiation", context);
+  },
   setSimulatorTimelineStep(root, args, context) {
     App.handleEvent(args, "setSimulatorTimelineStep", context);
   },

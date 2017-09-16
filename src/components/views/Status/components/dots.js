@@ -5,11 +5,7 @@ export default ({ level = 1, color = "rainbow", reverse }) => {
   function calcColor(i) {
     let outputColor;
     if (color === "rainbow") {
-      outputColor = Color.hsl(
-        reverse ? i * 11 : Math.abs(i * 11 - 200),
-        100,
-        50
-      );
+      outputColor = Color.hsl(reverse ? i * 5 : Math.abs(i * 5 - 90), 100, 50);
     } else {
       outputColor = Color(color);
     }
