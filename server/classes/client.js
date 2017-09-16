@@ -1,6 +1,6 @@
 // @flow
 import uuid from "uuid";
-
+import App from "../../app";
 // TODO: Add the ability to sort clients into groups
 
 export default class Client {
@@ -53,9 +53,20 @@ export default class Client {
   }
   setFlight(flightId: string) {
     this.flightId = flightId;
+    const flight = App.flights.find(f => f.id === flightId);
+    if (flight && flight.simulators.length === 1) {
+      this.simulatorId = flight.simulators[0];
+    }
+    if (!this.flightId) {
+      this.simulatorId = null;
+      this.station = null;
+    }
   }
   setSimulator(simulatorId: string) {
     this.simulatorId = simulatorId;
+    if (!this.simulatorId) {
+      this.station = null;
+    }
   }
   setStation(station: string) {
     this.station = station;

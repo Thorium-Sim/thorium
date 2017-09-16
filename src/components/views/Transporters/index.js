@@ -5,7 +5,7 @@ import { graphql, withApollo } from "react-apollo";
 import Target from "./targeting";
 import Scan from "./transporterScan";
 import DamageOverlay from "../helpers/DamageOverlay";
-import Tour from "reactour";
+//import Tour from "reactour";
 
 import "./style.scss";
 
