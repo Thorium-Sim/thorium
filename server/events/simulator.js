@@ -45,6 +45,20 @@ App.on("changeSimulatorAlertLevel", ({ simulatorId, alertLevel }) => {
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("changeSimulatorBridgeCrew", ({ simulatorId, crew }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  if (simulator) {
+    simulator.bridgeCrew(crew);
+  }
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("changeSimulatorRadiation", ({ simulatorId, radiation }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  if (simulator) {
+    simulator.radiation(radiation);
+  }
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 App.on("setSimulatorTimelineStep", ({ simulatorId, step }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   if (simulator) {
