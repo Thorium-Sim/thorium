@@ -52,6 +52,9 @@ export default class Simulator {
   airlock(tf) {
     this.ship.airlock = tf;
   }
+  bridgeCrew(num) {
+    this.ship.bridgeCrew = num;
+  }
   sendCode(code, station) {
     this.ship.remoteAccessCodes.push(new RemoteAccess({ code, station }));
   }
@@ -75,6 +78,7 @@ class Ship {
     this.clamps = params.clamps || false; // Detached
     this.ramps = params.ramps || false; // Retracted
     this.airlock = params.airlock || false; // Closed
+    this.bridgeCrew = params.bridgeCrew || 14;
     this.selfDestructTime = params.selfDestructTime || null;
     this.selfDestructCode = params.selfDestructCode || null;
     this.selfDestructAuto = params.selfDestructAuto || false; // Automatically black out stations when self destructed
