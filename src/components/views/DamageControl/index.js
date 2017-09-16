@@ -157,7 +157,7 @@ class DamageControl extends Component {
           >
             <h4>Damaged Systems</h4>
             <Card>
-              <CardBlock>
+              <CardBlock className="damaged-systems">
                 {this.state.reactivationCodeModal
                   ? <div className="reactivation-modal">
                       <ul className="flex-boxes">
@@ -224,6 +224,7 @@ class DamageControl extends Component {
                 </Button>
               : <Button
                   block
+                  className="request-report"
                   disabled={!this.state.selectedSystem}
                   onClick={this.requestReport.bind(this)}
                   color="primary"
@@ -272,9 +273,24 @@ class DamageControl extends Component {
 
 const trainingSteps = [
   {
-    selector: ".enginesBar",
+    selector: ".damaged-systems",
     content:
-      "The ship’s systems are intelligent enough to know when they’re damaged, and to understand (mostly) how they can be fixed. When a system is damaged, instructions to troubleshoot and repair the damaged system will appear here. Follow them exactly."
+      "The ship’s systems are intelligent enough to know when they’re damaged, and to understand (mostly) how they can be fixed. A list of damaged systems appears here. Click a system to see the damage report"
+  },
+  {
+    selector: ".request-report",
+    content:
+      "If a damage report hasn't been calculated, you need to request a damage report by clicking on this button."
+  },
+  {
+    selector: ".damageReport-text",
+    content:
+      "When a system is damaged, instructions to troubleshoot and repair the damaged system will appear here. Follow them exactly."
+  },
+  {
+    selector: ".damage-control",
+    content:
+      "Sometimes, a system needs a reactivation code to be entered before it can be repaired. Click the 'Enter Reactivation Code' button, then press the symbols listed in your damage report. Once the reactivation code is accepted, the system will be repaired."
   }
 ];
 

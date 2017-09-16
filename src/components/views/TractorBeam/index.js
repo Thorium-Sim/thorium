@@ -121,12 +121,12 @@ class TractorBeam extends Component {
 
 const trainingSteps = [
   {
-    selector: ".enginesBar",
+    selector: ".activate",
     content:
-      "Once a target it in sight, it will appear below the ship. Press this button to activate the tractor beam."
+      "The tractor beam pulls objects to you with zero-point energy. Once a target it in sight, it will appear below the ship. Press this button to activate the tractor beam."
   },
   {
-    selector: "button.speedBtn",
+    selector: ".strengthBar",
     content:
       "The size and speed of the object will impact the stress on the tractor beam. If the object is large, fast, or dense, it will put more stress on our ship, and we will need to strengthen the tractor beam in order to pull in the object. If we pull it in too fast, the object may collide with our ship and cause damage. Use this tool to match the strength of the tractor beam to the stress being put on it."
   }

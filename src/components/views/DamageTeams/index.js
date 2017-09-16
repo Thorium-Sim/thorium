@@ -228,6 +228,7 @@ class DamageTeams extends Component {
             <Button
               block
               color="success"
+              className="new-team"
               onClick={() =>
                 this.setState({
                   selectedTeam: {
@@ -243,7 +244,7 @@ class DamageTeams extends Component {
               New Damage Team
             </Button>
           </Col>
-          <Col sm={{ size: 8, offset: 1 }}>
+          <Col sm={{ size: 8, offset: 1 }} className="damage-team-entry">
             {(() => {
               if (!selectedTeam) return null;
               if (!selectedTeam.id) return null;
@@ -525,19 +526,14 @@ class DamageTeams extends Component {
 
 const trainingSteps = [
   {
-    selector: ".enginesBar",
+    selector: ".new-team",
     content:
-      "When a system on the ship is damaged, click this button to assign a team to assess the damage and begin work to repair it."
+      "When instructed by a damage report, click this button to assign a team to assess the damage and begin work to repair it."
   },
   {
-    selector: ".enginesBar",
+    selector: ".damage-team-entry",
     content:
-      "Type in the name of the team here, along with any specific instructions about what needs to be fixed and how."
-  },
-  {
-    selector: ".enginesBar",
-    content:
-      "Use these buttons to select the area of the ship where they are needed, and the priority of the project."
+      "Type in the name of the team here, along with any specific instructions about what needs to be fixed and how. Include the location on the ship the team should travel to, and the priority of the job. Don't forget to pick damage team officer to actually do the repair!"
   }
 ];
 

@@ -117,6 +117,7 @@ class Docking extends Component {
                 disabled={disabled}
                 block
                 size="lg"
+                className="clamps-button"
                 color="primary"
                 onClick={this.clamps.bind(this)}
               >
@@ -126,6 +127,7 @@ class Docking extends Component {
                 disabled={disabled}
                 block
                 size="lg"
+                className="ramps-button"
                 color="primary"
                 onClick={this.ramps.bind(this)}
               >
@@ -135,6 +137,7 @@ class Docking extends Component {
                 disabled={disabled}
                 block
                 size="lg"
+                className="doors-button"
                 color="primary"
                 onClick={this.doors.bind(this)}
               >
@@ -160,17 +163,17 @@ class Docking extends Component {
 
 const trainingSteps = [
   {
-    selector: ".enginesBar",
+    selector: ".clamps-button",
     content:
       "Use this button to attach or detach docking clamps when you dock with a space station. These clamps will stabilize your ship for safe disembarking."
   },
   {
-    selector: "button.speedBtn",
+    selector: ".ramps-button",
     content:
       "Use this button to extend and retract the boarding ramps to allow crew and other visitors to enter and exit the ship."
   },
   {
-    selector: ".full-stop",
+    selector: ".doors-button",
     content:
       "Use this button to open and close the airlock doors, effectively sealing off your ship from space. Because space is a vacuum - totally empty, even of oxygen and other gases - leaving these doors open when you launch may lead to deadly consequences. It also may cause precious oxygen to disappear into the vacuum of space."
   }

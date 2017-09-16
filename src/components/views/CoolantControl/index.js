@@ -137,19 +137,19 @@ class CoolantControl extends Component {
 
 const trainingSteps = [
   {
-    selector: ".enginesBar",
+    selector: ".tank",
     content:
-      "This coolant tank is filled with ethylene glycol (C2H6O2), which looks like this:"
+      "This coolant tank is filled with ethylene glycol (C2H6O2), which looks like this. Ethylene Glycol is highly conductive, making it easy to pull heat out of hot systems."
   },
   {
-    selector: "button.speedBtn",
+    selector: ".coolant-containers",
     content:
-      "Coolant is used to cool down the engines, which emit a lot of heat when running. It’s also used to cool down our phasers. CAUTION: Do NOT drink. May be administered to the bad guys."
+      "Coolant is used to cool down systems which emit a lot of heat when running.  CAUTION: Do NOT drink. May be administered to intruders."
   },
   {
-    selector: ".full-stop",
+    selector: ".coolant-containers",
     content:
-      "Use the “Fill coolant” and “Fill reservoir” buttons to redirect coolant from your tank to the other systems in the ship. You’ll need to make sure the engines and the phasers have enough coolant to continue running, while making sure to keep enough coolant in the tank to get the ship home safely at the end of the mission."
+      "Use the “Fill Coolant” and “Fill Reservoir” buttons to redirect coolant from your tank to the other systems in the ship. You’ll need to make sure the systems have enough coolant to continue running, while making sure to keep enough coolant in the tank to get the ship home safely at the end of the mission."
   }
 ];
 
