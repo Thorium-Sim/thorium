@@ -8,3 +8,4 @@ export Battery from "./battery";
 export Damaged from "./damaged";
 export AlertCondition from "./alertCondition";
 export Stealth from "./stealth";
+export Radiation from "./radiation";

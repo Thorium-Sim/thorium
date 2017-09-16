@@ -9,7 +9,8 @@ import {
   Battery,
   Damaged,
   AlertCondition,
-  Stealth
+  Stealth,
+  Radiation
 } from "./components";
 import "./style.scss";
 
@@ -22,9 +23,8 @@ export default props => {
           <Speed {...props} />
           <Targeted {...props} />
           <Population {...props} />
-          {/*<Label>Radiation</Label>
-          <Dots level={0.5} />
-          <Label>Water</Label>
+          <Radiation {...props} />
+          {/*<Label>Water</Label>
           <Dots level={0.5} color={"rgb(0,128,255)"} />*/}
           <Battery {...props} />
           <Coolant {...props} />

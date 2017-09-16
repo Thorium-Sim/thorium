@@ -16,13 +16,14 @@ const exceptions = [
   "ProbeNetworkCore",
   "SecurityDecksCore",
   "SelfDestructCore",
-  "ShuttlesCore"
+  "ShuttlesCore",
+  "ShipCore"
 ];
 export default class CoreDefault extends Component {
-  state = { timelineOpen: false };
+  state = {};
   render() {
     const { props, state } = this;
-    const { timelineOpen } = state;
+    const { timelineOpen, tractOpen, shipOpen } = state;
     return (
       <div>
         <div className="core-default">
@@ -41,14 +42,41 @@ export default class CoreDefault extends Component {
               );
             })}
         </div>
-        <div className={`timeline-core ${timelineOpen ? "open" : ""}`}>
+        <div
+          className={`side-core timeline-core ${timelineOpen ? "open" : ""}`}
+        >
           <div
-            className="timeline-label"
+            className="timeline-label side-label"
             onClick={() => this.setState({ timelineOpen: !timelineOpen })}
           >
             Timeline
           </div>
           <Cores.TimelineCore {...props} />
+        </div>
+        <div className={`side-core tract-core ${tractOpen ? "open" : ""}`}>
+          <div
+            className="tract-label side-label"
+            onClick={() => this.setState({ tractOpen: !tractOpen })}
+          >
+            Tractor Beam/Transporters
+          </div>
+          <div className="inner-cores">
+            <p>Tractor Beam</p>
+            <Cores.TractorBeamCore {...props} />
+            <p>Transporters</p>
+            <Cores.TransporterCore {...props} />
+          </div>
+        </div>
+        <div className={`side-core ship-core ${shipOpen ? "open" : ""}`}>
+          <div
+            className="ship-label side-label"
+            onClick={() => this.setState({ shipOpen: !shipOpen })}
+          >
+            Ship
+          </div>
+          <div className="inner-cores">
+            <Cores.ShipCore {...props} />
+          </div>
         </div>
       </div>
     );
