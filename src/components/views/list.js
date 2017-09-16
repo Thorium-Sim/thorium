@@ -30,7 +30,8 @@ const viewList = [
   "ReactorControl",
   "Messages",
   "Isochips",
-  "Shuttles"
+  "Shuttles",
+  "Status"
 ];
 
 export default viewList;
