@@ -5,12 +5,14 @@ import mkdirp from "mkdirp";
 import App from "../../app";
 import * as Classes from "../classes";
 import { pubsub } from "../helpers/subscriptionManager.js";
+import paths from "../helpers/paths";
 
 let assetDir = path.resolve("./assets/");
-//if (electron.app) {
-//  assetDir = path.resolve(electron.app.getPath("appData") + "/thorium/assets");
-//}
-//
+
+if (process.env.NODE_ENV === "production") {
+  assetDir = paths.userData + "/assets";
+}
+
 // Ensure the asset folder exists
 if (!fs.existsSync(assetDir)) {
   fs.mkdirSync(assetDir);
@@ -134,7 +136,6 @@ export const AssetsMutations = {
       );
       const key = `${fullPath.substr(1)}/${simulatorId + extension}`;
       const filepath = path.resolve(assetDir + "/" + key);
-      console.log(filepath);
       const directorypath = filepath.substring(0, filepath.lastIndexOf("/"));
       mkdirp.sync(directorypath);
 
