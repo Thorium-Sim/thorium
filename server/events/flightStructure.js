@@ -74,7 +74,6 @@ App.on("startFlight", ({ id, name, simulators }) => {
         const newAspect = Object.assign({}, a);
         newAspect.id = null;
         newAspect.simulatorId = sim.id;
-        console.log("BLAH!", sim.id, newAspect);
         // Rooms need to reference their deck
         if (aspect === "rooms") {
           const oldDeck = App.decks.find(d => d.id === newAspect.deckId);

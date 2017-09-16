@@ -106,7 +106,6 @@ class Docking extends Component {
     if (this.props.data.loading) return null;
     const { graphic, disabled } = this.state;
     const { clamps, ramps, airlock } = this.props.data.simulators[0].ship;
-    console.log("Outer", clamps);
     return (
       <Container fluid className="docking">
         <Row>

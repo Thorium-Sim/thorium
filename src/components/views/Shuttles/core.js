@@ -58,7 +58,6 @@ class Shuttles extends Component {
     if (this.props.data.loading) return null;
     const { docking } = this.props.data;
     if (docking.length === 0) return <p>No Shuttlebays</p>;
-    console.log(this.props.data.assetFolders);
     return (
       <div className="shuttles-core">
         <table>

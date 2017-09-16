@@ -16,7 +16,6 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
         type: "shuttlebay"
       }
     };
-    console.log(variables);
     client.mutate({
       mutation,
       variables,

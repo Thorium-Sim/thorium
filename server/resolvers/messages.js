@@ -34,7 +34,6 @@ export const MessagesMutations = {
     App.handleEvent(args, "toggleStationMessageGroup", context);
   },
   sendMessage(root, args, context) {
-    console.log("sendMessage", args);
     App.handleEvent(args, "sendMessage", context);
   }
 };
@@ -64,7 +63,6 @@ export const MessagesSubscriptions = {
     return returnValue;
   },
   sendMessage(rootValue, { simulatorId, station }) {
-    console.log(rootValue, simulatorId, station);
     if (simulatorId) {
       if (rootValue.simulatorId !== simulatorId) return;
     }
