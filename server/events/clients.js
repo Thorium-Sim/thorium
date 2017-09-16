@@ -18,7 +18,7 @@ App.on("clientConnect", ({ client }) => {
 });
 App.on("clientDisconnect", ({ client }) => {
   const clientObj = App.clients.find(c => c.id === client);
-  clientObj.disconnect();
+  clientObj && clientObj.disconnect();
   pubsub.publish("clientChanged", App.clients);
 });
 App.on("clientPing", ({ client, ping }) => {

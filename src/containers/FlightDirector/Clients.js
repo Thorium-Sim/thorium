@@ -101,10 +101,17 @@ class Clients extends Component {
     });
   }
   render() {
+    console.log(this.props.data.clients);
     return (
       <Container>
         <Row className="justify-content-md-center">
-          <Col xs="12">
+          <Col
+            xs="12"
+            style={{
+              height: "60vh",
+              overflowY: "scroll"
+            }}
+          >
             <h4>Clients</h4>
             <table className="table table-striped table-hover table-sm">
               <thead>
@@ -117,76 +124,83 @@ class Clients extends Component {
               </thead>
               <tbody>
                 {!this.props.data.loading
-                  ? this.props.data.clients.map((p, index) =>
-                      <tr key={`flight-${p.id}-${index}`}>
-                        <td>
-                          {`${p.id}`}
-                        </td>
-                        <td>
-                          <select
-                            value={(p.flight && p.flight.id) || ""}
-                            onChange={this._select.bind(this, p, "flight")}
-                            className="form-control-sm c-select"
-                          >
-                            <option>Select a flight</option>
-                            {this.props.data.flights
-                              ? this.props.data.flights.map(f => {
-                                  return (
+                  ? this.props.data.clients
+                      .filter(
+                        p =>
+                          p.flight === "" ||
+                          p.flight === null ||
+                          p.flight.id === this.props.routeParams.flightId
+                      )
+                      .map((p, index) =>
+                        <tr key={`flight-${p.id}-${index}`}>
+                          <td>
+                            {`${p.id}`}
+                          </td>
+                          <td>
+                            <select
+                              value={(p.flight && p.flight.id) || ""}
+                              onChange={this._select.bind(this, p, "flight")}
+                              className="form-control-sm c-select"
+                            >
+                              <option value="">Select a flight</option>
+                              {this.props.data.flights
+                                ? this.props.data.flights.map(f => {
+                                    return (
+                                      <option
+                                        key={`flight-${p.id}-${f.id}`}
+                                        value={f.id}
+                                      >
+                                        {`${f.name}: ${moment(f.date).format(
+                                          "MM/DD/YY hh:mma"
+                                        )}`}
+                                      </option>
+                                    );
+                                  })
+                                : <option disabled>No Flights</option>}
+                            </select>
+                          </td>
+                          <td>
+                            <select
+                              value={(p.simulator && p.simulator.id) || ""}
+                              onChange={this._select.bind(this, p, "simulator")}
+                              className="form-control-sm c-select"
+                            >
+                              <option value="">Select a simulator</option>
+                              {p.flight
+                                ? p.flight.simulators.map(s =>
                                     <option
-                                      key={`flight-${p.id}-${f.id}`}
-                                      value={f.id}
+                                      key={`${p.id}-simulator-${s.id}`}
+                                      value={s.id}
                                     >
-                                      {`${f.name}: ${moment(f.date).format(
-                                        "MM/DD/YY hh:mma"
-                                      )}`}
+                                      {s.name}
                                     </option>
-                                  );
-                                })
-                              : <option disabled>No Flights</option>}
-                          </select>
-                        </td>
-                        <td>
-                          <select
-                            value={(p.simulator && p.simulator.id) || ""}
-                            onChange={this._select.bind(this, p, "simulator")}
-                            className="form-control-sm c-select"
-                          >
-                            <option>Select a simulator</option>
-                            {p.flight
-                              ? p.flight.simulators.map(s =>
-                                  <option
-                                    key={`${p.id}-simulator-${s.id}`}
-                                    value={s.id}
-                                  >
-                                    {s.name}
-                                  </option>
-                                )
-                              : <option disabled>No Simulators</option>}
-                          </select>
-                        </td>
-                        <td>
-                          <select
-                            value={(p.station && p.station.name) || ""}
-                            onChange={this._select.bind(this, p, "station")}
-                            className="form-control-sm c-select"
-                          >
-                            <option>Select a station</option>
-                            {p.simulator
-                              ? p.simulator.stations.map(s =>
-                                  <option
-                                    key={`${p.id}-station-${s.name}`}
-                                    value={s.name}
-                                  >
-                                    {s.name}
-                                  </option>
-                                )
-                              : <option disabled>No Stations</option>}
-                            <option value={"Viewscreen"}>Viewscreen</option>
-                            <option value={"Blackout"}>Blackout</option>
-                          </select>
-                        </td>
-                      </tr>
-                    )
+                                  )
+                                : <option disabled>No Simulators</option>}
+                            </select>
+                          </td>
+                          <td>
+                            <select
+                              value={(p.station && p.station.name) || ""}
+                              onChange={this._select.bind(this, p, "station")}
+                              className="form-control-sm c-select"
+                            >
+                              <option value="">Select a station</option>
+                              {p.simulator
+                                ? p.simulator.stations.map(s =>
+                                    <option
+                                      key={`${p.id}-station-${s.name}`}
+                                      value={s.name}
+                                    >
+                                      {s.name}
+                                    </option>
+                                  )
+                                : <option disabled>No Stations</option>}
+                              <option value={"Viewscreen"}>Viewscreen</option>
+                              <option value={"Blackout"}>Blackout</option>
+                            </select>
+                          </td>
+                        </tr>
+                      )
                   : <tr />}
               </tbody>
             </table>
