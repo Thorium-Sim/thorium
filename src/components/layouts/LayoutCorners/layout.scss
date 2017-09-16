@@ -657,7 +657,7 @@ body {
       position: absolute;
     }
     .frame-1 {
-      width: 593px;
+      width: 542px;
       height: 127px;
       background-image: url(./images/slice1.png);
     }
@@ -677,6 +677,13 @@ body {
         right: auto;
         transform: scaleX(-1);
       }
+    }
+    .frame-5 {
+      right: 533px;
+      height: 139px;
+      left: 542px;
+      background-repeat-y: no-repeat;
+      background-image: url(./images/slice8.png);
     }
     @media (min-width: 1700px) {
       .frame-1 {
@@ -699,6 +706,7 @@ body {
         background-image: url(./images/slice3.png);
         background-size: 603px 139px;
       }
+
     }
   }
   .frame-color {
@@ -766,6 +774,12 @@ body {
         15px 105px,
         0px 109px
       );
+    }
+    .part-1-3 {
+      top: 0px;
+      left: 541px;
+      height: 38px;
+      width: 624px;
     }
     .part-c {
       width: 350px;

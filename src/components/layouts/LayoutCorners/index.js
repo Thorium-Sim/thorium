@@ -165,6 +165,7 @@ class LayoutCorners extends Component {
             <div className="part-1-1" />
             <div className="part-c" />
             <div className="part-1-2" />
+            <div className="part-1-3" />
             <div className="part-2" />
             <div className="part-3" />
           </div>
@@ -173,6 +174,7 @@ class LayoutCorners extends Component {
             <div className="frame-2" />
             <div className="frame-3" />
             <div className="frame-4" />
+            <div className="frame-5" />
           </div>
           <div className="frame-text">
             <h1 className="simulator-name">
