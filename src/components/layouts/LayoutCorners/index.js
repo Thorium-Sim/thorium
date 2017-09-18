@@ -7,7 +7,7 @@ import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 import CardSwitcher from "./CardSwitcher";
 import Widgets from "./Widgets";
-import Alerts from "./Alerts";
+import Alerts from "../../generic/Alerts";
 import ActionsMixin from "./Actions";
 
 import "./layout.scss";

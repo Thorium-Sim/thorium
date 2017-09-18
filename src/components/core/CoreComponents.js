@@ -12,6 +12,7 @@ import {
   ListGroup,
   ListGroupItem
 } from "reactstrap";
+import Alerts from "../generic/Alerts";
 import { Link } from "react-router";
 
 import "./CoreComponents.scss";
@@ -164,6 +165,12 @@ class CoreComponents extends Component {
             </Button>
           </ModalFooter>
         </Modal>
+        {this.state.simulator &&
+          <Alerts
+            ref="alert-widget"
+            simulator={{ id: this.state.simulator }}
+            station={{ name: "Core" }}
+          />}
       </div>
     );
   }

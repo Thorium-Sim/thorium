@@ -14,6 +14,7 @@ const SPEEDCHANGE_SUB = gql`
     speedChange {
       id
       speed
+      on
     }
   }
 `;
@@ -61,7 +62,8 @@ class EngineControl extends Component {
           const engines = previousResult.engines.map(engine => {
             if (engine.id === subscriptionData.data.speedChange.id) {
               return Object.assign({}, engine, {
-                speed: subscriptionData.data.speedChange.speed
+                speed: subscriptionData.data.speedChange.speed,
+                on: subscriptionData.data.speedChange.on
               });
             }
             return engine;
@@ -139,9 +141,8 @@ class EngineControl extends Component {
     }
   }
   fullStop() {
-    this.props.data.engines.forEach(engine => {
-      this.props.setSpeed({ id: engine.id, speed: -1, on: false });
-    });
+    const engine = this.props.data.engines.find(engine => engine.on);
+    this.props.setSpeed({ id: engine.id, speed: -1, on: false });
   }
   render() {
     const engines = this.props.data.engines || [];
@@ -269,6 +270,7 @@ const ENGINE_QUERY = gql`
       heat
       speed
       coolant
+      on
     }
   }
 `;

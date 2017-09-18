@@ -3,6 +3,8 @@ import { Alert } from "reactstrap";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 
+// Speech Handling
+const synth = window.speechSynthesis;
 const holderStyle = {
   position: "absolute",
   right: "20px",
@@ -52,6 +54,10 @@ class Alerts extends Component {
             self.setState({
               alerts
             });
+            if (self.props.station.name) {
+              synth.cancel();
+              synth.speak(new SpeechSynthesisUtterance(notify.title));
+            }
             const duration = notify.duration ? notify.duration : 5000;
             setTimeout(() => {
               self.onDismiss(notify.id);
@@ -106,16 +112,18 @@ class Alerts extends Component {
 
 const AlertItem = ({ dismiss, notify }) => {
   return (
-    <Alert
-      color={notify.color}
-      isOpen={notify.visible}
-      toggle={dismiss.bind(this, notify.id)}
-    >
-      <h5 className="alert-heading">
-        {notify.title}
-      </h5>
-      {notify.body}
-    </Alert>
+    <div onClick={dismiss.bind(this, notify.id)}>
+      <Alert
+        color={notify.color}
+        isOpen={notify.visible}
+        toggle={dismiss.bind(this, notify.id)}
+      >
+        <h5 className="alert-heading">
+          {notify.title}
+        </h5>
+        {notify.body}
+      </Alert>
+    </div>
   );
 };
 export default withApollo(Alerts);

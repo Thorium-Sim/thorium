@@ -1,6 +1,7 @@
 import App from "../../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
+import uuid from "uuid";
 
 // Simulator
 App.on(
@@ -42,6 +43,14 @@ App.on("changeSimulatorAlertLevel", ({ simulatorId, alertLevel }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   if (simulator) {
     simulator.setAlertLevel(alertLevel);
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: simulator.id,
+      station: "Core",
+      title: `Alert Level ${alertLevel}`,
+      body: "",
+      color: "info"
+    });
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
