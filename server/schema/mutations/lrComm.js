@@ -1,4 +1,5 @@
 export default `
+#Macro: Send long range message
 sendLongRangeMessage(id: ID, simulatorId: ID, message: String!, crew: Boolean, sender: String, decoded: Boolean): String
 longRangeMessageSend(id: ID, message: ID!): String
 deleteLongRangeMessage(id: ID!, message: ID!): String
