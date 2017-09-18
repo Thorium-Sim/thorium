@@ -29,9 +29,17 @@ App.on("sensorScanResult", ({ id, result }) => {
     App.systems.filter(s => s.type === "Sensors")
   );
 });
-App.on("processedData", ({ id, data }) => {
-  const system = App.systems.find(sys => sys.id === id);
-  system.processedDatad(data);
+App.on("processedData", ({ id, simulatorId, domain, data }) => {
+  let system;
+  if (id) {
+    system = App.systems.find(sys => sys.id === id);
+  }
+  if (simulatorId && domain) {
+    system = App.systems.find(
+      sys => sys.simulatorId === simulatorId && sys.domain === domain
+    );
+  }
+  system && system.processedDatad(data);
   pubsub.publish(
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")
