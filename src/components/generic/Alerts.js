@@ -50,18 +50,21 @@ class Alerts extends Component {
           // into the existing list of comments
           const alerts = self.state.alerts;
           if (notify.id) {
-            alerts.push(Object.assign(notify, { visible: true }));
-            self.setState({
-              alerts
-            });
-            if (self.props.station.name) {
+            if (!self.props.disabled) {
+              alerts.push(Object.assign(notify, { visible: true }));
+              self.setState({
+                alerts
+              });
+
+              const duration = notify.duration ? notify.duration : 5000;
+              setTimeout(() => {
+                self.onDismiss(notify.id);
+              }, duration);
+            }
+            if (self.props.station.name === "Core" && self.props.speech) {
               synth.cancel();
               synth.speak(new SpeechSynthesisUtterance(notify.title));
             }
-            const duration = notify.duration ? notify.duration : 5000;
-            setTimeout(() => {
-              self.onDismiss(notify.id);
-            }, duration);
           }
         },
         error(err) {

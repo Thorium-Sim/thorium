@@ -23,9 +23,13 @@ class CoreComponents extends Component {
     this.state = {
       simulator: null,
       layout: localStorage.getItem("thorium_coreLayout") || "defaultLayout",
+      notifications:
+        localStorage.getItem("thorium_coreNotifications") === "true",
+      speech: localStorage.getItem("thorium_coreSpeech") === "true",
       editable: false,
       issuesOpen: false
     };
+    console.log(this.state);
   }
   componentWillReceiveProps(nextProps) {
     if (!nextProps.data.loading) {
@@ -79,7 +83,7 @@ class CoreComponents extends Component {
       : {};
     const simulators = flight && flight.id ? flight.simulators : [];
     const LayoutComponent = Layouts[this.state.layout];
-
+    const { notifications, speech } = this.state;
     return (
       <div className="core">
         <select
@@ -123,6 +127,31 @@ class CoreComponents extends Component {
         >
           Bug Report/Issue Tracker
         </a>
+        <label>
+          Notifications{" "}
+          <input
+            type="checkbox"
+            checked={notifications}
+            onChange={e => {
+              this.setState({ notifications: e.target.checked });
+              localStorage.setItem(
+                "thorium_coreNotifications",
+                e.target.checked
+              );
+            }}
+          />
+        </label>
+        <label>
+          Speech{" "}
+          <input
+            type="checkbox"
+            checked={speech}
+            onChange={e => {
+              this.setState({ speech: e.target.checked });
+              localStorage.setItem("thorium_coreSpeech", e.target.checked);
+            }}
+          />
+        </label>
         <div
           id="core-layout"
           style={{
@@ -168,6 +197,8 @@ class CoreComponents extends Component {
         {this.state.simulator &&
           <Alerts
             ref="alert-widget"
+            disabled={!notifications}
+            speech={speech}
             simulator={{ id: this.state.simulator }}
             station={{ name: "Core" }}
           />}
