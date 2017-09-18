@@ -1,7 +1,10 @@
 export default `
 sensorScanRequest(id: ID!, request: String!): String
 sensorScanResult(id: ID!, result: String!): String
-processedData(id: ID!, data: String!): String
+
+#Macro: Send processed data to sensors
+processedData(id: ID, simulatorId: ID, domain: String, data: String!): String
+
 sensorScanCancel(id: ID!): String
 
 #Macro: Set a list of preset scan answers and processed data

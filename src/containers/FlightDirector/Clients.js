@@ -101,7 +101,6 @@ class Clients extends Component {
     });
   }
   render() {
-    console.log(this.props.data.clients);
     return (
       <Container>
         <Row className="justify-content-md-center">

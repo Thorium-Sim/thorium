@@ -63,7 +63,7 @@ class SensorsCore extends Component {
   sendProcessedData(sensors) {
     this.props.client.mutate({
       mutation: gql`
-        mutation ProcessedData($id: ID!, $data: String!) {
+        mutation ProcessedData($id: ID, $data: String!) {
           processedData(id: $id, data: $data)
         }
       `,
