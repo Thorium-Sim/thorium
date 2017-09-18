@@ -3,6 +3,8 @@ import { Alert } from "reactstrap";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 
+// Speech Handling
+const synth = window.speechSynthesis;
 const holderStyle = {
   position: "absolute",
   right: "20px",
@@ -48,14 +50,21 @@ class Alerts extends Component {
           // into the existing list of comments
           const alerts = self.state.alerts;
           if (notify.id) {
-            alerts.push(Object.assign(notify, { visible: true }));
-            self.setState({
-              alerts
-            });
-            const duration = notify.duration ? notify.duration : 5000;
-            setTimeout(() => {
-              self.onDismiss(notify.id);
-            }, duration);
+            if (!self.props.disabled) {
+              alerts.push(Object.assign(notify, { visible: true }));
+              self.setState({
+                alerts
+              });
+
+              const duration = notify.duration ? notify.duration : 5000;
+              setTimeout(() => {
+                self.onDismiss(notify.id);
+              }, duration);
+            }
+            if (self.props.station.name === "Core" && self.props.speech) {
+              synth.cancel();
+              synth.speak(new SpeechSynthesisUtterance(notify.title));
+            }
           }
         },
         error(err) {
@@ -106,16 +115,18 @@ class Alerts extends Component {
 
 const AlertItem = ({ dismiss, notify }) => {
   return (
-    <Alert
-      color={notify.color}
-      isOpen={notify.visible}
-      toggle={dismiss.bind(this, notify.id)}
-    >
-      <h5 className="alert-heading">
-        {notify.title}
-      </h5>
-      {notify.body}
-    </Alert>
+    <div onClick={dismiss.bind(this, notify.id)}>
+      <Alert
+        color={notify.color}
+        isOpen={notify.visible}
+        toggle={dismiss.bind(this, notify.id)}
+      >
+        <h5 className="alert-heading">
+          {notify.title}
+        </h5>
+        {notify.body}
+      </Alert>
+    </div>
   );
 };
 export default withApollo(Alerts);

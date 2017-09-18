@@ -1,6 +1,7 @@
 import App from "../../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
+import uuid from "uuid";
 
 App.on("createEngine", param => {
   const engine = new Classes.Engine(param);
@@ -24,7 +25,20 @@ App.on("removeEngine", param => {
 App.on("speedChange", param => {
   const system = App.systems.find(sys => sys.id === param.id);
   const engineIndex = App.systems.findIndex(sys => sys.id === param.id) || -1;
+  const on = system.on;
+  console.log(on, param);
   system.setSpeed(param.speed, param.on);
+  const speed = system.speeds[system.speed - 1];
+  if (param.on || on) {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: system.simulatorId,
+      station: "Core",
+      title: `Speed Change ${speed ? speed.text : "Full Stop"}`,
+      body: ``,
+      color: "info"
+    });
+  }
   pubsub.publish("speedChange", system);
   // Now stop the other engines
   // If speed is -1 (full stop), stop them all

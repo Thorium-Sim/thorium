@@ -98,6 +98,14 @@ App.on("systemReactivationCode", ({ systemId, station, code }) => {
   if (!sys) {
     sys = App.dockingPorts.find(s => s.id === systemId);
   }
+  pubsub.publish("notify", {
+    id: uuid.v4(),
+    simulatorId: sys.simulatorId,
+    station: "Core",
+    title: `Reactivation Code`,
+    body: sys.name,
+    color: "info"
+  });
   sys.reactivationCode(code, station);
   sendUpdate(sys);
 });
@@ -116,6 +124,14 @@ App.on("requestDamageReport", ({ systemId }) => {
   if (!sys) {
     sys = App.dockingPorts.find(s => s.id === systemId);
   }
+  pubsub.publish("notify", {
+    id: uuid.v4(),
+    simulatorId: sys.simulatorId,
+    station: "Core",
+    title: `Damage Report Request`,
+    body: sys.name,
+    color: "info"
+  });
   sys.requestReport();
   sendUpdate(sys);
 });

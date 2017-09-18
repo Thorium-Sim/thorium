@@ -1,6 +1,7 @@
 import App from "../../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
+import uuid from "uuid";
 
 //Creating a new long range message
 App.on(
@@ -24,7 +25,16 @@ App.on(
 );
 //Queued messages are sent
 App.on("longRangeMessageSend", ({ id, message }) => {
-  App.systems.find(s => s.id === id).sendMessage(message);
+  const sys = App.systems.find(s => s.id === id);
+  sys.sendMessage(message);
+  pubsub.publish("notify", {
+    id: uuid.v4(),
+    simulatorId: sys.simulatorId,
+    station: "Core",
+    title: `New Long Range Message`,
+    body: ``,
+    color: "info"
+  });
   pubsub.publish(
     "longRangeCommunicationsUpdate",
     App.systems.filter(s => s.type === "LongRangeComm")
