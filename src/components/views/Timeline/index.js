@@ -1,10 +1,21 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Button, ButtonGroup } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  ButtonGroup,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Input
+} from "reactstrap";
 import Immutable from "immutable";
 import FontAwesome from "react-fontawesome";
-
+import * as Macros from "../../macros";
 import "./style.scss";
 
 const TIMELINE_SUB = gql`
@@ -120,6 +131,13 @@ class TimelineCore extends Component {
       variables
     });
   };
+  toggle = () => {
+    const { currentTimelineStep } = this.props.data.simulators[0];
+    this.setState({
+      modal: !this.state.modal,
+      newStep: currentTimelineStep
+    });
+  };
   render() {
     if (this.props.data.loading) return null;
     const { mission, currentTimelineStep } = this.props.data.simulators[0];
@@ -147,6 +165,9 @@ class TimelineCore extends Component {
                 onClick={this.runMacro}
               >
                 <FontAwesome fixedWidth name="step-forward" />
+              </Button>
+              <Button color="info" onClick={this.toggle}>
+                {currentTimelineStep + 1}
               </Button>
               <Button
                 color="success"
@@ -188,9 +209,15 @@ class TimelineCore extends Component {
                         <p>
                           {i.event}
                         </p>
-                        <pre>
-                          {i.args}
-                        </pre>
+                        {Macros[i.event] &&
+                          (() => {
+                            const MacroPreview = Macros[i.event];
+                            let args = i.args;
+                            if (typeof args === "string") {
+                              args = JSON.parse(args);
+                            }
+                            return <MacroPreview args={args} />;
+                          })()}
                       </details>
                     </li>
                   )}
@@ -200,6 +227,40 @@ class TimelineCore extends Component {
                 <h5>End of Timeline</h5>
               </Col>}
         </Row>
+        <Modal isOpen={this.state.modal} toggle={this.toggle} size="large">
+          <ModalHeader toggle={this.toggle}>
+            Select which step to go to
+          </ModalHeader>
+          <ModalBody>
+            <Input
+              type="select"
+              value={this.state.newStep}
+              onChange={evt => this.setState({ newStep: evt.target.value })}
+            >
+              {mission.timeline.map(t => {
+                return (
+                  <option key={t.id} value={t.order}>
+                    {t.name}
+                  </option>
+                );
+              })}
+            </Input>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggle}>
+              Cancel
+            </Button>
+            <Button
+              color="primary"
+              onClick={() => {
+                this.updateStep(this.state.newStep);
+                this.toggle();
+              }}
+            >
+              Load Step
+            </Button>
+          </ModalFooter>
+        </Modal>
       </Container>
     );
   }

@@ -45,7 +45,7 @@ export default class SetArmyContacts extends Component {
     );
   };
   render() {
-    const { updateArgs, args /*client*/ } = this.props;
+    const { updateArgs = () => {}, args /*client*/ } = this.props;
     const { removeContacts, selectedContact } = this.state;
     const { armyContacts = [] } = args;
     return (
