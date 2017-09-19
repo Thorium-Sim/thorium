@@ -151,7 +151,7 @@ class GridCore extends Component {
     const self = this;
     this.setState({
       movingContact: Object.assign({}, movingContact, {
-        location: { x: 0, y: 0, z: 0 }
+        location: null
       })
     });
     document.addEventListener("mousemove", this.moveMouse);
@@ -164,7 +164,7 @@ class GridCore extends Component {
   };
   moveMouse = evt => {
     const { dimensions } = this;
-    const { movingContact } = this.state;
+    const { movingContact = {} } = this.state;
     const { width: dimWidth, height: dimHeight } = dimensions;
     const padding = 15;
     const width = Math.min(dimWidth, dimHeight) - padding;
@@ -193,6 +193,7 @@ class GridCore extends Component {
       cloaked,
       infrared
     } = movingContact;
+    if (!location) return;
     const distance = distance3d({ x: 0, y: 0, z: 0 }, location);
     if (distance > 1.08) {
       return;

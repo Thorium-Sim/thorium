@@ -76,31 +76,27 @@ class SetsPicker extends Component {
     const flight = flights[0];
     return (
       <Container className="set-picker">
+        <h4>Sets</h4>
         <Row className="justify-content-md-center">
-          <Col xs="12">
-            <h4>Sets</h4>
-            {flight &&
-              flight.simulators.map(s =>
-                <Row key={s.id}>
-                  <Col sm={4}>
-                    <h5>
-                      {s.name} - {s.stationSet.name}
-                    </h5>
-                    <Card>
-                      {sets.map(set =>
-                        <li
-                          className="list-group-item"
-                          onClick={() => this.applyClientSet(set, s, flight)}
-                          key={`${s.id}-${set.id}}`}
-                        >
-                          {set.name}
-                        </li>
-                      )}
-                    </Card>
-                  </Col>
-                </Row>
-              )}
-          </Col>
+          {flight &&
+            flight.simulators.map(s =>
+              <Col key={s.id} sm={4}>
+                <h5>
+                  {s.name} - {s.stationSet.name}
+                </h5>
+                <Card>
+                  {sets.map(set =>
+                    <li
+                      className="list-group-item"
+                      onClick={() => this.applyClientSet(set, s, flight)}
+                      key={`${s.id}-${set.id}}`}
+                    >
+                      {set.name}
+                    </li>
+                  )}
+                </Card>
+              </Col>
+            )}
         </Row>
       </Container>
     );
