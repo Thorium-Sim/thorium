@@ -4,3 +4,4 @@ export Decks from "./Decks";
 export Crew from "./Crew";
 export Systems from "./Systems";
 export Docking from "./Docking";
+export Assets from "./Assets";

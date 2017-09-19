@@ -91,9 +91,18 @@ export const AssetsMutations = {
     return "";
   },
   async uploadAsset(root, args, context) {
-    let { files, simulatorId, containerId, folderPath: givenFolderPath } = args;
+    let {
+      files,
+      simulatorId,
+      containerId,
+      containerName,
+      folderPath: givenFolderPath
+    } = args;
     let container = App.assetContainers.find(
-      container => containerId === container.id
+      container =>
+        containerId === container.id ||
+        (container.folderPath === folderPath &&
+          container.name === containerName)
     );
     let folderPath = givenFolderPath,
       fullPath;
@@ -104,8 +113,13 @@ export const AssetsMutations = {
     files.forEach(file => {
       // First, check to see if there is a container
       let container = App.assetContainers.find(
-        container => containerId === container.id
+        container =>
+          containerId === container.id ||
+          (container.folderPath === folderPath &&
+            container.name === containerName)
       );
+      fullPath = fullPath || container.fullPath;
+      containerId = containerId || container.id;
       let clearContainer = false;
       if (!container) {
         //Lets make a container for this asset
