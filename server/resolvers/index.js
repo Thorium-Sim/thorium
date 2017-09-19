@@ -151,6 +151,11 @@ import {
   DockingSubscriptions
 } from "./docking";
 
+import {
+  CoreFeedQueries,
+  CoreFeedMutations,
+  CoreFeedSubscriptions
+} from "./coreFeed";
 import App from "../../app";
 
 function parseJSONLiteral(ast) {
@@ -208,7 +213,8 @@ const queryMap = Object.assign(
   ViewscreenQueries,
   MessagesQueries,
   IsochipsQueries,
-  DockingQueries
+  DockingQueries,
+  CoreFeedQueries
 );
 
 export const mutationMap = Object.assign(
@@ -249,7 +255,8 @@ export const mutationMap = Object.assign(
   ViewscreenMutations,
   MessagesMutations,
   IsochipsMutations,
-  DockingMutations
+  DockingMutations,
+  CoreFeedMutations
 );
 
 const subscriptionMap = Object.assign(
@@ -285,7 +292,8 @@ const subscriptionMap = Object.assign(
   ViewscreenSubscriptions,
   MessagesSubscriptions,
   IsochipsSubscriptions,
-  DockingSubscriptions
+  DockingSubscriptions,
+  CoreFeedSubscriptions
 );
 
 export default Object.assign(
