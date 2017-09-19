@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Cores } from "./index";
-
+import { Cores } from "../";
+import { Button } from "reactstrap";
 import "./style.scss";
-
-console.log(Cores);
 
 const COREFEED_SUB = gql`
   subscription CoreFeedUpdate($simulatorId: ID) {
@@ -35,9 +33,45 @@ class CoreFeed extends Component {
       });
     }
   }
+  ignoreCoreFeed = id => {
+    const mutation = gql`
+      mutation IgnoreCoreFeed($id: ID) {
+        ignoreCoreFeed(id: $id)
+      }
+    `;
+    const variables = { id };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading) return null;
-    return <div className="coreFeed-core">This is the core feed</div>;
+    const coreFeed = this.props.data.coreFeed.filter(c => !c.ignored);
+    return (
+      <div className="coreFeed-core">
+        <p>Core Feed</p>
+        {coreFeed.length
+          ? coreFeed.map(c => {
+              const CoreComponent = Cores[c.component];
+              return (
+                <div key={c.id} className="core-feed-component">
+                  {c.component.replace("Core", "")}
+                  <CoreComponent {...this.props} />
+                  <Button
+                    color="info"
+                    block
+                    size="sm"
+                    onClick={() => this.ignoreCoreFeed(c.id)}
+                  >
+                    Ignore
+                  </Button>
+                </div>
+              );
+            })
+          : <p>No feed items...</p>}
+      </div>
+    );
   }
 }
 
