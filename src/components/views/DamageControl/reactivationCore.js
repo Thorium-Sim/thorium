@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Button, Input } from "reactstrap";
+import { Row, Col, Button } from "reactstrap";
 
 const SYSTEMS_SUB = gql`
   subscription DamagedSystemsUpdate($simulatorId: ID) {
