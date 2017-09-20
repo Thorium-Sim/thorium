@@ -13,11 +13,8 @@
 *New here? Check out the [contributing document](CONTRIBUTING.md)*
 
 Want something to work on? Here's where [we need help](https://github.com/Thorium-Sim/thorium/labels/help%20wanted).
-
-Thorium is built with the following technologies:
-* [React](https://facebook.github.io/react/) for the frontend
-* [Apollo Client](http://www.apollostack.com/) for the data layer
-* [GraphQL](http://graphql.org) for the transmission layer
+Not sure how to work with Thorium? Guides are in the [wiki](https://github.com/Thorium-Sim/thorium/wiki)
+Thorium accepts [donations](https://thoriumsim.com/download/)
 
 ## What is Thorium
 
@@ -49,11 +46,14 @@ Thorium is a simulator controls platform which eventually hopes to encapsulate t
 
 And more. The above merely scratches the surface.
 
-[Data Model Diagram](https://www.lucidchart.com/invitations/accept/6283bfd5-06ef-4dd5-8668-738ddf3e08ed)
-
 Thorium is flexible enough to provide a system for creating an integrated, distributed, fault-tolerant show-control system that can power lights, sound, video, and take input and provide output to a wide variety of devices.
 
-Created with ❤ by [Alex Anderson](http://ralexanderson.com).
+Created with ❤ by [Alex Anderson](http://ralexanderson.com) and [Fyreworks](https://fyreworks.us).
+
+Thorium is built with the following technologies:
+* [React](https://facebook.github.io/react/) for the frontend
+* [Apollo Client](http://www.apollostack.com/) for the data layer
+* [GraphQL](http://graphql.org) for the transmission layer
 
 ## Getting Started
 
