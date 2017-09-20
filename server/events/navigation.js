@@ -5,6 +5,10 @@ import uuid from "uuid";
 App.on("navCalculateCourse", ({ id, destination }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.calculateCourse(destination);
+  App.handleEvent(
+    { simulatorId: system.simulatorId, component: "NavigationCore" },
+    "addCoreFeed"
+  );
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: system.simulatorId,

@@ -32,3 +32,4 @@ import "./viewscreen";
 import "./messages";
 import "./isochips";
 import "./docking";
+import "./coreFeed";

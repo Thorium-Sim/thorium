@@ -62,7 +62,10 @@ class LRCommCore extends Component {
       <div className="comm-core">
         {this.props.data.longRangeCommunications.length > 0
           ? <Container style={{ height: "calc(100% - 16px)" }}>
-              <Row className="comm-messages" style={{ height: "100%" }}>
+              <Row
+                className="comm-messages"
+                style={{ height: "100%", minHeight: "30vh" }}
+              >
                 <Col sm={3}>
                   <ul>
                     {this.props.data.longRangeCommunications[0].messages.map(

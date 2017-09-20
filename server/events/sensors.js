@@ -23,6 +23,10 @@ App.on("sensorScanRequest", ({ id, request }) => {
     body: request,
     color: "info"
   });
+  App.handleEvent(
+    { simulatorId: system.simulatorId, component: "SensorsCore" },
+    "addCoreFeed"
+  );
   system.scanRequested(request);
   pubsub.publish(
     "sensorsUpdate",

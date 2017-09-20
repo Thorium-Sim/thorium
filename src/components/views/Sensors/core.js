@@ -117,7 +117,8 @@ class SensorsCore extends Component {
       display: "flex",
       flexDirection: "column",
       alignItems: "stretch",
-      height: "calc(100% - 100px)"
+      height: "calc(100% - 100px)",
+      minHeight: "20vh"
     };
     const buttonStyle = {
       display: "flex",

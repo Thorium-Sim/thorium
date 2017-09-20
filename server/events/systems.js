@@ -106,6 +106,10 @@ App.on("systemReactivationCode", ({ systemId, station, code }) => {
     body: sys.name,
     color: "info"
   });
+  App.handleEvent(
+    { simulatorId: sys.simulatorId, component: "ReactivationCore" },
+    "addCoreFeed"
+  );
   sys.reactivationCode(code, station);
   sendUpdate(sys);
 });
@@ -124,6 +128,10 @@ App.on("requestDamageReport", ({ systemId }) => {
   if (!sys) {
     sys = App.dockingPorts.find(s => s.id === systemId);
   }
+  App.handleEvent(
+    { simulatorId: sys.simulatorId, component: "DamageReportsCore" },
+    "addCoreFeed"
+  );
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: sys.simulatorId,

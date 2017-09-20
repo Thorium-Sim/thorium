@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Cores } from "../../views";
+import CoreFeed from "../../views/CoreFeed";
+
 import "./default.scss";
 
 const exceptions = [
@@ -17,13 +19,14 @@ const exceptions = [
   "SecurityDecksCore",
   "SelfDestructCore",
   "ShuttlesCore",
-  "ShipCore"
+  "ShipCore",
+  "ReactivationCore"
 ];
 export default class CoreDefault extends Component {
   state = {};
   render() {
     const { props, state } = this;
-    const { timelineOpen, tractOpen, shipOpen } = state;
+    const { timelineOpen, tractOpen, shipOpen, coreFeedOpen } = state;
     return (
       <div>
         <div className="core-default">
@@ -76,6 +79,19 @@ export default class CoreDefault extends Component {
           </div>
           <div className="inner-cores">
             <Cores.ShipCore {...props} />
+          </div>
+        </div>
+        <div
+          className={`side-core coreFeeds-core ${coreFeedOpen ? "open" : ""}`}
+        >
+          <div
+            className="coreFeed-label side-label"
+            onClick={() => this.setState({ coreFeedOpen: !coreFeedOpen })}
+          >
+            Core Feed
+          </div>
+          <div className="inner-cores">
+            <CoreFeed {...props} />
           </div>
         </div>
       </div>
