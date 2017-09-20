@@ -49,7 +49,9 @@
     top: 10px;
   }
 }
-.coreFeed-core {
+.coreFeeds-core {
+  width: 350px;
+  transform: translate(350px);  
   .coreFeed-label {
     background-color: goldenrod;
     left: -45px;

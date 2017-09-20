@@ -19,7 +19,8 @@ const exceptions = [
   "SecurityDecksCore",
   "SelfDestructCore",
   "ShuttlesCore",
-  "ShipCore"
+  "ShipCore",
+  "ReactivationCore"
 ];
 export default class CoreDefault extends Component {
   state = {};
@@ -81,7 +82,7 @@ export default class CoreDefault extends Component {
           </div>
         </div>
         <div
-          className={`side-core coreFeed-core ${coreFeedOpen ? "open" : ""}`}
+          className={`side-core coreFeeds-core ${coreFeedOpen ? "open" : ""}`}
         >
           <div
             className="coreFeed-label side-label"
