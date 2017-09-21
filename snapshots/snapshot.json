@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 236,
+	"_eventsCount": 240,
 	"simulators": [
 		{
 			"id": "test",
@@ -18,29 +18,8 @@
 				"clamps": false,
 				"ramps": false,
 				"airlock": false,
-				"selfDestructTime": null,
-				"selfDestructCode": null,
-				"selfDestructAuto": false,
-				"remoteAccessCodes": []
-			}
-		},
-		{
-			"id": "c151bf83-9078-445e-aea0-2fcda4c40937",
-			"name": "Big Ship",
-			"layout": "LayoutCorners",
-			"alertlevel": "3",
-			"template": true,
-			"templateId": null,
-			"class": "Simulator",
-			"stationSet": null,
-			"stations": [],
-			"mission": null,
-			"currentTimelineStep": 0,
-			"teams": [],
-			"ship": {
-				"clamps": false,
-				"ramps": false,
-				"airlock": false,
+				"bridgeCrew": 14,
+				"radiation": 0.1,
 				"selfDestructTime": null,
 				"selfDestructCode": null,
 				"selfDestructAuto": false,
@@ -64,6 +43,8 @@
 				"clamps": false,
 				"ramps": false,
 				"airlock": false,
+				"bridgeCrew": 14,
+				"radiation": 0.1,
 				"selfDestructTime": null,
 				"selfDestructCode": null,
 				"selfDestructAuto": false,
@@ -87,6 +68,8 @@
 				"clamps": false,
 				"ramps": false,
 				"airlock": false,
+				"bridgeCrew": 14,
+				"radiation": 0.1,
 				"selfDestructTime": null,
 				"selfDestructCode": null,
 				"selfDestructAuto": false,
@@ -110,6 +93,8 @@
 				"clamps": false,
 				"ramps": false,
 				"airlock": false,
+				"bridgeCrew": 14,
+				"radiation": 0.1,
 				"selfDestructTime": null,
 				"selfDestructCode": null,
 				"selfDestructAuto": false,
@@ -320,6 +305,8 @@
 				"clamps": false,
 				"ramps": false,
 				"airlock": false,
+				"bridgeCrew": 14,
+				"radiation": 0.1,
 				"selfDestructTime": null,
 				"selfDestructCode": null,
 				"selfDestructAuto": false,
@@ -343,6 +330,8 @@
 				"clamps": false,
 				"ramps": false,
 				"airlock": false,
+				"bridgeCrew": 14,
+				"radiation": 0.1,
 				"selfDestructTime": null,
 				"selfDestructCode": null,
 				"selfDestructAuto": false,
@@ -573,6 +562,8 @@
 				"clamps": false,
 				"ramps": false,
 				"airlock": false,
+				"bridgeCrew": 14,
+				"radiation": 0.1,
 				"selfDestructTime": null,
 				"selfDestructCode": null,
 				"selfDestructAuto": false,
@@ -835,6 +826,8 @@
 				"clamps": false,
 				"ramps": false,
 				"airlock": false,
+				"bridgeCrew": 14,
+				"radiation": 0.1,
 				"selfDestructTime": null,
 				"selfDestructCode": null,
 				"selfDestructAuto": false,
@@ -1097,6 +1090,8 @@
 				"clamps": false,
 				"ramps": false,
 				"airlock": false,
+				"bridgeCrew": 14,
+				"radiation": 0.1,
 				"selfDestructTime": null,
 				"selfDestructCode": null,
 				"selfDestructAuto": false,
@@ -1510,9 +1505,9 @@
 					"messageGroups": [],
 					"cards": [
 						{
-							"name": "Alert Condition",
+							"name": "Status",
 							"icon": null,
-							"component": "AlertCondition",
+							"component": "Status",
 							"class": "Card"
 						},
 						{
@@ -1559,7 +1554,9 @@
 					"class": "Station",
 					"name": "Engineering",
 					"login": false,
-					"messageGroups": [],
+					"messageGroups": [
+						"Damage"
+					],
 					"cards": [
 						{
 							"name": "Damage Report",
@@ -1719,7 +1716,9 @@
 					"class": "Station",
 					"name": "Security",
 					"login": false,
-					"messageGroups": [],
+					"messageGroups": [
+						"Security"
+					],
 					"cards": [
 						{
 							"name": "Deck Control",
@@ -2208,7 +2207,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 15943500,
+			"timeSincePing": 16339500,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -2297,7 +2296,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 15943500,
+			"timeSincePing": 16339500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2443,7 +2442,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.9048239999999048,
+			"batteryChargeLevel": 0.9016159999999016,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -3214,7 +3213,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 15943500,
+			"timeSincePing": 16339500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3244,7 +3243,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 15943500,
+			"timeSincePing": 16339500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4406,7 +4405,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 15943500,
+			"timeSincePing": 16339500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4437,7 +4436,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 15943500,
+			"timeSincePing": 16339500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4926,7 +4925,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.5729499999998363,
+			"batteryChargeLevel": 0.5724999999998361,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -5502,7 +5501,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11126500,
+			"timeSincePing": 11522500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5533,7 +5532,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11126500,
+			"timeSincePing": 11522500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6643,7 +6642,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "active",
-			"timeSincePing": 4100,
+			"timeSincePing": 3600,
 			"scanResults": "",
 			"scanRequest": "Course!",
 			"processedData": "",
@@ -6821,7 +6820,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11126500,
+			"timeSincePing": 11522500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -7762,7 +7761,9 @@
 			"displayName": "Long Range Comm",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					2
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -7784,7 +7785,9 @@
 			"displayName": "Internal Comm",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					2
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -7807,7 +7810,9 @@
 			"displayName": "Short Range Comm",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					3
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -7823,7 +7828,78 @@
 			"amplitude": 0.5,
 			"state": "idle",
 			"arrows": [],
-			"signals": []
+			"signals": [
+				{
+					"id": "6b1fddf6-7098-4f07-8515-0b7f8272879d",
+					"image": "Romulan",
+					"name": "Romulan",
+					"color": "#00ff00",
+					"range": {
+						"upper": 1,
+						"lower": 0.85
+					}
+				},
+				{
+					"id": "3dc916ed-48cd-42c3-92f7-03d83f5c227f",
+					"image": "Ferengi",
+					"name": "Ferengi",
+					"color": "#ffff00",
+					"range": {
+						"upper": 0.22,
+						"lower": 0
+					}
+				},
+				{
+					"id": "e21a4686-a0a2-4d30-974e-af71d79add4a",
+					"image": "Cardassian",
+					"name": "Cardassian",
+					"color": "#ffaa00",
+					"range": {
+						"upper": 0.85,
+						"lower": 0.75
+					}
+				},
+				{
+					"id": "589918e1-d246-4b42-8647-22d8535b642c",
+					"image": "General Use",
+					"name": "General Use",
+					"color": "#ffffff",
+					"range": {
+						"upper": 0.75,
+						"lower": 0.58
+					}
+				},
+				{
+					"id": "b70571fe-481f-4b39-9128-e9eb82cd7695",
+					"image": "Starfleet",
+					"name": "Starfleet",
+					"color": "#0088ff",
+					"range": {
+						"upper": 0.58,
+						"lower": 0.4
+					}
+				},
+				{
+					"id": "a2bd98b3-1dc4-4d14-a919-cd36cb55e940",
+					"image": "Klingon",
+					"name": "Klingon",
+					"color": "#ff0000",
+					"range": {
+						"upper": 0.4,
+						"lower": 0.3
+					}
+				},
+				{
+					"id": "50b29357-3a93-46d2-b21a-276a6bc6bf3e",
+					"image": "Orion",
+					"name": "Orion",
+					"color": "#888888",
+					"range": {
+						"upper": 0.3,
+						"lower": 0.22
+					}
+				}
+			]
 		},
 		{
 			"id": "0cfcf569-e400-4519-892a-f419ff3e5736",
@@ -7832,7 +7908,13 @@
 			"displayName": "Impulse Engine",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					6,
+					8,
+					10,
+					12,
+					14
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -7874,45 +7956,15 @@
 			"cooling": false
 		},
 		{
-			"id": "6405e39e-ac42-456e-a772-4913d9412234",
-			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
-			"name": "Wormhole",
-			"displayName": "Wormhole Drive",
-			"power": {
-				"power": 5,
-				"powerLevels": []
-			},
-			"damage": {
-				"damaged": false,
-				"report": null,
-				"requested": false,
-				"reactivationCode": null,
-				"reactivationRequester": null,
-				"neededReactivationCode": null
-			},
-			"heat": 0,
-			"heatRate": 1,
-			"coolant": 1,
-			"class": "Engine",
-			"type": "Engine",
-			"on": false,
-			"speeds": [
-				{
-					"text": "Wormhole",
-					"number": 1
-				}
-			],
-			"speed": -1,
-			"cooling": false
-		},
-		{
 			"id": "bcb0fae5-a2d3-4cbd-b740-3997eb90e552",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Thrusters",
 			"displayName": "Thrusters",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					5
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -7954,7 +8006,9 @@
 			"displayName": "Navigation",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					3
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -7987,7 +8041,9 @@
 			"displayName": "External Sensors",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					5
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -8002,7 +8058,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6013400,
+			"timeSincePing": 6409400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8018,7 +8074,9 @@
 			"displayName": "Internal Sensors",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					3
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -8033,7 +8091,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6013400,
+			"timeSincePing": 6409400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8455,7 +8513,10 @@
 			"displayName": "Tractor Beam",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					5,
+					10
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -8479,7 +8540,9 @@
 			"displayName": "Transporters",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					5
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -8559,7 +8622,9 @@
 			"displayName": "Stealth Field",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					15
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -8588,7 +8653,9 @@
 			"displayName": "Fore Shields",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					7
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -8612,7 +8679,9 @@
 			"displayName": "Aft Shields",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					7
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -8636,7 +8705,9 @@
 			"displayName": "Port Shields",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					7
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -8660,7 +8731,9 @@
 			"displayName": "Starboard Shields",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					7
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -8684,7 +8757,9 @@
 			"displayName": "Targeting",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					2
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -8707,7 +8782,9 @@
 			"displayName": "Phaser",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					6
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -8778,7 +8855,9 @@
 			"displayName": "Torpedo",
 			"power": {
 				"power": 5,
-				"powerLevels": []
+				"powerLevels": [
+					5
+				]
 			},
 			"damage": {
 				"damaged": false,
@@ -8798,8 +8877,8 @@
 		{
 			"id": "1983d21e-dfbd-478b-bfdf-4fe801d25bd0",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
-			"name": null,
-			"displayName": null,
+			"name": "Coolant",
+			"displayName": "Coolant",
 			"damage": {
 				"damaged": false,
 				"report": null,
@@ -9168,7 +9247,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11126500,
+			"timeSincePing": 11522500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -9199,7 +9278,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11126500,
+			"timeSincePing": 11522500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -10166,7 +10245,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6013400,
+			"timeSincePing": 6409400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -10197,7 +10276,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6013400,
+			"timeSincePing": 6409400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -11225,7 +11304,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6013400,
+			"timeSincePing": 6409400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -11256,7 +11335,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6013400,
+			"timeSincePing": 6409400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -12036,6 +12115,85 @@
 			"coolant": 1,
 			"coolantRate": 0.2,
 			"transfer": null
+		},
+		{
+			"id": "ab55d6de-1e66-4aec-8468-579f1c5a3a04",
+			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
+			"name": "Warp",
+			"displayName": "Warp Engine",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					10,
+					13,
+					16,
+					19,
+					22,
+					25,
+					28,
+					31,
+					34,
+					37
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"heat": 0,
+			"heatRate": 1,
+			"coolant": 1,
+			"class": "Engine",
+			"type": "Engine",
+			"on": false,
+			"speeds": [
+				{
+					"text": "Warp 1",
+					"number": 1
+				},
+				{
+					"text": "Warp 2",
+					"number": 2
+				},
+				{
+					"text": "Warp 3",
+					"number": 3
+				},
+				{
+					"text": "Warp 4",
+					"number": 4
+				},
+				{
+					"text": "Warp 5",
+					"number": 5
+				},
+				{
+					"text": "Warp 6",
+					"number": 6
+				},
+				{
+					"text": "Warp 7",
+					"number": 7
+				},
+				{
+					"text": "Warp 8",
+					"number": 8
+				},
+				{
+					"text": "Warp 9",
+					"number": 9
+				},
+				{
+					"text": "Destructive Warp",
+					"number": 9.54
+				}
+			],
+			"speed": -1,
+			"cooling": false
 		}
 	],
 	"clients": [],
@@ -30466,6 +30624,7 @@
 			"id": "f3a99734-71c8-4c39-b8fa-f775d22282f0",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Alpha",
+			"displayName": "Alpha",
 			"power": {
 				"power": 5,
 				"powerLevels": [
@@ -30492,6 +30651,7 @@
 			"id": "5add2b7a-adba-4b66-be4a-3af280f1af47",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Bravo",
+			"displayName": "Bravo",
 			"power": {
 				"power": 5,
 				"powerLevels": [
@@ -30518,6 +30678,7 @@
 			"id": "486e7de8-65b0-47d6-bd73-78bb50a7bc8c",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Charlie",
+			"displayName": "Charlie",
 			"power": {
 				"power": 5,
 				"powerLevels": [
@@ -30544,6 +30705,7 @@
 			"id": "2df0bbb7-3875-441d-badf-e1a7477588d1",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Delta",
+			"displayName": "Delta",
 			"power": {
 				"power": 5,
 				"powerLevels": [
@@ -30570,6 +30732,7 @@
 			"id": "dac8d712-2a66-4b5f-8d14-61ec43e730ed",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Echo",
+			"displayName": "Echo",
 			"power": {
 				"power": 5,
 				"powerLevels": [
@@ -30596,6 +30759,7 @@
 			"id": "9d5b3cf5-d1cb-438d-8c85-f63016356b49",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Foxtrot",
+			"displayName": "Foxtrot",
 			"power": {
 				"power": 5,
 				"powerLevels": [
@@ -30627,6 +30791,7 @@
 			"class": "CoreLayout"
 		}
 	],
+	"coreFeed": [],
 	"assetFolders": [
 		{
 			"id": "c7235894-5917-4c7d-bff9-095c8d5f523c",
@@ -31815,7 +31980,7 @@
 	],
 	"viewscreens": [],
 	"messages": [],
-	"snapshotVersion": 893,
-	"version": 893,
-	"timestamp": "2017-09-14T01:29:52.652Z"
+	"snapshotVersion": 227,
+	"version": 227,
+	"timestamp": "2017-09-21T16:45:51.638Z"
 }

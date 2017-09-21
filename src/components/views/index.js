@@ -74,6 +74,7 @@ import SecurityDecksCore from "./SecurityDecks/core";
 import HeatCore from "./Heat/core";
 import ShipCore from "./Ship/core";
 import ReactivationCore from "./DamageControl/reactivationCore";
+import MessagingCore from "./Messaging/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -184,7 +185,8 @@ export const Cores = {
   SecurityDecksCore,
   HeatCore,
   ShipCore,
-  ReactivationCore
+  ReactivationCore,
+  MessagingCore
 };
 
 export default Views;

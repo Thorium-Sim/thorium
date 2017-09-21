@@ -16,7 +16,8 @@ const exceptions = [
   "HeatCore",
   "DecksCore",
   "ShipCore",
-  "ReactivationCore"
+  "ReactivationCore",
+  "MessagingCore"
 ];
 export default props => {
   return (

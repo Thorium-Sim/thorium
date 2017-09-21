@@ -207,7 +207,7 @@ class Messaging extends Component {
                       <strong>{m.sender}</strong>: {m.content}
                     </p>
                   )}
-              </div>}
+              </div>
             </Card>
             <form action="javascript:" onSubmit={this.sendMessage}>
               <InputGroup>
