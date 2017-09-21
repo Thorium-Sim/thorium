@@ -6,6 +6,7 @@ import { findDOMNode } from "react-dom";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Immutable from "immutable";
+import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.scss";
 
 const TORPEDO_SUB = gql`
@@ -148,6 +149,14 @@ class TorpedoLoading extends Component {
     const torpedo = this.props.data.torpedos[0];
     return (
       <div className="torpedo-loading">
+        <DamageOverlay
+          system={torpedo}
+          message="Torpedos Offline"
+          style={{
+            height: "250px",
+            width: "500px"
+          }}
+        />
         <TransitionGroup>
           {components
             .map(Comp => {
