@@ -5,6 +5,7 @@ import { graphql, withApollo } from "react-apollo";
 import Immutable from "immutable";
 import FontAwesome from "react-fontawesome";
 import Tour from "reactour";
+import DamageOverlay from "../helpers/DamageOverlay";
 
 import Tank from "./tank";
 
@@ -113,6 +114,7 @@ class CoolantControl extends Component {
     const { systemCoolant } = this.props.data;
     return (
       <Container fluid className="card-coolant">
+        <DamageOverlay system={coolant} message="Coolant Disabled" />
         <Row>
           <Tank {...coolant} />
           <div className="coolant-containers">
@@ -244,6 +246,13 @@ const COOLANT_QUERY = gql`
       name
       coolant
       coolantRate
+      damage {
+        damaged
+      }
+      power {
+        power
+        powerLevels
+      }
     }
     systemCoolant(simulatorId: $simulatorId) {
       systemId

@@ -11,7 +11,9 @@
     flex-direction: column;
     justify-content: space-between;
   }
-  
+  .damageOverlay {
+    height: calc(100% + 50px);
+  }
   @media (width: 1024px) {
     .coolant-containers {
       height: 60vh;

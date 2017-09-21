@@ -1,20 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Input,
-  Card,
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  InputGroup,
-  InputGroupButton
-} from "reactstrap";
+import { Input } from "reactstrap";
 import "./style.scss";
 
 const MESSAGING_SUB = gql`

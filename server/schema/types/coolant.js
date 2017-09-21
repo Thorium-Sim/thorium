@@ -12,6 +12,8 @@ type CoolantTank {
 	name: String
 	coolant: Float
 	coolantRate: Float
+	damage: Damage
+	power: Power
 }
 
 type CoolantRegulator {

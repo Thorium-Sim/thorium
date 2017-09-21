@@ -18,6 +18,15 @@ export default class TractorBeam extends System {
     this.state = false;
     super.break(report);
   }
+  setPower(powerLevel) {
+    if (
+      this.power.powerLevels.length &&
+      powerLevel < this.power.powerLevels[0]
+    ) {
+      this.state = false;
+    }
+    super.setPower(powerLevel);
+  }
   setState(tf) {
     this.state = tf;
   }

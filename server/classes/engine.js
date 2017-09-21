@@ -28,6 +28,13 @@ export default class Engine extends HeatMixin(System) {
     this.speed = -1;
     super.break(report);
   }
+  setPower(powerLevel) {
+    // Override set power to change speed when power is changed
+    if (this.on && this.power.powerLevels[this.speed - 1] > powerLevel) {
+      this.speed = this.power.powerLevels.findIndex(p => p === powerLevel) + 1;
+    }
+    super.setPower(powerLevel);
+  }
   setSpeed(speed = -1, on = false) {
     // Check power
     if (on && this.power.power < this.power.powerLevels[speed - 1]) {
@@ -43,13 +50,7 @@ export default class Engine extends HeatMixin(System) {
     this.speed = speed;
     this.on = on;
   }
-  setPower(powerLevel) {
-    // Override set power to change speed when power is changed
-    if (this.on && this.power.powerLevels[this.speed - 1] > powerLevel) {
-      this.speed = this.power.powerLevels.findIndex(p => p === powerLevel) + 1;
-    }
-    this.power.power = powerLevel;
-  }
+
   cool(state = true) {
     this.cooling = state;
   }

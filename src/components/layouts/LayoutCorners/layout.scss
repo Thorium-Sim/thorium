@@ -430,6 +430,7 @@ body {
     }
   }
   .card-icon-container {
+    z-index: 10000 !important;
     width: 80px;
     position: absolute;
     top: 320px;
