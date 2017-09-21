@@ -17,7 +17,7 @@ import TransitionGroup from "react-transition-group/TransitionGroup";
 import Transitioner from "../helpers/transitioner";
 import ProbeEquipment from "./probeEquipment";
 import Measure from "react-measure";
-
+import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.scss";
 
 function d2r(deg) {
@@ -146,6 +146,11 @@ class ProbeConstruction extends Component {
     if (!probes) return <p>No Probe Launcher</p>;
     return (
       <Container fluid className="probe-construction">
+        <DamageOverlay
+          system={probes}
+          message={"Probe Launcher Offline"}
+          style={{ height: "50vh" }}
+        />
         <ProbeSelector
           types={probes.types}
           selectedProbeType={selectedProbeType}

@@ -8,6 +8,7 @@ import Grid from "./gridDom";
 import TorpedoLoading from "../TorpedoLoading";
 import { /*PhaserArc, */ PhaserBeam } from "../PhaserCharging";
 import { Asset } from "../../../helpers/assets";
+import DamageOverlay from "../helpers/DamageOverlay";
 
 const TARGETING_QUERY = gql`
   query Targeting($simulatorId: ID) {
@@ -308,6 +309,7 @@ class Targeting extends Component {
       <Container fluid className="targeting-control">
         <Row>
           <Col sm="5">
+            <DamageOverlay system={targeting} message="Targeting Offline" />
             <Measure useClone={true} includeMargin={false}>
               {dimensions => {
                 return dimensions.width !== 0
@@ -322,6 +324,7 @@ class Targeting extends Component {
             </Measure>
           </Col>
           <Col sm="7">
+            <DamageOverlay system={phasers} message="Phasers Offline" />
             {phasers.beams.map((p, i) =>
               <PhaserBeam
                 key={p.id}

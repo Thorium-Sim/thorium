@@ -19,7 +19,7 @@ const sendUpdate = sys => {
   if (sys.type === "LongRangeComm")
     pubsub.publish(
       "longRangeCommunicationsUpdate",
-      App.systems.filter(s => s.type === "LRCommunications")
+      App.systems.filter(s => s.type === "LongRangeComm")
     );
   if (sys.type === "InternalComm")
     pubsub.publish(
@@ -40,6 +40,26 @@ const sendUpdate = sys => {
     pubsub.publish(
       "tractorBeamUpdate",
       App.systems.filter(s => s.type === "TractorBeam")
+    );
+  if (sys.type === "Phasers")
+    pubsub.publish(
+      "phasersUpdate",
+      App.systems.filter(s => s.type === "Phasers")
+    );
+  if (sys.type === "Targeting")
+    pubsub.publish(
+      "targetingUpdate",
+      App.systems.filter(s => s.type === "Targeting")
+    );
+  if (sys.type === "Torpedo")
+    pubsub.publish(
+      "torpedosUpdate",
+      App.systems.filter(s => s.type === "Torpedo")
+    );
+  if (sys.type === "Probes")
+    pubsub.publish(
+      "probesUpdate",
+      App.systems.filter(s => s.type === "Probes")
     );
   if (sys.class === "DockingPort")
     pubsub.publish("dockingUpdate", App.dockingPorts);

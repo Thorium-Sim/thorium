@@ -6,6 +6,7 @@ import Immutable from "immutable";
 import TransitionGroup from "react-transition-group/TransitionGroup";
 import Transitioner from "../helpers/transitioner";
 import Tour from "reactour";
+import DamageOverlay from "../helpers/DamageOverlay";
 
 import "./style.scss";
 
@@ -22,6 +23,14 @@ const STEALTH_SUB = gql`
         aft
         port
         starboard
+      }
+      power {
+        power
+        powerLevels
+      }
+      damage {
+        damaged
+        report
       }
     }
   }
@@ -166,6 +175,10 @@ class StealthField extends Component {
     const { systems } = this.state;
     return (
       <Container fluid className="card-stealthField">
+        <DamageOverlay
+          system={stealthField}
+          message={`${stealthField.name} Offline`}
+        />
         <Row>
           <Col sm="2" />
           <Col sm="2" />
@@ -276,6 +289,14 @@ const STEALTH_QUERY = gql`
         aft
         port
         starboard
+      }
+      power {
+        power
+        powerLevels
+      }
+      damage {
+        damaged
+        report
       }
     }
     systems(simulatorId: $simulatorId) {
