@@ -19,7 +19,7 @@ const sendUpdate = sys => {
   if (sys.type === "LongRangeComm")
     pubsub.publish(
       "longRangeCommunicationsUpdate",
-      App.systems.filter(s => s.type === "LRCommunications")
+      App.systems.filter(s => s.type === "LongRangeComm")
     );
   if (sys.type === "InternalComm")
     pubsub.publish(
