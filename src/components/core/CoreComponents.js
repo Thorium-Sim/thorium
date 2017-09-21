@@ -29,7 +29,6 @@ class CoreComponents extends Component {
       editable: false,
       issuesOpen: false
     };
-    console.log(this.state);
   }
   componentWillReceiveProps(nextProps) {
     if (!nextProps.data.loading) {

@@ -56,6 +56,9 @@ App.on("startFlight", ({ id, name, simulators }) => {
             isochip.simulatorId = sim.id;
             App.isochips.push(new Classes.Isochip(isochip));
           }
+          if (newAspect.power && newAspect.power.powerLevels.length) {
+            newAspect.power.power = newAspect.power.powerLevels[0];
+          }
         }
         App[aspect].push(new Classes[newAspect.class](newAspect));
       });

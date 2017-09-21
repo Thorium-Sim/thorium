@@ -158,7 +158,7 @@ class PowerDistribution extends Component {
               .filter(
                 sys =>
                   (sys.power.power || sys.power.power === 0) &&
-                  sys.power.powerLevels
+                  sys.power.powerLevels.length
               )
               .map(sys =>
                 <SystemPower

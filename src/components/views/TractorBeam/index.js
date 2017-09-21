@@ -73,6 +73,14 @@ class TractorBeam extends Component {
     if (this.props.data.loading) return null;
     const tractorBeam = this.props.data.tractorBeam[0];
     if (!tractorBeam) return <p>No Tractor Beam</p>;
+    const maxPower = tractorBeam.power.powerLevels.length
+      ? (tractorBeam.power.power + 1 - tractorBeam.power.powerLevels[0]) /
+        (tractorBeam.power.powerLevels[
+          tractorBeam.power.powerLevels.length - 1
+        ] -
+          tractorBeam.power.powerLevels[0] +
+          1)
+      : 1;
     return (
       <Container className="tractor-beam">
         <DamageOverlay system={tractorBeam} message="Tractor Beam Offline" />
@@ -98,7 +106,8 @@ class TractorBeam extends Component {
           color={"blue"}
           active={tractorBeam.state}
           simulator={this.props.simulator}
-          level={Math.abs(tractorBeam.strength - 1)}
+          max={Math.abs(maxPower - 1)}
+          level={Math.abs(Math.min(tractorBeam.strength, maxPower) - 1)}
           id={tractorBeam.id}
         />
         <Button
