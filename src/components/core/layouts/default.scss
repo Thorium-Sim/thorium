@@ -58,9 +58,20 @@
     top: 300px;
   }
 }
-
+.coreMessaging-core {
+  width: 350px;
+  transform: translate(350px); 
+  height: 30vh;
+  top: 360px;  
+  .coreMessaging-label {
+    background-color: green;
+    left: -45px;
+    top: 40px;
+  }
+}
 .inner-cores {
   padding: 4px;
+  height: 100%;
 }
 .core-default {
   margin-right: 20px;

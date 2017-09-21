@@ -15,9 +15,24 @@ App.on("sendMessage", ({ message }) => {
   const messageClass = new Classes.Message(message);
   App.messages.push(messageClass);
   pubsub.publish("sendMessage", messageClass);
-  pubsub.publish("widgetNotify", {
-    widget: "messages",
-    simulatorId: messageClass.simulatorId,
-    station: messageClass.destination
-  });
+  const messageGroups = ["Security", "Damage", "Medical"];
+  if (messageGroups.indexOf(messageClass.sender) > -1) {
+    // Notify every station that has this class
+    App.simulators
+      .find(s => s.id === messageClass.simulatorId)
+      .stations.filter(s => s.messageGroups.indexOf(messageClass.sender) > -1)
+      .forEach(s => {
+        pubsub.publish("widgetNotify", {
+          widget: "messages",
+          simulatorId: messageClass.simulatorId,
+          station: s.name
+        });
+      });
+  } else {
+    pubsub.publish("widgetNotify", {
+      widget: "messages",
+      simulatorId: messageClass.simulatorId,
+      station: messageClass.destination
+    });
+  }
 });

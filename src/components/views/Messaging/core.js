@@ -35,7 +35,7 @@ class Messaging extends Component {
   state = {
     messageInput: "",
     stationsShown: false,
-    selectedConversation: "security"
+    selectedConversation: "Security"
   };
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
@@ -87,46 +87,48 @@ class Messaging extends Component {
     const { messages } = this.props.data;
     const { messageInput, selectedConversation } = this.state;
 
-    const messageGroups = ["security", "damage", "medical"];
+    const messageGroups = ["Security", "Damage", "Medical"];
     return (
       <div className="core-messaging">
-        <Col>
+        <Input
+          size="sm"
+          type="select"
+          onChange={evt =>
+            this.setState({ selectedConversation: evt.target.value })}
+          value={selectedConversation}
+        >
+          {messageGroups.map(g =>
+            <option key={g} value={g}>
+              {g}
+            </option>
+          )}
+        </Input>
+        <div className="message-list">
+          {messages
+            .filter(
+              m =>
+                m.sender === selectedConversation ||
+                m.destination === selectedConversation
+            )
+            .reverse()
+            .map(m =>
+              <p
+                key={m.id}
+                className={m.sender === selectedConversation ? "sender" : ""}
+              >
+                {m.sender === selectedConversation ? m.destination : m.sender} -{" "}
+                {m.content}
+              </p>
+            )}
+        </div>
+        <form action="javascript:" onSubmit={this.sendMessage}>
           <Input
             size="sm"
-            type="select"
-            onChange={evt =>
-              this.setState({ selectedConversation: evt.target.value })}
-            value={selectedConversation}
-          >
-            {messageGroups.map(g =>
-              <option key={g} value={g}>
-                {g}
-              </option>
-            )}
-          </Input>
-          <div>
-            {messages
-              .filter(
-                m =>
-                  m.sender === selectedConversation ||
-                  m.destination === selectedConversation
-              )
-              .map(m =>
-                <p key={m.id}>
-                  {m.sender} - {m.content}
-                </p>
-              )}
-          </div>
-          <form action="javascript:" onSubmit={this.sendMessage}>
-            <Input
-              size="sm"
-              type="text"
-              value={messageInput}
-              onChange={evt =>
-                this.setState({ messageInput: evt.target.value })}
-            />
-          </form>
-        </Col>
+            type="text"
+            value={messageInput}
+            onChange={evt => this.setState({ messageInput: evt.target.value })}
+          />
+        </form>
       </div>
     );
   }
