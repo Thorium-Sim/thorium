@@ -81,9 +81,12 @@ export const ClientSubscriptions = {
   clientDisconnect(rootValue) {
     return rootValue;
   },
-  clientChanged: (rootValue, { client }) => {
+  clientChanged: (rootValue, { client, simulatorId }) => {
     if (client) {
       return rootValue.filter(c => c.id === client);
+    }
+    if (simulatorId) {
+      return rootValue.filter(c => c.simulatorId === simulatorId);
     }
     return rootValue.filter(c => c.connected);
   },

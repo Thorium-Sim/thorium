@@ -21,7 +21,8 @@ const exceptions = [
   "ShuttlesCore",
   "ShipCore",
   "ReactivationCore",
-  "MessagingCore"
+  "MessagingCore",
+  "ClientsCore"
 ];
 export default class CoreDefault extends Component {
   state = {};
@@ -32,7 +33,8 @@ export default class CoreDefault extends Component {
       tractOpen,
       shipOpen,
       coreFeedOpen,
-      messagingOpen
+      messagingOpen,
+      clientsOpen
     } = state;
     return (
       <div>
@@ -114,6 +116,17 @@ export default class CoreDefault extends Component {
           </div>
           <div className="inner-cores">
             <Cores.MessagingCore {...props} />
+          </div>
+        </div>
+        <div className={`side-core clients-core ${clientsOpen ? "open" : ""}`}>
+          <div
+            className="clients-label side-label"
+            onClick={() => this.setState({ clientsOpen: !clientsOpen })}
+          >
+            Login Names
+          </div>
+          <div className="inner-cores">
+            <Cores.ClientsCore {...props} />
           </div>
         </div>
       </div>

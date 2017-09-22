@@ -17,7 +17,8 @@ const exceptions = [
   "DecksCore",
   "ShipCore",
   "ReactivationCore",
-  "MessagingCore"
+  "MessagingCore",
+  "ClientsCore"
 ];
 export default props => {
   return (

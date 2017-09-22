@@ -69,6 +69,17 @@
     top: 40px;
   }
 }
+.clients-core {
+  top: 455px;
+  height: auto;
+  bottom: auto;
+  min-height: 200px;
+  .clients-label {
+    background-color: cadetblue;
+    left: -50px;
+    top: 41px;
+  }
+}
 .inner-cores {
   padding: 4px;
   height: 100%;

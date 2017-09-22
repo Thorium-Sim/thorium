@@ -75,6 +75,7 @@ import HeatCore from "./Heat/core";
 import ShipCore from "./Ship/core";
 import ReactivationCore from "./DamageControl/reactivationCore";
 import MessagingCore from "./Messaging/core";
+import ClientsCore from "./Clients/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -186,7 +187,8 @@ export const Cores = {
   HeatCore,
   ShipCore,
   ReactivationCore,
-  MessagingCore
+  MessagingCore,
+  ClientsCore
 };
 
 export default Views;
