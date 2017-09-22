@@ -35,6 +35,10 @@ App.on("longRangeMessageSend", ({ id, message }) => {
     body: ``,
     color: "info"
   });
+  App.handleEvent(
+    { simulatorId: sys.simulatorId, component: "LRCommCore" },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "longRangeCommunicationsUpdate",
     App.systems.filter(s => s.type === "LongRangeComm")

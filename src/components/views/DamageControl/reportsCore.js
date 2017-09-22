@@ -148,10 +148,10 @@ class DamageReportCore extends Component {
               value={selectedReport}
               style={{
                 textAlign: "left",
-                height: "calc(100% - 80px)",
+                height: "auto",
                 fontFamily: "monospace"
               }}
-              rows={5}
+              rows={8}
               controlled={true}
               onChange={e => {
                 this.setState({

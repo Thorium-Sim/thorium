@@ -27,6 +27,10 @@ App.on("remoteAccessSendCode", ({ simulatorId, code, station }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   if (simulator) {
     simulator.sendCode(code, station);
+    App.handleEvent(
+      { simulatorId: simulator.id, component: "RemoteCore" },
+      "addCoreFeed"
+    );
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: simulatorId,

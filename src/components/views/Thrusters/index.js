@@ -9,6 +9,7 @@ import ThrusterThree from "./three";
 import distance from "../../../helpers/distance";
 import Measure from "react-measure";
 import Immutable from "immutable";
+import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.scss";
 import Tour from "reactour";
 
@@ -36,32 +37,21 @@ const ROTATION_CHANGE_SUB = gql`
   }
 `;
 
-const DamageOverlay = ({ engine }) => {
-  const overlayStyle = {
-    width: "100%",
-    minHeight: "400px",
-    height: "calc(100% + 40px)",
-    top: "-11px",
-    left: "0px",
-    position: "absolute",
-    backgroundColor: "rgba(0,0,0,0.75)",
-    border: "solid 1px rgba(255,255,255,0.5)",
-    zIndex: "1000",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
-  };
-  const textStyle = {
-    color: "red",
-    width: "100%",
-    textAlign: "center"
-  };
-  return (
-    <div style={overlayStyle} className="damageOverlay">
-      <h1 style={textStyle}>Thrusters Damaged</h1>
-    </div>
-  );
-};
+const THRUSTER_SUB = gql`
+  subscription ThrusterUpdate($simulatorId: ID) {
+    systemsUpdate(simulatorId: $simulatorId, type: "Thrusters") {
+      id
+      damage {
+        damaged
+        report
+      }
+      power {
+        power
+        powerLevels
+      }
+    }
+  }
+`;
 
 const IndicatorCircle = props => {
   return (
@@ -94,6 +84,7 @@ class Thrusters extends Component {
   constructor(props) {
     super(props);
     this.rotationSubscription = null;
+    this.thrusterSub = null;
     this.state = {
       control: false,
       gamepad: null,
@@ -145,6 +136,27 @@ class Thrusters extends Component {
           return {
             thrusters: thrusters.set(thrusterIndex, thruster).toJS()
           };
+        }
+      });
+    }
+    if (!this.thrusterSub && !nextProps.data.loading) {
+      this.thrusterSub = nextProps.data.subscribeToMore({
+        document: THRUSTER_SUB,
+        variables: {
+          simulatorId: nextProps.simulator.id
+        },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          return Object.assign({}, previousResult, {
+            thrusters: previousResult.thrusters.map(t => {
+              const updateT = subscriptionData.data.systemsUpdate.find(
+                s => s.id === t.id
+              );
+              if (updateT) {
+                return Object.assign({}, t, updateT);
+              }
+              return t;
+            })
+          });
         }
       });
     }
@@ -362,7 +374,7 @@ gamepadLoop(){
     if (!thruster) return <h1>No thruster system</h1>;
     return (
       <div className="cardThrusters">
-        {thruster.damage.damaged && <DamageOverlay />}
+        <DamageOverlay message={"Thrusters Offline"} system={thruster} />
         <Row>
           <Col className="col-sm-3 draggerContainer direction-drag">
             <label>Direction</label>

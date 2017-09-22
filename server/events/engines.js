@@ -27,6 +27,7 @@ App.on("speedChange", param => {
   const engineIndex = App.systems.findIndex(sys => sys.id === param.id) || -1;
   const on = system.on;
   system.setSpeed(param.speed, param.on);
+  //
   const speed = system.speeds[system.speed - 1];
   if (param.on || on) {
     pubsub.publish("notify", {

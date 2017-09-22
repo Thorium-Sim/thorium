@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Cores } from "../../views";
+import CoreFeed from "../../views/CoreFeed";
+
 import "./default.scss";
 
 const exceptions = [
@@ -17,13 +19,21 @@ const exceptions = [
   "SecurityDecksCore",
   "SelfDestructCore",
   "ShuttlesCore",
-  "ShipCore"
+  "ShipCore",
+  "ReactivationCore",
+  "MessagingCore"
 ];
 export default class CoreDefault extends Component {
   state = {};
   render() {
     const { props, state } = this;
-    const { timelineOpen, tractOpen, shipOpen } = state;
+    const {
+      timelineOpen,
+      tractOpen,
+      shipOpen,
+      coreFeedOpen,
+      messagingOpen
+    } = state;
     return (
       <div>
         <div className="core-default">
@@ -76,6 +86,34 @@ export default class CoreDefault extends Component {
           </div>
           <div className="inner-cores">
             <Cores.ShipCore {...props} />
+          </div>
+        </div>
+        <div
+          className={`side-core coreFeeds-core ${coreFeedOpen ? "open" : ""}`}
+        >
+          <div
+            className="coreFeed-label side-label"
+            onClick={() => this.setState({ coreFeedOpen: !coreFeedOpen })}
+          >
+            Core Feed
+          </div>
+          <div className="inner-cores">
+            <CoreFeed {...props} />
+          </div>
+        </div>
+        <div
+          className={`side-core coreMessaging-core ${messagingOpen
+            ? "open"
+            : ""}`}
+        >
+          <div
+            className="coreMessaging-label side-label"
+            onClick={() => this.setState({ messagingOpen: !messagingOpen })}
+          >
+            Messaging
+          </div>
+          <div className="inner-cores">
+            <Cores.MessagingCore {...props} />
           </div>
         </div>
       </div>

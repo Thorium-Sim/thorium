@@ -1,6 +1,6 @@
 {
   "projectName": "Thorium",
-  "projectOwner": "Fyreworks",
+  "projectOwner": "thorium-sim",
   "files": [
     "README.md"
   ],
@@ -55,6 +55,24 @@
       "profile": "http://www.brentjanderson.com",
       "contributions": [
         "ideas"
+      ]
+    },
+    {
+      "login": "farpoint",
+      "name": "Farpoint",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/4927395?v=4",
+      "profile": "http://www.farpointStation.org",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "isaacOstler",
+      "name": "Isaac Ostler",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/30113240?v=4",
+      "profile": "https://github.com/isaacOstler",
+      "contributions": [
+        "bug"
       ]
     }
   ]

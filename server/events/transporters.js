@@ -21,6 +21,10 @@ App.on("setTransportTarget", params => {
 App.on("beginTransportScan", params => {
   const transporter = App.systems.find(sys => sys.id === params.transporter);
   transporter.beginScan();
+  App.handleEvent(
+    { simulatorId: transporter.simulatorId, component: "TransporterCore" },
+    "addCoreFeed"
+  );
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: transporter.simulatorId,

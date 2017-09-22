@@ -62,6 +62,19 @@ export default class Targeting extends System {
   updateTargetClass(classInput) {
     this.classes.find(c => c.id === classInput.id).update(classInput);
   }
+  break(report) {
+    this.contacts.forEach(t => t.untarget());
+    super.break(report);
+  }
+  setPower(powerLevel) {
+    if (
+      this.power.powerLevels.length &&
+      powerLevel < this.power.powerLevels[0]
+    ) {
+      this.contacts.forEach(t => t.untarget());
+    }
+    super.setPower(powerLevel);
+  }
 }
 
 class TargetClass {

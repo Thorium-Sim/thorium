@@ -51,26 +51,26 @@ export const LRCommSubscriptions = {
     if (simulatorId)
       rootValue = rootValue.filter(s => s.simulatorId === simulatorId);
     if (typeof crew !== "undefined") {
-      rootValue = rootValue.map(s => {
-        const sys = Object.assign({}, s);
-        sys.messages = sys.messages.filter(m => m.crew === crew);
-        return sys;
-      });
+      rootValue = rootValue.map(s =>
+        Object.assign({}, s, {
+          messages: s.messages.filter(m => m.crew === crew)
+        })
+      );
     }
     if (typeof sent !== "undefined") {
-      rootValue = rootValue.map(s => {
-        const sys = Object.assign({}, s);
-        sys.messages = sys.messages.filter(m => m.sent === sent);
-        return sys;
-      });
+      rootValue = rootValue.map(s =>
+        Object.assign({}, s, {
+          messages: s.messages.filter(m => m.sent === sent)
+        })
+      );
     }
     if (typeof sent !== "undefined" && typeof crew !== "undefined") {
       if (sent !== true && crew === false) {
-        rootValue = rootValue.map(s => {
-          const sys = Object.assign({}, s);
-          sys.messages = sys.messages.filter(m => m.deleted === false);
-          return sys;
-        });
+        rootValue = rootValue.map(s =>
+          Object.assign({}, s, {
+            messages: s.messages.filter(m => m.deleted === false)
+          })
+        );
       }
     }
     return rootValue;
