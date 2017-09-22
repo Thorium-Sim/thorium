@@ -11,7 +11,8 @@ class AssetComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      src: `${assetPath}${props.asset}/default.${props.extension || "svg"}`
+      src: `${assetPath}${props.asset}/${props.simulatorId ||
+        "default"}.${props.extension || "svg"}`
     };
   }
   state = { src: "http://unsplash.it/300" };

@@ -22,6 +22,7 @@ App.on("startFlight", ({ id, name, simulators }) => {
     App.simulators.push(sim);
     // Duplicate all of the other stuff attached to the simulator too.
     [
+      "assetObjects",
       "systems",
       "decks",
       "rooms",
