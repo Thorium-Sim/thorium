@@ -66,7 +66,6 @@ export default Assets;
 class AssetDropzone extends Component {
   state = {};
   onDrop = evt => {
-    const self = this;
     const { folderPath, name, sim, client } = this.props;
 
     const mutation = gql`

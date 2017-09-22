@@ -42,7 +42,11 @@ App.on("startFlight", ({ id, name, simulators }) => {
         if (aspect === "rooms") {
           const oldDeck = App.decks.find(d => d.id === newAspect.deckId);
           const deck = App.decks.find(
-            d => d.simulatorId === sim.id && d.number === oldDeck.number
+            d =>
+              d &&
+              oldDeck &&
+              d.simulatorId === sim.id &&
+              d.number === oldDeck.number
           );
           newAspect.deckId = deck.id;
         }

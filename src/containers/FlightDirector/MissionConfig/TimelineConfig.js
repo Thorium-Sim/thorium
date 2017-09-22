@@ -484,6 +484,7 @@ export default class TimelineConfig extends Component {
               .timelineItems.find(
                 t => t.id === this.state.selectedTimelineItem
               );
+            if (!item) return null;
             return (
               <Col sm="6">
                 <h4>
