@@ -74,11 +74,12 @@ class Events extends EventEmitter {
     }
   }
   loadSnapshot() {
+    const self = this;
     const snapshot = jsonfile.readFileSync(snapshotDir + "snapshot.json");
     this.merge(snapshot);
     if (process.env.NODE_ENV === "production") {
       // Only auto save in the built version
-      setTimeout(() => this.autoSave(), 5000);
+      setTimeout(() => self.autoSave(), 5000);
     }
   }
   merge(snapshot) {
@@ -157,8 +158,9 @@ class Events extends EventEmitter {
   }
   // TODO: This is JANKY! Make this better by using actual event sourcing.
   autoSave() {
+    const self = this;
     this.snapshot();
-    setTimeout(() => this.autoSave(), 10 * 1000);
+    setTimeout(() => self.autoSave(), 10 * 1000);
   }
 }
 

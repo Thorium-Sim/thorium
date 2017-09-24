@@ -144,6 +144,7 @@ class ProbeConstruction extends Component {
     const probes = this.props.data.probes[0];
     const { selectedProbeType, launching } = this.state;
     if (!probes) return <p>No Probe Launcher</p>;
+    const comps = { ProbeDescription, ProbeEquipment, ProbeAction };
     return (
       <Container fluid className="probe-construction">
         <DamageOverlay
@@ -158,24 +159,25 @@ class ProbeConstruction extends Component {
           selectProbe={this.selectProbe.bind(this)}
         />
         <TransitionGroup>
-          {[ProbeDescription, ProbeEquipment, ProbeAction]
-            .filter(Comp => {
-              if (Comp.name === "ProbeDescription" && !selectedProbeType)
+          {Object.keys(comps)
+            .filter(compName => {
+              if (compName === "ProbeDescription" && !selectedProbeType)
                 return true;
               if (
-                Comp.name === "ProbeEquipment" &&
+                compName === "ProbeEquipment" &&
                 selectedProbeType &&
                 !launching
               )
                 return true;
-              if (Comp.name === "ProbeAction" && selectedProbeType && launching)
+              if (compName === "ProbeAction" && selectedProbeType && launching)
                 return true;
               return false;
             })
-            .map(Comp => {
+            .map(compName => {
+              const Comp = comps[compName];
               return (
                 <Comp
-                  key={Comp.name}
+                  key={compName}
                   {...this.state}
                   cancelProbe={this.selectProbe.bind(this, null)}
                   prepareProbe={this.prepareProbe.bind(this)}
