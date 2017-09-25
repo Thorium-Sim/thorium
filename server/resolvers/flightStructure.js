@@ -1,5 +1,7 @@
 import App from "../../app";
 import uuid from "uuid";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const FlightStructureQueries = {
   simulators: (root, { template, id }) => {
@@ -172,9 +174,15 @@ export const FlightStructureSubscriptions = {
     if (simulatorId) returnVal = returnVal.filter(s => s.id === simulatorId);
     return returnVal.length > 0 ? returnVal : null;
   },
-  flightsUpdate: (rootValue, { id }) => {
-    if (id) return rootValue.filter(s => s.id === id);
-    return rootValue;
+  flightsUpdate: {
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("flightsUpdate"),
+      (rootValue, { id }) => {
+        console.log("Stuff", rootValue, id);
+        if (id) return rootValue.filter(s => s.id === id);
+        return rootValue;
+      }
+    )
   }
 };
 

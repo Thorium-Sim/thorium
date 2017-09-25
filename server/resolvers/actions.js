@@ -1,5 +1,6 @@
 import App from "../../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const ActionsQueries = {
   actions() {
@@ -46,30 +47,39 @@ export const ActionsMutations = {
         break;
       default:
         pubsub.publish("actionsUpdate", args, context);
+        console.log("Actions Update");
         break;
     }
   }
 };
 
 export const ActionsSubscriptions = {
-  actionsUpdate(
-    {
-      action,
-      simulatorId: toSimulator,
-      stationId: toStation,
-      clientId: toClient,
-      duration
-    },
-    { simulatorId, stationId, clientId }
-  ) {
-    if (simulatorId !== toSimulator) return;
-    if (
-      toStation === "all" ||
-      toClient === "all" ||
-      (toStation === stationId && toStation && stationId) ||
-      (toClient === clientId && toClient && clientId)
-    ) {
-      return { action, duration };
-    }
+  actionsUpdate: {
+    subscribe: () =>
+      withFilter(
+        pubsub.asyncIterator("actionsUpdate"),
+        (
+          {
+            action,
+            simulatorId: toSimulator,
+            stationId: toStation,
+            clientId: toClient,
+            duration
+          },
+          { simulatorId, stationId, clientId }
+        ) => {
+          console.log(toSimulator, toStation, simulatorId, stationId);
+          if (simulatorId !== toSimulator) return false;
+          if (
+            toStation === "all" ||
+            toClient === "all" ||
+            (toStation === stationId && toStation && stationId) ||
+            (toClient === clientId && toClient && clientId)
+          ) {
+            return true;
+          }
+          return false;
+        }
+      )
   }
 };

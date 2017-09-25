@@ -1,19 +1,8 @@
-import { SubscriptionManager } from 'graphql-subscriptions';
-import { makeExecutableSchema } from 'graphql-tools';
-import schemaString from './schema';
-import resolvers from './resolvers';
-import { pubsub } from './helpers/subscriptionManager';
+import { makeExecutableSchema } from "graphql-tools";
+import schemaString from "./schema";
+import resolvers from "./resolvers";
 
-export const schema = makeExecutableSchema({
+export default makeExecutableSchema({
   typeDefs: schemaString,
-  resolvers,
+  resolvers
 });
-
-const subManager = new SubscriptionManager({
-  schema,
-  pubsub,
-});
-
-// addMockFunctionsToSchema({ schema, preserveResolvers: true });
-
-export const subscriptionManager = subManager;

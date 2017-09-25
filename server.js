@@ -6,10 +6,11 @@ import bodyParser from "body-parser";
 import { graphqlExpress, graphiqlExpress } from "graphql-server-express";
 import multer from "multer";
 import cors from "cors";
+import { execute, subscribe } from "graphql";
 import { SubscriptionServer } from "subscriptions-transport-ws";
 import { printSchema } from "graphql/utilities/schemaPrinter";
 import graphqlExpressUpload from "graphql-server-express-upload";
-import { schema, subscriptionManager } from "./server/data";
+import schema from "./server/data";
 import vanity from "./server/helpers/vanity";
 import "./server/helpers/broadcast";
 import ipaddress from "./server/helpers/ipaddress";
@@ -28,9 +29,6 @@ const GraphQLOptions = request => ({
 });
 
 let appDir = "./";
-//if (electron.app) {
-//  appDir = electron.app.getPath('appData') + '/thorium/';
-//}
 
 const upload = multer({
   dest: appDir + "temp"
@@ -44,16 +42,6 @@ export const websocketServer = createServer((req, response) => {
   response.writeHead(404);
   response.end();
 });
-
-// eslint-disable-next-line
-new SubscriptionServer(
-  {
-    subscriptionManager
-  },
-  {
-    server: websocketServer
-  }
-);
 
 export const graphQLServer = express();
 graphQLServer.use(require("express-status-monitor")());
@@ -83,4 +71,16 @@ GraphQL Server is now running on http://${ipaddress}:${GRAPHQL_PORT}/graphql`
   )
 );
 
-export const websocketServerInstance = websocketServer.listen(WS_PORT);
+export const websocketServerInstance = websocketServer.listen(WS_PORT, () => {
+  new SubscriptionServer(
+    {
+      execute,
+      subscribe,
+      schema: schema
+    },
+    {
+      server: websocketServer,
+      path: "/"
+    }
+  );
+});
