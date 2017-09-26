@@ -11,6 +11,7 @@ const SUB = gql`
       damage {
         damaged
       }
+      displayName
     }
   }
 `;
@@ -61,6 +62,7 @@ const QUERY = gql`
       damage {
         damaged
       }
+      displayName
     }
   }
 `;

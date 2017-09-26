@@ -133,7 +133,7 @@ export const ShipStructureSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("decksUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   },
   roomsUpdate: {
@@ -145,7 +145,7 @@ export const ShipStructureSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("roomsUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   },
   inventoryUpdate: {
@@ -157,7 +157,7 @@ export const ShipStructureSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("inventoryUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   }
 };

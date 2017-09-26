@@ -10,6 +10,7 @@ const SUB = gql`
       id
       model
       batteryChargeLevel
+      displayName
     }
   }
 `;
@@ -53,6 +54,7 @@ const QUERY = gql`
       id
       model
       batteryChargeLevel
+      displayName
     }
   }
 `;

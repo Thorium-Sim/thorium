@@ -43,7 +43,7 @@ export const TorpedoSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("torpedosUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   }
 };

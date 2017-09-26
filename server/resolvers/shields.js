@@ -34,7 +34,7 @@ export const ShieldSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("shieldsUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   }
 };

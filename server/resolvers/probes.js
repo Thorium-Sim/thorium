@@ -49,7 +49,7 @@ export const ProbesSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("probesUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   }
 };

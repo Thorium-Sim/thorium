@@ -37,7 +37,7 @@ export const TractorBeamSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("tractorBeamUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   }
 };

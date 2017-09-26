@@ -43,7 +43,7 @@ export const StealthFieldSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("stealthFieldUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   }
 };

@@ -5,6 +5,8 @@ import { graphql } from "react-apollo";
 const SUB = gql`
   subscription TargetUpdate($simulatorId: ID) {
     targetingUpdate(simulatorId: $simulatorId) {
+      id
+      displayName
       contacts {
         id
         targeted
@@ -51,6 +53,8 @@ class Targeted extends Component {
 const QUERY = gql`
   query Target($simulatorId: ID) {
     targeting(simulatorId: $simulatorId) {
+      id
+      displayName
       contacts {
         id
         targeted

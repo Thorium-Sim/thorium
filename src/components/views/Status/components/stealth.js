@@ -10,6 +10,7 @@ const SUB = gql`
       id
       state
       activated
+      displayName
     }
   }
 `;
@@ -21,6 +22,7 @@ const SHIELD_SUB = gql`
       position
       integrity
       state
+      displayName
     }
   }
 `;
@@ -93,12 +95,14 @@ const QUERY = gql`
       id
       state
       activated
+      displayName
     }
     shields(simulatorId: $simulatorId) {
       id
       position
       integrity
       state
+      displayName
     }
   }
 `;

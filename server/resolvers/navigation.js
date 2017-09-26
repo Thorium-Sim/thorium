@@ -40,7 +40,7 @@ export const NavigationSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("navigationUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   }
 };

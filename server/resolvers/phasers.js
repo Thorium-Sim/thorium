@@ -52,7 +52,7 @@ export const PhaserSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("phasersUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   }
 };

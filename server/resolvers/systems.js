@@ -83,7 +83,7 @@ export const SystemsSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("systemsUpdate"),
-      rootValue => rootValue.length > 0
+      rootValue => !!(rootValue && rootValue.length) > 0
     )
   }
 };

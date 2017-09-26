@@ -67,7 +67,10 @@ export const MessagesSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("messageUpdate"),
-      rootValue => rootValue.length
+      rootValue => {
+        console.log(rootValue);
+        return !!(rootValue && rootValue.length);
+      }
     )
   },
   sendMessage: {
@@ -95,7 +98,7 @@ export const MessagesSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("sendMessage"),
-      rootValue => rootValue
+      rootValue => !!rootValue
     )
   }
 };

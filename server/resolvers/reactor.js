@@ -40,7 +40,7 @@ export const ReactorSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("reactorUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   }
 };

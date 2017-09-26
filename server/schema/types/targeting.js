@@ -4,6 +4,7 @@ type Targeting {
   simulatorId: ID
   type: String
   name: String
+  displayName:String  
   power: Power
   damage: Damage
   contacts: [TargetingContact]

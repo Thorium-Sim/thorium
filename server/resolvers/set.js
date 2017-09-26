@@ -41,7 +41,7 @@ export const SetSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("setsUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   }
 };

@@ -49,6 +49,7 @@ const CLIENT_CHANGE_QUERY = gql`
       }
       loginName
       loginState
+      training
     }
   }
 `;
@@ -237,6 +238,7 @@ const CLIENTS_QUERY = gql`
       }
       loginName
       loginState
+      training
     }
     flights {
       id

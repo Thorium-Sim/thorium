@@ -123,6 +123,12 @@ class Events extends EventEmitter {
     return snapshot;
   }
   handleEvent(param, pres, context = {}) {
+    eventCount += 1;
+    if (Date().toString() !== date) {
+      console.log("Event Count:", eventCount);
+      eventCount = 0;
+      date = Date().toString();
+    }
     const { clientId } = context;
     //const { events } = collections;
     // We need to fire the events directly
@@ -163,6 +169,9 @@ class Events extends EventEmitter {
     setTimeout(() => self.autoSave(), 10 * 1000);
   }
 }
+
+let eventCount = 0;
+let date = Date().toString();
 
 const App = new Events();
 

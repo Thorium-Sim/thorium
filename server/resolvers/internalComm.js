@@ -40,7 +40,7 @@ export const InternalCommSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("internalCommUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   }
 };

@@ -53,7 +53,7 @@ export const TargetingSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("targetingUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   }
 };

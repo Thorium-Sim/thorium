@@ -44,7 +44,7 @@ export const ShipSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("notify"),
-      rootValue => rootValue
+      rootValue => !!rootValue
     )
   },
   widgetNotify: {

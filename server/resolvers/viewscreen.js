@@ -32,7 +32,7 @@ export const ViewscreenSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("viewscreensUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   }
 };

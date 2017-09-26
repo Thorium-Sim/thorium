@@ -80,7 +80,7 @@ export const LRCommSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("longRangeCommunicationsUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   }
 };

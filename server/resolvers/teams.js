@@ -43,7 +43,7 @@ export const TeamsSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("teamsUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   }
 };

@@ -43,7 +43,7 @@ export const IsochipsSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("isochipsUpdate"),
-      rootValue => rootValue.length
+      rootValue => !!(rootValue && rootValue.length)
     )
   }
 };
