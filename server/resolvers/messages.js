@@ -68,7 +68,6 @@ export const MessagesSubscriptions = {
     subscribe: withFilter(
       () => pubsub.asyncIterator("messageUpdate"),
       rootValue => {
-        console.log(rootValue);
         return !!(rootValue && rootValue.length);
       }
     )

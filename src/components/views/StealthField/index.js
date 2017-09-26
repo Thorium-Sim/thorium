@@ -83,7 +83,7 @@ class StealthField extends Component {
             .toJS();
         }
       });
-    }
+    } /*
     if (!this.systemsSubscription && !nextProps.data.loading) {
       this.systemsSubscription = nextProps.data.subscribeToMore({
         document: SYSTEMS_SUB,
@@ -97,7 +97,7 @@ class StealthField extends Component {
             .toJS();
         }
       });
-    }
+    }*/
     if (nextProps.data.systems && !this.state.systems) {
       // We only need to initialize the state
       this.setState({

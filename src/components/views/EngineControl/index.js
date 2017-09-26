@@ -79,7 +79,6 @@ class EngineControl extends Component {
         document: HEATCHANGE_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          console.log(subscriptionData);
           const engineIndex = previousResult.engines.findIndex(
             e => e.id === subscriptionData.data.heatChange.id
           );

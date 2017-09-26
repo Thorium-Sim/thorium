@@ -15,7 +15,6 @@ const shieldNames = [
 const sendUpdate = () => {
   const shields = App.systems.filter(sys => sys.type === "Shield");
   pubsub.publish("shieldsUpdate", shields);
-  pubsub.publish("systemsUpdate", App.systems);
 };
 App.on("shieldRaised", ({ id }) => {
   const system = App.systems.find(sys => sys.id === id);

@@ -58,8 +58,9 @@ export const ShipSubscriptions = {
       }
       return returnVal.widget;
     },
-    subscribe: withFilter(() =>
-      pubsub.asyncIterator("widgetNotify", rootValue => rootValue)
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("widgetNotify"),
+      rootValue => !!rootValue
     )
   }
 };

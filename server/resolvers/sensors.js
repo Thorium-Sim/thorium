@@ -125,7 +125,6 @@ export const SensorsSubscriptions = {
   },
   sensorsPing: {
     resolve(root, args) {
-      console.log("SensorPing", root, args);
       return root;
     },
     subscribe: () => pubsub.asyncIterator("sensorsPing")

@@ -32,8 +32,9 @@ const updateCoolant = () => {
           tankCoolant === 1
         )
           s.transfer = null;
-        App.handleEvent({ systemId: sysId, coolant: sysCoolant }, "setCoolant");
-        App.handleEvent({ systemId: s.id, coolant: tankCoolant }, "setCoolant");
+
+        s.setCoolant(tankCoolant);
+        transferSystem.setCoolant(sysCoolant);
       }
       if (transferSystem.type === "Phasers") {
         pubsub.publish(

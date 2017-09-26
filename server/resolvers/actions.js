@@ -1,7 +1,6 @@
 import App from "../../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
-console.log("PUBSUB", pubsub);
 export const ActionsQueries = {
   actions() {
     // Return nothing, because we don't care about the query
@@ -62,7 +61,6 @@ export const ActionsSubscriptions = {
         clientId: toClient,
         duration
       } = rootQuery;
-      console.log(rootQuery);
       if (simulatorId !== toSimulator) return false;
       if (
         toStation === "all" ||
@@ -75,7 +73,7 @@ export const ActionsSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("actionsUpdate"),
-      !!(rootValue => rootValue)
+      rootValue => !!rootValue
     )
   }
 };
