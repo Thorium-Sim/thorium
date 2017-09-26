@@ -10,8 +10,8 @@ import Tour from "reactour";
 import "./style.scss";
 
 const SPEEDCHANGE_SUB = gql`
-  subscription SpeedChanged {
-    speedChange {
+  subscription SpeedChanged($simulatorId: ID) {
+    speedChange(simulatorId: $simulatorId) {
       id
       speed
       on
@@ -20,8 +20,8 @@ const SPEEDCHANGE_SUB = gql`
 `;
 
 const HEATCHANGE_SUB = gql`
-  subscription HeatChanged {
-    heatChange {
+  subscription HeatChanged($simulatorId: ID) {
+    heatChange(simulatorId: $simulatorId) {
       id
       heat
       coolant
@@ -34,6 +34,7 @@ const SYSTEMS_SUB = gql`
     systemsUpdate(simulatorId: $simulatorId, type: $type) {
       id
       coolant
+      heat
       power {
         power
         powerLevels
@@ -58,6 +59,7 @@ class EngineControl extends Component {
     if (!this.setSpeedSubscription && !nextProps.data.loading) {
       this.setSpeedSubscription = nextProps.data.subscribeToMore({
         document: SPEEDCHANGE_SUB,
+        variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           const engines = previousResult.engines.map(engine => {
             if (engine.id === subscriptionData.data.speedChange.id) {
@@ -75,6 +77,7 @@ class EngineControl extends Component {
     if (!this.heatChangeSubscription && !nextProps.data.loading) {
       this.heatChangeSubscription = nextProps.data.subscribeToMore({
         document: HEATCHANGE_SUB,
+        variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           const engineIndex = previousResult.engines.findIndex(
             e => e.id === subscriptionData.data.heatChange.id
@@ -108,7 +111,8 @@ class EngineControl extends Component {
                   Immutable.Map(oldVal[index]).merge({
                     damage: e.get("damage"),
                     power: e.get("power"),
-                    coolant: e.get("coolant")
+                    coolant: e.get("coolant"),
+                    heat: e.get("heat")
                   })
                 );
               },

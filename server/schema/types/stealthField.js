@@ -6,6 +6,7 @@ type StealthField {
   power: Power
   damage: Damage
   name: String
+  displayName:String  
   activated: Boolean,
   charge: Boolean,
   state: Boolean,

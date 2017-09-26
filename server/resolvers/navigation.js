@@ -1,4 +1,6 @@
 import App from "../../app";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const NavigationQueries = {
   navigation(rootValue, { simulatorId }) {
@@ -29,10 +31,16 @@ export const NavigationMutations = {
 };
 
 export const NavigationSubscriptions = {
-  navigationUpdate(rootValue, { simulatorId }) {
-    let returnRes = rootValue;
-    if (simulatorId)
-      returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
-    return returnRes;
+  navigationUpdate: {
+    resolve(rootValue, { simulatorId }) {
+      let returnRes = rootValue;
+      if (simulatorId)
+        returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
+      return returnRes;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("navigationUpdate"),
+      rootValue => !!(rootValue && rootValue.length)
+    )
   }
 };

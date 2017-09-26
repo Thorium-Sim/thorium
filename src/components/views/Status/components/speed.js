@@ -59,6 +59,7 @@ const ENGINE_QUERY = gql`
     engines(simulatorId: $simulatorId) {
       id
       name
+      displayName
       speeds {
         text
         number

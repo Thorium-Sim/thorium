@@ -1,4 +1,6 @@
 import App from "../../app";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const ShipQueries = {
   //Handled by simulator
@@ -26,27 +28,39 @@ export const ShipMutations = {
 };
 
 export const ShipSubscriptions = {
-  notify: (rootValue, { simulatorId, station, trigger }) => {
-    let returnVal = rootValue;
-    if (simulatorId) {
-      returnVal = returnVal.simulatorId === simulatorId && returnVal;
-    }
-    if (station) {
-      returnVal = returnVal.station === station && returnVal;
-    }
-    if (trigger) {
-      returnVal = returnVal.trigger === trigger && returnVal;
-    }
-    return returnVal;
+  notify: {
+    resolve: (rootValue, { simulatorId, station, trigger }) => {
+      let returnVal = rootValue;
+      if (simulatorId) {
+        returnVal = returnVal.simulatorId === simulatorId && returnVal;
+      }
+      if (station) {
+        returnVal = returnVal.station === station && returnVal;
+      }
+      if (trigger) {
+        returnVal = returnVal.trigger === trigger && returnVal;
+      }
+      return returnVal;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("notify"),
+      rootValue => !!rootValue
+    )
   },
-  widgetNotify: (rootValue, { simulatorId, station }) => {
-    let returnVal = rootValue;
-    if (simulatorId) {
-      returnVal = returnVal.simulatorId === simulatorId && returnVal;
-    }
-    if (station) {
-      returnVal = returnVal.station === station && returnVal;
-    }
-    return returnVal.widget;
+  widgetNotify: {
+    resolve: (rootValue, { simulatorId, station }) => {
+      let returnVal = rootValue;
+      if (simulatorId) {
+        returnVal = returnVal.simulatorId === simulatorId && returnVal;
+      }
+      if (station) {
+        returnVal = returnVal.station === station && returnVal;
+      }
+      return returnVal.widget;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("widgetNotify"),
+      rootValue => !!rootValue
+    )
   }
 };

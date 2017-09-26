@@ -7,6 +7,7 @@ const DEST_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {
     navigationUpdate(simulatorId: $simulatorId) {
       id
+      displayName
       scanning
       calculate
       destination
@@ -68,6 +69,7 @@ const DEST_QUERY = gql`
   query Navigation($simulatorId: ID) {
     navigation(simulatorId: $simulatorId) {
       id
+      displayName
       scanning
       calculate
       destination

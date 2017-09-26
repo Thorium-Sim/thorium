@@ -3,7 +3,6 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
 import uuid from "uuid";
 // id always represents the ID of the sensor system
-
 App.on("addSensorsArray", ({ simulatorId, domain }) => {
   const system = new Classes.Sensors({ simulatorId, domain });
   App.systems.push(system);

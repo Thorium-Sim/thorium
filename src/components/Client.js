@@ -193,11 +193,6 @@ const SIMULATOR_SUB = gql`
     }
   }
 `;
-const PING_SUB = gql`
-  subscription ClientPing($client: ID!) {
-    clientPing(client: $client)
-  }
-`;
 
 class ClientView extends Component {
   constructor(props) {
@@ -226,62 +221,43 @@ class ClientView extends Component {
     }
     if (!this.simulatorSub && !nextProps.data.loading) {
       const client = nextProps.data.clients[0];
-      this.simulatorSub = nextProps.data.subscribeToMore({
-        document: SIMULATOR_SUB,
-        variables: { id: client.simulator && client.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          const sim = subscriptionData.data.simulatorsUpdate[0];
-          return Object.assign({}, previousResult, {
-            clients: previousResult.clients.map(
-              ({
-                flight,
-                id,
-                loginName,
-                loginState,
-                offlineState,
-                station,
-                __typename
-              }) => ({
-                flight,
-                id,
-                loginName,
-                loginState,
-                offlineState,
-                station,
-                __typename,
-                simulator: {
-                  __typename: "Simulator",
-                  id: sim.id,
-                  alertlevel: sim.alertlevel,
-                  layout: sim.layout,
-                  name: sim.name
-                }
-              })
-            )
-          });
-        }
-      });
-    }
-    if (!this.clientPingSubscription && !nextProps.data.loading) {
-      this.clientPingSubscription = nextProps.data.subscribeToMore({
-        document: PING_SUB,
-        variables: { client: clientId },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          //Respond with the ping that was recieved
-          this.props.client.mutate({
-            mutation: gql`
-              mutation pingRes($client: ID!, $ping: String!) {
-                clientPing(client: $client, ping: $ping)
-              }
-            `,
-            variables: {
-              client: clientId,
-              ping: subscriptionData.data.clientPing
-            }
-          });
-          return previousResult;
-        }
-      });
+      if (client.simulator) {
+        this.simulatorSub = nextProps.data.subscribeToMore({
+          document: SIMULATOR_SUB,
+          variables: { id: client.simulator.id },
+          updateQuery: (previousResult, { subscriptionData }) => {
+            const sim = subscriptionData.data.simulatorsUpdate[0];
+            return Object.assign({}, previousResult, {
+              clients: previousResult.clients.map(
+                ({
+                  flight,
+                  id,
+                  loginName,
+                  loginState,
+                  offlineState,
+                  station,
+                  __typename
+                }) => ({
+                  flight,
+                  id,
+                  loginName,
+                  loginState,
+                  offlineState,
+                  station,
+                  __typename,
+                  simulator: {
+                    __typename: "Simulator",
+                    id: sim.id,
+                    alertlevel: sim.alertlevel,
+                    layout: sim.layout,
+                    name: sim.name
+                  }
+                })
+              )
+            });
+          }
+        });
+      }
     }
   }
   componentDidMount() {

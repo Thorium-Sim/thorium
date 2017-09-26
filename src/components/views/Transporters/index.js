@@ -10,8 +10,8 @@ import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.scss";
 
 const TRANSPORTER_SUB = gql`
-  subscription TransportersSub {
-    transporterUpdate {
+  subscription TransportersSub($simulatorId: ID) {
+    transporterUpdate(simulatorId: $simulatorId) {
       id
       type
       state
@@ -95,18 +95,18 @@ class Transporters extends Component {
     if (!this.transporterSubscription && !nextProps.data.loading) {
       this.transporterSubscription = nextProps.data.subscribeToMore({
         document: TRANSPORTER_SUB,
+        variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          previousResult.transporters = previousResult.transporters.map(
-            transporter => {
+          return Object.assign({}, previousResult, {
+            transporters: previousResult.transporters.map(transporter => {
               if (
                 transporter.id === subscriptionData.data.transporterUpdate.id
               ) {
-                transporter = subscriptionData.data.transporterUpdate;
+                return subscriptionData.data.transporterUpdate;
               }
               return transporter;
-            }
-          );
-          return previousResult;
+            })
+          });
         }
       });
     }
@@ -204,6 +204,9 @@ class Transporters extends Component {
         target: target.id
       }
     });
+  }
+  componentWillUnmount() {
+    this.transporterSubscription();
   }
   render() {
     // Assume that there is only one transporter

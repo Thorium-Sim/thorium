@@ -3,8 +3,8 @@ import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 
 const SPEEDCHANGE_SUB = gql`
-  subscription SpeedChanged {
-    speedChange {
+  subscription SpeedChanged($simulatorId: ID) {
+    speedChange(simulatorId: $simulatorId) {
       id
       speed
       on
@@ -21,6 +21,7 @@ class EngineCoreView extends Component {
     if (!this.setSpeedSubscription && !nextProps.data.loading) {
       this.setSpeedSubscription = nextProps.data.subscribeToMore({
         document: SPEEDCHANGE_SUB,
+        variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           previousResult.engines = previousResult.engines.map(engine => {
             if (engine.id === subscriptionData.data.speedChange.id) {

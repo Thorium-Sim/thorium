@@ -144,7 +144,7 @@ class TorpedoLoading extends Component {
     }, 4000);
   }
   render() {
-    const components = [TorpedoTube, TorpedoPick];
+    const components = { TorpedoTube: TorpedoTube, TorpedoPick: TorpedoPick };
     if (this.props.data.loading) return null;
     const torpedo = this.props.data.torpedos[0];
     return (
@@ -158,9 +158,10 @@ class TorpedoLoading extends Component {
           }}
         />
         <TransitionGroup>
-          {components
-            .map(Comp => {
-              if (this.state.screen === Comp.name)
+          {Object.keys(components)
+            .map(compName => {
+              const Comp = components[compName];
+              if (this.state.screen === compName)
                 return (
                   <Comp
                     key={Comp.name}

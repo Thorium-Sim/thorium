@@ -74,7 +74,7 @@ webpack(config).run((err, stats) => {
   console.log();
   console.log(chalk.cyan("Compiling PKG"));
 
-  exec(["build-server"]).then(() => {
+  exec(["build-server", "--target", "host"]).then(() => {
     if (process.platform === "darwin") {
       console.log(chalk.cyan("Applying an icon to the PKG"));
       // Apply the icon, just for fun

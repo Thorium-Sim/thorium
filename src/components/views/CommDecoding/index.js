@@ -285,7 +285,7 @@ class Decoding extends Component {
                   onChange={this._handleOnChange.bind(this, "a")}
                   onChangeComplete={this._handleChangeComplete.bind(this, "a")}
                   tooltip={false}
-                  min={10}
+                  min={5}
                   step={5}
                   max={100}
                 />

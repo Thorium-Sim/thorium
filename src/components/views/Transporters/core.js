@@ -4,8 +4,8 @@ import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 
 const TRANSPORTER_SUB = gql`
-  subscription TransportersSub {
-    transporterUpdate {
+  subscription TransportersSub($simulatorId: ID) {
+    transporterUpdate(simulatorId: $simulatorId) {
       id
       type
       state
@@ -36,6 +36,7 @@ class TransporterCore extends Component {
     if (!this.transporterSubscription && !nextProps.data.loading) {
       this.transporterSubscription = nextProps.data.subscribeToMore({
         document: TRANSPORTER_SUB,
+        variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           const transporters = previousResult.transporters.map(transporter => {
             if (transporter.id === subscriptionData.data.transporterUpdate.id) {

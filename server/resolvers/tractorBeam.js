@@ -1,4 +1,6 @@
 import App from "../../app.js";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const TractorBeamQueries = {
   tractorBeam(root, { simulatorId }) {
@@ -26,10 +28,16 @@ export const TractorBeamMutations = {
 };
 
 export const TractorBeamSubscriptions = {
-  tractorBeamUpdate(rootValue, { simulatorId }) {
-    let returnRes = rootValue;
-    if (simulatorId)
-      returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
-    return returnRes;
+  tractorBeamUpdate: {
+    resolve(rootValue, { simulatorId }) {
+      let returnRes = rootValue;
+      if (simulatorId)
+        returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
+      return returnRes;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("tractorBeamUpdate"),
+      rootValue => !!(rootValue && rootValue.length)
+    )
   }
 };

@@ -58,7 +58,8 @@ class StealthFieldCore extends Component {
       });
     }
     if (!this.systemsSubscription && !nextProps.data.loading) {
-      this.systemsSubscription = nextProps.data.subscribeToMore({
+      this.props.data.startPolling(1000);
+      /*this.systemsSubscription = nextProps.data.subscribeToMore({
         document: SYSTEMS_SUB,
         variables: {
           simulatorId: nextProps.simulator.id
@@ -69,8 +70,12 @@ class StealthFieldCore extends Component {
             .merge({ systems: subscriptionData.data.systemsUpdate })
             .toJS();
         }
-      });
+      });*/
     }
+  }
+  componentWillUnmount() {
+    this.props.data.stopPolling(1000);
+    this.subscription();
   }
   systemName(sys) {
     if (sys.type === "Shield") {
@@ -199,8 +204,8 @@ class StealthFieldCore extends Component {
             >
               {highSystems.length > 1
                 ? `${highSystems.length} Alert Systems`
-                : `${highSystems[0].name} (${Math.round(
-                    highSystems[0].stealthFactor * 100
+                : `${highSystems[0] && highSystems[0].name} (${Math.round(
+                    highSystems[0] ? highSystems[0].stealthFactor * 100 : 0
                   )})`}
             </OutputField>
           </Col>

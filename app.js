@@ -74,11 +74,12 @@ class Events extends EventEmitter {
     }
   }
   loadSnapshot() {
+    const self = this;
     const snapshot = jsonfile.readFileSync(snapshotDir + "snapshot.json");
     this.merge(snapshot);
     if (process.env.NODE_ENV === "production") {
       // Only auto save in the built version
-      setTimeout(() => this.autoSave(), 5000);
+      setTimeout(() => self.autoSave(), 5000);
     }
   }
   merge(snapshot) {
@@ -122,6 +123,12 @@ class Events extends EventEmitter {
     return snapshot;
   }
   handleEvent(param, pres, context = {}) {
+    eventCount += 1;
+    if (Date().toString() !== date) {
+      console.log("Event Count:", eventCount);
+      eventCount = 0;
+      date = Date().toString();
+    }
     const { clientId } = context;
     //const { events } = collections;
     // We need to fire the events directly
@@ -157,10 +164,14 @@ class Events extends EventEmitter {
   }
   // TODO: This is JANKY! Make this better by using actual event sourcing.
   autoSave() {
+    const self = this;
     this.snapshot();
-    setTimeout(() => this.autoSave(), 10 * 1000);
+    setTimeout(() => self.autoSave(), 10 * 1000);
   }
 }
+
+let eventCount = 0;
+let date = Date().toString();
 
 const App = new Events();
 

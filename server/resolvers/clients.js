@@ -1,4 +1,6 @@
 import App from "../../app";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const ClientQueries = {
   clients: (root, { clientId, simulatorId, stationName }) => {
@@ -75,26 +77,28 @@ export const ClientMutations = {
 };
 
 export const ClientSubscriptions = {
-  clientConnect(rootValue) {
-    return rootValue;
-  },
-  clientDisconnect(rootValue) {
-    return rootValue;
-  },
-  clientChanged: (rootValue, { client, simulatorId }) => {
-    if (client) {
-      return rootValue.filter(c => c.id === client);
-    }
-    if (simulatorId) {
-      return rootValue.filter(c => c.simulatorId === simulatorId);
-    }
-    return rootValue.filter(c => c.connected);
-  },
-  clientPing: (rootValue, { client }) => {
-    if (rootValue.id === client) {
-      return rootValue.sentPing;
-    }
-    return null;
+  clientChanged: {
+    resolve(payload, { client, simulatorId }) {
+      if (client) {
+        return payload.filter(c => c.id === client);
+      }
+      if (simulatorId) {
+        return payload.filter(c => c.simulatorId === simulatorId);
+      }
+      return payload.filter(c => c.connected);
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("clientChanged"),
+      (rootValue, { client, simulatorId }) => {
+        if (client) {
+          return !!rootValue.find(c => c.id === client);
+        }
+        if (simulatorId) {
+          return !!rootValue.find(c => c.simulatorId === simulatorId);
+        }
+        return !!rootValue.find(c => c.connected);
+      }
+    )
   }
 };
 
