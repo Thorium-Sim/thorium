@@ -10,7 +10,8 @@ import {
   ButtonGroup,
   FormGroup,
   Label,
-  Input
+  Input,
+  FormText
 } from "reactstrap";
 import TimelineConfig from "./TimelineConfig";
 import { Link } from "react-router";
@@ -115,7 +116,37 @@ class MissionsConfig extends Component {
       variables: obj
     });
   };
-  showImportModal = () => {};
+  importMission = evt => {
+    const self = this;
+    const fileReader = new FileReader();
+    fileReader.onload = function() {
+      const variables = {
+        json: this.result
+      };
+      const mutation = gql`
+        mutation ImportMission($json: String!) {
+          importMission(jsonString: $json)
+        }
+      `;
+      self.props.client.mutate({
+        mutation,
+        variables
+      });
+    };
+    fileReader.readAsText(evt.target.files[0]);
+  };
+  exportMission = () => {
+    const { missions } = this.props.data;
+    const { selectedMission } = this.state;
+    const mission = missions.find(m => m.id === selectedMission);
+    const dataStr =
+      "data:text/json;charset=utf-8," +
+      encodeURIComponent(JSON.stringify(mission));
+    const dlAnchorElem = document.getElementById("downloadAnchorElem");
+    dlAnchorElem.setAttribute("href", dataStr);
+    dlAnchorElem.setAttribute("download", `${mission.name}.misn`);
+    dlAnchorElem.click();
+  };
   render() {
     if (this.props.data.loading) return null;
     const { missions } = this.props.data;
@@ -150,14 +181,23 @@ class MissionsConfig extends Component {
               <Button onClick={this.createMission} size="sm" color="success">
                 Add
               </Button>
-              <Button onClick={this.showImportModal} size="sm" color="warning">
-                Import
-              </Button>
               {selectedMission &&
                 <Button onClick={this.removeMission} size="sm" color="danger">
                   Remove
                 </Button>}
             </ButtonGroup>
+            <FormGroup>
+              <Label for="importFile">Import Mission</Label>
+              <Input
+                type="file"
+                name="file"
+                id="importFile"
+                onChange={this.importMission}
+              />
+              <FormText color="muted">
+                Mission files will be in a ".misn" format.
+              </FormText>
+            </FormGroup>
           </Col>
           {mission &&
             <Col sm="2">
@@ -179,6 +219,12 @@ class MissionsConfig extends Component {
                   onChange={e => this.updateMission("description", e)}
                 />
               </FormGroup>
+              <a id="downloadAnchorElem" style={{ display: "none" }}>
+                Nothing here
+              </a>
+              <Button block color="info" onClick={this.exportMission}>
+                Export
+              </Button>
             </Col>}
           {mission &&
             <Col sm="8">
