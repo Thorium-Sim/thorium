@@ -322,6 +322,7 @@ class Targeting extends Component {
                   : <div />;
               }}
             </Measure>
+            <small>Follow a contact with your mouse to target.</small>
           </Col>
           <Col sm="7">
             <DamageOverlay system={phasers} message="Phasers Offline" />
