@@ -97,17 +97,16 @@ class Transporters extends Component {
         document: TRANSPORTER_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          previousResult.transporters = previousResult.transporters.map(
-            transporter => {
+          return Object.assign({}, previousResult, {
+            transporters: previousResult.transporters.map(transporter => {
               if (
                 transporter.id === subscriptionData.data.transporterUpdate.id
               ) {
-                transporter = subscriptionData.data.transporterUpdate;
+                return subscriptionData.data.transporterUpdate;
               }
               return transporter;
-            }
-          );
-          return previousResult;
+            })
+          });
         }
       });
     }
@@ -205,6 +204,9 @@ class Transporters extends Component {
         target: target.id
       }
     });
+  }
+  componentWillUnmount() {
+    this.transporterSubscription();
   }
   render() {
     // Assume that there is only one transporter

@@ -128,6 +128,10 @@ class PowerDistribution extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.systemSub();
+    this.reactorSub();
+  }
   mouseDown = (sysId, dimensions, e) => {
     this.setState({
       sysId,

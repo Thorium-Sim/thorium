@@ -1,7 +1,7 @@
 import App from "../../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
-
+console.log("PUBSUB", pubsub);
 export const ActionsQueries = {
   actions() {
     // Return nothing, because we don't care about the query
@@ -47,7 +47,6 @@ export const ActionsMutations = {
         break;
       default:
         pubsub.publish("actionsUpdate", args);
-        console.log("Actions Update", context);
         break;
     }
   }

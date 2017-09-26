@@ -123,9 +123,12 @@ export const SensorsSubscriptions = {
       rootValue => !!(rootValue && rootValue.length)
     )
   },
-  sensorsPing(root, args) {
-    console.log("SensorPing", root, args);
-    return root;
+  sensorsPing: {
+    resolve(root, args) {
+      console.log("SensorPing", root, args);
+      return root;
+    },
+    subscribe: () => pubsub.asyncIterator("sensorsPing")
   }
 };
 

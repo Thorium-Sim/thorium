@@ -57,7 +57,7 @@ export const TransporterSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("transporterUpdate"),
-      rootValue => rootValue
+      rootValue => !!rootValue
     )
   }
 };

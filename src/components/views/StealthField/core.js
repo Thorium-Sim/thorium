@@ -58,7 +58,7 @@ class StealthFieldCore extends Component {
       });
     }
     if (!this.systemsSubscription && !nextProps.data.loading) {
-      this.systemsSubscription = nextProps.data.subscribeToMore({
+      /*this.systemsSubscription = nextProps.data.subscribeToMore({
         document: SYSTEMS_SUB,
         variables: {
           simulatorId: nextProps.simulator.id
@@ -69,7 +69,7 @@ class StealthFieldCore extends Component {
             .merge({ systems: subscriptionData.data.systemsUpdate })
             .toJS();
         }
-      });
+      });*/
     }
   }
   systemName(sys) {

@@ -21,9 +21,14 @@ export default class Target extends Component {
     this.updateCharge = throttle(props.setCharge, 1000);
   }
   componentDidMount() {
+    this.ticking = true;
     this.tick();
   }
+  componentWillUnmount() {
+    this.ticking = false;
+  }
   tick() {
+    if (!this.ticking) return;
     const { selectedTarget, mouseCharge, charge } = this.state;
     if (
       (selectedTarget && mouseCharge > charge && mouseCharge < charge + 0.08) ||

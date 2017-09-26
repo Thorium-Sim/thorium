@@ -49,7 +49,7 @@ export const EngineSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("heatChange"),
-      rootValue => rootValue
+      rootValue => !!rootValue
     )
   }
 };

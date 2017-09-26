@@ -5,7 +5,7 @@ import Immutable from "immutable";
 import { Table } from "reactstrap";
 import { InputField, OutputField } from "../../generic/core";
 
-const SYSTEMS_SUB = gql`
+/*const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId) {
       id
@@ -22,7 +22,7 @@ const SYSTEMS_SUB = gql`
       type
     }
   }
-`;
+`;*/
 
 class DamageControlCore extends Component {
   constructor(props) {
@@ -35,7 +35,7 @@ class DamageControlCore extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (!this.systemSub && !nextProps.data.loading) {
-      this.systemSub = nextProps.data.subscribeToMore({
+      /*this.systemSub = nextProps.data.subscribeToMore({
         document: SYSTEMS_SUB,
         variables: {
           simulatorId: nextProps.simulator.id
@@ -46,7 +46,7 @@ class DamageControlCore extends Component {
             .merge({ systems: subscriptionData.data.systemsUpdate })
             .toJS();
         }
-      });
+      });*/
     }
   }
   systemStyle(sys) {

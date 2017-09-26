@@ -295,7 +295,6 @@ const subscriptionMap = Object.assign(
   DockingSubscriptions,
   CoreFeedSubscriptions
 );
-
 export default Object.assign(
   {
     Query: queryMap,

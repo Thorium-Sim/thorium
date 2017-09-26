@@ -23,7 +23,7 @@ export const ViewscreenMutations = {
 
 export const ViewscreenSubscriptions = {
   viewscreensUpdate: {
-    resolver(rootValue, { simulatorId }) {
+    resolve(rootValue, { simulatorId }) {
       let viewscreens = App.clients.filter(s => s.station === "Viewscreen");
       if (simulatorId) {
         viewscreens = viewscreens.filter(v => v.simulatorId === simulatorId);

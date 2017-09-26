@@ -17,11 +17,6 @@ const sendUpdate = () => {
   pubsub.publish("shieldsUpdate", shields);
   pubsub.publish("systemsUpdate", App.systems);
 };
-App.on("createShield", ({ simulatorId, name, position }) => {
-  const system = new Classes.Shield({ simulatorId, name, position });
-  App.systems.push(system);
-  sendUpdate();
-});
 App.on("shieldRaised", ({ id }) => {
   const system = App.systems.find(sys => sys.id === id);
   pubsub.publish("notify", {

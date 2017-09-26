@@ -32,7 +32,7 @@ export const DockingMutations = {
 
 export const DockingSubscriptions = {
   dockingUpdate: {
-    resolver(rootValue, { id, simulatorId, type }) {
+    resolve(rootValue, { id, simulatorId, type }) {
       let dockingPorts = rootValue;
       if (id) {
         return dockingPorts.filter(d => d.id === id);
@@ -48,7 +48,7 @@ export const DockingSubscriptions = {
     subscribe: withFilter(
       () => pubsub.asyncIterator("dockingUpdate"),
       rootValue => {
-        return rootValue.length;
+        return !!(rootValue && rootValue.length);
       }
     )
   }

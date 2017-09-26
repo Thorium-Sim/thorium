@@ -107,7 +107,7 @@ class GridCore extends Component {
     if (!this.pingSub && !nextProps.data.loading) {
       this.pingSub = nextProps.data.subscribeToMore({
         document: PING_SUB,
-        variables: { id: nextProps.data.sensors[0] },
+        variables: { id: nextProps.data.sensors[0].id },
         updateQuery: (previousResult, { subscriptionData }) => {
           if (
             previousResult.sensors.find(

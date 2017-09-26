@@ -35,7 +35,7 @@ export const ThrustersSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("rotationChange"),
-      rootValue => rootValue
+      rootValue => !!rootValue
     )
   }
 };
