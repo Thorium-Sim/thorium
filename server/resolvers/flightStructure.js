@@ -48,7 +48,9 @@ export const FlightStructureMutations = {
   editMission(root, args, context) {
     App.handleEvent(args, "editMission", context);
   },
-
+  importMission(root, args, context) {
+    App.handleEvent(args, "importMission", context);
+  },
   // Flight
   startFlight(root, args, context) {
     const flightId = uuid.v4();

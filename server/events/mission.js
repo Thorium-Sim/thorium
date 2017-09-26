@@ -17,6 +17,13 @@ App.on("editMission", ({ missionId, name, description, simulators }) => {
   mission.update({ name, description, simulators });
   pubsub.publish("missionsUpdate", App.missions);
 });
+App.on("importMission", ({ jsonString }) => {
+  const json = JSON.parse(jsonString);
+  delete json.id;
+  const mission = new Classes.Mission(json);
+  App.missions.push(mission);
+  pubsub.publish("missionsUpdate", App.missions);
+});
 App.on("addSimulatorToMission", ({ missionId, simulatorName }) => {
   const mission = App.missions.find(m => m.id === missionId);
   const simulator = new Classes.Simulator({

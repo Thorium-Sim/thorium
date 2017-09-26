@@ -2,6 +2,7 @@ export default `
 createMission(name: String!):String
 removeMission(missionId: ID!):String
 editMission(missionId: ID!, name: String, description: String):String
+importMission(jsonString: String!):String
 
 startFlight(name: String, simulators: [SimulatorInput!]!):String
 createSimulator(name: String!,template: Boolean):String
