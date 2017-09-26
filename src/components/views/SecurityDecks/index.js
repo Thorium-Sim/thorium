@@ -11,6 +11,8 @@ import {
   Input
 } from "reactstrap";
 import gql from "graphql-tag";
+import { RoomDropdown } from "../helpers/shipStructure";
+
 import "./style.scss";
 
 const DECK_SUB = gql`
@@ -53,11 +55,11 @@ class SecurityTeams extends Component {
       selectedRoom: null
     });
   }
-  _selectRoom(e) {
+  _selectRoom = e => {
     this.setState({
-      selectedRoom: e.target.value
+      selectedRoom: e.room
     });
-  }
+  };
   _toggleDoors() {
     const mutation = gql`
       mutation ToggleDoors($deckId: ID!, $doors: Boolean!) {
@@ -182,14 +184,12 @@ class SecurityTeams extends Component {
                 <Card>
                   <CardBlock>
                     <h4>Tranzine Gas</h4>
-                    <Input onChange={this._selectRoom.bind(this)} type="select">
-                      <option value={false}>Select A Room:</option>
-                      {deck.rooms.map(r =>
-                        <option key={r.id} value={r.id}>
-                          {r.name}
-                        </option>
-                      )}
-                    </Input>
+                    <RoomDropdown
+                      selectedDeck={deck.id}
+                      selectedRoom={this.state.selectedRoom}
+                      decks={decks}
+                      setSelected={a => this._selectRoom(a)}
+                    />
                     <Button
                       color="warning"
                       block
