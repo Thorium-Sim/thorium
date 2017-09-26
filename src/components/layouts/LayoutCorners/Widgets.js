@@ -93,7 +93,7 @@ class Widget extends Component {
     return (
       <div className="widget-item" onClick={this.toggleModal}>
         <FontAwesome
-          size="lg"
+          size="2x"
           fixedWidth
           name={widget.icon}
           className={`widget-icon ${notify ? "notify" : ""}`}
