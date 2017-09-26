@@ -133,7 +133,7 @@
     "sourced": "^0.1.4",
     "subscriptions-transport-ws": "^0.8.3",
     "svg-mesh-3d": "^1.1.0",
-    "three": "^0.85.2",
+    "three": "^0.86.0",
     "three-obj-loader": "^1.0.2",
     "three-simplicial-complex": "^69.0.6",
     "tingodb": "^0.5.1",
