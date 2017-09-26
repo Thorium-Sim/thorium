@@ -2,16 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Immutable from "immutable";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
-} from "reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 import assetPath from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";

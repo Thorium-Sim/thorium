@@ -5,7 +5,7 @@ import { graphql } from "react-apollo";
 
 const SUB = gql`
   subscription DamagedSub($simulatorId: ID) {
-    systemsUpdate(simulatorId: $simulatorId) {
+    systemsUpdate(simulatorId: $simulatorId, extra: true) {
       id
       name
       damage {
@@ -55,7 +55,7 @@ class Damage extends Component {
 
 const QUERY = gql`
   query Damaged($simulatorId: ID) {
-    systems(simulatorId: $simulatorId) {
+    systems(simulatorId: $simulatorId, extra: true) {
       id
       name
       displayName

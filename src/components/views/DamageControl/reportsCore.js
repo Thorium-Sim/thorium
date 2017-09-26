@@ -227,14 +227,22 @@ class DamageReportCore extends Component {
                 {this.systemName(s)}
               </p>
             )}
-            <Button
+            <Input
+              type="select"
+              value={"top"}
               size="sm"
-              block
-              color="info"
-              onClick={() => this.createExtraSystem()}
+              onChange={evt => this.createExtraSystem(evt.target.value)}
             >
-              Create Extra
-            </Button>
+              <option disabled value="top">
+                Extra Damage
+              </option>
+              {extra.map(e =>
+                <option key={e} value={e}>
+                  {e}
+                </option>
+              )}
+              <option value="">Add System</option>
+            </Input>
           </Col>
           <Col sm={8}>
             <TypingField

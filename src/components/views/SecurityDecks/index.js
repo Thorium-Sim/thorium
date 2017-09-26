@@ -7,8 +7,7 @@ import {
   ListGroupItem,
   Button,
   Card,
-  CardBlock,
-  Input
+  CardBlock
 } from "reactstrap";
 import gql from "graphql-tag";
 import { RoomDropdown } from "../helpers/shipStructure";

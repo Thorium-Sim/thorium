@@ -270,7 +270,6 @@ class DamageControl extends Component {
     );
   }
 }
-
 const trainingSteps = [
   {
     selector: ".damaged-systems",
