@@ -87,6 +87,7 @@ class Ship {
     this.selfDestructCode = params.selfDestructCode || null;
     this.selfDestructAuto = params.selfDestructAuto || false; // Automatically black out stations when self destructed
     this.remoteAccessCodes = [];
+    this.extraSystems = [];
     const codes = params.remoteAccessCodes || [];
     codes.forEach(c => this.remoteAccessCodes.push(new RemoteAccess(c)));
   }

@@ -24,6 +24,7 @@ export Probes from "./probes";
 export StealthField from "./stealthField";
 export Coolant from "./coolant";
 export TractorBeam from "./tractorBeam";
+export { System } from "./generic";
 
 export Crew from "./crew";
 export Team from "./teams";

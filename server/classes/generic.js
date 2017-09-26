@@ -1,8 +1,8 @@
-import uuid from 'uuid';
+import uuid from "uuid";
 
 const defaultPower = {
   power: 5,
-  powerLevels: [5],
+  powerLevels: [5]
 };
 
 const defaultDamage = {
@@ -32,7 +32,7 @@ export function HeatMixin(inheritClass) {
       this.coolant = this.coolant - 0.037;
       this.heat = this.heat - 0.89;
     }
-  }
+  };
 }
 
 export class System {
@@ -42,14 +42,15 @@ export class System {
     this.name = params.name || null;
     this.displayName = params.displayName || params.name;
     this.power = params.power || defaultPower;
-    this.damage = params.damage || defaultDamage
+    this.damage = params.damage || defaultDamage;
+    this.extra = params.extra || false;
   }
   get stealthFactor() {
     return null;
   }
-  updateName({name, displayName}) {
-    if (name || name === '') this.name = name;
-    if (displayName || displayName === '') this.displayName = displayName;
+  updateName({ name, displayName }) {
+    if (name || name === "") this.name = name;
+    if (displayName || displayName === "") this.displayName = displayName;
   }
   setPower(powerLevel) {
     this.power.power = powerLevel;
@@ -94,46 +95,82 @@ export class System {
     if (!report) return;
     let returnReport = report;
     // #PART
-    const partMatches = report.match(/#PART/ig) || [];
+    const partMatches = report.match(/#PART/gi) || [];
     partMatches.forEach(m => {
       const index = returnReport.indexOf(m);
-      returnReport = returnReport.replace(m, '');
+      returnReport = returnReport.replace(m, "");
       const part = randomFromList(partsList);
       returnReport = splice(returnReport, index, 0, part);
     });
-    
+
     // #COLOR
-    const colorMatches = report.match(/#COLOR/ig) || [];
+    const colorMatches = report.match(/#COLOR/gi) || [];
     colorMatches.forEach(m => {
       const index = returnReport.indexOf(m);
-      returnReport = returnReport.replace(m, '');
-      returnReport = splice(returnReport, index, 0, randomFromList(['red','blue','green','yellow']));
+      returnReport = returnReport.replace(m, "");
+      returnReport = splice(
+        returnReport,
+        index,
+        0,
+        randomFromList(["red", "blue", "green", "yellow"])
+      );
     });
 
     // #[1 - 2]
-    const matches = returnReport.match(/#\[ ?([0-9]+) ?- ?([0-9]+) ?\]/ig) || [];
+    const matches =
+      returnReport.match(/#\[ ?([0-9]+) ?- ?([0-9]+) ?\]/gi) || [];
     matches.forEach(m => {
       const index = returnReport.indexOf(m);
-      returnReport = returnReport.replace(m, '');
-      const numbers = m.replace(/[ [\]#]/gi, '').split('-');
+      returnReport = returnReport.replace(m, "");
+      const numbers = m.replace(/[ [\]#]/gi, "").split("-");
       const num = Math.round(Math.random() * numbers[1] + numbers[0]);
       returnReport = splice(returnReport, index, 0, num);
-    })  
+    });
 
     // #["String1", "String2", "String3", etc.]
-    const stringMatches = returnReport.match(/#\[ ?("|')[^\]]*("|') ?]/ig) || [];
+    const stringMatches =
+      returnReport.match(/#\[ ?("|')[^\]]*("|') ?]/gi) || [];
     stringMatches.forEach(m => {
       const index = returnReport.indexOf(m);
-      returnReport = returnReport.replace(m, '');
+      returnReport = returnReport.replace(m, "");
       const strings = m.match(/"(.*?)"/gi);
-      returnReport = splice(returnReport, index, 0, randomFromList(strings).replace(/"/gi, ""));
-    })
-    
+      returnReport = splice(
+        returnReport,
+        index,
+        0,
+        randomFromList(strings).replace(/"/gi, "")
+      );
+    });
+
+    // #NUMBER
+    const numberMatches = returnReport.match(/#NUMBER/gi) || [];
+    const num = Math.round(Math.random() * 12 + 1);
+    numberMatches.forEach(m => {
+      const index = returnReport.indexOf(m);
+      returnReport = returnReport.replace(m, "");
+      returnReport = splice(returnReport, index, 0, num);
+    });
+
+    // #DECK
+    const deckMatches = returnReport.match(/#DECK/gi) || [];
+    const deck = Math.round(Math.random() * 14 + 1);
+    deckMatches.forEach(m => {
+      const index = returnReport.indexOf(m);
+      returnReport = returnReport.replace(m, "");
+      returnReport = splice(returnReport, index, 0, deck);
+    });
+
     // #REACTIVATIONCODE
-    if (report.indexOf('#REACTIVATIONCODE') > -1) {
-      const reactivationCode = Array(8).fill('').map(_ => randomFromList(['¥','Ω','∏','-','§','∆','£','∑','∂'])).join('');
+    if (report.indexOf("#REACTIVATIONCODE") > -1) {
+      const reactivationCode = Array(8)
+        .fill("")
+        .map(_ => randomFromList(["¥", "Ω", "∏", "-", "§", "∆", "£", "∑", "∂"]))
+        .join("");
       this.damage.neededReactivationCode = reactivationCode;
-      returnReport = returnReport.replace(/#REACTIVATIONCODE/ig, reactivationCode);
+      returnReport = returnReport.replace(
+        /#REACTIVATIONCODE/gi,
+        reactivationCode
+      );
     }
 
     return returnReport;
@@ -141,34 +178,34 @@ export class System {
 }
 
 const partsList = [
-"Field Generator",
-"Isolinear Rods",
-"Eps Step-down Conduit",
-"Fuel Regulator",
-"Field Emitter",
-"Sensor Pallet",
-"EPS Power Node",
-"Isolinear Chips",
-"Network Adapter",
-"Fusion Generator",
-"Magnetic Coil",
-"Analog Buffer",
-"Coaxial Servo",
-"CASM Generator",
-"Computer Interface",
-"Digital Sequence Encoder",
-"Fiberoptic Wire Linkage",
-"Fusion Welder",
-"Holographic Servo Display",
-"IDC Power Cable",
-"Integrated Fluid Sensor",
-"Magnetic Bolt Fastener",
-"Power Coupling",
-"Power Splitter",
-"Prefire Chamber",
-"Residual Power Store",
-"Subspace Transceiver",
-]
+  "Field Generator",
+  "Isolinear Rods",
+  "Eps Step-down Conduit",
+  "Fuel Regulator",
+  "Field Emitter",
+  "Sensor Pallet",
+  "EPS Power Node",
+  "Isolinear Chips",
+  "Network Adapter",
+  "Fusion Generator",
+  "Magnetic Coil",
+  "Analog Buffer",
+  "Coaxial Servo",
+  "CASM Generator",
+  "Computer Interface",
+  "Digital Sequence Encoder",
+  "Fiberoptic Wire Linkage",
+  "Fusion Welder",
+  "Holographic Servo Display",
+  "IDC Power Cable",
+  "Integrated Fluid Sensor",
+  "Magnetic Bolt Fastener",
+  "Power Coupling",
+  "Power Splitter",
+  "Prefire Chamber",
+  "Residual Power Store",
+  "Subspace Transceiver"
+];
 
 function randomFromList(list) {
   const length = list.length;
@@ -176,6 +213,7 @@ function randomFromList(list) {
   return list[index];
 }
 function splice(str, start, delCount, newSubStr) {
-  return str.slice(0, start) + newSubStr + str.slice(start + Math.abs(delCount));
+  return (
+    str.slice(0, start) + newSubStr + str.slice(start + Math.abs(delCount))
+  );
 }
-

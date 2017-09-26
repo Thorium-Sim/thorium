@@ -7,7 +7,7 @@ import { TypingField } from "../../generic/core";
 
 const SYSTEMS_SUB = gql`
   subscription DamagedSystemsUpdate($simulatorId: ID) {
-    systemsUpdate(simulatorId: $simulatorId) {
+    systemsUpdate(simulatorId: $simulatorId, extra: true) {
       id
       name
       damage {
@@ -22,6 +22,30 @@ const SYSTEMS_SUB = gql`
     }
   }
 `;
+
+const extra = [
+  "Co2 Scrubbers",
+  "Fire",
+  "Life Support",
+  "Power Adjustment",
+  "Transporter Buffer",
+  "Turbolift Malfunction",
+  "Antimatter Containment",
+  "Gravity Systems",
+  "Hull Breach",
+  "Temperature",
+  "Holodeck",
+  "Brig Force Field",
+  "Co2 Scrubbers",
+  "Oxygen Generators",
+  "Warp Field Realignment",
+  "Computer Power",
+  "Particle Detector",
+  "Deuterium Fuel",
+  "Water Pipes",
+  "Food Replicators",
+  "Zoology Pens Force Fields"
+];
 
 class DamageReportCore extends Component {
   constructor(props) {
@@ -121,11 +145,72 @@ class DamageReportCore extends Component {
       variables
     });
   };
+  createExtraSystem = name => {
+    name = name || prompt("What is the name of the system?");
+    const systems = this.props.data.systems;
+    if (systems.find(s => s.name === name)) {
+      this.breakSystem(systems.find(s => s.name === name).id);
+      return;
+    }
+    const mutation = gql`
+      mutation CreateExtraSystem($simulatorId: ID!, $params: String!) {
+        addSystemToSimulator(
+          simulatorId: $simulatorId
+          className: "System"
+          params: $params
+        )
+      }
+    `;
+    const variables = {
+      simulatorId: this.props.simulator.id,
+      params: JSON.stringify({
+        name,
+        extra: true,
+        damage: { damaged: true }
+      })
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  breakSystem = sys => {
+    const variables = {
+      systemId: sys
+    };
+    // Break it
+    const mutation = gql`
+      mutation DamageSystem($systemId: ID!) {
+        damageSystem(systemId: $systemId)
+      }
+    `;
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  repairSystem = () => {
+    const { selectedSystem } = this.state;
+    const variables = {
+      systemId: selectedSystem
+    };
+    // Fix it
+    const mutation = gql`
+      mutation RepairSystem($systemId: ID!) {
+        repairSystem(systemId: $systemId)
+      }
+    `;
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading) return null;
     const systems = this.props.data.systems;
     const { selectedReport, selectedSystem } = this.state;
     const selectedSystemObj = systems.find(s => s.id === selectedSystem);
+    console.log(systems);
     return (
       <Container fluid className="damageReport-core">
         <Row>
@@ -142,6 +227,14 @@ class DamageReportCore extends Component {
                 {this.systemName(s)}
               </p>
             )}
+            <Button
+              size="sm"
+              block
+              color="info"
+              onClick={() => this.createExtraSystem()}
+            >
+              Create Extra
+            </Button>
           </Col>
           <Col sm={8}>
             <TypingField
@@ -222,6 +315,14 @@ class DamageReportCore extends Component {
                     >
                       Send Report
                     </Button>
+                    <Button
+                      size={"sm"}
+                      block
+                      color="success"
+                      onClick={this.repairSystem}
+                    >
+                      Repair
+                    </Button>
                   </Col>
                 </Row>}
           </Col>
@@ -232,7 +333,7 @@ class DamageReportCore extends Component {
 }
 const SYSTEMS_QUERY = gql`
   query DamagedSystems($simulatorId: ID) {
-    systems(simulatorId: $simulatorId) {
+    systems(simulatorId: $simulatorId, extra: true) {
       id
       name
       damage {

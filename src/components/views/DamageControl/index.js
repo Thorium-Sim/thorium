@@ -9,7 +9,7 @@ import "./style.scss";
 
 const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
-    systemsUpdate(simulatorId: $simulatorId) {
+    systemsUpdate(simulatorId: $simulatorId, extra: true) {
       id
       name
       damage {
@@ -296,7 +296,7 @@ const trainingSteps = [
 
 const SYSTEMS_QUERY = gql`
   query Systems($simulatorId: ID) {
-    systems(simulatorId: $simulatorId) {
+    systems(simulatorId: $simulatorId, extra: true) {
       id
       name
       damage {
