@@ -1,4 +1,6 @@
 import App from "../../app";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const CoolantQueries = {
   coolant(root, { simulatorId, systemId }) {
@@ -42,17 +44,39 @@ export const CoolantMutations = {
 };
 
 export const CoolantSubscriptions = {
-  coolantUpdate(rootValue, { simulatorId }) {
-    let returnRes = rootValue;
-    if (simulatorId)
-      returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
-    return returnRes;
+  coolantUpdate: {
+    resolve(rootValue, { simulatorId }) {
+      let returnRes = rootValue;
+      if (simulatorId)
+        returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
+      return returnRes;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("coolantUpdate"),
+      (rootValue, { simulatorId }) => {
+        if (simulatorId)
+          return !!rootValue.find(s => s.simulatorId === simulatorId);
+        return true;
+      }
+    )
   },
-  coolantSystemUpdate(rootValue, { simulatorId, systemId }) {
-    let returnRes = rootValue;
-    if (simulatorId)
-      returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
-    if (systemId) returnRes = returnRes.filter(s => s.id === systemId);
-    return returnRes;
+  coolantSystemUpdate: {
+    resolve(rootValue, { simulatorId, systemId }) {
+      let returnRes = rootValue;
+      if (simulatorId)
+        returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
+      if (systemId) returnRes = returnRes.filter(s => s.id === systemId);
+      return returnRes;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("coolantSystemUpdate"),
+      (rootValue, { simulatorId, systemId }) => {
+        let returnRes = rootValue;
+        if (simulatorId)
+          returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
+        if (systemId) returnRes = returnRes.filter(s => s.id === systemId);
+        return returnRes.length > 0 ? true : false;
+      }
+    )
   }
 };

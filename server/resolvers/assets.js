@@ -190,8 +190,11 @@ export const AssetsMutations = {
 };
 
 export const AssetsSubscriptions = {
-  assetFolderChange(rootValue) {
-    return rootValue;
+  assetFolderChange: {
+    resolve(rootValue) {
+      return rootValue;
+    },
+    subscribe: pubsub.asyncIterator("assetFolderChange")
   }
 };
 

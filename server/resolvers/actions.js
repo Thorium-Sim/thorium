@@ -55,31 +55,29 @@ export const ActionsMutations = {
 
 export const ActionsSubscriptions = {
   actionsUpdate: {
-    subscribe: () =>
-      withFilter(
-        pubsub.asyncIterator("actionsUpdate"),
-        (
-          {
-            action,
-            simulatorId: toSimulator,
-            stationId: toStation,
-            clientId: toClient,
-            duration
-          },
-          { simulatorId, stationId, clientId }
-        ) => {
-          console.log(toSimulator, toStation, simulatorId, stationId);
-          if (simulatorId !== toSimulator) return false;
-          if (
-            toStation === "all" ||
-            toClient === "all" ||
-            (toStation === stationId && toStation && stationId) ||
-            (toClient === clientId && toClient && clientId)
-          ) {
-            return true;
-          }
-          return false;
-        }
-      )
+    resolve(
+      {
+        action,
+        simulatorId: toSimulator,
+        stationId: toStation,
+        clientId: toClient,
+        duration
+      },
+      { simulatorId, stationId, clientId }
+    ) {
+      if (simulatorId !== toSimulator) return false;
+      if (
+        toStation === "all" ||
+        toClient === "all" ||
+        (toStation === stationId && toStation && stationId) ||
+        (toClient === clientId && toClient && clientId)
+      ) {
+        return { action, duration };
+      }
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("actionsUpdate"),
+      rootValue => rootValue
+    )
   }
 };

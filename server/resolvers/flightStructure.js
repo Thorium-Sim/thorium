@@ -159,28 +159,57 @@ export const FlightStructureMutations = {
 };
 
 export const FlightStructureSubscriptions = {
-  stationSetUpdate: rootValue => {
-    return rootValue;
+  stationSetUpdate: {
+    resolve(rootValue) {
+      return rootValue;
+    },
+    subscribe: () => pubsub.asyncIterator("stationSetUpdate")
   },
-  missionsUpdate: (rootValue, { missionId }) => {
-    if (missionId) {
-      return rootValue.filter(m => m.id === missionId);
-    }
-    return rootValue;
+  missionsUpdate: {
+    resolve: (rootValue, { missionId }) => {
+      if (missionId) {
+        return rootValue.filter(m => m.id === missionId);
+      }
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("missionsUpdate"),
+      (rootValue, { missionId }) => {
+        if (missionId) {
+          return !!rootValue.find(m => m.id === missionId);
+        }
+        return true;
+      }
+    )
   },
-  simulatorsUpdate: (rootValue, { simulatorId, template }) => {
-    let returnVal = rootValue;
-    if (template) returnVal = returnVal.filter(s => s.template);
-    if (simulatorId) returnVal = returnVal.filter(s => s.id === simulatorId);
-    return returnVal.length > 0 ? returnVal : null;
+  simulatorsUpdate: {
+    resolve(rootValue, { simulatorId, template }) {
+      let returnVal = rootValue;
+      if (template) returnVal = returnVal.filter(s => s.template);
+      if (simulatorId) returnVal = returnVal.filter(s => s.id === simulatorId);
+      return returnVal.length > 0 ? returnVal : null;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("simulatorsUpdate"),
+      (rootValue, { simulatorId, template }) => {
+        let returnVal = rootValue;
+        if (template) returnVal = returnVal.filter(s => s.template);
+        if (simulatorId)
+          returnVal = returnVal.filter(s => s.id === simulatorId);
+        return returnVal.length > 0 ? true : false;
+      }
+    )
   },
   flightsUpdate: {
+    resolve(payload, { id }) {
+      if (id) return payload.filter(s => s.id === id);
+      return payload;
+    },
     subscribe: withFilter(
       () => pubsub.asyncIterator("flightsUpdate"),
       (rootValue, { id }) => {
-        console.log("Stuff", rootValue, id);
-        if (id) return rootValue.filter(s => s.id === id);
-        return rootValue;
+        if (id) return !!rootValue.find(s => s.id === id);
+        return true;
       }
     )
   }

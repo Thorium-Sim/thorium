@@ -1,4 +1,6 @@
 import App from "../../app.js";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const SystemsQueries = {
   systems(rootValue, { simulatorId, type, power, heat }) {
@@ -58,23 +60,31 @@ export const SystemsMutations = {
 };
 
 export const SystemsSubscriptions = {
-  systemsUpdate(rootValue, { simulatorId, type, power, heat }) {
-    let returnSystems = rootValue;
-    if (simulatorId) {
-      returnSystems = returnSystems.filter(s => s.simulatorId === simulatorId);
-    }
-    if (type) {
-      returnSystems = returnSystems.filter(s => s.type === type);
-    }
-    if (power) {
-      returnSystems = returnSystems.filter(
-        s => s.power.power || s.power.power === 0
-      );
-    }
-    if (heat) {
-      returnSystems = returnSystems.filter(s => s.heat || s.heat === 0);
-    }
-    return returnSystems;
+  systemsUpdate: {
+    resolve(rootValue, { simulatorId, type, power, heat }) {
+      let returnSystems = rootValue;
+      if (simulatorId) {
+        returnSystems = returnSystems.filter(
+          s => s.simulatorId === simulatorId
+        );
+      }
+      if (type) {
+        returnSystems = returnSystems.filter(s => s.type === type);
+      }
+      if (power) {
+        returnSystems = returnSystems.filter(
+          s => s.power.power || s.power.power === 0
+        );
+      }
+      if (heat) {
+        returnSystems = returnSystems.filter(s => s.heat || s.heat === 0);
+      }
+      return returnSystems;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("systemsUpdate"),
+      rootValue => rootValue.length > 0
+    )
   }
 };
 
