@@ -194,7 +194,7 @@ export const AssetsSubscriptions = {
     resolve(rootValue) {
       return rootValue;
     },
-    subscribe: pubsub.asyncIterator("assetFolderChange")
+    subscribe: () => pubsub.asyncIterator("assetFolderChange")
   }
 };
 

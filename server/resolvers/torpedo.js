@@ -1,9 +1,11 @@
-import App from '../../app.js';
+import App from "../../app.js";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const TorpedoQueries = {
-  torpedos(root, {simulatorId}){
-    let returnVal = App.systems.filter(s => s.type === 'Torpedo');
-    if (simulatorId){
+  torpedos(root, { simulatorId }) {
+    let returnVal = App.systems.filter(s => s.type === "Torpedo");
+    if (simulatorId) {
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
     }
     return returnVal;
@@ -11,30 +13,37 @@ export const TorpedoQueries = {
 };
 
 export const TorpedoMutations = {
-  torpedoAddWarhead(root, args, context){
-    App.handleEvent(args, 'torpedoAddWarhead', context);
+  torpedoAddWarhead(root, args, context) {
+    App.handleEvent(args, "torpedoAddWarhead", context);
   },
-  torpedoRemoveWarhead(root, args, context){
-    App.handleEvent(args, 'torpedoRemoveWarhead', context);
+  torpedoRemoveWarhead(root, args, context) {
+    App.handleEvent(args, "torpedoRemoveWarhead", context);
   },
-  torpedoLoadWarhead(root, args, context){
-    App.handleEvent(args, 'torpedoLoadWarhead', context);
+  torpedoLoadWarhead(root, args, context) {
+    App.handleEvent(args, "torpedoLoadWarhead", context);
   },
-  torpedoUnload(root, args, context){
-    App.handleEvent(args, 'torpedoUnload', context);
+  torpedoUnload(root, args, context) {
+    App.handleEvent(args, "torpedoUnload", context);
   },
-  torpedoFire(root, args, context){
-    App.handleEvent(args, 'torpedoFire', context);
+  torpedoFire(root, args, context) {
+    App.handleEvent(args, "torpedoFire", context);
   },
-  torpedoSetWarheadCount(root, args, context){
-    App.handleEvent(args, 'torpedoSetWarheadCount', context);
+  torpedoSetWarheadCount(root, args, context) {
+    App.handleEvent(args, "torpedoSetWarheadCount", context);
   }
 };
 
 export const TorpedoSubscriptions = {
-  torpedosUpdate(rootValue, {simulatorId}){
-    let returnRes = rootValue;
-    if (simulatorId) returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
-    return returnRes;
+  torpedosUpdate: {
+    resolve(rootValue, { simulatorId }) {
+      let returnRes = rootValue;
+      if (simulatorId)
+        returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
+      return returnRes;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("torpedosUpdate"),
+      rootValue => rootValue.length
+    )
   }
 };

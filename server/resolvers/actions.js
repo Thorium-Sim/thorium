@@ -46,8 +46,8 @@ export const ActionsMutations = {
           );
         break;
       default:
-        pubsub.publish("actionsUpdate", args, context);
-        console.log("Actions Update");
+        pubsub.publish("actionsUpdate", args);
+        console.log("Actions Update", context);
         break;
     }
   }
@@ -55,16 +55,15 @@ export const ActionsMutations = {
 
 export const ActionsSubscriptions = {
   actionsUpdate: {
-    resolve(
-      {
+    resolve(rootQuery, { simulatorId, stationId, clientId }) {
+      const {
         action,
         simulatorId: toSimulator,
         stationId: toStation,
         clientId: toClient,
         duration
-      },
-      { simulatorId, stationId, clientId }
-    ) {
+      } = rootQuery;
+      console.log(rootQuery);
       if (simulatorId !== toSimulator) return false;
       if (
         toStation === "all" ||
@@ -77,7 +76,7 @@ export const ActionsSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("actionsUpdate"),
-      rootValue => rootValue
+      !!(rootValue => rootValue)
     )
   }
 };

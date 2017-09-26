@@ -455,7 +455,10 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
               </select>
               <label>Message Groups:</label>
               {["Security", "Damage", "Medical"].map(group =>
-                <label style={{ display: "inline-block" }}>
+                <label
+                  key={`messageGroup-${group}`}
+                  style={{ display: "inline-block" }}
+                >
                   <input
                     type="checkbox"
                     checked={station.messageGroups.indexOf(group) > -1}

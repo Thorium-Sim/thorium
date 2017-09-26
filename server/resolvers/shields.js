@@ -1,4 +1,6 @@
 import App from "../../app.js";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const ShieldQueries = {
   shields(root, { simulatorId }) {
@@ -24,9 +26,15 @@ export const ShieldMutations = {
 };
 
 export const ShieldSubscriptions = {
-  shieldsUpdate(rootValue, { simulatorId }) {
-    if (simulatorId)
-      return rootValue.filter(s => s.simulatorId === simulatorId);
-    return rootValue;
+  shieldsUpdate: {
+    resolve(rootValue, { simulatorId }) {
+      if (simulatorId)
+        return rootValue.filter(s => s.simulatorId === simulatorId);
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("shieldsUpdate"),
+      rootValue => rootValue.length
+    )
   }
 };

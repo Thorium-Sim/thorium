@@ -42,7 +42,6 @@ export const EngineSubscriptions = {
   },
   heatChange: {
     resolve(rootValue, { simulatorId }) {
-      console.log(rootValue, simulatorId);
       if (simulatorId) {
         return rootValue.simulatorId === simulatorId && rootValue;
       }

@@ -1,4 +1,6 @@
 import App from "../../app.js";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const ViewscreenQueries = {
   viewscreens(rootValue, { simulatorId }) {
@@ -20,11 +22,17 @@ export const ViewscreenMutations = {
 };
 
 export const ViewscreenSubscriptions = {
-  viewscreensUpdate(rootValue, { simulatorId }) {
-    let viewscreens = App.clients.filter(s => s.station === "Viewscreen");
-    if (simulatorId) {
-      viewscreens = viewscreens.filter(v => v.simulatorId === simulatorId);
-    }
-    return viewscreens.map(v => rootValue.find(av => av.id === v.id));
+  viewscreensUpdate: {
+    resolver(rootValue, { simulatorId }) {
+      let viewscreens = App.clients.filter(s => s.station === "Viewscreen");
+      if (simulatorId) {
+        viewscreens = viewscreens.filter(v => v.simulatorId === simulatorId);
+      }
+      return viewscreens.map(v => rootValue.find(av => av.id === v.id));
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("viewscreensUpdate"),
+      rootValue => rootValue.length
+    )
   }
 };

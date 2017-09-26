@@ -1,3 +1,3 @@
 export default `
-  transporterUpdate: Transporter
+  transporterUpdate(simulatorId: ID): Transporter
 `;

@@ -1,8 +1,10 @@
-import App from '../../app';
+import App from "../../app";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const ProbesQueries = {
   probes(rootValue, { simulatorId }) {
-    let returnVal = App.systems.filter(s => s.type === 'Probes');
+    let returnVal = App.systems.filter(s => s.type === "Probes");
     if (simulatorId) {
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
     }
@@ -12,37 +14,43 @@ export const ProbesQueries = {
 
 export const ProbesMutations = {
   destroyProbe(rootValue, args, context) {
-    App.handleEvent(args, 'destroyProbe', context);
+    App.handleEvent(args, "destroyProbe", context);
   },
   launchProbe(rootValue, args, context) {
-    App.handleEvent(args, 'launchProbe', context);
+    App.handleEvent(args, "launchProbe", context);
   },
   fireProbe(rootValue, args, context) {
-    App.handleEvent(args, 'fireProbe', context);
+    App.handleEvent(args, "fireProbe", context);
   },
   updateProbeType(rootValue, args, context) {
-    App.handleEvent(args, 'updateProbeType', context);
+    App.handleEvent(args, "updateProbeType", context);
   },
   updateProbeEquipment(rootValue, args, context) {
-    App.handleEvent(args, 'updateProbeEquipment', context);
+    App.handleEvent(args, "updateProbeEquipment", context);
   },
   probeQuery(rootValue, args, context) {
-    App.handleEvent(args, 'probeQuery', context);
+    App.handleEvent(args, "probeQuery", context);
   },
   probeQueryResponse(rootValue, args, context) {
-    App.handleEvent(args, 'probeQueryResponse', context);
+    App.handleEvent(args, "probeQueryResponse", context);
   },
   probeProcessedData(rootValue, args, context) {
-    App.handleEvent(args, 'probeProcessedData', context);
+    App.handleEvent(args, "probeProcessedData", context);
   }
 };
 
 export const ProbesSubscriptions = {
-  probesUpdate(rootValue, { simulatorId }) {
-    let returnRes = rootValue;
-    if (simulatorId)
-      returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
-    return returnRes;
+  probesUpdate: {
+    resolve(rootValue, { simulatorId }) {
+      let returnRes = rootValue;
+      if (simulatorId)
+        returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
+      return returnRes;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("probesUpdate"),
+      rootValue => rootValue.length
+    )
   }
 };
 
@@ -51,7 +59,7 @@ export const ProbesTypes = {
     probes(launcher, { network }) {
       if (network) {
         return launcher.probes.filter(p => {
-          return p.equipment.find(e => e.id === 'probe-network-package');
+          return p.equipment.find(e => e.id === "probe-network-package");
         });
       }
       return launcher.probes;

@@ -1,6 +1,8 @@
 import App from "../../app.js";
 import moveSensorContact from "../processes/sensorContacts.js";
 import getAsset from "../helpers/getAsset";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const SensorsQueries = {
   sensors(root, { simulatorId, domain }) {
@@ -99,17 +101,30 @@ export const SensorsMutations = {
 };
 
 export const SensorsSubscriptions = {
-  sensorsUpdate(root, { simulatorId, domain }) {
-    let returnRes = root;
-    if (simulatorId)
-      returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
-    if (domain) returnRes = returnRes.filter(s => s.domain === domain);
-    return returnRes;
+  sensorsUpdate: {
+    resolve(root, { simulatorId, domain }) {
+      let returnRes = root;
+      if (simulatorId)
+        returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
+      if (domain) returnRes = returnRes.filter(s => s.domain === domain);
+      return returnRes;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("sensorsUpdate"),
+      rootValue => rootValue.length
+    )
   },
-  sensorContactUpdate(root, { sensorId }) {
-    return root.filter(contact => contact.sensorId === sensorId);
+  sensorContactUpdate: {
+    resolve(root, { sensorId }) {
+      return root.filter(contact => contact.sensorId === sensorId);
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("sensorContactUpdate"),
+      rootValue => rootValue.length
+    )
   },
   sensorsPing(root, args) {
+    console.log("SensorPing", root, args);
     return root;
   }
 };
