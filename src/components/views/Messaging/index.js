@@ -63,6 +63,9 @@ class Messaging extends Component {
       el.scrollTop = el.scrollHeight;
     }
   }
+  componentWillUnmount() {
+    this.subscription();
+  }
   sendMessage = () => {
     const mutation = gql`
       mutation SendMessage($message: MessageInput!) {
@@ -86,7 +89,9 @@ class Messaging extends Component {
   };
   scrollElement = () => {
     const el = this.refs.messageHolder;
-    scrollTo(el, el.scrollHeight, 600);
+    if (el) {
+      scrollTo(el, el.scrollHeight, 600);
+    }
   };
   toggleStations = () => {
     this.setState({

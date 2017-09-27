@@ -42,14 +42,24 @@ export class StationSet {
   setStationLogin(station, login) {
     this.stations.find(s => s.name === station).setLogin(login);
   }
+  setStationWidget(station, widget, state) {
+    this.stations.find(s => s.name === station).setWidgets(widget, state);
+  }
 }
 
 export class Station {
-  constructor({ name, cards = [], login = false, messageGroups = [] }) {
+  constructor({
+    name,
+    cards = [],
+    login = false,
+    messageGroups = [],
+    widgets = []
+  }) {
     this.class = "Station";
     this.name = name || "Station";
     this.login = login;
     this.messageGroups = messageGroups;
+    this.widgets = widgets;
     this.cards = [];
     cards.forEach(card => {
       this.addCard(card);
@@ -75,6 +85,15 @@ export class Station {
         .filter((g, i, arr) => arr.indexOf(g) === i);
     } else {
       this.messageGroups = this.messageGroups.filter(g => g !== group);
+    }
+  }
+  setWidgets(widget, state) {
+    if (state) {
+      this.widgets = this.widgets
+        .concat(widget)
+        .filter((g, i, arr) => arr.indexOf(g) === i);
+    } else {
+      this.widgets = this.widgets.filter(w => w !== widget);
     }
   }
   setLogin(login) {

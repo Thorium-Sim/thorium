@@ -157,6 +157,9 @@ export const FlightStructureMutations = {
   },
   setStationLogin(root, args, context) {
     App.handleEvent(args, "setStationLogin", context);
+  },
+  toggleStationWidgets(root, args, context) {
+    App.handleEvent(args, "toggleStationWidgets", context);
   }
 };
 

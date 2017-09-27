@@ -11,7 +11,7 @@ import {
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";
-import Views from "../../../../components/views/index";
+import Views, { Widgets } from "../../../../components/views/index";
 
 const viewList = Object.keys(Views)
   .filter(v => {
@@ -124,6 +124,21 @@ const ops = {
         stationSetID: $stationSetID
         stationName: $stationName
         login: $login
+      )
+    }
+  `,
+  toggleStationWidget: gql`
+    mutation AddWidgetsToStation(
+      $stationSetID: ID!
+      $stationName: String!
+      $widget: String!
+      $state: Boolean!
+    ) {
+      toggleStationWidgets(
+        stationSetID: $stationSetID
+        stationName: $stationName
+        widget: $widget
+        state: $state
       )
     }
   `
@@ -336,6 +351,18 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
       variables
     });
   };
+  const toggleStationWidget = (evt, station, widget) => {
+    const variables = {
+      stationSetID: selectedStationSet.id,
+      stationName: station.name,
+      widget,
+      state: evt.target.checked
+    };
+    client.mutate({
+      mutation: ops.toggleStationWidget,
+      variables
+    });
+  };
   const setStationLogin = (evt, station) => {
     const variables = {
       stationSetID: selectedStationSet.id,
@@ -466,6 +493,20 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
                       toggleStationMessageGroup(evt, station, group)}
                   />{" "}
                   {group}
+                </label>
+              )}
+              <label>Widgets:</label>
+              {Object.keys(Widgets).map(widget =>
+                <label
+                  key={`widgets-${widget}`}
+                  style={{ display: "inline-block" }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={station.widgets.indexOf(widget) > -1}
+                    onChange={evt => toggleStationWidget(evt, station, widget)}
+                  />{" "}
+                  {widget}
                 </label>
               )}
             </div>

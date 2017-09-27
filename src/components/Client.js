@@ -170,6 +170,7 @@ const CLIENT_SUB = gql`
         name
         login
         messageGroups
+        widgets
         cards {
           name
           component
@@ -315,6 +316,7 @@ const ClientQuery = gql`
         name
         login
         messageGroups
+        widgets
         cards {
           name
           component
