@@ -30,8 +30,19 @@ const MESSAGING_SUB = gql`
   }
 `;
 
+const TEAMS_SUB = gql`
+  subscription TeamsUpdate($simulatorId: ID) {
+    teamsUpdate(simulatorId: $simulatorId) {
+      id
+      name
+      type
+    }
+  }
+`;
+
 class Messaging extends Component {
   subscription = null;
+  teamSub = null;
   state = {
     messageInput: "",
     stationsShown: false,
@@ -56,6 +67,20 @@ class Messaging extends Component {
         }
       });
     }
+    if (!this.teamSub && !nextProps.data.loading) {
+      this.teamSub = nextProps.data.subscribeToMore({
+        document: TEAMS_SUB,
+        variables: {
+          simulatorId: nextProps.simulator.id
+        },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          console.log("Teams update");
+          return Object.assign({}, previousResult, {
+            teams: subscriptionData.data.teamsUpdate
+          });
+        }
+      });
+    }
   }
   componentDidUpdate() {
     const el = this.refs.messageHolder;
@@ -65,6 +90,7 @@ class Messaging extends Component {
   }
   componentWillUnmount() {
     this.subscription();
+    this.teamSub();
   }
   sendMessage = () => {
     const mutation = gql`
@@ -99,9 +125,10 @@ class Messaging extends Component {
     });
   };
   render() {
-    const { messages, simulators } = this.props.data.loading
-      ? { messages: [], simulators: [{ stations: [] }] }
+    const { messages, simulators, teams } = this.props.data.loading
+      ? { messages: [], teams: [], simulators: [{ stations: [] }] }
       : this.props.data;
+    console.log(teams);
     const stations = simulators[0].stations.filter(
       s => s.name !== this.props.station.name
     );
@@ -128,6 +155,7 @@ class Messaging extends Component {
         if (new Date(a.timestamp) < new Date(b.timestamp)) return 1;
         return 0;
       });
+    console.log(teams, messageGroups);
     return (
       <Container className="messages">
         <Row>
@@ -165,7 +193,7 @@ class Messaging extends Component {
               <DropdownToggle caret size="lg" block color="primary">
                 New Message
               </DropdownToggle>
-              <DropdownMenu>
+              <DropdownMenu className="messages-destinations">
                 {stations.map(s =>
                   <DropdownItem
                     key={s.name}
@@ -185,6 +213,24 @@ class Messaging extends Component {
                       {g}
                     </DropdownItem>
                   )}
+                <DropdownItem disabled>--------------</DropdownItem>
+                {teams &&
+                  teams
+                    .filter(
+                      t =>
+                        messageGroups.findIndex(
+                          m => m.toLowerCase() === t.type.toLowerCase()
+                        ) > -1
+                    )
+                    .map(g =>
+                      <DropdownItem
+                        key={g.name}
+                        onClick={() =>
+                          this.setState({ selectedConversation: g.name })}
+                      >
+                        {g.name}
+                      </DropdownItem>
+                    )}
               </DropdownMenu>
             </ButtonDropdown>
           </Col>
@@ -251,6 +297,11 @@ const MESSAGING_QUERY = gql`
       simulatorId
       destination
     }
+    teams(simulatorId: $simulatorId) {
+      id
+      name
+      type
+    }
     simulators(id: $simId) {
       stations {
         name
@@ -261,6 +312,7 @@ const MESSAGING_QUERY = gql`
 `;
 export default graphql(MESSAGING_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id,
       simId: ownProps.simulator.id,

@@ -5,7 +5,10 @@ import { withFilter } from "graphql-subscriptions";
 export const TeamsQueries = {
   teams(root, { simulatorId, type }) {
     // Get the simulator
-    let returnVal = App.teams.filter(t => t.type === type);
+    let returnVal = App.teams;
+    if (type) {
+      returnVal = returnVal.filter(t => t.type === type);
+    }
     if (simulatorId) {
       returnVal = returnVal.filter(t => t.simulatorId === simulatorId);
     }
@@ -35,7 +38,10 @@ export const TeamsSubscriptions = {
   teamsUpdate: {
     resolve(rootValue, { simulatorId, type }) {
       // Get the simulator
-      let returnVal = rootValue.filter(t => t.type === type);
+      let returnVal = rootValue;
+      if (type) {
+        returnVal = returnVal.filter(t => t.type === type);
+      }
       if (simulatorId) {
         returnVal = returnVal.filter(t => t.simulatorId === simulatorId);
       }

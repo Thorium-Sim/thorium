@@ -1,3 +1,3 @@
 export default `
-  teamsUpdate(simulatorId: ID, type: String!): [Team]
+  teamsUpdate(simulatorId: ID, type: String): [Team]
 `;

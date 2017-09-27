@@ -13,6 +13,14 @@ export const MessagesQueries = {
       const stationObj = App.simulators
         .find(s => s.id === simulatorId)
         .stations.find(s => s.name === station);
+      // Get teams
+      const teams = App.teams.filter(
+        t =>
+          t.simulatorId === simulatorId &&
+          stationObj.messageGroups.findIndex(
+            m => m.toLowerCase() === t.type.toLowerCase()
+          ) > -1
+      );
       // Get all of the messages which the station sent
       // And which are sent to the station
       returnValue = returnValue.filter(
@@ -20,7 +28,8 @@ export const MessagesQueries = {
           m.sender === station ||
           m.destination === station ||
           stationObj.messageGroups.indexOf(m.sender) > -1 ||
-          stationObj.messageGroups.indexOf(m.destination) > -1
+          stationObj.messageGroups.indexOf(m.destination) > -1 ||
+          !!teams.find(t => m.sender === t.name || m.destination === t.name)
       );
     }
 
@@ -82,13 +91,23 @@ export const MessagesSubscriptions = {
         const stationObj = App.simulators
           .find(s => s.id === simulatorId)
           .stations.find(s => s.name === station);
+        const teams = App.teams.filter(
+          t =>
+            t.simulatorId === simulatorId &&
+            stationObj.messageGroups.findIndex(
+              m => m.toLowerCase() === t.type.toLowerCase()
+            ) > -1
+        );
         // Get all of the messages which the station sent
         // And which are sent to the station
         if (
           rootValue.sender !== station &&
           rootValue.destination !== station &&
           stationObj.messageGroups.indexOf(rootValue.sender) === -1 &&
-          stationObj.messageGroups.indexOf(rootValue.destination) === -1
+          stationObj.messageGroups.indexOf(rootValue.destination) === -1 &&
+          !teams.find(
+            t => rootValue.sender === t.name || rootValue.destination === t.name
+          )
         )
           return;
       }

@@ -43,6 +43,10 @@
       float: right;
     }
   }
+  .messages-destinations {
+    max-height: 600px;
+    overflow-y: scroll;
+  }
 }
 .core-messaging {
   height: 100%;
