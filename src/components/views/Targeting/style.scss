@@ -60,6 +60,9 @@
     width: 100%;
     justify-content: space-between;
   }
+  .btn[disabled] {
+    pointer-events: none;
+  }
   .coolantHolder {
     margin-bottom: 20px;
   }

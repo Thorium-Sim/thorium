@@ -46,6 +46,7 @@ const ShieldData = ({ shields, startLoop, state, _toggleShields }) => {
       <Button
         color="success"
         block
+        disabled={state.disabledButton[shields.id]}
         onClick={_toggleShields.bind(this, shields)}
       >{`${shields.state ? "Lower" : "Raise"} ${shields.name} Shields`}</Button>
     </Col>
@@ -86,6 +87,7 @@ export default ({ shields, startLoop, state, _toggleShields }) => {
                 <Button
                   color="success"
                   block
+                  disabled={state.disabledButton["down"]}
                   onClick={_toggleShields.bind(this, "down")}
                 >
                   Lower All Shields
@@ -95,6 +97,7 @@ export default ({ shields, startLoop, state, _toggleShields }) => {
                 <Button
                   color="success"
                   block
+                  disabled={state.disabledButton["up"]}
                   onClick={_toggleShields.bind(this, "up")}
                 >
                   Raise All Shields

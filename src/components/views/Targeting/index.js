@@ -124,7 +124,7 @@ const PHASERS_SUB = gql`
 class Targeting extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { disabledPhasers: {} };
     this.targetingSubscription = null;
     this.phasersSubscription = null;
     this.phaserLoopId = null;
@@ -297,6 +297,18 @@ class Targeting extends Component {
       mutation,
       variables
     });
+    this.setState({
+      disabledPhasers: Object.assign({}, this.state.disabledPhasers, {
+        [beamId]: true
+      })
+    });
+    setTimeout(() => {
+      this.setState({
+        disabledPhasers: Object.assign({}, this.state.disabledPhasers, {
+          [beamId]: false
+        })
+      });
+    }, 3000);
     document.addEventListener("mouseup", this.mouseup);
   }
   render() {
@@ -330,6 +342,7 @@ class Targeting extends Component {
               <PhaserBeam
                 key={p.id}
                 {...p}
+                disabled={this.state.disabledPhasers[p.id]}
                 index={i + 1}
                 chargePhasers={this.chargePhasers.bind(this)}
                 dischargePhasers={this.dischargePhasers.bind(this)}
