@@ -3,6 +3,7 @@ import { Cores } from "../../views";
 import CoreFeed from "../../views/CoreFeed";
 
 import "./default.scss";
+import "./sideCore.scss";
 
 const exceptions = [
   "TractorBeamCore",

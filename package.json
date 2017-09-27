@@ -124,6 +124,7 @@
     "react-resizable": "^1.6.0",
     "react-router": "^3.0.2",
     "react-sortable-hoc": "^0.6.6",
+    "react-table": "^6.5.3",
     "react-three-renderer": "^3.2.1",
     "react-transition-group": "^1.2.0",
     "reactour": "^1.4.1",
