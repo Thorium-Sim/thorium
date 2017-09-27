@@ -17,8 +17,19 @@ const MESSAGING_SUB = gql`
   }
 `;
 
+const TEAMS_SUB = gql`
+  subscription TeamsUpdate($simulatorId: ID) {
+    teamsUpdate(simulatorId: $simulatorId) {
+      id
+      name
+      type
+    }
+  }
+`;
+
 class Messaging extends Component {
   subscription = null;
+  teamSub = null;
   state = {
     messageInput: "",
     stationsShown: false,
@@ -42,6 +53,23 @@ class Messaging extends Component {
         }
       });
     }
+    if (!this.teamSub && !nextProps.data.loading) {
+      this.teamSub = nextProps.data.subscribeToMore({
+        document: TEAMS_SUB,
+        variables: {
+          simulatorId: nextProps.simulator.id
+        },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          return Object.assign({}, previousResult, {
+            teams: subscriptionData.data.teamsUpdate
+          });
+        }
+      });
+    }
+  }
+  componentWillUnmount() {
+    this.subscription();
+    this.teamSub();
   }
   sendMessage = () => {
     const mutation = gql`
@@ -71,7 +99,7 @@ class Messaging extends Component {
   };
   render() {
     if (this.props.data.loading) return null;
-    const { messages } = this.props.data;
+    const { messages, teams } = this.props.data;
     const { messageInput, selectedConversation } = this.state;
 
     const messageGroups = ["Security", "Damage", "Medical"];
@@ -89,6 +117,20 @@ class Messaging extends Component {
               {g}
             </option>
           )}
+          <option disabled>-------------</option>
+          {teams &&
+            teams
+              .filter(
+                t =>
+                  messageGroups.findIndex(
+                    m => m.toLowerCase() === t.type.toLowerCase()
+                  ) > -1
+              )
+              .map(g =>
+                <option key={g.name} value={g.name}>
+                  {g.name} - {g.type}
+                </option>
+              )}
         </Input>
         <div className="message-list">
           {messages
@@ -130,6 +172,11 @@ const MESSAGING_QUERY = gql`
       timestamp
       simulatorId
       destination
+    }
+    teams(simulatorId: $simulatorId) {
+      id
+      name
+      type
     }
   }
 `;

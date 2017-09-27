@@ -210,7 +210,6 @@ class DamageReportCore extends Component {
     const systems = this.props.data.systems;
     const { selectedReport, selectedSystem } = this.state;
     const selectedSystemObj = systems.find(s => s.id === selectedSystem);
-    console.log(systems);
     return (
       <Container fluid className="damageReport-core">
         <Row>

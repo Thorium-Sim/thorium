@@ -267,7 +267,7 @@ class SecurityTeams extends Component {
                           })}
                         type="text"
                         id="teamName"
-                        disabled={!deck.id}
+                        disabled={!team.id}
                         placeholder="New Security Team"
                         size="lg"
                         value={team.name}
@@ -286,7 +286,7 @@ class SecurityTeams extends Component {
                           })}
                         type="textarea"
                         id="teamOrders"
-                        disabled={!deck.id}
+                        disabled={!team.id}
                         placeholder=""
                         rows={10}
                         size="lg"
@@ -301,7 +301,7 @@ class SecurityTeams extends Component {
                         <DeckDropdown
                           selectedDeck={deck.id}
                           decks={decks}
-                          disabled={!deck.id}
+                          disabled={!team.id}
                           setSelected={a =>
                             this.setState({
                               selectedTeam: Object.assign({}, team, {
@@ -315,7 +315,7 @@ class SecurityTeams extends Component {
                           selectedDeck={deck.id}
                           selectedRoom={room.id}
                           decks={decks}
-                          disabled={!deck.id}
+                          disabled={!team.id}
                           setSelected={a =>
                             this.setState({
                               selectedTeam: Object.assign({}, team, {
@@ -335,7 +335,7 @@ class SecurityTeams extends Component {
                             size="lg"
                             color="success"
                             className="recall-button"
-                            disabled={!deck.id}
+                            disabled={!team.id}
                             onClick={() => {
                               this.createSecurityTeam(team);
                             }}
@@ -346,7 +346,7 @@ class SecurityTeams extends Component {
                             block
                             size="lg"
                             color="danger"
-                            disabled={!deck.id}
+                            disabled={!team.id}
                             onClick={() => {
                               this.setState({
                                 selectedTeam: null
@@ -362,7 +362,7 @@ class SecurityTeams extends Component {
                             size="lg"
                             color="success"
                             className="recall-button"
-                            disabled={!deck.id}
+                            disabled={!team.id}
                             onClick={() => {
                               this.commitTeam(team);
                             }}
@@ -373,7 +373,7 @@ class SecurityTeams extends Component {
                             block
                             size="lg"
                             color="danger"
-                            disabled={!deck.id}
+                            disabled={!team.id}
                             onClick={() => {
                               this.removeTeam(team.id);
                             }}
@@ -398,7 +398,7 @@ class SecurityTeams extends Component {
                             <p
                               key={c.id}
                               onClick={() => {
-                                deck.id && this.assignOfficer(c);
+                                team.id && this.assignOfficer(c);
                               }}
                             >
                               {c.name}
@@ -417,7 +417,7 @@ class SecurityTeams extends Component {
                             <p
                               key={c.id}
                               onClick={() => {
-                                deck.id && this.removeOfficer(c);
+                                team.id && this.removeOfficer(c);
                               }}
                             >
                               {c.name}

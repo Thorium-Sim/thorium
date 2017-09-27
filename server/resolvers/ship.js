@@ -56,7 +56,6 @@ export const ShipSubscriptions = {
       if (station) {
         returnVal = returnVal.station === station && returnVal;
       }
-      console.log(returnVal);
       return returnVal.widget;
     },
     subscribe: withFilter(
