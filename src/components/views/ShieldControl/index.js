@@ -34,7 +34,8 @@ class ShieldControl extends Component {
     this.state = {
       frequency: {},
       frequencyAdder: 0.1,
-      frequencySpeed: 250
+      frequencySpeed: 250,
+      disabledButton: {}
     };
     this.shieldSub = null;
     this.freqLoop = null;
@@ -92,12 +93,10 @@ class ShieldControl extends Component {
       `;
     }
     if (shields === "down" || shields === "up") {
-      this.props.data.shields.forEach(s => {
-        let variables = { id: s.id };
-        this.props.client.mutate({
-          mutation,
-          variables
-        });
+      let variables = { id: this.props.simulator.id };
+      this.props.client.mutate({
+        mutation,
+        variables
       });
     } else {
       let variables = { id: shields.id };
@@ -106,6 +105,19 @@ class ShieldControl extends Component {
         variables
       });
     }
+    // Disable the buttons temporarily
+    this.setState({
+      disabledButton: Object.assign({}, this.state.disabledButton, {
+        [shields.id ? shields.id : shields]: true
+      })
+    });
+    setTimeout(() => {
+      this.setState({
+        disabledButton: Object.assign({}, this.state.disabledButton, {
+          [shields.id ? shields.id : shields]: false
+        })
+      });
+    }, 3000);
   }
   _loop(which, shields) {
     let { frequency, frequencyAdder, frequencySpeed } = this.state;
