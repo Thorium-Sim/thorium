@@ -145,71 +145,71 @@ class SecurityTeams extends Component {
               )}
           </ListGroup>
         </Col>
-        {this.state.selectedDeck &&
-          <Col sm={{ size: 6, offset: 1 }}>
-            <h1>
-              Deck {deck.number} Status:
-            </h1>
-            <h2>
-              Bulkhead Doors: {deck.doors ? "Closed" : "Open"}
-            </h2>
-            <h2>
-              Crew Status: {deck.evac ? "Evacuated" : "On Duty"}
-            </h2>
-            <Row>
-              <Col sm={6}>
-                <Button
-                  color="warning"
-                  block
-                  size="lg"
-                  onClick={this._toggleDoors.bind(this)}
-                >
-                  {deck.doors ? "Open Doors" : "Close Doors"}
-                </Button>
-              </Col>
-              <Col sm={6}>
-                <Button
-                  color="warning"
-                  block
-                  size="lg"
-                  onClick={this._toggleEvac.bind(this)}
-                >
-                  {deck.evac ? "Sound All-Clear" : "Evacuate Deck"}
-                </Button>
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={12}>
-                <Card>
-                  <CardBlock>
-                    <h4>Tranzine Gas</h4>
-                    <RoomDropdown
-                      selectedDeck={deck.id}
-                      selectedRoom={this.state.selectedRoom}
-                      decks={decks}
-                      setSelected={a => this._selectRoom(a)}
-                    />
-                    <Button
-                      color="warning"
-                      block
-                      disabled={!this.state.selectedRoom}
-                      onClick={this._toggleGas.bind(this)}
-                    >{`${room.gas
-                      ? "Siphon"
-                      : "Release"} Tranzine Gas`}</Button>
-                    <p>
-                      <em>
-                        Warning: The release of tranzine gas will cause
-                        unconsiousness to anyone who inhales the gas. Use with
-                        caution. Access to tranzine gas is limited to security
-                        personnel only. Access is restricted.
-                      </em>
-                    </p>
-                  </CardBlock>
-                </Card>
-              </Col>
-            </Row>
-          </Col>}
+        <Col sm={{ size: 6, offset: 1 }}>
+          <h1>
+            Deck {deck && deck.number} Status:
+          </h1>
+          <h2>
+            Bulkhead Doors: {deck && deck.doors ? "Closed" : "Open"}
+          </h2>
+          <h2>
+            Crew Status: {deck && deck.evac ? "Evacuated" : "On Duty"}
+          </h2>
+          <Row>
+            <Col sm={6}>
+              <Button
+                color="warning"
+                block
+                size="lg"
+                disabled={!deck}
+                onClick={this._toggleDoors.bind(this)}
+              >
+                {deck && deck.doors ? "Open Doors" : "Close Doors"}
+              </Button>
+            </Col>
+            <Col sm={6}>
+              <Button
+                color="warning"
+                block
+                size="lg"
+                disabled={!deck}
+                onClick={this._toggleEvac.bind(this)}
+              >
+                {deck && deck.evac ? "Sound All-Clear" : "Evacuate Deck"}
+              </Button>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm={12}>
+              <Card>
+                <CardBlock>
+                  <h4>Tranzine Gas</h4>
+                  <RoomDropdown
+                    selectedDeck={deck && deck.id}
+                    selectedRoom={this.state.selectedRoom}
+                    decks={decks}
+                    disabled={!deck}
+                    setSelected={a => this._selectRoom(a)}
+                  />
+                  <Button
+                    color="warning"
+                    block
+                    disabled={!deck || !this.state.selectedRoom}
+                    onClick={this._toggleGas.bind(this)}
+                  >{`${room.gas ? "Siphon" : "Release"} Tranzine Gas`}</Button>
+                  <p>
+                    <em>
+                      Warning: The release of tranzine gas will cause
+                      unconsiousness to anyone who inhales the gas. Use with
+                      caution. Access to tranzine gas is limited to security
+                      personnel only. Access is restricted.
+                    </em>
+                  </p>
+                </CardBlock>
+              </Card>
+            </Col>
+          </Row>
+        </Col>
       </Row>
     );
   }

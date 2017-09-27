@@ -241,9 +241,7 @@ class SecurityTeams extends Component {
           </Col>
           <Col sm={{ size: 8, offset: 1 }}>
             {(() => {
-              if (!selectedTeam) return null;
-              if (!selectedTeam.id) return null;
-              const team = selectedTeam;
+              const team = selectedTeam || {};
               let deck = {},
                 room = {};
               if (team.location) {
@@ -269,6 +267,7 @@ class SecurityTeams extends Component {
                           })}
                         type="text"
                         id="teamName"
+                        disabled={!deck.id}
                         placeholder="New Security Team"
                         size="lg"
                         value={team.name}
@@ -287,6 +286,7 @@ class SecurityTeams extends Component {
                           })}
                         type="textarea"
                         id="teamOrders"
+                        disabled={!deck.id}
                         placeholder=""
                         rows={10}
                         size="lg"
@@ -301,6 +301,7 @@ class SecurityTeams extends Component {
                         <DeckDropdown
                           selectedDeck={deck.id}
                           decks={decks}
+                          disabled={!deck.id}
                           setSelected={a =>
                             this.setState({
                               selectedTeam: Object.assign({}, team, {
@@ -314,6 +315,7 @@ class SecurityTeams extends Component {
                           selectedDeck={deck.id}
                           selectedRoom={room.id}
                           decks={decks}
+                          disabled={!deck.id}
                           setSelected={a =>
                             this.setState({
                               selectedTeam: Object.assign({}, team, {
@@ -333,6 +335,7 @@ class SecurityTeams extends Component {
                             size="lg"
                             color="success"
                             className="recall-button"
+                            disabled={!deck.id}
                             onClick={() => {
                               this.createSecurityTeam(team);
                             }}
@@ -343,6 +346,7 @@ class SecurityTeams extends Component {
                             block
                             size="lg"
                             color="danger"
+                            disabled={!deck.id}
                             onClick={() => {
                               this.setState({
                                 selectedTeam: null
@@ -358,6 +362,7 @@ class SecurityTeams extends Component {
                             size="lg"
                             color="success"
                             className="recall-button"
+                            disabled={!deck.id}
                             onClick={() => {
                               this.commitTeam(team);
                             }}
@@ -368,6 +373,7 @@ class SecurityTeams extends Component {
                             block
                             size="lg"
                             color="danger"
+                            disabled={!deck.id}
                             onClick={() => {
                               this.removeTeam(team.id);
                             }}
@@ -392,7 +398,7 @@ class SecurityTeams extends Component {
                             <p
                               key={c.id}
                               onClick={() => {
-                                this.assignOfficer(c);
+                                deck.id && this.assignOfficer(c);
                               }}
                             >
                               {c.name}
@@ -411,7 +417,7 @@ class SecurityTeams extends Component {
                             <p
                               key={c.id}
                               onClick={() => {
-                                this.removeOfficer(c);
+                                deck.id && this.removeOfficer(c);
                               }}
                             >
                               {c.name}
