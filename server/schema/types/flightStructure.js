@@ -63,6 +63,7 @@ type Station {
   name: String
   login: Boolean
   messageGroups: [String]
+  widgets: [String]
   cards: [Card]
 }
 

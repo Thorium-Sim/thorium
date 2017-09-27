@@ -45,13 +45,14 @@ class WidgetsContainer extends Component {
   render() {
     const { simulator, clientObj, station } = this.props;
     const { widgetNotify } = this.state;
+    console.log(station);
     return (
       <div
         className={`widgets ${clientObj.loginState} ${clientObj.offlineState
           ? "offline"
           : ""}`}
       >
-        {Object.keys(Widgets).map(key => {
+        {station.widgets.map(key => {
           const widget = Widgets[key];
           return (
             <Widget

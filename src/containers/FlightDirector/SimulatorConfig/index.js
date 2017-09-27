@@ -34,6 +34,7 @@ const SIMULATOR_SUB = gql`
           name
           login
           messageGroups
+          widgets
           cards {
             name
             component
@@ -56,6 +57,7 @@ const STATIONSET_SUB = gql`
         name
         login
         messageGroups
+        widgets
         cards {
           name
           component
@@ -271,6 +273,7 @@ const SIMULATOR_QUERY = gql`
           name
           login
           messageGroups
+          widgets
           cards {
             name
             component
