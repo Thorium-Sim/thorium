@@ -7,6 +7,7 @@ import TransitionGroup from "react-transition-group/TransitionGroup";
 import Transitioner from "../helpers/transitioner";
 import Tour from "reactour";
 import DamageOverlay from "../helpers/DamageOverlay";
+import { Asset } from "../../../helpers/assets";
 
 import "./style.scss";
 
@@ -62,6 +63,7 @@ class StealthField extends Component {
     this.loop = this.loop.bind(this);
     window.requestAnimationFrame(this.loop);
   }
+  scene = null;
   componentDidMount() {
     this.looping = true;
     this.props.data.startPolling(1000);
@@ -184,6 +186,40 @@ class StealthField extends Component {
           <Col sm="2" />
           <Col sm="2" />
           <Col sm="4">
+            <Asset
+              asset="/Ship Views/Left"
+              simulatorId={this.props.simulator.id}
+            >
+              {({ src }) => {
+                if (!this.scene) {
+                  this.scene = true;
+                  setTimeout(() => (this.scene = new Scene()), 100);
+                }
+                return (
+                  <div
+                    className="stealth"
+                    style={{ transform: "rotate(360deg)" }}
+                  >
+                    <img
+                      style={{ width: "100%" }}
+                      src={src}
+                      draggable="false"
+                    />
+                    <canvas
+                      id="stealth-canvas"
+                      style={{
+                        WebkitMaskImage: `url(${src})`,
+                        display:
+                          stealthField.id &&
+                          (!stealthField.activated || stealthField.state)
+                            ? "block"
+                            : "none"
+                      }}
+                    />
+                  </div>
+                );
+              }}
+            </Asset>
             {stealthField.activated &&
               (stealthField.state
                 ? <Button
@@ -250,29 +286,61 @@ class StealthBars extends Transitioner {
   }
   render() {
     const { systems } = this.props;
+    const stealthSystems = systems.filter(
+      s => typeof s.stealthFactor === "number"
+    );
+    const group1 = stealthSystems.slice(0, stealthSystems.length / 2);
+    const group2 = stealthSystems.slice(stealthSystems.length / 2);
     return (
       <div className="stealthBars">
-        {systems.filter(s => typeof s.stealthFactor === "number").map(s => {
-          return (
-            <Row key={s.id} className="mt-1">
-              <Col sm="3" className="text-right">
-                {this.systemName(s)}
-              </Col>
-              <Col sm="9">
-                <div className="bar-container">
-                  <div
-                    className="bar"
-                    style={{
-                      width: `${s.stealthFactor * 100}%`,
-                      backgroundSize: `5px 3px, ${100 /
-                        s.stealthFactor}%, ${100 / s.stealthFactor}%`
-                    }}
-                  />
-                </div>
-              </Col>
-            </Row>
-          );
-        })}
+        <Row>
+          <Col sm={6}>
+            {group1.map(s => {
+              return (
+                <Row key={s.id} className="mt-1">
+                  <Col sm="3" className="text-right">
+                    {this.systemName(s)}
+                  </Col>
+                  <Col sm="9">
+                    <div className="bar-container">
+                      <div
+                        className="bar"
+                        style={{
+                          width: `${s.stealthFactor * 100}%`,
+                          backgroundSize: `5px 3px, ${100 /
+                            s.stealthFactor}%, ${100 / s.stealthFactor}%`
+                        }}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+              );
+            })}
+          </Col>
+          <Col sm={6}>
+            {group2.map(s => {
+              return (
+                <Row key={s.id} className="mt-1">
+                  <Col sm="3" className="text-right">
+                    {this.systemName(s)}
+                  </Col>
+                  <Col sm="9">
+                    <div className="bar-container">
+                      <div
+                        className="bar"
+                        style={{
+                          width: `${s.stealthFactor * 100}%`,
+                          backgroundSize: `5px 3px, ${100 /
+                            s.stealthFactor}%, ${100 / s.stealthFactor}%`
+                        }}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+              );
+            })}
+          </Col>
+        </Row>
       </div>
     );
   }
@@ -316,3 +384,68 @@ export default graphql(STEALTH_QUERY, {
     }
   })
 })(withApollo(StealthField));
+
+class Blade {
+  constructor(c) {
+    this.c = c;
+    this.init();
+  }
+  init() {
+    this.r = Math.random() * 200 + 100;
+    this.x = Math.random() * window.innerWidth;
+    this.y = window.innerHeight * Math.random();
+    this.vy = Math.random() * 2 - 1;
+    this.ax = this.x - this.r;
+    this.bx = this.x + this.r;
+    this.dx = Math.random() * 150 + 80;
+    this.g = Math.round(Math.random() * 255);
+    this.b = this.g; // Math.round(Math.random() * 10 + 155);
+  }
+  run() {
+    this.ax += (this.x - this.ax) / this.dx;
+    this.bx += (this.x - this.bx) / this.dx;
+    this.y += this.vy;
+
+    if (this.bx - this.ax < 0.5) this.init();
+
+    this.c.strokeStyle = `rgba(${this.g}, ${this.g}, ${this.b}, 0.1)`;
+    this.c.beginPath();
+
+    this.c.moveTo(this.ax, this.y);
+    this.c.lineTo(this.bx, this.y);
+    this.c.stroke();
+  }
+}
+
+class Scene {
+  constructor() {
+    this.canvas = document.getElementById("stealth-canvas");
+    this.c = this.canvas.getContext("2d");
+    this.resize();
+    window.addEventListener("resize", this.resize.bind(this));
+    this.clear();
+    this.initBlades();
+    this.loop = this.loop.bind(this);
+    this.loop();
+  }
+  loop() {
+    for (let i = 0; i < 3; i++) {
+      this.blades.forEach(blade => blade.run());
+    }
+    requestAnimationFrame(this.loop);
+  }
+  initBlades() {
+    this.blades = [];
+    this.bladeNum = 1000;
+    for (let i = 0; i < this.bladeNum; i++) {
+      this.blades[i] = new Blade(this.c);
+    }
+  }
+  clear() {
+    this.c.fillStyle = "black";
+    this.c.fillRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+  resize() {
+    this.clear();
+  }
+}

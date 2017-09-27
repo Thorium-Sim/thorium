@@ -114,12 +114,11 @@ class ProbeControl extends Component {
             </Card>
           </Col>
           <Col sm={9}>
-            {selectedProbe &&
-              <ProbeControlWrapper
-                {...probes.probes.find(p => p.id === selectedProbe)}
-                probeId={probes.id}
-                client={this.props.client}
-              />}
+            <ProbeControlWrapper
+              {...probes.probes.find(p => p.id === selectedProbe) || {}}
+              probeId={probes.id}
+              client={this.props.client}
+            />
           </Col>
         </Row>
       </Container>
@@ -198,7 +197,7 @@ class ProbeControlWrapper extends Component {
     });
   };
   render() {
-    const { name, equipment, response, querying } = this.props;
+    const { name, equipment = [], response, querying, type } = this.props;
     const { queryText } = this.state;
     //const { activeTab } = this.state;
     return (
@@ -226,6 +225,7 @@ class ProbeControlWrapper extends Component {
                 {querying
                   ? <p className="querying">Querying...</p>
                   : <Input
+                      disabled={!name}
                       size="lg"
                       type="text"
                       value={queryText}
@@ -235,10 +235,20 @@ class ProbeControlWrapper extends Component {
               </Col>
               <Col sm={3}>
                 {querying
-                  ? <Button size="lg" color="danger" onClick={this.cancelQuery}>
+                  ? <Button
+                      disabled={!name}
+                      size="lg"
+                      color="danger"
+                      onClick={this.cancelQuery}
+                    >
                       Cancel
                     </Button>
-                  : <Button size="lg" color="primary" onClick={this.queryProbe}>
+                  : <Button
+                      disabled={!name}
+                      size="lg"
+                      color="primary"
+                      onClick={this.queryProbe}
+                    >
                       Query
                     </Button>}
               </Col>
@@ -248,6 +258,15 @@ class ProbeControlWrapper extends Component {
                 <pre className="results">
                   {response}
                 </pre>
+                {type &&
+                  <img
+                    draggable={false}
+                    style={{
+                      width: "200px",
+                      transform: "rotate(90deg) translate(-150px, -250px)"
+                    }}
+                    src={require(`../ProbeConstruction/probes/${type}.svg`)}
+                  />}
               </Col>
             </Row>
           </Col>

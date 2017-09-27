@@ -246,9 +246,7 @@ class DamageTeams extends Component {
           </Col>
           <Col sm={{ size: 8, offset: 1 }} className="damage-team-entry">
             {(() => {
-              if (!selectedTeam) return null;
-              if (!selectedTeam.id) return null;
-              const team = selectedTeam;
+              const team = selectedTeam || {};
               let deck = {},
                 room = {};
               if (team.location) {
@@ -274,6 +272,7 @@ class DamageTeams extends Component {
                           })}
                         type="text"
                         id="teamName"
+                        disabled={!team.id}
                         placeholder="New Damage Team"
                         size="lg"
                         value={team.name}
@@ -290,6 +289,7 @@ class DamageTeams extends Component {
                               orders: evt.target.value
                             })
                           })}
+                        disabled={!team.id}
                         type="textarea"
                         id="teamOrders"
                         placeholder=""
@@ -306,6 +306,7 @@ class DamageTeams extends Component {
                         <DeckDropdown
                           selectedDeck={deck.id}
                           decks={decks}
+                          disabled={!team.id}
                           setSelected={a =>
                             this.setState({
                               selectedTeam: Object.assign({}, team, {
@@ -319,6 +320,7 @@ class DamageTeams extends Component {
                           selectedDeck={deck.id}
                           selectedRoom={room.id}
                           decks={decks}
+                          disabled={!team.id}
                           setSelected={a =>
                             this.setState({
                               selectedTeam: Object.assign({}, team, {
@@ -348,6 +350,7 @@ class DamageTeams extends Component {
                                 priority: "low"
                               })
                             })}
+                          disabled={!team.id}
                           active={team.priority === "low"}
                           block
                           color="info"
@@ -363,6 +366,7 @@ class DamageTeams extends Component {
                                 priority: "normal"
                               })
                             })}
+                          disabled={!team.id}
                           active={team.priority === "normal"}
                           block
                           color="success"
@@ -380,6 +384,7 @@ class DamageTeams extends Component {
                                 priority: "critical"
                               })
                             })}
+                          disabled={!team.id}
                           active={team.priority === "critical"}
                           block
                           color="warning"
@@ -395,6 +400,7 @@ class DamageTeams extends Component {
                                 priority: "emergency"
                               })
                             })}
+                          disabled={!team.id}
                           active={team.priority === "emergency"}
                           block
                           color="danger"
@@ -410,6 +416,7 @@ class DamageTeams extends Component {
                             size="lg"
                             color="success"
                             className="recall-button"
+                            disabled={!team.id}
                             onClick={() => {
                               this.createDamageTeam(team);
                             }}
@@ -420,6 +427,7 @@ class DamageTeams extends Component {
                             block
                             size="lg"
                             color="danger"
+                            disabled={!team.id}
                             onClick={() => {
                               this.setState({
                                 selectedTeam: null
@@ -434,6 +442,7 @@ class DamageTeams extends Component {
                             block
                             size="lg"
                             color="success"
+                            disabled={!team.id}
                             className="recall-button"
                             onClick={() => {
                               this.commitTeam(team);
@@ -445,6 +454,7 @@ class DamageTeams extends Component {
                             block
                             size="lg"
                             color="danger"
+                            disabled={!team.id}
                             onClick={() => {
                               this.removeTeam(team.id);
                             }}
@@ -470,7 +480,9 @@ class DamageTeams extends Component {
                               className="officer"
                               key={c.id}
                               onClick={() => {
-                                this.assignOfficer(c);
+                                if (team) {
+                                  this.assignOfficer(c);
+                                }
                               }}
                             >
                               <p>
@@ -495,7 +507,9 @@ class DamageTeams extends Component {
                               className="officer"
                               key={c.id}
                               onClick={() => {
-                                this.removeOfficer(c);
+                                if (team) {
+                                  this.removeOfficer(c);
+                                }
                               }}
                             >
                               <p>

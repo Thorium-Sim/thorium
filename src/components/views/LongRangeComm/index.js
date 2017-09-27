@@ -195,6 +195,7 @@ class LongRangeComm extends Component {
   render() {
     if (this.props.data.loading) return null;
     const messages = this.props.data.longRangeCommunications[0].messages;
+    const messageObj = messages.find(m => m.id === this.state.selectedMessage);
     return (
       <Row className="long-range-comm">
         <DamageOverlay
@@ -220,50 +221,46 @@ class LongRangeComm extends Component {
             )}
           </Card>
         </Col>
-        {this.state.selectedMessage &&
-          <Col sm={9}>
-            <div className="sat-container">
-              <Measure includeMargin={true}>
-                {dimensions =>
-                  <Satellites
-                    selectSat={this.selectSat.bind(this)}
-                    selectedSat={this.state.selectedSat}
-                    width={dimensions.width}
-                    height={dimensions.height}
-                    messageLoc={this.state.messageLoc}
-                    messageText={this.state.messageText}
-                  />}
-              </Measure>
-            </div>
-            <Row style={{ marginTop: "10px" }}>
-              <Col lg={{ size: 4, offset: 1 }} xl={{ size: 3, offset: 2 }}>
-                <Button
-                  onClick={this.deleteMessage.bind(this)}
-                  size="lg"
-                  block
-                  color="danger"
-                >
-                  Delete Message
-                </Button>
-              </Col>
-              <Col lg={{ size: 4, offset: 2 }} xl={{ size: 3, offset: 2 }}>
-                <Button
-                  onClick={this.sendMessage.bind(this)}
-                  disabled={!this.state.selectedSat}
-                  size="lg"
-                  block
-                  color="success"
-                >
-                  Send Message
-                </Button>
-              </Col>
-            </Row>
-            <MessageBox
-              message={
-                messages.find(m => m.id === this.state.selectedMessage).message
-              }
-            />
-          </Col>}
+        <Col sm={9}>
+          <div className="sat-container">
+            <Measure includeMargin={true}>
+              {dimensions =>
+                <Satellites
+                  selectSat={messageObj ? this.selectSat.bind(this) : () => {}}
+                  selectedSat={this.state.selectedSat}
+                  width={dimensions.width}
+                  height={dimensions.height}
+                  messageLoc={this.state.messageLoc}
+                  messageText={this.state.messageText}
+                />}
+            </Measure>
+          </div>
+          <Row style={{ marginTop: "10px" }}>
+            <Col lg={{ size: 4, offset: 1 }} xl={{ size: 3, offset: 2 }}>
+              <Button
+                onClick={this.deleteMessage.bind(this)}
+                size="lg"
+                block
+                disabled={!messageObj}
+                color="danger"
+              >
+                Delete Message
+              </Button>
+            </Col>
+            <Col lg={{ size: 4, offset: 2 }} xl={{ size: 3, offset: 2 }}>
+              <Button
+                onClick={this.sendMessage.bind(this)}
+                disabled={!this.state.selectedSat || !messageObj}
+                size="lg"
+                block
+                color="success"
+              >
+                Send Message
+              </Button>
+            </Col>
+          </Row>
+          <MessageBox message={messageObj && messageObj.message} />
+        </Col>
         <Tour
           steps={trainingSteps}
           isOpen={this.props.clientObj.training}
