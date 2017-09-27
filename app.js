@@ -125,7 +125,7 @@ class Events extends EventEmitter {
   handleEvent(param, pres, context = {}) {
     eventCount += 1;
     if (Date().toString() !== date) {
-      console.log("Event Count:", eventCount);
+      //console.log("Event Count:", eventCount);
       eventCount = 0;
       date = Date().toString();
     }

@@ -2,18 +2,11 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Immutable from "immutable";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
-} from "reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 import assetPath from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
+import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
+
 import Tour from "reactour";
 
 const INTERNAL_SUB = gql`
@@ -143,82 +136,28 @@ class InternalComm extends Component {
             </Button>
           </Col>
           <Col sm={{ size: 2 }} className="room-select">
-            <UncontrolledDropdown>
-              <DropdownToggle
-                block
-                disabled={
-                  (internalComm.state !== "connected" &&
-                    internalComm.outgoing) ||
-                  internalComm.state === "connected"
-                }
-                caret
-              >
-                {deck
-                  ? `Deck ${decks.find(d => d.id === deck).number}`
-                  : "Select Deck"}
-              </DropdownToggle>
-              <DropdownMenu>
-                {decks
-                  .concat()
-                  .sort((a, b) => {
-                    if (a.number > b.number) return 1;
-                    if (a.number < b.number) return -1;
-                    return 0;
-                  })
-                  .map(d =>
-                    <DropdownItem
-                      key={d.id}
-                      onClick={() => {
-                        this.setState({ deck: d.id, room: null });
-                      }}
-                    >{`Deck ${d.number}`}</DropdownItem>
-                  )}
-              </DropdownMenu>
-            </UncontrolledDropdown>
+            <DeckDropdown
+              selectedDeck={deck}
+              decks={decks}
+              disabled={
+                (internalComm.state !== "connected" && internalComm.outgoing) ||
+                internalComm.state === "connected"
+              }
+              setSelected={({ deck }) => this.setState({ deck, room: null })}
+            />
           </Col>
           <Col sm={{ size: 3 }}>
-            <UncontrolledDropdown>
-              <DropdownToggle
-                block
-                disabled={
-                  deck === null ||
-                  (internalComm.state !== "connected" &&
-                    internalComm.outgoing) ||
-                  internalComm.state === "connected"
-                }
-                caret
-              >
-                {room
-                  ? decks
-                      .find(d => d.id === deck)
-                      .rooms.find(r => r.id === room).name
-                  : "Select Room"}
-              </DropdownToggle>
-              {deck &&
-                <DropdownMenu>
-                  <DropdownItem header>
-                    Deck {decks.find(d => d.id === deck).number}
-                  </DropdownItem>
-                  {decks
-                    .find(d => d.id === deck)
-                    .rooms.concat()
-                    .sort((a, b) => {
-                      if (a.name > b.name) return 1;
-                      if (a.name < b.name) return -1;
-                      return 0;
-                    })
-                    .map(r =>
-                      <DropdownItem
-                        key={r.id}
-                        onClick={() => {
-                          this.setState({ room: r.id });
-                        }}
-                      >
-                        {r.name}
-                      </DropdownItem>
-                    )}
-                </DropdownMenu>}
-            </UncontrolledDropdown>
+            <RoomDropdown
+              selectedDeck={deck}
+              selectedRoom={room}
+              decks={decks}
+              disabled={
+                deck === null ||
+                (internalComm.state !== "connected" && internalComm.outgoing) ||
+                internalComm.state === "connected"
+              }
+              setSelected={({ room }) => this.setState({ room })}
+            />
           </Col>
           <Col sm={{ size: 2 }}>
             <Button

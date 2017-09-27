@@ -3,8 +3,11 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
 export const SystemsQueries = {
-  systems(rootValue, { simulatorId, type, power, heat }) {
+  systems(rootValue, { simulatorId, type, power, heat, extra = false }) {
     let returnSystems = App.systems;
+    if (extra === false) {
+      returnSystems = returnSystems.filter(s => s.extra === false);
+    }
     if (simulatorId) {
       returnSystems = returnSystems.filter(s => s.simulatorId === simulatorId);
     }
@@ -61,8 +64,11 @@ export const SystemsMutations = {
 
 export const SystemsSubscriptions = {
   systemsUpdate: {
-    resolve(rootValue, { simulatorId, type, power, heat }) {
+    resolve(rootValue, { simulatorId, type, power, heat, extra = false }) {
       let returnSystems = rootValue;
+      if (extra === false) {
+        returnSystems = returnSystems.filter(s => s.extra === false);
+      }
       if (simulatorId) {
         returnSystems = returnSystems.filter(
           s => s.simulatorId === simulatorId

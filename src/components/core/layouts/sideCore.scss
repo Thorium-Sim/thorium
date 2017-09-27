@@ -1,0 +1,86 @@
+.side-core {
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  background: rgba(0,0,0,0.75);
+  width: 230px;
+  right: 0;
+  border-left: solid 1px rgba(255,255,255,0.25);
+  transform: translate(230px);
+  transition: transform 0.3s ease-out;
+  &.open {
+    transform: translate(0px);  
+    z-index: 100;  
+  }
+  .side-label {
+    padding: 3px 10px;
+    font-size: 18px;
+    text-align: center;
+    transform: rotate(-90deg);
+    left: -40px;
+    position: absolute;
+  }
+}
+.timeline-core {
+  top: 0px;
+  bottom: 0px;
+  width: 230px;
+  .timeline-label {
+    background-color: #2D73FF;
+    top: 18px;
+  }
+}
+.tract-core {
+  top: 70px;
+  bottom: auto;
+  height: 208px;
+  .tract-label {
+    background-color: #C32DFF;
+    left: -86px;
+    top: 65px;
+  }
+}
+.ship-core {
+  top: 226px;
+  bottom: auto;
+  .ship-label {
+    background-color: #FF2D6C;
+    left: -31px;
+    top: 10px;
+  }
+}
+.coreFeeds-core {
+  width: 350px;
+  transform: translate(350px);  
+  .coreFeed-label {
+    background-color: goldenrod;
+    left: -45px;
+    top: 300px;
+  }
+}
+.coreMessaging-core {
+  width: 350px;
+  transform: translate(350px); 
+  height: 30vh;
+  top: 360px;  
+  .coreMessaging-label {
+    background-color: green;
+    left: -45px;
+    top: 40px;
+  }
+}
+.clients-core {
+  top: 455px;
+  height: auto;
+  bottom: auto;
+  min-height: 200px;
+  .clients-label {
+    background-color: cadetblue;
+    left: -50px;
+    top: 41px;
+  }
+}
+.inner-cores {
+  padding: 4px;
+  height: 100%;
+}

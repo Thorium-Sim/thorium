@@ -79,7 +79,6 @@ body {
 .widgets {
   position: absolute;
   left: 460px;
-  top: 5px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   &.offline,
   &.offline * {
@@ -90,6 +89,10 @@ body {
   .widget-item {
     float: left;
     margin: 4px;
+    .fa-2x {
+      font-size: 1.7em;
+      line-height: 1;
+    }
   }
   .widget-icon {
     transition: color 0.25s ease-in-out;

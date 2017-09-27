@@ -194,11 +194,7 @@ export const FlightStructureSubscriptions = {
     subscribe: withFilter(
       () => pubsub.asyncIterator("simulatorsUpdate"),
       (rootValue, { simulatorId, template }) => {
-        let returnVal = rootValue;
-        if (template) returnVal = returnVal.filter(s => s.template);
-        if (simulatorId)
-          returnVal = returnVal.filter(s => s.id === simulatorId);
-        return returnVal.length > 0 ? true : false;
+        return !!rootValue;
       }
     )
   },

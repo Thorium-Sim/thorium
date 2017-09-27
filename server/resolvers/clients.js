@@ -89,14 +89,8 @@ export const ClientSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("clientChanged"),
-      (rootValue, { client, simulatorId }) => {
-        if (client) {
-          return !!rootValue.find(c => c.id === client);
-        }
-        if (simulatorId) {
-          return !!rootValue.find(c => c.simulatorId === simulatorId);
-        }
-        return !!rootValue.find(c => c.connected);
+      rootValue => {
+        return !!rootValue.length;
       }
     )
   }

@@ -36,6 +36,7 @@ const STEALTH_SUB = gql`
   }
 `;
 
+/*
 const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID, $type: String) {
     systemsUpdate(simulatorId: $simulatorId, type: $type) {
@@ -45,7 +46,7 @@ const SYSTEMS_SUB = gql`
       stealthFactor
     }
   }
-`;
+`;*/
 
 const limit = 0.05;
 const factor = 0.005;

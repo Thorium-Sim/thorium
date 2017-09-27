@@ -24,7 +24,7 @@ const STEALTH_SUB = gql`
     }
   }
 `;
-
+/*
 const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID, $type: String) {
     systemsUpdate(simulatorId: $simulatorId, type: $type) {
@@ -34,7 +34,7 @@ const SYSTEMS_SUB = gql`
       stealthFactor
     }
   }
-`;
+`;*/
 
 class StealthFieldCore extends Component {
   constructor(props) {
