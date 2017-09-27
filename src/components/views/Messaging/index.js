@@ -170,15 +170,16 @@ class Messaging extends Component {
                     {s.name}
                   </DropdownItem>
                 )}
-                <DropdownItem disabled>⸺⸺⸺⸺⸺</DropdownItem>
-                {messageGroups.map(g =>
-                  <DropdownItem
-                    key={g}
-                    onClick={() => this.setState({ selectedConversation: g })}
-                  >
-                    {g}
-                  </DropdownItem>
-                )}
+                <DropdownItem disabled>--------------</DropdownItem>
+                {messageGroups &&
+                  messageGroups.map(g =>
+                    <DropdownItem
+                      key={g}
+                      onClick={() => this.setState({ selectedConversation: g })}
+                    >
+                      {g}
+                    </DropdownItem>
+                  )}
               </DropdownMenu>
             </ButtonDropdown>
           </Col>

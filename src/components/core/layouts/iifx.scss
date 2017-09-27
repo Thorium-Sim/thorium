@@ -8,8 +8,8 @@
   "engineControl engineControl  securityDoors      crew      damageTeams     shortRange            systems"
   "thrusters     thrusters      securityDoors      crew      damageTeams     shortRange            systems"
   "thrusters     thrusters      securityDoors      crew      damageTeams     shortRange            systems"
-  "transporters  transporters   securityDoors     crew             securityTeams         messageSending        systems"
-  "stealthField  stealthField   nothing            sensorScans          longRange      internalComm         systems"
+  "stealthField  stealthField   securityDoors     crew             securityTeams         messageSending        systems"
+  "nothing       nothing        nothing            sensorScans          longRange      internalComm         systems"
   "probeControl  probeControl   probeControl    sensorScans         longRange      damageReports   damageReports"
   "probeControl  probeControl   probeControl    shuttles         actions         damageReports   damageReports"
   "reactor       reactor        probeNetwork    shuttles         viewscreen     damageReports   damageReports";

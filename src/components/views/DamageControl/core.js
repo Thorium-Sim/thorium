@@ -150,6 +150,19 @@ class DamageControlCore extends Component {
               </td>
             </tr>
           )}
+          <tr>
+            <td>Total</td>
+            <td>
+              <OutputField>
+                {this.props.data.systems.reduce(
+                  (prev, next) => (next.power ? prev + next.power.power : prev),
+                  0
+                )}
+              </OutputField>
+            </td>
+            <td>/</td>
+            <td />
+          </tr>
         </tbody>
       </Table>
     );
