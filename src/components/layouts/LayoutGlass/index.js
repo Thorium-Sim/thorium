@@ -24,6 +24,17 @@ export default props => {
         >
           <RenderedComponent {...props} topTraining={() => {}} />
         </div>
+        <div className={`frame`}>
+          <h1 className="sim-name">
+            {simulator.name}
+          </h1>
+          <h2 className="station-name">
+            {station.name}
+          </h2>
+          <h3 className="login-name">
+            {clientObj.loginName}
+          </h3>
+        </div>
       </div>
     </ActionsMixin>
   );

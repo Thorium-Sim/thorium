@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Saira');
-
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web:200');
 
 $alert5: #233f7a;
 $alert3: #7a7a23;
@@ -25,29 +25,39 @@ $color: $alert5;
   }
   &:active {
     background: rgba($background, 0.3);
-    box-shadow: inset 0px 0px 20px 0px rgba(darken(saturate($background, 10%), 20%), 1),
+    box-shadow: inset 0px 0px 20px 0px
+        rgba(darken(saturate($background, 10%), 20%), 1),
       0px 0px 10px -2px rgba(saturate($background, 10%), 1);
   }
 }
 
-
 .layout-glass {
   background-image: url('./bg.jpg');
   background-size: cover;
-  position:fixed;
-  left:0;
-  right:0;
-  top:0;
-  bottom:0;
-  font-family:"Saira", sans-serif;  
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-family: "Saira", sans-serif;
   color: #eee;
   .col {
     margin-top: 15px;
   }
+  .sim-name, .station-name, .login-name {
+    font-family: "Titillium Web";
+    text-shadow: 0px 0px 4px lighten($alert5, 20%);
+  }
+  .sim-name {
+  }
+  .station-name {
+  }
+  .login-name {
+  }
   button {
     color: white;
     font-weight: 600;
-    font-family:"Saira", sans-serif;      
+    font-family: "Saira", sans-serif;
     font-size: 16px;
     padding: 5px;
     border-radius: 5px;
