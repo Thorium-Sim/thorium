@@ -8,7 +8,7 @@ import { withApollo } from "react-apollo";
 import CardSwitcher from "./CardSwitcher";
 import Widgets from "./Widgets";
 import Alerts from "../../generic/Alerts";
-import ActionsMixin from "./Actions";
+import ActionsMixin from "../../generic/Actions";
 
 import "./layout.scss";
 import "./theme.scss";
@@ -134,7 +134,7 @@ class LayoutCorners extends Component {
     }
     return (
       <ActionsMixin {...this.props}>
-        <div className={`card-container card-area ${alertClass}`}>
+        <div className={`layout-corners card-area ${alertClass}`}>
           <TransitionGroup>
             {station.cards
               .concat({ name: "Login", component: "Login", icon: "Login" })

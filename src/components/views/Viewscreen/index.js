@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import ViewscreenCards from "../../viewscreens";
+import * as ViewscreenCards from "../../viewscreens";
 
 import "./style.scss";
 

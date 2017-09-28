@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
-import Spark from "../../views/Actions/spark";
+import Spark from "../views/Actions/spark";
 const ACTIONS_SUB = gql`
   subscription ActionsSub($simulatorId: ID!, $stationId: ID, $clientId: ID) {
     actionsUpdate(
