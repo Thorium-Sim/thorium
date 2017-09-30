@@ -38,7 +38,7 @@ export default class CoreDefault extends Component {
       clientsOpen
     } = state;
     return (
-      <div>
+      <div className="core">
         <div className="core-default">
           {Object.keys(Cores)
             .filter(c => exceptions.indexOf(c) === -1)

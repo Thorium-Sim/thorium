@@ -10,7 +10,7 @@ const Viewscreen = withApollo(props => {
   return (
     <div className="viewscreen">
       <div className={`layout-corners card-area ${alertClass}`}>
-        <Views.Viewscreen {...props} />
+        {props.children ? props.children : <Views.Viewscreen {...props} />}
       </div>
       <div id="curve-frame" className={alertClass}>
         <div className="frame-color">

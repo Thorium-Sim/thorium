@@ -1,6 +1,12 @@
-.viewscreen-core {
+  .viewscreen-core {
   height: 100%;
   position: relative;
+  .container-fluid {
+    margin-left: auto;
+    margin-right: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
   .q1, .q3 {
     transform: scale(0.5) translate(-50%, -50%);
     background-color: #333;
@@ -29,5 +35,5 @@
       background-color: #888;
     }
   }
-  }
+}
 }

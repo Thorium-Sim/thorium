@@ -9,7 +9,6 @@ import CardSwitcher from "./CardSwitcher";
 import Widgets from "./Widgets";
 import Alerts from "../../generic/Alerts";
 import ActionsMixin from "../../generic/Actions";
-import Metro from "react-metro";
 
 import "./layout.scss";
 import "./theme.scss";
@@ -133,12 +132,10 @@ class LayoutCorners extends Component {
     if (clientObj.offlineState) {
       cardName = "Offline";
     }
-    console.log(this.props.children);
     return (
       <ActionsMixin {...this.props}>
         <div className={`layout-corners card-area ${alertClass}`}>
-          {this.props.children}
-          {/*<TransitionGroup>
+          <TransitionGroup>
             {station.cards
               .concat({ name: "Login", component: "Login", icon: "Login" })
               .concat({
@@ -161,7 +158,7 @@ class LayoutCorners extends Component {
                 return null;
               })
               .filter(card => card)}
-          </TransitionGroup>*/}
+          </TransitionGroup>
         </div>
         <div id="curve-frame" className={alertClass}>
           <div className="frame-color">

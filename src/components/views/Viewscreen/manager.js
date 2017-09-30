@@ -12,6 +12,7 @@ import {
 } from "reactstrap";
 import Preview, { Viewscreen } from "./index";
 import * as ViewscreenCards from "../../viewscreens";
+import Layouts from "../../layouts";
 
 import "./style.scss";
 
@@ -41,6 +42,9 @@ class ViewscreenCore extends Component {
     preview: true,
     configData: "{}"
   };
+  componentWillUnmount() {
+    this.sub && this.sub();
+  }
   componentWillReceiveProps(nextProps) {
     if (!this.sub && !nextProps.data.loading) {
       this.internalSub = nextProps.data.subscribeToMore({
@@ -110,15 +114,26 @@ class ViewscreenCore extends Component {
       previewComponent,
       configData
     } = this.state;
+    const LayoutComponent =
+      Layouts[this.props.simulator.layout + "Viewscreen"] ||
+      Layouts[this.props.simulator.layout];
     if (!viewscreens) return <div>No Viewscreens</div>;
     return (
-      <Container fluid className="viewscreen-core">
+      <div className="viewscreen-core">
         <div className="q1">
           {selectedViewscreen &&
-            <Preview
+            <LayoutComponent
+              clientObj={{}}
+              flight={{}}
               simulator={this.props.simulator}
-              clientObj={{ id: selectedViewscreen }}
-            />}
+              station={{}}
+              cardName={"Viewscreen"}
+            >
+              <Preview
+                simulator={this.props.simulator}
+                clientObj={{ id: selectedViewscreen }}
+              />
+            </LayoutComponent>}
         </div>
         <div className="q3">
           {previewComponent &&
@@ -128,116 +143,118 @@ class ViewscreenCore extends Component {
               viewscreen={{ data: configData }}
             />}
         </div>
-        <div className="q2">
-          <Row>
-            <Col sm={6}>
-              <Label>Viewscreen</Label>
-              <Input
-                type="select"
-                size="sm"
-                value={selectedViewscreen || "select"}
-                onChange={evt => {
-                  this.setState({ selectedViewscreen: evt.target.value });
-                }}
-              >
-                <option value="select">Select a viewscreen</option>
-                {viewscreens.map(v =>
-                  <option key={v.id} value={v.id}>
-                    {v.name}
-                  </option>
-                )}
-              </Input>
-            </Col>
-            <Col sm={6}>
-              <Label>Cards</Label>
-              <div className="card-list">
-                {this.cards.map(c =>
-                  <p
-                    key={c}
-                    className={`${selectedViewscreen &&
-                    viewscreens.find(v => v.id === selectedViewscreen)
-                      .component === c
-                      ? "previewing"
-                      : ""} ${previewComponent === c ? "selected" : ""}`}
-                    onClick={() =>
-                      preview
-                        ? this.setState({ previewComponent: c })
-                        : this.updateCard(c)}
+        <div className="core" style={{ height: "100%" }}>
+          <div className="q2">
+            <Row>
+              <Col sm={6}>
+                <Label>Viewscreen</Label>
+                <Input
+                  type="select"
+                  size="sm"
+                  value={selectedViewscreen || "select"}
+                  onChange={evt => {
+                    this.setState({ selectedViewscreen: evt.target.value });
+                  }}
+                >
+                  <option value="select">Select a viewscreen</option>
+                  {viewscreens.map(v =>
+                    <option key={v.id} value={v.id}>
+                      {v.name}
+                    </option>
+                  )}
+                </Input>
+              </Col>
+              <Col sm={6}>
+                <Label>Cards</Label>
+                <div className="card-list">
+                  {this.cards.map(c =>
+                    <p
+                      key={c}
+                      className={`${selectedViewscreen &&
+                      viewscreens.find(v => v.id === selectedViewscreen)
+                        .component === c
+                        ? "previewing"
+                        : ""} ${previewComponent === c ? "selected" : ""}`}
+                      onClick={() =>
+                        preview
+                          ? this.setState({ previewComponent: c })
+                          : this.updateCard(c)}
+                    >
+                      {c}
+                    </p>
+                  )}
+                </div>
+                <ButtonGroup>
+                  <Button
+                    color="primary"
+                    className={preview ? "active" : ""}
+                    onClick={() => this.setState({ preview: true })}
                   >
-                    {c}
-                  </p>
-                )}
-              </div>
-              <ButtonGroup>
-                <Button
-                  color="primary"
-                  className={preview ? "active" : ""}
-                  onClick={() => this.setState({ preview: true })}
-                >
-                  Preview
-                </Button>
-                <Button
-                  color="info"
-                  onClick={() => this.updateCard(previewComponent)}
-                >
-                  Go
-                </Button>
-                <Button
-                  color="success"
-                  className={!preview ? "active" : ""}
-                  onClick={() => this.setState({ preview: false })}
-                >
-                  Change
-                </Button>
-              </ButtonGroup>
-            </Col>
-          </Row>
+                    Preview
+                  </Button>
+                  <Button
+                    color="info"
+                    onClick={() => this.updateCard(previewComponent)}
+                  >
+                    Go
+                  </Button>
+                  <Button
+                    color="success"
+                    className={!preview ? "active" : ""}
+                    onClick={() => this.setState({ preview: false })}
+                  >
+                    Change
+                  </Button>
+                </ButtonGroup>
+              </Col>
+            </Row>
+          </div>
+          <div className="q4">
+            <Label>Config</Label>
+            <Row>
+              <Col sm={6}>
+                <Label>Current Viewscreen</Label>
+                {(() => {
+                  const viewscreen =
+                    selectedViewscreen &&
+                    viewscreens.find(v => v.id === selectedViewscreen);
+                  const currentComponent = viewscreen && viewscreen.component;
+                  const currentData = viewscreen && viewscreen.data;
+                  if (this.configs.indexOf(`${currentComponent}Config`) > -1) {
+                    const ConfigComponent =
+                      ViewscreenCards[`${currentComponent}Config`];
+                    return (
+                      <ConfigComponent
+                        simulator={this.props.simulator}
+                        data={currentData}
+                        updateData={this.updateData}
+                      />
+                    );
+                  }
+                  return <p>No config for this component</p>;
+                })()}
+              </Col>
+              <Col sm={6}>
+                <Label>Preview Viewscreen</Label>
+                {(() => {
+                  if (this.configs.indexOf(`${previewComponent}Config`) > -1) {
+                    const ConfigComponent =
+                      ViewscreenCards[`${previewComponent}Config`];
+                    return (
+                      <ConfigComponent
+                        simulator={this.props.simulator}
+                        data={configData}
+                        updateData={data => this.setState({ configData: data })}
+                      />
+                    );
+                  }
+                  return <p>No config for this component</p>;
+                })()}
+              </Col>
+            </Row>
+          </div>
         </div>
-        <div className="q4">
-          <Label>Config</Label>
-          <Row>
-            <Col sm={6}>
-              <Label>Current Viewscreen</Label>
-              {(() => {
-                const viewscreen =
-                  selectedViewscreen &&
-                  viewscreens.find(v => v.id === selectedViewscreen);
-                const currentComponent = viewscreen && viewscreen.component;
-                const currentData = viewscreen && viewscreen.data;
-                if (this.configs.indexOf(`${currentComponent}Config`) > -1) {
-                  const ConfigComponent =
-                    ViewscreenCards[`${currentComponent}Config`];
-                  return (
-                    <ConfigComponent
-                      simulator={this.props.simulator}
-                      data={currentData}
-                      updateData={this.updateData}
-                    />
-                  );
-                }
-                return <p>No config for this component</p>;
-              })()}
-            </Col>
-            <Col sm={6}>
-              <Label>Preview Viewscreen</Label>
-              {(() => {
-                if (this.configs.indexOf(`${previewComponent}Config`) > -1) {
-                  const ConfigComponent =
-                    ViewscreenCards[`${previewComponent}Config`];
-                  return (
-                    <ConfigComponent
-                      simulator={this.props.simulator}
-                      data={configData}
-                      updateData={data => this.setState({ configData: data })}
-                    />
-                  );
-                }
-                return <p>No config for this component</p>;
-              })()}
-            </Col>
-          </Row>
-        </div>
-      </Container>
+      </div>
     );
   }
 }

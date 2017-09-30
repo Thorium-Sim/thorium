@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Layouts from "../components/layouts";
-import Views from "../components/views";
 
 const Blackout = () => {
   return (
@@ -78,10 +77,6 @@ export default class CardFrame extends Component {
     if (client.offlineState === "blackout" || station.name === "Blackout") {
       return <Blackout />;
     }
-    const componentName = station.cards.find(
-      card => card.name === this.state.card
-    ).component;
-    const CardComponent = Views[componentName];
     return (
       <LayoutComponent
         clientObj={client}
@@ -90,15 +85,7 @@ export default class CardFrame extends Component {
         station={station}
         cardName={this.state.card}
         changeCard={this._changeCard.bind(this)}
-      >
-        <CardComponent
-          clientObj={client}
-          flight={flight}
-          simulator={simulator}
-          station={station}
-          cardName={this.state.card}
-        />
-      </LayoutComponent>
+      />
     );
   }
 }

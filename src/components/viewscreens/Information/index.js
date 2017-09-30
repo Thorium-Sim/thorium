@@ -8,15 +8,17 @@ export default props => {
   const { viewscreen } = props;
   const data = JSON.parse(viewscreen.data);
   return (
-    <Container className="viewscreen-information">
-      <Row>
-        <Col sm={12}>
-          <h1>Information</h1>
-          <p>
-            {data.text}
-          </p>
-        </Col>
-      </Row>
+    <Container>
+      <div className="viewscreen-information">
+        <Row>
+          <Col sm={12}>
+            <h1>Information</h1>
+            <p className="info">
+              {data.text}
+            </p>
+          </Col>
+        </Row>
+      </div>
     </Container>
   );
 };

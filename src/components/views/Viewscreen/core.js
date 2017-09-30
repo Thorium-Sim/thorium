@@ -21,6 +21,9 @@ class Viewscreen extends Component {
   state = {
     selectedViewscreen: null
   };
+  componentWillUnmount() {
+    this.sub && this.sub();
+  }
   componentWillReceiveProps(nextProps) {
     if (!this.sub && !nextProps.data.loading) {
       this.internalSub = nextProps.data.subscribeToMore({
