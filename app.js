@@ -155,11 +155,34 @@ class Events extends EventEmitter {
     this.emit(pres, param);
   }
   test(param) {
-    if (param.key) {
+    /*if (param.key) {
       console.log(util.inspect(this[param.key], false, null));
     } else {
       console.log(util.inspect(this, false, null));
-    }
+    }*/
+    const keys = [
+      "stationSets",
+      "systems",
+      "decks",
+      "rooms",
+      "crew",
+      "teams",
+      "inventory",
+      "isochips",
+      "coreFeed",
+      "viewscreens",
+      "messages"
+    ];
+    keys.forEach(
+      k =>
+        (App[k] = App[k].filter(s =>
+          App.simulators.find(sim => sim.id === s.simulatorId)
+        ))
+    );
+    App.systems = App.systems.map(s => {
+      s.damage.report = null;
+      return s;
+    });
     //this.handleEvent(param, 'test', 'tested');
   }
   // TODO: This is JANKY! Make this better by using actual event sourcing.
