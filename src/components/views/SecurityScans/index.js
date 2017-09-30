@@ -13,7 +13,6 @@ import {
   DropdownItem
 } from "reactstrap";
 import gql from "graphql-tag";
-import moment from "moment";
 import assetPath from "../../../helpers/assets";
 import Immutable from "immutable";
 import DamageOverlay from "../helpers/DamageOverlay";
