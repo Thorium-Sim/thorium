@@ -15,10 +15,10 @@ const VIEWSCREEN_SUB = gql`
   }
 `;
 
-class Viewscreen extends Component {
+export class Viewscreen extends Component {
   sub = null;
   componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
+    if (nextProps.data && !this.sub && !nextProps.data.loading) {
       this.internalSub = nextProps.data.subscribeToMore({
         document: VIEWSCREEN_SUB,
         variables: {
@@ -33,6 +33,10 @@ class Viewscreen extends Component {
     }
   }
   render() {
+    if (this.props.component) {
+      const ViewscreenComponent = ViewscreenCards[this.props.component];
+      return <ViewscreenComponent {...this.props} />;
+    }
     if (this.props.data.loading) return null;
     const viewscreen = this.props.data.viewscreens.find(
       v => v.id === this.props.clientObj.id

@@ -2,7 +2,7 @@
 
 .viewscreen-offline {
   z-index:10000; 
-  position: fixed;
+  position: absolute;
   .text {
     position: absolute;    
     display: flex;

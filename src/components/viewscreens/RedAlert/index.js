@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import bodymovin from "bodymovin";
 import animationData from "./data.json";
 
 export default class RedAlert extends Component {
   componentDidMount() {
     bodymovin.loadAnimation({
-      container: document.querySelector("#redalert-bodymovin"),
+      container: ReactDOM.findDOMNode(this),
       renderer: "canvas",
       loop: true,
       autoplay: true,

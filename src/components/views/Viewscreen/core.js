@@ -5,7 +5,6 @@ import { Container, Row, Col, Input } from "reactstrap";
 import * as ViewscreenCards from "../../viewscreens";
 
 import "./style.scss";
-console.log("Viewscreen", ViewscreenCards);
 
 const VIEWSCREEN_SUB = gql`
   subscription ViewscreenSub($simulatorId: ID) {
