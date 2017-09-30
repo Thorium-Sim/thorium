@@ -137,11 +137,19 @@ class ViewscreenCore extends Component {
         </div>
         <div className="q3">
           {previewComponent &&
-            <CardPreview
+            <LayoutComponent
+              clientObj={{}}
+              flight={{}}
               simulator={this.props.simulator}
-              component={previewComponent}
-              viewscreen={{ data: configData }}
-            />}
+              station={{}}
+              cardName={"Viewscreen"}
+            >
+              <CardPreview
+                simulator={this.props.simulator}
+                component={previewComponent}
+                viewscreen={{ data: configData }}
+              />
+            </LayoutComponent>}
         </div>
         <div className="core" style={{ height: "100%" }}>
           <div className="q2">
