@@ -106,9 +106,8 @@ class SecurityScans extends Component {
         roomName = room ? room.name : roomName;
       }
     }
-    const request = `${moment().format("h:mm:ss a")} - ${this.state
-      .selectedScanType} - ${deckName}${roomName && ", "}${roomName}\n${this
-      .state.scanRequest}`;
+    const request = `${this.state.selectedScanType} - ${deckName}${roomName &&
+      ", "}${roomName}\n${this.state.scanRequest}`;
     const obj = {
       id: this.props.data.sensors[0].id,
       request

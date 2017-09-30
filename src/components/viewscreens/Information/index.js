@@ -4,7 +4,6 @@ import { Container, Row, Col } from "reactstrap";
 import "./style.scss";
 
 export default props => {
-  console.log(props);
   const { viewscreen } = props;
   const data = JSON.parse(viewscreen.data);
   return (

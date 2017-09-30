@@ -19,7 +19,7 @@ const VIEWSCREEN_SUB = gql`
 export class Viewscreen extends Component {
   sub = null;
   componentWillUnmount() {
-    this.sub();
+    this.sub && this.sub();
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && !this.sub && !nextProps.data.loading) {

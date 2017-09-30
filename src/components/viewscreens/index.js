@@ -7,5 +7,7 @@ export AsteroidField from "./AsteroidField";
 export Docking from "./Docking";
 export Overheating from "./Overheating";
 export Information from "./Information";
+export InternalSensors from "./InternalSensors";
 
 export InformationConfig from "./Information/config";
+export InternalSensorsConfig from "./InternalSensors/config";

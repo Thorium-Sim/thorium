@@ -18,6 +18,7 @@ export default class Viewscreen {
     if (typeof data === "object") {
       this.data = JSON.stringify(data);
     } else {
+      console.log(data);
       this.data = data;
     }
   }

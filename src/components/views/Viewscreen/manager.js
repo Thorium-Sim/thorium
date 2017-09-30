@@ -1,15 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import {
-  Container,
-  Label,
-  Row,
-  Col,
-  Input,
-  Button,
-  ButtonGroup
-} from "reactstrap";
+import { Label, Row, Col, Input, Button, ButtonGroup } from "reactstrap";
 import Preview, { Viewscreen } from "./index";
 import * as ViewscreenCards from "../../viewscreens";
 import Layouts from "../../layouts";
