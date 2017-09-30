@@ -41,7 +41,7 @@ export default class CoreIIFX extends Component {
       clientsOpen
     } = state;
     return (
-      <div>
+      <div className="core">
         <div className="core-iifx">
           {Object.keys(Cores)
             .filter(c => exceptions.indexOf(c) === -1)

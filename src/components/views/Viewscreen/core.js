@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input } from "reactstrap";
-import ViewscreenCards from "../../viewscreens";
+import * as ViewscreenCards from "../../viewscreens";
 
 import "./style.scss";
 
@@ -21,6 +21,9 @@ class Viewscreen extends Component {
   state = {
     selectedViewscreen: null
   };
+  componentWillUnmount() {
+    this.sub && this.sub();
+  }
   componentWillReceiveProps(nextProps) {
     if (!this.sub && !nextProps.data.loading) {
       this.internalSub = nextProps.data.subscribeToMore({

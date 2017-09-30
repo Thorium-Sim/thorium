@@ -1,14 +1,13 @@
-const preval = 0;
-const viewscreens = preval`
-const fs = require('fs');
-const path = require('path');
-module.exports = fs.readdirSync('./src/components/viewscreens').filter(p => p.indexOf('.js') > -1 && p !== 'index.js')
-.map(p => p.replace('.js',''))
-`;
+export RedAlert from "./RedAlert";
+export ShipLogo from "./ShipLogo";
+export Doodad from "./Doodad";
+export Offline from "./ViewscreenOffline";
+export ForwardScans from "./ForwardScans";
+export AsteroidField from "./AsteroidField";
+export Docking from "./Docking";
+export Overheating from "./Overheating";
+export Information from "./Information";
+export InternalSensors from "./InternalSensors";
 
-viewscreens.forEach(p => {
-  const viewscreen = require("./" + p);
-  if (viewscreen.default) {
-    module.exports[p] = viewscreen.default;
-  }
-});
+export InformationConfig from "./Information/config";
+export InternalSensorsConfig from "./InternalSensors/config";

@@ -84,6 +84,7 @@
     "appdirectory": "^0.1.0",
     "babel-plugin-preval": "^1.4.2",
     "body-parser": "^1.16.1",
+    "bodymovin": "^4.11.1",
     "bootstrap": "^4.0.0-alpha.6",
     "color": "^2.0.0",
     "compose-function": "^3.0.3",

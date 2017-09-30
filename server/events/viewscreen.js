@@ -6,8 +6,13 @@ App.on("updateViewscreenName", ({ id, name }) => {
   viewscreen.updateName(name);
   pubsub.publish("viewscreensUpdate", App.viewscreens);
 });
-App.on("updateViewscreenComponent", ({ id, component }) => {
+App.on("updateViewscreenComponent", ({ id, component, data }) => {
   const viewscreen = App.viewscreens.find(v => v.id === id);
-  viewscreen.updateComponent(component);
+  viewscreen.updateComponent(component, data);
+  pubsub.publish("viewscreensUpdate", App.viewscreens);
+});
+App.on("updateViewscreenData", ({ id, data }) => {
+  const viewscreen = App.viewscreens.find(v => v.id === id);
+  viewscreen.updateData(data);
   pubsub.publish("viewscreensUpdate", App.viewscreens);
 });

@@ -74,7 +74,6 @@ class Messaging extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          console.log("Teams update");
           return Object.assign({}, previousResult, {
             teams: subscriptionData.data.teamsUpdate
           });
@@ -128,7 +127,6 @@ class Messaging extends Component {
     const { messages, simulators, teams } = this.props.data.loading
       ? { messages: [], teams: [], simulators: [{ stations: [] }] }
       : this.props.data;
-    console.log(teams);
     const stations = simulators[0].stations.filter(
       s => s.name !== this.props.station.name
     );
@@ -155,7 +153,6 @@ class Messaging extends Component {
         if (new Date(a.timestamp) < new Date(b.timestamp)) return 1;
         return 0;
       });
-    console.log(teams, messageGroups);
     return (
       <Container className="messages">
         <Row>

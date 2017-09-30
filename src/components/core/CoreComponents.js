@@ -84,7 +84,7 @@ class CoreComponents extends Component {
     const LayoutComponent = Layouts[this.state.layout];
     const { notifications, speech } = this.state;
     return (
-      <div className="core">
+      <div style={{ backgroundColor: "#333", color: "white" }}>
         <select
           className="btn btn-info btn-sm"
           onChange={this.pickSimulator.bind(this)}
@@ -162,7 +162,7 @@ class CoreComponents extends Component {
             this.state.simulator &&
             <LayoutComponent
               {...this.props}
-              simulator={{ id: this.state.simulator }}
+              simulator={simulators.find(s => s.id === this.state.simulator)}
             />}
         </div>
         {!this.state.simulator &&
@@ -215,6 +215,7 @@ const CORE_LAYOUT = gql`
       simulators {
         id
         name
+        layout
       }
     }
   }

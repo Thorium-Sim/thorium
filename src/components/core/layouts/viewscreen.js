@@ -1,5 +1,6 @@
 import React from "react";
+import ViewscreenManager from "../../views/Viewscreen/manager";
 
-export default () => {
-  return <div>This is the viewscreen core layout!</div>;
+export default props => {
+  return <ViewscreenManager {...props} />;
 };

@@ -9,8 +9,8 @@ const Viewscreen = withApollo(props => {
   let alertClass = `alertColor${simulator.alertlevel || 5}`;
   return (
     <div className="viewscreen">
-      <div className={`card-container card-area ${alertClass}`}>
-        <Views.Viewscreen {...props} />
+      <div className={`layout-corners card-area ${alertClass}`}>
+        {props.children ? props.children : <Views.Viewscreen {...props} />}
       </div>
       <div id="curve-frame" className={alertClass}>
         <div className="frame-color">
