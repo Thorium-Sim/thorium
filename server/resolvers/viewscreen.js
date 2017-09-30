@@ -18,6 +18,9 @@ export const ViewscreenMutations = {
   },
   updateViewscreenComponent(_, params, context) {
     App.handleEvent(params, "updateViewscreenComponent", context);
+  },
+  updateViewscreenData(_, params, context) {
+    App.handleEvent(params, "updateViewscreenData", context);
   }
 };
 

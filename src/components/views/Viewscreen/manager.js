@@ -23,16 +23,23 @@ const VIEWSCREEN_SUB = gql`
       id
       name
       component
+      data
     }
   }
 `;
 
 class ViewscreenCore extends Component {
   sub = null;
-  cards = Object.keys(ViewscreenCards).sort();
+  cards = Object.keys(ViewscreenCards)
+    .filter(c => c.indexOf("Config") === -1)
+    .sort();
+  configs = Object.keys(ViewscreenCards)
+    .filter(c => c.indexOf("Config") > -1)
+    .sort();
   state = {
     selectedViewscreen: null,
-    preview: true
+    preview: true,
+    configData: "{}"
   };
   componentWillReceiveProps(nextProps) {
     if (!this.sub && !nextProps.data.loading) {
@@ -58,14 +65,36 @@ class ViewscreenCore extends Component {
     }
   }
   updateCard = component => {
+    const { previewComponent, configData } = this.state;
+
     const mutation = gql`
-      mutation UpdateViewscreen($id: ID!, $component: String!) {
-        updateViewscreenComponent(id: $id, component: $component)
+      mutation UpdateViewscreen($id: ID!, $component: String!, $data: String) {
+        updateViewscreenComponent(id: $id, component: $component, data: $data)
       }
     `;
     const variables = {
       id: this.state.selectedViewscreen,
       component
+    };
+    if (component === previewComponent) {
+      // If the component we are switching to is the same as the preview component
+      // Apply the preview data to the new component
+      variables.data = configData;
+    }
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  updateData = data => {
+    const mutation = gql`
+      mutation UpdateViewscreenData($id: ID!, $data: String!) {
+        updateViewscreenData(id: $id, data: $data)
+      }
+    `;
+    const variables = {
+      id: this.state.selectedViewscreen,
+      data
     };
     this.props.client.mutate({
       mutation,
@@ -75,7 +104,12 @@ class ViewscreenCore extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { viewscreens } = this.props.data;
-    const { selectedViewscreen = null, preview, previewComponent } = this.state;
+    const {
+      selectedViewscreen = null,
+      preview,
+      previewComponent,
+      configData
+    } = this.state;
     if (!viewscreens) return <div>No Viewscreens</div>;
     return (
       <Container fluid className="viewscreen-core">
@@ -91,6 +125,7 @@ class ViewscreenCore extends Component {
             <CardPreview
               simulator={this.props.simulator}
               component={previewComponent}
+              viewscreen={{ data: configData }}
             />}
         </div>
         <div className="q2">
@@ -158,6 +193,50 @@ class ViewscreenCore extends Component {
             </Col>
           </Row>
         </div>
+        <div className="q4">
+          <Label>Config</Label>
+          <Row>
+            <Col sm={6}>
+              <Label>Current Viewscreen</Label>
+              {(() => {
+                const viewscreen =
+                  selectedViewscreen &&
+                  viewscreens.find(v => v.id === selectedViewscreen);
+                const currentComponent = viewscreen && viewscreen.component;
+                const currentData = viewscreen && viewscreen.data;
+                if (this.configs.indexOf(`${currentComponent}Config`) > -1) {
+                  const ConfigComponent =
+                    ViewscreenCards[`${currentComponent}Config`];
+                  return (
+                    <ConfigComponent
+                      simulator={this.props.simulator}
+                      data={currentData}
+                      updateData={this.updateData}
+                    />
+                  );
+                }
+                return <p>No config for this component</p>;
+              })()}
+            </Col>
+            <Col sm={6}>
+              <Label>Preview Viewscreen</Label>
+              {(() => {
+                if (this.configs.indexOf(`${previewComponent}Config`) > -1) {
+                  const ConfigComponent =
+                    ViewscreenCards[`${previewComponent}Config`];
+                  return (
+                    <ConfigComponent
+                      simulator={this.props.simulator}
+                      data={configData}
+                      updateData={data => this.setState({ configData: data })}
+                    />
+                  );
+                }
+                return <p>No config for this component</p>;
+              })()}
+            </Col>
+          </Row>
+        </div>
       </Container>
     );
   }
@@ -169,6 +248,7 @@ const VIEWSCREEN_QUERY = gql`
       id
       name
       component
+      data
     }
   }
 `;

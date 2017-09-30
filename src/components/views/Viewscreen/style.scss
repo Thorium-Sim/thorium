@@ -12,8 +12,9 @@
   .q3 {
     transform: scale(0.5) translate(-50%, 50%);
   }
-  .q2 {
+  .q2, .q4{
     margin-left: 50%;
+    height: 50%;
   }
   .card-list {
     background-color: #333;

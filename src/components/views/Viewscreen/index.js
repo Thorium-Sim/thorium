@@ -11,6 +11,7 @@ const VIEWSCREEN_SUB = gql`
       id
       name
       component
+      data
     }
   }
 `;
@@ -44,7 +45,7 @@ export class Viewscreen extends Component {
     if (!viewscreen) return <div>No Viewscreen</div>;
     if (ViewscreenCards[viewscreen.component]) {
       const ViewscreenComponent = ViewscreenCards[viewscreen.component];
-      return <ViewscreenComponent {...this.props} />;
+      return <ViewscreenComponent {...this.props} viewscreen={viewscreen} />;
     }
     if (!viewscreen)
       return (
@@ -61,6 +62,7 @@ const VIEWSCREEN_QUERY = gql`
       id
       name
       component
+      data
     }
   }
 `;

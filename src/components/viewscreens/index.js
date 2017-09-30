@@ -6,3 +6,6 @@ export ForwardScans from "./ForwardScans";
 export AsteroidField from "./AsteroidField";
 export Docking from "./Docking";
 export Overheating from "./Overheating";
+export Information from "./Information";
+
+export InformationConfig from "./Information/config";
