@@ -1,4 +1,8 @@
 import React, { Component } from "react";
+import { Container, Row, Col } from "reactstrap";
+import Measure from "react-measure";
+
+import ReactorModel from "../../views/ReactorControl/model";
 
 export default class ReactorActivation extends Component {
   constructor(props) {
@@ -8,13 +12,6 @@ export default class ReactorActivation extends Component {
     this.state = {
       output: parseFloat(data.startOutput) || 0
     };
-  }
-  componentDidMount() {
-    const data = JSON.parse(this.props.viewscreen.data);
-    if (data.activate) {
-      this.looping = true;
-    }
-    this.loop();
   }
   componentWillReceiveProps(nextProps) {
     const data = JSON.parse(nextProps.viewscreen.data);
@@ -35,7 +32,7 @@ export default class ReactorActivation extends Component {
     if (parseFloat(data.startOutput) > parseFloat(data.endOutput)) {
       if (this.state.output > parseFloat(data.endOutput)) {
         this.setState({
-          output: this.state.output - 0.002
+          output: this.state.output - 0.01
         });
       } else {
         cancelAnimationFrame(this.frame);
@@ -45,7 +42,7 @@ export default class ReactorActivation extends Component {
     } else {
       if (this.state.output < parseFloat(data.endOutput)) {
         this.setState({
-          output: this.state.output + 0.002
+          output: this.state.output + 0.01
         });
       } else {
         cancelAnimationFrame(this.frame);
@@ -58,7 +55,30 @@ export default class ReactorActivation extends Component {
   render() {
     return (
       <div style={{ marginTop: "15vh" }}>
-        Reactor Output: {Math.round(this.state.output * 1000) / 10}
+        <Container>
+          <Row>
+            <Col sm={6}>
+              <Measure useClone={true} includeMargin={false}>
+                {dimensions =>
+                  <div>
+                    <ReactorModel {...dimensions} />
+                  </div>}
+              </Measure>
+            </Col>
+            <Col
+              sm={6}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center"
+              }}
+            >
+              <h1 style={{ fontSize: "60px" }}>
+                Reactor Output: {Math.round(this.state.output * 1000) / 10}
+              </h1>
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }

@@ -15,6 +15,7 @@ export default class ReactorActivationConfig extends Component {
     let { updateData } = this.props;
     return (
       <div>
+        <label>Starting Output</label>
         <input
           type="range"
           min="0"
@@ -26,6 +27,7 @@ export default class ReactorActivationConfig extends Component {
               startOutput: evt.target.value
             })}
         />
+        <label>Ending Output</label>
         <input
           type="range"
           min="0"
@@ -35,17 +37,6 @@ export default class ReactorActivationConfig extends Component {
           onChange={evt =>
             this.setState({
               endOutput: evt.target.value
-            })}
-        />
-        <input
-          type="range"
-          min="0"
-          max="10"
-          step="0.5"
-          value={this.state.duration}
-          onChange={evt =>
-            this.setState({
-              duration: evt.target.value
             })}
         />
         <button onClick={() => updateData(JSON.stringify(this.state))}>
