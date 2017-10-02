@@ -20,7 +20,6 @@ App.on("shipDockingChange", ({ simulatorId, which, state }) => {
       color: "info"
     });
   }
-
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
 App.on("remoteAccessSendCode", ({ simulatorId, code, station }) => {

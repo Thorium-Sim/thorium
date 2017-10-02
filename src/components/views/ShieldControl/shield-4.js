@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
-import assetPath from "../../../helpers/assets";
+import { Asset } from "../../../helpers/assets";
 import shieldStyle from "./shieldStyle";
 import DamageOverlay from "../helpers/DamageOverlay";
 
@@ -53,7 +53,7 @@ const ShieldData = ({ shields, startLoop, state, _toggleShields }) => {
   );
 };
 
-export default ({ shields, startLoop, state, _toggleShields }) => {
+export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
   return (
     <Container fluid className="shields">
       <Row>
@@ -62,12 +62,15 @@ export default ({ shields, startLoop, state, _toggleShields }) => {
             className="shieldBubble"
             style={{ boxShadow: shieldStyle(shields) }}
           >
-            <img
-              role="presentation"
-              className="mw-100 shieldImage"
-              draggable="false"
-              src={assetPath("/Ship Views/Top", "default", "png", false)}
-            />
+            <Asset asset={"/Ship Views/Top"} simulatorId={simulator.id}>
+              {({ src }) =>
+                <img
+                  role="presentation"
+                  className="mw-100 shieldImage"
+                  draggable="false"
+                  src={src}
+                />}
+            </Asset>
           </div>
         </Col>
         <Col style={{ marginTop: "50px" }} sm={{ size: 5, offset: 1 }}>

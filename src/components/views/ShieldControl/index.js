@@ -185,6 +185,7 @@ class ShieldControl extends Component {
           startLoop={this.startLoop.bind(this)}
           state={this.state}
           _toggleShields={this._toggleShields.bind(this)}
+          simulator={this.props.simulator}
         />
       );
     }
@@ -195,6 +196,7 @@ class ShieldControl extends Component {
           startLoop={this.startLoop.bind(this)}
           state={this.state}
           _toggleShields={this._toggleShields.bind(this)}
+          simulator={this.props.simulator}
         />
       );
     }
@@ -205,6 +207,7 @@ class ShieldControl extends Component {
           startLoop={this.startLoop.bind(this)}
           state={this.state}
           _toggleShields={this._toggleShields.bind(this)}
+          simulator={this.props.simulator}
         />
       );
     }
