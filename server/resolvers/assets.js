@@ -118,8 +118,11 @@ export const AssetsMutations = {
           (container.folderPath === folderPath &&
             container.name === containerName)
       );
-      fullPath = fullPath || container.fullPath;
-      containerId = containerId || container.id;
+      if (container) {
+        fullPath = fullPath || container.fullPath;
+
+        containerId = containerId || container.id;
+      }
       let clearContainer = false;
       if (!container) {
         //Lets make a container for this asset

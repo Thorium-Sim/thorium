@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 241,
+	"_eventsCount": 242,
 	"simulators": [
 		{
 			"id": "test",
@@ -1172,7 +1172,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 17998300,
+			"timeSincePing": 18045000,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -1262,7 +1262,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 17998300,
+			"timeSincePing": 18045000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -1411,7 +1411,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.8882079999998882,
+			"batteryChargeLevel": 0.8878319999998878,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2477,7 +2477,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 13181300,
+			"timeSincePing": 13228000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2509,7 +2509,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 13181300,
+			"timeSincePing": 13228000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3182,7 +3182,7 @@
 					},
 					"damage": {
 						"damaged": true,
-						"report":null,
+						"report": null,
 						"requested": false,
 						"reactivationCode": null,
 						"reactivationRequester": null,
@@ -3553,7 +3553,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 8068200,
+			"timeSincePing": 8114900,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3587,7 +3587,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 8068200,
+			"timeSincePing": 8114900,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -16423,6 +16423,13 @@
 			"fullPath": "/Docking Images",
 			"name": "Docking Images",
 			"class": "AssetFolder"
+		},
+		{
+			"id": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"folderPath": "/3D/Texture",
+			"fullPath": "/3D/Texture/Planets",
+			"name": "Planets",
+			"class": "AssetFolder"
 		}
 	],
 	"assetContainers": [
@@ -16832,6 +16839,166 @@
 			"fullPath": "/Docking Images/Teardrop",
 			"folderId": "3ee7185a-c23a-491d-b615-d84825df1aa0",
 			"name": "Teardrop",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "69377d4b-0e4d-4e86-b744-3190436f1284",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Alpine",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Alpine",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "f0d07c28-7420-40b6-ba33-c9e21bbefd2c",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Clouds1",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Clouds1",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "fc06cc31-6a42-43b4-a67b-34fdb93ce9f5",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Clouds2",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Clouds2",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "4266c0a4-33ec-4129-b2d2-9604afaa1d82",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Clouds3",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Clouds3",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "0f03bd29-a657-4f16-b589-79109cdb92d0",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Clouds4",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Clouds4",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "1f27095f-ed6a-4507-b50d-3feb18789ded",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Gaseous1",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Gaseous1",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "e59793cb-6142-410c-a368-8d09802f3945",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Gaseous2",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Gaseous2",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "f4ab4d1e-ee31-4503-a99b-fadc0dc0eb48",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Gaseous3",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Gaseous3",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "e3a98553-29ba-4b38-a117-3ad3f1ac857d",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Gaseous4",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Gaseous4",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "11b539a2-2d41-4509-930b-5d1540528383",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Icy",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Icy",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "6f574fd7-6fd4-456c-83bf-eaff1634dc6b",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Martian",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Martian",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "8e876af3-4ffd-4373-9a02-7781030f5384",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Savannah",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Savannah",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "1525edf9-7490-4b0a-8330-9a10f886a4b4",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Swamp",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Swamp",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "9c5d9381-4cc8-4e74-9204-ca7427bd9047",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Terrestrial1",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Terrestrial1",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "aaf3b409-de12-49e6-9068-0420a6d84bd1",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Terrestrial2",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Terrestrial2",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "df59e200-dc6d-4285-9c4b-1a187ee64818",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Terrestrial3",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Terrestrial3",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "a4e3ca8d-d40d-4595-acd1-2e662dde97f3",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Terrestrial4",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Terrestrial4",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "856846f3-16b3-4f9a-b9fe-7d8aafd16a03",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Tropical",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Tropical",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "4517b180-9ed6-4ba2-a2eb-001a783ccac9",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Venusian",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Venusian",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "08f224d9-57d2-45e1-b39d-fa936e554dec",
+			"folderPath": "/3D/Texture/Planets",
+			"fullPath": "/3D/Texture/Planets/Volcanic",
+			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
+			"name": "Volcanic",
 			"class": "AssetContainer"
 		}
 	],
@@ -17541,11 +17708,191 @@
 			"url": "/assets/Misc/Login Logo/83a4c0e2-2b67-415c-a468-4af558d403db.svg",
 			"simulatorId": "67bac67a-2fa4-4a68-b710-c9a3af627516",
 			"class": "AssetObject"
+		},
+		{
+			"id": "6aef50a8-87d7-4f4b-9507-70ae5704c213",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "69377d4b-0e4d-4e86-b744-3190436f1284",
+			"fullPath": "/3D/Texture/Planets/Alpine/default.png",
+			"url": "/assets/3D/Texture/Planets/Alpine/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "033a1937-ff16-4eae-8a8b-0fd4af6f9949",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "f0d07c28-7420-40b6-ba33-c9e21bbefd2c",
+			"fullPath": "/3D/Texture/Planets/Clouds1/default.png",
+			"url": "/assets/3D/Texture/Planets/Clouds1/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "67fb22fd-2159-4f46-823c-a020b8401d55",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "fc06cc31-6a42-43b4-a67b-34fdb93ce9f5",
+			"fullPath": "/3D/Texture/Planets/Clouds2/default.png",
+			"url": "/assets/3D/Texture/Planets/Clouds2/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "7a8ea913-6b64-4e92-8ad1-0127d941586e",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "4266c0a4-33ec-4129-b2d2-9604afaa1d82",
+			"fullPath": "/3D/Texture/Planets/Clouds3/default.png",
+			"url": "/assets/3D/Texture/Planets/Clouds3/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "6e3e2807-8703-47e2-b1f0-e07199595ed5",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "0f03bd29-a657-4f16-b589-79109cdb92d0",
+			"fullPath": "/3D/Texture/Planets/Clouds4/default.png",
+			"url": "/assets/3D/Texture/Planets/Clouds4/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "8d938ff1-5863-47c8-b130-8daab03055b9",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "1f27095f-ed6a-4507-b50d-3feb18789ded",
+			"fullPath": "/3D/Texture/Planets/Gaseous1/default.png",
+			"url": "/assets/3D/Texture/Planets/Gaseous1/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "83fb0f8e-9f78-43fa-b59c-af237362f344",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "e59793cb-6142-410c-a368-8d09802f3945",
+			"fullPath": "/3D/Texture/Planets/Gaseous2/default.png",
+			"url": "/assets/3D/Texture/Planets/Gaseous2/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "e6ef64a8-9080-4dfb-86ba-9b2bc8756047",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "f4ab4d1e-ee31-4503-a99b-fadc0dc0eb48",
+			"fullPath": "/3D/Texture/Planets/Gaseous3/default.png",
+			"url": "/assets/3D/Texture/Planets/Gaseous3/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "e2e07734-76cb-43d4-9280-47c1298bf2bf",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "e3a98553-29ba-4b38-a117-3ad3f1ac857d",
+			"fullPath": "/3D/Texture/Planets/Gaseous4/default.png",
+			"url": "/assets/3D/Texture/Planets/Gaseous4/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "88200bd4-89fe-4da3-9881-200c2257fcef",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "11b539a2-2d41-4509-930b-5d1540528383",
+			"fullPath": "/3D/Texture/Planets/Icy/default.png",
+			"url": "/assets/3D/Texture/Planets/Icy/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "ed6e3627-985d-4edf-9727-7f1ca164137d",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "6f574fd7-6fd4-456c-83bf-eaff1634dc6b",
+			"fullPath": "/3D/Texture/Planets/Martian/default.png",
+			"url": "/assets/3D/Texture/Planets/Martian/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "ee2eeb02-c0e4-4048-97eb-d316aa853cb2",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "8e876af3-4ffd-4373-9a02-7781030f5384",
+			"fullPath": "/3D/Texture/Planets/Savannah/default.png",
+			"url": "/assets/3D/Texture/Planets/Savannah/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "39d57ba4-2d1b-456b-86e5-915a2d310a59",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "1525edf9-7490-4b0a-8330-9a10f886a4b4",
+			"fullPath": "/3D/Texture/Planets/Swamp/default.png",
+			"url": "/assets/3D/Texture/Planets/Swamp/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "f82e09d6-980a-4b12-9e16-f3d62340ea81",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "9c5d9381-4cc8-4e74-9204-ca7427bd9047",
+			"fullPath": "/3D/Texture/Planets/Terrestrial1/default.png",
+			"url": "/assets/3D/Texture/Planets/Terrestrial1/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "cc526fa7-ace6-490b-8227-0cc0d97b519e",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "aaf3b409-de12-49e6-9068-0420a6d84bd1",
+			"fullPath": "/3D/Texture/Planets/Terrestrial2/default.png",
+			"url": "/assets/3D/Texture/Planets/Terrestrial2/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "84770362-5276-4bd8-9bb5-ea676aa8999c",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "df59e200-dc6d-4285-9c4b-1a187ee64818",
+			"fullPath": "/3D/Texture/Planets/Terrestrial3/default.png",
+			"url": "/assets/3D/Texture/Planets/Terrestrial3/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "714079d3-c449-45b1-94a7-a674c6c26a5f",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "a4e3ca8d-d40d-4595-acd1-2e662dde97f3",
+			"fullPath": "/3D/Texture/Planets/Terrestrial4/default.png",
+			"url": "/assets/3D/Texture/Planets/Terrestrial4/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "1aa2875d-b145-4bc3-a523-08ab36b06331",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "856846f3-16b3-4f9a-b9fe-7d8aafd16a03",
+			"fullPath": "/3D/Texture/Planets/Tropical/default.png",
+			"url": "/assets/3D/Texture/Planets/Tropical/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "b06a6797-77aa-43c3-ae93-584e4dcc0adc",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "4517b180-9ed6-4ba2-a2eb-001a783ccac9",
+			"fullPath": "/3D/Texture/Planets/Venusian/default.png",
+			"url": "/assets/3D/Texture/Planets/Venusian/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "51da2bb6-979d-445e-81d3-1d630fc9897c",
+			"containerPath": "/3D/Texture/Planets",
+			"containerId": "08f224d9-57d2-45e1-b39d-fa936e554dec",
+			"fullPath": "/3D/Texture/Planets/Volcanic/default.png",
+			"url": "/assets/3D/Texture/Planets/Volcanic/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
 		}
 	],
 	"viewscreens": [],
 	"messages": [],
-	"snapshotVersion": 5,
-	"version": 5,
-	"timestamp": "2017-09-29T12:48:41.241Z"
+	"snapshotVersion": 68,
+	"version": 68,
+	"timestamp": "2017-10-02T14:19:32.095Z"
 }
