@@ -1,11 +1,11 @@
 import React from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
-import assetPath from "../../../helpers/assets";
+import { Asset } from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
 import { shieldColor } from "./shieldStyle";
 
-export default ({ shields, startLoop, state, _toggleShields }) => {
+export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
   const s = shields[0];
   const color = shieldColor(s);
   return (
@@ -13,13 +13,16 @@ export default ({ shields, startLoop, state, _toggleShields }) => {
       <DamageOverlay system={s} message={`${s.name} Shields Offline`} />
       <Row>
         <Col sm="7">
-          <img
-            role="presentation"
-            className="mw-100 ccw-90 shieldImage"
-            style={{ filter: `drop-shadow(${color} 0px 0px 30px)` }}
-            draggable="false"
-            src={assetPath("/Ship Views/Top", "default", "png", false)}
-          />
+          <Asset asset={"/Ship Views/Top"} simulatorId={simulator.id}>
+            {({ src }) =>
+              <img
+                role="presentation"
+                className="mw-100 ccw-90 shieldImage"
+                style={{ filter: `drop-shadow(${color} 0px 0px 30px)` }}
+                draggable="false"
+                src={src}
+              />}
+          </Asset>
         </Col>
         <Col style={{ marginTop: "100px" }} sm={{ size: 4, offset: 1 }}>
           <h2>Integrity:</h2>
