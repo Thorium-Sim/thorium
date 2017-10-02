@@ -1,3 +1,9 @@
+.viewscreen-shieldMonitoring {
+  margin-top: 10vh;
+  h1 {
+    font-size: 60px;
+    text-align: center;
+  }
 .shieldMonitoring {
   height: 100%;
   display: flex;
@@ -16,4 +22,5 @@
       width: 100%;
     }
   }
+}
 }

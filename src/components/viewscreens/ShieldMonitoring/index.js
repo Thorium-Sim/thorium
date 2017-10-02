@@ -39,15 +39,17 @@ class ShieldMonitoring extends Component {
   render() {
     if (this.props.data.loading) return null;
     const shields = this.props.data.shields;
-    if (shields.length === 1) {
-      return <Shield1 shields={shields} simulator={this.props.simulator} />;
-    }
-    if (shields.length === 4) {
-      return <Shield4 shields={shields} simulator={this.props.simulator} />;
-    }
-    if (shields.length === 6) {
-      return <Shield6 shields={shields} simulator={this.props.simulator} />;
-    }
+    return (
+      <div className="viewscreen-shieldMonitoring">
+        <h1>Shield Monitoring</h1>
+        {shields.length === 1 &&
+          <Shield1 shields={shields} simulator={this.props.simulator} />}
+        {shields.length === 4 &&
+          <Shield4 shields={shields} simulator={this.props.simulator} />}
+        {shields.length === 6 &&
+          <Shield6 shields={shields} simulator={this.props.simulator} />}
+      </div>
+    );
   }
 }
 
