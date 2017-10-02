@@ -13,6 +13,7 @@ export IncomingTransmission from "./IncomingTransmission";
 export TransmittingCode from "./TransmittingCode";
 export ReactorActivation from "./ReactorActivation";
 export PlanetaryScan from "./PlanetaryScan";
+export ShieldMonitoring from "./ShieldMonitoring";
 
 export InformationConfig from "./Information/config";
 export InternalSensorsConfig from "./InternalSensors/config";
