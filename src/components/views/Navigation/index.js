@@ -10,7 +10,7 @@ import Tour from "reactour";
 
 import "./style.scss";
 
-class NavigationScanner extends Component {
+export class NavigationScanner extends Component {
   constructor(props) {
     super(props);
     this.state = {
