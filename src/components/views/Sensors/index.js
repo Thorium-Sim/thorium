@@ -8,7 +8,7 @@ import Grid from "./GridDom";
 import Measure from "react-measure";
 import DamageOverlay from "../helpers/DamageOverlay";
 import SensorScans from "./SensorScans";
-
+import { Asset } from "../../../helpers/assets";
 const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {
     sensorsUpdate(simulatorId: $simulatorId, domain: "external") {
@@ -285,16 +285,30 @@ class Sensors extends Component {
             <Col className="col-sm-3 data">
               <Row>
                 <Col className="col-sm-12 contactPictureContainer">
-                  <div
-                    className="card contactPicture"
-                    style={{
-                      backgroundSize: "contain",
-                      backgroundPosition: "center",
-                      backgroundRepeat: "no-repeat",
-                      backgroundColor: "black",
-                      backgroundImage: `url('${hoverContact.pictureUrl}')`
-                    }}
-                  />
+                  {hoverContact.picture
+                    ? <Asset asset={hoverContact.picture}>
+                        {({ src }) =>
+                          <div
+                            className="card contactPicture"
+                            style={{
+                              backgroundSize: "contain",
+                              backgroundPosition: "center",
+                              backgroundRepeat: "no-repeat",
+                              backgroundColor: "black",
+                              backgroundImage: `url('${src}')`
+                            }}
+                          />}
+                      </Asset>
+                    : <div
+                        className="card contactPicture"
+                        style={{
+                          backgroundSize: "contain",
+                          backgroundPosition: "center",
+                          backgroundRepeat: "no-repeat",
+                          backgroundColor: "black",
+                          backgroundImage: `none`
+                        }}
+                      />}
                 </Col>
                 <Col className="col-sm-12 contactNameContainer">
                   <div className="card contactName">
