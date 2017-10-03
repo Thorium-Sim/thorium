@@ -17,6 +17,7 @@ export ShieldMonitoring from "./ShieldMonitoring";
 export CourseCalculation from "./CourseCalculation";
 export ShipView from "./ShipView";
 export StealthMonitoring from "./StealthMonitoring";
+export Communications from "./Communications";
 
 export InformationConfig from "./Information/config";
 export InternalSensorsConfig from "./InternalSensors/config";
