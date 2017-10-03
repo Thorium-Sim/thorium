@@ -14,6 +14,7 @@ export TransmittingCode from "./TransmittingCode";
 export ReactorActivation from "./ReactorActivation";
 export PlanetaryScan from "./PlanetaryScan";
 export ShieldMonitoring from "./ShieldMonitoring";
+export CourseCalculation from "./CourseCalculation";
 
 export InformationConfig from "./Information/config";
 export InternalSensorsConfig from "./InternalSensors/config";
