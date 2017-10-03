@@ -23,6 +23,7 @@ const NAV_SUB = gql`
 class CourseCalculationViewscreen extends Component {
   state = {};
   componentWillReceiveProps(nextProps) {
+    const data = JSON.parse(nextProps.viewscreen.data);
     if (!this.sensorsSubscription && !nextProps.data.loading) {
       this.sensorsSubscription = nextProps.data.subscribeToMore({
         document: NAV_SUB,
@@ -37,7 +38,9 @@ class CourseCalculationViewscreen extends Component {
     if (!nextProps.data.loading) {
       this.setState(
         {
-          scanning: nextProps.data.navigation[0].scanning
+          scanning: data.reactive
+            ? nextProps.data.navigation[0].scanning
+            : data.scanning
         },
         () => {
           cancelAnimationFrame(this.looping);
@@ -57,8 +60,12 @@ class CourseCalculationViewscreen extends Component {
     }
   };
   render() {
+    const data = JSON.parse(this.props.viewscreen.data);
     if (this.props.data.loading) return null;
-    const { destination, calculatedCourse } = this.props.data.navigation[0];
+    const {
+      destination,
+      calculatedCourse = { x: 0, y: 0, z: 0 }
+    } = data.reactive ? this.props.data.navigation[0] : data;
     const { scanning, x, y, z } = this.state;
     return (
       <div className="viewscreen-courseCalculation">
@@ -72,32 +79,53 @@ class CourseCalculationViewscreen extends Component {
             </Col>
             <Col sm={6}>
               <Card>
-                <CardBlock>
-                  <div>
-                    X:{" "}
-                    <span className="course-text">
-                      {scanning
-                        ? Math.floor(x * 99999) / 100
-                        : calculatedCourse.x}
-                    </span>
-                  </div>
-                  <div>
-                    Y:{" "}
-                    <span className="course-text">
-                      {scanning
-                        ? Math.floor(y * 99999) / 100
-                        : calculatedCourse.y}
-                    </span>
-                  </div>
-                  <div>
-                    Z:{" "}
-                    <span className="course-text">
-                      {scanning
-                        ? Math.floor(z * 99999) / 100
-                        : calculatedCourse.z}
-                    </span>
-                  </div>
-                </CardBlock>
+                {!data.reactive && data.thrusters
+                  ? <CardBlock>
+                      <div>
+                        Yaw:{"  "}
+                        <span className="thruster-text">
+                          {scanning ? Math.floor(x * 360) : calculatedCourse.x}˚
+                        </span>
+                      </div>
+                      <div>
+                        Pitch:{" "}
+                        <span className="thruster-text">
+                          {scanning ? Math.floor(y * 360) : calculatedCourse.y}˚
+                        </span>
+                      </div>
+                      <div>
+                        Roll:{"  "}
+                        <span className="thruster-text">
+                          {scanning ? Math.floor(z * 360) : calculatedCourse.z}˚
+                        </span>
+                      </div>
+                    </CardBlock>
+                  : <CardBlock>
+                      <div>
+                        X:{" "}
+                        <span className="course-text">
+                          {scanning
+                            ? Math.floor(x * 99999) / 100
+                            : calculatedCourse.x}
+                        </span>
+                      </div>
+                      <div>
+                        Y:{" "}
+                        <span className="course-text">
+                          {scanning
+                            ? Math.floor(y * 99999) / 100
+                            : calculatedCourse.y}
+                        </span>
+                      </div>
+                      <div>
+                        Z:{" "}
+                        <span className="course-text">
+                          {scanning
+                            ? Math.floor(z * 99999) / 100
+                            : calculatedCourse.z}
+                        </span>
+                      </div>
+                    </CardBlock>}
               </Card>
             </Col>
           </Row>

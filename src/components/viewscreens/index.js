@@ -20,3 +20,4 @@ export InformationConfig from "./Information/config";
 export InternalSensorsConfig from "./InternalSensors/config";
 export ReactorActivationConfig from "./ReactorActivation/config";
 export PlanetaryScanConfig from "./PlanetaryScan/config";
+export CourseCalculationConfig from "./CourseCalculation/config";
