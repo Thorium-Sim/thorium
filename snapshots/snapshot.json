@@ -1172,7 +1172,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 18045000,
+			"timeSincePing": 18313400,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -1262,7 +1262,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 18045000,
+			"timeSincePing": 18313400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -1411,7 +1411,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.8878319999998878,
+			"batteryChargeLevel": 0.8856559999998856,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2477,7 +2477,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 13228000,
+			"timeSincePing": 13496400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2509,7 +2509,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 13228000,
+			"timeSincePing": 13496400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3553,7 +3553,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 8114900,
+			"timeSincePing": 8383300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3587,7 +3587,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 8114900,
+			"timeSincePing": 8383300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -16458,14 +16458,6 @@
 			"class": "AssetContainer"
 		},
 		{
-			"id": "1f6c94a2-3e2e-4558-b0f5-4a44ba90767d",
-			"folderPath": "/Sensor Contacts/Pictures",
-			"fullPath": "/Sensor Contacts/Pictures/N",
-			"folderId": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
-			"name": "N",
-			"class": "AssetContainer"
-		},
-		{
 			"id": "fbe3ae88-698b-4974-a9b8-9a150abaa01c",
 			"folderPath": "/Sensor Contacts/Icons",
 			"fullPath": "/Sensor Contacts/Icons/G",
@@ -16762,14 +16754,6 @@
 			"class": "AssetContainer"
 		},
 		{
-			"id": "dbf07d2f-4253-4637-bd56-3a281cdf312e",
-			"folderPath": "/Sensor Contacts/Pictures",
-			"fullPath": "/Sensor Contacts/Pictures/Default",
-			"folderId": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
-			"name": "Default",
-			"class": "AssetContainer"
-		},
-		{
 			"id": "1f4341e9-d2ef-40e6-b763-77d2efccbc8b",
 			"folderPath": "/Docking Images",
 			"fullPath": "/Docking Images/Default",
@@ -16999,6 +16983,78 @@
 			"fullPath": "/3D/Texture/Planets/Volcanic",
 			"folderId": "b7e0102a-036c-43f6-932b-1fc2ee7d0935",
 			"name": "Volcanic",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "6185d450-6567-4466-9c40-c9fed792caac",
+			"folderPath": "/Sensor Contacts/Pictures",
+			"fullPath": "/Sensor Contacts/Pictures/Alotec Battleship",
+			"folderId": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
+			"name": "Alotec Battleship",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "ec4ee266-3a47-4e45-8b0e-f584de10faa3",
+			"folderPath": "/Sensor Contacts/Pictures",
+			"fullPath": "/Sensor Contacts/Pictures/Astra Battleship",
+			"folderId": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
+			"name": "Astra Battleship",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "cc2da7b7-3d2a-4d8a-8aff-4967ce8c7bd6",
+			"folderPath": "/Sensor Contacts/Pictures",
+			"fullPath": "/Sensor Contacts/Pictures/Astra Fighter",
+			"folderId": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
+			"name": "Astra Fighter",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "334a9c6b-4c91-4302-bd0c-b5899ff8be87",
+			"folderPath": "/Sensor Contacts/Pictures",
+			"fullPath": "/Sensor Contacts/Pictures/Astra Heavy Cruiser",
+			"folderId": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
+			"name": "Astra Heavy Cruiser",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "489f8f93-64d1-4055-83bd-a59e0207f74f",
+			"folderPath": "/Sensor Contacts/Pictures",
+			"fullPath": "/Sensor Contacts/Pictures/Astra Light Cruiser",
+			"folderId": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
+			"name": "Astra Light Cruiser",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "0f501dae-1e95-440d-9a4b-c3e3222bde37",
+			"folderPath": "/Sensor Contacts/Pictures",
+			"fullPath": "/Sensor Contacts/Pictures/Astra Shuttle",
+			"folderId": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
+			"name": "Astra Shuttle",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "8d3119bc-2303-471a-a658-e70d7ee12847",
+			"folderPath": "/Sensor Contacts/Pictures",
+			"fullPath": "/Sensor Contacts/Pictures/Astra Starbase",
+			"folderId": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
+			"name": "Astra Starbase",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "22d27317-8787-46dd-aa39-bf5f461f134a",
+			"folderPath": "/Sensor Contacts/Pictures",
+			"fullPath": "/Sensor Contacts/Pictures/Starbug",
+			"folderId": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
+			"name": "Starbug",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "8f9343fa-f524-4f01-ac77-2b8276c7c4eb",
+			"folderPath": "/Sensor Contacts/Pictures",
+			"fullPath": "/Sensor Contacts/Pictures/Default",
+			"folderId": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
+			"name": "Default",
 			"class": "AssetContainer"
 		}
 	],
@@ -17888,11 +17944,92 @@
 			"url": "/assets/3D/Texture/Planets/Volcanic/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
+		},
+		{
+			"id": "7089bee7-63f5-4c40-9380-5c60d0c970b2",
+			"containerPath": "/Sensor Contacts/Pictures",
+			"containerId": "6185d450-6567-4466-9c40-c9fed792caac",
+			"fullPath": "/Sensor Contacts/Pictures/Alotec Battleship/default.png",
+			"url": "/assets/Sensor Contacts/Pictures/Alotec Battleship/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "24422d0d-ffcb-4c8a-91ba-e90f47dbdb66",
+			"containerPath": "/Sensor Contacts/Pictures",
+			"containerId": "ec4ee266-3a47-4e45-8b0e-f584de10faa3",
+			"fullPath": "/Sensor Contacts/Pictures/Astra Battleship/default.png",
+			"url": "/assets/Sensor Contacts/Pictures/Astra Battleship/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "202c2007-8b5a-4412-83d7-28ad98e2ec45",
+			"containerPath": "/Sensor Contacts/Pictures",
+			"containerId": "cc2da7b7-3d2a-4d8a-8aff-4967ce8c7bd6",
+			"fullPath": "/Sensor Contacts/Pictures/Astra Fighter/default.png",
+			"url": "/assets/Sensor Contacts/Pictures/Astra Fighter/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "8b6aa919-d3f9-4b2d-a642-11d0142ae21d",
+			"containerPath": "/Sensor Contacts/Pictures",
+			"containerId": "334a9c6b-4c91-4302-bd0c-b5899ff8be87",
+			"fullPath": "/Sensor Contacts/Pictures/Astra Heavy Cruiser/default.png",
+			"url": "/assets/Sensor Contacts/Pictures/Astra Heavy Cruiser/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "f0cf8a39-2b46-49f4-aaa1-b2c21c72a93b",
+			"containerPath": "/Sensor Contacts/Pictures",
+			"containerId": "489f8f93-64d1-4055-83bd-a59e0207f74f",
+			"fullPath": "/Sensor Contacts/Pictures/Astra Light Cruiser/default.png",
+			"url": "/assets/Sensor Contacts/Pictures/Astra Light Cruiser/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "06916aeb-ce46-4b8e-aac3-80527cd68d2f",
+			"containerPath": "/Sensor Contacts/Pictures",
+			"containerId": "0f501dae-1e95-440d-9a4b-c3e3222bde37",
+			"fullPath": "/Sensor Contacts/Pictures/Astra Shuttle/default.png",
+			"url": "/assets/Sensor Contacts/Pictures/Astra Shuttle/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "e84a7a0d-5dc1-4f8d-9e6e-cfcb6e8d2b69",
+			"containerPath": "/Sensor Contacts/Pictures",
+			"containerId": "8d3119bc-2303-471a-a658-e70d7ee12847",
+			"fullPath": "/Sensor Contacts/Pictures/Astra Starbase/default.png",
+			"url": "/assets/Sensor Contacts/Pictures/Astra Starbase/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "b1914927-abf5-4769-942a-32296d805b04",
+			"containerPath": "/Sensor Contacts/Pictures",
+			"containerId": "22d27317-8787-46dd-aa39-bf5f461f134a",
+			"fullPath": "/Sensor Contacts/Pictures/Starbug/default.png",
+			"url": "/assets/Sensor Contacts/Pictures/Starbug/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "198597ff-15a2-47c8-ac8a-69dfbeda64f9",
+			"containerPath": "/Sensor Contacts/Pictures",
+			"containerId": "8f9343fa-f524-4f01-ac77-2b8276c7c4eb",
+			"fullPath": "/Sensor Contacts/Pictures/Default/default.png",
+			"url": "/assets/Sensor Contacts/Pictures/Default/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
 		}
 	],
 	"viewscreens": [],
 	"messages": [],
-	"snapshotVersion": 68,
-	"version": 68,
-	"timestamp": "2017-10-02T14:19:32.095Z"
+	"snapshotVersion": 284,
+	"version": 284,
+	"timestamp": "2017-10-03T17:17:25.131Z"
 }
