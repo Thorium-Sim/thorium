@@ -6,9 +6,13 @@ export default class Viewscreen {
     this.name = params.name || params.id;
     this.component = params.component || "ShipLogo";
     this.data = params.data || `{}`;
+    this.auto = false;
   }
   updateName(name) {
     if (name) this.name = name;
+  }
+  updateAuto(auto) {
+    this.auto = auto;
   }
   updateComponent(component = "ShipLogo", data = {}) {
     this.component = component;
@@ -18,7 +22,6 @@ export default class Viewscreen {
     if (typeof data === "object") {
       this.data = JSON.stringify(data);
     } else {
-      console.log(data);
       this.data = data;
     }
   }

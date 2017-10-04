@@ -5,3 +5,4 @@ import "./reactor";
 import "./phasers";
 import "./coolant";
 import "./selfDestruct";
+import "./viewscreens";

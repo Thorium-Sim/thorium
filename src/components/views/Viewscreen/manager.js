@@ -17,6 +17,7 @@ const VIEWSCREEN_SUB = gql`
       name
       component
       data
+      auto
     }
   }
 `;
@@ -97,6 +98,25 @@ class ViewscreenCore extends Component {
       variables
     });
   };
+  toggleAuto = () => {
+    const { viewscreens } = this.props.data;
+    const { selectedViewscreen } = this.state;
+    const auto = !viewscreens.find(v => v.id === selectedViewscreen).auto;
+    const id = selectedViewscreen;
+    const mutation = gql`
+      mutation UpdateViewscreenAuto($id: ID!, $auto: Boolean!) {
+        updateViewscreenAuto(id: $id, auto: $auto)
+      }
+    `;
+    const variables = {
+      id,
+      auto
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading) return null;
     const { viewscreens } = this.props.data;
@@ -163,6 +183,16 @@ class ViewscreenCore extends Component {
                     </option>
                   )}
                 </Input>
+                <Label>
+                  <input
+                    type="checkbox"
+                    checked={
+                      viewscreens.find(v => v.id === selectedViewscreen).auto
+                    }
+                    onChange={this.toggleAuto}
+                  />{" "}
+                  Auto-switch generic tactical cards
+                </Label>
               </Col>
               <Col sm={6}>
                 <Label>Cards</Label>
@@ -266,6 +296,7 @@ const VIEWSCREEN_QUERY = gql`
       name
       component
       data
+      auto
     }
   }
 `;

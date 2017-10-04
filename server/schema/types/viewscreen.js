@@ -6,5 +6,6 @@ type Viewscreen {
   component: String
   # JSON
   data: String
+  auto: Boolean
 }
 `;
