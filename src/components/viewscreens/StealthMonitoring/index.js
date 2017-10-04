@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Button } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Immutable from "immutable";
 import TransitionGroup from "react-transition-group/TransitionGroup";
-import Transitioner from "../helpers/transitioner";
-import Tour from "reactour";
-import DamageOverlay from "../helpers/DamageOverlay";
+import Transitioner from "../../views/helpers/transitioner";
 import { Asset } from "../../../helpers/assets";
 
 import "./style.scss";
@@ -36,18 +34,6 @@ const STEALTH_SUB = gql`
     }
   }
 `;
-
-/*
-const SYSTEMS_SUB = gql`
-  subscription SystemsUpdate($simulatorId: ID, $type: String) {
-    systemsUpdate(simulatorId: $simulatorId, type: $type) {
-      id
-      name
-      type
-      stealthFactor
-    }
-  }
-`;*/
 
 const limit = 0.05;
 const factor = 0.005;
@@ -86,21 +72,7 @@ class StealthField extends Component {
             .toJS();
         }
       });
-    } /*
-    if (!this.systemsSubscription && !nextProps.data.loading) {
-      this.systemsSubscription = nextProps.data.subscribeToMore({
-        document: SYSTEMS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ systems: subscriptionData.data.systemsUpdate })
-            .toJS();
-        }
-      });
-    }*/
+    }
     if (nextProps.data.systems && !this.state.systems) {
       // We only need to initialize the state
       this.setState({
@@ -145,32 +117,6 @@ class StealthField extends Component {
         })
     });
   }
-  _activate() {
-    const { id } = this.props.data.stealthField[0];
-    const mutation = gql`
-      mutation ActivateStealth($id: ID!) {
-        activateStealth(id: $id)
-      }
-    `;
-    const variables = { id };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-  }
-  _deactivate() {
-    const { id } = this.props.data.stealthField[0];
-    const mutation = gql`
-      mutation DeactivateStealth($id: ID!) {
-        deactivateStealth(id: $id)
-      }
-    `;
-    const variables = { id };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-  }
   render() {
     if (this.props.data.loading) return null;
     const stealthField = this.props.data.stealthField[0];
@@ -178,10 +124,7 @@ class StealthField extends Component {
     const { systems } = this.state;
     return (
       <Container fluid className="card-stealthField">
-        <DamageOverlay
-          system={stealthField}
-          message={`${stealthField.name} Offline`}
-        />
+        <h1>Stealth Field</h1>
         <Row>
           <Col sm="3" />
           <Col sm="6">
@@ -219,26 +162,6 @@ class StealthField extends Component {
                 );
               }}
             </Asset>
-            {stealthField.activated &&
-              (stealthField.state
-                ? <Button
-                    size="lg"
-                    color="warning"
-                    className="stealth-button"
-                    block
-                    onClick={this._deactivate.bind(this)}
-                  >
-                    Deactivate Stealth Field
-                  </Button>
-                : <Button
-                    size="lg"
-                    color="primary"
-                    className="stealth-button"
-                    block
-                    onClick={this._activate.bind(this)}
-                  >
-                    Activate Stealth Field
-                  </Button>)}
           </Col>
           <Col sm="3" />
         </Row>
@@ -249,28 +172,10 @@ class StealthField extends Component {
               .map(Comp => <Comp key={Comp.name} systems={systems} />)}
           </TransitionGroup>
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
       </Container>
     );
   }
 }
-
-const trainingSteps = [
-  {
-    selector: ".stealth-button",
-    content:
-      "The ship’s stealth field allows it to move through space without being detected by other starships. If your stealth field needs to be activated, click this button to activate or deactivate the stealth field."
-  },
-  {
-    selector: ".stealth-board",
-    content:
-      "This dashboard shows the way that the ship’s operations impact the stealth field. Use of some shp functionality may increase the ship’s probability of being detected. For example, sending out messages and other signals makes it obvious to other starships that this ship is around. They may not be able to see the ship, but they’ll notice that someone is there. If you start shooting at them, they will probably realize that something fishy is going on."
-  }
-];
 
 class StealthBars extends Transitioner {
   systemName(sys) {
