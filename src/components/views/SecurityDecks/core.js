@@ -37,6 +37,9 @@ class SecurityTeams extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.deckSubscription && this.deckSubscription();
+  }
   _toggleDoors = (deckId, doors) => {
     const mutation = gql`
       mutation ToggleDoors($deckId: ID!, $doors: Boolean!) {

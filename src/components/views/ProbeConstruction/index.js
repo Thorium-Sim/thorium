@@ -91,6 +91,9 @@ class ProbeConstruction extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   toggle = () => {
     this.setState({
       modal: !this.state.modal

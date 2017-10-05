@@ -93,6 +93,10 @@ class SecurityTeams extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+    this.crewSubscription && this.crewSubscription();
+  }
   createSecurityTeam = () => {
     const mutation = gql`
       mutation CreateSecurityTeam($team: TeamInput!) {

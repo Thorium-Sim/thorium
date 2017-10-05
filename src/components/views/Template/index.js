@@ -7,10 +7,10 @@ import "./style.scss";
 const TEMPLATE_SUB = gql``;
 
 class Template extends Component {
-  sub = null;
+  subscription = null;
   componentWillReceiveProps(nextProps) {
-    if (!this.internalSub && !nextProps.data.loading) {
-      this.internalSub = nextProps.data.subscribeToMore({
+    if (!this.subscription && !nextProps.data.loading) {
+      this.subscription = nextProps.data.subscribeToMore({
         document: TEMPLATE_SUB,
         variables: {
           simulatorId: nextProps.simulator.id
@@ -22,6 +22,9 @@ class Template extends Component {
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
   }
   render() {
     if (this.props.data.loading) return null;

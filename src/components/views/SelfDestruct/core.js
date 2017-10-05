@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import {
-  Container
-} from "reactstrap";
+import { Container } from "reactstrap";
 import Moment from "moment";
 import { graphql, withApollo } from "react-apollo";
 import Immutable from "immutable";
@@ -45,6 +43,9 @@ class SelfDestructCore extends Component {
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.sub && this.sub();
   }
   activate = time => {
     if (time) {

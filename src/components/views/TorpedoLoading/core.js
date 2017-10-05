@@ -54,6 +54,9 @@ class TorpedoLoadingCore extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   updateTorpedoCount(type, count) {
     if (count) {
       const torpedos = this.props.data.torpedos[0];

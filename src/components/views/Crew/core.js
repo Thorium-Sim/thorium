@@ -71,6 +71,9 @@ class CrewCore extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.sub && this.sub();
+  }
   _importCrew = evt => {
     const self = this;
     const simulatorId = this.props.simulator.id;

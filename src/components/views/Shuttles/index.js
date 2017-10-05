@@ -42,6 +42,9 @@ class Shuttles extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.internalSub && this.internalSub();
+  }
   render() {
     if (this.props.data.loading) return null;
     const { docking } = this.props.data;

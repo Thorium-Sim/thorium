@@ -36,7 +36,6 @@ const extra = [
   "Temperature",
   "Holodeck",
   "Brig Force Field",
-  "Co2 Scrubbers",
   "Oxygen Generators",
   "Warp Field Realignment",
   "Computer Power",
@@ -73,6 +72,9 @@ class DamageReportCore extends Component {
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.systemSub && this.systemSub();
   }
   selectSystem(id) {
     const systems = this.props.data.systems;

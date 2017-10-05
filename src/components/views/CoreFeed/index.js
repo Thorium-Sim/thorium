@@ -33,6 +33,9 @@ class CoreFeed extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.internalSub && this.internalSub();
+  }
   ignoreCoreFeed = id => {
     const mutation = gql`
       mutation IgnoreCoreFeed($id: ID) {

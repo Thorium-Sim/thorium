@@ -73,6 +73,10 @@ class ReactorControl extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.internalSub && this.internalSub();
+    this.systemSub && this.systemSub();
+  }
   setEfficiency(e) {
     const { reactors } = this.props.data;
     const reactor = reactors.find(r => r.model === "reactor");

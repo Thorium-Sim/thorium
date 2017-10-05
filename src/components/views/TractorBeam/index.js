@@ -53,6 +53,9 @@ class TractorBeam extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.tractorBeamSub && this.tractorBeamSub();
+  }
   toggleBeam = () => {
     const tractorBeam = this.props.data.tractorBeam[0];
     const mutation = gql`

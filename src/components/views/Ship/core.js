@@ -32,6 +32,9 @@ class ShipCore extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.internalSub && this.internalSub();
+  }
   updateBridgeCrew = crew => {
     const mutation = gql`
       mutation SetBridgeCrew($simulatorId: ID!, $crew: Int!) {

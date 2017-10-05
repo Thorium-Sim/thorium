@@ -36,6 +36,9 @@ class ShieldMonitoring extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.shieldSub && this.shieldSub();
+  }
   render() {
     if (this.props.data.loading) return null;
     const shields = this.props.data.shields;

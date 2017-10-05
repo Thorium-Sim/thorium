@@ -64,6 +64,9 @@ class TorpedoLoading extends Component {
       torpedoType: type
     });
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   updateScreen(screen) {
     this.setState({
       screen

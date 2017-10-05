@@ -51,6 +51,9 @@ class ProbeControl extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   response = () => {
     const variables = {
       id: this.props.data.probes[0].id,

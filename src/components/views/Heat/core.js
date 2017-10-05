@@ -30,6 +30,9 @@ class HeatCore extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   updateHeat = (id, heat) => {
     const mutation = gql`
       mutation SystemHeat($id: ID!, $heat: Float) {

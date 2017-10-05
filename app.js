@@ -123,11 +123,13 @@ class Events extends EventEmitter {
     return snapshot;
   }
   handleEvent(param, pres, context = {}) {
-    eventCount += 1;
-    if (Date().toString() !== date) {
-      //console.log("Event Count:", eventCount);
-      eventCount = 0;
-      date = Date().toString();
+    if (process.env.DEBUG) {
+      eventCount += 1;
+      if (Date().toString() !== date) {
+        console.log("Event Count:", eventCount);
+        eventCount = 0;
+        date = Date().toString();
+      }
     }
     const { clientId } = context;
     //const { events } = collections;

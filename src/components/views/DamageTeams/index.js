@@ -97,6 +97,10 @@ class DamageTeams extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+    this.crewSubscription && this.crewSubscription();
+  }
   createDamageTeam = () => {
     const mutation = gql`
       mutation CreateDamageTeam($team: TeamInput!) {

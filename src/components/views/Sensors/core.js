@@ -47,6 +47,9 @@ class SensorsCore extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.sensorsSubscription && this.sensorsSubscription();
+  }
   sendScanResult = sensors => {
     this.props.client.mutate({
       mutation: gql`

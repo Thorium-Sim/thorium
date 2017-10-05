@@ -118,6 +118,9 @@ class LongRangeComm extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.lrsub && this.lrsub();
+  }
   selectSat(sat) {
     this.setState({
       selectedSat: sat

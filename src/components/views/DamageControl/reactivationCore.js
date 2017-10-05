@@ -47,6 +47,9 @@ class ReactivationCore extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.systemSub && this.systemSub();
+  }
   reactivationCodeResponse = (response, id) => {
     const mutation = gql`
       mutation ReactivationCodeResponse($systemId: ID!, $response: Boolean!) {

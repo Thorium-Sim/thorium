@@ -69,6 +69,9 @@ class CommShortRange extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   _commHail() {
     const ShortRange = this.props.data.shortRangeComm[0];
     const mutation = gql`

@@ -72,6 +72,9 @@ class TargetingCore extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   _addTargetClass() {
     const targeting = this.props.data.targeting[0];
     const { assetFolders } = this.props.data;

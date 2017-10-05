@@ -54,6 +54,9 @@ class SelfDestruct extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.sub && this.sub();
+  }
   toggle = () => {
     this.setState({
       modal: !this.state.modal,
@@ -94,11 +97,11 @@ class SelfDestruct extends Component {
       mutation,
       variables
     });
-    this.setState({modal: false, setCode: false})
+    this.setState({ modal: false, setCode: false });
   };
   openCodeModal = () => {
-    this.setState({modal: true, setCode: true})
-  }
+    this.setState({ modal: true, setCode: true });
+  };
   render() {
     if (this.props.data.loading) return null;
     const { modal, setCode } = this.state;
@@ -125,20 +128,24 @@ class SelfDestruct extends Component {
               )}:${padDigits(duration.seconds(), 2)}`}
             </div>
           : <div className="set-code">
-              <Button block color="warning" size="lg" onClick={this.openCodeModal}>
+              <Button
+                block
+                color="warning"
+                size="lg"
+                onClick={this.openCodeModal}
+              >
                 Set Self-Destruct Code
               </Button>
             </div>}
-            {modal &&
-        <SelfDestructModal
-          modal={modal}
-          toggle={this.toggle}
-          activate={this.activate}
-          code={selfDestructCode}
-          setCode={setCode}
-          setCodeFunc={this.setCode}
-        />
-        }
+        {modal &&
+          <SelfDestructModal
+            modal={modal}
+            toggle={this.toggle}
+            activate={this.activate}
+            code={selfDestructCode}
+            setCode={setCode}
+            setCodeFunc={this.setCode}
+          />}
       </Container>
     );
   }
@@ -227,7 +234,9 @@ class SelfDestructModal extends Component {
           <Col sm={3}>
             <Button
               color="danger"
-              disabled={!setCode && !((code ? code === inputCode : true) && time)}
+              disabled={
+                !setCode && !((code ? code === inputCode : true) && time)
+              }
               onClick={
                 setCode ? () => setCodeFunc(inputCode) : () => activate(time)
               }

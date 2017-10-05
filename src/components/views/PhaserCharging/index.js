@@ -54,6 +54,9 @@ class PhaserCharging extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   selectPhaserBank(id) {
     this.setState({
       selectedBank: id

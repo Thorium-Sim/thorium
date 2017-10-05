@@ -50,6 +50,9 @@ class LRCommCore extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.decodeSubscription && this.decodeSubscription();
+  }
   render() {
     if (this.props.data.loading) return null;
     let selectedMessage = null;

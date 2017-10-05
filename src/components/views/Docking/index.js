@@ -51,6 +51,9 @@ class Docking extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   undisable() {
     this.setState({
       disabled: false

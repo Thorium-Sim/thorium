@@ -35,6 +35,9 @@ class EngineCoreView extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.setSpeedSubscription && this.setSpeedSubscription();
+  }
   updateSpeed(e) {
     const id = e.target.value.split("$")[0];
     const speed = parseInt(e.target.value.split("$")[1], 10) + 1;

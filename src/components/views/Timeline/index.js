@@ -89,6 +89,9 @@ class TimelineCore extends Component {
       }
     }
   }
+  componentWillUnmount() {
+    this.internalSub && this.internalSub();
+  }
   checkStep = step => {
     this.setState(state => ({
       steps: Object.assign(state.steps, { [step]: !state.steps[step] })
