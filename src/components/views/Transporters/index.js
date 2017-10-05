@@ -206,7 +206,7 @@ class Transporters extends Component {
     });
   }
   componentWillUnmount() {
-    this.transporterSubscription();
+    this.transporterSubscription && this.transporterSubscription();
   }
   render() {
     // Assume that there is only one transporter

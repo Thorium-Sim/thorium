@@ -63,6 +63,9 @@ class ProbeControl extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   render() {
     if (this.props.data.loading) return null;
     const probes = this.props.data.probes[0];

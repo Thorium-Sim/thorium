@@ -101,6 +101,10 @@ class Sensors extends Component {
       }
     }
   }
+  componentWillUnmount() {
+    this.sensorsSubscription && this.sensorsSubscription();
+    this.pingSub && this.pingSub();
+  }
   showWeaponsRange() {
     this.setState({
       weaponsRangePulse: 1

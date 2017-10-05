@@ -49,6 +49,9 @@ class DamageControlCore extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.systemSub && this.systemSub();
+  }
   systemStyle(sys) {
     const obj = {
       listStyle: "none",

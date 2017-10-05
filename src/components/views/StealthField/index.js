@@ -71,6 +71,7 @@ class StealthField extends Component {
   componentWillUnmount() {
     this.looping = false;
     this.props.data.stopPolling();
+    this.subscription && this.subscription();
   }
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {

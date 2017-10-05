@@ -48,6 +48,9 @@ class CargoControlCore extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.inventorySub && this.inventorySub();
+  }
   setSelected(which, e) {
     const { decks } = this.props.data;
     let deck, room;

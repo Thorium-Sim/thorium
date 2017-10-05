@@ -54,6 +54,9 @@ class AdminAssetsView extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.assetFolderSubscription && this.assetFolderSubscription();
+  }
   _setDirectory(directory) {
     this.setState({ currentDirectory: directory });
   }

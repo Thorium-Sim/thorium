@@ -89,6 +89,9 @@ class CommShortRange extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   mouseDown(which, dimensions, e) {
     this.setState(
       {

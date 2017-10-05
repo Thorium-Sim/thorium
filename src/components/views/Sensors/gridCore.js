@@ -130,6 +130,10 @@ class GridCore extends Component {
       }
     }
   }
+  componentWillUnmount() {
+    this.sensorsSubscription && this.sensorsSubscription();
+    this.pingSub && this.pingSub();
+  }
   ping = () => {
     // Reset the state
     this.setState(

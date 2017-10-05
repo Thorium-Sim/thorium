@@ -89,6 +89,9 @@ class SecurityScans extends Component {
       }
     }
   }
+  componentWillUnmount() {
+    this.sensorsSubscription && this.sensorsSubscription();
+  }
   _scanRequest() {
     // For now, include the location in the scan request string, not separately.
     if (this.state.scanRequest.trim().length === 0) return;

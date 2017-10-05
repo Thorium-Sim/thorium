@@ -49,6 +49,9 @@ class TractorBeamCore extends Component {
       }
     }
   }
+  componentWillUnmount() {
+    this.tractorBeamSub && this.tractorBeamSub();
+  }
   toggleTractor = (which, evt) => {
     const tractorBeam = this.props.data.tractorBeam[0];
     let mutation,

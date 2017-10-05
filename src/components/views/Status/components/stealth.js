@@ -55,6 +55,10 @@ class Stealth extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.shieldSub && this.shieldSub();
+    this.sub && this.sub();
+  }
   render() {
     const stealth = this.props.data.loading
       ? {}

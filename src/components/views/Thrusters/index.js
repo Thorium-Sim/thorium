@@ -111,6 +111,8 @@ class Thrusters extends Component {
   }
   componentWillUnmount() {
     cancelAnimationFrame(this.state.request);
+    this.rotationSubscription && this.rotationSubscription();
+    this.thrusterSub && this.thrusterSub();
   }
   componentWillReceiveProps(nextProps) {
     if (!this.rotationSubscription && !nextProps.data.loading) {
@@ -161,6 +163,7 @@ class Thrusters extends Component {
       });
     }
   }
+
   /*
 componentDidMount(){
   let self = this;

@@ -44,6 +44,9 @@ class DecksCore extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   _addDeck() {
     const number = prompt("What is the deck number?");
     if (!number) return;

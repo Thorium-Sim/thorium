@@ -42,6 +42,9 @@ class ActionsCore extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   handleNameChange = e => {
     this.setState({
       actionName: e.target.value

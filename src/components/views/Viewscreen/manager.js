@@ -40,7 +40,7 @@ class ViewscreenCore extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (!this.sub && !nextProps.data.loading) {
-      this.internalSub = nextProps.data.subscribeToMore({
+      this.sub = nextProps.data.subscribeToMore({
         document: VIEWSCREEN_SUB,
         variables: {
           simulatorId: nextProps.simulator.id

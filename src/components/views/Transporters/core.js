@@ -61,6 +61,9 @@ class TransporterCore extends Component {
       }
     }
   }
+  componentWillUnmount() {
+    this.transporterSubscription && this.transporterSubscription();
+  }
   targets(transporter, result) {
     this.props.client.mutate({
       mutation: gql`

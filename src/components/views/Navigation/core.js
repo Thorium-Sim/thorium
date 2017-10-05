@@ -67,6 +67,9 @@ class NavigationCore extends Component {
       }
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   randomNums() {
     this.setState({
       calculatedCourse: {

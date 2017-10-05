@@ -61,6 +61,9 @@ class DamageControl extends Component {
       }
     }
   }
+  componentWillUnmount() {
+    this.systemSub && this.systemSub();
+  }
   systemName(sys) {
     if (sys.type === "Shield") {
       return `${sys.name} Shields`;

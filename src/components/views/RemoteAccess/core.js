@@ -52,6 +52,9 @@ class RemoteAccessCore extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   respond(codeId, state) {
     const variables = {
       simulatorId: this.props.simulator.id,

@@ -86,6 +86,10 @@ class CoolantControl extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+    this.coolantSystemSub && this.coolantSystemSub();
+  }
   transferCoolant(systemId, which) {
     const coolant = this.props.data.coolant[0];
     const variables = {

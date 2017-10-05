@@ -35,6 +35,9 @@ class EngineCoreView extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.setSpeedSubscription && this.setSpeedSubscription();
+  }
   render() {
     if (this.props.data.loading) return null;
     const { engines } = this.props.data;

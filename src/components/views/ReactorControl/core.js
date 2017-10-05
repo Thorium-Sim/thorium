@@ -53,7 +53,10 @@ class ReactorControl extends Component {
       });
     }
   }
-  setEfficiency = (e) => {
+  componentWillUnmount() {
+    this.internalSub && this.internalSub();
+  }
+  setEfficiency = e => {
     if (!e) return;
     const { reactors } = this.props.data;
     const reactor = reactors.find(r => r.model === "reactor");
@@ -70,8 +73,8 @@ class ReactorControl extends Component {
       mutation,
       variables
     });
-  }
-  setPowerLevel = (e) => {
+  };
+  setPowerLevel = e => {
     if (!e || !parseFloat(e)) return;
     const { reactors } = this.props.data;
     const reactor = reactors.find(r => r.model === "reactor");
@@ -88,8 +91,8 @@ class ReactorControl extends Component {
       mutation,
       variables
     });
-  }
-  setHeat = (e) => {
+  };
+  setHeat = e => {
     return;
     /*const { reactors } = this.props.data;
     const reactor = reactors.find(r => r.model === "reactor");
@@ -106,8 +109,8 @@ class ReactorControl extends Component {
       mutation,
       variables
     });*/
-  }
-  setChargeLevel = (e) => {
+  };
+  setChargeLevel = e => {
     if (!e) return;
     const { reactors } = this.props.data;
     const battery = reactors.find(r => r.model === "battery");
@@ -118,14 +121,14 @@ class ReactorControl extends Component {
     `;
     const variables = {
       id: battery.id,
-      e: (e/100)
+      e: e / 100
     };
     this.props.client.mutate({
       mutation,
       variables
     });
-  }
-  setChargeRate = (e) => {
+  };
+  setChargeRate = e => {
     if (!e) return;
     const { reactors } = this.props.data;
     const battery = reactors.find(r => r.model === "battery");
@@ -136,13 +139,13 @@ class ReactorControl extends Component {
     `;
     const variables = {
       id: battery.id,
-      e: (e/100)
+      e: e / 100
     };
     this.props.client.mutate({
       mutation,
       variables
     });
-  }
+  };
   render() {
     if (this.props.data.loading) return null;
     const { reactors } = this.props.data;

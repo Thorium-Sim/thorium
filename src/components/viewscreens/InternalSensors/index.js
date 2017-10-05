@@ -38,6 +38,7 @@ class InternalSensorsViewscreen extends Component {
   }
   componentWillUnmount() {
     this.looping = false;
+    this.sensorsSubscription && this.sensorsSubscription();
   }
   loop = () => {
     if (!this.looping) return;

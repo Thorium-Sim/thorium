@@ -40,6 +40,9 @@ class ShieldsCore extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.shieldSub && this.shieldSub();
+  }
   setFrequency(shields, freq) {
     if (freq < 100 || freq > 350) return;
     const mutation = gql`

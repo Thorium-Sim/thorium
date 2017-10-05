@@ -48,6 +48,9 @@ class SecurityTeams extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.deckSubscription && this.deckSubscription();
+  }
   _selectDeck(deck) {
     this.setState({
       selectedDeck: deck,

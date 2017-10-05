@@ -184,6 +184,10 @@ class Targeting extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.phasersSubscription && this.phasersSubscription();
+    this.targetingSubscription && this.targetingSubscription();
+  }
   targetContact(targetId) {
     const targeting = this.props.data.targeting[0];
     const mutation = gql`

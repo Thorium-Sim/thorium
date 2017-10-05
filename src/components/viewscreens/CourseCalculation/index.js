@@ -49,6 +49,9 @@ class CourseCalculationViewscreen extends Component {
       );
     }
   }
+  componentWillUnmount() {
+    this.sensorsSubscription && this.sensorsSubscription();
+  }
   loop = () => {
     if (this.state.scanning) {
       this.setState({

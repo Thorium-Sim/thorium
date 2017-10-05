@@ -67,6 +67,9 @@ class ShieldControl extends Component {
       }
     }
   }
+  componentWillUnmount() {
+    this.shieldSub && this.shieldSub();
+  }
   _toggleShields(shields) {
     let state;
     if (shields === "down") {

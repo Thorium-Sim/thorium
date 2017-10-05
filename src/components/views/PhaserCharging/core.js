@@ -44,6 +44,9 @@ class PhaserChargingCore extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   changeArc(value) {
     const phasers = this.props.data.phasers[0];
     const mutation = gql`

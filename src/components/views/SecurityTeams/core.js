@@ -82,6 +82,10 @@ class SecurityTeams extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+    this.crewSubscription && this.crewSubscription();
+  }
   removeTeam = teamId => {
     const mutation = gql`
       mutation RemoveTeam($teamId: ID!) {

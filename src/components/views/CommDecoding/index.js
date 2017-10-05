@@ -100,6 +100,7 @@ class Decoding extends Component {
     }
   }
   componentWillUnmount() {
+    this.decodeSubscription && this.decodeSubscription();
     clearTimeout(this.decodeTimeout);
   }
   decode() {

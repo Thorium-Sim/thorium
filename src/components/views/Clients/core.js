@@ -33,6 +33,9 @@ class Template extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.internalSub && this.internalSub();
+  }
   render() {
     if (this.props.data.loading) return null;
     const { clients } = this.props.data;

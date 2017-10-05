@@ -163,6 +163,9 @@ class Communications extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   changeGradient = comms => {
     var gradient = this.waves.ctx.createLinearGradient(
       0,

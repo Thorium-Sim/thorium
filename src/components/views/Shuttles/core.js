@@ -39,6 +39,9 @@ class Shuttles extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.internalSub && this.internalSub();
+  }
   updateShuttle = (id, which, value) => {
     const mutation = gql`
       mutation UpdateShuttleBay($port: DockingPortInput!) {

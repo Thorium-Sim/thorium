@@ -37,6 +37,9 @@ class Isochips extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.sub && this.sub();
+  }
   render() {
     if (this.props.data.loading) return null;
     const { isochips } = this.props.data;

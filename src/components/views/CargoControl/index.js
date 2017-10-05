@@ -50,6 +50,9 @@ class CargoControl extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.internalSub && this.internalSub();
+  }
   setSelected(which, { deck, room }) {
     const { decks } = this.props.data;
     if (decks.length === 1) deck = decks[0].id;

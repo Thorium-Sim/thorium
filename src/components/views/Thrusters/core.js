@@ -58,6 +58,9 @@ class ThrusterCore extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.rotationSubscription && this.rotationSubscription();
+  }
   toggleManualThrusters = () => {};
   setRequiredRotation = (which, value) => {
     const mutation = gql`

@@ -97,6 +97,7 @@ class GridDom extends Component {
   componentWillUnmount() {
     clearTimeout(this.contactTimeout);
     this.contactTimeout = null;
+    this.sensorsSubscription && this.sensorsSubscription();
   }
   contactLoop = () => {
     if (this.contactTimeout) {
