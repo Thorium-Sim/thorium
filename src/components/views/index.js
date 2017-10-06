@@ -36,6 +36,7 @@ import Messages from "./Messaging";
 import Isochips from "./Isochips";
 import Shuttles from "./Shuttles";
 import Status from "./Status";
+import JrOps from "./JrOps";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -118,7 +119,8 @@ const Views = {
   Messages,
   Isochips,
   Shuttles,
-  Status
+  Status,
+  JrOps
 };
 
 export const Widgets = {

@@ -1,0 +1,49 @@
+.card-jrOps {
+  .crystals {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+  }
+  .crystals-holder {
+    position: relative;
+    img {
+      height: 25vh;
+    }
+    .crystal-overlay {
+      -webkit-mask-image: url('./crystal.png');
+      -webkit-mask-position: center;
+      -webkit-mask-size: cover;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      mix-blend-mode: multiply;
+    }
+    .crystal {
+      position:relative;
+    }
+    .bars {
+      position: absolute;
+      width: 100%;
+      top: 5vh;
+      left: 100%;
+    .bar {
+      height: 3vh;
+      margin-bottom: 1vh;
+    }
+  }
+    .arrow-holder {
+      height: 60%;
+      position: absolute;
+      top: 20%;
+      left: -25%;
+      border-right: solid 3px gray;
+      .arrow {
+        background-color: transparent;
+        border-top: solid transparent 20px;
+        border-bottom: solid transparent 20px;
+        border-left: solid orange 30px;
+      }
+    }
+  }
+}
