@@ -1,16 +1,26 @@
 .card-jrOps {
-  .transporters {
+  .transporters, .tractor-beam {
     .spacer {
       padding-top: 100%;
     }
     .col-sm-4 .spacer {
       padding-top: 220%;
     }
+    .target {
+      position: absolute;
+      width: 64px;
+    }
+    .target-holder {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+    }
     .lines-holder {
       position: absolute;
       width: 100%;
       height: 100%;
       background-color: black;
+      overflow:hidden;
     }
     .lines-x,
     .lines-y {
@@ -35,6 +45,15 @@
       height: 100%;
       border-right: dashed 1px rgba(0,255,0,0.5);
       width: 0;
+    }
+    .scanner-bar {
+      width: 100%;
+      height: 10%;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      background-color: rgba(0,255,0,0.5);
+      animation: scannerbar 2s ease-in-out infinite;
     }
   }
   .crystals {
@@ -84,4 +103,9 @@
       }
     }
   }
+}
+
+@keyframes scannerbar {
+  from {transform: translateY(-100%)}
+  to {transform: translateY(1000%)}
 }

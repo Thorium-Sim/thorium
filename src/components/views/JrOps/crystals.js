@@ -2,10 +2,13 @@ import React, { Component } from "react";
 import tinycolor from "tinycolor2";
 
 export default () =>
-  <div className="crystals">
-    <Crystal bgColor="rebeccapurple" />
-    <Crystal bgColor="cyan" />
-    <Crystal bgColor="limegreen" />
+  <div style={{ width: "100%" }}>
+    <h1>Energy Crystals</h1>
+    <div className="crystals">
+      <Crystal bgColor="rebeccapurple" />
+      <Crystal bgColor="cyan" />
+      <Crystal bgColor="limegreen" />
+    </div>
   </div>;
 
 class Crystal extends Component {

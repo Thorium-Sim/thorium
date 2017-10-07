@@ -51,20 +51,21 @@ class WidgetsContainer extends Component {
           ? "offline"
           : ""}`}
       >
-        {station.widgets.map(key => {
-          const widget = Widgets[key];
-          return (
-            <Widget
-              simulator={simulator}
-              station={station}
-              widget={widget}
-              wkey={key}
-              notify={widgetNotify[key]}
-              setNotify={this.setNotify}
-              key={key}
-            />
-          );
-        })}
+        {station.widgets &&
+          station.widgets.map(key => {
+            const widget = Widgets[key];
+            return (
+              <Widget
+                simulator={simulator}
+                station={station}
+                widget={widget}
+                wkey={key}
+                notify={widgetNotify[key]}
+                setNotify={this.setNotify}
+                key={key}
+              />
+            );
+          })}
       </div>
     );
   }
