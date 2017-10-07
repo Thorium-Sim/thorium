@@ -10,11 +10,12 @@ export default () =>
 
 class Crystal extends Component {
   state = {
-    level: 0,
+    level: 1,
     bar1: Math.random(),
     bar2: Math.random(),
     bar3: Math.random(),
-    bar4: Math.random()
+    bar4: Math.random(),
+    arrowPos: Math.random()
   };
   looping = true;
   componentDidMount() {
@@ -25,6 +26,23 @@ class Crystal extends Component {
     cancelAnimationFrame(this.looping);
     this.looping = null;
   }
+  mouseDown = () => {
+    document.addEventListener("mouseup", this.mouseUp);
+    document.addEventListener("mousemove", this.mouseMove);
+  };
+  mouseUp = () => {
+    document.removeEventListener("mouseup", this.mouseUp);
+    document.removeEventListener("mousemove", this.mouseMove);
+  };
+  mouseMove = evt => {
+    const { movementY } = evt;
+    this.setState(state => {
+      return {
+        arrowPos: Math.min(1, Math.max(0, state.arrowPos + movementY / 100)),
+        level: Math.max(0, state.level - 0.005)
+      };
+    });
+  };
   loop = () => {
     if (this.looping) {
       this.setState(
@@ -33,19 +51,19 @@ class Crystal extends Component {
             level: state.level + Math.random() / 5000,
             bar1: Math.min(
               1,
-              Math.max(0, state.bar1 + (Math.random() - 0.5) / 50)
+              Math.max(0, state.bar1 + (Math.random() - 0.5) / 50 * state.level)
             ),
             bar2: Math.min(
               1,
-              Math.max(0, state.bar2 + (Math.random() - 0.5) / 50)
+              Math.max(0, state.bar2 + (Math.random() - 0.5) / 50 * state.level)
             ),
             bar3: Math.min(
               1,
-              Math.max(0, state.bar3 + (Math.random() - 0.5) / 50)
+              Math.max(0, state.bar3 + (Math.random() - 0.5) / 50 * state.level)
             ),
             bar4: Math.min(
               1,
-              Math.max(0, state.bar4 + (Math.random() - 0.5) / 50)
+              Math.max(0, state.bar4 + (Math.random() - 0.5) / 50 * state.level)
             )
           };
         },
@@ -56,7 +74,7 @@ class Crystal extends Component {
     }
   };
   render() {
-    const { level = 0, bar1, bar2, bar3, bar4 } = this.state;
+    const { level = 0, bar1, bar2, bar3, bar4, arrowPos } = this.state;
     let color;
     level > 0.8
       ? (color = "red")
@@ -69,7 +87,11 @@ class Crystal extends Component {
     return (
       <div className="crystals-holder">
         <div className="arrow-holder">
-          <div className="arrow" />
+          <div
+            className="arrow"
+            onMouseDown={this.mouseDown}
+            style={{ transform: `translateY(${arrowPos * 200}%)` }}
+          />
         </div>
         <div className="crystal">
           <img src={require("./crystal.png")} draggable="false" />

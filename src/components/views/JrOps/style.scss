@@ -1,4 +1,42 @@
 .card-jrOps {
+  .transporters {
+    .spacer {
+      padding-top: 100%;
+    }
+    .col-sm-4 .spacer {
+      padding-top: 220%;
+    }
+    .lines-holder {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+    }
+    .lines-x,
+    .lines-y {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+    .lines-x {
+      flex-direction: column;
+    }
+    .lines-y {
+      flex-direction: row;
+    }
+    .line-x {
+      border-bottom: dashed 1px rgba(0,255,0,0.5);
+      height: 0;
+      width: 100%;
+    }
+    .line-y {
+      height: 100%;
+      border-right: dashed 1px rgba(0,255,0,0.5);
+      width: 0;
+    }
+  }
   .crystals {
     display: flex;
     width: 100%;
