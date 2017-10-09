@@ -1,5 +1,5 @@
 .card-jrOps {
-  .transporters, .tractor-beam {
+  .transporters, .jr-tractor-beam {
     .spacer {
       padding-top: 100%;
     }
@@ -10,6 +10,7 @@
       position: absolute;
       width: 64px;
     }
+
     .target-holder {
       height: 100%;
       width: 100%;
@@ -54,6 +55,48 @@
       left: 0px;
       background-color: rgba(0,255,0,0.5);
       animation: scannerbar 2s ease-in-out infinite;
+    }
+    .charge-bar {
+      width: calc(100% - 30px);
+      height: 50%;
+      position: absolute;
+      bottom: 50px;
+      background-size: 5px 3px, 100%;      
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 100%), linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);      
+      background-color: yellow;
+      
+    }
+    .strength {
+      background-color: rgba(0,0,0,0.5);
+      border: solid 1px rgba(255,255,255,0.5);
+      height: calc(100% - 43px);
+      padding: 20px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      .rainbow-bar {
+        height: 100%;
+        width: 5px;
+        background: linear-gradient(0deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+      }
+      .arrow {
+        height: 0px;
+        width: 0px;
+        background-color: transparent;
+        margin: 5px;
+      }
+      .actual-arrow {
+        border-top: solid transparent 15px;
+        border-bottom: solid transparent 15px;
+        border-left: solid orange 20px;
+        cursor: pointer;
+      }
+      .correct-arrow {
+        border-top: solid transparent 10px;
+        border-bottom: solid transparent 10px;
+        border-right: solid orange 15px;
+        transition: transform 0.5s linear;
+      }
     }
   }
   .crystals {

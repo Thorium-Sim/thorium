@@ -38,8 +38,11 @@ const TRANSPORTER_SUB = gql`
 class Transporters extends Component {
   transporterSubscription = null;
   state = {
-    target: { x: 0, y: 0 }
+    target: { x: 0, y: 0 },
+    targetedContact: false,
+    charge: 0
   };
+  charging = false;
   constructor(props) {
     super(props);
     this.mouseMove = this.mouseMove.bind(this);
@@ -62,10 +65,13 @@ class Transporters extends Component {
           });
         }
       });
+      this.loop();
     }
   }
   componentWillUnmount() {
     this.transporterSubscription && this.transporterSubscription();
+    this.charging = false;
+    cancelAnimationFrame(this.looping);
   }
   mouseDown = () => {
     document.addEventListener("mousemove", this.mouseMove);
@@ -76,27 +82,52 @@ class Transporters extends Component {
       ".target-holder"
     );
     const { x, y, width, height } = targetGrid.getBoundingClientRect();
-    const transporter = this.props.data.transporters[0];
-    const transTarget = transporter.targets[0].position;
     const target = {};
     target.x = Math.min(0.9, Math.max(0, (evt.clientX - x) / width));
     target.y = Math.min(0.9, Math.max(0, (evt.clientY - y) / height));
-    if (
-      transTarget.x < target.x + 0.1 &&
-      transTarget.x > target.x - 0.1 &&
-      transTarget.y < target.y + 0.1 &&
-      transTarget.y > target.y - 0.1
-    ) {
-      target.x = transTarget.x;
-      target.y = transTarget.y;
-    }
+    const transporter = this.props.data.transporters[0];
+    let targetedContact = null;
+    transporter.targets.forEach(t => {
+      const transTarget = t.position;
+      if (
+        transTarget.x < target.x + 0.1 &&
+        transTarget.x > target.x - 0.1 &&
+        transTarget.y < target.y + 0.1 &&
+        transTarget.y > target.y - 0.1
+      ) {
+        target.x = transTarget.x;
+        target.y = transTarget.y;
+        targetedContact = t.id;
+      }
+    });
     this.setState({
-      target
+      target,
+      targetedContact
     });
   };
   mouseUp = () => {
     document.removeEventListener("mousemove", this.mouseMove);
     document.removeEventListener("mouseup", this.mouseUp);
+    this.charging = false;
+  };
+  loop = () => {
+    if (this.charging) {
+      this.setState({
+        charge: Math.min(1, this.state.charge + 0.005)
+      });
+      if (this.state.charge === 1) {
+        this.completeTransport(this.state.targetedContact);
+        this.charging = false;
+        this.setState({
+          targetedContact: null
+        });
+      }
+    } else {
+      this.setState({
+        charge: Math.max(0, this.state.charge - 0.01)
+      });
+    }
+    this.looping = requestAnimationFrame(this.loop);
   };
   beginScan = () => {
     const transporter = this.props.data.transporters[0] || null;
@@ -124,12 +155,25 @@ class Transporters extends Component {
       }
     });
   };
+  completeTransport(target) {
+    const transporter = this.props.data.transporters[0];
+    this.props.client.mutate({
+      mutation: gql`
+        mutation CompleteTransport($transporter: ID!, $target: ID!) {
+          completeTransport(transporter: $transporter, target: $target)
+        }
+      `,
+      variables: {
+        transporter: transporter.id,
+        target
+      }
+    });
+  }
   render() {
     if (this.props.data.loading) return null;
     const transporter = this.props.data.transporters[0];
-    const { target } = this.state;
+    const { target, targetedContact, charge } = this.state;
     if (!transporter) return <h1>No transporter system</h1>;
-    console.log(transporter);
     return (
       <Row className="transporters">
         <Col sm={12}>
@@ -168,16 +212,19 @@ class Transporters extends Component {
                       400}%)`
                   }}
                 />
-                <img
-                  src={require("./target2.svg")}
-                  className="target"
-                  draggable="false"
-                  style={{
-                    transform: `translate(${transporter.targets[0].position.x *
-                      400}%, ${transporter.targets[0].position.y * 400}%)`,
-                    pointerEvents: "none"
-                  }}
-                />
+                {transporter.targets.map(t =>
+                  <img
+                    key={t.id}
+                    src={require("./target2.svg")}
+                    className="target"
+                    draggable="false"
+                    style={{
+                      transform: `translate(${t.position.x * 400}%, ${t.position
+                        .y * 400}%)`,
+                      pointerEvents: "none"
+                    }}
+                  />
+                )}
               </div>}
             <div className="spacer" />
           </div>
@@ -188,13 +235,22 @@ class Transporters extends Component {
             : <Button block color="primary" onClick={this.beginScan}>
                 Scan for Target
               </Button>}
-          <Button block color="secondary">
-            Lock Target
-          </Button>
         </Col>
         <Col sm={4}>
           <div className="spacer" />
-          <Button block color="primary">
+          <div
+            className="charge-bar"
+            style={{ height: `calc(${charge * 100}% - 50px)` }}
+          />
+          <Button
+            disabled={!targetedContact}
+            block
+            color="primary"
+            onMouseDown={() => {
+              document.addEventListener("mouseup", this.mouseUp);
+              this.charging = true;
+            }}
+          >
             Energize
           </Button>
         </Col>

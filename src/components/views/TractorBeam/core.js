@@ -13,6 +13,7 @@ const TRACTORBEAM_SUB = gql`
       target
       strength
       stress
+      scanning
     }
   }
 `;
@@ -105,7 +106,7 @@ class TractorBeamCore extends Component {
     if (!tractorBeam) return <p>No Tractor Beam</p>;
     return (
       <Container className="tractor-beam-core">
-        <label>
+        <label style={{ color: tractorBeam.scanning ? "red" : "white" }}>
           Target:{" "}
           <input
             type="checkbox"
@@ -150,6 +151,7 @@ const TRACTORBEAM_QUERY = gql`
       target
       strength
       stress
+      scanning
     }
   }
 `;
