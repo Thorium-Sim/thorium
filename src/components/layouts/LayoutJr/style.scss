@@ -1,0 +1,40 @@
+.layout-jr {
+  background-color: black;
+  position: absolute;
+  height: calc(100vh - 80px);
+  top: 80px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index:10;
+  color: white;
+}
+#jr-frame {
+  height: 100vh;
+  background-color: black;
+  position: relative;
+  color: white;
+  .title-bar {
+    height: 60px;
+    border-radius: 60px;
+    background-color: blue;
+  }
+  .simulator-name,
+  .station-name,
+  .login-name {
+    font-family: 'Sarpanch', sans-serif;
+    background-color: black;
+    text-transform: uppercase;
+    position: absolute;
+    font-size: 60px;
+    line-height:1;
+    top: 0;
+  }
+  .simulator-name {
+    left: 50px;
+  }
+  .station-name {
+    right: 50px;
+  }
+}
