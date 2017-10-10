@@ -38,6 +38,7 @@ import Shuttles from "./Shuttles";
 import Status from "./Status";
 import JrOps from "./JrOps";
 import JrComm from "./JrComm";
+import JrFlight from "./JrFlight";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -122,7 +123,8 @@ const Views = {
   Shuttles,
   Status,
   JrOps,
-  JrComm
+  JrComm,
+  JrFlight
 };
 
 export const Widgets = {

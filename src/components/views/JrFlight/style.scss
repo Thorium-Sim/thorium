@@ -1,0 +1,27 @@
+.jr-flight {
+  height: 100%;
+  .row, .col {
+    height: 100%;
+  }
+  .engines-slider {
+    height: 90%;
+    margin: 20px;
+    display: flex;
+    justify-content: space-around;
+    .line {
+      height: 100%;
+      width: 5px;
+      background-color: gray;
+    }
+    .engines-list {
+      height: 100%;
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: space-between;
+      p {
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+}
