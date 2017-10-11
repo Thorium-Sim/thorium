@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { Button, Row, Col, Container } from "reactstrap";
 import gql from "graphql-tag";
 import Immutable from "immutable";
 import { graphql, compose } from "react-apollo";

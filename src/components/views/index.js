@@ -39,6 +39,7 @@ import Status from "./Status";
 import JrOps from "./JrOps";
 import JrComm from "./JrComm";
 import JrFlight from "./JrFlight";
+import JrSensors from "./JrSensors";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -125,7 +126,8 @@ const Views = {
   Status,
   JrOps,
   JrComm,
-  JrFlight
+  JrFlight,
+  JrSensors
 };
 
 export const Widgets = {

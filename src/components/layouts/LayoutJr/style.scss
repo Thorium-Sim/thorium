@@ -9,6 +9,12 @@
   justify-content: center;
   z-index:10;
   color: white;
+  .card {
+    color: white;
+    background-color: black;
+    border-radius: 0px;
+    border: solid 3px blue;
+  }
 }
 #jr-frame {
   height: 100vh;

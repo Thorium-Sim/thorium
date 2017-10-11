@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Row, Col, Container } from "reactstrap";
 import gql from "graphql-tag";
-import { InputGroup, InputGroupButton, Button, Input } from "reactstrap";
+import { Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import Immutable from "immutable";
 import { NavigationScanner } from "../Navigation";
