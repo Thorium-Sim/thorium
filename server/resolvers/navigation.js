@@ -27,6 +27,15 @@ export const NavigationMutations = {
   },
   navToggleCalculate(rootValue, args, context) {
     App.handleEvent(args, "navToggleCalculate", context);
+  },
+  navSetDestinations(rootValue, args, context) {
+    App.handleEvent(args, "navSetDestinations", context);
+  },
+  navSetDestination(rootValue, args, context) {
+    App.handleEvent(args, "navSetDestination", context);
+  },
+  navSetScanning(rootValue, args, context) {
+    App.handleEvent(args, "navSetScanning", context);
   }
 };
 

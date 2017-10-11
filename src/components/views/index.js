@@ -79,6 +79,7 @@ import ShipCore from "./Ship/core";
 import ReactivationCore from "./DamageControl/reactivationCore";
 import MessagingCore from "./Messaging/core";
 import ClientsCore from "./Clients/core";
+import JrNavigationCore from "./JrFlight/navigationCore";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -194,7 +195,8 @@ export const Cores = {
   ShipCore,
   ReactivationCore,
   MessagingCore,
-  ClientsCore
+  ClientsCore,
+  JrNavigationCore
 };
 
 export default Views;

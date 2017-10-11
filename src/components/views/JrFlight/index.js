@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import Engines from "./engines";
 import Thrusters from "./thrusters";
+import Navigation from "./navigation";
 
 export default props => {
   return (
@@ -10,7 +11,9 @@ export default props => {
         <Col sm={5}>
           <Thrusters {...props} />
         </Col>
-        <Col sm={3} />
+        <Col sm={3}>
+          <Navigation {...props} />
+        </Col>
         <Col sm={4}>
           <Engines {...props} />
         </Col>

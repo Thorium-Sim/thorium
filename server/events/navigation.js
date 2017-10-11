@@ -70,3 +70,27 @@ App.on("navToggleCalculate", ({ id, which }) => {
     App.systems.filter(s => s.type === "Navigation")
   );
 });
+App.on("navSetDestinations", ({ id, destinations }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  system.setDestinations(destinations);
+  pubsub.publish(
+    "navigationUpdate",
+    App.systems.filter(s => s.type === "Navigation")
+  );
+});
+App.on("navSetDestination", ({ id, destination }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  system.setDestination(destination);
+  pubsub.publish(
+    "navigationUpdate",
+    App.systems.filter(s => s.type === "Navigation")
+  );
+});
+App.on("navSetScanning", ({ id, scanning }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  system.setScanning(scanning);
+  pubsub.publish(
+    "navigationUpdate",
+    App.systems.filter(s => s.type === "Navigation")
+  );
+});

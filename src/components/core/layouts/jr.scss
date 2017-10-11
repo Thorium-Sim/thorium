@@ -1,0 +1,116 @@
+.core-jr {
+  margin-right: 20px;
+  display: grid;
+  height: calc(100vh - 26px);
+  grid-template-columns: 120px 60px 180px 1fr 1fr 300px 15%;
+  grid-template-rows: 40px 100px 40px 180px 1fr 100px 100px 120px; 
+  grid-template-areas:
+  "engineControl engineControl  navigation     sensors       sensors"
+  "thrusters     thrusters      navigation     sensors       sensors"
+  "thrusters thrusters          navigation     sensors       sensors   "
+  "targeting     targeting      targeting      sensors       sensors"
+  "phaser        torpedo        torpedo        sensorScans   shortRange"
+  "shields       shields        shields        sensorScans   shortRange"
+  "shields       shields        shields        sensorScans   actions   "
+  "transporters  transporters        tractorBeam   nothing   viewscreen";
+  
+  
+  & > div {
+    overflow: hidden;
+    border: solid 1px rgba(255,255,255,0.2);
+    background-color: #333;
+  }
+  .JrNavigationCore {
+    grid-area: navigation;
+  }
+  .SensorsGridCore {
+    grid-area: sensors;
+  }
+  .TransporterCore {
+    grid-area: transporters;
+  }
+  .SensorsCore {
+    grid-area: sensorScans;
+  }
+  .DecodingCore {
+    grid-area: longRange;
+  }
+  .LRCommCore {
+    grid-area: messageSending;
+  }
+  .InternalCommCore {
+    grid-area: internalComm;
+  }
+  .SystemsCore {
+    grid-area: systems;
+  }
+  .CommShortRangeCore {
+    grid-area: shortRange;
+  }
+  .RemoteCore {
+    grid-area: remoteAccess;
+  }
+  .DamageReportsCore {
+    grid-area: damageReports;
+  }
+  .DecksCore {
+    grid-area: nothing;
+  }
+  .CargoCore {
+    grid-area: cargo;
+  }
+  .ActionsCore {
+    grid-area: actions;
+  }
+  .ThrusterCore {
+    grid-area: thrusters;
+  }
+  .StealthFieldCore {
+    grid-area: stealthField;
+  }
+  .TractorBeamCore {
+    grid-area: tractorBeam;
+  }
+  .CrewCore {
+    grid-area: crew;
+  }
+  .SecurityTeamsCore {
+    grid-area: securityTeams;
+  }
+  .DamageTeamsCore {
+    grid-area: damageTeams;
+  }
+  .ProbeNetworkCore {
+    grid-area: probeNetwork;
+  }
+  .ProbeControlCore {
+    grid-area: probeControl;
+  }
+  .ReactorControlCore {
+    grid-area: reactor;
+  }
+  .ViewscreenCore {
+    grid-area: viewscreen;
+  }
+  .TimelineCore {
+    grid-area: timeline;
+  }
+  .ShuttlesCore {
+    grid-area: shuttles;
+  }
+  .SecurityDecksCore {
+    grid-area: securityDoors
+  }
+  .PhaserCore {
+    grid-area: phaser;
+  }
+  .TorpedoCore {
+    grid-area: torpedo;
+  }
+  .TargetingCore {
+    grid-area: targeting;
+  }
+  .ShieldControlCore {
+    grid-area: shields;
+  }
+}
