@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import { Button, Row, Col, Container } from "reactstrap";
 import gql from "graphql-tag";
 import Immutable from "immutable";
@@ -51,7 +52,7 @@ class EngineControl extends Component {
     this.heatChangeSubscription = null;
     this.systemSub = null;
   }
-
+  state = { arrowPos: 0 };
   componentWillReceiveProps(nextProps) {
     if (!this.setSpeedSubscription && !nextProps.data.loading) {
       this.setSpeedSubscription = nextProps.data.subscribeToMore({
@@ -119,12 +120,120 @@ class EngineControl extends Component {
         }
       });
     }
+    if (!nextProps.data.loading) {
+      const engines = nextProps.data.engines || [];
+      const speeds = [{ text: "Full Stop", number: -1 }].concat(
+        engines.reduce((prev, next) => {
+          return prev.concat(
+            next.speeds.map((speed, index) => {
+              return {
+                ...speed,
+                on: next.on && next.speed === index + 1,
+                engine: next.id,
+                speed: index
+              };
+            })
+          );
+        }, [])
+      );
+
+      // Check the props to see if we need to change
+      const propsEngines = this.props.data.engines || [];
+      const propsSpeeds = [{ text: "Full Stop", number: -1 }].concat(
+        propsEngines.reduce((prev, next) => {
+          return prev.concat(
+            next.speeds.map((speed, index) => {
+              return {
+                ...speed,
+                on: next.on && next.speed === index + 1,
+                engine: next.id,
+                speed: index
+              };
+            })
+          );
+        }, [])
+      );
+      const propsLevel = propsSpeeds.findIndex(s => s.on);
+      const level = speeds.findIndex(s => s.on);
+      if (propsLevel !== level) {
+        const arrowPos = level / (speeds.length - 1);
+        this.setState({
+          arrowPos
+        });
+      }
+    }
   }
   componentWillUnmount() {
     this.heatChangeSubscription();
     this.setSpeedSubscription();
     this.systemSub();
   }
+  mouseDown = () => {
+    document.addEventListener("mouseup", this.mouseUp);
+    document.addEventListener("mousemove", this.mouseMove);
+  };
+  mouseUp = () => {
+    document.removeEventListener("mouseup", this.mouseUp);
+    document.removeEventListener("mousemove", this.mouseMove);
+
+    const engines = this.props.data.engines || [];
+    const speeds = [{ text: "Full Stop", number: -1 }].concat(
+      engines.reduce((prev, next) => {
+        return prev.concat(
+          next.speeds.map((speed, index) => {
+            return {
+              ...speed,
+              on: next.on && next.speed === index + 1,
+              engine: next.id,
+              speed: index
+            };
+          })
+        );
+      }, [])
+    );
+    const levels = speeds.map((s, i) => i / (speeds.length - 1));
+    // Get the speed from the level
+    const speedIndex = levels.findIndex(s => s === this.state.arrowPos);
+    if (speeds[speedIndex].engine) {
+      this.props.setSpeed({
+        id: speeds[speedIndex].engine,
+        speed: speeds[speedIndex].speed + 1,
+        on: true
+      });
+    } else {
+      const engine = this.props.data.engines.find(engine => engine.on);
+      if (engine) {
+        this.props.setSpeed({ id: engine.id, speed: -1, on: false });
+      }
+    }
+  };
+  mouseMove = evt => {
+    const line = ReactDOM.findDOMNode(this).querySelector(".line");
+    const { y, height } = line.getBoundingClientRect();
+    let arrowPos = Math.abs(
+      Math.min(1, Math.max(0, (evt.clientY - y) / height)) - 1
+    );
+    // Get the speeds and map it to the speed
+    const engines = this.props.data.engines || [];
+    const speeds = [{ text: "Full Stop", number: -1 }].concat(
+      engines.reduce((prev, next) => {
+        return prev.concat(
+          next.speeds.map((speed, index) => {
+            return { ...speed, on: next.on && next.speed === index + 1 };
+          })
+        );
+      }, [])
+    );
+    const levels = speeds.map((s, i) => i / (speeds.length - 1));
+    arrowPos = levels.reduce((prev, next) => {
+      if (prev !== arrowPos) return prev;
+      if (arrowPos - 0.05 < next && arrowPos + 0.05 > next) return next;
+      return arrowPos;
+    }, arrowPos);
+    this.setState({
+      arrowPos
+    });
+  };
   speedBarStyle(array, speed, engineCount, index) {
     let width = speed / array.length * 100;
     if (engineCount - 1 === index) {
@@ -147,16 +256,32 @@ class EngineControl extends Component {
   }
   render() {
     const engines = this.props.data.engines || [];
-    const speeds = engines.reduce((prev, next) => {
-      return prev.concat(next.speeds);
-    }, []);
+    const { arrowPos } = this.state;
+    const speeds = [{ text: "Full Stop", number: -1 }].concat(
+      engines.reduce((prev, next) => {
+        return prev.concat(
+          next.speeds.map((speed, index) => {
+            return { ...speed, on: next.on && next.speed === index + 1 };
+          })
+        );
+      }, [])
+    );
     return (
       <div className="engines-slider">
-        <div className="engine-arrow" />
+        <div
+          className="engine-arrow-holder"
+          onMouseDown={this.mouseDown}
+          style={{ transform: `translateY(${Math.abs(arrowPos - 1) * 100}%)` }}
+        >
+          <div className="engine-arrow" />
+        </div>
         <div className="line" />
         <div className="engines-list">
           {speeds.map(s =>
-            <p key={`${s.text}-${s.number}`}>
+            <p
+              key={`${s.text}-${s.number}`}
+              style={{ color: s.on ? "yellow" : "white" }}
+            >
               {s.text}
             </p>
           )}
