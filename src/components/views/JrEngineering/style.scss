@@ -1,0 +1,26 @@
+
+svg.battery-charging {
+  width: 100vw;
+  height: 100vh;
+  .spark {
+    transition: transform 0.1s linear;
+  }
+  .arrow {
+    cursor: pointer;
+    transition: transform 0.5s ease;
+    &.n {
+      transform: rotate(270deg);
+    }
+    &.s {
+      transform: rotate(90deg);
+    }
+    &.e {
+      transform: rotate(0deg);
+    }
+    &.w {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+
