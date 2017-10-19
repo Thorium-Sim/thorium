@@ -54,6 +54,7 @@ class CargoControl extends Component {
     this.internalSub && this.internalSub();
   }
   setSelected(which, { deck, room }) {
+    deck = deck || this.state[which + "Deck"];
     const { decks } = this.props.data;
     if (decks.length === 1) deck = decks[0].id;
     const obj = {};
@@ -158,6 +159,7 @@ class CargoControl extends Component {
       toDeck = decks[0].id;
       fromDeck = decks[0].id;
     }
+    console.log(toDeck, fromDeck, toRoom, fromRoom);
     return (
       <Container className="cargo-control">
         <Row>
