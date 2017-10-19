@@ -67,7 +67,8 @@ export const graphQLserverInstance = graphQLServer.listen(GRAPHQL_PORT, () =>
     `
 Client Server is now running on http://${ipaddress}:${CLIENT_PORT}/client
 Access the Flight Director on http://${ipaddress}:${CLIENT_PORT}
-GraphQL Server is now running on http://${ipaddress}:${GRAPHQL_PORT}/graphql`
+GraphQL Server is now running on http://${ipaddress}:${GRAPHQL_PORT}/graphql
+Access GraphiQL developer tool on http://${ipaddress}:${GRAPHQL_PORT}/graphiql`
   )
 );
 
