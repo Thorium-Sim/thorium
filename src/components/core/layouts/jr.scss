@@ -5,14 +5,14 @@
   grid-template-columns: 120px 60px 180px 1fr 1fr 300px 15%;
   grid-template-rows: 40px 100px 40px 180px 1fr 100px 100px 120px; 
   grid-template-areas:
-  "engineControl engineControl  navigation     sensors       sensors"
-  "thrusters     thrusters      navigation     sensors       sensors"
-  "thrusters thrusters          navigation     sensors       sensors   "
-  "targeting     targeting      targeting      sensors       sensors"
-  "phaser        torpedo        torpedo        sensorScans   shortRange"
-  "shields       shields        shields        sensorScans   shortRange"
-  "shields       shields        shields        sensorScans   actions   "
-  "transporters  transporters        tractorBeam   nothing   viewscreen";
+  "engineControl engineControl  navigation     sensors       sensors nada systems"
+  "thrusters     thrusters      navigation     sensors       sensors nada systems"
+  "thrusters thrusters          navigation     sensors       sensors nada systems   "
+  "targeting     targeting      targeting      sensors       sensors nada systems"
+  "phaser        torpedo        torpedo        sensorScans   shortRange nada systems"
+  "shields       shields        shields        sensorScans   shortRange nada systems"
+  "shields       shields        shields        sensorScans   actions    nada systems"
+  "transporters  transporters        tractorBeam   reactivation   viewscreen nada systems";
   
   
   & > div {
@@ -88,6 +88,9 @@
   }
   .ReactorControlCore {
     grid-area: reactor;
+  }
+  .ReactivationCore {
+    grid-area: reactivation;
   }
   .ViewscreenCore {
     grid-area: viewscreen;

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 
 function shuffleArray(array) {
   for (var i = array.length - 1; i > 0; i--) {
@@ -37,7 +36,6 @@ export default class Isochips extends Component {
       });
     };
     this.mousemove = evt => {
-      var svg = ReactDOM.findDOMNode(this);
       this.setState(
         {
           chips: this.state.chips.map((chip, index) => {

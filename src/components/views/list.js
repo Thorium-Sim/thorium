@@ -35,7 +35,8 @@ const viewList = [
   "JrOps",
   "JrComm",
   "JrFlight",
-  "JrSensors"
+  "JrSensors",
+  "JrEngineering"
 ];
 
 export default viewList;

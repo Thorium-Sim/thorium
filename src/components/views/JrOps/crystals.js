@@ -13,7 +13,7 @@ export default () =>
 
 class Crystal extends Component {
   state = {
-    level: 1,
+    level: 0,
     bar1: Math.random(),
     bar2: Math.random(),
     bar3: Math.random(),

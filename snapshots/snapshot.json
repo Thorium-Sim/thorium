@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 242,
+	"_eventsCount": 247,
 	"simulators": [
 		{
 			"id": "test",
@@ -341,6 +341,32 @@
 				}
 			],
 			"mission": "ecf57e57-ac90-4f00-bc21-e9b68afffc4b",
+			"currentTimelineStep": 0,
+			"teams": [],
+			"ship": {
+				"clamps": false,
+				"ramps": false,
+				"airlock": false,
+				"bridgeCrew": 14,
+				"radiation": 0.1,
+				"selfDestructTime": null,
+				"selfDestructCode": null,
+				"selfDestructAuto": false,
+				"remoteAccessCodes": [],
+				"extraSystems": []
+			}
+		},
+		{
+			"id": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "Vanguard",
+			"layout": "LayoutJr",
+			"alertlevel": "5",
+			"template": true,
+			"templateId": null,
+			"class": "Simulator",
+			"stationSet": null,
+			"stations": [],
+			"mission": null,
 			"currentTimelineStep": 0,
 			"teams": [],
 			"ship": {
@@ -831,6 +857,104 @@
 							"name": "Security Teams",
 							"icon": null,
 							"component": "SecurityTeams",
+							"class": "Card"
+						}
+					]
+				}
+			]
+		},
+		{
+			"class": "StationSet",
+			"id": "b46f2925-584a-4353-bf7c-e35e2144c61e",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "6-Jr",
+			"stations": [
+				{
+					"class": "Station",
+					"name": "Operations",
+					"login": true,
+					"messageGroups": [],
+					"widgets": [],
+					"cards": [
+						{
+							"name": "Ops",
+							"icon": null,
+							"component": "JrOps",
+							"class": "Card"
+						}
+					]
+				},
+				{
+					"class": "Station",
+					"name": "Communications",
+					"login": true,
+					"messageGroups": [],
+					"widgets": [],
+					"cards": [
+						{
+							"name": "Comm",
+							"icon": null,
+							"component": "JrComm",
+							"class": "Card"
+						}
+					]
+				},
+				{
+					"class": "Station",
+					"name": "Flight",
+					"login": true,
+					"messageGroups": [],
+					"widgets": [],
+					"cards": [
+						{
+							"name": "Flight",
+							"icon": null,
+							"component": "JrFlight",
+							"class": "Card"
+						}
+					]
+				},
+				{
+					"class": "Station",
+					"name": "Sensors",
+					"login": true,
+					"messageGroups": [],
+					"widgets": [],
+					"cards": [
+						{
+							"name": "Sensors",
+							"icon": null,
+							"component": "JrSensors",
+							"class": "Card"
+						}
+					]
+				},
+				{
+					"class": "Station",
+					"name": "Engineer",
+					"login": true,
+					"messageGroups": [],
+					"widgets": [],
+					"cards": [
+						{
+							"name": "Docking",
+							"icon": null,
+							"component": "Docking",
+							"class": "Card"
+						}
+					]
+				},
+				{
+					"class": "Station",
+					"name": "Tactical",
+					"login": true,
+					"messageGroups": [],
+					"widgets": [],
+					"cards": [
+						{
+							"name": "Targeting",
+							"icon": null,
+							"component": "Targeting",
 							"class": "Card"
 						}
 					]
@@ -1460,7 +1584,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 20886100,
+			"timeSincePing": 21456200,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -1550,7 +1674,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 20886100,
+			"timeSincePing": 21456200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -1699,7 +1823,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.8648159999998648,
+			"batteryChargeLevel": 0.8602159999998602,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2321,7 +2445,8 @@
 			"state": false,
 			"target": false,
 			"strength": 0,
-			"stress": 0.15
+			"stress": 0.15,
+			"scanning": false
 		},
 		{
 			"id": "ea8f37b6-f835-40c6-8dcb-a1422d11620a",
@@ -2371,6 +2496,7 @@
 				"z": null
 			},
 			"destination": "Mars",
+			"destinations": [],
 			"scanning": true
 		},
 		{
@@ -2740,6 +2866,7 @@
 				"z": null
 			},
 			"destination": null,
+			"destinations": [],
 			"scanning": false
 		},
 		{
@@ -2765,7 +2892,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 16069100,
+			"timeSincePing": 16639200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2797,7 +2924,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 16069100,
+			"timeSincePing": 16639200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3236,7 +3363,8 @@
 			"state": false,
 			"target": false,
 			"strength": 0,
-			"stress": 0.15
+			"stress": 0.15,
+			"scanning": false
 		},
 		{
 			"id": "a81f853b-3ddb-4d43-b332-4f11b6e2de3e",
@@ -3814,6 +3942,7 @@
 				"z": null
 			},
 			"destination": null,
+			"destinations": [],
 			"scanning": false
 		},
 		{
@@ -3841,7 +3970,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10956000,
+			"timeSincePing": 11526100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3875,7 +4004,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10956000,
+			"timeSincePing": 11526100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4317,7 +4446,8 @@
 			"state": false,
 			"target": false,
 			"strength": 0,
-			"stress": 0.15
+			"stress": 0.15,
+			"scanning": false
 		},
 		{
 			"id": "de5b94aa-fd92-4867-8b71-4443d0b5bbfa",
@@ -5064,6 +5194,7 @@
 				"z": null
 			},
 			"destination": null,
+			"destinations": [],
 			"scanning": false
 		},
 		{
@@ -5091,7 +5222,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10956000,
+			"timeSincePing": 11526100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5125,7 +5256,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10956000,
+			"timeSincePing": 11526100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5567,7 +5698,8 @@
 			"state": false,
 			"target": false,
 			"strength": 0,
-			"stress": 0.15
+			"stress": 0.15,
+			"scanning": false
 		},
 		{
 			"id": "b23578be-0bb0-4ea6-860a-e239b77c3e8b",
@@ -6022,6 +6154,1125 @@
 			],
 			"speed": -1,
 			"cooling": false
+		},
+		{
+			"id": "0c2d23a6-e32b-46f3-ae55-f238d0c142a9",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "Long Range Communications",
+			"displayName": "Long Range Comm",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"type": "LongRangeComm",
+			"class": "LongRangeComm",
+			"messages": [],
+			"messageSent": false
+		},
+		{
+			"id": "b174b294-b373-481a-86ae-0221401ea524",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "Internal Communications",
+			"displayName": "Internal Comm",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"type": "InternalComm",
+			"class": "InternalComm",
+			"state": "idle",
+			"outgoing": null,
+			"incoming": null
+		},
+		{
+			"id": "a64b1861-43bc-463e-86fc-c70caa0a1fc4",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "Short Range Communications",
+			"displayName": "Short Range Comm",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"type": "ShortRangeComm",
+			"class": "ShortRangeComm",
+			"frequency": 0.5,
+			"amplitude": 0.5,
+			"state": "idle",
+			"arrows": [],
+			"signals": [
+				{
+					"id": "186cda65-3d4d-4be1-a265-4858b5f5d15e",
+					"image": "Romulan",
+					"name": "Romulan",
+					"color": "#00ff00",
+					"range": {
+						"upper": 1,
+						"lower": 0.85
+					}
+				},
+				{
+					"id": "dc5f6240-5e60-473b-98fd-0f4b7ef52f3b",
+					"image": "Cardassian",
+					"name": "Cardassian",
+					"color": "#ffaa00",
+					"range": {
+						"upper": 0.85,
+						"lower": 0.75
+					}
+				},
+				{
+					"id": "e0f04947-8d8c-481e-ab01-2722eb814878",
+					"image": "General Use",
+					"name": "General Use",
+					"color": "#ffffff",
+					"range": {
+						"upper": 0.75,
+						"lower": 0.58
+					}
+				},
+				{
+					"id": "8045766d-d177-4a69-82bf-296e0887f8cf",
+					"image": "Starfleet",
+					"name": "Starfleet",
+					"color": "#0088ff",
+					"range": {
+						"upper": 0.58,
+						"lower": 0.4
+					}
+				},
+				{
+					"id": "c432b0c8-e781-4564-ba2f-93c5238bf7bf",
+					"image": "Klingon",
+					"name": "Klingon",
+					"color": "#ff0000",
+					"range": {
+						"upper": 0.4,
+						"lower": 0.3
+					}
+				},
+				{
+					"id": "b02d0a3f-e55d-48c2-8778-cbfa62a1f4ad",
+					"image": "Orion",
+					"name": "Orion",
+					"color": "#888888",
+					"range": {
+						"upper": 0.3,
+						"lower": 0.22
+					}
+				},
+				{
+					"id": "44b2e5e8-36fc-4250-b608-ad340f121042",
+					"image": "Ferengi",
+					"name": "Ferengi",
+					"color": "#ffff00",
+					"range": {
+						"upper": 0.22,
+						"lower": 0
+					}
+				}
+			]
+		},
+		{
+			"id": "3506dcc3-4c9b-478b-8f68-ee37f917095d",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "Impulse",
+			"displayName": "Impulse Engine",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"heat": 0,
+			"heatRate": 1,
+			"coolant": 1,
+			"class": "Engine",
+			"type": "Engine",
+			"on": false,
+			"speeds": [
+				{
+					"text": "1/4 Impulse",
+					"number": 0.25
+				},
+				{
+					"text": "1/2 Impulse",
+					"number": 0.5
+				},
+				{
+					"text": "3/4 Impulse",
+					"number": 0.75
+				},
+				{
+					"text": "Full Impulse",
+					"number": 1
+				},
+				{
+					"text": "Destructive Impulse",
+					"number": 1.25
+				}
+			],
+			"speed": -1,
+			"cooling": false
+		},
+		{
+			"id": "088e3ea0-0b3f-400d-baf7-cf10abeb2eeb",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "Warp",
+			"displayName": "Warp Engine",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"heat": 0,
+			"heatRate": 1,
+			"coolant": 1,
+			"class": "Engine",
+			"type": "Engine",
+			"on": false,
+			"speeds": [
+				{
+					"text": "Warp 1",
+					"number": 1
+				},
+				{
+					"text": "Warp 2",
+					"number": 2
+				}
+			],
+			"speed": -1,
+			"cooling": false
+		},
+		{
+			"id": "33a913d6-04a9-466a-a255-0cd8adc46132",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "Thrusters",
+			"displayName": "Thrusters",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"class": "Thrusters",
+			"type": "Thrusters",
+			"direction": {
+				"x": 0,
+				"y": 0,
+				"z": 0
+			},
+			"rotation": {
+				"yaw": 0,
+				"pitch": 0,
+				"roll": 0
+			},
+			"rotationDelta": {
+				"yaw": 0,
+				"pitch": 0,
+				"roll": 0
+			},
+			"rotationRequired": {
+				"yaw": 0,
+				"pitch": 0,
+				"roll": 0
+			},
+			"manualThrusters": false,
+			"thrusting": false
+		},
+		{
+			"id": "360d41bf-85e4-42ac-86a5-b8f0875b59e2",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "Navigation",
+			"displayName": "Navigation",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"class": "Navigation",
+			"type": "Navigation",
+			"calculate": true,
+			"currentCourse": {
+				"x": null,
+				"y": null,
+				"z": null
+			},
+			"calculatedCourse": {
+				"x": null,
+				"y": null,
+				"z": null
+			},
+			"destination": null,
+			"destinations": [],
+			"scanning": false
+		},
+		{
+			"id": "7043d811-b6c6-4e19-9cab-f85b61fd2ca5",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "External Sensors",
+			"displayName": "External Sensors",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"type": "Sensors",
+			"class": "Sensors",
+			"domain": "external",
+			"pings": true,
+			"pingMode": "manual",
+			"timeSincePing": 211700,
+			"scanResults": "",
+			"scanRequest": "",
+			"processedData": "",
+			"presetAnswers": [],
+			"scanning": false,
+			"contacts": [],
+			"armyContacts": []
+		},
+		{
+			"id": "ea2ac650-e850-48d5-8435-3689c647ae13",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "Internal Sensors",
+			"displayName": "Internal Sensors",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"type": "Sensors",
+			"class": "Sensors",
+			"domain": "internal",
+			"pings": true,
+			"pingMode": "manual",
+			"timeSincePing": 211700,
+			"scanResults": "",
+			"scanRequest": "",
+			"processedData": "",
+			"presetAnswers": [],
+			"scanning": false,
+			"contacts": [],
+			"armyContacts": []
+		},
+		{
+			"id": "d1e6f128-d95e-4897-b408-20b9a2cdc549",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "Probe Launcher",
+			"displayName": "Probe Launcher",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"class": "Probes",
+			"type": "Probes",
+			"torpedo": false,
+			"probes": [],
+			"equipment": [
+				{
+					"id": "probe-network-package",
+					"name": "Probe Network Package",
+					"description": "A probe network package instructs the probe to network with up to 7 other probes.",
+					"size": 1,
+					"count": 60,
+					"availableProbes": []
+				},
+				{
+					"id": "radio-transceiver",
+					"name": "Radio Transceiver",
+					"description": "A radio transceiver is used to let the probe communicate.",
+					"size": 1,
+					"count": 54,
+					"availableProbes": []
+				},
+				{
+					"id": "video-camera",
+					"name": "Video Camera",
+					"description": "A Video Camera can take still or moving pictures.",
+					"size": 1,
+					"count": 47,
+					"availableProbes": []
+				},
+				{
+					"id": "communications-signal-booster",
+					"name": "Communications Signal Booster",
+					"description": "A Communications Signal Booster gives the probe's radio more range.",
+					"size": 2,
+					"count": 38,
+					"availableProbes": []
+				},
+				{
+					"id": "encoding-sequencer",
+					"name": "Encoding Sequencer",
+					"description": "Encodes and encrypts signals, making them more secure.",
+					"size": 2,
+					"count": 25,
+					"availableProbes": []
+				},
+				{
+					"id": "extra-data-storage",
+					"name": "Extra Data Storage",
+					"description": "Increases the amount of on-board data storage, allowing the probe to store more data.",
+					"size": 2,
+					"count": 61,
+					"availableProbes": []
+				},
+				{
+					"id": "extra-fuel-cell",
+					"name": "Extra Fuel Cell",
+					"description": "An Extra Fuel Cell lets the probe travel further and perform longer.",
+					"size": 2,
+					"count": 79,
+					"availableProbes": []
+				},
+				{
+					"id": "sensor-array",
+					"name": "Sensor Array",
+					"description": "The Sensor Array gives the probe general scanning abilities.",
+					"size": 2,
+					"count": 120,
+					"availableProbes": []
+				},
+				{
+					"id": "chemical-analysis-package",
+					"name": "Chemical Analysis Package",
+					"description": "A Chemical Analysis Package lets the probe research what chemicals it has found.",
+					"size": 3,
+					"count": 24,
+					"availableProbes": []
+				},
+				{
+					"id": "sample-retrieval-package",
+					"name": "Sample Retrieval Package",
+					"description": "A Sample Retrieval Package lets the probe get something and return it to the ship.",
+					"size": 3,
+					"count": 22,
+					"availableProbes": []
+				},
+				{
+					"id": "radiation-shielding",
+					"name": "Radiation Shielding",
+					"description": "Protects the probe from moderate levels of radiaiton.",
+					"size": 3,
+					"count": 16,
+					"availableProbes": []
+				},
+				{
+					"id": "ecm-package",
+					"name": "ECM Package",
+					"description": "An ECM (Electronic Counter Measures) Package is used to jam electronics.",
+					"size": 4,
+					"count": 26,
+					"availableProbes": []
+				},
+				{
+					"id": "gas-giant-encounter-package",
+					"name": "Gas Giant Encounter Package",
+					"description": "A Gas Giant Encounter Package allows the probe to research a gas giant.",
+					"size": 4,
+					"count": 11,
+					"availableProbes": []
+				},
+				{
+					"id": "nebula-encounter-package",
+					"name": "Nebula Encounter Package",
+					"description": "A Nebula Encounter Package allows the probe to research a nebula.",
+					"size": 4,
+					"count": 14,
+					"availableProbes": []
+				},
+				{
+					"id": "planetary-encounter-package",
+					"name": "Planetary Encounter Package",
+					"description": "A Planetary Encounter Package allows the probe to research a planet.",
+					"size": 4,
+					"count": 14,
+					"availableProbes": []
+				},
+				{
+					"id": "decoy-package",
+					"name": "Decoy Package",
+					"description": "A Decoy Package sends out signals to make sensor devices detect the probe as a ship.",
+					"size": 4,
+					"count": 23,
+					"availableProbes": []
+				},
+				{
+					"id": "subspace-encounter-package",
+					"name": "Subspace Encounter Package",
+					"description": "A Subspace Encounter Package allows the probe to research subspace.",
+					"size": 5,
+					"count": 6,
+					"availableProbes": []
+				},
+				{
+					"id": "solar-encounter-package",
+					"name": "Solar Encounter Package",
+					"description": "A Solar Encounter Package allows the probe to research a star.",
+					"size": 5,
+					"count": 19,
+					"availableProbes": []
+				},
+				{
+					"id": "transporter-relay",
+					"name": "Transporter Relay",
+					"description": "A transporter relay extends the transporter range of this ship.",
+					"size": 5,
+					"count": 15,
+					"availableProbes": []
+				},
+				{
+					"id": "hologram-projector-package",
+					"name": "Hologram Projector Package",
+					"description": "A Hologram Projector Package makes the probe look like a ship.",
+					"size": 5,
+					"count": 5,
+					"availableProbes": []
+				},
+				{
+					"id": "metaphasic-shield-generator",
+					"name": "Metaphasic Shield Generator",
+					"description": "Shield Generator that can construct a Shield Grid with other probes up to 2,500 Km protecting from radiation.",
+					"size": 6,
+					"count": 7,
+					"availableProbes": []
+				},
+				{
+					"id": "self-destruct-kit",
+					"name": "Self-Destruct Kit",
+					"description": "A Self-Destruct Kit allows the probe to receive a self-destruct signal from the station.",
+					"size": 1,
+					"count": 17,
+					"availableProbes": [
+						"defense"
+					]
+				},
+				{
+					"id": "warp-nacelle",
+					"name": "Warp Nacelle",
+					"description": "A Warp Nacelle (warp core included) allows the probe to travel at warp speed.",
+					"size": 1,
+					"count": 20,
+					"availableProbes": [
+						"defense"
+					]
+				},
+				{
+					"id": "targeting-sensors",
+					"name": "Targeting Sensors",
+					"description": "Targeting sensors extends the targeting range of the probe.",
+					"size": 2,
+					"count": 21,
+					"availableProbes": [
+						"defense"
+					]
+				},
+				{
+					"id": "proximity-destruct",
+					"name": "Proximity Destruct",
+					"description": "A Proximity Self-Destruct detector tells the probe to blow-up when an enemy is near.",
+					"size": 2,
+					"count": 20,
+					"availableProbes": [
+						"defense"
+					]
+				},
+				{
+					"id": "titanium-armor-alloy",
+					"name": "Titanium Armor Alloy",
+					"description": "Titanium Armor Alloy increases the probe's defenses.",
+					"size": 2,
+					"count": 15,
+					"availableProbes": [
+						"defense"
+					]
+				},
+				{
+					"id": "stealth-field",
+					"name": "Stealth Field",
+					"description": "A stealth field masks the probe making it harder to detect.",
+					"size": 3,
+					"count": 7,
+					"availableProbes": [
+						"defense"
+					]
+				},
+				{
+					"id": "phaser-head",
+					"name": "Phaser Head",
+					"description": "A Phaser Head allows the probe to fire one phaser shot at an enemy ship.",
+					"size": 3,
+					"count": 27,
+					"availableProbes": [
+						"defense"
+					]
+				},
+				{
+					"id": "tachyon-emitter",
+					"name": "Tachyon Emitter",
+					"description": "A Tachyon Emitter allows the probe to interact with tachyon particles.",
+					"size": 3,
+					"count": 8,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "resonance-emitter",
+					"name": "Resonance Emitter",
+					"description": "A Resonance Emitter allows the probe to interact with resonating particles.",
+					"size": 3,
+					"count": 8,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "lithium-emitter",
+					"name": "Lithium Emitter",
+					"description": "A Lithium Emitter allows the probe to interact with lithium particles.",
+					"size": 3,
+					"count": 10,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "carbon-emitter",
+					"name": "Carbon Emitter",
+					"description": "A Carbon Emitter allows the probe to interact with carbon particles.",
+					"size": 3,
+					"count": 8,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "radiation-emitter",
+					"name": "Radiation Emitter",
+					"description": "A Radiation Emitter allows the probe to interact with radioactive particles.",
+					"size": 3,
+					"count": 8,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "oxygen-emitter",
+					"name": "Oxygen Emitter",
+					"description": "An Oxygen Emitter allows the probe to interact with oxygen particles.",
+					"size": 3,
+					"count": 8,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "hydrogen-emitter",
+					"name": "Hydrogen Emitter",
+					"description": "A Hydrogen Emitter allows the probe to interact with hydrogen particles.",
+					"size": 3,
+					"count": 8,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "helium-emitter",
+					"name": "Helium Emitter",
+					"description": "A Helium Emitter allows the probe to interact with helium particles.",
+					"size": 3,
+					"count": 8,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "graviton-emitter",
+					"name": "Graviton Emitter",
+					"description": "A Graviton Emitter allows the probe to interact with graviton particles.",
+					"size": 3,
+					"count": 8,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "magnetic-emitter",
+					"name": "Magnetic Emitter",
+					"description": "A Magnetic Emitter allows the probe to interact with magnetic particles.",
+					"size": 3,
+					"count": 8,
+					"availableProbes": [
+						"science"
+					]
+				}
+			],
+			"types": [
+				{
+					"id": "class-i",
+					"name": "Class I Probe",
+					"parentId": "d1e6f128-d95e-4897-b408-20b9a2cdc549",
+					"description": "The smallest probe; can only hold 4 units of equipment. Use for probe networks and general purposes.",
+					"size": 4,
+					"count": 30
+				},
+				{
+					"id": "class-ii",
+					"name": "Class II Probe",
+					"parentId": "d1e6f128-d95e-4897-b408-20b9a2cdc549",
+					"description": "This medium-sized probe can hold 10 units of equipment. Use for probe networks and general purposes.",
+					"size": 10,
+					"count": 30
+				},
+				{
+					"id": "class-iii",
+					"name": "Class III Probe",
+					"parentId": "d1e6f128-d95e-4897-b408-20b9a2cdc549",
+					"description": "This is the largest standard probe. It can hold up to 16 units of equipment. Use for probe networks and general purposes.",
+					"size": 16,
+					"count": 30
+				},
+				{
+					"id": "defense",
+					"name": "Defensive Probe",
+					"parentId": "d1e6f128-d95e-4897-b408-20b9a2cdc549",
+					"description": "This weapon-like probe has access to additional equipment. You can use it to defend your ship. It holds 20 units of equipment.",
+					"size": 4,
+					"count": 20
+				},
+				{
+					"id": "science",
+					"name": "Science Probe",
+					"parentId": "d1e6f128-d95e-4897-b408-20b9a2cdc549",
+					"description": "This probe can use special emitters and detectors for specific scientific experiments. It holds 12 units of equipment.",
+					"size": 12,
+					"count": 20
+				}
+			],
+			"stealthCompromised": false,
+			"processedData": ""
+		},
+		{
+			"id": "6b220d13-9c6d-49f4-a0f7-6a8adc1cdbac",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "Tractor Beam",
+			"displayName": "Tractor Beam",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"class": "TractorBeam",
+			"type": "TractorBeam",
+			"state": false,
+			"target": false,
+			"strength": 0,
+			"stress": 0.15,
+			"scanning": false
+		},
+		{
+			"id": "f4915f86-0fcf-4762-b5a8-3f77f283b848",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "Transporters",
+			"displayName": "Transporters",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"type": "Transporters",
+			"class": "Transporters",
+			"targets": [],
+			"requestedTarget": null,
+			"destination": null,
+			"charge": 0,
+			"state": "Inactive",
+			"stealthCompromised": false
+		},
+		{
+			"id": "a91307d7-6561-4dc2-8064-4184ed8b4c19",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "Stealth Field",
+			"displayName": "Stealth Field",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"class": "StealthField",
+			"type": "StealthField",
+			"charge": false,
+			"activated": true,
+			"state": false,
+			"quadrants": {
+				"fore": 0,
+				"aft": 0,
+				"port": 0,
+				"starboard": 0
+			}
+		},
+		{
+			"id": "3cb9feb6-f3fe-469b-9b6c-796fa9f9af92",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "Full",
+			"displayName": "Shields",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"class": "Shield",
+			"type": "Shield",
+			"position": 0,
+			"frequency": 260.5,
+			"state": false,
+			"integrity": 1
+		},
+		{
+			"id": "6bca11c1-1e3b-412a-a2ab-16ef0ce16322",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "Targeting",
+			"displayName": "Targeting",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"class": "Targeting",
+			"type": "Targeting",
+			"contacts": [],
+			"classes": [],
+			"quadrants": false
+		},
+		{
+			"id": "652073f5-3bea-443c-970c-7ea7b8a8d652",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "Phaser",
+			"displayName": "Phaser",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"heat": 0,
+			"heatRate": 1,
+			"coolant": 1,
+			"class": "Phasers",
+			"type": "Phasers",
+			"arc": 0.5,
+			"beams": [
+				{
+					"id": "4abcf381-c2cd-4830-b7d4-2e5e79ed9d80",
+					"simulatorId": null,
+					"name": null,
+					"displayName": null,
+					"power": {
+						"power": 5,
+						"powerLevels": [
+							5
+						]
+					},
+					"damage": {
+						"damaged": false,
+						"report": null,
+						"requested": false,
+						"reactivationCode": null,
+						"reactivationRequester": null,
+						"neededReactivationCode": null
+					},
+					"extra": false,
+					"state": "idle",
+					"charge": 0,
+					"heat": 0,
+					"heatRate": 0.01
+				},
+				{
+					"id": "4cf2d990-f97e-4e13-a9c2-b3fb3cfe7890",
+					"simulatorId": null,
+					"name": null,
+					"displayName": null,
+					"power": {
+						"power": 5,
+						"powerLevels": [
+							5
+						]
+					},
+					"damage": {
+						"damaged": false,
+						"report": null,
+						"requested": false,
+						"reactivationCode": null,
+						"reactivationRequester": null,
+						"neededReactivationCode": null
+					},
+					"extra": false,
+					"state": "idle",
+					"charge": 0,
+					"heat": 0,
+					"heatRate": 0.01
+				}
+			],
+			"cooling": null
+		},
+		{
+			"id": "ba31a319-1424-4a17-b32c-71c66db43f5d",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": "Torpedo",
+			"displayName": "Torpedo",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"class": "Torpedo",
+			"type": "Torpedo",
+			"loaded": false,
+			"state": "idle",
+			"inventory": [
+				{
+					"id": "d0e589cf-e302-4b84-9b5f-7c6252f7af8d",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "59aa7430-dac0-4031-bd43-d84c2ace64b0",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "411e1e67-d7e9-44de-9feb-69f19913637b",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "b520de5b-a944-4bcb-a635-de54e69dd1a3",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "2e850403-9183-494c-9b8f-99e95e74ab9c",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "d01a6c15-8730-44ac-b89f-c3e24cb5eb5f",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "3292230e-392b-466b-96d4-55b3eaec092c",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "cf5b8ea3-68b3-4f01-aaa0-9516d5eb4b2b",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "c72398dc-bc94-4a6d-99ea-d52797e2c721",
+					"type": "Quantum",
+					"probe": null
+				},
+				{
+					"id": "13192944-2e1c-48f9-adbc-fe21a17e574b",
+					"type": "Quantum",
+					"probe": null
+				}
+			],
+			"stealthCompromised": false
+		},
+		{
+			"id": "6a84e88b-7024-40e6-8363-532efb131bb8",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"name": null,
+			"displayName": null,
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"class": "Coolant",
+			"type": "Coolant",
+			"coolant": 1,
+			"coolantRate": 0.2,
+			"transfer": null
 		}
 	],
 	"clients": [
@@ -26531,6 +27782,15 @@
 			"url": "/assets/Comm Images/General Use/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
+		},
+		{
+			"id": "ed26f0f2-53dc-4338-8822-c766bc51d060",
+			"containerPath": "/Misc",
+			"containerId": "bbcc1500-7301-4e2f-8623-2ea2afed97b5",
+			"fullPath": "/Misc/Login Logo/a147daf7-cf2e-4bda-b3c0-39fdbce2fd79.svg",
+			"url": "/assets/Misc/Login Logo/a147daf7-cf2e-4bda-b3c0-39fdbce2fd79.svg",
+			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
+			"class": "AssetObject"
 		}
 	],
 	"viewscreens": [
@@ -26540,11 +27800,12 @@
 			"simulatorId": "6b19ad15-e739-48b8-a2e4-10ae88703ec0",
 			"name": "local-client",
 			"component": "Communications",
-			"data": "{}"
+			"data": "{}",
+			"auto": false
 		}
 	],
 	"messages": [],
-	"snapshotVersion": 2704,
-	"version": 2704,
-	"timestamp": "2017-10-03T23:47:03.008Z"
+	"snapshotVersion": 47,
+	"version": 47,
+	"timestamp": "2017-10-21T02:05:13.746Z"
 }

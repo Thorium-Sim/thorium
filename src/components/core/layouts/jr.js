@@ -15,7 +15,9 @@ const coreList = [
   "ActionsCore",
   "ThrusterCore",
   "TractorBeamCore",
-  "TransporterCore"
+  "TransporterCore",
+  "SystemsCore",
+  "ReactivationCore"
 ];
 export default class CoreJr extends Component {
   render() {

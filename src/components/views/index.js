@@ -40,6 +40,7 @@ import JrOps from "./JrOps";
 import JrComm from "./JrComm";
 import JrFlight from "./JrFlight";
 import JrSensors from "./JrSensors";
+import JrEngineering from "./JrEngineering";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -127,7 +128,8 @@ const Views = {
   JrOps,
   JrComm,
   JrFlight,
-  JrSensors
+  JrSensors,
+  JrEngineering
 };
 
 export const Widgets = {
