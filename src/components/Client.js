@@ -223,7 +223,6 @@ class ClientView extends Component {
     if (!this.simulatorSub && !nextProps.data.loading) {
       const client = nextProps.data.clients[0];
       if (client.simulator) {
-        console.log(this.props.data.clients);
         if (
           !this.props.data.clients ||
           client.simulator.id !== this.props.data.clients[0].simulator.id
