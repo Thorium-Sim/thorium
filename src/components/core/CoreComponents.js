@@ -162,7 +162,11 @@ class CoreComponents extends Component {
             this.state.simulator &&
             <LayoutComponent
               {...this.props}
-              simulator={simulators.find(s => s.id === this.state.simulator)}
+              simulator={
+                simulators.find(s => s.id === this.state.simulator) || {
+                  id: this.state.simulator
+                }
+              }
             />}
         </div>
         {!this.state.simulator &&

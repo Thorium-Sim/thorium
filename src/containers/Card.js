@@ -51,7 +51,7 @@ export default class CardFrame extends Component {
             id: "test",
             name: "Test",
             alertLevel: "5",
-            layout: "LayoutCorners"
+            layout: "LayoutJr"
           },
           station: {
             name: "Test",

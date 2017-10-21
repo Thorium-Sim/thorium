@@ -1,6 +1,6 @@
 export default `
 type Navigation {
-    id: ID
+  id: ID
   simulatorId: ID
   type: String
   name: String
@@ -12,6 +12,7 @@ type Navigation {
   calculatedCourse: NavLoc
   destination: String
   scanning: Boolean
+  destinations: [String]
 }
 
 type NavLoc {

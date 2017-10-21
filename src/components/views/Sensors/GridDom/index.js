@@ -73,6 +73,7 @@ class GridDom extends Component {
       });
     }
     if (!nextProps.data.loading) {
+      console.log(nextProps);
       this.setState(({ locations: stateLocations }) => {
         const locations = {};
         nextProps.data.sensorContacts.forEach(c => {
@@ -83,7 +84,9 @@ class GridDom extends Component {
                 ? stateLocations[c.id].location
                 : c.location,
             speed: c.speed,
-            opacity: this.contactPing(c, Date.now() - nextProps.pingTime),
+            opacity: nextProps.pings
+              ? this.contactPing(c, Date.now() - nextProps.pingTime)
+              : 1,
             destination: c.destination
           };
         });
@@ -358,7 +361,7 @@ class GridDom extends Component {
                 mousedown={e => this._downMouse(e, contact.id)}
                 location={locations[contact.id].location}
                 destination={locations[contact.id].destination}
-                opacity={locations[contact.id].opacity}
+                opacity={this.props.pings ? locations[contact.id].opacity : 1}
                 mouseover={hoverContact}
               />
           )}

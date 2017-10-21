@@ -11,7 +11,13 @@ if (process.env.NODE_ENV === "production") {
   server.use("/assets/", express.static(assetDir));
 
   server.get("*", function(request, response) {
-    response.sendFile(`${assetPath}/index.html`);
+    response.sendFile(`${assetPath}/index.html`, function(err) {
+      if (err) {
+        console.log("THIS IS AN ERROR!");
+        console.log(err);
+        response.status(err.status).end();
+      }
+    });
   });
 
   server.listen(port);
