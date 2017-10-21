@@ -15,8 +15,10 @@ if (process.env.NODE_ENV === "production") {
       if (err) {
         console.log("THIS IS AN ERROR!");
         console.log(err);
-        response.status(err.status).end();
+        response.status(500).end();
+        return;
       }
+      response.end();
     });
   });
 

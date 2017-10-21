@@ -223,41 +223,49 @@ class ClientView extends Component {
     if (!this.simulatorSub && !nextProps.data.loading) {
       const client = nextProps.data.clients[0];
       if (client.simulator) {
-        this.simulatorSub = nextProps.data.subscribeToMore({
-          document: SIMULATOR_SUB,
-          variables: { id: client.simulator.id },
-          updateQuery: (previousResult, { subscriptionData }) => {
-            const sim = subscriptionData.data.simulatorsUpdate[0];
-            return Object.assign({}, previousResult, {
-              clients: previousResult.clients.map(
-                ({
-                  flight,
-                  id,
-                  loginName,
-                  loginState,
-                  offlineState,
-                  station,
-                  __typename
-                }) => ({
-                  flight,
-                  id,
-                  loginName,
-                  loginState,
-                  offlineState,
-                  station,
-                  __typename,
-                  simulator: {
-                    __typename: "Simulator",
-                    id: sim.id,
-                    alertlevel: sim.alertlevel,
-                    layout: sim.layout,
-                    name: sim.name
-                  }
-                })
-              )
-            });
-          }
-        });
+        console.log(this.props.data.clients);
+        if (
+          !this.props.data.clients ||
+          client.simulator.id !== this.props.data.clients[0].simulator.id
+        ) {
+          this.simulatorSub && this.simulatorSub();
+
+          this.simulatorSub = nextProps.data.subscribeToMore({
+            document: SIMULATOR_SUB,
+            variables: { id: client.simulator.id },
+            updateQuery: (previousResult, { subscriptionData }) => {
+              const sim = subscriptionData.data.simulatorsUpdate[0];
+              return Object.assign({}, previousResult, {
+                clients: previousResult.clients.map(
+                  ({
+                    flight,
+                    id,
+                    loginName,
+                    loginState,
+                    offlineState,
+                    station,
+                    __typename
+                  }) => ({
+                    flight,
+                    id,
+                    loginName,
+                    loginState,
+                    offlineState,
+                    station,
+                    __typename,
+                    simulator: {
+                      __typename: "Simulator",
+                      id: sim.id,
+                      alertlevel: sim.alertlevel,
+                      layout: sim.layout,
+                      name: sim.name
+                    }
+                  })
+                )
+              });
+            }
+          });
+        }
       }
     }
   }
