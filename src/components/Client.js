@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
-import { Container } from "reactstrap";
+import { Container, Button } from "reactstrap";
 import randomWords from "random-words";
 import CardContainer from "../containers/Card";
 import gql from "graphql-tag";
@@ -17,14 +17,7 @@ if (!clientId) {
 const creditList = [
   {
     header: "Created By:",
-    content: (
-      <a href="https://ralexanderson.com">
-        Alex Anderson{" "}
-        <span aria-label="rocket" role="img">
-          🚀
-        </span>
-      </a>
-    )
+    content: "Alex Anderson 🚀"
   },
   {
     header: "Conceptual Design",
@@ -83,14 +76,16 @@ class Credits extends Component {
   loop = () => {
     if (!this.looping) return;
     const el = this.refs.scroll;
+
     this.setState({
       scroll:
-        el && el.scrollTopMax === this.state.scroll
+        el && el.scrollHeight - el.clientHeight <= this.state.scroll
           ? 0
-          : this.state.scroll + 0.25 || 1
+          : this.state.scroll + 0.1 || 1
     });
     requestAnimationFrame(this.loop);
   };
+  changeClientId = () => {};
   render() {
     const { props } = this;
     let client = {};
@@ -118,7 +113,9 @@ class Credits extends Component {
           {this.state.debug
             ? <div className="debug">
                 <h4>
-                  Client ID: {client.id}
+                  <Button color="info" onClick={this.changeClientId}>
+                    Client ID: {client.id}
+                  </Button>
                 </h4>
                 <h5>
                   Flight: {flight.name}

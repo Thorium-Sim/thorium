@@ -23,7 +23,8 @@ const exceptions = [
   "ShipCore",
   "ReactivationCore",
   "MessagingCore",
-  "ClientsCore"
+  "ClientsCore",
+  "JrNavigationCore"
 ];
 export default class CoreDefault extends Component {
   state = {};
