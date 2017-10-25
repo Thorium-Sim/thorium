@@ -99,3 +99,13 @@ App.on("clientSetTraining", ({ client, training }) => {
   clientObj.setTraining(training);
   pubsub.publish("clientChanged", App.clients);
 });
+App.on("clientAddCache", ({ client, cacheItem }) => {
+  const clientObj = App.clients.find(c => c.id === client);
+  clientObj.addCache(cacheItem);
+  pubsub.publish("clientChanged", App.clients);
+});
+App.on("clientRemoveCache", ({ client, cacheItem }) => {
+  const clientObj = App.clients.find(c => c.id === client);
+  clientObj.removeCache(cacheItem);
+  pubsub.publish("clientChanged", App.clients);
+});

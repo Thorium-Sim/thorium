@@ -16,6 +16,7 @@ export default class Client {
     this.connected = params.connected || false;
     this.offlineState = params.offlineState || null;
     this.training = params.training || false;
+    this.caches = params.caches || [];
     this.class = "Client";
   }
   connect() {
@@ -61,6 +62,13 @@ export default class Client {
   setOfflineState(state) {
     // Allow one of null, 'blackout', 'offline', 'power', 'lockdown', and 'maintenance'
     this.offlineState = state;
+  }
+  addCache(cacheItem) {
+    this.caches.unshift(cacheItem);
+    this.caches.splice(5);
+  }
+  removeCache(cacheItem) {
+    this.caches = this.caches.filter(c => c !== cacheItem);
   }
   diagnostic() {}
   reset() {}
