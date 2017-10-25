@@ -19,6 +19,7 @@ export ShipView from "./ShipView";
 export StealthMonitoring from "./StealthMonitoring";
 export Communications from "./Communications";
 export Stars from "./Stars";
+export Video from "./Video";
 
 export InformationConfig from "./Information/config";
 export InternalSensorsConfig from "./InternalSensors/config";
@@ -26,3 +27,4 @@ export ReactorActivationConfig from "./ReactorActivation/config";
 export PlanetaryScanConfig from "./PlanetaryScan/config";
 export CourseCalculationConfig from "./CourseCalculation/config";
 export ShipViewConfig from "./ShipView/config";
+export VideoConfig from "./Video/config";

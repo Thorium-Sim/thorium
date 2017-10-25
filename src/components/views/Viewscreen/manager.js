@@ -187,6 +187,7 @@ class ViewscreenCore extends Component {
                   <input
                     type="checkbox"
                     checked={
+                      selectedViewscreen &&
                       viewscreens.find(v => v.id === selectedViewscreen).auto
                     }
                     onChange={this.toggleAuto}
@@ -275,6 +276,7 @@ class ViewscreenCore extends Component {
                         simulator={this.props.simulator}
                         data={configData}
                         updateData={data => this.setState({ configData: data })}
+                        selectedClient={selectedViewscreen}
                       />
                     );
                   }

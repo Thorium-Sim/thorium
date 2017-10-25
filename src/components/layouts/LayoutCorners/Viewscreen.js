@@ -16,10 +16,12 @@ const Viewscreen = withApollo(props => {
         <div className="frame-color">
           <div className="part-3" />
           <div className="part-3 opposite" />
+          <div className="part-1-3" style={{ left: "300px", width: "900px" }} />
         </div>
         <div className="frame-image">
           <div className="frame-3 opposite" />
           <div className="frame-3" />
+          <div className="frame-5" style={{ left: "533" }} />
         </div>
         <div className="frame-text">
           <h1 className="simulator-name">

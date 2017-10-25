@@ -5,6 +5,7 @@ import randomWords from "random-words";
 import CardContainer from "../containers/Card";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
+import Caching from "./caching";
 import "./client.scss";
 
 class ClientWrapper extends Component {
@@ -223,6 +224,7 @@ const CLIENT_SUB = gql`
       loginState
       offlineState
       training
+      caches
     }
   }
 `;
@@ -341,6 +343,7 @@ class ClientView extends Component {
     }
     return (
       <div>
+        <Caching client={client} />
         {flight && simulator && station
           ? <CardContainer
               flight={flight}
@@ -387,6 +390,7 @@ const ClientQuery = gql`
       loginState
       offlineState
       training
+      caches
     }
   }
 `;

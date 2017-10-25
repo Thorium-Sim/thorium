@@ -64,8 +64,19 @@ export default class Client {
     this.offlineState = state;
   }
   addCache(cacheItem) {
-    if (this.caches.indexOf(cacheItem) === -1) {
-      this.caches.unshift(cacheItem);
+    console.log(cacheItem);
+    const container = App.assetContainers.find(a => a.fullPath === cacheItem);
+    const object =
+      App.assetObjects.find(
+        obj =>
+          obj.containerId === container.id &&
+          obj.simulatorId === this.simulatorId
+      ) ||
+      App.assetObjects.find(
+        obj => obj.containerId === container.id && obj.simulatorId === "default"
+      );
+    if (this.caches.indexOf(object.url) === -1) {
+      this.caches.unshift(object.url);
       this.caches.splice(5);
     }
   }
