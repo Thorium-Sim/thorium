@@ -64,8 +64,10 @@ export default class Client {
     this.offlineState = state;
   }
   addCache(cacheItem) {
-    this.caches.unshift(cacheItem);
-    this.caches.splice(5);
+    if (this.caches.indexOf(cacheItem) === -1) {
+      this.caches.unshift(cacheItem);
+      this.caches.splice(5);
+    }
   }
   removeCache(cacheItem) {
     this.caches = this.caches.filter(c => c !== cacheItem);
