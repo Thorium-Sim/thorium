@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { OutputField } from "../../generic/core";
 import Immutable from "immutable";
@@ -140,6 +140,20 @@ class StealthFieldCore extends Component {
       variables
     });
   }
+  fluxCharge = () => {
+    const mutation = gql`
+      mutation FluxStealth($id: ID) {
+        fluxStealthQuadrants(id: $id)
+      }
+    `;
+    const variables = {
+      id: this.props.data.stealthField[0].id
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading) return null;
     const stealthField = this.props.data.stealthField[0];
@@ -180,12 +194,14 @@ class StealthFieldCore extends Component {
         <label>
           Charge{" "}
           <input
-            disabled
             checked={stealthField.charge}
             onChange={this.updateCharge.bind(this)}
             type="checkbox"
           />
         </label>
+        <Button color="warning" size="sm" onClick={this.fluxCharge}>
+          Flux
+        </Button>
         <Row>
           <Col sm="12">
             <OutputField
