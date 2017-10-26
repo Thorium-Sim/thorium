@@ -157,12 +157,12 @@ class Events extends EventEmitter {
     this.emit(pres, param);
   }
   test(param) {
-    /*if (param.key) {
+    if (param.key) {
       console.log(util.inspect(this[param.key], false, null));
     } else {
       console.log(util.inspect(this, false, null));
-    }*/
-    const keys = [
+    }
+    /*const keys = [
       "stationSets",
       "systems",
       "decks",
@@ -184,7 +184,7 @@ class Events extends EventEmitter {
     App.systems = App.systems.map(s => {
       s.damage.report = null;
       return s;
-    });
+    });*/
     //this.handleEvent(param, 'test', 'tested');
   }
   // TODO: This is JANKY! Make this better by using actual event sourcing.

@@ -53,7 +53,7 @@ class VideoConfig extends Component {
         <div>
           <label>
             <input
-              value={data.autoplay}
+              checked={data.autoplay}
               type="checkbox"
               onChange={evt =>
                 updateData(
@@ -68,7 +68,7 @@ class VideoConfig extends Component {
         <div>
           <label>
             <input
-              value={data.loop}
+              checked={data.loop}
               type="checkbox"
               onChange={evt =>
                 updateData(
@@ -83,7 +83,7 @@ class VideoConfig extends Component {
         <div>
           <label>
             <input
-              value={data.overlay}
+              checked={data.overlay}
               type="checkbox"
               onChange={evt =>
                 updateData(
