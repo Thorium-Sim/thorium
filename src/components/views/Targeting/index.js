@@ -439,7 +439,7 @@ class Targeting extends Component {
               </Row>}
           </Col>
           <Col sm={4}>
-            <TorpedoLoading simulator={this.props.simulator} />
+            <TorpedoLoading simulator={this.props.simulator} maxLaunchers={1} />
           </Col>
         </Row>
       </Container>
