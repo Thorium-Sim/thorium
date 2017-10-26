@@ -78,7 +78,6 @@ export default graphql(ASSET_QUERY, {
   name: "assetData",
   options: ownProps => ({
     variables: {
-      simulatorId: ownProps.simulator.id,
       names: ["Pictures"]
     }
   })

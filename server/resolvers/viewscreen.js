@@ -5,8 +5,14 @@ import { withFilter } from "graphql-subscriptions";
 export const ViewscreenQueries = {
   viewscreens(rootValue, { simulatorId }) {
     let viewscreens = App.clients.filter(s => s.station === "Viewscreen");
+    console.log(viewscreens);
     if (simulatorId) {
       viewscreens = viewscreens.filter(v => v.simulatorId === simulatorId);
+      return viewscreens.map(v =>
+        App.viewscreens.find(
+          av => av.id === v.id && av.simulatorId === simulatorId
+        )
+      );
     }
     return viewscreens.map(v => App.viewscreens.find(av => av.id === v.id));
   }
@@ -24,6 +30,9 @@ export const ViewscreenMutations = {
   },
   updateViewscreenAuto(_, params, context) {
     App.handleEvent(params, "updateViewscreenAuto", context);
+  },
+  setViewscreenToAuto(_, params, context) {
+    App.handleEvent(params, "setViewscreenToAuto", context);
   }
 };
 
@@ -33,6 +42,9 @@ export const ViewscreenSubscriptions = {
       let viewscreens = App.clients.filter(s => s.station === "Viewscreen");
       if (simulatorId) {
         viewscreens = viewscreens.filter(v => v.simulatorId === simulatorId);
+        return viewscreens.map(v =>
+          rootValue.find(av => av.id === v.id && av.simulatorId === simulatorId)
+        );
       }
       return viewscreens.map(v => rootValue.find(av => av.id === v.id));
     },

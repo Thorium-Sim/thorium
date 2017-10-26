@@ -73,6 +73,12 @@ export const ClientMutations = {
   },
   clientSetTraining: (root, args, context) => {
     App.handleEvent(args, "clientSetTraining", context);
+  },
+  clientAddCache: (root, args, context) => {
+    App.handleEvent(args, "clientAddCache", context);
+  },
+  clientRemoveCache: (root, args, context) => {
+    App.handleEvent(args, "clientRemoveCache", context);
   }
 };
 
