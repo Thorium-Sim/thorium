@@ -342,19 +342,21 @@ class Targeting extends Component {
           </Col>
           <Col sm="7">
             <DamageOverlay system={phasers} message="Phasers Offline" />
-            {phasers.beams.map((p, i) =>
-              <PhaserBeam
-                key={p.id}
-                {...p}
-                disabled={this.state.disabledPhasers[p.id]}
-                index={i + 1}
-                chargePhasers={this.chargePhasers.bind(this)}
-                dischargePhasers={this.dischargePhasers.bind(this)}
-                coolPhasers={this.coolPhasers.bind(this)}
-                firePhasers={this.firePhasers.bind(this)}
-                targeting={true}
-              />
-            )}
+            {phasers.beams
+              .slice(0, 2)
+              .map((p, i) =>
+                <PhaserBeam
+                  key={p.id}
+                  {...p}
+                  disabled={this.state.disabledPhasers[p.id]}
+                  index={i + 1}
+                  chargePhasers={this.chargePhasers.bind(this)}
+                  dischargePhasers={this.dischargePhasers.bind(this)}
+                  coolPhasers={this.coolPhasers.bind(this)}
+                  firePhasers={this.firePhasers.bind(this)}
+                  targeting={true}
+                />
+              )}
             <Row>
               <Col sm="8">
                 <PhaserCoolant coolant={phasers.coolant} />
