@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Container, Media, Button } from "reactstrap";
+import { Row, Col, Container } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
@@ -7,8 +7,9 @@ import Immutable from "immutable";
 import Grid from "./gridDom";
 import TorpedoLoading from "../TorpedoLoading";
 import { /*PhaserArc, */ PhaserBeam } from "../PhaserCharging";
-import { Asset } from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
+import TargetControls from "./targetControls";
+import Coordinates from "./coordinates";
 
 const TARGETING_QUERY = gql`
   query Targeting($simulatorId: ID) {
@@ -204,7 +205,7 @@ class Targeting extends Component {
       variables
     });
   }
-  untargetContact(targetId) {
+  untargetContact = targetId => {
     const targeting = this.props.data.targeting[0];
     const mutation = gql`
       mutation UntargetContact($systemId: ID!, $targetId: ID!) {
@@ -219,8 +220,8 @@ class Targeting extends Component {
       mutation,
       variables
     });
-  }
-  targetSystem(targetId, system) {
+  };
+  targetSystem = (targetId, system) => {
     const targeting = this.props.data.targeting[0];
     const mutation = gql`
       mutation TargetContact($systemId: ID!, $targetId: ID!, $system: String!) {
@@ -236,7 +237,7 @@ class Targeting extends Component {
       mutation,
       variables
     });
-  }
+  };
   chargePhasers(beamId) {
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
@@ -326,19 +327,22 @@ class Targeting extends Component {
         <Row>
           <Col sm="5">
             <DamageOverlay system={targeting} message="Targeting Offline" />
-            <Measure useClone={true} includeMargin={false}>
-              {dimensions => {
-                return dimensions.width !== 0
-                  ? <Grid
-                      dimensions={dimensions}
-                      targetContact={this.targetContact.bind(this)}
-                      untargetContact={this.untargetContact.bind(this)}
-                      targets={targeting.contacts}
-                    />
-                  : <div />;
-              }}
-            </Measure>
-            <small>Follow a contact with your mouse to target.</small>
+            {/*<div style={{height: '100%', minHeight: '40vh'}}>
+              <Measure useClone={true} includeMargin={false}>
+                {dimensions => {
+                  return dimensions.width !== 0
+                    ? <Grid
+                        dimensions={dimensions}
+                        targetContact={this.targetContact.bind(this)}
+                        untargetContact={this.untargetContact.bind(this)}
+                        targets={targeting.contacts}
+                      />
+                    : <div />;
+                }}
+              </Measure>
+              <small>Follow a contact with your mouse to target.</small>
+              </div>*/}
+            <Coordinates />
           </Col>
           <Col sm="7">
             <DamageOverlay system={phasers} message="Phasers Offline" />
@@ -366,79 +370,12 @@ class Targeting extends Component {
           </Col>
         </Row>
         <Row className="target-area">
-          <Col sm={3}>
-            {targetedContact &&
-              <div>
-                <h4>Targeted Contact</h4>
-                <Media>
-                  <Media left href="#">
-                    <Asset asset={targetedContact.picture}>
-                      {({ src }) =>
-                        <Media object src={src} alt="Targeted Contact Image" />}
-                    </Asset>
-                  </Media>
-                  <Media body>
-                    <Media heading>
-                      {targetedContact.name}
-                    </Media>
-                  </Media>
-                </Media>
-                <Button
-                  block
-                  color="warning"
-                  onClick={this.untargetContact.bind(this, targetedContact.id)}
-                >
-                  Unlock Target
-                </Button>
-              </div>}
-          </Col>
-          <Col sm={4}>
-            {targetedContact &&
-              <Row>
-                <Col sm={12}>
-                  <h4>Systems Targeting</h4>
-                </Col>
-                {[
-                  "General",
-                  "Engines",
-                  "Sensors",
-                  "Tractor Beam",
-                  "Communications",
-                  "Weapons",
-                  "Shields"
-                ].map(s => {
-                  return (
-                    <Col key={`system-${s}`} sm={6}>
-                      <label className="custom-control custom-radio">
-                        <input
-                          id="radio1"
-                          name="system"
-                          type="radio"
-                          onChange={this.targetSystem.bind(
-                            this,
-                            targetedContact.id,
-                            s
-                          )}
-                          checked={targetedContact.system === s}
-                          className="custom-control-input"
-                        />
-                        <span className="custom-control-indicator" />
-                        <span className="custom-control-description">
-                          {s}
-                        </span>
-                      </label>
-                    </Col>
-                  );
-                })}
-                {/* Uncomment for other targeting
-    <Col sm={6}>
-    <label className="custom-control custom-radio">
-    <input id="radio1" name="system" type="radio" className="custom-control-input" />
-    <span className="custom-control-indicator"></span>
-    <span className="custom-control-description"><Input size="sm" /></span>
-    </label>
-  </Col>*/}
-              </Row>}
+          <Col sm={7}>
+            <TargetControls
+              targetedContact={targetedContact}
+              untargetContact={this.untargetContact}
+              targetSystem={this.targetSystem}
+            />
           </Col>
           <Col sm={4}>
             <TorpedoLoading simulator={this.props.simulator} maxLaunchers={1} />

@@ -1,48 +1,61 @@
-.cardNavigation{
-  .keypadButtons{
-    text-align: center;
+.keypadButtons.card{
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+@media (width: 1024px) {
+  .keypadButtons {
     padding: 20px;
-    top: 90px;
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
   }
-  @media (width: 1024px) {
-    .keypadButtons {
-      padding: 20px;
-    }
+}
+.keypadButtons .keypad, .keypadButtons .enter{
+  color: #BABABA;
+  position: static;
+  padding: none;
+  font-size: 36px;
+  height: 30%;
+  width: 29%;
+  margin: 5px;
+  display: inline-block;
+  background-color: #233F7A;
+  border: 2px solid #545555;
+  box-shadow: inset 0px 0px 30px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background-color 0.1s ease-in-out;
+}
+.keypadButtons .keypad:hover, .keypadButtons .enter:hover{
+  background-color: rgba(200,200,200,0.2);
+}
+.keypadButtons .keypad:active, .keypadButtons .enter:active{
+  background-color: rgba(128,128,128,0.2);
+}
+.keypad:before, .keypad:after{
+  visibility: hidden;
+}
+.keypadButtons .enter{
+  width: 95%;
+}
+.keypadButtons.margin {
+  padding: 0;
+  .keypad {
+    margin: 0;
+    width: 33%;    
   }
-  .keypadButtons .keypad, .keypadButtons .enter{
-    color: #BABABA;
-    position: static;
-    padding: none;
-    font-size: 36px;
-    height: 30%;
-    width: 29%;
-    margin: 5px;
-    display: inline-block;
-    background-color: #233F7A;
-    border: 2px solid #545555;
-    box-shadow: inset 0px 0px 30px 10px rgba(0, 0, 0, 0.5);
-    border-radius: 4px;
-    user-select: none;
-    -webkit-user-select: none;
-    transition: background-color 0.1s ease-in-out;
+  .enter{
+    margin: 0;    
+    width: 100%;
   }
-  .keypadButtons .keypad:hover, .keypadButtons .enter:hover{
-    background-color: rgba(200,200,200,0.2);
+}
+.cardNavigation{
+  .keypadButtons {
+    top: 90px;    
   }
-  .keypadButtons .keypad:active, .keypadButtons .enter:active{
-    background-color: rgba(128,128,128,0.2);
-  }
-  .keypad:before, .keypad:after{
-    visibility: hidden;
-  }
-  .keypadButtons .enter{
-    width: 95%;
-  }
-
   .currentCourse{
     margin-top: 70px;
   }

@@ -37,7 +37,8 @@ const viewList = [
   "JrFlight",
   "JrSensors",
   "JrEngineering",
-  "TorpedoLoading"
+  "TorpedoLoading",
+  "TargetingCoords"
 ];
 
 export default viewList;

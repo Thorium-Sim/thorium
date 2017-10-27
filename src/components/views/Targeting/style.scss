@@ -105,6 +105,23 @@
       background-position: center;
     }
   }
+  
+  .current-coordinates {
+    margin-top: 20px;
+  }
+  .coordinate-box {
+    font-size: 20px;    
+    display: flex;
+    align-items: center;
+  }
+  .coordinate-box div{
+    background-color: #333;
+    border:solid 1px #ccc;
+    margin: 5px;
+    padding: 3px;
+    flex:1;
+    display: inline-block;
+  }
 }
 
 @keyframes coolant_glow {

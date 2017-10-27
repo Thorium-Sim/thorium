@@ -15,6 +15,11 @@ export default class Targeting extends System {
     const classes = params.classes || [];
     contacts.forEach(c => this.contacts.push(new Target(c, this.id)));
     classes.forEach(c => this.classes.push(new TargetClass(c, this.id)));
+
+    // Sensor-grid based targeting
+    this.coordinateTargeting = params.coordinates || false;
+    this.calculatedTarget = params.calculatedTarget || null;
+    this.enteredTarget = params.enteredTarget || null;
   }
   createTarget(targetClass) {
     this.contacts.push(new Target({ class: targetClass }, this.id));

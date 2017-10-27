@@ -42,7 +42,7 @@ import JrFlight from "./JrFlight";
 import JrSensors from "./JrSensors";
 import JrEngineering from "./JrEngineering";
 import TorpedoLoading from "./TorpedoLoading";
-
+import TargetingCoords from "./TargetingCoords";
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
 import SensorsGridCore from "./Sensors/gridCore";
@@ -131,7 +131,8 @@ const Views = {
   JrFlight,
   JrSensors,
   JrEngineering,
-  TorpedoLoading
+  TorpedoLoading,
+  TargetingCoords
 };
 
 export const Widgets = {
