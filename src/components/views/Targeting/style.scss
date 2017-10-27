@@ -121,6 +121,10 @@
     padding: 3px;
     flex:1;
     display: inline-block;
+    min-height: 38px;
+    &.selected {
+      background-color: #555;
+    }
   }
 }
 

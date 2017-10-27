@@ -123,28 +123,7 @@ class Navigation extends Component {
       this.scanning = setTimeout(this._scan.bind(this), 100);
     }
   }
-  handleKeydown(e) {
-    if (e.which === 8) {
-      //Delete key
-      this.clear();
-    }
-    if (e.which === 13) {
-      //Enter key
-      this.enter();
-    }
-    if (!isNaN(parseInt(e.key, 10)) || e.key === ".") {
-      this.keydown(e.key);
-    }
-  }
-  componentDidMount() {
-    document.addEventListener("keydown", this.handleKeydown.bind(this), false);
-  }
   componentWillUnmount() {
-    document.removeEventListener(
-      "keydown",
-      this.handleKeydown.bind(this),
-      false
-    );
     clearTimeout(this.scanning);
     this.scanning = null;
     this.subscription();

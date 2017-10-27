@@ -327,7 +327,7 @@ class Targeting extends Component {
         <Row>
           <Col sm="5">
             <DamageOverlay system={targeting} message="Targeting Offline" />
-            {/*<div style={{height: '100%', minHeight: '40vh'}}>
+            <div style={{ height: "100%", minHeight: "40vh" }}>
               <Measure useClone={true} includeMargin={false}>
                 {dimensions => {
                   return dimensions.width !== 0
@@ -341,8 +341,8 @@ class Targeting extends Component {
                 }}
               </Measure>
               <small>Follow a contact with your mouse to target.</small>
-              </div>*/}
-            <Coordinates />
+            </div>
+            {/*<Coordinates />*/}
           </Col>
           <Col sm="7">
             <DamageOverlay system={phasers} message="Phasers Offline" />
