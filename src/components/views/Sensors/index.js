@@ -278,6 +278,7 @@ class Sensors extends Component {
                         ping={ping}
                         pings={sensors.pings}
                         pingTime={pingTime}
+                        simulatorId={this.props.simulator.id}
                       />}
                   </div>}
               </Measure>

@@ -9,6 +9,8 @@ import Immutable from "immutable";
 import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.scss";
 
+import TorpedoFire from "./torpedoFire";
+
 const TORPEDO_SUB = gql`
   subscription TorpedosUpdate($simulatorId: ID!) {
     torpedosUpdate(simulatorId: $simulatorId) {
@@ -53,14 +55,22 @@ class TorpedoLoading extends Component {
   }
   render() {
     if (this.props.data.loading) return null;
-    const torpedos = this.props.data.torpedos.slice(
-      0,
-      this.props.maxLaunchers || Infinity
-    );
+    const torpedos = this.props.data.torpedos;
     return (
       <div className="torpedo-loading">
-        {torpedos.map(t =>
-          <TorpedoLoader key={t.id} torpedo={t} client={this.props.client} />
+        {torpedos.map(
+          t =>
+            torpedos.length > (this.props.maxLaunchers || Infinity)
+              ? <TorpedoFire
+                  key={t.id}
+                  torpedo={t}
+                  client={this.props.client}
+                />
+              : <TorpedoLoader
+                  key={t.id}
+                  torpedo={t}
+                  client={this.props.client}
+                />
         )}
       </div>
     );

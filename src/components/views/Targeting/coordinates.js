@@ -1,15 +1,23 @@
 import React, { Component } from "react";
 import { Row, Col } from "reactstrap";
 import Keypad from "../Navigation/keypad";
+import gql from "graphql-tag";
 
 export default class Coordinates extends Component {
-  state = {
-    destination: null,
-    calculatedCourse: {},
-    selectedField: null,
-    enteredTarget: {},
-    scanning: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      calculatedTarget: props.targeting.calculatedTarget || {},
+      selectedField: null,
+      enteredTarget: props.targeting.enteredTarget || {}
+    };
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      calculatedTarget: nextProps.targeting.calculatedTarget || {},
+      enteredTarget: nextProps.targeting.enteredTarget || {}
+    });
+  }
   keydown = e => {
     let key;
     let enteredTarget = Object.assign({}, this.state.enteredTarget);
@@ -91,10 +99,31 @@ export default class Coordinates extends Component {
       return;
     }
   };
-  inputTarget = () => {};
+  inputTarget = () => {
+    const { enteredTarget } = this.state;
+    const mutation = gql`
+      mutation SetEnteredTarget(
+        $id: ID!
+        $coordinates: StringCoordinatesInput!
+      ) {
+        setTargetingEnteredTarget(id: $id, coordinates: $coordinates)
+      }
+    `;
+    const variables = {
+      id: this.props.targeting.id,
+      coordinates: enteredTarget
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+    this.setState({
+      selectedField: null
+    });
+  };
 
   render() {
-    const { enteredTarget, selectedField } = this.state;
+    const { enteredTarget, selectedField, calculatedTarget } = this.state;
     return (
       <Row>
         <Col>
@@ -111,13 +140,13 @@ export default class Coordinates extends Component {
             <Col>
               <h4>Calculated Coordinates</h4>
               <div className="coordinate-box">
-                X: <div>123</div>
+                X: <div>{calculatedTarget.x || ""}</div>
               </div>
               <div className="coordinate-box">
-                Y: <div>123</div>
+                Y: <div>{calculatedTarget.y || ""}</div>
               </div>
               <div className="coordinate-box">
-                Z: <div>123</div>
+                Z: <div>{calculatedTarget.z || ""}</div>
               </div>
             </Col>
           </Row>

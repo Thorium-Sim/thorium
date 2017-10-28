@@ -18,6 +18,7 @@ export default class Targeting extends System {
 
     // Sensor-grid based targeting
     this.coordinateTargeting = params.coordinates || false;
+    this.targetedSensorContact = params.targetedSensorContact || null;
     this.calculatedTarget = params.calculatedTarget || null;
     this.enteredTarget = params.enteredTarget || null;
   }
@@ -28,7 +29,9 @@ export default class Targeting extends System {
     this.contacts.find(c => c.id === targetId).target();
   }
   untargetTarget(targetId) {
-    this.contacts.find(c => c.id === targetId).untarget();
+    const contact = this.contacts.find(c => c.id === targetId);
+    if (contact) contact.untarget();
+    this.enteredTarget = null;
   }
   targetSystem(targetId, system) {
     this.contacts.find(c => c.id === targetId).updateSystem(system);
@@ -66,6 +69,22 @@ export default class Targeting extends System {
   }
   updateTargetClass(classInput) {
     this.classes.find(c => c.id === classInput.id).update(classInput);
+  }
+  setCalculatedTarget(coordinates, contactId) {
+    this.targetedSensorContact = contactId;
+    this.calculatedTarget = {};
+    this.calculatedTarget.x = (Math.round(coordinates.x * 100000) /
+      100).toString();
+    this.calculatedTarget.y = (Math.round(coordinates.y * 100000) /
+      100).toString();
+    this.calculatedTarget.z = (Math.round(coordinates.z * 100000) /
+      100).toString();
+  }
+  setEnteredTarget(coordinates) {
+    this.enteredTarget = coordinates;
+  }
+  setCoordinateTargeting(which) {
+    this.coordinateTargeting = which;
   }
   break(report) {
     this.contacts.forEach(t => t.untarget());

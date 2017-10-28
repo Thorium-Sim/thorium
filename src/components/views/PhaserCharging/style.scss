@@ -46,6 +46,11 @@
   }
 }
 
+.phaser-fire {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;  
+}
 :root {
   --phaserArcRotate: -5deg;
 }

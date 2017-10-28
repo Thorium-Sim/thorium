@@ -53,6 +53,11 @@ class CoreComponents extends Component {
           });
           return;
         }
+        if (simulators.length === 0) {
+          this.pickSimulator({
+            target: { value: "test" }
+          });
+        }
       }
     }
   }

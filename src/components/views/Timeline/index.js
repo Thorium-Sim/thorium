@@ -94,6 +94,7 @@ class TimelineCore extends Component {
   }
   componentDidUpdate(prevProps, prevState) {
     const { mission, currentTimelineStep } = this.props.data.simulators[0];
+    if (!mission) return;
     const currentStep = mission.timeline[currentTimelineStep];
     const {
       mission: oldMission,

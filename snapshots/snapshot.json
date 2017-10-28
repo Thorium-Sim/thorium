@@ -2351,6 +2351,27 @@
 					"heatRate": 0.01
 				},
 				{
+					"id": "2f569e5d-3cec-445a-wat-0354680dd05b",
+					"simulatorId": null,
+					"name": null,
+					"displayName": null,
+					"power": {
+						"power": 5,
+						"powerLevels": [
+							5
+						]
+					},
+					"damage": {
+						"damaged": false,
+						"report": null
+					},
+					"extra": false,
+					"state": "idle",
+					"charge": 0,
+					"heat": 0,
+					"heatRate": 0.01
+				},
+				{
 					"id": "4f20dcaf-2b59-4e26-ae8a-094ab90bff75",
 					"simulatorId": null,
 					"name": null,
