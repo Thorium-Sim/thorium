@@ -72,7 +72,6 @@ App.on("startFlight", ({ id, name, simulators }) => {
             ).id;
             newRoomCount[newRoom] = newAspect.roomCount[room];
           });
-          console.log(newRoomCount, "\n\n\n", newAspect.roomCount);
           newAspect.roomCount = newRoomCount;
         }
         if (aspect === "systems") {

@@ -12,10 +12,6 @@ class VideoConfig extends Component {
   componentWillReceiveProps(nextProps) {
     const data = JSON.parse(nextProps.data);
     const oldData = JSON.parse(this.props.data);
-    console.log({
-      clientId: nextProps.selectedClient,
-      cacheItem: data.asset
-    });
     if (data.asset !== oldData.asset) {
       this.props.client.mutate({
         mutation: ADD_CACHE_MUTATION,

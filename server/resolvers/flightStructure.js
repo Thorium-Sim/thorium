@@ -276,11 +276,7 @@ export const FlightStructureTypes = {
       const mission = rootValue.timeline
         ? rootValue
         : App.missions.find(m => m.id === rootValue);
-      return Object.keys(mission.timeline).sort().map(k => {
-        const value = mission.timeline[k];
-        value.order = k;
-        return value;
-      });
+      return mission.timeline;
     }
   }
 };

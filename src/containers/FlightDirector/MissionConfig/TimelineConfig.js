@@ -42,16 +42,18 @@ const SortableList = SortableContainer(
   }) => {
     return (
       <ul style={{ padding: 0 }}>
-        {items.map((item, index) =>
-          <SortableItem
-            key={`${item.id}-timelineStep`}
-            index={index}
-            item={item}
-            selectedTimelineStep={selectedTimelineStep}
-            setSelectedTimelineStep={setSelectedTimelineStep}
-            removeTimelineStep={removeTimelineStep}
-          />
-        )}
+        {items.map((item, index) => {
+          return (
+            <SortableItem
+              key={`${item.id}-timelineStep`}
+              index={index}
+              item={item}
+              selectedTimelineStep={selectedTimelineStep}
+              setSelectedTimelineStep={setSelectedTimelineStep}
+              removeTimelineStep={removeTimelineStep}
+            />
+          );
+        })}
       </ul>
     );
   }

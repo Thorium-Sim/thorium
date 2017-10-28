@@ -7,7 +7,6 @@ class PubSubExtended extends PubSub {
   publish(a, b, c) {
     if (process.env.DEBUG) {
       if (date !== Date().toString()) {
-        console.log(pubs);
         pubs = {};
         date = Date().toString();
       }

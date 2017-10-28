@@ -73,7 +73,6 @@ class GridDom extends Component {
       });
     }
     if (!nextProps.data.loading) {
-      console.log(nextProps);
       this.setState(({ locations: stateLocations }) => {
         const locations = {};
         nextProps.data.sensorContacts.forEach(c => {
