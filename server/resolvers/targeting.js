@@ -40,6 +40,15 @@ export const TargetingMutations = {
   },
   setTargetClassCount(root, args, context) {
     App.handleEvent(args, "setTargetClassCount", context);
+  },
+  setTargetingCalculatedTarget(root, args, context) {
+    App.handleEvent(args, "setTargetingCalculatedTarget", context);
+  },
+  setTargetingEnteredTarget(root, args, context) {
+    App.handleEvent(args, "setTargetingEnteredTarget", context);
+  },
+  setCoordinateTargeting(root, args, context) {
+    App.handleEvent(args, "setCoordinateTargeting", context);
   }
 };
 
@@ -59,6 +68,28 @@ export const TargetingSubscriptions = {
 };
 
 export const TargetingTypes = {
+  Targeting: {
+    targetedSensorContact(targeting) {
+      const sensors = App.systems.find(
+        s =>
+          s.simulatorId === targeting.simulatorId &&
+          s.type === "Sensors" &&
+          s.domain === "external"
+      );
+      if (
+        targeting.calculatedTarget &&
+        targeting.enteredTarget &&
+        targeting.calculatedTarget.x === targeting.enteredTarget.x &&
+        targeting.calculatedTarget.y === targeting.enteredTarget.y &&
+        targeting.calculatedTarget.z === targeting.enteredTarget.z
+      ) {
+        return sensors
+          ? sensors.contacts.find(c => c.id === targeting.targetedSensorContact)
+          : null;
+      }
+      return null;
+    }
+  },
   TargetingClass: {
     iconUrl(targetClass) {
       const system = App.systems.find(s => s.id === targetClass.systemId);

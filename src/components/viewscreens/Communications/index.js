@@ -190,7 +190,6 @@ class Communications extends Component {
   };
   render() {
     const { comms } = this.state;
-    console.log("Comms", comms);
     return (
       <div className="viewscreen-communications">
         <Container>

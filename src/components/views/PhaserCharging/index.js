@@ -5,6 +5,7 @@ import { graphql, withApollo } from "react-apollo";
 import Immutable from "immutable";
 //import DamageOverlay from '../helpers/DamageOverlay';
 import "./style.scss";
+export PhaserFire from "./phaserFire";
 
 const PHASERS_SUB = gql`
   subscription PhasersUpdate($simulatorId: ID!) {

@@ -159,7 +159,6 @@ class CargoControl extends Component {
       toDeck = decks[0].id;
       fromDeck = decks[0].id;
     }
-    console.log(toDeck, fromDeck, toRoom, fromRoom);
     return (
       <Container className="cargo-control">
         <Row>

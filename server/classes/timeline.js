@@ -32,22 +32,25 @@ export class TimelineObject {
     this.timeline = this.timeline.filter(t => t.id !== timelineStepId);
   }
   reorderTimelineStep(timelineStepId, newOrder) {
+    function move(array, old_index, new_index) {
+      if (new_index >= array.length) {
+        var k = new_index - array.length;
+        while (k-- + 1) {
+          array.push(undefined);
+        }
+      }
+      array.splice(new_index, 0, array.splice(old_index, 1)[0]);
+      return array; // for testing purposes
+    }
     // Go through each timeline step in the timeline.
     // If it is less than newOrder, do nothing
     // If it is greater than newOrder, add 1 to the order.
     // Then sort it.
-    this.timeline = this.timeline
-      .map(t => {
-        const newT = t;
-        if (newT.order >= newOrder) newT.order += 1;
-        if (newT.id === timelineStepId) newT.order = newOrder;
-        return newT;
-      })
-      .sort((a, b) => {
-        if (a.order > b.order) return 1;
-        if (b.order > a.order) return -1;
-        return 0;
-      });
+    this.timeline = move(
+      this.timeline,
+      this.timeline.findIndex(t => t.id === timelineStepId),
+      newOrder
+    );
   }
   updateTimelineStep(timelineStepId, timelineStep) {
     const timeline = this.timeline.find(t => t.id === timelineStepId);

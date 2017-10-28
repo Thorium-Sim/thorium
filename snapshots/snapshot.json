@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 249,
+	"_eventsCount": 250,
 	"simulators": [
 		{
 			"id": "test",
@@ -339,7 +339,11 @@
 					"name": "Command",
 					"login": false,
 					"messageGroups": [],
-					"widgets": [],
+					"widgets": [
+						"composer",
+						"calculator",
+						"messages"
+					],
 					"cards": [
 						{
 							"name": "Status",
@@ -360,7 +364,10 @@
 					"name": "Flight Control",
 					"login": false,
 					"messageGroups": [],
-					"widgets": [],
+					"widgets": [
+						"calculator",
+						"messages"
+					],
 					"cards": [
 						{
 							"name": "Engines",
@@ -395,7 +402,11 @@
 					"messageGroups": [
 						"Damage"
 					],
-					"widgets": [],
+					"widgets": [
+						"calculator",
+						"messages",
+						"remote"
+					],
 					"cards": [
 						{
 							"name": "Damage Report",
@@ -422,7 +433,11 @@
 					"name": "Tactical",
 					"login": false,
 					"messageGroups": [],
-					"widgets": [],
+					"widgets": [
+						"calculator",
+						"remote",
+						"messages"
+					],
 					"cards": [
 						{
 							"name": "Targeting",
@@ -447,6 +462,18 @@
 							"icon": null,
 							"component": "TractorBeam",
 							"class": "Card"
+						},
+						{
+							"name": "Torpedos",
+							"icon": null,
+							"component": "TorpedoLoading",
+							"class": "Card"
+						},
+						{
+							"name": "Phasers",
+							"icon": null,
+							"component": "PhaserCharging",
+							"class": "Card"
 						}
 					]
 				},
@@ -455,7 +482,12 @@
 					"name": "Operations",
 					"login": false,
 					"messageGroups": [],
-					"widgets": [],
+					"widgets": [
+						"composer",
+						"calculator",
+						"messages",
+						"remote"
+					],
 					"cards": [
 						{
 							"name": "Power Distribution",
@@ -494,7 +526,10 @@
 					"name": "Sensors",
 					"login": false,
 					"messageGroups": [],
-					"widgets": [],
+					"widgets": [
+						"calculator",
+						"messages"
+					],
 					"cards": [
 						{
 							"name": "Sensors",
@@ -527,7 +562,11 @@
 					"name": "Comm",
 					"login": false,
 					"messageGroups": [],
-					"widgets": [],
+					"widgets": [
+						"composer",
+						"calculator",
+						"messages"
+					],
 					"cards": [
 						{
 							"name": "Short Range Comm",
@@ -562,7 +601,11 @@
 					"messageGroups": [
 						"Security"
 					],
-					"widgets": [],
+					"widgets": [
+						"composer",
+						"calculator",
+						"messages"
+					],
 					"cards": [
 						{
 							"name": "Deck Control",
@@ -750,7 +793,92 @@
 							"name": "Viewscreen",
 							"type": "event",
 							"event": "updateViewscreenComponent",
-							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Voyager Logo Screen\\\",\\\"autoplay\\\":true,\\\"loop\\\":true}\"}",
+							"args": "{\"component\":\"ShipLogo\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Voyager Logo Screen\\\",\\\"autoplay\\\":true,\\\"loop\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "87180b30-45c7-4d1b-a7dc-9945324f163f",
+					"class": "TimelineStep",
+					"name": "Computer Activation",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "94ff65c4-de0b-4e05-8007-bd02b4274997",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Computer Activation\\\",\\\"autoplay\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "3f9bfbb7-6065-4000-934e-300a9c2d90d8",
+					"class": "TimelineStep",
+					"name": "Auto Viewscreen",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "2e9793bb-ace3-4992-b7cf-aa88f6777434",
+							"name": "Auto",
+							"type": "event",
+							"event": "setViewscreenToAuto",
+							"args": null,
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "092816ff-f1cb-472f-b451-a7ca6122909b",
+					"class": "TimelineStep",
+					"name": "Course to Wormhole",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "dd64aefe-1f17-4880-a072-822a3269aae6",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Course To Wormhole\\\",\\\"autoplay\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "990da995-a30b-4c7b-964d-b66208759849",
+					"class": "TimelineStep",
+					"name": "Auto Viewscreen",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "b01795d0-e0f2-4b76-b4fa-19fa8429cf6c",
+							"name": "Auto",
+							"type": "event",
+							"event": "setViewscreenToAuto",
+							"args": null,
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "0fe46d44-78f0-49c8-a5d7-cec0fee22a96",
+					"class": "TimelineStep",
+					"name": "Nebula Viewscreen",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "5350c864-644c-45e7-b810-907fe1792ac3",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Matura Nebula Encounter\\\",\\\"autoplay\\\":true,\\\"loop\\\":true,\\\"overlay\\\":true}\"}",
 							"delay": 0
 						}
 					]
@@ -775,7 +903,58 @@
 							"name": "Viewscreen",
 							"type": "event",
 							"event": "updateViewscreenComponent",
-							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Montgomery sensors information\\\",\\\"autoplay\\\":true,\\\"overlay\\\":true}\"}",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Montgomery sensors information\\\",\\\"autoplay\\\":true,\\\"overlay\\\":true,\\\"loop\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "0be0bd95-b82f-4512-90a6-dcacc5ab21a2",
+					"class": "TimelineStep",
+					"name": "Auto Viewscreen 2",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "818268b5-d1e4-4be1-ae46-7632f9503ff6",
+							"name": "Auto",
+							"type": "event",
+							"event": "setViewscreenToAuto",
+							"args": null,
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "7d45acef-2d5a-41fa-b889-d21f1ca28410",
+					"class": "TimelineStep",
+					"name": "Collision Alert",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "f1c40bb7-6914-450f-abd8-2ab91e947ef6",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Collision Alert\\\",\\\"autoplay\\\":true,\\\"loop\\\":true,\\\"overlay\\\":false}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "99dfd4a1-fb29-42f3-848f-0d87b4cf6795",
+					"class": "TimelineStep",
+					"name": "Nearly Hit Ranger",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "09069c40-3db5-4db9-85e9-c134eb45d298",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Nearly Hit the USS Ranger\\\",\\\"autoplay\\\":true,\\\"overlay\\\":false}\"}",
 							"delay": 0
 						}
 					]
@@ -783,7 +962,7 @@
 				{
 					"id": "3e5a9a36-d2e2-4e0e-8667-708472799a11",
 					"class": "TimelineStep",
-					"name": "Mission Update",
+					"name": "Ranger Contact",
 					"description": "",
 					"order": "2",
 					"timelineItems": [
@@ -793,6 +972,14 @@
 							"type": "event",
 							"event": "sendLongRangeMessage",
 							"args": "{\"crew\":true,\"message\":\"TO: USS PHOENIX\\nFROM: STARBASE 74 \\n\\nPHOENIX, WE HAVE NOT RECEIVED A MESSAGE FROM YOU IN SOME TIME. WHAT IS YOUR STATUS?\\n\\nSTARBASE 74 OUT\",\"sender\":\"STARBASE 74\"}",
+							"delay": 0
+						},
+						{
+							"id": "40861836-a85b-44ef-90f9-04f2585bdfbd",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Ranger Contact\\\",\\\"autoplay\\\":true,\\\"loop\\\":true,\\\"overlay\\\":true}\"}",
 							"delay": 0
 						}
 					]
@@ -811,13 +998,140 @@
 							"event": "sendLongRangeMessage",
 							"args": "{\"crew\":true,\"message\":\"From: SpaceGuard Command\\nSpaceGuard Command agrees to offer the pennae protection and safety inside federation space until the government has time to review his or her case.  Offer our protection and assistance if needed.\\n\\nSpaceGuard Command Out\",\"sender\":\"SpaceGuard Command\"}",
 							"delay": 0
+						},
+						{
+							"id": "550906f3-af7f-4c47-9f67-1e164b92135b",
+							"name": "Auto Viewscreen",
+							"type": "event",
+							"event": "setViewscreenToAuto",
+							"args": null,
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "607c2b4f-c741-40a2-8546-bb6ffd684e9c",
+					"class": "TimelineStep",
+					"name": "Ranger Call",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "78fe6183-a542-4177-8a6a-e01135f7d663",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Comm Status\\\",\\\"autoplay\\\":true,\\\"loop\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "f519409c-3510-4337-8b24-2bd2a6352f1d",
+					"class": "TimelineStep",
+					"name": "Subspace Rupture",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "8e5b7d4f-e2d2-4097-bf00-c8e600db4cc9",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Subspace Rupture\\\",\\\"autoplay\\\":true,\\\"loop\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "ad122f0e-49c8-49ea-9462-57c40611e561",
+					"class": "TimelineStep",
+					"name": "Ranger Call 2",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "647be2d4-bb71-4c3e-9ed4-d2429731f059",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Comm Status\\\",\\\"autoplay\\\":true,\\\"loop\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "75c30230-e7a2-4cb0-b754-6d7e3ed49ca2",
+					"class": "TimelineStep",
+					"name": "Comm Line Disconnect",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "7feb5bff-4cb5-4846-aef3-bb78854f87d9",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Comm Line Disconnect\\\",\\\"autoplay\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "00ee0eb3-00e5-4492-a39b-518ccbed6597",
+					"class": "TimelineStep",
+					"name": "Unknown Object",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "8845765b-b6fd-432f-b336-c5149410e7df",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Unknown Object Detected Near Wormhole\\\",\\\"autoplay\\\":true,\\\"loop\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "69113bda-0944-444b-9807-c3ea3f953228",
+					"class": "TimelineStep",
+					"name": "Viewscreen Auto",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "83282de9-03a6-4a47-9d74-0f198568622f",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "setViewscreenToAuto",
+							"args": null,
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "713521b4-ea1c-4963-be34-74a2f8e2f0b3",
+					"class": "TimelineStep",
+					"name": "Rool's Vitals",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "754c93ce-3fe7-453c-bed3-be666de79d19",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Rool's Vitals\\\",\\\"autoplay\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
 						}
 					]
 				},
 				{
 					"id": "96009177-92c8-49a4-87e5-10ad2029a18a",
 					"class": "TimelineStep",
-					"name": "Judge on Starbase 12",
+					"name": "Transport Rool",
 					"description": "",
 					"order": "4",
 					"timelineItems": [
@@ -827,6 +1141,65 @@
 							"type": "event",
 							"event": "sendLongRangeMessage",
 							"args": "{\"crew\":true,\"message\":\"FROM: SpaceGuard Command\\n\\nIf the national police (the Pennou) enters federation space, you are authorized to inform them that a judge will listen to both sides and make a decision.  The hearing will be at starbase 12,  invite them to participate.  \\n\\nSpaceGuard Command Out\",\"sender\":\"SpaceGuard Command\"}",
+							"delay": 0
+						},
+						{
+							"id": "28f680c3-315e-407e-a7a5-250b38cec9bf",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Transport\\\",\\\"autoplay\\\":false,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "309a3917-aadb-48aa-8ef0-9c8d411ab265",
+					"class": "TimelineStep",
+					"name": "Biological Alert",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "544e2278-1c0d-476a-a0da-407a2bcc730d",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Biological Alert\\\",\\\"autoplay\\\":true,\\\"loop\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "841d67a7-8d46-419e-88ac-217caae83327",
+					"class": "TimelineStep",
+					"name": "Scanning Rupture",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "4f196289-b41d-47f7-983f-4add4351fa23",
+							"name": "Video",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Scanning Rupture\\\",\\\"autoplay\\\":true,\\\"loop\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "4a3e7e40-5854-4c5f-a1e1-2470bc41cbb2",
+					"class": "TimelineStep",
+					"name": "Panau Ship Emerges",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "80ec10e5-9343-484b-8994-d33edff11377",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/ANOTHER ship exits the Wormhole\\\",\\\"autoplay\\\":true,\\\"overlay\\\":true}\"}",
 							"delay": 0
 						}
 					]
@@ -845,6 +1218,175 @@
 							"event": "sendLongRangeMessage",
 							"args": "{\"crew\":true,\"message\":\"FROM: USS RANGER\\n\\nVoyager, our engineer has completed his study of the sensor scans \\nof the Pennae ship.  The power source is a single source quantum singularity.  It can produce tremendous power over many years.  We do not have the kind of techology necessary to make that kind of a power source.  The Pennou weapons could also be very powerful, so be careful.\\n\\nUSS Ranger out\",\"sender\":\"USS Ranger\"}",
 							"delay": 0
+						},
+						{
+							"id": "f831133e-9a44-4b2e-8804-340ed432eb2d",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Unknown Vessel\\\",\\\"autoplay\\\":true,\\\"loop\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "d2c30dcb-21de-4650-8782-b8376ba2c5af",
+					"class": "TimelineStep",
+					"name": "Auto Viewscreen",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "2b2fd805-9c8b-488b-87ee-5ee7798ecebf",
+							"name": "Auto",
+							"type": "event",
+							"event": "setViewscreenToAuto",
+							"args": null,
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "a5704acb-f78a-48b7-a7ad-50a0a6f6b1b1",
+					"class": "TimelineStep",
+					"name": "Wormhole Filler",
+					"description": "",
+					"order": 0,
+					"timelineItems": []
+				},
+				{
+					"id": "280d5e5a-abe4-49fd-b76e-dd14fcb7da05",
+					"class": "TimelineStep",
+					"name": "Auto Viewscreen",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "faa657f5-801b-4276-9f1e-59b472f0630e",
+							"name": "Auto",
+							"type": "event",
+							"event": "setViewscreenToAuto",
+							"args": null,
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "185f6317-d1e4-4354-a67c-8f4b166af406",
+					"class": "TimelineStep",
+					"name": "Shockwave",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "b177901e-b12e-43b0-8055-1e6b6a28bbb2",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Intolerance Shockwave\\\",\\\"autoplay\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "d3953dba-b123-4b82-bdbc-90a92d36849c",
+					"class": "TimelineStep",
+					"name": "Shields Offline",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "b4b50109-f62b-4c81-ab11-5788cc98fcd4",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Shields Offline Damage Report\\\",\\\"loop\\\":true,\\\"autoplay\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "5e30c1f6-c099-4f95-8361-70963d4d0e4e",
+					"class": "TimelineStep",
+					"name": "Viewscreen Auto",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "463205cd-472b-473e-988e-7e318b11e2e6",
+							"name": "Auto",
+							"type": "event",
+							"event": "setViewscreenToAuto",
+							"args": null,
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "6e6ad537-fd11-4cdd-889d-b9f93b00342a",
+					"class": "TimelineStep",
+					"name": "Warp Away",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "9eee0453-9c20-42be-9634-b03010e23b2c",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Intolerance Escape Warp Jump\\\",\\\"autoplay\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "33f1e48d-63c5-4269-8706-5deb4c16c47c",
+					"class": "TimelineStep",
+					"name": "Viewscreen Auto",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "b48cdff2-86e9-45ab-b803-5a09f454be1d",
+							"name": "Auto",
+							"type": "event",
+							"event": "setViewscreenToAuto",
+							"args": null,
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "963247cc-21c8-41f3-b982-5b8a1c9af3fc",
+					"class": "TimelineStep",
+					"name": "Intruder Alert",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "3d1cb6ee-c49c-4991-a0fb-485ac3e4c22b",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Intruder Alert\\\",\\\"autoplay\\\":true,\\\"loop\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "311f8875-306e-4357-b800-511f1243a386",
+					"class": "TimelineStep",
+					"name": "Stars",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "5dc68ea1-b74d-417a-bf4f-beebbb56489f",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Stars\"}",
+							"delay": 0
 						}
 					]
 				},
@@ -862,13 +1404,106 @@
 							"event": "sendLongRangeMessage",
 							"args": "{\"crew\":true,\"message\":\"FROM: USS MONTGOMERY \\n\\nInform your captain that we are on course to your position.  There is a dense nebula nearby.  It may offer as hiding place until we arrive to assist.  Be careful of the radiation pockets,  we are moving at maximum warp.\\n\\nUSS Montgomery Out\",\"sender\":\"USS Montgomery\"}",
 							"delay": 0
+						},
+						{
+							"id": "10d87113-5558-4fc7-820d-969271bfba18",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Fire Alert\\\",\\\"autoplay\\\":true,\\\"loop\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "01c1804c-1310-4785-ae86-bdd22cc3d0de",
+					"class": "TimelineStep",
+					"name": "Stars",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "00737d36-856e-4e9a-a300-30a556f700b4",
+							"name": "Stars",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Stars\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "5ff271c7-7aca-4a81-b2e0-660109fb32a1",
+					"class": "TimelineStep",
+					"name": "Approaching Nebula",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "a2ac6e49-4f78-4a4e-a089-b570b0ee9f2f",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Approaching Nebula\\\",\\\"autoplay\\\":true,\\\"overlay\\\":false}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "042e294c-6fe8-44b3-9f39-460f5058a384",
+					"class": "TimelineStep",
+					"name": "Nebula",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "15e470e4-2686-4223-88d9-d234ef8ecdc1",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Nebula\\\",\\\"autoplay\\\":true,\\\"loop\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "5e89ccee-64aa-4fa4-ad7f-42508a43c195",
+					"class": "TimelineStep",
+					"name": "Radiological Alert",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "d929de34-762d-4e61-a2ba-18b2b65215d2",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Radiological Alert\\\",\\\"autoplay\\\":true,\\\"loop\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "56cfd1af-9cfc-4351-896e-3a1cc6091ea2",
+					"class": "TimelineStep",
+					"name": "Nebula 2",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "50cad7fa-8f2e-4221-bfe4-13aa60c3ef77",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Nebula 2\\\",\\\"autoplay\\\":true,\\\"loop\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
 						}
 					]
 				},
 				{
 					"id": "fa9a0753-e7c4-4074-9f53-7cd56345648e",
 					"class": "TimelineStep",
-					"name": "Montgomery Going Down",
+					"name": "Deep In Nebula/Montgomery Going Down",
 					"description": "",
 					"order": "7",
 					"timelineItems": [
@@ -878,6 +1513,48 @@
 							"type": "event",
 							"event": "sendLongRangeMessage",
 							"args": "{\"crew\":true,\"message\":\"FROM: USS MONTGOMERY \\n\\nWe are under heavy attack, our shields are no match for their weapons.  We have to abandon ship please send rescue ships.\\nWe are ejecting our warp core and our records. \\n\\nUSS Montgomery Out\",\"sender\":\"USS Montgomery\"}",
+							"delay": 0
+						},
+						{
+							"id": "27328560-ff22-4006-bc74-783216bf1b96",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/Detected deep in nebula\\\",\\\"autoplay\\\":true,\\\"loop\\\":false,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "86b4250c-646f-419a-a453-a06ddbac7408",
+					"class": "TimelineStep",
+					"name": "USS Montgomery Destroyed",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "463b0a7c-4607-4007-a086-ae2f5df9c1f0",
+							"name": "Viewscreen",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Video\",\"data\":\"{\\\"asset\\\":\\\"/Viewscreen/Videos/USS Montgomery destroyed\\\",\\\"autoplay\\\":true,\\\"loop\\\":true,\\\"overlay\\\":true}\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
+					"id": "5e40d029-588c-4cb8-b61c-8eabb6fcb172",
+					"class": "TimelineStep",
+					"name": "Blackout",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "2cddb03b-7f05-41fb-858d-e1019d541bc2",
+							"name": "Blackout",
+							"type": "event",
+							"event": "updateViewscreenComponent",
+							"args": "{\"component\":\"Blackout\"}",
 							"delay": 0
 						}
 					]
@@ -1312,7 +1989,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 21827900,
+			"timeSincePing": 29921500,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -1402,7 +2079,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 21827900,
+			"timeSincePing": 29921500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -1551,7 +2228,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.8572159999998572,
+			"batteryChargeLevel": 0.7916559999997916,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -1584,7 +2261,7 @@
 					"id": "b5f7ef3f-5b24-46e6-9393-b93c79b712a8",
 					"systemId": "1e66763f-70d7-4cc7-a385-f3fa4b008da4",
 					"targeted": false,
-					"system": "General",
+					"system": "Communications",
 					"class": "7d0870a9-dfe5-445c-a316-e42406825acc"
 				},
 				{
@@ -1624,7 +2301,10 @@
 					"quadrant": 1
 				}
 			],
-			"quadrants": false
+			"quadrants": false,
+			"coordinateTargeting": false,
+			"calculatedTarget": null,
+			"enteredTarget": null
 		},
 		{
 			"id": "194c8133-b341-4b9c-be86-a1cacfa9512b",
@@ -1651,6 +2331,27 @@
 			"beams": [
 				{
 					"id": "2f569e5d-3cec-445a-a858-0354680dd05b",
+					"simulatorId": null,
+					"name": null,
+					"displayName": null,
+					"power": {
+						"power": 5,
+						"powerLevels": [
+							5
+						]
+					},
+					"damage": {
+						"damaged": false,
+						"report": null
+					},
+					"extra": false,
+					"state": "idle",
+					"charge": 0,
+					"heat": 0,
+					"heatRate": 0.01
+				},
+				{
+					"id": "2f569e5d-3cec-445a-wat-0354680dd05b",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
@@ -2214,9 +2915,9 @@
 			"type": "Navigation",
 			"calculate": true,
 			"currentCourse": {
-				"x": null,
-				"y": null,
-				"z": null
+				"x": "3424",
+				"y": "23423",
+				"z": "23423"
 			},
 			"calculatedCourse": {
 				"x": null,
@@ -2225,7 +2926,7 @@
 			},
 			"destination": "Mars",
 			"destinations": [],
-			"scanning": true
+			"scanning": false
 		},
 		{
 			"id": "f833f14e-5a24-42de-8a8a-3336bb98b985",
@@ -2620,7 +3321,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 17010900,
+			"timeSincePing": 25104500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2652,7 +3353,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 17010900,
+			"timeSincePing": 25104500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3265,7 +3966,10 @@
 			"type": "Targeting",
 			"contacts": [],
 			"classes": [],
-			"quadrants": false
+			"quadrants": false,
+			"coordinateTargeting": false,
+			"calculatedTarget": null,
+			"enteredTarget": null
 		},
 		{
 			"id": "b80c786f-b57e-4cbc-a0f5-a809f2ef1fca",
@@ -3698,7 +4402,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11897800,
+			"timeSincePing": 19991400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3732,7 +4436,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11897800,
+			"timeSincePing": 19991400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4426,7 +5130,10 @@
 			"type": "Targeting",
 			"contacts": [],
 			"classes": [],
-			"quadrants": false
+			"quadrants": false,
+			"coordinateTargeting": false,
+			"calculatedTarget": null,
+			"enteredTarget": null
 		},
 		{
 			"id": "4a8faefb-2e61-4908-9ebb-b1257ef1769b",
@@ -4456,13 +5163,15 @@
 			"arc": 0.5,
 			"beams": [
 				{
-					"id": "ac3e468e-7c3c-438a-a4fc-31cf1f6008f2",
+					"id": "9d563be3-e933-4a45-8c1a-abcdd3060d8e",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
 					"power": {
 						"power": 5,
-						"powerLevels": []
+						"powerLevels": [
+							5
+						]
 					},
 					"damage": {
 						"damaged": false,
@@ -4479,13 +5188,165 @@
 					"heatRate": 0.01
 				},
 				{
-					"id": "60f0c5ae-e692-4d4e-9232-7853460065ca",
+					"id": "1c551834-d645-4d24-908a-29fad4ea00f0",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
 					"power": {
 						"power": 5,
-						"powerLevels": []
+						"powerLevels": [
+							5
+						]
+					},
+					"damage": {
+						"damaged": false,
+						"report": null,
+						"requested": false,
+						"reactivationCode": null,
+						"reactivationRequester": null,
+						"neededReactivationCode": null
+					},
+					"extra": false,
+					"state": "idle",
+					"charge": 0,
+					"heat": 0,
+					"heatRate": 0.01
+				},
+				{
+					"id": "35add545-7d3a-43c4-a9a7-7b846f39301a",
+					"simulatorId": null,
+					"name": null,
+					"displayName": null,
+					"power": {
+						"power": 5,
+						"powerLevels": [
+							5
+						]
+					},
+					"damage": {
+						"damaged": false,
+						"report": null,
+						"requested": false,
+						"reactivationCode": null,
+						"reactivationRequester": null,
+						"neededReactivationCode": null
+					},
+					"extra": false,
+					"state": "idle",
+					"charge": 0,
+					"heat": 0,
+					"heatRate": 0.01
+				},
+				{
+					"id": "89d9012a-d3f8-4785-9e80-0278181b887d",
+					"simulatorId": null,
+					"name": null,
+					"displayName": null,
+					"power": {
+						"power": 5,
+						"powerLevels": [
+							5
+						]
+					},
+					"damage": {
+						"damaged": false,
+						"report": null,
+						"requested": false,
+						"reactivationCode": null,
+						"reactivationRequester": null,
+						"neededReactivationCode": null
+					},
+					"extra": false,
+					"state": "idle",
+					"charge": 0,
+					"heat": 0,
+					"heatRate": 0.01
+				},
+				{
+					"id": "331f3f9f-909b-4121-82e4-08b11edce324",
+					"simulatorId": null,
+					"name": null,
+					"displayName": null,
+					"power": {
+						"power": 5,
+						"powerLevels": [
+							5
+						]
+					},
+					"damage": {
+						"damaged": false,
+						"report": null,
+						"requested": false,
+						"reactivationCode": null,
+						"reactivationRequester": null,
+						"neededReactivationCode": null
+					},
+					"extra": false,
+					"state": "idle",
+					"charge": 0,
+					"heat": 0,
+					"heatRate": 0.01
+				},
+				{
+					"id": "82ea59dc-616a-48dc-b42c-c639fabc3608",
+					"simulatorId": null,
+					"name": null,
+					"displayName": null,
+					"power": {
+						"power": 5,
+						"powerLevels": [
+							5
+						]
+					},
+					"damage": {
+						"damaged": false,
+						"report": null,
+						"requested": false,
+						"reactivationCode": null,
+						"reactivationRequester": null,
+						"neededReactivationCode": null
+					},
+					"extra": false,
+					"state": "idle",
+					"charge": 0,
+					"heat": 0,
+					"heatRate": 0.01
+				},
+				{
+					"id": "69009cf3-9f81-4720-b91a-1896164e5d15",
+					"simulatorId": null,
+					"name": null,
+					"displayName": null,
+					"power": {
+						"power": 5,
+						"powerLevels": [
+							5
+						]
+					},
+					"damage": {
+						"damaged": false,
+						"report": null,
+						"requested": false,
+						"reactivationCode": null,
+						"reactivationRequester": null,
+						"neededReactivationCode": null
+					},
+					"extra": false,
+					"state": "idle",
+					"charge": 0,
+					"heat": 0,
+					"heatRate": 0.01
+				},
+				{
+					"id": "51e63203-42c1-416b-af07-d8f1b60460f7",
+					"simulatorId": null,
+					"name": null,
+					"displayName": null,
+					"power": {
+						"power": 5,
+						"powerLevels": [
+							5
+						]
 					},
 					"damage": {
 						"damaged": false,
@@ -4503,33 +5364,6 @@
 				}
 			],
 			"cooling": null
-		},
-		{
-			"id": "29adb23b-9062-4407-923e-e76ea3fe3d89",
-			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
-			"name": "Torpedo",
-			"displayName": "Torpedo",
-			"power": {
-				"power": 5,
-				"powerLevels": [
-					5
-				]
-			},
-			"damage": {
-				"damaged": false,
-				"report": null,
-				"requested": false,
-				"reactivationCode": null,
-				"reactivationRequester": null,
-				"neededReactivationCode": null
-			},
-			"extra": false,
-			"class": "Torpedo",
-			"type": "Torpedo",
-			"loaded": false,
-			"state": "idle",
-			"inventory": [],
-			"stealthCompromised": false
 		},
 		{
 			"id": "1983d21e-dfbd-478b-bfdf-4fe801d25bd0",
@@ -4978,7 +5812,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 583400,
+			"timeSincePing": 8677000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5012,7 +5846,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 583400,
+			"timeSincePing": 8677000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5570,7 +6404,10 @@
 			"type": "Targeting",
 			"contacts": [],
 			"classes": [],
-			"quadrants": false
+			"quadrants": false,
+			"coordinateTargeting": false,
+			"calculatedTarget": null,
+			"enteredTarget": null
 		},
 		{
 			"id": "652073f5-3bea-443c-970c-7ea7b8a8d652",
@@ -5749,6 +6586,162 @@
 			"coolant": 1,
 			"coolantRate": 0.2,
 			"transfer": null
+		},
+		{
+			"id": "1face113-86c0-4997-b11e-c9a092077ee3",
+			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
+			"name": "Fore Launcher",
+			"displayName": "Fore Launcher",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"class": "Torpedo",
+			"type": "Torpedo",
+			"loaded": false,
+			"state": "idle",
+			"inventory": [
+				{
+					"id": "5a88c6fd-6019-4b8c-b862-46c44ecd60cc",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "596f6dc6-95b5-44fc-bfdf-a75c4baa3141",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "506b2011-9fc8-48f3-8d21-4a80984bfdde",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "52ee16da-6fcb-4329-a1c7-ffcc0f9c885f",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "49bd14e2-d1ca-4094-ac17-bd922fbc4826",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "97e395c1-a519-43d4-adfc-edc2dcefe624",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "f98b04cc-67be-4ce0-93a4-6b3d02c68b01",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "c5623404-13a3-4404-991b-215cf4cb5225",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "8df592d1-0cd4-4fc3-8388-82070838419f",
+					"type": "Quantum",
+					"probe": null
+				},
+				{
+					"id": "39ca8e19-8df3-4e1f-bd3d-03a9aa3911c6",
+					"type": "Quantum",
+					"probe": null
+				}
+			],
+			"stealthCompromised": false
+		},
+		{
+			"id": "a3f0d300-1a5e-46ca-9275-93472a90d33f",
+			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
+			"name": "Aft Launcher",
+			"displayName": "Aft Launcher",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"class": "Torpedo",
+			"type": "Torpedo",
+			"loaded": false,
+			"state": "idle",
+			"inventory": [
+				{
+					"id": "959a78d8-f6b8-468d-a45e-d6f2406af318",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "3b52ab9b-2c29-41b6-b106-6dc288aa9a19",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "bb8e1eb7-3abc-4630-adfa-db5c6297e46a",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "f39d2ca2-605e-4727-9d2d-0f3483ca17f5",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "78c37992-7c2a-42de-baed-4c8c066c5a16",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "b22d945b-bb37-45ee-ba44-924791d7a287",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "65af5504-d138-4bb8-a082-2268a278bb24",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "62b06460-6045-4157-8060-bb7228a54e57",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "06c78aef-4e7e-439e-b974-34884adb492a",
+					"type": "Quantum",
+					"probe": null
+				},
+				{
+					"id": "4962a48e-3ede-43ab-a826-ec5849c18dfa",
+					"type": "Quantum",
+					"probe": null
+				}
+			],
+			"stealthCompromised": false
 		}
 	],
 	"clients": [
@@ -5784,11 +6777,11 @@
 		},
 		{
 			"id": "awesome-client",
-			"flightId": "",
+			"flightId": null,
 			"simulatorId": null,
 			"station": null,
-			"loginName": null,
-			"loginState": "logout",
+			"loginName": "Awesome",
+			"loginState": "login",
 			"sentPing": null,
 			"ping": null,
 			"connected": true,
@@ -18662,6 +19655,14 @@
 			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
 			"name": "Wormhole Detected",
 			"class": "AssetContainer"
+		},
+		{
+			"id": "8a858933-ed00-4d01-b5df-0cca9cf2032a",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Approaching Nebula",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Approaching Nebula",
+			"class": "AssetContainer"
 		}
 	],
 	"assetObjects": [
@@ -19982,6 +20983,15 @@
 			"url": "/assets/Viewscreen/Videos/Wormhole Detected/default.mov",
 			"simulatorId": "default",
 			"class": "AssetObject"
+		},
+		{
+			"id": "a6ccc87c-2be6-482b-b074-4d4cba464278",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "8a858933-ed00-4d01-b5df-0cca9cf2032a",
+			"fullPath": "/Viewscreen/Videos/Approaching Nebula/default.MP4",
+			"url": "/assets/Viewscreen/Videos/Approaching Nebula/default.MP4",
+			"simulatorId": "default",
+			"class": "AssetObject"
 		}
 	],
 	"viewscreens": [
@@ -20005,7 +21015,7 @@
 		}
 	],
 	"messages": [],
-	"snapshotVersion": 83,
-	"version": 83,
-	"timestamp": "2017-10-26T15:04:33.534Z"
+	"snapshotVersion": 4000,
+	"version": 4000,
+	"timestamp": "2017-10-28T01:53:36.471Z"
 }

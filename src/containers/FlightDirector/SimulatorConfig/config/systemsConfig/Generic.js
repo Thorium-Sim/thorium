@@ -47,7 +47,8 @@ export class GenericSystemConfig extends Component {
         "ShortRangeComm",
         "Reactor",
         "Phasers",
-        "Shields"
+        "Shields",
+        "Torpedo"
       ]
     });
   };
@@ -66,7 +67,8 @@ export class GenericSystemConfig extends Component {
         "ShortRangeComm",
         "Reactor",
         "Phasers",
-        "Shields"
+        "Shields",
+        "Torpedo"
       ]
     });
   };

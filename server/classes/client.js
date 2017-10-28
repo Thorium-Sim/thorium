@@ -64,7 +64,6 @@ export default class Client {
     this.offlineState = state;
   }
   addCache(cacheItem) {
-    console.log(cacheItem);
     const container = App.assetContainers.find(a => a.fullPath === cacheItem);
     const object =
       App.assetObjects.find(

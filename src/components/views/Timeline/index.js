@@ -92,6 +92,42 @@ class TimelineCore extends Component {
   componentWillUnmount() {
     this.internalSub && this.internalSub();
   }
+  componentDidUpdate(prevProps, prevState) {
+    const { mission, currentTimelineStep } = this.props.data.simulators[0];
+    if (!mission) return;
+    const currentStep = mission.timeline[currentTimelineStep];
+    const {
+      mission: oldMission,
+      currentTimelineStep: oldTimelineStep
+    } = prevProps.data.simulators[0];
+    const oldCurrentStep = oldMission.timeline[oldTimelineStep];
+    if (currentStep.id === oldCurrentStep.id) return;
+    const viewscreenItem = currentStep.timelineItems.find(
+      e => e.event === "updateViewscreenComponent"
+    );
+    if (!viewscreenItem) return;
+    const args = JSON.parse(viewscreenItem.args);
+    const data = JSON.parse(args.data);
+    if (!data.asset) return;
+    // Add the asset to the cache
+    const mutation = gql`
+      mutation AddCache($simulatorId: ID, $cacheItem: String!) {
+        clientAddCache(
+          simulatorId: $simulatorId
+          viewscreen: true
+          cacheItem: $cacheItem
+        )
+      }
+    `;
+    const variables = {
+      simulatorId: this.props.simulator.id,
+      cacheItem: data.asset
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  }
   checkStep = step => {
     this.setState(state => ({
       steps: Object.assign(state.steps, { [step]: !state.steps[step] })
@@ -240,9 +276,9 @@ class TimelineCore extends Component {
               value={this.state.newStep}
               onChange={evt => this.setState({ newStep: evt.target.value })}
             >
-              {mission.timeline.map(t => {
+              {mission.timeline.map((t, i) => {
                 return (
-                  <option key={t.id} value={t.order}>
+                  <option key={t.id} value={i}>
                     {t.name}
                   </option>
                 );

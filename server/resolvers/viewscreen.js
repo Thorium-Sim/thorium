@@ -5,7 +5,6 @@ import { withFilter } from "graphql-subscriptions";
 export const ViewscreenQueries = {
   viewscreens(rootValue, { simulatorId }) {
     let viewscreens = App.clients.filter(s => s.station === "Viewscreen");
-    console.log(viewscreens);
     if (simulatorId) {
       viewscreens = viewscreens.filter(v => v.simulatorId === simulatorId);
       return viewscreens.map(v =>

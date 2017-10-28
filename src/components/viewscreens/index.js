@@ -20,6 +20,7 @@ export StealthMonitoring from "./StealthMonitoring";
 export Communications from "./Communications";
 export Stars from "./Stars";
 export Video from "./Video";
+export Blackout from "./blackout";
 
 export InformationConfig from "./Information/config";
 export InternalSensorsConfig from "./InternalSensors/config";

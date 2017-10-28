@@ -73,7 +73,6 @@ class GridDom extends Component {
       });
     }
     if (!nextProps.data.loading) {
-      console.log(nextProps);
       this.setState(({ locations: stateLocations }) => {
         const locations = {};
         nextProps.data.sensorContacts.forEach(c => {
@@ -305,6 +304,32 @@ class GridDom extends Component {
       speedAsking: null
     });
   };
+  _clickMouse = contact => {
+    console.log(this.props);
+    const { x, y, z } = contact.location;
+    const mutation = gql`
+      mutation SetCalculatedTarget(
+        $simulatorId: ID
+        $coordinates: CoordinatesInput!
+        $contactId: ID
+      ) {
+        setTargetingCalculatedTarget(
+          simulatorId: $simulatorId
+          coordinates: $coordinates
+          contactId: $contactId
+        )
+      }
+    `;
+    const variables = {
+      simulatorId: this.props.simulatorId,
+      coordinates: { x, y, z },
+      contactId: contact.id
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading) return null;
     const {
@@ -358,7 +383,9 @@ class GridDom extends Component {
                 width={width}
                 core={core}
                 {...contact}
-                mousedown={e => this._downMouse(e, contact.id)}
+                mousedown={
+                  core ? e => this._downMouse(e, contact.id) : this._clickMouse
+                }
                 location={locations[contact.id].location}
                 destination={locations[contact.id].destination}
                 opacity={this.props.pings ? locations[contact.id].opacity : 1}

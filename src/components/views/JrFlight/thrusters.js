@@ -7,7 +7,6 @@ import gql from "graphql-tag";
 
 const Thrusters = props => {
   const { simulator, client, data } = props;
-  console.log(props);
   if (data.loading) return null;
   const thruster = data.thrusters[0];
   if (!thruster) return null;
