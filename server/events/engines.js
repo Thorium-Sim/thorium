@@ -68,6 +68,8 @@ App.on("addHeat", ({ id, heat }) => {
   const sys = App.systems.find(s => s.id === id);
   if (sys && sys.heat !== heat) {
     sys.setHeat(heat);
+  }
+  if (Date.now() % 100 === 1) {
     pubsub.publish("heatChange", sys);
     pubsub.publish("systemsUpdate", App.systems);
   }
