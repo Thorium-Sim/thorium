@@ -169,13 +169,13 @@ class SensorsCore extends Component {
           >
             Send
           </Button>
-          <Button
+          {/*<Button
             onClick={this.flash.bind(this)}
             style={{ flexGrow: 1 }}
             size={"sm"}
           >
             Flash
-          </Button>
+          </Button>*/}
           <select
             value={"answers"}
             onChange={this.scanPreset}

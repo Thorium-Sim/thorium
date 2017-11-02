@@ -43,7 +43,7 @@ export default class SensorScans extends Component {
   startScan = () => {
     let obj = {
       id: this.props.sensors.id,
-      request: this.refs.scanRequest.value
+      request: this.state.scanRequest
     };
     this.props.client.mutate({
       mutation: gql`
@@ -90,10 +90,13 @@ export default class SensorScans extends Component {
               ) : (
                 <div>
                   <textarea
-                    ref="scanRequest"
                     className="form-control btn-block"
                     rows="6"
-                    defaultValue={this.state.scanRequest}
+                    value={this.state.scanRequest}
+                    onChange={evt =>
+                      this.setState({
+                        scanRequest: evt.target.value
+                      })}
                   />
                   <Button color="primary" block onClick={this.startScan}>
                     Begin Scan
