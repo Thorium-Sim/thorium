@@ -484,7 +484,11 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
                 })}
               </select>
               <label>Message Groups:</label>
-              {["Security", "Damage", "Medical"].map(group => (
+              {[
+                "Security Teams",
+                "Damage Teams",
+                "Medical Teams"
+              ].map(group => (
                 <label
                   key={`messageGroup-${group}`}
                   style={{ display: "inline-block" }}
