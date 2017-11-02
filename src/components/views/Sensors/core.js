@@ -45,9 +45,22 @@ class SensorsCore extends Component {
       });
     }
   }
+  componentDidMount() {
+    document.addEventListener("keydown", this.keypress);
+  }
   componentWillUnmount() {
+    document.removeEventListener("keydown", this.keypress);
     this.sensorsSubscription && this.sensorsSubscription();
   }
+  keypress = evt => {
+    if (evt.altKey) {
+      const index = parseInt(evt.code.substr(-1, 1), 10);
+      if (!isNaN(index)) {
+        const data = index === 0 ? ScanPresets[10] : ScanPresets[index - 1];
+        this.scanPreset({ target: { value: data.value } });
+      }
+    }
+  };
   sendScanResult = sensors => {
     this.props.client.mutate({
       mutation: gql`
