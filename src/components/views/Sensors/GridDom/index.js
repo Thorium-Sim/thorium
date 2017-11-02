@@ -318,7 +318,7 @@ class GridDom extends Component {
     `;
     const variables = {
       simulatorId: this.props.simulatorId,
-      coordinates: { x, y, z },
+      coordinates: { x: Math.abs(x), y: Math.abs(y), z: Math.abs(z) },
       contactId: contact.id
     };
     this.props.client.mutate({

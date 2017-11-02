@@ -45,6 +45,7 @@ class TargetingGridDom extends Component {
           icon: t.icon,
           scale: t.size,
           hover: 0,
+          name: t.name,
           targeted: t.targeted
         });
       }
@@ -65,7 +66,7 @@ class TargetingGridDom extends Component {
     const height = width * 3 / 4;
     this.setState(({ targets }) => {
       const newTargets = targets.map(
-        ({ id, x, y, icon, speedX, speedY, scale, hover, targeted }) => {
+        ({ id, x, y, icon, name, speedX, speedY, scale, hover, targeted }) => {
           const limit = { x: width - 32, y: height - 64 };
           const speed = { x: speedX, y: speedY };
           const loc = { x, y };
@@ -122,6 +123,7 @@ class TargetingGridDom extends Component {
             icon,
             scale,
             hover,
+            name,
             targeted
           };
         }
@@ -177,7 +179,7 @@ class TargetingGridDom extends Component {
 
 export default TargetingGridDom;
 
-const Target = ({ id, mousemove, icon, x, y, scale, targeted }) => {
+const Target = ({ id, mousemove, icon, name, x, y, scale, targeted }) => {
   return (
     <Asset asset={icon}>
       {({ src }) => (
@@ -203,6 +205,14 @@ const Target = ({ id, mousemove, icon, x, y, scale, targeted }) => {
               src={require("./crosshair.svg")}
             />
           )}
+          <div
+            className="target-label"
+            style={{
+              transform: `translate(${x}px, ${y + 30}px) scale(${scale})`
+            }}
+          >
+            {name}
+          </div>
         </span>
       )}
     </Asset>

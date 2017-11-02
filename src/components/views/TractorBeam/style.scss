@@ -9,8 +9,8 @@
   }
   #tractorEffect{
     position: absolute;
-    top: 35%;
-    right: 45%;
+    top: 43%;
+    right: 56%;
     -webkit-transition: opacity 1s ease-in-out;
     -webkit-mask-size: 400px 400px;
     -webkit-mask-image: -webkit-gradient(linear, left bottom, right top, 
@@ -31,6 +31,12 @@
     opacity: 0;
     &.shown {
       opacity: 1;
+    }
+    span {
+      text-align: center;
+      font-size: 20px;
+      display: inline-block;
+      width: 100%;
     }
   }
   .activate {
