@@ -7,12 +7,12 @@ import {
   ListGroupItem,
   Button,
   Card,
-  CardBlock
+  CardBody
 } from "reactstrap";
 import gql from "graphql-tag";
 import { RoomDropdown } from "../helpers/shipStructure";
 
-import "./style.scss";
+import "./style.css";
 
 const DECK_SUB = gql`
   subscription DeckSubscribe($simulatorId: ID!) {
@@ -135,7 +135,7 @@ class SecurityTeams extends Component {
                 if (b.number < a.number) return 1;
                 return 0;
               })
-              .map(d =>
+              .map(d => (
                 <ListGroupItem
                   key={d.id}
                   onClick={this._selectDeck.bind(this, d.id)}
@@ -145,19 +145,13 @@ class SecurityTeams extends Component {
                 >
                   Deck {d.number}
                 </ListGroupItem>
-              )}
+              ))}
           </ListGroup>
         </Col>
         <Col sm={{ size: 6, offset: 1 }}>
-          <h1>
-            Deck {deck && deck.number} Status:
-          </h1>
-          <h2>
-            Bulkhead Doors: {deck && deck.doors ? "Closed" : "Open"}
-          </h2>
-          <h2>
-            Crew Status: {deck && deck.evac ? "Evacuated" : "On Duty"}
-          </h2>
+          <h1>Deck {deck && deck.number} Status:</h1>
+          <h2>Bulkhead Doors: {deck && deck.doors ? "Closed" : "Open"}</h2>
+          <h2>Crew Status: {deck && deck.evac ? "Evacuated" : "On Duty"}</h2>
           <Row>
             <Col sm={6}>
               <Button
@@ -185,7 +179,7 @@ class SecurityTeams extends Component {
           <Row>
             <Col sm={12}>
               <Card>
-                <CardBlock>
+                <CardBody>
                   <h4>Tranzine Gas</h4>
                   <RoomDropdown
                     selectedDeck={deck && deck.id}
@@ -208,7 +202,7 @@ class SecurityTeams extends Component {
                       personnel only. Access is restricted.
                     </em>
                   </p>
-                </CardBlock>
+                </CardBody>
               </Card>
             </Col>
           </Row>

@@ -3,9 +3,8 @@ import gql from "graphql-tag";
 import { Container, Row, Col, Button } from "reactstrap";
 import { OutputField, TypingField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 
-import "./style.scss";
+import "./style.css";
 
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
@@ -43,10 +42,9 @@ class ProbeControl extends Component {
         document: PROBES_SUB,
         variables: { simulatorId: this.props.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ probes: subscriptionData.data.probesUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            probes: subscriptionData.probesUpdate
+          });
         }
       });
     }
@@ -80,7 +78,7 @@ class ProbeControl extends Component {
         <Row style={{ height: "100%" }}>
           <Col sm={3} style={{ height: "100%" }}>
             <div className="scroll probelist">
-              {probes.probes.map(p =>
+              {probes.probes.map(p => (
                 <p
                   key={p.id}
                   className={`probe ${p.querying ? "querying" : ""}
@@ -89,10 +87,10 @@ class ProbeControl extends Component {
                 >
                   {p.name}
                 </p>
-              )}
+              ))}
             </div>
           </Col>
-          {selectedProbe &&
+          {selectedProbe && (
             <Col sm={9} style={{ height: "100%" }}>
               <Row>
                 <Col sm={12}>
@@ -119,7 +117,8 @@ class ProbeControl extends Component {
                   </Button>
                 </Col>
               </Row>
-            </Col>}
+            </Col>
+          )}
         </Row>
       </Container>
     );

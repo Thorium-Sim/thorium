@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
-import "./style.scss";
+import "./style.css";
 
 const DECK_SUB = gql`
   subscription DeckSubscribe($simulatorId: ID!) {
@@ -103,11 +103,9 @@ class SecurityTeams extends Component {
             </tr>
           </thead>
           <tbody>
-            {decks.map(d =>
+            {decks.map(d => (
               <tr key={d.id}>
-                <td>
-                  Deck {d.number}
-                </td>
+                <td>Deck {d.number}</td>
                 <td>
                   <input
                     type="checkbox"
@@ -127,7 +125,7 @@ class SecurityTeams extends Component {
                   <input type="checkbox" disabled />
                 </td>
               </tr>
-            )}
+            ))}
           </tbody>
         </table>
       </div>

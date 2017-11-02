@@ -25,7 +25,7 @@ class Targeted extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            targeting: subscriptionData.data.targetingUpdate
+            targeting: subscriptionData.targetingUpdate
           });
         }
       });
@@ -43,9 +43,7 @@ class Targeted extends Component {
     return (
       <div>
         <Label>Current Target</Label>
-        <div className="status-field">
-          {target ? target.name : "No Target"}
-        </div>
+        <div className="status-field">{target ? target.name : "No Target"}</div>
       </div>
     );
   }

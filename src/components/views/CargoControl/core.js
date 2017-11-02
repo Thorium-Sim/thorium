@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 import { Input } from "reactstrap";
 
-import "./style.scss";
+import "./style.css";
 
 const INVENTORY_SUB = gql`
   subscription InventoryUpdate($simulatorId: ID!) {
@@ -40,10 +39,9 @@ class CargoControlCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ inventory: subscriptionData.data.inventoryUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            inventory: subscriptionData.inventoryUpdate
+          });
         }
       });
     }
@@ -53,7 +51,8 @@ class CargoControlCore extends Component {
   }
   setSelected(which, e) {
     const { decks } = this.props.data;
-    let deck, room;
+    let deck;
+    let room;
     if (which === "deck") deck = e.target.value;
     else {
       deck = this.state.deck;
@@ -124,21 +123,20 @@ class CargoControlCore extends Component {
     return (
       <div className="cargo-core">
         <Input size="sm" onChange={this.findInv.bind(this)} />
-        {this.state.findInventory &&
+        {this.state.findInventory && (
           <div className="find-overlay">
-            {this.state.findInventory.map(i =>
+            {this.state.findInventory.map(i => (
               <div key={`find-${i.id}`}>
                 {i.name}
                 <ul>
-                  {i.locations.map((l, index) =>
-                    <li key={`loc-${index}`}>
-                      {l}
-                    </li>
-                  )}
+                  {i.locations.map((l, index) => (
+                    <li key={`loc-${index}`}>{l}</li>
+                  ))}
                 </ul>
               </div>
-            )}
-          </div>}
+            ))}
+          </div>
+        )}
         <select
           defaultValue={"select"}
           onChange={this.setSelected.bind(this, "deck")}
@@ -146,11 +144,11 @@ class CargoControlCore extends Component {
           <option disabled value="select">
             Select Deck
           </option>
-          {decks.map(d =>
+          {decks.map(d => (
             <option key={d.id} value={d.id}>
               Deck {d.number}
             </option>
-          )}
+          ))}
         </select>
         <select
           defaultValue={"select"}
@@ -161,11 +159,11 @@ class CargoControlCore extends Component {
             Select Room
           </option>
           {deck &&
-            decks.find(d => d.id === deck).rooms.map(r =>
+            decks.find(d => d.id === deck).rooms.map(r => (
               <option key={r.id} value={r.id}>
                 {r.name}
               </option>
-            )}
+            ))}
         </select>
         {room &&
           inventory
@@ -176,11 +174,11 @@ class CargoControlCore extends Component {
               return { id: i.id, name: i.name, count: roomCount.count };
             })
             .filter(i => i)
-            .map(i =>
+            .map(i => (
               <p key={`to-${i.id}`}>
                 {i.name} ({i.count})
               </p>
-            )}
+            ))}
       </div>
     );
   }

@@ -6,7 +6,7 @@ import {
   Button,
   Input,
   Card,
-  CardBlock,
+  CardBody,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -14,9 +14,8 @@ import {
 } from "reactstrap";
 import gql from "graphql-tag";
 import assetPath from "../../../helpers/assets";
-import Immutable from "immutable";
 import DamageOverlay from "../helpers/DamageOverlay";
-import "./style.scss";
+import "./style.css";
 
 const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {
@@ -57,10 +56,9 @@ class SecurityScans extends Component {
         document: SENSOR_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ sensors: subscriptionData.data.sensorsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            sensors: subscriptionData.sensorsUpdate
+          });
         }
       });
     }
@@ -204,7 +202,7 @@ class SecurityScans extends Component {
                       if (b.number > a.number) return -1;
                       return 0;
                     })
-                    .map(d =>
+                    .map(d => (
                       <DropdownItem
                         key={d.id}
                         onClick={() => {
@@ -216,7 +214,7 @@ class SecurityScans extends Component {
                       >
                         {d.number ? `Deck ${d.number}` : `All Decks`}
                       </DropdownItem>
-                    )}
+                    ))}
                 </DropdownMenu>
               </UncontrolledDropdown>
             </Col>
@@ -236,7 +234,7 @@ class SecurityScans extends Component {
                         .rooms.find(r => r.id === this.state.selectedRoom).name
                     : "Entire Deck"}
                 </DropdownToggle>
-                {this.state.selectedDeck &&
+                {this.state.selectedDeck && (
                   <DropdownMenu>
                     <DropdownItem
                       onClick={() => {
@@ -246,7 +244,7 @@ class SecurityScans extends Component {
                       Deck{" "}
                       {decks.find(d => d.id === this.state.selectedDeck).number}
                     </DropdownItem>
-                    {rooms.map(r =>
+                    {rooms.map(r => (
                       <DropdownItem
                         key={r.id}
                         onClick={() => {
@@ -255,8 +253,9 @@ class SecurityScans extends Component {
                       >
                         {r.name}
                       </DropdownItem>
-                    )}
-                  </DropdownMenu>}
+                    ))}
+                  </DropdownMenu>
+                )}
               </UncontrolledDropdown>
             </Col>
           </Row>
@@ -272,65 +271,66 @@ class SecurityScans extends Component {
               />
             </Col>
           </Row>
-          {scanning
-            ? <div>
-                <Row>
-                  <Col sm="auto">
-                    <Button
-                      size="lg"
-                      color="danger"
-                      onClick={this._stopScan.bind(this)}
-                    >
-                      Cancel Scan
-                    </Button>
-                  </Col>
-                </Row>
-                <Row style={{ marginTop: "50px" }}>
-                  <h4 className="text-center">Scan in progress...</h4>
-                  <Card className="scannerBox">
-                    <img
-                      role="presentation"
-                      className="mw-100 ship-image"
-                      draggable="false"
-                      src={assetPath(
-                        "/Ship Views/Right",
-                        "default",
-                        "png",
-                        false
-                      )}
-                    />
-                    <div className="scanner" />
+          {scanning ? (
+            <div>
+              <Row>
+                <Col sm="auto">
+                  <Button
+                    size="lg"
+                    color="danger"
+                    onClick={this._stopScan.bind(this)}
+                  >
+                    Cancel Scan
+                  </Button>
+                </Col>
+              </Row>
+              <Row style={{ marginTop: "50px" }}>
+                <h4 className="text-center">Scan in progress...</h4>
+                <Card className="scannerBox">
+                  <img
+                    alt="ship view"
+                    role="presentation"
+                    className="mw-100 ship-image"
+                    draggable="false"
+                    src={assetPath(
+                      "/Ship Views/Right",
+                      "default",
+                      "png",
+                      false
+                    )}
+                  />
+                  <div className="scanner" />
+                </Card>
+              </Row>
+            </div>
+          ) : (
+            <div>
+              <Row>
+                <Col sm="auto">
+                  <Button size="lg" onClick={this._scanRequest.bind(this)}>
+                    Begin Scan
+                  </Button>
+                </Col>
+                <Col sm="auto">
+                  <Button color="warning" size="lg">
+                    Clear
+                  </Button>
+                </Col>
+              </Row>
+              <Row style={{ marginTop: "50px" }}>
+                <h4>Scan Results:</h4>
+              </Row>
+              <Row>
+                <Col>
+                  <Card className="results">
+                    <CardBody>
+                      <p>{this.state.scanResults}</p>
+                    </CardBody>
                   </Card>
-                </Row>
-              </div>
-            : <div>
-                <Row>
-                  <Col sm="auto">
-                    <Button size="lg" onClick={this._scanRequest.bind(this)}>
-                      Begin Scan
-                    </Button>
-                  </Col>
-                  <Col sm="auto">
-                    <Button color="warning" size="lg">
-                      Clear
-                    </Button>
-                  </Col>
-                </Row>
-                <Row style={{ marginTop: "50px" }}>
-                  <h4>Scan Results:</h4>
-                </Row>
-                <Row>
-                  <Col>
-                    <Card className="results">
-                      <CardBlock>
-                        <p>
-                          {this.state.scanResults}
-                        </p>
-                      </CardBlock>
-                    </Card>
-                  </Col>
-                </Row>
-              </div>}
+                </Col>
+              </Row>
+            </div>
+          )}
         </Col>
         <Col sm={{ size: 2, offset: 1 }}>
           <h4>Scan Type:</h4>

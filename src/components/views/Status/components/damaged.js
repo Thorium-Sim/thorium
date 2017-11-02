@@ -25,7 +25,7 @@ class Damage extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            systems: subscriptionData.data.systemsUpdate
+            systems: subscriptionData.systemsUpdate
           });
         }
       });
@@ -42,11 +42,9 @@ class Damage extends Component {
       <div>
         <Label>Damaged Systems</Label>
         <div className="status-field damage-list">
-          {systems.filter(s => s.damage.damaged).map(s =>
-            <p key={s.id}>
-              {s.displayName || s.name}
-            </p>
-          )}
+          {systems
+            .filter(s => s.damage.damaged)
+            .map(s => <p key={s.id}>{s.displayName || s.name}</p>)}
         </div>
       </div>
     );

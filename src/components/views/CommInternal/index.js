@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 import { Container, Row, Col, Button } from "reactstrap";
 import assetPath from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
@@ -29,6 +28,28 @@ const INTERNAL_SUB = gql`
   }
 `;
 
+const trainingSteps = [
+  {
+    selector: ".all-decks",
+    content: "Click this button to start calling all decks in intercom mode."
+  },
+  {
+    selector: ".room-select",
+    content:
+      "If you select a deck, you can talk to the entire deck over intercom mode. Selecting a room allows you to talk to an individual person inside of that room. If you are instructed to call a specific room, make sure you select both the deck and the room."
+  },
+  {
+    selector: ".call",
+    content:
+      "After you select a deck and/or a room, click this button to initiate the call. Once the call is connected, you can use your communicator to talk to whoever you called."
+  },
+  {
+    selector: ".buttons-section",
+    content:
+      "After you initiate a call, or if someone else calls you, buttons will appear in this area. You can use those buttons to cancel an outgoing call, connect an incoming call, or disconnect a connected call."
+  }
+];
+
 class InternalComm extends Component {
   constructor(props) {
     super(props);
@@ -46,12 +67,9 @@ class InternalComm extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({
-              internalComm: subscriptionData.data.longRangeCommunicationsUpdate
-            })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            internalComm: subscriptionData.internalCommUpdate
+          });
         }
       });
     }
@@ -65,9 +83,10 @@ class InternalComm extends Component {
       rooms: []
     };
     const room = deck.rooms.find(r => r.id === this.state.room);
-    const outgoing = all
-      ? "All Decks"
-      : room ? `${room.name}, Deck ${deck.number}` : `Deck ${deck.number}`;
+    const roomLabel = room
+      ? `${room.name}, Deck ${deck.number}`
+      : `Deck ${deck.number}`;
+    const outgoing = all ? "All Decks" : roomLabel;
     const mutation = gql`
       mutation InitiateCall($id: ID!, $outgoing: String) {
         internalCommCallOutgoing(id: $id, outgoing: $outgoing)
@@ -129,7 +148,8 @@ class InternalComm extends Component {
             <Button
               block
               disabled={
-                (internalComm.state !== "connected" && internalComm.outgoing) ||
+                (internalComm.state !== "connected" &&
+                  !!internalComm.outgoing) ||
                 internalComm.state === "connected"
               }
               onClick={this.call.bind(this, true)}
@@ -143,10 +163,11 @@ class InternalComm extends Component {
               selectedDeck={deck}
               decks={decks}
               disabled={
-                (internalComm.state !== "connected" && internalComm.outgoing) ||
+                (internalComm.state !== "connected" &&
+                  !!internalComm.outgoing) ||
                 internalComm.state === "connected"
               }
-              setSelected={({ deck }) => this.setState({ deck, room: null })}
+              setSelected={({ deckD }) => this.setState({ deckD, room: null })}
             />
           </Col>
           <Col sm={{ size: 3 }}>
@@ -159,7 +180,7 @@ class InternalComm extends Component {
                 (internalComm.state !== "connected" && internalComm.outgoing) ||
                 internalComm.state === "connected"
               }
-              setSelected={({ room }) => this.setState({ room })}
+              setSelected={({ roomD }) => this.setState({ roomD })}
             />
           </Col>
           <Col sm={{ size: 2 }}>
@@ -184,36 +205,38 @@ class InternalComm extends Component {
         >
           <Col sm={{ size: 8, offset: 2 }}>
             {internalComm.state !== "connected" &&
-              internalComm.incoming &&
-              <div>
-                <h1 className="text-center">
-                  Incoming call from: {internalComm.incoming}
-                </h1>
-                <Button
-                  style={buttonStyle}
-                  color="info"
-                  block
-                  onClick={this.connect.bind(this)}
-                >
-                  Connect
-                </Button>
-              </div>}
+              internalComm.incoming && (
+                <div>
+                  <h1 className="text-center">
+                    Incoming call from: {internalComm.incoming}
+                  </h1>
+                  <Button
+                    style={buttonStyle}
+                    color="info"
+                    block
+                    onClick={this.connect.bind(this)}
+                  >
+                    Connect
+                  </Button>
+                </div>
+              )}
             {internalComm.state !== "connected" &&
-              internalComm.outgoing &&
-              <div>
-                <h1 className="text-center">
-                  Calling: {internalComm.outgoing}
-                </h1>
-                <Button
-                  style={buttonStyle}
-                  color="warning"
-                  block
-                  onClick={this.cancelCall.bind(this)}
-                >
-                  Cancel Call
-                </Button>
-              </div>}
-            {internalComm.state === "connected" &&
+              internalComm.outgoing && (
+                <div>
+                  <h1 className="text-center">
+                    Calling: {internalComm.outgoing}
+                  </h1>
+                  <Button
+                    style={buttonStyle}
+                    color="warning"
+                    block
+                    onClick={this.cancelCall.bind(this)}
+                  >
+                    Cancel Call
+                  </Button>
+                </div>
+              )}
+            {internalComm.state === "connected" && (
               <div>
                 <h1 className="text-center">
                   Connected: {internalComm.incoming}
@@ -226,14 +249,17 @@ class InternalComm extends Component {
                 >
                   Disconnect
                 </Button>
-              </div>}
-            {!(internalComm.outgoing || internalComm.incoming) &&
-              <h1 className="text-center">No Communications Line Connected</h1>}
+              </div>
+            )}
+            {!(internalComm.outgoing || internalComm.incoming) && (
+              <h1 className="text-center">No Communications Line Connected</h1>
+            )}
           </Col>
         </Row>
         <Row>
           <Col sm={{ size: 8, offset: 2 }}>
             <img
+              alt="Right View"
               role="presentation"
               className="mw-100"
               draggable="false"
@@ -250,28 +276,6 @@ class InternalComm extends Component {
     );
   }
 }
-
-const trainingSteps = [
-  {
-    selector: ".all-decks",
-    content: "Click this button to start calling all decks in intercom mode."
-  },
-  {
-    selector: ".room-select",
-    content:
-      "If you select a deck, you can talk to the entire deck over intercom mode. Selecting a room allows you to talk to an individual person inside of that room. If you are instructed to call a specific room, make sure you select both the deck and the room."
-  },
-  {
-    selector: ".call",
-    content:
-      "After you select a deck and/or a room, click this button to initiate the call. Once the call is connected, you can use your communicator to talk to whoever you called."
-  },
-  {
-    selector: ".buttons-section",
-    content:
-      "After you initiate a call, or if someone else calls you, buttons will appear in this area. You can use those buttons to cancel an outgoing call, connect an incoming call, or disconnect a connected call."
-  }
-];
 
 const INTERNAL_QUERY = gql`
   query InternalComm($simulatorId: ID!) {

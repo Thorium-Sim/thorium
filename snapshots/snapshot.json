@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 250,
+	"_eventsCount": 253,
 	"simulators": [
 		{
 			"id": "test",
@@ -1989,7 +1989,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 29921500,
+			"timeSincePing": 30007600,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -2079,7 +2079,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 29921500,
+			"timeSincePing": 30007600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2228,7 +2228,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7916559999997916,
+			"batteryChargeLevel": 0.7909599999997909,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2303,6 +2303,7 @@
 			],
 			"quadrants": false,
 			"coordinateTargeting": false,
+			"targetedSensorContact": null,
 			"calculatedTarget": null,
 			"enteredTarget": null
 		},
@@ -3321,7 +3322,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 25104500,
+			"timeSincePing": 25190600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3353,7 +3354,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 25104500,
+			"timeSincePing": 25190600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3968,6 +3969,7 @@
 			"classes": [],
 			"quadrants": false,
 			"coordinateTargeting": false,
+			"targetedSensorContact": null,
 			"calculatedTarget": null,
 			"enteredTarget": null
 		},
@@ -4402,7 +4404,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 19991400,
+			"timeSincePing": 20077500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4436,7 +4438,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 19991400,
+			"timeSincePing": 20077500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5132,6 +5134,7 @@
 			"classes": [],
 			"quadrants": false,
 			"coordinateTargeting": false,
+			"targetedSensorContact": null,
 			"calculatedTarget": null,
 			"enteredTarget": null
 		},
@@ -5812,7 +5815,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 8677000,
+			"timeSincePing": 8763100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5846,7 +5849,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 8677000,
+			"timeSincePing": 8763100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6406,6 +6409,7 @@
 			"classes": [],
 			"quadrants": false,
 			"coordinateTargeting": false,
+			"targetedSensorContact": null,
 			"calculatedTarget": null,
 			"enteredTarget": null
 		},
@@ -6744,53 +6748,7 @@
 			"stealthCompromised": false
 		}
 	],
-	"clients": [
-		{
-			"id": "local-client",
-			"flightId": null,
-			"simulatorId": null,
-			"station": null,
-			"loginName": "Alex",
-			"loginState": "login",
-			"sentPing": null,
-			"ping": null,
-			"connected": true,
-			"offlineState": null,
-			"training": false,
-			"caches": [],
-			"class": "Client"
-		},
-		{
-			"id": "yard-result-fat",
-			"flightId": null,
-			"simulatorId": null,
-			"station": null,
-			"loginName": "adsf",
-			"loginState": "login",
-			"sentPing": null,
-			"ping": null,
-			"connected": true,
-			"offlineState": null,
-			"training": false,
-			"caches": [],
-			"class": "Client"
-		},
-		{
-			"id": "awesome-client",
-			"flightId": null,
-			"simulatorId": null,
-			"station": null,
-			"loginName": "Awesome",
-			"loginState": "login",
-			"sentPing": null,
-			"ping": null,
-			"connected": true,
-			"offlineState": null,
-			"training": false,
-			"caches": [],
-			"class": "Client"
-		}
-	],
+	"clients": [],
 	"sets": [
 		{
 			"id": "147cc64b-19fc-4536-94d7-1d2e0cf33a99",
@@ -19359,310 +19317,6 @@
 			"folderId": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
 			"name": "Default",
 			"class": "AssetContainer"
-		},
-		{
-			"id": "d6c238a3-1cdb-408a-ab87-b3d8fc9dfb96",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Ship Scans",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Ship Scans",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "35f9b144-4fb4-4602-8264-0efe08ed76d0",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Active Scans Cycle",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Active Scans Cycle",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "68e625ef-db16-4a53-abbb-5b68fd19f283",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/ANOTHER ship exits the Wormhole",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "ANOTHER ship exits the Wormhole",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "90d15f1f-fa17-466d-aa88-34f3e381094c",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Biological Alert",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Biological Alert",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "f7364258-7074-4fa0-be01-a6347f765350",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Black Hole",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Black Hole",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "1441b7fd-3ffb-4ba4-be82-b3584889ea64",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Collision Alert",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Collision Alert",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "d451bb61-e5b3-4734-847b-d9e4ac59ddda",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Comm Line Disconnect",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Comm Line Disconnect",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "dbd938a1-5f6e-4113-83f6-fc0c5ccf865e",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Comm Status",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Comm Status",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "24a35674-29ef-419b-aabd-443218f5c8e4",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Computer Activation",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Computer Activation",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "e5a4392a-1f1e-48bd-906e-73703d734e5c",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Course To Wormhole",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Course To Wormhole",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "aae92f8e-ad3c-4e16-838b-6cd934e3f603",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Detected deep in nebula",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Detected deep in nebula",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "fd62ae84-1251-4bfc-9733-dd24cc231a10",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Fire Alert",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Fire Alert",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "5c833120-9931-4c87-b9fc-77248c357f6c",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Incoming Hail",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Incoming Hail",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "3cc3c988-0832-4d10-9536-08c6f90ce36c",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Intolerance Escape Warp Jump",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Intolerance Escape Warp Jump",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "2804ca76-5a28-49b2-8110-06ab7e27265f",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Intolerance Shockwave",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Intolerance Shockwave",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "cb556871-cc0b-426a-bb43-062598c61fd1",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Intruder Alert",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Intruder Alert",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "f1d95dda-ce5a-4af7-86fc-95a5a54f19f0",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Matura Nebula Encounter",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Matura Nebula Encounter",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "05a6b4dc-62af-4a09-a4c2-ea90439e78fb",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Montgomery sensors information",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Montgomery sensors information",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "d78a2edf-443f-44cf-be88-fd43550efd8d",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Nearly Hit the USS Ranger",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Nearly Hit the USS Ranger",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "d7a3de1b-72d0-4e4f-879b-4f07551c436f",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Nebula 2",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Nebula 2",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "a3d6575b-eef8-4881-864f-fb8b7c79970e",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Nebula",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Nebula",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "cf852b9b-e812-4a22-a2fd-bcd56e27d315",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Preflight Scans",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Preflight Scans",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "28befced-a3fa-497e-b303-db7b2e08f7a6",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Radiological Alert",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Radiological Alert",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "272a5cd1-5383-4de6-815a-6ccf54d6ae42",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Ranger Contact",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Ranger Contact",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "703ec3b2-7c80-4233-88d9-5458eba67010",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Red Alert Sreen",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Red Alert Sreen",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "7cbb320c-f43d-462b-aa95-9e1960392e5d",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Rool's Vitals",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Rool's Vitals",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "785ff463-b4a9-4383-bc04-a7a09c462273",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Scanning Rupture",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Scanning Rupture",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "cc26b048-0479-4fbf-870e-ed32efa0085b",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Shields Offline Damage Report",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Shields Offline Damage Report",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "d6b8adc1-34f6-408f-9c87-6fe6ed0b39c8",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Stars",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Stars",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "d4a3243a-1516-4ec6-8739-dc1779fd5f32",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Subspace Rupture",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Subspace Rupture",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "564009d7-11b6-42b8-a4b0-170f0dab7665",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Transport",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Transport",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "82406a35-e050-4dd2-ab0b-7416c13d6a3a",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Unknown Object Detected Near Wormhole",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Unknown Object Detected Near Wormhole",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "3b9c4c81-490e-43ab-b00b-cda5945f3fae",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Unknown Vessel",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Unknown Vessel",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "94073c09-ac9c-4143-8f06-a922bef295dd",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/USS Montgomery destroyed",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "USS Montgomery destroyed",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "532d25e5-4630-4b9d-af9e-cce4bb18e261",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Viewscreen offline",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Viewscreen offline",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "746b9016-dc6e-47ee-8117-6a73f578210a",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Voyager Logo Screen",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Voyager Logo Screen",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "2a0f4537-0e17-47d9-93a0-fdd7fc353303",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Wormhole Detected",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Wormhole Detected",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "8a858933-ed00-4d01-b5df-0cca9cf2032a",
-			"folderPath": "/Viewscreen/Videos",
-			"fullPath": "/Viewscreen/Videos/Approaching Nebula",
-			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
-			"name": "Approaching Nebula",
-			"class": "AssetContainer"
 		}
 	],
 	"assetObjects": [
@@ -21015,7 +20669,7 @@
 		}
 	],
 	"messages": [],
-	"snapshotVersion": 4000,
-	"version": 4000,
-	"timestamp": "2017-10-28T01:53:36.471Z"
+	"snapshotVersion": 125,
+	"version": 125,
+	"timestamp": "2017-10-31T22:05:31.516Z"
 }

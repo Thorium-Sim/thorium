@@ -1,8 +1,8 @@
-export FlightConfig from './FlightConfig';
-export FlightDirector from './FlightDirector';
-export MissionConfig from './MissionConfig';
-export SimulatorConfig from './SimulatorConfig';
-export AssetConfig from './AssetConfig';
-export Welcome from './Welcome';
-export ClientsLobby from './ClientsLobby';
-export SetConfig from './SetConfig';
+export { default as FlightConfig } from "./FlightConfig";
+export { default as FlightDirector } from "./FlightDirector";
+export { default as MissionConfig } from "./MissionConfig";
+export { default as SimulatorConfig } from "./SimulatorConfig";
+export { default as AssetConfig } from "./AssetConfig";
+export { default as Welcome } from "./Welcome";
+export { default as ClientsLobby } from "./ClientsLobby";
+export { default as SetConfig } from "./SetConfig";

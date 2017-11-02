@@ -1,8 +1,8 @@
 import React from "react";
 import Views from "../../views";
 import { withApollo } from "react-apollo";
-import "./layout.scss";
-import "./theme.scss";
+import "./layout.css";
+import "./theme.css";
 
 const Viewscreen = withApollo(props => {
   let { simulator, station } = props;
@@ -24,12 +24,8 @@ const Viewscreen = withApollo(props => {
           <div className="frame-5" style={{ left: "533" }} />
         </div>
         <div className="frame-text">
-          <h1 className="simulator-name">
-            {simulator.name}
-          </h1>
-          <h2 className="station-name">
-            {station.name}
-          </h2>
+          <h1 className="simulator-name">{simulator.name}</h1>
+          <h2 className="station-name">{station.name}</h2>
         </div>
       </div>
     </div>

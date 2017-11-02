@@ -20,6 +20,7 @@ export default class SensorContact extends Component {
     return (
       <div>
         <img
+          alt="contact"
           draggable="false"
           onMouseOver={() => mouseover(this.props)}
           onMouseOut={() => mouseover({})}
@@ -32,8 +33,9 @@ export default class SensorContact extends Component {
               y}px) scale(${size})`
           }}
         />
-        {core &&
+        {core && (
           <img
+            alt="icon"
             draggable="false"
             onMouseDown={mousedown}
             src={assetPath(icon, "default", "svg", false)}
@@ -42,7 +44,8 @@ export default class SensorContact extends Component {
                 2 *
                 dy}px) scale(${size})`
             }}
-          />}
+          />
+        )}
       </div>
     );
   }

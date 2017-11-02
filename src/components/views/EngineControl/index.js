@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { Button, Row, Col, Container } from "reactstrap";
 import gql from "graphql-tag";
-import Immutable from "immutable";
 import { graphql, compose } from "react-apollo";
 import Engine1 from "./engine-1";
 import Engine2 from "./engine-2";
 import Tour from "reactour";
 
-import "./style.scss";
+import "./style.css";
 
 const SPEEDCHANGE_SUB = gql`
   subscription SpeedChanged($simulatorId: ID) {
@@ -62,10 +61,10 @@ class EngineControl extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           const engines = previousResult.engines.map(engine => {
-            if (engine.id === subscriptionData.data.speedChange.id) {
+            if (engine.id === subscriptionData.speedChange.id) {
               return Object.assign({}, engine, {
-                speed: subscriptionData.data.speedChange.speed,
-                on: subscriptionData.data.speedChange.on
+                speed: subscriptionData.speedChange.speed,
+                on: subscriptionData.speedChange.on
               });
             }
             return engine;
@@ -80,18 +79,21 @@ class EngineControl extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           const engineIndex = previousResult.engines.findIndex(
-            e => e.id === subscriptionData.data.heatChange.id
+            e => e.id === subscriptionData.heatChange.id
           );
           if (engineIndex < 0) {
             return previousResult;
           }
-          const engine = Immutable.Map(previousResult.engines[engineIndex]);
-          engine.set("heat", subscriptionData.data.heatChange.heat);
-          engine.set("coolant", subscriptionData.data.heatChange.coolant);
           return {
-            engines: Immutable.List(previousResult.engines)
-              .set(engineIndex, engine)
-              .toJS()
+            engines: previousResult.engines.map(
+              (e, i) =>
+                i === engineIndex
+                  ? Object.assign({}, e, {
+                      heat: subscriptionData.heatChange.heat,
+                      coolant: subscriptionData.heatChange.coolant
+                    })
+                  : e
+            )
           };
         }
       });
@@ -104,21 +106,7 @@ class EngineControl extends Component {
           type: "Engine"
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          return Immutable.Map(previousResult)
-            .mergeWith(
-              (oldVal, newVal, key) => {
-                return newVal.map((e, index) =>
-                  Immutable.Map(oldVal[index]).merge({
-                    damage: e.get("damage"),
-                    power: e.get("power"),
-                    coolant: e.get("coolant"),
-                    heat: e.get("heat")
-                  })
-                );
-              },
-              { engines: subscriptionData.data.systemsUpdate }
-            )
-            .toJS();
+          // Make this work again
         }
       });
     }
@@ -158,9 +146,7 @@ class EngineControl extends Component {
               return engines.map((engine, index) => {
                 return (
                   <div key={engine.id} className="engineGroup">
-                    <h4>
-                      {engine.name}
-                    </h4>
+                    <h4>{engine.name}</h4>
                     <ul className="engine">
                       {engine.speeds.map((speed, speedIndex) => {
                         let speedWord = speed;
@@ -207,10 +193,12 @@ class EngineControl extends Component {
         </Row>
         <Row>
           <Col>
-            {engines.length === 1 &&
-              <Engine1 engines={engines} setSpeed={this.setSpeed.bind(this)} />}
-            {engines.length === 2 &&
-              <Engine2 engines={engines} setSpeed={this.setSpeed.bind(this)} />}
+            {engines.length === 1 && (
+              <Engine1 engines={engines} setSpeed={this.setSpeed.bind(this)} />
+            )}
+            {engines.length === 2 && (
+              <Engine2 engines={engines} setSpeed={this.setSpeed.bind(this)} />
+            )}
           </Col>
         </Row>
         <Tour

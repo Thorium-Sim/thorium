@@ -5,9 +5,9 @@ import Crystals from "./crystals";
 import Transporter from "./transporter";
 import TractorBeam from "./tractorBeam";
 
-import "./style.scss";
+import "./style.css";
 
-export default props =>
+export default props => (
   <Container className="card-jrOps">
     <Row>
       <Col sm={5}>
@@ -20,4 +20,5 @@ export default props =>
     <Row>
       <Crystals {...props} />
     </Row>
-  </Container>;
+  </Container>
+);

@@ -32,7 +32,6 @@ class TorpedoFire extends Component {
   render() {
     const { enabled } = this.state;
     const { torpedo } = this.props;
-    console.log(torpedo);
     return (
       <div className="torpedo-loader fire">
         <DamageOverlay
@@ -43,9 +42,7 @@ class TorpedoFire extends Component {
             width: "500px"
           }}
         />
-        <h4 className="text-center">
-          {torpedo.name}
-        </h4>
+        <h4 className="text-center">{torpedo.name}</h4>
         <p>
           Type:{" "}
           {(torpedo.inventory.find(t => t.id === torpedo.loaded) || {}).type ||

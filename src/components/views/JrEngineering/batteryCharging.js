@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./style.scss";
+import "./style.css";
 
 const points = [
   {
@@ -421,33 +421,36 @@ export default class BatteryCharging extends Component {
   render() {
     return (
       <svg className="battery-charging" viewBox="0 0 100 100">
-        {points.map((p, i, arr) =>
+        {points.map((p, i, arr) => (
           <g key={`circle-${p.id}`}>
-            {p.links.length === 0 && !p.charge
-              ? <circle fill="red" cx={p.x * 100} cy={p.y * 100} r={1.5} />
-              : <circle fill="white" cx={p.x * 100} cy={p.y * 100} r={0.7} />}
-            {p.links.map(l =>
+            {p.links.length === 0 && !p.charge ? (
+              <circle fill="red" cx={p.x * 100} cy={p.y * 100} r={1.5} />
+            ) : (
+              <circle fill="white" cx={p.x * 100} cy={p.y * 100} r={0.7} />
+            )}
+            {p.links.map(l => (
               <path
                 d={`M ${p.x * 100} ${p.y * 100} L ${arr.find(a => a.id === l)
                   .x * 100} ${arr.find(a => a.id === l).y * 100}`}
                 stroke="white"
               />
-            )}
+            ))}
           </g>
-        )}
+        ))}
         {points.map(
           (p, i) =>
-            p.links.length > 1 &&
-            <g
-              transform={`translate(${p.x * 100} ${p.y * 100})`}
-              onClick={() => this.rotateArrow(i)}
-            >
-              <path
-                fill={"#0f0"}
-                className={`arrow ${this.state.arrows[i]}`}
-                d={calcD(p)}
-              />
-            </g>
+            p.links.length > 1 && (
+              <g
+                transform={`translate(${p.x * 100} ${p.y * 100})`}
+                onClick={() => this.rotateArrow(i)}
+              >
+                <path
+                  fill={"#0f0"}
+                  className={`arrow ${this.state.arrows[i]}`}
+                  d={calcD(p)}
+                />
+              </g>
+            )
         )}
         <path
           transform="scale(0.08) translate(580 520)"

@@ -205,7 +205,7 @@ class SimulatorConfigView extends Component {
         <Row>
           <Col sm={3}>
             <Card>
-              {stationSets.map(s =>
+              {stationSets.map(s => (
                 <li
                   key={s.id}
                   className={`list-group-item ${selectedStationSet === s.id
@@ -215,7 +215,7 @@ class SimulatorConfigView extends Component {
                 >
                   {s.name}
                 </li>
-              )}
+              ))}
             </Card>
             <ButtonGroup>
               <Button onClick={this.createStationSet} size="sm" color="success">
@@ -226,32 +226,35 @@ class SimulatorConfigView extends Component {
               </Button>
             </ButtonGroup>
             <ButtonGroup>
-              {selectedStationSet &&
+              {selectedStationSet && (
                 <Button
                   onClick={this.renameStationSet}
                   size="sm"
                   color="warning"
                 >
                   Rename
-                </Button>}
-              {selectedStationSet &&
+                </Button>
+              )}
+              {selectedStationSet && (
                 <Button
                   onClick={this.removeStationSet}
                   size="sm"
                   color="danger"
                 >
                   Remove
-                </Button>}
+                </Button>
+              )}
             </ButtonGroup>
           </Col>
           <Col sm={9}>
-            {selectedStationSet &&
+            {selectedStationSet && (
               <ConfigStationSet
                 client={this.props.client}
                 selectedStationSet={stationSets.find(
                   s => s.id === selectedStationSet
                 )}
-              />}
+              />
+            )}
           </Col>
         </Row>
       </Container>
@@ -288,7 +291,7 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
     }
   };
   const removeStation = station => {
-    if (confirm("Are you sure you want to delete that station?")) {
+    if (window.confirm("Are you sure you want to delete that station?")) {
       const variables = {
         id: selectedStationSet.id,
         stationName: station.name
@@ -312,7 +315,7 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
     });
   };
   const removeCard = (card, station) => {
-    if (confirm("Are you sure you want to delete that card?")) {
+    if (window.confirm("Are you sure you want to delete that card?")) {
       const variables = {
         id: selectedStationSet.id,
         stationName: station.name,
@@ -481,7 +484,7 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
                 })}
               </select>
               <label>Message Groups:</label>
-              {["Security", "Damage", "Medical"].map(group =>
+              {["Security", "Damage", "Medical"].map(group => (
                 <label
                   key={`messageGroup-${group}`}
                   style={{ display: "inline-block" }}
@@ -494,9 +497,9 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
                   />{" "}
                   {group}
                 </label>
-              )}
+              ))}
               <label>Widgets:</label>
-              {Object.keys(Widgets).map(widget =>
+              {Object.keys(Widgets).map(widget => (
                 <label
                   key={`widgets-${widget}`}
                   style={{ display: "inline-block" }}
@@ -508,7 +511,7 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
                   />{" "}
                   {widget}
                 </label>
-              )}
+              ))}
             </div>
           );
         })}

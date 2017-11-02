@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Card, CardBlock, Button } from "reactstrap";
+import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
 import { Asset } from "../../../helpers/assets";
 import Decompress from "./Decompress";
 import Door from "./Door";
 import { Clamps } from "../Docking/graphics";
-import "./style.scss";
+import "./style.css";
 
 const SHUTTLE_SUB = gql`
   subscription ShuttlesUpdate($simulatorId: ID) {
@@ -36,7 +36,7 @@ class Shuttles extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            docking: subscriptionData.data.dockingUpdate
+            docking: subscriptionData.dockingUpdate
           });
         }
       });
@@ -52,7 +52,7 @@ class Shuttles extends Component {
       <Container fluid className="shuttles-card">
         {
           <Row>
-            {docking.map((d, i, a) =>
+            {docking.map((d, i, a) => (
               <div className="shuttleBay" key={d.id}>
                 <ShuttleBay
                   {...d}
@@ -61,7 +61,7 @@ class Shuttles extends Component {
                   simulatorId={this.props.simulator.id}
                 />
               </div>
-            )}
+            ))}
           </Row>
         }
       </Container>
@@ -107,10 +107,8 @@ class ShuttleBay extends Component {
     const { animating } = this.state;
     return (
       <Card>
-        <CardBlock>
-          <h3 className="text-center">
-            {name}
-          </h3>
+        <CardBody>
+          <h3 className="text-center">{name}</h3>
           <Row>
             <Col sm={6}>
               <Button
@@ -141,31 +139,35 @@ class ShuttleBay extends Component {
             <Col sm={6}>
               {animating === "clamps" && <Clamps transform={clamps} />}
               {animating === "compress" && <Decompress on={compress} />}
-              {animating === "doors" &&
-                <Door open={!doors} number={"0" + (i + 1)} />}
-              {docked
-                ? <Asset asset={image} simulatorId={simulatorId}>
-                    {({ src }) =>
-                      <div
-                        className="picture shuttle"
-                        style={{
-                          backgroundImage: `url('${src}')`,
-                          display: !animating ? "flex" : "none"
-                        }}
-                      >
-                        <div className="spacer" />
-                      </div>}
-                  </Asset>
-                : <div
-                    style={{ display: !animating ? "flex" : "none" }}
-                    className="shuttle"
-                  >
-                    <h2>No Shuttle</h2>
-                    <div className="spacer" />
-                  </div>}
+              {animating === "doors" && (
+                <Door open={!doors} number={"0" + (i + 1)} />
+              )}
+              {docked ? (
+                <Asset asset={image} simulatorId={simulatorId}>
+                  {({ src }) => (
+                    <div
+                      className="picture shuttle"
+                      style={{
+                        backgroundImage: `url('${src}')`,
+                        display: !animating ? "flex" : "none"
+                      }}
+                    >
+                      <div className="spacer" />
+                    </div>
+                  )}
+                </Asset>
+              ) : (
+                <div
+                  style={{ display: !animating ? "flex" : "none" }}
+                  className="shuttle"
+                >
+                  <h2>No Shuttle</h2>
+                  <div className="spacer" />
+                </div>
+              )}
             </Col>
           </Row>
-        </CardBlock>
+        </CardBody>
       </Card>
     );
   }

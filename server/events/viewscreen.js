@@ -1,4 +1,4 @@
-import App from "../../app";
+import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 
 App.on("updateViewscreenName", ({ id, name }) => {

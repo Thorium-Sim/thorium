@@ -5,13 +5,31 @@ import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 import { DraggableCore } from "react-draggable";
 import { Button, Row, Col } from "reactstrap";
-import ThrusterThree from "./three";
+//import ThrusterThree from "./three";
 import distance from "../../../helpers/distance";
-import Measure from "react-measure";
-import Immutable from "immutable";
+//import Measure from "react-measure";
+
 import DamageOverlay from "../helpers/DamageOverlay";
-import "./style.scss";
+import "./style.css";
 import Tour from "reactour";
+
+const trainingSteps = [
+  {
+    selector: ".direction-drag",
+    content:
+      "These toggles manually steer your ship. Drag the toggle around and watch how it affects the model of your ship. Use the lower sideways toggle to move forward and backward in space."
+  },
+  {
+    selector: ".rotation-drag",
+    content:
+      "Use these toggles to rotate your ship in space. Steering in 3D space is different than driving a car on Earth, where you only have to navigate a 2D plane. Luckily, you also have auto-pilot functions on your ship for long-distance navigation. These manual controls are useful, however, for navigating tighter spaces, like landing docks and asteroid fields."
+  },
+  {
+    selector: ".indicatorCircles",
+    content:
+      "These dials track your rotation in 3D space. The red line represents required thruster settings. Use the rotation controls to orient your ship so it is pointing in the right direction."
+  }
+];
 
 const ROTATION_CHANGE_SUB = gql`
   subscription RotationChanged($simulatorId: ID!) {
@@ -73,9 +91,7 @@ const IndicatorCircle = props => {
           <span className="label left">270</span>
         </div>
       </div>
-      <label>
-        {props.name}
-      </label>
+      <label>{props.name}</label>
     </Col>
   );
 };
@@ -122,22 +138,9 @@ class Thrusters extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const thrusters = Immutable.List(previousResult.thrusters);
-          const thrusterIndex = previousResult.thrusters.findIndex(
-            t => t.id === subscriptionData.data.rotationChange.id
-          );
-          const thruster = Immutable.Map(
-            previousResult.thrusters[thrusterIndex]
-          )
-            .set("rotation", subscriptionData.data.rotationChange.rotation)
-            .set(
-              "rotationRequired",
-              subscriptionData.data.rotationChange.rotationRequired
-            )
-            .set("direction", subscriptionData.data.rotationChange.direction);
-          return {
-            thrusters: thrusters.set(thrusterIndex, thruster).toJS()
-          };
+          return Object.assign({}, previousResult, {
+            thrusters: [subscriptionData.rotationChange]
+          });
         }
       });
     }
@@ -150,7 +153,7 @@ class Thrusters extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
             thrusters: previousResult.thrusters.map(t => {
-              const updateT = subscriptionData.data.systemsUpdate.find(
+              const updateT = subscriptionData.systemsUpdate.find(
                 s => s.id === t.id
               );
               if (updateT) {
@@ -266,8 +269,9 @@ gamepadLoop(){
           this.setState(obj);
           break;
         case "onDrag":
-          if (!this.state[which])
+          if (!this.state[which]) {
             throw new Error("onDrag called before onDragStart.");
+          }
           newPosition.left =
             (parentRect.left + parentRect.width / 2 - e.clientX) /
             width *
@@ -335,8 +339,9 @@ gamepadLoop(){
           this.setState(obj);
           break;
         case "onDragStop":
-          if (!this.state[which])
+          if (!this.state[which]) {
             throw new Error("onDragEnd called before onDragStart.");
+          }
           newPosition.left = this.state[which].left;
           newPosition.top = this.state[which].top;
           this.props.rotationUpdate({ id: id, rotation: rotation, on: false });
@@ -369,11 +374,11 @@ gamepadLoop(){
       width = this.refs.dirCirc.getBoundingClientRect().width;
       height = this.refs.dirCirc.getBoundingClientRect().height;
     }
-    const direction = {
+    /* const direction = {
       x: this.state.direction.left,
       y: this.state.direction.top,
       z: this.state.directionFore.left
-    };
+    };*/
     if (!thruster) return <h1>No thruster system</h1>;
     return (
       <div className="cardThrusters">
@@ -427,8 +432,8 @@ gamepadLoop(){
           <Col className="col-sm-6">
             <Row>
               <div style={{ marginTop: "70%" }} />
-              <Measure useClone={true} includeMargin={false}>
-                {dimensions =>
+              {/*<Measure useClone={true} includeMargin={false}>
+                {dimensions => (
                   <div
                     id="threeThruster"
                     style={{
@@ -439,29 +444,33 @@ gamepadLoop(){
                       bottom: 0
                     }}
                   >
-                    {dimensions.width > 0 &&
+                    {dimensions.width > 0 && (
                       <ThrusterThree
                         dimensions={dimensions}
                         direction={direction}
                         rotation={thruster.rotation}
-                      />}
-                  </div>}
-              </Measure>
+                      />
+                    )}
+                  </div>
+                )}
+              </Measure>*/}
             </Row>
-            {gamepad
-              ? <Row>
-                  <Col className="col-sm-6 col-sm-offset-3">
-                    <Button
-                      type="primary"
-                      className="btn-block"
-                      onClick={this.gamepadControl.bind(this)}
-                      label={`${this.state.control
-                        ? "Deactivate"
-                        : "Activate"} Manual Control`}
-                    />
-                  </Col>
-                </Row>
-              : <div />}
+            {gamepad ? (
+              <Row>
+                <Col className="col-sm-6 col-sm-offset-3">
+                  <Button
+                    type="primary"
+                    className="btn-block"
+                    onClick={this.gamepadControl.bind(this)}
+                    label={`${this.state.control
+                      ? "Deactivate"
+                      : "Activate"} Manual Control`}
+                  />
+                </Col>
+              </Row>
+            ) : (
+              <div />
+            )}
           </Col>
           <Col className="col-sm-3 draggerContainer rotation-drag">
             <label>Rotation</label>
@@ -510,7 +519,7 @@ gamepadLoop(){
           </Col>
         </Row>
         <Row className="indicatorCircles">
-          {!this.props.data.loading &&
+          {!this.props.data.loading && (
             <Col lg={{ size: 6, offset: 3 }}>
               <Row>
                 <IndicatorCircle
@@ -538,7 +547,8 @@ gamepadLoop(){
                   current={thruster.rotation.roll}
                 />
               </Row>
-            </Col>}
+            </Col>
+          )}
         </Row>
         <Tour
           steps={trainingSteps}
@@ -549,24 +559,6 @@ gamepadLoop(){
     );
   }
 }
-
-const trainingSteps = [
-  {
-    selector: ".direction-drag",
-    content:
-      "These toggles manually steer your ship. Drag the toggle around and watch how it affects the model of your ship. Use the lower sideways toggle to move forward and backward in space."
-  },
-  {
-    selector: ".rotation-drag",
-    content:
-      "Use these toggles to rotate your ship in space. Steering in 3D space is different than driving a car on Earth, where you only have to navigate a 2D plane. Luckily, you also have auto-pilot functions on your ship for long-distance navigation. These manual controls are useful, however, for navigating tighter spaces, like landing docks and asteroid fields."
-  },
-  {
-    selector: ".indicatorCircles",
-    content:
-      "These dials track your rotation in 3D space. The red line represents required thruster settings. Use the rotation controls to orient your ship so it is pointing in the right direction."
-  }
-];
 
 const THRUSTER_QUERY = gql`
   query Thrusters($simulatorId: ID) {

@@ -2,14 +2,13 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Container, Row, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 import FontAwesome from "react-fontawesome";
 import Tour from "reactour";
 import DamageOverlay from "../helpers/DamageOverlay";
 
 import Tank from "./tank";
 
-import "./style.scss";
+import "./style.css";
 
 const COOLANT_SUB = gql`
   subscription CoolantUpdate($simulatorId: ID!) {
@@ -64,10 +63,9 @@ class CoolantControl extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ coolant: subscriptionData.data.coolantUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            coolant: subscriptionData.coolantUpdate
+          });
         }
       });
     }
@@ -78,10 +76,9 @@ class CoolantControl extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ systemCoolant: subscriptionData.data.coolantSystemUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            systemCoolant: subscriptionData.coolantSystemUpdate
+          });
         }
       });
     }
@@ -122,13 +119,13 @@ class CoolantControl extends Component {
         <Row>
           <Tank {...coolant} />
           <div className="coolant-containers">
-            {systemCoolant.map(s =>
+            {systemCoolant.map(s => (
               <CoolantBar
                 {...s}
                 key={s.systemId}
                 transferCoolant={this.transferCoolant.bind(this)}
               />
-            )}
+            ))}
           </div>
         </Row>
         <Tour
@@ -163,9 +160,7 @@ const CoolantBar = ({ systemId, name, coolant, transferCoolant }) => {
   return (
     <div>
       <div className="coolant-bar">
-        <p>
-          {name}
-        </p>
+        <p>{name}</p>
         <CoolantLeftBracket />
         <CoolantMiddleBar />
         <div

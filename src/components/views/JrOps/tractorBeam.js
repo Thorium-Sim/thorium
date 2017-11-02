@@ -46,10 +46,8 @@ class TractorBeam extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
             tractorBeam: previousResult.tractorBeam.map(tractorBeam => {
-              if (
-                tractorBeam.id === subscriptionData.data.tractorBeamUpdate.id
-              ) {
-                return subscriptionData.data.tractorBeamUpdate;
+              if (tractorBeam.id === subscriptionData.tractorBeamUpdate.id) {
+                return subscriptionData.tractorBeamUpdate;
               }
               return tractorBeam;
             })
@@ -77,10 +75,10 @@ class TractorBeam extends Component {
     target.y = Math.min(0.9, Math.max(0, (evt.clientY - y) / height));
     let targetedContact = null;
     if (
-      0.8 < target.x + 0.1 &&
-      0.8 > target.x - 0.1 &&
-      0.8 < target.y + 0.1 &&
-      0.8 > target.y - 0.1
+      target.x + 0.1 > 0.8 &&
+      target.x - 0.1 < 0.8 &&
+      target.y + 0.1 > 0.8 &&
+      target.y - 0.1 < 0.8
     ) {
       target.x = 0.8;
       target.y = 0.8;
@@ -188,21 +186,22 @@ class TractorBeam extends Component {
               <div className="lines-x">
                 {Array(Math.round(10))
                   .fill(0)
-                  .map((y, i) =>
+                  .map((y, i) => (
                     <div key={`line-x-${i}`} className="line-x" />
-                  )}
+                  ))}
               </div>
               <div className="lines-y">
                 {Array(10)
                   .fill(0)
-                  .map((y, i) =>
+                  .map((y, i) => (
                     <div key={`line-y-${i}`} className="line-y" />
-                  )}
+                  ))}
               </div>
             </div>
-            {tractorBeam.target &&
+            {tractorBeam.target && (
               <div className="target-holder">
                 <img
+                  alt="target"
                   src={require("./target1.svg")}
                   className="target"
                   draggable="false"
@@ -213,6 +212,7 @@ class TractorBeam extends Component {
                   }}
                 />
                 <img
+                  alt="target"
                   src={require("./target2.svg")}
                   className="target"
                   draggable="false"
@@ -221,16 +221,19 @@ class TractorBeam extends Component {
                     pointerEvents: "none"
                   }}
                 />
-              </div>}
+              </div>
+            )}
             <div className="spacer" />
           </div>
-          {tractorBeam.scanning
-            ? <Button block color="danger" onClick={this.cancelScan}>
-                Cancel Tractor Beam Scan
-              </Button>
-            : <Button block color="primary" onClick={this.beginScan}>
-                Scan for Target
-              </Button>}
+          {tractorBeam.scanning ? (
+            <Button block color="danger" onClick={this.cancelScan}>
+              Cancel Tractor Beam Scan
+            </Button>
+          ) : (
+            <Button block color="primary" onClick={this.beginScan}>
+              Scan for Target
+            </Button>
+          )}
         </Col>
         <Col sm={4}>
           <div

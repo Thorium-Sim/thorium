@@ -2,13 +2,12 @@ import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import { Row, Col, Card, Button } from "reactstrap";
-import Immutable from "immutable";
 import Measure from "react-measure";
 import Satellites from "./Satellites";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Tour from "reactour";
 
-import "./style.scss";
+import "./style.css";
 
 const MESSAGES_SUB = gql`
   subscription LRQueueingSub($simulatorId: ID) {
@@ -64,20 +63,20 @@ class MessageBox extends Component {
   typeLoop() {
     const { message } = this.props;
     const { typedIndex } = this.state;
-    this.setState({
-      typedMessage: message.substr(0, typedIndex),
-      typedIndex: typedIndex + 1
-    });
-    if (typedIndex + 1 <= message.length) {
-      this.loopTimeout = setTimeout(this.typeLoop.bind(this), 16);
+    if (message) {
+      this.setState({
+        typedMessage: message.substr(0, typedIndex),
+        typedIndex: typedIndex + 1
+      });
+      if (typedIndex + 1 <= message.length) {
+        this.loopTimeout = setTimeout(this.typeLoop.bind(this), 16);
+      }
     }
   }
   render() {
     return (
       <div className="message-box">
-        <pre>
-          {this.state.typedMessage}
-        </pre>
+        <pre>{this.state.typedMessage}</pre>
       </div>
     );
   }
@@ -107,13 +106,10 @@ class LongRangeComm extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({
-              longRangeCommunications:
-                subscriptionData.data.longRangeCommunicationsUpdate
-            })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            longRangeCommunications:
+              subscriptionData.longRangeCommunicationsUpdate
+          });
         }
       });
     }
@@ -209,7 +205,7 @@ class LongRangeComm extends Component {
         <Col sm={3} className="message-queue">
           <h4>Message Queue</h4>
           <Card style={{ minHeight: "60px" }}>
-            {messages.map(m =>
+            {messages.map(m => (
               <li
                 onClick={() => {
                   this.setState({ selectedMessage: m.id, selectedSat: null });
@@ -221,21 +217,33 @@ class LongRangeComm extends Component {
               >
                 {`${m.datestamp}: ${m.sender}`}
               </li>
-            )}
+            ))}
           </Card>
         </Col>
         <Col sm={9}>
           <div className="sat-container">
-            <Measure includeMargin={true}>
-              {dimensions =>
-                <Satellites
-                  selectSat={messageObj ? this.selectSat.bind(this) : () => {}}
-                  selectedSat={this.state.selectedSat}
-                  width={dimensions.width}
-                  height={dimensions.height}
-                  messageLoc={this.state.messageLoc}
-                  messageText={this.state.messageText}
-                />}
+            <Measure
+              bounds
+              onResize={contentRect => {
+                this.setState({ dimensions: contentRect.bounds });
+              }}
+            >
+              {({ measureRef }) => (
+                <div ref={measureRef}>
+                  {this.state.dimensions && (
+                    <Satellites
+                      selectSat={
+                        messageObj ? this.selectSat.bind(this) : () => {}
+                      }
+                      selectedSat={this.state.selectedSat}
+                      width={this.state.dimensions.width}
+                      height={this.state.dimensions.height}
+                      messageLoc={this.state.messageLoc}
+                      messageText={this.state.messageText}
+                    />
+                  )}
+                </div>
+              )}
             </Measure>
           </div>
           <Row style={{ marginTop: "10px" }}>

@@ -55,10 +55,8 @@ class Transporters extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
             transporters: previousResult.transporters.map(transporter => {
-              if (
-                transporter.id === subscriptionData.data.transporterUpdate.id
-              ) {
-                return subscriptionData.data.transporterUpdate;
+              if (transporter.id === subscriptionData.transporterUpdate.id) {
+                return subscriptionData.transporterUpdate;
               }
               return transporter;
             })
@@ -182,27 +180,29 @@ class Transporters extends Component {
         <Col sm={8}>
           <div style={{ position: "relative" }}>
             <div className="lines-holder">
-              {transporter.state === "Scanning" &&
-                <div className="scanner-bar" />}
+              {transporter.state === "Scanning" && (
+                <div className="scanner-bar" />
+              )}
 
               <div className="lines-x">
                 {Array(Math.round(10))
                   .fill(0)
-                  .map((y, i) =>
+                  .map((y, i) => (
                     <div key={`line-x-${i}`} className="line-x" />
-                  )}
+                  ))}
               </div>
               <div className="lines-y">
                 {Array(10)
                   .fill(0)
-                  .map((y, i) =>
+                  .map((y, i) => (
                     <div key={`line-y-${i}`} className="line-y" />
-                  )}
+                  ))}
               </div>
             </div>
-            {transporter.state === "Targeting" &&
+            {transporter.state === "Targeting" && (
               <div className="target-holder">
                 <img
+                  alt="target"
                   src={require("./target1.svg")}
                   className="target"
                   draggable="false"
@@ -212,8 +212,9 @@ class Transporters extends Component {
                       400}%)`
                   }}
                 />
-                {transporter.targets.map(t =>
+                {transporter.targets.map(t => (
                   <img
+                    alt="target"
                     key={t.id}
                     src={require("./target2.svg")}
                     className="target"
@@ -224,17 +225,20 @@ class Transporters extends Component {
                       pointerEvents: "none"
                     }}
                   />
-                )}
-              </div>}
+                ))}
+              </div>
+            )}
             <div className="spacer" />
           </div>
-          {transporter.state === "Scanning"
-            ? <Button block color="danger" onClick={this.cancelScan}>
-                Cancel Transport
-              </Button>
-            : <Button block color="primary" onClick={this.beginScan}>
-                Scan for Target
-              </Button>}
+          {transporter.state === "Scanning" ? (
+            <Button block color="danger" onClick={this.cancelScan}>
+              Cancel Transport
+            </Button>
+          ) : (
+            <Button block color="primary" onClick={this.beginScan}>
+              Scan for Target
+            </Button>
+          )}
         </Col>
         <Col sm={4}>
           <div className="spacer" />

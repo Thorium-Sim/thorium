@@ -34,7 +34,7 @@ class Destination extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            navigation: subscriptionData.data.navigationUpdate
+            navigation: subscriptionData.navigationUpdate
           });
         }
       });
@@ -42,11 +42,11 @@ class Destination extends Component {
   }
   componentWillUnmount() {
     // Cancel the subscription
-    this.sub();
+    this.sub && this.sub();
   }
   render() {
     if (this.props.data.loading) return null;
-    const nav = this.props.data.navigation[0];
+    const nav = this.props.data.navigation && this.props.data.navigation[0];
     if (!nav) return null;
     if (!nav.calculate) return null;
     const onCourse =

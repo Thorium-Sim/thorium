@@ -72,7 +72,7 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
             </tr>
           </thead>
           <tbody>
-            {docking.map(d =>
+            {docking.map(d => (
               <tr key={d.id}>
                 <td>
                   <Input
@@ -91,16 +91,16 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
                     <option value="" disabled>
                       Select An Image
                     </option>
-                    {assetFolders[0].containers.map(a =>
+                    {assetFolders[0].containers.map(a => (
                       <option key={a.id} value={a.fullPath}>
                         {a.name}
                       </option>
-                    )}
+                    ))}
                   </Input>
                 </td>
                 <td>
                   <Asset asset={d.image}>
-                    {({ src }) => <img src={src} width="40" />}
+                    {({ src }) => <img alt="Shuttle" src={src} width="40" />}
                   </Asset>
                 </td>
                 <td>
@@ -113,7 +113,7 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
                   </Button>
                 </td>
               </tr>
-            )}
+            ))}
           </tbody>
         </Table>
         <Button color="success" onClick={addShuttle}>

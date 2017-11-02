@@ -1,11 +1,11 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Button, Row, Col, Card, CardBlock } from "reactstrap";
-import Immutable from "immutable";
-import "./style.scss";
+import { Button, Row, Col, Card, CardBody } from "reactstrap";
+
+import "./style.css";
 import Grid from "./GridDom";
-import Measure from "react-measure";
 import DamageOverlay from "../helpers/DamageOverlay";
 import SensorScans from "./SensorScans";
 import { Asset } from "../../../helpers/assets";
@@ -50,16 +50,36 @@ class Sensors extends Component {
       hoverContact: { name: "", pictureUrl: "" }
     };
   }
+  componentDidMount() {
+    if (!this.state.dimensions) {
+      const domNode = ReactDOM.findDOMNode(this).querySelector("#threeSensors");
+      if (domNode) {
+        this.setState({
+          dimensions: domNode.getBoundingClientRect()
+        });
+      }
+    }
+  }
+  componentDidUpdate() {
+    const domNode = ReactDOM.findDOMNode(this).querySelector("#threeSensors");
+    if (
+      !this.state.dimensions ||
+      this.state.dimensions.width !== domNode.getBoundingClientRect().width
+    ) {
+      this.setState({
+        dimensions: domNode.getBoundingClientRect()
+      });
+    }
+  }
   componentWillReceiveProps(nextProps) {
     if (!this.sensorsSubscription && !nextProps.data.loading) {
       this.sensorsSubscription = nextProps.data.subscribeToMore({
         document: SENSOR_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ sensors: subscriptionData.data.sensorsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            sensors: subscriptionData.sensorsUpdate
+          });
         }
       });
     }
@@ -70,7 +90,7 @@ class Sensors extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           if (
             previousResult.sensors.find(
-              s => s.id === subscriptionData.data.sensorsPing
+              s => s.id === subscriptionData.sensorsPing
             )
           ) {
             this.ping();
@@ -179,7 +199,7 @@ class Sensors extends Component {
   }
   render() {
     //if (this.props.data.error) console.error(this.props.data.error);
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading) return <p>Loading...</p>;
     const sensors = this.props.data.sensors[0];
     const { pingMode, pings } = sensors;
     const { hoverContact, ping, pingTime } = this.state;
@@ -193,7 +213,7 @@ class Sensors extends Component {
                 system={sensors}
               />
               <SensorScans sensors={sensors} client={this.props.client} />
-              {pings &&
+              {pings && (
                 <Row>
                   <Col sm="12">
                     <label>Sensor Options:</label>
@@ -238,7 +258,8 @@ class Sensors extends Component {
                       Ping
                     </Button>
                   </Col>
-                </Row>}
+                </Row>
+              )}
               {/*<Row>
 			<Col className="col-sm-12">
 			<h4>Contact Coordinates</h4>
@@ -255,33 +276,29 @@ class Sensors extends Component {
             </Col>
             <Col sm={6} className="arrayContainer">
               <div className="spacer" />
-              <Measure useClone={true} includeMargin={false}>
-                {dimensions =>
-                  <div
-                    id="threeSensors"
-                    className="array"
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      display: "flex",
-                      justifyContent: "center"
-                    }}
-                  >
-                    {dimensions.width > 0 &&
-                      <Grid
-                        dimensions={dimensions}
-                        sensor={sensors.id}
-                        hoverContact={this._hoverContact.bind(this)}
-                        ping={ping}
-                        pings={sensors.pings}
-                        pingTime={pingTime}
-                        simulatorId={this.props.simulator.id}
-                      />}
-                  </div>}
-              </Measure>
+              <div
+                id="threeSensors"
+                className="array"
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  display: "flex",
+                  justifyContent: "center"
+                }}
+              >
+                <Grid
+                  dimensions={this.state.dimensions}
+                  sensor={sensors.id}
+                  hoverContact={this._hoverContact.bind(this)}
+                  ping={ping}
+                  pings={sensors.pings}
+                  pingTime={pingTime}
+                  simulatorId={this.props.simulator.id}
+                />
+              </div>
               <DamageOverlay
                 message="External Sensors Offline"
                 system={sensors}
@@ -290,35 +307,36 @@ class Sensors extends Component {
             <Col className="col-sm-3 data">
               <Row>
                 <Col className="col-sm-12 contactPictureContainer">
-                  {hoverContact.picture
-                    ? <Asset asset={hoverContact.picture}>
-                        {({ src }) =>
-                          <div
-                            className="card contactPicture"
-                            style={{
-                              backgroundSize: "contain",
-                              backgroundPosition: "center",
-                              backgroundRepeat: "no-repeat",
-                              backgroundColor: "black",
-                              backgroundImage: `url('${src}')`
-                            }}
-                          />}
-                      </Asset>
-                    : <div
-                        className="card contactPicture"
-                        style={{
-                          backgroundSize: "contain",
-                          backgroundPosition: "center",
-                          backgroundRepeat: "no-repeat",
-                          backgroundColor: "black",
-                          backgroundImage: `none`
-                        }}
-                      />}
+                  {hoverContact.picture ? (
+                    <Asset asset={hoverContact.picture}>
+                      {({ src }) => (
+                        <div
+                          className="card contactPicture"
+                          style={{
+                            backgroundSize: "contain",
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                            backgroundColor: "black",
+                            backgroundImage: `url('${src}')`
+                          }}
+                        />
+                      )}
+                    </Asset>
+                  ) : (
+                    <div
+                      className="card contactPicture"
+                      style={{
+                        backgroundSize: "contain",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat",
+                        backgroundColor: "black",
+                        backgroundImage: `none`
+                      }}
+                    />
+                  )}
                 </Col>
                 <Col className="col-sm-12 contactNameContainer">
-                  <div className="card contactName">
-                    {hoverContact.name}
-                  </div>
+                  <div className="card contactName">{hoverContact.name}</div>
                 </Col>
               </Row>
               <Row>
@@ -327,11 +345,9 @@ class Sensors extends Component {
                 </Col>
                 <Col className="col-sm-12">
                   <Card className="processedData">
-                    <CardBlock>
-                      <pre>
-                        {this.state.processedData}
-                      </pre>
-                    </CardBlock>
+                    <CardBody>
+                      <pre>{this.state.processedData}</pre>
+                    </CardBody>
                   </Card>
                 </Col>
               </Row>

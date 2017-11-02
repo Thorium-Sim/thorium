@@ -6,17 +6,16 @@ import {
   Row,
   Col,
   Card,
-  CardBlock,
+  CardBody,
   Button,
   Input,
   Label,
   FormGroup
 } from "reactstrap";
-import Immutable from "immutable";
 import Tour from "reactour";
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
 
-import "./style.scss";
+import "./style.css";
 
 const CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID) {
@@ -75,10 +74,9 @@ class DamageTeams extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ teams: subscriptionData.data.teamsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            teams: subscriptionData.teamsUpdate
+          });
         }
       });
     }
@@ -89,10 +87,9 @@ class DamageTeams extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ crew: subscriptionData.data.crewUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            crew: subscriptionData.crewUpdate
+          });
         }
       });
     }
@@ -213,8 +210,8 @@ class DamageTeams extends Component {
         <Row>
           <Col sm={3}>
             <Card>
-              <CardBlock>
-                {teams.map(t =>
+              <CardBody>
+                {teams.map(t => (
                   <p
                     key={t.id}
                     onClick={() => {
@@ -226,8 +223,8 @@ class DamageTeams extends Component {
                   >
                     {t.name}
                   </p>
-                )}
-              </CardBlock>
+                ))}
+              </CardBody>
             </Card>
             <Button
               block
@@ -413,59 +410,61 @@ class DamageTeams extends Component {
                         </Button>
                       </Col>
                     </Row>
-                    {team.creating
-                      ? <div>
-                          <Button
-                            block
-                            size="lg"
-                            color="success"
-                            className="recall-button"
-                            disabled={!team.id}
-                            onClick={() => {
-                              this.createDamageTeam(team);
-                            }}
-                          >
-                            Create Damage Team
-                          </Button>
-                          <Button
-                            block
-                            size="lg"
-                            color="danger"
-                            disabled={!team.id}
-                            onClick={() => {
-                              this.setState({
-                                selectedTeam: null
-                              });
-                            }}
-                          >
-                            Cancel
-                          </Button>
-                        </div>
-                      : <div>
-                          <Button
-                            block
-                            size="lg"
-                            color="success"
-                            disabled={!team.id}
-                            className="recall-button"
-                            onClick={() => {
-                              this.commitTeam(team);
-                            }}
-                          >
-                            Update Damage Team
-                          </Button>
-                          <Button
-                            block
-                            size="lg"
-                            color="danger"
-                            disabled={!team.id}
-                            onClick={() => {
-                              this.removeTeam(team.id);
-                            }}
-                          >
-                            Recall Damage Team
-                          </Button>
-                        </div>}
+                    {team.creating ? (
+                      <div>
+                        <Button
+                          block
+                          size="lg"
+                          color="success"
+                          className="recall-button"
+                          disabled={!team.id}
+                          onClick={() => {
+                            this.createDamageTeam(team);
+                          }}
+                        >
+                          Create Damage Team
+                        </Button>
+                        <Button
+                          block
+                          size="lg"
+                          color="danger"
+                          disabled={!team.id}
+                          onClick={() => {
+                            this.setState({
+                              selectedTeam: null
+                            });
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    ) : (
+                      <div>
+                        <Button
+                          block
+                          size="lg"
+                          color="success"
+                          disabled={!team.id}
+                          className="recall-button"
+                          onClick={() => {
+                            this.commitTeam(team);
+                          }}
+                        >
+                          Update Damage Team
+                        </Button>
+                        <Button
+                          block
+                          size="lg"
+                          color="danger"
+                          disabled={!team.id}
+                          onClick={() => {
+                            this.removeTeam(team.id);
+                          }}
+                        >
+                          Recall Damage Team
+                        </Button>
+                      </div>
+                    )}
                   </Col>
                   <Col
                     xl={{ size: 5, offset: 2 }}
@@ -476,10 +475,10 @@ class DamageTeams extends Component {
                       Available Officers
                     </Label>
                     <Card>
-                      <CardBlock>
+                      <CardBody>
                         {crew
                           .filter(c => assignedOfficers.indexOf(c.id) === -1)
-                          .map(c =>
+                          .map(c => (
                             <div
                               className="officer"
                               key={c.id}
@@ -489,24 +488,20 @@ class DamageTeams extends Component {
                                 }
                               }}
                             >
-                              <p>
-                                {c.name}
-                              </p>
-                              <small>
-                                {c.position}
-                              </small>
+                              <p>{c.name}</p>
+                              <small>{c.position}</small>
                             </div>
-                          )}
-                      </CardBlock>
+                          ))}
+                      </CardBody>
                     </Card>
                     <Label for="teamName" size="lg">
                       Assigned Officers
                     </Label>
                     <Card>
-                      <CardBlock>
+                      <CardBody>
                         {team &&
                           team.officers &&
-                          team.officers.map(c =>
+                          team.officers.map(c => (
                             <div
                               className="officer"
                               key={c.id}
@@ -516,15 +511,11 @@ class DamageTeams extends Component {
                                 }
                               }}
                             >
-                              <p>
-                                {c.name}
-                              </p>
-                              <small>
-                                {c.position}
-                              </small>
+                              <p>{c.name}</p>
+                              <small>{c.position}</small>
                             </div>
-                          )}
-                      </CardBlock>
+                          ))}
+                      </CardBody>
                     </Card>
                   </Col>
                 </Row>

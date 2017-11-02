@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
+
 import Shield1 from "./shield-1";
 import Shield4 from "./shield-4";
 import Shield6 from "./shield-6";
-import "./style.scss";
+import "./style.css";
 
 const SHIELD_SUB = gql`
   subscription ShieldSub($simulatorId: ID) {
@@ -48,10 +48,9 @@ class ShieldControl extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ shields: subscriptionData.data.shieldsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            shields: subscriptionData.shieldsUpdate
+          });
         }
       });
     }

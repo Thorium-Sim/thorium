@@ -6,7 +6,7 @@ import CardContainer from "../containers/Card";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Caching from "./caching";
-import "./client.scss";
+import "./client.css";
 
 class ClientWrapper extends Component {
   constructor(props) {
@@ -101,7 +101,7 @@ const creditList = [
 ];
 class Credits extends Component {
   state = { debug: false, scroll: 0 };
-  toggleDebug = evt => {
+  toggleDebug = () => {
     this.setState({
       debug: !this.state.debug
     });
@@ -151,44 +151,34 @@ class Credits extends Component {
       <div className="credit-bg">
         <Container>
           <img
-            role="presentation"
+            alt="Logo"
             src={require("./logo.png")}
             draggable="false"
             onClick={this.toggleDebug}
           />
           <h1>Thorium</h1>
-          {this.state.debug
-            ? <div className="debug">
-                <h4>
-                  <Button color="info" onClick={this.changeClientId}>
-                    Client ID: {client.id}
-                  </Button>
-                </h4>
-                <h5>
-                  Flight: {flight.name}
-                </h5>
-                <h5>
-                  Simulator: {simulator.name}
-                </h5>
-                <h5>
-                  Station: {station.name}
-                </h5>
-                <h5>
-                  Login Name: {client.loginName}
-                </h5>
-              </div>
-            : <div ref="scroll" className="scroll">
-                {creditList.map(c =>
-                  <div key={c.header} className="creditSection">
-                    <h3>
-                      {c.header}
-                    </h3>
-                    <h4>
-                      {c.content}
-                    </h4>
-                  </div>
-                )}
-              </div>}
+          {this.state.debug ? (
+            <div className="debug">
+              <h4>
+                <Button color="info" onClick={this.changeClientId}>
+                  Client ID: {client.id}
+                </Button>
+              </h4>
+              <h5>Flight: {flight.name}</h5>
+              <h5>Simulator: {simulator.name}</h5>
+              <h5>Station: {station.name}</h5>
+              <h5>Login Name: {client.loginName}</h5>
+            </div>
+          ) : (
+            <div ref="scroll" className="scroll">
+              {creditList.map(c => (
+                <div key={c.header} className="creditSection">
+                  <h3>{c.header}</h3>
+                  <h4>{c.content}</h4>
+                </div>
+              ))}
+            </div>
+          )}
         </Container>
       </div>
     );
@@ -286,7 +276,7 @@ class ClientView extends Component {
           document: SIMULATOR_SUB,
           variables: { id: client.simulator.id },
           updateQuery: (previousResult, { subscriptionData }) => {
-            const sim = subscriptionData.data.simulatorsUpdate[0];
+            const sim = subscriptionData.simulatorsUpdate[0];
             return Object.assign({}, previousResult, {
               clients: previousResult.clients.map(
                 ({
@@ -331,10 +321,10 @@ class ClientView extends Component {
     });
   }
   render() {
-    let flight,
-      simulator,
-      station,
-      client = {};
+    let flight;
+    let simulator;
+    let station;
+    let client = {};
     if (!this.props.data.loading && this.props.data.clients[0]) {
       client = this.props.data.clients[0];
       flight = client.flight;
@@ -344,18 +334,20 @@ class ClientView extends Component {
     return (
       <div>
         <Caching client={client} />
-        {flight && simulator && station
-          ? <CardContainer
-              flight={flight}
-              simulator={simulator}
-              station={station}
-              client={client}
-            />
-          : <Credits
-              {...this.props}
-              clientId={this.props.clientId}
-              updateClientId={this.props.updateClientId}
-            />}
+        {flight && simulator && station ? (
+          <CardContainer
+            flight={flight}
+            simulator={simulator}
+            station={station}
+            client={client}
+          />
+        ) : (
+          <Credits
+            {...this.props}
+            clientId={this.props.clientId}
+            updateClientId={this.props.updateClientId}
+          />
+        )}
       </div>
     );
   }

@@ -32,7 +32,7 @@ class ShipCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            simulators: subscriptionData.data.simulatorsUpdate
+            simulators: subscriptionData.simulatorsUpdate
           });
         }
       });
@@ -129,11 +129,11 @@ class ShipCore extends Component {
           value={layout}
           onChange={evt => this.changeSimulatorLayout(evt.target.value)}
         >
-          {layouts.map(l =>
+          {layouts.map(l => (
             <option key={`layout-${l}`} value={l}>
               {l}
             </option>
-          )}
+          ))}
         </Input>
         <p>Bridge Crew: </p>
         <InputField

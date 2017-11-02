@@ -6,14 +6,14 @@ const Caching = ({ client }) => {
   return (
     <div>
       {client.caches &&
-        client.caches.map(c =>
+        client.caches.map(c => (
           <link
             key={c}
             rel="preload"
-            href={`${location.origin}${c}`}
+            href={`${window.location.origin}${c}`}
             as="video"
           />
-        )}
+        ))}
     </div>
   );
 };

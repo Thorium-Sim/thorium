@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import { Row, Col, Container, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 //import DamageOverlay from '../helpers/DamageOverlay';
-import "./style.scss";
-export PhaserFire from "./phaserFire";
+import "./style.css";
+export { default as PhaserFire } from "./phaserFire";
 
 const PHASERS_SUB = gql`
   subscription PhasersUpdate($simulatorId: ID!) {
@@ -47,10 +46,9 @@ class PhaserCharging extends Component {
         document: PHASERS_SUB,
         variables: { simulatorId: this.props.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ phasers: subscriptionData.data.phasersUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            phasers: subscriptionData.phasersUpdate
+          });
         }
       });
     }
@@ -134,7 +132,7 @@ class PhaserCharging extends Component {
             </p>
           </Col>
         </Row>
-        {phasers.beams.map((p, i) =>
+        {phasers.beams.map((p, i) => (
           <PhaserBeam
             key={p.id}
             {...p}
@@ -142,7 +140,7 @@ class PhaserCharging extends Component {
             selectedBank={selectedBank}
             selectPhaserBank={this.selectPhaserBank.bind(this, p.id)}
           />
-        )}
+        ))}
         <Row>
           <Col sm={{ size: 6, offset: 3 }}>
             <Row>
@@ -218,12 +216,8 @@ export const PhaserBeam = ({
         <Row className="phaserBeam">
           <Col sm="8">
             <div className="phaserText">
-              <p>
-                Phaser Bank {index}
-              </p>
-              <p>
-                Charge: {Math.round(charge * 100)}%
-              </p>
+              <p>Phaser Bank {index}</p>
+              <p>Charge: {Math.round(charge * 100)}%</p>
             </div>
             <div className="chargeHolder">
               <div className="charge" style={{ width: `${charge * 100}%` }} />
@@ -381,9 +375,7 @@ export class PhaserArc extends Component {
           >
             Tighten Arc
           </Button>
-          <p>
-            Beam Arc: {Math.round(arc * 90)} Degrees
-          </p>
+          <p>Beam Arc: {Math.round(arc * 90)} Degrees</p>
         </Col>
         <Col sm={{ size: 8 }}>
           <div className="lasers">

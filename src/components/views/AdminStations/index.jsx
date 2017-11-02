@@ -3,7 +3,7 @@ import { findDOMNode } from 'react-dom';
 import { Button, Row, Col, Card } from '../../generic';
 import dragula from 'react-dragula';
 import viewList from '../list.js';
-import './style.scss';
+import './style.css';
 
 class AdminStationsContent extends Component {
 	constructor(props) {
@@ -41,7 +41,7 @@ class AdminStationsContent extends Component {
 		this.props.operationChannel.push("update",updateObj);
 	}
 	_deleteStation(){
-		if (confirm("Are you sure you want to delete this station? It will delete all the cards too.")){
+		if (window.confirm("Are you sure you want to delete this station? It will delete all the cards too.")){
 			//Delete the station
 			let deleteObj = {
 				table:"stations",
@@ -81,7 +81,7 @@ class AdminStationsContent extends Component {
 		this.props.operationChannel.push("insert",insertObj);
 	}
 	_deleteCard(){
-		if (confirm("Are you sure you want to delete this card?")){
+		if (window.confirm("Are you sure you want to delete this card?")){
 			//Delete the station
 			let deleteObj = {
 				table:"cards",

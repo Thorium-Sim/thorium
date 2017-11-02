@@ -15,7 +15,7 @@ import {
 } from "reactstrap";
 import TimelineConfig from "./TimelineConfig";
 import { Link } from "react-router";
-import "./style.scss";
+import "./style.css";
 const MISSION_SUB = gql`
   subscription MissionSubscription {
     missionsUpdate {
@@ -51,7 +51,7 @@ class MissionsConfig extends Component {
         document: MISSION_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            missions: subscriptionData.data.missionsUpdate
+            missions: subscriptionData.missionsUpdate
           });
         }
       });
@@ -78,7 +78,7 @@ class MissionsConfig extends Component {
   removeMission = () => {
     let mission = this.state.selectedMission;
     if (mission) {
-      if (confirm("Are you sure you want to delete that mission?")) {
+      if (window.confirm("Are you sure you want to delete that mission?")) {
         this.props.client.mutate({
           mutation: gql`
             mutation RemoveMission($id: ID!) {
@@ -181,10 +181,11 @@ class MissionsConfig extends Component {
               <Button onClick={this.createMission} size="sm" color="success">
                 Add
               </Button>
-              {selectedMission &&
+              {selectedMission && (
                 <Button onClick={this.removeMission} size="sm" color="danger">
                   Remove
-                </Button>}
+                </Button>
+              )}
             </ButtonGroup>
             <FormGroup>
               <Label for="importFile">Import Mission</Label>
@@ -199,7 +200,7 @@ class MissionsConfig extends Component {
               </FormText>
             </FormGroup>
           </Col>
-          {mission &&
+          {mission && (
             <Col sm="2">
               <h5>Mission Config</h5>
               <FormGroup>
@@ -225,8 +226,9 @@ class MissionsConfig extends Component {
               <Button block color="info" onClick={this.exportMission}>
                 Export
               </Button>
-            </Col>}
-          {mission &&
+            </Col>
+          )}
+          {mission && (
             <Col sm="8">
               <TimelineConfig
                 type="mission"
@@ -234,7 +236,8 @@ class MissionsConfig extends Component {
                 config={this.props.config}
                 client={this.props.client}
               />
-            </Col>}
+            </Col>
+          )}
         </Row>
       </Container>
     );

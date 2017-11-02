@@ -49,12 +49,14 @@ const Thrusters = props => {
                 onMouseUp={() => thrust({ x: 0, y: 0 })}
               />
               <Asset asset="/Ship Views/Top" simulatorId={simulator.id}>
-                {({ src }) =>
+                {({ src }) => (
                   <img
+                    alt="thruster"
                     draggable="false"
                     src={src}
                     style={{ width: "100%", transform: "rotate(-90deg)" }}
-                  />}
+                  />
+                )}
               </Asset>
               <FontAwesome
                 name="arrow-right"

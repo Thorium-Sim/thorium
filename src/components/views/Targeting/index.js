@@ -3,7 +3,7 @@ import { Row, Col, Container } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
-import Immutable from "immutable";
+
 import Grid from "./gridDom";
 import TorpedoLoading from "../TorpedoLoading";
 import { /*PhaserArc, */ PhaserBeam, PhaserFire } from "../PhaserCharging";
@@ -199,20 +199,18 @@ class Targeting extends Component {
         document: TARGETING_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ targeting: subscriptionData.data.targetingUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            targeting: subscriptionData.targetingUpdate
+          });
         }
       });
       this.phasersSubscription = nextProps.data.subscribeToMore({
         document: PHASERS_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ phasers: subscriptionData.data.phasersUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            phasers: subscriptionData.phasersUpdate
+          });
         }
       });
     }
@@ -359,49 +357,61 @@ class Targeting extends Component {
         <Row>
           <Col sm="5">
             <DamageOverlay system={targeting} message="Targeting Offline" />
-            {targeting.coordinateTargeting
-              ? <Coordinates targeting={targeting} client={this.props.client} />
-              : <div style={{ height: "100%", minHeight: "40vh" }}>
-                  <Measure useClone={true} includeMargin={false}>
-                    {dimensions => {
-                      return dimensions.width !== 0
-                        ? <Grid
-                            dimensions={dimensions}
-                            targetContact={this.targetContact.bind(this)}
-                            untargetContact={this.untargetContact.bind(this)}
-                            targets={targeting.contacts}
-                          />
-                        : <div />;
-                    }}
-                  </Measure>
-                  <small>Follow a contact with your mouse to target.</small>
-                </div>}
+            {targeting.coordinateTargeting ? (
+              <Coordinates targeting={targeting} client={this.props.client} />
+            ) : (
+              <div style={{ height: "100%", minHeight: "40vh" }}>
+                <Measure
+                  bounds
+                  onResize={contentRect => {
+                    this.setState({ dimensions: contentRect.bounds });
+                  }}
+                >
+                  {({ measureRef }) => (
+                    <div
+                      ref={measureRef}
+                      style={{ height: "100%", minHeight: "40vh" }}
+                    >
+                      <Grid
+                        dimensions={this.state.dimensions}
+                        targetContact={this.targetContact.bind(this)}
+                        untargetContact={this.untargetContact.bind(this)}
+                        targets={targeting.contacts}
+                      />
+                    </div>
+                  )}
+                </Measure>
+                <small>Follow a contact with your mouse to target.</small>
+              </div>
+            )}
           </Col>
           <Col sm="7">
             <DamageOverlay system={phasers} message="Phasers Offline" />
             <div className="phaser-holder">
               {phasers.beams.map(
                 (p, i, arr) =>
-                  arr.length > 2
-                    ? <PhaserFire
-                        key={p.id}
-                        {...p}
-                        disabled={this.state.disabledPhasers[p.id]}
-                        index={i + 1}
-                        firePhasers={this.firePhasers.bind(this)}
-                        coolPhasers={this.coolPhasers.bind(this)}
-                      />
-                    : <PhaserBeam
-                        key={p.id}
-                        {...p}
-                        disabled={this.state.disabledPhasers[p.id]}
-                        index={i + 1}
-                        chargePhasers={this.chargePhasers.bind(this)}
-                        dischargePhasers={this.dischargePhasers.bind(this)}
-                        coolPhasers={this.coolPhasers.bind(this)}
-                        firePhasers={this.firePhasers.bind(this)}
-                        targeting={true}
-                      />
+                  arr.length > 2 ? (
+                    <PhaserFire
+                      key={p.id}
+                      {...p}
+                      disabled={this.state.disabledPhasers[p.id]}
+                      index={i + 1}
+                      firePhasers={this.firePhasers.bind(this)}
+                      coolPhasers={this.coolPhasers.bind(this)}
+                    />
+                  ) : (
+                    <PhaserBeam
+                      key={p.id}
+                      {...p}
+                      disabled={this.state.disabledPhasers[p.id]}
+                      index={i + 1}
+                      chargePhasers={this.chargePhasers.bind(this)}
+                      dischargePhasers={this.dischargePhasers.bind(this)}
+                      coolPhasers={this.coolPhasers.bind(this)}
+                      firePhasers={this.firePhasers.bind(this)}
+                      targeting={true}
+                    />
+                  )
               )}
             </div>
             <Row>

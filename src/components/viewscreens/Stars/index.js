@@ -37,10 +37,10 @@ class Stars extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           const engines = previousResult.engines.map(engine => {
-            if (engine.id === subscriptionData.data.speedChange.id) {
+            if (engine.id === subscriptionData.speedChange.id) {
               return Object.assign({}, engine, {
-                speed: subscriptionData.data.speedChange.speed,
-                on: subscriptionData.data.speedChange.on
+                speed: subscriptionData.speedChange.speed,
+                on: subscriptionData.speedChange.on
               });
             }
             return engine;

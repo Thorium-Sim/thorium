@@ -4,7 +4,6 @@ var chalk = require("chalk");
 var config = require("../config/webpack.config.server");
 var fs = require("fs");
 const { exec } = require("pkg");
-const { exec: execCommand } = require("child_process");
 const ncp = require("ncp").ncp;
 
 var deleteFolderRecursive = function(path) {
@@ -74,11 +73,5 @@ webpack(config).run((err, stats) => {
   console.log();
   console.log(chalk.cyan("Compiling PKG"));
 
-  exec(["build-server" /*, "--target", "host"*/]).then(() => {
-    if (process.platform === "darwin") {
-      console.log(chalk.cyan("Applying an icon to the PKG"));
-      // Apply the icon, just for fun
-      execCommand("npm run apply-icon");
-    }
-  });
+  exec(["build-server" /*, "--target", "host"*/]).then(() => {});
 });

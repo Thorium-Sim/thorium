@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Container, Row, Col } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 
-import "./style.scss";
+import "./style.css";
 
 const ISOCHIPS_SUB = gql`
   subscription IsochipsUpdate($simulatorId: ID) {
@@ -31,7 +31,7 @@ class Isochips extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            template: subscriptionData.data.templateUpdate
+            template: subscriptionData.templateUpdate
           });
         }
       });
@@ -46,11 +46,11 @@ class Isochips extends Component {
     return (
       <Container className="isochips">
         <Row>
-          {isochips.map(i =>
+          {isochips.map(i => (
             <Col key={i.id} sm={2}>
               <Isochip {...i} />
             </Col>
-          )}
+          ))}
         </Row>
       </Container>
     );
@@ -60,13 +60,9 @@ class Isochips extends Component {
 const Isochip = ({ state, system: { displayName }, label }) => {
   return (
     <div className="isochip-container">
-      <label>
-        {displayName}
-      </label>
+      <label>{displayName}</label>
       <div className={`state ${state}`} />
-      <label>
-        {label}
-      </label>
+      <label>{label}</label>
     </div>
   );
 };

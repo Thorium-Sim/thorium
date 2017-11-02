@@ -7,11 +7,10 @@
     height: 35vh;
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
     align-items: flex-start;
     justify-content: space-around;
     div {
-      width: 70%;
+      width: 100%;
     }
   }
   .targetingGrid-dom {

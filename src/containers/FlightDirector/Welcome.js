@@ -5,7 +5,7 @@ import {
   Container,
   Button,
   Card,
-  CardBlock,
+  CardBody,
   Modal,
   ModalHeader,
   ModalBody,
@@ -16,7 +16,7 @@ import { graphql } from "react-apollo";
 import { Link } from "react-router";
 import IssueTracker from "../../components/admin/IssueTracker";
 
-import "./welcome.scss";
+import "./welcome.css";
 
 const FLIGHT_SUB = gql`
   subscription FlightsChanged {
@@ -37,7 +37,7 @@ class Welcome extends Component {
         document: FLIGHT_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            flights: subscriptionData.data.flightsUpdate
+            flights: subscriptionData.flightsUpdate
           });
         }
       });
@@ -62,8 +62,8 @@ class Welcome extends Component {
           <div>
             <h3>Pick a running Flight</h3>
             <Card>
-              <CardBlock>
-                {flights.map(f =>
+              <CardBody>
+                {flights.map(f => (
                   <Link
                     to={`/flight/${f.id}`}
                     key={f.id}
@@ -72,8 +72,8 @@ class Welcome extends Component {
                     <p>{f.name}</p>{" "}
                     <small>{formatDate(new Date(f.date))}</small>
                   </Link>
-                )}
-              </CardBlock>
+                ))}
+              </CardBody>
             </Card>
           </div>
           <div>

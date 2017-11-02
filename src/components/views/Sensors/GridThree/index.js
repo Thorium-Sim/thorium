@@ -311,25 +311,27 @@ class SensorGrid extends Component {
           return false;
         })
         .map(contact => {
-          return fetch(contact.iconUrl).then(res => res.text()).then(val => {
-            // Process the response
-            var div = document.createElement("div");
-            div.innerHTML = val;
-            const svg = div.querySelector("svg");
-            const svgPath = parsePath(svg);
-            const complex = svgMesh3d(svgPath, {
-              delaunay: true,
-              scale: 4,
-              simplify: 1,
-              randomization: 10
+          return fetch(contact.iconUrl)
+            .then(res => res.text())
+            .then(val => {
+              // Process the response
+              var div = document.createElement("div");
+              div.innerHTML = val;
+              const svg = div.querySelector("svg");
+              const svgPath = parsePath(svg);
+              const complex = svgMesh3d(svgPath, {
+                delaunay: true,
+                scale: 4,
+                simplify: 1,
+                randomization: 10
+              });
+              //const mesh = reindex(unindex(complex.positions, complex.cells));
+              const returnContact = Immutable.Map(contact);
+              const output = returnContact
+                .merge({ geometry: new createGeom(complex) })
+                .toJS();
+              return output;
             });
-            //const mesh = reindex(unindex(complex.positions, complex.cells));
-            const returnContact = Immutable.Map(contact);
-            const output = returnContact
-              .merge({ geometry: new createGeom(complex) })
-              .toJS();
-            return output;
-          });
         })
     )
       .then(contacts => {
@@ -370,7 +372,7 @@ class SensorGrid extends Component {
           const returnResult = Immutable.Map(previousResult);
           return returnResult
             .mergeDeep({
-              sensorContacts: subscriptionData.data.sensorContactUpdate
+              sensorContacts: subscriptionData.sensorContactUpdate
             })
             .toJS();
         }
@@ -456,7 +458,7 @@ class SensorGrid extends Component {
     geometry.vertices.shift();
     return (
       <div id="sensorGrid" ref="container" style={style}>
-        {!this.props.data.loading &&
+        {!this.props.data.loading && (
           <React3
             alpha
             antialias
@@ -524,35 +526,37 @@ class SensorGrid extends Component {
                 />
               </line>
 
-              {Array(12).fill(1).map((a, i) => {
-                const vertices = [];
-                vertices.push(new THREE.Vector3(0, 0, 0));
-                vertices.push(
-                  new THREE.Vector3(
-                    Math.cos(degtorad(i * 30 + 15)),
-                    Math.sin(degtorad(i * 30 + 15)),
-                    0
-                  )
-                );
-                return (
-                  <line name={`line-${i}`} key={`line-${i}`}>
-                    <geometry vertices={vertices} />
-                    <lineBasicMaterial
-                      color={0xffffff}
-                      transparent
-                      opacity={0.5}
-                      linewidth={1}
-                    />
-                  </line>
-                );
-              })}
+              {Array(12)
+                .fill(1)
+                .map((a, i) => {
+                  const vertices = [];
+                  vertices.push(new THREE.Vector3(0, 0, 0));
+                  vertices.push(
+                    new THREE.Vector3(
+                      Math.cos(degtorad(i * 30 + 15)),
+                      Math.sin(degtorad(i * 30 + 15)),
+                      0
+                    )
+                  );
+                  return (
+                    <line name={`line-${i}`} key={`line-${i}`}>
+                      <geometry vertices={vertices} />
+                      <lineBasicMaterial
+                        color={0xffffff}
+                        transparent
+                        opacity={0.5}
+                        linewidth={1}
+                      />
+                    </line>
+                  );
+                })}
               {!this.props.data.loading &&
                 Object.keys(this.state.contacts).map(id => {
                   const contact = this.state.contacts[id];
                   // Sensor Contacts
                   return (
                     <object3D key={contact.id}>
-                      {this.props.core &&
+                      {this.props.core && (
                         <mesh
                           key={`${contact.id}-real`}
                           name={contact.id}
@@ -583,7 +587,8 @@ class SensorGrid extends Component {
                             color={0xffff00}
                             side={THREE.DoubleSide}
                           />
-                        </mesh>}
+                        </mesh>
+                      )}
                       <mesh
                         key={`${contact.id}-ghost`}
                         name={contact.id}
@@ -621,7 +626,8 @@ class SensorGrid extends Component {
                   );
                 })}
             </scene>
-          </React3>}
+          </React3>
+        )}
       </div>
     );
   }

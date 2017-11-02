@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Container } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
-import "./style.scss";
+
+import "./style.css";
 
 const TRACTORBEAM_SUB = gql`
   subscription TractorBeamUpdate($simulatorId: ID!) {
@@ -34,10 +34,9 @@ class TractorBeamCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ tractorBeam: subscriptionData.data.tractorBeamUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            tractorBeam: subscriptionData.tractorBeamUpdate
+          });
         }
       });
     }
@@ -122,9 +121,7 @@ class TractorBeamCore extends Component {
             checked={tractorBeam.state}
           />
         </label>
-        <label>
-          Strength: {Math.round(tractorBeam.strength * 100)}
-        </label>
+        <label>Strength: {Math.round(tractorBeam.strength * 100)}</label>
         <label>
           Stress: {Math.round(this.state.stress * 100)}{" "}
           <input

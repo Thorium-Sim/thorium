@@ -12,7 +12,7 @@ import {
   Stealth,
   Radiation
 } from "./components";
-import "./style.scss";
+import "./style.css";
 
 export default props => {
   return (

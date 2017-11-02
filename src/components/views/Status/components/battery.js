@@ -24,7 +24,7 @@ class Battery extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            reactors: subscriptionData.data.reactorUpdate
+            reactors: subscriptionData.reactorUpdate
           });
         }
       });

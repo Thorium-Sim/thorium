@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 
-import "./style.scss";
+import "./style.css";
 
 const TEMPLATE_SUB = gql`
   subscription ClientsUpdate($simulatorId: ID) {
@@ -27,7 +27,7 @@ class Template extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            clients: subscriptionData.data.clientChanged
+            clients: subscriptionData.clientChanged
           });
         }
       });
@@ -42,11 +42,11 @@ class Template extends Component {
     return (
       <div className="clients-card">
         <ul>
-          {clients.map(c =>
+          {clients.map(c => (
             <li key={c.id}>
               {`${c.station ? c.station.name : ""} - ${c.loginName || ""}`}
             </li>
-          )}
+          ))}
         </ul>
       </div>
     );

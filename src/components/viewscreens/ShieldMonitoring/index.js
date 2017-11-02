@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
+
 import Shield1 from "./shield-1";
 import Shield4 from "./shield-4";
 import Shield6 from "./shield-6";
-import "./style.scss";
+import "./style.css";
 
 const SHIELD_SUB = gql`
   subscription ShieldSub($simulatorId: ID) {
@@ -28,10 +28,9 @@ class ShieldMonitoring extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ shields: subscriptionData.data.shieldsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            shields: subscriptionData.shieldsUpdate
+          });
         }
       });
     }
@@ -45,12 +44,15 @@ class ShieldMonitoring extends Component {
     return (
       <div className="viewscreen-shieldMonitoring">
         <h1>Shield Monitoring</h1>
-        {shields.length === 1 &&
-          <Shield1 shields={shields} simulator={this.props.simulator} />}
-        {shields.length === 4 &&
-          <Shield4 shields={shields} simulator={this.props.simulator} />}
-        {shields.length === 6 &&
-          <Shield6 shields={shields} simulator={this.props.simulator} />}
+        {shields.length === 1 && (
+          <Shield1 shields={shields} simulator={this.props.simulator} />
+        )}
+        {shields.length === 4 && (
+          <Shield4 shields={shields} simulator={this.props.simulator} />
+        )}
+        {shields.length === 6 && (
+          <Shield6 shields={shields} simulator={this.props.simulator} />
+        )}
       </div>
     );
   }

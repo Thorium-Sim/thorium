@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 import { NavigationScanner } from "../Navigation";
 
-import "./style.scss";
+import "./style.css";
 
 const NAVIGATION_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {
@@ -40,10 +39,9 @@ class Navigation extends Component {
         document: NAVIGATION_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ navigation: subscriptionData.data.navigationUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            navigation: subscriptionData.navigationUpdate
+          });
         }
       });
     }
@@ -86,14 +84,12 @@ class Navigation extends Component {
     if (!navigation) return <p>No Navigation System</p>;
     return (
       <div className="jr-navigation">
-        <h1>
-          Current Course: {navigation.destination}
-        </h1>
+        <h1>Current Course: {navigation.destination}</h1>
         <Button block color="info" onClick={this.calcCourses}>
           Calculate Courses
         </Button>
         <div className="course-list">
-          {navigation.destinations.map(d =>
+          {navigation.destinations.map(d => (
             <p
               key={d}
               onClick={() => this.setState({ selectedDest: d })}
@@ -101,7 +97,7 @@ class Navigation extends Component {
             >
               {d}
             </p>
-          )}
+          ))}
         </div>
         <Button block color="success" onClick={this.setCourse}>
           Set Course

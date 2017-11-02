@@ -1,15 +1,13 @@
 import React, { Component } from "react";
-import { Layer, Line, Stage } from "react-konva";
-import { Card, CardBlock, Container, Row, Col, Button } from "reactstrap";
+import { Card, CardBody, Container, Row, Col, Button } from "reactstrap";
 import gql from "graphql-tag";
 import tinycolor from "tinycolor2";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 import Measure from "react-measure";
 import assetPath from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
 import { findDOMNode } from "react-dom";
-import "./style.scss";
+import "./style.css";
 
 const SHORTRANGE_SUB = gql`
   subscription ShortRangeCommSub($simulatorId: ID!) {
@@ -71,12 +69,9 @@ class CommShortRange extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({
-              shortRangeComm: subscriptionData.data.shortRangeCommUpdate
-            })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            shortRangeComm: subscriptionData.shortRangeCommUpdate
+          });
         }
       });
     }
@@ -116,7 +111,7 @@ class CommShortRange extends Component {
     obj[this.state.which] = Math.max(Math.min((e.pageY - top) / height, 1), 0);
     this.setState(obj);
   };
-  mouseUp = e => {
+  mouseUp = () => {
     document.removeEventListener("mousemove", this.mouseMove);
     document.removeEventListener("mouseup", this.mouseUp);
     this.commUpdate({
@@ -152,16 +147,16 @@ class CommShortRange extends Component {
     }, false);
     if (arrow) {
       return arrow;
-    } else {
-      return {};
     }
+    return {};
   }
   getSignal() {
     const ShortRange = this.props.data.shortRangeComm[0];
     const { frequency } = this.state;
     return ShortRange.signals.reduce((prev, next) => {
-      if (next.range.upper > frequency && next.range.lower < frequency)
+      if (next.range.upper > frequency && next.range.lower < frequency) {
         return next;
+      }
       return prev;
     }, {});
   }
@@ -252,7 +247,7 @@ class CommShortRange extends Component {
           <Col lg="4" xl="3" className="commControls">
             <Card>
               <div className="spacer" />
-              {ShortRange.signals.map(s =>
+              {ShortRange.signals.map(s => (
                 <div
                   className={`img-container ${s.id === this.getSignal().id
                     ? "selected"
@@ -268,8 +263,8 @@ class CommShortRange extends Component {
                 >
                   <div className="spacer" />
                 </div>
-              )}
-              <CardBlock>
+              ))}
+              <CardBody>
                 <div>
                   Frequency:{" "}
                   {Math.round(this.state.frequency * 37700 + 37700) / 100} MHz
@@ -277,7 +272,7 @@ class CommShortRange extends Component {
                 <div className="signalName">
                   {this.getSignal.apply(this).name}
                 </div>
-              </CardBlock>
+              </CardBody>
             </Card>
             <Button
               size="lg"
@@ -291,7 +286,7 @@ class CommShortRange extends Component {
           <Col lg={{ size: 4, offset: 1 }}>
             <Card className="frequencyContainer">
               <div className="signals">
-                {ShortRange.signals.map(s =>
+                {ShortRange.signals.map(s => (
                   <div
                     key={s.id}
                     className="signal"
@@ -303,10 +298,10 @@ class CommShortRange extends Component {
                   >
                     {s.name}
                   </div>
-                )}
+                ))}
               </div>
               <div className="arrows">
-                {ShortRange.arrows.map(a =>
+                {ShortRange.arrows.map(a => (
                   <Arrow
                     key={a.id}
                     alertLevel={this.props.simulator.alertLevel}
@@ -314,19 +309,27 @@ class CommShortRange extends Component {
                     flop={true}
                     connected={a.connected}
                   />
-                )}
+                ))}
               </div>
               <div className="bar frequencyBar" />
-              <Measure includeMargin={true}>
-                {dimensions =>
-                  <div className="arrowHolder-right">
-                    <Arrow
-                      alertLevel={this.props.simulator.alertLevel}
-                      level={this.state.frequency}
-                      mouseDown={this.mouseDown.bind(this, "frequency")}
-                      dimensions={dimensions}
-                    />
-                  </div>}
+              <Measure
+                bounds
+                onResize={contentRect => {
+                  this.setState({ dimensions: contentRect.bounds });
+                }}
+              >
+                {({ measureRef }) => (
+                  <div ref={measureRef} className="arrowHolder-right">
+                    {this.state.dimensions && (
+                      <Arrow
+                        alertLevel={this.props.simulator.alertLevel}
+                        level={this.state.frequency}
+                        mouseDown={this.mouseDown.bind(this, "frequency")}
+                        dimensions={this.state.dimensions}
+                      />
+                    )}
+                  </div>
+                )}
               </Measure>
             </Card>
           </Col>
@@ -349,12 +352,13 @@ class CommShortRange extends Component {
           <Col sm="3">
             <Card className="signalCanvas">
               <Measure useClone={false} includeMargin={false}>
-                {dimensions =>
+                {dimensions => (
                   <FrequencySignals
                     dimensions={dimensions}
                     frequency={this.state.frequency}
                     amplitude={this.state.amplitude}
-                  />}
+                  />
+                )}
               </Measure>
             </Card>
           </Col>
@@ -443,13 +447,15 @@ const Arrow = ({
   );
 };
 
-const sinPoints = ({ frequency = 0, amplitude = 0, width, height }) => {
+/*const sinPoints = ({ frequency = 0, amplitude = 0, width, height }) => {
   let sinHeight = height * 2 * 2;
-  return Array(Math.round(sinHeight)).fill(0).map((_, i) => {
-    if (i % 2 === 1) return i / 2;
-    return Math.sin(i / 2 / frequency) * amplitude + width / 2;
-  });
-};
+  return Array(Math.round(sinHeight))
+    .fill(0)
+    .map((_, i) => {
+      if (i % 2 === 1) return i / 2;
+      return Math.sin(i / 2 / frequency) * amplitude + width / 2;
+    });
+};*/
 
 class FrequencySignals extends Component {
   state = {};
@@ -460,11 +466,11 @@ class FrequencySignals extends Component {
     });
   }
   render() {
-    const { dimensions, frequency, amplitude } = this.props;
-    const height = this.state.height || 0;
+    const { dimensions /*, frequency, amplitude*/ } = this.props;
+    // const height = this.state.height || 0;
     if (dimensions.width === 0) return <div />;
-    return (
-      <Stage width={dimensions.width} height={height}>
+    return <div />;
+    /*<Stage width={dimensions.width} height={height}>
         <Layer>
           <Line
             points={sinPoints({
@@ -479,8 +485,7 @@ class FrequencySignals extends Component {
             lineCap="round"
           />
         </Layer>
-      </Stage>
-    );
+      </Stage>*/
   }
 }
 

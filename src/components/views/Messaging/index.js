@@ -15,7 +15,7 @@ import {
   InputGroup,
   InputGroupButton
 } from "reactstrap";
-import "./style.scss";
+import "./style.css";
 
 const MESSAGING_SUB = gql`
   subscription GotMessage($simulatorId: ID!, $station: String) {
@@ -57,11 +57,11 @@ class Messaging extends Component {
           station: nextProps.station.name
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          if (!subscriptionData.data.sendMessage) return previousResult;
+          if (!subscriptionData.sendMessage) return previousResult;
           setTimeout(this.scrollElement, 100);
           return Object.assign({}, previousResult, {
             messages: previousResult.messages.concat(
-              subscriptionData.data.sendMessage
+              subscriptionData.sendMessage
             )
           });
         }
@@ -75,7 +75,7 @@ class Messaging extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            teams: subscriptionData.data.teamsUpdate
+            teams: subscriptionData.teamsUpdate
           });
         }
       });
@@ -159,7 +159,7 @@ class Messaging extends Component {
           <Col sm={3}>
             <h4>Conversations</h4>
             <Card className="convoList">
-              {conversations.map(c =>
+              {conversations.map(c => (
                 <li
                   className={`list-group-item ${c.convo === selectedConversation
                     ? "selected"
@@ -168,9 +168,7 @@ class Messaging extends Component {
                   onClick={() =>
                     this.setState({ selectedConversation: c.convo })}
                 >
-                  <div>
-                    {c.convo}
-                  </div>
+                  <div>{c.convo}</div>
                   <div>
                     <small>
                       {`${c.content.substr(0, 25)}${c.content.length > 25
@@ -179,7 +177,7 @@ class Messaging extends Component {
                     </small>
                   </div>
                 </li>
-              )}
+              ))}
             </Card>
             <ButtonDropdown
               className="btn-block"
@@ -191,7 +189,7 @@ class Messaging extends Component {
                 New Message
               </DropdownToggle>
               <DropdownMenu className="messages-destinations">
-                {stations.map(s =>
+                {stations.map(s => (
                   <DropdownItem
                     key={s.name}
                     onClick={() =>
@@ -199,17 +197,17 @@ class Messaging extends Component {
                   >
                     {s.name}
                   </DropdownItem>
-                )}
+                ))}
                 <DropdownItem disabled>--------------</DropdownItem>
                 {messageGroups &&
-                  messageGroups.map(g =>
+                  messageGroups.map(g => (
                     <DropdownItem
                       key={g}
                       onClick={() => this.setState({ selectedConversation: g })}
                     >
                       {g}
                     </DropdownItem>
-                  )}
+                  ))}
                 <DropdownItem disabled>--------------</DropdownItem>
                 {teams &&
                   teams
@@ -219,7 +217,7 @@ class Messaging extends Component {
                           m => m.toLowerCase() === t.type.toLowerCase()
                         ) > -1
                     )
-                    .map(g =>
+                    .map(g => (
                       <DropdownItem
                         key={g.name}
                         onClick={() =>
@@ -227,7 +225,7 @@ class Messaging extends Component {
                       >
                         {g.name}
                       </DropdownItem>
-                    )}
+                    ))}
               </DropdownMenu>
             </ButtonDropdown>
           </Col>
@@ -236,17 +234,18 @@ class Messaging extends Component {
 
             <Card>
               <div className="message-holder" ref="messageHolder">
-                {selectedConversation &&
+                {selectedConversation && (
                   <h2 className="convoHeader">
                     Conversation with {selectedConversation}
-                  </h2>}
+                  </h2>
+                )}
                 {messages
                   .filter(
                     m =>
                       m.sender === selectedConversation ||
                       m.destination === selectedConversation
                   )
-                  .map(m =>
+                  .map(m => (
                     <p
                       key={m.id}
                       className={`message ${m.sender === this.props.station.name
@@ -255,10 +254,10 @@ class Messaging extends Component {
                     >
                       <strong>{m.sender}</strong>: {m.content}
                     </p>
-                  )}
+                  ))}
               </div>
             </Card>
-            <form action="javascript:" onSubmit={this.sendMessage}>
+            <form action={"#"} onSubmit={this.sendMessage}>
               <InputGroup>
                 <Input
                   disabled={!selectedConversation}
@@ -320,8 +319,8 @@ export default graphql(MESSAGING_QUERY, {
 
 function scrollTo(element, to, duration) {
   if (duration <= 0) return;
-  var difference = to - element.scrollTop;
-  var perTick = difference / duration * 10;
+  let difference = to - element.scrollTop;
+  let perTick = difference / duration * 10;
 
   setTimeout(function() {
     element.scrollTop = element.scrollTop + perTick;

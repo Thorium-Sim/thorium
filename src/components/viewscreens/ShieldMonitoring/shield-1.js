@@ -8,14 +8,16 @@ export default ({ simulator, shields }) => {
   return (
     <div className="shieldMonitoring">
       <Asset asset={"/Ship Views/Top"} simulatorId={simulator.id}>
-        {({ src }) =>
+        {({ src }) => (
           <img
+            alt="ship"
             role="presentation"
             className="mw-100 ccw-90 shieldImage"
             style={{ filter: `drop-shadow(${color} 0px 0px 30px)` }}
             draggable="false"
             src={src}
-          />}
+          />
+        )}
       </Asset>
     </div>
   );

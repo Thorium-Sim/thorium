@@ -3,8 +3,7 @@ import gql from "graphql-tag";
 import { Container, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { OutputField, TypingField } from "../../generic/core";
-import Immutable from "immutable";
-import "./style.scss";
+import "./style.css";
 
 const NAVIGATION_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {
@@ -33,10 +32,9 @@ class NavigationCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ navigation: subscriptionData.data.navigationUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            navigation: subscriptionData.navigationUpdate
+          });
         }
       });
     }

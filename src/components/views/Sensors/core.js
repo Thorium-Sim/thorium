@@ -3,7 +3,6 @@ import { OutputField, TypingField } from "../../generic/core";
 import { Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
-import Immutable from "immutable";
 import ScanPresets from "./ScanPresets";
 
 const SENSOR_SUB = gql`
@@ -39,10 +38,9 @@ class SensorsCore extends Component {
         document: SENSOR_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ sensors: subscriptionData.data.sensorsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            sensors: subscriptionData.sensorsUpdate
+          });
         }
       });
     }
@@ -186,11 +184,11 @@ class SensorsCore extends Component {
             <option value={"answers"} disabled>
               Answers
             </option>
-            {ScanPresets.map(p =>
+            {ScanPresets.map(p => (
               <option key={p.label} value={p.value}>
                 {p.label}
               </option>
-            )}
+            ))}
           </select>
           <select
             onChange={this.scanPreset}
@@ -200,11 +198,11 @@ class SensorsCore extends Component {
             <option disabled value={"answers"}>
               Info
             </option>
-            {sensor.presetAnswers.map(p =>
+            {sensor.presetAnswers.map(p => (
               <option key={`${p.label}-${p.value}`} value={p.value}>
                 {p.label}
               </option>
-            )}
+            ))}
           </select>
           <Button
             onClick={this.sendProcessedData.bind(this, external)}

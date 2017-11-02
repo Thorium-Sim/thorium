@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import * as ViewscreenCards from "../../viewscreens";
 
-import "./style.scss";
+import "./style.css";
 
 const VIEWSCREEN_SUB = gql`
   subscription ViewscreenSub($simulatorId: ID) {
@@ -30,7 +30,7 @@ export class Viewscreen extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            viewscreens: subscriptionData.data.viewscreensUpdate
+            viewscreens: subscriptionData.viewscreensUpdate
           });
         }
       });
@@ -51,11 +51,7 @@ export class Viewscreen extends Component {
       return <ViewscreenComponent {...this.props} viewscreen={viewscreen} />;
     }
     if (!viewscreen)
-      return (
-        <div>
-          No Viewscreen Component for {viewscreen.component}
-        </div>
-      );
+      return <div>No Viewscreen Component for {viewscreen.component}</div>;
   }
 }
 

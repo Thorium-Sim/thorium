@@ -42,7 +42,7 @@ class ActionsMixin extends Component {
           stationId: this.props.station.name
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          let { action, duration } = subscriptionData.data.actionsUpdate;
+          let { action, duration } = subscriptionData.actionsUpdate;
           switch (action) {
             case "flash":
               duration = duration || 10;
@@ -87,7 +87,7 @@ class ActionsMixin extends Component {
     return (
       <div className={`actionsContainer ${this.state.flash ? "flash" : ""}`}>
         {this.props.children}
-        {this.state.canvas &&
+        {this.state.canvas && (
           <canvas
             id="c"
             style={{
@@ -96,7 +96,8 @@ class ActionsMixin extends Component {
               top: "0px",
               left: "0px"
             }}
-          />}
+          />
+        )}
         {this.state.spark && <Spark />}
       </div>
     );

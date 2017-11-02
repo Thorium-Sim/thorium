@@ -41,7 +41,7 @@ class ReactivationCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            systems: subscriptionData.data.systemsUpdate
+            systems: subscriptionData.systemsUpdate
           });
         }
       });
@@ -70,22 +70,16 @@ class ReactivationCore extends Component {
     const { systems } = this.props.data;
     return (
       <div>
-        {systems.filter(s => s.damage.reactivationCode).map(s =>
+        {systems.filter(s => s.damage.reactivationCode).map(s => (
           <div key={s.id}>
-            <Row style={{ margin: 0 }}>
-              {s.name}
-            </Row>
+            <Row style={{ margin: 0 }}>{s.name}</Row>
             <Row style={{ margin: 0 }}>
               <Col sm={3}>Code:</Col>
-              <Col sm={9}>
-                {s.damage.reactivationCode}
-              </Col>
+              <Col sm={9}>{s.damage.reactivationCode}</Col>
             </Row>
             <Row style={{ margin: 0 }}>
               <Col sm={3}>Actual:</Col>
-              <Col sm={9}>
-                {s.damage.neededReactivationCode}
-              </Col>
+              <Col sm={9}>{s.damage.neededReactivationCode}</Col>
             </Row>
             <Row style={{ margin: 0 }}>
               <Col sm={8}>
@@ -114,7 +108,7 @@ class ReactivationCore extends Component {
               </Col>
             </Row>
           </div>
-        )}
+        ))}
       </div>
     );
   }

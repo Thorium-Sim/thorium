@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container, Row, Col } from "reactstrap";
 import Measure from "react-measure";
 
-import ReactorModel from "../../views/ReactorControl/model";
+//import ReactorModel from "../../views/ReactorControl/model";
 
 export default class ReactorActivation extends Component {
   constructor(props) {
@@ -59,10 +59,9 @@ export default class ReactorActivation extends Component {
           <Row>
             <Col sm={6}>
               <Measure useClone={true} includeMargin={false}>
-                {dimensions =>
-                  <div>
-                    <ReactorModel {...dimensions} />
-                  </div>}
+                {dimensions => (
+                  <div>{/*<ReactorModel {...dimensions} />*/}</div>
+                )}
               </Measure>
             </Col>
             <Col

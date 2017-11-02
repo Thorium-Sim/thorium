@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import uuid from "uuid";
 import mkdirp from "mkdirp";
-import App from "../../app";
+import App from "../app";
 import * as Classes from "../classes";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import paths from "../helpers/paths";

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
+
 import Tour from "reactour";
 import DamageOverlay from "../helpers/DamageOverlay";
 import { Asset } from "../../../helpers/assets";
@@ -10,7 +10,7 @@ import Scene from "./effect";
 import StealthBoard from "./stealthBoard";
 import ChargeBar from "./chargeBar";
 
-import "./style.scss";
+import "./style.css";
 
 const STEALTH_SUB = gql`
   subscription StealthFieldUpdate($simulatorId: ID!) {
@@ -37,6 +37,19 @@ const STEALTH_SUB = gql`
     }
   }
 `;
+
+const trainingSteps = [
+  {
+    selector: ".stealth-button",
+    content:
+      "The ship’s stealth field allows it to move through space without being detected by other starships. If your stealth field needs to be activated, click this button to activate or deactivate the stealth field."
+  },
+  {
+    selector: ".stealth-board",
+    content:
+      "This dashboard shows the way that the ship’s operations impact the stealth field. Use of some shp functionality may increase the ship’s probability of being detected. For example, sending out messages and other signals makes it obvious to other starships that this ship is around. They may not be able to see the ship, but they’ll notice that someone is there. If you start shooting at them, they will probably realize that something fishy is going on."
+  }
+];
 
 /*
 const SYSTEMS_SUB = gql`
@@ -71,10 +84,9 @@ class StealthField extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ stealthField: subscriptionData.data.stealthFieldUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            stealthField: subscriptionData.stealthFieldUpdate
+          });
         }
       });
     }
@@ -117,7 +129,7 @@ class StealthField extends Component {
         />
         <Row>
           <Col sm="3">
-            {stealthField.charge &&
+            {stealthField.charge && (
               <Row className="charge-row">
                 <Col sm={6}>
                   <ChargeBar
@@ -137,7 +149,8 @@ class StealthField extends Component {
                     simulator={this.props.simulator}
                   />
                 </Col>
-              </Row>}
+              </Row>
+            )}
           </Col>
           <Col sm="6">
             <Asset
@@ -155,6 +168,7 @@ class StealthField extends Component {
                     style={{ transform: "rotate(360deg)" }}
                   >
                     <img
+                      alt="ship"
                       style={{ width: "100%" }}
                       src={src}
                       draggable="false"
@@ -175,28 +189,30 @@ class StealthField extends Component {
               }}
             </Asset>
             {stealthField.activated &&
-              (stealthField.state
-                ? <Button
-                    size="lg"
-                    color="warning"
-                    className="stealth-button"
-                    block
-                    onClick={this._deactivate.bind(this)}
-                  >
-                    Deactivate Stealth Field
-                  </Button>
-                : <Button
-                    size="lg"
-                    color="primary"
-                    className="stealth-button"
-                    block
-                    onClick={this._activate.bind(this)}
-                  >
-                    Activate Stealth Field
-                  </Button>)}
+              (stealthField.state ? (
+                <Button
+                  size="lg"
+                  color="warning"
+                  className="stealth-button"
+                  block
+                  onClick={this._deactivate.bind(this)}
+                >
+                  Deactivate Stealth Field
+                </Button>
+              ) : (
+                <Button
+                  size="lg"
+                  color="primary"
+                  className="stealth-button"
+                  block
+                  onClick={this._activate.bind(this)}
+                >
+                  Activate Stealth Field
+                </Button>
+              ))}
           </Col>
           <Col sm="3">
-            {stealthField.charge &&
+            {stealthField.charge && (
               <Row className="charge-row">
                 <Col sm={6}>
                   <ChargeBar
@@ -216,7 +232,8 @@ class StealthField extends Component {
                     simulator={this.props.simulator}
                   />
                 </Col>
-              </Row>}
+              </Row>
+            )}
           </Col>
         </Row>
         <StealthBoard
@@ -232,19 +249,6 @@ class StealthField extends Component {
     );
   }
 }
-
-const trainingSteps = [
-  {
-    selector: ".stealth-button",
-    content:
-      "The ship’s stealth field allows it to move through space without being detected by other starships. If your stealth field needs to be activated, click this button to activate or deactivate the stealth field."
-  },
-  {
-    selector: ".stealth-board",
-    content:
-      "This dashboard shows the way that the ship’s operations impact the stealth field. Use of some shp functionality may increase the ship’s probability of being detected. For example, sending out messages and other signals makes it obvious to other starships that this ship is around. They may not be able to see the ship, but they’ll notice that someone is there. If you start shooting at them, they will probably realize that something fishy is going on."
-  }
-];
 
 const STEALTH_QUERY = gql`
   query StealthField($simulatorId: ID!) {

@@ -7,7 +7,7 @@ import { graphql, withApollo } from "react-apollo";
 import tinycolor from "tinycolor2";
 import { Asset } from "../../../helpers/assets";
 
-import "./style.scss";
+import "./style.css";
 
 const SHORTRANGE_SUB = gql`
   subscription ShortRangeCommSub($simulatorId: ID!) {
@@ -104,8 +104,8 @@ class Communications extends Component {
         );
         gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
 
-        var index = -1;
-        var length = this.waves.length;
+        let index = -1;
+        const length = this.waves.length;
         while (++index < length) {
           this.waves[index].strokeStyle = gradient;
         }
@@ -121,7 +121,7 @@ class Communications extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            shortRangeComm: subscriptionData.data.shortRangeCommUpdate
+            shortRangeComm: subscriptionData.shortRangeCommUpdate
           });
         }
       });
@@ -177,13 +177,15 @@ class Communications extends Component {
     comms.forEach((comm, index, arr) => {
       gradient.addColorStop(
         (index + 1) / (arr.length + 1),
-        tinycolor(comm.color).setAlpha(comm.connected ? 1 : 0.3).toRgbString()
+        tinycolor(comm.color)
+          .setAlpha(comm.connected ? 1 : 0.3)
+          .toRgbString()
       );
     });
     gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
 
-    var index = -1;
-    var length = this.waves.waves.length;
+    let index = -1;
+    const length = this.waves.waves.length;
     while (++index < length) {
       this.waves.waves[index].strokeStyle = gradient;
     }
@@ -194,26 +196,27 @@ class Communications extends Component {
       <div className="viewscreen-communications">
         <Container>
           <Row className="justify-content-center">
-            {comms.length > 0
-              ? comms.map(c =>
-                  <Col key={c.id} className="comm-container">
-                    <Asset asset={`/Comm Images/${c.image}`}>
-                      {({ src }) => <img src={src} />}
-                    </Asset>
-                    <h2>
-                      {c.name} - {Math.round(c.frequency * 37700 + 37700) /
-                        100}MHz
-                    </h2>
-                    <h3>
-                      {c.connected
-                        ? "Connected"
-                        : c.hailing ? "Hailing" : "Incoming Call"}
-                    </h3>
-                  </Col>
-                )
-              : <Col>
-                  <h1 className="text-center">No Communications Lines Open</h1>
-                </Col>}
+            {comms.length > 0 ? (
+              comms.map(c => (
+                <Col key={c.id} className="comm-container">
+                  <Asset asset={`/Comm Images/${c.image}`}>
+                    {({ src }) => <img alt="comm" src={src} />}
+                  </Asset>
+                  <h2>
+                    {c.name} - {Math.round(c.frequency * 37700 + 37700) /
+                      100}MHz
+                  </h2>
+                  <h3>
+                    {c.connected ? "Connected" : ""}
+                    {c.hailing ? "Hailing" : "Incoming Call"}
+                  </h3>
+                </Col>
+              ))
+            ) : (
+              <Col>
+                <h1 className="text-center">No Communications Lines Open</h1>
+              </Col>
+            )}
           </Row>
           <Row>
             <Col sm={12}>

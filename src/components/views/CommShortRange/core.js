@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
-import "./style.scss";
+import "./style.css";
 
 const SHORTRANGE_SUB = gql`
   subscription ShortRangeCommSub($simulatorId: ID!) {
@@ -59,12 +58,9 @@ class CommShortRange extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({
-              shortRangeComm: subscriptionData.data.shortRangeCommUpdate
-            })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            shortRangeComm: subscriptionData.shortRangeCommUpdate
+          });
         }
       });
     }
@@ -151,15 +147,15 @@ class CommShortRange extends Component {
             </p>
             <div>
               External Call
-              {ShortRange.state === "hailing"
-                ? <Button
-                    onClick={this._commConnect.bind(this)}
-                    size="sm"
-                    color="info"
-                  >
-                    Hailing - Connect
-                  </Button>
-                : null}
+              {ShortRange.state === "hailing" ? (
+                <Button
+                  onClick={this._commConnect.bind(this)}
+                  size="sm"
+                  color="info"
+                >
+                  Hailing - Connect
+                </Button>
+              ) : null}
             </div>
             <select
               value={selectedCall || ""}
@@ -168,8 +164,9 @@ class CommShortRange extends Component {
               }}
             >
               <option value={null}>---</option>
-              {ShortRange.signals.length === 0 &&
-                <option value="random">Random</option>}
+              {ShortRange.signals.length === 0 && (
+                <option value="random">Random</option>
+              )}
               {ShortRange.signals.map(s => {
                 return (
                   <option key={s.id} value={s.id}>
