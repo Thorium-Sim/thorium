@@ -1,14 +1,13 @@
+import fs from "fs";
 import jsonfile from "jsonfile";
 import { EventEmitter } from "events";
-import { writeFile } from "./server/helpers/json-format";
-import paths from "./server/helpers/paths";
 import path from "path";
-import * as Classes from "./server/classes";
 import util from "util";
 import { cloneDeep } from "lodash";
-//import { collections } from "./server/helpers/database";
-import fs from "fs";
-import { move } from "./server/helpers/init";
+import { writeFile } from "./helpers/json-format";
+import paths from "./helpers/paths";
+import * as Classes from "./classes";
+import { move } from "./helpers/init";
 
 let snapshotDir = "./snapshots/";
 if (process.env.NODE_ENV === "production") {

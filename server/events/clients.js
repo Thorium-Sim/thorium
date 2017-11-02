@@ -1,4 +1,4 @@
-import App from "../../app";
+import App from "../app";
 import Client from "../classes/client";
 import Viewscreen from "../classes/viewscreen";
 import { pubsub } from "../helpers/subscriptionManager.js";

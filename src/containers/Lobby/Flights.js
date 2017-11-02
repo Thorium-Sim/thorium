@@ -39,7 +39,7 @@ class Flights extends Component {
         document: FLIGHT_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
           const returnResult = Object.assign({}, previousResult);
-          returnResult.flights = subscriptionData.data.flightsUpdate;
+          returnResult.flights = subscriptionData.flightsUpdate;
           return returnResult;
         }
       });
@@ -59,53 +59,51 @@ class Flights extends Component {
             Create Flight
           </Button>
         </h4>
-        {this.props.data.loading || !this.props.data.flights
-          ? <h4>Loading...</h4>
-          : this.props.data.flights.map(flight => {
-              return (
-                <Row key={flight.id}>
-                  <Col sm="12">
-                    <h4>
-                      {flight.name} - {flight.date}
-                    </h4>
-                  </Col>
-                  {flight.simulators.map(simulator => {
-                    return (
-                      <Col key={simulator.id} sm="12">
-                        <h5>
-                          {simulator.name}
-                        </h5>
-                        {simulator.stations.map(station => {
-                          return (
-                            <Col key={`${simulator.id}-${station.name}`} sm="6">
-                              <label>
-                                {station.name}
-                              </label>
-                              <select>
-                                <option value={null}>Select a client</option>
-                                {this.props.data.clients.map(client => {
-                                  return (
-                                    <option value={client.id}>
-                                      {client.id}
-                                    </option>
-                                  );
-                                })}
-                              </select>
-                            </Col>
-                          );
-                        })}
-                      </Col>
-                    );
-                  })}
-                </Row>
-              );
-            })}
-        {this.state.modal
-          ? <MissionModal
-              modal={this.state.modal}
-              toggle={this.toggle.bind(this)}
-            />
-          : <span />}
+        {this.props.data.loading || !this.props.data.flights ? (
+          <h4>Loading...</h4>
+        ) : (
+          this.props.data.flights.map(flight => {
+            return (
+              <Row key={flight.id}>
+                <Col sm="12">
+                  <h4>
+                    {flight.name} - {flight.date}
+                  </h4>
+                </Col>
+                {flight.simulators.map(simulator => {
+                  return (
+                    <Col key={simulator.id} sm="12">
+                      <h5>{simulator.name}</h5>
+                      {simulator.stations.map(station => {
+                        return (
+                          <Col key={`${simulator.id}-${station.name}`} sm="6">
+                            <label>{station.name}</label>
+                            <select>
+                              <option value={null}>Select a client</option>
+                              {this.props.data.clients.map(client => {
+                                return (
+                                  <option value={client.id}>{client.id}</option>
+                                );
+                              })}
+                            </select>
+                          </Col>
+                        );
+                      })}
+                    </Col>
+                  );
+                })}
+              </Row>
+            );
+          })
+        )}
+        {this.state.modal ? (
+          <MissionModal
+            modal={this.state.modal}
+            toggle={this.toggle.bind(this)}
+          />
+        ) : (
+          <span />
+        )}
       </Container>
     );
   }

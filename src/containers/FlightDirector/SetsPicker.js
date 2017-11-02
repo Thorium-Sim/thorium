@@ -3,7 +3,7 @@ import { Container, Row, Col, Card } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 
-import "./setConfig.scss";
+import "./setConfig.css";
 
 const ops = {
   flight: gql`
@@ -36,7 +36,7 @@ class SetsPicker extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            flights: subscriptionData.data.flightsUpdate
+            flights: subscriptionData.flightsUpdate
           });
         }
       });
@@ -73,19 +73,19 @@ class SetsPicker extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { flights, sets } = this.props.data;
-    const flight = flights[0];
+    const flight = flights && flights[0];
     return (
       <Container className="set-picker">
         <h4>Sets</h4>
         <Row className="justify-content-md-center">
           {flight &&
-            flight.simulators.map(s =>
+            flight.simulators.map(s => (
               <Col key={s.id} sm={4}>
                 <h5>
                   {s.name} - {s.stationSet.name}
                 </h5>
                 <Card>
-                  {sets.map(set =>
+                  {sets.map(set => (
                     <li
                       className="list-group-item"
                       onClick={() => this.applyClientSet(set, s, flight)}
@@ -93,10 +93,10 @@ class SetsPicker extends Component {
                     >
                       {set.name}
                     </li>
-                  )}
+                  ))}
                 </Card>
               </Col>
-            )}
+            ))}
         </Row>
       </Container>
     );

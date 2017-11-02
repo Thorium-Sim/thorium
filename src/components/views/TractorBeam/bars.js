@@ -71,43 +71,55 @@ class Bars extends Component {
     const { level } = this.state;
     return (
       <div className={`bar-container ${className} ${active ? "shown" : ""}`}>
-        {arrow &&
-          <Measure includeMargin={false}>
-            {dimensions =>
-              <div className="arrow-container">
-                <Arrow
-                  dimensions={dimensions}
-                  alertLevel={simulator.alertLevel}
-                  level={level}
-                  mouseDown={this.mouseDown}
-                  flop={true}
-                />
-              </div>}
-          </Measure>}
+        {arrow && (
+          <Measure
+            bounds
+            onResize={contentRect => {
+              this.setState({ dimensions: contentRect.bounds });
+            }}
+          >
+            {({ measureRef }) => (
+              <div ref={measureRef} className="arrow-container">
+                {this.state.dimensions && (
+                  <Arrow
+                    dimensions={this.state.dimensions}
+                    alertLevel={simulator.alertLevel}
+                    level={level}
+                    mouseDown={this.mouseDown}
+                    flop={true}
+                  />
+                )}
+              </div>
+            )}
+          </Measure>
+        )}
         <p className="barLabel">
           {label && label + ": "}
           {Math.round(Math.abs(level - 1) * 100) + "%"}
         </p>
         <div className="bar-holder">
-          {Array(30).fill(0).map((_, index, array) => {
-            return (
-              <div
-                key={`tractor-bars-${index}`}
-                className="bar"
-                style={{
-                  opacity: index / array.length >= level ? 1 : 0.3,
-                  backgroundColor: color || null,
-                  width:
-                    array.length / (index + 2) * (100 / array.length) + "%",
-                  marginLeft: flop
-                    ? Math.abs(
-                        array.length / (index + 2) * (100 / array.length) - 100
-                      ) + "%"
-                    : 0
-                }}
-              />
-            );
-          })}
+          {Array(30)
+            .fill(0)
+            .map((_, index, array) => {
+              return (
+                <div
+                  key={`tractor-bars-${index}`}
+                  className="bar"
+                  style={{
+                    opacity: index / array.length >= level ? 1 : 0.3,
+                    backgroundColor: color || null,
+                    width:
+                      array.length / (index + 2) * (100 / array.length) + "%",
+                    marginLeft: flop
+                      ? Math.abs(
+                          array.length / (index + 2) * (100 / array.length) -
+                            100
+                        ) + "%"
+                      : 0
+                  }}
+                />
+              );
+            })}
         </div>
       </div>
     );

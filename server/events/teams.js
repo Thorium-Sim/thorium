@@ -1,4 +1,4 @@
-import App from "../../app";
+import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import Team from "../classes/teams";
 import uuid from "uuid";

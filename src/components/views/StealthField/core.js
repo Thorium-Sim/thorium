@@ -3,9 +3,8 @@ import gql from "graphql-tag";
 import { Container, Row, Col, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { OutputField } from "../../generic/core";
-import Immutable from "immutable";
 
-import "./style.scss";
+import "./style.css";
 
 const STEALTH_SUB = gql`
   subscription StealthFieldUpdate($simulatorId: ID!) {
@@ -50,10 +49,9 @@ class StealthFieldCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ stealthField: subscriptionData.data.stealthFieldUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            stealthField: subscriptionData.stealthFieldUpdate
+          });
         }
       });
     }
@@ -67,7 +65,7 @@ class StealthFieldCore extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           const returnResult = Immutable.Map(previousResult);
           return returnResult
-            .merge({ systems: subscriptionData.data.systemsUpdate })
+            .merge({ systems: subscriptionData.systemsUpdate })
             .toJS();
         }
       });*/
@@ -184,7 +182,8 @@ class StealthFieldCore extends Component {
     return (
       <Container className="targeting-core">
         <label>
-          {" "}Activate{" "}
+          {" "}
+          Activate{" "}
           <input
             checked={stealthField.activated}
             onChange={this.updateActivated.bind(this)}

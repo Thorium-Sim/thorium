@@ -2,7 +2,7 @@ import React from "react";
 import Views from "../../views";
 import Alerts from "../../generic/Alerts";
 import ActionsMixin from "../../generic/Actions";
-import "./style.scss";
+import "./style.css";
 
 export default props => {
   const { simulator, station, clientObj } = props;
@@ -35,12 +35,8 @@ export default props => {
       </div>
       <div id="jr-frame" className={alertClass}>
         <div className="title-bar" />
-        <h1 className="simulator-name">
-          {simulator.name}
-        </h1>
-        <h1 className="station-name">
-          {station.name}
-        </h1>
+        <h1 className="simulator-name">{simulator.name}</h1>
+        <h1 className="station-name">{station.name}</h1>
         <Alerts simulator={simulator} station={station} />
       </div>
     </ActionsMixin>

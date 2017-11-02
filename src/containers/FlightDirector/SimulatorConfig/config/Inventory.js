@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Container, Row, Col, Button, Input, Label } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 
 const INVENTORY_SUB = gql`
   subscription InventoryUpdate($simulatorId: ID!) {
@@ -30,7 +29,7 @@ const INVENTORY_SUB = gql`
 `;
 
 const inventoryConfig = {
-  probe: ({ inventoryItem, updateInventory }) =>
+  probe: ({ inventoryItem, updateInventory }) => (
     <div>
       <Label>Description</Label>
       <Input
@@ -68,8 +67,9 @@ const inventoryConfig = {
         />{" "}
         Defense
       </Label>
-    </div>,
-  probeEquipment: ({ inventoryItem, updateInventory }) =>
+    </div>
+  ),
+  probeEquipment: ({ inventoryItem, updateInventory }) => (
     <div>
       <Label>Description</Label>
       <Input type="text" />
@@ -85,7 +85,8 @@ const inventoryConfig = {
       <Label>
         <Input type="checkbox" /> Defense
       </Label>
-    </div>,
+    </div>
+  ),
   coolant: props => <div />,
   torpedo: props => <div />
 };
@@ -107,10 +108,9 @@ class Inventory extends Component {
           simulatorId: nextProps.selectedSimulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ inventory: subscriptionData.data.inventoryUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            inventory: subscriptionData.inventoryUpdate
+          });
         }
       });
     }
@@ -205,7 +205,7 @@ class Inventory extends Component {
         <Row>
           <Col sm={3}>
             <ul>
-              {inventory.map(i =>
+              {inventory.map(i => (
                 <li
                   key={i.id}
                   onClick={() =>
@@ -215,13 +215,13 @@ class Inventory extends Component {
                 >
                   {i.name}
                 </li>
-              )}
+              ))}
             </ul>
             <Button color="info" onClick={this.addInventory}>
               Add Inventory
             </Button>
           </Col>
-          {inventoryItem &&
+          {inventoryItem && (
             <Col sm={9}>
               <Row>
                 <Col sm={6}>
@@ -307,7 +307,7 @@ class Inventory extends Component {
                         if (b.number > a.number) return -1;
                         return 0;
                       })
-                      .map(d =>
+                      .map(d => (
                         <li
                           key={d.id}
                           className={selectedDeck === d.id ? "selected" : ""}
@@ -319,7 +319,7 @@ class Inventory extends Component {
                         >
                           Deck {d.number}
                         </li>
-                      )}
+                      ))}
                   </ul>
                 </Col>
                 <Col sm="4" className="decks-columns">
@@ -333,7 +333,7 @@ class Inventory extends Component {
                           if (b.name > a.name) return -1;
                           return 0;
                         })
-                        .map(r =>
+                        .map(r => (
                           <li
                             key={r.id}
                             className={selectedRoom === r.id ? "selected" : ""}
@@ -381,11 +381,12 @@ class Inventory extends Component {
                             />
                             {r.name}
                           </li>
-                        )}
+                        ))}
                   </ul>
                 </Col>
               </Row>
-            </Col>}
+            </Col>
+          )}
         </Row>
       </Container>
     );

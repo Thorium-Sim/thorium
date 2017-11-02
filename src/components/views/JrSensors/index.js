@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Card, CardBlock } from "reactstrap";
+import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import Measure from "react-measure";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 import { Asset } from "../../../helpers/assets";
 import Grid from "../Sensors/GridDom";
 
-import "./style.scss";
+import "./style.css";
 
 const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {
@@ -32,10 +31,9 @@ class Sensors extends Component {
         document: SENSOR_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ sensors: subscriptionData.data.sensorsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            sensors: subscriptionData.sensorsUpdate
+          });
         }
       });
     }
@@ -88,11 +86,17 @@ class Sensors extends Component {
         <Row style={{ height: "100%" }}>
           <Col sm={8} className="arrayContainer" style={{ height: "100%" }}>
             <div className="spacer" />
-            <Measure useClone={true} includeMargin={false}>
-              {dimensions =>
+            <Measure
+              bounds
+              onResize={contentRect => {
+                this.setState({ dimensions: contentRect.bounds });
+              }}
+            >
+              {({ measureRef }) => (
                 <div
                   id="threeSensors"
                   className="array"
+                  ref={measureRef}
                   style={{
                     position: "absolute",
                     top: 0,
@@ -103,48 +107,51 @@ class Sensors extends Component {
                     justifyContent: "center"
                   }}
                 >
-                  {dimensions.width > 0 &&
+                  {this.state.dimensions && (
                     <Grid
-                      dimensions={dimensions}
+                      dimensions={this.state.dimensions}
                       sensor={sensors.id}
                       hoverContact={this._hoverContact.bind(this)}
                       pings={false}
-                    />}
-                </div>}
+                    />
+                  )}
+                </div>
+              )}
             </Measure>
           </Col>
           <Col sm={4}>
             <Row>
               <Col className="col-sm-12 contactPictureContainer">
-                {hoverContact.picture
-                  ? <Asset asset={hoverContact.picture}>
-                      {({ src }) =>
-                        <div
-                          className="card contactPicture"
-                          style={{
-                            backgroundSize: "contain",
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundColor: "black",
-                            backgroundImage: `url('${src}')`
-                          }}
-                        />}
-                    </Asset>
-                  : <div
-                      className="card contactPicture"
-                      style={{
-                        backgroundSize: "contain",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat",
-                        backgroundColor: "black",
-                        backgroundImage: `none`
-                      }}
-                    />}
+                {hoverContact.picture ? (
+                  <Asset asset={hoverContact.picture}>
+                    {({ src }) => (
+                      <div
+                        className="card contactPicture"
+                        style={{
+                          backgroundSize: "contain",
+                          backgroundPosition: "center",
+                          backgroundRepeat: "no-repeat",
+                          backgroundColor: "black",
+                          backgroundImage: `url('${src}')`
+                        }}
+                      />
+                    )}
+                  </Asset>
+                ) : (
+                  <div
+                    className="card contactPicture"
+                    style={{
+                      backgroundSize: "contain",
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
+                      backgroundColor: "black",
+                      backgroundImage: `none`
+                    }}
+                  />
+                )}
               </Col>
               <Col className="col-sm-12 contactNameContainer">
-                <div className="card contactName">
-                  {hoverContact.name}
-                </div>
+                <div className="card contactName">{hoverContact.name}</div>
               </Col>
             </Row>
             <Row>
@@ -153,11 +160,9 @@ class Sensors extends Component {
               </Col>
               <Col className="col-sm-12">
                 <Card className="processedData">
-                  <CardBlock>
-                    <pre>
-                      {this.state.processedData}
-                    </pre>
-                  </CardBlock>
+                  <CardBody>
+                    <pre>{this.state.processedData}</pre>
+                  </CardBody>
                 </Card>
               </Col>
             </Row>

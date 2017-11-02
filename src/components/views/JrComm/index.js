@@ -135,7 +135,7 @@ class CommShortRange extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            shortRangeComm: subscriptionData.data.shortRangeCommUpdate
+            shortRangeComm: subscriptionData.shortRangeCommUpdate
           });
         }
       });
@@ -255,7 +255,9 @@ class CommShortRange extends Component {
     comms.forEach((comm, index, arr) => {
       gradient.addColorStop(
         (index + 1) / (arr.length + 1),
-        tinycolor(comm.color).setAlpha(comm.connected ? 1 : 0.3).toRgbString()
+        tinycolor(comm.color)
+          .setAlpha(comm.connected ? 1 : 0.3)
+          .toRgbString()
       );
     });
     gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
@@ -282,48 +284,28 @@ class CommShortRange extends Component {
       <Container className="shortRangeComm">
         <Row>
           <Col sm={{ size: 6, offset: 3 }}>
-            <h1>
-              Status: {status}
-            </h1>
+            <h1>Status: {status}</h1>
           </Col>
         </Row>
         <Row>
           <Col sm={{ size: 6, offset: 3 }}>
-            {ShortRange.state === "hailing"
-              ? <Button
-                  block
-                  size="lg"
-                  color="danger"
-                  onClick={this.cancelCall}
-                >
-                  Cancel Call
-                </Button>
-              : ShortRange.arrows.length === 0
-                ? <Button
-                    block
-                    size="lg"
-                    color="primary"
-                    onClick={this.newCall}
-                  >
-                    Call
-                  </Button>
-                : ShortRange.arrows.find(a => a.connected)
-                  ? <Button
-                      block
-                      size="lg"
-                      color="danger"
-                      onClick={this.hangUp}
-                    >
-                      Hang Up
-                    </Button>
-                  : <Button
-                      block
-                      size="lg"
-                      color="info"
-                      onClick={this.answerCall}
-                    >
-                      Answer
-                    </Button>}
+            {ShortRange.state === "hailing" ? (
+              <Button block size="lg" color="danger" onClick={this.cancelCall}>
+                Cancel Call
+              </Button>
+            ) : ShortRange.arrows.length === 0 ? (
+              <Button block size="lg" color="primary" onClick={this.newCall}>
+                Call
+              </Button>
+            ) : ShortRange.arrows.find(a => a.connected) ? (
+              <Button block size="lg" color="danger" onClick={this.hangUp}>
+                Hang Up
+              </Button>
+            ) : (
+              <Button block size="lg" color="info" onClick={this.answerCall}>
+                Answer
+              </Button>
+            )}
           </Col>
         </Row>
         <Row>

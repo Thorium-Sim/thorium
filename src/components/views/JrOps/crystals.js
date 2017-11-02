@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import tinycolor from "tinycolor2";
 
-export default () =>
+export default () => (
   <div style={{ width: "100%" }}>
     <h1>Energy Crystals</h1>
     <div className="crystals">
@@ -9,7 +9,8 @@ export default () =>
       <Crystal bgColor="cyan" />
       <Crystal bgColor="limegreen" />
     </div>
-  </div>;
+  </div>
+);
 
 class Crystal extends Component {
   state = {
@@ -54,19 +55,19 @@ class Crystal extends Component {
             level: state.level + Math.random() / 5000,
             bar1: Math.min(
               1,
-              Math.max(0, state.bar1 + (Math.random() - 0.5) / 50 * state.level)
+              Math.max(0, state.bar1 + (Math.random() - 0.5) * state.level)
             ),
             bar2: Math.min(
               1,
-              Math.max(0, state.bar2 + (Math.random() - 0.5) / 50 * state.level)
+              Math.max(0, state.bar2 + (Math.random() - 0.5) * state.level)
             ),
             bar3: Math.min(
               1,
-              Math.max(0, state.bar3 + (Math.random() - 0.5) / 50 * state.level)
+              Math.max(0, state.bar3 + (Math.random() - 0.5) * state.level)
             ),
             bar4: Math.min(
               1,
-              Math.max(0, state.bar4 + (Math.random() - 0.5) / 50 * state.level)
+              Math.max(0, state.bar4 + (Math.random() - 0.5) * state.level)
             )
           };
         },
@@ -79,14 +80,17 @@ class Crystal extends Component {
   render() {
     const { level = 0, bar1, bar2, bar3, bar4, arrowPos } = this.state;
     let color;
-    level > 0.8
-      ? (color = "red")
-      : level > 0.6
-        ? (color = "orange")
-        : level > 0.4
-          ? (color = "yellow")
-          : level > 0.2 ? (color = "green") : (color = "transparent");
-
+    if (level > 0.8) {
+      color = "red";
+    } else if (level > 0.6) {
+      color = "orange";
+    } else if (level > 0.4) {
+      color = "yellow";
+    } else if (level > 0.2) {
+      color = "green";
+    } else {
+      color = "transparent";
+    }
     return (
       <div className="crystals-holder">
         <div className="arrow-holder">
@@ -97,7 +101,7 @@ class Crystal extends Component {
           />
         </div>
         <div className="crystal">
-          <img src={require("./crystal.png")} draggable="false" />
+          <img alt="crystal" src={require("./crystal.png")} draggable="false" />
           <div className="crystal-overlay" style={{ backgroundColor: color }} />
         </div>
         <div className="bars">

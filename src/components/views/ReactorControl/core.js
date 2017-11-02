@@ -3,9 +3,8 @@ import gql from "graphql-tag";
 import { InputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input } from "reactstrap";
-import Immutable from "immutable";
 
-import "./style.scss";
+import "./style.css";
 
 const REACTOR_SUB = gql`
   subscription ReactorsUpdate($simulatorId: ID!) {
@@ -43,12 +42,9 @@ class ReactorControl extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({
-              reactors: subscriptionData.data.reactorUpdate
-            })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            reactors: subscriptionData.reactorUpdate
+          });
         }
       });
     }
@@ -199,11 +195,11 @@ class ReactorControl extends Component {
               onChange={evt => this.setEfficiency(evt.target.value)}
               value={reactor.efficiency}
             >
-              {efficiencies.map(e =>
+              {efficiencies.map(e => (
                 <option key={e.label} value={e.efficiency}>
                   {e.label}
                 </option>
-              )}
+              ))}
             </Input>
             <p>Reactor Heat:</p>
             <InputField prompt="What is the new reactor heat?">

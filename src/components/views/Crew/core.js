@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import ReactTable from "react-table";
-import Immutable from "immutable";
 
 import "react-table/react-table.css";
 
@@ -63,10 +62,9 @@ class CrewCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ crew: subscriptionData.data.crewUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            crew: subscriptionData.crewUpdate
+          });
         }
       });
     }

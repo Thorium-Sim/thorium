@@ -5,7 +5,7 @@ import {
   Row,
   Col,
   Card,
-  CardBlock,
+  CardBody,
   Input,
   Button /*
   TabContent,
@@ -15,9 +15,8 @@ import {
   NavLink*/
 } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 
-import "./style.scss";
+import "./style.css";
 
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
@@ -55,10 +54,9 @@ class ProbeControl extends Component {
         document: PROBES_SUB,
         variables: { simulatorId: this.props.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ probes: subscriptionData.data.probesUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            probes: subscriptionData.probesUpdate
+          });
         }
       });
     }
@@ -80,8 +78,8 @@ class ProbeControl extends Component {
           <Col sm={3}>
             <h3>Probes</h3>
             <Card>
-              <CardBlock>
-                {network &&
+              <CardBody>
+                {network && (
                   <div
                     onClick={() =>
                       this.setState({
@@ -96,8 +94,9 @@ class ProbeControl extends Component {
                   >
                     <p className="probe-name">Probe Network</p>
                     <small />
-                  </div>}
-                {probes.probes.filter(p => !/[1-8]/.test(p.name)).map(p =>
+                  </div>
+                )}
+                {probes.probes.filter(p => !/[1-8]/.test(p.name)).map(p => (
                   <div
                     key={p.id}
                     onClick={() => this.setState({ selectedProbe: p.id })}
@@ -105,15 +104,13 @@ class ProbeControl extends Component {
                       ? "selected"
                       : ""}`}
                   >
-                    <p className="probe-name">
-                      {p.name}
-                    </p>
+                    <p className="probe-name">{p.name}</p>
                     <small>
                       {probes.types.find(t => t.id === p.type).name}
                     </small>
                   </div>
-                )}
-              </CardBlock>
+                ))}
+              </CardBody>
             </Card>
           </Col>
           <Col sm={9}>
@@ -205,71 +202,69 @@ class ProbeControlWrapper extends Component {
     //const { activeTab } = this.state;
     return (
       <Container>
-        <h1>
-          {name}
-        </h1>
+        <h1>{name}</h1>
         <Row>
           <Col sm={4}>
             <h3>Equipment</h3>
             <Card className="equipment">
-              <CardBlock>
-                {equipment.map(e =>
-                  <p key={e.id}>
-                    {e.name}
-                  </p>
-                )}
-              </CardBlock>
+              <CardBody>
+                {equipment.map(e => <p key={e.id}>{e.name}</p>)}
+              </CardBody>
             </Card>
           </Col>
           <Col sm={8}>
             <h3>Query</h3>
             <Row>
               <Col sm={9}>
-                {querying
-                  ? <p className="querying">Querying...</p>
-                  : <Input
-                      disabled={!name}
-                      size="lg"
-                      type="text"
-                      value={queryText}
-                      onChange={evt =>
-                        this.setState({ queryText: evt.target.value })}
-                    />}
+                {querying ? (
+                  <p className="querying">Querying...</p>
+                ) : (
+                  <Input
+                    disabled={!name}
+                    size="lg"
+                    type="text"
+                    value={queryText}
+                    onChange={evt =>
+                      this.setState({ queryText: evt.target.value })}
+                  />
+                )}
               </Col>
               <Col sm={3}>
-                {querying
-                  ? <Button
-                      disabled={!name}
-                      size="lg"
-                      color="danger"
-                      onClick={this.cancelQuery}
-                    >
-                      Cancel
-                    </Button>
-                  : <Button
-                      disabled={!name}
-                      size="lg"
-                      color="primary"
-                      onClick={this.queryProbe}
-                    >
-                      Query
-                    </Button>}
+                {querying ? (
+                  <Button
+                    disabled={!name}
+                    size="lg"
+                    color="danger"
+                    onClick={this.cancelQuery}
+                  >
+                    Cancel
+                  </Button>
+                ) : (
+                  <Button
+                    disabled={!name}
+                    size="lg"
+                    color="primary"
+                    onClick={this.queryProbe}
+                  >
+                    Query
+                  </Button>
+                )}
               </Col>
             </Row>
             <Row>
               <Col sm={12}>
-                <pre className="results">
-                  {response}
-                </pre>
-                {type &&
+                <pre className="results">{response}</pre>
+                {type && (
                   <img
+                    alt="probe"
                     draggable={false}
                     style={{
                       width: "200px",
                       transform: "rotate(90deg) translate(-150px, -250px)"
                     }}
                     src={require(`../ProbeConstruction/probes/${type}.svg`)}
-                  />}
+                  />
+                )}
               </Col>
             </Row>
           </Col>

@@ -56,3 +56,6 @@ assets
 temp
 thorium-server-*
 thorium-server
+
+# unecessary CSS files
+src/**/*.css

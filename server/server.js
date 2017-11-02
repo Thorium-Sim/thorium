@@ -1,4 +1,4 @@
-import "./server/helpers/init";
+import "./helpers/init";
 //Run init before anything else. Make sure all our files are in place before they are needed by other things
 import express from "express";
 import { createServer } from "http";
@@ -10,14 +10,14 @@ import { execute, subscribe } from "graphql";
 import { SubscriptionServer } from "subscriptions-transport-ws";
 import { printSchema } from "graphql/utilities/schemaPrinter";
 import graphqlExpressUpload from "graphql-server-express-upload";
-import schema from "./server/data";
-import vanity from "./server/helpers/vanity";
-import "./server/helpers/broadcast";
-import ipaddress from "./server/helpers/ipaddress";
-import "./server/helpers/client-server.js";
+import schema from "./data";
+import vanity from "./helpers/vanity";
+import "./helpers/broadcast";
+import ipaddress from "./helpers/ipaddress";
+import "./helpers/client-server.js";
 
-import "./server/events";
-import "./server/processes";
+import "./events";
+import "./processes";
 
 const CLIENT_PORT = 3000;
 const GRAPHQL_PORT = 3001;

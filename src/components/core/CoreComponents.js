@@ -15,7 +15,7 @@ import {
 import Alerts from "../generic/Alerts";
 import { Link } from "react-router";
 
-import "./CoreComponents.scss";
+import "./CoreComponents.css";
 
 class CoreComponents extends Component {
   constructor(props) {
@@ -61,7 +61,7 @@ class CoreComponents extends Component {
       }
     }
   }
-  pickSimulator = (e, done) => {
+  pickSimulator = e => {
     const simulator = e.target.value;
     this.setState({
       simulator
@@ -98,11 +98,11 @@ class CoreComponents extends Component {
           <option>Pick a simulator</option>
           <option disabled>⸺⸺⸺⸺⸺</option>
           <option value="test">Test</option>
-          {simulators.map(s =>
+          {simulators.map(s => (
             <option key={s.id} value={s.id}>
               {s.name}
             </option>
-          )}
+          ))}
         </select>
         <select
           className="btn btn-primary btn-sm"
@@ -124,13 +124,13 @@ class CoreComponents extends Component {
             })}
         </select>
         <Link to={`/flight/${this.props.flightId}`}>Client Config</Link>
-        <a
-          href="#"
+        <Button
+          size="sm"
           onClick={this.toggleIssueTracker}
           style={{ marginLeft: "20px" }}
         >
           Bug Report/Issue Tracker
-        </a>
+        </Button>
         <label>
           Notifications{" "}
           <input
@@ -164,19 +164,20 @@ class CoreComponents extends Component {
           }}
         >
           {LayoutComponent &&
-            this.state.simulator &&
-            <LayoutComponent
-              {...this.props}
-              simulator={
-                simulators.find(s => s.id === this.state.simulator) || {
-                  id: this.state.simulator
+            this.state.simulator && (
+              <LayoutComponent
+                {...this.props}
+                simulator={
+                  simulators.find(s => s.id === this.state.simulator) || {
+                    id: this.state.simulator
+                  }
                 }
-              }
-            />}
+              />
+            )}
         </div>
-        {!this.state.simulator &&
+        {!this.state.simulator && (
           <ListGroup style={{ maxWidth: "500px" }}>
-            {simulators.map(s =>
+            {simulators.map(s => (
               <ListGroupItem
                 onClick={() => this.pickSimulator({ target: { value: s.id } })}
                 key={s.id}
@@ -187,8 +188,9 @@ class CoreComponents extends Component {
               >
                 {s.name}
               </ListGroupItem>
-            )}
-          </ListGroup>}
+            ))}
+          </ListGroup>
+        )}
         <Modal isOpen={this.state.issuesOpen} toggle={this.toggleIssueTracker}>
           <ModalHeader toggle={this.toggleIssueTracker}>
             Submit a Feature/Bug Report
@@ -202,14 +204,15 @@ class CoreComponents extends Component {
             </Button>
           </ModalFooter>
         </Modal>
-        {this.state.simulator &&
+        {this.state.simulator && (
           <Alerts
             ref="alert-widget"
             disabled={!notifications}
             speech={speech}
             simulator={{ id: this.state.simulator }}
             station={{ name: "Core" }}
-          />}
+          />
+        )}
       </div>
     );
   }

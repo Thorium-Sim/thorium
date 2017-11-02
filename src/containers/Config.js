@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Col, Row, Container, Card } from "reactstrap";
 import Configs from "../components/config";
 
-import "./config.scss";
+import "./config.css";
 
 class ConfigView extends Component {
   constructor(props) {
@@ -22,48 +22,44 @@ class ConfigView extends Component {
     return (
       <Container className="ConfigView">
         <Row>
-          {this.state.selectedConfigObject
-            ? <Col sm="12">
-                <a
-                  href="#back"
-                  onClick={this._setSelectedConfigObject.bind(this, null)}
+          {this.state.selectedConfigObject ? (
+            <Col sm="12">
+              <a
+                href="#back"
+                onClick={this._setSelectedConfigObject.bind(this, null)}
+              >
+                Go Back
+              </a>
+              <ConfigComponent {...this.props} />
+            </Col>
+          ) : (
+            <Col sm="3">
+              <h4>Configurations</h4>
+              <Card className="scroll">
+                <li
+                  className="list-group-item"
+                  onClick={this._setSelectedConfigObject.bind(
+                    this,
+                    "Simulator"
+                  )}
                 >
-                  Go Back
-                </a>
-                <ConfigComponent {...this.props} />
-              </Col>
-            : <Col sm="3">
-                <h4>Configurations</h4>
-                <Card className="scroll">
-                  <li
-                    className="list-group-item"
-                    onClick={this._setSelectedConfigObject.bind(
-                      this,
-                      "Simulator"
-                    )}
-                  >
-                    Template Simulators
-                  </li>
-                  <li
-                    className="list-group-item"
-                    onClick={this._setSelectedConfigObject.bind(
-                      this,
-                      "Stations"
-                    )}
-                  >
-                    Station Sets
-                  </li>
-                  <li
-                    className="list-group-item"
-                    onClick={this._setSelectedConfigObject.bind(
-                      this,
-                      "Missions"
-                    )}
-                  >
-                    Missions
-                  </li>
-                </Card>
-              </Col>}
+                  Template Simulators
+                </li>
+                <li
+                  className="list-group-item"
+                  onClick={this._setSelectedConfigObject.bind(this, "Stations")}
+                >
+                  Station Sets
+                </li>
+                <li
+                  className="list-group-item"
+                  onClick={this._setSelectedConfigObject.bind(this, "Missions")}
+                >
+                  Missions
+                </li>
+              </Card>
+            </Col>
+          )}
         </Row>
       </Container>
     );
@@ -91,7 +87,7 @@ export default ConfigView;
 	_deleteSimulator(){
 		let simulator = this.state.selectedSimulator;
 		if (simulator){
-			if (confirm("Are you sure you want to delete that simulator?")){
+			if (window.confirm("Are you sure you want to delete that simulator?")){
 				//TODO: Delete all of the objects associated with the simulator;
 				let obj = {
 					id: simulator.id,

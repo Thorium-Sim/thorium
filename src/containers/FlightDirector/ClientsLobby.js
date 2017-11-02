@@ -10,7 +10,7 @@ const ClientLobby = props => {
   const deleteFlight = () => {
     const flightId = props.params.flightId;
     if (
-      confirm(
+      window.confirm(
         `Are you sure you want to delete this flight?
         It will permenantly erase all simulators running in this flight.`
       )

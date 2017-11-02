@@ -2,11 +2,10 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Row, Col, Container } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 import Isochips from "./isochips";
 import Battery from "./batteryCharging";
 import Routing from "./powerRouting";
-import "./style.scss";
+import "./style.css";
 
 const Components = [Isochips, Battery, Routing];
 
@@ -47,10 +46,9 @@ class JrEng extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ systems: subscriptionData.data.systemsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            systems: subscriptionData.systemsUpdate
+          });
         }
       });
     }
@@ -62,7 +60,7 @@ class JrEng extends Component {
     this.setState({
       repairSystem: system,
       repairComponent: Object.keys(Components)[
-        Math.round(Math.random() * Components.length)
+        Math.round(Math.random() * (Components.length - 1))
       ]
     });
   };
@@ -98,6 +96,7 @@ class JrEng extends Component {
     if (this.props.data.loading) return null;
     if (this.state.repairSystem) {
       const Comp = Components[this.state.repairComponent];
+      console.log(this.state.repairComponent, Comp);
       return (
         <Container fluid className="jr-eng">
           <Row>
@@ -117,7 +116,7 @@ class JrEng extends Component {
               return 0;
             })
             .filter(s => s.name || s.displayName)
-            .map(sys =>
+            .map(sys => (
               <Col key={sys.id} sm={6}>
                 <h1
                   className={sys.damage.damaged ? "text-danger" : ""}
@@ -130,7 +129,7 @@ class JrEng extends Component {
                   {sys.displayName || sys.name}
                 </h1>
               </Col>
-            )}
+            ))}
         </Row>
       </Container>
     );

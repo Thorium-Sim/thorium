@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { Container, Row, Col, Button, Card, CardBlock } from "reactstrap";
+import { Container, Row, Col, Button, Card, CardBody } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 import Tour from "reactour";
 
-import "./style.scss";
+import "./style.css";
 
 const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
@@ -43,10 +42,9 @@ class DamageControl extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ systems: subscriptionData.data.systemsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            systems: subscriptionData.systemsUpdate
+          });
         }
       });
     }
@@ -160,107 +158,112 @@ class DamageControl extends Component {
           >
             <h4>Damaged Systems</h4>
             <Card>
-              <CardBlock className="damaged-systems">
-                {this.state.reactivationCodeModal
-                  ? <div className="reactivation-modal">
-                      <ul className="flex-boxes">
-                        {[
-                          "¥",
-                          "Ω",
-                          "∏",
-                          "§",
-                          "-",
-                          "∆",
-                          "£",
-                          "∑",
-                          "∂"
-                        ].map((c, i) =>
-                          <li key={i} onClick={() => this.setCodeEntry(c)}>
-                            {c}
-                          </li>
-                        )}
-                      </ul>
-                      <Row>
-                        <Col sm={5}>
-                          <Button
-                            block
-                            color="danger"
-                            onClick={this.cancelReactivationCode}
-                          >
-                            Cancel
-                          </Button>
-                        </Col>
-                        <Col sm={{ size: 5, offset: 2 }}>
-                          <Button
-                            block
-                            color="warning"
-                            onClick={this.clearCodeEntry}
-                          >
-                            Clear
-                          </Button>
-                        </Col>
-                      </Row>
-                    </div>
-                  : systems.filter(s => s.damage.damaged).map(s =>
-                      <p
-                        key={s.id}
-                        className={`${this.state.selectedSystem === s.id
-                          ? "selected"
-                          : ""}
+              <CardBody className="damaged-systems">
+                {this.state.reactivationCodeModal ? (
+                  <div className="reactivation-modal">
+                    <ul className="flex-boxes">
+                      {[
+                        "¥",
+                        "Ω",
+                        "∏",
+                        "§",
+                        "-",
+                        "∆",
+                        "£",
+                        "∑",
+                        "∂"
+                      ].map((c, i) => (
+                        <li key={i} onClick={() => this.setCodeEntry(c)}>
+                          {c}
+                        </li>
+                      ))}
+                    </ul>
+                    <Row>
+                      <Col sm={5}>
+                        <Button
+                          block
+                          color="danger"
+                          onClick={this.cancelReactivationCode}
+                        >
+                          Cancel
+                        </Button>
+                      </Col>
+                      <Col sm={{ size: 5, offset: 2 }}>
+                        <Button
+                          block
+                          color="warning"
+                          onClick={this.clearCodeEntry}
+                        >
+                          Clear
+                        </Button>
+                      </Col>
+                    </Row>
+                  </div>
+                ) : (
+                  systems.filter(s => s.damage.damaged).map(s => (
+                    <p
+                      key={s.id}
+                      className={`${this.state.selectedSystem === s.id
+                        ? "selected"
+                        : ""}
           ${s.damage.requested ? "requested" : ""}
           ${s.damage.report ? "report" : ""}`}
-                        onClick={this.selectSystem.bind(this, s.id)}
-                      >
-                        {this.systemName(s)}
-                      </p>
-                    )}
-              </CardBlock>
+                      onClick={this.selectSystem.bind(this, s.id)}
+                    >
+                      {this.systemName(s)}
+                    </p>
+                  ))
+                )}
+              </CardBody>
             </Card>
-            {this.state.reactivationCodeModal
-              ? <Button
-                  block
-                  size="lg"
-                  color="primary"
-                  onClick={this.reactivateCode}
-                >
-                  Reactivate
-                </Button>
-              : <Button
-                  block
-                  className="request-report"
-                  disabled={!this.state.selectedSystem}
-                  onClick={this.requestReport.bind(this)}
-                  color="primary"
-                >
-                  Request Damage Report
-                </Button>}
-            {damagedSystem.damage.neededReactivationCode &&
+            {this.state.reactivationCodeModal ? (
+              <Button
+                block
+                size="lg"
+                color="primary"
+                onClick={this.reactivateCode}
+              >
+                Reactivate
+              </Button>
+            ) : (
+              <Button
+                block
+                className="request-report"
+                disabled={!this.state.selectedSystem}
+                onClick={this.requestReport.bind(this)}
+                color="primary"
+              >
+                Request Damage Report
+              </Button>
+            )}
+            {damagedSystem.damage.neededReactivationCode && (
               <Card
                 className="reactivation-code-entry"
                 onClick={
                   this.state.reactivationCodeModal ? () => {} : this.toggle
                 }
               >
-                <CardBlock>
+                <CardBody>
                   <p className={`${this.state.codeEntry ? "code-entry" : ""}`}>
                     {this.state.codeEntry
                       ? this.state.codeEntry
                       : "Enter Reactivation Code..."}
                   </p>
-                </CardBlock>
-              </Card>}
+                </CardBody>
+              </Card>
+            )}
           </Col>
           <Col sm="9" className="damage-report">
             <h4>Damage Report</h4>
             <Card>
-              <CardBlock>
+              <CardBody>
                 <p className="damageReport-text">
                   {this.state.selectedSystem
                     ? systems.find(s => s.id === this.state.selectedSystem)
                         .damage.report
                     : "No system selected."}
                 </p>
-              </CardBlock>
+              </CardBody>
             </Card>
           </Col>
         </Row>

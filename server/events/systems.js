@@ -1,4 +1,4 @@
-import App from "../../app.js";
+import App from "../app.js";
 import uuid from "uuid";
 import { pubsub } from "../helpers/subscriptionManager";
 import * as Classes from "../classes";

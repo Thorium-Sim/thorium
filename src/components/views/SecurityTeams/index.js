@@ -6,16 +6,15 @@ import {
   Row,
   Col,
   Card,
-  CardBlock,
+  CardBody,
   Button,
   Input,
   Label,
   FormGroup
 } from "reactstrap";
-import Immutable from "immutable";
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
 
-import "./style.scss";
+import "./style.css";
 
 const CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID) {
@@ -71,10 +70,9 @@ class SecurityTeams extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ teams: subscriptionData.data.teamsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            teams: subscriptionData.teamsUpdate
+          });
         }
       });
     }
@@ -85,10 +83,9 @@ class SecurityTeams extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ crew: subscriptionData.data.crewUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            crew: subscriptionData.crewUpdate
+          });
         }
       });
     }
@@ -209,8 +206,8 @@ class SecurityTeams extends Component {
         <Row>
           <Col sm={3}>
             <Card>
-              <CardBlock>
-                {teams.map(t =>
+              <CardBody>
+                {teams.map(t => (
                   <p
                     key={t.id}
                     onClick={() => {
@@ -222,8 +219,8 @@ class SecurityTeams extends Component {
                   >
                     {t.name}
                   </p>
-                )}
-              </CardBlock>
+                ))}
+              </CardBody>
             </Card>
             <Button
               block
@@ -332,59 +329,61 @@ class SecurityTeams extends Component {
                         />
                       </Col>
                     </Row>
-                    {team.creating
-                      ? <div>
-                          <Button
-                            block
-                            size="lg"
-                            color="success"
-                            className="recall-button"
-                            disabled={!team.id}
-                            onClick={() => {
-                              this.createSecurityTeam(team);
-                            }}
-                          >
-                            Create Security Team
-                          </Button>
-                          <Button
-                            block
-                            size="lg"
-                            color="danger"
-                            disabled={!team.id}
-                            onClick={() => {
-                              this.setState({
-                                selectedTeam: null
-                              });
-                            }}
-                          >
-                            Cancel
-                          </Button>
-                        </div>
-                      : <div>
-                          <Button
-                            block
-                            size="lg"
-                            color="success"
-                            className="recall-button"
-                            disabled={!team.id}
-                            onClick={() => {
-                              this.commitTeam(team);
-                            }}
-                          >
-                            Update Security Team
-                          </Button>
-                          <Button
-                            block
-                            size="lg"
-                            color="danger"
-                            disabled={!team.id}
-                            onClick={() => {
-                              this.removeTeam(team.id);
-                            }}
-                          >
-                            Recall Security Team
-                          </Button>
-                        </div>}
+                    {team.creating ? (
+                      <div>
+                        <Button
+                          block
+                          size="lg"
+                          color="success"
+                          className="recall-button"
+                          disabled={!team.id}
+                          onClick={() => {
+                            this.createSecurityTeam(team);
+                          }}
+                        >
+                          Create Security Team
+                        </Button>
+                        <Button
+                          block
+                          size="lg"
+                          color="danger"
+                          disabled={!team.id}
+                          onClick={() => {
+                            this.setState({
+                              selectedTeam: null
+                            });
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    ) : (
+                      <div>
+                        <Button
+                          block
+                          size="lg"
+                          color="success"
+                          className="recall-button"
+                          disabled={!team.id}
+                          onClick={() => {
+                            this.commitTeam(team);
+                          }}
+                        >
+                          Update Security Team
+                        </Button>
+                        <Button
+                          block
+                          size="lg"
+                          color="danger"
+                          disabled={!team.id}
+                          onClick={() => {
+                            this.removeTeam(team.id);
+                          }}
+                        >
+                          Recall Security Team
+                        </Button>
+                      </div>
+                    )}
                   </Col>
                   <Col
                     xl={{ size: 5, offset: 2 }}
@@ -395,10 +394,10 @@ class SecurityTeams extends Component {
                       Available Officers
                     </Label>
                     <Card>
-                      <CardBlock>
+                      <CardBody>
                         {crew
                           .filter(c => assignedOfficers.indexOf(c.id) === -1)
-                          .map(c =>
+                          .map(c => (
                             <p
                               key={c.id}
                               onClick={() => {
@@ -407,17 +406,17 @@ class SecurityTeams extends Component {
                             >
                               {c.name}
                             </p>
-                          )}
-                      </CardBlock>
+                          ))}
+                      </CardBody>
                     </Card>
                     <Label for="teamName" size="lg">
                       Assigned Officers
                     </Label>
                     <Card>
-                      <CardBlock>
+                      <CardBody>
                         {team &&
                           team.officers &&
-                          team.officers.map(c =>
+                          team.officers.map(c => (
                             <p
                               key={c.id}
                               onClick={() => {
@@ -426,8 +425,8 @@ class SecurityTeams extends Component {
                             >
                               {c.name}
                             </p>
-                          )}
-                      </CardBlock>
+                          ))}
+                      </CardBody>
                     </Card>
                   </Col>
                 </Row>

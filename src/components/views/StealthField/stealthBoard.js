@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import TransitionGroup from "react-transition-group/TransitionGroup";
 import StealthBars from "./stealthBars";
-import { Row } from "reactstrap";
 
 const limit = 0.05;
 const factor = 0.005;
@@ -70,13 +68,11 @@ export default class StealthBoard extends Component {
     const { stealthField } = this.props;
     const { systems } = this.state;
     return (
-      <Row className="stealth-board">
-        <TransitionGroup>
-          {[StealthBars]
-            .filter(s => stealthField.state)
-            .map(Comp => <Comp key={Comp.name} systems={systems} />)}
-        </TransitionGroup>
-      </Row>
+      <div className="stealth-board">
+        {[StealthBars]
+          .filter(() => stealthField.state)
+          .map(Comp => <Comp key={Comp.name} systems={systems} />)}
+      </div>
     );
   }
 }

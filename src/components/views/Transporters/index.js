@@ -7,7 +7,7 @@ import Scan from "./transporterScan";
 import DamageOverlay from "../helpers/DamageOverlay";
 //import Tour from "reactour";
 
-import "./style.scss";
+import "./style.css";
 
 const TRANSPORTER_SUB = gql`
   subscription TransportersSub($simulatorId: ID) {
@@ -99,10 +99,8 @@ class Transporters extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
             transporters: previousResult.transporters.map(transporter => {
-              if (
-                transporter.id === subscriptionData.data.transporterUpdate.id
-              ) {
-                return subscriptionData.data.transporterUpdate;
+              if (transporter.id === subscriptionData.transporterUpdate.id) {
+                return subscriptionData.transporterUpdate;
               }
               return transporter;
             })
@@ -215,24 +213,27 @@ class Transporters extends Component {
     return (
       <div className="transporter-control">
         <DamageOverlay system={transporter} message="Transporters Offline" />
-        {transporter.state === "Inactive" &&
+        {transporter.state === "Inactive" && (
           <TargetSelect
             beginScan={this.beginScan.bind(this, transporter)}
             updateTarget={this.updateTarget.bind(this, transporter)}
             updateDestination={this.updateDestination.bind(this, transporter)}
             target={transporter.requestedTarget}
             destination={transporter.destination}
-          />}
-        {transporter.state === "Scanning" &&
-          <Scanning cancelScan={this.cancelScan.bind(this, transporter)} />}
+          />
+        )}
+        {transporter.state === "Scanning" && (
+          <Scanning cancelScan={this.cancelScan.bind(this, transporter)} />
+        )}
         {(transporter.state === "Targeting" ||
-          transporter.state === "Charging") &&
+          transporter.state === "Charging") && (
           <Target
             completeTransport={this.completeTransport.bind(this, transporter)}
             cancelTransport={this.cancelTransport.bind(this, transporter)}
             setCharge={this.setCharge.bind(this, transporter)}
             targets={transporter.targets}
-          />}
+          />
+        )}
         {/*<Tour
           steps={trainingSteps}
           isOpen={this.props.clientObj.training}

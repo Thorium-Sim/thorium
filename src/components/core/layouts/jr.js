@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Cores } from "../../views";
 //import CoreFeed from "../../views/CoreFeed";
-import "./jr.scss";
+import "./jr.css";
 const coreList = [
   "JrNavigationCore",
   "EngineControlCore",
@@ -30,9 +30,7 @@ export default class CoreJr extends Component {
             const label = c.replace("Core", "");
             return (
               <div key={c} className={c}>
-                <p>
-                  {label}
-                </p>
+                <p>{label}</p>
                 <Core {...this.props} />
               </div>
             );

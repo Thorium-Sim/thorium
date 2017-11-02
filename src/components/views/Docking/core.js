@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Container, Row, Col, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
-import "./style.scss";
+import "./style.css";
 
 const DOCKING_SUB = gql`
   subscription SimulatorSub($simulatorId: ID) {
@@ -40,10 +39,9 @@ class DockingCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ simulators: subscriptionData.data.simulatorsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            simulators: subscriptionData.simulatorsUpdate
+          });
         }
       });
     }

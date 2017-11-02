@@ -1,4 +1,4 @@
-import App from "../../app";
+import App from "../app";
 import * as THREE from "three";
 import { pubsub } from "../helpers/subscriptionManager.js";
 

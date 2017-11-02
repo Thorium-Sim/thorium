@@ -10,8 +10,8 @@ import Widgets from "./Widgets";
 import Alerts from "../../generic/Alerts";
 import ActionsMixin from "../../generic/Actions";
 
-import "./layout.scss";
-import "./theme.scss";
+import "./layout.css";
+import "./theme.css";
 
 class CardHolder extends Component {
   componentWillEnter(callback) {
@@ -177,15 +177,9 @@ class LayoutCorners extends Component {
             <div className="frame-5" />
           </div>
           <div className="frame-text">
-            <h1 className="simulator-name">
-              {simulator.name}
-            </h1>
-            <h2 className="station-name">
-              {station.name}
-            </h2>
-            <h2 className="login-name">
-              {clientObj.loginName}
-            </h2>
+            <h1 className="simulator-name">{simulator.name}</h1>
+            <h2 className="station-name">{station.name}</h2>
+            <h2 className="login-name">{clientObj.loginName}</h2>
           </div>
           <CardSwitcher
             className={alertClass}

@@ -3,9 +3,8 @@ import gql from "graphql-tag";
 import { Row, Col, Container, Card } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
-import Immutable from "immutable";
 import Tour from "reactour";
-import "./style.scss";
+import "./style.css";
 /* TODO
 
 Some improvements:
@@ -108,10 +107,9 @@ class PowerDistribution extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ systems: subscriptionData.data.systemsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            systems: subscriptionData.systemsUpdate
+          });
         }
       });
       this.reactorSub = nextProps.data.subscribeToMore({
@@ -120,10 +118,9 @@ class PowerDistribution extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ reactors: subscriptionData.data.reactorUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            reactors: subscriptionData.reactorUpdate
+          });
         }
       });
     }
@@ -164,7 +161,7 @@ class PowerDistribution extends Component {
                   (sys.power.power || sys.power.power === 0) &&
                   sys.power.powerLevels.length
               )
-              .map(sys =>
+              .map(sys => (
                 <SystemPower
                   key={sys.id}
                   {...sys}
@@ -172,12 +169,10 @@ class PowerDistribution extends Component {
                   count={this.state.systems.length}
                   height={window.innerHeight * 0.74}
                 />
-              )}
-            <h4 className="totalPowerText">
-              Total Power Used: {powerTotal}
-            </h4>
+              ))}
+            <h4 className="totalPowerText">Total Power Used: {powerTotal}</h4>
           </Col>
-          {battery &&
+          {battery && (
             <Col sm="4" className="battery-holder">
               <Card>
                 <div className="battery-container">
@@ -193,7 +188,8 @@ class PowerDistribution extends Component {
                   <Battery level={Math.min(1, Math.max(0, charge * 4))} />
                 </div>
               </Card>
-            </Col>}
+            </Col>
+          )}
         </Row>
         <Tour
           steps={trainingSteps}
@@ -244,7 +240,7 @@ const SystemPower = ({
       </Col>
       <Col sm="9">
         <Measure>
-          {dimensions =>
+          {dimensions => (
             <div
               className="powerLine"
               style={{ margin: (height / count - 20) / 2 }}
@@ -263,16 +259,19 @@ const SystemPower = ({
                 onMouseDown={() => mouseDown(id, dimensions)}
                 key={`${id}-${-1}`}
               />
-              {Array(40).fill(0).map((n, i) => {
-                return (
-                  <div
-                    className={`powerBox ${i >= power ? "hidden" : ""}`}
-                    onMouseDown={() => mouseDown(id, dimensions)}
-                    key={`${id}-${i}`}
-                  />
-                );
-              })}
-            </div>}
+              {Array(40)
+                .fill(0)
+                .map((n, i) => {
+                  return (
+                    <div
+                      className={`powerBox ${i >= power ? "hidden" : ""}`}
+                      onMouseDown={() => mouseDown(id, dimensions)}
+                      key={`${id}-${i}`}
+                    />
+                  );
+                })}
+            </div>
+          )}
         </Measure>
       </Col>
     </Row>
@@ -283,9 +282,7 @@ const Battery = ({ level = 1 }) => {
   return (
     <div className="battery">
       <div className="battery-bar" style={{ height: `${level * 100}%` }} />
-      <div className="battery-level">
-        {Math.round(level * 100)}
-      </div>
+      <div className="battery-level">{Math.round(level * 100)}</div>
     </div>
   );
 };

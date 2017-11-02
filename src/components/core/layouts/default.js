@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Cores } from "../../views";
 import CoreFeed from "../../views/CoreFeed";
 
-import "./default.scss";
-import "./sideCore.scss";
+import "./default.css";
+import "./sideCore.css";
 
 const exceptions = [
   "TractorBeamCore",
@@ -25,6 +25,27 @@ const exceptions = [
   "MessagingCore",
   "ClientsCore",
   "JrNavigationCore"
+  /*  "EngineControlCore",
+  "SensorsGridCore",
+  "SensorsCore",
+  "ShieldControlCore",
+  "DecodingCore",
+  "LRCommCore",
+  "InternalCommCore",
+  //"SystemsCore",
+  "DockingCore",
+  "NavigationCore",
+  "CommShortRangeCore",
+  "RemoteCore",
+  //"DamageReportsCore",
+  "TargetingCore",
+  "PhaserCore",
+  "TorpedoCore",
+  "ActionsCore",
+  "ThrusterCore",
+  "ReactorControlCore",
+  "ViewscreenCore",
+  "HeatCore"*/
 ];
 export default class CoreDefault extends Component {
   state = {};
@@ -48,9 +69,7 @@ export default class CoreDefault extends Component {
               const label = c.replace("Core", "");
               return (
                 <div key={c} className={c}>
-                  <p>
-                    {label}
-                  </p>
+                  <p>{label}</p>
                   <Core {...props} />
                 </div>
               );

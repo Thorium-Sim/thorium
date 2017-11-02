@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Container, Row, Col, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
-import "./style.scss";
+import "./style.css";
 
 const PROBES_SUB = gql`
   subscription ProbesSub($simulatorId: ID!) {
@@ -29,10 +28,9 @@ class ProbeNetworkCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ probes: subscriptionData.data.probesUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            probes: subscriptionData.probesUpdate
+          });
         }
       });
     }
@@ -41,28 +39,32 @@ class ProbeNetworkCore extends Component {
     this.subscription && this.subscription();
   }
   destroyProbe = probe => {
-    if (confirm(`Are you sure you want to destroy this probe: ${probe}`)) {
+    if (
+      window.confirm(`Are you sure you want to destroy this probe: ${probe}`)
+    ) {
       const mutation = gql`
         mutation DestroyProbe($id: ID!, $probeId: ID!) {
           destroyProbe(id: $id, probeId: $probeId)
         }
       `;
       if (probe === "all") {
-        Array(8).fill(1).forEach((_, probeNum) => {
-          const probeObj = this.props.data.probes[0].probes.find(
-            p => p.name === (probeNum + 1).toString()
-          );
-          if (probeObj) {
-            const variables = {
-              id: this.props.data.probes[0].id,
-              probeId: probeObj.id
-            };
-            this.props.client.mutate({
-              mutation,
-              variables
-            });
-          }
-        });
+        Array(8)
+          .fill(1)
+          .forEach((_, probeNum) => {
+            const probeObj = this.props.data.probes[0].probes.find(
+              p => p.name === (probeNum + 1).toString()
+            );
+            if (probeObj) {
+              const variables = {
+                id: this.props.data.probes[0].id,
+                probeId: probeObj.id
+              };
+              this.props.client.mutate({
+                mutation,
+                variables
+              });
+            }
+          });
       } else {
         const probeObj = this.props.data.probes[0].probes.find(
           p => p.name === probe.toString()

@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
 
-import "./style.scss";
+import "./style.css";
 
 export default props => {
   const { viewscreen } = props;
@@ -12,9 +12,7 @@ export default props => {
         <Row>
           <Col sm={12}>
             <h1>Information</h1>
-            <p className="info">
-              {data.text}
-            </p>
+            <p className="info">{data.text}</p>
           </Col>
         </Row>
       </div>

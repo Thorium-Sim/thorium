@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Asset } from "../../../helpers/assets";
 
-import "./style.scss";
+import "./style.css";
 
 const INTERNAL_SUB = gql`
   subscription InternalSensorsUpdate($simulatorId: ID) {
@@ -30,7 +30,7 @@ class InternalSensorsViewscreen extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            sensors: subscriptionData.data.sensorsUpdate
+            sensors: subscriptionData.sensorsUpdate
           });
         }
       });
@@ -67,11 +67,12 @@ class InternalSensorsViewscreen extends Component {
       <div className="viewscreen-internalSensors">
         <h1>Internal Scans</h1>
         <Asset asset="/Ship Views/Right" simulatorId={this.props.simulator.id}>
-          {({ src }) =>
+          {({ src }) => (
             <div className="ship">
               {scanning && <div className="scanner" style={{ background }} />}
-              <img src={src} />
-            </div>}
+              <img alt="ship" src={src} />
+            </div>
+          )}
         </Asset>
         <h2>
           {scanning

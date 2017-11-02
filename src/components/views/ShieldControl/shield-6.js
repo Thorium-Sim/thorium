@@ -13,12 +13,8 @@ const ShieldData = ({ s, startLoop, state, _toggleShields }) => {
         message={`${s.name} Shields Offline`}
         style={{ fontSize: "30px" }}
       />
-      <h4>
-        {s.name}
-      </h4>
-      <h5>
-        Integrity: {`${Math.round(s.integrity * 100)}%`}
-      </h5>
+      <h4>{s.name}</h4>
+      <h5>Integrity: {`${Math.round(s.integrity * 100)}%`}</h5>
       <h5>Frequency:</h5>
       <Row>
         <Col sm="auto">
@@ -64,13 +60,15 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
                 style={{ boxShadow: shieldStyle(shields) }}
               >
                 <Asset asset={"/Ship Views/Top"} simulatorId={simulator.id}>
-                  {({ src }) =>
+                  {({ src }) => (
                     <img
+                      alt="shield"
                       role="presentation"
                       className="mw-100 shieldImage"
                       draggable="false"
                       src={src}
-                    />}
+                    />
+                  )}
                 </Asset>
               </div>
             </Col>
@@ -82,13 +80,15 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
                 style={{ boxShadow: shieldStyle(shields, true) }}
               >
                 <Asset asset={"/Ship Views/Right"} simulatorId={simulator.id}>
-                  {({ src }) =>
+                  {({ src }) => (
                     <img
+                      alt="shield"
                       role="presentation"
                       className="mw-100 shieldImage"
                       draggable="false"
                       src={src}
-                    />}
+                    />
+                  )}
                 </Asset>
               </div>
             </Col>
@@ -99,6 +99,7 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
             {shields.map(s => {
               return (
                 <ShieldData
+                  key={s.id}
                   s={s}
                   startLoop={startLoop}
                   state={state}
@@ -112,7 +113,7 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
               <Button
                 color="success"
                 block
-                disabled={state.disabledButton["down"]}
+                disabled={state.disabledButton.down}
                 onClick={_toggleShields.bind(this, "down")}
               >
                 Lower All Shields
@@ -122,7 +123,7 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
               <Button
                 color="success"
                 block
-                disabled={state.disabledButton["up"]}
+                disabled={state.disabledButton.up}
                 onClick={_toggleShields.bind(this, "up")}
               >
                 Raise All Shields

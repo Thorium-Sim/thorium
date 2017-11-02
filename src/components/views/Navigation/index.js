@@ -3,12 +3,11 @@ import { Row, Col, Container } from "reactstrap";
 import gql from "graphql-tag";
 import { InputGroup, InputGroupButton, Button, Input } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Keypad from "./keypad";
 import Tour from "reactour";
 
-import "./style.scss";
+import "./style.css";
 
 export class NavigationScanner extends Component {
   constructor(props) {
@@ -134,10 +133,9 @@ class Navigation extends Component {
         document: NAVIGATION_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ navigation: subscriptionData.data.navigationUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            navigation: subscriptionData.navigationUpdate
+          });
         }
       });
     }
@@ -342,43 +340,47 @@ class Navigation extends Component {
         />
         <Row>
           <Col xl={6} lg={5}>
-            {navigation.calculate &&
+            {navigation.calculate && (
               <Row>
-                {navigation.scanning
-                  ? <Col sm="12">
-                      <Button
-                        block
-                        size="lg"
-                        style={{ marginTop: "55px" }}
-                        color="warning"
-                        onClick={this.cancelCalc.bind(this)}
-                      >
-                        Cancel Scan
-                      </Button>
-                    </Col>
-                  : <Col sm="12">
-                      <label htmlFor="destination">
-                        <h3>Desired Destination:</h3>
-                      </label>
-                      <InputGroup>
-                        <Input
-                          id="destination"
-                          type="text"
-                          value={this.state.destination}
-                          onChange={this.updateDestination.bind(this)}
-                          className="form-control"
-                        />
-                        <InputGroupButton>
-                          <Button
-                            onClick={this.calc.bind(this)}
-                            color="secondary"
-                          >
-                            Calculate Coordinates
-                          </Button>
-                        </InputGroupButton>
-                      </InputGroup>
-                    </Col>}
-              </Row>}
+                {navigation.scanning ? (
+                  <Col sm="12">
+                    <Button
+                      block
+                      size="lg"
+                      style={{ marginTop: "55px" }}
+                      color="warning"
+                      onClick={this.cancelCalc.bind(this)}
+                    >
+                      Cancel Scan
+                    </Button>
+                  </Col>
+                ) : (
+                  <Col sm="12">
+                    <label htmlFor="destination">
+                      <h3>Desired Destination:</h3>
+                    </label>
+                    <InputGroup>
+                      <Input
+                        id="destination"
+                        type="text"
+                        value={this.state.destination}
+                        onChange={this.updateDestination.bind(this)}
+                        className="form-control"
+                      />
+                      <InputGroupButton>
+                        <Button
+                          onClick={this.calc.bind(this)}
+                          color="secondary"
+                          style={{ marginTop: "-1px", height: "56px" }}
+                        >
+                          Calculate Coordinates
+                        </Button>
+                      </InputGroupButton>
+                    </InputGroup>
+                  </Col>
+                )}
+              </Row>
+            )}
             <Row>
               <Col className="col-sm-12">
                 <NavigationScanner scanning={scanning} />
@@ -386,28 +388,23 @@ class Navigation extends Component {
             </Row>
           </Col>
           <Col className="col-sm-3">
-            {navigation.calculate &&
+            {navigation.calculate && (
               <div className="calculated card">
                 <label>Calculated Course</label>
                 <Row>
                   <Col className="col-sm-3">X:</Col>
-                  <Col className="col-sm-8 numBox">
-                    {calculatedCourse.x}
-                  </Col>
+                  <Col className="col-sm-8 numBox">{calculatedCourse.x}</Col>
                 </Row>
                 <Row>
                   <Col className="col-sm-3">Y:</Col>
-                  <Col className="col-sm-8 numBox">
-                    {calculatedCourse.y}
-                  </Col>
+                  <Col className="col-sm-8 numBox">{calculatedCourse.y}</Col>
                 </Row>
                 <Row>
                   <Col className="col-sm-3">Z:</Col>
-                  <Col className="col-sm-8 numBox">
-                    {calculatedCourse.z}
-                  </Col>
+                  <Col className="col-sm-8 numBox">{calculatedCourse.z}</Col>
                 </Row>
-              </div>}
+              </div>
+            )}
             <div className="currentCourse card">
               <label>Current Course</label>
               <Row>

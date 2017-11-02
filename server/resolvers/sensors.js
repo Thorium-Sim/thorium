@@ -1,4 +1,4 @@
-import App from "../../app.js";
+import App from "../app.js";
 import moveSensorContact from "../processes/sensorContacts.js";
 import getAsset from "../helpers/getAsset";
 import { pubsub } from "../helpers/subscriptionManager.js";

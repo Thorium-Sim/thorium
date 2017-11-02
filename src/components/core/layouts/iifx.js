@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Cores } from "../../views";
 import CoreFeed from "../../views/CoreFeed";
 
-import "./iifx.scss";
-import "./sideCore.scss";
+import "./iifx.css";
+import "./sideCore.css";
 
 const exceptions = [
   "EngineControlCore",
@@ -51,9 +51,7 @@ export default class CoreIIFX extends Component {
               const label = c.replace("Core", "");
               return (
                 <div key={c} className={c}>
-                  <p>
-                    {label}
-                  </p>
+                  <p>{label}</p>
                   <Core {...props} />
                 </div>
               );

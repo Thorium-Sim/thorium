@@ -4,7 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input } from "reactstrap";
 import * as ViewscreenCards from "../../viewscreens";
 
-import "./style.scss";
+import "./style.css";
 
 const VIEWSCREEN_SUB = gql`
   subscription ViewscreenSub($simulatorId: ID) {
@@ -33,7 +33,7 @@ class Viewscreen extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            viewscreens: subscriptionData.data.viewscreensUpdate
+            viewscreens: subscriptionData.viewscreensUpdate
           });
         }
       });
@@ -72,11 +72,11 @@ class Viewscreen extends Component {
               }}
             >
               <option value="select">Select a viewscreen</option>
-              {viewscreens.map(v =>
+              {viewscreens.map(v => (
                 <option key={v.id} value={v.id}>
                   {v.name}
                 </option>
-              )}
+              ))}
             </Input>
           </Col>
           <Col sm={6}>
@@ -94,11 +94,11 @@ class Viewscreen extends Component {
               <option value="select" disabled>
                 Select a card
               </option>
-              {Object.keys(ViewscreenCards).map(v =>
+              {Object.keys(ViewscreenCards).map(v => (
                 <option key={v} value={v}>
                   {v}
                 </option>
-              )}
+              ))}
             </Input>
           </Col>
         </Row>

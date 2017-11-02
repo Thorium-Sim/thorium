@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 
-import "./style.scss";
+import "./style.css";
 
 const TEMPLATE_SUB = gql``;
 
@@ -17,7 +17,7 @@ class Template extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            template: subscriptionData.data.templateUpdate
+            template: subscriptionData.templateUpdate
           });
         }
       });

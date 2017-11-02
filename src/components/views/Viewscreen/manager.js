@@ -6,7 +6,7 @@ import Preview, { Viewscreen } from "./index";
 import * as ViewscreenCards from "../../viewscreens";
 import Layouts from "../../layouts";
 
-import "./style.scss";
+import "./style.css";
 
 const CardPreview = Viewscreen;
 
@@ -47,7 +47,7 @@ class ViewscreenCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            viewscreens: subscriptionData.data.viewscreensUpdate
+            viewscreens: subscriptionData.viewscreensUpdate
           });
         }
       });
@@ -128,12 +128,13 @@ class ViewscreenCore extends Component {
     } = this.state;
     const LayoutComponent =
       Layouts[this.props.simulator.layout + "Viewscreen"] ||
-      Layouts[this.props.simulator.layout];
+      Layouts[this.props.simulator.layout] ||
+      (({ children }) => <div>{children}</div>);
     if (!viewscreens) return <div>No Viewscreens</div>;
     return (
       <div className="viewscreen-core">
         <div className="q1">
-          {selectedViewscreen &&
+          {selectedViewscreen && (
             <LayoutComponent
               clientObj={{}}
               flight={{}}
@@ -145,10 +146,11 @@ class ViewscreenCore extends Component {
                 simulator={this.props.simulator}
                 clientObj={{ id: selectedViewscreen }}
               />
-            </LayoutComponent>}
+            </LayoutComponent>
+          )}
         </div>
         <div className="q3">
-          {previewComponent &&
+          {previewComponent && (
             <LayoutComponent
               clientObj={{}}
               flight={{}}
@@ -161,7 +163,8 @@ class ViewscreenCore extends Component {
                 component={previewComponent}
                 viewscreen={{ data: configData }}
               />
-            </LayoutComponent>}
+            </LayoutComponent>
+          )}
         </div>
         <div className="core" style={{ height: "100%" }}>
           <div className="q2">
@@ -177,11 +180,11 @@ class ViewscreenCore extends Component {
                   }}
                 >
                   <option value="select">Select a viewscreen</option>
-                  {viewscreens.map(v =>
+                  {viewscreens.map(v => (
                     <option key={v.id} value={v.id}>
                       {v.name}
                     </option>
-                  )}
+                  ))}
                 </Input>
                 <Label>
                   <input
@@ -198,7 +201,7 @@ class ViewscreenCore extends Component {
               <Col sm={6}>
                 <Label>Cards</Label>
                 <div className="card-list">
-                  {this.cards.map(c =>
+                  {this.cards.map(c => (
                     <p
                       key={c}
                       className={`${selectedViewscreen &&
@@ -213,7 +216,7 @@ class ViewscreenCore extends Component {
                     >
                       {c}
                     </p>
-                  )}
+                  ))}
                 </div>
                 <ButtonGroup>
                   <Button

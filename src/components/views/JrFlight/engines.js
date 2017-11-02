@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import gql from "graphql-tag";
-import Immutable from "immutable";
 import { graphql, compose } from "react-apollo";
 
-import "./style.scss";
+import "./style.css";
 
 const SPEEDCHANGE_SUB = gql`
   subscription SpeedChanged($simulatorId: ID) {
@@ -12,16 +11,6 @@ const SPEEDCHANGE_SUB = gql`
       id
       speed
       on
-    }
-  }
-`;
-
-const HEATCHANGE_SUB = gql`
-  subscription HeatChanged($simulatorId: ID) {
-    heatChange(simulatorId: $simulatorId) {
-      id
-      heat
-      coolant
     }
   }
 `;
@@ -48,7 +37,6 @@ class EngineControl extends Component {
   constructor(props) {
     super(props);
     this.setSpeedSubscription = null;
-    this.heatChangeSubscription = null;
     this.systemSub = null;
   }
   state = { arrowPos: 0 };
@@ -59,37 +47,15 @@ class EngineControl extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           const engines = previousResult.engines.map(engine => {
-            if (engine.id === subscriptionData.data.speedChange.id) {
+            if (engine.id === subscriptionData.speedChange.id) {
               return Object.assign({}, engine, {
-                speed: subscriptionData.data.speedChange.speed,
-                on: subscriptionData.data.speedChange.on
+                speed: subscriptionData.speedChange.speed,
+                on: subscriptionData.speedChange.on
               });
             }
             return engine;
           });
           return Object.assign({}, previousResult, { engines });
-        }
-      });
-    }
-    if (!this.heatChangeSubscription && !nextProps.data.loading) {
-      this.heatChangeSubscription = nextProps.data.subscribeToMore({
-        document: HEATCHANGE_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          const engineIndex = previousResult.engines.findIndex(
-            e => e.id === subscriptionData.data.heatChange.id
-          );
-          if (engineIndex < 0) {
-            return previousResult;
-          }
-          const engine = Immutable.Map(previousResult.engines[engineIndex]);
-          engine.set("heat", subscriptionData.data.heatChange.heat);
-          engine.set("coolant", subscriptionData.data.heatChange.coolant);
-          return {
-            engines: Immutable.List(previousResult.engines)
-              .set(engineIndex, engine)
-              .toJS()
-          };
         }
       });
     }
@@ -100,22 +66,8 @@ class EngineControl extends Component {
           simulatorId: nextProps.simulator.id,
           type: "Engine"
         },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Immutable.Map(previousResult)
-            .mergeWith(
-              (oldVal, newVal, key) => {
-                return newVal.map((e, index) =>
-                  Immutable.Map(oldVal[index]).merge({
-                    damage: e.get("damage"),
-                    power: e.get("power"),
-                    coolant: e.get("coolant"),
-                    heat: e.get("heat")
-                  })
-                );
-              },
-              { engines: subscriptionData.data.systemsUpdate }
-            )
-            .toJS();
+        updateQuery: (/*previousResult, { subscriptionData }*/) => {
+          // Make this work again
         }
       });
     }
@@ -163,7 +115,6 @@ class EngineControl extends Component {
     }
   }
   componentWillUnmount() {
-    this.heatChangeSubscription();
     this.setSpeedSubscription();
     this.systemSub();
   }
@@ -193,14 +144,14 @@ class EngineControl extends Component {
     const levels = speeds.map((s, i) => i / (speeds.length - 1));
     // Get the speed from the level
     const speedIndex = levels.findIndex(s => s === this.state.arrowPos);
-    if (speeds[speedIndex].engine) {
+    if (speeds[speedIndex] && speeds[speedIndex].engine) {
       this.props.setSpeed({
         id: speeds[speedIndex].engine,
         speed: speeds[speedIndex].speed + 1,
         on: true
       });
     } else {
-      const engine = this.props.data.engines.find(engine => engine.on);
+      const engine = this.props.data.engines.find(enginef => enginef.on);
       if (engine) {
         this.props.setSpeed({ id: engine.id, speed: -1, on: false });
       }
@@ -250,7 +201,7 @@ class EngineControl extends Component {
     }
   }
   fullStop() {
-    const engine = this.props.data.engines.find(engine => engine.on);
+    const engine = this.props.data.engines.find(enginef => enginef.on);
     this.props.setSpeed({ id: engine.id, speed: -1, on: false });
   }
   render() {
@@ -270,20 +221,23 @@ class EngineControl extends Component {
         <div
           className="engine-arrow-holder"
           onMouseDown={this.mouseDown}
-          style={{ transform: `translateY(${Math.abs(arrowPos - 1) * 100}%)` }}
+          style={{
+            transform: `translateY(${Math.min(1, Math.abs(arrowPos - 1)) *
+              100}%)`
+          }}
         >
           <div className="engine-arrow" />
         </div>
         <div className="line" />
         <div className="engines-list">
-          {speeds.map(s =>
+          {speeds.map(s => (
             <p
               key={`${s.text}-${s.number}`}
               style={{ color: s.on ? "yellow" : "white" }}
             >
               {s.text}
             </p>
-          )}
+          ))}
         </div>
       </div>
     );

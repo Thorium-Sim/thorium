@@ -1,37 +1,40 @@
 import React, { Component } from "react";
-import React3 from "react-three-renderer";
-import * as THREE from "three";
+//import React3 from "react-three-renderer";
+///import * as THREE from "three";
 import { Asset } from "../../../helpers/assets";
 
-import "./style.scss";
+import "./style.css";
 
 export default props => {
   const data = JSON.parse(props.viewscreen.data);
   if (!data.clouds) {
     return (
       <Asset asset={data.planet || "/3D/Texture/Planets/Alpine"}>
-        {({ src }) =>
+        {({ src }) => (
           <RenderSphere
             src={src}
             clouds={null}
             wireframe={data.wireframe}
             text={data.text}
-          />}
+          />
+        )}
       </Asset>
     );
   }
   return (
     <Asset asset={data.clouds || "/3D/Texture/Planets/Clouds1"}>
-      {({ src: clouds }) =>
+      {({ src: clouds }) => (
         <Asset asset={data.planet || "/3D/Texture/Planets/Alpine"}>
-          {({ src }) =>
+          {({ src }) => (
             <RenderSphere
               src={src}
               clouds={clouds}
               wireframe={data.wireframe}
               text={data.text}
-            />}
-        </Asset>}
+            />
+          )}
+        </Asset>
+      )}
     </Asset>
   );
 };
@@ -44,17 +47,15 @@ class RenderSphere extends Component {
     });
   };
   render() {
-    const cameraPosition = new THREE.Vector3(0, 2, 4);
-    const { src, clouds, wireframe, text } = this.props;
+    //const cameraPosition = new THREE.Vector3(0, 2, 4);
+    const { /*src, clouds, wireframe,*/ text } = this.props;
     return (
       <div className="planetary-scan">
         <div className="scannerBox">
           <div className="scannerBar" />
         </div>
-        <div className="text-box">
-          {text}
-        </div>
-        <React3
+        <div className="text-box">{text}</div>
+        {/*<React3
           alpha
           mainCamera="camera"
           width={window.innerHeight}
@@ -106,7 +107,7 @@ class RenderSphere extends Component {
                 </meshPhongMaterial>
               </mesh>}
           </scene>
-        </React3>
+            </React3>*/}
       </div>
     );
   }
