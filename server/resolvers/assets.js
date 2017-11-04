@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import uuid from "uuid";
 import mkdirp from "mkdirp";
-import App from "../../app";
+import App from "../app";
 import * as Classes from "../classes";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import paths from "../helpers/paths";
@@ -118,8 +118,11 @@ export const AssetsMutations = {
           (container.folderPath === folderPath &&
             container.name === containerName)
       );
-      fullPath = fullPath || container.fullPath;
-      containerId = containerId || container.id;
+      if (container) {
+        fullPath = fullPath || container.fullPath;
+
+        containerId = containerId || container.id;
+      }
       let clearContainer = false;
       if (!container) {
         //Lets make a container for this asset
@@ -190,8 +193,11 @@ export const AssetsMutations = {
 };
 
 export const AssetsSubscriptions = {
-  assetFolderChange(rootValue) {
-    return rootValue;
+  assetFolderChange: {
+    resolve(rootValue) {
+      return rootValue;
+    },
+    subscribe: () => pubsub.asyncIterator("assetFolderChange")
   }
 };
 

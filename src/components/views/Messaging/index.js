@@ -15,7 +15,7 @@ import {
   InputGroup,
   InputGroupButton
 } from "reactstrap";
-import "./style.scss";
+import "./style.css";
 
 const MESSAGING_SUB = gql`
   subscription GotMessage($simulatorId: ID!, $station: String) {
@@ -30,8 +30,19 @@ const MESSAGING_SUB = gql`
   }
 `;
 
+const TEAMS_SUB = gql`
+  subscription TeamsUpdate($simulatorId: ID) {
+    teamsUpdate(simulatorId: $simulatorId) {
+      id
+      name
+      type
+    }
+  }
+`;
+
 class Messaging extends Component {
   subscription = null;
+  teamSub = null;
   state = {
     messageInput: "",
     stationsShown: false,
@@ -46,12 +57,25 @@ class Messaging extends Component {
           station: nextProps.station.name
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          if (!subscriptionData.data.sendMessage) return previousResult;
+          if (!subscriptionData.sendMessage) return previousResult;
           setTimeout(this.scrollElement, 100);
           return Object.assign({}, previousResult, {
             messages: previousResult.messages.concat(
-              subscriptionData.data.sendMessage
+              subscriptionData.sendMessage
             )
+          });
+        }
+      });
+    }
+    if (!this.teamSub && !nextProps.data.loading) {
+      this.teamSub = nextProps.data.subscribeToMore({
+        document: TEAMS_SUB,
+        variables: {
+          simulatorId: nextProps.simulator.id
+        },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          return Object.assign({}, previousResult, {
+            teams: subscriptionData.teamsUpdate
           });
         }
       });
@@ -62,6 +86,10 @@ class Messaging extends Component {
     if (el) {
       el.scrollTop = el.scrollHeight;
     }
+  }
+  componentWillUnmount() {
+    this.subscription();
+    this.teamSub();
   }
   sendMessage = () => {
     const mutation = gql`
@@ -86,7 +114,9 @@ class Messaging extends Component {
   };
   scrollElement = () => {
     const el = this.refs.messageHolder;
-    scrollTo(el, el.scrollHeight, 600);
+    if (el) {
+      scrollTo(el, el.scrollHeight, 600);
+    }
   };
   toggleStations = () => {
     this.setState({
@@ -94,8 +124,8 @@ class Messaging extends Component {
     });
   };
   render() {
-    const { messages, simulators } = this.props.data.loading
-      ? { messages: [], simulators: [{ stations: [] }] }
+    const { messages, simulators, teams } = this.props.data.loading
+      ? { messages: [], teams: [], simulators: [{ stations: [] }] }
       : this.props.data;
     const stations = simulators[0].stations.filter(
       s => s.name !== this.props.station.name
@@ -129,7 +159,7 @@ class Messaging extends Component {
           <Col sm={3}>
             <h4>Conversations</h4>
             <Card className="convoList">
-              {conversations.map(c =>
+              {conversations.map(c => (
                 <li
                   className={`list-group-item ${c.convo === selectedConversation
                     ? "selected"
@@ -138,9 +168,7 @@ class Messaging extends Component {
                   onClick={() =>
                     this.setState({ selectedConversation: c.convo })}
                 >
-                  <div>
-                    {c.convo}
-                  </div>
+                  <div>{c.convo}</div>
                   <div>
                     <small>
                       {`${c.content.substr(0, 25)}${c.content.length > 25
@@ -149,7 +177,7 @@ class Messaging extends Component {
                     </small>
                   </div>
                 </li>
-              )}
+              ))}
             </Card>
             <ButtonDropdown
               className="btn-block"
@@ -160,8 +188,8 @@ class Messaging extends Component {
               <DropdownToggle caret size="lg" block color="primary">
                 New Message
               </DropdownToggle>
-              <DropdownMenu>
-                {stations.map(s =>
+              <DropdownMenu className="messages-destinations">
+                {stations.map(s => (
                   <DropdownItem
                     key={s.name}
                     onClick={() =>
@@ -169,16 +197,35 @@ class Messaging extends Component {
                   >
                     {s.name}
                   </DropdownItem>
-                )}
-                <DropdownItem disabled>⸺⸺⸺⸺⸺</DropdownItem>
-                {messageGroups.map(g =>
-                  <DropdownItem
-                    key={g}
-                    onClick={() => this.setState({ selectedConversation: g })}
-                  >
-                    {g}
-                  </DropdownItem>
-                )}
+                ))}
+                <DropdownItem disabled>--------------</DropdownItem>
+                {messageGroups &&
+                  messageGroups.map(g => (
+                    <DropdownItem
+                      key={g}
+                      onClick={() => this.setState({ selectedConversation: g })}
+                    >
+                      {g}
+                    </DropdownItem>
+                  ))}
+                <DropdownItem disabled>--------------</DropdownItem>
+                {teams &&
+                  teams
+                    .filter(
+                      t =>
+                        messageGroups.findIndex(
+                          m => m.toLowerCase() === t.type.toLowerCase()
+                        ) > -1
+                    )
+                    .map(g => (
+                      <DropdownItem
+                        key={g.name}
+                        onClick={() =>
+                          this.setState({ selectedConversation: g.name })}
+                      >
+                        {g.name}
+                      </DropdownItem>
+                    ))}
               </DropdownMenu>
             </ButtonDropdown>
           </Col>
@@ -187,17 +234,18 @@ class Messaging extends Component {
 
             <Card>
               <div className="message-holder" ref="messageHolder">
-                {selectedConversation &&
+                {selectedConversation && (
                   <h2 className="convoHeader">
                     Conversation with {selectedConversation}
-                  </h2>}
+                  </h2>
+                )}
                 {messages
                   .filter(
                     m =>
                       m.sender === selectedConversation ||
                       m.destination === selectedConversation
                   )
-                  .map(m =>
+                  .map(m => (
                     <p
                       key={m.id}
                       className={`message ${m.sender === this.props.station.name
@@ -206,10 +254,10 @@ class Messaging extends Component {
                     >
                       <strong>{m.sender}</strong>: {m.content}
                     </p>
-                  )}
+                  ))}
               </div>
             </Card>
-            <form action="javascript:" onSubmit={this.sendMessage}>
+            <form action={"#"} onSubmit={this.sendMessage}>
               <InputGroup>
                 <Input
                   disabled={!selectedConversation}
@@ -245,6 +293,11 @@ const MESSAGING_QUERY = gql`
       simulatorId
       destination
     }
+    teams(simulatorId: $simulatorId) {
+      id
+      name
+      type
+    }
     simulators(id: $simId) {
       stations {
         name
@@ -255,6 +308,7 @@ const MESSAGING_QUERY = gql`
 `;
 export default graphql(MESSAGING_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id,
       simId: ownProps.simulator.id,
@@ -265,8 +319,8 @@ export default graphql(MESSAGING_QUERY, {
 
 function scrollTo(element, to, duration) {
   if (duration <= 0) return;
-  var difference = to - element.scrollTop;
-  var perTick = difference / duration * 10;
+  let difference = to - element.scrollTop;
+  let perTick = difference / duration * 10;
 
   setTimeout(function() {
     element.scrollTop = element.scrollTop + perTick;

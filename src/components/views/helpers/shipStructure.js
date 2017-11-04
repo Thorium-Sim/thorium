@@ -6,15 +6,20 @@ import {
   DropdownItem
 } from "reactstrap";
 
-export const DeckDropdown = ({ selectedDeck, decks, setSelected }) => {
+export const DeckDropdown = ({
+  selectedDeck,
+  decks,
+  setSelected,
+  disabled
+}) => {
   return (
     <UncontrolledDropdown>
-      <DropdownToggle block caret>
+      <DropdownToggle block caret disabled={disabled}>
         {selectedDeck
           ? `Deck ${decks.find(d => d.id === selectedDeck).number}`
           : "Select Deck"}
       </DropdownToggle>
-      <DropdownMenu>
+      <DropdownMenu style={{ maxHeight: "200px", overflowY: "scroll" }}>
         {decks
           .concat()
           .sort((a, b) => {
@@ -40,11 +45,12 @@ export const RoomDropdown = ({
   otherSelected,
   selectedRoom,
   decks,
-  setSelected
+  setSelected,
+  disabled
 }) => {
   return (
     <UncontrolledDropdown>
-      <DropdownToggle block caret>
+      <DropdownToggle block caret disabled={disabled}>
         {selectedRoom
           ? decks
               .find(d => d.id === selectedDeck)
@@ -52,7 +58,7 @@ export const RoomDropdown = ({
           : "Select Room"}
       </DropdownToggle>
       {selectedDeck &&
-        <DropdownMenu>
+        <DropdownMenu style={{ maxHeight: "200px", overflowY: "scroll" }}>
           <DropdownItem header>
             Deck {decks.find(d => d.id === selectedDeck).number}
           </DropdownItem>

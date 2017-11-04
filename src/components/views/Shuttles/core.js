@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { TypingField } from "../../generic/core";
 
-import "./style.scss";
+import "./style.css";
 
 const SHUTTLE_SUB = gql`
   subscription ShuttlesUpdate($simulatorId: ID) {
@@ -33,11 +33,14 @@ class Shuttles extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            docking: subscriptionData.data.dockingUpdate
+            docking: subscriptionData.dockingUpdate
           });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.internalSub && this.internalSub();
   }
   updateShuttle = (id, which, value) => {
     const mutation = gql`
@@ -72,7 +75,7 @@ class Shuttles extends Component {
             </tr>
           </thead>
           <tbody>
-            {docking.map(d =>
+            {docking.map(d => (
               <tr key={d.id}>
                 <td>
                   <TypingField
@@ -123,15 +126,15 @@ class Shuttles extends Component {
                       this.updateShuttle(d.id, "image", evt.target.value)}
                   >
                     <option disabled>Select an image</option>
-                    {this.props.data.assetFolders[0].containers.map(a =>
+                    {this.props.data.assetFolders[0].containers.map(a => (
                       <option key={a.id} value={a.fullPath}>
                         {a.name}
                       </option>
-                    )}
+                    ))}
                   </select>
                 </td>
               </tr>
-            )}
+            ))}
           </tbody>
         </table>
       </div>

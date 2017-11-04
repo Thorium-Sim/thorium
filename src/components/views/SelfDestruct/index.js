@@ -12,8 +12,7 @@ import {
 } from "reactstrap";
 import Moment from "moment";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
-import "./style.scss";
+import "./style.css";
 
 function padDigits(number, digits) {
   return (
@@ -46,13 +45,15 @@ class SelfDestruct extends Component {
           id: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ simulators: subscriptionData.data.simulatorsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            simulators: subscriptionData.simulatorsUpdate
+          });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.sub && this.sub();
   }
   toggle = () => {
     this.setState({
@@ -94,11 +95,11 @@ class SelfDestruct extends Component {
       mutation,
       variables
     });
-    this.setState({modal: false, setCode: false})
+    this.setState({ modal: false, setCode: false });
   };
   openCodeModal = () => {
-    this.setState({modal: true, setCode: true})
-  }
+    this.setState({ modal: true, setCode: true });
+  };
   render() {
     if (this.props.data.loading) return null;
     const { modal, setCode } = this.state;
@@ -117,28 +118,35 @@ class SelfDestruct extends Component {
             {selfDestructTime ? "Deactivate" : "Activate"} Self-Destruct
           </div>
         </div>
-        {selfDestructTime && selfDestructTime > 0
-          ? <div className="counter">
-              {`${padDigits(duration.hours(), 2)}:${padDigits(
-                duration.minutes(),
-                2
-              )}:${padDigits(duration.seconds(), 2)}`}
-            </div>
-          : <div className="set-code">
-              <Button block color="warning" size="lg" onClick={this.openCodeModal}>
-                Set Self-Destruct Code
-              </Button>
-            </div>}
-            {modal &&
-        <SelfDestructModal
-          modal={modal}
-          toggle={this.toggle}
-          activate={this.activate}
-          code={selfDestructCode}
-          setCode={setCode}
-          setCodeFunc={this.setCode}
-        />
-        }
+        {selfDestructTime && selfDestructTime > 0 ? (
+          <div className="counter">
+            {`${padDigits(duration.hours(), 2)}:${padDigits(
+              duration.minutes(),
+              2
+            )}:${padDigits(duration.seconds(), 2)}`}
+          </div>
+        ) : (
+          <div className="set-code">
+            <Button
+              block
+              color="warning"
+              size="lg"
+              onClick={this.openCodeModal}
+            >
+              Set Self-Destruct Code
+            </Button>
+          </div>
+        )}
+        {modal && (
+          <SelfDestructModal
+            modal={modal}
+            toggle={this.toggle}
+            activate={this.activate}
+            code={selfDestructCode}
+            setCode={setCode}
+            setCodeFunc={this.setCode}
+          />
+        )}
       </Container>
     );
   }
@@ -180,7 +188,7 @@ class SelfDestructModal extends Component {
           {setCode ? "Set Self-Destruct Code" : "Activate Self-Destruct"}
         </ModalHeader>
         <ModalBody>
-          {code &&
+          {code && (
             <div>
               <h3>Enter Self-Destruct Code:</h3>
               <Input
@@ -189,34 +197,38 @@ class SelfDestructModal extends Component {
                 disabled={inputCode === code}
                 onChange={evt => this.setState({ inputCode: evt.target.value })}
               />
-            </div>}
+            </div>
+          )}
           {!setCode &&
-            (code ? code === inputCode : true) &&
-            <div>
-              <h3>Enter Countdown Time:</h3>
-              <div className="countdown-input">
-                <Input
-                  type="text"
-                  value={hours}
-                  onChange={evt => this.setState({ hours: evt.target.value })}
-                  maxLength={2}
-                />
-                <span className="divider">:</span>
-                <Input
-                  type="text"
-                  value={minutes}
-                  onChange={evt => this.setState({ minutes: evt.target.value })}
-                  maxLength={2}
-                />
-                <span className="divider">:</span>
-                <Input
-                  type="text"
-                  value={seconds}
-                  onChange={evt => this.setState({ seconds: evt.target.value })}
-                  maxLength={2}
-                />
+            (code ? code === inputCode : true) && (
+              <div>
+                <h3>Enter Countdown Time:</h3>
+                <div className="countdown-input">
+                  <Input
+                    type="text"
+                    value={hours}
+                    onChange={evt => this.setState({ hours: evt.target.value })}
+                    maxLength={2}
+                  />
+                  <span className="divider">:</span>
+                  <Input
+                    type="text"
+                    value={minutes}
+                    onChange={evt =>
+                      this.setState({ minutes: evt.target.value })}
+                    maxLength={2}
+                  />
+                  <span className="divider">:</span>
+                  <Input
+                    type="text"
+                    value={seconds}
+                    onChange={evt =>
+                      this.setState({ seconds: evt.target.value })}
+                    maxLength={2}
+                  />
+                </div>
               </div>
-            </div>}
+            )}
         </ModalBody>
         <ModalFooter>
           <Col sm={3}>
@@ -227,7 +239,9 @@ class SelfDestructModal extends Component {
           <Col sm={3}>
             <Button
               color="danger"
-              disabled={!setCode && !((code ? code === inputCode : true) && time)}
+              disabled={
+                !setCode && !((code ? code === inputCode : true) && time)
+              }
               onClick={
                 setCode ? () => setCodeFunc(inputCode) : () => activate(time)
               }

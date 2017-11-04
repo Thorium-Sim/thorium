@@ -31,7 +31,14 @@ const viewList = [
   "Messages",
   "Isochips",
   "Shuttles",
-  "Status"
+  "Status",
+  "JrOps",
+  "JrComm",
+  "JrFlight",
+  "JrSensors",
+  "JrEngineering",
+  "TorpedoLoading",
+  "TargetingCoords"
 ];
 
 export default viewList;

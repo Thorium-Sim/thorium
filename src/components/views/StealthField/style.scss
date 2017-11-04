@@ -18,4 +18,44 @@
     display: block;
     width: 100%;
   }
+  #stealth-canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: gray;
+    position: absolute;
+    mix-blend-mode: multiply;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+  }
+  .charge-row, .charge-row .col {
+    height: 100%;
+  }
+  .chargeBar {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .bar-holder {
+      margin-top: 20px;
+      height: 80%;
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .bar {
+      background: linear-gradient(to bottom, rgba(0,255,0,1) 0%,rgba(0,128,0,1) 49%,  yellow 50%, rgba(0,127,0,1) 51%, rgba(0,36,0,1) 100%);
+      height: 100%;
+      width: 20px;
+      position: absolute;
+    }
+    .arrow {
+      margin-top: -10px;
+      margin-left: 20px;
+      height: 100%; 
+    }
+  }
 }

@@ -5,7 +5,7 @@ import {
   Card,
   Button,
   ButtonGroup,
-  CardBlock,
+  CardBody,
   FormGroup,
   Label,
   Input
@@ -21,7 +21,7 @@ const SortableItem = SortableElement(
     selectedTimelineStep,
     setSelectedTimelineStep,
     removeTimelineStep
-  }) =>
+  }) => (
     <li
       key={`${item.id}-timelineStep`}
       onClick={setSelectedTimelineStep.bind(this, item)}
@@ -31,6 +31,7 @@ const SortableItem = SortableElement(
     >
       {item.name}
     </li>
+  )
 );
 
 const SortableList = SortableContainer(
@@ -42,16 +43,18 @@ const SortableList = SortableContainer(
   }) => {
     return (
       <ul style={{ padding: 0 }}>
-        {items.map((item, index) =>
-          <SortableItem
-            key={`${item.id}-timelineStep`}
-            index={index}
-            item={item}
-            selectedTimelineStep={selectedTimelineStep}
-            setSelectedTimelineStep={setSelectedTimelineStep}
-            removeTimelineStep={removeTimelineStep}
-          />
-        )}
+        {items.map((item, index) => {
+          return (
+            <SortableItem
+              key={`${item.id}-timelineStep`}
+              index={index}
+              item={item}
+              selectedTimelineStep={selectedTimelineStep}
+              setSelectedTimelineStep={setSelectedTimelineStep}
+              removeTimelineStep={removeTimelineStep}
+            />
+          );
+        })}
       </ul>
     );
   }
@@ -252,7 +255,7 @@ export default class TimelineConfig extends Component {
   }
   _removeTimelineStep(timelineStep, e) {
     e.stopPropagation();
-    if (confirm("Are you sure you want to remove this timeline step?")) {
+    if (window.confirm("Are you sure you want to remove this timeline step?")) {
       if (timelineStep === this.state.selectedTimelineStep) {
         this.setState({
           selectedTimelineStep: null,
@@ -288,7 +291,7 @@ export default class TimelineConfig extends Component {
   }
   _removeTimelineItem(timelineItem, e) {
     e.stopPropagation();
-    if (confirm("Are you sure you want to remove this timeline item?")) {
+    if (window.confirm("Are you sure you want to remove this timeline item?")) {
       if (timelineItem.id === this.state.selectedTimelineItem) {
         this.setState({
           selectedTimelineItem: null
@@ -386,7 +389,7 @@ export default class TimelineConfig extends Component {
             >
               Add Step
             </Button>
-            {this.state.selectedTimelineStep &&
+            {this.state.selectedTimelineStep && (
               <Button
                 color="danger"
                 size="sm"
@@ -396,10 +399,11 @@ export default class TimelineConfig extends Component {
                 )}
               >
                 Remove Step
-              </Button>}
+              </Button>
+            )}
           </ButtonGroup>
         </Col>
-        {this.state.selectedTimelineStep &&
+        {this.state.selectedTimelineStep && (
           <Col sm="3" style={{ maxHeight: "27vh" }}>
             <h4>
               {
@@ -450,7 +454,8 @@ export default class TimelineConfig extends Component {
                 Add Item
               </Button>
             </Card>
-          </Col>}
+          </Col>
+        )}
         {(() => {
           if (this.state.selectedTimelineItem === "step") {
             const step = object.timeline.find(
@@ -487,11 +492,9 @@ export default class TimelineConfig extends Component {
             if (!item) return null;
             return (
               <Col sm="6">
-                <h4>
-                  {item.name}
-                </h4>
+                <h4>{item.name}</h4>
                 <Card className="scroll" style={{ maxHeight: "60vh" }}>
-                  <CardBlock>
+                  <CardBody>
                     <FormGroup>
                       <Label>Item Name</Label>
                       <Input
@@ -513,7 +516,7 @@ export default class TimelineConfig extends Component {
                       args={item.args}
                       updateMacro={this._updateMacro.bind(this)}
                     />
-                  </CardBlock>
+                  </CardBody>
                 </Card>
               </Col>
             );

@@ -13,10 +13,10 @@ import {
   ModalFooter,
   Input
 } from "reactstrap";
-import Immutable from "immutable";
+
 import FontAwesome from "react-fontawesome";
 import * as Macros from "../../macros";
-import "./style.scss";
+import "./style.css";
 
 const TIMELINE_SUB = gql`
   subscription UpdateSimulator($simulatorId: ID) {
@@ -61,10 +61,9 @@ class TimelineCore extends Component {
           simulatorId: simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ simulators: subscriptionData.data.simulatorsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            simulators: subscriptionData.simulatorsUpdate
+          });
         }
       });
     }
@@ -88,6 +87,46 @@ class TimelineCore extends Component {
         });
       }
     }
+  }
+  componentWillUnmount() {
+    this.internalSub && this.internalSub();
+  }
+  componentDidUpdate(prevProps, prevState) {
+    const { mission, currentTimelineStep } = this.props.data.simulators[0];
+    if (!mission) return;
+    const currentStep = mission.timeline[currentTimelineStep];
+    if (!prevProps.data.simulators) return;
+    const {
+      mission: oldMission,
+      currentTimelineStep: oldTimelineStep
+    } = prevProps.data.simulators[0];
+    const oldCurrentStep = oldMission.timeline[oldTimelineStep];
+    if (currentStep.id === oldCurrentStep.id) return;
+    const viewscreenItem = currentStep.timelineItems.find(
+      e => e.event === "updateViewscreenComponent"
+    );
+    if (!viewscreenItem) return;
+    const args = JSON.parse(viewscreenItem.args);
+    const data = JSON.parse(args.data);
+    if (!data.asset) return;
+    // Add the asset to the cache
+    const mutation = gql`
+      mutation AddCache($simulatorId: ID, $cacheItem: String!) {
+        clientAddCache(
+          simulatorId: $simulatorId
+          viewscreen: true
+          cacheItem: $cacheItem
+        )
+      }
+    `;
+    const variables = {
+      simulatorId: this.props.simulator.id,
+      cacheItem: data.asset
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
   }
   checkStep = step => {
     this.setState(state => ({
@@ -148,9 +187,7 @@ class TimelineCore extends Component {
       <Container className="core-timeline">
         <Row>
           <Col>
-            <h4>
-              {mission.name}
-            </h4>
+            <h4>{mission.name}</h4>
             <ButtonGroup size="sm">
               <Button
                 color="primary"
@@ -187,45 +224,41 @@ class TimelineCore extends Component {
           </Col>
         </Row>
         <Row>
-          {currentStep
-            ? <Col>
-                <h5>
-                  {currentStep.name}
-                </h5>
-                <p>
-                  {currentStep.description}
-                </p>
-                <ul>
-                  {currentStep.timelineItems.map(i =>
-                    <li key={i.id}>
-                      <input
-                        type="checkbox"
-                        checked={steps[i.id]}
-                        onChange={() => this.checkStep(i.id)}
-                      />{" "}
-                      {i.name}
-                      <details>
-                        <summary>Details</summary>
-                        <p>
-                          {i.event}
-                        </p>
-                        {Macros[i.event] &&
-                          (() => {
-                            const MacroPreview = Macros[i.event];
-                            let args = i.args;
-                            if (typeof args === "string") {
-                              args = JSON.parse(args);
-                            }
-                            return <MacroPreview args={args} />;
-                          })()}
-                      </details>
-                    </li>
-                  )}
-                </ul>
-              </Col>
-            : <Col>
-                <h5>End of Timeline</h5>
-              </Col>}
+          {currentStep ? (
+            <Col>
+              <h5>{currentStep.name}</h5>
+              <p>{currentStep.description}</p>
+              <ul>
+                {currentStep.timelineItems.map(i => (
+                  <li key={i.id}>
+                    <input
+                      type="checkbox"
+                      checked={steps[i.id]}
+                      onChange={() => this.checkStep(i.id)}
+                    />{" "}
+                    {i.name}
+                    <details>
+                      <summary>Details</summary>
+                      <p>{i.event}</p>
+                      {Macros[i.event] &&
+                        (() => {
+                          const MacroPreview = Macros[i.event];
+                          let args = i.args;
+                          if (typeof args === "string") {
+                            args = JSON.parse(args);
+                          }
+                          return <MacroPreview args={args} />;
+                        })()}
+                    </details>
+                  </li>
+                ))}
+              </ul>
+            </Col>
+          ) : (
+            <Col>
+              <h5>End of Timeline</h5>
+            </Col>
+          )}
         </Row>
         <Modal isOpen={this.state.modal} toggle={this.toggle} size="large">
           <ModalHeader toggle={this.toggle}>
@@ -237,9 +270,9 @@ class TimelineCore extends Component {
               value={this.state.newStep}
               onChange={evt => this.setState({ newStep: evt.target.value })}
             >
-              {mission.timeline.map(t => {
+              {mission.timeline.map((t, i) => {
                 return (
-                  <option key={t.id} value={t.order}>
+                  <option key={t.id} value={i}>
                     {t.name}
                   </option>
                 );

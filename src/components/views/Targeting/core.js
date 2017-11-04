@@ -6,14 +6,16 @@ import {
   Col,
   Button,
   InputGroup,
-  InputGroupButton
+  InputGroupButton,
+  Media
 } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { InputField, OutputField } from "../../generic/core";
-import Immutable from "immutable";
-import FontAwesome from "react-fontawesome";
 
-import "./style.scss";
+import FontAwesome from "react-fontawesome";
+import { Asset } from "../../../helpers/assets";
+
+import "./style.css";
 
 const TARGETING_SUB = gql`
   subscription TargetingUpdate($simulatorId: ID) {
@@ -22,6 +24,12 @@ const TARGETING_SUB = gql`
       type
       name
       quadrants
+      coordinateTargeting
+      targetedSensorContact {
+        id
+        picture
+        name
+      }
       power {
         power
         powerLevels
@@ -64,13 +72,15 @@ class TargetingCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ navigation: subscriptionData.data.navigationUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            navigation: subscriptionData.navigationUpdate
+          });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
   }
   _addTargetClass() {
     const targeting = this.props.data.targeting[0];
@@ -169,13 +179,46 @@ class TargetingCore extends Component {
       variables
     });
   }
+  _setCoordinateTargeting = evt => {
+    const targeting = this.props.data.targeting[0];
+    const mutation = gql`
+      mutation SetCoordinateTargeting($id: ID!, $which: Boolean!) {
+        setCoordinateTargeting(id: $id, which: $which)
+      }
+    `;
+    const variables = {
+      id: targeting.id,
+      which: evt.target.checked
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  untargetContact = targetId => {
+    const targeting = this.props.data.targeting[0];
+    const mutation = gql`
+      mutation UntargetContact($systemId: ID!, $targetId: ID!) {
+        untargetTargetingContact(id: $systemId, targetId: $targetId)
+      }
+    `;
+    const variables = {
+      systemId: targeting.id,
+      targetId
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading) return null;
     const targeting = this.props.data.targeting[0];
     if (!targeting) return <p>No Targeting Systems</p>;
     const { assetFolders } = this.props.data;
     const targetedContact = targeting.contacts.find(t => t.targeted);
-    let contactClass, contactId;
+    let contactClass;
+    let contactId;
     if (targetedContact) {
       contactClass = targetedContact.class;
       contactId = targetedContact.id;
@@ -184,156 +227,210 @@ class TargetingCore extends Component {
       <Container className="targeting-core">
         <Row>
           <Col sm={6}>Targeted System</Col>
-          <Col sm={6} />
-        </Row>
-        <Row>
-          <Col sm={8}>
-            <OutputField alert={targetedContact}>
-              {targetedContact && targetedContact.system}
-            </OutputField>
-          </Col>
-          <Col sm={4}>
-            <Button
-              color="danger"
-              disabled={!targetedContact}
-              size="sm"
-              block
-              onClick={this._removeTargetedContact.bind(this, contactId)}
-            >
-              Destroy
-            </Button>
+          <Col sm={6}>
+            <label>
+              <input
+                type="checkbox"
+                onChange={this._setCoordinateTargeting}
+                checked={targeting.coordinateTargeting}
+              />{" "}
+              Coordinate Targeting
+            </label>
           </Col>
         </Row>
-        <Row>
-          <Col sm={4}>Count</Col>
-          <Col sm={1}>Icon</Col>
-          <Col sm={1}>Pic</Col>
-          <Col sm={5}>Label</Col>
-          <Col sm={1} />
-        </Row>
-        <div className="targets-container">
-          {targeting.classes.map(t => {
-            const contactCount = targeting.contacts.filter(
-              c => c.class === t.id
-            ).length;
-            return (
-              <Row key={t.id}>
-                <Col sm={4}>
-                  <InputGroup size="sm">
-                    <InputGroupButton>
-                      <Button
-                        onClick={this._setTargetClassCount.bind(
+        {targeting.coordinateTargeting ? (
+          <div>
+            {targeting.targetedSensorContact ? (
+              <div>
+                <h4>Targeted Contact</h4>
+                <Media>
+                  <Media left href="#">
+                    <Asset asset={targeting.targetedSensorContact.picture}>
+                      {({ src }) => (
+                        <Media object src={src} alt="Targeted Contact Image" />
+                      )}
+                    </Asset>
+                  </Media>
+                  <Media body>
+                    <Media heading>
+                      {targeting.targetedSensorContact.name}
+                    </Media>
+                  </Media>
+                </Media>
+                <Button
+                  block
+                  color="warning"
+                  size="sm"
+                  onClick={() =>
+                    this.untargetContact(targeting.targetedSensorContact.id)}
+                >
+                  Unlock Target
+                </Button>
+              </div>
+            ) : (
+              <p>No target</p>
+            )}
+          </div>
+        ) : (
+          <div>
+            <Row>
+              <Col sm={8}>
+                <OutputField alert={targetedContact}>
+                  {targetedContact && targetedContact.system}
+                </OutputField>
+              </Col>
+              <Col sm={4}>
+                <Button
+                  color="danger"
+                  disabled={!targetedContact}
+                  size="sm"
+                  block
+                  onClick={this._removeTargetedContact.bind(this, contactId)}
+                >
+                  Destroy
+                </Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={4}>Count</Col>
+              <Col sm={1}>Icon</Col>
+              <Col sm={1}>Pic</Col>
+              <Col sm={5}>Label</Col>
+              <Col sm={1} />
+            </Row>
+            <div className="targets-container">
+              {targeting.classes.map(t => {
+                const contactCount = targeting.contacts.filter(
+                  c => c.class === t.id
+                ).length;
+                return (
+                  <Row key={t.id}>
+                    <Col sm={4}>
+                      <InputGroup size="sm">
+                        <InputGroupButton>
+                          <Button
+                            onClick={this._setTargetClassCount.bind(
+                              this,
+                              t.id,
+                              contactCount - 1
+                            )}
+                            color="secondary"
+                          >
+                            -
+                          </Button>
+                        </InputGroupButton>
+                        <InputField
+                          style={{
+                            lineHeight: "16px",
+                            height: "16px",
+                            width: "100%"
+                          }}
+                          prompt={"How many targets?"}
+                          onClick={this._setTargetClassCount.bind(this, t.id)}
+                        >
+                          {contactCount}
+                        </InputField>
+                        <InputGroupButton>
+                          <Button
+                            onClick={this._setTargetClassCount.bind(
+                              this,
+                              t.id,
+                              contactCount + 1
+                            )}
+                            color="secondary"
+                          >
+                            +
+                          </Button>
+                        </InputGroupButton>
+                      </InputGroup>
+                    </Col>
+                    <Col sm={1}>
+                      <select
+                        className="pictureSelect"
+                        onChange={this._updateTargetClass.bind(
                           this,
                           t.id,
-                          contactCount - 1
+                          "icon"
                         )}
-                        color="secondary"
+                        value={t.icon}
                       >
-                        -
-                      </Button>
-                    </InputGroupButton>
-                    <InputField
-                      style={{
-                        lineHeight: "16px",
-                        height: "16px",
-                        width: "100%"
-                      }}
-                      prompt={"How many targets?"}
-                      onClick={this._setTargetClassCount.bind(this, t.id)}
-                    >
-                      {contactCount}
-                    </InputField>
-                    <InputGroupButton>
-                      <Button
-                        onClick={this._setTargetClassCount.bind(
+                        {assetFolders
+                          .find(a => a.name === "Icons")
+                          .containers.map(c => {
+                            return (
+                              <option key={c.id} value={c.fullPath}>
+                                {c.name}
+                              </option>
+                            );
+                          })}
+                      </select>
+                      <img alt="pic" src={t.iconUrl} role="presentation" />
+                    </Col>
+                    <Col sm={1}>
+                      <select
+                        className="pictureSelect"
+                        onChange={this._updateTargetClass.bind(
                           this,
                           t.id,
-                          contactCount + 1
+                          "picture"
                         )}
-                        color="secondary"
+                        value={t.picture}
                       >
-                        +
-                      </Button>
-                    </InputGroupButton>
-                  </InputGroup>
-                </Col>
-                <Col sm={1}>
-                  <select
-                    className="pictureSelect"
-                    onChange={this._updateTargetClass.bind(this, t.id, "icon")}
-                    value={t.icon}
-                  >
-                    {assetFolders
-                      .find(a => a.name === "Icons")
-                      .containers.map(c => {
-                        return (
-                          <option key={c.id} value={c.fullPath}>
-                            {c.name}
-                          </option>
-                        );
-                      })}
-                  </select>
-                  <img src={t.iconUrl} role="presentation" />
-                </Col>
-                <Col sm={1}>
-                  <select
-                    className="pictureSelect"
-                    onChange={this._updateTargetClass.bind(
-                      this,
-                      t.id,
-                      "picture"
-                    )}
-                    value={t.picture}
-                  >
-                    {assetFolders
-                      .find(a => a.name === "Pictures")
-                      .containers.map(c => {
-                        return (
-                          <option key={c.id} value={c.fullPath}>
-                            {c.name}
-                          </option>
-                        );
-                      })}
-                  </select>
-                  <img src={t.pictureUrl} role="presentation" />
-                </Col>
-                <Col sm={5}>
-                  <InputField
-                    style={{
-                      lineHeight: "16px",
-                      height: "16px",
-                      width: "100%"
-                    }}
-                    prompt={"New target label?"}
-                    alert={contactClass === t.id}
-                    onClick={this._updateTargetClass.bind(this, t.id, "name")}
-                  >
-                    {t.name}
-                  </InputField>
-                </Col>
-                <Col sm={1}>
-                  <FontAwesome
-                    name="ban"
-                    className="text-danger"
-                    onClick={this._removeTargetClass.bind(this, t.id)}
-                  />
-                </Col>
-              </Row>
-            );
-          })}
-        </div>
-        <Row>
-          <Col sm={12}>
-            <Button
-              size={"sm"}
-              block
-              color="success"
-              onClick={this._addTargetClass.bind(this)}
-            >
-              Add Targets
-            </Button>
-          </Col>
-        </Row>
+                        {assetFolders
+                          .find(a => a.name === "Pictures")
+                          .containers.map(c => {
+                            return (
+                              <option key={c.id} value={c.fullPath}>
+                                {c.name}
+                              </option>
+                            );
+                          })}
+                      </select>
+                      <img alt="pic" src={t.pictureUrl} role="presentation" />
+                    </Col>
+                    <Col sm={5}>
+                      <InputField
+                        style={{
+                          lineHeight: "16px",
+                          height: "16px",
+                          width: "100%"
+                        }}
+                        prompt={"New target label?"}
+                        alert={contactClass === t.id}
+                        onClick={this._updateTargetClass.bind(
+                          this,
+                          t.id,
+                          "name"
+                        )}
+                      >
+                        {t.name}
+                      </InputField>
+                    </Col>
+                    <Col sm={1}>
+                      <FontAwesome
+                        name="ban"
+                        className="text-danger"
+                        onClick={this._removeTargetClass.bind(this, t.id)}
+                      />
+                    </Col>
+                  </Row>
+                );
+              })}
+            </div>
+            <Row>
+              <Col sm={12}>
+                <Button
+                  size={"sm"}
+                  block
+                  color="success"
+                  onClick={this._addTargetClass.bind(this)}
+                >
+                  Add Targets
+                </Button>
+              </Col>
+            </Row>
+          </div>
+        )}
       </Container>
     );
   }
@@ -346,6 +443,12 @@ const TARGETING_QUERY = gql`
       type
       name
       quadrants
+      coordinateTargeting
+      targetedSensorContact {
+        id
+        picture
+        name
+      }
       power {
         power
         powerLevels

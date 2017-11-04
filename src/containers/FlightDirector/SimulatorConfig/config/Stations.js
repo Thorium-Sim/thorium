@@ -11,7 +11,7 @@ import {
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";
-import Views from "../../../../components/views/index";
+import Views, { Widgets } from "../../../../components/views/index";
 
 const viewList = Object.keys(Views)
   .filter(v => {
@@ -126,6 +126,21 @@ const ops = {
         login: $login
       )
     }
+  `,
+  toggleStationWidget: gql`
+    mutation AddWidgetsToStation(
+      $stationSetID: ID!
+      $stationName: String!
+      $widget: String!
+      $state: Boolean!
+    ) {
+      toggleStationWidgets(
+        stationSetID: $stationSetID
+        stationName: $stationName
+        widget: $widget
+        state: $state
+      )
+    }
   `
 };
 class SimulatorConfigView extends Component {
@@ -190,7 +205,7 @@ class SimulatorConfigView extends Component {
         <Row>
           <Col sm={3}>
             <Card>
-              {stationSets.map(s =>
+              {stationSets.map(s => (
                 <li
                   key={s.id}
                   className={`list-group-item ${selectedStationSet === s.id
@@ -200,7 +215,7 @@ class SimulatorConfigView extends Component {
                 >
                   {s.name}
                 </li>
-              )}
+              ))}
             </Card>
             <ButtonGroup>
               <Button onClick={this.createStationSet} size="sm" color="success">
@@ -211,32 +226,35 @@ class SimulatorConfigView extends Component {
               </Button>
             </ButtonGroup>
             <ButtonGroup>
-              {selectedStationSet &&
+              {selectedStationSet && (
                 <Button
                   onClick={this.renameStationSet}
                   size="sm"
                   color="warning"
                 >
                   Rename
-                </Button>}
-              {selectedStationSet &&
+                </Button>
+              )}
+              {selectedStationSet && (
                 <Button
                   onClick={this.removeStationSet}
                   size="sm"
                   color="danger"
                 >
                   Remove
-                </Button>}
+                </Button>
+              )}
             </ButtonGroup>
           </Col>
           <Col sm={9}>
-            {selectedStationSet &&
+            {selectedStationSet && (
               <ConfigStationSet
                 client={this.props.client}
                 selectedStationSet={stationSets.find(
                   s => s.id === selectedStationSet
                 )}
-              />}
+              />
+            )}
           </Col>
         </Row>
       </Container>
@@ -273,7 +291,7 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
     }
   };
   const removeStation = station => {
-    if (confirm("Are you sure you want to delete that station?")) {
+    if (window.confirm("Are you sure you want to delete that station?")) {
       const variables = {
         id: selectedStationSet.id,
         stationName: station.name
@@ -297,7 +315,7 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
     });
   };
   const removeCard = (card, station) => {
-    if (confirm("Are you sure you want to delete that card?")) {
+    if (window.confirm("Are you sure you want to delete that card?")) {
       const variables = {
         id: selectedStationSet.id,
         stationName: station.name,
@@ -333,6 +351,18 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
     };
     client.mutate({
       mutation: ops.toggleStationMessageGroup,
+      variables
+    });
+  };
+  const toggleStationWidget = (evt, station, widget) => {
+    const variables = {
+      stationSetID: selectedStationSet.id,
+      stationName: station.name,
+      widget,
+      state: evt.target.checked
+    };
+    client.mutate({
+      mutation: ops.toggleStationWidget,
       variables
     });
   };
@@ -454,8 +484,15 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
                 })}
               </select>
               <label>Message Groups:</label>
-              {["Security", "Damage", "Medical"].map(group =>
-                <label style={{ display: "inline-block" }}>
+              {[
+                "Security Teams",
+                "Damage Teams",
+                "Medical Teams"
+              ].map(group => (
+                <label
+                  key={`messageGroup-${group}`}
+                  style={{ display: "inline-block" }}
+                >
                   <input
                     type="checkbox"
                     checked={station.messageGroups.indexOf(group) > -1}
@@ -464,7 +501,21 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
                   />{" "}
                   {group}
                 </label>
-              )}
+              ))}
+              <label>Widgets:</label>
+              {Object.keys(Widgets).map(widget => (
+                <label
+                  key={`widgets-${widget}`}
+                  style={{ display: "inline-block" }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={station.widgets.indexOf(widget) > -1}
+                    onChange={evt => toggleStationWidget(evt, station, widget)}
+                  />{" "}
+                  {widget}
+                </label>
+              ))}
             </div>
           );
         })}

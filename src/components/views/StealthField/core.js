@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { OutputField } from "../../generic/core";
-import Immutable from "immutable";
 
-import "./style.scss";
+import "./style.css";
 
 const STEALTH_SUB = gql`
   subscription StealthFieldUpdate($simulatorId: ID!) {
@@ -24,7 +23,7 @@ const STEALTH_SUB = gql`
     }
   }
 `;
-
+/*
 const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID, $type: String) {
     systemsUpdate(simulatorId: $simulatorId, type: $type) {
@@ -34,7 +33,7 @@ const SYSTEMS_SUB = gql`
       stealthFactor
     }
   }
-`;
+`;*/
 
 class StealthFieldCore extends Component {
   constructor(props) {
@@ -50,15 +49,15 @@ class StealthFieldCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ stealthField: subscriptionData.data.stealthFieldUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            stealthField: subscriptionData.stealthFieldUpdate
+          });
         }
       });
     }
     if (!this.systemsSubscription && !nextProps.data.loading) {
-      this.systemsSubscription = nextProps.data.subscribeToMore({
+      this.props.data.startPolling(1000);
+      /*this.systemsSubscription = nextProps.data.subscribeToMore({
         document: SYSTEMS_SUB,
         variables: {
           simulatorId: nextProps.simulator.id
@@ -66,11 +65,15 @@ class StealthFieldCore extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           const returnResult = Immutable.Map(previousResult);
           return returnResult
-            .merge({ systems: subscriptionData.data.systemsUpdate })
+            .merge({ systems: subscriptionData.systemsUpdate })
             .toJS();
         }
-      });
+      });*/
     }
+  }
+  componentWillUnmount() {
+    this.props.data.stopPolling(1000);
+    this.subscription();
   }
   systemName(sys) {
     if (sys.type === "Shield") {
@@ -135,6 +138,20 @@ class StealthFieldCore extends Component {
       variables
     });
   }
+  fluxCharge = () => {
+    const mutation = gql`
+      mutation FluxStealth($id: ID) {
+        fluxStealthQuadrants(id: $id)
+      }
+    `;
+    const variables = {
+      id: this.props.data.stealthField[0].id
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading) return null;
     const stealthField = this.props.data.stealthField[0];
@@ -165,7 +182,8 @@ class StealthFieldCore extends Component {
     return (
       <Container className="targeting-core">
         <label>
-          {" "}Activate{" "}
+          {" "}
+          Activate{" "}
           <input
             checked={stealthField.activated}
             onChange={this.updateActivated.bind(this)}
@@ -175,12 +193,14 @@ class StealthFieldCore extends Component {
         <label>
           Charge{" "}
           <input
-            disabled
             checked={stealthField.charge}
             onChange={this.updateCharge.bind(this)}
             type="checkbox"
           />
         </label>
+        <Button color="warning" size="sm" onClick={this.fluxCharge}>
+          Flux
+        </Button>
         <Row>
           <Col sm="12">
             <OutputField
@@ -199,8 +219,8 @@ class StealthFieldCore extends Component {
             >
               {highSystems.length > 1
                 ? `${highSystems.length} Alert Systems`
-                : `${highSystems[0].name} (${Math.round(
-                    highSystems[0].stealthFactor * 100
+                : `${highSystems[0] && highSystems[0].name} (${Math.round(
+                    highSystems[0] ? highSystems[0].stealthFactor * 100 : 0
                   )})`}
             </OutputField>
           </Col>

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Input } from "reactstrap";
-import "./style.scss";
+import "./style.css";
 
 const MESSAGING_SUB = gql`
   subscription GotMessage($simulatorId: ID!) {
@@ -17,12 +17,23 @@ const MESSAGING_SUB = gql`
   }
 `;
 
+const TEAMS_SUB = gql`
+  subscription TeamsUpdate($simulatorId: ID) {
+    teamsUpdate(simulatorId: $simulatorId) {
+      id
+      name
+      type
+    }
+  }
+`;
+
 class Messaging extends Component {
   subscription = null;
+  teamSub = null;
   state = {
     messageInput: "",
     stationsShown: false,
-    selectedConversation: "Security"
+    selectedConversation: "Security Teams"
   };
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
@@ -32,16 +43,33 @@ class Messaging extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          if (!subscriptionData.data.sendMessage) return previousResult;
+          if (!subscriptionData.sendMessage) return previousResult;
           setTimeout(this.scrollElement, 100);
           return Object.assign({}, previousResult, {
             messages: previousResult.messages.concat(
-              subscriptionData.data.sendMessage
+              subscriptionData.sendMessage
             )
           });
         }
       });
     }
+    if (!this.teamSub && !nextProps.data.loading) {
+      this.teamSub = nextProps.data.subscribeToMore({
+        document: TEAMS_SUB,
+        variables: {
+          simulatorId: nextProps.simulator.id
+        },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          return Object.assign({}, previousResult, {
+            teams: subscriptionData.teamsUpdate
+          });
+        }
+      });
+    }
+  }
+  componentWillUnmount() {
+    this.subscription();
+    this.teamSub();
   }
   sendMessage = () => {
     const mutation = gql`
@@ -71,10 +99,10 @@ class Messaging extends Component {
   };
   render() {
     if (this.props.data.loading) return null;
-    const { messages } = this.props.data;
+    const { messages, teams } = this.props.data;
     const { messageInput, selectedConversation } = this.state;
 
-    const messageGroups = ["Security", "Damage", "Medical"];
+    const messageGroups = ["Security Teams", "Damage Teams", "Medical Teams"];
     return (
       <div className="core-messaging">
         <Input
@@ -84,11 +112,25 @@ class Messaging extends Component {
             this.setState({ selectedConversation: evt.target.value })}
           value={selectedConversation}
         >
-          {messageGroups.map(g =>
+          {messageGroups.map(g => (
             <option key={g} value={g}>
               {g}
             </option>
-          )}
+          ))}
+          <option disabled>-------------</option>
+          {teams &&
+            teams
+              .filter(
+                t =>
+                  messageGroups.findIndex(
+                    m => m.toLowerCase() === t.type.toLowerCase()
+                  ) > -1
+              )
+              .map(g => (
+                <option key={g.name} value={g.name}>
+                  {g.name} - {g.type}
+                </option>
+              ))}
         </Input>
         <div className="message-list">
           {messages
@@ -98,7 +140,7 @@ class Messaging extends Component {
                 m.destination === selectedConversation
             )
             .reverse()
-            .map(m =>
+            .map(m => (
               <p
                 key={m.id}
                 className={m.sender === selectedConversation ? "sender" : ""}
@@ -106,9 +148,9 @@ class Messaging extends Component {
                 {m.sender === selectedConversation ? m.destination : m.sender} -{" "}
                 {m.content}
               </p>
-            )}
+            ))}
         </div>
-        <form action="javascript:" onSubmit={this.sendMessage}>
+        <form action={"#"} onSubmit={this.sendMessage}>
           <Input
             size="sm"
             type="text"
@@ -130,6 +172,11 @@ const MESSAGING_QUERY = gql`
       timestamp
       simulatorId
       destination
+    }
+    teams(simulatorId: $simulatorId) {
+      id
+      name
+      type
     }
   }
 `;

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 import { Table } from "reactstrap";
 import { InputField, OutputField } from "../../generic/core";
 
@@ -41,13 +40,15 @@ class DamageControlCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ systems: subscriptionData.data.systemsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            systems: subscriptionData.systemsUpdate
+          });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.systemSub && this.systemSub();
   }
   systemStyle(sys) {
     const obj = {
@@ -124,7 +125,7 @@ class DamageControlCore extends Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.data.systems.map(s =>
+          {this.props.data.systems.map(s => (
             <tr key={s.id}>
               <td
                 onClick={this.toggleDamage.bind(this, s)}
@@ -133,23 +134,36 @@ class DamageControlCore extends Component {
                 {this.systemName(s)}
               </td>
               <td>
-                {(s.power.power || s.power.power === 0) &&
+                {(s.power.power || s.power.power === 0) && (
                   <InputField
                     prompt="What is the power?"
                     onClick={this.setPower.bind(this, s)}
                   >
                     {s.power.power}
-                  </InputField>}
+                  </InputField>
+                )}
               </td>
               <td>/</td>
               <td>
-                {(s.power.power || s.power.power === 0) &&
-                  <OutputField>
-                    {s.power.powerLevels[0]}
-                  </OutputField>}
+                {(s.power.power || s.power.power === 0) && (
+                  <OutputField>{s.power.powerLevels[0]}</OutputField>
+                )}
               </td>
             </tr>
-          )}
+          ))}
+          <tr>
+            <td>Total</td>
+            <td>
+              <OutputField>
+                {this.props.data.systems.reduce(
+                  (prev, next) => (next.power ? prev + next.power.power : prev),
+                  0
+                )}
+              </OutputField>
+            </td>
+            <td>/</td>
+            <td />
+          </tr>
         </tbody>
       </Table>
     );

@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 
-import "./style.scss";
+import "./style.css";
 
 const STATION_CHANGE_QUERY = gql`
   subscription StationsUpdate($simulatorId: ID) {
@@ -34,13 +33,15 @@ class ActionsCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ simulators: subscriptionData.data.simulatorsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            simulators: subscriptionData.simulatorsUpdate
+          });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
   }
   handleNameChange = e => {
     this.setState({
@@ -151,11 +152,11 @@ class ActionsCore extends Component {
             {!this.props.data.loading &&
               this.props.data.simulators[0] &&
               this.props.data.simulators[0].stations &&
-              this.props.data.simulators[0].stations.map(s =>
+              this.props.data.simulators[0].stations.map(s => (
                 <option key={s.name} value={s.name}>
                   {s.name}
                 </option>
-              )}
+              ))}
           </select>
         </div>
         <Button block color="primary" size="sm" onClick={this.triggerAction}>

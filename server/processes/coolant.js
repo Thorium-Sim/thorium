@@ -1,4 +1,4 @@
-import App from "../../app";
+import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 
 const updateCoolant = () => {
@@ -32,8 +32,9 @@ const updateCoolant = () => {
           tankCoolant === 1
         )
           s.transfer = null;
-        App.handleEvent({ systemId: sysId, coolant: sysCoolant }, "setCoolant");
-        App.handleEvent({ systemId: s.id, coolant: tankCoolant }, "setCoolant");
+
+        s.setCoolant(tankCoolant);
+        transferSystem.setCoolant(sysCoolant);
       }
       if (transferSystem.type === "Phasers") {
         pubsub.publish(

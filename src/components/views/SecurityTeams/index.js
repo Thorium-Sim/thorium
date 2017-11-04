@@ -6,16 +6,16 @@ import {
   Row,
   Col,
   Card,
-  CardBlock,
+  CardBody,
   Button,
   Input,
   Label,
   FormGroup
 } from "reactstrap";
-import Immutable from "immutable";
+import Tour from "reactour";
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
 
-import "./style.scss";
+import "./style.css";
 
 const CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID) {
@@ -54,6 +54,63 @@ const SECURITY_SUB = gql`
   }
 `;
 
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content:
+      "Security officers are other people on the ship assigned to keep the entire crew safe. You are responsible for understanding what threats are on the ship and assigning security officers to take care of those threats."
+  },
+  {
+    selector: ".team-list",
+    content:
+      "This is the list of all assigned security teams. If you are just getting started, it should be empty."
+  },
+  {
+    selector: ".new-button",
+    content: "Click this button to create a new team."
+  },
+  {
+    selector: ".team-name",
+    content:
+      "Before the team can be created, we need to fill in some information. Start by naming your security team. This is what you will use to identify the security team later on."
+  },
+  {
+    selector: ".team-orders",
+    content:
+      "Give your team some orders. This is what they are supposed to do. It could be something like investigating, patroling, taking care of intruders, or guarding something. Your team will obey your orders."
+  },
+  {
+    selector: ".team-location",
+    content:
+      "You also have to tell your security team members where to go. You first need to pick a deck. Once you have picked a deck, you can optionally select a room for them to go to. This helps them know exactly where you want them to be."
+  },
+  {
+    selector: ".crew-list",
+    content:
+      "You have to assign officers to be on the team. Otherwise, it will be empty and nothing will happen. Click on the names above to assign those officers to your team. You have a limited number of officers, and they can only be assigned to one team at a time, so use them carefully."
+  },
+  {
+    selector: ".crew-assigned",
+    content:
+      "This is where your assigned officers show up. If you want to remove an officer from the team, click on the officer's name."
+  },
+  {
+    selector: ".create-button",
+    content:
+      "Any time you create a team, or whenever you make changes, you have to click the 'Create' or 'Update' button here."
+  },
+  {
+    selector: ".cancel-button",
+    content:
+      "If you change your mind, or want to recall your officers and remove the team, you can click on the 'Cancel' or 'Recall' button here."
+  },
+  {
+    selector: "#widget-messages",
+    content:
+      "You can communicate with your security teams using the messaging widget. You can contact the teams individually, or you can communicate with the security station. Be sure you regularly check your messages and respond promptly."
+  }
+];
+
 class SecurityTeams extends Component {
   constructor(props) {
     super(props);
@@ -71,10 +128,9 @@ class SecurityTeams extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ teams: subscriptionData.data.teamsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            teams: subscriptionData.teamsUpdate
+          });
         }
       });
     }
@@ -85,13 +141,16 @@ class SecurityTeams extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ crew: subscriptionData.data.crewUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            crew: subscriptionData.crewUpdate
+          });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+    this.crewSubscription && this.crewSubscription();
   }
   createSecurityTeam = () => {
     const mutation = gql`
@@ -192,6 +251,7 @@ class SecurityTeams extends Component {
     if (this.props.data.loading) return null;
     const { teams, crew, decks } = this.props.data;
     const { selectedTeam } = this.state;
+    if (!teams) return null;
     const assignedOfficers = teams
       .concat(selectedTeam)
       .reduce((prev, next) => {
@@ -205,8 +265,8 @@ class SecurityTeams extends Component {
         <Row>
           <Col sm={3}>
             <Card>
-              <CardBlock>
-                {teams.map(t =>
+              <CardBody className="team-list">
+                {teams.map(t => (
                   <p
                     key={t.id}
                     onClick={() => {
@@ -218,11 +278,12 @@ class SecurityTeams extends Component {
                   >
                     {t.name}
                   </p>
-                )}
-              </CardBlock>
+                ))}
+              </CardBody>
             </Card>
             <Button
               block
+              className="new-button"
               color="success"
               onClick={() =>
                 this.setState({
@@ -241,9 +302,7 @@ class SecurityTeams extends Component {
           </Col>
           <Col sm={{ size: 8, offset: 1 }}>
             {(() => {
-              if (!selectedTeam) return null;
-              if (!selectedTeam.id) return null;
-              const team = selectedTeam;
+              const team = selectedTeam || {};
               let deck = {},
                 room = {};
               if (team.location) {
@@ -256,7 +315,7 @@ class SecurityTeams extends Component {
               return (
                 <Row>
                   <Col xl={5} lg={6}>
-                    <FormGroup row>
+                    <FormGroup row className="team-name">
                       <Label for="teamName" size="lg">
                         Name
                       </Label>
@@ -269,12 +328,13 @@ class SecurityTeams extends Component {
                           })}
                         type="text"
                         id="teamName"
+                        disabled={!team.id}
                         placeholder="New Security Team"
                         size="lg"
-                        value={team.name}
+                        value={team.name || ""}
                       />
                     </FormGroup>
-                    <FormGroup row>
+                    <FormGroup row className="team-orders">
                       <Label for="teamOrders" size="lg">
                         Orders
                       </Label>
@@ -287,20 +347,22 @@ class SecurityTeams extends Component {
                           })}
                         type="textarea"
                         id="teamOrders"
+                        disabled={!team.id}
                         placeholder=""
                         rows={10}
                         size="lg"
-                        value={team.orders}
+                        value={team.orders || ""}
                       />
                     </FormGroup>
                     <FormGroup className="location-label" row>
                       <Label size="lg">Location</Label>
                     </FormGroup>
-                    <Row>
+                    <Row className="team-location">
                       <Col sm={5}>
                         <DeckDropdown
                           selectedDeck={deck.id}
                           decks={decks}
+                          disabled={!team.id}
                           setSelected={a =>
                             this.setState({
                               selectedTeam: Object.assign({}, team, {
@@ -314,6 +376,7 @@ class SecurityTeams extends Component {
                           selectedDeck={deck.id}
                           selectedRoom={room.id}
                           decks={decks}
+                          disabled={!team.id}
                           setSelected={a =>
                             this.setState({
                               selectedTeam: Object.assign({}, team, {
@@ -326,55 +389,63 @@ class SecurityTeams extends Component {
                         />
                       </Col>
                     </Row>
-                    {team.creating
-                      ? <div>
-                          <Button
-                            block
-                            size="lg"
-                            color="success"
-                            className="recall-button"
-                            onClick={() => {
-                              this.createSecurityTeam(team);
-                            }}
-                          >
-                            Create Security Team
-                          </Button>
-                          <Button
-                            block
-                            size="lg"
-                            color="danger"
-                            onClick={() => {
-                              this.setState({
-                                selectedTeam: null
-                              });
-                            }}
-                          >
-                            Cancel
-                          </Button>
-                        </div>
-                      : <div>
-                          <Button
-                            block
-                            size="lg"
-                            color="success"
-                            className="recall-button"
-                            onClick={() => {
-                              this.commitTeam(team);
-                            }}
-                          >
-                            Update Security Team
-                          </Button>
-                          <Button
-                            block
-                            size="lg"
-                            color="danger"
-                            onClick={() => {
-                              this.removeTeam(team.id);
-                            }}
-                          >
-                            Recall Security Team
-                          </Button>
-                        </div>}
+                    {team.creating ? (
+                      <div>
+                        <Button
+                          block
+                          size="lg"
+                          color="success"
+                          className="recall-button create-button"
+                          disabled={!team.id}
+                          onClick={() => {
+                            this.createSecurityTeam(team);
+                          }}
+                        >
+                          Create Security Team
+                        </Button>
+                        <Button
+                          block
+                          size="lg"
+                          color="danger"
+                          className="cancel-button"
+                          disabled={!team.id}
+                          onClick={() => {
+                            this.setState({
+                              selectedTeam: null
+                            });
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    ) : (
+                      <div>
+                        <Button
+                          block
+                          size="lg"
+                          color="success"
+                          className="recall-button create-button"
+                          disabled={!team.id}
+                          onClick={() => {
+                            this.commitTeam(team);
+                          }}
+                        >
+                          Update Security Team
+                        </Button>
+                        <Button
+                          block
+                          size="lg"
+                          color="danger"
+                          className="cancel-button"
+                          disabled={!team.id}
+                          onClick={() => {
+                            this.removeTeam(team.id);
+                          }}
+                        >
+                          Recall Security Team
+                        </Button>
+                      </div>
+                    )}
                   </Col>
                   <Col
                     xl={{ size: 5, offset: 2 }}
@@ -384,40 +455,40 @@ class SecurityTeams extends Component {
                     <Label for="teamName" size="lg">
                       Available Officers
                     </Label>
-                    <Card>
-                      <CardBlock>
+                    <Card className="crew-list">
+                      <CardBody>
                         {crew
                           .filter(c => assignedOfficers.indexOf(c.id) === -1)
-                          .map(c =>
+                          .map(c => (
                             <p
                               key={c.id}
                               onClick={() => {
-                                this.assignOfficer(c);
+                                team.id && this.assignOfficer(c);
                               }}
                             >
                               {c.name}
                             </p>
-                          )}
-                      </CardBlock>
+                          ))}
+                      </CardBody>
                     </Card>
                     <Label for="teamName" size="lg">
                       Assigned Officers
                     </Label>
-                    <Card>
-                      <CardBlock>
+                    <Card className="crew-assigned">
+                      <CardBody>
                         {team &&
                           team.officers &&
-                          team.officers.map(c =>
+                          team.officers.map(c => (
                             <p
                               key={c.id}
                               onClick={() => {
-                                this.removeOfficer(c);
+                                team.id && this.removeOfficer(c);
                               }}
                             >
                               {c.name}
                             </p>
-                          )}
-                      </CardBlock>
+                          ))}
+                      </CardBody>
                     </Card>
                   </Col>
                 </Row>
@@ -425,6 +496,11 @@ class SecurityTeams extends Component {
             })()}
           </Col>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }

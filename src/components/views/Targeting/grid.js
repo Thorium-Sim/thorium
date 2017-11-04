@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactKonva from "react-konva";
 import { parse as parsePath } from "extract-svg-path";
-import "./style.scss";
+import "./style.css";
 import { findDOMNode } from "react-dom";
 
 const { Layer, Line, Stage, Path, Rect, Group } = ReactKonva;
@@ -240,28 +240,32 @@ class TargetingGrid extends Component {
               stroke={"green"}
               strokeWidth={2}
             />
-            {Array(Math.round(width / 16)).fill(width / 16).map((x, i) => {
-              return (
-                <Line
-                  key={`line-vertical-${i}`}
-                  stroke={"green"}
-                  strokeWidth={1}
-                  dash={[5, 5]}
-                  points={[x * i, 0, x * i, height]}
-                />
-              );
-            })}
-            {Array(Math.round(width / 16)).fill(width / 16).map((y, i) => {
-              return (
-                <Line
-                  key={`line-horizontal-${i}`}
-                  stroke={"green"}
-                  strokeWidth={1}
-                  dash={[5, 5]}
-                  points={[0, y * i, width, y * i]}
-                />
-              );
-            })}
+            {Array(Math.round(width / 16))
+              .fill(width / 16)
+              .map((x, i) => {
+                return (
+                  <Line
+                    key={`line-vertical-${i}`}
+                    stroke={"green"}
+                    strokeWidth={1}
+                    dash={[5, 5]}
+                    points={[x * i, 0, x * i, height]}
+                  />
+                );
+              })}
+            {Array(Math.round(width / 16))
+              .fill(width / 16)
+              .map((y, i) => {
+                return (
+                  <Line
+                    key={`line-horizontal-${i}`}
+                    stroke={"green"}
+                    strokeWidth={1}
+                    dash={[5, 5]}
+                    points={[0, y * i, width, y * i]}
+                  />
+                );
+              })}
             {this.state.targets.map(t => {
               return (
                 <Path
@@ -278,7 +282,7 @@ class TargetingGrid extends Component {
                 />
               );
             })}
-            {targetedContact &&
+            {targetedContact && (
               <Group x={targetedContact.x} y={targetedContact.y}>
                 <Path
                   data={crosshairPath}
@@ -323,7 +327,8 @@ class TargetingGrid extends Component {
                     y: 0.3
                   }}
                 />
-              </Group>}
+              </Group>
+            )}
           </Layer>
         </Stage>
       </div>

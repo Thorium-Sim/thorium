@@ -4,7 +4,7 @@ import assetPath from "../../../helpers/assets";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import { Asset } from "../../../helpers/assets";
-import "./login.scss";
+import "./login.css";
 
 class Login extends Component {
   constructor(props) {
@@ -44,16 +44,21 @@ class Login extends Component {
       <Row className="loginCard">
         <Col sm={{ size: 3, offset: 1 }}>
           <Asset asset="/Misc/Login Logo" simulatorId={this.props.simulator.id}>
-            {({ src }) =>
-              <img role="presentation" src={src} className="img-fluid" />}
+            {({ src }) => (
+              <img
+                alt="login logo"
+                role="presentation"
+                src={src}
+                className="img-fluid"
+              />
+            )}
           </Asset>
-          <h1>
-            {simulatorName}
-          </h1>
+          <h1>{simulatorName}</h1>
         </Col>
         <Col sm={{ size: 7, offset: 1 }}>
           <img
             role="presentation"
+            alt="ship right"
             src={assetPath("/Ship Views/Right", "default", "png", false)}
             className="img-fluid"
           />

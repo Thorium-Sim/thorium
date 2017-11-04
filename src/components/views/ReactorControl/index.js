@@ -4,8 +4,8 @@ import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button, Card } from "reactstrap";
 import Measure from "react-measure";
 
-import ReactorModel from "./model";
-import "./style.scss";
+//import ReactorModel from "./model";
+import "./style.css";
 
 const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
@@ -56,7 +56,7 @@ class ReactorControl extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            reactors: subscriptionData.data.reactorUpdate
+            reactors: subscriptionData.reactorUpdate
           });
         }
       });
@@ -67,11 +67,15 @@ class ReactorControl extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            systems: subscriptionData.data.systemsUpdate
+            systems: subscriptionData.systemsUpdate
           });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.internalSub && this.internalSub();
+    this.systemSub && this.systemSub();
   }
   setEfficiency(e) {
     const { reactors } = this.props.data;
@@ -143,10 +147,9 @@ class ReactorControl extends Component {
             <Row>
               <Col sm={12}>
                 <Measure useClone={true} includeMargin={false}>
-                  {dimensions =>
-                    <div>
-                      <ReactorModel {...dimensions} />
-                    </div>}
+                  {dimensions => (
+                    <div>{/* <ReactorModel {...dimensions} />*/}</div>
+                  )}
                 </Measure>
               </Col>
             </Row>
@@ -159,70 +162,70 @@ class ReactorControl extends Component {
                   Reactor Output:{" "}
                   {Math.round(reactor.efficiency * reactor.powerOutput)}
                 </h2>
-                <h2>
-                  Power Used: {powerTotal}
-                </h2>
+                <h2>Power Used: {powerTotal}</h2>
               </Col>
             </Row>
           </Col>
-          {battery
-            ? <Col sm={6}>
-                <Row className="batteries">
-                  <Col sm={{ size: 10, offset: 1 }}>
-                    <Card>
-                      <div className="battery-container">
-                        <Battery
-                          level={Math.min(1, Math.max(0, (charge - 0.75) * 4))}
-                        />
-                        <Battery
-                          level={Math.min(1, Math.max(0, (charge - 0.5) * 4))}
-                        />
-                        <Battery
-                          level={Math.min(1, Math.max(0, (charge - 0.25) * 4))}
-                        />
-                        <Battery level={Math.min(1, Math.max(0, charge * 4))} />
-                      </div>
-                    </Card>
+          {battery ? (
+            <Col sm={6}>
+              <Row className="batteries">
+                <Col sm={{ size: 10, offset: 1 }}>
+                  <Card>
+                    <div className="battery-container">
+                      <Battery
+                        level={Math.min(1, Math.max(0, (charge - 0.75) * 4))}
+                      />
+                      <Battery
+                        level={Math.min(1, Math.max(0, (charge - 0.5) * 4))}
+                      />
+                      <Battery
+                        level={Math.min(1, Math.max(0, (charge - 0.25) * 4))}
+                      />
+                      <Battery level={Math.min(1, Math.max(0, charge * 4))} />
+                    </div>
+                  </Card>
+                </Col>
+              </Row>
+              <Row>
+                {efficiencies.map(e => (
+                  <Col sm={6} key={e.label}>
+                    <Button
+                      block
+                      className={
+                        e.efficiency === reactor.efficiency ? "active" : ""
+                      }
+                      onClick={() => this.setEfficiency(e.efficiency)}
+                      size="lg"
+                      color={e.color}
+                    >
+                      {e.label}
+                      {typeof e.efficiency === "number" &&
+                        ": " + e.efficiency * 100 + "%"}
+                    </Button>
                   </Col>
-                </Row>
-                <Row>
-                  {efficiencies.map(e =>
-                    <Col sm={6} key={e.label}>
-                      <Button
-                        block
-                        className={
-                          e.efficiency === reactor.efficiency ? "active" : ""
-                        }
-                        onClick={() => this.setEfficiency(e.efficiency)}
-                        size="lg"
-                        color={e.color}
-                      >
-                        {e.label}
-                        {typeof e.efficiency === "number" &&
-                          ": " + e.efficiency * 100 + "%"}
-                      </Button>
-                    </Col>
-                  )}
-                </Row>
-              </Col>
-            : <Col sm={{ size: 4, offset: 2 }}>
-                {efficiencies.map(e =>
-                  <Button
-                    key={e.label}
-                    block
-                    className={
-                      e.efficiency === reactor.efficiency ? "active" : ""
-                    }
-                    onClick={() => this.setEfficiency(e.efficiency)}
-                    size="lg"
-                    color={e.color}
-                  >
-                    {e.label}
-                    {typeof e.efficiency === "number" &&
-                      ": " + e.efficiency * 100 + "%"}
-                  </Button>
-                )}
-              </Col>}
+                ))}
+              </Row>
+            </Col>
+          ) : (
+            <Col sm={{ size: 4, offset: 2 }}>
+              {efficiencies.map(e => (
+                <Button
+                  key={e.label}
+                  block
+                  className={
+                    e.efficiency === reactor.efficiency ? "active" : ""
+                  }
+                  onClick={() => this.setEfficiency(e.efficiency)}
+                  size="lg"
+                  color={e.color}
+                >
+                  {e.label}
+                  {typeof e.efficiency === "number" &&
+                    ": " + e.efficiency * 100 + "%"}
+                </Button>
+              ))}
+            </Col>
+          )}
         </Row>
       </Container>
     );
@@ -269,9 +272,7 @@ const Battery = ({ level = 1 }) => {
   return (
     <div className="battery">
       <div className="battery-bar" style={{ height: `${level * 100}%` }} />
-      <div className="battery-level">
-        {Math.round(level * 100)}
-      </div>
+      <div className="battery-level">{Math.round(level * 100)}</div>
     </div>
   );
 };

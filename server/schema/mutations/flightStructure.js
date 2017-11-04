@@ -2,9 +2,11 @@ export default `
 createMission(name: String!):String
 removeMission(missionId: ID!):String
 editMission(missionId: ID!, name: String, description: String):String
+importMission(jsonString: String!):String
 
 startFlight(name: String, simulators: [SimulatorInput!]!):String
 createSimulator(name: String!,template: Boolean):String
+deleteFlight(flightId: ID!): String
 
 removeSimulator(simulatorId: ID!):String
 
@@ -27,4 +29,5 @@ addCardToStation(stationSetID: ID!, stationName: String!, cardName: String!, car
 removeCardFromStation(stationSetID: ID!, stationName: String!, cardName: String!):String
 editCardInStationSet(stationSetID: ID!, stationName: String!, cardName: String!, newCardName: String, cardComponent: String, cardIcon: String):String
 setStationLogin(stationSetID: ID!, stationName: String!, login: Boolean!):String
+toggleStationWidgets(stationSetID: ID!, stationName: String!, widget: String!, state: Boolean!): String
 `;

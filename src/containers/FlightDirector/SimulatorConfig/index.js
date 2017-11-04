@@ -6,7 +6,7 @@ import {
   Button,
   ButtonGroup,
   Card,
-  CardBlock
+  CardBody
 } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
@@ -15,7 +15,7 @@ import { Link } from "react-router";
 import SimulatorProperties from "./SimulatorProperties";
 import * as Config from "./config";
 
-import "./SimulatorConfig.scss";
+import "./SimulatorConfig.css";
 
 const SIMULATOR_SUB = gql`
   subscription SimulatorsUpdate {
@@ -34,6 +34,7 @@ const SIMULATOR_SUB = gql`
           name
           login
           messageGroups
+          widgets
           cards {
             name
             component
@@ -56,6 +57,7 @@ const STATIONSET_SUB = gql`
         name
         login
         messageGroups
+        widgets
         cards {
           name
           component
@@ -75,7 +77,7 @@ class SimulatorConfig extends Component {
         document: SIMULATOR_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            simulators: subscriptionData.data.simulatorsUpdate
+            simulators: subscriptionData.simulatorsUpdate
           });
         }
       });
@@ -84,7 +86,7 @@ class SimulatorConfig extends Component {
       this.stationSetSub = nextProps.data.subscribeToMore({
         document: STATIONSET_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
-          const stationSets = subscriptionData.data.stationSetUpdate;
+          const stationSets = subscriptionData.stationSetUpdate;
           return Object.assign({}, previousResult, {
             simulators: previousResult.simulators.map(s => {
               const returnSimulator = Object.assign({}, s);
@@ -150,7 +152,7 @@ class SimulatorConfig extends Component {
   removeSimulator = () => {
     const simulator = this.state.selectedSimulator;
     if (simulator) {
-      if (confirm("Are you sure you want to delete that simulator?")) {
+      if (window.confirm("Are you sure you want to delete that simulator?")) {
         let obj = {
           id: simulator
         };
@@ -185,7 +187,7 @@ class SimulatorConfig extends Component {
         <Row>
           <Col sm={2}>
             <Card>
-              {simulators.map(s =>
+              {simulators.map(s => (
                 <li
                   key={s.id}
                   className={`list-group-item simulator-item ${selectedSimulator &&
@@ -200,7 +202,7 @@ class SimulatorConfig extends Component {
                 >
                   {s.name}
                 </li>
-              )}
+              ))}
             </Card>
             <ButtonGroup>
               <Button onClick={this.createSimulator} size="sm" color="success">
@@ -211,30 +213,33 @@ class SimulatorConfig extends Component {
               </Button>
             </ButtonGroup>
             <ButtonGroup>
-              {selectedSimulator &&
+              {selectedSimulator && (
                 <Button
                   onClick={this.renameSimulator}
                   size="sm"
                   color="warning"
                 >
                   Rename
-                </Button>}
-              {selectedSimulator &&
+                </Button>
+              )}
+              {selectedSimulator && (
                 <Button onClick={this.removeSimulator} size="sm" color="danger">
                   Remove
-                </Button>}
+                </Button>
+              )}
             </ButtonGroup>
           </Col>
           <Col sm={2}>
-            {selectedSimulator &&
+            {selectedSimulator && (
               <SimulatorProperties
                 selectProperty={this.selectProperty}
                 selectedProperty={selectedProperty}
-              />}
+              />
+            )}
           </Col>
           <Col sm={8}>
             <Card>
-              <CardBlock>
+              <CardBody>
                 {(() => {
                   const ConfigComponent = Config[selectedProperty] || "div";
                   return (
@@ -245,7 +250,7 @@ class SimulatorConfig extends Component {
                     />
                   );
                 })()}
-              </CardBlock>
+              </CardBody>
             </Card>
           </Col>
         </Row>
@@ -271,6 +276,7 @@ const SIMULATOR_QUERY = gql`
           name
           login
           messageGroups
+          widgets
           cards {
             name
             component

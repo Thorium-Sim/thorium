@@ -1,4 +1,4 @@
-import App from "../../app.js";
+import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
 import uuid from "uuid";
@@ -50,6 +50,30 @@ App.on("startFlight", ({ id, name, simulators }) => {
           );
           newAspect.deckId = deck.id;
         }
+        if (aspect === "inventory") {
+          // Inventory needs to reference the correct room
+          const rooms = Object.keys(newAspect.roomCount);
+          const newRoomCount = {};
+          rooms.forEach(room => {
+            const oldRoom = App.rooms.find(r => r.id === room);
+            const oldDeck = App.decks.find(d => d.id === oldRoom.deckId);
+            const deck = App.decks.find(
+              d =>
+                d &&
+                oldDeck &&
+                d.simulatorId === sim.id &&
+                d.number === oldDeck.number
+            );
+            const newRoom = App.rooms.find(
+              r =>
+                r.name === oldRoom.name &&
+                r.simulatorId === sim.id &&
+                r.deckId === deck.id
+            ).id;
+            newRoomCount[newRoom] = newAspect.roomCount[room];
+          });
+          newAspect.roomCount = newRoomCount;
+        }
         if (aspect === "systems") {
           // Create a new isochip for that system, if one exists
           const isochip = App.isochips.find(i => i.system === a.id);
@@ -77,6 +101,36 @@ App.on("startFlight", ({ id, name, simulators }) => {
   pubsub.publish("flightsUpdate", App.flights);
 });
 
+App.on("deleteFlight", ({ flightId }) => {
+  const aspectList = [
+    "assetObjects",
+    "systems",
+    "decks",
+    "rooms",
+    "crew",
+    "teams",
+    "inventory",
+    "dockingPorts"
+  ];
+  const flight = App.flights.find(f => f.id === flightId);
+  // We need to remove all reference to this flight.
+  // Loop over the simulators
+  // Reset the clients
+  App.clients
+    .concat()
+    .filter(c => c.flightId === flightId)
+    .forEach(c => c.setFlight(null));
+  flight.simulators.forEach(simId => {
+    // Remove all of the systems, inventory, crew, etc.
+    aspectList.forEach(aspect => {
+      App[aspect] = App[aspect].filter(a => a.simulatorId !== simId);
+    });
+    App.simulators = App.simulators.filter(s => s.id !== simId);
+  });
+  App.flights = App.flights.filter(f => f.id !== flightId);
+  pubsub.publish("flightsUpdate", App.flights);
+  pubsub.publish("clientChanged", App.clients);
+});
+
 App.on("pauseFlight", () => {});
 App.on("resumeFlight", () => {});
-App.on("removeFlight", () => {});

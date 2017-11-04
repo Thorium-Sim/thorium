@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Table, Button } from "reactstrap";
 import { InputField, OutputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
+
 import gql from "graphql-tag";
 
 const SHIELD_SUB = gql`
@@ -32,13 +32,15 @@ class ShieldsCore extends Component {
           id: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ shields: subscriptionData.data.shieldsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            shields: subscriptionData.shieldsUpdate
+          });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.shieldSub && this.shieldSub();
   }
   setFrequency(shields, freq) {
     if (freq < 100 || freq > 350) return;
@@ -87,69 +89,69 @@ class ShieldsCore extends Component {
     if (this.props.data.loading) return null;
     return (
       <div>
-        {this.props.data.shields.length > 0
-          ? <div>
-              <Table responsive size="sm">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>State</th>
-                    <th>Frequency</th>
-                    <th>Integrity</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.props.data.shields.map(s => {
-                    return (
-                      <tr key={s.id}>
-                        <td>
-                          {s.name}
-                        </td>
-                        <td>
-                          <OutputField>
-                            {s.state ? "Raised" : "Lowered"}
-                          </OutputField>
-                        </td>
-                        <td>
-                          <InputField
-                            prompt="What is the frequency? (100.0 - 350.0)"
-                            onClick={this.setFrequency.bind(this, s)}
-                          >
-                            {Math.round(s.frequency * 10) / 10}
-                          </InputField>
-                        </td>
-                        <td>
-                          <InputField
-                            style={{ width: "50%", float: "left" }}
-                            prompt="What is the integrity? (0 - 100)"
-                            onClick={this.setIntegrity.bind(this, s)}
-                          >
-                            {Math.round(s.integrity * 100)}
-                          </InputField>
-                          <Button
-                            style={{ width: "50%" }}
-                            size="sm"
-                            color="danger"
-                            onClick={this._hitShields.bind(this, s)}
-                          >
-                            Hit
-                          </Button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </Table>
-              <Button
-                style={{ width: "50%" }}
-                size="sm"
-                color="danger"
-                onClick={this._hitShields.bind(this, "all")}
-              >
-                Hit All
-              </Button>
-            </div>
-          : "No shields"}
+        {this.props.data.shields.length > 0 ? (
+          <div>
+            <Table responsive size="sm">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>State</th>
+                  <th>Frequency</th>
+                  <th>Integrity</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.props.data.shields.map(s => {
+                  return (
+                    <tr key={s.id}>
+                      <td>{s.name}</td>
+                      <td>
+                        <OutputField>
+                          {s.state ? "Raised" : "Lowered"}
+                        </OutputField>
+                      </td>
+                      <td>
+                        <InputField
+                          prompt="What is the frequency? (100.0 - 350.0)"
+                          onClick={this.setFrequency.bind(this, s)}
+                        >
+                          {Math.round(s.frequency * 10) / 10}
+                        </InputField>
+                      </td>
+                      <td>
+                        <InputField
+                          style={{ width: "50%", float: "left" }}
+                          prompt="What is the integrity? (0 - 100)"
+                          onClick={this.setIntegrity.bind(this, s)}
+                        >
+                          {Math.round(s.integrity * 100)}
+                        </InputField>
+                        <Button
+                          style={{ width: "50%" }}
+                          size="sm"
+                          color="danger"
+                          onClick={this._hitShields.bind(this, s)}
+                        >
+                          Hit
+                        </Button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+            <Button
+              style={{ width: "50%" }}
+              size="sm"
+              color="danger"
+              onClick={this._hitShields.bind(this, "all")}
+            >
+              Hit All
+            </Button>
+          </div>
+        ) : (
+          "No shields"
+        )}
       </div>
     );
   }

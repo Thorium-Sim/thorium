@@ -9,7 +9,7 @@ import {
   Form,
   Label,
   Card,
-  CardBlock,
+  CardBody,
   Button
 } from "reactstrap";
 
@@ -33,7 +33,7 @@ const ContactContextMenu = props => {
   return (
     <div className="contextMenu">
       <Card>
-        <CardBlock>
+        <CardBody>
           <Form>
             <Row style={{ margin: 0 }}>
               <Col sm={12}>
@@ -69,11 +69,11 @@ const ContactContextMenu = props => {
                     {!props.data.loading &&
                       props.data.assetFolders
                         .find(f => f.name === "Icons")
-                        .containers.map(icon =>
+                        .containers.map(icon => (
                           <option key={icon.id} value={icon.fullPath}>
                             {icon.name}
                           </option>
-                        )}
+                        ))}
                   </Input>
                 </FormGroup>
               </Col>
@@ -99,11 +99,11 @@ const ContactContextMenu = props => {
                     {!props.data.loading &&
                       props.data.assetFolders
                         .find(f => f.name === "Pictures")
-                        .containers.map(picture =>
+                        .containers.map(picture => (
                           <option key={picture.id} value={picture.fullPath}>
                             {picture.name}
                           </option>
-                        )}
+                        ))}
                   </Input>
                 </FormGroup>
               </Col>
@@ -206,7 +206,7 @@ const ContactContextMenu = props => {
           <Button color="info" size="sm" onClick={closeMenu}>
             Close
           </Button>
-        </CardBlock>
+        </CardBody>
       </Card>
     </div>
   );

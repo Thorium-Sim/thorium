@@ -55,3 +55,8 @@ assets
 *-rxdb-*
 temp
 thorium-server-*
+thorium-server
+thorium
+
+# unecessary CSS files
+src/**/*.css

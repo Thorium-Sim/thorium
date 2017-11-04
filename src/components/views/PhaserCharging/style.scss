@@ -22,7 +22,7 @@
   }
   
   .phaserBeam {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 
   .chargeHolder {
@@ -46,6 +46,11 @@
   }
 }
 
+.phaser-fire {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;  
+}
 :root {
   --phaserArcRotate: -5deg;
 }

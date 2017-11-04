@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;">
+    <g id="Template">
+        <g id="TractorBeam">
+            <path d="M128,0L128,128L0,128L0,0L128,0ZM71,52.667L71,24L98,64L71,104L71,75.333L79.5,64L71,52.667ZM71,104L71,75.333L51,102L51,104L71,104ZM28.5,64L52.5,45.5L52.5,82.5L28.5,64ZM66.5,64L52.5,82.5L52.5,45.5L66.5,64ZM71,52.667L51,26L51,24L71,24L71,52.667Z"/>
+        </g>
+    </g>
+</svg>

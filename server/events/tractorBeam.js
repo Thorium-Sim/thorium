@@ -1,10 +1,11 @@
-import App from "../../app";
+import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import uuid from "uuid";
 
 App.on("setTractorBeamState", ({ id, state }) => {
   const system = App.systems.find(s => s.id === id);
   system.setState(state);
+  system.setScanning(false);
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: system.simulatorId,
@@ -19,7 +20,9 @@ App.on("setTractorBeamState", ({ id, state }) => {
   );
 });
 App.on("setTractorBeamTarget", ({ id, target }) => {
-  App.systems.find(s => s.id === id).setTarget(target);
+  const sys = App.systems.find(s => s.id === id);
+  sys.setTarget(target);
+  sys.setScanning(false);
   pubsub.publish(
     "tractorBeamUpdate",
     App.systems.filter(s => s.type === "TractorBeam")
@@ -37,5 +40,17 @@ App.on("setTractorBeamStress", ({ id, stress }) => {
   pubsub.publish(
     "tractorBeamUpdate",
     App.systems.filter(s => s.type === "TractorBeam")
+  );
+});
+App.on("setTractorBeamScanning", ({ id, scanning }) => {
+  const sys = App.systems.find(s => s.id === id);
+  sys.setScanning(scanning);
+  pubsub.publish(
+    "tractorBeamUpdate",
+    App.systems.filter(s => s.type === "TractorBeam")
+  );
+  App.handleEvent(
+    { simulatorId: sys.simulatorId, component: "TractorBeamCore" },
+    "addCoreFeed"
   );
 });

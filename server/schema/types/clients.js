@@ -10,5 +10,6 @@ type Client {
   ping: String
   offlineState: String
   training: Boolean
+  caches: [String]
 }
 `;

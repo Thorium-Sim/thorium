@@ -10,6 +10,7 @@ const SUB = gql`
       id
       state
       activated
+      displayName
     }
   }
 `;
@@ -21,6 +22,7 @@ const SHIELD_SUB = gql`
       position
       integrity
       state
+      displayName
     }
   }
 `;
@@ -36,7 +38,7 @@ class Stealth extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            stealthField: subscriptionData.data.stealthFieldUpdate
+            stealthField: subscriptionData.stealthFieldUpdate
           });
         }
       });
@@ -47,11 +49,15 @@ class Stealth extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            shields: subscriptionData.data.shieldsUpdate
+            shields: subscriptionData.shieldsUpdate
           });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.shieldSub && this.shieldSub();
+    this.sub && this.sub();
   }
   render() {
     const stealth = this.props.data.loading
@@ -60,7 +66,7 @@ class Stealth extends Component {
     const shields = this.props.data.loading ? [] : this.props.data.shields;
     return (
       <Asset asset="/Ship Views/Top" simulatorId={this.props.simulator.id}>
-        {({ src }) =>
+        {({ src }) => (
           <div
             className="shieldBubble"
             style={{
@@ -69,7 +75,12 @@ class Stealth extends Component {
             }}
           >
             <div className="stealth" style={{ transform: "rotate(360deg)" }}>
-              <img className="status-ship" src={src} draggable="false" />
+              <img
+                alt="ship"
+                className="status-ship"
+                src={src}
+                draggable="false"
+              />
               <canvas
                 id="stealth-canvas"
                 style={{
@@ -81,7 +92,8 @@ class Stealth extends Component {
                 }}
               />
             </div>
-          </div>}
+          </div>
+        )}
       </Asset>
     );
   }
@@ -93,12 +105,14 @@ const QUERY = gql`
       id
       state
       activated
+      displayName
     }
     shields(simulatorId: $simulatorId) {
       id
       position
       integrity
       state
+      displayName
     }
   }
 `;

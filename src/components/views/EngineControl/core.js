@@ -3,8 +3,8 @@ import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 
 const SPEEDCHANGE_SUB = gql`
-  subscription SpeedChanged {
-    speedChange {
+  subscription SpeedChanged($simulatorId: ID) {
+    speedChange(simulatorId: $simulatorId) {
       id
       speed
       on
@@ -21,18 +21,25 @@ class EngineCoreView extends Component {
     if (!this.setSpeedSubscription && !nextProps.data.loading) {
       this.setSpeedSubscription = nextProps.data.subscribeToMore({
         document: SPEEDCHANGE_SUB,
+        variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          previousResult.engines = previousResult.engines.map(engine => {
-            if (engine.id === subscriptionData.data.speedChange.id) {
-              engine.speed = subscriptionData.data.speedChange.speed;
-              engine.on = subscriptionData.data.speedChange.on;
-            }
-            return engine;
+          return Object.assign({}, previousResult, {
+            engines: previousResult.engines.map(engine => {
+              if (engine.id === subscriptionData.speedChange.id) {
+                return Object.assign({}, engine, {
+                  speed: subscriptionData.speedChange.speed,
+                  on: subscriptionData.speedChange.on
+                });
+              }
+              return engine;
+            })
           });
-          return previousResult;
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.setSpeedSubscription && this.setSpeedSubscription();
   }
   updateSpeed(e) {
     const id = e.target.value.split("$")[0];
@@ -60,26 +67,30 @@ class EngineCoreView extends Component {
         });
       });
     }
-    return this.props.data.loading
-      ? <span>"Loading..."</span>
-      : <div>
-          {speedList.length > 0
-            ? <select value={onEngine} onChange={this.updateSpeed.bind(this)}>
-                <option>Full Stop</option>
-                {speedList.map((output, index) => {
-                  return (
-                    <option
-                      key={index}
-                      value={`${output.engineId}$${output.index}`}
-                      disabled={output.disabled}
-                    >
-                      {output.text}
-                    </option>
-                  );
-                })}
-              </select>
-            : "No engines"}
-        </div>;
+    return this.props.data.loading ? (
+      <span>"Loading..."</span>
+    ) : (
+      <div>
+        {speedList.length > 0 ? (
+          <select value={onEngine} onChange={this.updateSpeed.bind(this)}>
+            <option>Full Stop</option>
+            {speedList.map((output, index) => {
+              return (
+                <option
+                  key={index}
+                  value={`${output.engineId}$${output.index}`}
+                  disabled={output.disabled}
+                >
+                  {output.text}
+                </option>
+              );
+            })}
+          </select>
+        ) : (
+          "No engines"
+        )}
+      </div>
+    );
   }
 }
 

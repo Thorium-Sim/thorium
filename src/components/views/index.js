@@ -36,6 +36,12 @@ import Messages from "./Messaging";
 import Isochips from "./Isochips";
 import Shuttles from "./Shuttles";
 import Status from "./Status";
+import JrOps from "./JrOps";
+import JrComm from "./JrComm";
+import JrFlight from "./JrFlight";
+import JrSensors from "./JrSensors";
+import JrEngineering from "./JrEngineering";
+import TorpedoLoading from "./TorpedoLoading";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -76,6 +82,7 @@ import ShipCore from "./Ship/core";
 import ReactivationCore from "./DamageControl/reactivationCore";
 import MessagingCore from "./Messaging/core";
 import ClientsCore from "./Clients/core";
+import JrNavigationCore from "./JrFlight/navigationCore";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -118,7 +125,13 @@ const Views = {
   Messages,
   Isochips,
   Shuttles,
-  Status
+  Status,
+  JrOps,
+  JrComm,
+  JrFlight,
+  JrSensors,
+  JrEngineering,
+  TorpedoLoading
 };
 
 export const Widgets = {
@@ -188,7 +201,8 @@ export const Cores = {
   ShipCore,
   ReactivationCore,
   MessagingCore,
-  ClientsCore
+  ClientsCore,
+  JrNavigationCore
 };
 
 export default Views;

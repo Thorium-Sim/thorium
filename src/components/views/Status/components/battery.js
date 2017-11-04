@@ -10,6 +10,7 @@ const SUB = gql`
       id
       model
       batteryChargeLevel
+      displayName
     }
   }
 `;
@@ -23,7 +24,7 @@ class Battery extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            reactors: subscriptionData.data.reactorUpdate
+            reactors: subscriptionData.reactorUpdate
           });
         }
       });
@@ -53,6 +54,7 @@ const QUERY = gql`
       id
       model
       batteryChargeLevel
+      displayName
     }
   }
 `;

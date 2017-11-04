@@ -3,7 +3,12 @@ import viewList from "../components/views/list.js";
 import { Link } from "react-router";
 const DebugList = () => {
   return (
-    <ul>
+    <ul
+      style={{
+        maxHeight: "100%",
+        columnWidth: "20vw"
+      }}
+    >
       {viewList.sort().map(v => {
         return (
           <li key={v}>

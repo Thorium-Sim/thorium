@@ -3,7 +3,6 @@ import { OutputField, TypingField } from "../../generic/core";
 import { Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
-import Immutable from "immutable";
 import ScanPresets from "./ScanPresets";
 
 const SENSOR_SUB = gql`
@@ -39,14 +38,29 @@ class SensorsCore extends Component {
         document: SENSOR_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ sensors: subscriptionData.data.sensorsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            sensors: subscriptionData.sensorsUpdate
+          });
         }
       });
     }
   }
+  componentDidMount() {
+    document.addEventListener("keydown", this.keypress);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.keypress);
+    this.sensorsSubscription && this.sensorsSubscription();
+  }
+  keypress = evt => {
+    if (evt.altKey) {
+      const index = parseInt(evt.code.substr(-1, 1), 10);
+      if (!isNaN(index)) {
+        const data = index === 0 ? ScanPresets[10] : ScanPresets[index - 1];
+        this.scanPreset({ target: { value: data.value } });
+      }
+    }
+  };
   sendScanResult = sensors => {
     this.props.client.mutate({
       mutation: gql`
@@ -168,13 +182,13 @@ class SensorsCore extends Component {
           >
             Send
           </Button>
-          <Button
+          {/*<Button
             onClick={this.flash.bind(this)}
             style={{ flexGrow: 1 }}
             size={"sm"}
           >
             Flash
-          </Button>
+          </Button>*/}
           <select
             value={"answers"}
             onChange={this.scanPreset}
@@ -183,11 +197,11 @@ class SensorsCore extends Component {
             <option value={"answers"} disabled>
               Answers
             </option>
-            {ScanPresets.map(p =>
+            {ScanPresets.map(p => (
               <option key={p.label} value={p.value}>
                 {p.label}
               </option>
-            )}
+            ))}
           </select>
           <select
             onChange={this.scanPreset}
@@ -197,11 +211,11 @@ class SensorsCore extends Component {
             <option disabled value={"answers"}>
               Info
             </option>
-            {sensor.presetAnswers.map(p =>
+            {sensor.presetAnswers.map(p => (
               <option key={`${p.label}-${p.value}`} value={p.value}>
                 {p.label}
               </option>
-            )}
+            ))}
           </select>
           <Button
             onClick={this.sendProcessedData.bind(this, external)}

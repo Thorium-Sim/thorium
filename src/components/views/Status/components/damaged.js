@@ -5,12 +5,13 @@ import { graphql } from "react-apollo";
 
 const SUB = gql`
   subscription DamagedSub($simulatorId: ID) {
-    systemsUpdate(simulatorId: $simulatorId) {
+    systemsUpdate(simulatorId: $simulatorId, extra: true) {
       id
       name
       damage {
         damaged
       }
+      displayName
     }
   }
 `;
@@ -24,7 +25,7 @@ class Damage extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            systems: subscriptionData.data.systemsUpdate
+            systems: subscriptionData.systemsUpdate
           });
         }
       });
@@ -41,11 +42,9 @@ class Damage extends Component {
       <div>
         <Label>Damaged Systems</Label>
         <div className="status-field damage-list">
-          {systems.filter(s => s.damage.damaged).map(s =>
-            <p key={s.id}>
-              {s.displayName || s.name}
-            </p>
-          )}
+          {systems
+            .filter(s => s.damage.damaged)
+            .map(s => <p key={s.id}>{s.displayName || s.name}</p>)}
         </div>
       </div>
     );
@@ -54,13 +53,14 @@ class Damage extends Component {
 
 const QUERY = gql`
   query Damaged($simulatorId: ID) {
-    systems(simulatorId: $simulatorId) {
+    systems(simulatorId: $simulatorId, extra: true) {
       id
       name
       displayName
       damage {
         damaged
       }
+      displayName
     }
   }
 `;

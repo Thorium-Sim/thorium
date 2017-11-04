@@ -5,6 +5,8 @@ import { graphql } from "react-apollo";
 const SUB = gql`
   subscription TargetUpdate($simulatorId: ID) {
     targetingUpdate(simulatorId: $simulatorId) {
+      id
+      displayName
       contacts {
         id
         targeted
@@ -23,7 +25,7 @@ class Targeted extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            targeting: subscriptionData.data.targetingUpdate
+            targeting: subscriptionData.targetingUpdate
           });
         }
       });
@@ -41,9 +43,7 @@ class Targeted extends Component {
     return (
       <div>
         <Label>Current Target</Label>
-        <div className="status-field">
-          {target ? target.name : "No Target"}
-        </div>
+        <div className="status-field">{target ? target.name : "No Target"}</div>
       </div>
     );
   }
@@ -51,6 +51,8 @@ class Targeted extends Component {
 const QUERY = gql`
   query Target($simulatorId: ID) {
     targeting(simulatorId: $simulatorId) {
+      id
+      displayName
       contacts {
         id
         targeted

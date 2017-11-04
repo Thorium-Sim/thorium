@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Container, Row, Col, Button, Input } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 
-import "./style.scss";
+import "./style.css";
 
 const DECKS_SUB = gql`
   subscription DecksSub($simulatorId: ID!) {
@@ -36,16 +35,18 @@ class DecksCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ decks: subscriptionData.data.decksUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            decks: subscriptionData.decksUpdate
+          });
         }
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   _addDeck() {
-    const number = prompt("What is the deck number?");
+    const number = window.prompt("What is the deck number?");
     if (!number) return;
     if (this.props.data.decks.find(d => d.number === number)) return;
     const mutation = gql`
@@ -63,7 +64,7 @@ class DecksCore extends Component {
     });
   }
   _removeDeck() {
-    if (!confirm("Are you sure you want to remove this deck?")) return;
+    if (!window.confirm("Are you sure you want to remove this deck?")) return;
     const mutation = gql`
       mutation RemoveDeck($id: ID!) {
         removeDeck(deckId: $id)
@@ -100,7 +101,7 @@ class DecksCore extends Component {
     });
   }
   _removeRoom() {
-    if (!confirm("Are you sure you want to remove this room?")) return;
+    if (!window.confirm("Are you sure you want to remove this room?")) return;
     const mutation = gql`
       mutation RemoveRoom($id: ID!) {
         removeRoom(roomId: $id)
@@ -206,7 +207,7 @@ class DecksCore extends Component {
                   if (b.number > a.number) return -1;
                   return 0;
                 })
-                .map(d =>
+                .map(d => (
                   <li
                     key={d.id}
                     className={selectedDeck === d.id ? "selected" : ""}
@@ -215,7 +216,7 @@ class DecksCore extends Component {
                   >
                     Deck {d.number}
                   </li>
-                )}
+                ))}
             </ul>
             <div className="buttons">
               <Button
@@ -244,7 +245,8 @@ class DecksCore extends Component {
                 Export
               </Button>
               <label>
-                {" "}Import:
+                {" "}
+                Import:
                 <Input type="file" onChange={this._importDecks} />
               </label>
             </div>
@@ -260,7 +262,7 @@ class DecksCore extends Component {
                     if (b.name > a.name) return -1;
                     return 0;
                   })
-                  .map(r =>
+                  .map(r => (
                     <li
                       key={r.id}
                       className={selectedRoom === r.id ? "selected" : ""}
@@ -268,7 +270,7 @@ class DecksCore extends Component {
                     >
                       {r.name}
                     </li>
-                  )}
+                  ))}
             </ul>
             <div className="buttons">
               <Button

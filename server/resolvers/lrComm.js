@@ -1,4 +1,6 @@
-import App from "../../app";
+import App from "../app";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const LRCommQueries = {
   longRangeCommunications(root, { simulatorId, crew, sent }) {
@@ -47,32 +49,38 @@ export const LRCommMutations = {
 };
 
 export const LRCommSubscriptions = {
-  longRangeCommunicationsUpdate(rootValue, { simulatorId, crew, sent }) {
-    if (simulatorId)
-      rootValue = rootValue.filter(s => s.simulatorId === simulatorId);
-    if (typeof crew !== "undefined") {
-      rootValue = rootValue.map(s =>
-        Object.assign({}, s, {
-          messages: s.messages.filter(m => m.crew === crew)
-        })
-      );
-    }
-    if (typeof sent !== "undefined") {
-      rootValue = rootValue.map(s =>
-        Object.assign({}, s, {
-          messages: s.messages.filter(m => m.sent === sent)
-        })
-      );
-    }
-    if (typeof sent !== "undefined" && typeof crew !== "undefined") {
-      if (sent !== true && crew === false) {
+  longRangeCommunicationsUpdate: {
+    resolve(rootValue, { simulatorId, crew, sent }) {
+      if (simulatorId)
+        rootValue = rootValue.filter(s => s.simulatorId === simulatorId);
+      if (typeof crew !== "undefined") {
         rootValue = rootValue.map(s =>
           Object.assign({}, s, {
-            messages: s.messages.filter(m => m.deleted === false)
+            messages: s.messages.filter(m => m.crew === crew)
           })
         );
       }
-    }
-    return rootValue;
+      if (typeof sent !== "undefined") {
+        rootValue = rootValue.map(s =>
+          Object.assign({}, s, {
+            messages: s.messages.filter(m => m.sent === sent)
+          })
+        );
+      }
+      if (typeof sent !== "undefined" && typeof crew !== "undefined") {
+        if (sent !== true && crew === false) {
+          rootValue = rootValue.map(s =>
+            Object.assign({}, s, {
+              messages: s.messages.filter(m => m.deleted === false)
+            })
+          );
+        }
+      }
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("longRangeCommunicationsUpdate"),
+      rootValue => !!(rootValue && rootValue.length)
+    )
   }
 };

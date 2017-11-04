@@ -24,9 +24,9 @@ class EngineCoreView extends Component {
         document: SPEEDCHANGE_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
           previousResult.engines = previousResult.engines.map(engine => {
-            if (engine.id === subscriptionData.data.speedChange.id) {
-              engine.speed = subscriptionData.data.speedChange.speed;
-              engine.on = subscriptionData.data.speedChange.on;
+            if (engine.id === subscriptionData.speedChange.id) {
+              engine.speed = subscriptionData.speedChange.speed;
+              engine.on = subscriptionData.speedChange.on;
             }
             return engine;
           });
@@ -34,6 +34,9 @@ class EngineCoreView extends Component {
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.setSpeedSubscription && this.setSpeedSubscription();
   }
   render() {
     if (this.props.data.loading) return null;
@@ -46,9 +49,7 @@ class EngineCoreView extends Component {
     return (
       <div>
         <Label>Speed</Label>
-        <div className="status-field">
-          {speed}
-        </div>
+        <div className="status-field">{speed}</div>
       </div>
     );
   }
@@ -59,6 +60,7 @@ const ENGINE_QUERY = gql`
     engines(simulatorId: $simulatorId) {
       id
       name
+      displayName
       speeds {
         text
         number

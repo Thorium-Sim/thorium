@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import assetPath from '../../../../helpers/assets';
+import React, { Component } from "react";
+import assetPath from "../../../../helpers/assets";
 
 export default class SensorContact extends Component {
   render() {
@@ -12,7 +12,7 @@ export default class SensorContact extends Component {
       core,
       opacity,
       mouseover = () => {},
-      mousedown
+      mousedown = () => {}
     } = this.props;
     if (!location) return null;
     const { x, y } = location;
@@ -20,10 +20,12 @@ export default class SensorContact extends Component {
     return (
       <div>
         <img
+          alt="contact"
           draggable="false"
           onMouseOver={() => mouseover(this.props)}
           onMouseOut={() => mouseover({})}
-          src={assetPath(icon, 'default', 'svg', false)}
+          onMouseDown={() => mousedown(this.props)}
+          src={assetPath(icon, "default", "svg", false)}
           style={{
             opacity: core ? 0.5 : opacity,
             transform: `translate(${width / 2 * x}px, ${width /
@@ -31,17 +33,19 @@ export default class SensorContact extends Component {
               y}px) scale(${size})`
           }}
         />
-        {core &&
+        {core && (
           <img
+            alt="icon"
             draggable="false"
             onMouseDown={mousedown}
-            src={assetPath(icon, 'default', 'svg', false)}
+            src={assetPath(icon, "default", "svg", false)}
             style={{
               transform: `translate(${width / 2 * dx}px, ${width /
                 2 *
                 dy}px) scale(${size})`
             }}
-          />}
+          />
+        )}
       </div>
     );
   }

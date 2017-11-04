@@ -7,11 +7,12 @@ import {
   ListGroupItem,
   Button,
   Card,
-  CardBlock,
-  Input
+  CardBody
 } from "reactstrap";
 import gql from "graphql-tag";
-import "./style.scss";
+import { RoomDropdown } from "../helpers/shipStructure";
+
+import "./style.css";
 
 const DECK_SUB = gql`
   subscription DeckSubscribe($simulatorId: ID!) {
@@ -28,7 +29,7 @@ const DECK_SUB = gql`
   }
 `;
 
-class SecurityTeams extends Component {
+class SecurityDecks extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,17 +48,20 @@ class SecurityTeams extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.deckSubscription && this.deckSubscription();
+  }
   _selectDeck(deck) {
     this.setState({
       selectedDeck: deck,
       selectedRoom: null
     });
   }
-  _selectRoom(e) {
+  _selectRoom = e => {
     this.setState({
-      selectedRoom: e.target.value
+      selectedRoom: e.room
     });
-  }
+  };
   _toggleDoors() {
     const mutation = gql`
       mutation ToggleDoors($deckId: ID!, $doors: Boolean!) {
@@ -124,93 +128,86 @@ class SecurityTeams extends Component {
         <Col sm={3}>
           <h4>Decks</h4>
           <ListGroup>
-            {decks
-              .concat()
-              .sort((a, b) => {
-                if (a.number < b.number) return -1;
-                if (b.number < a.number) return 1;
-                return 0;
-              })
-              .map(d =>
-                <ListGroupItem
-                  key={d.id}
-                  onClick={this._selectDeck.bind(this, d.id)}
-                  className={`${this.state.selectedDeck === d.id
-                    ? "selected"
-                    : ""}`}
-                >
-                  Deck {d.number}
-                </ListGroupItem>
-              )}
+            {decks &&
+              decks
+                .concat()
+                .sort((a, b) => {
+                  if (a.number < b.number) return -1;
+                  if (b.number < a.number) return 1;
+                  return 0;
+                })
+                .map(d => (
+                  <ListGroupItem
+                    key={d.id}
+                    onClick={this._selectDeck.bind(this, d.id)}
+                    className={`${this.state.selectedDeck === d.id
+                      ? "selected"
+                      : ""}`}
+                  >
+                    Deck {d.number}
+                  </ListGroupItem>
+                ))}
           </ListGroup>
         </Col>
-        {this.state.selectedDeck &&
-          <Col sm={{ size: 6, offset: 1 }}>
-            <h1>
-              Deck {deck.number} Status:
-            </h1>
-            <h2>
-              Bulkhead Doors: {deck.doors ? "Closed" : "Open"}
-            </h2>
-            <h2>
-              Crew Status: {deck.evac ? "Evacuated" : "On Duty"}
-            </h2>
-            <Row>
-              <Col sm={6}>
-                <Button
-                  color="warning"
-                  block
-                  size="lg"
-                  onClick={this._toggleDoors.bind(this)}
-                >
-                  {deck.doors ? "Open Doors" : "Close Doors"}
-                </Button>
-              </Col>
-              <Col sm={6}>
-                <Button
-                  color="warning"
-                  block
-                  size="lg"
-                  onClick={this._toggleEvac.bind(this)}
-                >
-                  {deck.evac ? "Sound All-Clear" : "Evacuate Deck"}
-                </Button>
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={12}>
-                <Card>
-                  <CardBlock>
-                    <h4>Tranzine Gas</h4>
-                    <Input onChange={this._selectRoom.bind(this)} type="select">
-                      <option value={false}>Select A Room:</option>
-                      {deck.rooms.map(r =>
-                        <option key={r.id} value={r.id}>
-                          {r.name}
-                        </option>
-                      )}
-                    </Input>
-                    <Button
-                      color="warning"
-                      block
-                      disabled={!this.state.selectedRoom}
-                      onClick={this._toggleGas.bind(this)}
-                    >{`${room.gas
-                      ? "Siphon"
-                      : "Release"} Tranzine Gas`}</Button>
-                    <p>
-                      <em>
-                        Warning: The release of tranzine gas will cause
-                        unconsiousness to anyone who inhales the gas. Use with
-                        caution. Access to tranzine gas is limited to security
-                        personnel only. Access is restricted.
-                      </em>
-                    </p>
-                  </CardBlock>
-                </Card>
-              </Col>
-            </Row>
-          </Col>}
+        <Col sm={{ size: 6, offset: 1 }}>
+          <h1>Deck {deck && deck.number} Status:</h1>
+          <h2>Bulkhead Doors: {deck && deck.doors ? "Closed" : "Open"}</h2>
+          <h2>Crew Status: {deck && deck.evac ? "Evacuated" : "On Duty"}</h2>
+          <Row>
+            <Col sm={6}>
+              <Button
+                color="warning"
+                block
+                size="lg"
+                disabled={!deck}
+                onClick={this._toggleDoors.bind(this)}
+              >
+                {deck && deck.doors ? "Open Doors" : "Close Doors"}
+              </Button>
+            </Col>
+            <Col sm={6}>
+              <Button
+                color="warning"
+                block
+                size="lg"
+                disabled={!deck}
+                onClick={this._toggleEvac.bind(this)}
+              >
+                {deck && deck.evac ? "Sound All-Clear" : "Evacuate Deck"}
+              </Button>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm={12}>
+              <Card>
+                <CardBody>
+                  <h4>Tranzine Gas</h4>
+                  <RoomDropdown
+                    selectedDeck={deck && deck.id}
+                    selectedRoom={this.state.selectedRoom}
+                    decks={decks}
+                    disabled={!deck}
+                    setSelected={a => this._selectRoom(a)}
+                  />
+                  <Button
+                    color="warning"
+                    block
+                    disabled={!deck || !this.state.selectedRoom}
+                    onClick={this._toggleGas.bind(this)}
+                  >{`${room.gas ? "Siphon" : "Release"} Tranzine Gas`}</Button>
+                  <p>
+                    <em>
+                      Warning: The release of tranzine gas will cause
+                      unconsiousness to anyone who inhales the gas. Use with
+                      caution. Access to tranzine gas is limited to security
+                      personnel only. Access is restricted.
+                    </em>
+                  </p>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </Col>
       </Row>
     );
   }
@@ -234,4 +231,4 @@ const DECK_QUERY = gql`
 
 export default graphql(DECK_QUERY, {
   options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })
-})(withApollo(SecurityTeams));
+})(withApollo(SecurityDecks));

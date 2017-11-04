@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
-import { Container, Row, Col, Input, Card, CardBlock } from "reactstrap";
+import { Container, Row, Col, Input, Card, CardBody } from "reactstrap";
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
 import Tour from "reactour";
-import "./style.scss";
+import "./style.css";
 
 const INVENTORY_SUB = gql`
   subscription InventoryUpdate($simulatorId: ID!) {
@@ -42,15 +41,18 @@ class CargoControl extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ inventory: subscriptionData.data.inventoryUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            inventory: subscriptionData.inventoryUpdate
+          });
         }
       });
     }
   }
+  componentWillUnmount() {
+    this.internalSub && this.internalSub();
+  }
   setSelected(which, { deck, room }) {
+    deck = deck || this.state[which + "Deck"];
     const { decks } = this.props.data;
     if (decks.length === 1) deck = decks[0].id;
     const obj = {};
@@ -158,14 +160,15 @@ class CargoControl extends Component {
     return (
       <Container className="cargo-control">
         <Row>
-          {decks.length > 1 &&
+          {decks.length > 1 && (
             <Col sm="2">
               <DeckDropdown
                 selectedDeck={toDeck}
                 decks={decks}
                 setSelected={this.setSelected.bind(this, "to")}
               />
-            </Col>}
+            </Col>
+          )}
           <Col className="to-room" sm={decks.length > 1 ? 2 : 4}>
             <RoomDropdown
               selectedDeck={toDeck}
@@ -176,14 +179,15 @@ class CargoControl extends Component {
             />
           </Col>
 
-          {decks.length > 1 &&
+          {decks.length > 1 && (
             <Col sm={{ size: 2 }}>
               <DeckDropdown
                 selectedDeck={fromDeck}
                 decks={decks}
                 setSelected={this.setSelected.bind(this, "from")}
               />
-            </Col>}
+            </Col>
+          )}
           <Col className="from-room" sm={{ size: decks.length > 1 ? 2 : 4 }}>
             <RoomDropdown
               selectedDeck={fromDeck}
@@ -197,7 +201,7 @@ class CargoControl extends Component {
         <Row className="inventoryRow">
           <Col sm={4} className="to-cargo">
             <Card>
-              <CardBlock>
+              <CardBody>
                 {toRoom &&
                   inventory
                     .map(i => {
@@ -209,21 +213,21 @@ class CargoControl extends Component {
                       return { id: i.id, name: i.name, count: roomCount.count };
                     })
                     .filter(i => i)
-                    .map(i =>
+                    .map(i => (
                       <p
                         key={`to-${i.id}`}
                         onClick={this.transfer.bind(this, "to", i)}
                       >
                         {i.name} ({i.count})
                       </p>
-                    )}
-              </CardBlock>
+                    ))}
+              </CardBody>
             </Card>
           </Col>
 
           <Col sm={{ size: 4 }}>
             <Card>
-              <CardBlock>
+              <CardBody>
                 {fromRoom &&
                   inventory
                     .map(i => {
@@ -235,15 +239,15 @@ class CargoControl extends Component {
                       return { id: i.id, name: i.name, count: roomCount.count };
                     })
                     .filter(i => i)
-                    .map(i =>
+                    .map(i => (
                       <p
                         key={`to-${i.id}`}
                         onClick={this.transfer.bind(this, "from", i)}
                       >
                         {i.name} ({i.count})
                       </p>
-                    )}
-              </CardBlock>
+                    ))}
+              </CardBody>
             </Card>
           </Col>
           <Col sm={{ size: 4 }}>
@@ -253,23 +257,22 @@ class CargoControl extends Component {
               size="sm"
               onChange={this.findInv.bind(this)}
             />
-            {this.state.findInventory &&
+            {this.state.findInventory && (
               <Card className="search-container">
-                <CardBlock>
-                  {this.state.findInventory.map(i =>
+                <CardBody>
+                  {this.state.findInventory.map(i => (
                     <div key={`find-${i.id}`}>
                       {i.name}
                       <ul>
-                        {i.locations.map((l, index) =>
-                          <li key={`loc-${index}`}>
-                            {l}
-                          </li>
-                        )}
+                        {i.locations.map((l, index) => (
+                          <li key={`loc-${index}`}>{l}</li>
+                        ))}
                       </ul>
                     </div>
-                  )}
-                </CardBlock>
-              </Card>}
+                  ))}
+                </CardBody>
+              </Card>
+            )}
           </Col>
         </Row>
         <Tour

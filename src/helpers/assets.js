@@ -43,8 +43,12 @@ class AssetComponent extends Component {
         variables
       })
       .then(res => {
+        console.log(
+          res.data.asset,
+          (res.data.asset.url || "").replace(/http(s|):\/\/.*:3000/gi, "")
+        );
         this.setState({
-          src: res.data.asset.url
+          src: (res.data.asset.url || "").replace(/http(s|):\/\/.*:3000/gi, "")
         });
       });
   }

@@ -1,4 +1,4 @@
-import App from "../../app.js";
+import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
 
@@ -77,3 +77,12 @@ App.on("setStationLogin", ({ stationSetID, stationName, login }) => {
     .setStationLogin(stationName, login);
   pubsub.publish("stationSetUpdate", App.stationSets);
 });
+App.on(
+  "toggleStationWidgets",
+  ({ stationSetID, stationName, widget, state }) => {
+    App.stationSets
+      .find(s => s.id === stationSetID)
+      .setStationWidget(stationName, widget, state);
+    pubsub.publish("stationSetUpdate", App.stationSets);
+  }
+);

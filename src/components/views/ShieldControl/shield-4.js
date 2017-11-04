@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
-import assetPath from "../../../helpers/assets";
+import { Asset } from "../../../helpers/assets";
 import shieldStyle from "./shieldStyle";
 import DamageOverlay from "../helpers/DamageOverlay";
 
@@ -13,12 +13,8 @@ const ShieldData = ({ shields, startLoop, state, _toggleShields }) => {
         message={`${shields.name} Shields Offline`}
         style={{ fontSize: "30px" }}
       />
-      <h4>
-        {shields.name}
-      </h4>
-      <h5>
-        Integrity: {`${Math.round(shields.integrity * 100)}%`}
-      </h5>
+      <h4>{shields.name}</h4>
+      <h5>Integrity: {`${Math.round(shields.integrity * 100)}%`}</h5>
       <h5>Frequency:</h5>
       <Row>
         <Col sm="auto">
@@ -46,13 +42,14 @@ const ShieldData = ({ shields, startLoop, state, _toggleShields }) => {
       <Button
         color="success"
         block
+        disabled={state.disabledButton[shields.id]}
         onClick={_toggleShields.bind(this, shields)}
       >{`${shields.state ? "Lower" : "Raise"} ${shields.name} Shields`}</Button>
     </Col>
   );
 };
 
-export default ({ shields, startLoop, state, _toggleShields }) => {
+export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
   return (
     <Container fluid className="shields">
       <Row>
@@ -61,12 +58,17 @@ export default ({ shields, startLoop, state, _toggleShields }) => {
             className="shieldBubble"
             style={{ boxShadow: shieldStyle(shields) }}
           >
-            <img
-              role="presentation"
-              className="mw-100 shieldImage"
-              draggable="false"
-              src={assetPath("/Ship Views/Top", "default", "png", false)}
-            />
+            <Asset asset={"/Ship Views/Top"} simulatorId={simulator.id}>
+              {({ src }) => (
+                <img
+                  alt="shield"
+                  role="presentation"
+                  className="mw-100 shieldImage"
+                  draggable="false"
+                  src={src}
+                />
+              )}
+            </Asset>
           </div>
         </Col>
         <Col style={{ marginTop: "50px" }} sm={{ size: 5, offset: 1 }}>
@@ -74,6 +76,7 @@ export default ({ shields, startLoop, state, _toggleShields }) => {
             {shields.map(s => {
               return (
                 <ShieldData
+                  key={s.id}
                   shields={s}
                   startLoop={startLoop}
                   state={state}
@@ -86,6 +89,7 @@ export default ({ shields, startLoop, state, _toggleShields }) => {
                 <Button
                   color="success"
                   block
+                  disabled={state.disabledButton.down}
                   onClick={_toggleShields.bind(this, "down")}
                 >
                   Lower All Shields
@@ -95,6 +99,7 @@ export default ({ shields, startLoop, state, _toggleShields }) => {
                 <Button
                   color="success"
                   block
+                  disabled={state.disabledButton.up}
                   onClick={_toggleShields.bind(this, "up")}
                 >
                   Raise All Shields

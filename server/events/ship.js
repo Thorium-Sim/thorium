@@ -1,4 +1,4 @@
-import App from "../../app.js";
+import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import uuid from "uuid";
 
@@ -20,7 +20,6 @@ App.on("shipDockingChange", ({ simulatorId, which, state }) => {
       color: "info"
     });
   }
-
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
 App.on("remoteAccessSendCode", ({ simulatorId, code, station }) => {

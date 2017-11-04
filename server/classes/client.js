@@ -1,33 +1,9 @@
-// @flow
 import uuid from "uuid";
-import App from "../../app";
+import App from "../app";
 // TODO: Add the ability to sort clients into groups
 
 export default class Client {
-  id: string;
-  flightId: ?string;
-  simulatorId: ?string;
-  station: ?string;
-  loginName: ?string;
-  loginState: string;
-  sentPing: ?boolean;
-  ping: ?string;
-  connected: ?boolean;
-  offlineState: ?string;
-  class: string;
-  constructor(params: {
-    id: ?string,
-    flightId: ?string,
-    simulatorId: ?string,
-    station: ?string,
-    loginName: ?string,
-    loginState: ?string,
-    sentPing: ?boolean,
-    ping: ?string,
-    connected: ?boolean,
-    offlineState: ?string,
-    training: boolean
-  }) {
+  constructor(params) {
     params = params || {};
     this.id = params.id || uuid.v4();
     this.flightId = params.flightId || null;
@@ -40,6 +16,7 @@ export default class Client {
     this.connected = params.connected || false;
     this.offlineState = params.offlineState || null;
     this.training = params.training || false;
+    this.caches = params.caches || [];
     this.class = "Client";
   }
   connect() {
@@ -48,10 +25,10 @@ export default class Client {
   disconnect() {
     this.connected = false;
   }
-  setPing(ping: boolean) {
+  setPing(ping) {
     this.sentPing = ping;
   }
-  setFlight(flightId: string) {
+  setFlight(flightId) {
     this.flightId = flightId;
     const flight = App.flights.find(f => f.id === flightId);
     if (flight && flight.simulators.length === 1) {
@@ -62,16 +39,16 @@ export default class Client {
       this.station = null;
     }
   }
-  setSimulator(simulatorId: string) {
+  setSimulator(simulatorId) {
     this.simulatorId = simulatorId;
     if (!this.simulatorId) {
       this.station = null;
     }
   }
-  setStation(station: string) {
+  setStation(station) {
     this.station = station;
   }
-  login(name: string) {
+  login(name) {
     this.loginName = name;
     this.loginState = "login";
   }
@@ -82,9 +59,28 @@ export default class Client {
   setTraining(training) {
     this.training = training;
   }
-  setOfflineState(state: string) {
+  setOfflineState(state) {
     // Allow one of null, 'blackout', 'offline', 'power', 'lockdown', and 'maintenance'
     this.offlineState = state;
+  }
+  addCache(cacheItem) {
+    const container = App.assetContainers.find(a => a.fullPath === cacheItem);
+    const object =
+      App.assetObjects.find(
+        obj =>
+          obj.containerId === container.id &&
+          obj.simulatorId === this.simulatorId
+      ) ||
+      App.assetObjects.find(
+        obj => obj.containerId === container.id && obj.simulatorId === "default"
+      );
+    if (this.caches.indexOf(object.url) === -1) {
+      this.caches.unshift(object.url);
+      this.caches.splice(5);
+    }
+  }
+  removeCache(cacheItem) {
+    this.caches = this.caches.filter(c => c !== cacheItem);
   }
   diagnostic() {}
   reset() {}

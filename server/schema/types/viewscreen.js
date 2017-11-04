@@ -4,5 +4,8 @@ type Viewscreen {
   simulatorId: ID
   name: String
   component: String
+  # JSON
+  data: String
+  auto: Boolean
 }
 `;

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./style.scss";
+import "./style.css";
 import { Asset } from "../../../helpers/assets";
 
 const speedLimit = 20;
@@ -9,7 +9,7 @@ const speedConstant2 = 1.5 / 200;
 class TargetingGridDom extends Component {
   constructor(props) {
     super(props);
-    this.state = { targets: [] };
+    this.state = { targets: [], dimensions: {} };
     this.looping = true;
   }
   componentWillReceiveProps(nextProps) {
@@ -25,7 +25,7 @@ class TargetingGridDom extends Component {
   }
   refreshTargets(nextProps) {
     const targets = [].concat(this.state.targets);
-    const { width } = this.props.dimensions;
+    const { width } = this.props.dimensions || { width: 400 };
     const height = width * 3 / 4;
     nextProps.targets.forEach(t => {
       const index = targets.findIndex(ta => ta.id === t.id);
@@ -45,6 +45,7 @@ class TargetingGridDom extends Component {
           icon: t.icon,
           scale: t.size,
           hover: 0,
+          name: t.name,
           targeted: t.targeted
         });
       }
@@ -56,18 +57,24 @@ class TargetingGridDom extends Component {
   }
   loop() {
     if (!this.looping) return false;
-    const { width } = this.props.dimensions;
+    // Next frame
+    requestAnimationFrame(() => {
+      this.loop();
+    });
+    const { width } = this.props.dimensions || { width: 400 };
+    if (!width) return;
     const height = width * 3 / 4;
     this.setState(({ targets }) => {
       const newTargets = targets.map(
-        ({ id, x, y, icon, speedX, speedY, scale, hover, targeted }) => {
+        ({ id, x, y, icon, name, speedX, speedY, scale, hover, targeted }) => {
           const limit = { x: width - 32, y: height - 64 };
           const speed = { x: speedX, y: speedY };
           const loc = { x, y };
           ["x", "y"].forEach(which => {
             if (speed[which] / speedLimit > 0.99) speed[which] = speedLimit - 1;
-            if (speed[which] / speedLimit < -0.99)
+            if (speed[which] / speedLimit < -0.99) {
               speed[which] = (speedLimit - 1) * -1;
+            }
             if (loc[which] > limit[which]) {
               loc[which] = limit[which] - 1;
               if (speed[which] > 0) speed[which] = 0;
@@ -116,18 +123,15 @@ class TargetingGridDom extends Component {
             icon,
             scale,
             hover,
+            name,
             targeted
           };
         }
       );
       return { targets: newTargets };
     });
-    // Next frame
-    requestAnimationFrame(() => {
-      this.loop();
-    });
   }
-  _mouseMove = (id, e) => {
+  _mouseMove = id => {
     const { targets } = this.state;
     if (targets.find(t => t.targeted === true)) {
       this.setState({
@@ -164,9 +168,9 @@ class TargetingGridDom extends Component {
             .map((y, i) => <div key={`line-y-${i}`} className="line-y" />)}
         </div>
         <div className="icons">
-          {targets.map(t =>
+          {targets.map(t => (
             <Target key={t.id} mousemove={this._mouseMove} {...t} />
-          )}
+          ))}
         </div>
       </div>
     );
@@ -175,12 +179,13 @@ class TargetingGridDom extends Component {
 
 export default TargetingGridDom;
 
-const Target = ({ id, mousemove, icon, x, y, scale, targeted }) => {
+const Target = ({ id, mousemove, icon, name, x, y, scale, targeted }) => {
   return (
     <Asset asset={icon}>
-      {({ src }) =>
+      {({ src }) => (
         <span>
           <img
+            alt="target"
             role="presentation"
             draggable="false"
             className="target"
@@ -190,15 +195,26 @@ const Target = ({ id, mousemove, icon, x, y, scale, targeted }) => {
               transform: `translate(${x}px, ${y}px) scale(${scale})`
             }}
           />
-          {targeted &&
+          {targeted && (
             <img
+              alt="crosshair"
               className="crosshair"
               style={{
                 transform: `translate(${x}px, ${y}px) scale(${scale * 1.1})`
               }}
               src={require("./crosshair.svg")}
-            />}
-        </span>}
+            />
+          )}
+          <div
+            className="target-label"
+            style={{
+              transform: `translate(${x}px, ${y + 30}px) scale(${scale})`
+            }}
+          >
+            {name}
+          </div>
+        </span>
+      )}
     </Asset>
   );
 };

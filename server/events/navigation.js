@@ -1,4 +1,4 @@
-import App from "../../app";
+import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import uuid from "uuid";
 
@@ -65,6 +65,30 @@ App.on("navCourseEntry", ({ id, x, y, z }) => {
 App.on("navToggleCalculate", ({ id, which }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.toggleCalculate(which);
+  pubsub.publish(
+    "navigationUpdate",
+    App.systems.filter(s => s.type === "Navigation")
+  );
+});
+App.on("navSetDestinations", ({ id, destinations }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  system.setDestinations(destinations);
+  pubsub.publish(
+    "navigationUpdate",
+    App.systems.filter(s => s.type === "Navigation")
+  );
+});
+App.on("navSetDestination", ({ id, destination }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  system.setDestination(destination);
+  pubsub.publish(
+    "navigationUpdate",
+    App.systems.filter(s => s.type === "Navigation")
+  );
+});
+App.on("navSetScanning", ({ id, scanning }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  system.setScanning(scanning);
   pubsub.publish(
     "navigationUpdate",
     App.systems.filter(s => s.type === "Navigation")

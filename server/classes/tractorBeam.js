@@ -10,6 +10,7 @@ export default class TractorBeam extends System {
     this.target = params.target || false;
     this.strength = params.strength || 0.0;
     this.stress = params.stress || 0.15;
+    this.scanning = params.scanning || false;
   }
   get stealthFactor() {
     return this.state ? this.stress / 5 + 0.8 : 0;
@@ -38,5 +39,8 @@ export default class TractorBeam extends System {
   }
   setStress(perc) {
     this.stress = perc;
+  }
+  setScanning(scanning) {
+    this.scanning = scanning;
   }
 }

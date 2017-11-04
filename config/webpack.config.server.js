@@ -22,10 +22,10 @@ module.exports = {
   // We generate sourcemaps in production. This is slow but gives good results.
   // You can exclude the *.map files from the build during deployment.
   // In production, we only want to load the polyfills and the app code.
-  entry: ["babel-polyfill", path.resolve(__dirname + "/../server.js")],
+  entry: ["babel-polyfill", path.resolve(__dirname + "/../server/server.js")],
   output: {
     // The build folder.
-    path: path.resolve(__dirname + "/../build-server"),
+    path: path.resolve(__dirname + "/../build"),
     // Generated JS file names (with nested folders).
     // There will be one main bundle, and one file per asynchronous chunk.
     // We don't currently advertise code splitting but Webpack supports it.

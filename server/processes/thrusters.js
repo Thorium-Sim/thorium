@@ -1,8 +1,8 @@
-import App from '../../app';
+import App from "../app";
 
 const updateThrusters = () => {
-  App.systems.forEach((sys) => {
-    if (sys.type === 'Thrusters' && sys.thrusting === true) {
+  App.systems.forEach(sys => {
+    if (sys.type === "Thrusters" && sys.thrusting === true) {
       const rotationAdd = Object.assign({}, sys.rotation);
       rotationAdd.yaw += sys.rotationDelta.yaw * 3;
       rotationAdd.pitch += sys.rotationDelta.pitch * 3;
@@ -13,7 +13,7 @@ const updateThrusters = () => {
       if (rotationAdd.yaw < 0) rotationAdd.yaw += 360;
       if (rotationAdd.pitch < 0) rotationAdd.pitch += 360;
       if (rotationAdd.roll < 0) rotationAdd.roll += 360;
-      App.handleEvent({id: sys.id, rotation: rotationAdd}, 'rotationSet');
+      App.handleEvent({ id: sys.id, rotation: rotationAdd }, "rotationSet");
     }
   });
   setTimeout(updateThrusters, 100);

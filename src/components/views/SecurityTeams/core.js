@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Label, Button } from "reactstrap";
-import Immutable from "immutable";
 
-import "./style.scss";
+import "./style.css";
 
 const CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID) {
@@ -60,10 +59,9 @@ class SecurityTeams extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ teams: subscriptionData.data.teamsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            teams: subscriptionData.teamsUpdate
+          });
         }
       });
     }
@@ -74,13 +72,16 @@ class SecurityTeams extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ crew: subscriptionData.data.crewUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            crew: subscriptionData.crewUpdate
+          });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+    this.crewSubscription && this.crewSubscription();
   }
   removeTeam = teamId => {
     const mutation = gql`
@@ -108,7 +109,7 @@ class SecurityTeams extends Component {
       <Container fluid className="security-teams-core">
         <Row>
           <Col sm={6} className="scroller">
-            {teams.map(t =>
+            {teams.map(t => (
               <p
                 key={t.id}
                 onClick={() => {
@@ -118,7 +119,7 @@ class SecurityTeams extends Component {
               >
                 {t.name}
               </p>
-            )}
+            ))}
           </Col>
           <Col sm={{ size: 6 }} className="scroller">
             {(() => {
@@ -137,15 +138,11 @@ class SecurityTeams extends Component {
                 <div>
                   <div className="label-section">
                     <Label for="teamName">Name</Label>
-                    <p>
-                      {team.name}
-                    </p>
+                    <p>{team.name}</p>
                   </div>
                   <div className="label-section">
                     <Label for="teamOrders">Orders</Label>
-                    <p>
-                      {team.orders}
-                    </p>
+                    <p>{team.orders}</p>
                   </div>
                   <div className="label-section">
                     <Label>Location</Label>
@@ -157,11 +154,7 @@ class SecurityTeams extends Component {
                   </div>
                   <div className="label-section">
                     <Label for="teamName">Assigned Officers</Label>
-                    {team.officers.map(c =>
-                      <p key={c.id}>
-                        {c.name}
-                      </p>
-                    )}
+                    {team.officers.map(c => <p key={c.id}>{c.name}</p>)}
                   </div>
                   <Button
                     size="sm"

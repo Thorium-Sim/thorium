@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Row, Col, Card, CardBlock } from "reactstrap";
+import { Button, Row, Col, Card, CardBody } from "reactstrap";
 import gql from "graphql-tag";
 
 export default class SensorScans extends Component {
@@ -43,7 +43,7 @@ export default class SensorScans extends Component {
   startScan = () => {
     let obj = {
       id: this.props.sensors.id,
-      request: this.refs.scanRequest.value
+      request: this.state.scanRequest
     };
     this.props.client.mutate({
       mutation: gql`
@@ -74,30 +74,35 @@ export default class SensorScans extends Component {
       <div>
         <Row>
           <Col className="col-sm-12">
+            <label>Sensor Scan Entry:</label>
+          </Col>
+          <Col className="col-sm-12">
             <div className="scanEntry">
-              {scanning
-                ? <div>
-                    <video ref={"ReactVideo"} autoPlay loop>
-                      <source
-                        src={require("./scansvid.mov")}
-                        type="video/mp4"
-                      />
-                    </video>
-                    <Button color="danger" block onClick={this.stopScan}>
-                      Cancel Scan
-                    </Button>
-                  </div>
-                : <div>
-                    <textarea
-                      ref="scanRequest"
-                      className="form-control btn-block"
-                      rows="6"
-                      defaultValue={this.state.scanRequest}
-                    />
-                    <Button color="primary" block onClick={this.startScan}>
-                      Begin Scan
-                    </Button>
-                  </div>}
+              {scanning ? (
+                <div>
+                  <video ref={"ReactVideo"} autoPlay loop>
+                    <source src={require("./scansvid.mov")} type="video/mp4" />
+                  </video>
+                  <Button color="danger" block onClick={this.stopScan}>
+                    Cancel Scan
+                  </Button>
+                </div>
+              ) : (
+                <div>
+                  <textarea
+                    className="form-control btn-block"
+                    rows="6"
+                    value={this.state.scanRequest}
+                    onChange={evt =>
+                      this.setState({
+                        scanRequest: evt.target.value
+                      })}
+                  />
+                  <Button color="primary" block onClick={this.startScan}>
+                    Begin Scan
+                  </Button>
+                </div>
+              )}
             </div>
           </Col>
         </Row>
@@ -107,11 +112,9 @@ export default class SensorScans extends Component {
           </Col>
           <Col className="col-sm-12">
             <Card style={{ height: "200px" }}>
-              <CardBlock>
-                <pre>
-                  {this.state.scanResults}
-                </pre>
-              </CardBlock>
+              <CardBody>
+                <pre>{this.state.scanResults}</pre>
+              </CardBody>
             </Card>
           </Col>
         </Row>

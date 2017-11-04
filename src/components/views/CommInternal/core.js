@@ -33,11 +33,14 @@ class InternalCommCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            internalComm: subscriptionData.data.internalCommUpdate
+            internalComm: subscriptionData.internalCommUpdate
           });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.internalSub && this.internalSub();
   }
   call(e) {
     const internalComm = this.props.data.internalComm[0];
@@ -102,130 +105,138 @@ class InternalCommCore extends Component {
     const inputStyle = { height: "22px" };
     return (
       <div className="internal-comm-core">
-        {this.props.data.internalComm.length > 0
-          ? <Container>
-              <Row>
-                <Col sm={8}>
-                  <p
-                    style={{
-                      background: "lightgray",
-                      height: "16px",
-                      padding: "0 5px"
-                    }}
+        {this.props.data.internalComm.length > 0 ? (
+          <Container>
+            <Row>
+              <Col sm={8}>
+                <p
+                  style={{
+                    background: "lightgray",
+                    height: "16px",
+                    padding: "0 5px"
+                  }}
+                >
+                  {internalComm.outgoing}
+                  {internalComm.state === "connected" ? ` - Connected` : ""}
+                </p>
+              </Col>
+              <Col sm={4}>
+                {internalComm.state === "connected" ? (
+                  <Button
+                    block
+                    size="sm"
+                    color="danger"
+                    onClick={this.cancelCall.bind(this)}
                   >
-                    {internalComm.outgoing}
-                    {internalComm.state === "connected" ? ` - Connected` : ""}
-                  </p>
-                </Col>
-                <Col sm={4}>
-                  {internalComm.state === "connected"
-                    ? <Button
-                        block
-                        size="sm"
-                        color="danger"
-                        onClick={this.cancelCall.bind(this)}
-                      >
-                        Disconnect
-                      </Button>
-                    : <Button
-                        block
-                        disabled={
-                          !(
-                            internalComm.state !== "connected" &&
-                            internalComm.outgoing
-                          )
-                        }
-                        size="sm"
-                        color="info"
-                        onClick={this.connect.bind(this)}
-                      >
-                        Connect
-                      </Button>}
+                    Disconnect
+                  </Button>
+                ) : (
+                  <Button
+                    block
+                    disabled={
+                      !(
+                        internalComm.state !== "connected" &&
+                        internalComm.outgoing
+                      )
+                    }
+                    size="sm"
+                    color="info"
+                    onClick={this.connect.bind(this)}
+                  >
+                    Connect
+                  </Button>
+                )}
+              </Col>
+            </Row>
+            {internalComm.incoming ? (
+              <Row>
+                <Col sm={12}>
+                  {internalComm.state === "connected" ? (
+                    <Button
+                      block
+                      size="sm"
+                      color="danger"
+                      onClick={this.cancelCall.bind(this)}
+                    >
+                      Disconnect
+                    </Button>
+                  ) : (
+                    <Button
+                      block
+                      size="sm"
+                      color="warning"
+                      onClick={this.cancelCall.bind(this)}
+                    >
+                      Cancel Call
+                    </Button>
+                  )}
                 </Col>
               </Row>
-              {internalComm.incoming
-                ? <Row>
-                    <Col sm={12}>
-                      {internalComm.state === "connected"
-                        ? <Button
-                            block
-                            size="sm"
-                            color="danger"
-                            onClick={this.cancelCall.bind(this)}
-                          >
-                            Disconnect
-                          </Button>
-                        : <Button
-                            block
-                            size="sm"
-                            color="warning"
-                            onClick={this.cancelCall.bind(this)}
-                          >
-                            Cancel Call
-                          </Button>}
-                    </Col>
-                  </Row>
-                : <Row>
-                    <Col sm={4}>
-                      <Input
-                        value={deck || ""}
-                        style={inputStyle}
-                        size="sm"
-                        type="select"
-                        onChange={e =>
-                          this.setState({ deck: e.target.value, room: null })}
-                      >
-                        <option value={null}>Select Deck</option>
-                        {decks
-                          .concat()
-                          .sort((a, b) => {
-                            if (a.number > b.number) return 1;
-                            if (b.number > a.number) return -1;
-                            return 0;
-                          })
-                          .map(d =>
-                            <option
-                              key={d.id}
-                              value={d.id}
-                            >{`Deck ${d.number}`}</option>
-                          )}
-                      </Input>
-                    </Col>
-                    <Col sm={6}>
-                      <Input
-                        value={room || ""}
-                        style={inputStyle}
-                        size="sm"
-                        disabled={!deck || deck === "Select Deck"}
-                        type="select"
-                        onChange={e => this.setState({ room: e.target.value })}
-                      >
-                        <option value="">Select Room</option>
-                        {rooms.map(r =>
-                          <option key={r.id} value={r.id}>
-                            {r.name}
-                          </option>
-                        )}
-                      </Input>
-                    </Col>
-                    <Col sm={2}>
-                      <Button
-                        block
-                        disabled={
-                          !deck ||
-                          deck === "Select Deck" ||
-                          internalComm.state === "connected"
-                        }
-                        size="sm"
-                        color="success"
-                        onClick={this.call.bind(this)}
-                      >
-                        Call
-                      </Button>
-                    </Col>
-                  </Row>}
-            </Container>
-          : "No Internal Comm"}
+            ) : (
+              <Row>
+                <Col sm={4}>
+                  <Input
+                    value={deck || ""}
+                    style={inputStyle}
+                    size="sm"
+                    type="select"
+                    onChange={e =>
+                      this.setState({ deck: e.target.value, room: null })}
+                  >
+                    <option value={null}>Select Deck</option>
+                    {decks
+                      .concat()
+                      .sort((a, b) => {
+                        if (a.number > b.number) return 1;
+                        if (b.number > a.number) return -1;
+                        return 0;
+                      })
+                      .map(d => (
+                        <option
+                          key={d.id}
+                          value={d.id}
+                        >{`Deck ${d.number}`}</option>
+                      ))}
+                  </Input>
+                </Col>
+                <Col sm={6}>
+                  <Input
+                    value={room || ""}
+                    style={inputStyle}
+                    size="sm"
+                    disabled={!deck || deck === "Select Deck"}
+                    type="select"
+                    onChange={e => this.setState({ room: e.target.value })}
+                  >
+                    <option value="">Select Room</option>
+                    {rooms.map(r => (
+                      <option key={r.id} value={r.id}>
+                        {r.name}
+                      </option>
+                    ))}
+                  </Input>
+                </Col>
+                <Col sm={2}>
+                  <Button
+                    block
+                    disabled={
+                      !deck ||
+                      deck === "Select Deck" ||
+                      internalComm.state === "connected"
+                    }
+                    size="sm"
+                    color="success"
+                    onClick={this.call.bind(this)}
+                  >
+                    Call
+                  </Button>
+                </Col>
+              </Row>
+            )}
+          </Container>
+        ) : (
+          "No Internal Comm"
+        )}
       </div>
     );
   }

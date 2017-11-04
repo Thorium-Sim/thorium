@@ -59,7 +59,7 @@ body {
 }
 
 //Card area
-.card-container {
+.layout-corners {
   position: absolute;
   top: 115px;
   left: 122px;
@@ -69,7 +69,7 @@ body {
     overflow: visible;
   }
 }
-.viewscreen .card-container {
+.viewscreen .layout-corners {
 	top: 0;
 	left: 0;
 	width: 100vw;
@@ -79,7 +79,6 @@ body {
 .widgets {
   position: absolute;
   left: 460px;
-  top: 5px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   &.offline,
   &.offline * {
@@ -90,6 +89,10 @@ body {
   .widget-item {
     float: left;
     margin: 4px;
+    .fa-2x {
+      font-size: 1.7em;
+      line-height: 1;
+    }
   }
   .widget-icon {
     transition: color 0.25s ease-in-out;
@@ -1019,7 +1022,7 @@ body {
 }
 
 @media (width: 1024px) {
-  .card-container {
+  .layout-corners {
   }
   #curve-frame {
     .frame-image {
@@ -1184,7 +1187,7 @@ body {
       background-size: 100%, 35px;
     }
   }
-  .card-container {
+  .layout-corners{
     top: 93px;
     left: 77px;
     width: 92vw;

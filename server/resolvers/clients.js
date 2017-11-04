@@ -1,4 +1,6 @@
-import App from "../../app";
+import App from "../app";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const ClientQueries = {
   clients: (root, { clientId, simulatorId, stationName }) => {
@@ -71,30 +73,32 @@ export const ClientMutations = {
   },
   clientSetTraining: (root, args, context) => {
     App.handleEvent(args, "clientSetTraining", context);
+  },
+  clientAddCache: (root, args, context) => {
+    App.handleEvent(args, "clientAddCache", context);
+  },
+  clientRemoveCache: (root, args, context) => {
+    App.handleEvent(args, "clientRemoveCache", context);
   }
 };
 
 export const ClientSubscriptions = {
-  clientConnect(rootValue) {
-    return rootValue;
-  },
-  clientDisconnect(rootValue) {
-    return rootValue;
-  },
-  clientChanged: (rootValue, { client, simulatorId }) => {
-    if (client) {
-      return rootValue.filter(c => c.id === client);
-    }
-    if (simulatorId) {
-      return rootValue.filter(c => c.simulatorId === simulatorId);
-    }
-    return rootValue.filter(c => c.connected);
-  },
-  clientPing: (rootValue, { client }) => {
-    if (rootValue.id === client) {
-      return rootValue.sentPing;
-    }
-    return null;
+  clientChanged: {
+    resolve(payload, { client, simulatorId }) {
+      if (client) {
+        return payload.filter(c => c.id === client);
+      }
+      if (simulatorId) {
+        return payload.filter(c => c.simulatorId === simulatorId);
+      }
+      return payload.filter(c => c.connected);
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("clientChanged"),
+      rootValue => {
+        return !!rootValue.length;
+      }
+    )
   }
 };
 

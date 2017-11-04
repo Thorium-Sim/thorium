@@ -1,4 +1,6 @@
-import App from "../../app";
+import App from "../app";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const InternalCommQueries = {
   internalComm(root, { simulatorId }) {
@@ -30,9 +32,15 @@ export const InternalCommMutations = {
 };
 
 export const InternalCommSubscriptions = {
-  internalCommUpdate(rootValue, { simulatorId }) {
-    if (simulatorId)
-      rootValue = rootValue.filter(s => s.simulatorId === simulatorId);
-    return rootValue;
+  internalCommUpdate: {
+    resolve(rootValue, { simulatorId }) {
+      if (simulatorId)
+        rootValue = rootValue.filter(s => s.simulatorId === simulatorId);
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("internalCommUpdate"),
+      rootValue => !!(rootValue && rootValue.length)
+    )
   }
 };

@@ -8,4 +8,7 @@ export default `
   removeTargetClass(id: ID!, classId: ID!): String
   updateTargetClass(id: ID!, classInput: TargetClassInput!): String
   setTargetClassCount(id: ID!, classId: ID!, count: Int!): String
+  setCoordinateTargeting(id: ID!, which: Boolean!): String
+  setTargetingCalculatedTarget(id: ID, simulatorId: ID,  coordinates:CoordinatesInput, contactId: ID): String
+  setTargetingEnteredTarget(id: ID!, coordinates:StringCoordinatesInput): String
 `;

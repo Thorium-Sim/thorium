@@ -1,4 +1,4 @@
-import App from "../../app";
+import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import uuid from "uuid";
 
@@ -69,6 +69,42 @@ App.on("updateTargetClass", ({ id, classInput }) => {
 });
 App.on("setTargetClassCount", ({ id, classId, count }) => {
   App.systems.find(s => s.id === id).setTargetClassCount(classId, count);
+  pubsub.publish(
+    "targetingUpdate",
+    App.systems.filter(s => s.type === "Targeting")
+  );
+});
+App.on(
+  "setTargetingCalculatedTarget",
+  ({ id, coordinates, simulatorId, contactId }) => {
+    if (coordinates.z === 0) coordinates.z = Math.random();
+    App.systems
+      .find(
+        s =>
+          s.id === id ||
+          (s.simulatorId === simulatorId && s.type === "Targeting")
+      )
+      .setCalculatedTarget(coordinates, contactId);
+    pubsub.publish(
+      "targetingUpdate",
+      App.systems.filter(s => s.type === "Targeting")
+    );
+  }
+);
+App.on("setTargetingEnteredTarget", ({ id, simulatorId, coordinates }) => {
+  App.systems
+    .find(
+      s =>
+        s.id === id || (s.simulatorId === simulatorId && s.type === "Targeting")
+    )
+    .setEnteredTarget(coordinates);
+  pubsub.publish(
+    "targetingUpdate",
+    App.systems.filter(s => s.type === "Targeting")
+  );
+});
+App.on("setCoordinateTargeting", ({ id, which }) => {
+  App.systems.find(s => s.id === id).setCoordinateTargeting(which);
   pubsub.publish(
     "targetingUpdate",
     App.systems.filter(s => s.type === "Targeting")

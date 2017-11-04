@@ -8,10 +8,10 @@ import { withApollo } from "react-apollo";
 import CardSwitcher from "./CardSwitcher";
 import Widgets from "./Widgets";
 import Alerts from "../../generic/Alerts";
-import ActionsMixin from "./Actions";
+import ActionsMixin from "../../generic/Actions";
 
-import "./layout.scss";
-import "./theme.scss";
+import "./layout.css";
+import "./theme.css";
 
 class CardHolder extends Component {
   componentWillEnter(callback) {
@@ -45,7 +45,7 @@ class CardHolder extends Component {
   render() {
     return (
       <div
-        className="cardContainer container"
+        className="cardContainer"
         style={{ width: "100%", position: "absolute", alignSelf: "center" }}
       >
         <this.props.component {...this.props} />
@@ -134,7 +134,7 @@ class LayoutCorners extends Component {
     }
     return (
       <ActionsMixin {...this.props}>
-        <div className={`card-container card-area ${alertClass}`}>
+        <div className={`layout-corners card-area ${alertClass}`}>
           <TransitionGroup>
             {station.cards
               .concat({ name: "Login", component: "Login", icon: "Login" })
@@ -177,15 +177,9 @@ class LayoutCorners extends Component {
             <div className="frame-5" />
           </div>
           <div className="frame-text">
-            <h1 className="simulator-name">
-              {simulator.name}
-            </h1>
-            <h2 className="station-name">
-              {station.name}
-            </h2>
-            <h2 className="login-name">
-              {clientObj.loginName}
-            </h2>
+            <h1 className="simulator-name">{simulator.name}</h1>
+            <h2 className="station-name">{station.name}</h2>
+            <h2 className="login-name">{clientObj.loginName}</h2>
           </div>
           <CardSwitcher
             className={alertClass}

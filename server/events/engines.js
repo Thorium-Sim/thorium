@@ -1,4 +1,4 @@
-import App from "../../app";
+import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
 import uuid from "uuid";
@@ -68,6 +68,8 @@ App.on("addHeat", ({ id, heat }) => {
   const sys = App.systems.find(s => s.id === id);
   if (sys && sys.heat !== heat) {
     sys.setHeat(heat);
+  }
+  if (Date.now() % 100 === 1) {
     pubsub.publish("heatChange", sys);
     pubsub.publish("systemsUpdate", App.systems);
   }

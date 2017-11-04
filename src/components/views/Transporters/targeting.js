@@ -21,9 +21,14 @@ export default class Target extends Component {
     this.updateCharge = throttle(props.setCharge, 1000);
   }
   componentDidMount() {
+    this.ticking = true;
     this.tick();
   }
+  componentWillUnmount() {
+    this.ticking = false;
+  }
   tick() {
+    if (!this.ticking) return;
     const { selectedTarget, mouseCharge, charge } = this.state;
     if (
       (selectedTarget && mouseCharge > charge && mouseCharge < charge + 0.08) ||
@@ -88,67 +93,78 @@ export default class Target extends Component {
           </h2>
         </Row>
         <Row>
-          <Measure>
-            {dimensions =>
-              <Col
-                className="targetBox"
-                lg={{ size: 6 }}
-                xl={{ size: 4, offset: 1 }}
-              >
-                {this.props.targets.map(target => {
-                  return (
-                    <img
-                      key={target.id}
-                      draggable="false"
-                      role="presentation"
-                      src={require("./crosstarget.svg")}
-                      style={{
-                        position: "absolute",
-                        left: `${target.position.x * 90}%`,
-                        top: `${target.position.y * 90}%`
-                      }}
-                    />
-                  );
-                })}
-                <Draggable
-                  bounds=".targetBox"
-                  defaultPosition={{
-                    x: dimensions.width / 2,
-                    y: dimensions.height / 2
-                  }}
-                  onDrag={(event, obj) => {
-                    const {
-                      clientWidth,
-                      clientHeight
-                    } = event.target.parentElement;
-                    const { x, y } = obj;
-                    let selectedTarget = null;
-                    this.props.targets.forEach(target => {
-                      const { x: objX, y: objY } = target.position;
-                      if (
-                        Math.round((objX - x / clientWidth * 1.11111) * 100) ===
-                          0 &&
-                        Math.round(
-                          (objY - y / clientHeight * 1.11111) * 100
-                        ) === 0
-                      ) {
-                        // The crosshair is on top of a target
-                        selectedTarget = target;
-                      }
-                    });
-                    this.setState({
-                      selectedTarget
-                    });
-                  }}
-                >
-                  <img
-                    draggable="false"
-                    role="presentation"
-                    src={require("./crosshairs.svg")}
-                  />
-                </Draggable>
-              </Col>}
-          </Measure>
+          <Col
+            className="targetBox"
+            lg={{ size: 6 }}
+            xl={{ size: 4, offset: 1 }}
+          >
+            <Measure
+              bounds
+              onResize={contentRect => {
+                this.setState({ dimensions: contentRect.bounds });
+              }}
+            >
+              {({ measureRef }) => (
+                <div ref={measureRef} style={{ height: "100%" }}>
+                  {this.state.dimensions && (
+                    <div>
+                      {this.props.targets.map(target => {
+                        return (
+                          <img
+                            alt="target"
+                            key={target.id}
+                            draggable="false"
+                            role="presentation"
+                            src={require("./crosstarget.svg")}
+                            style={{
+                              position: "absolute",
+                              left: `${target.position.x * 90}%`,
+                              top: `${target.position.y * 90}%`
+                            }}
+                          />
+                        );
+                      })}
+                      <Draggable
+                        bounds=".targetBox"
+                        defaultPosition={{
+                          x: this.state.dimensions.width / 2,
+                          y: this.state.dimensions.height / 2
+                        }}
+                        onDrag={(event, obj) => {
+                          const { width, height } = this.state.dimensions;
+                          const { x, y } = obj;
+                          let selectedTarget = null;
+                          this.props.targets.forEach(target => {
+                            const { x: objX, y: objY } = target.position;
+                            if (
+                              Math.round((objX - x / width * 1.11111) * 100) ===
+                                0 &&
+                              Math.round(
+                                (objY - y / height * 1.11111) * 100
+                              ) === 0
+                            ) {
+                              // The crosshair is on top of a target
+                              selectedTarget = target;
+                            }
+                          });
+                          this.setState({
+                            selectedTarget
+                          });
+                        }}
+                      >
+                        <img
+                          alt="crosshairs"
+                          draggable="false"
+                          role="presentation"
+                          src={require("./crosshairs.svg")}
+                        />
+                      </Draggable>
+                    </div>
+                  )}
+                </div>
+              )}
+            </Measure>
+          </Col>
           <Col
             onMouseMove={this.powerUp.bind(this)}
             className="chargeBox"

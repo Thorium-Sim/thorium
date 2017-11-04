@@ -51,11 +51,11 @@ const Assets = ({ selectedSimulator: sim }) => {
     <Container className="assets">
       <p>Assets</p>
       <Row style={{ overflowY: "scroll", height: "80vh" }}>
-        {assetList.map(a =>
+        {assetList.map(a => (
           <Asset key={a.fullPath} asset={a.fullPath} simulatorId={sim.id}>
             {({ src }) => <WrappedAssetDropdown src={src} sim={sim} {...a} />}
           </Asset>
-        )}
+        ))}
       </Row>
     </Container>
   );
@@ -98,17 +98,19 @@ class AssetDropzone extends Component {
     const { name, fullPath, src } = this.props;
     return (
       <Col sm={4}>
-        <h3>
-          {name}
-        </h3>
-        <h4>
-          {fullPath}
-        </h4>
+        <h3>{name}</h3>
+        <h4>{fullPath}</h4>
         <input type="file" onChange={this.onDrop} />
         <div>
-          {src
-            ? <img style={{ width: "100%", maxHeight: "100%" }} src={src} />
-            : <p>Drop your file, or click to select files to upload.</p>}
+          {src ? (
+            <img
+              alt="Asset"
+              style={{ width: "100%", maxHeight: "100%" }}
+              src={src}
+            />
+          ) : (
+            <p>Drop your file, or click to select files to upload.</p>
+          )}
         </div>
       </Col>
     );

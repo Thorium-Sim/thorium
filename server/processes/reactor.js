@@ -1,4 +1,4 @@
-import App from "../../app";
+import App from "../app";
 
 const updateReactor = () => {
   //Loop through all of the simulators to isolate the systems

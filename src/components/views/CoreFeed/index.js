@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Cores } from "../";
 import { Button } from "reactstrap";
-import "./style.scss";
+import "./style.css";
 
 const COREFEED_SUB = gql`
   subscription CoreFeedUpdate($simulatorId: ID) {
@@ -27,11 +27,14 @@ class CoreFeed extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            coreFeed: subscriptionData.data.coreFeedUpdate
+            coreFeed: subscriptionData.coreFeedUpdate
           });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.internalSub && this.internalSub();
   }
   ignoreCoreFeed = id => {
     const mutation = gql`
@@ -51,25 +54,27 @@ class CoreFeed extends Component {
     return (
       <div className="coreFeed-core">
         <p>Core Feed</p>
-        {coreFeed.length
-          ? coreFeed.map(c => {
-              const CoreComponent = Cores[c.component];
-              return (
-                <div key={c.id} className="core-feed-component">
-                  {c.component.replace("Core", "")}
-                  <CoreComponent {...this.props} />
-                  <Button
-                    color="info"
-                    block
-                    size="sm"
-                    onClick={() => this.ignoreCoreFeed(c.id)}
-                  >
-                    Ignore
-                  </Button>
-                </div>
-              );
-            })
-          : <p>No feed items...</p>}
+        {coreFeed.length ? (
+          coreFeed.map(c => {
+            const CoreComponent = Cores[c.component];
+            return (
+              <div key={c.id} className="core-feed-component">
+                {c.component.replace("Core", "")}
+                <CoreComponent {...this.props} />
+                <Button
+                  color="info"
+                  block
+                  size="sm"
+                  onClick={() => this.ignoreCoreFeed(c.id)}
+                >
+                  Ignore
+                </Button>
+              </div>
+            );
+          })
+        ) : (
+          <p>No feed items...</p>
+        )}
       </div>
     );
   }

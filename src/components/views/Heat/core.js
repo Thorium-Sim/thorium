@@ -24,11 +24,14 @@ class HeatCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            systems: subscriptionData.data.systemsUpdate
+            systems: subscriptionData.systemsUpdate
           });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
   }
   updateHeat = (id, heat) => {
     const mutation = gql`
@@ -58,11 +61,9 @@ class HeatCore extends Component {
             </tr>
           </thead>
           <tbody>
-            {systems.map(s =>
+            {systems.map(s => (
               <tr key={s.id}>
-                <td>
-                  {s.name}
-                </td>
+                <td>{s.name}</td>
                 <td>
                   <InputField
                     prompt={`What do you want to change the heat of ${s.name} to?`}
@@ -72,7 +73,7 @@ class HeatCore extends Component {
                   </InputField>
                 </td>
               </tr>
-            )}
+            ))}
           </tbody>
         </table>
       </div>

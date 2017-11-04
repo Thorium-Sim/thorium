@@ -4,8 +4,8 @@ import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 
 const TRANSPORTER_SUB = gql`
-  subscription TransportersSub {
-    transporterUpdate {
+  subscription TransportersSub($simulatorId: ID) {
+    transporterUpdate(simulatorId: $simulatorId) {
       id
       type
       state
@@ -36,10 +36,11 @@ class TransporterCore extends Component {
     if (!this.transporterSubscription && !nextProps.data.loading) {
       this.transporterSubscription = nextProps.data.subscribeToMore({
         document: TRANSPORTER_SUB,
+        variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           const transporters = previousResult.transporters.map(transporter => {
-            if (transporter.id === subscriptionData.data.transporterUpdate.id) {
-              transporter = subscriptionData.data.transporterUpdate;
+            if (transporter.id === subscriptionData.transporterUpdate.id) {
+              transporter = subscriptionData.transporterUpdate;
             }
             return transporter;
           });
@@ -60,6 +61,9 @@ class TransporterCore extends Component {
       }
     }
   }
+  componentWillUnmount() {
+    this.transporterSubscription && this.transporterSubscription();
+  }
   targets(transporter, result) {
     this.props.client.mutate({
       mutation: gql`
@@ -79,35 +83,31 @@ class TransporterCore extends Component {
       : this.props.data.transporters[0];
     return (
       <div>
-        {this.props.data.loading
-          ? <span>Loading...</span>
-          : this.props.data.transporters.length > 0
-            ? <div>
-                <OutputField
-                  alert={
-                    transporter.state === "Scanning" || this.state.transported
-                  }
-                >
-                  {this.state.transported
-                    ? "Transported"
-                    : `${transporter.state} ${transporter.state === "Charging"
-                        ? `- ${Math.round(transporter.charge * 100)}%`
-                        : ""} `}
-                </OutputField>
-                <OutputField>
-                  {transporter.requestedTarget}
-                </OutputField>
-                <OutputField>
-                  {transporter.destination}
-                </OutputField>
-                <InputField
-                  prompt="How many transporter targets?"
-                  onClick={this.targets.bind(this, transporter)}
-                >
-                  {transporter.targets.length}
-                </InputField>
-              </div>
-            : "No transporters"}
+        {this.props.data.loading ? (
+          <span>Loading...</span>
+        ) : this.props.data.transporters.length > 0 ? (
+          <div>
+            <OutputField
+              alert={transporter.state === "Scanning" || this.state.transported}
+            >
+              {this.state.transported
+                ? "Transported"
+                : `${transporter.state} ${transporter.state === "Charging"
+                    ? `- ${Math.round(transporter.charge * 100)}%`
+                    : ""} `}
+            </OutputField>
+            <OutputField>{transporter.requestedTarget}</OutputField>
+            <OutputField>{transporter.destination}</OutputField>
+            <InputField
+              prompt="How many transporter targets?"
+              onClick={this.targets.bind(this, transporter)}
+            >
+              {transporter.targets.length}
+            </InputField>
+          </div>
+        ) : (
+          "No transporters"
+        )}
       </div>
     );
   }

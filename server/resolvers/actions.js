@@ -1,6 +1,6 @@
-import App from "../../app";
+import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
-
+import { withFilter } from "graphql-subscriptions";
 export const ActionsQueries = {
   actions() {
     // Return nothing, because we don't care about the query
@@ -45,31 +45,35 @@ export const ActionsMutations = {
           );
         break;
       default:
-        pubsub.publish("actionsUpdate", args, context);
+        pubsub.publish("actionsUpdate", args);
         break;
     }
   }
 };
 
 export const ActionsSubscriptions = {
-  actionsUpdate(
-    {
-      action,
-      simulatorId: toSimulator,
-      stationId: toStation,
-      clientId: toClient,
-      duration
+  actionsUpdate: {
+    resolve(rootQuery, { simulatorId, stationId, clientId }) {
+      const {
+        action,
+        simulatorId: toSimulator,
+        stationId: toStation,
+        clientId: toClient,
+        duration
+      } = rootQuery;
+      if (simulatorId !== toSimulator) return false;
+      if (
+        toStation === "all" ||
+        toClient === "all" ||
+        (toStation === stationId && toStation && stationId) ||
+        (toClient === clientId && toClient && clientId)
+      ) {
+        return { action, duration };
+      }
     },
-    { simulatorId, stationId, clientId }
-  ) {
-    if (simulatorId !== toSimulator) return;
-    if (
-      toStation === "all" ||
-      toClient === "all" ||
-      (toStation === stationId && toStation && stationId) ||
-      (toClient === clientId && toClient && clientId)
-    ) {
-      return { action, duration };
-    }
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("actionsUpdate"),
+      rootValue => !!rootValue
+    )
   }
 };

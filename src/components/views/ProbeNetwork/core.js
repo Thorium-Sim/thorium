@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
-import gql from 'graphql-tag';
-import { Container, Row, Col, Button } from 'reactstrap';
-import { graphql, withApollo } from 'react-apollo';
-import Immutable from 'immutable';
-import './style.scss';
+import React, { Component } from "react";
+import gql from "graphql-tag";
+import { Container, Row, Col, Button } from "reactstrap";
+import { graphql, withApollo } from "react-apollo";
+import "./style.css";
 
 const PROBES_SUB = gql`
   subscription ProbesSub($simulatorId: ID!) {
@@ -29,37 +28,43 @@ class ProbeNetworkCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ probes: subscriptionData.data.probesUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            probes: subscriptionData.probesUpdate
+          });
         }
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   destroyProbe = probe => {
-    if (confirm(`Are you sure you want to destroy this probe: ${probe}`)) {
+    if (
+      window.confirm(`Are you sure you want to destroy this probe: ${probe}`)
+    ) {
       const mutation = gql`
         mutation DestroyProbe($id: ID!, $probeId: ID!) {
           destroyProbe(id: $id, probeId: $probeId)
         }
       `;
-      if (probe === 'all') {
-        Array(8).fill(1).forEach((_, probeNum) => {
-          const probeObj = this.props.data.probes[0].probes.find(
-            p => p.name === (probeNum + 1).toString()
-          );
-          if (probeObj) {
-            const variables = {
-              id: this.props.data.probes[0].id,
-              probeId: probeObj.id
-            };
-            this.props.client.mutate({
-              mutation,
-              variables
-            });
-          }
-        });
+      if (probe === "all") {
+        Array(8)
+          .fill(1)
+          .forEach((_, probeNum) => {
+            const probeObj = this.props.data.probes[0].probes.find(
+              p => p.name === (probeNum + 1).toString()
+            );
+            if (probeObj) {
+              const variables = {
+                id: this.props.data.probes[0].id,
+                probeId: probeObj.id
+              };
+              this.props.client.mutate({
+                mutation,
+                variables
+              });
+            }
+          });
       } else {
         const probeObj = this.props.data.probes[0].probes.find(
           p => p.name === probe.toString()
@@ -88,7 +93,8 @@ class ProbeNetworkCore extends Component {
           <Col sm={{ size: 2, offset: 5 }}>
             <p
               onClick={() => this.destroyProbe(1)}
-              className={network[1] ? 'on' : ''}>
+              className={network[1] ? "on" : ""}
+            >
               1
             </p>
           </Col>
@@ -97,14 +103,16 @@ class ProbeNetworkCore extends Component {
           <Col sm={{ size: 2, offset: 2 }}>
             <p
               onClick={() => this.destroyProbe(8)}
-              className={network[8] ? 'on' : ''}>
+              className={network[8] ? "on" : ""}
+            >
               8
             </p>
           </Col>
           <Col sm={{ size: 2, offset: 4 }}>
             <p
               onClick={() => this.destroyProbe(2)}
-              className={network[2] ? 'on' : ''}>
+              className={network[2] ? "on" : ""}
+            >
               2
             </p>
           </Col>
@@ -113,7 +121,8 @@ class ProbeNetworkCore extends Component {
           <Col sm={2}>
             <p
               onClick={() => this.destroyProbe(7)}
-              className={network[7] ? 'on' : ''}>
+              className={network[7] ? "on" : ""}
+            >
               7
             </p>
           </Col>
@@ -122,14 +131,16 @@ class ProbeNetworkCore extends Component {
               block
               color="danger"
               size="sm"
-              onClick={() => this.destroyProbe('all')}>
+              onClick={() => this.destroyProbe("all")}
+            >
               Destroy
             </Button>
           </Col>
           <Col sm={{ size: 2, offset: 1 }}>
             <p
               onClick={() => this.destroyProbe(3)}
-              className={network[3] ? 'on' : ''}>
+              className={network[3] ? "on" : ""}
+            >
               3
             </p>
           </Col>
@@ -138,14 +149,16 @@ class ProbeNetworkCore extends Component {
           <Col sm={{ size: 2, offset: 2 }}>
             <p
               onClick={() => this.destroyProbe(6)}
-              className={network[6] ? 'on' : ''}>
+              className={network[6] ? "on" : ""}
+            >
               6
             </p>
           </Col>
           <Col sm={{ size: 2, offset: 4 }}>
             <p
               onClick={() => this.destroyProbe(4)}
-              className={network[4] ? 'on' : ''}>
+              className={network[4] ? "on" : ""}
+            >
               4
             </p>
           </Col>
@@ -154,7 +167,8 @@ class ProbeNetworkCore extends Component {
           <Col sm={{ size: 2, offset: 5 }}>
             <p
               onClick={() => this.destroyProbe(5)}
-              className={network[5] ? 'on' : ''}>
+              className={network[5] ? "on" : ""}
+            >
               5
             </p>
           </Col>

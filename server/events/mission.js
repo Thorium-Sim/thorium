@@ -1,4 +1,4 @@
-import App from "../../app.js";
+import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
 
@@ -15,6 +15,13 @@ App.on("removeMission", ({ missionId }) => {
 App.on("editMission", ({ missionId, name, description, simulators }) => {
   const mission = App.missions.find(m => m.id === missionId);
   mission.update({ name, description, simulators });
+  pubsub.publish("missionsUpdate", App.missions);
+});
+App.on("importMission", ({ jsonString }) => {
+  const json = JSON.parse(jsonString);
+  delete json.id;
+  const mission = new Classes.Mission(json);
+  App.missions.push(mission);
   pubsub.publish("missionsUpdate", App.missions);
 });
 App.on("addSimulatorToMission", ({ missionId, simulatorName }) => {

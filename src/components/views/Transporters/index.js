@@ -7,11 +7,11 @@ import Scan from "./transporterScan";
 import DamageOverlay from "../helpers/DamageOverlay";
 //import Tour from "reactour";
 
-import "./style.scss";
+import "./style.css";
 
 const TRANSPORTER_SUB = gql`
-  subscription TransportersSub {
-    transporterUpdate {
+  subscription TransportersSub($simulatorId: ID) {
+    transporterUpdate(simulatorId: $simulatorId) {
       id
       type
       state
@@ -95,18 +95,16 @@ class Transporters extends Component {
     if (!this.transporterSubscription && !nextProps.data.loading) {
       this.transporterSubscription = nextProps.data.subscribeToMore({
         document: TRANSPORTER_SUB,
+        variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          previousResult.transporters = previousResult.transporters.map(
-            transporter => {
-              if (
-                transporter.id === subscriptionData.data.transporterUpdate.id
-              ) {
-                transporter = subscriptionData.data.transporterUpdate;
+          return Object.assign({}, previousResult, {
+            transporters: previousResult.transporters.map(transporter => {
+              if (transporter.id === subscriptionData.transporterUpdate.id) {
+                return subscriptionData.transporterUpdate;
               }
               return transporter;
-            }
-          );
-          return previousResult;
+            })
+          });
         }
       });
     }
@@ -205,6 +203,9 @@ class Transporters extends Component {
       }
     });
   }
+  componentWillUnmount() {
+    this.transporterSubscription && this.transporterSubscription();
+  }
   render() {
     // Assume that there is only one transporter
     if (this.props.data.loading) return null;
@@ -212,24 +213,27 @@ class Transporters extends Component {
     return (
       <div className="transporter-control">
         <DamageOverlay system={transporter} message="Transporters Offline" />
-        {transporter.state === "Inactive" &&
+        {transporter.state === "Inactive" && (
           <TargetSelect
             beginScan={this.beginScan.bind(this, transporter)}
             updateTarget={this.updateTarget.bind(this, transporter)}
             updateDestination={this.updateDestination.bind(this, transporter)}
             target={transporter.requestedTarget}
             destination={transporter.destination}
-          />}
-        {transporter.state === "Scanning" &&
-          <Scanning cancelScan={this.cancelScan.bind(this, transporter)} />}
+          />
+        )}
+        {transporter.state === "Scanning" && (
+          <Scanning cancelScan={this.cancelScan.bind(this, transporter)} />
+        )}
         {(transporter.state === "Targeting" ||
-          transporter.state === "Charging") &&
+          transporter.state === "Charging") && (
           <Target
             completeTransport={this.completeTransport.bind(this, transporter)}
             cancelTransport={this.cancelTransport.bind(this, transporter)}
             setCharge={this.setCharge.bind(this, transporter)}
             targets={transporter.targets}
-          />}
+          />
+        )}
         {/*<Tour
           steps={trainingSteps}
           isOpen={this.props.clientObj.training}

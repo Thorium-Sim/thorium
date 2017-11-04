@@ -3,10 +3,9 @@ import { Container, Row, Col, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Clamps, Ramps, Doors } from "./graphics";
-import Immutable from "immutable";
 import Tour from "reactour";
 
-import "./style.scss";
+import "./style.css";
 
 const DOCKING_SUB = gql`
   subscription SimulatorSub($simulatorId: ID) {
@@ -43,13 +42,15 @@ class Docking extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ simulators: subscriptionData.data.simulatorsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            simulators: subscriptionData.simulatorsUpdate
+          });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
   }
   undisable() {
     this.setState({

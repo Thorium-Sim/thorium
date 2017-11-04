@@ -1,4 +1,6 @@
-import App from "../../app.js";
+import App from "../app.js";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const EngineQueries = {
   engines(root, { simulatorId }) {
@@ -27,13 +29,27 @@ export const EngineMutations = {
 };
 
 export const EngineSubscriptions = {
-  speedChange(rootValue) {
-    return rootValue;
+  speedChange: {
+    resolve(rootValue, { simulatorId }) {
+      if (simulatorId)
+        return rootValue.simulatorId === simulatorId && rootValue;
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("speedChange"),
+      rootValue => !!rootValue
+    )
   },
-  heatChange(rootValue, { simulatorId }) {
-    if (simulatorId) {
-      return rootValue.filter(s => s.simulatorId === simulatorId);
-    }
-    return rootValue;
+  heatChange: {
+    resolve(rootValue, { simulatorId }) {
+      if (simulatorId) {
+        return rootValue.simulatorId === simulatorId && rootValue;
+      }
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("heatChange"),
+      rootValue => !!rootValue
+    )
   }
 };

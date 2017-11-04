@@ -3,14 +3,24 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col } from "reactstrap";
 import { InputField, OutputField } from "../../generic/core";
-import Immutable from "immutable";
+
 import FontAwesome from "react-fontawesome";
 
 const ROTATION_CHANGE_SUB = gql`
   subscription RotationChanged($simulatorId: ID) {
     rotationChange(simulatorId: $simulatorId) {
       id
+      direction {
+        x
+        y
+        z
+      }
       rotation {
+        yaw
+        pitch
+        roll
+      }
+      rotationDelta {
         yaw
         pitch
         roll
@@ -21,10 +31,13 @@ const ROTATION_CHANGE_SUB = gql`
         roll
       }
       manualThrusters
-      direction {
-        x
-        y
-        z
+      damage {
+        damaged
+        report
+      }
+      power {
+        power
+        powerLevels
       }
     }
   }
@@ -38,25 +51,15 @@ class ThrusterCore extends Component {
         document: ROTATION_CHANGE_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const thrusters = Immutable.List(previousResult.thrusters);
-          const thrusterIndex = previousResult.thrusters.findIndex(
-            t => t.id === subscriptionData.data.rotationChange.id
-          );
-          const thruster = Immutable.Map(
-            previousResult.thrusters[thrusterIndex]
-          )
-            .set("rotation", subscriptionData.data.rotationChange.rotation)
-            .set(
-              "rotationRequired",
-              subscriptionData.data.rotationChange.rotationRequired
-            )
-            .set("direction", subscriptionData.data.rotationChange.direction);
-          return {
-            thrusters: thrusters.set(thrusterIndex, thruster).toJS()
-          };
+          return Object.assign({}, previousResult, {
+            thrusters: [subscriptionData.rotationChange]
+          });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.rotationSubscription && this.rotationSubscription();
   }
   toggleManualThrusters = () => {};
   setRequiredRotation = (which, value) => {
@@ -96,19 +99,13 @@ class ThrusterCore extends Component {
           <Col sm={4}>Pitch</Col>
           <Col sm={4}>Roll</Col>
           <Col sm={4}>
-            <OutputField>
-              {Math.round(thrusters.rotation.yaw)}
-            </OutputField>
+            <OutputField>{Math.round(thrusters.rotation.yaw)}</OutputField>
           </Col>
           <Col sm={4}>
-            <OutputField>
-              {Math.round(thrusters.rotation.pitch)}
-            </OutputField>
+            <OutputField>{Math.round(thrusters.rotation.pitch)}</OutputField>
           </Col>
           <Col sm={4}>
-            <OutputField>
-              {Math.round(thrusters.rotation.roll)}
-            </OutputField>
+            <OutputField>{Math.round(thrusters.rotation.roll)}</OutputField>
           </Col>
           <Col sm={4}>
             <InputField

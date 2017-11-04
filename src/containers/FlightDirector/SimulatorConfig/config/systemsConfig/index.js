@@ -1,6 +1,7 @@
-export Engine from './Engine';
-export Generic from './Generic';
-export Phasers from './Phasers';
-export Reactor from './Reactor';
-export Shield from './Shield';
-export ShortRangeComm from './ShortRangeComm';
+export { default as Engine } from "./Engine";
+export { default as Generic } from "./Generic";
+export { default as Phasers } from "./Phasers";
+export { default as Reactor } from "./Reactor";
+export { default as Shield } from "./Shield";
+export { default as ShortRangeComm } from "./ShortRangeComm";
+export { default as Torpedo } from "./Torpedo";

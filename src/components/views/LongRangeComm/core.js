@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col } from "reactstrap";
-import Immutable from "immutable";
 import gql from "graphql-tag";
-import "./style.scss";
+import "./style.css";
 
 const MESSAGES_SUB = gql`
   subscription LRDecoding($simulatorId: ID) {
@@ -39,16 +38,16 @@ class LRCommCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({
-              longRangeCommunications:
-                subscriptionData.data.longRangeCommunicationsUpdate
-            })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            longRangeCommunications:
+              subscriptionData.longRangeCommunicationsUpdate
+          });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.decodeSubscription && this.decodeSubscription();
   }
   render() {
     if (this.props.data.loading) return null;
@@ -60,40 +59,43 @@ class LRCommCore extends Component {
     }
     return (
       <div className="comm-core">
-        {this.props.data.longRangeCommunications.length > 0
-          ? <Container style={{ height: "calc(100% - 16px)" }}>
-              <Row
-                className="comm-messages"
-                style={{ height: "100%", minHeight: "30vh" }}
-              >
-                <Col sm={3}>
-                  <ul>
-                    {this.props.data.longRangeCommunications[0].messages.map(
-                      m =>
-                        <li
-                          key={m.id}
-                          className={`${this.state.selectedMessage === m.id
-                            ? "active"
-                            : ""} ${m.sent === true
-                            ? "text-success"
-                            : ""} ${m.deleted === true ? "text-danger" : ""}`}
-                          onClick={() =>
-                            this.setState({ selectedMessage: m.id })}
-                        >
-                          {m.datestamp} - {m.sender}
-                        </li>
-                    )}
-                  </ul>
-                </Col>
-                <Col sm={9}>
-                  {selectedMessage &&
-                    <pre>{`${selectedMessage.datestamp}
+        {this.props.data.longRangeCommunications.length > 0 ? (
+          <Container style={{ height: "calc(100% - 16px)" }}>
+            <Row
+              className="comm-messages"
+              style={{ height: "100%", minHeight: "30vh" }}
+            >
+              <Col sm={3}>
+                <ul>
+                  {this.props.data.longRangeCommunications[0].messages.map(
+                    m => (
+                      <li
+                        key={m.id}
+                        className={`${this.state.selectedMessage === m.id
+                          ? "active"
+                          : ""} ${m.sent === true
+                          ? "text-success"
+                          : ""} ${m.deleted === true ? "text-danger" : ""}`}
+                        onClick={() => this.setState({ selectedMessage: m.id })}
+                      >
+                        {m.datestamp} - {m.sender}
+                      </li>
+                    )
+                  )}
+                </ul>
+              </Col>
+              <Col sm={9}>
+                {selectedMessage && (
+                  <pre>{`${selectedMessage.datestamp}
 From: ${selectedMessage.sender}
-${selectedMessage.message}`}</pre>}
-                </Col>
-              </Row>
-            </Container>
-          : "No Long Range Comm"}
+${selectedMessage.message}`}</pre>
+                )}
+              </Col>
+            </Row>
+          </Container>
+        ) : (
+          "No Long Range Comm"
+        )}
       </div>
     );
   }

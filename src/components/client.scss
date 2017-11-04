@@ -8,8 +8,10 @@
 		padding: 50px; 
 		text-align: center;
 		.scroll {
-			height: calc(100% - 183px);
+			height: calc(100% - 303px);
 			overflow: hidden;
+			padding-top: 50%;
+			padding-bottom: 100%;
 			.creditSection {
 				margin-top: 40px;
 			}
