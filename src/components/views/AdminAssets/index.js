@@ -88,14 +88,20 @@ class AdminAssetsView extends Component {
     this.props.addAssetContainer(obj);
   }
   _createObject(e) {
-    const obj = {
-      files: e.target.files,
-      simulatorId: this.refs.simulatorSelect.value || "default",
-      containerId: this.state.currentContainer.id
-    };
-    this.props.uploadAsset(obj).catch(error => {
-      console.error("error", error.message);
-    });
+    // Manually upload the file
+    const data = new FormData();
+    data.append("simulatorId", this.refs.simulatorSelect.value || "default");
+    data.append("containerId", this.state.currentContainer.id);
+    Array.from(e.target.files).forEach((f, index) =>
+      data.append(`files[${index}]`, f)
+    );
+    fetch(
+      `${window.location.protocol}//${window.location.hostname}:3001/upload`,
+      {
+        method: "POST",
+        body: data
+      }
+    );
   }
   _deleteFolder(directory) {
     //First delete all of the objects attached to containers attached to this folder
@@ -127,15 +133,19 @@ class AdminAssetsView extends Component {
     this.props.removeAssetObject({ id: object.id });
   }
   _massUpload = e => {
-    let files = e.target.files;
-    const obj = {
-      files,
-      simulatorId: "default",
-      folderPath: this.state.currentDirectory
-    };
-    this.props.uploadAsset(obj).catch(error => {
-      console.error("error", error.message);
-    });
+    const data = new FormData();
+    data.append("simulatorId", "default");
+    data.append("folderPath", this.state.currentDirectory);
+    Array.from(e.target.files).forEach((f, index) =>
+      data.append(`files[${index}]`, f)
+    );
+    fetch(
+      `${window.location.protocol}//${window.location.hostname}:3001/upload`,
+      {
+        method: "POST",
+        body: data
+      }
+    );
   };
   openModal(object) {
     this.setState({
@@ -246,30 +256,35 @@ class AdminAssetsView extends Component {
                       </li>
                     );
                   })}
-                {this.props.data.assetFolders
-                  .find(
-                    folder => folder.fullPath === this.state.currentDirectory
-                  )
-                  .containers.map(container => {
-                    return (
-                      <li key={container.id}>
-                        <FontAwesome name="file" />
-                        <button
-                          onClick={this._setContainer.bind(this, container)}
-                          className="containerLink btn btn-link"
-                        >
-                          <span className="glyphicon-class">
-                            {container.name}
-                          </span>
-                        </button>
-                        <FontAwesome
-                          name="ban"
-                          className="text-danger"
-                          onClick={this._deleteContainer.bind(this, container)}
-                        />
-                      </li>
-                    );
-                  })}
+                {this.props.data.assetFolders &&
+                  this.props.data.assetFolders.length &&
+                  this.props.data.assetFolders
+                    .find(
+                      folder => folder.fullPath === this.state.currentDirectory
+                    )
+                    .containers.map(container => {
+                      return (
+                        <li key={container.id}>
+                          <FontAwesome name="file" />
+                          <button
+                            onClick={this._setContainer.bind(this, container)}
+                            className="containerLink btn btn-link"
+                          >
+                            <span className="glyphicon-class">
+                              {container.name}
+                            </span>
+                          </button>
+                          <FontAwesome
+                            name="ban"
+                            className="text-danger"
+                            onClick={this._deleteContainer.bind(
+                              this,
+                              container
+                            )}
+                          />
+                        </li>
+                      );
+                    })}
               </ul>
             </Card>
           </Col>
@@ -403,22 +418,6 @@ const REMOVE_ASSET_CONTAINER = gql`
   }
 `;
 
-const UPLOAD_ASSET = gql`
-  mutation UploadAsset(
-    $files: [UploadedFile!]!
-    $simulatorId: ID
-    $containerId: ID
-    $folderPath: String
-  ) {
-    uploadAsset(
-      files: $files
-      simulatorId: $simulatorId
-      containerId: $containerId
-      folderPath: $folderPath
-    )
-  }
-`;
-
 const REMOVE_ASSET_OBJECT = gql`
   mutation RemoveAssetObject($id: ID!) {
     removeAssetObject(id: $id)
@@ -459,15 +458,6 @@ export default compose(
     props: ({ removeAssetContainer }) => ({
       removeAssetContainer: props =>
         removeAssetContainer({
-          variables: Object.assign(props)
-        })
-    })
-  }),
-  graphql(UPLOAD_ASSET, {
-    name: "uploadAsset",
-    props: ({ uploadAsset }) => ({
-      uploadAsset: props =>
-        uploadAsset({
           variables: Object.assign(props)
         })
     })

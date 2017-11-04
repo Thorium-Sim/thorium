@@ -5,7 +5,7 @@ import { Asset } from "../../helpers/assets.js";
 
 function copyToChannel(destination, source, channelNumber) {
   var nowBuffering = destination.getChannelData(channelNumber);
-  for (var i = 0; i < source.length; i++) {
+  for (let i = 0; i < source.length; i++) {
     nowBuffering[i] = source[i];
   }
   return destination;
@@ -143,35 +143,37 @@ class Sound extends Component {
     const channel = opts.channel || [0, 1];
     const asset = opts.url;
     if (!asset) return;
-    fetch(asset).then(res => res.arrayBuffer()).then(arrayBuffer => {
-      opts._id = opts._id || uuid.v4();
+    fetch(asset)
+      .then(res => res.arrayBuffer())
+      .then(arrayBuffer => {
+        opts._id = opts._id || uuid.v4();
 
-      this.audioContext.destination.channelCount = this.audioContext.destination.maxChannelCount;
+        this.audioContext.destination.channelCount = this.audioContext.destination.maxChannelCount;
 
-      this.sound.source = this.audioContext.createBufferSource();
-      this.sound.volume = this.audioContext.createGain();
-      this.sound.volume.gain.value = volume;
+        this.sound.source = this.audioContext.createBufferSource();
+        this.sound.volume = this.audioContext.createGain();
+        this.sound.volume.gain.value = volume;
 
-      // Connect the sound source to the volume control.
-      this.sound.source.connect(this.sound.volume);
-      // Create a buffer from the response ArrayBuffer.
-      this.audioContext.decodeAudioData(
-        arrayBuffer,
-        buffer => {
-          //Create a new buffer and set it to the specified channel.
-          this.sound = this.audioContext.createBufferSource();
-          this.sound.buffer = downMixBuffer(buffer, channel);
-          this.sound.loop = opts.looping || false;
-          this.sound.playbackRate.value = playbackRate;
-          this.sound.onended = function() {};
-          this.sound.connect(this.audioContext.destination);
-          if (opts.playStatus === "PLAYING") this.sound.play();
-        },
-        function onFailure() {
-          console.error("Decoding the audio buffer failed");
-        }
-      );
-    });
+        // Connect the sound source to the volume control.
+        this.sound.source.connect(this.sound.volume);
+        // Create a buffer from the response ArrayBuffer.
+        this.audioContext.decodeAudioData(
+          arrayBuffer,
+          buffer => {
+            //Create a new buffer and set it to the specified channel.
+            this.sound = this.audioContext.createBufferSource();
+            this.sound.buffer = downMixBuffer(buffer, channel);
+            this.sound.loop = opts.looping || false;
+            this.sound.playbackRate.value = playbackRate;
+            this.sound.onended = function() {};
+            this.sound.connect(this.audioContext.destination);
+            if (opts.playStatus === "PLAYING") this.sound.play();
+          },
+          function onFailure() {
+            console.error("Decoding the audio buffer failed");
+          }
+        );
+      });
   }
 
   removeSound() {
@@ -186,7 +188,8 @@ class Sound extends Component {
   }
 }
 
-export default props =>
+export default props => (
   <Asset asset={props.asset}>
     {({ src }) => <Sound {...props} url={src} />}
-  </Asset>;
+  </Asset>
+);

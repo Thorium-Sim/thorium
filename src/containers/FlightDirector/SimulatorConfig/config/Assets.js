@@ -66,33 +66,21 @@ export default Assets;
 class AssetDropzone extends Component {
   state = {};
   onDrop = evt => {
-    const { folderPath, name, sim, client } = this.props;
-
-    const mutation = gql`
-      mutation UploadAsset(
-        $files: [UploadedFile!]!
-        $folderPath: String
-        $simulatorId: ID
-        $containerName: String
-      ) {
-        uploadAsset(
-          files: $files
-          folderPath: $folderPath
-          simulatorId: $simulatorId
-          containerName: $containerName
-        )
+    const { folderPath, name, sim } = this.props;
+    const data = new FormData();
+    data.append("simulatorId", sim.id);
+    data.append("containerName", name);
+    data.append("folderPath", folderPath);
+    Array.from(evt.target.files).forEach((f, index) =>
+      data.append(`files[${index}]`, f)
+    );
+    fetch(
+      `${window.location.protocol}//${window.location.hostname}:3001/upload`,
+      {
+        method: "POST",
+        body: data
       }
-    `;
-    const variables = {
-      files: evt.target.files,
-      folderPath,
-      containerName: name,
-      simulatorId: sim.id
-    };
-    client.mutate({
-      mutation,
-      variables
-    });
+    );
   };
   render() {
     const { name, fullPath, src } = this.props;

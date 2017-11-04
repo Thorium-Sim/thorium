@@ -1,6 +1,7 @@
 import "./helpers/init";
 //Run init before anything else. Make sure all our files are in place before they are needed by other things
 import express from "express";
+import path from "path";
 import { createServer } from "http";
 import bodyParser from "body-parser";
 import { graphqlExpress, graphiqlExpress } from "graphql-server-express";
@@ -15,7 +16,7 @@ import vanity from "./helpers/vanity";
 import "./helpers/broadcast";
 import ipaddress from "./helpers/ipaddress";
 import "./helpers/client-server.js";
-
+import { uploadAsset } from "./resolvers/assets";
 import "./events";
 import "./processes";
 
@@ -54,11 +55,15 @@ graphQLServer.use("/schema", (req, res) => {
 
 graphQLServer.use(
   "/graphql",
-  upload.array("files"),
   graphqlExpressUpload({ endpointURL: "/graphql" }),
   bodyParser.json({ limit: "4mb" }),
   graphqlExpress(GraphQLOptions)
 );
+
+graphQLServer.post("/upload", upload.any(), async (req, res) => {
+  uploadAsset({}, Object.assign({}, req.body, { files: req.files }), {});
+  res.end(JSON.stringify("success!"));
+});
 
 graphQLServer.use("/graphiql", graphiqlExpress(options));
 vanity();
