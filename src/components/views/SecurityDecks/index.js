@@ -29,7 +29,7 @@ const DECK_SUB = gql`
   }
 `;
 
-class SecurityTeams extends Component {
+class SecurityDecks extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -128,24 +128,25 @@ class SecurityTeams extends Component {
         <Col sm={3}>
           <h4>Decks</h4>
           <ListGroup>
-            {decks
-              .concat()
-              .sort((a, b) => {
-                if (a.number < b.number) return -1;
-                if (b.number < a.number) return 1;
-                return 0;
-              })
-              .map(d => (
-                <ListGroupItem
-                  key={d.id}
-                  onClick={this._selectDeck.bind(this, d.id)}
-                  className={`${this.state.selectedDeck === d.id
-                    ? "selected"
-                    : ""}`}
-                >
-                  Deck {d.number}
-                </ListGroupItem>
-              ))}
+            {decks &&
+              decks
+                .concat()
+                .sort((a, b) => {
+                  if (a.number < b.number) return -1;
+                  if (b.number < a.number) return 1;
+                  return 0;
+                })
+                .map(d => (
+                  <ListGroupItem
+                    key={d.id}
+                    onClick={this._selectDeck.bind(this, d.id)}
+                    className={`${this.state.selectedDeck === d.id
+                      ? "selected"
+                      : ""}`}
+                  >
+                    Deck {d.number}
+                  </ListGroupItem>
+                ))}
           </ListGroup>
         </Col>
         <Col sm={{ size: 6, offset: 1 }}>
@@ -230,4 +231,4 @@ const DECK_QUERY = gql`
 
 export default graphql(DECK_QUERY, {
   options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })
-})(withApollo(SecurityTeams));
+})(withApollo(SecurityDecks));

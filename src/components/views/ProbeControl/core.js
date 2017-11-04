@@ -52,6 +52,33 @@ class ProbeControl extends Component {
   componentWillUnmount() {
     this.subscription && this.subscription();
   }
+  destroyProbe = () => {
+    const probes = this.props.data.probes[0];
+    const { selectedProbe } = this.state;
+    const probeObj = probes.probes.find(p => p.id === selectedProbe);
+    if (
+      window.confirm(
+        `Are you sure you want to destroy this probe: ${probeObj.name}`
+      )
+    ) {
+      this.setState({ selectedProbe: null });
+      const mutation = gql`
+        mutation DestroyProbe($id: ID!, $probeId: ID!) {
+          destroyProbe(id: $id, probeId: $probeId)
+        }
+      `;
+      if (probeObj) {
+        const variables = {
+          id: this.props.data.probes[0].id,
+          probeId: probeObj.id
+        };
+        this.props.client.mutate({
+          mutation,
+          variables
+        });
+      }
+    }
+  };
   response = () => {
     const variables = {
       id: this.props.data.probes[0].id,
@@ -114,6 +141,9 @@ class ProbeControl extends Component {
                   />
                   <Button size="sm" onClick={this.response}>
                     Send Response
+                  </Button>
+                  <Button size="sm" color="danger" onClick={this.destroyProbe}>
+                    Destroy
                   </Button>
                 </Col>
               </Row>

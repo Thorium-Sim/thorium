@@ -400,7 +400,7 @@
 					"name": "Engineering",
 					"login": false,
 					"messageGroups": [
-						"Damage"
+						"Damage Teams"
 					],
 					"widgets": [
 						"calculator",
@@ -599,7 +599,7 @@
 					"name": "Security",
 					"login": false,
 					"messageGroups": [
-						"Security"
+						"Security Teams"
 					],
 					"widgets": [
 						"composer",

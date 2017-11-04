@@ -36,7 +36,7 @@ export const MessagesQueries = {
     return returnValue;
   },
   messageGroups() {
-    return ["Security", "Damage", "Medical"];
+    return ["Security Teams", "Damage Teams", "Medical Teams"];
   }
 };
 

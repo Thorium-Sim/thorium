@@ -57,6 +57,68 @@ const DAMAGE_SUB = gql`
   }
 `;
 
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content:
+      "There are officers on the ship assigned to repair and maintain the ship. You are responsible for keeping track of damage and maintenance and assigning these officers to handle those problems."
+  },
+  {
+    selector: ".team-list",
+    content:
+      "This is the list of all assigned damage teams. If you are just getting started, it should be empty."
+  },
+  {
+    selector: ".new-team",
+    content: "Click this button to create a new team."
+  },
+  {
+    selector: ".team-name",
+    content:
+      "Before the team can be created, we need to fill in some information. Start by naming your damage team. This is what you will use to identify the team later on."
+  },
+  {
+    selector: ".team-orders",
+    content:
+      "Give your team some orders. This is what they are supposed to do. It could be something repairing a system, running diagnostics, or cleaning up. Your damage reports should tell you what orders to give the teams."
+  },
+  {
+    selector: ".team-location",
+    content:
+      "You also have to tell your damage team members where to go. You first need to pick a deck. Once you have picked a deck, you can optionally select a room for them to go to. This helps them know exactly where you want them to be."
+  },
+  {
+    selector: ".team-priority",
+    content:
+      "Some work orders are more important than others. Assign a priority to this team with these buttons."
+  },
+  {
+    selector: ".crew-list",
+    content:
+      "You have to assign officers to be on the team. Each officer has a specific thing that they are assigned to do, so make sure you choose the right person for the job. Click on the names above to assign those officers to your team. You have a limited number of officers, and they can only be assigned to one team at a time, so use them carefully."
+  },
+  {
+    selector: ".crew-assigned",
+    content:
+      "This is where your assigned officers show up. If you want to remove an officer from the team, click on the officer's name."
+  },
+  {
+    selector: ".create-button",
+    content:
+      "Any time you create a team, or whenever you make changes, you have to click the 'Create' or 'Update' button here."
+  },
+  {
+    selector: ".cancel-button",
+    content:
+      "If you change your mind, or want to recall your officers and remove the team, you can click on the 'Cancel' or 'Recall' button here."
+  },
+  {
+    selector: "#widget-messages",
+    content:
+      "You can communicate with your damage teams using the messaging widget. You can contact the teams individually, or you can communicate with the damage team station. Be sure you regularly check your messages and respond promptly."
+  }
+];
+
 class DamageTeams extends Component {
   constructor(props) {
     super(props);
@@ -197,6 +259,7 @@ class DamageTeams extends Component {
     if (this.props.data.loading) return null;
     const { teams, crew, decks } = this.props.data;
     const { selectedTeam } = this.state;
+    if (!teams) return null;
     const assignedOfficers = teams
       .concat(selectedTeam)
       .reduce((prev, next) => {
@@ -209,7 +272,7 @@ class DamageTeams extends Component {
       <Container fluid className="damage-teams">
         <Row>
           <Col sm={3}>
-            <Card>
+            <Card className="team-list">
               <CardBody>
                 {teams.map(t => (
                   <p
@@ -260,7 +323,7 @@ class DamageTeams extends Component {
               return (
                 <Row>
                   <Col xl={5} lg={6}>
-                    <FormGroup row>
+                    <FormGroup row className="team-name">
                       <Label for="teamName" size="lg">
                         Name
                       </Label>
@@ -279,7 +342,7 @@ class DamageTeams extends Component {
                         value={team.name}
                       />
                     </FormGroup>
-                    <FormGroup row>
+                    <FormGroup row className="team-orders">
                       <Label for="teamOrders" size="lg">
                         Orders
                       </Label>
@@ -302,7 +365,7 @@ class DamageTeams extends Component {
                     <FormGroup className="location-label" row>
                       <Label size="lg">Location</Label>
                     </FormGroup>
-                    <Row>
+                    <Row className="team-location">
                       <Col sm={5}>
                         <DeckDropdown
                           selectedDeck={deck.id}
@@ -342,7 +405,7 @@ class DamageTeams extends Component {
                         Priority
                       </Label>
                     </FormGroup>
-                    <Row>
+                    <Row className="team-priority">
                       <Col sm={5}>
                         <Button
                           onClick={evt =>
@@ -416,7 +479,7 @@ class DamageTeams extends Component {
                           block
                           size="lg"
                           color="success"
-                          className="recall-button"
+                          className="create-button recall-button"
                           disabled={!team.id}
                           onClick={() => {
                             this.createDamageTeam(team);
@@ -428,6 +491,7 @@ class DamageTeams extends Component {
                           block
                           size="lg"
                           color="danger"
+                          className="cancel-button"
                           disabled={!team.id}
                           onClick={() => {
                             this.setState({
@@ -445,7 +509,7 @@ class DamageTeams extends Component {
                           size="lg"
                           color="success"
                           disabled={!team.id}
-                          className="recall-button"
+                          className="create-button recall-button"
                           onClick={() => {
                             this.commitTeam(team);
                           }}
@@ -456,6 +520,7 @@ class DamageTeams extends Component {
                           block
                           size="lg"
                           color="danger"
+                          className="cancel-button"
                           disabled={!team.id}
                           onClick={() => {
                             this.removeTeam(team.id);
@@ -474,7 +539,7 @@ class DamageTeams extends Component {
                     <Label for="teamName" size="lg">
                       Available Officers
                     </Label>
-                    <Card>
+                    <Card className="crew-list">
                       <CardBody>
                         {crew
                           .filter(c => assignedOfficers.indexOf(c.id) === -1)
@@ -497,7 +562,7 @@ class DamageTeams extends Component {
                     <Label for="teamName" size="lg">
                       Assigned Officers
                     </Label>
-                    <Card>
+                    <Card className="crew-assigned">
                       <CardBody>
                         {team &&
                           team.officers &&
@@ -532,19 +597,6 @@ class DamageTeams extends Component {
     );
   }
 }
-
-const trainingSteps = [
-  {
-    selector: ".new-team",
-    content:
-      "When instructed by a damage report, click this button to assign a team to assess the damage and begin work to repair it."
-  },
-  {
-    selector: ".damage-team-entry",
-    content:
-      "Type in the name of the team here, along with any specific instructions about what needs to be fixed and how. Include the location on the ship the team should travel to, and the priority of the job. Don't forget to pick damage team officer to actually do the repair!"
-  }
-];
 
 const DAMAGE_QUERY = gql`
   query DamageTeams($simulatorId: ID, $simId: ID!) {

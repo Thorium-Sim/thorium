@@ -183,14 +183,14 @@ class TorpedoTube extends Transitioner {
               >
                 Unload Torpedo
               </Button>
-              <Button
+              {/*<Button
                 block
                 color="danger"
                 disabled={!enabled}
                 onClick={fireTorpedo}
               >
                 Fire Torpedo
-              </Button>
+              </Button>*/}
             </div>
           )}
         </div>

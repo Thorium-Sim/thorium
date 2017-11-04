@@ -62,7 +62,7 @@ class SecurityScans extends Component {
         }
       });
     }
-    if (!nextProps.data.loading) {
+    if (!nextProps.data.loading && nextProps.data.sensors) {
       const nextSensors = nextProps.data.sensors[0];
       if (this.props.data.loading) {
         //First time load
@@ -166,7 +166,7 @@ class SecurityScans extends Component {
     });
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.sensors) return null;
     const { scanning } = this.props.data.sensors[0];
     const decks = [{ id: null }].concat(this.props.data.decks);
     let rooms;
