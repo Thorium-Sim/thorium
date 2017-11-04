@@ -479,8 +479,7 @@ class DamageTeams extends Component {
                           block
                           size="lg"
                           color="success"
-                          className="create-button"
-                          className="recall-button"
+                          className="create-button recall-button"
                           disabled={!team.id}
                           onClick={() => {
                             this.createDamageTeam(team);
