@@ -11,8 +11,7 @@ class AssetComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      src: `${assetPath}${props.asset}/${props.simulatorId ||
-        "default"}.${props.extension || "svg"}`
+      src: null
     };
   }
   state = { src: "http://unsplash.it/300" };
@@ -43,10 +42,6 @@ class AssetComponent extends Component {
         variables
       })
       .then(res => {
-        console.log(
-          res.data.asset,
-          (res.data.asset.url || "").replace(/http(s|):\/\/.*:3000/gi, "")
-        );
         this.setState({
           src: (res.data.asset.url || "").replace(/http(s|):\/\/.*:3000/gi, "")
         });
@@ -55,6 +50,7 @@ class AssetComponent extends Component {
   render() {
     const { children } = this.props;
     const { src } = this.state;
+    if (!src) return null;
     return children({ src });
   }
 }
