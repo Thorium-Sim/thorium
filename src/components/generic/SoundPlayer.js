@@ -59,7 +59,7 @@ function downMixBuffer(buffer, channel) {
 
 function playSound(opts) {
   removeSound(opts.id);
-
+  opts.id = uuid.v4();
   const volume = opts.muted ? 0 : opts.volume || 1;
   const playbackRate = opts.paused ? 0 : opts.playbackRate || 1;
   const channel = opts.channel || [0, 1];
@@ -91,7 +91,7 @@ function playSound(opts) {
           };
           sound.source.connect(window.audioContext.destination);
           sound.source.start();
-          sounds[opts.id || uuid.v4()] = sound;
+          sounds[opts.id] = sound;
         },
         function onFailure() {
           console.error("Decoding the audio buffer failed");
@@ -103,7 +103,7 @@ function playSound(opts) {
 function removeSound(id) {
   const sound = sounds[id];
   if (sound) {
-    sound.stop();
+    sound.source.stop();
     delete sounds[id];
   }
 }
