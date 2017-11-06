@@ -1,9 +1,16 @@
 import React, { Component } from "react";
-import SoundPlayer from "../../generic/SoundPlayer";
+import uuid from "uuid";
+import gql from "graphql-tag";
+import { graphql, withApollo } from "react-apollo";
+import { Asset } from "../../../helpers/assets.js";
+
+import withSound from "../../generic/SoundPlayer";
 class SoundsTester extends Component {
-  state = { currentSound: null };
+  state = { currentSounds: [] };
   playSound = asset => {
-    console.log(asset);
+    this.setState({
+      currentSounds: this.state.currentSounds.concat({ id: uuid.v4(), asset })
+    });
   };
   render() {
     if (this.props.data.loading) return null;
@@ -14,9 +21,17 @@ class SoundsTester extends Component {
         <h1>Sound Player</h1>
         <ul>
           {sounds.map(s => (
-            <li key={s.id} onClick={() => this.playSound(s.fullPath)}>
-              {s.name}
-            </li>
+            <Asset asset={s.fullPath} key={s.id}>
+              {({ src }) => (
+                <li
+                  onClick={() => {
+                    this.props.playSound({ url: src });
+                  }}
+                >
+                  {s.name}
+                </li>
+              )}
+            </Asset>
           ))}
         </ul>
       </div>
@@ -25,7 +40,7 @@ class SoundsTester extends Component {
 }
 
 const SOUNDS_QUERY = gql`
-  query Sounds($simulatorId: ID, $names: [String]) {
+  query Sounds($names: [String]) {
     assetFolders(names: $names) {
       id
       name
@@ -39,10 +54,9 @@ const SOUNDS_QUERY = gql`
 `;
 
 export default graphql(SOUNDS_QUERY, {
-  options: ownProps => ({
+  options: () => ({
     variables: {
-      simulatorId: ownProps.simulator.id,
       names: ["Sounds"]
     }
   })
-})(withApollo(SoundsTester));
+})(withApollo(withSound(SoundsTester)));

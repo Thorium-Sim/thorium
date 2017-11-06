@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;">
+    <g id="Template">
+        <g id="Docking">
+            <path d="M128,0L128,128L0,128L0,0L128,0ZM86.426,97.118C80.029,101.461 72.308,104 64,104C41.923,104 24,86.077 24,64C24,41.923 41.923,24 64,24C72.308,24 80.029,26.539 86.426,30.882L73.431,39.766C70.507,38.626 67.326,38 64,38C49.654,38 38.005,49.645 38,63.99L37.985,64L38,64.01C38.005,78.355 49.654,90 64,90C67.326,90 70.507,89.374 73.431,88.234L86.426,97.118ZM93,64L103.328,95.673L57,64L103.328,32.327L93,64Z"/>
+        </g>
+    </g>
+</svg>

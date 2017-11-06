@@ -38,7 +38,7 @@ const viewList = [
   "JrSensors",
   "JrEngineering",
   "TorpedoLoading",
-  "TargetingCoords"
+  "SoundsTester"
 ];
 
 export default viewList;

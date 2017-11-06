@@ -1989,7 +1989,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 30007600,
+			"timeSincePing": 30169000,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -2079,7 +2079,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 30007600,
+			"timeSincePing": 30169000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2228,7 +2228,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7909599999997909,
+			"batteryChargeLevel": 0.7896559999997896,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -3322,7 +3322,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 25190600,
+			"timeSincePing": 25352000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3354,7 +3354,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 25190600,
+			"timeSincePing": 25352000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4404,7 +4404,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 20077500,
+			"timeSincePing": 20238900,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4438,7 +4438,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 20077500,
+			"timeSincePing": 20238900,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5815,7 +5815,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 8763100,
+			"timeSincePing": 8924500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5849,7 +5849,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 8763100,
+			"timeSincePing": 8924500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -18691,6 +18691,13 @@
 			"fullPath": "/Viewscreen/Videos",
 			"name": "Videos",
 			"class": "AssetFolder"
+		},
+		{
+			"id": "074b07b0-21e4-45eb-ad38-1562cd274076",
+			"folderPath": "/",
+			"fullPath": "/Sounds",
+			"name": "Sounds",
+			"class": "AssetFolder"
 		}
 	],
 	"assetContainers": [
@@ -19316,6 +19323,14 @@
 			"fullPath": "/Sensor Contacts/Pictures/Default",
 			"folderId": "001b6d40-809a-4e1e-8cdd-e5bb6932022e",
 			"name": "Default",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "54c39f9f-57ec-446b-9d48-2f500557fb21",
+			"folderPath": "/Sounds",
+			"fullPath": "/Sounds/sciences",
+			"folderId": "074b07b0-21e4-45eb-ad38-1562cd274076",
+			"name": "sciences",
 			"class": "AssetContainer"
 		}
 	],
@@ -20646,6 +20661,15 @@
 			"url": "/assets/Viewscreen/Videos/Approaching Nebula/default.MP4",
 			"simulatorId": "default",
 			"class": "AssetObject"
+		},
+		{
+			"id": "604f3bfc-6cec-408a-a49f-a4c63a3da2d3",
+			"containerPath": "/Sounds",
+			"containerId": "54c39f9f-57ec-446b-9d48-2f500557fb21",
+			"fullPath": "/Sounds/sciences/default.wav",
+			"url": "/assets/Sounds/sciences/default.wav",
+			"simulatorId": "default",
+			"class": "AssetObject"
 		}
 	],
 	"viewscreens": [
@@ -20669,7 +20693,7 @@
 		}
 	],
 	"messages": [],
-	"snapshotVersion": 125,
-	"version": 125,
-	"timestamp": "2017-10-31T22:05:31.516Z"
+	"snapshotVersion": 165,
+	"version": 165,
+	"timestamp": "2017-11-04T21:49:31.151Z"
 }
