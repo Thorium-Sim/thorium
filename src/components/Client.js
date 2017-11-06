@@ -6,6 +6,7 @@ import CardContainer from "../containers/Card";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Caching from "./caching";
+import playSound from "./generic/SoundPlayer";
 import "./client.css";
 
 class ClientWrapper extends Component {
@@ -309,6 +310,23 @@ class ClientView extends Component {
         });
       }
     }
+    // Play the sound effect
+    const c = nextProps.data.clients ? nextProps.data.clients[0] : {};
+    const oldClient = this.props.data.clients ? this.props.data.clients[0] : {};
+    const { flight, simulator, station } = c;
+    const {
+      flight: oldFlight,
+      simulator: oldSimulator,
+      station: oldStation
+    } = oldClient;
+    if (
+      flight &&
+      simulator &&
+      station &&
+      !(oldFlight && oldSimulator && oldStation)
+    ) {
+      this.props.playSound({ url: "/sciences.ogg" });
+    }
   }
   componentDidMount() {
     this.props.client.mutate({
@@ -394,5 +412,5 @@ const Client = withRouter(
         clientId: ownProps.clientId
       }
     })
-  })(withApollo(ClientView))
+  })(withApollo(playSound(ClientView)))
 );
