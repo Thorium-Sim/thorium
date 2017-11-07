@@ -189,7 +189,7 @@ class DecksCore extends Component {
         }, 1000);
       });
     };
-    reader.readAsText(e.target.files[0]);
+    e.target.files[0] && reader.readAsText(e.target.files[0]);
   };
   render() {
     if (this.props.data.loading) return null;

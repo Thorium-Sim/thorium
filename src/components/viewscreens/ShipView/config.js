@@ -10,7 +10,7 @@ class ShipViewsConfig extends Component {
       <div>
         <div>
           <label>Ship Image</label>
-          {!assetData.loading &&
+          {!assetData.loading && (
             <select
               value={data.ship}
               onChange={evt =>
@@ -20,12 +20,14 @@ class ShipViewsConfig extends Component {
                   )
                 )}
             >
-              {assetData.assetFolders[0].containers.map(c =>
-                <option key={c.id} value={c.fullPath}>
-                  {c.name}
-                </option>
-              )}
-            </select>}
+              {assetData.assetFolders &&
+                assetData.assetFolders[0].containers.map(c => (
+                  <option key={c.id} value={c.fullPath}>
+                    {c.name}
+                  </option>
+                ))}
+            </select>
+          )}
         </div>
         <div>
           <label>Name</label>

@@ -133,7 +133,7 @@ class MissionsConfig extends Component {
         variables
       });
     };
-    fileReader.readAsText(evt.target.files[0]);
+    evt.target.files[0] && fileReader.readAsText(evt.target.files[0]);
   };
   exportMission = () => {
     const { missions } = this.props.data;

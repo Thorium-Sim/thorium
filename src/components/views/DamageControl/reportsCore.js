@@ -113,7 +113,7 @@ class DamageReportCore extends Component {
         selectedReport: result
       });
     };
-    reader.readAsText(e.target.files[0]);
+    e.target.files[0] && reader.readAsText(e.target.files[0]);
   }
   sendReport() {
     const mutation = gql`

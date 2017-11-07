@@ -35,7 +35,7 @@ class PlanetaryScanConfig extends Component {
         </div>
         <div>
           <label>Planet Texture</label>
-          {!assetData.loading &&
+          {!assetData.loading && (
             <select
               value={data.planet}
               onChange={evt =>
@@ -45,18 +45,20 @@ class PlanetaryScanConfig extends Component {
                   )
                 )}
             >
-              {assetData.assetFolders[0].containers
-                .filter(c => c.name.toLowerCase().indexOf("clouds") === -1)
-                .map(c =>
-                  <option key={c.id} value={c.fullPath}>
-                    {c.name}
-                  </option>
-                )}
-            </select>}
+              {assetData.assetFolders &&
+                assetData.assetFolders[0].containers
+                  .filter(c => c.name.toLowerCase().indexOf("clouds") === -1)
+                  .map(c => (
+                    <option key={c.id} value={c.fullPath}>
+                      {c.name}
+                    </option>
+                  ))}
+            </select>
+          )}
         </div>
         <div>
           <label>Cloud Texture</label>
-          {!assetData.loading &&
+          {!assetData.loading && (
             <select
               value={data.clouds}
               onChange={evt =>
@@ -67,14 +69,16 @@ class PlanetaryScanConfig extends Component {
                 )}
             >
               <option value="">No Clouds</option>
-              {assetData.assetFolders[0].containers
-                .filter(c => c.name.toLowerCase().indexOf("clouds") > -1)
-                .map(c =>
-                  <option key={c.id} value={c.fullPath}>
-                    {c.name}
-                  </option>
-                )}
-            </select>}
+              {assetData.assetFolders &&
+                assetData.assetFolders[0].containers
+                  .filter(c => c.name.toLowerCase().indexOf("clouds") > -1)
+                  .map(c => (
+                    <option key={c.id} value={c.fullPath}>
+                      {c.name}
+                    </option>
+                  ))}
+            </select>
+          )}
         </div>
         <div>
           <label>Text</label>

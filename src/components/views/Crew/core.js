@@ -109,7 +109,7 @@ class CrewCore extends Component {
         });
       });
     };
-    reader.readAsText(files[0]);
+    files[0] && reader.readAsText(files[0]);
   };
   _editable = evt => {
     this.setState({

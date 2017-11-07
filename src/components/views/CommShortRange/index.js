@@ -249,6 +249,7 @@ class CommShortRange extends Component {
               <div className="spacer" />
               {ShortRange.signals.map(s => (
                 <div
+                  key={s.id}
                   className={`img-container ${s.id === this.getSignal().id
                     ? "selected"
                     : ""}`}
