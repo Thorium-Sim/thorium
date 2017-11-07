@@ -61,6 +61,9 @@ export const FlightStructureMutations = {
     );
     return flightId;
   },
+  resetFlight(root, args, context) {
+    App.handleEvent(args, "resetFlight", context);
+  },
   deleteFlight(root, args, context) {
     App.handleEvent(args, "deleteFlight", context);
   },
