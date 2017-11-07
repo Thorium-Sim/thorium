@@ -101,7 +101,10 @@ class ViewscreenCore extends Component {
   toggleAuto = () => {
     const { viewscreens } = this.props.data;
     const { selectedViewscreen } = this.state;
-    const auto = !viewscreens.find(v => v.id === selectedViewscreen).auto;
+    const auto = !(
+      viewscreens.find(v => v.id === selectedViewscreen) &&
+      viewscreens.find(v => v.id === selectedViewscreen).auto
+    );
     const id = selectedViewscreen;
     const mutation = gql`
       mutation UpdateViewscreenAuto($id: ID!, $auto: Boolean!) {
@@ -191,6 +194,7 @@ class ViewscreenCore extends Component {
                     type="checkbox"
                     checked={
                       selectedViewscreen &&
+                      viewscreens.length &&
                       viewscreens.find(v => v.id === selectedViewscreen).auto
                     }
                     onChange={this.toggleAuto}

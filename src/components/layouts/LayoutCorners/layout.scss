@@ -710,7 +710,12 @@ body {
         background-image: url(./images/slice3.png);
         background-size: 603px 139px;
       }
-
+      .frame-5 {
+        left: 603px;
+        right: 603px;
+        height: 83px;
+        background-size: 100% 100%;
+      }
     }
   }
   .frame-color {
@@ -939,6 +944,10 @@ body {
           15px 110px,
           0px 130px
         );
+      }
+      .part-1-3 {
+        left: 300px;
+        width: 1900px;
       }
       .part-c {
         width: 380px;
