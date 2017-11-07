@@ -119,7 +119,8 @@ class StealthField extends Component {
   }
   render() {
     if (this.props.data.loading) return null;
-    const stealthField = this.props.data.stealthField[0];
+    const stealthField =
+      this.props.data.stealthField && this.props.data.stealthField[0];
     if (!stealthField) return <p>No Stealth Field</p>;
     return (
       <Container fluid className="card-stealthField">

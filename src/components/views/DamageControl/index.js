@@ -48,7 +48,7 @@ class DamageControl extends Component {
         }
       });
     }
-    if (!nextProps.data.loading) {
+    if (!nextProps.data.loading && nextProps.data.systems) {
       const selectedSystem = nextProps.data.systems.find(
         s => s.id === this.state.selectedSystem
       );
@@ -143,6 +143,7 @@ class DamageControl extends Component {
   render() {
     if (this.props.data.loading) return null;
     const systems = this.props.data.systems;
+    if (!systems) return null;
     const damagedSystem = systems.find(
       s => this.state.selectedSystem === s.id
     ) || { damage: {} };
@@ -258,7 +259,7 @@ class DamageControl extends Component {
             <Card>
               <CardBody>
                 <p className="damageReport-text">
-                  {this.state.selectedSystem
+                  {this.state.selectedSystem && systems
                     ? systems.find(s => s.id === this.state.selectedSystem)
                         .damage.report
                     : "No system selected."}

@@ -86,7 +86,8 @@ class TractorBeam extends Component {
   };
   render() {
     if (this.props.data.loading) return null;
-    const tractorBeam = this.props.data.tractorBeam[0];
+    const tractorBeam =
+      this.props.data.tractorBeam && this.props.data.tractorBeam[0];
     if (!tractorBeam) return <p>No Tractor Beam</p>;
     const maxPower = tractorBeam.power.powerLevels.length
       ? (tractorBeam.power.power + 1 - tractorBeam.power.powerLevels[0]) /

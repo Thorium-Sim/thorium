@@ -348,8 +348,8 @@ class Targeting extends Component {
   }
   render() {
     if (this.props.data.loading) return null;
-    const targeting = this.props.data.targeting[0];
-    const phasers = this.props.data.phasers[0];
+    const targeting = this.props.data.targeting && this.props.data.targeting[0];
+    const phasers = this.props.data.phasers && this.props.data.phasers[0];
     if (!targeting) return <p>No Targeting</p>;
     const targetedContact = targeting.contacts.find(t => t.targeted);
     return (

@@ -113,7 +113,7 @@ class PhaserCharging extends Component {
   }
   render() {
     if (this.props.data.loading) return null;
-    const phasers = this.props.data.phasers[0];
+    const phasers = this.props.data.phasers && this.props.data.phasers[0];
     const { selectedBank } = this.state;
     if (!phasers) return <p>No Phaser System</p>;
     return (

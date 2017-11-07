@@ -54,6 +54,7 @@ class TorpedoLoading extends Component {
   render() {
     if (this.props.data.loading) return null;
     const torpedos = this.props.data.torpedos;
+    if (!torpedos) return null;
     return (
       <div className="torpedo-loading">
         {torpedos.map(

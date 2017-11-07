@@ -180,6 +180,7 @@ class ShieldControl extends Component {
     //Define the color
     if (this.props.data.loading) return null;
     const shields = this.props.data.shields;
+    if (!shields) return null;
     if (shields.length === 1) {
       return (
         <Shield1
