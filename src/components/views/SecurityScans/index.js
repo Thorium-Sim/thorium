@@ -1,18 +1,8 @@
 import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
-import {
-  Row,
-  Col,
-  Button,
-  Input,
-  Card,
-  CardBody,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
-} from "reactstrap";
+import { Row, Col, Button, Input, Card, CardBody } from "reactstrap";
 import gql from "graphql-tag";
+import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
 import assetPath from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.css";
@@ -168,13 +158,7 @@ class SecurityScans extends Component {
   render() {
     if (this.props.data.loading || !this.props.data.sensors) return null;
     const { scanning } = this.props.data.sensors[0];
-    const decks = [{ id: null }].concat(this.props.data.decks);
-    let rooms;
-    if (this.state.selectedDeck && this.state.selectedDeck !== "All Decks") {
-      rooms = [{ id: null }].concat(
-        decks.find(d => d.id === this.state.selectedDeck).rooms
-      );
-    }
+    const decks = this.props.data.decks;
     return (
       <Row className="security-scans">
         <DamageOverlay
@@ -187,76 +171,29 @@ class SecurityScans extends Component {
           </Row>
           <Row>
             <Col sm={"auto"}>
-              <UncontrolledDropdown>
-                <DropdownToggle block caret>
-                  {this.state.selectedDeck
-                    ? `Deck ${decks.find(d => d.id === this.state.selectedDeck)
-                        .number}`
-                    : "All Decks"}
-                </DropdownToggle>
-                <DropdownMenu>
-                  {decks
-                    .concat()
-                    .sort((a, b) => {
-                      if (a.number > b.number) return 1;
-                      if (b.number > a.number) return -1;
-                      return 0;
-                    })
-                    .map(d => (
-                      <DropdownItem
-                        key={d.id}
-                        onClick={() => {
-                          this.setState({
-                            selectedDeck: d.id,
-                            selectedRoom: null
-                          });
-                        }}
-                      >
-                        {d.number ? `Deck ${d.number}` : `All Decks`}
-                      </DropdownItem>
-                    ))}
-                </DropdownMenu>
-              </UncontrolledDropdown>
+              <DeckDropdown
+                selectedDeck={this.state.selectedDeck}
+                decks={decks}
+                allDecks
+                disabled={scanning}
+                setSelected={a =>
+                  this.setState({
+                    selectedDeck: a.deck,
+                    selectedRoom: null
+                  })}
+              />
             </Col>
             <Col>
-              <UncontrolledDropdown>
-                <DropdownToggle
-                  disabled={
-                    !this.state.selectedDeck ||
-                    this.state.selectedDeck === "All Decks"
-                  }
-                  block
-                  caret
-                >
-                  {this.state.selectedRoom
-                    ? decks
-                        .find(d => d.id === this.state.selectedDeck)
-                        .rooms.find(r => r.id === this.state.selectedRoom).name
-                    : "Entire Deck"}
-                </DropdownToggle>
-                {this.state.selectedDeck && (
-                  <DropdownMenu>
-                    <DropdownItem
-                      onClick={() => {
-                        this.setState({ selectedRoom: null });
-                      }}
-                    >
-                      Deck{" "}
-                      {decks.find(d => d.id === this.state.selectedDeck).number}
-                    </DropdownItem>
-                    {rooms.map(r => (
-                      <DropdownItem
-                        key={r.id}
-                        onClick={() => {
-                          this.setState({ selectedRoom: r.id });
-                        }}
-                      >
-                        {r.name}
-                      </DropdownItem>
-                    ))}
-                  </DropdownMenu>
-                )}
-              </UncontrolledDropdown>
+              <RoomDropdown
+                selectedDeck={this.state.selectedDeck}
+                selectedRoom={this.state.selectedRoom}
+                decks={decks}
+                disabled={scanning}
+                setSelected={a =>
+                  this.setState({
+                    selectedRoom: a.room
+                  })}
+              />
             </Col>
           </Row>
           <Row style={{ marginTop: "20px" }}>

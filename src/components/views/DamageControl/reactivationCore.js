@@ -70,45 +70,46 @@ class ReactivationCore extends Component {
     const { systems } = this.props.data;
     return (
       <div>
-        {systems.filter(s => s.damage.reactivationCode).map(s => (
-          <div key={s.id}>
-            <Row style={{ margin: 0 }}>{s.name}</Row>
-            <Row style={{ margin: 0 }}>
-              <Col sm={3}>Code:</Col>
-              <Col sm={9}>{s.damage.reactivationCode}</Col>
-            </Row>
-            <Row style={{ margin: 0 }}>
-              <Col sm={3}>Actual:</Col>
-              <Col sm={9}>{s.damage.neededReactivationCode}</Col>
-            </Row>
-            <Row style={{ margin: 0 }}>
-              <Col sm={8}>
-                <Button
-                  onClick={() => {
-                    this.reactivationCodeResponse(true, s.id);
-                  }}
-                  size={"sm"}
-                  color="success"
-                  block
-                >
-                  Accept & Fix
-                </Button>
-              </Col>
-              <Col sm={4}>
-                <Button
-                  onClick={() => {
-                    this.reactivationCodeResponse(false, s.id);
-                  }}
-                  size={"sm"}
-                  color="danger"
-                  block
-                >
-                  Deny
-                </Button>
-              </Col>
-            </Row>
-          </div>
-        ))}
+        {systems &&
+          systems.filter(s => s.damage.reactivationCode).map(s => (
+            <div key={s.id}>
+              <Row style={{ margin: 0 }}>{s.name}</Row>
+              <Row style={{ margin: 0 }}>
+                <Col sm={3}>Code:</Col>
+                <Col sm={9}>{s.damage.reactivationCode}</Col>
+              </Row>
+              <Row style={{ margin: 0 }}>
+                <Col sm={3}>Actual:</Col>
+                <Col sm={9}>{s.damage.neededReactivationCode}</Col>
+              </Row>
+              <Row style={{ margin: 0 }}>
+                <Col sm={8}>
+                  <Button
+                    onClick={() => {
+                      this.reactivationCodeResponse(true, s.id);
+                    }}
+                    size={"sm"}
+                    color="success"
+                    block
+                  >
+                    Accept & Fix
+                  </Button>
+                </Col>
+                <Col sm={4}>
+                  <Button
+                    onClick={() => {
+                      this.reactivationCodeResponse(false, s.id);
+                    }}
+                    size={"sm"}
+                    color="danger"
+                    block
+                  >
+                    Deny
+                  </Button>
+                </Col>
+              </Row>
+            </div>
+          ))}
       </div>
     );
   }

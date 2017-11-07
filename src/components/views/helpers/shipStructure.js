@@ -7,6 +7,7 @@ import {
 } from "reactstrap";
 
 export const DeckDropdown = ({
+  allDecks,
   selectedDeck,
   decks,
   setSelected,
@@ -16,25 +17,35 @@ export const DeckDropdown = ({
     <UncontrolledDropdown>
       <DropdownToggle block caret disabled={disabled}>
         {selectedDeck
-          ? `Deck ${decks.find(d => d.id === selectedDeck).number}`
+          ? decks.find(d => d.id === selectedDeck)
+            ? `Deck ${decks.find(d => d.id === selectedDeck).number}`
+            : "All Decks"
           : "Select Deck"}
       </DropdownToggle>
       <DropdownMenu style={{ maxHeight: "200px", overflowY: "scroll" }}>
+        {allDecks && (
+          <DropdownItem
+            onClick={() => {
+              setSelected({ deck: "All Decks", room: null });
+            }}
+          >{`All Decks`}</DropdownItem>
+        )}
         {decks
           .concat()
           .sort((a, b) => {
+            console.log(a.number, b.number);
             if (a.number < b.number) return -1;
             if (b.number < a.number) return 1;
             return 0;
           })
-          .map(d =>
+          .map(d => (
             <DropdownItem
               key={d.id}
               onClick={() => {
                 setSelected({ deck: d.id, room: null });
               }}
             >{`Deck ${d.number}`}</DropdownItem>
-          )}
+          ))}
       </DropdownMenu>
     </UncontrolledDropdown>
   );
@@ -57,23 +68,27 @@ export const RoomDropdown = ({
               .rooms.find(r => r.id === selectedRoom).name
           : "Select Room"}
       </DropdownToggle>
-      {selectedDeck &&
+      {selectedDeck && (
         <DropdownMenu style={{ maxHeight: "200px", overflowY: "scroll" }}>
           <DropdownItem header>
-            Deck {decks.find(d => d.id === selectedDeck).number}
+            {decks.find(d => d.id === selectedDeck)
+              ? `Deck ${decks.find(d => d.id === selectedDeck).number}`
+              : "All Decks"}
           </DropdownItem>
-          {decks.find(d => d.id === selectedDeck).rooms.map(r =>
-            <DropdownItem
-              key={r.id}
-              disabled={r.id === otherSelected}
-              onClick={() => {
-                setSelected({ room: r.id });
-              }}
-            >
-              {r.name}
-            </DropdownItem>
-          )}
-        </DropdownMenu>}
+          {decks.find(d => d.id === selectedDeck) &&
+            decks.find(d => d.id === selectedDeck).rooms.map(r => (
+              <DropdownItem
+                key={r.id}
+                disabled={r.id === otherSelected}
+                onClick={() => {
+                  setSelected({ room: r.id });
+                }}
+              >
+                {r.name}
+              </DropdownItem>
+            ))}
+        </DropdownMenu>
+      )}
     </UncontrolledDropdown>
   );
 };
