@@ -24,7 +24,7 @@ export default ({ level = 1, color = "rainbow", reverse }) => {
               style={{
                 background: `radial-gradient(ellipse at center, ${calcColor(
                   i
-                ).toString()} 0%,${calcColor(i)
+                ).rgbaString()} 0%,${calcColor(i)
                   .alpha(0.25)
                   .rgbaString()} 90%)`,
                 boxShadow: `0px 0px 5px ${calcColor(i)

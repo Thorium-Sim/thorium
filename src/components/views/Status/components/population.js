@@ -55,8 +55,9 @@ class Population extends Component {
   render() {
     if (this.props.data.loading) return null;
     const crew = this.props.data.crew;
+    if (!this.props.data.simulators) return null;
     const { ship } = this.props.data.simulators[0];
-    if (!crew || crew.length === 0) return null;
+    if (!ship || !crew || crew.length === 0) return null;
     return (
       <div>
         <Label>Crew Population</Label>

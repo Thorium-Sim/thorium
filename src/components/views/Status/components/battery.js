@@ -37,6 +37,7 @@ class Battery extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { reactors } = this.props.data;
+    if (!reactors) return null;
     const battery = reactors.find(r => r.model === "battery");
     if (!battery) return null;
     return (
