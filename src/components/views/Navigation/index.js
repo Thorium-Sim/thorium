@@ -139,7 +139,7 @@ class Navigation extends Component {
         }
       });
     }
-    if (!nextProps.data.loading) {
+    if (!nextProps.data.loading && nextProps.data.navigation) {
       const navigation = nextProps.data.navigation[0];
       if (navigation) {
         if (navigation.scanning) {
@@ -329,6 +329,7 @@ class Navigation extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { calculatedCourse, enteredCourse, selectedField } = this.state;
+    if (!this.props.data.navigation) return null;
     const navigation = this.props.data.navigation[0];
     const scanning = this.state.scanning || navigation.scanning;
     if (!navigation) return <p>No Navigation System</p>;

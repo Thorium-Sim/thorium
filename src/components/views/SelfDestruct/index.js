@@ -12,6 +12,8 @@ import {
 } from "reactstrap";
 import Moment from "moment";
 import { graphql, withApollo } from "react-apollo";
+import Tour from "reactour";
+
 import "./style.css";
 
 function padDigits(number, digits) {
@@ -32,6 +34,18 @@ const SELF_DESTRUCT_SUB = gql`
   }
 `;
 
+const trainingSteps = [
+  {
+    selector: ".self-destruct-button",
+    content:
+      "Only use this as your last possible option. The self-destruct will overload the main reactor, causing it to explode. The ship will be destroyed and your crew will be dead."
+  },
+  {
+    selector: ".self-destruct-button",
+    content:
+      "Click this button to activate and deactivate the self destruct. You have the option to set a time on the self destruct in Hour:Minute:Second format. Give yourself enough time ."
+  }
+];
 class SelfDestruct extends Component {
   sub = null;
   state = {
@@ -103,6 +117,7 @@ class SelfDestruct extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { modal, setCode } = this.state;
+    if (!this.props.data.simulators) return null;
     const {
       selfDestructTime,
       selfDestructCode
@@ -127,14 +142,14 @@ class SelfDestruct extends Component {
           </div>
         ) : (
           <div className="set-code">
-            <Button
+            {/*<Button
               block
               color="warning"
               size="lg"
               onClick={this.openCodeModal}
             >
               Set Self-Destruct Code
-            </Button>
+            </Button>*/}
           </div>
         )}
         {modal && (
@@ -147,6 +162,11 @@ class SelfDestruct extends Component {
             setCodeFunc={this.setCode}
           />
         )}
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
