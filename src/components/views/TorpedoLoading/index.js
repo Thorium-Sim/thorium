@@ -83,6 +83,7 @@ class TorpedoLoading extends Component {
               <TorpedoLoader
                 key={t.id}
                 torpedo={t}
+                targeting={this.props.targeting}
                 client={this.props.client}
               />
             )
@@ -185,7 +186,8 @@ class TorpedoTube extends Transitioner {
       updateScreen,
       unloadTorpedo,
       fireTorpedo,
-      enabled
+      enabled,
+      targeting
     } = this.props;
     return (
       <div style={{ position: "absolute", width: "100%", height: "100%" }}>
@@ -209,14 +211,16 @@ class TorpedoTube extends Transitioner {
               >
                 Unload Torpedo
               </Button>
-              {/*<Button
-                block
-                color="danger"
-                disabled={!enabled}
-                onClick={fireTorpedo}
-              >
-                Fire Torpedo
-              </Button>*/}
+              {targeting && (
+                <Button
+                  block
+                  color="danger"
+                  disabled={!enabled}
+                  onClick={fireTorpedo}
+                >
+                  Fire Torpedo
+                </Button>
+              )}
             </div>
           )}
         </div>
@@ -452,6 +456,7 @@ class TorpedoLoader extends Component {
                 <Comp
                   key={Comp.name}
                   {...this.state}
+                  targeting={this.props.targeting}
                   inventory={torpedo.inventory}
                   loadTorpedo={this.loadTorpedo.bind(this)}
                   unloadTorpedo={this.unloadTorpedo.bind(this)}

@@ -53,7 +53,7 @@ class Shuttles extends Component {
       <Container fluid className="shuttles-card">
         {
           <Row>
-            {docking.map((d, i, a) => (
+            {docking.map((d, i) => (
               <div className="shuttleBay" key={d.id}>
                 <ShuttleBay
                   {...d}
