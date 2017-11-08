@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button, Card } from "reactstrap";
 import Measure from "react-measure";
+import Tour from "reactour";
 
 //import ReactorModel from "./model";
 import "./style.css";
@@ -41,6 +42,28 @@ const REACTOR_SUB = gql`
   }
 `;
 
+const trainingSteps = [
+  {
+    selector: ".powerlevel-containers",
+    content:
+      "Your main reactor provides power to your ship. In certain circumstances, you will need to change the output of the main reactor, which you can do from this screen."
+  },
+  {
+    selector: ".reactor-info",
+    content:
+      "This shows you the current efficiency of the reactor, the reactor output, and the current power being used. Make sure your reactor output matches the current power."
+  },
+  {
+    selector: ".reactor-buttons",
+    content:
+      "Use these buttons to change the power output of the main reactor. Silent running mode is useful for masking the energy signature put off by your reactor. External power is used when your ship is connected to an external power source, like a starbase. Just make sure you have enough power to run the systems on your ship."
+  },
+  {
+    selector: ".battery-container",
+    content:
+      "These are the ship’s batteries, if it has any. They show how much power is remaining in the batteries. If you use more power than is being outputted by your reactor, power will draw from the batteries. If they run out of power, you will have to balance your power, and the batteries will need to be recharged. You can recharge batteries from your reactor by using less power than the current reactor output. Don’t let these run out in the middle of space. That would be...problematic."
+  }
+];
 class ReactorControl extends Component {
   constructor(props) {
     super(props);
@@ -97,6 +120,7 @@ class ReactorControl extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { reactors, systems } = this.props.data;
+    if (!reactors) return null;
     const reactor = reactors.find(r => r.model === "reactor");
     const battery = reactors.find(r => r.model === "battery");
     const charge = battery && battery.batteryChargeLevel;
@@ -153,7 +177,7 @@ class ReactorControl extends Component {
                 </Measure>
               </Col>
             </Row>
-            <Row>
+            <Row className="reactor-info">
               <Col sm={12}>
                 <h1>
                   Reactor Efficiency: {Math.round(reactor.efficiency * 100)}%
@@ -186,7 +210,7 @@ class ReactorControl extends Component {
                   </Card>
                 </Col>
               </Row>
-              <Row>
+              <Row className="reactor-buttons">
                 {efficiencies.map(e => (
                   <Col sm={6} key={e.label}>
                     <Button
@@ -227,6 +251,11 @@ class ReactorControl extends Component {
             </Col>
           )}
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }

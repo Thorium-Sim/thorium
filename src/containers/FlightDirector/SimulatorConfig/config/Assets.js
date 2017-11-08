@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Col, Row, Container } from "reactstrap";
-import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 import { Asset } from "../../../../helpers/assets";
 const assetList = [

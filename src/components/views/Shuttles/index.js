@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
+import Tour from "reactour";
 import { Asset } from "../../../helpers/assets";
 import Decompress from "./Decompress";
 import Door from "./Door";
@@ -25,6 +26,32 @@ const SHUTTLE_SUB = gql`
   }
 `;
 
+const trainingSteps = [
+  {
+    selector: ".shuttles-card",
+    content:
+      "Shuttles are small ships which can be stored inside of your ship. Most shuttles are piloted and can transport large amounts of supplies or personnel great distances."
+  },
+  {
+    selector: ".clamps-button",
+    content:
+      "To undock a shuttle, you must first release the docking clamps which hold the shuttle in place with this button."
+  },
+  {
+    selector: ".compress-button",
+    content:
+      "Then, you must decompress the shuttlebay. To board the shuttle, there must be air inside the shuttlebay. However, if the shuttlebay doors are opened without decompressing the shuttlebay, all of that air would be sucked into space. The change in pressure would also pull people and equipment into space as well, so decompressing the shuttlebay is an important safety step."
+  },
+  {
+    selector: ".doors-button",
+    content:
+      "Finally, you can open the shuttlebay doors. Once the image of the shuttle disappears, you can know that the shuttle has disembarked from your ship."
+  },
+  {
+    selector: ".nothing",
+    content: "To dock a shuttle, follow the steps in the opposite order."
+  }
+];
 class Shuttles extends Component {
   sub = null;
   componentWillReceiveProps(nextProps) {
@@ -48,11 +75,12 @@ class Shuttles extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { docking } = this.props.data;
+    if (!docking) return null;
     return (
       <Container fluid className="shuttles-card">
         {
           <Row>
-            {docking.map((d, i, a) => (
+            {docking.map((d, i) => (
               <div className="shuttleBay" key={d.id}>
                 <ShuttleBay
                   {...d}
@@ -64,6 +92,11 @@ class Shuttles extends Component {
             ))}
           </Row>
         }
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
@@ -113,6 +146,7 @@ class ShuttleBay extends Component {
             <Col sm={6}>
               <Button
                 block
+                className="clamps-button"
                 disabled={!!animating}
                 color="primary"
                 onClick={() => this.toggleShuttle(id, "clamps")}
@@ -123,6 +157,7 @@ class ShuttleBay extends Component {
                 block
                 disabled={!!animating || !doors}
                 color="primary"
+                className="compress-button"
                 onClick={() => this.toggleShuttle(id, "compress")}
               >
                 {compress ? "Decompress" : "Compress"} Bay
@@ -131,6 +166,7 @@ class ShuttleBay extends Component {
                 block
                 disabled={!!animating || compress}
                 color="primary"
+                className="doors-button"
                 onClick={() => this.toggleShuttle(id, "doors")}
               >
                 {doors ? "Open" : "Close"} Doors

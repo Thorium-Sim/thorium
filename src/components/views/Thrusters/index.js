@@ -519,36 +519,37 @@ gamepadLoop(){
           </Col>
         </Row>
         <Row className="indicatorCircles">
-          {!this.props.data.loading && (
-            <Col lg={{ size: 6, offset: 3 }}>
-              <Row>
-                <IndicatorCircle
-                  name={`Yaw: ${Math.min(
-                    359,
-                    Math.max(0, Math.round(thruster.rotation.yaw))
-                  )}`}
-                  required={thruster.rotationRequired.yaw}
-                  current={thruster.rotation.yaw}
-                />
-                <IndicatorCircle
-                  name={`Pitch: ${Math.min(
-                    359,
-                    Math.max(0, Math.round(thruster.rotation.pitch))
-                  )}`}
-                  required={thruster.rotationRequired.pitch}
-                  current={thruster.rotation.pitch}
-                />
-                <IndicatorCircle
-                  name={`Roll: ${Math.min(
-                    359,
-                    Math.max(0, Math.round(thruster.rotation.roll))
-                  )}`}
-                  required={thruster.rotationRequired.roll}
-                  current={thruster.rotation.roll}
-                />
-              </Row>
-            </Col>
-          )}
+          {!this.props.data.loading &&
+            thruster.rotation && (
+              <Col lg={{ size: 6, offset: 3 }}>
+                <Row>
+                  <IndicatorCircle
+                    name={`Yaw: ${Math.min(
+                      359,
+                      Math.max(0, Math.round(thruster.rotation.yaw))
+                    )}`}
+                    required={thruster.rotationRequired.yaw}
+                    current={thruster.rotation.yaw}
+                  />
+                  <IndicatorCircle
+                    name={`Pitch: ${Math.min(
+                      359,
+                      Math.max(0, Math.round(thruster.rotation.pitch))
+                    )}`}
+                    required={thruster.rotationRequired.pitch}
+                    current={thruster.rotation.pitch}
+                  />
+                  <IndicatorCircle
+                    name={`Roll: ${Math.min(
+                      359,
+                      Math.max(0, Math.round(thruster.rotation.roll))
+                    )}`}
+                    required={thruster.rotationRequired.roll}
+                    current={thruster.rotation.roll}
+                  />
+                </Row>
+              </Col>
+            )}
         </Row>
         <Tour
           steps={trainingSteps}

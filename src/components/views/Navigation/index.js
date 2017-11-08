@@ -9,6 +9,14 @@ import Tour from "reactour";
 
 import "./style.css";
 
+const trainingSteps = [
+  {
+    selector: ".number-pad",
+    content:
+      "Using the number pad, input the calculated course coordinates in the Current Course fields to set your course."
+  }
+];
+
 export class NavigationScanner extends Component {
   constructor(props) {
     super(props);
@@ -139,7 +147,7 @@ class Navigation extends Component {
         }
       });
     }
-    if (!nextProps.data.loading) {
+    if (!nextProps.data.loading && nextProps.data.navigation) {
       const navigation = nextProps.data.navigation[0];
       if (navigation) {
         if (navigation.scanning) {
@@ -329,6 +337,7 @@ class Navigation extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { calculatedCourse, enteredCourse, selectedField } = this.state;
+    if (!this.props.data.navigation) return null;
     const navigation = this.props.data.navigation[0];
     const scanning = this.state.scanning || navigation.scanning;
     if (!navigation) return <p>No Navigation System</p>;
@@ -456,13 +465,6 @@ class Navigation extends Component {
     );
   }
 }
-const trainingSteps = [
-  {
-    selector: ".number-pad",
-    content:
-      "Using the number pad, input the calculated course coordinates in the Current Course fields to set your course."
-  }
-];
 
 const NAVIGATION_QUERY = gql`
   query Navigation($simulatorId: ID) {

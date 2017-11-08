@@ -220,19 +220,22 @@ class DamageTeams extends Component {
   };
   assignOfficer = officer => {
     const { selectedTeam } = this.state;
-    this.setState({
-      selectedTeam: Object.assign({}, selectedTeam, {
-        officers: selectedTeam.officers.concat(officer)
-      })
-    });
+
+    selectedTeam.id &&
+      this.setState({
+        selectedTeam: Object.assign({}, selectedTeam, {
+          officers: selectedTeam.officers.concat(officer)
+        })
+      });
   };
   removeOfficer = ({ id }, teamId) => {
     const { selectedTeam } = this.state;
-    this.setState({
-      selectedTeam: Object.assign({}, selectedTeam, {
-        officers: selectedTeam.officers.filter(o => o.id !== id)
-      })
-    });
+    selectedTeam.id &&
+      this.setState({
+        selectedTeam: Object.assign({}, selectedTeam, {
+          officers: selectedTeam.officers.filter(o => o.id !== id)
+        })
+      });
   };
   removeTeam = teamId => {
     this.setState(

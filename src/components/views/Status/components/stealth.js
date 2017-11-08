@@ -60,10 +60,14 @@ class Stealth extends Component {
     this.sub && this.sub();
   }
   render() {
-    const stealth = this.props.data.loading
-      ? {}
-      : this.props.data.stealthField[0];
-    const shields = this.props.data.loading ? [] : this.props.data.shields;
+    const stealth =
+      this.props.data.loading || !this.props.data.stealthField
+        ? {}
+        : this.props.data.stealthField[0];
+    const shields =
+      this.props.data.loading || !this.props.data.shields
+        ? []
+        : this.props.data.shields;
     return (
       <Asset asset="/Ship Views/Top" simulatorId={this.props.simulator.id}>
         {({ src }) => (
@@ -156,6 +160,7 @@ class Blade {
 class Scene {
   constructor() {
     this.canvas = document.getElementById("stealth-canvas");
+    if (!this.canvas) return;
     this.c = this.canvas.getContext("2d");
     this.resize();
     window.addEventListener("resize", this.resize.bind(this));

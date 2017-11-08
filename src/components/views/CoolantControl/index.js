@@ -110,7 +110,7 @@ class CoolantControl extends Component {
     document.addEventListener("mouseup", this.mouseup);
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.coolant) return null;
     const coolant = this.props.data.coolant[0];
     const { systemCoolant } = this.props.data;
     return (

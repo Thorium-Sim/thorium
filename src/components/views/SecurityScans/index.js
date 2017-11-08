@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
 import { Row, Col, Button, Input, Card, CardBody } from "reactstrap";
 import gql from "graphql-tag";
+import Tour from "reactour";
+
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
 import assetPath from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
@@ -27,6 +29,36 @@ const SENSOR_SUB = gql`
     }
   }
 `;
+
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content:
+      "There are sensors located throughout the entire ship which allow you to run scans. These scans could tell you about the location of people on the ship, or any other situation that is happening inside the ship."
+  },
+  {
+    selector: ".scantype",
+    content:
+      "You can select a scan type from this list. This will focus your scan to a specific category."
+  },
+  {
+    selector: ".locations",
+    content:
+      "Select where you want to scan here. The more specific your scan location, the faster your results will come."
+  },
+  {
+    selector: ".scan-input",
+    content: "Type in what you want to scan for here."
+  },
+  {
+    selector: ".begin-scan",
+    content: "Click here to begin your scan."
+  },
+  {
+    selector: ".results",
+    content: "The results of your scan will appear in this box."
+  }
+];
 
 class SecurityScans extends Component {
   constructor(props) {
@@ -169,7 +201,7 @@ class SecurityScans extends Component {
           <Row>
             <h4>Location Select:</h4>
           </Row>
-          <Row>
+          <Row className="locations">
             <Col sm={"auto"}>
               <DeckDropdown
                 selectedDeck={this.state.selectedDeck}
@@ -199,7 +231,7 @@ class SecurityScans extends Component {
           <Row style={{ marginTop: "20px" }}>
             <h4>Scan Input:</h4>
           </Row>
-          <Row>
+          <Row className="scan-input">
             <Col>
               <Input
                 type="text"
@@ -244,7 +276,11 @@ class SecurityScans extends Component {
             <div>
               <Row>
                 <Col sm="auto">
-                  <Button size="lg" onClick={this._scanRequest.bind(this)}>
+                  <Button
+                    className="begin-scan"
+                    size="lg"
+                    onClick={this._scanRequest.bind(this)}
+                  >
                     Begin Scan
                   </Button>
                 </Col>
@@ -269,7 +305,7 @@ class SecurityScans extends Component {
             </div>
           )}
         </Col>
-        <Col sm={{ size: 2, offset: 1 }}>
+        <Col sm={{ size: 2, offset: 1 }} className="scantype">
           <h4>Scan Type:</h4>
           <Button
             block
@@ -317,6 +353,11 @@ class SecurityScans extends Component {
             Subspace
           </Button>
         </Col>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Row>
     );
   }

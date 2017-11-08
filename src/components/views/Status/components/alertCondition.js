@@ -56,10 +56,10 @@ class AlertCondition extends Component {
   };
   render() {
     return (
-      <div>
+      <div className="alert-condition">
         <Label>Alert Condition</Label>
         <div className="button-container">
-          {alertLevels.map(a =>
+          {alertLevels.map(a => (
             <div
               key={`alert-condition-${a.number}`}
               className={`alert-button alert-${a.number}`}
@@ -77,7 +77,7 @@ class AlertCondition extends Component {
                 {a.text}
               </Tooltip>
             </div>
-          )}
+          ))}
         </div>
       </div>
     );

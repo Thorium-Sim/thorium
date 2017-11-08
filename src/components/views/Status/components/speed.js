@@ -41,7 +41,7 @@ class EngineCoreView extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { engines } = this.props.data;
-    if (engines.length === 0) return null;
+    if (!engines || engines.length === 0) return null;
     const onEngine = engines.find(e => e.on);
     const speed = !onEngine
       ? "Full Stop"

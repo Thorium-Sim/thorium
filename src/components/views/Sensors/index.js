@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Button, Row, Col, Card, CardBody } from "reactstrap";
+import Tour from "reactour";
 
 import "./style.css";
 import Grid from "./GridDom";
@@ -39,6 +40,38 @@ const PING_SUB = gql`
   }
 `;
 
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content:
+      "Sensors allow you to get information about what is going on around your ship."
+  },
+  {
+    selector: "#sensorGrid",
+    content:
+      "This is your sensor grid. Your ship is located at the center of the grid, where the lines converge. The top segment is directly in front of your ship, as if you were looking down on your ship from above it. You can see the relative location of objects around your ship on this grid."
+  },
+  {
+    selector: ".ping-controls",
+    content:
+      "Some sensor systems allow you to control how often the sensor grid 'pings', or detects objects around the ship. You can control the rate of pings with these controls. Whenever your sensors pings, it sends out a faint signal which can be detected by other ships. Turning down the rate of sensor pings can keep your ship's position masked."
+  },
+  {
+    selector: ".contact-info",
+    content:
+      "When you move your mouse over a contact, the contact's identification will show up in this box."
+  },
+  {
+    selector: ".processedData",
+    content:
+      "Text will sometimes appear in this box. Your sensors will passively scan and when it finds useful information it will inform you here. Whenever it does, you want to read it out loud so the Captain can know about what is going on around your ship."
+  },
+  {
+    selector: ".scanEntry",
+    content:
+      "If you want to know specific information about a contact around your ship, you can scan it directly. Just type what you want to know, such as the weapons on a ship, the population, size, distance, or anything else you want to know about. Click the scan button to initiate your scan. The results will appear in the box below."
+  }
+];
 class Sensors extends Component {
   constructor(props) {
     super(props);
@@ -63,8 +96,9 @@ class Sensors extends Component {
   componentDidUpdate() {
     const domNode = ReactDOM.findDOMNode(this).querySelector("#threeSensors");
     if (
-      !this.state.dimensions ||
-      this.state.dimensions.width !== domNode.getBoundingClientRect().width
+      domNode &&
+      (!this.state.dimensions ||
+        this.state.dimensions.width !== domNode.getBoundingClientRect().width)
     ) {
       this.setState({
         dimensions: domNode.getBoundingClientRect()
@@ -98,8 +132,8 @@ class Sensors extends Component {
         }
       });
     }
-    const nextSensors = nextProps.data.sensors[0];
-    if (!nextProps.data.loading) {
+    const nextSensors = nextProps.data.sensors && nextProps.data.sensors[0];
+    if (!nextProps.data.loading && nextSensors) {
       if (this.props.data.loading) {
         //First time load
         this.setState({
@@ -198,8 +232,8 @@ class Sensors extends Component {
     });
   }
   render() {
-    //if (this.props.data.error) console.error(this.props.data.error);
-    if (this.props.data.loading) return <p>Loading...</p>;
+    if (this.props.data.loading || !this.props.data.sensors)
+      return <p>Loading...</p>;
     const sensors = this.props.data.sensors[0];
     const { pingMode, pings } = sensors;
     const { hoverContact, ping, pingTime } = this.state;
@@ -218,7 +252,7 @@ class Sensors extends Component {
                   <Col sm="12">
                     <label>Sensor Options:</label>
                   </Col>
-                  <Col sm={12}>
+                  <Col sm={12} className="ping-controls">
                     <Card>
                       <li
                         onClick={() => this.selectPing("active")}
@@ -305,7 +339,7 @@ class Sensors extends Component {
               />
             </Col>
             <Col className="col-sm-3 data">
-              <Row>
+              <Row className="contact-info">
                 <Col className="col-sm-12 contactPictureContainer">
                   {hoverContact.picture ? (
                     <Asset asset={hoverContact.picture}>
@@ -354,6 +388,11 @@ class Sensors extends Component {
             </Col>
           </Row>
         </div>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </div>
     );
   }

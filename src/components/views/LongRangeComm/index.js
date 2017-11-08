@@ -192,7 +192,8 @@ class LongRangeComm extends Component {
     setTimeout(messageShow, 2000);
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.longRangeCommunications)
+      return null;
     const messages = this.props.data.longRangeCommunications[0].messages;
     const messageObj = messages.find(m => m.id === this.state.selectedMessage);
     return (
@@ -283,6 +284,11 @@ class LongRangeComm extends Component {
 }
 
 const trainingSteps = [
+  {
+    selector: "#widget-composer",
+    content:
+      "This screen allows you to send messages from people inside the ship to people outside the ship. You can compose messages using this widget. Just type in the destination and the content of your message."
+  },
   {
     selector: ".message-queue",
     content:

@@ -106,7 +106,7 @@ class Docking extends Component {
     });
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.simulators) return null;
     const { graphic, disabled } = this.state;
     const { clamps, ramps, airlock } = this.props.data.simulators[0].ship;
     return (

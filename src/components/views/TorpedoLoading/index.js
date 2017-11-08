@@ -4,11 +4,29 @@ import { TweenMax } from "gsap";
 import { findDOMNode } from "react-dom";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
+import Tour from "reactour";
 
 import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.css";
 
 import TorpedoFire from "./torpedoFire";
+
+const trainingSteps = [
+  {
+    selector: ".torpedo-loading",
+    content:
+      "Torpedos are explosive projectile weapons. You can use this screen to load torpedos into your launchers."
+  },
+  {
+    selector: ".torpedoButton",
+    content: "Click the load button to see the available torpedos."
+  },
+  {
+    selector: ".torpedoPickScroll",
+    content:
+      "Click on one of the torpedos to load it into your launcher. Recognize that some torpedos have different properties. For example, photon torpedos travel quickly but carry a smaller payload, thus causing less damage. Quantum torpedos do not travel as quickly, but are many times more explosive than photon torpedos."
+  }
+];
 
 const TORPEDO_SUB = gql`
   subscription TorpedosUpdate($simulatorId: ID!) {
@@ -54,6 +72,7 @@ class TorpedoLoading extends Component {
   render() {
     if (this.props.data.loading) return null;
     const torpedos = this.props.data.torpedos;
+    if (!torpedos) return null;
     return (
       <div className="torpedo-loading">
         {torpedos.map(
@@ -64,9 +83,17 @@ class TorpedoLoading extends Component {
               <TorpedoLoader
                 key={t.id}
                 torpedo={t}
+                targeting={this.props.targeting}
                 client={this.props.client}
               />
             )
+        )}
+        {this.props.clientObj && (
+          <Tour
+            steps={trainingSteps}
+            isOpen={this.props.clientObj.training}
+            onRequestClose={this.props.stopTraining}
+          />
         )}
       </div>
     );
@@ -159,7 +186,8 @@ class TorpedoTube extends Transitioner {
       updateScreen,
       unloadTorpedo,
       fireTorpedo,
-      enabled
+      enabled,
+      targeting
     } = this.props;
     return (
       <div style={{ position: "absolute", width: "100%", height: "100%" }}>
@@ -183,14 +211,16 @@ class TorpedoTube extends Transitioner {
               >
                 Unload Torpedo
               </Button>
-              {/*<Button
-                block
-                color="danger"
-                disabled={!enabled}
-                onClick={fireTorpedo}
-              >
-                Fire Torpedo
-              </Button>*/}
+              {targeting && (
+                <Button
+                  block
+                  color="danger"
+                  disabled={!enabled}
+                  onClick={fireTorpedo}
+                >
+                  Fire Torpedo
+                </Button>
+              )}
             </div>
           )}
         </div>
@@ -426,6 +456,7 @@ class TorpedoLoader extends Component {
                 <Comp
                   key={Comp.name}
                   {...this.state}
+                  targeting={this.props.targeting}
                   inventory={torpedo.inventory}
                   loadTorpedo={this.loadTorpedo.bind(this)}
                   unloadTorpedo={this.unloadTorpedo.bind(this)}

@@ -13,6 +13,23 @@ Some improvements:
 - Change the types of the systems to make it easier to sort the systems by name.
 */
 
+const trainingSteps = [
+  {
+    selector: ".powerlevel-containers",
+    content:
+      "This list shows all of the systems on the ship that take power. Drag the green bars next to each system to add or remove power. You must ensure that there is enough power for the system to run. The yellow bars represent the amount of power necessary for the system to function at a certain level."
+  },
+  {
+    selector: ".totalPowerText",
+    content: "This is the total amount of power being used by the ship."
+  },
+  {
+    selector: ".battery-holder",
+    content:
+      "These are the ship’s batteries, if it has any. They show how much power is remaining in the batteries. If you use more power than is being outputted by your reactor, power will draw from the batteries. If they run out of power, you will have to balance your power, and the batteries will need to be recharged. You can recharge batteries from your reactor by using less power than the current reactor output. Don’t let these run out in the middle of space. That would be...problematic."
+  }
+];
+
 const mutation = gql`
   mutation ChangePower($id: ID!, $level: Int!) {
     changePower(systemId: $id, power: $level)
@@ -138,7 +155,7 @@ class PowerDistribution extends Component {
     document.addEventListener("mouseup", this.mouseUp);
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.reactors) return null;
     // Get the batteries, get just the first one.
     const battery = this.props.data.reactors.find(r => r.model === "battery");
     const charge = battery && battery.batteryChargeLevel;
@@ -201,82 +218,74 @@ class PowerDistribution extends Component {
   }
 }
 
-const trainingSteps = [
-  {
-    selector: ".powerlevel-containers",
-    content:
-      "This list shows all of the systems on the ship that take power. Drag the green bars next to each system to add or remove power. You must ensure that there is enough power for the system to run. The yellow bars represent the amount of power necessary for the system to function at a certain level."
-  },
-  {
-    selector: ".totalPowerText",
-    content: "This is the total amount of power being used by the ship."
-  },
-  {
-    selector: ".battery-holder",
-    content:
-      "These are the ship’s batteries, if it has any. They show how much power is remaining in the batteries. If you use more power than is being outputted by your reactor, power will draw from the batteries. If they run out of power, you will have to balance your power, and the batteries will need to be recharged. You can recharge batteries from your reactor by using less power than the current reactor output. Don’t let these run out in the middle of space. That would be...problematic."
-  }
-];
-
-const SystemPower = ({
-  id,
-  name,
-  displayName,
-  damage: { damaged },
-  power: { power, powerLevels },
-  mouseDown,
-  count,
-  height
-}) => {
-  return (
-    <Row>
-      <Col sm="3">
-        <h5
-          className={damaged ? "text-danger" : ""}
-          style={{ padding: 0, margin: 0, marginTop: height / count - 20 }}
-        >
-          {displayName}: {power}
-        </h5>
-      </Col>
-      <Col sm="9">
-        <Measure>
-          {dimensions => (
-            <div
-              className="powerLine"
-              style={{ margin: (height / count - 20) / 2 }}
-            >
-              {powerLevels.map(n => {
-                return (
-                  <div
-                    className="powerLevel"
-                    key={`${id}-powerLine-${n}`}
-                    style={{ left: `${(n + 1) * 14 - 7}px` }}
-                  />
-                );
-              })}
+class SystemPower extends Component {
+  state = {};
+  render() {
+    const {
+      id,
+      displayName,
+      damage: { damaged },
+      power: { power, powerLevels },
+      mouseDown,
+      count,
+      height
+    } = this.props;
+    return (
+      <Row>
+        <Col sm="3">
+          <h5
+            className={damaged ? "text-danger" : ""}
+            style={{ padding: 0, margin: 0, marginTop: height / count - 20 }}
+          >
+            {displayName}: {power}
+          </h5>
+        </Col>
+        <Col sm="9">
+          <Measure
+            bounds
+            onResize={contentRect => {
+              this.setState({ dimensions: contentRect.bounds });
+            }}
+          >
+            {({ measureRef }) => (
               <div
-                className="powerBox zero"
-                onMouseDown={() => mouseDown(id, dimensions)}
-                key={`${id}-${-1}`}
-              />
-              {Array(40)
-                .fill(0)
-                .map((n, i) => {
+                ref={measureRef}
+                className="powerLine"
+                style={{ margin: (height / count - 20) / 2 }}
+              >
+                {powerLevels.map(n => {
                   return (
                     <div
-                      className={`powerBox ${i >= power ? "hidden" : ""}`}
-                      onMouseDown={() => mouseDown(id, dimensions)}
-                      key={`${id}-${i}`}
+                      className="powerLevel"
+                      key={`${id}-powerLine-${n}`}
+                      style={{ left: `${(n + 1) * 14 - 7}px` }}
                     />
                   );
                 })}
-            </div>
-          )}
-        </Measure>
-      </Col>
-    </Row>
-  );
-};
+                <div
+                  className="powerBox zero"
+                  onMouseDown={() => mouseDown(id, this.state.dimensions)}
+                  key={`${id}-${-1}`}
+                />
+                {Array(40)
+                  .fill(0)
+                  .map((n, i) => {
+                    return (
+                      <div
+                        className={`powerBox ${i >= power ? "hidden" : ""}`}
+                        onMouseDown={() => mouseDown(id, this.state.dimensions)}
+                        key={`${id}-${i}`}
+                      />
+                    );
+                  })}
+              </div>
+            )}
+          </Measure>
+        </Col>
+      </Row>
+    );
+  }
+}
 
 const Battery = ({ level = 1 }) => {
   return (

@@ -5,7 +5,7 @@ import { graphql, withApollo } from "react-apollo";
 import Target from "./targeting";
 import Scan from "./transporterScan";
 import DamageOverlay from "../helpers/DamageOverlay";
-//import Tour from "reactour";
+import Tour from "reactour";
 
 import "./style.css";
 
@@ -43,8 +43,8 @@ const TRANSPORTER_SUB = gql`
 const TargetSelect = props => {
   return (
     <Row>
-      <Col sm={{ size: 6, push: 3 }}>
-        <div style={{ height: "60px" }} />
+      <Col sm={{ size: 6, push: 3 }} className="target-destination">
+        <div className="target-input" style={{ height: "60px" }} />
         <h3>Enter Target:</h3>
         <Input
           defaultValue={props.target}
@@ -52,7 +52,7 @@ const TargetSelect = props => {
           placeholder="Enter Target..."
           size="lg"
         />
-        <div style={{ height: "60px" }} />
+        <div className="destination-input" style={{ height: "60px" }} />
         <h3>Enter Destination:</h3>
         <Input
           defaultValue={props.destination}
@@ -208,7 +208,7 @@ class Transporters extends Component {
   }
   render() {
     // Assume that there is only one transporter
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.transporters) return null;
     const transporter = this.props.data.transporters[0] || {};
     return (
       <div className="transporter-control">
@@ -234,33 +234,43 @@ class Transporters extends Component {
             targets={transporter.targets}
           />
         )}
-        {/*<Tour
+        <Tour
           steps={trainingSteps}
           isOpen={this.props.clientObj.training}
           onRequestClose={this.props.stopTraining}
-        />*/}
+        />
       </div>
     );
   }
 }
 
-/*const trainingSteps = [
+const trainingSteps = [
   {
-    selector: ".destination",
+    selector: ".nothing",
     content:
-      "Transporters move objects from one place to another by converting the atoms in the object to energy and reassembling the object on the other side. Input the name of the object you want to transport, as well as your target destination for transporting."
+      "Transporters move objects from one place to another by converting the atoms in the object to energy and reassembling the object on the other side."
   },
   {
-    selector: ".targeting",
+    selector: ".target-destination",
+    content:
+      "Input the name of the object you want to transport, as well as your target destination for transporting. Type something into these boxes, such as 'Apple' for the target and 'Outer Space' for the destination. Click the 'Begin Scan' button before proceeding."
+  },
+  {
+    selector: ".transporterScan",
+    content:
+      "The computer has to find the target and destination before you can proceed. Wait for your scan to complete."
+  },
+  {
+    selector: ".targetBox",
     content:
       "Drag your target sights over the object you are trying to transport until the “Transport Possible” message appears."
   },
   {
-    selector: ".power-up",
+    selector: ".chargeBox",
     content:
-      "Once you have locked onto your target, slowly drag the yellow bars upward from the bottom of this box by hovering over the yellow bars and moving your mouse upward. This will maintaining the connection with the target until the transporters have fully engaged. If you reach the top, your target will successfully transport to your ship."
+      "Once you have locked onto your target, slowly drag the yellow bars upward from the bottom of this box by hovering over the yellow bars and moving your mouse upward. This will maintain the connection with the target until the transporters have fully engaged. If you reach the top, your target will successfully transport to the destination."
   }
-];*/
+];
 
 const TRANSPORTERS_QUERY = gql`
   query GetTransporters($simulatorId: ID) {
