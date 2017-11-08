@@ -11,6 +11,8 @@ import {
   ModalBody,
   ModalFooter
 } from "reactstrap";
+import Tour from "reactour";
+
 import { graphql, withApollo } from "react-apollo";
 import Transitioner from "../helpers/transitioner";
 import ProbeEquipment from "./probeEquipment";
@@ -21,6 +23,34 @@ import "./style.css";
 function d2r(deg) {
   return deg * Math.PI / 180;
 }
+
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content:
+      "Probes are small robots that you can launch into space to perform many functions. Probe functionality is extended by the equipment which you put on the probe. Different kinds of probes can take different equipment and different amounts. Be sure to use the right probe for the right job."
+  },
+  {
+    selector: ".probe-container",
+    content:
+      "These are the probes which are available. If you move your mouse over the probe you can see a brief description. Click on any probe type before continuing."
+  },
+  {
+    selector: ".equipmentList",
+    content:
+      "This is a list of the equipment available to your probe. You can see its name, its size, and how many you have on your ship in this table. Move your mouse over an equipment item to see a description of the equipment item. Click on the item to add it to your probe."
+  },
+  {
+    selector: ".probe-control-buttons",
+    content:
+      "Here you can see the amount of space available on your probe. You cannot put more equipment on a probe than what you have space for. Once you are done adding equipment to your probe, click the 'Prepare Probe' button. Then click the 'Launch' button to confirm the probe you created."
+  },
+  {
+    selector: ".nothing",
+    content:
+      "You will then have to type in the destination. If you equipped your probe with a probe network package, you will instead be shown a diagram of your probe network which will allow you to select where you want to place the probe."
+  }
+];
 
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
@@ -396,7 +426,7 @@ class ProbeConstruction extends Component {
   };
   render() {
     if (this.props.data.loading) return null;
-    const probes = this.props.data.probes[0];
+    const probes = this.props.data.probes && this.props.data.probes[0];
     const { selectedProbeType, launching } = this.state;
     if (!probes) return <p>No Probe Launcher</p>;
     const comps = { ProbeDescription, ProbeEquipment, ProbeAction };
@@ -458,6 +488,11 @@ class ProbeConstruction extends Component {
             launchProbe={this.launchProbe}
           />
         )}
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }

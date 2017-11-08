@@ -3,12 +3,31 @@ import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
+import Tour from "reactour";
 
 import "./style.css";
 
 function d2r(deg) {
   return deg * Math.PI / 180;
 }
+
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content:
+      "Once constructed, a probe network gives you access to a vast amount of information about what surrounds your ship. It augments the information provided by your sensor grid. Creating a probe network is done on the Probe Construction screen. Building probes with a 'Probe Network Package' prepares everything the probe needs to be added to the probe network."
+  },
+  {
+    selector: ".network-grid",
+    content:
+      "This grid shows you the current status of your probe network. Each of the nodes around the edge is where a probe will be located. A circle inside of the node indicates a probe that has been launched to that location. If all of the probes in the network have been launched, you will see the datagrams sent from the probes to your ship."
+  },
+  {
+    selector: ".processedData",
+    content:
+      "Your probe network will collect and summarize important information here. If you ever see new information in this box, be sure to read it to your captain."
+  }
+];
 
 const datagramImage = require(`./datagram.svg`);
 
@@ -48,13 +67,13 @@ class ProbeNetwork extends Component {
     this.subscription && this.subscription();
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.probes) return null;
     const probes = this.props.data.probes[0];
     const { processedData, probes: network } = probes;
     return (
       <Container className="probe-network" style={{ height: "100%" }}>
         <Row style={{ height: "100%" }}>
-          <Col sm={8} style={{ height: "100%" }}>
+          <Col sm={8} style={{ height: "100%" }} className="network-grid">
             <Measure
               bounds
               onResize={contentRect => {
@@ -82,6 +101,11 @@ class ProbeNetwork extends Component {
             </Card>
           </Col>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }

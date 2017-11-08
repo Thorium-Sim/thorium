@@ -111,7 +111,7 @@ export default class ProbeEquipment extends Transitioner {
             </CardBody>
           </Card>
         </Col>
-        <Col sm="4">
+        <Col sm="4" className="probe-control-buttons">
           <p>Total Space: {type.size}</p>
           <p>Space Used: {used}</p>
           <p>Space Remaining: {type.size - used}</p>

@@ -15,8 +15,35 @@ import {
   NavLink*/
 } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
+import Tour from "reactour";
 
 import "./style.css";
+
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content:
+      "You can use this screen to control probes that have already been launched. Use the probe construction screen to launch a probe before controlling it here."
+  },
+  {
+    selector: ".probe-list",
+    content:
+      "This is where the list of probes will show up. If you have a completed probe network, it will also show up in this list. Click on a probe to select it."
+  },
+  {
+    selector: ".equipment",
+    content: "This area shows the equipment on a selected probe."
+  },
+  {
+    selector: ".query-box",
+    content:
+      "You can run probe queries, which are commands to be sent to the probe. These queries can activate equipment on the probe or perform scans or diagnostics."
+  },
+  {
+    selector: ".results",
+    content: "The results of your query will appear in this box"
+  }
+];
 
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
@@ -65,7 +92,7 @@ class ProbeControl extends Component {
     this.subscription && this.subscription();
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.probes) return null;
     const probes = this.props.data.probes[0];
     const { selectedProbe } = this.state;
     if (!probes) return <p>No Probe Launcher</p>;
@@ -77,7 +104,7 @@ class ProbeControl extends Component {
         <Row>
           <Col sm={3}>
             <h3>Probes</h3>
-            <Card>
+            <Card className="probe-list">
               <CardBody>
                 {network && (
                   <div
@@ -121,6 +148,11 @@ class ProbeControl extends Component {
             />
           </Col>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
@@ -214,7 +246,7 @@ class ProbeControlWrapper extends Component {
           </Col>
           <Col sm={8}>
             <h3>Query</h3>
-            <Row>
+            <Row className="query-box">
               <Col sm={9}>
                 {querying ? (
                   <p className="querying">Querying...</p>
