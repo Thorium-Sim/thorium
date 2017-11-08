@@ -4,11 +4,29 @@ import { TweenMax } from "gsap";
 import { findDOMNode } from "react-dom";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
+import Tour from "reactour";
 
 import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.css";
 
 import TorpedoFire from "./torpedoFire";
+
+const trainingSteps = [
+  {
+    selector: ".torpedo-loading",
+    content:
+      "Torpedos are explosive projectile weapons. You can use this screen to load torpedos into your launchers."
+  },
+  {
+    selector: ".torpedoButton",
+    content: "Click the load button to see the available torpedos."
+  },
+  {
+    selector: ".torpedoPickScroll",
+    content:
+      "Click on one of the torpedos to load it into your launcher. Recognize that some torpedos have different properties. For example, photon torpedos travel quickly but carry a smaller payload, thus causing less damage. Quantum torpedos do not travel as quickly, but are many times more explosive than photon torpedos."
+  }
+];
 
 const TORPEDO_SUB = gql`
   subscription TorpedosUpdate($simulatorId: ID!) {
@@ -68,6 +86,13 @@ class TorpedoLoading extends Component {
                 client={this.props.client}
               />
             )
+        )}
+        {this.props.clientObj && (
+          <Tour
+            steps={trainingSteps}
+            isOpen={this.props.clientObj.training}
+            onRequestClose={this.props.stopTraining}
+          />
         )}
       </div>
     );

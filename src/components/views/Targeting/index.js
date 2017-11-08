@@ -3,6 +3,7 @@ import { Row, Col, Container } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
+import Tour from "reactour";
 
 import Grid from "./gridDom";
 import TorpedoLoading from "../TorpedoLoading";
@@ -10,6 +11,29 @@ import { /*PhaserArc, */ PhaserBeam, PhaserFire } from "../PhaserCharging";
 import DamageOverlay from "../helpers/DamageOverlay";
 import TargetControls from "./targetControls";
 import Coordinates from "./coordinates";
+
+const trainingSteps = [
+  {
+    selector: ".targeting-screen",
+    content:
+      "This screen is used to target and attack contacts outside the ship. Be careful - the weapons on your ship are dangerous."
+  },
+  {
+    selector: ".targeting-area",
+    content:
+      "Use this area to lock onto a target. Once a target is locked on, you will be able to acurately fire your weapons at it."
+  },
+  {
+    selector: ".phaser-holder",
+    content:
+      "You can fire your phasers from this area. Phasers are energy weapons which you must first charge before you can fire them. Phasers are effective against shielding systems. Press and hold the fire button to fire your phasers. Keep an eye on the heat - if your phasers overheat, you won't be able to fire them until they cool down."
+  },
+  {
+    selector: ".torpedos",
+    content:
+      "Here you can fire your torpedos at the target. Torpedos are explosive projectile weapons and can deal more damage than phasers. However, you have a limited supply so use them wisely."
+  }
+];
 
 const TARGETING_QUERY = gql`
   query Targeting($simulatorId: ID) {
@@ -355,7 +379,7 @@ class Targeting extends Component {
     return (
       <Container fluid className="targeting-control">
         <Row>
-          <Col sm="5">
+          <Col sm="5" className="targeting-area">
             <DamageOverlay system={targeting} message="Targeting Offline" />
             {targeting.coordinateTargeting ? (
               <Coordinates targeting={targeting} client={this.props.client} />
@@ -434,10 +458,15 @@ class Targeting extends Component {
               targetSystem={this.targetSystem}
             />
           </Col>
-          <Col sm={4}>
+          <Col sm={4} className="torpedos">
             <TorpedoLoading simulator={this.props.simulator} maxLaunchers={1} />
           </Col>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }

@@ -28,9 +28,9 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
         </Col>
         <Col style={{ marginTop: "100px" }} sm={{ size: 4, offset: 1 }}>
           <h2>Integrity:</h2>
-          <h1>{`${Math.round(s.integrity * 100)}%`}</h1>
+          <h1 className="integrity">{`${Math.round(s.integrity * 100)}%`}</h1>
           <h2>Frequency:</h2>
-          <Row>
+          <Row className="frequency">
             <Col sm="auto">
               <h1 className="arrow">
                 <FontAwesome
@@ -57,6 +57,7 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
             color="success"
             size="lg"
             block
+            className="shield-activate"
             disabled={state.disabledButton[s.id]}
             onClick={_toggleShields.bind(this, s)}
           >{`${s.state ? "Lower" : "Raise"} Shields`}</Button>

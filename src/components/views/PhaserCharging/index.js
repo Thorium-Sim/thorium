@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Row, Col, Container, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
+import Tour from "reactour";
+
 //import DamageOverlay from '../helpers/DamageOverlay';
 import "./style.css";
 export { default as PhaserFire } from "./phaserFire";
@@ -31,6 +33,28 @@ const PHASERS_SUB = gql`
   }
 `;
 
+const trainingSteps = [
+  {
+    selector: ".card-phaserCharging",
+    content:
+      "Phasers are energy weapons which must be charged before they can be fired. Use this screen to charge them."
+  },
+  {
+    selector: ".phaserBeam",
+    content:
+      "Click the phaser button on the left to select that phaser. You can also see the phaser's charge here."
+  },
+  {
+    selector: ".phaserButtons",
+    content:
+      "Click on these buttons to charge and discharge an individual phaser beam or all of the phaser beams at once."
+  },
+  {
+    selector: ".phaserArc",
+    content:
+      "You can control the phaser arc here. A wide phaser arc will be more accurate, but will cause less damage because the phaser beam is spread out. A narrow phaser arc will do higher, more precise damage but a fast moving ship could avoid the beam. Use an arc that is appropriate for a specific situation."
+  }
+];
 class PhaserCharging extends Component {
   constructor(props) {
     super(props);
@@ -143,7 +167,7 @@ class PhaserCharging extends Component {
         ))}
         <Row>
           <Col sm={{ size: 6, offset: 3 }}>
-            <Row>
+            <Row className="phaserButtons">
               <Col sm={6}>
                 <Button
                   color="primary"
@@ -189,6 +213,11 @@ class PhaserCharging extends Component {
           client={this.props.client}
           phaserId={phasers.id}
           arc={phasers.arc}
+        />
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
         />
       </Container>
     );

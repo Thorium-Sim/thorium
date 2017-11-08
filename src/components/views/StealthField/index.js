@@ -40,7 +40,7 @@ const STEALTH_SUB = gql`
 
 const trainingSteps = [
   {
-    selector: ".stealth-button",
+    selector: ".stealth-row",
     content:
       "The ship’s stealth field allows it to move through space without being detected by other starships. If your stealth field needs to be activated, click this button to activate or deactivate the stealth field."
   },
@@ -128,7 +128,7 @@ class StealthField extends Component {
           system={stealthField}
           message={`${stealthField.name} Offline`}
         />
-        <Row>
+        <Row className="stealth-row">
           <Col sm="3">
             {stealthField.charge && (
               <Row className="charge-row">

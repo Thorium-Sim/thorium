@@ -9,6 +9,14 @@ import Tour from "reactour";
 
 import "./style.css";
 
+const trainingSteps = [
+  {
+    selector: ".number-pad",
+    content:
+      "Using the number pad, input the calculated course coordinates in the Current Course fields to set your course."
+  }
+];
+
 export class NavigationScanner extends Component {
   constructor(props) {
     super(props);
@@ -457,13 +465,6 @@ class Navigation extends Component {
     );
   }
 }
-const trainingSteps = [
-  {
-    selector: ".number-pad",
-    content:
-      "Using the number pad, input the calculated course coordinates in the Current Course fields to set your course."
-  }
-];
 
 const NAVIGATION_QUERY = gql`
   query Navigation($simulatorId: ID) {

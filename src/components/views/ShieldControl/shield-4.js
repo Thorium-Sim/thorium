@@ -14,9 +14,11 @@ const ShieldData = ({ shields, startLoop, state, _toggleShields }) => {
         style={{ fontSize: "30px" }}
       />
       <h4>{shields.name}</h4>
-      <h5>Integrity: {`${Math.round(shields.integrity * 100)}%`}</h5>
+      <h5 className="integrity">
+        Integrity: {`${Math.round(shields.integrity * 100)}%`}
+      </h5>
       <h5>Frequency:</h5>
-      <Row>
+      <Row className="frequency">
         <Col sm="auto">
           <h4 className="arrow">
             <FontAwesome
@@ -84,7 +86,7 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
                 />
               );
             })}
-            <Row style={{ marginTop: "20px" }}>
+            <Row style={{ marginTop: "20px" }} className="shield-activate">
               <Col sm={{ size: 6 }}>
                 <Button
                   color="success"
