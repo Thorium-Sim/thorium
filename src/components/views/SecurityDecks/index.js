@@ -9,10 +9,39 @@ import {
   Card,
   CardBody
 } from "reactstrap";
+import Tour from "reactour";
+
 import gql from "graphql-tag";
 import { RoomDropdown } from "../helpers/shipStructure";
 
 import "./style.css";
+
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content:
+      "This screen allows you to see the status of each deck on the ship, as well as evacuating decks and sealing them off with bulkhead doors."
+  },
+  {
+    selector: ".deck-list",
+    content:
+      "This is the list of the decks on your ship. Click a deck to access it."
+  },
+  {
+    selector: ".doors",
+    content: "Use this button to open and close the bulkhead doors."
+  },
+  {
+    selector: ".evac",
+    content:
+      "Use this button to evacuate the deck or sound the all-clear. Make sure the bulkhead doors are open before evacuating - otherwise your crew will be stuck on the deck!"
+  },
+  {
+    selector: ".tranzine-gas",
+    content:
+      "Tranzine gas can be released in specific rooms on the ship. Click the button to release or siphon the gas. Be careful - tranzine gas is a dangerous chemical and can cause medical problems to anyone who inhales it."
+  }
+];
 
 const DECK_SUB = gql`
   subscription DeckSubscribe($simulatorId: ID!) {
@@ -125,7 +154,7 @@ class SecurityDecks extends Component {
     }
     return (
       <Row className="security-decks">
-        <Col sm={3}>
+        <Col sm={3} className="deck-list">
           <h4>Decks</h4>
           <ListGroup>
             {decks &&
@@ -156,6 +185,7 @@ class SecurityDecks extends Component {
           <Row>
             <Col sm={6}>
               <Button
+                className="doors"
                 color="warning"
                 block
                 size="lg"
@@ -167,6 +197,7 @@ class SecurityDecks extends Component {
             </Col>
             <Col sm={6}>
               <Button
+                className="evac"
                 color="warning"
                 block
                 size="lg"
@@ -178,7 +209,7 @@ class SecurityDecks extends Component {
             </Col>
           </Row>
           <Row>
-            <Col sm={12}>
+            <Col sm={12} className="tranzine-gas">
               <Card>
                 <CardBody>
                   <h4>Tranzine Gas</h4>
@@ -208,6 +239,11 @@ class SecurityDecks extends Component {
             </Col>
           </Row>
         </Col>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Row>
     );
   }
