@@ -48,6 +48,7 @@ class Shuttles extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { docking } = this.props.data;
+    if (!docking) return null;
     return (
       <Container fluid className="shuttles-card">
         {

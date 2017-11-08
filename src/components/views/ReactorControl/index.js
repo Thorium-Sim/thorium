@@ -97,6 +97,7 @@ class ReactorControl extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { reactors, systems } = this.props.data;
+    if (!reactors) return null;
     const reactor = reactors.find(r => r.model === "reactor");
     const battery = reactors.find(r => r.model === "battery");
     const charge = battery && battery.batteryChargeLevel;

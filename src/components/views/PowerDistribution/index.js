@@ -138,7 +138,7 @@ class PowerDistribution extends Component {
     document.addEventListener("mouseup", this.mouseUp);
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.reactors) return null;
     // Get the batteries, get just the first one.
     const battery = this.props.data.reactors.find(r => r.model === "battery");
     const charge = battery && battery.batteryChargeLevel;

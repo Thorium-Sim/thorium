@@ -208,7 +208,7 @@ class Transporters extends Component {
   }
   render() {
     // Assume that there is only one transporter
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.transporters) return null;
     const transporter = this.props.data.transporters[0] || {};
     return (
       <div className="transporter-control">

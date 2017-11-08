@@ -152,6 +152,7 @@ class CargoControl extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { decks, inventory } = this.props.data;
+    if (!decks || !inventory) return null;
     let { toDeck, toRoom, fromDeck, fromRoom } = this.state;
     if (decks.length <= 1) {
       toDeck = decks[0].id;
