@@ -4,9 +4,11 @@ import gql from "graphql-tag";
 import tinycolor from "tinycolor2";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
+import Tour from "reactour";
 import assetPath from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
-import { findDOMNode } from "react-dom";
+import Arrow from "./arrow";
+import FrequencySignals from "./frequency";
 import "./style.css";
 
 const SHORTRANGE_SUB = gql`
@@ -45,6 +47,30 @@ const SHORTRANGE_SUB = gql`
     }
   }
 `;
+
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content:
+      "This screen allows you to connect to radio frequencies. These frequencies allow you to communicate vocally with people in other starships."
+  },
+  {
+    selector: ".frequencyContainer",
+    content:
+      "Here are the frequency bands that you can transmit on. The arrow on the right is the current frequency you are broadcasting on. You can click and drag that arrow to change the frequency."
+  },
+  {
+    selector: ".frequencyContainer",
+    content:
+      "On the left side are arrows from people who are trying to contact you. Drag your arrow next to the other arrows to connect to them. You can connect to multiple arrows at the same time to have concurrent conversations."
+  },
+  {
+    selector: ".hail-button",
+    content:
+      "Click this button to hail, or start a call; to connect to another person's call; and to disconnect from the current call. To disconnect, you must drag your arrow on top of an already-connected arrow."
+  }
+];
+
 function transparentColor(col) {
   var color = tinycolor(col);
   color.setAlpha(0.1);
@@ -76,7 +102,7 @@ class CommShortRange extends Component {
       });
     }
     //Update the state based on the props
-    if (!nextProps.data.loading) {
+    if (!nextProps.data.loading && nextProps.data.shortRangeComm) {
       const ShortRange = nextProps.data.shortRangeComm[0];
       this.setState({
         frequency: ShortRange.frequency,
@@ -234,7 +260,8 @@ class CommShortRange extends Component {
       return `Hail ${this.getSignal().name || ""}`;
     };
     if (this.props.data.loading) return null;
-    const ShortRange = this.props.data.shortRangeComm[0];
+    const ShortRange =
+      this.props.data.shortRangeComm && this.props.data.shortRangeComm[0];
     if (!ShortRange) return <p>No short range comm</p>;
     return (
       <Container fluid className="shortRangeComm">
@@ -276,6 +303,7 @@ class CommShortRange extends Component {
               </CardBody>
             </Card>
             <Button
+              className="hail-button"
               size="lg"
               onClick={this.commHail.bind(this)}
               block
@@ -364,6 +392,11 @@ class CommShortRange extends Component {
             </Card>
           </Col>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
@@ -405,90 +438,6 @@ const SHORTRANGE_QUERY = gql`
     }
   }
 `;
-
-const Arrow = ({
-  alertLevel,
-  level = 1,
-  mouseDown = () => {},
-  dimensions,
-  flop,
-  connected
-}) => {
-  return (
-    <div
-      onMouseDown={mouseDown.bind(this, dimensions)}
-      style={{
-        height: "100%",
-        transform: `translateY(${level * 97}%) ${flop ? "scaleX(-1)" : ""}`
-      }}
-    >
-      <svg
-        version="1.1"
-        x="0px"
-        y="0px"
-        width="45px"
-        height="20px"
-        viewBox="0 0 45 20"
-        enableBackground="new 0 0 45 20"
-      >
-        <polygon
-          className={`alertFill-${alertLevel || "5"} ${connected
-            ? "connected"
-            : ""}`}
-          points="45,11 45,20 10,20 0,11 "
-        />
-        <polygon
-          className={`alertFill-${alertLevel || "5"} ${connected
-            ? "connected"
-            : ""}`}
-          points="0,9 10,0 45,0 45,9 "
-        />
-      </svg>
-    </div>
-  );
-};
-
-/*const sinPoints = ({ frequency = 0, amplitude = 0, width, height }) => {
-  let sinHeight = height * 2 * 2;
-  return Array(Math.round(sinHeight))
-    .fill(0)
-    .map((_, i) => {
-      if (i % 2 === 1) return i / 2;
-      return Math.sin(i / 2 / frequency) * amplitude + width / 2;
-    });
-};*/
-
-class FrequencySignals extends Component {
-  state = {};
-  componentDidMount() {
-    const el = findDOMNode(this);
-    this.setState({
-      height: el.parentElement.getBoundingClientRect().height
-    });
-  }
-  render() {
-    const { dimensions /*, frequency, amplitude*/ } = this.props;
-    // const height = this.state.height || 0;
-    if (dimensions.width === 0) return <div />;
-    return <div />;
-    /*<Stage width={dimensions.width} height={height}>
-        <Layer>
-          <Line
-            points={sinPoints({
-              frequency: Math.pow(10, 1 - frequency) + 2,
-              amplitude: amplitude * dimensions.width / 3 + 10,
-              height: height,
-              width: dimensions.width
-            })}
-            stroke="green"
-            strokeWidth={4}
-            lineJoin="round"
-            lineCap="round"
-          />
-        </Layer>
-      </Stage>*/
-  }
-}
 
 export default graphql(SHORTRANGE_QUERY, {
   options: ownProps => ({

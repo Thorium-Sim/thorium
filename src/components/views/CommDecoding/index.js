@@ -33,17 +33,27 @@ const DECODING_SUB = gql`
 
 const trainingSteps = [
   {
-    selector: ".enginesBar",
+    selector: ".nothing",
     content:
-      "Use these two knobs to adjust the amplitude and frequency of the waves you are sending. Amplitude is the height of the wave and frequency is how close together the waves are, or how quickly you send out the waves."
+      "When you receive messages from someone outside of your ship, you must first decode them before you can read them."
   },
   {
-    selector: "button.speedBtn",
+    selector: ".incoming-messages",
     content:
-      "Once your yellow intercepting waves line up with the red waves you are receiving, press this button."
+      "This is the list of messages you have received. Click on one to read it or decode it."
   },
   {
-    selector: ".full-stop",
+    selector: ".decode-sliders",
+    content:
+      "Use these two knobs to adjust the amplitude and frequency of the waves you are sending. Amplitude is the height of the wave and frequency is how close together the waves are, or how quickly you send out the waves. To decode the message, you have to line up the yellow wave and the red wave by adjusting the frequency and amplitude."
+  },
+  {
+    selector: ".decode-button ",
+    content:
+      "Once your yellow intercepting waves line up with the red waves you are receiving, press this button to decode the message."
+  },
+  {
+    selector: ".message-field",
     content:
       "The decoded message will appear here. If the message isn’t coming through in a language you understand, continue to refine your intercepting wavelength until the message comes through clearly."
   }
@@ -202,7 +212,8 @@ class Decoding extends Component {
   }
   render() {
     let alertClass = `alertColor${this.props.simulator.alertLevel || 5}`;
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.longRangeCommunications)
+      return null;
     const sys = this.props.data.longRangeCommunications[0];
     let selectedMessage = { a: 20, f: 20 };
     if (this.state.selectedMessage) {
@@ -256,7 +267,7 @@ class Decoding extends Component {
             >
               Decode
             </Button>
-            <Row>
+            <Row className="decode-sliders">
               <Col>
                 <Label>Frequency</Label>
                 <Slider
@@ -292,7 +303,7 @@ class Decoding extends Component {
               </Card>
             </Row>
           </Col>
-          <Col sm={4}>
+          <Col sm={4} className="incoming-messages">
             <h3>Incoming Messages</h3>
             <Card style={{ minHeight: "40px" }}>
               {sys.messages.map(m => (

@@ -62,7 +62,6 @@ export default class DecodingCanvas extends Component {
   render() {
     const { p } = this.state;
     const { ra, rf, f, a, message, decodeProgress, dimensions } = this.props;
-    console.log(dimensions);
     return (
       <svg
         key={"decoding-line"}
@@ -83,31 +82,35 @@ export default class DecodingCanvas extends Component {
           stroke="red"
           strokeWidth={2}
         />
-        <path
-          fill="transparent"
-          stroke={decodeProgress ? "magenta" : "yellow"}
-          strokeWidth={2}
-          d={(decodeProgress
-            ? decodePoints({
-                rf,
-                ra,
-                message,
-                decodeProgress,
-                width: dimensions.width
-              })
-            : sinPoints({
-                f: rf,
-                a: ra,
-                p: p,
-                animate: true,
-                width: dimensions.width
-              })
-          ).reduce(
-            (prev, next, index) =>
-              prev + `${index % 2 === 0 && index !== 0 ? "L" : ""} ${next} `,
-            `M `
+        {rf &&
+          ra && (
+            <path
+              fill="transparent"
+              stroke={decodeProgress ? "magenta" : "yellow"}
+              strokeWidth={2}
+              d={(decodeProgress
+                ? decodePoints({
+                    rf,
+                    ra,
+                    message,
+                    decodeProgress,
+                    width: dimensions.width
+                  })
+                : sinPoints({
+                    f: rf,
+                    a: ra,
+                    p: p,
+                    animate: true,
+                    width: dimensions.width
+                  })
+              ).reduce(
+                (prev, next, index) =>
+                  prev +
+                  `${index % 2 === 0 && index !== 0 ? "L" : ""} ${next} `,
+                `M `
+              )}
+            />
           )}
-        />
       </svg>
     );
   }

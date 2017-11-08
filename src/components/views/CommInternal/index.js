@@ -30,6 +30,11 @@ const INTERNAL_SUB = gql`
 
 const trainingSteps = [
   {
+    selector: ".nothing",
+    content:
+      "This screen allows you to make communications connections to different decks and rooms on the ship."
+  },
+  {
     selector: ".all-decks",
     content: "Click this button to start calling all decks in intercom mode."
   },
@@ -132,7 +137,7 @@ class InternalComm extends Component {
     });
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.internalComm) return null;
     const internalComm = this.props.data.internalComm[0];
     const decks = this.props.data.decks;
     const { deck, room } = this.state;
