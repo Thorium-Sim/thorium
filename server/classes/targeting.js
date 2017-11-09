@@ -1,7 +1,5 @@
 import { System } from "./generic";
 import uuid from "uuid";
-//TODO: Also make it so you can do sensors targeting
-//As well as quadrant targeting
 export default class Targeting extends System {
   constructor(params) {
     super(params);
@@ -73,12 +71,12 @@ export default class Targeting extends System {
   setCalculatedTarget(coordinates, contactId) {
     this.targetedSensorContact = contactId;
     this.calculatedTarget = {};
-    this.calculatedTarget.x = (Math.round(coordinates.x * 100000) /
-      100).toString();
-    this.calculatedTarget.y = (Math.round(coordinates.y * 100000) /
-      100).toString();
-    this.calculatedTarget.z = (Math.round(coordinates.z * 100000) /
-      100).toString();
+    this.calculatedTarget.x = (Math.round(coordinates.x * 100000) / 100
+    ).toString();
+    this.calculatedTarget.y = (Math.round(coordinates.y * 100000) / 100
+    ).toString();
+    this.calculatedTarget.z = (Math.round(coordinates.z * 100000) / 100
+    ).toString();
   }
   setEnteredTarget(coordinates) {
     this.enteredTarget = coordinates;

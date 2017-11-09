@@ -243,7 +243,7 @@ class SensorGrid extends Component {
       document.removeEventListener("mouseup", this._onDocumentMouseUp);
       document.removeEventListener("mousemove", this._onDocumentMouseMove);
       const contact = this.state.draggingContact;
-      const speed = 0.5; //TODO: Replace with selected speed
+      const speed = 0.5;
       this.props.client.mutate({
         mutation: gql`
           mutation MoveSensorContact($id: ID!, $contact: SensorContactInput!) {

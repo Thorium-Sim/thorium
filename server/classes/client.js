@@ -1,6 +1,5 @@
 import uuid from "uuid";
 import App from "../app";
-// TODO: Add the ability to sort clients into groups
 
 export default class Client {
   constructor(params) {

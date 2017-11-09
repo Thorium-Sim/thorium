@@ -37,7 +37,7 @@ export default class Sensors extends System {
       });
     }
   }
-  // TODO: Update to include the scan mode: Active, Passive, Manual
+
   get stealthFactor() {
     if (this.scanning) return 0.5;
     return 0.1;

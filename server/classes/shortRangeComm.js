@@ -118,7 +118,6 @@ class Arrow {
   constructor(params, signals) {
     this.id = params.id || uuid.v4();
     this.signal = params.signal || uuid.v4(); //Useless arrow
-    // TODO: Set a random frequency within the range of the signal
     const signal = signals.find(s => s.id === params.signal);
     if (params.frequency) {
       this.frequency = params.frequency;
