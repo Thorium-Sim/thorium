@@ -158,6 +158,7 @@ class Credits extends Component {
             onClick={this.toggleDebug}
           />
           <h1>Thorium</h1>
+
           {this.state.debug ? (
             <div className="debug">
               <h4>
@@ -169,6 +170,14 @@ class Credits extends Component {
               <h5>Simulator: {simulator.name}</h5>
               <h5>Station: {station.name}</h5>
               <h5>Login Name: {client.loginName}</h5>
+              <h5>
+                Download the client app:{" "}
+                <a download="Thorium.zip" href="/thorium.zip">
+                  Mac
+                </a>
+                {/*| <a download="Thorium.zip" href="/sciences.ogg">Windows</a>
+                | <a download="Thorium.zip" href="/sciences.ogg">Linux</a>*/}
+              </h5>
             </div>
           ) : (
             <div ref="scroll" className="scroll">

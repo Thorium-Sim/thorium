@@ -57,6 +57,7 @@ temp
 thorium-server-*
 thorium-server
 thorium
+Thorium.zip
 
 # unecessary CSS files
 src/**/*.css
