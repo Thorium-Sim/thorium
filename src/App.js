@@ -10,9 +10,7 @@ import { split } from "apollo-link";
 import { getMainDefinition } from "apollo-utilities";
 import { WebSocketLink } from "apollo-link-ws";
 import { ApolloProvider } from "react-apollo";
-//import createNetworkInterface from "apollo-upload-network-interface";
 import App from "./containers/App";
-//import fragmentMatcher from "./helpers/fragmentMatcher";
 import "./app.css";
 
 // Set a clientId for the client

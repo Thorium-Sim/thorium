@@ -33,9 +33,6 @@ export default class Simulator {
     this.alertlevel = alertlevel;
   }
   setLayout(layout) {
-    // TODO: Validate this layout against the available layouts
-    // This would require the front-end modules being available
-    // To the server
     this.layout = layout;
   }
   setTimelineStep(step) {
