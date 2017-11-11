@@ -1,0 +1,71 @@
+.card-advanced-navigation {
+  .crystal-display {
+    font-family: 'LiquidCrystal', monospace;
+    letter-spacing: 2px;
+    font-size: 30px;
+    padding: 3px;
+    text-align: center;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  label {
+    font-size: 24px;
+  }
+  .ship-image {
+    margin: 80px 0;
+  }
+}
+
+$arrowSize: 15px;
+$circleRadius: 100px;
+.thruster-rotor {
+  position: relative;
+  height: $circleRadius*2 + $arrowSize*4;
+  width: $circleRadius*2 + $arrowSize*2;
+  .arrow {
+    cursor: pointer;
+    position: absolute;
+    border-left: transparent $arrowSize solid;
+    border-right: transparent $arrowSize solid;
+    border-top: #888 $arrowSize solid;
+    width: 0;
+    height: 0;
+    transform: translateX($circleRadius) rotate(var(--thruster-rotation));
+    transform-origin: $arrowSize ($circleRadius + $arrowSize);
+    &:active {
+      cursor: grabbing;
+      border-top-color: #333;
+    }
+  }
+  .inner-circle {
+    position: absolute;
+    width: $circleRadius*2;
+    height: $circleRadius*2;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    margin: $arrowSize;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 6px solid #777;
+    .angle-box {
+      font-family: 'LiquidCrystal', monospace;      
+      color: white;
+      font-size: $circleRadius / 3;
+      width: 60%;
+      background-color: #333;
+      text-align: center;
+      border: solid 2px rgba(255,255,255,0.5);
+      user-select: none;
+    }
+  }
+  label {
+    color: white;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    user-select: none;
+  }
+}
