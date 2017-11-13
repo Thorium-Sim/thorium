@@ -164,8 +164,20 @@ class AdvancedNavigation extends Component {
           </Col>
           <Col sm={4}>
             <Row>
-              <Col sm={6}>Impulse Acceleration</Col>
-              <Col sm={6}>Warp Acceleration</Col>
+              <Col sm={6}>
+                Impulse Acceleration
+                <input type="range" min="-4" max="4" step="1" />
+              </Col>
+              <Col sm={6}>
+                Warp Acceleration
+                <input
+                  type="range"
+                  min="0"
+                  max="10"
+                  step="1"
+                  className="warp"
+                />
+              </Col>
             </Row>
           </Col>
         </Row>
