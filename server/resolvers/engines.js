@@ -25,6 +25,15 @@ export const EngineMutations = {
   },
   engineCool(root, args, context) {
     App.handleEvent(args, "engineCool", context);
+  },
+  setEngineAcceleration(root, args, context) {
+    App.handleEvent(args, "setEngineAcceleration", context);
+  },
+  setEngineUseAcceleration(root, args, context) {
+    App.handleEvent(args, "setEngineUseAcceleration", context);
+  },
+  setEngineSpeedFactor(root, args, context) {
+    App.handleEvent(args, "setEngineSpeedFactor", context);
   }
 };
 

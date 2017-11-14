@@ -55,6 +55,9 @@ export default class Simulator {
   radiation(num) {
     this.ship.radiation = num;
   }
+  speed(num) {
+    this.ship.speed = num;
+  }
   sendCode(code, station) {
     this.ship.remoteAccessCodes.push(new RemoteAccess({ code, station }));
   }
@@ -80,6 +83,7 @@ class Ship {
     this.airlock = params.airlock || false; // Closed
     this.bridgeCrew = params.bridgeCrew || 14;
     this.radiation = params.radiation || 0.1;
+    this.speed = params.speed || 0;
     this.selfDestructTime = params.selfDestructTime || null;
     this.selfDestructCode = params.selfDestructCode || null;
     this.selfDestructAuto = params.selfDestructAuto || false; // Automatically black out stations when self destructed

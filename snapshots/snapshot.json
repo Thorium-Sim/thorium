@@ -1834,6 +1834,7 @@
 				"damaged": false,
 				"report": null
 			},
+			"useAcceleration":true,
 			"extra": false,
 			"heat": 0,
 			"heatRate": 1,

@@ -87,3 +87,18 @@ App.on("applyEngineCoolant", ({ id }) => {
   if (engine.coolant === 0 || engine.heat === 0) engine.cool(false);
   pubsub.publish("heatChange", engine);
 });
+App.on("setEngineAcceleration", ({ id, acceleration }) => {
+  const engine = App.systems.find(s => s.id === id);
+  engine.setAcceleration(acceleration);
+  pubsub.publish("engineUpdate", App.systems.find(s => s.type === "Engine"));
+});
+App.on("setEngineUseAcceleration", ({ id, useAcceleration }) => {
+  const engine = App.systems.find(s => s.id === id);
+  engine.toggleAcceleration(useAcceleration);
+  pubsub.publish("engineUpdate", App.systems.find(s => s.type === "Engine"));
+});
+App.on("setEngineSpeedFactor", ({ id, speedFactor }) => {
+  const engine = App.systems.find(s => s.id === id);
+  engine.setSpeedFactor(speedFactor);
+  pubsub.publish("engineUpdate", App.systems.find(s => s.type === "Engine"));
+});

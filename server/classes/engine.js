@@ -8,8 +8,9 @@ export default class Engine extends HeatMixin(System) {
     this.on = params.on || false;
     this.speeds = params.speeds || [];
     this.speed = params.speed || -1;
-    this.useVelocity = params.useVelocity || false; // useVelocity requires negative speed to stop.
-    this.velocity = params.velocity || 0;
+    this.useAcceleration = params.useAcceleration || false; // useAcceleration requires negative speed to stop.
+    this.speedFactor = params.speedFactor || 1250;
+    this.acceleration = params.acceleration || 0;
     this.cooling = false;
     this.displayName = params.displayName || this.name + " Engine";
   }
@@ -52,7 +53,15 @@ export default class Engine extends HeatMixin(System) {
     this.speed = speed;
     this.on = on;
   }
-
+  setAcceleration(num) {
+    this.acceleration = num;
+  }
+  setSpeedFactor(num) {
+    this.speedFactor = num;
+  }
+  toggleAcceleration(tf) {
+    this.useAcceleration = tf;
+  }
   cool(state = true) {
     this.cooling = state;
   }
