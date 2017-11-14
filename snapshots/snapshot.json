@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 253,
+	"_eventsCount": 257,
 	"simulators": [
 		{
 			"id": "test",
@@ -20,6 +20,7 @@
 				"airlock": false,
 				"bridgeCrew": 14,
 				"radiation": 0.1,
+				"speed": 0,
 				"selfDestructTime": null,
 				"selfDestructCode": null,
 				"selfDestructAuto": false,
@@ -46,6 +47,7 @@
 				"airlock": false,
 				"bridgeCrew": 14,
 				"radiation": 0.1,
+				"speed": 0,
 				"selfDestructTime": null,
 				"selfDestructCode": null,
 				"selfDestructAuto": false,
@@ -72,6 +74,7 @@
 				"airlock": false,
 				"bridgeCrew": 14,
 				"radiation": 0.1,
+				"speed": 0,
 				"selfDestructTime": null,
 				"selfDestructCode": null,
 				"selfDestructAuto": false,
@@ -98,6 +101,7 @@
 				"airlock": false,
 				"bridgeCrew": 14,
 				"radiation": 0.1,
+				"speed": 0,
 				"selfDestructTime": null,
 				"selfDestructCode": null,
 				"selfDestructAuto": false,
@@ -1834,7 +1838,6 @@
 				"damaged": false,
 				"report": null
 			},
-			"useAcceleration":true,
 			"extra": false,
 			"heat": 0,
 			"heatRate": 1,
@@ -1845,26 +1848,34 @@
 			"speeds": [
 				{
 					"text": "1/4 Impulse",
-					"number": 0.25
+					"number": 0.25,
+					"velocity": 18750
 				},
 				{
 					"text": "1/2 Impulse",
-					"number": 0.5
+					"number": 0.5,
+					"velocity": 37500
 				},
 				{
 					"text": "3/4 Impulse",
-					"number": 0.75
+					"number": 0.75,
+					"velocity": 56250
 				},
 				{
 					"text": "Full Impulse",
-					"number": 1
+					"number": 1,
+					"velocity": 75000
 				},
 				{
 					"text": "Destructive Impulse",
-					"number": 1.25
+					"number": 1.25,
+					"velocity": 93750
 				}
 			],
-			"speed": 5,
+			"speed": -1,
+			"useAcceleration": true,
+			"speedFactor": 1250,
+			"acceleration": 0,
 			"cooling": false
 		},
 		{
@@ -1902,46 +1913,59 @@
 			"speeds": [
 				{
 					"text": "Warp 1",
-					"number": 1
+					"number": 1,
+					"velocity": 749277
 				},
 				{
 					"text": "Warp 2",
-					"number": 2
+					"number": 2,
+					"velocity": 900321
 				},
 				{
 					"text": "Warp 3",
-					"number": 3
+					"number": 3,
+					"velocity": 1443619
 				},
 				{
 					"text": "Warp 4",
-					"number": 4
+					"number": 4,
+					"velocity": 3265257
 				},
 				{
 					"text": "Warp 5",
-					"number": 5
+					"number": 5,
+					"velocity": 9381363
 				},
 				{
 					"text": "Warp 6",
-					"number": 6
+					"number": 6,
+					"velocity": 30652599
 				},
 				{
 					"text": "Warp 7",
-					"number": 7
+					"number": 7,
+					"velocity": 109919571
 				},
 				{
 					"text": "Warp 8",
-					"number": 8
+					"number": 8,
+					"velocity": 447053408
 				},
 				{
 					"text": "Warp 9",
-					"number": 9
+					"number": 9,
+					"velocity": 2429304561
 				},
 				{
 					"text": "Destructive Warp",
-					"number": 9.54
+					"number": 9.54,
+					"velocity": 9062165670
 				}
 			],
-			"speed": 3,
+			"speed": -1,
+			"useAcceleration": false,
+			"speedFactor": 1,
+			"acceleration": 0,
 			"cooling": false
 		},
 		{
@@ -1990,7 +2014,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 30169000,
+			"timeSincePing": 33204600,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -2080,7 +2104,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 30169000,
+			"timeSincePing": 33204600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2229,7 +2253,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7896559999997896,
+			"batteryChargeLevel": 0.765063999999765,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -3171,6 +3195,9 @@
 				}
 			],
 			"speed": -1,
+			"useAcceleration": false,
+			"speedFactor": 1250,
+			"acceleration": 0,
 			"cooling": false
 		},
 		{
@@ -3220,6 +3247,9 @@
 				}
 			],
 			"speed": -1,
+			"useAcceleration": false,
+			"speedFactor": 1250,
+			"acceleration": 0,
 			"cooling": false
 		},
 		{
@@ -3323,7 +3353,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 25352000,
+			"timeSincePing": 28387600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3355,7 +3385,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 25352000,
+			"timeSincePing": 28387600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4276,26 +4306,34 @@
 			"speeds": [
 				{
 					"text": "1/4 Impulse",
-					"number": 0.25
+					"number": 0.25,
+					"velocity": 18750
 				},
 				{
 					"text": "1/2 Impulse",
-					"number": 0.5
+					"number": 0.5,
+					"velocity": 37500
 				},
 				{
 					"text": "3/4 Impulse",
-					"number": 0.75
+					"number": 0.75,
+					"velocity": 56250
 				},
 				{
 					"text": "Full Impulse",
-					"number": 1
+					"number": 1,
+					"velocity": 75000
 				},
 				{
 					"text": "Destructive Impulse",
-					"number": 1.25
+					"number": 1.25,
+					"velocity": 93750
 				}
 			],
 			"speed": -1,
+			"useAcceleration": true,
+			"speedFactor": 1250,
+			"acceleration": 0,
 			"cooling": false
 		},
 		{
@@ -4405,7 +4443,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 20238900,
+			"timeSincePing": 23274500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4439,7 +4477,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 20238900,
+			"timeSincePing": 23274500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5427,46 +5465,59 @@
 			"speeds": [
 				{
 					"text": "Warp 1",
-					"number": 1
+					"number": 1,
+					"velocity": 749277
 				},
 				{
 					"text": "Warp 2",
-					"number": 2
+					"number": 2,
+					"velocity": 900321
 				},
 				{
 					"text": "Warp 3",
-					"number": 3
+					"number": 3,
+					"velocity": 1443619
 				},
 				{
 					"text": "Warp 4",
-					"number": 4
+					"number": 4,
+					"velocity": 3265257
 				},
 				{
 					"text": "Warp 5",
-					"number": 5
+					"number": 5,
+					"velocity": 9381363
 				},
 				{
 					"text": "Warp 6",
-					"number": 6
+					"number": 6,
+					"velocity": 30652599
 				},
 				{
 					"text": "Warp 7",
-					"number": 7
+					"number": 7,
+					"velocity": 109919571
 				},
 				{
 					"text": "Warp 8",
-					"number": 8
+					"number": 8,
+					"velocity": 447053408
 				},
 				{
 					"text": "Warp 9",
-					"number": 9
+					"number": 9,
+					"velocity": 2429304561
 				},
 				{
 					"text": "Destructive Warp",
-					"number": 9.54
+					"number": 9.54,
+					"velocity": 9062165670
 				}
 			],
 			"speed": -1,
+			"useAcceleration": false,
+			"speedFactor": 1,
+			"acceleration": 0,
 			"cooling": false
 		},
 		{
@@ -5668,6 +5719,9 @@
 				}
 			],
 			"speed": -1,
+			"useAcceleration": false,
+			"speedFactor": 1250,
+			"acceleration": 0,
 			"cooling": false
 		},
 		{
@@ -5707,6 +5761,9 @@
 				}
 			],
 			"speed": -1,
+			"useAcceleration": false,
+			"speedFactor": 1250,
+			"acceleration": 0,
 			"cooling": false
 		},
 		{
@@ -5816,7 +5873,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 8924500,
+			"timeSincePing": 11960100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5850,7 +5907,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 8924500,
+			"timeSincePing": 11960100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -20694,7 +20751,7 @@
 		}
 	],
 	"messages": [],
-	"snapshotVersion": 165,
-	"version": 165,
-	"timestamp": "2017-11-04T21:49:31.151Z"
+	"snapshotVersion": 3112,
+	"version": 3112,
+	"timestamp": "2017-11-14T22:07:17.554Z"
 }
