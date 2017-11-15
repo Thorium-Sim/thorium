@@ -1,5 +1,5 @@
 export default `
   speedChange(simulatorId: ID): Engine
   heatChange(simulatorId: ID): Engine
-  engineUpdate(simulatorId: ID): Float
+  engineUpdate(simulatorId: ID): Engine
 `;

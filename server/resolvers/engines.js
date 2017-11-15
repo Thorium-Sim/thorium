@@ -60,5 +60,26 @@ export const EngineSubscriptions = {
       () => pubsub.asyncIterator("heatChange"),
       rootValue => !!rootValue
     )
+  },
+  engineUpdate: {
+    resolve(rootValue, { simulatorId }) {
+      if (simulatorId) {
+        return rootValue.simulatorId === simulatorId && rootValue;
+      }
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("engineUpdate"),
+      rootValue => !!rootValue
+    )
+  }
+};
+
+export const EngineTypes = {
+  Engine: {
+    velocity(rootValue) {
+      const sim = App.simulators.find(s => s.id === rootValue.simulatorId);
+      return sim ? sim.ship.speed : 0;
+    }
   }
 };

@@ -3,7 +3,8 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card } from "reactstrap";
 import { Asset } from "../../../helpers/assets";
-
+import { throttle } from "../../../helpers/debounce";
+import AnimatedNumber from "react-animated-number";
 import Slider from "./slider";
 import ThrusterRotor from "./thrusterRotor";
 import "./style.css";
@@ -11,19 +12,23 @@ import "./style.css";
 const sliderColors = [
   {
     backgroundColor: "rgba(128,0,0,0.9)",
-    borderColor: "rgba(255,0,0,0.3)"
+    borderColor: "rgba(255,0,0,0.3)",
+    className: "text-danger"
   },
   {
     backgroundColor: "rgba(0,128,0,0.9)",
-    borderColor: "rgba(0,255,0,0.3)"
+    borderColor: "rgba(0,255,0,0.3)",
+    className: "text-success"
   },
   {
     backgroundColor: "rgba(128,0,128,0.9)",
-    borderColor: "rgba(255,0,255,0.3)"
+    borderColor: "rgba(255,0,255,0.3)",
+    className: "text-info"
   },
   {
     backgroundColor: "rgba(0,0,128,0.9)",
-    borderColor: "rgba(0,0,255,0.3)"
+    borderColor: "rgba(0,0,255,0.3)",
+    className: "text-warning"
   }
 ];
 const THRUSTER_SUB = gql`
@@ -52,11 +57,39 @@ const THRUSTER_SUB = gql`
   }
 `;
 
+const ENGINE_SUB = gql`
+  subscription EngineSub($simulatorId: ID) {
+    engineUpdate(simulatorId: $simulatorId) {
+      id
+      name
+      useAcceleration
+      power {
+        power
+        powerLevels
+      }
+      damage {
+        damaged
+      }
+      speeds {
+        text
+        number
+        velocity
+      }
+      heat
+      speed
+      velocity
+      coolant
+      on
+    }
+  }
+`;
+
 class AdvancedNavigation extends Component {
   state = { velocity: 0, acceleration: 0 };
-  subscription = null;
+  thrusterSub = null;
+  engineSub = null;
   componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
+    if (!this.thrusterSub && !nextProps.data.loading) {
       this.thrusterSub = nextProps.data.subscribeToMore({
         document: THRUSTER_SUB,
         variables: {
@@ -65,6 +98,27 @@ class AdvancedNavigation extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
             thrusters: [subscriptionData.rotationChange]
+          });
+        }
+      });
+    }
+    if (!this.engineSub && !nextProps.data.loading) {
+      this.engineSub = nextProps.data.subscribeToMore({
+        document: ENGINE_SUB,
+        variables: {
+          simulatorId: nextProps.simulator.id
+        },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          return Object.assign({}, previousResult, {
+            engines: previousResult.engines.map(e => {
+              if (e.id === subscriptionData.engineUpdate.id) {
+                return subscriptionData.engineUpdate;
+              }
+              return Object.assign({}, e, {
+                on: false,
+                velocity: subscriptionData.engineUpdate.velocity
+              });
+            })
           });
         }
       });
@@ -95,11 +149,45 @@ class AdvancedNavigation extends Component {
       variables
     });
   };
-  handleSlider = (engine, value, numbers) => {
-    let speed = 1250 * 2 * (value - 0.5);
-    this.setState({
-      acceleration: speed
+  handleSlider = throttle((engine, value) => {
+    const mutation = gql`
+      mutation SetEngineAcceleration($id: ID!, $acceleration: Float!) {
+        setEngineAcceleration(id: $id, acceleration: $acceleration)
+      }
+    `;
+    const variables = {
+      id: engine.id,
+      acceleration: engine.useAcceleration ? value * 2 - 1 : value
+    };
+    if (variables.acceleration === 1) variables.acceleration = 0.99;
+    this.props.client.mutate({
+      mutation,
+      variables
     });
+  }, 250);
+  getCurrentSpeed() {
+    const velocity = this.props.data.engines[0].velocity;
+    const speed = this.props.data.engines
+      .reduce((prev, next) => {
+        return prev.concat(next.speeds);
+      }, [])
+      .reduce((prev, next) => {
+        if (next.velocity > velocity) return prev;
+        if (!prev) return next;
+        if (next.velocity > prev.velocity) return next;
+        return prev;
+      }, null);
+    return speed ? speed.text : "Full Stop";
+  }
+  engineSpeedClass = () => {
+    const engines = this.props.data.engines;
+    return sliderColors[engines.findIndex(e => e.on === true)]
+      ? sliderColors[engines.findIndex(e => e.on === true)].className
+      : "text-danger";
+  };
+  velocity = () => {
+    const engines = this.props.data.engines;
+    return engines[0].velocity;
   };
   render() {
     if (this.props.data.loading || !this.props.data.thrusters) return null;
@@ -118,12 +206,12 @@ class AdvancedNavigation extends Component {
           <Col sm={8}>
             <Row>
               <Col sm={4}>
-                <Card className="text-danger crystal-display">1/4 Impulse</Card>
+                <Card className={`${this.engineSpeedClass()} crystal-display`}>
+                  {this.getCurrentSpeed()}
+                </Card>
               </Col>
               <Col sm={5}>
-                <Card className="text-success crystal-display">
-                  {this.state.velocity.toLocaleString()} km/s
-                </Card>
+                <VelocityDisplay velocity={this.velocity()} />
               </Col>
               <Col sm={3}>
                 <label>Velocity</label>
@@ -214,6 +302,12 @@ class AdvancedNavigation extends Component {
                             .reverse()
                             .concat(0)
                     }
+                    disabled={
+                      e.useAcceleration &&
+                      engines.find(
+                        eng => eng.useAcceleration === false && eng.on === true
+                      )
+                    }
                     defaultLevel={e.useAcceleration ? 0.5 : 0}
                     sliderStyle={sliderColors[i]}
                     onChange={(value, numbers) =>
@@ -229,6 +323,26 @@ class AdvancedNavigation extends Component {
   }
 }
 
+class VelocityDisplay extends Component {
+  shouldComponentUpdate(nextProps) {
+    if (this.props.velocity !== nextProps.velocity) {
+      return true;
+    }
+    return false;
+  }
+  render() {
+    return (
+      <Card className="text-success crystal-display">
+        <AnimatedNumber
+          stepPrecision={0}
+          value={this.props.velocity}
+          duration={500}
+          formatValue={n => `${n.toLocaleString()} km/s`}
+        />
+      </Card>
+    );
+  }
+}
 const NAV_QUERY = gql`
   query AdvancedNavigation($simulatorId: ID) {
     thrusters(simulatorId: $simulatorId) {
@@ -270,6 +384,7 @@ const NAV_QUERY = gql`
       }
       heat
       speed
+      velocity
       coolant
       on
     }

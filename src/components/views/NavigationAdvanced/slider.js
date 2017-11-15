@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { throttle } from "../../../helpers/debounce";
 
 import "./slider.css";
 export default class Slider extends Component {
@@ -19,6 +18,7 @@ export default class Slider extends Component {
   triggerChange = level =>
     this.props.onChange && this.props.onChange(level, this.props.numbers);
   mouseDown = () => {
+    if (this.props.disabled) return;
     this.setState({ dragging: true });
     document.addEventListener("mouseup", this.mouseUp);
     document.addEventListener("mousemove", this.mouseMove);
