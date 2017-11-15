@@ -189,6 +189,10 @@ class AdvancedNavigation extends Component {
     const engines = this.props.data.engines;
     return engines[0].velocity;
   };
+  getInitialValue = ({ speeds, velocity }) => {
+    const speedIndex = speeds.findIndex(s => s.velocity === velocity);
+    return speedIndex / (speeds.length - 1);
+  };
   render() {
     if (this.props.data.loading || !this.props.data.thrusters) return null;
     const thrusters = this.props.data.thrusters[0];
@@ -219,7 +223,17 @@ class AdvancedNavigation extends Component {
             </Row>
             <Row>
               <Col sm={4}>
-                <Card className="text-danger crystal-display">Off Course</Card>
+                {Math.round(yawr) === Math.round(yaw) &&
+                Math.round(pitchr) === Math.round(pitch) &&
+                Math.round(rollr) === Math.round(roll) ? (
+                  <Card className="text-success crystal-display">
+                    On Course
+                  </Card>
+                ) : (
+                  <Card className="text-danger crystal-display">
+                    Off Course
+                  </Card>
+                )}
               </Col>
               <Col sm={5}>
                 <Card className="crystal-display">
@@ -308,7 +322,9 @@ class AdvancedNavigation extends Component {
                         eng => eng.useAcceleration === false && eng.on === true
                       )
                     }
-                    defaultLevel={e.useAcceleration ? 0.5 : 0}
+                    defaultLevel={
+                      e.useAcceleration ? 0.5 : this.getInitialValue(e)
+                    }
                     sliderStyle={sliderColors[i]}
                     onChange={(value, numbers) =>
                       this.handleSlider(e, value, numbers)}
@@ -370,6 +386,7 @@ const NAV_QUERY = gql`
       id
       name
       useAcceleration
+      acceleration
       power {
         power
         powerLevels
