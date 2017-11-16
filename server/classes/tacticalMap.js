@@ -29,6 +29,14 @@ class TacticalLayer {
     this.items = [];
     (params.items || []).forEach(i => this.items.push(new TacticalItem(i)));
   }
+  update({ type, image, color, labels, gridCols, gridRows }) {
+    if (type) this.type = type;
+    if (image || image === null) this.image = image;
+    if (color || color === 0) this.color = color;
+    if (labels || labels === false) this.labels = labels;
+    if (gridCols || gridCols === 0) this.gridCols = gridCols;
+    if (gridRows || gridRows === 0) this.gridRows = gridRows;
+  }
 }
 export default class TacticalMap {
   constructor(params) {
@@ -39,5 +47,11 @@ export default class TacticalMap {
     this.frozen = params.frozen || false;
     this.layers = [];
     (params.layers || []).forEach(l => this.layers.push(new TacticalLayer(l)));
+  }
+  addLayer(layer) {
+    this.layers.push(new TacticalLayer(layer));
+  }
+  removeLayer(id) {
+    this.layers = this.layers.filter(l => l.id !== id);
   }
 }

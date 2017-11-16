@@ -27,6 +27,16 @@ type TacticalLayer {
   gridRows: Int
 }
 
+input TacticalLayerInput {
+  id: ID
+  type: TACTICAL_TYPES
+  image: String
+  color: String
+  labels: Boolean
+  gridCols: Int
+  gridRows: Int
+}
+
 type TacticalItem {
   id: ID
 

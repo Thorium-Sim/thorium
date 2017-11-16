@@ -1,3 +1,3 @@
 export default `
-  tacticalMaps:[TacticalMap]
+  tacticalMaps(flightId: ID):[TacticalMap]
 `;
