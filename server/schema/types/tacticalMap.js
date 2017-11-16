@@ -12,6 +12,7 @@ type TacticalMap {
 
 type TacticalLayer {
   id: ID
+  name: String
   type: TACTICAL_TYPES
   
   #Item Options

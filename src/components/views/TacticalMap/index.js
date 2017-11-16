@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { TabContent, TabPane, Nav, NavItem, NavLink, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-
+import Sidebar from "./sidebar";
+import Bottom from "./bottom";
+import Preview from "./preview";
 import "./style.css";
 
 const TACTICALMAP_SUB = gql`
@@ -15,6 +16,7 @@ const TACTICALMAP_SUB = gql`
       }
       layers {
         id
+        name
         type
         items {
           id
@@ -58,7 +60,8 @@ const TACTICALMAP_SUB = gql`
 
 class TacticalMapCore extends Component {
   state = {
-    tacticalMapId: null
+    tacticalMapId: null,
+    layerId: null
   };
   sub = null;
   componentWillReceiveProps(nextProps) {
@@ -80,23 +83,40 @@ class TacticalMapCore extends Component {
     this.sub && this.sub();
   }
   selectTactical = tacticalMapId => {
-    this.setState({ tacticalMapId });
+    this.setState({ tacticalMapId, layerId: null });
+  };
+  selectLayer = layerId => {
+    this.setState({ layerId });
   };
   render() {
     if (this.props.data.loading || !this.props.data.tacticalMaps) return null;
     const { tacticalMaps } = this.props.data;
+    const selectedTactical = tacticalMaps.find(
+      t => t.id === this.state.tacticalMapId
+    );
     return (
       <div className="tacticalmap-core">
-        <div className="preview" />
+        <div className="preview">
+          {selectedTactical && <Preview layers={selectedTactical.layers} />}
+        </div>
         <div className="right-sidebar">
           <Sidebar
             tacticalMapId={this.state.tacticalMapId}
+            layerId={this.state.layerId}
             tacticalMaps={tacticalMaps}
             selectTactical={this.selectTactical}
+            selectLayer={this.selectLayer}
             {...this.props}
           />
         </div>
-        <div className="bottom-bar" />
+        <div className="bottom-bar">
+          <Bottom
+            tacticalMapId={this.state.tacticalMapId}
+            layerId={this.state.layerId}
+            tacticalMaps={tacticalMaps}
+            {...this.props}
+          />
+        </div>
       </div>
     );
   }
@@ -112,6 +132,7 @@ const TACTICALMAP_QUERY = gql`
       }
       layers {
         id
+        name
         type
         items {
           id
@@ -160,118 +181,3 @@ export default graphql(TACTICALMAP_QUERY, {
     }
   })
 })(withApollo(TacticalMapCore));
-class Sidebar extends Component {
-  state = { activeTab: "1" };
-  toggle = tab => {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      });
-    }
-  };
-  addTactical = () => {
-    const name = prompt("What is the name of the new tactical map?");
-    if (name) {
-      const mutation = gql`
-        mutation NewTactical($name: String!) {
-          newTacticalMap(name: $name)
-        }
-      `;
-      const variables = { name };
-      this.props.client.mutate({
-        mutation,
-        variables
-      });
-    }
-  };
-  render() {
-    const { tacticalMapId, tacticalMaps, selectTactical } = this.props;
-    const { activeTab } = this.state;
-    const selectedTactical = tacticalMaps.find(t => t.id === tacticalMapId);
-    return (
-      <div>
-        <Nav tabs>
-          <NavItem>
-            <NavLink
-              className={activeTab === "1" ? "active" : ""}
-              onClick={() => {
-                this.toggle("1");
-              }}
-            >
-              Layers
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              className={activeTab === "2" ? "active" : ""}
-              onClick={() => {
-                this.toggle("2");
-              }}
-            >
-              Saved Tacticals
-            </NavLink>
-          </NavItem>
-        </Nav>
-        <TabContent activeTab={activeTab}>
-          {tacticalMapId && (
-            <TabPane tabId="1">
-              <p>Layers</p>
-              <ul className="layer-list">
-                {selectedTactical.layers.map(l => <li key={l.id}>{l.name}</li>)}
-              </ul>
-              <Button color="success" size="sm">
-                Add Layer
-              </Button>
-              <Button color="warning" size="sm">
-                Clear Tactical
-              </Button>
-            </TabPane>
-          )}
-          <TabPane tabId="2">
-            <p>Saved Maps</p>
-            <ul className="saved-list">
-              {tacticalMaps.filter(t => t.template).map(t => (
-                <li
-                  key={t.id}
-                  className={t.id === tacticalMapId ? "selected" : ""}
-                  onClick={() => selectTactical(t.id)}
-                >
-                  {t.name}
-                </li>
-              ))}
-            </ul>
-            {this.props.dedicated && (
-              <div>
-                <Button color="success" size="sm" onClick={this.addTactical}>
-                  New Map
-                </Button>
-                <Button color="info" size="sm">
-                  Duplicate Map
-                </Button>
-              </div>
-            )}
-            {!this.props.dedicated && (
-              <div>
-                <p>Flight Maps</p>
-                <ul className="saved-list">
-                  {tacticalMaps.filter(t => !t.template).map(t => (
-                    <li
-                      key={t.id}
-                      className={t.id === tacticalMapId ? "selected" : ""}
-                      onClick={() => selectTactical(t.id)}
-                    >
-                      {t.name}
-                    </li>
-                  ))}
-                </ul>
-                <Button color="success" size="sm">
-                  Save as Template Map
-                </Button>
-              </div>
-            )}
-          </TabPane>
-        </TabContent>
-      </div>
-    );
-  }
-}

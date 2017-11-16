@@ -5,8 +5,8 @@ export default `
   duplicateTacticalMap(id: ID!, name: String!):String
   loadTacticalMap(id: ID!, flightId: ID!):String
 
-  addTacticalMapLayer(mapId: ID!):String
-  updateTacticalMapLayer(mapId: ID!):String
+  addTacticalMapLayer(mapId: ID!, name: String!):String
+  updateTacticalMapLayer(mapId: ID!, layer: TacticalLayerInput!):String
   removeTacticalMapLayer(mapId: ID!):String
 
   addTacticalMapItem(mapId: ID!, layerId: ID!):String

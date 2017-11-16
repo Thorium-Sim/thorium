@@ -12,9 +12,20 @@ App.on("updateTacticalMap", ({ id }) => {});
 App.on("freezeTacticalMap", ({ id }) => {});
 App.on("duplicateTacticalMap", ({ id }) => {});
 App.on("loadTacticalMap", ({ id }) => {});
-App.on("addTacticalMapLayer", ({ mapId }) => {});
-App.on("updateTacticalMapLayer", ({ mapId }) => {});
+
+App.on("addTacticalMapLayer", ({ mapId, name }) => {
+  const map = App.tacticalMaps.find(t => t.id === mapId);
+  map.addLayer({ name });
+  pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+});
+App.on("updateTacticalMapLayer", ({ mapId, layer }) => {
+  const map = App.tacticalMaps.find(t => t.id === mapId);
+  map.updateLayer(layer);
+  pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+});
+App.on("reorderTacticalMapLayer", ({ mapId }) => {});
 App.on("removeTacticalMapLayer", ({ mapId }) => {});
+
 App.on("addTacticalMapItem", ({ mapId }) => {});
 App.on("updateTacticalMapItem", ({ mapId }) => {});
 App.on("removeTacticalMapItem", ({ mapId }) => {});

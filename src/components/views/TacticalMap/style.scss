@@ -2,24 +2,21 @@
   display: grid;
   grid-template-columns: 70vw auto;
   grid-template-rows: (70vw * 9/16) auto;
-  grid-template-areas: 
-  "preview sidebar"
-  "bottom sidebar";
+  grid-template-areas: "preview sidebar" "bottom sidebar";
   .preview {
     grid-area: preview;
-    background-color: rebeccapurple;
   }
   .right-sidebar {
     grid-area: sidebar;
   }
   .bottom-bar {
     grid-area: bottom;
-    min-height: 200px;
-    background-color: darkcyan;
+    min-height: 235px;
   }
-  .layer-list, .saved-list {
+  .layer-list,
+  .saved-list {
     min-height: 300px;
-    border: solid 1px rgba(128,128,128,0.5);
+    border: solid 1px rgba(128, 128, 128, 0.5);
     margin: 3px;
     padding: 0;
     list-style: none;
@@ -27,7 +24,62 @@
       padding: 2px;
     }
     .selected {
-      background-color: rgba(128,128,128,0.5);
+      background-color: rgba(128, 128, 128, 0.5);
+    }
+  }
+}
+.tactical-map-view {
+  height: 100%;
+  background-color: black;
+  position: relative;
+  .tactical-map-layer {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+  .tactical-grid {
+    height: 100%;
+    .cols,
+    .rows,
+    .label-cols,
+    .label-rows {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: space-evenly;
+    }
+    .cols {
+      flex-direction: row;
+      div {
+        width: 1px;
+        height: 100%;
+      }
+    }
+    .rows {
+      flex-direction: column;
+      div {
+        width: 100%;
+        height: 1px;
+      }
+    }
+    .labels {
+      color: white;
+      text-align: center;
+      .label-cols {
+        flex-direction: row;
+        align-items: flex-end;  
+        div {
+          width: 3ch;
+        }    
+      }
+      .label-rows {
+        flex-direction: column;
+        align-items: flex-start; 
+        div {
+          height: 2ch;
+        } 
+      }
     }
   }
 }

@@ -21,9 +21,10 @@ class TacticalItem {
 class TacticalLayer {
   constructor(params) {
     this.id = params.id || uuid.v4();
+    this.name = params.name || "Layer";
     this.type = params.type || "grid";
     this.image = params.image || null;
-    this.color = params.color || "rgb(0,255,0)";
+    this.color = params.color || "#00ff00";
     this.labels = params.labels || false;
     this.gridCols = params.gridCols || 16;
     this.gridRows = params.gridRows || 9;
@@ -54,5 +55,8 @@ export default class TacticalMap {
   }
   removeLayer(id) {
     this.layers = this.layers.filter(l => l.id !== id);
+  }
+  updateLayer(layer) {
+    this.layers.find(l => l.id === layer.id).update(layer);
   }
 }
