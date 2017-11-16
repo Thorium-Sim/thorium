@@ -13,6 +13,9 @@ export const TacticalMapQueries = {
 };
 
 export const TacticalMapMutations = {
+  newTacticalMap(rootValue, args, context) {
+    App.handleEvent(args, "newTacticalMap", context);
+  },
   updateTacticalMap(rootValue, args, context) {
     App.handleEvent(args, "updateTacticalMap", context);
   },
@@ -46,7 +49,7 @@ export const TacticalMapMutations = {
 };
 
 export const TacticalMapSubscriptions = {
-  tacticalMapUpdate: {
+  tacticalMapsUpdate: {
     resolve(rootValue, { flightId }) {
       let returnRes = rootValue;
       if (flightId) {
@@ -55,7 +58,7 @@ export const TacticalMapSubscriptions = {
       return returnRes;
     },
     subscribe: withFilter(
-      () => pubsub.asyncIterator("tacticalMapUpdate"),
+      () => pubsub.asyncIterator("tacticalMapsUpdate"),
       rootValue => !!(rootValue && rootValue.length)
     )
   }

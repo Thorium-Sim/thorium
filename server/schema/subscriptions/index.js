@@ -31,3 +31,4 @@ export messages from "./messages";
 export isochips from "./isochips";
 export docking from "./docking";
 export coreFeed from "./coreFeed";
+export tacticalMap from "./tacticalMap";

@@ -1,6 +1,13 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
+import * as Classes from "../classes";
 
+App.on("newTacticalMap", ({ name, flightId }) => {
+  App.tacticalMaps.push(
+    new Classes.TacticalMap({ name, flightId, template: !flightId })
+  );
+  pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+});
 App.on("updateTacticalMap", ({ id }) => {});
 App.on("freezeTacticalMap", ({ id }) => {});
 App.on("duplicateTacticalMap", ({ id }) => {});

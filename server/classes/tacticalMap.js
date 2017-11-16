@@ -1,3 +1,4 @@
+import uuid from "uuid";
 class TacticalItem {
   constructor(params) {
     this.id = params.id || uuid.v4();
