@@ -1,0 +1,26 @@
+.tacticalmap-core {
+  display: grid;
+  grid-template-columns: 70vw auto;
+  grid-template-rows: (70vw * 9/16) auto;
+  grid-template-areas: 
+  "preview sidebar"
+  "bottom sidebar";
+  .preview {
+    grid-area: preview;
+    background-color: rebeccapurple;
+  }
+  .right-sidebar {
+    grid-area: sidebar;
+    background-color: navy;
+  }
+  .bottom-bar {
+    grid-area: bottom;
+    min-height: 200px;
+    background-color: darkcyan;
+  }
+  .layer-list, .saved-list {
+    min-height: 300px;
+    border: solid 1px rgba(255,255,255,0.5);
+    margin: 3px;
+  }
+}

@@ -21,6 +21,7 @@ export { default as Communications } from "./Communications";
 export { default as Stars } from "./Stars";
 export { default as Video } from "./Video";
 export { default as Blackout } from "./blackout";
+export { default as TacticalMap } from "./TacticalMap";
 
 export { default as InformationConfig } from "./Information/config";
 export { default as InternalSensorsConfig } from "./InternalSensors/config";
@@ -29,3 +30,4 @@ export { default as PlanetaryScanConfig } from "./PlanetaryScan/config";
 export { default as CourseCalculationConfig } from "./CourseCalculation/config";
 export { default as ShipViewConfig } from "./ShipView/config";
 export { default as VideoConfig } from "./Video/config";
+export { default as TacticalMapConfig } from "./TacticalMap/config";
