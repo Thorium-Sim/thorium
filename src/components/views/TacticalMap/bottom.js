@@ -1,37 +1,14 @@
 import React, { Component } from "react";
 import { Row, Col, Input, Label, FormGroup } from "reactstrap";
 import gql from "graphql-tag";
+import { ChromePicker } from "react-color";
+
+import ImageConfig from "./imageConfig";
 
 const configs = {
   gridConfig: ({ selectedLayer, updateLayer }) => {
     return (
       <Row>
-        <Col>
-          <FormGroup>
-            <Label>
-              Color{" "}
-              <Input
-                type="color"
-                defaultValue={selectedLayer.color}
-                onChange={evt => updateLayer("color", evt.target.value)}
-                style={{
-                  height: "40px",
-                  width: "90px"
-                }}
-              />
-            </Label>
-          </FormGroup>
-          <FormGroup>
-            <Label>
-              Labels?{" "}
-              <Input
-                type="checkbox"
-                checked={selectedLayer.labels}
-                onChange={evt => updateLayer("labels", evt.target.checked)}
-              />
-            </Label>
-          </FormGroup>
-        </Col>
         <Col>
           <FormGroup>
             <Label>
@@ -59,11 +36,32 @@ const configs = {
               />
             </Label>
           </FormGroup>
+          <FormGroup>
+            <Label>
+              Labels?{" "}
+              <Input
+                type="checkbox"
+                checked={selectedLayer.labels}
+                onChange={evt => updateLayer("labels", evt.target.checked)}
+              />
+            </Label>
+          </FormGroup>
+        </Col>
+        <Col>
+          <ChromePicker
+            color={selectedLayer.color}
+            onChangeComplete={color =>
+              updateLayer(
+                "color",
+                `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color
+                  .rgb.a})`
+              )}
+          />
         </Col>
       </Row>
     );
   },
-  imageConfig: ({ selectedLayer, client, tacticalMapId, layerId }) => {},
+  imageConfig: ImageConfig,
   objectsConfig: ({ selectedLayer, client, tacticalMapId, layerId }) => {}
 };
 
@@ -111,9 +109,9 @@ export default class Bottom extends Component {
     const selectedLayer = selectedMap.layers.find(l => l.id === layerId);
     return (
       <div>
-        <h3>{selectedLayer.name}</h3>
         <Row>
           <Col sm={3}>
+            <h3>{selectedLayer.name}</h3>
             <Input
               type="select"
               value={selectedLayer.type}
@@ -125,7 +123,6 @@ export default class Bottom extends Component {
             </Input>
           </Col>
           <Col sm={9}>
-            <h4>Config</h4>
             {(() => {
               const Comp = configs[`${selectedLayer.type}Config`];
               return (

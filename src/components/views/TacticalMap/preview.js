@@ -1,4 +1,5 @@
 import React from "react";
+import { Asset } from "../../../helpers/assets";
 
 const layerComps = {
   grid: ({ gridCols, gridRows, color, labels }) => {
@@ -39,7 +40,15 @@ const layerComps = {
       </div>
     );
   },
-  image: () => {},
+  image: ({ image }) => {
+    return (
+      <div className="tactical-image">
+        <Asset asset={image}>
+          {({ src }) => <img src={src} alt="Background" />}
+        </Asset>
+      </div>
+    );
+  },
   objects: () => {}
 };
 export default ({ layers }) => {

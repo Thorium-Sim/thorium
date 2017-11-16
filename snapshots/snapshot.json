@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 253,
+	"_eventsCount": 266,
 	"simulators": [
 		{
 			"id": "test",
@@ -1989,7 +1989,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 30169000,
+			"timeSincePing": 30499700,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -2079,7 +2079,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 30169000,
+			"timeSincePing": 30499700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2228,7 +2228,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7896559999997896,
+			"batteryChargeLevel": 0.786975999999787,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -3322,7 +3322,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 25352000,
+			"timeSincePing": 25682700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3354,7 +3354,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 25352000,
+			"timeSincePing": 25682700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4404,7 +4404,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 20238900,
+			"timeSincePing": 20569600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4438,7 +4438,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 20238900,
+			"timeSincePing": 20569600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5815,7 +5815,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 8924500,
+			"timeSincePing": 9255200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5849,7 +5849,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 8924500,
+			"timeSincePing": 9255200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -18698,6 +18698,13 @@
 			"fullPath": "/Sounds",
 			"name": "Sounds",
 			"class": "AssetFolder"
+		},
+		{
+			"id": "db7e3f65-98b9-488c-8f2e-0353c18855c3",
+			"folderPath": "/Viewscreen",
+			"fullPath": "/Viewscreen/Tactical",
+			"name": "Tactical",
+			"class": "AssetFolder"
 		}
 	],
 	"assetContainers": [
@@ -19331,6 +19338,30 @@
 			"fullPath": "/Sounds/sciences",
 			"folderId": "074b07b0-21e4-45eb-ad38-1562cd274076",
 			"name": "sciences",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "ca4adab9-81cb-45cd-a4ce-daa955b2d72a",
+			"folderPath": "/Viewscreen/Tactical",
+			"fullPath": "/Viewscreen/Tactical/Clouds",
+			"folderId": "db7e3f65-98b9-488c-8f2e-0353c18855c3",
+			"name": "Clouds",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "fa114b2f-be1a-4d7b-b336-fb957a2dd579",
+			"folderPath": "/Viewscreen/Tactical",
+			"fullPath": "/Viewscreen/Tactical/Planets",
+			"folderId": "db7e3f65-98b9-488c-8f2e-0353c18855c3",
+			"name": "Planets",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "36c8cf13-4e7d-4423-ac79-0de0e0dbc257",
+			"folderPath": "/Viewscreen/Tactical",
+			"fullPath": "/Viewscreen/Tactical/Stars",
+			"folderId": "db7e3f65-98b9-488c-8f2e-0353c18855c3",
+			"name": "Stars",
 			"class": "AssetContainer"
 		}
 	],
@@ -20670,6 +20701,33 @@
 			"url": "/assets/Sounds/sciences/default.wav",
 			"simulatorId": "default",
 			"class": "AssetObject"
+		},
+		{
+			"id": "deb942ea-b467-42cd-90f2-38047815c2c5",
+			"containerPath": "/Viewscreen/Tactical",
+			"containerId": "ca4adab9-81cb-45cd-a4ce-daa955b2d72a",
+			"fullPath": "/Viewscreen/Tactical/Clouds/default.png",
+			"url": "/assets/Viewscreen/Tactical/Clouds/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "f5ec1cee-55a5-4f26-81ee-42d7e3190bfc",
+			"containerPath": "/Viewscreen/Tactical",
+			"containerId": "fa114b2f-be1a-4d7b-b336-fb957a2dd579",
+			"fullPath": "/Viewscreen/Tactical/Planets/default.png",
+			"url": "/assets/Viewscreen/Tactical/Planets/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "2dbcc830-438a-4d47-bd3b-0d44d072b1cb",
+			"containerPath": "/Viewscreen/Tactical",
+			"containerId": "36c8cf13-4e7d-4423-ac79-0de0e0dbc257",
+			"fullPath": "/Viewscreen/Tactical/Stars/default.png",
+			"url": "/assets/Viewscreen/Tactical/Stars/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
 		}
 	],
 	"viewscreens": [
@@ -20693,7 +20751,8 @@
 		}
 	],
 	"messages": [],
-	"snapshotVersion": 165,
-	"version": 165,
-	"timestamp": "2017-11-04T21:49:31.151Z"
+	"tacticalMaps": [],
+	"snapshotVersion": 339,
+	"version": 339,
+	"timestamp": "2017-11-16T22:57:43.306Z"
 }
