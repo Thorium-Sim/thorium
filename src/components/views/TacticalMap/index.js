@@ -20,6 +20,7 @@ const TACTICALMAP_SUB = gql`
         type
         items {
           id
+          layerId
           font
           label
           fontSize
@@ -84,10 +85,55 @@ class TacticalMapCore extends Component {
     this.sub && this.sub();
   }
   selectTactical = tacticalMapId => {
-    this.setState({ tacticalMapId, layerId: null });
+    this.setState({ tacticalMapId, layerId: null, objectId: null });
   };
   selectLayer = layerId => {
-    this.setState({ layerId });
+    this.setState({ layerId, objectId: null });
+  };
+  selectObject = object => {
+    this.setState({ layerId: object.layerId, objectId: object.id });
+  };
+  updateObject = (key, value) => {
+    const variables = {
+      mapId: this.state.tacticalMapId,
+      layerId: this.state.layerId,
+      item: {
+        id: this.state.objectId,
+        [key]: value
+      }
+    };
+    const mutation = gql`
+      mutation UpdateTacticalItem(
+        $mapId: ID!
+        $layerId: ID!
+        $item: TacticalItemInput!
+      ) {
+        updateTacticalMapItem(mapId: $mapId, layerId: $layerId, item: $item)
+      }
+    `;
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  removeObject = objectId => {
+    const mutation = gql`
+      mutation RemoveTacticalItem($mapId: ID!, $layerId: ID!, $itemId: ID!) {
+        removeTacticalMapItem(mapId: $mapId, layerId: $layerId, itemId: $itemId)
+      }
+    `;
+    const variables = {
+      mapId: this.state.tacticalMapId,
+      layerId: this.state.layerId,
+      itemId: objectId || this.state.objectId
+    };
+    this.setState({
+      objectId: null
+    });
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
   };
   render() {
     if (this.props.data.loading || !this.props.data.tacticalMaps) return null;
@@ -98,7 +144,15 @@ class TacticalMapCore extends Component {
     return (
       <div className="tacticalmap-core">
         <div className="preview">
-          {selectedTactical && <Preview layers={selectedTactical.layers} />}
+          {selectedTactical && (
+            <Preview
+              layers={selectedTactical.layers}
+              selectObject={this.selectObject}
+              objectId={this.state.objectId}
+              updateObject={this.updateObject}
+              removeObject={this.removeObject}
+            />
+          )}
         </div>
         <div className="right-sidebar">
           <Sidebar
