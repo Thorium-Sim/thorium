@@ -7,6 +7,7 @@ export default `
 
   addTacticalMapLayer(mapId: ID!, name: String!):String
   updateTacticalMapLayer(mapId: ID!, layer: TacticalLayerInput!):String
+  reorderTacticalMapLayer(mapId: ID!, layer: ID!, order: Int!):String
   removeTacticalMapLayer(mapId: ID!):String
 
   addTacticalMapItem(mapId: ID!, layerId: ID!):String

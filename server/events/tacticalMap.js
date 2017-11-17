@@ -23,7 +23,11 @@ App.on("updateTacticalMapLayer", ({ mapId, layer }) => {
   map.updateLayer(layer);
   pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
 });
-App.on("reorderTacticalMapLayer", ({ mapId }) => {});
+App.on("reorderTacticalMapLayer", ({ mapId, layer, order }) => {
+  const map = App.tacticalMaps.find(t => t.id === mapId);
+  map.reorderLayer(layer, order);
+  pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+});
 App.on("removeTacticalMapLayer", ({ mapId }) => {});
 
 App.on("addTacticalMapItem", ({ mapId }) => {});

@@ -59,4 +59,21 @@ export default class TacticalMap {
   updateLayer(layer) {
     this.layers.find(l => l.id === layer.id).update(layer);
   }
+  reorderLayer(layer, order) {
+    function move(array, oldIndex, newIndex) {
+      if (newIndex >= array.length) {
+        let k = newIndex - array.length;
+        while (k-- + 1) {
+          array.push(undefined);
+        }
+      }
+      array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
+      return array; // for testing purposes
+    }
+    this.layers = move(
+      this.layers,
+      this.layers.findIndex(t => t.id === layer),
+      order
+    );
+  }
 }

@@ -1,7 +1,36 @@
 import React, { Component } from "react";
 import { TabContent, TabPane, Nav, NavItem, NavLink, Button } from "reactstrap";
 import gql from "graphql-tag";
+import { SortableContainer, SortableElement } from "react-sortable-hoc";
 
+const SortableItem = SortableElement(({ item, selectedLayer, selectLayer }) => (
+  <li
+    onMouseDown={() => selectLayer(item)}
+    className={`${item.id === selectedLayer ? "selected" : ""} list-group-item`}
+  >
+    {item.name}
+  </li>
+));
+
+const SortableList = SortableContainer(
+  ({ items, selectedLayer, selectLayer }) => {
+    return (
+      <ul style={{ padding: 0 }}>
+        {items.map((item, index) => {
+          return (
+            <SortableItem
+              key={`${item.id}-layer`}
+              index={index}
+              item={item}
+              selectedLayer={selectedLayer}
+              selectLayer={selectLayer}
+            />
+          );
+        })}
+      </ul>
+    );
+  }
+);
 export default class Sidebar extends Component {
   state = { activeTab: "1" };
   toggle = tab => {
@@ -35,6 +64,27 @@ export default class Sidebar extends Component {
         }
       `;
       const variables = { mapId: this.props.tacticalMapId, name };
+      this.props.client.mutate({
+        mutation,
+        variables
+      });
+    }
+  };
+  onSortEnd = ({ oldIndex, newIndex }) => {
+    if (oldIndex !== newIndex) {
+      const mutation = gql`
+        mutation ReorderTacticalLayer($mapId: ID!, $layer: ID!, $order: Int!) {
+          reorderTacticalMapLayer(mapId: $mapId, layer: $layer, order: $order)
+        }
+      `;
+      const selectedTactical = this.props.tacticalMaps.find(
+        t => t.id === this.props.tacticalMapId
+      );
+      const variables = {
+        mapId: this.props.tacticalMapId,
+        layer: selectedTactical.layers[oldIndex].id,
+        order: newIndex
+      };
       this.props.client.mutate({
         mutation,
         variables
@@ -80,17 +130,15 @@ export default class Sidebar extends Component {
             <TabPane tabId="1">
               <h3>{selectedTactical.name}</h3>
               <p>Layers</p>
-              <ul className="layer-list">
-                {selectedTactical.layers.map(l => (
-                  <li
-                    key={l.id}
-                    className={l.id === layerId ? "selected" : ""}
-                    onClick={() => selectLayer(l.id)}
-                  >
-                    {l.name}
-                  </li>
-                ))}
-              </ul>
+              <div className="layer-list">
+                <SortableList
+                  items={selectedTactical.layers}
+                  onSortEnd={this.onSortEnd}
+                  selectedLayer={layerId}
+                  selectLayer={l => selectLayer(l.id)}
+                />
+              </div>
+
               <Button color="success" size="sm" onClick={this.addLayer}>
                 Add Layer
               </Button>
