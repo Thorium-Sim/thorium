@@ -16,6 +16,35 @@ class TacticalItem {
     this.wasd = params.wasd || false;
     this.ijkl = params.ijkl || false;
   }
+  update({
+    label,
+    font,
+    fontSize,
+    fontColor,
+    flash,
+    icon,
+    size,
+    speed,
+    velocity,
+    location,
+    destination,
+    wasd,
+    ijkl
+  }) {
+    if (label || label === null) this.label = label;
+    if (font) this.font = font;
+    if (fontSize) this.fontSize = fontSize;
+    if (fontColor) this.fontColor = fontColor;
+    if (flash || flash === false) this.flash = flash;
+    if (icon || icon === "") this.icon = icon;
+    if (size) this.size = size;
+    if (speed || speed === 0) this.speed = speed;
+    if (velocity) this.velocity = velocity;
+    if (location) this.location = location;
+    if (destination) this.destination = destination;
+    if (wasd || wasd === false) this.wasd = wasd;
+    if (ijkl || ijkl === false) this.ijkl = ijkl;
+  }
 }
 
 class TacticalLayer {
@@ -38,6 +67,16 @@ class TacticalLayer {
     if (labels || labels === false) this.labels = labels;
     if (gridCols || gridCols === 0) this.gridCols = gridCols;
     if (gridRows || gridRows === 0) this.gridRows = gridRows;
+  }
+  addItem(item) {
+    this.items.push(new TacticalItem(item));
+  }
+  updateItem(item) {
+    const itemObj = this.items.find(i => i.id === item.id);
+    itemObj && itemObj.update(item);
+  }
+  removeItem(itemId) {
+    this.items = this.items.filter(i => i.id !== itemId);
   }
 }
 export default class TacticalMap {
@@ -75,5 +114,17 @@ export default class TacticalMap {
       this.layers.findIndex(t => t.id === layer),
       order
     );
+  }
+  removeLayer(layerId) {
+    this.layers = this.layers.filter(l => l.id !== layerId);
+  }
+  addItemToLayer(layerId, item) {
+    this.layers.find(l => l.id === layerId).addItem(item);
+  }
+  updateItemInLayer(layerId, item) {
+    this.layers.find(l => l.id === layerId).updateItem(item);
+  }
+  removeItemFromLayer(layerId, itemId) {
+    this.layers.find(l => l.id === layerId).removeItem(itemId);
   }
 }

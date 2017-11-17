@@ -28,8 +28,24 @@ App.on("reorderTacticalMapLayer", ({ mapId, layer, order }) => {
   map.reorderLayer(layer, order);
   pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
 });
-App.on("removeTacticalMapLayer", ({ mapId }) => {});
+App.on("removeTacticalMapLayer", ({ mapId, layerId }) => {
+  const map = App.tacticalMaps.find(t => t.id === mapId);
+  map.removeLayer(layerId);
+  pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+});
 
-App.on("addTacticalMapItem", ({ mapId }) => {});
-App.on("updateTacticalMapItem", ({ mapId }) => {});
-App.on("removeTacticalMapItem", ({ mapId }) => {});
+App.on("addTacticalMapItem", ({ mapId, layerId, item }) => {
+  const map = App.tacticalMaps.find(t => t.id === mapId);
+  map.addItemToLayer(layerId, item);
+  pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+});
+App.on("updateTacticalMapItem", ({ mapId, layerId, item }) => {
+  const map = App.tacticalMaps.find(t => t.id === mapId);
+  map.updateItemInLayer(layerId, item);
+  pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+});
+App.on("removeTacticalMapItem", ({ mapId, layerId, itemId }) => {
+  const map = App.tacticalMaps.find(t => t.id === mapId);
+  map.removeItemFromLayer(layerId, itemId);
+  pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+});

@@ -72,5 +72,12 @@ export const TacticalMapTypes = {
     flight(rootValue) {
       return App.flights.find(f => f.id === rootValue.flightId);
     }
+  },
+  TacticalLayer: {
+    items(rootValue) {
+      return rootValue.items.map(i =>
+        Object.assign({}, i, { layerId: rootValue.id })
+      );
+    }
   }
 };

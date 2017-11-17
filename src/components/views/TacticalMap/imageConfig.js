@@ -49,7 +49,7 @@ export default graphql(ASSET_QUERY, {
   name: "assetData",
   options: () => ({
     variables: {
-      names: ["Tactical"]
+      names: ["Tactical Backgrounds"]
     }
   })
 })(ImageConfig);

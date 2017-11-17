@@ -61,7 +61,8 @@ const TACTICALMAP_SUB = gql`
 class TacticalMapCore extends Component {
   state = {
     tacticalMapId: null,
-    layerId: null
+    layerId: null,
+    objectId: null
   };
   sub = null;
   componentWillReceiveProps(nextProps) {
@@ -136,6 +137,7 @@ const TACTICALMAP_QUERY = gql`
         type
         items {
           id
+          layerId
           font
           label
           fontSize

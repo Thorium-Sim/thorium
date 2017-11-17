@@ -11,7 +11,7 @@
   }
   .bottom-bar {
     grid-area: bottom;
-    min-height: 235px;
+    height: 235px;
   }
   .layer-list,
   .saved-list {
@@ -27,6 +27,15 @@
       background-color: rgba(128, 128, 128, 0.5);
     }
   }
+  .tactical-object {
+    height: 100%;
+    .dragging-img {
+      position: fixed;
+      left: 0;
+      top: 0;
+      max-width: 100px;
+    }
+  }
 }
 .tactical-map-view {
   height: 100%;
@@ -38,6 +47,7 @@
     width: 100%;
   }
   .tactical-grid {
+    pointer-events: none;
     height: 100%;
     .cols,
     .rows,
@@ -83,11 +93,23 @@
     }
   }
   .tactical-image {
+    pointer-events: none;
     width: 100%;
     height: 100%;
     img {
       width: 100%;
       height: 100%;
+    }
+  }
+  .tactical-objects {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    .tactical-icon {
+      width: 100%;
+      height: 100%;
+      position: absolute;
     }
   }
 }

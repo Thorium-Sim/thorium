@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 import { ChromePicker } from "react-color";
 
 import ImageConfig from "./imageConfig";
+import ObjectConfig from "./objectConfig";
 
 const configs = {
   gridConfig: ({ selectedLayer, updateLayer }) => {
@@ -62,7 +63,7 @@ const configs = {
     );
   },
   imageConfig: ImageConfig,
-  objectsConfig: ({ selectedLayer, client, tacticalMapId, layerId }) => {}
+  objectsConfig: ObjectConfig
 };
 
 export default class Bottom extends Component {
@@ -108,8 +109,8 @@ export default class Bottom extends Component {
     const selectedMap = tacticalMaps.find(t => t.id === tacticalMapId);
     const selectedLayer = selectedMap.layers.find(l => l.id === layerId);
     return (
-      <div>
-        <Row>
+      <div style={{ height: "100%" }}>
+        <Row style={{ height: "100%" }}>
           <Col sm={3}>
             <h3>{selectedLayer.name}</h3>
             <Input
@@ -127,6 +128,9 @@ export default class Bottom extends Component {
               const Comp = configs[`${selectedLayer.type}Config`];
               return (
                 <Comp
+                  tacticalMapId={tacticalMapId}
+                  layerId={layerId}
+                  client={this.props.client}
                   selectedLayer={selectedLayer}
                   updateLayer={this.updateLayer}
                 />

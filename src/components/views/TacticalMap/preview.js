@@ -49,7 +49,25 @@ const layerComps = {
       </div>
     );
   },
-  objects: () => {}
+  objects: ({ items }) => (
+    <div className="tactical-objects">
+      {items.map(i => (
+        <Asset asset={i.icon} key={i.id}>
+          {({ src }) => (
+            <div
+              className={"tactical-icon"}
+              style={{
+                transform: `translate(${i.location.x * 100}%, ${i.location.y *
+                  100}%)`
+              }}
+            >
+              <img draggable={false} src={src} />
+            </div>
+          )}
+        </Asset>
+      ))}
+    </div>
+  )
 };
 export default ({ layers }) => {
   return (

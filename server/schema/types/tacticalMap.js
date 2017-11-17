@@ -40,7 +40,8 @@ input TacticalLayerInput {
 
 type TacticalItem {
   id: ID
-
+  layerId: ID
+  
   #Text
   label: String
   font: String
@@ -63,6 +64,32 @@ type TacticalItem {
   ijkl: Boolean
 
 }
+
+input TacticalItemInput {
+  id: ID
+  
+    #Text
+    label: String
+    font: String
+    fontSize: Float
+    fontColor: String
+    flash: Boolean
+  
+    #Icon
+    icon: String  
+    size: Float
+  
+    #Animation
+    speed: Float
+    velocity: CoordinatesInput
+    location: CoordinatesInput
+    destination: CoordinatesInput
+  
+    #Keyboard Control
+    wasd: Boolean
+    ijkl: Boolean
+}
+
 enum TACTICAL_TYPES {
  grid
  image
