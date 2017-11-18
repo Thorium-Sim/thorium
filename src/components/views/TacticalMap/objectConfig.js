@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
+import { Row, Col, Input, Label, FormGroup } from "reactstrap";
+import { ChromePicker } from "react-color";
 import FileExplorer from "./fileExplorer";
 
 export default class ObjectConfig extends Component {
@@ -71,15 +73,22 @@ export default class ObjectConfig extends Component {
     });
   };
   render() {
+    const { objectId, selectedLayer, updateObject } = this.props;
     const { draggingObject } = this.state;
+    const selectedObject = selectedLayer.items.find(i => i.id === objectId);
     return (
       <div className="tactical-object">
-        <FileExplorer
-          onMouseDown={this.mouseDown}
-          directory="/Viewscreen/Tactical Icons"
-        />
+        {objectId ? (
+          <ObjectSettings {...selectedObject} updateObject={updateObject} />
+        ) : (
+          <FileExplorer
+            onMouseDown={this.mouseDown}
+            directory="/Viewscreen/Tactical Icons"
+          />
+        )}
         {draggingObject && (
           <img
+            alt="draggers"
             className="dragging-img"
             draggable={false}
             src={draggingObject.url}
@@ -92,3 +101,162 @@ export default class ObjectConfig extends Component {
     );
   }
 }
+
+const ObjectSettings = ({
+  speed,
+  size,
+  font,
+  fontSize,
+  fontColor,
+  label,
+  flash,
+  ijkl,
+  wasd,
+  updateObject
+}) => {
+  return (
+    <Row>
+      <Col>
+        <FormGroup style={{ marginBottom: 0 }}>
+          <Label>
+            Size
+            <Input
+              type="range"
+              min="0.1"
+              max="10"
+              step={0.1}
+              value={size}
+              onChange={evt => updateObject("size", evt.target.value)}
+            />
+          </Label>
+        </FormGroup>
+        <FormGroup>
+          <Label>
+            Speed
+            <Input
+              type="select"
+              size="sm"
+              value={speed}
+              onChange={evt => updateObject("speed", evt.target.value)}
+            >
+              <option value="1000">Instant</option>
+              <option value="5">Warp</option>
+              <option value="2">Very Fast</option>
+              <option value="1">Fast</option>
+              <option value="0.6">Moderate</option>
+              <option value="0.4">Slow</option>
+              <option value="0.1">Very Slow</option>
+            </Input>
+          </Label>
+        </FormGroup>
+        <FormGroup check>
+          <Label check>
+            <Input
+              type="checkbox"
+              checked={flash}
+              onChange={evt => updateObject("flash", evt.target.checked)}
+            />
+            Flash
+          </Label>
+        </FormGroup>
+        <FormGroup check>
+          <Label check>
+            <Input
+              type="checkbox"
+              checked={wasd}
+              onChange={evt => updateObject("wasd", evt.target.checked)}
+            />
+            WASD Keys
+          </Label>
+        </FormGroup>
+        <FormGroup check>
+          <Label check>
+            <Input
+              type="checkbox"
+              checked={ijkl}
+              onChange={evt => updateObject("ijkl", evt.target.checked)}
+            />
+            IJKL Keys
+          </Label>
+        </FormGroup>
+      </Col>
+      <Col>
+        <FormGroup>
+          <Label>
+            Label
+            <Input
+              type="textarea"
+              value={label}
+              onChange={evt => updateObject("label", evt.target.value)}
+            />
+          </Label>
+        </FormGroup>
+      </Col>
+      <Col>
+        <FormGroup>
+          <Label>
+            Font
+            <Input
+              type="text"
+              value={font}
+              onChange={evt => updateObject("font", evt.target.value)}
+            />
+          </Label>
+        </FormGroup>
+        <FormGroup>
+          <Label>
+            Font Size
+            <Input
+              type="range"
+              min="0"
+              max="255"
+              step="1"
+              value={fontSize}
+              onChange={evt => updateObject("fontSize", evt.target.value)}
+            />
+          </Label>
+        </FormGroup>
+      </Col>
+      <Col>
+        <ChromePicker
+          color={fontColor}
+          onChangeComplete={color =>
+            updateObject(
+              "fontColor",
+              `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb
+                .a})`
+            )}
+        />
+      </Col>
+    </Row>
+  );
+};
+/*
+id
+layerId
+font
+label
+fontSize
+fontColor
+icon
+size
+speed
+velocity {
+  x
+  y
+  z
+}
+location {
+  x
+  y
+  z
+}
+destination {
+  x
+  y
+  z
+}
+flash
+ijkl
+wasd
+*/

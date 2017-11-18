@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Input, Label, FormGroup } from "reactstrap";
+import { Row, Col, Input, Label, FormGroup, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { ChromePicker } from "react-color";
 
@@ -37,14 +37,14 @@ const configs = {
               />
             </Label>
           </FormGroup>
-          <FormGroup>
-            <Label>
-              Labels?{" "}
+          <FormGroup check>
+            <Label check>
               <Input
                 type="checkbox"
                 checked={selectedLayer.labels}
                 onChange={evt => updateLayer("labels", evt.target.checked)}
-              />
+              />{" "}
+              Labels?
             </Label>
           </FormGroup>
         </Col>
@@ -103,8 +103,39 @@ export default class Bottom extends Component {
       variables
     });
   };
+  addLabel = () => {
+    const mutation = gql`
+      mutation AddTacticalItem(
+        $mapId: ID!
+        $layerId: ID!
+        $item: TacticalItemInput!
+      ) {
+        addTacticalMapItem(mapId: $mapId, layerId: $layerId, item: $item)
+      }
+    `;
+    const variables = {
+      mapId: this.props.tacticalMapId,
+      layerId: this.props.layerId,
+      item: {
+        label: "Label",
+        icon: null,
+        location: { x: 0.5, y: 0.5, z: 0 },
+        destination: { x: 0.5, y: 0.5, z: 0 }
+      }
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
-    const { tacticalMapId, layerId, tacticalMaps } = this.props;
+    const {
+      tacticalMapId,
+      layerId,
+      objectId,
+      tacticalMaps,
+      updateObject
+    } = this.props;
     if (!tacticalMapId || !layerId) return null;
     const selectedMap = tacticalMaps.find(t => t.id === tacticalMapId);
     const selectedLayer = selectedMap.layers.find(l => l.id === layerId);
@@ -122,6 +153,11 @@ export default class Bottom extends Component {
               <option value="image">Image</option>
               <option value="objects">Objects</option>
             </Input>
+            {selectedLayer.type === "objects" && (
+              <Button size="sm" color="primary" onClick={this.addLabel}>
+                Add Label
+              </Button>
+            )}
           </Col>
           <Col sm={9}>
             {(() => {
@@ -130,9 +166,11 @@ export default class Bottom extends Component {
                 <Comp
                   tacticalMapId={tacticalMapId}
                   layerId={layerId}
+                  objectId={objectId}
                   client={this.props.client}
                   selectedLayer={selectedLayer}
                   updateLayer={this.updateLayer}
+                  updateObject={updateObject}
                 />
               );
             })()}

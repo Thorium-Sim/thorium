@@ -5,7 +5,6 @@ import gql from "graphql-tag";
 import FontAwesome from "react-fontawesome";
 import "./fileExplorer.css";
 
-const noop = () => {};
 class FileExplorer extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +21,7 @@ class FileExplorer extends Component {
   render() {
     if (this.props.data.loading || !this.props.data.assetFolders) return null;
     const assetFolders = this.props.data.assetFolders;
-    const { directory } = this.props;
+    const { directory, selectedFiles = [] } = this.props;
     return (
       <div className="file-explorer">
         <Row>
@@ -80,8 +79,14 @@ class FileExplorer extends Component {
                       this.props.onMouseUp &&
                       this.props.onMouseUp(evt, container)}
                   >
-                    <div className="file-container">
-                      <img draggable="false" src={object.url} />
+                    <div
+                      className={`file-container ${selectedFiles.indexOf(
+                        container.fullPath
+                      ) > -1
+                        ? "selected"
+                        : ""}`}
+                    >
+                      <img alt="object" draggable="false" src={object.url} />
                       <p>{container.name}</p>
                     </div>
                   </Col>

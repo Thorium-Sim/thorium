@@ -15,7 +15,7 @@
   }
   .layer-list,
   .saved-list {
-    min-height: 300px;
+    min-height: 150px;
     border: solid 1px rgba(128, 128, 128, 0.5);
     margin: 3px;
     padding: 0;
@@ -78,17 +78,17 @@
       text-align: center;
       .label-cols {
         flex-direction: row;
-        align-items: flex-end;  
+        align-items: flex-end;
         div {
           width: 3ch;
-        }    
+        }
       }
       .label-rows {
         flex-direction: column;
-        align-items: flex-start; 
+        align-items: flex-start;
         div {
           height: 2ch;
-        } 
+        }
       }
     }
   }
@@ -115,7 +115,13 @@
     .image-holder {
       pointer-events: all;
       position: absolute;
-      display: inline-block;
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .icon-label {
+      text-align: center;
     }
     .select-loc {
       width: 100%;
@@ -134,19 +140,16 @@
         right: -5px;
         top: -5px;
         transform: rotate(90deg);
-        
       }
       img:nth-child(3) {
         left: -5px;
         bottom: -5px;
         transform: rotate(-90deg);
-        
       }
       img:nth-child(4) {
         right: -5px;
         bottom: -5px;
         transform: rotate(180deg);
-        
       }
     }
   }

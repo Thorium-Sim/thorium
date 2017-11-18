@@ -82,6 +82,8 @@ class TacticalIcon extends Component {
   }
   mouseDown = evt => {
     this.dragging = true;
+    evt.stopPropagation();
+    evt.preventDefault();
     this.props.selectObject(this.props);
     this.setState({
       targetBounds: evt.target.getBoundingClientRect()
@@ -118,57 +120,176 @@ class TacticalIcon extends Component {
   };
   render() {
     const { location } = this.state;
-    const { icon, id, objectId } = this.props;
+    const {
+      icon,
+      id,
+      objectId,
+      size,
+      label,
+      font,
+      fontColor,
+      fontSize
+    } = this.props;
+    if (icon) {
+      return (
+        <Asset asset={icon}>
+          {({ src }) => (
+            <IconMarkup
+              mouseDown={this.mouseDown}
+              location={location}
+              size={size}
+              objectId={objectId}
+              id={id}
+              src={src}
+              font={font}
+              fontColor={fontColor}
+              fontSize={fontSize}
+              label={label}
+            />
+          )}
+        </Asset>
+      );
+    }
     return (
-      <Asset asset={icon}>
-        {({ src }) => (
-          <div
-            className={"tactical-icon"}
-            style={{
-              transform: `translate(${location.x * 100}%, ${location.y * 100}%)`
-            }}
-          >
-            <div className="image-holder" onMouseDown={this.mouseDown}>
-              {objectId === id && (
-                <div className="select-loc">
-                  <img draggable={false} src={require("./cornerLoc.svg")} />
-                  <img draggable={false} src={require("./cornerLoc.svg")} />
-                  <img draggable={false} src={require("./cornerLoc.svg")} />
-                  <img draggable={false} src={require("./cornerLoc.svg")} />
-                </div>
-              )}
-              <img draggable={false} src={src} />
-            </div>
-          </div>
-        )}
-      </Asset>
+      <IconMarkup
+        mouseDown={this.mouseDown}
+        location={location}
+        size={size}
+        objectId={objectId}
+        id={id}
+        font={font}
+        fontColor={fontColor}
+        fontSize={fontSize}
+        label={label}
+      />
     );
   }
 }
 
-export default ({
-  layers,
-  selectObject,
+const IconMarkup = ({
+  mouseDown,
+  location,
+  size,
   objectId,
-  updateObject,
-  removeObject
-}) => {
-  return (
-    <div className="tactical-map-view">
-      {layers.map(l => {
-        const Comp = layerComps[l.type];
-        return (
-          <div key={l.id} className="tactical-map-layer">
-            <Comp
-              {...l}
-              selectObject={selectObject}
-              objectId={objectId}
-              updateObject={updateObject}
-              removeObject={removeObject}
-            />
-          </div>
-        );
-      })}
+  id,
+  src,
+  font,
+  fontColor,
+  fontSize,
+  label
+}) => (
+  <div
+    className={"tactical-icon"}
+    style={{
+      transform: `translate(${location.x * 100}%, ${location.y * 100}%)`
+    }}
+  >
+    <div
+      className="image-holder"
+      onMouseDown={mouseDown}
+      style={{ transform: `scale(${size})` }}
+    >
+      {objectId === id && (
+        <div className="select-loc">
+          <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
+          <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
+          <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
+          <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
+        </div>
+      )}
+      {src && <img alt="icon" draggable={false} src={src} />}
+      <pre
+        className="icon-label"
+        style={{ fontFamily: font, color: fontColor, fontSize }}
+      >
+        {label}
+      </pre>
     </div>
-  );
-};
+  </div>
+);
+export default class TacticalMapPreview extends Component {
+  keypress = evt => {
+    const distance = 0.005;
+    const ratio = 16 / 9;
+    const wasd = ["KeyW", "KeyA", "KeyS", "KeyD"];
+    const ijkl = ["KeyI", "KeyJ", "KeyK", "KeyL"];
+    const movement = { x: 0, y: 0 };
+    switch (evt.code) {
+      case "KeyW":
+      case "KeyI":
+        movement.y = -1 * distance * ratio;
+        break;
+      case "KeyA":
+      case "KeyJ":
+        movement.x = -1 * distance;
+        break;
+      case "KeyS":
+      case "KeyK":
+        movement.y = distance * ratio;
+        break;
+      case "KeyD":
+      case "KeyL":
+        movement.x = distance;
+        break;
+      default:
+        break;
+    }
+    this.props.layers.forEach(l => {
+      if (l.type === "objects") {
+        l.items.forEach(i => {
+          if (
+            (wasd.indexOf(evt.code) > -1 && i.wasd) ||
+            (ijkl.indexOf(evt.code) > -1 && i.ijkl)
+          ) {
+            this.props.updateObject(
+              "location",
+              {
+                x: i.location.x + movement.x,
+                y: i.location.y + movement.y,
+                z: i.location.z
+              },
+              i
+            );
+          }
+        });
+      }
+    });
+  };
+  componentDidMount() {
+    document.addEventListener("keydown", this.keypress);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.keypress);
+  }
+  render() {
+    const {
+      layers,
+      selectObject,
+      objectId,
+      updateObject,
+      removeObject
+    } = this.props;
+    return (
+      <div className="tactical-map-view">
+        {layers.map(l => {
+          const Comp = layerComps[l.type];
+          return (
+            <div
+              key={l.id}
+              className="tactical-map-layer"
+              onMouseDown={() => selectObject(null)}
+            >
+              <Comp
+                {...l}
+                selectObject={selectObject}
+                objectId={objectId}
+                updateObject={updateObject}
+                removeObject={removeObject}
+              />
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+}

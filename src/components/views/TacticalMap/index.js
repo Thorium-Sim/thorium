@@ -91,14 +91,18 @@ class TacticalMapCore extends Component {
     this.setState({ layerId, objectId: null });
   };
   selectObject = object => {
-    this.setState({ layerId: object.layerId, objectId: object.id });
+    if (object) {
+      this.setState({ layerId: object.layerId, objectId: object.id });
+    } else {
+      this.setState({ objectId: null });
+    }
   };
-  updateObject = (key, value) => {
+  updateObject = (key, value, object) => {
     const variables = {
       mapId: this.state.tacticalMapId,
-      layerId: this.state.layerId,
+      layerId: object ? object.layerId : this.state.layerId,
       item: {
-        id: this.state.objectId,
+        id: object ? object.id : this.state.objectId,
         [key]: value
       }
     };
@@ -168,7 +172,9 @@ class TacticalMapCore extends Component {
           <Bottom
             tacticalMapId={this.state.tacticalMapId}
             layerId={this.state.layerId}
+            objectId={this.state.objectId}
             tacticalMaps={tacticalMaps}
+            updateObject={this.updateObject}
             {...this.props}
           />
         </div>
