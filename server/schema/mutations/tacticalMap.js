@@ -1,7 +1,7 @@
 export default `
   newTacticalMap(name: String!, flightId: ID):String
   updateTacticalMap(id:ID!):String
-  freezeTacticalMap(id: ID!):String
+  freezeTacticalMap(id: ID!, freeze: Boolean!):String
   duplicateTacticalMap(id: ID!, name: String!):String
   loadTacticalMap(id: ID!, flightId: ID!):String
 

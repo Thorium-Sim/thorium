@@ -1,17 +1,36 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
+import uuid from "uuid";
 
-App.on("newTacticalMap", ({ name, flightId }) => {
+App.on("newTacticalMap", ({ id, name, flightId }) => {
   App.tacticalMaps.push(
-    new Classes.TacticalMap({ name, flightId, template: !flightId })
+    new Classes.TacticalMap({ id, name, flightId, template: !flightId })
   );
   pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
 });
 App.on("updateTacticalMap", ({ id }) => {});
-App.on("freezeTacticalMap", ({ id }) => {});
-App.on("duplicateTacticalMap", ({ id }) => {});
-App.on("loadTacticalMap", ({ id }) => {});
+App.on("freezeTacticalMap", ({ id, freeze }) => {
+  const map = App.tacticalMaps.find(t => t.id === id);
+  map.freeze(freeze);
+  pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+});
+App.on("duplicateTacticalMap", ({ id, name }) => {
+  const map = App.tacticalMaps.find(t => t.id === id);
+  App.tacticalMaps.push(
+    new Classes.TacticalMap(Object.assign({}, map, { id: uuid.v4(), name }))
+  );
+  pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+});
+App.on("loadTacticalMap", ({ id, newid, flightId }) => {
+  const map = App.tacticalMaps.find(t => t.id === id);
+  App.tacticalMaps.push(
+    new Classes.TacticalMap(
+      Object.assign({}, map, { id: newid, flightId, template: false })
+    )
+  );
+  pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+});
 
 App.on("addTacticalMapLayer", ({ mapId, name }) => {
   const map = App.tacticalMaps.find(t => t.id === mapId);

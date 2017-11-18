@@ -264,6 +264,7 @@ class ViewscreenCore extends Component {
                     return (
                       <ConfigComponent
                         simulator={this.props.simulator}
+                        flightId={this.props.flightId}
                         data={currentData}
                         updateData={this.updateData}
                       />
@@ -281,6 +282,7 @@ class ViewscreenCore extends Component {
                     return (
                       <ConfigComponent
                         simulator={this.props.simulator}
+                        flightId={this.props.flightId}
                         data={configData}
                         updateData={data => this.setState({ configData: data })}
                         selectedClient={selectedViewscreen}

@@ -41,6 +41,7 @@ export const ViewscreenSubscriptions = {
       let viewscreens = App.clients.filter(s => s.station === "Viewscreen");
       if (simulatorId) {
         viewscreens = viewscreens.filter(v => v.simulatorId === simulatorId);
+        console.log("RootValue", rootValue);
         return viewscreens.map(v =>
           rootValue.find(av => av.id === v.id && av.simulatorId === simulatorId)
         );

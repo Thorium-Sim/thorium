@@ -31,7 +31,7 @@ class TacticalItem {
     wasd,
     ijkl
   }) {
-    if (label || label === null) this.label = label;
+    if (label || label === null || label === "") this.label = label;
     if (font) this.font = font;
     if (fontSize) this.fontSize = fontSize;
     if (fontColor) this.fontColor = fontColor;
@@ -84,7 +84,7 @@ export default class TacticalMap {
     this.id = params.id || uuid.v4();
     this.name = params.name || "Tactical Map";
     this.template = params.template || false;
-    this.flight = params.flight || null;
+    this.flightId = params.flightId || null;
     this.frozen = params.frozen || false;
     this.layers = [];
     (params.layers || []).forEach(l => this.layers.push(new TacticalLayer(l)));
@@ -126,5 +126,8 @@ export default class TacticalMap {
   }
   removeItemFromLayer(layerId, itemId) {
     this.layers.find(l => l.id === layerId).removeItem(itemId);
+  }
+  freeze(tf) {
+    this.frozen = tf;
   }
 }

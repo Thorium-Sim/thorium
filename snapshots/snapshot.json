@@ -22132,24 +22132,6 @@
 		}
 	],
 	"viewscreens": [
-		{
-			"id": "local-client",
-			"class": "Viewscreen",
-			"simulatorId": "6b19ad15-e739-48b8-a2e4-10ae88703ec0",
-			"name": "local-client",
-			"component": "Communications",
-			"data": "{}",
-			"auto": false
-		},
-		{
-			"id": "awesome-client",
-			"class": "Viewscreen",
-			"simulatorId": "974ab83f-9865-462e-b8cb-e54b8f88d7ea",
-			"name": "awesome-client",
-			"component": "ShipLogo",
-			"data": "{}",
-			"auto": false
-		}
 	],
 	"messages": [],
 	"tacticalMaps": [],

@@ -1,20 +1,23 @@
 import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
-
+import uuid from "uuid";
 export const TacticalMapQueries = {
   tacticalMaps(rootValue, { flightId, template }, context) {
     let returnVal = App.tacticalMaps;
     if (flightId) returnVal = returnVal.filter(m => m.flightId === flightId);
-    if (template || template === false)
+    if (template || template === false) {
       returnVal = returnVal.filter(m => m.template === template);
+    }
     return returnVal;
   }
 };
 
 export const TacticalMapMutations = {
   newTacticalMap(rootValue, args, context) {
-    App.handleEvent(args, "newTacticalMap", context);
+    const id = uuid.v4();
+    App.handleEvent(Object.assign({}, args, { id }), "newTacticalMap", context);
+    return id;
   },
   updateTacticalMap(rootValue, args, context) {
     App.handleEvent(args, "updateTacticalMap", context);
@@ -26,7 +29,13 @@ export const TacticalMapMutations = {
     App.handleEvent(args, "duplicateTacticalMap", context);
   },
   loadTacticalMap(rootValue, args, context) {
-    App.handleEvent(args, "loadTacticalMap", context);
+    const newid = uuid.v4();
+    App.handleEvent(
+      Object.assign({}, args, { newid }),
+      "loadTacticalMap",
+      context
+    );
+    return newid;
   },
   addTacticalMapLayer(rootValue, args, context) {
     App.handleEvent(args, "addTacticalMapLayer", context);
@@ -70,6 +79,7 @@ export const TacticalMapSubscriptions = {
 export const TacticalMapTypes = {
   TacticalMap: {
     flight(rootValue) {
+      console.log(rootValue, "\n\n", App.flights);
       return App.flights.find(f => f.id === rootValue.flightId);
     }
   },

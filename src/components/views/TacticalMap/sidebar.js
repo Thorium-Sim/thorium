@@ -33,6 +33,7 @@ const SortableList = SortableContainer(
 );
 export default class Sidebar extends Component {
   addTactical = () => {
+    const { selectTactical } = this.props;
     const name = prompt("What is the name of the new tactical map?");
     if (name) {
       const mutation = gql`
@@ -41,10 +42,14 @@ export default class Sidebar extends Component {
         }
       `;
       const variables = { name };
-      this.props.client.mutate({
-        mutation,
-        variables
-      });
+      this.props.client
+        .mutate({
+          mutation,
+          variables
+        })
+        .then(res =>
+          setTimeout(() => selectTactical(res.data.newTacticalMap), 300)
+        );
     }
   };
   addLayer = () => {
