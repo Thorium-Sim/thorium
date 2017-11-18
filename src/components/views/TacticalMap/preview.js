@@ -74,6 +74,7 @@ class TacticalIcon extends Component {
     this.dragging = false;
   }
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps.location);
     if (!this.dragging) {
       this.setState({
         location: nextProps.location

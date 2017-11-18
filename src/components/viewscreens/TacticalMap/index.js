@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Preview from "../../views/TacticalMap/preview";
@@ -8,7 +7,7 @@ import Preview from "../../views/TacticalMap/preview";
 //import "./style.css";
 
 const TACTICALMAP_SUB = gql`
-  subscription TacticalMapUpdate($flightId: ID) {
+  subscription UpdateTacticalMap($flightId: ID) {
     tacticalMapsUpdate(flightId: $flightId) {
       id
       name
@@ -68,8 +67,8 @@ class TacticalMapViewscreen extends Component {
   };
   sub = null;
   componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.tacticalData.loading) {
-      this.sub = nextProps.tacticalData.subscribeToMore({
+    if (!this.sub && !nextProps.data.loading) {
+      this.sub = nextProps.data.subscribeToMore({
         document: TACTICALMAP_SUB,
         variables: {
           flightId: nextProps.flightId
@@ -142,15 +141,11 @@ class TacticalMapViewscreen extends Component {
     });
   };
   render() {
-    if (
-      this.props.tacticalData.loading ||
-      !this.props.tacticalData.tacticalMaps
-    )
-      return null;
+    if (this.props.data.loading || !this.props.data.tacticalMaps) return null;
     const data = JSON.parse(this.props.viewscreen.data);
     const { tacticalMapId } = data;
     if (!tacticalMapId) return null;
-    const { tacticalMaps } = this.props.tacticalData;
+    const { tacticalMaps } = this.props.data;
     const selectedTactical = tacticalMaps.find(t => t.id === tacticalMapId);
     return (
       <div className="viewscreen-tacticalMap">
@@ -167,7 +162,7 @@ class TacticalMapViewscreen extends Component {
 }
 
 const TACTICALMAP_QUERY = gql`
-  query TacticalMap($flightId: ID) {
+  query TacticalMapQuery($flightId: ID) {
     tacticalMaps(flightId: $flightId) {
       id
       name
@@ -220,7 +215,6 @@ const TACTICALMAP_QUERY = gql`
 `;
 
 export default graphql(TACTICALMAP_QUERY, {
-  name: "tacticalData",
   options: ownProps => ({
     variables: {
       flightId: ownProps.flightId

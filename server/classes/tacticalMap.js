@@ -72,6 +72,7 @@ class TacticalLayer {
     this.items.push(new TacticalItem(item));
   }
   updateItem(item) {
+    console.log(item);
     const itemObj = this.items.find(i => i.id === item.id);
     itemObj && itemObj.update(item);
   }
