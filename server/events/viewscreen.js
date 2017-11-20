@@ -13,7 +13,6 @@ App.on("updateViewscreenComponent", ({ id, simulatorId, component, data }) => {
   // First de-auto the viewscreen, since we want to force this component;
   viewscreen.updateAuto(false);
   viewscreen.updateComponent(component, data);
-  console.log(App.viewscreens);
   pubsub.publish("viewscreensUpdate", App.viewscreens);
 });
 App.on("updateViewscreenData", ({ id, data }) => {

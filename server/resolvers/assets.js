@@ -119,7 +119,6 @@ export const AssetsTypes = {
 };
 
 export async function uploadAsset(root, args, context) {
-  console.log(args);
   let {
     files,
     simulatorId,

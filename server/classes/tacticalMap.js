@@ -9,7 +9,7 @@ class TacticalItem {
     this.flash = params.flash || false;
     this.icon = params.icon || null;
     this.size = params.size || 1;
-    this.speed = params.speed || 1;
+    this.speed = params.speed || 1000;
     this.velocity = params.velocity || { x: 0, y: 0, z: 0 };
     this.location = params.location || { x: 0, y: 0, z: 0 };
     this.destination = params.destination || { x: 0, y: 0, z: 0 };
@@ -76,7 +76,6 @@ class TacticalLayer {
     this.items.push(new TacticalItem(item));
   }
   updateItem(item) {
-    console.log(item);
     const itemObj = this.items.find(i => i.id === item.id);
     itemObj && itemObj.update(item);
   }

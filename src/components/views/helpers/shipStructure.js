@@ -33,7 +33,6 @@ export const DeckDropdown = ({
         {decks
           .concat()
           .sort((a, b) => {
-            console.log(a.number, b.number);
             if (a.number < b.number) return -1;
             if (b.number < a.number) return 1;
             return 0;

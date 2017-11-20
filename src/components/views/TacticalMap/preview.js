@@ -53,22 +53,26 @@ const layerComps = {
     state = { flash: false };
     flashing = true;
     componentDidMount() {
-      this.flashing = true;
-      this.loop();
+      this.looping = true;
+      this.flashLoop();
+      this.moveLoop();
     }
     componentWillUnmount() {
-      this.flashing = false;
+      this.looping = false;
     }
-    loop = () => {
-      if (!this.flashing) return;
+    flashLoop = () => {
+      if (!this.looping) return;
       this.setState({
         flash: !this.state.flash
       });
       if (this.state.flash) {
-        setTimeout(this.loop, 250);
+        setTimeout(this.flashLoop, 250);
       } else {
-        setTimeout(this.loop, 500);
+        setTimeout(this.flashLoop, 500);
       }
+    };
+    moveLoop = () => {
+      if (!this.looping) return;
     };
     render() {
       const {
@@ -106,7 +110,6 @@ class TacticalIcon extends Component {
     this.dragging = false;
   }
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.location);
     if (!this.dragging) {
       this.setState({
         location: nextProps.location

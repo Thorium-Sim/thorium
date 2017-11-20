@@ -63,7 +63,6 @@ class TacticalMapConfig extends Component {
   render() {
     const { tacticalData } = this.props;
     if (tacticalData.loading || !tacticalData.tacticalMaps) return null;
-    console.log(this.props);
     const { tacticalMaps } = this.props.tacticalData;
     const { tacticalMapId } = this.state;
     const data = JSON.parse(this.props.data);

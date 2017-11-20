@@ -96,7 +96,6 @@ class JrEng extends Component {
     if (this.props.data.loading) return null;
     if (this.state.repairSystem) {
       const Comp = Components[this.state.repairComponent];
-      console.log(this.state.repairComponent, Comp);
       return (
         <Container fluid className="jr-eng">
           <Row>
