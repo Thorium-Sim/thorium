@@ -87,3 +87,34 @@ App.on("applyEngineCoolant", ({ id }) => {
   if (engine.coolant === 0 || engine.heat === 0) engine.cool(false);
   pubsub.publish("heatChange", engine);
 });
+App.on("setEngineAcceleration", ({ id, acceleration }) => {
+  const engine = App.systems.find(s => s.id === id);
+  const engines = App.systems.filter(s => s.simulatorId === engine.simulatorId);
+  const sim = App.simulators.find(s => s.id === engine.simulatorId);
+  engines.forEach(e => {
+    e.on = false;
+  });
+  engine.on = true;
+  if (engine.useAcceleration) {
+    engine.setAcceleration(acceleration);
+  } else {
+    // Set the simulator's velocity to the correct level
+    sim.ship.speed = (engine.speeds[
+      Math.floor(acceleration * (engine.speeds.length + 1)) - 1
+    ] || { velocity: 0 }).velocity;
+  }
+  if (sim.ship.speed === 0) {
+    engine.on = false;
+  }
+  pubsub.publish("engineUpdate", engine);
+});
+App.on("setEngineUseAcceleration", ({ id, useAcceleration }) => {
+  const engine = App.systems.find(s => s.id === id);
+  engine.toggleAcceleration(useAcceleration);
+  //pubsub.publish("engineUpdate", App.systems.find(s => s.type === "Engine"));
+});
+App.on("setEngineSpeedFactor", ({ id, speedFactor }) => {
+  const engine = App.systems.find(s => s.id === id);
+  engine.setSpeedFactor(speedFactor);
+  //pubsub.publish("engineUpdate", App.systems.find(s => s.type === "Engine"));
+});
