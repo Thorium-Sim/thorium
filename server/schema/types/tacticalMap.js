@@ -57,6 +57,7 @@ type TacticalItem {
   speed: Float
   velocity: Coordinates
   location: Coordinates
+  locationJson: String
   destination: Coordinates
 
   #Keyboard Control

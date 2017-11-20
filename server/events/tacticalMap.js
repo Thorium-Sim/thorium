@@ -18,7 +18,9 @@ App.on("freezeTacticalMap", ({ id, freeze }) => {
 App.on("duplicateTacticalMap", ({ id, name }) => {
   const map = App.tacticalMaps.find(t => t.id === id);
   App.tacticalMaps.push(
-    new Classes.TacticalMap(Object.assign({}, map, { id: uuid.v4(), name }))
+    new Classes.TacticalMap(
+      Object.assign({}, map, { id: uuid.v4(), dup: true, name })
+    )
   );
   pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
 });
@@ -26,7 +28,12 @@ App.on("loadTacticalMap", ({ id, newid, flightId }) => {
   const map = App.tacticalMaps.find(t => t.id === id);
   App.tacticalMaps.push(
     new Classes.TacticalMap(
-      Object.assign({}, map, { id: newid, flightId, template: false })
+      Object.assign({}, map, {
+        id: newid,
+        dup: true,
+        flightId,
+        template: false
+      })
     )
   );
   pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);

@@ -38,6 +38,7 @@ const TACTICALMAP_SUB = gql`
             y
             z
           }
+          locationJson
           destination {
             x
             y
@@ -71,7 +72,8 @@ class TacticalMapViewscreen extends Component {
       this.sub = nextProps.data.subscribeToMore({
         document: TACTICALMAP_SUB,
         variables: {
-          flightId: nextProps.flightId
+          flightId:
+            nextProps.flightId || (nextProps.flight && nextProps.flight.id)
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
@@ -193,6 +195,7 @@ const TACTICALMAP_QUERY = gql`
             y
             z
           }
+          locationJson
           destination {
             x
             y
@@ -217,7 +220,7 @@ const TACTICALMAP_QUERY = gql`
 export default graphql(TACTICALMAP_QUERY, {
   options: ownProps => ({
     variables: {
-      flightId: ownProps.flightId
+      flightId: ownProps.flightId || (ownProps.flight && ownProps.flight.id)
     }
   })
 })(withApollo(TacticalMapViewscreen));

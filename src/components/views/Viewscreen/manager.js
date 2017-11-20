@@ -147,6 +147,7 @@ class ViewscreenCore extends Component {
             >
               <Preview
                 simulator={this.props.simulator}
+                flightId={this.props.flightId}
                 clientObj={{ id: selectedViewscreen }}
               />
             </LayoutComponent>
@@ -164,6 +165,7 @@ class ViewscreenCore extends Component {
               <CardPreview
                 simulator={this.props.simulator}
                 component={previewComponent}
+                flightId={this.props.flightId}
                 viewscreen={{ data: configData }}
               />
             </LayoutComponent>

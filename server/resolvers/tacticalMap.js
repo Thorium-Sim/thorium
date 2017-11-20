@@ -79,14 +79,16 @@ export const TacticalMapSubscriptions = {
 export const TacticalMapTypes = {
   TacticalMap: {
     flight(rootValue) {
-      console.log(rootValue, "\n\n", App.flights);
       return App.flights.find(f => f.id === rootValue.flightId);
     }
   },
   TacticalLayer: {
     items(rootValue) {
       return rootValue.items.map(i =>
-        Object.assign({}, i, { layerId: rootValue.id })
+        Object.assign({}, i, {
+          layerId: rootValue.id,
+          locationJson: JSON.stringify(i.location)
+        })
       );
     }
   }

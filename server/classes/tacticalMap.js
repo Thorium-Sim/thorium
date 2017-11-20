@@ -1,7 +1,7 @@
 import uuid from "uuid";
 class TacticalItem {
   constructor(params) {
-    this.id = params.id || uuid.v4();
+    this.id = params.dup ? uuid.v4() : params.id || uuid.v4();
     this.label = params.label || "";
     this.font = params.font || "Helvetica";
     this.fontSize = params.fontSize || 12;
@@ -49,7 +49,7 @@ class TacticalItem {
 
 class TacticalLayer {
   constructor(params) {
-    this.id = params.id || uuid.v4();
+    this.id = params.dup ? uuid.v4() : params.id || uuid.v4();
     this.name = params.name || "Layer";
     this.type = params.type || "grid";
     this.image = params.image || null;
@@ -58,7 +58,11 @@ class TacticalLayer {
     this.gridCols = params.gridCols || 16;
     this.gridRows = params.gridRows || 9;
     this.items = [];
-    (params.items || []).forEach(i => this.items.push(new TacticalItem(i)));
+    (params.items || []).forEach(i =>
+      this.items.push(
+        new TacticalItem(Object.assign({}, i, { dup: params.dup }))
+      )
+    );
   }
   update({ type, image, color, labels, gridCols, gridRows }) {
     if (type) this.type = type;
@@ -88,7 +92,11 @@ export default class TacticalMap {
     this.flightId = params.flightId || null;
     this.frozen = params.frozen || false;
     this.layers = [];
-    (params.layers || []).forEach(l => this.layers.push(new TacticalLayer(l)));
+    (params.layers || []).forEach(l =>
+      this.layers.push(
+        new TacticalLayer(Object.assign({}, l, { dup: params.dup }))
+      )
+    );
   }
   addLayer(layer) {
     this.layers.push(new TacticalLayer(layer));
