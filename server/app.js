@@ -38,6 +38,7 @@ class Events extends EventEmitter {
     this.assetObjects = [];
     this.viewscreens = [];
     this.messages = [];
+    this.tacticalMaps = [];
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;

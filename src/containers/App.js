@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Router, browserHistory } from "react-router";
+import { Router, browserHistory, Link } from "react-router";
 import CardContainer from "./Card";
 import Client from "../components/Client";
+import TacticalMapCore from "../components/views/TacticalMap";
 import DebugList from "./DebugList";
 import {
   FlightConfig,
@@ -56,6 +57,22 @@ const routes = [
   {
     path: "/assetConfig",
     component: AssetConfig
+  },
+  {
+    path: "/tacticalConfig",
+    component: props => {
+      return (
+        <div>
+          <h4>
+            Tactical Config{" "}
+            <small>
+              <Link to="/">Return to Main</Link>
+            </small>
+          </h4>
+          <TacticalMapCore dedicated={true} {...props} />
+        </div>
+      );
+    }
   },
   {
     path: "/setConfig",

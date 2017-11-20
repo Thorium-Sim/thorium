@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 257,
+	"_eventsCount": 266,
 	"simulators": [
 		{
 			"id": "test",
@@ -2104,7 +2104,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 33204600,
+			"timeSincePing": 30840800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2253,7 +2253,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.765063999999765,
+			"batteryChargeLevel": 0.7842079999997842,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -3353,7 +3353,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 28387600,
+			"timeSincePing": 26023800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3385,7 +3385,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 28387600,
+			"timeSincePing": 26023800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4443,7 +4443,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 23274500,
+			"timeSincePing": 20910700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4477,7 +4477,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 23274500,
+			"timeSincePing": 20910700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5873,7 +5873,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11960100,
+			"timeSincePing": 9596300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5907,7 +5907,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11960100,
+			"timeSincePing": 9596300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -18756,6 +18756,27 @@
 			"fullPath": "/Sounds",
 			"name": "Sounds",
 			"class": "AssetFolder"
+		},
+		{
+			"id": "93669558-d1d7-48b1-8069-3418c8cf31a7",
+			"folderPath": "/Viewscreen",
+			"fullPath": "/Viewscreen/Tactical Backgrounds",
+			"name": "Tactical Backgrounds",
+			"class": "AssetFolder"
+		},
+		{
+			"id": "9b217399-be05-42df-8f0c-8dbbc999cbbe",
+			"folderPath": "/Viewscreen",
+			"fullPath": "/Viewscreen/Tactical Icons",
+			"name": "Tactical Icons",
+			"class": "AssetFolder"
+		},
+		{
+			"id": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"name": "Old Icons",
+			"class": "AssetFolder"
 		}
 	],
 	"assetContainers": [
@@ -19389,6 +19410,670 @@
 			"fullPath": "/Sounds/sciences",
 			"folderId": "074b07b0-21e4-45eb-ad38-1562cd274076",
 			"name": "sciences",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "ac115cb2-bc1b-4c93-9bed-c1ee6c758adb",
+			"folderPath": "/Viewscreen/Tactical Backgrounds",
+			"fullPath": "/Viewscreen/Tactical Backgrounds/Stars",
+			"folderId": "93669558-d1d7-48b1-8069-3418c8cf31a7",
+			"name": "Stars",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "323c78bc-f82d-4a2f-8b63-2c81a45272d4",
+			"folderPath": "/Viewscreen/Tactical Backgrounds",
+			"fullPath": "/Viewscreen/Tactical Backgrounds/Planets",
+			"folderId": "93669558-d1d7-48b1-8069-3418c8cf31a7",
+			"name": "Planets",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "16bb25fb-b272-405b-b659-b150922f39d0",
+			"folderPath": "/Viewscreen/Tactical Backgrounds",
+			"fullPath": "/Viewscreen/Tactical Backgrounds/Clouds",
+			"folderId": "93669558-d1d7-48b1-8069-3418c8cf31a7",
+			"name": "Clouds",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "b3c66ccb-fa14-4351-95f1-bd6b72398799",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Asteroids Big",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Asteroids Big",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "522a2747-d5cb-475b-9566-97ac6f0ce370",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Asteroids Med",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Asteroids Med",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "33bc9b25-1029-49fd-8e4c-e9cdbf090cf5",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Asteroids Small",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Asteroids Small",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "3b225490-83b7-40c7-a976-4d05b3c892a8",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Bird Big",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Bird Big",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "7fb99050-a56f-4851-a575-e8220a2f6f78",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Bird Small",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Bird Small",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "8b8f6b3a-b5fa-42dc-8dd7-410b5672cbfd",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Cardassian Big",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Cardassian Big",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "e341546b-cd73-420f-90dd-0b2812bf5133",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Cardassian Small",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Cardassian Small",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "c990b903-145b-4527-8320-190317161963",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Cross",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Cross",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "76cb75e0-b319-411a-adf6-e16e3cb5e37f",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Defiant",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Defiant",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "e5914afb-42ab-425a-aa11-9e83151d0f8f",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Federation",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Federation",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "3559c707-b895-4388-a9a7-8a57bb086495",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Klingon Big",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Klingon Big",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "1c5f441d-91b2-404c-9791-757e71fdb19e",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Klingon BOP",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Klingon BOP",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "c7840e8b-9a9f-47c5-8f5b-235cb238f236",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Klingon Fleet",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Klingon Fleet",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "772ff3bc-dd14-4cae-aa03-c95a7c7f1ca7",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Klingon High",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Klingon High",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "50e7547e-679b-4e3a-98b0-102d9cb99e22",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Klingon Small",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Klingon Small",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "99c2887d-7e8e-44a0-b5e4-fedb26c2a6c9",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Meteor Left",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Meteor Left",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "e11dd5b7-a6eb-4424-983d-4f78653ec407",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Meteor Right",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Meteor Right",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "9691bcc4-22f5-48a1-ada9-fb68e22063b1",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Nebula High",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Nebula High",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "4f5f6642-8cf3-48a1-9703-39c52c2c595a",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Nebula Low",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Nebula Low",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "e0581a72-66a4-4c34-af3b-46a7487f529d",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Nebula Med",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Nebula Med",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "632b0285-6d98-47b4-b3da-67571412fd0a",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Nebula",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Nebula",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "c71ad20f-eabf-47e1-8eec-d00d9ab09f02",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Pakled",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Pakled",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "ff2451ee-fd05-41c3-9bf5-8c793a6482a7",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Planet Big",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Planet Big",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "440b499b-5eeb-46d6-adea-f1582dbeb0a0",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Planet Med",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Planet Med",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "1f49ac29-6ab7-4eae-9562-6bb63b57f0af",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Planet Small",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Planet Small",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "c6d6717d-7dab-413f-9efd-08c26af186f3",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Romulan Big",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Romulan Big",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "9d9d16dc-6073-4d43-b8ea-0c45ecd407a3",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Romulan Small",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Romulan Small",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "a464cdcd-4451-49b7-acbe-1350a4303ce3",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Rupture",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Rupture",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "054991a6-0808-4513-b1da-27af33d98acc",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Satellite",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Satellite",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "90e5f514-84a6-4722-9328-62c374455001",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Seeker",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Seeker",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "c8db0a79-547b-4578-860f-9129df7cc1f0",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Spiral",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Spiral",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "8a741dd8-adc5-462e-8dbc-472ad58ab944",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Star Big",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Star Big",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "5119f19a-dad2-4762-a9e0-b1816535ab5a",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Star Small",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Star Small",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "574f1273-5e54-4fd7-8f23-49911d3433cb",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Starbase",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Starbase",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "13052b5d-ccd1-4f2e-9d87-a093cb1147ba",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Starfleet Big",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Starfleet Big",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "e3513c0d-b696-4cd4-a798-34654947da61",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Stazi Fleet",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Stazi Fleet",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "1b5a3af0-526e-4903-bfc9-d8e95dccc84c",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Stazi",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Stazi",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "29e56600-57c0-4ea1-94c3-821b46b99ccf",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Target",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Target",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "ec2138ee-ed9f-41fb-ab05-aa68da3dd463",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Thick Nebula",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Thick Nebula",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "eaa8cacc-10e1-4454-819d-4798d0e98a4f",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Vortex",
+			"folderId": "5f9b7fa9-7baf-4e4d-82a9-9c32ce558047",
+			"name": "Vortex",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "f2960aba-3c63-4b6d-8a89-4bab28be2f58",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Asteroids Big",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Asteroids Big",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "7a0b6026-1252-4ea2-b9fe-c4349de66364",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Asteroids Med",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Asteroids Med",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "824a3069-cc2c-45ff-88a0-40673aa9930d",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Asteroids Small",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Asteroids Small",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "ab096c64-5f46-476f-b2bf-c6d684645df5",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Bird Big",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Bird Big",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "3f714791-6369-400d-bc42-73180be1a821",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Bird Small",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Bird Small",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "b97ade09-4475-45ef-ad12-919f4b16014b",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Cardassian Big",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Cardassian Big",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "7eed6f1d-a492-4620-a3b7-bec90d84ab69",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Cardassian Small",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Cardassian Small",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "85e1a7cd-b3b6-45db-a4df-fe9bd8ce32fc",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Cross",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Cross",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "569e19bf-af02-4800-a157-7600cdcca939",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Defiant",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Defiant",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "138a1d49-e002-40cb-878a-42e6732f71f2",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Federation",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Federation",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "3bf0e9d8-efc0-4328-a3fd-3184af7a4524",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Klingon Big",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Klingon Big",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "3da1dc59-e662-409d-9dc8-60faa923b3b6",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Klingon BOP",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Klingon BOP",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "0bdde7b1-624e-4c11-a406-634f8c27e1e8",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Klingon Fleet",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Klingon Fleet",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "a065f7d4-9f43-443b-aa23-709f98f3ccfc",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Klingon High",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Klingon High",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "537c9db7-7117-423f-89fb-eb8fa0a64611",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Klingon Small",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Klingon Small",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "ad88beb3-9bfb-4f8d-8b5f-027624270725",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Meteor Left",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Meteor Left",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "5f98a620-fd31-473e-8cc1-ac69b5b67835",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Meteor Right",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Meteor Right",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "77276439-6ba7-402a-935c-30bcf5d918fa",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Nebula High",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Nebula High",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "661fe1e1-20da-4248-af72-6c8891923298",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Nebula Low",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Nebula Low",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "3b9ba1f3-bce8-4c4f-b3af-9adf120af6fa",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Nebula Med",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Nebula Med",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "7b0b6f2c-25d7-4d21-bd2f-c22abdc92a4d",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Nebula",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Nebula",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "ba984875-1bf6-43d6-8686-2e6955a0007b",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Pakled",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Pakled",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "0338edde-cdde-4e12-8c60-df4707847cfb",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Planet Big",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Planet Big",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "3f21cc65-75d1-47b9-9547-89ca160d307f",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Planet Med",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Planet Med",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "9073ccfa-4976-465a-ad80-aeafd53fd806",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Planet Small",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Planet Small",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "93616f8a-96b9-427a-a105-90ddbf085ac7",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Romulan Big",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Romulan Big",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "6c10bf89-3a12-4aca-9baf-e5a8e1944218",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Romulan Small",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Romulan Small",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "d0b46b9b-b03e-4e8d-ab91-a26c7b1a235a",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Rupture",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Rupture",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "1dc32397-a94b-401d-8523-a07b26d29233",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Satellite",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Satellite",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "70763aaf-90d6-4e69-afdf-35b4650c4f9b",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Seeker",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Seeker",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "3736e22f-898a-47aa-be15-361c15f713bb",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Spiral",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Spiral",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "4777b33d-74a1-49cf-9cec-2291ac00639b",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Star Big",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Star Big",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "1e368548-938f-45b0-ac3d-8297bb930be2",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Star Small",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Star Small",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "1a35ffac-cd77-467f-8b86-7d4aa3ec2fe2",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Starbase",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Starbase",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "8b7e1f91-1587-4a17-a5d5-08ce70b14a93",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Starfleet Big",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Starfleet Big",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "187d3b10-0bc8-4dc2-bac4-94a23a4f8cd7",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Stazi Fleet",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Stazi Fleet",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "5291bc7f-d0b2-48f8-89bd-af6c83fbe322",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Stazi",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Stazi",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "cc55a550-06ac-43a0-b85e-860e956c87a7",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Target",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Target",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "1124e81f-e09e-42a0-a536-22f6de1161bf",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Thick Nebula",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Thick Nebula",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "04b2b28e-4784-48b8-989b-61e38541d102",
+			"folderPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Vortex",
+			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
+			"name": "Vortex",
 			"class": "AssetContainer"
 		}
 	],
@@ -20728,30 +21413,787 @@
 			"url": "/assets/Sounds/sciences/default.wav",
 			"simulatorId": "default",
 			"class": "AssetObject"
+		},
+		{
+			"id": "deb942ea-b467-42cd-90f2-38047815c2c5",
+			"containerPath": "/Viewscreen/Tactical",
+			"containerId": "ca4adab9-81cb-45cd-a4ce-daa955b2d72a",
+			"fullPath": "/Viewscreen/Tactical/Clouds/default.png",
+			"url": "/assets/Viewscreen/Tactical/Clouds/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "f5ec1cee-55a5-4f26-81ee-42d7e3190bfc",
+			"containerPath": "/Viewscreen/Tactical",
+			"containerId": "fa114b2f-be1a-4d7b-b336-fb957a2dd579",
+			"fullPath": "/Viewscreen/Tactical/Planets/default.png",
+			"url": "/assets/Viewscreen/Tactical/Planets/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "2dbcc830-438a-4d47-bd3b-0d44d072b1cb",
+			"containerPath": "/Viewscreen/Tactical",
+			"containerId": "36c8cf13-4e7d-4423-ac79-0de0e0dbc257",
+			"fullPath": "/Viewscreen/Tactical/Stars/default.png",
+			"url": "/assets/Viewscreen/Tactical/Stars/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "d2d1eafe-11e3-4ad1-95bb-ffe5033910ea",
+			"containerPath": "/Viewscreen/Tactical Backgrounds",
+			"containerId": "ac115cb2-bc1b-4c93-9bed-c1ee6c758adb",
+			"fullPath": "/Viewscreen/Tactical Backgrounds/Stars/default.png",
+			"url": "/assets/Viewscreen/Tactical Backgrounds/Stars/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "3ba03b82-280b-4abf-b50e-a8ff3a23c297",
+			"containerPath": "/Viewscreen/Tactical Backgrounds",
+			"containerId": "323c78bc-f82d-4a2f-8b63-2c81a45272d4",
+			"fullPath": "/Viewscreen/Tactical Backgrounds/Planets/default.png",
+			"url": "/assets/Viewscreen/Tactical Backgrounds/Planets/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "d0a116bc-1fd0-4b5d-8e42-2db63aba934b",
+			"containerPath": "/Viewscreen/Tactical Backgrounds",
+			"containerId": "16bb25fb-b272-405b-b659-b150922f39d0",
+			"fullPath": "/Viewscreen/Tactical Backgrounds/Clouds/default.png",
+			"url": "/assets/Viewscreen/Tactical Backgrounds/Clouds/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "c93cad86-4562-45f7-a007-ce99cf8ef72c",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "b3c66ccb-fa14-4351-95f1-bd6b72398799",
+			"fullPath": "/Viewscreen/Tactical Icons/Asteroids Big/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Asteroids Big/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "c6736fd3-9317-444a-bd05-6aa82cff2c55",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "522a2747-d5cb-475b-9566-97ac6f0ce370",
+			"fullPath": "/Viewscreen/Tactical Icons/Asteroids Med/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Asteroids Med/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "742d5fee-af2e-43b2-b95c-52bd5f7c9494",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "33bc9b25-1029-49fd-8e4c-e9cdbf090cf5",
+			"fullPath": "/Viewscreen/Tactical Icons/Asteroids Small/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Asteroids Small/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "1c8f2d00-522a-4657-91a3-4da25f850fdd",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "3b225490-83b7-40c7-a976-4d05b3c892a8",
+			"fullPath": "/Viewscreen/Tactical Icons/Bird Big/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Bird Big/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "560b96cc-a7e0-4c14-ad7e-abab4810cbd2",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "7fb99050-a56f-4851-a575-e8220a2f6f78",
+			"fullPath": "/Viewscreen/Tactical Icons/Bird Small/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Bird Small/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "d158f62f-c0b8-4329-a2cd-7e16a2487c71",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "8b8f6b3a-b5fa-42dc-8dd7-410b5672cbfd",
+			"fullPath": "/Viewscreen/Tactical Icons/Cardassian Big/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Cardassian Big/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "cd89f314-7b3c-4705-ad0b-f82e29967186",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "e341546b-cd73-420f-90dd-0b2812bf5133",
+			"fullPath": "/Viewscreen/Tactical Icons/Cardassian Small/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Cardassian Small/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "481a036b-2eef-40ed-8243-929c6f7a59b3",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "c990b903-145b-4527-8320-190317161963",
+			"fullPath": "/Viewscreen/Tactical Icons/Cross/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Cross/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "bf5f1c5c-cc25-4cb6-99ea-62fb6ddf016c",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "76cb75e0-b319-411a-adf6-e16e3cb5e37f",
+			"fullPath": "/Viewscreen/Tactical Icons/Defiant/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Defiant/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "4610f95f-9352-430a-a92b-1c00fe0252b9",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "e5914afb-42ab-425a-aa11-9e83151d0f8f",
+			"fullPath": "/Viewscreen/Tactical Icons/Federation/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Federation/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "211b0e4a-63d8-4528-a3e3-2d976f51d7bc",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "3559c707-b895-4388-a9a7-8a57bb086495",
+			"fullPath": "/Viewscreen/Tactical Icons/Klingon Big/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Klingon Big/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "b8154945-f6f4-4f4c-987f-f91fe31919c8",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "1c5f441d-91b2-404c-9791-757e71fdb19e",
+			"fullPath": "/Viewscreen/Tactical Icons/Klingon BOP/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Klingon BOP/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "5ca805c5-1e1b-4e67-b179-2abedb36355d",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "c7840e8b-9a9f-47c5-8f5b-235cb238f236",
+			"fullPath": "/Viewscreen/Tactical Icons/Klingon Fleet/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Klingon Fleet/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "da881f48-b156-4444-aad4-4624840221aa",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "772ff3bc-dd14-4cae-aa03-c95a7c7f1ca7",
+			"fullPath": "/Viewscreen/Tactical Icons/Klingon High/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Klingon High/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "b9cc686a-02d3-4346-a262-83d30d0ea425",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "50e7547e-679b-4e3a-98b0-102d9cb99e22",
+			"fullPath": "/Viewscreen/Tactical Icons/Klingon Small/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Klingon Small/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "3b4af84f-6953-4fba-8d75-ca3574557909",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "99c2887d-7e8e-44a0-b5e4-fedb26c2a6c9",
+			"fullPath": "/Viewscreen/Tactical Icons/Meteor Left/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Meteor Left/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "ccf316c3-a0b9-4a97-a793-53d19f24f663",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "e11dd5b7-a6eb-4424-983d-4f78653ec407",
+			"fullPath": "/Viewscreen/Tactical Icons/Meteor Right/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Meteor Right/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "af31972a-09b9-4d57-ab3e-bfd80b5e2fb1",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "9691bcc4-22f5-48a1-ada9-fb68e22063b1",
+			"fullPath": "/Viewscreen/Tactical Icons/Nebula High/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Nebula High/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "5ba345b0-a04f-49c1-af2b-489506fed6de",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "4f5f6642-8cf3-48a1-9703-39c52c2c595a",
+			"fullPath": "/Viewscreen/Tactical Icons/Nebula Low/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Nebula Low/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "c7c8ea16-476b-4bf6-9765-7a37d7e1396f",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "e0581a72-66a4-4c34-af3b-46a7487f529d",
+			"fullPath": "/Viewscreen/Tactical Icons/Nebula Med/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Nebula Med/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "0542b93d-72d5-450e-a342-c7e36e089c8c",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "632b0285-6d98-47b4-b3da-67571412fd0a",
+			"fullPath": "/Viewscreen/Tactical Icons/Nebula/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Nebula/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "6c53817b-12fb-4865-ac8d-71e8bd591097",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "c71ad20f-eabf-47e1-8eec-d00d9ab09f02",
+			"fullPath": "/Viewscreen/Tactical Icons/Pakled/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Pakled/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "4baf7fd1-f1c8-4e57-a145-bb8a6c128ce9",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "ff2451ee-fd05-41c3-9bf5-8c793a6482a7",
+			"fullPath": "/Viewscreen/Tactical Icons/Planet Big/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Planet Big/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "8bbc7783-9c06-4b38-a076-f538a58012b6",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "440b499b-5eeb-46d6-adea-f1582dbeb0a0",
+			"fullPath": "/Viewscreen/Tactical Icons/Planet Med/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Planet Med/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "048663d0-cccf-4000-8e91-874dbecf3a4a",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "1f49ac29-6ab7-4eae-9562-6bb63b57f0af",
+			"fullPath": "/Viewscreen/Tactical Icons/Planet Small/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Planet Small/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "f688c7e9-9d5b-4f3c-a01f-3834409e27cd",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "c6d6717d-7dab-413f-9efd-08c26af186f3",
+			"fullPath": "/Viewscreen/Tactical Icons/Romulan Big/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Romulan Big/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "201bd62a-6846-4bc3-9033-740153e3aca6",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "9d9d16dc-6073-4d43-b8ea-0c45ecd407a3",
+			"fullPath": "/Viewscreen/Tactical Icons/Romulan Small/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Romulan Small/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "ee0cddd0-5e5f-4464-a47d-5bf7ca079d5b",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "a464cdcd-4451-49b7-acbe-1350a4303ce3",
+			"fullPath": "/Viewscreen/Tactical Icons/Rupture/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Rupture/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "323f72d9-c1b5-4da5-a55d-4fd8f5751308",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "054991a6-0808-4513-b1da-27af33d98acc",
+			"fullPath": "/Viewscreen/Tactical Icons/Satellite/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Satellite/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "957b921b-bf6c-47c5-8b3d-0c626fc5723d",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "90e5f514-84a6-4722-9328-62c374455001",
+			"fullPath": "/Viewscreen/Tactical Icons/Seeker/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Seeker/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "2273359d-4dfa-4806-aada-f74dc68c49f4",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "c8db0a79-547b-4578-860f-9129df7cc1f0",
+			"fullPath": "/Viewscreen/Tactical Icons/Spiral/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Spiral/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "7c5a6097-8262-40ce-9117-0ecb3db23eda",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "8a741dd8-adc5-462e-8dbc-472ad58ab944",
+			"fullPath": "/Viewscreen/Tactical Icons/Star Big/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Star Big/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "2820d210-ad12-4528-8bcd-f67b6894959a",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "5119f19a-dad2-4762-a9e0-b1816535ab5a",
+			"fullPath": "/Viewscreen/Tactical Icons/Star Small/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Star Small/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "09e6d9e0-09ca-406b-ba94-3be9a0b0883c",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "574f1273-5e54-4fd7-8f23-49911d3433cb",
+			"fullPath": "/Viewscreen/Tactical Icons/Starbase/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Starbase/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "687fb0a8-5c44-4fe2-a1ad-f9d7eeac8930",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "13052b5d-ccd1-4f2e-9d87-a093cb1147ba",
+			"fullPath": "/Viewscreen/Tactical Icons/Starfleet Big/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Starfleet Big/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "7a1b8359-6db5-45e6-97e4-07945da9e855",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "e3513c0d-b696-4cd4-a798-34654947da61",
+			"fullPath": "/Viewscreen/Tactical Icons/Stazi Fleet/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Stazi Fleet/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "66a06cb4-022e-4cad-8246-d998f9428f48",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "1b5a3af0-526e-4903-bfc9-d8e95dccc84c",
+			"fullPath": "/Viewscreen/Tactical Icons/Stazi/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Stazi/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "be71daba-4712-4a2d-90ec-83663488fccf",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "29e56600-57c0-4ea1-94c3-821b46b99ccf",
+			"fullPath": "/Viewscreen/Tactical Icons/Target/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Target/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "01a1a7b2-3b82-4e29-95ee-7c5603b29bf7",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "ec2138ee-ed9f-41fb-ab05-aa68da3dd463",
+			"fullPath": "/Viewscreen/Tactical Icons/Thick Nebula/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Thick Nebula/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "d15b12b0-72df-47e5-8804-89c1b458bc6a",
+			"containerPath": "/Viewscreen/Tactical Icons",
+			"containerId": "eaa8cacc-10e1-4454-819d-4798d0e98a4f",
+			"fullPath": "/Viewscreen/Tactical Icons/Vortex/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Vortex/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "8027109b-5a88-4f0a-acc1-c0b617f68fa0",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "f2960aba-3c63-4b6d-8a89-4bab28be2f58",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Asteroids Big/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Asteroids Big/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "c521f9bb-5302-45cb-8e30-62a6c5c91f77",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "7a0b6026-1252-4ea2-b9fe-c4349de66364",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Asteroids Med/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Asteroids Med/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "a3c87cec-e46f-436a-a502-1fac43d789db",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "824a3069-cc2c-45ff-88a0-40673aa9930d",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Asteroids Small/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Asteroids Small/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "6b27c808-7ae0-42c0-9d37-bf9814b3bd94",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "ab096c64-5f46-476f-b2bf-c6d684645df5",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Bird Big/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Bird Big/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "7623835b-04fe-4d69-8f02-ab2c7b361158",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "3f714791-6369-400d-bc42-73180be1a821",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Bird Small/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Bird Small/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "250e11b9-1ea1-4cd0-933d-df65188c78eb",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "b97ade09-4475-45ef-ad12-919f4b16014b",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Cardassian Big/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Cardassian Big/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "f61e3e46-6fa2-4fc5-a0f9-20b28e42a915",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "7eed6f1d-a492-4620-a3b7-bec90d84ab69",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Cardassian Small/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Cardassian Small/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "78fdd672-2ac4-469b-bcb1-023f8319353e",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "85e1a7cd-b3b6-45db-a4df-fe9bd8ce32fc",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Cross/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Cross/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "8619acba-f272-4ba7-a4cc-b148532ddda0",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "569e19bf-af02-4800-a157-7600cdcca939",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Defiant/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Defiant/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "999d4011-6afe-4fed-83af-4e907986cfcb",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "138a1d49-e002-40cb-878a-42e6732f71f2",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Federation/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Federation/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "92ed1bf4-6047-4f19-8f46-a826c6910f02",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "3bf0e9d8-efc0-4328-a3fd-3184af7a4524",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Klingon Big/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Klingon Big/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "5b9dc060-a312-4b81-80f9-12fcd081cdf9",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "3da1dc59-e662-409d-9dc8-60faa923b3b6",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Klingon BOP/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Klingon BOP/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "c4e1ecd1-73dd-40da-8ff6-aa33ba800b6e",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "0bdde7b1-624e-4c11-a406-634f8c27e1e8",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Klingon Fleet/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Klingon Fleet/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "c7e928ee-8655-4211-a25e-0e48978ceee8",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "a065f7d4-9f43-443b-aa23-709f98f3ccfc",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Klingon High/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Klingon High/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "e831f9db-7faa-4310-b11e-b14bab9e8f17",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "537c9db7-7117-423f-89fb-eb8fa0a64611",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Klingon Small/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Klingon Small/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "09f268bd-3270-4fed-842b-f59cb44da6a2",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "ad88beb3-9bfb-4f8d-8b5f-027624270725",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Meteor Left/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Meteor Left/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "f94c5fc7-0815-4637-90bb-8fe0d4a505fb",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "5f98a620-fd31-473e-8cc1-ac69b5b67835",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Meteor Right/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Meteor Right/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "a490857a-e35a-4295-a286-854d5f6925b7",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "77276439-6ba7-402a-935c-30bcf5d918fa",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Nebula High/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Nebula High/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "6a86b2f7-a747-485a-b577-9acb6d12fb73",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "661fe1e1-20da-4248-af72-6c8891923298",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Nebula Low/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Nebula Low/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "f8189ec8-15f5-49ad-bd04-234850c378c2",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "3b9ba1f3-bce8-4c4f-b3af-9adf120af6fa",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Nebula Med/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Nebula Med/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "9c4bb0a5-77ce-4ee6-ac84-cf030248d870",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "7b0b6f2c-25d7-4d21-bd2f-c22abdc92a4d",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Nebula/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Nebula/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "46064e0c-e291-4cb5-8255-854d2eac90f2",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "ba984875-1bf6-43d6-8686-2e6955a0007b",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Pakled/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Pakled/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "20747574-cf2c-4b43-a043-be6e0275a356",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "0338edde-cdde-4e12-8c60-df4707847cfb",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Planet Big/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Planet Big/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "8c346985-74c0-4b83-aa17-901be73837b2",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "3f21cc65-75d1-47b9-9547-89ca160d307f",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Planet Med/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Planet Med/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "1966f33e-f42c-43e5-874b-dbcc1aa6f6a5",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "9073ccfa-4976-465a-ad80-aeafd53fd806",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Planet Small/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Planet Small/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "9abc6f37-b7be-4e8a-8663-8784b9d4c089",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "93616f8a-96b9-427a-a105-90ddbf085ac7",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Romulan Big/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Romulan Big/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "56e8e9b5-29c1-4907-abfc-a0672fb9af5a",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "6c10bf89-3a12-4aca-9baf-e5a8e1944218",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Romulan Small/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Romulan Small/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "7cbdc8f8-57c7-4961-9b36-2fa302d1becc",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "d0b46b9b-b03e-4e8d-ab91-a26c7b1a235a",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Rupture/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Rupture/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "e3d07d9c-6829-402c-bedd-b0d05463e208",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "1dc32397-a94b-401d-8523-a07b26d29233",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Satellite/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Satellite/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "2ea2f8f2-f157-4f7c-a08a-44f7a787a10f",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "70763aaf-90d6-4e69-afdf-35b4650c4f9b",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Seeker/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Seeker/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "74d96125-95dc-4bb7-9c5f-fa8d7ef7a3d3",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "3736e22f-898a-47aa-be15-361c15f713bb",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Spiral/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Spiral/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "82eade74-deed-4fef-a2fb-08164446a396",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "4777b33d-74a1-49cf-9cec-2291ac00639b",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Star Big/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Star Big/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "9a5f1c5b-4150-4b76-affc-4ae7f555c3e1",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "1e368548-938f-45b0-ac3d-8297bb930be2",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Star Small/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Star Small/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "0c9ee7b1-020e-4a70-a573-9b2bd68cffab",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "1a35ffac-cd77-467f-8b86-7d4aa3ec2fe2",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Starbase/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Starbase/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "ac7e53f2-1e35-4e50-85a8-58cda4a28f8b",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "8b7e1f91-1587-4a17-a5d5-08ce70b14a93",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Starfleet Big/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Starfleet Big/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "89505c31-68d7-4399-8236-62a2f1970fb9",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "187d3b10-0bc8-4dc2-bac4-94a23a4f8cd7",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Stazi Fleet/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Stazi Fleet/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "40d158ad-2ffa-4f31-acc9-732510363d5e",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "5291bc7f-d0b2-48f8-89bd-af6c83fbe322",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Stazi/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Stazi/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "f526888d-70f9-4398-8b39-f4c40d8d4d8d",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "cc55a550-06ac-43a0-b85e-860e956c87a7",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Target/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Target/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "c9527d91-93cb-4015-a484-12fe12ba02ab",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "1124e81f-e09e-42a0-a536-22f6de1161bf",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Thick Nebula/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Thick Nebula/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "6a4e9e98-7670-478a-804e-46d52c36f81f",
+			"containerPath": "/Viewscreen/Tactical Icons/Old Icons",
+			"containerId": "04b2b28e-4784-48b8-989b-61e38541d102",
+			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Vortex/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Vortex/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
 		}
 	],
 	"viewscreens": [
-		{
-			"id": "local-client",
-			"class": "Viewscreen",
-			"simulatorId": "6b19ad15-e739-48b8-a2e4-10ae88703ec0",
-			"name": "local-client",
-			"component": "Communications",
-			"data": "{}",
-			"auto": false
-		},
-		{
-			"id": "awesome-client",
-			"class": "Viewscreen",
-			"simulatorId": "974ab83f-9865-462e-b8cb-e54b8f88d7ea",
-			"name": "awesome-client",
-			"component": "ShipLogo",
-			"data": "{}",
-			"auto": false
-		}
 	],
 	"messages": [],
-	"snapshotVersion": 3112,
-	"version": 3112,
-	"timestamp": "2017-11-14T22:07:17.554Z"
+	"tacticalMaps": [],
+	"snapshotVersion": 145,
+	"version": 145,
+	"timestamp": "2017-11-17T04:24:02.315Z"
 }

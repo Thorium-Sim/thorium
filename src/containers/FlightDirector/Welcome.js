@@ -99,18 +99,8 @@ class Welcome extends Component {
             </Button>
           </Col>
           <Col sm={4}>
-            <Button tag={Link} to="/assetConfig" color="secondary" block>
+            <Button tag={Link} to="/assetConfig" color="info" block>
               Configure Generic Assets
-            </Button>
-          </Col>
-          <Col sm={4}>
-            <Button tag={Link} to="/missionConfig" color="primary" block>
-              Configure Missions
-            </Button>
-          </Col>
-          <Col sm={{ size: 4 }}>
-            <Button tag={Link} to="/setConfig" color="warning" block>
-              Configure Sets
             </Button>
           </Col>
           <Col sm={{ size: 4 }}>
@@ -118,13 +108,28 @@ class Welcome extends Component {
               Debug Core
             </Button>
           </Col>
+          <Col sm={4}>
+            <Button tag={Link} to="/missionConfig" color="info" block>
+              Configure Missions
+            </Button>
+          </Col>
           <Col sm={{ size: 4 }}>
-            <Button tag={Link} to="/debug" color="primary" block>
+            <Button tag={Link} to="/setConfig" color="info" block>
+              Configure Sets
+            </Button>
+          </Col>
+          <Col sm={{ size: 4 }}>
+            <Button tag={Link} to="/debug" color="secondary" block>
               Debug
             </Button>
           </Col>
           <Col sm={{ size: 4 }}>
-            <Button color="info" block onClick={this.toggleIssueTracker}>
+            <Button tag={Link} to="/tacticalConfig" color="info" block>
+              Configure Tactical Maps
+            </Button>
+          </Col>
+          <Col sm={{ size: 4 }}>
+            <Button color="primary" block onClick={this.toggleIssueTracker}>
               Bug Report/Feature Request
             </Button>
           </Col>

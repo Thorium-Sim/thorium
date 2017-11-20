@@ -50,7 +50,7 @@ class AssetComponent extends Component {
   render() {
     const { children } = this.props;
     const { src } = this.state;
-    if (!src) return null;
+    if (!src || !this.props.asset) return null;
     return children({ src });
   }
 }
