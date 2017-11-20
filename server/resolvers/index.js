@@ -1,4 +1,9 @@
-import { EngineQueries, EngineMutations, EngineSubscriptions } from "./engines";
+import {
+  EngineQueries,
+  EngineMutations,
+  EngineSubscriptions,
+  EngineTypes
+} from "./engines";
 import { ShieldQueries, ShieldMutations, ShieldSubscriptions } from "./shields";
 import {
   ClientQueries,
@@ -318,6 +323,7 @@ export default Object.assign(
     }
   },
   AssetsTypes,
+  EngineTypes,
   SensorsTypes,
   FlightStructureTypes,
   ClientTypes,

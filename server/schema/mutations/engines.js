@@ -4,4 +4,7 @@ export default `
   setEngineSpeeds(id: ID!, speeds: [SpeedInput]!): String
   addHeat(id: ID!, heat: Float): String
   engineCool(id: ID!, state: Boolean): String
+  setEngineAcceleration(id: ID!, acceleration: Float!): String
+  setEngineUseAcceleration(id: ID!, useAcceleration: Boolean!):String
+  setEngineSpeedFactor(id: ID!, speedFactor: Float!):String
 `;
