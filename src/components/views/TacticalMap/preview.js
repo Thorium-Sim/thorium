@@ -49,20 +49,52 @@ const layerComps = {
       </div>
     );
   },
-  objects: ({ items, selectObject, objectId, updateObject, removeObject }) => (
-    <div className="tactical-objects">
-      {items.map(i => (
-        <TacticalIcon
-          key={i.id}
-          {...i}
-          selectObject={selectObject}
-          objectId={objectId}
-          updateObject={updateObject}
-          removeObject={removeObject}
-        />
-      ))}
-    </div>
-  )
+  objects: class extends Component {
+    state = { flash: false };
+    flashing = true;
+    componentDidMount() {
+      this.flashing = true;
+      this.loop();
+    }
+    componentWillUnmount() {
+      this.flashing = false;
+    }
+    loop = () => {
+      if (!this.flashing) return;
+      this.setState({
+        flash: !this.state.flash
+      });
+      if (this.state.flash) {
+        setTimeout(this.loop, 250);
+      } else {
+        setTimeout(this.loop, 500);
+      }
+    };
+    render() {
+      const {
+        items,
+        selectObject,
+        objectId,
+        updateObject,
+        removeObject
+      } = this.props;
+      return (
+        <div className="tactical-objects">
+          {items.map(i => (
+            <TacticalIcon
+              key={i.id}
+              {...i}
+              flashing={this.state.flash}
+              selectObject={selectObject}
+              objectId={objectId}
+              updateObject={updateObject}
+              removeObject={removeObject}
+            />
+          ))}
+        </div>
+      );
+    }
+  }
 };
 
 class TacticalIcon extends Component {
@@ -129,7 +161,9 @@ class TacticalIcon extends Component {
       label,
       font,
       fontColor,
-      fontSize
+      fontSize,
+      flash,
+      flashing
     } = this.props;
     if (icon) {
       return (
@@ -143,6 +177,8 @@ class TacticalIcon extends Component {
               id={id}
               src={src}
               font={font}
+              flash={flash}
+              flashing={flashing}
               fontColor={fontColor}
               fontSize={fontSize}
               label={label}
@@ -159,6 +195,8 @@ class TacticalIcon extends Component {
         objectId={objectId}
         id={id}
         font={font}
+        flash={flash}
+        flashing={flashing}
         fontColor={fontColor}
         fontSize={fontSize}
         label={label}
@@ -177,7 +215,9 @@ const IconMarkup = ({
   font,
   fontColor,
   fontSize,
-  label
+  label,
+  flash,
+  flashing
 }) => (
   <div
     className={"tactical-icon"}
@@ -188,7 +228,10 @@ const IconMarkup = ({
     <div
       className="image-holder"
       onMouseDown={mouseDown}
-      style={{ transform: `scale(${size})` }}
+      style={{
+        transform: `scale(${size})`,
+        opacity: flash && flashing ? 0 : 1
+      }}
     >
       {objectId === id && (
         <div className="select-loc">
