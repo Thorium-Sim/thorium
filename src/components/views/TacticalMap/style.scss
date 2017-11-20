@@ -7,10 +7,10 @@
 .tacticalmap-core, .tacticalmap-config{
   .preview {
     grid-area: preview;
-   /* width: 100vw;
+    width: 100vw;
     height: 100vh;
     transform-origin: 0 0;
-    transform: scale(0.7);*/
+    transform: scale(0.7);
   }
   .right-sidebar {
     grid-area: sidebar;

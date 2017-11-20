@@ -64,7 +64,8 @@ class TacticalMapViewscreen extends Component {
   state = {
     tacticalMapId: null,
     layerId: null,
-    objectId: null
+    objectId: null,
+    layers: {}
   };
   sub = null;
   componentWillReceiveProps(nextProps) {
@@ -80,6 +81,23 @@ class TacticalMapViewscreen extends Component {
             tacticalMaps: subscriptionData.tacticalMapsUpdate
           });
         }
+      });
+    }
+    if (!nextProps.data.loading) {
+      this.setState({
+        layers: nextProps.data.tacticalMaps.reduce((prev, next) => {
+          // If the tactical map is frozen, use the previous tactical map's layers
+          if (
+            this.props.cardName &&
+            next.frozen &&
+            this.state.layers[next.id]
+          ) {
+            prev[next.id] = this.state.layers[next.id];
+          } else {
+            prev[next.id] = next.layers;
+          }
+          return prev;
+        }, {})
       });
     }
   }
@@ -147,12 +165,11 @@ class TacticalMapViewscreen extends Component {
     const data = JSON.parse(this.props.viewscreen.data);
     const { tacticalMapId } = data;
     if (!tacticalMapId) return null;
-    const { tacticalMaps } = this.props.data;
-    const selectedTactical = tacticalMaps.find(t => t.id === tacticalMapId);
+    const layers = this.state.layers[tacticalMapId];
     return (
       <div className="viewscreen-tacticalMap">
         <Preview
-          layers={selectedTactical.layers}
+          layers={layers}
           selectObject={this.selectObject}
           objectId={this.state.objectId}
           updateObject={this.updateObject}

@@ -43,6 +43,23 @@ class TacticalMapConfig extends Component {
     data = JSON.parse(data);
     updateData(JSON.stringify(Object.assign({}, data, { tacticalMapId })));
   };
+  freezeTactical = evt => {
+    const mutation = gql`
+      mutation FreezeTacticalMap($id: ID!, $freeze: Boolean!) {
+        freezeTacticalMap(id: $id, freeze: $freeze)
+      }
+    `;
+    const data = JSON.parse(this.props.data);
+    const flightTacticalId = data.tacticalMapId;
+    const variables = {
+      id: flightTacticalId,
+      freeze: evt.target.checked
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   loadTactical = () => {
     const mutation = gql`
       mutation LoadTactical($id: ID!, $flightId: ID!) {
@@ -86,6 +103,18 @@ class TacticalMapConfig extends Component {
         </Button>
         <div>
           <p>Flight Maps</p>
+          {flightTacticalId && (
+            <label>
+              <input
+                type="checkbox"
+                checked={
+                  tacticalMaps.find(t => t.id === flightTacticalId).frozen
+                }
+                onChange={this.freezeTactical}
+              />{" "}
+              Frozen
+            </label>
+          )}
           <ul className="saved-list">
             {tacticalMaps
               .filter(t => t.flight && t.flight.id === this.props.flightId)

@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
 	"_eventsCount": 266,
-=======
-	"_eventsCount": 257,
->>>>>>> 4c91c32b96f77add7a0b2b44eb44e7899b694c9b
 	"simulators": [
 		{
 			"id": "test",
@@ -2018,11 +2014,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-<<<<<<< HEAD
-			"timeSincePing": 30840800,
-=======
 			"timeSincePing": 33204600,
->>>>>>> 4c91c32b96f77add7a0b2b44eb44e7899b694c9b
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -2112,11 +2104,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-<<<<<<< HEAD
 			"timeSincePing": 30840800,
-=======
-			"timeSincePing": 33204600,
->>>>>>> 4c91c32b96f77add7a0b2b44eb44e7899b694c9b
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2265,11 +2253,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-<<<<<<< HEAD
 			"batteryChargeLevel": 0.7842079999997842,
-=======
-			"batteryChargeLevel": 0.765063999999765,
->>>>>>> 4c91c32b96f77add7a0b2b44eb44e7899b694c9b
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -3369,11 +3353,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-<<<<<<< HEAD
 			"timeSincePing": 26023800,
-=======
-			"timeSincePing": 28387600,
->>>>>>> 4c91c32b96f77add7a0b2b44eb44e7899b694c9b
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3405,11 +3385,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-<<<<<<< HEAD
 			"timeSincePing": 26023800,
-=======
-			"timeSincePing": 28387600,
->>>>>>> 4c91c32b96f77add7a0b2b44eb44e7899b694c9b
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4467,11 +4443,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-<<<<<<< HEAD
 			"timeSincePing": 20910700,
-=======
-			"timeSincePing": 23274500,
->>>>>>> 4c91c32b96f77add7a0b2b44eb44e7899b694c9b
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4505,11 +4477,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-<<<<<<< HEAD
 			"timeSincePing": 20910700,
-=======
-			"timeSincePing": 23274500,
->>>>>>> 4c91c32b96f77add7a0b2b44eb44e7899b694c9b
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5905,11 +5873,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-<<<<<<< HEAD
 			"timeSincePing": 9596300,
-=======
-			"timeSincePing": 11960100,
->>>>>>> 4c91c32b96f77add7a0b2b44eb44e7899b694c9b
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5943,11 +5907,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-<<<<<<< HEAD
 			"timeSincePing": 9596300,
-=======
-			"timeSincePing": 11960100,
->>>>>>> 4c91c32b96f77add7a0b2b44eb44e7899b694c9b
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -22232,14 +22192,8 @@
 	"viewscreens": [
 	],
 	"messages": [],
-<<<<<<< HEAD
 	"tacticalMaps": [],
 	"snapshotVersion": 145,
 	"version": 145,
 	"timestamp": "2017-11-17T04:24:02.315Z"
-=======
-	"snapshotVersion": 3112,
-	"version": 3112,
-	"timestamp": "2017-11-14T22:07:17.554Z"
->>>>>>> 4c91c32b96f77add7a0b2b44eb44e7899b694c9b
 }
