@@ -1,5 +1,12 @@
 import React, { Component } from "react";
 import { Asset } from "../../../helpers/assets";
+import * as THREE from "three";
+
+function distance3d(coord2, coord1) {
+  const { x: x1, y: y1, z: z1 } = coord1;
+  let { x: x2, y: y2, z: z2 } = coord2;
+  return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
+}
 
 const layerComps = {
   grid: ({ gridCols, gridRows, color, labels }) => {
@@ -50,8 +57,9 @@ const layerComps = {
     );
   },
   objects: class extends Component {
-    state = { flash: false };
+    state = { flash: false, locations: null };
     flashing = true;
+    loopInterval = 30;
     componentDidMount() {
       this.looping = true;
       this.flashLoop();
@@ -73,6 +81,50 @@ const layerComps = {
     };
     moveLoop = () => {
       if (!this.looping) return;
+      setTimeout(this.moveLoop, this.loopInterval);
+      this.setState({
+        locations: this.props.items.reduce((prev, next) => {
+          const { destination, speed, id } = next;
+          const location = this.state.locations
+            ? this.state.locations[id] || next.location
+            : next.location;
+          if (
+            destination.x === location.x &&
+            destination.y === location.y &&
+            destination.z === location.z
+          ) {
+            prev[id] = destination;
+          } else {
+            prev[id] = this.moveContact(
+              destination,
+              location,
+              speed,
+              this.props.frozen,
+              this.loopInterval
+            );
+          }
+          return prev;
+        }, {})
+      });
+    };
+    moveContact = (dest, loc, speed, frozen, i) => {
+      if (speed > 100) return dest;
+      if (speed === 0 || frozen) return loc;
+      if (distance3d(dest, loc) < 0.005) {
+        return dest;
+      }
+      const locVec = new THREE.Vector3(loc.x, loc.y, loc.z);
+      const destVec = new THREE.Vector3(dest.x, dest.y, dest.z);
+      const v = destVec
+        .sub(locVec)
+        .normalize()
+        .multiplyScalar(speed);
+      const newLoc = {
+        x: loc.x + Math.round(v.x / (10000 / i) * 10000) / 10000,
+        y: loc.y + Math.round(v.y / (10000 / i) * 10000) / 10000,
+        z: loc.z + Math.round(v.z / (10000 / i) * 10000) / 10000
+      };
+      return newLoc;
     };
     render() {
       const {
@@ -80,15 +132,20 @@ const layerComps = {
         selectObject,
         objectId,
         updateObject,
-        removeObject
+        removeObject,
+        core
       } = this.props;
+      const { flash, locations } = this.state;
+      if (!locations) return null;
       return (
         <div className="tactical-objects">
           {items.map(i => (
             <TacticalIcon
               key={i.id}
               {...i}
-              flashing={this.state.flash}
+              core={core}
+              location={locations[i.id]}
+              flashing={flash}
               selectObject={selectObject}
               objectId={objectId}
               updateObject={updateObject}
@@ -105,14 +162,14 @@ class TacticalIcon extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: props.location
+      destination: props.destination
     };
     this.dragging = false;
   }
   componentWillReceiveProps(nextProps) {
     if (!this.dragging) {
       this.setState({
-        location: nextProps.location
+        destination: nextProps.destination
       });
     }
   }
@@ -128,11 +185,11 @@ class TacticalIcon extends Component {
     document.addEventListener("mousemove", this.mouseMove);
   };
   mouseUp = () => {
-    const { x, y, z } = this.state.location;
+    const { x, y, z } = this.state.destination;
     if (x > 1 || x < 0 || y > 1 || y < 0) {
       this.props.removeObject();
     } else {
-      this.props.updateObject("location", { x, y, z });
+      this.props.updateObject("destination", { x, y, z });
     }
     this.dragging = false;
     this.setState({
@@ -151,14 +208,15 @@ class TacticalIcon extends Component {
     const y =
       (evt.clientY - targetBounds.height / 4 - bounds.top) / bounds.height;
     this.setState({
-      location: Object.assign({}, this.state.location, { x, y })
+      destination: Object.assign({}, this.state.destination, { x, y })
     });
   };
   render() {
-    const { location } = this.state;
+    const { destination } = this.state;
     const {
       icon,
       id,
+      location,
       objectId,
       size,
       label,
@@ -166,7 +224,8 @@ class TacticalIcon extends Component {
       fontColor,
       fontSize,
       flash,
-      flashing
+      flashing,
+      core
     } = this.props;
     if (icon) {
       return (
@@ -174,6 +233,7 @@ class TacticalIcon extends Component {
           {({ src }) => (
             <IconMarkup
               mouseDown={this.mouseDown}
+              destination={destination}
               location={location}
               size={size}
               objectId={objectId}
@@ -185,6 +245,7 @@ class TacticalIcon extends Component {
               fontColor={fontColor}
               fontSize={fontSize}
               label={label}
+              core={core}
             />
           )}
         </Asset>
@@ -203,6 +264,7 @@ class TacticalIcon extends Component {
         fontColor={fontColor}
         fontSize={fontSize}
         label={label}
+        core={core}
       />
     );
   }
@@ -211,6 +273,7 @@ class TacticalIcon extends Component {
 const IconMarkup = ({
   mouseDown,
   location,
+  destination,
   size,
   objectId,
   id,
@@ -220,40 +283,71 @@ const IconMarkup = ({
   fontSize,
   label,
   flash,
-  flashing
-}) => (
-  <div
-    className={"tactical-icon"}
-    style={{
-      transform: `translate(${location.x * 100}%, ${location.y * 100}%)`
-    }}
-  >
+  flashing,
+  core
+}) => [
+  location ? (
     <div
-      className="image-holder"
-      onMouseDown={mouseDown}
+      className={"tactical-icon"}
+      key={`icon-location-${id}`}
       style={{
-        transform: `scale(${size})`,
-        opacity: flash && flashing ? 0 : 1
+        transform: `translate(${location.x * 100}%, ${location.y * 100}%)`,
+        opacity: core ? 0.5 : 1
       }}
     >
-      {objectId === id && (
-        <div className="select-loc">
-          <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
-          <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
-          <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
-          <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
-        </div>
-      )}
-      {src && <img alt="icon" draggable={false} src={src} />}
-      <pre
-        className="icon-label"
-        style={{ fontFamily: font, color: fontColor, fontSize }}
+      <div
+        className="image-holder"
+        onMouseDown={mouseDown}
+        style={{
+          transform: `scale(${size})`,
+          opacity: flash && flashing ? 0 : 1
+        }}
       >
-        {label}
-      </pre>
+        {src && <img alt="icon" draggable={false} src={src} />}
+        <pre
+          className="icon-label"
+          style={{ fontFamily: font, color: fontColor, fontSize }}
+        >
+          {label}
+        </pre>
+      </div>
     </div>
-  </div>
-);
+  ) : null,
+  core ? (
+    <div
+      className={"tactical-icon"}
+      key={`icon-destination-${id}`}
+      style={{
+        transform: `translate(${destination.x * 100}%, ${destination.y * 100}%)`
+      }}
+    >
+      <div
+        className="image-holder"
+        onMouseDown={mouseDown}
+        style={{
+          transform: `scale(${size})`,
+          opacity: flash && flashing ? 0 : 1
+        }}
+      >
+        {objectId === id && (
+          <div className="select-loc">
+            <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
+            <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
+            <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
+            <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
+          </div>
+        )}
+        {src && <img alt="icon" draggable={false} src={src} />}
+        <pre
+          className="icon-label"
+          style={{ fontFamily: font, color: fontColor, fontSize }}
+        >
+          {label}
+        </pre>
+      </div>
+    </div>
+  ) : null
+];
 export default class TacticalMapPreview extends Component {
   keypress = evt => {
     const distance = 0.005;
@@ -289,11 +383,11 @@ export default class TacticalMapPreview extends Component {
             (ijkl.indexOf(evt.code) > -1 && i.ijkl)
           ) {
             this.props.updateObject(
-              "location",
+              "destination",
               {
-                x: i.location.x + movement.x,
-                y: i.location.y + movement.y,
-                z: i.location.z
+                x: i.destination.x + movement.x,
+                y: i.destination.y + movement.y,
+                z: i.destination.z
               },
               i
             );
@@ -314,28 +408,33 @@ export default class TacticalMapPreview extends Component {
       selectObject,
       objectId,
       updateObject,
-      removeObject
+      removeObject,
+      core,
+      frozen
     } = this.props;
     return (
       <div className="tactical-map-view">
-        {layers.map(l => {
-          const Comp = layerComps[l.type];
-          return (
-            <div
-              key={l.id}
-              className="tactical-map-layer"
-              onMouseDown={() => selectObject(null)}
-            >
-              <Comp
-                {...l}
-                selectObject={selectObject}
-                objectId={objectId}
-                updateObject={updateObject}
-                removeObject={removeObject}
-              />
-            </div>
-          );
-        })}
+        {layers &&
+          layers.map(l => {
+            const Comp = layerComps[l.type];
+            return (
+              <div
+                key={l.id}
+                className="tactical-map-layer"
+                onMouseDown={() => selectObject(null)}
+              >
+                <Comp
+                  {...l}
+                  core={core}
+                  frozen={frozen}
+                  selectObject={selectObject}
+                  objectId={objectId}
+                  updateObject={updateObject}
+                  removeObject={removeObject}
+                />
+              </div>
+            );
+          })}
       </div>
     );
   }

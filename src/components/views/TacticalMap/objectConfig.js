@@ -140,12 +140,12 @@ const ObjectSettings = ({
               onChange={evt => updateObject("speed", evt.target.value)}
             >
               <option value="1000">Instant</option>
-              <option value="5">Warp</option>
-              <option value="2">Very Fast</option>
-              <option value="1">Fast</option>
-              <option value="0.6">Moderate</option>
-              <option value="0.4">Slow</option>
-              <option value="0.1">Very Slow</option>
+              <option value="2">Warp</option>
+              <option value="1">Very Fast</option>
+              <option value="0.6">Fast</option>
+              <option value="0.4">Moderate</option>
+              <option value="0.1">Slow</option>
+              <option value="0.05">Very Slow</option>
             </Input>
           </Label>
         </FormGroup>

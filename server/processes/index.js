@@ -7,3 +7,4 @@ import "./coolant";
 import "./selfDestruct";
 import "./viewscreens";
 import "./engineVelocity";
+import "./tacticalMapMove";

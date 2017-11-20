@@ -83,7 +83,7 @@ class TacticalMapViewscreen extends Component {
         }
       });
     }
-    if (!nextProps.data.loading) {
+    if (!nextProps.data.loading && nextProps.data.tacticalMaps) {
       this.setState({
         layers: nextProps.data.tacticalMaps.reduce((prev, next) => {
           // If the tactical map is frozen, use the previous tactical map's layers
@@ -165,10 +165,15 @@ class TacticalMapViewscreen extends Component {
     const data = JSON.parse(this.props.viewscreen.data);
     const { tacticalMapId } = data;
     if (!tacticalMapId) return null;
+    const selectedTacticalMap = this.props.data.tacticalMaps.find(
+      t => t.id === tacticalMapId
+    );
     const layers = this.state.layers[tacticalMapId];
     return (
       <div className="viewscreen-tacticalMap">
         <Preview
+          core={!this.props.cardName}
+          frozen={selectedTacticalMap.frozen}
           layers={layers}
           selectObject={this.selectObject}
           objectId={this.state.objectId}

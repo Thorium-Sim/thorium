@@ -155,6 +155,7 @@ class TacticalMapCore extends Component {
               objectId={this.state.objectId}
               updateObject={this.updateObject}
               removeObject={this.removeObject}
+              core={true}
             />
           )}
         </div>
