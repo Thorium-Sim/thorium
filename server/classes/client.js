@@ -64,6 +64,7 @@ export default class Client {
   }
   addCache(cacheItem) {
     const container = App.assetContainers.find(a => a.fullPath === cacheItem);
+    if (!container) return;
     const object =
       App.assetObjects.find(
         obj =>

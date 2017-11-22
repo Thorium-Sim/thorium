@@ -86,6 +86,7 @@ class TacticalLayer {
 export default class TacticalMap {
   constructor(params) {
     this.id = params.id || uuid.v4();
+    this.class = "TacticalMap";
     this.name = params.name || "Tactical Map";
     this.template = params.template || false;
     this.flightId = params.flightId || null;

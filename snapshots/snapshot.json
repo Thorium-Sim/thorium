@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 266,
+	"_eventsCount": 270,
 	"simulators": [
 		{
 			"id": "test",
@@ -1471,6 +1471,23 @@
 					]
 				},
 				{
+					"id": "200ec71f-4c0e-4b90-9784-87bf683a8f78",
+					"class": "TimelineStep",
+					"name": "Nebula Nav",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "af5e35d2-707e-490d-9602-964c5bc7d724",
+							"name": "Tactical",
+							"type": "event",
+							"event": "showViewscreenTactical",
+							"args": "{\"tacticalId\":\"a368605d-523b-467c-90c1-0661078e700b\",\"mapId\":\"a368605d-523b-467c-90c1-0661078e700b\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
 					"id": "5e89ccee-64aa-4fa4-ad7f-42508a43c195",
 					"class": "TimelineStep",
 					"name": "Radiological Alert",
@@ -1904,7 +1921,7 @@
 				"report": null
 			},
 			"extra": false,
-			"heat": 1,
+			"heat": 0.33089999999933084,
 			"heatRate": 1,
 			"coolant": 0.3,
 			"class": "Engine",
@@ -2014,7 +2031,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 33204600,
+			"timeSincePing": 34341600,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -2104,7 +2121,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 30840800,
+			"timeSincePing": 31977800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2253,7 +2270,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7842079999997842,
+			"batteryChargeLevel": 0.775007999999775,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -3353,7 +3370,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 26023800,
+			"timeSincePing": 27160800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3385,7 +3402,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 26023800,
+			"timeSincePing": 27160800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4443,7 +4460,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 20910700,
+			"timeSincePing": 22047700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4477,7 +4494,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 20910700,
+			"timeSincePing": 22047700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5873,7 +5890,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9596300,
+			"timeSincePing": 10733300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5907,7 +5924,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9596300,
+			"timeSincePing": 10733300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -18777,6 +18794,13 @@
 			"fullPath": "/Viewscreen/Tactical Icons/Old Icons",
 			"name": "Old Icons",
 			"class": "AssetFolder"
+		},
+		{
+			"id": "998a920b-00ec-4fa8-ab6c-ca85fdfe4578",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Ships",
+			"name": "Ships",
+			"class": "AssetFolder"
 		}
 	],
 	"assetContainers": [
@@ -20074,6 +20098,334 @@
 			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Vortex",
 			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
 			"name": "Vortex",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "b0ca857b-b7d5-43ac-96c6-556918de544c",
+			"folderPath": "/Viewscreen/Tactical Backgrounds",
+			"fullPath": "/Viewscreen/Tactical Backgrounds/Nebula Nav Small",
+			"folderId": "93669558-d1d7-48b1-8069-3418c8cf31a7",
+			"name": "Nebula Nav Small",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "a087e1fb-644e-425a-b18c-9c6ba1384a0f",
+			"folderPath": "/Viewscreen/Tactical Backgrounds",
+			"fullPath": "/Viewscreen/Tactical Backgrounds/Nebula Nav",
+			"folderId": "93669558-d1d7-48b1-8069-3418c8cf31a7",
+			"name": "Nebula Nav",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "74be42d6-dbf7-4707-969a-2d3759d6afb4",
+			"folderPath": "/Viewscreen/Tactical Icons/Ships",
+			"fullPath": "/Viewscreen/Tactical Icons/Ships/vangaurd",
+			"folderId": "998a920b-00ec-4fa8-ab6c-ca85fdfe4578",
+			"name": "vangaurd",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "628079ce-bd8e-43c5-b820-e1cfebd3ced5",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Active Scans Cycle",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Active Scans Cycle",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "c48bad4e-3587-4ba9-bbef-0954920fcce6",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/ANOTHER ship exits the Wormhole",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "ANOTHER ship exits the Wormhole",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "b02e2dcd-7e7d-487f-84ba-ff6730d279ab",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Approaching Nebula",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Approaching Nebula",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "45af5d19-0126-4ba7-af0e-370b24e1569b",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Biological Alert",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Biological Alert",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "3385708f-03dd-4ff9-8716-24ee33822cfc",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Black Hole",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Black Hole",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "38017a71-4bae-4608-a283-6cef97e744e6",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Collision Alert",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Collision Alert",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "e9e06776-d503-466f-88d2-5ceac8a8ed14",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Comm Line Disconnect",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Comm Line Disconnect",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "8ea2685e-39ba-4940-8c01-bfe32ad62989",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Comm Status",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Comm Status",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "870d48ac-6196-4ad1-8d3f-ab559fc7b606",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Computer Activation",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Computer Activation",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "10dc5978-0d41-457f-8792-5f347bce4fb2",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Course To Wormhole",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Course To Wormhole",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "e58066c1-4019-4423-84b4-b7ac7cab7a4b",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Detected deep in nebula",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Detected deep in nebula",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "5e3c704f-beb3-42bd-b1ac-0aa240949787",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Fire Alert",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Fire Alert",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "27cc2d69-91ed-4a4f-946f-23d7a285ab11",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Incoming Hail",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Incoming Hail",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "d817c6d1-00de-486f-b057-0e180ee92780",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Intolerance Escape Warp Jump",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Intolerance Escape Warp Jump",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "a13424ac-8bef-4c5f-93e5-f92b4d532e12",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Intolerance Shockwave",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Intolerance Shockwave",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "e3b8eea9-833a-40d4-99c3-5353328522c5",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Intruder Alert",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Intruder Alert",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "3f9ac433-ee73-46fc-b0ef-2467f6ec9123",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Matura Nebula Encounter",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Matura Nebula Encounter",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "9b4723b5-61a8-4152-bf17-2823ba35f2f9",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Montgomery sensors information",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Montgomery sensors information",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "8fff18ae-4f11-420b-bf12-959318ccb6c3",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Nearly Hit the USS Ranger",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Nearly Hit the USS Ranger",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "75b35490-8231-46d5-93d0-d204ddc306c0",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Nebula 2",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Nebula 2",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "3905117c-9482-46a3-b910-d6f6c7bc0d8e",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Nebula",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Nebula",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "2c0ccabc-2e6c-4954-9470-9fc21af57765",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Preflight Scans",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Preflight Scans",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "21b229f9-3000-4c74-8832-ebaee22f562f",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Radiological Alert",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Radiological Alert",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "3b92b794-2b73-458b-80e0-1bfc29bbb9be",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Ranger Contact",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Ranger Contact",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "27ccf7b1-4059-4728-bd46-575ccbf19db8",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Red Alert Sreen",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Red Alert Sreen",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "e2686710-225f-4e2e-8262-d2abb542e110",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Rool's Vitals",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Rool's Vitals",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "97f1baf1-6c4a-4231-82f3-c9d3db69e71c",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Scanning Rupture",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Scanning Rupture",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "759b0654-aeb0-43a8-b32b-eea1732ba0e0",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Shields Offline Damage Report",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Shields Offline Damage Report",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "dcf04c44-a102-4e54-9505-6ead7055a1f9",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Ship Scans",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Ship Scans",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "2d3ec8f6-c6a1-4907-afce-b4140fd95e11",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Stars",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Stars",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "d767e519-37bb-4943-af1a-892b14a55493",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Subspace Rupture",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Subspace Rupture",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "fe48fccd-b422-4c90-947b-2ee5d8681f3d",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Transport",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Transport",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "c52be593-2823-4d6a-b4c6-dd196600b210",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Unknown Object Detected Near Wormhole",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Unknown Object Detected Near Wormhole",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "76004221-71fa-469d-9be1-473312138da4",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Unknown Vessel",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Unknown Vessel",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "a58175f9-c11f-405e-82c1-e46e2c5f73b8",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/USS Montgomery destroyed",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "USS Montgomery destroyed",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "c99cbb01-d292-4976-ab90-42c8ba795b20",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Viewscreen offline",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Viewscreen offline",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "c7a89109-7f50-48fe-90e2-6a48bd71a216",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Voyager Logo Screen",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Voyager Logo Screen",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "0a145119-c7fd-46cb-88b3-a60d39d5b64c",
+			"folderPath": "/Viewscreen/Videos",
+			"fullPath": "/Viewscreen/Videos/Wormhole Detected",
+			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
+			"name": "Wormhole Detected",
 			"class": "AssetContainer"
 		}
 	],
@@ -22187,13 +22539,454 @@
 			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Vortex/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
+		},
+		{
+			"id": "38a3077f-7ed0-4d6f-a212-8872aef8f7a0",
+			"containerPath": "/Viewscreen/Tactical Backgrounds",
+			"containerId": "b0ca857b-b7d5-43ac-96c6-556918de544c",
+			"fullPath": "/Viewscreen/Tactical Backgrounds/Nebula Nav Small/default.png",
+			"url": "/assets/Viewscreen/Tactical Backgrounds/Nebula Nav Small/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "9d63c581-4ab5-4605-8e57-d47f8a371c6c",
+			"containerPath": "/Viewscreen/Tactical Backgrounds",
+			"containerId": "a087e1fb-644e-425a-b18c-9c6ba1384a0f",
+			"fullPath": "/Viewscreen/Tactical Backgrounds/Nebula Nav/default.png",
+			"url": "/assets/Viewscreen/Tactical Backgrounds/Nebula Nav/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "392f3061-8452-42ba-88d7-db7c819ca25d",
+			"containerPath": "/Viewscreen/Tactical Icons/Ships",
+			"containerId": "74be42d6-dbf7-4707-969a-2d3759d6afb4",
+			"fullPath": "/Viewscreen/Tactical Icons/Ships/vangaurd/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Ships/vangaurd/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "a31f73f4-514a-4e00-8ae5-52f7339f4452",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "628079ce-bd8e-43c5-b820-e1cfebd3ced5",
+			"fullPath": "/Viewscreen/Videos/Active Scans Cycle/default.mov",
+			"url": "/assets/Viewscreen/Videos/Active Scans Cycle/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "2b48cc03-373b-466f-b3c2-189daccc8850",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "c48bad4e-3587-4ba9-bbef-0954920fcce6",
+			"fullPath": "/Viewscreen/Videos/ANOTHER ship exits the Wormhole/default.mov",
+			"url": "/assets/Viewscreen/Videos/ANOTHER ship exits the Wormhole/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "713c4c97-400e-4950-98ae-585412b52e40",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "b02e2dcd-7e7d-487f-84ba-ff6730d279ab",
+			"fullPath": "/Viewscreen/Videos/Approaching Nebula/default.MP4",
+			"url": "/assets/Viewscreen/Videos/Approaching Nebula/default.MP4",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "1a979f63-af11-4ea5-ac61-007d5022dcb8",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "45af5d19-0126-4ba7-af0e-370b24e1569b",
+			"fullPath": "/Viewscreen/Videos/Biological Alert/default.mov",
+			"url": "/assets/Viewscreen/Videos/Biological Alert/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "5107fd3d-eb03-4322-b428-c4646157e67c",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "3385708f-03dd-4ff9-8716-24ee33822cfc",
+			"fullPath": "/Viewscreen/Videos/Black Hole/default.mov",
+			"url": "/assets/Viewscreen/Videos/Black Hole/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "7b518c3e-9246-49ab-996e-9b95f7c85701",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "38017a71-4bae-4608-a283-6cef97e744e6",
+			"fullPath": "/Viewscreen/Videos/Collision Alert/default.mov",
+			"url": "/assets/Viewscreen/Videos/Collision Alert/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "bb467df2-0280-477b-a77e-edc1a171c347",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "e9e06776-d503-466f-88d2-5ceac8a8ed14",
+			"fullPath": "/Viewscreen/Videos/Comm Line Disconnect/default.mov",
+			"url": "/assets/Viewscreen/Videos/Comm Line Disconnect/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "5f36af0a-c2ab-449c-b72e-27449f69778c",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "8ea2685e-39ba-4940-8c01-bfe32ad62989",
+			"fullPath": "/Viewscreen/Videos/Comm Status/default.mov",
+			"url": "/assets/Viewscreen/Videos/Comm Status/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "a47e33fc-35b0-41c5-ab5e-1e3627ea4235",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "870d48ac-6196-4ad1-8d3f-ab559fc7b606",
+			"fullPath": "/Viewscreen/Videos/Computer Activation/default.mov",
+			"url": "/assets/Viewscreen/Videos/Computer Activation/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "c68b3f7e-b937-4abd-ae47-41eb6422692f",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "10dc5978-0d41-457f-8792-5f347bce4fb2",
+			"fullPath": "/Viewscreen/Videos/Course To Wormhole/default.mov",
+			"url": "/assets/Viewscreen/Videos/Course To Wormhole/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "eb76c17f-0f28-4839-b052-f65bef1204b0",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "e58066c1-4019-4423-84b4-b7ac7cab7a4b",
+			"fullPath": "/Viewscreen/Videos/Detected deep in nebula/default.mov",
+			"url": "/assets/Viewscreen/Videos/Detected deep in nebula/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "b4cc8acf-f826-4123-9ea8-ab841999c5d0",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "5e3c704f-beb3-42bd-b1ac-0aa240949787",
+			"fullPath": "/Viewscreen/Videos/Fire Alert/default.mov",
+			"url": "/assets/Viewscreen/Videos/Fire Alert/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "c2e2b425-908f-494c-8082-373841418d4c",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "27cc2d69-91ed-4a4f-946f-23d7a285ab11",
+			"fullPath": "/Viewscreen/Videos/Incoming Hail/default.mov",
+			"url": "/assets/Viewscreen/Videos/Incoming Hail/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "1396b14c-ebcc-4eab-8765-b71002a7b214",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "d817c6d1-00de-486f-b057-0e180ee92780",
+			"fullPath": "/Viewscreen/Videos/Intolerance Escape Warp Jump/default.mov",
+			"url": "/assets/Viewscreen/Videos/Intolerance Escape Warp Jump/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "baea3baa-754c-4dfb-b880-710261b83dea",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "a13424ac-8bef-4c5f-93e5-f92b4d532e12",
+			"fullPath": "/Viewscreen/Videos/Intolerance Shockwave/default.mov",
+			"url": "/assets/Viewscreen/Videos/Intolerance Shockwave/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "c735e284-3112-4ad5-a7a1-63806b9b8799",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "e3b8eea9-833a-40d4-99c3-5353328522c5",
+			"fullPath": "/Viewscreen/Videos/Intruder Alert/default.mov",
+			"url": "/assets/Viewscreen/Videos/Intruder Alert/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "0a7f01a5-9bb1-4424-9b4e-7db3ec3a6a85",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "3f9ac433-ee73-46fc-b0ef-2467f6ec9123",
+			"fullPath": "/Viewscreen/Videos/Matura Nebula Encounter/default.mov",
+			"url": "/assets/Viewscreen/Videos/Matura Nebula Encounter/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "12ffedaf-dd3d-4fff-814b-6fef242201f3",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "9b4723b5-61a8-4152-bf17-2823ba35f2f9",
+			"fullPath": "/Viewscreen/Videos/Montgomery sensors information/default.mov",
+			"url": "/assets/Viewscreen/Videos/Montgomery sensors information/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "e6c32ab9-d642-4978-be05-2c8fdd8a02f1",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "8fff18ae-4f11-420b-bf12-959318ccb6c3",
+			"fullPath": "/Viewscreen/Videos/Nearly Hit the USS Ranger/default.mov",
+			"url": "/assets/Viewscreen/Videos/Nearly Hit the USS Ranger/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "c37ab45a-66fa-4427-8d45-eb69bf97e6af",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "75b35490-8231-46d5-93d0-d204ddc306c0",
+			"fullPath": "/Viewscreen/Videos/Nebula 2/default.mov",
+			"url": "/assets/Viewscreen/Videos/Nebula 2/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "7de5af11-06d5-466f-b602-0e3f6f247a10",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "3905117c-9482-46a3-b910-d6f6c7bc0d8e",
+			"fullPath": "/Viewscreen/Videos/Nebula/default.mov",
+			"url": "/assets/Viewscreen/Videos/Nebula/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "ec41229b-f179-49ae-bd00-ed816d535194",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "2c0ccabc-2e6c-4954-9470-9fc21af57765",
+			"fullPath": "/Viewscreen/Videos/Preflight Scans/default.mov",
+			"url": "/assets/Viewscreen/Videos/Preflight Scans/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "c91c0877-292a-45c0-80ba-58ea81a1a732",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "21b229f9-3000-4c74-8832-ebaee22f562f",
+			"fullPath": "/Viewscreen/Videos/Radiological Alert/default.mov",
+			"url": "/assets/Viewscreen/Videos/Radiological Alert/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "56511cc8-2591-4297-8c1f-7996d230ddf3",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "3b92b794-2b73-458b-80e0-1bfc29bbb9be",
+			"fullPath": "/Viewscreen/Videos/Ranger Contact/default.mov",
+			"url": "/assets/Viewscreen/Videos/Ranger Contact/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "d4d56ce1-e65c-45e6-b180-9f5e20d5c6fd",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "27ccf7b1-4059-4728-bd46-575ccbf19db8",
+			"fullPath": "/Viewscreen/Videos/Red Alert Sreen/default.mov",
+			"url": "/assets/Viewscreen/Videos/Red Alert Sreen/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "c9c4c811-31a6-40bb-896e-8b5d9485b0bd",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "e2686710-225f-4e2e-8262-d2abb542e110",
+			"fullPath": "/Viewscreen/Videos/Rool's Vitals/default.mov",
+			"url": "/assets/Viewscreen/Videos/Rool's Vitals/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "7b52db87-e11c-49ed-bab2-5c62c27fb0ae",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "97f1baf1-6c4a-4231-82f3-c9d3db69e71c",
+			"fullPath": "/Viewscreen/Videos/Scanning Rupture/default.mov",
+			"url": "/assets/Viewscreen/Videos/Scanning Rupture/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "451c4a08-faf8-491d-8865-eb9a9e8e672f",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "759b0654-aeb0-43a8-b32b-eea1732ba0e0",
+			"fullPath": "/Viewscreen/Videos/Shields Offline Damage Report/default.mov",
+			"url": "/assets/Viewscreen/Videos/Shields Offline Damage Report/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "658aeb0d-7a96-4ec1-9ce1-f5c5931261b4",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "dcf04c44-a102-4e54-9505-6ead7055a1f9",
+			"fullPath": "/Viewscreen/Videos/Ship Scans/default.MP4",
+			"url": "/assets/Viewscreen/Videos/Ship Scans/default.MP4",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "a231fba6-7c3f-43f4-810a-692e23d674e3",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "2d3ec8f6-c6a1-4907-afce-b4140fd95e11",
+			"fullPath": "/Viewscreen/Videos/Stars/default.mov",
+			"url": "/assets/Viewscreen/Videos/Stars/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "3b25f6df-3304-4c88-8270-69bfb57b4d50",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "d767e519-37bb-4943-af1a-892b14a55493",
+			"fullPath": "/Viewscreen/Videos/Subspace Rupture/default.mov",
+			"url": "/assets/Viewscreen/Videos/Subspace Rupture/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "971c35e8-99ae-4cdd-9776-04d74fb1a37e",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "fe48fccd-b422-4c90-947b-2ee5d8681f3d",
+			"fullPath": "/Viewscreen/Videos/Transport/default.mov",
+			"url": "/assets/Viewscreen/Videos/Transport/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "bcb4c740-3941-4ff7-827c-4fe709e9bea4",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "c52be593-2823-4d6a-b4c6-dd196600b210",
+			"fullPath": "/Viewscreen/Videos/Unknown Object Detected Near Wormhole/default.mov",
+			"url": "/assets/Viewscreen/Videos/Unknown Object Detected Near Wormhole/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "bf06aa25-311d-4d44-8b4f-27c855c26494",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "76004221-71fa-469d-9be1-473312138da4",
+			"fullPath": "/Viewscreen/Videos/Unknown Vessel/default.mov",
+			"url": "/assets/Viewscreen/Videos/Unknown Vessel/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "8177e948-6d68-4df3-b9a3-1d131a231a71",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "a58175f9-c11f-405e-82c1-e46e2c5f73b8",
+			"fullPath": "/Viewscreen/Videos/USS Montgomery destroyed/default.mov",
+			"url": "/assets/Viewscreen/Videos/USS Montgomery destroyed/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "e4e0edc8-5386-4c14-9511-715a4814a1e2",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "c99cbb01-d292-4976-ab90-42c8ba795b20",
+			"fullPath": "/Viewscreen/Videos/Viewscreen offline/default.mov",
+			"url": "/assets/Viewscreen/Videos/Viewscreen offline/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "a90a3ce9-f56d-4d5a-a141-76a64d410be0",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "c7a89109-7f50-48fe-90e2-6a48bd71a216",
+			"fullPath": "/Viewscreen/Videos/Voyager Logo Screen/default.mov",
+			"url": "/assets/Viewscreen/Videos/Voyager Logo Screen/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "c692fbcb-169f-4adf-a9a5-ca5e682005ea",
+			"containerPath": "/Viewscreen/Videos",
+			"containerId": "0a145119-c7fd-46cb-88b3-a60d39d5b64c",
+			"fullPath": "/Viewscreen/Videos/Wormhole Detected/default.mov",
+			"url": "/assets/Viewscreen/Videos/Wormhole Detected/default.mov",
+			"simulatorId": "default",
+			"class": "AssetObject"
 		}
 	],
-	"viewscreens": [
-	],
+	"viewscreens": [],
 	"messages": [],
-	"tacticalMaps": [],
-	"snapshotVersion": 145,
-	"version": 145,
-	"timestamp": "2017-11-17T04:24:02.315Z"
+	"tacticalMaps": [
+		{
+			"id": "a368605d-523b-467c-90c1-0661078e700b",
+			"class": "TacticalMap",
+			"name": "Nebula Navigation",
+			"template": true,
+			"flightId": null,
+			"frozen": false,
+			"layers": [
+				{
+					"id": "6764a63b-52d3-4d8f-b798-e91a83fd4d54",
+					"name": "Background",
+					"type": "image",
+					"image": "/Viewscreen/Tactical Backgrounds/Stars",
+					"color": "#00ff00",
+					"labels": false,
+					"gridCols": 16,
+					"gridRows": 9,
+					"items": []
+				},
+				{
+					"id": "db14db2a-dae7-4fbb-b2ed-c53fa32b9eec",
+					"name": "Nebula",
+					"type": "image",
+					"image": "/Viewscreen/Tactical Backgrounds/Nebula Nav Small",
+					"color": "#00ff00",
+					"labels": false,
+					"gridCols": 16,
+					"gridRows": 9,
+					"items": []
+				},
+				{
+					"id": "5f5e7369-3a91-4d39-b67a-f4ee32f3a60e",
+					"name": "Objects",
+					"type": "objects",
+					"image": null,
+					"color": "#00ff00",
+					"labels": false,
+					"gridCols": 16,
+					"gridRows": 9,
+					"items": [
+						{
+							"id": "1857e7a9-df8d-4d31-8291-b2bf37e64d43",
+							"label": "",
+							"font": "Helvetica",
+							"fontSize": 12,
+							"fontColor": "white",
+							"flash": false,
+							"icon": "/Viewscreen/Tactical Icons/Ships/vangaurd",
+							"size": 0.9,
+							"speed": 0.4,
+							"velocity": {
+								"x": 0,
+								"y": 0,
+								"z": 0
+							},
+							"location": {
+								"x": 0.3022073412698413,
+								"y": 0.9144012416338292,
+								"z": 0
+							},
+							"destination": {
+								"x": 0.3022073412698413,
+								"y": 0.9144012416338292,
+								"z": 0
+							},
+							"wasd": true,
+							"ijkl": false
+						}
+					]
+				}
+			]
+		}
+	],
+	"snapshotVersion": 1542,
+	"version": 1542,
+	"timestamp": "2017-11-22T14:15:24.687Z"
 }

@@ -5,3 +5,4 @@ export { default as processedData } from "./processedData";
 export {
   default as updateViewscreenComponent
 } from "./updateViewscreenComponent";
+export { default as showViewscreenTactical } from "./showViewscreenTactical";
