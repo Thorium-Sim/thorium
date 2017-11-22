@@ -4,6 +4,21 @@
   grid-template-rows: (70vw * 9/16) auto;
   grid-template-areas: "preview sidebar" "bottom sidebar";
 }
+      /* selection container */
+      .selection {
+        height: 100%;
+        //position: relative;
+      }
+      .select-box {
+        background-color: rgba(255,0,0,0.5);
+      }
+      /* selection box */
+      .selection-border {
+        background: rgba(0, 162, 255, 0.4);
+        position: absolute;
+        z-index: 99;
+      }
+
 .tacticalmap-core, .tacticalmap-config{
   .preview {
     grid-area: preview;

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import { findDOMNode } from "react-dom";
 import { Asset } from "../../../helpers/assets";
 import * as THREE from "three";
+import Selection from "./select";
 
 function distance3d(coord2, coord1) {
   const { x: x1, y: y1, z: z1 } = coord1;
@@ -57,7 +59,7 @@ const layerComps = {
     );
   },
   objects: class extends Component {
-    state = { flash: false, locations: null };
+    state = { flash: false, locations: null, movements: {} };
     flashing = true;
     loopInterval = 30;
     componentDidMount() {
@@ -126,6 +128,49 @@ const layerComps = {
       };
       return newLoc;
     };
+    selectionChange = selectedChildren => {
+      this.setState({
+        selected: Object.keys(selectedChildren).filter(c => selectedChildren[c])
+      });
+    };
+    moveMultiple = (evt, bounds) => {
+      const { selected, movements } = this.state;
+      const { items } = this.props;
+      if (evt === "cancel") {
+        Object.keys(movements).forEach(m => {
+          const item = items.find(i => i.id === m);
+          let { x, y, z } = item.destination;
+          const movement = movements[m];
+          x = x + movement.x;
+          y = y + movement.y;
+          if (x > 1 || x < 0 || y > 1 || y < 0) {
+            this.props.removeObject();
+          } else {
+            this.props.updateObject("destination", { x, y, z }, item);
+          }
+        });
+        this.setState({
+          movements: {}
+        });
+      } else {
+        const x = evt.movementX / bounds.width;
+        const y = evt.movementY / bounds.height;
+        this.setState({
+          movements: selected.reduce((prev, next) => {
+            if (!movements[next]) {
+              prev[next] = { x, y, z: 0 };
+            } else {
+              prev[next] = {
+                x: movements[next].x + x,
+                y: movements[next].y + y,
+                z: 0
+              };
+            }
+            return prev;
+          }, {})
+        });
+      }
+    };
     render() {
       const {
         items,
@@ -135,23 +180,27 @@ const layerComps = {
         removeObject,
         core
       } = this.props;
-      const { flash, locations } = this.state;
+      const { flash, locations, selected = [], movements = {} } = this.state;
       if (!locations) return null;
       return (
         <div className="tactical-objects">
-          {items.map(i => (
-            <TacticalIcon
-              key={i.id}
-              {...i}
-              core={core}
-              location={locations[i.id]}
-              flashing={flash}
-              selectObject={selectObject}
-              objectId={objectId}
-              updateObject={updateObject}
-              removeObject={removeObject}
-            />
-          ))}
+          <Selection onSelectionChange={this.selectionChange}>
+            {items.map(i => (
+              <TacticalIcon
+                key={i.id}
+                {...i}
+                core={core}
+                moveMultiple={selected.length ? this.moveMultiple : () => {}}
+                movement={movements[i.id]}
+                location={locations[i.id]}
+                flashing={flash}
+                selectObject={selectObject}
+                objectId={objectId}
+                updateObject={updateObject}
+                removeObject={removeObject}
+              />
+            ))}
+          </Selection>
         </div>
       );
     }
@@ -174,7 +223,9 @@ class TacticalIcon extends Component {
     }
   }
   mouseDown = evt => {
-    this.dragging = true;
+    if (!this.props.isSelected) {
+      this.dragging = true;
+    }
     evt.stopPropagation();
     evt.preventDefault();
     this.props.selectObject(this.props);
@@ -185,16 +236,20 @@ class TacticalIcon extends Component {
     document.addEventListener("mousemove", this.mouseMove);
   };
   mouseUp = () => {
-    const { x, y, z } = this.state.destination;
-    if (x > 1 || x < 0 || y > 1 || y < 0) {
-      this.props.removeObject();
+    if (this.props.isSelected) {
+      this.props.moveMultiple("cancel");
     } else {
-      this.props.updateObject("destination", { x, y, z });
+      const { x, y, z } = this.state.destination;
+      if (x > 1 || x < 0 || y > 1 || y < 0) {
+        this.props.removeObject();
+      } else {
+        this.props.updateObject("destination", { x, y, z });
+      }
+      this.dragging = false;
+      this.setState({
+        targetBounds: null
+      });
     }
-    this.dragging = false;
-    this.setState({
-      targetBounds: null
-    });
     document.removeEventListener("mouseup", this.mouseUp);
     document.removeEventListener("mousemove", this.mouseMove);
   };
@@ -202,14 +257,18 @@ class TacticalIcon extends Component {
     const bounds = document
       .querySelector(".tactical-map-view")
       .getBoundingClientRect();
-    const { targetBounds } = this.state;
-    const x =
-      (evt.clientX - targetBounds.width / 4 - bounds.left) / bounds.width;
-    const y =
-      (evt.clientY - targetBounds.height / 4 - bounds.top) / bounds.height;
-    this.setState({
-      destination: Object.assign({}, this.state.destination, { x, y })
-    });
+    if (this.props.isSelected) {
+      this.props.moveMultiple(evt, bounds);
+    } else {
+      const { targetBounds } = this.state;
+      const x =
+        (evt.clientX - targetBounds.width / 4 - bounds.left) / bounds.width;
+      const y =
+        (evt.clientY - targetBounds.height / 4 - bounds.top) / bounds.height;
+      this.setState({
+        destination: Object.assign({}, this.state.destination, { x, y })
+      });
+    }
   };
   render() {
     const { destination } = this.state;
@@ -225,7 +284,9 @@ class TacticalIcon extends Component {
       fontSize,
       flash,
       flashing,
-      core
+      core,
+      movement = { x: 0, y: 0, z: 0 },
+      isSelected
     } = this.props;
     if (icon) {
       return (
@@ -235,8 +296,10 @@ class TacticalIcon extends Component {
               mouseDown={this.mouseDown}
               destination={destination}
               location={location}
+              movement={movement}
               size={size}
               objectId={objectId}
+              isSelected={isSelected}
               id={id}
               src={src}
               font={font}
@@ -255,8 +318,10 @@ class TacticalIcon extends Component {
       <IconMarkup
         mouseDown={this.mouseDown}
         location={location}
+        movement={movement}
         size={size}
         objectId={objectId}
+        isSelected={isSelected}
         id={id}
         font={font}
         flash={flash}
@@ -274,6 +339,7 @@ const IconMarkup = ({
   mouseDown,
   location,
   destination,
+  movement,
   size,
   objectId,
   id,
@@ -284,7 +350,8 @@ const IconMarkup = ({
   label,
   flash,
   flashing,
-  core
+  core,
+  isSelected
 }) => [
   location ? (
     <div
@@ -318,7 +385,8 @@ const IconMarkup = ({
       className={"tactical-icon"}
       key={`icon-destination-${id}`}
       style={{
-        transform: `translate(${destination.x * 100}%, ${destination.y * 100}%)`
+        transform: `translate(${(destination.x + movement.x) *
+          100}%, ${(destination.y + movement.y) * 100}%)`
       }}
     >
       <div
@@ -329,7 +397,7 @@ const IconMarkup = ({
           opacity: flash && flashing ? 0 : 1
         }}
       >
-        {objectId === id && (
+        {(objectId === id || isSelected) && (
           <div className="select-loc">
             <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
             <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
