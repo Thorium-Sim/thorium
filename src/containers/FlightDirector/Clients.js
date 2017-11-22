@@ -83,18 +83,19 @@ class Clients extends Component {
     }
   }
   _select(p, type, e) {
+    let m = null;
+    if (type === "flight") {
+      m = "clientSetFlight(client: $client, flightId: $id)";
+    }
+    if (type === "simulator") {
+      m = "clientSetSimulator(client: $client, simulatorId: $id)";
+    }
+    if (type === "station") {
+      m = "clientSetStation(client: $client, stationName: $id)";
+    }
     const mutation = gql`mutation UpdateClient($client: ID!, $id: ID!) {
-      ${(() => {
-        if (type === "flight") {
-          return "clientSetFlight(client: $client, flightId: $id)}";
-        }
-        if (type === "simulator") {
-          return "clientSetSimulator(client: $client, simulatorId: $id)}";
-        }
-        if (type === "station") {
-          return "clientSetStation(client: $client, stationName: $id)}";
-        }
-      })()}`;
+    ${m} 
+    }`;
     const obj = {
       client: p.id,
       id: e.target.value

@@ -16,7 +16,7 @@ class MacroConfig extends Component {
     this.props.updateMacro("args", JSON.stringify(args));
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.__schema) return null;
     const data = this.props.data.__schema.mutationType.fields;
     const { event, client } = this.props;
     const args = JSON.parse(this.props.args);
@@ -46,12 +46,13 @@ class MacroConfig extends Component {
                 })}
             </select>
           </FormGroup>
-          {event &&
+          {event && (
             <EventMacro
               updateArgs={this._handleArg}
               args={args || {}}
               client={client}
-            />}
+            />
+          )}
         </Col>
       </Row>
     );

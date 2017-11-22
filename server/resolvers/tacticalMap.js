@@ -57,6 +57,9 @@ export const TacticalMapMutations = {
   },
   removeTacticalMapItem(rootValue, args, context) {
     App.handleEvent(args, "removeTacticalMapItem", context);
+  },
+  showViewscreenTactical(rootValue, args, context) {
+    App.handleEvent(args, "showViewscreenTactical", context);
   }
 };
 

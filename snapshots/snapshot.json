@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 266,
+	"_eventsCount": 270,
 	"simulators": [
 		{
 			"id": "test",
@@ -1471,6 +1471,23 @@
 					]
 				},
 				{
+					"id": "200ec71f-4c0e-4b90-9784-87bf683a8f78",
+					"class": "TimelineStep",
+					"name": "Nebula Nav",
+					"description": "",
+					"order": 0,
+					"timelineItems": [
+						{
+							"id": "af5e35d2-707e-490d-9602-964c5bc7d724",
+							"name": "Tactical",
+							"type": "event",
+							"event": "showViewscreenTactical",
+							"args": "{\"tacticalId\":\"a368605d-523b-467c-90c1-0661078e700b\"}",
+							"delay": 0
+						}
+					]
+				},
+				{
 					"id": "5e89ccee-64aa-4fa4-ad7f-42508a43c195",
 					"class": "TimelineStep",
 					"name": "Radiological Alert",
@@ -1904,7 +1921,7 @@
 				"report": null
 			},
 			"extra": false,
-			"heat": 1,
+			"heat": 0.3599599999993599,
 			"heatRate": 1,
 			"coolant": 0.3,
 			"class": "Engine",
@@ -2014,7 +2031,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 33204600,
+			"timeSincePing": 34292100,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -2104,7 +2121,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 30840800,
+			"timeSincePing": 31928300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2253,7 +2270,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7842079999997842,
+			"batteryChargeLevel": 0.7754079999997754,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -3353,7 +3370,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 26023800,
+			"timeSincePing": 27111300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3385,7 +3402,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 26023800,
+			"timeSincePing": 27111300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4443,7 +4460,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 20910700,
+			"timeSincePing": 21998200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4477,7 +4494,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 20910700,
+			"timeSincePing": 21998200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5873,7 +5890,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9596300,
+			"timeSincePing": 10683800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5907,7 +5924,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 9596300,
+			"timeSincePing": 10683800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -18777,6 +18794,13 @@
 			"fullPath": "/Viewscreen/Tactical Icons/Old Icons",
 			"name": "Old Icons",
 			"class": "AssetFolder"
+		},
+		{
+			"id": "998a920b-00ec-4fa8-ab6c-ca85fdfe4578",
+			"folderPath": "/Viewscreen/Tactical Icons",
+			"fullPath": "/Viewscreen/Tactical Icons/Ships",
+			"name": "Ships",
+			"class": "AssetFolder"
 		}
 	],
 	"assetContainers": [
@@ -20074,6 +20098,30 @@
 			"fullPath": "/Viewscreen/Tactical Icons/Old Icons/Vortex",
 			"folderId": "13e8128a-940a-4caf-ad56-8c37dceac5fd",
 			"name": "Vortex",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "b0ca857b-b7d5-43ac-96c6-556918de544c",
+			"folderPath": "/Viewscreen/Tactical Backgrounds",
+			"fullPath": "/Viewscreen/Tactical Backgrounds/Nebula Nav Small",
+			"folderId": "93669558-d1d7-48b1-8069-3418c8cf31a7",
+			"name": "Nebula Nav Small",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "a087e1fb-644e-425a-b18c-9c6ba1384a0f",
+			"folderPath": "/Viewscreen/Tactical Backgrounds",
+			"fullPath": "/Viewscreen/Tactical Backgrounds/Nebula Nav",
+			"folderId": "93669558-d1d7-48b1-8069-3418c8cf31a7",
+			"name": "Nebula Nav",
+			"class": "AssetContainer"
+		},
+		{
+			"id": "74be42d6-dbf7-4707-969a-2d3759d6afb4",
+			"folderPath": "/Viewscreen/Tactical Icons/Ships",
+			"fullPath": "/Viewscreen/Tactical Icons/Ships/vangaurd",
+			"folderId": "998a920b-00ec-4fa8-ab6c-ca85fdfe4578",
+			"name": "vangaurd",
 			"class": "AssetContainer"
 		}
 	],
@@ -22187,13 +22235,112 @@
 			"url": "/assets/Viewscreen/Tactical Icons/Old Icons/Vortex/default.png",
 			"simulatorId": "default",
 			"class": "AssetObject"
+		},
+		{
+			"id": "38a3077f-7ed0-4d6f-a212-8872aef8f7a0",
+			"containerPath": "/Viewscreen/Tactical Backgrounds",
+			"containerId": "b0ca857b-b7d5-43ac-96c6-556918de544c",
+			"fullPath": "/Viewscreen/Tactical Backgrounds/Nebula Nav Small/default.png",
+			"url": "/assets/Viewscreen/Tactical Backgrounds/Nebula Nav Small/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "9d63c581-4ab5-4605-8e57-d47f8a371c6c",
+			"containerPath": "/Viewscreen/Tactical Backgrounds",
+			"containerId": "a087e1fb-644e-425a-b18c-9c6ba1384a0f",
+			"fullPath": "/Viewscreen/Tactical Backgrounds/Nebula Nav/default.png",
+			"url": "/assets/Viewscreen/Tactical Backgrounds/Nebula Nav/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
+		},
+		{
+			"id": "392f3061-8452-42ba-88d7-db7c819ca25d",
+			"containerPath": "/Viewscreen/Tactical Icons/Ships",
+			"containerId": "74be42d6-dbf7-4707-969a-2d3759d6afb4",
+			"fullPath": "/Viewscreen/Tactical Icons/Ships/vangaurd/default.png",
+			"url": "/assets/Viewscreen/Tactical Icons/Ships/vangaurd/default.png",
+			"simulatorId": "default",
+			"class": "AssetObject"
 		}
 	],
-	"viewscreens": [
-	],
+	"viewscreens": [],
 	"messages": [],
-	"tacticalMaps": [],
-	"snapshotVersion": 145,
-	"version": 145,
-	"timestamp": "2017-11-17T04:24:02.315Z"
+	"tacticalMaps": [
+		{
+			"id": "a368605d-523b-467c-90c1-0661078e700b",
+			"class": "TacticalMap",
+			"name": "Nebula Navigation",
+			"template": true,
+			"flightId": null,
+			"frozen": false,
+			"layers": [
+				{
+					"id": "6764a63b-52d3-4d8f-b798-e91a83fd4d54",
+					"name": "Background",
+					"type": "image",
+					"image": "/Viewscreen/Tactical Backgrounds/Stars",
+					"color": "#00ff00",
+					"labels": false,
+					"gridCols": 16,
+					"gridRows": 9,
+					"items": []
+				},
+				{
+					"id": "db14db2a-dae7-4fbb-b2ed-c53fa32b9eec",
+					"name": "Nebula",
+					"type": "image",
+					"image": "/Viewscreen/Tactical Backgrounds/Nebula Nav Small",
+					"color": "#00ff00",
+					"labels": false,
+					"gridCols": 16,
+					"gridRows": 9,
+					"items": []
+				},
+				{
+					"id": "5f5e7369-3a91-4d39-b67a-f4ee32f3a60e",
+					"name": "Objects",
+					"type": "objects",
+					"image": null,
+					"color": "#00ff00",
+					"labels": false,
+					"gridCols": 16,
+					"gridRows": 9,
+					"items": [
+						{
+							"id": "1857e7a9-df8d-4d31-8291-b2bf37e64d43",
+							"label": "",
+							"font": "Helvetica",
+							"fontSize": 12,
+							"fontColor": "white",
+							"flash": false,
+							"icon": "/Viewscreen/Tactical Icons/Ships/vangaurd",
+							"size": 0.9,
+							"speed": 0.4,
+							"velocity": {
+								"x": 0,
+								"y": 0,
+								"z": 0
+							},
+							"location": {
+								"x": 0.3022073412698413,
+								"y": 0.9144012416338292,
+								"z": 0
+							},
+							"destination": {
+								"x": 0.3022073412698413,
+								"y": 0.9144012416338292,
+								"z": 0
+							},
+							"wasd": true,
+							"ijkl": false
+						}
+					]
+				}
+			]
+		}
+	],
+	"snapshotVersion": 2574,
+	"version": 2574,
+	"timestamp": "2017-11-21T14:51:00.893Z"
 }

@@ -104,7 +104,7 @@ class Events extends EventEmitter {
   }
   snapshot(save) {
     this.snapshotVersion = this.version;
-    var snap = cloneDeep(this, true);
+    const snap = cloneDeep(this, true);
     const snapshot = this.trimSnapshot(snap);
     writeFile(snapshotDir + "snapshot.json", snapshot, err => {
       err && console.log(err);
