@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { findDOMNode } from "react-dom";
 import { Asset } from "../../../helpers/assets";
 import * as THREE from "three";
 import Selection from "./select";
