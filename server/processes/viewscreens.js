@@ -112,7 +112,7 @@ function viewscreenMachine() {
   });
 
   pubsub.publish("viewscreensUpdate", App.viewscreens);
-  //setTimeout(viewscreenMachine, 500);
+  setTimeout(viewscreenMachine, 500);
 }
 
 viewscreenMachine();

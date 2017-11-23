@@ -101,13 +101,14 @@ class TimelineCore extends Component {
       currentTimelineStep: oldTimelineStep
     } = prevProps.data.simulators[0];
     const oldCurrentStep = oldMission.timeline[oldTimelineStep];
-    if (currentStep.id === oldCurrentStep.id) return;
+    if (!oldCurrentStep || !currentStep || currentStep.id === oldCurrentStep.id)
+      return;
     const viewscreenItem = currentStep.timelineItems.find(
       e => e.event === "updateViewscreenComponent"
     );
     if (!viewscreenItem) return;
     const args = JSON.parse(viewscreenItem.args);
-    const data = JSON.parse(args.data);
+    const data = args.data ? JSON.parse(args.data) : {};
     if (!data.asset) return;
     // Add the asset to the cache
     const mutation = gql`
@@ -137,6 +138,7 @@ class TimelineCore extends Component {
     const { mission, currentTimelineStep } = this.props.data.simulators[0];
     const currentStep = mission.timeline[currentTimelineStep];
     const { steps } = this.state;
+    if (!currentStep) return;
     const variables = {
       simulatorId: this.props.simulator.id,
       macros: currentStep.timelineItems

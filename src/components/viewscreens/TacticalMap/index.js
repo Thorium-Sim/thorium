@@ -171,15 +171,17 @@ class TacticalMapViewscreen extends Component {
     const layers = this.state.layers[tacticalMapId];
     return (
       <div className="viewscreen-tacticalMap">
-        <Preview
-          core={!this.props.cardName}
-          frozen={selectedTacticalMap.frozen}
-          layers={layers}
-          selectObject={this.selectObject}
-          objectId={this.state.objectId}
-          updateObject={this.updateObject}
-          removeObject={this.removeObject}
-        />
+        {selectedTacticalMap && (
+          <Preview
+            core={!this.props.cardName}
+            frozen={selectedTacticalMap.frozen}
+            layers={layers}
+            selectObject={this.selectObject}
+            objectId={this.state.objectId}
+            updateObject={this.updateObject}
+            removeObject={this.removeObject}
+          />
+        )}
       </div>
     );
   }

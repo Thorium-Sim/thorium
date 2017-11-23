@@ -32,6 +32,10 @@ function printErrors(summary, errors) {
   });
 }
 
+if (!fs.existsSync(path.resolve(__dirname + "/../build"))) {
+  fs.mkdirSync(path.resolve(__dirname + "/../build"));
+}
+
 fs
   .createReadStream("./package.json")
   .pipe(
@@ -45,7 +49,7 @@ fs
   );
 
 ncp(
-  path.resolve(__dirname + "/../assets"),
+  path.resolve(__dirname + "/../public/assets"),
   path.resolve(__dirname + "/../build/assets"),
   function(err) {
     if (err) {
