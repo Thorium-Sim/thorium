@@ -100,7 +100,7 @@ class TractorBeamCore extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.tractorBeam) return null;
     const tractorBeam = this.props.data.tractorBeam[0];
     if (!tractorBeam) return <p>No Tractor Beam</p>;
     return (

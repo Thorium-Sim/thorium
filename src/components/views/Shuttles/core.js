@@ -58,7 +58,7 @@ class Shuttles extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.docking) return null;
     const { docking } = this.props.data;
     if (docking.length === 0) return <p>No Shuttlebays</p>;
     return (

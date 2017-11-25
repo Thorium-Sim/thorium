@@ -67,10 +67,10 @@ class SetConfig extends Component {
       selectedStationSet,
       selectedStation
     } = this.state;
-    let mutation,
-      variables = {
-        id: selectedSet
-      };
+    let mutation;
+    let variables = {
+      id: selectedSet
+    };
     if (checked) {
       mutation = gql`
         mutation AddClient($id: ID!, $client: SetClientInput!) {
@@ -245,6 +245,27 @@ class SetConfig extends Component {
                         {s.name}
                       </li>
                     ))}
+                  <li
+                    key={`station-viewscreen`}
+                    className={`list-group-item ${selectedStation ===
+                    "Viewscreen"
+                      ? "selected"
+                      : ""}`}
+                    onClick={() =>
+                      this.setState({ selectedStation: "Viewscreen" })}
+                  >
+                    Viewscreen
+                  </li>
+                  <li
+                    key={`station-blackout`}
+                    className={`list-group-item ${selectedStation === "Blackout"
+                      ? "selected"
+                      : ""}`}
+                    onClick={() =>
+                      this.setState({ selectedStation: "Blackout" })}
+                  >
+                    Blackout
+                  </li>
                 </Card>
               )}
           </Col>

@@ -52,6 +52,7 @@ class Stars extends Component {
     // Only load the canvas if we have the data
     if (!nextProps.data.loading) {
       const { engines } = nextProps.data;
+      if (!engines) return;
       const engine = engines.find(e => e.on === true);
       if (!engine) {
         this.currentSpeed = 0;

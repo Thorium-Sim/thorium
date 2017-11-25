@@ -3,7 +3,7 @@ $alert3: #4d4d16;
 $alert2: #804d19;
 $alert1: #801919;
 $alertp: #4d1980;
-$url: './images/background-blue.svg';
+$url: "./images/background-blue.svg";
 
 body {
   overflow: hidden;
@@ -70,10 +70,10 @@ body {
   }
 }
 .viewscreen .layout-corners {
-	top: 0;
-	left: 0;
-	width: 100vw;
-	height: 100vh;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
 }
 
 .widgets {
@@ -105,9 +105,13 @@ body {
       animation-direction: alternate;
     }
     @keyframes flashNotify {
-      from {opacity: 1;}
-      to {opacity: 0.5;}
-  }
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0.5;
+      }
+    }
   }
 }
 .settingsBall {
@@ -190,9 +194,9 @@ body {
     background: radial-gradient(
         ellipse at center,
         rgba(0, 0, 0, 0) 0%,
-        rgba(0, 0, 0, .9) 100%
+        rgba(0, 0, 0, 0.9) 100%
       ),
-      url('./images/gear.svg');
+      url("./images/gear.svg");
     background-size: 100%, 55px;
     background-position: center, 4px 7px;
     background-repeat: no-repeat, no-repeat;
@@ -217,7 +221,7 @@ body {
   .simulator-name,
   .station-name,
   .login-name {
-    font-family: 'Sarpanch', sans-serif;
+    font-family: "Sarpanch", sans-serif;
     text-transform: uppercase;
   }
   button {
@@ -267,7 +271,7 @@ body {
   background: radial-gradient(
       ellipse at center,
       rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, .9) 100%
+      rgba(0, 0, 0, 0.9) 100%
     ),
     url($url),
     linear-gradient(165deg, #000000 0%, rgba(0, 0, 0, 0) 50%, #000000 100%);
@@ -331,7 +335,7 @@ body {
       background-color: $alert5;
     }
     .card-icon-color {
-      background-color: lighten($alert5, 25%);
+      background-color: lighten($alert5, 15%);
     }
   }
   &.alertColor3 {
@@ -339,7 +343,7 @@ body {
       background-color: $alert3;
     }
     .card-icon-color {
-      background-color: lighten($alert3, 25%);
+      background-color: lighten($alert3, 15%);
     }
   }
   &.alertColor2 {
@@ -347,7 +351,7 @@ body {
       background-color: $alert2;
     }
     .card-icon-color {
-      background-color: lighten($alert2, 25%);
+      background-color: lighten($alert2, 15%);
     }
   }
   &.alertColor1 {
@@ -355,7 +359,7 @@ body {
       background-color: $alert1;
     }
     .card-icon-color {
-      background-color: lighten($alert1, 25%);
+      background-color: lighten($alert1, 15%);
     }
   }
   &.alertColorp {
@@ -363,7 +367,25 @@ body {
       background-color: $alertp;
     }
     .card-icon-color {
-      background-color: lighten($alertp, 25%);
+      background-color: lighten($alertp, 15%);
+    }
+  }
+  .active {
+    .alertColor5,
+    .alertColor4 {
+      background-color: lighten($alert5, 45%);
+    }
+    .alertColor3 {
+      background-color: lighten($alert3, 45%);
+    }
+    .alertColor2 {
+      background-color: lighten($alert2, 45%);
+    }
+    .alertColor1 {
+      background-color: lighten($alert1, 45%);
+    }
+    .alertColorp {
+      background-color: lighten($alertp, 45%);
     }
   }
 }
@@ -378,42 +400,43 @@ body {
     color: white;
   }
   .alert-info {
-    background-color: rgba($alert5, .7);
+    background-color: rgba($alert5, 0.7);
     color: lighten($alert5, 70%);
   }
   .alert-success {
-    background-color: rgba(#164d16, .7);
+    background-color: rgba(#164d16, 0.7);
     color: lighten(#164d16, 70%);
   }
   .alert-danger {
-    background-color: rgba($alert1, .7);
+    background-color: rgba($alert1, 0.7);
     color: lighten($alert1, 70%);
   }
   .alert-warning {
-    background-color: rgba($alert2, .7);
+    background-color: rgba($alert2, 0.7);
     color: lighten($alert2, 70%);
   }
   .alert-primary {
-    background-color: rgba($alert5, .7);
+    background-color: rgba($alert5, 0.7);
     color: lighten($alert5, 70%);
   }
   //Alert Classes
   &.alertColor5,
   &.alertColor4 {
-    @include alertColor($alert5,'./images/background-blue.svg');
+    @include alertColor($alert5,"./images/background-blue.svg");
   }
   &.alertColor3 {
-    @include alertColor($alert3,'./images/background-yellow.svg');
+    @include alertColor($alert3,"./images/background-yellow.svg");
   }
   &.alertColor2 {
-    @include alertColor($alert2,'./images/background-orange.svg');
+    @include alertColor($alert2,"./images/background-orange.svg");
   }
   &.alertColor1 {
-    @include alertColor($alert1,'./images/background-red.svg');
+    @include alertColor($alert1,"./images/background-red.svg");
   }
   &.alertColorp {
-    @include alertColor($alertp,'./images/background-purple.svg');
+    @include alertColor($alertp,"./images/background-purple.svg");
   }
+
   .simulator-image {
     img {
       position: absolute;
@@ -509,14 +532,17 @@ body {
       margin-bottom: 90px;
       &:hover {
         -webkit-filter: brightness(1.2);
-        filter: brightness(1.2);        
+        filter: brightness(1.2);
       }
       .card-icon-background {
         width: 70px;
         height: 70px;
         margin-top: -85px;
-        background: #ccc;
+        background: #bbb;
         border-radius: 50%;
+      }
+      .active .card-icon-background {
+        background: #fff;
       }
       .card-icon-color {
         position: absolute;
@@ -616,7 +642,7 @@ body {
       -webkit-text-fill-color: transparent;
       -webkit-text-stroke: 1px #9c9da0;
       -webkit-font-smoothing: subpixel-antialiased;
-      background-clip: text;      
+      background-clip: text;
       letter-spacing: -3px;
     }
     .login-name {
@@ -628,12 +654,12 @@ body {
       width: 270px;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;  
+      text-overflow: ellipsis;
       background: -webkit-linear-gradient(#ddd, #999, #ddd);
       -webkit-text-stroke: 1px #777;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-clip: text;      
+      background-clip: text;
       color: #000;
       letter-spacing: 1px;
       -webkit-font-smoothing: subpixel-antialiased;
@@ -767,7 +793,7 @@ body {
         15px 105px,
         0px 109px
       );
-      clip-path:polygon(
+      clip-path: polygon(
         0 0,
         538px 0px,
         520px 35px,
@@ -842,13 +868,7 @@ body {
         54px 75px,
         43px 65px
       );
-      clip-path: polygon(
-        10px 0,
-        557px 0,
-        557px 75px,
-        54px 75px,
-        43px 65px
-      );
+      clip-path: polygon(10px 0, 557px 0, 557px 75px, 54px 75px, 43px 65px);
       &.opposite {
         left: 0px;
         right: auto;
@@ -962,13 +982,7 @@ body {
           338px 60px,
           0 60px
         );
-        clip-path: polygon(
-          0 0,
-          380px 0,
-          355px 50px,
-          338px 60px,
-          0 60px
-        );
+        clip-path: polygon(0 0, 380px 0, 355px 50px, 338px 60px, 0 60px);
       }
       .part-2 {
         width: 105px;
@@ -1013,13 +1027,7 @@ body {
           90px 80px,
           82px 76px
         );
-        clip-path: polygon(
-          40px 0,
-          557px 0,
-          557px 80px,
-          90px 80px,
-          82px 76px
-        );
+        clip-path: polygon(40px 0, 557px 0, 557px 80px, 90px 80px, 82px 76px);
         &.opposite {
           right: auto;
           left: 0;
@@ -1073,14 +1081,7 @@ body {
           79% 102%,
           0 60px
         );
-        clip-path: polygon(
-          0 0,
-          87.5% 0,
-          85% 60%,
-          83% 87%,
-          79% 102%,
-          0 60px
-        );
+        clip-path: polygon(0 0, 87.5% 0, 85% 60%, 83% 87%, 79% 102%, 0 60px);
         border-radius: 26px 0 0 0;
       }
       .part-1-1 {
@@ -1196,7 +1197,7 @@ body {
       background-size: 100%, 35px;
     }
   }
-  .layout-corners{
+  .layout-corners {
     top: 93px;
     left: 77px;
     width: 92vw;

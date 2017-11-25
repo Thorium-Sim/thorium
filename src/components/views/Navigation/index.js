@@ -335,9 +335,8 @@ class Navigation extends Component {
     }, 750);
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.navigation) return null;
     const { calculatedCourse, enteredCourse, selectedField } = this.state;
-    if (!this.props.data.navigation) return null;
     const navigation = this.props.data.navigation[0];
     const scanning = this.state.scanning || navigation.scanning;
     if (!navigation) return <p>No Navigation System</p>;

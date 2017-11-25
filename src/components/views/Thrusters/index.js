@@ -363,7 +363,7 @@ gamepadLoop(){
     };
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.thrusters) return null;
     const gamepad = navigator.getGamepads()[0];
     let thruster = {};
     if (this.props.data.thrusters) {

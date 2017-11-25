@@ -255,6 +255,7 @@ class CoreLayout extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { coreLayouts, flights } = this.props.data;
+    if (!coreLayouts || !flights) return null;
     const flight = this.state.flight
       ? flights.find(f => f.id === this.state.flight)
       : {};

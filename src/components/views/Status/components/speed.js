@@ -39,7 +39,7 @@ class EngineCoreView extends Component {
     this.setSpeedSubscription && this.setSpeedSubscription();
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.engines) return null;
     const { engines } = this.props.data;
     if (!engines || engines.length === 0) return null;
     const onEngine = engines.find(e => e.on);

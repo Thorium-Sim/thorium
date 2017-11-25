@@ -98,7 +98,7 @@ class Messaging extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.messages) return null;
     const { messages, teams } = this.props.data;
     const { messageInput, selectedConversation } = this.state;
 
@@ -150,7 +150,7 @@ class Messaging extends Component {
               </p>
             ))}
         </div>
-        <form action={"#"} onSubmit={this.sendMessage}>
+        <form action={"javascript:void(0);"} onSubmit={this.sendMessage}>
           <Input
             size="sm"
             type="text"

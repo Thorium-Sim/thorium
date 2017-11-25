@@ -194,7 +194,12 @@ class Inventory extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (
+      this.props.data.loading ||
+      !this.props.data.decks ||
+      !this.props.data.inventory
+    )
+      return null;
     const { decks, inventory } = this.props.data;
     const { selectedDeck, selectedRoom, inventoryItem } = this.state;
     return (

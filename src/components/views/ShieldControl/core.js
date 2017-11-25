@@ -86,7 +86,7 @@ class ShieldsCore extends Component {
     this.setIntegrity(shields, integrity);
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.shields) return null;
     return (
       <div>
         {this.props.data.shields.length > 0 ? (

@@ -169,7 +169,7 @@ class TractorBeam extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.tractorBeam) return null;
     const tractorBeam = this.props.data.tractorBeam[0];
     const { target, targetedContact, arrow, actual } = this.state;
     if (!tractorBeam) return <h1>No Tractor Beam system</h1>;

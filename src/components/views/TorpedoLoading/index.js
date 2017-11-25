@@ -70,7 +70,7 @@ class TorpedoLoading extends Component {
     this.subscription && this.subscription();
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.torpedos) return null;
     const torpedos = this.props.data.torpedos;
     if (!torpedos) return null;
     return (

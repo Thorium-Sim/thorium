@@ -172,7 +172,8 @@ class InternalComm extends Component {
                   !!internalComm.outgoing) ||
                 internalComm.state === "connected"
               }
-              setSelected={({ deckD }) => this.setState({ deckD, room: null })}
+              setSelected={({ deck: deckD }) =>
+                this.setState({ deck: deckD, room: null })}
             />
           </Col>
           <Col sm={{ size: 3 }}>
@@ -185,7 +186,7 @@ class InternalComm extends Component {
                 (internalComm.state !== "connected" && internalComm.outgoing) ||
                 internalComm.state === "connected"
               }
-              setSelected={({ roomD }) => this.setState({ roomD })}
+              setSelected={({ room: roomD }) => this.setState({ room: roomD })}
             />
           </Col>
           <Col sm={{ size: 2 }}>

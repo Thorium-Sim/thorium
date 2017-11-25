@@ -148,7 +148,7 @@ class MissionsConfig extends Component {
     dlAnchorElem.click();
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.missions) return null;
     const { missions } = this.props.data;
     const { selectedMission } = this.state;
     const mission = missions.find(m => m.id === selectedMission);

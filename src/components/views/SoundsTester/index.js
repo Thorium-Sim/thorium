@@ -13,7 +13,7 @@ class SoundsTester extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.assetFolders) return null;
     const { assetFolders } = this.props.data;
     const sounds = assetFolders[0].containers;
     return (

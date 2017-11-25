@@ -39,6 +39,7 @@ class Template extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { clients } = this.props.data;
+    if (!clients) return null;
     return (
       <div className="clients-card">
         <ul>

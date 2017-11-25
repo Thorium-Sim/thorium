@@ -327,7 +327,7 @@ class GridDom extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.sensorContacts) return null;
     const {
       dimensions,
       data,

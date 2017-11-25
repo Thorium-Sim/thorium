@@ -101,7 +101,13 @@ class SecurityTeams extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (
+      this.props.data.loading ||
+      !this.props.data.teams ||
+      !this.props.data.crew ||
+      !this.props.data.decks
+    )
+      return null;
     const { teams, crew, decks } = this.props.data;
     const { selectedTeam } = this.state;
     if (crew.length === 0) return <p>Need crew for teams</p>;

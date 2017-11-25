@@ -39,7 +39,7 @@ class ShieldMonitoring extends Component {
     this.shieldSub && this.shieldSub();
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.shields) return null;
     const shields = this.props.data.shields;
     return (
       <div className="viewscreen-shieldMonitoring">

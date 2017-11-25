@@ -259,7 +259,7 @@ class CommShortRange extends Component {
       }
       return `Hail ${this.getSignal().name || ""}`;
     };
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.shortRangeComm) return null;
     const ShortRange =
       this.props.data.shortRangeComm && this.props.data.shortRangeComm[0];
     if (!ShortRange) return <p>No short range comm</p>;

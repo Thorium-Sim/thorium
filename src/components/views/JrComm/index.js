@@ -118,8 +118,8 @@ class CommShortRange extends Component {
         );
         gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
 
-        var index = -1;
-        var length = this.waves.length;
+        let index = -1;
+        let length = this.waves.length;
         while (++index < length) {
           this.waves[index].strokeStyle = gradient;
         }
@@ -245,7 +245,7 @@ class CommShortRange extends Component {
   };
   changeGradient = comms => {
     if (!this.waves) return;
-    var gradient = this.waves.ctx.createLinearGradient(
+    let gradient = this.waves.ctx.createLinearGradient(
       0,
       0,
       this.waves.width,
@@ -262,14 +262,14 @@ class CommShortRange extends Component {
     });
     gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
 
-    var index = -1;
-    var length = this.waves.waves.length;
+    let index = -1;
+    let length = this.waves.waves.length;
     while (++index < length) {
       this.waves.waves[index].strokeStyle = gradient;
     }
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.shortRangeComm) return null;
     const ShortRange = this.props.data.shortRangeComm[0];
     const status =
       ShortRange.state === "hailing"

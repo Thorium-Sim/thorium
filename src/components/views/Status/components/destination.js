@@ -45,7 +45,7 @@ class Destination extends Component {
     this.sub && this.sub();
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.navigation) return null;
     const nav = this.props.data.navigation && this.props.data.navigation[0];
     if (!nav) return null;
     if (!nav.calculate) return null;

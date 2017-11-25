@@ -113,7 +113,7 @@ class DamageControlCore extends Component {
     });
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.systems) return null;
     return (
       <Table size="sm" hover>
         <thead>

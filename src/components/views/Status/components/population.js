@@ -53,7 +53,7 @@ class Population extends Component {
     this.sub();
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.crew) return null;
     const crew = this.props.data.crew;
     if (!this.props.data.simulators) return null;
     const { ship } = this.props.data.simulators[0];

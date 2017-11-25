@@ -135,7 +135,7 @@ class CrewCore extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.crew) return null;
     const crew = this.props.data.crew || [];
     return (
       <div

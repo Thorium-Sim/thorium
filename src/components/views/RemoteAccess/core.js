@@ -65,7 +65,7 @@ class RemoteAccessCore extends Component {
     });
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.simulators) return null;
     const { ship } = this.props.data.simulators[0];
     return (
       <Container className="remote-access-core">

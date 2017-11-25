@@ -82,6 +82,7 @@ class CoreComponents extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { flights } = this.props.data;
+    if (!flights) return null;
     const flight = this.props.flightId
       ? flights.find(f => f.id === this.props.flightId)
       : {};

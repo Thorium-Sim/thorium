@@ -132,7 +132,7 @@ class CommShortRange extends Component {
     }, {});
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.shortRangeComm) return null;
     const { selectedCall, selectedArrow } = this.state;
     const ShortRange = this.props.data.shortRangeComm[0];
     if (!ShortRange) return <p>No short range comm</p>;

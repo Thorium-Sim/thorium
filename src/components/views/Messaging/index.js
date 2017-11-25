@@ -127,6 +127,7 @@ class Messaging extends Component {
     const { messages, simulators, teams } = this.props.data.loading
       ? { messages: [], teams: [], simulators: [{ stations: [] }] }
       : this.props.data;
+    if (!simulators | !messages | !teams) return null;
     const stations = simulators[0].stations.filter(
       s => s.name !== this.props.station.name
     );
@@ -257,7 +258,7 @@ class Messaging extends Component {
                   ))}
               </div>
             </Card>
-            <form action={"#"} onSubmit={this.sendMessage}>
+            <form action={"javascript:void(0);"} onSubmit={this.sendMessage}>
               <InputGroup>
                 <Input
                   disabled={!selectedConversation}

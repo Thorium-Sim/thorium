@@ -88,7 +88,7 @@ class ThrusterCore extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.thrusters) return null;
     const thrusters = this.props.data.thrusters[0];
     if (!thrusters) return <p>No Thrusters</p>;
     return (

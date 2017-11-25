@@ -142,7 +142,7 @@ class SecurityDecks extends Component {
     });
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.decks) return null;
     const decks = this.props.data.decks;
     let deck;
     let room = {};

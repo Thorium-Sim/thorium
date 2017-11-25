@@ -68,7 +68,12 @@ class FlightConfig extends Component {
       });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (
+      this.props.data.loading ||
+      !this.props.data.simulators ||
+      !this.props.data.missions
+    )
+      return null;
     const {
       name,
       selectedSimulator,

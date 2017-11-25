@@ -118,7 +118,12 @@ class ReactorControl extends Component {
     });
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (
+      this.props.data.loading ||
+      !this.props.data.reactors ||
+      !this.props.data.systems
+    )
+      return null;
     const { reactors, systems } = this.props.data;
     if (!reactors) return null;
     const reactor = reactors.find(r => r.model === "reactor");

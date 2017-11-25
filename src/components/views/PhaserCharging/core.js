@@ -79,7 +79,7 @@ class PhaserChargingCore extends Component {
     });
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.phasers) return null;
     const phasers = this.props.data.phasers[0];
     if (!phasers) return <p>No phasers</p>;
     return (
