@@ -371,7 +371,7 @@ class Targeting extends Component {
     document.addEventListener("mouseup", this.mouseup);
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.targeting) return null;
     const targeting = this.props.data.targeting && this.props.data.targeting[0];
     const phasers = this.props.data.phasers && this.props.data.phasers[0];
     if (!targeting) return <p>No Targeting</p>;

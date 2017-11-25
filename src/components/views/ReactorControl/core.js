@@ -143,7 +143,7 @@ class ReactorControl extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.reactors) return null;
     const { reactors } = this.props.data;
     const reactor = reactors.find(r => r.model === "reactor") || {};
     const battery = reactors.find(r => r.model === "battery") || {};

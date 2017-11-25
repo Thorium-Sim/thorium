@@ -103,6 +103,7 @@ class DamageTeams extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { teams, crew, decks } = this.props.data;
+    if (!teams || !crew || !decks) return null;
     const { selectedTeam } = this.state;
     if (crew.length === 0) return <p>Need crew for teams</p>;
     return (

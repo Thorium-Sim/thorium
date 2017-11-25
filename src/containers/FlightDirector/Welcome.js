@@ -49,7 +49,7 @@ class Welcome extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.flights) return null;
     const flights = this.props.data.flights;
     return (
       <Container className="WelcomeView">

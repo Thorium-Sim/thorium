@@ -41,7 +41,7 @@ class Isochips extends Component {
     this.sub && this.sub();
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.isochips) return null;
     const { isochips } = this.props.data;
     return (
       <Container className="isochips">

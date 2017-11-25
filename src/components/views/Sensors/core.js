@@ -122,7 +122,7 @@ class SensorsCore extends Component {
     localStorage.setItem("sensorCore-domain", which);
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.sensors) return null;
     const external = this.props.data.sensors.find(s => s.domain === "external");
     const internal = this.props.data.sensors.find(s => s.domain === "internal");
     const sensor = this.state.domain === "external" ? external : internal;

@@ -128,13 +128,16 @@ class EngineControl extends Component {
     };
   }
   setSpeed(engine, speed) {
-    if (!engine.damage.damaged) {
+    if (
+      !engine.damage.damaged &&
+      engine.power.power >= engine.power.powerLevels[0]
+    ) {
       this.props.setSpeed({ id: engine.id, speed: speed + 1, on: true });
     }
   }
   fullStop() {
-    const engine = this.props.data.engines.find(engine => engine.on);
-    this.props.setSpeed({ id: engine.id, speed: -1, on: false });
+    const engine = this.props.data.engines.find(e => e.on);
+    engine && this.props.setSpeed({ id: engine.id, speed: -1, on: false });
   }
   render() {
     const engines = this.props.data.engines || [];

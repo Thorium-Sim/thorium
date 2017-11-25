@@ -50,7 +50,8 @@ class LRCommCore extends Component {
     this.decodeSubscription && this.decodeSubscription();
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.longRangeCommunications)
+      return null;
     let selectedMessage = null;
     if (this.state.selectedMessage) {
       selectedMessage = this.props.data.longRangeCommunications[0].messages.find(

@@ -54,7 +54,7 @@ class InternalSensorsViewscreen extends Component {
       this.props.viewscreen.data
     );
     if (reactive) {
-      if (this.props.data.loading) return null;
+      if (this.props.data.loading || !this.props.data.sensors) return null;
       scanning = this.props.data.sensors[0].scanning;
       scanRequest = this.props.data.sensors[0].scanRequest;
       scanResults = this.props.data.sensors[0].scanResults;

@@ -102,7 +102,7 @@ class SelfDestructCore extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.simulators) return null;
     const {
       selfDestructTime,
       selfDestructCode,

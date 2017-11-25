@@ -77,6 +77,24 @@ export default class Target extends Component {
       });
     }
   }
+  dragTarget = (event, obj) => {
+    const { width, height } = this.state.dimensions;
+    const { x, y } = obj;
+    let selectedTarget = null;
+    this.props.targets.forEach(target => {
+      const { x: objX, y: objY } = target.position;
+      if (
+        Math.round((objX - x / width * 1.2) * 100) === 0 &&
+        Math.round((objY - y / height * 1.2) * 100) === 0
+      ) {
+        // The crosshair is on top of a target
+        selectedTarget = target;
+      }
+    });
+    this.setState({
+      selectedTarget
+    });
+  };
   render() {
     return (
       <div>
@@ -130,27 +148,7 @@ export default class Target extends Component {
                           x: this.state.dimensions.width / 2,
                           y: this.state.dimensions.height / 2
                         }}
-                        onDrag={(event, obj) => {
-                          const { width, height } = this.state.dimensions;
-                          const { x, y } = obj;
-                          let selectedTarget = null;
-                          this.props.targets.forEach(target => {
-                            const { x: objX, y: objY } = target.position;
-                            if (
-                              Math.round((objX - x / width * 1.11111) * 100) ===
-                                0 &&
-                              Math.round(
-                                (objY - y / height * 1.11111) * 100
-                              ) === 0
-                            ) {
-                              // The crosshair is on top of a target
-                              selectedTarget = target;
-                            }
-                          });
-                          this.setState({
-                            selectedTarget
-                          });
-                        }}
+                        onDrag={this.dragTarget}
                       >
                         <img
                           alt="crosshairs"

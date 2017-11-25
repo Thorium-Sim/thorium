@@ -67,7 +67,7 @@ class NavigationCore extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.navigation) return null;
     const navigation = this.props.data.navigation[0];
     if (!navigation) return <p>No Navigation Systems</p>;
     return (

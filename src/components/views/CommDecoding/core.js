@@ -68,7 +68,8 @@ class LRCommCore extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.longRangeCommunications)
+      return null;
     return (
       <div className="comm-core">
         {this.props.data.longRangeCommunications.length > 0 ? (

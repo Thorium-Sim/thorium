@@ -207,8 +207,9 @@ class Communications extends Component {
                       100}MHz
                   </h2>
                   <h3>
-                    {c.connected ? "Connected" : ""}
-                    {c.hailing ? "Hailing" : "Incoming Call"}
+                    {c.connected
+                      ? "Connected"
+                      : c.hailing ? "Hailing" : "Incoming Call"}
                   </h3>
                 </Col>
               ))

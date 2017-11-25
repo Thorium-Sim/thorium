@@ -49,7 +49,7 @@ class CoreFeed extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.coreFeed) return null;
     const coreFeed = this.props.data.coreFeed.filter(c => !c.ignored);
     return (
       <div className="coreFeed-core">

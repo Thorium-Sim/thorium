@@ -32,7 +32,7 @@ class Coolant extends Component {
     this.sub();
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.coolant) return null;
     const coolant = this.props.data.coolant && this.props.data.coolant[0];
     if (!coolant) return null;
     return (

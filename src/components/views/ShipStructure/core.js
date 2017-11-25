@@ -192,7 +192,7 @@ class DecksCore extends Component {
     e.target.files[0] && reader.readAsText(e.target.files[0]);
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.decks) return null;
     const { decks } = this.props.data;
     const { selectedDeck, selectedRoom } = this.state;
     return (

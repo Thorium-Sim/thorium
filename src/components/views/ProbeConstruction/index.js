@@ -425,7 +425,7 @@ class ProbeConstruction extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.probes) return null;
     const probes = this.props.data.probes && this.props.data.probes[0];
     const { selectedProbeType, launching } = this.state;
     if (!probes) return <p>No Probe Launcher</p>;

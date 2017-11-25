@@ -121,7 +121,7 @@ class ViewscreenCore extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.viewscreens) return null;
     const { viewscreens } = this.props.data;
     const {
       selectedViewscreen = null,

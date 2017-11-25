@@ -119,6 +119,7 @@ class CargoControlCore extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { decks, inventory } = this.props.data;
+    if (!decks || !inventory) return null;
     let { deck, room } = this.state;
     return (
       <div className="cargo-core">

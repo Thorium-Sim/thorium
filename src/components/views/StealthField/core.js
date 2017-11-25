@@ -153,7 +153,7 @@ class StealthFieldCore extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.stealthField) return null;
     const stealthField = this.props.data.stealthField[0];
     if (!stealthField) return <p>No Stealth Field Systems</p>;
 

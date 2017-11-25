@@ -168,7 +168,7 @@ class Transporters extends Component {
     });
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.transporters) return null;
     const transporter = this.props.data.transporters[0];
     const { target, targetedContact, charge } = this.state;
     if (!transporter) return <h1>No transporter system</h1>;

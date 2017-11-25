@@ -83,7 +83,7 @@ class ProbeNetworkCore extends Component {
     }
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.probes) return null;
     const probes = this.props.data.probes[0].probes;
     const network = {};
     probes.forEach(p => (network[p.name] = p.launched));

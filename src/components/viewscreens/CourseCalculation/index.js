@@ -64,7 +64,7 @@ class CourseCalculationViewscreen extends Component {
   };
   render() {
     const data = JSON.parse(this.props.viewscreen.data);
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.navigation) return null;
     const {
       destination,
       calculatedCourse = { x: 0, y: 0, z: 0 }

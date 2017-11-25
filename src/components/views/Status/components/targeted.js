@@ -36,7 +36,7 @@ class Targeted extends Component {
     this.sub();
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.targeting) return null;
     const targeting = this.props.data.targeting && this.props.data.targeting[0];
     if (!targeting) return null;
     const target = targeting.contacts.find(t => t.targeted);

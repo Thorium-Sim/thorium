@@ -115,7 +115,7 @@ class SelfDestruct extends Component {
     this.setState({ modal: true, setCode: true });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.simulators) return null;
     const { modal, setCode } = this.state;
     if (!this.props.data.simulators) return null;
     const {

@@ -212,7 +212,7 @@ class TargetingCore extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.targeting) return null;
     const targeting = this.props.data.targeting[0];
     if (!targeting) return <p>No Targeting Systems</p>;
     const { assetFolders } = this.props.data;

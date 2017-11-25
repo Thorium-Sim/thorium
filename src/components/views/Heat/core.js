@@ -49,7 +49,7 @@ class HeatCore extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.systems) return null;
     const { systems } = this.props.data;
     return (
       <div className="core-heat">
