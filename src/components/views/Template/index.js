@@ -27,7 +27,7 @@ class Template extends Component {
     this.subscription && this.subscription();
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.template) return null;
     return <div className="template-card">This is a template</div>;
   }
 }
