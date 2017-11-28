@@ -1,4 +1,5 @@
 import uuid from "uuid";
+import App from "../app";
 
 const defaultPower = {
   power: 5,
@@ -65,6 +66,35 @@ export class System {
     this.damage.report = this.processReport(report);
     this.damage.requested = false;
   }
+  generateDamageReport() {
+    const sim = App.simulators.find(s => s.id === this.simulatorId);
+  }
+  /*
+  Damage Report Steps:
+    Power
+    Remote Access
+    Panel Switch
+    Damage Control Team
+      Officers
+      Orders
+      Team Name
+      Deck/Room
+    Damage Control Team Message
+    Security Evac
+    Security Bulkhead
+    Security Team
+    Send parts
+    Internal Call
+      Shut off the system/Restart the system
+      
+    Long Range Message
+    Probe Launch
+    Reactivation Code
+    Add Computer User
+    Environment
+    Exocomp
+    Generic
+*/
   damageReport(report) {
     this.damage.report = this.processReport(report);
     this.damage.requested = false;

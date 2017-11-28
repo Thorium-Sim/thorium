@@ -11,6 +11,7 @@ import { getMainDefinition } from "apollo-utilities";
 import { WebSocketLink } from "apollo-link-ws";
 import { ApolloProvider } from "react-apollo";
 import App from "./containers/App";
+import ErrorBoundary from "./helpers/errorBoundary";
 import "./app.css";
 
 // Set a clientId for the client
@@ -91,7 +92,9 @@ const client = new ApolloClient({
 
 const ApolloApp = () => (
   <ApolloProvider client={client}>
-    <App />
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   </ApolloProvider>
 );
 

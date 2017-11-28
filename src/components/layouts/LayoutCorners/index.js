@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { findDOMNode } from "react-dom";
 import TransitionGroup from "react-addons-transition-group";
+import { Button } from "reactstrap";
 import { TweenMax } from "gsap";
 import Views from "../../views";
 import gql from "graphql-tag";
@@ -9,6 +10,7 @@ import CardSwitcher from "./CardSwitcher";
 import Widgets from "./Widgets";
 import Alerts from "../../generic/Alerts";
 import ActionsMixin from "../../generic/Actions";
+import ErrorBoundary from "../../../helpers/errorBoundary";
 
 import "./layout.css";
 import "./theme.css";
@@ -48,7 +50,31 @@ class CardHolder extends Component {
         className="cardContainer"
         style={{ width: "100%", position: "absolute", alignSelf: "center" }}
       >
-        <this.props.component {...this.props} />
+        <ErrorBoundary
+          render={
+            <div className={"card-error"}>
+              <p className="offline-title">Station Error</p>
+              <p className="offline-message" style={{ fontSize: "40px" }}>
+                Your station has experienced an error. A diagnostic must be
+                performed to restore this station to functionality. If you
+                continue to see this screen after performing the diagnostic,
+                please contact a computer specialist.
+              </p>
+              <Button
+                block
+                color="primary"
+                size="lg"
+                onClick={() => {
+                  window.location.reload();
+                }}
+              >
+                Perform Diagnostic
+              </Button>
+            </div>
+          }
+        >
+          <this.props.component {...this.props} />
+        </ErrorBoundary>
       </div>
     );
   }
