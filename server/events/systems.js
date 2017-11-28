@@ -186,3 +186,8 @@ App.on("setCoolant", ({ systemId, coolant }) => {
   if (sys.setCoolant) sys.setCoolant(coolant);
   sendUpdate(sys);
 });
+App.on("updateSystemRooms", ({ systemId, locations }) => {
+  const sys = App.systems.find(s => s.id === systemId);
+  if (sys.updateLocations) sys.updateLocations(locations);
+  sendUpdate(sys);
+});

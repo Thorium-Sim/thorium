@@ -1,9 +1,22 @@
 import React, { Component } from "react";
-import { Input, FormGroup, Label } from "reactstrap";
+import { Input, FormGroup, Label, Col, Row, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
+import {
+  DeckDropdown,
+  RoomDropdown
+} from "../../../../../components/views/helpers/shipStructure";
 
+const refetchQueries = [
+  "System",
+  "Engines",
+  "ShortRangeComm",
+  "Reactor",
+  "Phasers",
+  "Shields",
+  "Torpedo"
+];
 const ops = {
   updatePowerLevels: gql`
     mutation UpdatePowerLevels($id: ID!, $levels: [Int]!) {
@@ -14,10 +27,16 @@ const ops = {
     mutation UpdateName($id: ID!, $name: String, $displayName: String) {
       updateSystemName(systemId: $id, name: $name, displayName: $displayName)
     }
+  `,
+  updateRooms: gql`
+    mutation UpdateSystemLocations($id: ID!, $locations: [ID]) {
+      updateSystemRooms(systemId: $id, locations: $locations)
+    }
   `
 };
 
 export class GenericSystemConfig extends Component {
+  state = {};
   addPowerLevel = ({ id, power: { powerLevels = [] } }) => {
     const lastLevel = powerLevels[powerLevels.length - 1] || 4;
     const updatedPowerLevels = powerLevels.concat(lastLevel + 1);
@@ -41,15 +60,7 @@ export class GenericSystemConfig extends Component {
     this.props.client.mutate({
       mutation: ops.updatePowerLevels,
       variables,
-      refetchQueries: [
-        "System",
-        "Engines",
-        "ShortRangeComm",
-        "Reactor",
-        "Phasers",
-        "Shields",
-        "Torpedo"
-      ]
+      refetchQueries
     });
   };
   updateName = ({ id }, name, displayName) => {
@@ -61,20 +72,46 @@ export class GenericSystemConfig extends Component {
     this.props.client.mutate({
       mutation: ops.updateName,
       variables,
-      refetchQueries: [
-        "System",
-        "Engines",
-        "ShortRangeComm",
-        "Reactor",
-        "Phasers",
-        "Shields",
-        "Torpedo"
-      ]
+      refetchQueries
+    });
+  };
+  addRoom = ({ id, locations }, room) => {
+    const roomId = room || this.state.room;
+    const variables = {
+      id,
+      locations: locations.map(l => l.id).concat(roomId)
+    };
+    this.props.client.mutate({
+      mutation: ops.updateRooms,
+      variables,
+      refetchQueries
+    });
+    this.setState({
+      deck: null,
+      room: null
+    });
+  };
+  removeRoom = ({ id, locations }, roomId) => {
+    const variables = {
+      id,
+      locations: locations.filter(l => l.id !== roomId).map(l => l.id)
+    };
+    this.props.client.mutate({
+      mutation: ops.updateRooms,
+      variables,
+      refetchQueries
     });
   };
   render() {
-    if (this.props.data.loading || !this.props.data.systems) return null;
-    const systems = this.props.data.systems;
+    if (
+      this.props.data.loading ||
+      !this.props.data.systems ||
+      !this.props.data.decks
+    ) {
+      return null;
+    }
+    const { systems, decks } = this.props.data;
+    const { deck, room } = this.state;
     return (
       <div className="scroll">
         {systems.length === 0 && (
@@ -109,6 +146,53 @@ export class GenericSystemConfig extends Component {
                   }}
                 />
               </Label>
+            </FormGroup>
+            <FormGroup>
+              <Label>Rooms</Label>
+              <small>
+                This controls what rooms are used for storing inventory for this
+                system (if applicable) and what room is used on damage reports.
+              </small>
+              <div className="room-list">
+                {s.locations && s.locations.length > 0 ? (
+                  s.locations.map(
+                    l =>
+                      l && (
+                        <p key={l.id}>
+                          {l.name}, Deck {l.deck.number}{" "}
+                          <FontAwesome
+                            name="ban"
+                            className="text-danger"
+                            onClick={() => this.removeRoom(s, l.id)}
+                          />
+                        </p>
+                      )
+                  )
+                ) : (
+                  <p>No Rooms</p>
+                )}
+              </div>
+              <Row>
+                <Col sm={{ size: 6 }} className="room-select">
+                  <DeckDropdown
+                    selectedDeck={deck}
+                    decks={decks}
+                    setSelected={({ deck }) =>
+                      this.setState({ deck, room: null })}
+                  />
+                </Col>
+                <Col sm={{ size: 6 }}>
+                  <RoomDropdown
+                    selectedDeck={deck}
+                    selectedRoom={room}
+                    decks={decks}
+                    setSelected={({ room }) => this.setState({ room })}
+                  />
+                </Col>
+              </Row>
+              <Button color="success" onClick={() => this.addRoom(s)}>
+                Add Room to System
+              </Button>
             </FormGroup>
             <FormGroup>
               <Label>Required Power</Label>
@@ -159,7 +243,7 @@ export class GenericSystemConfig extends Component {
 }
 
 const SYSTEM_QUERY = gql`
-  query System($id: ID, $type: String) {
+  query System($id: ID, $deckId: ID!, $type: String) {
     systems(simulatorId: $id, type: $type) {
       id
       name
@@ -176,7 +260,22 @@ const SYSTEM_QUERY = gql`
         reactivationCode
         neededReactivationCode
       }
+      locations {
+        id
+        name
+        deck {
+          number
+        }
+      }
       displayName
+    }
+    decks(simulatorId: $deckId) {
+      id
+      number
+      rooms {
+        id
+        name
+      }
     }
   }
 `;
@@ -185,6 +284,7 @@ export default graphql(SYSTEM_QUERY, {
   options: ownProps => ({
     variables: {
       id: ownProps.simulatorId,
+      deckId: ownProps.simulatorId,
       type: ownProps.type
     }
   })

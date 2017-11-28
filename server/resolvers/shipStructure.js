@@ -179,6 +179,9 @@ export const ShipStructureTypes = {
           i.count = i.roomCount[room.id];
           return i;
         });
+    },
+    systems(room) {
+      return App.systems.filter(s => s.locations.indexOf(room.id) > -1);
     }
   },
   InventoryItem: {

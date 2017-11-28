@@ -28,6 +28,7 @@ type System implements SystemInterface {
   heat: Float
   coolant: Float
   isochips: [Isochip]
+  locations: [Room]
 }
 
 # Generic system type. Query any system by type.

@@ -59,6 +59,9 @@ export const SystemsMutations = {
   },
   changeSystemPowerLevels(rootValue, params, context) {
     App.handleEvent(params, "changeSystemPowerLevels", context);
+  },
+  updateSystemRooms(rootValue, params, context) {
+    App.handleEvent(params, "updateSystemRooms", context);
   }
 };
 
@@ -98,6 +101,11 @@ export const SystemsTypes = {
   System: {
     isochips(rootValue) {
       return App.isochips.filter(i => i.system === rootValue.id);
+    },
+    locations(rootValue) {
+      return rootValue.locations.map(r =>
+        App.rooms.find(room => room.id === r)
+      );
     }
   },
   SystemUnion: {

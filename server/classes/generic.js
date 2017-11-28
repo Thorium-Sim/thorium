@@ -45,6 +45,7 @@ export class System {
     this.power = params.power || defaultPower;
     this.damage = params.damage || defaultDamage;
     this.extra = params.extra || false;
+    this.locations = params.locations || [];
   }
   get stealthFactor() {
     return null;
@@ -52,6 +53,9 @@ export class System {
   updateName({ name, displayName }) {
     if (name || name === "") this.name = name;
     if (displayName || displayName === "") this.displayName = displayName;
+  }
+  updateLocations(locations) {
+    this.locations = locations || [];
   }
   setPower(powerLevel) {
     this.power.power = powerLevel;
