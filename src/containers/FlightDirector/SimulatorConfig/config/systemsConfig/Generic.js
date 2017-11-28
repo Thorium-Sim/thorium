@@ -147,6 +147,9 @@ export class GenericSystemConfig extends Component {
                   </div>
                 ))}
             </FormGroup>
+            <FormGroup>
+              <Label>Isochip Config</Label>
+            </FormGroup>
             {this.props.children}
           </div>
         ))}

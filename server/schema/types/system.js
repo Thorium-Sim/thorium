@@ -27,6 +27,7 @@ type System implements SystemInterface {
   stealthFactor: Float
   heat: Float
   coolant: Float
+  isochips: [Isochip]
 }
 
 # Generic system type. Query any system by type.
