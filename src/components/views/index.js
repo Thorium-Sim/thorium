@@ -15,7 +15,6 @@ import CommInternal from "./CommInternal";
 import Docking from "./Docking";
 import CommShortRange from "./CommShortRange";
 import PowerDistribution from "./PowerDistribution";
-import PowerDistributionBattery from "./PowerDistributionBattery";
 import DamageControl from "./DamageControl";
 import Targeting from "./Targeting";
 import PhaserCharging from "./PhaserCharging";
@@ -35,6 +34,16 @@ import ReactorControl from "./ReactorControl";
 import Viewscreen from "./Viewscreen";
 import Messages from "./Messaging";
 import Isochips from "./Isochips";
+import Shuttles from "./Shuttles";
+import Status from "./Status";
+import JrOps from "./JrOps";
+import JrComm from "./JrComm";
+import JrFlight from "./JrFlight";
+import JrSensors from "./JrSensors";
+import JrEngineering from "./JrEngineering";
+import TorpedoLoading from "./TorpedoLoading";
+import SoundsTester from "./SoundsTester";
+import NavigationAdvanced from "./NavigationAdvanced";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -68,6 +77,14 @@ import ProbeControlCore from "./ProbeControl/core";
 import ReactorControlCore from "./ReactorControl/core";
 import ViewscreenCore from "./Viewscreen/core";
 import TimelineCore from "./Timeline";
+import ShuttlesCore from "./Shuttles/core";
+import SecurityDecksCore from "./SecurityDecks/core";
+import HeatCore from "./Heat/core";
+import ShipCore from "./Ship/core";
+import ReactivationCore from "./DamageControl/reactivationCore";
+import MessagingCore from "./Messaging/core";
+import ClientsCore from "./Clients/core";
+import JrNavigationCore from "./JrFlight/navigationCore";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -91,7 +108,6 @@ const Views = {
   Docking,
   CommShortRange,
   PowerDistribution,
-  PowerDistributionBattery,
   DamageControl,
   Targeting,
   PhaserCharging,
@@ -109,7 +125,17 @@ const Views = {
   ReactorControl,
   Viewscreen,
   Messages,
-  Isochips
+  Isochips,
+  Shuttles,
+  Status,
+  JrOps,
+  JrComm,
+  JrFlight,
+  JrSensors,
+  JrEngineering,
+  TorpedoLoading,
+  SoundsTester,
+  NavigationAdvanced
 };
 
 export const Widgets = {
@@ -172,7 +198,15 @@ export const Cores = {
   ProbeControlCore,
   ReactorControlCore,
   ViewscreenCore,
-  TimelineCore
+  TimelineCore,
+  ShuttlesCore,
+  SecurityDecksCore,
+  HeatCore,
+  ShipCore,
+  ReactivationCore,
+  MessagingCore,
+  ClientsCore,
+  JrNavigationCore
 };
 
 export default Views;

@@ -1,7 +1,36 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
+import ReactTable from "react-table";
+
+import "react-table/react-table.css";
+
+const columns = [
+  {
+    Header: "First",
+    accessor: "firstName" // String-based value accessors!
+  },
+  {
+    Header: "Last",
+    accessor: "lastName"
+  },
+  {
+    Header: "Age",
+    accessor: "age"
+  },
+  {
+    Header: "Gender",
+    accessor: "gender"
+  },
+  {
+    Header: "Position",
+    accessor: "position"
+  },
+  {
+    Header: "Rank",
+    accessor: "rank"
+  }
+];
 
 const INTERNAL_SUB = gql`
   subscription CrewUpdate($id: ID) {
@@ -33,13 +62,15 @@ class CrewCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ crew: subscriptionData.data.crewUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            crew: subscriptionData.crewUpdate
+          });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.sub && this.sub();
   }
   _importCrew = evt => {
     const self = this;
@@ -78,7 +109,7 @@ class CrewCore extends Component {
         });
       });
     };
-    reader.readAsText(files[0]);
+    files[0] && reader.readAsText(files[0]);
   };
   _editable = evt => {
     this.setState({
@@ -104,59 +135,19 @@ class CrewCore extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
-    //const crew = this.props.data.crew || [];
-    //const {editable} = this.state;
-    /*const columns = [{
-      key: 'firstName',
-      name: 'First',
-      editable
-    },
-    {
-      key: 'lastName',
-      name: 'Start Date',
-      editable
-    },
-    {
-      key: 'age',
-      name: 'Age',
-      editable
-    },
-    {
-      key: 'gender',
-      name: 'Sex',
-      editable
-    },
-    {
-      key: 'position',
-      name: 'Position',
-      editable
-    },
-    {
-      key: 'rank',
-      name: 'Rank',
-      editable
-    }]*/
-
+    if (this.props.data.loading || !this.props.data.crew) return null;
+    const crew = this.props.data.crew || [];
     return (
       <div
         className="crew-core"
         style={{ height: "100%", position: "relative" }}
       >
-        <label>
-          {" "}<input type="checkbox" onClick={this._editable} /> Editable
-        </label>
-        <input type="file" onChange={this._importCrew} />
-        {/*crew.length > 0 && 
-      <ReactDataGrid
-      enableCellSelect={true}
-      columns={columns}
-      rowGetter={this.rowGetter}
-      rowsCount={crew.length}
-      minHeight={500}
-      enableDragAndDrop={false}
-      onGridRowsUpdated={this._updateCrew.bind(this)} />
-    */}
+        <ReactTable
+          style={{ height: "100%" }}
+          data={crew}
+          columns={columns}
+          filterable={true}
+        />
       </div>
     );
   }

@@ -37,7 +37,7 @@ export default class Sensors extends System {
       });
     }
   }
-  // TODO: Update to include the scan mode: Active, Passive, Manual
+
   get stealthFactor() {
     if (this.scanning) return 0.5;
     return 0.1;
@@ -119,5 +119,18 @@ export default class Sensors extends System {
   }
   setPingMode(mode) {
     this.pingMode = mode;
+  }
+  break(report) {
+    this.scanCanceled();
+    super.break(report);
+  }
+  setPower(powerLevel) {
+    if (
+      this.power.powerLevels.length &&
+      powerLevel < this.power.powerLevels[0]
+    ) {
+      this.scanCanceled();
+    }
+    super.setPower(powerLevel);
   }
 }

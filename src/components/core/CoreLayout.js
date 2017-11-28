@@ -3,7 +3,6 @@ import "golden-layout/src/css/goldenlayout-base.css";
 import "golden-layout/src/css/goldenlayout-dark-theme.css";
 import React, { Component } from "react";
 import ReactDOM, { findDOMNode } from "react-dom";
-import Immutable from "immutable";
 import { Cores } from "../../components/views";
 import { graphql, withApollo, ApolloProvider } from "react-apollo";
 import gql from "graphql-tag";
@@ -19,7 +18,7 @@ import {
 } from "reactstrap";
 import { Link } from "react-router";
 import { client } from "../../App";
-import "./CoreLayout.scss";
+import "./CoreLayout.css";
 window.ReactDOM = ReactDOM;
 window.React = React;
 
@@ -81,10 +80,9 @@ class CoreLayout extends Component {
       this.coreSubscription = nextProps.data.subscribeToMore({
         document: CORE_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ coreLayouts: subscriptionData.data.coreLayoutChange })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            coreLayouts: subscriptionData.coreLayoutChange
+          });
         }
       });
     }
@@ -257,6 +255,7 @@ class CoreLayout extends Component {
   render() {
     if (this.props.data.loading) return null;
     const { coreLayouts, flights } = this.props.data;
+    if (!coreLayouts || !flights) return null;
     const flight = this.state.flight
       ? flights.find(f => f.id === this.state.flight)
       : {};
@@ -271,11 +270,11 @@ class CoreLayout extends Component {
           <option>Pick a simulator</option>
           <option disabled>⸺⸺⸺⸺⸺</option>
           <option value="test">Test</option>
-          {simulators.map(s =>
+          {simulators.map(s => (
             <option key={s.id} value={s.id}>
               {s.name}
             </option>
-          )}
+          ))}
         </select>
         <select
           className="btn btn-primary btn-sm"
@@ -307,19 +306,20 @@ class CoreLayout extends Component {
           />{" "}
           Editable
         </label>{" "}
-        {this.state.editable &&
+        {this.state.editable && (
           <select
             className="btn btn-primary btn-sm"
             onChange={this.addCore.bind(this)}
           >
             <option value="cancel">Pick a core</option>
             <option disabled>⸺⸺⸺⸺⸺</option>
-            {Object.keys(Cores).map((core, index) =>
+            {Object.keys(Cores).map((core, index) => (
               <option value={core} key={`${core}-${index}`}>
                 {core}
               </option>
-            )}
-          </select>}
+            ))}
+          </select>
+        )}
         <Link to={`/flight/${this.props.flightId}`}>Client Config</Link>
         <a
           href="#"
@@ -335,9 +335,9 @@ class CoreLayout extends Component {
             height: "calc(100vh - 26px)"
           }}
         />
-        {!this.state.simulator &&
+        {!this.state.simulator && (
           <ListGroup style={{ maxWidth: "500px" }}>
-            {simulators.map(s =>
+            {simulators.map(s => (
               <ListGroupItem
                 onClick={() => this.pickSimulator({ target: { value: s.id } })}
                 key={s.id}
@@ -348,8 +348,9 @@ class CoreLayout extends Component {
               >
                 {s.name}
               </ListGroupItem>
-            )}
-          </ListGroup>}
+            ))}
+          </ListGroup>
+        )}
         <Modal isOpen={this.state.issuesOpen} toggle={this.toggleIssueTracker}>
           <ModalHeader toggle={this.toggleIssueTracker}>
             Submit a Feature/Bug Report

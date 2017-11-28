@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import ViewscreenCards from "../../viewscreens";
+import * as ViewscreenCards from "../../viewscreens";
 
-import "./style.scss";
+import "./style.css";
 
 const VIEWSCREEN_SUB = gql`
   subscription ViewscreenSub($simulatorId: ID) {
@@ -11,43 +11,47 @@ const VIEWSCREEN_SUB = gql`
       id
       name
       component
+      data
     }
   }
 `;
 
-class Viewscreen extends Component {
+export class Viewscreen extends Component {
   sub = null;
+  componentWillUnmount() {
+    this.sub && this.sub();
+  }
   componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.internalSub = nextProps.data.subscribeToMore({
+    if (nextProps.data && !this.sub && !nextProps.data.loading) {
+      this.sub = nextProps.data.subscribeToMore({
         document: VIEWSCREEN_SUB,
         variables: {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            viewscreens: subscriptionData.data.viewscreensUpdate
+            viewscreens: subscriptionData.viewscreensUpdate
           });
         }
       });
     }
   }
   render() {
-    if (this.props.data.loading) return null;
-    const viewscreen = this.props.data.viewscreens.find(
-      v => v.id === this.props.clientObj.id
-    );
+    if (this.props.component) {
+      const ViewscreenComponent = ViewscreenCards[this.props.component];
+      return <ViewscreenComponent {...this.props} />;
+    }
+    if (this.props.data.loading || !this.props.data.viewscreens) return null;
+    const viewscreen =
+      this.props.data.viewscreens &&
+      this.props.data.viewscreens.find(v => v.id === this.props.clientObj.id);
     if (!viewscreen) return <div>No Viewscreen</div>;
     if (ViewscreenCards[viewscreen.component]) {
       const ViewscreenComponent = ViewscreenCards[viewscreen.component];
-      return <ViewscreenComponent {...this.props} />;
+      return <ViewscreenComponent {...this.props} viewscreen={viewscreen} />;
     }
     if (!viewscreen)
-      return (
-        <div>
-          No Viewscreen Component for {viewscreen.component}
-        </div>
-      );
+      return <div>No Viewscreen Component for {viewscreen.component}</div>;
   }
 }
 
@@ -57,6 +61,7 @@ const VIEWSCREEN_QUERY = gql`
       id
       name
       component
+      data
     }
   }
 `;

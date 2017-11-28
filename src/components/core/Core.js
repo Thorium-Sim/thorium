@@ -3,11 +3,10 @@ import ReactGridLayout from "react-grid-layout";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import FontAwesome from "react-fontawesome";
-import Immutable from "immutable";
 import { Cores } from "../../components/views";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
-import "./Core.scss";
+import "./Core.css";
 
 const CORE_SUB = gql`
   subscription CoreSub {
@@ -40,12 +39,13 @@ const CoreComponent = props => {
   };
   return (
     <span>
-      {props.editable &&
+      {props.editable && (
         <FontAwesome
           name="ban"
           className="text-danger pull-right clickable"
           onClick={_removeCore.bind(this)}
-        />}
+        />
+      )}
       {props.children}
     </span>
   );
@@ -68,10 +68,9 @@ class Core extends Component {
       this.coreSubscription = nextProps.data.subscribeToMore({
         document: CORE_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ coreLayouts: subscriptionData.data.coreLayoutChange })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            coreLayouts: subscriptionData.coreLayoutChange
+          });
         }
       });
     }
@@ -171,9 +170,7 @@ class Core extends Component {
       ? { coreLayouts: [], flights: [] }
       : this.props.data;
     const layout = coreLayouts.map(l => {
-      const ret = Immutable.Map(l);
-
-      return ret.merge({ i: l.id }).toObject();
+      return Object.assign({}, previousResult, { i: l.id });
     });
     const flight = this.state.flight
       ? flights.find(f => f.id === this.state.flight)
@@ -195,11 +192,11 @@ class Core extends Component {
           <option>Pick a simulator</option>
           <option disabled>⸺⸺⸺⸺⸺</option>
           <option value="test">Test</option>
-          {simulators.map(s =>
+          {simulators.map(s => (
             <option key={s.id} value={s.id}>
               {s.name}
             </option>
-          )}
+          ))}
         </select>
         <select
           className="btn btn-primary btn-sm"
@@ -231,20 +228,21 @@ class Core extends Component {
           />{" "}
           Editable
         </label>{" "}
-        {this.state.editable &&
+        {this.state.editable && (
           <select
             className="btn btn-primary btn-sm"
             onChange={this.addCore.bind(this)}
           >
             <option value="cancel">Pick a core</option>
             <option disabled>⸺⸺⸺⸺⸺</option>
-            {Object.keys(Cores).map((core, index) =>
+            {Object.keys(Cores).map((core, index) => (
               <option value={core} key={`${core}-${index}`}>
                 {core}
               </option>
-            )}
-          </select>}
-        {this.state.simulator &&
+            ))}
+          </select>
+        )}
+        {this.state.simulator && (
           <ReactGridLayout
             className="layout"
             layout={renderLayout}
@@ -277,7 +275,8 @@ class Core extends Component {
                 </div>
               );
             })}
-          </ReactGridLayout>}
+          </ReactGridLayout>
+        )}
       </div>
     );
   }

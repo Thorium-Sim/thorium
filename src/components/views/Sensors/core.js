@@ -3,7 +3,6 @@ import { OutputField, TypingField } from "../../generic/core";
 import { Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
-import Immutable from "immutable";
 import ScanPresets from "./ScanPresets";
 
 const SENSOR_SUB = gql`
@@ -39,14 +38,29 @@ class SensorsCore extends Component {
         document: SENSOR_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ sensors: subscriptionData.data.sensorsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            sensors: subscriptionData.sensorsUpdate
+          });
         }
       });
     }
   }
+  componentDidMount() {
+    document.addEventListener("keydown", this.keypress);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.keypress);
+    this.sensorsSubscription && this.sensorsSubscription();
+  }
+  keypress = evt => {
+    if (evt.altKey) {
+      const index = parseInt(evt.code.substr(-1, 1), 10);
+      if (!isNaN(index)) {
+        const data = index === 0 ? ScanPresets[10] : ScanPresets[index - 1];
+        this.scanPreset({ target: { value: data.value } });
+      }
+    }
+  };
   sendScanResult = sensors => {
     this.props.client.mutate({
       mutation: gql`
@@ -63,7 +77,7 @@ class SensorsCore extends Component {
   sendProcessedData(sensors) {
     this.props.client.mutate({
       mutation: gql`
-        mutation ProcessedData($id: ID!, $data: String!) {
+        mutation ProcessedData($id: ID, $data: String!) {
           processedData(id: $id, data: $data)
         }
       `,
@@ -108,7 +122,7 @@ class SensorsCore extends Component {
     localStorage.setItem("sensorCore-domain", which);
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.sensors) return null;
     const external = this.props.data.sensors.find(s => s.domain === "external");
     const internal = this.props.data.sensors.find(s => s.domain === "internal");
     const sensor = this.state.domain === "external" ? external : internal;
@@ -117,7 +131,8 @@ class SensorsCore extends Component {
       display: "flex",
       flexDirection: "column",
       alignItems: "stretch",
-      height: "calc(100% - 100px)"
+      height: "calc(100% - 100px)",
+      minHeight: "20vh"
     };
     const buttonStyle = {
       display: "flex",
@@ -167,13 +182,13 @@ class SensorsCore extends Component {
           >
             Send
           </Button>
-          <Button
+          {/*<Button
             onClick={this.flash.bind(this)}
             style={{ flexGrow: 1 }}
             size={"sm"}
           >
             Flash
-          </Button>
+          </Button>*/}
           <select
             value={"answers"}
             onChange={this.scanPreset}
@@ -182,11 +197,11 @@ class SensorsCore extends Component {
             <option value={"answers"} disabled>
               Answers
             </option>
-            {ScanPresets.map(p =>
+            {ScanPresets.map(p => (
               <option key={p.label} value={p.value}>
                 {p.label}
               </option>
-            )}
+            ))}
           </select>
           <select
             onChange={this.scanPreset}
@@ -196,11 +211,11 @@ class SensorsCore extends Component {
             <option disabled value={"answers"}>
               Info
             </option>
-            {sensor.presetAnswers.map(p =>
+            {sensor.presetAnswers.map(p => (
               <option key={`${p.label}-${p.value}`} value={p.value}>
                 {p.label}
               </option>
-            )}
+            ))}
           </select>
           <Button
             onClick={this.sendProcessedData.bind(this, external)}

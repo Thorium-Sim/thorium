@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button, Row, Col, Card } from "reactstrap";
 import "whatwg-fetch";
 import FontAwesome from "react-fontawesome";
-import "./style.scss";
+import "./style.css";
 import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 import ImageViewer from "./imageViewer";
@@ -48,11 +48,14 @@ class AdminAssetsView extends Component {
         document: ASSET_FOLDER_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            assetFolders: subscriptionData.data.assetFolderChange
+            assetFolders: subscriptionData.assetFolderChange
           });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.assetFolderSubscription && this.assetFolderSubscription();
   }
   _setDirectory(directory) {
     this.setState({ currentDirectory: directory });
@@ -85,14 +88,20 @@ class AdminAssetsView extends Component {
     this.props.addAssetContainer(obj);
   }
   _createObject(e) {
-    const obj = {
-      files: e.target.files,
-      simulatorId: this.refs.simulatorSelect.value || "default",
-      containerId: this.state.currentContainer.id
-    };
-    this.props.uploadAsset(obj).catch(error => {
-      console.error("error", error.message);
-    });
+    // Manually upload the file
+    const data = new FormData();
+    data.append("simulatorId", this.refs.simulatorSelect.value || "default");
+    data.append("containerId", this.state.currentContainer.id);
+    Array.from(e.target.files).forEach((f, index) =>
+      data.append(`files[${index}]`, f)
+    );
+    fetch(
+      `${window.location.protocol}//${window.location.hostname}:3001/upload`,
+      {
+        method: "POST",
+        body: data
+      }
+    );
   }
   _deleteFolder(directory) {
     //First delete all of the objects attached to containers attached to this folder
@@ -124,15 +133,19 @@ class AdminAssetsView extends Component {
     this.props.removeAssetObject({ id: object.id });
   }
   _massUpload = e => {
-    let files = e.target.files;
-    const obj = {
-      files,
-      simulatorId: "default",
-      folderPath: this.state.currentDirectory
-    };
-    this.props.uploadAsset(obj).catch(error => {
-      console.error("error", error.message);
-    });
+    const data = new FormData();
+    data.append("simulatorId", "default");
+    data.append("folderPath", this.state.currentDirectory);
+    Array.from(e.target.files).forEach((f, index) =>
+      data.append(`files[${index}]`, f)
+    );
+    fetch(
+      `${window.location.protocol}//${window.location.hostname}:3001/upload`,
+      {
+        method: "POST",
+        body: data
+      }
+    );
   };
   openModal(object) {
     this.setState({
@@ -148,106 +161,104 @@ class AdminAssetsView extends Component {
     });
   }
   render() {
-    return this.props.data.loading
-      ? <span>Loading...</span>
-      : <div className="cardAdminAssets">
-          <Row>
-            <Col sm="4">
-              <div className="btn-group">
-                <Button color="primary" onClick={this._createFolder.bind(this)}>
-                  <FontAwesome name="folder-open" />
-                </Button>
-                <Button
-                  color="primary"
-                  onClick={this._createContainer.bind(this)}
+    return this.props.data.loading ? (
+      <span>Loading...</span>
+    ) : (
+      <div className="cardAdminAssets">
+        <Row>
+          <Col sm="4">
+            <div className="btn-group">
+              <Button color="primary" onClick={this._createFolder.bind(this)}>
+                <FontAwesome name="folder-open" />
+              </Button>
+              <Button
+                color="primary"
+                onClick={this._createContainer.bind(this)}
+              >
+                <FontAwesome name="file" />
+              </Button>
+              <Button color="warning" style={{ position: "relative" }}>
+                <div
+                  style={{
+                    opacity: 0,
+                    position: "absolute",
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0
+                  }}
                 >
-                  <FontAwesome name="file" />
-                </Button>
-                <Button color="warning" style={{ position: "relative" }}>
-                  <div
-                    style={{
-                      opacity: 0,
-                      position: "absolute",
-                      left: 0,
-                      right: 0,
-                      top: 0,
-                      bottom: 0
-                    }}
-                  >
-                    <input
-                      ref="massUpload"
-                      type="file"
-                      id="mass-upload-folder"
-                      multiple
-                      onChange={this._massUpload}
-                    />
-                  </div>
-                  <FontAwesome name="upload" />
-                </Button>
-              </div>
+                  <input
+                    ref="massUpload"
+                    type="file"
+                    id="mass-upload-folder"
+                    multiple
+                    onChange={this._massUpload}
+                  />
+                </div>
+                <FontAwesome name="upload" />
+              </Button>
+            </div>
 
-              <p>
-                <strong>
-                  Path: {this.state.currentDirectory}
-                </strong>
-              </p>
-              <Card className="flintassetbrowser">
-                <ul>
-                  {this.state.currentDirectory !== "/"
-                    ? <li className="folder">
+            <p>
+              <strong>Path: {this.state.currentDirectory}</strong>
+            </p>
+            <Card className="flintassetbrowser">
+              <ul>
+                {this.state.currentDirectory !== "/" ? (
+                  <li className="folder">
+                    <FontAwesome name="folder" />
+                    <button
+                      onClick={() => {
+                        //Get the current directory's folder
+                        let directory = this.props.data.assetFolders.filter(
+                          folder => {
+                            return (
+                              folder.fullPath === this.state.currentDirectory
+                            );
+                          }
+                        )[0];
+                        this.setState({
+                          currentDirectory: directory.folderPath,
+                          currentContainer: {}
+                        });
+                      }}
+                      className="cd-dot-dot btn btn-link"
+                    >
+                      <span className="glyphicon-class">&laquo; Back</span>
+                    </button>
+                  </li>
+                ) : (
+                  <div />
+                )}
+                {this.props.data.assetFolders
+                  .filter(folder => {
+                    return folder.folderPath === this.state.currentDirectory;
+                  })
+                  .map(folder => {
+                    return (
+                      <li key={folder.id}>
                         <FontAwesome name="folder" />
-                        <a
-                          href="#"
-                          onClick={() => {
-                            //Get the current directory's folder
-                            let directory = this.props.data.assetFolders.filter(
-                              folder => {
-                                return (
-                                  folder.fullPath ===
-                                  this.state.currentDirectory
-                                );
-                              }
-                            )[0];
-                            this.setState({
-                              currentDirectory: directory.folderPath,
-                              currentContainer: {}
-                            });
-                          }}
-                          className="cd-dot-dot"
+                        <button
+                          onClick={this._setDirectory.bind(
+                            this,
+                            folder.fullPath
+                          )}
+                          className="folder btn btn-link"
                         >
-                          <span className="glyphicon-class">&laquo; Back</span>
-                        </a>
+                          <span className="glyphicon-class">{folder.name}</span>
+                        </button>
+                        <FontAwesome
+                          name="ban"
+                          className="text-danger"
+                          onClick={this._deleteFolder.bind(this, folder)}
+                        />
                       </li>
-                    : <div />}
-                  {this.props.data.assetFolders
-                    .filter(folder => {
-                      return folder.folderPath === this.state.currentDirectory;
-                    })
-                    .map(folder => {
-                      return (
-                        <li key={folder.id}>
-                          <FontAwesome name="folder" />
-                          <a
-                            href="#"
-                            onClick={this._setDirectory.bind(
-                              this,
-                              folder.fullPath
-                            )}
-                            className="folder"
-                          >
-                            <span className="glyphicon-class">
-                              {folder.name}
-                            </span>
-                          </a>
-                          <FontAwesome
-                            name="ban"
-                            className="text-danger"
-                            onClick={this._deleteFolder.bind(this, folder)}
-                          />
-                        </li>
-                      );
-                    })}
-                  {this.props.data.assetFolders
+                    );
+                  })}
+                {this.props.data.assetFolders &&
+                  this.props.data.assetFolders.length &&
+                  this.props.data.assetFolders
                     .find(
                       folder => folder.fullPath === this.state.currentDirectory
                     )
@@ -255,15 +266,14 @@ class AdminAssetsView extends Component {
                       return (
                         <li key={container.id}>
                           <FontAwesome name="file" />
-                          <a
-                            href="#"
+                          <button
                             onClick={this._setContainer.bind(this, container)}
-                            className="containerLink"
+                            className="containerLink btn btn-link"
                           >
                             <span className="glyphicon-class">
                               {container.name}
                             </span>
-                          </a>
+                          </button>
                           <FontAwesome
                             name="ban"
                             className="text-danger"
@@ -275,69 +285,69 @@ class AdminAssetsView extends Component {
                         </li>
                       );
                     })}
-                </ul>
-              </Card>
+              </ul>
+            </Card>
+          </Col>
+          {this.state.currentContainer.id ? (
+            <Col className="col-sm-8">
+              <h2>Asset: {this.state.currentContainer.name}</h2>
+              <h3 className="selectable">
+                Asset Path: {this.state.currentContainer.fullPath}
+              </h3>
+              <h3>Objects:</h3>
+              <ul>
+                {this.props.data.assetFolders
+                  .find(
+                    folder => folder.fullPath === this.state.currentDirectory
+                  )
+                  .containers.find(
+                    container => container.id === this.state.currentContainer.id
+                  )
+                  .objects.map(object => {
+                    return (
+                      <li key={object.id}>
+                        {object.simulatorId}
+                        <img
+                          alt="Asset"
+                          src={object.url}
+                          className="img-small"
+                          onClick={this.openModal.bind(this, object)}
+                        />
+                        <FontAwesome
+                          name="ban"
+                          className="text-ban"
+                          onClick={this._deleteObject.bind(this, object)}
+                        />
+                      </li>
+                    );
+                  })}
+              </ul>
+              <select ref="simulatorSelect" className="c-select">
+                <option value="default">Default</option>;
+                {this.props.data.simulators.map(simulator => {
+                  return (
+                    <option key={simulator.id} value={simulator.id}>
+                      {simulator.name}
+                    </option>
+                  );
+                })}
+              </select>
+              <input type="file" onChange={this._createObject.bind(this)} />
             </Col>
-            {this.state.currentContainer.id
-              ? <Col className="col-sm-8">
-                  <h2>
-                    Asset: {this.state.currentContainer.name}
-                  </h2>
-                  <h3 className="selectable">
-                    Asset Path: {this.state.currentContainer.fullPath}
-                  </h3>
-                  <h3>Objects:</h3>
-                  <ul>
-                    {this.props.data.assetFolders
-                      .find(
-                        folder =>
-                          folder.fullPath === this.state.currentDirectory
-                      )
-                      .containers.find(
-                        container =>
-                          container.id === this.state.currentContainer.id
-                      )
-                      .objects.map(object => {
-                        return (
-                          <li key={object.id}>
-                            {object.simulatorId}
-                            <img
-                              role="presentation"
-                              src={object.url}
-                              className="img-small"
-                              onClick={this.openModal.bind(this, object)}
-                            />
-                            <FontAwesome
-                              name="ban"
-                              className="text-ban"
-                              onClick={this._deleteObject.bind(this, object)}
-                            />
-                          </li>
-                        );
-                      })}
-                  </ul>
-                  <select ref="simulatorSelect" className="c-select">
-                    <option value="default">Default</option>;
-                    {this.props.data.simulators.map(simulator => {
-                      return (
-                        <option key={simulator.id} value={simulator.id}>
-                          {simulator.name}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  <input type="file" onChange={this._createObject.bind(this)} />
-                </Col>
-              : <div />}
-          </Row>
-          {this.state.imageModal &&
-            <ImageViewer
-              isOpen={this.state.imageModal}
-              toggle={this.closeModal.bind(this)}
-              name={this.state.imageModal.name}
-              image={this.state.imageModal.image}
-            />}
-        </div>;
+          ) : (
+            <div />
+          )}
+        </Row>
+        {this.state.imageModal && (
+          <ImageViewer
+            isOpen={this.state.imageModal}
+            toggle={this.closeModal.bind(this)}
+            name={this.state.imageModal.name}
+            image={this.state.imageModal.image}
+          />
+        )}
+      </div>
+    );
   }
 }
 
@@ -408,22 +418,6 @@ const REMOVE_ASSET_CONTAINER = gql`
   }
 `;
 
-const UPLOAD_ASSET = gql`
-  mutation UploadAsset(
-    $files: [UploadedFile!]!
-    $simulatorId: ID
-    $containerId: ID
-    $folderPath: String
-  ) {
-    uploadAsset(
-      files: $files
-      simulatorId: $simulatorId
-      containerId: $containerId
-      folderPath: $folderPath
-    )
-  }
-`;
-
 const REMOVE_ASSET_OBJECT = gql`
   mutation RemoveAssetObject($id: ID!) {
     removeAssetObject(id: $id)
@@ -464,15 +458,6 @@ export default compose(
     props: ({ removeAssetContainer }) => ({
       removeAssetContainer: props =>
         removeAssetContainer({
-          variables: Object.assign(props)
-        })
-    })
-  }),
-  graphql(UPLOAD_ASSET, {
-    name: "uploadAsset",
-    props: ({ uploadAsset }) => ({
-      uploadAsset: props =>
-        uploadAsset({
           variables: Object.assign(props)
         })
     })

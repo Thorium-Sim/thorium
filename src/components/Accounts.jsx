@@ -5,7 +5,7 @@ import {
     Row,
     Container,
     Card,
-    CardBlock,
+    CardBody,
     CardTitle,
     Button,
 } from 'reactstrap';
@@ -66,7 +66,7 @@ export class SigninView extends Component {
                         marginTop: "100px"
                     }}>
                         <Card>
-                            <CardBlock>
+                            <CardBody>
                                 <CardTitle>Login</CardTitle>
                                 <div className={`form-group ${ (this.state.emailInvalid
                                     ? "has-danger"
@@ -89,7 +89,7 @@ export class SigninView extends Component {
                                 <div className="form-group">
                                     <Button type="submit" onClick={this._handleSignin.bind(this)} disabled={!(this.state.email && this.state.password)} color="secondary">Login</Button>
                                 </div>
-                            </CardBlock>
+                            </CardBody>
                         </Card>
                         <label>Don't have an account?
                             <Link to="/register">Register</Link>
@@ -170,7 +170,7 @@ export class ForgotView extends Component {
                         marginTop: "100px"
                     }}>
                         <Card>
-                            <CardBlock>
+                            <CardBody>
                                 <CardTitle>Send Reset Password Link</CardTitle>
                                 <div className={`form-group ${ (this.state.emailInvalid
                                     ? "has-danger"
@@ -184,7 +184,7 @@ export class ForgotView extends Component {
                                 <div className="form-group">
                                     <Button type="submit" onClick={this._handleForgot.bind(this)} disabled={!(this.state.email) || !!(this.state.emailInvalid)} color="secondary">Send Reset Link</Button>
                                 </div>
-                            </CardBlock>
+                            </CardBody>
                         </Card>
                         <label>Looking to login?
                             <Link to="/login">Login</Link>
@@ -277,7 +277,7 @@ export class RegisterView extends Component {
 									marginTop: "100px"
 								}}>
 									<Card>
-										<CardBlock>
+										<CardBody>
 											<CardTitle>Register</CardTitle>
 											<div className={`form-group ${ (this.state.emailInvalid
 												? "has-danger"
@@ -306,7 +306,7 @@ export class RegisterView extends Component {
 											<div className="form-group">
 												<Button type="submit" onClick={this._handleRegister.bind(this)} disabled={!(this.state.email && this.state.password) || !!(this.state.passwordInvalid || this.state.emailInvalid)} color="secondary">Register</Button>
 											</div>
-										</CardBlock>
+										</CardBody>
 									</Card>
 									<label>Have an account?
 										<Link to="/login">Login</Link>
@@ -390,7 +390,7 @@ export class PasswordResetView extends Component {
                         marginTop: "100px"
                     }}>
                         <Card>
-                            <CardBlock>
+                            <CardBody>
                                 <CardTitle>Reset Password</CardTitle>
                                 <div className={`form-group ${ (this.state.passwordInvalid
                                     ? "has-danger"
@@ -410,7 +410,7 @@ export class PasswordResetView extends Component {
                                 <div className="form-group">
                                     <Button type="submit" onClick={this._handleReset.bind(this)} disabled={!(this.state.password) || !!(this.state.passwordInvalid)} color="secondary">Reset Password</Button>
                                 </div>
-                            </CardBlock>
+                            </CardBody>
                         </Card>
                         <label>Remember your password?
                             <Link to="/login">Login</Link>

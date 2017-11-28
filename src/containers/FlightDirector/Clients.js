@@ -49,6 +49,7 @@ const CLIENT_CHANGE_QUERY = gql`
       }
       loginName
       loginState
+      training
     }
   }
 `;
@@ -65,7 +66,7 @@ class Clients extends Component {
         document: CLIENT_CHANGE_QUERY,
         updateQuery: (previousResult, { subscriptionData }) => {
           const returnResult = Object.assign({}, previousResult);
-          returnResult.clients = subscriptionData.data.clientChanged;
+          returnResult.clients = subscriptionData.clientChanged;
           return returnResult;
         }
       });
@@ -75,22 +76,26 @@ class Clients extends Component {
         document: FLIGHTS_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            flights: subscriptionData.data.flightsUpdate
+            flights: subscriptionData.flightsUpdate
           });
         }
       });
     }
   }
   _select(p, type, e) {
+    let m = null;
+    if (type === "flight") {
+      m = "clientSetFlight(client: $client, flightId: $id)";
+    }
+    if (type === "simulator") {
+      m = "clientSetSimulator(client: $client, simulatorId: $id)";
+    }
+    if (type === "station") {
+      m = "clientSetStation(client: $client, stationName: $id)";
+    }
     const mutation = gql`mutation UpdateClient($client: ID!, $id: ID!) {
-      ${(() => {
-        if (type === "flight")
-          return "clientSetFlight(client: $client, flightId: $id)}";
-        if (type === "simulator")
-          return "clientSetSimulator(client: $client, simulatorId: $id)}";
-        if (type === "station")
-          return "clientSetStation(client: $client, stationName: $id)}";
-      })()}`;
+    ${m} 
+    }`;
     const obj = {
       client: p.id,
       id: e.target.value
@@ -104,7 +109,13 @@ class Clients extends Component {
     return (
       <Container>
         <Row className="justify-content-md-center">
-          <Col xs="12">
+          <Col
+            xs="12"
+            style={{
+              height: "60vh",
+              overflowY: "scroll"
+            }}
+          >
             <h4>Clients</h4>
             <table className="table table-striped table-hover table-sm">
               <thead>
@@ -116,33 +127,41 @@ class Clients extends Component {
                 </tr>
               </thead>
               <tbody>
-                {!this.props.data.loading
-                  ? this.props.data.clients.map((p, index) =>
+                {!this.props.data.loading ? (
+                  this.props.data.clients &&
+                  this.props.data.clients
+                    .filter(
+                      p =>
+                        p.flight === "" ||
+                        p.flight === null ||
+                        p.flight.id === this.props.routeParams.flightId
+                    )
+                    .map((p, index) => (
                       <tr key={`flight-${p.id}-${index}`}>
-                        <td>
-                          {`${p.id}`}
-                        </td>
+                        <td>{`${p.id}`}</td>
                         <td>
                           <select
                             value={(p.flight && p.flight.id) || ""}
                             onChange={this._select.bind(this, p, "flight")}
                             className="form-control-sm c-select"
                           >
-                            <option>Select a flight</option>
-                            {this.props.data.flights
-                              ? this.props.data.flights.map(f => {
-                                  return (
-                                    <option
-                                      key={`flight-${p.id}-${f.id}`}
-                                      value={f.id}
-                                    >
-                                      {`${f.name}: ${moment(f.date).format(
-                                        "MM/DD/YY hh:mma"
-                                      )}`}
-                                    </option>
-                                  );
-                                })
-                              : <option disabled>No Flights</option>}
+                            <option value="">Select a flight</option>
+                            {this.props.data.flights ? (
+                              this.props.data.flights.map(f => {
+                                return (
+                                  <option
+                                    key={`flight-${p.id}-${f.id}`}
+                                    value={f.id}
+                                  >
+                                    {`${f.name}: ${moment(f.date).format(
+                                      "MM/DD/YY hh:mma"
+                                    )}`}
+                                  </option>
+                                );
+                              })
+                            ) : (
+                              <option disabled>No Flights</option>
+                            )}
                           </select>
                         </td>
                         <td>
@@ -151,17 +170,19 @@ class Clients extends Component {
                             onChange={this._select.bind(this, p, "simulator")}
                             className="form-control-sm c-select"
                           >
-                            <option>Select a simulator</option>
-                            {p.flight
-                              ? p.flight.simulators.map(s =>
-                                  <option
-                                    key={`${p.id}-simulator-${s.id}`}
-                                    value={s.id}
-                                  >
-                                    {s.name}
-                                  </option>
-                                )
-                              : <option disabled>No Simulators</option>}
+                            <option value="">Select a simulator</option>
+                            {p.flight ? (
+                              p.flight.simulators.map(s => (
+                                <option
+                                  key={`${p.id}-simulator-${s.id}`}
+                                  value={s.id}
+                                >
+                                  {s.name}
+                                </option>
+                              ))
+                            ) : (
+                              <option disabled>No Simulators</option>
+                            )}
                           </select>
                         </td>
                         <td>
@@ -170,24 +191,28 @@ class Clients extends Component {
                             onChange={this._select.bind(this, p, "station")}
                             className="form-control-sm c-select"
                           >
-                            <option>Select a station</option>
-                            {p.simulator
-                              ? p.simulator.stations.map(s =>
-                                  <option
-                                    key={`${p.id}-station-${s.name}`}
-                                    value={s.name}
-                                  >
-                                    {s.name}
-                                  </option>
-                                )
-                              : <option disabled>No Stations</option>}
+                            <option value="">Select a station</option>
+                            {p.simulator ? (
+                              p.simulator.stations.map(s => (
+                                <option
+                                  key={`${p.id}-station-${s.name}`}
+                                  value={s.name}
+                                >
+                                  {s.name}
+                                </option>
+                              ))
+                            ) : (
+                              <option disabled>No Stations</option>
+                            )}
                             <option value={"Viewscreen"}>Viewscreen</option>
                             <option value={"Blackout"}>Blackout</option>
                           </select>
                         </td>
                       </tr>
-                    )
-                  : <tr />}
+                    ))
+                ) : (
+                  <tr />
+                )}
               </tbody>
             </table>
           </Col>
@@ -224,6 +249,7 @@ const CLIENTS_QUERY = gql`
       }
       loginName
       loginState
+      training
     }
     flights {
       id

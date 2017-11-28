@@ -1,7 +1,7 @@
 import React from "react";
-import "./Doodad.scss";
+import "./Doodad.css";
 
-export default () =>
+export default () => (
   <figure className="doodad">
     <div className="c" />
     <div className="c2">
@@ -46,4 +46,5 @@ export default () =>
     <div className="c4" />
     <div className="c5" />
     <div className="c6" />
-  </figure>;
+  </figure>
+);

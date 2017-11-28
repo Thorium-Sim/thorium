@@ -5,62 +5,71 @@ import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 import { DraggableCore } from "react-draggable";
 import { Button, Row, Col } from "reactstrap";
-import ThrusterThree from "./three";
+//import ThrusterThree from "./three";
 import distance from "../../../helpers/distance";
-import Measure from "react-measure";
-import Immutable from 'immutable';
-import "./style.scss";
+//import Measure from "react-measure";
+
+import DamageOverlay from "../helpers/DamageOverlay";
+import "./style.css";
+import Tour from "reactour";
+
+const trainingSteps = [
+  {
+    selector: ".direction-drag",
+    content:
+      "These toggles manually steer your ship. Drag the toggle around and watch how it affects the model of your ship. Use the lower sideways toggle to move forward and backward in space."
+  },
+  {
+    selector: ".rotation-drag",
+    content:
+      "Use these toggles to rotate your ship in space. Steering in 3D space is different than driving a car on Earth, where you only have to navigate a 2D plane. Luckily, you also have auto-pilot functions on your ship for long-distance navigation. These manual controls are useful, however, for navigating tighter spaces, like landing docks and asteroid fields."
+  },
+  {
+    selector: ".indicatorCircles",
+    content:
+      "These dials track your rotation in 3D space. The red line represents required thruster settings. Use the rotation controls to orient your ship so it is pointing in the right direction."
+  }
+];
 
 const ROTATION_CHANGE_SUB = gql`
-subscription RotationChanged($simulatorId: ID!){
-  rotationChange(simulatorId: $simulatorId){
-    id
-    rotation {
-      yaw
-      pitch
-      roll
-    }
-    rotationRequired{
-      yaw
-      pitch
-      roll
-    }
-    manualThrusters
-    direction {
-      x
-      y
-      z
+  subscription RotationChanged($simulatorId: ID!) {
+    rotationChange(simulatorId: $simulatorId) {
+      id
+      rotation {
+        yaw
+        pitch
+        roll
+      }
+      rotationRequired {
+        yaw
+        pitch
+        roll
+      }
+      manualThrusters
+      direction {
+        x
+        y
+        z
+      }
     }
   }
-}
 `;
 
-const DamageOverlay = ({ engine }) => {
-  const overlayStyle = {
-    width: "100%",
-    minHeight: "400px",
-    height: "calc(100% + 40px)",
-    top: "-11px",
-    left: "0px",
-    position: "absolute",
-    backgroundColor: "rgba(0,0,0,0.75)",
-    border: "solid 1px rgba(255,255,255,0.5)",
-    zIndex: "1000",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
-  };
-  const textStyle = {
-    color: "red",
-    width: "100%",
-    textAlign: "center"
-  };
-  return (
-    <div style={overlayStyle} className="damageOverlay">
-      <h1 style={textStyle}>Thrusters Damaged</h1>
-    </div>
-  );
-};
+const THRUSTER_SUB = gql`
+  subscription ThrusterUpdate($simulatorId: ID) {
+    systemsUpdate(simulatorId: $simulatorId, type: "Thrusters") {
+      id
+      damage {
+        damaged
+        report
+      }
+      power {
+        power
+        powerLevels
+      }
+    }
+  }
+`;
 
 const IndicatorCircle = props => {
   return (
@@ -82,9 +91,7 @@ const IndicatorCircle = props => {
           <span className="label left">270</span>
         </div>
       </div>
-      <label>
-        {props.name}
-      </label>
+      <label>{props.name}</label>
     </Col>
   );
 };
@@ -93,6 +100,7 @@ class Thrusters extends Component {
   constructor(props) {
     super(props);
     this.rotationSubscription = null;
+    this.thrusterSub = null;
     this.state = {
       control: false,
       gamepad: null,
@@ -119,6 +127,8 @@ class Thrusters extends Component {
   }
   componentWillUnmount() {
     cancelAnimationFrame(this.state.request);
+    this.rotationSubscription && this.rotationSubscription();
+    this.thrusterSub && this.thrusterSub();
   }
   componentWillReceiveProps(nextProps) {
     if (!this.rotationSubscription && !nextProps.data.loading) {
@@ -128,19 +138,35 @@ class Thrusters extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const thrusters = Immutable.List(previousResult.thrusters);
-          const thrusterIndex = previousResult.thrusters.findIndex(t => t.id === subscriptionData.data.rotationChange.id);
-          const thruster = Immutable.Map(previousResult.thrusters[thrusterIndex])
-          .set('rotation', subscriptionData.data.rotationChange.rotation)
-          .set('rotationRequired', subscriptionData.data.rotationChange.rotationRequired)
-          .set('direction', subscriptionData.data.rotationChange.direction)
-          return {
-            thrusters: thrusters.set(thrusterIndex, thruster).toJS()
-          };
+          return Object.assign({}, previousResult, {
+            thrusters: [subscriptionData.rotationChange]
+          });
+        }
+      });
+    }
+    if (!this.thrusterSub && !nextProps.data.loading) {
+      this.thrusterSub = nextProps.data.subscribeToMore({
+        document: THRUSTER_SUB,
+        variables: {
+          simulatorId: nextProps.simulator.id
+        },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          return Object.assign({}, previousResult, {
+            thrusters: previousResult.thrusters.map(t => {
+              const updateT = subscriptionData.systemsUpdate.find(
+                s => s.id === t.id
+              );
+              if (updateT) {
+                return Object.assign({}, t, updateT);
+              }
+              return t;
+            })
+          });
         }
       });
     }
   }
+
   /*
 componentDidMount(){
   let self = this;
@@ -243,8 +269,9 @@ gamepadLoop(){
           this.setState(obj);
           break;
         case "onDrag":
-          if (!this.state[which])
+          if (!this.state[which]) {
             throw new Error("onDrag called before onDragStart.");
+          }
           newPosition.left =
             (parentRect.left + parentRect.width / 2 - e.clientX) /
             width *
@@ -312,8 +339,9 @@ gamepadLoop(){
           this.setState(obj);
           break;
         case "onDragStop":
-          if (!this.state[which])
+          if (!this.state[which]) {
             throw new Error("onDragEnd called before onDragStart.");
+          }
           newPosition.left = this.state[which].left;
           newPosition.top = this.state[which].top;
           this.props.rotationUpdate({ id: id, rotation: rotation, on: false });
@@ -335,7 +363,7 @@ gamepadLoop(){
     };
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.thrusters) return null;
     const gamepad = navigator.getGamepads()[0];
     let thruster = {};
     if (this.props.data.thrusters) {
@@ -346,17 +374,17 @@ gamepadLoop(){
       width = this.refs.dirCirc.getBoundingClientRect().width;
       height = this.refs.dirCirc.getBoundingClientRect().height;
     }
-    const direction = {
+    /* const direction = {
       x: this.state.direction.left,
       y: this.state.direction.top,
       z: this.state.directionFore.left
-    };
+    };*/
     if (!thruster) return <h1>No thruster system</h1>;
     return (
       <div className="cardThrusters">
-        {thruster.damage.damaged && <DamageOverlay />}
+        <DamageOverlay message={"Thrusters Offline"} system={thruster} />
         <Row>
-          <Col className="col-sm-3 draggerContainer">
+          <Col className="col-sm-3 draggerContainer direction-drag">
             <label>Direction</label>
             <div className="spacer" />
             <div className="draggerCircle" ref="dirCirc">
@@ -404,8 +432,8 @@ gamepadLoop(){
           <Col className="col-sm-6">
             <Row>
               <div style={{ marginTop: "70%" }} />
-              <Measure useClone={true} includeMargin={false}>
-                {dimensions =>
+              {/*<Measure useClone={true} includeMargin={false}>
+                {dimensions => (
                   <div
                     id="threeThruster"
                     style={{
@@ -416,31 +444,35 @@ gamepadLoop(){
                       bottom: 0
                     }}
                   >
-                    {dimensions.width > 0 &&
+                    {dimensions.width > 0 && (
                       <ThrusterThree
                         dimensions={dimensions}
                         direction={direction}
                         rotation={thruster.rotation}
-                      />}
-                  </div>}
-              </Measure>
+                      />
+                    )}
+                  </div>
+                )}
+              </Measure>*/}
             </Row>
-            {gamepad
-              ? <Row>
-                  <Col className="col-sm-6 col-sm-offset-3">
-                    <Button
-                      type="primary"
-                      className="btn-block"
-                      onClick={this.gamepadControl.bind(this)}
-                      label={`${this.state.control
-                        ? "Deactivate"
-                        : "Activate"} Manual Control`}
-                    />
-                  </Col>
-                </Row>
-              : <div />}
+            {gamepad ? (
+              <Row>
+                <Col className="col-sm-6 col-sm-offset-3">
+                  <Button
+                    type="primary"
+                    className="btn-block"
+                    onClick={this.gamepadControl.bind(this)}
+                    label={`${this.state.control
+                      ? "Deactivate"
+                      : "Activate"} Manual Control`}
+                  />
+                </Col>
+              </Row>
+            ) : (
+              <div />
+            )}
           </Col>
-          <Col className="col-sm-3 draggerContainer">
+          <Col className="col-sm-3 draggerContainer rotation-drag">
             <label>Rotation</label>
             <div className="spacer" />
             <div className="draggerCircle">
@@ -488,30 +520,47 @@ gamepadLoop(){
         </Row>
         <Row className="indicatorCircles">
           {!this.props.data.loading &&
-            <Col lg={{ size: 6, offset: 3 }}>
-              <Row>
-                <IndicatorCircle
-                  name={`Yaw: ${Math.round(thruster.rotation.yaw)}`}
-                  required={thruster.rotationRequired.yaw}
-                  current={thruster.rotation.yaw}
-                />
-                <IndicatorCircle
-                  name={`Pitch: ${Math.round(thruster.rotation.pitch)}`}
-                  required={thruster.rotationRequired.pitch}
-                  current={thruster.rotation.pitch}
-                />
-                <IndicatorCircle
-                  name={`Roll: ${Math.round(thruster.rotation.roll)}`}
-                  required={thruster.rotationRequired.roll}
-                  current={thruster.rotation.roll}
-                />
-              </Row>
-            </Col>}
+            thruster.rotation && (
+              <Col lg={{ size: 6, offset: 3 }}>
+                <Row>
+                  <IndicatorCircle
+                    name={`Yaw: ${Math.min(
+                      359,
+                      Math.max(0, Math.round(thruster.rotation.yaw))
+                    )}`}
+                    required={thruster.rotationRequired.yaw}
+                    current={thruster.rotation.yaw}
+                  />
+                  <IndicatorCircle
+                    name={`Pitch: ${Math.min(
+                      359,
+                      Math.max(0, Math.round(thruster.rotation.pitch))
+                    )}`}
+                    required={thruster.rotationRequired.pitch}
+                    current={thruster.rotation.pitch}
+                  />
+                  <IndicatorCircle
+                    name={`Roll: ${Math.min(
+                      359,
+                      Math.max(0, Math.round(thruster.rotation.roll))
+                    )}`}
+                    required={thruster.rotationRequired.roll}
+                    current={thruster.rotation.roll}
+                  />
+                </Row>
+              </Col>
+            )}
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </div>
     );
   }
 }
+
 const THRUSTER_QUERY = gql`
   query Thrusters($simulatorId: ID) {
     thrusters(simulatorId: $simulatorId) {

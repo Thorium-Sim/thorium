@@ -14,6 +14,8 @@ changeSimulatorAlertLevel(
 simulatorId: ID!, 
 alertLevel: String!): String
 
+changeSimulatorBridgeCrew(simulatorId: ID!, crew: Int!): String
+changeSimulatorRadiation(simulatorId: ID!, radiation: Float!):String
 setSimulatorTimelineStep(simulatorId: ID!, step: Int!): String
 
 shipDockingChange(simulatorId: ID!, which: String!, state: Boolean!): String

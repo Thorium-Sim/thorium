@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import ReactKonva from 'react-konva';
-import SensorContact from './SensorContact';
-import ArmyContact from './ArmyContact';
-import gql from 'graphql-tag';
-import { graphql, withApollo } from 'react-apollo';
-import Immutable from 'immutable';
-import { findDOMNode } from 'react-dom';
+import React, { Component } from "react";
+import ReactKonva from "react-konva";
+import SensorContact from "./SensorContact";
+import ArmyContact from "./ArmyContact";
+import gql from "graphql-tag";
+import { graphql, withApollo } from "react-apollo";
+
+import { findDOMNode } from "react-dom";
 
 function degtorad(deg) {
   return deg * (Math.PI / 180);
@@ -56,23 +56,25 @@ class GridCoreGrid extends Component {
         document: SENSORCONTACT_SUB,
         variables: { sensorId: this.props.sensor },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .mergeDeep({
-              sensorContacts: subscriptionData.data.sensorContactUpdate
-            })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            sensorContacts: subscriptionData.sensorContactUpdate
+          });
         }
       });
     }
   }
+  componentWillUnmount() {
+    this.sensorsSubscription && this.sensorsSubscription();
+  }
   componentDidMount() {
     setTimeout(() => {
-      findDOMNode(this).querySelectorAll('canvas').forEach(c => {
-        c.addEventListener('contextmenu', e => {
-          e.preventDefault();
+      findDOMNode(this)
+        .querySelectorAll("canvas")
+        .forEach(c => {
+          c.addEventListener("contextmenu", e => {
+            e.preventDefault();
+          });
         });
-      });
     }, 200);
   }
   render() {
@@ -95,15 +97,16 @@ class GridCoreGrid extends Component {
       <div id="sensorGrid">
         <Stage width={dimWidth} height={width}>
           <Layer>
-            {core &&
+            {core && (
               <Circle
                 radius={radius * 1.08}
                 x={radius + padding}
                 y={radius + padding}
-                stroke={'gray'}
-                fill={'gray'}
+                stroke={"gray"}
+                fill={"gray"}
                 strokeWidth={1}
-              />}
+              />
+            )}
             <Circle
               radius={radius}
               x={radius + padding}
@@ -118,43 +121,49 @@ class GridCoreGrid extends Component {
                 y: 0
               }}
               fillRadialGradientEndRadius={radius}
-              fillRadialGradientColorStops={[0, 'rgba(0,0,0,0.6)', 1, '#000']}
-              fill={core ? 'black' : null}
-              stroke={'gray'}
+              fillRadialGradientColorStops={[0, "rgba(0,0,0,0.6)", 1, "#000"]}
+              fill={core ? "black" : null}
+              stroke={"gray"}
               strokeWidth={2}
             />
             <Circle
               radius={radius * 0.66}
               x={radius + padding}
               y={radius + padding}
-              stroke={'gray'}
+              stroke={"gray"}
               strokeWidth={1}
             />
             <Circle
               radius={radius * 0.33}
               x={radius + padding}
               y={radius + padding}
-              stroke={'gray'}
+              stroke={"gray"}
               strokeWidth={1}
             />
-            {Array(12).fill(1).map((a, i) => {
-              return (
-                <Line
-                  key={`line-${i}`}
-                  stroke={'gray'}
-                  strokeWidth={1}
-                  points={[
-                    radius + padding,
-                    radius + padding,
-                    Math.cos(degtorad(i * 30 + 15)) * radius + radius + padding,
-                    Math.sin(degtorad(i * 30 + 15)) * radius + radius + padding
-                  ]}
-                />
-              );
-            })}
+            {Array(12)
+              .fill(1)
+              .map((a, i) => {
+                return (
+                  <Line
+                    key={`line-${i}`}
+                    stroke={"gray"}
+                    strokeWidth={1}
+                    points={[
+                      radius + padding,
+                      radius + padding,
+                      Math.cos(degtorad(i * 30 + 15)) * radius +
+                        radius +
+                        padding,
+                      Math.sin(degtorad(i * 30 + 15)) * radius +
+                        radius +
+                        padding
+                    ]}
+                  />
+                );
+              })}
           </Layer>
           <Layer>
-            {contacts.map(contact =>
+            {contacts.map(contact => (
               <SensorContact
                 key={contact.id}
                 core={core}
@@ -168,16 +177,17 @@ class GridCoreGrid extends Component {
                 setSelectedContact={setSelectedContact}
                 selectedContact={selectedContact}
               />
-            )}
+            ))}
           </Layer>
-          {core &&
+          {core && (
             <Layer>
               <Text text="Contacts" x={width + 50} y={0} />
-              {armyContacts.map((a, i, array) =>
+              {armyContacts.map((a, i, array) => (
                 <Group
                   key={a.id}
                   x={width + 50}
-                  y={(i + 1) * (array[i - 1] ? array[i - 1].size * 40 : 40)}>
+                  y={(i + 1) * (array[i - 1] ? array[i - 1].size * 40 : 40)}
+                >
                   <ArmyContact
                     {...a}
                     x={width + 50}
@@ -191,8 +201,9 @@ class GridCoreGrid extends Component {
 
                   <Text text={a.name} x={a.size * 25} />
                 </Group>
-              )}
-            </Layer>}
+              ))}
+            </Layer>
+          )}
         </Stage>
       </div>
     );

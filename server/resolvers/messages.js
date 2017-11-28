@@ -1,4 +1,6 @@
-import App from "../../app";
+import App from "../app";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const MessagesQueries = {
   messages(_, { simulatorId, station }) {
@@ -11,6 +13,14 @@ export const MessagesQueries = {
       const stationObj = App.simulators
         .find(s => s.id === simulatorId)
         .stations.find(s => s.name === station);
+      // Get teams
+      const teams = App.teams.filter(
+        t =>
+          t.simulatorId === simulatorId &&
+          stationObj.messageGroups.findIndex(
+            m => m.toLowerCase() === t.type.toLowerCase()
+          ) > -1
+      );
       // Get all of the messages which the station sent
       // And which are sent to the station
       returnValue = returnValue.filter(
@@ -18,14 +28,15 @@ export const MessagesQueries = {
           m.sender === station ||
           m.destination === station ||
           stationObj.messageGroups.indexOf(m.sender) > -1 ||
-          stationObj.messageGroups.indexOf(m.destination) > -1
+          stationObj.messageGroups.indexOf(m.destination) > -1 ||
+          !!teams.find(t => m.sender === t.name || m.destination === t.name)
       );
     }
 
     return returnValue;
   },
   messageGroups() {
-    return ["Security", "Damage", "Medical"];
+    return ["Security Teams", "Damage Teams", "Medical Teams"];
   }
 };
 
@@ -34,56 +45,78 @@ export const MessagesMutations = {
     App.handleEvent(args, "toggleStationMessageGroup", context);
   },
   sendMessage(root, args, context) {
-    console.log("sendMessage", args);
     App.handleEvent(args, "sendMessage", context);
   }
 };
 
 export const MessagesSubscriptions = {
-  messageUpdates(rootValue, { simulatorId, station }) {
-    let returnValue = rootValue;
-    if (simulatorId) {
-      returnValue = returnValue.filter(m => m.simulatorId === simulatorId);
-    }
-    if (station) {
-      // Get the station object
-      const stationObj = App.simulators
-        .find(s => s.id === simulatorId)
-        .stations.find(s => s.name === station);
-      // Get all of the messages which the station sent
-      // And which are sent to the station
-      returnValue = returnValue.filter(
-        m =>
-          m.sender === station ||
-          m.destination === station ||
-          stationObj.messageGroups.indexOf(m.sender) > -1 ||
-          stationObj.messageGroups.indexOf(m.destination) > -1
-      );
-    }
+  messageUpdates: {
+    resolve(rootValue, { simulatorId, station }) {
+      let returnValue = rootValue;
+      if (simulatorId) {
+        returnValue = returnValue.filter(m => m.simulatorId === simulatorId);
+      }
+      if (station) {
+        // Get the station object
+        const stationObj = App.simulators
+          .find(s => s.id === simulatorId)
+          .stations.find(s => s.name === station);
+        // Get all of the messages which the station sent
+        // And which are sent to the station
+        returnValue = returnValue.filter(
+          m =>
+            m.sender === station ||
+            m.destination === station ||
+            stationObj.messageGroups.indexOf(m.sender) > -1 ||
+            stationObj.messageGroups.indexOf(m.destination) > -1
+        );
+      }
 
-    return returnValue;
+      return returnValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("messageUpdate"),
+      rootValue => {
+        return !!(rootValue && rootValue.length);
+      }
+    )
   },
-  sendMessage(rootValue, { simulatorId, station }) {
-    console.log(rootValue, simulatorId, station);
-    if (simulatorId) {
-      if (rootValue.simulatorId !== simulatorId) return;
-    }
-    if (station) {
-      // Get the station object
-      const stationObj = App.simulators
-        .find(s => s.id === simulatorId)
-        .stations.find(s => s.name === station);
-      // Get all of the messages which the station sent
-      // And which are sent to the station
-      if (
-        rootValue.sender !== station &&
-        rootValue.destination !== station &&
-        stationObj.messageGroups.indexOf(rootValue.sender) === -1 &&
-        stationObj.messageGroups.indexOf(rootValue.destination) === -1
-      )
-        return;
-    }
+  sendMessage: {
+    resolve(rootValue, { simulatorId, station }) {
+      if (simulatorId) {
+        if (rootValue.simulatorId !== simulatorId) return;
+      }
+      if (station) {
+        // Get the station object
+        const stationObj = App.simulators
+          .find(s => s.id === simulatorId)
+          .stations.find(s => s.name === station);
+        const teams = App.teams.filter(
+          t =>
+            t.simulatorId === simulatorId &&
+            stationObj.messageGroups.findIndex(
+              m => m.toLowerCase() === t.type.toLowerCase()
+            ) > -1
+        );
+        // Get all of the messages which the station sent
+        // And which are sent to the station
+        if (
+          rootValue.sender !== station &&
+          rootValue.destination !== station &&
+          stationObj.messageGroups.indexOf(rootValue.sender) === -1 &&
+          stationObj.messageGroups.indexOf(rootValue.destination) === -1 &&
+          !teams.find(
+            t => rootValue.sender === t.name || rootValue.destination === t.name
+          )
+        )
+          return;
+      }
 
-    return rootValue;
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("sendMessage"),
+      rootValue => !!rootValue
+    )
   }
 };

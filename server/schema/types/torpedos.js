@@ -14,11 +14,12 @@ type OldTorpedo {
   state: String
 }
 
-type Torpedo {
+type Torpedo implements SystemInterface{
   id: ID
   simulatorId: ID
   type: String
   name: String
+  displayName: String
   power: Power
   damage: Damage
   #List torpedos take a list of warheads
@@ -26,6 +27,7 @@ type Torpedo {
   loaded: ID
   #One of 'idle', 'loaded', 'fired'
   state: String
+  stealthFactor: Float
 }
 
 type Warhead {

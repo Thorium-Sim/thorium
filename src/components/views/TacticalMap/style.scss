@@ -1,0 +1,187 @@
+.tacticalmap-core {
+  display: grid;
+  grid-template-columns: 70vw auto;
+  grid-template-rows: (70vw * 9/16) auto;
+  grid-template-areas: "preview sidebar" "bottom sidebar";
+}
+      /* selection container */
+      .selection {
+        height: 100%;
+        //position: relative;
+      }
+      .select-box {
+        background-color: rgba(255,0,0,0.5);
+      }
+      /* selection box */
+      .selection-border {
+        background: rgba(0, 162, 255, 0.4);
+        position: absolute;
+        z-index: 99;
+      }
+
+.tacticalmap-core, .tacticalmap-config{
+  .preview {
+    grid-area: preview;
+    width: 100vw;
+    height: 100vh;
+    transform-origin: 0 0;
+    transform: scale(0.7);
+  }
+  .right-sidebar {
+    grid-area: sidebar;
+  }
+  .bottom-bar {
+    grid-area: bottom;
+    height: 235px;
+  }
+  .layer-list,
+  .saved-list {
+    min-height: 150px;
+    border: solid 1px rgba(128, 128, 128, 0.5);
+    margin: 3px;
+    padding: 0;
+    list-style: none;
+    li {
+      padding: 2px;
+    }
+    .selected {
+      background-color: rgba(128, 128, 128, 0.5);
+    }
+  }
+  .tactical-object {
+    height: 100%;
+    .dragging-img {
+      position: fixed;
+      left: 0;
+      top: 0;
+      max-width: 100px;
+    }
+  }
+}
+.tacticalmap-config {
+  .layer-list,
+  .saved-list {
+    min-height: 100px;
+  }
+}
+.viewscreen-tacticalMap {
+  height: 100%;
+}
+.tactical-map-view {
+  height: 100%;
+  background-color: black;
+  position: relative;
+  .tactical-map-layer {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+  .tactical-grid {
+    pointer-events: none;
+    height: 100%;
+    .cols,
+    .rows,
+    .label-cols,
+    .label-rows {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: space-evenly;
+    }
+    .cols {
+      flex-direction: row;
+      div {
+        width: 1px;
+        height: 100%;
+      }
+    }
+    .rows {
+      flex-direction: column;
+      div {
+        width: 100%;
+        height: 1px;
+      }
+    }
+    .labels {
+      color: white;
+      text-align: center;
+      .label-cols {
+        flex-direction: row;
+        align-items: flex-end;
+        div {
+          width: 3ch;
+        }
+      }
+      .label-rows {
+        flex-direction: column;
+        align-items: flex-start;
+        div {
+          height: 2ch;
+        }
+      }
+    }
+  }
+  .tactical-image {
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    img {
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+  }
+  .tactical-objects {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    .tactical-icon {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      pointer-events: none;
+    }
+    .image-holder {
+      pointer-events: all;
+      position: absolute;
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .icon-label {
+      text-align: center;
+    }
+    .select-loc {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      img {
+        position: absolute;
+        width: 15px;
+        height: 15px;
+      }
+      img:nth-child(1) {
+        left: -5px;
+        top: -5px;
+      }
+      img:nth-child(2) {
+        right: -5px;
+        top: -5px;
+        transform: rotate(90deg);
+      }
+      img:nth-child(3) {
+        left: -5px;
+        bottom: -5px;
+        transform: rotate(-90deg);
+      }
+      img:nth-child(4) {
+        right: -5px;
+        bottom: -5px;
+        transform: rotate(180deg);
+      }
+    }
+  }
+}

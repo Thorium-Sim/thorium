@@ -1,6 +1,6 @@
 import { System } from "./generic";
 import uuid from "uuid";
-import App from "../../app.js";
+import App from "../app.js";
 
 export default class Probes extends System {
   constructor(params) {

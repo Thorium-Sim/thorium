@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Container, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 
 const REMOTE_ACCESS_SUB = gql`
   subscription SimulatorSub($simulatorId: ID) {
@@ -44,13 +43,15 @@ class RemoteAccessCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ simulators: subscriptionData.data.simulatorsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            simulators: subscriptionData.simulatorsUpdate
+          });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
   }
   respond(codeId, state) {
     const variables = {
@@ -64,25 +65,31 @@ class RemoteAccessCore extends Component {
     });
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.simulators) return null;
     const { ship } = this.props.data.simulators[0];
     return (
       <Container className="remote-access-core">
         <div style={{ overflowY: "scroll", height: "calc(100% - 16px)" }}>
-          {ship.remoteAccessCodes.slice().reverse().map(c =>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <p
-                style={{
-                  backgroundColor: "lightgray",
-                  margin: "1px",
-                  flex: "6 0 0"
-                }}
-                title={`${c.station} - ${c.timestamp}`}
+          {ship.remoteAccessCodes
+            .slice()
+            .reverse()
+            .map(c => (
+              <div
+                key={`${c.state}-${c.code}`}
+                style={{ display: "flex", justifyContent: "space-between" }}
               >
-                {c.code}
-              </p>
-              {c.state === "sent"
-                ? <div>
+                <p
+                  style={{
+                    backgroundColor: "lightgray",
+                    margin: "1px",
+                    flex: "6 0 0"
+                  }}
+                  title={`${c.station} - ${c.timestamp}`}
+                >
+                  {c.code}
+                </p>
+                {c.state === "sent" ? (
+                  <div>
                     <Button
                       size="sm"
                       color="danger"
@@ -98,16 +105,18 @@ class RemoteAccessCore extends Component {
                       Accept
                     </Button>
                   </div>
-                : <p
+                ) : (
+                  <p
                     style={{ flex: "1 0 0" }}
                     className={
                       c.state === "Accepted" ? "text-success" : "text-danger"
                     }
                   >
                     {c.state}
-                  </p>}
-            </div>
-          )}
+                  </p>
+                )}
+              </div>
+            ))}
         </div>
       </Container>
     );

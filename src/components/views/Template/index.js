@@ -2,26 +2,29 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 
-import "./style.scss";
+import "./style.css";
 
 const TEMPLATE_SUB = gql``;
 
 class Template extends Component {
-  sub = null;
+  subscription = null;
   componentWillReceiveProps(nextProps) {
-    if (!this.internalSub && !nextProps.data.loading) {
-      this.internalSub = nextProps.data.subscribeToMore({
+    if (!this.subscription && !nextProps.data.loading) {
+      this.subscription = nextProps.data.subscribeToMore({
         document: TEMPLATE_SUB,
         variables: {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            template: subscriptionData.data.templateUpdate
+            template: subscriptionData.templateUpdate
           });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
   }
   render() {
     if (this.props.data.loading) return null;

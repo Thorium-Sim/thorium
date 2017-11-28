@@ -1,7 +1,7 @@
 import React from "react";
 import { FormGroup, Label, Input } from "reactstrap";
 
-export default ({ updateArgs, args, client }) => {
+export default ({ updateArgs = () => {}, args, client, preview }) => {
   let answers = args.presetAnswers || [];
   answers = answers
     .map(a => `${a.label || ""}${a.value && ";" + a.value}`)

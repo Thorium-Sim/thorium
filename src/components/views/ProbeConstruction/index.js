@@ -11,18 +11,46 @@ import {
   ModalBody,
   ModalFooter
 } from "reactstrap";
+import Tour from "reactour";
+
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
-import TransitionGroup from "react-transition-group/TransitionGroup";
 import Transitioner from "../helpers/transitioner";
 import ProbeEquipment from "./probeEquipment";
 import Measure from "react-measure";
-
-import "./style.scss";
+import DamageOverlay from "../helpers/DamageOverlay";
+import "./style.css";
 
 function d2r(deg) {
   return deg * Math.PI / 180;
 }
+
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content:
+      "Probes are small robots that you can launch into space to perform many functions. Probe functionality is extended by the equipment which you put on the probe. Different kinds of probes can take different equipment and different amounts. Be sure to use the right probe for the right job."
+  },
+  {
+    selector: ".probe-container",
+    content:
+      "These are the probes which are available. If you move your mouse over the probe you can see a brief description. Click on any probe type before continuing."
+  },
+  {
+    selector: ".equipmentList",
+    content:
+      "This is a list of the equipment available to your probe. You can see its name, its size, and how many you have on your ship in this table. Move your mouse over an equipment item to see a description of the equipment item. Click on the item to add it to your probe."
+  },
+  {
+    selector: ".probe-control-buttons",
+    content:
+      "Here you can see the amount of space available on your probe. You cannot put more equipment on a probe than what you have space for. Once you are done adding equipment to your probe, click the 'Prepare Probe' button. Then click the 'Launch' button to confirm the probe you created."
+  },
+  {
+    selector: ".nothing",
+    content:
+      "You will then have to type in the destination. If you equipped your probe with a probe network package, you will instead be shown a diagram of your probe network which will allow you to select where you want to place the probe."
+  }
+];
 
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
@@ -65,140 +93,6 @@ const PROBES_SUB = gql`
   }
 `;
 
-class ProbeConstruction extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedProbeType: null,
-      launching: false,
-      description: null,
-      equipment: [],
-      modal: false
-    };
-    this.subscription = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: PROBES_SUB,
-        variables: { simulatorId: this.props.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ probes: subscriptionData.data.probesUpdate })
-            .toJS();
-        }
-      });
-    }
-  }
-  toggle = () => {
-    this.setState({
-      modal: !this.state.modal
-    });
-  };
-  selectProbe(id) {
-    this.setState({
-      selectedProbeType: id,
-      launching: false,
-      equipment: id === null ? [] : this.state.equipment
-    });
-  }
-  prepareProbe(equipment) {
-    this.setState({
-      equipment,
-      launching: true
-    });
-  }
-  launchProbe = name => {
-    const probes = this.props.data.probes[0];
-    const { selectedProbeType, equipment } = this.state;
-    const mutation = gql`
-      mutation LaunchProbe($id: ID!, $probe: ProbeInput!) {
-        launchProbe(id: $id, probe: $probe)
-      }
-    `;
-    const variables = {
-      id: probes.id,
-      probe: {
-        name,
-        type: selectedProbeType,
-        equipment: equipment.map(({ id, count }) => ({
-          id,
-          count
-        }))
-      }
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-    this.setState({
-      selectedProbeType: null,
-      launching: false,
-      equipment: [],
-      modal: false
-    });
-  };
-  render() {
-    if (this.props.data.loading) return null;
-    const probes = this.props.data.probes[0];
-    const { selectedProbeType, launching } = this.state;
-    if (!probes) return <p>No Probe Launcher</p>;
-    return (
-      <Container fluid className="probe-construction">
-        <ProbeSelector
-          types={probes.types}
-          selectedProbeType={selectedProbeType}
-          setDescription={e => this.setState({ description: e })}
-          selectProbe={this.selectProbe.bind(this)}
-        />
-        <TransitionGroup>
-          {[ProbeDescription, ProbeEquipment, ProbeAction]
-            .filter(Comp => {
-              if (Comp.name === "ProbeDescription" && !selectedProbeType)
-                return true;
-              if (
-                Comp.name === "ProbeEquipment" &&
-                selectedProbeType &&
-                !launching
-              )
-                return true;
-              if (Comp.name === "ProbeAction" && selectedProbeType && launching)
-                return true;
-              return false;
-            })
-            .map(Comp => {
-              return (
-                <Comp
-                  key={Comp.name}
-                  {...this.state}
-                  cancelProbe={this.selectProbe.bind(this, null)}
-                  prepareProbe={this.prepareProbe.bind(this)}
-                  selectProbe={this.selectProbe.bind(this)}
-                  equipment={this.state.equipment}
-                  toggle={this.toggle.bind(this)}
-                  probes={probes}
-                />
-              );
-            })}
-        </TransitionGroup>
-        {this.state.modal &&
-          <ProbeName
-            network={probes.probes
-              .filter(p =>
-                p.equipment.find(e => e.id === "probe-network-package")
-              )
-              .map(p => parseInt(p.name, 10))}
-            modal={this.state.modal}
-            toggle={() => this.toggle()}
-            equipment={this.state.equipment}
-            launchProbe={this.launchProbe}
-          />}
-      </Container>
-    );
-  }
-}
-
 const ProbeSelector = ({
   types,
   selectedProbeType,
@@ -214,7 +108,7 @@ const ProbeSelector = ({
           : ""}`}
       >
         <div className="placeholder" />
-        {types.map((t, i) => {
+        {types.map(t => {
           const probeImage = require(`./probes/${t.id}.svg`);
           return (
             <div
@@ -229,7 +123,12 @@ const ProbeSelector = ({
               <p>
                 {t.name}: {t.count}
               </p>
-              <img draggable="false" src={probeImage} role="presentation" />
+              <img
+                alt="probe"
+                draggable="false"
+                src={probeImage}
+                role="presentation"
+              />
             </div>
           );
         })}
@@ -244,9 +143,7 @@ class ProbeDescription extends Transitioner {
     return (
       <Row className="probeDescription">
         <Col sm={{ size: 4, offset: 4 }}>
-          <p>
-            {this.props.description}
-          </p>
+          <p>{this.props.description}</p>
         </Col>
       </Row>
     );
@@ -287,85 +184,108 @@ class ProbeName extends Component {
     const { name } = this.state;
     return (
       <Modal className="modal-themed probe-name" isOpen={modal} toggle={toggle}>
-        {equipment.find(e => e.id === "probe-network-package")
-          ? <div>
-              <ModalHeader toggle={toggle}>
-                Please select a destination for the probe
-              </ModalHeader>
-              <ModalBody>
-                <Measure>
-                  {({ height, width }) =>
-                    <div style={{ height: width }}>
+        {equipment.find(e => e.id === "probe-network-package") ? (
+          <div>
+            <ModalHeader toggle={toggle}>
+              Please select a destination for the probe
+            </ModalHeader>
+            <ModalBody>
+              <Measure
+                bounds
+                onResize={contentRect => {
+                  this.setState({ dimensions: contentRect.bounds });
+                }}
+              >
+                {({ measureRef }) => (
+                  <div
+                    ref={measureRef}
+                    style={{
+                      height:
+                        this.state.dimensions && this.state.dimensions.width
+                    }}
+                  >
+                    {this.state.dimensions && (
                       <div
                         className={`grid`}
                         style={{
-                          width: width,
-                          height: width
+                          width: this.state.dimensions.width,
+                          height: this.state.dimensions.width
                         }}
                       >
-                        {Array(8).fill(0).map((_, i, array) =>
-                          <div
-                            key={`line-${i}`}
-                            className="line"
-                            style={{
-                              transform: `rotate(${(i + 0.5) /
-                                array.length *
-                                360}deg)`
-                            }}
-                          />
-                        )}
-                        {Array(3).fill(0).map((_, i, array) =>
-                          <div
-                            key={`ring-${i}`}
-                            className="ring"
-                            style={{
-                              width: `${(i + 1) / array.length * 100}%`,
-                              height: `${(i + 1) / array.length * 100}%`,
-                              backgroundColor: i < 2 ? "black" : "transparent"
-                            }}
-                          />
-                        )}
-                        {Array(8).fill(0).map(
-                          (_, i, array) =>
-                            network.indexOf(i + 1) === -1 &&
-                            <p
-                              key={`label-${i}`}
-                              className="label"
-                              onClick={() => {
-                                launchProbe(i + 1);
-                              }}
+                        {Array(8)
+                          .fill(0)
+                          .map((_, i, array) => (
+                            <div
+                              key={`line-${i}`}
+                              className="line"
                               style={{
-                                transform: `translate(${Math.cos(
-                                  d2r((i - 2) / array.length * 360)
-                                ) *
-                                  height /
-                                  2.5}px, ${Math.sin(
-                                  d2r((i - 2) / array.length * 360)
-                                ) *
-                                  height /
-                                  2.5}px)`
+                                transform: `rotate(${(i + 0.5) /
+                                  array.length *
+                                  360}deg)`
                               }}
-                            >
-                              {i + 1}
-                            </p>
-                        )}
+                            />
+                          ))}
+                        {Array(3)
+                          .fill(0)
+                          .map((_, i, array) => (
+                            <div
+                              key={`ring-${i}`}
+                              className="ring"
+                              style={{
+                                width: `${(i + 1) / array.length * 100}%`,
+                                height: `${(i + 1) / array.length * 100}%`,
+                                backgroundColor: i < 2 ? "black" : "transparent"
+                              }}
+                            />
+                          ))}
+                        {Array(8)
+                          .fill(0)
+                          .map(
+                            (_, i, array) =>
+                              network.indexOf(i + 1) === -1 && (
+                                <p
+                                  key={`label-${i}`}
+                                  className="label"
+                                  onClick={() => {
+                                    launchProbe(i + 1);
+                                  }}
+                                  style={{
+                                    transform: `translate(${Math.cos(
+                                      d2r((i - 2) / array.length * 360)
+                                    ) *
+                                      this.state.dimensions.height /
+                                      2.5}px, ${Math.sin(
+                                      d2r((i - 2) / array.length * 360)
+                                    ) *
+                                      this.state.dimensions.height /
+                                      2.5}px)`
+                                  }}
+                                >
+                                  {i + 1}
+                                </p>
+                              )
+                          )}
                       </div>
-                    </div>}
-                </Measure>
-              </ModalBody>
-            </div>
-          : <div>
-              <ModalHeader toggle={toggle}>
-                Please enter a name for the probe
-              </ModalHeader>
-              <ModalBody>
-                <Input
-                  type="text"
-                  value={name}
-                  onChange={e => this.setState({ name: e.target.value })}
-                />
-              </ModalBody>
-            </div>}
+                    )}
+                  </div>
+                )}
+              </Measure>
+            </ModalBody>
+          </div>
+        ) : (
+          <div>
+            <ModalHeader toggle={toggle}>
+              Please enter a name for the probe
+            </ModalHeader>
+            <ModalBody>
+              <Input
+                type="text"
+                value={name}
+                onChange={e => this.setState({ name: e.target.value })}
+              />
+            </ModalBody>
+          </div>
+        )}
         <ModalFooter>
           <Col sm="3">
             <Button block color="danger" onClick={toggle}>
@@ -427,6 +347,156 @@ const PROBES_QUERY = gql`
     }
   }
 `;
+
+class ProbeConstruction extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedProbeType: null,
+      launching: false,
+      description: null,
+      equipment: [],
+      modal: false
+    };
+    this.subscription = null;
+  }
+  componentWillReceiveProps(nextProps) {
+    if (!this.subscription && !nextProps.data.loading) {
+      this.subscription = nextProps.data.subscribeToMore({
+        document: PROBES_SUB,
+        variables: { simulatorId: this.props.simulator.id },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          return Object.assign({}, previousResult, {
+            probes: subscriptionData.probesUpdate
+          });
+        }
+      });
+    }
+  }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
+  toggle = () => {
+    this.setState({
+      modal: !this.state.modal
+    });
+  };
+  selectProbe(id) {
+    this.setState({
+      selectedProbeType: id,
+      launching: false,
+      equipment: id === null ? [] : this.state.equipment
+    });
+  }
+  prepareProbe(equipment) {
+    this.setState({
+      equipment,
+      launching: true
+    });
+  }
+  launchProbe = name => {
+    const probes = this.props.data.probes[0];
+    const { selectedProbeType, equipment } = this.state;
+    const mutation = gql`
+      mutation LaunchProbe($id: ID!, $probe: ProbeInput!) {
+        launchProbe(id: $id, probe: $probe)
+      }
+    `;
+    const variables = {
+      id: probes.id,
+      probe: {
+        name,
+        type: selectedProbeType,
+        equipment: equipment.map(({ id, count }) => ({
+          id,
+          count
+        }))
+      }
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+    this.setState({
+      selectedProbeType: null,
+      launching: false,
+      equipment: [],
+      modal: false
+    });
+  };
+  render() {
+    if (this.props.data.loading || !this.props.data.probes) return null;
+    const probes = this.props.data.probes && this.props.data.probes[0];
+    const { selectedProbeType, launching } = this.state;
+    if (!probes) return <p>No Probe Launcher</p>;
+    const comps = { ProbeDescription, ProbeEquipment, ProbeAction };
+    return (
+      <Container fluid className="probe-construction">
+        <DamageOverlay
+          system={probes}
+          message={"Probe Launcher Offline"}
+          style={{ height: "50vh" }}
+        />
+        <ProbeSelector
+          types={probes.types}
+          selectedProbeType={selectedProbeType}
+          setDescription={e => this.setState({ description: e })}
+          selectProbe={this.selectProbe.bind(this)}
+        />
+        {Object.keys(comps)
+          .filter(compName => {
+            if (compName === "ProbeDescription" && !selectedProbeType) {
+              return true;
+            }
+            if (
+              compName === "ProbeEquipment" &&
+              selectedProbeType &&
+              !launching
+            ) {
+              return true;
+            }
+            if (compName === "ProbeAction" && selectedProbeType && launching) {
+              return true;
+            }
+            return false;
+          })
+          .map(compName => {
+            const Comp = comps[compName];
+            return (
+              <Comp
+                key={compName}
+                {...this.state}
+                cancelProbe={this.selectProbe.bind(this, null)}
+                prepareProbe={this.prepareProbe.bind(this)}
+                selectProbe={this.selectProbe.bind(this)}
+                equipment={this.state.equipment}
+                toggle={this.toggle.bind(this)}
+                probes={probes}
+              />
+            );
+          })}
+        {this.state.modal && (
+          <ProbeName
+            network={probes.probes
+              .filter(p =>
+                p.equipment.find(e => e.id === "probe-network-package")
+              )
+              .map(p => parseInt(p.name, 10))}
+            modal={this.state.modal}
+            toggle={() => this.toggle()}
+            equipment={this.state.equipment}
+            launchProbe={this.launchProbe}
+          />
+        )}
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
+      </Container>
+    );
+  }
+}
 
 export default graphql(PROBES_QUERY, {
   options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })

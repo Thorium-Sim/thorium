@@ -5,7 +5,7 @@ import {
   Row,
   Col,
   Card,
-  CardBlock,
+  CardBody,
   Input,
   Button /*
   TabContent,
@@ -15,9 +15,35 @@ import {
   NavLink*/
 } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
+import Tour from "reactour";
 
-import "./style.scss";
+import "./style.css";
+
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content:
+      "You can use this screen to control probes that have already been launched. Use the probe construction screen to launch a probe before controlling it here."
+  },
+  {
+    selector: ".probe-list",
+    content:
+      "This is where the list of probes will show up. If you have a completed probe network, it will also show up in this list. Click on a probe to select it."
+  },
+  {
+    selector: ".equipment",
+    content: "This area shows the equipment on a selected probe."
+  },
+  {
+    selector: ".query-box",
+    content:
+      "You can run probe queries, which are commands to be sent to the probe. These queries can activate equipment on the probe or perform scans or diagnostics."
+  },
+  {
+    selector: ".results",
+    content: "The results of your query will appear in this box"
+  }
+];
 
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
@@ -55,16 +81,18 @@ class ProbeControl extends Component {
         document: PROBES_SUB,
         variables: { simulatorId: this.props.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ probes: subscriptionData.data.probesUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            probes: subscriptionData.probesUpdate
+          });
         }
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.probes) return null;
     const probes = this.props.data.probes[0];
     const { selectedProbe } = this.state;
     if (!probes) return <p>No Probe Launcher</p>;
@@ -76,9 +104,9 @@ class ProbeControl extends Component {
         <Row>
           <Col sm={3}>
             <h3>Probes</h3>
-            <Card>
-              <CardBlock>
-                {network &&
+            <Card className="probe-list">
+              <CardBody>
+                {network && (
                   <div
                     onClick={() =>
                       this.setState({
@@ -93,8 +121,9 @@ class ProbeControl extends Component {
                   >
                     <p className="probe-name">Probe Network</p>
                     <small />
-                  </div>}
-                {probes.probes.filter(p => !/[1-8]/.test(p.name)).map(p =>
+                  </div>
+                )}
+                {probes.probes.filter(p => !/[1-8]/.test(p.name)).map(p => (
                   <div
                     key={p.id}
                     onClick={() => this.setState({ selectedProbe: p.id })}
@@ -102,26 +131,28 @@ class ProbeControl extends Component {
                       ? "selected"
                       : ""}`}
                   >
-                    <p className="probe-name">
-                      {p.name}
-                    </p>
+                    <p className="probe-name">{p.name}</p>
                     <small>
                       {probes.types.find(t => t.id === p.type).name}
                     </small>
                   </div>
-                )}
-              </CardBlock>
+                ))}
+              </CardBody>
             </Card>
           </Col>
           <Col sm={9}>
-            {selectedProbe &&
-              <ProbeControlWrapper
-                {...probes.probes.find(p => p.id === selectedProbe)}
-                probeId={probes.id}
-                client={this.props.client}
-              />}
+            <ProbeControlWrapper
+              {...probes.probes.find(p => p.id === selectedProbe) || {}}
+              probeId={probes.id}
+              client={this.props.client}
+            />
           </Col>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
@@ -198,56 +229,74 @@ class ProbeControlWrapper extends Component {
     });
   };
   render() {
-    const { name, equipment, response, querying } = this.props;
+    const { name, equipment = [], response, querying, type } = this.props;
     const { queryText } = this.state;
     //const { activeTab } = this.state;
     return (
       <Container>
-        <h1>
-          {name}
-        </h1>
+        <h1>{name}</h1>
         <Row>
           <Col sm={4}>
             <h3>Equipment</h3>
             <Card className="equipment">
-              <CardBlock>
-                {equipment.map(e =>
-                  <p key={e.id}>
-                    {e.name}
-                  </p>
-                )}
-              </CardBlock>
+              <CardBody>
+                {equipment.map(e => <p key={e.id}>{e.name}</p>)}
+              </CardBody>
             </Card>
           </Col>
           <Col sm={8}>
             <h3>Query</h3>
-            <Row>
+            <Row className="query-box">
               <Col sm={9}>
-                {querying
-                  ? <p className="querying">Querying...</p>
-                  : <Input
-                      size="lg"
-                      type="text"
-                      value={queryText}
-                      onChange={evt =>
-                        this.setState({ queryText: evt.target.value })}
-                    />}
+                {querying ? (
+                  <p className="querying">Querying...</p>
+                ) : (
+                  <Input
+                    disabled={!name}
+                    size="lg"
+                    type="text"
+                    value={queryText}
+                    onChange={evt =>
+                      this.setState({ queryText: evt.target.value })}
+                  />
+                )}
               </Col>
               <Col sm={3}>
-                {querying
-                  ? <Button size="lg" color="danger" onClick={this.cancelQuery}>
-                      Cancel
-                    </Button>
-                  : <Button size="lg" color="primary" onClick={this.queryProbe}>
-                      Query
-                    </Button>}
+                {querying ? (
+                  <Button
+                    disabled={!name}
+                    size="lg"
+                    color="danger"
+                    onClick={this.cancelQuery}
+                  >
+                    Cancel
+                  </Button>
+                ) : (
+                  <Button
+                    disabled={!name}
+                    size="lg"
+                    color="primary"
+                    onClick={this.queryProbe}
+                  >
+                    Query
+                  </Button>
+                )}
               </Col>
             </Row>
             <Row>
               <Col sm={12}>
-                <pre className="results">
-                  {response}
-                </pre>
+                <pre className="results">{response}</pre>
+                {type && (
+                  <img
+                    alt="probe"
+                    draggable={false}
+                    style={{
+                      width: "200px",
+                      transform: "rotate(90deg) translate(-150px, -250px)"
+                    }}
+                    src={require(`../ProbeConstruction/probes/${type}.svg`)}
+                  />
+                )}
               </Col>
             </Row>
           </Col>

@@ -1,14 +1,15 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Button, Row, Col, Card, CardBlock } from "reactstrap";
-import Immutable from "immutable";
-import "./style.scss";
+import { Button, Row, Col, Card, CardBody } from "reactstrap";
+import Tour from "reactour";
+
+import "./style.css";
 import Grid from "./GridDom";
-import Measure from "react-measure";
 import DamageOverlay from "../helpers/DamageOverlay";
 import SensorScans from "./SensorScans";
-
+import { Asset } from "../../../helpers/assets";
 const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {
     sensorsUpdate(simulatorId: $simulatorId, domain: "external") {
@@ -39,6 +40,38 @@ const PING_SUB = gql`
   }
 `;
 
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content:
+      "Sensors allow you to get information about what is going on around your ship."
+  },
+  {
+    selector: "#sensorGrid",
+    content:
+      "This is your sensor grid. Your ship is located at the center of the grid, where the lines converge. The top segment is directly in front of your ship, as if you were looking down on your ship from above it. You can see the relative location of objects around your ship on this grid."
+  },
+  {
+    selector: ".ping-controls",
+    content:
+      "Some sensor systems allow you to control how often the sensor grid 'pings', or detects objects around the ship. You can control the rate of pings with these controls. Whenever your sensors pings, it sends out a faint signal which can be detected by other ships. Turning down the rate of sensor pings can keep your ship's position masked."
+  },
+  {
+    selector: ".contact-info",
+    content:
+      "When you move your mouse over a contact, the contact's identification will show up in this box."
+  },
+  {
+    selector: ".processedData",
+    content:
+      "Text will sometimes appear in this box. Your sensors will passively scan and when it finds useful information it will inform you here. Whenever it does, you want to read it out loud so the Captain can know about what is going on around your ship."
+  },
+  {
+    selector: ".scanEntry",
+    content:
+      "If you want to know specific information about a contact around your ship, you can scan it directly. Just type what you want to know, such as the weapons on a ship, the population, size, distance, or anything else you want to know about. Click the scan button to initiate your scan. The results will appear in the box below."
+  }
+];
 class Sensors extends Component {
   constructor(props) {
     super(props);
@@ -50,27 +83,48 @@ class Sensors extends Component {
       hoverContact: { name: "", pictureUrl: "" }
     };
   }
+  componentDidMount() {
+    if (!this.state.dimensions) {
+      const domNode = ReactDOM.findDOMNode(this).querySelector("#threeSensors");
+      if (domNode) {
+        this.setState({
+          dimensions: domNode.getBoundingClientRect()
+        });
+      }
+    }
+  }
+  componentDidUpdate() {
+    const domNode = ReactDOM.findDOMNode(this).querySelector("#threeSensors");
+    if (
+      domNode &&
+      (!this.state.dimensions ||
+        this.state.dimensions.width !== domNode.getBoundingClientRect().width)
+    ) {
+      this.setState({
+        dimensions: domNode.getBoundingClientRect()
+      });
+    }
+  }
   componentWillReceiveProps(nextProps) {
     if (!this.sensorsSubscription && !nextProps.data.loading) {
       this.sensorsSubscription = nextProps.data.subscribeToMore({
         document: SENSOR_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ sensors: subscriptionData.data.sensorsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            sensors: subscriptionData.sensorsUpdate
+          });
         }
       });
     }
     if (!this.pingSub && !nextProps.data.loading) {
       this.pingSub = nextProps.data.subscribeToMore({
         document: PING_SUB,
-        variables: { id: nextProps.data.sensors[0] },
+        variables: { id: nextProps.data.sensors[0].id },
         updateQuery: (previousResult, { subscriptionData }) => {
           if (
             previousResult.sensors.find(
-              s => s.id === subscriptionData.data.sensorsPing
+              s => s.id === subscriptionData.sensorsPing
             )
           ) {
             this.ping();
@@ -78,8 +132,8 @@ class Sensors extends Component {
         }
       });
     }
-    const nextSensors = nextProps.data.sensors[0];
-    if (!nextProps.data.loading) {
+    const nextSensors = nextProps.data.sensors && nextProps.data.sensors[0];
+    if (!nextProps.data.loading && nextSensors) {
       if (this.props.data.loading) {
         //First time load
         this.setState({
@@ -100,6 +154,10 @@ class Sensors extends Component {
         }
       }
     }
+  }
+  componentWillUnmount() {
+    this.sensorsSubscription && this.sensorsSubscription();
+    this.pingSub && this.pingSub();
   }
   showWeaponsRange() {
     this.setState({
@@ -174,8 +232,8 @@ class Sensors extends Component {
     });
   }
   render() {
-    //if (this.props.data.error) console.error(this.props.data.error);
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.sensors)
+      return <p>Loading...</p>;
     const sensors = this.props.data.sensors[0];
     const { pingMode, pings } = sensors;
     const { hoverContact, ping, pingTime } = this.state;
@@ -189,12 +247,12 @@ class Sensors extends Component {
                 system={sensors}
               />
               <SensorScans sensors={sensors} client={this.props.client} />
-              {pings &&
+              {pings && (
                 <Row>
                   <Col sm="12">
                     <label>Sensor Options:</label>
                   </Col>
-                  <Col sm={12}>
+                  <Col sm={12} className="ping-controls">
                     <Card>
                       <li
                         onClick={() => this.selectPing("active")}
@@ -234,7 +292,8 @@ class Sensors extends Component {
                       Ping
                     </Button>
                   </Col>
-                </Row>}
+                </Row>
+              )}
               {/*<Row>
 			<Col className="col-sm-12">
 			<h4>Contact Coordinates</h4>
@@ -251,55 +310,67 @@ class Sensors extends Component {
             </Col>
             <Col sm={6} className="arrayContainer">
               <div className="spacer" />
-              <Measure useClone={true} includeMargin={false}>
-                {dimensions =>
-                  <div
-                    id="threeSensors"
-                    className="array"
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      display: "flex",
-                      justifyContent: "center"
-                    }}
-                  >
-                    {dimensions.width > 0 &&
-                      <Grid
-                        dimensions={dimensions}
-                        sensor={sensors.id}
-                        hoverContact={this._hoverContact.bind(this)}
-                        ping={ping}
-                        pings={sensors.pings}
-                        pingTime={pingTime}
-                      />}
-                  </div>}
-              </Measure>
+              <div
+                id="threeSensors"
+                className="array"
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  display: "flex",
+                  justifyContent: "center"
+                }}
+              >
+                <Grid
+                  dimensions={this.state.dimensions}
+                  sensor={sensors.id}
+                  hoverContact={this._hoverContact.bind(this)}
+                  ping={ping}
+                  pings={sensors.pings}
+                  pingTime={pingTime}
+                  simulatorId={this.props.simulator.id}
+                />
+              </div>
               <DamageOverlay
                 message="External Sensors Offline"
                 system={sensors}
               />
             </Col>
             <Col className="col-sm-3 data">
-              <Row>
+              <Row className="contact-info">
                 <Col className="col-sm-12 contactPictureContainer">
-                  <div
-                    className="card contactPicture"
-                    style={{
-                      backgroundSize: "contain",
-                      backgroundPosition: "center",
-                      backgroundRepeat: "no-repeat",
-                      backgroundColor: "black",
-                      backgroundImage: `url('${hoverContact.pictureUrl}')`
-                    }}
-                  />
+                  {hoverContact.picture ? (
+                    <Asset asset={hoverContact.picture}>
+                      {({ src }) => (
+                        <div
+                          className="card contactPicture"
+                          style={{
+                            backgroundSize: "contain",
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                            backgroundColor: "black",
+                            backgroundImage: `url('${src}')`
+                          }}
+                        />
+                      )}
+                    </Asset>
+                  ) : (
+                    <div
+                      className="card contactPicture"
+                      style={{
+                        backgroundSize: "contain",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat",
+                        backgroundColor: "black",
+                        backgroundImage: `none`
+                      }}
+                    />
+                  )}
                 </Col>
                 <Col className="col-sm-12 contactNameContainer">
-                  <div className="card contactName">
-                    {hoverContact.name}
-                  </div>
+                  <div className="card contactName">{hoverContact.name}</div>
                 </Col>
               </Row>
               <Row>
@@ -308,17 +379,20 @@ class Sensors extends Component {
                 </Col>
                 <Col className="col-sm-12">
                   <Card className="processedData">
-                    <CardBlock>
-                      <pre>
-                        {this.state.processedData}
-                      </pre>
-                    </CardBlock>
+                    <CardBody>
+                      <pre>{this.state.processedData}</pre>
+                    </CardBody>
                   </Card>
                 </Col>
               </Row>
             </Col>
           </Row>
         </div>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </div>
     );
   }

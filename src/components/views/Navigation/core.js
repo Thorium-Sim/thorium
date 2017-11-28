@@ -3,8 +3,7 @@ import gql from "graphql-tag";
 import { Container, Row, Col, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { OutputField } from "../../generic/core";
-import Immutable from "immutable";
-import "./style.scss";
+import "./style.css";
 
 const NAVIGATION_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {
@@ -51,10 +50,9 @@ class NavigationCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ navigation: subscriptionData.data.navigationUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            navigation: subscriptionData.navigationUpdate
+          });
         }
       });
     }
@@ -66,6 +64,9 @@ class NavigationCore extends Component {
         });
       }
     }
+  }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
   }
   randomNums() {
     this.setState({
@@ -121,7 +122,7 @@ class NavigationCore extends Component {
     });
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.navigation) return null;
     const navigation = this.props.data.navigation[0];
     if (!navigation) return <p>No Navigation Systems</p>;
     return (
@@ -145,14 +146,10 @@ class NavigationCore extends Component {
             <p style={{ textAlign: "right" }}>X</p>
           </Col>
           <Col sm="3">
-            <OutputField>
-              {navigation.currentCourse.x}
-            </OutputField>
+            <OutputField>{navigation.currentCourse.x}</OutputField>
           </Col>
           <Col sm="3">
-            <OutputField>
-              {this.state.calculatedCourse.x}
-            </OutputField>
+            <OutputField>{this.state.calculatedCourse.x}</OutputField>
           </Col>
           <Col sm="5">
             <Button
@@ -170,14 +167,10 @@ class NavigationCore extends Component {
             <p style={{ textAlign: "right" }}>Y</p>
           </Col>
           <Col sm="3">
-            <OutputField>
-              {navigation.currentCourse.y}
-            </OutputField>
+            <OutputField>{navigation.currentCourse.y}</OutputField>
           </Col>
           <Col sm="3">
-            <OutputField>
-              {this.state.calculatedCourse.y}
-            </OutputField>
+            <OutputField>{this.state.calculatedCourse.y}</OutputField>
           </Col>
           <Col sm="5">
             <Button
@@ -195,14 +188,10 @@ class NavigationCore extends Component {
             <p style={{ textAlign: "right" }}>Z</p>
           </Col>
           <Col sm="3">
-            <OutputField>
-              {navigation.currentCourse.z}
-            </OutputField>
+            <OutputField>{navigation.currentCourse.z}</OutputField>
           </Col>
           <Col sm="3">
-            <OutputField>
-              {this.state.calculatedCourse.z}
-            </OutputField>
+            <OutputField>{this.state.calculatedCourse.z}</OutputField>
           </Col>
           <Col sm="5">
             <Button

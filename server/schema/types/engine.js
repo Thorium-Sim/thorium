@@ -9,6 +9,10 @@ type Engine implements SystemInterface {
   stealthFactor: Float
   speeds: [Speed]
   speed: Int
+  velocity: Float
+  speedFactor: Float
+  acceleration: Float
+  useAcceleration: Boolean  
   heat: Float
   damage: Damage
   on: Boolean
@@ -17,9 +21,11 @@ type Engine implements SystemInterface {
 type Speed {
   text: String
   number: Float
+  velocity: Float
 }
 input SpeedInput {
   text: String
   number: Float
+  velocity: Float
 }
 `;

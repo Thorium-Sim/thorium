@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Container, Row, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 import FontAwesome from "react-fontawesome";
+import Tour from "reactour";
+import DamageOverlay from "../helpers/DamageOverlay";
 
 import Tank from "./tank";
 
-import "./style.scss";
+import "./style.css";
 
 const COOLANT_SUB = gql`
   subscription CoolantUpdate($simulatorId: ID!) {
@@ -62,10 +63,9 @@ class CoolantControl extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ coolant: subscriptionData.data.coolantUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            coolant: subscriptionData.coolantUpdate
+          });
         }
       });
     }
@@ -76,13 +76,16 @@ class CoolantControl extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ systemCoolant: subscriptionData.data.coolantSystemUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            systemCoolant: subscriptionData.coolantSystemUpdate
+          });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+    this.coolantSystemSub && this.coolantSystemSub();
   }
   transferCoolant(systemId, which) {
     const coolant = this.props.data.coolant[0];
@@ -107,35 +110,57 @@ class CoolantControl extends Component {
     document.addEventListener("mouseup", this.mouseup);
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.coolant) return null;
     const coolant = this.props.data.coolant[0];
     const { systemCoolant } = this.props.data;
     return (
       <Container fluid className="card-coolant">
+        <DamageOverlay system={coolant} message="Coolant Disabled" />
         <Row>
           <Tank {...coolant} />
           <div className="coolant-containers">
-            {systemCoolant.map(s =>
+            {systemCoolant.map(s => (
               <CoolantBar
                 {...s}
                 key={s.systemId}
                 transferCoolant={this.transferCoolant.bind(this)}
               />
-            )}
+            ))}
           </div>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
 }
 
+const trainingSteps = [
+  {
+    selector: ".tank",
+    content:
+      "This coolant tank is filled with ethylene glycol (C2H6O2), which looks like this. Ethylene Glycol is highly conductive, making it easy to pull heat out of hot systems."
+  },
+  {
+    selector: ".coolant-containers",
+    content:
+      "Coolant is used to cool down systems which emit a lot of heat when running.  CAUTION: Do NOT drink. May be administered to intruders."
+  },
+  {
+    selector: ".coolant-containers",
+    content:
+      "Use the “Fill Coolant” and “Fill Reservoir” buttons to redirect coolant from your tank to the other systems in the ship. You’ll need to make sure the systems have enough coolant to continue running, while making sure to keep enough coolant in the tank to get the ship home safely at the end of the mission."
+  }
+];
+
 const CoolantBar = ({ systemId, name, coolant, transferCoolant }) => {
   return (
     <div>
       <div className="coolant-bar">
-        <p>
-          {name}
-        </p>
+        <p>{name}</p>
         <CoolantLeftBracket />
         <CoolantMiddleBar />
         <div
@@ -220,6 +245,13 @@ const COOLANT_QUERY = gql`
       name
       coolant
       coolantRate
+      damage {
+        damaged
+      }
+      power {
+        power
+        powerLevels
+      }
     }
     systemCoolant(simulatorId: $simulatorId) {
       systemId

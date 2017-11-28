@@ -1,4 +1,6 @@
-import App from "../../app";
+import App from "../app";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const NavigationQueries = {
   navigation(rootValue, { simulatorId }) {
@@ -25,14 +27,29 @@ export const NavigationMutations = {
   },
   navToggleCalculate(rootValue, args, context) {
     App.handleEvent(args, "navToggleCalculate", context);
+  },
+  navSetDestinations(rootValue, args, context) {
+    App.handleEvent(args, "navSetDestinations", context);
+  },
+  navSetDestination(rootValue, args, context) {
+    App.handleEvent(args, "navSetDestination", context);
+  },
+  navSetScanning(rootValue, args, context) {
+    App.handleEvent(args, "navSetScanning", context);
   }
 };
 
 export const NavigationSubscriptions = {
-  navigationUpdate(rootValue, { simulatorId }) {
-    let returnRes = rootValue;
-    if (simulatorId)
-      returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
-    return returnRes;
+  navigationUpdate: {
+    resolve(rootValue, { simulatorId }) {
+      let returnRes = rootValue;
+      if (simulatorId)
+        returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
+      return returnRes;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("navigationUpdate"),
+      rootValue => !!(rootValue && rootValue.length)
+    )
   }
 };

@@ -1,4 +1,6 @@
-import App from "../../app.js";
+import App from "../app.js";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const TransporterQueries = {
   transporters(_, { simulatorId }) {
@@ -48,7 +50,14 @@ export const TransporterMutations = {
 };
 
 export const TransporterSubscriptions = {
-  transporterUpdate(rootValue) {
-    return rootValue;
+  transporterUpdate: {
+    resolve(rootValue, { simulatorId }) {
+      if (rootValue.simulatorId !== simulatorId) return false;
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("transporterUpdate"),
+      rootValue => !!rootValue
+    )
   }
 };

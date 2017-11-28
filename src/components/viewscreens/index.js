@@ -1,14 +1,33 @@
-const preval = 0;
-const viewscreens = preval`
-const fs = require('fs');
-const path = require('path');
-module.exports = fs.readdirSync('./src/components/viewscreens').filter(p => p.indexOf('.js') > -1 && p !== 'index.js')
-.map(p => p.replace('.js',''))
-`;
+export { default as RedAlert } from "./RedAlert";
+export { default as ShipLogo } from "./ShipLogo";
+export { default as Doodad } from "./Doodad";
+export { default as Doodad2 } from "./Doodad2";
+export { default as Offline } from "./ViewscreenOffline";
+export { default as ForwardScans } from "./ForwardScans";
+export { default as AsteroidField } from "./AsteroidField";
+export { default as Docking } from "./Docking";
+export { default as Overheating } from "./Overheating";
+export { default as Information } from "./Information";
+export { default as InternalSensors } from "./InternalSensors";
+export { default as IncomingTransmission } from "./IncomingTransmission";
+export { default as TransmittingCode } from "./TransmittingCode";
+export { default as ReactorActivation } from "./ReactorActivation";
+export { default as PlanetaryScan } from "./PlanetaryScan";
+export { default as ShieldMonitoring } from "./ShieldMonitoring";
+export { default as CourseCalculation } from "./CourseCalculation";
+export { default as ShipView } from "./ShipView";
+export { default as StealthMonitoring } from "./StealthMonitoring";
+export { default as Communications } from "./Communications";
+export { default as Stars } from "./Stars";
+export { default as Video } from "./Video";
+export { default as Blackout } from "./blackout";
+export { default as TacticalMap } from "./TacticalMap";
 
-viewscreens.forEach(p => {
-  const viewscreen = require("./" + p);
-  if (viewscreen.default) {
-    module.exports[p] = viewscreen.default;
-  }
-});
+export { default as InformationConfig } from "./Information/config";
+export { default as InternalSensorsConfig } from "./InternalSensors/config";
+export { default as ReactorActivationConfig } from "./ReactorActivation/config";
+export { default as PlanetaryScanConfig } from "./PlanetaryScan/config";
+export { default as CourseCalculationConfig } from "./CourseCalculation/config";
+export { default as ShipViewConfig } from "./ShipView/config";
+export { default as VideoConfig } from "./Video/config";
+export { default as TacticalMapConfig } from "./TacticalMap/config";

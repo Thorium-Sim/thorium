@@ -1,4 +1,4 @@
-import App from "../../app";
+import App from "../app";
 import Client from "../classes/client";
 import Viewscreen from "../classes/viewscreen";
 import { pubsub } from "../helpers/subscriptionManager.js";
@@ -18,7 +18,7 @@ App.on("clientConnect", ({ client }) => {
 });
 App.on("clientDisconnect", ({ client }) => {
   const clientObj = App.clients.find(c => c.id === client);
-  clientObj.disconnect();
+  clientObj && clientObj.disconnect();
   pubsub.publish("clientChanged", App.clients);
 });
 App.on("clientPing", ({ client, ping }) => {
@@ -97,5 +97,19 @@ App.on("clientOfflineState", ({ client, state }) => {
 App.on("clientSetTraining", ({ client, training }) => {
   const clientObj = App.clients.find(c => c.id === client);
   clientObj.setTraining(training);
+  pubsub.publish("clientChanged", App.clients);
+});
+App.on("clientAddCache", ({ client, simulatorId, viewscreen, cacheItem }) => {
+  const clientObj = App.clients.find(
+    c =>
+      c.id === client ||
+      (c.simulatorId === simulatorId && c.station === "Viewscreen")
+  );
+  clientObj.addCache(cacheItem);
+  pubsub.publish("clientChanged", App.clients);
+});
+App.on("clientRemoveCache", ({ client, cacheItem }) => {
+  const clientObj = App.clients.find(c => c.id === client);
+  clientObj.removeCache(cacheItem);
   pubsub.publish("clientChanged", App.clients);
 });

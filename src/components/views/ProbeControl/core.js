@@ -3,9 +3,8 @@ import gql from "graphql-tag";
 import { Container, Row, Col, Button } from "reactstrap";
 import { OutputField, TypingField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 
-import "./style.scss";
+import "./style.css";
 
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
@@ -43,14 +42,43 @@ class ProbeControl extends Component {
         document: PROBES_SUB,
         variables: { simulatorId: this.props.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ probes: subscriptionData.data.probesUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            probes: subscriptionData.probesUpdate
+          });
         }
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
+  destroyProbe = () => {
+    const probes = this.props.data.probes[0];
+    const { selectedProbe } = this.state;
+    const probeObj = probes.probes.find(p => p.id === selectedProbe);
+    if (
+      window.confirm(
+        `Are you sure you want to destroy this probe: ${probeObj.name}`
+      )
+    ) {
+      this.setState({ selectedProbe: null });
+      const mutation = gql`
+        mutation DestroyProbe($id: ID!, $probeId: ID!) {
+          destroyProbe(id: $id, probeId: $probeId)
+        }
+      `;
+      if (probeObj) {
+        const variables = {
+          id: this.props.data.probes[0].id,
+          probeId: probeObj.id
+        };
+        this.props.client.mutate({
+          mutation,
+          variables
+        });
+      }
+    }
+  };
   response = () => {
     const variables = {
       id: this.props.data.probes[0].id,
@@ -68,7 +96,7 @@ class ProbeControl extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.probes) return null;
     const probes = this.props.data.probes[0];
     const { selectedProbe } = this.state;
     if (!probes) return <p>No Probe Launcher</p>;
@@ -77,7 +105,7 @@ class ProbeControl extends Component {
         <Row style={{ height: "100%" }}>
           <Col sm={3} style={{ height: "100%" }}>
             <div className="scroll probelist">
-              {probes.probes.map(p =>
+              {probes.probes.map(p => (
                 <p
                   key={p.id}
                   className={`probe ${p.querying ? "querying" : ""}
@@ -86,10 +114,10 @@ class ProbeControl extends Component {
                 >
                   {p.name}
                 </p>
-              )}
+              ))}
             </div>
           </Col>
-          {selectedProbe &&
+          {selectedProbe && (
             <Col sm={9} style={{ height: "100%" }}>
               <Row>
                 <Col sm={12}>
@@ -114,9 +142,13 @@ class ProbeControl extends Component {
                   <Button size="sm" onClick={this.response}>
                     Send Response
                   </Button>
+                  <Button size="sm" color="danger" onClick={this.destroyProbe}>
+                    Destroy
+                  </Button>
                 </Col>
               </Row>
-            </Col>}
+            </Col>
+          )}
         </Row>
       </Container>
     );

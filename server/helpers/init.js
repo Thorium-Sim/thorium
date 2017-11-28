@@ -3,6 +3,9 @@ const path = require("path");
 const fs = require("fs");
 const ncp = require("ncp").ncp;
 const paths = require("./paths");
+if (!fs.existsSync(paths.userData)) {
+  fs.mkdirSync(paths.userData);
+}
 if (process.env.NODE_ENV === "production") {
   const assetFolder = paths.userData + "/assets";
   var assetPath = path.dirname(process.argv[1]);
@@ -31,6 +34,8 @@ export function move(oldPath, newPath, callback) {
   readStream.pipe(writeStream);
 }
 console.log(`
+
+
 
 
 

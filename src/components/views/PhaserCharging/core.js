@@ -3,8 +3,7 @@ import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
 import { InputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
-import "./style.scss";
+import "./style.css";
 
 const PHASERS_SUB = gql`
   subscription PhasersUpdate($simulatorId: ID!) {
@@ -36,13 +35,15 @@ class PhaserChargingCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ phasers: subscriptionData.data.phasersUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            phasers: subscriptionData.phasersUpdate
+          });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
   }
   changeArc(value) {
     const phasers = this.props.data.phasers[0];
@@ -78,7 +79,7 @@ class PhaserChargingCore extends Component {
     });
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.phasers) return null;
     const phasers = this.props.data.phasers[0];
     if (!phasers) return <p>No phasers</p>;
     return (
@@ -97,9 +98,7 @@ class PhaserChargingCore extends Component {
         {phasers.beams.map((b, i) => {
           return (
             <Row key={`${b.id}-${i}`}>
-              <Col sm={4}>
-                {i}:
-              </Col>
+              <Col sm={4}>{i}:</Col>
               <Col sm={8}>
                 <InputField
                   prompt="What would you like to change the charge to?"

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Row, Col, Card, CardBlock } from "reactstrap";
+import { Button, Row, Col, Card, CardBody } from "reactstrap";
 import Transitioner from "../helpers/transitioner";
 
 export default class ProbeEquipment extends Transitioner {
@@ -64,7 +64,7 @@ export default class ProbeEquipment extends Transitioner {
         <Col sm="4">
           <p>Available Equipment:</p>
           <Card>
-            <CardBlock>
+            <CardBody>
               <Row>
                 <Col sm="8">
                   <strong>Name</strong>
@@ -76,8 +76,8 @@ export default class ProbeEquipment extends Transitioner {
                   <strong>Qty</strong>
                 </Col>
               </Row>
-            </CardBlock>
-            <CardBlock
+            </CardBody>
+            <CardBody
               onMouseOut={() => {
                 this.setState({ shownDescription: null });
               }}
@@ -97,36 +97,24 @@ export default class ProbeEquipment extends Transitioner {
                     className="equipmentItem"
                   >
                     <Col sm="8">
-                      <p>
-                        {e.name}
-                      </p>
+                      <p>{e.name}</p>
                     </Col>
                     <Col sm="2">
-                      <p>
-                        {e.size}
-                      </p>
+                      <p>{e.size}</p>
                     </Col>
                     <Col sm="2">
-                      <p>
-                        {e.count - used.count}
-                      </p>
+                      <p>{e.count - used.count}</p>
                     </Col>
                   </Row>
                 );
               })}
-            </CardBlock>
+            </CardBody>
           </Card>
         </Col>
-        <Col sm="4">
-          <p>
-            Total Space: {type.size}
-          </p>
-          <p>
-            Space Used: {used}
-          </p>
-          <p>
-            Space Remaining: {type.size - used}
-          </p>
+        <Col sm="4" className="probe-control-buttons">
+          <p>Total Space: {type.size}</p>
+          <p>Space Used: {used}</p>
+          <p>Space Remaining: {type.size - used}</p>
           <Button
             block
             color="primary"
@@ -137,14 +125,12 @@ export default class ProbeEquipment extends Transitioner {
           <Button block color="danger" onClick={cancelProbe}>
             Cancel Probe
           </Button>
-          <p className="description">
-            {shownDescription}
-          </p>
+          <p className="description">{shownDescription}</p>
         </Col>
         <Col sm="4">
           <p>Loaded Equipment:</p>
           <Card>
-            <CardBlock>
+            <CardBody>
               <Row>
                 <Col sm="6">
                   <strong>Name</strong>
@@ -156,14 +142,14 @@ export default class ProbeEquipment extends Transitioner {
                   <strong>Qty</strong>
                 </Col>
               </Row>
-            </CardBlock>
-            <CardBlock
+            </CardBody>
+            <CardBody
               onMouseOut={() => {
                 this.setState({ shownDescription: null });
               }}
               className="equipmentList"
             >
-              {equipment.map(e =>
+              {equipment.map(e => (
                 <Row
                   onClick={this.removeFromProbe.bind(this, e)}
                   onMouseOver={() => {
@@ -172,23 +158,17 @@ export default class ProbeEquipment extends Transitioner {
                   className="equipmentItem"
                 >
                   <Col sm="8">
-                    <p>
-                      {e.name}
-                    </p>
+                    <p>{e.name}</p>
                   </Col>
                   <Col sm="2">
-                    <p>
-                      {e.size}
-                    </p>
+                    <p>{e.size}</p>
                   </Col>
                   <Col sm="2">
-                    <p>
-                      {e.count}
-                    </p>
+                    <p>{e.count}</p>
                   </Col>
                 </Row>
-              )}
-            </CardBlock>
+              ))}
+            </CardBody>
           </Card>
         </Col>
       </Row>

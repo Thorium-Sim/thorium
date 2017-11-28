@@ -1,14 +1,14 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Measure from "react-measure";
 import FontAwesome from "react-fontawesome";
 import ContactContextMenu from "./contactContextMenu";
 import { Row, Col, Container, Button, Input, Label } from "reactstrap";
 import Grid from "./GridDom";
 import Nudge from "./nudge";
-
-import "./gridCore.scss";
+import { Asset } from "../../../helpers/assets";
+import "./gridCore.css";
 
 function distance3d(coord2, coord1) {
   const { x: x1, y: y1, z: z1 } = coord1;
@@ -68,6 +68,12 @@ const SENSOR_SUB = gql`
   }
 `;
 
+const PING_SUB = gql`
+  subscription SensorPing($id: ID) {
+    sensorsPing(sensorId: $id)
+  }
+`;
+
 class GridCore extends Component {
   constructor(props) {
     super(props);
@@ -93,17 +99,84 @@ class GridCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            sensors: subscriptionData.data.sensorsUpdate
+            sensors: subscriptionData.sensorsUpdate
           });
         }
       });
     }
+    if (!this.pingSub && !nextProps.data.loading) {
+      this.pingSub = nextProps.data.subscribeToMore({
+        document: PING_SUB,
+        variables: { id: nextProps.data.sensors[0].id },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          if (
+            previousResult.sensors.find(
+              s => s.id === subscriptionData.sensorsPing
+            )
+          ) {
+            this.ping();
+          }
+        }
+      });
+    }
+    if (!nextProps.data.loading) {
+      const nextSensors = nextProps.data.sensors[0];
+      if (this.props.data.loading) {
+        //First time load
+        this.setState({
+          pingTime: Date.now() - nextSensors.timeSincePing,
+          ping: false
+        });
+      }
+    }
   }
+  componentWillUnmount() {
+    this.sensorsSubscription && this.sensorsSubscription();
+    this.pingSub && this.pingSub();
+  }
+  componentDidMount() {
+    if (!this.state.dimensions) {
+      const domNode = ReactDOM.findDOMNode(this).querySelector("#threeSensors");
+      if (domNode) {
+        this.setState({
+          dimensions: domNode.getBoundingClientRect()
+        });
+      }
+    }
+  }
+  componentDidUpdate() {
+    const domNode = ReactDOM.findDOMNode(this).querySelector("#threeSensors");
+    if (
+      !this.state.dimensions ||
+      this.state.dimensions.width !== domNode.getBoundingClientRect().width
+    ) {
+      this.setState({
+        dimensions: domNode.getBoundingClientRect()
+      });
+    }
+  }
+  ping = () => {
+    // Reset the state
+    this.setState(
+      {
+        ping: false
+      },
+      () => {
+        this.setState({
+          ping: true,
+          pingTime: Date.now()
+        });
+        setTimeout(() => {
+          this.setState({ ping: false });
+        }, 1000 * 5);
+      }
+    );
+  };
   dragStart = movingContact => {
     const self = this;
     this.setState({
       movingContact: Object.assign({}, movingContact, {
-        location: { x: 0, y: 0, z: 0 }
+        location: null
       })
     });
     document.addEventListener("mousemove", this.moveMouse);
@@ -115,8 +188,8 @@ class GridCore extends Component {
     }
   };
   moveMouse = evt => {
-    const { dimensions } = this;
-    const { movingContact } = this.state;
+    const { dimensions } = this.state;
+    const { movingContact = {} } = this.state;
     const { width: dimWidth, height: dimHeight } = dimensions;
     const padding = 15;
     const width = Math.min(dimWidth, dimHeight) - padding;
@@ -145,6 +218,7 @@ class GridCore extends Component {
       cloaked,
       infrared
     } = movingContact;
+    if (!location) return;
     const distance = distance3d({ x: 0, y: 0, z: 0 }, location);
     if (distance > 1.08) {
       return;
@@ -357,11 +431,11 @@ class GridCore extends Component {
               onChange={this._changeSpeed.bind(this)}
               defaultValue={speed}
             >
-              {speeds.map(s =>
+              {speeds.map(s => (
                 <option key={s.value} value={s.value}>
                   {s.label}
                 </option>
-              )}
+              ))}
               <option disabled>─────────</option>
               <option disabled>Timed</option>
             </Input>
@@ -411,39 +485,31 @@ class GridCore extends Component {
             </Label>
           </Col>
           <Col sm={6} style={{ height: "100%" }}>
-            <Measure useClone={true} includeMargin={false}>
-              {dimensions => {
-                this.dimensions = dimensions;
-                return (
-                  <div
-                    id="threeSensors"
-                    className="array"
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0
-                    }}
-                  >
-                    {dimensions.width > 0 &&
-                      <Grid
-                        mouseover={this.props.hoverContact}
-                        core
-                        dimensions={dimensions}
-                        sensor={sensors.id}
-                        moveSpeed={speed}
-                        speeds={speeds}
-                        askForSpeed={askForSpeed}
-                        setSelectedContact={this._setSelectedContact.bind(this)}
-                        selectedContact={selectedContact}
-                        armyContacts={sensors.armyContacts}
-                        movingContact={movingContact}
-                      />}
-                  </div>
-                );
+            <div
+              id="threeSensors"
+              className="array"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0
               }}
-            </Measure>
+            >
+              <Grid
+                mouseover={this.props.hoverContact}
+                core
+                dimensions={this.state.dimensions}
+                sensor={sensors.id}
+                moveSpeed={speed}
+                speeds={speeds}
+                askForSpeed={askForSpeed}
+                setSelectedContact={this._setSelectedContact.bind(this)}
+                selectedContact={selectedContact}
+                armyContacts={sensors.armyContacts}
+                movingContact={movingContact}
+              />
+            </div>
           </Col>
           <Col sm={3} className="contacts-container">
             <p>Contacts:</p>
@@ -451,25 +517,31 @@ class GridCore extends Component {
               {sensors.armyContacts.map(contact => {
                 return (
                   <Col key={contact.id} className={"flex-container"} sm={12}>
-                    <img
-                      onMouseDown={() => this.dragStart(contact)}
-                      onContextMenu={this._contextMenu.bind(this, contact)}
-                      draggable="false"
-                      role="presentation"
-                      className="armyContact"
-                      src={contact.iconUrl}
-                    />
+                    <Asset asset={contact.icon}>
+                      {({ src }) => (
+                        <img
+                          alt="contact"
+                          onMouseDown={() => this.dragStart(contact)}
+                          onContextMenu={this._contextMenu.bind(this, contact)}
+                          draggable="false"
+                          role="presentation"
+                          className="armyContact"
+                          src={src}
+                        />
+                      )}
+                    </Asset>
                     <label
                       onContextMenu={this._contextMenu.bind(this, contact)}
                     >
                       {contact.name}
                     </label>
-                    {removeContacts &&
+                    {removeContacts && (
                       <FontAwesome
                         name="ban"
                         className="text-danger pull-right clickable"
                         onClick={this._removeArmyContact.bind(this, contact)}
-                      />}
+                      />
+                    )}
                   </Col>
                 );
               })}
@@ -490,22 +562,24 @@ class GridCore extends Component {
               />{" "}
               Remove
             </label>
-            {contextContact &&
+            {contextContact && (
               <ContactContextMenu
                 closeMenu={this._closeContext.bind(this)}
                 updateArmyContact={this._updateArmyContact.bind(this)}
                 contact={contextContact.contact}
                 x={contextContact.left}
                 y={0}
-              />}
-            {selectedContact &&
+              />
+            )}
+            {selectedContact && (
               <ContactContextMenu
                 closeMenu={this._closeContext.bind(this)}
                 updateArmyContact={this._updateSensorContact.bind(this)}
                 contact={selectedContact}
                 x={0}
                 y={0}
-              />}
+              />
+            )}
           </Col>
         </Row>
       </Container>

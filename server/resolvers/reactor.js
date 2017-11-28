@@ -1,9 +1,11 @@
-import App from '../../app.js';
+import App from "../app.js";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const ReactorQueries = {
-  reactors(root, {simulatorId}){
-    let returnVal = App.systems.filter(s => s.type === 'Reactor');
-    if (simulatorId){
+  reactors(root, { simulatorId }) {
+    let returnVal = App.systems.filter(s => s.type === "Reactor");
+    if (simulatorId) {
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
     }
     return returnVal;
@@ -11,27 +13,34 @@ export const ReactorQueries = {
 };
 
 export const ReactorMutations = {
-  reactorEject(root, args, context){
-    App.handleEvent(args, 'reactorEject', context);
+  reactorEject(root, args, context) {
+    App.handleEvent(args, "reactorEject", context);
   },
-  reactorChangeOutput(root, args, context){
-    App.handleEvent(args, 'reactorChangeOutput', context);
+  reactorChangeOutput(root, args, context) {
+    App.handleEvent(args, "reactorChangeOutput", context);
   },
-  reactorChangeEfficiency(root, args, context){
-    App.handleEvent(args, 'reactorChangeEfficiency', context);
+  reactorChangeEfficiency(root, args, context) {
+    App.handleEvent(args, "reactorChangeEfficiency", context);
   },
-  reactorBatteryChargeLevel(root, args, context){
-    App.handleEvent(args, 'reactorBatteryChargeLevel', context);
+  reactorBatteryChargeLevel(root, args, context) {
+    App.handleEvent(args, "reactorBatteryChargeLevel", context);
   },
-  reactorBatteryChargeRate(root, args, context){
-    App.handleEvent(args, 'reactorBatteryChargeRate', context);
-  },
+  reactorBatteryChargeRate(root, args, context) {
+    App.handleEvent(args, "reactorBatteryChargeRate", context);
+  }
 };
 
 export const ReactorSubscriptions = {
-  reactorUpdate(rootValue, {simulatorId}){
-    let returnRes = rootValue;
-    if (simulatorId) returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
-    return returnRes;
+  reactorUpdate: {
+    resolve(rootValue, { simulatorId }) {
+      let returnRes = rootValue;
+      if (simulatorId)
+        returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
+      return returnRes;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("reactorUpdate"),
+      rootValue => !!(rootValue && rootValue.length)
+    )
   }
 };

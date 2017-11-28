@@ -1,4 +1,6 @@
-import App from "../../app";
+import App from "../app";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const IsochipsQueries = {
   isochips(root, { simulatorId }) {
@@ -32,11 +34,17 @@ export const IsochipsMutations = {
 };
 
 export const IsochipsSubscriptions = {
-  isochipsUpdate(rootValue, { simulatorId }) {
-    let returnVal = rootValue;
-    if (simulatorId)
-      returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
-    return returnVal;
+  isochipsUpdate: {
+    resolve(rootValue, { simulatorId }) {
+      let returnVal = rootValue;
+      if (simulatorId)
+        returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
+      return returnVal;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("isochipsUpdate"),
+      rootValue => !!(rootValue && rootValue.length)
+    )
   }
 };
 

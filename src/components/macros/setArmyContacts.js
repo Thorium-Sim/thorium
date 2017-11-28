@@ -45,7 +45,7 @@ export default class SetArmyContacts extends Component {
     );
   };
   render() {
-    const { updateArgs, args /*client*/ } = this.props;
+    const { updateArgs = () => {}, args /*client*/ } = this.props;
     const { removeContacts, selectedContact } = this.state;
     const { armyContacts = [] } = args;
     return (
@@ -66,36 +66,41 @@ export default class SetArmyContacts extends Component {
             return (
               <Col key={contact.id} className={"flex-container"}>
                 <Asset asset={contact.icon}>
-                  {({ src }) =>
+                  {({ src }) => (
                     <img
+                      alt="armyContact"
                       onClick={() => this.selectContact(contact)}
                       draggable="false"
                       role="presentation"
                       style={{ width: "30px" }}
                       className="armyContact"
                       src={src}
-                    />}
+                    />
+                  )}
                 </Asset>
                 <Asset asset={contact.picture}>
-                  {({ src }) =>
+                  {({ src }) => (
                     <img
+                      alt="armyContactPicture"
                       onClick={() => this.selectContact(contact)}
                       draggable="false"
                       role="presentation"
                       style={{ width: "30px" }}
                       className="armyContact"
                       src={src}
-                    />}
+                    />
+                  )}
                 </Asset>
                 <label onClick={() => this.selectContact(contact)}>
                   {contact.name}
                 </label>
-                {removeContacts &&
+                {removeContacts && (
                   <FontAwesome
                     name="ban"
                     className="text-danger pull-right clickable"
                     onClick={() => this.removeContact(contact)}
-                  />}
+                  />
+                )}
               </Col>
             );
           })}
@@ -113,12 +118,13 @@ export default class SetArmyContacts extends Component {
           Remove
         </label>
         <div style={{ position: "fixed", right: "40%", bottom: "10%" }}>
-          {selectedContact &&
+          {selectedContact && (
             <ContactContextMenu
               contact={selectedContact}
               closeMenu={() => this.setState({ selectedContact: null })}
               updateArmyContact={this.updateArmyContact}
-            />}
+            />
+          )}
         </div>
       </FormGroup>
     );

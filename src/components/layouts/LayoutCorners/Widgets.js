@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Tooltip, Modal, ModalHeader, ModalBody } from "reactstrap";
+import { Tooltip, Button } from "reactstrap";
 import { Widgets } from "../../views";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
-
+import "./widgets.css";
 const WIDGET_NOTIFY = gql`
   subscription WidgetNotify($simulatorId: ID!, $station: String) {
     widgetNotify(simulatorId: $simulatorId, station: $station)
@@ -51,20 +51,21 @@ class WidgetsContainer extends Component {
           ? "offline"
           : ""}`}
       >
-        {Object.keys(Widgets).map(key => {
-          const widget = Widgets[key];
-          return (
-            <Widget
-              simulator={simulator}
-              station={station}
-              widget={widget}
-              wkey={key}
-              notify={widgetNotify[key]}
-              setNotify={this.setNotify}
-              key={key}
-            />
-          );
-        })}
+        {station.widgets &&
+          station.widgets.map(key => {
+            const widget = Widgets[key];
+            return (
+              <Widget
+                simulator={simulator}
+                station={station}
+                widget={widget}
+                wkey={key}
+                notify={widgetNotify[key]}
+                setNotify={this.setNotify}
+                key={key}
+              />
+            );
+          })}
       </div>
     );
   }
@@ -74,7 +75,24 @@ class Widget extends Component {
   state = {
     tooltipOpen: false,
     modal: false,
-    widgetNotifications: {}
+    widgetNotifications: {},
+    position: { x: 0, y: 0 }
+  };
+  mouseDown = () => {
+    document.addEventListener("mousemove", this.mouseMove);
+    document.addEventListener("mouseup", this.mouseUp);
+  };
+  mouseUp = () => {
+    document.removeEventListener("mousemove", this.mouseMove);
+    document.removeEventListener("mouseup", this.mouseUp);
+  };
+  mouseMove = evt => {
+    this.setState({
+      position: {
+        x: this.state.position.x + evt.movementX,
+        y: this.state.position.y + evt.movementY
+      }
+    });
   };
   toggle = () => {
     this.setState({
@@ -89,15 +107,17 @@ class Widget extends Component {
   };
   render() {
     const { widget, wkey, notify } = this.props;
-    const Component = widget.widget;
+    const { position } = this.state;
+    const Comp = widget.widget;
     return (
-      <div className="widget-item" onClick={this.toggleModal}>
+      <div className="widget-item">
         <FontAwesome
-          size="lg"
+          size="2x"
           fixedWidth
           name={widget.icon}
           className={`widget-icon ${notify ? "notify" : ""}`}
           id={`widget-${wkey}`}
+          onClick={this.toggleModal}
           style={{ color: widget.color || "rgb(200,150,255)" }}
         />
         <Tooltip
@@ -108,24 +128,29 @@ class Widget extends Component {
         >
           {widget.name}
         </Tooltip>
-        {this.state.modal &&
-          <Modal
-            className="modal-themed"
-            size={widget.size || ""}
-            isOpen={this.state.modal}
-            toggle={this.toggleModal}
+        {this.state.modal && (
+          <div
+            className={`modal-themed widget-body widget-${widget.size} ${this
+              .state.modal
+              ? "open"
+              : ""}`}
+            style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
           >
-            <ModalHeader toggle={this.toggleModal}>
+            <div className="widget-name" onMouseDown={this.mouseDown}>
               {widget.name}
-            </ModalHeader>
-            <ModalBody>
-              <Component
+            </div>
+            <div className="widget-container">
+              <Comp
                 toggle={this.toggleModal}
                 simulator={this.props.simulator}
                 station={this.props.station}
               />
-            </ModalBody>
-          </Modal>}
+            </div>
+            <Button onClick={this.toggleModal} style={{ width: "200px" }}>
+              Close
+            </Button>
+          </div>
+        )}
       </div>
     );
   }

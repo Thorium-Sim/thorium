@@ -1,3 +1,3 @@
 export default `
-  systems(simulatorId: ID, type: String, power: Boolean): [System]
+  systems(simulatorId: ID, type: String, power: Boolean, heat: Boolean, extra: Boolean): [System]
 `;

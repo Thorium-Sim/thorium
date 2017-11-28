@@ -1,8 +1,13 @@
-import App from "../../app.js";
+import App from "../app.js";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const SystemsQueries = {
-  systems(rootValue, { simulatorId, type, power }) {
+  systems(rootValue, { simulatorId, type, power, heat, extra = false }) {
     let returnSystems = App.systems;
+    if (extra === false) {
+      returnSystems = returnSystems.filter(s => s.extra === false);
+    }
     if (simulatorId) {
       returnSystems = returnSystems.filter(s => s.simulatorId === simulatorId);
     }
@@ -13,6 +18,9 @@ export const SystemsQueries = {
       returnSystems = returnSystems.filter(
         s => s.power.power || s.power.power === 0
       );
+    }
+    if (heat) {
+      returnSystems = returnSystems.filter(s => s.heat || s.heat === 0);
     }
     return returnSystems;
   }
@@ -55,20 +63,34 @@ export const SystemsMutations = {
 };
 
 export const SystemsSubscriptions = {
-  systemsUpdate(rootValue, { simulatorId, type, power }) {
-    let returnSystems = rootValue;
-    if (simulatorId) {
-      returnSystems = returnSystems.filter(s => s.simulatorId === simulatorId);
-    }
-    if (type) {
-      returnSystems = returnSystems.filter(s => s.type === type);
-    }
-    if (power) {
-      returnSystems = returnSystems.filter(
-        s => s.power.power || s.power.power === 0
-      );
-    }
-    return returnSystems;
+  systemsUpdate: {
+    resolve(rootValue, { simulatorId, type, power, heat, extra = false }) {
+      let returnSystems = rootValue;
+      if (extra === false) {
+        returnSystems = returnSystems.filter(s => s.extra === false);
+      }
+      if (simulatorId) {
+        returnSystems = returnSystems.filter(
+          s => s.simulatorId === simulatorId
+        );
+      }
+      if (type) {
+        returnSystems = returnSystems.filter(s => s.type === type);
+      }
+      if (power) {
+        returnSystems = returnSystems.filter(
+          s => s.power.power || s.power.power === 0
+        );
+      }
+      if (heat) {
+        returnSystems = returnSystems.filter(s => s.heat || s.heat === 0);
+      }
+      return returnSystems;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("systemsUpdate"),
+      rootValue => !!(rootValue && rootValue.length) > 0
+    )
   }
 };
 

@@ -1,4 +1,6 @@
-import App from "../../app.js";
+import App from "../app.js";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const ThrustersQueries = {
   thrusters(root, { simulatorId }) {
@@ -24,10 +26,16 @@ export const ThrustersMutations = {
 };
 
 export const ThrustersSubscriptions = {
-  rotationChange(root, { simulatorId }) {
-    if (simulatorId) {
-      return root.simulatorId === simulatorId && root;
-    }
-    return root;
+  rotationChange: {
+    resolve(root, { simulatorId }) {
+      if (simulatorId) {
+        return root.simulatorId === simulatorId && root;
+      }
+      return root;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("rotationChange"),
+      rootValue => !!rootValue
+    )
   }
 };

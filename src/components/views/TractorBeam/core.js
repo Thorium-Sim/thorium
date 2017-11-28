@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Container } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
-import "./style.scss";
+
+import "./style.css";
 
 const TRACTORBEAM_SUB = gql`
   subscription TractorBeamUpdate($simulatorId: ID!) {
@@ -13,6 +13,7 @@ const TRACTORBEAM_SUB = gql`
       target
       strength
       stress
+      scanning
     }
   }
 `;
@@ -33,10 +34,9 @@ class TractorBeamCore extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ tractorBeam: subscriptionData.data.tractorBeamUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            tractorBeam: subscriptionData.tractorBeamUpdate
+          });
         }
       });
     }
@@ -48,6 +48,9 @@ class TractorBeamCore extends Component {
         });
       }
     }
+  }
+  componentWillUnmount() {
+    this.tractorBeamSub && this.tractorBeamSub();
   }
   toggleTractor = (which, evt) => {
     const tractorBeam = this.props.data.tractorBeam[0];
@@ -97,12 +100,12 @@ class TractorBeamCore extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.tractorBeam) return null;
     const tractorBeam = this.props.data.tractorBeam[0];
     if (!tractorBeam) return <p>No Tractor Beam</p>;
     return (
       <Container className="tractor-beam-core">
-        <label>
+        <label style={{ color: tractorBeam.scanning ? "red" : "white" }}>
           Target:{" "}
           <input
             type="checkbox"
@@ -118,9 +121,7 @@ class TractorBeamCore extends Component {
             checked={tractorBeam.state}
           />
         </label>
-        <label>
-          Strength: {Math.round(tractorBeam.strength * 100)}
-        </label>
+        <label>Strength: {Math.round(tractorBeam.strength * 100)}</label>
         <label>
           Stress: {Math.round(this.state.stress * 100)}{" "}
           <input
@@ -147,6 +148,7 @@ const TRACTORBEAM_QUERY = gql`
       target
       strength
       stress
+      scanning
     }
   }
 `;

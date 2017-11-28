@@ -1,5 +1,7 @@
-import App from "../../app";
+import App from "../app";
 import uuid from "uuid";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const FlightStructureQueries = {
   simulators: (root, { template, id }) => {
@@ -46,7 +48,9 @@ export const FlightStructureMutations = {
   editMission(root, args, context) {
     App.handleEvent(args, "editMission", context);
   },
-
+  importMission(root, args, context) {
+    App.handleEvent(args, "importMission", context);
+  },
   // Flight
   startFlight(root, args, context) {
     const flightId = uuid.v4();
@@ -56,6 +60,12 @@ export const FlightStructureMutations = {
       context
     );
     return flightId;
+  },
+  resetFlight(root, args, context) {
+    App.handleEvent(args, "resetFlight", context);
+  },
+  deleteFlight(root, args, context) {
+    App.handleEvent(args, "deleteFlight", context);
   },
 
   // Simulator
@@ -77,6 +87,12 @@ export const FlightStructureMutations = {
   },
   changeSimulatorAlertLevel(root, args, context) {
     App.handleEvent(args, "changeSimulatorAlertLevel", context);
+  },
+  changeSimulatorBridgeCrew(root, args, context) {
+    App.handleEvent(args, "changeSimulatorBridgeCrew", context);
+  },
+  changeSimulatorRadiation(root, args, context) {
+    App.handleEvent(args, "changeSimulatorRadiation", context);
   },
   setSimulatorTimelineStep(root, args, context) {
     App.handleEvent(args, "setSimulatorTimelineStep", context);
@@ -147,28 +163,62 @@ export const FlightStructureMutations = {
   },
   setStationLogin(root, args, context) {
     App.handleEvent(args, "setStationLogin", context);
+  },
+  toggleStationWidgets(root, args, context) {
+    App.handleEvent(args, "toggleStationWidgets", context);
   }
 };
 
 export const FlightStructureSubscriptions = {
-  stationSetUpdate: rootValue => {
-    return rootValue;
+  stationSetUpdate: {
+    resolve(rootValue) {
+      return rootValue;
+    },
+    subscribe: () => pubsub.asyncIterator("stationSetUpdate")
   },
-  missionsUpdate: (rootValue, { missionId }) => {
-    if (missionId) {
-      return rootValue.filter(m => m.id === missionId);
-    }
-    return rootValue;
+  missionsUpdate: {
+    resolve: (rootValue, { missionId }) => {
+      if (missionId) {
+        return rootValue.filter(m => m.id === missionId);
+      }
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("missionsUpdate"),
+      (rootValue, { missionId }) => {
+        if (missionId) {
+          return !!rootValue.find(m => m.id === missionId);
+        }
+        return true;
+      }
+    )
   },
-  simulatorsUpdate: (rootValue, { simulatorId, template }) => {
-    let returnVal = rootValue;
-    if (template) returnVal = returnVal.filter(s => s.template);
-    if (simulatorId) returnVal = returnVal.filter(s => s.id === simulatorId);
-    return returnVal.length > 0 ? returnVal : null;
+  simulatorsUpdate: {
+    resolve(rootValue, { simulatorId, template }) {
+      let returnVal = rootValue;
+      if (template) returnVal = returnVal.filter(s => s.template);
+      if (simulatorId) returnVal = returnVal.filter(s => s.id === simulatorId);
+      return returnVal.length > 0 ? returnVal : null;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("simulatorsUpdate"),
+      (rootValue, { simulatorId, template }) => {
+        return !!rootValue;
+      }
+    )
   },
-  flightsUpdate: (rootValue, { id }) => {
-    if (id) return rootValue.filter(s => s.id === id);
-    return rootValue;
+  flightsUpdate: {
+    resolve(payload, { id }) {
+      if (id) return payload.filter(s => s.id === id);
+      return payload;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("flightsUpdate"),
+      (rootValue, { id }) => {
+        if (id) return !!rootValue.find(s => s.id === id);
+        return true;
+      }
+    )
   }
 };
 
@@ -229,11 +279,7 @@ export const FlightStructureTypes = {
       const mission = rootValue.timeline
         ? rootValue
         : App.missions.find(m => m.id === rootValue);
-      return Object.keys(mission.timeline).sort().map(k => {
-        const value = mission.timeline[k];
-        value.order = k;
-        return value;
-      });
+      return mission.timeline;
     }
   }
 };

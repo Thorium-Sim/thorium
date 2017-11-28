@@ -11,7 +11,7 @@ class AssetComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      src: `${assetPath}${props.asset}/default.${props.extension || "svg"}`
+      src: null
     };
   }
   state = { src: "http://unsplash.it/300" };
@@ -19,7 +19,9 @@ class AssetComponent extends Component {
     this.updateAsset(this.props);
   }
   componentWillReceiveProps(nextProps) {
-    this.updateAsset(nextProps);
+    if (nextProps.asset !== this.props.asset) {
+      this.updateAsset(nextProps);
+    }
   }
   updateAsset(props) {
     const query = gql`
@@ -41,13 +43,14 @@ class AssetComponent extends Component {
       })
       .then(res => {
         this.setState({
-          src: res.data.asset.url
+          src: (res.data.asset.url || "").replace(/http(s|):\/\/.*:3000/gi, "")
         });
       });
   }
   render() {
     const { children } = this.props;
     const { src } = this.state;
+    if (!src || !this.props.asset) return null;
     return children({ src });
   }
 }

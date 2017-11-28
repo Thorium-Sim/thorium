@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import SensorContact from "./SensorContact";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 import * as THREE from "three";
 
-import "./style.scss";
+import "./style.css";
 
 function distance3d(coord2, coord1) {
   const { x: x1, y: y1, z: z1 } = coord1;
@@ -63,30 +62,30 @@ class GridDom extends Component {
         document: SENSORCONTACT_SUB,
         variables: { sensorId: this.props.sensor },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .mergeDeep({
-              sensorContacts: subscriptionData.data.sensorContactUpdate
-            })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            sensorContacts: subscriptionData.sensorContactUpdate
+          });
         }
       });
     }
     if (!nextProps.data.loading) {
       this.setState(({ locations: stateLocations }) => {
         const locations = {};
-        nextProps.data.sensorContacts.forEach(c => {
-          locations[c.id] = {
-            location: c.forceUpdate
-              ? c.location
-              : stateLocations[c.id]
-                ? stateLocations[c.id].location
-                : c.location,
-            speed: c.speed,
-            opacity: this.contactPing(c, Date.now() - nextProps.pingTime),
-            destination: c.destination
-          };
-        });
+        nextProps.data.sensorContacts &&
+          nextProps.data.sensorContacts.forEach(c => {
+            locations[c.id] = {
+              location: c.forceUpdate
+                ? c.location
+                : stateLocations[c.id]
+                  ? stateLocations[c.id].location
+                  : c.location,
+              speed: c.speed,
+              opacity: nextProps.pings
+                ? this.contactPing(c, Date.now() - nextProps.pingTime)
+                : 1,
+              destination: c.destination
+            };
+          });
         return { locations };
       });
     }
@@ -97,6 +96,7 @@ class GridDom extends Component {
   componentWillUnmount() {
     clearTimeout(this.contactTimeout);
     this.contactTimeout = null;
+    this.sensorsSubscription && this.sensorsSubscription();
   }
   contactLoop = () => {
     if (this.contactTimeout) {
@@ -301,8 +301,33 @@ class GridDom extends Component {
       speedAsking: null
     });
   };
+  _clickMouse = contact => {
+    const { x, y, z } = contact.location;
+    const mutation = gql`
+      mutation SetCalculatedTarget(
+        $simulatorId: ID
+        $coordinates: CoordinatesInput!
+        $contactId: ID
+      ) {
+        setTargetingCalculatedTarget(
+          simulatorId: $simulatorId
+          coordinates: $coordinates
+          contactId: $contactId
+        )
+      }
+    `;
+    const variables = {
+      simulatorId: this.props.simulatorId,
+      coordinates: { x: Math.abs(x), y: Math.abs(y), z: Math.abs(z) },
+      contactId: contact.id
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.sensorContacts) return null;
     const {
       dimensions,
       data,
@@ -316,6 +341,8 @@ class GridDom extends Component {
     } = this.props;
     const { locations, speedAsking } = this.state;
     const { sensorContacts: contacts } = data;
+    if (!dimensions) return <div id="sensorGrid" />;
+
     const { width: dimWidth, height: dimHeight } = dimensions;
     const padding = core ? 15 : 0;
     const width = Math.min(dimWidth, dimHeight) - padding;
@@ -327,58 +354,72 @@ class GridDom extends Component {
     return (
       <div id="sensorGrid" style={gridStyle}>
         <div className={`grid ${ping ? "ping" : ""}`}>
-          {Array(rings).fill(0).map((_, i, array) =>
-            <div
-              key={`ring-${i}`}
-              className="ring"
-              style={{
-                width: `${(i + 1) / array.length * 100}%`,
-                height: `${(i + 1) / array.length * 100}%`
-              }}
-            />
-          )}
-          {Array(lines).fill(0).map((_, i, array) =>
-            <div
-              key={`line-${i}`}
-              className="line"
-              style={{
-                transform: `rotate(${(i + 0.5) / array.length * 360}deg)`
-              }}
-            />
-          )}
-          {contacts.map(
-            contact =>
-              locations[contact.id] &&
-              <SensorContact
-                key={contact.id}
-                width={width}
-                core={core}
-                {...contact}
-                mousedown={e => this._downMouse(e, contact.id)}
-                location={locations[contact.id].location}
-                destination={locations[contact.id].destination}
-                opacity={locations[contact.id].opacity}
-                mouseover={hoverContact}
+          {Array(rings)
+            .fill(0)
+            .map((_, i, array) => (
+              <div
+                key={`ring-${i}`}
+                className="ring"
+                style={{
+                  width: `${(i + 1) / array.length * 100}%`,
+                  height: `${(i + 1) / array.length * 100}%`
+                }}
               />
-          )}
-          {movingContact &&
+            ))}
+          {Array(lines)
+            .fill(0)
+            .map((_, i, array) => (
+              <div
+                key={`line-${i}`}
+                className="line"
+                style={{
+                  transform: `rotate(${(i + 0.5) / array.length * 360}deg)`
+                }}
+              />
+            ))}
+          {contacts &&
+            contacts.map(
+              contact =>
+                locations[contact.id] && (
+                  <SensorContact
+                    key={contact.id}
+                    width={width}
+                    core={core}
+                    {...contact}
+                    mousedown={
+                      core
+                        ? e => this._downMouse(e, contact.id)
+                        : this._clickMouse
+                    }
+                    location={locations[contact.id].location}
+                    destination={locations[contact.id].destination}
+                    opacity={
+                      this.props.pings ? locations[contact.id].opacity : 1
+                    }
+                    mouseover={hoverContact}
+                  />
+                )
+            )}
+          {movingContact && (
             <div id="movingContact">
               <SensorContact width={width} {...movingContact} />{" "}
-            </div>}
-          {speedAsking &&
+            </div>
+          )}
+          {speedAsking && (
             <div
               className="speed-container"
               style={{
                 transform: `translate(${speedAsking.x}px, ${speedAsking.y}px)`
               }}
             >
-              {speeds.map(s =>
+              {speeds.map(s => (
                 <p key={s.value} onClick={() => this.triggerUpdate(s.value)}>
                   {s.label}
                 </p>
-              )}
+              ))}
               <p onClick={this.cancelMove}>Stop</p>
-            </div>}
+            </div>
+          )}
         </div>
       </div>
     );

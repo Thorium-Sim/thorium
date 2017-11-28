@@ -10,5 +10,6 @@ type TractorBeam {
   target: Boolean
   strength: Float
   stress: Float
+  scanning: Boolean
 }
 `;

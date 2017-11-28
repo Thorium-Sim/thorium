@@ -1,12 +1,39 @@
 import React, { Component } from "react";
-import { Row, Col, Container, Media, Button } from "reactstrap";
+import { Row, Col, Container } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
-import Immutable from "immutable";
+import Tour from "reactour";
+
 import Grid from "./gridDom";
 import TorpedoLoading from "../TorpedoLoading";
-import { /*PhaserArc, */ PhaserBeam } from "../PhaserCharging";
+import { /*PhaserArc, */ PhaserBeam, PhaserFire } from "../PhaserCharging";
+import DamageOverlay from "../helpers/DamageOverlay";
+import TargetControls from "./targetControls";
+import Coordinates from "./coordinates";
+
+const trainingSteps = [
+  {
+    selector: ".targeting-screen",
+    content:
+      "This screen is used to target and attack contacts outside the ship. Be careful - the weapons on your ship are dangerous."
+  },
+  {
+    selector: ".targeting-area",
+    content:
+      "Use this area to lock onto a target. Once a target is locked on, you will be able to acurately fire your weapons at it."
+  },
+  {
+    selector: ".phaser-holder",
+    content:
+      "You can fire your phasers from this area. Phasers are energy weapons which you must first charge before you can fire them. Phasers are effective against shielding systems. Press and hold the fire button to fire your phasers. Keep an eye on the heat - if your phasers overheat, you won't be able to fire them until they cool down."
+  },
+  {
+    selector: ".torpedos",
+    content:
+      "Here you can fire your torpedos at the target. Torpedos are explosive projectile weapons and can deal more damage than phasers. However, you have a limited supply so use them wisely."
+  }
+];
 
 const TARGETING_QUERY = gql`
   query Targeting($simulatorId: ID) {
@@ -15,6 +42,22 @@ const TARGETING_QUERY = gql`
       type
       name
       quadrants
+      coordinateTargeting
+      calculatedTarget {
+        x
+        y
+        z
+      }
+      enteredTarget {
+        x
+        y
+        z
+      }
+      targetedSensorContact {
+        id
+        picture
+        name
+      }
       power {
         power
         powerLevels
@@ -68,6 +111,22 @@ const TARGETING_SUB = gql`
       type
       name
       quadrants
+      coordinateTargeting
+      calculatedTarget {
+        x
+        y
+        z
+      }
+      enteredTarget {
+        x
+        y
+        z
+      }
+      targetedSensorContact {
+        id
+        picture
+        name
+      }
       power {
         power
         powerLevels
@@ -122,7 +181,7 @@ const PHASERS_SUB = gql`
 class Targeting extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { disabledPhasers: {} };
     this.targetingSubscription = null;
     this.phasersSubscription = null;
     this.phaserLoopId = null;
@@ -164,23 +223,25 @@ class Targeting extends Component {
         document: TARGETING_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ targeting: subscriptionData.data.targetingUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            targeting: subscriptionData.targetingUpdate
+          });
         }
       });
       this.phasersSubscription = nextProps.data.subscribeToMore({
         document: PHASERS_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ phasers: subscriptionData.data.phasersUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            phasers: subscriptionData.phasersUpdate
+          });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.phasersSubscription && this.phasersSubscription();
+    this.targetingSubscription && this.targetingSubscription();
   }
   targetContact(targetId) {
     const targeting = this.props.data.targeting[0];
@@ -198,7 +259,7 @@ class Targeting extends Component {
       variables
     });
   }
-  untargetContact(targetId) {
+  untargetContact = targetId => {
     const targeting = this.props.data.targeting[0];
     const mutation = gql`
       mutation UntargetContact($systemId: ID!, $targetId: ID!) {
@@ -213,8 +274,8 @@ class Targeting extends Component {
       mutation,
       variables
     });
-  }
-  targetSystem(targetId, system) {
+  };
+  targetSystem = (targetId, system) => {
     const targeting = this.props.data.targeting[0];
     const mutation = gql`
       mutation TargetContact($systemId: ID!, $targetId: ID!, $system: String!) {
@@ -230,7 +291,7 @@ class Targeting extends Component {
       mutation,
       variables
     });
-  }
+  };
   chargePhasers(beamId) {
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
@@ -295,44 +356,88 @@ class Targeting extends Component {
       mutation,
       variables
     });
+    this.setState({
+      disabledPhasers: Object.assign({}, this.state.disabledPhasers, {
+        [beamId]: true
+      })
+    });
+    setTimeout(() => {
+      this.setState({
+        disabledPhasers: Object.assign({}, this.state.disabledPhasers, {
+          [beamId]: false
+        })
+      });
+    }, 3000);
     document.addEventListener("mouseup", this.mouseup);
   }
   render() {
-    if (this.props.data.loading) return null;
-    const targeting = this.props.data.targeting[0];
-    const phasers = this.props.data.phasers[0];
+    if (this.props.data.loading || !this.props.data.targeting) return null;
+    const targeting = this.props.data.targeting && this.props.data.targeting[0];
+    const phasers = this.props.data.phasers && this.props.data.phasers[0];
     if (!targeting) return <p>No Targeting</p>;
     const targetedContact = targeting.contacts.find(t => t.targeted);
     return (
       <Container fluid className="targeting-control">
         <Row>
-          <Col sm="5">
-            <Measure useClone={true} includeMargin={false}>
-              {dimensions => {
-                return dimensions.width !== 0
-                  ? <Grid
-                      dimensions={dimensions}
-                      targetContact={this.targetContact.bind(this)}
-                      untargetContact={this.untargetContact.bind(this)}
-                      targets={targeting.contacts}
-                    />
-                  : <div />;
-              }}
-            </Measure>
+          <Col sm="5" className="targeting-area">
+            <DamageOverlay system={targeting} message="Targeting Offline" />
+            {targeting.coordinateTargeting ? (
+              <Coordinates targeting={targeting} client={this.props.client} />
+            ) : (
+              <div style={{ height: "100%", minHeight: "40vh" }}>
+                <Measure
+                  bounds
+                  onResize={contentRect => {
+                    this.setState({ dimensions: contentRect.bounds });
+                  }}
+                >
+                  {({ measureRef }) => (
+                    <div
+                      ref={measureRef}
+                      style={{ height: "100%", minHeight: "40vh" }}
+                    >
+                      <Grid
+                        dimensions={this.state.dimensions}
+                        targetContact={this.targetContact.bind(this)}
+                        untargetContact={this.untargetContact.bind(this)}
+                        targets={targeting.contacts}
+                      />
+                    </div>
+                  )}
+                </Measure>
+                <small>Follow a contact with your mouse to target.</small>
+              </div>
+            )}
           </Col>
           <Col sm="7">
-            {phasers.beams.map((p, i) =>
-              <PhaserBeam
-                key={p.id}
-                {...p}
-                index={i + 1}
-                chargePhasers={this.chargePhasers.bind(this)}
-                dischargePhasers={this.dischargePhasers.bind(this)}
-                coolPhasers={this.coolPhasers.bind(this)}
-                firePhasers={this.firePhasers.bind(this)}
-                targeting={true}
-              />
-            )}
+            <DamageOverlay system={phasers} message="Phasers Offline" />
+            <div className="phaser-holder">
+              {phasers.beams.map(
+                (p, i, arr) =>
+                  arr.length > 2 ? (
+                    <PhaserFire
+                      key={p.id}
+                      {...p}
+                      disabled={this.state.disabledPhasers[p.id]}
+                      index={i + 1}
+                      firePhasers={this.firePhasers.bind(this)}
+                      coolPhasers={this.coolPhasers.bind(this)}
+                    />
+                  ) : (
+                    <PhaserBeam
+                      key={p.id}
+                      {...p}
+                      disabled={this.state.disabledPhasers[p.id]}
+                      index={i + 1}
+                      chargePhasers={this.chargePhasers.bind(this)}
+                      dischargePhasers={this.dischargePhasers.bind(this)}
+                      coolPhasers={this.coolPhasers.bind(this)}
+                      firePhasers={this.firePhasers.bind(this)}
+                      targeting={true}
+                    />
+                  )
+              )}
+            </div>
             <Row>
               <Col sm="8">
                 <PhaserCoolant coolant={phasers.coolant} />
@@ -342,85 +447,30 @@ class Targeting extends Component {
           </Col>
         </Row>
         <Row className="target-area">
-          <Col sm={3}>
-            {targetedContact &&
-              <div>
-                <h4>Targeted Contact</h4>
-                <Media>
-                  <Media left href="#">
-                    <Media
-                      object
-                      src={targetedContact.pictureUrl}
-                      alt="Generic placeholder image"
-                    />
-                  </Media>
-                  <Media body>
-                    <Media heading>
-                      {targetedContact.name}
-                    </Media>
-                  </Media>
-                </Media>
-                <Button
-                  block
-                  color="warning"
-                  onClick={this.untargetContact.bind(this, targetedContact.id)}
-                >
-                  Unlock Target
-                </Button>
-              </div>}
+          <Col sm={7}>
+            <TargetControls
+              targetedContact={
+                targeting.coordinateTargeting
+                  ? targeting.targetedSensorContact
+                  : targetedContact
+              }
+              untargetContact={this.untargetContact}
+              targetSystem={this.targetSystem}
+            />
           </Col>
-          <Col sm={4}>
-            {targetedContact &&
-              <Row>
-                <Col sm={12}>
-                  <h4>Systems Targeting</h4>
-                </Col>
-                {[
-                  "General",
-                  "Engines",
-                  "Sensors",
-                  "Tractor Beam",
-                  "Communications",
-                  "Weapons",
-                  "Shields"
-                ].map(s => {
-                  return (
-                    <Col key={`system-${s}`} sm={6}>
-                      <label className="custom-control custom-radio">
-                        <input
-                          id="radio1"
-                          name="system"
-                          type="radio"
-                          onChange={this.targetSystem.bind(
-                            this,
-                            targetedContact.id,
-                            s
-                          )}
-                          checked={targetedContact.system === s}
-                          className="custom-control-input"
-                        />
-                        <span className="custom-control-indicator" />
-                        <span className="custom-control-description">
-                          {s}
-                        </span>
-                      </label>
-                    </Col>
-                  );
-                })}
-                {/* Uncomment for other targeting
-    <Col sm={6}>
-    <label className="custom-control custom-radio">
-    <input id="radio1" name="system" type="radio" className="custom-control-input" />
-    <span className="custom-control-indicator"></span>
-    <span className="custom-control-description"><Input size="sm" /></span>
-    </label>
-  </Col>*/}
-              </Row>}
-          </Col>
-          <Col sm={4}>
-            <TorpedoLoading simulator={this.props.simulator} />
+          <Col sm={4} className="torpedos">
+            <TorpedoLoading
+              simulator={this.props.simulator}
+              maxLaunchers={1}
+              targeting={true}
+            />
           </Col>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }

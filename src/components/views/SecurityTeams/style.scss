@@ -11,10 +11,10 @@
       padding: 5px;
       border-radius: 5px;
       &:active {
-        background-color: rgba(255,255,255,0.4);
+        background-color: rgba(255, 255, 255, 0.4);
       }
       &.selected {
-        background-color: rgba(255,255,255,0.2);
+        background-color: rgba(255, 255, 255, 0.2);
       }
     }
   }
@@ -24,7 +24,8 @@
       overflow-y: scroll;
     }
   }
-  .location-label, .location-label label  {
+  .location-label,
+  .location-label label {
     margin-bottom: 0;
     padding-bottom: 0;
   }
@@ -46,11 +47,11 @@
     font-weight: 800;
   }
   .scroller {
-    max-height: 100%;
+    max-height: calc(100% - 20px);
     overflow-y: scroll;
   }
   .label-section {
-        margin-bottom: 5px;
+    margin-bottom: 5px;
   }
   p {
     margin: 0;

@@ -1,18 +1,39 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
-import TransitionGroup from "react-transition-group/TransitionGroup";
 import { TweenMax } from "gsap";
 import { findDOMNode } from "react-dom";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
-import "./style.scss";
+import Tour from "reactour";
+
+import DamageOverlay from "../helpers/DamageOverlay";
+import "./style.css";
+
+import TorpedoFire from "./torpedoFire";
+
+const trainingSteps = [
+  {
+    selector: ".torpedo-loading",
+    content:
+      "Torpedos are explosive projectile weapons. You can use this screen to load torpedos into your launchers."
+  },
+  {
+    selector: ".torpedoButton",
+    content: "Click the load button to see the available torpedos."
+  },
+  {
+    selector: ".torpedoPickScroll",
+    content:
+      "Click on one of the torpedos to load it into your launcher. Recognize that some torpedos have different properties. For example, photon torpedos travel quickly but carry a smaller payload, thus causing less damage. Quantum torpedos do not travel as quickly, but are many times more explosive than photon torpedos."
+  }
+];
 
 const TORPEDO_SUB = gql`
   subscription TorpedosUpdate($simulatorId: ID!) {
     torpedosUpdate(simulatorId: $simulatorId) {
       id
       loaded
+      name
       power {
         power
         powerLevels
@@ -32,147 +53,54 @@ const TORPEDO_SUB = gql`
 `;
 
 class TorpedoLoading extends Component {
-  state = {
-    torpedoState: "idle",
-    torpedoType: "other",
-    enabled: true,
-    screen: "TorpedoTube"
-  };
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
       this.subscription = nextProps.data.subscribeToMore({
         document: TORPEDO_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ torpedos: subscriptionData.data.torpedosUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            torpedos: subscriptionData.torpedosUpdate
+          });
         }
       });
     }
-    // Update the state based on the props
-    const torpedo = nextProps.data.torpedos[0];
-    let type = this.state.torpedoType;
-    if (torpedo.loaded !== "false") {
-      const loadedTorp = torpedo.inventory.find(t => t.id === torpedo.loaded);
-      type = loadedTorp.type;
-    }
-    this.setState({
-      torpedoState: torpedo.state,
-      torpedoType: type
-    });
   }
-  updateScreen(screen) {
-    this.setState({
-      screen
-    });
-  }
-  loadTorpedo(which) {
-    const torpedo = this.props.data.torpedos[0];
-    const mutation = gql`
-      mutation loadWarhead($id: ID!, $warheadId: ID!) {
-        torpedoLoadWarhead(id: $id, warheadId: $warheadId)
-      }
-    `;
-    const variables = {
-      id: torpedo.id,
-      warheadId: which
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-    this.setState({
-      enabled: false
-    });
-    //Reenable the buttons
-    setTimeout(() => {
-      this.setState({
-        enabled: true
-      });
-    }, 4000);
-    this.updateScreen("TorpedoTube");
-  }
-  unloadTorpedo() {
-    const torpedo = this.props.data.torpedos[0];
-    const mutation = gql`
-      mutation unloadWarhead($id: ID!) {
-        torpedoUnload(id: $id)
-      }
-    `;
-    const variables = {
-      id: torpedo.id
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-    this.setState({
-      enabled: false
-    });
-    //Reenable the buttons
-    setTimeout(() => {
-      this.setState({
-        enabled: true
-      });
-    }, 4000);
-  }
-  fireTorpedo() {
-    const torpedo = this.props.data.torpedos[0];
-    const mutation = gql`
-      mutation fireWarhead($id: ID!) {
-        torpedoFire(id: $id)
-      }
-    `;
-    const variables = {
-      id: torpedo.id
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-    this.setState({
-      enabled: false
-    });
-    //Reenable the buttons
-    setTimeout(() => {
-      this.setState({
-        enabled: true
-      });
-    }, 4000);
+  componentWillUnmount() {
+    this.subscription && this.subscription();
   }
   render() {
-    const components = [TorpedoTube, TorpedoPick];
-    if (this.props.data.loading) return null;
-    const torpedo = this.props.data.torpedos[0];
+    if (this.props.data.loading || !this.props.data.torpedos) return null;
+    const torpedos = this.props.data.torpedos;
+    if (!torpedos) return null;
     return (
       <div className="torpedo-loading">
-        <TransitionGroup>
-          {components
-            .map(Comp => {
-              if (this.state.screen === Comp.name)
-                return (
-                  <Comp
-                    key={Comp.name}
-                    {...this.state}
-                    inventory={torpedo.inventory}
-                    loadTorpedo={this.loadTorpedo.bind(this)}
-                    unloadTorpedo={this.unloadTorpedo.bind(this)}
-                    updateScreen={this.updateScreen.bind(this)}
-                    fireTorpedo={this.fireTorpedo.bind(this)}
-                  />
-                );
-              return null;
-            })
-            .filter(a => a)}
-        </TransitionGroup>
+        {torpedos.map(
+          t =>
+            torpedos.length > (this.props.maxLaunchers || Infinity) ? (
+              <TorpedoFire key={t.id} torpedo={t} client={this.props.client} />
+            ) : (
+              <TorpedoLoader
+                key={t.id}
+                torpedo={t}
+                targeting={this.props.targeting}
+                client={this.props.client}
+              />
+            )
+        )}
+        {this.props.clientObj && (
+          <Tour
+            steps={trainingSteps}
+            isOpen={this.props.clientObj.training}
+            onRequestClose={this.props.stopTraining}
+          />
+        )}
       </div>
     );
   }
 }
 
-const Torpedo = ({ state, type, updateScreen }) => {
+const Torpedo = ({ state, type }) => {
   const style = {
     opacity: state !== "loaded" ? 0 : 1,
     top: state === "loaded" || state === "fired" ? "86%" : "2px",
@@ -258,29 +186,32 @@ class TorpedoTube extends Transitioner {
       updateScreen,
       unloadTorpedo,
       fireTorpedo,
-      enabled
+      enabled,
+      targeting
     } = this.props;
     return (
       <div style={{ position: "absolute", width: "100%", height: "100%" }}>
         <div className="torpedoButton">
-          {torpedoState === "idle"
-            ? <Button
+          {torpedoState === "idle" ? (
+            <Button
+              block
+              color="info"
+              disabled={!enabled}
+              onClick={updateScreen.bind(this, "TorpedoPick")}
+            >
+              Load Torpedo
+            </Button>
+          ) : (
+            <div>
+              <Button
                 block
-                color="info"
+                color="warning"
                 disabled={!enabled}
-                onClick={updateScreen.bind(this, "TorpedoPick")}
+                onClick={unloadTorpedo}
               >
-                Load Torpedo
+                Unload Torpedo
               </Button>
-            : <div>
-                <Button
-                  block
-                  color="warning"
-                  disabled={!enabled}
-                  onClick={unloadTorpedo}
-                >
-                  Unload Torpedo
-                </Button>
+              {targeting && (
                 <Button
                   block
                   color="danger"
@@ -289,10 +220,13 @@ class TorpedoTube extends Transitioner {
                 >
                   Fire Torpedo
                 </Button>
-              </div>}
+              )}
+            </div>
+          )}
         </div>
         <Torpedo state={torpedoState} type={torpedoType} />
         <img
+          alt="torpedo"
           role="presentation"
           className="torpedoImage"
           draggable="false"
@@ -335,12 +269,17 @@ class TorpedoPick extends Transitioner {
                   key={t + i}
                   onClick={loadTorpedo.bind(
                     this,
-                    (inventory.find(i => i.type === t) || {}).id
+                    (inventory.find(inv => inv.type === t) || {}).id
                   )}
                   className="torpedoPick"
                   style={{ width: torpedoWidth }}
                 >
-                  <img draggable="false" role="presentation" src={img} />
+                  <img
+                    alt="torpedo"
+                    draggable="false"
+                    role="presentation"
+                    src={img}
+                  />
                   <span style={{ textTransform: "capitalize" }}>
                     {t} ({types[t]})
                   </span>
@@ -366,6 +305,7 @@ const TORPEDO_QUERY = gql`
     torpedos(simulatorId: $simulatorId) {
       id
       loaded
+      name
       power {
         power
         powerLevels
@@ -383,6 +323,155 @@ const TORPEDO_QUERY = gql`
     }
   }
 `;
+
+class TorpedoLoader extends Component {
+  constructor(props) {
+    super(props);
+    let type = "other";
+    if (props.torpedo.loaded !== "false") {
+      const loadedTorp = props.torpedo.inventory.find(
+        t => t.id === props.torpedo.loaded
+      );
+      type = loadedTorp.type;
+    }
+    this.state = {
+      torpedoState: props.torpedo.state,
+      torpedoType: type,
+      enabled: true,
+      screen: "TorpedoTube"
+    };
+  }
+  componentWillReceiveProps(nextProps) {
+    // Update the state based on the props
+    const torpedo = nextProps.torpedo;
+    let type = this.state.torpedoType;
+    if (torpedo.loaded !== "false") {
+      const loadedTorp = torpedo.inventory.find(t => t.id === torpedo.loaded);
+      type = loadedTorp.type;
+    }
+    this.setState({
+      torpedoState: torpedo.state,
+      torpedoType: type
+    });
+  }
+
+  updateScreen(screen) {
+    this.setState({
+      screen
+    });
+  }
+  loadTorpedo(which) {
+    const torpedo = this.props.torpedo;
+    const mutation = gql`
+      mutation loadWarhead($id: ID!, $warheadId: ID!) {
+        torpedoLoadWarhead(id: $id, warheadId: $warheadId)
+      }
+    `;
+    const variables = {
+      id: torpedo.id,
+      warheadId: which
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+    this.setState({
+      enabled: false
+    });
+    //Reenable the buttons
+    setTimeout(() => {
+      this.setState({
+        enabled: true
+      });
+    }, 4000);
+    this.updateScreen("TorpedoTube");
+  }
+  unloadTorpedo() {
+    const torpedo = this.props.torpedo;
+    const mutation = gql`
+      mutation unloadWarhead($id: ID!) {
+        torpedoUnload(id: $id)
+      }
+    `;
+    const variables = {
+      id: torpedo.id
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+    this.setState({
+      enabled: false
+    });
+    //Reenable the buttons
+    setTimeout(() => {
+      this.setState({
+        enabled: true
+      });
+    }, 4000);
+  }
+  fireTorpedo() {
+    const torpedo = this.props.torpedo;
+    const mutation = gql`
+      mutation fireWarhead($id: ID!) {
+        torpedoFire(id: $id)
+      }
+    `;
+    const variables = {
+      id: torpedo.id
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+    this.setState({
+      enabled: false
+    });
+    //Reenable the buttons
+    setTimeout(() => {
+      this.setState({
+        enabled: true
+      });
+    }, 4000);
+  }
+  render() {
+    const components = { TorpedoTube: TorpedoTube, TorpedoPick: TorpedoPick };
+    const torpedo = this.props.torpedo;
+    return (
+      <div className="torpedo-loader">
+        <DamageOverlay
+          system={torpedo}
+          message={`${torpedo.name} Offline`}
+          style={{
+            height: "250px",
+            width: "500px"
+          }}
+        />
+        <h3 className="text-center">{torpedo.name}</h3>
+        {Object.keys(components)
+          .map(compName => {
+            const Comp = components[compName];
+            if (this.state.screen === compName) {
+              return (
+                <Comp
+                  key={Comp.name}
+                  {...this.state}
+                  targeting={this.props.targeting}
+                  inventory={torpedo.inventory}
+                  loadTorpedo={this.loadTorpedo.bind(this)}
+                  unloadTorpedo={this.unloadTorpedo.bind(this)}
+                  updateScreen={this.updateScreen.bind(this)}
+                  fireTorpedo={this.fireTorpedo.bind(this)}
+                />
+              );
+            }
+            return null;
+          })
+          .filter(a => a)}
+      </div>
+    );
+  }
+}
 
 export default graphql(TORPEDO_QUERY, {
   options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })

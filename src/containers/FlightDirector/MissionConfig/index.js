@@ -10,11 +10,12 @@ import {
   ButtonGroup,
   FormGroup,
   Label,
-  Input
+  Input,
+  FormText
 } from "reactstrap";
 import TimelineConfig from "./TimelineConfig";
 import { Link } from "react-router";
-import "./style.scss";
+import "./style.css";
 const MISSION_SUB = gql`
   subscription MissionSubscription {
     missionsUpdate {
@@ -50,7 +51,7 @@ class MissionsConfig extends Component {
         document: MISSION_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            missions: subscriptionData.data.missionsUpdate
+            missions: subscriptionData.missionsUpdate
           });
         }
       });
@@ -77,7 +78,7 @@ class MissionsConfig extends Component {
   removeMission = () => {
     let mission = this.state.selectedMission;
     if (mission) {
-      if (confirm("Are you sure you want to delete that mission?")) {
+      if (window.confirm("Are you sure you want to delete that mission?")) {
         this.props.client.mutate({
           mutation: gql`
             mutation RemoveMission($id: ID!) {
@@ -115,9 +116,39 @@ class MissionsConfig extends Component {
       variables: obj
     });
   };
-  showImportModal = () => {};
+  importMission = evt => {
+    const self = this;
+    const fileReader = new FileReader();
+    fileReader.onload = function() {
+      const variables = {
+        json: this.result
+      };
+      const mutation = gql`
+        mutation ImportMission($json: String!) {
+          importMission(jsonString: $json)
+        }
+      `;
+      self.props.client.mutate({
+        mutation,
+        variables
+      });
+    };
+    evt.target.files[0] && fileReader.readAsText(evt.target.files[0]);
+  };
+  exportMission = () => {
+    const { missions } = this.props.data;
+    const { selectedMission } = this.state;
+    const mission = missions.find(m => m.id === selectedMission);
+    const dataStr =
+      "data:text/json;charset=utf-8," +
+      encodeURIComponent(JSON.stringify(mission));
+    const dlAnchorElem = document.getElementById("downloadAnchorElem");
+    dlAnchorElem.setAttribute("href", dataStr);
+    dlAnchorElem.setAttribute("download", `${mission.name}.misn`);
+    dlAnchorElem.click();
+  };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.missions) return null;
     const { missions } = this.props.data;
     const { selectedMission } = this.state;
     const mission = missions.find(m => m.id === selectedMission);
@@ -150,16 +181,26 @@ class MissionsConfig extends Component {
               <Button onClick={this.createMission} size="sm" color="success">
                 Add
               </Button>
-              <Button onClick={this.showImportModal} size="sm" color="warning">
-                Import
-              </Button>
-              {selectedMission &&
+              {selectedMission && (
                 <Button onClick={this.removeMission} size="sm" color="danger">
                   Remove
-                </Button>}
+                </Button>
+              )}
             </ButtonGroup>
+            <FormGroup>
+              <Label for="importFile">Import Mission</Label>
+              <Input
+                type="file"
+                name="file"
+                id="importFile"
+                onChange={this.importMission}
+              />
+              <FormText color="muted">
+                Mission files will be in a ".misn" format.
+              </FormText>
+            </FormGroup>
           </Col>
-          {mission &&
+          {mission && (
             <Col sm="2">
               <h5>Mission Config</h5>
               <FormGroup>
@@ -179,8 +220,15 @@ class MissionsConfig extends Component {
                   onChange={e => this.updateMission("description", e)}
                 />
               </FormGroup>
-            </Col>}
-          {mission &&
+              <a id="downloadAnchorElem" style={{ display: "none" }}>
+                Nothing here
+              </a>
+              <Button block color="info" onClick={this.exportMission}>
+                Export
+              </Button>
+            </Col>
+          )}
+          {mission && (
             <Col sm="8">
               <TimelineConfig
                 type="mission"
@@ -188,7 +236,8 @@ class MissionsConfig extends Component {
                 config={this.props.config}
                 client={this.props.client}
               />
-            </Col>}
+            </Col>
+          )}
         </Row>
       </Container>
     );

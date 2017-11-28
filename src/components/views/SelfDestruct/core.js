@@ -1,13 +1,10 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import {
-  Container
-} from "reactstrap";
+import { Container } from "reactstrap";
 import Moment from "moment";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
 import { InputField } from "../../generic/core";
-import "./style.scss";
+import "./style.css";
 
 function padDigits(number, digits) {
   return (
@@ -38,13 +35,15 @@ class SelfDestructCore extends Component {
           id: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ simulators: subscriptionData.data.simulatorsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            simulators: subscriptionData.simulatorsUpdate
+          });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.sub && this.sub();
   }
   activate = time => {
     if (time) {
@@ -103,7 +102,7 @@ class SelfDestructCore extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.simulators) return null;
     const {
       selfDestructTime,
       selfDestructCode,

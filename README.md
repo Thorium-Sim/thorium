@@ -1,5 +1,5 @@
 ![Thorium](github-banner.png)
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/53c3c34f0752473383ba4341fa69cb55)](https://www.codacy.com/app/alexanderson1993/thorium?utm_source=github.com&utm_medium=referral&utm_content=Thorium-Sim/thorium&utm_campaign=badger)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/53c3c34f0752473383ba4341fa69cb55)](https://www.codacy.com/app/alexanderson1993/thorium?utm_source=github.com&utm_medium=referral&utm_content=Thorium-Sim/thorium&utm_campaign=Badge_Coverage)
@@ -12,10 +12,9 @@
 
 *New here? Check out the [contributing document](CONTRIBUTING.md)*
 
-Thorium is built with the following technologies:
-* [React](https://facebook.github.io/react/) for the frontend
-* [Apollo Client](http://www.apollostack.com/) for the data layer
-* [GraphQL](http://graphql.org) for the transmission layer
+Want something to work on? Here's where [we need help](https://github.com/Thorium-Sim/thorium/labels/help%20wanted).
+Not sure how to work with Thorium? Guides are in the [wiki](https://github.com/Thorium-Sim/thorium/wiki)
+Thorium accepts [donations](https://thoriumsim.com/download/)
 
 ## What is Thorium
 
@@ -47,11 +46,14 @@ Thorium is a simulator controls platform which eventually hopes to encapsulate t
 
 And more. The above merely scratches the surface.
 
-[Data Model Diagram](https://www.lucidchart.com/invitations/accept/6283bfd5-06ef-4dd5-8668-738ddf3e08ed)
-
 Thorium is flexible enough to provide a system for creating an integrated, distributed, fault-tolerant show-control system that can power lights, sound, video, and take input and provide output to a wide variety of devices.
 
-Created with ❤ by [Alex Anderson](http://ralexanderson.com).
+Created with ❤ by [Alex Anderson](http://ralexanderson.com) and [Fyreworks](https://fyreworks.us).
+
+Thorium is built with the following technologies:
+* [React](https://facebook.github.io/react/) for the frontend
+* [Apollo Client](http://www.apollostack.com/) for the data layer
+* [GraphQL](http://graphql.org) for the transmission layer
 
 ## Getting Started
 
@@ -116,8 +118,8 @@ A list of the most important folders. (You can pretty much ignore everything els
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-| [<img src="https://avatars1.githubusercontent.com/u/6558157?v=4" width="100px;"/><br /><sub>Alex</sub>](http://ralexanderson.com)<br />[💻](https://github.com/Fyreworks/Thorium/commits?author=alexanderson1993 "Code") [📖](https://github.com/Fyreworks/Thorium/commits?author=alexanderson1993 "Documentation") [🎨](#design-alexanderson1993 "Design") | [<img src="https://avatars0.githubusercontent.com/u/1387836?v=4" width="100px;"/><br /><sub>Emrix</sub>](https://github.com/Emrix)<br />[💻](https://github.com/Fyreworks/Thorium/commits?author=Emrix "Code") [👀](#review-Emrix "Reviewed Pull Requests") [🤔](#ideas-Emrix "Ideas, Planning, & Feedback") | [<img src="https://avatars3.githubusercontent.com/u/30132958?v=4" width="100px;"/><br /><sub>ctolley6</sub>](https://github.com/ctolley6)<br />[🤔](#ideas-ctolley6 "Ideas, Planning, & Feedback") [✅](#tutorial-ctolley6 "Tutorials") | [<img src="https://avatars0.githubusercontent.com/u/22157796?v=4" width="100px;"/><br /><sub>Todd Rasband</sub>](https://github.com/Rasbandit)<br />[🎨](#design-Rasbandit "Design") | [<img src="https://avatars0.githubusercontent.com/u/45031?v=4" width="100px;"/><br /><sub>Brent Anderson</sub>](http://www.brentjanderson.com)<br />[🤔](#ideas-brentjanderson "Ideas, Planning, & Feedback") |
-| :---: | :---: | :---: | :---: | :---: |
+| [<img src="https://avatars1.githubusercontent.com/u/6558157?v=4" width="100px;"/><br /><sub>Alex</sub>](http://ralexanderson.com)<br />[💻](https://github.com/thorium-sim/Thorium/commits?author=alexanderson1993 "Code") [📖](https://github.com/thorium-sim/Thorium/commits?author=alexanderson1993 "Documentation") [🎨](#design-alexanderson1993 "Design") | [<img src="https://avatars0.githubusercontent.com/u/1387836?v=4" width="100px;"/><br /><sub>Emrix</sub>](https://github.com/Emrix)<br />[💻](https://github.com/thorium-sim/Thorium/commits?author=Emrix "Code") [👀](#review-Emrix "Reviewed Pull Requests") [🤔](#ideas-Emrix "Ideas, Planning, & Feedback") | [<img src="https://avatars3.githubusercontent.com/u/30132958?v=4" width="100px;"/><br /><sub>ctolley6</sub>](https://github.com/ctolley6)<br />[🤔](#ideas-ctolley6 "Ideas, Planning, & Feedback") [✅](#tutorial-ctolley6 "Tutorials") | [<img src="https://avatars0.githubusercontent.com/u/22157796?v=4" width="100px;"/><br /><sub>Todd Rasband</sub>](https://github.com/Rasbandit)<br />[🎨](#design-Rasbandit "Design") | [<img src="https://avatars0.githubusercontent.com/u/45031?v=4" width="100px;"/><br /><sub>Brent Anderson</sub>](http://www.brentjanderson.com)<br />[🤔](#ideas-brentjanderson "Ideas, Planning, & Feedback") | [<img src="https://avatars1.githubusercontent.com/u/4927395?v=4" width="100px;"/><br /><sub>Farpoint</sub>](http://www.farpointStation.org)<br />[🐛](https://github.com/thorium-sim/Thorium/issues?q=author%3Afarpoint "Bug reports") | [<img src="https://avatars1.githubusercontent.com/u/30113240?v=4" width="100px;"/><br /><sub>Isaac Ostler</sub>](https://github.com/isaacOstler)<br />[🐛](https://github.com/thorium-sim/Thorium/issues?q=author%3AisaacOstler "Bug reports") |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!

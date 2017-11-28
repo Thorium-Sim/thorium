@@ -1,4 +1,4 @@
-import App from "../../app";
+import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 
 const updateHeat = () => {
@@ -7,7 +7,7 @@ const updateHeat = () => {
       const speedVal = sys.on ? sys.speed : -4;
       let heatAdd = Math.min(
         1,
-        Math.max(0, sys.heat + speedVal * sys.heatRate * 1 / 1000)
+        Math.max(0, sys.heat + speedVal * sys.heatRate * 1 / 50000)
       );
       if (sys.cooling) {
         App.handleEvent({ id: sys.id }, "applyEngineCoolant");

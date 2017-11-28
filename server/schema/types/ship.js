@@ -3,6 +3,9 @@ type Ship {
   clamps: Boolean
   ramps: Boolean
   airlock: Boolean
+  bridgeCrew: Int
+  radiation: Float
+  velocity: Float
   remoteAccessCodes: [RemoteAccessCode]
   selfDestructTime: Float
   selfDestructCode: String

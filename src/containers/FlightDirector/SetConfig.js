@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Link } from "react-router";
 
-import "./setConfig.scss";
+import "./setConfig.css";
 
 /*const SIMULATOR_SUB = gql`subscription SimulatorsUpdate {
   simulatorsUpdate(template: true) {
@@ -37,7 +37,7 @@ class SetConfig extends Component {
       this.subscription = nextProps.data.subscribeToMore({
         document: SIMULATOR_SUB,
         updateQuery: (previousResult, {subscriptionData}) => {
-          return Object.assign({}, previousResult, {simulators: subscriptionData.data.simulatorsUpdate});
+          return Object.assign({}, previousResult, {simulators: subscriptionData.simulatorsUpdate});
         },
       });
     }
@@ -67,10 +67,10 @@ class SetConfig extends Component {
       selectedStationSet,
       selectedStation
     } = this.state;
-    let mutation,
-      variables = {
-        id: selectedSet
-      };
+    let mutation;
+    let variables = {
+      id: selectedSet
+    };
     if (checked) {
       mutation = gql`
         mutation AddClient($id: ID!, $client: SetClientInput!) {
@@ -156,7 +156,7 @@ class SetConfig extends Component {
           <Col>
             <h5>Sets</h5>
             <Card>
-              {sets.map(s =>
+              {sets.map(s => (
                 <li
                   key={s.id}
                   className={`list-group-item ${s.id === selectedSet
@@ -172,7 +172,7 @@ class SetConfig extends Component {
                 >
                   {s.name}
                 </li>
-              )}
+              ))}
             </Card>
             <Button block color="primary" onClick={this.addSet}>
               Add Set
@@ -180,9 +180,9 @@ class SetConfig extends Component {
           </Col>
           <Col>
             <h5>Simulators</h5>
-            {selectedSet &&
+            {selectedSet && (
               <Card>
-                {simulators.map(s =>
+                {simulators.map(s => (
                   <li
                     key={s.id}
                     className={`list-group-item ${s.id === selectedSimulator
@@ -197,16 +197,17 @@ class SetConfig extends Component {
                   >
                     {s.name}
                   </li>
-                )}
-              </Card>}
+                ))}
+              </Card>
+            )}
           </Col>
           <Col>
             <h5>Station Sets</h5>
-            {selectedSimulator &&
+            {selectedSimulator && (
               <Card>
                 {simulators
                   .find(s => s.id === selectedSimulator)
-                  .stationSets.map(s =>
+                  .stationSets.map(s => (
                     <li
                       key={s.id}
                       className={`list-group-item ${s.id === selectedStationSet
@@ -220,56 +221,81 @@ class SetConfig extends Component {
                     >
                       {s.name}
                     </li>
-                  )}
-              </Card>}
+                  ))}
+              </Card>
+            )}
           </Col>
           <Col>
             <h5>Station</h5>
             {selectedSimulator &&
-              selectedStationSet &&
-              <Card>
-                {simulators
-                  .find(s => s.id === selectedSimulator)
-                  .stationSets.find(s => s.id === selectedStationSet)
-                  .stations.map(s =>
-                    <li
-                      key={`station-${s.name}`}
-                      className={`list-group-item ${s.name === selectedStation
-                        ? "selected"
-                        : ""}`}
-                      onClick={() => this.setState({ selectedStation: s.name })}
-                    >
-                      {s.name}
-                    </li>
-                  )}
-              </Card>}
+              selectedStationSet && (
+                <Card>
+                  {simulators
+                    .find(s => s.id === selectedSimulator)
+                    .stationSets.find(s => s.id === selectedStationSet)
+                    .stations.map(s => (
+                      <li
+                        key={`station-${s.name}`}
+                        className={`list-group-item ${s.name === selectedStation
+                          ? "selected"
+                          : ""}`}
+                        onClick={() =>
+                          this.setState({ selectedStation: s.name })}
+                      >
+                        {s.name}
+                      </li>
+                    ))}
+                  <li
+                    key={`station-viewscreen`}
+                    className={`list-group-item ${selectedStation ===
+                    "Viewscreen"
+                      ? "selected"
+                      : ""}`}
+                    onClick={() =>
+                      this.setState({ selectedStation: "Viewscreen" })}
+                  >
+                    Viewscreen
+                  </li>
+                  <li
+                    key={`station-blackout`}
+                    className={`list-group-item ${selectedStation === "Blackout"
+                      ? "selected"
+                      : ""}`}
+                    onClick={() =>
+                      this.setState({ selectedStation: "Blackout" })}
+                  >
+                    Blackout
+                  </li>
+                </Card>
+              )}
           </Col>
           <Col>
             <h5>Clients</h5>
             {selectedSimulator &&
               selectedStationSet &&
-              selectedStation &&
-              <Card style={{ maxHeight: "60vh", overflowY: "scroll" }}>
-                <ul style={{ padding: 0 }}>
-                  {clients.map(s =>
-                    <li key={s.id} className={`list-group-item`}>
-                      <label>
-                        <Input
-                          checked={this.getCurrentClient(s.id).id}
-                          onChange={e => this.updateClient(e, s.id)}
-                          disabled={
-                            this.getClientAssignedStation(s.id) !==
-                              selectedStation &&
-                            this.getClientAssignedStation(s.id) !== true
-                          }
-                          type="checkbox"
-                        />
-                        {s.id}
-                      </label>
-                    </li>
-                  )}
-                </ul>
-              </Card>}
+              selectedStation && (
+                <Card style={{ maxHeight: "60vh", overflowY: "scroll" }}>
+                  <ul style={{ padding: 0 }}>
+                    {clients.map(s => (
+                      <li key={s.id} className={`list-group-item`}>
+                        <label>
+                          <Input
+                            checked={this.getCurrentClient(s.id).id}
+                            onChange={e => this.updateClient(e, s.id)}
+                            disabled={
+                              this.getClientAssignedStation(s.id) !==
+                                selectedStation &&
+                              this.getClientAssignedStation(s.id) !== true
+                            }
+                            type="checkbox"
+                          />
+                          {s.id}
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+              )}
           </Col>
         </Row>
       </Container>

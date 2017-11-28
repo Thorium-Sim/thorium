@@ -3,6 +3,16 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
   }
+  .phaser-holder {
+    height: 35vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+    div {
+      width: 100%;
+    }
+  }
   .targetingGrid-dom {
     border: solid 1px rgba(0,255,0,0.5);
     position: relative;
@@ -60,6 +70,9 @@
     width: 100%;
     justify-content: space-between;
   }
+  .btn[disabled] {
+    pointer-events: none;
+  }
   .coolantHolder {
     margin-bottom: 20px;
   }
@@ -101,6 +114,28 @@
       background: radial-gradient(ellipse at center, #0061b1 0%, #2072c9 100%);
       background-position: center;
     }
+
+  }
+  
+  .current-coordinates {
+    margin-top: 20px;
+  }
+  .coordinate-box {
+    font-size: 20px;    
+    display: flex;
+    align-items: center;
+  }
+  .coordinate-box div{
+    background-color: #333;
+    border:solid 1px #ccc;
+    margin: 5px;
+    padding: 3px;
+    flex:1;
+    display: inline-block;
+    min-height: 38px;
+    &.selected {
+      background-color: #555;
+    }
   }
 }
 
@@ -136,5 +171,9 @@
   .targets-container {
     height: calc(19px * 4);
     overflow-y: scroll;
+  }
+  .media-object {
+    width: 48px;
+    height: 48px;
   }
 }

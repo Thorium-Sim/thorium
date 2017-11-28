@@ -47,7 +47,8 @@ export class GenericSystemConfig extends Component {
         "ShortRangeComm",
         "Reactor",
         "Phasers",
-        "Shields"
+        "Shields",
+        "Torpedo"
       ]
     });
   };
@@ -66,27 +67,25 @@ export class GenericSystemConfig extends Component {
         "ShortRangeComm",
         "Reactor",
         "Phasers",
-        "Shields"
+        "Shields",
+        "Torpedo"
       ]
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.systems) return null;
     const systems = this.props.data.systems;
     return (
       <div className="scroll">
-        {systems.length === 0 &&
-          <p>
-            Click the checkbox to add a {this.props.type} system
-          </p>}
-        {systems.map(s =>
+        {systems.length === 0 && (
+          <p>Click the checkbox to add a {this.props.type} system</p>
+        )}
+        {systems.map(s => (
           <div
             key={s.id}
             style={{ border: "solid 1px rgba(0,0,0,0.5)", padding: "2px" }}
           >
-            <label>
-              {s.type}
-            </label>
+            <label>{s.type}</label>
             <FormGroup>
               <Label>
                 Name
@@ -128,7 +127,7 @@ export class GenericSystemConfig extends Component {
                 className="text-danger"
               />
               {s.power.powerLevels &&
-                s.power.powerLevels.map((p, i) =>
+                s.power.powerLevels.map((p, i) => (
                   <div
                     key={`system-power-${i}`}
                     style={{ display: "inline-block" }}
@@ -146,14 +145,14 @@ export class GenericSystemConfig extends Component {
                         this.updatePowerLevel(s, i, e.target.value)}
                     />
                   </div>
-                )}
+                ))}
             </FormGroup>
             <FormGroup>
               <Label>Isochip Config</Label>
             </FormGroup>
             {this.props.children}
           </div>
-        )}
+        ))}
       </div>
     );
   }

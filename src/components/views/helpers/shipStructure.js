@@ -6,15 +6,30 @@ import {
   DropdownItem
 } from "reactstrap";
 
-export const DeckDropdown = ({ selectedDeck, decks, setSelected }) => {
+export const DeckDropdown = ({
+  allDecks,
+  selectedDeck,
+  decks,
+  setSelected,
+  disabled
+}) => {
   return (
     <UncontrolledDropdown>
-      <DropdownToggle block caret>
+      <DropdownToggle block caret disabled={disabled}>
         {selectedDeck
-          ? `Deck ${decks.find(d => d.id === selectedDeck).number}`
+          ? decks.find(d => d.id === selectedDeck)
+            ? `Deck ${decks.find(d => d.id === selectedDeck).number}`
+            : "All Decks"
           : "Select Deck"}
       </DropdownToggle>
-      <DropdownMenu>
+      <DropdownMenu style={{ maxHeight: "200px", overflowY: "scroll" }}>
+        {allDecks && (
+          <DropdownItem
+            onClick={() => {
+              setSelected({ deck: "All Decks", room: null });
+            }}
+          >{`All Decks`}</DropdownItem>
+        )}
         {decks
           .concat()
           .sort((a, b) => {
@@ -22,14 +37,14 @@ export const DeckDropdown = ({ selectedDeck, decks, setSelected }) => {
             if (b.number < a.number) return 1;
             return 0;
           })
-          .map(d =>
+          .map(d => (
             <DropdownItem
               key={d.id}
               onClick={() => {
                 setSelected({ deck: d.id, room: null });
               }}
             >{`Deck ${d.number}`}</DropdownItem>
-          )}
+          ))}
       </DropdownMenu>
     </UncontrolledDropdown>
   );
@@ -40,34 +55,39 @@ export const RoomDropdown = ({
   otherSelected,
   selectedRoom,
   decks,
-  setSelected
+  setSelected,
+  disabled
 }) => {
   return (
     <UncontrolledDropdown>
-      <DropdownToggle block caret>
+      <DropdownToggle block caret disabled={disabled}>
         {selectedRoom
           ? decks
               .find(d => d.id === selectedDeck)
               .rooms.find(r => r.id === selectedRoom).name
           : "Select Room"}
       </DropdownToggle>
-      {selectedDeck &&
-        <DropdownMenu>
+      {selectedDeck && (
+        <DropdownMenu style={{ maxHeight: "200px", overflowY: "scroll" }}>
           <DropdownItem header>
-            Deck {decks.find(d => d.id === selectedDeck).number}
+            {decks.find(d => d.id === selectedDeck)
+              ? `Deck ${decks.find(d => d.id === selectedDeck).number}`
+              : "All Decks"}
           </DropdownItem>
-          {decks.find(d => d.id === selectedDeck).rooms.map(r =>
-            <DropdownItem
-              key={r.id}
-              disabled={r.id === otherSelected}
-              onClick={() => {
-                setSelected({ room: r.id });
-              }}
-            >
-              {r.name}
-            </DropdownItem>
-          )}
-        </DropdownMenu>}
+          {decks.find(d => d.id === selectedDeck) &&
+            decks.find(d => d.id === selectedDeck).rooms.map(r => (
+              <DropdownItem
+                key={r.id}
+                disabled={r.id === otherSelected}
+                onClick={() => {
+                  setSelected({ room: r.id });
+                }}
+              >
+                {r.name}
+              </DropdownItem>
+            ))}
+        </DropdownMenu>
+      )}
     </UncontrolledDropdown>
   );
 };

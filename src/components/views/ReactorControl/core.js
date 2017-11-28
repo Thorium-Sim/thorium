@@ -3,9 +3,8 @@ import gql from "graphql-tag";
 import { InputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input } from "reactstrap";
-import Immutable from "immutable";
 
-import "./style.scss";
+import "./style.css";
 
 const REACTOR_SUB = gql`
   subscription ReactorsUpdate($simulatorId: ID!) {
@@ -43,17 +42,17 @@ class ReactorControl extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({
-              reactors: subscriptionData.data.reactorUpdate
-            })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            reactors: subscriptionData.reactorUpdate
+          });
         }
       });
     }
   }
-  setEfficiency = (e) => {
+  componentWillUnmount() {
+    this.internalSub && this.internalSub();
+  }
+  setEfficiency = e => {
     if (!e) return;
     const { reactors } = this.props.data;
     const reactor = reactors.find(r => r.model === "reactor");
@@ -70,8 +69,8 @@ class ReactorControl extends Component {
       mutation,
       variables
     });
-  }
-  setPowerLevel = (e) => {
+  };
+  setPowerLevel = e => {
     if (!e || !parseFloat(e)) return;
     const { reactors } = this.props.data;
     const reactor = reactors.find(r => r.model === "reactor");
@@ -88,8 +87,8 @@ class ReactorControl extends Component {
       mutation,
       variables
     });
-  }
-  setHeat = (e) => {
+  };
+  setHeat = e => {
     return;
     /*const { reactors } = this.props.data;
     const reactor = reactors.find(r => r.model === "reactor");
@@ -106,8 +105,8 @@ class ReactorControl extends Component {
       mutation,
       variables
     });*/
-  }
-  setChargeLevel = (e) => {
+  };
+  setChargeLevel = e => {
     if (!e) return;
     const { reactors } = this.props.data;
     const battery = reactors.find(r => r.model === "battery");
@@ -118,14 +117,14 @@ class ReactorControl extends Component {
     `;
     const variables = {
       id: battery.id,
-      e: (e/100)
+      e: e / 100
     };
     this.props.client.mutate({
       mutation,
       variables
     });
-  }
-  setChargeRate = (e) => {
+  };
+  setChargeRate = e => {
     if (!e) return;
     const { reactors } = this.props.data;
     const battery = reactors.find(r => r.model === "battery");
@@ -136,15 +135,15 @@ class ReactorControl extends Component {
     `;
     const variables = {
       id: battery.id,
-      e: (e/100)
+      e: e / 100
     };
     this.props.client.mutate({
       mutation,
       variables
     });
-  }
+  };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.reactors) return null;
     const { reactors } = this.props.data;
     const reactor = reactors.find(r => r.model === "reactor") || {};
     const battery = reactors.find(r => r.model === "battery") || {};
@@ -196,11 +195,11 @@ class ReactorControl extends Component {
               onChange={evt => this.setEfficiency(evt.target.value)}
               value={reactor.efficiency}
             >
-              {efficiencies.map(e =>
+              {efficiencies.map(e => (
                 <option key={e.label} value={e.efficiency}>
                   {e.label}
                 </option>
-              )}
+              ))}
             </Input>
             <p>Reactor Heat:</p>
             <InputField prompt="What is the new reactor heat?">

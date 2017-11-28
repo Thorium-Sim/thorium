@@ -5,7 +5,7 @@ import {
   Container,
   Button,
   Card,
-  CardBlock,
+  CardBody,
   Modal,
   ModalHeader,
   ModalBody,
@@ -16,7 +16,7 @@ import { graphql } from "react-apollo";
 import { Link } from "react-router";
 import IssueTracker from "../../components/admin/IssueTracker";
 
-import "./welcome.scss";
+import "./welcome.css";
 
 const FLIGHT_SUB = gql`
   subscription FlightsChanged {
@@ -37,7 +37,7 @@ class Welcome extends Component {
         document: FLIGHT_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            flights: subscriptionData.data.flightsUpdate
+            flights: subscriptionData.flightsUpdate
           });
         }
       });
@@ -49,7 +49,7 @@ class Welcome extends Component {
     });
   };
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.flights) return null;
     const flights = this.props.data.flights;
     return (
       <Container className="WelcomeView">
@@ -62,8 +62,8 @@ class Welcome extends Component {
           <div>
             <h3>Pick a running Flight</h3>
             <Card>
-              <CardBlock>
-                {flights.map(f =>
+              <CardBody>
+                {flights.map(f => (
                   <Link
                     to={`/flight/${f.id}`}
                     key={f.id}
@@ -72,8 +72,8 @@ class Welcome extends Component {
                     <p>{f.name}</p>{" "}
                     <small>{formatDate(new Date(f.date))}</small>
                   </Link>
-                )}
-              </CardBlock>
+                ))}
+              </CardBody>
             </Card>
           </div>
           <div>
@@ -99,18 +99,8 @@ class Welcome extends Component {
             </Button>
           </Col>
           <Col sm={4}>
-            <Button tag={Link} to="/assetConfig" color="secondary" block>
+            <Button tag={Link} to="/assetConfig" color="info" block>
               Configure Generic Assets
-            </Button>
-          </Col>
-          <Col sm={4}>
-            <Button tag={Link} to="/missionConfig" color="primary" block>
-              Configure Missions
-            </Button>
-          </Col>
-          <Col sm={{ size: 4 }}>
-            <Button tag={Link} to="/setConfig" color="warning" block>
-              Configure Sets
             </Button>
           </Col>
           <Col sm={{ size: 4 }}>
@@ -118,13 +108,28 @@ class Welcome extends Component {
               Debug Core
             </Button>
           </Col>
+          <Col sm={4}>
+            <Button tag={Link} to="/missionConfig" color="info" block>
+              Configure Missions
+            </Button>
+          </Col>
           <Col sm={{ size: 4 }}>
-            <Button tag={Link} to="/debug" color="primary" block>
+            <Button tag={Link} to="/setConfig" color="info" block>
+              Configure Sets
+            </Button>
+          </Col>
+          <Col sm={{ size: 4 }}>
+            <Button tag={Link} to="/debug" color="secondary" block>
               Debug
             </Button>
           </Col>
           <Col sm={{ size: 4 }}>
-            <Button color="info" block onClick={this.toggleIssueTracker}>
+            <Button tag={Link} to="/tacticalConfig" color="info" block>
+              Configure Tactical Maps
+            </Button>
+          </Col>
+          <Col sm={{ size: 4 }}>
+            <Button color="primary" block onClick={this.toggleIssueTracker}>
               Bug Report/Feature Request
             </Button>
           </Col>

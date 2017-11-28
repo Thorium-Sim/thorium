@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
-import "./issueTracker.scss";
+import "./issueTracker.css";
 
 class IssueTracker extends Component {
   constructor(props) {

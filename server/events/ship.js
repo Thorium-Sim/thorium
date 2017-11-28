@@ -1,4 +1,4 @@
-import App from "../../app.js";
+import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import uuid from "uuid";
 
@@ -6,6 +6,19 @@ App.on("shipDockingChange", ({ simulatorId, which, state }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   if (simulator) {
     simulator[which](state);
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: simulatorId,
+      station: "Core",
+      title: which,
+      body:
+        which === "clamps"
+          ? `Clamps are now ${state ? "Attached" : "Detached"}`
+          : which === "ramps"
+            ? `Ramps are now ${state ? "Extended" : "Retracted"}`
+            : `Doors are now ${state ? "Open" : "Closed"}`,
+      color: "info"
+    });
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
@@ -13,6 +26,19 @@ App.on("remoteAccessSendCode", ({ simulatorId, code, station }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   if (simulator) {
     simulator.sendCode(code, station);
+    App.handleEvent(
+      { simulatorId: simulator.id, component: "RemoteCore" },
+      "addCoreFeed"
+    );
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: simulatorId,
+      station: "Core",
+      title: "Remote Access Code",
+      body: `Code from: ${station}
+      ${code}`,
+      color: "info"
+    });
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
@@ -37,6 +63,14 @@ App.on("remoteAccessUpdateCode", ({ simulatorId, codeId, state }) => {
 App.on("setSelfDestructTime", ({ simulatorId, time }) => {
   const sim = App.simulators.find(s => s.id === simulatorId);
   sim.setSelfDestructTime(time);
+  pubsub.publish("notify", {
+    id: uuid.v4(),
+    simulatorId: simulatorId,
+    station: "Core",
+    title: `Self Destruct ${time ? "Activated" : "Deactivated"}`,
+    body: ``,
+    color: "info"
+  });
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
 App.on("setSelfDestructCode", ({ simulatorId, code }) => {

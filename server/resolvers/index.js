@@ -1,4 +1,9 @@
-import { EngineQueries, EngineMutations, EngineSubscriptions } from "./engines";
+import {
+  EngineQueries,
+  EngineMutations,
+  EngineSubscriptions,
+  EngineTypes
+} from "./engines";
 import { ShieldQueries, ShieldMutations, ShieldSubscriptions } from "./shields";
 import {
   ClientQueries,
@@ -145,7 +150,26 @@ import {
   IsochipsTypes
 } from "./isochips";
 
-import App from "../../app";
+import {
+  DockingQueries,
+  DockingMutations,
+  DockingSubscriptions
+} from "./docking";
+
+import {
+  CoreFeedQueries,
+  CoreFeedMutations,
+  CoreFeedSubscriptions
+} from "./coreFeed";
+
+import {
+  TacticalMapQueries,
+  TacticalMapMutations,
+  TacticalMapSubscriptions,
+  TacticalMapTypes
+} from "./tacticalMap";
+
+import App from "../app";
 
 function parseJSONLiteral(ast) {
   /* switch (ast.kind) {
@@ -201,7 +225,10 @@ const queryMap = Object.assign(
   SetQueries,
   ViewscreenQueries,
   MessagesQueries,
-  IsochipsQueries
+  IsochipsQueries,
+  DockingQueries,
+  CoreFeedQueries,
+  TacticalMapQueries
 );
 
 export const mutationMap = Object.assign(
@@ -241,7 +268,10 @@ export const mutationMap = Object.assign(
   SetMutations,
   ViewscreenMutations,
   MessagesMutations,
-  IsochipsMutations
+  IsochipsMutations,
+  DockingMutations,
+  CoreFeedMutations,
+  TacticalMapMutations
 );
 
 const subscriptionMap = Object.assign(
@@ -276,9 +306,11 @@ const subscriptionMap = Object.assign(
   SetSubscriptions,
   ViewscreenSubscriptions,
   MessagesSubscriptions,
-  IsochipsSubscriptions
+  IsochipsSubscriptions,
+  DockingSubscriptions,
+  CoreFeedSubscriptions,
+  TacticalMapSubscriptions
 );
-
 export default Object.assign(
   {
     Query: queryMap,
@@ -291,6 +323,7 @@ export default Object.assign(
     }
   },
   AssetsTypes,
+  EngineTypes,
   SensorsTypes,
   FlightStructureTypes,
   ClientTypes,
@@ -301,5 +334,6 @@ export default Object.assign(
   CrewTypes,
   TeamsTypes,
   SetTypes,
-  IsochipsTypes
+  IsochipsTypes,
+  TacticalMapTypes
 );

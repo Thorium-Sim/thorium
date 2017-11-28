@@ -1,4 +1,6 @@
-import App from "../../app.js";
+import App from "../app.js";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const EngineQueries = {
   engines(root, { simulatorId }) {
@@ -23,17 +25,61 @@ export const EngineMutations = {
   },
   engineCool(root, args, context) {
     App.handleEvent(args, "engineCool", context);
+  },
+  setEngineAcceleration(root, args, context) {
+    App.handleEvent(args, "setEngineAcceleration", context);
+  },
+  setEngineUseAcceleration(root, args, context) {
+    App.handleEvent(args, "setEngineUseAcceleration", context);
+  },
+  setEngineSpeedFactor(root, args, context) {
+    App.handleEvent(args, "setEngineSpeedFactor", context);
   }
 };
 
 export const EngineSubscriptions = {
-  speedChange(rootValue) {
-    return rootValue;
+  speedChange: {
+    resolve(rootValue, { simulatorId }) {
+      if (simulatorId)
+        return rootValue.simulatorId === simulatorId && rootValue;
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("speedChange"),
+      rootValue => !!rootValue
+    )
   },
-  heatChange(rootValue, { simulatorId }) {
-    if (simulatorId) {
-      return rootValue.filter(s => s.simulatorId === simulatorId);
+  heatChange: {
+    resolve(rootValue, { simulatorId }) {
+      if (simulatorId) {
+        return rootValue.simulatorId === simulatorId && rootValue;
+      }
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("heatChange"),
+      rootValue => !!rootValue
+    )
+  },
+  engineUpdate: {
+    resolve(rootValue, { simulatorId }) {
+      if (simulatorId) {
+        return rootValue.simulatorId === simulatorId && rootValue;
+      }
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("engineUpdate"),
+      rootValue => !!rootValue
+    )
+  }
+};
+
+export const EngineTypes = {
+  Engine: {
+    velocity(rootValue) {
+      const sim = App.simulators.find(s => s.id === rootValue.simulatorId);
+      return sim ? sim.ship.speed : 0;
     }
-    return rootValue;
   }
 };

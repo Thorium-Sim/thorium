@@ -5,11 +5,13 @@ import { graphql, withApollo } from "react-apollo";
 import Target from "./targeting";
 import Scan from "./transporterScan";
 import DamageOverlay from "../helpers/DamageOverlay";
-import "./style.scss";
+import Tour from "reactour";
+
+import "./style.css";
 
 const TRANSPORTER_SUB = gql`
-  subscription TransportersSub {
-    transporterUpdate {
+  subscription TransportersSub($simulatorId: ID) {
+    transporterUpdate(simulatorId: $simulatorId) {
       id
       type
       state
@@ -41,8 +43,8 @@ const TRANSPORTER_SUB = gql`
 const TargetSelect = props => {
   return (
     <Row>
-      <Col sm={{ size: 6, push: 3 }}>
-        <div style={{ height: "60px" }} />
+      <Col sm={{ size: 6, push: 3 }} className="target-destination">
+        <div className="target-input" style={{ height: "60px" }} />
         <h3>Enter Target:</h3>
         <Input
           defaultValue={props.target}
@@ -50,7 +52,7 @@ const TargetSelect = props => {
           placeholder="Enter Target..."
           size="lg"
         />
-        <div style={{ height: "60px" }} />
+        <div className="destination-input" style={{ height: "60px" }} />
         <h3>Enter Destination:</h3>
         <Input
           defaultValue={props.destination}
@@ -93,18 +95,16 @@ class Transporters extends Component {
     if (!this.transporterSubscription && !nextProps.data.loading) {
       this.transporterSubscription = nextProps.data.subscribeToMore({
         document: TRANSPORTER_SUB,
+        variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          previousResult.transporters = previousResult.transporters.map(
-            transporter => {
-              if (
-                transporter.id === subscriptionData.data.transporterUpdate.id
-              ) {
-                transporter = subscriptionData.data.transporterUpdate;
+          return Object.assign({}, previousResult, {
+            transporters: previousResult.transporters.map(transporter => {
+              if (transporter.id === subscriptionData.transporterUpdate.id) {
+                return subscriptionData.transporterUpdate;
               }
               return transporter;
-            }
-          );
-          return previousResult;
+            })
+          });
         }
       });
     }
@@ -203,35 +203,74 @@ class Transporters extends Component {
       }
     });
   }
+  componentWillUnmount() {
+    this.transporterSubscription && this.transporterSubscription();
+  }
   render() {
     // Assume that there is only one transporter
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.transporters) return null;
     const transporter = this.props.data.transporters[0] || {};
     return (
       <div className="transporter-control">
         <DamageOverlay system={transporter} message="Transporters Offline" />
-        {transporter.state === "Inactive" &&
+        {transporter.state === "Inactive" && (
           <TargetSelect
             beginScan={this.beginScan.bind(this, transporter)}
             updateTarget={this.updateTarget.bind(this, transporter)}
             updateDestination={this.updateDestination.bind(this, transporter)}
             target={transporter.requestedTarget}
             destination={transporter.destination}
-          />}
-        {transporter.state === "Scanning" &&
-          <Scanning cancelScan={this.cancelScan.bind(this, transporter)} />}
+          />
+        )}
+        {transporter.state === "Scanning" && (
+          <Scanning cancelScan={this.cancelScan.bind(this, transporter)} />
+        )}
         {(transporter.state === "Targeting" ||
-          transporter.state === "Charging") &&
+          transporter.state === "Charging") && (
           <Target
             completeTransport={this.completeTransport.bind(this, transporter)}
             cancelTransport={this.cancelTransport.bind(this, transporter)}
             setCharge={this.setCharge.bind(this, transporter)}
             targets={transporter.targets}
-          />}
+          />
+        )}
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </div>
     );
   }
 }
+
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content:
+      "Transporters move objects from one place to another by converting the atoms in the object to energy and reassembling the object on the other side."
+  },
+  {
+    selector: ".target-destination",
+    content:
+      "Input the name of the object you want to transport, as well as your target destination for transporting. Type something into these boxes, such as 'Apple' for the target and 'Outer Space' for the destination. Click the 'Begin Scan' button before proceeding."
+  },
+  {
+    selector: ".transporterScan",
+    content:
+      "The computer has to find the target and destination before you can proceed. Wait for your scan to complete."
+  },
+  {
+    selector: ".targetBox",
+    content:
+      "Drag your target sights over the object you are trying to transport until the “Transport Possible” message appears."
+  },
+  {
+    selector: ".chargeBox",
+    content:
+      "Once you have locked onto your target, slowly drag the yellow bars upward from the bottom of this box by hovering over the yellow bars and moving your mouse upward. This will maintain the connection with the target until the transporters have fully engaged. If you reach the top, your target will successfully transport to the destination."
+  }
+];
 
 const TRANSPORTERS_QUERY = gql`
   query GetTransporters($simulatorId: ID) {

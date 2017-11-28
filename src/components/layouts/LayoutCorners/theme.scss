@@ -79,7 +79,7 @@ $color: $alert5;
     }
 }
 
-.card-container,
+.layout-corners,
 .modal-themed {
     color: white;
     .modal-content {
@@ -276,6 +276,12 @@ $color: $alert5;
         box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.75),
             5px 5px 10px rgba(0, 0, 0, 0.3);
         margin: 0 0 10px 0;
+        &:disabled, &.disabled {
+            background-color: rgba(255, 255, 255, 0.1);            
+        }
+    }
+    .form-control:disabled {
+        background-color: rgba(255, 255, 255, 0.1);                    
     }
     .border-left {
         border-left: solid 1px rgba(255, 255, 255, 0.1);

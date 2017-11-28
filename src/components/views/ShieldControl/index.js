@@ -1,11 +1,35 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
+import Tour from "reactour";
+
 import Shield1 from "./shield-1";
 import Shield4 from "./shield-4";
 import Shield6 from "./shield-6";
-import "./style.scss";
+import "./style.css";
+
+const trainingSteps = [
+  {
+    selector: ".number-pad",
+    content:
+      "Shields use energy fields to protect your ship from outside dangers, including asteroids, radiation, and enemy weapons. Shields also block transporter signals and can disrupt communications, so there may be times when you need to lower the shields."
+  },
+  {
+    selector: ".integrity",
+    content:
+      "As your shields protect you, they slowly lose integrity. Keep track of your integrity to know where your weak points are."
+  },
+  {
+    selector: ".frequency",
+    content:
+      "The shield frequency controls how often the shields recalibrate. Your shields will protect you regardless of the frequency, but in some circumstances you may need to change it. Click and hold on the arrows to change the frequency. The longer you hold, the faster the frequency changes."
+  },
+  {
+    selector: ".shield-activate",
+    content:
+      "These controls allow you to raise and lower the shields. When the shields are raised, your ship is protected."
+  }
+];
 
 const SHIELD_SUB = gql`
   subscription ShieldSub($simulatorId: ID) {
@@ -34,7 +58,8 @@ class ShieldControl extends Component {
     this.state = {
       frequency: {},
       frequencyAdder: 0.1,
-      frequencySpeed: 250
+      frequencySpeed: 250,
+      disabledButton: {}
     };
     this.shieldSub = null;
     this.freqLoop = null;
@@ -47,10 +72,9 @@ class ShieldControl extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ shields: subscriptionData.data.shieldsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            shields: subscriptionData.shieldsUpdate
+          });
         }
       });
     }
@@ -65,6 +89,9 @@ class ShieldControl extends Component {
         });
       }
     }
+  }
+  componentWillUnmount() {
+    this.shieldSub && this.shieldSub();
   }
   _toggleShields(shields) {
     let state;
@@ -92,12 +119,10 @@ class ShieldControl extends Component {
       `;
     }
     if (shields === "down" || shields === "up") {
-      this.props.data.shields.forEach(s => {
-        let variables = { id: s.id };
-        this.props.client.mutate({
-          mutation,
-          variables
-        });
+      let variables = { id: this.props.simulator.id };
+      this.props.client.mutate({
+        mutation,
+        variables
       });
     } else {
       let variables = { id: shields.id };
@@ -106,6 +131,19 @@ class ShieldControl extends Component {
         variables
       });
     }
+    // Disable the buttons temporarily
+    this.setState({
+      disabledButton: Object.assign({}, this.state.disabledButton, {
+        [shields.id ? shields.id : shields]: true
+      })
+    });
+    setTimeout(() => {
+      this.setState({
+        disabledButton: Object.assign({}, this.state.disabledButton, {
+          [shields.id ? shields.id : shields]: false
+        })
+      });
+    }, 3000);
   }
   _loop(which, shields) {
     let { frequency, frequencyAdder, frequencySpeed } = this.state;
@@ -164,39 +202,54 @@ class ShieldControl extends Component {
   }
   render() {
     //Define the color
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.shields) return null;
     const shields = this.props.data.shields;
-    if (shields.length === 1) {
-      return (
-        <Shield1
-          shields={shields}
-          startLoop={this.startLoop.bind(this)}
-          state={this.state}
-          _toggleShields={this._toggleShields.bind(this)}
+    if (!shields) return null;
+    return (
+      <div>
+        {(() => {
+          if (shields.length === 1) {
+            return (
+              <Shield1
+                shields={shields}
+                startLoop={this.startLoop.bind(this)}
+                state={this.state}
+                _toggleShields={this._toggleShields.bind(this)}
+                simulator={this.props.simulator}
+              />
+            );
+          }
+          if (shields.length === 4) {
+            return (
+              <Shield4
+                shields={shields}
+                startLoop={this.startLoop.bind(this)}
+                state={this.state}
+                _toggleShields={this._toggleShields.bind(this)}
+                simulator={this.props.simulator}
+              />
+            );
+          }
+          if (shields.length === 6) {
+            return (
+              <Shield6
+                shields={shields}
+                startLoop={this.startLoop.bind(this)}
+                state={this.state}
+                _toggleShields={this._toggleShields.bind(this)}
+                simulator={this.props.simulator}
+              />
+            );
+          }
+          return "Invalid Shield Configuration";
+        })()}
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
         />
-      );
-    }
-    if (shields.length === 4) {
-      return (
-        <Shield4
-          shields={shields}
-          startLoop={this.startLoop.bind(this)}
-          state={this.state}
-          _toggleShields={this._toggleShields.bind(this)}
-        />
-      );
-    }
-    if (shields.length === 6) {
-      return (
-        <Shield6
-          shields={shields}
-          startLoop={this.startLoop.bind(this)}
-          state={this.state}
-          _toggleShields={this._toggleShields.bind(this)}
-        />
-      );
-    }
-    return "Invalid Shield Configuration";
+      </div>
+    );
   }
 }
 

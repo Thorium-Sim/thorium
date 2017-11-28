@@ -1,9 +1,8 @@
-import App from "../../app";
+import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
-
+import uuid from "uuid";
 // id always represents the ID of the sensor system
-
 App.on("addSensorsArray", ({ simulatorId, domain }) => {
   const system = new Classes.Sensors({ simulatorId, domain });
   App.systems.push(system);
@@ -15,6 +14,18 @@ App.on("addSensorsArray", ({ simulatorId, domain }) => {
 App.on("removedSensorsArray", ({ id }) => {});
 App.on("sensorScanRequest", ({ id, request }) => {
   const system = App.systems.find(sys => sys.id === id);
+  pubsub.publish("notify", {
+    id: uuid.v4(),
+    simulatorId: system.simulatorId,
+    station: "Core",
+    title: `${system.domain} Scan`,
+    body: request,
+    color: "info"
+  });
+  App.handleEvent(
+    { simulatorId: system.simulatorId, component: "SensorsCore" },
+    "addCoreFeed"
+  );
   system.scanRequested(request);
   pubsub.publish(
     "sensorsUpdate",
@@ -29,9 +40,17 @@ App.on("sensorScanResult", ({ id, result }) => {
     App.systems.filter(s => s.type === "Sensors")
   );
 });
-App.on("processedData", ({ id, data }) => {
-  const system = App.systems.find(sys => sys.id === id);
-  system.processedDatad(data);
+App.on("processedData", ({ id, simulatorId, domain, data }) => {
+  let system;
+  if (id) {
+    system = App.systems.find(sys => sys.id === id);
+  }
+  if (simulatorId && domain) {
+    system = App.systems.find(
+      sys => sys.simulatorId === simulatorId && sys.domain === domain
+    );
+  }
+  system && system.processedDatad(data);
   pubsub.publish(
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")
@@ -40,6 +59,14 @@ App.on("processedData", ({ id, data }) => {
 App.on("sensorScanCancel", ({ id }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.scanCanceled();
+  pubsub.publish("notify", {
+    id: uuid.v4(),
+    simulatorId: system.simulatorId,
+    station: "Core",
+    title: `${system.domain} Scan Cancelled`,
+    body: "",
+    color: "info"
+  });
   pubsub.publish(
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")

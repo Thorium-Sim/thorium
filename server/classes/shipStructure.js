@@ -1,15 +1,15 @@
-import uuid from 'uuid';
+import uuid from "uuid";
 
 export class Deck {
   constructor(params) {
     this.id = params.id || uuid.v4();
-    this.class = 'Deck';
+    this.class = "Deck";
     this.simulatorId = params.simulatorId || null;
     this.number = params.number || 1;
-    this.svgPath = params.svgPath || '';
+    this.svgPath = params.svgPath || "";
     this.doors = params.doors || false;
     this.evac = params.evac || false;
-    this.hallway = params.hallway || '';
+    this.hallway = params.hallway || "";
   }
   updateSvg(svg) {
     this.svgPath = svg;
@@ -25,17 +25,16 @@ export class Deck {
   }
 }
 
-
 export class Room {
   constructor(params) {
     if (!params.deckId) return false;
-    this.class = 'Room';
+    this.class = "Room";
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId || null;
     this.deckId = params.deckId;
-    this.name = params.name || 'Vic\'s Lounge';
+    this.name = params.name || "Vic's Lounge";
     this.gas = params.gas || false;
-    this.svgPath = params.svgPath || '';
+    this.svgPath = params.svgPath || "";
     this.metadata = params.metadata || {};
   }
   setGas(gas) {
@@ -47,22 +46,22 @@ export class Room {
   updateSvg(svg) {
     this.svgPath = svg;
   }
-    updateMetadata(metadata) {
+  updateMetadata(metadata) {
     this.metadata = metadata;
   }
 }
 
 export class InventoryItem {
   constructor(params) {
-    this.class = 'InventoryItem';
+    this.class = "InventoryItem";
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId || null;
-    this.name = params.name || 'Generic Cargo';
+    this.name = params.name || "Generic Cargo";
     this.roomCount = {};
     if (Array.isArray(params.roomCount)) {
       params.roomCount.forEach(r => {
         this.roomCount[r.room] = r.count;
-      })
+      });
     } else {
       this.roomCount = params.roomCount || {};
     }

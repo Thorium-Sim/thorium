@@ -15,7 +15,6 @@ const viewList = [
   "CommShortRange",
   "PowerDistribution",
   "DamageControl",
-  "PowerDistributionBattery",
   "Targeting",
   "PhaserCharging",
   "ProbeConstruction",
@@ -30,7 +29,17 @@ const viewList = [
   "ProbeControl",
   "ReactorControl",
   "Messages",
-  "Isochips"
+  "Isochips",
+  "Shuttles",
+  "Status",
+  "JrOps",
+  "JrComm",
+  "JrFlight",
+  "JrSensors",
+  "JrEngineering",
+  "TorpedoLoading",
+  "SoundsTester",
+  "NavigationAdvanced"
 ];
 
 export default viewList;

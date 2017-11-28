@@ -3,8 +3,8 @@ import { Container, Row, Col, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { OutputField, InputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
-import "./style.scss";
+
+import "./style.css";
 
 const TORPEDO_SUB = gql`
   subscription TorpedosUpdate($simulatorId: ID!) {
@@ -35,10 +35,9 @@ class TorpedoLoadingCore extends Component {
         document: TORPEDO_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ torpedos: subscriptionData.data.torpedosUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            torpedos: subscriptionData.torpedosUpdate
+          });
         }
       });
     }
@@ -53,6 +52,9 @@ class TorpedoLoadingCore extends Component {
         type
       });
     }
+  }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
   }
   updateTorpedoCount(type, count) {
     if (count) {
@@ -142,9 +144,7 @@ class TorpedoLoadingCore extends Component {
                 </Col>
                 <Col sm={6}>Probe:</Col>
                 <Col sm={6}>
-                  <OutputField>
-                    {types.probe}
-                  </OutputField>
+                  <OutputField>{types.probe}</OutputField>
                 </Col>
               </Row>
               <Button
@@ -159,7 +159,7 @@ class TorpedoLoadingCore extends Component {
             <Col
               sm={6}
               style={{
-                position: "absolute",
+                position: "relative",
                 right: 0,
                 height: "100%",
                 overflowY: "scroll"
@@ -172,9 +172,7 @@ class TorpedoLoadingCore extends Component {
                 .map(t => {
                   return (
                     <Row key={`torpedo-${t}`} style={{ margin: 0 }}>
-                      <Col sm={6}>
-                        {t}:
-                      </Col>
+                      <Col sm={6}>{t}:</Col>
                       <Col sm={6}>
                         <InputField
                           prompt={`What is the new value for ${t} torpedos?`}

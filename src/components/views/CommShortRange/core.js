@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Immutable from "immutable";
-import "./style.scss";
+import "./style.css";
 
 const SHORTRANGE_SUB = gql`
   subscription ShortRangeCommSub($simulatorId: ID!) {
@@ -59,15 +58,15 @@ class CommShortRange extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({
-              shortRangeComm: subscriptionData.data.shortRangeCommUpdate
-            })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            shortRangeComm: subscriptionData.shortRangeCommUpdate
+          });
         }
       });
     }
+  }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
   }
   _commHail() {
     const ShortRange = this.props.data.shortRangeComm[0];
@@ -133,7 +132,7 @@ class CommShortRange extends Component {
     }, {});
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.shortRangeComm) return null;
     const { selectedCall, selectedArrow } = this.state;
     const ShortRange = this.props.data.shortRangeComm[0];
     if (!ShortRange) return <p>No short range comm</p>;
@@ -148,15 +147,15 @@ class CommShortRange extends Component {
             </p>
             <div>
               External Call
-              {ShortRange.state === "hailing"
-                ? <Button
-                    onClick={this._commConnect.bind(this)}
-                    size="sm"
-                    color="info"
-                  >
-                    Hailing - Connect
-                  </Button>
-                : null}
+              {ShortRange.state === "hailing" ? (
+                <Button
+                  onClick={this._commConnect.bind(this)}
+                  size="sm"
+                  color="info"
+                >
+                  Hailing - Connect
+                </Button>
+              ) : null}
             </div>
             <select
               value={selectedCall || ""}
@@ -165,6 +164,9 @@ class CommShortRange extends Component {
               }}
             >
               <option value={null}>---</option>
+              {ShortRange.signals.length === 0 && (
+                <option value="random">Random</option>
+              )}
               {ShortRange.signals.map(s => {
                 return (
                   <option key={s.id} value={s.id}>
@@ -196,7 +198,7 @@ class CommShortRange extends Component {
                       ? "selected"
                       : ""}`}
                   >
-                    {signal.name} -{" "}
+                    {signal && signal.name} -{" "}
                     {Math.round(a.frequency * 37700 + 37700) / 100} MHz
                   </p>
                 );

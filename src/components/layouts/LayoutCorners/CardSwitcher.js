@@ -3,27 +3,24 @@ import React, { Component } from "react";
 const CardButton = props => {
   return (
     <div className="card-icon-item">
-      <a
-        href="#"
+      <div
         onClick={props.changeCard.bind(this, props.name)}
         className={props.name === props.currentCard ? "active" : ""}
       >
         <div className="card-button-mask">
           <div className="card-button-background">
-            <div className="card-button">
-              {props.name}
-            </div>
+            <div className="card-button">{props.name}</div>
           </div>
         </div>
         <div className={`card-icon-color ${props.className}`} />
         <img
-          role="presentation"
+          alt="Card"
           className="card-icon"
           src={require(`./icons/${props.component}.svg`)}
           draggable="false"
         />
         <div className="card-icon-background" />
-      </a>
+      </div>
     </div>
   );
 };

@@ -1,23 +1,13 @@
 import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
-import {
-  Row,
-  Col,
-  Button,
-  Input,
-  Card,
-  CardBlock,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
-} from "reactstrap";
+import { Row, Col, Button, Input, Card, CardBody } from "reactstrap";
 import gql from "graphql-tag";
-import moment from "moment";
+import Tour from "reactour";
+
+import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
 import assetPath from "../../../helpers/assets";
-import Immutable from "immutable";
 import DamageOverlay from "../helpers/DamageOverlay";
-import "./style.scss";
+import "./style.css";
 
 const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {
@@ -40,6 +30,36 @@ const SENSOR_SUB = gql`
   }
 `;
 
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content:
+      "There are sensors located throughout the entire ship which allow you to run scans. These scans could tell you about the location of people on the ship, or any other situation that is happening inside the ship."
+  },
+  {
+    selector: ".scantype",
+    content:
+      "You can select a scan type from this list. This will focus your scan to a specific category."
+  },
+  {
+    selector: ".locations",
+    content:
+      "Select where you want to scan here. The more specific your scan location, the faster your results will come."
+  },
+  {
+    selector: ".scan-input",
+    content: "Type in what you want to scan for here."
+  },
+  {
+    selector: ".begin-scan",
+    content: "Click here to begin your scan."
+  },
+  {
+    selector: ".results",
+    content: "The results of your scan will appear in this box."
+  }
+];
+
 class SecurityScans extends Component {
   constructor(props) {
     super(props);
@@ -58,14 +78,13 @@ class SecurityScans extends Component {
         document: SENSOR_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ sensors: subscriptionData.data.sensorsUpdate })
-            .toJS();
+          return Object.assign({}, previousResult, {
+            sensors: subscriptionData.sensorsUpdate
+          });
         }
       });
     }
-    if (!nextProps.data.loading) {
+    if (!nextProps.data.loading && nextProps.data.sensors) {
       const nextSensors = nextProps.data.sensors[0];
       if (this.props.data.loading) {
         //First time load
@@ -90,6 +109,9 @@ class SecurityScans extends Component {
       }
     }
   }
+  componentWillUnmount() {
+    this.sensorsSubscription && this.sensorsSubscription();
+  }
   _scanRequest() {
     // For now, include the location in the scan request string, not separately.
     if (this.state.scanRequest.trim().length === 0) return;
@@ -101,13 +123,13 @@ class SecurityScans extends Component {
       );
       deckName = "Deck " + deck.number;
       roomName = "Entire Deck";
-      if (this.state.selectedRoom !== "") {
-        roomName = deck.rooms.find(r => r.id === this.state.selectedRoom).name;
+      if (!this.state.selectedRoom || this.state.selectedRoom !== "") {
+        const room = deck.rooms.find(r => r.id === this.state.selectedRoom);
+        roomName = room ? room.name : roomName;
       }
     }
-    const request = `${moment().format("h:mm:ss a")} - ${this.state
-      .selectedScanType} - ${deckName}${roomName && ", "}${roomName}\n${this
-      .state.scanRequest}`;
+    const request = `${this.state.selectedScanType} - ${deckName}${roomName &&
+      ", "}${roomName}\n${this.state.scanRequest}`;
     const obj = {
       id: this.props.data.sensors[0].id,
       request
@@ -166,15 +188,9 @@ class SecurityScans extends Component {
     });
   }
   render() {
-    if (this.props.data.loading) return null;
+    if (this.props.data.loading || !this.props.data.sensors) return null;
     const { scanning } = this.props.data.sensors[0];
-    const decks = [{ id: null }].concat(this.props.data.decks);
-    let rooms;
-    if (this.state.selectedDeck && this.state.selectedDeck !== "All Decks") {
-      rooms = [{ id: null }].concat(
-        decks.find(d => d.id === this.state.selectedDeck).rooms
-      );
-    }
+    const decks = this.props.data.decks;
     return (
       <Row className="security-scans">
         <DamageOverlay
@@ -185,83 +201,37 @@ class SecurityScans extends Component {
           <Row>
             <h4>Location Select:</h4>
           </Row>
-          <Row>
+          <Row className="locations">
             <Col sm={"auto"}>
-              <UncontrolledDropdown>
-                <DropdownToggle block caret>
-                  {this.state.selectedDeck
-                    ? `Deck ${decks.find(d => d.id === this.state.selectedDeck)
-                        .number}`
-                    : "All Decks"}
-                </DropdownToggle>
-                <DropdownMenu>
-                  {decks
-                    .concat()
-                    .sort((a, b) => {
-                      if (a.number > b.number) return 1;
-                      if (b.number > a.number) return -1;
-                      return 0;
-                    })
-                    .map(d =>
-                      <DropdownItem
-                        key={d.id}
-                        onClick={() => {
-                          this.setState({
-                            selectedDeck: d.id,
-                            selectedRoom: null
-                          });
-                        }}
-                      >
-                        {d.number ? `Deck ${d.number}` : `All Decks`}
-                      </DropdownItem>
-                    )}
-                </DropdownMenu>
-              </UncontrolledDropdown>
+              <DeckDropdown
+                selectedDeck={this.state.selectedDeck}
+                decks={decks}
+                allDecks
+                disabled={scanning}
+                setSelected={a =>
+                  this.setState({
+                    selectedDeck: a.deck,
+                    selectedRoom: null
+                  })}
+              />
             </Col>
             <Col>
-              <UncontrolledDropdown>
-                <DropdownToggle
-                  disabled={
-                    !this.state.selectedDeck ||
-                    this.state.selectedDeck === "All Decks"
-                  }
-                  block
-                  caret
-                >
-                  {this.state.selectedRoom
-                    ? decks
-                        .find(d => d.id === this.state.selectedDeck)
-                        .rooms.find(r => r.id === this.state.selectedRoom).name
-                    : "Entire Deck"}
-                </DropdownToggle>
-                {this.state.selectedDeck &&
-                  <DropdownMenu>
-                    <DropdownItem
-                      onClick={() => {
-                        this.setState({ selectedRoom: null });
-                      }}
-                    >
-                      Deck{" "}
-                      {decks.find(d => d.id === this.state.selectedDeck).number}
-                    </DropdownItem>
-                    {rooms.map(r =>
-                      <DropdownItem
-                        key={r.id}
-                        onClick={() => {
-                          this.setState({ selectedRoom: r.id });
-                        }}
-                      >
-                        {r.name}
-                      </DropdownItem>
-                    )}
-                  </DropdownMenu>}
-              </UncontrolledDropdown>
+              <RoomDropdown
+                selectedDeck={this.state.selectedDeck}
+                selectedRoom={this.state.selectedRoom}
+                decks={decks}
+                disabled={scanning}
+                setSelected={a =>
+                  this.setState({
+                    selectedRoom: a.room
+                  })}
+              />
             </Col>
           </Row>
           <Row style={{ marginTop: "20px" }}>
             <h4>Scan Input:</h4>
           </Row>
-          <Row>
+          <Row className="scan-input">
             <Col>
               <Input
                 type="text"
@@ -270,67 +240,72 @@ class SecurityScans extends Component {
               />
             </Col>
           </Row>
-          {scanning
-            ? <div>
-                <Row>
-                  <Col sm="auto">
-                    <Button
-                      size="lg"
-                      color="danger"
-                      onClick={this._stopScan.bind(this)}
-                    >
-                      Cancel Scan
-                    </Button>
-                  </Col>
-                </Row>
-                <Row style={{ marginTop: "50px" }}>
-                  <h4 className="text-center">Scan in progress...</h4>
-                  <Card className="scannerBox">
-                    <img
-                      role="presentation"
-                      className="mw-100 ship-image"
-                      draggable="false"
-                      src={assetPath(
-                        "/Ship Views/Right",
-                        "default",
-                        "png",
-                        false
-                      )}
-                    />
-                    <div className="scanner" />
+          {scanning ? (
+            <div>
+              <Row>
+                <Col sm="auto">
+                  <Button
+                    size="lg"
+                    color="danger"
+                    onClick={this._stopScan.bind(this)}
+                  >
+                    Cancel Scan
+                  </Button>
+                </Col>
+              </Row>
+              <Row style={{ marginTop: "50px" }}>
+                <h4 className="text-center">Scan in progress...</h4>
+                <Card className="scannerBox">
+                  <img
+                    alt="ship view"
+                    role="presentation"
+                    className="mw-100 ship-image"
+                    draggable="false"
+                    src={assetPath(
+                      "/Ship Views/Right",
+                      "default",
+                      "png",
+                      false
+                    )}
+                  />
+                  <div className="scanner" />
+                </Card>
+              </Row>
+            </div>
+          ) : (
+            <div>
+              <Row>
+                <Col sm="auto">
+                  <Button
+                    className="begin-scan"
+                    size="lg"
+                    onClick={this._scanRequest.bind(this)}
+                  >
+                    Begin Scan
+                  </Button>
+                </Col>
+                <Col sm="auto">
+                  <Button color="warning" size="lg">
+                    Clear
+                  </Button>
+                </Col>
+              </Row>
+              <Row style={{ marginTop: "50px" }}>
+                <h4>Scan Results:</h4>
+              </Row>
+              <Row>
+                <Col>
+                  <Card className="results">
+                    <CardBody>
+                      <p>{this.state.scanResults}</p>
+                    </CardBody>
                   </Card>
-                </Row>
-              </div>
-            : <div>
-                <Row>
-                  <Col sm="auto">
-                    <Button size="lg" onClick={this._scanRequest.bind(this)}>
-                      Begin Scan
-                    </Button>
-                  </Col>
-                  <Col sm="auto">
-                    <Button color="warning" size="lg">
-                      Clear
-                    </Button>
-                  </Col>
-                </Row>
-                <Row style={{ marginTop: "50px" }}>
-                  <h4>Scan Results:</h4>
-                </Row>
-                <Row>
-                  <Col>
-                    <Card className="results">
-                      <CardBlock>
-                        <p>
-                          {this.state.scanResults}
-                        </p>
-                      </CardBlock>
-                    </Card>
-                  </Col>
-                </Row>
-              </div>}
+                </Col>
+              </Row>
+            </div>
+          )}
         </Col>
-        <Col sm={{ size: 2, offset: 1 }}>
+        <Col sm={{ size: 2, offset: 1 }} className="scantype">
           <h4>Scan Type:</h4>
           <Button
             block
@@ -378,6 +353,11 @@ class SecurityScans extends Component {
             Subspace
           </Button>
         </Col>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Row>
     );
   }
