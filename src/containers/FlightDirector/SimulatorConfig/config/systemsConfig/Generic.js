@@ -153,7 +153,10 @@ export class GenericSystemConfig extends Component {
                 This controls what rooms are used for storing inventory for this
                 system (if applicable) and what room is used on damage reports.
               </small>
-              <div className="room-list">
+              <div
+                className="room-list"
+                style={{ maxHeight: "70px", overflowY: "scroll" }}
+              >
                 {s.locations && s.locations.length > 0 ? (
                   s.locations.map(
                     l =>
