@@ -1,5 +1,12 @@
 import uuid from "uuid";
 import App from "../app";
+import {
+  partsList,
+  defaultOptionalSteps,
+  damagePositions,
+  randomFromList
+} from "../damageReports/constants";
+import * as damageStepFunctions from "../damageReports/functions";
 
 const defaultPower = {
   power: 5,
@@ -14,70 +21,6 @@ const defaultDamage = {
   reactivationRequester: null,
   neededReactivationCode: null
 };
-
-const defaultOptionalSteps = [
-  { name: "damageTeam" },
-  { name: "remoteAccess" },
-  { name: "damageTeamMessage" },
-  { name: "sendInventory" },
-  { name: "longRangeMessage" },
-  { name: "probeLaunch" }
-];
-
-const damageStepFunctions = {
-  power: ({ end }, context, index) => {},
-  damageTeam: ({ end, cleanup, name, orders, room, officers }, context) => {},
-  damageTeamMessage: ({ message }, context, index) => {},
-  remoteAccess: ({ code }, context, index) => {},
-  sendInventory: ({ inventory, room }, context, index) => {},
-  longRangeMessage: ({ message, destination }, context, index) => {},
-  probeLaunch: ({ equipment, query }, context, index) => {},
-  generic: ({ message }, context, index) => {},
-  finish: ({ reactivate }, context, index) => {}
-};
-/*
-  Damage Report Steps:
-    -- Power
-    -- Remote Access
-    Panel Switch
-    -- Damage Control Team
-      Officers
-      Orders
-      Team Name
-      Deck/Room
-    -- Damage Control Team Message
-    Security Evac
-    Security Bulkhead
-    Security Team
-    Alert Level
-    -- Send parts
-    Internal Call
-      Shut off the system/Restart the system
-      
-    -- Long Range Message
-    -- Probe Launch
-    -- Reactivation Code
-    Add Computer User
-    Environment
-    Exocomp
-    Generic
-*/
-
-const damagePositions = [
-  "Computer Specialist",
-  "Custodian",
-  "Quality Assurance",
-  "Electrician",
-  "Explosive Expert",
-  "Fire Control",
-  "General Engineer",
-  "Hazardous Waste Expert",
-  "Maintenance Officer",
-  "Mechanic",
-  "Plumber",
-  "Structural Engineer",
-  "Welder"
-];
 
 export function HeatMixin(inheritClass) {
   return class Heat extends inheritClass {
@@ -154,14 +97,12 @@ export class System {
       .filter(c => damagePositions.indexOf(c) > -1)
       .filter((c, i, a) => a.indexOf(c) === i);
     const stations = sim.stations;
-    const components = stations
-      .reduce(s => {
-        return prev.concat(s.cards.map(c => c.component));
-      }, [])
-      .filter((c, i, a) => a.indexOf(c) !== i);
+    const components = stations.reduce((prev, s) => {
+      return prev.concat(s.cards.map(c => c.component));
+    }, []);
 
     const widgets = stations
-      .reduce(s => {
+      .reduce((prev, s) => {
         return prev.concat(s.widgets);
       }, [])
       .filter((c, i, a) => a.indexOf(c) !== i);
@@ -217,15 +158,22 @@ export class System {
         if (step.name === "generic") return true;
         return false;
       });
+
     let stepIteration = 0;
-    while (damageSteps.length < stepCount || stepIteration < 50) {
+
+    // Start with a damage team, if possible
+    if (optionalSteps.find(s => s.name === "damageTeam")) {
+      damageSteps.push({ name: "damageTeam", args: {} });
+      stepIteration = 1;
+    }
+    while (damageSteps.length < stepCount && stepIteration < 50) {
       // Ensure we don't infinitely loop
       stepIteration++;
 
       // Grab a random optional step
       const stepIndex = Math.floor(Math.random() * optionalSteps.length);
       if (!damageSteps.find(d => d.name === optionalSteps[stepIndex].name)) {
-        damageSteps.push(optionalDamageSteps[stepIndex]);
+        damageSteps.push(optionalSteps[stepIndex]);
       } else if (
         optionalSteps[stepIndex].name === "damageTeam" &&
         damageSteps.filter(d => d.name === "damageTeam").length === 1
@@ -259,15 +207,24 @@ export class System {
     damageSteps.push({ name: "finish", args: { reactivate: true } });
 
     // Now put together our damage report usign the damage step functions
+    // Pick a location for the damage team
+    const randomRoom = randomFromList(this.locations || []);
+    const room = rooms.find(r => r.id === randomRoom);
+    const deck = App.decks.find(d => d.id === room.deckId);
+    const location = `${room.name}, Deck ${deck.number}`;
     // First create our context object
     const context = Object.assign(
-      { damageSteps, simulator, stations, rooms, crew },
+      { damageSteps, simulator: sim, stations, deck, room, location, crew },
       this
     );
     const damageReport = damageSteps.reduce((prev, { name, args }, index) => {
-      return prev + damageStepFunctions(args, context, index);
+      return `${prev}
+Step ${index + 1}:
+${damageStepFunctions[name](args || {}, context, index)}
+
+`;
     }, "");
-    return processReport(damageReport);
+    return this.processReport(damageReport);
   }
 
   damageReport(report) {
@@ -369,7 +326,9 @@ export class System {
     if (report.indexOf("#REACTIVATIONCODE") > -1) {
       const reactivationCode = Array(8)
         .fill("")
-        .map(_ => randomFromList(["¥", "Ω", "∏", "-", "§", "∆", "£", "∑", "∂"]))
+        .map(() =>
+          randomFromList(["¥", "Ω", "∏", "-", "§", "∆", "£", "∑", "∂"])
+        )
         .join("");
       this.damage.neededReactivationCode = reactivationCode;
       returnReport = returnReport.replace(
@@ -382,41 +341,6 @@ export class System {
   }
 }
 
-const partsList = [
-  "Field Generator",
-  "Isolinear Rods",
-  "Eps Step-down Conduit",
-  "Fuel Regulator",
-  "Field Emitter",
-  "Sensor Pallet",
-  "EPS Power Node",
-  "Isolinear Chips",
-  "Network Adapter",
-  "Fusion Generator",
-  "Magnetic Coil",
-  "Analog Buffer",
-  "Coaxial Servo",
-  "CASM Generator",
-  "Computer Interface",
-  "Digital Sequence Encoder",
-  "Fiberoptic Wire Linkage",
-  "Fusion Welder",
-  "Holographic Servo Display",
-  "IDC Power Cable",
-  "Integrated Fluid Sensor",
-  "Magnetic Bolt Fastener",
-  "Power Coupling",
-  "Power Splitter",
-  "Prefire Chamber",
-  "Residual Power Store",
-  "Subspace Transceiver"
-];
-
-function randomFromList(list) {
-  const length = list.length;
-  const index = Math.floor(Math.random() * length);
-  return list[index];
-}
 function splice(str, start, delCount, newSubStr) {
   return (
     str.slice(0, start) + newSubStr + str.slice(start + Math.abs(delCount))

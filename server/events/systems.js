@@ -143,6 +143,10 @@ App.on("changeSystemPowerLevels", ({ systemId, powerLevels }) => {
   sys.setPowerLevels(powerLevels);
   sendUpdate(sys);
 });
+App.on("generateDamageReport", ({ systemId }) => {
+  let sys = App.systems.find(s => s.id === systemId);
+  console.log(sys.generateDamageReport());
+});
 App.on("requestDamageReport", ({ systemId }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
