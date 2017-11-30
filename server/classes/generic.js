@@ -46,6 +46,7 @@ export function HeatMixin(inheritClass) {
 export class System {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
+    this.class = "System";
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || null;
     this.displayName = params.displayName || params.name;

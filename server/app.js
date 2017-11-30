@@ -96,7 +96,13 @@ class Events extends EventEmitter {
       if (snapshot[key] instanceof Array) {
         snapshot[key].forEach(obj => {
           if (Object.keys(obj).length !== 0) {
-            this[key].push(new Classes[obj.class](obj));
+            try {
+              this[key].push(new Classes[obj.class](obj));
+            } catch (err) {
+              throw new Error(
+                JSON.stringify({ message: "Undefined key in class", key, obj })
+              );
+            }
           }
         });
       }
