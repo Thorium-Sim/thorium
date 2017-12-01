@@ -268,6 +268,7 @@ const SIMULATOR_QUERY = gql`
       systems {
         id
         type
+        name
       }
       stationSets {
         id

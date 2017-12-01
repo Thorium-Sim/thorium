@@ -24,14 +24,16 @@ export const damageTeam = (
   if (end) {
     // Find the previous damage team.
     let team = null;
-    let oldTeamName = null;
     for (let i = index; i >= 0; i--) {
       if (damageSteps[i].name === "damageTeam" && !damageSteps[i].args.end) {
         team = damageSteps[i];
       }
     }
+    let oldTeamName = null;
     if (!team || !team.args.teamName) {
-      oldTeamName = displayName + (cleanup ? " Cleanup" : " Repair");
+      oldTeamName =
+        displayName +
+        (cleanup || (team && team.args.cleanup) ? " Cleanup" : " Repair");
     }
     return `Before continuing on, you need to wait for the damage team named '${oldTeamName}' to finish their work. Once the damage team named '${oldTeamName}' disappears from the list of damage teams, you can continue on.
       
@@ -49,6 +51,8 @@ Orders: Clean up the mess left from repairing the ${displayName} system.
   const teamType = type
     ? type
     : randomFromList(damagePositions.filter(p => p.position !== "Custodian"));
+
+  console.log(teamType, damageTexts[teamType]);
   return `${preamble ||
     randomFromList(damageTexts[teamType]).preamble.replace(
       "%SYSTEM%",

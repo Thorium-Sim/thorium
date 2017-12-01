@@ -114,7 +114,9 @@ export const damageTexts = {
   Mechanic: [
     {
       preamble:
-        "Mechanical parts in the %SYSTEM% system have siezed, causing the system to fail."
+        "Mechanical parts in the %SYSTEM% system have siezed, causing the system to fail.",
+      orders:
+        "Discover and repair the siezed mechanical parts in the %SYSTEM% system."
     }
   ],
   Plumber: [

@@ -111,6 +111,7 @@ export class System {
     // Create a list of all the damage report steps
     // Remove power if the system has power
     if (
+      this.power.powerLevels &&
       this.power.powerLevels.length > 0 &&
       components.indexOf("PowerDistribution") > -1
     ) {
@@ -211,8 +212,10 @@ export class System {
     // Pick a location for the damage team
     const randomRoom = randomFromList(this.locations || []);
     const room = rooms.find(r => r.id === randomRoom);
-    const deck = App.decks.find(d => d.id === room.deckId);
-    const location = `${room.name}, Deck ${deck.number}`;
+    const deck = room && App.decks.find(d => d.id === room.deckId);
+    const location = room
+      ? `${room.name}, Deck ${deck.number}`
+      : deck ? `Deck ${deck.number}` : `None`;
     // First create our context object
     const context = Object.assign(
       { damageSteps, simulator: sim, stations, deck, room, location, crew },
