@@ -45,8 +45,10 @@ export const SystemsMutations = {
   repairSystem(rootValue, params, context) {
     App.handleEvent(params, "repairSystem", context);
   },
-  generateDamageReport(rootValue, params, context) {
+  generateDamageReport(rootValue, { systemId }, context) {
+    let sys = App.systems.find(s => s.id === systemId);
     App.handleEvent(params, "generateDamageReport", context);
+    return sys.generateDamageReport();
   },
   requestDamageReport(rootValue, params, context) {
     App.handleEvent(params, "requestDamageReport", context);
@@ -65,6 +67,15 @@ export const SystemsMutations = {
   },
   updateSystemRooms(rootValue, params, context) {
     App.handleEvent(params, "updateSystemRooms", context);
+  },
+  addSystemDamageStep(rootValue, params, context) {
+    App.handleEvent(params, "addSystemDamageStep", context);
+  },
+  updateSystemDamageStep(rootValue, params, context) {
+    App.handleEvent(params, "updateSystemDamageStep", context);
+  },
+  removeSystemDamageStep(rootValue, params, context) {
+    App.handleEvent(params, "removeSystemDamageStep", context);
   }
 };
 

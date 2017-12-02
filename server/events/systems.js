@@ -143,10 +143,6 @@ App.on("changeSystemPowerLevels", ({ systemId, powerLevels }) => {
   sys.setPowerLevels(powerLevels);
   sendUpdate(sys);
 });
-App.on("generateDamageReport", ({ systemId }) => {
-  let sys = App.systems.find(s => s.id === systemId);
-  console.log(sys.generateDamageReport());
-});
 App.on("requestDamageReport", ({ systemId }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
@@ -193,5 +189,20 @@ App.on("setCoolant", ({ systemId, coolant }) => {
 App.on("updateSystemRooms", ({ systemId, locations }) => {
   const sys = App.systems.find(s => s.id === systemId);
   if (sys.updateLocations) sys.updateLocations(locations);
+  sendUpdate(sys);
+});
+App.on("addSystemDamageStep", ({ systemId, step }) => {
+  const sys = App.systems.find(s => s.id === systemId);
+  sys.addDamageStep(step);
+  sendUpdate(sys);
+});
+App.on("updateSystemDamageStep", ({ systemId, step }) => {
+  const sys = App.systems.find(s => s.id === systemId);
+  sys.updateDamageStep(step);
+  sendUpdate(sys);
+});
+App.on("removeSystemDamageStep", ({ systemId, step }) => {
+  const sys = App.systems.find(s => s.id === systemId);
+  sys.removeDamageStep(step);
   sendUpdate(sys);
 });

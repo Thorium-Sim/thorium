@@ -11,5 +11,8 @@ systemReactivationCodeResponse(systemId: ID!, response: Boolean!): String
 changePower(systemId: ID!, power: Int!): String
 changeSystemPowerLevels(systemId: ID!, powerLevels: [Int]!): String
 updateSystemRooms(systemId: ID!, locations:[ID]): String
+addSystemDamageStep(systemId: ID!, step: DamageStepInput!): String
+updateSystemDamageStep(systemId: ID!, step: DamageStepInput!): String
+removeSystemDamageStep(systemId: ID!, step: ID!):String
 generateDamageReport(systemId: ID!): String
 `;

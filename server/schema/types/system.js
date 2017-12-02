@@ -15,7 +15,29 @@ interface HeatInterface {
   coolant: Float
 }
 
+# Generic system type. Give information available to all systems.
+type System implements SystemInterface {
+  id: ID
+  simulatorId: ID
+  type: String
+  name: String
+  displayName: String
+  damage: Damage
+  power: Power
+  stealthFactor: Float
+  heat: Float
+  coolant: Float
+  isochips: [Isochip]
+  locations: [Room]
+  requiredDamageSteps: [DamageStep]
+  optionalDamageSteps: [DamageStep]
+}
+
+# Generic system type. Query any system by type.
+union SystemUnion = LRCommunications | Shield | Thruster | Engine | Transporter | Sensors | InternalComm
+
 type DamageStep {
+  id: ID
   name: String
   args: DamageStepArgs
 }
@@ -53,24 +75,50 @@ type DamageStepArgs {
   reactivate: Boolean
 }
 
-# Generic system type. Give information available to all systems.
-type System implements SystemInterface {
+input DamageStepInput {
   id: ID
-  simulatorId: ID
-  type: String
   name: String
-  displayName: String
-  damage: Damage
-  power: Power
-  stealthFactor: Float
-  heat: Float
-  coolant: Float
-  isochips: [Isochip]
-  locations: [Room]
-  requiredDamageSteps: [DamageStep]
-  optionalDamageSteps: [DamageStep]
+  args: DamageStepArgsInput
+  type: DAMAGE_STEP_TYPES
 }
 
-# Generic system type. Query any system by type.
-union SystemUnion = LRCommunications | Shield | Thruster | Engine | Transporter | Sensors | InternalComm
+enum DAMAGE_STEP_TYPES {
+  required
+  optional
+}
+
+input DamageStepArgsInput {
+  end: Boolean
+
+  #Damage Team Args
+  cleanup: Boolean
+  name: String
+  orders: String
+  room: String
+  preamble: String
+  type: String
+
+  #Damage Team Message Args
+  message: String
+
+  #Remote Access Args
+  code: String
+
+  #Inventory Args
+  inventory: String
+
+  #Long Range Message Args
+  destination: String
+
+  #Probe Launch Args
+  equipment: String
+  query: String
+
+  #Generic Args
+
+  #Finish Args
+  reactivate: Boolean
+}
+
+
 `;

@@ -43,6 +43,18 @@ export function HeatMixin(inheritClass) {
   };
 }
 
+class DamageStep {
+  constructor(params = {}) {
+    this.id = params.id || uuid.v4();
+    this.name = params.name || "generic";
+    this.args = params.args || {};
+  }
+  update({ name, args }) {
+    if (name) this.name = name;
+    if (args) this.args = args;
+  }
+}
+
 export class System {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
@@ -54,16 +66,14 @@ export class System {
     this.damage = params.damage || defaultDamage;
     this.extra = params.extra || false;
     this.locations = params.locations || [];
-
-    // Damage steps are objects which look like this:
-    /*
-        {
-          name: 'damageStepName',
-          args: { end: true, arg1: true, arg2: false}
-        }
-    */
-    this.requiredDamageSteps = params.requiredDamageSteps || [];
-    this.optionalDamageSteps = params.optionalDamageSteps || [];
+    this.requiredDamageSteps = [];
+    this.optionalDamageSteps = [];
+    params.requiredDamageSteps.forEach(s =>
+      this.requiredDamageSteps.push(new DamageStep(s))
+    );
+    params.optionalDamageSteps.forEach(s =>
+      this.optionalDamageSteps.push(new DamageStep(s))
+    );
   }
   get stealthFactor() {
     return null;
@@ -87,6 +97,24 @@ export class System {
     this.damage.damaged = true;
     this.damage.report = this.processReport(report);
     this.damage.requested = false;
+  }
+  addDamageStep({ name, args, type }) {
+    this[`${type}DamageSteps`].push(new DamageStep({ name, args }));
+  }
+  updateDamageStep({ id, name, args }) {
+    const step =
+      this.requiredDamageSteps.find(s => s.id === id) ||
+      this.optionalDamageSteps.find(s => s.id === id);
+    step.update({ name, args });
+  }
+  removeDamageStep(stepId) {
+    // Check both required and optional
+    this.requiredDamageSteps = this.requiredDamageSteps.filter(
+      s => s.id !== stepId
+    );
+    this.optionalDamageSteps = this.optionalDamageSteps.filter(
+      s => s.id !== stepId
+    );
   }
   generateDamageReport(stepCount = 5) {
     const sim = App.simulators.find(s => s.id === this.simulatorId);

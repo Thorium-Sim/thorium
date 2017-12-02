@@ -1,9 +1,9 @@
-export * from "./damageTeam";
-export * from "./damageTeamMessage";
-export * from "./finish";
-export * from "./generic";
-export * from "./longRangeMessage";
-export * from "./power";
-export * from "./probeLaunch";
-export * from "./remoteAccess";
-export * from "./sendInventory";
+export { default as damageTeam } from "./damageTeam";
+export { default as damageTeamMessage } from "./damageTeamMessage";
+export { default as finish } from "./finish";
+export { default as generic } from "./generic";
+export { default as longRangeMessage } from "./longRangeMessage";
+export { default as power } from "./power";
+export { default as probeLaunch } from "./probeLaunch";
+export { default as remoteAccess } from "./remoteAccess";
+export { default as sendInventory } from "./sendInventory";
