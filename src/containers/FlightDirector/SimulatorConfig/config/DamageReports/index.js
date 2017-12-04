@@ -1,17 +1,53 @@
 import React, { Component } from "react";
 import { Row, Col, Card, Input } from "reactstrap";
+import gql from "graphql-tag";
+import { withApollo } from "react-apollo";
 import * as steps from "./steps";
 
 class DamageReportsConfig extends Component {
   state = {};
+  addDamageStep = (evt, type) => {
+    const mutation = gql`
+      mutation AddDamageStep($systemId: ID!, $step: DamageStepInput!) {
+        addSystemDamageStep(systemId: $systemId, step: $step)
+      }
+    `;
+    const variables = {
+      systemId: this.state.selectedSystem,
+      step: {
+        name: evt.target.value,
+        args: {},
+        type
+      }
+    };
+    this.props.client.mutate({
+      mutation,
+      variables,
+      refetchQueries: ["Simulators"]
+    });
+  };
   render() {
-    const { data, selectedSimulator, client } = this.props;
+    const { selectedSimulator, client } = this.props;
     const {
       selectedSystem,
       selectedRequiredStep,
       selectedOptionalStep
     } = this.state;
     const { systems } = selectedSimulator;
+    const requiredStep =
+      selectedSystem &&
+      selectedRequiredStep &&
+      systems
+        .find(s => s.id === selectedSystem)
+        .requiredDamageSteps.find(s => s.id === selectedRequiredStep);
+    const RequiredConfig = requiredStep && steps[requiredStep.name];
+    const optionalStep =
+      selectedSystem &&
+      selectedOptionalStep &&
+      systems
+        .find(s => s.id === selectedSystem)
+        .optionalDamageSteps.find(s => s.id === selectedOptionalStep);
+    const OptionalConfig = optionalStep && steps[optionalStep.name];
     return (
       <div>
         <h4>Damage Reports Config</h4>
@@ -21,7 +57,12 @@ class DamageReportsConfig extends Component {
               {systems.map(s => (
                 <li
                   key={s.id}
-                  onClick={() => this.setState({ selectedSystem: s.id })}
+                  onClick={() =>
+                    this.setState({
+                      selectedSystem: s.id,
+                      selectedRequiredStep: null,
+                      selectedOptionalStep: null
+                    })}
                   className={`list-group-item ${selectedSystem === s.id
                     ? "selected"
                     : ""}`}
@@ -55,7 +96,11 @@ class DamageReportsConfig extends Component {
                           </li>
                         ))}
                     </Card>
-                    <Input type="select" value="Select">
+                    <Input
+                      type="select"
+                      value="Select"
+                      onChange={evt => this.addDamageStep(evt, "required")}
+                    >
                       <option value="Select" disabled>
                         Select a damage step
                       </option>
@@ -66,7 +111,15 @@ class DamageReportsConfig extends Component {
                       ))}
                     </Input>
                   </Col>
-                  <Col sm="8" />
+                  <Col sm="8">
+                    {RequiredConfig && (
+                      <RequiredConfig
+                        {...requiredStep}
+                        client={client}
+                        systemId={selectedSystem}
+                      />
+                    )}
+                  </Col>
                 </Row>
               </Card>
               Optional Steps
@@ -94,7 +147,11 @@ class DamageReportsConfig extends Component {
                           </li>
                         ))}
                     </Card>
-                    <Input type="select" value="Select">
+                    <Input
+                      type="select"
+                      value="Select"
+                      onChange={evt => this.addDamageStep(evt, "optional")}
+                    >
                       <option value="Select" disabled>
                         Select a damage step
                       </option>
@@ -105,7 +162,15 @@ class DamageReportsConfig extends Component {
                       ))}
                     </Input>
                   </Col>
-                  <Col sm="8" />
+                  <Col sm="8">
+                    {OptionalConfig && (
+                      <OptionalConfig
+                        {...optionalStep}
+                        client={client}
+                        systemId={selectedSystem}
+                      />
+                    )}
+                  </Col>
                 </Row>
               </Card>
             </Col>
@@ -116,4 +181,4 @@ class DamageReportsConfig extends Component {
   }
 }
 
-export default DamageReportsConfig;
+export default withApollo(DamageReportsConfig);

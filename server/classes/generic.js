@@ -51,7 +51,7 @@ class DamageStep {
   }
   update({ name, args }) {
     if (name) this.name = name;
-    if (args) this.args = args;
+    if (args) this.args = Object.assign({}, this.args, args);
   }
 }
 

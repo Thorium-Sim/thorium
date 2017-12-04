@@ -28,6 +28,7 @@ const SIMULATOR_SUB = gql`
         type
         name
         requiredDamageSteps {
+          id
           name
           args {
             end
@@ -47,6 +48,7 @@ const SIMULATOR_SUB = gql`
           }
         }
         optionalDamageSteps {
+          id
           name
           args {
             end
@@ -309,6 +311,7 @@ const SIMULATOR_QUERY = gql`
         type
         name
         requiredDamageSteps {
+          id
           name
           args {
             end
@@ -328,6 +331,7 @@ const SIMULATOR_QUERY = gql`
           }
         }
         optionalDamageSteps {
+          id
           name
           args {
             end

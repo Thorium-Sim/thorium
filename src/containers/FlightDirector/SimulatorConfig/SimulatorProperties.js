@@ -4,8 +4,8 @@ import { Card } from "reactstrap";
 const properties = [
   "Simulator",
   "Stations",
-  "Systems",
   "Decks",
+  "Systems",
   "Inventory",
   "Crew",
   "Assets",
