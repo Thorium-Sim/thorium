@@ -150,7 +150,11 @@ class Messaging extends Component {
               </p>
             ))}
         </div>
-        <form action={"javascript:void(0);"} onSubmit={this.sendMessage}>
+        <form
+          // eslint-disable-next-line
+          action={"javascript:void(0);"}
+          onSubmit={this.sendMessage}
+        >
           <Input
             size="sm"
             type="text"

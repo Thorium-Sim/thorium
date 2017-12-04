@@ -18,7 +18,7 @@ type Room {
   gas: Boolean
   svgPath: String
   inventory: [InventoryItem]
-  metadata: RoomMetadata
+  systems: [System]
 }
 
 union Location = Deck | Room
@@ -54,19 +54,7 @@ type InventoryMetadata {
 
 }
 
-type RoomMetadata {
-  inventory: Boolean
-  probeInventory: Boolean
-  torpedoInventory: Boolean
-  coolantInventory: Boolean
-}
 
-input RoomMetadataInput {
-  inventory: Boolean
-  probeInventory: Boolean
-  torpedoInventory: Boolean
-  coolantInventory: Boolean
-}
 
 input InventoryMetadataInput {
   type: String

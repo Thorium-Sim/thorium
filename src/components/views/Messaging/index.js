@@ -258,7 +258,11 @@ class Messaging extends Component {
                   ))}
               </div>
             </Card>
-            <form action={"javascript:void(0);"} onSubmit={this.sendMessage}>
+            <form
+              // eslint-disable-next-line
+              action={"javascript:void(0);"}
+              onSubmit={this.sendMessage}
+            >
               <InputGroup>
                 <Input
                   disabled={!selectedConversation}

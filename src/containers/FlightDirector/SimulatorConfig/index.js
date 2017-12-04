@@ -26,6 +26,47 @@ const SIMULATOR_SUB = gql`
       systems {
         id
         type
+        name
+        requiredDamageSteps {
+          id
+          name
+          args {
+            end
+            cleanup
+            name
+            orders
+            room
+            preamble
+            type
+            message
+            code
+            inventory
+            destination
+            equipment
+            query
+            reactivate
+          }
+        }
+        optionalDamageSteps {
+          id
+          name
+          args {
+            end
+            cleanup
+            name
+            orders
+            room
+            preamble
+            type
+            message
+            code
+            inventory
+            destination
+            equipment
+            query
+            reactivate
+          }
+        }
       }
       stationSets {
         id
@@ -268,6 +309,47 @@ const SIMULATOR_QUERY = gql`
       systems {
         id
         type
+        name
+        requiredDamageSteps {
+          id
+          name
+          args {
+            end
+            cleanup
+            name
+            orders
+            room
+            preamble
+            type
+            message
+            code
+            inventory
+            destination
+            equipment
+            query
+            reactivate
+          }
+        }
+        optionalDamageSteps {
+          id
+          name
+          args {
+            end
+            cleanup
+            name
+            orders
+            room
+            preamble
+            type
+            message
+            code
+            inventory
+            destination
+            equipment
+            query
+            reactivate
+          }
+        }
       }
       stationSets {
         id

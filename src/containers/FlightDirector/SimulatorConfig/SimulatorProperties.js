@@ -4,17 +4,18 @@ import { Card } from "reactstrap";
 const properties = [
   "Simulator",
   "Stations",
-  "Systems",
   "Decks",
+  "Systems",
   "Inventory",
   "Crew",
   "Assets",
-  "Docking"
+  "Docking",
+  "DamageReports"
 ];
 export default ({ selectProperty, selectedProperty }) => {
   return (
     <Card>
-      {properties.map(p =>
+      {properties.map(p => (
         <li
           key={p}
           onClick={() => {
@@ -26,7 +27,7 @@ export default ({ selectProperty, selectedProperty }) => {
         >
           {p}
         </li>
-      )}
+      ))}
     </Card>
   );
 };

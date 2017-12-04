@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 270,
+	"_eventsCount": 274,
 	"simulators": [
 		{
 			"id": "test",
@@ -1623,6 +1623,7 @@
 	"systems": [
 		{
 			"id": "long-range-comm",
+			"class": "LongRangeComm",
 			"simulatorId": "test",
 			"name": "Long Range Communications",
 			"displayName": "Long Range Comm",
@@ -1637,8 +1638,10 @@
 				"report": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "LongRangeComm",
-			"class": "LongRangeComm",
 			"messages": [
 				{
 					"id": "message-1",
@@ -1659,6 +1662,7 @@
 		},
 		{
 			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb3d",
+			"class": "Shield",
 			"simulatorId": "test",
 			"name": "Fore",
 			"displayName": "Fore Shields",
@@ -1673,7 +1677,9 @@
 				"report": null
 			},
 			"extra": false,
-			"class": "Shield",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Shield",
 			"position": 1,
 			"frequency": 161.50000000000506,
@@ -1682,6 +1688,7 @@
 		},
 		{
 			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb3c",
+			"class": "Shield",
 			"simulatorId": "test",
 			"name": "Aft",
 			"displayName": "Aft Shields",
@@ -1696,7 +1703,9 @@
 				"report": null
 			},
 			"extra": false,
-			"class": "Shield",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Shield",
 			"position": 2,
 			"frequency": 161.50000000000506,
@@ -1705,6 +1714,7 @@
 		},
 		{
 			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb3e",
+			"class": "Shield",
 			"simulatorId": "test",
 			"name": "Port",
 			"displayName": "Port Shields",
@@ -1719,7 +1729,9 @@
 				"report": null
 			},
 			"extra": false,
-			"class": "Shield",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Shield",
 			"position": 3,
 			"frequency": 161.50000000000506,
@@ -1728,6 +1740,7 @@
 		},
 		{
 			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb3f",
+			"class": "Shield",
 			"simulatorId": "test",
 			"name": "Starboard",
 			"displayName": "Starboard Shields",
@@ -1742,7 +1755,9 @@
 				"report": null
 			},
 			"extra": false,
-			"class": "Shield",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Shield",
 			"position": 4,
 			"frequency": 161.50000000000506,
@@ -1751,6 +1766,7 @@
 		},
 		{
 			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb31",
+			"class": "Shield",
 			"simulatorId": "test",
 			"name": "Ventral",
 			"displayName": "Ventral Shields",
@@ -1765,7 +1781,9 @@
 				"report": null
 			},
 			"extra": false,
-			"class": "Shield",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Shield",
 			"position": 6,
 			"frequency": 161.50000000000506,
@@ -1774,6 +1792,7 @@
 		},
 		{
 			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb32",
+			"class": "Shield",
 			"simulatorId": "test",
 			"name": "Dorsal",
 			"displayName": "Dorsal Shields",
@@ -1788,7 +1807,9 @@
 				"report": null
 			},
 			"extra": false,
-			"class": "Shield",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Shield",
 			"position": 5,
 			"frequency": 161.50000000000506,
@@ -1797,6 +1818,7 @@
 		},
 		{
 			"id": "1b8c9a95-4b6d-47d9-92d2-e419bd291f61",
+			"class": "Thrusters",
 			"simulatorId": "test",
 			"name": "Thrusters",
 			"displayName": "Thrusters",
@@ -1811,7 +1833,9 @@
 				"report": null
 			},
 			"extra": false,
-			"class": "Thrusters",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Thrusters",
 			"direction": {
 				"x": 0,
@@ -1838,6 +1862,7 @@
 		},
 		{
 			"id": "test-engine-impulse",
+			"class": "Engine",
 			"simulatorId": "test",
 			"name": "Impulse",
 			"displayName": "Impulse Engine",
@@ -1856,10 +1881,12 @@
 				"report": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 0.2,
-			"class": "Engine",
 			"type": "Engine",
 			"on": false,
 			"speeds": [
@@ -1897,6 +1924,7 @@
 		},
 		{
 			"id": "test-engine-warp",
+			"class": "Engine",
 			"simulatorId": "test",
 			"name": "Warp",
 			"displayName": "Warp Engine",
@@ -1921,10 +1949,12 @@
 				"report": null
 			},
 			"extra": false,
-			"heat": 0.33089999999933084,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"heat": 0,
 			"heatRate": 1,
 			"coolant": 0.3,
-			"class": "Engine",
 			"type": "Engine",
 			"on": true,
 			"speeds": [
@@ -1987,6 +2017,7 @@
 		},
 		{
 			"id": "6fdc098f-d4b3-4bbf-a312-0f6b9bfc558e",
+			"class": "Transporters",
 			"simulatorId": "test",
 			"name": "Transporters",
 			"displayName": "Transporters",
@@ -2001,8 +2032,10 @@
 				"report": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Transporters",
-			"class": "Transporters",
 			"targets": [],
 			"requestedTarget": null,
 			"destination": null,
@@ -2012,6 +2045,7 @@
 		},
 		{
 			"id": "c230c51b-c2fe-4c1b-9b19-5323cfd6b2b6",
+			"class": "Sensors",
 			"simulatorId": "test",
 			"name": "External Sensors",
 			"displayName": "External Sensors",
@@ -2026,12 +2060,14 @@
 				"report": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Sensors",
-			"class": "Sensors",
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 34341600,
+			"timeSincePing": 35531600,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -2102,6 +2138,7 @@
 		},
 		{
 			"id": "f4c8c9be-bb8e-4ec2-a7d1-718df91aa7f7",
+			"class": "Sensors",
 			"simulatorId": "test",
 			"name": "Internal Sensors",
 			"displayName": "Internal Sensors",
@@ -2116,12 +2153,14 @@
 				"report": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Sensors",
-			"class": "Sensors",
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 31977800,
+			"timeSincePing": 33167800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2132,6 +2171,7 @@
 		},
 		{
 			"id": "32973f59-c28d-4eb4-b370-da0548b0ba0a",
+			"class": "InternalComm",
 			"simulatorId": "test",
 			"name": "Internal Communications",
 			"displayName": "Internal Comm",
@@ -2146,14 +2186,17 @@
 				"report": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "InternalComm",
-			"class": "InternalComm",
 			"state": "idle",
 			"outgoing": null,
 			"incoming": null
 		},
 		{
 			"id": "43123433-40d3-49f2-a111-ab0cc3286608",
+			"class": "ShortRangeComm",
 			"simulatorId": "test",
 			"name": "Short Range Communications",
 			"displayName": "Short Range Comm",
@@ -2168,8 +2211,10 @@
 				"report": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "ShortRangeComm",
-			"class": "ShortRangeComm",
 			"frequency": 0.6505163909856392,
 			"amplitude": 0.5,
 			"state": "idle",
@@ -2249,6 +2294,7 @@
 		},
 		{
 			"id": "5fa743ea-850c-4d54-ae27-d15d10b15b10",
+			"class": "Reactor",
 			"simulatorId": "test",
 			"name": "Reactor",
 			"displayName": "Reactor",
@@ -2263,18 +2309,21 @@
 				"report": null
 			},
 			"extra": false,
-			"class": "Reactor",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Reactor",
 			"ejected": false,
 			"model": "battery",
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.775007999999775,
+			"batteryChargeLevel": 0.7653759999997654,
 			"batteryChargeRate": 0.001
 		},
 		{
 			"id": "1e66763f-70d7-4cc7-a385-f3fa4b008da4",
+			"class": "Targeting",
 			"simulatorId": "test",
 			"name": "Targeting",
 			"displayName": "Targeting",
@@ -2289,7 +2338,9 @@
 				"report": null
 			},
 			"extra": false,
-			"class": "Targeting",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Targeting",
 			"contacts": [
 				{
@@ -2351,6 +2402,7 @@
 		},
 		{
 			"id": "194c8133-b341-4b9c-be86-a1cacfa9512b",
+			"class": "Phasers",
 			"simulatorId": "test",
 			"name": "Phaser",
 			"displayName": "Phaser",
@@ -2365,15 +2417,18 @@
 				"report": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
-			"class": "Phasers",
 			"type": "Phasers",
 			"arc": 0.5,
 			"beams": [
 				{
 					"id": "2f569e5d-3cec-445a-a858-0354680dd05b",
+					"class": "System",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
@@ -2388,6 +2443,9 @@
 						"report": null
 					},
 					"extra": false,
+					"locations": [],
+					"requiredDamageSteps": [],
+					"optionalDamageSteps": [],
 					"state": "idle",
 					"charge": 0,
 					"heat": 0,
@@ -2395,6 +2453,7 @@
 				},
 				{
 					"id": "2f569e5d-3cec-445a-wat-0354680dd05b",
+					"class": "System",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
@@ -2409,6 +2468,9 @@
 						"report": null
 					},
 					"extra": false,
+					"locations": [],
+					"requiredDamageSteps": [],
+					"optionalDamageSteps": [],
 					"state": "idle",
 					"charge": 0,
 					"heat": 0,
@@ -2416,6 +2478,7 @@
 				},
 				{
 					"id": "4f20dcaf-2b59-4e26-ae8a-094ab90bff75",
+					"class": "System",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
@@ -2430,6 +2493,9 @@
 						"report": null
 					},
 					"extra": false,
+					"locations": [],
+					"requiredDamageSteps": [],
+					"optionalDamageSteps": [],
 					"state": "idle",
 					"charge": 0,
 					"heat": 0,
@@ -2440,6 +2506,7 @@
 		},
 		{
 			"id": "b9067849-f8ce-41bd-bd83-3399e7552d7b",
+			"class": "Torpedo",
 			"simulatorId": "test",
 			"name": "Torpedo",
 			"displayName": "Torpedo",
@@ -2454,7 +2521,9 @@
 				"report": null
 			},
 			"extra": false,
-			"class": "Torpedo",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Torpedo",
 			"loaded": false,
 			"state": "idle",
@@ -2463,6 +2532,7 @@
 		},
 		{
 			"id": "5e22f218-e004-47fc-b09d-0d41e9bb85b4",
+			"class": "Probes",
 			"simulatorId": "test",
 			"name": "Probe Launcher",
 			"displayName": "Probe Launcher",
@@ -2477,7 +2547,9 @@
 				"report": null
 			},
 			"extra": false,
-			"class": "Probes",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Probes",
 			"torpedo": false,
 			"probes": [],
@@ -2868,6 +2940,7 @@
 		},
 		{
 			"id": "1d38f989-e770-440c-ad86-52770caaf12b",
+			"class": "StealthField",
 			"simulatorId": "test",
 			"name": "Stealth Field",
 			"displayName": "Stealth Field",
@@ -2883,7 +2956,9 @@
 				"requested": false
 			},
 			"extra": false,
-			"class": "StealthField",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "StealthField",
 			"charge": false,
 			"activated": true,
@@ -2897,6 +2972,7 @@
 		},
 		{
 			"id": "3abbdf89-1299-4bd8-9311-f358124ab224",
+			"class": "TractorBeam",
 			"simulatorId": "test",
 			"name": "Tractor Beam",
 			"displayName": "Tractor Beam",
@@ -2912,7 +2988,9 @@
 				"requested": false
 			},
 			"extra": false,
-			"class": "TractorBeam",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "TractorBeam",
 			"state": false,
 			"target": false,
@@ -2922,6 +3000,7 @@
 		},
 		{
 			"id": "ea8f37b6-f835-40c6-8dcb-a1422d11620a",
+			"class": "Coolant",
 			"simulatorId": "test",
 			"name": null,
 			"displayName": null,
@@ -2931,7 +3010,9 @@
 				"requested": false
 			},
 			"extra": false,
-			"class": "Coolant",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Coolant",
 			"coolant": 1,
 			"coolantRate": 0.2,
@@ -2939,6 +3020,7 @@
 		},
 		{
 			"id": "0d998466-a178-4f03-8177-ec08e663a30f",
+			"class": "Navigation",
 			"simulatorId": "test",
 			"name": "Navigation",
 			"displayName": "Navigation",
@@ -2954,7 +3036,9 @@
 				"requested": false
 			},
 			"extra": false,
-			"class": "Navigation",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Navigation",
 			"calculate": true,
 			"currentCourse": {
@@ -2973,6 +3057,7 @@
 		},
 		{
 			"id": "f833f14e-5a24-42de-8a8a-3336bb98b985",
+			"class": "Reactor",
 			"simulatorId": "test",
 			"name": "Reactor",
 			"displayName": "Reactor",
@@ -2991,7 +3076,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Reactor",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Reactor",
 			"ejected": false,
 			"model": "reactor",
@@ -3003,6 +3090,7 @@
 		},
 		{
 			"id": "7186f20f-c814-4a66-98a3-35db6c9e1345",
+			"class": "LongRangeComm",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Long Range Communications",
 			"displayName": "Long Range Comm",
@@ -3019,13 +3107,16 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "LongRangeComm",
-			"class": "LongRangeComm",
 			"messages": [],
 			"messageSent": false
 		},
 		{
 			"id": "ad14e51e-782e-4efc-ace5-0e25826665ee",
+			"class": "InternalComm",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Internal Communications",
 			"displayName": "Internal Comm",
@@ -3042,14 +3133,17 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "InternalComm",
-			"class": "InternalComm",
 			"state": "idle",
 			"outgoing": null,
 			"incoming": null
 		},
 		{
 			"id": "8ec31f54-5b2e-4235-8c51-7256e3142367",
+			"class": "ShortRangeComm",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Short Range Communications",
 			"displayName": "Short Range Comm",
@@ -3066,8 +3160,10 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "ShortRangeComm",
-			"class": "ShortRangeComm",
 			"frequency": 0.5,
 			"amplitude": 0.5,
 			"state": "idle",
@@ -3147,6 +3243,7 @@
 		},
 		{
 			"id": "1616b07c-08eb-48ac-ab39-df53330fddc2",
+			"class": "Engine",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Warp",
 			"displayName": "Warp Engines",
@@ -3163,10 +3260,12 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
-			"class": "Engine",
 			"type": "Engine",
 			"on": false,
 			"speeds": [
@@ -3219,6 +3318,7 @@
 		},
 		{
 			"id": "30179ddb-800f-4897-a50a-8ab2b6b507de",
+			"class": "Engine",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Impulse",
 			"displayName": "Impulse Engines",
@@ -3235,10 +3335,12 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
-			"class": "Engine",
 			"type": "Engine",
 			"on": false,
 			"speeds": [
@@ -3271,6 +3373,7 @@
 		},
 		{
 			"id": "1be38b50-4127-46a6-b8eb-f9f3864565e4",
+			"class": "Thrusters",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Thrusters",
 			"displayName": "Thrusters",
@@ -3287,7 +3390,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Thrusters",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Thrusters",
 			"direction": {
 				"x": 0,
@@ -3314,6 +3419,7 @@
 		},
 		{
 			"id": "f266300d-a398-48e9-af38-53410c25681f",
+			"class": "Navigation",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Navigation",
 			"displayName": "Navigation",
@@ -3330,7 +3436,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Navigation",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Navigation",
 			"calculate": true,
 			"currentCourse": {
@@ -3349,6 +3457,7 @@
 		},
 		{
 			"id": "1e6ecb6a-54a2-41b7-af13-0b42458e234c",
+			"class": "Sensors",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "External Sensors",
 			"displayName": "External Sensors",
@@ -3365,12 +3474,14 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Sensors",
-			"class": "Sensors",
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 27160800,
+			"timeSincePing": 28350800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3381,6 +3492,7 @@
 		},
 		{
 			"id": "71a506bc-5930-4ec5-90de-51f1d0a99c2b",
+			"class": "Sensors",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Internal Sensors",
 			"displayName": "Internal Sensors",
@@ -3397,12 +3509,14 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Sensors",
-			"class": "Sensors",
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 27160800,
+			"timeSincePing": 28350800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3413,6 +3527,7 @@
 		},
 		{
 			"id": "ee9b7eea-f215-44ca-a4eb-d512f66570ec",
+			"class": "Probes",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Probe Launcher",
 			"displayName": "Probe Launcher",
@@ -3429,7 +3544,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Probes",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Probes",
 			"torpedo": false,
 			"probes": [],
@@ -3820,6 +3937,7 @@
 		},
 		{
 			"id": "0ca98f50-df64-406f-a1df-e1c2275b2055",
+			"class": "TractorBeam",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Tractor Beam",
 			"displayName": "Tractor Beam",
@@ -3836,7 +3954,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "TractorBeam",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "TractorBeam",
 			"state": false,
 			"target": false,
@@ -3846,6 +3966,7 @@
 		},
 		{
 			"id": "a81f853b-3ddb-4d43-b332-4f11b6e2de3e",
+			"class": "Transporters",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Transporters",
 			"displayName": "Transporters",
@@ -3862,8 +3983,10 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Transporters",
-			"class": "Transporters",
 			"targets": [
 				{
 					"id": "acf891c0-ad5e-496a-aa8e-d29d1b17a070",
@@ -3884,6 +4007,7 @@
 		},
 		{
 			"id": "990e0cba-bcac-4211-ac17-a39bf16d7449",
+			"class": "Reactor",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Reactor",
 			"displayName": "Reactor",
@@ -3900,7 +4024,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Reactor",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Reactor",
 			"ejected": false,
 			"model": "reactor",
@@ -3912,6 +4038,7 @@
 		},
 		{
 			"id": "06c61c99-a1dc-45cd-87ab-40105f5a20f4",
+			"class": "Reactor",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Battery",
 			"displayName": "Battery",
@@ -3928,7 +4055,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Reactor",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Reactor",
 			"ejected": false,
 			"model": "battery",
@@ -3940,6 +4069,7 @@
 		},
 		{
 			"id": "f86789e7-a423-442f-8f21-13cbe315e66e",
+			"class": "StealthField",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Stealth Field",
 			"displayName": "Stealth Field",
@@ -3956,7 +4086,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "StealthField",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "StealthField",
 			"charge": false,
 			"activated": true,
@@ -3970,6 +4102,7 @@
 		},
 		{
 			"id": "412baca7-e39a-4491-816a-70a4e95d17a9",
+			"class": "Shield",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Full",
 			"displayName": "Shields",
@@ -3986,7 +4119,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Shield",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Shield",
 			"position": 0,
 			"frequency": 260.5,
@@ -3995,6 +4130,7 @@
 		},
 		{
 			"id": "e74ad1b3-ef6e-40a1-b6de-a4eeaaff6121",
+			"class": "Targeting",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Targeting",
 			"displayName": "Targeting",
@@ -4011,7 +4147,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Targeting",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Targeting",
 			"contacts": [],
 			"classes": [],
@@ -4023,6 +4161,7 @@
 		},
 		{
 			"id": "b80c786f-b57e-4cbc-a0f5-a809f2ef1fca",
+			"class": "Phasers",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Phaser",
 			"displayName": "Phaser",
@@ -4039,15 +4178,18 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
-			"class": "Phasers",
 			"type": "Phasers",
 			"arc": 0.5,
 			"beams": [
 				{
 					"id": "248b6cb6-588c-4cbc-a441-05b6a3ce8c60",
+					"class": "System",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
@@ -4064,6 +4206,9 @@
 						"neededReactivationCode": null
 					},
 					"extra": false,
+					"locations": [],
+					"requiredDamageSteps": [],
+					"optionalDamageSteps": [],
 					"state": "idle",
 					"charge": 0,
 					"heat": 0,
@@ -4071,6 +4216,7 @@
 				},
 				{
 					"id": "f56723e6-9f93-4c5a-b3c5-2da61c1161d2",
+					"class": "System",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
@@ -4087,6 +4233,9 @@
 						"neededReactivationCode": null
 					},
 					"extra": false,
+					"locations": [],
+					"requiredDamageSteps": [],
+					"optionalDamageSteps": [],
 					"state": "idle",
 					"charge": 0,
 					"heat": 0,
@@ -4097,6 +4246,7 @@
 		},
 		{
 			"id": "72077f6b-5842-4d97-90ab-5985c2a7b8d3",
+			"class": "Torpedo",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Torpedo",
 			"displayName": "Torpedo",
@@ -4113,7 +4263,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Torpedo",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Torpedo",
 			"loaded": false,
 			"state": "idle",
@@ -4122,6 +4274,7 @@
 		},
 		{
 			"id": "dc3a2c49-301d-4724-a365-354a7e5340ea",
+			"class": "Coolant",
 			"simulatorId": "e0b9ad33-511d-458f-99a9-cb85df873735",
 			"name": "Coolant",
 			"displayName": "Coolant",
@@ -4134,7 +4287,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Coolant",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Coolant",
 			"coolant": 1,
 			"coolantRate": 0.2,
@@ -4142,6 +4297,7 @@
 		},
 		{
 			"id": "83874d2a-5646-4a96-a837-fa7b7dc5acea",
+			"class": "LongRangeComm",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Long Range Communications",
 			"displayName": "Long Range Comm",
@@ -4160,13 +4316,26 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [
+				"ddbeb9de-a9bd-485a-8d1c-8cff972e57ff"
+			],
+			"requiredDamageSteps": [
+				{
+					"id": "73da858c-2c9f-4b98-beb0-b2af9ce6836f",
+					"name": "generic",
+					"args": {
+						"message": "tada! #COLOR #PART #[12 - 23] #[\"Awesome\", \"Cool\" \"Super\"]"
+					}
+				}
+			],
+			"optionalDamageSteps": [],
 			"type": "LongRangeComm",
-			"class": "LongRangeComm",
 			"messages": [],
 			"messageSent": false
 		},
 		{
 			"id": "5c72442a-e6c1-46ca-99a3-fb8ff8a2c0cc",
+			"class": "InternalComm",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Internal Communications",
 			"displayName": "Internal Comm",
@@ -4185,113 +4354,19 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [
+				"ddbeb9de-a9bd-485a-8d1c-8cff972e57ff"
+			],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "InternalComm",
-			"class": "InternalComm",
 			"state": "idle",
 			"outgoing": null,
 			"incoming": null
 		},
 		{
-			"id": "33c05af3-8042-4c99-9185-b1c99a856a50",
-			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
-			"name": "Short Range Communications",
-			"displayName": "Short Range Comm",
-			"power": {
-				"power": 3,
-				"powerLevels": [
-					3
-				]
-			},
-			"damage": {
-				"damaged": false,
-				"report": null,
-				"requested": false,
-				"reactivationCode": null,
-				"reactivationRequester": null,
-				"neededReactivationCode": null
-			},
-			"extra": false,
-			"type": "ShortRangeComm",
-			"class": "ShortRangeComm",
-			"frequency": 0.5,
-			"amplitude": 0.5,
-			"state": "idle",
-			"arrows": [],
-			"signals": [
-				{
-					"id": "6b1fddf6-7098-4f07-8515-0b7f8272879d",
-					"image": "Romulan",
-					"name": "Romulan",
-					"color": "#00ff00",
-					"range": {
-						"upper": 1,
-						"lower": 0.85
-					}
-				},
-				{
-					"id": "3dc916ed-48cd-42c3-92f7-03d83f5c227f",
-					"image": "Ferengi",
-					"name": "Ferengi",
-					"color": "#ffff00",
-					"range": {
-						"upper": 0.22,
-						"lower": 0
-					}
-				},
-				{
-					"id": "e21a4686-a0a2-4d30-974e-af71d79add4a",
-					"image": "Cardassian",
-					"name": "Cardassian",
-					"color": "#ffaa00",
-					"range": {
-						"upper": 0.85,
-						"lower": 0.75
-					}
-				},
-				{
-					"id": "589918e1-d246-4b42-8647-22d8535b642c",
-					"image": "General Use",
-					"name": "General Use",
-					"color": "#ffffff",
-					"range": {
-						"upper": 0.75,
-						"lower": 0.58
-					}
-				},
-				{
-					"id": "b70571fe-481f-4b39-9128-e9eb82cd7695",
-					"image": "Starfleet",
-					"name": "Starfleet",
-					"color": "#0088ff",
-					"range": {
-						"upper": 0.58,
-						"lower": 0.4
-					}
-				},
-				{
-					"id": "a2bd98b3-1dc4-4d14-a919-cd36cb55e940",
-					"image": "Klingon",
-					"name": "Klingon",
-					"color": "#ff0000",
-					"range": {
-						"upper": 0.4,
-						"lower": 0.3
-					}
-				},
-				{
-					"id": "50b29357-3a93-46d2-b21a-276a6bc6bf3e",
-					"image": "Orion",
-					"name": "Orion",
-					"color": "#888888",
-					"range": {
-						"upper": 0.3,
-						"lower": 0.22
-					}
-				}
-			]
-		},
-		{
 			"id": "0cfcf569-e400-4519-892a-f419ff3e5736",
+			"class": "Engine",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Impulse",
 			"displayName": "Impulse Engine",
@@ -4314,10 +4389,12 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
-			"class": "Engine",
 			"type": "Engine",
 			"on": false,
 			"speeds": [
@@ -4355,6 +4432,7 @@
 		},
 		{
 			"id": "bcb0fae5-a2d3-4cbd-b740-3997eb90e552",
+			"class": "Thrusters",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Thrusters",
 			"displayName": "Thrusters",
@@ -4373,7 +4451,11 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Thrusters",
+			"locations": [
+				"6c4bffc3-f3d5-4bc0-b8ef-23e54d90b7e6"
+			],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Thrusters",
 			"direction": {
 				"x": 0,
@@ -4400,6 +4482,7 @@
 		},
 		{
 			"id": "85f9b00d-8e9f-4413-8c0a-fbc4fc509a45",
+			"class": "Navigation",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Navigation",
 			"displayName": "Navigation",
@@ -4418,7 +4501,13 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Navigation",
+			"locations": [
+				"0e0b1949-1614-44f6-a6f2-f07c055cb395",
+				"fcd7ec80-4449-4807-a2eb-847f656b3c20",
+				"8cd12316-8275-46cc-a645-3b6824caa258"
+			],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Navigation",
 			"calculate": true,
 			"currentCourse": {
@@ -4437,6 +4526,7 @@
 		},
 		{
 			"id": "e4f415e5-cb39-4eee-9182-a69edf53244d",
+			"class": "Sensors",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "External Sensors",
 			"displayName": "External Sensors",
@@ -4455,12 +4545,18 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [
+				"348640e7-3093-4df0-82f8-82fabeb050f4",
+				"7dfdabeb-3864-46b7-8365-80b71955c613",
+				"aca5df5b-c86b-44ec-9895-6515c87b4b4a"
+			],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Sensors",
-			"class": "Sensors",
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 22047700,
+			"timeSincePing": 23237700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4471,6 +4567,7 @@
 		},
 		{
 			"id": "59bc406d-8663-44aa-8afa-176bb1f847ed",
+			"class": "Sensors",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Internal Sensors",
 			"displayName": "Internal Sensors",
@@ -4489,12 +4586,17 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [
+				"aca5df5b-c86b-44ec-9895-6515c87b4b4a",
+				"03a1f570-44b1-49ea-a088-f5bf4391f39c"
+			],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Sensors",
-			"class": "Sensors",
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 22047700,
+			"timeSincePing": 23237700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4505,6 +4607,7 @@
 		},
 		{
 			"id": "a29b342a-a838-4846-84df-6b908c1406ed",
+			"class": "Probes",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Probe Launcher",
 			"displayName": "Probe Launcher",
@@ -4521,7 +4624,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Probes",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Probes",
 			"torpedo": false,
 			"probes": [],
@@ -4912,6 +5017,7 @@
 		},
 		{
 			"id": "08ffe5c8-2a3e-4627-82de-4ff797ac1cb6",
+			"class": "TractorBeam",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Tractor Beam",
 			"displayName": "Tractor Beam",
@@ -4931,7 +5037,11 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "TractorBeam",
+			"locations": [
+				"c7becabe-4f63-4a6b-a198-43fece113968"
+			],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "TractorBeam",
 			"state": false,
 			"target": false,
@@ -4941,6 +5051,7 @@
 		},
 		{
 			"id": "de5b94aa-fd92-4867-8b71-4443d0b5bbfa",
+			"class": "Transporters",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Transporters",
 			"displayName": "Transporters",
@@ -4959,8 +5070,12 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [
+				"5572080f-c99d-493d-8233-35aa1451859c"
+			],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Transporters",
-			"class": "Transporters",
 			"targets": [],
 			"requestedTarget": null,
 			"destination": null,
@@ -4970,6 +5085,7 @@
 		},
 		{
 			"id": "0b2d5ff0-2277-4db4-83d0-86321c199faf",
+			"class": "Reactor",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Battery",
 			"displayName": "Battery",
@@ -4986,7 +5102,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Reactor",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Reactor",
 			"ejected": false,
 			"model": "battery",
@@ -4998,6 +5116,7 @@
 		},
 		{
 			"id": "bfaa82f6-bf45-43c2-b53f-8920f94e84ab",
+			"class": "Reactor",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Reactor",
 			"displayName": "Reactor",
@@ -5014,7 +5133,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Reactor",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Reactor",
 			"ejected": false,
 			"model": "reactor",
@@ -5026,6 +5147,7 @@
 		},
 		{
 			"id": "99468936-6fff-4118-914d-ff441547bef5",
+			"class": "StealthField",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Stealth Field",
 			"displayName": "Stealth Field",
@@ -5044,7 +5166,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "StealthField",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "StealthField",
 			"charge": false,
 			"activated": true,
@@ -5058,6 +5182,7 @@
 		},
 		{
 			"id": "792cf092-42c8-471d-ac79-8457147fd744",
+			"class": "Shield",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Fore",
 			"displayName": "Fore Shields",
@@ -5076,7 +5201,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Shield",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Shield",
 			"position": 1,
 			"frequency": 260.5,
@@ -5085,6 +5212,7 @@
 		},
 		{
 			"id": "f80fe4f1-62b8-44ce-aa74-44f08da5a913",
+			"class": "Shield",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Aft",
 			"displayName": "Aft Shields",
@@ -5103,7 +5231,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Shield",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Shield",
 			"position": 2,
 			"frequency": 260.5,
@@ -5112,6 +5242,7 @@
 		},
 		{
 			"id": "cc5a943c-cc91-4b3f-badb-79c68e68e6f2",
+			"class": "Shield",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Port",
 			"displayName": "Port Shields",
@@ -5130,7 +5261,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Shield",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Shield",
 			"position": 3,
 			"frequency": 260.5,
@@ -5139,6 +5272,7 @@
 		},
 		{
 			"id": "11174340-1f5c-4afd-aa14-c569f794cbf9",
+			"class": "Shield",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Starboard",
 			"displayName": "Starboard Shields",
@@ -5157,7 +5291,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Shield",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Shield",
 			"position": 4,
 			"frequency": 260.5,
@@ -5166,6 +5302,7 @@
 		},
 		{
 			"id": "e922064a-a0a8-46ad-a5b4-09d7862d3643",
+			"class": "Targeting",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Targeting",
 			"displayName": "Targeting",
@@ -5184,7 +5321,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Targeting",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Targeting",
 			"contacts": [],
 			"classes": [],
@@ -5196,6 +5335,7 @@
 		},
 		{
 			"id": "4a8faefb-2e61-4908-9ebb-b1257ef1769b",
+			"class": "Phasers",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Phaser",
 			"displayName": "Phaser",
@@ -5214,15 +5354,18 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
-			"class": "Phasers",
 			"type": "Phasers",
 			"arc": 0.5,
 			"beams": [
 				{
 					"id": "9d563be3-e933-4a45-8c1a-abcdd3060d8e",
+					"class": "System",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
@@ -5241,6 +5384,9 @@
 						"neededReactivationCode": null
 					},
 					"extra": false,
+					"locations": [],
+					"requiredDamageSteps": [],
+					"optionalDamageSteps": [],
 					"state": "idle",
 					"charge": 0,
 					"heat": 0,
@@ -5248,6 +5394,7 @@
 				},
 				{
 					"id": "1c551834-d645-4d24-908a-29fad4ea00f0",
+					"class": "System",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
@@ -5266,6 +5413,9 @@
 						"neededReactivationCode": null
 					},
 					"extra": false,
+					"locations": [],
+					"requiredDamageSteps": [],
+					"optionalDamageSteps": [],
 					"state": "idle",
 					"charge": 0,
 					"heat": 0,
@@ -5273,6 +5423,7 @@
 				},
 				{
 					"id": "35add545-7d3a-43c4-a9a7-7b846f39301a",
+					"class": "System",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
@@ -5291,6 +5442,9 @@
 						"neededReactivationCode": null
 					},
 					"extra": false,
+					"locations": [],
+					"requiredDamageSteps": [],
+					"optionalDamageSteps": [],
 					"state": "idle",
 					"charge": 0,
 					"heat": 0,
@@ -5298,6 +5452,7 @@
 				},
 				{
 					"id": "89d9012a-d3f8-4785-9e80-0278181b887d",
+					"class": "System",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
@@ -5316,6 +5471,9 @@
 						"neededReactivationCode": null
 					},
 					"extra": false,
+					"locations": [],
+					"requiredDamageSteps": [],
+					"optionalDamageSteps": [],
 					"state": "idle",
 					"charge": 0,
 					"heat": 0,
@@ -5323,6 +5481,7 @@
 				},
 				{
 					"id": "331f3f9f-909b-4121-82e4-08b11edce324",
+					"class": "System",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
@@ -5341,6 +5500,9 @@
 						"neededReactivationCode": null
 					},
 					"extra": false,
+					"locations": [],
+					"requiredDamageSteps": [],
+					"optionalDamageSteps": [],
 					"state": "idle",
 					"charge": 0,
 					"heat": 0,
@@ -5348,6 +5510,7 @@
 				},
 				{
 					"id": "82ea59dc-616a-48dc-b42c-c639fabc3608",
+					"class": "System",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
@@ -5366,6 +5529,9 @@
 						"neededReactivationCode": null
 					},
 					"extra": false,
+					"locations": [],
+					"requiredDamageSteps": [],
+					"optionalDamageSteps": [],
 					"state": "idle",
 					"charge": 0,
 					"heat": 0,
@@ -5373,6 +5539,7 @@
 				},
 				{
 					"id": "69009cf3-9f81-4720-b91a-1896164e5d15",
+					"class": "System",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
@@ -5391,6 +5558,9 @@
 						"neededReactivationCode": null
 					},
 					"extra": false,
+					"locations": [],
+					"requiredDamageSteps": [],
+					"optionalDamageSteps": [],
 					"state": "idle",
 					"charge": 0,
 					"heat": 0,
@@ -5398,6 +5568,7 @@
 				},
 				{
 					"id": "51e63203-42c1-416b-af07-d8f1b60460f7",
+					"class": "System",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
@@ -5416,6 +5587,9 @@
 						"neededReactivationCode": null
 					},
 					"extra": false,
+					"locations": [],
+					"requiredDamageSteps": [],
+					"optionalDamageSteps": [],
 					"state": "idle",
 					"charge": 0,
 					"heat": 0,
@@ -5426,6 +5600,7 @@
 		},
 		{
 			"id": "1983d21e-dfbd-478b-bfdf-4fe801d25bd0",
+			"class": "Coolant",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Coolant",
 			"displayName": "Coolant",
@@ -5438,7 +5613,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Coolant",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Coolant",
 			"coolant": 1,
 			"coolantRate": 0.2,
@@ -5446,6 +5623,7 @@
 		},
 		{
 			"id": "ab55d6de-1e66-4aec-8468-579f1c5a3a04",
+			"class": "Engine",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Warp",
 			"displayName": "Warp Engine",
@@ -5473,10 +5651,12 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
-			"class": "Engine",
 			"type": "Engine",
 			"on": false,
 			"speeds": [
@@ -5539,6 +5719,7 @@
 		},
 		{
 			"id": "0c2d23a6-e32b-46f3-ae55-f238d0c142a9",
+			"class": "LongRangeComm",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Long Range Communications",
 			"displayName": "Long Range Comm",
@@ -5557,13 +5738,16 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "LongRangeComm",
-			"class": "LongRangeComm",
 			"messages": [],
 			"messageSent": false
 		},
 		{
 			"id": "b174b294-b373-481a-86ae-0221401ea524",
+			"class": "InternalComm",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Internal Communications",
 			"displayName": "Internal Comm",
@@ -5582,14 +5766,17 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "InternalComm",
-			"class": "InternalComm",
 			"state": "idle",
 			"outgoing": null,
 			"incoming": null
 		},
 		{
 			"id": "a64b1861-43bc-463e-86fc-c70caa0a1fc4",
+			"class": "ShortRangeComm",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Short Range Communications",
 			"displayName": "Short Range Comm",
@@ -5608,8 +5795,10 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "ShortRangeComm",
-			"class": "ShortRangeComm",
 			"frequency": 0.5,
 			"amplitude": 0.5,
 			"state": "idle",
@@ -5689,6 +5878,7 @@
 		},
 		{
 			"id": "3506dcc3-4c9b-478b-8f68-ee37f917095d",
+			"class": "Engine",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Impulse",
 			"displayName": "Impulse Engine",
@@ -5707,10 +5897,12 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
-			"class": "Engine",
 			"type": "Engine",
 			"on": false,
 			"speeds": [
@@ -5743,6 +5935,7 @@
 		},
 		{
 			"id": "088e3ea0-0b3f-400d-baf7-cf10abeb2eeb",
+			"class": "Engine",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Warp",
 			"displayName": "Warp Engine",
@@ -5761,10 +5954,12 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
-			"class": "Engine",
 			"type": "Engine",
 			"on": false,
 			"speeds": [
@@ -5785,6 +5980,7 @@
 		},
 		{
 			"id": "33a913d6-04a9-466a-a255-0cd8adc46132",
+			"class": "Thrusters",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Thrusters",
 			"displayName": "Thrusters",
@@ -5803,7 +5999,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Thrusters",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Thrusters",
 			"direction": {
 				"x": 0,
@@ -5830,6 +6028,7 @@
 		},
 		{
 			"id": "360d41bf-85e4-42ac-86a5-b8f0875b59e2",
+			"class": "Navigation",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Navigation",
 			"displayName": "Navigation",
@@ -5848,7 +6047,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Navigation",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Navigation",
 			"calculate": true,
 			"currentCourse": {
@@ -5867,6 +6068,7 @@
 		},
 		{
 			"id": "7043d811-b6c6-4e19-9cab-f85b61fd2ca5",
+			"class": "Sensors",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "External Sensors",
 			"displayName": "External Sensors",
@@ -5885,12 +6087,14 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Sensors",
-			"class": "Sensors",
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10733300,
+			"timeSincePing": 11923300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5901,6 +6105,7 @@
 		},
 		{
 			"id": "ea2ac650-e850-48d5-8435-3689c647ae13",
+			"class": "Sensors",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Internal Sensors",
 			"displayName": "Internal Sensors",
@@ -5919,12 +6124,14 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Sensors",
-			"class": "Sensors",
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 10733300,
+			"timeSincePing": 11923300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5935,6 +6142,7 @@
 		},
 		{
 			"id": "d1e6f128-d95e-4897-b408-20b9a2cdc549",
+			"class": "Probes",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Probe Launcher",
 			"displayName": "Probe Launcher",
@@ -5953,7 +6161,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Probes",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Probes",
 			"torpedo": false,
 			"probes": [],
@@ -6344,6 +6554,7 @@
 		},
 		{
 			"id": "6b220d13-9c6d-49f4-a0f7-6a8adc1cdbac",
+			"class": "TractorBeam",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Tractor Beam",
 			"displayName": "Tractor Beam",
@@ -6362,7 +6573,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "TractorBeam",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "TractorBeam",
 			"state": false,
 			"target": false,
@@ -6372,6 +6585,7 @@
 		},
 		{
 			"id": "f4915f86-0fcf-4762-b5a8-3f77f283b848",
+			"class": "Transporters",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Transporters",
 			"displayName": "Transporters",
@@ -6390,8 +6604,10 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Transporters",
-			"class": "Transporters",
 			"targets": [],
 			"requestedTarget": null,
 			"destination": null,
@@ -6401,6 +6617,7 @@
 		},
 		{
 			"id": "a91307d7-6561-4dc2-8064-4184ed8b4c19",
+			"class": "StealthField",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Stealth Field",
 			"displayName": "Stealth Field",
@@ -6419,7 +6636,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "StealthField",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "StealthField",
 			"charge": false,
 			"activated": true,
@@ -6433,6 +6652,7 @@
 		},
 		{
 			"id": "3cb9feb6-f3fe-469b-9b6c-796fa9f9af92",
+			"class": "Shield",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Full",
 			"displayName": "Shields",
@@ -6451,7 +6671,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Shield",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Shield",
 			"position": 0,
 			"frequency": 260.5,
@@ -6460,6 +6682,7 @@
 		},
 		{
 			"id": "6bca11c1-1e3b-412a-a2ab-16ef0ce16322",
+			"class": "Targeting",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Targeting",
 			"displayName": "Targeting",
@@ -6478,7 +6701,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Targeting",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Targeting",
 			"contacts": [],
 			"classes": [],
@@ -6490,6 +6715,7 @@
 		},
 		{
 			"id": "652073f5-3bea-443c-970c-7ea7b8a8d652",
+			"class": "Phasers",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Phaser",
 			"displayName": "Phaser",
@@ -6508,15 +6734,18 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
-			"class": "Phasers",
 			"type": "Phasers",
 			"arc": 0.5,
 			"beams": [
 				{
 					"id": "4abcf381-c2cd-4830-b7d4-2e5e79ed9d80",
+					"class": "System",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
@@ -6535,6 +6764,9 @@
 						"neededReactivationCode": null
 					},
 					"extra": false,
+					"locations": [],
+					"requiredDamageSteps": [],
+					"optionalDamageSteps": [],
 					"state": "idle",
 					"charge": 0,
 					"heat": 0,
@@ -6542,6 +6774,7 @@
 				},
 				{
 					"id": "4cf2d990-f97e-4e13-a9c2-b3fb3cfe7890",
+					"class": "System",
 					"simulatorId": null,
 					"name": null,
 					"displayName": null,
@@ -6560,6 +6793,9 @@
 						"neededReactivationCode": null
 					},
 					"extra": false,
+					"locations": [],
+					"requiredDamageSteps": [],
+					"optionalDamageSteps": [],
 					"state": "idle",
 					"charge": 0,
 					"heat": 0,
@@ -6570,6 +6806,7 @@
 		},
 		{
 			"id": "ba31a319-1424-4a17-b32c-71c66db43f5d",
+			"class": "Torpedo",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Torpedo",
 			"displayName": "Torpedo",
@@ -6588,7 +6825,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Torpedo",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Torpedo",
 			"loaded": false,
 			"state": "idle",
@@ -6648,6 +6887,7 @@
 		},
 		{
 			"id": "6a84e88b-7024-40e6-8363-532efb131bb8",
+			"class": "Coolant",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": null,
 			"displayName": null,
@@ -6660,7 +6900,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Coolant",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Coolant",
 			"coolant": 1,
 			"coolantRate": 0.2,
@@ -6668,6 +6910,7 @@
 		},
 		{
 			"id": "1face113-86c0-4997-b11e-c9a092077ee3",
+			"class": "Torpedo",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Fore Launcher",
 			"displayName": "Fore Launcher",
@@ -6686,7 +6929,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Torpedo",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Torpedo",
 			"loaded": false,
 			"state": "idle",
@@ -6746,6 +6991,7 @@
 		},
 		{
 			"id": "a3f0d300-1a5e-46ca-9275-93472a90d33f",
+			"class": "Torpedo",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Aft Launcher",
 			"displayName": "Aft Launcher",
@@ -6764,7 +7010,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "Torpedo",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "Torpedo",
 			"loaded": false,
 			"state": "idle",
@@ -6821,6 +7069,37 @@
 				}
 			],
 			"stealthCompromised": false
+		},
+		{
+			"id": "1950aba0-b817-420b-8f66-8053ef410bac",
+			"class": "ShortRangeComm",
+			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
+			"name": "Short Range Communications",
+			"displayName": "Short Range Comm",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "ShortRangeComm",
+			"frequency": 0.5,
+			"amplitude": 0.5,
+			"state": "idle",
+			"arrows": [],
+			"signals": []
 		}
 	],
 	"clients": [],
@@ -18205,6 +18484,7 @@
 	"dockingPorts": [
 		{
 			"id": "207220e5-2253-4d18-b58e-94c0ccc2862d",
+			"class": "DockingPort",
 			"simulatorId": "test",
 			"name": "Alpha",
 			"displayName": "Alpha",
@@ -18223,7 +18503,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "DockingPort",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "shuttlebay",
 			"clamps": true,
 			"compress": true,
@@ -18233,6 +18515,7 @@
 		},
 		{
 			"id": "238bab8a-7de1-429e-8370-e4606dbe7035",
+			"class": "DockingPort",
 			"simulatorId": "test",
 			"name": "Bravo",
 			"displayName": "Bravo",
@@ -18251,7 +18534,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "DockingPort",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "shuttlebay",
 			"clamps": true,
 			"compress": true,
@@ -18261,6 +18546,7 @@
 		},
 		{
 			"id": "95ced121-4875-44b4-8a59-7686c5faade8",
+			"class": "DockingPort",
 			"simulatorId": "test",
 			"name": "Charlie",
 			"displayName": "Charlie",
@@ -18279,7 +18565,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "DockingPort",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "shuttlebay",
 			"clamps": true,
 			"compress": true,
@@ -18289,6 +18577,7 @@
 		},
 		{
 			"id": "015ee0ed-d6ee-43f4-ba3d-16e2c390b64a",
+			"class": "DockingPort",
 			"simulatorId": "test",
 			"name": "Delta",
 			"displayName": "Delta",
@@ -18307,7 +18596,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "DockingPort",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "shuttlebay",
 			"clamps": true,
 			"compress": true,
@@ -18317,6 +18608,7 @@
 		},
 		{
 			"id": "f3a99734-71c8-4c39-b8fa-f775d22282f0",
+			"class": "DockingPort",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Alpha",
 			"displayName": "Alpha",
@@ -18335,7 +18627,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "DockingPort",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "shuttlebay",
 			"clamps": true,
 			"compress": true,
@@ -18345,6 +18639,7 @@
 		},
 		{
 			"id": "5add2b7a-adba-4b66-be4a-3af280f1af47",
+			"class": "DockingPort",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Bravo",
 			"displayName": "Bravo",
@@ -18363,7 +18658,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "DockingPort",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "shuttlebay",
 			"clamps": true,
 			"compress": true,
@@ -18373,6 +18670,7 @@
 		},
 		{
 			"id": "486e7de8-65b0-47d6-bd73-78bb50a7bc8c",
+			"class": "DockingPort",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Charlie",
 			"displayName": "Charlie",
@@ -18391,7 +18689,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "DockingPort",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "shuttlebay",
 			"clamps": true,
 			"compress": true,
@@ -18401,6 +18701,7 @@
 		},
 		{
 			"id": "2df0bbb7-3875-441d-badf-e1a7477588d1",
+			"class": "DockingPort",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Delta",
 			"displayName": "Delta",
@@ -18419,7 +18720,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "DockingPort",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "shuttlebay",
 			"clamps": true,
 			"compress": true,
@@ -18429,6 +18732,7 @@
 		},
 		{
 			"id": "dac8d712-2a66-4b5f-8d14-61ec43e730ed",
+			"class": "DockingPort",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Echo",
 			"displayName": "Echo",
@@ -18447,7 +18751,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "DockingPort",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "shuttlebay",
 			"clamps": true,
 			"compress": true,
@@ -18457,6 +18763,7 @@
 		},
 		{
 			"id": "9d5b3cf5-d1cb-438d-8c85-f63016356b49",
+			"class": "DockingPort",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"name": "Foxtrot",
 			"displayName": "Foxtrot",
@@ -18475,7 +18782,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "DockingPort",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "shuttlebay",
 			"clamps": true,
 			"compress": true,
@@ -18485,6 +18794,7 @@
 		},
 		{
 			"id": "77d66df5-4fa1-49fd-9776-3e91be46351d",
+			"class": "DockingPort",
 			"simulatorId": "67bac67a-2fa4-4a68-b710-c9a3af627516",
 			"name": "Alpha",
 			"displayName": "Alpha",
@@ -18503,7 +18813,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "DockingPort",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "shuttlebay",
 			"clamps": true,
 			"compress": true,
@@ -18513,6 +18825,7 @@
 		},
 		{
 			"id": "5ae522cd-008c-4314-a777-4dc037f6f29c",
+			"class": "DockingPort",
 			"simulatorId": "67bac67a-2fa4-4a68-b710-c9a3af627516",
 			"name": "Bravo",
 			"displayName": "Bravo",
@@ -18531,7 +18844,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "DockingPort",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "shuttlebay",
 			"clamps": true,
 			"compress": true,
@@ -18541,6 +18856,7 @@
 		},
 		{
 			"id": "4ce33af5-4118-4241-a6a3-9722b1568463",
+			"class": "DockingPort",
 			"simulatorId": "67bac67a-2fa4-4a68-b710-c9a3af627516",
 			"name": "Charlie",
 			"displayName": "Charlie",
@@ -18559,7 +18875,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "DockingPort",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "shuttlebay",
 			"clamps": true,
 			"compress": true,
@@ -18569,6 +18887,7 @@
 		},
 		{
 			"id": "14c1f327-3982-49f6-98d6-a6ee40d07afd",
+			"class": "DockingPort",
 			"simulatorId": "67bac67a-2fa4-4a68-b710-c9a3af627516",
 			"name": "Delta",
 			"displayName": "Delta",
@@ -18587,7 +18906,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "DockingPort",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "shuttlebay",
 			"clamps": true,
 			"compress": true,
@@ -18597,6 +18918,7 @@
 		},
 		{
 			"id": "16741fa0-195a-46f8-83aa-94ad756f6b68",
+			"class": "DockingPort",
 			"simulatorId": "67bac67a-2fa4-4a68-b710-c9a3af627516",
 			"name": "Echo",
 			"displayName": "Echo",
@@ -18615,7 +18937,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "DockingPort",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "shuttlebay",
 			"clamps": true,
 			"compress": true,
@@ -18625,6 +18949,7 @@
 		},
 		{
 			"id": "f044a069-9972-4567-80f6-a0811cd8cd5e",
+			"class": "DockingPort",
 			"simulatorId": "67bac67a-2fa4-4a68-b710-c9a3af627516",
 			"name": "Foxtrot",
 			"displayName": "Foxtrot",
@@ -18643,7 +18968,9 @@
 				"neededReactivationCode": null
 			},
 			"extra": false,
-			"class": "DockingPort",
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
 			"type": "shuttlebay",
 			"clamps": true,
 			"compress": true,
@@ -22986,7 +23313,7 @@
 			]
 		}
 	],
-	"snapshotVersion": 1542,
-	"version": 1542,
-	"timestamp": "2017-11-22T14:15:24.687Z"
+	"snapshotVersion": 67,
+	"version": 67,
+	"timestamp": "2017-12-04T18:26:55.393Z"
 }
