@@ -102,9 +102,9 @@ App.on("setEngineAcceleration", ({ id, acceleration }) => {
     sim.ship.speed = (engine.speeds[
       Math.floor(acceleration * (engine.speeds.length + 1)) - 1
     ] || { velocity: 0 }).velocity;
-  }
-  if (sim.ship.speed === 0) {
-    engine.on = false;
+    if (sim.ship.speed === 0) {
+      engine.on = false;
+    }
   }
   pubsub.publish("engineUpdate", engine);
 });

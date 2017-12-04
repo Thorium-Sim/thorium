@@ -9,9 +9,12 @@ export default class Slider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      level: props.snap
-        ? this.props.defaultLevel || 0.5
-        : this.props.defaultLevel || 0,
+      level: Math.max(
+        0,
+        props.snap
+          ? this.props.defaultLevel || 0.5
+          : this.props.defaultLevel || 0
+      ),
       dragging: false
     };
   }
@@ -33,7 +36,7 @@ export default class Slider extends Component {
             this.props.defaultLevel || 0.5,
             this.props.numbers
           );
-        this.setState({ level: this.props.defaultLevel || 0.5 });
+        this.setState({ level: Math.max(0, this.props.defaultLevel || 0.5) });
       }
     });
   };
@@ -42,7 +45,7 @@ export default class Slider extends Component {
     const level = Math.abs(
       Math.min(1, Math.max(0, (evt.clientY - bounds.top) / bounds.height)) - 1
     );
-    this.setState({ level });
+    this.setState({ level: Math.max(0, level) });
     this.triggerChange(level);
   };
   render() {

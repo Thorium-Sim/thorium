@@ -63,6 +63,7 @@ const ENGINE_SUB = gql`
       id
       name
       useAcceleration
+      acceleration
       power {
         power
         powerLevels
@@ -204,6 +205,7 @@ class AdvancedNavigation extends Component {
       pitch: pitchr,
       roll: rollr
     } = thrusters.rotationRequired;
+    console.log(engines);
     return (
       <Container fluid className="card-advanced-navigation">
         <Row>
@@ -319,7 +321,10 @@ class AdvancedNavigation extends Component {
                     disabled={
                       e.useAcceleration &&
                       engines.find(
-                        eng => eng.useAcceleration === false && eng.on === true
+                        eng =>
+                          eng.id !== e.id &&
+                          eng.useAcceleration === false &&
+                          eng.on === true
                       )
                     }
                     defaultLevel={
