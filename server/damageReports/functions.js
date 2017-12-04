@@ -52,7 +52,6 @@ Orders: Clean up the mess left from repairing the ${displayName} system.
     ? type
     : randomFromList(damagePositions.filter(p => p.position !== "Custodian"));
 
-  console.log(teamType, damageTexts[teamType]);
   return `${preamble ||
     randomFromList(damageTexts[teamType]).preamble.replace(
       "%SYSTEM%",
@@ -83,12 +82,16 @@ Wait for a response and follow the instructions they provide.
     `;
 };
 
-export const remoteAccess = ({ code = randomCode() }, { stations }, index) => {
+export const remoteAccess = (
+  { code = randomCode(), backup = randomCode() },
+  { stations },
+  index
+) => {
   const station = stations.find(s => s.widgets.indexOf("remote") > -1);
   const officer = station ? station.name : "Remote Access";
   return `Ask the ${officer} officer to send the following remote access code: ${code}.
     
-If the code is rejected, have them send a backup remote access code: ${randomCode()}`;
+If the code is rejected, have them send a backup remote access code: ${backupCode}`;
 };
 
 export const sendInventory = (
@@ -151,7 +154,7 @@ export const probeLaunch = (
   const stationName = station ? station.name : "Probe Construction";
   return `A probe should be launched to check on the repair status of the ${displayName} system. Ask the ${stationName} officer to launch a probe. Then have them perform this query:
     
-Query: Status of ${displayName} system.
+Query: ${query || `Status of ${displayName} system.`}
     
 If they query returns a positive response, continue with the damage report.`;
 };

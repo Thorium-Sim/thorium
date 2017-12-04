@@ -58,6 +58,7 @@ type DamageStepArgs {
 
   #Remote Access Args
   code: String
+  backup: String
 
   #Inventory Args
   inventory: String
@@ -103,7 +104,8 @@ input DamageStepArgsInput {
 
   #Remote Access Args
   code: String
-
+  backup: String
+  
   #Inventory Args
   inventory: String
 
