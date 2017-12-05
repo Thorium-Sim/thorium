@@ -39,7 +39,7 @@ App.on("speedChange", param => {
       color: "info"
     });
   }
-  pubsub.publish("speedChange", system);
+  pubsub.publish("engineUpdate", system);
   // Now stop the other engines
   // If speed is -1 (full stop), stop them all
   App.systems.forEach((engine, index) => {
@@ -53,11 +53,11 @@ App.on("speedChange", param => {
         } else {
           engine.setSpeed(engine.speeds.length, false);
         }
-        pubsub.publish("speedChange", engine);
+        pubsub.publish("engineUpdate", engine);
       }
       if (index > engineIndex) {
         engine.setSpeed(-1, false);
-        pubsub.publish("speedChange", engine);
+        pubsub.publish("engineUpdate", engine);
       }
     }
   });

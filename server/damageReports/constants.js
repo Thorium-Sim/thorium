@@ -142,17 +142,26 @@ export const damageTexts = {
   ]
 };
 
+export const greekLetters = [
+  "Alpha",
+  "Beta",
+  "Gamma",
+  "Delta",
+  "Zeta",
+  "Eta",
+  "Iota",
+  "Kappa",
+  "Lambda",
+  "Rho",
+  "Sigma",
+  "Tau",
+  "Omega",
+  "Epsilon",
+  "Omicron",
+  "Theta",
+  "Phi"
+];
 export function randomCode() {
-  const codeWords = [
-    "Alpha",
-    "Beta",
-    "Gamma",
-    "Delta",
-    "Epsilon",
-    "Omicron",
-    "Theta",
-    "Phi"
-  ];
   const codeWords2 = [
     "Ansible",
     "Cyber",
@@ -162,9 +171,27 @@ export function randomCode() {
     "Memory",
     "Faraday",
     "Bernal",
-    "Dyson"
+    "Dyson",
+    "Protocol",
+    "Vector",
+    "Analog",
+    "Digital",
+    "Buffer",
+    "Cache",
+    "Crypto",
+    "Fragment",
+    "System",
+    "Duplex",
+    "Threading",
+    "Hyper",
+    "Interlace",
+    "Progressive",
+    "Simplex",
+    "Multiplex",
+    "Syntax",
+    "Token"
   ];
-  return `${randomFromList(codeWords)}-${Math.floor(
+  return `${randomFromList(greekLetters)}-${Math.floor(
     Math.random() * 999
   )}-${randomFromList(codeWords2)}`;
 }

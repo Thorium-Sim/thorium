@@ -1,11 +1,20 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
+import { Container, Col, Row } from "reactstrap";
 
 const SPEEDCHANGE_SUB = gql`
   subscription SpeedChanged($simulatorId: ID) {
-    speedChange(simulatorId: $simulatorId) {
+    engineUpdate(simulatorId: $simulatorId) {
       id
+      name
+      speeds {
+        text
+        number
+        velocity
+      }
+      velocity
+      heat
       speed
       on
     }
@@ -25,11 +34,8 @@ class EngineCoreView extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
             engines: previousResult.engines.map(engine => {
-              if (engine.id === subscriptionData.speedChange.id) {
-                return Object.assign({}, engine, {
-                  speed: subscriptionData.speedChange.speed,
-                  on: subscriptionData.speedChange.on
-                });
+              if (engine.id === subscriptionData.engineUpdate.id) {
+                return Object.assign({}, engine, subscriptionData.engineUpdate);
               }
               return engine;
             })
@@ -55,6 +61,20 @@ class EngineCoreView extends Component {
       this.props.setSpeed({ id: id, speed: speed, on: true });
     }
   }
+  getCurrentSpeed() {
+    const velocity = this.props.data.engines[0].velocity;
+    const speed = this.props.data.engines
+      .reduce((prev, next) => {
+        return prev.concat(next.speeds);
+      }, [])
+      .reduce((prev, next) => {
+        if (next.velocity > velocity) return prev;
+        if (!prev) return next;
+        if (next.velocity > prev.velocity) return next;
+        return prev;
+      }, null);
+    return speed ? speed.text : "Full Stop";
+  }
   render() {
     let speedList = [];
     let onEngine = "Full Stop";
@@ -67,29 +87,41 @@ class EngineCoreView extends Component {
         });
       });
     }
-    return this.props.data.loading ? (
+    return this.props.data.loading || !this.props.data.engines ? (
       <span>"Loading..."</span>
     ) : (
-      <div>
-        {speedList.length > 0 ? (
-          <select value={onEngine} onChange={this.updateSpeed.bind(this)}>
-            <option>Full Stop</option>
-            {speedList.map((output, index) => {
-              return (
-                <option
-                  key={index}
-                  value={`${output.engineId}$${output.index}`}
-                  disabled={output.disabled}
-                >
-                  {output.text}
-                </option>
-              );
-            })}
-          </select>
-        ) : (
-          "No engines"
-        )}
-      </div>
+      <Container>
+        <Row>
+          <Col sm={6}>
+            {speedList.length > 0 ? (
+              <select value={onEngine} onChange={this.updateSpeed.bind(this)}>
+                <option>Full Stop</option>
+                {speedList.map((output, index) => {
+                  return (
+                    <option
+                      key={index}
+                      value={`${output.engineId}$${output.index}`}
+                      disabled={output.disabled}
+                    >
+                      {output.text}
+                    </option>
+                  );
+                })}
+              </select>
+            ) : (
+              "No engines"
+            )}
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <p>Velocity</p>
+            {this.getCurrentSpeed()} -{" "}
+            {this.props.data.engines &&
+              `${this.props.data.engines[0].velocity.toLocaleString()} km/s`}
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }
@@ -102,7 +134,9 @@ const ENGINE_QUERY = gql`
       speeds {
         text
         number
+        velocity
       }
+      velocity
       heat
       speed
       on

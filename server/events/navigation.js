@@ -41,6 +41,20 @@ App.on("navCancelCalculation", ({ id }) => {
 App.on("navCourseResponse", ({ id, x, y, z }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.courseResponse(x, y, z);
+  if (x.indexOf("˚") > -1) {
+    // It's a thruster setting - set the required thrusters of the thruster system
+    const thrusters = App.systems.find(
+      sys => sys.type === "Thrusters" && sys.simulatorId === system.simulatorId
+    );
+    if (thrusters) {
+      thrusters.updateRequired({
+        yaw: parseInt(x.replace("˚", ""), 10),
+        pitch: parseInt(y.replace("˚", ""), 10),
+        roll: parseInt(z.replace("˚", ""), 10)
+      });
+      pubsub.publish("rotationChange", thrusters);
+    }
+  }
   pubsub.publish(
     "navigationUpdate",
     App.systems.filter(s => s.type === "Navigation")

@@ -7,7 +7,7 @@ import "./style.css";
 
 const SPEEDCHANGE_SUB = gql`
   subscription SpeedChanged($simulatorId: ID) {
-    speedChange(simulatorId: $simulatorId) {
+    engineUpdate(simulatorId: $simulatorId) {
       id
       speed
       on
@@ -47,10 +47,10 @@ class EngineControl extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           const engines = previousResult.engines.map(engine => {
-            if (engine.id === subscriptionData.speedChange.id) {
+            if (engine.id === subscriptionData.engineUpdate.id) {
               return Object.assign({}, engine, {
-                speed: subscriptionData.speedChange.speed,
-                on: subscriptionData.speedChange.on
+                speed: subscriptionData.engineUpdate.speed,
+                on: subscriptionData.engineUpdate.on
               });
             }
             return engine;

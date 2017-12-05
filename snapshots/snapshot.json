@@ -2067,7 +2067,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 35531600,
+			"timeSincePing": 35600400,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -2160,7 +2160,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 33167800,
+			"timeSincePing": 33236600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2318,7 +2318,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7653759999997654,
+			"batteryChargeLevel": 0.7648159999997648,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -3481,7 +3481,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 28350800,
+			"timeSincePing": 28419600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3516,7 +3516,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 28350800,
+			"timeSincePing": 28419600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4308,8 +4308,7 @@
 				]
 			},
 			"damage": {
-				"damaged": false,
-				"report": null,
+				"damaged": true,
 				"requested": false,
 				"reactivationCode": null,
 				"reactivationRequester": null,
@@ -4321,11 +4320,54 @@
 			],
 			"requiredDamageSteps": [
 				{
-					"id": "73da858c-2c9f-4b98-beb0-b2af9ce6836f",
+					"id": "135fe992-7a8a-476e-82a8-cfdebdf270ba",
+					"name": "damageTeam",
+					"args": {}
+				},
+				{
+					"id": "352e92bc-1c0a-4182-872a-99be70d222c5",
+					"name": "damageTeamMessage",
+					"args": {}
+				},
+				{
+					"id": "911d6e19-08d4-43b4-b6c1-e8f46b5ee582",
 					"name": "generic",
-					"args": {
-						"message": "tada! #COLOR #PART #[12 - 23] #[\"Awesome\", \"Cool\" \"Super\"]"
-					}
+					"args": {}
+				},
+				{
+					"id": "63096850-6f88-4f08-b82b-a942d990c678",
+					"name": "longRangeMessage",
+					"args": {}
+				},
+				{
+					"id": "3cb1c758-8fbc-417e-821d-e03274437966",
+					"name": "probeLaunch",
+					"args": {}
+				},
+				{
+					"id": "0a1495b0-58de-427c-9020-396ee626585e",
+					"name": "remoteAccess",
+					"args": {}
+				},
+				{
+					"id": "24a70eb0-f2e3-4446-8c61-f856144f4dfe",
+					"name": "sendInventory",
+					"args": {}
+				},
+				{
+					"id": "a2c409b4-dacf-4bab-a142-b1cbfcf91ff1",
+					"name": "internalCall",
+					"args": {}
+				},
+				{
+					"id": "6ec78dea-8e08-4c37-b563-72e5d819fcd1",
+					"name": "securityEvac",
+					"args": {}
+				},
+				{
+					"id": "b99c1ef2-c0c3-438a-9cda-a6715603c732",
+					"name": "securityTeam",
+					"args": {}
 				}
 			],
 			"optionalDamageSteps": [],
@@ -4556,7 +4598,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 23237700,
+			"timeSincePing": 23306500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4596,7 +4638,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 23237700,
+			"timeSincePing": 23306500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6094,7 +6136,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11923300,
+			"timeSincePing": 11992100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6131,7 +6173,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11923300,
+			"timeSincePing": 11992100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -23313,7 +23355,7 @@
 			]
 		}
 	],
-	"snapshotVersion": 67,
-	"version": 67,
-	"timestamp": "2017-12-04T18:26:55.393Z"
+	"snapshotVersion": 11,
+	"version": 11,
+	"timestamp": "2017-12-05T16:05:37.303Z"
 }

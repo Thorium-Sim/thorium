@@ -23,8 +23,10 @@ const updateVelocity = () => {
       const speed = Math.round(
         sim.ship.speed + sys.acceleration * sys.speedFactor
       );
-      sim.ship.speed = Math.min(maxSpeed, Math.max(0, speed));
-      pubsub.publish("engineUpdate", sys);
+      if (sim.ship.speed !== Math.min(maxSpeed, Math.max(0, speed))) {
+        sim.ship.speed = Math.min(maxSpeed, Math.max(0, speed));
+        pubsub.publish("engineUpdate", sys);
+      }
     });
   setTimeout(updateVelocity, 250);
 };

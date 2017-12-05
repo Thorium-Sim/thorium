@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Label, Input, FormGroup } from "reactstrap";
+import { Label, Input } from "reactstrap";
 import gql from "graphql-tag";
 
-export default class GenericConfig extends Component {
+export default class SecurityTeamConfig extends Component {
   constructor(props) {
     super(props);
     this.state = props.args;
@@ -31,7 +31,7 @@ export default class GenericConfig extends Component {
   render() {
     return (
       <div>
-        <div>Probe Launch Config</div>
+        <div>Security Team Config</div>
         <small>
           You can use some hashtags to make your report dynamic:
           <ul>
@@ -52,22 +52,33 @@ export default class GenericConfig extends Component {
             </li>
           </ul>
         </small>
-        <FormGroup check>
-          <Label check>
-            Put at end of report?{" "}
-            <Input
-              type="checkbox"
-              checked={this.props.args.end}
-              onChange={evt => this.update(evt, "end")}
-            />
-          </Label>
-        </FormGroup>
-        <Label>Query</Label>
+        <Label>Preamble</Label>
+        <Input
+          type="textarea"
+          value={this.state.preamble || ""}
+          onChange={evt => this.setState({ preamble: evt.target.value })}
+          onBlur={evt => this.update(evt, "preamble")}
+        />
+        <Label>Name</Label>
+        <Input
+          type="textarea"
+          value={this.state.name || ""}
+          onChange={evt => this.setState({ name: evt.target.value })}
+          onBlur={evt => this.update(evt, "name")}
+        />
+        <Label>Orders</Label>
+        <Input
+          type="textarea"
+          value={this.state.orders || ""}
+          onChange={evt => this.setState({ orders: evt.target.value })}
+          onBlur={evt => this.update(evt, "orders")}
+        />
+        <Label>Room</Label>
         <Input
           type="text"
-          value={this.state.query || ""}
-          onChange={evt => this.setState({ query: evt.target.value })}
-          onBlur={evt => this.update(evt, "query")}
+          value={this.state.room || ""}
+          onChange={evt => this.setState({ room: evt.target.value })}
+          onBlur={evt => this.update(evt, "room")}
         />
       </div>
     );

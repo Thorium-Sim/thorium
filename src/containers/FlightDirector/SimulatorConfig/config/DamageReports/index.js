@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Row, Col, Card, Input } from "reactstrap";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
+import FontAwesome from "react-fontawesome";
 import * as steps from "./steps";
 
 class DamageReportsConfig extends Component {
@@ -19,6 +20,22 @@ class DamageReportsConfig extends Component {
         args: {},
         type
       }
+    };
+    this.props.client.mutate({
+      mutation,
+      variables,
+      refetchQueries: ["Simulators"]
+    });
+  };
+  removeDamageStep = stepId => {
+    const mutation = gql`
+      mutation RemoveDamageStep($systemId: ID!, $stepId: ID!) {
+        removeSystemDamageStep(systemId: $systemId, step: $stepId)
+      }
+    `;
+    const variables = {
+      systemId: this.state.selectedSystem,
+      stepId
     };
     this.props.client.mutate({
       mutation,
@@ -92,7 +109,12 @@ class DamageReportsConfig extends Component {
                               ? "selected"
                               : ""}`}
                           >
-                            {s.name}
+                            {s.name}{" "}
+                            <FontAwesome
+                              className="text-danger"
+                              name="ban"
+                              onClick={() => this.removeDamageStep(s.id)}
+                            />
                           </li>
                         ))}
                     </Card>
