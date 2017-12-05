@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
+import FontAwesome from "react-fontawesome";
 import { Container, Row, Col, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { OutputField } from "../../generic/core";
@@ -77,6 +78,15 @@ class NavigationCore extends Component {
       }
     });
   }
+  randomDegs = () => {
+    this.setState({
+      calculatedCourse: {
+        x: `${Math.round(Math.random() * 360)}˚`,
+        y: `${Math.round(Math.random() * 360)}˚`,
+        z: `${Math.round(Math.random() * 360)}˚`
+      }
+    });
+  };
   unknownCourse() {
     this.setState({
       calculatedCourse: {
@@ -152,14 +162,28 @@ class NavigationCore extends Component {
             <OutputField>{this.state.calculatedCourse.x}</OutputField>
           </Col>
           <Col sm="5">
-            <Button
-              onClick={this.randomNums.bind(this)}
-              block
-              size="sm"
-              color="secondary"
-            >
-              Random
-            </Button>
+            <Row>
+              <Col sm="6">
+                <Button
+                  onClick={this.randomNums.bind(this)}
+                  block
+                  size="sm"
+                  color="info"
+                >
+                  <FontAwesome name="random" />
+                </Button>
+              </Col>
+              <Col sm="6">
+                <Button
+                  onClick={this.randomDegs}
+                  block
+                  size="sm"
+                  color="warning"
+                >
+                  <FontAwesome name="repeat" />
+                </Button>
+              </Col>
+            </Row>
           </Col>
         </Row>
         <Row>
@@ -177,7 +201,7 @@ class NavigationCore extends Component {
               onClick={this.sendCourse.bind(this)}
               block
               size="sm"
-              color="secondary"
+              color="primary"
             >
               Send
             </Button>
