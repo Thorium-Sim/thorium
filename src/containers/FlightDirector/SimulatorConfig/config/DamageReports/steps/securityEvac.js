@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Label, Input, FormGroup } from "reactstrap";
 import gql from "graphql-tag";
 
-export default class GenericConfig extends Component {
+export default class SecurityEvacConfig extends Component {
   constructor(props) {
     super(props);
     this.state = props.args;
@@ -31,7 +31,7 @@ export default class GenericConfig extends Component {
   render() {
     return (
       <div>
-        <div>Probe Launch Config</div>
+        <div>Security Evac Config</div>
         <small>
           You can use some hashtags to make your report dynamic:
           <ul>
@@ -62,12 +62,19 @@ export default class GenericConfig extends Component {
             />
           </Label>
         </FormGroup>
-        <Label>Query</Label>
+        <Label>Preamble</Label>
+        <Input
+          type="textarea"
+          value={this.state.preamble || ""}
+          onChange={evt => this.setState({ preamble: evt.target.value })}
+          onBlur={evt => this.update(evt, "preamble")}
+        />
+        <Label>Room</Label>
         <Input
           type="text"
-          value={this.state.query || ""}
-          onChange={evt => this.setState({ query: evt.target.value })}
-          onBlur={evt => this.update(evt, "query")}
+          value={this.state.room || ""}
+          onChange={evt => this.setState({ room: evt.target.value })}
+          onBlur={evt => this.update(evt, "room")}
         />
       </div>
     );

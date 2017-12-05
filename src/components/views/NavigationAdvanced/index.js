@@ -205,7 +205,6 @@ class AdvancedNavigation extends Component {
       pitch: pitchr,
       roll: rollr
     } = thrusters.rotationRequired;
-    console.log(engines);
     return (
       <Container fluid className="card-advanced-navigation">
         <Row>
@@ -249,7 +248,7 @@ class AdvancedNavigation extends Component {
               </Col>
             </Row>
             <Row>
-              <Col sm={{ size: 10, offset: 1 }} className="ship-image">
+              <Col sm={{ size: 8, offset: 2 }} className="ship-image">
                 <Asset
                   asset="/Ship Views/Left"
                   simulatorId={this.props.simulator.id}

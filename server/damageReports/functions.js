@@ -1,8 +1,10 @@
+import App from "../app";
 import {
   damagePositions,
   damageTexts,
   randomCode,
-  randomFromList
+  randomFromList,
+  greekLetters
 } from "./constants";
 
 export const power = ({ end }, { name, displayName = name, stations }) => {
@@ -51,9 +53,9 @@ Orders: Clean up the mess left from repairing the ${displayName} system.
   const teamType = type
     ? type
     : randomFromList(damagePositions.filter(p => p.position !== "Custodian"));
-
+  const damageText = randomFromList(damageTexts[teamType]);
   return `${preamble ||
-    randomFromList(damageTexts[teamType]).preamble.replace(
+    damageText.preamble.replace(
       "%SYSTEM%",
       displayName
     )} Create the following work order:
@@ -61,11 +63,7 @@ Orders: Clean up the mess left from repairing the ${displayName} system.
 Damage Team Name: ${teamName || displayName + " Repair"}
 Location: ${room || location}
 Officers: ${Math.floor(Math.random() * 2 + 1)} ${teamType}(s)
-Orders: ${orders ||
-    randomFromList(damageTexts[teamType]).orders.replace(
-      "%SYSTEM%",
-      displayName
-    )}
+Orders: ${orders || damageText.orders.replace("%SYSTEM%", displayName)}
       `;
 };
 
@@ -84,14 +82,13 @@ Wait for a response and follow the instructions they provide.
 
 export const remoteAccess = (
   { code = randomCode(), backup = randomCode() },
-  { stations },
-  index
+  { stations }
 ) => {
   const station = stations.find(s => s.widgets.indexOf("remote") > -1);
   const officer = station ? station.name : "Remote Access";
   return `Ask the ${officer} officer to send the following remote access code: ${code}.
     
-If the code is rejected, have them send a backup remote access code: ${backupCode}`;
+If the code is rejected, have them send a backup remote access code: ${backup}`;
 };
 
 export const sendInventory = (
@@ -107,16 +104,17 @@ export const sendInventory = (
     
 Location: ${room || location}
 Cargo: ${inventory ||
-    Array(Math.floor(Math.random() * 3 + 1))
-      .fill(0)
-      .map(
-        () =>
-          randomFromList(
-            App.inventory.filter(i => i.simulatorId === simulatorId)
-          ).name
-      )
-      .filter((c, i, a) => a.indexOf(c) === i)
-      .map(i => Math.floor(Math.random() * 4 + 1) + " " + i)}
+    (App.inventory.filter(i => i.simulatorId === simulatorId).length &&
+      Array(Math.floor(Math.random() * 3 + 1))
+        .fill(0)
+        .map(
+          () =>
+            randomFromList(
+              App.inventory.filter(i => i.simulatorId === simulatorId)
+            ).name
+        )
+        .filter((c, i, a) => a.indexOf(c) === i)
+        .map(i => Math.floor(Math.random() * 4 + 1) + " " + i))}
     `;
 };
 
@@ -170,30 +168,63 @@ export const finish = ({ reactivate }) => {
     : ""}`;
 };
 
-/*
-  Damage Report Steps:
-    -- Power
-    -- Remote Access
-    Panel Switch
-    -- Damage Control Team
-      Officers
-      Orders
-      Team Name
-      Deck/Room
-    -- Damage Control Team Message
-    Security Evac
-    Security Bulkhead
-    Security Team
-    Alert Level
-    -- Send parts
-    Internal Call
-      Shut off the system/Restart the system
-      
-    -- Long Range Message
-    -- Probe Launch
-    -- Reactivation Code
-    Add Computer User
-    Environment
-    Exocomp
-    Generic
-*/
+export const securityTeam = (
+  { name: teamName, orders, room, preamble },
+  { name, displayName = name, location, stations }
+) => {
+  // Find the station with the security teams
+  const station = stations.find(s =>
+    s.cards.find(c => c.component === "SecurityTeams")
+  );
+  const stationName = station ? station.name : "Security Teams";
+  return `${preamble ||
+    `A security team should be dispatched to ensure there are no problems as the ${displayName} system is repaired.`}
+Ask the ${stationName} officer to create the following security team:
+
+Team Name: ${teamName || `${displayName} Detail`}
+Orders: ${orders ||
+    `Ensure there are no problems as the ${displayName} system is repaired.`}
+Location: ${room || location}
+
+`;
+};
+
+export const securityEvac = ({ room, preamble }, { location, stations }) => {
+  // Find the station with the security decks
+  const station = stations.find(s =>
+    s.cards.find(c => c.component === "SecurityDecks")
+  );
+  const stationName = station ? station.name : "Security Decks";
+  return `${preamble ||
+    `For safety, the deck where the damage is should be evacuated and sealed.`}
+Ask the ${stationName} officer to evacuate and seal the entire deck where the damage is: ${room
+    ? `Deck ${room}`
+    : location}
+  `;
+};
+
+export const internalCall = (
+  { room, preamble, message },
+  { name, displayName = name, location, stations }
+) => {
+  // Find the station with the internal comm
+  const station = stations.find(s =>
+    s.cards.find(c => c.component === "CommInternal")
+  );
+  const stationName = station ? station.name : "Telephone";
+  const messageList = [
+    `Run a level ${Math.floor(
+      Math.random() * 5
+    )} diagnostic on the ${displayName} system.`,
+    `Activate the ${randomFromList(
+      greekLetters
+    )} protocol on the ${displayName} system.`,
+    `Ensure there is no residual power flow in the ${displayName} system capacitors.`
+  ];
+  return `${preamble || `A call should be made to the system's room.`}
+Ask the ${stationName} officer to make the following internal call:
+
+Room: ${room || location}
+Message: ${message || randomFromList(messageList)}
+`;
+};

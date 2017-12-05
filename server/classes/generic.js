@@ -68,12 +68,14 @@ export class System {
     this.locations = params.locations || [];
     this.requiredDamageSteps = [];
     this.optionalDamageSteps = [];
-    params.requiredDamageSteps.forEach(s =>
-      this.requiredDamageSteps.push(new DamageStep(s))
-    );
-    params.optionalDamageSteps.forEach(s =>
-      this.optionalDamageSteps.push(new DamageStep(s))
-    );
+    params.requiredDamageSteps &&
+      params.requiredDamageSteps.forEach(s =>
+        this.requiredDamageSteps.push(new DamageStep(s))
+      );
+    params.optionalDamageSteps &&
+      params.optionalDamageSteps.forEach(s =>
+        this.optionalDamageSteps.push(new DamageStep(s))
+      );
   }
   get stealthFactor() {
     return null;
@@ -118,6 +120,7 @@ export class System {
   }
   generateDamageReport(stepCount = 5) {
     const sim = App.simulators.find(s => s.id === this.simulatorId);
+    const decks = App.decks.filter(d => d.simulatorId === this.simulatorId);
     const rooms = App.rooms.filter(r => this.locations.indexOf(r.id) > -1);
     const crew = App.crew.filter(c => c.simulatorId === this.simulatorId);
     // Get the damage team positions
@@ -125,6 +128,9 @@ export class System {
       .map(c => c.position)
       .filter(c => damagePositions.indexOf(c) > -1)
       .filter((c, i, a) => a.indexOf(c) === i);
+    const securityTeamCrew = crew
+      .map(c => c.position)
+      .filter(c => c.indexOf("Security") > -1);
     const stations = sim.stations;
     const components = stations.reduce((prev, s) => {
       return prev.concat(s.cards.map(c => c.component));
@@ -186,6 +192,18 @@ export class System {
           return components.indexOf("ProbeConstruction") > -1;
         }
         if (step.name === "generic") return true;
+        if (step.name === "securityTeam") {
+          return (
+            components.indexOf("SecurityTeams") > -1 &&
+            securityTeamCrew.length > -1
+          );
+        }
+        if (step.name === "securityEvac") {
+          return components.indexOf("SecurityDecks") > -1 && decks.length > -1;
+        }
+        if (step.name === "internalCall") {
+          return components.indexOf("CommInternal") > -1 && decks.length > -1;
+        }
         return false;
       });
 

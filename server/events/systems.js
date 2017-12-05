@@ -4,7 +4,7 @@ import { pubsub } from "../helpers/subscriptionManager";
 import * as Classes from "../classes";
 
 const sendUpdate = sys => {
-  if (sys.type === "Engine") pubsub.publish("speedChange", sys);
+  if (sys.type === "Engine") pubsub.publish("engineUpdate", sys);
   if (sys.type === "Transporters") pubsub.publish("transporterUpdate", sys);
   if (sys.type === "Shield")
     pubsub.publish(

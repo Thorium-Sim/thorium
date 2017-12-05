@@ -115,7 +115,7 @@ class DamageReportCore extends Component {
     };
     e.target.files[0] && reader.readAsText(e.target.files[0]);
   }
-  sendReport() {
+  sendReport = () => {
     const mutation = gql`
       mutation DamageReport($systemId: ID!, $report: String!) {
         damageReport(systemId: $systemId, report: $report)
@@ -129,7 +129,7 @@ class DamageReportCore extends Component {
       mutation,
       variables
     });
-  }
+  };
   reactivationCodeResponse = response => {
     const mutation = gql`
       mutation ReactivationCodeResponse($systemId: ID!, $response: Boolean!) {
@@ -204,6 +204,24 @@ class DamageReportCore extends Component {
       mutation,
       variables
     });
+  };
+  generateReport = () => {
+    const mutation = gql`
+      mutation GenerateReport($systemId: ID!) {
+        generateDamageReport(systemId: $systemId)
+      }
+    `;
+    const variables = { systemId: this.state.selectedSystem };
+    this.props.client
+      .mutate({
+        mutation,
+        variables
+      })
+      .then(res => {
+        this.setState({
+          selectedReport: res.data.generateDamageReport
+        });
+      });
   };
   render() {
     if (this.props.data.loading) return null;
@@ -301,7 +319,7 @@ class DamageReportCore extends Component {
               </div>
             ) : (
               <Row style={{ margin: 0 }}>
-                <Col sm={6}>
+                <Col sm={3}>
                   <Input
                     onChange={this.loadReport.bind(this)}
                     style={{ position: "absolute", opacity: 0 }}
@@ -313,15 +331,27 @@ class DamageReportCore extends Component {
                     Load Report
                   </Button>
                 </Col>
-                <Col sm={6}>
+                <Col sm={3}>
                   <Button
                     size={"sm"}
                     block
                     color="primary"
-                    onClick={this.sendReport.bind(this)}
+                    onClick={this.sendReport}
                   >
-                    Send Report
+                    Send
                   </Button>
+                </Col>
+                <Col sm={3}>
+                  <Button
+                    size={"sm"}
+                    block
+                    color="warning"
+                    onClick={this.generateReport}
+                  >
+                    Generate
+                  </Button>
+                </Col>
+                <Col sm={3}>
                   <Button
                     size={"sm"}
                     block

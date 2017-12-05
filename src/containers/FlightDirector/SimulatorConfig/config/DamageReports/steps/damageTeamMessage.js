@@ -5,12 +5,10 @@ import gql from "graphql-tag";
 export default class GenericConfig extends Component {
   constructor(props) {
     super(props);
-    this.state = { message: props.args.message };
+    this.state = props.args;
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.args.message !== this.state.message) {
-      this.setState({ message: nextProps.args.message });
-    }
+    this.setState(nextProps.args);
   }
   update = evt => {
     const { systemId, id, client } = this.props;
