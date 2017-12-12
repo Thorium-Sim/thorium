@@ -20,14 +20,18 @@ class MacroConfig extends Component {
     const data = this.props.data.__schema.mutationType.fields;
     const { event, client } = this.props;
     const args = JSON.parse(this.props.args);
-    const EventMacro = Macros[this.props.event] || (() => {});
+    const EventMacro =
+      Macros[this.props.event] ||
+      (() => {
+        return null;
+      });
     return (
       <Row>
         <Col sm="12">
           <FormGroup>
             <Label>Item Event</Label>
             <select
-              value={event}
+              value={event || ""}
               onChange={this._handleChange}
               name="mutations"
               className="c-select form-control"

@@ -12,6 +12,7 @@ import { SubscriptionServer } from "subscriptions-transport-ws";
 import { printSchema } from "graphql/utilities/schemaPrinter";
 import graphqlExpressUpload from "graphql-server-express-upload";
 import schema from "./data";
+import exportMission from "./missions/export";
 import vanity from "./helpers/vanity";
 import "./helpers/broadcast";
 import ipaddress from "./helpers/ipaddress";
@@ -63,6 +64,12 @@ graphQLServer.use(
 graphQLServer.post("/upload", upload.any(), async (req, res) => {
   uploadAsset({}, Object.assign({}, req.body, { files: req.files }), {});
   res.end(JSON.stringify("success!"));
+});
+
+graphQLServer.post("/exportMission/:missionId", (req, res) => {
+  console.log(req.params);
+  exportMission(req.params.missionId);
+  res.end("Hello!");
 });
 
 graphQLServer.use("/graphiql", graphiqlExpress(options));
