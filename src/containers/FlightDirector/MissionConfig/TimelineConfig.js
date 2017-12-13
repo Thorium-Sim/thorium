@@ -68,6 +68,14 @@ export default class TimelineConfig extends Component {
       selectedTimelineItem: null
     };
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.object.id !== this.props.object.id) {
+      this.setState({
+        selectedTimelineStep: null,
+        selectedTimelineItem: null
+      });
+    }
+  }
   _setSelectedTimelineStep(timeline) {
     this.setState({
       selectedTimelineStep: timeline.id,

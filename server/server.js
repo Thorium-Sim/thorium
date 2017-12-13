@@ -2,6 +2,7 @@ import "./helpers/init";
 //Run init before anything else. Make sure all our files are in place before they are needed by other things
 import express from "express";
 import path from "path";
+import fs from "fs";
 import { createServer } from "http";
 import bodyParser from "body-parser";
 import { graphqlExpress, graphiqlExpress } from "graphql-server-express";
@@ -12,6 +13,8 @@ import { SubscriptionServer } from "subscriptions-transport-ws";
 import { printSchema } from "graphql/utilities/schemaPrinter";
 import graphqlExpressUpload from "graphql-server-express-upload";
 import schema from "./data";
+import exportMission from "./missions/export";
+import importMission from "./missions/import";
 import vanity from "./helpers/vanity";
 import "./helpers/broadcast";
 import ipaddress from "./helpers/ipaddress";
@@ -63,6 +66,22 @@ graphQLServer.use(
 graphQLServer.post("/upload", upload.any(), async (req, res) => {
   uploadAsset({}, Object.assign({}, req.body, { files: req.files }), {});
   res.end(JSON.stringify("success!"));
+});
+
+graphQLServer.get("/exportMission/:missionId", (req, res) => {
+  exportMission(req.params.missionId, res);
+});
+
+graphQLServer.post("/importMission", upload.any(), async (req, res) => {
+  if (req.files[0]) {
+    importMission(req.files[0].path, () => {
+      fs.unlink(req.files[0].path, err => {
+        res.end("Error");
+        if (err) throw new Error(err);
+      });
+      res.end("Complete");
+    });
+  }
 });
 
 graphQLServer.use("/graphiql", graphiqlExpress(options));

@@ -117,36 +117,22 @@ class MissionsConfig extends Component {
     });
   };
   importMission = evt => {
-    const self = this;
-    const fileReader = new FileReader();
-    fileReader.onload = function() {
-      const variables = {
-        json: this.result
-      };
-      const mutation = gql`
-        mutation ImportMission($json: String!) {
-          importMission(jsonString: $json)
+    if (evt.target.files[0]) {
+      const data = new FormData();
+      Array.from(evt.target.files).forEach((f, index) =>
+        data.append(`files[${index}]`, f)
+      );
+      fetch(
+        `${window.location.protocol}//${window.location
+          .hostname}:3001/importMission`,
+        {
+          method: "POST",
+          body: data
         }
-      `;
-      self.props.client.mutate({
-        mutation,
-        variables
-      });
-    };
-    evt.target.files[0] && fileReader.readAsText(evt.target.files[0]);
+      );
+    }
   };
-  exportMission = () => {
-    const { missions } = this.props.data;
-    const { selectedMission } = this.state;
-    const mission = missions.find(m => m.id === selectedMission);
-    const dataStr =
-      "data:text/json;charset=utf-8," +
-      encodeURIComponent(JSON.stringify(mission));
-    const dlAnchorElem = document.getElementById("downloadAnchorElem");
-    dlAnchorElem.setAttribute("href", dataStr);
-    dlAnchorElem.setAttribute("download", `${mission.name}.misn`);
-    dlAnchorElem.click();
-  };
+
   render() {
     if (this.props.data.loading || !this.props.data.missions) return null;
     const { missions } = this.props.data;
@@ -223,7 +209,13 @@ class MissionsConfig extends Component {
               <a id="downloadAnchorElem" style={{ display: "none" }}>
                 Nothing here
               </a>
-              <Button block color="info" onClick={this.exportMission}>
+              <Button
+                tag="a"
+                href={`${window.location.protocol}//${window.location
+                  .hostname}:3001/exportMission/${mission.id}`}
+                block
+                color="info"
+              >
                 Export
               </Button>
             </Col>

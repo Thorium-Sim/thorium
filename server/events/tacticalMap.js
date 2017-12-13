@@ -81,7 +81,6 @@ App.on("showViewscreenTactical", ({ mapId, simulatorId }) => {
 
   const newid = uuid.v4();
   const map = App.tacticalMaps.find(t => t.id === mapId);
-  console.log(mapId, map, newid, flight);
   App.tacticalMaps.push(
     new Classes.TacticalMap(
       Object.assign({}, map, {

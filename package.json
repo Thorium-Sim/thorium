@@ -80,7 +80,9 @@
     "sine-waves": "^0.3.0",
     "subscriptions-transport-ws": "^0.9.1",
     "three": "^0.88.0",
-    "tinycolor2": "^1.4.1"
+    "tinycolor2": "^1.4.1",
+    "yauzl": "^2.9.1",
+    "yazl": "^2.4.3"
   },
   "scripts": {
     "start-server": "nodemon ./server/server.js -e js,graphql --ignore snapshots/ --ignore src/ --exec babel-node",
