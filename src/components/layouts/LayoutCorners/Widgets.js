@@ -60,6 +60,7 @@ class WidgetsContainer extends Component {
                 station={station}
                 widget={widget}
                 wkey={key}
+                clientObj={clientObj}
                 notify={widgetNotify[key]}
                 setNotify={this.setNotify}
                 key={key}
@@ -144,6 +145,7 @@ class Widget extends Component {
                 toggle={this.toggleModal}
                 simulator={this.props.simulator}
                 station={this.props.station}
+                clientObj={this.props.clientObj}
               />
             </div>
             <Button onClick={this.toggleModal} style={{ width: "200px" }}>
