@@ -299,6 +299,8 @@ gamepadLoop(){
               newPosition.top = Math.sin(theta) * -1;
             }
           }
+          if (Math.abs(newPosition.top) < 0.1) newPosition.top = 0;
+          if (Math.abs(newPosition.left) < 0.1) newPosition.left = 0;
           obj[which] = newPosition;
           switch (which) {
             case "rotation":
