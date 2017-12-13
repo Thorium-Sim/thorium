@@ -57,7 +57,7 @@ class NavigationCore extends Component {
         }
       });
     }
-    if (!nextProps.data.loading) {
+    if (!nextProps.data.loading && nextProps.data.navigation) {
       const navigation = nextProps.data.navigation[0];
       if (navigation) {
         this.setState({
