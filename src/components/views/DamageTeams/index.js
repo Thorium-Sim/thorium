@@ -496,7 +496,7 @@ class DamageTeams extends Component {
                           size="lg"
                           color="danger"
                           className="cancel-button"
-                          disabled={!team.id}
+                          disabled={!team.id || team.officers.length > 0}
                           onClick={() => {
                             this.setState({
                               selectedTeam: null
@@ -512,7 +512,7 @@ class DamageTeams extends Component {
                           block
                           size="lg"
                           color="success"
-                          disabled={!team.id}
+                          disabled={!team.id || team.officers.length > 0}
                           className="create-button recall-button"
                           onClick={() => {
                             this.commitTeam(team);

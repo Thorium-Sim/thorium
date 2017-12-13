@@ -403,7 +403,7 @@ class SecurityTeams extends Component {
                           size="lg"
                           color="success"
                           className="recall-button create-button"
-                          disabled={!team.id}
+                          disabled={!team.id || team.officers.length === 0}
                           onClick={() => {
                             this.createSecurityTeam(team);
                           }}
@@ -432,7 +432,7 @@ class SecurityTeams extends Component {
                           size="lg"
                           color="success"
                           className="recall-button create-button"
-                          disabled={!team.id}
+                          disabled={!team.id || team.officers.length > 0}
                           onClick={() => {
                             this.commitTeam(team);
                           }}
