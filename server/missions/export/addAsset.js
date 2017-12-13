@@ -13,7 +13,7 @@ const addAsset = (key, zip) => {
   const container = App.assetContainers.find(a => a.fullPath === key);
   const objects = App.assetObjects.filter(a => a.containerId === container.id);
   objects.forEach(o => {
-    zip.addFile(`${assetDir}/${o.url}`, `mission/${o.url}`);
+    zip.addFile(`${assetDir}/${o.url}`, `mission${o.url}`);
   });
 };
 

@@ -81,6 +81,7 @@
     "subscriptions-transport-ws": "^0.9.1",
     "three": "^0.88.0",
     "tinycolor2": "^1.4.1",
+    "yauzl": "^2.9.1",
     "yazl": "^2.4.3"
   },
   "scripts": {

@@ -3,12 +3,13 @@ import setArmyContacts from "./setArmyContacts";
 import showViewscreenTactical from "./showViewscreenTactical";
 import App from "../../app";
 import yazl from "yazl";
-import fs from "fs";
 
-export default function exportMissions(missionId) {
+export default function exportMissions(missionId, res) {
   const mission = App.missions.find(m => m.id === missionId);
-  var zipfile = new yazl.ZipFile();
-  const file = fs.createWriteStream("./test.zip");
+  if (!mission) {
+    return res.end("No mission");
+  }
+  const zipfile = new yazl.ZipFile();
   updateViewscreenComponent(zipfile, mission);
   setArmyContacts(zipfile, mission);
   showViewscreenTactical(zipfile, mission);
@@ -19,6 +20,11 @@ export default function exportMissions(missionId) {
     mode: parseInt("0100664", 8) // -rw-rw-r--
   });
 
-  zipfile.end();
-  zipfile.outputStream.pipe(file);
+  zipfile.end({}, function() {
+    res.set({
+      "Content-Disposition": `attachment; filename=${mission.name}.misn`,
+      "Content-Type": "application/octet-stream"
+    });
+    zipfile.outputStream.pipe(res);
+  });
 }
