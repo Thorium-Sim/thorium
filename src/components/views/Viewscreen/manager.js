@@ -211,6 +211,7 @@ class ViewscreenCore extends Component {
                     <p
                       key={c}
                       className={`${selectedViewscreen &&
+                      viewscreens.find(v => v.id === selectedViewscreen) &&
                       viewscreens.find(v => v.id === selectedViewscreen)
                         .component === c
                         ? "previewing"
