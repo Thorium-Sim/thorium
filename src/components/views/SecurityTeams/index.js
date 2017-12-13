@@ -253,8 +253,9 @@ class SecurityTeams extends Component {
       !this.props.data.teams ||
       !this.props.data.crew ||
       !this.props.data.decks
-    )
+    ) {
       return null;
+    }
     const { teams, crew, decks } = this.props.data;
     const { selectedTeam } = this.state;
     if (!teams) return null;
