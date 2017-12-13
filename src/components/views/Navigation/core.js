@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import FontAwesome from "react-fontawesome";
 import { Container, Row, Col, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import { OutputField } from "../../generic/core";
+import { OutputField, TypingField } from "../../generic/core";
 import "./style.css";
 
 const NAVIGATION_SUB = gql`
@@ -159,7 +159,19 @@ class NavigationCore extends Component {
             <OutputField>{navigation.currentCourse.x}</OutputField>
           </Col>
           <Col sm="3">
-            <OutputField>{this.state.calculatedCourse.x}</OutputField>
+            <TypingField
+              input
+              controlled
+              value={this.state.calculatedCourse.x}
+              onChange={evt =>
+                this.setState({
+                  calculatedCourse: Object.assign(
+                    {},
+                    this.state.calculatedCourse,
+                    { x: evt.target.value }
+                  )
+                })}
+            />
           </Col>
           <Col sm="5">
             <Row>
@@ -194,7 +206,19 @@ class NavigationCore extends Component {
             <OutputField>{navigation.currentCourse.y}</OutputField>
           </Col>
           <Col sm="3">
-            <OutputField>{this.state.calculatedCourse.y}</OutputField>
+            <TypingField
+              input
+              controlled
+              value={this.state.calculatedCourse.y}
+              onChange={evt =>
+                this.setState({
+                  calculatedCourse: Object.assign(
+                    {},
+                    this.state.calculatedCourse,
+                    { y: evt.target.value }
+                  )
+                })}
+            />{" "}
           </Col>
           <Col sm="5">
             <Button
@@ -215,7 +239,19 @@ class NavigationCore extends Component {
             <OutputField>{navigation.currentCourse.z}</OutputField>
           </Col>
           <Col sm="3">
-            <OutputField>{this.state.calculatedCourse.z}</OutputField>
+            <TypingField
+              input
+              controlled
+              value={this.state.calculatedCourse.z}
+              onChange={evt =>
+                this.setState({
+                  calculatedCourse: Object.assign(
+                    {},
+                    this.state.calculatedCourse,
+                    { z: evt.target.value }
+                  )
+                })}
+            />{" "}
           </Col>
           <Col sm="5">
             <Button
