@@ -4,7 +4,15 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import ContactContextMenu from "./contactContextMenu";
-import { Row, Col, Container, Button, Input, Label } from "reactstrap";
+import {
+  Row,
+  Col,
+  Container,
+  Button,
+  Input,
+  Label,
+  FormGroup
+} from "reactstrap";
 import Grid from "./GridDom";
 import Nudge from "./nudge";
 import { Asset } from "../../../helpers/assets";
@@ -469,20 +477,22 @@ class GridCore extends Component {
               client={this.props.client}
               speed={speed}
             />
-            <Label>
-              Ask for speed
-              <Input
-                type="checkbox"
-                checked={this.state.askForSpeed}
-                onClick={evt => {
-                  this.setState({ askForSpeed: evt.target.checked });
-                  localStorage.setItem(
-                    "thorium-core-sensors-askforspeed",
-                    evt.target.checked ? "yes" : "no"
-                  );
-                }}
-              />
-            </Label>
+            <FormGroup check>
+              <Label check>
+                Ask for speed
+                <Input
+                  type="checkbox"
+                  checked={this.state.askForSpeed}
+                  onClick={evt => {
+                    this.setState({ askForSpeed: evt.target.checked });
+                    localStorage.setItem(
+                      "thorium-core-sensors-askforspeed",
+                      evt.target.checked ? "yes" : "no"
+                    );
+                  }}
+                />
+              </Label>
+            </FormGroup>
           </Col>
           <Col sm={6} style={{ height: "100%" }}>
             <div
