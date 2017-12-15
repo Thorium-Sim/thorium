@@ -13,6 +13,7 @@ type Navigation {
   destination: String
   scanning: Boolean
   destinations: [String]
+  presets: [NavPreset]
 }
 
 type NavLoc {
@@ -20,4 +21,19 @@ type NavLoc {
   y: String
   z: String
 }
+
+input NavLocInput {
+  x: String
+  y: String
+  z: String
+}
+type NavPreset {
+  name: String
+  course: NavLoc
+}
+input NavPresetInput {
+  name: String
+  course: NavLocInput
+}
+
 `;

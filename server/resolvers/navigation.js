@@ -36,6 +36,9 @@ export const NavigationMutations = {
   },
   navSetScanning(rootValue, args, context) {
     App.handleEvent(args, "navSetScanning", context);
+  },
+  navSetPresets(rootValue, args, context) {
+    App.handleEvent(args, "navSetPresets", context);
   }
 };
 

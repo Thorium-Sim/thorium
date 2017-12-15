@@ -108,3 +108,11 @@ App.on("navSetScanning", ({ id, scanning }) => {
     App.systems.filter(s => s.type === "Navigation")
   );
 });
+App.on("navSetPresets", ({ id, presets }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  system.setPresets(presets);
+  pubsub.publish(
+    "navigationUpdate",
+    App.systems.filter(s => s.type === "Navigation")
+  );
+});
