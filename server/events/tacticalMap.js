@@ -75,10 +75,12 @@ App.on("removeTacticalMapItem", ({ mapId, layerId, itemId }) => {
   map.removeItemFromLayer(layerId, itemId);
   pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
 });
-App.on("showViewscreenTactical", ({ mapId, simulatorId }) => {
+App.on("showViewscreenTactical", ({ mapId, simulatorId, secondary }) => {
   const flight = App.flights.find(f => f.simulators.indexOf(simulatorId) > -1);
-  const viewscreen = App.viewscreens.find(v => v.simulatorId === simulatorId);
-
+  const viewscreen = App.viewscreens.find(
+    v => v.simulatorId === simulatorId && v.secondary === secondary
+  );
+  if (!viewscreen) return;
   const newid = uuid.v4();
   const map = App.tacticalMaps.find(t => t.id === mapId);
   App.tacticalMaps.push(
