@@ -6,15 +6,21 @@ App.on("updateViewscreenName", ({ id, name }) => {
   viewscreen.updateName(name);
   pubsub.publish("viewscreensUpdate", App.viewscreens);
 });
-App.on("updateViewscreenComponent", ({ id, simulatorId, component, data }) => {
-  const viewscreen = App.viewscreens.find(
-    v => v.id === id || v.simulatorId === simulatorId
-  );
-  // First de-auto the viewscreen, since we want to force this component;
-  viewscreen.updateAuto(false);
-  viewscreen.updateComponent(component, data);
-  pubsub.publish("viewscreensUpdate", App.viewscreens);
-});
+App.on(
+  "updateViewscreenComponent",
+  ({ id, simulatorId, component, data, secondary = false }) => {
+    const viewscreen = App.viewscreens.find(
+      v =>
+        (v.id === id || v.simulatorId === simulatorId) &&
+        v.secondary === secondary
+    );
+    if (!viewscreen) return;
+    // First de-auto the viewscreen, since we want to force this component;
+    viewscreen.updateAuto(false);
+    viewscreen.updateComponent(component, data);
+    pubsub.publish("viewscreensUpdate", App.viewscreens);
+  }
+);
 App.on("updateViewscreenData", ({ id, data }) => {
   const viewscreen = App.viewscreens.find(v => v.id === id);
   viewscreen.updateData(data);
@@ -27,10 +33,18 @@ App.on("updateViewscreenAuto", ({ id, simulatorId, auto }) => {
   viewscreen.updateAuto(auto);
   pubsub.publish("viewscreensUpdate", App.viewscreens);
 });
-App.on("setViewscreenToAuto", ({ id, simulatorId }) => {
+App.on("setViewscreenToAuto", ({ id, simulatorId, secondary = false }) => {
   const viewscreen = App.viewscreens.find(
-    v => v.id === id || v.simulatorId === simulatorId
+    v =>
+      (v.id === id || v.simulatorId === simulatorId) &&
+      v.secondary === secondary
   );
+  if (!viewscreen) return;
   viewscreen.updateAuto(true);
+  pubsub.publish("viewscreensUpdate", App.viewscreens);
+});
+App.on("updateViewscreenSecondary", ({ id, secondary }) => {
+  const viewscreen = App.viewscreens.find(v => v.id === id);
+  viewscreen.secondary = secondary;
   pubsub.publish("viewscreensUpdate", App.viewscreens);
 });

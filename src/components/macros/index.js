@@ -6,3 +6,5 @@ export {
   default as updateViewscreenComponent
 } from "./updateViewscreenComponent";
 export { default as showViewscreenTactical } from "./showViewscreenTactical";
+export { default as navSetPresets } from "./navSetPresets";
+export { default as setViewscreenToAuto } from "./setViewscreenToAuto";

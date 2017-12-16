@@ -25,6 +25,7 @@ class MacroConfig extends Component {
       (() => {
         return null;
       });
+    console.log(this.props.event, EventMacro);
     return (
       <Row>
         <Col sm="12">
@@ -50,7 +51,7 @@ class MacroConfig extends Component {
                 })}
             </select>
           </FormGroup>
-          {event && (
+          {EventMacro && (
             <EventMacro
               updateArgs={this._handleArg}
               args={args || {}}

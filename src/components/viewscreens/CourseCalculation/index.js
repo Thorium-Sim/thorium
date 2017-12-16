@@ -35,7 +35,7 @@ class CourseCalculationViewscreen extends Component {
         }
       });
     }
-    if (!nextProps.data.loading) {
+    if (!nextProps.data.loading && nextProps.data.navigation) {
       this.setState(
         {
           scanning: data.reactive

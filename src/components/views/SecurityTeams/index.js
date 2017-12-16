@@ -253,8 +253,9 @@ class SecurityTeams extends Component {
       !this.props.data.teams ||
       !this.props.data.crew ||
       !this.props.data.decks
-    )
+    ) {
       return null;
+    }
     const { teams, crew, decks } = this.props.data;
     const { selectedTeam } = this.state;
     if (!teams) return null;
@@ -402,7 +403,7 @@ class SecurityTeams extends Component {
                           size="lg"
                           color="success"
                           className="recall-button create-button"
-                          disabled={!team.id}
+                          disabled={!team.id || team.officers.length === 0}
                           onClick={() => {
                             this.createSecurityTeam(team);
                           }}
@@ -431,7 +432,7 @@ class SecurityTeams extends Component {
                           size="lg"
                           color="success"
                           className="recall-button create-button"
-                          disabled={!team.id}
+                          disabled={!team.id || team.officers.length > 0}
                           onClick={() => {
                             this.commitTeam(team);
                           }}

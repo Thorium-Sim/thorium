@@ -163,6 +163,13 @@ export const Widgets = {
     name: "Messaging",
     size: "lg",
     color: "rgb(100,150,200)"
+  },
+  damageReport: {
+    widget: DamageControl,
+    icon: "file-text",
+    name: "Damage Report",
+    size: "lg",
+    color: "rgb(200, 100, 100)"
   }
 };
 

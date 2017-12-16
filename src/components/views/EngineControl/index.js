@@ -167,6 +167,10 @@ class EngineControl extends Component {
                     <h4>{engine.name}</h4>
                     <ul className="engine">
                       {engine.speeds.map((speed, speedIndex) => {
+                        const powerIndex =
+                          engine.power.powerLevels.findIndex(
+                            p => p > engine.power.power
+                          ) - 1;
                         let speedWord = speed;
                         if (typeof speed === "object") {
                           speedWord = speed.number;
@@ -174,7 +178,10 @@ class EngineControl extends Component {
                         return (
                           <li
                             key={`${engine.id}-${speedWord}`}
-                            className="speedNums speedBtn"
+                            className={`speedNums speedBtn ${speedIndex <=
+                            powerIndex
+                              ? "powered"
+                              : ""}`}
                             onClick={() => {
                               this.setSpeed(engine, speedIndex, engines, index);
                             }}

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import FontAwesome from 'react-fontawesome';
-import { Input } from 'reactstrap';
-import gql from 'graphql-tag';
+import React, { Component } from "react";
+import FontAwesome from "react-fontawesome";
+import { Input } from "reactstrap";
+import gql from "graphql-tag";
 
 export default class Nudge extends Component {
   state = {
-    nudge: localStorage.getItem('thorium-core-sensors-nudge')
+    nudge: localStorage.getItem("thorium-core-sensors-nudge") || 5
   };
   nudgeContacts = ({ x = 0, y = 0, yaw = 0 }) => {
     const { nudge } = this.state;
@@ -50,16 +50,17 @@ export default class Nudge extends Component {
               nudge: evt.target.value
             });
             localStorage.setItem(
-              'thorium-core-sensors-nudge',
+              "thorium-core-sensors-nudge",
               evt.target.value
             );
           }}
-          defaultValue={nudge}>
-          {[100, 90, 75, 60, 50, 45, 30, 20, 15, 10, 5, 2, 1].map(n =>
+          defaultValue={nudge}
+        >
+          {[100, 90, 75, 60, 50, 45, 30, 20, 15, 10, 5, 2, 1].map(n => (
             <option key={`nudge-${n}`} value={n}>
               {n}
             </option>
-          )}
+          ))}
         </Input>
         <div className="buttons">
           <FontAwesome

@@ -32,6 +32,9 @@ export const ViewscreenMutations = {
   },
   setViewscreenToAuto(_, params, context) {
     App.handleEvent(params, "setViewscreenToAuto", context);
+  },
+  updateViewscreenSecondary(_, params, context) {
+    App.handleEvent(params, "updateViewscreenSecondary", context);
   }
 };
 

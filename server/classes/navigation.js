@@ -20,6 +20,7 @@ export default class Navigation extends System {
     this.destination = params.destination || null;
     this.destinations = params.destinations || [];
     this.scanning = params.scanning || false;
+    this.presets = params.presets || [];
   }
   toggleCalculate(which) {
     this.calculate = which;
@@ -55,5 +56,8 @@ export default class Navigation extends System {
       y,
       z
     };
+  }
+  setPresets(presets) {
+    this.presets = presets || [];
   }
 }

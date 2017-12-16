@@ -15,5 +15,5 @@ export default `
   removeTacticalMapItem(mapId: ID!, layerId: ID!, itemId: ID!): String
 
   #Macro: Set a tactical on the viewscreen  
-  showViewscreenTactical(mapId: ID!): String
+  showViewscreenTactical(mapId: ID!, secondary: Boolean): String
 `;

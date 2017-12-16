@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
+import { Label, Input } from "reactstrap";
 
 const TACTICALMAP_SUB = gql`
   subscription TacticalMapUpdate {
@@ -42,6 +43,14 @@ class TacticalMapConfig extends Component {
     const { tacticalMaps } = this.props.tacticalData;
     return (
       <div className="tacticalmap-config">
+        <Label>Secondary Screen?</Label>
+
+        <Input
+          type="checkbox"
+          checked={args.secondary}
+          onChange={evt => updateArgs("secondary", evt.target.value)}
+        />
+
         <p>Saved Maps</p>
         <ul className="saved-list">
           {tacticalMaps.filter(t => t.template).map(t => (

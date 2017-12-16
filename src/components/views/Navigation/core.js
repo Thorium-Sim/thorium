@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import FontAwesome from "react-fontawesome";
-import { Container, Row, Col, Button } from "reactstrap";
+import { Container, Row, Col, Button, Input } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import { OutputField } from "../../generic/core";
+import { OutputField, TypingField } from "../../generic/core";
 import "./style.css";
 
 const NAVIGATION_SUB = gql`
@@ -31,6 +31,14 @@ const NAVIGATION_SUB = gql`
         y
         z
       }
+      presets {
+        name
+        course {
+          x
+          y
+          z
+        }
+      }
     }
   }
 `;
@@ -57,7 +65,7 @@ class NavigationCore extends Component {
         }
       });
     }
-    if (!nextProps.data.loading) {
+    if (!nextProps.data.loading && nextProps.data.navigation) {
       const navigation = nextProps.data.navigation[0];
       if (navigation) {
         this.setState({
@@ -131,6 +139,14 @@ class NavigationCore extends Component {
       variables
     });
   }
+  setPreset = e => {
+    const course = this.props.data.navigation[0].presets.find(
+      p => p.name === e.target.value
+    );
+    this.setState({
+      calculatedCourse: course.course
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.navigation) return null;
     const navigation = this.props.data.navigation[0];
@@ -159,7 +175,19 @@ class NavigationCore extends Component {
             <OutputField>{navigation.currentCourse.x}</OutputField>
           </Col>
           <Col sm="3">
-            <OutputField>{this.state.calculatedCourse.x}</OutputField>
+            <TypingField
+              input
+              controlled
+              value={this.state.calculatedCourse.x}
+              onChange={evt =>
+                this.setState({
+                  calculatedCourse: Object.assign(
+                    {},
+                    this.state.calculatedCourse,
+                    { x: evt.target.value }
+                  )
+                })}
+            />
           </Col>
           <Col sm="5">
             <Row>
@@ -194,7 +222,19 @@ class NavigationCore extends Component {
             <OutputField>{navigation.currentCourse.y}</OutputField>
           </Col>
           <Col sm="3">
-            <OutputField>{this.state.calculatedCourse.y}</OutputField>
+            <TypingField
+              input
+              controlled
+              value={this.state.calculatedCourse.y}
+              onChange={evt =>
+                this.setState({
+                  calculatedCourse: Object.assign(
+                    {},
+                    this.state.calculatedCourse,
+                    { y: evt.target.value }
+                  )
+                })}
+            />{" "}
           </Col>
           <Col sm="5">
             <Button
@@ -215,7 +255,19 @@ class NavigationCore extends Component {
             <OutputField>{navigation.currentCourse.z}</OutputField>
           </Col>
           <Col sm="3">
-            <OutputField>{this.state.calculatedCourse.z}</OutputField>
+            <TypingField
+              input
+              controlled
+              value={this.state.calculatedCourse.z}
+              onChange={evt =>
+                this.setState({
+                  calculatedCourse: Object.assign(
+                    {},
+                    this.state.calculatedCourse,
+                    { z: evt.target.value }
+                  )
+                })}
+            />{" "}
           </Col>
           <Col sm="5">
             <Button
@@ -229,10 +281,25 @@ class NavigationCore extends Component {
           </Col>
         </Row>
         <Row>
-          <Col sm="12">
+          <Col sm="8">
             <OutputField alert={navigation.scanning}>
               {navigation.destination}
             </OutputField>
+          </Col>
+          <Col sm="4">
+            <Input
+              style={{ height: "20px" }}
+              type="select"
+              value="select"
+              onChange={this.setPreset}
+            >
+              <option value="select">Presets</option>
+              {navigation.presets.map(p => (
+                <option key={p.name} value={p.name}>
+                  {p.name}
+                </option>
+              ))}
+            </Input>
           </Col>
         </Row>
       </Container>
@@ -264,6 +331,14 @@ const NAVIGATION_QUERY = gql`
         x
         y
         z
+      }
+      presets {
+        name
+        course {
+          x
+          y
+          z
+        }
       }
     }
   }

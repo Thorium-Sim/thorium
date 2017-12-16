@@ -7,5 +7,6 @@ type Viewscreen {
   # JSON
   data: String
   auto: Boolean
+  secondary: Boolean
 }
 `;

@@ -120,6 +120,28 @@ class ViewscreenCore extends Component {
       variables
     });
   };
+  toggleSecondary = () => {
+    const { viewscreens } = this.props.data;
+    const { selectedViewscreen } = this.state;
+    const secondary = !(
+      viewscreens.find(v => v.id === selectedViewscreen) &&
+      viewscreens.find(v => v.id === selectedViewscreen).secondary
+    );
+    const id = selectedViewscreen;
+    const mutation = gql`
+      mutation UpdateViewscreenSecondary($id: ID!, $secondary: Boolean!) {
+        updateViewscreenSecondary(id: $id, secondary: $secondary)
+      }
+    `;
+    const variables = {
+      id,
+      secondary
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.viewscreens) return null;
     const { viewscreens } = this.props.data;
@@ -203,6 +225,19 @@ class ViewscreenCore extends Component {
                   />{" "}
                   Auto-switch generic tactical cards
                 </Label>
+                <Label>
+                  <input
+                    type="checkbox"
+                    checked={
+                      selectedViewscreen &&
+                      viewscreens.length &&
+                      viewscreens.find(v => v.id === selectedViewscreen)
+                        .secondary
+                    }
+                    onChange={this.toggleSecondary}
+                  />{" "}
+                  Secondary Screen?
+                </Label>
               </Col>
               <Col sm={6}>
                 <Label>Cards</Label>
@@ -211,6 +246,7 @@ class ViewscreenCore extends Component {
                     <p
                       key={c}
                       className={`${selectedViewscreen &&
+                      viewscreens.find(v => v.id === selectedViewscreen) &&
                       viewscreens.find(v => v.id === selectedViewscreen)
                         .component === c
                         ? "previewing"

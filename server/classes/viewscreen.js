@@ -7,6 +7,7 @@ export default class Viewscreen {
     this.component = params.component || "ShipLogo";
     this.data = params.data || `{}`;
     this.auto = false;
+    this.secondary = params.secondary || false;
   }
   updateName(name) {
     if (name) this.name = name;

@@ -84,8 +84,8 @@ export default class Target extends Component {
     this.props.targets.forEach(target => {
       const { x: objX, y: objY } = target.position;
       if (
-        Math.round((objX - x / width * 1.2) * 100) === 0 &&
-        Math.round((objY - y / height * 1.2) * 100) === 0
+        Math.round((objX - x / width * 1.1) * 50) === 0 &&
+        Math.round((objY - y / height * 1.1) * 50) === 0
       ) {
         // The crosshair is on top of a target
         selectedTarget = target;
