@@ -472,11 +472,6 @@ class GridCore extends Component {
             >
               Freeze
             </Button>
-            <Nudge
-              sensor={sensors.id}
-              client={this.props.client}
-              speed={speed}
-            />
             <FormGroup check>
               <Label check>
                 Ask for speed
@@ -493,6 +488,11 @@ class GridCore extends Component {
                 />
               </Label>
             </FormGroup>
+            <Nudge
+              sensor={sensors.id}
+              client={this.props.client}
+              speed={speed}
+            />
           </Col>
           <Col sm={6} style={{ height: "100%" }}>
             <div

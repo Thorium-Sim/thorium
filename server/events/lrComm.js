@@ -1,6 +1,5 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
-import * as Classes from "../classes";
 import uuid from "uuid";
 
 //Creating a new long range message

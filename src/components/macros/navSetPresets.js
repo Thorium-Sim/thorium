@@ -10,11 +10,23 @@ import {
 } from "reactstrap";
 
 export default class NavSetPresetConfig extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      presets: props.args.presets
+    };
+  }
+  componentWillReceiveProps(nextProps) {
+    if (JSON.stringify(nextProps.args) !== JSON.stringify(this.props.args)) {
+      this.setState({
+        presets: nextProps.args.presets
+      });
+    }
+  }
   update = (evt, which) => {
-    const { presets = [], selectedPreset } = this.props.args;
-    this.props.updateArgs(
-      "presets",
-      presets.map(p => {
+    const { presets = [], selectedPreset } = this.state;
+    this.setState({
+      presets: presets.map(p => {
         if (p.name === selectedPreset) {
           return Object.assign({}, p, {
             course: Object.assign({}, p.course, { [which]: evt.target.value })
@@ -22,23 +34,26 @@ export default class NavSetPresetConfig extends Component {
         }
         return p;
       })
-    );
+    });
   };
   addPreset = () => {
-    const { presets = [] } = this.props.args;
+    const { presets = [] } = this.state;
     const name = prompt("What is the name of the preset?");
     if (name && !presets.find(p => p.name === name)) {
-      this.props.updateArgs(
-        "presets",
-        presets.concat({ name, course: { x: "", y: "", z: "" } })
-      );
+      this.setState({
+        presets: presets.concat({ name, course: { x: "", y: "", z: "" } })
+      });
     }
   };
+  updateArgs = () => {
+    const { presets = [] } = this.state;
+    this.props.updateArgs("presets", presets);
+  };
   setSelected = preset => {
-    this.props.updateArgs("selectedPreset", preset);
+    this.setState({ selectedPreset: preset });
   };
   render() {
-    const { presets = [], selectedPreset } = this.props.args;
+    const { presets = [], selectedPreset } = this.state;
     const preset = presets.find(p => p.name === selectedPreset);
     return (
       <Container>
@@ -66,6 +81,9 @@ export default class NavSetPresetConfig extends Component {
               </div>
             )}
           </Col>
+          <Button block color="success" size="sm" onClick={this.updateArgs}>
+            Save
+          </Button>
         </Row>
       </Container>
     );

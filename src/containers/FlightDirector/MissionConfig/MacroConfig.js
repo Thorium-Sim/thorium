@@ -5,15 +5,6 @@ import { graphql, withApollo } from "react-apollo";
 import * as Macros from "../../../components/macros";
 
 class MacroConfig extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.event !== this.props.event || !this.EventMacro) {
-      this.EventMacro =
-        Macros[this.props.event] ||
-        (() => {
-          return null;
-        });
-    }
-  }
   _handleChange = e => {
     this.props.updateMacro("event", e.target.value);
   };
@@ -29,6 +20,12 @@ class MacroConfig extends Component {
     const data = this.props.data.__schema.mutationType.fields;
     const { event, client } = this.props;
     const args = JSON.parse(this.props.args);
+    const EventMacro =
+      Macros[this.props.event] ||
+      (() => {
+        return null;
+      });
+    console.log(this.props.event, EventMacro);
     return (
       <Row>
         <Col sm="12">
@@ -54,8 +51,8 @@ class MacroConfig extends Component {
                 })}
             </select>
           </FormGroup>
-          {this.EventMacro && (
-            <this.EventMacro
+          {EventMacro && (
+            <EventMacro
               updateArgs={this._handleArg}
               args={args || {}}
               client={client}

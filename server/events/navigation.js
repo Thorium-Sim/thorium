@@ -108,8 +108,12 @@ App.on("navSetScanning", ({ id, scanning }) => {
     App.systems.filter(s => s.type === "Navigation")
   );
 });
-App.on("navSetPresets", ({ id, presets }) => {
-  const system = App.systems.find(sys => sys.id === id);
+App.on("navSetPresets", ({ id, presets, simulatorId }) => {
+  const system = App.systems.find(
+    sys =>
+      sys.id === id ||
+      (sys.simulatorId === simulatorId && sys.type === "Navigation")
+  );
   system.setPresets(presets);
   pubsub.publish(
     "navigationUpdate",

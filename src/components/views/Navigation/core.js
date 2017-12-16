@@ -31,6 +31,14 @@ const NAVIGATION_SUB = gql`
         y
         z
       }
+      presets {
+        name
+        course {
+          x
+          y
+          z
+        }
+      }
     }
   }
 `;
