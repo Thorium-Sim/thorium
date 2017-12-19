@@ -22,12 +22,15 @@
     "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
     "husky": "^0.14.3",
-    "react-scripts": "1.0.15",
+    "jest-localstorage-mock": "^2.1.0",
     "lint-staged": "^4.3.0",
     "nodemon": "^1.12.1",
     "pkg": "^4.3.0-beta.1",
-    "prettier": "^1.7.4"
+    "prettier": "^1.7.4",
+    "react-scripts": "1.0.15"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.0.0",
@@ -97,7 +100,9 @@
     "build": "npm run build-client && npm run build-server",
     "lint": "eslint .",
     "cloc": "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots",
-    "test": "react-scripts test --env=jsdom",
+    "test:client": "react-scripts test --env=jsdom",
+    "test:server": "jest server/tests --env=node",
+    "test": "npm run test:client & npm run test:server",
     "flow": "flow",
     "precommit": "lint-staged",
     "add": "all-contributors add",
