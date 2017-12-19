@@ -4,8 +4,9 @@ import uuid from "uuid";
 const sounds = {};
 
 if (!window.audioContext) {
-  window.audioContext = new (window.AudioContext ||
-    window.webkitAudioContext)();
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+
+  if (AudioContext) window.audioContext = new AudioContext();
 }
 
 function copyToChannel(destination, source, channelNumber) {
