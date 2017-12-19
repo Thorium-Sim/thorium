@@ -152,7 +152,7 @@ class Welcome extends Component {
   }
 }
 
-const FLIGHTS_QUERY = gql`
+export const FLIGHTS_QUERY = gql`
   query Flights {
     flights(running: true) {
       id

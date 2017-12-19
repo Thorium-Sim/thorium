@@ -38,7 +38,7 @@ class TacticalMapConfig extends Component {
     updateArgs("mapId", mapId);
   };
   render() {
-    const { tacticalData, args } = this.props;
+    const { tacticalData, args, updateArgs } = this.props;
     if (tacticalData.loading || !tacticalData.tacticalMaps) return null;
     const { tacticalMaps } = this.props.tacticalData;
     return (
