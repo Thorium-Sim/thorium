@@ -82,7 +82,7 @@
     "request": "^2.83.0",
     "sine-waves": "^0.3.0",
     "subscriptions-transport-ws": "^0.9.1",
-    "three": "^0.88.0",
+    "three": "^0.89.0",
     "tinycolor2": "^1.4.1",
     "yauzl": "^2.9.1",
     "yazl": "^2.4.3"
