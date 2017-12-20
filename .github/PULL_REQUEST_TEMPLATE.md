@@ -8,3 +8,5 @@
 <!--- Please link to the issue here: -->
 
 ## Screenshots (if appropriate):
+
+- [ ] I submitted a pull request or created an issue for documenting this feature on the [Thorium Docs](https://github.com/Thorium-Sim/thorium-docs) repo. (Include the issue or pull request url below.)
