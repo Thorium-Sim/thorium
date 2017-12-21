@@ -148,7 +148,7 @@ const Engine = ({ data, client, simulatorId, type }) => {
     });
   };
   if (data.loading) return null;
-  const { engines } = data;
+  const { engines, decks } = data;
   return (
     <div className="engine scroll">
       {engines.map(e => (
@@ -157,7 +157,7 @@ const Engine = ({ data, client, simulatorId, type }) => {
             client={client}
             simulatorId={simulatorId}
             type={type}
-            data={{ systems: [e] }}
+            data={{ systems: [e], decks }}
           >
             <FormGroup>
               <Label style={{ display: "inline-block" }}>
@@ -261,7 +261,15 @@ const Engine = ({ data, client, simulatorId, type }) => {
 };
 
 const SYSTEM_QUERY = gql`
-  query Engines($id: ID) {
+  query Engines($id: ID, $deckId: ID!) {
+    decks(simulatorId: $deckId) {
+      id
+      number
+      rooms {
+        id
+        name
+      }
+    }
     engines(simulatorId: $id) {
       id
       name
@@ -285,7 +293,8 @@ const SYSTEM_QUERY = gql`
 export default graphql(SYSTEM_QUERY, {
   options: ownProps => ({
     variables: {
-      id: ownProps.simulatorId
+      id: ownProps.simulatorId,
+      deckId: ownProps.simulatorId
     }
   })
 })(Engine);

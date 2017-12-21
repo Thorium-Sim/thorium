@@ -62,8 +62,8 @@ export class System {
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || null;
     this.displayName = params.displayName || params.name;
-    this.power = params.power || defaultPower;
-    this.damage = params.damage || defaultDamage;
+    this.power = params.power || Object.assign({}, defaultPower);
+    this.damage = params.damage || Object.assign({}, defaultDamage);
     this.extra = params.extra || false;
     this.locations = params.locations || [];
     this.requiredDamageSteps = [];
@@ -91,6 +91,7 @@ export class System {
     this.power.power = powerLevel;
   }
   setPowerLevels(levels) {
+    console.log("Setting Power Levels", this.name, levels);
     this.power.powerLevels = levels;
   }
   break(report) {
