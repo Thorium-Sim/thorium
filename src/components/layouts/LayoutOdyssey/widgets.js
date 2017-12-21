@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { Tooltip, Button } from "reactstrap";
-import { Widgets } from "../../views";
-import FontAwesome from "react-fontawesome";
-import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
-import "./widgets.css";
+import gql from "graphql-tag";
+import { Widgets } from "../../views";
+import { Tooltip } from "reactstrap";
+import FontAwesome from "react-fontawesome";
+
+import { Widget } from "../LayoutCorners/Widgets";
+
 const WIDGET_NOTIFY = gql`
   subscription WidgetNotify($simulatorId: ID!, $station: String) {
     widgetNotify(simulatorId: $simulatorId, station: $station)
@@ -42,9 +44,42 @@ class WidgetsContainer extends Component {
       })
     });
   };
+  startTraining = () => {
+    const client = this.props.clientObj.id;
+    const variables = {
+      client,
+      training: true
+    };
+    const mutation = gql`
+      mutation ClientSetTraining($client: ID!, $training: Boolean!) {
+        clientSetTraining(client: $client, training: $training)
+      }
+    `;
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  logout = () => {
+    const client = this.props.clientObj.id;
+    const obj = {
+      client
+    };
+    const mutation = gql`
+      mutation LogoutClient($client: ID!) {
+        clientLogout(client: $client)
+      }
+    `;
+    this.props.client.mutate({
+      mutation: mutation,
+      variables: obj
+    });
+  };
   render() {
     const { simulator, clientObj, station } = this.props;
     const { widgetNotify } = this.state;
+    if (clientObj.loginState === "logout" && station.login === false)
+      return null;
     return (
       <div
         className={`widgets ${clientObj.loginState} ${clientObj.offlineState
@@ -67,95 +102,53 @@ class WidgetsContainer extends Component {
               />
             );
           })}
+        <StaticWidget
+          icon={"question-circle"}
+          name="Training"
+          color="#3363AA"
+          onClick={this.startTraining}
+        />
+        <StaticWidget
+          icon={"sign-out"}
+          name="Logout"
+          color="#999"
+          onClick={this.logout}
+        />
       </div>
     );
   }
 }
 
-export class Widget extends Component {
-  state = {
-    tooltipOpen: false,
-    modal: false,
-    widgetNotifications: {},
-    position: { x: 0, y: 0 }
-  };
-  mouseDown = () => {
-    document.addEventListener("mousemove", this.mouseMove);
-    document.addEventListener("mouseup", this.mouseUp);
-  };
-  mouseUp = () => {
-    document.removeEventListener("mousemove", this.mouseMove);
-    document.removeEventListener("mouseup", this.mouseUp);
-  };
-  mouseMove = evt => {
-    this.setState({
-      position: {
-        x: this.state.position.x + evt.movementX,
-        y: this.state.position.y + evt.movementY
-      }
-    });
-  };
+class StaticWidget extends Component {
+  state = {};
   toggle = () => {
     this.setState({
       tooltipOpen: !this.state.tooltipOpen
     });
   };
-  toggleModal = () => {
-    this.props.setNotify(this.props.wkey, false);
-    this.setState({
-      modal: !this.state.modal
-    });
-  };
   render() {
-    const { widget, wkey, notify } = this.props;
-    const { position } = this.state;
-    const Comp = widget.widget;
+    const { icon, color, onClick = () => {}, name } = this.props;
     return (
       <div className="widget-item">
         <FontAwesome
           size="2x"
           fixedWidth
-          name={widget.icon}
-          className={`widget-icon ${notify ? "notify" : ""}`}
-          id={`widget-${wkey}`}
-          onClick={this.toggleModal}
-          style={{ color: widget.color || "rgb(200,150,255)" }}
+          name={icon}
+          className={`widget-icon`}
+          onClick={onClick}
+          id={`widget-${icon}`}
+          style={{ color: color || "rgb(200,150,255)" }}
         />
         <Tooltip
           placement="bottom"
           isOpen={this.state.tooltipOpen}
-          target={`widget-${wkey}`}
+          target={`widget-${icon}`}
           toggle={this.toggle}
         >
-          {widget.name}
+          {name}
         </Tooltip>
-        {this.state.modal && (
-          <div
-            className={`modal-themed widget-body widget-${widget.size} ${this
-              .state.modal
-              ? "open"
-              : ""}`}
-            style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
-          >
-            <div className="widget-name" onMouseDown={this.mouseDown}>
-              {widget.name}
-            </div>
-            <div className="widget-container">
-              <Comp
-                toggle={this.toggleModal}
-                simulator={this.props.simulator}
-                station={this.props.station}
-                clientObj={this.props.clientObj}
-              />
-            </div>
-            <Button onClick={this.toggleModal} style={{ width: "200px" }}>
-              Close
-            </Button>
-          </div>
-        )}
       </div>
     );
   }
 }
-
 export default withApollo(WidgetsContainer);

@@ -282,7 +282,8 @@ class SimulatorConfig extends Component {
             <Card>
               <CardBody>
                 {(() => {
-                  const ConfigComponent = Config[selectedProperty] || "div";
+                  const ConfigComponent =
+                    Config[selectedProperty] || (() => null);
                   return (
                     <ConfigComponent
                       selectedSimulator={simulators.find(

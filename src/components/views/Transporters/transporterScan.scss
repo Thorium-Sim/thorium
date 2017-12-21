@@ -1,5 +1,5 @@
 $resolution: 20;
-$spinner-size: 60vh;
+$spinner-size: 50vh;
 $vortex-speed: 3.5s;
 $vortex-delay: 0.05s;
 $hue-speed: 7s;
@@ -12,7 +12,7 @@ $rainbow: #00ccff #0044cc #00aaff blue indigo rebeccapurple;
 // Generate the classes
 @for $i from 1 through $resolution {
   .ring_#{$i} {
-    animation: spin infinite $vortex-speed linear, rainbow infinite $hue-speed linear;
+    animation: transporter_spin infinite $vortex-speed linear, rainbow infinite $hue-speed linear;
     $size: ($spinner-size/$resolution) * $i;
     animation-delay: $vortex-delay * $i;
     position: absolute;
@@ -52,7 +52,7 @@ $rainbow: #00ccff #0044cc #00aaff blue indigo rebeccapurple;
   }
 }
 
-@keyframes spin {
+@keyframes transporter_spin {
   0% {
     transform: rotate(0deg);
   }
@@ -61,7 +61,7 @@ $rainbow: #00ccff #0044cc #00aaff blue indigo rebeccapurple;
   }
 }
 
-@-webkit-keyframes spin {
+@-webkit-keyframes transporter_spin {
   0% {
     transform: rotate(0deg);
   }

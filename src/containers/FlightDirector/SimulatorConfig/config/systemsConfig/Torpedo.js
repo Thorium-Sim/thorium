@@ -41,16 +41,16 @@ const Torpedo = ({ data, client, simulatorId, type }) => {
     });
   };
   if (data.loading) return null;
-  const { torpedos } = data;
+  const { torpedos, decks } = data;
   return (
     <div className="torpedo scroll">
-      {torpedos.map(e =>
+      {torpedos.map(e => (
         <div key={e.id}>
           <GenericSystemConfig
             client={client}
             simulatorId={simulatorId}
             type={type}
-            data={{ systems: [e] }}
+            data={{ systems: [e], decks }}
           >
             <div>
               <Button
@@ -64,7 +64,7 @@ const Torpedo = ({ data, client, simulatorId, type }) => {
             </div>
           </GenericSystemConfig>
         </div>
-      )}
+      ))}
       <Button color="success" onClick={addTorpedo}>
         Add Torpedo Launcher
       </Button>
@@ -73,7 +73,7 @@ const Torpedo = ({ data, client, simulatorId, type }) => {
 };
 
 const SYSTEM_QUERY = gql`
-  query Torpedo($id: ID) {
+  query Torpedo($id: ID, $deckId: ID!) {
     torpedos(simulatorId: $id) {
       id
       name
@@ -83,13 +83,22 @@ const SYSTEM_QUERY = gql`
         powerLevels
       }
     }
+    decks(simulatorId: $deckId) {
+      id
+      number
+      rooms {
+        id
+        name
+      }
+    }
   }
 `;
 
 export default graphql(SYSTEM_QUERY, {
   options: ownProps => ({
     variables: {
-      id: ownProps.simulatorId
+      id: ownProps.simulatorId,
+      deckId: ownProps.simulatorId
     }
   })
 })(Torpedo);

@@ -271,7 +271,7 @@ export const PhaserBeam = ({
           </Col>
         </Row>
         <Row>
-          <Col lg="4" xl="2">
+          <Col lg="4" xl="3">
             <Button
               block
               color="primary"
@@ -280,7 +280,7 @@ export const PhaserBeam = ({
               Charge
             </Button>
           </Col>
-          <Col lg="4" xl="2">
+          <Col lg="4" xl="3">
             <Button
               block
               color="warning"
@@ -289,7 +289,7 @@ export const PhaserBeam = ({
               Discharge
             </Button>
           </Col>
-          <Col lg="4" xl="2">
+          <Col lg="4" xl="3">
             <Button block color="info" onMouseDown={coolPhasers.bind(this, id)}>
               Coolant
             </Button>

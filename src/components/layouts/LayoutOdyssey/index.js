@@ -4,16 +4,40 @@ import Alerts from "../../generic/Alerts";
 import ActionsMixin from "../../generic/Actions";
 import ErrorBoundary from "../../../helpers/errorBoundary";
 import CardFrame from "./frame";
-
+import Widgets from "./widgets";
+import { withApollo } from "react-apollo";
+import gql from "graphql-tag";
 import { Button } from "reactstrap";
 import "./layout.css";
 
-export default class LayoutOdyssey extends Component {
+class LayoutOdyssey extends Component {
   state = {};
+  stopTraining = () => {
+    const client = this.props.clientObj.id;
+    const variables = {
+      client,
+      training: false
+    };
+    const mutation = gql`
+      mutation ClientSetTraining($client: ID!, $training: Boolean!) {
+        clientSetTraining(client: $client, training: $training)
+      }
+    `;
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     let { simulator, station, cardName, changeCard, clientObj } = this.props;
     const { changingCard } = this.state;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
+    if (clientObj.loginState === "logout" && station.login === false) {
+      cardName = "Login";
+    }
+    if (clientObj.offlineState) {
+      cardName = "Offline";
+    }
     return (
       <ActionsMixin {...this.props}>
         <div id="layout-odyssey" className={alertClass}>
@@ -22,7 +46,11 @@ export default class LayoutOdyssey extends Component {
             onClick={() => this.setState({ changingCard: false })}
           >
             {station.cards.map(c => (
-              <div className="cardName" key={c.name}>
+              <div
+                className="cardName"
+                key={c.name}
+                onClick={() => changeCard(c.name)}
+              >
                 {c.name}
               </div>
             ))}
@@ -88,7 +116,11 @@ export default class LayoutOdyssey extends Component {
               </h2>
             </div>
             <CardFrame simulator={simulator} />
-
+            <Widgets
+              clientObj={clientObj}
+              simulator={simulator}
+              station={station}
+            />
             <Alerts
               ref="alert-widget"
               simulator={simulator}
@@ -100,3 +132,5 @@ export default class LayoutOdyssey extends Component {
     );
   }
 }
+
+export default withApollo(LayoutOdyssey);
