@@ -65,7 +65,7 @@
     "react": "^16.0.0",
     "react-addons-transition-group": "^15.6.2",
     "react-animated-number": "^0.4.3",
-    "react-apollo": "^2.0.0",
+    "react-apollo": "^2.0.4",
     "react-color": "^2.13.8",
     "react-dom": "^16.0.0",
     "react-draggable": "^3.0.4",
