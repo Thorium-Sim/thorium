@@ -49,7 +49,7 @@ class Alerts extends Component {
           // ... call updateQuery to integrate the new comment
           // into the existing list of comments
           const alerts = self.state.alerts;
-          if (notify.id) {
+          if (notify && notify.id) {
             if (!self.props.disabled) {
               alerts.push(Object.assign(notify, { visible: true }));
               self.setState({
@@ -101,13 +101,13 @@ class Alerts extends Component {
   render() {
     return (
       <div style={holderStyle} className="alertsHolder">
-        {this.state.alerts.map(a =>
+        {this.state.alerts.map(a => (
           <AlertItem
             key={a.id}
             notify={a}
             dismiss={this.onDismiss.bind(this)}
           />
-        )}
+        ))}
       </div>
     );
   }
@@ -121,9 +121,7 @@ const AlertItem = ({ dismiss, notify }) => {
         isOpen={notify.visible}
         toggle={dismiss.bind(this, notify.id)}
       >
-        <h5 className="alert-heading">
-          {notify.title}
-        </h5>
+        <h5 className="alert-heading">{notify.title}</h5>
         {notify.body}
       </Alert>
     </div>

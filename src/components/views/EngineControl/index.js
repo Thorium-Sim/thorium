@@ -93,6 +93,7 @@ class EngineControl extends Component {
         document: HEATCHANGE_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
+          console.log(subscriptionData);
           const engineIndex = previousResult.engines.findIndex(
             e => e.id === subscriptionData.heatChange.id
           );
@@ -178,10 +179,9 @@ class EngineControl extends Component {
                         return (
                           <li
                             key={`${engine.id}-${speedWord}`}
-                            className={`speedNums speedBtn ${speedIndex <=
-                            powerIndex
-                              ? "powered"
-                              : ""}`}
+                            className={`speedNums speedBtn ${
+                              speedIndex <= powerIndex ? "powered" : ""
+                            }`}
                             onClick={() => {
                               this.setSpeed(engine, speedIndex, engines, index);
                             }}

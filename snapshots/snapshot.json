@@ -1486,7 +1486,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 36455800,
+			"timeSincePing": 38145300,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -1579,7 +1579,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 34092000,
+			"timeSincePing": 35781500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -1737,7 +1737,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7578879999997579,
+			"batteryChargeLevel": 0.7441999999997442,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2902,7 +2902,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 29275000,
+			"timeSincePing": 30964500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2937,7 +2937,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 29275000,
+			"timeSincePing": 30964500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4020,7 +4020,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 24161900,
+			"timeSincePing": 25851400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4060,7 +4060,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 24161900,
+			"timeSincePing": 25851400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5559,7 +5559,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 12847500,
+			"timeSincePing": 14537000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5596,7 +5596,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 12847500,
+			"timeSincePing": 14537000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6779,6 +6779,7 @@
 			"class": "Thrusters",
 			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
 			"name": "Thrusters",
+			"displayName": "Thrusters",
 			"power": {
 				"power": 5,
 				"powerLevels": [
@@ -6826,6 +6827,7 @@
 			"class": "Navigation",
 			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
 			"name": "Navigation",
+			"displayName": "Navigation",
 			"power": {
 				"power": 5,
 				"powerLevels": [
@@ -6866,6 +6868,7 @@
 			"class": "Sensors",
 			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
 			"name": "External Sensors",
+			"displayName": "External Sensors",
 			"power": {
 				"power": 5,
 				"powerLevels": [
@@ -6888,7 +6891,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 642400,
+			"timeSincePing": 2331900,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6902,6 +6905,7 @@
 			"class": "Sensors",
 			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
 			"name": "Internal Sensors",
+			"displayName": "Internal Sensors",
 			"power": {
 				"power": 5,
 				"powerLevels": [
@@ -6924,7 +6928,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 642400,
+			"timeSincePing": 2331900,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6938,6 +6942,7 @@
 			"class": "Probes",
 			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
 			"name": "Probe Launcher",
+			"displayName": "Probe Launcher",
 			"power": {
 				"power": 5,
 				"powerLevels": []
@@ -6961,382 +6966,279 @@
 				{
 					"id": "probe-network-package",
 					"name": "Probe Network Package",
-					"description": "A probe network package instructs the probe to network with up to 7 other probes.",
 					"size": 1,
-					"count": 60,
-					"availableProbes": []
+					"count": 9,
+					"availableProbes": [],
+					"description":
+						"The probe network package equips the probe with special equipment allowing it to interact with other probes within the network creating a sensor and defensive parimeter around this vessel."
 				},
 				{
 					"id": "radio-transceiver",
 					"name": "Radio Transceiver",
-					"description": "A radio transceiver is used to let the probe communicate.",
 					"size": 1,
-					"count": 54,
-					"availableProbes": []
+					"count": 8,
+					"availableProbes": [],
+					"description": "A radio transceiver is used to let the probe communicate."
 				},
 				{
-					"id": "video-camera",
-					"name": "Video Camera",
-					"description": "A Video Camera can take still or moving pictures.",
+					"id": "central-processing-unit",
+					"name": "Central Processing Unit",
 					"size": 1,
-					"count": 47,
-					"availableProbes": []
+					"count": 13,
+					"availableProbes": ["science"],
+					"description":
+						"A Central Processing Unit (CPU) increases the probes ability to analyze data."
+				},
+				{
+					"id": "coding-sequencer",
+					"name": "Coding Sequencer",
+					"size": 1,
+					"count": 9,
+					"availableProbes": [],
+					"description":
+						"A Coding Sequencer encodes all communications entering and exiting the probe."
+				},
+				{
+					"id": "camera-stills-only",
+					"name": "Camera  (Stills Only)",
+					"size": 1,
+					"count": 12,
+					"availableProbes": [],
+					"description":
+						"The Still Photo Camera creates high resolution photos of the space surrounding the probe."
 				},
 				{
 					"id": "communications-signal-booster",
 					"name": "Communications Signal Booster",
-					"description": "A Communications Signal Booster gives the probe's radio more range.",
-					"size": 2,
-					"count": 38,
-					"availableProbes": []
+					"size": 1,
+					"count": 5,
+					"availableProbes": [],
+					"description":
+						"A Communications Signal Booster gives the probe's radio more range."
 				},
 				{
-					"id": "encoding-sequencer",
-					"name": "Encoding Sequencer",
-					"description": "Encodes and encrypts signals, making them more secure.",
-					"size": 2,
-					"count": 25,
-					"availableProbes": []
+					"id": "video-camera",
+					"name": "Video Camera",
+					"size": 1,
+					"count": 9,
+					"availableProbes": [],
+					"description":
+						"The Video Camera can take thousands of photos per second creating a stunning moving picture of the surrounding space."
 				},
 				{
-					"id": "extra-data-storage",
-					"name": "Extra Data Storage",
-					"description": "Increases the amount of on-board data storage, allowing the probe to store more data.",
-					"size": 2,
-					"count": 61,
-					"availableProbes": []
+					"id": "data-storage-disk-100-terabytes",
+					"name": "Data Storage Disk (100 Terabytes)",
+					"size": 1,
+					"count": 4,
+					"availableProbes": ["science"],
+					"description":
+						"The data storage disk allows the probe to store up to 100 gigaquads of information within its data banks."
 				},
 				{
 					"id": "extra-fuel-cell",
 					"name": "Extra Fuel Cell",
-					"description": "An Extra Fuel Cell lets the probe travel further and perform longer.",
-					"size": 2,
-					"count": 79,
-					"availableProbes": []
+					"size": 1,
+					"count": 7,
+					"availableProbes": [],
+					"description":
+						"An Extra Fuel Cell lets the probe travel further by increasing the energy available on the probe."
 				},
 				{
 					"id": "sensor-array",
 					"name": "Sensor Array",
-					"description": "The Sensor Array gives the probe general scanning abilities.",
-					"size": 2,
-					"count": 120,
-					"availableProbes": []
+					"size": 1,
+					"count": 9,
+					"availableProbes": [],
+					"description":
+						"The Sensor Array allows the probe to scan and detect objects around it."
 				},
 				{
 					"id": "chemical-analysis-package",
 					"name": "Chemical Analysis Package",
-					"description": "A Chemical Analysis Package lets the probe research what chemicals it has found.",
-					"size": 3,
-					"count": 24,
-					"availableProbes": []
+					"size": 1,
+					"count": 14,
+					"availableProbes": ["science"],
+					"description":
+						"A Chemical Analysis Package lets the probe research what chemicals it has found."
 				},
 				{
 					"id": "sample-retrieval-package",
 					"name": "Sample Retrieval Package",
-					"description": "A Sample Retrieval Package lets the probe get something and return it to the ship.",
-					"size": 3,
-					"count": 22,
-					"availableProbes": []
+					"size": 1,
+					"count": 12,
+					"availableProbes": [],
+					"description":
+						"A Sample Retrieval Packagea lets the probe collect samples with robotic arms"
 				},
 				{
-					"id": "radiation-shielding",
-					"name": "Radiation Shielding",
-					"description": "Protects the probe from moderate levels of radiaiton.",
-					"size": 3,
-					"count": 16,
-					"availableProbes": []
+					"id": "planetary-encounter-packaging",
+					"name": "Planetary Encounter Packaging",
+					"size": 1,
+					"count": 6,
+					"availableProbes": ["science"],
+					"description":
+						"The planetary encounter package allows the probe to scan planets with greater accuracy."
 				},
 				{
 					"id": "ecm-package",
-					"name": "ECM Package",
-					"description": "An ECM (Electronic Counter Measures) Package is used to jam electronics.",
-					"size": 4,
-					"count": 26,
-					"availableProbes": []
+					"name": "Ecm Package",
+					"size": 1,
+					"count": 10,
+					"availableProbes": ["defense"],
+					"description":
+						"An ECM (Electronic Counter Measures) Package is used to jam electronics."
+				},
+				{
+					"id": "em-shield",
+					"name": "Em Shield",
+					"size": 1,
+					"count": 12,
+					"availableProbes": [],
+					"description":
+						"An EM Shield (Electro-Magnetic) protects the probe from electro-magnetic radiation."
 				},
 				{
 					"id": "gas-giant-encounter-package",
 					"name": "Gas Giant Encounter Package",
-					"description": "A Gas Giant Encounter Package allows the probe to research a gas giant.",
-					"size": 4,
-					"count": 11,
-					"availableProbes": []
+					"size": 1,
+					"count": 14,
+					"availableProbes": ["science"],
+					"description":
+						"A Gas Giant Encounter Package allows the probe to research a gas giant."
 				},
 				{
 					"id": "nebula-encounter-package",
 					"name": "Nebula Encounter Package",
-					"description": "A Nebula Encounter Package allows the probe to research a nebula.",
-					"size": 4,
-					"count": 14,
-					"availableProbes": []
+					"size": 1,
+					"count": 4,
+					"availableProbes": ["science"],
+					"description":
+						"A Nebula Encounter Package allows the probe to research a nebula."
 				},
 				{
-					"id": "planetary-encounter-package",
-					"name": "Planetary Encounter Package",
-					"description": "A Planetary Encounter Package allows the probe to research a planet.",
-					"size": 4,
-					"count": 14,
-					"availableProbes": []
+					"id": "debris-encounter-package",
+					"name": "Debris Encounter Package",
+					"size": 1,
+					"count": 7,
+					"availableProbes": ["science"],
+					"description":
+						"A Debris/Asteroid Field encounter package allows the probe to explore any kind of loose debris."
 				},
 				{
-					"id": "decoy-package",
-					"name": "Decoy Package",
-					"description": "A Decoy Package sends out signals to make sensor devices detect the probe as a ship.",
-					"size": 4,
-					"count": 23,
-					"availableProbes": []
-				},
-				{
-					"id": "subspace-encounter-package",
-					"name": "Subspace Encounter Package",
-					"description": "A Subspace Encounter Package allows the probe to research subspace.",
-					"size": 5,
-					"count": 6,
-					"availableProbes": []
+					"id": "signal-jammer",
+					"name": "Signal Jammer",
+					"size": 1,
+					"count": 13,
+					"availableProbes": ["defense"],
+					"description":
+						"The Signal Jammer allows the probe to dampen certain frequencies of signals."
 				},
 				{
 					"id": "solar-encounter-package",
 					"name": "Solar Encounter Package",
-					"description": "A Solar Encounter Package allows the probe to research a star.",
-					"size": 5,
-					"count": 19,
-					"availableProbes": []
-				},
-				{
-					"id": "transporter-relay",
-					"name": "Transporter Relay",
-					"description": "A transporter relay extends the transporter range of this ship.",
-					"size": 5,
-					"count": 15,
-					"availableProbes": []
-				},
-				{
-					"id": "hologram-projector-package",
-					"name": "Hologram Projector Package",
-					"description": "A Hologram Projector Package makes the probe look like a ship.",
-					"size": 5,
-					"count": 5,
-					"availableProbes": []
-				},
-				{
-					"id": "metaphasic-shield-generator",
-					"name": "Metaphasic Shield Generator",
-					"description": "Shield Generator that can construct a Shield Grid with other probes up to 2,500 Km protecting from radiation.",
-					"size": 6,
-					"count": 7,
-					"availableProbes": []
-				},
-				{
-					"id": "self-destruct-kit",
-					"name": "Self-Destruct Kit",
-					"description": "A Self-Destruct Kit allows the probe to receive a self-destruct signal from the station.",
 					"size": 1,
-					"count": 17,
-					"availableProbes": [
-						"defense"
-					]
+					"count": 13,
+					"availableProbes": ["science"],
+					"description":
+						"A Solar Encounter Package allows the probe to research a star."
 				},
 				{
-					"id": "warp-nacelle",
-					"name": "Warp Nacelle",
-					"description": "A Warp Nacelle (warp core included) allows the probe to travel at warp speed.",
+					"id": "radiation-protective-covering",
+					"name": "Radiation Protective Covering",
 					"size": 1,
-					"count": 20,
-					"availableProbes": [
-						"defense"
-					]
-				},
-				{
-					"id": "targeting-sensors",
-					"name": "Targeting Sensors",
-					"description": "Targeting sensors extends the targeting range of the probe.",
-					"size": 2,
-					"count": 21,
-					"availableProbes": [
-						"defense"
-					]
-				},
-				{
-					"id": "proximity-destruct",
-					"name": "Proximity Destruct",
-					"description": "A Proximity Self-Destruct detector tells the probe to blow-up when an enemy is near.",
-					"size": 2,
-					"count": 20,
-					"availableProbes": [
-						"defense"
-					]
-				},
-				{
-					"id": "titanium-armor-alloy",
-					"name": "Titanium Armor Alloy",
-					"description": "Titanium Armor Alloy increases the probe's defenses.",
-					"size": 2,
-					"count": 15,
-					"availableProbes": [
-						"defense"
-					]
-				},
-				{
-					"id": "stealth-field",
-					"name": "Stealth Field",
-					"description": "A stealth field masks the probe making it harder to detect.",
-					"size": 3,
-					"count": 7,
-					"availableProbes": [
-						"defense"
-					]
+					"count": 9,
+					"availableProbes": [],
+					"description":
+						"A Radiation Protective Covering is a special type of armor used to repel radiation."
 				},
 				{
 					"id": "phaser-head",
 					"name": "Phaser Head",
-					"description": "A Phaser Head allows the probe to fire one phaser shot at an enemy ship.",
-					"size": 3,
-					"count": 27,
-					"availableProbes": [
-						"defense"
-					]
+					"size": 1,
+					"count": 11,
+					"availableProbes": ["defense"],
+					"description":
+						"A phaser head allows the probe to fire a single phaser fire."
 				},
 				{
-					"id": "tachyon-emitter",
-					"name": "Tachyon Emitter",
-					"description": "A Tachyon Emitter allows the probe to interact with tachyon particles.",
-					"size": 3,
-					"count": 8,
-					"availableProbes": [
-						"science"
-					]
+					"id": "transporter-relay",
+					"name": "Transporter Relay",
+					"size": 1,
+					"count": 7,
+					"availableProbes": [],
+					"description":
+						"A transporter can extend the transport range of a vessel considerably."
 				},
 				{
-					"id": "resonance-emitter",
-					"name": "Resonance Emitter",
-					"description": "A Resonance Emitter allows the probe to interact with resonating particles.",
-					"size": 3,
-					"count": 8,
-					"availableProbes": [
-						"science"
-					]
-				},
-				{
-					"id": "lithium-emitter",
-					"name": "Lithium Emitter",
-					"description": "A Lithium Emitter allows the probe to interact with lithium particles.",
-					"size": 3,
+					"id": "self-destruct-kit",
+					"name": "Self-Destruct Kit",
+					"size": 1,
 					"count": 10,
-					"availableProbes": [
-						"science"
-					]
+					"availableProbes": ["defense"],
+					"description":
+						"A Self-Destruct kit give the probe the ability to destroy itself in a massive explosion."
 				},
 				{
-					"id": "carbon-emitter",
-					"name": "Carbon Emitter",
-					"description": "A Carbon Emitter allows the probe to interact with carbon particles.",
-					"size": 3,
-					"count": 8,
-					"availableProbes": [
-						"science"
-					]
+					"id": "decoy-pack",
+					"name": "Decoy Pack",
+					"size": 1,
+					"count": 4,
+					"availableProbes": ["defense"],
+					"description":
+						"A Decoy Package sends out signals to make sensor devices detect the probe as a ship."
 				},
 				{
-					"id": "radiation-emitter",
-					"name": "Radiation Emitter",
-					"description": "A Radiation Emitter allows the probe to interact with radioactive particles.",
-					"size": 3,
-					"count": 8,
-					"availableProbes": [
-						"science"
-					]
+					"id": "subspace-encounter-package",
+					"name": "Subspace Encounter Package",
+					"size": 1,
+					"count": 6,
+					"availableProbes": ["science"],
+					"description":
+						"A Subspace Encounter Package allows the probe to research subspace."
 				},
 				{
-					"id": "oxygen-emitter",
-					"name": "Oxygen Emitter",
-					"description": "An Oxygen Emitter allows the probe to interact with oxygen particles.",
-					"size": 3,
-					"count": 8,
-					"availableProbes": [
-						"science"
-					]
+					"id": "holographic-projection-unit",
+					"name": "Holographic Projection Unit",
+					"size": 1,
+					"count": 11,
+					"availableProbes": [],
+					"description":
+						"A Holographic Projection Unit allows the probe to project holograms within space."
 				},
 				{
-					"id": "hydrogen-emitter",
-					"name": "Hydrogen Emitter",
-					"description": "A Hydrogen Emitter allows the probe to interact with hydrogen particles.",
-					"size": 3,
-					"count": 8,
-					"availableProbes": [
-						"science"
-					]
-				},
-				{
-					"id": "helium-emitter",
-					"name": "Helium Emitter",
-					"description": "A Helium Emitter allows the probe to interact with helium particles.",
-					"size": 3,
-					"count": 8,
-					"availableProbes": [
-						"science"
-					]
-				},
-				{
-					"id": "graviton-emitter",
-					"name": "Graviton Emitter",
-					"description": "A Graviton Emitter allows the probe to interact with graviton particles.",
-					"size": 3,
-					"count": 8,
-					"availableProbes": [
-						"science"
-					]
-				},
-				{
-					"id": "magnetic-emitter",
-					"name": "Magnetic Emitter",
-					"description": "A Magnetic Emitter allows the probe to interact with magnetic particles.",
-					"size": 3,
-					"count": 8,
-					"availableProbes": [
-						"science"
-					]
+					"id": "tachyon-emission-detectors",
+					"name": "Tachyon Emission Detectors",
+					"size": 1,
+					"count": 9,
+					"availableProbes": ["defense"],
+					"description":
+						"A Tachyon Emission Detector is used to find tachyon emissions using very specific bands of particle detection sensors."
 				}
 			],
 			"types": [
 				{
 					"id": "class-i",
-					"name": "Class I Probe",
+					"name": "Short Range",
 					"parentId": "18bea077-8dcc-4151-8638-d48124b44e14",
-					"description": "The smallest probe; can only hold 4 units of equipment. Use for probe networks and general purposes.",
-					"size": 4,
-					"count": 30
+					"description": "Short range probes are cheap, disposable probes designed for limited use. They cannot move further than the edge of sensor range. ",
+					"size": 2,
+					"count": 4
 				},
 				{
 					"id": "class-ii",
-					"name": "Class II Probe",
+					"name": "Long Range",
 					"parentId": "18bea077-8dcc-4151-8638-d48124b44e14",
-					"description": "This medium-sized probe can hold 10 units of equipment. Use for probe networks and general purposes.",
-					"size": 10,
-					"count": 30
-				},
-				{
-					"id": "class-iii",
-					"name": "Class III Probe",
-					"parentId": "18bea077-8dcc-4151-8638-d48124b44e14",
-					"description": "This is the largest standard probe. It can hold up to 16 units of equipment. Use for probe networks and general purposes.",
-					"size": 16,
-					"count": 30
-				},
-				{
-					"id": "defense",
-					"name": "Defensive Probe",
-					"parentId": "18bea077-8dcc-4151-8638-d48124b44e14",
-					"description": "This weapon-like probe has access to additional equipment. You can use it to defend your ship. It holds 20 units of equipment.",
-					"size": 4,
-					"count": 20
+					"description": "Larger, and equipped with enough fuel to last for several days. They are designed to monitor areas and objects that are far away from the ship.",
+					"size": 3,
+					"count": 4
 				},
 				{
 					"id": "science",
-					"name": "Science Probe",
+					"name": "Science",
 					"parentId": "18bea077-8dcc-4151-8638-d48124b44e14",
-					"description": "This probe can use special emitters and detectors for specific scientific experiments. It holds 12 units of equipment.",
-					"size": 12,
-					"count": 20
+					"description": "Specifically designed for scientific purposes.  This probe type is equippable with a wide array of customizable features.",
+					"size": 3,
+					"count": 3
 				}
 			],
 			"stealthCompromised": false,
@@ -7347,6 +7249,7 @@
 			"class": "TractorBeam",
 			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
 			"name": "Tractor Beam",
+			"displayName": "Tractor Beam",
 			"power": {
 				"power": 5,
 				"powerLevels": [
@@ -7378,6 +7281,7 @@
 			"class": "Transporters",
 			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
 			"name": "Transporters",
+			"displayName": "Transporters",
 			"power": {
 				"power": 5,
 				"powerLevels": [
@@ -7409,6 +7313,7 @@
 			"class": "Reactor",
 			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
 			"name": "Reactor",
+			"displayName": "Reactor",
 			"power": {
 				"power": 5,
 				"powerLevels": []
@@ -7439,6 +7344,7 @@
 			"class": "Reactor",
 			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
 			"name": "Batteries",
+			"displayName": "Batteries",
 			"power": {
 				"power": 5,
 				"powerLevels": []
@@ -7469,6 +7375,7 @@
 			"class": "StealthField",
 			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
 			"name": "Stealth Field",
+			"displayName": "Stealth Field",
 			"power": {
 				"power": 5,
 				"powerLevels": [
@@ -7534,6 +7441,7 @@
 			"class": "Targeting",
 			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
 			"name": "Targeting",
+			"displayName": "Targeting",
 			"power": {
 				"power": 5,
 				"powerLevels": []
@@ -7564,6 +7472,7 @@
 			"class": "Phasers",
 			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
 			"name": "Phaser",
+			"displayName": "Phaser",
 			"power": {
 				"power": 5,
 				"powerLevels": [
@@ -7593,6 +7502,7 @@
 					"class": "System",
 					"simulatorId": null,
 					"name": null,
+					"displayName": null,
 					"power": {
 						"power": 5,
 						"powerLevels": [
@@ -7621,6 +7531,7 @@
 					"class": "System",
 					"simulatorId": null,
 					"name": null,
+					"displayName": null,
 					"power": {
 						"power": 5,
 						"powerLevels": [
@@ -7652,6 +7563,7 @@
 			"class": "Torpedo",
 			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
 			"name": "Torpedos",
+			"displayName": "Torpedos",
 			"power": {
 				"power": 5,
 				"powerLevels": [
@@ -7936,6 +7848,26 @@
 			"class": "Deck",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"number": 10,
+			"svgPath": "",
+			"doors": false,
+			"evac": false,
+			"hallway": ""
+		},
+		{
+			"id": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"class": "Deck",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"number": 1,
+			"svgPath": "",
+			"doors": false,
+			"evac": false,
+			"hallway": ""
+		},
+		{
+			"id": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"class": "Deck",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"number": 2,
 			"svgPath": "",
 			"doors": false,
 			"evac": false,
@@ -10259,6 +10191,436 @@
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"deckId": "57ba2f12-33ff-4769-bafb-c92ad5f5e62d",
 			"name": "Coolant Storage",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "c450012e-7591-4493-aace-baf7c33609f1",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Bridge",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "cb66db2f-c3cd-433b-9d5e-f325dc1576c3",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Captain’s Quarters",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "f8f58833-ac84-4aa1-b758-e52ca65c080a",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Crew Quarters",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "d082dd36-5a42-43b0-bcdf-236f1881b5ac",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Decontamination",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "60cf95bf-d378-48da-b3c5-be1eba3a070e",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Galley",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "df8e4490-04d1-4e12-ad96-08d3e2f5a9a1",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Long Range Communication Antenna",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "7ec30803-6c25-49d5-ac2c-2482ad481c97",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Lounge",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "c3962a33-43b0-4f76-bc6b-5d9711ef1335",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Navigations System Control",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "a0890a99-b9af-45b7-afea-01ae6ea75a84",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Records Storage",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "32b814ec-29c5-413f-af07-f2cfbe334e7d",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Sensors Array Access",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "a04f8a32-94f3-43ab-9a75-56fb2c7a9b7c",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Ship’s Locker",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "cb754e9f-87ae-4a97-be0f-c0fe56d0b246",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Short Range Communications Control",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "723c9cb4-823b-4238-aeb9-87f3c35172a8",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Sickbay",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "4bef6007-2e96-45b6-9cb4-6a421abbeb6b",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Targeting System Control",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "9553624d-9e0b-46e9-9e53-df48d0591f83",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Transporter Room",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "a21f8e53-4692-49e0-bf94-2fe4cc976e32",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Turbolift",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "8b273006-b754-4b89-ab56-dcaca88776e7",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Coolant Tank Access",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "8d0e3d06-ff1d-4961-bb25-a586eb2effb3",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "CO2 Scrubbers",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "0e12ca7f-2666-4add-8e71-75c4727f162d",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Battery Access",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "019c5e5e-9a2e-4bd8-aec5-626b19d5565e",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Cargo Bay",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "7fa3d1dd-8088-493e-a8ba-f34845998a3f",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Central Computer Core",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "99018874-faee-44d0-a76b-1edded79fcff",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Exocomp Station",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "bd83b139-c4c4-4500-a8a8-ed3a701dbd18",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Impulse Access Alpha",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "9a13f010-2071-48ba-b637-d5288a84c2a6",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Impulse Access Beta",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "d6406089-dac4-48eb-bc74-b576a7533101",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Life Support System Control",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "10e36397-16f3-429d-9bbe-f4c9c079c87c",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Docking System Access",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "70e04fdb-8141-4466-9561-9a296999970e",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Main Reactor",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "36bda3bf-edfa-4326-8dac-d30494e33b0b",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Oxygen Generators",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "e7f1148f-81a5-4152-8d97-04a777a2b01a",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Phaser Bank Access",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "4d09f9b0-7732-43b4-993b-43914467603c",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Port Warp Nacelle",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "78bf00bd-bad7-483c-b3d1-a42d8a400d50",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Main Computer Core",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "cf46568a-daed-46e5-891f-885676cf1b5f",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Power Conduit Access B",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "80508fbe-95ac-41b7-b0e7-75c860988eb7",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Power Conduit Access C",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "639088d7-c7a1-41f9-874b-bc815ca5fcfa",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Probe Assembly",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "bd041078-76a6-4ef7-a61a-5ecb2bf55f28",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Shield Generator Control",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "08bcc7d3-f9a5-4879-840a-6b12a454d5af",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Power Conduit Access A",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "c8b53709-b1e1-44da-97bb-919c07b586ca",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Thruster System Control",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "432c2c5d-beb6-4d40-acba-4de5b2cb1b3c",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Torpedo Control",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "01c2295f-0f53-48c5-a4dc-ec76a5b1666a",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Torpedo Storage",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "12dd0c43-cc30-4652-81f6-11a677e890b4",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Tractor Beam Access",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "8f80f8ce-7242-4bf9-9945-bb9b6462a935",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Starboard Warp Nacelle",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "f4551a60-95cf-48bf-9f34-73f96d625c5b",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Warp Core",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "a3608991-d7f7-405f-86c3-21d5f3ef1aa1",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Turbolift",
 			"gas": false,
 			"svgPath": "",
 			"metadata": {}
@@ -19024,7 +19386,8 @@
 			"roomCount": {
 				"257fb45e-ac29-4313-a1b9-7e9530a37f83": 2
 			},
-			"metadata": {}
+			"metadata": {},
+			"count": 2
 		},
 		{
 			"class": "InventoryItem",
@@ -19034,6 +19397,319 @@
 			"roomCount": {
 				"257fb45e-ac29-4313-a1b9-7e9530a37f83": 1,
 				"7a9c592f-7656-401e-95d5-9c98de183a95": 1
+			},
+			"metadata": {},
+			"count": 1
+		},
+		{
+			"class": "InventoryItem",
+			"id": "510184c3-907d-49a8-b30c-c3304d62f37d",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Antimatter Containment Field",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 1
+			},
+			"metadata": {},
+			"count": 1
+		},
+		{
+			"class": "InventoryItem",
+			"id": "5d74ed6f-ecf7-43cc-a4eb-2bfcca2ae8a2",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Food Supplies",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 480
+			},
+			"metadata": {},
+			"count": 480
+		},
+		{
+			"class": "InventoryItem",
+			"id": "46f87710-b88f-41c9-a7a1-2dbeb815eb61",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Backup Computer Drive",
+			"roomCount": {
+				"7fa3d1dd-8088-493e-a8ba-f34845998a3f": 4
+			},
+			"metadata": {},
+			"count": 4
+		},
+		{
+			"class": "InventoryItem",
+			"id": "7c2042ec-8ab1-4211-9e48-0a450e4074b7",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Braided Duranium Space Construction Cable",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 2000
+			},
+			"metadata": {},
+			"count": 2000
+		},
+		{
+			"class": "InventoryItem",
+			"id": "ecc8d109-fabd-4b24-8537-e65e2afbdfdd",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Coaxial Servo",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 24
+			},
+			"metadata": {},
+			"count": 24
+		},
+		{
+			"class": "InventoryItem",
+			"id": "a89c35f7-8104-45d1-8d33-581fa2458f6d",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Computer Networking Package",
+			"roomCount": {
+				"7fa3d1dd-8088-493e-a8ba-f34845998a3f": 10
+			},
+			"metadata": {},
+			"count": 10
+		},
+		{
+			"class": "InventoryItem",
+			"id": "4acb7185-2d0d-4190-a4f6-20f089a60e0c",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Coolant Injector",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 4
+			},
+			"metadata": {},
+			"count": 4
+		},
+		{
+			"class": "InventoryItem",
+			"id": "cd39f67e-7a13-4f27-b53d-baca0daef74d",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Dilithium Replacement Crystals",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 3
+			},
+			"metadata": {},
+			"count": 3
+		},
+		{
+			"class": "InventoryItem",
+			"id": "60937c4f-a8fa-417e-931c-765682640433",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Dual Interface Conduit",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 50
+			},
+			"metadata": {},
+			"count": 50
+		},
+		{
+			"class": "InventoryItem",
+			"id": "b8ecdbc4-8813-44ab-a049-461560380648",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "EPS Power Nodes",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 12
+			},
+			"metadata": {},
+			"count": 12
+		},
+		{
+			"class": "InventoryItem",
+			"id": "ee2566c4-6708-4b4a-b3de-c745d6afc177",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "High Density Plasma Detector",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 1
+			},
+			"metadata": {},
+			"count": 1
+		},
+		{
+			"class": "InventoryItem",
+			"id": "bd997399-de70-440b-bc82-76d07f9e7162",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "High Voltage Interositer",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 1
+			},
+			"metadata": {},
+			"count": 1
+		},
+		{
+			"class": "InventoryItem",
+			"id": "eefe3a27-5f07-4061-9b2b-c5eadbad7718",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "High-Amp Wire",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 100
+			},
+			"metadata": {},
+			"count": 100
+		},
+		{
+			"class": "InventoryItem",
+			"id": "701183c5-8f2e-44f9-8dc1-8d68ed5b4311",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Isolinear Chips",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 12
+			},
+			"metadata": {},
+			"count": 12
+		},
+		{
+			"class": "InventoryItem",
+			"id": "431fa8ea-18b6-4263-ace4-64dd3ba41af5",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Isolinear Rods",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 8
+			},
+			"metadata": {},
+			"count": 8
+		},
+		{
+			"class": "InventoryItem",
+			"id": "a74f2f37-bb72-40d6-900d-c87864941225",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Isotronic Circuitry",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 25
+			},
+			"metadata": {},
+			"count": 25
+		},
+		{
+			"class": "InventoryItem",
+			"id": "04dd47b7-bd43-410b-afde-a1f2287b78b8",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Latinum Bar",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 50
+			},
+			"metadata": {},
+			"count": 50
+		},
+		{
+			"class": "InventoryItem",
+			"id": "1d0e5cc2-74d2-43cf-bd53-b17b72c48978",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Liquid Compressed Hydrogen Tanks",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 8
+			},
+			"metadata": {},
+			"count": 8
+		},
+		{
+			"class": "InventoryItem",
+			"id": "5f3f51d8-71a5-44a6-b101-7e4cad996468",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Liquid Compressed Oxygen Tanks",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 4
+			},
+			"metadata": {},
+			"count": 4
+		},
+		{
+			"class": "InventoryItem",
+			"id": "685acd60-e25d-4507-914e-6f5f4f1f98f1",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Low Gravity Suit",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 6
+			},
+			"metadata": {},
+			"count": 1
+		},
+		{
+			"class": "InventoryItem",
+			"id": "2e389394-ceee-41fa-806a-19c6d5904fc8",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Medical Bunk Sheets",
+			"roomCount": {
+				"723c9cb4-823b-4238-aeb9-87f3c35172a8": 4
+			},
+			"metadata": {},
+			"count": 4
+		},
+		{
+			"class": "InventoryItem",
+			"id": "dd329370-7913-49cf-befc-d41a98b26f7d",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Medical Supply Kit",
+			"roomCount": {
+				"723c9cb4-823b-4238-aeb9-87f3c35172a8": 9
+			},
+			"metadata": {},
+			"count": 9
+		},
+		{
+			"class": "InventoryItem",
+			"id": "c2f1d204-e9ed-4404-b379-c9888d4dea40",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Planetary Geological Scan Unit",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 1
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "cd71146d-e0c0-4093-ad16-9ecbbbeca081",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Replacement Lamp Unit",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 5
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "4075bdfe-2733-486b-a204-91dd0d47f826",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Subsystem Diagnostic Manager",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 1
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "6a502867-6adb-4047-8d75-abfdf13b6fe5",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Transporter Beacons",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 10
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "c438e160-ebb1-41b5-8a84-0b39487fb80a",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Ultralight Dranium Interlocking Infrastructure Beams",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 50
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "aa9dc101-4e4d-4fb2-bab0-ccf1284225f1",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Video Surveillance Unit",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 1
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "8cee1dd6-9a55-4ef4-893b-81172bb5cc1f",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Water Filtration Unit",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 1
 			},
 			"metadata": {}
 		}
@@ -23889,7 +24565,7 @@
 	"viewscreens": [],
 	"messages": [],
 	"tacticalMaps": [],
-	"snapshotVersion": 1192,
-	"version": 1192,
-	"timestamp": "2017-12-21T04:05:16.853Z"
+	"snapshotVersion": 1786,
+	"version": 1786,
+	"timestamp": "2017-12-22T14:32:05.667Z"
 }
