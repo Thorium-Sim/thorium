@@ -31,7 +31,7 @@ class Isochips extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            template: subscriptionData.templateUpdate
+            template: subscriptionData.data.templateUpdate
           });
         }
       });

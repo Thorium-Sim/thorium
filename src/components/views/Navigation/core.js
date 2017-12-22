@@ -60,7 +60,7 @@ class NavigationCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            navigation: subscriptionData.navigationUpdate
+            navigation: subscriptionData.data.navigationUpdate
           });
         }
       });
@@ -186,7 +186,8 @@ class NavigationCore extends Component {
                     this.state.calculatedCourse,
                     { x: evt.target.value }
                   )
-                })}
+                })
+              }
             />
           </Col>
           <Col sm="5">
@@ -233,7 +234,8 @@ class NavigationCore extends Component {
                     this.state.calculatedCourse,
                     { y: evt.target.value }
                   )
-                })}
+                })
+              }
             />{" "}
           </Col>
           <Col sm="5">
@@ -266,7 +268,8 @@ class NavigationCore extends Component {
                     this.state.calculatedCourse,
                     { z: evt.target.value }
                   )
-                })}
+                })
+              }
             />{" "}
           </Col>
           <Col sm="5">

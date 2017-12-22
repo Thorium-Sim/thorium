@@ -71,7 +71,7 @@ class PhaserCharging extends Component {
         variables: { simulatorId: this.props.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            phasers: subscriptionData.phasersUpdate
+            phasers: subscriptionData.data.phasersUpdate
           });
         }
       });

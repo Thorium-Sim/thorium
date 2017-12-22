@@ -36,7 +36,7 @@ class DecksCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            decks: subscriptionData.decksUpdate
+            decks: subscriptionData.data.decksUpdate
           });
         }
       });
@@ -212,7 +212,8 @@ class DecksCore extends Component {
                     key={d.id}
                     className={selectedDeck === d.id ? "selected" : ""}
                     onClick={() =>
-                      this.setState({ selectedDeck: d.id, selectedRoom: null })}
+                      this.setState({ selectedDeck: d.id, selectedRoom: null })
+                    }
                   >
                     Deck {d.number}
                   </li>

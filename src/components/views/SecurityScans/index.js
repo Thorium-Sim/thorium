@@ -79,7 +79,7 @@ class SecurityScans extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            sensors: subscriptionData.sensorsUpdate
+            sensors: subscriptionData.data.sensorsUpdate
           });
         }
       });
@@ -212,7 +212,8 @@ class SecurityScans extends Component {
                   this.setState({
                     selectedDeck: a.deck,
                     selectedRoom: null
-                  })}
+                  })
+                }
               />
             </Col>
             <Col>
@@ -224,7 +225,8 @@ class SecurityScans extends Component {
                 setSelected={a =>
                   this.setState({
                     selectedRoom: a.room
-                  })}
+                  })
+                }
               />
             </Col>
           </Row>

@@ -37,7 +37,7 @@ class SetConfig extends Component {
       this.subscription = nextProps.data.subscribeToMore({
         document: SIMULATOR_SUB,
         updateQuery: (previousResult, {subscriptionData}) => {
-          return Object.assign({}, previousResult, {simulators: subscriptionData.simulatorsUpdate});
+          return Object.assign({}, previousResult, {simulators: subscriptionData.data.simulatorsUpdate});
         },
       });
     }
@@ -159,16 +159,17 @@ class SetConfig extends Component {
               {sets.map(s => (
                 <li
                   key={s.id}
-                  className={`list-group-item ${s.id === selectedSet
-                    ? "selected"
-                    : ""}`}
+                  className={`list-group-item ${
+                    s.id === selectedSet ? "selected" : ""
+                  }`}
                   onClick={() =>
                     this.setState({
                       selectedSet: s.id,
                       selectedSimulator: null,
                       selectedStationSet: null,
                       selectedStation: null
-                    })}
+                    })
+                  }
                 >
                   {s.name}
                 </li>
@@ -185,15 +186,16 @@ class SetConfig extends Component {
                 {simulators.map(s => (
                   <li
                     key={s.id}
-                    className={`list-group-item ${s.id === selectedSimulator
-                      ? "selected"
-                      : ""}`}
+                    className={`list-group-item ${
+                      s.id === selectedSimulator ? "selected" : ""
+                    }`}
                     onClick={() =>
                       this.setState({
                         selectedSimulator: s.id,
                         selectedStationSet: null,
                         selectedStation: null
-                      })}
+                      })
+                    }
                   >
                     {s.name}
                   </li>
@@ -210,14 +212,15 @@ class SetConfig extends Component {
                   .stationSets.map(s => (
                     <li
                       key={s.id}
-                      className={`list-group-item ${s.id === selectedStationSet
-                        ? "selected"
-                        : ""}`}
+                      className={`list-group-item ${
+                        s.id === selectedStationSet ? "selected" : ""
+                      }`}
                       onClick={() =>
                         this.setState({
                           selectedStationSet: s.id,
                           selectedStation: null
-                        })}
+                        })
+                      }
                     >
                       {s.name}
                     </li>
@@ -236,33 +239,35 @@ class SetConfig extends Component {
                     .stations.map(s => (
                       <li
                         key={`station-${s.name}`}
-                        className={`list-group-item ${s.name === selectedStation
-                          ? "selected"
-                          : ""}`}
+                        className={`list-group-item ${
+                          s.name === selectedStation ? "selected" : ""
+                        }`}
                         onClick={() =>
-                          this.setState({ selectedStation: s.name })}
+                          this.setState({ selectedStation: s.name })
+                        }
                       >
                         {s.name}
                       </li>
                     ))}
                   <li
                     key={`station-viewscreen`}
-                    className={`list-group-item ${selectedStation ===
-                    "Viewscreen"
-                      ? "selected"
-                      : ""}`}
+                    className={`list-group-item ${
+                      selectedStation === "Viewscreen" ? "selected" : ""
+                    }`}
                     onClick={() =>
-                      this.setState({ selectedStation: "Viewscreen" })}
+                      this.setState({ selectedStation: "Viewscreen" })
+                    }
                   >
                     Viewscreen
                   </li>
                   <li
                     key={`station-blackout`}
-                    className={`list-group-item ${selectedStation === "Blackout"
-                      ? "selected"
-                      : ""}`}
+                    className={`list-group-item ${
+                      selectedStation === "Blackout" ? "selected" : ""
+                    }`}
                     onClick={() =>
-                      this.setState({ selectedStation: "Blackout" })}
+                      this.setState({ selectedStation: "Blackout" })
+                    }
                   >
                     Blackout
                   </li>

@@ -31,7 +31,7 @@ class Population extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            crew: subscriptionData.crewUpdate
+            crew: subscriptionData.data.crewUpdate
           });
         }
       });
@@ -42,7 +42,7 @@ class Population extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            simulators: subscriptionData.simulatorsUpdate
+            simulators: subscriptionData.data.simulatorsUpdate
           });
         }
       });

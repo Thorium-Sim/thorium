@@ -76,10 +76,10 @@ class EngineControl extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           const engines = previousResult.engines.map(engine => {
-            if (engine.id === subscriptionData.engineUpdate.id) {
+            if (engine.id === subscriptionData.data.engineUpdate.id) {
               return Object.assign({}, engine, {
-                speed: subscriptionData.engineUpdate.speed,
-                on: subscriptionData.engineUpdate.on
+                speed: subscriptionData.data.engineUpdate.speed,
+                on: subscriptionData.data.engineUpdate.on
               });
             }
             return engine;
@@ -93,9 +93,8 @@ class EngineControl extends Component {
         document: HEATCHANGE_SUB,
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
-          console.log(subscriptionData);
           const engineIndex = previousResult.engines.findIndex(
-            e => e.id === subscriptionData.heatChange.id
+            e => e.id === subscriptionData.data.heatChange.id
           );
           if (engineIndex < 0) {
             return previousResult;
@@ -105,8 +104,8 @@ class EngineControl extends Component {
               (e, i) =>
                 i === engineIndex
                   ? Object.assign({}, e, {
-                      heat: subscriptionData.heatChange.heat,
-                      coolant: subscriptionData.heatChange.coolant
+                      heat: subscriptionData.data.heatChange.heat,
+                      coolant: subscriptionData.data.heatChange.coolant
                     })
                   : e
             )

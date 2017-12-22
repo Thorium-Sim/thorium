@@ -42,7 +42,7 @@ class CargoControl extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            inventory: subscriptionData.inventoryUpdate
+            inventory: subscriptionData.data.inventoryUpdate
           });
         }
       });
@@ -136,8 +136,9 @@ class CargoControl extends Component {
                   .filter(rc => rc.count > 0)
                   .map(
                     rc =>
-                      `${rc.room.name}, Deck ${rc.room.deck
-                        .number} (${rc.count})`
+                      `${rc.room.name}, Deck ${rc.room.deck.number} (${
+                        rc.count
+                      })`
                   )
               }))
             });

@@ -63,7 +63,7 @@ class CrewCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            crew: subscriptionData.crewUpdate
+            crew: subscriptionData.data.crewUpdate
           });
         }
       });

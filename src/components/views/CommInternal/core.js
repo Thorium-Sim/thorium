@@ -33,7 +33,7 @@ class InternalCommCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            internalComm: subscriptionData.internalCommUpdate
+            internalComm: subscriptionData.data.internalCommUpdate
           });
         }
       });
@@ -181,7 +181,8 @@ class InternalCommCore extends Component {
                     size="sm"
                     type="select"
                     onChange={e =>
-                      this.setState({ deck: e.target.value, room: null })}
+                      this.setState({ deck: e.target.value, room: null })
+                    }
                   >
                     <option value={null}>Select Deck</option>
                     {decks
@@ -192,10 +193,9 @@ class InternalCommCore extends Component {
                         return 0;
                       })
                       .map(d => (
-                        <option
-                          key={d.id}
-                          value={d.id}
-                        >{`Deck ${d.number}`}</option>
+                        <option key={d.id} value={d.id}>{`Deck ${
+                          d.number
+                        }`}</option>
                       ))}
                   </Input>
                 </Col>

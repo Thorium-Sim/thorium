@@ -108,7 +108,7 @@ class LongRangeComm extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
             longRangeCommunications:
-              subscriptionData.longRangeCommunicationsUpdate
+              subscriptionData.data.longRangeCommunicationsUpdate
           });
         }
       });
@@ -211,9 +211,9 @@ class LongRangeComm extends Component {
                 onClick={() => {
                   this.setState({ selectedMessage: m.id, selectedSat: null });
                 }}
-                className={`message-list ${m.id === this.state.selectedMessage
-                  ? "active"
-                  : ""}`}
+                className={`message-list ${
+                  m.id === this.state.selectedMessage ? "active" : ""
+                }`}
                 key={m.id}
               >
                 {`${m.datestamp}: ${m.sender}`}

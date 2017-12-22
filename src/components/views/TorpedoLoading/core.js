@@ -36,7 +36,7 @@ class TorpedoLoadingCore extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            torpedos: subscriptionData.torpedosUpdate
+            torpedos: subscriptionData.data.torpedosUpdate
           });
         }
       });
@@ -116,9 +116,9 @@ class TorpedoLoadingCore extends Component {
             {(() => {
               if (torpedos.state === "idle") return "No Torpedos Loaded";
 
-              return `${this.state.type} Torpedo ${torpedos.state === "loaded"
-                ? "Loaded"
-                : "Fired"}`;
+              return `${this.state.type} Torpedo ${
+                torpedos.state === "loaded" ? "Loaded" : "Fired"
+              }`;
             })()}
           </OutputField>
           <Row>

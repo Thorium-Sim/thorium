@@ -125,7 +125,7 @@ class PowerDistribution extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            systems: subscriptionData.systemsUpdate
+            systems: subscriptionData.data.systemsUpdate
           });
         }
       });
@@ -136,7 +136,7 @@ class PowerDistribution extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            reactors: subscriptionData.reactorUpdate
+            reactors: subscriptionData.data.reactorUpdate
           });
         }
       });

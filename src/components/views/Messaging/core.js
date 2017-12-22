@@ -43,11 +43,11 @@ class Messaging extends Component {
           simulatorId: nextProps.simulator.id
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          if (!subscriptionData.sendMessage) return previousResult;
+          if (!subscriptionData.data.sendMessage) return previousResult;
           setTimeout(this.scrollElement, 100);
           return Object.assign({}, previousResult, {
             messages: previousResult.messages.concat(
-              subscriptionData.sendMessage
+              subscriptionData.data.sendMessage
             )
           });
         }
@@ -61,7 +61,7 @@ class Messaging extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            teams: subscriptionData.teamsUpdate
+            teams: subscriptionData.data.teamsUpdate
           });
         }
       });
@@ -109,7 +109,8 @@ class Messaging extends Component {
           size="sm"
           type="select"
           onChange={evt =>
-            this.setState({ selectedConversation: evt.target.value })}
+            this.setState({ selectedConversation: evt.target.value })
+          }
           value={selectedConversation}
         >
           {messageGroups.map(g => (

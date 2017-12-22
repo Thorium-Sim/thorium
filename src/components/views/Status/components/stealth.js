@@ -38,7 +38,7 @@ class Stealth extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            stealthField: subscriptionData.stealthFieldUpdate
+            stealthField: subscriptionData.data.stealthFieldUpdate
           });
         }
       });
@@ -49,7 +49,7 @@ class Stealth extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            shields: subscriptionData.shieldsUpdate
+            shields: subscriptionData.data.shieldsUpdate
           });
         }
       });

@@ -43,7 +43,7 @@ class ReactorControl extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            reactors: subscriptionData.reactorUpdate
+            reactors: subscriptionData.data.reactorUpdate
           });
         }
       });

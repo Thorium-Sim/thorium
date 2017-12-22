@@ -137,7 +137,7 @@ class DamageTeams extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            teams: subscriptionData.teamsUpdate
+            teams: subscriptionData.data.teamsUpdate
           });
         }
       });
@@ -150,7 +150,7 @@ class DamageTeams extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            crew: subscriptionData.crewUpdate
+            crew: subscriptionData.data.crewUpdate
           });
         }
       });
@@ -307,7 +307,8 @@ class DamageTeams extends Component {
                     officers: [],
                     creating: true
                   }
-                })}
+                })
+              }
             >
               New Damage Team
             </Button>
@@ -337,7 +338,8 @@ class DamageTeams extends Component {
                             selectedTeam: Object.assign({}, team, {
                               name: evt.target.value
                             })
-                          })}
+                          })
+                        }
                         type="text"
                         id="teamName"
                         disabled={!team.id}
@@ -356,7 +358,8 @@ class DamageTeams extends Component {
                             selectedTeam: Object.assign({}, team, {
                               orders: evt.target.value
                             })
-                          })}
+                          })
+                        }
                         disabled={!team.id}
                         type="textarea"
                         id="teamOrders"
@@ -380,7 +383,8 @@ class DamageTeams extends Component {
                               selectedTeam: Object.assign({}, team, {
                                 location: { id: a.deck }
                               })
-                            })}
+                            })
+                          }
                         />
                       </Col>
                       <Col sm={7}>
@@ -397,7 +401,8 @@ class DamageTeams extends Component {
                                   id: a.room
                                 }
                               })
-                            })}
+                            })
+                          }
                         />
                       </Col>
                     </Row>
@@ -417,7 +422,8 @@ class DamageTeams extends Component {
                               selectedTeam: Object.assign({}, team, {
                                 priority: "low"
                               })
-                            })}
+                            })
+                          }
                           disabled={!team.id}
                           active={team.priority === "low"}
                           block
@@ -433,7 +439,8 @@ class DamageTeams extends Component {
                               selectedTeam: Object.assign({}, team, {
                                 priority: "normal"
                               })
-                            })}
+                            })
+                          }
                           disabled={!team.id}
                           active={team.priority === "normal"}
                           block
@@ -451,7 +458,8 @@ class DamageTeams extends Component {
                               selectedTeam: Object.assign({}, team, {
                                 priority: "critical"
                               })
-                            })}
+                            })
+                          }
                           disabled={!team.id}
                           active={team.priority === "critical"}
                           block
@@ -467,7 +475,8 @@ class DamageTeams extends Component {
                               selectedTeam: Object.assign({}, team, {
                                 priority: "emergency"
                               })
-                            })}
+                            })
+                          }
                           disabled={!team.id}
                           active={team.priority === "emergency"}
                           block

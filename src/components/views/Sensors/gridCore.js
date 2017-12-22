@@ -107,7 +107,7 @@ class GridCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            sensors: subscriptionData.sensorsUpdate
+            sensors: subscriptionData.data.sensorsUpdate
           });
         }
       });
@@ -119,7 +119,7 @@ class GridCore extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           if (
             previousResult.sensors.find(
-              s => s.id === subscriptionData.sensorsPing
+              s => s.id === subscriptionData.data.sensorsPing
             )
           ) {
             this.ping();

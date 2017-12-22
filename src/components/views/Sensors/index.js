@@ -112,7 +112,7 @@ class Sensors extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            sensors: subscriptionData.sensorsUpdate
+            sensors: subscriptionData.data.sensorsUpdate
           });
         }
       });
@@ -124,7 +124,7 @@ class Sensors extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           if (
             previousResult.sensors.find(
-              s => s.id === subscriptionData.sensorsPing
+              s => s.id === subscriptionData.data.sensorsPing
             )
           ) {
             this.ping();
@@ -256,25 +256,25 @@ class Sensors extends Component {
                     <Card>
                       <li
                         onClick={() => this.selectPing("active")}
-                        className={`list-group-item ${pingMode === "active"
-                          ? "selected"
-                          : ""}`}
+                        className={`list-group-item ${
+                          pingMode === "active" ? "selected" : ""
+                        }`}
                       >
                         Active Scan
                       </li>
                       <li
                         onClick={() => this.selectPing("passive")}
-                        className={`list-group-item ${pingMode === "passive"
-                          ? "selected"
-                          : ""}`}
+                        className={`list-group-item ${
+                          pingMode === "passive" ? "selected" : ""
+                        }`}
                       >
                         Passive Scan
                       </li>
                       <li
                         onClick={() => this.selectPing("manual")}
-                        className={`list-group-item ${pingMode === "manual"
-                          ? "selected"
-                          : ""}`}
+                        className={`list-group-item ${
+                          pingMode === "manual" ? "selected" : ""
+                        }`}
                       >
                         Manual Scan
                       </li>

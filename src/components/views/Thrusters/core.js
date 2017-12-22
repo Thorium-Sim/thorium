@@ -52,7 +52,7 @@ class ThrusterCore extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            thrusters: [subscriptionData.rotationChange]
+            thrusters: [subscriptionData.data.rotationChange]
           });
         }
       });

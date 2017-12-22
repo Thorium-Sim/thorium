@@ -99,8 +99,10 @@ class Transporters extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
             transporters: previousResult.transporters.map(transporter => {
-              if (transporter.id === subscriptionData.transporterUpdate.id) {
-                return subscriptionData.transporterUpdate;
+              if (
+                transporter.id === subscriptionData.data.transporterUpdate.id
+              ) {
+                return subscriptionData.data.transporterUpdate;
               }
               return transporter;
             })

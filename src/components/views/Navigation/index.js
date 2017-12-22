@@ -142,7 +142,7 @@ class Navigation extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            navigation: subscriptionData.navigationUpdate
+            navigation: subscriptionData.data.navigationUpdate
           });
         }
       });
@@ -418,9 +418,9 @@ class Navigation extends Component {
               <Row>
                 <Col className="col-sm-3">X:</Col>
                 <Col
-                  className={`col-sm-8 numBox ${selectedField === "x"
-                    ? "selected"
-                    : ""}`}
+                  className={`col-sm-8 numBox ${
+                    selectedField === "x" ? "selected" : ""
+                  }`}
                 >
                   {enteredCourse.x}
                 </Col>
@@ -428,9 +428,9 @@ class Navigation extends Component {
               <Row>
                 <Col className="col-sm-3">Y:</Col>
                 <Col
-                  className={`col-sm-8 numBox ${selectedField === "y"
-                    ? "selected"
-                    : ""}`}
+                  className={`col-sm-8 numBox ${
+                    selectedField === "y" ? "selected" : ""
+                  }`}
                 >
                   {enteredCourse.y}
                 </Col>
@@ -438,9 +438,9 @@ class Navigation extends Component {
               <Row>
                 <Col className="col-sm-3">Z:</Col>
                 <Col
-                  className={`col-sm-8 numBox ${selectedField === "z"
-                    ? "selected"
-                    : ""}`}
+                  className={`col-sm-8 numBox ${
+                    selectedField === "z" ? "selected" : ""
+                  }`}
                 >
                   {enteredCourse.z}
                 </Col>

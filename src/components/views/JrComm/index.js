@@ -135,7 +135,7 @@ class CommShortRange extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            shortRangeComm: subscriptionData.shortRangeCommUpdate
+            shortRangeComm: subscriptionData.data.shortRangeCommUpdate
           });
         }
       });

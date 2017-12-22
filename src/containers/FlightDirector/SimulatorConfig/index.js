@@ -118,7 +118,7 @@ class SimulatorConfig extends Component {
         document: SIMULATOR_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            simulators: subscriptionData.simulatorsUpdate
+            simulators: subscriptionData.data.simulatorsUpdate
           });
         }
       });
@@ -127,7 +127,7 @@ class SimulatorConfig extends Component {
       this.stationSetSub = nextProps.data.subscribeToMore({
         document: STATIONSET_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
-          const stationSets = subscriptionData.stationSetUpdate;
+          const stationSets = subscriptionData.data.stationSetUpdate;
           return Object.assign({}, previousResult, {
             simulators: previousResult.simulators.map(s => {
               const returnSimulator = Object.assign({}, s);
@@ -231,15 +231,17 @@ class SimulatorConfig extends Component {
               {simulators.map(s => (
                 <li
                   key={s.id}
-                  className={`list-group-item simulator-item ${selectedSimulator &&
-                  selectedSimulator === s.id
-                    ? "selected"
-                    : ""}`}
+                  className={`list-group-item simulator-item ${
+                    selectedSimulator && selectedSimulator === s.id
+                      ? "selected"
+                      : ""
+                  }`}
                   onClick={() =>
                     this.setState({
                       selectedSimulator: s.id,
                       selectedProperty: null
-                    })}
+                    })
+                  }
                 >
                   {s.name}
                 </li>

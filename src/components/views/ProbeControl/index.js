@@ -82,7 +82,7 @@ class ProbeControl extends Component {
         variables: { simulatorId: this.props.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            probes: subscriptionData.probesUpdate
+            probes: subscriptionData.data.probesUpdate
           });
         }
       });
@@ -113,11 +113,14 @@ class ProbeControl extends Component {
                         selectedProbe: probes.probes.filter(p =>
                           /[1-8]/.test(p.name)
                         )[0].id
-                      })}
-                    className={`probe-list ${selectedProbe ===
-                    probes.probes.filter(p => /[1-8]/.test(p.name))[0].id
-                      ? "selected"
-                      : ""}`}
+                      })
+                    }
+                    className={`probe-list ${
+                      selectedProbe ===
+                      probes.probes.filter(p => /[1-8]/.test(p.name))[0].id
+                        ? "selected"
+                        : ""
+                    }`}
                   >
                     <p className="probe-name">Probe Network</p>
                     <small />
@@ -127,9 +130,9 @@ class ProbeControl extends Component {
                   <div
                     key={p.id}
                     onClick={() => this.setState({ selectedProbe: p.id })}
-                    className={`probe-list ${selectedProbe === p.id
-                      ? "selected"
-                      : ""}`}
+                    className={`probe-list ${
+                      selectedProbe === p.id ? "selected" : ""
+                    }`}
                   >
                     <p className="probe-name">{p.name}</p>
                     <small>
@@ -257,7 +260,8 @@ class ProbeControlWrapper extends Component {
                     type="text"
                     value={queryText}
                     onChange={evt =>
-                      this.setState({ queryText: evt.target.value })}
+                      this.setState({ queryText: evt.target.value })
+                    }
                   />
                 )}
               </Col>

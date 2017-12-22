@@ -50,7 +50,7 @@ class StealthFieldCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            stealthField: subscriptionData.stealthFieldUpdate
+            stealthField: subscriptionData.data.stealthFieldUpdate
           });
         }
       });
@@ -65,7 +65,7 @@ class StealthFieldCore extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           const returnResult = Immutable.Map(previousResult);
           return returnResult
-            .merge({ systems: subscriptionData.systemsUpdate })
+            .merge({ systems: subscriptionData.data.systemsUpdate })
             .toJS();
         }
       });*/

@@ -24,7 +24,7 @@ class HeatCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            systems: subscriptionData.systemsUpdate
+            systems: subscriptionData.data.systemsUpdate
           });
         }
       });
@@ -66,7 +66,9 @@ class HeatCore extends Component {
                 <td>{s.name}</td>
                 <td>
                   <InputField
-                    prompt={`What do you want to change the heat of ${s.name} to?`}
+                    prompt={`What do you want to change the heat of ${
+                      s.name
+                    } to?`}
                     onClick={value => this.updateHeat(s.id, value / 100)}
                   >
                     {Math.round(s.heat * 100)}

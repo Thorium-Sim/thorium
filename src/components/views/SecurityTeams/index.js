@@ -129,7 +129,7 @@ class SecurityTeams extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            teams: subscriptionData.teamsUpdate
+            teams: subscriptionData.data.teamsUpdate
           });
         }
       });
@@ -142,7 +142,7 @@ class SecurityTeams extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            crew: subscriptionData.crewUpdate
+            crew: subscriptionData.data.crewUpdate
           });
         }
       });
@@ -302,7 +302,8 @@ class SecurityTeams extends Component {
                     officers: [],
                     creating: true
                   }
-                })}
+                })
+              }
             >
               New Security Team
             </Button>
@@ -332,7 +333,8 @@ class SecurityTeams extends Component {
                             selectedTeam: Object.assign({}, team, {
                               name: evt.target.value
                             })
-                          })}
+                          })
+                        }
                         type="text"
                         id="teamName"
                         disabled={!team.id}
@@ -351,7 +353,8 @@ class SecurityTeams extends Component {
                             selectedTeam: Object.assign({}, team, {
                               orders: evt.target.value
                             })
-                          })}
+                          })
+                        }
                         type="textarea"
                         id="teamOrders"
                         disabled={!team.id}
@@ -375,7 +378,8 @@ class SecurityTeams extends Component {
                               selectedTeam: Object.assign({}, team, {
                                 location: { id: a.deck }
                               })
-                            })}
+                            })
+                          }
                         />
                       </Col>
                       <Col sm={7}>
@@ -392,7 +396,8 @@ class SecurityTeams extends Component {
                                   id: a.room
                                 }
                               })
-                            })}
+                            })
+                          }
                         />
                       </Col>
                     </Row>

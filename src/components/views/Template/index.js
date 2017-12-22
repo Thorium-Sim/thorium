@@ -17,7 +17,7 @@ class Template extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            template: subscriptionData.templateUpdate
+            template: subscriptionData.data.templateUpdate
           });
         }
       });
@@ -32,8 +32,7 @@ class Template extends Component {
   }
 }
 
-const TEMPLATE_QUERY = gql`
-`;
+const TEMPLATE_QUERY = gql``;
 export default graphql(TEMPLATE_QUERY, {
   options: ownProps => ({
     variables: {

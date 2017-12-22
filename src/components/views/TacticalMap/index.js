@@ -75,7 +75,7 @@ class TacticalMapCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            tacticalMaps: subscriptionData.tacticalMapsUpdate
+            tacticalMaps: subscriptionData.data.tacticalMapsUpdate
           });
         }
       });

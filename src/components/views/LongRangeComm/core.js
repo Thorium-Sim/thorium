@@ -40,7 +40,7 @@ class LRCommCore extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
             longRangeCommunications:
-              subscriptionData.longRangeCommunicationsUpdate
+              subscriptionData.data.longRangeCommunicationsUpdate
           });
         }
       });
@@ -72,11 +72,11 @@ class LRCommCore extends Component {
                     m => (
                       <li
                         key={m.id}
-                        className={`${this.state.selectedMessage === m.id
-                          ? "active"
-                          : ""} ${m.sent === true
-                          ? "text-success"
-                          : ""} ${m.deleted === true ? "text-danger" : ""}`}
+                        className={`${
+                          this.state.selectedMessage === m.id ? "active" : ""
+                        } ${m.sent === true ? "text-success" : ""} ${
+                          m.deleted === true ? "text-danger" : ""
+                        }`}
                         onClick={() => this.setState({ selectedMessage: m.id })}
                       >
                         {m.datestamp} - {m.sender}

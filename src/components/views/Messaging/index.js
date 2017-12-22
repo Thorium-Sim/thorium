@@ -57,11 +57,11 @@ class Messaging extends Component {
           station: nextProps.station.name
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          if (!subscriptionData.sendMessage) return previousResult;
+          if (!subscriptionData.data.sendMessage) return previousResult;
           setTimeout(this.scrollElement, 100);
           return Object.assign({}, previousResult, {
             messages: previousResult.messages.concat(
-              subscriptionData.sendMessage
+              subscriptionData.data.sendMessage
             )
           });
         }
@@ -75,7 +75,7 @@ class Messaging extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            teams: subscriptionData.teamsUpdate
+            teams: subscriptionData.data.teamsUpdate
           });
         }
       });
@@ -162,19 +162,20 @@ class Messaging extends Component {
             <Card className="convoList">
               {conversations.map(c => (
                 <li
-                  className={`list-group-item ${c.convo === selectedConversation
-                    ? "selected"
-                    : ""}`}
+                  className={`list-group-item ${
+                    c.convo === selectedConversation ? "selected" : ""
+                  }`}
                   key={c.id}
                   onClick={() =>
-                    this.setState({ selectedConversation: c.convo })}
+                    this.setState({ selectedConversation: c.convo })
+                  }
                 >
                   <div>{c.convo}</div>
                   <div>
                     <small>
-                      {`${c.content.substr(0, 25)}${c.content.length > 25
-                        ? "..."
-                        : ""}`}
+                      {`${c.content.substr(0, 25)}${
+                        c.content.length > 25 ? "..." : ""
+                      }`}
                     </small>
                   </div>
                 </li>
@@ -194,7 +195,8 @@ class Messaging extends Component {
                   <DropdownItem
                     key={s.name}
                     onClick={() =>
-                      this.setState({ selectedConversation: s.name })}
+                      this.setState({ selectedConversation: s.name })
+                    }
                   >
                     {s.name}
                   </DropdownItem>
@@ -222,7 +224,8 @@ class Messaging extends Component {
                       <DropdownItem
                         key={g.name}
                         onClick={() =>
-                          this.setState({ selectedConversation: g.name })}
+                          this.setState({ selectedConversation: g.name })
+                        }
                       >
                         {g.name}
                       </DropdownItem>
@@ -249,9 +252,9 @@ class Messaging extends Component {
                   .map(m => (
                     <p
                       key={m.id}
-                      className={`message ${m.sender === this.props.station.name
-                        ? "sent"
-                        : ""}`}
+                      className={`message ${
+                        m.sender === this.props.station.name ? "sent" : ""
+                      }`}
                     >
                       <strong>{m.sender}</strong>: {m.content}
                     </p>
@@ -267,7 +270,8 @@ class Messaging extends Component {
                 <Input
                   disabled={!selectedConversation}
                   onChange={evt =>
-                    this.setState({ messageInput: evt.target.value })}
+                    this.setState({ messageInput: evt.target.value })
+                  }
                   value={messageInput}
                 />
                 <InputGroupButton>

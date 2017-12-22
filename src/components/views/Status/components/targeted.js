@@ -25,7 +25,7 @@ class Targeted extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            targeting: subscriptionData.targetingUpdate
+            targeting: subscriptionData.data.targetingUpdate
           });
         }
       });

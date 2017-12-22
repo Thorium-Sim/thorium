@@ -46,8 +46,10 @@ class TractorBeam extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
             tractorBeam: previousResult.tractorBeam.map(tractorBeam => {
-              if (tractorBeam.id === subscriptionData.tractorBeamUpdate.id) {
-                return subscriptionData.tractorBeamUpdate;
+              if (
+                tractorBeam.id === subscriptionData.data.tractorBeamUpdate.id
+              ) {
+                return subscriptionData.data.tractorBeamUpdate;
               }
               return tractorBeam;
             })

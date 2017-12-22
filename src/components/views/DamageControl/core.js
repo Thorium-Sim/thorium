@@ -41,7 +41,7 @@ class DamageControlCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            systems: subscriptionData.systemsUpdate
+            systems: subscriptionData.data.systemsUpdate
           });
         }
       });

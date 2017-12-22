@@ -139,7 +139,7 @@ class Thrusters extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            thrusters: [subscriptionData.rotationChange]
+            thrusters: [subscriptionData.data.rotationChange]
           });
         }
       });
@@ -153,7 +153,7 @@ class Thrusters extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
             thrusters: previousResult.thrusters.map(t => {
-              const updateT = subscriptionData.systemsUpdate.find(
+              const updateT = subscriptionData.data.systemsUpdate.find(
                 s => s.id === t.id
               );
               if (updateT) {
@@ -464,9 +464,9 @@ gamepadLoop(){
                     type="primary"
                     className="btn-block"
                     onClick={this.gamepadControl.bind(this)}
-                    label={`${this.state.control
-                      ? "Deactivate"
-                      : "Activate"} Manual Control`}
+                    label={`${
+                      this.state.control ? "Deactivate" : "Activate"
+                    } Manual Control`}
                   />
                 </Col>
               </Row>

@@ -34,8 +34,12 @@ class EngineCoreView extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
             engines: previousResult.engines.map(engine => {
-              if (engine.id === subscriptionData.engineUpdate.id) {
-                return Object.assign({}, engine, subscriptionData.engineUpdate);
+              if (engine.id === subscriptionData.data.engineUpdate.id) {
+                return Object.assign(
+                  {},
+                  engine,
+                  subscriptionData.data.engineUpdate
+                );
               }
               return engine;
             })
