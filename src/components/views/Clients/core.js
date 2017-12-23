@@ -27,7 +27,7 @@ class Template extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            clients: subscriptionData.clientChanged
+            clients: subscriptionData.data.clientChanged
           });
         }
       });

@@ -24,7 +24,7 @@ class Radiation extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            simulators: subscriptionData.simulatorsUpdate
+            simulators: subscriptionData.data.simulatorsUpdate
           });
         }
       });

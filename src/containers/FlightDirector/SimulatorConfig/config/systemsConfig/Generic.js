@@ -103,6 +103,7 @@ export class GenericSystemConfig extends Component {
     });
   };
   render() {
+    console.log(this.props.data);
     if (
       this.props.data.loading ||
       !this.props.data.systems ||
@@ -140,7 +141,7 @@ export class GenericSystemConfig extends Component {
                 Display Name
                 <Input
                   type="text"
-                  value={s.displayName}
+                  value={s.displayName || ""}
                   onChange={e => {
                     this.updateName(s, null, e.target.value);
                   }}
@@ -227,7 +228,7 @@ export class GenericSystemConfig extends Component {
                       }}
                       type="number"
                       name="power"
-                      value={p}
+                      value={p || ""}
                       onChange={e =>
                         this.updatePowerLevel(s, i, e.target.value)}
                     />

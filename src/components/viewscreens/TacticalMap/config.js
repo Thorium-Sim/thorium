@@ -26,7 +26,7 @@ class TacticalMapConfig extends Component {
         document: TACTICALMAP_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            tacticalMaps: subscriptionData.tacticalMapsUpdate
+            tacticalMaps: subscriptionData.data.tacticalMapsUpdate
           });
         }
       });

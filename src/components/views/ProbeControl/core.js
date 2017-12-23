@@ -43,7 +43,7 @@ class ProbeControl extends Component {
         variables: { simulatorId: this.props.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            probes: subscriptionData.probesUpdate
+            probes: subscriptionData.data.probesUpdate
           });
         }
       });
@@ -137,7 +137,8 @@ class ProbeControl extends Component {
                     controlled
                     value={this.state.responseString}
                     onChange={evt =>
-                      this.setState({ responseString: evt.target.value })}
+                      this.setState({ responseString: evt.target.value })
+                    }
                   />
                   <Button size="sm" onClick={this.response}>
                     Send Response

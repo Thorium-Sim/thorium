@@ -86,7 +86,7 @@ class Decoding extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
             longRangeCommunications:
-              subscriptionData.longRangeCommunicationsUpdate
+              subscriptionData.data.longRangeCommunicationsUpdate
           });
         }
       });
@@ -310,9 +310,9 @@ class Decoding extends Component {
                 <li
                   key={m.id}
                   onClick={this._selectMessage.bind(this, m)}
-                  className={`${m.id === this.state.selectedMessage
-                    ? "active"
-                    : ""} list-group-item`}
+                  className={`${
+                    m.id === this.state.selectedMessage ? "active" : ""
+                  } list-group-item`}
                 >
                   {m.datestamp} - {m.sender}
                 </li>

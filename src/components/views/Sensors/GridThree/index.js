@@ -372,7 +372,7 @@ class SensorGrid extends Component {
           const returnResult = Immutable.Map(previousResult);
           return returnResult
             .mergeDeep({
-              sensorContacts: subscriptionData.sensorContactUpdate
+              sensorContacts: subscriptionData.data.sensorContactUpdate
             })
             .toJS();
         }

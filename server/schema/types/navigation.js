@@ -14,6 +14,7 @@ type Navigation {
   scanning: Boolean
   destinations: [String]
   presets: [NavPreset]
+  thrusters: Boolean
 }
 
 type NavLoc {

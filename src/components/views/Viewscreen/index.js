@@ -30,7 +30,7 @@ export class Viewscreen extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            viewscreens: subscriptionData.viewscreensUpdate
+            viewscreens: subscriptionData.data.viewscreensUpdate
           });
         }
       });

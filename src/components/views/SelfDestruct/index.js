@@ -60,7 +60,7 @@ class SelfDestruct extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            simulators: subscriptionData.simulatorsUpdate
+            simulators: subscriptionData.data.simulatorsUpdate
           });
         }
       });
@@ -235,7 +235,8 @@ class SelfDestructModal extends Component {
                     type="text"
                     value={minutes}
                     onChange={evt =>
-                      this.setState({ minutes: evt.target.value })}
+                      this.setState({ minutes: evt.target.value })
+                    }
                     maxLength={2}
                   />
                   <span className="divider">:</span>
@@ -243,7 +244,8 @@ class SelfDestructModal extends Component {
                     type="text"
                     value={seconds}
                     onChange={evt =>
-                      this.setState({ seconds: evt.target.value })}
+                      this.setState({ seconds: evt.target.value })
+                    }
                     maxLength={2}
                   />
                 </div>

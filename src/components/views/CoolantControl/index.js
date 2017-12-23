@@ -64,7 +64,7 @@ class CoolantControl extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            coolant: subscriptionData.coolantUpdate
+            coolant: subscriptionData.data.coolantUpdate
           });
         }
       });
@@ -77,7 +77,7 @@ class CoolantControl extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            systemCoolant: subscriptionData.coolantSystemUpdate
+            systemCoolant: subscriptionData.data.coolantSystemUpdate
           });
         }
       });

@@ -18,12 +18,12 @@ export default class Probes extends System {
     this.processedData = params.processedData || "";
     // Load the probes
     params.probes = params.probes || [];
-    params.types = params.types || [];
-    params.equipment = params.equipment || [];
+    params.types = params.types || probesTypes;
+    params.equipment = params.equipment || probesEquipment;
 
     params.probes.forEach(p => this.probes.push(new Probe(p, this.id)));
-    probesTypes.forEach(p => this.types.push(new ProbeType(p, this.id)));
-    probesEquipment.forEach(e => this.equipment.push(new ProbeEquipment(e)));
+    params.types.forEach(p => this.types.push(new ProbeType(p, this.id)));
+    params.equipment.forEach(e => this.equipment.push(new ProbeEquipment(e)));
 
     // Create the systems based on the equipment added to the probe
   }
@@ -538,3 +538,285 @@ const probesEquipment = [
     availableProbes: ["science"]
   }
 ];
+
+/*
+const odysseyEquipment = [
+  {
+    "id": "probe-network-package",
+    "name": "Probe Network Package",
+    "size": 1,
+    "count": 9,
+    "availableProbes": [],
+    "description":
+      "The probe network package equips the probe with special equipment allowing it to interact with other probes within the network creating a sensor and defensive parimeter around this vessel."
+  },
+  {
+    "id": "radio-transceiver",
+    "name": "Radio Transceiver",
+    "size": 1,
+    "count": 8,
+    "availableProbes": [],
+    "description": "A radio transceiver is used to let the probe communicate."
+  },
+  {
+    "id": "central-processing-unit",
+    "name": "Central Processing Unit",
+    "size": 1,
+    "count": 13,
+    "availableProbes": ["science"],
+    "description":
+      "A Central Processing Unit (CPU) increases the probes ability to analyze data."
+  },
+  {
+    "id": "coding-sequencer",
+    "name": "Coding Sequencer",
+    "size": 1,
+    "count": 9,
+    "availableProbes": [],
+    "description":
+      "A Coding Sequencer encodes all communications entering and exiting the probe."
+  },
+  {
+    "id": "camera-stills-only",
+    "name": "Camera  (Stills Only)",
+    "size": 1,
+    "count": 12,
+    "availableProbes": [],
+    "description":
+      "The Still Photo Camera creates high resolution photos of the space surrounding the probe."
+  },
+  {
+    "id": "communications-signal-booster",
+    "name": "Communications Signal Booster",
+    "size": 1,
+    "count": 5,
+    "availableProbes": [],
+    "description":
+      "A Communications Signal Booster gives the probe's radio more range."
+  },
+  {
+    "id": "video-camera",
+    "name": "Video Camera",
+    "size": 1,
+    "count": 9,
+    "availableProbes": [],
+    "description":
+      "The Video Camera can take thousands of photos per second creating a stunning moving picture of the surrounding space."
+  },
+  {
+    "id": "data-storage-disk-100-terabytes",
+    "name": "Data Storage Disk (100 Terabytes)",
+    "size": 1,
+    "count": 4,
+    "availableProbes": ["science"],
+    "description":
+      "The data storage disk allows the probe to store up to 100 gigaquads of information within its data banks."
+  },
+  {
+    "id": "extra-fuel-cell",
+    "name": "Extra Fuel Cell",
+    "size": 1,
+    "count": 7,
+    "availableProbes": [],
+    "description":
+      "An Extra Fuel Cell lets the probe travel further by increasing the energy available on the probe."
+  },
+  {
+    "id": "sensor-array",
+    "name": "Sensor Array",
+    "size": 1,
+    "count": 9,
+    "availableProbes": [],
+    "description":
+      "The Sensor Array allows the probe to scan and detect objects around it."
+  },
+  {
+    "id": "chemical-analysis-package",
+    "name": "Chemical Analysis Package",
+    "size": 1,
+    "count": 14,
+    "availableProbes": ["science"],
+    "description":
+      "A Chemical Analysis Package lets the probe research what chemicals it has found."
+  },
+  {
+    "id": "sample-retrieval-package",
+    "name": "Sample Retrieval Package",
+    "size": 1,
+    "count": 12,
+    "availableProbes": [],
+    "description":
+      "A Sample Retrieval Packagea lets the probe collect samples with robotic arms"
+  },
+  {
+    "id": "planetary-encounter-packaging",
+    "name": "Planetary Encounter Packaging",
+    "size": 1,
+    "count": 6,
+    "availableProbes": ["science"],
+    "description":
+      "The planetary encounter package allows the probe to scan planets with greater accuracy."
+  },
+  {
+    "id": "ecm-package",
+    "name": "Ecm Package",
+    "size": 1,
+    "count": 10,
+    "availableProbes": ["defense"],
+    "description":
+      "An ECM (Electronic Counter Measures) Package is used to jam electronics."
+  },
+  {
+    "id": "em-shield",
+    "name": "Em Shield",
+    "size": 1,
+    "count": 12,
+    "availableProbes": [],
+    "description":
+      "An EM Shield (Electro-Magnetic) protects the probe from electro-magnetic radiation."
+  },
+  {
+    "id": "gas-giant-encounter-package",
+    "name": "Gas Giant Encounter Package",
+    "size": 1,
+    "count": 14,
+    "availableProbes": ["science"],
+    "description":
+      "A Gas Giant Encounter Package allows the probe to research a gas giant."
+  },
+  {
+    "id": "nebula-encounter-package",
+    "name": "Nebula Encounter Package",
+    "size": 1,
+    "count": 4,
+    "availableProbes": ["science"],
+    "description":
+      "A Nebula Encounter Package allows the probe to research a nebula."
+  },
+  {
+    "id": "debris-encounter-package",
+    "name": "Debris Encounter Package",
+    "size": 1,
+    "count": 7,
+    "availableProbes": ["science"],
+    "description":
+      "A Debris/Asteroid Field encounter package allows the probe to explore any kind of loose debris."
+  },
+  {
+    "id": "signal-jammer",
+    "name": "Signal Jammer",
+    "size": 1,
+    "count": 13,
+    "availableProbes": ["defense"],
+    "description":
+      "The Signal Jammer allows the probe to dampen certain frequencies of signals."
+  },
+  {
+    "id": "solar-encounter-package",
+    "name": "Solar Encounter Package",
+    "size": 1,
+    "count": 13,
+    "availableProbes": ["science"],
+    "description":
+      "A Solar Encounter Package allows the probe to research a star."
+  },
+  {
+    "id": "radiation-protective-covering",
+    "name": "Radiation Protective Covering",
+    "size": 1,
+    "count": 9,
+    "availableProbes": [],
+    "description":
+      "A Radiation Protective Covering is a special type of armor used to repel radiation."
+  },
+  {
+    "id": "phaser-head",
+    "name": "Phaser Head",
+    "size": 1,
+    "count": 11,
+    "availableProbes": ["defense"],
+    "description":
+      "A phaser head allows the probe to fire a single phaser fire."
+  },
+  {
+    "id": "transporter-relay",
+    "name": "Transporter Relay",
+    "size": 1,
+    "count": 7,
+    "availableProbes": [],
+    "description":
+      "A transporter can extend the transport range of a vessel considerably."
+  },
+  {
+    "id": "self-destruct-kit",
+    "name": "Self-Destruct Kit",
+    "size": 1,
+    "count": 10,
+    "availableProbes": ["defense"],
+    "description":
+      "A Self-Destruct kit give the probe the ability to destroy itself in a massive explosion."
+  },
+  {
+    "id": "decoy-pack",
+    "name": "Decoy Pack",
+    "size": 1,
+    "count": 4,
+    "availableProbes": ["defense"],
+    "description":
+      "A Decoy Package sends out signals to make sensor devices detect the probe as a ship."
+  },
+  {
+    "id": "subspace-encounter-package",
+    "name": "Subspace Encounter Package",
+    "size": 1,
+    "count": 6,
+    "availableProbes": ["science"],
+    "description":
+      "A Subspace Encounter Package allows the probe to research subspace."
+  },
+  {
+    "id": "holographic-projection-unit",
+    "name": "Holographic Projection Unit",
+    "size": 1,
+    "count": 11,
+    "availableProbes": [],
+    "description":
+      "A Holographic Projection Unit allows the probe to project holograms within space."
+  },
+  {
+    "id": "tachyon-emission-detectors",
+    "name": "Tachyon Emission Detectors",
+    "size": 1,
+    "count": 9,
+    "availableProbes": ["defense"],
+    "description":
+      "A Tachyon Emission Detector is used to find tachyon emissions using very specific bands of particle detection sensors."
+  }
+];
+const odysseyTypes = [
+  {
+    "id": "class-i",
+    "name": "Short Range",
+    "parentId": "18bea077-8dcc-4151-8638-d48124b44e14",
+    "description": "Short range probes are cheap, disposable probes designed for limited use. They cannot move further than the edge of sensor range. ",
+    "size": 2,
+    "count": 4
+  },
+  {
+    "id": "class-ii",
+    "name": "Long Range",
+    "parentId": "18bea077-8dcc-4151-8638-d48124b44e14",
+    "description": "Larger, and equipped with enough fuel to last for several days. They are designed to monitor areas and objects that are far away from the ship.",
+    "size": 3,
+    "count": 4
+  },
+  {
+    "id": "science",
+    "name": "Science",
+    "parentId": "18bea077-8dcc-4151-8638-d48124b44e14",
+    "description": "Specifically designed for scientific purposes.  This probe type is equippable with a wide array of customizable features.",
+    "size": 3,
+    "count": 3
+  }
+]
+*/

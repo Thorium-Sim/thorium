@@ -35,7 +35,7 @@ class TractorBeamCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            tractorBeam: subscriptionData.tractorBeamUpdate
+            tractorBeam: subscriptionData.data.tractorBeamUpdate
           });
         }
       });

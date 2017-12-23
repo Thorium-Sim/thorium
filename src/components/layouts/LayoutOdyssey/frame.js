@@ -9,7 +9,7 @@ const Frame = ({ simulator }) => {
     "5": "#18236f",
     p: "#441970"
   };
-  const color = colors[simulator.alertLevel] || colors["5"];
+  const color = colors[simulator.alertlevel] || colors["5"];
   return (
     <svg
       preserveAspectRatio="none"

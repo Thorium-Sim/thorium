@@ -37,7 +37,7 @@ class Welcome extends Component {
         document: FLIGHT_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            flights: subscriptionData.flightsUpdate
+            flights: subscriptionData.data.flightsUpdate
           });
         }
       });

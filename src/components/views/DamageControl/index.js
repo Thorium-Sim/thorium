@@ -43,7 +43,7 @@ class DamageControl extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            systems: subscriptionData.systemsUpdate
+            systems: subscriptionData.data.systemsUpdate
           });
         }
       });
@@ -152,10 +152,11 @@ class DamageControl extends Component {
         <Row>
           <Col
             sm="3"
-            className={`damage-list ${damagedSystem.damage
-              .neededReactivationCode
-              ? "reactivation-code"
-              : ""}`}
+            className={`damage-list ${
+              damagedSystem.damage.neededReactivationCode
+                ? "reactivation-code"
+                : ""
+            }`}
           >
             <h4>Damaged Systems</h4>
             <Card>
@@ -163,21 +164,13 @@ class DamageControl extends Component {
                 {this.state.reactivationCodeModal ? (
                   <div className="reactivation-modal">
                     <ul className="flex-boxes">
-                      {[
-                        "¥",
-                        "Ω",
-                        "∏",
-                        "§",
-                        "-",
-                        "∆",
-                        "£",
-                        "∑",
-                        "∂"
-                      ].map((c, i) => (
-                        <li key={i} onClick={() => this.setCodeEntry(c)}>
-                          {c}
-                        </li>
-                      ))}
+                      {["¥", "Ω", "∏", "§", "-", "∆", "£", "∑", "∂"].map(
+                        (c, i) => (
+                          <li key={i} onClick={() => this.setCodeEntry(c)}>
+                            {c}
+                          </li>
+                        )
+                      )}
                     </ul>
                     <Row>
                       <Col sm={5}>
@@ -204,9 +197,9 @@ class DamageControl extends Component {
                   systems.filter(s => s.damage.damaged).map(s => (
                     <p
                       key={s.id}
-                      className={`${this.state.selectedSystem === s.id
-                        ? "selected"
-                        : ""}
+                      className={`${
+                        this.state.selectedSystem === s.id ? "selected" : ""
+                      }
           ${s.damage.requested ? "requested" : ""}
           ${s.damage.report ? "report" : ""}`}
                       onClick={this.selectSystem.bind(this, s.id)}

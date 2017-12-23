@@ -72,7 +72,7 @@ class WidgetsContainer extends Component {
   }
 }
 
-class Widget extends Component {
+export class Widget extends Component {
   state = {
     tooltipOpen: false,
     modal: false,

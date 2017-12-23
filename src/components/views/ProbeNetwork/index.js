@@ -57,7 +57,7 @@ class ProbeNetwork extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            probes: subscriptionData.probesUpdate
+            probes: subscriptionData.data.probesUpdate
           });
         }
       });

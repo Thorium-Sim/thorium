@@ -60,7 +60,7 @@ class DamageTeams extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            teams: subscriptionData.teamsUpdate
+            teams: subscriptionData.data.teamsUpdate
           });
         }
       });
@@ -73,7 +73,7 @@ class DamageTeams extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            crew: subscriptionData.crewUpdate
+            crew: subscriptionData.data.crewUpdate
           });
         }
       });

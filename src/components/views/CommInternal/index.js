@@ -73,7 +73,7 @@ class InternalComm extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            internalComm: subscriptionData.internalCommUpdate
+            internalComm: subscriptionData.data.internalCommUpdate
           });
         }
       });
@@ -173,7 +173,8 @@ class InternalComm extends Component {
                 internalComm.state === "connected"
               }
               setSelected={({ deck: deckD }) =>
-                this.setState({ deck: deckD, room: null })}
+                this.setState({ deck: deckD, room: null })
+              }
             />
           </Col>
           <Col sm={{ size: 3 }}>

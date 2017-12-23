@@ -37,6 +37,9 @@ export const TacticalMapMutations = {
     );
     return newid;
   },
+  removeTacticalMap(rootValue, args, context) {
+    App.handleEvent(args, "removeTacticalMap", context);
+  },
   addTacticalMapLayer(rootValue, args, context) {
     App.handleEvent(args, "addTacticalMapLayer", context);
   },

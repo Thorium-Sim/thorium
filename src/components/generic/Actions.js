@@ -42,7 +42,7 @@ class ActionsMixin extends Component {
           stationId: this.props.station.name
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          let { action, duration } = subscriptionData.actionsUpdate;
+          let { action, duration } = subscriptionData.data.actionsUpdate;
           switch (action) {
             case "flash":
               duration = duration || 10;

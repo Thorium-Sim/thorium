@@ -60,7 +60,7 @@ class TorpedoLoading extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            torpedos: subscriptionData.torpedosUpdate
+            torpedos: subscriptionData.data.torpedosUpdate
           });
         }
       });
@@ -105,9 +105,9 @@ const Torpedo = ({ state, type }) => {
     opacity: state !== "loaded" ? 0 : 1,
     top: state === "loaded" || state === "fired" ? "86%" : "2px",
     left: state === "fired" ? "70px" : "3px",
-    transition: `opacity 1s ease-in ${state === "loaded"
-      ? ""
-      : "2s"}, top 3s ease-in-out, left 0.2s ease-in`
+    transition: `opacity 1s ease-in ${
+      state === "loaded" ? "" : "2s"
+    }, top 3s ease-in-out, left 0.2s ease-in`
   };
   let color = "rgb(200, 120, 255)";
   switch (type) {

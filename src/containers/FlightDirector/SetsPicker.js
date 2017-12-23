@@ -36,7 +36,7 @@ class SetsPicker extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            flights: subscriptionData.flightsUpdate
+            flights: subscriptionData.data.flightsUpdate
           });
         }
       });

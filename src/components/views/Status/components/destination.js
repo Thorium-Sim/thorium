@@ -34,7 +34,7 @@ class Destination extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            navigation: subscriptionData.navigationUpdate
+            navigation: subscriptionData.data.navigationUpdate
           });
         }
       });

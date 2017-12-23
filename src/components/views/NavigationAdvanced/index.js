@@ -98,7 +98,7 @@ class AdvancedNavigation extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            thrusters: [subscriptionData.rotationChange]
+            thrusters: [subscriptionData.data.rotationChange]
           });
         }
       });
@@ -112,12 +112,12 @@ class AdvancedNavigation extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
             engines: previousResult.engines.map(e => {
-              if (e.id === subscriptionData.engineUpdate.id) {
-                return subscriptionData.engineUpdate;
+              if (e.id === subscriptionData.data.engineUpdate.id) {
+                return subscriptionData.data.engineUpdate;
               }
               return Object.assign({}, e, {
                 on: false,
-                velocity: subscriptionData.engineUpdate.velocity
+                velocity: subscriptionData.data.engineUpdate.velocity
               });
             })
           });
@@ -331,7 +331,8 @@ class AdvancedNavigation extends Component {
                     }
                     sliderStyle={sliderColors[i]}
                     onChange={(value, numbers) =>
-                      this.handleSlider(e, value, numbers)}
+                      this.handleSlider(e, value, numbers)
+                    }
                   />
                 </Col>
               ))}

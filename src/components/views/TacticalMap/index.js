@@ -75,7 +75,7 @@ class TacticalMapCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            tacticalMaps: subscriptionData.tacticalMapsUpdate
+            tacticalMaps: subscriptionData.data.tacticalMapsUpdate
           });
         }
       });
@@ -166,6 +166,11 @@ class TacticalMapCore extends Component {
             tacticalMaps={tacticalMaps}
             selectTactical={this.selectTactical}
             selectLayer={this.selectLayer}
+            deselectTactical={() =>
+              this.setState({
+                tacticalMapId: null
+              })
+            }
             {...this.props}
           />
         </div>

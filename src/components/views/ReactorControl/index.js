@@ -79,7 +79,7 @@ class ReactorControl extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            reactors: subscriptionData.reactorUpdate
+            reactors: subscriptionData.data.reactorUpdate
           });
         }
       });
@@ -90,7 +90,7 @@ class ReactorControl extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            systems: subscriptionData.systemsUpdate
+            systems: subscriptionData.data.systemsUpdate
           });
         }
       });
@@ -134,6 +134,11 @@ class ReactorControl extends Component {
       return next.power.power + prev;
     }, 0);
     const efficiencies = [
+      {
+        label: "Overload",
+        color: "danger",
+        efficiency: 1.25
+      },
       {
         label: "Cruise",
         color: "primary",

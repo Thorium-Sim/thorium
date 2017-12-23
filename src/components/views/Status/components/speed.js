@@ -24,9 +24,9 @@ class EngineCoreView extends Component {
         document: SPEEDCHANGE_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
           previousResult.engines = previousResult.engines.map(engine => {
-            if (engine.id === subscriptionData.engineUpdate.id) {
-              engine.speed = subscriptionData.engineUpdate.speed;
-              engine.on = subscriptionData.engineUpdate.on;
+            if (engine.id === subscriptionData.data.engineUpdate.id) {
+              engine.speed = subscriptionData.data.engineUpdate.speed;
+              engine.on = subscriptionData.data.engineUpdate.on;
             }
             return engine;
           });

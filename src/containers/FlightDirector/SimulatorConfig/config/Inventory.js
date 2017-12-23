@@ -109,7 +109,7 @@ class Inventory extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            inventory: subscriptionData.inventoryUpdate
+            inventory: subscriptionData.data.inventoryUpdate
           });
         }
       });
@@ -125,7 +125,7 @@ class Inventory extends Component {
   };
   saveInventory = () => {
     const { inventoryItem } = this.state;
-    const { name, metadata, roomCount } = inventoryItem;
+    const { name, metadata = {}, roomCount } = inventoryItem;
     const mutation = gql`
       mutation UpdateInventory(
         $simulatorId: ID
@@ -208,15 +208,19 @@ class Inventory extends Component {
           Make sure you configure decks and rooms before configuring inventory
         </p>
         <Row>
-          <Col sm={3}>
-            <ul>
+          <Col sm={4}>
+            <ul style={{ padding: 0, maxHeight: "75vh", overflowY: "scroll" }}>
               {inventory.map(i => (
                 <li
                   key={i.id}
                   onClick={() =>
                     this.setState({
                       inventoryItem: i
-                    })}
+                    })
+                  }
+                  className={
+                    inventoryItem && inventoryItem.id === i.id ? "selected" : ""
+                  }
                 >
                   {i.name}
                 </li>
@@ -227,15 +231,17 @@ class Inventory extends Component {
             </Button>
           </Col>
           {inventoryItem && (
-            <Col sm={9}>
+            <Col sm={8}>
               <Row>
-                <Col sm={6}>
+                <Col sm={5}>
                   <Label>Name</Label>
                   <Input
+                    autofocus="autofocus"
                     type="text"
                     value={inventoryItem.name || ""}
                     onChange={evt =>
-                      this.updateInventory("name", evt.target.value)}
+                      this.updateInventory("name", evt.target.value)
+                    }
                   />
                   <Label>Count</Label>
                   <Input type="text" readOnly />
@@ -256,7 +262,8 @@ class Inventory extends Component {
                         Object.assign({}, this.state.inventoryItem.metadata, {
                           type: evt.target.value
                         })
-                      )}
+                      )
+                    }
                   >
                     <option value="">Pick a type</option>
                     <option value="probe">Probe</option>
@@ -320,14 +327,15 @@ class Inventory extends Component {
                             this.setState({
                               selectedDeck: d.id,
                               selectedRoom: null
-                            })}
+                            })
+                          }
                         >
                           Deck {d.number}
                         </li>
                       ))}
                   </ul>
                 </Col>
-                <Col sm="4" className="decks-columns">
+                <Col sm="5" className="decks-columns">
                   <ul className="roomList">
                     {selectedDeck &&
                       decks
@@ -343,7 +351,8 @@ class Inventory extends Component {
                             key={r.id}
                             className={selectedRoom === r.id ? "selected" : ""}
                             onClick={() =>
-                              this.setState({ selectedRoom: r.id })}
+                              this.setState({ selectedRoom: r.id })
+                            }
                           >
                             <input
                               type="text"
@@ -358,7 +367,6 @@ class Inventory extends Component {
                                   : 0
                               }
                               onChange={evt => {
-                                debugger;
                                 let roomCount =
                                   this.state.inventoryItem.roomCount || [];
                                 const room = roomCount.find(
@@ -406,6 +414,22 @@ const DECKS_QUERY = gql`
       rooms {
         id
         name
+        inventory {
+          id
+          name
+          count
+          metadata {
+            type
+            size
+            description
+            image
+            science
+            defense
+          }
+          roomCount {
+            count
+          }
+        }
       }
     }
     inventory(simulatorId: $simulatorId) {

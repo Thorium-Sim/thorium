@@ -31,6 +31,7 @@ const NAVIGATION_SUB = gql`
         y
         z
       }
+      thrusters
       presets {
         name
         course {
@@ -60,7 +61,7 @@ class NavigationCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            navigation: subscriptionData.navigationUpdate
+            navigation: subscriptionData.data.navigationUpdate
           });
         }
       });
@@ -147,6 +148,22 @@ class NavigationCore extends Component {
       calculatedCourse: course.course
     });
   };
+  toggleThrusters = () => {
+    const navigation = this.props.data.navigation[0];
+    const mutation = gql`
+      mutation ToggleNavThrusters($id: ID!, $thrusters: Boolean) {
+        navSetThrusters(id: $id, thrusters: $thrusters)
+      }
+    `;
+    const variables = {
+      id: navigation.id,
+      thrusters: !navigation.thrusters
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.navigation) return null;
     const navigation = this.props.data.navigation[0];
@@ -160,6 +177,14 @@ class NavigationCore extends Component {
             onChange={this.toggleCalculate.bind(this)}
           />
           Calculate
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={navigation.thrusters}
+            onChange={this.toggleThrusters}
+          />
+          Thrusters
         </label>
         <Row>
           <Col sm="1" />
@@ -186,7 +211,8 @@ class NavigationCore extends Component {
                     this.state.calculatedCourse,
                     { x: evt.target.value }
                   )
-                })}
+                })
+              }
             />
           </Col>
           <Col sm="5">
@@ -233,7 +259,8 @@ class NavigationCore extends Component {
                     this.state.calculatedCourse,
                     { y: evt.target.value }
                   )
-                })}
+                })
+              }
             />{" "}
           </Col>
           <Col sm="5">
@@ -266,7 +293,8 @@ class NavigationCore extends Component {
                     this.state.calculatedCourse,
                     { z: evt.target.value }
                   )
-                })}
+                })
+              }
             />{" "}
           </Col>
           <Col sm="5">
@@ -332,6 +360,7 @@ const NAVIGATION_QUERY = gql`
         y
         z
       }
+      thrusters
       presets {
         name
         course {

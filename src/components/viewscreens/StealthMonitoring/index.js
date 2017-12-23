@@ -205,7 +205,7 @@ class StealthField extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            stealthField: subscriptionData.stealthFieldUpdate
+            stealthField: subscriptionData.data.stealthFieldUpdate
           });
         }
       });

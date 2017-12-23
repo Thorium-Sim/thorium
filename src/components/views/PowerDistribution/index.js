@@ -60,6 +60,8 @@ const REACTOR_SUB = gql`
       id
       model
       batteryChargeLevel
+      efficiency
+      powerOutput
     }
   }
 `;
@@ -125,7 +127,7 @@ class PowerDistribution extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            systems: subscriptionData.systemsUpdate
+            systems: subscriptionData.data.systemsUpdate
           });
         }
       });
@@ -136,7 +138,7 @@ class PowerDistribution extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            reactors: subscriptionData.reactorUpdate
+            reactors: subscriptionData.data.reactorUpdate
           });
         }
       });
@@ -158,6 +160,7 @@ class PowerDistribution extends Component {
     if (this.props.data.loading || !this.props.data.reactors) return null;
     // Get the batteries, get just the first one.
     const battery = this.props.data.reactors.find(r => r.model === "battery");
+    const reactor = this.props.data.reactors.find(r => r.model === "reactor");
     const charge = battery && battery.batteryChargeLevel;
     const powerTotal = this.state.systems.reduce((prev, next) => {
       return next.power.power + prev;
@@ -188,6 +191,23 @@ class PowerDistribution extends Component {
                 />
               ))}
             <h4 className="totalPowerText">Total Power Used: {powerTotal}</h4>
+            <h4>
+              Total Power Available:{" "}
+              {Math.round(reactor.efficiency * reactor.powerOutput)}
+            </h4>
+            <h4
+              className={` ${
+                Math.round(reactor.efficiency * reactor.powerOutput) -
+                  powerTotal <
+                0
+                  ? "text-danger"
+                  : ""
+              }`}
+            >
+              Power Draw:{" "}
+              {Math.round(reactor.efficiency * reactor.powerOutput) -
+                powerTotal}
+            </h4>
           </Col>
           {battery && (
             <Col sm="4" className="battery-holder">
@@ -314,6 +334,8 @@ const SYSTEMS_QUERY = gql`
       id
       model
       batteryChargeLevel
+      efficiency
+      powerOutput
     }
   }
 `;

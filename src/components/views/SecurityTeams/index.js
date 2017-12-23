@@ -19,7 +19,7 @@ import "./style.css";
 
 const CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID) {
-    crewUpdate(simulatorId: $simulatorId, position: "security") {
+    crewUpdate(simulatorId: $simulatorId, position: "security", killed: false) {
       id
       name
     }
@@ -49,6 +49,7 @@ const SECURITY_SUB = gql`
       officers {
         id
         name
+        killed
       }
     }
   }
@@ -129,7 +130,7 @@ class SecurityTeams extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            teams: subscriptionData.teamsUpdate
+            teams: subscriptionData.data.teamsUpdate
           });
         }
       });
@@ -142,7 +143,7 @@ class SecurityTeams extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            crew: subscriptionData.crewUpdate
+            crew: subscriptionData.data.crewUpdate
           });
         }
       });
@@ -302,7 +303,8 @@ class SecurityTeams extends Component {
                     officers: [],
                     creating: true
                   }
-                })}
+                })
+              }
             >
               New Security Team
             </Button>
@@ -332,7 +334,8 @@ class SecurityTeams extends Component {
                             selectedTeam: Object.assign({}, team, {
                               name: evt.target.value
                             })
-                          })}
+                          })
+                        }
                         type="text"
                         id="teamName"
                         disabled={!team.id}
@@ -351,7 +354,8 @@ class SecurityTeams extends Component {
                             selectedTeam: Object.assign({}, team, {
                               orders: evt.target.value
                             })
-                          })}
+                          })
+                        }
                         type="textarea"
                         id="teamOrders"
                         disabled={!team.id}
@@ -375,7 +379,8 @@ class SecurityTeams extends Component {
                               selectedTeam: Object.assign({}, team, {
                                 location: { id: a.deck }
                               })
-                            })}
+                            })
+                          }
                         />
                       </Col>
                       <Col sm={7}>
@@ -392,7 +397,8 @@ class SecurityTeams extends Component {
                                   id: a.room
                                 }
                               })
-                            })}
+                            })
+                          }
                         />
                       </Col>
                     </Row>
@@ -432,7 +438,7 @@ class SecurityTeams extends Component {
                           size="lg"
                           color="success"
                           className="recall-button create-button"
-                          disabled={!team.id || team.officers.length > 0}
+                          disabled={!team.id || team.officers.length === 0}
                           onClick={() => {
                             this.commitTeam(team);
                           }}
@@ -491,6 +497,7 @@ class SecurityTeams extends Component {
                               onClick={() => {
                                 team.id && this.removeOfficer(c);
                               }}
+                              className={c.killed ? "text-danger" : ""}
                             >
                               {c.name}
                             </p>
@@ -515,7 +522,7 @@ class SecurityTeams extends Component {
 
 const SECURITY_QUERY = gql`
   query SecurityTeams($simulatorId: ID, $simId: ID!) {
-    crew(simulatorId: $simulatorId, position: "security") {
+    crew(simulatorId: $simulatorId, position: "security", killed: false) {
       id
       name
     }
@@ -540,6 +547,7 @@ const SECURITY_QUERY = gql`
       officers {
         id
         name
+        killed
       }
     }
     decks(simulatorId: $simId) {

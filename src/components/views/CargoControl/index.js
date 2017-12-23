@@ -42,7 +42,7 @@ class CargoControl extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            inventory: subscriptionData.inventoryUpdate
+            inventory: subscriptionData.data.inventoryUpdate
           });
         }
       });
@@ -136,8 +136,9 @@ class CargoControl extends Component {
                   .filter(rc => rc.count > 0)
                   .map(
                     rc =>
-                      `${rc.room.name}, Deck ${rc.room.deck
-                        .number} (${rc.count})`
+                      `${rc.room.name}, Deck ${rc.room.deck.number} (${
+                        rc.count
+                      })`
                   )
               }))
             });
@@ -154,6 +155,7 @@ class CargoControl extends Component {
     const { decks, inventory } = this.props.data;
     if (!decks || !inventory) return null;
     let { toDeck, toRoom, fromDeck, fromRoom } = this.state;
+    if (decks.length === 0) return <p>No Cargo control</p>;
     if (decks.length <= 1) {
       toDeck = decks[0].id;
       fromDeck = decks[0].id;

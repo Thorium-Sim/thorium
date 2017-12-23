@@ -120,3 +120,11 @@ App.on("navSetPresets", ({ id, presets, simulatorId }) => {
     App.systems.filter(s => s.type === "Navigation")
   );
 });
+App.on("navSetThrusters", ({ id, thrusters }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  system.thrusters = thrusters;
+  pubsub.publish(
+    "navigationUpdate",
+    App.systems.filter(s => s.type === "Navigation")
+  );
+});

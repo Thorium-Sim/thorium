@@ -21,6 +21,7 @@ export default class Navigation extends System {
     this.destinations = params.destinations || [];
     this.scanning = params.scanning || false;
     this.presets = params.presets || [];
+    this.thrusters = params.thrusters || false;
   }
   toggleCalculate(which) {
     this.calculate = which;

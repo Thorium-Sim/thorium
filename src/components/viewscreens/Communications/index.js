@@ -121,7 +121,7 @@ class Communications extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            shortRangeComm: subscriptionData.shortRangeCommUpdate
+            shortRangeComm: subscriptionData.data.shortRangeCommUpdate
           });
         }
       });
@@ -203,8 +203,7 @@ class Communications extends Component {
                     {({ src }) => <img alt="comm" src={src} />}
                   </Asset>
                   <h2>
-                    {c.name} - {Math.round(c.frequency * 37700 + 37700) /
-                      100}MHz
+                    {c.name} - {Math.round(c.frequency * 37700 + 37700) / 100}MHz
                   </h2>
                   <h3>
                     {c.connected

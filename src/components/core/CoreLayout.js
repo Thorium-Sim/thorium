@@ -81,7 +81,7 @@ class CoreLayout extends Component {
         document: CORE_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            coreLayouts: subscriptionData.coreLayoutChange
+            coreLayouts: subscriptionData.data.coreLayoutChange
           });
         }
       });

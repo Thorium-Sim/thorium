@@ -27,7 +27,7 @@ class CoreFeed extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            coreFeed: subscriptionData.coreFeedUpdate
+            coreFeed: subscriptionData.data.coreFeedUpdate
           });
         }
       });

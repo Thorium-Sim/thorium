@@ -33,7 +33,7 @@ class Shuttles extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            docking: subscriptionData.dockingUpdate
+            docking: subscriptionData.data.dockingUpdate
           });
         }
       });
@@ -83,7 +83,8 @@ class Shuttles extends Component {
                     controlled
                     value={d.name}
                     onBlur={evt =>
-                      this.updateShuttle(d.id, "name", evt.target.value)}
+                      this.updateShuttle(d.id, "name", evt.target.value)
+                    }
                   />
                 </td>
                 <td>
@@ -91,7 +92,8 @@ class Shuttles extends Component {
                     type="checkbox"
                     checked={d.clamps}
                     onChange={evt =>
-                      this.updateShuttle(d.id, "clamps", evt.target.checked)}
+                      this.updateShuttle(d.id, "clamps", evt.target.checked)
+                    }
                   />
                 </td>
                 <td>
@@ -99,7 +101,8 @@ class Shuttles extends Component {
                     type="checkbox"
                     checked={d.compress}
                     onChange={evt =>
-                      this.updateShuttle(d.id, "compress", evt.target.checked)}
+                      this.updateShuttle(d.id, "compress", evt.target.checked)
+                    }
                   />
                 </td>
                 <td>
@@ -107,7 +110,8 @@ class Shuttles extends Component {
                     type="checkbox"
                     checked={d.doors}
                     onChange={evt =>
-                      this.updateShuttle(d.id, "doors", evt.target.checked)}
+                      this.updateShuttle(d.id, "doors", evt.target.checked)
+                    }
                   />
                 </td>
                 <td>
@@ -115,7 +119,8 @@ class Shuttles extends Component {
                     type="checkbox"
                     checked={d.docked}
                     onChange={evt =>
-                      this.updateShuttle(d.id, "docked", evt.target.checked)}
+                      this.updateShuttle(d.id, "docked", evt.target.checked)
+                    }
                   />
                 </td>
                 <td>
@@ -123,7 +128,8 @@ class Shuttles extends Component {
                     style={{ height: "18px" }}
                     value={d.image}
                     onChange={evt =>
-                      this.updateShuttle(d.id, "image", evt.target.value)}
+                      this.updateShuttle(d.id, "image", evt.target.value)
+                    }
                   >
                     <option disabled>Select an image</option>
                     {this.props.data.assetFolders[0].containers.map(a => (

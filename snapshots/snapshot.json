@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 274,
+	"_eventsCount": 278,
 	"simulators": [
 		{
 			"id": "test",
@@ -7,33 +7,6 @@
 			"layout": "LayoutCorners",
 			"alertlevel": "5",
 			"template": false,
-			"templateId": null,
-			"class": "Simulator",
-			"stationSet": null,
-			"stations": [],
-			"mission": null,
-			"currentTimelineStep": 0,
-			"teams": [],
-			"ship": {
-				"clamps": false,
-				"ramps": false,
-				"airlock": false,
-				"bridgeCrew": 14,
-				"radiation": 0.1,
-				"speed": 0,
-				"selfDestructTime": null,
-				"selfDestructCode": null,
-				"selfDestructAuto": false,
-				"remoteAccessCodes": [],
-				"extraSystems": []
-			}
-		},
-		{
-			"id": "e0b9ad33-511d-458f-99a9-cb85df873735",
-			"name": "Odyssey",
-			"layout": "LayoutCorners",
-			"alertlevel": "5",
-			"template": true,
 			"templateId": null,
 			"class": "Simulator",
 			"stationSet": null,
@@ -86,6 +59,33 @@
 			"id": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Vanguard",
 			"layout": "LayoutJr",
+			"alertlevel": "5",
+			"template": true,
+			"templateId": null,
+			"class": "Simulator",
+			"stationSet": null,
+			"stations": [],
+			"mission": null,
+			"currentTimelineStep": 0,
+			"teams": [],
+			"ship": {
+				"clamps": false,
+				"ramps": false,
+				"airlock": false,
+				"bridgeCrew": 14,
+				"radiation": 0.1,
+				"speed": 0,
+				"selfDestructTime": null,
+				"selfDestructCode": null,
+				"selfDestructAuto": false,
+				"remoteAccessCodes": [],
+				"extraSystems": []
+			}
+		},
+		{
+			"id": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Odyssey",
+			"layout": "LayoutOdyssey",
 			"alertlevel": "5",
 			"template": true,
 			"templateId": null,
@@ -730,6 +730,252 @@
 					]
 				}
 			]
+		},
+		{
+			"class": "StationSet",
+			"id": "04f75f2e-f97e-4a49-911a-6e30fea1b842",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "8-Standard",
+			"stations": [
+				{
+					"class": "Station",
+					"name": "Command",
+					"login": false,
+					"messageGroups": [],
+					"widgets": [
+						"composer",
+						"calculator",
+						"remote",
+						"messages"
+					],
+					"cards": [
+						{
+							"name": "Status",
+							"icon": null,
+							"component": "Status",
+							"class": "Card"
+						},
+						{
+							"name": "Self Destruct",
+							"icon": null,
+							"component": "SelfDestruct",
+							"class": "Card"
+						}
+					]
+				},
+				{
+					"class": "Station",
+					"name": "Communications",
+					"login": false,
+					"messageGroups": [],
+					"widgets": [
+						"composer",
+						"calculator",
+						"remote",
+						"messages"
+					],
+					"cards": [
+						{
+							"name": "Short Range Comm",
+							"icon": null,
+							"component": "CommShortRange",
+							"class": "Card"
+						},
+						{
+							"name": "Message Sending",
+							"icon": null,
+							"component": "LongRangeComm",
+							"class": "Card"
+						},
+						{
+							"name": "Decoding",
+							"icon": null,
+							"component": "CommDecoding",
+							"class": "Card"
+						}
+					]
+				},
+				{
+					"class": "Station",
+					"name": "Flight",
+					"login": false,
+					"messageGroups": [],
+					"widgets": [
+						"calculator",
+						"remote",
+						"messages"
+					],
+					"cards": [
+						{
+							"name": "Engine Control",
+							"icon": null,
+							"component": "EngineControl",
+							"class": "Card"
+						},
+						{
+							"name": "Thrusters",
+							"icon": null,
+							"component": "Thrusters",
+							"class": "Card"
+						},
+						{
+							"name": "Navigation",
+							"icon": null,
+							"component": "Navigation",
+							"class": "Card"
+						},
+						{
+							"name": "Docking",
+							"icon": null,
+							"component": "Docking",
+							"class": "Card"
+						}
+					]
+				},
+				{
+					"class": "Station",
+					"name": "Tactical",
+					"login": false,
+					"messageGroups": [],
+					"widgets": [
+						"calculator",
+						"remote",
+						"messages"
+					],
+					"cards": [
+						{
+							"name": "Weapons",
+							"icon": null,
+							"component": "Targeting",
+							"class": "Card"
+						},
+						{
+							"name": "Shields",
+							"icon": null,
+							"component": "ShieldControl",
+							"class": "Card"
+						},
+						{
+							"name": "Tractor Beam",
+							"icon": null,
+							"component": "TractorBeam",
+							"class": "Card"
+						},
+						{
+							"name": "Stealth Field",
+							"icon": null,
+							"component": "StealthField",
+							"class": "Card"
+						}
+					]
+				},
+				{
+					"class": "Station",
+					"name": "Sensors",
+					"login": false,
+					"messageGroups": [],
+					"widgets": [
+						"calculator",
+						"remote",
+						"messages"
+					],
+					"cards": [
+						{
+							"name": "Sensors",
+							"icon": null,
+							"component": "Sensors",
+							"class": "Card"
+						},
+						{
+							"name": "Probe Construction",
+							"icon": null,
+							"component": "ProbeConstruction",
+							"class": "Card"
+						},
+						{
+							"name": "Probe Control",
+							"icon": null,
+							"component": "ProbeControl",
+							"class": "Card"
+						},
+						{
+							"name": "Probe Network",
+							"icon": null,
+							"component": "ProbeNetwork",
+							"class": "Card"
+						}
+					]
+				},
+				{
+					"class": "Station",
+					"name": "Operations",
+					"login": false,
+					"messageGroups": [],
+					"widgets": [
+						"calculator",
+						"remote",
+						"messages"
+					],
+					"cards": [
+						{
+							"name": "Power Distribution",
+							"icon": null,
+							"component": "PowerDistribution",
+							"class": "Card"
+						},
+						{
+							"name": "Reactor Control",
+							"icon": null,
+							"component": "ReactorControl",
+							"class": "Card"
+						},
+						{
+							"name": "Transporters",
+							"icon": null,
+							"component": "Transporters",
+							"class": "Card"
+						},
+						{
+							"name": "Cargo Control",
+							"icon": null,
+							"component": "CargoControl",
+							"class": "Card"
+						}
+					]
+				},
+				{
+					"class": "Station",
+					"name": "Engineering",
+					"login": false,
+					"messageGroups": [],
+					"widgets": [
+						"calculator",
+						"remote",
+						"messages",
+						"damageReport"
+					],
+					"cards": [
+						{
+							"name": "Damage Control",
+							"icon": null,
+							"component": "DamageControl",
+							"class": "Card"
+						},
+						{
+							"name": "Coolant",
+							"icon": null,
+							"component": "CoolantControl",
+							"class": "Card"
+						},
+						{
+							"name": "Isochips",
+							"icon": null,
+							"component": "Isochips",
+							"class": "Card"
+						}
+					]
+				}
+			]
 		}
 	],
 	"flights": [],
@@ -1240,7 +1486,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 35600400,
+			"timeSincePing": 39090300,
 			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
 			"scanRequest": "",
 			"processedData": "",
@@ -1333,7 +1579,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 33236600,
+			"timeSincePing": 36726500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -1491,7 +1737,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7648159999997648,
+			"batteryChargeLevel": 0.7365439999997365,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2226,7 +2472,8 @@
 			},
 			"destination": "Mars",
 			"destinations": [],
-			"scanning": false
+			"scanning": false,
+			"presets": []
 		},
 		{
 			"id": "f833f14e-5a24-42de-8a8a-3336bb98b985",
@@ -2626,7 +2873,8 @@
 			},
 			"destination": null,
 			"destinations": [],
-			"scanning": false
+			"scanning": false,
+			"presets": []
 		},
 		{
 			"id": "1e6ecb6a-54a2-41b7-af13-0b42458e234c",
@@ -2654,7 +2902,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 28419600,
+			"timeSincePing": 31909500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2689,7 +2937,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 28419600,
+			"timeSincePing": 31909500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3491,58 +3739,7 @@
 			"locations": [
 				"ddbeb9de-a9bd-485a-8d1c-8cff972e57ff"
 			],
-			"requiredDamageSteps": [
-				{
-					"id": "135fe992-7a8a-476e-82a8-cfdebdf270ba",
-					"name": "damageTeam",
-					"args": {}
-				},
-				{
-					"id": "352e92bc-1c0a-4182-872a-99be70d222c5",
-					"name": "damageTeamMessage",
-					"args": {}
-				},
-				{
-					"id": "911d6e19-08d4-43b4-b6c1-e8f46b5ee582",
-					"name": "generic",
-					"args": {}
-				},
-				{
-					"id": "63096850-6f88-4f08-b82b-a942d990c678",
-					"name": "longRangeMessage",
-					"args": {}
-				},
-				{
-					"id": "3cb1c758-8fbc-417e-821d-e03274437966",
-					"name": "probeLaunch",
-					"args": {}
-				},
-				{
-					"id": "0a1495b0-58de-427c-9020-396ee626585e",
-					"name": "remoteAccess",
-					"args": {}
-				},
-				{
-					"id": "24a70eb0-f2e3-4446-8c61-f856144f4dfe",
-					"name": "sendInventory",
-					"args": {}
-				},
-				{
-					"id": "a2c409b4-dacf-4bab-a142-b1cbfcf91ff1",
-					"name": "internalCall",
-					"args": {}
-				},
-				{
-					"id": "6ec78dea-8e08-4c37-b563-72e5d819fcd1",
-					"name": "securityEvac",
-					"args": {}
-				},
-				{
-					"id": "b99c1ef2-c0c3-438a-9cda-a6715603c732",
-					"name": "securityTeam",
-					"args": {}
-				}
-			],
+			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
 			"type": "LongRangeComm",
 			"messages": [],
@@ -3737,7 +3934,8 @@
 			},
 			"destination": null,
 			"destinations": [],
-			"scanning": false
+			"scanning": false,
+			"presets": []
 		},
 		{
 			"id": "e4f415e5-cb39-4eee-9182-a69edf53244d",
@@ -3771,7 +3969,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 23306500,
+			"timeSincePing": 26796400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3811,7 +4009,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 23306500,
+			"timeSincePing": 26796400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5279,7 +5477,8 @@
 			},
 			"destination": null,
 			"destinations": [],
-			"scanning": false
+			"scanning": false,
+			"presets": []
 		},
 		{
 			"id": "7043d811-b6c6-4e19-9cab-f85b61fd2ca5",
@@ -5309,7 +5508,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11992100,
+			"timeSincePing": 15482000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5346,7 +5545,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 11992100,
+			"timeSincePing": 15482000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6315,6 +6514,1105 @@
 			"state": "idle",
 			"arrows": [],
 			"signals": []
+		},
+		{
+			"id": "63f7ce15-9ae3-4f50-85d1-5bb1023cfd16",
+			"class": "LongRangeComm",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Long Range Communications",
+			"displayName": "Long Range Comm",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					1
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "LongRangeComm",
+			"messages": [],
+			"messageSent": false
+		},
+		{
+			"id": "61007d6f-086f-4453-b2bf-0cce83cf0038",
+			"class": "ShortRangeComm",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Short Range Communications",
+			"displayName": "Short Range Comm",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					2
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "ShortRangeComm",
+			"frequency": 0.5,
+			"amplitude": 0.5,
+			"state": "idle",
+			"arrows": [],
+			"signals": []
+		},
+		{
+			"id": "65a95d88-d74a-4f4f-924b-2366965f462c",
+			"class": "Engine",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Impulse",
+			"displayName": "Impulse Engines",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					8,
+					10
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"heat": 0,
+			"heatRate": 1,
+			"coolant": 1,
+			"type": "Engine",
+			"on": false,
+			"speeds": [
+				{
+					"text": "1/4 Impulse",
+					"number": 0.25,
+					"velocity": 18750
+				},
+				{
+					"text": "1/2 Impulse",
+					"number": 0.5,
+					"velocity": 37500
+				},
+				{
+					"text": "3/4 Impulse",
+					"number": 0.75,
+					"velocity": 56250
+				},
+				{
+					"text": "Full Impulse",
+					"number": 1,
+					"velocity": 75000
+				},
+				{
+					"text": "Destructive Impulse",
+					"number": 1.25,
+					"velocity": 93750
+				}
+			],
+			"speed": -1,
+			"useAcceleration": true,
+			"speedFactor": 1250,
+			"acceleration": 0,
+			"cooling": false
+		},
+		{
+			"id": "2f8b880a-9a19-436c-b099-87f812062b91",
+			"class": "Engine",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Warp",
+			"displayName": "Warp Engines",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					10,
+					13,
+					16,
+					19,
+					22,
+					25,
+					28,
+					31,
+					34,
+					36
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"heat": 0,
+			"heatRate": 1,
+			"coolant": 1,
+			"type": "Engine",
+			"on": false,
+			"speeds": [
+				{
+					"text": "Warp 1",
+					"number": 1
+				},
+				{
+					"text": "Warp 2",
+					"number": 2
+				},
+				{
+					"text": "Warp 3",
+					"number": 3
+				},
+				{
+					"text": "Warp 4",
+					"number": 4
+				},
+				{
+					"text": "Warp 5",
+					"number": 5
+				},
+				{
+					"text": "Warp 6",
+					"number": 6
+				},
+				{
+					"text": "Warp 7",
+					"number": 7
+				},
+				{
+					"text": "Warp 8",
+					"number": 8
+				},
+				{
+					"text": "Warp 9",
+					"number": 9
+				},
+				{
+					"text": "Destructive Warp",
+					"number": 9.23
+				}
+			],
+			"speed": -1,
+			"useAcceleration": false,
+			"speedFactor": 1250,
+			"acceleration": 0,
+			"cooling": false
+		},
+		{
+			"id": "240cc277-9f19-4590-84eb-b8e5220d81b3",
+			"class": "Thrusters",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Thrusters",
+			"displayName": "Thrusters",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					3
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "Thrusters",
+			"direction": {
+				"x": 0,
+				"y": 0,
+				"z": 0
+			},
+			"rotation": {
+				"yaw": 0,
+				"pitch": 0,
+				"roll": 0
+			},
+			"rotationDelta": {
+				"yaw": 0,
+				"pitch": 0,
+				"roll": 0
+			},
+			"rotationRequired": {
+				"yaw": 0,
+				"pitch": 0,
+				"roll": 0
+			},
+			"manualThrusters": false,
+			"thrusting": false
+		},
+		{
+			"id": "39679045-b093-46fa-bae2-26b480d5b6ce",
+			"class": "Navigation",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Navigation",
+			"displayName": "Navigation",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					3
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "Navigation",
+			"calculate": true,
+			"currentCourse": {
+				"x": null,
+				"y": null,
+				"z": null
+			},
+			"calculatedCourse": {
+				"x": null,
+				"y": null,
+				"z": null
+			},
+			"destination": null,
+			"destinations": [],
+			"scanning": false,
+			"presets": []
+		},
+		{
+			"id": "d0599585-260a-43c7-a81b-7ece4d1c0bfb",
+			"class": "Sensors",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "External Sensors",
+			"displayName": "External Sensors",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					4
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "Sensors",
+			"domain": "external",
+			"pings": true,
+			"pingMode": "manual",
+			"timeSincePing": 3276900,
+			"scanResults": "",
+			"scanRequest": "",
+			"processedData": "",
+			"presetAnswers": [],
+			"scanning": false,
+			"contacts": [],
+			"armyContacts": []
+		},
+		{
+			"id": "faaeb22d-ed25-4b35-a1d1-3c5e80e88974",
+			"class": "Sensors",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Internal Sensors",
+			"displayName": "Internal Sensors",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					3
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "Sensors",
+			"domain": "internal",
+			"pings": true,
+			"pingMode": "manual",
+			"timeSincePing": 3276900,
+			"scanResults": "",
+			"scanRequest": "",
+			"processedData": "",
+			"presetAnswers": [],
+			"scanning": false,
+			"contacts": [],
+			"armyContacts": []
+		},
+		{
+			"id": "18bea077-8dcc-4151-8638-d48124b44e14",
+			"class": "Probes",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Probe Launcher",
+			"displayName": "Probe Launcher",
+			"power": {
+				"power": 5,
+				"powerLevels": []
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "Probes",
+			"torpedo": false,
+			"probes": [],
+			"equipment": [
+				{
+					"id": "probe-network-package",
+					"name": "Probe Network Package",
+					"description": "The probe network package equips the probe with special equipment allowing it to interact with other probes within the network creating a sensor and defensive parimeter around this vessel.",
+					"size": 1,
+					"count": 9,
+					"availableProbes": []
+				},
+				{
+					"id": "radio-transceiver",
+					"name": "Radio Transceiver",
+					"description": "A radio transceiver is used to let the probe communicate.",
+					"size": 1,
+					"count": 8,
+					"availableProbes": []
+				},
+				{
+					"id": "central-processing-unit",
+					"name": "Central Processing Unit",
+					"description": "A Central Processing Unit (CPU) increases the probes ability to analyze data.",
+					"size": 1,
+					"count": 13,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "coding-sequencer",
+					"name": "Coding Sequencer",
+					"description": "A Coding Sequencer encodes all communications entering and exiting the probe.",
+					"size": 1,
+					"count": 9,
+					"availableProbes": []
+				},
+				{
+					"id": "camera-stills-only",
+					"name": "Camera  (Stills Only)",
+					"description": "The Still Photo Camera creates high resolution photos of the space surrounding the probe.",
+					"size": 1,
+					"count": 12,
+					"availableProbes": []
+				},
+				{
+					"id": "communications-signal-booster",
+					"name": "Communications Signal Booster",
+					"description": "A Communications Signal Booster gives the probe's radio more range.",
+					"size": 1,
+					"count": 5,
+					"availableProbes": []
+				},
+				{
+					"id": "video-camera",
+					"name": "Video Camera",
+					"description": "The Video Camera can take thousands of photos per second creating a stunning moving picture of the surrounding space.",
+					"size": 1,
+					"count": 9,
+					"availableProbes": []
+				},
+				{
+					"id": "data-storage-disk-100-terabytes",
+					"name": "Data Storage Disk (100 Terabytes)",
+					"description": "The data storage disk allows the probe to store up to 100 gigaquads of information within its data banks.",
+					"size": 1,
+					"count": 4,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "extra-fuel-cell",
+					"name": "Extra Fuel Cell",
+					"description": "An Extra Fuel Cell lets the probe travel further by increasing the energy available on the probe.",
+					"size": 1,
+					"count": 7,
+					"availableProbes": []
+				},
+				{
+					"id": "sensor-array",
+					"name": "Sensor Array",
+					"description": "The Sensor Array allows the probe to scan and detect objects around it.",
+					"size": 1,
+					"count": 9,
+					"availableProbes": []
+				},
+				{
+					"id": "chemical-analysis-package",
+					"name": "Chemical Analysis Package",
+					"description": "A Chemical Analysis Package lets the probe research what chemicals it has found.",
+					"size": 1,
+					"count": 14,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "sample-retrieval-package",
+					"name": "Sample Retrieval Package",
+					"description": "A Sample Retrieval Packagea lets the probe collect samples with robotic arms",
+					"size": 1,
+					"count": 12,
+					"availableProbes": []
+				},
+				{
+					"id": "planetary-encounter-packaging",
+					"name": "Planetary Encounter Packaging",
+					"description": "The planetary encounter package allows the probe to scan planets with greater accuracy.",
+					"size": 1,
+					"count": 6,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "ecm-package",
+					"name": "Ecm Package",
+					"description": "An ECM (Electronic Counter Measures) Package is used to jam electronics.",
+					"size": 1,
+					"count": 10,
+					"availableProbes": [
+						"defense"
+					]
+				},
+				{
+					"id": "em-shield",
+					"name": "Em Shield",
+					"description": "An EM Shield (Electro-Magnetic) protects the probe from electro-magnetic radiation.",
+					"size": 1,
+					"count": 12,
+					"availableProbes": []
+				},
+				{
+					"id": "gas-giant-encounter-package",
+					"name": "Gas Giant Encounter Package",
+					"description": "A Gas Giant Encounter Package allows the probe to research a gas giant.",
+					"size": 1,
+					"count": 14,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "nebula-encounter-package",
+					"name": "Nebula Encounter Package",
+					"description": "A Nebula Encounter Package allows the probe to research a nebula.",
+					"size": 1,
+					"count": 4,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "debris-encounter-package",
+					"name": "Debris Encounter Package",
+					"description": "A Debris/Asteroid Field encounter package allows the probe to explore any kind of loose debris.",
+					"size": 1,
+					"count": 7,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "signal-jammer",
+					"name": "Signal Jammer",
+					"description": "The Signal Jammer allows the probe to dampen certain frequencies of signals.",
+					"size": 1,
+					"count": 13,
+					"availableProbes": [
+						"defense"
+					]
+				},
+				{
+					"id": "solar-encounter-package",
+					"name": "Solar Encounter Package",
+					"description": "A Solar Encounter Package allows the probe to research a star.",
+					"size": 1,
+					"count": 13,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "radiation-protective-covering",
+					"name": "Radiation Protective Covering",
+					"description": "A Radiation Protective Covering is a special type of armor used to repel radiation.",
+					"size": 1,
+					"count": 9,
+					"availableProbes": []
+				},
+				{
+					"id": "phaser-head",
+					"name": "Phaser Head",
+					"description": "A phaser head allows the probe to fire a single phaser fire.",
+					"size": 1,
+					"count": 11,
+					"availableProbes": [
+						"defense"
+					]
+				},
+				{
+					"id": "transporter-relay",
+					"name": "Transporter Relay",
+					"description": "A transporter can extend the transport range of a vessel considerably.",
+					"size": 1,
+					"count": 7,
+					"availableProbes": []
+				},
+				{
+					"id": "self-destruct-kit",
+					"name": "Self-Destruct Kit",
+					"description": "A Self-Destruct kit give the probe the ability to destroy itself in a massive explosion.",
+					"size": 1,
+					"count": 10,
+					"availableProbes": [
+						"defense"
+					]
+				},
+				{
+					"id": "decoy-pack",
+					"name": "Decoy Pack",
+					"description": "A Decoy Package sends out signals to make sensor devices detect the probe as a ship.",
+					"size": 1,
+					"count": 4,
+					"availableProbes": [
+						"defense"
+					]
+				},
+				{
+					"id": "subspace-encounter-package",
+					"name": "Subspace Encounter Package",
+					"description": "A Subspace Encounter Package allows the probe to research subspace.",
+					"size": 1,
+					"count": 6,
+					"availableProbes": [
+						"science"
+					]
+				},
+				{
+					"id": "holographic-projection-unit",
+					"name": "Holographic Projection Unit",
+					"description": "A Holographic Projection Unit allows the probe to project holograms within space.",
+					"size": 1,
+					"count": 11,
+					"availableProbes": []
+				},
+				{
+					"id": "tachyon-emission-detectors",
+					"name": "Tachyon Emission Detectors",
+					"description": "A Tachyon Emission Detector is used to find tachyon emissions using very specific bands of particle detection sensors.",
+					"size": 1,
+					"count": 9,
+					"availableProbes": [
+						"defense"
+					]
+				}
+			],
+			"types": [
+				{
+					"id": "class-i",
+					"name": "Short Range",
+					"parentId": "18bea077-8dcc-4151-8638-d48124b44e14",
+					"description": "Short range probes are cheap, disposable probes designed for limited use. They cannot move further than the edge of sensor range. ",
+					"size": 2,
+					"count": 4
+				},
+				{
+					"id": "class-ii",
+					"name": "Long Range",
+					"parentId": "18bea077-8dcc-4151-8638-d48124b44e14",
+					"description": "Larger, and equipped with enough fuel to last for several days. They are designed to monitor areas and objects that are far away from the ship.",
+					"size": 3,
+					"count": 4
+				},
+				{
+					"id": "science",
+					"name": "Science",
+					"parentId": "18bea077-8dcc-4151-8638-d48124b44e14",
+					"description": "Specifically designed for scientific purposes.  This probe type is equippable with a wide array of customizable features.",
+					"size": 3,
+					"count": 3
+				}
+			],
+			"stealthCompromised": false,
+			"processedData": ""
+		},
+		{
+			"id": "3aaeb1bd-3f1c-4fef-8736-6c7b8c898c27",
+			"class": "TractorBeam",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Tractor Beam",
+			"displayName": "Tractor Beam",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5,
+					10
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "TractorBeam",
+			"state": false,
+			"target": false,
+			"strength": 0,
+			"stress": 0.15,
+			"scanning": false
+		},
+		{
+			"id": "99eaa3de-2af8-407d-8e9c-961f8c2ce20e",
+			"class": "Transporters",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Transporters",
+			"displayName": "Transporters",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					6
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "Transporters",
+			"targets": [],
+			"requestedTarget": null,
+			"destination": null,
+			"charge": 0,
+			"state": "Inactive",
+			"stealthCompromised": false
+		},
+		{
+			"id": "d6617efb-2bfc-44b9-a5c1-342aaacd4a6f",
+			"class": "Reactor",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Reactor",
+			"displayName": "Reactor",
+			"power": {
+				"power": 5,
+				"powerLevels": []
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "Reactor",
+			"ejected": false,
+			"model": "reactor",
+			"powerOutput": 100,
+			"efficiency": 1,
+			"externalPower": true,
+			"batteryChargeLevel": 1,
+			"batteryChargeRate": 0.001
+		},
+		{
+			"id": "8c7c3501-4c52-418e-a725-f23f794b4fbb",
+			"class": "Reactor",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Batteries",
+			"displayName": "Batteries",
+			"power": {
+				"power": 5,
+				"powerLevels": []
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "Reactor",
+			"ejected": false,
+			"model": "battery",
+			"powerOutput": 120,
+			"efficiency": 1,
+			"externalPower": true,
+			"batteryChargeLevel": 1,
+			"batteryChargeRate": 0.001
+		},
+		{
+			"id": "4ad61c72-c50b-4500-801c-e01827cf46bd",
+			"class": "StealthField",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Stealth Field",
+			"displayName": "Stealth Field",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					15
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "StealthField",
+			"charge": false,
+			"activated": true,
+			"state": false,
+			"quadrants": {
+				"fore": 0,
+				"aft": 0,
+				"port": 0,
+				"starboard": 0
+			}
+		},
+		{
+			"id": "a52af9e8-2b12-49f4-8fc0-48b26cd96a63",
+			"class": "Shield",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Shields",
+			"displayName": "Shields",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					8,
+					12
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "Shield",
+			"position": 0,
+			"frequency": 260.5,
+			"state": false,
+			"integrity": 1
+		},
+		{
+			"id": "9dfa5f57-e399-458c-b393-8fe334249c31",
+			"class": "Targeting",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Targeting",
+			"displayName": "Targeting",
+			"power": {
+				"power": 5,
+				"powerLevels": []
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "Targeting",
+			"contacts": [],
+			"classes": [],
+			"quadrants": false,
+			"coordinateTargeting": false,
+			"targetedSensorContact": null,
+			"calculatedTarget": null,
+			"enteredTarget": null
+		},
+		{
+			"id": "451494d2-9497-4159-b368-e97bc2e9a528",
+			"class": "Phasers",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Phaser",
+			"displayName": "Phaser",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					6
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"heat": 0,
+			"heatRate": 1,
+			"coolant": 1,
+			"type": "Phasers",
+			"arc": 0.5,
+			"beams": [
+				{
+					"id": "d766d0ec-7899-4036-8547-e8161534e7b6",
+					"class": "System",
+					"simulatorId": null,
+					"name": null,
+					"displayName": null,
+					"power": {
+						"power": 5,
+						"powerLevels": [
+							5
+						]
+					},
+					"damage": {
+						"damaged": false,
+						"report": null,
+						"requested": false,
+						"reactivationCode": null,
+						"reactivationRequester": null,
+						"neededReactivationCode": null
+					},
+					"extra": false,
+					"locations": [],
+					"requiredDamageSteps": [],
+					"optionalDamageSteps": [],
+					"state": "idle",
+					"charge": 0,
+					"heat": 0,
+					"heatRate": 0.01
+				},
+				{
+					"id": "0a082253-c5d5-4e00-a052-ef04df500c9f",
+					"class": "System",
+					"simulatorId": null,
+					"name": null,
+					"displayName": null,
+					"power": {
+						"power": 5,
+						"powerLevels": [
+							5
+						]
+					},
+					"damage": {
+						"damaged": false,
+						"report": null,
+						"requested": false,
+						"reactivationCode": null,
+						"reactivationRequester": null,
+						"neededReactivationCode": null
+					},
+					"extra": false,
+					"locations": [],
+					"requiredDamageSteps": [],
+					"optionalDamageSteps": [],
+					"state": "idle",
+					"charge": 0,
+					"heat": 0,
+					"heatRate": 0.01
+				}
+			],
+			"cooling": null
+		},
+		{
+			"id": "e6970820-61ce-4b60-bfbb-f929d6568717",
+			"class": "Torpedo",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Torpedos",
+			"displayName": "Torpedos",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					4
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "Torpedo",
+			"loaded": false,
+			"state": "idle",
+			"inventory": [
+				{
+					"id": "048848b0-fc56-4e3c-a0e6-3ce964c84cfd",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "78895500-e067-416f-bbb8-0627c3f8bcc9",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "b2ea41e6-d0ad-4825-8ba4-9c6ddbda43aa",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "d2b83dfe-ef9a-4926-9f2f-0f9b07b51e3d",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "c187edac-faa8-4c0b-82f9-8745cda4a2cc",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "f8138cf5-b35a-494c-b953-72bef65dd58d",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "17962edc-fb56-4568-82d2-540a7ae50bb8",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "f168a011-cb76-4027-8fb1-062c5a806ba2",
+					"type": "Photon",
+					"probe": null
+				},
+				{
+					"id": "a59c9a73-1a71-44a7-85c5-6285d025389b",
+					"type": "Quantum",
+					"probe": null
+				},
+				{
+					"id": "6a141462-1a8b-45af-9e44-fce76f516941",
+					"type": "Quantum",
+					"probe": null
+				}
+			],
+			"stealthCompromised": false
+		},
+		{
+			"id": "f19533b0-9727-41fb-b716-c46cf69b34d2",
+			"class": "Coolant",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Coolant",
+			"displayName": "Coolant",
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "Coolant",
+			"coolant": 1,
+			"coolantRate": 0.2,
+			"transfer": null
 		}
 	],
 	"clients": [],
@@ -6502,6 +7800,26 @@
 			"class": "Deck",
 			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
 			"number": 10,
+			"svgPath": "",
+			"doors": false,
+			"evac": false,
+			"hallway": ""
+		},
+		{
+			"id": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"class": "Deck",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"number": 1,
+			"svgPath": "",
+			"doors": false,
+			"evac": false,
+			"hallway": ""
+		},
+		{
+			"id": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"class": "Deck",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"number": 2,
 			"svgPath": "",
 			"doors": false,
 			"evac": false,
@@ -8828,6 +10146,436 @@
 			"gas": false,
 			"svgPath": "",
 			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "c450012e-7591-4493-aace-baf7c33609f1",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Bridge",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "cb66db2f-c3cd-433b-9d5e-f325dc1576c3",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Captain’s Quarters",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "f8f58833-ac84-4aa1-b758-e52ca65c080a",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Crew Quarters",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "d082dd36-5a42-43b0-bcdf-236f1881b5ac",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Decontamination",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "60cf95bf-d378-48da-b3c5-be1eba3a070e",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Galley",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "df8e4490-04d1-4e12-ad96-08d3e2f5a9a1",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Long Range Communication Antenna",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "7ec30803-6c25-49d5-ac2c-2482ad481c97",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Lounge",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "c3962a33-43b0-4f76-bc6b-5d9711ef1335",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Navigations System Control",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "a0890a99-b9af-45b7-afea-01ae6ea75a84",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Records Storage",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "32b814ec-29c5-413f-af07-f2cfbe334e7d",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Sensors Array Access",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "a04f8a32-94f3-43ab-9a75-56fb2c7a9b7c",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Ship’s Locker",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "cb754e9f-87ae-4a97-be0f-c0fe56d0b246",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Short Range Communications Control",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "723c9cb4-823b-4238-aeb9-87f3c35172a8",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Sickbay",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "4bef6007-2e96-45b6-9cb4-6a421abbeb6b",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Targeting System Control",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "9553624d-9e0b-46e9-9e53-df48d0591f83",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Transporter Room",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "a21f8e53-4692-49e0-bf94-2fe4cc976e32",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "4f5c98b1-8217-43d0-8346-75c61a6679cd",
+			"name": "Turbolift",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "8b273006-b754-4b89-ab56-dcaca88776e7",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Coolant Tank Access",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "8d0e3d06-ff1d-4961-bb25-a586eb2effb3",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "CO2 Scrubbers",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "0e12ca7f-2666-4add-8e71-75c4727f162d",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Battery Access",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "019c5e5e-9a2e-4bd8-aec5-626b19d5565e",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Cargo Bay",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "7fa3d1dd-8088-493e-a8ba-f34845998a3f",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Central Computer Core",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "99018874-faee-44d0-a76b-1edded79fcff",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Exocomp Station",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "bd83b139-c4c4-4500-a8a8-ed3a701dbd18",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Impulse Access Alpha",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "9a13f010-2071-48ba-b637-d5288a84c2a6",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Impulse Access Beta",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "d6406089-dac4-48eb-bc74-b576a7533101",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Life Support System Control",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "10e36397-16f3-429d-9bbe-f4c9c079c87c",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Docking System Access",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "70e04fdb-8141-4466-9561-9a296999970e",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Main Reactor",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "36bda3bf-edfa-4326-8dac-d30494e33b0b",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Oxygen Generators",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "e7f1148f-81a5-4152-8d97-04a777a2b01a",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Phaser Bank Access",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "4d09f9b0-7732-43b4-993b-43914467603c",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Port Warp Nacelle",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "78bf00bd-bad7-483c-b3d1-a42d8a400d50",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Main Computer Core",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "cf46568a-daed-46e5-891f-885676cf1b5f",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Power Conduit Access B",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "80508fbe-95ac-41b7-b0e7-75c860988eb7",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Power Conduit Access C",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "639088d7-c7a1-41f9-874b-bc815ca5fcfa",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Probe Assembly",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "bd041078-76a6-4ef7-a61a-5ecb2bf55f28",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Shield Generator Control",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "08bcc7d3-f9a5-4879-840a-6b12a454d5af",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Power Conduit Access A",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "c8b53709-b1e1-44da-97bb-919c07b586ca",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Thruster System Control",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "432c2c5d-beb6-4d40-acba-4de5b2cb1b3c",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Torpedo Control",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "01c2295f-0f53-48c5-a4dc-ec76a5b1666a",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Torpedo Storage",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "12dd0c43-cc30-4652-81f6-11a677e890b4",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Tractor Beam Access",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "8f80f8ce-7242-4bf9-9945-bb9b6462a935",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Starboard Warp Nacelle",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "f4551a60-95cf-48bf-9f34-73f96d625c5b",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Warp Core",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
+		},
+		{
+			"class": "Room",
+			"id": "a3608991-d7f7-405f-86c3-21d5f3ef1aa1",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"deckId": "42b1d3ec-55b2-4c1d-813a-bbbb1033b95b",
+			"name": "Turbolift",
+			"gas": false,
+			"svgPath": "",
+			"metadata": {}
 		}
 	],
 	"crew": [
@@ -8841,6 +10589,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Air Pumping Controller",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -8854,6 +10603,7 @@
 			"age": 23,
 			"rank": "Cadet",
 			"position": "Air Pumping Controller",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -8867,6 +10617,7 @@
 			"age": 27,
 			"rank": "Warrant Officer",
 			"position": "Air Pumping Supervisor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -8880,6 +10631,7 @@
 			"age": 26,
 			"rank": "Crewman",
 			"position": "Ambassador Secretary",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -8893,6 +10645,7 @@
 			"age": 25,
 			"rank": "Petty Officer",
 			"position": "Archaeologist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -8906,6 +10659,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Assistant Counselor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -8919,6 +10673,7 @@
 			"age": 26,
 			"rank": "Cadet",
 			"position": "Astrophysicist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -8932,6 +10687,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Bartender",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -8945,6 +10701,7 @@
 			"age": 25,
 			"rank": "Crewman",
 			"position": "Armory Attendant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -8958,6 +10715,7 @@
 			"age": 37,
 			"rank": "Chief Petty Officer",
 			"position": "Biologist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -8971,6 +10729,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Biologist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -8984,6 +10743,7 @@
 			"age": 29,
 			"rank": "Crewman",
 			"position": "Botany Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -8997,6 +10757,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Cargo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9010,6 +10771,7 @@
 			"age": 20,
 			"rank": "Ensign",
 			"position": "Atmospheric Monitor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9023,6 +10785,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Cargo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9036,6 +10799,7 @@
 			"age": 25,
 			"rank": "Crewman",
 			"position": "Cargo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9049,6 +10813,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Cargo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9062,6 +10827,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Cargo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9075,6 +10841,7 @@
 			"age": 27,
 			"rank": "Crewman",
 			"position": "Cargo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9088,6 +10855,7 @@
 			"age": 40,
 			"rank": "Chief Petty Officer",
 			"position": "Cargo Supervisor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9101,6 +10869,7 @@
 			"age": 26,
 			"rank": "Chief Petty Officer",
 			"position": "Cargobay Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9114,6 +10883,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Cargo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9127,6 +10897,7 @@
 			"age": 29,
 			"rank": "Chaplain",
 			"position": "Chaplain",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9140,6 +10911,7 @@
 			"age": 28,
 			"rank": "Chaplain",
 			"position": "Chaplain",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9153,6 +10925,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Chaplain Aide",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9166,6 +10939,7 @@
 			"age": 20,
 			"rank": "Cadet",
 			"position": "Chaos Theory Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9179,6 +10953,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Chef",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9192,6 +10967,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Chef",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9205,6 +10981,7 @@
 			"age": 32,
 			"rank": "Chief Petty Officer",
 			"position": "Chef",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9218,6 +10995,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Chaplain Aide",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9231,6 +11009,7 @@
 			"age": 35,
 			"rank": "Chief Petty Officer",
 			"position": "Chef",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9244,6 +11023,7 @@
 			"age": 36,
 			"rank": "Chief Petty Officer",
 			"position": "Chief Decryption Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9257,6 +11037,7 @@
 			"age": 29,
 			"rank": "Chief Petty Officer",
 			"position": "Chief Phaser Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9270,6 +11051,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Chef",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9283,6 +11065,7 @@
 			"age": 25,
 			"rank": "Petty Officer",
 			"position": "Chief Programmer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9296,6 +11079,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Chief Railgun Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9309,6 +11093,7 @@
 			"age": 34,
 			"rank": "Chief Petty Officer",
 			"position": "Chief Torpedo Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9322,6 +11107,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Chief Probes Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9335,6 +11121,7 @@
 			"age": 25,
 			"rank": "Yeoman",
 			"position": "Clerk",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9348,6 +11135,7 @@
 			"age": 25,
 			"rank": "Yeoman",
 			"position": "Clerk",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9361,6 +11149,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "Client / Server Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9374,6 +11163,7 @@
 			"age": 26,
 			"rank": "Yeoman",
 			"position": "Clerk",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9387,6 +11177,7 @@
 			"age": 21,
 			"rank": "Cadet",
 			"position": "Communications Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9400,6 +11191,7 @@
 			"age": 29,
 			"rank": "Chief Petty Officer",
 			"position": "Communications Crew Department Head",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9413,6 +11205,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Communications Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9426,6 +11219,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Communications Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9439,6 +11233,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Communications Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9452,6 +11247,7 @@
 			"age": 24,
 			"rank": "Petty Officer",
 			"position": "Co2 Scrubber Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9465,6 +11261,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Communications Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9478,6 +11275,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Communications Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9491,6 +11289,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Communications Sub-department Head",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9504,6 +11303,7 @@
 			"age": 21,
 			"rank": "Petty Officer",
 			"position": "Compressor Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9517,6 +11317,7 @@
 			"age": 22,
 			"rank": "Ensign",
 			"position": "Communications Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9530,6 +11331,7 @@
 			"age": 29,
 			"rank": "Warrant Officer",
 			"position": "Computer Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9543,6 +11345,7 @@
 			"age": 26,
 			"rank": "Warrant Officer",
 			"position": "Computer Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9556,6 +11359,7 @@
 			"age": 28,
 			"rank": "Warrant Officer",
 			"position": "Computer Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9569,6 +11373,7 @@
 			"age": 28,
 			"rank": "Lieutenant Junior Grade",
 			"position": "Counselor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9582,6 +11387,7 @@
 			"age": 33,
 			"rank": "Chief Petty Officer",
 			"position": "Computer Core Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9595,6 +11401,7 @@
 			"age": 34,
 			"rank": "Lieutenant Junior Grade",
 			"position": "Crew Development Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9608,6 +11415,7 @@
 			"age": 29,
 			"rank": "Chief Petty Officer",
 			"position": "Crm-114 Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9621,6 +11429,7 @@
 			"age": 20,
 			"rank": "Ensign",
 			"position": "Cryonic Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9634,6 +11443,7 @@
 			"age": 27,
 			"rank": "Warrant Officer",
 			"position": "Cultural Studies Attendant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9647,6 +11457,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Custodian",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9660,6 +11471,7 @@
 			"age": 25,
 			"rank": "Crewman",
 			"position": "Custodian",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9673,6 +11485,7 @@
 			"age": 25,
 			"rank": "Petty Officer",
 			"position": "Decoder",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9686,6 +11499,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Decoder",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9699,6 +11513,7 @@
 			"age": 27,
 			"rank": "Lieutenant Commander",
 			"position": "Deputy Chief Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9712,6 +11527,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Custodian",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9725,6 +11541,7 @@
 			"age": 35,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Deputy Chief Of Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9738,6 +11555,7 @@
 			"age": 29,
 			"rank": "Lieutenant Commander",
 			"position": "Deputy Communications Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9751,6 +11569,7 @@
 			"age": 29,
 			"rank": "Lieutenant",
 			"position": "Deputy Maintenance Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9764,6 +11583,7 @@
 			"age": 41,
 			"rank": "Lieutenant Commander",
 			"position": "Deputy Navigations Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9777,6 +11597,7 @@
 			"age": 33,
 			"rank": "Lieutenant Commander",
 			"position": "Deputy Chief Of Operations",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9790,6 +11611,7 @@
 			"age": 29,
 			"rank": "Chief Warrant Officer",
 			"position": "Deputy Quartermaster",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9803,6 +11625,7 @@
 			"age": 26,
 			"rank": "Chief Petty Officer",
 			"position": "Deputy Railgun Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9816,6 +11639,7 @@
 			"age": 29,
 			"rank": "Lieutenant Commander",
 			"position": "Deputy Tactical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9829,6 +11653,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Deputy Torpedo Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9842,6 +11667,7 @@
 			"age": 48,
 			"rank": "Chief Petty Officer",
 			"position": "Deputy Phaser Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9855,6 +11681,7 @@
 			"age": 23,
 			"rank": "Petty Officer",
 			"position": "Docking Port Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9868,6 +11695,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Docking Port Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9881,6 +11709,7 @@
 			"age": 45,
 			"rank": "Lieutenant Commander",
 			"position": "Duty Medical Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9894,6 +11723,7 @@
 			"age": 29,
 			"rank": "Lieutenant",
 			"position": "Duty Navigations Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9907,6 +11737,7 @@
 			"age": 28,
 			"rank": "Warrant Officer",
 			"position": "Docking Port Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9920,6 +11751,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Electrician",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9933,6 +11765,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Electrician",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9946,6 +11779,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Electrician",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9959,6 +11793,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9972,6 +11807,7 @@
 			"age": 29,
 			"rank": "Lieutenant",
 			"position": "Duty Surviellance Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9985,6 +11821,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -9998,6 +11835,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10011,6 +11849,7 @@
 			"age": 25,
 			"rank": "Crewman",
 			"position": "Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10024,6 +11863,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Entertainment & Crew Morale Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10037,6 +11877,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10050,6 +11891,7 @@
 			"age": 29,
 			"rank": "Chief Petty Officer",
 			"position": "Environmental Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10063,6 +11905,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Environmental Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10076,6 +11919,7 @@
 			"age": 36,
 			"rank": "Chief Petty Officer",
 			"position": "Environmental Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10089,6 +11933,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Explosive Expert",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10102,6 +11947,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Environmental Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10115,6 +11961,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Fire Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10128,6 +11975,7 @@
 			"age": 39,
 			"rank": "Warrant Officer",
 			"position": "Fire Suppression Systems Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10141,6 +11989,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Food Preparation",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10154,6 +12003,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Genetics Lab Researcher",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10167,6 +12017,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Fire Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10180,6 +12031,7 @@
 			"age": 29,
 			"rank": "Chief Petty Officer",
 			"position": "Forensics",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10193,6 +12045,7 @@
 			"age": 26,
 			"rank": "Warrant Officer",
 			"position": "Gamma Ray Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10206,6 +12059,7 @@
 			"age": 27,
 			"rank": "Warrant Officer",
 			"position": "Gravity Control Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10219,6 +12073,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Gravity Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10232,6 +12087,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Food Preparation",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10245,6 +12101,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Geologist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10258,6 +12115,7 @@
 			"age": 25,
 			"rank": "Crewman",
 			"position": "Greenhouse Caretaker",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10271,6 +12129,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Gymnasium Supervisor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10284,6 +12143,7 @@
 			"age": 29,
 			"rank": "Crewman",
 			"position": "Hazardous Waste Expert",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10297,6 +12157,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Gravity Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10310,6 +12171,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Hazardous Waste Expert",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10323,6 +12185,7 @@
 			"age": 26,
 			"rank": "Crewman",
 			"position": "Hull Monitoring Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10336,6 +12199,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Hydroponics",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10349,6 +12213,7 @@
 			"age": 25,
 			"rank": "Cadet",
 			"position": "Inorganic Chemist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10362,6 +12227,7 @@
 			"age": 23,
 			"rank": "Ensign",
 			"position": "Hazardous Waste Expert",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10375,6 +12241,7 @@
 			"age": 22,
 			"rank": "Petty Officer",
 			"position": "Intelligence Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10388,6 +12255,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Internal Communications Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10401,6 +12269,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Janitor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10414,6 +12283,7 @@
 			"age": 37,
 			"rank": "Crewman",
 			"position": "Janitor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10427,6 +12297,7 @@
 			"age": 22,
 			"rank": "Petty Officer",
 			"position": "Intelligence Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10440,6 +12311,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Janitor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10453,6 +12325,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Janitor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10466,6 +12339,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Janitor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10479,6 +12353,7 @@
 			"age": 34,
 			"rank": "Chief Petty Officer",
 			"position": "Janitor Crew Department Head",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10492,6 +12367,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Janitor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10505,6 +12381,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Launderer ",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10518,6 +12395,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "Librarian",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10531,6 +12409,7 @@
 			"age": 21,
 			"rank": "Cadet",
 			"position": "Librarian",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10544,6 +12423,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Librarian",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10557,6 +12437,7 @@
 			"age": 20,
 			"rank": "Cadet",
 			"position": "Lateral Sensors Array Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10570,6 +12451,7 @@
 			"age": 39,
 			"rank": "Chief Petty Officer",
 			"position": "Long Range Sensors Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10583,6 +12465,7 @@
 			"age": 43,
 			"rank": "Lieutenant",
 			"position": "Maintenance Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10596,6 +12479,7 @@
 			"age": 25,
 			"rank": "Petty Officer",
 			"position": "Maintenance Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10609,6 +12493,7 @@
 			"age": 25,
 			"rank": "Cadet",
 			"position": "Maintenance Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10622,6 +12507,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Maintenance Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10635,6 +12521,7 @@
 			"age": 24,
 			"rank": "Crewman",
 			"position": "Lifeguard",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10648,6 +12535,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Maintenance Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10661,6 +12549,7 @@
 			"age": 20,
 			"rank": "Cadet",
 			"position": "Maintenance Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10674,6 +12563,7 @@
 			"age": 26,
 			"rank": "Chief Petty Officer",
 			"position": "Marconi Cube Attendant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10687,6 +12577,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Marconi Cube Attendant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10700,6 +12591,7 @@
 			"age": 36,
 			"rank": "Chief Petty Officer",
 			"position": "Marconi Cube Attendant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10713,6 +12605,7 @@
 			"age": 51,
 			"rank": "Chief Petty Officer",
 			"position": "Marconi Radio Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10726,6 +12619,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Marconi Radio Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10739,6 +12633,7 @@
 			"age": 32,
 			"rank": "Chief Petty Officer",
 			"position": "Marconi Radio Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10752,6 +12647,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Mechanic",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10765,6 +12661,7 @@
 			"age": 25,
 			"rank": "Crewman",
 			"position": "Mechanic",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10778,6 +12675,7 @@
 			"age": 29,
 			"rank": "Lieutenant",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10791,6 +12689,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10804,6 +12703,7 @@
 			"age": 48,
 			"rank": "Chief Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10817,6 +12717,7 @@
 			"age": 24,
 			"rank": "Ensign",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10830,6 +12731,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Mechanic",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10843,6 +12745,7 @@
 			"age": 31,
 			"rank": "Lieutenant Junior Grade",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10856,6 +12759,7 @@
 			"age": 32,
 			"rank": "Warrant Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10869,6 +12773,7 @@
 			"age": 30,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10882,6 +12787,7 @@
 			"age": 40,
 			"rank": "Chief Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10895,6 +12801,7 @@
 			"age": 48,
 			"rank": "Chief Warrant Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10908,6 +12815,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10921,6 +12829,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10934,6 +12843,7 @@
 			"age": 49,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10947,6 +12857,7 @@
 			"age": 21,
 			"rank": "Ensign",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10960,6 +12871,7 @@
 			"age": 32,
 			"rank": "Warrant Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10973,6 +12885,7 @@
 			"age": 30,
 			"rank": "Lieutenant Junior Grade",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10986,6 +12899,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -10999,6 +12913,7 @@
 			"age": 26,
 			"rank": "Crewman",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11012,6 +12927,7 @@
 			"age": 38,
 			"rank": "Chief Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11025,6 +12941,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11038,6 +12955,7 @@
 			"age": 41,
 			"rank": "Chief Petty Officer",
 			"position": "Mepcomm Symmetric Encryption Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11051,6 +12969,7 @@
 			"age": 22,
 			"rank": "Cadet",
 			"position": "Metallurgist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11064,6 +12983,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Metallurgist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11077,6 +12997,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Molecular Biologist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11090,6 +13011,7 @@
 			"age": 26,
 			"rank": "Chief Petty Officer",
 			"position": "Mepcomm Assymetric Encryption Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11103,6 +13025,7 @@
 			"age": 28,
 			"rank": "Warrant Officer",
 			"position": "Nano Technology Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11116,6 +13039,7 @@
 			"age": 24,
 			"rank": "Cadet",
 			"position": "Navigational Deflector Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11129,6 +13053,7 @@
 			"age": 24,
 			"rank": "Crewman",
 			"position": "Navigational Deflector Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11142,6 +13067,7 @@
 			"age": 28,
 			"rank": "Warrant Officer",
 			"position": "Morgue Attendant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11155,6 +13081,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "Network Administrator 2",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11168,6 +13095,7 @@
 			"age": 38,
 			"rank": "Lieutenant Junior Grade",
 			"position": "Nuclear Physicist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11181,6 +13109,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "On-site Technician",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11194,6 +13123,7 @@
 			"age": 24,
 			"rank": "Petty Officer",
 			"position": "Network Administrator 1",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11207,6 +13137,7 @@
 			"age": 39,
 			"rank": "Lieutenant Junior Grade",
 			"position": "Organic Chemist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11220,6 +13151,7 @@
 			"age": 21,
 			"rank": "Ensign",
 			"position": "Oxygen Generator Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11233,6 +13165,7 @@
 			"age": 21,
 			"rank": "Petty Officer",
 			"position": "Paralegal Assistant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11246,6 +13179,7 @@
 			"age": 23,
 			"rank": "Petty Officer",
 			"position": "Paralegal Assistant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11259,6 +13193,7 @@
 			"age": 23,
 			"rank": "Cadet",
 			"position": "Orbital Trajectory Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11272,6 +13207,7 @@
 			"age": 38,
 			"rank": "Lieutenant Junior Grade",
 			"position": "Particle Physicist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11285,6 +13221,7 @@
 			"age": 38,
 			"rank": "Chief Petty Officer",
 			"position": "Penetration Tester",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11298,6 +13235,7 @@
 			"age": 29,
 			"rank": "Chief Warrant Officer",
 			"position": "Personnel Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11311,6 +13249,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Phaser Head Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11324,6 +13263,7 @@
 			"age": 24,
 			"rank": "Petty Officer",
 			"position": "Phaser Inspector",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11337,6 +13277,7 @@
 			"age": 33,
 			"rank": "Warrant Officer",
 			"position": "Physics Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11350,6 +13291,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Plumber",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11363,6 +13305,7 @@
 			"age": 24,
 			"rank": "Ensign",
 			"position": "Phaser Head Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11376,6 +13319,7 @@
 			"age": 24,
 			"rank": "Crewman",
 			"position": "Plumber",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11389,6 +13333,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Plumber",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11402,6 +13347,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Pool Hall Disk Jockey",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11415,6 +13361,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Plumber",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11428,6 +13375,7 @@
 			"age": 28,
 			"rank": "Crewman",
 			"position": "Power Distribution Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11441,6 +13389,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Power Distribution Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11454,6 +13403,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Power Distribution Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11467,6 +13417,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Potions Master",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11480,6 +13431,7 @@
 			"age": 20,
 			"rank": "Cadet",
 			"position": "Probes Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11493,6 +13445,7 @@
 			"age": 24,
 			"rank": "Crewman",
 			"position": "Probes Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11506,6 +13459,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Probes Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11519,6 +13473,7 @@
 			"age": 26,
 			"rank": "Warrant Officer",
 			"position": "Pro-javascript Writer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11532,6 +13487,7 @@
 			"age": 24,
 			"rank": "Petty Officer",
 			"position": "Quality Assurance",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11545,6 +13501,7 @@
 			"age": 22,
 			"rank": "Petty Officer",
 			"position": "Quality Assurance",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11558,6 +13515,7 @@
 			"age": 32,
 			"rank": "Lieutenant Junior Grade",
 			"position": "Quantum Mechanic",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11571,6 +13529,7 @@
 			"age": 20,
 			"rank": "Petty Officer",
 			"position": "Quality Assurance",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11584,6 +13543,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Quartermaster",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11597,6 +13557,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Quartermaster",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11610,6 +13571,7 @@
 			"age": 24,
 			"rank": "Petty Officer",
 			"position": "Rcs Thruster Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11623,6 +13585,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Quartermaster",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11636,6 +13599,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "Navigational Array Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11649,6 +13613,7 @@
 			"age": 29,
 			"rank": "Chief Petty Officer",
 			"position": "Reactor Core Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11662,6 +13627,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Reactor Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11675,6 +13641,7 @@
 			"age": 31,
 			"rank": "Petty Officer",
 			"position": "Reactor Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11688,6 +13655,7 @@
 			"age": 27,
 			"rank": "Warrant Officer",
 			"position": "Recycling Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11701,6 +13669,7 @@
 			"age": 24,
 			"rank": "Petty Officer",
 			"position": "Rcs Thruster Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11714,6 +13683,7 @@
 			"age": 26,
 			"rank": "Ensign",
 			"position": "Science Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11727,6 +13697,7 @@
 			"age": 26,
 			"rank": "Crewman",
 			"position": "Recycling Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11740,6 +13711,7 @@
 			"age": 26,
 			"rank": "Crewman",
 			"position": "Recycling Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11753,6 +13725,7 @@
 			"age": 28,
 			"rank": "Chief Warrant Officer",
 			"position": "Repair Teams Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11766,6 +13739,7 @@
 			"age": 50,
 			"rank": "Lieutenant",
 			"position": "Science Department Head",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11779,6 +13753,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Science Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11792,6 +13767,7 @@
 			"age": 28,
 			"rank": "Crewman",
 			"position": "Science Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11805,6 +13781,7 @@
 			"age": 24,
 			"rank": "Petty Officer",
 			"position": "Secondary Computer Core Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11818,6 +13795,7 @@
 			"age": 24,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11831,6 +13809,7 @@
 			"age": 24,
 			"rank": "Petty Officer",
 			"position": "Science Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11844,6 +13823,7 @@
 			"age": 25,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11857,6 +13837,7 @@
 			"age": 26,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11870,6 +13851,7 @@
 			"age": 49,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11883,6 +13865,7 @@
 			"age": 25,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11896,6 +13879,7 @@
 			"age": 23,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11909,6 +13893,7 @@
 			"age": 28,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11922,6 +13907,7 @@
 			"age": 24,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11935,6 +13921,7 @@
 			"age": 23,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11948,6 +13935,7 @@
 			"age": 24,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11961,6 +13949,7 @@
 			"age": 28,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11974,6 +13963,7 @@
 			"age": 25,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -11987,6 +13977,7 @@
 			"age": 23,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12000,6 +13991,7 @@
 			"age": 35,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12013,6 +14005,7 @@
 			"age": 26,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12026,6 +14019,7 @@
 			"age": 24,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12039,6 +14033,7 @@
 			"age": 29,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12052,6 +14047,7 @@
 			"age": 32,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12065,6 +14061,7 @@
 			"age": 37,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12078,6 +14075,7 @@
 			"age": 29,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12091,6 +14089,7 @@
 			"age": 28,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12104,6 +14103,7 @@
 			"age": 28,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12117,6 +14117,7 @@
 			"age": 29,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12130,6 +14131,7 @@
 			"age": 27,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12143,6 +14145,7 @@
 			"age": 41,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12156,6 +14159,7 @@
 			"age": 29,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12169,6 +14173,7 @@
 			"age": 41,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12182,6 +14187,7 @@
 			"age": 27,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12195,6 +14201,7 @@
 			"age": 28,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12208,6 +14215,7 @@
 			"age": 33,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12221,6 +14229,7 @@
 			"age": 27,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12234,6 +14243,7 @@
 			"age": 28,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12247,6 +14257,7 @@
 			"age": 27,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12260,6 +14271,7 @@
 			"age": 29,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12273,6 +14285,7 @@
 			"age": 35,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12286,6 +14299,7 @@
 			"age": 28,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12299,6 +14313,7 @@
 			"age": 34,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12312,6 +14327,7 @@
 			"age": 47,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Senior Construction Mechanic",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12325,6 +14341,7 @@
 			"age": 29,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Senior Cryptologic Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12338,6 +14355,7 @@
 			"age": 28,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Senior Equipment Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12351,6 +14369,7 @@
 			"age": 40,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Senior Information Systems Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12364,6 +14383,7 @@
 			"age": 30,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Senior Intelligence Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12377,6 +14397,7 @@
 			"age": 29,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Senior Quartermaster",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12390,6 +14411,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Sensor Systems Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12403,6 +14425,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Sensors Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12416,6 +14439,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Sensors Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12429,6 +14453,7 @@
 			"age": 52,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Senior Paralegal",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12442,6 +14467,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Sensors Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12455,6 +14481,7 @@
 			"age": 36,
 			"rank": "Warrant Officer",
 			"position": "Shield Control Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12468,6 +14495,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Shield Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12481,6 +14509,7 @@
 			"age": 22,
 			"rank": "Cadet",
 			"position": "Shield Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12494,6 +14523,7 @@
 			"age": 29,
 			"rank": "Chief Warrant Officer",
 			"position": "Ship Serviceman",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12507,6 +14537,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Short Range Sensors Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12520,6 +14551,7 @@
 			"age": 31,
 			"rank": "Chief Petty Officer",
 			"position": "Shuttlebay Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12533,6 +14565,7 @@
 			"age": 21,
 			"rank": "Cadet",
 			"position": "Ship Photographer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12546,6 +14579,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Shuttlebay Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12559,6 +14593,7 @@
 			"age": 22,
 			"rank": "Ensign",
 			"position": "Shuttlebay Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12572,6 +14607,7 @@
 			"age": 27,
 			"rank": "Petty Officer",
 			"position": "Sous Chef",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12585,6 +14621,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Shuttlebay Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12598,6 +14635,7 @@
 			"age": 29,
 			"rank": "Petty Officer",
 			"position": "Stellar Cartographer Assistant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12611,6 +14649,7 @@
 			"age": 23,
 			"rank": "Petty Officer",
 			"position": "Stellar Cartographer Assistant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12624,6 +14663,7 @@
 			"age": 23,
 			"rank": "Petty Officer",
 			"position": "Stellar Cartographer Assistant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12637,6 +14677,7 @@
 			"age": 34,
 			"rank": "Lieutenant",
 			"position": "Stellar Cartographer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12650,6 +14691,7 @@
 			"age": 24,
 			"rank": "Crewman",
 			"position": "Structural Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12663,6 +14705,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Structural Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12676,6 +14719,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Structural Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12689,6 +14733,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Strategic Operations Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12702,6 +14747,7 @@
 			"age": 25,
 			"rank": "Petty Officer",
 			"position": "Sub-light Engine Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12715,6 +14761,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Swim Instructor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12728,6 +14775,7 @@
 			"age": 24,
 			"rank": "Crewman",
 			"position": "Tailor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12741,6 +14789,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Sub-light Engine Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12754,6 +14803,7 @@
 			"age": 25,
 			"rank": "Petty Officer",
 			"position": "Temperature Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12767,6 +14817,7 @@
 			"age": 26,
 			"rank": "Crewman",
 			"position": "Theater Projector Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12780,6 +14831,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Thermal Imaging",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12793,6 +14845,7 @@
 			"age": 45,
 			"rank": "Petty Officer",
 			"position": "Thruster Coolant Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12806,6 +14859,7 @@
 			"age": 57,
 			"rank": "Civilian",
 			"position": "Teacher",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12819,6 +14873,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Torpedo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12832,6 +14887,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Torpedo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12845,6 +14901,7 @@
 			"age": 26,
 			"rank": "Crewman",
 			"position": "Torpedo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12858,6 +14915,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Torpedo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12871,6 +14929,7 @@
 			"age": 25,
 			"rank": "Petty Officer",
 			"position": "Tractor Beam Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12884,6 +14943,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Tractor Beam Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12897,6 +14957,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Tractor Beam Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12910,6 +14971,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "Torpedo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12923,6 +14985,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Transporter Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12936,6 +14999,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Transporter Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12949,6 +15013,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Turbolift Maintenance Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12962,6 +15027,7 @@
 			"age": 29,
 			"rank": "Crewman",
 			"position": "Water Pumping",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12975,6 +15041,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Water Pumping",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -12988,6 +15055,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Transporter Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13001,6 +15069,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Weapons Control Understudy",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13014,6 +15083,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Weapons Control Understudy",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13027,6 +15097,7 @@
 			"age": 28,
 			"rank": "Warrant Officer",
 			"position": "Weapons Crew Department Head",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13040,6 +15111,7 @@
 			"age": 21,
 			"rank": "Cadet",
 			"position": "Weapons Crew Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13053,6 +15125,7 @@
 			"age": 24,
 			"rank": "Crewman",
 			"position": "Water Pumping Supervisor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13066,6 +15139,7 @@
 			"age": 22,
 			"rank": "Ensign",
 			"position": "Weapons Sub-department Head",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13079,6 +15153,7 @@
 			"age": 23,
 			"rank": "Ensign",
 			"position": "Welder",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13092,6 +15167,7 @@
 			"age": 27,
 			"rank": "Crewman",
 			"position": "Welder",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13105,6 +15181,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Welder",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13118,6 +15195,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Weapons Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13131,6 +15209,7 @@
 			"age": 27,
 			"rank": "Petty Officer",
 			"position": "Work Bee Control Room Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13144,6 +15223,7 @@
 			"age": 22,
 			"rank": "Petty Officer",
 			"position": "Work Bee Control Room Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13157,6 +15237,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Wormhole Generator Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13170,6 +15251,7 @@
 			"age": 29,
 			"rank": "Lieutenant",
 			"position": "Zoology Lab Technican",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13183,6 +15265,7 @@
 			"age": 23,
 			"rank": "Petty Officer",
 			"position": "Work Bee Control Room Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13196,6 +15279,7 @@
 			"age": 24,
 			"rank": "Crewman",
 			"position": "Explosive Expert",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13209,6 +15293,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Air Pumping Controller",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13222,6 +15307,7 @@
 			"age": 23,
 			"rank": "Cadet",
 			"position": "Air Pumping Controller",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13235,6 +15321,7 @@
 			"age": 27,
 			"rank": "Warrant Officer",
 			"position": "Air Pumping Supervisor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13248,6 +15335,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Assistant Counselor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13261,6 +15349,7 @@
 			"age": 26,
 			"rank": "Cadet",
 			"position": "Astrophysicist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13274,6 +15363,7 @@
 			"age": 26,
 			"rank": "Crewman",
 			"position": "Ambassador Secretary",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13287,6 +15377,7 @@
 			"age": 25,
 			"rank": "Petty Officer",
 			"position": "Archaeologist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13300,6 +15391,7 @@
 			"age": 25,
 			"rank": "Crewman",
 			"position": "Armory Attendant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13313,6 +15405,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Bartender",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13326,6 +15419,7 @@
 			"age": 37,
 			"rank": "Chief Petty Officer",
 			"position": "Biologist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13339,6 +15433,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Biologist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13352,6 +15447,7 @@
 			"age": 29,
 			"rank": "Crewman",
 			"position": "Botany Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13365,6 +15461,7 @@
 			"age": 20,
 			"rank": "Ensign",
 			"position": "Atmospheric Monitor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13378,6 +15475,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Cargo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13391,6 +15489,7 @@
 			"age": 25,
 			"rank": "Crewman",
 			"position": "Cargo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13404,6 +15503,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Cargo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13417,6 +15517,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Cargo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13430,6 +15531,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Cargo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13443,6 +15545,7 @@
 			"age": 27,
 			"rank": "Crewman",
 			"position": "Cargo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13456,6 +15559,7 @@
 			"age": 40,
 			"rank": "Chief Petty Officer",
 			"position": "Cargo Supervisor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13469,6 +15573,7 @@
 			"age": 26,
 			"rank": "Chief Petty Officer",
 			"position": "Cargobay Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13482,6 +15587,7 @@
 			"age": 20,
 			"rank": "Cadet",
 			"position": "Chaos Theory Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13495,6 +15601,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Cargo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13508,6 +15615,7 @@
 			"age": 28,
 			"rank": "Chaplain",
 			"position": "Chaplain",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13521,6 +15629,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Chaplain Aide",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13534,6 +15643,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Chaplain Aide",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13547,6 +15657,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Chef",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13560,6 +15671,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Chef",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13573,6 +15685,7 @@
 			"age": 29,
 			"rank": "Chaplain",
 			"position": "Chaplain",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13586,6 +15699,7 @@
 			"age": 32,
 			"rank": "Chief Petty Officer",
 			"position": "Chef",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13599,6 +15713,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Chef",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13612,6 +15727,7 @@
 			"age": 35,
 			"rank": "Chief Petty Officer",
 			"position": "Chef",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13625,6 +15741,7 @@
 			"age": 36,
 			"rank": "Chief Petty Officer",
 			"position": "Chief Decryption Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13638,6 +15755,7 @@
 			"age": 29,
 			"rank": "Chief Petty Officer",
 			"position": "Chief Phaser Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13651,6 +15769,7 @@
 			"age": 25,
 			"rank": "Petty Officer",
 			"position": "Chief Programmer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13664,6 +15783,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Chief Railgun Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13677,6 +15797,7 @@
 			"age": 34,
 			"rank": "Chief Petty Officer",
 			"position": "Chief Torpedo Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13690,6 +15811,7 @@
 			"age": 26,
 			"rank": "Yeoman",
 			"position": "Clerk",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13703,6 +15825,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Chief Probes Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13716,6 +15839,7 @@
 			"age": 25,
 			"rank": "Yeoman",
 			"position": "Clerk",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13729,6 +15853,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "Client / Server Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13742,6 +15867,7 @@
 			"age": 24,
 			"rank": "Petty Officer",
 			"position": "Co2 Scrubber Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13755,6 +15881,7 @@
 			"age": 29,
 			"rank": "Chief Petty Officer",
 			"position": "Communications Crew Department Head",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13768,6 +15895,7 @@
 			"age": 25,
 			"rank": "Yeoman",
 			"position": "Clerk",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13781,6 +15909,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Communications Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13794,6 +15923,7 @@
 			"age": 21,
 			"rank": "Cadet",
 			"position": "Communications Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13807,6 +15937,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Communications Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13820,6 +15951,7 @@
 			"age": 22,
 			"rank": "Ensign",
 			"position": "Communications Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13833,6 +15965,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Communications Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13846,6 +15979,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Communications Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13859,6 +15993,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Communications Sub-department Head",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13872,6 +16007,7 @@
 			"age": 21,
 			"rank": "Petty Officer",
 			"position": "Compressor Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13885,6 +16021,7 @@
 			"age": 33,
 			"rank": "Chief Petty Officer",
 			"position": "Computer Core Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13898,6 +16035,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Communications Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13911,6 +16049,7 @@
 			"age": 26,
 			"rank": "Warrant Officer",
 			"position": "Computer Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13924,6 +16063,7 @@
 			"age": 28,
 			"rank": "Warrant Officer",
 			"position": "Computer Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13937,6 +16077,7 @@
 			"age": 28,
 			"rank": "Lieutenant Junior Grade",
 			"position": "Counselor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13950,6 +16091,7 @@
 			"age": 34,
 			"rank": "Lieutenant Junior Grade",
 			"position": "Crew Development Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13963,6 +16105,7 @@
 			"age": 29,
 			"rank": "Chief Petty Officer",
 			"position": "Crm-114 Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13976,6 +16119,7 @@
 			"age": 29,
 			"rank": "Warrant Officer",
 			"position": "Computer Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -13989,6 +16133,7 @@
 			"age": 20,
 			"rank": "Ensign",
 			"position": "Cryonic Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14002,6 +16147,7 @@
 			"age": 27,
 			"rank": "Warrant Officer",
 			"position": "Cultural Studies Attendant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14015,6 +16161,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Custodian",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14028,6 +16175,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Custodian",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14041,6 +16189,7 @@
 			"age": 25,
 			"rank": "Crewman",
 			"position": "Custodian",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14054,6 +16203,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Decoder",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14067,6 +16217,7 @@
 			"age": 27,
 			"rank": "Lieutenant Commander",
 			"position": "Deputy Chief Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14080,6 +16231,7 @@
 			"age": 33,
 			"rank": "Lieutenant Commander",
 			"position": "Deputy Chief Of Operations",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14093,6 +16245,7 @@
 			"age": 35,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Deputy Chief Of Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14106,6 +16259,7 @@
 			"age": 25,
 			"rank": "Petty Officer",
 			"position": "Decoder",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14119,6 +16273,7 @@
 			"age": 29,
 			"rank": "Lieutenant",
 			"position": "Deputy Maintenance Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14132,6 +16287,7 @@
 			"age": 41,
 			"rank": "Lieutenant Commander",
 			"position": "Deputy Navigations Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14145,6 +16301,7 @@
 			"age": 48,
 			"rank": "Chief Petty Officer",
 			"position": "Deputy Phaser Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14158,6 +16315,7 @@
 			"age": 29,
 			"rank": "Chief Warrant Officer",
 			"position": "Deputy Quartermaster",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14171,6 +16329,7 @@
 			"age": 29,
 			"rank": "Lieutenant Commander",
 			"position": "Deputy Communications Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14184,6 +16343,7 @@
 			"age": 29,
 			"rank": "Lieutenant Commander",
 			"position": "Deputy Tactical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14197,6 +16357,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Deputy Torpedo Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14210,6 +16371,7 @@
 			"age": 28,
 			"rank": "Warrant Officer",
 			"position": "Docking Port Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14223,6 +16385,7 @@
 			"age": 23,
 			"rank": "Petty Officer",
 			"position": "Docking Port Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14236,6 +16399,7 @@
 			"age": 26,
 			"rank": "Chief Petty Officer",
 			"position": "Deputy Railgun Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14249,6 +16413,7 @@
 			"age": 45,
 			"rank": "Lieutenant Commander",
 			"position": "Duty Medical Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14262,6 +16427,7 @@
 			"age": 29,
 			"rank": "Lieutenant",
 			"position": "Duty Navigations Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14275,6 +16441,7 @@
 			"age": 29,
 			"rank": "Lieutenant",
 			"position": "Duty Surviellance Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14288,6 +16455,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Electrician",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14301,6 +16469,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Electrician",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14314,6 +16483,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Docking Port Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14327,6 +16497,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Electrician",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14340,6 +16511,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14353,6 +16525,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14366,6 +16539,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14379,6 +16553,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14392,6 +16567,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Entertainment & Crew Morale Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14405,6 +16581,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Environmental Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14418,6 +16595,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Environmental Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14431,6 +16609,7 @@
 			"age": 36,
 			"rank": "Chief Petty Officer",
 			"position": "Environmental Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14444,6 +16623,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Explosive Expert",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14457,6 +16637,7 @@
 			"age": 25,
 			"rank": "Crewman",
 			"position": "Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14470,6 +16651,7 @@
 			"age": 29,
 			"rank": "Chief Petty Officer",
 			"position": "Environmental Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14483,6 +16665,7 @@
 			"age": 24,
 			"rank": "Crewman",
 			"position": "Explosive Expert",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14496,6 +16679,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Fire Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14509,6 +16693,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Fire Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14522,6 +16707,7 @@
 			"age": 39,
 			"rank": "Warrant Officer",
 			"position": "Fire Suppression Systems Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14535,6 +16721,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Food Preparation",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14548,6 +16735,7 @@
 			"age": 29,
 			"rank": "Chief Petty Officer",
 			"position": "Forensics",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14561,6 +16749,7 @@
 			"age": 26,
 			"rank": "Warrant Officer",
 			"position": "Gamma Ray Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14574,6 +16763,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Genetics Lab Researcher",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14587,6 +16777,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Food Preparation",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14600,6 +16791,7 @@
 			"age": 27,
 			"rank": "Warrant Officer",
 			"position": "Gravity Control Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14613,6 +16805,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Gravity Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14626,6 +16819,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Gravity Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14639,6 +16833,7 @@
 			"age": 25,
 			"rank": "Crewman",
 			"position": "Greenhouse Caretaker",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14652,6 +16847,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Geologist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14665,6 +16861,7 @@
 			"age": 29,
 			"rank": "Crewman",
 			"position": "Hazardous Waste Expert",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14678,6 +16875,7 @@
 			"age": 23,
 			"rank": "Ensign",
 			"position": "Hazardous Waste Expert",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14691,6 +16889,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Hazardous Waste Expert",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14704,6 +16903,7 @@
 			"age": 26,
 			"rank": "Crewman",
 			"position": "Hull Monitoring Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14717,6 +16917,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Gymnasium Supervisor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14730,6 +16931,7 @@
 			"age": 25,
 			"rank": "Cadet",
 			"position": "Inorganic Chemist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14743,6 +16945,7 @@
 			"age": 22,
 			"rank": "Petty Officer",
 			"position": "Intelligence Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14756,6 +16959,7 @@
 			"age": 22,
 			"rank": "Petty Officer",
 			"position": "Intelligence Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14769,6 +16973,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Internal Communications Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14782,6 +16987,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Janitor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14795,6 +17001,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Hydroponics",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14808,6 +17015,7 @@
 			"age": 37,
 			"rank": "Crewman",
 			"position": "Janitor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14821,6 +17029,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Janitor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14834,6 +17043,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Janitor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14847,6 +17057,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Janitor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14860,6 +17071,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Janitor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14873,6 +17085,7 @@
 			"age": 20,
 			"rank": "Cadet",
 			"position": "Lateral Sensors Array Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14886,6 +17099,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "Librarian",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14899,6 +17113,7 @@
 			"age": 21,
 			"rank": "Cadet",
 			"position": "Librarian",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14912,6 +17127,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Librarian",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14925,6 +17141,7 @@
 			"age": 34,
 			"rank": "Chief Petty Officer",
 			"position": "Janitor Crew Department Head",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14938,6 +17155,7 @@
 			"age": 24,
 			"rank": "Crewman",
 			"position": "Lifeguard",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14951,6 +17169,7 @@
 			"age": 39,
 			"rank": "Chief Petty Officer",
 			"position": "Long Range Sensors Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14964,6 +17183,7 @@
 			"age": 43,
 			"rank": "Lieutenant",
 			"position": "Maintenance Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14977,6 +17197,7 @@
 			"age": 25,
 			"rank": "Petty Officer",
 			"position": "Maintenance Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -14990,6 +17211,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Launderer ",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15003,6 +17225,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Maintenance Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15016,6 +17239,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Maintenance Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15029,6 +17253,7 @@
 			"age": 20,
 			"rank": "Cadet",
 			"position": "Maintenance Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15042,6 +17267,7 @@
 			"age": 26,
 			"rank": "Chief Petty Officer",
 			"position": "Marconi Cube Attendant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15055,6 +17281,7 @@
 			"age": 25,
 			"rank": "Cadet",
 			"position": "Maintenance Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15068,6 +17295,7 @@
 			"age": 36,
 			"rank": "Chief Petty Officer",
 			"position": "Marconi Cube Attendant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15081,6 +17309,7 @@
 			"age": 51,
 			"rank": "Chief Petty Officer",
 			"position": "Marconi Radio Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15094,6 +17323,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Marconi Radio Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15107,6 +17337,7 @@
 			"age": 32,
 			"rank": "Chief Petty Officer",
 			"position": "Marconi Radio Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15120,6 +17351,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Marconi Cube Attendant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15133,6 +17365,7 @@
 			"age": 25,
 			"rank": "Crewman",
 			"position": "Mechanic",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15146,6 +17379,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Mechanic",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15159,6 +17393,7 @@
 			"age": 29,
 			"rank": "Lieutenant",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15172,6 +17407,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15185,6 +17421,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Mechanic",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15198,6 +17435,7 @@
 			"age": 24,
 			"rank": "Ensign",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15211,6 +17449,7 @@
 			"age": 48,
 			"rank": "Chief Warrant Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15224,6 +17463,7 @@
 			"age": 31,
 			"rank": "Lieutenant Junior Grade",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15237,6 +17477,7 @@
 			"age": 32,
 			"rank": "Warrant Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15250,6 +17491,7 @@
 			"age": 48,
 			"rank": "Chief Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15263,6 +17505,7 @@
 			"age": 40,
 			"rank": "Chief Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15276,6 +17519,7 @@
 			"age": 32,
 			"rank": "Warrant Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15289,6 +17533,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15302,6 +17547,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15315,6 +17561,7 @@
 			"age": 30,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15328,6 +17575,7 @@
 			"age": 21,
 			"rank": "Ensign",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15341,6 +17589,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15354,6 +17603,7 @@
 			"age": 30,
 			"rank": "Lieutenant Junior Grade",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15367,6 +17617,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15380,6 +17631,7 @@
 			"age": 26,
 			"rank": "Crewman",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15393,6 +17645,7 @@
 			"age": 49,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15406,6 +17659,7 @@
 			"age": 38,
 			"rank": "Chief Petty Officer",
 			"position": "Medical Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15419,6 +17673,7 @@
 			"age": 26,
 			"rank": "Chief Petty Officer",
 			"position": "Mepcomm Assymetric Encryption Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15432,6 +17687,7 @@
 			"age": 41,
 			"rank": "Chief Petty Officer",
 			"position": "Mepcomm Symmetric Encryption Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15445,6 +17701,7 @@
 			"age": 22,
 			"rank": "Cadet",
 			"position": "Metallurgist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15458,6 +17715,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Metallurgist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15471,6 +17729,7 @@
 			"age": 28,
 			"rank": "Warrant Officer",
 			"position": "Morgue Attendant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15484,6 +17743,7 @@
 			"age": 28,
 			"rank": "Warrant Officer",
 			"position": "Nano Technology Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15497,6 +17757,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "Navigational Array Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15510,6 +17771,7 @@
 			"age": 24,
 			"rank": "Cadet",
 			"position": "Navigational Deflector Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15523,6 +17785,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Molecular Biologist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15536,6 +17799,7 @@
 			"age": 24,
 			"rank": "Petty Officer",
 			"position": "Network Administrator 1",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15549,6 +17813,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "Network Administrator 2",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15562,6 +17827,7 @@
 			"age": 38,
 			"rank": "Lieutenant Junior Grade",
 			"position": "Nuclear Physicist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15575,6 +17841,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "On-site Technician",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15588,6 +17855,7 @@
 			"age": 24,
 			"rank": "Crewman",
 			"position": "Navigational Deflector Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15601,6 +17869,7 @@
 			"age": 39,
 			"rank": "Lieutenant Junior Grade",
 			"position": "Organic Chemist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15614,6 +17883,7 @@
 			"age": 21,
 			"rank": "Ensign",
 			"position": "Oxygen Generator Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15627,6 +17897,7 @@
 			"age": 21,
 			"rank": "Petty Officer",
 			"position": "Paralegal Assistant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15640,6 +17911,7 @@
 			"age": 38,
 			"rank": "Chief Petty Officer",
 			"position": "Penetration Tester",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15653,6 +17925,7 @@
 			"age": 23,
 			"rank": "Cadet",
 			"position": "Orbital Trajectory Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15666,6 +17939,7 @@
 			"age": 23,
 			"rank": "Petty Officer",
 			"position": "Paralegal Assistant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15679,6 +17953,7 @@
 			"age": 38,
 			"rank": "Lieutenant Junior Grade",
 			"position": "Particle Physicist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15692,6 +17967,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Phaser Head Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15705,6 +17981,7 @@
 			"age": 24,
 			"rank": "Ensign",
 			"position": "Phaser Head Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15718,6 +17995,7 @@
 			"age": 24,
 			"rank": "Petty Officer",
 			"position": "Phaser Inspector",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15731,6 +18009,7 @@
 			"age": 29,
 			"rank": "Chief Warrant Officer",
 			"position": "Personnel Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15744,6 +18023,7 @@
 			"age": 33,
 			"rank": "Warrant Officer",
 			"position": "Physics Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15757,6 +18037,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Plumber",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15770,6 +18051,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Plumber",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15783,6 +18065,7 @@
 			"age": 24,
 			"rank": "Crewman",
 			"position": "Plumber",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15796,6 +18079,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Plumber",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15809,6 +18093,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Potions Master",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15822,6 +18107,7 @@
 			"age": 28,
 			"rank": "Crewman",
 			"position": "Power Distribution Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15835,6 +18121,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Power Distribution Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15848,6 +18135,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Power Distribution Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15861,6 +18149,7 @@
 			"age": 26,
 			"rank": "Warrant Officer",
 			"position": "Pro-javascript Writer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15874,6 +18163,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Pool Hall Disk Jockey",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15887,6 +18177,7 @@
 			"age": 20,
 			"rank": "Cadet",
 			"position": "Probes Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15900,6 +18191,7 @@
 			"age": 24,
 			"rank": "Crewman",
 			"position": "Probes Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15913,6 +18205,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Probes Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15926,6 +18219,7 @@
 			"age": 20,
 			"rank": "Petty Officer",
 			"position": "Quality Assurance",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15939,6 +18233,7 @@
 			"age": 24,
 			"rank": "Petty Officer",
 			"position": "Quality Assurance",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15952,6 +18247,7 @@
 			"age": 32,
 			"rank": "Lieutenant Junior Grade",
 			"position": "Quantum Mechanic",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15965,6 +18261,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Quartermaster",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15978,6 +18275,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Quartermaster",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -15991,6 +18289,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Quartermaster",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16004,6 +18303,7 @@
 			"age": 22,
 			"rank": "Petty Officer",
 			"position": "Quality Assurance",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16017,6 +18317,7 @@
 			"age": 24,
 			"rank": "Petty Officer",
 			"position": "Rcs Thruster Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16030,6 +18331,7 @@
 			"age": 29,
 			"rank": "Chief Petty Officer",
 			"position": "Reactor Core Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16043,6 +18345,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Reactor Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16056,6 +18359,7 @@
 			"age": 31,
 			"rank": "Petty Officer",
 			"position": "Reactor Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16069,6 +18373,7 @@
 			"age": 24,
 			"rank": "Petty Officer",
 			"position": "Rcs Thruster Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16082,6 +18387,7 @@
 			"age": 26,
 			"rank": "Crewman",
 			"position": "Recycling Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16095,6 +18401,7 @@
 			"age": 26,
 			"rank": "Crewman",
 			"position": "Recycling Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16108,6 +18415,7 @@
 			"age": 28,
 			"rank": "Chief Warrant Officer",
 			"position": "Repair Teams Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16121,6 +18429,7 @@
 			"age": 50,
 			"rank": "Lieutenant",
 			"position": "Science Department Head",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16134,6 +18443,7 @@
 			"age": 27,
 			"rank": "Warrant Officer",
 			"position": "Recycling Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16147,6 +18457,7 @@
 			"age": 24,
 			"rank": "Petty Officer",
 			"position": "Science Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16160,6 +18471,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Science Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16173,6 +18485,7 @@
 			"age": 28,
 			"rank": "Crewman",
 			"position": "Science Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16186,6 +18499,7 @@
 			"age": 24,
 			"rank": "Petty Officer",
 			"position": "Secondary Computer Core Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16199,6 +18513,7 @@
 			"age": 26,
 			"rank": "Ensign",
 			"position": "Science Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16212,6 +18527,7 @@
 			"age": 23,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16225,6 +18541,7 @@
 			"age": 25,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16238,6 +18555,7 @@
 			"age": 25,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16251,6 +18569,7 @@
 			"age": 26,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16264,6 +18583,7 @@
 			"age": 24,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16277,6 +18597,7 @@
 			"age": 28,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16290,6 +18611,7 @@
 			"age": 28,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16303,6 +18625,7 @@
 			"age": 24,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16316,6 +18639,7 @@
 			"age": 23,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16329,6 +18653,7 @@
 			"age": 49,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16342,6 +18667,7 @@
 			"age": 24,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16355,6 +18681,7 @@
 			"age": 25,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16368,6 +18695,7 @@
 			"age": 23,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16381,6 +18709,7 @@
 			"age": 35,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16394,6 +18723,7 @@
 			"age": 24,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16407,6 +18737,7 @@
 			"age": 28,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16420,6 +18751,7 @@
 			"age": 29,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16433,6 +18765,7 @@
 			"age": 32,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16446,6 +18779,7 @@
 			"age": 37,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16459,6 +18793,7 @@
 			"age": 26,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16472,6 +18807,7 @@
 			"age": 29,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16485,6 +18821,7 @@
 			"age": 28,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16498,6 +18835,7 @@
 			"age": 29,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16511,6 +18849,7 @@
 			"age": 27,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16524,6 +18863,7 @@
 			"age": 41,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16537,6 +18877,7 @@
 			"age": 29,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16550,6 +18891,7 @@
 			"age": 27,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16563,6 +18905,7 @@
 			"age": 41,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16576,6 +18919,7 @@
 			"age": 27,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16589,6 +18933,7 @@
 			"age": 28,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16602,6 +18947,7 @@
 			"age": 33,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16615,6 +18961,7 @@
 			"age": 34,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16628,6 +18975,7 @@
 			"age": 28,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16641,6 +18989,7 @@
 			"age": 27,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16654,6 +19003,7 @@
 			"age": 29,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16667,6 +19017,7 @@
 			"age": 35,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16680,6 +19031,7 @@
 			"age": 28,
 			"rank": "Master-at-arms",
 			"position": "Security",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16693,6 +19045,7 @@
 			"age": 29,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Senior Cryptologic Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16706,6 +19059,7 @@
 			"age": 28,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Senior Equipment Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16719,6 +19073,7 @@
 			"age": 40,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Senior Information Systems Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16732,6 +19087,7 @@
 			"age": 30,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Senior Intelligence Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16745,6 +19101,7 @@
 			"age": 52,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Senior Paralegal",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16758,6 +19115,7 @@
 			"age": 47,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Senior Construction Mechanic",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16771,6 +19129,7 @@
 			"age": 29,
 			"rank": "Senior Chief Petty Officer",
 			"position": "Senior Quartermaster",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16784,6 +19143,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Sensor Systems Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16797,6 +19157,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Sensors Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16810,6 +19171,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Sensors Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16823,6 +19185,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Sensors Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16836,6 +19199,7 @@
 			"age": 36,
 			"rank": "Warrant Officer",
 			"position": "Shield Control Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16849,6 +19213,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Shield Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16862,6 +19227,7 @@
 			"age": 22,
 			"rank": "Cadet",
 			"position": "Shield Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16875,6 +19241,7 @@
 			"age": 21,
 			"rank": "Cadet",
 			"position": "Ship Photographer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16888,6 +19255,7 @@
 			"age": 29,
 			"rank": "Chief Warrant Officer",
 			"position": "Ship Serviceman",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16901,6 +19269,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Short Range Sensors Specialist",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16914,6 +19283,7 @@
 			"age": 31,
 			"rank": "Chief Petty Officer",
 			"position": "Shuttlebay Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16927,6 +19297,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Shuttlebay Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16940,6 +19311,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Shuttlebay Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16953,6 +19325,7 @@
 			"age": 22,
 			"rank": "Ensign",
 			"position": "Shuttlebay Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16966,6 +19339,7 @@
 			"age": 27,
 			"rank": "Petty Officer",
 			"position": "Sous Chef",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16979,6 +19353,7 @@
 			"age": 34,
 			"rank": "Lieutenant",
 			"position": "Stellar Cartographer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -16992,6 +19367,7 @@
 			"age": 29,
 			"rank": "Petty Officer",
 			"position": "Stellar Cartographer Assistant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17005,6 +19381,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Structural Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17018,6 +19395,7 @@
 			"age": 23,
 			"rank": "Petty Officer",
 			"position": "Stellar Cartographer Assistant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17031,6 +19409,7 @@
 			"age": 23,
 			"rank": "Petty Officer",
 			"position": "Stellar Cartographer Assistant",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17044,6 +19423,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Strategic Operations Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17057,6 +19437,7 @@
 			"age": 24,
 			"rank": "Crewman",
 			"position": "Structural Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17070,6 +19451,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Sub-light Engine Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17083,6 +19465,7 @@
 			"age": 25,
 			"rank": "Petty Officer",
 			"position": "Sub-light Engine Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17096,6 +19479,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Swim Instructor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17109,6 +19493,7 @@
 			"age": 24,
 			"rank": "Crewman",
 			"position": "Tailor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17122,6 +19507,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Structural Engineer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17135,6 +19521,7 @@
 			"age": 25,
 			"rank": "Petty Officer",
 			"position": "Temperature Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17148,6 +19535,7 @@
 			"age": 26,
 			"rank": "Crewman",
 			"position": "Theater Projector Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17161,6 +19549,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Thermal Imaging",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17174,6 +19563,7 @@
 			"age": 45,
 			"rank": "Petty Officer",
 			"position": "Thruster Coolant Control",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17187,6 +19577,7 @@
 			"age": 57,
 			"rank": "Civilian",
 			"position": "Teacher",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17200,6 +19591,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Torpedo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17213,6 +19605,7 @@
 			"age": 26,
 			"rank": "Crewman",
 			"position": "Torpedo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17226,6 +19619,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Torpedo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17239,6 +19633,7 @@
 			"age": 26,
 			"rank": "Petty Officer",
 			"position": "Torpedo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17252,6 +19647,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Torpedo Loader",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17265,6 +19661,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Tractor Beam Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17278,6 +19675,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Tractor Beam Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17291,6 +19689,7 @@
 			"age": 28,
 			"rank": "Chief Petty Officer",
 			"position": "Transporter Chief",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17304,6 +19703,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Transporter Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17317,6 +19717,7 @@
 			"age": 25,
 			"rank": "Petty Officer",
 			"position": "Tractor Beam Control Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17330,6 +19731,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Turbolift Maintenance Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17343,6 +19745,7 @@
 			"age": 29,
 			"rank": "Crewman",
 			"position": "Water Pumping",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17356,6 +19759,7 @@
 			"age": 20,
 			"rank": "Crewman",
 			"position": "Water Pumping",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17369,6 +19773,7 @@
 			"age": 24,
 			"rank": "Crewman",
 			"position": "Water Pumping Supervisor",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17382,6 +19787,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Transporter Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17395,6 +19801,7 @@
 			"age": 23,
 			"rank": "Crewman",
 			"position": "Weapons Control Understudy",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17408,6 +19815,7 @@
 			"age": 28,
 			"rank": "Warrant Officer",
 			"position": "Weapons Crew Department Head",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17421,6 +19829,7 @@
 			"age": 21,
 			"rank": "Cadet",
 			"position": "Weapons Crew Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17434,6 +19843,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Weapons Manager",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17447,6 +19857,7 @@
 			"age": 21,
 			"rank": "Crewman",
 			"position": "Weapons Control Understudy",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17460,6 +19871,7 @@
 			"age": 23,
 			"rank": "Ensign",
 			"position": "Welder",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17473,6 +19885,7 @@
 			"age": 27,
 			"rank": "Crewman",
 			"position": "Welder",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17486,6 +19899,7 @@
 			"age": 22,
 			"rank": "Crewman",
 			"position": "Welder",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17499,6 +19913,7 @@
 			"age": 23,
 			"rank": "Petty Officer",
 			"position": "Work Bee Control Room Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17512,6 +19927,7 @@
 			"age": 22,
 			"rank": "Ensign",
 			"position": "Weapons Sub-department Head",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17525,6 +19941,7 @@
 			"age": 22,
 			"rank": "Petty Officer",
 			"position": "Work Bee Control Room Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17538,6 +19955,7 @@
 			"age": 27,
 			"rank": "Chief Petty Officer",
 			"position": "Wormhole Generator Operator",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17551,6 +19969,7 @@
 			"age": 29,
 			"rank": "Lieutenant",
 			"position": "Zoology Lab Technican",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		},
@@ -17564,6 +19983,7 @@
 			"age": 27,
 			"rank": "Petty Officer",
 			"position": "Work Bee Control Room Officer",
+			"killed": false,
 			"workRoom": null,
 			"restRoom": null
 		}
@@ -17600,6 +20020,296 @@
 			"roomCount": {
 				"257fb45e-ac29-4313-a1b9-7e9530a37f83": 1,
 				"7a9c592f-7656-401e-95d5-9c98de183a95": 1
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "510184c3-907d-49a8-b30c-c3304d62f37d",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Antimatter Containment Field",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 1
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "5d74ed6f-ecf7-43cc-a4eb-2bfcca2ae8a2",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Food Supplies",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 480
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "46f87710-b88f-41c9-a7a1-2dbeb815eb61",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Backup Computer Drive",
+			"roomCount": {
+				"7fa3d1dd-8088-493e-a8ba-f34845998a3f": 4
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "7c2042ec-8ab1-4211-9e48-0a450e4074b7",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Braided Duranium Space Construction Cable",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 2000
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "ecc8d109-fabd-4b24-8537-e65e2afbdfdd",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Coaxial Servo",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 24
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "a89c35f7-8104-45d1-8d33-581fa2458f6d",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Computer Networking Package",
+			"roomCount": {
+				"7fa3d1dd-8088-493e-a8ba-f34845998a3f": 10
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "4acb7185-2d0d-4190-a4f6-20f089a60e0c",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Coolant Injector",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 4
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "cd39f67e-7a13-4f27-b53d-baca0daef74d",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Dilithium Replacement Crystals",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 3
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "60937c4f-a8fa-417e-931c-765682640433",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Dual Interface Conduit",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 50
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "b8ecdbc4-8813-44ab-a049-461560380648",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "EPS Power Nodes",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 12
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "ee2566c4-6708-4b4a-b3de-c745d6afc177",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "High Density Plasma Detector",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 1
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "bd997399-de70-440b-bc82-76d07f9e7162",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "High Voltage Interositer",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 1
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "eefe3a27-5f07-4061-9b2b-c5eadbad7718",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "High-Amp Wire",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 100
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "701183c5-8f2e-44f9-8dc1-8d68ed5b4311",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Isolinear Chips",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 12
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "431fa8ea-18b6-4263-ace4-64dd3ba41af5",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Isolinear Rods",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 8
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "a74f2f37-bb72-40d6-900d-c87864941225",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Isotronic Circuitry",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 25
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "04dd47b7-bd43-410b-afde-a1f2287b78b8",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Latinum Bar",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 50
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "1d0e5cc2-74d2-43cf-bd53-b17b72c48978",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Liquid Compressed Hydrogen Tanks",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 8
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "5f3f51d8-71a5-44a6-b101-7e4cad996468",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Liquid Compressed Oxygen Tanks",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 4
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "685acd60-e25d-4507-914e-6f5f4f1f98f1",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Low Gravity Suit",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 6
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "2e389394-ceee-41fa-806a-19c6d5904fc8",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Medical Bunk Sheets",
+			"roomCount": {
+				"723c9cb4-823b-4238-aeb9-87f3c35172a8": 4
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "dd329370-7913-49cf-befc-d41a98b26f7d",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Medical Supply Kit",
+			"roomCount": {
+				"723c9cb4-823b-4238-aeb9-87f3c35172a8": 9
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "c2f1d204-e9ed-4404-b379-c9888d4dea40",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Planetary Geological Scan Unit",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 1
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "cd71146d-e0c0-4093-ad16-9ecbbbeca081",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Replacement Lamp Unit",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 5
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "4075bdfe-2733-486b-a204-91dd0d47f826",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Subsystem Diagnostic Manager",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 1
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "6a502867-6adb-4047-8d75-abfdf13b6fe5",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Transporter Beacons",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 10
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "c438e160-ebb1-41b5-8a84-0b39487fb80a",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Ultralight Dranium Interlocking Infrastructure Beams",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 50
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "aa9dc101-4e4d-4fb2-bab0-ccf1284225f1",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Video Surveillance Unit",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 1
+			},
+			"metadata": {}
+		},
+		{
+			"class": "InventoryItem",
+			"id": "8cee1dd6-9a55-4ef4-893b-81172bb5cc1f",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Water Filtration Unit",
+			"roomCount": {
+				"019c5e5e-9a2e-4bd8-aec5-626b19d5565e": 1
 			},
 			"metadata": {}
 		}
@@ -22454,9 +25164,8 @@
 	],
 	"viewscreens": [],
 	"messages": [],
-	"tacticalMaps": [
-	],
-	"snapshotVersion": 11,
-	"version": 11,
-	"timestamp": "2017-12-05T16:05:37.303Z"
+	"tacticalMaps": [],
+	"snapshotVersion": 985,
+	"version": 985,
+	"timestamp": "2017-12-23T14:08:28.692Z"
 }

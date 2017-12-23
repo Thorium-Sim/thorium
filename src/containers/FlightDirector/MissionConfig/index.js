@@ -51,7 +51,7 @@ class MissionsConfig extends Component {
         document: MISSION_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            missions: subscriptionData.missionsUpdate
+            missions: subscriptionData.data.missionsUpdate
           });
         }
       });
@@ -123,8 +123,9 @@ class MissionsConfig extends Component {
         data.append(`files[${index}]`, f)
       );
       fetch(
-        `${window.location.protocol}//${window.location
-          .hostname}:3001/importMission`,
+        `${window.location.protocol}//${
+          window.location.hostname
+        }:3001/importMission`,
         {
           method: "POST",
           body: data
@@ -154,9 +155,9 @@ class MissionsConfig extends Component {
                   <li
                     key={e.id}
                     onClick={() => this.setSelectedMission(e)}
-                    className={`${e.id === selectedMission
-                      ? "selected"
-                      : ""} list-group-item`}
+                    className={`${
+                      e.id === selectedMission ? "selected" : ""
+                    } list-group-item`}
                   >
                     {e.name}
                   </li>
@@ -211,8 +212,9 @@ class MissionsConfig extends Component {
               </a>
               <Button
                 tag="a"
-                href={`${window.location.protocol}//${window.location
-                  .hostname}:3001/exportMission/${mission.id}`}
+                href={`${window.location.protocol}//${
+                  window.location.hostname
+                }:3001/exportMission/${mission.id}`}
                 block
                 color="info"
               >

@@ -103,9 +103,9 @@ const ProbeSelector = ({
     <Row>
       <Col
         sm={12}
-        className={`probe-container  ${selectedProbeType
-          ? "probeSelected"
-          : ""}`}
+        className={`probe-container  ${
+          selectedProbeType ? "probeSelected" : ""
+        }`}
       >
         <div className="placeholder" />
         {types.map(t => {
@@ -115,9 +115,9 @@ const ProbeSelector = ({
               key={t.id}
               onMouseOut={setDescription.bind(this, null)}
               onMouseOver={setDescription.bind(this, t.description)}
-              className={`probe-type ${selectedProbeType === t.id
-                ? "selected"
-                : ""}`}
+              className={`probe-type ${
+                selectedProbeType === t.id ? "selected" : ""
+              }`}
               onClick={selectProbe.bind(this, t.id)}
             >
               <p>
@@ -367,7 +367,7 @@ class ProbeConstruction extends Component {
         variables: { simulatorId: this.props.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            probes: subscriptionData.probesUpdate
+            probes: subscriptionData.data.probesUpdate
           });
         }
       });

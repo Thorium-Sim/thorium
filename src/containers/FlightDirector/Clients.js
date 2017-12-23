@@ -66,7 +66,7 @@ class Clients extends Component {
         document: CLIENT_CHANGE_QUERY,
         updateQuery: (previousResult, { subscriptionData }) => {
           const returnResult = Object.assign({}, previousResult);
-          returnResult.clients = subscriptionData.clientChanged;
+          returnResult.clients = subscriptionData.data.clientChanged;
           return returnResult;
         }
       });
@@ -76,7 +76,7 @@ class Clients extends Component {
         document: FLIGHTS_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            flights: subscriptionData.flightsUpdate
+            flights: subscriptionData.data.flightsUpdate
           });
         }
       });

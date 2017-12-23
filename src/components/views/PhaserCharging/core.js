@@ -36,7 +36,7 @@ class PhaserChargingCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            phasers: subscriptionData.phasersUpdate
+            phasers: subscriptionData.data.phasersUpdate
           });
         }
       });

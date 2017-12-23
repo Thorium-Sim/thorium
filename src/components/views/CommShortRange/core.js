@@ -59,7 +59,7 @@ class CommShortRange extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            shortRangeComm: subscriptionData.shortRangeCommUpdate
+            shortRangeComm: subscriptionData.data.shortRangeCommUpdate
           });
         }
       });
@@ -193,10 +193,9 @@ class CommShortRange extends Component {
                     onClick={() => {
                       this.setState({ selectedArrow: a.id });
                     }}
-                    className={`${a.connected ? "text-success" : ""} ${a.id ===
-                    selectedArrow
-                      ? "selected"
-                      : ""}`}
+                    className={`${a.connected ? "text-success" : ""} ${
+                      a.id === selectedArrow ? "selected" : ""
+                    }`}
                   >
                     {signal && signal.name} -{" "}
                     {Math.round(a.frequency * 37700 + 37700) / 100} MHz

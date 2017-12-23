@@ -73,7 +73,7 @@ class TargetingCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            navigation: subscriptionData.navigationUpdate
+            navigation: subscriptionData.data.navigationUpdate
           });
         }
       });
@@ -262,7 +262,8 @@ class TargetingCore extends Component {
                   color="warning"
                   size="sm"
                   onClick={() =>
-                    this.untargetContact(targeting.targetedSensorContact.id)}
+                    this.untargetContact(targeting.targetedSensorContact.id)
+                  }
                 >
                   Unlock Target
                 </Button>

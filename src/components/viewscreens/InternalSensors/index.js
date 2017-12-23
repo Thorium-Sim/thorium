@@ -30,7 +30,7 @@ class InternalSensorsViewscreen extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            sensors: subscriptionData.sensorsUpdate
+            sensors: subscriptionData.data.sensorsUpdate
           });
         }
       });

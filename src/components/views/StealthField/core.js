@@ -50,7 +50,7 @@ class StealthFieldCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            stealthField: subscriptionData.stealthFieldUpdate
+            stealthField: subscriptionData.data.stealthFieldUpdate
           });
         }
       });
@@ -65,7 +65,7 @@ class StealthFieldCore extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           const returnResult = Immutable.Map(previousResult);
           return returnResult
-            .merge({ systems: subscriptionData.systemsUpdate })
+            .merge({ systems: subscriptionData.data.systemsUpdate })
             .toJS();
         }
       });*/
@@ -73,7 +73,7 @@ class StealthFieldCore extends Component {
   }
   componentWillUnmount() {
     this.props.data.stopPolling(1000);
-    this.subscription();
+    this.subscription && this.subscription();
   }
   systemName(sys) {
     if (sys.type === "Shield") {
@@ -84,10 +84,10 @@ class StealthFieldCore extends Component {
     }
     return sys.name;
   }
-  toggleStealth() {
+  toggleStealth = () => {
     const { id, state } = this.props.data.stealthField[0];
     let mutation;
-    if (state) {
+    if (!state) {
       mutation = gql`
         mutation ActivateStealth($id: ID!) {
           activateStealth(id: $id)
@@ -105,7 +105,7 @@ class StealthFieldCore extends Component {
       mutation,
       variables
     });
-  }
+  };
   updateActivated(e) {
     const { id } = this.props.data.stealthField[0];
     const mutation = gql`
@@ -204,7 +204,7 @@ class StealthFieldCore extends Component {
         <Row>
           <Col sm="12">
             <OutputField
-              onMouseDown={this.toggleStealth.bind(this)}
+              onClick={this.toggleStealth}
               alert={stealthField.state}
             >
               {stealthField.state ? "Activated" : "Deactivated"}

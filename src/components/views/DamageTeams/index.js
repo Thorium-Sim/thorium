@@ -19,7 +19,7 @@ import "./style.css";
 
 const CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID) {
-    crewUpdate(simulatorId: $simulatorId, position: "damage") {
+    crewUpdate(simulatorId: $simulatorId, position: "damage", killed: false) {
       id
       name
       position
@@ -52,6 +52,7 @@ const DAMAGE_SUB = gql`
         id
         name
         position
+        killed
       }
     }
   }
@@ -137,7 +138,7 @@ class DamageTeams extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            teams: subscriptionData.teamsUpdate
+            teams: subscriptionData.data.teamsUpdate
           });
         }
       });
@@ -150,7 +151,7 @@ class DamageTeams extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            crew: subscriptionData.crewUpdate
+            crew: subscriptionData.data.crewUpdate
           });
         }
       });
@@ -307,7 +308,8 @@ class DamageTeams extends Component {
                     officers: [],
                     creating: true
                   }
-                })}
+                })
+              }
             >
               New Damage Team
             </Button>
@@ -337,7 +339,8 @@ class DamageTeams extends Component {
                             selectedTeam: Object.assign({}, team, {
                               name: evt.target.value
                             })
-                          })}
+                          })
+                        }
                         type="text"
                         id="teamName"
                         disabled={!team.id}
@@ -356,7 +359,8 @@ class DamageTeams extends Component {
                             selectedTeam: Object.assign({}, team, {
                               orders: evt.target.value
                             })
-                          })}
+                          })
+                        }
                         disabled={!team.id}
                         type="textarea"
                         id="teamOrders"
@@ -380,7 +384,8 @@ class DamageTeams extends Component {
                               selectedTeam: Object.assign({}, team, {
                                 location: { id: a.deck }
                               })
-                            })}
+                            })
+                          }
                         />
                       </Col>
                       <Col sm={7}>
@@ -397,7 +402,8 @@ class DamageTeams extends Component {
                                   id: a.room
                                 }
                               })
-                            })}
+                            })
+                          }
                         />
                       </Col>
                     </Row>
@@ -417,7 +423,8 @@ class DamageTeams extends Component {
                               selectedTeam: Object.assign({}, team, {
                                 priority: "low"
                               })
-                            })}
+                            })
+                          }
                           disabled={!team.id}
                           active={team.priority === "low"}
                           block
@@ -433,7 +440,8 @@ class DamageTeams extends Component {
                               selectedTeam: Object.assign({}, team, {
                                 priority: "normal"
                               })
-                            })}
+                            })
+                          }
                           disabled={!team.id}
                           active={team.priority === "normal"}
                           block
@@ -451,7 +459,8 @@ class DamageTeams extends Component {
                               selectedTeam: Object.assign({}, team, {
                                 priority: "critical"
                               })
-                            })}
+                            })
+                          }
                           disabled={!team.id}
                           active={team.priority === "critical"}
                           block
@@ -467,7 +476,8 @@ class DamageTeams extends Component {
                               selectedTeam: Object.assign({}, team, {
                                 priority: "emergency"
                               })
-                            })}
+                            })
+                          }
                           disabled={!team.id}
                           active={team.priority === "emergency"}
                           block
@@ -484,7 +494,7 @@ class DamageTeams extends Component {
                           size="lg"
                           color="success"
                           className="create-button recall-button"
-                          disabled={!team.id}
+                          disabled={!team.id || team.officers.length === 0}
                           onClick={() => {
                             this.createDamageTeam(team);
                           }}
@@ -496,7 +506,7 @@ class DamageTeams extends Component {
                           size="lg"
                           color="danger"
                           className="cancel-button"
-                          disabled={!team.id || team.officers.length > 0}
+                          disabled={!team.id}
                           onClick={() => {
                             this.setState({
                               selectedTeam: null
@@ -512,7 +522,7 @@ class DamageTeams extends Component {
                           block
                           size="lg"
                           color="success"
-                          disabled={!team.id || team.officers.length > 0}
+                          disabled={!team.id || team.officers.length === 0}
                           className="create-button recall-button"
                           onClick={() => {
                             this.commitTeam(team);
@@ -572,13 +582,15 @@ class DamageTeams extends Component {
                           team.officers &&
                           team.officers.map(c => (
                             <div
-                              className="officer"
                               key={c.id}
                               onClick={() => {
                                 if (team) {
                                   this.removeOfficer(c);
                                 }
                               }}
+                              className={`officer ${
+                                c.killed ? "text-danger" : ""
+                              }`}
                             >
                               <p>{c.name}</p>
                               <small>{c.position}</small>
@@ -604,7 +616,7 @@ class DamageTeams extends Component {
 
 const DAMAGE_QUERY = gql`
   query DamageTeams($simulatorId: ID, $simId: ID!) {
-    crew(simulatorId: $simulatorId, position: "damage") {
+    crew(simulatorId: $simulatorId, position: "damage", killed: false) {
       id
       name
       position

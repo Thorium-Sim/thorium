@@ -57,7 +57,7 @@ class GridCoreGrid extends Component {
         variables: { sensorId: this.props.sensor },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            sensorContacts: subscriptionData.sensorContactUpdate
+            sensorContacts: subscriptionData.data.sensorContactUpdate
           });
         }
       });

@@ -39,8 +39,8 @@ class TransporterCore extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           const transporters = previousResult.transporters.map(transporter => {
-            if (transporter.id === subscriptionData.transporterUpdate.id) {
-              transporter = subscriptionData.transporterUpdate;
+            if (transporter.id === subscriptionData.data.transporterUpdate.id) {
+              transporter = subscriptionData.data.transporterUpdate;
             }
             return transporter;
           });
@@ -92,9 +92,11 @@ class TransporterCore extends Component {
             >
               {this.state.transported
                 ? "Transported"
-                : `${transporter.state} ${transporter.state === "Charging"
-                    ? `- ${Math.round(transporter.charge * 100)}%`
-                    : ""} `}
+                : `${transporter.state} ${
+                    transporter.state === "Charging"
+                      ? `- ${Math.round(transporter.charge * 100)}%`
+                      : ""
+                  } `}
             </OutputField>
             <OutputField>{transporter.requestedTarget}</OutputField>
             <OutputField>{transporter.destination}</OutputField>

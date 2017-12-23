@@ -33,7 +33,7 @@ class ShieldsCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            shields: subscriptionData.shieldsUpdate
+            shields: subscriptionData.data.shieldsUpdate
           });
         }
       });

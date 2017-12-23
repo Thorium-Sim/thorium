@@ -56,19 +56,26 @@
   .keypadButtons {
     top: 90px;    
   }
+  .course-numbers {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
   .currentCourse{
     margin-top: 70px;
   }
   .currentCourse, .calculated{
+    width: 100%;
     padding: 10px;
     position:relative;
-    top: 80px;
+    //top: 80px;
     font-size: 20px;
     .row{
       margin-top: 10px;
       margin-bottom: 10px;
     }
-    .col-sm-3{
+    .col-sm-4{
       text-align: center;
     }
     .numBox{
@@ -82,7 +89,17 @@
       }
     }
   }
-
+  .calculated.thrusters {
+    width: 70%;
+    .numBox {
+      font-size: 40px;
+      height: auto;
+    }
+    .col-sm-4{
+      font-size: 30px;
+      text-align: center;
+    }
+  }
 }
 
 .starsBox{

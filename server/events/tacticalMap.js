@@ -38,6 +38,10 @@ App.on("loadTacticalMap", ({ id, newid, flightId }) => {
   );
   pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
 });
+App.on("removeTacticalMap", ({ id }) => {
+  App.tacticalMaps = App.tacticalMaps.filter(i => i.id !== id);
+  pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+});
 
 App.on("addTacticalMapLayer", ({ mapId, name }) => {
   const map = App.tacticalMaps.find(t => t.id === mapId);

@@ -9,6 +9,7 @@ type Crew {
   age: Int
   rank: String
   position: String
+  killed: Boolean
   workRoom: Room
   restRoom: Room
 }
@@ -22,6 +23,7 @@ input CrewInput {
   age: Int
   rank: String
   position: String
+  killed: Boolean
   workRoom: Int
   restRoom: Int
 }

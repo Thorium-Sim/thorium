@@ -118,18 +118,18 @@ const ShortRangeComm = ({ data, client, simulatorId, type }) => {
     });
   };
   if (data.loading) return null;
-  const { shortRangeComm, assetFolders } = data;
+  const { shortRangeComm, assetFolders, decks } = data;
   const [folders] = assetFolders;
   const { containers } = folders;
   return (
     <div className="shortRangeComm scroll">
-      {shortRangeComm.map(e =>
+      {shortRangeComm.map(e => (
         <div key={e.id}>
           <GenericSystemConfig
             client={client}
             simulatorId={simulatorId}
             type={type}
-            data={{ systems: [e] }}
+            data={{ systems: [e], decks }}
           >
             <Button
               size="sm"
@@ -138,7 +138,7 @@ const ShortRangeComm = ({ data, client, simulatorId, type }) => {
             >
               Default Star Trek
             </Button>
-            {e.signals.map(s =>
+            {e.signals.map(s => (
               <div key={s.id} style={{ border: "solid 1px rgba(0,0,0,0.25)" }}>
                 <FormGroup>
                   <Label
@@ -180,11 +180,11 @@ const ShortRangeComm = ({ data, client, simulatorId, type }) => {
                       onChange={evt =>
                         signalUpdate("image", s, e, evt.target.value)}
                     >
-                      {containers.map(i =>
+                      {containers.map(i => (
                         <option key={i.id} value={i.name}>
                           {i.name}
                         </option>
-                      )}
+                      ))}
                     </Input>
                   </Label>
                   <Button
@@ -240,13 +240,13 @@ const ShortRangeComm = ({ data, client, simulatorId, type }) => {
                   </Label>
                 </FormGroup>
               </div>
-            )}
+            ))}
             <Button size="sm" color="success" onClick={() => addSignal(e)}>
               Add Signal
             </Button>
           </GenericSystemConfig>
         </div>
-      )}
+      ))}
     </div>
   );
 };
@@ -271,6 +271,14 @@ const SYSTEM_QUERY = gql`
           upper
         }
         color
+      }
+    }
+    decks(simulatorId: $id) {
+      id
+      number
+      rooms {
+        id
+        name
       }
     }
     assetFolders(names: ["Comm Images"]) {

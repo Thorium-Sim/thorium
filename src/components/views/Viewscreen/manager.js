@@ -47,7 +47,7 @@ class ViewscreenCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            viewscreens: subscriptionData.viewscreensUpdate
+            viewscreens: subscriptionData.data.viewscreensUpdate
           });
         }
       });
@@ -245,16 +245,19 @@ class ViewscreenCore extends Component {
                   {this.cards.map(c => (
                     <p
                       key={c}
-                      className={`${selectedViewscreen &&
-                      viewscreens.find(v => v.id === selectedViewscreen) &&
-                      viewscreens.find(v => v.id === selectedViewscreen)
-                        .component === c
-                        ? "previewing"
-                        : ""} ${previewComponent === c ? "selected" : ""}`}
+                      className={`${
+                        selectedViewscreen &&
+                        viewscreens.find(v => v.id === selectedViewscreen) &&
+                        viewscreens.find(v => v.id === selectedViewscreen)
+                          .component === c
+                          ? "previewing"
+                          : ""
+                      } ${previewComponent === c ? "selected" : ""}`}
                       onClick={() =>
                         preview
                           ? this.setState({ previewComponent: c })
-                          : this.updateCard(c)}
+                          : this.updateCard(c)
+                      }
                     >
                       {c}
                     </p>

@@ -7,6 +7,7 @@ navToggleCalculate(id: ID!, which: Boolean!): String
 navSetDestinations(id: ID, destinations: [String]): String
 navSetDestination(id: ID, destination: String): String
 navSetScanning(id: ID, scanning: Boolean): String
+navSetThrusters(id: ID!, thrusters: Boolean): String
 
 #Macro: Set the navigation course presets
 navSetPresets(id: ID, presets:NavPresetInput ): String

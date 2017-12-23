@@ -48,7 +48,7 @@ class AdminAssetsView extends Component {
         document: ASSET_FOLDER_SUB,
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            assetFolders: subscriptionData.assetFolderChange
+            assetFolders: subscriptionData.data.assetFolderChange
           });
         }
       });

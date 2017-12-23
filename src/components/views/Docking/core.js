@@ -40,7 +40,7 @@ class DockingCore extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            simulators: subscriptionData.simulatorsUpdate
+            simulators: subscriptionData.data.simulatorsUpdate
           });
         }
       });

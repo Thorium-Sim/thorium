@@ -224,7 +224,7 @@ class Targeting extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            targeting: subscriptionData.targetingUpdate
+            targeting: subscriptionData.data.targetingUpdate
           });
         }
       });
@@ -233,7 +233,7 @@ class Targeting extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            phasers: subscriptionData.phasersUpdate
+            phasers: subscriptionData.data.phasersUpdate
           });
         }
       });

@@ -63,7 +63,7 @@ class Shuttles extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            docking: subscriptionData.dockingUpdate
+            docking: subscriptionData.data.dockingUpdate
           });
         }
       });

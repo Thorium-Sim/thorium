@@ -96,7 +96,7 @@ class CommShortRange extends Component {
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            shortRangeComm: subscriptionData.shortRangeCommUpdate
+            shortRangeComm: subscriptionData.data.shortRangeCommUpdate
           });
         }
       });
@@ -277,9 +277,9 @@ class CommShortRange extends Component {
               {ShortRange.signals.map(s => (
                 <div
                   key={s.id}
-                  className={`img-container ${s.id === this.getSignal().id
-                    ? "selected"
-                    : ""}`}
+                  className={`img-container ${
+                    s.id === this.getSignal().id ? "selected" : ""
+                  }`}
                   style={{
                     backgroundImage: `url('${assetPath(
                       `/Comm Images/${s.image}`,

@@ -286,7 +286,7 @@ class ClientView extends Component {
           document: SIMULATOR_SUB,
           variables: { id: client.simulator.id },
           updateQuery: (previousResult, { subscriptionData }) => {
-            const sim = subscriptionData.simulatorsUpdate[0];
+            const sim = subscriptionData.data.simulatorsUpdate[0];
             return Object.assign({}, previousResult, {
               clients: previousResult.clients.map(
                 ({

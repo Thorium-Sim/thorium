@@ -21,7 +21,7 @@ class Coolant extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            coolant: subscriptionData.coolantUpdate
+            coolant: subscriptionData.data.coolantUpdate
           });
         }
       });

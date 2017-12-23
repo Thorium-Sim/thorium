@@ -39,7 +39,7 @@ class SensorsCore extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            sensors: subscriptionData.sensorsUpdate
+            sensors: subscriptionData.data.sensorsUpdate
           });
         }
       });
@@ -54,6 +54,7 @@ class SensorsCore extends Component {
   }
   keypress = evt => {
     if (evt.altKey) {
+      evt.preventDefault();
       const index = parseInt(evt.code.substr(-1, 1), 10);
       if (!isNaN(index)) {
         const data = index === 0 ? ScanPresets[10] : ScanPresets[index - 1];
@@ -144,18 +145,18 @@ class SensorsCore extends Component {
         <div>
           <Button
             size="sm"
-            className={`${this.state.domain === "external"
-              ? "focus"
-              : ""} ${external.scanning ? "btn-danger" : ""}`}
+            className={`${this.state.domain === "external" ? "focus" : ""} ${
+              external.scanning ? "btn-danger" : ""
+            }`}
             onClick={() => this.setDomain("external")}
           >
             External
           </Button>
           <Button
             size="sm"
-            className={`${this.state.domain === "internal"
-              ? "focus"
-              : ""} ${internal.scanning ? "btn-danger" : ""}`}
+            className={`${this.state.domain === "internal" ? "focus" : ""} ${
+              internal.scanning ? "btn-danger" : ""
+            }`}
             onClick={() => this.setDomain("internal")}
           >
             Internal

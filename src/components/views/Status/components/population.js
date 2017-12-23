@@ -5,7 +5,7 @@ import { graphql } from "react-apollo";
 
 const POP_SUB = gql`
   subscription Population($simulatorId: ID) {
-    crewUpdate(simulatorId: $simulatorId) {
+    crewUpdate(simulatorId: $simulatorId, killed: false) {
       id
     }
   }
@@ -31,7 +31,7 @@ class Population extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            crew: subscriptionData.crewUpdate
+            crew: subscriptionData.data.crewUpdate
           });
         }
       });
@@ -42,7 +42,7 @@ class Population extends Component {
         variables: { simulatorId: nextProps.simulator.id },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            simulators: subscriptionData.simulatorsUpdate
+            simulators: subscriptionData.data.simulatorsUpdate
           });
         }
       });
@@ -71,7 +71,7 @@ class Population extends Component {
 
 const POP_QUERY = gql`
   query Population($simulatorId: ID, $simId: String) {
-    crew(simulatorId: $simulatorId) {
+    crew(simulatorId: $simulatorId, killed: false) {
       id
     }
     simulators(id: $simId) {
