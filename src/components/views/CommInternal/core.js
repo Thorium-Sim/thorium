@@ -113,7 +113,8 @@ class InternalCommCore extends Component {
                   style={{
                     background: "lightgray",
                     height: "16px",
-                    padding: "0 5px"
+                    padding: "0 5px",
+                    color: "black"
                   }}
                 >
                   {internalComm.outgoing}
