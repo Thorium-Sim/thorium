@@ -278,7 +278,7 @@ class CommShortRange extends Component {
           ? "No Calls"
           : ShortRange.arrows.find(a => a.connected)
             ? "Call Answered"
-            : "Incomming Call";
+            : "Incoming Call";
     if (!ShortRange) return <p>No short range comm</p>;
     return (
       <Container className="shortRangeComm">
