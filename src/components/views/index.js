@@ -44,6 +44,7 @@ import JrEngineering from "./JrEngineering";
 import TorpedoLoading from "./TorpedoLoading";
 import SoundsTester from "./SoundsTester";
 import NavigationAdvanced from "./NavigationAdvanced";
+import SensorScans from "./SensorScans";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -135,7 +136,8 @@ const Views = {
   JrEngineering,
   TorpedoLoading,
   SoundsTester,
-  NavigationAdvanced
+  NavigationAdvanced,
+  SensorScans
 };
 
 export const Widgets = {

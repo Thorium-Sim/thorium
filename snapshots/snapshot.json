@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 278,
+	"_eventsCount": 279,
 	"simulators": [
 		{
 			"id": "test",
@@ -542,21 +542,27 @@
 							"class": "Card"
 						},
 						{
+							"name": "Scanning",
+							"icon": null,
+							"component": "SensorScans",
+							"class": "Card"
+						},
+						{
 							"name": "Probe Construction",
 							"icon": null,
 							"component": "ProbeConstruction",
 							"class": "Card"
 						},
 						{
-							"name": "Probe Network",
-							"icon": null,
-							"component": "ProbeNetwork",
-							"class": "Card"
-						},
-						{
 							"name": "Probe Control",
 							"icon": null,
 							"component": "ProbeControl",
+							"class": "Card"
+						},
+						{
+							"name": "Probe Network",
+							"icon": null,
+							"component": "ProbeNetwork",
 							"class": "Card"
 						}
 					]
@@ -1486,9 +1492,9 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 39090300,
-			"scanResults": "Course Calculated:\n      X: 675.19\n      Y: 808.63\n      Z: 851.98",
-			"scanRequest": "",
+			"timeSincePing": 2461500,
+			"scanResults": "Awesome",
+			"scanRequest": "Standard - \nTesting",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
@@ -1521,6 +1527,35 @@
 					"infrared": false,
 					"cloaked": false,
 					"destroyed": false
+				},
+				{
+					"id": "6345eb9f-e848-4e2f-ac5c-668490e07a59",
+					"sensorId": "c230c51b-c2fe-4c1b-9b19-5323cfd6b2b6",
+					"class": "SensorContact",
+					"name": "USS Voyager",
+					"size": 1,
+					"icon": "/Sensor Contacts/Icons/N",
+					"color": "#0f0",
+					"picture": "/Sensor Contacts/Pictures/Astra Heavy Cruiser",
+					"speed": 0,
+					"velocity": {
+						"x": 0,
+						"y": 0,
+						"z": 0
+					},
+					"location": {
+						"x": 0.283495145631068,
+						"y": -0.537864077669903,
+						"z": 0
+					},
+					"destination": {
+						"x": 0.283495145631068,
+						"y": -0.537864077669903,
+						"z": 0
+					},
+					"infrared": false,
+					"cloaked": false,
+					"destroyed": false
 				}
 			],
 			"armyContacts": [
@@ -1532,7 +1567,7 @@
 					"size": 1,
 					"icon": "/Sensor Contacts/Icons/N",
 					"color": "#0f0",
-					"picture": "/Sensor Contacts/Pictures/N",
+					"picture": "/Sensor Contacts/Pictures/Astra Heavy Cruiser",
 					"speed": 0,
 					"velocity": {
 						"x": 0,
@@ -1579,7 +1614,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 36726500,
+			"timeSincePing": 39510700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -1737,7 +1772,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7365439999997365,
+			"batteryChargeLevel": 0.7139439999997139,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -1815,8 +1850,12 @@
 			],
 			"quadrants": false,
 			"coordinateTargeting": false,
-			"targetedSensorContact": null,
-			"calculatedTarget": null,
+			"targetedSensorContact": "87629e49-391c-4e69-9331-c11da95d3b0a",
+			"calculatedTarget": {
+				"x": "30.78",
+				"y": "648.92",
+				"z": "523.19"
+			},
 			"enteredTarget": null
 		},
 		{
@@ -2473,7 +2512,8 @@
 			"destination": "Mars",
 			"destinations": [],
 			"scanning": false,
-			"presets": []
+			"presets": [],
+			"thrusters": false
 		},
 		{
 			"id": "f833f14e-5a24-42de-8a8a-3336bb98b985",
@@ -2874,7 +2914,8 @@
 			"destination": null,
 			"destinations": [],
 			"scanning": false,
-			"presets": []
+			"presets": [],
+			"thrusters": false
 		},
 		{
 			"id": "1e6ecb6a-54a2-41b7-af13-0b42458e234c",
@@ -2902,7 +2943,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 31909500,
+			"timeSincePing": 34693700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2937,7 +2978,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 31909500,
+			"timeSincePing": 34693700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3935,7 +3976,8 @@
 			"destination": null,
 			"destinations": [],
 			"scanning": false,
-			"presets": []
+			"presets": [],
+			"thrusters": false
 		},
 		{
 			"id": "e4f415e5-cb39-4eee-9182-a69edf53244d",
@@ -3969,7 +4011,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 26796400,
+			"timeSincePing": 29580600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4009,7 +4051,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 26796400,
+			"timeSincePing": 29580600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5478,7 +5520,8 @@
 			"destination": null,
 			"destinations": [],
 			"scanning": false,
-			"presets": []
+			"presets": [],
+			"thrusters": false
 		},
 		{
 			"id": "7043d811-b6c6-4e19-9cab-f85b61fd2ca5",
@@ -5508,7 +5551,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 15482000,
+			"timeSincePing": 18266200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5545,7 +5588,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 15482000,
+			"timeSincePing": 18266200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6810,7 +6853,8 @@
 			"destination": null,
 			"destinations": [],
 			"scanning": false,
-			"presets": []
+			"presets": [],
+			"thrusters": false
 		},
 		{
 			"id": "d0599585-260a-43c7-a81b-7ece4d1c0bfb",
@@ -6840,7 +6884,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 3276900,
+			"timeSincePing": 6061100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6877,7 +6921,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 3276900,
+			"timeSincePing": 6061100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -7615,7 +7659,23 @@
 			"transfer": null
 		}
 	],
-	"clients": [],
+	"clients": [
+		{
+			"id": "opportunity-have-neighborhood",
+			"flightId": null,
+			"simulatorId": null,
+			"station": null,
+			"loginName": "asdf",
+			"loginState": "login",
+			"sentPing": null,
+			"ping": null,
+			"connected": true,
+			"offlineState": null,
+			"training": false,
+			"caches": [],
+			"class": "Client"
+		}
+	],
 	"sets": [
 		{
 			"id": "147cc64b-19fc-4536-94d7-1d2e0cf33a99",
@@ -20912,7 +20972,43 @@
 			"class": "CoreLayout"
 		}
 	],
-	"coreFeed": [],
+	"coreFeed": [
+		{
+			"id": "bc56dba1-e1c1-4b0e-b3b4-8ec340f11f36",
+			"class": "CoreFeed",
+			"simulatorId": "test",
+			"component": "SensorsCore",
+			"ignored": true
+		},
+		{
+			"id": "cfad2ec9-5eb0-4370-8db4-0ddbd0ea490c",
+			"class": "CoreFeed",
+			"simulatorId": "test",
+			"component": "SensorsCore",
+			"ignored": true
+		},
+		{
+			"id": "2b06d1b5-2e13-4c03-bd6b-ea8b695a7eed",
+			"class": "CoreFeed",
+			"simulatorId": "test",
+			"component": "SensorsCore",
+			"ignored": true
+		},
+		{
+			"id": "0a714282-24c5-4515-85ee-2e2216c10290",
+			"class": "CoreFeed",
+			"simulatorId": "test",
+			"component": "SensorsCore",
+			"ignored": true
+		},
+		{
+			"id": "773e6985-5d4e-47de-b1fc-9a68f8bf0e48",
+			"class": "CoreFeed",
+			"simulatorId": "test",
+			"component": "SensorsCore",
+			"ignored": false
+		}
+	],
 	"assetFolders": [
 		{
 			"id": "c7235894-5917-4c7d-bff9-095c8d5f523c",
@@ -25165,7 +25261,7 @@
 	"viewscreens": [],
 	"messages": [],
 	"tacticalMaps": [],
-	"snapshotVersion": 985,
-	"version": 985,
-	"timestamp": "2017-12-23T14:08:28.692Z"
+	"snapshotVersion": 2898,
+	"version": 2898,
+	"timestamp": "2017-12-23T17:30:05.897Z"
 }

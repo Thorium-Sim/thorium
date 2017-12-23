@@ -6,7 +6,6 @@
 	h3,
 	h4 {
 		width: 100%;
-		text-align: center;
 	}
 	label {
 		font-size: 20px;
@@ -69,9 +68,12 @@
 			margin-top: 89.483%;
 		}
 	}
-	.contactPicture {
+	.contactPictureContainer {
 		height: 17vh;
 		margin-bottom: 10px;
+	}
+	.contactPicture {
+		height: 100%;
 		background-size: cover;
 	}
 	.contactName {
@@ -80,7 +82,7 @@
 		height: 58px;
 	}
 	.processedData {
-		height: 40vh;
+		height: 25vh;
 	}
 	.list-group-item.selected {
 		background-color: rgba(255, 255, 255, 0.125);

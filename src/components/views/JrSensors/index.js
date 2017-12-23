@@ -121,34 +121,25 @@ class Sensors extends Component {
           </Col>
           <Col sm={4}>
             <Row>
-              <Col className="col-sm-12 contactPictureContainer">
-                {hoverContact.picture ? (
-                  <Asset asset={hoverContact.picture}>
-                    {({ src }) => (
-                      <div
-                        className="card contactPicture"
-                        style={{
-                          backgroundSize: "contain",
-                          backgroundPosition: "center",
-                          backgroundRepeat: "no-repeat",
-                          backgroundColor: "black",
-                          backgroundImage: `url('${src}')`
-                        }}
-                      />
-                    )}
-                  </Asset>
-                ) : (
-                  <div
-                    className="card contactPicture"
-                    style={{
-                      backgroundSize: "contain",
-                      backgroundPosition: "center",
-                      backgroundRepeat: "no-repeat",
-                      backgroundColor: "black",
-                      backgroundImage: `none`
-                    }}
-                  />
-                )}
+              <Col className="col-sm-12">
+                <div className="card contactPictureContainer">
+                  {hoverContact.picture && (
+                    <Asset asset={hoverContact.picture}>
+                      {({ src }) => (
+                        <div
+                          className="contactPicture"
+                          style={{
+                            backgroundSize: "contain",
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                            backgroundColor: "black",
+                            backgroundImage: `url('${src}')`
+                          }}
+                        />
+                      )}
+                    </Asset>
+                  )}
+                </div>
               </Col>
               <Col className="col-sm-12 contactNameContainer">
                 <div className="card contactName">{hoverContact.name}</div>
