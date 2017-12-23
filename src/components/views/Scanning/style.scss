@@ -1,4 +1,17 @@
-.security-scans {
+.scanning {
+  .card {
+    min-height: 40px;
+    max-height: 60vh;
+    overflow-y: scroll;
+    p {
+      margin: 0;
+      padding: 5px;
+      border-radius: 5px;
+      &.selected {
+        background-color: rgba(255,255,255,0.5);
+      }
+    }
+  }
   .results {
     width: 100%;
     min-height: 30vh;

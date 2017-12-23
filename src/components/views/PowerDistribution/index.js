@@ -252,7 +252,7 @@ class SystemPower extends Component {
     } = this.props;
     return (
       <Row>
-        <Col sm="3">
+        <Col sm="4">
           <h5
             className={damaged ? "text-danger" : ""}
             style={{ padding: 0, margin: 0, marginTop: height / count - 20 }}
@@ -260,7 +260,7 @@ class SystemPower extends Component {
             {displayName}: {power}
           </h5>
         </Col>
-        <Col sm="9">
+        <Col sm="8">
           <Measure
             bounds
             onResize={contentRect => {

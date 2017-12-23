@@ -20,6 +20,7 @@ import {
 const history = createHistory();
 
 const TestCard = props => {
+  console.log(props);
   return <CardContainer test={true} component={props.match.params.component} />;
 };
 TestCard.propTypes = {
@@ -77,7 +78,7 @@ export default class App extends Component {
             render={props => <FlightDirector {...props} history={history} />}
           />
           <Route path="/debug" component={DebugList} />
-          <Route path="/test" component={TestCard} />
+          <Route path="/test" exact component={TestCard} />
           <Route path="/test/:component" component={TestCard} />
           <Route path="*" component={NoMatch} />
         </Switch>

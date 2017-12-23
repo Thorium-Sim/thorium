@@ -5,9 +5,12 @@
   .grid {
     overflow: hidden;
   }
-  .contactPicture {
+  .contactPictureContainer {
     height: 17vh;
     margin-bottom: 10px;
+  }
+  .contactPicture {
+    height: 100%;
     background-size: cover;
   }
   .contactName {

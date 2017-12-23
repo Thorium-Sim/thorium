@@ -10,6 +10,7 @@ import Grid from "./GridDom";
 import DamageOverlay from "../helpers/DamageOverlay";
 import SensorScans from "./SensorScans";
 import { Asset } from "../../../helpers/assets";
+
 const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {
     sensorsUpdate(simulatorId: $simulatorId, domain: "external") {
@@ -216,7 +217,7 @@ class Sensors extends Component {
       variables
     });
   };
-  selectPing(which) {
+  selectPing = which => {
     const mutation = gql`
       mutation SetPingMode($id: ID!, $mode: PING_MODES) {
         setSensorPingMode(id: $id, mode: $mode)
@@ -230,10 +231,13 @@ class Sensors extends Component {
       mutation,
       variables
     });
-  }
+  };
   render() {
     if (this.props.data.loading || !this.props.data.sensors)
       return <p>Loading...</p>;
+    const needScans = !this.props.station.cards.find(
+      c => c.component === "SensorScans"
+    );
     const sensors = this.props.data.sensors[0];
     const { pingMode, pings } = sensors;
     const { hoverContact, ping, pingTime } = this.state;
@@ -241,60 +245,22 @@ class Sensors extends Component {
       <div className="cardSensors">
         <div>
           <Row>
-            <Col sm={3}>
-              <DamageOverlay
-                message="External Sensors Offline"
-                system={sensors}
-              />
-              <SensorScans sensors={sensors} client={this.props.client} />
-              {pings && (
-                <Row>
-                  <Col sm="12">
-                    <label>Sensor Options:</label>
-                  </Col>
-                  <Col sm={12} className="ping-controls">
-                    <Card>
-                      <li
-                        onClick={() => this.selectPing("active")}
-                        className={`list-group-item ${
-                          pingMode === "active" ? "selected" : ""
-                        }`}
-                      >
-                        Active Scan
-                      </li>
-                      <li
-                        onClick={() => this.selectPing("passive")}
-                        className={`list-group-item ${
-                          pingMode === "passive" ? "selected" : ""
-                        }`}
-                      >
-                        Passive Scan
-                      </li>
-                      <li
-                        onClick={() => this.selectPing("manual")}
-                        className={`list-group-item ${
-                          pingMode === "manual" ? "selected" : ""
-                        }`}
-                      >
-                        Manual Scan
-                      </li>
-                    </Card>
-                    <Button
-                      block
-                      disabled={ping}
-                      className="pingButton"
-                      style={{
-                        opacity: pingMode === "manual" ? 1 : 0,
-                        pointerEvents: pingMode === "manual" ? "auto" : "none"
-                      }}
-                      onClick={this.triggerPing}
-                    >
-                      Ping
-                    </Button>
-                  </Col>
-                </Row>
-              )}
-              {/*<Row>
+            {needScans && (
+              <Col sm={3}>
+                <DamageOverlay
+                  message="External Sensors Offline"
+                  system={sensors}
+                />
+                <SensorScans sensors={sensors} client={this.props.client} />
+                {pings && (
+                  <PingControl
+                    selectPing={this.selectPing}
+                    pingMode={pingMode}
+                    ping={ping}
+                    triggerPing={this.triggerPing}
+                  />
+                )}
+                {/*<Row>
 			<Col className="col-sm-12">
 			<h4>Contact Coordinates</h4>
 			</Col>
@@ -307,8 +273,12 @@ class Sensors extends Component {
 			</Col>
 			</Row>
 		<Button onClick={this.showWeaponsRange.bind(this)} block>Show Weapons Range</Button>*/}
-            </Col>
-            <Col sm={6} className="arrayContainer">
+              </Col>
+            )}
+            <Col
+              sm={{ size: 6, offset: !needScans ? 1 : 0 }}
+              className="arrayContainer"
+            >
               <div className="spacer" />
               <div
                 id="threeSensors"
@@ -338,36 +308,27 @@ class Sensors extends Component {
                 system={sensors}
               />
             </Col>
-            <Col className="col-sm-3 data">
+            <Col sm={{ size: 3, offset: !needScans ? 1 : 0 }} className="data">
               <Row className="contact-info">
-                <Col className="col-sm-12 contactPictureContainer">
-                  {hoverContact.picture ? (
-                    <Asset asset={hoverContact.picture}>
-                      {({ src }) => (
-                        <div
-                          className="card contactPicture"
-                          style={{
-                            backgroundSize: "contain",
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundColor: "black",
-                            backgroundImage: `url('${src}')`
-                          }}
-                        />
-                      )}
-                    </Asset>
-                  ) : (
-                    <div
-                      className="card contactPicture"
-                      style={{
-                        backgroundSize: "contain",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat",
-                        backgroundColor: "black",
-                        backgroundImage: `none`
-                      }}
-                    />
-                  )}
+                <Col className="col-sm-12">
+                  <div className="card contactPictureContainer">
+                    {hoverContact.picture && (
+                      <Asset asset={hoverContact.picture}>
+                        {({ src }) => (
+                          <div
+                            className="contactPicture"
+                            style={{
+                              backgroundSize: "contain",
+                              backgroundPosition: "center",
+                              backgroundRepeat: "no-repeat",
+                              backgroundColor: "black",
+                              backgroundImage: `url('${src}')`
+                            }}
+                          />
+                        )}
+                      </Asset>
+                    )}
+                  </div>
                 </Col>
                 <Col className="col-sm-12 contactNameContainer">
                   <div className="card contactName">{hoverContact.name}</div>
@@ -385,6 +346,15 @@ class Sensors extends Component {
                   </Card>
                 </Col>
               </Row>
+              {pings &&
+                !needScans && (
+                  <PingControl
+                    selectPing={this.selectPing}
+                    pingMode={pingMode}
+                    ping={ping}
+                    triggerPing={this.triggerPing}
+                  />
+                )}
             </Col>
           </Row>
         </div>
@@ -398,6 +368,55 @@ class Sensors extends Component {
   }
 }
 
+const PingControl = ({ selectPing, pingMode, ping, triggerPing }) => {
+  return (
+    <Row>
+      <Col sm="12">
+        <label>Sensor Options:</label>
+      </Col>
+      <Col sm={12} className="ping-controls">
+        <Card>
+          <li
+            onClick={() => selectPing("active")}
+            className={`list-group-item ${
+              pingMode === "active" ? "selected" : ""
+            }`}
+          >
+            Active Scan
+          </li>
+          <li
+            onClick={() => selectPing("passive")}
+            className={`list-group-item ${
+              pingMode === "passive" ? "selected" : ""
+            }`}
+          >
+            Passive Scan
+          </li>
+          <li
+            onClick={() => selectPing("manual")}
+            className={`list-group-item ${
+              pingMode === "manual" ? "selected" : ""
+            }`}
+          >
+            Manual Scan
+          </li>
+        </Card>
+        <Button
+          block
+          disabled={ping}
+          className="pingButton"
+          style={{
+            opacity: pingMode === "manual" ? 1 : 0,
+            pointerEvents: pingMode === "manual" ? "auto" : "none"
+          }}
+          onClick={triggerPing}
+        >
+          Ping
+        </Button>
+      </Col>
+    </Row>
+  );
+};
 const SENSOR_QUERY = gql`
   query GetSensors($simulatorId: ID) {
     sensors(simulatorId: $simulatorId, domain: "external") {

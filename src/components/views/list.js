@@ -39,7 +39,8 @@ const viewList = [
   "JrEngineering",
   "TorpedoLoading",
   "SoundsTester",
-  "NavigationAdvanced"
+  "NavigationAdvanced",
+  "SensorScans"
 ];
 
 export default viewList;
