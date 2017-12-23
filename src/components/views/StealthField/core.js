@@ -84,10 +84,10 @@ class StealthFieldCore extends Component {
     }
     return sys.name;
   }
-  toggleStealth() {
+  toggleStealth = () => {
     const { id, state } = this.props.data.stealthField[0];
     let mutation;
-    if (state) {
+    if (!state) {
       mutation = gql`
         mutation ActivateStealth($id: ID!) {
           activateStealth(id: $id)
@@ -105,7 +105,7 @@ class StealthFieldCore extends Component {
       mutation,
       variables
     });
-  }
+  };
   updateActivated(e) {
     const { id } = this.props.data.stealthField[0];
     const mutation = gql`
@@ -204,7 +204,7 @@ class StealthFieldCore extends Component {
         <Row>
           <Col sm="12">
             <OutputField
-              onMouseDown={this.toggleStealth.bind(this)}
+              onClick={this.toggleStealth}
               alert={stealthField.state}
             >
               {stealthField.state ? "Activated" : "Deactivated"}
