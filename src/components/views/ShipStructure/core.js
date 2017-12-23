@@ -135,16 +135,16 @@ class DecksCore extends Component {
     var a = document.createElement("a");
     document.body.appendChild(a);
     a.style = "display: none";
-    var json = JSON.stringify(
-        this.props.data.decks.map(d => {
-          return {
-            number: d.number,
-            rooms: d.rooms.map(r => ({ name: r.name }))
-          };
-        })
-      ),
-      blob = new Blob([json], { type: "octet/stream" }),
-      url = window.URL.createObjectURL(blob);
+    const json = JSON.stringify(
+      this.props.data.decks.map(d => {
+        return {
+          number: d.number,
+          rooms: d.rooms.map(r => ({ name: r.name }))
+        };
+      })
+    );
+    const blob = new Blob([json], { type: "octet/stream" });
+    const url = window.URL.createObjectURL(blob);
     a.href = url;
     a.download = "deckExport.json";
     a.click();
