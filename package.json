@@ -101,7 +101,7 @@
     "build-server": "node ./config/build-server.js",
     "build": "npm run build-client && npm run build-server",
     "lint": "eslint .",
-    "cloc": "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots",
+    "cloc": "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots,coverage,build",
     "test:client": "react-scripts test --env=jsdom",
     "test:server": "jest server/tests --env=node",
     "test": "npm run test:client & npm run test:server",

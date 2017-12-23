@@ -208,8 +208,8 @@ class Inventory extends Component {
           Make sure you configure decks and rooms before configuring inventory
         </p>
         <Row>
-          <Col sm={3}>
-            <ul style={{ maxHeight: "75vh", overflowY: "scroll" }}>
+          <Col sm={4}>
+            <ul style={{ padding: 0, maxHeight: "75vh", overflowY: "scroll" }}>
               {inventory.map(i => (
                 <li
                   key={i.id}
@@ -217,6 +217,9 @@ class Inventory extends Component {
                     this.setState({
                       inventoryItem: i
                     })
+                  }
+                  className={
+                    inventoryItem && inventoryItem.id === i.id ? "selected" : ""
                   }
                 >
                   {i.name}
@@ -228,9 +231,9 @@ class Inventory extends Component {
             </Button>
           </Col>
           {inventoryItem && (
-            <Col sm={9}>
+            <Col sm={8}>
               <Row>
-                <Col sm={6}>
+                <Col sm={5}>
                   <Label>Name</Label>
                   <Input
                     autofocus="autofocus"
@@ -332,7 +335,7 @@ class Inventory extends Component {
                       ))}
                   </ul>
                 </Col>
-                <Col sm="4" className="decks-columns">
+                <Col sm="5" className="decks-columns">
                   <ul className="roomList">
                     {selectedDeck &&
                       decks
