@@ -617,6 +617,7 @@ body {
     }
   }
   .frame-text {
+    pointer-events: none;
     -webkit-user-select: none;
     user-select: none;
     .simulator-name {
@@ -687,6 +688,7 @@ body {
     }
   }
   .frame-image {
+    pointer-events: none;
     div {
       position: absolute;
     }
@@ -1047,6 +1049,7 @@ body {
   }
   #curve-frame {
     .frame-image {
+      pointer-events: none;
       .frame-1 {
         background-image: url(./images/slice4.png);
         height: 116px;
@@ -1071,6 +1074,7 @@ body {
       }
     }
     .frame-color {
+      pointer-events: none;
       .part-c {
         width: 350px;
         height: 32px;
@@ -1150,6 +1154,7 @@ body {
       }
     }
     .frame-text {
+      pointer-events: none;
       .simulator-name {
         top: 0px;
         left: 20px;

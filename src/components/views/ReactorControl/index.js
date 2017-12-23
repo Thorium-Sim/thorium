@@ -135,6 +135,11 @@ class ReactorControl extends Component {
     }, 0);
     const efficiencies = [
       {
+        label: "Overload",
+        color: "danger",
+        efficiency: 1.25
+      },
+      {
         label: "Cruise",
         color: "primary",
         efficiency: 1
