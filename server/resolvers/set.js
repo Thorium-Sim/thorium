@@ -17,7 +17,7 @@ export const SetMutations = {
     pubsub.publish("setsUpdate", App.sets);
   },
   removeSet(rootValue, { id }, context) {
-    App.sets.filter(s => s.id !== id);
+    App.sets = App.sets.filter(s => s.id !== id);
     pubsub.publish("setsUpdate", App.sets);
   },
   addClientToSet(rootValue, { id, client }, context) {

@@ -60,6 +60,24 @@ class SetConfig extends Component {
       });
     }
   };
+  removeSet = () => {
+    const mutation = gql`
+      mutation RemoveSet($id: ID!) {
+        removeSet(id: $id)
+      }
+    `;
+    const variables = {
+      id: this.state.selectedSet
+    };
+    this.setState({
+      selectedSet: null
+    });
+    this.props.client.mutate({
+      mutation,
+      variables,
+      refetchQueries: ["Sets"]
+    });
+  };
   updateClient = ({ target: { checked } }, clientId) => {
     const {
       selectedSet,
@@ -175,9 +193,23 @@ class SetConfig extends Component {
                 </li>
               ))}
             </Card>
-            <Button block color="primary" onClick={this.addSet}>
-              Add Set
-            </Button>
+            <Row>
+              <Col sm={6}>
+                <Button block color="primary" onClick={this.addSet}>
+                  Add Set
+                </Button>
+              </Col>
+              <Col sm={6}>
+                <Button
+                  block
+                  color="danger"
+                  onClick={this.removeSet}
+                  disabled={!selectedSet}
+                >
+                  Remove Set
+                </Button>
+              </Col>
+            </Row>
           </Col>
           <Col>
             <h5>Simulators</h5>
