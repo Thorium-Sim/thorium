@@ -16,7 +16,7 @@ import {
   ListGroup,
   ListGroupItem
 } from "reactstrap";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { client } from "../../App";
 import "./CoreLayout.css";
 window.ReactDOM = ReactDOM;

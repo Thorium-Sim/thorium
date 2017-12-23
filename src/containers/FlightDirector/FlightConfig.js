@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import {
   Col,
   Row,
@@ -13,7 +13,6 @@ import {
   Label,
   Input
 } from "reactstrap";
-import { browserHistory } from "react-router";
 
 import randomWords from "random-words";
 
@@ -63,7 +62,7 @@ class FlightConfig extends Component {
       })
       .then(({ data: { startFlight: flightId } }) => {
         setTimeout(() => {
-          browserHistory.push(`/flight/${flightId}`);
+          this.props.history.push(`/flight/${flightId}`);
         }, 500);
       });
   };
@@ -113,10 +112,11 @@ class FlightConfig extends Component {
                     this.setState({
                       selectedStation: null,
                       selectedSimulator: s.id
-                    })}
-                  className={`list-group-item ${s.id === selectedSimulator
-                    ? "selected"
-                    : ""}`}
+                    })
+                  }
+                  className={`list-group-item ${
+                    s.id === selectedSimulator ? "selected" : ""
+                  }`}
                 >
                   {s.name}
                 </li>

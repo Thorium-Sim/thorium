@@ -106,6 +106,15 @@ class Clients extends Component {
     });
   }
   render() {
+    if (this.props.data.loading) return null;
+    if (
+      this.props.data.flights
+        .map(f => f.id)
+        .indexOf(this.props.match.params.flightId) === -1
+    ) {
+      this.props.history.push("/");
+      return null;
+    }
     return (
       <Container>
         <Row className="justify-content-md-center">
@@ -134,7 +143,7 @@ class Clients extends Component {
                       p =>
                         p.flight === "" ||
                         p.flight === null ||
-                        p.flight.id === this.props.routeParams.flightId
+                        p.flight.id === this.props.match.params.flightId
                     )
                     .map((p, index) => (
                       <tr key={`flight-${p.id}-${index}`}>

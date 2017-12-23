@@ -214,9 +214,8 @@ export const FlightStructureSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("flightsUpdate"),
-      (rootValue, { id }) => {
-        if (id) return !!rootValue.find(s => s.id === id);
-        return true;
+      rootValue => {
+        return !!rootValue;
       }
     )
   }

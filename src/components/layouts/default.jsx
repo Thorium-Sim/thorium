@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import { findDOMNode } from 'react-dom';
 import TransitionGroup from 'react-addons-transition-group';
@@ -27,7 +27,7 @@ class CardHolder extends Component {
 
 class LayoutDefault extends Component {
 	render() {
-		const {simulatorId, stationId} = this.props.params;
+		const {simulatorId, stationId} = this.props.match.params;
 		let {cardsData} = this.props.data;
 		cardsData = cardsData || [];
 		let loading = cardsData.length === 0;

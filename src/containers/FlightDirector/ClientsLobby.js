@@ -1,14 +1,14 @@
 import React from "react";
 import Clients from "./Clients";
 import SetsPicker from "./SetsPicker";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router-dom";
 import { Container, Button } from "reactstrap";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag";
 
 const ClientLobby = props => {
   const resetFlight = () => {
-    const flightId = props.params.flightId;
+    const flightId = props.match.params.flightId;
     if (
       window.confirm(
         `Are you sure you want to reset this flight?
@@ -30,14 +30,13 @@ All information in all simulators in this flight will be reset.`
     }
   };
   const deleteFlight = () => {
-    const flightId = props.params.flightId;
+    const flightId = props.match.params.flightId;
     if (
       window.confirm(
         `Are you sure you want to delete this flight?
 It will permenantly erase all simulators running in this flight.`
       )
     ) {
-      browserHistory.push("/");
       const mutation = gql`
         mutation DeleteFlight($flightId: ID!) {
           deleteFlight(flightId: $flightId)
@@ -46,14 +45,18 @@ It will permenantly erase all simulators running in this flight.`
       const variables = {
         flightId
       };
-      props.client.mutate({
-        mutation,
-        variables
-      });
+      props.client
+        .mutate({
+          mutation,
+          variables
+        })
+        .then(() => {
+          props.history.push(`/`);
+        });
     }
   };
   return (
-    <Container className="asset-config">
+    <Container className="flight-lobby">
       <span>
         <h4>
           Flight Lobby{" "}
@@ -68,7 +71,9 @@ It will permenantly erase all simulators running in this flight.`
           Reset Flight
         </Button>
         <h5 className="text-right">
-          <Link to={`/flight/${props.params.flightId}/core`}>Go to Core</Link>
+          <Link to={`/flight/${props.match.params.flightId}/core`}>
+            Go to Core
+          </Link>
         </h5>
       </span>
       <SetsPicker {...props} />

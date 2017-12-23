@@ -32,7 +32,7 @@ class SetsPicker extends Component {
       this.flightsSub = nextProps.data.subscribeToMore({
         document: FLIGHTS_SUB,
         variables: {
-          flightId: nextProps.params.flightId
+          flightId: nextProps.match.params.flightId
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
@@ -166,7 +166,7 @@ const SETS_QUERY = gql`
 export default graphql(SETS_QUERY, {
   options: ownProps => ({
     variables: {
-      flightId: ownProps.params.flightId
+      flightId: ownProps.match.params.flightId
     }
   })
 })(withApollo(SetsPicker));

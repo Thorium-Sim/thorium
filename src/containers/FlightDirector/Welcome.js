@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import IssueTracker from "../../components/admin/IssueTracker";
 
 import "./welcome.css";

@@ -13,9 +13,25 @@ import {
   ListGroupItem
 } from "reactstrap";
 import Alerts from "../generic/Alerts";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 import "./CoreComponents.css";
+
+const FLIGHTS_SUB = gql`
+  subscription FlightsSub($id: ID) {
+    flightsUpdate(id: $id) {
+      id
+      name
+      date
+      running
+      simulators {
+        id
+        name
+        layout
+      }
+    }
+  }
+`;
 
 class CoreComponents extends Component {
   constructor(props) {
@@ -29,8 +45,20 @@ class CoreComponents extends Component {
       editable: false,
       issuesOpen: false
     };
+    this.flightsSub = null;
   }
   componentWillReceiveProps(nextProps) {
+    if (!this.flightsSub && !nextProps.data.loading) {
+      this.flightsSub = nextProps.data.subscribeToMore({
+        document: FLIGHTS_SUB,
+        variables: { id: this.props.flightId },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          return Object.assign({}, previousResult, {
+            flights: subscriptionData.data.flightsUpdate
+          });
+        }
+      });
+    }
     if (!nextProps.data.loading) {
       const { flights } = nextProps.data;
       if (flights) {
@@ -81,7 +109,12 @@ class CoreComponents extends Component {
   };
   render() {
     if (this.props.data.loading) return null;
-    const { flights } = this.props.data;
+
+    const { data: { flights }, flightId, history } = this.props;
+    if (flights.map(f => f.id).indexOf(flightId) === -1) {
+      history.push("/");
+      return null;
+    }
     if (!flights) return null;
     const flight = this.props.flightId
       ? flights.find(f => f.id === this.props.flightId)
@@ -225,6 +258,7 @@ const CORE_LAYOUT = gql`
       id
       name
       date
+      running
       simulators {
         id
         name

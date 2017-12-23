@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router";
+import { withRouter } from "react-router-dom";
 import { Container, Button } from "reactstrap";
 import randomWords from "random-words";
 import CardContainer from "../containers/Card";

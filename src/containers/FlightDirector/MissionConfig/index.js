@@ -14,7 +14,7 @@ import {
   FormText
 } from "reactstrap";
 import TimelineConfig from "./TimelineConfig";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import "./style.css";
 const MISSION_SUB = gql`
   subscription MissionSubscription {

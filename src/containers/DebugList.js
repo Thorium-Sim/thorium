@@ -1,6 +1,6 @@
 import React from "react";
 import viewList from "../components/views/list.js";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 const DebugList = () => {
   return (
     <ul
@@ -12,9 +12,7 @@ const DebugList = () => {
       {viewList.sort().map(v => {
         return (
           <li key={v}>
-            <Link to={`/test/${v}`}>
-              {v}
-            </Link>
+            <Link to={`/test/${v}`}>{v}</Link>
           </li>
         );
       })}
