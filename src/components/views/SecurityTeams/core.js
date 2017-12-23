@@ -37,6 +37,7 @@ const SECURITY_SUB = gql`
       officers {
         id
         name
+        killed
       }
     }
   }
@@ -100,6 +101,20 @@ class SecurityTeams extends Component {
       selectedTeam: null
     });
   };
+  killCrew = id => {
+    const variables = {
+      crew: { id, killed: true }
+    };
+    const mutation = gql`
+      mutation UpdateCrew($crew: CrewInput) {
+        updateCrewmember(crew: $crew)
+      }
+    `;
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (
       this.props.data.loading ||
@@ -160,7 +175,20 @@ class SecurityTeams extends Component {
                   </div>
                   <div className="label-section">
                     <Label for="teamName">Assigned Officers</Label>
-                    {team.officers.map(c => <p key={c.id}>{c.name}</p>)}
+                    {team.officers.map(c => (
+                      <p key={c.id} className={c.killed ? "text-danger" : ""}>
+                        {c.name}{" "}
+                        {!c.killed && (
+                          <Button
+                            color="warning"
+                            size="sm"
+                            onClick={() => this.killCrew(c.id)}
+                          >
+                            Kill
+                          </Button>
+                        )}
+                      </p>
+                    ))}
                   </div>
                   <Button
                     size="sm"
@@ -207,6 +235,7 @@ const SECURITY_QUERY = gql`
       officers {
         id
         name
+        killed
       }
     }
     decks(simulatorId: $simId) {

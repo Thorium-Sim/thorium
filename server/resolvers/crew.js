@@ -3,10 +3,16 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
 export const CrewQueries = {
-  crew(root, { id, simulatorId, position }) {
+  crew(root, { id, simulatorId, position, killed }) {
     let returnVal = App.crew.concat();
     if (simulatorId) {
       returnVal = returnVal.filter(c => c.simulatorId === simulatorId);
+    }
+    if (killed === false) {
+      returnVal = returnVal.filter(c => !c.killed);
+    }
+    if (killed === true) {
+      returnVal = returnVal.filter(c => c.killed);
     }
     if (position) {
       // Special considerations for the security and damage
@@ -47,15 +53,24 @@ export const CrewMutations = {
   },
   updateCrewmember(rootValue, params, context) {
     App.handleEvent(params, "updateCrewmember", context);
+  },
+  newRandomCrewmember(rootValue, params, context) {
+    App.handleEvent(params, "newRandomCrewmember", context);
   }
 };
 
 export const CrewSubscriptions = {
   crewUpdate: {
-    resolve(rootValue, { simulatorId, position }) {
+    resolve(rootValue, { simulatorId, position, killed }) {
       let returnVal = rootValue;
       if (simulatorId) {
         returnVal = returnVal.filter(c => c.simulatorId === simulatorId);
+      }
+      if (killed === false) {
+        returnVal = returnVal.filter(c => !c.killed);
+      }
+      if (killed === true) {
+        returnVal = returnVal.filter(c => c.killed);
       }
       if (position) {
         // Special considerations for the security and damage

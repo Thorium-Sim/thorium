@@ -19,7 +19,7 @@ import "./style.css";
 
 const CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID) {
-    crewUpdate(simulatorId: $simulatorId, position: "security") {
+    crewUpdate(simulatorId: $simulatorId, position: "security", killed: false) {
       id
       name
     }
@@ -49,6 +49,7 @@ const SECURITY_SUB = gql`
       officers {
         id
         name
+        killed
       }
     }
   }
@@ -437,7 +438,7 @@ class SecurityTeams extends Component {
                           size="lg"
                           color="success"
                           className="recall-button create-button"
-                          disabled={!team.id || team.officers.length > 0}
+                          disabled={!team.id || team.officers.length === 0}
                           onClick={() => {
                             this.commitTeam(team);
                           }}
@@ -496,6 +497,7 @@ class SecurityTeams extends Component {
                               onClick={() => {
                                 team.id && this.removeOfficer(c);
                               }}
+                              className={c.killed ? "text-danger" : ""}
                             >
                               {c.name}
                             </p>
@@ -520,7 +522,7 @@ class SecurityTeams extends Component {
 
 const SECURITY_QUERY = gql`
   query SecurityTeams($simulatorId: ID, $simId: ID!) {
-    crew(simulatorId: $simulatorId, position: "security") {
+    crew(simulatorId: $simulatorId, position: "security", killed: false) {
       id
       name
     }
@@ -545,6 +547,7 @@ const SECURITY_QUERY = gql`
       officers {
         id
         name
+        killed
       }
     }
     decks(simulatorId: $simId) {

@@ -73,7 +73,7 @@ class StealthFieldCore extends Component {
   }
   componentWillUnmount() {
     this.props.data.stopPolling(1000);
-    this.subscription();
+    this.subscription && this.subscription();
   }
   systemName(sys) {
     if (sys.type === "Shield") {
