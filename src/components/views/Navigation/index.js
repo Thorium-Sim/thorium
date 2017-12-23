@@ -175,11 +175,12 @@ class Navigation extends Component {
     });
     this.scanning = setTimeout(this._randomCourse.bind(this), 60);
   }
-  updateDestination(e) {
+  updateDestination = e => {
+    e.preventDefault();
     this.setState({
       destination: e.target.value
     });
-  }
+  };
   keydown(e) {
     let key;
     let enteredCourse = Object.assign({}, this.state.enteredCourse);
@@ -372,8 +373,8 @@ class Navigation extends Component {
                         id="destination"
                         type="text"
                         value={this.state.destination}
-                        onChange={this.updateDestination.bind(this)}
-                        className="form-control"
+                        onChange={this.updateDestination}
+                        className="form-control no-keypad"
                       />
                       <InputGroupButton>
                         <Button

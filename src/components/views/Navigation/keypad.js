@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 export default class Keypad extends Component {
   handleKeydown = e => {
+    if (e.target.classList.contains("no-keypad")) return;
     const { keydown, clear, enter } = this.props;
     if (e.which === 8) {
       //Delete key
