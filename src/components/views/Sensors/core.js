@@ -54,6 +54,7 @@ class SensorsCore extends Component {
   }
   keypress = evt => {
     if (evt.altKey) {
+      evt.preventDefault();
       const index = parseInt(evt.code.substr(-1, 1), 10);
       if (!isNaN(index)) {
         const data = index === 0 ? ScanPresets[10] : ScanPresets[index - 1];
