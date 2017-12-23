@@ -70,6 +70,24 @@ export default class Sidebar extends Component {
       });
     }
   };
+  removeTactical = () => {
+    if (window.confirm("Are you sure you want to delete this tactical?")) {
+      const mutation = gql`
+        mutation RemoveMap($id: ID!) {
+          removeTacticalMap(id: $id)
+        }
+      `;
+      const variables = {
+        id: this.props.tacticalMapId
+      };
+      this.props.deselectTactical();
+      this.props.client.mutate({
+        mutation,
+        variables,
+        refetchQueries: ["TacticalMap"]
+      });
+    }
+  };
   addLayer = () => {
     const name = prompt("What is the name of the new layer?");
     if (name) {
@@ -168,6 +186,14 @@ export default class Sidebar extends Component {
               onClick={this.duplicateTactical}
             >
               Duplicate Map
+            </Button>
+            <Button
+              color="danger"
+              size="sm"
+              disabled={!tacticalMapId}
+              onClick={this.removeTactical}
+            >
+              Remove Map
             </Button>
           </div>
         )}

@@ -4,7 +4,8 @@ export default `
   freezeTacticalMap(id: ID!, freeze: Boolean!):String
   duplicateTacticalMap(id: ID!, name: String!):String
   loadTacticalMap(id: ID!, flightId: ID!):String
-
+  removeTacticalMap(id: ID!):String
+  
   addTacticalMapLayer(mapId: ID!, name: String!):String
   updateTacticalMapLayer(mapId: ID!, layer: TacticalLayerInput!):String
   reorderTacticalMapLayer(mapId: ID!, layer: ID!, order: Int!):String

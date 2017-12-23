@@ -166,6 +166,11 @@ class TacticalMapCore extends Component {
             tacticalMaps={tacticalMaps}
             selectTactical={this.selectTactical}
             selectLayer={this.selectLayer}
+            deselectTactical={() =>
+              this.setState({
+                tacticalMapId: null
+              })
+            }
             {...this.props}
           />
         </div>
