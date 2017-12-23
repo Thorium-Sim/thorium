@@ -58,7 +58,7 @@ class ShieldControl extends Component {
     this.state = {
       frequency: {},
       frequencyAdder: 0.1,
-      frequencySpeed: 250,
+      frequencySpeed: 150,
       disabledButton: {}
     };
     this.shieldSub = null;
@@ -151,7 +151,7 @@ class ShieldControl extends Component {
       frequencyAdder *= -1;
     }
     if (frequencySpeed > 10) {
-      frequencySpeed -= 5;
+      frequencySpeed -= 7;
     }
     frequency[shields.id] += frequencyAdder;
     if (frequency[shields.id] <= 100) {
@@ -174,7 +174,7 @@ class ShieldControl extends Component {
     frequency[shields.id] = shields.frequency;
     this.setState({
       frequency,
-      frequencySpeed: 250
+      frequencySpeed: 150
     });
     document.addEventListener("mouseup", this.stopLoop.bind(this, shields));
     this.freqLoop = setTimeout(
