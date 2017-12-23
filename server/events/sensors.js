@@ -187,3 +187,38 @@ App.on("pingSensors", ({ id }) => {
   system.timeSincePing = 0;
   pubsub.publish("sensorsPing", id);
 });
+
+App.on("setSensorsHistory", ({ id, history }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  system.history = history;
+
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});
+
+App.on("newSensorScan", ({ id, scan }) => {
+  const sensors = App.systems.find(sys => sys.id === id);
+  sensors.newScan(scan);
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});
+App.on("updateSensorScan", ({ id, scan }) => {
+  const sensors = App.systems.find(sys => sys.id === id);
+  sensors.updateScan(scan);
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});
+App.on("cancelSensorScan", ({ id, scan }) => {
+  const sensors = App.systems.find(sys => sys.id === id);
+  sensors.cancelScan(scan);
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});

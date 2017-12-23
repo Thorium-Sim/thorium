@@ -217,7 +217,7 @@ class Sensors extends Component {
       variables
     });
   };
-  selectPing(which) {
+  selectPing = which => {
     const mutation = gql`
       mutation SetPingMode($id: ID!, $mode: PING_MODES) {
         setSensorPingMode(id: $id, mode: $mode)
@@ -231,7 +231,7 @@ class Sensors extends Component {
       mutation,
       variables
     });
-  }
+  };
   render() {
     if (this.props.data.loading || !this.props.data.sensors)
       return <p>Loading...</p>;

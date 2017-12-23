@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 279,
+	"_eventsCount": 283,
 	"simulators": [
 		{
 			"id": "test",
@@ -893,21 +893,27 @@
 							"class": "Card"
 						},
 						{
+							"name": "Scanning",
+							"icon": null,
+							"component": "SensorScans",
+							"class": "Card"
+						},
+						{
 							"name": "Probe Construction",
 							"icon": null,
 							"component": "ProbeConstruction",
 							"class": "Card"
 						},
 						{
-							"name": "Probe Control",
-							"icon": null,
-							"component": "ProbeControl",
-							"class": "Card"
-						},
-						{
 							"name": "Probe Network",
 							"icon": null,
 							"component": "ProbeNetwork",
+							"class": "Card"
+						},
+						{
+							"name": "Probe Control",
+							"icon": null,
+							"component": "ProbeControl",
 							"class": "Card"
 						}
 					]
@@ -945,6 +951,12 @@
 							"name": "Cargo Control",
 							"icon": null,
 							"component": "CargoControl",
+							"class": "Card"
+						},
+						{
+							"name": "Internal Scanning",
+							"icon": null,
+							"component": "SecurityScans",
 							"class": "Card"
 						}
 					]
@@ -1492,12 +1504,14 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 2461500,
+			"timeSincePing": 2542700,
 			"scanResults": "Awesome",
 			"scanRequest": "Standard - \nTesting",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"history": false,
+			"scans": [],
 			"contacts": [
 				{
 					"id": "87629e49-391c-4e69-9331-c11da95d3b0a",
@@ -1614,12 +1628,14 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 39510700,
+			"timeSincePing": 39591900,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"history": false,
+			"scans": [],
 			"contacts": [],
 			"armyContacts": []
 		},
@@ -1772,7 +1788,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7139439999997139,
+			"batteryChargeLevel": 0.7132879999997133,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2943,12 +2959,14 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 34693700,
+			"timeSincePing": 34774900,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"history": false,
+			"scans": [],
 			"contacts": [],
 			"armyContacts": []
 		},
@@ -2978,12 +2996,14 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 34693700,
+			"timeSincePing": 34774900,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"history": false,
+			"scans": [],
 			"contacts": [],
 			"armyContacts": []
 		},
@@ -4011,12 +4031,14 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 29580600,
+			"timeSincePing": 29661800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"history": false,
+			"scans": [],
 			"contacts": [],
 			"armyContacts": []
 		},
@@ -4051,12 +4073,14 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 29580600,
+			"timeSincePing": 29661800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"history": false,
+			"scans": [],
 			"contacts": [],
 			"armyContacts": []
 		},
@@ -5551,12 +5575,14 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 18266200,
+			"timeSincePing": 18347400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"history": false,
+			"scans": [],
 			"contacts": [],
 			"armyContacts": []
 		},
@@ -5588,12 +5614,14 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 18266200,
+			"timeSincePing": 18347400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"history": false,
+			"scans": [],
 			"contacts": [],
 			"armyContacts": []
 		},
@@ -6884,12 +6912,14 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6061100,
+			"timeSincePing": 6142300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"history": false,
+			"scans": [],
 			"contacts": [],
 			"armyContacts": []
 		},
@@ -6921,12 +6951,14 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6061100,
+			"timeSincePing": 6142300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"history": false,
+			"scans": [],
 			"contacts": [],
 			"armyContacts": []
 		},
@@ -25261,7 +25293,7 @@
 	"viewscreens": [],
 	"messages": [],
 	"tacticalMaps": [],
-	"snapshotVersion": 2898,
-	"version": 2898,
-	"timestamp": "2017-12-23T17:30:05.897Z"
+	"snapshotVersion": 94,
+	"version": 94,
+	"timestamp": "2017-12-23T21:35:15.694Z"
 }

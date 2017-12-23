@@ -157,7 +157,23 @@
       background-color: #441970;
     }
   }
-
+  .dropdown-toggle {
+    overflow: hidden;
+  }
+  .dropdown-menu {
+    background-color: rgba(0,0,0,0.8);
+    
+    button {
+      color: white;
+      &:hover {
+        background-color: rgba(255,255,255,0.2);
+      }
+      &:active, &:focus {
+        background-color: rgba(255,255,255,0.4);
+      }
+      
+    }
+  }
 
   .widgets {
     bottom: 25px;
@@ -206,5 +222,8 @@
   }
   .cardThrusters .indicatorCircles {
     margin-top: -100px;
+  }
+  .powerlevel-containers h5 {
+    line-height: 0;
   }
 }

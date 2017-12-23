@@ -3,6 +3,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Row, Col, Button, Input, Card, CardBody } from "reactstrap";
 import gql from "graphql-tag";
 import Tour from "reactour";
+import FontAwesome from "react-fontawesome";
 
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
 import assetPath from "../../../helpers/assets";
@@ -18,6 +19,17 @@ const SENSOR_SUB = gql`
       scanRequest
       processedData
       scanning
+      history
+      scans {
+        id
+        request
+        mode
+        location
+        response
+        scanning
+        timestamp
+        cancelled
+      }
       damage {
         damaged
         report
@@ -100,25 +112,35 @@ class Scanning extends Component {
       });
     }
     if (!nextProps.data.loading && nextProps.data.sensors) {
-      const nextSensors = nextProps.data.sensors[0];
-      if (this.props.data.loading) {
-        //First time load
-        //Remove the first line of metadata;
-        const request = nextSensors.scanRequest.split("\n");
-        request.shift();
-        this.setState({
-          scanResults: nextSensors.scanResults,
-          scanRequest: request.join("\n")
-        });
+      if (nextProps.data.sensors[0].history) {
+        if (this.state.selectedScan) {
+          this.selectScan(
+            nextProps.data.sensors[0].scans.find(
+              s => s.id === this.state.selectedScan
+            )
+          );
+        }
       } else {
-        //Every other load
-        if (nextSensors.scanResults !== this.state.scanResults) {
-          if (this.state.scanResults === undefined) {
-            this.setState({
-              scanResults: nextSensors.scanResults
-            });
-          } else {
-            this.typeIn(nextSensors.scanResults, 0, "scanResults");
+        const nextSensors = nextProps.data.sensors[0];
+        if (this.props.data.loading) {
+          //First time load
+          //Remove the first line of metadata;
+          const request = nextSensors.scanRequest.split("\n");
+          request.shift();
+          this.setState({
+            scanResults: nextSensors.scanResults,
+            scanRequest: request.join("\n")
+          });
+        } else {
+          //Every other load
+          if (nextSensors.scanResults !== this.state.scanResults) {
+            if (this.state.scanResults === undefined) {
+              this.setState({
+                scanResults: nextSensors.scanResults
+              });
+            } else {
+              this.typeIn(nextSensors.scanResults, 0, "scanResults");
+            }
           }
         }
       }
@@ -206,18 +228,143 @@ class Scanning extends Component {
       scanRequest: e.target.value
     });
   }
+  newScan = () => {
+    const {
+      selectedScanType,
+      scanRequest,
+      selectedDeck,
+      selectedRoom
+    } = this.state;
+    const { decks, sensors } = this.props.data;
+    const deck = decks.find(d => d.id === selectedDeck);
+    const room = deck && deck.rooms.find(r => r.id === selectedRoom);
+    const mutation = gql`
+      mutation NewScan($id: ID!, $scan: SensorScanInput!) {
+        newSensorScan(id: $id, scan: $scan)
+      }
+    `;
+    const variables = {
+      id: sensors[0].id,
+      scan: {
+        mode: selectedScanType,
+        request: scanRequest,
+        location:
+          deck &&
+          (room ? `${room.name}, Deck ${deck.number}` : `Deck ${deck.number}`)
+      }
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+    this.setState({
+      selectedScan: null,
+      scanRequest: "",
+      selectedScanType: "Standard",
+      scanResults: "",
+      scanning: false,
+      selectedDeck: "All Decks",
+      selectedRoom: null
+    });
+  };
+  cancelScan = () => {
+    const { selectedScan } = this.state;
+    const { sensors } = this.props.data;
+    const mutation = gql`
+      mutation CancelScan($id: ID!, $scan: ID!) {
+        cancelSensorScan(id: $id, scan: $scan)
+      }
+    `;
+    const variables = {
+      id: sensors[0].id,
+      scan: selectedScan
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  selectScan = ({ id, location = "", request, response, mode, scanning }) => {
+    const { decks } = this.props.data;
+    let deck = location.split(", Deck ")[1];
+    let room = location.split(", Deck ")[0];
+    if (!deck) {
+      room = null;
+      deck = location.replace("Deck ", "");
+    }
+    this.setState({
+      selectedScan: id,
+      scanRequest: request,
+      selectedScanType: mode,
+      scanResults: response,
+      scanning,
+      selectedDeck:
+        deck && deck === "All Decks"
+          ? "All Decks"
+          : decks.find(d => d.number === parseInt(deck, 10)).id,
+      selectedRoom:
+        room &&
+        deck &&
+        decks
+          .find(d => d.number === parseInt(deck, 10))
+          .rooms.find(r => r.name === room).id
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.sensors) return null;
     const { domain } = this.props;
-    const { scanning } = this.props.data.sensors[0];
+    let { scanning, history, scans } = this.props.data.sensors[0];
+    const { selectedScan } = this.state;
+    if (history && selectedScan) {
+      scanning = scans.find(s => s.id === selectedScan).scanning;
+    }
     const decks = this.props.data.decks;
     return (
-      <Row className="security-scans">
+      <Row className="scanning">
         <DamageOverlay
           message="Scanning Offline"
           system={this.props.data.sensors[0]}
         />
-        <Col sm={{ size: 6, offset: 2 }}>
+        {history && (
+          <Col sm={3}>
+            <h3>Scan Log</h3>
+            <Card>
+              <CardBody>
+                {scans.map(s => (
+                  <p
+                    key={s.id}
+                    className={`${s.cancelled ? "text-danger" : ""} ${
+                      selectedScan === s.id ? "selected" : ""
+                    } ${!s.cancelled && !s.scanning ? "text-success" : ""}`}
+                    onClick={() => this.selectScan(s)}
+                  >
+                    {s.request.substr(0, 30)}
+                    {s.request.length > 30 ? "... " : " "}
+                    {s.scanning && <FontAwesome name="refresh" spin />}
+                  </p>
+                ))}
+              </CardBody>
+            </Card>
+            <Button
+              block
+              color="primary"
+              onClick={() =>
+                this.setState({
+                  selectedScan: null,
+                  scanRequest: "",
+                  selectedScanType: "Standard",
+                  scanResults: "",
+                  scanning: false,
+                  selectedDeck: "All Decks",
+                  selectedRoom: null
+                })
+              }
+            >
+              New Scan
+            </Button>
+          </Col>
+        )}
+        <Col sm={{ size: 6, offset: history ? 0 : 2 }}>
           {domain === "internal" && (
             <Row>
               <h4>Location Select:</h4>
@@ -230,7 +377,7 @@ class Scanning extends Component {
                   selectedDeck={this.state.selectedDeck}
                   decks={decks}
                   allDecks
-                  disabled={scanning}
+                  disabled={scanning || selectedScan}
                   setSelected={a =>
                     this.setState({
                       selectedDeck: a.deck,
@@ -244,7 +391,7 @@ class Scanning extends Component {
                   selectedDeck={this.state.selectedDeck}
                   selectedRoom={this.state.selectedRoom}
                   decks={decks}
-                  disabled={scanning}
+                  disabled={scanning || selectedScan}
                   setSelected={a =>
                     this.setState({
                       selectedRoom: a.room
@@ -261,6 +408,7 @@ class Scanning extends Component {
             <Col>
               <Input
                 type="text"
+                disabled={selectedScan}
                 onChange={this._setScanRequest.bind(this)}
                 value={this.state.scanRequest}
               />
@@ -273,7 +421,9 @@ class Scanning extends Component {
                   <Button
                     size="lg"
                     color="danger"
-                    onClick={this._stopScan.bind(this)}
+                    onClick={
+                      history ? this.cancelScan : this._stopScan.bind(this)
+                    }
                   >
                     Cancel Scan
                   </Button>
@@ -321,13 +471,27 @@ class Scanning extends Component {
                   <Button
                     className="begin-scan"
                     size="lg"
-                    onClick={this._scanRequest.bind(this)}
+                    disabled={selectedScan}
+                    onClick={
+                      history ? this.newScan : this._scanRequest.bind(this)
+                    }
                   >
                     Begin Scan
                   </Button>
                 </Col>
                 <Col sm="auto">
-                  <Button color="warning" size="lg">
+                  <Button
+                    color="warning"
+                    size="lg"
+                    disabled={selectedScan}
+                    onClick={() =>
+                      this.setState({
+                        selectedDeck: null,
+                        selectedRoom: null,
+                        scanRequest: ""
+                      })
+                    }
+                  >
                     Clear
                   </Button>
                 </Col>
@@ -347,11 +511,13 @@ class Scanning extends Component {
             </div>
           )}
         </Col>
-        <Col sm={{ size: 2, offset: 1 }} className="scantype">
+        <Col sm={{ size: 2, offset: history ? 0 : 1 }} className="scantype">
           <h4>Scan Type:</h4>
           {scanTypes.map(s => (
             <Button
+              key={`scan-type-${s}`}
               block
+              disabled={selectedScan}
               onClick={() => this._setSelectedScan(s)}
               className={this.state.selectedScanType === s ? "active" : ""}
             >
@@ -377,6 +543,17 @@ const SENSOR_QUERY = gql`
       scanResults
       scanRequest
       scanning
+      history
+      scans {
+        id
+        request
+        mode
+        location
+        response
+        scanning
+        timestamp
+        cancelled
+      }
       damage {
         damaged
         report

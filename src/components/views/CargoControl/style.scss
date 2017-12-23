@@ -5,6 +5,7 @@
     &.search-container {
       height: unset;
       max-height: calc(70vh - 85px);
+      overflow-y:scroll;
     }
     p {
       padding: 0.25rem;
@@ -20,6 +21,9 @@
   }
   .card-block {
     height: 100%;
+    overflow-y: scroll;
+  }
+  .inventoryRow .card{
     overflow-y: scroll;
   }
 }

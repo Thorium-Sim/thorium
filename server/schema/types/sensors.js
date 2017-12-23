@@ -19,6 +19,29 @@ type Sensors implements SystemInterface{
   contacts: [SensorContact]
   armyContacts: [SensorContact]
   damage: Damage
+
+  scans: [SensorScan]
+  history: Boolean
+}
+type SensorScan {
+  id: ID
+  timestamp: String
+  mode: String
+  location: String
+  request: String
+  response: String
+  scanning: Boolean
+  cancelled: Boolean
+}
+input SensorScanInput {
+  id: ID
+  timestamp: String
+  mode: String
+  location: String
+  request: String
+  response: String
+  scanning: Boolean
+  cancelled: Boolean
 }
 type SensorContact {
   id: ID

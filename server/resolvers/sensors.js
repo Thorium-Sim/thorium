@@ -97,6 +97,18 @@ export const SensorsMutations = {
   },
   animateSensorContacact() {
     moveSensorContact();
+  },
+  setSensorsHistory(root, args, context) {
+    App.handleEvent(args, "setSensorsHistory", context);
+  },
+  newSensorScan(root, args, context) {
+    App.handleEvent(args, "newSensorScan", context);
+  },
+  updateSensorScan(root, args, context) {
+    App.handleEvent(args, "updateSensorScan", context);
+  },
+  cancelSensorScan(root, args, context) {
+    App.handleEvent(args, "cancelSensorScan", context);
   }
 };
 

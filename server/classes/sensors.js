@@ -1,6 +1,29 @@
 import SensorContact from "./sensorContact";
 import { System } from "./generic";
-
+import uuid from "uuid";
+class Scan {
+  constructor(params) {
+    this.id = params.id || uuid.v4();
+    this.timestamp = params.timestamp || new Date().toString();
+    this.mode = params.mode || "Standard";
+    this.location = params.location || "";
+    this.request = params.request || "Scanning for something";
+    this.response = params.response || "";
+    this.scanning = params.scanning || true;
+    this.cancelled = params.cancelled || false;
+  }
+  update({ response, cancelled }) {
+    if (response || response === "") {
+      this.response = response;
+      this.scanning = false;
+    }
+    if (cancelled) {
+      this.cancelled = true;
+      this.response = "Scan Cancelled";
+      this.scanning = false;
+    }
+  }
+}
 export default class Sensors extends System {
   constructor(params) {
     super(params);
@@ -23,6 +46,14 @@ export default class Sensors extends System {
     this.processedData = params.processedData || "";
     this.presetAnswers = params.presetAnswers || [];
     this.scanning = params.scanning || false;
+    this.history = params.history || false;
+    this.scans = [];
+
+    if (params.scans) {
+      params.scans.forEach(scan => {
+        this.scans.push(new Scan(scan));
+      });
+    }
     // Initialize the contacts and army contacts;
     this.contacts = [];
     this.armyContacts = [];
@@ -39,9 +70,29 @@ export default class Sensors extends System {
   }
 
   get stealthFactor() {
+    if (this.history) {
+      return Math.min(
+        0.9,
+        this.scans.reduce((prev, next) => {
+          if (next.scanning) return prev + 0.3;
+          return prev;
+        }, 0)
+      );
+    }
     if (this.scanning) return 0.5;
     return 0.1;
   }
+
+  newScan(scan) {
+    this.scans.push(new Scan(scan));
+  }
+  updateScan(scan) {
+    this.scans.find(s => s.id === scan.id).update(scan);
+  }
+  cancelScan(id) {
+    this.scans.find(s => s.id === id).update({ cancelled: true });
+  }
+
   scanRequested(request) {
     this.scanning = true;
     this.scanRequest = request;

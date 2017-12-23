@@ -29,4 +29,12 @@ nudgeSensorContacts(id: ID!, amount: CoordinatesInput, speed: Float!, yaw: Float
 setSensorPingMode(id: ID!, mode: PING_MODES):String
 pingSensors(id: ID!):String
 animateSensorContacact:String
+
+setSensorsHistory(id: ID!, history: Boolean!): String
+# For scan history
+newSensorScan(id: ID!, scan: SensorScanInput!): String
+# For scan history
+updateSensorScan(id: ID!, scan: SensorScanInput!): String
+# For scan history
+cancelSensorScan(id: ID!, scan: ID!):String
 `;
