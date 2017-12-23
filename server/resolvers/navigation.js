@@ -39,6 +39,9 @@ export const NavigationMutations = {
   },
   navSetPresets(rootValue, args, context) {
     App.handleEvent(args, "navSetPresets", context);
+  },
+  navSetThrusters(rootValue, args, context) {
+    App.handleEvent(args, "navSetThrusters", context);
   }
 };
 

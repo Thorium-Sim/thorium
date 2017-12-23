@@ -105,6 +105,7 @@ const NAVIGATION_SUB = gql`
         y
         z
       }
+      thrusters
       calculatedCourse {
         x
         y
@@ -165,12 +166,17 @@ class Navigation extends Component {
       }
     }
   }
+  courseCoordinate = () => {
+    const navigation = this.props.data.navigation[0];
+    if (navigation.thrusters) return `${Math.round(Math.random() * 360)}˚`;
+    return Math.round(Math.random() * 100000) / 100;
+  };
   _randomCourse() {
     this.setState({
       calculatedCourse: {
-        x: Math.round(Math.random() * 100000) / 100,
-        y: Math.round(Math.random() * 100000) / 100,
-        z: Math.round(Math.random() * 100000) / 100
+        x: this.courseCoordinate(),
+        y: this.courseCoordinate(),
+        z: this.courseCoordinate()
       }
     });
     this.scanning = setTimeout(this._randomCourse.bind(this), 60);
@@ -396,65 +402,79 @@ class Navigation extends Component {
               </Col>
             </Row>
           </Col>
-          <Col className="col-sm-3">
+          <Col className="course-numbers">
             {navigation.calculate && (
-              <div className="calculated card">
+              <div
+                className={`calculated card ${
+                  navigation.thrusters ? "thrusters" : ""
+                }`}
+              >
                 <label>Calculated Course</label>
                 <Row>
-                  <Col className="col-sm-3">X:</Col>
-                  <Col className="col-sm-8 numBox">{calculatedCourse.x}</Col>
+                  <Col className="col-sm-4">
+                    {navigation.thrusters ? "Yaw" : "X"}:
+                  </Col>
+                  <Col className="col-sm-7 numBox">{calculatedCourse.x}</Col>
                 </Row>
                 <Row>
-                  <Col className="col-sm-3">Y:</Col>
-                  <Col className="col-sm-8 numBox">{calculatedCourse.y}</Col>
+                  <Col className="col-sm-4">
+                    {navigation.thrusters ? "Pitch" : "Y"}:
+                  </Col>
+                  <Col className="col-sm-7 numBox">{calculatedCourse.y}</Col>
                 </Row>
                 <Row>
-                  <Col className="col-sm-3">Z:</Col>
-                  <Col className="col-sm-8 numBox">{calculatedCourse.z}</Col>
+                  <Col className="col-sm-4">
+                    {navigation.thrusters ? "Roll" : "Z"}:
+                  </Col>
+                  <Col className="col-sm-7 numBox">{calculatedCourse.z}</Col>
                 </Row>
               </div>
             )}
-            <div className="currentCourse card">
-              <label>Current Course</label>
-              <Row>
-                <Col className="col-sm-3">X:</Col>
-                <Col
-                  className={`col-sm-8 numBox ${
-                    selectedField === "x" ? "selected" : ""
-                  }`}
-                >
-                  {enteredCourse.x}
-                </Col>
-              </Row>
-              <Row>
-                <Col className="col-sm-3">Y:</Col>
-                <Col
-                  className={`col-sm-8 numBox ${
-                    selectedField === "y" ? "selected" : ""
-                  }`}
-                >
-                  {enteredCourse.y}
-                </Col>
-              </Row>
-              <Row>
-                <Col className="col-sm-3">Z:</Col>
-                <Col
-                  className={`col-sm-8 numBox ${
-                    selectedField === "z" ? "selected" : ""
-                  }`}
-                >
-                  {enteredCourse.z}
-                </Col>
-              </Row>
-            </div>
+            {!navigation.thrusters && (
+              <div className="currentCourse card">
+                <label>Current Course</label>
+                <Row>
+                  <Col className="col-sm-3">X:</Col>
+                  <Col
+                    className={`col-sm-8 numBox ${
+                      selectedField === "x" ? "selected" : ""
+                    }`}
+                  >
+                    {enteredCourse.x}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className="col-sm-3">Y:</Col>
+                  <Col
+                    className={`col-sm-8 numBox ${
+                      selectedField === "y" ? "selected" : ""
+                    }`}
+                  >
+                    {enteredCourse.y}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className="col-sm-3">Z:</Col>
+                  <Col
+                    className={`col-sm-8 numBox ${
+                      selectedField === "z" ? "selected" : ""
+                    }`}
+                  >
+                    {enteredCourse.z}
+                  </Col>
+                </Row>
+              </div>
+            )}
           </Col>
-          <Col xl={3} lg={4} className="number-pad">
-            <Keypad
-              keydown={this.keydown.bind(this)}
-              clear={this.clear.bind(this)}
-              enter={this.enter.bind(this)}
-            />
-          </Col>
+          {!navigation.thrusters && (
+            <Col className="number-pad">
+              <Keypad
+                keydown={this.keydown.bind(this)}
+                clear={this.clear.bind(this)}
+                enter={this.enter.bind(this)}
+              />
+            </Col>
+          )}
         </Row>
         <Tour
           steps={trainingSteps}
@@ -486,6 +506,7 @@ const NAVIGATION_QUERY = gql`
         y
         z
       }
+      thrusters
       calculatedCourse {
         x
         y
