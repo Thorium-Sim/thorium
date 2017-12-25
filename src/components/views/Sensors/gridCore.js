@@ -195,8 +195,12 @@ class GridCore extends Component {
     const width = Math.min(dimWidth, dimHeight) - padding;
     const destination = {
       x:
-        (evt.clientX - dimensions.left - padding / 2 - width / 2) / (width / 2),
-      y: (evt.clientY - dimensions.top - padding / 2 - width / 2) / (width / 2),
+        (evt.clientX - dimensions.left - padding / 2 - width / 2) /
+          (width / 2) -
+        0.08,
+      y:
+        (evt.clientY - dimensions.top - padding / 2 - width / 2) / (width / 2) -
+        0.08,
       z: 0
     };
     this.setState({
