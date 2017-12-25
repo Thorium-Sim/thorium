@@ -29,6 +29,7 @@ type SystemCoolant {
 	systemId: ID
 	simulatorId: ID
 	name: String
+	type: String
 	coolant: Float
 	coolantRate: Float
 }

@@ -27,6 +27,7 @@ const COOLANT_SYSTEM_SUB = gql`
       systemId
       simulatorId
       name
+      type
       coolant
       coolantRate
     }
@@ -119,13 +120,20 @@ class CoolantControl extends Component {
         <Row>
           <Tank {...coolant} />
           <div className="coolant-containers">
-            {systemCoolant.map(s => (
-              <CoolantBar
-                {...s}
-                key={s.systemId}
-                transferCoolant={this.transferCoolant.bind(this)}
-              />
-            ))}
+            {systemCoolant
+              .concat()
+              .sort((a, b) => {
+                if (a.type > b.type) return 1;
+                if (a.type < b.type) return -1;
+                return 0;
+              })
+              .map(s => (
+                <CoolantBar
+                  {...s}
+                  key={s.systemId}
+                  transferCoolant={this.transferCoolant.bind(this)}
+                />
+              ))}
           </div>
         </Row>
         <Tour
@@ -257,6 +265,7 @@ const COOLANT_QUERY = gql`
       systemId
       simulatorId
       name
+      type
       coolant
       coolantRate
     }

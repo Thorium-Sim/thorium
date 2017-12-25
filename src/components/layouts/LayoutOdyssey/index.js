@@ -30,9 +30,10 @@ class LayoutOdyssey extends Component {
   };
   render() {
     let { simulator, station, cardName, changeCard, clientObj } = this.props;
+    const { login: stationLogin, name: stationName, cards = [] } = station;
     const { changingCard } = this.state;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
-    if (clientObj.loginState === "logout" && station.login === false) {
+    if (clientObj.loginState === "logout" && stationLogin === false) {
       cardName = "Login";
     }
     if (clientObj.offlineState) {
@@ -45,7 +46,7 @@ class LayoutOdyssey extends Component {
             className="backdrop"
             onClick={() => this.setState({ changingCard: false })}
           >
-            {station.cards.map(c => (
+            {cards.map(c => (
               <div
                 className="cardName"
                 key={c.name}
@@ -74,6 +75,7 @@ class LayoutOdyssey extends Component {
                       color="primary"
                       size="lg"
                       onClick={() => {
+                        localStorage.clear();
                         window.location.reload();
                       }}
                     >
@@ -82,7 +84,7 @@ class LayoutOdyssey extends Component {
                   </div>
                 }
               >
-                {station.cards
+                {cards
                   .concat({ name: "Login", component: "Login", icon: "Login" })
                   .concat({
                     name: "Offline",
@@ -107,7 +109,7 @@ class LayoutOdyssey extends Component {
             </div>
             <div className="frame-text">
               <h1 className="simulator-name">{simulator.name}</h1>
-              <h2 className="station-name">{station.name}</h2>
+              <h2 className="station-name">{stationName}</h2>
               <h2
                 className="card-name"
                 onClick={() => this.setState({ changingCard: !changingCard })}

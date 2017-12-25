@@ -1,5 +1,6 @@
 import uuid from "uuid";
 import Team from "./teams";
+import { DamageStep } from "./generic";
 
 export default class Simulator {
   constructor(params) {
@@ -20,6 +21,17 @@ export default class Simulator {
     if (params.teams) {
       params.teams.forEach(t => this.teams.push(new Team(t)));
     }
+
+    this.requiredDamageSteps = [];
+    this.optionalDamageSteps = [];
+    params.requiredDamageSteps &&
+      params.requiredDamageSteps.forEach(s =>
+        this.requiredDamageSteps.push(new DamageStep(s))
+      );
+    params.optionalDamageSteps &&
+      params.optionalDamageSteps.forEach(s =>
+        this.optionalDamageSteps.push(new DamageStep(s))
+      );
   }
   rename(name) {
     this.name = name;
@@ -72,6 +84,26 @@ export default class Simulator {
   }
   setSelfDestructAuto(tf) {
     this.ship.selfDestructAuto = tf;
+  }
+
+  // Damage Steps
+  addDamageStep({ name, args, type }) {
+    this[`${type}DamageSteps`].push(new DamageStep({ name, args }));
+  }
+  updateDamageStep({ id, name, args }) {
+    const step =
+      this.requiredDamageSteps.find(s => s.id === id) ||
+      this.optionalDamageSteps.find(s => s.id === id);
+    step.update({ name, args });
+  }
+  removeDamageStep(stepId) {
+    // Check both required and optional
+    this.requiredDamageSteps = this.requiredDamageSteps.filter(
+      s => s.id !== stepId
+    );
+    this.optionalDamageSteps = this.optionalDamageSteps.filter(
+      s => s.id !== stepId
+    );
   }
 }
 

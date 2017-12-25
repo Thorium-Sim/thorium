@@ -205,13 +205,13 @@ class DamageReportCore extends Component {
       variables
     });
   };
-  generateReport = () => {
+  generateReport = steps => {
     const mutation = gql`
-      mutation GenerateReport($systemId: ID!) {
-        generateDamageReport(systemId: $systemId)
+      mutation GenerateReport($systemId: ID!, $steps: Int) {
+        generateDamageReport(systemId: $systemId, steps: $steps)
       }
     `;
-    const variables = { systemId: this.state.selectedSystem };
+    const variables = { systemId: this.state.selectedSystem, steps };
     this.props.client
       .mutate({
         mutation,
@@ -320,6 +320,16 @@ class DamageReportCore extends Component {
             ) : (
               <Row style={{ margin: 0 }}>
                 <Col sm={3}>
+                  <Button
+                    size={"sm"}
+                    block
+                    color="success"
+                    onClick={this.repairSystem}
+                  >
+                    Repair
+                  </Button>
+                </Col>
+                <Col sm={3}>
                   <Input
                     onChange={this.loadReport.bind(this)}
                     style={{ position: "absolute", opacity: 0 }}
@@ -332,6 +342,20 @@ class DamageReportCore extends Component {
                   </Button>
                 </Col>
                 <Col sm={3}>
+                  <select
+                    className="btn btn-warning btn-sm btn-block"
+                    onChange={evt =>
+                      this.generateReport(parseInt(evt.target.value, 10))
+                    }
+                    value={"select"}
+                  >
+                    <option value="select">Generate</option>
+                    <option value="5">Short</option>
+                    <option value="8">Medium</option>
+                    <option value="12">Long</option>
+                  </select>
+                </Col>
+                <Col sm={3}>
                   <Button
                     size={"sm"}
                     block
@@ -339,26 +363,6 @@ class DamageReportCore extends Component {
                     onClick={this.sendReport}
                   >
                     Send
-                  </Button>
-                </Col>
-                <Col sm={3}>
-                  <Button
-                    size={"sm"}
-                    block
-                    color="warning"
-                    onClick={this.generateReport}
-                  >
-                    Generate
-                  </Button>
-                </Col>
-                <Col sm={3}>
-                  <Button
-                    size={"sm"}
-                    block
-                    color="success"
-                    onClick={this.repairSystem}
-                  >
-                    Repair
                   </Button>
                 </Col>
               </Row>

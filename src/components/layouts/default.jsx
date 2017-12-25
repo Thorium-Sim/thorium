@@ -1,56 +1,70 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Container } from 'reactstrap';
-import { findDOMNode } from 'react-dom';
-import TransitionGroup from 'react-addons-transition-group';
-import {TweenMax} from 'gsap';
+import { Container, Button, Row, Col } from 'reactstrap';
 import Views from '../views';
+import ErrorBoundary from "../../helpers/errorBoundary";
 
-class CardHolder extends Component {
-	componentWillEnter (callback) {
-		const el = findDOMNode(this);
-		TweenMax.fromTo(el, 0.5, {z: 100, rotationY:0, opacity: 0, transformPerspective:200}, {z: 0, rotationY:0, opacity: 1, transformPerspective:200, onComplete: callback});
-	}
-
-	componentWillLeave (callback) {
-		const el = findDOMNode(this);
-		TweenMax.fromTo(el, 0.5, {z: 0, rotationY:0, opacity: 1, transformPerspective:200}, {z: -100, rotationY:0, opacity: 0, transformPerspective:200, onComplete: callback});
-	}
-	render(){
-		return (
-			<div className="cardContainer container">
-			<this.props.component {...this.props} />
-			</div>
-			);
-	}
-}
 
 class LayoutDefault extends Component {
 	render() {
-		const {simulatorId, stationId} = this.props.match.params;
-		let {cardsData} = this.props.data;
-		cardsData = cardsData || [];
-		let loading = cardsData.length === 0;
-		return (<Container>
-			<div style={{display:'flex'}}>
-			<ul>
-			{(loading) ? <div></div> : cardsData.map((card,index) => (
-				<li key={card.id}>
-				<Link to={`/app/simulator/${simulatorId}/station/${stationId}/card/${index}`}>
-				{card.name}
-				</Link>
-				</li>
-				))}
-			</ul>
-			<TransitionGroup>
-			{
-				cardsData.map((card) => {
-					const component = Views[card.component];
-					return <CardHolder component={component} {...this.props} key={card.id} />;
-				})
-			}
-			</TransitionGroup>
-			</div>
+    let {station, cardName, clientObj } = this.props;
+    const { login: stationLogin, cards = [] } = station;
+		if (clientObj.loginState === "logout" && stationLogin === false) {
+      cardName = "Login";
+    }
+    if (clientObj.offlineState) {
+      cardName = "Offline";
+    }
+		return (<Container fluid>
+			<Row className="cardContainer">
+			<Col sm={12}>
+              <ErrorBoundary
+                render={
+                  <div className={"card-error"}>
+                    <p className="offline-title">Station Error</p>
+                    <p className="offline-message" style={{ fontSize: "40px" }}>
+                      Your station has experienced an error. A diagnostic must
+                      be performed to restore this station to functionality. If
+                      you continue to see this screen after performing the
+                      diagnostic, please contact a computer specialist.
+                    </p>
+                    <Button
+                      block
+                      color="primary"
+                      size="lg"
+                      onClick={() => {
+                        localStorage.clear();
+                        window.location.reload();
+                      }}
+                    >
+                      Perform Diagnostic
+                    </Button>
+                  </div>
+                }
+              >
+                {cards
+                  .concat({ name: "Login", component: "Login", icon: "Login" })
+                  .concat({
+                    name: "Offline",
+                    component: "Offline",
+                    icon: "Offline"
+                  })
+                  .map(card => {
+                    const Card = Views[card.component];
+                    if (card.name === cardName) {
+                      return (
+                        <Card
+                          {...this.props}
+                          stopTraining={this.stopTraining}
+                          key={card.name}
+                        />
+                      );
+                    }
+                    return null;
+                  })
+                  .filter(card => card)}
+              </ErrorBoundary>
+							</Col>
+            </Row>
 			</Container>);
 	}
 }

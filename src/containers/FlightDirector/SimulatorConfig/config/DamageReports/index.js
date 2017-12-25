@@ -8,36 +8,70 @@ import * as steps from "./steps";
 class DamageReportsConfig extends Component {
   state = {};
   addDamageStep = (evt, type) => {
-    const mutation = gql`
-      mutation AddDamageStep($systemId: ID!, $step: DamageStepInput!) {
-        addSystemDamageStep(systemId: $systemId, step: $step)
-      }
-    `;
-    const variables = {
-      systemId: this.state.selectedSystem,
-      step: {
-        name: evt.target.value,
-        args: {},
-        type
-      }
+    const { selectedSimulator: { id }, client } = this.props;
+    const { selectedSystem } = this.state;
+    const mutation =
+      selectedSystem === "simulator"
+        ? gql`
+            mutation AddDamageStep($simulatorId: ID!, $step: DamageStepInput!) {
+              addSimulatorDamageStep(simulatorId: $simulatorId, step: $step)
+            }
+          `
+        : gql`
+            mutation AddDamageStep($systemId: ID!, $step: DamageStepInput!) {
+              addSystemDamageStep(systemId: $systemId, step: $step)
+            }
+          `;
+    const step = {
+      name: evt.target.value,
+      args: {},
+      type
     };
-    this.props.client.mutate({
+    const variables =
+      selectedSystem === "simulator"
+        ? {
+            simulatorId: id,
+            step
+          }
+        : {
+            systemId: selectedSystem,
+            step
+          };
+    client.mutate({
       mutation,
       variables,
       refetchQueries: ["Simulators"]
     });
   };
   removeDamageStep = stepId => {
-    const mutation = gql`
-      mutation RemoveDamageStep($systemId: ID!, $stepId: ID!) {
-        removeSystemDamageStep(systemId: $systemId, step: $stepId)
-      }
-    `;
-    const variables = {
-      systemId: this.state.selectedSystem,
-      stepId
-    };
-    this.props.client.mutate({
+    const { selectedSimulator: { id }, client } = this.props;
+    const { selectedSystem } = this.state;
+    const mutation =
+      selectedSystem === "simulator"
+        ? gql`
+            mutation RemoveDamageStep($simulatorId: ID!, $stepId: ID!) {
+              removeSimulatorDamageStep(
+                simulatorId: $simulatorId
+                step: $stepId
+              )
+            }
+          `
+        : gql`
+            mutation RemoveDamageStep($systemId: ID!, $stepId: ID!) {
+              removeSystemDamageStep(systemId: $systemId, step: $stepId)
+            }
+          `;
+    const variables =
+      selectedSystem === "simulator"
+        ? {
+            simulatorId: id,
+            stepId
+          }
+        : {
+            systemId: selectedSystem,
+            stepId
+          };
+    client.mutate({
       mutation,
       variables,
       refetchQueries: ["Simulators"]
@@ -51,26 +85,50 @@ class DamageReportsConfig extends Component {
       selectedOptionalStep
     } = this.state;
     const { systems } = selectedSimulator;
+    const requiredSteps = selectedSystem
+      ? (selectedSystem === "simulator"
+          ? selectedSimulator
+          : systems.find(s => s.id === selectedSystem)
+        ).requiredDamageSteps
+      : [];
+    const optionalSteps = selectedSystem
+      ? (selectedSystem === "simulator"
+          ? selectedSimulator
+          : systems.find(s => s.id === selectedSystem)
+        ).optionalDamageSteps
+      : [];
+
     const requiredStep =
       selectedSystem &&
       selectedRequiredStep &&
-      systems
-        .find(s => s.id === selectedSystem)
-        .requiredDamageSteps.find(s => s.id === selectedRequiredStep);
+      requiredSteps.find(s => s.id === selectedRequiredStep);
     const RequiredConfig = requiredStep && steps[requiredStep.name];
     const optionalStep =
       selectedSystem &&
       selectedOptionalStep &&
-      systems
-        .find(s => s.id === selectedSystem)
-        .optionalDamageSteps.find(s => s.id === selectedOptionalStep);
+      optionalSteps.find(s => s.id === selectedOptionalStep);
     const OptionalConfig = optionalStep && steps[optionalStep.name];
     return (
       <div>
         <h4>Damage Reports Config</h4>
         <Row>
           <Col sm="3">
-            Systems<Card className="scroll">
+            Systems
+            <Card className="scroll">
+              <li
+                onClick={() =>
+                  this.setState({
+                    selectedSystem: "simulator",
+                    selectedRequiredStep: null,
+                    selectedOptionalStep: null
+                  })
+                }
+                className={`list-group-item ${
+                  selectedSystem === "simulator" ? "selected" : ""
+                }`}
+              >
+                Simulator
+              </li>
               {systems.map(s => (
                 <li
                   key={s.id}
@@ -79,10 +137,11 @@ class DamageReportsConfig extends Component {
                       selectedSystem: s.id,
                       selectedRequiredStep: null,
                       selectedOptionalStep: null
-                    })}
-                  className={`list-group-item ${selectedSystem === s.id
-                    ? "selected"
-                    : ""}`}
+                    })
+                  }
+                  className={`list-group-item ${
+                    selectedSystem === s.id ? "selected" : ""
+                  }`}
                 >
                   {s.name}
                 </li>
@@ -97,26 +156,24 @@ class DamageReportsConfig extends Component {
                 <Row>
                   <Col sm="4">
                     <Card className="scroll">
-                      {systems
-                        .find(s => s.id === selectedSystem)
-                        .requiredDamageSteps.map(s => (
-                          <li
-                            key={s.id}
-                            onClick={() =>
-                              this.setState({ selectedRequiredStep: s.id })}
-                            className={`list-group-item ${selectedRequiredStep ===
-                            s.id
-                              ? "selected"
-                              : ""}`}
-                          >
-                            {s.name}{" "}
-                            <FontAwesome
-                              className="text-danger"
-                              name="ban"
-                              onClick={() => this.removeDamageStep(s.id)}
-                            />
-                          </li>
-                        ))}
+                      {requiredSteps.map(s => (
+                        <li
+                          key={s.id}
+                          onClick={() =>
+                            this.setState({ selectedRequiredStep: s.id })
+                          }
+                          className={`list-group-item ${
+                            selectedRequiredStep === s.id ? "selected" : ""
+                          }`}
+                        >
+                          {s.name}{" "}
+                          <FontAwesome
+                            className="text-danger"
+                            name="ban"
+                            onClick={() => this.removeDamageStep(s.id)}
+                          />
+                        </li>
+                      ))}
                     </Card>
                     <Input
                       type="select"
@@ -139,6 +196,7 @@ class DamageReportsConfig extends Component {
                         {...requiredStep}
                         client={client}
                         systemId={selectedSystem}
+                        simulatorId={selectedSimulator.id}
                       />
                     )}
                   </Col>
@@ -153,21 +211,24 @@ class DamageReportsConfig extends Component {
                 <Row>
                   <Col sm="4">
                     <Card className="scroll">
-                      {systems
-                        .find(s => s.id === selectedSystem)
-                        .optionalDamageSteps.map(s => (
-                          <li
-                            key={s.id}
-                            onClick={() =>
-                              this.setState({ selectedOptionalStep: s.id })}
-                            className={`list-group-item ${selectedOptionalStep ===
-                            s.id
-                              ? "selected"
-                              : ""}`}
-                          >
-                            {s.name}
-                          </li>
-                        ))}
+                      {optionalSteps.map(s => (
+                        <li
+                          key={s.id}
+                          onClick={() =>
+                            this.setState({ selectedOptionalStep: s.id })
+                          }
+                          className={`list-group-item ${
+                            selectedOptionalStep === s.id ? "selected" : ""
+                          }`}
+                        >
+                          {s.name}{" "}
+                          <FontAwesome
+                            className="text-danger"
+                            name="ban"
+                            onClick={() => this.removeDamageStep(s.id)}
+                          />
+                        </li>
+                      ))}
                     </Card>
                     <Input
                       type="select"
@@ -190,6 +251,7 @@ class DamageReportsConfig extends Component {
                         {...optionalStep}
                         client={client}
                         systemId={selectedSystem}
+                        simulatorId={selectedSimulator.id}
                       />
                     )}
                   </Col>

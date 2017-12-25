@@ -1,3 +1,5 @@
-**/test/**/*.js
+**/test/**
 **/coverage/**
 **/scripts/**
+**/node_modules/**
+**/build/**

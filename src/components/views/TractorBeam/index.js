@@ -31,6 +31,7 @@ const TRACTORBEAM_SUB = gql`
       id
       state
       target
+      targetLabel
       strength
       stress
       damage {
@@ -107,7 +108,7 @@ class TractorBeam extends Component {
           src={assetPath("/Ship Views/Right", "default", "png", false)}
           draggable="false"
         />
-        <Target shown={tractorBeam.target} />
+        <Target shown={tractorBeam.target} label={tractorBeam.targetLabel} />
         <Bars
           className="stressBar"
           flop
@@ -151,6 +152,7 @@ const TRACTORBEAM_QUERY = gql`
       id
       state
       target
+      targetLabel
       strength
       stress
       damage {

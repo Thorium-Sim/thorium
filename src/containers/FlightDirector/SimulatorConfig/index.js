@@ -309,6 +309,46 @@ const SIMULATOR_QUERY = gql`
       id
       name
       layout
+      requiredDamageSteps {
+        id
+        name
+        args {
+          end
+          cleanup
+          name
+          orders
+          room
+          preamble
+          type
+          message
+          code
+          inventory
+          destination
+          equipment
+          query
+          reactivate
+        }
+      }
+      optionalDamageSteps {
+        id
+        name
+        args {
+          end
+          cleanup
+          name
+          orders
+          room
+          preamble
+          type
+          message
+          code
+          inventory
+          destination
+          equipment
+          query
+          reactivate
+        }
+      }
       systems {
         id
         type

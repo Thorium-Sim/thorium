@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { findDOMNode } from "react-dom";
 
-/*const sinPoints = ({ frequency = 0, amplitude = 0, width, height }) => {
+const sinPoints = ({ frequency = 0, amplitude = 0, width, height }) => {
   let sinHeight = height * 2 * 2;
   return Array(Math.round(sinHeight))
     .fill(0)
@@ -9,7 +9,7 @@ import { findDOMNode } from "react-dom";
       if (i % 2 === 1) return i / 2;
       return Math.sin(i / 2 / frequency) * amplitude + width / 2;
     });
-};*/
+};
 
 export default class FrequencySignals extends Component {
   state = {};
@@ -20,25 +20,29 @@ export default class FrequencySignals extends Component {
     });
   }
   render() {
-    const { dimensions /*, frequency, amplitude*/ } = this.props;
-    // const height = this.state.height || 0;
+    const { dimensions, frequency, amplitude } = this.props;
     if (dimensions.width === 0) return <div />;
-    return <div />;
-    /*<Stage width={dimensions.width} height={height}>
-        <Layer>
-          <Line
-            points={sinPoints({
-              frequency: Math.pow(10, 1 - frequency) + 2,
-              amplitude: amplitude * dimensions.width / 3 + 10,
-              height: height,
-              width: dimensions.width
-            })}
-            stroke="green"
-            strokeWidth={4}
-            lineJoin="round"
-            lineCap="round"
-          />
-        </Layer>
-      </Stage>*/
+    return (
+      <svg
+        key={"short-range-line"}
+        style={{ height: "100%", width: dimensions.width }}
+      >
+        <path
+          d={sinPoints({
+            frequency: Math.pow(10, 1 - frequency) + 2,
+            amplitude: amplitude * dimensions.width / 3 + 10,
+            height: dimensions.height,
+            width: dimensions.width
+          }).reduce(
+            (prev, next, index) =>
+              prev + `${index % 2 === 0 ? "L" : ""} ${next} `,
+            `M ${dimensions.width / 2} 0 `
+          )}
+          fill="transparent"
+          stroke="green"
+          strokeWidth={2}
+        />
+      </svg>
+    );
   }
 }
