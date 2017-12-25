@@ -179,7 +179,9 @@ class Navigation extends Component {
         z: this.courseCoordinate()
       }
     });
-    this.scanning = setTimeout(this._randomCourse.bind(this), 60);
+    if (this.scanning) {
+      this.scanning = setTimeout(this._randomCourse.bind(this), 60);
+    }
   }
   updateDestination = e => {
     e.preventDefault();
