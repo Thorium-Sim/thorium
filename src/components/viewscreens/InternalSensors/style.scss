@@ -1,5 +1,5 @@
 .viewscreen-internalSensors {
-  margin-top: 15vh;
+  margin-top: 5vh;
   display: flex;
   align-items: center;
   flex-direction:column;
@@ -11,6 +11,7 @@
     padding-top: 40px;
     font-size: 60px;
     white-space: pre-wrap;
+    max-width: 80%;
   }
   .ship {
     width: 50%;
