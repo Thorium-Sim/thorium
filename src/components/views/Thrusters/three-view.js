@@ -186,7 +186,7 @@ class ThreeView extends Component {
     document
       .getElementById("thrustersMount")
       .appendChild(this.renderer.domElement);
-    this.animate;
+    this.animate();
   }
   animate = () => {
     this.renderer.render(this.scene, this.camera);

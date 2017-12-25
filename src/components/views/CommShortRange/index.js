@@ -380,13 +380,22 @@ class CommShortRange extends Component {
     </Col>*/}
           <Col sm="3">
             <Card className="signalCanvas">
-              <Measure useClone={false} includeMargin={false}>
-                {dimensions => (
-                  <FrequencySignals
-                    dimensions={dimensions}
-                    frequency={this.state.frequency}
-                    amplitude={this.state.amplitude}
-                  />
+              <Measure
+                bounds
+                onResize={contentRect => {
+                  this.setState({ dimensions: contentRect.bounds });
+                }}
+              >
+                {({ measureRef }) => (
+                  <div ref={measureRef} className="signal-right">
+                    {this.state.dimensions && (
+                      <FrequencySignals
+                        dimensions={this.state.dimensions}
+                        frequency={this.state.frequency}
+                        amplitude={this.state.amplitude}
+                      />
+                    )}
+                  </div>
                 )}
               </Measure>
             </Card>
