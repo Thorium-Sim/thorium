@@ -15,7 +15,8 @@ const refetchQueries = [
   "Reactor",
   "Phasers",
   "Shields",
-  "Torpedo"
+  "Torpedo",
+  "Navigation"
 ];
 const ops = {
   updatePowerLevels: gql`
@@ -103,7 +104,7 @@ export class GenericSystemConfig extends Component {
     });
   };
   render() {
-    console.log(this.props.data);
+    console.log(this.props);
     if (
       this.props.data.loading ||
       !this.props.data.systems ||
@@ -182,7 +183,8 @@ export class GenericSystemConfig extends Component {
                     selectedDeck={deck}
                     decks={decks}
                     setSelected={({ deck }) =>
-                      this.setState({ deck, room: null })}
+                      this.setState({ deck, room: null })
+                    }
                   />
                 </Col>
                 <Col sm={{ size: 6 }}>
@@ -230,7 +232,8 @@ export class GenericSystemConfig extends Component {
                       name="power"
                       value={p || ""}
                       onChange={e =>
-                        this.updatePowerLevel(s, i, e.target.value)}
+                        this.updatePowerLevel(s, i, e.target.value)
+                      }
                     />
                   </div>
                 ))}
@@ -239,6 +242,7 @@ export class GenericSystemConfig extends Component {
               <Label>Isochip Config</Label>
             </FormGroup>
             {this.props.children}
+            {this.props.render && this.props.render(s)}
           </div>
         ))}
       </div>
