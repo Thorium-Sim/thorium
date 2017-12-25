@@ -23,7 +23,8 @@ export const CoolantQueries = {
         return {
           systemId: s.id,
           simulatorId: s.simulatorId,
-          name: s.name,
+          name: s.displayName || s.name,
+          type: s.type,
           coolant: s.coolant
         };
       });

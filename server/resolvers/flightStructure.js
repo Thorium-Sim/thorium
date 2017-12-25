@@ -97,6 +97,16 @@ export const FlightStructureMutations = {
   setSimulatorTimelineStep(root, args, context) {
     App.handleEvent(args, "setSimulatorTimelineStep", context);
   },
+  addSimulatorDamageStep(rootValue, params, context) {
+    App.handleEvent(params, "addSimulatorDamageStep", context);
+  },
+  updateSimulatorDamageStep(rootValue, params, context) {
+    App.handleEvent(params, "updateSimulatorDamageStep", context);
+  },
+  removeSimulatorDamageStep(rootValue, params, context) {
+    App.handleEvent(params, "removeSimulatorDamageStep", context);
+  },
+
   // Timeline
   addTimelineStep(root, args, context) {
     App.handleEvent(

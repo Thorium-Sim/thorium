@@ -5,7 +5,7 @@ import { Container, Row, Col, Button, Card } from "reactstrap";
 import Measure from "react-measure";
 import Tour from "reactour";
 
-//import ReactorModel from "./model";
+import ReactorModel from "./model";
 import "./style.css";
 
 const SYSTEMS_SUB = gql`
@@ -67,6 +67,7 @@ const trainingSteps = [
 class ReactorControl extends Component {
   constructor(props) {
     super(props);
+    this.state = {};
     this.internalSub = null;
     this.systemSub = null;
   }
@@ -180,9 +181,18 @@ class ReactorControl extends Component {
           <Col sm={6}>
             <Row>
               <Col sm={12}>
-                <Measure useClone={true} includeMargin={false}>
-                  {dimensions => (
-                    <div>{/* <ReactorModel {...dimensions} />*/}</div>
+                <Measure
+                  bounds
+                  onResize={contentRect => {
+                    this.setState({ dimensions: contentRect.bounds });
+                  }}
+                >
+                  {({ measureRef }) => (
+                    <div ref={measureRef} style={{ height: "500px" }}>
+                      {this.state.dimensions && (
+                        <ReactorModel dimensions={this.state.dimensions} />
+                      )}
+                    </div>
                   )}
                 </Measure>
               </Col>

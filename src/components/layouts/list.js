@@ -1,1 +1,1 @@
-export default ["LayoutCorners", "LayoutDefault", "LayoutJr"];
+export default ["LayoutCorners", "LayoutDefault", "LayoutJr", "LayoutOdyssey"];

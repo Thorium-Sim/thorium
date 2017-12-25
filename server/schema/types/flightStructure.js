@@ -44,6 +44,8 @@ type Simulator {
   decks: [Deck]
   rooms: [Room]
   ship: Ship
+  requiredDamageSteps: [DamageStep]
+  optionalDamageSteps: [DamageStep]
 }
 
 type TemplateSimulator {

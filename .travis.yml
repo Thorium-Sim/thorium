@@ -8,11 +8,10 @@ addons:
     repo_token: $CODECLIMATE_REPO_TOKEN
 install:
   - npm install
-  - npm run build
+  - npm run build-css
 script:
-  - npm run test:client -- --coverage
-  - npm run test:server -- --coverage
-  - npm run lint
+  - npm run test:client -- --coverage --forceExit
+  - npm run test:server -- --coverage --forceExit
 after_success:
   - npm install -g codeclimate-test-reporter
   - codeclimate-test-reporter < coverage/lcov.info

@@ -126,7 +126,11 @@ App.on("deleteFlight", ({ flightId }) => {
   App.clients
     .concat()
     .filter(c => c.flightId === flightId)
-    .forEach(c => c.setFlight(null));
+    .forEach(c => {
+      c.setTraining(false);
+      c.logout();
+      c.setOfflineState(null);
+    });
   flight.simulators.forEach(simId => {
     // Remove all of the systems, inventory, crew, etc.
     aspectList.forEach(aspect => {

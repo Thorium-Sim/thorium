@@ -43,7 +43,7 @@ export function HeatMixin(inheritClass) {
   };
 }
 
-class DamageStep {
+export class DamageStep {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
     this.name = params.name || "generic";
@@ -155,12 +155,14 @@ export class System {
 
     // Add in any required damage steps at the start
     this.requiredDamageSteps
+      .concat(sim.requiredDamageSteps)
       .filter(step => step.args.end !== true)
       .forEach(step => damageSteps.push(step));
 
     // Add in a number of optional steps
     const optionalSteps = defaultOptionalSteps
       .concat(this.optionalDamageSteps)
+      .concat(sim.optionalDamageSteps)
       .filter(step => {
         if (step.name === "damageTeam") {
           return (
@@ -218,28 +220,33 @@ export class System {
     while (damageSteps.length < stepCount && stepIteration < 50) {
       // Ensure we don't infinitely loop
       stepIteration++;
-
       // Grab a random optional step
       const stepIndex = Math.floor(Math.random() * optionalSteps.length);
-      if (!damageSteps.find(d => d.name === optionalSteps[stepIndex].name)) {
-        damageSteps.push(optionalSteps[stepIndex]);
-      } else if (
-        optionalSteps[stepIndex].name === "damageTeam" &&
-        damageSteps.filter(d => d.name === "damageTeam").length === 1
-      ) {
-        // Clear the damage team
-        damageSteps.push({ name: "damageTeam", args: { end: true } });
-        // Add a cleanup team
-        damageSteps.push({
-          name: "damageTeam",
-          args: { end: false, cleanup: true }
-        });
+      if (optionalSteps.length > 0) {
+        if (
+          optionalSteps[stepIndex].name === "generic" ||
+          !damageSteps.find(d => d.name === optionalSteps[stepIndex].name)
+        ) {
+          damageSteps.push(optionalSteps[stepIndex]);
+        } else if (
+          optionalSteps[stepIndex].name === "damageTeam" &&
+          damageSteps.filter(d => d.name === "damageTeam").length === 1
+        ) {
+          // Clear the damage team
+          damageSteps.push({ name: "damageTeam", args: { end: true } });
+          // Add a cleanup team
+          damageSteps.push({
+            name: "damageTeam",
+            args: { end: false, cleanup: true }
+          });
+        }
       }
     }
 
     // Finishing Steps
     // Add in any required damage steps at the end
     this.requiredDamageSteps
+      .concat(sim.requiredDamageSteps)
       .filter(step => step.args.end === true)
       .forEach(step => damageSteps.push(step));
 
