@@ -221,19 +221,21 @@ export class System {
 
       // Grab a random optional step
       const stepIndex = Math.floor(Math.random() * optionalSteps.length);
-      if (!damageSteps.find(d => d.name === optionalSteps[stepIndex].name)) {
-        damageSteps.push(optionalSteps[stepIndex]);
-      } else if (
-        optionalSteps[stepIndex].name === "damageTeam" &&
-        damageSteps.filter(d => d.name === "damageTeam").length === 1
-      ) {
-        // Clear the damage team
-        damageSteps.push({ name: "damageTeam", args: { end: true } });
-        // Add a cleanup team
-        damageSteps.push({
-          name: "damageTeam",
-          args: { end: false, cleanup: true }
-        });
+      if (optionalSteps.length > 0) {
+        if (!damageSteps.find(d => d.name === optionalSteps[stepIndex].name)) {
+          damageSteps.push(optionalSteps[stepIndex]);
+        } else if (
+          optionalSteps[stepIndex].name === "damageTeam" &&
+          damageSteps.filter(d => d.name === "damageTeam").length === 1
+        ) {
+          // Clear the damage team
+          damageSteps.push({ name: "damageTeam", args: { end: true } });
+          // Add a cleanup team
+          damageSteps.push({
+            name: "damageTeam",
+            args: { end: false, cleanup: true }
+          });
+        }
       }
     }
 
