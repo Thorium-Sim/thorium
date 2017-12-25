@@ -8,6 +8,7 @@ type TractorBeam {
   name: String
   state: Boolean
   target: Boolean
+  targetLabel: String
   strength: Float
   stress: Float
   scanning: Boolean

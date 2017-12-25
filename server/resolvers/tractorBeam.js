@@ -27,6 +27,9 @@ export const TractorBeamMutations = {
   },
   setTractorBeamScanning(rootValue, args, context) {
     App.handleEvent(args, "setTractorBeamScanning", context);
+  },
+  setTractorBeamTargetLabel(rootValue, args, context) {
+    App.handleEvent(args, "setTractorBeamTargetLabel", context);
   }
 };
 

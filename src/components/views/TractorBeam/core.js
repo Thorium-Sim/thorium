@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Container } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
+import { InputField } from "../../generic/core";
 
 import "./style.css";
 
@@ -11,6 +12,7 @@ const TRACTORBEAM_SUB = gql`
       id
       state
       target
+      targetLabel
       strength
       stress
       scanning
@@ -52,13 +54,29 @@ class TractorBeamCore extends Component {
   componentWillUnmount() {
     this.tractorBeamSub && this.tractorBeamSub();
   }
+  targetLabel = label => {
+    const tractorBeam = this.props.data.tractorBeam[0];
+    const mutation = gql`
+      mutation TractorBeamTargetLabel($id: ID!, $label: String!) {
+        setTractorBeamTargetLabel(id: $id, label: $label)
+      }
+    `;
+    const variables = {
+      id: tractorBeam.id,
+      label
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   toggleTractor = (which, evt) => {
     const tractorBeam = this.props.data.tractorBeam[0];
-    let mutation,
-      variables = {
-        id: tractorBeam.id,
-        state: evt.target.checked
-      };
+    let mutation;
+    const variables = {
+      id: tractorBeam.id,
+      state: evt.target.checked
+    };
     if (which === "target") {
       mutation = gql`
         mutation TractorBeamTarget($id: ID!, $state: Boolean!) {
@@ -121,6 +139,15 @@ class TractorBeamCore extends Component {
             checked={tractorBeam.state}
           />
         </label>
+        <div>
+          <span>Target Label:</span>
+          <InputField
+            prompt="What is the target label?"
+            onClick={this.targetLabel}
+          >
+            {tractorBeam.targetLabel}
+          </InputField>
+        </div>
         <label>Strength: {Math.round(tractorBeam.strength * 100)}</label>
         <label>
           Stress: {Math.round(this.state.stress * 100)}{" "}
@@ -146,6 +173,7 @@ const TRACTORBEAM_QUERY = gql`
       id
       state
       target
+      targetLabel
       strength
       stress
       scanning

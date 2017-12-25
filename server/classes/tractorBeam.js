@@ -8,6 +8,7 @@ export default class TractorBeam extends System {
     this.name = params.name || "Tractor Beam";
     this.state = params.state || false;
     this.target = params.target || false;
+    this.targetLabel = params.targetLabel || "";
     this.strength = params.strength || 0.0;
     this.stress = params.stress || 0.15;
     this.scanning = params.scanning || false;
@@ -33,6 +34,9 @@ export default class TractorBeam extends System {
   }
   setTarget(tf) {
     this.target = tf;
+  }
+  setTargetLabel(label) {
+    this.targetLabel = label;
   }
   setStrength(perc) {
     this.strength = perc;
