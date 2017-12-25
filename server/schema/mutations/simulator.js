@@ -26,4 +26,8 @@ remoteAccessUpdateCode(simulatorId: ID!, codeId: ID!, state: String!): String
 setSelfDestructTime(simulatorId: ID!, time: Float): String
 setSelfDestructCode(simulatorId: ID!, code: String): String
 setSelfDestructAuto(simulatorId: ID!, auto: Boolean): String
+
+addSimulatorDamageStep(simulatorId: ID!, step: DamageStepInput!): String
+updateSimulatorDamageStep(simulatorId: ID!, step: DamageStepInput!): String
+removeSimulatorDamageStep(simulatorId: ID!, step: ID!):String
 `;

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default ({ shown }) => {
+export default ({ shown, label }) => {
   return (
     <div className={`target ${shown ? "shown" : ""}`}>
       <svg
@@ -21,7 +21,7 @@ export default ({ shown }) => {
           />
         </g>
       </svg>
-      <span>Target</span>
+      <span>{label}</span>
     </div>
   );
 };

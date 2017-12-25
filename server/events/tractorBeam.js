@@ -54,3 +54,11 @@ App.on("setTractorBeamScanning", ({ id, scanning }) => {
     "addCoreFeed"
   );
 });
+App.on("setTractorBeamTargetLabel", ({ id, label }) => {
+  const sys = App.systems.find(s => s.id === id);
+  sys.setTargetLabel(label);
+  pubsub.publish(
+    "tractorBeamUpdate",
+    App.systems.filter(s => s.type === "TractorBeam")
+  );
+});

@@ -14,5 +14,5 @@ updateSystemRooms(systemId: ID!, locations:[ID]): String
 addSystemDamageStep(systemId: ID!, step: DamageStepInput!): String
 updateSystemDamageStep(systemId: ID!, step: DamageStepInput!): String
 removeSystemDamageStep(systemId: ID!, step: ID!):String
-generateDamageReport(systemId: ID!): String
+generateDamageReport(systemId: ID!, steps: Int): String
 `;

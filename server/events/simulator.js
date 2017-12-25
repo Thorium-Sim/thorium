@@ -75,3 +75,18 @@ App.on("setSimulatorTimelineStep", ({ simulatorId, step }) => {
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("addSimulatorDamageStep", ({ simulatorId, step }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  sim.addDamageStep(step);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("updateSimulatorDamageStep", ({ simulatorId, step }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  sim.updateDamageStep(step);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("removeSimulatorDamageStep", ({ simulatorId, step }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  sim.removeDamageStep(step);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});

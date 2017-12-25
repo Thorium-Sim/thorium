@@ -48,7 +48,7 @@ export const SystemsMutations = {
   generateDamageReport(rootValue, params, context) {
     let sys = App.systems.find(s => s.id === params.systemId);
     App.handleEvent(params, "generateDamageReport", context);
-    return sys.generateDamageReport();
+    return sys.generateDamageReport(params.steps);
   },
   requestDamageReport(rootValue, params, context) {
     App.handleEvent(params, "requestDamageReport", context);

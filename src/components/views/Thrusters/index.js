@@ -5,9 +5,9 @@ import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 import { DraggableCore } from "react-draggable";
 import { Button, Row, Col } from "reactstrap";
-//import ThrusterThree from "./three";
+import ThrusterThree from "./three-view";
 import distance from "../../../helpers/distance";
-//import Measure from "react-measure";
+import Measure from "react-measure";
 
 import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.css";
@@ -45,6 +45,7 @@ const ROTATION_CHANGE_SUB = gql`
         pitch
         roll
       }
+
       manualThrusters
       direction {
         x
@@ -376,11 +377,11 @@ gamepadLoop(){
       width = this.refs.dirCirc.getBoundingClientRect().width;
       height = this.refs.dirCirc.getBoundingClientRect().height;
     }
-    /* const direction = {
+    const direction = {
       x: this.state.direction.left,
       y: this.state.direction.top,
       z: this.state.directionFore.left
-    };*/
+    };
     if (!thruster) return <h1>No thruster system</h1>;
     return (
       <div className="cardThrusters">
@@ -432,31 +433,25 @@ gamepadLoop(){
             </div>
           </Col>
           <Col className="col-sm-6">
-            <Row>
-              <div style={{ marginTop: "70%" }} />
-              {/*<Measure useClone={true} includeMargin={false}>
-                {dimensions => (
-                  <div
-                    id="threeThruster"
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0
-                    }}
-                  >
-                    {dimensions.width > 0 && (
-                      <ThrusterThree
-                        dimensions={dimensions}
-                        direction={direction}
-                        rotation={thruster.rotation}
-                      />
-                    )}
-                  </div>
-                )}
-              </Measure>*/}
-            </Row>
+            <Measure
+              bounds
+              onResize={contentRect => {
+                this.setState({ dimensions: contentRect.bounds });
+              }}
+            >
+              {({ measureRef }) => (
+                <div ref={measureRef} style={{ height: "100%" }}>
+                  {this.state.dimensions && (
+                    <ThrusterThree
+                      direction={direction}
+                      simulatorId={this.props.simulator.id}
+                      dimensions={this.state.dimensions}
+                      rotation={thruster.rotation}
+                    />
+                  )}
+                </div>
+              )}
+            </Measure>
             {gamepad ? (
               <Row>
                 <Col className="col-sm-6 col-sm-offset-3">

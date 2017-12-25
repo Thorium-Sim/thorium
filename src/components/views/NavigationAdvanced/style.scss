@@ -136,6 +136,9 @@ $circleRadius: 100px;
   position: relative;
   height: $circleRadius*2 + $arrowSize*4;
   width: $circleRadius*2 + $arrowSize*2;
+  label {
+    pointer-events: none;
+  }
   .arrow {
     cursor: pointer;
     position: absolute;
