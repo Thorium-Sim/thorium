@@ -12,7 +12,6 @@ install:
 script:
   - npm run test:client -- --coverage --forceExit
   - npm run test:server -- --coverage --forceExit
-  - npm run lint
 after_success:
   - npm install -g codeclimate-test-reporter
   - codeclimate-test-reporter < coverage/lcov.info
