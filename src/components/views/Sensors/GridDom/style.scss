@@ -63,11 +63,12 @@
     border: solid 1px gray;
     p {
       border-top: solid 1px gray;
-      line-height: 1;
-      padding: 1px;
+      color: black;
+      line-height: 0.7;
+      padding: 0px 3px;
       cursor: pointer;
       &:hover {
-        background-color: lightgray;
+        background-color: #555;
       }
     }
   }

@@ -472,22 +472,20 @@ class GridCore extends Component {
             >
               Freeze
             </Button>
-            <FormGroup check>
-              <Label check>
-                Ask for speed
-                <Input
-                  type="checkbox"
-                  checked={this.state.askForSpeed}
-                  onClick={evt => {
-                    this.setState({ askForSpeed: evt.target.checked });
-                    localStorage.setItem(
-                      "thorium-core-sensors-askforspeed",
-                      evt.target.checked ? "yes" : "no"
-                    );
-                  }}
-                />
-              </Label>
-            </FormGroup>
+            <label>
+              Ask for speed{" "}
+              <input
+                type="checkbox"
+                checked={this.state.askForSpeed}
+                onClick={evt => {
+                  this.setState({ askForSpeed: evt.target.checked });
+                  localStorage.setItem(
+                    "thorium-core-sensors-askforspeed",
+                    evt.target.checked ? "yes" : "no"
+                  );
+                }}
+              />
+            </label>
             <Nudge
               sensor={sensors.id}
               client={this.props.client}
