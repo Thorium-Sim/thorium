@@ -15,6 +15,7 @@ export default class ErrorBoundary extends Component {
     // You can also log error messages to an error reporting service here
   }
   refresh() {
+    localStorage.clear();
     window.location.reload();
   }
   render() {

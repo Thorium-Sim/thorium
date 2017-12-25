@@ -65,6 +65,7 @@ class CardHolder extends Component {
                 color="primary"
                 size="lg"
                 onClick={() => {
+                  localStorage.clear();
                   window.location.reload();
                 }}
               >
@@ -114,11 +115,9 @@ const Settings = props => {
   };
   return (
     <div
-      className={`settingsBall ${props.station.login
-        ? ""
-        : props.clientObj.loginState} ${props.clientObj.offlineState
-        ? "offline"
-        : ""}`}
+      className={`settingsBall ${
+        props.station.login ? "" : props.clientObj.loginState
+      } ${props.clientObj.offlineState ? "offline" : ""}`}
     >
       <div className={`icon ${props.className}`} />
       <ul className="options">

@@ -74,6 +74,7 @@ class LayoutOdyssey extends Component {
                       color="primary"
                       size="lg"
                       onClick={() => {
+                        localStorage.clear();
                         window.location.reload();
                       }}
                     >
