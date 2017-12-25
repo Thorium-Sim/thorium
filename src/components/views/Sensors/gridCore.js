@@ -4,15 +4,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import ContactContextMenu from "./contactContextMenu";
-import {
-  Row,
-  Col,
-  Container,
-  Button,
-  Input,
-  Label,
-  FormGroup
-} from "reactstrap";
+import { Row, Col, Container, Button, Input } from "reactstrap";
 import Grid from "./GridDom";
 import Nudge from "./nudge";
 import { Asset } from "../../../helpers/assets";

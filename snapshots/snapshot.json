@@ -2575,7 +2575,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -2601,7 +2601,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -2628,7 +2628,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -2728,7 +2728,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -2803,7 +2803,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -2858,7 +2858,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -2904,7 +2904,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -2944,7 +2944,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -2981,7 +2981,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -3018,7 +3018,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -3428,7 +3428,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -3457,7 +3457,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -3498,7 +3498,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -3529,7 +3529,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -3560,7 +3560,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -3593,7 +3593,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -3621,7 +3621,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -3652,7 +3652,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -3680,7 +3680,7 @@
 						"powerLevels": []
 					},
 					"damage": {
-						"damaged": true,
+						"damaged": false,
 						"report": null,
 						"requested": false,
 						"reactivationCode": null,
@@ -3707,7 +3707,7 @@
 						"powerLevels": []
 					},
 					"damage": {
-						"damaged": true,
+						"damaged": false,
 						"report": null,
 						"requested": false,
 						"reactivationCode": null,
@@ -3737,7 +3737,7 @@
 				"powerLevels": []
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -3761,7 +3761,7 @@
 			"name": "Coolant",
 			"displayName": "Coolant",
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"report": null,
 				"requested": false,
 				"reactivationCode": null,
@@ -3790,7 +3790,7 @@
 				]
 			},
 			"damage": {
-				"damaged": true,
+				"damaged": false,
 				"requested": false,
 				"reactivationCode": null,
 				"reactivationRequester": null,

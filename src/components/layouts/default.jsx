@@ -6,8 +6,8 @@ import ErrorBoundary from "../../helpers/errorBoundary";
 
 class LayoutDefault extends Component {
 	render() {
-    let { simulator, station, cardName, changeCard, clientObj } = this.props;
-    const { login: stationLogin, name: stationName, cards = [] } = station;
+    let {station, cardName, clientObj } = this.props;
+    const { login: stationLogin, cards = [] } = station;
 		if (clientObj.loginState === "logout" && stationLogin === false) {
       cardName = "Login";
     }
