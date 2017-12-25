@@ -6,6 +6,13 @@ sudo: false
 addons:
   code_climate:
     repo_token: $CODECLIMATE_REPO_TOKEN
+install:
+  - npm install
+  - npm run build
+script:
+  - npm run test:client -- --coverage
+  - npm run test:server -- --coverage
+  - npm run lint
 after_success:
   - npm install -g codeclimate-test-reporter
   - codeclimate-test-reporter < coverage/lcov.info
