@@ -124,7 +124,7 @@ class CargoControlCore extends Component {
     let { deck, room } = this.state;
     return (
       <div className="cargo-core">
-        <Input size="sm" onChange={this.findInv.bind(this)} />
+        <Input bSize="sm" onChange={this.findInv.bind(this)} />
         {this.state.findInventory && (
           <div className="find-overlay">
             {this.state.findInventory.map(i => (
