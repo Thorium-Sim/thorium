@@ -396,7 +396,11 @@ class GridDom extends Component {
                     opacity={
                       this.props.pings ? locations[contact.id].opacity : 1
                     }
-                    mouseover={hoverContact}
+                    mouseover={e => {
+                      if (locations[contact.id].opacity > 0.25) {
+                        hoverContact(e);
+                      }
+                    }}
                   />
                 )
             )}
