@@ -222,3 +222,11 @@ App.on("cancelSensorScan", ({ id, scan }) => {
     App.systems.filter(s => s.type === "Sensors")
   );
 });
+App.on("toggleSensorsAutoTarget", ({ id, target }) => {
+  const sensors = App.systems.find(sys => sys.id === id);
+  sensors.setAutoTarget(target);
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});

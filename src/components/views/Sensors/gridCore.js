@@ -51,6 +51,7 @@ const SENSOR_SUB = gql`
     sensorsUpdate(simulatorId: $id, domain: "external") {
       id
       type
+      autoTarget
       armyContacts {
         id
         name
@@ -405,6 +406,22 @@ class GridCore extends Component {
       selectedContact
     });
   }
+  autoTarget = e => {
+    const mutation = gql`
+      mutation SensorsAutoTarget($id: ID!, $target: Boolean!) {
+        toggleSensorsAutoTarget(id: $id, target: $target)
+      }
+    `;
+    const sensors = this.props.data.sensors[0];
+    const variables = {
+      id: sensors.id,
+      target: e.target.checked
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading) return <p>Loading...</p>;
     if (!this.props.data.sensors[0]) return <p>No Sensor Grid</p>;
@@ -469,18 +486,28 @@ class GridCore extends Component {
             >
               Freeze
             </Button>
+            <div>
+              <label>
+                Ask for speed{" "}
+                <input
+                  type="checkbox"
+                  checked={this.state.askForSpeed}
+                  onClick={evt => {
+                    this.setState({ askForSpeed: evt.target.checked });
+                    localStorage.setItem(
+                      "thorium-core-sensors-askforspeed",
+                      evt.target.checked ? "yes" : "no"
+                    );
+                  }}
+                />
+              </label>
+            </div>
             <label>
-              Ask for speed{" "}
+              Add to targeting{" "}
               <input
                 type="checkbox"
-                checked={this.state.askForSpeed}
-                onClick={evt => {
-                  this.setState({ askForSpeed: evt.target.checked });
-                  localStorage.setItem(
-                    "thorium-core-sensors-askforspeed",
-                    evt.target.checked ? "yes" : "no"
-                  );
-                }}
+                checked={sensors.autoTarget}
+                onClick={this.autoTarget}
               />
             </label>
             <Nudge
@@ -599,6 +626,7 @@ const GRID_QUERY = gql`
     sensors(simulatorId: $simulatorId, domain: "external") {
       id
       type
+      autoTarget
       armyContacts {
         id
         name

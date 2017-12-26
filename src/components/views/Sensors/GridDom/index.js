@@ -251,6 +251,7 @@ class GridDom extends Component {
   triggerUpdate = speed => {
     // Send the update to the server
     const { movingContact, locations } = this.state;
+    if (!locations[movingContact]) return;
     const { destination } = locations[movingContact];
     this.setState({
       movingContact: false,
@@ -397,7 +398,10 @@ class GridDom extends Component {
                       this.props.pings ? locations[contact.id].opacity : 1
                     }
                     mouseover={e => {
-                      if (locations[contact.id].opacity > 0.25) {
+                      if (
+                        hoverContact &&
+                        locations[contact.id].opacity > 0.25
+                      ) {
                         hoverContact(e);
                       }
                     }}
