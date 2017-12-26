@@ -1,17 +1,9 @@
-import React from "react";
+import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
-import {
-  Input,
-  Row,
-  Col,
-  FormGroup,
-  Form,
-  Label,
-  Card,
-  CardBody,
-  Button
-} from "reactstrap";
+import { Input, Row, Col, FormGroup, Label, Button } from "reactstrap";
+import { Asset } from "../../../helpers/assets";
+import FileExplorer from "../TacticalMap/fileExplorer";
 
 const ICON_QUERY = gql`
   query AssetFolders($names: [String]) {
@@ -27,190 +19,118 @@ const ICON_QUERY = gql`
   }
 `;
 
-const ContactContextMenu = props => {
-  //Get the position
-  const { contact, closeMenu } = props;
-  return (
-    <div className="contextMenu">
-      <Card>
-        <CardBody>
-          <Form>
-            <Row style={{ margin: 0 }}>
-              <Col sm={12}>
-                <FormGroup>
-                  <Label for="iconSelect" sm={2}>
-                    Label
-                  </Label>
-                  <Input
-                    type="text"
-                    name="label"
-                    id="labelText"
-                    defaultValue={contact.name}
-                    onChange={e => {
-                      const contact = props.contact;
-                      props.updateArmyContact(contact, "name", e.target.value);
-                    }}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="iconSelect" sm={2}>
-                    Icon
-                  </Label>
-                  <Input
-                    type="select"
-                    name="select"
-                    id="iconSelect"
-                    defaultValue={contact.icon}
-                    onChange={e => {
-                      const contact = props.contact;
-                      props.updateArmyContact(contact, "icon", e.target.value);
-                    }}
-                  >
-                    {!props.data.loading &&
-                      props.data.assetFolders
-                        .find(f => f.name === "Icons")
-                        .containers.map(icon => (
-                          <option key={icon.id} value={icon.fullPath}>
-                            {icon.name}
-                          </option>
-                        ))}
-                  </Input>
-                </FormGroup>
-              </Col>
-              <Col sm={12}>
-                <FormGroup>
-                  <Label for="pictureSelect" sm={2}>
-                    Picture
-                  </Label>
-                  <Input
-                    type="select"
-                    name="select"
-                    id="pictureSelect"
-                    defaultValue={contact.picture}
-                    onChange={e => {
-                      const contact = props.contact;
-                      props.updateArmyContact(
-                        contact,
-                        "picture",
-                        e.target.value
-                      );
-                    }}
-                  >
-                    {!props.data.loading &&
-                      props.data.assetFolders
-                        .find(f => f.name === "Pictures")
-                        .containers.map(picture => (
-                          <option key={picture.id} value={picture.fullPath}>
-                            {picture.name}
-                          </option>
-                        ))}
-                  </Input>
-                </FormGroup>
-              </Col>
-              <Col sm={12}>
-                <FormGroup>
-                  <Label for="sizeRange" sm={2}>
-                    Size
-                  </Label>
-                  <input
-                    type="range"
-                    id="sizeRange"
-                    min="0.1"
-                    defaultValue={contact.size}
-                    max="5"
-                    step="0.1"
-                    onChange={e => {
-                      const contact = props.contact;
-                      props.updateArmyContact(contact, "size", e.target.value);
-                    }}
-                  />
-                </FormGroup>
-              </Col>
-              {/*<Col sm={4}>
-                <FormGroup>
-                  <Label for="infraredCheckbox" sm={2}>
-                    Infrared
-                  </Label>
-                  <FormGroup check>
-                    <Label check>
-                      <Input
-                        type="checkbox"
-                        id="infraredCheckbox"
-                        defaultChecked={contact.infrared}
-                        onChange={e => {
-                          const contact = props.contact;
-                          props.updateArmyContact(
-                            contact,
-                            "cloaked",
-                            e.target.checked
-                          );
-                        }}
-                      />{" "}
-                      Shown
-                    </Label>
-                  </FormGroup>
-                </FormGroup>
-              </Col>
-              <Col sm={4}>
-                <FormGroup>
-                  <Label for="cloakedCheckbox" sm={2}>
-                    Cloaked
-                  </Label>
-                  <FormGroup check>
-                    <Label check>
-                      <Input
-                        type="checkbox"
-                        id="cloakedCheckbox"
-                        defaultChecked={contact.cloaked}
-                        onChange={e => {
-                          const contact = props.contact;
-                          props.updateArmyContact(
-                            contact,
-                            "cloaked",
-                            e.target.checked
-                          );
-                        }}
-                      />{" "}
-                      Invisible
-                    </Label>
-                  </FormGroup>
-                </FormGroup>
-              </Col>
-              <Col sm={4}>
-                <FormGroup>
-                  <Label for="color" sm={2}>
-                    Color
-                  </Label>
-                  <FormGroup>
-                    <Label>
-                      <Input
-                        type="color"
-                        id="colorInput"
-                        style={{ width: "20px", padding: 0 }}
-                        defaultValue={contact.color}
-                        onChange={e => {
-                          const contact = props.contact;
-                          props.updateArmyContact(
-                            contact,
-                            "color",
-                            e.target.value
-                          );
-                        }}
-                      />{" "}
-                    </Label>
-                  </FormGroup>
-                </FormGroup>
-              </Col>*/}
-            </Row>
-          </Form>
-          <Button color="info" size="sm" onClick={closeMenu}>
-            Close
-          </Button>
-        </CardBody>
-      </Card>
-    </div>
-  );
-};
+class ContactContextMenu extends Component {
+  state = {};
+  render() {
+    //Get the position
+    const { pickingIcon, pickingPicture } = this.state;
+    const { contact, closeMenu, updateArmyContact } = this.props;
+    return (
+      <div className="contextMenu">
+        <h5>Contact Config</h5>
+        {pickingIcon && (
+          <FileExplorer
+            directory="/Sensor Contacts/Icons"
+            selectedFiles={[contact.icon]}
+            onClick={(e, container) => {
+              this.setState({ pickingIcon: false });
+              updateArmyContact(contact, "icon", container.fullPath);
+            }}
+          />
+        )}
+        {pickingPicture && (
+          <FileExplorer
+            directory="/Sensor Contacts/Pictures"
+            selectedFiles={[contact.picture]}
+            onClick={(e, container) => {
+              this.setState({ pickingPicture: false });
+              updateArmyContact(contact, "picture", container.fullPath);
+            }}
+          />
+        )}
+        {!pickingIcon &&
+          !pickingPicture && (
+            <div>
+              <FormGroup>
+                <Row>
+                  <Col sm={2}>
+                    <Label for="iconSelect">Label</Label>
+                  </Col>
+                  <Col sm={10}>
+                    <Input
+                      type="text"
+                      name="label"
+                      id="labelText"
+                      defaultValue={contact.name}
+                      onChange={e => {
+                        updateArmyContact(contact, "name", e.target.value);
+                      }}
+                    />
+                  </Col>
+                </Row>
+              </FormGroup>
+              <FormGroup>
+                <Row>
+                  <Col sm={2}>
+                    <Label for="iconSelect">Icon</Label>
+                  </Col>
+                  <Col sm={2}>
+                    <Asset asset={contact.icon}>
+                      {({ src }) => (
+                        <img
+                          src={src}
+                          onClick={() => this.setState({ pickingIcon: true })}
+                        />
+                      )}
+                    </Asset>
+                  </Col>
+                </Row>
+              </FormGroup>
+              <FormGroup>
+                <Row>
+                  <Col sm={2}>
+                    <Label for="iconSelect">Picture</Label>
+                  </Col>
+                  <Col sm={2}>
+                    <Asset asset={contact.picture}>
+                      {({ src }) => (
+                        <img
+                          style={{ width: "100%" }}
+                          src={src}
+                          onClick={() =>
+                            this.setState({ pickingPicture: true })
+                          }
+                        />
+                      )}
+                    </Asset>
+                  </Col>
+                </Row>
+              </FormGroup>
+              <FormGroup>
+                <Label for="sizeRange" sm={2}>
+                  Size
+                </Label>
+                <input
+                  type="range"
+                  id="sizeRange"
+                  min="0.1"
+                  defaultValue={contact.size}
+                  max="5"
+                  step="0.1"
+                  onChange={e => {
+                    updateArmyContact(contact, "size", e.target.value);
+                  }}
+                />
+              </FormGroup>
+            </div>
+          )}
+        <Button color="info" size="sm" onClick={closeMenu}>
+          Close
+        </Button>
+      </div>
+    );
+  }
+}
 
 export default graphql(ICON_QUERY, {
   options: () => ({ variables: { names: ["Icons", "Pictures"] } })

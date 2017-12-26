@@ -135,7 +135,7 @@ class GridCore extends Component {
     this.pingSub && this.pingSub();
   }
   componentDidMount() {
-    if (!this.state.dimensions) {
+    if (!this.state.dimensions && ReactDOM.findDOMNode(this)) {
       const domNode = ReactDOM.findDOMNode(this).querySelector("#threeSensors");
       if (domNode) {
         this.setState({
@@ -145,6 +145,7 @@ class GridCore extends Component {
     }
   }
   componentDidUpdate() {
+    if (!ReactDOM.findDOMNode(this)) return;
     const domNode = ReactDOM.findDOMNode(this).querySelector("#threeSensors");
     if (
       !this.state.dimensions ||
@@ -351,7 +352,7 @@ class GridCore extends Component {
     const obj = {
       left: left - outerLeft + 20,
       top: top - outerTop,
-      contact: contact
+      contact: contact.id
     };
     this.setState({
       contextContact: obj
@@ -570,7 +571,9 @@ class GridCore extends Component {
               <ContactContextMenu
                 closeMenu={this._closeContext.bind(this)}
                 updateArmyContact={this._updateArmyContact.bind(this)}
-                contact={contextContact.contact}
+                contact={sensors.armyContacts.find(
+                  c => c.id === contextContact.contact
+                )}
                 x={contextContact.left}
                 y={0}
               />
