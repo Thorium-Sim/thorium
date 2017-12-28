@@ -50,7 +50,8 @@ App.on("processedData", ({ id, simulatorId, domain, data }) => {
       sys => sys.simulatorId === simulatorId && sys.domain === domain
     );
   }
-  system && system.processedDatad(data);
+  const simulator = App.simulators.find(s => s.id === system.simulatorId);
+  system && system.processedDatad(data.replace(/#SIM/gi, simulator.name));
   pubsub.publish(
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")
@@ -76,7 +77,16 @@ App.on("setPresetAnswers", ({ simulatorId, domain, presetAnswers }) => {
   const system = App.systems.find(
     sys => sys.simulatorId === simulatorId && sys.domain === domain
   );
-  system && system.setPresetAnswers(presetAnswers);
+  const simulator = App.simulators.find(s => s.id === system.simulatorId);
+  system &&
+    system.setPresetAnswers(
+      presetAnswers.map(p => {
+        return {
+          label: p.label.replace(/#SIM/gi, simulator.name),
+          value: p.value.replace(/#SIM/gi, simulator.name)
+        };
+      })
+    );
   pubsub.publish(
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")

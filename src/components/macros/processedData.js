@@ -14,7 +14,10 @@ export default ({ updateArgs, args, client }) => {
         <option value="external">External</option>
         <option value="internal">Internal</option>
       </Input>
-      <Label>Data</Label>
+      <Label>
+        Data{" "}
+        <small>Use #SIM in your message for the name of the simulator</small>
+      </Label>
       <Input
         type="textarea"
         rows={8}

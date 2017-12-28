@@ -29,7 +29,9 @@ export default ({ updateArgs, args, client }) => {
           </option>
         ))}
       </Input>
-      <Label>Config</Label>
+      <Label>
+        Config <small>Use #SIM for the name of the simulator</small>
+      </Label>
       {(() => {
         if (args.component && configs.indexOf(`${args.component}Config`) > -1) {
           const ConfigComponent = ViewscreenCards[`${args.component}Config`];
