@@ -69,7 +69,8 @@ export const TypingField = ({
   value,
   rows,
   input,
-  controlled
+  controlled,
+  placeholder
 }) => {
   const compStyle = Object.assign(
     {
@@ -87,6 +88,7 @@ export const TypingField = ({
       return (
         <input
           type="text"
+          placeholder={placeholder}
           className={`typing-field ${className}`}
           onChange={onChange}
           onBlur={onBlur}
@@ -98,6 +100,7 @@ export const TypingField = ({
     return (
       <input
         type="text"
+        placeholder={placeholder}
         className={`typing-field ${className}`}
         onChange={onChange}
         onBlur={onBlur}
@@ -110,6 +113,7 @@ export const TypingField = ({
     return (
       <textarea
         type="text"
+        placeholder={placeholder}
         className={`typing-field ${className}`}
         rows={rows}
         onChange={onChange}

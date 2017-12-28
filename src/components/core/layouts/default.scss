@@ -85,6 +85,9 @@
     grid-area: remoteAccess;
   }
   .ProbeNetworkCore {
-    grid-area: probeNetwork
+    grid-area: probeNetwork;
+  }
+  .ExtrasCore {
+    grid-area: extras;
   }
 }
