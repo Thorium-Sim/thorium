@@ -8,6 +8,7 @@ type Reactor implements SystemInterface{
   stealthFactor: Float
   power: Power
   heat: Float
+  heatRate: Float
   coolant: Float
   damage: Damage
   #One of 'reactor' or 'battery'

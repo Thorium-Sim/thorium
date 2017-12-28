@@ -23,7 +23,10 @@ export default ({ updateArgs, args, client }) => {
     <FormGroup className="macro-sendLongRangeMessage">
       <Label>Sender</Label>
       <Input type="text" value={args.sender} onChange={updateSender} />
-      <Label>Message</Label>
+      <Label>
+        Message{" "}
+        <small>Use #SIM in your message for the name of the simulator</small>
+      </Label>
       <Input type="textarea" value={args.message} onChange={lrmText} />
     </FormGroup>
   );

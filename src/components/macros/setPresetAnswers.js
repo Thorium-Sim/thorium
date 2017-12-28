@@ -36,7 +36,8 @@ export default ({ updateArgs = () => {}, args, client, preview }) => {
         <option value="internal">Internal</option>
       </Input>
       <Label>
-        Answers <small>Separate labels from answers with a semicolon</small>
+        Answers <small>Separate labels from answers with a semicolon</small>{" "}
+        <small>Use #SIM in your message for the name of the simulator</small>
       </Label>
       <Input
         type="textarea"
@@ -47,11 +48,11 @@ export default ({ updateArgs = () => {}, args, client, preview }) => {
       />
       <Label>Preview</Label>
       <Input type="select">
-        {(args.presetAnswers || []).map(a =>
+        {(args.presetAnswers || []).map(a => (
           <option key={a.value}>
             {a.label} - {a.value}
           </option>
-        )}
+        ))}
       </Input>
     </FormGroup>
   );

@@ -140,26 +140,7 @@ App.on("changePower", ({ systemId, power }) => {
 });
 App.on("changeSystemPowerLevels", ({ systemId, powerLevels }) => {
   const sys = App.systems.find(s => s.id === systemId);
-  console.log(
-    App.systems
-      .filter(s => s.simulatorId === sys.simulatorId)
-      .map(s => ({
-        name: s.name,
-        type: s.type,
-        powerLevels: s.power.powerLevels
-      }))
-  );
-  console.log("\n");
   sys.setPowerLevels(powerLevels);
-  console.log(
-    App.systems
-      .filter(s => s.simulatorId === sys.simulatorId)
-      .map(s => ({
-        name: s.name,
-        type: s.type,
-        powerLevels: s.power.powerLevels
-      }))
-  );
   sendUpdate(sys);
 });
 App.on("requestDamageReport", ({ systemId }) => {
@@ -192,9 +173,9 @@ App.on("systemReactivationCodeResponse", ({ systemId, response }) => {
     simulatorId: sys.simulatorId,
     station: sys.damage.reactivationRequester,
     title: "Reactivation Code",
-    body: `Reactivation Code for ${sys.displayName || sys.name} was ${response
-      ? "Accepted"
-      : "Denied"}`,
+    body: `Reactivation Code for ${sys.displayName || sys.name} was ${
+      response ? "Accepted" : "Denied"
+    }`,
     color: response ? "success" : "danger"
   });
   sys.reactivationCodeResponse(response);

@@ -148,6 +148,7 @@ class GridCore extends Component {
   componentDidUpdate() {
     if (!ReactDOM.findDOMNode(this)) return;
     const domNode = ReactDOM.findDOMNode(this).querySelector("#threeSensors");
+    if (!domNode) return;
     if (
       !this.state.dimensions ||
       this.state.dimensions.width !== domNode.getBoundingClientRect().width

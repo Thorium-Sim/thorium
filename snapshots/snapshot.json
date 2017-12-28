@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 283,
+	"_eventsCount": 289,
 	"simulators": [
 		{
 			"id": "test",
@@ -26,7 +26,9 @@
 				"selfDestructAuto": false,
 				"remoteAccessCodes": [],
 				"extraSystems": []
-			}
+			},
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": []
 		},
 		{
 			"id": "83a4c0e2-2b67-415c-a468-4af558d403db",
@@ -53,7 +55,9 @@
 				"selfDestructAuto": false,
 				"remoteAccessCodes": [],
 				"extraSystems": []
-			}
+			},
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": []
 		},
 		{
 			"id": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
@@ -80,7 +84,9 @@
 				"selfDestructAuto": false,
 				"remoteAccessCodes": [],
 				"extraSystems": []
-			}
+			},
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": []
 		},
 		{
 			"id": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
@@ -107,7 +113,9 @@
 				"selfDestructAuto": false,
 				"remoteAccessCodes": [],
 				"extraSystems": []
-			}
+			},
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": []
 		}
 	],
 	"stationSets": [
@@ -1001,60 +1009,27 @@
 		{
 			"timeline": [
 				{
-					"id": "168e86c9-dcf2-41bc-a16b-791310ce443e",
+					"id": "7cd5cf3d-1fd5-45fa-a40a-7a1767e95214-initial",
 					"class": "TimelineStep",
 					"name": "Initialize",
 					"description": "Initializes the mission",
-					"order": "0",
+					"order": 0,
 					"timelineItems": [
 						{
-							"id": "3e2a6732-37bc-4fc9-b149-f3114290e7dc",
-							"name": "Create Simulator: 3e2a6732-37bc-4fc9-b149-f3114290e7dc",
-							"type": "event",
-							"event": "createSimulator",
-							"args": "{\"name\":\"USS Voyager\"}",
-							"delay": 0
-						}
-					]
-				}
-			],
-			"class": "Mission",
-			"id": "297c4aa8-da9e-48be-8117-cfaed0d5e80c",
-			"name": "Stormfront",
-			"description": ""
-		},
-		{
-			"timeline": [
-				{
-					"id": "ecf57e57-ac90-4f00-bc21-e9b68afffc4b-initial",
-					"class": "TimelineStep",
-					"name": "Initialize",
-					"description": "Initializes the mission",
-					"order": "0",
-					"timelineItems": [
-						{
-							"id": "965735ca-d88b-43c9-bcdc-35dd2e6d5706",
+							"id": "8b72ea85-eff8-4904-86d1-954765da48cf",
 							"name": "Sensor Presets",
 							"type": "event",
 							"event": "setPresetAnswers",
-							"args": "{\"presetAnswers\":[{\"label\":\"CLEAR SPACE\",\"value\":\"THIS VESSEL IS CURRENTLY WITHIN CLEAR SPACE.\"},{\"label\":\"APPROCHING BORDER\",\"value\":\"THIS VESSEL IS APPROCHING THE NEW EARTH BORDER RECOMMEND FULL STOP.\"},{\"label\":\"STOPEPD AT BORDER\",\"value\":\"THIS VESSEL HAS STOPED AT THE NEW EARTH BORDER, FOREWARD SCANS PROGRESSING.\"},{\"label\":\"USS SEWARD COMING\",\"value\":\"DETECTING THE USS SEWARD APROCHNIG THIS VESSEL, ETA 3 MINUTES.\"},{\"label\":\"ANOTHER SHIP?\",\"value\":\"DECTECING A NEW EARTH SHIP DECLOAKING, REGESTRY NUMBER 062458 THE SHIP IS MATCHING SPEED WITH THE USS SEWARD.\"},{\"label\":\"SHIP FIRING...\",\"value\":\"NEW EARTH SHIP 062458 IS ARMING AND FIREING WEAPONS ON THE USS SEWARD.\"},{\"label\":\"SEWARD DESTROIED\",\"value\":\"USS SEWARD HAS BEEN DESTROED.\"},{\"label\":\"CLEAR SPACE\",\"value\":\"CLEAR SPACE AHEAD. \"},{\"label\":\"NEW EARTH SHIP\",\"value\":\"NEW EARTH CRUSER DECLOAKING. SHIP'S REGESTRAY NUMBER IS 062458.\"},{\"label\":\"NEW EARTH LEAVES\",\"value\":\"THE NEW EARTH SHIP IS TURNING AND LEAVING THE AREA.\"},{\"label\":\"KLINGON SHIPS DECLOAKING\",\"value\":\"WARRNING! 3 KLINGON WAR SHIPS HAVE DECLOAKED ON THE OTHER SIDE OF THE NEW EARTH BORDER.\"},{\"label\":\"KLINGON SHIPS LEAVES\",\"value\":\"KLINGON SHIP ARE CLOAKING AND LEAVING THE AREA.\"},{\"label\":\"SATELLITES DECTING\",\"value\":\"WARRNING! THIS VESSEL IS ABOUT TO CROSS INTO THE SCANING RANGE OF A THOR 88 SATELLITE.\"},{\"label\":\"CLEAR SPACE\",\"value\":\"CLEAR SPACE AHEAD\"},{\"label\":\"ORBIT OF NEW EARTH\",\"value\":\"THIS VESSEL IS IN STABLE ORBIT OF NEW EARTH.\"},{\"label\":\"EMBASSY FOUND\",\"value\":\"FEDERATION EMBASY FOUND, CONN OFFICER MUST PUT IN THE FOLLOWING CORDANATES IN ORDER TO BE IN TRANSPORTER RANGE:  X: 928.33 Y: 591.12 Z: 110.09\"},{\"label\":\"TRANSPORTS IN PROGRESS\",\"value\":\"FEDERATION EMBASY IS NOW IN TRASNSPORTER RANGE, TRANSPORTS MAY BEGIN.\"},{\"label\":\"NEW EARTH FIGHTER\",\"value\":\"NEW EARTH FIGHTER ON APPROCH, THIS VESSEL WILL BE DECTCED IN APPROX. 60 SECONDS\"},{\"label\":\"FIGHTER SCANS\",\"value\":\"NEW EATH FIGHTER IS SCANING THIS VESSEL\"},{\"label\":\"FIGHTER FLEES\",\"value\":\"NEW EARTH FIGHTER IS CHANGING COURSE TO AVOID THIS VESSEL\"},{\"label\":\"FIGHTERS LAUNCHING.\",\"value\":\"WARNING! MANY NEW EARTH FIGHTERS ARE LAUNCING FROM THE SURFACE.\"},{\"label\":\"INCOMMING TORPEDOS\",\"value\":\"WARNING! INCOMMING TORPEDOS, TORPEDOS WILL IMPACT THIS VESSEL IN APPROX. 10 SECONDS\"},{\"label\":\"BORDER ZONE\",\"value\":\"THIS VESSEL IS APPROCING THE FEDERATION BORDER\"},{\"label\":\"FEDERATION SPACE\",\"value\":\"THIS VESSEL HAS ENTERED FEDERATION SPACE\"}],\"domain\":\"external\"}",
-							"delay": 0
-						},
-						{
-							"id": "7974d528-0137-4138-bec8-6b01aace5626",
-							"name": "Sensor Icons",
-							"type": "event",
-							"event": "setArmyContacts",
-							"args": "{\"domain\":\"external\",\"armyContacts\":[{\"id\":\"fb454b24-7a5e-43fa-bad0-1e7067077334\",\"name\":\"Army Contact\",\"icon\":\"/Sensor Contacts/Icons/Satellite\",\"picture\":\"/Sensor Contacts/Pictures/Default\",\"size\":1,\"color\":\"#0f0\",\"infrared\":false,\"cloaked\":false,\"destroyed\":false}]}",
+							"args": "{\"domain\":\"external\",\"presetAnswers\":[{\"label\":\"Test\",\"value\":\" This is a test. My Name is #SIM\"}]}",
 							"delay": 0
 						}
 					]
 				}
 			],
 			"class": "Mission",
-			"id": "ecf57e57-ac90-4f00-bc21-e9b68afffc4b",
-			"name": "Midnight Rescue",
-			"description": "A mission about evacuating an embassy"
+			"id": "7cd5cf3d-1fd5-45fa-a40a-7a1767e95214",
+			"name": "Test",
+			"description": ""
 		}
 	],
 	"systems": [
@@ -1324,6 +1299,7 @@
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 0.2,
+			"cooling": false,
 			"type": "Engine",
 			"on": false,
 			"speeds": [
@@ -1356,8 +1332,7 @@
 			"speed": -1,
 			"useAcceleration": true,
 			"speedFactor": 1250,
-			"acceleration": 0,
-			"cooling": false
+			"acceleration": 0
 		},
 		{
 			"id": "test-engine-warp",
@@ -1392,6 +1367,7 @@
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 0.3,
+			"cooling": false,
 			"type": "Engine",
 			"on": true,
 			"speeds": [
@@ -1449,8 +1425,7 @@
 			"speed": -1,
 			"useAcceleration": false,
 			"speedFactor": 1,
-			"acceleration": 0,
-			"cooling": false
+			"acceleration": 0
 		},
 		{
 			"id": "6fdc098f-d4b3-4bbf-a312-0f6b9bfc558e",
@@ -1504,12 +1479,13 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 2542700,
+			"timeSincePing": 2709000,
 			"scanResults": "Awesome",
 			"scanRequest": "Standard - \nTesting",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"autoTarget": false,
 			"history": false,
 			"scans": [],
 			"contacts": [
@@ -1628,12 +1604,13 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 39591900,
+			"timeSincePing": 39758200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"autoTarget": false,
 			"history": false,
 			"scans": [],
 			"contacts": [],
@@ -1782,13 +1759,17 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
+			"heat": null,
+			"heatRate": null,
+			"coolant": null,
+			"cooling": false,
 			"type": "Reactor",
 			"ejected": false,
 			"model": "battery",
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7132879999997133,
+			"batteryChargeLevel": 0.7119439999997119,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -1897,6 +1878,7 @@
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
+			"cooling": null,
 			"type": "Phasers",
 			"arc": 0.5,
 			"beams": [
@@ -1975,8 +1957,7 @@
 					"heat": 0,
 					"heatRate": 0.01
 				}
-			],
-			"cooling": null
+			]
 		},
 		{
 			"id": "b9067849-f8ce-41bd-bd83-3399e7552d7b",
@@ -2468,6 +2449,7 @@
 			"type": "TractorBeam",
 			"state": false,
 			"target": false,
+			"targetLabel": "",
 			"strength": 0,
 			"stress": 0.15,
 			"scanning": false
@@ -2555,6 +2537,10 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
+			"heat": 0.057166666666666734,
+			"heatRate": 1,
+			"coolant": 1,
+			"cooling": false,
 			"type": "Reactor",
 			"ejected": false,
 			"model": "reactor",
@@ -2742,6 +2728,7 @@
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
+			"cooling": false,
 			"type": "Engine",
 			"on": false,
 			"speeds": [
@@ -2789,8 +2776,7 @@
 			"speed": -1,
 			"useAcceleration": false,
 			"speedFactor": 1250,
-			"acceleration": 0,
-			"cooling": false
+			"acceleration": 0
 		},
 		{
 			"id": "30179ddb-800f-4897-a50a-8ab2b6b507de",
@@ -2817,6 +2803,7 @@
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
+			"cooling": false,
 			"type": "Engine",
 			"on": false,
 			"speeds": [
@@ -2844,8 +2831,7 @@
 			"speed": -1,
 			"useAcceleration": false,
 			"speedFactor": 1250,
-			"acceleration": 0,
-			"cooling": false
+			"acceleration": 0
 		},
 		{
 			"id": "1be38b50-4127-46a6-b8eb-f9f3864565e4",
@@ -2959,12 +2945,13 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 34774900,
+			"timeSincePing": 34941200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"autoTarget": false,
 			"history": false,
 			"scans": [],
 			"contacts": [],
@@ -2996,12 +2983,13 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 34774900,
+			"timeSincePing": 34941200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"autoTarget": false,
 			"history": false,
 			"scans": [],
 			"contacts": [],
@@ -3442,6 +3430,7 @@
 			"type": "TractorBeam",
 			"state": false,
 			"target": false,
+			"targetLabel": "",
 			"strength": 0,
 			"stress": 0.15,
 			"scanning": false
@@ -3509,6 +3498,10 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
+			"heat": 0,
+			"heatRate": 1,
+			"coolant": 1,
+			"cooling": false,
 			"type": "Reactor",
 			"ejected": false,
 			"model": "reactor",
@@ -3540,6 +3533,10 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
+			"heat": null,
+			"heatRate": null,
+			"coolant": null,
+			"cooling": false,
 			"type": "Reactor",
 			"ejected": false,
 			"model": "battery",
@@ -3666,6 +3663,7 @@
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
+			"cooling": null,
 			"type": "Phasers",
 			"arc": 0.5,
 			"beams": [
@@ -3723,8 +3721,7 @@
 					"heat": 0,
 					"heatRate": 0.01
 				}
-			],
-			"cooling": null
+			]
 		},
 		{
 			"id": "72077f6b-5842-4d97-90ab-5985c2a7b8d3",
@@ -3868,6 +3865,7 @@
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
+			"cooling": false,
 			"type": "Engine",
 			"on": false,
 			"speeds": [
@@ -3900,8 +3898,7 @@
 			"speed": -1,
 			"useAcceleration": true,
 			"speedFactor": 1250,
-			"acceleration": 0,
-			"cooling": false
+			"acceleration": 0
 		},
 		{
 			"id": "bcb0fae5-a2d3-4cbd-b740-3997eb90e552",
@@ -4031,12 +4028,13 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 29661800,
+			"timeSincePing": 29828100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"autoTarget": false,
 			"history": false,
 			"scans": [],
 			"contacts": [],
@@ -4073,12 +4071,13 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 29661800,
+			"timeSincePing": 29828100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"autoTarget": false,
 			"history": false,
 			"scans": [],
 			"contacts": [],
@@ -4524,6 +4523,7 @@
 			"type": "TractorBeam",
 			"state": false,
 			"target": false,
+			"targetLabel": "",
 			"strength": 0,
 			"stress": 0.15,
 			"scanning": false
@@ -4584,6 +4584,10 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
+			"heat": null,
+			"heatRate": null,
+			"coolant": null,
+			"cooling": false,
 			"type": "Reactor",
 			"ejected": false,
 			"model": "battery",
@@ -4615,6 +4619,10 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
+			"heat": 0.034666666666666644,
+			"heatRate": 1,
+			"coolant": 1,
+			"cooling": false,
 			"type": "Reactor",
 			"ejected": false,
 			"model": "reactor",
@@ -4839,6 +4847,7 @@
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
+			"cooling": null,
 			"type": "Phasers",
 			"arc": 0.5,
 			"beams": [
@@ -5074,8 +5083,7 @@
 					"heat": 0,
 					"heatRate": 0.01
 				}
-			],
-			"cooling": null
+			]
 		},
 		{
 			"id": "1983d21e-dfbd-478b-bfdf-4fe801d25bd0",
@@ -5136,6 +5144,7 @@
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
+			"cooling": false,
 			"type": "Engine",
 			"on": false,
 			"speeds": [
@@ -5193,8 +5202,7 @@
 			"speed": -1,
 			"useAcceleration": false,
 			"speedFactor": 1,
-			"acceleration": 0,
-			"cooling": false
+			"acceleration": 0
 		},
 		{
 			"id": "0c2d23a6-e32b-46f3-ae55-f238d0c142a9",
@@ -5382,6 +5390,7 @@
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
+			"cooling": false,
 			"type": "Engine",
 			"on": false,
 			"speeds": [
@@ -5409,8 +5418,7 @@
 			"speed": -1,
 			"useAcceleration": false,
 			"speedFactor": 1250,
-			"acceleration": 0,
-			"cooling": false
+			"acceleration": 0
 		},
 		{
 			"id": "088e3ea0-0b3f-400d-baf7-cf10abeb2eeb",
@@ -5439,6 +5447,7 @@
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
+			"cooling": false,
 			"type": "Engine",
 			"on": false,
 			"speeds": [
@@ -5454,8 +5463,7 @@
 			"speed": -1,
 			"useAcceleration": false,
 			"speedFactor": 1250,
-			"acceleration": 0,
-			"cooling": false
+			"acceleration": 0
 		},
 		{
 			"id": "33a913d6-04a9-466a-a255-0cd8adc46132",
@@ -5575,12 +5583,13 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 18347400,
+			"timeSincePing": 18513700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"autoTarget": false,
 			"history": false,
 			"scans": [],
 			"contacts": [],
@@ -5614,12 +5623,13 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 18347400,
+			"timeSincePing": 18513700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"autoTarget": false,
 			"history": false,
 			"scans": [],
 			"contacts": [],
@@ -6064,6 +6074,7 @@
 			"type": "TractorBeam",
 			"state": false,
 			"target": false,
+			"targetLabel": "",
 			"strength": 0,
 			"stress": 0.15,
 			"scanning": false
@@ -6225,6 +6236,7 @@
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
+			"cooling": null,
 			"type": "Phasers",
 			"arc": 0.5,
 			"beams": [
@@ -6286,8 +6298,7 @@
 					"heat": 0,
 					"heatRate": 0.01
 				}
-			],
-			"cooling": null
+			]
 		},
 		{
 			"id": "ba31a319-1424-4a17-b32c-71c66db43f5d",
@@ -6584,7 +6595,78 @@
 			"amplitude": 0.5,
 			"state": "idle",
 			"arrows": [],
-			"signals": []
+			"signals": [
+				{
+					"id": "46e553ad-67b2-41bf-973a-4a9843b7becd",
+					"image": "Romulan",
+					"name": "Romulan",
+					"color": "#00ff00",
+					"range": {
+						"upper": 1,
+						"lower": 0.85
+					}
+				},
+				{
+					"id": "92c0ef89-cb42-41c7-b412-237e21150b3e",
+					"image": "Cardassian",
+					"name": "Cardassian",
+					"color": "#ffaa00",
+					"range": {
+						"upper": 0.85,
+						"lower": 0.75
+					}
+				},
+				{
+					"id": "4a6cd0ae-6f87-420c-92fe-e1d279636fe6",
+					"image": "General Use",
+					"name": "General Use",
+					"color": "#ffffff",
+					"range": {
+						"upper": 0.75,
+						"lower": 0.58
+					}
+				},
+				{
+					"id": "b6ffe8ec-a03e-45f1-a625-16b535f9ef5a",
+					"image": "Klingon",
+					"name": "Klingon",
+					"color": "#ff0000",
+					"range": {
+						"upper": 0.4,
+						"lower": 0.3
+					}
+				},
+				{
+					"id": "e3bb9969-9373-44e0-a4ff-d8afc35f9bed",
+					"image": "Orion",
+					"name": "Orion",
+					"color": "#888888",
+					"range": {
+						"upper": 0.3,
+						"lower": 0.22
+					}
+				},
+				{
+					"id": "5e1c5d42-e3c7-46c8-9097-4303f2fd7d99",
+					"image": "Starfleet",
+					"name": "Starfleet",
+					"color": "#0088ff",
+					"range": {
+						"upper": 0.58,
+						"lower": 0.4
+					}
+				},
+				{
+					"id": "d9ac2f16-569e-43eb-b810-b23c707b1203",
+					"image": "Ferengi",
+					"name": "Ferengi",
+					"color": "#ffff00",
+					"range": {
+						"upper": 0.22,
+						"lower": 0
+					}
+				}
+			]
 		},
 		{
 			"id": "63f7ce15-9ae3-4f50-85d1-5bb1023cfd16",
@@ -6673,6 +6755,7 @@
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
+			"cooling": false,
 			"type": "Engine",
 			"on": false,
 			"speeds": [
@@ -6705,8 +6788,7 @@
 			"speed": -1,
 			"useAcceleration": true,
 			"speedFactor": 1250,
-			"acceleration": 0,
-			"cooling": false
+			"acceleration": 0
 		},
 		{
 			"id": "2f8b880a-9a19-436c-b099-87f812062b91",
@@ -6744,6 +6826,7 @@
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
+			"cooling": false,
 			"type": "Engine",
 			"on": false,
 			"speeds": [
@@ -6791,8 +6874,7 @@
 			"speed": -1,
 			"useAcceleration": false,
 			"speedFactor": 1250,
-			"acceleration": 0,
-			"cooling": false
+			"acceleration": 0
 		},
 		{
 			"id": "240cc277-9f19-4590-84eb-b8e5220d81b3",
@@ -6912,12 +6994,13 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6142300,
+			"timeSincePing": 6308600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"autoTarget": false,
 			"history": false,
 			"scans": [],
 			"contacts": [],
@@ -6951,12 +7034,13 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6142300,
+			"timeSincePing": 6308600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
+			"autoTarget": false,
 			"history": false,
 			"scans": [],
 			"contacts": [],
@@ -7300,6 +7384,7 @@
 			"type": "TractorBeam",
 			"state": false,
 			"target": false,
+			"targetLabel": "",
 			"strength": 0,
 			"stress": 0.15,
 			"scanning": false
@@ -7358,6 +7443,10 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
+			"heat": 0.027999999999999955,
+			"heatRate": 1,
+			"coolant": 1,
+			"cooling": false,
 			"type": "Reactor",
 			"ejected": false,
 			"model": "reactor",
@@ -7389,6 +7478,10 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
+			"heat": null,
+			"heatRate": null,
+			"coolant": null,
+			"cooling": false,
 			"type": "Reactor",
 			"ejected": false,
 			"model": "battery",
@@ -7522,6 +7615,7 @@
 			"heat": 0,
 			"heatRate": 1,
 			"coolant": 1,
+			"cooling": null,
 			"type": "Phasers",
 			"arc": 0.5,
 			"beams": [
@@ -7583,8 +7677,7 @@
 					"heat": 0,
 					"heatRate": 0.01
 				}
-			],
-			"cooling": null
+			]
 		},
 		{
 			"id": "e6970820-61ce-4b60-bfbb-f929d6568717",
@@ -7691,31 +7784,8 @@
 			"transfer": null
 		}
 	],
-	"clients": [
-		{
-			"id": "opportunity-have-neighborhood",
-			"flightId": null,
-			"simulatorId": null,
-			"station": null,
-			"loginName": "asdf",
-			"loginState": "login",
-			"sentPing": null,
-			"ping": null,
-			"connected": true,
-			"offlineState": null,
-			"training": false,
-			"caches": [],
-			"class": "Client"
-		}
-	],
-	"sets": [
-		{
-			"id": "147cc64b-19fc-4536-94d7-1d2e0cf33a99",
-			"class": "Set",
-			"name": "Awesome",
-			"clients": []
-		}
-	],
+	"clients": [],
+	"sets": [],
 	"decks": [
 		{
 			"id": "d5e57556-80b5-4bb1-9372-35d578591eb0",
@@ -25293,7 +25363,7 @@
 	"viewscreens": [],
 	"messages": [],
 	"tacticalMaps": [],
-	"snapshotVersion": 94,
-	"version": 94,
-	"timestamp": "2017-12-23T21:35:15.694Z"
+	"snapshotVersion": 116,
+	"version": 116,
+	"timestamp": "2017-12-28T04:51:23.880Z"
 }

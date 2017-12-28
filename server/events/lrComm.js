@@ -6,16 +6,24 @@ import uuid from "uuid";
 App.on(
   "sendLongRangeMessage",
   ({ id, simulatorId, message, crew, decoded, sender }) => {
+    let system;
     if (id) {
-      App.systems
-        .find(s => s.id === id)
-        .createMessage(message, crew, decoded, sender);
+      system = App.systems.find(s => s.id === id);
     }
     if (simulatorId) {
-      App.systems
-        .find(s => s.simulatorId === simulatorId && s.type === "LongRangeComm")
-        .createMessage(message, crew, decoded, sender);
+      system = App.systems.find(
+        s => s.simulatorId === simulatorId && s.type === "LongRangeComm"
+      );
     }
+    const simulator = App.simulators.find(s => s.id === system.simulatorId);
+    system &&
+      system.createMessage(
+        message.replace(/#SIM/gi, simulator.name),
+        crew,
+        decoded,
+        sender
+      );
+
     pubsub.publish(
       "longRangeCommunicationsUpdate",
       App.systems.filter(s => s.type === "LongRangeComm")

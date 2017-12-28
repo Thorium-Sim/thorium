@@ -9,6 +9,7 @@ import {
   Button
 } from "reactstrap";
 import gql from "graphql-tag";
+import { TypingField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
 import "./style.css";
 const damagePositions = [
@@ -190,7 +191,7 @@ class CrewCore extends Component {
       <Container className="crew-core">
         <Row>
           <Col sm={3}>
-            <Row style={{ height: "20px" }}>
+            <Row style={{ height: "20px", overflow: "hidden" }}>
               <Col sm={6}>
                 <Button
                   size="sm"
@@ -205,8 +206,9 @@ class CrewCore extends Component {
                 <Input type="file" onChange={this._importCrew} />
               </Col>
             </Row>
-            <Input
-              size="sm"
+            <TypingField
+              input
+              controlled
               value={search}
               onChange={e => this.setState({ search: e.target.value })}
             />

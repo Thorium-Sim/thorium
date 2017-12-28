@@ -28,6 +28,20 @@ const FLIGHT_SUB = gql`
   }
 `;
 
+const quotes = [
+  "Not all who wander are lost",
+  "If you don’t know where your destination is, you don’t know how long you have to wander",
+  "Its origin and purpose are still a total mystery...",
+  "For everything, there is a first time",
+  "I like to believe that there are always possibilities",
+  "Sometimes a feeling is all we humans have to go on.",
+  "Failure is the mark of a life well lived. In turn, the only way to live without failure is to be of no use to anyone.",
+  "Let the past die. Kill it, if you have to. That's the only way to become what you are meant to be.",
+  "History has its eyes on you.",
+  "We take one step at a time. In doing so we reach toward the unknown.",
+  "Where does this lead us? Where do we go?"
+];
+
 class Welcome extends Component {
   subscription = null;
   state = { issuesOpen: false };
@@ -56,6 +70,9 @@ class Welcome extends Component {
         <Row>
           <Col sm={12} className="title-row">
             <h1 className="text-center">Thorium</h1>
+            <h3 className="text-center">
+              <small>{quotes[Math.floor(Math.random() * quotes.length)]}</small>
+            </h3>
           </Col>
         </Row>
         <Row className="content-row">
