@@ -36,13 +36,21 @@
     overflow-y: scroll;
   }
   .contextMenu {
+    z-index: 100;
     position: absolute;
-    width: 100%;
+    width: 300%;
+    background-color: rgba(0,0,0,0.8);
     top: 0;
-    left: 0;
     right: 0;
     bottom: 0;
-
+    .file-explorer {
+      height: 80%;
+      .file-container {
+        width: 100px;
+        padding: 2px;
+        margin: 2px;
+      }
+    }
     .form-group {
       margin-bottom: 0;
     }

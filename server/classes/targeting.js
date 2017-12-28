@@ -58,7 +58,10 @@ export default class Targeting extends System {
     }
   }
   addTargetClass(classInput) {
-    this.classes.push(new TargetClass(classInput, this.id));
+    // no duplicate classes
+    if (!classInput.id || !this.classes.find(c => c.id === classInput.id)) {
+      this.classes.push(new TargetClass(classInput, this.id));
+    }
   }
   removeTargetClass(classId) {
     this.classes = this.classes.filter(c => c.id !== classId);
@@ -71,11 +74,14 @@ export default class Targeting extends System {
   setCalculatedTarget(coordinates, contactId) {
     this.targetedSensorContact = contactId;
     this.calculatedTarget = {};
-    this.calculatedTarget.x = (Math.round(coordinates.x * 100000) / 100
+    this.calculatedTarget.x = (
+      Math.round(coordinates.x * 100000) / 100
     ).toString();
-    this.calculatedTarget.y = (Math.round(coordinates.y * 100000) / 100
+    this.calculatedTarget.y = (
+      Math.round(coordinates.y * 100000) / 100
     ).toString();
-    this.calculatedTarget.z = (Math.round(coordinates.z * 100000) / 100
+    this.calculatedTarget.z = (
+      Math.round(coordinates.z * 100000) / 100
     ).toString();
   }
   setEnteredTarget(coordinates) {

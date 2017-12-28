@@ -44,6 +44,7 @@
     top: 12%;
     position: absolute;
     align-self: center;
+    overflow: hidden;
   }
   .frame-text {
     position: absolute;
@@ -226,4 +227,18 @@
   .powerlevel-containers h5 {
     line-height: 0;
   }
+
+}
+
+.viewscreen {
+  #layout-odyssey {
+  .cardContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    div {
+      width: 100%;
+    }
+  }
+}
 }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Button } from "reactstrap";
+import { Container, Row, Col, Button, ButtonGroup } from "reactstrap";
 import gql from "graphql-tag";
 import { OutputField, InputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
@@ -10,6 +10,7 @@ const TORPEDO_SUB = gql`
   subscription TorpedosUpdate($simulatorId: ID!) {
     torpedosUpdate(simulatorId: $simulatorId) {
       id
+      name
       loaded
       inventory {
         id
@@ -42,7 +43,10 @@ class TorpedoLoadingCore extends Component {
       });
     }
     if (!nextProps.data.loading) {
-      const torpedos = nextProps.data.torpedos[0];
+      const torpedos =
+        nextProps.data.torpedos.find(
+          t => t.id === this.state.selectedTorpedo
+        ) || nextProps.data.torpedos[0];
       let { type } = this.state;
       const loadedTorp = torpedos.inventory.find(t => t.id === torpedos.loaded);
       if (loadedTorp) {
@@ -58,14 +62,15 @@ class TorpedoLoadingCore extends Component {
   }
   updateTorpedoCount(type, count) {
     if (count) {
-      const torpedos = this.props.data.torpedos[0];
+      const torpedos =
+        this.state.selectedTorpedo || this.props.data.torpedos[0];
       const mutation = gql`
         mutation AddWarhead($id: ID!, $type: String!, $count: Int!) {
           torpedoSetWarheadCount(id: $id, warheadType: $type, count: $count)
         }
       `;
       const variables = {
-        id: torpedos.id,
+        id: torpedos.id || torpedos,
         type,
         count
       };
@@ -78,14 +83,15 @@ class TorpedoLoadingCore extends Component {
   addTorpedo() {
     const type = prompt("What type of torpedo do you want to add?");
     if (type) {
-      const torpedos = this.props.data.torpedos[0];
+      const torpedos =
+        this.state.selectedTorpedo || this.props.data.torpedos[0];
       const mutation = gql`
         mutation AddWarhead($id: ID!, $type: String) {
           torpedoAddWarhead(id: $id, warhead: { type: $type })
         }
       `;
       const variables = {
-        id: torpedos.id,
+        id: torpedos.id || torpedos,
         type
       };
       this.props.client.mutate({
@@ -96,9 +102,11 @@ class TorpedoLoadingCore extends Component {
   }
   render() {
     if (this.props.data.loading) return null;
-    const torpedos = this.props.data.torpedos[0];
-    if (!torpedos) return <p>No torpedos</p>;
-    const types = torpedos.inventory.reduce(
+    const torpedos = this.props.data.torpedos;
+    const { selectedTorpedo } = this.state;
+    if (!torpedos || torpedos.length === 0) return <p>No torpedos</p>;
+    const torpedo = torpedos.find(t => t.id === selectedTorpedo) || torpedos[0];
+    const types = torpedo.inventory.reduce(
       (prev, next) => {
         if (prev[next.type]) {
           prev[next.type] += 1;
@@ -112,6 +120,20 @@ class TorpedoLoadingCore extends Component {
     return (
       <div>
         <Container fluid className="torpedos-core">
+          <ButtonGroup>
+            {torpedos.map((t, i) => (
+              <Button
+                size="sm"
+                key={t.id}
+                active={
+                  t.id === selectedTorpedo || (!selectedTorpedo && i === 0)
+                }
+                onClick={() => this.setState({ selectedTorpedo: t.id })}
+              >
+                {t.name}
+              </Button>
+            ))}
+          </ButtonGroup>
           <OutputField alert={torpedos.state === "fired"}>
             {(() => {
               if (torpedos.state === "idle") return "No Torpedos Loaded";
@@ -196,6 +218,7 @@ const TORPEDO_QUERY = gql`
   query Torpedos($simulatorId: ID!) {
     torpedos(simulatorId: $simulatorId) {
       id
+      name
       loaded
       inventory {
         id

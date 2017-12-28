@@ -13,34 +13,34 @@ export default class Torpedo extends System {
     this.stealthCompromised = false;
     const warheads = params.inventory || [
       {
-        type: "Photon"
+        type: "photon"
       },
       {
-        type: "Photon"
+        type: "photon"
       },
       {
-        type: "Photon"
+        type: "photon"
       },
       {
-        type: "Photon"
+        type: "photon"
       },
       {
-        type: "Photon"
+        type: "photon"
       },
       {
-        type: "Photon"
+        type: "photon"
       },
       {
-        type: "Photon"
+        type: "photon"
       },
       {
-        type: "Photon"
+        type: "photon"
       },
       {
-        type: "Quantum"
+        type: "quantum"
       },
       {
-        type: "Quantum"
+        type: "quantum"
       }
     ];
     warheads.forEach(w => this.inventory.push(new Warhead(w)));

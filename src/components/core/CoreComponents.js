@@ -111,7 +111,10 @@ class CoreComponents extends Component {
     if (this.props.data.loading) return null;
 
     const { data: { flights }, flightId, history } = this.props;
-    if (flights.map(f => f.id).indexOf(flightId) === -1 && flightId !== "c") {
+    if (
+      !flights ||
+      (flights.map(f => f.id).indexOf(flightId) === -1 && flightId !== "c")
+    ) {
       history.push("/");
       return null;
     }

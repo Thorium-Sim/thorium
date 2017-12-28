@@ -30,4 +30,6 @@ setSelfDestructAuto(simulatorId: ID!, auto: Boolean): String
 addSimulatorDamageStep(simulatorId: ID!, step: DamageStepInput!): String
 updateSimulatorDamageStep(simulatorId: ID!, step: DamageStepInput!): String
 removeSimulatorDamageStep(simulatorId: ID!, step: ID!):String
+
+setSimulatorMission(simulatorId: ID!, missionId: ID!): String
 `;
