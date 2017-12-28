@@ -195,6 +195,12 @@ class Credits extends Component {
   }
 }
 
+const CACHE_INVALID_SUB = gql`
+  subscription ClearCache($client: ID!) {
+    clearCache(client: $client)
+  }
+`;
+
 const CLIENT_SUB = gql`
   subscription ClientChanged($client: ID!) {
     clientChanged(client: $client) {
@@ -245,6 +251,7 @@ class ClientView extends Component {
     super(props);
     this.clientSubscription = null;
     this.simulatorSub = null;
+    this.cacheSub = null;
     window.onbeforeunload = () => {
       props.client.mutate({
         mutation: gql`
@@ -258,6 +265,7 @@ class ClientView extends Component {
     };
   }
   componentWillReceiveProps(nextProps) {
+    if (nextProps.data.loading) return;
     if (this.props.clientId !== nextProps.clientId) {
       this.clientSubscription && this.clientSubscription();
       this.clientSubscription = null;
@@ -266,6 +274,17 @@ class ClientView extends Component {
       this.clientSubscription = nextProps.data.subscribeToMore({
         document: CLIENT_SUB,
         variables: { client: nextProps.clientId }
+      });
+    }
+    if (!this.cacheSub && !nextProps.data.loading) {
+      this.cacheSub = nextProps.data.subscribeToMore({
+        document: CACHE_INVALID_SUB,
+        variables: { client: nextProps.clientId },
+        updateQuery: previousResult => {
+          this.props.playSound({ url: "/sciences.ogg" });
+          setTimeout(() => this.props.client.resetStore(), 500);
+          return previousResult;
+        }
       });
     }
     const client = nextProps.data.clients[0];

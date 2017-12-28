@@ -16,8 +16,12 @@ App.on(
     );
     if (!viewscreen) return;
     // First de-auto the viewscreen, since we want to force this component;
+    const simulator = App.simulators.find(s => s.id === viewscreen.simulatorId);
     viewscreen.updateAuto(false);
-    viewscreen.updateComponent(component, data);
+    viewscreen.updateComponent(
+      component,
+      data.replace(/#SIM/gi, simulator.name)
+    );
     pubsub.publish("viewscreensUpdate", App.viewscreens);
   }
 );

@@ -99,6 +99,20 @@ export const ClientSubscriptions = {
         return !!rootValue.length;
       }
     )
+  },
+  clearCache: {
+    resolve(payload, { client }) {
+      if (client) {
+        return payload.filter(c => c.id === client);
+      }
+      return payload.filter(c => c.connected);
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("clearCache"),
+      rootValue => {
+        return !!rootValue.length;
+      }
+    )
   }
 };
 

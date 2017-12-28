@@ -76,7 +76,9 @@ function addAspects(template, sim) {
           newAspect.power.power = 0;
         }
       }
-      App[aspect].push(new Classes[newAspect.class](newAspect));
+      App[aspect].push(
+        new Classes[newAspect.class](Object.assign({}, newAspect))
+      );
     });
   });
 }
@@ -196,6 +198,7 @@ App.on("resetFlight", ({ flightId }) => {
     addAspects({ simulatorId: tempId }, newSim);
     pubsub.publish("flightsUpdate", App.flights);
     pubsub.publish("clientChanged", App.clients);
+    pubsub.publish("clearCache", App.clients);
   });
 });
 App.on("pauseFlight", () => {});

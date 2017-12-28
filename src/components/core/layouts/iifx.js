@@ -25,7 +25,7 @@ const exceptions = [
   "TractorBeamCore",
   "TransporterCore",
   "RemoteCore",
-  "CargoCore",
+  //"CargoCore",
   "JrNavigationCore",
   "ViewscreenCore"
 ];

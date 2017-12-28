@@ -23,19 +23,7 @@ export const AssetsQueries = {
     const container = App.assetContainers.find(obj => {
       return obj.fullPath === assetKey;
     });
-    console.log("Container", container, assetKey);
     if (!container) return {};
-    console.log(
-      App.assetObjects.find(
-        obj =>
-          obj.containerId === container.id && obj.simulatorId === simulatorId
-      )
-    );
-    console.log(
-      App.assetObjects.find(
-        obj => obj.containerId === container.id && obj.simulatorId === "default"
-      )
-    );
     return (
       App.assetObjects.find(
         obj =>

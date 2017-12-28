@@ -29,8 +29,10 @@
 }
 
 .cargo-core {
+  position: relative;
+  height: 100%;
   .find-overlay {
-    background-color: white;
+    background-color: black;
     position: absolute;
     width: 100%;
     height: calc(100% - 40px);

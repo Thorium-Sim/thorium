@@ -20,7 +20,6 @@ import {
 const history = createHistory();
 
 const TestCard = props => {
-  console.log(props);
   return <CardContainer test={true} component={props.match.params.component} />;
 };
 TestCard.propTypes = {

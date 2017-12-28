@@ -8,20 +8,6 @@ import {
 } from "../damageReports/constants";
 import * as damageStepFunctions from "../damageReports/functions";
 
-const defaultPower = {
-  power: 5,
-  powerLevels: [5]
-};
-
-const defaultDamage = {
-  damaged: false,
-  report: null,
-  requested: false,
-  reactivationCode: null,
-  reactivationRequester: null,
-  neededReactivationCode: null
-};
-
 export function HeatMixin(inheritClass) {
   return class Heat extends inheritClass {
     constructor(params) {
@@ -29,6 +15,7 @@ export function HeatMixin(inheritClass) {
       this.heat = params.heat || this.heat || 0;
       this.heatRate = params.heatRate || this.heatRate || 1;
       this.coolant = params.coolant || this.coolant || 1;
+      this.cooling = params.cooling || false;
     }
     setHeat(heat) {
       this.heat = Math.min(1, Math.max(0, heat));
@@ -39,6 +26,9 @@ export function HeatMixin(inheritClass) {
     applyCoolant() {
       this.coolant = this.coolant - 0.037;
       this.heat = this.heat - 0.89;
+    }
+    cool(state = true) {
+      this.cooling = state;
     }
   };
 }
@@ -62,8 +52,18 @@ export class System {
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || null;
     this.displayName = params.displayName || params.name;
-    this.power = params.power || Object.assign({}, defaultPower);
-    this.damage = params.damage || Object.assign({}, defaultDamage);
+    this.power = Object.assign({}, params.power) || {
+      power: 5,
+      powerLevels: [5]
+    };
+    this.damage = Object.assign({}, params.damage) || {
+      damaged: false,
+      report: null,
+      requested: false,
+      reactivationCode: null,
+      reactivationRequester: null,
+      neededReactivationCode: null
+    };
     this.extra = params.extra || false;
     this.locations = params.locations || [];
     this.requiredDamageSteps = [];
@@ -91,12 +91,9 @@ export class System {
     this.power.power = powerLevel;
   }
   setPowerLevels(levels) {
-    console.log("Setting Power Levels", this.name, levels);
     this.power.powerLevels = levels;
   }
   break(report) {
-    // TODO: Generate the damage report if
-    // The report is null or blank.
     this.damage.damaged = true;
     this.damage.report = this.processReport(report);
     this.damage.requested = false;
@@ -282,7 +279,7 @@ ${damageStepFunctions[name](args || {}, context, index)}
 
 `;
     }, "");
-    return this.processReport(damageReport);
+    return damageReport;
   }
 
   damageReport(report) {

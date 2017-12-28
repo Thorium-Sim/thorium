@@ -75,17 +75,18 @@ App.on("addHeat", ({ id, heat }) => {
   }
 });
 App.on("engineCool", ({ id, state }) => {
-  App.systems.find(s => s.id === id).cool(state);
+  const engine = App.systems.find(s => s.id === id);
+  engine && engine.cool(state);
 });
 App.on("setEngineSpeeds", ({ id, speeds }) => {
   App.systems.find(s => s.id === id).setSpeeds(speeds);
 });
-App.on("applyEngineCoolant", ({ id }) => {
-  const engine = App.systems.find(s => s.id === id);
-  engine.setCoolant(Math.min(1, Math.max(0, engine.coolant - 0.005)));
-  engine.setHeat(Math.min(1, Math.max(0, engine.heat - 0.01)));
-  if (engine.coolant === 0 || engine.heat === 0) engine.cool(false);
-  pubsub.publish("heatChange", engine);
+App.on("applyCoolant", ({ id }) => {
+  const sys = App.systems.find(s => s.id === id);
+  sys.setCoolant(Math.min(1, Math.max(0, sys.coolant - 0.005)));
+  sys.setHeat(Math.min(1, Math.max(0, sys.heat - 0.01)));
+  if ((sys.coolant === 0 || sys.heat === 0) && sys.cool) sys.cool(false);
+  pubsub.publish("heatChange", sys);
 });
 App.on("setEngineAcceleration", ({ id, acceleration }) => {
   const engine = App.systems.find(s => s.id === id);
@@ -99,9 +100,11 @@ App.on("setEngineAcceleration", ({ id, acceleration }) => {
     engine.setAcceleration(acceleration);
   } else {
     // Set the simulator's velocity to the correct level
-    sim.ship.speed = (engine.speeds[
-      Math.floor(acceleration * (engine.speeds.length + 1)) - 1
-    ] || { velocity: 0 }).velocity;
+    sim.ship.speed = (
+      engine.speeds[
+        Math.floor(acceleration * (engine.speeds.length + 1)) - 1
+      ] || { velocity: 0 }
+    ).velocity;
     if (sim.ship.speed === 0) {
       engine.on = false;
     }

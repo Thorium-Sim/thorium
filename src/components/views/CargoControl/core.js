@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Input } from "reactstrap";
-
+import { TypingField, InputField } from "../../generic/core";
+import { Button } from "reactstrap";
 import "./style.css";
 
 const INVENTORY_SUB = gql`
@@ -49,7 +49,7 @@ class CargoControlCore extends Component {
   componentWillUnmount() {
     this.inventorySub && this.inventorySub();
   }
-  setSelected(which, e) {
+  setSelected = (which, e) => {
     const { decks } = this.props.data;
     let deck;
     let room;
@@ -63,8 +63,8 @@ class CargoControlCore extends Component {
       deck,
       room
     });
-  }
-  findInv(e) {
+  };
+  findInv = e => {
     const variables = {
       name: e.target.value,
       simulatorId: this.props.simulator.id
@@ -77,6 +77,7 @@ class CargoControlCore extends Component {
           roomCount {
             room {
               deck {
+                id
                 number
               }
               id
@@ -99,14 +100,15 @@ class CargoControlCore extends Component {
               findInventory: res.data.inventory.map(i => ({
                 id: i.id,
                 name: i.name,
-                locations: i.roomCount
-                  .filter(rc => rc.count > 0)
-                  .map(
-                    rc =>
-                      `${rc.room.name}, Deck ${rc.room.deck.number} (${
-                        rc.count
-                      })`
-                  )
+                locations: i.roomCount.filter(rc => rc.count > 0).map(rc => ({
+                  label: (
+                    <span>
+                      {rc.room.name}, Deck {rc.room.deck.number} ({rc.count})
+                    </span>
+                  ),
+                  deck: rc.room.deck.id,
+                  room: rc.room.id
+                }))
               }))
             });
           }
@@ -116,7 +118,49 @@ class CargoControlCore extends Component {
         findInventory: null
       });
     }
-  }
+  };
+  updateInventoryQuantity = ({ id, room }, count) => {
+    const mutation = gql`
+      mutation UpdateInventoryCount($id: ID!, $room: ID!, $count: Int!) {
+        updateInventoryCount(id: $id, room: $room, count: $count)
+      }
+    `;
+    const variables = {
+      id,
+      room,
+      count
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  addInventory = () => {
+    const mutation = gql`
+      mutation AddInventory($inventory: InventoryItemInput) {
+        addInventory(inventory: $inventory)
+      }
+    `;
+    const { room } = this.state;
+    const name = window.prompt("What is the name of the inventory?");
+    if (name) {
+      const count = window.prompt("How many do you want to add?");
+      if (count && !isNaN(parseInt(count, 10))) {
+        const variables = {
+          inventory: {
+            simulatorId: this.props.simulator.id,
+            name,
+            metadata: {},
+            roomCount: [{ room, count }]
+          }
+        };
+        this.props.client.mutate({
+          mutation,
+          variables
+        });
+      }
+    }
+  };
   render() {
     if (this.props.data.loading) return null;
     const { decks, inventory } = this.props.data;
@@ -124,15 +168,30 @@ class CargoControlCore extends Component {
     let { deck, room } = this.state;
     return (
       <div className="cargo-core">
-        <Input bSize="sm" onChange={this.findInv.bind(this)} />
+        <TypingField
+          placeholder="Search for Inventory"
+          input
+          onChange={this.findInv}
+        />
         {this.state.findInventory && (
           <div className="find-overlay">
             {this.state.findInventory.map(i => (
               <div key={`find-${i.id}`}>
-                {i.name}
+                <strong>{i.name}</strong>
                 <ul>
                   {i.locations.map((l, index) => (
-                    <li key={`loc-${index}`}>{l}</li>
+                    <li
+                      key={`loc-${index}`}
+                      onClick={() =>
+                        this.setState({
+                          deck: l.deck,
+                          room: l.room,
+                          findInventory: null
+                        })
+                      }
+                    >
+                      {l.label}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -140,8 +199,9 @@ class CargoControlCore extends Component {
           </div>
         )}
         <select
-          defaultValue={"select"}
-          onChange={this.setSelected.bind(this, "deck")}
+          style={{ height: "24px" }}
+          value={this.state.deck || "select"}
+          onChange={e => this.setSelected("deck", e)}
         >
           <option disabled value="select">
             Select Deck
@@ -153,9 +213,10 @@ class CargoControlCore extends Component {
           ))}
         </select>
         <select
-          defaultValue={"select"}
+          style={{ height: "24px" }}
+          value={this.state.room || "select"}
           disabled={!deck}
-          onChange={this.setSelected.bind(this, "room")}
+          onChange={e => this.setSelected("room", e)}
         >
           <option disabled value="select">
             Select Room
@@ -167,18 +228,36 @@ class CargoControlCore extends Component {
               </option>
             ))}
         </select>
+        <Button
+          size="sm"
+          color="primary"
+          disabled={!room}
+          onClick={this.addInventory}
+        >
+          Add Inventory
+        </Button>
         {room &&
           inventory
             .map(i => {
               const roomCount = i.roomCount.find(r => r.room.id === room);
               if (!roomCount) return null;
               if (roomCount.count === 0) return null;
-              return { id: i.id, name: i.name, count: roomCount.count };
+              return { id: i.id, name: i.name, count: roomCount.count, room };
             })
             .filter(i => i)
             .map(i => (
               <p key={`to-${i.id}`}>
-                {i.name} ({i.count})
+                {i.name}{" "}
+                <InputField
+                  style={{
+                    display: "inline-block",
+                    minWidth: "20px"
+                  }}
+                  prompt={`What is the new quantity of ${i.name}?`}
+                  onClick={val => this.updateInventoryQuantity(i, val)}
+                >
+                  {i.count}
+                </InputField>
               </p>
             ))}
       </div>
