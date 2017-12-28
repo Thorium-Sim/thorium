@@ -208,9 +208,9 @@ class SimulatorConfigView extends Component {
               {stationSets.map(s => (
                 <li
                   key={s.id}
-                  className={`list-group-item ${selectedStationSet === s.id
-                    ? "selected"
-                    : ""}`}
+                  className={`list-group-item ${
+                    selectedStationSet === s.id ? "selected" : ""
+                  }`}
                   onClick={() => this.setState({ selectedStationSet: s.id })}
                 >
                   {s.name}
@@ -431,14 +431,17 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
                   {station.cards.map((card, index) => {
                     return (
                       <tr
-                        key={`${selectedStationSet.id}-${station.name}-${index}`}
+                        key={`${selectedStationSet.id}-${
+                          station.name
+                        }-${index}`}
                       >
                         <td>
                           <Input
                             type="text"
                             value={card.name}
                             onChange={e =>
-                              updateStationCard("name", card, station, e)}
+                              updateStationCard("name", card, station, e)
+                            }
                           />
                         </td>
                         <td>
@@ -446,7 +449,8 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
                             type="select"
                             value={card.component}
                             onChange={e =>
-                              updateStationCard("component", card, station, e)}
+                              updateStationCard("component", card, station, e)
+                            }
                           >
                             {viewList.map(e => {
                               return (
@@ -484,11 +488,7 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
                 })}
               </select>
               <label>Message Groups:</label>
-              {[
-                "Security Teams",
-                "Damage Teams",
-                "Medical Teams"
-              ].map(group => (
+              {["SecurityTeams", "DamageTeams", "MedicalTeams"].map(group => (
                 <label
                   key={`messageGroup-${group}`}
                   style={{ display: "inline-block" }}
@@ -497,7 +497,8 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
                     type="checkbox"
                     checked={station.messageGroups.indexOf(group) > -1}
                     onChange={evt =>
-                      toggleStationMessageGroup(evt, station, group)}
+                      toggleStationMessageGroup(evt, station, group)
+                    }
                   />{" "}
                   {group}
                 </label>

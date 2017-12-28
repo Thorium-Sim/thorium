@@ -16,7 +16,7 @@ App.on("sendMessage", ({ message }) => {
   const messageClass = new Classes.Message(message);
   App.messages.push(messageClass);
   pubsub.publish("sendMessage", messageClass);
-  const messageGroups = ["Security Teams", "Damage Teams", "Medical Teams"];
+  const messageGroups = ["SecurityTeams", "DamageTeams", "MedicalTeams"];
   if (messageGroups.indexOf(messageClass.sender) > -1) {
     // Notify every station that has this class
     App.simulators
