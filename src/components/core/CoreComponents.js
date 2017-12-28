@@ -67,23 +67,24 @@ class CoreComponents extends Component {
           : {};
         const simulators = flight && flight.id ? flight.simulators : [];
         if (simulators.length === 1) {
-          this.pickSimulator({
-            target: { value: simulators[0].id }
+          this.setState({
+            simulator: simulators[0].id
           });
+          localStorage.setItem("thorium_coreSimulator", simulators[0].id);
         }
         if (
           simulators.indexOf(
             s => s.id === localStorage.getItem("thorium_coreSimulator")
           ) > -1
         ) {
-          this.pickSimulator({
-            target: { value: localStorage.getItem("thorium_coreSimulator") }
+          this.setState({
+            simulator: localStorage.getItem("thorium_coreSimulator")
           });
           return;
         }
         if (simulators.length === 0) {
-          this.pickSimulator({
-            target: { value: "test" }
+          this.setState({
+            simulator: "test"
           });
         }
       }
@@ -94,12 +95,14 @@ class CoreComponents extends Component {
     this.setState({
       simulator
     });
+    this.props.client.resetStore();
     localStorage.setItem("thorium_coreSimulator", simulator);
   };
   pickLayout = e => {
     this.setState({
       layout: e.target.value
     });
+    this.props.client.resetStore();
     localStorage.setItem("thorium_coreLayout", e.target.value);
   };
   toggleIssueTracker = () => {

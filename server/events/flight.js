@@ -196,6 +196,7 @@ App.on("resetFlight", ({ flightId }) => {
     addAspects({ simulatorId: tempId }, newSim);
     pubsub.publish("flightsUpdate", App.flights);
     pubsub.publish("clientChanged", App.clients);
+    pubsub.publish("clearCache", App.clients);
   });
 });
 App.on("pauseFlight", () => {});
