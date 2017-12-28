@@ -124,7 +124,7 @@ class Messaging extends Component {
               .filter(
                 t =>
                   messageGroups.findIndex(
-                    m => m.toLowerCase() === t.type.toLowerCase()
+                    m => m.toLowerCase().indexOf(t.type.toLowerCase()) > -1
                   ) > -1
               )
               .map(g => (

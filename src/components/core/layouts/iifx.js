@@ -26,7 +26,8 @@ const exceptions = [
   "TransporterCore",
   "RemoteCore",
   "CargoCore",
-  "JrNavigationCore"
+  "JrNavigationCore",
+  "ViewscreenCore"
 ];
 
 export default class CoreIIFX extends Component {
@@ -107,9 +108,9 @@ export default class CoreIIFX extends Component {
           </div>
         </div>
         <div
-          className={`side-core coreMessaging-core ${messagingOpen
-            ? "open"
-            : ""}`}
+          className={`side-core coreMessaging-core ${
+            messagingOpen ? "open" : ""
+          }`}
         >
           <div
             className="coreMessaging-label side-label"

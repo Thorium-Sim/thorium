@@ -71,6 +71,39 @@ const moveSensorContact = () => {
           }
         }
         contact.updateLocation(location);
+
+        // Check to see if the contact is in weapons range
+        const targeting = App.systems.find(
+          s => s.simulatorId === sensors.simulatorId && s.class === "Targeting"
+        );
+        if (sensors.autoTarget) {
+          if (distance3d({ x: 0, y: 0, z: 0 }, location) < 0.33) {
+            if (!targeting.classes.find(t => t.id === contact.id)) {
+              const target = {
+                id: contact.id,
+                name: contact.name,
+                size: contact.size,
+                icon: contact.icon,
+                picture: contact.picture,
+                speed: contact.speed || 1
+              };
+              targeting.addTargetClass(target);
+              targeting.createTarget(contact.id);
+              pubsub.publish(
+                "targetingUpdate",
+                App.systems.filter(s => s.type === "Targeting")
+              );
+            }
+          } else {
+            if (targeting.classes.find(t => t.id === contact.id)) {
+              targeting.removeTargetClass(contact.id);
+              pubsub.publish(
+                "targetingUpdate",
+                App.systems.filter(s => s.type === "Targeting")
+              );
+            }
+          }
+        }
         return newContact;
       });
       return sensors;

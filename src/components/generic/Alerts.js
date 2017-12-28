@@ -45,7 +45,7 @@ class Alerts extends Component {
         }
       })
       .subscribe({
-        next({ notify }) {
+        next({ data: { notify } }) {
           // ... call updateQuery to integrate the new comment
           // into the existing list of comments
           const alerts = self.state.alerts;

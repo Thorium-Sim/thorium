@@ -328,14 +328,20 @@ class TorpedoLoader extends Component {
   constructor(props) {
     super(props);
     let type = "other";
+    let torpState = props.torpedo.state;
     if (props.torpedo.loaded !== "false") {
       const loadedTorp = props.torpedo.inventory.find(
         t => t.id === props.torpedo.loaded
       );
-      type = loadedTorp.type;
+      if (loadedTorp) {
+        type = loadedTorp.type;
+      } else {
+        type = null;
+        torpState = false;
+      }
     }
     this.state = {
-      torpedoState: props.torpedo.state,
+      torpedoState: torpState,
       torpedoType: type,
       enabled: true,
       screen: "TorpedoTube"
@@ -343,14 +349,20 @@ class TorpedoLoader extends Component {
   }
   componentWillReceiveProps(nextProps) {
     // Update the state based on the props
-    const torpedo = nextProps.torpedo;
+    let torpedo = nextProps.torpedo;
+    let torpState = torpedo.state;
     let type = this.state.torpedoType;
     if (torpedo.loaded !== "false") {
       const loadedTorp = torpedo.inventory.find(t => t.id === torpedo.loaded);
-      type = loadedTorp.type;
+      if (loadedTorp) {
+        type = loadedTorp.type;
+      } else {
+        type = null;
+        torpState = false;
+      }
     }
     this.setState({
-      torpedoState: torpedo.state,
+      torpedoState: torpState,
       torpedoType: type
     });
   }

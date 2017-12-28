@@ -6319,52 +6319,52 @@
 			"inventory": [
 				{
 					"id": "d0e589cf-e302-4b84-9b5f-7c6252f7af8d",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "59aa7430-dac0-4031-bd43-d84c2ace64b0",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "411e1e67-d7e9-44de-9feb-69f19913637b",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "b520de5b-a944-4bcb-a635-de54e69dd1a3",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "2e850403-9183-494c-9b8f-99e95e74ab9c",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "d01a6c15-8730-44ac-b89f-c3e24cb5eb5f",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "3292230e-392b-466b-96d4-55b3eaec092c",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "cf5b8ea3-68b3-4f01-aaa0-9516d5eb4b2b",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "c72398dc-bc94-4a6d-99ea-d52797e2c721",
-					"type": "Quantum",
+					"type": "quantum",
 					"probe": null
 				},
 				{
 					"id": "13192944-2e1c-48f9-adbc-fe21a17e574b",
-					"type": "Quantum",
+					"type": "quantum",
 					"probe": null
 				}
 			],
@@ -6423,52 +6423,52 @@
 			"inventory": [
 				{
 					"id": "5a88c6fd-6019-4b8c-b862-46c44ecd60cc",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "596f6dc6-95b5-44fc-bfdf-a75c4baa3141",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "506b2011-9fc8-48f3-8d21-4a80984bfdde",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "52ee16da-6fcb-4329-a1c7-ffcc0f9c885f",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "49bd14e2-d1ca-4094-ac17-bd922fbc4826",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "97e395c1-a519-43d4-adfc-edc2dcefe624",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "f98b04cc-67be-4ce0-93a4-6b3d02c68b01",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "c5623404-13a3-4404-991b-215cf4cb5225",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "8df592d1-0cd4-4fc3-8388-82070838419f",
-					"type": "Quantum",
+					"type": "quantum",
 					"probe": null
 				},
 				{
 					"id": "39ca8e19-8df3-4e1f-bd3d-03a9aa3911c6",
-					"type": "Quantum",
+					"type": "quantum",
 					"probe": null
 				}
 			],
@@ -6504,52 +6504,52 @@
 			"inventory": [
 				{
 					"id": "959a78d8-f6b8-468d-a45e-d6f2406af318",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "3b52ab9b-2c29-41b6-b106-6dc288aa9a19",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "bb8e1eb7-3abc-4630-adfa-db5c6297e46a",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "f39d2ca2-605e-4727-9d2d-0f3483ca17f5",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "78c37992-7c2a-42de-baed-4c8c066c5a16",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "b22d945b-bb37-45ee-ba44-924791d7a287",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "65af5504-d138-4bb8-a082-2268a278bb24",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "62b06460-6045-4157-8060-bb7228a54e57",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "06c78aef-4e7e-439e-b974-34884adb492a",
-					"type": "Quantum",
+					"type": "quantum",
 					"probe": null
 				},
 				{
 					"id": "4962a48e-3ede-43ab-a826-ec5849c18dfa",
-					"type": "Quantum",
+					"type": "quantum",
 					"probe": null
 				}
 			],
@@ -7616,52 +7616,52 @@
 			"inventory": [
 				{
 					"id": "048848b0-fc56-4e3c-a0e6-3ce964c84cfd",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "78895500-e067-416f-bbb8-0627c3f8bcc9",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "b2ea41e6-d0ad-4825-8ba4-9c6ddbda43aa",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "d2b83dfe-ef9a-4926-9f2f-0f9b07b51e3d",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "c187edac-faa8-4c0b-82f9-8745cda4a2cc",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "f8138cf5-b35a-494c-b953-72bef65dd58d",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "17962edc-fb56-4568-82d2-540a7ae50bb8",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "f168a011-cb76-4027-8fb1-062c5a806ba2",
-					"type": "Photon",
+					"type": "photon",
 					"probe": null
 				},
 				{
 					"id": "a59c9a73-1a71-44a7-85c5-6285d025389b",
-					"type": "Quantum",
+					"type": "quantum",
 					"probe": null
 				},
 				{
 					"id": "6a141462-1a8b-45af-9e44-fce76f516941",
-					"type": "Quantum",
+					"type": "quantum",
 					"probe": null
 				}
 			],

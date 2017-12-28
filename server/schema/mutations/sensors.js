@@ -37,4 +37,6 @@ newSensorScan(id: ID!, scan: SensorScanInput!): String
 updateSensorScan(id: ID!, scan: SensorScanInput!): String
 # For scan history
 cancelSensorScan(id: ID!, scan: ID!):String
+
+toggleSensorsAutoTarget(id: ID!, target: Boolean!):String
 `;

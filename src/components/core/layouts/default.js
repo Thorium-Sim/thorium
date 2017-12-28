@@ -24,7 +24,9 @@ const exceptions = [
   "ReactivationCore",
   "MessagingCore",
   "ClientsCore",
-  "JrNavigationCore"
+  "JrNavigationCore",
+  "ViewscreenCore",
+  "RemoteCore"
   /*  "EngineControlCore",
   "SensorsGridCore",
   "SensorsCore",
@@ -125,9 +127,9 @@ export default class CoreDefault extends Component {
           </div>
         </div>
         <div
-          className={`side-core coreMessaging-core ${messagingOpen
-            ? "open"
-            : ""}`}
+          className={`side-core coreMessaging-core ${
+            messagingOpen ? "open" : ""
+          }`}
         >
           <div
             className="coreMessaging-label side-label"

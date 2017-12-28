@@ -85,7 +85,7 @@ class Sensors extends Component {
     };
   }
   componentDidMount() {
-    if (!this.state.dimensions) {
+    if (!this.state.dimensions && ReactDOM.findDOMNode(this)) {
       const domNode = ReactDOM.findDOMNode(this).querySelector("#threeSensors");
       if (domNode) {
         this.setState({
@@ -95,6 +95,7 @@ class Sensors extends Component {
     }
   }
   componentDidUpdate() {
+    if (!ReactDOM.findDOMNode(this)) return;
     const domNode = ReactDOM.findDOMNode(this).querySelector("#threeSensors");
     if (
       domNode &&
