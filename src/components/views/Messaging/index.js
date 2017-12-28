@@ -154,6 +154,7 @@ class Messaging extends Component {
         if (new Date(a.timestamp) < new Date(b.timestamp)) return 1;
         return 0;
       });
+    console.log(teams);
     return (
       <Container className="messages">
         <Row>
@@ -217,7 +218,8 @@ class Messaging extends Component {
                     .filter(
                       t =>
                         messageGroups.findIndex(
-                          m => m.toLowerCase() === t.type.toLowerCase()
+                          m =>
+                            m.toLowerCase().indexOf(t.type.toLowerCase()) > -1
                         ) > -1
                     )
                     .map(g => (

@@ -5,6 +5,7 @@ import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import FontAwesome from "react-fontawesome";
 import ScanPresets from "./ScanPresets";
+import { subscribe } from "../helpers/pubsub";
 
 const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {
@@ -59,10 +60,16 @@ class SensorsCore extends Component {
   }
   componentDidMount() {
     document.addEventListener("keydown", this.keypress);
+    this.sensorDataBox = subscribe("sensorData", data => {
+      this.setState({
+        dataField: data
+      });
+    });
   }
   componentWillUnmount() {
     document.removeEventListener("keydown", this.keypress);
     this.sensorsSubscription && this.sensorsSubscription();
+    this.sensorDataBox && this.sensorDataBox();
   }
   keypress = evt => {
     if (evt.altKey) {

@@ -12,8 +12,8 @@
   "targeting     targeting      targeting      sensors       sensors     longRange             systems"
   "phaser        torpedo        torpedo        sensorScans   messageSending     internalComm         systems"
   "shields       shields        shields        sensorScans   messageSending   damageReports   damageReports"
-  "shields       shields        shields        sensorScans   actions   damageReports   damageReports"
-  "reactor       reactor        heat   remoteAccess   viewscreen   damageReports   damageReports";
+  "shields       shields        shields        extras   remote   damageReports   damageReports"
+  "reactor       reactor        heat   actions   remote   damageReports   damageReports";
   
   
   & > div {

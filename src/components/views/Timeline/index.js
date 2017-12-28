@@ -100,6 +100,7 @@ class TimelineCore extends Component {
       mission: oldMission,
       currentTimelineStep: oldTimelineStep
     } = prevProps.data.simulators[0];
+    if (!oldMission) return;
     const oldCurrentStep = oldMission.timeline[oldTimelineStep];
     if (!oldCurrentStep || !currentStep || currentStep.id === oldCurrentStep.id)
       return;
@@ -179,16 +180,58 @@ class TimelineCore extends Component {
       newStep: currentTimelineStep
     });
   };
+  updateMission = e => {
+    const mutation = gql`
+      mutation SetSimulatorMission($simulatorId: ID!, $missionId: ID!) {
+        setSimulatorMission(simulatorId: $simulatorId, missionId: $missionId)
+      }
+    `;
+    const variables = {
+      simulatorId: this.props.simulator.id,
+      missionId: e.target.value
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.simulators) return null;
+    const { missions } = this.props.data;
     const { mission, currentTimelineStep } = this.props.data.simulators[0];
-    if (!mission) return <p>Simulator has no mission</p>;
+    if (!mission) {
+      return (
+        <div>
+          <select value={"nothing"} onChange={this.updateMission}>
+            <option disabled value="nothing">
+              Select a mission
+            </option>
+            {missions.map(m => (
+              <option key={m.id} value={m.id}>
+                {m.name}
+              </option>
+            ))}
+          </select>
+          <p>Simulator has no mission</p>
+        </div>
+      );
+    }
     const currentStep = mission.timeline[currentTimelineStep];
     const { steps } = this.state;
     return (
       <Container className="core-timeline">
         <Row>
           <Col>
+            <select value={"nothing"} onChange={this.updateMission}>
+              <option disabled value="nothing">
+                Select a mission
+              </option>
+              {missions.map(m => (
+                <option key={m.id} value={m.id}>
+                  {m.name}
+                </option>
+              ))}
+            </select>
             <h4>{mission.name}</h4>
             <ButtonGroup size="sm">
               <Button
@@ -303,6 +346,11 @@ class TimelineCore extends Component {
 
 const SUBSCRIPTIONS_QUERY = gql`
   query Timeline($simulatorId: String) {
+    missions {
+      id
+      name
+      description
+    }
     simulators(id: $simulatorId) {
       id
       currentTimelineStep

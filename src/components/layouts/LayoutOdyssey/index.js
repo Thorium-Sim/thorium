@@ -30,7 +30,16 @@ class LayoutOdyssey extends Component {
   };
   render() {
     let { simulator, station, cardName, changeCard, clientObj } = this.props;
-    const { login: stationLogin, name: stationName, cards = [] } = station;
+    const {
+      login: stationLogin,
+      name: stationName,
+      cards = [
+        {
+          component: "Viewscreen",
+          name: "Viewscreen"
+        }
+      ]
+    } = station;
     const { changingCard } = this.state;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     if (clientObj.loginState === "logout" && stationLogin === false) {

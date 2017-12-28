@@ -133,6 +133,7 @@ export const AssetsTypes = {
 export async function uploadAsset(root, args, context) {
   let {
     files,
+    name,
     simulatorId,
     containerId,
     containerName,
@@ -143,8 +144,8 @@ export async function uploadAsset(root, args, context) {
       containerId === container.id ||
       (container.folderPath === folderPath && container.name === containerName)
   );
-  let folderPath = givenFolderPath,
-    fullPath;
+  let folderPath = givenFolderPath;
+  let fullPath;
   if (container) {
     folderPath = container.folderPath;
     fullPath = container.fullPath;
@@ -165,13 +166,13 @@ export async function uploadAsset(root, args, context) {
     let clearContainer = false;
     if (!container) {
       //Lets make a container for this asset
-      const name = file.originalname.replace(/(\..{3})/gi, "");
+      const fileName = name || file.originalname.replace(/(\..{3})/gi, "");
       const folder = App.assetFolders.find(f => f.fullPath === folderPath);
       const folderId = folder && folder.id;
 
-      const containerFullPath = folderPath + "/" + name;
+      const containerFullPath = folderPath + "/" + fileName;
       const params = {
-        name,
+        name: fileName,
         folderId,
         folderPath,
         fullPath: containerFullPath

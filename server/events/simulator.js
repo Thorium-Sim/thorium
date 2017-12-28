@@ -90,3 +90,9 @@ App.on("removeSimulatorDamageStep", ({ simulatorId, step }) => {
   sim.removeDamageStep(step);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("setSimulatorMission", ({ simulatorId, missionId }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  simulator.mission = missionId;
+  simulator.setTimelineStep(0);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});

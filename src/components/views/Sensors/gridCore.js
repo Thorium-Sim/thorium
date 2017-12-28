@@ -51,6 +51,7 @@ const SENSOR_SUB = gql`
     sensorsUpdate(simulatorId: $id, domain: "external") {
       id
       type
+      autoTarget
       armyContacts {
         id
         name
@@ -135,7 +136,7 @@ class GridCore extends Component {
     this.pingSub && this.pingSub();
   }
   componentDidMount() {
-    if (!this.state.dimensions) {
+    if (!this.state.dimensions && ReactDOM.findDOMNode(this)) {
       const domNode = ReactDOM.findDOMNode(this).querySelector("#threeSensors");
       if (domNode) {
         this.setState({
@@ -145,6 +146,7 @@ class GridCore extends Component {
     }
   }
   componentDidUpdate() {
+    if (!ReactDOM.findDOMNode(this)) return;
     const domNode = ReactDOM.findDOMNode(this).querySelector("#threeSensors");
     if (
       !this.state.dimensions ||
@@ -195,8 +197,12 @@ class GridCore extends Component {
     const width = Math.min(dimWidth, dimHeight) - padding;
     const destination = {
       x:
-        (evt.clientX - dimensions.left - padding / 2 - width / 2) / (width / 2),
-      y: (evt.clientY - dimensions.top - padding / 2 - width / 2) / (width / 2),
+        (evt.clientX - dimensions.left - padding / 2 - width / 2) /
+          (width / 2) -
+        0.08,
+      y:
+        (evt.clientY - dimensions.top - padding / 2 - width / 2) / (width / 2) -
+        0.08,
       z: 0
     };
     this.setState({
@@ -347,7 +353,7 @@ class GridCore extends Component {
     const obj = {
       left: left - outerLeft + 20,
       top: top - outerTop,
-      contact: contact
+      contact: contact.id
     };
     this.setState({
       contextContact: obj
@@ -400,6 +406,22 @@ class GridCore extends Component {
       selectedContact
     });
   }
+  autoTarget = e => {
+    const mutation = gql`
+      mutation SensorsAutoTarget($id: ID!, $target: Boolean!) {
+        toggleSensorsAutoTarget(id: $id, target: $target)
+      }
+    `;
+    const sensors = this.props.data.sensors[0];
+    const variables = {
+      id: sensors.id,
+      target: e.target.checked
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading) return <p>Loading...</p>;
     if (!this.props.data.sensors[0]) return <p>No Sensor Grid</p>;
@@ -464,18 +486,28 @@ class GridCore extends Component {
             >
               Freeze
             </Button>
+            <div>
+              <label>
+                Ask for speed{" "}
+                <input
+                  type="checkbox"
+                  checked={this.state.askForSpeed}
+                  onClick={evt => {
+                    this.setState({ askForSpeed: evt.target.checked });
+                    localStorage.setItem(
+                      "thorium-core-sensors-askforspeed",
+                      evt.target.checked ? "yes" : "no"
+                    );
+                  }}
+                />
+              </label>
+            </div>
             <label>
-              Ask for speed{" "}
+              Add to targeting{" "}
               <input
                 type="checkbox"
-                checked={this.state.askForSpeed}
-                onClick={evt => {
-                  this.setState({ askForSpeed: evt.target.checked });
-                  localStorage.setItem(
-                    "thorium-core-sensors-askforspeed",
-                    evt.target.checked ? "yes" : "no"
-                  );
-                }}
+                checked={sensors.autoTarget}
+                onClick={this.autoTarget}
               />
             </label>
             <Nudge
@@ -566,7 +598,9 @@ class GridCore extends Component {
               <ContactContextMenu
                 closeMenu={this._closeContext.bind(this)}
                 updateArmyContact={this._updateArmyContact.bind(this)}
-                contact={contextContact.contact}
+                contact={sensors.armyContacts.find(
+                  c => c.id === contextContact.contact
+                )}
                 x={contextContact.left}
                 y={0}
               />
@@ -592,6 +626,7 @@ const GRID_QUERY = gql`
     sensors(simulatorId: $simulatorId, domain: "external") {
       id
       type
+      autoTarget
       armyContacts {
         id
         name

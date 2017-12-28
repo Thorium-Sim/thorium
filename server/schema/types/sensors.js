@@ -22,6 +22,7 @@ type Sensors implements SystemInterface{
 
   scans: [SensorScan]
   history: Boolean
+  autoTarget: Boolean
 }
 type SensorScan {
   id: ID

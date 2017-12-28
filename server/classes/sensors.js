@@ -46,6 +46,7 @@ export default class Sensors extends System {
     this.processedData = params.processedData || "";
     this.presetAnswers = params.presetAnswers || [];
     this.scanning = params.scanning || false;
+    this.autoTarget = params.autoTarget || false;
     this.history = params.history || false;
     this.scans = [];
 
@@ -183,5 +184,8 @@ export default class Sensors extends System {
       this.scanCanceled();
     }
     super.setPower(powerLevel);
+  }
+  setAutoTarget(target) {
+    this.autoTarget = target;
   }
 }

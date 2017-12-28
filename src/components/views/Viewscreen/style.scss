@@ -1,6 +1,9 @@
   .viewscreen-core {
   height: 100%;
   position: relative;
+  .viewscreen {
+    cursor: unset;
+  }
   .container-fluid {
     margin-left: auto;
     margin-right: auto;

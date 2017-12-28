@@ -109,6 +109,9 @@ export const SensorsMutations = {
   },
   cancelSensorScan(root, args, context) {
     App.handleEvent(args, "cancelSensorScan", context);
+  },
+  toggleSensorsAutoTarget(root, args, context) {
+    App.handleEvent(args, "toggleSensorsAutoTarget", context);
   }
 };
 
