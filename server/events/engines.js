@@ -75,7 +75,8 @@ App.on("addHeat", ({ id, heat }) => {
   }
 });
 App.on("engineCool", ({ id, state }) => {
-  App.systems.find(s => s.id === id).cool(state);
+  const engine = App.systems.find(s => s.id === id);
+  engine && engine.cool(state);
 });
 App.on("setEngineSpeeds", ({ id, speeds }) => {
   App.systems.find(s => s.id === id).setSpeeds(speeds);
@@ -84,7 +85,7 @@ App.on("applyCoolant", ({ id }) => {
   const sys = App.systems.find(s => s.id === id);
   sys.setCoolant(Math.min(1, Math.max(0, sys.coolant - 0.005)));
   sys.setHeat(Math.min(1, Math.max(0, sys.heat - 0.01)));
-  if (sys.coolant === 0 || sys.heat === 0) sys.cool(false);
+  if ((sys.coolant === 0 || sys.heat === 0) && sys.cool) sys.cool(false);
   pubsub.publish("heatChange", sys);
 });
 App.on("setEngineAcceleration", ({ id, acceleration }) => {

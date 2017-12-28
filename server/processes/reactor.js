@@ -58,7 +58,7 @@ function reactorHeat() {
   reactors.forEach(r => {
     r.setCoolant(Math.min(1, Math.max(0, r.coolant - 0.005)));
     r.setHeat(Math.min(1, Math.max(0, r.heat - 0.01)));
-    if (r.coolant === 0 || r.heat === 0) r.cool(false);
+    if ((r.coolant === 0 || r.heat === 0) && r.cool) r.cool(false);
     pubsub.publish(
       "coolantSystemUpdate",
       App.systems

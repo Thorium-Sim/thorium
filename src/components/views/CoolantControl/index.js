@@ -17,6 +17,13 @@ const COOLANT_SUB = gql`
       name
       coolant
       coolantRate
+      damage {
+        damaged
+      }
+      power {
+        power
+        powerLevels
+      }
     }
   }
 `;

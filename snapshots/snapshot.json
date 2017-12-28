@@ -1479,7 +1479,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 2603500,
+			"timeSincePing": 2709000,
 			"scanResults": "Awesome",
 			"scanRequest": "Standard - \nTesting",
 			"processedData": "",
@@ -1604,7 +1604,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 39652700,
+			"timeSincePing": 39758200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -1769,7 +1769,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7127999999997128,
+			"batteryChargeLevel": 0.7119439999997119,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2537,7 +2537,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.02075694444444442,
+			"heat": 0.057166666666666734,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -2945,7 +2945,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 34835700,
+			"timeSincePing": 34941200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2983,7 +2983,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 34835700,
+			"timeSincePing": 34941200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4028,7 +4028,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 29722600,
+			"timeSincePing": 29828100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4071,7 +4071,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 29722600,
+			"timeSincePing": 29828100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4619,7 +4619,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.012587301587301595,
+			"heat": 0.034666666666666644,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -5583,7 +5583,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 18408200,
+			"timeSincePing": 18513700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5623,7 +5623,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 18408200,
+			"timeSincePing": 18513700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6595,7 +6595,78 @@
 			"amplitude": 0.5,
 			"state": "idle",
 			"arrows": [],
-			"signals": []
+			"signals": [
+				{
+					"id": "46e553ad-67b2-41bf-973a-4a9843b7becd",
+					"image": "Romulan",
+					"name": "Romulan",
+					"color": "#00ff00",
+					"range": {
+						"upper": 1,
+						"lower": 0.85
+					}
+				},
+				{
+					"id": "92c0ef89-cb42-41c7-b412-237e21150b3e",
+					"image": "Cardassian",
+					"name": "Cardassian",
+					"color": "#ffaa00",
+					"range": {
+						"upper": 0.85,
+						"lower": 0.75
+					}
+				},
+				{
+					"id": "4a6cd0ae-6f87-420c-92fe-e1d279636fe6",
+					"image": "General Use",
+					"name": "General Use",
+					"color": "#ffffff",
+					"range": {
+						"upper": 0.75,
+						"lower": 0.58
+					}
+				},
+				{
+					"id": "b6ffe8ec-a03e-45f1-a625-16b535f9ef5a",
+					"image": "Klingon",
+					"name": "Klingon",
+					"color": "#ff0000",
+					"range": {
+						"upper": 0.4,
+						"lower": 0.3
+					}
+				},
+				{
+					"id": "e3bb9969-9373-44e0-a4ff-d8afc35f9bed",
+					"image": "Orion",
+					"name": "Orion",
+					"color": "#888888",
+					"range": {
+						"upper": 0.3,
+						"lower": 0.22
+					}
+				},
+				{
+					"id": "5e1c5d42-e3c7-46c8-9097-4303f2fd7d99",
+					"image": "Starfleet",
+					"name": "Starfleet",
+					"color": "#0088ff",
+					"range": {
+						"upper": 0.58,
+						"lower": 0.4
+					}
+				},
+				{
+					"id": "d9ac2f16-569e-43eb-b810-b23c707b1203",
+					"image": "Ferengi",
+					"name": "Ferengi",
+					"color": "#ffff00",
+					"range": {
+						"upper": 0.22,
+						"lower": 0
+					}
+				}
+			]
 		},
 		{
 			"id": "63f7ce15-9ae3-4f50-85d1-5bb1023cfd16",
@@ -6923,7 +6994,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6203100,
+			"timeSincePing": 6308600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6963,7 +7034,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6203100,
+			"timeSincePing": 6308600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -7372,7 +7443,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.010166666666666673,
+			"heat": 0.027999999999999955,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -7713,31 +7784,8 @@
 			"transfer": null
 		}
 	],
-	"clients": [
-		{
-			"id": "opportunity-have-neighborhood",
-			"flightId": null,
-			"simulatorId": null,
-			"station": null,
-			"loginName": "asdf",
-			"loginState": "login",
-			"sentPing": null,
-			"ping": null,
-			"connected": true,
-			"offlineState": null,
-			"training": false,
-			"caches": [],
-			"class": "Client"
-		}
-	],
-	"sets": [
-		{
-			"id": "147cc64b-19fc-4536-94d7-1d2e0cf33a99",
-			"class": "Set",
-			"name": "Awesome",
-			"clients": []
-		}
-	],
+	"clients": [],
+	"sets": [],
 	"decks": [
 		{
 			"id": "d5e57556-80b5-4bb1-9372-35d578591eb0",
@@ -25315,7 +25363,7 @@
 	"viewscreens": [],
 	"messages": [],
 	"tacticalMaps": [],
-	"snapshotVersion": 68,
-	"version": 68,
-	"timestamp": "2017-12-28T02:40:47.974Z"
+	"snapshotVersion": 116,
+	"version": 116,
+	"timestamp": "2017-12-28T04:51:23.880Z"
 }
