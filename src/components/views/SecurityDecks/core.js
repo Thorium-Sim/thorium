@@ -97,41 +97,63 @@ class SecurityTeams extends Component {
           <thead>
             <tr>
               <th>Deck</th>
-              <th title="Evacuation">E</th>
-              <th title="Doors">D</th>
-              <th title="Gas">G</th>
+              <th title="Evacuation">Evac</th>
+              <th title="Doors">Door</th>
+              <th title="Tranzine">Tranzine</th>
             </tr>
           </thead>
           <tbody>
-            {decks.map(d => (
-              <tr key={d.id}>
-                <td>Deck {d.number}</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={d.evac}
-                    onChange={evt => this._toggleEvac(d.id, evt.target.checked)}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={d.doors}
-                    onChange={evt =>
-                      this._toggleDoors(d.id, evt.target.checked)}
-                  />
-                </td>
-                <td>
-                  <input type="checkbox" disabled />
-                </td>
-              </tr>
-            ))}
+            {decks
+              .concat()
+              .sort((a, b) => {
+                if (a.number > b.number) return 1;
+                if (a.number < b.number) return -1;
+                return 0;
+              })
+              .map(d => (
+                <tr key={d.id}>
+                  <td>Deck {d.number}</td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={d.evac}
+                      onChange={evt =>
+                        this._toggleEvac(d.id, evt.target.checked)
+                      }
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={d.doors}
+                      onChange={evt =>
+                        this._toggleDoors(d.id, evt.target.checked)
+                      }
+                    />
+                  </td>
+                  <td>
+                    <TranzineSelect deck={d} />
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
     );
   }
 }
+
+const TranzineSelect = ({ deck }) => {
+  const tRooms = deck.rooms.filter(r => r.gas);
+  return (
+    <select value="tranzine">
+      <option value="tranzine" disabled>
+        {tRooms.length === 0 ? "No Gas" : "Tranzine Active"}
+      </option>
+      {tRooms.map(r => <option key={r.id}>{r.name}</option>)}
+    </select>
+  );
+};
 
 const DECK_QUERY = gql`
   query SimulatorDecks($simulatorId: ID!) {

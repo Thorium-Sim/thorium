@@ -20,3 +20,14 @@
     }
   }
 }
+.core-securityDecks {
+  height: 100%;
+  overflow-y:scroll;
+  td {
+    padding: 0;
+  }
+  select {
+    height: 16px;
+    width: 75px;
+  }
+}
