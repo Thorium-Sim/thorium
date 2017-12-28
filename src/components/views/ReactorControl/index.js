@@ -5,6 +5,7 @@ import { Container, Row, Col, Button, Card } from "reactstrap";
 import Measure from "react-measure";
 import Tour from "reactour";
 
+import HeatBar from "../EngineControl/heatbar";
 import ReactorModel from "./model";
 import "./style.css";
 
@@ -118,6 +119,41 @@ class ReactorControl extends Component {
       variables
     });
   }
+  applyCoolant = () => {
+    const { reactors } = this.props.data;
+    const reactor = reactors.find(r => r.model === "reactor");
+    const mutation = gql`
+      mutation CoolEngine($id: ID!, $state: Boolean) {
+        engineCool(id: $id, state: $state)
+      }
+    `;
+    const variables = {
+      id: reactor.id,
+      state: true
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+    document.addEventListener("mouseup", this.stopCoolant);
+  };
+  stopCoolant = () => {
+    const { reactors } = this.props.data;
+    const reactor = reactors.find(r => r.model === "reactor");
+    const mutation = gql`
+      mutation CoolEngine($id: ID!, $state: Boolean) {
+        engineCool(id: $id, state: $state)
+      }
+    `;
+    const variables = {
+      id: reactor.id,
+      state: false
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (
       this.props.data.loading ||
@@ -176,9 +212,9 @@ class ReactorControl extends Component {
       }
     ];
     return (
-      <Container className="reactor-control">
+      <Container fluid className="reactor-control">
         <Row>
-          <Col sm={6}>
+          <Col sm={5}>
             <Row>
               <Col sm={12}>
                 <Measure
@@ -210,8 +246,35 @@ class ReactorControl extends Component {
               </Col>
             </Row>
           </Col>
-          {battery ? (
-            <Col sm={6}>
+          <Col sm={2}>
+            <Row>
+              <Col sm={6}>
+                <HeatBar
+                  label="Heat"
+                  level={reactor.heat}
+                  background={
+                    "linear-gradient(to bottom, #440000 0%,#aa0000 50%,#440000 100%)"
+                  }
+                />
+              </Col>
+              <Col sm={6}>
+                <HeatBar
+                  label="Coolant"
+                  level={reactor.coolant}
+                  background={
+                    "linear-gradient(to bottom, #004488 0%,#0088aa 50%,#004488 100%)"
+                  }
+                />
+              </Col>
+              <Col sm={12}>
+                <Button color="info" block onMouseDown={this.applyCoolant}>
+                  Coolant
+                </Button>
+              </Col>
+            </Row>
+          </Col>
+          <Col sm={{ size: 5 }}>
+            {battery && (
               <Row className="batteries">
                 <Col sm={{ size: 10, offset: 1 }}>
                   <Card>
@@ -230,46 +293,27 @@ class ReactorControl extends Component {
                   </Card>
                 </Col>
               </Row>
-              <Row className="reactor-buttons">
-                {efficiencies.map(e => (
-                  <Col sm={6} key={e.label}>
-                    <Button
-                      block
-                      className={
-                        e.efficiency === reactor.efficiency ? "active" : ""
-                      }
-                      onClick={() => this.setEfficiency(e.efficiency)}
-                      size="lg"
-                      color={e.color}
-                    >
-                      {e.label}
-                      {typeof e.efficiency === "number" &&
-                        ": " + e.efficiency * 100 + "%"}
-                    </Button>
-                  </Col>
-                ))}
-              </Row>
-            </Col>
-          ) : (
-            <Col sm={{ size: 4, offset: 2 }}>
+            )}
+            <Row className="reactor-buttons">
               {efficiencies.map(e => (
-                <Button
-                  key={e.label}
-                  block
-                  className={
-                    e.efficiency === reactor.efficiency ? "active" : ""
-                  }
-                  onClick={() => this.setEfficiency(e.efficiency)}
-                  size="lg"
-                  color={e.color}
-                >
-                  {e.label}
-                  {typeof e.efficiency === "number" &&
-                    ": " + e.efficiency * 100 + "%"}
-                </Button>
+                <Col sm={6} key={e.label}>
+                  <Button
+                    block
+                    className={
+                      e.efficiency === reactor.efficiency ? "active" : ""
+                    }
+                    onClick={() => this.setEfficiency(e.efficiency)}
+                    size="lg"
+                    color={e.color}
+                  >
+                    {e.label}
+                    {typeof e.efficiency === "number" &&
+                      ": " + e.efficiency * 100 + "%"}
+                  </Button>
+                </Col>
               ))}
-            </Col>
-          )}
+            </Row>
+          </Col>
         </Row>
         <Tour
           steps={trainingSteps}

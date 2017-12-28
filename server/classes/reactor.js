@@ -1,6 +1,6 @@
-import { System } from "./generic";
+import { System, HeatMixin } from "./generic";
 
-export default class Reactor extends System {
+export default class Reactor extends HeatMixin(System) {
   constructor(params) {
     super(params);
     this.class = "Reactor";
@@ -13,6 +13,11 @@ export default class Reactor extends System {
     this.externalPower = params.externalPower || true;
     this.batteryChargeLevel = params.batteryChargeLevel || 1;
     this.batteryChargeRate = params.batteryChargeRate || 1 / 1000;
+    if (this.model === "battery") {
+      this.heat = null;
+      this.coolant = null;
+      this.heatRate = null;
+    }
   }
   get stealthFactor() {
     if (this.ejected) return 0;

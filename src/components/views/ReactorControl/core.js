@@ -142,6 +142,23 @@ class ReactorControl extends Component {
       variables
     });
   };
+  updateHeat = heat => {
+    const { reactors } = this.props.data;
+    const reactor = reactors.find(r => r.model === "reactor") || {};
+    const mutation = gql`
+      mutation SystemHeat($id: ID!, $heat: Float) {
+        addHeat(id: $id, heat: $heat)
+      }
+    `;
+    const variables = {
+      id: reactor.id,
+      heat
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.reactors) return null;
     const { reactors } = this.props.data;
@@ -202,8 +219,11 @@ class ReactorControl extends Component {
               ))}
             </Input>
             <p>Reactor Heat:</p>
-            <InputField prompt="What is the new reactor heat?">
-              {reactor.heat}
+            <InputField
+              prompt="What is the new reactor heat?"
+              onClick={this.updateHeat}
+            >
+              {Math.round(reactor.heat * 1000) / 10}%
             </InputField>
             <p>Battery Output:</p>
             <InputField

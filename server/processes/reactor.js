@@ -1,10 +1,10 @@
 import App from "../app";
-
+import { pubsub } from "../helpers/subscriptionManager.js";
 const updateReactor = () => {
   //Loop through all of the simulators to isolate the systems
   App.simulators.forEach(sim => {
     const simId = sim.id;
-    let level = App.systems
+    let oldLevel = App.systems
       .filter(s => s.simulatorId === simId)
       .filter(s => s.power.power)
       .reduce((prev, sys) => {
@@ -16,10 +16,19 @@ const updateReactor = () => {
     const reactors = systems.filter(s => s.model === "reactor");
     const batteries = systems.filter(s => s.model === "battery");
     //Reduce the level by the amount supplied by the reactors
-    level = reactors.reduce((prev, next) => {
+    const level = reactors.reduce((prev, next) => {
       const actualOutput = next.powerOutput * next.efficiency;
-      return Math.round(level - actualOutput);
-    }, level);
+      return Math.round(prev - actualOutput);
+    }, oldLevel);
+
+    //Adjust the reactors heat
+    reactors.forEach(reactor => {
+      const { efficiency, heatRate, heat } = reactor;
+      reactor.setHeat(
+        heat + (efficiency * heatRate / (60 * 60) + level / (oldLevel * 1000))
+      );
+    });
+
     //Reduce the batteries by the amount left over
     //Each battery takes the remaining load evenly
     //If level is a negative number, charge the batteries
@@ -41,4 +50,35 @@ const updateReactor = () => {
   });
   setTimeout(updateReactor, 1000);
 };
+
+function reactorHeat() {
+  const reactors = App.systems.filter(
+    s => s.type === "Reactor" && s.model === "reactor" && s.cooling === true
+  );
+  reactors.forEach(r => {
+    r.setCoolant(Math.min(1, Math.max(0, r.coolant - 0.005)));
+    r.setHeat(Math.min(1, Math.max(0, r.heat - 0.01)));
+    if (r.coolant === 0 || r.heat === 0) r.cool(false);
+    pubsub.publish(
+      "coolantSystemUpdate",
+      App.systems
+        .filter(s => (s.coolant || s.coolant === 0) && s.type !== "Coolant")
+        .map(s => {
+          return {
+            systemId: s.id,
+            simulatorId: s.simulatorId,
+            name: s.name,
+            coolant: s.coolant
+          };
+        })
+    );
+  });
+  reactors.length > 0 &&
+    pubsub.publish(
+      "reactorUpdate",
+      App.systems.filter(s => s.type === "Reactor")
+    );
+  setTimeout(reactorHeat, 1000 / 30);
+}
 updateReactor();
+reactorHeat();

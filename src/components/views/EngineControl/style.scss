@@ -74,30 +74,30 @@
 		top: -47px;
 		z-index: 2;
 	}
-	.heatBox{
-		width: 100%;
-		height: 55vh;
-		position: relative;
-		border: solid 1px white;
-		-webkit-backdrop-filter: blur(10px);
-		backdrop-filter: blur(10px);
-		background-color: rgba(0, 0, 0, 0.25);
+}
+.heatBox{
+	width: 100%;
+	height: 55vh;
+	position: relative;
+	border: solid 1px white;
+	-webkit-backdrop-filter: blur(10px);
+	backdrop-filter: blur(10px);
+	background-color: rgba(0, 0, 0, 0.25);
+}
+@media (width: 1024px) {
+	.heatBox {
+		height: 45vh;
 	}
-	@media (width: 1024px) {
-    .heatBox {
-    	height: 45vh;
-    }
-	}
-	.heatBox-Label{
-		width: 100%;
-		text-align: center;
-	}
-	.heatBar{
-		width: 100%;
-		position: absolute;
-		bottom: 0px;
-		left: 0px;
-		background-size: 5px 3px;
-		transition: height 0.2s ease-out;
-	}
+}
+.heatBox-Label{
+	width: 100%;
+	text-align: center;
+}
+.heatBar{
+	width: 100%;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	background-size: 5px 3px;
+	transition: height 0.2s ease-out;
 }

@@ -62,7 +62,4 @@ export default class Engine extends HeatMixin(System) {
   toggleAcceleration(tf) {
     this.useAcceleration = tf;
   }
-  cool(state = true) {
-    this.cooling = state;
-  }
 }
