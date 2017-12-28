@@ -8,20 +8,6 @@ import {
 } from "../damageReports/constants";
 import * as damageStepFunctions from "../damageReports/functions";
 
-const defaultPower = {
-  power: 5,
-  powerLevels: [5]
-};
-
-const defaultDamage = {
-  damaged: false,
-  report: null,
-  requested: false,
-  reactivationCode: null,
-  reactivationRequester: null,
-  neededReactivationCode: null
-};
-
 export function HeatMixin(inheritClass) {
   return class Heat extends inheritClass {
     constructor(params) {
@@ -66,8 +52,18 @@ export class System {
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || null;
     this.displayName = params.displayName || params.name;
-    this.power = params.power || Object.assign({}, defaultPower);
-    this.damage = params.damage || Object.assign({}, defaultDamage);
+    this.power = Object.assign({}, params.power) || {
+      power: 5,
+      powerLevels: [5]
+    };
+    this.damage = Object.assign({}, params.damage) || {
+      damaged: false,
+      report: null,
+      requested: false,
+      reactivationCode: null,
+      reactivationRequester: null,
+      neededReactivationCode: null
+    };
     this.extra = params.extra || false;
     this.locations = params.locations || [];
     this.requiredDamageSteps = [];
@@ -95,15 +91,17 @@ export class System {
     this.power.power = powerLevel;
   }
   setPowerLevels(levels) {
-    console.log("Setting Power Levels", this.name, levels);
     this.power.powerLevels = levels;
   }
   break(report) {
-    // TODO: Generate the damage report if
-    // The report is null or blank.
     this.damage.damaged = true;
     this.damage.report = this.processReport(report);
     this.damage.requested = false;
+    console.log(
+      App.systems
+        .filter(s => s.class === this.class)
+        .map(s => ({ simId: s.simulatorId, class: s.class, damage: s.damage }))
+    );
   }
   addDamageStep({ name, args, type }) {
     this[`${type}DamageSteps`].push(new DamageStep({ name, args }));
@@ -300,6 +298,11 @@ ${damageStepFunctions[name](args || {}, context, index)}
     this.damage.neededReactivationCode = null;
     this.damage.reactivationCode = null;
     this.damage.reactivationRequester = null;
+    console.log(
+      App.systems
+        .filter(s => s.class === this.class)
+        .map(s => ({ simId: s.simulatorId, class: s.class, damage: s.damage }))
+    );
   }
   requestReport() {
     this.damage.requested = true;
