@@ -9,9 +9,9 @@ type Message {
 }
 
 enum MESSAGE_GROUP {
-  Security Teams
-  Damage Teams
-  Medical Teams
+  SecurityTeams
+  DamageTeams
+  MedicalTeams
 }
 
 input MessageInput {

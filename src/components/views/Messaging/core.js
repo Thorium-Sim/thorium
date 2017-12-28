@@ -33,7 +33,7 @@ class Messaging extends Component {
   state = {
     messageInput: "",
     stationsShown: false,
-    selectedConversation: "Security Teams"
+    selectedConversation: "SecurityTeams"
   };
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
@@ -102,7 +102,7 @@ class Messaging extends Component {
     const { messages, teams } = this.props.data;
     const { messageInput, selectedConversation } = this.state;
 
-    const messageGroups = ["Security Teams", "Damage Teams", "Medical Teams"];
+    const messageGroups = ["SecurityTeams", "DamageTeams", "MedicalTeams"];
     return (
       <div className="core-messaging">
         <Input
