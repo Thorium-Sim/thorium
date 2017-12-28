@@ -97,11 +97,6 @@ export class System {
     this.damage.damaged = true;
     this.damage.report = this.processReport(report);
     this.damage.requested = false;
-    console.log(
-      App.systems
-        .filter(s => s.class === this.class)
-        .map(s => ({ simId: s.simulatorId, class: s.class, damage: s.damage }))
-    );
   }
   addDamageStep({ name, args, type }) {
     this[`${type}DamageSteps`].push(new DamageStep({ name, args }));
@@ -284,7 +279,7 @@ ${damageStepFunctions[name](args || {}, context, index)}
 
 `;
     }, "");
-    return this.processReport(damageReport);
+    return damageReport;
   }
 
   damageReport(report) {
@@ -298,11 +293,6 @@ ${damageStepFunctions[name](args || {}, context, index)}
     this.damage.neededReactivationCode = null;
     this.damage.reactivationCode = null;
     this.damage.reactivationRequester = null;
-    console.log(
-      App.systems
-        .filter(s => s.class === this.class)
-        .map(s => ({ simId: s.simulatorId, class: s.class, damage: s.damage }))
-    );
   }
   requestReport() {
     this.damage.requested = true;
