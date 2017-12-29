@@ -43,7 +43,7 @@ const MISSION_SUB = gql`
 class MissionsConfig extends Component {
   state = {
     selectedMission: null,
-    loadingMission: true
+    loadingMission: false
   };
   missionSubscription = null;
   componentWillReceiveProps(nextProps) {
