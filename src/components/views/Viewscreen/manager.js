@@ -243,9 +243,9 @@ class ViewscreenCore extends Component {
                 <Label>Cards</Label>
                 <div className="card-list">
                   {this.cards.map(c => (
-                    <p
+                    <div
                       key={c}
-                      className={`${
+                      className={`viewscreen-card ${
                         selectedViewscreen &&
                         viewscreens.find(v => v.id === selectedViewscreen) &&
                         viewscreens.find(v => v.id === selectedViewscreen)
@@ -259,8 +259,9 @@ class ViewscreenCore extends Component {
                           : this.updateCard(c)
                       }
                     >
-                      {c}
-                    </p>
+                      <img src={`/viewscreen/${c}.jpg`} draggable="false" />
+                      <p>{c}</p>
+                    </div>
                   ))}
                 </div>
                 <ButtonGroup>

@@ -20,7 +20,7 @@ App.on(
     viewscreen.updateAuto(false);
     viewscreen.updateComponent(
       component,
-      data.replace(/#SIM/gi, simulator.name)
+      data ? data.replace(/#SIM/gi, simulator.name) : data
     );
     pubsub.publish("viewscreensUpdate", App.viewscreens);
   }

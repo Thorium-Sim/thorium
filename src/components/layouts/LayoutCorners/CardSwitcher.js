@@ -16,7 +16,7 @@ const CardButton = props => {
         <img
           alt="Card"
           className="card-icon"
-          src={require(`./icons/${props.component}.svg`)}
+          src={`/cardIcons/${props.component}.svg`}
           draggable="false"
         />
         <div className="card-icon-background" />
@@ -29,11 +29,9 @@ class CardSwitcher extends Component {
   render() {
     return (
       <div
-        className={`card-icon-container ${this.props.clientObj.offlineState
-          ? "offline"
-          : ""} ${this.props.station.login
-          ? ""
-          : this.props.clientObj.loginState}`}
+        className={`card-icon-container ${
+          this.props.clientObj.offlineState ? "offline" : ""
+        } ${this.props.station.login ? "" : this.props.clientObj.loginState}`}
       >
         {this.props.cards.map((card, index) => {
           return (
