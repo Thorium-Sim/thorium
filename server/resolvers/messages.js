@@ -2,6 +2,12 @@ import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
+const teamMap = {
+  DamageTeams: "damage",
+  SecurityTeams: "security",
+  MedicalTeams: "medical"
+};
+
 export const MessagesQueries = {
   messages(_, { simulatorId, station }) {
     let returnValue = App.messages;
@@ -18,7 +24,7 @@ export const MessagesQueries = {
         t =>
           t.simulatorId === simulatorId &&
           stationObj.messageGroups.findIndex(
-            m => m.toLowerCase() === t.type.toLowerCase()
+            m => teamMap[m] === t.type.toLowerCase()
           ) > -1
       );
       // Get all of the messages which the station sent
@@ -95,7 +101,7 @@ export const MessagesSubscriptions = {
           t =>
             t.simulatorId === simulatorId &&
             stationObj.messageGroups.findIndex(
-              m => m.toLowerCase() === t.type.toLowerCase()
+              m => teamMap[m] === t.type.toLowerCase()
             ) > -1
         );
         // Get all of the messages which the station sent
