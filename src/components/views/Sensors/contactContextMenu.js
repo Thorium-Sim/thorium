@@ -78,6 +78,12 @@ class ContactContextMenu extends Component {
                     <Asset asset={contact.icon}>
                       {({ src }) => (
                         <img
+                          alt={"Contact"}
+                          style={{
+                            width: "100%",
+                            minHeight: "20px",
+                            backgroundColor: "rgba(20,20,50,0.5)"
+                          }}
                           src={src}
                           onClick={() => this.setState({ pickingIcon: true })}
                         />
@@ -95,7 +101,12 @@ class ContactContextMenu extends Component {
                     <Asset asset={contact.picture}>
                       {({ src }) => (
                         <img
-                          style={{ width: "100%" }}
+                          alt={"Contact"}
+                          style={{
+                            width: "100%",
+                            minHeight: "20px",
+                            backgroundColor: "rgba(20,20,50,0.5)"
+                          }}
                           src={src}
                           onClick={() =>
                             this.setState({ pickingPicture: true })

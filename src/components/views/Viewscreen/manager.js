@@ -259,7 +259,11 @@ class ViewscreenCore extends Component {
                           : this.updateCard(c)
                       }
                     >
-                      <img src={`/viewscreen/${c}.jpg`} draggable="false" />
+                      <img
+                        alt={`Viewscreen Preview ${c}`}
+                        src={`/viewscreen/${c}.jpg`}
+                        draggable="false"
+                      />
                       <p>{c}</p>
                     </div>
                   ))}

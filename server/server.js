@@ -78,8 +78,8 @@ graphQLServer.post("/importMission", upload.any(), async (req, res) => {
       fs.unlink(req.files[0].path, err => {
         res.end("Error");
         if (err) throw new Error(err);
+        res.end("Complete");
       });
-      res.end("Complete");
     });
   }
 });
