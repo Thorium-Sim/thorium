@@ -206,3 +206,25 @@ App.on("removeSystemDamageStep", ({ systemId, step }) => {
   sys.removeDamageStep(step);
   sendUpdate(sys);
 });
+App.on("breakSystem", ({ simulatorId, type, name }) => {
+  const systems = App.systems.filter(
+    s =>
+      s.simulatorId === simulatorId &&
+      s.type === type &&
+      (name ? s.name === name : true)
+  );
+  const sys = systems.find(s => s.damage.damaged === false);
+  sys && sys.break();
+  sendUpdate(sys);
+});
+App.on("fixSystem", ({ simulatorId, type, name }) => {
+  const systems = App.systems.filter(
+    s =>
+      s.simulatorId === simulatorId &&
+      s.type === type &&
+      (name ? s.name === name : true)
+  );
+  const sys = systems.find(s => s.damage.damaged === true);
+  sys && sys.repair();
+  sendUpdate(sys);
+});
