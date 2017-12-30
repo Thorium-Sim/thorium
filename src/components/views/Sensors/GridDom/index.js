@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import SensorContact from "./SensorContact";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import * as THREE from "three";
 
 import "./style.css";
 
@@ -25,11 +24,6 @@ const SENSORCONTACT_SUB = gql`
       icon
       picture
       speed
-      velocity {
-        x
-        y
-        z
-      }
       location {
         x
         y
@@ -40,6 +34,14 @@ const SENSORCONTACT_SUB = gql`
         y
         z
       }
+      position {
+        x
+        y
+        z
+      }
+      movementTime
+      startTime
+      endTime
       infrared
       cloaked
       destroyed
@@ -54,7 +56,7 @@ class GridDom extends Component {
     movingContact: null,
     iconWidth: null
   };
-  interval = 30;
+  interval = 1000 / 30;
   sensorContactsSubscription = null;
   componentWillReceiveProps(nextProps) {
     if (!this.sensorsSubscription && !nextProps.data.loading) {
@@ -63,7 +65,13 @@ class GridDom extends Component {
         variables: { sensorId: this.props.sensor },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            sensorContacts: subscriptionData.data.sensorContactUpdate
+            sensorContacts:
+              subscriptionData.data
+                .sensorContactUpdate /*.map(c => {
+              c.startTime = Date.now();
+              c.endTime = Date.now() + c.movementTime;
+              return c;
+            })*/
           });
         }
       });
@@ -73,12 +81,13 @@ class GridDom extends Component {
         const locations = {};
         nextProps.data.sensorContacts &&
           nextProps.data.sensorContacts.forEach(c => {
+            let location = c.position;
+            if (c.forceUpdate) location = c.position;
+            /*else if (stateLocations[c.id]) {
+              location = stateLocations[c.id].location;
+            }*/
             locations[c.id] = {
-              location: c.forceUpdate
-                ? c.location
-                : stateLocations[c.id]
-                  ? stateLocations[c.id].location
-                  : c.location,
+              location,
               speed: c.speed,
               opacity: nextProps.pings
                 ? this.contactPing(c, Date.now() - nextProps.pingTime)
@@ -128,6 +137,49 @@ class GridDom extends Component {
       this.setState({ locations });
     }
   };
+  moveContact = (
+    { destination, location, startTime, endTime },
+    position,
+    speed
+  ) => {
+    if (speed === 0) {
+      return {
+        location: position,
+        speed
+      };
+    }
+    const time = Date.now();
+    if (speed > 100) {
+      return {
+        location: destination,
+        speed: 0
+      };
+    } else if (speed > 0) {
+      // Total movement time is the difference between the distance and location
+      // Divided by the speed times one second (1000 ms)
+      const currentTime = time - startTime;
+      // Location is a function of the current time and the end time.
+      const newLoc = {
+        x:
+          location.x +
+          (destination.x - location.x) / (endTime - startTime) * currentTime,
+        y:
+          location.y +
+          (destination.y - location.y) / (endTime - startTime) * currentTime,
+        z: 0
+      };
+      if (distance3d(destination, position) < 0.05) {
+        return {
+          speed: 0,
+          location: destination
+        };
+      }
+      return {
+        speed,
+        location: newLoc
+      };
+    }
+  };
   contactPing = ({ location }, delta) => {
     //If the ping happened too long ago, just return 0
     if (delta > 7000) {
@@ -144,60 +196,6 @@ class GridDom extends Component {
       return 1;
     }
     return 0;
-  };
-  moveContact = ({ destination, velocity }, location, speed) => {
-    const { movingContact } = this.state;
-    if (speed > 100) {
-      return {
-        location: {
-          x: location.x,
-          y: location.y,
-          z: location.z
-        },
-        speed: 0
-      };
-    } else if (speed > 0) {
-      const locationVector = new THREE.Vector3(
-        location.x,
-        location.y,
-        location.z
-      );
-      const destinationVector = new THREE.Vector3(
-        destination.x,
-        destination.y,
-        destination.z
-      );
-      if (!movingContact) {
-        velocity = destinationVector
-          .sub(locationVector)
-          .normalize()
-          .multiplyScalar(speed);
-      }
-      // Update the location
-      const newLocation = {
-        x:
-          location.x +
-          Math.round(velocity.x / (10000 / this.interval) * 10000) / 10000,
-        y:
-          location.y +
-          Math.round(velocity.y / (10000 / this.interval) * 10000) / 10000,
-        z:
-          location.z +
-          Math.round(velocity.z / (10000 / this.interval) * 10000) / 10000
-      };
-      // Why not clean up the destination while we're at it?
-      if (distance3d(destination, newLocation) < 0.005) {
-        speed = 0;
-      }
-      return {
-        location: newLocation,
-        speed: speed
-      };
-    }
-    return {
-      location,
-      speed
-    };
   };
   _moveMouse = e => {
     const { dimensions, core } = this.props;
@@ -444,11 +442,6 @@ const CONTACTS_QUERY = gql`
       picture
       color
       speed
-      velocity {
-        x
-        y
-        z
-      }
       location {
         x
         y
@@ -459,6 +452,14 @@ const CONTACTS_QUERY = gql`
         y
         z
       }
+      position {
+        x
+        y
+        z
+      }
+      movementTime
+      startTime
+      endTime
       infrared
       cloaked
       destroyed

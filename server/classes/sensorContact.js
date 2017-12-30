@@ -1,5 +1,4 @@
 import uuid from "uuid";
-import * as THREE from "three";
 // TODO: Extend this with different types of sensor contacts
 // Ex: Ship has crew count, weapons, etc.
 
@@ -32,7 +31,6 @@ export default class SensorContact {
     this.color = params.color || "#0f0";
     this.picture = params.picture || "/Sensor Contacts/Pictures/Default"; // Added to '/Sensor Pictures/'
     this.speed = params.speed || 0; // Float
-    this.velocity = params.velocity || { x: 0, y: 0, z: 0 };
     this.location = params.location || {
       x: 0,
       y: 0,
@@ -43,30 +41,25 @@ export default class SensorContact {
       y: 0,
       z: 0
     };
+    this.position = params.position || this.location;
     this.infrared = params.infrared || false;
     this.cloaked = params.cloaked || false;
     this.destroyed = false;
+    this.startTime = 0;
+    this.endTime = 0;
   }
   move(coordinates, speed, stop) {
     this.speed = stop ? 0 : speed;
     this.destination = coordinates;
-    const locationVector = new THREE.Vector3(
-      this.location.x,
-      this.location.y,
-      this.location.z
-    );
-    const destinationVector = new THREE.Vector3(
-      coordinates.x,
-      coordinates.y,
-      coordinates.z
-    );
-    this.velocity = destinationVector
-      .sub(locationVector)
-      .normalize()
-      .multiplyScalar(speed);
+    this.location = this.position;
     if (stop) {
-      this.destination = this.location;
+      this.destination = this.position;
     }
+    this.startTime = Date.now();
+    const movementTime = Math.ceil(
+      distance3d(this.destination, this.location) / (this.speed / 10) * 1000
+    );
+    this.endTime = this.startTime + movementTime;
   }
   nudge(coordinates, speed, yaw) {
     this.speed = speed;
@@ -74,10 +67,14 @@ export default class SensorContact {
       // Rotate the contact about the center
       const destinationPoints = calculateRotatedPoint(this.destination, yaw);
       const locationPoints = calculateRotatedPoint(this.location, yaw);
+      const positionPoints = calculateRotatedPoint(this.position, yaw);
+
       this.destination.x = destinationPoints.x;
       this.destination.y = destinationPoints.y;
       this.location.x = locationPoints.x;
       this.location.y = locationPoints.y;
+      this.position.x = positionPoints.x;
+      this.position.y = positionPoints.y;
     } else {
       this.destination.x = Math.max(
         -1.08,
@@ -91,36 +88,17 @@ export default class SensorContact {
         -1.08,
         Math.min(1.08, this.destination.z + coordinates.z)
       );
+      this.location = this.position;
+      this.startTime = Date.now();
+      const movementTime = Math.ceil(
+        distance3d(this.destination, this.location) / (this.speed / 10) * 1000
+      );
+      this.endTime = this.startTime + movementTime;
     }
-    // Recalculate the velocity
-    const locationVector = new THREE.Vector3(
-      this.location.x,
-      this.location.y,
-      this.location.z
-    );
-    const destinationVector = new THREE.Vector3(
-      this.destination.x,
-      this.destination.y,
-      this.destination.z
-    );
-    this.velocity = destinationVector
-      .sub(locationVector)
-      .normalize()
-      .multiplyScalar(speed);
   }
   stop() {
     this.destination = this.location;
     this.speed = 0;
-    this.velocity = { x: 0, y: 0, z: 0 };
-  }
-  updateLocation(coordinates) {
-    this.location = coordinates;
-    // Reset the velocity and speed if it is at it's destination
-    if (distance3d(this.destination, this.location) < 0.005) {
-      // A magic number
-      this.velocity = { x: 0, y: 0, z: 0 };
-      this.speed = 0;
-    }
   }
   updateInfrared(tf) {
     this.infrared = tf;

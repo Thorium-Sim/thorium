@@ -95,9 +95,6 @@ export const SensorsMutations = {
   pingSensors(root, args, context) {
     App.handleEvent(args, "pingSensors", context);
   },
-  animateSensorContacact() {
-    moveSensorContact();
-  },
   setSensorsHistory(root, args, context) {
     App.handleEvent(args, "setSensorsHistory", context);
   },
@@ -148,11 +145,14 @@ export const SensorsSubscriptions = {
 
 export const SensorsTypes = {
   SensorContact: {
-    iconUrl({ icon: assetKey, simulatorId }) {
-      return getAsset(assetKey, simulatorId);
+    /*startTime() {
+      return 0;
     },
-    pictureUrl({ picture: assetKey, simulatorId }) {
-      return getAsset(assetKey, simulatorId);
+    endTime() {
+      return 0;
+    },*/
+    movementTime({ startTime, endTime }) {
+      return endTime - startTime;
     }
   }
 };

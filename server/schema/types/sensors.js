@@ -49,14 +49,15 @@ type SensorContact {
   name: String
   size: Float
   icon: String
-  iconUrl: String
   picture: String
-  pictureUrl: String
   color: String
   speed: Float
-  velocity: Coordinates
   location: Coordinates
   destination: Coordinates
+  position: Coordinates
+  startTime: Float
+  endTime: Float
+  movementTime: Int
   infrared: Boolean
   cloaked: Boolean
   destroyed: Boolean

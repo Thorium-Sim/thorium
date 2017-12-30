@@ -1,9 +1,7 @@
 import App from "../app";
-import * as THREE from "three";
-import { pubsub } from "../helpers/subscriptionManager.js";
+//import { pubsub } from "../helpers/subscriptionManager.js";
 
-const interval = 30; // 1/30 of a second
-const updateInterval = 1000;
+const interval = 1000 / 30; // 1/30 of a second
 const pingInterval = 100;
 function distance3d(coord2, coord1) {
   const { x: x1, y: y1, z: z1 } = coord1;
@@ -11,115 +9,54 @@ function distance3d(coord2, coord1) {
   return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
 }
 
-const moveSensorContact = () => {
-  App.systems.forEach(sys => {
-    if (sys.type === "Sensors") {
-      // Loop through all of the sensor contacts
-      const sensors = sys;
-      sensors.contacts = sensors.contacts.map(contact => {
-        const { location, destination, speed } = contact;
-        const newContact = contact;
-        if (contact.speed > 100) {
-          location.x = destination.x;
-          location.y = destination.y;
-          location.z = destination.z;
-          newContact.location = location;
-          newContact.velocity = { x: 0, y: 0, z: 0 };
-          newContact.speed = 0;
-        } else if (contact.speed > 0) {
-          // Update the velocity
-          const locationVector = new THREE.Vector3(
-            location.x,
-            location.y,
-            location.z
-          );
-          const destinationVector = new THREE.Vector3(
-            destination.x,
-            destination.y,
-            destination.z
-          );
-
-          const velocity = destinationVector
-            .sub(locationVector)
-            .normalize()
-            .multiplyScalar(speed);
-
-          velocity.x = velocity.x || 0;
-          velocity.y = velocity.y || 0;
-          velocity.z = velocity.z || 0;
-
-          // Update the location
-          location.x +=
-            Math.round(velocity.x / (10000 / interval) * 10000) / 10000;
-          location.y +=
-            Math.round(velocity.y / (10000 / interval) * 10000) / 10000;
-          location.z +=
-            Math.round(velocity.z / (10000 / interval) * 10000) / 10000;
-
-          // Why not clean up the destination while we're at it?
-          destination.x = Math.round(destination.x * 10000) / 10000;
-          destination.y = Math.round(destination.y * 10000) / 10000;
-          destination.z = Math.round(destination.z * 10000) / 10000;
-
-          // Check to see if it is close enough to the destination
-          newContact.location = location;
-          newContact.velocity = velocity;
-          if (distance3d(destination, location) < 0.005) {
-            // A magic number
-            newContact.velocity = { x: 0, y: 0, z: 0 };
-            newContact.speed = 0;
-          }
+const moveSensorContactTimed = () => {
+  const time = Date.now();
+  App.systems.filter(sys => sys.type === "Sensors").forEach(sensors => {
+    sensors.contacts = sensors.contacts.map(contact => {
+      if (contact.speed === 0) return contact;
+      const {
+        location,
+        position,
+        destination,
+        speed,
+        startTime,
+        endTime
+      } = contact;
+      if (speed > 100) {
+        contact.position = Object.assign({}, contact.destination);
+        contact.location = Object.assign({}, contact.destination);
+        contact.speed = 0;
+      } else if (speed > 0) {
+        // Total movement time is the difference between the distance and location
+        // Divided by the speed times one second (1000 ms)
+        const currentTime = time - startTime;
+        // Location is a function of the current time and the end time.
+        const newLoc = {
+          x:
+            location.x +
+            (destination.x - location.x) / (endTime - startTime) * currentTime,
+          y:
+            location.y +
+            (destination.y - location.y) / (endTime - startTime) * currentTime,
+          z: 0
+        };
+        contact.position = newLoc;
+        if (distance3d(destination, position) < 0.01) {
+          contact.speed = 0;
+          contact.position = Object.assign({}, contact.destination);
+          contact.location = Object.assign({}, contact.destination);
         }
-        contact.updateLocation(location);
-
-        // Check to see if the contact is in weapons range
-        const targeting = App.systems.find(
-          s => s.simulatorId === sensors.simulatorId && s.class === "Targeting"
-        );
-        if (sensors.autoTarget) {
-          if (distance3d({ x: 0, y: 0, z: 0 }, location) < 0.33) {
-            if (!targeting.classes.find(t => t.id === contact.id)) {
-              const target = {
-                id: contact.id,
-                name: contact.name,
-                size: contact.size,
-                icon: contact.icon,
-                picture: contact.picture,
-                speed: contact.speed || 1
-              };
-              targeting.addTargetClass(target);
-              targeting.createTarget(contact.id);
-              pubsub.publish(
-                "targetingUpdate",
-                App.systems.filter(s => s.type === "Targeting")
-              );
-            }
-          } else {
-            if (targeting.classes.find(t => t.id === contact.id)) {
-              targeting.removeTargetClass(contact.id);
-              pubsub.publish(
-                "targetingUpdate",
-                App.systems.filter(s => s.type === "Targeting")
-              );
-            }
-          }
-        }
-        return newContact;
-      });
-      return sensors;
-    }
-    return sys;
+      }
+      return contact;
+    });
   });
-  setTimeout(moveSensorContact, interval);
-};
-const updateSensorGrids = () => {
-  App.systems.forEach(sys => {
+  /*App.systems.forEach(sys => {
     if (sys.type === "Sensors") {
       const sensors = sys;
       pubsub.publish("sensorContactUpdate", sensors.contacts);
     }
-  });
-  setTimeout(updateSensorGrids, updateInterval);
+  });*/
+  setTimeout(moveSensorContactTimed, interval);
 };
 
 const activePingInterval = 6500;
@@ -143,8 +80,5 @@ const pingSensors = () => {
   setTimeout(pingSensors, pingInterval);
 };
 
-//updateSensorGrids();
-moveSensorContact();
+moveSensorContactTimed();
 pingSensors();
-
-export default moveSensorContact;

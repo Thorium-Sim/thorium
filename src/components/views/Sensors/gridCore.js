@@ -57,9 +57,7 @@ const SENSOR_SUB = gql`
         name
         size
         icon
-        iconUrl
         picture
-        pictureUrl
         color
         infrared
         cloaked
@@ -633,9 +631,7 @@ const GRID_QUERY = gql`
         name
         size
         icon
-        iconUrl
         picture
-        pictureUrl
         color
         infrared
         cloaked
