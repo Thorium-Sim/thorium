@@ -44,14 +44,21 @@ export const ShortRangeCommMutations = {
   },
   connectHail(root, args, context) {
     App.handleEvent(args, "connectHail", context);
+  },
+  addShortRangeComm(root, args, context) {
+    App.handleEvent(args, "addShortRangeComm", context);
+  },
+  removeShortRangeComm(root, args, context) {
+    App.handleEvent(args, "removeShortRangeComm", context);
   }
 };
 
 export const ShortRangeCommSubscriptions = {
   shortRangeCommUpdate: {
-    resolve(rootValue, { simulatorId, crew, sent }) {
-      if (simulatorId)
-        rootValue = rootValue.filter(s => s.simulatorId === simulatorId);
+    resolve(rootValue, { simulatorId }) {
+      if (simulatorId) {
+        return rootValue.filter(s => s.simulatorId === simulatorId);
+      }
       return rootValue;
     },
     subscribe: withFilter(

@@ -116,3 +116,48 @@ App.on("connectHail", ({ id }) => {
     App.systems.filter(s => s.type === "ShortRangeComm")
   );
 });
+App.on("addShortRangeComm", ({ simulatorId, frequency, signalName }) => {
+  const system = App.systems.find(
+    s => s.simulatorId === simulatorId && s.type === "ShortRangeComm"
+  );
+  if (!system) return;
+  if (signalName) {
+    const signal = system.signals.find(s => s.name === signalName);
+    if (signal) {
+      system.addArrow({ signal: signal.id });
+      pubsub.publish(
+        "shortRangeCommUpdate",
+        App.systems.filter(s => s.type === "ShortRangeComm")
+      );
+      return;
+    }
+  }
+  system.addArrow({ frequency });
+  pubsub.publish(
+    "shortRangeCommUpdate",
+    App.systems.filter(s => s.type === "ShortRangeComm")
+  );
+});
+App.on("removeShortRangeComm", ({ simulatorId, frequency, signalName }) => {
+  const system = App.systems.find(
+    s => s.simulatorId === simulatorId && s.type === "ShortRangeComm"
+  );
+  if (!system) return;
+  if (signalName) {
+    const signal = system.signals.find(s => s.name === signalName);
+    const arrow = system.arrows.find(s => s.signal === signal.id);
+    if (arrow) {
+      system.arrows = system.arrows.filter(s => s.id !== arrow.id);
+      pubsub.publish(
+        "shortRangeCommUpdate",
+        App.systems.filter(s => s.type === "ShortRangeComm")
+      );
+      return;
+    }
+  }
+  system.arrows = system.arrows.filter(a => a.frequency !== frequency);
+  pubsub.publish(
+    "shortRangeCommUpdate",
+    App.systems.filter(s => s.type === "ShortRangeComm")
+  );
+});

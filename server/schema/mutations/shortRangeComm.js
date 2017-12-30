@@ -10,4 +10,11 @@ commUpdate(id: ID!, commUpdateInput: CommUpdateInput!):String
 commHail(id: ID!):String
 cancelHail(id: ID!):String
 connectHail(id: ID!):String
+
+#Macro: Add a short range comm
+addShortRangeComm(simulatorId: ID!, frequency: Float, signalName: String): String
+
+#Macro: Remove a short range comm
+removeShortRangeComm(simulatorId: ID!, frequency: Float, signalName: String): String
+
 `;

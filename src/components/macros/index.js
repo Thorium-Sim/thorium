@@ -8,3 +8,5 @@ export {
 export { default as showViewscreenTactical } from "./showViewscreenTactical";
 export { default as navSetPresets } from "./navSetPresets";
 export { default as setViewscreenToAuto } from "./setViewscreenToAuto";
+export { default as addShortRangeComm } from "./addShortRangeComm";
+export { default as removeShortRangeComm } from "./removeShortRangeComm";
