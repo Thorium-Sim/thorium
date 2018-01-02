@@ -43,13 +43,13 @@ class WidgetsContainer extends Component {
     });
   };
   render() {
-    const { simulator, clientObj, station } = this.props;
+    const { simulator, clientObj, station, flight } = this.props;
     const { widgetNotify } = this.state;
     return (
       <div
-        className={`widgets ${clientObj.loginState} ${clientObj.offlineState
-          ? "offline"
-          : ""}`}
+        className={`widgets ${clientObj.loginState} ${
+          clientObj.offlineState ? "offline" : ""
+        }`}
       >
         {station.widgets &&
           station.widgets.map(key => {
@@ -57,6 +57,7 @@ class WidgetsContainer extends Component {
             return (
               <Widget
                 simulator={simulator}
+                flight={flight}
                 station={station}
                 widget={widget}
                 wkey={key}
@@ -131,10 +132,9 @@ export class Widget extends Component {
         </Tooltip>
         {this.state.modal && (
           <div
-            className={`modal-themed widget-body widget-${widget.size} ${this
-              .state.modal
-              ? "open"
-              : ""}`}
+            className={`modal-themed widget-body widget-${widget.size} ${
+              this.state.modal ? "open" : ""
+            }`}
             style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
           >
             <div className="widget-name" onMouseDown={this.mouseDown}>
@@ -146,6 +146,7 @@ export class Widget extends Component {
                 simulator={this.props.simulator}
                 station={this.props.station}
                 clientObj={this.props.clientObj}
+                flight={this.props.flight}
               />
             </div>
             <Button onClick={this.toggleModal} style={{ width: "200px" }}>

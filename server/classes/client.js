@@ -2,9 +2,9 @@ import uuid from "uuid";
 import App from "../app";
 
 export default class Client {
-  constructor(params) {
-    params = params || {};
+  constructor(params = {}) {
     this.id = params.id || uuid.v4();
+    this.class = "Client";
     this.flightId = params.flightId || null;
     this.simulatorId = params.simulatorId || null;
     this.station = params.station || null;
@@ -16,7 +16,6 @@ export default class Client {
     this.offlineState = params.offlineState || null;
     this.training = params.training || false;
     this.caches = params.caches || [];
-    this.class = "Client";
   }
   connect() {
     this.connected = true;

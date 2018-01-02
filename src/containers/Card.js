@@ -76,7 +76,14 @@ export default class CardFrame extends Component {
           },
           station: {
             name: "Test",
-            widgets: ["composer", "calculator", "remote", "messages"],
+            widgets: [
+              "composer",
+              "calculator",
+              "remote",
+              "messages",
+              "officerLog",
+              "damageReport"
+            ],
             cards: [
               {
                 id: "test",
@@ -85,8 +92,8 @@ export default class CardFrame extends Component {
               }
             ]
           },
-          flight: {},
-          client: { loginState: "login", loginName: "Test" }
+          flight: { id: "test" },
+          client: { loginState: "login", loginName: "Test", id: "test" }
         }
       : this.props;
     const layoutName = station.layout || simulator.layout || "LayoutCorners";

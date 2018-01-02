@@ -76,15 +76,15 @@ class WidgetsContainer extends Component {
     });
   };
   render() {
-    const { simulator, clientObj, station } = this.props;
+    const { simulator, clientObj, station, flight } = this.props;
     const { widgetNotify } = this.state;
     if (clientObj.loginState === "logout" && station.login === false)
       return null;
     return (
       <div
-        className={`widgets ${clientObj.loginState} ${clientObj.offlineState
-          ? "offline"
-          : ""}`}
+        className={`widgets ${clientObj.loginState} ${
+          clientObj.offlineState ? "offline" : ""
+        }`}
       >
         {station.widgets &&
           station.widgets.map(key => {
@@ -93,6 +93,7 @@ class WidgetsContainer extends Component {
               <Widget
                 simulator={simulator}
                 station={station}
+                flight={flight}
                 widget={widget}
                 wkey={key}
                 clientObj={clientObj}
