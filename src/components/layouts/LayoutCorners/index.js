@@ -149,7 +149,14 @@ class LayoutCorners extends Component {
     });
   };
   render() {
-    let { simulator, station, cardName, changeCard, clientObj } = this.props;
+    let {
+      simulator,
+      station,
+      cardName,
+      changeCard,
+      clientObj,
+      flight
+    } = this.props;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     if (clientObj.loginState === "logout" && station.login === false) {
       cardName = "Login";
@@ -224,6 +231,7 @@ class LayoutCorners extends Component {
             clientObj={this.props.clientObj}
             simulator={simulator}
             station={station}
+            flight={flight}
           />
           <Alerts ref="alert-widget" simulator={simulator} station={station} />
         </div>

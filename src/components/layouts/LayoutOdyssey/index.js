@@ -29,7 +29,14 @@ class LayoutOdyssey extends Component {
     });
   };
   render() {
-    let { simulator, station, cardName, changeCard, clientObj } = this.props;
+    let {
+      simulator,
+      station,
+      cardName,
+      changeCard,
+      clientObj,
+      flight
+    } = this.props;
     const {
       login: stationLogin,
       name: stationName,
@@ -131,6 +138,7 @@ class LayoutOdyssey extends Component {
               clientObj={clientObj}
               simulator={simulator}
               station={station}
+              flight={flight}
             />
             <Alerts
               ref="alert-widget"

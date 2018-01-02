@@ -169,6 +169,12 @@ import {
   TacticalMapTypes
 } from "./tacticalMap";
 
+import {
+  OfficerLogQueries,
+  OfficerLogMutations,
+  OfficerLogSubscriptions
+} from "./officerLog";
+
 import App from "../app";
 
 function parseJSONLiteral(ast) {
@@ -228,7 +234,8 @@ const queryMap = Object.assign(
   IsochipsQueries,
   DockingQueries,
   CoreFeedQueries,
-  TacticalMapQueries
+  TacticalMapQueries,
+  OfficerLogQueries
 );
 
 export const mutationMap = Object.assign(
@@ -271,7 +278,8 @@ export const mutationMap = Object.assign(
   IsochipsMutations,
   DockingMutations,
   CoreFeedMutations,
-  TacticalMapMutations
+  TacticalMapMutations,
+  OfficerLogMutations
 );
 
 const subscriptionMap = Object.assign(
@@ -309,7 +317,8 @@ const subscriptionMap = Object.assign(
   IsochipsSubscriptions,
   DockingSubscriptions,
   CoreFeedSubscriptions,
-  TacticalMapSubscriptions
+  TacticalMapSubscriptions,
+  OfficerLogSubscriptions
 );
 export default Object.assign(
   {
