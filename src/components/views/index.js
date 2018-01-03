@@ -45,6 +45,7 @@ import TorpedoLoading from "./TorpedoLoading";
 import SoundsTester from "./SoundsTester";
 import NavigationAdvanced from "./NavigationAdvanced";
 import SensorScans from "./SensorScans";
+import OfficerLog from "./OfficerLog";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -138,7 +139,8 @@ const Views = {
   TorpedoLoading,
   SoundsTester,
   NavigationAdvanced,
-  SensorScans
+  SensorScans,
+  OfficerLog
 };
 
 export const Widgets = {
@@ -173,6 +175,13 @@ export const Widgets = {
     name: "Damage Report",
     size: "lg",
     color: "rgb(200, 100, 100)"
+  },
+  officerLog: {
+    widget: OfficerLog,
+    icon: "book",
+    name: "Officer Log",
+    size: "lg",
+    color: "rgb(255,255,100)"
   }
 };
 
