@@ -23,6 +23,7 @@ type Sensors implements SystemInterface{
   scans: [SensorScan]
   history: Boolean
   autoTarget: Boolean
+  segments: [SensorsSegment]
 }
 type SensorScan {
   id: ID
@@ -62,6 +63,10 @@ type SensorContact {
   cloaked: Boolean
   destroyed: Boolean
   forceUpdate: Boolean
+}
+type SensorsSegment {
+  segment: String
+  state: Boolean
 }
 type PresetAnswer {
   label: String

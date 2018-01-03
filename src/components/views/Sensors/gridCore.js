@@ -52,6 +52,10 @@ const SENSOR_SUB = gql`
       id
       type
       autoTarget
+      segments {
+        segment
+        state
+      }
       armyContacts {
         id
         name
@@ -514,6 +518,7 @@ class GridCore extends Component {
               client={this.props.client}
               speed={speed}
             />
+            <small>Click grid segments to black out</small>
           </Col>
           <Col sm={6} style={{ height: "100%" }}>
             <div
@@ -539,6 +544,7 @@ class GridCore extends Component {
                 selectedContact={selectedContact}
                 armyContacts={sensors.armyContacts}
                 movingContact={movingContact}
+                segments={sensors.segments}
               />
             </div>
           </Col>
@@ -626,6 +632,10 @@ const GRID_QUERY = gql`
       id
       type
       autoTarget
+      segments {
+        segment
+        state
+      }
       armyContacts {
         id
         name

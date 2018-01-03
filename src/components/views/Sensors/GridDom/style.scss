@@ -15,9 +15,10 @@
     justify-content: center;
     align-items: center;
     border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.6);
 
     //Ping Stuff
-    background: radial-gradient(
+    /*background: radial-gradient(
       ellipse at center,
       rgba(30, 87, 153, 0) 0%,
       rgba(31, 91, 158, 0) 21%,
@@ -29,17 +30,37 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: 0%;
-    transition: background-size 0s linear;
+    transition: background-size 0s linear;*/
     &.ping {
-      transition: background-size 10s ease;
-      background-size: 600%;
+      //transition: background-size 10s ease;
+      //background-size: 600%;
+    }
+    .ping-ring {
+      width: 100%;
+      height: 100%;
+      border: solid 4px rgba(0,128,255,0.7);
+      border-radius: 50%;
+      position: absolute;
+      transition: transform 0s ease-out;
+      transform: scale(0);
+      box-shadow: 0px 0px 10px rgba(0,128,255,0.7), inset 0px 0px 20px 10px rgba(0,128,255,0.7);
+      opacity: 1;
+    }
+    &.ping .ping-ring {
+      transition: transform 2s ease-out, opacity 3s linear;
+      transform: scale(1.01);
+      opacity: 0;
     }
     .ring {
+      z-index: 11;
+      pointer-events: none;
       border: solid 1px rgba(255, 255, 255, 0.2);
       border-radius: 50%;
       position: absolute;
     }
     .line {
+      z-index: 11;
+      pointer-events: none;
       position: absolute;
       width: 100%;
       height: 1px;
@@ -51,6 +72,20 @@
       height: 5%;
       position: absolute;
       transform: translate(-100%, 0);
+    }
+  }
+  .grid-segments {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    path {
+      fill: black;
+    }
+    .active {
+      opacity: 1;
+    }
+    .hidden {
+      opacity: 0;
     }
   }
   .speed-container {
@@ -71,5 +106,16 @@
         background-color: #555;
       }
     }
+  }
+}
+
+.grid-segments {
+  pointer-events: none;
+  z-index: 10;
+}
+.sensorGridCore {
+  .grid-segments {
+    pointer-events: auto;
+    z-index: 0;
   }
 }
