@@ -240,3 +240,11 @@ App.on("toggleSensorsAutoTarget", ({ id, target }) => {
     App.systems.filter(s => s.type === "Sensors")
   );
 });
+App.on("setSensorsSegment", ({ id, segment, state }) => {
+  const sensors = App.systems.find(sys => sys.id === id);
+  sensors.setSegment(segment, state);
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});

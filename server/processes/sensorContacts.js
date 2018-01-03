@@ -1,8 +1,9 @@
 import App from "../app";
-//import { pubsub } from "../helpers/subscriptionManager.js";
+import { pubsub } from "../helpers/subscriptionManager.js";
 
 const interval = 1000 / 30; // 1/30 of a second
 const pingInterval = 100;
+const updateInterval = 1000;
 function distance3d(coord2, coord1) {
   const { x: x1, y: y1, z: z1 } = coord1;
   let { x: x2, y: y2, z: z2 } = coord2;
@@ -11,6 +12,7 @@ function distance3d(coord2, coord1) {
 
 const moveSensorContactTimed = () => {
   const time = Date.now();
+  let sendUpdate = false;
   App.systems.filter(sys => sys.type === "Sensors").forEach(sensors => {
     sensors.contacts = sensors.contacts.map(contact => {
       if (contact.speed === 0) return contact;
@@ -45,20 +47,32 @@ const moveSensorContactTimed = () => {
           contact.speed = 0;
           contact.position = Object.assign({}, contact.destination);
           contact.location = Object.assign({}, contact.destination);
+          sendUpdate = true;
         }
       }
       return contact;
     });
   });
-  /*App.systems.forEach(sys => {
+  if (sendUpdate) {
+    App.systems.forEach(sys => {
+      if (sys.type === "Sensors") {
+        const sensors = sys;
+        pubsub.publish("sensorContactUpdate", sensors.contacts);
+      }
+    });
+  }
+  setTimeout(moveSensorContactTimed, interval);
+};
+
+const updateSensors = () => {
+  App.systems.forEach(sys => {
     if (sys.type === "Sensors") {
       const sensors = sys;
       pubsub.publish("sensorContactUpdate", sensors.contacts);
     }
-  });*/
-  setTimeout(moveSensorContactTimed, interval);
+  });
+  setTimeout(updateSensors, updateInterval);
 };
-
 const activePingInterval = 6500;
 const passivePingInterval = 15000;
 const pingSensors = () => {
@@ -82,3 +96,4 @@ const pingSensors = () => {
 
 moveSensorContactTimed();
 pingSensors();
+updateSensors();

@@ -68,6 +68,44 @@ export default class Sensors extends System {
         this.armyContacts.push(new SensorContact(contact));
       });
     }
+    this.segments = params.segments || [
+      { segment: "a1", state: false },
+      { segment: "b1", state: false },
+      { segment: "c1", state: false },
+      { segment: "a2", state: false },
+      { segment: "b2", state: false },
+      { segment: "c2", state: false },
+      { segment: "a3", state: false },
+      { segment: "b3", state: false },
+      { segment: "c3", state: false },
+      { segment: "a4", state: false },
+      { segment: "b4", state: false },
+      { segment: "c4", state: false },
+      { segment: "a5", state: false },
+      { segment: "b5", state: false },
+      { segment: "c5", state: false },
+      { segment: "a6", state: false },
+      { segment: "b6", state: false },
+      { segment: "c6", state: false },
+      { segment: "a7", state: false },
+      { segment: "b7", state: false },
+      { segment: "c7", state: false },
+      { segment: "a8", state: false },
+      { segment: "b8", state: false },
+      { segment: "c8", state: false },
+      { segment: "a9", state: false },
+      { segment: "b9", state: false },
+      { segment: "c9", state: false },
+      { segment: "a10", state: false },
+      { segment: "b10", state: false },
+      { segment: "c10", state: false },
+      { segment: "a11", state: false },
+      { segment: "b11", state: false },
+      { segment: "c11", state: false },
+      { segment: "a12", state: false },
+      { segment: "b12", state: false },
+      { segment: "c12", state: false }
+    ];
   }
 
   get stealthFactor() {
@@ -187,5 +225,8 @@ export default class Sensors extends System {
   }
   setAutoTarget(target) {
     this.autoTarget = target;
+  }
+  setSegment(segment, state) {
+    this.segments.find(s => s.segment === segment).state = state;
   }
 }

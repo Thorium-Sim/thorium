@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import SensorContact from "./SensorContact";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
+import Segments from "./blackout";
 
 import "./style.css";
 
@@ -65,35 +66,27 @@ class GridDom extends Component {
         variables: { sensorId: this.props.sensor },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
-            sensorContacts:
-              subscriptionData.data
-                .sensorContactUpdate /*.map(c => {
-              c.startTime = Date.now();
-              c.endTime = Date.now() + c.movementTime;
-              return c;
-            })*/
+            sensorContacts: subscriptionData.data.sensorContactUpdate
           });
         }
       });
     }
     if (!nextProps.data.loading) {
-      this.setState(({ locations: stateLocations }) => {
-        const locations = {};
+      this.setState(({ locations }) => {
         nextProps.data.sensorContacts &&
           nextProps.data.sensorContacts.forEach(c => {
             let location = c.position;
             if (c.forceUpdate) location = c.position;
-            /*else if (stateLocations[c.id]) {
-              location = stateLocations[c.id].location;
-            }*/
-            locations[c.id] = {
-              location,
-              speed: c.speed,
-              opacity: nextProps.pings
-                ? this.contactPing(c, Date.now() - nextProps.pingTime)
-                : 1,
-              destination: c.destination
-            };
+            if (this.props.ping === nextProps.ping) {
+              locations[c.id] = {
+                location,
+                speed: c.speed,
+                opacity: nextProps.pings
+                  ? this.contactPing(c, Date.now() - nextProps.pingTime)
+                  : 1,
+                destination: c.destination
+              };
+            }
           });
         return { locations };
       });
@@ -168,7 +161,7 @@ class GridDom extends Component {
           (destination.y - location.y) / (endTime - startTime) * currentTime,
         z: 0
       };
-      if (distance3d(destination, position) < 0.05) {
+      if (distance3d(destination, position) < 0.005) {
         return {
           speed: 0,
           location: destination
@@ -336,7 +329,9 @@ class GridDom extends Component {
       ping,
       rings = 3,
       lines = 12,
-      hoverContact
+      hoverContact,
+      segments,
+      sensor
     } = this.props;
     const { locations, speedAsking } = this.state;
     const { sensorContacts: contacts } = data;
@@ -353,6 +348,7 @@ class GridDom extends Component {
     return (
       <div id="sensorGrid" style={gridStyle}>
         <div className={`grid ${ping ? "ping" : ""}`}>
+          <Segments segments={segments} sensors={sensor} />
           {Array(rings)
             .fill(0)
             .map((_, i, array) => (
@@ -376,6 +372,7 @@ class GridDom extends Component {
                 }}
               />
             ))}
+          <div className="ping-ring" />
           {contacts &&
             contacts.map(
               contact =>

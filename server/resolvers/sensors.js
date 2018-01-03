@@ -109,6 +109,9 @@ export const SensorsMutations = {
   },
   toggleSensorsAutoTarget(root, args, context) {
     App.handleEvent(args, "toggleSensorsAutoTarget", context);
+  },
+  setSensorsSegment(root, args, context) {
+    App.handleEvent(args, "setSensorsSegment", context);
   }
 };
 

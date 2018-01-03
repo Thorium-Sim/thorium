@@ -39,4 +39,5 @@ updateSensorScan(id: ID!, scan: SensorScanInput!): String
 cancelSensorScan(id: ID!, scan: ID!):String
 
 toggleSensorsAutoTarget(id: ID!, target: Boolean!):String
+setSensorsSegment(id: ID!, segment: String!, state: Boolean!): String
 `;
