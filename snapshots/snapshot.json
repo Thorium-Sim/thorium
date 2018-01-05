@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 289,
+	"_eventsCount": 295,
 	"simulators": [
 		{
 			"id": "test",
@@ -1479,7 +1479,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 2709000,
+			"timeSincePing": 2724900,
 			"scanResults": "Awesome",
 			"scanRequest": "Standard - \nTesting",
 			"processedData": "",
@@ -1499,11 +1499,6 @@
 					"color": "#0f0",
 					"picture": "/Sensor Contacts/Pictures/N",
 					"speed": 0,
-					"velocity": {
-						"x": 0,
-						"y": 0,
-						"z": 0
-					},
 					"location": {
 						"x": 0.0307777777777776,
 						"y": 0.6489223946784929,
@@ -1514,9 +1509,16 @@
 						"y": 0.649,
 						"z": 0
 					},
+					"position": {
+						"x": 0.0307777777777776,
+						"y": 0.6489223946784929,
+						"z": 0
+					},
 					"infrared": false,
 					"cloaked": false,
-					"destroyed": false
+					"destroyed": false,
+					"startTime": 0,
+					"endTime": 0
 				},
 				{
 					"id": "6345eb9f-e848-4e2f-ac5c-668490e07a59",
@@ -1528,11 +1530,6 @@
 					"color": "#0f0",
 					"picture": "/Sensor Contacts/Pictures/Astra Heavy Cruiser",
 					"speed": 0,
-					"velocity": {
-						"x": 0,
-						"y": 0,
-						"z": 0
-					},
 					"location": {
 						"x": 0.283495145631068,
 						"y": -0.537864077669903,
@@ -1543,9 +1540,16 @@
 						"y": -0.537864077669903,
 						"z": 0
 					},
+					"position": {
+						"x": 0.283495145631068,
+						"y": -0.537864077669903,
+						"z": 0
+					},
 					"infrared": false,
 					"cloaked": false,
-					"destroyed": false
+					"destroyed": false,
+					"startTime": 0,
+					"endTime": 0
 				}
 			],
 			"armyContacts": [
@@ -1559,11 +1563,6 @@
 					"color": "#0f0",
 					"picture": "/Sensor Contacts/Pictures/Astra Heavy Cruiser",
 					"speed": 0,
-					"velocity": {
-						"x": 0,
-						"y": 0,
-						"z": 0
-					},
 					"location": {
 						"x": 0,
 						"y": 0,
@@ -1574,9 +1573,162 @@
 						"y": 0,
 						"z": 0
 					},
+					"position": {
+						"x": 0,
+						"y": 0,
+						"z": 0
+					},
 					"infrared": false,
 					"cloaked": false,
-					"destroyed": false
+					"destroyed": false,
+					"startTime": 0,
+					"endTime": 0
+				}
+			],
+			"segments": [
+				{
+					"segment": "a1",
+					"state": false
+				},
+				{
+					"segment": "b1",
+					"state": false
+				},
+				{
+					"segment": "c1",
+					"state": false
+				},
+				{
+					"segment": "a2",
+					"state": false
+				},
+				{
+					"segment": "b2",
+					"state": false
+				},
+				{
+					"segment": "c2",
+					"state": false
+				},
+				{
+					"segment": "a3",
+					"state": false
+				},
+				{
+					"segment": "b3",
+					"state": false
+				},
+				{
+					"segment": "c3",
+					"state": false
+				},
+				{
+					"segment": "a4",
+					"state": false
+				},
+				{
+					"segment": "b4",
+					"state": false
+				},
+				{
+					"segment": "c4",
+					"state": false
+				},
+				{
+					"segment": "a5",
+					"state": false
+				},
+				{
+					"segment": "b5",
+					"state": false
+				},
+				{
+					"segment": "c5",
+					"state": false
+				},
+				{
+					"segment": "a6",
+					"state": false
+				},
+				{
+					"segment": "b6",
+					"state": false
+				},
+				{
+					"segment": "c6",
+					"state": false
+				},
+				{
+					"segment": "a7",
+					"state": false
+				},
+				{
+					"segment": "b7",
+					"state": false
+				},
+				{
+					"segment": "c7",
+					"state": false
+				},
+				{
+					"segment": "a8",
+					"state": false
+				},
+				{
+					"segment": "b8",
+					"state": false
+				},
+				{
+					"segment": "c8",
+					"state": false
+				},
+				{
+					"segment": "a9",
+					"state": false
+				},
+				{
+					"segment": "b9",
+					"state": false
+				},
+				{
+					"segment": "c9",
+					"state": false
+				},
+				{
+					"segment": "a10",
+					"state": false
+				},
+				{
+					"segment": "b10",
+					"state": false
+				},
+				{
+					"segment": "c10",
+					"state": false
+				},
+				{
+					"segment": "a11",
+					"state": false
+				},
+				{
+					"segment": "b11",
+					"state": false
+				},
+				{
+					"segment": "c11",
+					"state": false
+				},
+				{
+					"segment": "a12",
+					"state": false
+				},
+				{
+					"segment": "b12",
+					"state": false
+				},
+				{
+					"segment": "c12",
+					"state": false
 				}
 			]
 		},
@@ -1604,7 +1756,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 39758200,
+			"timeSincePing": 39774100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -1614,7 +1766,153 @@
 			"history": false,
 			"scans": [],
 			"contacts": [],
-			"armyContacts": []
+			"armyContacts": [],
+			"segments": [
+				{
+					"segment": "a1",
+					"state": false
+				},
+				{
+					"segment": "b1",
+					"state": false
+				},
+				{
+					"segment": "c1",
+					"state": false
+				},
+				{
+					"segment": "a2",
+					"state": false
+				},
+				{
+					"segment": "b2",
+					"state": false
+				},
+				{
+					"segment": "c2",
+					"state": false
+				},
+				{
+					"segment": "a3",
+					"state": false
+				},
+				{
+					"segment": "b3",
+					"state": false
+				},
+				{
+					"segment": "c3",
+					"state": false
+				},
+				{
+					"segment": "a4",
+					"state": false
+				},
+				{
+					"segment": "b4",
+					"state": false
+				},
+				{
+					"segment": "c4",
+					"state": false
+				},
+				{
+					"segment": "a5",
+					"state": false
+				},
+				{
+					"segment": "b5",
+					"state": false
+				},
+				{
+					"segment": "c5",
+					"state": false
+				},
+				{
+					"segment": "a6",
+					"state": false
+				},
+				{
+					"segment": "b6",
+					"state": false
+				},
+				{
+					"segment": "c6",
+					"state": false
+				},
+				{
+					"segment": "a7",
+					"state": false
+				},
+				{
+					"segment": "b7",
+					"state": false
+				},
+				{
+					"segment": "c7",
+					"state": false
+				},
+				{
+					"segment": "a8",
+					"state": false
+				},
+				{
+					"segment": "b8",
+					"state": false
+				},
+				{
+					"segment": "c8",
+					"state": false
+				},
+				{
+					"segment": "a9",
+					"state": false
+				},
+				{
+					"segment": "b9",
+					"state": false
+				},
+				{
+					"segment": "c9",
+					"state": false
+				},
+				{
+					"segment": "a10",
+					"state": false
+				},
+				{
+					"segment": "b10",
+					"state": false
+				},
+				{
+					"segment": "c10",
+					"state": false
+				},
+				{
+					"segment": "a11",
+					"state": false
+				},
+				{
+					"segment": "b11",
+					"state": false
+				},
+				{
+					"segment": "c11",
+					"state": false
+				},
+				{
+					"segment": "a12",
+					"state": false
+				},
+				{
+					"segment": "b12",
+					"state": false
+				},
+				{
+					"segment": "c12",
+					"state": false
+				}
+			]
 		},
 		{
 			"id": "32973f59-c28d-4eb4-b370-da0548b0ba0a",
@@ -1769,7 +2067,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7119439999997119,
+			"batteryChargeLevel": 0.7118059999997117,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2458,7 +2756,7 @@
 			"id": "ea8f37b6-f835-40c6-8dcb-a1422d11620a",
 			"class": "Coolant",
 			"simulatorId": "test",
-			"name": null,
+			"name": "Coolant",
 			"displayName": null,
 			"damage": {
 				"damaged": false,
@@ -2537,7 +2835,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.057166666666666734,
+			"heat": 0.06268159983291571,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -2945,7 +3243,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 34941200,
+			"timeSincePing": 34957100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2955,7 +3253,153 @@
 			"history": false,
 			"scans": [],
 			"contacts": [],
-			"armyContacts": []
+			"armyContacts": [],
+			"segments": [
+				{
+					"segment": "a1",
+					"state": false
+				},
+				{
+					"segment": "b1",
+					"state": false
+				},
+				{
+					"segment": "c1",
+					"state": false
+				},
+				{
+					"segment": "a2",
+					"state": false
+				},
+				{
+					"segment": "b2",
+					"state": false
+				},
+				{
+					"segment": "c2",
+					"state": false
+				},
+				{
+					"segment": "a3",
+					"state": false
+				},
+				{
+					"segment": "b3",
+					"state": false
+				},
+				{
+					"segment": "c3",
+					"state": false
+				},
+				{
+					"segment": "a4",
+					"state": false
+				},
+				{
+					"segment": "b4",
+					"state": false
+				},
+				{
+					"segment": "c4",
+					"state": false
+				},
+				{
+					"segment": "a5",
+					"state": false
+				},
+				{
+					"segment": "b5",
+					"state": false
+				},
+				{
+					"segment": "c5",
+					"state": false
+				},
+				{
+					"segment": "a6",
+					"state": false
+				},
+				{
+					"segment": "b6",
+					"state": false
+				},
+				{
+					"segment": "c6",
+					"state": false
+				},
+				{
+					"segment": "a7",
+					"state": false
+				},
+				{
+					"segment": "b7",
+					"state": false
+				},
+				{
+					"segment": "c7",
+					"state": false
+				},
+				{
+					"segment": "a8",
+					"state": false
+				},
+				{
+					"segment": "b8",
+					"state": false
+				},
+				{
+					"segment": "c8",
+					"state": false
+				},
+				{
+					"segment": "a9",
+					"state": false
+				},
+				{
+					"segment": "b9",
+					"state": false
+				},
+				{
+					"segment": "c9",
+					"state": false
+				},
+				{
+					"segment": "a10",
+					"state": false
+				},
+				{
+					"segment": "b10",
+					"state": false
+				},
+				{
+					"segment": "c10",
+					"state": false
+				},
+				{
+					"segment": "a11",
+					"state": false
+				},
+				{
+					"segment": "b11",
+					"state": false
+				},
+				{
+					"segment": "c11",
+					"state": false
+				},
+				{
+					"segment": "a12",
+					"state": false
+				},
+				{
+					"segment": "b12",
+					"state": false
+				},
+				{
+					"segment": "c12",
+					"state": false
+				}
+			]
 		},
 		{
 			"id": "71a506bc-5930-4ec5-90de-51f1d0a99c2b",
@@ -2983,7 +3427,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 34941200,
+			"timeSincePing": 34957100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2993,7 +3437,153 @@
 			"history": false,
 			"scans": [],
 			"contacts": [],
-			"armyContacts": []
+			"armyContacts": [],
+			"segments": [
+				{
+					"segment": "a1",
+					"state": false
+				},
+				{
+					"segment": "b1",
+					"state": false
+				},
+				{
+					"segment": "c1",
+					"state": false
+				},
+				{
+					"segment": "a2",
+					"state": false
+				},
+				{
+					"segment": "b2",
+					"state": false
+				},
+				{
+					"segment": "c2",
+					"state": false
+				},
+				{
+					"segment": "a3",
+					"state": false
+				},
+				{
+					"segment": "b3",
+					"state": false
+				},
+				{
+					"segment": "c3",
+					"state": false
+				},
+				{
+					"segment": "a4",
+					"state": false
+				},
+				{
+					"segment": "b4",
+					"state": false
+				},
+				{
+					"segment": "c4",
+					"state": false
+				},
+				{
+					"segment": "a5",
+					"state": false
+				},
+				{
+					"segment": "b5",
+					"state": false
+				},
+				{
+					"segment": "c5",
+					"state": false
+				},
+				{
+					"segment": "a6",
+					"state": false
+				},
+				{
+					"segment": "b6",
+					"state": false
+				},
+				{
+					"segment": "c6",
+					"state": false
+				},
+				{
+					"segment": "a7",
+					"state": false
+				},
+				{
+					"segment": "b7",
+					"state": false
+				},
+				{
+					"segment": "c7",
+					"state": false
+				},
+				{
+					"segment": "a8",
+					"state": false
+				},
+				{
+					"segment": "b8",
+					"state": false
+				},
+				{
+					"segment": "c8",
+					"state": false
+				},
+				{
+					"segment": "a9",
+					"state": false
+				},
+				{
+					"segment": "b9",
+					"state": false
+				},
+				{
+					"segment": "c9",
+					"state": false
+				},
+				{
+					"segment": "a10",
+					"state": false
+				},
+				{
+					"segment": "b10",
+					"state": false
+				},
+				{
+					"segment": "c10",
+					"state": false
+				},
+				{
+					"segment": "a11",
+					"state": false
+				},
+				{
+					"segment": "b11",
+					"state": false
+				},
+				{
+					"segment": "c11",
+					"state": false
+				},
+				{
+					"segment": "a12",
+					"state": false
+				},
+				{
+					"segment": "b12",
+					"state": false
+				},
+				{
+					"segment": "c12",
+					"state": false
+				}
+			]
 		},
 		{
 			"id": "ee9b7eea-f215-44ca-a4eb-d512f66570ec",
@@ -4028,7 +4618,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 29828100,
+			"timeSincePing": 29844000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4038,7 +4628,153 @@
 			"history": false,
 			"scans": [],
 			"contacts": [],
-			"armyContacts": []
+			"armyContacts": [],
+			"segments": [
+				{
+					"segment": "a1",
+					"state": false
+				},
+				{
+					"segment": "b1",
+					"state": false
+				},
+				{
+					"segment": "c1",
+					"state": false
+				},
+				{
+					"segment": "a2",
+					"state": false
+				},
+				{
+					"segment": "b2",
+					"state": false
+				},
+				{
+					"segment": "c2",
+					"state": false
+				},
+				{
+					"segment": "a3",
+					"state": false
+				},
+				{
+					"segment": "b3",
+					"state": false
+				},
+				{
+					"segment": "c3",
+					"state": false
+				},
+				{
+					"segment": "a4",
+					"state": false
+				},
+				{
+					"segment": "b4",
+					"state": false
+				},
+				{
+					"segment": "c4",
+					"state": false
+				},
+				{
+					"segment": "a5",
+					"state": false
+				},
+				{
+					"segment": "b5",
+					"state": false
+				},
+				{
+					"segment": "c5",
+					"state": false
+				},
+				{
+					"segment": "a6",
+					"state": false
+				},
+				{
+					"segment": "b6",
+					"state": false
+				},
+				{
+					"segment": "c6",
+					"state": false
+				},
+				{
+					"segment": "a7",
+					"state": false
+				},
+				{
+					"segment": "b7",
+					"state": false
+				},
+				{
+					"segment": "c7",
+					"state": false
+				},
+				{
+					"segment": "a8",
+					"state": false
+				},
+				{
+					"segment": "b8",
+					"state": false
+				},
+				{
+					"segment": "c8",
+					"state": false
+				},
+				{
+					"segment": "a9",
+					"state": false
+				},
+				{
+					"segment": "b9",
+					"state": false
+				},
+				{
+					"segment": "c9",
+					"state": false
+				},
+				{
+					"segment": "a10",
+					"state": false
+				},
+				{
+					"segment": "b10",
+					"state": false
+				},
+				{
+					"segment": "c10",
+					"state": false
+				},
+				{
+					"segment": "a11",
+					"state": false
+				},
+				{
+					"segment": "b11",
+					"state": false
+				},
+				{
+					"segment": "c11",
+					"state": false
+				},
+				{
+					"segment": "a12",
+					"state": false
+				},
+				{
+					"segment": "b12",
+					"state": false
+				},
+				{
+					"segment": "c12",
+					"state": false
+				}
+			]
 		},
 		{
 			"id": "59bc406d-8663-44aa-8afa-176bb1f847ed",
@@ -4071,7 +4807,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 29828100,
+			"timeSincePing": 29844000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4081,7 +4817,153 @@
 			"history": false,
 			"scans": [],
 			"contacts": [],
-			"armyContacts": []
+			"armyContacts": [],
+			"segments": [
+				{
+					"segment": "a1",
+					"state": false
+				},
+				{
+					"segment": "b1",
+					"state": false
+				},
+				{
+					"segment": "c1",
+					"state": false
+				},
+				{
+					"segment": "a2",
+					"state": false
+				},
+				{
+					"segment": "b2",
+					"state": false
+				},
+				{
+					"segment": "c2",
+					"state": false
+				},
+				{
+					"segment": "a3",
+					"state": false
+				},
+				{
+					"segment": "b3",
+					"state": false
+				},
+				{
+					"segment": "c3",
+					"state": false
+				},
+				{
+					"segment": "a4",
+					"state": false
+				},
+				{
+					"segment": "b4",
+					"state": false
+				},
+				{
+					"segment": "c4",
+					"state": false
+				},
+				{
+					"segment": "a5",
+					"state": false
+				},
+				{
+					"segment": "b5",
+					"state": false
+				},
+				{
+					"segment": "c5",
+					"state": false
+				},
+				{
+					"segment": "a6",
+					"state": false
+				},
+				{
+					"segment": "b6",
+					"state": false
+				},
+				{
+					"segment": "c6",
+					"state": false
+				},
+				{
+					"segment": "a7",
+					"state": false
+				},
+				{
+					"segment": "b7",
+					"state": false
+				},
+				{
+					"segment": "c7",
+					"state": false
+				},
+				{
+					"segment": "a8",
+					"state": false
+				},
+				{
+					"segment": "b8",
+					"state": false
+				},
+				{
+					"segment": "c8",
+					"state": false
+				},
+				{
+					"segment": "a9",
+					"state": false
+				},
+				{
+					"segment": "b9",
+					"state": false
+				},
+				{
+					"segment": "c9",
+					"state": false
+				},
+				{
+					"segment": "a10",
+					"state": false
+				},
+				{
+					"segment": "b10",
+					"state": false
+				},
+				{
+					"segment": "c10",
+					"state": false
+				},
+				{
+					"segment": "a11",
+					"state": false
+				},
+				{
+					"segment": "b11",
+					"state": false
+				},
+				{
+					"segment": "c11",
+					"state": false
+				},
+				{
+					"segment": "a12",
+					"state": false
+				},
+				{
+					"segment": "b12",
+					"state": false
+				},
+				{
+					"segment": "c12",
+					"state": false
+				}
+			]
 		},
 		{
 			"id": "a29b342a-a838-4846-84df-6b908c1406ed",
@@ -4619,7 +5501,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.034666666666666644,
+			"heat": 0.037968253968253894,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -5583,7 +6465,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 18513700,
+			"timeSincePing": 18529600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5593,7 +6475,153 @@
 			"history": false,
 			"scans": [],
 			"contacts": [],
-			"armyContacts": []
+			"armyContacts": [],
+			"segments": [
+				{
+					"segment": "a1",
+					"state": false
+				},
+				{
+					"segment": "b1",
+					"state": false
+				},
+				{
+					"segment": "c1",
+					"state": false
+				},
+				{
+					"segment": "a2",
+					"state": false
+				},
+				{
+					"segment": "b2",
+					"state": false
+				},
+				{
+					"segment": "c2",
+					"state": false
+				},
+				{
+					"segment": "a3",
+					"state": false
+				},
+				{
+					"segment": "b3",
+					"state": false
+				},
+				{
+					"segment": "c3",
+					"state": false
+				},
+				{
+					"segment": "a4",
+					"state": false
+				},
+				{
+					"segment": "b4",
+					"state": false
+				},
+				{
+					"segment": "c4",
+					"state": false
+				},
+				{
+					"segment": "a5",
+					"state": false
+				},
+				{
+					"segment": "b5",
+					"state": false
+				},
+				{
+					"segment": "c5",
+					"state": false
+				},
+				{
+					"segment": "a6",
+					"state": false
+				},
+				{
+					"segment": "b6",
+					"state": false
+				},
+				{
+					"segment": "c6",
+					"state": false
+				},
+				{
+					"segment": "a7",
+					"state": false
+				},
+				{
+					"segment": "b7",
+					"state": false
+				},
+				{
+					"segment": "c7",
+					"state": false
+				},
+				{
+					"segment": "a8",
+					"state": false
+				},
+				{
+					"segment": "b8",
+					"state": false
+				},
+				{
+					"segment": "c8",
+					"state": false
+				},
+				{
+					"segment": "a9",
+					"state": false
+				},
+				{
+					"segment": "b9",
+					"state": false
+				},
+				{
+					"segment": "c9",
+					"state": false
+				},
+				{
+					"segment": "a10",
+					"state": false
+				},
+				{
+					"segment": "b10",
+					"state": false
+				},
+				{
+					"segment": "c10",
+					"state": false
+				},
+				{
+					"segment": "a11",
+					"state": false
+				},
+				{
+					"segment": "b11",
+					"state": false
+				},
+				{
+					"segment": "c11",
+					"state": false
+				},
+				{
+					"segment": "a12",
+					"state": false
+				},
+				{
+					"segment": "b12",
+					"state": false
+				},
+				{
+					"segment": "c12",
+					"state": false
+				}
+			]
 		},
 		{
 			"id": "ea2ac650-e850-48d5-8435-3689c647ae13",
@@ -5623,7 +6651,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 18513700,
+			"timeSincePing": 18529600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5633,7 +6661,153 @@
 			"history": false,
 			"scans": [],
 			"contacts": [],
-			"armyContacts": []
+			"armyContacts": [],
+			"segments": [
+				{
+					"segment": "a1",
+					"state": false
+				},
+				{
+					"segment": "b1",
+					"state": false
+				},
+				{
+					"segment": "c1",
+					"state": false
+				},
+				{
+					"segment": "a2",
+					"state": false
+				},
+				{
+					"segment": "b2",
+					"state": false
+				},
+				{
+					"segment": "c2",
+					"state": false
+				},
+				{
+					"segment": "a3",
+					"state": false
+				},
+				{
+					"segment": "b3",
+					"state": false
+				},
+				{
+					"segment": "c3",
+					"state": false
+				},
+				{
+					"segment": "a4",
+					"state": false
+				},
+				{
+					"segment": "b4",
+					"state": false
+				},
+				{
+					"segment": "c4",
+					"state": false
+				},
+				{
+					"segment": "a5",
+					"state": false
+				},
+				{
+					"segment": "b5",
+					"state": false
+				},
+				{
+					"segment": "c5",
+					"state": false
+				},
+				{
+					"segment": "a6",
+					"state": false
+				},
+				{
+					"segment": "b6",
+					"state": false
+				},
+				{
+					"segment": "c6",
+					"state": false
+				},
+				{
+					"segment": "a7",
+					"state": false
+				},
+				{
+					"segment": "b7",
+					"state": false
+				},
+				{
+					"segment": "c7",
+					"state": false
+				},
+				{
+					"segment": "a8",
+					"state": false
+				},
+				{
+					"segment": "b8",
+					"state": false
+				},
+				{
+					"segment": "c8",
+					"state": false
+				},
+				{
+					"segment": "a9",
+					"state": false
+				},
+				{
+					"segment": "b9",
+					"state": false
+				},
+				{
+					"segment": "c9",
+					"state": false
+				},
+				{
+					"segment": "a10",
+					"state": false
+				},
+				{
+					"segment": "b10",
+					"state": false
+				},
+				{
+					"segment": "c10",
+					"state": false
+				},
+				{
+					"segment": "a11",
+					"state": false
+				},
+				{
+					"segment": "b11",
+					"state": false
+				},
+				{
+					"segment": "c11",
+					"state": false
+				},
+				{
+					"segment": "a12",
+					"state": false
+				},
+				{
+					"segment": "b12",
+					"state": false
+				},
+				{
+					"segment": "c12",
+					"state": false
+				}
+			]
 		},
 		{
 			"id": "d1e6f128-d95e-4897-b408-20b9a2cdc549",
@@ -6385,7 +7559,7 @@
 			"id": "6a84e88b-7024-40e6-8363-532efb131bb8",
 			"class": "Coolant",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
-			"name": null,
+			"name": "Coolant",
 			"displayName": null,
 			"damage": {
 				"damaged": false,
@@ -6994,7 +8168,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6308600,
+			"timeSincePing": 6324500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -7004,7 +8178,153 @@
 			"history": false,
 			"scans": [],
 			"contacts": [],
-			"armyContacts": []
+			"armyContacts": [],
+			"segments": [
+				{
+					"segment": "a1",
+					"state": false
+				},
+				{
+					"segment": "b1",
+					"state": false
+				},
+				{
+					"segment": "c1",
+					"state": false
+				},
+				{
+					"segment": "a2",
+					"state": false
+				},
+				{
+					"segment": "b2",
+					"state": false
+				},
+				{
+					"segment": "c2",
+					"state": false
+				},
+				{
+					"segment": "a3",
+					"state": false
+				},
+				{
+					"segment": "b3",
+					"state": false
+				},
+				{
+					"segment": "c3",
+					"state": false
+				},
+				{
+					"segment": "a4",
+					"state": false
+				},
+				{
+					"segment": "b4",
+					"state": false
+				},
+				{
+					"segment": "c4",
+					"state": false
+				},
+				{
+					"segment": "a5",
+					"state": false
+				},
+				{
+					"segment": "b5",
+					"state": false
+				},
+				{
+					"segment": "c5",
+					"state": false
+				},
+				{
+					"segment": "a6",
+					"state": false
+				},
+				{
+					"segment": "b6",
+					"state": false
+				},
+				{
+					"segment": "c6",
+					"state": false
+				},
+				{
+					"segment": "a7",
+					"state": false
+				},
+				{
+					"segment": "b7",
+					"state": false
+				},
+				{
+					"segment": "c7",
+					"state": false
+				},
+				{
+					"segment": "a8",
+					"state": false
+				},
+				{
+					"segment": "b8",
+					"state": false
+				},
+				{
+					"segment": "c8",
+					"state": false
+				},
+				{
+					"segment": "a9",
+					"state": false
+				},
+				{
+					"segment": "b9",
+					"state": false
+				},
+				{
+					"segment": "c9",
+					"state": false
+				},
+				{
+					"segment": "a10",
+					"state": false
+				},
+				{
+					"segment": "b10",
+					"state": false
+				},
+				{
+					"segment": "c10",
+					"state": false
+				},
+				{
+					"segment": "a11",
+					"state": false
+				},
+				{
+					"segment": "b11",
+					"state": false
+				},
+				{
+					"segment": "c11",
+					"state": false
+				},
+				{
+					"segment": "a12",
+					"state": false
+				},
+				{
+					"segment": "b12",
+					"state": false
+				},
+				{
+					"segment": "c12",
+					"state": false
+				}
+			]
 		},
 		{
 			"id": "faaeb22d-ed25-4b35-a1d1-3c5e80e88974",
@@ -7034,7 +8354,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6308600,
+			"timeSincePing": 6324500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -7044,7 +8364,153 @@
 			"history": false,
 			"scans": [],
 			"contacts": [],
-			"armyContacts": []
+			"armyContacts": [],
+			"segments": [
+				{
+					"segment": "a1",
+					"state": false
+				},
+				{
+					"segment": "b1",
+					"state": false
+				},
+				{
+					"segment": "c1",
+					"state": false
+				},
+				{
+					"segment": "a2",
+					"state": false
+				},
+				{
+					"segment": "b2",
+					"state": false
+				},
+				{
+					"segment": "c2",
+					"state": false
+				},
+				{
+					"segment": "a3",
+					"state": false
+				},
+				{
+					"segment": "b3",
+					"state": false
+				},
+				{
+					"segment": "c3",
+					"state": false
+				},
+				{
+					"segment": "a4",
+					"state": false
+				},
+				{
+					"segment": "b4",
+					"state": false
+				},
+				{
+					"segment": "c4",
+					"state": false
+				},
+				{
+					"segment": "a5",
+					"state": false
+				},
+				{
+					"segment": "b5",
+					"state": false
+				},
+				{
+					"segment": "c5",
+					"state": false
+				},
+				{
+					"segment": "a6",
+					"state": false
+				},
+				{
+					"segment": "b6",
+					"state": false
+				},
+				{
+					"segment": "c6",
+					"state": false
+				},
+				{
+					"segment": "a7",
+					"state": false
+				},
+				{
+					"segment": "b7",
+					"state": false
+				},
+				{
+					"segment": "c7",
+					"state": false
+				},
+				{
+					"segment": "a8",
+					"state": false
+				},
+				{
+					"segment": "b8",
+					"state": false
+				},
+				{
+					"segment": "c8",
+					"state": false
+				},
+				{
+					"segment": "a9",
+					"state": false
+				},
+				{
+					"segment": "b9",
+					"state": false
+				},
+				{
+					"segment": "c9",
+					"state": false
+				},
+				{
+					"segment": "a10",
+					"state": false
+				},
+				{
+					"segment": "b10",
+					"state": false
+				},
+				{
+					"segment": "c10",
+					"state": false
+				},
+				{
+					"segment": "a11",
+					"state": false
+				},
+				{
+					"segment": "b11",
+					"state": false
+				},
+				{
+					"segment": "c11",
+					"state": false
+				},
+				{
+					"segment": "a12",
+					"state": false
+				},
+				{
+					"segment": "b12",
+					"state": false
+				},
+				{
+					"segment": "c12",
+					"state": false
+				}
+			]
 		},
 		{
 			"id": "18bea077-8dcc-4151-8638-d48124b44e14",
@@ -7443,7 +8909,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.027999999999999955,
+			"heat": 0.030666666666666606,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -7782,6 +9248,35 @@
 			"coolant": 1,
 			"coolantRate": 0.2,
 			"transfer": null
+		},
+		{
+			"id": "424ca42a-13aa-494d-8cf2-376eed14254f",
+			"class": "SignalJammer",
+			"simulatorId": "test",
+			"name": "Signal Jammer",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "SignalJammer",
+			"active": false,
+			"level": 0.5,
+			"strength": 0.1,
+			"signals": []
 		}
 	],
 	"clients": [],
@@ -25363,7 +26858,8 @@
 	"viewscreens": [],
 	"messages": [],
 	"tacticalMaps": [],
-	"snapshotVersion": 116,
-	"version": 116,
-	"timestamp": "2017-12-28T04:51:23.880Z"
+	"officerLogs": [],
+	"snapshotVersion": 5,
+	"version": 5,
+	"timestamp": "2018-01-05T04:19:21.270Z"
 }

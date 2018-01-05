@@ -36,3 +36,4 @@ export { default as DockingPort } from "./docking";
 export { default as CoreFeed } from "./coreFeed";
 export { default as TacticalMap } from "./tacticalMap";
 export { default as OfficerLog } from "./officerLog";
+export { default as SignalJammer } from "./signalJammer";

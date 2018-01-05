@@ -61,6 +61,11 @@ const sendUpdate = sys => {
       "probesUpdate",
       App.systems.filter(s => s.type === "Probes")
     );
+  if (sys.type === "SignalJammer")
+    pubsub.publish(
+      "signalJammersUpdate",
+      App.systems.filter(s => s.type === "SignalJammer")
+    );
   if (sys.class === "DockingPort")
     pubsub.publish("dockingUpdate", App.dockingPorts);
   pubsub.publish("systemsUpdate", App.systems);

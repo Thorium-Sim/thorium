@@ -46,6 +46,7 @@ import SoundsTester from "./SoundsTester";
 import NavigationAdvanced from "./NavigationAdvanced";
 import SensorScans from "./SensorScans";
 import OfficerLog from "./OfficerLog";
+import SignalJammer from "./SignalJammer";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -88,6 +89,7 @@ import MessagingCore from "./Messaging/core";
 import ClientsCore from "./Clients/core";
 import JrNavigationCore from "./JrFlight/navigationCore";
 import ExtrasCore from "./CoreExtras";
+import SignalJammerCore from "./SignalJammer/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -140,7 +142,8 @@ const Views = {
   SoundsTester,
   NavigationAdvanced,
   SensorScans,
-  OfficerLog
+  OfficerLog,
+  SignalJammer
 };
 
 export const Widgets = {
@@ -226,7 +229,8 @@ export const Cores = {
   MessagingCore,
   ClientsCore,
   JrNavigationCore,
-  ExtrasCore
+  ExtrasCore,
+  SignalJammerCore
 };
 
 export default Views;

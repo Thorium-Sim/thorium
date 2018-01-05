@@ -52,18 +52,22 @@ export class System {
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || null;
     this.displayName = params.displayName || params.name;
-    this.power = Object.assign({}, params.power) || {
-      power: 5,
-      powerLevels: [5]
-    };
-    this.damage = Object.assign({}, params.damage) || {
-      damaged: false,
-      report: null,
-      requested: false,
-      reactivationCode: null,
-      reactivationRequester: null,
-      neededReactivationCode: null
-    };
+    this.power = params.power
+      ? Object.assign({}, params.power)
+      : {
+          power: 5,
+          powerLevels: [5]
+        };
+    this.damage = params.damage
+      ? Object.assign({}, params.damage)
+      : {
+          damaged: false,
+          report: null,
+          requested: false,
+          reactivationCode: null,
+          reactivationRequester: null,
+          neededReactivationCode: null
+        };
     this.extra = params.extra || false;
     this.locations = params.locations || [];
     this.requiredDamageSteps = [];

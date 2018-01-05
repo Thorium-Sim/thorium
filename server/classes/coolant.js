@@ -18,6 +18,7 @@ export default class Coolant extends System {
   }) {
     params = params || {};
     super(params);
+    this.name = params.name || "Coolant";
     this.class = "Coolant";
     this.type = "Coolant";
     this.coolant = params.coolant || 1;

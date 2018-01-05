@@ -175,6 +175,12 @@ import {
   OfficerLogSubscriptions
 } from "./officerLog";
 
+import {
+  SignalJammerQueries,
+  SignalJammerMutations,
+  SignalJammerSubscriptions
+} from "./signalJammer";
+
 import App from "../app";
 
 function parseJSONLiteral(ast) {
@@ -235,7 +241,8 @@ const queryMap = Object.assign(
   DockingQueries,
   CoreFeedQueries,
   TacticalMapQueries,
-  OfficerLogQueries
+  OfficerLogQueries,
+  SignalJammerQueries
 );
 
 export const mutationMap = Object.assign(
@@ -279,7 +286,8 @@ export const mutationMap = Object.assign(
   DockingMutations,
   CoreFeedMutations,
   TacticalMapMutations,
-  OfficerLogMutations
+  OfficerLogMutations,
+  SignalJammerMutations
 );
 
 const subscriptionMap = Object.assign(
@@ -318,7 +326,8 @@ const subscriptionMap = Object.assign(
   DockingSubscriptions,
   CoreFeedSubscriptions,
   TacticalMapSubscriptions,
-  OfficerLogSubscriptions
+  OfficerLogSubscriptions,
+  SignalJammerSubscriptions
 );
 export default Object.assign(
   {

@@ -41,7 +41,8 @@ const viewList = [
   "SoundsTester",
   "NavigationAdvanced",
   "SensorScans",
-  "OfficerLog"
+  "OfficerLog",
+  "SignalJammer"
 ];
 
 export default viewList;
