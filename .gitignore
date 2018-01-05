@@ -58,6 +58,6 @@ thorium-server-*
 thorium-server
 thorium
 Thorium.zip
-
+kiosks
 # unecessary CSS files
 src/**/*.css

@@ -172,11 +172,27 @@ class Credits extends Component {
               <h5>Login Name: {client.loginName}</h5>
               <h5>
                 Download the client app:{" "}
-                <a download="Thorium.zip" href="/thorium.zip">
+                <a download="Thorium.zip" href="/kiosks/Thorium-darwin-x64.zip">
                   Mac
                 </a>
-                {/*| <a download="Thorium.zip" href="/sciences.ogg">Windows</a>
-                | <a download="Thorium.zip" href="/sciences.ogg">Linux</a>*/}
+                <a download="Thorium.zip" href="/kiosks/Thorium-win32-x64.zip">
+                  Windows x64
+                </a>
+                <a download="Thorium.zip" href="/kiosks/Thorium-win32-ia32.zip">
+                  Windows ia32
+                </a>
+                <a download="Thorium.zip" href="/kiosks/Thorium-linux-x64.zip">
+                  Linux x64
+                </a>
+                <a download="Thorium.zip" href="/kiosks/Thorium-linux-ia32.zip">
+                  Linux ia32
+                </a>
+                <a
+                  download="Thorium.zip"
+                  href="/kiosks/Thorium-linux-armv7l.zip"
+                >
+                  Linux armv7l
+                </a>
               </h5>
             </div>
           ) : (
