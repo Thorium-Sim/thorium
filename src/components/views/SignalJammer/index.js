@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Card } from "reactstrap";
+import { Container, Row, Col, Card, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
@@ -50,6 +50,15 @@ class SignalJammer extends Component {
         }
       });
     }
+    if (nextProps.data.signalJammers.length > 0) {
+      const signalJammer = nextProps.data.signalJammers[0];
+      this.setState({
+        jammer: {
+          power: signalJammer.strength,
+          level: signalJammer.level
+        }
+      });
+    }
   }
   componentWillUnmount() {
     this.sub && this.sub();
@@ -70,7 +79,27 @@ class SignalJammer extends Component {
       })
     });
   };
-  finishLevel = e => {};
+  updateJammer = (which, value) => {
+    const { data: { loading, signalJammers } } = this.props;
+    if (loading || !signalJammers) return null;
+    const signalJammer = signalJammers[0];
+    if (!signalJammer) return;
+    const variables = {
+      jammer: {
+        id: signalJammer.id,
+        [which]: value
+      }
+    };
+    const mutation = gql`
+      mutation UpdateSignalJammer($jammer: SignalJammerInput!) {
+        updateSignalJammer(jammer: $jammer)
+      }
+    `;
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     const { data: { loading, signalJammers } } = this.props;
     const { jammer } = this.state;
@@ -103,6 +132,7 @@ class SignalJammer extends Component {
                         height={this.state.dimensions.height}
                         jammer={jammer}
                         signals={signalJammer.signals}
+                        active={signalJammer.active}
                       />
                     )}
                   </div>
@@ -115,22 +145,46 @@ class SignalJammer extends Component {
                 value={jammer.level}
                 orientation="horizontal"
                 onChange={this.changeLevel}
-                onChangeComplete={this.finishLevel}
+                onChangeComplete={e => this.updateJammer("level", jammer.level)}
                 tooltip={false}
                 min={0}
                 step={0.01}
                 max={1}
               />
             </div>
+            <Col sm={4}>
+              {signalJammer.active ? (
+                <Button
+                  size="lg"
+                  color="danger"
+                  block
+                  onClick={() => this.updateJammer("active", false)}
+                >
+                  Deactivate
+                </Button>
+              ) : (
+                <Button
+                  size="lg"
+                  color="primary"
+                  block
+                  onClick={() => this.updateJammer("active", true)}
+                >
+                  Activate
+                </Button>
+              )}
+            </Col>
           </Col>
           <Col sm={3}>
+            <h3 className="text-center">Power</h3>
             <div className="signal-power">
               <Slider
                 className={`power-slider ${alertClass}`}
                 value={jammer.power}
                 orientation="vertical"
                 onChange={this.changePower}
-                onChangeComplete={this.finishLevel}
+                onChangeComplete={() =>
+                  this.updateJammer("strength", jammer.power)
+                }
                 tooltip={false}
                 min={0}
                 step={0.01}
