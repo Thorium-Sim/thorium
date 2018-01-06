@@ -6,7 +6,8 @@ $alertp: #4d1980;
 $url: "./images/background-blue.svg";
 
 body {
-  overflow: hidden;
+  overflow: hidden !important;
+  overflow-y: hidden !important;
   margin: 0;
 }
 

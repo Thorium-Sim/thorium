@@ -35,3 +35,4 @@ import "./docking";
 import "./coreFeed";
 import "./tacticalMap";
 import "./officerLog";
+import "./signalJammer";

@@ -7,6 +7,7 @@ const properties = [
   { name: "LongRangeComm" },
   { name: "InternalComm" },
   { name: "ShortRangeComm" },
+  { name: "SignalJammer" },
   { name: "Engine", config: true },
   { name: "Thrusters" },
   { name: "Navigation" },
@@ -99,17 +100,17 @@ class Systems extends Component {
         <Row>
           <Col sm={3}>
             <Card className="scroll">
-              {properties.map(p =>
+              {properties.map(p => (
                 <li
                   key={p.name}
                   onClick={() => {
                     this.selectProperty(p.name);
                   }}
-                  className={`list-group-item ${selectedProperty === p.name
-                    ? "selected"
-                    : ""}`}
+                  className={`list-group-item ${
+                    selectedProperty === p.name ? "selected" : ""
+                  }`}
                 >
-                  {!p.config &&
+                  {!p.config && (
                     <Input
                       type="checkbox"
                       className="system-checkbox"
@@ -119,21 +120,21 @@ class Systems extends Component {
                       onChange={e => {
                         this.toggleSystem(e, p);
                       }}
-                    />}
-                  <label>
-                    {p.name}
-                  </label>
+                    />
+                  )}
+                  <label>{p.name}</label>
                 </li>
-              )}
+              ))}
             </Card>
           </Col>
           <Col sm={9}>
-            {selectedProperty &&
+            {selectedProperty && (
               <SystemConfig
                 client={this.props.client}
                 simulatorId={selectedSimulator.id}
                 type={selectedProperty}
-              />}
+              />
+            )}
           </Col>
         </Row>
       </Container>
