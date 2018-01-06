@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 295,
+	"_eventsCount": 298,
 	"simulators": [
 		{
 			"id": "test",
@@ -354,7 +354,8 @@
 					"widgets": [
 						"composer",
 						"calculator",
-						"messages"
+						"messages",
+						"officerLog"
 					],
 					"cards": [
 						{
@@ -378,7 +379,8 @@
 					"messageGroups": [],
 					"widgets": [
 						"calculator",
-						"messages"
+						"messages",
+						"officerLog"
 					],
 					"cards": [
 						{
@@ -417,7 +419,9 @@
 					"widgets": [
 						"calculator",
 						"messages",
-						"remote"
+						"remote",
+						"officerLog",
+						"damageReport"
 					],
 					"cards": [
 						{
@@ -448,7 +452,8 @@
 					"widgets": [
 						"calculator",
 						"remote",
-						"messages"
+						"messages",
+						"officerLog"
 					],
 					"cards": [
 						{
@@ -498,7 +503,8 @@
 						"composer",
 						"calculator",
 						"messages",
-						"remote"
+						"remote",
+						"officerLog"
 					],
 					"cards": [
 						{
@@ -540,7 +546,8 @@
 					"messageGroups": [],
 					"widgets": [
 						"calculator",
-						"messages"
+						"messages",
+						"officerLog"
 					],
 					"cards": [
 						{
@@ -583,7 +590,8 @@
 					"widgets": [
 						"composer",
 						"calculator",
-						"messages"
+						"messages",
+						"officerLog"
 					],
 					"cards": [
 						{
@@ -609,6 +617,12 @@
 							"icon": null,
 							"component": "CommInternal",
 							"class": "Card"
+						},
+						{
+							"name": "Signal Jammer",
+							"icon": null,
+							"component": "SignalJammer",
+							"class": "Card"
 						}
 					]
 				},
@@ -622,7 +636,8 @@
 					"widgets": [
 						"composer",
 						"calculator",
-						"messages"
+						"messages",
+						"officerLog"
 					],
 					"cards": [
 						{
@@ -760,7 +775,8 @@
 						"composer",
 						"calculator",
 						"remote",
-						"messages"
+						"messages",
+						"officerLog"
 					],
 					"cards": [
 						{
@@ -786,7 +802,8 @@
 						"composer",
 						"calculator",
 						"remote",
-						"messages"
+						"messages",
+						"officerLog"
 					],
 					"cards": [
 						{
@@ -806,6 +823,12 @@
 							"icon": null,
 							"component": "CommDecoding",
 							"class": "Card"
+						},
+						{
+							"name": "Signal Jammer",
+							"icon": null,
+							"component": "SignalJammer",
+							"class": "Card"
 						}
 					]
 				},
@@ -817,7 +840,8 @@
 					"widgets": [
 						"calculator",
 						"remote",
-						"messages"
+						"messages",
+						"officerLog"
 					],
 					"cards": [
 						{
@@ -854,7 +878,8 @@
 					"widgets": [
 						"calculator",
 						"remote",
-						"messages"
+						"messages",
+						"officerLog"
 					],
 					"cards": [
 						{
@@ -891,7 +916,8 @@
 					"widgets": [
 						"calculator",
 						"remote",
-						"messages"
+						"messages",
+						"officerLog"
 					],
 					"cards": [
 						{
@@ -934,7 +960,8 @@
 					"widgets": [
 						"calculator",
 						"remote",
-						"messages"
+						"messages",
+						"officerLog"
 					],
 					"cards": [
 						{
@@ -978,7 +1005,8 @@
 						"calculator",
 						"remote",
 						"messages",
-						"damageReport"
+						"damageReport",
+						"officerLog"
 					],
 					"cards": [
 						{
@@ -1479,7 +1507,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 2724900,
+			"timeSincePing": 3167800,
 			"scanResults": "Awesome",
 			"scanRequest": "Standard - \nTesting",
 			"processedData": "",
@@ -1756,7 +1784,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 39774100,
+			"timeSincePing": 40217000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2067,7 +2095,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7118059999997117,
+			"batteryChargeLevel": 0.7059819999996935,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2757,7 +2785,7 @@
 			"class": "Coolant",
 			"simulatorId": "test",
 			"name": "Coolant",
-			"displayName": null,
+			"displayName": "Coolant",
 			"damage": {
 				"damaged": false,
 				"report": null,
@@ -2835,7 +2863,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.06268159983291571,
+			"heat": 0.23091551796156867,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -3243,7 +3271,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 34957100,
+			"timeSincePing": 35400000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3427,7 +3455,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 34957100,
+			"timeSincePing": 35400000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4618,7 +4646,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 29844000,
+			"timeSincePing": 30286900,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4807,7 +4835,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 29844000,
+			"timeSincePing": 30286900,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5501,7 +5529,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.037968253968253894,
+			"heat": 0.14895665445665524,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -6465,7 +6493,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 18529600,
+			"timeSincePing": 18972500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6651,7 +6679,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 18529600,
+			"timeSincePing": 18972500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -7560,7 +7588,7 @@
 			"class": "Coolant",
 			"simulatorId": "a147daf7-cf2e-4bda-b3c0-39fdbce2fd79",
 			"name": "Coolant",
-			"displayName": null,
+			"displayName": "Coolant",
 			"damage": {
 				"damaged": false,
 				"report": null,
@@ -7849,7 +7877,7 @@
 			"name": "Long Range Communications",
 			"displayName": "Long Range Comm",
 			"power": {
-				"power": 5,
+				"power": 1,
 				"powerLevels": [
 					1
 				]
@@ -7877,7 +7905,7 @@
 			"name": "Short Range Communications",
 			"displayName": "Short Range Comm",
 			"power": {
-				"power": 5,
+				"power": 2,
 				"powerLevels": [
 					2
 				]
@@ -7899,7 +7927,78 @@
 			"amplitude": 0.5,
 			"state": "idle",
 			"arrows": [],
-			"signals": []
+			"signals": [
+				{
+					"id": "1300b1a8-8111-4219-8e16-29e0b494541f",
+					"image": "Romulan",
+					"name": "Romulan",
+					"color": "#00ff00",
+					"range": {
+						"upper": 1,
+						"lower": 0.85
+					}
+				},
+				{
+					"id": "011854ac-cab6-41d5-b4c2-02acfaf632fe",
+					"image": "Cardassian",
+					"name": "Cardassian",
+					"color": "#ffaa00",
+					"range": {
+						"upper": 0.85,
+						"lower": 0.75
+					}
+				},
+				{
+					"id": "fd5fcbcb-1c34-4e4f-9c5f-a717f2d4ac6a",
+					"image": "General Use",
+					"name": "General Use",
+					"color": "#ffffff",
+					"range": {
+						"upper": 0.75,
+						"lower": 0.58
+					}
+				},
+				{
+					"id": "412068e1-393b-44e5-8b3d-28edc50771f4",
+					"image": "Starfleet",
+					"name": "Starfleet",
+					"color": "#0088ff",
+					"range": {
+						"upper": 0.58,
+						"lower": 0.4
+					}
+				},
+				{
+					"id": "e6bdeeac-d814-4ca2-b1ca-01aec00dcae1",
+					"image": "Klingon",
+					"name": "Klingon",
+					"color": "#ff0000",
+					"range": {
+						"upper": 0.4,
+						"lower": 0.3
+					}
+				},
+				{
+					"id": "6c013aee-7dc8-4724-8eb3-8147cf70261d",
+					"image": "Orion",
+					"name": "Orion",
+					"color": "#888888",
+					"range": {
+						"upper": 0.3,
+						"lower": 0.22
+					}
+				},
+				{
+					"id": "2d083190-5689-48f8-b494-b2e8b6672e6a",
+					"image": "Ferengi",
+					"name": "Ferengi",
+					"color": "#ffff00",
+					"range": {
+						"upper": 0.22,
+						"lower": 0
+					}
+				}
+			]
 		},
 		{
 			"id": "65a95d88-d74a-4f4f-924b-2366965f462c",
@@ -7908,7 +8007,7 @@
 			"name": "Impulse",
 			"displayName": "Impulse Engines",
 			"power": {
-				"power": 5,
+				"power": 8,
 				"powerLevels": [
 					8,
 					10
@@ -7971,7 +8070,7 @@
 			"name": "Warp",
 			"displayName": "Warp Engines",
 			"power": {
-				"power": 5,
+				"power": 10,
 				"powerLevels": [
 					10,
 					13,
@@ -8057,7 +8156,7 @@
 			"name": "Thrusters",
 			"displayName": "Thrusters",
 			"power": {
-				"power": 5,
+				"power": 3,
 				"powerLevels": [
 					3
 				]
@@ -8105,7 +8204,7 @@
 			"name": "Navigation",
 			"displayName": "Navigation",
 			"power": {
-				"power": 5,
+				"power": 3,
 				"powerLevels": [
 					3
 				]
@@ -8147,7 +8246,7 @@
 			"name": "External Sensors",
 			"displayName": "External Sensors",
 			"power": {
-				"power": 5,
+				"power": 4,
 				"powerLevels": [
 					4
 				]
@@ -8168,7 +8267,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6324500,
+			"timeSincePing": 6767400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8333,7 +8432,7 @@
 			"name": "Internal Sensors",
 			"displayName": "Internal Sensors",
 			"power": {
-				"power": 5,
+				"power": 3,
 				"powerLevels": [
 					3
 				]
@@ -8354,7 +8453,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6324500,
+			"timeSincePing": 6767400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8519,7 +8618,7 @@
 			"name": "Probe Launcher",
 			"displayName": "Probe Launcher",
 			"power": {
-				"power": 5,
+				"power": 0,
 				"powerLevels": []
 			},
 			"damage": {
@@ -8862,7 +8961,7 @@
 			"name": "Transporters",
 			"displayName": "Transporters",
 			"power": {
-				"power": 5,
+				"power": 6,
 				"powerLevels": [
 					6
 				]
@@ -8894,7 +8993,7 @@
 			"name": "Reactor",
 			"displayName": "Reactor",
 			"power": {
-				"power": 5,
+				"power": 0,
 				"powerLevels": []
 			},
 			"damage": {
@@ -8909,7 +9008,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.030666666666666606,
+			"heat": 0.06860818713450306,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -8929,7 +9028,7 @@
 			"name": "Batteries",
 			"displayName": "Batteries",
 			"power": {
-				"power": 5,
+				"power": 0,
 				"powerLevels": []
 			},
 			"damage": {
@@ -8964,7 +9063,7 @@
 			"name": "Stealth Field",
 			"displayName": "Stealth Field",
 			"power": {
-				"power": 5,
+				"power": 15,
 				"powerLevels": [
 					15
 				]
@@ -8999,7 +9098,7 @@
 			"name": "Shields",
 			"displayName": "Shields",
 			"power": {
-				"power": 5,
+				"power": 8,
 				"powerLevels": [
 					8,
 					12
@@ -9030,7 +9129,7 @@
 			"name": "Targeting",
 			"displayName": "Targeting",
 			"power": {
-				"power": 5,
+				"power": 0,
 				"powerLevels": []
 			},
 			"damage": {
@@ -9061,7 +9160,7 @@
 			"name": "Phaser",
 			"displayName": "Phaser",
 			"power": {
-				"power": 5,
+				"power": 6,
 				"powerLevels": [
 					6
 				]
@@ -9152,7 +9251,7 @@
 			"name": "Torpedos",
 			"displayName": "Torpedos",
 			"power": {
-				"power": 5,
+				"power": 4,
 				"powerLevels": [
 					4
 				]
@@ -9254,6 +9353,7 @@
 			"class": "SignalJammer",
 			"simulatorId": "test",
 			"name": "Signal Jammer",
+			"displayName": "Signal Jammer",
 			"power": {
 				"power": 5,
 				"powerLevels": [
@@ -9277,9 +9377,87 @@
 			"level": 0.5,
 			"strength": 0.1,
 			"signals": []
+		},
+		{
+			"id": "4de6714c-ba0e-4e72-84fe-40010240b434",
+			"class": "SignalJammer",
+			"simulatorId": "ab081ea2-5bc1-4ef8-a2cc-820bc36d783b",
+			"name": "Signal Jammer",
+			"power": {
+				"power": 3,
+				"powerLevels": [
+					3
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [
+				"df8e4490-04d1-4e12-ad96-08d3e2f5a9a1"
+			],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "SignalJammer",
+			"active": false,
+			"level": 0.5,
+			"strength": 0.1,
+			"signals": []
+		},
+		{
+			"id": "5ae4d60e-4374-4ab4-8d28-e81840dbc5e6",
+			"class": "SignalJammer",
+			"simulatorId": "83a4c0e2-2b67-415c-a468-4af558d403db",
+			"name": "Signal Jammer",
+			"power": {
+				"power": 5,
+				"powerLevels": [
+					5
+				]
+			},
+			"damage": {
+				"damaged": false,
+				"report": null,
+				"requested": false,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"neededReactivationCode": null
+			},
+			"extra": false,
+			"locations": [
+				"b12f6870-e1f2-480f-86d4-be29df302e55"
+			],
+			"requiredDamageSteps": [],
+			"optionalDamageSteps": [],
+			"type": "SignalJammer",
+			"active": false,
+			"level": 0.5,
+			"strength": 0.1,
+			"signals": []
 		}
 	],
-	"clients": [],
+	"clients": [
+		{
+			"id": "white-hair-given",
+			"class": "Client",
+			"flightId": "7d4d60b0-b19a-42b9-af56-8d1d0e01a94e",
+			"simulatorId": "1f1d06b5-966a-4ab6-a5f3-09ca577669d7",
+			"station": "Communications",
+			"loginName": null,
+			"loginState": "logout",
+			"sentPing": null,
+			"ping": null,
+			"connected": true,
+			"offlineState": null,
+			"training": false,
+			"caches": []
+		}
+	],
 	"sets": [],
 	"decks": [
 		{
@@ -26859,7 +27037,7 @@
 	"messages": [],
 	"tacticalMaps": [],
 	"officerLogs": [],
-	"snapshotVersion": 5,
-	"version": 5,
-	"timestamp": "2018-01-05T04:19:21.270Z"
+	"snapshotVersion": 500,
+	"version": 500,
+	"timestamp": "2018-01-06T00:15:16.031Z"
 }

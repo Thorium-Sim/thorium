@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
 import Slider from "react-rangeslider";
+import Tour from "reactour";
 import SignalLines from "./signalLines";
 import "react-rangeslider/lib/index.css";
 
@@ -32,6 +33,46 @@ const SUB = gql`
     }
   }
 `;
+
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content:
+      "Signals of all variety are used for communications, sensors, and tactical purposes such as torpedo tracking and targeting. By detecting and dampening these signals, you can block the effectiveness of the signals for other ships."
+  },
+  {
+    selector: ".nothing",
+    content:
+      "For example, if there is an incoming torpedo, you could block the red tactical signal which could keep the torpedo from hitting your ship. You can also keep other ships from communicating with each other by blocking comm signals."
+  },
+  {
+    selector: ".signal-container",
+    content: (
+      <div>
+        This is the signal monitor. It is color coded, with{" "}
+        <span style={{ color: "red" }}>tactical</span>,{" "}
+        <span style={{ color: "#00f" }}>sensors</span>, and{" "}
+        <span style={{ color: "#0f0" }}>communication</span> signals. The
+        signals will only be detected if the signal jammer is activated. The
+        higher the line, the stronger the signal.
+      </div>
+    )
+  },
+  {
+    selector: ".activate-button",
+    content: "Click this button to activate and deactivate the signal jammer."
+  },
+  {
+    selector: ".signal-level",
+    content:
+      "Drag this slider to choose the frequency to jam. You can only jam a short span of frequencies, so you have to select where you want to target the jammer."
+  },
+  {
+    selector: ".signal-power",
+    content:
+      "Drag this slider up to increase power. You want the signal level to match the background radiation, so don't increase the power level too high."
+  }
+];
 
 class SignalJammer extends Component {
   state = { jammer: { level: 0.5, power: 0.1 } };
@@ -118,6 +159,19 @@ class SignalJammer extends Component {
               <h4 style={{ color: "green" }}>Communications</h4>
             </div>
             <Card>
+              <div className="signal-strength">
+                <span>-30db</span>
+                <span>-40db</span>
+                <span>-50db</span>
+                <span>-60db</span>
+                <span>-70db</span>
+                <span>-80db</span>
+                <span>-90db</span>
+                <span>-100db</span>
+                <span>-110db</span>
+                <span>-120db</span>
+                <span>-130db</span>
+              </div>
               <Measure
                 bounds
                 onResize={contentRect => {
@@ -145,34 +199,44 @@ class SignalJammer extends Component {
                 value={jammer.level}
                 orientation="horizontal"
                 onChange={this.changeLevel}
-                onChangeComplete={e => this.updateJammer("level", jammer.level)}
+                onChangeComplete={() =>
+                  this.updateJammer("level", jammer.level)
+                }
                 tooltip={false}
                 min={0}
                 step={0.01}
                 max={1}
               />
             </div>
-            <Col sm={4}>
-              {signalJammer.active ? (
-                <Button
-                  size="lg"
-                  color="danger"
-                  block
-                  onClick={() => this.updateJammer("active", false)}
-                >
-                  Deactivate
-                </Button>
-              ) : (
-                <Button
-                  size="lg"
-                  color="primary"
-                  block
-                  onClick={() => this.updateJammer("active", true)}
-                >
-                  Activate
-                </Button>
-              )}
-            </Col>
+            <Row>
+              <Col sm={4} className="activate-button">
+                {signalJammer.active ? (
+                  <Button
+                    size="lg"
+                    color="danger"
+                    block
+                    onClick={() => this.updateJammer("active", false)}
+                  >
+                    Deactivate
+                  </Button>
+                ) : (
+                  <Button
+                    size="lg"
+                    color="primary"
+                    block
+                    onClick={() => this.updateJammer("active", true)}
+                  >
+                    Activate
+                  </Button>
+                )}
+              </Col>
+              <Col sm={8}>
+                <h2>
+                  Frequency: {Math.round(jammer.level * 37700 + 37700) / 100}{" "}
+                  MHz
+                </h2>
+              </Col>
+            </Row>
           </Col>
           <Col sm={3}>
             <h3 className="text-center">Power</h3>
@@ -193,6 +257,11 @@ class SignalJammer extends Component {
             </div>
           </Col>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }

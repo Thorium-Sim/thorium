@@ -39,7 +39,9 @@ const quotes = [
   "Let the past die. Kill it, if you have to. That's the only way to become what you are meant to be.",
   "History has its eyes on you.",
   "We take one step at a time. In doing so we reach toward the unknown.",
-  "Where does this lead us? Where do we go?"
+  "Where does this lead us? Where do we go?",
+  "If you listen carefully, the silence is beautiful.",
+  "The man who has no imagination has no wings."
 ];
 
 class Welcome extends Component {

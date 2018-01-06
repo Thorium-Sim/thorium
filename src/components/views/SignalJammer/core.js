@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
+import { Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { InputField } from "../../generic/core";
 
@@ -84,6 +85,25 @@ class SignalJammerCore extends Component {
           >
             {signalJammer.signals.filter(s => s.type === "comm").length}
           </InputField>
+          <Button
+            size="sm"
+            color="success"
+            onClick={() =>
+              this.setSignal(
+                "comm",
+                signalJammer.signals.filter(s => s.type === "comm").length + 1
+              )
+            }
+          >
+            Add
+          </Button>
+          <Button
+            size="sm"
+            color="danger"
+            onClick={() => this.setSignal("comm", 0)}
+          >
+            Clear
+          </Button>
         </div>
         <div style={{ display: "flex" }}>
           Tact{" "}
@@ -94,6 +114,26 @@ class SignalJammerCore extends Component {
           >
             {signalJammer.signals.filter(s => s.type === "tactical").length}
           </InputField>
+          <Button
+            size="sm"
+            color="success"
+            onClick={() =>
+              this.setSignal(
+                "tactical",
+                signalJammer.signals.filter(s => s.type === "tactical").length +
+                  1
+              )
+            }
+          >
+            Add
+          </Button>
+          <Button
+            size="sm"
+            color="danger"
+            onClick={() => this.setSignal("tactical", 0)}
+          >
+            Clear
+          </Button>
         </div>
         <div style={{ display: "flex" }}>
           Sens{" "}
@@ -104,6 +144,26 @@ class SignalJammerCore extends Component {
           >
             {signalJammer.signals.filter(s => s.type === "sensors").length}
           </InputField>
+          <Button
+            size="sm"
+            color="success"
+            onClick={() =>
+              this.setSignal(
+                "sensors",
+                signalJammer.signals.filter(s => s.type === "sensors").length +
+                  1
+              )
+            }
+          >
+            Add
+          </Button>
+          <Button
+            size="sm"
+            color="danger"
+            onClick={() => this.setSignal("sensors", 0)}
+          >
+            Clear
+          </Button>
         </div>
       </div>
     );

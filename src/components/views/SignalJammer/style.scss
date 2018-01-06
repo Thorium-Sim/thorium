@@ -4,6 +4,13 @@ $alert2: #804d19;
 $alert1: #801919;
 $alertp: #4d1980;
 .card-signalJammer {
+  .signal-strength {
+    position: absolute;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
   .captions {
     display: flex;
     justify-content: space-between;
