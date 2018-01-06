@@ -122,7 +122,7 @@ class Credits extends Component {
       scroll:
         el && el.scrollHeight - el.clientHeight <= this.state.scroll
           ? 0
-          : this.state.scroll + 0.1 || 1
+          : this.state.scroll + 0.5 || 1
     });
     requestAnimationFrame(this.loop);
   };
@@ -170,30 +170,57 @@ class Credits extends Component {
               <h5>Simulator: {simulator.name}</h5>
               <h5>Station: {station.name}</h5>
               <h5>Login Name: {client.loginName}</h5>
-              <h5>
-                Download the client app:{" "}
-                <a download="Thorium.zip" href="/kiosks/Thorium-darwin-x64.zip">
-                  Mac
-                </a>
-                <a download="Thorium.zip" href="/kiosks/Thorium-win32-x64.zip">
-                  Windows x64
-                </a>
-                <a download="Thorium.zip" href="/kiosks/Thorium-win32-ia32.zip">
-                  Windows ia32
-                </a>
-                <a download="Thorium.zip" href="/kiosks/Thorium-linux-x64.zip">
-                  Linux x64
-                </a>
-                <a download="Thorium.zip" href="/kiosks/Thorium-linux-ia32.zip">
-                  Linux ia32
-                </a>
-                <a
-                  download="Thorium.zip"
-                  href="/kiosks/Thorium-linux-armv7l.zip"
-                >
-                  Linux armv7l
-                </a>
-              </h5>
+              <h5>Download the client app: </h5>
+              <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+                <li>
+                  <a
+                    download="Thorium.zip"
+                    href="https://s3.amazonaws.com/thoriumsim/Thorium-darwin-x64.zip"
+                  >
+                    Mac
+                  </a>
+                </li>
+                <li>
+                  <a
+                    download="Thorium.zip"
+                    href="https://s3.amazonaws.com/thoriumsim/Thorium-win32-x64.zip"
+                  >
+                    Windows x64
+                  </a>
+                </li>
+                <li>
+                  <a
+                    download="Thorium.zip"
+                    href="https://s3.amazonaws.com/thoriumsim/Thorium-win32-ia32.zip"
+                  >
+                    Windows ia32
+                  </a>
+                </li>
+                <li>
+                  <a
+                    download="Thorium.zip"
+                    href="https://s3.amazonaws.com/thoriumsim/Thorium-linux-x64.zip"
+                  >
+                    Linux x64
+                  </a>
+                </li>
+                <li>
+                  <a
+                    download="Thorium.zip"
+                    href="https://s3.amazonaws.com/thoriumsim/Thorium-linux-ia32.zip"
+                  >
+                    Linux ia32
+                  </a>
+                </li>
+                <li>
+                  <a
+                    download="Thorium.zip"
+                    href="https://s3.amazonaws.com/thoriumsim/Thorium-linux-armv7l.zip"
+                  >
+                    Linux armv7l
+                  </a>
+                </li>
+              </ul>
             </div>
           ) : (
             <div ref="scroll" className="scroll">
