@@ -103,7 +103,7 @@ App.on("startFlight", ({ id, name, simulators }) => {
 
     // Create exocomps for the simulator
     App.handleEvent(
-      { simulatorId: sim.id, count: simulator.exocomps },
+      { simulatorId: sim.id, count: sim.exocomps },
       "setSimulatorExocomps"
     );
     return sim.id;

@@ -63,6 +63,9 @@
   .exocomp-information {
     height: 40vh;
     overflow-y: scroll;
+    p {
+      line-height: 1;
+    }
   }
   button {
     float: right;

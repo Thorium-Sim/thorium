@@ -21,8 +21,29 @@ function exocompLoop() {
       }
       if (e.state === "deploying") {
         // Check to see if the system needs to be repaired
+        // Check to make sure it has the right parts
+        let tf = false;
+        sys.damage.exocompParts.forEach(p => {
+          if (e.parts.indexOf(p) > -1) tf = true;
+        });
         if (sys.damage.damaged) {
-          e.updateState("repairing");
+          if (tf) {
+            e.parts.forEach(p => {
+              sys.damage.exocompParts = sys.damage.exocompParts.filter(
+                s => s !== p
+              );
+            });
+            e.updateState("repairing");
+          } else {
+            e.logs.push({
+              timestamp: Date.now(),
+              message: `No parts deployed for repair. Need ${sys.damage.exocompParts.join(
+                ", "
+              )}.`
+            });
+            e.destination = null;
+            e.updateState("returning");
+          }
         } else {
           e.logs.push({
             timestamp: Date.now(),

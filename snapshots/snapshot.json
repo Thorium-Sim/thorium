@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 301,
+	"_eventsCount": 302,
 	"simulators": [
 		{
 			"id": "test",
@@ -101,7 +101,7 @@
 			"class": "Simulator",
 			"stationSet": null,
 			"stations": [],
-			"exocomps": 0,
+			"exocomps": 3,
 			"mission": null,
 			"currentTimelineStep": 0,
 			"teams": [],
@@ -909,6 +909,12 @@
 							"icon": null,
 							"component": "StealthField",
 							"class": "Card"
+						},
+						{
+							"name": "Exocomps",
+							"icon": null,
+							"component": "Exocomps",
+							"class": "Card"
 						}
 					]
 				},
@@ -1511,7 +1517,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 3252300,
+			"timeSincePing": 3433600,
 			"scanResults": "Awesome",
 			"scanRequest": "Standard - \nTesting",
 			"processedData": "",
@@ -1788,7 +1794,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 40301500,
+			"timeSincePing": 40482800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2099,7 +2105,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.70487699999969,
+			"batteryChargeLevel": 0.7024979999996825,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2867,7 +2873,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.26283489974937113,
+			"heat": 0.3315554511278164,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -3275,7 +3281,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 35484500,
+			"timeSincePing": 35665800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3459,7 +3465,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 35484500,
+			"timeSincePing": 35665800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4650,7 +4656,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 30371400,
+			"timeSincePing": 30552700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4839,7 +4845,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 30371400,
+			"timeSincePing": 30552700,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5533,7 +5539,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.17038827838827947,
+			"heat": 0.21652930402930576,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -6497,7 +6503,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 19057000,
+			"timeSincePing": 19238300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6683,7 +6689,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 19057000,
+			"timeSincePing": 19238300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8271,7 +8277,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6851900,
+			"timeSincePing": 7033200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8457,7 +8463,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 6851900,
+			"timeSincePing": 7033200,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -9012,7 +9018,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.07228102664067637,
+			"heat": 0.08018843404808479,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -9451,14 +9457,14 @@
 		{
 			"id": "white-hair-given",
 			"class": "Client",
-			"flightId": "7d4d60b0-b19a-42b9-af56-8d1d0e01a94e",
-			"simulatorId": "1f1d06b5-966a-4ab6-a5f3-09ca577669d7",
-			"station": "Communications",
+			"flightId": "9d0b9afa-430b-4fe7-aa07-adace0385ca0",
+			"simulatorId": "ac141f49-b806-4e8b-bf81-1a566deb3421",
+			"station": "Tactical",
 			"loginName": null,
 			"loginState": "logout",
 			"sentPing": null,
 			"ping": null,
-			"connected": true,
+			"connected": false,
 			"offlineState": null,
 			"training": false,
 			"caches": []
@@ -27051,7 +27057,8 @@
 			"state": "idle",
 			"completion": 0,
 			"parts": [],
-			"destination": null
+			"destination": null,
+			"logs": []
 		},
 		{
 			"id": "eb8e984f-387e-4c11-8fe2-830ea69cc9be",
@@ -27060,7 +27067,8 @@
 			"state": "idle",
 			"completion": 0,
 			"parts": [],
-			"destination": null
+			"destination": null,
+			"logs": []
 		},
 		{
 			"id": "f0aef2ff-8665-424b-b9f6-715ccbab7ae0",
@@ -27069,10 +27077,11 @@
 			"state": "idle",
 			"completion": 0,
 			"parts": [],
-			"destination": null
+			"destination": null,
+			"logs": []
 		}
 	],
-	"snapshotVersion": 86,
-	"version": 86,
-	"timestamp": "2018-01-08T16:25:06.695Z"
+	"snapshotVersion": 136,
+	"version": 136,
+	"timestamp": "2018-01-08T21:23:43.543Z"
 }

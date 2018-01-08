@@ -33,7 +33,8 @@ export const defaultOptionalSteps = [
   { name: "damageTeamMessage", args: {} },
   { name: "sendInventory", args: {} },
   { name: "longRangeMessage", args: {} },
-  { name: "probeLaunch", args: {} }
+  { name: "probeLaunch", args: {} },
+  { name: "exocomps", args: {} }
 ];
 
 export const damagePositions = [
