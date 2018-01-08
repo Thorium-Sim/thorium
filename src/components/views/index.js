@@ -47,6 +47,7 @@ import NavigationAdvanced from "./NavigationAdvanced";
 import SensorScans from "./SensorScans";
 import OfficerLog from "./OfficerLog";
 import SignalJammer from "./SignalJammer";
+import Exocomps from "./Exocomps";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -143,7 +144,8 @@ const Views = {
   NavigationAdvanced,
   SensorScans,
   OfficerLog,
-  SignalJammer
+  SignalJammer,
+  Exocomps
 };
 
 export const Widgets = {

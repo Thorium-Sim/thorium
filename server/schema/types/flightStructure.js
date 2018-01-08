@@ -46,6 +46,7 @@ type Simulator {
   ship: Ship
   requiredDamageSteps: [DamageStep]
   optionalDamageSteps: [DamageStep]
+  exocomps: Int
 }
 
 type TemplateSimulator {

@@ -33,3 +33,4 @@ export { default as coreFeed } from "./coreFeed";
 export { default as tacticalMap } from "./tacticalMap";
 export { default as OfficerLog } from "./officerLog";
 export { default as SignalJammer } from "./signalJammer";
+export { default as Exocomp } from "./exocomp";
