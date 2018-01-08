@@ -181,6 +181,13 @@ import {
   SignalJammerSubscriptions
 } from "./signalJammer";
 
+import {
+  ExocompQueries,
+  ExocompMutations,
+  ExocompSubscriptions,
+  ExocompTypes
+} from "./exocomp";
+
 import App from "../app";
 
 function parseJSONLiteral(ast) {
@@ -242,7 +249,8 @@ const queryMap = Object.assign(
   CoreFeedQueries,
   TacticalMapQueries,
   OfficerLogQueries,
-  SignalJammerQueries
+  SignalJammerQueries,
+  ExocompQueries
 );
 
 export const mutationMap = Object.assign(
@@ -287,7 +295,8 @@ export const mutationMap = Object.assign(
   CoreFeedMutations,
   TacticalMapMutations,
   OfficerLogMutations,
-  SignalJammerMutations
+  SignalJammerMutations,
+  ExocompMutations
 );
 
 const subscriptionMap = Object.assign(
@@ -327,7 +336,8 @@ const subscriptionMap = Object.assign(
   CoreFeedSubscriptions,
   TacticalMapSubscriptions,
   OfficerLogSubscriptions,
-  SignalJammerSubscriptions
+  SignalJammerSubscriptions,
+  ExocompSubscriptions
 );
 export default Object.assign(
   {
@@ -353,5 +363,6 @@ export default Object.assign(
   TeamsTypes,
   SetTypes,
   IsochipsTypes,
-  TacticalMapTypes
+  TacticalMapTypes,
+  ExocompTypes
 );

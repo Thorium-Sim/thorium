@@ -6,4 +6,17 @@ export const TemplateQueries = {};
 
 export const TemplateMutations = {};
 
-export const TemplateSubscriptions = {};
+export const TemplateSubscriptions = {
+  templateUpdate: {
+    resolve(rootValue, { simulatorId }) {
+      if (simulatorId) {
+        return rootValue.filter(s => s.simulatorId === simulatorId);
+      }
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("templateUpdate"),
+      rootValue => !!(rootValue && rootValue.length)
+    )
+  }
+};

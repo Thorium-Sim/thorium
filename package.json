@@ -27,14 +27,14 @@
     "husky": "^0.14.3",
     "jest-localstorage-mock": "^2.1.0",
     "lint-staged": "^6.0.0",
-    "nodemon": "^1.14.7",
+    "nodemon": "^1.14.8",
     "pkg": "^4.3.0-beta.1",
     "prettier": "^1.9.2",
     "react-scripts": "1.0.17"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.5",
-    "apollo-client": "^2.0.4",
+    "apollo-client": "^2.2.0",
     "apollo-link-http": "^1.3.2",
     "apollo-link-ws": "^1.0.4",
     "appdirectory": "^0.1.0",

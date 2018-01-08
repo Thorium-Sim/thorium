@@ -42,7 +42,8 @@ const viewList = [
   "NavigationAdvanced",
   "SensorScans",
   "OfficerLog",
-  "SignalJammer"
+  "SignalJammer",
+  "Exocomps"
 ];
 
 export default viewList;

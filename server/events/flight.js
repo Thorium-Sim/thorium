@@ -100,6 +100,12 @@ App.on("startFlight", ({ id, name, simulators }) => {
     sim.stationSet = stationSet.id;
     App.simulators.push(sim);
     addAspects(s, sim);
+
+    // Create exocomps for the simulator
+    App.handleEvent(
+      { simulatorId: sim.id, count: sim.exocomps },
+      "setSimulatorExocomps"
+    );
     return sim.id;
   });
   App.flights.push(new Classes.Flight({ id, name, simulators: simIds }));
@@ -119,7 +125,9 @@ App.on("deleteFlight", ({ flightId }) => {
     "isochips",
     "coreFeed",
     "viewscreens",
-    "messages"
+    "messages",
+    "officerLogs",
+    "exocomps"
   ];
   const flight = App.flights.find(f => f.id === flightId);
   // We need to remove all reference to this flight.
@@ -133,6 +141,7 @@ App.on("deleteFlight", ({ flightId }) => {
       c.logout();
       c.setOfflineState(null);
     });
+  App.tacticalMaps = App.tacticalMaps.filter(t => t.flightId !== flightId);
   flight.simulators.forEach(simId => {
     // Remove all of the systems, inventory, crew, etc.
     aspectList.forEach(aspect => {
@@ -158,7 +167,9 @@ App.on("resetFlight", ({ flightId }) => {
     "isochips",
     "coreFeed",
     "viewscreens",
-    "messages"
+    "messages",
+    "officerLogs",
+    "exocomps"
   ];
   const flight = App.flights.find(f => f.id === flightId);
 
@@ -171,6 +182,7 @@ App.on("resetFlight", ({ flightId }) => {
       c.logout();
       c.setOfflineState(null);
     });
+  App.tacticalMaps = App.tacticalMaps.filter(t => t.flightId !== flightId);
 
   // Create new simulators, then delete the old ones
   flight.simulators.forEach(simId => {

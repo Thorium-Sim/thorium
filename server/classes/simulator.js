@@ -13,6 +13,7 @@ export default class Simulator {
     this.class = "Simulator";
     this.stationSet = params.stationSet || null;
     this.stations = params.stations || [];
+    this.exocomps = params.exocomps || 0;
     this.mission = params.mission || null;
     this.currentTimelineStep = params.currentTimelineStep || 0;
     this.teams = [];
