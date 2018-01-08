@@ -66,7 +66,8 @@ export class System {
           requested: false,
           reactivationCode: null,
           reactivationRequester: null,
-          neededReactivationCode: null
+          neededReactivationCode: null,
+          exocompParts: []
         };
     this.extra = params.extra || false;
     this.locations = params.locations || [];
@@ -208,6 +209,12 @@ export class System {
         if (step.name === "internalCall") {
           return components.indexOf("CommInternal") > -1 && decks.length > -1;
         }
+        if (step.name === "exocomps") {
+          return (
+            components.indexOf("Exocomps") > -1 &&
+            App.exocomps.find(e => e.simulatorId === sim.id)
+          );
+        }
         return false;
       });
 
@@ -277,6 +284,7 @@ export class System {
       this
     );
     const damageReport = damageSteps.reduce((prev, { name, args }, index) => {
+      console.log(name, damageStepFunctions[name]);
       return `${prev}
 Step ${index + 1}:
 ${damageStepFunctions[name](args || {}, context, index)}
@@ -297,6 +305,7 @@ ${damageStepFunctions[name](args || {}, context, index)}
     this.damage.neededReactivationCode = null;
     this.damage.reactivationCode = null;
     this.damage.reactivationRequester = null;
+    this.damage.exocompParts = [];
   }
   requestReport() {
     this.damage.requested = true;
@@ -316,11 +325,13 @@ ${damageStepFunctions[name](args || {}, context, index)}
     if (!report) return;
     let returnReport = report;
     // #PART
+    this.damage.exocompParts = [];
     const partMatches = report.match(/#PART/gi) || [];
     partMatches.forEach(m => {
       const index = returnReport.indexOf(m);
       returnReport = returnReport.replace(m, "");
       const part = randomFromList(partsList);
+      this.damage.exocompParts.push(part);
       returnReport = splice(returnReport, index, 0, part);
     });
 

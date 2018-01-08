@@ -1,0 +1,73 @@
+.card-exocomps {
+  p {
+    line-height: 0.5;
+    font-size: 18px;
+    margin-left: 10px;
+  }
+  .exocomp-list {
+    max-height: 80vh;
+    overflow-y: scroll;
+  }
+  .card {
+    margin-bottom: 20px;
+  }
+  .exocomp-title {
+    font-size: 30px;
+    float: left;
+    margin-bottom: 10px;
+    margin-right: 20px;
+  }
+  .exocomp-list {
+    .parts-holder {
+      float: left;
+    }
+  }
+  .parts-holder {
+    display: flex;
+  }
+  .exocomp-part {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    background-color: black;
+    border: solid 2px white;
+    background-size: cover;
+  }
+  .parts-container {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(4, 1fr);
+    height: 30vh;
+    border: solid 1px rgba(255,255,255,0.5);
+    background-color: rgba(0,0,0,0.5);
+    margin-top: 20px;
+    padding: 10px;
+    overflow-y: scroll;
+    .exocomp-part {
+      cursor: pointer;
+    }
+    .part-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    p {
+      text-align: center;
+      line-height: 1;
+    }
+  }
+  .dropdown-menu {
+    height: 50vh;
+    overflow-y: scroll;
+  }
+  .exocomp-information {
+    height: 40vh;
+    overflow-y: scroll;
+    p {
+      line-height: 1;
+    }
+  }
+  button {
+    float: right;
+  }
+}

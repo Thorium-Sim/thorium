@@ -20,10 +20,15 @@ const ops = {
     mutation ChangeAlert($id: ID!, $value: String!) {
       changeSimulatorAlertLevel(simulatorId: $id, alertLevel: $value)
     }
+  `,
+  exocomps: gql`
+    mutation ChangeExocomps($id: ID!, $value: Int!) {
+      changeSimulatorExocomps(simulatorId: $id, exocomps: $value)
+    }
   `
 };
 class SimulatorConfigView extends Component {
-  _handleChange(e) {
+  _handleChange = e => {
     const variables = {
       id: this.props.selectedSimulator.id,
       value: e.target.value
@@ -33,7 +38,7 @@ class SimulatorConfigView extends Component {
       mutation,
       variables
     });
-  }
+  };
   render() {
     return (
       <div>
@@ -84,6 +89,18 @@ class SimulatorConfigView extends Component {
               <option value="2">1</option>
               <option value="p">P</option>
             </select>
+          </fieldset>
+          <fieldset className="form-group">
+            <label>Exocomp Count</label>
+            <input
+              type="range"
+              min="0"
+              max="5"
+              name="exocomps"
+              onChange={this._handleChange}
+              defaultValue={this.props.selectedSimulator.exocomps}
+            />{" "}
+            {this.props.selectedSimulator.exocomps}
           </fieldset>
         </form>
       </div>

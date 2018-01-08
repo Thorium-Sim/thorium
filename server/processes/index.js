@@ -8,3 +8,4 @@ import "./selfDestruct";
 import "./viewscreens";
 import "./engineVelocity";
 import "./tacticalMapMove";
+import "./exocomps";

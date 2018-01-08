@@ -54,6 +54,13 @@ App.on("changeSimulatorAlertLevel", ({ simulatorId, alertLevel }) => {
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("changeSimulatorExocomps", ({ simulatorId, exocomps }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  if (simulator) {
+    simulator.exocomps = exocomps;
+  }
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 App.on("changeSimulatorBridgeCrew", ({ simulatorId, crew }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   if (simulator) {

@@ -163,9 +163,11 @@ export const generic = ({ message }) => {
 };
 
 export const finish = ({ reactivate }) => {
-  return `If you followed the steps properly, the system has been repaired. ${reactivate
-    ? "Enter the following reactivation code to reactivate the system: #REACTIVATIONCODE"
-    : ""}`;
+  return `If you followed the steps properly, the system has been repaired. ${
+    reactivate
+      ? "Enter the following reactivation code to reactivate the system: #REACTIVATIONCODE"
+      : ""
+  }`;
 };
 
 export const securityTeam = (
@@ -197,9 +199,9 @@ export const securityEvac = ({ room, preamble }, { location, stations }) => {
   const stationName = station ? station.name : "Security Decks";
   return `${preamble ||
     `For safety, the deck where the damage is should be evacuated and sealed.`}
-Ask the ${stationName} officer to evacuate and seal the entire deck where the damage is: ${room
-    ? `Deck ${room}`
-    : location}
+Ask the ${stationName} officer to evacuate and seal the entire deck where the damage is: ${
+    room ? `Deck ${room}` : location
+  }
   `;
 };
 
@@ -227,4 +229,21 @@ Ask the ${stationName} officer to make the following internal call:
 Room: ${room || location}
 Message: ${message || randomFromList(messageList)}
 `;
+};
+
+export const exocomps = (_, { name, displayName = name, stations }) => {
+  // Find the station with the internal comm
+  const station = stations.find(s =>
+    s.cards.find(c => c.component === "Exocomps")
+  );
+  const stationName = station ? station.name : "Exocomp";
+  return `An exocomp should be deployed to repair the damaged system. Ask the ${stationName} officer to deploy with the following settings:
+  
+  Destination: ${displayName}
+  Parts: ${Array(Math.ceil(Math.random() * 3))
+    .fill(0)
+    .reduce(prev => {
+      return prev + ", #PART";
+    }, "#PART")}
+  `;
 };
