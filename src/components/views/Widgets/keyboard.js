@@ -90,34 +90,6 @@ const keys = [
   { name: "rcontrol", shift: "control", size: "1-25u", modifier: true }
 ];
 
-function simulateKeyPress(key, el) {
-  const evt = document.createEvent("KeyboardEvent");
-  var initMethod =
-    typeof evt.initKeyboardEvent !== "undefined"
-      ? "initKeyboardEvent"
-      : "initKeyEvent";
-  evt[initMethod](
-    "keydown",
-    true,
-    true,
-    window,
-    0,
-    0,
-    0,
-    0,
-    0,
-    key.charCodeAt(0)
-  );
-  const canceled = !el.dispatchEvent(evt);
-  if (canceled) {
-    // A handler called preventDefault
-    alert("canceled");
-  } else {
-    // None of the handlers called preventDefault
-    //alert("not canceled");
-  }
-}
-
 const Key = ({
   name,
   modifier,
@@ -134,8 +106,26 @@ const Key = ({
       onMouseDown={e => {
         e.stopPropagation();
         e.preventDefault();
-        //simulateKeyPress(name, document.activeElement);
-        document.activeElement.value += name;
+        const nodeName = document.activeElement.nodeName;
+        let nodeElement;
+        if (nodeName === "INPUT") nodeElement = "HTMLInputElement";
+        else if (nodeName === "TEXTAREA") nodeElement = "HTMLTextAreaElement";
+        else return;
+        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+          window[nodeElement].prototype,
+          "value"
+        ).set;
+        nativeInputValueSetter.call(
+          document.activeElement,
+          document.activeElement.value + name
+        );
+
+        document.activeElement.dispatchEvent(
+          new Event("input", { bubbles: true })
+        );
+        document.activeElement.dispatchEvent(
+          new Event("change", { bubbles: true })
+        );
       }}
       className={`key ${size ? "size-" + size : ""} ${escape ? "escape" : ""} ${
         modifier ? "modifier" : ""

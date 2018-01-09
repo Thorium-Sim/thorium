@@ -11,7 +11,7 @@ $color-dark-escape-keycap: darken($color-escape-keycap, 10%);
 $text-color: invert($color-base-keycap);
 $grid-gap: 5px;
 $base-border-radius: 5px;
-$keycap-height: 100%;
+$keycap-height: 45px;
 /* 60 column grid. */
 /* 1u key (standard keysize) = 4 columns */
 .keyboard {
@@ -66,7 +66,7 @@ $keycap-height: 100%;
     opacity: 0;
   }
   .short {
-     height: $keycap-height;
+     height: $keycap-height / 2;
   }
   /* Keycap sizes */
   /* 1.25u key */

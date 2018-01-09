@@ -5,5 +5,6 @@ const paths = new AppDirectory({
 });
 paths.userData = paths._userDataTemplate
   .replace("{0}", "thorium")
-  .replace("/{1}", "");
+  .replace("/{1}", "")
+  .replace("\\{1}", "");
 module.exports = paths;

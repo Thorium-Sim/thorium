@@ -150,6 +150,13 @@ const Views = {
 };
 
 export const Widgets = {
+  keyboard: {
+    widget: Keyboard,
+    icon: "keyboard-o",
+    name: "Keyboard",
+    size: "lg",
+    color: "rgb(50,50,200)"
+  },
   composer: {
     widget: ComposerWidget,
     icon: "pencil-square-o",
@@ -188,13 +195,6 @@ export const Widgets = {
     name: "Officer Log",
     size: "lg",
     color: "rgb(255,255,100)"
-  },
-  keyboard: {
-    widget: Keyboard,
-    icon: "keyboard-o",
-    name: "Keyboard",
-    size: "lg",
-    color: "rgb(50,50,200)"
   }
 };
 

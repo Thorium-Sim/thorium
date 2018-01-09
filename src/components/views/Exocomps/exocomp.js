@@ -12,7 +12,6 @@ const Exocomp = ({
   select,
   recall
 }) => {
-  console.log(destination);
   return (
     <Card>
       <CardBody>
