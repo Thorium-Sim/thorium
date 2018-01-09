@@ -56,7 +56,7 @@ assets
 temp
 thorium-server-*
 thorium-server
-thorium
+thorium-*
 Thorium.zip
 kiosks
 # unecessary CSS files

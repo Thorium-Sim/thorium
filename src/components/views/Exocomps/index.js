@@ -101,7 +101,6 @@ class Exocomps extends Component {
             <h2>Exocomps</h2>
             <div className="exocomp-list">
               {exocomps.map((e, i) => {
-                console.log(e);
                 return (
                   <Exocomp
                     {...e}

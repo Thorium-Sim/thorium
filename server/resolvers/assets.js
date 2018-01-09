@@ -181,23 +181,14 @@ export async function uploadAsset(root, args, context) {
     );
     const key = `${fullPath.substr(1)}/${simulatorId + extension}`;
     const filepath = path.resolve(assetDir + "/" + key);
-    const directorypath = filepath.substring(0, filepath.lastIndexOf("/"));
+    const lastIndex =
+      filepath.lastIndexOf("/") > -1
+        ? filepath.lastIndexOf("/")
+        : filepath.lastIndexOf("\\");
+    const directorypath = filepath.substring(0, lastIndex);
     mkdirp.sync(directorypath);
+    fs.writeFileSync(filepath, fs.readFileSync(file.path));
 
-    //Move the file in
-    const writeStream = fs.createWriteStream(filepath);
-    const stream = fs.createReadStream(file.path).pipe(writeStream);
-    stream.on("error", function(err) {
-      throw new Error(err);
-    });
-    writeStream.on("error", function(err) {
-      throw new Error(err);
-    });
-    stream.on("close", function() {
-      // Delete the temp file
-      fs.unlink(file.path, () => {});
-    });
-    // Add to the event store
     App.handleEvent(
       {
         id: uuid.v4(),

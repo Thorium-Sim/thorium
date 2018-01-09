@@ -161,7 +161,6 @@ const QUERY = gql`
 
 export default graphql(QUERY, {
   options: ownProps => {
-    console.log(ownProps);
     return {
       variables: {
         clientId: ownProps.clientObj.id,

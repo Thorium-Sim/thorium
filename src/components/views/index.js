@@ -95,6 +95,7 @@ import SignalJammerCore from "./SignalJammer/core";
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
 import RemoteWidget from "./RemoteAccess/widget";
+import Keyboard from "./Widgets/keyboard";
 
 const Views = {
   Login,
@@ -149,6 +150,13 @@ const Views = {
 };
 
 export const Widgets = {
+  keyboard: {
+    widget: Keyboard,
+    icon: "keyboard-o",
+    name: "Keyboard",
+    size: "lg",
+    color: "rgb(50,50,200)"
+  },
   composer: {
     widget: ComposerWidget,
     icon: "pencil-square-o",

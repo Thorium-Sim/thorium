@@ -77,6 +77,7 @@ export default class CardFrame extends Component {
           station: {
             name: "Test",
             widgets: [
+              "keyboard",
               "composer",
               "calculator",
               "remote",

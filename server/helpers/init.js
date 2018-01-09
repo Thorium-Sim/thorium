@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const ncp = require("ncp").ncp;
 const paths = require("./paths");
+
 if (!fs.existsSync(paths.userData)) {
   fs.mkdirSync(paths.userData);
 }

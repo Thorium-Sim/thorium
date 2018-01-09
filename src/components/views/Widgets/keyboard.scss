@@ -1,0 +1,150 @@
+$color-black: #000;
+$color-off-white: #f2f2ef;
+$color-base-keycap: #dedede;
+$color-dark-base-keycap: darken($color-base-keycap, 10%);
+$color-modifier-keycap: #ccc;
+$color-dark-modifier-keycap: darken($color-modifier-keycap, 10%);
+$color-enter-keycap: #71b0f1;
+$color-dark-enter-keycap: darken($color-enter-keycap, 10%);
+$color-escape-keycap: #db6767;
+$color-dark-escape-keycap: darken($color-escape-keycap, 10%);
+$text-color: invert($color-base-keycap);
+$grid-gap: 5px;
+$base-border-radius: 5px;
+$keycap-height: 45px;
+/* 60 column grid. */
+/* 1u key (standard keysize) = 4 columns */
+.keyboard {
+  display: grid;
+  width: 100%;
+  min-width: 380px;
+  min-height: 170px;
+  grid-template-columns: repeat(60, 1fr);
+  grid-gap: $grid-gap;
+  padding: 16px 7px 7px 7px;
+  background-color: $color-off-white;
+  border-radius: $base-border-radius;
+  resize: both;
+  overflow: hidden;
+  pointer-events: none;
+  /* See keycap sizing: https://deskthority.net/wiki/Keycap_size_by_keyboard */
+  /* Standard 1u key */
+  .key {
+    pointer-events: auto;
+    user-select: none;
+    display: flex;
+    grid-column: span 4;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: $keycap-height;
+    background-color: $color-base-keycap;
+    background-image: linear-gradient(
+      to bottom right,
+      $color-base-keycap,
+      $color-dark-base-keycap
+    );
+    border-radius: $base-border-radius;
+
+    font-family: "Arial";
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: $text-color;
+    white-space: nowrap;
+    &:hover {
+      box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1)
+    }
+    &:active {
+      box-shadow: inset 3px 3px 5px rgba(0,0,0,0.2)
+    }
+  }
+  .pressed {
+    background-color: $color-dark-modifier-keycap;
+  }
+  .blank {
+    opacity: 0;
+  }
+  .short {
+     height: $keycap-height / 2;
+  }
+  /* Keycap sizes */
+  /* 1.25u key */
+  .size-1-25u {
+    grid-column: span 5;
+  }
+
+  /* 1.5u key */
+  .size-1-5u {
+    grid-column: span 6;
+  }
+
+  /* 1.75u key */
+  .size-1-75u {
+    grid-column: span 7;
+  }
+
+  /* 2u key */
+  .size-2u {
+    grid-column: span 8;
+  }
+
+  /* 2.25u key */
+  .size-2-25u {
+    grid-column: span 9;
+  }
+
+  /* 2.5u key */
+  .size-2-5u {
+    grid-column: span 10;
+  }
+
+  /* 2.75u key */
+  .size-2-75u {
+    grid-column: span 11;
+  }
+
+  /* 6.25u space key */
+  .size-6-25u {
+    grid-column: span 25;
+  }
+  
+  .size-7-25u {
+    grid-column: span 30;
+  }
+
+  /* Keycap variations */
+  /* Modifier keys */
+  .modifier {
+    background-color: $color-modifier-keycap;
+    background-image: linear-gradient(
+      to bottom right,
+      $color-modifier-keycap,
+      $color-dark-modifier-keycap
+    );
+
+    font-size: 8px;
+  }
+
+  /* Enter key */
+  .enter {
+    background-color: $color-enter-keycap;
+    background-image: linear-gradient(
+      to bottom right,
+      $color-enter-keycap,
+      $color-dark-enter-keycap
+    );
+  }
+
+  /* Escape key */
+  .escape {
+    background-color: $color-escape-keycap;
+    background-image: linear-gradient(
+      to bottom right,
+      $color-escape-keycap,
+      $color-dark-escape-keycap
+    );
+  }
+}
+
+
