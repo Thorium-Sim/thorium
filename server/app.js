@@ -41,6 +41,7 @@ class Events extends EventEmitter {
     this.tacticalMaps = [];
     this.officerLogs = [];
     this.exocomps = [];
+    this.libraryDatabase = [];
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;

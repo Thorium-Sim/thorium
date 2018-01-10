@@ -187,6 +187,12 @@ import {
   ExocompSubscriptions,
   ExocompTypes
 } from "./exocomp";
+import {
+  LibraryQueries,
+  LibraryMutations,
+  LibrarySubscriptions,
+  LibraryTypes
+} from "./library";
 
 import App from "../app";
 
@@ -250,7 +256,8 @@ const queryMap = Object.assign(
   TacticalMapQueries,
   OfficerLogQueries,
   SignalJammerQueries,
-  ExocompQueries
+  ExocompQueries,
+  LibraryQueries
 );
 
 export const mutationMap = Object.assign(
@@ -296,7 +303,8 @@ export const mutationMap = Object.assign(
   TacticalMapMutations,
   OfficerLogMutations,
   SignalJammerMutations,
-  ExocompMutations
+  ExocompMutations,
+  LibraryMutations
 );
 
 const subscriptionMap = Object.assign(
@@ -337,7 +345,8 @@ const subscriptionMap = Object.assign(
   TacticalMapSubscriptions,
   OfficerLogSubscriptions,
   SignalJammerSubscriptions,
-  ExocompSubscriptions
+  ExocompSubscriptions,
+  LibrarySubscriptions
 );
 export default Object.assign(
   {
@@ -364,5 +373,6 @@ export default Object.assign(
   SetTypes,
   IsochipsTypes,
   TacticalMapTypes,
-  ExocompTypes
+  ExocompTypes,
+  LibraryTypes
 );
