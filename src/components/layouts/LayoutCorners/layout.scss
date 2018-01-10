@@ -451,14 +451,14 @@ body {
       height: 162px;
       border-radius: 50%;
     }
-    @media screen and (min-width: 1700px) {
+    /*@media screen and (min-width: 1700px) {
       img {
         top: 85px;
         left: 35px;
         width: 196px;
         height: 196px;
       }
-    }
+    }*/
   }
   .card-icon-container {
     z-index: 10000 !important;
@@ -670,7 +670,7 @@ body {
       letter-spacing: 1px;
       -webkit-font-smoothing: subpixel-antialiased;
     }
-    @media (min-width: 1700px) {
+    /*@media (min-width: 1700px) {
       .simulator-name {
         top: 0px;
         left: 70px;
@@ -686,7 +686,7 @@ body {
         left: 260px;
         font-size: 40px;
       }
-    }
+    }*/
   }
   .frame-image {
     pointer-events: none;
@@ -718,11 +718,11 @@ body {
     .frame-5 {
       right: 533px;
       height: 40px;
-      left: 542px;
+      left: 533px;
       background-repeat-y: no-repeat;
       background-image: url(./images/slice8.png);
     }
-    @media (min-width: 1700px) {
+    /*@media (min-width: 1700px) {
       .frame-1 {
         width: 723px;
         height: 169px;
@@ -749,7 +749,7 @@ body {
         height: 83px;
         background-size: 100% 100%;
       }
-    }
+    }*/
   }
   .frame-color {
     div {
@@ -819,9 +819,9 @@ body {
     }
     .part-1-3 {
       top: 0px;
-      left: 541px;
+      left: 0px;
       height: 38px;
-      width: 624px;
+      width: 100%;
     }
     .part-c {
       width: 350px;
@@ -882,7 +882,7 @@ body {
         transform: scaleX(-1);
       }
     }
-    @media (min-width: 1700px) {
+   /* @media (min-width: 1700px) {
       .part-1-1 {
         top: 0px;
         width: 50px;
@@ -1041,7 +1041,7 @@ body {
           transform: scaleX(-1);
         }
       }
-    }
+    }*/
   }
 }
 

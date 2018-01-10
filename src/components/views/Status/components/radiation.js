@@ -32,7 +32,7 @@ class Radiation extends Component {
   }
   componentWillUnmount() {
     // Cancel the subscription
-    this.sub();
+    this.sub && this.sub();
   }
   render() {
     if (this.props.data.loading || !this.props.data.simulators) return null;
