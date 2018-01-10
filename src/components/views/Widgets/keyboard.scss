@@ -1,10 +1,10 @@
 $color-black: #000;
-$color-off-white: #f2f2ef;
-$color-base-keycap: #dedede;
+$color-off-white: invert(#f2f2ef);
+$color-base-keycap: #444;
 $color-dark-base-keycap: darken($color-base-keycap, 10%);
-$color-modifier-keycap: #ccc;
+$color-modifier-keycap: #222;
 $color-dark-modifier-keycap: darken($color-modifier-keycap, 10%);
-$color-enter-keycap: #71b0f1;
+$color-enter-keycap: darken(#71b0f1, 20%);
 $color-dark-enter-keycap: darken($color-enter-keycap, 10%);
 $color-escape-keycap: #db6767;
 $color-dark-escape-keycap: darken($color-escape-keycap, 10%);
@@ -24,7 +24,7 @@ $keycap-height: 45px;
   padding: 16px 7px 7px 7px;
   background-color: $color-off-white;
   border-radius: $base-border-radius;
-  resize: both;
+  //resize: both;
   overflow: hidden;
   pointer-events: none;
   /* See keycap sizing: https://deskthority.net/wiki/Keycap_size_by_keyboard */
