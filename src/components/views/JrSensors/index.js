@@ -14,6 +14,10 @@ const SENSOR_SUB = gql`
       id
       simulatorId
       processedData
+      segments {
+        segment
+        state
+      }
     }
   }
 `;
@@ -113,6 +117,7 @@ class Sensors extends Component {
                       sensor={sensors.id}
                       hoverContact={this._hoverContact.bind(this)}
                       pings={false}
+                      segments={sensors.segments}
                     />
                   )}
                 </div>
@@ -170,6 +175,10 @@ const SENSOR_QUERY = gql`
       id
       simulatorId
       processedData
+      segments {
+        segment
+        state
+      }
     }
   }
 `;

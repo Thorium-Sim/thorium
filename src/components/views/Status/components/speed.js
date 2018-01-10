@@ -45,7 +45,8 @@ class EngineCoreView extends Component {
     const onEngine = engines.find(e => e.on);
     const speed = !onEngine
       ? "Full Stop"
-      : onEngine.speeds[onEngine.speed - 1].text;
+      : onEngine.speeds[onEngine.speed - 1] &&
+        onEngine.speeds[onEngine.speed - 1].text;
     return (
       <div>
         <Label>Speed</Label>

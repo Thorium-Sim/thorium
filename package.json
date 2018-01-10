@@ -133,7 +133,12 @@
       "css/**/*",
       "fonts/**/*",
       "js/**/*",
-      "static/**/*"
+      "static/**/*",
+      "cardIcons/**/*",
+      "parts/**/*",
+      "viewscreen/**/*",
+      "sciences.ogg",
+      "favicon.ico"
     ]
   }
 }

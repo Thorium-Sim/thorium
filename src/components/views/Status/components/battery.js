@@ -32,7 +32,7 @@ class Battery extends Component {
   }
   componentWillUnmount() {
     // Cancel the subscription
-    this.sub();
+    this.sub && this.sub();
   }
   render() {
     if (this.props.data.loading || !this.props.data.reactors) return null;
