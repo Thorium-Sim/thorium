@@ -1,3 +1,3 @@
 export default `
-libraryEntries(simulatorId: ID!, type: String):[LibraryEntry]
+libraryEntries(simulatorId: ID, type: String, all: Boolean):[LibraryEntry]
 `;

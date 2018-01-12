@@ -15,14 +15,14 @@ App.on("addLibraryEntry", ({ entry, simulatorId }) => {
   } else {
     App.libraryDatabase.push(new Classes.Library(entry));
   }
-  pubsub.publish("libraryEntriesUpdate", app.libraryDatabase);
+  pubsub.publish("libraryEntriesUpdate", App.libraryDatabase);
 });
 App.on("updateLibraryEntry", ({ entry }) => {
   const lib = App.libraryDatabase.find(l => l.id === entry.id);
   lib.update(entry);
-  pubsub.publish("libraryEntriesUpdate", app.libraryDatabase);
+  pubsub.publish("libraryEntriesUpdate", App.libraryDatabase);
 });
 App.on("removeLibraryEntry", ({ entry }) => {
   App.libraryDatabase = App.libraryDatabase.filter(l => l.id !== entry);
-  pubsub.publish("libraryEntriesUpdate", app.libraryDatabase);
+  pubsub.publish("libraryEntriesUpdate", App.libraryDatabase);
 });

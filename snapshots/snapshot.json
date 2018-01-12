@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 302,
+	"_eventsCount": 305,
 	"simulators": [
 		{
 			"id": "test",
@@ -1517,7 +1517,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 3433600,
+			"timeSincePing": 3944700,
 			"scanResults": "Awesome",
 			"scanRequest": "Standard - \nTesting",
 			"processedData": "",
@@ -1794,7 +1794,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 40482800,
+			"timeSincePing": 40993900,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2105,7 +2105,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7024979999996825,
+			"batteryChargeLevel": 0.6957769999996615,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2873,7 +2873,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.3315554511278164,
+			"heat": 0.5257003968253952,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -3281,7 +3281,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 35665800,
+			"timeSincePing": 36176900,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3465,7 +3465,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 35665800,
+			"timeSincePing": 36176900,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4656,7 +4656,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 30552700,
+			"timeSincePing": 31063800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4845,7 +4845,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 30552700,
+			"timeSincePing": 31063800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5539,7 +5539,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.21652930402930576,
+			"heat": 0.34688400488400845,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -6503,7 +6503,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 19238300,
+			"timeSincePing": 19749400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6689,7 +6689,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 19238300,
+			"timeSincePing": 19749400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8277,7 +8277,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 7033200,
+			"timeSincePing": 7544300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8463,7 +8463,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 7033200,
+			"timeSincePing": 7544300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -9018,7 +9018,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.08018843404808479,
+			"heat": 0.10252794022092715,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -22861,13 +22861,6 @@
 			"class": "AssetFolder"
 		},
 		{
-			"id": "6d9a1815-2b26-4d64-8e8a-bd9c4100db89",
-			"folderPath": "/",
-			"fullPath": "/Card Icons",
-			"name": "Card Icons",
-			"class": "AssetFolder"
-		},
-		{
 			"id": "d208ff4a-f81a-4757-be99-87b58224422e",
 			"folderPath": "/",
 			"fullPath": "/Comm Images",
@@ -22935,6 +22928,13 @@
 			"folderPath": "/Viewscreen/Tactical Icons",
 			"fullPath": "/Viewscreen/Tactical Icons/Ships",
 			"name": "Ships",
+			"class": "AssetFolder"
+		},
+		{
+			"id": "9920ec7e-1249-4798-814e-4bfd7213f1b8",
+			"folderPath": "/",
+			"fullPath": "/Library Images",
+			"name": "Library Images",
 			"class": "AssetFolder"
 		}
 	],
@@ -27081,7 +27081,8 @@
 			"logs": []
 		}
 	],
-	"snapshotVersion": 136,
-	"version": 136,
-	"timestamp": "2018-01-08T21:23:43.543Z"
+	"libraryDatabase": [],
+	"snapshotVersion": 519,
+	"version": 519,
+	"timestamp": "2018-01-12T00:18:02.769Z"
 }

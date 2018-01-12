@@ -3,13 +3,17 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
 export const LibraryQueries = {
-  libraryEntries(rootValue, { simulatorId, type }) {
+  libraryEntries(rootValue, { simulatorId, type, all }) {
+    let returnValue = App.libraryDatabase;
     if (type) {
-      return App.libraryDatabase.filter(
-        s => s.simulatorId === simulatorId && s.type === type
+      returnValue = returnValue.filter(s => s.type === type);
+    }
+    if (simulatorId) {
+      returnValue = returnValue.filter(
+        s => s.simulatorId === simulatorId || (all && s.simulatorId)
       );
     }
-    return App.libraryDatabase.filter(s => s.simulatorId === simulatorId);
+    return returnValue;
   }
 };
 
@@ -27,13 +31,17 @@ export const LibraryMutations = {
 
 export const LibrarySubscriptions = {
   libraryEntriesUpdate: {
-    resolve(rootValue, { simulatorId, type }) {
+    resolve(rootValue, { simulatorId, type, all }) {
+      let returnValue = rootValue;
       if (type) {
-        return rootValue.filter(
-          s => s.simulatorId === simulatorId && s.type === type
+        returnValue = returnValue.filter(s => s.type === type);
+      }
+      if (simulatorId) {
+        returnValue = returnValue.filter(
+          s => s.simulatorId === simulatorId || (all && s.simulatorId)
         );
       }
-      return rootValue.filter(s => s.simulatorId === simulatorId);
+      return returnValue;
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("libraryEntriesUpdate"),
