@@ -26,6 +26,9 @@ export const LibraryMutations = {
   },
   removeLibraryEntry(rootValue, args, context) {
     App.handleEvent(args, "removeLibraryEntry", context);
+  },
+  importLibraryEntry(rootValue, args, context) {
+    App.handleEvent(args, "importLibraryEntry", context);
   }
 };
 

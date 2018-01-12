@@ -26,3 +26,21 @@ App.on("removeLibraryEntry", ({ entry }) => {
   App.libraryDatabase = App.libraryDatabase.filter(l => l.id !== entry);
   pubsub.publish("libraryEntriesUpdate", App.libraryDatabase);
 });
+App.on("importLibraryEntry", ({ simulatorId, entries }) => {
+  try {
+    JSON.parse(entries).forEach(entry => {
+      entry.simulatorId = simulatorId;
+      const lib = App.libraryDatabase.find(
+        l => l.slug === entry.slug && l.simulatorId === entry.simulatorId
+      );
+      if (lib) {
+        lib.update(entry);
+      } else {
+        App.libraryDatabase.push(new Classes.Library(entry));
+      }
+    });
+  } catch (err) {
+    throw new Error("Error reading JSON file.");
+  }
+  pubsub.publish("libraryEntriesUpdate", App.libraryDatabase);
+});
