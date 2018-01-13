@@ -51,7 +51,6 @@ class Library extends Component {
     }
   }
   updateEntry = (key, value) => {
-    console.log(key, value);
     this.setState({
       entry: Object.assign({}, this.state.entry, { [key]: value })
     });
@@ -199,6 +198,7 @@ class Library extends Component {
                     >
                       <option value={"general"}>General</option>
                       <option value={"command"}>Command</option>
+                      <option value={"legal"}>Legal</option>
                       <option value={"medical"}>Medical</option>
                       <option value={"security"}>Security</option>
                       <option value={"damage"}>Damage</option>

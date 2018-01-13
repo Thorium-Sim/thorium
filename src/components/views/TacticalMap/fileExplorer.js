@@ -250,7 +250,9 @@ class FileExplorer extends Component {
                       <AssetObject
                         object={object}
                         container={container}
-                        removeObject={this._removeObject}
+                        removeObject={
+                          this.props.admin ? this._removeObject : null
+                        }
                       />
                     </div>
                   </div>
@@ -315,11 +317,13 @@ const AssetObject = ({ object, container, removeObject }) => {
       <img alt="object" draggable="false" src={object.url} />
       <p>
         {container.name}{" "}
-        <FontAwesome
-          name="ban"
-          className="text-danger"
-          onClick={() => removeObject(container.id)}
-        />
+        {removeObject && (
+          <FontAwesome
+            name="ban"
+            className="text-danger"
+            onClick={() => removeObject(container.id)}
+          />
+        )}
       </p>
     </div>
   );

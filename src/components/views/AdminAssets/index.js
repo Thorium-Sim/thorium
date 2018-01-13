@@ -10,6 +10,7 @@ const Assets = () => {
           directory="/"
           selectedFiles={[]}
           onClick={(e, container) => {}}
+          admin
         />
       </Col>
     </Row>

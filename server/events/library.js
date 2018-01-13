@@ -22,8 +22,10 @@ App.on("updateLibraryEntry", ({ entry }) => {
   lib.update(entry);
   pubsub.publish("libraryEntriesUpdate", App.libraryDatabase);
 });
-App.on("removeLibraryEntry", ({ entry }) => {
-  App.libraryDatabase = App.libraryDatabase.filter(l => l.id !== entry);
+App.on("removeLibraryEntry", ({ entry, slug, simulatorId }) => {
+  App.libraryDatabase = App.libraryDatabase.filter(
+    l => l.id !== entry || (l.slug === slug && l.simulatorId === simulatorId)
+  );
   pubsub.publish("libraryEntriesUpdate", App.libraryDatabase);
 });
 App.on("importLibraryEntry", ({ simulatorId, entries }) => {

@@ -41,7 +41,7 @@ export const LibrarySubscriptions = {
       }
       if (simulatorId) {
         returnValue = returnValue.filter(
-          s => s.simulatorId === simulatorId || (all && s.simulatorId)
+          s => s.simulatorId === simulatorId || (all && !s.simulatorId)
         );
       }
       return returnValue;
