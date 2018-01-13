@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card, CardBody, Input, Button } from "reactstrap";
 import { Asset } from "../../../helpers/assets";
+import Tour from "reactour";
 
 import "./style.css";
 
@@ -24,6 +25,31 @@ const SUB = gql`
   }
 `;
 
+const trainingSteps = [
+  {
+    selector: "#nothing",
+    content:
+      "This ship has an on-board library of information which you can peruse. Some of the information could give you a strategic advantage during your mission."
+  },
+  {
+    selector: ".entry-list",
+    content:
+      "The list of library entries available to you is here. Click on an entry to view it."
+  },
+  {
+    selector: "input.search",
+    content: "Type in here to search for entries by name."
+  },
+  {
+    selector: ".category-list",
+    content:
+      "You can filter the entries by category by clicking on the categories in this list."
+  },
+  {
+    selector: ".entry-main",
+    content: "The entry content will appear here."
+  }
+];
 class Library extends Component {
   subscription = null;
   state = {};
@@ -68,6 +94,7 @@ class Library extends Component {
           <Col sm={3}>
             <h4>Entries</h4>
             <Input
+              className="search"
               type="text"
               placeholder="search"
               value={searchFilter}
@@ -189,6 +216,11 @@ class Library extends Component {
             </Row>
           </Col>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
