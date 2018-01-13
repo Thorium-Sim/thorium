@@ -263,10 +263,8 @@ class FileExplorer extends Component {
 }
 
 const AssetObject = ({ object, container, removeObject }) => {
-  const ext = object.url
-    .match(/\..*$/gi)[0]
-    .replace(".", "")
-    .toLowerCase();
+  const ext1 = object.url.match(/\..*$/gi);
+  const ext = ext1 ? ext1[0].replace(".", "").toLowerCase() : null;
   if (ext === "obj") {
     return (
       <div>

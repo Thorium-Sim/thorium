@@ -48,9 +48,9 @@ class AssetComponent extends Component {
       });
   }
   render() {
-    const { children } = this.props;
+    const { children, fail } = this.props;
     const { src } = this.state;
-    if (!src || !this.props.asset) return null;
+    if (!fail && (!src || !this.props.asset)) return null;
     return children({ src });
   }
 }
