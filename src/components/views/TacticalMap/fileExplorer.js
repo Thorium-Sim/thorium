@@ -250,7 +250,9 @@ class FileExplorer extends Component {
                       <AssetObject
                         object={object}
                         container={container}
-                        removeObject={this._removeObject}
+                        removeObject={
+                          this.props.admin ? this._removeObject : null
+                        }
                       />
                     </div>
                   </div>
@@ -263,10 +265,8 @@ class FileExplorer extends Component {
 }
 
 const AssetObject = ({ object, container, removeObject }) => {
-  const ext = object.url
-    .match(/\..*$/gi)[0]
-    .replace(".", "")
-    .toLowerCase();
+  const ext1 = object.url.match(/\..*$/gi);
+  const ext = ext1 ? ext1[0].replace(".", "").toLowerCase() : null;
   if (ext === "obj") {
     return (
       <div>
@@ -317,11 +317,13 @@ const AssetObject = ({ object, container, removeObject }) => {
       <img alt="object" draggable="false" src={object.url} />
       <p>
         {container.name}{" "}
-        <FontAwesome
-          name="ban"
-          className="text-danger"
-          onClick={() => removeObject(container.id)}
-        />
+        {removeObject && (
+          <FontAwesome
+            name="ban"
+            className="text-danger"
+            onClick={() => removeObject(container.id)}
+          />
+        )}
       </p>
     </div>
   );

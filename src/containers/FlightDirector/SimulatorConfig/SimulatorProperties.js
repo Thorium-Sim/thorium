@@ -10,7 +10,8 @@ const properties = [
   "Crew",
   "Assets",
   "Docking",
-  "DamageReports"
+  "DamageReports",
+  "Library"
 ];
 export default ({ selectProperty, selectedProperty }) => {
   return (
@@ -21,9 +22,9 @@ export default ({ selectProperty, selectedProperty }) => {
           onClick={() => {
             selectProperty(p);
           }}
-          className={`list-group-item ${selectedProperty === p
-            ? "selected"
-            : ""}`}
+          className={`list-group-item ${
+            selectedProperty === p ? "selected" : ""
+          }`}
         >
           {p}
         </li>

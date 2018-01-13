@@ -12,3 +12,5 @@ export { default as addShortRangeComm } from "./addShortRangeComm";
 export { default as removeShortRangeComm } from "./removeShortRangeComm";
 export { default as breakSystem } from "./breakSystem";
 export { default as fixSystem } from "./breakSystem";
+export { default as addLibraryEntry } from "./addLibraryEntry";
+export { default as removeLibraryEntry } from "./removeLibraryEntry";

@@ -37,3 +37,4 @@ import "./tacticalMap";
 import "./officerLog";
 import "./signalJammer";
 import "./exocomp";
+import "./library";

@@ -13,7 +13,8 @@ function addAspects(template, sim) {
     "crew",
     "teams",
     "inventory",
-    "dockingPorts"
+    "dockingPorts",
+    "libraryDatabase"
   ].forEach(aspect => {
     const filterAspect = App[aspect].filter(
       a => a.simulatorId === template.simulatorId
@@ -127,7 +128,8 @@ App.on("deleteFlight", ({ flightId }) => {
     "viewscreens",
     "messages",
     "officerLogs",
-    "exocomps"
+    "exocomps",
+    "libraryDatabase"
   ];
   const flight = App.flights.find(f => f.id === flightId);
   // We need to remove all reference to this flight.
@@ -169,7 +171,8 @@ App.on("resetFlight", ({ flightId }) => {
     "viewscreens",
     "messages",
     "officerLogs",
-    "exocomps"
+    "exocomps",
+    "libraryDatabase"
   ];
   const flight = App.flights.find(f => f.id === flightId);
 

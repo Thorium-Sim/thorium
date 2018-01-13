@@ -36,3 +36,4 @@ export { default as tacticalMap } from "./tacticalMap";
 export { default as OfficerLog } from "./officerLog";
 export { default as SignalJammer } from "./signalJammer";
 export { default as Exocomp } from "./exocomp";
+export { default as Library } from "./library";

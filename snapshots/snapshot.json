@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 302,
+	"_eventsCount": 306,
 	"simulators": [
 		{
 			"id": "test",
@@ -12,7 +12,7 @@
 			"stationSet": null,
 			"stations": [],
 			"exocomps": 0,
-			"mission": null,
+			"mission": "7cd5cf3d-1fd5-45fa-a40a-7a1767e95214",
 			"currentTimelineStep": 0,
 			"teams": [],
 			"ship": {
@@ -790,6 +790,12 @@
 							"class": "Card"
 						},
 						{
+							"name": "Library",
+							"icon": null,
+							"component": "Library",
+							"class": "Card"
+						},
+						{
 							"name": "Self Destruct",
 							"icon": null,
 							"component": "SelfDestruct",
@@ -1134,7 +1140,7 @@
 			"position": 1,
 			"frequency": 161.50000000000506,
 			"state": true,
-			"integrity": 1
+			"integrity": 0.56
 		},
 		{
 			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb3c",
@@ -1160,7 +1166,7 @@
 			"position": 2,
 			"frequency": 161.50000000000506,
 			"state": true,
-			"integrity": 1
+			"integrity": 0.65
 		},
 		{
 			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb3e",
@@ -1186,7 +1192,7 @@
 			"position": 3,
 			"frequency": 161.50000000000506,
 			"state": true,
-			"integrity": 1
+			"integrity": 0.61
 		},
 		{
 			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb3f",
@@ -1212,7 +1218,7 @@
 			"position": 4,
 			"frequency": 161.50000000000506,
 			"state": true,
-			"integrity": 1
+			"integrity": 0.52
 		},
 		{
 			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb31",
@@ -1238,7 +1244,7 @@
 			"position": 6,
 			"frequency": 161.50000000000506,
 			"state": true,
-			"integrity": 1
+			"integrity": 0.69
 		},
 		{
 			"id": "8dfbfcf3-51a0-4884-b1f6-18006278fb32",
@@ -1264,7 +1270,7 @@
 			"position": 5,
 			"frequency": 161.50000000000506,
 			"state": true,
-			"integrity": 1
+			"integrity": 0.76
 		},
 		{
 			"id": "1b8c9a95-4b6d-47d9-92d2-e419bd291f61",
@@ -1293,9 +1299,9 @@
 				"z": 0
 			},
 			"rotation": {
-				"yaw": 0,
-				"pitch": 0,
-				"roll": 0
+				"yaw": 183.27280016174905,
+				"pitch": 175.89724256444788,
+				"roll": 181.31231513949243
 			},
 			"rotationDelta": {
 				"yaw": 0,
@@ -1336,7 +1342,7 @@
 			"optionalDamageSteps": [],
 			"heat": 0,
 			"heatRate": 1,
-			"coolant": 0.2,
+			"coolant": 0.19,
 			"cooling": false,
 			"type": "Engine",
 			"on": false,
@@ -1367,7 +1373,7 @@
 					"velocity": 93750
 				}
 			],
-			"speed": -1,
+			"speed": 5,
 			"useAcceleration": true,
 			"speedFactor": 1250,
 			"acceleration": 0
@@ -1402,7 +1408,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0,
+			"heat": 1,
 			"heatRate": 1,
 			"coolant": 0.3,
 			"cooling": false,
@@ -1460,7 +1466,7 @@
 					"velocity": 9062165670
 				}
 			],
-			"speed": -1,
+			"speed": 1,
 			"useAcceleration": false,
 			"speedFactor": 1,
 			"acceleration": 0
@@ -1516,10 +1522,10 @@
 			"type": "Sensors",
 			"domain": "external",
 			"pings": true,
-			"pingMode": "manual",
-			"timeSincePing": 3433600,
-			"scanResults": "Awesome",
-			"scanRequest": "Standard - \nTesting",
+			"pingMode": "active",
+			"timeSincePing": 6200,
+			"scanResults": "Three phaser banks and two torpedo launchers on the Voyager.",
+			"scanRequest": "Weapons on the USS voyager",
 			"processedData": "",
 			"presetAnswers": [],
 			"scanning": false,
@@ -1538,18 +1544,18 @@
 					"picture": "/Sensor Contacts/Pictures/N",
 					"speed": 0,
 					"location": {
-						"x": 0.0307777777777776,
-						"y": 0.6489223946784929,
+						"x": 0.5795964125560538,
+						"y": 0.09080717488789238,
 						"z": 0
 					},
 					"destination": {
-						"x": 0.031,
-						"y": 0.649,
+						"x": 0.5795964125560538,
+						"y": 0.09080717488789238,
 						"z": 0
 					},
 					"position": {
-						"x": 0.0307777777777776,
-						"y": 0.6489223946784929,
+						"x": 0.5795964125560538,
+						"y": 0.09080717488789238,
 						"z": 0
 					},
 					"infrared": false,
@@ -1569,18 +1575,18 @@
 					"picture": "/Sensor Contacts/Pictures/Astra Heavy Cruiser",
 					"speed": 0,
 					"location": {
-						"x": 0.283495145631068,
-						"y": -0.537864077669903,
+						"x": -0.030269058295964126,
+						"y": 0.4567264573991031,
 						"z": 0
 					},
 					"destination": {
-						"x": 0.283495145631068,
-						"y": -0.537864077669903,
+						"x": -0.030269058295964126,
+						"y": 0.4567264573991031,
 						"z": 0
 					},
 					"position": {
-						"x": 0.283495145631068,
-						"y": -0.537864077669903,
+						"x": -0.030269058295964126,
+						"y": 0.4567264573991031,
 						"z": 0
 					},
 					"infrared": false,
@@ -1794,7 +1800,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 40482800,
+			"timeSincePing": 46537100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -2105,7 +2111,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.7024979999996825,
+			"batteryChargeLevel": 0.6228729999994329,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -2776,7 +2782,11 @@
 			"damage": {
 				"damaged": false,
 				"report": null,
-				"requested": false
+				"requested": false,
+				"neededReactivationCode": null,
+				"reactivationCode": null,
+				"reactivationRequester": null,
+				"exocompParts": []
 			},
 			"extra": false,
 			"locations": [],
@@ -2784,10 +2794,10 @@
 			"optionalDamageSteps": [],
 			"type": "TractorBeam",
 			"state": false,
-			"target": false,
-			"targetLabel": "",
-			"strength": 0,
-			"stress": 0.15,
+			"target": true,
+			"targetLabel": "USS Voyager",
+			"strength": 0.21963028169014087,
+			"stress": 0.76,
 			"scanning": false
 		},
 		{
@@ -2873,7 +2883,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.3315554511278164,
+			"heat": 1,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -3281,7 +3291,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 35665800,
+			"timeSincePing": 41720100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3465,7 +3475,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 35665800,
+			"timeSincePing": 41720100,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4656,7 +4666,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 30552700,
+			"timeSincePing": 36607000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4845,7 +4855,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 30552700,
+			"timeSincePing": 36607000,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -5539,7 +5549,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.21652930402930576,
+			"heat": 1,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -6503,7 +6513,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 19238300,
+			"timeSincePing": 25292600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6689,7 +6699,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 19238300,
+			"timeSincePing": 25292600,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8277,7 +8287,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 7033200,
+			"timeSincePing": 13087500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8463,7 +8473,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 7033200,
+			"timeSincePing": 13087500,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -9018,7 +9028,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.08018843404808479,
+			"heat": 0.3448489278752791,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -9453,23 +9463,7 @@
 			"signals": []
 		}
 	],
-	"clients": [
-		{
-			"id": "white-hair-given",
-			"class": "Client",
-			"flightId": "9d0b9afa-430b-4fe7-aa07-adace0385ca0",
-			"simulatorId": "ac141f49-b806-4e8b-bf81-1a566deb3421",
-			"station": "Tactical",
-			"loginName": null,
-			"loginState": "logout",
-			"sentPing": null,
-			"ping": null,
-			"connected": false,
-			"offlineState": null,
-			"training": false,
-			"caches": []
-		}
-	],
+	"clients": [],
 	"sets": [],
 	"decks": [
 		{
@@ -22793,6 +22787,13 @@
 			"class": "CoreFeed",
 			"simulatorId": "test",
 			"component": "SensorsCore",
+			"ignored": true
+		},
+		{
+			"id": "7870fa28-ec85-4de9-9cf7-d801f10916f5",
+			"class": "CoreFeed",
+			"simulatorId": "test",
+			"component": "SensorsCore",
 			"ignored": false
 		}
 	],
@@ -22858,13 +22859,6 @@
 			"folderPath": "/",
 			"fullPath": "/Misc",
 			"name": "Misc",
-			"class": "AssetFolder"
-		},
-		{
-			"id": "6d9a1815-2b26-4d64-8e8a-bd9c4100db89",
-			"folderPath": "/",
-			"fullPath": "/Card Icons",
-			"name": "Card Icons",
 			"class": "AssetFolder"
 		},
 		{
@@ -22935,6 +22929,13 @@
 			"folderPath": "/Viewscreen/Tactical Icons",
 			"fullPath": "/Viewscreen/Tactical Icons/Ships",
 			"name": "Ships",
+			"class": "AssetFolder"
+		},
+		{
+			"id": "9920ec7e-1249-4798-814e-4bfd7213f1b8",
+			"folderPath": "/",
+			"fullPath": "/Library Images",
+			"name": "Library Images",
 			"class": "AssetFolder"
 		}
 	],
@@ -27081,7 +27082,8 @@
 			"logs": []
 		}
 	],
-	"snapshotVersion": 136,
-	"version": 136,
-	"timestamp": "2018-01-08T21:23:43.543Z"
+	"libraryDatabase": [],
+	"snapshotVersion": 88,
+	"version": 88,
+	"timestamp": "2018-01-13T13:45:57.415Z"
 }
