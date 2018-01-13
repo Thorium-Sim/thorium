@@ -1,10 +1,8 @@
 ![Thorium](github-banner.png)
 [![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/53c3c34f0752473383ba4341fa69cb55)](https://www.codacy.com/app/alexanderson1993/thorium?utm_source=github.com&utm_medium=referral&utm_content=Thorium-Sim/thorium&utm_campaign=badger)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/53c3c34f0752473383ba4341fa69cb55)](https://www.codacy.com/app/alexanderson1993/thorium?utm_source=github.com&utm_medium=referral&utm_content=Thorium-Sim/thorium&utm_campaign=Badge_Coverage)
 [![Build Status](https://travis-ci.org/Thorium-Sim/thorium.svg?branch=master)](https://travis-ci.org/Thorium-Sim/thorium)
-[![Slack Status](https://slack.ralexanderson.com/badge.svg)](https://slack.ralexanderson.com)
+[![Discord](https://img.shields.io/discord/390968011605147648.svg)](https://discord.gg/UvxTQZz)
 
 # Thorium
 
@@ -13,8 +11,8 @@
 *New here? Check out the [contributing document](CONTRIBUTING.md)*
 
 Want something to work on? Here's where [we need help](https://github.com/Thorium-Sim/thorium/labels/help%20wanted).
-Not sure how to work with Thorium? Guides are in the [wiki](https://github.com/Thorium-Sim/thorium/wiki)
-Thorium accepts [donations](https://thoriumsim.com/download/)
+Not sure how to work with Thorium? Guides are in the [wiki](https://github.com/Thorium-Sim/thorium/wiki).
+Thorium accepts [donations](https://thoriumsim.com/en/donate.html).
 
 ## What is Thorium
 
@@ -50,10 +48,6 @@ Thorium is flexible enough to provide a system for creating an integrated, distr
 
 Created with ❤ by [Alex Anderson](http://ralexanderson.com) and [Fyreworks](https://fyreworks.us).
 
-Thorium is built with the following technologies:
-* [React](https://facebook.github.io/react/) for the frontend
-* [Apollo Client](http://www.apollostack.com/) for the data layer
-* [GraphQL](http://graphql.org) for the transmission layer
 
 ## Getting Started
 
@@ -67,17 +61,16 @@ Then open [the app](http://localhost:3000) or [GraphiQL](http://localhost:3001/g
 ## Building the App
 
 ```
-npm run build-server
+npm run build
 ```
 
-Builds the app for production and bundles it into an electron app.
+Builds the app for production and bundles it into a packaged terminal app.
 
-## Event Sourcing
+## Open-source Assets
 
-Thorium Server is built on an event sourcing model coupled with CQRS. GraphQL serves this purpose well. Queries are normal GraphQL queries. Commands are mutations which return an empty string. When a command is fired, it dispatches an event which is stored in an event store. Event consumers detect the new event and trigger based on that event.
+You can download open-source licensed assets to be used with Thorium [here](https://drive.google.com/open?id=0B-UK2-Zf7K9ycUJScHJlWW92MjQ).
 
-If the event store is accessible, the consumers don't even have to be on this server - they can be any number of microprocesses across any number of computers and environments.
-
+*Interested in contributing your own images, movies, sounds, and more to this repository? [File an Issue](https://github.com/Thorium-Sim/thorium/issues/new)* and we'll give you access.
 
 ## Folder Structure
 
