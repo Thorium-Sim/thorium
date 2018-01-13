@@ -43,7 +43,8 @@ const viewList = [
   "SensorScans",
   "OfficerLog",
   "SignalJammer",
-  "Exocomps"
+  "Exocomps",
+  "Library"
 ];
 
 export default viewList;

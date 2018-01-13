@@ -1,0 +1,27 @@
+.library-card {
+  .entry-list {
+    height: 35vh;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+  }
+  .category-list {
+    height: 22vh;
+    overflow-y: scroll;
+  }
+  .entry-body {
+    height: 69vh;
+    overflow-y: scroll;
+  }
+  .entry-image {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    background-size: contain;
+    background-color: black;
+    border: solid 1px rgab(255, 255, 255, 0.5);
+  }
+  .entry-seeAlso {
+    height: 22vh;
+    overflow-y: scroll;
+  }
+}
