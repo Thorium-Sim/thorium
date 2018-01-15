@@ -30,7 +30,7 @@
     "nodemon": "^1.14.11",
     "pkg": "^4.3.0-beta.1",
     "prettier": "^1.10.2",
-    "react-scripts": "1.0.17"
+    "react-scripts": "1.1.0"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.5",
