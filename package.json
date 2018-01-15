@@ -70,7 +70,7 @@
     "react-apollo": "^2.0.4",
     "react-color": "^2.13.8",
     "react-dom": "^16.0.0",
-    "react-draggable": "^3.0.4",
+    "react-draggable": "^3.0.5",
     "react-fontawesome": "^1.6.1",
     "react-measure": "^2.0.2",
     "react-popper": "^0.7.5",
