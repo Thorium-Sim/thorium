@@ -86,7 +86,11 @@ class Dynamic extends Component {
             <MosaicWindow
               path={path}
               title={<UpdateSelect id={id} />}
-              toolbarControls={[<Split />, <ExpandButton />, <RemoveButton />]}
+              toolbarControls={[
+                <Split key="split-button" />,
+                <ExpandButton key="expand-button" />,
+                <RemoveButton key="remove-button" />
+              ]}
               createNode={e => e}
             >
               {(() => {
