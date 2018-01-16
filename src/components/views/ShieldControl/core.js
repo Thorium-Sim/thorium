@@ -127,7 +127,7 @@ class ShieldsCore extends Component {
                           {Math.round(s.integrity * 100)}
                         </InputField>
                         <Button
-                          style={{ width: "50%" }}
+                          style={{ width: "50%", height: "16px" }}
                           size="sm"
                           color="danger"
                           onClick={this._hitShields.bind(this, s)}
