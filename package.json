@@ -30,7 +30,7 @@
     "nodemon": "^1.14.11",
     "pkg": "^4.3.0-beta.1",
     "prettier": "^1.10.2",
-    "react-scripts": "1.0.17"
+    "react-scripts": "1.1.0"
   },
   "dependencies": {
     "@blueprintjs/core": "^1.35.0",
@@ -71,7 +71,7 @@
     "react-apollo": "^2.0.4",
     "react-color": "^2.13.8",
     "react-dom": "^16.0.0",
-    "react-draggable": "^3.0.4",
+    "react-draggable": "^3.0.5",
     "react-fontawesome": "^1.6.1",
     "react-measure": "^2.0.2",
     "react-mosaic-component": "^1.0.3",
