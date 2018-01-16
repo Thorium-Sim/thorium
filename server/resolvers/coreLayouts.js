@@ -1,8 +1,10 @@
 import App from "../app";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import { withFilter } from "graphql-subscriptions";
 
 export const CoreLayoutQueries = {
-  coreLayouts(_, { name = "default" }) {
-    return App.coreLayouts.filter(layout => layout.name === name);
+  coreLayouts() {
+    return App.coreLayouts;
   }
 };
 
@@ -19,7 +21,15 @@ export const CoreLayoutMutations = {
 };
 
 export const CoreLayoutSubscriptions = {
-  coreLayoutChange(rootQuery) {
-    return rootQuery;
+  coreLayoutChange: {
+    resolve(rootValue) {
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("coreLayoutChange"),
+      rootValue => {
+        return !!(rootValue && rootValue.length);
+      }
+    )
   }
 };
