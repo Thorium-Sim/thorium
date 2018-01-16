@@ -125,15 +125,17 @@ class SetConfig extends Component {
       selectedStation
     } = this.state;
     return (
-      this.props.data.sets
-        .find(s => s.id === selectedSet)
-        .clients.find(
-          c =>
-            c.simulator.id === selectedSimulator &&
-            c.client.id === clientId &&
-            c.stationSet.id === selectedStationSet &&
-            c.station === selectedStation
-        ) || {}
+      (this.props.data.sets.find(s => s.id === selectedSet) &&
+        this.props.data.sets
+          .find(s => s.id === selectedSet)
+          .clients.find(
+            c =>
+              c.simulator.id === selectedSimulator &&
+              c.client.id === clientId &&
+              c.stationSet.id === selectedStationSet &&
+              c.station === selectedStation
+          )) ||
+      {}
     );
   };
   getClientAssignedStation = clientId => {
