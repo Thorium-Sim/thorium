@@ -14,6 +14,7 @@ import {
 } from "reactstrap";
 import Alerts from "../generic/Alerts";
 import { Link } from "react-router-dom";
+import DynamicPicker from "./DynamicPicker";
 
 import "./CoreComponents.css";
 
@@ -39,6 +40,7 @@ class CoreComponents extends Component {
     this.state = {
       simulator: null,
       layout: localStorage.getItem("thorium_coreLayout") || "defaultLayout",
+      mosaic: JSON.parse(localStorage.getItem("thorium_coreMosaic")) || null,
       notifications:
         localStorage.getItem("thorium_coreNotifications") === "true",
       speech: localStorage.getItem("thorium_coreSpeech") === "true",
@@ -105,6 +107,12 @@ class CoreComponents extends Component {
     this.props.client.resetStore();
     localStorage.setItem("thorium_coreLayout", e.target.value);
   };
+  updateMosaic = mosaic => {
+    this.setState({
+      mosaic
+    });
+    localStorage.setItem("thorium_coreMosaic", JSON.stringify(mosaic));
+  };
   toggleIssueTracker = () => {
     this.setState({
       issuesOpen: !this.state.issuesOpen
@@ -127,7 +135,7 @@ class CoreComponents extends Component {
       : {};
     const simulators = flight && flight.id ? flight.simulators : [];
     const LayoutComponent = Layouts[this.state.layout];
-    const { notifications, speech } = this.state;
+    const { notifications, speech, mosaic } = this.state;
     return (
       <div style={{ backgroundColor: "#333", color: "white" }}>
         <select
@@ -163,6 +171,12 @@ class CoreComponents extends Component {
               );
             })}
         </select>
+        {this.state.layout === "dynamic" && (
+          <DynamicPicker
+            mosaic={mosaic}
+            onChange={m => this.setState({ mosaic: m })}
+          />
+        )}
         <Link to={`/flight/${this.props.flightId}`}>Client Config</Link>
         <Button
           size="sm"
@@ -207,6 +221,8 @@ class CoreComponents extends Component {
             this.state.simulator && (
               <LayoutComponent
                 {...this.props}
+                mosaic={mosaic}
+                updateMosaic={this.updateMosaic}
                 simulator={
                   simulators.find(s => s.id === this.state.simulator) || {
                     id: this.state.simulator

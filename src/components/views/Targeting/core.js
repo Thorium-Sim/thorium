@@ -1,14 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  InputGroup,
-  InputGroupButton,
-  Media
-} from "reactstrap";
+import { Container, Row, Col, Button, Media } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { InputField, OutputField } from "../../generic/core";
 
@@ -307,43 +299,47 @@ class TargetingCore extends Component {
                 return (
                   <Row key={t.id}>
                     <Col sm={4}>
-                      <InputGroup size="sm">
-                        <InputGroupButton>
+                      <Row>
+                        <Col sm={3}>
                           <Button
                             onClick={this._setTargetClassCount.bind(
                               this,
                               t.id,
                               contactCount - 1
                             )}
+                            size="sm"
                             color="secondary"
                           >
                             -
                           </Button>
-                        </InputGroupButton>
-                        <InputField
-                          style={{
-                            lineHeight: "16px",
-                            height: "16px",
-                            width: "100%"
-                          }}
-                          prompt={"How many targets?"}
-                          onClick={this._setTargetClassCount.bind(this, t.id)}
-                        >
-                          {contactCount}
-                        </InputField>
-                        <InputGroupButton>
+                        </Col>
+                        <Col sm={6}>
+                          <InputField
+                            style={{
+                              lineHeight: "16px",
+                              height: "16px",
+                              width: "100%"
+                            }}
+                            prompt={"How many targets?"}
+                            onClick={this._setTargetClassCount.bind(this, t.id)}
+                          >
+                            {contactCount}
+                          </InputField>
+                        </Col>
+                        <Col sm={3}>
                           <Button
                             onClick={this._setTargetClassCount.bind(
                               this,
                               t.id,
                               contactCount + 1
                             )}
+                            size="sm"
                             color="secondary"
                           >
                             +
                           </Button>
-                        </InputGroupButton>
-                      </InputGroup>
+                        </Col>
+                      </Row>
                     </Col>
                     <Col sm={1}>
                       <select
