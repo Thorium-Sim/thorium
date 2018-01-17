@@ -145,7 +145,7 @@ class TimelineCore extends Component {
       simulatorId: this.props.simulator.id,
       macros: currentStep.timelineItems
         .filter(t => steps[t.id])
-        .map(t => ({ event: t.event, args: t.args }))
+        .map(t => ({ event: t.event, args: t.args, delay: t.delay }))
     };
     const mutation = gql`mutation ExecuteMacro($simulatorId: ID!, $macros: [MacroInput]!) {
       triggerMacros(simulatorId: $simulatorId, macros: $macros)

@@ -9,7 +9,8 @@ type Mission {
 
 input MacroInput {
   event: String,
-  args: String
+  args: String,
+  delay: Int
 }
 
 type Flight {
