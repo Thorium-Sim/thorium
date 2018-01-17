@@ -14,6 +14,7 @@ import MacroWrapper from "./MacroConfig";
 import gql from "graphql-tag";
 import FontAwesome from "react-fontawesome";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
+import EventPicker from "./EventPicker";
 
 const SortableItem = SortableElement(
   ({
@@ -25,9 +26,9 @@ const SortableItem = SortableElement(
     <li
       key={`${item.id}-timelineStep`}
       onClick={setSelectedTimelineStep.bind(this, item)}
-      className={`${item.id === selectedTimelineStep
-        ? "selected"
-        : ""} list-group-item`}
+      className={`${
+        item.id === selectedTimelineStep ? "selected" : ""
+      } list-group-item`}
     >
       {item.name}
     </li>
@@ -224,8 +225,7 @@ export default class TimelineConfig extends Component {
       });
     }
   }
-  _addTimelineItem() {
-    const name = prompt("What is the name of the timeline item?");
+  _addTimelineItem = e => {
     const mutation = gql`
       mutation AddTimelineItem(
         $simulatorId: ID
@@ -241,26 +241,25 @@ export default class TimelineConfig extends Component {
         )
       }
     `;
-    if (name) {
-      const obj = {
-        timelineStepId: this.state.selectedTimelineStep
-      };
-      if (this.props.type === "mission") {
-        obj.missionId = this.props.object.id;
-      } else {
-        obj.simulatorId = this.props.object.id;
-      }
-      let timelineItem = {
-        name,
-        type: "event"
-      };
-      obj.timelineItem = timelineItem;
-      this.props.client.mutate({
-        mutation: mutation,
-        variables: obj
-      });
+    const obj = {
+      timelineStepId: this.state.selectedTimelineStep
+    };
+    if (this.props.type === "mission") {
+      obj.missionId = this.props.object.id;
+    } else {
+      obj.simulatorId = this.props.object.id;
     }
-  }
+    let timelineItem = {
+      name: e.target.value,
+      type: "event",
+      event: e.target.value
+    };
+    obj.timelineItem = timelineItem;
+    this.props.client.mutate({
+      mutation: mutation,
+      variables: obj
+    });
+  };
   _removeTimelineStep(timelineStep, e) {
     e.stopPropagation();
     if (window.confirm("Are you sure you want to remove this timeline step?")) {
@@ -425,9 +424,9 @@ export default class TimelineConfig extends Component {
                 onClick={this._setSelectedTimelineItem.bind(this, {
                   id: "step"
                 })}
-                className={`${"step" === this.state.selectedTimelineItem
-                  ? "selected"
-                  : ""} list-group-item`}
+                className={`${
+                  "step" === this.state.selectedTimelineItem ? "selected" : ""
+                } list-group-item`}
               >
                 Edit Step
               </li>
@@ -440,9 +439,11 @@ export default class TimelineConfig extends Component {
                         e => e.id === this.state.selectedTimelineStep
                       )}-${e.id}`}
                       onClick={this._setSelectedTimelineItem.bind(this, e)}
-                      className={`${e.id === this.state.selectedTimelineItem
-                        ? "selected"
-                        : ""} list-group-item`}
+                      className={`${
+                        e.id === this.state.selectedTimelineItem
+                          ? "selected"
+                          : ""
+                      } list-group-item`}
                     >
                       {e.name}{" "}
                       <FontAwesome
@@ -453,14 +454,10 @@ export default class TimelineConfig extends Component {
                     </li>
                   );
                 })}
-              <Button
-                color="success"
-                size="sm"
-                block
-                onClick={this._addTimelineItem.bind(this)}
-              >
-                Add Item
-              </Button>
+              <EventPicker
+                className={"btn btn-sm btn-success"}
+                handleChange={e => this._addTimelineItem(e)}
+              />
             </Card>
           </Col>
         )}
@@ -500,16 +497,12 @@ export default class TimelineConfig extends Component {
             if (!item) return null;
             return (
               <Col sm="6">
-                <h4>{item.name}</h4>
+                <h4>{item.event}</h4>
                 <Card className="scroll" style={{ maxHeight: "60vh" }}>
                   <CardBody>
                     <FormGroup>
                       <Label>Item Name</Label>
-                      <Input
-                        type="text"
-                        value={item.name}
-                        onChange={this._updateItem.bind(this, "name")}
-                      />
+                      <Input type="text" value={item.event} readOnly />
                     </FormGroup>
                     <FormGroup>
                       <Label>Item Delay (in milliseconds)</Label>
