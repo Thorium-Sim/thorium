@@ -35,6 +35,15 @@ export default function exportSimulator(simId, res) {
   App.dockingPorts
     .filter(a => a.simulatorId === sim.id)
     .forEach(a => addAsset(a.image, zipfile, "simulator"));
+  App.libraryDatabase
+    .filter(a => a.simulatorId === sim.id)
+    .forEach(a =>
+      addAsset(
+        a.image && (a.image.substr(0, a.image.lastIndexOf(".")) || a.image),
+        zipfile,
+        "simulator"
+      )
+    );
   zipfile.end({}, function() {
     res.set({
       "Content-Disposition": `attachment; filename=${sim.name}.sim`,

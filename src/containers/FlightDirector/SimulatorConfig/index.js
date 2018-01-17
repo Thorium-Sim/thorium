@@ -275,10 +275,23 @@ class SimulatorConfig extends Component {
           </Col>
           <Col sm={2}>
             {selectedSimulator && (
-              <SimulatorProperties
-                selectProperty={this.selectProperty}
-                selectedProperty={selectedProperty}
-              />
+              <div>
+                <SimulatorProperties
+                  selectProperty={this.selectProperty}
+                  selectedProperty={selectedProperty}
+                />
+                <Button
+                  tag="a"
+                  href={`${window.location.protocol}//${
+                    window.location.hostname
+                  }:3001/exportSimulator/${selectedSimulator}`}
+                  block
+                  size="sm"
+                  color="info"
+                >
+                  Export
+                </Button>
+              </div>
             )}
           </Col>
           <Col sm={8}>

@@ -14,12 +14,14 @@ const addAsset = (key, zip, prefix = "mission") => {
     zip.addFile(`${assetDir}/${key.url}`, `${prefix}${key.url}`);
   } else {
     const container = App.assetContainers.find(a => a.fullPath === key);
-    const objects = App.assetObjects.filter(
-      a => a.containerId === container.id
-    );
-    objects.forEach(o => {
-      zip.addFile(`${assetDir}/${o.url}`, `${prefix}${o.url}`);
-    });
+    if (container) {
+      const objects = App.assetObjects.filter(
+        a => a.containerId === container.id
+      );
+      objects.forEach(o => {
+        zip.addFile(`${assetDir}/${o.url}`, `${prefix}${o.url}`);
+      });
+    }
   }
 };
 
