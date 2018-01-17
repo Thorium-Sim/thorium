@@ -41,7 +41,8 @@ const quotes = [
   "We take one step at a time. In doing so we reach toward the unknown.",
   "Where does this lead us? Where do we go?",
   "If you listen carefully, the silence is beautiful.",
-  "The man who has no imagination has no wings."
+  "The man who has no imagination has no wings.",
+  "Life before death. Strength before weakness. Journey before destination."
 ];
 
 class Welcome extends Component {
