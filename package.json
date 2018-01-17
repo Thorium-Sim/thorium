@@ -127,7 +127,11 @@
     ]
   },
   "bin": "./app.js",
-  "proxy": "http://localhost:3001",
+  "proxy": {
+    "/assets": {
+      "target": "http://localhost:3001"
+    }
+  },
   "pkg": {
     "assets": [
       "assets/**/*",
