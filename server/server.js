@@ -115,14 +115,7 @@ Access GraphiQL developer tool on http://${ipaddress}:${GRAPHQL_PORT}/graphiql`
 );
 
 if (!process.env.NODE_ENV) {
-  graphQLServer.use(
-    "/assets/",
-    (req, res, next) => {
-      console.log(req);
-      next();
-    },
-    express.static(path.resolve("./assets"))
-  );
+  graphQLServer.use("/assets/", express.static(path.resolve("./assets")));
 }
 
 export const websocketServerInstance = websocketServer.listen(WS_PORT, () => {
