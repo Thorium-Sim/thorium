@@ -1,9 +1,9 @@
 export default `
-#Macro: Add an entry to the library database
+#Macro: Library: Add Entry
 addLibraryEntry(entry: LibraryInput!):String
 updateLibraryEntry(entry: LibraryInput!):String
 
-#Macro: Remove an entry from the library database
+#Macro: Library: Remove Entry
 removeLibraryEntry(entry: ID, slug: String):String
 importLibraryEntry(
   simulatorId: ID!

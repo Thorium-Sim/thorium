@@ -17,10 +17,10 @@ updateSystemDamageStep(systemId: ID!, step: DamageStepInput!): String
 removeSystemDamageStep(systemId: ID!, step: ID!):String
 generateDamageReport(systemId: ID!, steps: Int): String
 
-#Macro: Break a system
+#Macro: Break system
 breakSystem(simulatorId: ID!, type: String!, name: String): String
 
-#Macro: Fix a system
+#Macro: Fix system
 fixSystem(simulatorId: ID!, type: String!, name: String): String
 
 `;

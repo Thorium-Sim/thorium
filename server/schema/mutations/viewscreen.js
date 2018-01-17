@@ -2,11 +2,11 @@ export default `
   updateViewscreenName(id: ID!, name: String!):String
   updateViewscreenSecondary(id: ID!, secondary: Boolean!):String
   
-  #Macro: Change the viewscreen or apply data
+  #Macro: Viewscreen Card
   updateViewscreenComponent(id: ID!, component: String!, data: String, secondary: Boolean):String
   updateViewscreenData(id: ID!, data: String!):String
 
-  #Macro: Set the viewscreen to auto mode
+  #Macro: Viewscreen Auto
   setViewscreenToAuto(id: ID!, secondary: Boolean): String  
   updateViewscreenAuto(id: ID!, auto: Boolean!):String
 `;
