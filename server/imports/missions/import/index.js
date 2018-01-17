@@ -1,11 +1,11 @@
 import yauzl from "yauzl";
 import loadAsset from "./loadAsset";
 import path from "path";
-import paths from "../../helpers/paths";
+import paths from "../../../helpers/paths";
 import fs from "fs";
-import App from "../../app";
+import App from "../../../app";
 import mkdirp from "mkdirp";
-import * as Classes from "../../classes";
+import * as Classes from "../../../classes";
 
 let assetDir = path.resolve("./public/");
 

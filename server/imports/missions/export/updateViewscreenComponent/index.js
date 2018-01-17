@@ -1,5 +1,5 @@
 import * as viewscreens from "./viewscreens";
-import addAsset from "../addAsset";
+import addAsset from "../../../addAsset";
 
 export default function buildExport(zip, mission) {
   let assets = [];

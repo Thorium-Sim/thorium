@@ -1,6 +1,6 @@
-import App from "../../app";
+import App from "../../../app";
 
-import * as Classes from "../../classes";
+import * as Classes from "../../../classes";
 
 export default function loadAsset(entry) {
   // Move the file into the assets folder

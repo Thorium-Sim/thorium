@@ -13,8 +13,9 @@ import { SubscriptionServer } from "subscriptions-transport-ws";
 import { printSchema } from "graphql/utilities/schemaPrinter";
 import graphqlExpressUpload from "graphql-server-express-upload";
 import schema from "./data";
-import exportMission from "./missions/export";
-import importMission from "./missions/import";
+import exportMission from "./imports/missions/export";
+import importMission from "./imports/missions/import";
+import exportSimulator from "./imports/simulators/export";
 import vanity from "./helpers/vanity";
 import "./helpers/broadcast";
 import ipaddress from "./helpers/ipaddress";
@@ -70,6 +71,10 @@ graphQLServer.post("/upload", upload.any(), async (req, res) => {
 
 graphQLServer.get("/exportMission/:missionId", (req, res) => {
   exportMission(req.params.missionId, res);
+});
+
+graphQLServer.get("/exportSimulator/:simId", (req, res) => {
+  exportSimulator(req.params.simId, res);
 });
 
 graphQLServer.post("/importMission", upload.any(), async (req, res) => {

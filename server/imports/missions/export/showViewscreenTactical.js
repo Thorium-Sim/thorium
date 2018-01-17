@@ -1,5 +1,5 @@
-import App from "../../app";
-import addAsset from "./addAsset";
+import App from "../../../app";
+import addAsset from "../../addAsset";
 
 export default function buildExport(zip, mission) {
   const tacticals = [];
