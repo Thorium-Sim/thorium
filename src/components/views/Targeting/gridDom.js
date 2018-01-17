@@ -67,7 +67,7 @@ class TargetingGridDom extends Component {
     this.setState(({ targets }) => {
       const newTargets = targets.map(
         ({ id, x, y, icon, name, speedX, speedY, scale, hover, targeted }) => {
-          const limit = { x: width - 32, y: height - 64 };
+          const limit = { x: width - 32, y: height - 32 };
           const speed = { x: speedX, y: speedY };
           const loc = { x, y };
           ["x", "y"].forEach(which => {

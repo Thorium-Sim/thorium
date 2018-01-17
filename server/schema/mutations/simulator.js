@@ -4,12 +4,12 @@ renameSimulator(
 simulatorId: ID!, 
 name: String!): String
 
-#Macro: Change Simulator Layout
+#Macro: Simulator Layout
 changeSimulatorLayout(
 simulatorId: ID!, 
 layout: String!): String
 
-#Macro: Change Simulator Alert Level
+#Macro: Alert Level
 changeSimulatorAlertLevel(
 simulatorId: ID!, 
 alertLevel: String!): String

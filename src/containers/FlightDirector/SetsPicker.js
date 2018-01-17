@@ -20,6 +20,11 @@ const ops = {
     mutation UpdateClient($client: ID!, $id: ID!) {
       clientSetStation(client: $client, stationName: $id)
     }
+  `,
+  simName: gql`
+    mutation UpdateSimulatorName($id: ID!, $name: String!) {
+      renameSimulator(simulatorId: $id, name: $name)
+    }
   `
 };
 class SetsPicker extends Component {
@@ -43,13 +48,21 @@ class SetsPicker extends Component {
     }
   }
   applyClientSet = (
-    { clients },
+    { clients, name },
     { id: simulatorId, templateId, stationSet: { id: stationSetId } },
     { id: flightId }
   ) => {
     const applyClients = clients.filter(
       c => c.simulator.id === templateId && c.stationSet.id === stationSetId
     );
+    // Update the simulator name
+    this.props.client.mutate({
+      mutation: ops.simName,
+      variables: {
+        id: simulatorId,
+        name
+      }
+    });
     applyClients.forEach(c => {
       const variables = { client: c.client.id };
       // Apply the flight

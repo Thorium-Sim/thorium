@@ -71,6 +71,12 @@
   height: 100%;
   background-color: black;
   position: relative;
+  pre {
+    box-shadow: none;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+  }
   .tactical-map-layer {
     position: absolute;
     height: 100%;

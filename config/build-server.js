@@ -42,22 +42,6 @@ fs
     fs.createWriteStream(path.resolve(__dirname + "/../build/package.json"))
   );
 
-fs
-  .createReadStream("./snapshots/snapshot.json")
-  .pipe(
-    fs.createWriteStream(path.resolve(__dirname + "/../build/snapshot.json"))
-  );
-
-ncp(
-  path.resolve(__dirname + "/../public/assets"),
-  path.resolve(__dirname + "/../build/assets"),
-  function(err) {
-    if (err) {
-      throw new Error(err);
-    }
-  }
-);
-
 console.log("Creating an optimized production server build...");
 webpack(config).run((err, stats) => {
   if (err) {
@@ -73,5 +57,5 @@ webpack(config).run((err, stats) => {
   console.log();
   console.log(chalk.cyan("Compiling PKG"));
 
-  exec(["build"]).then(() => {});
+  exec(["build", "--debug"]).then(() => {});
 });

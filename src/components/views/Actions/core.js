@@ -102,15 +102,6 @@ class ActionsCore extends Component {
             <option value="message" disabled>
               Message
             </option>
-            <option value="reset" disabled>
-              Reset
-            </option>
-            <option value="trainingmode" disabled>
-              Training Mode
-            </option>
-            <option value="save" disabled>
-              Save
-            </option>
             <option value="-" disabled>
               -
             </option>

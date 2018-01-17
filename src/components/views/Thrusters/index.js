@@ -35,7 +35,17 @@ const ROTATION_CHANGE_SUB = gql`
   subscription RotationChanged($simulatorId: ID!) {
     rotationChange(simulatorId: $simulatorId) {
       id
+      direction {
+        x
+        y
+        z
+      }
       rotation {
+        yaw
+        pitch
+        roll
+      }
+      rotationDelta {
         yaw
         pitch
         roll
@@ -45,12 +55,14 @@ const ROTATION_CHANGE_SUB = gql`
         pitch
         roll
       }
-
       manualThrusters
-      direction {
-        x
-        y
-        z
+      damage {
+        damaged
+        report
+      }
+      power {
+        power
+        powerLevels
       }
     }
   }

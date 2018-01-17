@@ -17,7 +17,7 @@
     font-size: 18px;
     text-align: center;
     transform: rotate(-90deg);
-    left: -40px;
+    left: -54px;
     position: absolute;
   }
 }
@@ -27,7 +27,7 @@
   width: 230px;
   .timeline-label {
     background-color: #2D73FF;
-    top: 18px;
+    top: 24px;
   }
 }
 .tract-core {
@@ -36,8 +36,8 @@
   height: 208px;
   .tract-label {
     background-color: #C32DFF;
-    left: -86px;
-    top: 65px;
+    left: -122px;
+    top: 106px;
   }
 }
 .ship-core {
@@ -45,8 +45,8 @@
   bottom: auto;
   .ship-label {
     background-color: #FF2D6C;
-    left: -31px;
-    top: 10px;
+    left: -37px;
+    top: 86px;
   }
 }
 .coreFeeds-core {
@@ -54,8 +54,8 @@
   transform: translate(350px);  
   .coreFeed-label {
     background-color: goldenrod;
-    left: -45px;
-    top: 300px;
+    left: -61px;
+    top: 388px;
   }
 }
 .coreMessaging-core {
@@ -65,8 +65,8 @@
   top: 360px;  
   .coreMessaging-label {
     background-color: green;
-    left: -45px;
-    top: 40px;
+    left: -58px;
+    top: 125px;
   }
 }
 .clients-core {
@@ -76,8 +76,8 @@
   min-height: 200px;
   .clients-label {
     background-color: cadetblue;
-    left: -50px;
-    top: 41px;
+    left: -69px;
+    top: 136px;
   }
 }
 .inner-cores {

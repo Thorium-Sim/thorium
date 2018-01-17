@@ -1,13 +1,11 @@
 import fs from "fs";
 import jsonfile from "jsonfile";
 import { EventEmitter } from "events";
-import path from "path";
 import util from "util";
 import { cloneDeep } from "lodash";
 import { writeFile } from "./helpers/json-format";
 import paths from "./helpers/paths";
 import * as Classes from "./classes";
-import { move } from "./helpers/init";
 
 let snapshotDir = "./snapshots/";
 if (process.env.NODE_ENV === "production") {
@@ -51,18 +49,7 @@ class Events extends EventEmitter {
   }
   init() {
     if (process.env.NODE_ENV) {
-      if (!fs.existsSync(snapshotDir + "snapshot.json")) {
-        move(
-          path.dirname(process.argv[1]) + "/snapshot.json",
-          snapshotDir + "snapshot.json",
-          function(err) {
-            if (err) {
-              throw new Error(err);
-            }
-            this.loadSnapshot();
-          }
-        );
-      } else {
+      if (fs.existsSync(snapshotDir + "snapshot.json")) {
         this.loadSnapshot();
       }
     } else {

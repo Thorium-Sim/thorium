@@ -179,7 +179,7 @@ class Library extends Component {
           </Col>
           <Col sm={9}>
             {entry && (
-              <Row>
+              <Row style={{ maxHeight: "80vh", overflowY: "scroll" }}>
                 <Col sm={6}>
                   <FormGroup>
                     <Label>Title</Label>

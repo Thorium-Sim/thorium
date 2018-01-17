@@ -9,6 +9,6 @@ navSetDestination(id: ID, destination: String): String
 navSetScanning(id: ID, scanning: Boolean): String
 navSetThrusters(id: ID!, thrusters: Boolean): String
 
-#Macro: Set the navigation course presets
+#Macro: Navigation Course Preset
 navSetPresets(id: ID, presets:NavPresetInput ): String
 `;

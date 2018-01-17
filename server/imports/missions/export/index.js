@@ -1,7 +1,7 @@
 import updateViewscreenComponent from "./updateViewscreenComponent";
 import setArmyContacts from "./setArmyContacts";
 import showViewscreenTactical from "./showViewscreenTactical";
-import App from "../../app";
+import App from "../../../app";
 import yazl from "yazl";
 
 export default function exportMissions(missionId, res) {

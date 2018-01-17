@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { Col, Row, FormGroup, Label } from "reactstrap";
-import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
+import { withApollo } from "react-apollo";
 import * as Macros from "../../../components/macros";
-
+import EventPicker from "./EventPicker";
 class MacroConfig extends Component {
   _handleChange = e => {
     this.props.updateMacro("event", e.target.value);
@@ -16,12 +15,10 @@ class MacroConfig extends Component {
     this.props.updateMacro("args", JSON.stringify(args));
   };
   render() {
-    if (this.props.data.loading || !this.props.data.__schema) return null;
-    const data = this.props.data.__schema.mutationType.fields;
     const { event, client } = this.props;
     const args = JSON.parse(this.props.args);
     const EventMacro =
-      Macros[this.props.event] ||
+      Macros[event] ||
       (() => {
         return null;
       });
@@ -30,25 +27,7 @@ class MacroConfig extends Component {
         <Col sm="12">
           <FormGroup>
             <Label>Item Event</Label>
-            <select
-              value={event || ""}
-              onChange={this._handleChange}
-              name="mutations"
-              className="c-select form-control"
-            >
-              <option>Select an event</option>
-              {data
-                .filter(mutation => {
-                  return mutation.description.substr(0, 5) === "Macro";
-                })
-                .map(type => {
-                  return (
-                    <option key={type.name} value={type.name}>
-                      {type.description.replace("Macro: ", "")}
-                    </option>
-                  );
-                })}
-            </select>
+            <EventPicker event={event} handleChange={this._handleChange} />
           </FormGroup>
           {EventMacro && (
             <EventMacro
@@ -63,26 +42,4 @@ class MacroConfig extends Component {
   }
 }
 
-const MacroConfigQuery = gql`
-  query IntrospectionQuery {
-    __schema {
-      mutationType {
-        name
-        description
-        fields {
-          name
-          description
-          isDeprecated
-          deprecationReason
-          args {
-            name
-            description
-            defaultValue
-          }
-        }
-      }
-    }
-  }
-`;
-
-export default graphql(MacroConfigQuery, {})(withApollo(MacroConfig));
+export default withApollo(MacroConfig);

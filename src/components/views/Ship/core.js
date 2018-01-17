@@ -124,7 +124,7 @@ class ShipCore extends Component {
         </InputField>
         <p>Layout: </p>
         <Input
-          size="sm"
+          bsSize="sm"
           type="select"
           value={layout}
           onChange={evt => this.changeSimulatorLayout(evt.target.value)}

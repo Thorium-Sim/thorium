@@ -3,19 +3,27 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
 import uuid from "uuid";
 
+export const aspectList = [
+  "assetObjects",
+  "systems",
+  "decks",
+  "rooms",
+  "crew",
+  "teams",
+  "inventory",
+  "dockingPorts",
+  "isochips",
+  "coreFeed",
+  "viewscreens",
+  "messages",
+  "officerLogs",
+  "exocomps",
+  "libraryDatabase"
+];
+
 function addAspects(template, sim) {
   // Duplicate all of the other stuff attached to the simulator too.
-  [
-    "assetObjects",
-    "systems",
-    "decks",
-    "rooms",
-    "crew",
-    "teams",
-    "inventory",
-    "dockingPorts",
-    "libraryDatabase"
-  ].forEach(aspect => {
+  aspectList.forEach(aspect => {
     const filterAspect = App[aspect].filter(
       a => a.simulatorId === template.simulatorId
     );
@@ -114,23 +122,6 @@ App.on("startFlight", ({ id, name, simulators }) => {
 });
 
 App.on("deleteFlight", ({ flightId }) => {
-  const aspectList = [
-    "assetObjects",
-    "systems",
-    "decks",
-    "rooms",
-    "crew",
-    "teams",
-    "inventory",
-    "dockingPorts",
-    "isochips",
-    "coreFeed",
-    "viewscreens",
-    "messages",
-    "officerLogs",
-    "exocomps",
-    "libraryDatabase"
-  ];
   const flight = App.flights.find(f => f.id === flightId);
   // We need to remove all reference to this flight.
   // Loop over the simulators
@@ -157,23 +148,6 @@ App.on("deleteFlight", ({ flightId }) => {
 });
 
 App.on("resetFlight", ({ flightId }) => {
-  const aspectList = [
-    "assetObjects",
-    "systems",
-    "decks",
-    "rooms",
-    "crew",
-    "teams",
-    "inventory",
-    "dockingPorts",
-    "isochips",
-    "coreFeed",
-    "viewscreens",
-    "messages",
-    "officerLogs",
-    "exocomps",
-    "libraryDatabase"
-  ];
   const flight = App.flights.find(f => f.id === flightId);
 
   // Log out the clients

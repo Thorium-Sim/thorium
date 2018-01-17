@@ -75,13 +75,14 @@ class ContactContextMenu extends Component {
                     <Label for="iconSelect">Icon</Label>
                   </Col>
                   <Col sm={2}>
-                    <Asset asset={contact.icon}>
+                    <Asset asset={contact.icon} fail>
                       {({ src }) => (
                         <img
                           alt={"Contact"}
                           style={{
                             width: "100%",
                             minHeight: "20px",
+                            minWidth: "20px",
                             backgroundColor: "rgba(20,20,50,0.5)"
                           }}
                           src={src}

@@ -6,7 +6,10 @@ import {
   Button,
   ButtonGroup,
   Card,
-  CardBody
+  CardBody,
+  Label,
+  Input,
+  FormText
 } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
@@ -172,7 +175,28 @@ class SimulatorConfig extends Component {
       });
     }
   };
-  showImportModal = () => {};
+  importSimulator = evt => {
+    if (evt.target.files[0]) {
+      const data = new FormData();
+      Array.from(evt.target.files).forEach((f, index) =>
+        data.append(`files[${index}]`, f)
+      );
+      this.setState({
+        loadingMission: true
+      });
+      fetch(
+        `${window.location.protocol}//${
+          window.location.hostname
+        }:3001/importSimulator`,
+        {
+          method: "POST",
+          body: data
+        }
+      ).then(() => {
+        window.location.reload();
+      });
+    }
+  };
   renameSimulator = () => {
     const name = prompt("What is the simulator name? eg. Voyager");
     const simulator = this.state.selectedSimulator;
@@ -252,9 +276,6 @@ class SimulatorConfig extends Component {
               <Button onClick={this.createSimulator} size="sm" color="success">
                 Add
               </Button>
-              <Button onClick={this.showImportModal} size="sm" color="info">
-                Import
-              </Button>
             </ButtonGroup>
             <ButtonGroup>
               {selectedSimulator && (
@@ -272,13 +293,36 @@ class SimulatorConfig extends Component {
                 </Button>
               )}
             </ButtonGroup>
+            <Label>Import Simulator</Label>
+            <Input
+              type="file"
+              name="file"
+              id="importFile"
+              onChange={this.importSimulator}
+            />
+            <FormText color="muted">
+              Simulator files will be in a ".sim" format.
+            </FormText>
           </Col>
           <Col sm={2}>
             {selectedSimulator && (
-              <SimulatorProperties
-                selectProperty={this.selectProperty}
-                selectedProperty={selectedProperty}
-              />
+              <div>
+                <SimulatorProperties
+                  selectProperty={this.selectProperty}
+                  selectedProperty={selectedProperty}
+                />
+                <Button
+                  tag="a"
+                  href={`${window.location.protocol}//${
+                    window.location.hostname
+                  }:3001/exportSimulator/${selectedSimulator}`}
+                  block
+                  size="sm"
+                  color="info"
+                >
+                  Export
+                </Button>
+              </div>
             )}
           </Col>
           <Col sm={8}>

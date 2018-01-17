@@ -23,7 +23,6 @@ type Query {
 
 #Mutations definition
 type Mutation {
-  #Macro: Trigger a snapshot
   snapshot: String
   ${Object.keys(mutations).map(mutation => mutations[mutation])}
 }

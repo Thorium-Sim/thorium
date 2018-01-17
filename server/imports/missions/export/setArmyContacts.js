@@ -1,4 +1,4 @@
-import addAsset from "./addAsset";
+import addAsset from "../../addAsset";
 
 export default function buildExport(zip, mission) {
   mission.timeline.forEach(t =>

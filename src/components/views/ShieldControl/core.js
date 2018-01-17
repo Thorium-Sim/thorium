@@ -79,6 +79,7 @@ class ShieldsCore extends Component {
       this.props.data.shields.forEach(s => {
         this._hitShields(s);
       });
+      return;
     }
     let integrity = shields.integrity * 100;
     integrity -= Math.random() * 10;

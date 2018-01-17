@@ -61,3 +61,4 @@ Thorium.zip
 kiosks
 # unecessary CSS files
 src/**/*.css
+snapshot-*
