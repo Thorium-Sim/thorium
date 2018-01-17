@@ -9,8 +9,6 @@ if (process.env.NODE_ENV === "production") {
   server.use(express.static(assetPath));
   let assetDir = path.resolve(paths.userData + "/assets");
   server.use("/assets/", express.static(assetDir));
-  let kiosksDir = path.resolve(paths.userData + "/kiosks");
-  server.use("/kiosks/", express.static(kiosksDir));
 
   server.get("*", function(request, response) {
     response.sendFile(`${assetPath}/index.html`, function(err) {

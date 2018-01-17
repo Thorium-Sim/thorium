@@ -57,5 +57,5 @@ webpack(config).run((err, stats) => {
   console.log();
   console.log(chalk.cyan("Compiling PKG"));
 
-  exec(["build", "--debug"]).then(() => {});
+  exec(["build"]).then(() => {});
 });

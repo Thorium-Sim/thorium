@@ -60,12 +60,21 @@ class Events extends EventEmitter {
         fs.mkdirSync(snapshotDir);
         fs.writeFileSync(snapshotDir + "snapshot.json", "{}");
       }
-      this.loadSnapshot();
+      if (
+        !process.env.NODE_ENV &&
+        fs.existsSync(snapshotDir + "snapshot-dev.json")
+      ) {
+        this.loadSnapshot(true);
+      } else {
+        this.loadSnapshot();
+      }
     }
   }
-  loadSnapshot() {
+  loadSnapshot(dev) {
     const self = this;
-    const snapshot = jsonfile.readFileSync(snapshotDir + "snapshot.json");
+    const snapshot = jsonfile.readFileSync(
+      snapshotDir + (dev ? "snapshot-dev.json" : "snapshot.json")
+    );
     this.merge(snapshot);
     if (process.env.NODE_ENV === "production") {
       // Only auto save in the built version
