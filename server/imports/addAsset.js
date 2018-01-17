@@ -2,7 +2,7 @@ import path from "path";
 import paths from "../helpers/paths";
 import App from "../app";
 
-let assetDir = path.resolve("./public/");
+let assetDir = path.resolve("./");
 
 if (process.env.NODE_ENV === "production") {
   assetDir = paths.userData;

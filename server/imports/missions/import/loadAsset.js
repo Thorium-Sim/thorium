@@ -12,6 +12,8 @@ export default function loadAsset(
   // Create the asset object, checking for existing objects
 
   const regexRes = folderRegex.exec(entry.fileName);
+  if (!regexRes) return;
+  console.log(regexRes, entry.fileName);
   const fullPath = regexRes[1];
   let folder;
   fullPath.split("/").forEach((p, i, a) => {

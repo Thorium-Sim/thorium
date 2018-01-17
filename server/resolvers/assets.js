@@ -7,7 +7,7 @@ import * as Classes from "../classes";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import paths from "../helpers/paths";
 
-let assetDir = path.resolve("./public/assets/");
+let assetDir = path.resolve("./assets/");
 
 if (process.env.NODE_ENV === "production") {
   assetDir = paths.userData + "/assets";

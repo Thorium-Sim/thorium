@@ -7,7 +7,7 @@ import path from "path";
 import paths from "../../helpers/paths";
 import fs from "fs";
 import loadAsset from "../missions/import/loadAsset";
-let assetDir = path.resolve("./public/");
+let assetDir = path.resolve("./");
 
 if (process.env.NODE_ENV === "production") {
   assetDir = paths.userData;

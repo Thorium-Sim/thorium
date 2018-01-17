@@ -7,7 +7,7 @@ import App from "../../../app";
 import mkdirp from "mkdirp";
 import * as Classes from "../../../classes";
 
-let assetDir = path.resolve("./public/");
+let assetDir = path.resolve("./");
 
 if (process.env.NODE_ENV === "production") {
   assetDir = paths.userData;
