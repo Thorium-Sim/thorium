@@ -16,6 +16,7 @@ import schema from "./data";
 import exportMission from "./imports/missions/export";
 import importMission from "./imports/missions/import";
 import exportSimulator from "./imports/simulators/export";
+import importSimulator from "./imports/simulators/import";
 import vanity from "./helpers/vanity";
 import "./helpers/broadcast";
 import ipaddress from "./helpers/ipaddress";
@@ -75,6 +76,18 @@ graphQLServer.get("/exportMission/:missionId", (req, res) => {
 
 graphQLServer.get("/exportSimulator/:simId", (req, res) => {
   exportSimulator(req.params.simId, res);
+});
+
+graphQLServer.post("/importSimulator", upload.any(), async (req, res) => {
+  if (req.files[0]) {
+    importSimulator(req.files[0].path, () => {
+      fs.unlink(req.files[0].path, err => {
+        res.end("Error");
+        if (err) throw new Error(err);
+        res.end("Complete");
+      });
+    });
+  }
 });
 
 graphQLServer.post("/importMission", upload.any(), async (req, res) => {

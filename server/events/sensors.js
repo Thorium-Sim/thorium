@@ -82,8 +82,8 @@ App.on("setPresetAnswers", ({ simulatorId, domain, presetAnswers }) => {
     system.setPresetAnswers(
       presetAnswers.map(p => {
         return {
-          label: p.label.replace(/#SIM/gi, simulator.name),
-          value: p.value.replace(/#SIM/gi, simulator.name)
+          label: p.label ? p.label.replace(/#SIM/gi, simulator.name) : "",
+          value: p.value ? p.value.replace(/#SIM/gi, simulator.name) : ""
         };
       })
     );

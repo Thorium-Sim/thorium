@@ -3,6 +3,7 @@ import yazl from "yazl";
 import { aspectList } from "../../events/flight";
 import addAsset from "../addAsset";
 
+aspectList.push("stationSets");
 export default function exportSimulator(simId, res) {
   const sim = App.simulators.find(s => s.id === simId);
   if (!sim) {
