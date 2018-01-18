@@ -44,7 +44,8 @@ const viewList = [
   "OfficerLog",
   "SignalJammer",
   "Exocomps",
-  "Library"
+  "Library",
+  "CodeCyphers"
 ];
 
 export default viewList;

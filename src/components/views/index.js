@@ -49,6 +49,7 @@ import OfficerLog from "./OfficerLog";
 import SignalJammer from "./SignalJammer";
 import Exocomps from "./Exocomps";
 import Library from "./Library";
+import CodeCyphers from "./CodeCyphers";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -92,6 +93,7 @@ import ClientsCore from "./Clients/core";
 import JrNavigationCore from "./JrFlight/navigationCore";
 import ExtrasCore from "./CoreExtras";
 import SignalJammerCore from "./SignalJammer/core";
+import CodeCyphersCore from "./CodeCyphers/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -148,7 +150,8 @@ const Views = {
   OfficerLog,
   SignalJammer,
   Exocomps,
-  Library
+  Library,
+  CodeCyphers
 };
 
 export const Widgets = {
@@ -242,7 +245,8 @@ export const Cores = {
   ClientsCore,
   JrNavigationCore,
   ExtrasCore,
-  SignalJammerCore
+  SignalJammerCore,
+  CodeCyphersCore
 };
 
 export default Views;

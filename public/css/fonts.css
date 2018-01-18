@@ -125,3 +125,118 @@
   font-weight: 400;
   src: url(../fonts/LiquidCrystal-Normal.woff) format('woff');
 }
+
+@font-face {
+  font-family: 'Andorian';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/Andorian.woff') format('woff');
+}
+@font-face {
+  font-family: 'Decepticon';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/Decepticon.woff') format('woff');
+}
+@font-face {
+  font-family: 'Preservers';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/Preservers.woff') format('woff');
+}
+@font-face {
+  font-family: 'Tengwar';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/Tengwar.woff') format('woff');
+}
+@font-face {
+  font-family: 'Aurabesh';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/Aurabesh.woff') format('woff');
+}
+@font-face {
+  font-family: 'Dethek';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/Dethek.woff') format('woff');
+}
+@font-face {
+  font-family: 'Rihannsu';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/Rihannsu.woff') format('woff');
+}
+@font-face {
+  font-family: 'Trill';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/Trill.ttf') format('ttf');
+}
+@font-face {
+  font-family: 'Borg';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/Borg.woff') format('woff');
+}
+@font-face {
+  font-family: 'DwarfSpiritas';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/DwarfSpiritas.woff') format('woff');
+}
+@font-face {
+  font-family: 'Shadow';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/Shadow.woff') format('woff');
+}
+@font-face {
+  font-family: 'Visitor';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/Visitor.woff') format('woff');
+}
+@font-face {
+  font-family: 'Cardassian';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/Cardassian.woff') format('woff');
+}
+@font-face {
+  font-family: 'Fabrini';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/Fabrini.woff') format('woff');
+}
+@font-face {
+  font-family: 'Skaven';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/Skaven.woff') format('woff');
+}
+@font-face {
+  font-family: 'Voth';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/Voth.woff') format('woff');
+}
+@font-face {
+  font-family: 'DarkArts';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/DarkArts.woff') format('woff');
+}
+@font-face {
+  font-family: 'Klingon';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/Klingon.woff') format('woff');
+}
+@font-face {
+  font-family: 'Symbol';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/cyphers/Symbol.woff') format('woff');
+}
