@@ -2,12 +2,16 @@ import React, { Component } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import { TypingField } from "../../generic/core";
 import { cypherMap } from "./index";
+var greekUtils = require("greek-utils");
+
 // Control what codes are available
 // Code and print encoded messages
 class CypherCore extends Component {
   state = { message: "" };
   sendMessage = () => {
-    window.print();
+    setTimeout(() => {
+      window.print();
+    }, 1000);
   };
   render() {
     return (
@@ -31,7 +35,7 @@ class CypherCore extends Component {
                 Select a cypher
               </option>
               {Object.keys(cypherMap).map(c => (
-                <option value={c}>
+                <option value={c} key={c}>
                   {c} - {cypherMap[c]}
                 </option>
               ))}
@@ -51,7 +55,9 @@ class CypherCore extends Component {
         <div className="printable">
           <h1>=== Intercepted Message ===</h1>
           <pre className={cypherMap[this.state.cypher]}>
-            {this.state.message}
+            {cypherMap[this.state.cypher] === "Symbol"
+              ? greekUtils.toGreek(this.state.message.toLowerCase())
+              : this.state.message}
           </pre>
         </div>
       </Container>
