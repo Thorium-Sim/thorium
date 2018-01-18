@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container, Button, Row, Col, Card, CardBody } from "reactstrap";
 import "./style.css";
-const cypherMap = {
+export const cypherMap = {
   "RCSQ-804": "Andorian",
   //"RZGY-282": "Decepticon",
   "OQMG-523": "Preservers",
@@ -72,7 +72,6 @@ class Codes extends Component {
 }
 
 const CodeList = ({ font = "Symbol" }) => {
-  console.log(font);
   return (
     <div className="code-list">
       <div>

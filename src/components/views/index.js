@@ -93,6 +93,7 @@ import ClientsCore from "./Clients/core";
 import JrNavigationCore from "./JrFlight/navigationCore";
 import ExtrasCore from "./CoreExtras";
 import SignalJammerCore from "./SignalJammer/core";
+import CodeCyphersCore from "./CodeCyphers/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -244,7 +245,8 @@ export const Cores = {
   ClientsCore,
   JrNavigationCore,
   ExtrasCore,
-  SignalJammerCore
+  SignalJammerCore,
+  CodeCyphersCore
 };
 
 export default Views;

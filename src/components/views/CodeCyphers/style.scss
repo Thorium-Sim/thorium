@@ -1,4 +1,4 @@
-.card-codeCyphers {
+.card-codeCyphers, .core-codeCyphers {
   .code-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -102,7 +102,7 @@
     right: 0 !important;
     bottom: 0 !important;
   }
-  .card-codeCyphers {
+  .card-codeCyphers, .core-codeCyphers {
     .printable {
       * {
         visibility: visible;
@@ -127,13 +127,25 @@
       }
       width: 100vw;
       height: 90vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
       visibility: visible;
       opacity: 1;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       color: black;
+      pre {
+       color: black;
+       background-color: transparent;
+       border: none;
+       font-size: 30px;
+       line-height: 2;
+       text-transform: lowercase;
+      }
       h1,
       h2,
       h3,
@@ -142,6 +154,7 @@
       h6,
       p,
       span {
+        font-family: "Gill Sans", "Helvetica", sans-serif;
         color: black;
       }
     }
