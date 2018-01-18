@@ -49,6 +49,7 @@ import OfficerLog from "./OfficerLog";
 import SignalJammer from "./SignalJammer";
 import Exocomps from "./Exocomps";
 import Library from "./Library";
+import CodeCyphers from "./CodeCyphers";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -148,7 +149,8 @@ const Views = {
   OfficerLog,
   SignalJammer,
   Exocomps,
-  Library
+  Library,
+  CodeCyphers
 };
 
 export const Widgets = {
