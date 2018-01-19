@@ -97,16 +97,16 @@ class JrEng extends Component {
     if (this.state.repairSystem) {
       const Comp = Components[this.state.repairComponent];
       return (
-        <Container fluid className="jr-eng">
-          <Row>
+        <Container fluid className="jr-eng" style={{ height: "100%" }}>
+          <Row style={{ height: "100%" }}>
             <Comp complete={this.complete} />
           </Row>
         </Container>
       );
     }
     return (
-      <Container className="jr-eng">
-        <Row>
+      <Container className="jr-eng" style={{ height: "100%" }}>
+        <Row style={{ height: "100%" }}>
           {this.state.systems
             .slice(0)
             .sort((a, b) => {

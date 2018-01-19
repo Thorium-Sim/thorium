@@ -30,19 +30,32 @@ class Crystal extends Component {
     cancelAnimationFrame(this.looping);
     this.looping = null;
   }
-  mouseDown = () => {
+  mouseDown = e => {
+    this.setState({
+      target: e.target.getBoundingClientRect()
+    });
     document.addEventListener("mouseup", this.mouseUp);
     document.addEventListener("mousemove", this.mouseMove);
+    document.addEventListener("touchend", this.mouseUp);
+    document.addEventListener("touchmove", this.mouseMove);
   };
   mouseUp = () => {
     document.removeEventListener("mouseup", this.mouseUp);
     document.removeEventListener("mousemove", this.mouseMove);
+    document.removeEventListener("touchend", this.mouseUp);
+    document.removeEventListener("touchmove", this.mouseMove);
   };
-  mouseMove = evt => {
-    const { movementY } = evt;
+  mouseMove = e => {
+    const clientY = e.clientY || e.touches[0].clientY;
     this.setState(state => {
       return {
-        arrowPos: Math.min(1, Math.max(0, state.arrowPos + movementY / 100)),
+        arrowPos: Math.min(
+          1,
+          Math.max(
+            0,
+            (clientY - this.state.target.top) / this.state.target.height
+          )
+        ),
         level: Math.max(0, state.level - 0.005)
       };
     });
@@ -97,6 +110,7 @@ class Crystal extends Component {
           <div
             className="arrow"
             onMouseDown={this.mouseDown}
+            onTouchStart={this.mouseDown}
             style={{ transform: `translateY(${arrowPos * 200}%)` }}
           />
         </div>

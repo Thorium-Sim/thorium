@@ -20,11 +20,13 @@ export default class PowerRouting extends Component {
     ];
 
     for (let i = 1; i < 6; i++) {
-      let nextLine = Array(8).fill("gray").map((l, index, arr) => ({
-        color: l,
-        x: width / arr.length * i + 35 * 2,
-        y: height / arr.length * index + 35
-      }));
+      let nextLine = Array(8)
+        .fill("gray")
+        .map((l, index, arr) => ({
+          color: l,
+          x: width / arr.length * i + 35 * 2,
+          y: height / arr.length * index + 35
+        }));
       let lineColors = colorList.concat();
       while (lineColors.length > 0) {
         const index = Math.round(Math.random() * 8);
@@ -85,16 +87,16 @@ export default class PowerRouting extends Component {
   render() {
     const { selectedCol, selectedRow, connections } = this.state;
     return (
-      <svg>
-        {connections.map(c =>
+      <svg viewBox="0 0 1600 900">
+        {connections.map(c => (
           <path
             d={`M ${c.fromcol} ${c.fromrow} L ${c.tocol} ${c.torow}`}
             stroke={c.color}
             strokeWidth={3}
           />
-        )}
+        ))}
         {this.colors.map((colors, i, colorArr) =>
-          colors.map((color, j) =>
+          colors.map((color, j) => (
             <circle
               cx={color.x}
               cy={color.y}
@@ -103,7 +105,7 @@ export default class PowerRouting extends Component {
               onClick={evt => this.selectDot(i, j, evt)}
               stroke={selectedCol === i && selectedRow === j ? "white" : ""}
             />
-          )
+          ))
         )}
       </svg>
     );

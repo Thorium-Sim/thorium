@@ -25,10 +25,14 @@ export default class Slider extends Component {
     this.setState({ dragging: true });
     document.addEventListener("mouseup", this.mouseUp);
     document.addEventListener("mousemove", this.mouseMove);
+    document.addEventListener("touchend", this.mouseUp);
+    document.addEventListener("touchmove", this.mouseMove);
   };
   mouseUp = () => {
     document.removeEventListener("mouseup", this.mouseUp);
     document.removeEventListener("mousemove", this.mouseMove);
+    document.removeEventListener("touchend", this.mouseUp);
+    document.removeEventListener("touchmove", this.mouseMove);
     this.setState({ dragging: false }, () => {
       if (this.props.snap) {
         this.props.onChange &&
@@ -43,7 +47,13 @@ export default class Slider extends Component {
   mouseMove = evt => {
     const bounds = ReactDOM.findDOMNode(this).getBoundingClientRect();
     const level = Math.abs(
-      Math.min(1, Math.max(0, (evt.clientY - bounds.top) / bounds.height)) - 1
+      Math.min(
+        1,
+        Math.max(
+          0,
+          ((evt.clientY || evt.touches[0].clientY) - bounds.top) / bounds.height
+        )
+      ) - 1
     );
     this.setState({ level: Math.max(0, level) });
     this.triggerChange(level);
@@ -70,6 +80,7 @@ export default class Slider extends Component {
           <div
             className="slider"
             onMouseDown={this.mouseDown}
+            onTouchStart={this.mouseDown}
             style={this.props.sliderStyle}
           />
         </div>

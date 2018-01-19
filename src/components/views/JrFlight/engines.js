@@ -121,10 +121,14 @@ class EngineControl extends Component {
   mouseDown = () => {
     document.addEventListener("mouseup", this.mouseUp);
     document.addEventListener("mousemove", this.mouseMove);
+    document.addEventListener("touchend", this.mouseUp);
+    document.addEventListener("touchmove", this.mouseMove);
   };
   mouseUp = () => {
     document.removeEventListener("mouseup", this.mouseUp);
     document.removeEventListener("mousemove", this.mouseMove);
+    document.removeEventListener("touchend", this.mouseUp);
+    document.removeEventListener("touchmove", this.mouseMove);
 
     const engines = this.props.data.engines || [];
     const speeds = [{ text: "Full Stop", number: -1 }].concat(
@@ -161,7 +165,10 @@ class EngineControl extends Component {
     const line = ReactDOM.findDOMNode(this).querySelector(".line");
     const { y, height } = line.getBoundingClientRect();
     let arrowPos = Math.abs(
-      Math.min(1, Math.max(0, (evt.clientY - y) / height)) - 1
+      Math.min(
+        1,
+        Math.max(0, ((evt.clientY || evt.touches[0].clientY) - y) / height)
+      ) - 1
     );
     // Get the speeds and map it to the speed
     const engines = this.props.data.engines || [];
@@ -221,6 +228,7 @@ class EngineControl extends Component {
         <div
           className="engine-arrow-holder"
           onMouseDown={this.mouseDown}
+          onTouchStart={this.mouseDown}
           style={{
             transform: `translateY(${Math.min(1, Math.abs(arrowPos - 1)) *
               100}%)`

@@ -23,6 +23,8 @@ export default class ChargeBar extends Component {
     });
     document.addEventListener("mousemove", this.mouseMove);
     document.addEventListener("mouseup", this.mouseUp);
+    document.addEventListener("touchmove", this.mouseMove);
+    document.addEventListener("touchend", this.mouseUp);
   };
   mouseUp = () => {
     this.setState({
@@ -44,6 +46,8 @@ export default class ChargeBar extends Component {
     });
     document.removeEventListener("mousemove", this.mouseMove);
     document.removeEventListener("mouseup", this.mouseUp);
+    document.removeEventListener("touchmove", this.mouseMove);
+    document.removeEventListener("touchend", this.mouseUp);
   };
   mouseMove = evt => {
     const node = ReactDOM.findDOMNode(this).querySelector(".bar-holder");
@@ -52,7 +56,8 @@ export default class ChargeBar extends Component {
         1,
         Math.max(
           0,
-          (evt.clientY - node.getBoundingClientRect().top) /
+          ((evt.clientY || evt.touches[0].clientY) -
+            node.getBoundingClientRect().top) /
             node.getBoundingClientRect().height
         )
       )

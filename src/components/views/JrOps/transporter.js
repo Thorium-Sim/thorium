@@ -76,6 +76,8 @@ class Transporters extends Component {
   mouseDown = () => {
     document.addEventListener("mousemove", this.mouseMove);
     document.addEventListener("mouseup", this.mouseUp);
+    document.addEventListener("touchmove", this.mouseMove);
+    document.addEventListener("touchend", this.mouseUp);
   };
   mouseMove = evt => {
     const targetGrid = ReactDOM.findDOMNode(this).querySelector(
@@ -83,8 +85,14 @@ class Transporters extends Component {
     );
     const { x, y, width, height } = targetGrid.getBoundingClientRect();
     const target = {};
-    target.x = Math.min(0.9, Math.max(0, (evt.clientX - x) / width));
-    target.y = Math.min(0.9, Math.max(0, (evt.clientY - y) / height));
+    target.x = Math.min(
+      0.9,
+      Math.max(0, ((evt.clientX || evt.touches[0].clientX) - x) / width)
+    );
+    target.y = Math.min(
+      0.9,
+      Math.max(0, ((evt.clientY || evt.touches[0].clientY) - y) / height)
+    );
     const transporter = this.props.data.transporters[0];
     let targetedContact = null;
     transporter.targets.forEach(t => {
@@ -108,6 +116,8 @@ class Transporters extends Component {
   mouseUp = () => {
     document.removeEventListener("mousemove", this.mouseMove);
     document.removeEventListener("mouseup", this.mouseUp);
+    document.removeEventListener("touchmove", this.mouseMove);
+    document.removeEventListener("touchend", this.mouseUp);
     this.charging = false;
   };
   loop = () => {
@@ -209,6 +219,7 @@ class Transporters extends Component {
                   className="target"
                   draggable="false"
                   onMouseDown={this.mouseDown}
+                  onTouchStart={this.mouseDown}
                   style={{
                     transform: `translate(${target.x * 400}%, ${target.y *
                       400}%)`
@@ -254,6 +265,10 @@ class Transporters extends Component {
             color="primary"
             onMouseDown={() => {
               document.addEventListener("mouseup", this.mouseUp);
+              this.charging = true;
+            }}
+            onTouchStart={() => {
+              document.addEventListener("touchend", this.mouseUp);
               this.charging = true;
             }}
           >
