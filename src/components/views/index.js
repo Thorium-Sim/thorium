@@ -50,6 +50,7 @@ import SignalJammer from "./SignalJammer";
 import Exocomps from "./Exocomps";
 import Library from "./Library";
 import CodeCyphers from "./CodeCyphers";
+import Interception from "./CommInterception";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -94,6 +95,7 @@ import JrNavigationCore from "./JrFlight/navigationCore";
 import ExtrasCore from "./CoreExtras";
 import SignalJammerCore from "./SignalJammer/core";
 import CodeCyphersCore from "./CodeCyphers/core";
+import InterceptionCore from "./CommInterception/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -151,7 +153,8 @@ const Views = {
   SignalJammer,
   Exocomps,
   Library,
-  CodeCyphers
+  CodeCyphers,
+  Interception
 };
 
 export const Widgets = {
@@ -246,7 +249,8 @@ export const Cores = {
   JrNavigationCore,
   ExtrasCore,
   SignalJammerCore,
-  CodeCyphersCore
+  CodeCyphersCore,
+  InterceptionCore
 };
 
 export default Views;

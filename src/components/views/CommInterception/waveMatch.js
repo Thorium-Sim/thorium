@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { Row, Col, Button } from "reactstrap";
+import Measure from "react-measure";
+import gql from "graphql-tag";
 
 export default class WaveMatch extends Component {
   constructor(props) {
@@ -23,61 +26,107 @@ export default class WaveMatch extends Component {
     };
     this.loop();
   }
-
+  lockSignal = () => {
+    console.log(this.props);
+    const { lrComm } = this.props;
+    const mutation = gql`
+      mutation UpdateLRC($longRange: LongRangeCommInput!) {
+        updateLongRangeComm(longRangeComm: $longRange)
+      }
+    `;
+    const variables = {
+      longRange: {
+        id: lrComm.id,
+        locked: true
+      }
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     return (
-      <div>
-        <svg width={200} height={200}>
-          <path
-            stroke="red"
-            opacity="0.5"
-            fill="transparent"
-            strokeWidth="2"
-            d={calculateSin(
-              200,
-              200,
-              this.state.frequencyA,
-              Math.abs(this.state.frequencyA - this.state.required),
-              this.state.phase
+      <Row>
+        <Col sm={{ size: 8, offset: 2 }}>
+          <h2 className="text-center">Lock Signal</h2>
+          <Measure
+            bounds
+            onResize={contentRect => {
+              this.setState({ dimensions: contentRect.bounds });
+            }}
+          >
+            {({ measureRef }) => (
+              <div ref={measureRef} className="wave-box">
+                {this.state.dimensions && (
+                  <svg
+                    width={this.state.dimensions.width}
+                    height={this.state.dimensions.height}
+                  >
+                    <path
+                      stroke="red"
+                      opacity="0.5"
+                      fill="transparent"
+                      strokeWidth="4"
+                      d={calculateSin(
+                        this.state.dimensions.width,
+                        this.state.dimensions.height,
+                        this.state.frequencyA,
+                        Math.abs(this.state.frequencyA - this.state.required),
+                        this.state.phase
+                      )}
+                    />
+                    <path
+                      stroke="blue"
+                      opacity="0.5"
+                      fill="transparent"
+                      strokeWidth="4"
+                      d={calculateSin(
+                        this.state.dimensions.width,
+                        this.state.dimensions.height,
+                        this.state.frequencyB,
+                        Math.abs(this.state.frequencyB - this.state.required),
+                        this.state.phase
+                      )}
+                    />
+                  </svg>
+                )}
+              </div>
             )}
+          </Measure>
+          <input
+            type="range"
+            min={this.state.offsetDownA}
+            max={this.state.offsetUpA}
+            step="0.5"
+            value={this.state.frequencyA}
+            onChange={e => this.setState({ frequencyA: e.target.value })}
           />
-          <path
-            stroke="blue"
-            opacity="0.5"
-            fill="transparent"
-            strokeWidth="2"
-            d={calculateSin(
-              200,
-              200,
-              this.state.frequencyB,
-              Math.abs(this.state.frequencyB - this.state.required),
-              this.state.phase
-            )}
-          />
-        </svg>
-        <input
-          type="range"
-          min={this.state.offsetDownA}
-          max={this.state.offsetUpA}
-          step="0.5"
-          value={this.state.frequencyA}
-          onChange={e => this.setState({ frequencyA: e.target.value })}
-        />
 
-        <input
-          type="range"
-          min={this.state.offsetDownB}
-          max={this.state.offsetUpB}
-          step="0.5"
-          value={this.state.frequencyB}
-          onChange={e => this.setState({ frequencyB: e.target.value })}
-        />
-        <div>{this.state.required}</div>
-        <div>{this.state.frequencyA}</div>
-        <div>{this.state.offsetDownA}</div>
-        <div>{this.state.offsetUpA}</div>
-        <div>{this.state.frequencyB}</div>
-      </div>
+          <input
+            type="range"
+            min={this.state.offsetDownB}
+            max={this.state.offsetUpB}
+            step="0.5"
+            value={this.state.frequencyB}
+            onChange={e => this.setState({ frequencyB: e.target.value })}
+          />
+          <Button
+            onClick={this.lockSignal}
+            size="lg"
+            color="warning"
+            block
+            disabled={
+              !(
+                parseFloat(this.state.frequencyB) === this.state.required &&
+                parseFloat(this.state.frequencyA) === this.state.required
+              )
+            }
+          >
+            Lock Signal
+          </Button>
+        </Col>
+      </Row>
     );
   }
 }
@@ -87,7 +136,7 @@ function calculateSin(width, height, freq, variance, phase) {
     .fill(0)
     .map((_, i) =>
       Math.sin(
-        Math.PI * 1 / 180 * (i + phase) * freq + Math.random() * variance
+        Math.PI * 1 / 180 * (i + phase) / 5 * freq + Math.random() * variance
       )
     )
     .reduce((prev, next, i) => {

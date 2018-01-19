@@ -1,9 +1,31 @@
 .card-commInterception {
+  height: 100%;
+  .row, .col {
+    height: 100%;
+  }
+  .centered-text {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+  }
+  .wave-box {
+    height: 400px;
+    overflow: hidden;
+    border: solid 2px rgba(255,255,255,0.5);
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 10px;
+    margin: 10px;
+  }
   // Range Sliders
   input[type="range"] {
     -webkit-appearance: none;
     width: 100%;
     margin: -3.1px 0;
+    background: transparent;
   }
   input[type="range"]:focus {
     outline: none;

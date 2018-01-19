@@ -70,3 +70,21 @@ App.on(
     );
   }
 );
+App.on("updateLongRangeComm", ({ longRangeComm }) => {
+  const lr = App.systems.find(s => s.id === longRangeComm.id);
+  lr.update(longRangeComm);
+  if (longRangeComm.locked) {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: lr.simulatorId,
+      station: "Core",
+      title: `Interception Signal Locked`,
+      body: ``,
+      color: "info"
+    });
+  }
+  pubsub.publish(
+    "longRangeCommunicationsUpdate",
+    App.systems.filter(s => s.type === "LongRangeComm")
+  );
+});
