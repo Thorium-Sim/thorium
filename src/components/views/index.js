@@ -163,7 +163,7 @@ export const Widgets = {
     icon: "keyboard-o",
     name: "Keyboard",
     size: "lg",
-    color: "rgb(50,50,200)"
+    color: "rgb(90,180,255)"
   },
   composer: {
     widget: ComposerWidget,
