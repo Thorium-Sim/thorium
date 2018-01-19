@@ -20,14 +20,18 @@ export default class WaveMatch extends Component {
     this.state.required = Math.round(
       maxDown + Math.random() * (minUp - maxDown)
     );
-    this.loop = () => {
+    this.loop = delta => {
       requestAnimationFrame(this.loop);
       this.setState({ phase: this.state.phase + 2 });
+      if (delta % 12000 > 11000) {
+        this.updateState();
+      }
     };
+  }
+  componentDidMount() {
     this.loop();
   }
   lockSignal = () => {
-    console.log(this.props);
     const { lrComm } = this.props;
     const mutation = gql`
       mutation UpdateLRC($longRange: LongRangeCommInput!) {
@@ -45,9 +49,21 @@ export default class WaveMatch extends Component {
       variables
     });
   };
+  updateState = () => {
+    const update = {
+      offsetDownA: 10 - Math.round(Math.random() * 20) / 2,
+      offsetUpA: 10 + Math.round(Math.random() * 20) / 2,
+      offsetDownB: 10 - Math.round(Math.random() * 20) / 2,
+      offsetUpB: 10 + Math.round(Math.random() * 20) / 2
+    };
+    const maxDown = Math.max(update.offsetDownA, update.offsetDownB);
+    const minUp = Math.min(update.offsetUpA, update.offsetUpB);
+    update.required = Math.round(maxDown + Math.random() * (minUp - maxDown));
+    this.setState(update);
+  };
   render() {
     return (
-      <Row>
+      <Row className="wave-match">
         <Col sm={{ size: 8, offset: 2 }}>
           <h2 className="text-center">Lock Signal</h2>
           <Measure

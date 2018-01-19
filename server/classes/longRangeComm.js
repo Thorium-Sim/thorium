@@ -32,6 +32,8 @@ export default class LongRangeComm extends System {
   update({ interception, locked, decoded }) {
     if (interception || interception === false) {
       this.interception = interception;
+      this.locked = false;
+      this.decoded = false;
     }
     if (locked || locked === false) this.locked = locked;
     if (decoded || decoded === false) this.decoded = decoded;

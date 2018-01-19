@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button } from "reactstrap";
 import WaveMatch from "./waveMatch";
+import Tour from "reactour";
 
 import "./style.css";
 
@@ -27,7 +28,25 @@ const SUB = gql`
   }
 `;
 
-class LongRangeComm extends Component {
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content:
+      "Sometimes your systems will detect signals which can be intercepted. These signals can be short range communications or long range messages."
+  },
+  {
+    selector: ".centered-text",
+    content:
+      "When a signal can be intercepted, a button will appear which says 'Attempt Interception'. Clicking this button will begin the interception process."
+  },
+  {
+    selector: ".wave-match",
+    content:
+      "To intercept a signal you must match the red carrier wave with the blue receiver wave. You can do this by adjusting the sliders below the signal display. Once the two signals match up, you can click 'Lock Signal' to lock on to the signal and intercept it."
+  }
+];
+
+class Interception extends Component {
   sub = null;
   state = { intercepting: false };
   componentWillReceiveProps(nextProps) {
@@ -55,9 +74,11 @@ class LongRangeComm extends Component {
     if (interception) {
       if (locked) {
         if (decoded) {
-          <div className="centered-text">
-            <h1>Signal Decoded</h1>
-          </div>;
+          return (
+            <div className="centered-text">
+              <h1>Signal Decoded</h1>
+            </div>
+          );
         }
         return (
           <div className="centered-text">
@@ -100,6 +121,11 @@ class LongRangeComm extends Component {
         <Row>
           <Col sm={12}>{this.renderInterception()}</Col>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
@@ -130,4 +156,4 @@ export default graphql(QUEUING_QUERY, {
       simulatorId: ownProps.simulator.id
     }
   })
-})(withApollo(LongRangeComm));
+})(withApollo(Interception));
