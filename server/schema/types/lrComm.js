@@ -7,6 +7,11 @@ type LRCommunications {
   name: String
   damage: Damage
   messages: [LRMessage]
+
+  #Interception Properties
+  interception: Boolean
+  locked: Boolean
+  decoded: Boolean
 }
 type LRMessage {
   id: ID
@@ -22,6 +27,13 @@ type LRMessage {
   f: Int
   ra: Int
   rf: Int
+}
+
+input LongRangeCommInput {
+  id: ID
+  interception: Boolean
+  locked: Boolean
+  decoded: Boolean
 }
 `;
 

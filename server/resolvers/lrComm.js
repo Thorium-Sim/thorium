@@ -45,6 +45,9 @@ export const LRCommMutations = {
   },
   updateLongRangeDecodedMessage(root, args, context) {
     App.handleEvent(args, "updateLongRangeDecodedMessage", context);
+  },
+  updateLongRangeComm(root, args, context) {
+    App.handleEvent(args, "updateLongRangeComm", context);
   }
 };
 
