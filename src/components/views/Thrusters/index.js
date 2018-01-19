@@ -282,19 +282,16 @@ gamepadLoop(){
           this.setState(obj);
           break;
         case "onDrag":
+          const clientX = e.clientX || e.touches[0].clientX;
+          const clientY = e.clientY || e.touches[0].clientY;
+
           if (!this.state[which]) {
             throw new Error("onDrag called before onDragStart.");
           }
           newPosition.left =
-            (parentRect.left + parentRect.width / 2 - e.clientX) /
-            width *
-            -1 *
-            2;
+            (parentRect.left + parentRect.width / 2 - clientX) / width * -1 * 2;
           newPosition.top =
-            (parentRect.top + parentRect.height / 2 - e.clientY) /
-            width *
-            -1 *
-            2;
+            (parentRect.top + parentRect.height / 2 - clientY) / width * -1 * 2;
           if (
             distance(undefined, { x: newPosition.left, y: newPosition.top }) > 1
           ) {

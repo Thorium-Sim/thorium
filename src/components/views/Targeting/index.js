@@ -340,6 +340,7 @@ class Targeting extends Component {
       variables
     });
     document.addEventListener("mouseup", this.stopCoolant);
+    document.addEventListener("touchend", this.stopCoolant);
   }
   firePhasers(beamId) {
     const phasers = this.props.data.phasers[0];
@@ -369,6 +370,7 @@ class Targeting extends Component {
       });
     }, 3000);
     document.addEventListener("mouseup", this.mouseup);
+    document.addEventListener("touchend", this.mouseup);
   }
   render() {
     if (this.props.data.loading || !this.props.data.targeting) return null;

@@ -75,7 +75,7 @@ class PowerDistribution extends Component {
       sysId: null
     };
     this.mouseMove = e => {
-      const mouseX = e.pageX;
+      const mouseX = e.pageX || e.touches[0].pageX;
       const level = Math.max(
         0,
         Math.min(40, Math.round((mouseX - this.state.offset - 10) / 14))
@@ -96,6 +96,8 @@ class PowerDistribution extends Component {
     this.mouseUp = () => {
       document.removeEventListener("mousemove", this.mouseMove);
       document.removeEventListener("mouseup", this.mouseUp);
+      document.removeEventListener("touchmove", this.mouseMove);
+      document.removeEventListener("touchend", this.mouseUp);
       const system = this.state.systems.find(s => s.id === this.state.sysId);
       const variables = {
         id: system.id,
@@ -155,6 +157,8 @@ class PowerDistribution extends Component {
     });
     document.addEventListener("mousemove", this.mouseMove);
     document.addEventListener("mouseup", this.mouseUp);
+    document.addEventListener("touchmove", this.mouseMove);
+    document.addEventListener("touchend", this.mouseUp);
   };
   render() {
     if (this.props.data.loading || !this.props.data.reactors) return null;
@@ -285,6 +289,7 @@ class SystemPower extends Component {
                 <div
                   className="powerBox zero"
                   onMouseDown={() => mouseDown(id, this.state.dimensions)}
+                  onTouchStart={() => mouseDown(id, this.state.dimensions)}
                   key={`${id}-${-1}`}
                 />
                 {Array(40)
@@ -294,6 +299,9 @@ class SystemPower extends Component {
                       <div
                         className={`powerBox ${i >= power ? "hidden" : ""}`}
                         onMouseDown={() => mouseDown(id, this.state.dimensions)}
+                        onTouchStart={() =>
+                          mouseDown(id, this.state.dimensions)
+                        }
                         key={`${id}-${i}`}
                       />
                     );

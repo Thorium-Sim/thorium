@@ -113,17 +113,18 @@ class CommShortRange extends Component {
   componentWillUnmount() {
     this.subscription && this.subscription();
   }
-  mouseDown(which, dimensions, e) {
+  mouseDown(which, dimensions) {
     this.setState(
       {
         height: dimensions.height,
         top: dimensions.top,
-        mouseY: e.nativeEvent.pageY,
         which
       },
       () => {
         document.addEventListener("mousemove", this.mouseMove);
         document.addEventListener("mouseup", this.mouseUp);
+        document.addEventListener("touchmove", this.mouseMove);
+        document.addEventListener("touchend", this.mouseUp);
       }
     );
   }
@@ -134,12 +135,17 @@ class CommShortRange extends Component {
     }
     const { height, top } = this.state;
     const obj = {};
-    obj[this.state.which] = Math.max(Math.min((e.pageY - top) / height, 1), 0);
+    obj[this.state.which] = Math.max(
+      Math.min(((e.pageY || e.touches[0].pageY) - top) / height, 1),
+      0
+    );
     this.setState(obj);
   };
   mouseUp = () => {
     document.removeEventListener("mousemove", this.mouseMove);
     document.removeEventListener("mouseup", this.mouseUp);
+    document.removeEventListener("touchmove", this.mouseMove);
+    document.removeEventListener("touchend", this.mouseUp);
     this.commUpdate({
       frequency: this.state.frequency,
       amplitude: this.state.amplitude

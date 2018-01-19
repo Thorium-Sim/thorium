@@ -8,7 +8,9 @@
   position:absolute;
   align-self:center;
 }
-
+pre {
+  background-color: transparent;
+}
 .clickable:hover {
   cursor: pointer;
 }

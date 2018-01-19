@@ -24,6 +24,7 @@ const ShieldData = ({ shields, startLoop, state, _toggleShields }) => {
             <FontAwesome
               name="arrow-down"
               onMouseDown={startLoop.bind(this, "down", shields)}
+              onTouchStart={startLoop.bind(this, "down", shields)}
             />
           </h4>
         </Col>
@@ -37,6 +38,7 @@ const ShieldData = ({ shields, startLoop, state, _toggleShields }) => {
             <FontAwesome
               name="arrow-up"
               onMouseDown={startLoop.bind(this, "up", shields)}
+              onTouchStart={startLoop.bind(this, "up", shields)}
             />
           </h4>
         </Col>

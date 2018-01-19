@@ -191,6 +191,7 @@ const Target = ({ id, mousemove, icon, name, x, y, scale, targeted }) => {
             className="target"
             src={src}
             onMouseMove={evt => mousemove(id, evt)}
+            onTouchMove={evt => mousemove(id, evt)}
             style={{
               transform: `translate(${x}px, ${y}px) scale(${scale})`
             }}

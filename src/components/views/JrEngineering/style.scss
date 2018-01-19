@@ -3,14 +3,14 @@
     cursor: pointer;
   }
   svg {
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
   }
 }
 
 svg.battery-charging {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   .spark {
     transition: transform 0.1s linear;
   }

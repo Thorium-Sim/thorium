@@ -11,6 +11,7 @@ const Arrow = ({
   return (
     <div
       onMouseDown={() => mouseDown(dimensions)}
+      onTouchStart={() => mouseDown(dimensions)}
       style={{
         transform: `translateY(${level * 97}%) ${flop ? "scaleX(-1)" : ""}`
       }}
@@ -26,15 +27,15 @@ const Arrow = ({
         enableBackground="new 0 0 45 20"
       >
         <polygon
-          className={`alertFill-${alertLevel || "5"} ${connected
-            ? "connected"
-            : ""}`}
+          className={`alertFill-${alertLevel || "5"} ${
+            connected ? "connected" : ""
+          }`}
           points="45,11 45,20 10,20 0,11 "
         />
         <polygon
-          className={`alertFill-${alertLevel || "5"} ${connected
-            ? "connected"
-            : ""}`}
+          className={`alertFill-${alertLevel || "5"} ${
+            connected ? "connected" : ""
+          }`}
           points="0,9 10,0 45,0 45,9 "
         />
       </svg>

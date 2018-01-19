@@ -28,20 +28,26 @@ class Bars extends Component {
       },
       () => {
         document.addEventListener("mousemove", this.mouseMove);
+        document.addEventListener("touchmove", this.mouseMove);
         document.addEventListener("mouseup", this.mouseUp);
+        document.addEventListener("touchend", this.mouseUp);
       }
     );
   };
   mouseMove = e => {
     const { max = 1 } = this.props;
+    const pageY = e.pageY || e.touches[0].pageY;
     const { height, top } = this.state;
     this.setState({
-      level: Math.max(Math.min((e.pageY - top) / height, 1), max)
+      level: Math.max(Math.min((pageY - top) / height, 1), max)
     });
   };
   mouseUp = e => {
     document.removeEventListener("mousemove", this.mouseMove);
+    document.removeEventListener("touchmove", this.mouseMove);
     document.removeEventListener("mouseup", this.mouseUp);
+    document.removeEventListener("touchend", this.mouseUp);
+
     // mutate to update
     const { id } = this.props;
     const mutation = gql`

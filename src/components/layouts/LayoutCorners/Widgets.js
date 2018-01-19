@@ -80,13 +80,37 @@ export class Widget extends Component {
     widgetNotifications: {},
     position: { x: 0, y: 0 }
   };
-  mouseDown = () => {
-    document.addEventListener("mousemove", this.mouseMove);
-    document.addEventListener("mouseup", this.mouseUp);
+  mouseDown = evt => {
+    this.setState(
+      {
+        initialPosition: evt.target.getBoundingClientRect()
+      },
+      () => {
+        document.addEventListener("mousemove", this.mouseMove);
+        document.addEventListener("touchmove", this.touchMove);
+        document.addEventListener("touchend", this.mouseUp);
+
+        document.addEventListener("mouseup", this.mouseUp);
+      }
+    );
   };
   mouseUp = () => {
     document.removeEventListener("mousemove", this.mouseMove);
+    document.removeEventListener("touchmove", this.touchMove);
     document.removeEventListener("mouseup", this.mouseUp);
+    document.removeEventListener("touchend", this.mouseUp);
+  };
+  touchMove = evt => {
+    const { clientX, clientY } = evt.touches[0];
+    this.setState({
+      position: {
+        x:
+          clientX -
+          this.state.initialPosition.x -
+          this.state.initialPosition.width / 2,
+        y: clientY - this.state.initialPosition.y
+      }
+    });
   };
   mouseMove = evt => {
     this.setState({
@@ -137,7 +161,11 @@ export class Widget extends Component {
             }`}
             style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
           >
-            <div className="widget-name" onMouseDown={this.mouseDown}>
+            <div
+              className="widget-name"
+              onMouseDown={this.mouseDown}
+              onTouchStart={this.mouseDown}
+            >
               {widget.name}
             </div>
             <div className="widget-container">
