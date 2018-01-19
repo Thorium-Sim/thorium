@@ -177,6 +177,7 @@ class ShieldControl extends Component {
       frequencySpeed: 150
     });
     document.addEventListener("mouseup", this.stopLoop.bind(this, shields));
+    document.addEventListener("touchend", this.stopLoop.bind(this, shields));
     this.freqLoop = setTimeout(
       this._loop.bind(this, which, shields),
       this.state.frequencySpeed

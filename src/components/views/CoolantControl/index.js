@@ -116,6 +116,7 @@ class CoolantControl extends Component {
       variables
     });
     document.addEventListener("mouseup", this.mouseup);
+    document.addEventListener("touchend", this.mouseup);
   }
   render() {
     if (this.props.data.loading || !this.props.data.coolant) return null;
@@ -188,12 +189,14 @@ const CoolantBar = ({ systemId, name, coolant, transferCoolant }) => {
         <Button
           color="info"
           onMouseDown={transferCoolant.bind(this, systemId, "tank")}
+          onTouchStart={transferCoolant.bind(this, systemId, "tank")}
         >
           <FontAwesome name="arrow-left" /> Fill Reservoir
         </Button>
         <Button
           color="primary"
           onMouseDown={transferCoolant.bind(this, systemId, "system")}
+          onTouchStart={transferCoolant.bind(this, systemId, "system")}
         >
           Fill Coolant <FontAwesome name="arrow-right" />
         </Button>
