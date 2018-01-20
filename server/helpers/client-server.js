@@ -28,7 +28,7 @@ if (process.env.NODE_ENV === "production") {
   });
 
   server.listen(port, () => {
-    openBrowser(`http://${ipaddress}:${CLIENT_PORT}`);
+    openBrowser(`http://${ipaddress.default}:${CLIENT_PORT}`);
   });
 }
 
