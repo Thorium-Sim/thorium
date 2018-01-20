@@ -438,6 +438,7 @@ class Navigation extends Component {
                 <Row>
                   <Col className="col-sm-3">X:</Col>
                   <Col
+                    onClick={() => this.setState({ selectedField: "x" })}
                     className={`col-sm-8 numBox ${
                       selectedField === "x" ? "selected" : ""
                     }`}
@@ -448,6 +449,7 @@ class Navigation extends Component {
                 <Row>
                   <Col className="col-sm-3">Y:</Col>
                   <Col
+                    onClick={() => this.setState({ selectedField: "y" })}
                     className={`col-sm-8 numBox ${
                       selectedField === "y" ? "selected" : ""
                     }`}
@@ -458,6 +460,7 @@ class Navigation extends Component {
                 <Row>
                   <Col className="col-sm-3">Z:</Col>
                   <Col
+                    onClick={() => this.setState({ selectedField: "z" })}
                     className={`col-sm-8 numBox ${
                       selectedField === "z" ? "selected" : ""
                     }`}

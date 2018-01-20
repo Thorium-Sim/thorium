@@ -8,7 +8,7 @@ export default class Keypad extends Component {
       //Delete key
       clear();
     }
-    if (e.which === 13) {
+    if (e.which === 13 || e.which === 9) {
       //Enter key
       enter();
     }

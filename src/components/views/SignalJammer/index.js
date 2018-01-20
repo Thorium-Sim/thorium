@@ -91,7 +91,10 @@ class SignalJammer extends Component {
         }
       });
     }
-    if (nextProps.data.signalJammers.length > 0) {
+    if (
+      nextProps.data.signalJammers &&
+      nextProps.data.signalJammers.length > 0
+    ) {
       const signalJammer = nextProps.data.signalJammers[0];
       this.setState({
         jammer: {
