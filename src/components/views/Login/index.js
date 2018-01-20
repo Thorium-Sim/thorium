@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Button, Row, Col, Input } from "reactstrap";
-import assetPath from "../../../helpers/assets";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import { Asset } from "../../../helpers/assets";
