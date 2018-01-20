@@ -130,6 +130,12 @@ Access GraphiQL developer tool on http://${ipaddress}:${GRAPHQL_PORT}/graphiql`
 
 if (!process.env.NODE_ENV) {
   graphQLServer.use("/assets/", express.static(path.resolve("./assets")));
+
+  // If we're in production, the last thing we want is for the server to crash
+  // Print all server errors, but don't terminate the process
+  process.on("uncaughtException", err => {
+    console.log(chalk.red(`Caught exception: ${err}\n`));
+  });
 }
 
 export const websocketServerInstance = websocketServer.listen(WS_PORT, () => {

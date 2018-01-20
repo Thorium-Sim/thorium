@@ -86,7 +86,20 @@ const client = new ApolloClient({
   ssrMode: true,
   ssrForceFetchDelay: 100,
   connectToDevTools: true,
-  queryDeduplication: true
+  queryDeduplication: true,
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: "cache-and-network",
+      errorPolicy: "all"
+    },
+    query: {
+      fetchPolicy: "cache-and-network",
+      errorPolicy: "all"
+    },
+    mutate: {
+      errorPolicy: "all"
+    }
+  }
 });
 
 export default client;
