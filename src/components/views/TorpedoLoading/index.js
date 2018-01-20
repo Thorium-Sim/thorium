@@ -486,5 +486,8 @@ class TorpedoLoader extends Component {
 }
 
 export default graphql(TORPEDO_QUERY, {
-  options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })
+  options: ownProps => ({
+    fetchPolicy: "cache-and-network",
+    variables: { simulatorId: ownProps.simulator.id }
+  })
 })(withApollo(TorpedoLoading));

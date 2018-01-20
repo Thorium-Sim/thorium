@@ -78,7 +78,8 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
                   <Input
                     value={d.name || ""}
                     onChange={evt =>
-                      updateShuttle(d.id, "name", evt.target.value)}
+                      updateShuttle(d.id, "name", evt.target.value)
+                    }
                   />
                 </td>
                 <td>
@@ -86,7 +87,8 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
                     type="select"
                     value={d.image || ""}
                     onChange={evt =>
-                      updateShuttle(d.id, "image", evt.target.value)}
+                      updateShuttle(d.id, "image", evt.target.value)
+                    }
                   >
                     <option value="" disabled>
                       Select An Image
@@ -148,6 +150,7 @@ const DOCKING_QUERY = gql`
 
 export default graphql(DOCKING_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       id: ownProps.selectedSimulator.id
     }

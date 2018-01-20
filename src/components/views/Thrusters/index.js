@@ -618,7 +618,10 @@ const DIRECTION_UPDATE = gql`
 
 export default compose(
   graphql(THRUSTER_QUERY, {
-    options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })
+    options: ownProps => ({
+      fetchPolicy: "cache-and-network",
+      variables: { simulatorId: ownProps.simulator.id }
+    })
   }),
   graphql(ROTATION_UPDATE, {
     name: "rotationUpdate",

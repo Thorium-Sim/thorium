@@ -70,5 +70,8 @@ const SHIELD_QUERY = gql`
   }
 `;
 export default graphql(SHIELD_QUERY, {
-  options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })
+  options: ownProps => ({
+    fetchPolicy: "cache-and-network",
+    variables: { simulatorId: ownProps.simulator.id }
+  })
 })(withApollo(ShieldMonitoring));

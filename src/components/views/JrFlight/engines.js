@@ -284,7 +284,10 @@ const SET_SPEED = gql`
 `;
 export default compose(
   graphql(ENGINE_QUERY, {
-    options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })
+    options: ownProps => ({
+      fetchPolicy: "cache-and-network",
+      variables: { simulatorId: ownProps.simulator.id }
+    })
   }),
   graphql(SET_SPEED, {
     name: "setSpeed",

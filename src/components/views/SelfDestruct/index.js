@@ -185,6 +185,7 @@ const SELF_DESTRUCT_QUERY = gql`
 `;
 export default graphql(SELF_DESTRUCT_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       id: ownProps.simulator.id
     }

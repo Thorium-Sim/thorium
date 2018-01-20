@@ -121,5 +121,8 @@ const MESSAGES_QUERY = gql`
 `;
 
 export default graphql(MESSAGES_QUERY, {
-  options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })
+  options: ownProps => ({
+    fetchPolicy: "cache-and-network",
+    variables: { simulatorId: ownProps.simulator.id }
+  })
 })(withApollo(LRCommCore));

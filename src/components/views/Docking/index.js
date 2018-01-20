@@ -195,6 +195,7 @@ const DOCKING_QUERY = gql`
 
 export default graphql(DOCKING_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id
     }

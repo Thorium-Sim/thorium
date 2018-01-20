@@ -581,6 +581,7 @@ const SENSOR_QUERY = gql`
 
 export default graphql(SENSOR_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id,
       domain: ownProps.domain || "internal"

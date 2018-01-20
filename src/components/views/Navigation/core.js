@@ -375,6 +375,7 @@ const NAVIGATION_QUERY = gql`
 
 export default graphql(NAVIGATION_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id
     }

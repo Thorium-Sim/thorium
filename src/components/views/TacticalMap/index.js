@@ -244,6 +244,7 @@ const TACTICALMAP_QUERY = gql`
 
 export default graphql(TACTICALMAP_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       flightId: ownProps.flightId
     }

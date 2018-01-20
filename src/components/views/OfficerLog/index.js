@@ -162,6 +162,7 @@ const QUERY = gql`
 export default graphql(QUERY, {
   options: ownProps => {
     return {
+      fetchPolicy: "cache-and-network",
       variables: {
         clientId: ownProps.clientObj.id,
         flightId: ownProps.flight.id

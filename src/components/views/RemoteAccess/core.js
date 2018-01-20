@@ -142,6 +142,7 @@ const REMOTE_ACCESS_QUERY = gql`
 
 export default graphql(REMOTE_ACCESS_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id
     }

@@ -15,7 +15,6 @@ export const SignalJammerMutations = {
     App.handleEvent(args, "updateSignalJammer", context);
   },
   signalJammerSignals(root, args, context) {
-    console.log(args);
     App.handleEvent(args, "signalJammerSignals", context);
   },
   fluxSignalJammer(root, args, context) {

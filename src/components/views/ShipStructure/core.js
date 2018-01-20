@@ -323,6 +323,8 @@ const DECKS_QUERY = gql`
 
 export default graphql(DECKS_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
+
     variables: {
       simulatorId: ownProps.simulator.id,
       names: ["Icons", "Pictures"]

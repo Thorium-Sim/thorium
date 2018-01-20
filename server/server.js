@@ -13,6 +13,7 @@ import { SubscriptionServer } from "subscriptions-transport-ws";
 import { printSchema } from "graphql/utilities/schemaPrinter";
 import graphqlExpressUpload from "graphql-server-express-upload";
 import schema from "./data";
+import chalk from "chalk";
 import exportMission from "./imports/missions/export";
 import importMission from "./imports/missions/import";
 import exportSimulator from "./imports/simulators/export";
@@ -135,6 +136,7 @@ if (!process.env.NODE_ENV) {
   // Print all server errors, but don't terminate the process
   process.on("uncaughtException", err => {
     console.log(chalk.red(`Caught exception: ${err}\n`));
+    console.log(err);
   });
 }
 

@@ -37,9 +37,6 @@ export default function ImportAssets(filepath, cb) {
             .splice(0, filename.split("/").length - 1)
             .join("/");
           mkdirp.sync(`${assetDir}/${directorypath}`);
-          console.log("AssetDir", assetDir);
-          console.log("filename", filename);
-          console.log("directoryPath", directorypath);
           const output = fs.createWriteStream(`${assetDir}/${filename}`);
           readStream.pipe(output);
           loadAsset(entry, /(\/.*)\/.*\..{3,}/gi);

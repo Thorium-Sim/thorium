@@ -269,6 +269,7 @@ const REACTOR_QUERY = gql`
 `;
 export default graphql(REACTOR_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id
     }

@@ -175,6 +175,8 @@ const SHUTTLE_QUERY = gql`
 `;
 export default graphql(SHUTTLE_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
+
     variables: {
       simulatorId: ownProps.simulator.id,
       names: ["Docking Images"]

@@ -29,7 +29,7 @@ class VideoConfig extends Component {
       <div>
         <div>
           <label>Video</label>
-          {!assetData.loading &&
+          {!assetData.loading && (
             <select
               value={data.asset}
               onChange={evt =>
@@ -37,14 +37,16 @@ class VideoConfig extends Component {
                   JSON.stringify(
                     Object.assign({}, data, { asset: evt.target.value })
                   )
-                )}
+                )
+              }
             >
-              {assetData.assetFolders[0].containers.map(c =>
+              {assetData.assetFolders[0].containers.map(c => (
                 <option key={c.id} value={c.fullPath}>
                   {c.name}
                 </option>
-              )}
-            </select>}
+              ))}
+            </select>
+          )}
         </div>
         <div>
           <label>
@@ -56,7 +58,8 @@ class VideoConfig extends Component {
                   JSON.stringify(
                     Object.assign({}, data, { autoplay: evt.target.checked })
                   )
-                )}
+                )
+              }
             />{" "}
             Autoplay
           </label>
@@ -71,7 +74,8 @@ class VideoConfig extends Component {
                   JSON.stringify(
                     Object.assign({}, data, { loop: evt.target.checked })
                   )
-                )}
+                )
+              }
             />{" "}
             Loop
           </label>
@@ -86,7 +90,8 @@ class VideoConfig extends Component {
                   JSON.stringify(
                     Object.assign({}, data, { overlay: evt.target.checked })
                   )
-                )}
+                )
+              }
             />{" "}
             Overlay
           </label>
@@ -113,6 +118,7 @@ const ASSET_QUERY = gql`
 export default graphql(ASSET_QUERY, {
   name: "assetData",
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       names: ["Videos"]
     }

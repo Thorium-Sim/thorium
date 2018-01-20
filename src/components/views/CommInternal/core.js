@@ -264,5 +264,8 @@ const INTERNAL_QUERY = gql`
 `;
 
 export default graphql(INTERNAL_QUERY, {
-  options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })
+  options: ownProps => ({
+    fetchPolicy: "cache-and-network",
+    variables: { simulatorId: ownProps.simulator.id }
+  })
 })(withApollo(InternalCommCore));

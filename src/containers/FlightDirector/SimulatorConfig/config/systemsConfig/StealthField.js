@@ -94,6 +94,8 @@ const SENSORS_QUERY = gql`
 `;
 export default graphql(SENSORS_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
+
     variables: {
       id: ownProps.simulatorId,
       deckId: ownProps.simulatorId

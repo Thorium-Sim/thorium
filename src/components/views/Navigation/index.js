@@ -519,5 +519,8 @@ const NAVIGATION_QUERY = gql`
 `;
 
 export default graphql(NAVIGATION_QUERY, {
-  options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })
+  options: ownProps => ({
+    fetchPolicy: "cache-and-network",
+    variables: { simulatorId: ownProps.simulator.id }
+  })
 })(withApollo(Navigation));

@@ -92,6 +92,7 @@ const QUEUING_QUERY = gql`
 `;
 export default graphql(QUEUING_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id
     }

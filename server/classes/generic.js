@@ -284,7 +284,6 @@ export class System {
       this
     );
     const damageReport = damageSteps.reduce((prev, { name, args }, index) => {
-      console.log(name, damageStepFunctions[name]);
       return `${prev}
 Step ${index + 1}:
 ${damageStepFunctions[name](args || {}, context, index)}

@@ -169,9 +169,9 @@ class SecurityDecks extends Component {
                   <ListGroupItem
                     key={d.id}
                     onClick={this._selectDeck.bind(this, d.id)}
-                    className={`${this.state.selectedDeck === d.id
-                      ? "selected"
-                      : ""}`}
+                    className={`${
+                      this.state.selectedDeck === d.id ? "selected" : ""
+                    }`}
                   >
                     Deck {d.number}
                   </ListGroupItem>
@@ -266,5 +266,8 @@ const DECK_QUERY = gql`
 `;
 
 export default graphql(DECK_QUERY, {
-  options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })
+  options: ownProps => ({
+    fetchPolicy: "cache-and-network",
+    variables: { simulatorId: ownProps.simulator.id }
+  })
 })(withApollo(SecurityDecks));

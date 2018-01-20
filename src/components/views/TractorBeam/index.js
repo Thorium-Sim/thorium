@@ -172,6 +172,7 @@ const TRACTORBEAM_QUERY = gql`
 `;
 export default graphql(TRACTORBEAM_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id
     }

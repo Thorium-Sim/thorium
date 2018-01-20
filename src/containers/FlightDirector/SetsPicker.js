@@ -178,6 +178,7 @@ const SETS_QUERY = gql`
 
 export default graphql(SETS_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       flightId: ownProps.match.params.flightId
     }

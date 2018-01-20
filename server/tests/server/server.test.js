@@ -10,7 +10,6 @@ chai.use(chaiHttp);
 
 describe("Server", function() {
   it("should provide a /schema endpoint", function(done) {
-    console.log("Tada!");
     chai
       .request(server)
       .get("/schema")

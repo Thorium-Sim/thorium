@@ -68,8 +68,8 @@ class Messaging extends Component {
     }
   }
   componentWillUnmount() {
-    this.subscription();
-    this.teamSub();
+    this.subscription && this.subscription();
+    this.teamSub && this.teamSub();
   }
   sendMessage = () => {
     const mutation = gql`
@@ -187,6 +187,7 @@ const MESSAGING_QUERY = gql`
 `;
 export default graphql(MESSAGING_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id
     }

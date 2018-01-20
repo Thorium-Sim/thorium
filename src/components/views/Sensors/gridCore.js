@@ -652,5 +652,8 @@ const GRID_QUERY = gql`
 `;
 
 export default graphql(GRID_QUERY, {
-  options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })
+  options: ownProps => ({
+    fetchPolicy: "cache-and-network",
+    variables: { simulatorId: ownProps.simulator.id }
+  })
 })(withApollo(GridCore));

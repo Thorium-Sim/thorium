@@ -312,5 +312,8 @@ const SYSTEMS_QUERY = gql`
 `;
 
 export default graphql(SYSTEMS_QUERY, {
-  options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })
+  options: ownProps => ({
+    fetchPolicy: "cache-and-network",
+    variables: { simulatorId: ownProps.simulator.id }
+  })
 })(withApollo(DamageControl));

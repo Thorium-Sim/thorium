@@ -243,5 +243,8 @@ const CONTACTS_QUERY = gql`
 `;
 
 export default graphql(CONTACTS_QUERY, {
-  options: ({ sensor }) => ({ variables: { sensorsId: sensor } })
+  options: ({ sensor }) => ({
+    fetchPolicy: "cache-and-network",
+    variables: { sensorsId: sensor }
+  })
 })(withApollo(GridCoreGrid));

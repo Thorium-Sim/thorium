@@ -196,6 +196,8 @@ const QUERY = gql`
 
 export default graphql(QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
+
     variables: {
       id: ownProps.simulator.id
     }

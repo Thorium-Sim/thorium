@@ -95,6 +95,7 @@ const HEAT_QUERY = gql`
 
 export default graphql(HEAT_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id
     }

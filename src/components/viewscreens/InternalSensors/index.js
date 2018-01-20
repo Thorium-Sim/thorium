@@ -97,6 +97,7 @@ const INTERNAL_QUERY = gql`
 
 export default graphql(INTERNAL_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id
     }

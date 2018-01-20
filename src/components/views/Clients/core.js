@@ -67,6 +67,7 @@ const TEMPLATE_QUERY = gql`
 `;
 export default graphql(TEMPLATE_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id
     }

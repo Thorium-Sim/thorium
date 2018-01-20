@@ -484,6 +484,7 @@ const ClientQuery = gql`
 const Client = withRouter(
   graphql(ClientQuery, {
     options: ownProps => ({
+      fetchPolicy: "cache-and-network",
       variables: {
         clientId: ownProps.clientId
       }

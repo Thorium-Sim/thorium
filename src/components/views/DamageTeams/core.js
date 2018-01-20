@@ -216,6 +216,7 @@ const DAMAGE_QUERY = gql`
 `;
 export default graphql(DAMAGE_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id,
       simId: ownProps.simulator.id

@@ -29,7 +29,8 @@ class PlanetaryScanConfig extends Component {
                   JSON.stringify(
                     Object.assign({}, data, { wireframe: evt.target.checked })
                   )
-                )}
+                )
+              }
             />
           </label>
         </div>
@@ -43,7 +44,8 @@ class PlanetaryScanConfig extends Component {
                   JSON.stringify(
                     Object.assign({}, data, { planet: evt.target.value })
                   )
-                )}
+                )
+              }
             >
               {assetData.assetFolders &&
                 assetData.assetFolders[0].containers
@@ -66,7 +68,8 @@ class PlanetaryScanConfig extends Component {
                   JSON.stringify(
                     Object.assign({}, data, { clouds: evt.target.value })
                   )
-                )}
+                )
+              }
             >
               <option value="">No Clouds</option>
               {assetData.assetFolders &&
@@ -88,7 +91,8 @@ class PlanetaryScanConfig extends Component {
                 JSON.stringify(
                   Object.assign({}, data, { text: evt.target.value })
                 )
-              )}
+              )
+            }
             rows={10}
           />
         </div>
@@ -114,6 +118,7 @@ const ASSET_QUERY = gql`
 export default graphql(ASSET_QUERY, {
   name: "assetData",
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       names: ["Planets"]
     }

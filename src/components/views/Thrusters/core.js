@@ -244,5 +244,8 @@ const THRUSTER_QUERY = gql`
 `;
 
 export default graphql(THRUSTER_QUERY, {
-  options: ownProps => ({ variables: { simulatorId: ownProps.simulator.id } })
+  options: ownProps => ({
+    fetchPolicy: "cache-and-network",
+    variables: { simulatorId: ownProps.simulator.id }
+  })
 })(withApollo(ThrusterCore));

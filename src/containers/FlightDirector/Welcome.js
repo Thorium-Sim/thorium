@@ -183,7 +183,7 @@ export const FLIGHTS_QUERY = gql`
 `;
 
 function formatDate(date) {
-  var monthNames = [
+  let monthNames = [
     "Jan",
     "Feb",
     "Mar",
@@ -198,13 +198,13 @@ function formatDate(date) {
     "Dec"
   ];
 
-  var day = date.getDate();
-  var monthIndex = date.getMonth();
-  var year = date.getFullYear();
-  var hour = date.getHours();
-  var am = "AM";
+  let day = date.getDate();
+  let monthIndex = date.getMonth();
+  let year = date.getFullYear();
+  let hour = date.getHours();
+  let am = "AM";
   hour = hour > 12 ? ((am = "PM"), hour - 12) : hour;
-  var minute = date.getMinutes();
+  let minute = date.getMinutes();
 
   return (
     monthNames[monthIndex] +

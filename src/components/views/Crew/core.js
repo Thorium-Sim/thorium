@@ -431,6 +431,7 @@ const CREW_QUERY = gql`
 `;
 export default graphql(CREW_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id
     }

@@ -92,6 +92,7 @@ const COREFEED_QUERY = gql`
 `;
 export default graphql(COREFEED_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id
     }

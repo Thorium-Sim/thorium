@@ -284,6 +284,8 @@ const STEALTH_QUERY = gql`
 `;
 
 export default graphql(STEALTH_QUERY, {
+  fetchPolicy: "cache-and-network",
+
   options: ownProps => ({
     variables: {
       simulatorId: ownProps.simulator.id

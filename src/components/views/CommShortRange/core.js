@@ -258,6 +258,7 @@ const SHORTRANGE_QUERY = gql`
 
 export default graphql(SHORTRANGE_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id
     }

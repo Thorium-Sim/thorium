@@ -89,11 +89,11 @@ const client = new ApolloClient({
   queryDeduplication: true,
   defaultOptions: {
     watchQuery: {
-      fetchPolicy: "cache-and-network",
+      fetchPolicy: "network-only",
       errorPolicy: "all"
     },
     query: {
-      fetchPolicy: "cache-and-network",
+      fetchPolicy: "network-only",
       errorPolicy: "all"
     },
     mutate: {

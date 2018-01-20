@@ -127,6 +127,7 @@ const PROBE_NETWORK_QUERY = gql`
 
 export default graphql(PROBE_NETWORK_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id
     }

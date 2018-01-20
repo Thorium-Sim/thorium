@@ -178,7 +178,8 @@ const ShortRangeComm = ({ data, client, simulatorId, type }) => {
                       type="select"
                       value={s.image}
                       onChange={evt =>
-                        signalUpdate("image", s, e, evt.target.value)}
+                        signalUpdate("image", s, e, evt.target.value)
+                      }
                     >
                       {containers.map(i => (
                         <option key={i.id} value={i.name}>
@@ -295,6 +296,8 @@ const SYSTEM_QUERY = gql`
 
 export default graphql(SYSTEM_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
+
     variables: {
       id: ownProps.simulatorId
     }

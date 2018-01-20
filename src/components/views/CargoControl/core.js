@@ -291,6 +291,7 @@ const INVENTORY_QUERY = gql`
 
 export default graphql(INVENTORY_QUERY, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id
     }

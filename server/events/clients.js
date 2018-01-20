@@ -105,7 +105,7 @@ App.on("clientAddCache", ({ client, simulatorId, viewscreen, cacheItem }) => {
       c.id === client ||
       (c.simulatorId === simulatorId && c.station === "Viewscreen")
   );
-  clientObj.addCache(cacheItem);
+  clientObj && clientObj.addCache(cacheItem);
   pubsub.publish("clientChanged", App.clients);
 });
 App.on("clientRemoveCache", ({ client, cacheItem }) => {

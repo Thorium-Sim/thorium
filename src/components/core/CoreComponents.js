@@ -291,6 +291,8 @@ const CORE_LAYOUT = gql`
 `;
 export default graphql(CORE_LAYOUT, {
   options: ownProps => ({
+    fetchPolicy: "cache-and-network",
+
     variables: {
       id: ownProps.flightId
     }

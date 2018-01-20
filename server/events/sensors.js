@@ -50,6 +50,10 @@ App.on("processedData", ({ id, simulatorId, domain, data }) => {
       sys => sys.simulatorId === simulatorId && sys.domain === domain
     );
   }
+  if (!system) {
+    console.log("Please specify the domain when sending this data: ", data);
+    return;
+  }
   const simulator = App.simulators.find(s => s.id === system.simulatorId);
   system && system.processedDatad(data.replace(/#SIM/gi, simulator.name));
   pubsub.publish(
