@@ -50,7 +50,8 @@ class Population extends Component {
   }
   componentWillUnmount() {
     // Cancel the subscription
-    this.sub();
+    this.sub && this.sub();
+    this.shipsub && this.shipsub();
   }
   render() {
     if (this.props.data.loading || !this.props.data.crew) return null;

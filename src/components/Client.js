@@ -399,6 +399,11 @@ class ClientView extends Component {
       this.props.playSound({ url: "/sciences.ogg" });
     }
   }
+  componentWillUnmount() {
+    this.clientSubscription && this.clientSubscription();
+    this.simulatorSub && this.simulatorSub();
+    this.cacheSub && this.cacheSub();
+  }
   componentDidMount() {
     this.props.client.mutate({
       mutation: gql`

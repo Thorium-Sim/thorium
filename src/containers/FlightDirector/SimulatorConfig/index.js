@@ -153,6 +153,10 @@ class SimulatorConfig extends Component {
       });
     }
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+    this.stationSetSub && this.stationSetSub();
+  }
   selectProperty = prop => {
     this.setState({
       selectedProperty: prop
