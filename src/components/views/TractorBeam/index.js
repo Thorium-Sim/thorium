@@ -3,7 +3,7 @@ import { Container, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 
-import assetPath from "../../../helpers/assets";
+import { Asset } from "../../../helpers/assets";
 import Beam from "./beam";
 import Target from "./target";
 import Bars from "./bars";
@@ -102,12 +102,16 @@ class TractorBeam extends Component {
       <Container className="tractor-beam">
         <DamageOverlay system={tractorBeam} message="Tractor Beam Offline" />
         <Beam shown={tractorBeam.state} />
-        <img
-          alt="ship view"
-          className="ship-side"
-          src={assetPath("/Ship Views/Right", "default", "png", false)}
-          draggable="false"
-        />
+        <Asset asset="/Ship Views/Right" simulatorId={this.props.simulator.id}>
+          {({ src }) => (
+            <img
+              alt="ship view"
+              className="ship-side"
+              src={src}
+              draggable="false"
+            />
+          )}
+        </Asset>
         <Target shown={tractorBeam.target} label={tractorBeam.targetLabel} />
         <Bars
           className="stressBar"

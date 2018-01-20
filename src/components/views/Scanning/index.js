@@ -6,7 +6,7 @@ import Tour from "reactour";
 import FontAwesome from "react-fontawesome";
 
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
-import assetPath from "../../../helpers/assets";
+import { Asset } from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.css";
 
@@ -299,7 +299,7 @@ class Scanning extends Component {
       scanResults: response,
       scanning,
       selectedDeck:
-        deck && deck === "All Decks"
+        (deck && deck === "All Decks") || deck === ""
           ? "All Decks"
           : decks.find(d => d.number === parseInt(deck, 10)).id,
       selectedRoom:
@@ -433,18 +433,20 @@ class Scanning extends Component {
                 <h4 className="text-center">Scan in progress...</h4>
                 {domain === "internal" ? (
                   <Card className="scannerBox">
-                    <img
-                      alt="ship view"
-                      role="presentation"
-                      className="mw-100 ship-image"
-                      draggable="false"
-                      src={assetPath(
-                        "/Ship Views/Right",
-                        "default",
-                        "png",
-                        false
+                    <Asset
+                      asset="/Ship Views/Right"
+                      simulatorId={this.props.simulator.id}
+                    >
+                      {({ src }) => (
+                        <img
+                          alt="ship view"
+                          role="presentation"
+                          className="mw-100 ship-image"
+                          draggable="false"
+                          src={src}
+                        />
                       )}
-                    />
+                    </Asset>
                     <div className="scanner" />
                   </Card>
                 ) : (

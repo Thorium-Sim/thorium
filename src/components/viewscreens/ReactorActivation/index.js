@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container, Row, Col } from "reactstrap";
 import Measure from "react-measure";
 
-//import ReactorModel from "../../views/ReactorControl/model";
+import ReactorModel from "../../views/ReactorControl/model";
 
 export default class ReactorActivation extends Component {
   constructor(props) {
@@ -58,9 +58,18 @@ export default class ReactorActivation extends Component {
         <Container>
           <Row>
             <Col sm={6}>
-              <Measure useClone={true} includeMargin={false}>
-                {dimensions => (
-                  <div>{/*<ReactorModel {...dimensions} />*/}</div>
+              <Measure
+                bounds
+                onResize={contentRect => {
+                  this.setState({ dimensions: contentRect.bounds });
+                }}
+              >
+                {({ measureRef }) => (
+                  <div ref={measureRef} style={{ height: "80vh" }}>
+                    {this.state.dimensions && (
+                      <ReactorModel dimensions={this.state.dimensions} />
+                    )}
+                  </div>
                 )}
               </Measure>
             </Col>
@@ -73,7 +82,7 @@ export default class ReactorActivation extends Component {
               }}
             >
               <h1 style={{ fontSize: "60px" }}>
-                Reactor Output: {Math.round(this.state.output * 1000) / 10}
+                Reactor Output: {Math.round(this.state.output * 1000) / 10}%
               </h1>
             </Col>
           </Row>

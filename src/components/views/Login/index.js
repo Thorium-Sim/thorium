@@ -56,12 +56,20 @@ class Login extends Component {
           <h1>{simulatorName}</h1>
         </Col>
         <Col sm={{ size: 7, offset: 1 }}>
-          <img
-            role="presentation"
-            alt="ship right"
-            src={assetPath("/Ship Views/Right", "default", "png", false)}
-            className="img-fluid"
-          />
+          <Asset
+            asset="/Ship Views/Right"
+            simulatorId={this.props.simulator.id}
+          >
+            {({ src }) => (
+              <img
+                role="presentation"
+                alt="ship right"
+                src={src}
+                className="img-fluid"
+              />
+            )}
+          </Asset>
+
           <Col className="loginBlock" sm={{ size: 8, offset: 2 }}>
             <h2>Agent Login</h2>
             <Input
