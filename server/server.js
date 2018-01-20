@@ -117,6 +117,7 @@ graphQLServer.post("/importAssets", upload.any(), async (req, res) => {
 
 graphQLServer.use("/graphiql", graphiqlExpress(options));
 vanity();
+
 export const graphQLserverInstance = graphQLServer.listen(GRAPHQL_PORT, () =>
   console.log(
     `

@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { Container, Button, Row, Col, Card, CardBody } from "reactstrap";
 import "./style.css";
-var greekUtils = require("greek-utils");
-
+//var greekUtils = require("greek-utils");
+const greekUtils = {
+  toGreek: a => a
+};
 export const cypherMap = {
   "RCSQ-804": "Andorian",
   "RZGY-282": "Decepticon",
@@ -21,8 +23,8 @@ export const cypherMap = {
   "ZWRD-323": "Skaven",
   "XAIK-661": "Voth",
   // "QXGB-913": "DarkArts",
-  "XSDM-421": "Klingon",
-  "TTBS-639": "Symbol"
+  "XSDM-421": "Klingon"
+  //"TTBS-639": "Symbol"
 };
 class Codes extends Component {
   state = {};

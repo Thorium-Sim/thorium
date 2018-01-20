@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import { TypingField } from "../../generic/core";
 import { cypherMap } from "./index";
-var greekUtils = require("greek-utils");
-
+//var greekUtils = require("greek-utils");
+const greekUtils = {
+  toGreek: a => a
+};
 // Control what codes are available
 // Code and print encoded messages
 class CypherCore extends Component {
