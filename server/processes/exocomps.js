@@ -3,7 +3,7 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 
 function exocompLoop() {
   App.exocomps.filter(e => e.state !== "idle").forEach(e => {
-    e.updateCompletion(e.completion + Math.random() * 0.05);
+    e.updateCompletion(e.completion + Math.random() * e.difficulty);
     if (e.completion >= 1) {
       const sys = App.systems.find(s => s.id === e.destination);
       e.updateCompletion(0);
@@ -23,7 +23,7 @@ function exocompLoop() {
         // Check to see if the system needs to be repaired
         // Check to make sure it has the right parts
         let tf = false;
-        sys.damage.exocompParts.forEach(p => {
+        (sys.damage.exocompParts || []).forEach(p => {
           if (e.parts.indexOf(p) > -1) tf = true;
         });
         if (sys.damage.damaged) {

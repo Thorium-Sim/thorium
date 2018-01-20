@@ -33,3 +33,8 @@ App.on("recallExocomp", ({ exocomp }) => {
   ex.recall();
   pubsub.publish("exocompsUpdate", App.exocomps);
 });
+App.on("updateExocompDifficulty", ({ exocomp, difficulty }) => {
+  const ex = App.exocomps.find(e => e.id === exocomp);
+  ex.updateDifficulty(difficulty);
+  pubsub.publish("exocompsUpdate", App.exocomps);
+});

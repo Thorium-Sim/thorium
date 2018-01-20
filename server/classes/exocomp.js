@@ -13,6 +13,7 @@ export default class Exocomp {
     // Destination refers to a system
     this.destination = params.destination || null;
     this.logs = params.logs || [];
+    this.difficulty = params.difficulty || 0.05;
   }
   updateState(state) {
     this.state = state;
@@ -34,6 +35,9 @@ export default class Exocomp {
       timestamp: Date.now(),
       message
     });
+  }
+  updateDifficulty(diff) {
+    this.difficulty = Math.min(1, Math.max(0, diff));
   }
   updateCompletion(completion) {
     this.completion = completion;

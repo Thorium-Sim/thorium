@@ -9,6 +9,7 @@ type Exocomp {
   # Destination refers to a system
   destination: System
   logs: [ExocompLog]
+  difficulty: Float
 }
 
 type ExocompLog {

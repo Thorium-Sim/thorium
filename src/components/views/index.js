@@ -94,6 +94,7 @@ import ClientsCore from "./Clients/core";
 import JrNavigationCore from "./JrFlight/navigationCore";
 import ExtrasCore from "./CoreExtras";
 import SignalJammerCore from "./SignalJammer/core";
+import ExocompsCore from "./Exocomps/core";
 import CodeCyphersCore from "./CodeCyphers/core";
 import InterceptionCore from "./CommInterception/core";
 
@@ -250,7 +251,8 @@ export const Cores = {
   ExtrasCore,
   SignalJammerCore,
   CodeCyphersCore,
-  InterceptionCore
+  InterceptionCore,
+  ExocompsCore
 };
 
 export default Views;
