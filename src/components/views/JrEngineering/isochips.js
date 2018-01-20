@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
 function shuffleArray(array) {
-  for (var i = array.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
@@ -24,6 +24,8 @@ export default class Isochips extends Component {
     this.mousedown = (evt, chipindex) => {
       document.addEventListener("mouseup", this.mouseup);
       document.addEventListener("mousemove", this.mousemove);
+      document.addEventListener("touchend", this.mouseup);
+      document.addEventListener("touchmove", this.mousemove);
       this.setState({
         chipindex
       });
@@ -31,6 +33,8 @@ export default class Isochips extends Component {
     this.mouseup = () => {
       document.removeEventListener("mouseup", this.mouseup);
       document.removeEventListener("mousemove", this.mousemove);
+      document.removeEventListener("touchend", this.mouseup);
+      document.removeEventListener("touchmove", this.mousemove);
       this.setState({
         chipindex: null
       });
@@ -39,10 +43,10 @@ export default class Isochips extends Component {
       this.setState(
         {
           chips: this.state.chips.map((chip, index) => {
+            const clientX = evt.clientX || evt.touches[0].clientX;
+            const clientY = evt.clientY || evt.touches[0].clientY;
             if (index === this.state.chipindex) {
-              if (
-                distance(evt.clientX + 50, evt.clientY, chipX, chip.dy) < 75
-              ) {
+              if (distance(clientX + 50, clientY, chipX, chip.dy) < 75) {
                 return Object.assign({}, chip, {
                   x: chipX - 150,
                   y: chip.dy,
@@ -50,8 +54,8 @@ export default class Isochips extends Component {
                 });
               }
               return Object.assign({}, chip, {
-                x: evt.clientX - 100,
-                y: evt.clientY - 50,
+                x: clientX - 100,
+                y: clientY - 50,
                 connected: false
               });
             }
@@ -68,25 +72,28 @@ export default class Isochips extends Component {
   }
   generateChips() {
     const chipPos = shuffleArray([0, 1, 2, 3]);
-    return Array(4).fill("").map((_item, i) => {
-      return {
-        x: 100,
-        y: window.innerHeight * (i / 4),
-        dy: window.innerHeight * (chipPos[i] / 4),
-        edges: Array(Math.round(Math.random() * 5) + 3)
-          .fill("")
-          .map(() => Math.random())
-      };
-    });
+    return Array(4)
+      .fill("")
+      .map((_item, i) => {
+        return {
+          x: 100,
+          y: window.innerHeight * (i / 4),
+          dy: window.innerHeight * (chipPos[i] / 4),
+          edges: Array(Math.round(Math.random() * 5) + 3)
+            .fill("")
+            .map(() => Math.random())
+        };
+      });
   }
   render() {
     const { chips } = this.state;
     return (
-      <svg id="chips">
-        {chips.map((chip, index) =>
+      <svg id="chips" viewBox="0 0 1600 900">
+        {chips.map((chip, index) => (
           <g>
             <g
               onMouseDown={evt => this.mousedown(evt, index)}
+              onTouchStart={evt => this.mousedown(evt, index)}
               transform={`translate(${chip.x}, ${chip.y})`}
             >
               <path
@@ -110,7 +117,7 @@ export default class Isochips extends Component {
               />
             </g>
           </g>
-        )}
+        ))}
       </svg>
     );
   }

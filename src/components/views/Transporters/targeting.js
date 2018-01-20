@@ -70,10 +70,11 @@ export default class Target extends Component {
   powerUp(e) {
     const { clientHeight: height } = e.currentTarget;
     const { top } = e.currentTarget.getBoundingClientRect();
+    const clientY = e.clientY || e.touches[0].clientY;
     if (this.state.selectedTarget) {
       this.setState({
         mouseCharge:
-          Math.round((height - (e.clientY - top)) / height * 1000) / 1000
+          Math.round((height - (clientY - top)) / height * 1000) / 1000
       });
     }
   }
@@ -165,6 +166,7 @@ export default class Target extends Component {
           </Col>
           <Col
             onMouseMove={this.powerUp.bind(this)}
+            onTouchMove={this.powerUp.bind(this)}
             className="chargeBox"
             lg={{ size: 5, offset: 1 }}
             xl={{ size: 4, offset: 2 }}

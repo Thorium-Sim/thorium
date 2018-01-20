@@ -22,6 +22,7 @@ export default withApollo(props => {
       variables
     });
     document.addEventListener("mouseup", stopCoolant.bind(this, id));
+    document.addEventListener("touchend", stopCoolant.bind(this, id));
   };
   const stopCoolant = id => {
     const mutation = gql`
@@ -90,6 +91,7 @@ export default withApollo(props => {
               className="cool-engines"
               color="info"
               onMouseDown={applyCoolant.bind(this, engines[0].id)}
+              onTouchStart={applyCoolant.bind(this, engines[0].id)}
             >
               Coolant
             </Button>
@@ -120,6 +122,7 @@ export default withApollo(props => {
               block
               color="info"
               onMouseDown={applyCoolant.bind(this, engines[1].id)}
+              onTouchStart={applyCoolant.bind(this, engines[1].id)}
             >
               Coolant
             </Button>

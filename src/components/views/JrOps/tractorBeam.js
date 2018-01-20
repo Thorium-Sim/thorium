@@ -66,6 +66,8 @@ class TractorBeam extends Component {
   mouseDown = () => {
     document.addEventListener("mousemove", this.mouseMove);
     document.addEventListener("mouseup", this.mouseUp);
+    document.addEventListener("touchmove", this.mouseMove);
+    document.addEventListener("touchend", this.mouseUp);
   };
   mouseMove = evt => {
     const targetGrid = ReactDOM.findDOMNode(this).querySelector(
@@ -73,8 +75,14 @@ class TractorBeam extends Component {
     );
     const { x, y, width, height } = targetGrid.getBoundingClientRect();
     const target = {};
-    target.x = Math.min(0.9, Math.max(0, (evt.clientX - x) / width));
-    target.y = Math.min(0.9, Math.max(0, (evt.clientY - y) / height));
+    target.x = Math.min(
+      0.9,
+      Math.max(0, ((evt.clientX || evt.touches[0].clientX) - x) / width)
+    );
+    target.y = Math.min(
+      0.9,
+      Math.max(0, ((evt.clientY || evt.touches[0].clientY) - y) / height)
+    );
     let targetedContact = null;
     if (
       target.x + 0.1 > 0.8 &&
@@ -95,18 +103,26 @@ class TractorBeam extends Component {
     document.removeEventListener("mousemove", this.mouseMove);
     document.removeEventListener("mousemove", this.arrowMouseMove);
     document.removeEventListener("mouseup", this.mouseUp);
+    document.removeEventListener("touchmove", this.mouseMove);
+    document.removeEventListener("touchmove", this.arrowMouseMove);
+    document.removeEventListener("touchend", this.mouseUp);
     this.charging = false;
   };
   arrowMouseDown = () => {
     document.addEventListener("mousemove", this.arrowMouseMove);
     document.addEventListener("mouseup", this.mouseUp);
+    document.addEventListener("touchmove", this.arrowMouseMove);
+    document.addEventListener("touchend", this.mouseUp);
   };
   arrowMouseMove = evt => {
     const arrowContainer = ReactDOM.findDOMNode(this).querySelector(
       ".rainbow-bar"
     );
     const { y, height } = arrowContainer.getBoundingClientRect();
-    const actual = Math.min(1, Math.max(0, (evt.clientY - y) / height));
+    const actual = Math.min(
+      1,
+      Math.max(0, ((evt.clientY || evt.touches[0].clientY) - y) / height)
+    );
     this.setState({
       actual
     });
@@ -208,6 +224,7 @@ class TractorBeam extends Component {
                   className="target"
                   draggable="false"
                   onMouseDown={this.mouseDown}
+                  onTouchStart={this.mouseDown}
                   style={{
                     transform: `translate(${target.x * 400}%, ${target.y *
                       400}%)`
@@ -246,6 +263,7 @@ class TractorBeam extends Component {
               className="arrow actual-arrow"
               style={{ transform: `translateY(${actual * 650}%)` }}
               onMouseDown={this.arrowMouseDown}
+              onTouchStart={this.arrowMouseDown}
             />
             <div className="rainbow-bar" />
             <div

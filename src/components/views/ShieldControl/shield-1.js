@@ -36,6 +36,7 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
                 <FontAwesome
                   name="arrow-down"
                   onMouseDown={startLoop.bind(this, "down", s)}
+                  onTouchStart={startLoop.bind(this, "down", s)}
                 />
               </h1>
             </Col>
@@ -49,6 +50,7 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
                 <FontAwesome
                   name="arrow-up"
                   onMouseDown={startLoop.bind(this, "up", s)}
+                  onTouchStart={startLoop.bind(this, "up", s)}
                 />
               </h1>
             </Col>

@@ -297,27 +297,26 @@ export const PhaserBeam = ({
         </Row>
       </div>
     );
-  } else {
-    return (
-      <Row className="phaserBeam">
-        <Col sm="2">
-          <Button
-            color="warning"
-            active={id === selectedBank}
-            onClick={selectPhaserBank}
-            block
-          >
-            Phaser Bank {index}
-          </Button>
-        </Col>
-        <Col sm="10">
-          <div className="chargeHolder">
-            <div className="charge" style={{ width: `${charge * 100}%` }} />
-          </div>
-        </Col>
-      </Row>
-    );
   }
+  return (
+    <Row className="phaserBeam">
+      <Col sm="2">
+        <Button
+          color="warning"
+          active={id === selectedBank}
+          onClick={selectPhaserBank}
+          block
+        >
+          Phaser Bank {index}
+        </Button>
+      </Col>
+      <Col sm="10">
+        <div className="chargeHolder">
+          <div className="charge" style={{ width: `${charge * 100}%` }} />
+        </div>
+      </Col>
+    </Row>
+  );
 };
 
 export class PhaserArc extends Component {
@@ -367,6 +366,7 @@ export class PhaserArc extends Component {
   }
   updateArc(direction) {
     document.addEventListener("mouseup", this.mouseUp);
+    document.addEventListener("touchend", this.mouseUp);
     this.arcTimeout = setTimeout(this.changeArc.bind(this, direction), 100);
   }
   componentWillReceiveProps(newProps) {
@@ -392,6 +392,7 @@ export class PhaserArc extends Component {
         <Col sm={{ size: 4 }} style={{ marginTop: "50px" }}>
           <Button
             onMouseDown={this.updateArc.bind(this, "up")}
+            onTouchStart={this.updateArc.bind(this, "up")}
             block
             color="warning"
           >
@@ -399,6 +400,7 @@ export class PhaserArc extends Component {
           </Button>
           <Button
             onMouseDown={this.updateArc.bind(this, "down")}
+            onTouchStart={this.updateArc.bind(this, "down")}
             block
             color="warning"
           >

@@ -135,9 +135,12 @@ class ReactorControl extends Component {
       mutation,
       variables
     });
+    document.addEventListener("touchend", this.stopCoolant);
     document.addEventListener("mouseup", this.stopCoolant);
   };
   stopCoolant = () => {
+    document.removeEventListener("touchend", this.stopCoolant);
+    document.removeEventListener("mouseup", this.stopCoolant);
     const { reactors } = this.props.data;
     const reactor = reactors.find(r => r.model === "reactor");
     const mutation = gql`
@@ -267,7 +270,12 @@ class ReactorControl extends Component {
                 />
               </Col>
               <Col sm={12}>
-                <Button color="info" block onMouseDown={this.applyCoolant}>
+                <Button
+                  color="info"
+                  block
+                  onMouseDown={this.applyCoolant}
+                  onTouchStart={this.applyCoolant}
+                >
                   Coolant
                 </Button>
               </Col>
