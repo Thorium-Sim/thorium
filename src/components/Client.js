@@ -384,6 +384,7 @@ class ClientView extends Component {
     // Play the sound effect
     const c = nextProps.data.clients ? nextProps.data.clients[0] : {};
     const oldClient = this.props.data.clients ? this.props.data.clients[0] : {};
+    if (!c) return;
     const { flight, simulator, station } = c;
     const {
       flight: oldFlight,

@@ -66,39 +66,46 @@ function playSound(opts) {
   const channel = opts.channel || [0, 1];
   const asset = opts.url;
   if (!asset) return;
-  fetch(asset)
-    .then(res => res.arrayBuffer())
-    .then(arrayBuffer => {
-      window.audioContext.destination.channelCount =
-        window.audioContext.destination.maxChannelCount;
-      // Connect the sound source to the volume control.
-      // Create a buffer from the response ArrayBuffer.
-      window.audioContext.decodeAudioData(
-        arrayBuffer,
-        buffer => {
-          const sound = opts || {};
-          //Create a new buffer and set it to the specified channel.
-          sound.source = window.audioContext.createBufferSource();
-          sound.source.buffer = downMixBuffer(buffer, channel);
-          sound.source.loop = opts.looping || false;
-          sound.source.playbackRate.value = playbackRate;
-          sound.volume = window.audioContext.createGain();
-          sound.volume.gain.value = volume;
-          sound.source.connect(sound.volume);
+  try {
+    fetch(asset)
+      .then(res => res.arrayBuffer())
+      .then(arrayBuffer => {
+        window.audioContext.destination.channelCount =
+          window.audioContext.destination.maxChannelCount;
+        // Connect the sound source to the volume control.
+        // Create a buffer from the response ArrayBuffer.
+        window.audioContext.decodeAudioData(
+          arrayBuffer,
+          buffer => {
+            const sound = opts || {};
+            //Create a new buffer and set it to the specified channel.
+            sound.source = window.audioContext.createBufferSource();
+            sound.source.buffer = downMixBuffer(buffer, channel);
+            sound.source.loop = opts.looping || false;
+            sound.source.playbackRate.value = playbackRate;
+            sound.volume = window.audioContext.createGain();
+            sound.volume.gain.value = volume;
+            sound.source.connect(sound.volume);
 
-          sound.source.onended = () => {
-            removeSound(opts.id);
-            opts.onFinishedPlaying && opts.onFinishedPlaying();
-          };
-          sound.source.connect(window.audioContext.destination);
-          sound.source.start();
-          sounds[opts.id] = sound;
-        },
-        function onFailure() {
-          console.error(new Error("Decoding the audio buffer failed"));
-        }
-      );
-    });
+            sound.source.onended = () => {
+              removeSound(opts.id);
+              opts.onFinishedPlaying && opts.onFinishedPlaying();
+            };
+            sound.source.connect(window.audioContext.destination);
+            sound.source.start();
+            sounds[opts.id] = sound;
+          },
+          function onFailure() {
+            console.error(new Error("Decoding the audio buffer failed"));
+          }
+        );
+      })
+      .catch(err => {
+        console.log("There was an error");
+      });
+  } catch (err) {
+    console.log("There was an error");
+  }
 }
 
 function removeSound(id) {

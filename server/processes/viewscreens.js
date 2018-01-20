@@ -40,7 +40,7 @@ function viewscreenMachine() {
     // If one of the shields is suddenly raised or lowered, spike the priority.
     shields.forEach(shield => {
       if (!cache.ShieldMonitoring[shield.id]) {
-        cache.ShieldMonitoring = 0;
+        cache.ShieldMonitoring.priority = 0;
       } else if (shield.state !== cache.ShieldMonitoring[shield.id]) {
         cache.ShieldMonitoring.priority = 0.75;
       }
