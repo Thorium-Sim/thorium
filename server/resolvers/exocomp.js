@@ -20,6 +20,9 @@ export const ExocompMutations = {
   },
   recallExocomp(rootValue, args, context) {
     App.handleEvent(args, "recallExocomp", context);
+  },
+  updateExocompDifficulty(rootValue, args, context) {
+    App.handleEvent(args, "updateExocompDifficulty", context);
   }
 };
 
