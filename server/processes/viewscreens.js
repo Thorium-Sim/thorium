@@ -39,7 +39,9 @@ function viewscreenMachine() {
     // Loop through the shields and check to see if they are raised.
     // If one of the shields is suddenly raised or lowered, spike the priority.
     shields.forEach(shield => {
-      if (shield.state !== cache.ShieldMonitoring[shield.id]) {
+      if (!cache.ShieldMonitoring[shield.id]) {
+        cache.ShieldMonitoring = 0;
+      } else if (shield.state !== cache.ShieldMonitoring[shield.id]) {
         cache.ShieldMonitoring.priority = 0.75;
       }
       cache.ShieldMonitoring[shield.id] = shield.state;
@@ -52,7 +54,9 @@ function viewscreenMachine() {
     );
     cache.StealthMonitoring = cache.StealthMonitoring || {};
     stealth.forEach(s => {
-      if (s.state !== cache.StealthMonitoring[s.id]) {
+      if (!cache.StealthMonitoring[s.id]) {
+        cache.StealthMonitoring.priority = 0;
+      } else if (s.state !== cache.StealthMonitoring[s.id]) {
         cache.StealthMonitoring.priority = 0.75;
       }
       cache.StealthMonitoring[s.id] = s.state;
@@ -64,8 +68,8 @@ function viewscreenMachine() {
     cache.CourseCalculation = cache.CourseCalculation || {};
     // Loop through nav
     nav.forEach(n => {
-      if (n.calculate && n.scanning !== cache.CourseCalculation[n.id]) {
-        cache.CourseCalculation.priority = 0.75;
+      if (n.calculate && n.scanning) {
+        cache.CourseCalculation.priority = 0.77;
       }
       cache.CourseCalculation[n.id] = n.scanning;
     });
@@ -105,7 +109,7 @@ function viewscreenMachine() {
     // Finally, decriment all of the viewscreen's priority
     Object.keys(cache).forEach(c => {
       if (c !== "id") {
-        cache[c].priority = Math.max(cache[c].priority - 0.05, 0);
+        cache[c].priority = Math.max(cache[c].priority - 0.02, 0);
       }
     });
     //console.log(Object.keys(cache).map(k => ({k, priority: cache[k].priority})));
