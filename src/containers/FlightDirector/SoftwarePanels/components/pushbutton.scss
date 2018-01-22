@@ -1,0 +1,31 @@
+.pushbutton {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: solid 2px #aaa;
+  background-color: #888;
+  background: linear-gradient(0deg, #929495 0%, #81878a 45%, #737a7f 65%, #919395 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pushbutton:after {
+  content: '';
+  width: 85%;
+  height: 85%;
+  display: block;
+  border: solid 3px #777;
+  border-radius: 50%;
+  background: linear-gradient(0deg, #888a8b 0%, #777d80 45%, #697075 65%, #87898b 100%);
+  cursor: pointer;
+}
+
+.pushbutton:hover:after {
+  background: linear-gradient(0deg, #929495 0%, #81878a 45%, #737a7f 65%, #919395 100%);
+}
+
+.pushbutton:active:after {
+  background: linear-gradient(180deg, #6a6c6d 0%, #6d7376 45%, #5f666b 65%, #7d7f81 100%);
+}
+

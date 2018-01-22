@@ -1,0 +1,15 @@
+.plasmaBall .canvas-container {
+    border-radius: 50%;
+  border: solid 4px #666;
+    width: 200px;
+  height: 200px;
+  overflow: hidden;
+  background-color: black;
+}
+.plasmaBall canvas {
+  margin: 0 auto;
+  display: block;
+  border-left: 0;
+  border-right: 0;
+  filter: blur(20px);
+}
