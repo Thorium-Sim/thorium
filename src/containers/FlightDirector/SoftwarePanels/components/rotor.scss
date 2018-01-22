@@ -1,32 +1,39 @@
-div.rotor {
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
-  width: 100px;
-  height: 100px;
-  background: radial-gradient(ellipse at center, #b5bdb5 0%, #828c8c 36%, #283434 100%);
-  border-radius: 50%;
-}
+.software-panels {
+  div.rotor {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(
+      ellipse at center,
+      #b5bdb5 0%,
+      #828c8c 36%,
+      #283434 100%
+    );
+    border-radius: 50%;
+  }
 
-.rotor .center {
-  background: conic-gradient(#888, #444, #ccc, #999, #666, #aaa, #888);
-  background-color: gray;
-  width: 70%;
-  height: 70%;
-  border-radius: 50%;
-  border: solid 3px #555;
-  display: flex;
-  justify-content: center;
-  cursor: pointer;
-}
+  .rotor .center {
+    background: conic-gradient(#888, #444, #ccc, #999, #666, #aaa, #888);
+    background-color: gray;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    border: solid 3px #555;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+  }
 
-.rotor .center:after {
-  display: block;
-  align-self: flex-start;
-  content: '';
-  width: 2px;
-  background-color: #333;
-  height: 50%;
-  transform-origin: bottom;
-  transform: rotate(-130deg);
+  .rotor .center:after {
+    display: block;
+    align-self: flex-start;
+    content: "";
+    width: 2px;
+    background-color: #333;
+    height: 50%;
+    transform-origin: bottom;
+    transform: rotate(-130deg);
+  }
 }

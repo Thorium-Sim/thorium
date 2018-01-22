@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Button, Container, Row, Col } from "reactstrap";
 import uuid from "uuid";
 import "bootstrap/dist/css/bootstrap.css";
 import "./style.css";
@@ -8,7 +8,7 @@ import * as Components from "./components";
 import ComponentLibrary from "./componentLibrary";
 import PageComponent from "./pageComponent";
 import DraggingLine from "./draggingLine";
-
+import Measure from "react-measure";
 class App extends Component {
   state = {
     edit: true,
@@ -34,7 +34,10 @@ class App extends Component {
     if (this.state.draggingCable) {
       this.setState({
         draggingCable: Object.assign({}, this.state.draggingCable, {
-          location: { x: e.clientX - 10, y: e.clientY - 10 }
+          location: {
+            x: e.clientX - this.state.dimensions.left - 10,
+            y: e.clientY - this.state.dimensions.top - 10
+          }
         })
       });
     }
@@ -78,8 +81,8 @@ class App extends Component {
       libraryShown: false,
       draggingComponent: component,
       componentLocation: {
-        x: evt.clientX - 12,
-        y: evt.clientY - 30
+        x: evt.clientX - this.state.dimensions.left - 12,
+        y: evt.clientY - this.state.dimensions.top - 30
       }
     });
     document.addEventListener("mousemove", this.mouseMove);
@@ -108,15 +111,15 @@ class App extends Component {
     if (
       loc.x < 0 ||
       loc.y < 0 ||
-      loc.x > window.innerWidth ||
-      loc.y > window.innerHeight
+      loc.x > this.state.dimensions.width ||
+      loc.y > this.state.dimensions.height
     )
       return;
     const comp = {
       id: uuid.v4(),
       component: draggingComponent,
-      x: loc.x / window.innerWidth,
-      y: loc.y / window.innerHeight
+      x: loc.x / this.state.dimensions.width,
+      y: loc.y / this.state.dimensions.height
     };
     this.setState({
       components: components.concat(comp)
@@ -144,16 +147,16 @@ class App extends Component {
     this.setState({
       connectingFrom: id,
       connectingLocation: {
-        x: evt.clientX,
-        y: evt.clientY
+        x: evt.clientX - this.state.dimensions.left,
+        y: evt.clientY - this.state.dimensions.top
       }
     });
   };
   moveConnection = evt => {
     this.setState({
       connectingLocation: {
-        x: evt.clientX,
-        y: evt.clientY
+        x: evt.clientX - this.state.dimensions.left,
+        y: evt.clientY - this.state.dimensions.top
       }
     });
   };
@@ -195,10 +198,9 @@ class App extends Component {
         }
       }
     });
-  render() {
+  renderCanvas({ width, height }) {
     const {
       components,
-      libraryShown,
       componentLocation,
       draggingComponent,
       connectingFrom,
@@ -210,131 +212,158 @@ class App extends Component {
       cables
     } = this.state;
     return (
-      <div className="software-panels">
-        <Link to={"/"}>Go Back</Link>
-        {edit && (
-          <Button
-            size="sm"
-            style={{ position: "absolute", left: "200px", zIndex: 2 }}
-            onClick={() => this.setState({ libraryShown: true })}
-          >
-            Show
-          </Button>
-        )}
-        <Button
-          size="sm"
-          style={{ position: "absolute", zIndex: 2 }}
-          onClick={() => this.setState({ edit: !edit })}
-        >
-          {edit ? "Play" : "Edit"}
-        </Button>
-        {selectedLine && (
-          <Button
-            size="sm"
-            style={{ position: "absolute", zIndex: 2 }}
-            onClick={this.delete}
-          >
-            Delete
-          </Button>
-        )}
-        <div className="componentCanvas">
+      <div>
+        {draggingCable &&
+          (draggingCable.location.x !== 0 &&
+            draggingCable.location.y !== 0) && (
+            <div
+              className={`ready-cable ${draggingCable.color} dragger`}
+              style={{
+                transform: `translate(${draggingCable.location.x}px, ${
+                  draggingCable.location.y
+                }px)`
+              }}
+            />
+          )}
+
+        <svg className="connectors">
           {draggingCable &&
-            (draggingCable.location.x !== 0 &&
-              draggingCable.location.y !== 0) && (
-              <div
-                className={`ready-cable ${draggingCable.color} dragger`}
-                style={{
-                  transform: `translate(${draggingCable.location.x}px, ${
-                    draggingCable.location.y
-                  }px)`
-                }}
+            draggingCable.component && (
+              <DraggingLine
+                width={width}
+                height={height}
+                components={components}
+                connectingFrom={draggingCable.component}
+                color={draggingCable.color}
+                stroke={4}
+                loc={draggingCable.location}
               />
             )}
-
-          <svg className="connectors">
-            {draggingCable &&
-              draggingCable.component && (
-                <DraggingLine
-                  components={components}
-                  connectingFrom={draggingCable.component}
-                  color={draggingCable.color}
-                  stroke={4}
-                  loc={draggingCable.location}
-                />
-              )}
-            {cables.map(c => (
-              <DraggingLine
-                key={c.id}
-                components={components}
-                connectingFrom={c.components[0]}
-                connectingTo={c.components[1]}
-                color={c.color}
-                stroke={4}
-              />
-            ))}
-            {edit &&
-              connectingFrom && (
-                <DraggingLine
-                  components={components}
-                  connectingFrom={connectingFrom}
-                  loc={connectingLocation}
-                />
-              )}
-            {edit &&
-              connections.map(c => (
-                <DraggingLine
-                  key={c.id}
-                  id={c.id}
-                  selected={selectedLine === c.id}
-                  onClick={this.selectLine}
-                  components={components}
-                  connectingFrom={c.from}
-                  connectingTo={c.to}
-                />
-              ))}
-          </svg>
-
-          {components.map(c => (
-            <PageComponent
+          {cables.map(c => (
+            <DraggingLine
+              width={width}
+              height={height}
               key={c.id}
-              {...c}
-              edit={edit}
-              cables={cables}
-              draggingCable={draggingCable}
               components={components}
-              update={this.updateComponent}
-              remove={() => this.removeComponent(c.id)}
-              connecting={connectingFrom}
-              connections={connections
-                .filter(conn => conn.to === c.id)
-                .map(conn => components.find(comp => comp.id === conn.from))}
-              startConnecting={evt => this.startConnecting(evt, c.id)}
-              dragCable={this.dragCable}
+              connectingFrom={c.components[0]}
+              connectingTo={c.components[1]}
+              color={c.color}
+              stroke={4}
             />
           ))}
+          {edit &&
+            connectingFrom && (
+              <DraggingLine
+                width={width}
+                height={height}
+                components={components}
+                connectingFrom={connectingFrom}
+                loc={connectingLocation}
+              />
+            )}
+          {edit &&
+            connections.map(c => (
+              <DraggingLine
+                width={width}
+                height={height}
+                key={c.id}
+                id={c.id}
+                selected={selectedLine === c.id}
+                onClick={this.selectLine}
+                components={components}
+                connectingFrom={c.from}
+                connectingTo={c.to}
+              />
+            ))}
+        </svg>
 
-          {draggingComponent &&
-            (() => {
-              const Comp = Components[draggingComponent];
-              return (
-                <div
-                  style={{
-                    transform: `translate(${componentLocation.x}px, ${
-                      componentLocation.y
-                    }px)`
-                  }}
-                >
-                  <Comp />
+        {components.map(c => (
+          <PageComponent
+            key={c.id}
+            {...c}
+            width={width}
+            height={height}
+            edit={edit}
+            cables={cables}
+            draggingCable={draggingCable}
+            components={components}
+            update={this.updateComponent}
+            remove={() => this.removeComponent(c.id)}
+            connecting={connectingFrom}
+            connections={connections
+              .filter(conn => conn.to === c.id)
+              .map(conn => components.find(comp => comp.id === conn.from))}
+            startConnecting={evt => this.startConnecting(evt, c.id)}
+            dragCable={this.dragCable}
+          />
+        ))}
+
+        {draggingComponent &&
+          (() => {
+            const Comp = Components[draggingComponent];
+            return (
+              <div
+                className={"componentInstance"}
+                style={{
+                  transform: `translate(${componentLocation.x}px, ${
+                    componentLocation.y
+                  }px)`
+                }}
+              >
+                <Comp />
+              </div>
+            );
+          })()}
+      </div>
+    );
+  }
+  render() {
+    const { libraryShown, selectedLine, edit } = this.state;
+    return (
+      <Container fluid className="software-panels">
+        <Row>
+          <Col sm={3}>
+            <Link to={"/"}>Go Back</Link>
+            {edit && (
+              <Button
+                size="sm"
+                onClick={() => this.setState({ libraryShown: true })}
+              >
+                Show
+              </Button>
+            )}
+            <Button size="sm" onClick={() => this.setState({ edit: !edit })}>
+              {edit ? "Play" : "Edit"}
+            </Button>
+            {selectedLine && (
+              <Button size="sm" onClick={this.delete}>
+                Delete
+              </Button>
+            )}
+          </Col>
+          <Col sm={9}>
+            <Measure
+              bounds
+              onResize={contentRect => {
+                this.setState({ dimensions: contentRect.bounds });
+              }}
+            >
+              {({ measureRef }) => (
+                <div className="componentCanvas" ref={measureRef}>
+                  <div style={{ paddingTop: `${9 / 16 * 100}%` }} />
+                  {this.state.dimensions &&
+                    this.renderCanvas(this.state.dimensions)}
                 </div>
-              );
-            })()}
-        </div>
+              )}
+            </Measure>
+          </Col>
+        </Row>
         <ComponentLibrary
           mouseDown={this.mouseDown}
           shown={libraryShown}
           hide={() => this.setState({ libraryShown: false })}
         />
-      </div>
+      </Container>
     );
   }
 }

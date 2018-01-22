@@ -10,8 +10,8 @@ class PageComponent extends Component {
     const { update, id, x, y } = this.props;
     update({
       id,
-      x: x + evt.movementX / window.innerWidth,
-      y: y + evt.movementY / window.innerHeight
+      x: x + evt.movementX / this.props.width,
+      y: y + evt.movementY / this.props.height
     });
   };
   mouseUp = () => {
