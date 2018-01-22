@@ -40,6 +40,7 @@ class Events extends EventEmitter {
     this.officerLogs = [];
     this.exocomps = [];
     this.libraryDatabase = [];
+    this.softwarePanels = [];
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;
