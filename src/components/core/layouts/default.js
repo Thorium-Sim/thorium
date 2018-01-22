@@ -26,7 +26,10 @@ const exceptions = [
   "ClientsCore",
   "JrNavigationCore",
   "ViewscreenCore",
-  "RemoteCore"
+  "RemoteCore",
+  "InterceptionCore",
+  "CodeCyphersCore",
+  "CoreFeed"
   /*  "EngineControlCore",
   "SensorsGridCore",
   "SensorsCore",

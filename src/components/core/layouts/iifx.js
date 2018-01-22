@@ -27,7 +27,10 @@ const exceptions = [
   "RemoteCore",
   //"CargoCore",
   "JrNavigationCore",
-  "ViewscreenCore"
+  "ViewscreenCore",
+  "CodeCyphersCore",
+  "ExocompsCore",
+  "CoreFeed"
 ];
 
 export default class CoreIIFX extends Component {
