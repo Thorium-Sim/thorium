@@ -26,7 +26,7 @@
     "chai-http": "^3.0.0",
     "husky": "^0.14.3",
     "jest-localstorage-mock": "^2.2.0",
-    "lint-staged": "^6.0.0",
+    "lint-staged": "^6.0.1",
     "nodemon": "^1.14.11",
     "pkg": "^4.3.0-beta.5",
     "prettier": "^1.10.2",
