@@ -2,7 +2,7 @@ import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
-export const TemplateQueries = {
+export const SoftwarePanelsQueries = {
   softwarePanels(rootQuery, { simulatorId }) {
     if (simulatorId) {
       return App.softwarePanels.filter(s => s.simulatorId === simulatorId);
@@ -11,7 +11,7 @@ export const TemplateQueries = {
   }
 };
 
-export const TemplateMutations = {
+export const SoftwarePanelsMutations = {
   createSoftwarePanel(rootValue, args, context) {
     App.handleEvent(args, "createSoftwarePanel", context);
   },
@@ -23,7 +23,7 @@ export const TemplateMutations = {
   }
 };
 
-export const TemplateSubscriptions = {
+export const SoftwarePanelsSubscriptions = {
   softwarePanelsUpdate: {
     resolve(rootValue, { simulatorId }) {
       if (simulatorId) {
