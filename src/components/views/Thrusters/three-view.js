@@ -133,11 +133,11 @@ class ThreeView extends Component {
       })
       .then(res => {
         const meshSrc = (res.data.asset.url || "").replace(
-          /http(s|):\/\/.*:3000/gi,
+          /http(s|):\/\/.*:[0-9]{4}/gi,
           ""
         );
         const texSrc = (res.data.textureAsset.url || "").replace(
-          /http(s|):\/\/.*:3000/gi,
+          /http(s|):\/\/.*:[0-9]{4}/gi,
           ""
         );
         const objLoader = new window.THREE.OBJLoader();

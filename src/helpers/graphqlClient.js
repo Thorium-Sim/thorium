@@ -21,7 +21,7 @@ if (!clientId) {
 const hostname = window.location.hostname;
 
 const wsLink = new WebSocketLink({
-  uri: `ws://${hostname}:3002`,
+  uri: `ws://${hostname}:${parseInt(window.location.port, 10) + 2}`,
   options: {
     reconnect: true
   }
@@ -31,7 +31,8 @@ const httpLink =
   process.env.NODE_ENV === "test"
     ? new MockLink([{ request: { query: FLIGHTS_QUERY } }])
     : new HttpLink({
-        uri: `http://${hostname}:3001/graphql`,
+        uri: `http://${hostname}:${parseInt(window.location.port, 10) +
+          1}/graphql`,
         headers: { clientId },
         opts: {
           mode: "cors"

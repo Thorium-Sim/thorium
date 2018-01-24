@@ -43,7 +43,10 @@ class AssetComponent extends Component {
       })
       .then(res => {
         this.setState({
-          src: (res.data.asset.url || "").replace(/http(s|):\/\/.*:3000/gi, "")
+          src: (res.data.asset.url || "").replace(
+            /http(s|):\/\/.*:[0-9]{4}/gi,
+            ""
+          )
         });
       });
   }

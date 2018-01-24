@@ -127,9 +127,10 @@ class MissionsConfig extends Component {
         loadingMission: true
       });
       fetch(
-        `${window.location.protocol}//${
-          window.location.hostname
-        }:3001/importMission`,
+        `${window.location.protocol}//${window.location.hostname}:${parseInt(
+          window.location.port,
+          10
+        ) + 1}/importMission`,
         {
           method: "POST",
           body: data
@@ -220,7 +221,9 @@ class MissionsConfig extends Component {
                 tag="a"
                 href={`${window.location.protocol}//${
                   window.location.hostname
-                }:3001/exportMission/${mission.id}`}
+                }:${parseInt(window.location.port, 10) + 1}/exportMission/${
+                  mission.id
+                }`}
                 block
                 color="info"
               >

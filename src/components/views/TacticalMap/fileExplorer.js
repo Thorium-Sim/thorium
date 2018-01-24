@@ -129,7 +129,10 @@ class FileExplorer extends Component {
     if (name) data.append("name", name);
     Array.from(files).forEach((f, index) => data.append(`files[${index}]`, f));
     fetch(
-      `${window.location.protocol}//${window.location.hostname}:3001/upload`,
+      `${window.location.protocol}//${window.location.hostname}:${parseInt(
+        window.location.port,
+        10
+      ) + 1}/upload`,
       {
         method: "POST",
         body: data

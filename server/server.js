@@ -20,16 +20,23 @@ import exportSimulator from "./imports/simulators/export";
 import importSimulator from "./imports/simulators/import";
 import importAssets from "./imports/asset/import";
 import vanity from "./helpers/vanity";
-import "./helpers/broadcast";
+import broadcast from "./helpers/broadcast";
 import ipaddress from "./helpers/ipaddress";
-import "./helpers/client-server.js";
+import clientServer from "./helpers/client-server.js";
 import { uploadAsset } from "./resolvers/assets";
 import "./events";
 import "./processes";
 
-const CLIENT_PORT = 3000;
-const GRAPHQL_PORT = 3001;
-const WS_PORT = 3002;
+const CLIENT_PORT =
+  process.env.NODE_ENV === "production"
+    ? Math.round(Math.random() * (9999 - 1024)) + 1024
+    : 3000;
+const GRAPHQL_PORT = CLIENT_PORT + 1;
+const WS_PORT = CLIENT_PORT + 2;
+export const port = CLIENT_PORT;
+
+broadcast(CLIENT_PORT);
+clientServer(CLIENT_PORT);
 
 const GraphQLOptions = request => ({
   schema,

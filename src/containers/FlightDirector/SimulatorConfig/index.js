@@ -190,9 +190,10 @@ class SimulatorConfig extends Component {
         loadingMission: true
       });
       fetch(
-        `${window.location.protocol}//${
-          window.location.hostname
-        }:3001/importSimulator`,
+        `${window.location.protocol}//${window.location.hostname}:${parseInt(
+          window.location.port,
+          10
+        ) + 1}/importSimulator`,
         {
           method: "POST",
           body: data
@@ -320,7 +321,8 @@ class SimulatorConfig extends Component {
                   tag="a"
                   href={`${window.location.protocol}//${
                     window.location.hostname
-                  }:3001/exportSimulator/${selectedSimulator}`}
+                  }:${parseInt(window.location.port, 10) +
+                    1}/exportSimulator/${selectedSimulator}`}
                   block
                   size="sm"
                   color="info"
