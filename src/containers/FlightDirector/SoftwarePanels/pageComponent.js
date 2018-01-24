@@ -8,16 +8,20 @@ class PageComponent extends Component {
   };
   mouseMove = evt => {
     const { update, id, x, y } = this.props;
-    update({
-      id,
-      x: x + evt.movementX / this.props.width,
-      y: y + evt.movementY / this.props.height
-    });
+    update(
+      {
+        id,
+        x: x + evt.movementX / this.props.width,
+        y: y + evt.movementY / this.props.height
+      },
+      true
+    );
   };
   mouseUp = () => {
     document.removeEventListener("mousemove", this.mouseMove);
     document.removeEventListener("mouseup", this.mouseUp);
-    const { x, y, remove } = this.props;
+    const { id, x, y, remove, update } = this.props;
+    update({ id, x, y });
     if (x < 0 || x > 1 || y < 0 || y > 1) remove();
   };
   render() {
@@ -56,7 +60,7 @@ class PageComponent extends Component {
           components={components}
           startConnecting={startConnecting}
           inputs={connections.map(c => c.level)}
-          update={level => update({ level, id })}
+          update={(l, noupdate) => update({ level: l, id }, noupdate)}
           onMouseDown={edit ? this.mouseDown : () => {}}
           dragCable={dragCable}
         />

@@ -13,6 +13,7 @@ class Rotor extends Component {
   mouseUp = () => {
     document.removeEventListener("mouseup", this.mouseUp);
     document.removeEventListener("mousemove", this.mouseMove);
+    this.props.update && this.props.update(this.props.level);
   };
   mouseMove = evt => {
     const {
@@ -31,7 +32,7 @@ class Rotor extends Component {
     if (rotation >= 315) rotation = 0;
     else if (rotation >= 270) rotation = 270;
 
-    this.props.update && this.props.update(rotation / 270);
+    this.props.update && this.props.update(rotation / 270, true);
   };
   move = evt => {
     if (evt.target.id === "innerCircle" && this.props.onMouseDown) {

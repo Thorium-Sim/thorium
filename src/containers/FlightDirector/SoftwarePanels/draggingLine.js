@@ -1,5 +1,4 @@
 import React from "react";
-
 const DraggingLine = ({
   id,
   width,
@@ -22,14 +21,15 @@ const DraggingLine = ({
   }
   return (
     <path
+      className="drag-line"
       onClick={() => {
         onClick(id);
       }}
       d={`M${comp.x * width + 10} ${comp.y * height + 10} L ${x + 10} ${y +
         10}`}
-      fill="orange"
+      fill="transparent"
       stroke={color || "white"}
-      strokeWidth={selected ? 3 : stroke || 2}
+      strokeWidth={selected ? 7 : stroke || 3}
     />
   );
 };

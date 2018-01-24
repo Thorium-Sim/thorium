@@ -33,7 +33,9 @@
     border-radius: 5px;
     margin: 2px;
   }
-
+  .drag-line:hover {
+    opacity: 0.5;
+  }
   .componentHolder {
     padding: 10px;
     margin: 10px;
