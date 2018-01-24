@@ -30,6 +30,7 @@ class PageComponent extends Component {
       x,
       y,
       level,
+      label,
       update,
       component,
       connections,
@@ -39,7 +40,9 @@ class PageComponent extends Component {
       draggingCable,
       cables,
       components,
-      dragCable
+      dragCable,
+      selectComponent,
+      selected
     } = this.props;
     const Comp = Components[component];
     return (
@@ -48,22 +51,33 @@ class PageComponent extends Component {
         style={{
           transform: `translate(${x * 100 - 0.5}%, ${y * 100 - 0.5}%)`
         }}
+        onClick={() => selectComponent(id)}
       >
-        <Comp
-          level={level}
-          connecting={connecting}
-          id={id}
-          page
-          edit={edit}
-          cables={cables}
-          draggingCable={draggingCable}
-          components={components}
-          startConnecting={startConnecting}
-          inputs={connections.map(c => c.level)}
-          update={(l, noupdate) => update({ level: l, id }, noupdate)}
-          onMouseDown={edit ? this.mouseDown : () => {}}
-          dragCable={dragCable}
-        />
+        <div
+          style={{
+            display: "inline-flex",
+            flexDirection: "column",
+            textAlign: "center",
+            backgroundColor: selected ? "rgba(255,0,0,0.5)" : "transparent"
+          }}
+        >
+          <Comp
+            level={level}
+            connecting={connecting}
+            id={id}
+            page
+            edit={edit}
+            cables={cables}
+            draggingCable={draggingCable}
+            components={components}
+            startConnecting={startConnecting}
+            inputs={connections.map(c => c.level)}
+            update={(l, noupdate) => update({ level: l, id }, noupdate)}
+            onMouseDown={edit ? this.mouseDown : () => {}}
+            dragCable={dragCable}
+          />
+          <span className="label">{label}</span>
+        </div>
       </div>
     );
   }

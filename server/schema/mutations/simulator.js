@@ -33,4 +33,5 @@ updateSimulatorDamageStep(simulatorId: ID!, step: DamageStepInput!): String
 removeSimulatorDamageStep(simulatorId: ID!, step: ID!):String
 
 setSimulatorMission(simulatorId: ID!, missionId: ID!): String
+updateSimulatorPanels(simulatorId: ID!, panels: [ID]!):String
 `;

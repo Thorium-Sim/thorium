@@ -161,7 +161,9 @@ export default class PanelCanvas extends Component {
       cables,
       draggingComponent,
       componentLocation,
-      selectLine
+      selectLine,
+      selectComponent = () => {},
+      selectedComponent
     } = this.props;
     return (
       <div>
@@ -249,6 +251,8 @@ export default class PanelCanvas extends Component {
               .map(conn => components.find(comp => comp.id === conn.from))}
             startConnecting={evt => this.startConnecting(evt, c.id)}
             dragCable={this.dragCable}
+            selectComponent={selectComponent}
+            selected={selectedComponent === c.id}
           />
         ))}
 

@@ -27,6 +27,7 @@ const SIMULATOR_SUB = gql`
       name
       layout
       exocomps
+      panels
       systems {
         id
         type
@@ -359,6 +360,7 @@ const SIMULATOR_QUERY = gql`
       name
       layout
       exocomps
+      panels
       requiredDamageSteps {
         id
         name

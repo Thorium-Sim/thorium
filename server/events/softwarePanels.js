@@ -1,5 +1,6 @@
 import App from "../app";
 import * as Classes from "../classes";
+import { pubsub } from "../helpers/subscriptionManager.js";
 
 App.on("createSoftwarePanel", ({ panel }) => {
   App.softwarePanels.push(new Classes.SoftwarePanel(panel));

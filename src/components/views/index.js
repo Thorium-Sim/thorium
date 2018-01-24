@@ -51,6 +51,7 @@ import Exocomps from "./Exocomps";
 import Library from "./Library";
 import CodeCyphers from "./CodeCyphers";
 import Interception from "./CommInterception";
+import SoftwarePanels from "./SoftwarePanels";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -155,7 +156,8 @@ const Views = {
   Exocomps,
   Library,
   CodeCyphers,
-  Interception
+  Interception,
+  SoftwarePanels
 };
 
 export const Widgets = {

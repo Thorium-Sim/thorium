@@ -44,13 +44,18 @@
     cursor: pointer;
   }
   .componentCanvas {
-    position: absolute;
+    position: relative;
     overflow: hidden;
     width: 100%;
     right: 0;
     top: 0;
     //height: 100vh;
     background-color: #666;
+  }
+  &.softwarePanels-card {
+    .componentCanvas {
+      background-color: transparent;
+    }
   }
   .componentInstance {
     position: absolute;

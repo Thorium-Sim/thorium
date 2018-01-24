@@ -19,6 +19,7 @@
     transition: all 0.2s ease;
     transform: scale(0);
     opacity: 0;
+    z-index: 100000;
   }
   .cable-box-opener {
     position: absolute;
