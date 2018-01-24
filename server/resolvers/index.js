@@ -193,6 +193,11 @@ import {
   LibrarySubscriptions,
   LibraryTypes
 } from "./library";
+import {
+  SoftwarePanelsQueries,
+  SoftwarePanelsMutations,
+  SoftwarePanelsSubscriptions
+} from "./softwarePanels";
 
 import App from "../app";
 
@@ -257,7 +262,8 @@ const queryMap = Object.assign(
   OfficerLogQueries,
   SignalJammerQueries,
   ExocompQueries,
-  LibraryQueries
+  LibraryQueries,
+  SoftwarePanelsQueries
 );
 
 export const mutationMap = Object.assign(
@@ -304,7 +310,8 @@ export const mutationMap = Object.assign(
   OfficerLogMutations,
   SignalJammerMutations,
   ExocompMutations,
-  LibraryMutations
+  LibraryMutations,
+  SoftwarePanelsMutations
 );
 
 const subscriptionMap = Object.assign(
@@ -346,7 +353,8 @@ const subscriptionMap = Object.assign(
   OfficerLogSubscriptions,
   SignalJammerSubscriptions,
   ExocompSubscriptions,
-  LibrarySubscriptions
+  LibrarySubscriptions,
+  SoftwarePanelsSubscriptions
 );
 export default Object.assign(
   {

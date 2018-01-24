@@ -112,7 +112,9 @@ export const FlightStructureMutations = {
   setSimulatorMission(rootValue, params, context) {
     App.handleEvent(params, "setSimulatorMission", context);
   },
-
+  updateSimulatorPanels(rootValue, params, context) {
+    App.handleEvent(params, "updateSimulatorPanels", context);
+  },
   // Timeline
   addTimelineStep(root, args, context) {
     App.handleEvent(

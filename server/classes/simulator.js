@@ -18,6 +18,7 @@ export default class Simulator {
     this.currentTimelineStep = params.currentTimelineStep || 0;
     this.teams = [];
     this.ship = new Ship(params.ship);
+    this.panels = params.panels || [];
     // Set up the teams
     if (params.teams) {
       params.teams.forEach(t => this.teams.push(new Team(t)));
@@ -86,7 +87,9 @@ export default class Simulator {
   setSelfDestructAuto(tf) {
     this.ship.selfDestructAuto = tf;
   }
-
+  updatePanels(panels) {
+    this.panels = panels || [];
+  }
   // Damage Steps
   addDamageStep({ name, args, type }) {
     this[`${type}DamageSteps`].push(new DamageStep({ name, args }));

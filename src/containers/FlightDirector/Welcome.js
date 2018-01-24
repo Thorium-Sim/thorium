@@ -153,6 +153,11 @@ class Welcome extends Component {
               Bug Report/Feature Request
             </Button>
           </Col>
+          <Col sm={{ size: 4 }}>
+            <Button color="warning" block tag={Link} to="/softwarePanels">
+              Software Panel Config
+            </Button>
+          </Col>
         </Row>
         <Modal isOpen={this.state.issuesOpen} toggle={this.toggleIssueTracker}>
           <ModalHeader toggle={this.toggleIssueTracker}>

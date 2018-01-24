@@ -14,7 +14,8 @@ import {
   SimulatorConfig,
   AssetConfig,
   Welcome,
-  ClientsLobby
+  ClientsLobby,
+  SoftwarePanels
 } from "./FlightDirector";
 
 const history = createHistory();
@@ -78,6 +79,10 @@ export default class App extends Component {
           />
           <Route path="/debug" component={DebugList} />
           <Route path="/test" exact component={TestCard} />
+          <Route
+            path="/softwarePanels"
+            render={props => <SoftwarePanels {...props} history={history} />}
+          />
           <Route path="/test/:component" component={TestCard} />
           <Route path="*" component={NoMatch} />
         </Switch>

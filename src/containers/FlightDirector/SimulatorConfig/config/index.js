@@ -8,3 +8,4 @@ export { default as Assets } from "./Assets";
 export { default as Inventory } from "./Inventory";
 export { default as DamageReports } from "./DamageReports";
 export { default as Library } from "./Library";
+export { default as Panels } from "./Panels";

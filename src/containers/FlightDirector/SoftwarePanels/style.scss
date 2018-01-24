@@ -1,0 +1,110 @@
+.software-panels {
+  .light {
+    width: 20px;
+    height: 20px;
+    background-color: #eee;
+    border: solid 2px #aaa;
+    border-radius: 50%;
+  }
+
+  .componentLibrary {
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-right: solid 1px #eee;
+    transform: translateX(-100%);
+    background-color: white;
+    transition: transform 0.5s ease;
+    z-index: 3;
+  }
+  .componentLibrary.shown {
+    transform: translateX(0);
+  }
+
+  .componentLibrary .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 90px;
+    border: solid 1px #ddd;
+    border-radius: 5px;
+    margin: 2px;
+  }
+  .drag-line:hover {
+    opacity: 0.5;
+  }
+  .componentHolder {
+    padding: 10px;
+    margin: 10px;
+    background-color: #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .componentCanvas {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    right: 0;
+    top: 0;
+    //height: 100vh;
+    background-color: #666;
+  }
+  &.softwarePanels-card {
+    .componentCanvas {
+      background-color: transparent;
+    }
+  }
+  .componentInstance {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+  }
+
+  .componentInstance div {
+    pointer-events: all;
+    display: inline-block;
+  }
+
+  .output {
+    width: 15px;
+    height: 15px;
+    border-radius: 2px;
+    background-color: rgba(25, 190, 36, 1);
+    cursor: pointer;
+  }
+  .output:hover {
+    background-color: rgba(45, 210, 56, 1);
+  }
+  .input {
+    width: 15px;
+    height: 15px;
+    border-radius: 2px;
+    background-color: rgba(190, 25, 36, 1);
+    cursor: pointer;
+  }
+  .input:hover {
+    background-color: rgba(210, 45, 56, 1);
+  }
+
+  .connectors {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+  }
+
+  .and {
+    padding: 3px;
+    background-color: #333;
+    display: inline-block;
+    border-radius: 5px;
+    color: white;
+  }
+}

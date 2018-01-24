@@ -103,3 +103,8 @@ App.on("setSimulatorMission", ({ simulatorId, missionId }) => {
   simulator.setTimelineStep(0);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("updateSimulatorPanels", ({ simulatorId, panels }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  simulator.updatePanels(panels);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});

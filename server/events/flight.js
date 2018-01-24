@@ -18,7 +18,8 @@ export const aspectList = [
   "messages",
   "officerLogs",
   "exocomps",
-  "libraryDatabase"
+  "libraryDatabase",
+  "softwarePanels"
 ];
 
 function addAspects(template, sim) {
@@ -89,6 +90,22 @@ function addAspects(template, sim) {
         new Classes[newAspect.class](Object.assign({}, newAspect))
       );
     });
+  });
+  // Add the panels
+  const panels =
+    App.simulators.find(s => s.id === template.simulatorId).panels || [];
+  panels.forEach(p => {
+    const panel = App.softwarePanels.find(s => s.id === p);
+    App.softwarePanels.push(
+      new Classes.SoftwarePanel({
+        id: uuid.v4(),
+        name: panel.name,
+        simulatorId: sim.id,
+        cables: panel.cables,
+        components: panel.components,
+        connections: panel.connections
+      })
+    );
   });
 }
 // Flight

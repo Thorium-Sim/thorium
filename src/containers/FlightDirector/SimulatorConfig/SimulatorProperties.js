@@ -11,7 +11,8 @@ const properties = [
   "Assets",
   "Docking",
   "DamageReports",
-  "Library"
+  "Library",
+  "Panels"
 ];
 export default ({ selectProperty, selectedProperty }) => {
   return (
