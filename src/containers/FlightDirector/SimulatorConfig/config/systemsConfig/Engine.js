@@ -159,6 +159,13 @@ const Engine = ({ data, client, simulatorId, type }) => {
             type={type}
             data={{ systems: [e], decks }}
           >
+            <p>
+              <strong>
+                <em>
+                  Engines must have as many power levels as they have speeds.
+                </em>
+              </strong>
+            </p>
             <FormGroup>
               <Label style={{ display: "inline-block" }}>
                 Speed Factor

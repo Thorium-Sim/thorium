@@ -195,23 +195,27 @@ class PowerDistribution extends Component {
                 />
               ))}
             <h4 className="totalPowerText">Total Power Used: {powerTotal}</h4>
-            <h4>
-              Total Power Available:{" "}
-              {Math.round(reactor.efficiency * reactor.powerOutput)}
-            </h4>
-            <h4
-              className={` ${
-                Math.round(reactor.efficiency * reactor.powerOutput) -
-                  powerTotal <
-                0
-                  ? "text-danger"
-                  : ""
-              }`}
-            >
-              Power Draw:{" "}
-              {Math.round(reactor.efficiency * reactor.powerOutput) -
-                powerTotal}
-            </h4>
+            {reactor && (
+              <h4>
+                Total Power Available:{" "}
+                {Math.round(reactor.efficiency * reactor.powerOutput)}
+              </h4>
+            )}
+            {reactor && (
+              <h4
+                className={` ${
+                  Math.round(reactor.efficiency * reactor.powerOutput) -
+                    powerTotal <
+                  0
+                    ? "text-danger"
+                    : ""
+                }`}
+              >
+                Power Draw:{" "}
+                {Math.round(reactor.efficiency * reactor.powerOutput) -
+                  powerTotal}
+              </h4>
+            )}
           </Col>
           {battery && (
             <Col sm="4" className="battery-holder">
