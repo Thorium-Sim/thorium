@@ -129,8 +129,8 @@ export class GenericSystemConfig extends Component {
                 Name
                 <Input
                   type="text"
-                  value={s.name}
-                  onChange={e => {
+                  defaultValue={s.name}
+                  onBlur={e => {
                     this.updateName(s, e.target.value, null);
                   }}
                 />
@@ -141,8 +141,8 @@ export class GenericSystemConfig extends Component {
                 Display Name
                 <Input
                   type="text"
-                  value={s.displayName || ""}
-                  onChange={e => {
+                  defaultValue={s.displayName || ""}
+                  onBlur={e => {
                     this.updateName(s, null, e.target.value);
                   }}
                 />
@@ -236,9 +236,6 @@ export class GenericSystemConfig extends Component {
                     />
                   </div>
                 ))}
-            </FormGroup>
-            <FormGroup>
-              <Label>Isochip Config</Label>
             </FormGroup>
             {this.props.children}
             {this.props.render && this.props.render(s)}

@@ -168,9 +168,9 @@ class EngineControl extends Component {
                     <ul className="engine">
                       {engine.speeds.map((speed, speedIndex) => {
                         const powerIndex =
-                          engine.power.powerLevels.findIndex(
-                            p => p > engine.power.power
-                          ) - 1;
+                          engine.power.powerLevels
+                            .concat(1000)
+                            .findIndex(p => p > engine.power.power) - 1;
                         let speedWord = speed;
                         if (typeof speed === "object") {
                           speedWord = speed.number;

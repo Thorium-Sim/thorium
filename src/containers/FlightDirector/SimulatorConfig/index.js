@@ -248,6 +248,7 @@ class SimulatorConfig extends Component {
     const { selectedSimulator, selectedProperty } = this.state;
     if (data.loading) return null;
     const { simulators } = data;
+    if (!simulators) return;
     return (
       <Container fluid className="simulator-config">
         <h4>
