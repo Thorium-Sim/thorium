@@ -84,7 +84,10 @@ class GridDom extends Component {
                 opacity: nextProps.pings
                   ? this.contactPing(c, Date.now() - nextProps.pingTime)
                   : 1,
-                destination: c.destination
+                destination:
+                  this.state.movingContact === c.id
+                    ? locations[c.id].destination
+                    : c.destination
               };
             }
           });

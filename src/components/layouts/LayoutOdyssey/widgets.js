@@ -87,22 +87,28 @@ class WidgetsContainer extends Component {
         }`}
       >
         {station.widgets &&
-          station.widgets.map(key => {
-            const widget = Widgets[key];
-            return (
-              <Widget
-                simulator={simulator}
-                station={station}
-                flight={flight}
-                widget={widget}
-                wkey={key}
-                clientObj={clientObj}
-                notify={widgetNotify[key]}
-                setNotify={this.setNotify}
-                key={key}
-              />
-            );
-          })}
+          station.widgets
+            .concat()
+            .sort(w => {
+              if (w === "keyboard") return 1;
+              return -1;
+            })
+            .map(key => {
+              const widget = Widgets[key];
+              return (
+                <Widget
+                  simulator={simulator}
+                  station={station}
+                  flight={flight}
+                  widget={widget}
+                  wkey={key}
+                  clientObj={clientObj}
+                  notify={widgetNotify[key]}
+                  setNotify={this.setNotify}
+                  key={key}
+                />
+              );
+            })}
         <StaticWidget
           icon={"question-circle"}
           name="Training"
