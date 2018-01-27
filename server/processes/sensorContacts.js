@@ -73,6 +73,7 @@ const updateSensors = () => {
   });
   setTimeout(updateSensors, updateInterval);
 };
+
 const activePingInterval = 6500;
 const passivePingInterval = 15000;
 const pingSensors = () => {
@@ -96,4 +97,4 @@ const pingSensors = () => {
 
 moveSensorContactTimed();
 pingSensors();
-updateSensors();
+//updateSensors();

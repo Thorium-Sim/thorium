@@ -18,11 +18,11 @@
     background-color: rgba(0, 0, 0, 0.6);
 
     //Ping Stuff
-    /*background: radial-gradient(
+    background: radial-gradient(
       ellipse at center,
       rgba(30, 87, 153, 0) 0%,
       rgba(31, 91, 158, 0) 21%,
-      rgba(41, 137, 216, 0.24) 33%,
+      rgba(41, 137, 216, 0.24) 50%,
       rgba(34, 107, 178, 0.8) 61%,
       rgba(30, 88, 154, 0) 70%
     );
@@ -30,12 +30,12 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: 0%;
-    transition: background-size 0s linear;*/
+    transition: background-size 0s linear;
     &.ping {
-      //transition: background-size 10s ease;
-      //background-size: 600%;
+ transition: background-size 10s ease;
+ background-size: 600%;
     }
-    .ping-ring {
+    /*.ping-ring {
       width: 100%;
       height: 100%;
       border: solid 4px rgba(0,128,255,0.7);
@@ -50,7 +50,7 @@
       transition: transform 2s ease-out, opacity 3s linear;
       transform: scale(1.01);
       opacity: 0;
-    }
+    }*/
     .ring {
       z-index: 11;
       pointer-events: none;

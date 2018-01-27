@@ -70,13 +70,6 @@ const SENSOR_SUB = gql`
     }
   }
 `;
-
-const PING_SUB = gql`
-  subscription SensorPing($id: ID) {
-    sensorsPing(sensorId: $id)
-  }
-`;
-
 class GridCore extends Component {
   constructor(props) {
     super(props);
@@ -107,35 +100,9 @@ class GridCore extends Component {
         }
       });
     }
-    if (!this.pingSub && !nextProps.data.loading) {
-      this.pingSub = nextProps.data.subscribeToMore({
-        document: PING_SUB,
-        variables: { id: nextProps.data.sensors[0].id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          if (
-            previousResult.sensors.find(
-              s => s.id === subscriptionData.data.sensorsPing
-            )
-          ) {
-            this.ping();
-          }
-        }
-      });
-    }
-    if (!nextProps.data.loading) {
-      const nextSensors = nextProps.data.sensors[0];
-      if (this.props.data.loading) {
-        //First time load
-        this.setState({
-          pingTime: Date.now() - nextSensors.timeSincePing,
-          ping: false
-        });
-      }
-    }
   }
   componentWillUnmount() {
     this.sensorsSubscription && this.sensorsSubscription();
-    this.pingSub && this.pingSub();
   }
   componentDidMount() {
     if (!this.state.dimensions && ReactDOM.findDOMNode(this)) {
@@ -160,23 +127,6 @@ class GridCore extends Component {
       });
     }
   }
-  ping = () => {
-    // Reset the state
-    this.setState(
-      {
-        ping: false
-      },
-      () => {
-        this.setState({
-          ping: true,
-          pingTime: Date.now()
-        });
-        setTimeout(() => {
-          this.setState({ ping: false });
-        }, 1000 * 5);
-      }
-    );
-  };
   dragStart = movingContact => {
     const self = this;
     this.setState({
