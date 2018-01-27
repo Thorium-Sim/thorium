@@ -48,10 +48,35 @@
     overflow-y: scroll;
   }
 }
+.core.core-messaging {
+  .card {
+    width: 100%;
+    max-height: 35vh;
+    overflow-y: scroll;
+  }
+  .card.full {
+    height: 70vh;
+    max-height: 70vh;
+    overflow-y: scroll;
+  }
+  p {
+    &.bold {
+      font-weight: 700;
+      color: goldenrod;
+    }
+    font-size: 16px;
+    padding: 5px;
+    &.selected {
+      border-radius: 5px;
+      background-color: rgba(255,255,255,0.5);
+    }
+  }
+}
 .core-messaging {
   height: 100%;
   display: flex;
   flex-direction: column;
+
   .message-list {
     flex: 1;
     max-height: calc(100% - 50px);

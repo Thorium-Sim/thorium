@@ -1,7 +1,8 @@
-export { default as defaultLayout } from "./default";
-export { default as viewscreen } from "./viewscreen";
-export { default as iifx } from "./iifx";
-export { default as jr } from "./jr";
-export { default as tacticalMap } from "./tacticalMap";
-export { default as dynamic } from "./dynamic";
-export { default as panels } from "./panels";
+export { default as MainCore } from "./default";
+export { default as AuxCore } from "./iifx";
+export { default as Dynamic } from "./dynamic";
+export { default as Jr } from "./jr";
+export { default as Viewscreen } from "./viewscreen";
+export { default as TacticalMaps } from "./tacticalMap";
+export { default as Panels } from "./panels";
+export { default as Messaging } from "./messaging";
