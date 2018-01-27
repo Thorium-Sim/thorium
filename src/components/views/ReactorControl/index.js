@@ -4,6 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button, Card } from "reactstrap";
 import Measure from "react-measure";
 import Tour from "reactour";
+import AnimatedNumber from "react-animated-number";
 
 import HeatBar from "../EngineControl/heatbar";
 import ReactorModel from "./model";
@@ -239,11 +240,22 @@ class ReactorControl extends Component {
             <Row className="reactor-info">
               <Col sm={12}>
                 <h1>
-                  Reactor Efficiency: {Math.round(reactor.efficiency * 100)}%
+                  Reactor Efficiency:{" "}
+                  <AnimatedNumber
+                    stepPrecision={3}
+                    value={reactor.efficiency}
+                    duration={800}
+                    formatValue={n => `${Math.round(n * 100)}%`}
+                  />
                 </h1>
                 <h2>
                   Reactor Output:{" "}
-                  {Math.round(reactor.efficiency * reactor.powerOutput)}
+                  <AnimatedNumber
+                    stepPrecision={3}
+                    value={reactor.efficiency * reactor.powerOutput}
+                    duration={800}
+                    formatValue={n => `${Math.round(n)}`}
+                  />
                 </h2>
                 <h2>Power Used: {powerTotal}</h2>
               </Col>
