@@ -5,6 +5,7 @@ updateSystemName(systemId: ID!, name: String, displayName: String): String
 
 damageSystem(systemId: ID!, report: String): String
 damageReport(systemId: ID!, report: String!): String
+updateCurrentDamageStep(systemId: ID!, step: Int!):String
 repairSystem(systemId: ID!): String
 requestDamageReport(systemId: ID!): String
 systemReactivationCode(systemId: ID!, station: String!, code: String!): String

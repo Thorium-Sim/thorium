@@ -15,6 +15,7 @@ const SYSTEMS_SUB = gql`
         requested
         reactivationCode
         neededReactivationCode
+        currentStep
       }
       simulatorId
       type
@@ -242,7 +243,12 @@ class DamageReportCore extends Component {
           ${s.damage.reactivationCode ? "reactivation" : ""}`}
                 onClick={this.selectSystem.bind(this, s.id)}
               >
-                {this.systemName(s)}
+                {this.systemName(s)} - {s.damage.currentStep + 1} /{" "}
+                {s.damage.report
+                  ? s.damage.report
+                      .split(/Step [0-9]+:\n/gi)
+                      .filter(st => st && st !== "\n").length
+                  : 0}
               </p>
             ))}
             <Input
@@ -384,6 +390,7 @@ const SYSTEMS_QUERY = gql`
         requested
         reactivationCode
         neededReactivationCode
+        currentStep
       }
       simulatorId
       type

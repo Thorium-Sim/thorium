@@ -46,7 +46,8 @@ const viewList = [
   "Exocomps",
   "Library",
   "CodeCyphers",
-  "Interception"
+  "Interception",
+  "DamageStepControl"
 ];
 
 export default viewList;

@@ -118,6 +118,14 @@ App.on("repairSystem", ({ systemId }) => {
   sys.repair();
   sendUpdate(sys);
 });
+App.on("updateCurrentDamageStep", ({ systemId, step }) => {
+  let sys = App.systems.find(s => s.id === systemId);
+  if (!sys) {
+    sys = App.dockingPorts.find(s => s.id === systemId);
+  }
+  sys.updateCurrentStep(step);
+  sendUpdate(sys);
+});
 App.on("systemReactivationCode", ({ systemId, station, code }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {

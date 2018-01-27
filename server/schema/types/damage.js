@@ -5,5 +5,6 @@ type Damage {
   requested: Boolean
   reactivationCode: String
   neededReactivationCode: String 
+  currentStep: Int
 }
 `;

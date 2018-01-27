@@ -64,6 +64,7 @@ export class System {
           damaged: false,
           report: null,
           requested: false,
+          currentStep: 0,
           reactivationCode: null,
           reactivationRequester: null,
           neededReactivationCode: null,
@@ -102,6 +103,7 @@ export class System {
     this.damage.damaged = true;
     this.damage.report = this.processReport(report);
     this.damage.requested = false;
+    this.damage.currentStep = 0;
   }
   addDamageStep({ name, args, type }) {
     this[`${type}DamageSteps`].push(new DamageStep({ name, args }));
@@ -305,6 +307,10 @@ ${damageStepFunctions[name](args || {}, context, index)}
     this.damage.reactivationCode = null;
     this.damage.reactivationRequester = null;
     this.damage.exocompParts = [];
+    this.damage.currentStep = 0;
+  }
+  updateCurrentStep(step) {
+    this.damage.currentStep = step;
   }
   requestReport() {
     this.damage.requested = true;
