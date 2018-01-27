@@ -40,13 +40,15 @@ class CableOutput extends Component {
       onMouseDown,
       edit,
       draggingCable,
-      cables = []
+      cables = [],
+      scaleComp = () => {},
+      scale = 1
     } = this.props;
     const cableComponents = cables.reduce((prev, next) => {
       return prev.concat(next.components);
     }, []);
     return (
-      <div>
+      <div style={{ transform: `scale(${scale})` }}>
         <div onMouseDown={onMouseDown}>
           <div
             data-component={id}
@@ -65,6 +67,7 @@ class CableOutput extends Component {
               onMouseDown={evt => startConnecting(evt, id)}
             />
           )}
+        {page && edit && <div className="scale" onMouseDown={scaleComp} />}
       </div>
     );
   }

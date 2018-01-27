@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button } from "reactstrap";
-import assetPath from "../../../helpers/assets";
+import { Asset } from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
 
@@ -265,13 +265,20 @@ class InternalComm extends Component {
         </Row>
         <Row>
           <Col sm={{ size: 8, offset: 2 }}>
-            <img
-              alt="Right View"
-              role="presentation"
-              className="mw-100"
-              draggable="false"
-              src={assetPath("/Ship Views/Right", "default", "png", false)}
-            />
+            <Asset
+              asset="/Ship Views/Right"
+              simulatorId={this.props.simulator.id}
+            >
+              {({ src }) => (
+                <img
+                  alt="Right View"
+                  role="presentation"
+                  className="mw-100"
+                  draggable="false"
+                  src={src}
+                />
+              )}
+            </Asset>
           </Col>
         </Row>
         <Tour

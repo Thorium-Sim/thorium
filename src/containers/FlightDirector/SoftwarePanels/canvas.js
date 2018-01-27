@@ -4,6 +4,11 @@ import PageComponent from "./pageComponent";
 import DraggingLine from "./draggingLine";
 import uuid from "uuid";
 
+function distance3d(coord2, coord1) {
+  const { x: x1, y: y1, z: z1 } = coord1;
+  let { x: x2, y: y2, z: z2 } = coord2;
+  return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
+}
 export default class PanelCanvas extends Component {
   state = {
     draggingCable: null,
@@ -14,30 +19,56 @@ export default class PanelCanvas extends Component {
   componentDidMount() {
     document.addEventListener("mousemove", this.cableMovement);
     document.addEventListener("mouseup", this.cableUp);
+    document.addEventListener("touchmove", this.cableMovement);
+    document.addEventListener("touchend", this.cableUp);
   }
   componentWillUnmount() {
     document.removeEventListener("mousemove", this.cableMovement);
     document.removeEventListener("mouseup", this.cableUp);
+    document.removeEventListener("touchmove", this.cableMovement);
+    document.removeEventListener("touchend", this.cableUp);
   }
   cableMovement = e => {
     if (this.state.draggingCable) {
+      const location = {
+        x: (e.clientX || e.touches[0].clientX) - this.props.left - 10,
+        y: (e.clientY || e.touches[0].clientY) - this.props.top - 10
+      };
+
       this.setState({
         draggingCable: Object.assign({}, this.state.draggingCable, {
-          location: {
-            x: e.clientX - this.props.left - 10,
-            y: e.clientY - this.props.top - 10
-          }
+          location
         })
       });
     }
   };
   cableUp = e => {
     if (this.state.draggingCable) {
-      if (e.target.classList.contains("cable")) {
+      const adjustedLocation = {
+        x:
+          ((e.clientX || e.changedTouches[0].clientX) - this.props.left - 10) /
+          this.props.width,
+        y:
+          ((e.clientY || e.changedTouches[0].clientY) - this.props.top - 10) /
+          this.props.height,
+        z: 0
+      };
+      const comp = this.props.components.reduce(
+        (prev, c) => {
+          const dist = distance3d(adjustedLocation, { x: c.x, y: c.y, z: 0 });
+          return prev.dist > dist && dist <= 0.02
+            ? Object.assign({}, c, { dist })
+            : prev;
+        },
+        { dist: 100 }
+      );
+      if (e.target.classList.contains("cable") || comp.id) {
         const cableComponents = this.props.cables.reduce((prev, next) => {
           return prev.concat(next.components);
         }, []);
-        if (cableComponents.indexOf(e.target.dataset.component) > -1) {
+        if (
+          cableComponents.indexOf(comp.id || e.target.dataset.component) > -1
+        ) {
           this.setState({ draggingCable: null });
           return;
         }
@@ -53,7 +84,7 @@ export default class PanelCanvas extends Component {
                   color: this.state.draggingCable.color,
                   components: [
                     this.state.draggingCable.component,
-                    e.target.dataset.component
+                    comp.id || e.target.dataset.component
                   ]
                 })
               }
@@ -63,7 +94,7 @@ export default class PanelCanvas extends Component {
         } else {
           this.setState({
             draggingCable: Object.assign({}, this.state.draggingCable, {
-              component: e.target.dataset.component
+              component: comp.id || e.target.dataset.component
             })
           });
         }
@@ -123,7 +154,7 @@ export default class PanelCanvas extends Component {
       noupdate
     );
   };
-  dragCable = color =>
+  dragCable = color => {
     this.setState({
       draggingCable: {
         color,
@@ -133,6 +164,7 @@ export default class PanelCanvas extends Component {
         }
       }
     });
+  };
   removeCable = cableId => {
     const { components, connections, cables } = this.props;
     this.props.applyUpdate({
@@ -156,6 +188,8 @@ export default class PanelCanvas extends Component {
       selectedLine,
       width,
       height,
+      left,
+      top,
       components,
       connections,
       cables,
@@ -239,6 +273,8 @@ export default class PanelCanvas extends Component {
             {...c}
             width={width}
             height={height}
+            left={left}
+            top={top}
             edit={edit}
             cables={cables}
             draggingCable={draggingCable}

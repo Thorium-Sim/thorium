@@ -5,7 +5,7 @@ import tinycolor from "tinycolor2";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
 import Tour from "reactour";
-import assetPath from "../../../helpers/assets";
+import { Asset } from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Arrow from "./arrow";
 import FrequencySignals from "./frequency";
@@ -281,22 +281,21 @@ class CommShortRange extends Component {
             <Card>
               <div className="spacer" />
               {ShortRange.signals.map(s => (
-                <div
-                  key={s.id}
-                  className={`img-container ${
-                    s.id === this.getSignal().id ? "selected" : ""
-                  }`}
-                  style={{
-                    backgroundImage: `url('${assetPath(
-                      `/Comm Images/${s.image}`,
-                      "default",
-                      "png",
-                      false
-                    )}')`
-                  }}
-                >
-                  <div className="spacer" />
-                </div>
+                <Asset asset={`/Comm Images/${s.image}`}>
+                  {({ src }) => (
+                    <div
+                      key={s.id}
+                      className={`img-container ${
+                        s.id === this.getSignal().id ? "selected" : ""
+                      }`}
+                      style={{
+                        backgroundImage: `url('${src}')`
+                      }}
+                    >
+                      <div className="spacer" />
+                    </div>
+                  )}
+                </Asset>
               ))}
               <CardBody>
                 <div>

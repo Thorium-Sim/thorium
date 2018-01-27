@@ -20,6 +20,7 @@ type PanelComponent {
   label: String
   x: Float
   y: Float
+  scale: Float
 }
 
 type PanelConnection {
@@ -48,6 +49,7 @@ input PanelComponentInput {
   label: String
   x: Float
   y: Float
+  scale: Float
 }
 input PanelConnectionInput {
   id: ID

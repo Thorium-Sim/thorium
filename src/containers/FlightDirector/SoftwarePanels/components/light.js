@@ -8,13 +8,16 @@ const Light = ({
   onMouseDown,
   id,
   connecting,
-  page
+  page,
+  scaleComp = () => {},
+  scale = 1,
+  edit
 }) => {
   const c = colormod(color);
   const alpha = level || inputs[0] || 0;
   c.setAlpha(alpha);
   return (
-    <div>
+    <div style={{ transform: `scale(${scale})` }}>
       {page &&
         connecting &&
         inputs.length === 0 && <div className="input" data-component={id} />}
@@ -23,6 +26,7 @@ const Light = ({
         className="light"
         style={{ backgroundColor: c.toRgbString() }}
       />
+      {page && edit && <div className="scale" onMouseDown={scaleComp} />}
     </div>
   );
 };

@@ -20,6 +20,7 @@ const SUB = gql`
         id
         x
         y
+        scale
         component
         level
         label
@@ -80,7 +81,8 @@ class SoftwarePanels extends Component {
           level: c.level,
           label: c.label,
           x: c.x,
-          y: c.y
+          y: c.y,
+          scale: c.scale
         })),
         cables: data.cables.map(c => ({
           id: c.id,
@@ -176,6 +178,7 @@ const QUERY = gql`
         id
         x
         y
+        scale
         component
         level
         label

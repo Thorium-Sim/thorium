@@ -28,18 +28,22 @@ export default class CableBox extends Component {
         >
           <div
             onMouseDown={e => this.drag(e, "red")}
+            onTouchStart={e => this.drag(e, "red")}
             className="ready-cable red"
           />
           <div
             onMouseDown={e => this.drag(e, "blue")}
+            onTouchStart={e => this.drag(e, "blue")}
             className="ready-cable blue"
           />
           <div
             onMouseDown={e => this.drag(e, "green")}
+            onTouchStart={e => this.drag(e, "green")}
             className="ready-cable green"
           />
           <div
             onMouseDown={e => this.drag(e, "yellow")}
+            onTouchStart={e => this.drag(e, "yellow")}
             className="ready-cable yellow"
           />
         </div>

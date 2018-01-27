@@ -1,5 +1,4 @@
 .core {
-  background-color: black;
   font-family: 'Gill Sans', sans-serif;
   line-height: 16px;
   font-size: 12px;
@@ -44,5 +43,8 @@
     font-size: 12px;
     margin: 0;
     padding: 0;
+  }
+  .card {
+    background-color: rgba(0,0,0,0.5);
   }
 }

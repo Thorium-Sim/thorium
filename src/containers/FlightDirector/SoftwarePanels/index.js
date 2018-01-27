@@ -32,6 +32,7 @@ const SUB = gql`
         id
         x
         y
+        scale
         component
         level
         label
@@ -114,6 +115,7 @@ class App extends Component {
           component: c.component,
           level: c.level,
           label: c.label,
+          scale: c.scale,
           x: c.x,
           y: c.y
         })),
@@ -305,7 +307,7 @@ class App extends Component {
                     <div style={{ paddingTop: `${9 / 16 * 100}%` }} />
                     {this.state.dimensions && (
                       <Canvas
-                        edit={this.state}
+                        edit={this.state.edit}
                         selectedLine={selectedLine}
                         applyUpdate={this.applyUpdate}
                         components={components}
@@ -365,6 +367,7 @@ const QUERY = gql`
         id
         x
         y
+        scale
         component
         level
         label

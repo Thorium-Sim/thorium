@@ -29,6 +29,9 @@ const FLIGHTS_SUB = gql`
         id
         name
         layout
+        stations {
+          name
+        }
       }
     }
   }
@@ -285,6 +288,9 @@ const CORE_LAYOUT = gql`
         id
         name
         layout
+        stations {
+          name
+        }
       }
     }
   }
