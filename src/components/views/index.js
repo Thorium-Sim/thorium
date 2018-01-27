@@ -53,6 +53,7 @@ import CodeCyphers from "./CodeCyphers";
 import Interception from "./CommInterception";
 import SoftwarePanels from "./SoftwarePanels";
 import DamageStepControl from "./DamageStepControl";
+import Roster from "./Roster";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -159,7 +160,8 @@ const Views = {
   CodeCyphers,
   Interception,
   SoftwarePanels,
-  DamageStepControl
+  DamageStepControl,
+  Roster
 };
 
 export const Widgets = {
