@@ -174,7 +174,7 @@ class CoreComponents extends Component {
               );
             })}
         </select>
-        {this.state.layout === "dynamic" && (
+        {this.state.layout === "Dynamic" && (
           <DynamicPicker
             mosaic={mosaic}
             onChange={m => this.setState({ mosaic: m })}
