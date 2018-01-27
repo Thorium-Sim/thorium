@@ -32,8 +32,8 @@
     background-size: 0%;
     transition: background-size 0s linear;
     &.ping {
- transition: background-size 10s ease;
- background-size: 600%;
+      transition: background-size 10s ease;
+      background-size: 600%;
     }
     /*.ping-ring {
       width: 100%;

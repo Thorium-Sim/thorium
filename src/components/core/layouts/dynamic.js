@@ -38,7 +38,11 @@ class UpdateSelect extends React.PureComponent {
         <option value="select" disabled>
           Select a Core
         </option>
-        {Object.keys(Cores).map(s => <option key={s}>{s}</option>)}
+        {Object.keys(Cores).map(s => (
+          <option key={s}>{`${s}${
+            mosaicComponents(this.props.mosaic).indexOf(s) > -1 ? " - ✅" : ""
+          }`}</option>
+        ))}
       </select>
     );
   }
@@ -67,7 +71,11 @@ class Split extends React.PureComponent {
           }}
           onChange={this.split}
         >
-          {Object.keys(Cores).map(s => <option key={s}>{s}</option>)}
+          {Object.keys(Cores).map(s => (
+            <option key={s}>{`${s}${
+              mosaicComponents(this.props.mosaic).indexOf(s) > -1 ? " - ✅" : ""
+            }`}</option>
+          ))}
         </select>
       </div>
     );
@@ -77,6 +85,21 @@ class Split extends React.PureComponent {
     this.context.mosaicWindowActions.split(e.target.value);
   };
 }
+
+function mosaicComponents(page) {
+  let components = [];
+  if (typeof page.first === "string") {
+    components.push(page.first);
+  } else {
+    components = components.concat(mosaicComponents(page.first));
+  }
+  if (typeof page.second === "string") {
+    components.push(page.second);
+  } else {
+    components = components.concat(mosaicComponents(page.second));
+  }
+  return components;
+}
 class Dynamic extends Component {
   render() {
     return (
@@ -85,9 +108,9 @@ class Dynamic extends Component {
           return (
             <MosaicWindow
               path={path}
-              title={<UpdateSelect id={id} />}
+              title={<UpdateSelect mosaic={this.props.mosaic} id={id} />}
               toolbarControls={[
-                <Split key="split-button" />,
+                <Split key="split-button" mosaic={this.props.mosaic} />,
                 <ExpandButton key="expand-button" />,
                 <RemoveButton key="remove-button" />
               ]}
@@ -106,7 +129,7 @@ class Dynamic extends Component {
               <Col sm={12}>
                 <h1>No cores loaded</h1>
                 <h4>Add a core.</h4>
-                <UpdateSelect />
+                <UpdateSelect mosaic={this.props.mosaic} />
               </Col>
             </Row>
           </Container>
