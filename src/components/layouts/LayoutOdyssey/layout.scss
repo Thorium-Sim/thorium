@@ -1,3 +1,7 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
 #layout-odyssey {
   background-color: black;
   color: white;
@@ -12,7 +16,7 @@
   }
   .backdrop {
     top: 0;
-    background-color: #333;
+    background: linear-gradient(0deg, #111 0%, rgba(0, 0, 0, 0) 35%, #444 100%);
     position: fixed;
     width: 100%;
     height: 100%;
@@ -83,6 +87,12 @@
     background-color: rgba(255, 255, 255, 0.4);
   }
   .btn {
+    display: inline-block;
+    font-weight: $btn-font-weight;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
     font-family: "Bank Gothic";
     color: white;
     text-transform: uppercase;
@@ -91,14 +101,114 @@
     border: solid 2px rgba(255, 255, 255, 0.5);
     box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 1),
       inset 0px 0px 3px 1px rgba(255, 255, 255, 0.5);
+
+    @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $btn-line-height, $btn-border-radius);
+    @include transition($btn-transition);
+
+    // Share hover and focus styles
+    @include hover-focus {
+      text-decoration: none;
+    }
+
+    &:focus,
+    &.focus {
+      outline: 0;
+      box-shadow: $btn-focus-box-shadow;
+    }
+
+    // Disabled comes first so active can properly restyle
+    &.disabled,
+    &:disabled {
+      opacity: $btn-disabled-opacity;
+      @include box-shadow(none);
+    }
+
+    // Opinionated: add "hand" cursor to non-disabled .btn elements
+    &:not(:disabled):not(.disabled) {
+      cursor: pointer;
+    }
+
+    &:not(:disabled):not(.disabled):active,
+    &:not(:disabled):not(.disabled).active {
+      //background-image: none;
+      @include box-shadow($btn-active-box-shadow);
+
+      &:focus {
+        @include box-shadow($btn-focus-box-shadow, $btn-active-box-shadow);
+      }
+    }
   }
+
+  // Future-proof disabling of clicks on `<a>` elements
+  a.btn.disabled,
+  fieldset:disabled a.btn {
+    pointer-events: none;
+  }
+
+  //
+  // Alternate buttons
+  //
+  @mixin odyssey-button-variant($background, $border, $hover-background: darken($background, 10.5%), $hover-border: darken($border, 14%), $active-background: darken($background, 20%), $active-border: darken($border, 22.5%)) {
+    color: color-yiq($background);
+    @include gradient-bg($background);
+    border-color: $border;
+    @include box-shadow($btn-box-shadow);
+  
+    @include hover {
+      color: color-yiq($hover-background);
+      @include gradient-bg($hover-background);
+      border-color: $hover-border;
+    }
+  
+    &:focus,
+    &.focus {
+      // Avoid using mixin so we can pass custom focus shadow properly
+      @if $enable-shadows {
+        box-shadow: $btn-box-shadow, 0 0 0 $btn-focus-width rgba($border, .5);
+      } @else {
+        box-shadow: 0 0 0 $btn-focus-width rgba($border, .5);
+      }
+    }
+  
+    // Disabled comes first so active can properly restyle
+    &.disabled,
+    &:disabled {
+      color: color-yiq($background);
+      background-color: $background;
+      border-color: $border;
+    }
+  
+    &:not(:disabled):not(.disabled):active,
+    &:not(:disabled):not(.disabled).active,
+    .show > &.dropdown-toggle {
+      color: color-yiq($active-background);
+      background-color: $active-background;
+      border-color: $active-border;
+  
+      &:focus {
+        // Avoid using mixin so we can pass custom focus shadow properly
+        @if $enable-shadows {
+          box-shadow: $btn-active-box-shadow, 0 0 0 $btn-focus-width rgba($border, .5);
+        } @else {
+          box-shadow: 0 0 0 $btn-focus-width rgba($border, .5);
+        }
+      }
+    }
+  }
+  @each $color, $value in $theme-colors {
+    .btn-#{$color} {
+      @include odyssey-button-variant($value, $value);
+    }
+  }
+
   .btn-default {
-    background-color: rgba(255,255,255,0.5);
+    background-color: rgba(255, 255, 255, 0.5);
   }
   .btn-cloak {
     background-color: #4d1980;
   }
-  input[type="text"], textarea {
+  input[type="text"],
+  textarea {
     color: white;
   }
   .list-group-item {
@@ -163,17 +273,17 @@
     overflow: hidden;
   }
   .dropdown-menu {
-    background-color: rgba(0,0,0,0.8);
-    
+    background-color: rgba(0, 0, 0, 0.8);
+
     button {
       color: white;
       &:hover {
-        background-color: rgba(255,255,255,0.2);
+        background-color: rgba(255, 255, 255, 0.2);
       }
-      &:active, &:focus {
-        background-color: rgba(255,255,255,0.4);
+      &:active,
+      &:focus {
+        background-color: rgba(255, 255, 255, 0.4);
       }
-      
     }
   }
 
@@ -213,7 +323,7 @@
     margin-top: 10px;
   }
   .cardThrusters .draggerContainer .spacer {
-    margin-top: calc(100% + 100px)
+    margin-top: calc(100% + 100px);
   }
   .cardThrusters .draggerCircle {
     margin-top: 60px;
@@ -228,18 +338,17 @@
   .powerlevel-containers h5 {
     line-height: 0;
   }
-
 }
 
 .viewscreen {
   #layout-odyssey {
-  .cardContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    div {
-      width: 100%;
+    .cardContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      div {
+        width: 100%;
+      }
     }
   }
-}
 }
