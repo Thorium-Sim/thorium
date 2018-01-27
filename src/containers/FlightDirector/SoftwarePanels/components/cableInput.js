@@ -21,13 +21,16 @@ class CableInput extends Component {
       onMouseDown,
       inputs,
       draggingCable,
-      cables = []
+      cables = [],
+      scaleComp = () => {},
+      scale = 1,
+      edit
     } = this.props;
     const cableComponents = cables.reduce((prev, next) => {
       return prev.concat(next.components);
     }, []);
     return (
-      <div>
+      <div style={{ transform: `scale(${scale})` }}>
         <div onMouseDown={onMouseDown}>
           {page &&
             connecting &&
@@ -43,6 +46,7 @@ class CableInput extends Component {
             }`}
           />
         </div>
+        {page && edit && <div className="scale" onMouseDown={scaleComp} />}
       </div>
     );
   }

@@ -7,11 +7,14 @@ const PlasmaRipples = ({
   onMouseDown,
   id,
   connecting,
-  page
+  page,
+  scaleComp = () => {},
+  scale = 1,
+  edit
 }) => {
   const alpha = level || inputs[0] || 0;
   return (
-    <div>
+    <div style={{ transform: `scale(${scale})` }}>
       {page &&
         connecting &&
         inputs.length === 0 && <div className="input" data-component={id} />}
@@ -22,6 +25,7 @@ const PlasmaRipples = ({
             .map((_, i) => <div key={`ball-${i}`} className="ball" />)}
         </div>
       </div>
+      {page && edit && <div className="scale" onMouseDown={scaleComp} />}
     </div>
   );
 };

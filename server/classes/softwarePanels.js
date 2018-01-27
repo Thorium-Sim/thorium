@@ -16,6 +16,7 @@ class PanelComponent {
     this.label = params.label || "";
     this.x = params.x || 0;
     this.y = params.y || 0;
+    this.scale = params.scale || 1;
   }
 }
 

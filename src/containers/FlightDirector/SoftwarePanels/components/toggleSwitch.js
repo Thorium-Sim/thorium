@@ -9,10 +9,12 @@ const ToggleSwitch = ({
   id,
   page,
   onMouseDown,
-  edit
+  edit,
+  scaleComp = () => {},
+  scale = 1
 }) => {
   return (
-    <div>
+    <div style={{ transform: `scale(${scale})` }}>
       <div onMouseDown={onMouseDown}>
         <div
           className="switch no-inline"
@@ -29,6 +31,7 @@ const ToggleSwitch = ({
             onMouseDown={evt => startConnecting(evt, id)}
           />
         )}
+      {page && edit && <div className="scale" onMouseDown={scaleComp} />}
     </div>
   );
 };

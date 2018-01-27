@@ -6,6 +6,12 @@ function radToDeg(radians) {
 }
 
 class Rotor extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      level: props.level
+    };
+  }
   mouseDown = () => {
     document.addEventListener("mouseup", this.mouseUp);
     document.addEventListener("mousemove", this.mouseMove);
@@ -13,7 +19,7 @@ class Rotor extends Component {
   mouseUp = () => {
     document.removeEventListener("mouseup", this.mouseUp);
     document.removeEventListener("mousemove", this.mouseMove);
-    this.props.update && this.props.update(this.props.level);
+    this.props.update && this.props.update(this.state.level);
   };
   mouseMove = evt => {
     const {
@@ -31,8 +37,7 @@ class Rotor extends Component {
 
     if (rotation >= 315) rotation = 0;
     else if (rotation >= 270) rotation = 270;
-
-    this.props.update && this.props.update(rotation / 270, true);
+    this.setState({ level: rotation / 270 });
   };
   move = evt => {
     if (evt.target.id === "innerCircle" && this.props.onMouseDown) {
@@ -40,9 +45,18 @@ class Rotor extends Component {
     }
   };
   render() {
-    const { id, edit, page, connecting, startConnecting, level } = this.props;
+    const {
+      id,
+      edit,
+      page,
+      connecting,
+      startConnecting,
+      scaleComp = () => {},
+      scale = 1
+    } = this.props;
+    const { level } = this.state;
     return (
-      <div>
+      <div style={{ transform: `scale(${scale})` }}>
         <div
           className="rotor"
           ref="innerCircle"
@@ -60,6 +74,7 @@ class Rotor extends Component {
               onMouseDown={evt => startConnecting(evt, id)}
             />
           )}
+        {page && edit && <div className="scale" onMouseDown={scaleComp} />}
       </div>
     );
   }

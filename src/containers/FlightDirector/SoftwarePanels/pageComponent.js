@@ -24,6 +24,38 @@ class PageComponent extends Component {
     update({ id, x, y });
     if (x < 0 || x > 1 || y < 0 || y > 1) remove();
   };
+  scaleComp = evt => {
+    document.addEventListener("mousemove", this.moveScale);
+    document.addEventListener("mouseup", this.endScale);
+  };
+  moveScale = evt => {
+    function distance3d(coord2, coord1) {
+      const { x: x1, y: y1, z: z1 } = coord1;
+      let { x: x2, y: y2, z: z2 } = coord2;
+      return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
+    }
+
+    const { update, id, x, y, width, height, left, top } = this.props;
+    const x1 = {
+      x: (evt.clientX - left) / width,
+      y: (evt.clientY - top) / height,
+      z: 0
+    };
+    const x2 = { x, y, z: 0 };
+    update(
+      {
+        id,
+        scale: distance3d(x1, x2) * 20
+      },
+      true
+    );
+  };
+  endScale = () => {
+    document.removeEventListener("mousemove", this.moveScale);
+    document.removeEventListener("mouseup", this.endScale);
+    const { id, scale, update } = this.props;
+    update({ id, scale });
+  };
   render() {
     const {
       id,
@@ -42,7 +74,8 @@ class PageComponent extends Component {
       components,
       dragCable,
       selectComponent,
-      selected
+      selected,
+      scale
     } = this.props;
     const Comp = Components[component];
     return (
@@ -75,6 +108,8 @@ class PageComponent extends Component {
             update={(l, noupdate) => update({ level: l, id }, noupdate)}
             onMouseDown={edit ? this.mouseDown : () => {}}
             dragCable={dragCable}
+            scale={scale}
+            scaleComp={this.scaleComp}
           />
           <span className="label">{label}</span>
         </div>
