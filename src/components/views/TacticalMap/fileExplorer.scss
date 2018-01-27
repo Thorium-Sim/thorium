@@ -8,7 +8,7 @@
   }
   .directory-container {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto;
     grid-gap: 5px;
   }
@@ -18,7 +18,7 @@
     border-radius: 5px;
     text-align: center;
     height: 100%;
-    width: 100px;
+    max-width: 100px;
     flex-basis: auto;
     &.selected {
       background-color: rgba(128,128,128,0.2);
