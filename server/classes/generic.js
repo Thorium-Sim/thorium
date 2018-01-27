@@ -23,6 +23,9 @@ export function HeatMixin(inheritClass) {
     setCoolant(coolant) {
       this.coolant = Math.min(1, Math.max(0, coolant));
     }
+    setRate(rate) {
+      this.heatRate = rate;
+    }
     applyCoolant() {
       this.coolant = this.coolant - 0.037;
       this.heat = this.heat - 0.89;

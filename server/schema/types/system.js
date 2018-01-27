@@ -27,6 +27,7 @@ type System implements SystemInterface {
   stealthFactor: Float
   heat: Float
   coolant: Float
+  heatRate: Float
   isochips: [Isochip]
   locations: [Room]
   requiredDamageSteps: [DamageStep]

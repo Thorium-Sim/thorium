@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
+import { Table } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { InputField } from "../../generic/core";
 
@@ -9,6 +10,7 @@ const HEAT_SUB = gql`
       id
       name
       heat
+      heatRate
     }
   }
 `;
@@ -48,16 +50,32 @@ class HeatCore extends Component {
       variables
     });
   };
+  updateRate = (id, rate) => {
+    const mutation = gql`
+      mutation SystemHeat($id: ID!, $rate: Float) {
+        setHeatRate(id: $id, rate: $rate)
+      }
+    `;
+    const variables = {
+      id,
+      rate
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.systems) return null;
     const { systems } = this.props.data;
     return (
       <div className="core-heat">
-        <table>
+        <Table size="sm">
           <thead>
             <tr>
               <th>Name</th>
               <th>Heat</th>
+              <th>Rate</th>
             </tr>
           </thead>
           <tbody>
@@ -74,10 +92,20 @@ class HeatCore extends Component {
                     {Math.round(s.heat * 100)}
                   </InputField>
                 </td>
+                <td>
+                  <InputField
+                    prompt={`What do you want to change the rate of ${
+                      s.name
+                    } to?`}
+                    onClick={value => this.updateRate(s.id, value)}
+                  >
+                    {s.heatRate}
+                  </InputField>
+                </td>
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       </div>
     );
   }
@@ -89,6 +117,7 @@ const HEAT_QUERY = gql`
       id
       name
       heat
+      heatRate
     }
   }
 `;

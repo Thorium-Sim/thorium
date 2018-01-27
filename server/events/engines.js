@@ -74,6 +74,13 @@ App.on("addHeat", ({ id, heat }) => {
     pubsub.publish("systemsUpdate", App.systems);
   }
 });
+App.on("setHeatRate", ({ id, rate }) => {
+  const sys = App.systems.find(s => s.id === id);
+  if (sys && sys.rate !== rate) {
+    sys.setRate(rate);
+    pubsub.publish("systemsUpdate", App.systems);
+  }
+});
 App.on("engineCool", ({ id, state }) => {
   const engine = App.systems.find(s => s.id === id);
   engine && engine.cool(state);
