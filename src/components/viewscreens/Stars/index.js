@@ -9,7 +9,7 @@ const backgroundColor = { r: 0, g: 0, b: 0, a: 0 };
 
 const center = { x: canvasWidth / 2, y: canvasHeight / 2 };
 const fov = 300;
-const starHolderCount = 3000;
+const starHolderCount = 1000;
 const starHolder = [];
 const starBgHolder = [];
 const starSpeedMin = 1;
@@ -83,7 +83,7 @@ class Stars extends Component {
     }
   }
   componentWillUnmount() {
-    this.setSpeedSubscription();
+    this.setSpeedSubscription && this.setSpeedSubscription();
     cancelAnimationFrame(this.looping);
     this.looping = false;
   }
@@ -208,12 +208,12 @@ class Stars extends Component {
     var scale;
 
     if (this.starSpeed < this.currentSpeed) {
-      this.starSpeed += 1;
+      this.starSpeed += 0.2;
 
       if (this.starSpeed > starSpeedMax) this.starSpeed = starSpeedMax;
     }
     if (this.starSpeed > this.currentSpeed) {
-      this.starSpeed -= 1;
+      this.starSpeed -= 0.5;
 
       if (this.starSpeed < starSpeedMin) this.starSpeed = starSpeedMin;
     }
