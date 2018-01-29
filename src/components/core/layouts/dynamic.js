@@ -88,6 +88,7 @@ class Split extends React.PureComponent {
 
 function mosaicComponents(page) {
   let components = [];
+  if (!page) return [];
   if (typeof page.first === "string") {
     components.push(page.first);
   } else {

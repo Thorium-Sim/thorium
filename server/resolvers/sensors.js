@@ -135,7 +135,7 @@ export const SensorsSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("sensorContactUpdate"),
-      rootValue => !!(rootValue && rootValue.length)
+      rootValue => !!(rootValue && (rootValue.length || rootValue.length === 0))
     )
   },
   sensorsPing: {
