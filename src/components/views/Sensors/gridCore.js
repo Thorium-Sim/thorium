@@ -54,6 +54,8 @@ const SENSOR_SUB = gql`
       id
       type
       autoTarget
+      autoThrusters
+      interference
       segments {
         segment
         state
@@ -383,6 +385,38 @@ class GridCore extends Component {
       variables
     });
   };
+  autoThrusters = e => {
+    const mutation = gql`
+      mutation SensorsAutoThrusters($id: ID!, $thrusters: Boolean!) {
+        toggleSensorsAutoThrusters(id: $id, thrusters: $thrusters)
+      }
+    `;
+    const sensors = this.props.data.sensors[0];
+    const variables = {
+      id: sensors.id,
+      thrusters: e.target.checked
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  updateInterference = e => {
+    const mutation = gql`
+      mutation SensorsInterference($id: ID!, $interference: Float!) {
+        setSensorsInterference(id: $id, interference: $interference)
+      }
+    `;
+    const sensors = this.props.data.sensors[0];
+    const variables = {
+      id: sensors.id,
+      interference: e.target.value
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading) return <p>Loading...</p>;
     if (!this.props.data.sensors[0]) return <p>No Sensor Grid</p>;
@@ -471,6 +505,14 @@ class GridCore extends Component {
                 onClick={this.autoTarget}
               />
             </label>
+            <label>
+              Auto Thrusters{" "}
+              <input
+                type="checkbox"
+                checked={sensors.autoThrusters}
+                onClick={this.autoThrusters}
+              />
+            </label>
             <Nudge
               sensor={sensors.id}
               client={this.props.client}
@@ -544,6 +586,19 @@ class GridCore extends Component {
                       this.state.borderColor
                     ).toString()
                   }}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={12}>
+                <label>Interference</label>
+                <input
+                  type="range"
+                  min={0}
+                  max={1}
+                  step={0.01}
+                  defaultValue={sensors.interference}
+                  onMouseUp={this.updateInterference}
                 />
               </Col>
             </Row>
@@ -660,6 +715,8 @@ const GRID_QUERY = gql`
       id
       type
       autoTarget
+      autoThrusters
+      interference
       segments {
         segment
         state

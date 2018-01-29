@@ -112,6 +112,12 @@ export const SensorsMutations = {
   },
   setSensorsSegment(root, args, context) {
     App.handleEvent(args, "setSensorsSegment", context);
+  },
+  toggleSensorsAutoThrusters(root, args, context) {
+    App.handleEvent(args, "toggleSensorsAutoThrusters", context);
+  },
+  setSensorsInterference(root, args, context) {
+    App.handleEvent(args, "setSensorsInterference", context);
   }
 };
 

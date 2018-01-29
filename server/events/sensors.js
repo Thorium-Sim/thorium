@@ -254,3 +254,19 @@ App.on("setSensorsSegment", ({ id, segment, state }) => {
     App.systems.filter(s => s.type === "Sensors")
   );
 });
+App.on("toggleSensorsAutoThrusters", ({ id, thrusters }) => {
+  const sensors = App.systems.find(sys => sys.id === id);
+  sensors.setAutoThrusters(thrusters);
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});
+App.on("setSensorsInterference", ({ id, interference }) => {
+  const sensors = App.systems.find(sys => sys.id === id);
+  sensors.setInterference(interference);
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});

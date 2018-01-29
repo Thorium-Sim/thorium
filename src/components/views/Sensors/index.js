@@ -22,6 +22,7 @@ const SENSOR_SUB = gql`
       scanning
       pings
       pingMode
+      interference
       timeSincePing
       segments {
         segment
@@ -308,6 +309,7 @@ class Sensors extends Component {
                   pingTime={pingTime}
                   simulatorId={this.props.simulator.id}
                   segments={sensors.segments}
+                  interference={sensors.interference}
                 />
               </div>
               <DamageOverlay
@@ -435,6 +437,7 @@ const SENSOR_QUERY = gql`
       processedData
       pings
       pingMode
+      interference
       timeSincePing
       segments {
         segment

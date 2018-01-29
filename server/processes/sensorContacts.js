@@ -94,7 +94,39 @@ const pingSensors = () => {
   });
   setTimeout(pingSensors, pingInterval);
 };
-
+const sensorsAutoThrusters = () => {
+  App.systems.forEach(sys => {
+    if (sys.type === "Sensors" && sys.autoThrusters === true) {
+      const sensors = sys;
+      const thrusters = App.systems.find(
+        s => s.class === "Thrusters" && s.simulatorId === sensors.simulatorId
+      );
+      if (thrusters) {
+        sensors.nudgeContacts(
+          {
+            x: thrusters.direction.x / -50,
+            y: thrusters.direction.z / 50,
+            z: thrusters.direction.y / 50
+          },
+          0.3,
+          0
+        );
+        pubsub.publish(
+          "sensorContactUpdate",
+          Object.assign({}, sensors, {
+            contacts: sensors.contacts.map(c =>
+              Object.assign({}, c, { forceUpdate: true })
+            )
+          })
+        );
+        // Reset the force update after a second.
+        setTimeout(() => pubsub.publish("sensorContactUpdate", sensors), 500);
+      }
+    }
+  });
+  setTimeout(sensorsAutoThrusters, 500);
+};
+sensorsAutoThrusters();
 moveSensorContactTimed();
 pingSensors();
 //updateSensors();

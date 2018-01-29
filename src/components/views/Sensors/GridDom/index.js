@@ -3,6 +3,7 @@ import SensorContact from "./SensorContact";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Segments from "./blackout";
+import Interference from "./interference";
 
 import "./style.css";
 
@@ -348,7 +349,8 @@ class GridDom extends Component {
       lines = 12,
       hoverContact,
       segments,
-      sensor
+      sensor,
+      interference = 0
     } = this.props;
     const { locations, speedAsking } = this.state;
     const { sensorContacts: contacts } = data;
@@ -365,6 +367,9 @@ class GridDom extends Component {
     return (
       <div id="sensorGrid" style={gridStyle}>
         <div className={`grid ${ping ? "ping" : ""}`}>
+          {interference > 0 && (
+            <Interference width={width} interference={interference} />
+          )}
           <Segments segments={segments} sensors={sensor} />
           {Array(rings)
             .fill(0)
