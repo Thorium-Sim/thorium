@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactKonva from 'react-konva';
-import Immutable from 'immutable';
-import gql from 'graphql-tag';
-import { withApollo } from 'react-apollo';
-import Contact from './contact';
-import * as THREE from 'three';
+import React from "react";
+import ReactKonva from "react-konva";
+import Immutable from "immutable";
+import gql from "graphql-tag";
+import { withApollo } from "react-apollo";
+import Contact from "./contact";
+import * as THREE from "three";
 
 const { Group, Path, Rect } = ReactKonva;
 
@@ -27,7 +27,7 @@ class KonvaContact extends Contact {
     clearTimeout(this.moveTimeout);
   }
   _moveMouse = e => {
-    if (e.target.offsetParent.classList.contains('konvajs-content')) {
+    if (e.target.offsetParent.classList.contains("konvajs-content")) {
       const { radius, padding } = this.props;
       const contact = Immutable.Map(this.state.contact);
       const destination = {
@@ -36,20 +36,20 @@ class KonvaContact extends Contact {
         z: 0
       };
       this.setState({
-        contact: contact.set('destination', destination).toJS()
+        contact: contact.set("destination", destination).toJS()
       });
     }
   };
   _downMouse(id, e, a, b) {
-    document.addEventListener('mousemove', this._moveMouse);
-    document.addEventListener('mouseup', this._upMouse.bind(this));
+    document.addEventListener("mousemove", this._moveMouse);
+    document.addEventListener("mouseup", this._upMouse.bind(this));
     this.setState({
       movingContact: true
     });
   }
   _upMouse = () => {
-    document.removeEventListener('mousemove', this._moveMouse);
-    document.removeEventListener('mouseup', this._upMouse);
+    document.removeEventListener("mousemove", this._moveMouse);
+    document.removeEventListener("mouseup", this._upMouse);
     // Send the update to the server
     const speed = this.props.moveSpeed;
     const { contact } = this.state;
@@ -58,7 +58,8 @@ class KonvaContact extends Contact {
     });
     const distance = distance3d({ x: 0, y: 0, z: 0 }, contact.destination);
     let mutation;
-    if (distance > 1.08) {
+    const maxDistance = contact.type === "planet" ? 2 : 1.1;
+    if (distance > maxDistance) {
       // Delete the contact
       mutation = gql`
         mutation DeleteContact($id: ID!, $contact: SensorContactInput!) {
@@ -104,8 +105,8 @@ class KonvaContact extends Contact {
       if (speed > 100) {
         return {
           contact: newContact
-            .set('location', destination)
-            .set('speed', 0)
+            .set("location", destination)
+            .set("speed", 0)
             .toJS()
         };
       } else if (speed > 0) {
@@ -153,9 +154,9 @@ class KonvaContact extends Contact {
         }
         return {
           contact: newContact
-            .set('location', newLocation)
-            .set('destination', newDestination)
-            .set('speed', speed)
+            .set("location", newLocation)
+            .set("destination", newDestination)
+            .set("speed", speed)
             .toJS()
         };
       }
@@ -178,55 +179,57 @@ class KonvaContact extends Contact {
     return (
       <Group x={radius} y={radius}>
         {selectedContact &&
-          selectedContact.id === id &&
-          <Group
-            x={destination.x * radius + padding}
-            y={destination.y * radius + padding}>
-            <Rect x={-5} y={-5} height={2} width={7} fill="lightblue" />
-            <Rect x={-5} y={-5} height={7} width={2} fill="lightblue" />
-            <Rect
-              x={5 + (size - 1) * 6}
-              y={-5}
-              height={2}
-              width={7}
-              fill="lightblue"
-            />
-            <Rect
-              x={5 + size * 6}
-              y={-5}
-              height={7}
-              width={2}
-              fill="lightblue"
-            />
-            <Rect
-              x={-5}
-              y={5 + size * 6}
-              height={2}
-              width={7}
-              fill="lightblue"
-            />
-            <Rect
-              x={-5}
-              y={5 + (size - 1) * 6}
-              height={7}
-              width={2}
-              fill="lightblue"
-            />
-            <Rect
-              x={5 + (size - 1) * 6}
-              y={5 + size * 6}
-              height={2}
-              width={7}
-              fill="lightblue"
-            />
-            <Rect
-              x={5 + size * 6}
-              y={5 + (size - 1) * 6}
-              height={7}
-              width={2}
-              fill="lightblue"
-            />
-          </Group>}
+          selectedContact.id === id && (
+            <Group
+              x={destination.x * radius + padding}
+              y={destination.y * radius + padding}
+            >
+              <Rect x={-5} y={-5} height={2} width={7} fill="lightblue" />
+              <Rect x={-5} y={-5} height={7} width={2} fill="lightblue" />
+              <Rect
+                x={5 + (size - 1) * 6}
+                y={-5}
+                height={2}
+                width={7}
+                fill="lightblue"
+              />
+              <Rect
+                x={5 + size * 6}
+                y={-5}
+                height={7}
+                width={2}
+                fill="lightblue"
+              />
+              <Rect
+                x={-5}
+                y={5 + size * 6}
+                height={2}
+                width={7}
+                fill="lightblue"
+              />
+              <Rect
+                x={-5}
+                y={5 + (size - 1) * 6}
+                height={7}
+                width={2}
+                fill="lightblue"
+              />
+              <Rect
+                x={5 + (size - 1) * 6}
+                y={5 + size * 6}
+                height={2}
+                width={7}
+                fill="lightblue"
+              />
+              <Rect
+                x={5 + size * 6}
+                y={5 + (size - 1) * 6}
+                height={7}
+                width={2}
+                fill="lightblue"
+              />
+            </Group>
+          )}
         <Path
           data={data}
           onMouseover={mouseover.bind(this, contact)}
@@ -241,19 +244,20 @@ class KonvaContact extends Contact {
           }}
         />
         {core &&
-          !army &&
-          <Path
-            onClick={e => e.evt.button === 2 && setSelectedContact(contact)}
-            onMouseDown={e => e.evt.button === 0 && this._downMouse(this, id)}
-            data={data}
-            x={destination.x * radius + padding}
-            y={destination.y * radius + padding}
-            fill={color}
-            scale={{
-              x: size * (radius / 400),
-              y: size * (radius / 400)
-            }}
-          />}
+          !army && (
+            <Path
+              onClick={e => e.evt.button === 2 && setSelectedContact(contact)}
+              onMouseDown={e => e.evt.button === 0 && this._downMouse(this, id)}
+              data={data}
+              x={destination.x * radius + padding}
+              y={destination.y * radius + padding}
+              fill={color}
+              scale={{
+                x: size * (radius / 400),
+                y: size * (radius / 400)
+              }}
+            />
+          )}
       </Group>
     );
   }

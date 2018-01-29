@@ -120,9 +120,7 @@ App.on("removeSensorContact", ({ id, contact }) => {
 });
 App.on("removeAllSensorContacts", ({ id }) => {
   const system = App.systems.find(sys => sys.id === id);
-  system.contacts.concat().forEach(contact => {
-    system.removeContact(contact);
-  });
+  system.contacts = [];
   pubsub.publish("sensorContactUpdate", system.contacts);
 });
 App.on("stopAllSensorContacts", ({ id }) => {

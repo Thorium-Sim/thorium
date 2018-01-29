@@ -189,7 +189,7 @@ export default class Sensors extends System {
   }
   moveContact({ id, destination, speed, stop }) {
     const myContact = this.contacts.find(contact => contact.id === id);
-    myContact.move(destination, speed, stop);
+    myContact && myContact.move(destination, speed, stop);
   }
   removeContact({ id }) {
     const contactIndex = this.contacts.findIndex(contact => contact.id === id);
@@ -197,7 +197,7 @@ export default class Sensors extends System {
   }
   stopContact({ id }) {
     const myContact = this.contacts.find(contact => contact.id === id);
-    myContact.stop();
+    myContact && myContact.stop();
   }
   destroyContact({ id }) {
     const myContact = this.contacts.find(contact => contact.id === id);

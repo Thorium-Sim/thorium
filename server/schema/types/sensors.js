@@ -48,10 +48,12 @@ input SensorScanInput {
 type SensorContact {
   id: ID
   name: String
+  type: String
   size: Float
   icon: String
   picture: String
   color: String
+  rotation: Float
   speed: Float
   location: Coordinates
   destination: Coordinates
@@ -84,11 +86,13 @@ input CoordinatesInput {
 input SensorContactInput {
   id: ID
   name: String
+  type: String
   size: Float
   icon: String
   picture: String
   color: String
   speed: Float
+  rotation: Float
   location: CoordinatesInput
   destination: CoordinatesInput
   infrared: Boolean

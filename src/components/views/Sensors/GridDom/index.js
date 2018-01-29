@@ -25,6 +25,8 @@ const SENSORCONTACT_SUB = gql`
       icon
       picture
       speed
+      type
+      rotation
       location {
         x
         y
@@ -55,7 +57,8 @@ class GridDom extends Component {
   state = {
     locations: {},
     movingContact: null,
-    iconWidth: null
+    iconWidth: null,
+    iconHeight: null
   };
   interval = 1000 / 30;
   sensorContactsSubscription = null;
@@ -195,7 +198,7 @@ class GridDom extends Component {
   };
   _moveMouse = e => {
     const { dimensions, core } = this.props;
-    const { movingContact, locations, iconWidth } = this.state;
+    const { movingContact, locations, iconWidth, iconHeight } = this.state;
     if (!movingContact) return;
     const { width: dimWidth, height: dimHeight } = dimensions;
     const padding = core ? 15 : 0;
@@ -205,7 +208,7 @@ class GridDom extends Component {
         (e.clientX - dimensions.left - padding - iconWidth / 2 - width / 2) /
         (width / 2),
       y:
-        (e.clientY - dimensions.top - padding - iconWidth / 2 - width / 2) /
+        (e.clientY - dimensions.top - padding - iconHeight / 2 - width / 2) /
         (width / 2),
       z: 0
     };
@@ -220,12 +223,19 @@ class GridDom extends Component {
   };
   _downMouse(e, id) {
     const self = this;
+    if (!e.target) return;
     const width = e.target.getBoundingClientRect().width;
+    const height = e.target.getBoundingClientRect().height;
+    const { sensorContacts: contacts } = this.props.data;
+    const contact = contacts.find(c => c.id === id);
     document.addEventListener("mousemove", this._moveMouse);
     document.addEventListener("mouseup", _upMouse);
     this.setState({
       movingContact: id,
-      iconWidth: width
+      iconWidth:
+        contact.type === "planet" || contact.type === "border" ? 0 : width,
+      iconHeight:
+        contact.type === "planet" || contact.type === "border" ? 0 : height
     });
     function _upMouse(evt) {
       document.removeEventListener("mousemove", self._moveMouse);
@@ -244,17 +254,21 @@ class GridDom extends Component {
   }
   triggerUpdate = speed => {
     // Send the update to the server
+    const { sensorContacts: contacts } = this.props.data;
     const { movingContact, locations } = this.state;
     if (!locations[movingContact]) return;
     const { destination } = locations[movingContact];
     this.setState({
       movingContact: false,
       iconWidth: null,
+      iconHeight: null,
       speedAsking: null
     });
     const distance = distance3d({ x: 0, y: 0, z: 0 }, destination);
     let mutation;
-    if (distance > 1.08) {
+    const contact = contacts.find(c => c.id === movingContact);
+    const maxDistance = contact.type === "planet" ? 2 : 1.1;
+    if (distance > maxDistance) {
       // Delete the contact
       mutation = gql`
         mutation DeleteContact($id: ID!, $contact: SensorContactInput!) {
@@ -407,9 +421,12 @@ class GridDom extends Component {
                 )
             )}
           {movingContact && (
-            <div id="movingContact">
-              <SensorContact width={width} {...movingContact} />{" "}
-            </div>
+            <SensorContact
+              width={width}
+              core={core}
+              destination={movingContact.location}
+              {...movingContact}
+            />
           )}
           {speedAsking && (
             <div
@@ -442,6 +459,8 @@ const CONTACTS_QUERY = gql`
       picture
       color
       speed
+      type
+      rotation
       location {
         x
         y

@@ -39,11 +39,11 @@ const SENSOR_SUB = gql`
   }
 `;
 
-const PING_SUB = gql`
+/*const PING_SUB = gql`
   subscription SensorPing($id: ID) {
     sensorsPing(sensorId: $id)
   }
-`;
+`;*/
 
 const trainingSteps = [
   {
@@ -56,11 +56,11 @@ const trainingSteps = [
     content:
       "This is your sensor grid. Your ship is located at the center of the grid, where the lines converge. The top segment is directly in front of your ship, as if you were looking down on your ship from above it. You can see the relative location of objects around your ship on this grid."
   },
-  {
+  /*{
     selector: ".ping-controls",
     content:
       "Some sensor systems allow you to control how often the sensor grid 'pings', or detects objects around the ship. You can control the rate of pings with these controls. Whenever your sensors pings, it sends out a faint signal which can be detected by other ships. Turning down the rate of sensor pings can keep your ship's position masked."
-  },
+  },*/
   {
     selector: ".contact-info",
     content:
@@ -123,7 +123,7 @@ class Sensors extends Component {
         }
       });
     }
-    if (!this.pingSub && !nextProps.data.loading) {
+    /* if (!this.pingSub && !nextProps.data.loading) {
       this.pingSub = nextProps.data.subscribeToMore({
         document: PING_SUB,
         variables: { id: nextProps.data.sensors[0].id },
@@ -137,7 +137,7 @@ class Sensors extends Component {
           }
         }
       });
-    }
+    }*/
     const nextSensors = nextProps.data.sensors && nextProps.data.sensors[0];
     if (!nextProps.data.loading && nextSensors) {
       if (this.props.data.loading) {
@@ -244,7 +244,8 @@ class Sensors extends Component {
       c => c.component === "SensorScans"
     );
     const sensors = this.props.data.sensors[0];
-    const { pingMode, pings } = sensors;
+    const { pingMode } = sensors;
+    const pings = false;
     const { hoverContact, ping, pingTime } = this.state;
     return (
       <div className="cardSensors">
@@ -303,7 +304,7 @@ class Sensors extends Component {
                   sensor={sensors.id}
                   hoverContact={this._hoverContact.bind(this)}
                   ping={ping}
-                  pings={sensors.pings}
+                  pings={pings}
                   pingTime={pingTime}
                   simulatorId={this.props.simulator.id}
                   segments={sensors.segments}
