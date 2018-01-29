@@ -23,6 +23,7 @@ type Sensors implements SystemInterface{
   scans: [SensorScan]
   history: Boolean
   autoTarget: Boolean
+  frozen: Boolean
   segments: [SensorsSegment]
 }
 type SensorScan {

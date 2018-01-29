@@ -57,7 +57,7 @@ const moveSensorContactTimed = () => {
     App.systems.forEach(sys => {
       if (sys.type === "Sensors") {
         const sensors = sys;
-        pubsub.publish("sensorContactUpdate", sensors.contacts);
+        pubsub.publish("sensorContactUpdate", sensors);
       }
     });
   }
@@ -68,7 +68,7 @@ const updateSensors = () => {
   App.systems.forEach(sys => {
     if (sys.type === "Sensors") {
       const sensors = sys;
-      pubsub.publish("sensorContactUpdate", sensors.contacts);
+      pubsub.publish("sensorContactUpdate", sensors);
     }
   });
   setTimeout(updateSensors, updateInterval);

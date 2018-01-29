@@ -68,6 +68,8 @@ export default class Sensors extends System {
         this.armyContacts.push(new SensorContact(contact));
       });
     }
+    this.frozen = params.frozen || false;
+
     this.segments = params.segments || [
       { segment: "a1", state: false },
       { segment: "b1", state: false },
@@ -225,6 +227,9 @@ export default class Sensors extends System {
   }
   setAutoTarget(target) {
     this.autoTarget = target;
+  }
+  setFrozen(frozen) {
+    this.frozen = frozen;
   }
   setSegment(segment, state) {
     this.segments.find(s => s.segment === segment).state = state;
