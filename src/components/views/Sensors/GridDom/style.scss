@@ -1,5 +1,6 @@
 #sensorGrid {
   position: absolute;
+  z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,6 +8,17 @@
   border-radius: 50%;
   border: solid rgba(255, 255, 255, 0.4);
   border-width: 4px;
+  .sensors-interference {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index:10000;
+    background-color: white;
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+  }
   .grid {
     height: 100%;
     width: 100%;
@@ -18,23 +30,23 @@
     background-color: rgba(0, 0, 0, 0.6);
 
     //Ping Stuff
-    background: radial-gradient(
-      ellipse at center,
-      rgba(30, 87, 153, 0) 0%,
-      rgba(31, 91, 158, 0) 21%,
-      rgba(41, 137, 216, 0.24) 50%,
-      rgba(34, 107, 178, 0.8) 61%,
-      rgba(30, 88, 154, 0) 70%
-    );
-    background-color: rgba(0, 0, 0, 0.6);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 0%;
-    transition: background-size 0s linear;
-    &.ping {
-      transition: background-size 10s ease;
-      background-size: 600%;
-    }
+    // background: radial-gradient(
+    //   ellipse at center,
+    //   rgba(30, 87, 153, 0) 0%,
+    //   rgba(31, 91, 158, 0) 21%,
+    //   rgba(41, 137, 216, 0.24) 50%,
+    //   rgba(34, 107, 178, 0.8) 61%,
+    //   rgba(30, 88, 154, 0) 70%
+    // );
+    // background-color: rgba(0, 0, 0, 0.6);
+    // background-position: center;
+    // background-repeat: no-repeat;
+    // background-size: 0%;
+    // transition: background-size 0s linear;
+    // &.ping {
+    //   transition: background-size 10s ease;
+    //   background-size: 600%;
+    // }
     /*.ping-ring {
       width: 100%;
       height: 100%;
@@ -72,6 +84,33 @@
       height: 5%;
       position: absolute;
       transform: translate(-100%, 0);
+    }
+    .sensors-border-holder, .sensors-planet-holder {
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items:center;
+      pointer-events: none;
+    }
+    .sensors-border {
+      width: 200%;
+      height: 3%;
+      position: absolute;
+      border: solid 3px #417;
+      background-color: rebeccapurple;
+      opacity: 0.7;
+      pointer-events: all;
+    }
+    .sensors-planet {
+      width: 50%;
+      height: 50%;
+      position: absolute;
+      pointer-events: all;
+      border: solid 3px #417;
+      border-radius: 50%;
     }
   }
   .grid-segments {

@@ -68,6 +68,10 @@ export default class Sensors extends System {
         this.armyContacts.push(new SensorContact(contact));
       });
     }
+    this.frozen = params.frozen || false;
+    this.autoThrusters = params.autoThrusters || false;
+    this.interference = params.interference || 0;
+
     this.segments = params.segments || [
       { segment: "a1", state: false },
       { segment: "b1", state: false },
@@ -189,7 +193,7 @@ export default class Sensors extends System {
   }
   moveContact({ id, destination, speed, stop }) {
     const myContact = this.contacts.find(contact => contact.id === id);
-    myContact.move(destination, speed, stop);
+    myContact && myContact.move(destination, speed, stop);
   }
   removeContact({ id }) {
     const contactIndex = this.contacts.findIndex(contact => contact.id === id);
@@ -197,7 +201,7 @@ export default class Sensors extends System {
   }
   stopContact({ id }) {
     const myContact = this.contacts.find(contact => contact.id === id);
-    myContact.stop();
+    myContact && myContact.stop();
   }
   destroyContact({ id }) {
     const myContact = this.contacts.find(contact => contact.id === id);
@@ -225,6 +229,15 @@ export default class Sensors extends System {
   }
   setAutoTarget(target) {
     this.autoTarget = target;
+  }
+  setFrozen(frozen) {
+    this.frozen = frozen;
+  }
+  setAutoThrusters(t) {
+    this.autoThrusters = t;
+  }
+  setInterference(i) {
+    this.interference = i;
   }
   setSegment(segment, state) {
     this.segments.find(s => s.segment === segment).state = state;

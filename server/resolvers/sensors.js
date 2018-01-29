@@ -112,6 +112,12 @@ export const SensorsMutations = {
   },
   setSensorsSegment(root, args, context) {
     App.handleEvent(args, "setSensorsSegment", context);
+  },
+  toggleSensorsAutoThrusters(root, args, context) {
+    App.handleEvent(args, "toggleSensorsAutoThrusters", context);
+  },
+  setSensorsInterference(root, args, context) {
+    App.handleEvent(args, "setSensorsInterference", context);
   }
 };
 
@@ -131,11 +137,12 @@ export const SensorsSubscriptions = {
   },
   sensorContactUpdate: {
     resolve(root, { sensorId }) {
-      return root.filter(contact => contact.sensorId === sensorId);
+      if (root.id !== sensorId) return null;
+      return root.contacts.filter(contact => contact.sensorId === sensorId);
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("sensorContactUpdate"),
-      rootValue => !!(rootValue && rootValue.length)
+      (rootValue, { sensorId }) => rootValue.id === sensorId
     )
   },
   sensorsPing: {

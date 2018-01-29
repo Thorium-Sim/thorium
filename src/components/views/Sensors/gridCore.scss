@@ -1,4 +1,12 @@
 .sensorGridCore {
+  .col-sm-3 {
+    position: relative;
+    z-index: 1000;
+    pointer-events: none;
+    * {
+      pointer-events: all;
+    }
+  }
   .sensorGridHolder {
     background-color: #ccc;
     border-radius: 50%;
@@ -14,7 +22,24 @@
   .core .react-grid-item .sensorGridCore div {
     height: initial;
   }
-
+  .slider-picker > div:nth-child(1){
+    margin-bottom: -15px;
+  }
+  .planet-dragger {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border: solid 2px #999;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .border-dragger {
+    width: 20px;
+    height: 15px;
+    background-color: white;
+    border: solid 2px #999;
+    cursor: pointer;
+  }
   img.armyContact {
     height: 16px;
     width: 16px;

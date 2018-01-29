@@ -27,6 +27,8 @@ export default class SensorContact {
     this.class = "SensorContact";
     this.name = params.name || "Contact";
     this.size = params.size || 1; // Float - Scale percentage
+    this.type = params.type || "contact";
+    this.rotation = params.rotation || 0;
     this.icon = params.icon || "/Sensor Contacts/Icons/Default"; // Added to '/Sensor Contacts/'
     this.color = params.color || "#0f0";
     this.picture = params.picture || "/Sensor Contacts/Pictures/Default"; // Added to '/Sensor Pictures/'
@@ -63,6 +65,7 @@ export default class SensorContact {
   }
   nudge(coordinates, speed, yaw) {
     this.speed = speed;
+    const maxDistance = this.type === "planet" ? 2 : 1.1;
     if (yaw) {
       // Rotate the contact about the center
       const destinationPoints = calculateRotatedPoint(this.destination, yaw);
@@ -75,18 +78,19 @@ export default class SensorContact {
       this.location.y = locationPoints.y;
       this.position.x = positionPoints.x;
       this.position.y = positionPoints.y;
+      this.rotation += yaw;
     } else {
       this.destination.x = Math.max(
-        -1.08,
-        Math.min(1.08, this.destination.x + coordinates.x)
+        -1 * maxDistance,
+        Math.min(maxDistance, this.destination.x + coordinates.x)
       );
       this.destination.y = Math.max(
-        -1.08,
-        Math.min(1.08, this.destination.y + coordinates.y)
+        -1 * maxDistance,
+        Math.min(maxDistance, this.destination.y + coordinates.y)
       );
       this.destination.z = Math.max(
-        -1.08,
-        Math.min(1.08, this.destination.z + coordinates.z)
+        -1 * maxDistance,
+        Math.min(maxDistance, this.destination.z + coordinates.z)
       );
       this.location = this.position;
       this.startTime = Date.now();

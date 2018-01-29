@@ -5,6 +5,8 @@ import { graphql, withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import ContactContextMenu from "./contactContextMenu";
 import { Row, Col, Container, Button, Input } from "reactstrap";
+import { SliderPicker } from "react-color";
+import tinycolor from "tinycolor2";
 import Grid from "./GridDom";
 import Nudge from "./nudge";
 import { Asset } from "../../../helpers/assets";
@@ -52,6 +54,8 @@ const SENSOR_SUB = gql`
       id
       type
       autoTarget
+      autoThrusters
+      interference
       segments {
         segment
         state
@@ -79,6 +83,9 @@ class GridCore extends Component {
       removeContacts: false,
       contextContact: null,
       speed: 0.6,
+      planetSize: 1,
+      planetColor: "#663399",
+      borderColor: "#663399",
       askForSpeed:
         localStorage.getItem("thorium-core-sensors-askforspeed") === "yes"
           ? true
@@ -170,6 +177,7 @@ class GridCore extends Component {
     const {
       location,
       icon,
+      type,
       size,
       name,
       color,
@@ -179,7 +187,8 @@ class GridCore extends Component {
     } = movingContact;
     if (!location) return;
     const distance = distance3d({ x: 0, y: 0, z: 0 }, location);
-    if (distance > 1.08) {
+    const maxDistance = type === "planet" ? 2 : 1.1;
+    if (distance > maxDistance) {
       return;
     }
     const mutation = gql`
@@ -191,6 +200,7 @@ class GridCore extends Component {
       id: this.props.data.sensors[0].id,
       contact: {
         icon,
+        type,
         size,
         name,
         color,
@@ -375,6 +385,38 @@ class GridCore extends Component {
       variables
     });
   };
+  autoThrusters = e => {
+    const mutation = gql`
+      mutation SensorsAutoThrusters($id: ID!, $thrusters: Boolean!) {
+        toggleSensorsAutoThrusters(id: $id, thrusters: $thrusters)
+      }
+    `;
+    const sensors = this.props.data.sensors[0];
+    const variables = {
+      id: sensors.id,
+      thrusters: e.target.checked
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  updateInterference = e => {
+    const mutation = gql`
+      mutation SensorsInterference($id: ID!, $interference: Float!) {
+        setSensorsInterference(id: $id, interference: $interference)
+      }
+    `;
+    const sensors = this.props.data.sensors[0];
+    const variables = {
+      id: sensors.id,
+      interference: e.target.value
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading) return <p>Loading...</p>;
     if (!this.props.data.sensors[0]) return <p>No Sensor Grid</p>;
@@ -463,12 +505,103 @@ class GridCore extends Component {
                 onClick={this.autoTarget}
               />
             </label>
+            <label>
+              Auto Thrusters{" "}
+              <input
+                type="checkbox"
+                checked={sensors.autoThrusters}
+                onClick={this.autoThrusters}
+              />
+            </label>
             <Nudge
               sensor={sensors.id}
               client={this.props.client}
               speed={speed}
             />
             <small>Click grid segments to black out</small>
+            <Row>
+              <Col sm={10}>
+                <label>Planet</label>
+                <input
+                  type="range"
+                  min={0.01}
+                  max={2}
+                  step={0.01}
+                  value={this.state.planetSize}
+                  onChange={e => this.setState({ planetSize: e.target.value })}
+                />
+                <label>Color</label>
+                <SliderPicker
+                  color={this.state.planetColor}
+                  onChangeComplete={color =>
+                    this.setState({ planetColor: color.hex })
+                  }
+                />
+              </Col>
+              <Col sm={2}>
+                <div
+                  className="planet-dragger"
+                  onMouseDown={() =>
+                    this.dragStart({
+                      color: this.state.planetColor,
+                      type: "planet",
+                      size: this.state.planetSize
+                    })
+                  }
+                  style={{
+                    borderColor: tinycolor(this.state.planetColor)
+                      .darken(10)
+                      .toString(),
+                    backgroundColor: tinycolor(
+                      this.state.planetColor
+                    ).toString()
+                  }}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={10}>
+                <label>Border</label>
+                <SliderPicker
+                  color={this.state.borderColor}
+                  onChangeComplete={color =>
+                    this.setState({ borderColor: color.hex })
+                  }
+                />
+              </Col>
+              <Col sm={2}>
+                <div
+                  className="border-dragger"
+                  onMouseDown={() =>
+                    this.dragStart({
+                      color: this.state.borderColor,
+                      type: "border"
+                    })
+                  }
+                  style={{
+                    borderColor: tinycolor(this.state.borderColor)
+                      .darken(10)
+                      .toString(),
+                    backgroundColor: tinycolor(
+                      this.state.borderColor
+                    ).toString()
+                  }}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={12}>
+                <label>Interference</label>
+                <input
+                  type="range"
+                  min={0}
+                  max={1}
+                  step={0.01}
+                  defaultValue={sensors.interference}
+                  onMouseUp={this.updateInterference}
+                />
+              </Col>
+            </Row>
           </Col>
           <Col sm={6} style={{ height: "100%" }}>
             <div
@@ -582,6 +715,8 @@ const GRID_QUERY = gql`
       id
       type
       autoTarget
+      autoThrusters
+      interference
       segments {
         segment
         state
