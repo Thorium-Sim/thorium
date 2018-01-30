@@ -117,8 +117,8 @@ const ShortRangeComm = ({ data, client, simulatorId, type }) => {
       refetchQueries: ["ShortRangeComm"]
     });
   };
-  if (data.loading) return null;
   const { shortRangeComm, assetFolders, decks } = data;
+  if (data.loading && !shortRangeComm) return null;
   const [folders] = assetFolders;
   const { containers } = folders;
   return (
@@ -206,8 +206,8 @@ const ShortRangeComm = ({ data, client, simulatorId, type }) => {
                       min="0"
                       max="100"
                       step="1"
-                      value={s.range.lower * 100}
-                      onChange={evt => {
+                      defaultValue={s.range.lower * 100}
+                      onMouseUp={evt => {
                         signalUpdate(
                           "range-lower",
                           s,
@@ -227,8 +227,8 @@ const ShortRangeComm = ({ data, client, simulatorId, type }) => {
                       min="0"
                       max="100"
                       step="1"
-                      value={s.range.upper * 100}
-                      onChange={evt => {
+                      defaultValue={s.range.upper * 100}
+                      onMouseUp={evt => {
                         signalUpdate(
                           "range-upper",
                           s,

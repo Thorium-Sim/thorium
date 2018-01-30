@@ -9,7 +9,7 @@ import {
   Input
 } from "reactstrap";
 import gql from "graphql-tag";
-import { withApollo } from "react-apollo";
+import { withApollo, graphql } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import Views, { Widgets } from "../../../../components/views/index";
 
@@ -249,7 +249,9 @@ class SimulatorConfigView extends Component {
           <Col sm={9}>
             {selectedStationSet && (
               <ConfigStationSet
+                data={this.props.data}
                 client={this.props.client}
+                simulator={sim}
                 selectedStationSet={stationSets.find(
                   s => s.id === selectedStationSet
                 )}
@@ -262,7 +264,13 @@ class SimulatorConfigView extends Component {
   }
 }
 
-const ConfigStationSet = ({ client, selectedStationSet }) => {
+const ConfigStationSet = props => {
+  const {
+    client,
+    selectedStationSet,
+    simulator,
+    data: { loading, softwarePanels }
+  } = props;
   const addStation = () => {
     let name = prompt("What is the station name?");
     if (name) {
@@ -377,6 +385,7 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
       variables
     });
   };
+  console.log(simulator.panels);
   return (
     <div>
       <h5>Stations</h5>
@@ -459,6 +468,13 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
                                 </option>
                               );
                             })}
+                            <option disabled>-----------</option>
+                            {!loading &&
+                              simulator.panels.map(p => (
+                                <option key={p} value={p}>
+                                  {softwarePanels.find(s => s.id === p).name}
+                                </option>
+                              ))}
                           </Input>
                         </td>
                         <td>
@@ -486,6 +502,13 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
                     </option>
                   );
                 })}
+                <option disabled>-----------</option>
+                {!loading &&
+                  simulator.panels.map(p => (
+                    <option key={p} value={p}>
+                      {softwarePanels.find(s => s.id === p).name}
+                    </option>
+                  ))}
               </select>
               <label>Message Groups:</label>
               {["SecurityTeams", "DamageTeams", "MedicalTeams"].map(group => (
@@ -528,4 +551,13 @@ const ConfigStationSet = ({ client, selectedStationSet }) => {
   );
 };
 
-export default withApollo(SimulatorConfigView);
+const QUERY = gql`
+  query Panels {
+    softwarePanels {
+      id
+      name
+    }
+  }
+`;
+
+export default withApollo(graphql(QUERY)(SimulatorConfigView));

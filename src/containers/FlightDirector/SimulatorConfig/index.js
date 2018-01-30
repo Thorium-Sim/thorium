@@ -246,6 +246,7 @@ class SimulatorConfig extends Component {
   render() {
     const { data } = this.props;
     const { selectedSimulator, selectedProperty } = this.state;
+    const ConfigComponent = Config[selectedProperty];
     if (data.loading) return null;
     const { simulators } = data;
     if (!simulators) return;
@@ -336,17 +337,13 @@ class SimulatorConfig extends Component {
           <Col sm={8}>
             <Card>
               <CardBody>
-                {(() => {
-                  const ConfigComponent =
-                    Config[selectedProperty] || (() => null);
-                  return (
-                    <ConfigComponent
-                      selectedSimulator={simulators.find(
-                        s => s.id === selectedSimulator
-                      )}
-                    />
-                  );
-                })()}
+                {ConfigComponent && (
+                  <ConfigComponent
+                    selectedSimulator={simulators.find(
+                      s => s.id === selectedSimulator
+                    )}
+                  />
+                )}
               </CardBody>
             </Card>
           </Col>
