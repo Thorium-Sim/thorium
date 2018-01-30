@@ -66,6 +66,7 @@ class EngineCoreView extends Component {
     }
   }
   getCurrentSpeed() {
+    if (!this.props.data.engines) return;
     const velocity = this.props.data.engines[0].velocity;
     const speed = this.props.data.engines
       .reduce((prev, next) => {

@@ -6,8 +6,8 @@ export default class ViewscreenOffline extends Component {
   componentDidMount() {
     const canvas = document.getElementById("canvas");
     this.ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth / 4;
+    canvas.height = window.innerHeight / 4;
     this.toggle = true;
     this.loop();
   }
@@ -20,7 +20,7 @@ export default class ViewscreenOffline extends Component {
         opacity: Math.max(Math.random(), 0.5)
       });
       noise(this.ctx);
-      requestAnimationFrame(this.loop);
+      setTimeout(this.loop, 1000 / 30);
       return;
     }
   };
@@ -32,19 +32,19 @@ export default class ViewscreenOffline extends Component {
             MAIN VIEW SCREEN OFFLINE
           </h1>
         </div>
-        <canvas id="canvas" />
+        <canvas id="canvas" style={{ width: "100vw", height: "100vh" }} />
       </div>
     );
   }
 }
 
 function noise(ctx) {
-  var w = ctx.canvas.width,
-    h = ctx.canvas.height,
-    idata = ctx.createImageData(w, h),
-    buffer32 = new Uint32Array(idata.data.buffer),
-    len = buffer32.length,
-    i = 0;
+  const w = ctx.canvas.width;
+  const h = ctx.canvas.height;
+  const idata = ctx.createImageData(w, h);
+  const buffer32 = new Uint32Array(idata.data.buffer);
+  const len = buffer32.length;
+  let i = 0;
 
   for (; i < len; ) buffer32[i++] = ((255 * Math.random()) | 0) << 24;
 

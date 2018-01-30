@@ -100,14 +100,12 @@ class CoreComponents extends Component {
     this.setState({
       simulator
     });
-    this.props.client.resetStore();
     localStorage.setItem("thorium_coreSimulator", simulator);
   };
   pickLayout = e => {
     this.setState({
       layout: e.target.value
     });
-    this.props.client.resetStore();
     localStorage.setItem("thorium_coreLayout", e.target.value);
   };
   updateMosaic = mosaic => {

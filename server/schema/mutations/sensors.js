@@ -39,5 +39,7 @@ updateSensorScan(id: ID!, scan: SensorScanInput!): String
 cancelSensorScan(id: ID!, scan: ID!):String
 
 toggleSensorsAutoTarget(id: ID!, target: Boolean!):String
+toggleSensorsAutoThrusters(id: ID!, thrusters: Boolean!):String
+setSensorsInterference(id: ID!, interference: Float!):String
 setSensorsSegment(id: ID!, segment: String!, state: Boolean!): String
 `;

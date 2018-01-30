@@ -101,46 +101,44 @@ App.on("setPresetAnswers", ({ simulatorId, domain, presetAnswers }) => {
 App.on("createSensorContact", ({ id, contact }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.createContact(contact);
-  pubsub.publish("sensorContactUpdate", system.contacts);
+  pubsub.publish("sensorContactUpdate", system);
 });
 App.on("moveSensorContact", ({ id, contact }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.moveContact(contact);
-  pubsub.publish("sensorContactUpdate", system.contacts);
+  pubsub.publish("sensorContactUpdate", system);
 });
 App.on("updateSensorContactLocation", ({ id, contact }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.updateContact(contact);
-  pubsub.publish("sensorContactUpdate", system.contacts);
+  pubsub.publish("sensorContactUpdate", system);
 });
 App.on("removeSensorContact", ({ id, contact }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.removeContact(contact);
-  pubsub.publish("sensorContactUpdate", system.contacts);
+  pubsub.publish("sensorContactUpdate", system);
 });
 App.on("removeAllSensorContacts", ({ id }) => {
   const system = App.systems.find(sys => sys.id === id);
-  system.contacts.concat().forEach(contact => {
-    system.removeContact(contact);
-  });
-  pubsub.publish("sensorContactUpdate", system.contacts);
+  system.contacts = [];
+  pubsub.publish("sensorContactUpdate", system);
 });
 App.on("stopAllSensorContacts", ({ id }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.contacts.concat().forEach(contact => {
     system.stopContact(contact);
   });
-  pubsub.publish("sensorContactUpdate", system.contacts);
+  pubsub.publish("sensorContactUpdate", system);
 });
 App.on("destroySensorContact", ({ id, contact }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.destroyContact(contact);
-  pubsub.publish("sensorContactUpdate", system.contacts);
+  pubsub.publish("sensorContactUpdate", system);
 });
 App.on("updateSensorContact", ({ id, contact }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.updateContact(contact);
-  pubsub.publish("sensorContactUpdate", system.contacts);
+  pubsub.publish("sensorContactUpdate", system);
 });
 
 // Army Contacts
@@ -183,10 +181,14 @@ App.on("nudgeSensorContacts", ({ id, amount, speed, yaw }) => {
   system.nudgeContacts(amount, speed, yaw);
   pubsub.publish(
     "sensorContactUpdate",
-    system.contacts.map(c => Object.assign({}, c, { forceUpdate: true }))
+    Object.assign({}, system, {
+      contacts: system.contacts.map(c =>
+        Object.assign({}, c, { forceUpdate: true })
+      )
+    })
   );
   // Reset the force update after a second.
-  setTimeout(() => pubsub.publish("sensorContactUpdate", system.contacts), 500);
+  setTimeout(() => pubsub.publish("sensorContactUpdate", system), 500);
 });
 App.on("setSensorPingMode", ({ id, mode }) => {
   const system = App.systems.find(sys => sys.id === id);
@@ -247,6 +249,22 @@ App.on("toggleSensorsAutoTarget", ({ id, target }) => {
 App.on("setSensorsSegment", ({ id, segment, state }) => {
   const sensors = App.systems.find(sys => sys.id === id);
   sensors.setSegment(segment, state);
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});
+App.on("toggleSensorsAutoThrusters", ({ id, thrusters }) => {
+  const sensors = App.systems.find(sys => sys.id === id);
+  sensors.setAutoThrusters(thrusters);
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});
+App.on("setSensorsInterference", ({ id, interference }) => {
+  const sensors = App.systems.find(sys => sys.id === id);
+  sensors.setInterference(interference);
   pubsub.publish(
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")
