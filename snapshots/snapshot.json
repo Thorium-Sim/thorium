@@ -1,5 +1,5 @@
 {
-	"_eventsCount": 314,
+	"_eventsCount": 316,
 	"simulators": [
 		{
 			"id": "test",
@@ -59,7 +59,9 @@
 				"remoteAccessCodes": [],
 				"extraSystems": []
 			},
-			"panels": [],
+			"panels": [
+				"7c9bc63a-f060-486a-9b4f-c92f2321a7f3"
+			],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": []
 		},
@@ -376,6 +378,12 @@
 							"name": "Self Destruct",
 							"icon": null,
 							"component": "SelfDestruct",
+							"class": "Card"
+						},
+						{
+							"name": "Panel",
+							"icon": null,
+							"component": "7c9bc63a-f060-486a-9b4f-c92f2321a7f3",
 							"class": "Card"
 						}
 					]
@@ -1530,7 +1538,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "active",
-			"timeSincePing": 4400,
+			"timeSincePing": 2500,
 			"scanResults": "Three phaser banks and two torpedo launchers on the Voyager.",
 			"scanRequest": "Weapons on the USS voyager",
 			"processedData": "",
@@ -1546,6 +1554,8 @@
 					"class": "SensorContact",
 					"name": "USS Voyager",
 					"size": 1,
+					"type": "contact",
+					"rotation": 0,
 					"icon": "/Sensor Contacts/Icons/N",
 					"color": "#0f0",
 					"picture": "/Sensor Contacts/Pictures/N",
@@ -1577,6 +1587,8 @@
 					"class": "SensorContact",
 					"name": "USS Voyager",
 					"size": 1,
+					"type": "contact",
+					"rotation": 0,
 					"icon": "/Sensor Contacts/Icons/N",
 					"color": "#0f0",
 					"picture": "/Sensor Contacts/Pictures/Astra Heavy Cruiser",
@@ -1610,6 +1622,8 @@
 					"class": "SensorContact",
 					"name": "USS Voyager",
 					"size": 1,
+					"type": "contact",
+					"rotation": 0,
 					"icon": "/Sensor Contacts/Icons/N",
 					"color": "#0f0",
 					"picture": "/Sensor Contacts/Pictures/Astra Heavy Cruiser",
@@ -1636,6 +1650,9 @@
 					"endTime": 0
 				}
 			],
+			"frozen": false,
+			"autoThrusters": false,
+			"interference": 0,
 			"segments": [
 				{
 					"segment": "a1",
@@ -1807,7 +1824,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 54335300,
+			"timeSincePing": 46884400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -1818,6 +1835,9 @@
 			"scans": [],
 			"contacts": [],
 			"armyContacts": [],
+			"frozen": false,
+			"autoThrusters": false,
+			"interference": 0,
 			"segments": [
 				{
 					"segment": "a1",
@@ -2118,7 +2138,7 @@
 			"powerOutput": 120,
 			"efficiency": 1,
 			"externalPower": true,
-			"batteryChargeLevel": 0.5203419999991115,
+			"batteryChargeLevel": 0.6183099999994186,
 			"batteryChargeRate": 0.001
 		},
 		{
@@ -3301,7 +3321,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 49518300,
+			"timeSincePing": 42067400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3312,6 +3332,9 @@
 			"scans": [],
 			"contacts": [],
 			"armyContacts": [],
+			"frozen": false,
+			"autoThrusters": false,
+			"interference": 0,
 			"segments": [
 				{
 					"segment": "a1",
@@ -3485,7 +3508,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 49518300,
+			"timeSincePing": 42067400,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -3496,6 +3519,9 @@
 			"scans": [],
 			"contacts": [],
 			"armyContacts": [],
+			"frozen": false,
+			"autoThrusters": false,
+			"interference": 0,
 			"segments": [
 				{
 					"segment": "a1",
@@ -4679,7 +4705,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 44405200,
+			"timeSincePing": 36954300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4690,6 +4716,9 @@
 			"scans": [],
 			"contacts": [],
 			"armyContacts": [],
+			"frozen": false,
+			"autoThrusters": false,
+			"interference": 0,
 			"segments": [
 				{
 					"segment": "a1",
@@ -4868,7 +4897,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 44405200,
+			"timeSincePing": 36954300,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -4879,6 +4908,9 @@
 			"scans": [],
 			"contacts": [],
 			"armyContacts": [],
+			"frozen": false,
+			"autoThrusters": false,
+			"interference": 0,
 			"segments": [
 				{
 					"segment": "a1",
@@ -6529,7 +6561,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 33090800,
+			"timeSincePing": 25639900,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6540,6 +6572,9 @@
 			"scans": [],
 			"contacts": [],
 			"armyContacts": [],
+			"frozen": false,
+			"autoThrusters": false,
+			"interference": 0,
 			"segments": [
 				{
 					"segment": "a1",
@@ -6715,7 +6750,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 33090800,
+			"timeSincePing": 25639900,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -6726,6 +6761,9 @@
 			"scans": [],
 			"contacts": [],
 			"armyContacts": [],
+			"frozen": false,
+			"autoThrusters": false,
+			"interference": 0,
 			"segments": [
 				{
 					"segment": "a1",
@@ -8306,7 +8344,7 @@
 			"domain": "external",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 20885700,
+			"timeSincePing": 13434800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8317,6 +8355,9 @@
 			"scans": [],
 			"contacts": [],
 			"armyContacts": [],
+			"frozen": false,
+			"autoThrusters": false,
+			"interference": 0,
 			"segments": [
 				{
 					"segment": "a1",
@@ -8492,7 +8533,7 @@
 			"domain": "internal",
 			"pings": true,
 			"pingMode": "manual",
-			"timeSincePing": 20885700,
+			"timeSincePing": 13434800,
 			"scanResults": "",
 			"scanRequest": "",
 			"processedData": "",
@@ -8503,6 +8544,9 @@
 			"scans": [],
 			"contacts": [],
 			"armyContacts": [],
+			"frozen": false,
+			"autoThrusters": false,
+			"interference": 0,
 			"segments": [
 				{
 					"segment": "a1",
@@ -9047,7 +9091,7 @@
 			"locations": [],
 			"requiredDamageSteps": [],
 			"optionalDamageSteps": [],
-			"heat": 0.6856452241713804,
+			"heat": 0.3600155945419477,
 			"heatRate": 1,
 			"coolant": 1,
 			"cooling": false,
@@ -9486,9 +9530,9 @@
 		{
 			"id": "kind-another-possible",
 			"class": "Client",
-			"flightId": "f561bf87-d280-48c5-9188-9f995c548253",
-			"simulatorId": "00f8f213-f6da-4f07-9d1c-523f5466c6de",
-			"station": "Viewscreen",
+			"flightId": "c90e2ffe-b8d5-42a0-b551-07b243622e05",
+			"simulatorId": "2b52d1d5-d02c-4008-855c-3973332def81",
+			"station": "Command",
 			"loginName": null,
 			"loginState": "logout",
 			"sentPing": null,
@@ -22922,13 +22966,6 @@
 			"fullPath": "/Library Images",
 			"name": "Library Images",
 			"class": "AssetFolder"
-		},
-		{
-			"id": "5b42e657-de62-432d-a6fc-7149a15093b6",
-			"folderPath": "/Viewscreen",
-			"fullPath": "/Viewscreen/Faces",
-			"name": "Faces",
-			"class": "AssetFolder"
 		}
 	],
 	"assetContainers": [
@@ -24554,62 +24591,6 @@
 			"fullPath": "/Viewscreen/Videos/Wormhole Detected",
 			"folderId": "95048f99-89e3-4b10-bae9-f14a84f2897d",
 			"name": "Wormhole Detected",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "c1ea040a-ea84-4309-82f3-9d1e71b0e819",
-			"folderPath": "/Viewscreen/Faces",
-			"fullPath": "/Viewscreen/Faces/Aatik",
-			"folderId": "5b42e657-de62-432d-a6fc-7149a15093b6",
-			"name": "Aatik",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "6c62ab2b-8af7-45d9-b3e6-e0223494b99f",
-			"folderPath": "/Viewscreen/Faces",
-			"fullPath": "/Viewscreen/Faces/Els",
-			"folderId": "5b42e657-de62-432d-a6fc-7149a15093b6",
-			"name": "Els",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "b022f539-9d7f-480c-971f-6d229f681279",
-			"folderPath": "/Viewscreen/Faces",
-			"fullPath": "/Viewscreen/Faces/Anya",
-			"folderId": "5b42e657-de62-432d-a6fc-7149a15093b6",
-			"name": "Anya",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "561948cd-4825-43e5-8052-32b6d3c9c309",
-			"folderPath": "/Viewscreen/Faces",
-			"fullPath": "/Viewscreen/Faces/Julia",
-			"folderId": "5b42e657-de62-432d-a6fc-7149a15093b6",
-			"name": "Julia",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "7b41e3a7-3a19-418b-9ef3-ca0377134954",
-			"folderPath": "/Viewscreen/Faces",
-			"fullPath": "/Viewscreen/Faces/Owen",
-			"folderId": "5b42e657-de62-432d-a6fc-7149a15093b6",
-			"name": "Owen",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "46a59529-b6c4-4d68-9e4d-c7aae8eaad7e",
-			"folderPath": "/Viewscreen/Faces",
-			"fullPath": "/Viewscreen/Faces/Murdock",
-			"folderId": "5b42e657-de62-432d-a6fc-7149a15093b6",
-			"name": "Murdock",
-			"class": "AssetContainer"
-		},
-		{
-			"id": "be542b02-0c6e-4ff1-8c00-428c990754f8",
-			"folderPath": "/Viewscreen/Faces",
-			"fullPath": "/Viewscreen/Faces/Wanda",
-			"folderId": "5b42e657-de62-432d-a6fc-7149a15093b6",
-			"name": "Wanda",
 			"class": "AssetContainer"
 		}
 	],
@@ -27092,69 +27073,6 @@
 			"url": "/assets/Viewscreen/Videos/Wormhole Detected/default.mov",
 			"simulatorId": "default",
 			"class": "AssetObject"
-		},
-		{
-			"id": "60503303-a5b4-48e7-b3b9-7fb1b6c04813",
-			"containerPath": "/Viewscreen/Faces",
-			"containerId": "c1ea040a-ea84-4309-82f3-9d1e71b0e819",
-			"fullPath": "/Viewscreen/Faces/Aatik/default.jpg",
-			"url": "/assets/Viewscreen/Faces/Aatik/default.jpg",
-			"simulatorId": "default",
-			"class": "AssetObject"
-		},
-		{
-			"id": "cdc45c7e-3c81-4e75-bf3d-60673445be75",
-			"containerPath": "/Viewscreen/Faces",
-			"containerId": "6c62ab2b-8af7-45d9-b3e6-e0223494b99f",
-			"fullPath": "/Viewscreen/Faces/Els/default.jpg",
-			"url": "/assets/Viewscreen/Faces/Els/default.jpg",
-			"simulatorId": "default",
-			"class": "AssetObject"
-		},
-		{
-			"id": "52864388-8eda-41e7-acdb-9d2e07ebf537",
-			"containerPath": "/Viewscreen/Faces",
-			"containerId": "b022f539-9d7f-480c-971f-6d229f681279",
-			"fullPath": "/Viewscreen/Faces/Anya/default.jpg",
-			"url": "/assets/Viewscreen/Faces/Anya/default.jpg",
-			"simulatorId": "default",
-			"class": "AssetObject"
-		},
-		{
-			"id": "a448cec7-5ea0-4f43-b96c-41e92de3d264",
-			"containerPath": "/Viewscreen/Faces",
-			"containerId": "561948cd-4825-43e5-8052-32b6d3c9c309",
-			"fullPath": "/Viewscreen/Faces/Julia/default.jpg",
-			"url": "/assets/Viewscreen/Faces/Julia/default.jpg",
-			"simulatorId": "default",
-			"class": "AssetObject"
-		},
-		{
-			"id": "da6c5efa-6732-4f3c-b519-b2c394835104",
-			"containerPath": "/Viewscreen/Faces",
-			"containerId": "7b41e3a7-3a19-418b-9ef3-ca0377134954",
-			"fullPath": "/Viewscreen/Faces/Owen/default.jpg",
-			"url": "/assets/Viewscreen/Faces/Owen/default.jpg",
-			"simulatorId": "default",
-			"class": "AssetObject"
-		},
-		{
-			"id": "aeac1f76-2aff-4899-b627-3ea6e089d013",
-			"containerPath": "/Viewscreen/Faces",
-			"containerId": "46a59529-b6c4-4d68-9e4d-c7aae8eaad7e",
-			"fullPath": "/Viewscreen/Faces/Murdock/default.jpg",
-			"url": "/assets/Viewscreen/Faces/Murdock/default.jpg",
-			"simulatorId": "default",
-			"class": "AssetObject"
-		},
-		{
-			"id": "3fa126b9-f8bf-44c1-9f7d-4811dbcdd1f6",
-			"containerPath": "/Viewscreen/Faces",
-			"containerId": "be542b02-0c6e-4ff1-8c00-428c990754f8",
-			"fullPath": "/Viewscreen/Faces/Wanda/default.jpg",
-			"url": "/assets/Viewscreen/Faces/Wanda/default.jpg",
-			"simulatorId": "default",
-			"class": "AssetObject"
 		}
 	],
 	"viewscreens": [],
@@ -27197,8 +27115,43 @@
 		}
 	],
 	"libraryDatabase": [],
-	"softwarePanels": [],
-	"snapshotVersion": 9148,
-	"version": 9148,
-	"timestamp": "2018-01-27T23:05:02.293Z"
+	"softwarePanels": [
+		{
+			"id": "7c9bc63a-f060-486a-9b4f-c92f2321a7f3",
+			"class": "SoftwarePanel",
+			"simulatorId": null,
+			"name": "Awesome",
+			"cables": [],
+			"components": [
+				{
+					"id": "2cd688ae-a910-4a55-95e0-a59deca13dee",
+					"component": "Light",
+					"level": 0,
+					"label": "",
+					"x": 0.23142857142857143,
+					"y": 0.551957671957672,
+					"scale": 1
+				},
+				{
+					"id": "198b07ea-6cc0-4d97-85b3-fa5ad384d3b5",
+					"component": "ToggleSwitch",
+					"level": 0,
+					"label": "",
+					"x": 0.44,
+					"y": 0.6315343915343915,
+					"scale": 1
+				}
+			],
+			"connections": [
+				{
+					"id": "a8029cd1-f3b1-4f12-99a7-d7943a95b7f4",
+					"to": "2cd688ae-a910-4a55-95e0-a59deca13dee",
+					"from": "198b07ea-6cc0-4d97-85b3-fa5ad384d3b5"
+				}
+			]
+		}
+	],
+	"snapshotVersion": 432,
+	"version": 432,
+	"timestamp": "2018-01-31T14:59:33.208Z"
 }
