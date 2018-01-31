@@ -25,6 +25,14 @@ export default props => {
             icon: "Offline"
           })
           .map(card => {
+            if (card.component.match(/.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
+              return (
+                <Views.SoftwarePanelSingle
+                  panel={card.component}
+                  {...this.props}
+                />
+              );
+            }
             const Component = Views[card.component];
             if (card.name === cardName) {
               return <Component {...props} />;

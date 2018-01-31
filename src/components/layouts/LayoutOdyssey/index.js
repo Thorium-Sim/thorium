@@ -108,8 +108,19 @@ class LayoutOdyssey extends Component {
                     icon: "Offline"
                   })
                   .map(card => {
-                    const Card = Views[card.component];
                     if (card.name === cardName) {
+                      if (card.component.match(/.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
+                        // Software Panel
+                        return (
+                          <Views.SoftwarePanelSingle
+                            panel={card.component}
+                            {...this.props}
+                            stopTraining={this.stopTraining}
+                            key={card.name}
+                          />
+                        );
+                      }
+                      const Card = Views[card.component];
                       return (
                         <Card
                           {...this.props}
