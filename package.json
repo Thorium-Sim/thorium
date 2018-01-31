@@ -83,7 +83,7 @@
     "react-table": "^6.7.4",
     "react-transition-group": "^2.2.1",
     "reactour": "^1.6.3",
-    "reactstrap": "^5.0.0-alpha.3",
+    "reactstrap": "^5.0.0-beta",
     "request": "^2.83.0",
     "sine-waves": "^0.3.0",
     "subscriptions-transport-ws": "^0.9.5",
