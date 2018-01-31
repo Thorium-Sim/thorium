@@ -34,7 +34,8 @@ export const defaultOptionalSteps = [
   { name: "sendInventory", args: {} },
   { name: "longRangeMessage", args: {} },
   { name: "probeLaunch", args: {} },
-  { name: "exocomps", args: {} }
+  { name: "exocomps", args: {} },
+  { name: "softwarePanel", args: {} }
 ];
 
 export const damagePositions = [

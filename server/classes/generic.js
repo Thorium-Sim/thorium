@@ -220,6 +220,9 @@ export class System {
             App.exocomps.find(e => e.simulatorId === sim.id)
           );
         }
+        if (step.name === "softwarePanel") {
+          return App.softwarePanels.find(e => e.simulatorId === sim.id);
+        }
         return false;
       });
 
