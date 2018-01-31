@@ -141,7 +141,7 @@ class LayoutOdyssey extends Component {
                 className="card-name"
                 onClick={() => this.setState({ changingCard: !changingCard })}
               >
-                {cardName}
+                {cardName} <span style={{ float: "right" }}>&#9660;</span>
               </h2>
             </div>
             <CardFrame simulator={simulator} />
