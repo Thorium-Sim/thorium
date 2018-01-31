@@ -253,7 +253,7 @@ class CoreComponents extends Component {
             Submit a Feature/Bug Report
           </ModalHeader>
           <ModalBody>
-            <IssueTracker />
+            <IssueTracker close={this.toggleIssueTracker} />
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={this.toggleIssueTracker}>

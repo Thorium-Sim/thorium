@@ -37,7 +37,8 @@ class IssueTracker extends Component {
       mutation,
       variables
     });
-    this._toggleShown();
+    this.setState({});
+    this.props.close && this.props.close();
   }
   render() {
     return (
