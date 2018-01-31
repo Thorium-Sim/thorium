@@ -261,7 +261,16 @@ class StealthField extends Component {
     if (!stealthField) return <p>No Stealth Field</p>;
     const { systems } = this.state;
     return (
-      <Container fluid className="card-stealthField">
+      <Container
+        fluid
+        className="card-stealthField"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-around",
+          alignItems: "center"
+        }}
+      >
         <h1>Stealth Field</h1>
         <Row>
           <Col sm="3" />

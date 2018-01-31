@@ -11,7 +11,6 @@ let snapshotDir = "./snapshots/";
 if (process.env.NODE_ENV === "production") {
   snapshotDir = paths.userData + "/";
 }
-
 class Events extends EventEmitter {
   constructor(params) {
     super(params);
@@ -109,12 +108,18 @@ class Events extends EventEmitter {
     });
   }
   snapshot(save) {
+    const dev =
+      !process.env.NODE_ENV && fs.existsSync(snapshotDir + "snapshot-dev.json");
     this.snapshotVersion = this.version;
     const snap = cloneDeep(this, true);
     const snapshot = this.trimSnapshot(snap);
-    writeFile(snapshotDir + "snapshot.json", snapshot, err => {
-      err && console.log(err);
-    });
+    writeFile(
+      snapshotDir + (dev ? "snapshot-dev.json" : "snapshot.json"),
+      snapshot,
+      err => {
+        err && console.log(err);
+      }
+    );
     return snapshot;
   }
   trimSnapshot(snapshot) {
