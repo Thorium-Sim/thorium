@@ -96,9 +96,16 @@ function addAspects(template, sim) {
     App.simulators.find(s => s.id === template.simulatorId).panels || [];
   panels.forEach(p => {
     const panel = App.softwarePanels.find(s => s.id === p);
+    const id = uuid.v4();
+    sim.stations.forEach(s => {
+      s.cards.forEach(c => {
+        console.log(id, p, c.component);
+        if (c.component === p) c.component = id;
+      });
+    });
     App.softwarePanels.push(
       new Classes.SoftwarePanel({
-        id: uuid.v4(),
+        id,
         name: panel.name,
         simulatorId: sim.id,
         cables: panel.cables,

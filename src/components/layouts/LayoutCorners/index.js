@@ -180,16 +180,24 @@ class LayoutCorners extends Component {
                   const component = Views[card.component];
                   if (card.component.match(/.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
                     // Software Panel
-                  } else {
                     return (
                       <CardHolder
-                        component={component}
+                        component={Views.SoftwarePanelSingle}
+                        panel={card.component}
                         {...this.props}
                         stopTraining={this.stopTraining}
                         key={card.name}
                       />
                     );
                   }
+                  return (
+                    <CardHolder
+                      component={component}
+                      {...this.props}
+                      stopTraining={this.stopTraining}
+                      key={card.name}
+                    />
+                  );
                 }
                 return null;
               })
