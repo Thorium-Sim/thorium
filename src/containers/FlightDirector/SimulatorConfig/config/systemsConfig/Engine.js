@@ -147,8 +147,8 @@ const Engine = ({ data, client, simulatorId, type }) => {
       refetchQueries: ["Engines"]
     });
   };
-  if (data.loading) return null;
   const { engines, decks } = data;
+  if (data.loading && !engines) return null;
   return (
     <div className="engine scroll">
       {engines.map(e => (

@@ -176,16 +176,20 @@ class LayoutCorners extends Component {
                 icon: "Offline"
               })
               .map(card => {
-                const component = Views[card.component];
                 if (card.name === cardName) {
-                  return (
-                    <CardHolder
-                      component={component}
-                      {...this.props}
-                      stopTraining={this.stopTraining}
-                      key={card.name}
-                    />
-                  );
+                  const component = Views[card.component];
+                  if (card.component.match(/.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
+                    // Software Panel
+                  } else {
+                    return (
+                      <CardHolder
+                        component={component}
+                        {...this.props}
+                        stopTraining={this.stopTraining}
+                        key={card.name}
+                      />
+                    );
+                  }
                 }
                 return null;
               })

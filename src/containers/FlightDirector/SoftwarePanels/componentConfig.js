@@ -46,7 +46,7 @@ class Config extends Component {
           <Input
             value={this.state.label}
             onChange={e => this.setState({ label: e.target.value })}
-            onBlur={e => update(this.state.label, "label")}
+            onBlur={() => update(this.state.label, "label")}
           />
         </FormGroup>
       </div>

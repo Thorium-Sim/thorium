@@ -14,6 +14,7 @@ export { default as CableSimple } from "./cableSimple";
 export { default as CableOutput } from "./cableOutput";
 export { default as CableInput } from "./cableInput";
 export { default as cableBox } from "./cableBox";
+export { default as Label } from "./label";
 export { default as Light } from "./light";
 export { default as ToggleSwitch } from "./toggleSwitch";
 export { default as ThreeWaySwitch } from "./threeWaySwitch";

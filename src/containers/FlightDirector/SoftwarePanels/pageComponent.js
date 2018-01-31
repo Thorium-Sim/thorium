@@ -110,8 +110,9 @@ class PageComponent extends Component {
             dragCable={dragCable}
             scale={scale}
             scaleComp={this.scaleComp}
+            label={label}
           />
-          <span className="label">{label}</span>
+          {component !== "Label" && <span className="label">{label}</span>}
         </div>
       </div>
     );

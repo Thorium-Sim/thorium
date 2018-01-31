@@ -6,7 +6,9 @@
     border: solid 2px #aaa;
     border-radius: 50%;
   }
-
+  .label {
+    z-index: 500;
+  }
   .componentLibrary {
     height: 100vh;
     width: 250px;

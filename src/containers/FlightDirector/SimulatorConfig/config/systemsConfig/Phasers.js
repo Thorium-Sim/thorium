@@ -40,7 +40,7 @@ const Phasers = ({ data, client, simulatorId, type }) => {
                 min="1"
                 max="12"
                 value={e.beams.length}
-                onChange={evt => {
+                onMouseUp={evt => {
                   updateBeams(e, evt.target.value);
                 }}
               />

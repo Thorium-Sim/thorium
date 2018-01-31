@@ -11,7 +11,8 @@ const Light = ({
   page,
   scaleComp = () => {},
   scale = 1,
-  edit
+  edit,
+  label
 }) => {
   const c = colormod(color);
   const alpha = level || inputs[0] || 0;
