@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 
 const CardButton = props => {
+  const cardName = props.component.match(/.{8}-.{4}-.{4}-.{4}-.{12}/gi)
+    ? "SoftwarePanels"
+    : props.component;
   return (
     <div className="card-icon-item">
       <div
@@ -16,7 +19,7 @@ const CardButton = props => {
         <img
           alt="Card"
           className="card-icon"
-          src={`/cardIcons/${props.component}.svg`}
+          src={`/cardIcons/${cardName}.svg`}
           draggable="false"
         />
         <div className="card-icon-background" />

@@ -104,7 +104,7 @@ class PageComponent extends Component {
             draggingCable={draggingCable}
             components={components}
             startConnecting={startConnecting}
-            inputs={connections.map(c => c.level)}
+            inputs={connections}
             update={(l, noupdate) => update({ level: l, id }, noupdate)}
             onMouseDown={edit ? this.mouseDown : () => {}}
             dragCable={dragCable}

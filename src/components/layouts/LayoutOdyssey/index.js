@@ -112,7 +112,7 @@ class LayoutOdyssey extends Component {
                       if (card.component.match(/.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
                         // Software Panel
                         return (
-                          <Views.SoftwarePanelSingle
+                          <Views.SoftwarePanels
                             panel={card.component}
                             {...this.props}
                             stopTraining={this.stopTraining}

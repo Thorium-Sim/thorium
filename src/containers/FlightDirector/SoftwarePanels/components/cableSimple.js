@@ -8,7 +8,7 @@ class CableSimple extends Component {
     const cableComponents = cables.reduce((prev, next) => {
       return prev.concat(next.components);
     }, []);
-    update(cableComponents.indexOf(id) > -1 ? 1 : 0);
+    update(cableComponents.indexOf(id) > -1 ? 1 : 0, true);
   }
   componentWillReceiveProps(nextProps) {
     if (JSON.stringify(nextProps.cables) === JSON.stringify(this.props.cables))
@@ -17,7 +17,7 @@ class CableSimple extends Component {
     const cableComponents = cables.reduce((prev, next) => {
       return prev.concat(next.components);
     }, []);
-    update(cableComponents.indexOf(id) > -1 ? 1 : 0);
+    update(cableComponents.indexOf(id) > -1 ? 1 : 0, true);
   }
   render() {
     const {

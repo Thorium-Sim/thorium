@@ -54,7 +54,6 @@ import Interception from "./CommInterception";
 import SoftwarePanels from "./SoftwarePanels";
 import DamageStepControl from "./DamageStepControl";
 import Roster from "./Roster";
-import SoftwarePanelSingle from "./SoftwarePanelSingle";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -162,8 +161,7 @@ const Views = {
   Interception,
   SoftwarePanels,
   DamageStepControl,
-  Roster,
-  SoftwarePanelSingle
+  Roster
 };
 
 export const Widgets = {
