@@ -46,7 +46,7 @@ const SUB = gql`
   }
 `;
 
-const getComponentLevel = (comp, levels) => {
+export const getComponentLevel = (comp, levels) => {
   // Apply the transformations based on the type of component we are dealing with
   switch (comp.component) {
     case "AND":

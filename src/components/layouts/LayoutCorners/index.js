@@ -182,7 +182,7 @@ class LayoutCorners extends Component {
                     // Software Panel
                     return (
                       <CardHolder
-                        component={Views.SoftwarePanelSingle}
+                        component={Views.SoftwarePanels}
                         panel={card.component}
                         {...this.props}
                         stopTraining={this.stopTraining}

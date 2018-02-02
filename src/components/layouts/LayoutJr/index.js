@@ -27,10 +27,7 @@ export default props => {
           .map(card => {
             if (card.component.match(/.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
               return (
-                <Views.SoftwarePanelSingle
-                  panel={card.component}
-                  {...this.props}
-                />
+                <Views.SoftwarePanels panel={card.component} {...this.props} />
               );
             }
             const Component = Views[card.component];
