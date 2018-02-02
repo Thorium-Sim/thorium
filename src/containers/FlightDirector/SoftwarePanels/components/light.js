@@ -15,7 +15,7 @@ const Light = ({
   label
 }) => {
   const c = colormod(color);
-  const alpha = level || inputs[0] || 0;
+  const alpha = level || 0;
   c.setAlpha(alpha);
   return (
     <div style={{ transform: `scale(${scale})` }}>
