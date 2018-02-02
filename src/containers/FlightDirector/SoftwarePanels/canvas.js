@@ -276,7 +276,6 @@ export default class PanelCanvas extends Component {
             left={left}
             top={top}
             edit={edit}
-            cables={cables}
             draggingCable={draggingCable}
             components={components}
             update={this.updateComponent}

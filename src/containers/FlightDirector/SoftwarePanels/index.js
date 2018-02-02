@@ -46,6 +46,40 @@ const SUB = gql`
   }
 `;
 
+const getComponentLevel = (comp, levels) => {
+  // Apply the transformations based on the type of component we are dealing with
+  switch (comp.component) {
+    case "AND":
+      return levels.reduce((prev, next) => {
+        if (prev === 0) return 0;
+        return Math.round(next) >= 1 ? 1 : 0;
+      }, 1);
+    case "OR":
+      return levels.reduce((prev, next) => {
+        if (prev === 1) return 1;
+        return Math.round(next) >= 1 ? 1 : 0;
+      }, 0);
+    case "NOT":
+      return Math.round(levels[0]) === 1 ? 0 : 1;
+    case "NAND":
+      return levels.reduce((prev, next) => {
+        if (prev === 0) return 0;
+        return Math.round(next) >= 1 ? 0 : 1;
+      }, 1);
+    case "NOR":
+      return levels.reduce((prev, next) => {
+        if (prev === 1) return 1;
+        return Math.round(next) >= 1 ? 0 : 1;
+      }, 0);
+    case "Floor":
+      return Math.floor(levels[0]);
+    case "Ceil":
+      return Math.ceil(levels[0]);
+    default:
+      return levels[0];
+  }
+};
+
 class App extends Component {
   state = {
     edit: true,
@@ -76,11 +110,14 @@ class App extends Component {
           s => s.id === this.state.selectedPanel
         );
         if (panel) {
-          this.setState({
-            components: panel.components,
-            connections: panel.connections,
-            cables: panel.cables
-          });
+          this.setState(
+            {
+              components: panel.components,
+              connections: panel.connections,
+              cables: panel.cables
+            },
+            () => this.reconcileComponents()
+          );
         }
       }
     }
@@ -88,6 +125,60 @@ class App extends Component {
   componentWillUnmount() {
     this.subscription && this.subscription();
   }
+  reconcileComponents = () => {
+    const topCompNames = ["Light", "PlasmaChannel"];
+    const { components, connections, cables } = this.state;
+    const calcedComps = {};
+    const calcLevel = comp => {
+      if (calcedComps[comp.id] || calcedComps[comp.id] === 0)
+        return calcedComps[comp.id];
+      // Get the down-stream levels
+      const levels = connections
+        .filter(c => c.to === comp.id)
+        .map(c => c.from)
+        // Get the cables too.
+        .concat(
+          comp.component === "CableOutput"
+            ? cables
+                .filter(c => c.components.indexOf(comp.id) > -1)
+                .map(c => c.components.find(d => d !== comp.id))
+            : []
+        )
+        .map(c => components.find(d => d.id === c))
+        .map(
+          c =>
+            calcedComps[comp.id] || calcedComps[comp.id] === 0
+              ? calcedComps[comp.id]
+              : calcLevel(c)
+        )
+        .filter(c => (Array.isArray(c) ? c.length > 0 : c || c === 0))
+        .concat(topCompNames.indexOf(comp.component) > -1 ? [0] : [comp.level])
+        .sort(function(a, b) {
+          return b - a;
+        });
+      if (levels.length !== 1) {
+        levels.pop();
+      }
+      const level = getComponentLevel(comp, levels);
+      calcedComps[comp.id] = level;
+      return level;
+    };
+
+    const topComponents = components.filter(
+      c => topCompNames.indexOf(c.component) > -1
+    );
+    const componentLevels = topComponents.reduce((prev, next) => {
+      return Object.assign({}, prev, { [next.id]: calcLevel(next) });
+    }, {});
+    this.setState({
+      components: components.map(c => {
+        if (componentLevels[c.id] || componentLevels[c.id] === 0) {
+          return Object.assign({}, c, { level: componentLevels[c.id] });
+        }
+        return c;
+      })
+    });
+  };
   applyUpdate = (data, noupdate) => {
     this.setState(data);
     if (!noupdate) {
@@ -224,12 +315,15 @@ class App extends Component {
     if (!this.props.data.loading && this.props.data.softwarePanels && id) {
       const panel = this.props.data.softwarePanels.find(s => s.id === id);
       if (panel) {
-        this.setState({
-          components: panel.components,
-          connections: panel.connections,
-          cables: panel.cables,
-          selectedPanel: id
-        });
+        this.setState(
+          {
+            components: panel.components,
+            connections: panel.connections,
+            cables: panel.cables,
+            selectedPanel: id
+          },
+          () => this.reconcileComponents()
+        );
       }
     }
   };
@@ -320,7 +414,6 @@ class App extends Component {
                           this.setState({ selectedComponent: id })
                         }
                         selectedComponent={selectedComponent}
-                        update
                         {...this.state.dimensions}
                       />
                     )}
