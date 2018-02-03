@@ -391,19 +391,26 @@ class App extends Component {
                 )}
               </div>
             )}
-            <ListGroup>
-              {softwarePanels.map(s => (
-                <ListGroupItem
-                  key={s.id}
-                  active={selectedPanel === s.id}
-                  tag="button"
-                  action
-                  onClick={() => this.selectPanel(s.id)}
-                >
-                  {s.name}
-                </ListGroupItem>
-              ))}
-            </ListGroup>
+            <div
+              style={{
+                maxHeight: "60vh",
+                overflowY: "scroll"
+              }}
+            >
+              <ListGroup>
+                {softwarePanels.map(s => (
+                  <ListGroupItem
+                    key={s.id}
+                    active={selectedPanel === s.id}
+                    tag="button"
+                    action
+                    onClick={() => this.selectPanel(s.id)}
+                  >
+                    {s.name}
+                  </ListGroupItem>
+                ))}
+              </ListGroup>
+            </div>
             <Button color="success" block onClick={this.createPanel}>
               Create Panel
             </Button>
