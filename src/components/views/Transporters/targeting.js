@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Draggable from "react-draggable";
 import { Button, Row, Col } from "reactstrap";
-import { throttle } from "lodash";
+import throttle from "lodash/throttle";
 import Measure from "react-measure";
 
 const ChargeBar = props => {
