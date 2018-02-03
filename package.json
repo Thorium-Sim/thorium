@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": true,
   "description": "Node + React + GraphQL simulator controls",
   "repository": {
@@ -84,6 +84,7 @@
     "reactour": "^1.6.4",
     "reactstrap": "^5.0.0-beta",
     "request": "^2.83.0",
+    "semver": "^5.5.0",
     "sine-waves": "^0.3.0",
     "subscriptions-transport-ws": "^0.9.5",
     "three": "^0.89.0",

@@ -9,13 +9,14 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter
+  ModalFooter,
+  Alert
 } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import { Link } from "react-router-dom";
 import IssueTracker from "../../components/admin/IssueTracker";
-
+import semver from "semver";
 import "./welcome.css";
 
 const FLIGHT_SUB = gql`
@@ -42,12 +43,22 @@ const quotes = [
   "Where does this lead us? Where do we go?",
   "If you listen carefully, the silence is beautiful.",
   "The man who has no imagination has no wings.",
-  "Life before death. Strength before weakness. Journey before destination."
+  "Life before death. Strength before weakness. Journey before destination.",
+  "We are the ones we have been waiting for."
 ];
 
 class Welcome extends Component {
   subscription = null;
   state = { issuesOpen: false };
+  componentDidMount() {
+    fetch("https://api.github.com/repos/thorium-sim/thorium/tags")
+      .then(res => res.json())
+      .then(res => {
+        if (semver.gt(res[0].name, require("../../../package.json").version)) {
+          this.setState({ outdated: res[0].name });
+        }
+      });
+  }
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
       this.subscription = nextProps.data.subscribeToMore({
@@ -76,6 +87,16 @@ class Welcome extends Component {
             <h3 className="text-center">
               <small>{quotes[Math.floor(Math.random() * quotes.length)]}</small>
             </h3>
+            {this.state.outdated && (
+              <Alert color="warning">
+                Your version of Thorium is outdated. Current version is{" "}
+                {this.state.outdated}. Your version is{" "}
+                {require("../../../package.json").version}.{" "}
+                <a href="http://thoriumsim.com/en/releases" target="_blank">
+                  Click here to get the latest version.
+                </a>
+              </Alert>
+            )}
           </Col>
         </Row>
         <Row className="content-row">
