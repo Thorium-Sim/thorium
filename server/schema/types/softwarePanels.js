@@ -18,6 +18,7 @@ type PanelComponent {
   component: String
   level: Float
   label: String
+  color: String
   x: Float
   y: Float
   scale: Float
@@ -47,6 +48,7 @@ input PanelComponentInput {
   component: String
   level: Float
   label: String
+  color: String
   x: Float
   y: Float
   scale: Float

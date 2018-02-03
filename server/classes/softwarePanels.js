@@ -13,6 +13,7 @@ class PanelComponent {
     this.id = params.id || uuid.v4();
     this.component = params.component || "Buffer";
     this.level = params.level || 0;
+    this.color = params.color || "#0f0";
     this.label = params.label || "";
     this.x = params.x || 0;
     this.y = params.y || 0;

@@ -36,6 +36,7 @@ const SUB = gql`
         component
         level
         label
+        color
       }
       connections {
         id
@@ -207,6 +208,7 @@ class App extends Component {
           level: c.level,
           label: c.label,
           scale: c.scale,
+          color: c.color,
           x: c.x,
           y: c.y
         })),
@@ -496,6 +498,7 @@ const QUERY = gql`
         component
         level
         label
+        color
       }
       connections {
         id

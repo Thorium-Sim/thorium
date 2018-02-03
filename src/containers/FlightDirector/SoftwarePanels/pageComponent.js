@@ -63,6 +63,7 @@ class PageComponent extends Component {
       y,
       level,
       label,
+      color,
       update,
       component,
       connections,
@@ -96,6 +97,7 @@ class PageComponent extends Component {
         >
           <Comp
             level={level}
+            color={color}
             connecting={connecting}
             id={id}
             page
