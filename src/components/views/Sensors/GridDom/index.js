@@ -349,6 +349,7 @@ class GridDom extends Component {
       lines = 12,
       hoverContact,
       segments,
+      damaged,
       sensor,
       interference = 0
     } = this.props;
@@ -367,6 +368,7 @@ class GridDom extends Component {
     return (
       <div id="sensorGrid" style={gridStyle}>
         <div className={`grid ${ping ? "ping" : ""}`}>
+          {damaged && <div class="damaged-sensors" />}
           {interference > 0 && (
             <Interference width={width} interference={interference} />
           )}

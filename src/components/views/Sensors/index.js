@@ -303,6 +303,7 @@ class Sensors extends Component {
                 <Grid
                   dimensions={this.state.dimensions}
                   sensor={sensors.id}
+                  damaged={sensors.damage.damaged}
                   hoverContact={this._hoverContact.bind(this)}
                   ping={ping}
                   pings={pings}
