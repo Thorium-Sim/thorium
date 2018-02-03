@@ -5,6 +5,9 @@
 #layout-odyssey {
   background-color: black;
   color: white;
+  h1, h2, h3, h4, h5, h6 {
+    color: white;
+  }
   font-family: "Bank Gothic";
   perspective: 900px;
   .perspectiveContainer {
