@@ -11,7 +11,6 @@ import {
   createDefaultToolbarButton
 } from "react-mosaic-component";
 import "react-mosaic-component/react-mosaic-component.css";
-import "@blueprintjs/core/dist/blueprint.css";
 import "./dynamic.css";
 
 Cores.CoreFeed = CoreFeed;
