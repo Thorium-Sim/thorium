@@ -245,8 +245,9 @@ class App extends Component {
     const loc = this.state.componentLocation;
     this.setState({
       componentLocation: {
-        x: loc.x + evt.movementX,
-        y: loc.y + evt.movementY
+        x:
+          Math.round((evt.clientX - this.state.dimensions.left - 12) / 10) * 10,
+        y: Math.round((evt.clientY - this.state.dimensions.top - 30) / 10) * 10
       }
     });
   };
@@ -391,6 +392,14 @@ class App extends Component {
                     Delete
                   </Button>
                 )}
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={this.state.snap}
+                    onChange={e => this.setState({ snap: e.target.checked })}
+                  />{" "}
+                  Snap To Grid
+                </label>
               </div>
             )}
             <div
@@ -449,6 +458,7 @@ class App extends Component {
                         }
                         selectedComponent={selectedComponent}
                         {...this.state.dimensions}
+                        snap={this.state.snap}
                       />
                     )}
                   </div>

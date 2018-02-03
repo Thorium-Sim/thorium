@@ -197,7 +197,8 @@ export default class PanelCanvas extends Component {
       componentLocation,
       selectLine,
       selectComponent = () => {},
-      selectedComponent
+      selectedComponent,
+      snap
     } = this.props;
     return (
       <div>
@@ -288,6 +289,7 @@ export default class PanelCanvas extends Component {
             dragCable={this.dragCable}
             selectComponent={selectComponent}
             selected={selectedComponent === c.id}
+            snap={snap}
           />
         ))}
 

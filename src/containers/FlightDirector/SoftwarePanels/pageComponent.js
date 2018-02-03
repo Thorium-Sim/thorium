@@ -5,14 +5,31 @@ class PageComponent extends Component {
   mouseDown = evt => {
     document.addEventListener("mousemove", this.mouseMove);
     document.addEventListener("mouseup", this.mouseUp);
+    const dims = evt.target.getBoundingClientRect();
+
+    this.setState({
+      offsetX: evt.clientX - dims.x,
+      offsetY: evt.clientY - dims.y
+    });
   };
   mouseMove = evt => {
-    const { update, id, x, y } = this.props;
+    const { update, id, snap } = this.props;
+    const snapnum = snap ? 50 : 1;
     update(
       {
         id,
-        x: x + evt.movementX / this.props.width,
-        y: y + evt.movementY / this.props.height
+        x:
+          Math.round(
+            (evt.clientX - this.props.left - this.state.offsetX) / snapnum
+          ) /
+          this.props.width *
+          snapnum,
+        y:
+          Math.round(
+            (evt.clientY - this.props.top - this.state.offsetY) / snapnum
+          ) /
+          this.props.height *
+          snapnum
       },
       true
     );
