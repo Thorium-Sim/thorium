@@ -56,7 +56,7 @@ class Config extends Component {
           </FormGroup>
         </Col>
         <Col sm={4}>
-          {component.component === "Light" && (
+          {["Light", "PlasmaChannel"].indexOf(component.component) > -1 && (
             <FormGroup>
               <Label>Color</Label>
               <ChromePicker
