@@ -114,7 +114,7 @@
   transition: background-position 5s linear;
   overflow: hidden;
   .barVert{
-    width: 3px;
+    width: 3px !important;
     height: 100%;
     background-color: gray;
     position: absolute;
@@ -132,7 +132,7 @@
     transition: top 5s linear;
   }
   .crosshair{
-    width: 40px;
+    width: 40px !important;
     height: 40px;
     left: calc(200px - 18px);
     top: calc(200px - 18px);
