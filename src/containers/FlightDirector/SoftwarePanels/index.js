@@ -242,12 +242,10 @@ class App extends Component {
     document.addEventListener("mouseup", this.mouseUp);
   };
   mouseMove = evt => {
-    const loc = this.state.componentLocation;
     this.setState({
       componentLocation: {
-        x:
-          Math.round((evt.clientX - this.state.dimensions.left - 12) / 10) * 10,
-        y: Math.round((evt.clientY - this.state.dimensions.top - 30) / 10) * 10
+        x: Math.round(evt.clientX - this.state.dimensions.left - 12),
+        y: Math.round(evt.clientY - this.state.dimensions.top - 30)
       }
     });
   };
