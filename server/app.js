@@ -2,7 +2,7 @@ import fs from "fs";
 import jsonfile from "jsonfile";
 import { EventEmitter } from "events";
 import util from "util";
-import { cloneDeep } from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 import { writeFile } from "./helpers/json-format";
 import paths from "./helpers/paths";
 import * as Classes from "./classes";
