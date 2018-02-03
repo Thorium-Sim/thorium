@@ -10,8 +10,11 @@
   }
 
   .ball-container {
-    height: 100%;
     filter: blur(20px);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 
   .ball {
@@ -101,14 +104,12 @@
     animation-delay: -3s;
   }
 
-  .ball:after {
+  .ball .color {
     mix-blend-mode: hard-light;
     content: "";
     display: block;
     width: 40px;
     height: 50px;
-    background-color: blue;
-    border: 7px solid red;
     position: absolute;
     opacity: 0.75;
   }

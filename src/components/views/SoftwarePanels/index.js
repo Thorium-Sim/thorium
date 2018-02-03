@@ -25,6 +25,7 @@ const SUB = gql`
         component
         level
         label
+        color
       }
       connections {
         id
@@ -155,6 +156,7 @@ class SoftwarePanels extends Component {
           component: c.component,
           level: c.level,
           label: c.label,
+          color: c.color,
           x: c.x,
           y: c.y,
           scale: c.scale
@@ -271,6 +273,7 @@ const QUERY = gql`
         component
         level
         label
+        color
       }
       connections {
         id

@@ -36,6 +36,7 @@ const SUB = gql`
         component
         level
         label
+        color
       }
       connections {
         id
@@ -207,6 +208,7 @@ class App extends Component {
           level: c.level,
           label: c.label,
           scale: c.scale,
+          color: c.color,
           x: c.x,
           y: c.y
         })),
@@ -311,6 +313,26 @@ class App extends Component {
     };
     this.props.client.mutate({ mutation, variables });
   };
+  removePanel = () => {
+    if (window.confirm("Are you sure you want to remove this panel?")) {
+      const mutation = gql`
+        mutation RemovePanel($panel: ID!) {
+          removeSoftwarePanel(panel: $panel)
+        }
+      `;
+      const variables = {
+        panel: this.state.selectedPanel
+      };
+      this.setState(
+        {
+          selectedPanel: null
+        },
+        () => {
+          this.props.client.mutate({ mutation, variables });
+        }
+      );
+    }
+  };
   selectPanel = id => {
     if (!this.props.data.loading && this.props.data.softwarePanels && id) {
       const panel = this.props.data.softwarePanels.find(s => s.id === id);
@@ -371,22 +393,34 @@ class App extends Component {
                 )}
               </div>
             )}
-            <ListGroup>
-              {softwarePanels.map(s => (
-                <ListGroupItem
-                  key={s.id}
-                  active={selectedPanel === s.id}
-                  tag="button"
-                  action
-                  onClick={() => this.selectPanel(s.id)}
-                >
-                  {s.name}
-                </ListGroupItem>
-              ))}
-            </ListGroup>
+            <div
+              style={{
+                maxHeight: "60vh",
+                overflowY: "scroll"
+              }}
+            >
+              <ListGroup>
+                {softwarePanels.map(s => (
+                  <ListGroupItem
+                    key={s.id}
+                    active={selectedPanel === s.id}
+                    tag="button"
+                    action
+                    onClick={() => this.selectPanel(s.id)}
+                  >
+                    {s.name}
+                  </ListGroupItem>
+                ))}
+              </ListGroup>
+            </div>
             <Button color="success" block onClick={this.createPanel}>
               Create Panel
             </Button>
+            {this.state.selectedPanel && (
+              <Button color="danger" block onClick={this.removePanel}>
+                Remove Panel
+              </Button>
+            )}
           </Col>
           <Col sm={9}>
             {selectedPanel && (
@@ -464,6 +498,7 @@ const QUERY = gql`
         component
         level
         label
+        color
       }
       connections {
         id

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { FormGroup, Input, Label } from "reactstrap";
+import { Row, Col, FormGroup, Input, Label } from "reactstrap";
+import { ChromePicker } from "react-color";
 
 class Config extends Component {
   constructor(props) {
@@ -8,7 +9,8 @@ class Config extends Component {
       s => s.id === props.selectedComponent
     );
     this.state = {
-      label: component.label
+      label: component.label,
+      color: component.color
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -16,7 +18,8 @@ class Config extends Component {
       s => s.id === nextProps.selectedComponent
     );
     this.setState({
-      label: component.label
+      label: component.label,
+      color: component.color
     });
   }
   render() {
@@ -39,17 +42,38 @@ class Config extends Component {
         })
       });
     };
+    const component = components.find(c => c.id === selectedComponent);
     return (
-      <div className="component-config">
-        <FormGroup>
-          <Label>Label</Label>
-          <Input
-            value={this.state.label}
-            onChange={e => this.setState({ label: e.target.value })}
-            onBlur={() => update(this.state.label, "label")}
-          />
-        </FormGroup>
-      </div>
+      <Row className="component-config">
+        <Col sm={4}>
+          <FormGroup>
+            <Label>Label</Label>
+            <Input
+              value={this.state.label}
+              onChange={e => this.setState({ label: e.target.value })}
+              onBlur={() => update(this.state.label, "label")}
+            />
+          </FormGroup>
+        </Col>
+        <Col sm={4}>
+          {["Light", "PlasmaChannel"].indexOf(component.component) > -1 && (
+            <FormGroup>
+              <Label>Color</Label>
+              <ChromePicker
+                color={this.state.color}
+                onChangeComplete={color =>
+                  update(
+                    `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${
+                      color.rgb.a
+                    })`,
+                    "color"
+                  )
+                }
+              />
+            </FormGroup>
+          )}
+        </Col>
+      </Row>
     );
   }
 }
