@@ -311,6 +311,26 @@ class App extends Component {
     };
     this.props.client.mutate({ mutation, variables });
   };
+  removePanel = () => {
+    if (window.confirm("Are you sure you want to remove this panel?")) {
+      const mutation = gql`
+        mutation RemovePanel($panel: ID!) {
+          removeSoftwarePanel(panel: $panel)
+        }
+      `;
+      const variables = {
+        panel: this.state.selectedPanel
+      };
+      this.setState(
+        {
+          selectedPanel: null
+        },
+        () => {
+          this.props.client.mutate({ mutation, variables });
+        }
+      );
+    }
+  };
   selectPanel = id => {
     if (!this.props.data.loading && this.props.data.softwarePanels && id) {
       const panel = this.props.data.softwarePanels.find(s => s.id === id);
@@ -387,6 +407,11 @@ class App extends Component {
             <Button color="success" block onClick={this.createPanel}>
               Create Panel
             </Button>
+            {this.state.selectedPanel && (
+              <Button color="danger" block onClick={this.removePanel}>
+                Remove Panel
+              </Button>
+            )}
           </Col>
           <Col sm={9}>
             {selectedPanel && (

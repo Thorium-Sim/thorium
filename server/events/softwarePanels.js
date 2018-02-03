@@ -12,6 +12,6 @@ App.on("updateSoftwarePanel", ({ panel }) => {
   pubsub.publish("softwarePanelsUpdate", App.softwarePanels);
 });
 App.on("removeSoftwarePanel", ({ panel }) => {
-  App.softwarePanels.filter(s => s.id !== panel);
+  App.softwarePanels = App.softwarePanels.filter(s => s.id !== panel);
   pubsub.publish("softwarePanelsUpdate", App.softwarePanels);
 });
