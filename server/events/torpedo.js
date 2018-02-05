@@ -40,6 +40,17 @@ App.on("torpedoFire", ({ id }) => {
     body: "",
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: sys.simulatorId,
+      title: `${
+        sys.inventory.find(i => i.id === sys.loaded).type
+      } Torpedo Fired`,
+      body: null,
+      color: "warning"
+    },
+    "addCoreFeed"
+  );
   sys.fireWarhead();
   pubsub.publish(
     "torpedosUpdate",
