@@ -99,7 +99,6 @@ function addAspects(template, sim) {
     const id = uuid.v4();
     sim.stations.forEach(s => {
       s.cards.forEach(c => {
-        console.log(id, p, c.component);
         if (c.component === p) c.component = id;
       });
     });
