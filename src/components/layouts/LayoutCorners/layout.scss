@@ -8,6 +8,9 @@ $url: "./images/background-blue.svg";
 body {
   overflow: hidden !important;
   overflow-y: hidden !important;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
   margin: 0;
 }
 
@@ -619,7 +622,6 @@ body {
   }
   .frame-text {
     pointer-events: none;
-    -webkit-user-select: none;
     user-select: none;
     .simulator-name {
       text-transform: uppercase;

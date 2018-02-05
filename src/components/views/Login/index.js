@@ -12,11 +12,6 @@ class Login extends Component {
       loginName: ""
     };
   }
-  _updateName(e) {
-    this.setState({
-      loginName: e.target.value
-    });
-  }
   _login() {
     const { loginName } = this.state;
     const client = this.props.clientObj.id;
@@ -78,7 +73,11 @@ class Login extends Component {
                 }
               }}
               value={this.state.loginName}
-              onChange={this._updateName.bind(this)}
+              onChange={e =>
+                this.setState({
+                  loginName: e.target.value
+                })
+              }
               ref="loginField"
             />
             <Button onClick={this._login.bind(this)} block>

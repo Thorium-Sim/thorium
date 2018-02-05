@@ -34,6 +34,14 @@ class WidgetsContainer extends Component {
           console.error("err", err);
         }
       });
+    window.addEventListener(
+      "touchstart",
+      function onFirstTouch() {
+        self.setState({ hasKeyboard: true });
+        window.removeEventListener("touchstart", onFirstTouch);
+      },
+      false
+    );
   }
   setNotify = (widget, state) => {
     this.setState({
@@ -44,13 +52,25 @@ class WidgetsContainer extends Component {
   };
   render() {
     const { simulator, clientObj, station, flight } = this.props;
-    const { widgetNotify } = this.state;
+    const { widgetNotify, hasKeyboard } = this.state;
     return (
       <div
         className={`widgets ${clientObj.loginState} ${
           clientObj.offlineState ? "offline" : ""
         }`}
       >
+        {hasKeyboard && (
+          <Widget
+            simulator={simulator}
+            station={station}
+            flight={flight}
+            widget={Widgets.keyboard}
+            wkey={"keyboard-auto"}
+            clientObj={clientObj}
+            notify={widgetNotify.keyboard}
+            setNotify={this.setNotify}
+          />
+        )}
         {station.widgets &&
           station.widgets
             .concat()

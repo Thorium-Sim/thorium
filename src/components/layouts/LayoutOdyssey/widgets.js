@@ -36,6 +36,14 @@ class WidgetsContainer extends Component {
           console.error("err", err);
         }
       });
+    window.addEventListener(
+      "touchstart",
+      function onFirstTouch() {
+        self.setState({ hasKeyboard: true });
+        window.removeEventListener("touchstart", onFirstTouch);
+      },
+      false
+    );
   }
   setNotify = (widget, state) => {
     this.setState({
@@ -77,38 +85,44 @@ class WidgetsContainer extends Component {
   };
   render() {
     const { simulator, clientObj, station, flight } = this.props;
-    const { widgetNotify } = this.state;
-    if (clientObj.loginState === "logout" && station.login === false)
-      return null;
+    const { widgetNotify, hasKeyboard } = this.state;
+    //if (clientObj.loginState === "logout" && station.login === false)
+    // return null;
     return (
       <div
         className={`widgets ${clientObj.loginState} ${
           clientObj.offlineState ? "offline" : ""
         }`}
       >
+        {hasKeyboard && (
+          <Widget
+            simulator={simulator}
+            station={station}
+            flight={flight}
+            widget={Widgets.keyboard}
+            wkey={"keyboard-auto"}
+            clientObj={clientObj}
+            notify={widgetNotify.keyboard}
+            setNotify={this.setNotify}
+          />
+        )}
         {station.widgets &&
-          station.widgets
-            .concat()
-            .sort(w => {
-              if (w === "keyboard") return 1;
-              return -1;
-            })
-            .map(key => {
-              const widget = Widgets[key];
-              return (
-                <Widget
-                  simulator={simulator}
-                  station={station}
-                  flight={flight}
-                  widget={widget}
-                  wkey={key}
-                  clientObj={clientObj}
-                  notify={widgetNotify[key]}
-                  setNotify={this.setNotify}
-                  key={key}
-                />
-              );
-            })}
+          station.widgets.concat().map(key => {
+            const widget = Widgets[key];
+            return (
+              <Widget
+                simulator={simulator}
+                station={station}
+                flight={flight}
+                widget={widget}
+                wkey={key}
+                clientObj={clientObj}
+                notify={widgetNotify[key]}
+                setNotify={this.setNotify}
+                key={key}
+              />
+            );
+          })}
         <StaticWidget
           icon={"question-circle"}
           name="Training"
