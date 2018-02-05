@@ -1,6 +1,6 @@
 import LayoutDefault from "./default.jsx";
 import LayoutCorners from "./LayoutCorners";
-//import LayoutGlass from "./LayoutGlass";
+import LayoutGlass from "./LayoutGlass";
 import LayoutJr from "./LayoutJr";
 import LayoutOdyssey from "./LayoutOdyssey";
 
@@ -11,7 +11,7 @@ import LayoutOdysseyViewscreen from "./LayoutOdyssey/viewscreen";
 const Layouts = {
   LayoutDefault,
   LayoutCorners,
-  //LayoutGlass,
+  LayoutGlass,
   LayoutJr,
   LayoutOdyssey,
   LayoutCornersViewscreen,
