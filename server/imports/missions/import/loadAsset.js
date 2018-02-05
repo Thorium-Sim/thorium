@@ -57,6 +57,7 @@ export default function loadAsset(
   const object = App.assetObjects.find(
     o => o.url === entry.fileName.replace("mission", "")
   );
+  if (entry.fileName[0] !== "/") entry.fileName = `/${entry.fileName}`;
   if (!object) {
     const params = {
       containerPath: container.folderPath,

@@ -98,7 +98,11 @@ class Welcome extends Component {
                 Your version of Thorium is outdated. Current version is{" "}
                 {this.state.outdated}. Your version is{" "}
                 {require("../../../package.json").version}.{" "}
-                <a href="http://thoriumsim.com/en/releases" target="_blank">
+                <a
+                  href="http://thoriumsim.com/en/releases"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Click here to get the latest version.
                 </a>
               </Alert>

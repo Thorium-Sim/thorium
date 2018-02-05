@@ -52,13 +52,28 @@ class Events extends EventEmitter {
       if (fs.existsSync(snapshotDir + "snapshot.json")) {
         this.loadSnapshot();
       }
+      if (!fs.existsSync(snapshotDir)) {
+        fs.mkdirSync(snapshotDir);
+      }
+      if (!fs.existsSync(snapshotDir + "snapshot.json")) {
+        fs.writeFileSync(
+          snapshotDir + "snapshot.json",
+          JSON.stringify(require("./helpers/defaultSnapshot.js"))
+        );
+        this.merge(require("./helpers/defaultSnapshot.js").default);
+        setTimeout(() => this.autoSave(), 5000);
+      }
     } else {
       if (
         !fs.existsSync(snapshotDir + "snapshot.json") &&
         !fs.existsSync(snapshotDir)
       ) {
         fs.mkdirSync(snapshotDir);
-        fs.writeFileSync(snapshotDir + "snapshot.json", "{}");
+        fs.writeFileSync(
+          snapshotDir + "snapshot.json",
+          JSON.stringify(require("./helpers/defaultSnapshot.js"))
+        );
+        this.merge(require("./helpers/defaultSnapshot.js").default);
       }
       if (
         !process.env.NODE_ENV &&
@@ -71,14 +86,13 @@ class Events extends EventEmitter {
     }
   }
   loadSnapshot(dev) {
-    const self = this;
     const snapshot = jsonfile.readFileSync(
       snapshotDir + (dev ? "snapshot-dev.json" : "snapshot.json")
     );
     this.merge(snapshot);
     if (process.env.NODE_ENV === "production") {
       // Only auto save in the built version
-      setTimeout(() => self.autoSave(), 5000);
+      setTimeout(() => this.autoSave(), 5000);
     }
   }
   merge(snapshot) {
