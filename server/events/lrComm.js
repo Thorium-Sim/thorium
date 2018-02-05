@@ -43,7 +43,13 @@ App.on("longRangeMessageSend", ({ id, message }) => {
     color: "info"
   });
   App.handleEvent(
-    { simulatorId: sys.simulatorId, component: "LRCommCore" },
+    {
+      simulatorId: sys.simulatorId,
+      component: "LRCommCore",
+      title: `New Long Range Message`,
+      body: ``,
+      color: "info"
+    },
     "addCoreFeed"
   );
   pubsub.publish(
@@ -82,6 +88,15 @@ App.on("updateLongRangeComm", ({ longRangeComm }) => {
       body: ``,
       color: "info"
     });
+    App.handleEvent(
+      {
+        simulatorId: lr.simulatorId,
+        title: `Interception Signal Locked`,
+        body: null,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
   }
   pubsub.publish(
     "longRangeCommunicationsUpdate",

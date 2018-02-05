@@ -20,6 +20,15 @@ App.on("targetTargetingContact", ({ id, targetId }) => {
     body: "",
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: system.simulatorId,
+      title: `Targeted`,
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "targetingUpdate",
     App.systems.filter(s => s.type === "Targeting")

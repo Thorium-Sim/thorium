@@ -48,6 +48,15 @@ App.on("commConnectArrow", ({ id, arrowId }) => {
     body: "",
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: system.simulatorId,
+      title: `Comm Connected`,
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "shortRangeCommUpdate",
     App.systems.filter(s => s.type === "ShortRangeComm")
@@ -64,6 +73,15 @@ App.on("commDisconnectArrow", ({ id, arrowId }) => {
     body: "",
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: system.simulatorId,
+      title: `Call Disconnected`,
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "shortRangeCommUpdate",
     App.systems.filter(s => s.type === "ShortRangeComm")
@@ -87,6 +105,15 @@ App.on("commHail", ({ id }) => {
     body: "",
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: system.simulatorId,
+      title: `New Hail`,
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "shortRangeCommUpdate",
     App.systems.filter(s => s.type === "ShortRangeComm")
@@ -103,6 +130,15 @@ App.on("cancelHail", ({ id }) => {
     body: "",
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: system.simulatorId,
+      title: `Hail Canceled`,
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "shortRangeCommUpdate",
     App.systems.filter(s => s.type === "ShortRangeComm")

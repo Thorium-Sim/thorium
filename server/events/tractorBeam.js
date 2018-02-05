@@ -14,6 +14,15 @@ App.on("setTractorBeamState", ({ id, state }) => {
     body: "",
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: system.simulatorId,
+      title: `Tractor Beam ${state ? "Activated" : "Deactivated"}`,
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "tractorBeamUpdate",
     App.systems.filter(s => s.type === "TractorBeam")

@@ -23,7 +23,13 @@ App.on("sensorScanRequest", ({ id, request }) => {
     color: "info"
   });
   App.handleEvent(
-    { simulatorId: system.simulatorId, component: "SensorsCore" },
+    {
+      simulatorId: system.simulatorId,
+      component: "SensorsCore",
+      title: `${system.domain} Scan`,
+      body: request,
+      color: "info"
+    },
     "addCoreFeed"
   );
   system.scanRequested(request);
@@ -72,6 +78,15 @@ App.on("sensorScanCancel", ({ id }) => {
     body: "",
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: system.simulatorId,
+      title: `${system.domain} Scan Cancelled`,
+      body: null,
+      color: "warning"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")

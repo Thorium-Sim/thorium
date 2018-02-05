@@ -12,6 +12,15 @@ App.on("reactorEject", ({ id, tf = true }) => {
     body: "",
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: system.simulatorId,
+      title: `Reactor Ejected`,
+      body: null,
+      color: "danger"
+    },
+    "addCoreFeed"
+  );
   system.eject(tf);
   pubsub.publish(
     "reactorUpdate",

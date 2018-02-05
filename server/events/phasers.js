@@ -31,6 +31,15 @@ App.on("firePhaserBeam", ({ id, beamId }) => {
     body: "",
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: sys.simulatorId,
+      title: `Phasers Firing`,
+      body: null,
+      color: "danger"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "phasersUpdate",
     App.systems.filter(s => s.type === "Phasers")

@@ -4,5 +4,9 @@ type CoreFeed {
   simulatorId: ID
   component: String
   ignored: Boolean
+  timestamp: String
+  title: String
+  body: String
+  color: String
 }
 `;

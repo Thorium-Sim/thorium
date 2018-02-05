@@ -1,7 +1,11 @@
-.inner-cores .coreFeed-core {
+.coreFeed-core {
   .core-feed-component {
     margin-bottom: 20px;
   }
   height: 100vh;
   overflow-y: scroll;
+  .alert {
+    margin: 2px;
+    padding: 4px;
+  }
 }
