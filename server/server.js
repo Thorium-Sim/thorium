@@ -29,7 +29,7 @@ import "./processes";
 
 const CLIENT_PORT =
   process.env.NODE_ENV === "production"
-    ? Math.round(Math.random() * (9999 - 1024)) + 1024
+    ? 1337 //Math.round(Math.random() * (9999 - 1024)) + 1024
     : 3000;
 const GRAPHQL_PORT = CLIENT_PORT + 1;
 const WS_PORT = CLIENT_PORT + 2;
