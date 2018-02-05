@@ -37,7 +37,6 @@ const quotes = [
   "I like to believe that there are always possibilities",
   "Sometimes a feeling is all we humans have to go on.",
   "Failure is the mark of a life well lived. In turn, the only way to live without failure is to be of no use to anyone.",
-  "Let the past die. Kill it, if you have to. That's the only way to become what you are meant to be.",
   "History has its eyes on you.",
   "We take one step at a time. In doing so we reach toward the unknown.",
   "Where does this lead us? Where do we go?",
@@ -51,13 +50,20 @@ class Welcome extends Component {
   subscription = null;
   state = { issuesOpen: false };
   componentDidMount() {
-    fetch("https://api.github.com/repos/thorium-sim/thorium/tags")
-      .then(res => res.json())
-      .then(res => {
-        if (semver.gt(res[0].name, require("../../../package.json").version)) {
-          this.setState({ outdated: res[0].name });
-        }
-      });
+    if (process.env.CI) {
+      fetch("https://api.github.com/repos/thorium-sim/thorium/tags")
+        .then(res => res.json())
+        .then(res => {
+          if (
+            semver.gt(res[0].name, require("../../../package.json").version)
+          ) {
+            this.setState({ outdated: res[0].name });
+          }
+        })
+        .catch(err => {
+          //Oh well.
+        });
+    }
   }
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
