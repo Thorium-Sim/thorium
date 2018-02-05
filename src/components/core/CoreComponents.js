@@ -37,6 +37,12 @@ const FLIGHTS_SUB = gql`
   }
 `;
 
+const CACHE_INVALID_SUB = gql`
+  subscription ClearCache($flight: ID!) {
+    clearCache(flight: $flight)
+  }
+`;
+
 class CoreComponents extends Component {
   constructor(props) {
     super(props);
@@ -61,6 +67,18 @@ class CoreComponents extends Component {
           return Object.assign({}, previousResult, {
             flights: subscriptionData.data.flightsUpdate
           });
+        }
+      });
+    }
+    if (!this.cacheSub && !nextProps.data.loading) {
+      this.cacheSub = nextProps.data.subscribeToMore({
+        document: CACHE_INVALID_SUB,
+        variables: { flight: this.props.flightId },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          console.log(subscriptionData);
+          debugger;
+          window.location.reload();
+          return previousResult;
         }
       });
     }
@@ -94,6 +112,10 @@ class CoreComponents extends Component {
         }
       }
     }
+  }
+  componentWillUnmount() {
+    this.flightsSub && this.flightsSub();
+    this.cacheSub && this.cacheSub();
   }
   pickSimulator = e => {
     const simulator = e.target.value;

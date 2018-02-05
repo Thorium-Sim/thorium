@@ -13,6 +13,15 @@ App.on("createTeam", ({ team }) => {
     body: team.name,
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: team.simulatorId,
+      title: `New ${team.type} team`,
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish("teamsUpdate", App.teams);
 });
 App.on("updateTeam", ({ team }) => {

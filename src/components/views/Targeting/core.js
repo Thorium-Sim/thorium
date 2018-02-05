@@ -87,10 +87,13 @@ class TargetingCore extends Component {
       classInput: {
         name: "Target",
         size: 1,
-        icon: assetFolders.find(a => a.name === "Icons").containers[0].fullPath,
+        icon:
+          assetFolders.find(a => a.name === "Icons") &&
+          assetFolders.find(a => a.name === "Icons").containers[0].fullPath,
         speed: 1,
-        picture: assetFolders.find(a => a.name === "Pictures").containers[0]
-          .fullPath,
+        picture:
+          assetFolders.find(a => a.name === "Pictures") &&
+          assetFolders.find(a => a.name === "Pictures").containers[0].fullPath,
         quadrant: 1
       }
     };

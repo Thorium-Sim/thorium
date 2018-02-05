@@ -99,7 +99,6 @@ function addAspects(template, sim) {
     const id = uuid.v4();
     sim.stations.forEach(s => {
       s.cards.forEach(c => {
-        console.log(id, p, c.component);
         if (c.component === p) c.component = id;
       });
     });
@@ -188,6 +187,7 @@ App.on("resetFlight", ({ flightId }) => {
   // Create new simulators, then delete the old ones
   flight.simulators.forEach(simId => {
     const sim = App.simulators.find(s => s.id === simId);
+    const viewscreens = App.viewscreens.filter(s => s.simulatorId === sim.id);
     const tempId = sim.templateId;
     // Remove all of the systems, inventory, crew, etc.
     aspectList.forEach(aspect => {
@@ -207,11 +207,30 @@ App.on("resetFlight", ({ flightId }) => {
     newSim.mission = sim.missionId;
     newSim.stations = sim.stations;
     newSim.stationSet = sim.stationSet;
+    viewscreens.forEach(v =>
+      App.viewscreens.push(
+        new Classes.Viewscreen({
+          id: v.id,
+          simulatorId: newSim.id,
+          name: v.name,
+          secondary: v.secondary
+        })
+      )
+    );
     App.simulators.push(newSim);
     addAspects({ simulatorId: tempId }, newSim);
+    // Create exocomps for the simulator
+    App.handleEvent(
+      { simulatorId: newSim.id, count: newSim.exocomps },
+      "setSimulatorExocomps"
+    );
     pubsub.publish("flightsUpdate", App.flights);
     pubsub.publish("clientChanged", App.clients);
-    pubsub.publish("clearCache", App.clients);
+    pubsub.publish(
+      "clearCache",
+      App.clients.filter(c => c.flightId === flightId)
+    );
+    pubsub.publish("clearCache", App.flights.filter(f => f.id === flightId));
   });
 });
 App.on("pauseFlight", () => {});

@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Cores } from "../";
-import { Button } from "reactstrap";
+import { Button, Alert } from "reactstrap";
+import moment from "moment";
 import "./style.css";
 
 const COREFEED_SUB = gql`
@@ -12,12 +13,17 @@ const COREFEED_SUB = gql`
       simulatorId
       component
       ignored
+      timestamp
+      title
+      body
+      color
     }
   }
 `;
 
 class CoreFeed extends Component {
   sub = null;
+  state = { showIgnore: false, components: false };
   componentWillReceiveProps(nextProps) {
     if (!this.internalSub && !nextProps.data.loading) {
       this.internalSub = nextProps.data.subscribeToMore({
@@ -50,26 +56,62 @@ class CoreFeed extends Component {
   };
   render() {
     if (this.props.data.loading || !this.props.data.coreFeed) return null;
-    const coreFeed = this.props.data.coreFeed.filter(c => !c.ignored);
+    const { showIgnore, components } = this.state;
+    const coreFeed = this.props.data.coreFeed.concat().reverse();
     return (
       <div className="coreFeed-core">
         <p>Core Feed</p>
+        <label>
+          <input
+            type="checkbox"
+            checked={showIgnore}
+            onChange={e => this.setState({ showIgnore: e.target.checked })}
+          />{" "}
+          Show Ignored
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={components}
+            onChange={e => this.setState({ components: e.target.checked })}
+          />{" "}
+          Show Components
+        </label>
+
         {coreFeed.length ? (
           coreFeed.map(c => {
-            const CoreComponent = Cores[c.component];
+            if (components && c.component) {
+              if (c.ignored && !showIgnore) return null;
+              const CoreComponent = Cores[c.component];
+              return (
+                <div key={c.id} className="core-feed-component">
+                  {c.component.replace("Core", "")}
+                  <CoreComponent {...this.props} />
+                  {!showIgnore && (
+                    <Button
+                      color="info"
+                      block
+                      size="sm"
+                      onClick={() => this.ignoreCoreFeed(c.id)}
+                    >
+                      Ignore
+                    </Button>
+                  )}
+                </div>
+              );
+            }
             return (
-              <div key={c.id} className="core-feed-component">
-                {c.component.replace("Core", "")}
-                <CoreComponent {...this.props} />
-                <Button
-                  color="info"
-                  block
-                  size="sm"
-                  onClick={() => this.ignoreCoreFeed(c.id)}
-                >
-                  Ignore
-                </Button>
-              </div>
+              <Alert
+                key={c.id}
+                color={c.color}
+                isOpen={!c.ignored || showIgnore}
+                toggle={showIgnore ? null : () => this.ignoreCoreFeed(c.id)}
+              >
+                <strong className="alert-heading">
+                  {moment(c.timestamp).format("H:mm:ssa")} - {c.title}
+                </strong>
+                {c.body && <p>{c.body}</p>}
+              </Alert>
             );
           })
         ) : (
@@ -87,6 +129,10 @@ const COREFEED_QUERY = gql`
       simulatorId
       component
       ignored
+      timestamp
+      title
+      body
+      color
     }
   }
 `;

@@ -22,7 +22,13 @@ App.on("beginTransportScan", params => {
   const transporter = App.systems.find(sys => sys.id === params.transporter);
   transporter.beginScan();
   App.handleEvent(
-    { simulatorId: transporter.simulatorId, component: "TransporterCore" },
+    {
+      simulatorId: transporter.simulatorId,
+      component: "TransporterCore",
+      title: `Transporter Scan`,
+      body: "",
+      color: "info"
+    },
     "addCoreFeed"
   );
   pubsub.publish("notify", {
@@ -47,6 +53,15 @@ App.on("cancelTransportScan", params => {
     body: "",
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: transporter.simulatorId,
+      title: `Transporter Scan Canceled`,
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish("transporterUpdate", transporter);
 });
 App.on("clearTransportTargets", params => {
@@ -70,6 +85,15 @@ App.on("completeTransport", params => {
     body: "",
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: transporter.simulatorId,
+      title: `Transported`,
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish("transporterUpdate", transporter);
 });
 App.on("setTransporterTargets", params => {

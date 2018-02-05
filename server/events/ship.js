@@ -19,6 +19,20 @@ App.on("shipDockingChange", ({ simulatorId, which, state }) => {
             : `Doors are now ${state ? "Open" : "Closed"}`,
       color: "info"
     });
+    App.handleEvent(
+      {
+        simulatorId: simulatorId,
+        title: which,
+        body:
+          which === "clamps"
+            ? `Clamps are now ${state ? "Attached" : "Detached"}`
+            : which === "ramps"
+              ? `Ramps are now ${state ? "Extended" : "Retracted"}`
+              : `Doors are now ${state ? "Open" : "Closed"}`,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
@@ -27,7 +41,14 @@ App.on("remoteAccessSendCode", ({ simulatorId, code, station }) => {
   if (simulator) {
     simulator.sendCode(code, station);
     App.handleEvent(
-      { simulatorId: simulator.id, component: "RemoteCore" },
+      {
+        simulatorId: simulator.id,
+        component: "RemoteCore",
+        title: "Remote Access Code",
+        body: `Code from: ${station}
+      ${code}`,
+        color: "info"
+      },
       "addCoreFeed"
     );
     pubsub.publish("notify", {
@@ -71,6 +92,15 @@ App.on("setSelfDestructTime", ({ simulatorId, time }) => {
     body: ``,
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: simulatorId,
+      title: `Self Destruct ${time ? "Activated" : "Deactivated"}`,
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
 App.on("setSelfDestructCode", ({ simulatorId, code }) => {

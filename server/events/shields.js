@@ -27,6 +27,15 @@ App.on("shieldRaised", ({ id }) => {
       body: `${shieldNames[system.position]}`,
       color: "info"
     });
+    App.handleEvent(
+      {
+        simulatorId: system.simulatorId,
+        title: `Shields Raised`,
+        body: `${shieldNames[system.position]}`,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
     system.shieldState(true);
   } else {
     //Check to see if the ID is the simulator ID
@@ -46,6 +55,15 @@ App.on("shieldRaised", ({ id }) => {
         body: `All`,
         color: "info"
       });
+      App.handleEvent(
+        {
+          simulatorId: id,
+          title: `Shields Raised`,
+          body: `All`,
+          color: "info"
+        },
+        "addCoreFeed"
+      );
     }
   }
   sendUpdate();
@@ -61,6 +79,15 @@ App.on("shieldLowered", ({ id }) => {
       body: `${shieldNames[system.position]}`,
       color: "info"
     });
+    App.handleEvent(
+      {
+        simulatorId: system.simulatorId,
+        title: `Shields Lowered`,
+        body: `${shieldNames[system.position]}`,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
     system.shieldState(false);
   } else {
     //Check to see if the ID is the simulator ID
@@ -80,6 +107,15 @@ App.on("shieldLowered", ({ id }) => {
         body: `All`,
         color: "info"
       });
+      App.handleEvent(
+        {
+          simulatorId: id,
+          title: `Shields Lowered`,
+          body: `All`,
+          color: "info"
+        },
+        "addCoreFeed"
+      );
     }
   }
   sendUpdate();

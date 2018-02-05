@@ -51,6 +51,15 @@ App.on("changeSimulatorAlertLevel", ({ simulatorId, alertLevel }) => {
       body: "",
       color: "info"
     });
+    App.handleEvent(
+      {
+        simulatorId: system.simulatorId,
+        title: `Alert Level ${alertLevel}`,
+        body: null,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });

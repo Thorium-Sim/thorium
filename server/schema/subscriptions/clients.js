@@ -1,5 +1,5 @@
 export default `
   clientChanged(client: ID, simulatorId: ID): [Client]
-  clearCache(client: ID): Boolean
+  clearCache(client: ID, flight: ID): Boolean
 
 `;

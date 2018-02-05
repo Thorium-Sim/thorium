@@ -6,7 +6,13 @@ App.on("navCalculateCourse", ({ id, destination }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.calculateCourse(destination);
   App.handleEvent(
-    { simulatorId: system.simulatorId, component: "NavigationCore" },
+    {
+      simulatorId: system.simulatorId,
+      component: "NavigationCore",
+      title: `Calculating Course`,
+      body: destination,
+      color: "info"
+    },
     "addCoreFeed"
   );
   pubsub.publish("notify", {
@@ -33,6 +39,15 @@ App.on("navCancelCalculation", ({ id }) => {
     body: "",
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: system.simulatorId,
+      title: `Course Calculation Cancelled`,
+      body: null,
+      color: "warning"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "navigationUpdate",
     App.systems.filter(s => s.type === "Navigation")
@@ -71,6 +86,15 @@ App.on("navCourseEntry", ({ id, x, y, z }) => {
     body: "",
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: system.simulatorId,
+      title: `Course Entered`,
+      body: null,
+      color: "success"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "navigationUpdate",
     App.systems.filter(s => s.type === "Navigation")

@@ -17,6 +17,15 @@ App.on("sendMessage", ({ message }) => {
   App.messages.push(messageClass);
   pubsub.publish("sendMessage", messageClass);
   const messageGroups = ["SecurityTeams", "DamageTeams", "MedicalTeams"];
+  App.handleEvent(
+    {
+      simulatorId: messageClass.simulatorId,
+      title: `Message: ${messageClass.sender} -> ${messageClass.destination}`,
+      body: messageClass.content,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   if (messageGroups.indexOf(messageClass.sender) > -1) {
     // Notify every station that has this class
     App.simulators

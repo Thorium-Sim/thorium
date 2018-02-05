@@ -27,6 +27,15 @@ App.on("activateStealth", ({ id }) => {
     body: "",
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: system.simulatorId,
+      title: `Stealth Activated`,
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "stealthFieldUpdate",
     App.systems.filter(s => s.type === "StealthField")
@@ -43,6 +52,15 @@ App.on("deactivateStealth", ({ id }) => {
     body: "",
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: system.simulatorId,
+      title: `Stealth Deactivated`,
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "stealthFieldUpdate",
     App.systems.filter(s => s.type === "StealthField")

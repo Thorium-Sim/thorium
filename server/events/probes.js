@@ -16,6 +16,15 @@ App.on("launchProbe", ({ id, probe }) => {
     body: probe.name,
     color: "info"
   });
+  App.handleEvent(
+    {
+      simulatorId: sys.simulatorId,
+      title: `Probe Launched`,
+      body: probe.name,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   sys.launchProbe(probe);
   pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
 });

@@ -101,16 +101,31 @@ export const ClientSubscriptions = {
     )
   },
   clearCache: {
-    resolve(payload, { client }) {
+    resolve(payload, { client, flight }) {
+      let output = false;
       if (client) {
-        return payload.filter(c => c.id === client);
+        output = payload.filter(c => c.id === client).length > 0;
+      } else if (flight) {
+        output = payload.filter(c => c.id === flight).length > 0;
+      } else {
+        output = payload.filter(c => c.connected).length > 0;
       }
-      return payload.filter(c => c.connected);
+      console.log(client, flight, output);
+      return output;
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("clearCache"),
-      rootValue => {
-        return !!rootValue.length;
+      (rootValue, { client, flight }) => {
+        let output = false;
+        if (client) {
+          output = rootValue.filter(c => c.id === client).length > 0;
+        } else if (flight) {
+          output = rootValue.filter(c => c.id === flight).length > 0;
+        } else {
+          output = rootValue.filter(c => c.connected).length > 0;
+        }
+        console.log(client, flight, output);
+        return output;
       }
     )
   }
