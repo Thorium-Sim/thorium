@@ -226,7 +226,11 @@ App.on("resetFlight", ({ flightId }) => {
     );
     pubsub.publish("flightsUpdate", App.flights);
     pubsub.publish("clientChanged", App.clients);
-    pubsub.publish("clearCache", App.clients);
+    pubsub.publish(
+      "clearCache",
+      App.clients.filter(c => c.flightId === flightId)
+    );
+    pubsub.publish("clearCache", App.flights.filter(f => f.id === flightId));
   });
 });
 App.on("pauseFlight", () => {});
