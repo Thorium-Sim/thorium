@@ -51,13 +51,17 @@ class Welcome extends Component {
   subscription = null;
   state = { issuesOpen: false };
   componentDidMount() {
-    fetch("https://api.github.com/repos/thorium-sim/thorium/tags")
-      .then(res => res.json())
-      .then(res => {
-        if (semver.gt(res[0].name, require("../../../package.json").version)) {
-          this.setState({ outdated: res[0].name });
-        }
-      });
+    if (process.env.CI) {
+      fetch("https://api.github.com/repos/thorium-sim/thorium/tags")
+        .then(res => res.json())
+        .then(res => {
+          if (
+            semver.gt(res[0].name, require("../../../package.json").version)
+          ) {
+            this.setState({ outdated: res[0].name });
+          }
+        });
+    }
   }
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
