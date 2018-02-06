@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css?family=Titillium+Web:200");
 
 $alert5: #233f7a;
-$alert4: $alert5;
+$alert4: #237A23;
 $alert3: #7a7a23;
 $alert2: #804d19;
 $alert1: #801919;
@@ -182,6 +182,53 @@ $color: $alert5;
     width: 100vw;
     height: 100vh;
   }
+  
+.simName-graphic {
+  background-image: url(./SimName.png);
+  position: fixed;
+  background-size: contain;
+  width: 32vw;
+  height: 8vh;
+  top: 4vh;
+  left: 2vw;
+}
+.cards-graphic {
+  background-image: url(./Cards.png);
+  position: fixed;
+  background-size: contain;
+  transform: rotate(270deg);
+  width: 47vw;
+  height: 13.5vh;
+  left: -18vw;
+  top: 54vh;
+}
+.stationName-graphic {
+  background-image: url(./StationName.png);
+  position: fixed;
+  background-size: contain;
+  width: 32vw;
+  height: 7vh;
+  right: 2vw;
+  top: 4vh;
+}
+.widgets-graphic {
+  background-image: url(./Widgets.png);
+  position: fixed;
+  background-size: contain;
+  width: 36vw;
+  height: 5.5vh;
+  left: 36vw;
+  top: 5.5vh;
+}
+.username-graphic {
+  background-image: url(./Username.png);
+  position: fixed;
+  background-size: contain;
+  width: 27vw;
+  height: 6vh;
+  left: 2vw;
+  top: 12vh;
+}
   button {
     color: white;
     font-weight: 600;
@@ -230,26 +277,14 @@ $color: $alert5;
   }
   &.alertColor3 {
     @include parts-colors($alert3);
-    video {
-      filter: hue-rotate(198deg);
-    }
   }
   &.alertColor2 {
     @include parts-colors($alert2);
-    video {
-      filter: hue-rotate(156deg);
-    }
   }
   &.alertColor1 {
     @include parts-colors($alert1);
-    video {
-      filter: hue-rotate(126deg);
-    }
   }
   &.alertColorp {
     @include parts-colors($alertp);
-    video {
-      filter: hue-rotate(68deg);
-    }
   }
 }
