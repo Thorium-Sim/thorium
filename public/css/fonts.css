@@ -156,34 +156,34 @@
   src: url(../fonts/BankGothicMedium.woff) format("woff");
 }
 @font-face {
-  font-family: "BabasNeue";
+  font-family: "BebasNeue";
   font-style: normal;
   font-weight: 800;
-  src: url("../fonts/BabasNeue Bold.woff") format("woff");
+  src: url("../fonts/BebasNeue Bold.woff") format("woff");
 }
 @font-face {
-  font-family: "BabasNeue";
+  font-family: "BebasNeue";
   font-style: normal;
   font-weight: 600;
-  src: url("../fonts/BabasNeue Regular.woff") format("woff");
+  src: url("../fonts/BebasNeue Regular.woff") format("woff");
 }
 @font-face {
-  font-family: "BabasNeue";
+  font-family: "BebasNeue";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/BabasNeue Regular.woff") format("woff");
+  src: url("../fonts/BebasNeue Regular.woff") format("woff");
 }
 @font-face {
-  font-family: "BabasNeue";
+  font-family: "BebasNeue";
   font-style: normal;
   font-weight: 300;
-  src: url("../fonts/BabasNeue Light.woff") format("woff");
+  src: url("../fonts/BebasNeue Light.woff") format("woff");
 }
 @font-face {
-  font-family: "BabasNeue";
+  font-family: "BebasNeue";
   font-style: normal;
   font-weight: 200;
-  src: url("../fonts/BabasNeue Thin.woff") format("woff");
+  src: url("../fonts/BebasNeue Thin.woff") format("woff");
 }
 @font-face {
   font-family: "Bank Gothic";

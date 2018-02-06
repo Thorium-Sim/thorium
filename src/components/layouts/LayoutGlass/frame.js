@@ -1,5 +1,5 @@
 import React from "react";
 
 export default () => {
-  return <div />;
+  return <video autoPlay loop src={require("./blue.mp4")} />;
 };

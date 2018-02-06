@@ -1,7 +1,8 @@
-@import url('https://fonts.googleapis.com/css?family=Saira');
-@import url('https://fonts.googleapis.com/css?family=Titillium+Web:200');
+@import url("https://fonts.googleapis.com/css?family=Saira");
+@import url("https://fonts.googleapis.com/css?family=Titillium+Web:200");
 
 $alert5: #233f7a;
+$alert4: $alert5;
 $alert3: #7a7a23;
 $alert2: #804d19;
 $alert1: #801919;
@@ -14,7 +15,8 @@ $color: $alert5;
   border: solid 1px $background;
   box-shadow: inset 0px 0px 20px -5px rgba(saturate($background, 10%), 0.5),
     0px 0px 15px -2px rgba(saturate($background, 10%), 1);
-  &:hover {
+  &:hover:not([disabled]) {
+    color: white;
     background: rgba($background, 0.5);
     box-shadow: inset 0px 0px 20px 0px rgba(saturate($background, 10%), 1),
       0px 0px 10px -2px rgba(saturate($background, 10%), 1);
@@ -31,6 +33,56 @@ $color: $alert5;
   }
 }
 
+@mixin card-variant($background) {
+  $background: lighten(desaturate($background, 20%), 10%);
+  background: rgba($background, 0.1);
+  border: solid 1px $background;
+  box-shadow: inset 0px 0px 20px -5px rgba(saturate($background, 10%), 0.5),
+    0px 0px 15px -2px rgba(saturate($background, 10%), 1);
+}
+
+@mixin input-variant($background) {
+  color: white;
+  $background: lighten(desaturate($background, 20%), 10%);
+  background: rgba(desaturate($background, 20%), 0.1);
+  border: solid 1px desaturate($background, 20%);
+  box-shadow: inset 0px 0px 20px -5px rgba(desaturate($background, 20%), 0.5),
+    0px 0px 15px -2px rgba(desaturate($background, 20%), 1);
+  &:hover {
+    box-shadow: inset 0px 0px 20px 0px rgba(saturate($background, 10%), 1),
+      0px 0px 10px -2px rgba($background, 1);
+  }
+  &:focus {
+    box-shadow: inset 0px 0px 20px 0px rgba(saturate($background, 10%), 1),
+      0px 0px 10px -2px rgba(saturate($background, 10%), 1);
+  }
+}
+
+@mixin parts-colors($background) {
+  .card {
+    @include card-variant($background);
+  }
+
+  input,
+  textarea {
+    @include input-variant($background);
+  }
+
+  .list-group {
+    margin-right: 4px;
+    border-radius: 5px;
+    @include card-variant($background);
+  }
+  .keypadButtons .keypad,
+  .keypadButtons .enter {
+    @include button-variant($background);
+  }
+  .card-icon-container {
+    .card-icon {
+      @include card-variant($background);
+    }
+  }
+}
 .layout-glass {
   background-color: black;
   position: fixed;
@@ -40,18 +92,95 @@ $color: $alert5;
   bottom: 0;
   font-family: "Saira", sans-serif;
   color: #eee;
-  .col {
-    margin-top: 15px;
+  .frame-text {
+    h1,
+    h2 {
+      font-family: "BebasNeue";
+      font-weight: 300;
+    }
   }
-  .sim-name, .station-name, .login-name {
-    font-family: "Titillium Web";
+  .widgets {
+    top: 6vh;
+    left: 39vw;
+    width: 23vw;
+    display: flex;
+    justify-content: space-between;
+  }
+  .card-icon-container {
+    top: 33vh;
+    left: 3vw;
+    .card-icon-item {
+      margin-bottom: 97px;
+    }
+    .card-icon {
+      opacity: 0.8;
+    }
+    .card-icon-background {
+      background-color: transparent !important;
+    }
+    .card-button-mask {
+      top: 10px;
+    }
+    .btn {
+      width: 0;
+      overflow: hidden;
+      transition: width 0.5s ease, padding 0.5s ease;
+      padding-left: 0px;
+      padding-right: 0;
+      font-size: 24px;
+    }
+    &:hover {
+      .btn {
+        width: 100%;
+        padding-left: 30px;
+        padding-right: 20px;
+      }
+    }
+  }
+  .simulator-name,
+  .station-name,
+  .login-name {
     text-shadow: 0px 0px 4px lighten($alert5, 20%);
+    position: absolute;
+    text-align: center;
+    color: #aaa;
   }
-  .sim-name {
+  .simulator-name {
+    top: 4.8vh;
+    left: 5vh;
+    font-size: 6vh;
+    width: 30vw;
   }
   .station-name {
+    top: 4.8vh;
+    right: 5vh;
+    font-size: 6vh;
+    width: 30vw;
   }
   .login-name {
+    top: 13vh;
+    left: 5vh;
+    font-size: 4vh;
+    width: 26vw;
+  }
+  .cardContainer {
+    max-width: 88vw;
+    height: 75vh;
+    width: 100%;
+    position: absolute;
+    left: 10vw;
+    top: 19vh;
+  }
+  video {
+    mix-blend-mode: screen;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
   }
   button {
     color: white;
@@ -84,6 +213,43 @@ $color: $alert5;
     }
     &.btn-danger {
       @include button-variant($alert1);
+    }
+  }
+  .list-group-item {
+    border: none;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  pre {
+    color: white;
+  }
+  &.alertColor5 {
+    @include parts-colors($alert5);
+  }
+  &.alertColor4 {
+    @include parts-colors($alert4);
+  }
+  &.alertColor3 {
+    @include parts-colors($alert3);
+    video {
+      filter: hue-rotate(198deg);
+    }
+  }
+  &.alertColor2 {
+    @include parts-colors($alert2);
+    video {
+      filter: hue-rotate(156deg);
+    }
+  }
+  &.alertColor1 {
+    @include parts-colors($alert1);
+    video {
+      filter: hue-rotate(126deg);
+    }
+  }
+  &.alertColorp {
+    @include parts-colors($alertp);
+    video {
+      filter: hue-rotate(68deg);
     }
   }
 }

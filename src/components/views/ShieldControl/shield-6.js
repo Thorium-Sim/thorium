@@ -56,7 +56,7 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
   return (
     <Container fluid className="shields">
       <Row>
-        <Col sm="6">
+        <Col sm="5">
           <Row>
             <Col sm={{ size: 9, offset: 2 }} style={{ maxHeight: "50vh" }}>
               <div
