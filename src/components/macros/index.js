@@ -1,3 +1,6 @@
+export { default as addTractorTarget } from "./addTractorTarget";
+export { default as removeTractorTarget } from "./removeTractorTarget";
+export { default as hitShields } from "./hitShields";
 export { default as setPresetAnswers } from "./setPresetAnswers";
 export { default as setArmyContacts } from "./setArmyContacts";
 export { default as sendLongRangeMessage } from "./sendLongRangeMessage";

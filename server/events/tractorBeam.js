@@ -71,3 +71,38 @@ App.on("setTractorBeamTargetLabel", ({ id, label }) => {
     App.systems.filter(s => s.type === "TractorBeam")
   );
 });
+App.on("addTractorTarget", ({ id, simulatorId, label }) => {
+  let sys;
+  if (id) {
+    sys = App.systems.find(s => s.id === id);
+  } else {
+    sys = App.systems.find(
+      s => s.simulatorId === simulatorId && s.class === "TractorBeam"
+    );
+  }
+  if (!sys) return;
+  sys.setTargetLabel(label);
+  sys.setTarget(true);
+  sys.setScanning(false);
+  pubsub.publish(
+    "tractorBeamUpdate",
+    App.systems.filter(s => s.type === "TractorBeam")
+  );
+});
+App.on("removeTractorTarget", ({ id, simulatorId, label }) => {
+  let sys;
+  if (id) {
+    sys = App.systems.find(s => s.id === id);
+  } else {
+    sys = App.systems.find(
+      s => s.simulatorId === simulatorId && s.class === "TractorBeam"
+    );
+  }
+  if (!sys) return;
+  sys.setTargetLabel(label);
+  sys.setTarget(false);
+  pubsub.publish(
+    "tractorBeamUpdate",
+    App.systems.filter(s => s.type === "TractorBeam")
+  );
+});
