@@ -16,6 +16,14 @@ App.on("commUpdateSignal", ({ id, commSignalInput }) => {
     App.systems.filter(s => s.type === "ShortRangeComm")
   );
 });
+App.on("commUpdateSignals", ({ id, signals }) => {
+  const sys = App.systems.find(s => s.id === id);
+  signals.forEach(s => sys.updateCommSignal(s));
+  pubsub.publish(
+    "shortRangeCommUpdate",
+    App.systems.filter(s => s.type === "ShortRangeComm")
+  );
+});
 App.on("commRemoveSignal", ({ id, signalId }) => {
   App.systems.find(s => s.id === id).removeCommSignal(signalId);
   pubsub.publish(

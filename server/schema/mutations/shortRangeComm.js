@@ -1,6 +1,7 @@
 export default `
 commAddSignal(id: ID!, commSignalInput: CommSignalInput!):String
 commUpdateSignal(id: ID!, commSignalInput: CommSignalInput!):String
+commUpdateSignals(id: ID!, signals: [CommSignalInput]!):String
 commRemoveSignal(id: ID!, signalId: ID!):String
 commAddArrow(id: ID!, commArrowInput: CommArrowInput!):String
 commRemoveArrow(id: ID!, arrowId: ID!):String
