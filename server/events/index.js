@@ -39,3 +39,4 @@ import "./signalJammer";
 import "./exocomp";
 import "./library";
 import "./softwarePanels";
+import "./actions";
