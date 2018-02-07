@@ -75,7 +75,7 @@ class ContactContextMenu extends Component {
                     <Label for="iconSelect">Icon</Label>
                   </Col>
                   <Col sm={2}>
-                    <Asset fail asset={contact.icon} fail>
+                    <Asset fail asset={contact.icon}>
                       {({ src }) => (
                         <img
                           alt={"Contact"}
