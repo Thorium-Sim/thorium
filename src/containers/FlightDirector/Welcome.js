@@ -144,47 +144,53 @@ class Welcome extends Component {
           </div>
         </Row>
         <Row className="config-row">
-          <Col sm={4}>
+          <Col>
             <Button tag={Link} to="/simulatorConfig" color="info" block>
               Configure Simulators
             </Button>
           </Col>
-          <Col sm={4}>
+          <Col>
             <Button tag={Link} to="/assetConfig" color="info" block>
               Configure Generic Assets
             </Button>
           </Col>
-          <Col sm={{ size: 4 }}>
-            <Button tag={Link} to="/flight/c/core" color="secondary" block>
-              Debug Core
-            </Button>
-          </Col>
-          <Col sm={4}>
+
+          <Col>
             <Button tag={Link} to="/missionConfig" color="info" block>
               Configure Missions
             </Button>
           </Col>
-          <Col sm={{ size: 4 }}>
+          <Col>
             <Button tag={Link} to="/setConfig" color="info" block>
               Configure Sets
             </Button>
           </Col>
-          <Col sm={{ size: 4 }}>
-            <Button tag={Link} to="/debug" color="secondary" block>
-              Debug
-            </Button>
-          </Col>
-          <Col sm={{ size: 4 }}>
+
+          <Col>
             <Button tag={Link} to="/tacticalConfig" color="info" block>
               Configure Tactical Maps
             </Button>
           </Col>
-          <Col sm={{ size: 4 }}>
+          {process.env.NODE_ENV !== "production" && (
+            <Col>
+              <Button tag={Link} to="/debug" color="secondary" block>
+                Debug
+              </Button>
+            </Col>
+          )}
+          {process.env.NODE_ENV !== "production" && (
+            <Col>
+              <Button tag={Link} to="/flight/c/core" color="secondary" block>
+                Debug Core
+              </Button>
+            </Col>
+          )}
+          <Col>
             <Button color="primary" block onClick={this.toggleIssueTracker}>
               Bug Report/Feature Request
             </Button>
           </Col>
-          <Col sm={{ size: 4 }}>
+          <Col>
             <Button color="warning" block tag={Link} to="/softwarePanels">
               Software Panel Config
             </Button>

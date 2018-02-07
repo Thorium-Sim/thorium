@@ -4,7 +4,6 @@ import { graphql, withApollo } from "react-apollo";
 import { Label, Row, Col, Input, Button, ButtonGroup } from "reactstrap";
 import Preview, { Viewscreen } from "./index";
 import * as ViewscreenCards from "../../viewscreens";
-import Layouts from "../../layouts";
 
 import "./style.css";
 
