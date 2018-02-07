@@ -25,15 +25,9 @@ class LayoutGlass extends Component {
     });
   };
   render() {
-    let { simulator, station, clientObj } = this.props;
-    const { login: stationLogin, name: stationName } = station;
+    let { simulator, station } = this.props;
+    const { name: stationName } = station;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
-    if (clientObj.loginState === "logout" && stationLogin === false) {
-      cardName = "Login";
-    }
-    if (clientObj.offlineState) {
-      cardName = "Offline";
-    }
     return (
       <ActionsMixin {...this.props}>
         <div className={`layout-glass glass-viewscreen ${alertClass}`}>
