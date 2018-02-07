@@ -130,3 +130,14 @@ App.on("shieldFrequencySet", ({ id, frequency }) => {
   system.setFrequency(frequency);
   sendUpdate();
 });
+App.on("hitShields", ({ id, simulatorId }) => {
+  if (id) {
+    const system = App.systems.find(sys => sys.id === id);
+    system.setIntegrity(system.integrity - Math.random() / 10);
+  } else {
+    App.systems
+      .filter(s => s.simulatorId === simulatorId && s.class === "Shield")
+      .forEach(s => s.setIntegrity(s.integrity - Math.random() / 10));
+  }
+  sendUpdate();
+});

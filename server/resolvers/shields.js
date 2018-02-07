@@ -22,6 +22,9 @@ export const ShieldMutations = {
   },
   shieldFrequencySet(root, args, context) {
     App.handleEvent(args, "shieldFrequencySet", context);
+  },
+  hitShields(root, args, context) {
+    App.handleEvent(args, "hitShields", context);
   }
 };
 
