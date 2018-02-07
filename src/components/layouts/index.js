@@ -7,6 +7,7 @@ import LayoutOdyssey from "./LayoutOdyssey";
 import LayoutCornersViewscreen from "./LayoutCorners/Viewscreen";
 import LayoutDefaultViewscreen from "./LayoutDefault/Viewscreen";
 import LayoutOdysseyViewscreen from "./LayoutOdyssey/viewscreen";
+import LayoutGlassViewscreen from "./LayoutGlass/viewscreen";
 
 const Layouts = {
   LayoutDefault,
@@ -16,6 +17,7 @@ const Layouts = {
   LayoutOdyssey,
   LayoutCornersViewscreen,
   LayoutDefaultViewscreen,
-  LayoutOdysseyViewscreen
+  LayoutOdysseyViewscreen,
+  LayoutGlassViewscreen
 };
 export default Layouts;
