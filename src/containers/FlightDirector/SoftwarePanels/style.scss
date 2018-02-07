@@ -9,6 +9,13 @@
   .label {
     z-index: 500;
   }
+  .connectors {
+    pointer-events: none;
+    .drag-line {
+      pointer-events: all;
+    }
+  }
+
   .componentLibrary {
     height: 100vh;
     width: 250px;

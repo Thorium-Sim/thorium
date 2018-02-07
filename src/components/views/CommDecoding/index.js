@@ -234,17 +234,18 @@ class Decoding extends Component {
               >
                 {({ measureRef }) => (
                   <div ref={measureRef}>
-                    {this.state.dimensions && (
-                      <DecodingCanvas
-                        dimensions={this.state.dimensions}
-                        decodeProgress={this.state.decodeProgress}
-                        ra={selectedMessage.ra}
-                        rf={selectedMessage.rf}
-                        message={selectedMessage.message}
-                        a={this.state.a}
-                        f={this.state.f}
-                      />
-                    )}
+                    {this.state.dimensions &&
+                      selectedMessage && (
+                        <DecodingCanvas
+                          dimensions={this.state.dimensions}
+                          decodeProgress={this.state.decodeProgress}
+                          ra={selectedMessage.ra}
+                          rf={selectedMessage.rf}
+                          message={selectedMessage.message}
+                          a={this.state.a}
+                          f={this.state.f}
+                        />
+                      )}
                   </div>
                 )}
               </Measure>

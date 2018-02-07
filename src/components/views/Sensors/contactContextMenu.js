@@ -75,7 +75,7 @@ class ContactContextMenu extends Component {
                     <Label for="iconSelect">Icon</Label>
                   </Col>
                   <Col sm={2}>
-                    <Asset asset={contact.icon} fail>
+                    <Asset fail asset={contact.icon} fail>
                       {({ src }) => (
                         <img
                           alt={"Contact"}
@@ -99,7 +99,7 @@ class ContactContextMenu extends Component {
                     <Label for="iconSelect">Picture</Label>
                   </Col>
                   <Col sm={2}>
-                    <Asset asset={contact.picture}>
+                    <Asset fail asset={contact.picture}>
                       {({ src }) => (
                         <img
                           alt={"Contact"}

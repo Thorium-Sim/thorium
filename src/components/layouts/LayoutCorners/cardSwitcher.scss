@@ -10,6 +10,9 @@
       .card-button-background, .btn {
         left: 5px;
       }
+      .card-button-mask {
+        width: auto;
+      }
     }
   }
   &.offline,
@@ -106,6 +109,7 @@
     }
     .card-button-mask {
       background-color: transparent;
+      width: 0;
       left: 50px;
       height: 100px;
       position: absolute;
