@@ -53,7 +53,7 @@ App.on("changeSimulatorAlertLevel", ({ simulatorId, alertLevel }) => {
     });
     App.handleEvent(
       {
-        simulatorId: system.simulatorId,
+        simulatorId: simulator.id,
         title: `Alert Level ${alertLevel}`,
         body: null,
         color: "info"

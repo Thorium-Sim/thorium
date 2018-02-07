@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Button } from "reactstrap";
+import "./cardSwitcher.css";
 
 const CardButton = props => {
   const cardName = props.component.match(/.{8}-.{4}-.{4}-.{4}-.{12}/gi)
@@ -11,9 +13,10 @@ const CardButton = props => {
         className={props.name === props.currentCard ? "active" : ""}
       >
         <div className="card-button-mask">
-          <div className="card-button-background">
+          {/* {<div className="card-button-background">
             <div className="card-button">{props.name}</div>
-          </div>
+          </div>} */}
+          <Button size="lg">{props.name}</Button>
         </div>
         <div className={`card-icon-color ${props.className}`} />
         <img

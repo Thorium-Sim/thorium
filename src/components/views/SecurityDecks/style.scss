@@ -1,5 +1,7 @@
 .security-decks {
   .list-group {
+    max-height: 70vh;
+    overflow-y: scroll;
     .list-group-item {
       cursor: pointer;
       &.selected {

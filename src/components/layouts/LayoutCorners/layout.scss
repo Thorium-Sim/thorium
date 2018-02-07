@@ -1,4 +1,5 @@
 $alert5: #233f7a;
+$alert4: #237A23;
 $alert3: #4d4d16;
 $alert2: #804d19;
 $alert1: #801919;
@@ -62,6 +63,34 @@ body {
   stroke: lighten($alertp, 40%);
 }
 
+@mixin cardIcon($color) {
+  .card-icon-container .card-icon-item .card-button-background, .card-icon-color {
+    background: $color;
+  }
+  .active .card-icon-color {
+    background: saturate(lighten($color, 20%), 20%);
+
+  }
+}
+
+.alertColor5 {
+  @include cardIcon($alert5);
+}
+.alertColor4 {
+  @include cardIcon($alert4);
+}
+.alertColor3 {
+  @include cardIcon($alert3);
+}
+.alertColor2 {
+  @include cardIcon($alert2);
+}
+.alertColor1 {
+  @include cardIcon($alert1);
+}
+.alertColorp {
+  @include cardIcon($alertp);
+}
 //Card area
 .layout-corners {
   position: absolute;
@@ -288,14 +317,7 @@ body {
   .frame-color div {
     background-color: saturate(darken($color, 1%), 5%);
   }
-  .card-icon-container .card-icon-item .card-button-background {
-    background: linear-gradient(
-      to bottom,
-      saturate(darken($color, 4%), 5%) 0%,
-      saturate(darken($color, 1%), 5%) 50%,
-      saturate(darken($color, 4%), 5%) 100%
-    );
-  }
+  @include cardIcon($color);
   .alertBack {
     background-color: $color;
   }
@@ -463,163 +485,7 @@ body {
       }
     }*/
   }
-  .card-icon-container {
-    z-index: 10000 !important;
-    width: 80px;
-    position: absolute;
-    top: 320px;
-    left: 10px;
-    z-index: 10;
-    &:hover {
-      .card-icon-item {
-        .card-button-background {
-          left: 105px;
-        }
-        .card-button-mask {
-          transition: width 0s linear;
-        }
-      }
-    }
-    &.offline,
-    &.logout {
-      pointer-events: none;
-    }
-    .card-icon-item:nth-child(1) {
-      .card-button-background {
-        transition-delay: (0.05s * 0);
-      }
-    }
-    .card-icon-item:nth-child(2) {
-      .card-button-background {
-        transition-delay: (0.05s * 1);
-      }
-    }
-    .card-icon-item:nth-child(3) {
-      .card-button-background {
-        transition-delay: (0.05s * 2);
-      }
-    }
-    .card-icon-item:nth-child(4) {
-      .card-button-background {
-        transition-delay: (0.05s * 3);
-      }
-    }
-    .card-icon-item:nth-child(5) {
-      .card-button-background {
-        transition-delay: (0.05s * 4);
-      }
-    }
-    .card-icon-item:nth-child(6) {
-      .card-button-background {
-        transition-delay: (0.05s * 5);
-      }
-    }
-    .card-icon-item:nth-child(7) {
-      .card-button-background {
-        transition-delay: (0.05s * 6);
-      }
-    }
-    .card-icon-item:nth-child(8) {
-      .card-button-background {
-        transition-delay: (0.05s * 7);
-      }
-    }
-    .card-icon-item:nth-child(9) {
-      .card-button-background {
-        transition-delay: (0.05s * 8);
-      }
-    }
-    .card-icon-item:nth-child(10) {
-      .card-button-background {
-        transition-delay: (0.05s * 9);
-      }
-    }
-
-    .card-icon-item {
-      position: relative;
-      margin-bottom: 90px;
-      &:hover {
-        -webkit-filter: brightness(1.2);
-        filter: brightness(1.2);
-      }
-      .card-icon-background {
-        width: 70px;
-        height: 70px;
-        margin-top: -85px;
-        background: #bbb;
-        border-radius: 50%;
-      }
-      .active .card-icon-background {
-        background: #fff;
-      }
-      .card-icon-color {
-        position: absolute;
-        top: 4px;
-        left: 4px;
-        padding: 6px;
-        width: 62px;
-        height: 62px;
-        border-radius: 50%;
-        //background-color: #f00;
-      }
-      .card-icon {
-        position: absolute;
-        top: 4px;
-        left: 4px;
-        //padding: 6px;
-        width: 62px;
-        height: 62px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
-        border-radius: 50%;
-      }
-      .card-button-mask {
-        background-color: transparent;
-        left: 50px;
-        height: 100px;
-        position: absolute;
-        width: 0px;
-        transition: width 0.5s ease-in-out 0.2s;
-      }
-      .card-button {
-        font-weight: 700;
-        text-transform: capitalize;
-        height: 40px;
-        font-size: 25px;
-        line-height: 33px;
-        text-align: right;
-        padding-right: 20px;
-        padding-left: 30px;
-        margin-top: 3px;
-        margin-right: -20px;
-        white-space: nowrap;
-        border: solid 1px #777;
-        background: radial-gradient(
-          ellipse at center,
-          #888888 0%,
-          #aaaaaa 50%,
-          #bbbbbb 100%
-        );
-        border-radius: 15px;
-        color: #000;
-      }
-      .card-button-background {
-        position: absolute;
-        height: 48px;
-        margin-left: -100px;
-        margin-top: 13px;
-        background: linear-gradient(
-          to bottom,
-          #1c3f6d 0%,
-          #2462b3 50%,
-          #1c3f6d 100%
-        );
-        border: solid 1px #949495;
-        border-radius: 15px;
-        transition: left 0.5s ease-in-out;
-        left: -410px;
-      }
-    }
-  }
+  
   .frame-text {
     pointer-events: none;
     user-select: none;
@@ -1223,3 +1089,4 @@ body {
 // This is just for the viewscreen
 @media (width: 1920px) {
 }
+

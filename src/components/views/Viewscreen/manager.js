@@ -4,7 +4,6 @@ import { graphql, withApollo } from "react-apollo";
 import { Label, Row, Col, Input, Button, ButtonGroup } from "reactstrap";
 import Preview, { Viewscreen } from "./index";
 import * as ViewscreenCards from "../../viewscreens";
-import Layouts from "../../layouts";
 
 import "./style.css";
 
@@ -152,9 +151,9 @@ class ViewscreenCore extends Component {
       configData
     } = this.state;
     const LayoutComponent =
-      Layouts[this.props.simulator.layout + "Viewscreen"] ||
-      Layouts[this.props.simulator.layout] ||
-      (({ children }) => <div>{children}</div>);
+      // Layouts[this.props.simulator.layout + "Viewscreen"] ||
+      //Layouts[this.props.simulator.layout] ||
+      ({ children }) => <div>{children}</div>;
     if (!viewscreens) return <div>No Viewscreens</div>;
     return (
       <div className="viewscreen-core">
