@@ -9,10 +9,16 @@ App.on("updateSignalJammer", ({ jammer }) => {
     App.systems.filter(s => s.type === "SignalJammer")
   );
 });
-App.on("signalJammerSignals", ({ id, type, signals }) => {
-  const sys = App.systems.find(s => s.id === id);
+App.on("signalJammerSignals", ({ id, simulatorId, type, signals }) => {
+  const sys = App.systems.find(
+    s =>
+      s.id === id ||
+      (s.simulatorId === simulatorId && s.type === "SignalJammer")
+  );
+  if (!sys) return;
+  const sig = parseInt(signals, 10);
   sys.signals = sys.signals.filter(s => s.type !== type);
-  Array(signals)
+  Array(sig)
     .fill(0)
     .forEach(() => sys.addSignal({ type }));
   pubsub.publish(

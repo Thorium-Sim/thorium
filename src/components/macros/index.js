@@ -18,3 +18,4 @@ export { default as fixSystem } from "./breakSystem";
 export { default as addLibraryEntry } from "./addLibraryEntry";
 export { default as removeLibraryEntry } from "./removeLibraryEntry";
 export { default as triggerAction } from "./triggerAction";
+export { default as signalJammerSignals } from "./signalJammerSignals";
