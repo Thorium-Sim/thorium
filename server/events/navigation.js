@@ -53,8 +53,13 @@ App.on("navCancelCalculation", ({ id }) => {
     App.systems.filter(s => s.type === "Navigation")
   );
 });
-App.on("navCourseResponse", ({ id, x, y, z }) => {
-  const system = App.systems.find(sys => sys.id === id);
+App.on("navCourseResponse", ({ id, simulatorId, x, y, z }) => {
+  const system = App.systems.find(
+    sys =>
+      sys.id === id ||
+      (sys.simulatorId === simulatorId && sys.type === "Navigation")
+  );
+  if (!system) return;
   system.courseResponse(x, y, z);
   if (x.indexOf("˚") > -1) {
     // It's a thruster setting - set the required thrusters of the thruster system

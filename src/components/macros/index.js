@@ -1,3 +1,6 @@
+export { default as addTractorTarget } from "./addTractorTarget";
+export { default as removeTractorTarget } from "./removeTractorTarget";
+export { default as hitShields } from "./hitShields";
 export { default as setPresetAnswers } from "./setPresetAnswers";
 export { default as setArmyContacts } from "./setArmyContacts";
 export { default as sendLongRangeMessage } from "./sendLongRangeMessage";
@@ -14,3 +17,7 @@ export { default as breakSystem } from "./breakSystem";
 export { default as fixSystem } from "./breakSystem";
 export { default as addLibraryEntry } from "./addLibraryEntry";
 export { default as removeLibraryEntry } from "./removeLibraryEntry";
+export { default as triggerAction } from "./triggerAction";
+export { default as signalJammerSignals } from "./signalJammerSignals";
+export { default as setTransporterTargets } from "./setTransporterTargets";
+export { default as navCourseResponse } from "./navCourseResponse";

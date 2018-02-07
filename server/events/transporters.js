@@ -97,12 +97,18 @@ App.on("completeTransport", params => {
   pubsub.publish("transporterUpdate", transporter);
 });
 App.on("setTransporterTargets", params => {
-  const transporter = App.systems.find(sys => sys.id === params.transporter);
-  if (transporter.targets.length < params.targets) {
-    transporter.addTargets(params.targets - transporter.targets.length);
+  const transporter = App.systems.find(
+    sys =>
+      sys.id === params.transporter ||
+      (sys.simulatorId === params.simulatorId && sys.type === "Transporters")
+  );
+  if (!transporter) return;
+  const targetCount = parseInt(params.targets, 10);
+  if (transporter.targets.length < targetCount) {
+    transporter.addTargets(targetCount - transporter.targets.length);
   }
-  if (transporter.targets.length > params.targets) {
-    transporter.removeTargets(transporter.targets.length - params.targets);
+  if (transporter.targets.length > targetCount) {
+    transporter.removeTargets(transporter.targets.length - targetCount);
   }
   pubsub.publish("transporterUpdate", transporter);
 });
