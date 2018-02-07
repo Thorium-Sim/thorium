@@ -18,6 +18,9 @@ export const ShortRangeCommMutations = {
   commUpdateSignal(root, args, context) {
     App.handleEvent(args, "commUpdateSignal", context);
   },
+  commUpdateSignals(root, args, context) {
+    App.handleEvent(args, "commUpdateSignals", context);
+  },
   commRemoveSignal(root, args, context) {
     App.handleEvent(args, "commRemoveSignal", context);
   },
