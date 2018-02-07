@@ -152,9 +152,9 @@ class ViewscreenCore extends Component {
       configData
     } = this.state;
     const LayoutComponent =
-      Layouts[this.props.simulator.layout + "Viewscreen"] ||
-      Layouts[this.props.simulator.layout] ||
-      (({ children }) => <div>{children}</div>);
+      // Layouts[this.props.simulator.layout + "Viewscreen"] ||
+      //Layouts[this.props.simulator.layout] ||
+      ({ children }) => <div>{children}</div>;
     if (!viewscreens) return <div>No Viewscreens</div>;
     return (
       <div className="viewscreen-core">
