@@ -1,14 +1,9 @@
 import React, { Component } from "react";
 import Views from "../../views";
-import Alerts from "../../generic/Alerts";
 import ActionsMixin from "../../generic/Actions";
-import TransitionGroup from "react-addons-transition-group";
-import CardHolder from "./cardHolder";
 import CardFrame from "./frame";
-import Widgets from "../LayoutOdyssey/widgets";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag";
-import CardSwitcher from "../LayoutCorners/CardSwitcher";
 import "./layout.css";
 
 class LayoutGlass extends Component {
@@ -30,14 +25,7 @@ class LayoutGlass extends Component {
     });
   };
   render() {
-    let {
-      simulator,
-      station,
-      cardName,
-      changeCard,
-      clientObj,
-      flight
-    } = this.props;
+    let { simulator, station, clientObj } = this.props;
     const { login: stationLogin, name: stationName } = station;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     if (clientObj.loginState === "logout" && stationLogin === false) {
