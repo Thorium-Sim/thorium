@@ -77,6 +77,10 @@ const creditList = [
     content: "BJ Warner 🎨 & Todd Rasband 🖌"
   },
   {
+    header: "Glass Frame Design",
+    content: "Nathan King 👑"
+  },
+  {
     header: "Docking Images (Endless Sky)",
     content: (
       <div>
@@ -96,6 +100,7 @@ const creditList = [
         <p>Gyroscope by Arthur Shlain from the Noun Project</p>
         <p>Radar by Oliviu Stoian from the Noun Project</p>
         <p>Feather Icon Pack</p>
+        <p>Font Awesome</p>
       </div>
     )
   }
