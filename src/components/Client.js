@@ -112,25 +112,6 @@ class Credits extends Component {
       debug: !this.state.debug
     });
   };
-  componentDidMount() {
-    this.looping = true;
-    this.loop();
-  }
-  componentWillUnmount() {
-    this.looping = false;
-  }
-  loop = () => {
-    if (!this.looping) return;
-    const el = this.refs.scroll;
-
-    this.setState({
-      scroll:
-        el && el.scrollHeight - el.clientHeight <= this.state.scroll
-          ? 0
-          : this.state.scroll + 0.5 || 1
-    });
-    requestAnimationFrame(this.loop);
-  };
   changeClientId = evt => {
     evt.preventDefault();
     const newClientId = prompt("What is the new client ID?");
@@ -229,12 +210,14 @@ class Credits extends Component {
             </div>
           ) : (
             <div ref="scroll" className="scroll">
-              {creditList.map(c => (
-                <div key={c.header} className="creditSection">
-                  <h3>{c.header}</h3>
-                  <h4>{c.content}</h4>
-                </div>
-              ))}
+              <div className="scroller">
+                {creditList.map(c => (
+                  <div key={c.header} className="creditSection">
+                    <h3>{c.header}</h3>
+                    <h4>{c.content}</h4>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </Container>
