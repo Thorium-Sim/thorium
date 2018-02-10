@@ -161,7 +161,7 @@ class Credits extends Component {
                 <li>
                   <a
                     download="Thorium.zip"
-                    href="https://s3.amazonaws.com/thoriumsim/Thorium-darwin-x64.zip"
+                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v0.0.1/thorium-client-0.0.1-mac.zip"
                   >
                     Mac
                   </a>
@@ -169,41 +169,17 @@ class Credits extends Component {
                 <li>
                   <a
                     download="Thorium.zip"
-                    href="https://s3.amazonaws.com/thoriumsim/Thorium-win32-x64.zip"
+                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v0.0.1/thorium-client-setup-0.0.1.exe"
                   >
-                    Windows x64
+                    Windows
                   </a>
                 </li>
                 <li>
                   <a
                     download="Thorium.zip"
-                    href="https://s3.amazonaws.com/thoriumsim/Thorium-win32-ia32.zip"
+                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v0.0.1/thorium-client-0.0.1-x86_64.AppImage"
                   >
-                    Windows ia32
-                  </a>
-                </li>
-                <li>
-                  <a
-                    download="Thorium.zip"
-                    href="https://s3.amazonaws.com/thoriumsim/Thorium-linux-x64.zip"
-                  >
-                    Linux x64
-                  </a>
-                </li>
-                <li>
-                  <a
-                    download="Thorium.zip"
-                    href="https://s3.amazonaws.com/thoriumsim/Thorium-linux-ia32.zip"
-                  >
-                    Linux ia32
-                  </a>
-                </li>
-                <li>
-                  <a
-                    download="Thorium.zip"
-                    href="https://s3.amazonaws.com/thoriumsim/Thorium-linux-armv7l.zip"
-                  >
-                    Linux armv7l
+                    Linux
                   </a>
                 </li>
               </ul>
