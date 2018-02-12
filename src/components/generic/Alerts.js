@@ -102,9 +102,8 @@ class Alerts extends Component {
       })
     });
     setTimeout(() => {
-      const alerts = this.state.alerts;
       this.setState({
-        alerts: alerts.filter(a => a.id !== id)
+        alerts: this.state.alerts.filter(a => a.id !== id)
       });
     }, 2000);
   }
