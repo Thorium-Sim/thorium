@@ -29,7 +29,8 @@ const exceptions = [
   "RemoteCore",
   "InterceptionCore",
   "CodeCyphersCore",
-  "CoreFeed"
+  "CoreFeed",
+  "ShortRangeSignalsCore"
   /*  "EngineControlCore",
   "SensorsGridCore",
   "SensorsCore",

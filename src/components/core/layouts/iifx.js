@@ -30,7 +30,8 @@ const exceptions = [
   "ViewscreenCore",
   "CodeCyphersCore",
   "ExocompsCore",
-  "CoreFeed"
+  "CoreFeed",
+  "ShortRangeSignalsCore"
 ];
 
 export default class CoreIIFX extends Component {
