@@ -71,6 +71,7 @@ class WidgetsContainer extends Component {
             setNotify={this.setNotify}
           />
         )}
+
         {station.widgets &&
           station.widgets
             .concat()
