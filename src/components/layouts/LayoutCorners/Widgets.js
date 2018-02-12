@@ -74,6 +74,7 @@ class WidgetsContainer extends Component {
         {station.widgets &&
           station.widgets
             .concat()
+            .filter(w => (hasKeyboard ? w !== "keyboard" : true))
             .sort(w => {
               if (w === "keyboard") return 1;
               return -1;
