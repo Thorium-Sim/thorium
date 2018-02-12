@@ -34,7 +34,7 @@
     "pkg": "^4.3.0",
     "plop": "^1.9.1",
     "prettier": "^1.10.2",
-    "react-scripts": "1.1.0"
+    "react-scripts": "1.1.1"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.7",
@@ -47,7 +47,7 @@
     "bonjour": "^3.5.0",
     "bootstrap": "^4.0.0",
     "capitalize": "^1.0.0",
-    "chalk": "^2.3.0",
+    "chalk": "^2.3.1",
     "change-case": "^3.0.1",
     "cors": "^2.8.4",
     "express": "^4.16.2",
