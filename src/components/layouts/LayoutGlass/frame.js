@@ -17,6 +17,7 @@ function videoColor(al) {
 export default ({ simulator, viewscreen }) => {
   const al = simulator.alertlevel;
   const video = videoColor(al);
+  console.log(require(`./${video}.jpg`));
   return (
     <div>
       <link rel="preload" href={require("./blue.mp4")} as="video" />
@@ -30,6 +31,10 @@ export default ({ simulator, viewscreen }) => {
       <div className="stationName-graphic" />
       <div className="widgets-graphic" />
       {!viewscreen && <div className="username-graphic" />}
+      <div
+        className="color-image"
+        style={{ backgroundImage: `url(${require(`./${video}.jpg`)})` }}
+      />
       <video autoPlay loop src={require(`./${video}.mp4`)} />
     </div>
   );

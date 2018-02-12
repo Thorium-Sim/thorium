@@ -155,36 +155,50 @@
   font-weight: 700;
   src: url(../fonts/BankGothicMedium.woff) format("woff");
 }
+
 @font-face {
-  font-family: "BebasNeue";
+  font-family: "Bebas Neue";
   font-style: normal;
   font-weight: 800;
   src: url("../fonts/BebasNeue Bold.woff") format("woff");
 }
 @font-face {
-  font-family: "BebasNeue";
+  font-family: "Bebas Neue";
   font-style: normal;
   font-weight: 600;
   src: url("../fonts/BebasNeue Regular.woff") format("woff");
 }
 @font-face {
-  font-family: "BebasNeue";
+  font-family: "Bebas Neue";
   font-style: normal;
   font-weight: 400;
   src: url("../fonts/BebasNeue Regular.woff") format("woff");
 }
 @font-face {
-  font-family: "BebasNeue";
+  font-family: "Bebas Neue";
   font-style: normal;
   font-weight: 300;
   src: url("../fonts/BebasNeue Light.woff") format("woff");
 }
 @font-face {
-  font-family: "BebasNeue";
+  font-family: "Bebas Neue";
   font-style: normal;
   font-weight: 200;
   src: url("../fonts/BebasNeue Thin.woff") format("woff");
 }
+
+@font-face {
+  font-family: "Bebas Neue";
+  src: url('../fonts/bebasneue-webfont.eot');
+  src: url('../fonts/bebasneue-webfont.eot?#iefix') format('embedded-opentype'), 
+    url('../fonts/bebasneue-webfont.woff2') format('woff2'),
+    url('../fonts/bebasneue-webfont.woff') format('woff'), 
+    url('../fonts/bebasneue-webfont.ttf') format('truetype'), 
+    url('../fonts/bebasneue-webfont.svg#bebas_neueregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @font-face {
   font-family: "Bank Gothic";
   font-style: normal;

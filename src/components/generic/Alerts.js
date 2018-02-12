@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { Alert } from "reactstrap";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
-
+import { subscribe } from "../views/helpers/pubsub";
 // Speech Handling
 const synth = window.speechSynthesis;
 const holderStyle = {
   position: "absolute",
   right: "20px",
-  top: "20px",
+  top: "40px",
   width: "30vw",
   zIndex: "100000"
 };
@@ -72,6 +72,16 @@ class Alerts extends Component {
         }
       });
   }
+  componentDidMount() {
+    this.sub = subscribe("clearNotifications", () => {
+      this.setState({
+        alerts: []
+      });
+    });
+  }
+  componentWillUnmount() {
+    this.sub && this.sub();
+  }
   trigger({ title, body, color, duration, id }) {
     const alerts = this.state.alerts;
     alerts.push(Object.assign({ title, body, color }, { visible: true }));
@@ -92,9 +102,8 @@ class Alerts extends Component {
       })
     });
     setTimeout(() => {
-      const alerts = this.state.alerts;
       this.setState({
-        alerts: alerts.filter(a => a.id !== id)
+        alerts: this.state.alerts.filter(a => a.id !== id)
       });
     }, 2000);
   }

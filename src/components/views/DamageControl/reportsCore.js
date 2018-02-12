@@ -232,25 +232,27 @@ class DamageReportCore extends Component {
     const selectedSystemObj = systems.find(s => s.id === selectedSystem);
     return (
       <Container fluid className="damageReport-core">
-        <Row>
-          <Col sm={4} style={{ overflowY: "scroll" }}>
-            {systems.filter(s => s.damage.damaged).map(s => (
-              <p
-                key={s.id}
-                className={`${selectedSystem === s.id ? "selected" : ""} 
+        <Row style={{ height: "100%" }}>
+          <Col sm={4} className="left-side">
+            <div className="system-list">
+              {systems.filter(s => s.damage.damaged).map(s => (
+                <p
+                  key={s.id}
+                  className={`${selectedSystem === s.id ? "selected" : ""} 
           ${s.damage.requested ? "requested" : ""}
           ${s.damage.report ? "report" : ""}
           ${s.damage.reactivationCode ? "reactivation" : ""}`}
-                onClick={this.selectSystem.bind(this, s.id)}
-              >
-                {this.systemName(s)} - {s.damage.currentStep + 1} /{" "}
-                {s.damage.report
-                  ? s.damage.report
-                      .split(/Step [0-9]+:\n/gi)
-                      .filter(st => st && st !== "\n").length
-                  : 0}
-              </p>
-            ))}
+                  onClick={this.selectSystem.bind(this, s.id)}
+                >
+                  {this.systemName(s)} - {s.damage.currentStep + 1} /{" "}
+                  {s.damage.report
+                    ? s.damage.report
+                        .split(/Step [0-9]+:\n/gi)
+                        .filter(st => st && st !== "\n").length
+                    : 0}
+                </p>
+              ))}
+            </div>
             <Input
               type="select"
               value={"top"}

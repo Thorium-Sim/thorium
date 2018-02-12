@@ -1,4 +1,5 @@
-.damage-control, .damageReport-core {
+.damage-control,
+.damageReport-core {
   .card {
     height: 60vh;
     overflow-y: scroll;
@@ -7,7 +8,7 @@
     margin: 0;
     padding: 4px;
     &.selected {
-      background-color: rgba(128,128,128,0.5);
+      background-color: rgba(128, 128, 128, 0.5);
       border-radius: 5px;
     }
     &.requested {
@@ -65,8 +66,8 @@
     justify-content: space-around;
     flex-wrap: wrap;
     li {
-      background-color: rgba(255,255,255,0.3);
-      border: solid 1px rgba(255,255,255,0.5);
+      background-color: rgba(255, 255, 255, 0.3);
+      border: solid 1px rgba(255, 255, 255, 0.5);
       font-size: 36px;
       list-style: none;
       display: inline-block;
@@ -76,10 +77,10 @@
       padding: 10%;
       width: 30%;
       &:hover {
-        background-color: rgba(255,255,255,0.1);
+        background-color: rgba(255, 255, 255, 0.1);
       }
       &:active {
-        background-color: rgba(255,255,255,0.4);
+        background-color: rgba(255, 255, 255, 0.4);
       }
     }
   }
@@ -88,11 +89,21 @@
     padding-left: 20%;
     padding-top: 20px;
     height: 85px;
-    background-color: rgb(0,0,0);
+    background-color: rgb(0, 0, 0);
     letter-spacing: 20px;
   }
 }
 
 .damageReport-core {
   height: 100%;
+  .left-side {
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .system-list {
+    flex: 1;
+    overflow-y: scroll;
+  }
 }

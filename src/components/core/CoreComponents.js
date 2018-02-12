@@ -3,6 +3,8 @@ import * as Layouts from "./layouts";
 import { withApollo, graphql } from "react-apollo";
 import gql from "graphql-tag";
 import IssueTracker from "../../components/admin/IssueTracker";
+import { publish } from "../views/helpers/pubsub";
+
 import {
   Button,
   Modal,
@@ -75,8 +77,6 @@ class CoreComponents extends Component {
         document: CACHE_INVALID_SUB,
         variables: { flight: this.props.flightId },
         updateQuery: (previousResult, { subscriptionData }) => {
-          console.log(subscriptionData);
-          debugger;
           window.location.reload();
           return previousResult;
         }
@@ -233,6 +233,14 @@ class CoreComponents extends Component {
             }}
           />
         </label>
+        <Button
+          onClick={() => publish("clearNotifications")}
+          size="sm"
+          color="info"
+          style={{ float: "right", marginRight: "50px" }}
+        >
+          Clear all notifications
+        </Button>
         <div
           id="core-layout"
           style={{

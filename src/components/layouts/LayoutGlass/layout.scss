@@ -95,7 +95,7 @@ $color: $alert5;
   .frame-text {
     h1,
     h2 {
-      font-family: "BebasNeue";
+      font-family: "Bebas Neue";
       font-weight: 300;
     }
   }
@@ -170,6 +170,7 @@ $color: $alert5;
     position: absolute;
     left: 10vw;
     top: 19vh;
+    z-index: 100000;
   }
   video {
     mix-blend-mode: screen;
@@ -201,6 +202,13 @@ $color: $alert5;
   height: 13.5vh;
   left: -18vw;
   top: 54vh;
+}
+.color-image {
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  position: fixed;
+  mix-blend-mode: color;
 }
 .stationName-graphic {
   background-image: url(./StationName.png);
