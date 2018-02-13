@@ -146,8 +146,8 @@ class DamageReportCore extends Component {
       variables
     });
   };
-  createExtraSystem = name => {
-    name = name || prompt("What is the name of the system?");
+  createExtraSystem = sysName => {
+    const name = sysName || prompt("What is the name of the system?");
     const systems = this.props.data.systems;
     if (systems.find(s => s.name === name)) {
       this.breakSystem(systems.find(s => s.name === name).id);
