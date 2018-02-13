@@ -151,14 +151,20 @@ class PowerDistribution extends Component {
     this.reactorSub();
   }
   mouseDown = (sysId, dimensions, e) => {
-    this.setState({
-      sysId,
-      offset: dimensions.left
-    });
-    document.addEventListener("mousemove", this.mouseMove);
-    document.addEventListener("mouseup", this.mouseUp);
-    document.addEventListener("touchmove", this.mouseMove);
-    document.addEventListener("touchend", this.mouseUp);
+    e.persist();
+    this.setState(
+      {
+        sysId,
+        offset: dimensions.left
+      },
+      () => {
+        this.mouseMove(e);
+        document.addEventListener("mousemove", this.mouseMove);
+        document.addEventListener("mouseup", this.mouseUp);
+        document.addEventListener("touchmove", this.mouseMove);
+        document.addEventListener("touchend", this.mouseUp);
+      }
+    );
   };
   render() {
     if (this.props.data.loading || !this.props.data.reactors) return null;
@@ -292,8 +298,8 @@ class SystemPower extends Component {
                 })}
                 <div
                   className="powerBox zero"
-                  onMouseDown={() => mouseDown(id, this.state.dimensions)}
-                  onTouchStart={() => mouseDown(id, this.state.dimensions)}
+                  onMouseDown={e => mouseDown(id, this.state.dimensions, e)}
+                  onTouchStart={e => mouseDown(id, this.state.dimensions, e)}
                   key={`${id}-${-1}`}
                 />
                 {Array(40)
@@ -302,9 +308,11 @@ class SystemPower extends Component {
                     return (
                       <div
                         className={`powerBox ${i >= power ? "hidden" : ""}`}
-                        onMouseDown={() => mouseDown(id, this.state.dimensions)}
-                        onTouchStart={() =>
-                          mouseDown(id, this.state.dimensions)
+                        onMouseDown={e =>
+                          mouseDown(id, this.state.dimensions, e)
+                        }
+                        onTouchStart={e =>
+                          mouseDown(id, this.state.dimensions, e)
                         }
                         key={`${id}-${i}`}
                       />

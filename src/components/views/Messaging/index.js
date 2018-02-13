@@ -173,9 +173,11 @@ class Messaging extends Component {
                   <div>{c.convo}</div>
                   <div>
                     <small>
-                      {`${c.content.substr(0, 25)}${
-                        c.content.length > 25 ? "..." : ""
-                      }`}
+                      {c.content
+                        ? `${c.content.substr(0, 25)}${
+                            c.content.length > 25 ? "..." : ""
+                          }`
+                        : null}
                     </small>
                   </div>
                 </li>
@@ -201,7 +203,9 @@ class Messaging extends Component {
                     {s.name}
                   </DropdownItem>
                 ))}
-                <DropdownItem disabled>--------------</DropdownItem>
+                {messageGroups && (
+                  <DropdownItem disabled>--------------</DropdownItem>
+                )}
                 {messageGroups &&
                   messageGroups.map(g => (
                     <DropdownItem
@@ -211,7 +215,13 @@ class Messaging extends Component {
                       {g}
                     </DropdownItem>
                   ))}
-                <DropdownItem disabled>--------------</DropdownItem>
+                {teams &&
+                  teams.filter(
+                    t =>
+                      messageGroups.findIndex(
+                        m => m.toLowerCase().indexOf(t.type.toLowerCase()) > -1
+                      ) > -1
+                  ) && <DropdownItem disabled>--------------</DropdownItem>}
                 {teams &&
                   teams
                     .filter(
