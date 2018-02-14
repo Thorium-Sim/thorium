@@ -78,8 +78,8 @@
       filter: brightness(1.2);
     }
     .card-icon-background {
-      width: 70px;
-      height: 70px;
+      width: calc(4vw + 8px);
+      height: calc(4vw + 8px);
       margin-top: -85px;
       background: #bbb;
       border-radius: 50%;

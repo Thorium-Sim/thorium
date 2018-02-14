@@ -29,19 +29,15 @@ export default class Client {
   setFlight(flightId) {
     this.flightId = flightId;
     const flight = App.flights.find(f => f.id === flightId);
+    this.simulatorId = null;
+    this.station = null;
     if (flight && flight.simulators.length === 1) {
       this.simulatorId = flight.simulators[0];
-    }
-    if (!this.flightId) {
-      this.simulatorId = null;
-      this.station = null;
     }
   }
   setSimulator(simulatorId) {
     this.simulatorId = simulatorId;
-    if (!this.simulatorId) {
-      this.station = null;
-    }
+    this.station = null;
   }
   setStation(station) {
     this.station = station;

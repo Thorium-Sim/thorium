@@ -53,7 +53,7 @@ class ViewscreenCore extends Component {
     }
     if (!nextProps.data.loading) {
       const { viewscreens } = nextProps.data;
-      if (viewscreens.length === 1) {
+      if (viewscreens.length === 1 && viewscreens[0]) {
         this.setState({
           selectedViewscreen: viewscreens[0].id
         });

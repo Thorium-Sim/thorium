@@ -156,6 +156,7 @@ App.on("deleteFlight", ({ flightId }) => {
       c.setTraining(false);
       c.logout();
       c.setOfflineState(null);
+      c.setFlight(null);
     });
   App.tacticalMaps = App.tacticalMaps.filter(t => t.flightId !== flightId);
   flight.simulators.forEach(simId => {

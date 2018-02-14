@@ -129,6 +129,7 @@ class Communications extends Component {
     //Update the state based on the props
     if (!nextProps.data.loading) {
       const ShortRange = nextProps.data.shortRangeComm[0];
+      if (!ShortRange) return;
       let comms = ShortRange.arrows.map(a => {
         const signal = ShortRange.signals.find(s => s.id === a.signal) || {};
         return {
