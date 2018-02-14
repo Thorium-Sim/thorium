@@ -1,10 +1,10 @@
 import React from "react";
 import Dice from "./dice";
 import Timer from "./timer";
-const ExtrasCore = () => {
+const ExtrasCore = props => {
   return (
     <div>
-      <Timer />
+      <Timer {...props} />
       <Dice />
     </div>
   );

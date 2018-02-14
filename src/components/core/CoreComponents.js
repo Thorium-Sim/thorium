@@ -76,7 +76,7 @@ class CoreComponents extends Component {
       this.cacheSub = nextProps.data.subscribeToMore({
         document: CACHE_INVALID_SUB,
         variables: { flight: this.props.flightId },
-        updateQuery: (previousResult, { subscriptionData }) => {
+        updateQuery: previousResult => {
           window.location.reload();
           return previousResult;
         }
