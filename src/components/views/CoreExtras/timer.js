@@ -44,7 +44,7 @@ class Timer extends Component {
       });
   }
   componentWillUnmount() {
-    this.subscription && this.subscription();
+    this.subscription && this.subscription.unsubscribe();
   }
   updateTimer = () => {
     if (
