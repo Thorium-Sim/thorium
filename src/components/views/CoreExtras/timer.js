@@ -1,17 +1,59 @@
 import React, { Component } from "react";
 import moment from "moment";
 import { Button } from "reactstrap";
+import gql from "graphql-tag";
+import { withApollo } from "react-apollo";
 import { publish } from "../helpers/pubsub";
 
+const TIMESYNC_SUB = gql`
+  subscription SyncTime($simulatorId: ID!) {
+    syncTime(simulatorId: $simulatorId) {
+      time
+      active
+    }
+  }
+`;
 class Timer extends Component {
-  state = { timer: "00:00:00" };
+  state = {
+    timer: "00:00:00",
+    sync:
+      (window.localStorage.getItem("thorium_syncTime") || "false") === "true"
+  };
+  componentDidMount() {
+    this.subscription = this.props.client
+      .subscribe({
+        query: TIMESYNC_SUB,
+        variables: {
+          simulatorId: this.props.simulator.id
+        }
+      })
+      .subscribe({
+        next: ({ data: { syncTime } }) => {
+          this.state.sync &&
+            this.setState(
+              { timer: syncTime.time, stopped: !syncTime.active },
+              () => {
+                clearTimeout(this.timer);
+                this.updateTimer();
+              }
+            );
+        },
+        error(err) {
+          console.error("err", err);
+        }
+      });
+  }
+  componentWillUnmount() {
+    this.subscription && this.subscription();
+  }
   updateTimer = () => {
     if (
       this.state.stopped ||
       this.state.timer === "00:00:00" ||
       this.state.timer === "0:0:0"
-    )
+    ) {
       return;
+    }
     const dur = moment.duration(this.state.timer);
     dur.subtract(1, "second");
     this.setState({
@@ -26,6 +68,20 @@ class Timer extends Component {
 
     clearTimeout(this.timer);
     this.timer = null;
+    const mutation = gql`
+      mutation SyncTimer($time: String, $active: Boolean, $simulatorId: ID!) {
+        syncTimer(time: $time, active: $active, simulatorId: $simulatorId)
+      }
+    `;
+    this.state.sync &&
+      this.props.client.mutate({
+        mutation,
+        variables: {
+          time: `${hours}:${minutes}:${seconds}`,
+          active: true,
+          simulatorId: this.props.simulator.id
+        }
+      });
     this.setState(
       { timer: `${hours}:${minutes}:${seconds}`, stopped: false },
       () => {
@@ -51,6 +107,20 @@ class Timer extends Component {
         stopped: true
       });
     }
+    const mutation = gql`
+      mutation SyncTimer($time: String, $active: Boolean, $simulatorId: ID!) {
+        syncTimer(time: $time, active: $active, simulatorId: $simulatorId)
+      }
+    `;
+    this.state.sync &&
+      this.props.client.mutate({
+        mutation,
+        variables: {
+          time: this.state.timer,
+          active: stopped,
+          simulatorId: this.props.simulator.id
+        }
+      });
   };
   sendToSensors = () => {
     const dur = moment.duration(this.state.timer);
@@ -96,9 +166,20 @@ class Timer extends Component {
         >
           Send to Sensors
         </Button>
+        <label>
+          <input
+            type="checkbox"
+            checked={this.state.sync}
+            onClick={e => {
+              this.setState({ sync: e.target.checked });
+              window.localStorage.setItem("thorium_syncTime", e.target.checked);
+            }}
+          />
+          Sync Cores
+        </label>
       </div>
     );
   }
 }
 
-export default Timer;
+export default withApollo(Timer);

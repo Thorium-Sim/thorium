@@ -9,4 +9,8 @@ type CoreFeed {
   body: String
   color: String
 }
+type Timer {
+  time: String
+  active: Boolean
+}
 `;

@@ -15,3 +15,7 @@ App.on("addCoreFeed", args => {
   App.coreFeed.push(new Classes.CoreFeed(args));
   pubsub.publish("coreFeedUpdate", App.coreFeed);
 });
+
+App.on("syncTimer", args => {
+  pubsub.publish("syncTime", args);
+});
