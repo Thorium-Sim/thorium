@@ -6,13 +6,13 @@ const issuesUrl =
 export const IssueTrackerMutations = {
   addIssue(rootValue, { title, body, person, priority, type }) {
     // Create our body
-    var postBody = `### Requested By: ${person}
+    var postBody = `
+      ### Requested By: ${person}
 
-    ### Priority: ${priority}
-    
-    ### Version: ${require("../../package.json").version}
-    
-    ${body}`;
+      ### Priority: ${priority}
+
+      ### Version: ${require("../../package.json").version}
+    `.replace(/^\s+/gm, '').replace(/\s+$/m, '\n\n') + body;
 
     var postOptions = {
       title,
