@@ -131,6 +131,11 @@ export class System {
     const decks = App.decks.filter(d => d.simulatorId === this.simulatorId);
     const rooms = App.rooms.filter(r => this.locations.indexOf(r.id) > -1);
     const crew = App.crew.filter(c => c.simulatorId === this.simulatorId);
+
+    //
+    // Gather Information
+    //
+
     // Get the damage team positions
     const damageTeamCrew = crew
       .map(c => c.position)
@@ -150,7 +155,11 @@ export class System {
       }, [])
       .filter((c, i, a) => a.indexOf(c) !== i);
     const damageSteps = [];
+
+    //
     // Create a list of all the damage report steps
+    //
+
     // Remove power if the system has power
     if (
       this.power.powerLevels &&

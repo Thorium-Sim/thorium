@@ -8,7 +8,7 @@ export default class Crew {
     this.firstName = params.firstName || "John";
     this.lastName = params.lastName || "Doe";
     this.gender = params.gender || "m";
-    this.age = params.age || "27";
+    this.age = params.age || 27;
     this.rank = params.rank || "Ensign";
     this.position = params.position || "Crewmember";
     this.killed = params.killed || false;
@@ -26,7 +26,7 @@ export default class Crew {
       this.firstName = firstName;
     if (lastName || lastName === "" || lastName === 0) this.lastName = lastName;
     if (gender || gender === "" || gender === 0) this.gender = gender;
-    if (age || age === "" || age === 0) this.age = age;
+    if (age || age === "" || age === 0) this.age = parseInt(age, 10);
     if (rank || rank === "" || rank === 0) this.rank = rank;
     if (position || position === "" || position === 0) this.position = position;
     if (killed || killed === false) this.killed = killed;

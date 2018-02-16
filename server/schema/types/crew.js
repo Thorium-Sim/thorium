@@ -20,7 +20,7 @@ input CrewInput {
   firstName: String
   lastName: String
   gender: String
-  age: Int
+  age: String
   rank: String
   position: String
   killed: Boolean
