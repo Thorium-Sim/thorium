@@ -103,6 +103,7 @@ App.on("setTransporterTargets", params => {
       (sys.simulatorId === params.simulatorId && sys.type === "Transporters")
   );
   if (!transporter) return;
+  transporter.state = "Inactive";
   const targetCount = parseInt(params.targets, 10);
   if (transporter.targets.length < targetCount) {
     transporter.addTargets(targetCount - transporter.targets.length);
@@ -110,5 +111,6 @@ App.on("setTransporterTargets", params => {
   if (transporter.targets.length > targetCount) {
     transporter.removeTargets(transporter.targets.length - targetCount);
   }
+
   pubsub.publish("transporterUpdate", transporter);
 });

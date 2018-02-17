@@ -22,8 +22,9 @@ export default class Crew {
     return `${this.lastName}, ${this.firstName}`;
   }
   update({ firstName, lastName, gender, age, rank, position, killed }) {
-    if (firstName || firstName === "" || firstName === 0)
+    if (firstName || firstName === "" || firstName === 0) {
       this.firstName = firstName;
+    }
     if (lastName || lastName === "" || lastName === 0) this.lastName = lastName;
     if (gender || gender === "" || gender === 0) this.gender = gender;
     if (age || age === "" || age === 0) this.age = parseInt(age, 10);
