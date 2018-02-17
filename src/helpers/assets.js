@@ -36,6 +36,9 @@ class AssetComponent extends Component {
       assetKey: props.asset,
       simulatorId: props.simulatorId
     };
+    if (!props.asset) {
+      return;
+    }
     props.client
       .query({
         query,
