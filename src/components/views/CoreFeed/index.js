@@ -54,6 +54,11 @@ class CoreFeed extends Component {
       variables
     });
   };
+  ignoreAll = () => {
+    this.props.data.coreFeed.forEach(i => {
+      this.ignoreCoreFeed(i.id);
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.coreFeed) return null;
     const { showIgnore, components } = this.state;
@@ -77,7 +82,9 @@ class CoreFeed extends Component {
           />{" "}
           Show Components
         </label>
-
+        <Button color="info" size="sm" block onClick={this.ignoreAll}>
+          Ignore All
+        </Button>
         {coreFeed.length ? (
           coreFeed.map(c => {
             if (components && c.component) {
