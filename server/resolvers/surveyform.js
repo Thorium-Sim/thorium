@@ -4,14 +4,31 @@ import { withFilter } from "graphql-subscriptions";
 
 export const SurveyFormQueries = {
   surveyform(root, { simulatorId }) {
-    let returnVal = [];
-    if (simulatorId)
+    let returnVal = App.surveyForms;
+    if (simulatorId) {
       returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
+    }
     return returnVal;
   }
 };
 
-export const SurveyFormMutations = {};
+export const SurveyFormMutations = {
+  createSurveyForm(root, args, context) {
+    App.handleEvent(args, "createForm", context);
+  },
+  removeSurveyForm(root, args, context) {
+    App.handleEvent(args, "removeForm", context);
+  },
+  updateSurveyForm(root, args, context) {
+    App.handleEvent(args, "updateSurveyForm", context);
+  },
+  triggerSurvey(root, args, context) {
+    App.handleEvent(args, "triggerSurvey", context);
+  },
+  surveyFormResponse(root, args, context) {
+    App.handleEvent(args, "surveyFormResponse", context);
+  }
+};
 
 export const SurveyFormSubscriptions = {
   surveyformUpdate: {
