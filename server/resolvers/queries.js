@@ -37,6 +37,7 @@ import { SignalJammerQueries } from "./signalJammer";
 import { ExocompQueries } from "./exocomp";
 import { LibraryQueries } from "./library";
 import { SoftwarePanelsQueries } from "./softwarePanels";
+import { SurveyFormQueries } from "./surveyform.js";
 
 const queryMap = Object.assign(
   {},
@@ -78,7 +79,8 @@ const queryMap = Object.assign(
   SignalJammerQueries,
   ExocompQueries,
   LibraryQueries,
-  SoftwarePanelsQueries
+  SoftwarePanelsQueries,
+  SurveyFormQueries
 );
 
 export default queryMap;

@@ -58,3 +58,4 @@ type user {
   roles: [role]
 }
 `;
+export { default as SurveyForm } from "./surveyform.js";
