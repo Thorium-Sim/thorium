@@ -24,6 +24,7 @@ App.on("targetTargetingContact", ({ id, targetId }) => {
     {
       simulatorId: system.simulatorId,
       title: `Targeted`,
+      component: "TargetingCore",
       body: null,
       color: "info"
     },

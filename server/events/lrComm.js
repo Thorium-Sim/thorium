@@ -93,6 +93,7 @@ App.on("updateLongRangeComm", ({ longRangeComm }) => {
         simulatorId: lr.simulatorId,
         title: `Interception Signal Locked`,
         body: null,
+        component: "InterceptionCore",
         color: "info"
       },
       "addCoreFeed"

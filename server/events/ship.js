@@ -23,6 +23,7 @@ App.on("shipDockingChange", ({ simulatorId, which, state }) => {
       {
         simulatorId: simulatorId,
         title: which,
+        component: "DockingCore",
         body:
           which === "clamps"
             ? `Clamps are now ${state ? "Attached" : "Detached"}`
@@ -95,6 +96,7 @@ App.on("setSelfDestructTime", ({ simulatorId, time }) => {
   App.handleEvent(
     {
       simulatorId: simulatorId,
+      component: "SelfDestructCore",
       title: `Self Destruct ${time ? "Activated" : "Deactivated"}`,
       body: null,
       color: "info"

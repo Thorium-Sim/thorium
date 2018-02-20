@@ -82,6 +82,7 @@ App.on("sensorScanCancel", ({ id }) => {
     {
       simulatorId: system.simulatorId,
       title: `${system.domain} Scan Cancelled`,
+      component: "SensorsCore",
       body: null,
       color: "warning"
     },

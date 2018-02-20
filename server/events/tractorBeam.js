@@ -17,6 +17,7 @@ App.on("setTractorBeamState", ({ id, state }) => {
   App.handleEvent(
     {
       simulatorId: system.simulatorId,
+      component: "TractorBeamCore",
       title: `Tractor Beam ${state ? "Activated" : "Deactivated"}`,
       body: null,
       color: "info"

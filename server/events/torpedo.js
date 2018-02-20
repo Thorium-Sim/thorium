@@ -43,6 +43,7 @@ App.on("torpedoFire", ({ id }) => {
   App.handleEvent(
     {
       simulatorId: sys.simulatorId,
+      component: "TorpedoCore",
       title: `${
         sys.inventory.find(i => i.id === sys.loaded).type
       } Torpedo Fired`,

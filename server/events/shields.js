@@ -32,6 +32,7 @@ App.on("shieldRaised", ({ id }) => {
         simulatorId: system.simulatorId,
         title: `Shields Raised`,
         body: `${shieldNames[system.position]}`,
+        component: "ShieldControlCore",
         color: "info"
       },
       "addCoreFeed"
@@ -59,6 +60,7 @@ App.on("shieldRaised", ({ id }) => {
         {
           simulatorId: id,
           title: `Shields Raised`,
+          component: "ShieldControlCore",
           body: `All`,
           color: "info"
         },
@@ -83,6 +85,7 @@ App.on("shieldLowered", ({ id }) => {
       {
         simulatorId: system.simulatorId,
         title: `Shields Lowered`,
+        component: "ShieldControlCore",
         body: `${shieldNames[system.position]}`,
         color: "info"
       },
@@ -111,6 +114,7 @@ App.on("shieldLowered", ({ id }) => {
         {
           simulatorId: id,
           title: `Shields Lowered`,
+          component: "ShieldControlCore",
           body: `All`,
           color: "info"
         },

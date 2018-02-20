@@ -31,6 +31,7 @@ App.on("activateStealth", ({ id }) => {
     {
       simulatorId: system.simulatorId,
       title: `Stealth Activated`,
+      component: "StealthFieldCore",
       body: null,
       color: "info"
     },
@@ -56,6 +57,7 @@ App.on("deactivateStealth", ({ id }) => {
     {
       simulatorId: system.simulatorId,
       title: `Stealth Deactivated`,
+      component: "StealthFieldCore",
       body: null,
       color: "info"
     },

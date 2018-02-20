@@ -35,6 +35,7 @@ App.on("firePhaserBeam", ({ id, beamId }) => {
     {
       simulatorId: sys.simulatorId,
       title: `Phasers Firing`,
+      component: "PhaserCore",
       body: null,
       color: "danger"
     },

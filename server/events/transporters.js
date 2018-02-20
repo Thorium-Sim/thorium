@@ -57,6 +57,7 @@ App.on("cancelTransportScan", params => {
     {
       simulatorId: transporter.simulatorId,
       title: `Transporter Scan Canceled`,
+      component: "TransporterCore",
       body: null,
       color: "info"
     },
@@ -89,6 +90,7 @@ App.on("completeTransport", params => {
     {
       simulatorId: transporter.simulatorId,
       title: `Transported`,
+      component: "TransporterCore",
       body: null,
       color: "info"
     },

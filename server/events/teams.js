@@ -13,9 +13,14 @@ App.on("createTeam", ({ team }) => {
     body: team.name,
     color: "info"
   });
+  const component =
+    team.type === "damage"
+      ? "DamageTeamsCore"
+      : team.type === "security" ? "SecurityTeamsCore" : "MedicalTeamsCore";
   App.handleEvent(
     {
       simulatorId: team.simulatorId,
+      componnet,
       title: `New ${team.type} team`,
       body: null,
       color: "info"

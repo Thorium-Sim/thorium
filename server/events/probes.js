@@ -20,6 +20,7 @@ App.on("launchProbe", ({ id, probe }) => {
     {
       simulatorId: sys.simulatorId,
       title: `Probe Launched`,
+      component: "ProbeControlCore",
       body: probe.name,
       color: "info"
     },

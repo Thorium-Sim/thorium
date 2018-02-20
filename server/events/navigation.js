@@ -43,6 +43,7 @@ App.on("navCancelCalculation", ({ id }) => {
     {
       simulatorId: system.simulatorId,
       title: `Course Calculation Cancelled`,
+      component: "NavigationCore",
       body: null,
       color: "warning"
     },
@@ -95,6 +96,7 @@ App.on("navCourseEntry", ({ id, x, y, z }) => {
     {
       simulatorId: system.simulatorId,
       title: `Course Entered`,
+      component: "NavigationCore",
       body: null,
       color: "success"
     },

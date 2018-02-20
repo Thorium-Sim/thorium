@@ -81,6 +81,7 @@ class CoreFeed extends Component {
         <Button color="info" size="sm" block onClick={this.ignoreAll}>
           Ignore All
         </Button>
+        <p>Click on core feed notification for contextual component.</p>
         {coreFeed.length ? (
           coreFeed.filter((c, i) => (i < 10 ? true : false)).map(c => {
             if (c.ignored) return null;

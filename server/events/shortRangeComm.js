@@ -60,6 +60,7 @@ App.on("commConnectArrow", ({ id, arrowId }) => {
     {
       simulatorId: system.simulatorId,
       title: `Comm Connected`,
+      component: "CommShortRangeCore",
       body: null,
       color: "info"
     },
@@ -85,6 +86,7 @@ App.on("commDisconnectArrow", ({ id, arrowId }) => {
     {
       simulatorId: system.simulatorId,
       title: `Call Disconnected`,
+      component: "CommShortRangeCore",
       body: null,
       color: "info"
     },
@@ -117,6 +119,7 @@ App.on("commHail", ({ id }) => {
     {
       simulatorId: system.simulatorId,
       title: `New Hail`,
+      component: "CommShortRangeCore",
       body: null,
       color: "info"
     },
@@ -142,6 +145,7 @@ App.on("cancelHail", ({ id }) => {
     {
       simulatorId: system.simulatorId,
       title: `Hail Canceled`,
+      component: "CommShortRangeCore",
       body: null,
       color: "info"
     },
