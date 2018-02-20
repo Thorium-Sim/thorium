@@ -58,12 +58,13 @@ class SignalLines extends Component {
     });
   };
   loop = () => {
+    if (!this.animating) return;
     this.setState({
       comm: this.updateLines(this.state.comm, "comm"),
       sensors: this.updateLines(this.state.sensors, "sensors"),
       tactical: this.updateLines(this.state.tactical, "tactical")
     });
-    requestAnimationFrame(this.loop);
+    this.frame = requestAnimationFrame(this.loop);
   };
   calcLines = (prev, next, i) => {
     return `${prev}L ${(i + 1) * this.segments} ${next * this.props.height +
@@ -71,7 +72,12 @@ class SignalLines extends Component {
   };
   strokeWidth = 2;
   componentDidMount() {
+    this.animating = true;
     this.loop();
+  }
+  componentWillUnmount() {
+    this.animating = false;
+    cancelAnimationFrame(this.frame);
   }
   render() {
     const { height } = this.props;
