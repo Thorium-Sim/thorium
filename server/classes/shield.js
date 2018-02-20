@@ -37,7 +37,10 @@ export default class Shield extends System {
     }
   }
   setIntegrity(integrity) {
-    this.integrity = integrity;
+    this.integrity = Math.min(1, Math.max(0, integrity));
+    if (this.integrity === 0) {
+      this.state = false;
+    }
   }
   setFrequency(frequency) {
     this.frequency = frequency;

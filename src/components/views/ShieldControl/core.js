@@ -76,8 +76,17 @@ class ShieldsCore extends Component {
   }
   _hitShields(shields) {
     if (shields === "all") {
-      this.props.data.shields.forEach(s => {
-        this._hitShields(s);
+      const mutation = gql`
+        mutation HitAllShields($simulatorId: ID!) {
+          hitShields(simulatorId: $simulatorId)
+        }
+      `;
+      const variables = {
+        simulatorId: this.props.simulator.id
+      };
+      this.props.client.mutate({
+        mutation,
+        variables
       });
       return;
     }

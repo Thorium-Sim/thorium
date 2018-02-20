@@ -2,6 +2,9 @@
   font-family: "Gill Sans", sans-serif;
   font-size: 12;
   line-height: 1;
+  .mosaic-window-body {
+    overflow-y: scroll;
+  }
   .pt-button {
     color: #a7b6c2;
     border-top-left-radius: 0;
