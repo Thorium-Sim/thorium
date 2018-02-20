@@ -32,7 +32,7 @@ export default ({ updateArgs, args, client }) => {
       <Label>System Type</Label>
       <Input
         type="select"
-        value={args.type || "select"}
+        value={args ? args.type : "select"}
         onChange={evt => updateArgs("type", evt.target.value)}
       >
         <option value={"select"}>Pick a Type</option>
@@ -46,7 +46,7 @@ export default ({ updateArgs, args, client }) => {
       <Input
         type="text"
         placeholder="Optional"
-        defaultValue={args.name}
+        defaultValue={args ? args.name : ""}
         onBlur={evt => updateArgs("name", evt.target.value)}
       />
     </FormGroup>

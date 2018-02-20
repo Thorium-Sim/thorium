@@ -1,8 +1,8 @@
 import React from "react";
 import { FormGroup, Label, Input } from "reactstrap";
 
-export default ({ updateArgs = () => {}, args, client, preview }) => {
-  let answers = args.presetAnswers || [];
+export default ({ updateArgs = () => {}, args = {}, client, preview }) => {
+  let answers = args ? args.presetAnswers : [];
   answers = answers
     .map(a => `${a.label || ""}${a.value && ";" + a.value}`)
     .join("\n");
@@ -28,7 +28,7 @@ export default ({ updateArgs = () => {}, args, client, preview }) => {
       <Label>Domain</Label>
       <Input
         type="select"
-        value={args.domain}
+        value={args ? args.domain : "External"}
         onChange={evt => updateArgs("domain", evt.target.value)}
       >
         <option value={null}>Pick a Domain</option>
@@ -48,7 +48,7 @@ export default ({ updateArgs = () => {}, args, client, preview }) => {
       />
       <Label>Preview</Label>
       <Input type="select">
-        {(args.presetAnswers || []).map(a => (
+        {(args ? args.presetAnswers : []).map(a => (
           <option key={a.value}>
             {a.label} - {a.value}
           </option>

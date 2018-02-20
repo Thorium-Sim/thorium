@@ -1,7 +1,7 @@
 import React from "react";
 import { FormGroup, Label, Input } from "reactstrap";
 
-export default ({ updateArgs, args, client }) => {
+export default ({ updateArgs = () => {}, args, client }) => {
   const lrmText = e => {
     let value = e.target.value;
     const regex = /.*(?= out| out\.)/gi;
@@ -16,18 +16,26 @@ export default ({ updateArgs, args, client }) => {
   const updateSender = e => {
     updateArgs("sender", e.target.value);
   };
-  if (!args.crew) {
+  if (!args || !args.crew) {
     updateArgs("crew", true);
   }
   return (
     <FormGroup className="macro-sendLongRangeMessage">
       <Label>Sender</Label>
-      <Input type="text" value={args.sender} onChange={updateSender} />
+      <Input
+        type="text"
+        value={args ? args.sender : ""}
+        onChange={updateSender}
+      />
       <Label>
         Message{" "}
         <small>Use #SIM in your message for the name of the simulator</small>
       </Label>
-      <Input type="textarea" value={args.message} onChange={lrmText} />
+      <Input
+        type="textarea"
+        value={args ? args.message : ""}
+        onChange={lrmText}
+      />
     </FormGroup>
   );
 };

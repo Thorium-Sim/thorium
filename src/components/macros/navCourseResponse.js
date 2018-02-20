@@ -8,19 +8,19 @@ export default ({ updateArgs, args, client }) => {
         <Label>X</Label>
         <Input
           type="text"
-          value={args.x}
+          value={args ? args.x : ""}
           onChange={e => updateArgs("x", e.target.value)}
         />
         <Label>Y</Label>
         <Input
           type="text"
-          value={args.y}
+          value={args ? args.y : ""}
           onChange={e => updateArgs("y", e.target.value)}
         />
         <Label>Z</Label>
         <Input
           type="text"
-          value={args.z}
+          value={args ? args.z : ""}
           onChange={e => updateArgs("z", e.target.value)}
         />
       </FormGroup>

@@ -274,7 +274,7 @@ class TimelineCore extends Component {
             <Col>
               <h5>{currentStep.name}</h5>
               <p>{currentStep.description}</p>
-              <ul>
+              <ul className="timeline-list">
                 {currentStep.timelineItems.map(i => (
                   <li key={i.id}>
                     <input
