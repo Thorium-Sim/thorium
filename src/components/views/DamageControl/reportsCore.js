@@ -130,6 +130,9 @@ class DamageReportCore extends Component {
       mutation,
       variables
     });
+    setTimeout(() => {
+      this.selectSystem(this.state.selectedSystem);
+    }, 500);
   };
   reactivationCodeResponse = response => {
     const mutation = gql`
