@@ -22,7 +22,7 @@
   .core .react-grid-item .sensorGridCore div {
     height: initial;
   }
-  .slider-picker > div:nth-child(1){
+  .slider-picker > div:nth-child(1) {
     margin-bottom: -15px;
   }
   .planet-dragger {
@@ -64,10 +64,11 @@
     z-index: 100;
     position: absolute;
     width: 300%;
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(0, 0, 0, 0.8);
     top: 0;
     right: 0;
     bottom: 0;
+    left: 0;
     .file-explorer {
       height: 80%;
       .file-container {

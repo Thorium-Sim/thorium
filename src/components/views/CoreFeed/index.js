@@ -85,7 +85,7 @@ class CoreFeed extends Component {
         {coreFeed.length ? (
           coreFeed.filter((c, i) => (i < 10 ? true : false)).map(c => {
             if (c.ignored) return null;
-            if (components[c.id] && c.component) {
+            if (components[c.id] && c.component && Cores[c.component]) {
               const CoreComponent = Cores[c.component];
               return (
                 <div key={c.id} className="core-feed-component">

@@ -43,6 +43,7 @@ export default class Nudge extends Component {
 
     return (
       <div className="nudge">
+        <small>Nudge Distance</small>
         <Input
           type="select"
           onChange={evt => {
