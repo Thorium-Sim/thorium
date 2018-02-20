@@ -43,6 +43,41 @@ const moveSensorContactTimed = () => {
           z: 0
         };
         contact.position = newLoc;
+
+        // Auto-target
+        const targeting = App.systems.find(
+          s => s.simulatorId === sensors.simulatorId && s.class === "Targeting"
+        );
+        if (sensors.autoTarget) {
+          if (distance3d({ x: 0, y: 0, z: 0 }, newLoc) < 0.33) {
+            if (!targeting.classes.find(t => t.id === contact.id)) {
+              const target = {
+                id: contact.id,
+                name: contact.name,
+                size: contact.size,
+                icon: contact.icon,
+                picture: contact.picture,
+                speed: contact.speed || 1
+              };
+              targeting.addTargetClass(target);
+              targeting.createTarget(contact.id);
+              pubsub.publish(
+                "targetingUpdate",
+                App.systems.filter(s => s.type === "Targeting")
+              );
+            }
+          } else {
+            if (targeting.classes.find(t => t.id === contact.id)) {
+              targeting.removeTargetClass(contact.id);
+              pubsub.publish(
+                "targetingUpdate",
+                App.systems.filter(s => s.type === "Targeting")
+              );
+            }
+          }
+        }
+
+        // Reached Destination
         if (distance3d(destination, position) < 0.01) {
           contact.speed = 0;
           contact.position = Object.assign({}, contact.destination);

@@ -17,7 +17,7 @@ class ExtraControls extends Component {
         toggleSensorsAutoTarget(id: $id, target: $target)
       }
     `;
-    const sensors = this.props.data.sensors[0];
+    const sensors = this.props.sensors;
     const variables = {
       id: sensors.id,
       target: e.target.checked
@@ -33,7 +33,7 @@ class ExtraControls extends Component {
         toggleSensorsAutoThrusters(id: $id, thrusters: $thrusters)
       }
     `;
-    const sensors = this.props.data.sensors[0];
+    const sensors = this.props.sensors;
     const variables = {
       id: sensors.id,
       thrusters: e.target.checked
