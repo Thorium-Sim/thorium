@@ -24,7 +24,7 @@ export default class WaveMatch extends Component {
       if (!this.animating) return;
       this.frame = requestAnimationFrame(this.loop);
       this.setState({ phase: this.state.phase + 2 });
-      if (delta % 12000 > 11000) {
+      if (delta % 30000 > 29000) {
         this.updateState();
       }
     };

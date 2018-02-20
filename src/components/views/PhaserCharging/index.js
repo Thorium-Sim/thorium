@@ -347,7 +347,7 @@ export class PhaserArc extends Component {
       variables
     });
   }
-  changeArc(direction) {
+  changeArc = direction => {
     let { arc } = this.state;
     if (direction === "up") {
       arc += 0.04;
@@ -359,15 +359,15 @@ export class PhaserArc extends Component {
       arc
     });
     if (this.arcTimeout) {
-      this.arcTimeout = setTimeout(this.changeArc.bind(this, direction), 100);
+      this.arcTimeout = setTimeout(() => this.changeArc(direction), 100);
     } else {
       this.setArc();
     }
-  }
+  };
   updateArc(direction) {
     document.addEventListener("mouseup", this.mouseUp);
     document.addEventListener("touchend", this.mouseUp);
-    this.arcTimeout = setTimeout(this.changeArc.bind(this, direction), 100);
+    this.arcTimeout = setTimeout(() => this.changeArc(direction), 100);
   }
   componentWillReceiveProps(newProps) {
     this.setState({
