@@ -23,7 +23,7 @@ const COREFEED_SUB = gql`
 
 class CoreFeed extends Component {
   sub = null;
-  state = { showIgnore: false, components: false };
+  state = { components: {} };
   componentWillReceiveProps(nextProps) {
     if (!this.internalSub && !nextProps.data.loading) {
       this.internalSub = nextProps.data.subscribeToMore({
@@ -55,70 +55,66 @@ class CoreFeed extends Component {
     });
   };
   ignoreAll = () => {
-    this.props.data.coreFeed.forEach(i => {
-      this.ignoreCoreFeed(i.id);
+    const mutation = gql`
+      mutation IgnoreCoreFeed($id: ID) {
+        ignoreCoreFeed(id: $id)
+      }
+    `;
+    const variables = { id: this.props.simulator.id };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  showComponent = id => {
+    this.setState({
+      components: Object.assign({}, this.state.components, { [id]: true })
     });
   };
   render() {
     if (this.props.data.loading || !this.props.data.coreFeed) return null;
-    const { showIgnore, components } = this.state;
     const coreFeed = this.props.data.coreFeed.concat().reverse();
+    const { components } = this.state;
     return (
       <div className="coreFeed-core">
         <p>Core Feed</p>
-        <label>
-          <input
-            type="checkbox"
-            checked={showIgnore}
-            onChange={e => this.setState({ showIgnore: e.target.checked })}
-          />{" "}
-          Show Ignored
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={components}
-            onChange={e => this.setState({ components: e.target.checked })}
-          />{" "}
-          Show Components
-        </label>
         <Button color="info" size="sm" block onClick={this.ignoreAll}>
           Ignore All
         </Button>
         {coreFeed.length ? (
-          coreFeed.map(c => {
-            if (components && c.component) {
-              if (c.ignored && !showIgnore) return null;
+          coreFeed.filter((c, i) => (i < 10 ? true : false)).map(c => {
+            if (c.ignored) return null;
+            if (components[c.id] && c.component) {
               const CoreComponent = Cores[c.component];
               return (
                 <div key={c.id} className="core-feed-component">
                   {c.component.replace("Core", "")}
                   <CoreComponent {...this.props} />
-                  {!showIgnore && (
-                    <Button
-                      color="info"
-                      block
-                      size="sm"
-                      onClick={() => this.ignoreCoreFeed(c.id)}
-                    >
-                      Ignore
-                    </Button>
-                  )}
+                  <Button
+                    color="info"
+                    block
+                    size="sm"
+                    onClick={() => this.ignoreCoreFeed(c.id)}
+                  >
+                    Ignore
+                  </Button>
                 </div>
               );
             }
             return (
-              <Alert
-                key={c.id}
-                color={c.color}
-                isOpen={!c.ignored || showIgnore}
-                toggle={showIgnore ? null : () => this.ignoreCoreFeed(c.id)}
-              >
-                <strong className="alert-heading">
-                  {moment(c.timestamp).format("H:mm:ssa")} - {c.title}
-                </strong>
-                {c.body && <p>{c.body}</p>}
-              </Alert>
+              <div onClick={() => this.showComponent(c.id)}>
+                <Alert
+                  key={c.id}
+                  color={c.color}
+                  isOpen={true}
+                  toggle={() => this.ignoreCoreFeed(c.id)}
+                >
+                  <strong className="alert-heading">
+                    {moment(c.timestamp).format("H:mm:ssa")} - {c.title}
+                  </strong>
+                  {c.body && <p>{c.body}</p>}
+                </Alert>
+              </div>
             );
           })
         ) : (
