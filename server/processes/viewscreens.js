@@ -39,10 +39,7 @@ function viewscreenMachine() {
     // Loop through the shields and check to see if they are raised.
     // If one of the shields is suddenly raised or lowered, spike the priority.
     shields.forEach(shield => {
-      if (
-        !cache.ShieldMonitoring[shield.id] &&
-        cache.ShieldMonitoring[shield.id] !== false
-      ) {
+      if (!cache.ShieldMonitoring[shield.id]) {
         cache.ShieldMonitoring.priority = 0;
       } else if (shield.state !== cache.ShieldMonitoring[shield.id]) {
         cache.ShieldMonitoring.priority = 0.75;
@@ -57,10 +54,7 @@ function viewscreenMachine() {
     );
     cache.StealthMonitoring = cache.StealthMonitoring || {};
     stealth.forEach(s => {
-      if (
-        !cache.StealthMonitoring[s.id] &&
-        cache.StealthMonitoring[s.id] !== false
-      ) {
+      if (!cache.StealthMonitoring[s.id]) {
         cache.StealthMonitoring.priority = 0;
       } else if (s.state !== cache.StealthMonitoring[s.id]) {
         cache.StealthMonitoring.priority = 0.75;
@@ -75,7 +69,7 @@ function viewscreenMachine() {
     // Loop through nav
     nav.forEach(n => {
       if (n.calculate && n.scanning) {
-        cache.CourseCalculation.priority = 0.65;
+        cache.CourseCalculation.priority = 0.77;
       }
       cache.CourseCalculation[n.id] = n.scanning;
     });
@@ -90,7 +84,7 @@ function viewscreenMachine() {
     comm.forEach(c => {
       // Check for if the comm is hailing or if it has any arrows.
       if (c.arrows.length > 0 || c.state === "hailing") {
-        cache.Communications.priority = 0.6;
+        cache.Communications.priority = 0.76;
       }
     });
     // Stars
@@ -102,33 +96,22 @@ function viewscreenMachine() {
           : cache.Stars.priority || 0
     };
 
-    // Only change the Viewscreen when the current screen has run out of juice
-    // Or if it is one of the low-priority screens
-
+    // Next, set the viewscreen to the screen with the highest priority
+    const component = Object.keys(cache).reduce((prev, next) => {
+      if (next === "id") return prev;
+      if (!prev) return next;
+      if (cache[next].priority > cache[prev].priority) {
+        return next;
+      }
+      return prev;
+    }, null);
+    if (component) viewscreen.updateComponent(component, { reactive: true });
     // Finally, decriment all of the viewscreen's priority
-    if (cache[viewscreen.component]) {
-      cache[viewscreen.component].priority = Math.max(
-        cache[viewscreen.component].priority - 0.02,
-        0
-      );
-    }
-
-    const basicScreens = ["RedAlert", "ForwardScans", "Overheating"];
-    if (
-      !cache[viewscreen.component] ||
-      cache[viewscreen.component].priority === 0 ||
-      basicScreens.indexOf(viewscreen.component) > -1
-    ) {
-      const component = Object.keys(cache).reduce((prev, next) => {
-        if (next === "id") return prev;
-        if (!prev) return next;
-        if (cache[next].priority > cache[prev].priority) {
-          return next;
-        }
-        return prev;
-      }, null);
-      if (component) viewscreen.updateComponent(component, { reactive: true });
-    }
+    Object.keys(cache).forEach(c => {
+      if (c !== "id") {
+        cache[c].priority = Math.max(cache[c].priority - 0.02, 0);
+      }
+    });
   });
 
   pubsub.publish("viewscreensUpdate", App.viewscreens);
