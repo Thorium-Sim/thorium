@@ -1,3 +1,4 @@
+export { default as Next } from "./next";
 export { default as MainCore } from "./default";
 export { default as AuxCore } from "./iifx";
 export { default as Dynamic } from "./dynamic";

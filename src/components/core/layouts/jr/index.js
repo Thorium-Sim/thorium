@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Cores } from "../../views";
+import { Cores } from "../../../views";
 //import CoreFeed from "../../views/CoreFeed";
 import "./jr.css";
 const coreList = [

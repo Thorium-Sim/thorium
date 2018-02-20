@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Cores } from "../../views";
-import CoreFeed from "../../views/CoreFeed";
+import { Cores } from "../../../views";
+import CoreFeed from "../../../views/CoreFeed";
 import { Container, Row, Col } from "reactstrap";
 import {
   Mosaic,
@@ -10,6 +10,7 @@ import {
   ExpandButton,
   createDefaultToolbarButton
 } from "react-mosaic-component";
+import Picker from "./picker";
 import "react-mosaic-component/react-mosaic-component.css";
 import "./dynamic.css";
 
@@ -38,7 +39,7 @@ class UpdateSelect extends React.PureComponent {
           Select a Core
         </option>
         {Object.keys(Cores).map(s => (
-          <option key={s}>{`${s}${
+          <option key={s} value={s}>{`${s}${
             mosaicComponents(this.props.mosaic).indexOf(s) > -1 ? " - ✅" : ""
           }`}</option>
         ))}
@@ -56,9 +57,9 @@ class Split extends React.PureComponent {
         {createDefaultToolbarButton(
           "Split Window",
           "pt-icon-add-column-right",
-          () => {}
+          this.split
         )}
-        <select
+        {/*<select
           type="select"
           style={{
             width: "30px",
@@ -68,20 +69,22 @@ class Split extends React.PureComponent {
             zIndex: 5,
             opacity: 0
           }}
+          value="nothing"
           onChange={this.split}
         >
+          <option key="nothing">Select a core...</option>
           {Object.keys(Cores).map(s => (
             <option key={s}>{`${s}${
               mosaicComponents(this.props.mosaic).indexOf(s) > -1 ? " - ✅" : ""
             }`}</option>
           ))}
-        </select>
+        </select>*/}
       </div>
     );
   }
 
   split = e => {
-    this.context.mosaicWindowActions.split(e.target.value);
+    this.context.mosaicWindowActions.split("Picker");
   };
 }
 
@@ -117,6 +120,7 @@ class Dynamic extends Component {
               createNode={e => e}
             >
               {(() => {
+                if (id === "Picker") return <Picker />;
                 const Comp = Cores[id];
                 return <Comp {...this.props} />;
               })()}

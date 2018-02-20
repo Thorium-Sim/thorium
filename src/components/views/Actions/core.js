@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-
 import "./style.css";
 
 const STATION_CHANGE_QUERY = gql`

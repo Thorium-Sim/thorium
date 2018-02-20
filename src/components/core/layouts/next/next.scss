@@ -1,0 +1,50 @@
+.core-next {
+  background-color: #062458;
+  background-image: url("./background.jpg");
+  background-size: cover;
+  height: 100%;
+  display: grid;
+  height: calc(100vh - 26px);
+  grid-gap: 20px;
+  grid-template-columns: 30vw 3fr 1fr;
+  grid-template-rows: 36vh 1fr 1fr;
+  grid-template-areas:
+    "sensors main timeline"
+    "actions main timeline"
+    "coreFeed main timeline";
+  .next-sensors,
+  .next-timeline,
+  .next-coreFeed,
+  .next-actions,
+  .category-content {
+    background-color: rgba(0, 0, 0, 0.8);
+    border: solid 2px rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+  }
+  .category-title {
+    font-size: 18px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  }
+  .category-content {
+    //max-height: 200px;
+    //overflow-y: scroll;
+  }
+  .next-sensors {
+    grid-area: sensors;
+  }
+  .next-coreFeed {
+    grid-area: coreFeed;
+  }
+  .next-actions {
+    grid-area: actions;
+  }
+  .next-main {
+    height: calc(100vh - 48px);
+    border-left: solid 3px rgba(255, 255, 255, 0.5);
+    border-right: solid 3px rgba(255, 255, 255, 0.5);
+    grid-area: main;
+  }
+  .next-timeline {
+    grid-area: timeline;
+  }
+}

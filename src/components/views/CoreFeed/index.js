@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Cores } from "../";
-import { Button, Alert } from "reactstrap";
+import { Button } from "reactstrap";
+import FontAwesome from "react-fontawesome";
 import moment from "moment";
 import "./style.css";
 
@@ -83,41 +84,46 @@ class CoreFeed extends Component {
         </Button>
         <p>Click on core feed notification for contextual component.</p>
         {coreFeed.length ? (
-          coreFeed.filter((c, i) => (i < 10 ? true : false)).map(c => {
-            if (c.ignored) return null;
-            if (components[c.id] && c.component && Cores[c.component]) {
-              const CoreComponent = Cores[c.component];
+          coreFeed
+            .filter(c => !c.ignored)
+            .filter((c, i) => (i < 10 ? true : false))
+            .map(c => {
+              if (components[c.id] && c.component && Cores[c.component]) {
+                const CoreComponent = Cores[c.component];
+                return (
+                  <div key={c.id} className="core-feed-component">
+                    {c.component.replace("Core", "")}
+                    <CoreComponent {...this.props} />
+                    <Button color="info" block size="sm">
+                      Ignore
+                    </Button>
+                  </div>
+                );
+              }
               return (
-                <div key={c.id} className="core-feed-component">
-                  {c.component.replace("Core", "")}
-                  <CoreComponent {...this.props} />
-                  <Button
-                    color="info"
-                    block
-                    size="sm"
-                    onClick={() => this.ignoreCoreFeed(c.id)}
+                <div>
+                  <div
+                    className={`alert alert-${c.color} alert-dismissible`}
+                    key={c.id}
+                    onClick={() => this.showComponent(c.id)}
                   >
-                    Ignore
-                  </Button>
+                    <strong className="alert-heading">
+                      {moment(c.timestamp).format("H:mm:ssa")} - {c.title}
+                    </strong>
+                    {c.body && <p>{c.body}</p>}
+                    <FontAwesome
+                      className="pull-right"
+                      name="times"
+                      onClick={e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        this.ignoreCoreFeed(c.id);
+                      }}
+                    />
+                  </div>
                 </div>
               );
-            }
-            return (
-              <div onClick={() => this.showComponent(c.id)}>
-                <Alert
-                  key={c.id}
-                  color={c.color}
-                  isOpen={true}
-                  toggle={() => this.ignoreCoreFeed(c.id)}
-                >
-                  <strong className="alert-heading">
-                    {moment(c.timestamp).format("H:mm:ssa")} - {c.title}
-                  </strong>
-                  {c.body && <p>{c.body}</p>}
-                </Alert>
-              </div>
-            );
-          })
+            })
         ) : (
           <p>No feed items...</p>
         )}

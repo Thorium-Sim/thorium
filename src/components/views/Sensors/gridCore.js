@@ -240,10 +240,12 @@ class GridCore extends Component {
       { value: "0.4", label: "Slow" },
       { value: "0.1", label: "Very Slow" }
     ];
+
     return (
       <Container className="sensorGridCore" fluid style={{ height: "100%" }}>
         <Row style={{ height: "100%" }}>
-          <Col sm={3}>
+          <Col sm={4}>
+            <small>Speed</small>
             <Input
               type="select"
               name="select"
@@ -310,7 +312,7 @@ class GridCore extends Component {
               />
             )}
           </Col>
-          <Col sm={9} style={{ height: "100%" }}>
+          <Col sm={7} style={{ height: "100%" }}>
             <div
               id="threeSensors"
               className="array"

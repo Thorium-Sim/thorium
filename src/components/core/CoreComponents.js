@@ -161,6 +161,10 @@ class CoreComponents extends Component {
     const { notifications, speech, mosaic } = this.state;
     return (
       <div style={{ backgroundColor: "#333", color: "white" }}>
+        <Button tag={Link} size="sm" to={`/flight/${this.props.flightId}`}>
+          {"<-"} Client Config
+        </Button>
+
         <select
           className="btn btn-info btn-sm"
           onChange={this.pickSimulator.bind(this)}
@@ -194,13 +198,12 @@ class CoreComponents extends Component {
               );
             })}
         </select>
-        {this.state.layout === "Dynamic" && (
+        {["Dynamic", "Next"].indexOf(this.state.layout) > -1 && (
           <DynamicPicker
             mosaic={mosaic}
             onChange={m => this.setState({ mosaic: m })}
           />
         )}
-        <Link to={`/flight/${this.props.flightId}`}>Client Config</Link>
         <Button
           size="sm"
           onClick={this.toggleIssueTracker}

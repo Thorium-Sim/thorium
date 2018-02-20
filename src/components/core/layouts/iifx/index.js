@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Cores } from "../../views";
-import CoreFeed from "../../views/CoreFeed";
+import { Cores } from "../../../views";
+import CoreFeed from "../../../views/CoreFeed";
 
 import "./iifx.css";
-import "./sideCore.css";
+import "../sideCore.css";
 
 const exceptions = [
   "EngineControlCore",

@@ -44,3 +44,15 @@
     line-height: 1;
   }
 }
+
+.core-picker {
+  height: 100%;
+  overflow-y: scroll;
+  .categories {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .category {
+    margin: 10px;
+  }
+}
