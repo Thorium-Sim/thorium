@@ -30,7 +30,7 @@
     "inquirer-recursive": "0.0.5",
     "jest-localstorage-mock": "^2.2.0",
     "lint-staged": "^6.1.1",
-    "nodemon": "^1.15.0",
+    "nodemon": "^1.15.1",
     "pkg": "^4.3.0",
     "plop": "^1.9.1",
     "prettier": "^1.10.2",
