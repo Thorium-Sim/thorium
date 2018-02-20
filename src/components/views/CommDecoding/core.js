@@ -11,7 +11,8 @@ class LRCommCore extends Component {
     this.state = {
       messageSender: "",
       message: "",
-      decoded: false
+      decoded: false,
+      sent: false
     };
   }
   _lrmText(e) {
@@ -59,17 +60,36 @@ class LRCommCore extends Component {
       mutation,
       variables
     });
+    this.setState({
+      sent: true
+    });
+    setTimeout(() => {
+      this.setState({
+        sent: false
+      });
+    }, 4000);
   }
   _clearMessage = () => {
     this.setState({
       messageSender: "",
       message: "",
-      decoded: false
+      decoded: false,
+      sent: false
     });
   };
   render() {
     if (this.props.data.loading || !this.props.data.longRangeCommunications)
       return null;
+    if (this.state.sent) {
+      return (
+        <div>
+          <p>Message Sent</p>
+          <Button size="sm" onClick={this._clearMessage}>
+            Send Another
+          </Button>
+        </div>
+      );
+    }
     return (
       <div className="comm-core">
         {this.props.data.longRangeCommunications.length > 0 ? (
