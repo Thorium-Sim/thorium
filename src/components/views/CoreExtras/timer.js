@@ -45,6 +45,7 @@ class Timer extends Component {
   }
   componentWillUnmount() {
     this.subscription && this.subscription.unsubscribe();
+    clearTimeout(this.timer);
   }
   updateTimer = () => {
     if (

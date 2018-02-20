@@ -38,6 +38,7 @@ class InternalSensorsViewscreen extends Component {
   }
   componentWillUnmount() {
     this.looping = false;
+    cancelAnimationFrame(this.frame);
     this.sensorsSubscription && this.sensorsSubscription();
   }
   loop = () => {
@@ -46,7 +47,7 @@ class InternalSensorsViewscreen extends Component {
     if (scan >= 1) scan = -0.1;
     scan += 0.01;
     this.setState({ scan });
-    requestAnimationFrame(this.loop);
+    this.frame = requestAnimationFrame(this.loop);
   };
   render() {
     const { scan } = this.state;

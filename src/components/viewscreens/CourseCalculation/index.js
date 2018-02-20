@@ -51,6 +51,7 @@ class CourseCalculationViewscreen extends Component {
   }
   componentWillUnmount() {
     this.sensorsSubscription && this.sensorsSubscription();
+    cancelAnimationFrame(this.looping);
   }
   loop = () => {
     if (this.state.scanning) {

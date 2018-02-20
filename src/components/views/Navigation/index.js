@@ -28,12 +28,12 @@ export class NavigationScanner extends Component {
     };
     this.scanning = null;
     if (props.scanning) {
-      this.scanning = setTimeout(this._scan.bind(this), 100);
+      this.scanning = setTimeout(this._scan, 100);
     }
   }
   componentWillReceiveProps(nextProps) {
     if (!this.props.scanning && nextProps.scanning) {
-      this.scanning = setTimeout(this._scan.bind(this), 100);
+      this.scanning = setTimeout(this._scan, 100);
     }
     if (!nextProps.scanning) {
       clearTimeout(this.scanning);
@@ -44,7 +44,7 @@ export class NavigationScanner extends Component {
     clearTimeout(this.scanning);
     this.scanning = null;
   }
-  _scan() {
+  _scan = () => {
     if (this.props.scanning && this.scanning) {
       this.setState({
         lineX: Math.random() * 100,
@@ -57,7 +57,7 @@ export class NavigationScanner extends Component {
         Math.random(5000) + 2000
       );
     }
-  }
+  };
   render() {
     return (
       <div
@@ -128,13 +128,13 @@ class Navigation extends Component {
     this.scanning = null;
     this.subscription = null;
     if (props.scanning) {
-      this.scanning = setTimeout(this._scan.bind(this), 100);
+      this.scanning = setTimeout(this._scan, 100);
     }
   }
   componentWillUnmount() {
     clearTimeout(this.scanning);
     this.scanning = null;
-    this.subscription();
+    this.subscription && this.subscription();
   }
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
@@ -152,7 +152,7 @@ class Navigation extends Component {
       const navigation = nextProps.data.navigation[0];
       if (navigation) {
         if (navigation.scanning) {
-          this.scanning = setTimeout(this._randomCourse.bind(this), 60);
+          this.scanning = setTimeout(this._randomCourse, 60);
         }
         if (!navigation.scanning) {
           clearTimeout(this.scanning);
@@ -171,7 +171,7 @@ class Navigation extends Component {
     if (navigation.thrusters) return `${Math.round(Math.random() * 360)}˚`;
     return Math.round(Math.random() * 100000) / 100;
   };
-  _randomCourse() {
+  _randomCourse = () => {
     this.setState({
       calculatedCourse: {
         x: this.courseCoordinate(),
@@ -180,9 +180,9 @@ class Navigation extends Component {
       }
     });
     if (this.scanning) {
-      this.scanning = setTimeout(this._randomCourse.bind(this), 60);
+      this.scanning = setTimeout(this._randomCourse, 60);
     }
-  }
+  };
   updateDestination = e => {
     e.preventDefault();
     this.setState({

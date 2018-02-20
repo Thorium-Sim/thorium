@@ -26,6 +26,11 @@ export default class ReactorActivation extends Component {
       }
     );
   }
+  componentWillUnmount() {
+    this.looping = false;
+    cancelAnimationFrame(this.frame);
+    this.frame = false;
+  }
   loop = () => {
     if (!this.looping) return false;
     const data = JSON.parse(this.props.viewscreen.data);

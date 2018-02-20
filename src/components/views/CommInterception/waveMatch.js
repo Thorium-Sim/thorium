@@ -21,7 +21,8 @@ export default class WaveMatch extends Component {
       maxDown + Math.random() * (minUp - maxDown)
     );
     this.loop = delta => {
-      requestAnimationFrame(this.loop);
+      if (!this.animating) return;
+      this.frame = requestAnimationFrame(this.loop);
       this.setState({ phase: this.state.phase + 2 });
       if (delta % 12000 > 11000) {
         this.updateState();
@@ -29,7 +30,12 @@ export default class WaveMatch extends Component {
     };
   }
   componentDidMount() {
+    this.animating = true;
     this.loop();
+  }
+  componentWillUnmount() {
+    this.animating = false;
+    cancelAnimationFrame(this.frame);
   }
   lockSignal = () => {
     const { lrComm } = this.props;

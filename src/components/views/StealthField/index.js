@@ -159,10 +159,6 @@ class StealthField extends Component {
               simulatorId={this.props.simulator.id}
             >
               {({ src }) => {
-                if (!this.scene) {
-                  this.scene = true;
-                  setTimeout(() => (this.scene = new Scene()), 100);
-                }
                 return (
                   <div
                     className="stealth"

@@ -186,11 +186,17 @@ class ThreeView extends Component {
     document
       .getElementById("thrustersMount")
       .appendChild(this.renderer.domElement);
+    this.animating = true;
     this.animate();
   }
+  componentWillUnmount() {
+    this.animating = false;
+    cancelAnimationFrame(this.frame);
+  }
   animate = () => {
+    if (!this.animating) return;
     this.renderer.render(this.scene, this.camera);
-    requestAnimationFrame(this.animate);
+    this.frame = requestAnimationFrame(this.animate);
   };
   render() {
     return <div id="thrustersMount" />;

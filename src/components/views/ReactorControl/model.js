@@ -48,6 +48,7 @@ class ThreeView extends Component {
     });
   }
   componentWillMount() {
+    this.animating = true;
     this.animate();
   }
   componentDidMount() {
@@ -55,7 +56,12 @@ class ThreeView extends Component {
       .getElementById("reactorMount")
       .appendChild(this.renderer.domElement);
   }
+  componentWillUnmount() {
+    cancelAnimationFrame(this.frame);
+    this.animating = false;
+  }
   animate = () => {
+    if (!this.animating) return false;
     this.setState(({ rotation }) => {
       return { rotation: rotation + 0.005 };
     });
@@ -63,7 +69,7 @@ class ThreeView extends Component {
       this.reactor.rotation.y = this.state.rotation;
     }
     this.renderer.render(this.scene, this.camera);
-    requestAnimationFrame(this.animate);
+    this.frame = requestAnimationFrame(this.animate);
   };
   render() {
     return <div id="reactorMount" />;

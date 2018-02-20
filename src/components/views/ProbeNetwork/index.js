@@ -150,6 +150,7 @@ class Grid extends Component {
   }
   componentWillUnmount() {
     this.looping = false;
+    clearTimeout(this.frame);
   }
   loop = () => {
     if (!this.looping) return;
@@ -179,7 +180,7 @@ class Grid extends Component {
     this.setState({
       datagrams
     });
-    setTimeout(this.loop, 30);
+    this.frame = setTimeout(this.loop, 30);
   };
   componentDidMount() {
     this.looping = true;

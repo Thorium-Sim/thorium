@@ -48,7 +48,10 @@ class MessageBox extends Component {
     this.loopTimeout = null;
   }
   componentDidMount() {
-    this.loopTimeout = setTimeout(this.typeLoop.bind(this), 16);
+    this.loopTimeout = setTimeout(this.typeLoop, 16);
+  }
+  componentWillUnmount() {
+    clearTimeout(this.loopTimeout);
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.message !== this.props.message) {
@@ -57,10 +60,10 @@ class MessageBox extends Component {
         typedIndex: 0
       });
       clearTimeout(this.loopTimeout);
-      this.loopTimeout = setTimeout(this.typeLoop.bind(this), 16);
+      this.loopTimeout = setTimeout(this.typeLoop, 16);
     }
   }
-  typeLoop() {
+  typeLoop = () => {
     const { message } = this.props;
     const { typedIndex } = this.state;
     if (message) {
@@ -69,10 +72,10 @@ class MessageBox extends Component {
         typedIndex: typedIndex + 1
       });
       if (typedIndex + 1 <= message.length) {
-        this.loopTimeout = setTimeout(this.typeLoop.bind(this), 16);
+        this.loopTimeout = setTimeout(this.typeLoop, 16);
       }
     }
-  }
+  };
   render() {
     return (
       <div className="message-box">
@@ -158,23 +161,6 @@ class LongRangeComm extends Component {
     this.setState({
       messageLoc: { x: this.state.selectedSat.x, y: this.state.selectedSat.y }
     });
-    const messageShow = () => {
-      const message = this.props.data.longRangeCommunications[0].messages.find(
-        s => s.id === this.state.selectedMessage
-      );
-      this.setState({
-        messageText: message.message
-      });
-
-      setTimeout(messageHide, 2000);
-    };
-    const messageHide = () => {
-      this.setState({
-        messageText: null,
-        messageLoc: messageLoc()
-      });
-      setTimeout(sendMessage, 2000);
-    };
     const sendMessage = () => {
       this.setState(
         {
@@ -188,6 +174,23 @@ class LongRangeComm extends Component {
           });
         }
       );
+    };
+    const messageHide = () => {
+      this.setState({
+        messageText: null,
+        messageLoc: messageLoc()
+      });
+      setTimeout(sendMessage, 2000);
+    };
+    const messageShow = () => {
+      const message = this.props.data.longRangeCommunications[0].messages.find(
+        s => s.id === this.state.selectedMessage
+      );
+      this.setState({
+        messageText: message.message
+      });
+
+      setTimeout(messageHide, 2000);
     };
     setTimeout(messageShow, 2000);
   }

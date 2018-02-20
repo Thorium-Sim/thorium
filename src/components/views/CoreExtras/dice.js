@@ -20,6 +20,9 @@ class Dice extends Component {
     this.rolling = true;
     this.shakeDice();
   };
+  componentWillUnmount() {
+    this.rolling = false;
+  }
   render() {
     const { dice } = this.state;
     return (

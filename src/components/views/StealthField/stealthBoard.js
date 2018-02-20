@@ -12,12 +12,13 @@ export default class StealthBoard extends Component {
     };
     this.looping = true;
     this.loop = this.loop.bind(this);
-    window.requestAnimationFrame(this.loop);
+    this.frame = window.requestAnimationFrame(this.loop);
   }
   componentDidMount() {
     this.looping = true;
   }
   componentWillUnmount() {
+    cancelAnimationFrame(this.frame);
     this.looping = false;
   }
   componentWillReceiveProps(nextProps) {
@@ -32,7 +33,7 @@ export default class StealthBoard extends Component {
   }
   loop(currentTime) {
     if (this.looping) {
-      window.requestAnimationFrame(this.loop);
+      this.frame = window.requestAnimationFrame(this.loop);
     } else {
       return;
     }

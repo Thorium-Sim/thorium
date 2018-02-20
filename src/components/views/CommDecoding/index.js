@@ -96,7 +96,7 @@ class Decoding extends Component {
     this.decodeSubscription && this.decodeSubscription();
     clearTimeout(this.decodeTimeout);
   }
-  decode() {
+  decode = () => {
     let {
       selectedMessage,
       decodeProgress,
@@ -132,7 +132,7 @@ class Decoding extends Component {
         decodeProgress
       });
       clearTimeout(this.decodeTimeout);
-      this.decodeTimeout = setTimeout(this.decode.bind(this), 50);
+      this.decodeTimeout = setTimeout(this.decode, 50);
     } else {
       // Update the server
       const mutation = gql`
@@ -165,7 +165,7 @@ class Decoding extends Component {
       });
       this.setState({ decodeProgress: null });
     }
-  }
+  };
   _selectMessage(message) {
     this.setState({
       selectedMessage: message.id,

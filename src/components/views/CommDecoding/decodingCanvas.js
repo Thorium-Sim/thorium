@@ -40,10 +40,11 @@ export default class DecodingCanvas extends Component {
   }
   componentDidMount() {
     this.looping = true;
-    requestAnimationFrame(this.loop.bind(this));
+    this.frame = requestAnimationFrame(this.loop.bind(this));
   }
   componentWillUnmount() {
     this.looping = false;
+    cancelAnimationFrame(this.frame);
   }
   loop() {
     if (!this.looping) return;
@@ -57,7 +58,7 @@ export default class DecodingCanvas extends Component {
       });
     }
     // Next frame
-    requestAnimationFrame(this.loop.bind(this));
+    this.frame = requestAnimationFrame(this.loop.bind(this));
   }
   render() {
     const { p } = this.state;

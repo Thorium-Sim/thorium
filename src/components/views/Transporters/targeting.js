@@ -26,8 +26,9 @@ export default class Target extends Component {
   }
   componentWillUnmount() {
     this.ticking = false;
+    cancelAnimationFrame(this.frame);
   }
-  tick() {
+  tick = () => {
     if (!this.ticking) return;
     const { selectedTarget, mouseCharge, charge } = this.state;
     if (
@@ -65,8 +66,8 @@ export default class Target extends Component {
         this.updateCharge(charge);
       }
     }
-    window.requestAnimationFrame(this.tick.bind(this));
-  }
+    this.frame = window.requestAnimationFrame(this.tick);
+  };
   powerUp(e) {
     const { clientHeight: height } = e.currentTarget;
     const { top } = e.currentTarget.getBoundingClientRect();

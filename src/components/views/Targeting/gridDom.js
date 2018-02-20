@@ -22,6 +22,7 @@ class TargetingGridDom extends Component {
   }
   componentWillUnmount() {
     this.looping = false;
+    cancelAnimationFrame(this.frame);
   }
   refreshTargets(nextProps) {
     const targets = [].concat(this.state.targets);
@@ -58,7 +59,7 @@ class TargetingGridDom extends Component {
   loop() {
     if (!this.looping) return false;
     // Next frame
-    requestAnimationFrame(() => {
+    this.frame = requestAnimationFrame(() => {
       this.loop();
     });
     const { width } = this.props.dimensions || { width: 400 };

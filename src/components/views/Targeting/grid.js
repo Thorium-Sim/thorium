@@ -24,7 +24,7 @@ class TargetingGrid extends Component {
   }
   componentDidMount() {
     this.looping = true;
-    requestAnimationFrame(() => {
+    this.frame = requestAnimationFrame(() => {
       this.loop();
     });
     const el = findDOMNode(this);
@@ -32,6 +32,7 @@ class TargetingGrid extends Component {
   }
   componentWillUnmount() {
     this.looping = false;
+    cancelAnimationFrame(this.frame);
   }
   refreshTargets(nextProps) {
     const stateTargets = this.state.targets;
@@ -193,7 +194,7 @@ class TargetingGrid extends Component {
       targets: newTargets
     });
     // Next frame
-    requestAnimationFrame(() => {
+    this.frame = requestAnimationFrame(() => {
       this.loop();
     });
   }

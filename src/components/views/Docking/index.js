@@ -51,18 +51,19 @@ class Docking extends Component {
   }
   componentWillUnmount() {
     this.subscription && this.subscription();
+    clearTimeout(this.timeout);
   }
-  undisable() {
+  undisable = () => {
     this.setState({
       disabled: false
     });
-  }
+  };
   clamps() {
     this.setState({
       graphic: "clamps",
       disabled: true
     });
-    setTimeout(this.undisable.bind(this), 3000);
+    this.timeout = setTimeout(this.undisable, 3000);
     const variables = {
       simulatorId: this.props.simulator.id,
       which: "clamps",
@@ -78,7 +79,7 @@ class Docking extends Component {
       graphic: "ramps",
       disabled: true
     });
-    setTimeout(this.undisable.bind(this), 1000);
+    this.timeout = setTimeout(this.undisable, 1000);
     const variables = {
       simulatorId: this.props.simulator.id,
       which: "ramps",
@@ -94,7 +95,7 @@ class Docking extends Component {
       graphic: "doors",
       disabled: true
     });
-    setTimeout(this.undisable.bind(this), 2000);
+    this.timeout = setTimeout(this.undisable, 2000);
     const variables = {
       simulatorId: this.props.simulator.id,
       which: "airlock",
