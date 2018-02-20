@@ -6,7 +6,6 @@ import { graphql, withApollo } from "react-apollo";
 import Tour from "reactour";
 import DamageOverlay from "../helpers/DamageOverlay";
 import { Asset } from "../../../helpers/assets";
-import Scene from "./effect";
 import StealthBoard from "./stealthBoard";
 import ChargeBar from "./chargeBar";
 
@@ -170,8 +169,8 @@ class StealthField extends Component {
                       src={src}
                       draggable="false"
                     />
-                    <canvas
-                      id="stealth-canvas"
+                    <div
+                      className="stealth-animation"
                       style={{
                         WebkitMaskImage: `url(${src})`,
                         display:
@@ -180,7 +179,98 @@ class StealthField extends Component {
                             ? "block"
                             : "none"
                       }}
-                    />
+                    >
+                      <div class="band band-1">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-2">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-3">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-4">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-5">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-6">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-7">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-8">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-9">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-10">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-11">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-12">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-13">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-14">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-15">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-16">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-17">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-18">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-19">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-20">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-21">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-22">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-23">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-24">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-25">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-26">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-27">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-28">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-29">
+                        <div class="color" />
+                      </div>
+                      <div class="band band-30">
+                        <div class="color" />
+                      </div>
+                    </div>
                   </div>
                 );
               }}
@@ -280,7 +370,7 @@ const STEALTH_QUERY = gql`
 `;
 
 export default graphql(STEALTH_QUERY, {
-  fetchPolicy: "cache-and-network",
+  fetchPolicy: "network-only",
 
   options: ownProps => ({
     variables: {
