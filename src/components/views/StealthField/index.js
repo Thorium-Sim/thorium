@@ -47,7 +47,7 @@ const trainingSteps = [
   {
     selector: ".stealth-board",
     content:
-      "This dashboard shows the way that the ship’s operations impact the stealth field. Use of some shp functionality may increase the ship’s probability of being detected. For example, sending out messages and other signals makes it obvious to other starships that this ship is around. They may not be able to see the ship, but they’ll notice that someone is there. If you start shooting at them, they will probably realize that something fishy is going on."
+      "This dashboard shows the way that the ship’s operations impact the stealth field. Use of some ship functionality may increase the ship’s probability of being detected. For example, sending out messages and other signals makes it obvious to other starships that this ship is around. They may not be able to see the ship, but they’ll notice that someone is there. If you start shooting at them, they will probably realize that something fishy is going on."
   }
 ];
 
