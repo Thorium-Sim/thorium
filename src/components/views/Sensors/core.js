@@ -212,7 +212,7 @@ class SensorsCore extends Component {
         <Row>
           <Button
             size="sm"
-            className={`${this.state.domain === "external" ? "focus" : ""} ${
+            className={`${this.state.domain === "external" ? "active" : ""} ${
               external.scanning ? "btn-danger" : ""
             }`}
             onClick={() => this.setDomain("external")}
@@ -221,7 +221,7 @@ class SensorsCore extends Component {
           </Button>
           <Button
             size="sm"
-            className={`${this.state.domain === "internal" ? "focus" : ""} ${
+            className={`${this.state.domain === "internal" ? "active" : ""} ${
               internal.scanning ? "btn-danger" : ""
             }`}
             onClick={() => this.setDomain("internal")}
@@ -241,18 +241,21 @@ class SensorsCore extends Component {
           {sensor.history && (
             <Col sm={4}>
               <div className="scan-list">
-                {sensor.scans.map(s => (
-                  <p
-                    key={s.id}
-                    className={`${s.cancelled ? "text-danger" : ""} ${
-                      selectedScan === s.id ? "selected" : ""
-                    } ${!s.cancelled && !s.scanning ? "text-success" : ""}`}
-                    onClick={() => this.selectScan(s)}
-                  >
-                    {s.request.substr(0, 15)}...{" "}
-                    {s.scanning && <FontAwesome name="refresh" spin />}
-                  </p>
-                ))}
+                {sensor.scans
+                  .concat()
+                  .reverse()
+                  .map(s => (
+                    <p
+                      key={s.id}
+                      className={`${s.cancelled ? "text-danger" : ""} ${
+                        selectedScan === s.id ? "selected" : ""
+                      } ${!s.cancelled && !s.scanning ? "text-success" : ""}`}
+                      onClick={() => this.selectScan(s)}
+                    >
+                      {s.request.substr(0, 15)}...{" "}
+                      {s.scanning && <FontAwesome name="refresh" spin />}
+                    </p>
+                  ))}
               </div>
             </Col>
           )}

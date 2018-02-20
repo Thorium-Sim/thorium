@@ -330,19 +330,22 @@ class Scanning extends Component {
             <h3>Scan Log</h3>
             <Card>
               <CardBody>
-                {scans.map(s => (
-                  <p
-                    key={s.id}
-                    className={`${s.cancelled ? "text-danger" : ""} ${
-                      selectedScan === s.id ? "selected" : ""
-                    } ${!s.cancelled && !s.scanning ? "text-success" : ""}`}
-                    onClick={() => this.selectScan(s)}
-                  >
-                    {s.request.substr(0, 30)}
-                    {s.request.length > 30 ? "... " : " "}
-                    {s.scanning && <FontAwesome name="refresh" spin />}
-                  </p>
-                ))}
+                {scans
+                  .concat()
+                  .reverse()
+                  .map(s => (
+                    <p
+                      key={s.id}
+                      className={`${s.cancelled ? "text-danger" : ""} ${
+                        selectedScan === s.id ? "selected" : ""
+                      } ${!s.cancelled && !s.scanning ? "text-success" : ""}`}
+                      onClick={() => this.selectScan(s)}
+                    >
+                      {s.request.substr(0, 30)}
+                      {s.request.length > 30 ? "... " : " "}
+                      {s.scanning && <FontAwesome name="refresh" spin />}
+                    </p>
+                  ))}
               </CardBody>
             </Card>
             <Button
