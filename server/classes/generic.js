@@ -89,6 +89,9 @@ export class System {
   get stealthFactor() {
     return null;
   }
+  trainingMode() {
+    return;
+  }
   updateName({ name, displayName }) {
     if (name || name === "") this.name = name;
     if (displayName || displayName === "") this.displayName = displayName;

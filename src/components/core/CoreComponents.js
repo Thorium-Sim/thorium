@@ -31,7 +31,6 @@ const FLIGHTS_SUB = gql`
         id
         name
         layout
-        alertlevel
         stations {
           name
         }
@@ -320,7 +319,6 @@ const CORE_LAYOUT = gql`
         id
         name
         layout
-        alertlevel
         stations {
           name
         }

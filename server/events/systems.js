@@ -253,3 +253,13 @@ App.on("fixSystem", ({ simulatorId, type, name }) => {
   sys && sys.repair();
   sendUpdate(sys);
 });
+App.on("trainingMode", ({ simulatorId }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  sim.trainingMode(true);
+  const systems = App.systems.filter(s => s.simulatorId === simulatorId);
+  systems.forEach(s => {
+    s.trainingMode();
+    sendUpdate(s);
+  });
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
