@@ -44,8 +44,6 @@ const TARGETING_SUB = gql`
         speed
         picture
         quadrant
-        iconUrl
-        pictureUrl
       }
     }
   }
@@ -364,7 +362,11 @@ class TargetingCore extends Component {
                             );
                           })}
                       </select>
-                      <img alt="pic" src={t.iconUrl} role="presentation" />
+                      <Asset asset={t.icon}>
+                        {({ src }) => (
+                          <img alt="pic" src={src} role="presentation" />
+                        )}
+                      </Asset>
                     </Col>
                     <Col sm={1}>
                       <select
@@ -386,7 +388,11 @@ class TargetingCore extends Component {
                             );
                           })}
                       </select>
-                      <img alt="pic" src={t.pictureUrl} role="presentation" />
+                      <Asset asset={t.picture}>
+                        {({ src }) => (
+                          <img alt="pic" src={src} role="presentation" />
+                        )}
+                      </Asset>{" "}
                     </Col>
                     <Col sm={5}>
                       <InputField
@@ -471,8 +477,6 @@ const TARGETING_QUERY = gql`
         speed
         picture
         quadrant
-        iconUrl
-        pictureUrl
       }
     }
     assetFolders(names: $names) {
