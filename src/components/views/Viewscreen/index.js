@@ -41,9 +41,9 @@ export class Viewscreen extends Component {
       const ViewscreenComponent = ViewscreenCards[this.props.component];
       return <ViewscreenComponent {...this.props} />;
     }
-    const { data: { loading, viewscreens } } = this.props;
+    const { data: { loading, viewscreens }, clientObj } = this.props;
     if (loading || !viewscreens) return null;
-    const viewscreen = viewscreens.find(v => v.id === this.props.clientObj.id);
+    const viewscreen = viewscreens.find(v => v.id === clientObj.id);
     if (!viewscreen) return <div>No Viewscreen</div>;
     if (ViewscreenCards[viewscreen.component]) {
       const ViewscreenComponent = ViewscreenCards[viewscreen.component];
