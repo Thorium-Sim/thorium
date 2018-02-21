@@ -38,6 +38,7 @@ import { ExocompQueries } from "./exocomp";
 import { LibraryQueries } from "./library";
 import { SoftwarePanelsQueries } from "./softwarePanels";
 import { SurveyFormQueries } from "./surveyform.js";
+import { ObjectiveQueries } from "./objective.js";
 
 const queryMap = Object.assign(
   {},
@@ -80,7 +81,8 @@ const queryMap = Object.assign(
   ExocompQueries,
   LibraryQueries,
   SoftwarePanelsQueries,
-  SurveyFormQueries
+  SurveyFormQueries,
+  ObjectiveQueries
 );
 
 export default queryMap;

@@ -41,3 +41,4 @@ export { default as Exocomp } from "./exocomp";
 export { default as Library } from "./library";
 export { default as SoftwarePanel } from "./softwarePanels";
 export { default as SurveyForm } from "./surveyform.js";
+export { default as Objective } from "./objective.js";

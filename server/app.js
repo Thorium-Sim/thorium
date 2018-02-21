@@ -41,6 +41,7 @@ class Events extends EventEmitter {
     this.libraryDatabase = [];
     this.softwarePanels = [];
     this.surveyForms = [];
+    this.objectives = [];
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;
@@ -105,8 +106,9 @@ class Events extends EventEmitter {
         key === "timestamp" ||
         key === "version" ||
         key === "_eventsCount"
-      )
+      ) {
         return;
+      }
       if (snapshot[key] instanceof Array) {
         snapshot[key].forEach(obj => {
           if (Object.keys(obj).length !== 0) {
@@ -122,7 +124,7 @@ class Events extends EventEmitter {
       }
     });
   }
-  snapshot(save) {
+  snapshot() {
     const dev =
       !process.env.NODE_ENV && fs.existsSync(snapshotDir + "snapshot-dev.json");
     this.snapshotVersion = this.version;

@@ -41,3 +41,4 @@ import "./library";
 import "./softwarePanels";
 import "./actions";
 import "./surveyform.js";
+import "./objective.js";

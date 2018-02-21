@@ -38,6 +38,7 @@ import { ExocompSubscriptions } from "./exocomp";
 import { LibrarySubscriptions } from "./library";
 import { SoftwarePanelsSubscriptions } from "./softwarePanels";
 import { SurveyFormSubscriptions } from "./surveyform.js";
+import { ObjectiveSubscriptions } from "./objective.js";
 
 const subscriptionMap = Object.assign(
   {},
@@ -80,7 +81,8 @@ const subscriptionMap = Object.assign(
   ExocompSubscriptions,
   LibrarySubscriptions,
   SoftwarePanelsSubscriptions,
-  SurveyFormSubscriptions
+  SurveyFormSubscriptions,
+  ObjectiveSubscriptions
 );
 
 export default subscriptionMap;
