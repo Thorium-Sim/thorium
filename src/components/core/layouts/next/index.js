@@ -16,6 +16,7 @@ class Next extends Component {
         <div className="next-actions">
           <Cores.ActionsCore {...props} />
           <Cores.ExtrasCore {...props} />
+          <Cores.AlertConditionCore {...props} />
         </div>
         <div className="next-coreFeed">
           <CoreFeed {...props} />

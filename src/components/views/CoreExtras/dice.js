@@ -26,7 +26,7 @@ class Dice extends Component {
   render() {
     const { dice } = this.state;
     return (
-      <div>
+      <div className="pull-left">
         {dice.map((d, i) => (
           <Die rollDice={this.rollDice} num={d} key={`dice-${i}`} />
         ))}

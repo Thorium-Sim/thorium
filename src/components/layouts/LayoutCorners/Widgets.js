@@ -28,7 +28,8 @@ class WidgetsContainer extends Component {
         }
       })
       .subscribe({
-        next({ widgetNotify }) {
+        next({ data }) {
+          const { widgetNotify } = data;
           self.setNotify(widgetNotify, true);
         },
         error(err) {

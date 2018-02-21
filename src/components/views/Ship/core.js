@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { InputField } from "../../generic/core";
-import { Input } from "reactstrap";
+import { Input, Button } from "reactstrap";
 import LayoutList from "../../layouts/list";
 
 const layouts = LayoutList;
@@ -13,6 +13,7 @@ const SHIP_CORE_SUB = gql`
       id
       name
       layout
+      training
       ship {
         bridgeCrew
         radiation
@@ -108,10 +109,24 @@ class ShipCore extends Component {
       variables
     });
   };
+  startTraining = () => {
+    const mutation = gql`
+      mutation StartTraining($simulatorId: ID!) {
+        trainingMode(simulatorId: $simulatorId)
+      }
+    `;
+    const variables = {
+      simulatorId: this.props.simulator.id
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.simulators) return null;
     const simulator = this.props.data.simulators[0];
-    const { name, layout } = simulator;
+    const { name, layout, training } = simulator;
     const { bridgeCrew, radiation } = simulator.ship;
     return (
       <div className="core-ship">
@@ -152,6 +167,14 @@ class ShipCore extends Component {
           step={0.01}
           onChange={evt => this.updateRadiation(evt.target.value)}
         />
+        <Button
+          size="sm"
+          color="warning"
+          disabled={training}
+          onClick={this.startTraining}
+        >
+          Start Training
+        </Button>
       </div>
     );
   }
@@ -163,6 +186,7 @@ const SHIP_CORE_QUERY = gql`
       id
       name
       layout
+      training
       ship {
         bridgeCrew
         radiation

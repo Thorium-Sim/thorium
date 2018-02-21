@@ -13,7 +13,7 @@ import {
   DropdownMenu,
   DropdownItem,
   InputGroup,
-  InputGroupButton
+  InputGroupAddon
 } from "reactstrap";
 import "./style.css";
 
@@ -285,7 +285,7 @@ class Messaging extends Component {
                   }
                   value={messageInput}
                 />
-                <InputGroupButton>
+                <InputGroupAddon addonType="append">
                   <Button
                     disabled={!selectedConversation}
                     type="submit"
@@ -293,7 +293,7 @@ class Messaging extends Component {
                   >
                     Send Message
                   </Button>
-                </InputGroupButton>
+                </InputGroupAddon>
               </InputGroup>
             </form>
           </Col>

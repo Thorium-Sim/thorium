@@ -16,6 +16,11 @@ export default class TractorBeam extends System {
   get stealthFactor() {
     return this.state ? this.stress / 5 + 0.8 : 0;
   }
+  trainingMode() {
+    this.setTarget(true);
+    this.setTargetLabel("Training Target");
+  }
+
   break(report) {
     this.state = false;
     super.break(report);

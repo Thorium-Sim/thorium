@@ -23,7 +23,25 @@ App.on(
         decoded,
         sender
       );
-
+    if (crew === false) {
+      // Find the station(s) which has long range message sending
+      const sim = App.simulators.find(s => s.id === system.simulatorId);
+      const stations = sim.stations.filter(s =>
+        s.cards.find(c => c.component === "LongRangeComm")
+      );
+      stations.forEach(s => {
+        if (s.name !== sender) {
+          pubsub.publish("notify", {
+            id: uuid.v4(),
+            simulatorId: system.simulatorId,
+            station: s.name,
+            title: `New Long Range Message Queued`,
+            body: `Message composed by ${sender}`,
+            color: "info"
+          });
+        }
+      });
+    }
     pubsub.publish(
       "longRangeCommunicationsUpdate",
       App.systems.filter(s => s.type === "LongRangeComm")

@@ -17,6 +17,7 @@ export default class Simulator {
     this.mission = params.mission || null;
     this.currentTimelineStep = params.currentTimelineStep || 0;
     this.teams = [];
+    this.training = params.training || false;
     this.ship = new Ship(params.ship);
     this.panels = params.panels || [];
     // Set up the teams
@@ -34,6 +35,9 @@ export default class Simulator {
       params.optionalDamageSteps.forEach(s =>
         this.optionalDamageSteps.push(new DamageStep(s))
       );
+  }
+  trainingMode(tf) {
+    this.training = tf;
   }
   rename(name) {
     this.name = name;
