@@ -294,6 +294,7 @@ class ClientView extends Component {
         }
       });
     }
+    if (!nextProps.data.clients) return;
     const client = nextProps.data.clients[0];
     if (
       !client ||
@@ -384,7 +385,7 @@ class ClientView extends Component {
     let simulator;
     let station;
     let client = {};
-    if (!this.props.data.loading && this.props.data.clients[0]) {
+    if (!this.props.data.loading && this.props.data.clients) {
       client = this.props.data.clients[0];
       flight = client.flight;
       simulator = client.simulator;
