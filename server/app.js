@@ -40,6 +40,7 @@ class Events extends EventEmitter {
     this.exocomps = [];
     this.libraryDatabase = [];
     this.softwarePanels = [];
+    this.surveyForms = [];
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;
