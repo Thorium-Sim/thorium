@@ -159,7 +159,7 @@ class Exocomps extends Component {
 
 const QUERY = gql`
   query Exocomps($simulatorId: ID) {
-    systems(simulatorId: $simulatorId) {
+    systems(simulatorId: $simulatorId, extra: true) {
       id
       name
       type
