@@ -11,8 +11,8 @@ App.on(
   ({ id, simulatorId, component, data, secondary = false }) => {
     const viewscreen = App.viewscreens.find(
       v =>
-        v.id === id &&
-        (v.simulatorId === simulatorId ? v.secondary === secondary : true)
+        (v.id === id || v.simulatorId === simulatorId) &&
+        v.secondary === secondary
     );
     if (!viewscreen) return;
     // First de-auto the viewscreen, since we want to force this component;

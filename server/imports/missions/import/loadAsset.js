@@ -63,7 +63,7 @@ export default function loadAsset(
       containerPath: container.folderPath,
       containerId: container.id,
       fullPath: entry.fileName.replace("/assets", ""),
-      url: entry.fileName.replace("mission", "").replace("simulator", ""),
+      url: entry.fileName.replace("mission/", "").replace("simulator/", ""),
       simulatorId: "default"
     };
     App.assetObjects.push(new Classes.AssetObject(params));
