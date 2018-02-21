@@ -57,7 +57,7 @@ const cache = new InMemoryCache({
     return null;
   },
   addTypename: true,
-  cacheResolvers: {},
+  //cacheResolvers: {},
   fragmentMatcher: new IntrospectionFragmentMatcher({
     introspectionQueryResultData: {
       __schema: {

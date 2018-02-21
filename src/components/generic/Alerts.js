@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert } from "reactstrap";
+import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 import { subscribe } from "../views/helpers/pubsub";
@@ -93,7 +93,7 @@ class Alerts extends Component {
       this.onDismiss(id);
     }, timeoutDuration);
   }
-  onDismiss(id) {
+  onDismiss = id => {
     const alerts = this.state.alerts;
     this.setState({
       alerts: alerts.map(a => {
@@ -106,17 +106,15 @@ class Alerts extends Component {
         alerts: this.state.alerts.filter(a => a.id !== id)
       });
     }, 2000);
-  }
+  };
   render() {
     return (
       <div style={holderStyle} className="alertsHolder">
-        {this.state.alerts.map(a => (
-          <AlertItem
-            key={a.id}
-            notify={a}
-            dismiss={this.onDismiss.bind(this)}
-          />
-        ))}
+        {this.state.alerts
+          .filter(a => a.visible)
+          .map(a => (
+            <AlertItem key={a.id} notify={a} dismiss={this.onDismiss} />
+          ))}
       </div>
     );
   }
@@ -125,14 +123,13 @@ class Alerts extends Component {
 const AlertItem = ({ dismiss, notify }) => {
   return (
     <div onClick={dismiss.bind(this, notify.id)}>
-      <Alert
-        color={notify.color}
-        isOpen={notify.visible}
-        toggle={dismiss.bind(this, notify.id)}
-      >
-        <h5 className="alert-heading">{notify.title}</h5>
+      <div className={`alert alert-${notify.color}`}>
+        <h5 className="alert-heading">
+          {notify.title}{" "}
+          <FontAwesome name="times" onClick={() => dismiss(notify.id)} />
+        </h5>
         {notify.body}
-      </Alert>
+      </div>
     </div>
   );
 };

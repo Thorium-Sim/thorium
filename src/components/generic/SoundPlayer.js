@@ -82,9 +82,9 @@ function playSound(opts) {
             sound.source = window.audioContext.createBufferSource();
             sound.source.buffer = downMixBuffer(buffer, channel);
             sound.source.loop = opts.looping || false;
-            sound.source.playbackRate.value = playbackRate;
+            sound.source.playbackRate.setValueAtTime(playbackRate, 0);
             sound.volume = window.audioContext.createGain();
-            sound.volume.gain.value = volume;
+            sound.volume.gain.setValueAtTime(volume, 0);
             sound.source.connect(sound.volume);
 
             sound.source.onended = () => {
