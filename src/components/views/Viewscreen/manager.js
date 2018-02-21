@@ -150,46 +150,26 @@ class ViewscreenCore extends Component {
       previewComponent,
       configData
     } = this.state;
-    const LayoutComponent =
-      // Layouts[this.props.simulator.layout + "Viewscreen"] ||
-      //Layouts[this.props.simulator.layout] ||
-      ({ children }) => <div>{children}</div>;
     if (!viewscreens) return <div>No Viewscreens</div>;
     return (
       <div className="viewscreen-core">
         <div className="q1">
           {selectedViewscreen && (
-            <LayoutComponent
-              clientObj={{}}
-              flight={{}}
+            <Preview
               simulator={this.props.simulator}
-              station={{}}
-              cardName={"Viewscreen"}
-            >
-              <Preview
-                simulator={this.props.simulator}
-                flightId={this.props.flightId}
-                clientObj={{ id: selectedViewscreen }}
-              />
-            </LayoutComponent>
+              flightId={this.props.flightId}
+              clientObj={{ id: selectedViewscreen }}
+            />
           )}
         </div>
         <div className="q3">
           {previewComponent && (
-            <LayoutComponent
-              clientObj={{}}
-              flight={{}}
+            <CardPreview
               simulator={this.props.simulator}
-              station={{}}
-              cardName={"Viewscreen"}
-            >
-              <CardPreview
-                simulator={this.props.simulator}
-                component={previewComponent}
-                flightId={this.props.flightId}
-                viewscreen={{ data: configData }}
-              />
-            </LayoutComponent>
+              component={previewComponent}
+              flightId={this.props.flightId}
+              viewscreen={{ data: configData }}
+            />
           )}
         </div>
         <div className="core" style={{ height: "100%" }}>
