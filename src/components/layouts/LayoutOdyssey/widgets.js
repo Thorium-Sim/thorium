@@ -129,6 +129,7 @@ class WidgetsContainer extends Component {
         <StaticWidget
           icon={"question-circle"}
           name="Training"
+          className="help"
           color="#3363AA"
           onClick={this.startTraining}
         />
@@ -151,14 +152,20 @@ class StaticWidget extends Component {
     });
   };
   render() {
-    const { icon, color, onClick = () => {}, name } = this.props;
+    const {
+      icon,
+      color,
+      onClick = () => {},
+      name,
+      className = ""
+    } = this.props;
     return (
       <div className="widget-item">
         <FontAwesome
           size="2x"
           fixedWidth
           name={icon}
-          className={`widget-icon`}
+          className={`widget-icon ${className}`}
           onClick={onClick}
           id={`widget-${icon}`}
           style={{ color: color || "rgb(200,150,255)" }}

@@ -5,7 +5,7 @@ export default (
 ) => {
   const station = stations.find(s => s.widgets.indexOf("remote") > -1);
   const officer = station ? station.name : "Remote Access";
-  return `Ask the ${officer} officer to send the following remote access code: ${code}.
+  return `Ask the ${officer} officer to use the remote access widget to send the following remote access code: ${code}.
     
 If the code is rejected, have them send a backup remote access code: ${backup}`;
 };

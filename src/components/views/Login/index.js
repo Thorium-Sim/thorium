@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { Button, Row, Col, Input } from "reactstrap";
 import { withApollo } from "react-apollo";
+import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";
 import { Asset } from "../../../helpers/assets";
+import Tour from "reactour";
+
 import "./login.css";
 
 class Login extends Component {
@@ -31,6 +34,47 @@ class Login extends Component {
       });
     }
   }
+  generateTraining = () => {
+    const { simulator: { name: simName }, station: { name } } = this.props;
+    const training = [
+      {
+        selector: ".nothing-at-all",
+        content: `Welcome aboard the ${simName}. You are in charge of the ${name} station. This on-screen training will teach you how use all of the controls on your station. You should go through all of the training at the beginning of your mission, but you can always refer to it later.`
+      },
+      {
+        selector: ".widgets",
+        content: (
+          <p>
+            Here are the widgets. These are controls which you can access on all
+            of the screens on your station. Click on the icon to open the
+            widget. A <FontAwesome name="question-circle-o" /> icon in the top
+            right corner will open training for the widget when you click on it.
+          </p>
+        )
+      },
+      {
+        selector: ".card-switcher",
+        content:
+          "Use this to switch between the different screens on your station."
+      },
+      {
+        selector: ".help",
+        content:
+          "You can use this to access training on the screens that you navigate to. Be sure to do the training on all of the screens so you know how to do your job."
+      },
+      {
+        selector: ".loginBlock",
+        content:
+          "You should now log in to your station. Good luck with training and on your mission!"
+      }
+    ];
+    return training;
+  };
+  training = () => {
+    this.setState({
+      training: true
+    });
+  };
   render() {
     let simulatorName;
     if (this.props.simulator) simulatorName = this.props.simulator.name;
@@ -48,6 +92,9 @@ class Login extends Component {
             )}
           </Asset>
           <h1>{simulatorName}</h1>
+          <Button color="success" onClick={this.training} block>
+            Begin Training
+          </Button>
         </Col>
         <Col sm={{ size: 7, offset: 1 }}>
           <Asset
@@ -85,6 +132,11 @@ class Login extends Component {
             </Button>
           </Col>
         </Col>
+        <Tour
+          steps={this.generateTraining()}
+          isOpen={this.state.training}
+          onRequestClose={() => this.setState({ training: false })}
+        />
       </Row>
     );
   }

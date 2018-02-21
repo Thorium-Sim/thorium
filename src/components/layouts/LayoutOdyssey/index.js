@@ -138,7 +138,7 @@ class LayoutOdyssey extends Component {
               <h1 className="simulator-name">{simulator.name}</h1>
               <h2 className="station-name">{stationName}</h2>
               <h2
-                className="card-name"
+                className="card-name card-switcher"
                 onClick={() => this.setState({ changingCard: !changingCard })}
               >
                 {cardName} <span style={{ float: "right" }}>&#9660;</span>

@@ -189,7 +189,19 @@ export const Widgets = {
     widget: RemoteWidget,
     icon: "rss",
     name: "Remote Access",
-    color: "rgb(100,200,100)"
+    color: "rgb(100,200,100)",
+    training: [
+      {
+        selector: ".remote-access",
+        content:
+          "Remote access codes are used to send commands or information from one system to another. You can send remote access codes to systems on your ship or to systems on antoher ship."
+      },
+      {
+        selector: ".remote-access",
+        content:
+          "To send a remote access code, type the code in the text box and click the send button. The results of the remote access code will soon appear as a notification in the top right corner of your screen."
+      }
+    ]
   },
   messages: {
     widget: Messages,

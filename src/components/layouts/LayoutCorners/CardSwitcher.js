@@ -35,7 +35,7 @@ class CardSwitcher extends Component {
   render() {
     return (
       <div
-        className={`card-icon-container ${
+        className={`card-icon-container card-switcher ${
           this.props.clientObj.offlineState ? "offline" : ""
         } ${this.props.station.login ? "" : this.props.clientObj.loginState}`}
       >

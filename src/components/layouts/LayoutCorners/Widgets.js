@@ -4,6 +4,7 @@ import { Widgets } from "../../views";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
+import Tour from "reactour";
 import "./widgets.css";
 const WIDGET_NOTIFY = gql`
   subscription WidgetNotify($simulatorId: ID!, $station: String) {
@@ -195,6 +196,13 @@ export class Widget extends Component {
               onTouchStart={this.mouseDown}
             >
               {widget.name}
+              {widget.training && (
+                <FontAwesome
+                  className="pull-right"
+                  name="question-circle-o"
+                  onClick={() => this.setState({ training: true })}
+                />
+              )}
             </div>
             <div className="widget-container">
               <Comp
@@ -210,6 +218,11 @@ export class Widget extends Component {
             </Button>
           </div>
         )}
+        <Tour
+          steps={widget.training}
+          isOpen={this.state.training}
+          onRequestClose={() => this.setState({ training: false })}
+        />
       </div>
     );
   }

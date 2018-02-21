@@ -115,7 +115,7 @@ const Settings = props => {
   };
   return (
     <div
-      className={`settingsBall ${
+      className={`settingsBall help ${
         props.station.login ? "" : props.clientObj.loginState
       } ${props.clientObj.offlineState ? "offline" : ""}`}
     >
