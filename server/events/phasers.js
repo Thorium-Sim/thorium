@@ -48,7 +48,7 @@ App.on("firePhaserBeam", ({ id, beamId }) => {
 });
 App.on("stopPhaserBeams", ({ id }) => {
   const sys = App.systems.find(s => s.id === id);
-  sys.stopBeams();
+  sys && sys.stopBeams();
   pubsub.publish(
     "phasersUpdate",
     App.systems.filter(s => s.type === "Phasers")
@@ -76,7 +76,8 @@ App.on("setPhaserBeamHeat", ({ id, beamId, heat }) => {
   );
 });
 App.on("coolPhaserBeam", ({ id, beamId }) => {
-  App.systems.find(s => s.id === id).coolBeam(beamId);
+  const sys = App.systems.find(s => s.id === id);
+  sys && sys.coolBeam(beamId);
   pubsub.publish(
     "phasersUpdate",
     App.systems.filter(s => s.type === "Phasers")
