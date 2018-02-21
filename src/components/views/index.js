@@ -101,6 +101,7 @@ import ExocompsCore from "./Exocomps/core";
 import CodeCyphersCore from "./CodeCyphers/core";
 import InterceptionCore from "./CommInterception/core";
 import ShortRangeSignalsCore from "./CommShortRange/signalsCore";
+import AlertConditionCore from "./AlertCondition/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -272,7 +273,8 @@ export const Cores = {
   CodeCyphersCore,
   InterceptionCore,
   ExocompsCore,
-  ShortRangeSignalsCore
+  ShortRangeSignalsCore,
+  AlertConditionCore
 };
 
 export default Views;

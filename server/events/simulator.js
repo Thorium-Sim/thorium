@@ -41,7 +41,7 @@ App.on("changeSimulatorLayout", ({ simulatorId, layout }) => {
 });
 App.on("changeSimulatorAlertLevel", ({ simulatorId, alertLevel }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
-  if (simulator) {
+  if (simulator && alertLevel !== simulator.alertlevel) {
     simulator.setAlertLevel(alertLevel);
     pubsub.publish("notify", {
       id: uuid.v4(),

@@ -48,6 +48,7 @@ type Simulator {
   requiredDamageSteps: [DamageStep]
   optionalDamageSteps: [DamageStep]
   exocomps: Int
+  training: Boolean
   panels:[ID]
 }
 

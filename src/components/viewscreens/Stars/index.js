@@ -3,11 +3,8 @@ import ReactDOM from "react-dom";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 
-const canvasWidth = window.innerWidth;
-const canvasHeight = window.innerHeight;
 const backgroundColor = { r: 0, g: 0, b: 0, a: 0 };
 
-const center = { x: canvasWidth / 2, y: canvasHeight / 2 };
 const fov = 300;
 const starHolderCount = 1000;
 const starHolder = [];
@@ -30,6 +27,9 @@ class Stars extends Component {
   currentSpeed = 0;
   starSpeed = null;
   setSpeedSubscription = null;
+  canvasWidth = window.innerWidth;
+  canvasHeight = window.innerHeight;
+  center = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
   componentWillReceiveProps(nextProps) {
     if (!this.setSpeedSubscription && !nextProps.data.loading) {
       this.setSpeedSubscription = nextProps.data.subscribeToMore({
@@ -72,10 +72,15 @@ class Stars extends Component {
     }
     if (this.props.data.loading && !nextProps.data.loading) {
       this.canvas = ReactDOM.findDOMNode(this);
-      this.canvas.setAttribute("width", canvasWidth);
-      this.canvas.setAttribute("height", canvasHeight);
+      this.canvas.setAttribute("width", this.canvasWidth);
+      this.canvas.setAttribute("height", this.canvasHeight);
       this.ctx = this.canvas.getContext("2d");
-      this.imageData = this.ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+      this.imageData = this.ctx.getImageData(
+        0,
+        0,
+        this.canvasWidth,
+        this.canvasHeight
+      );
       this.pix = this.imageData.data;
       this.looping = true;
       this.addParticles();
@@ -96,7 +101,7 @@ class Stars extends Component {
     }
   };
   setPixel = (x, y, r, g, b, a) => {
-    const i = (x + y * canvasWidth) * 4;
+    const i = (x + y * this.canvasWidth) * 4;
 
     this.pix[i] = r;
     this.pix[i + 1] = g;
@@ -104,7 +109,7 @@ class Stars extends Component {
     this.pix[i + 3] = a;
   };
   setPixelAdditive = (x, y, r, g, b, a) => {
-    var i = (x + y * canvasWidth) * 4;
+    var i = (x + y * this.canvasWidth) * 4;
 
     this.pix[i] = this.pix[i] + r;
     this.pix[i + 1] = this.pix[i + 1] + g;
@@ -124,7 +129,7 @@ class Stars extends Component {
     let ly = y1;
 
     while (true) {
-      if (lx > 0 && lx < canvasWidth && ly > 0 && ly < canvasHeight) {
+      if (lx > 0 && lx < this.canvasWidth && ly > 0 && ly < this.canvasHeight) {
         this.setPixel(lx, ly, r, g, b, a);
       }
 
@@ -225,14 +230,14 @@ class Stars extends Component {
 
       scale = fov / (fov + star.z);
 
-      star.x2d = star.x * scale + center.x;
-      star.y2d = star.y * scale + center.y;
+      star.x2d = star.x * scale + this.center.x;
+      star.y2d = star.y * scale + this.center.y;
 
       if (
         star.x2d > 0 &&
-        star.x2d < canvasWidth &&
+        star.x2d < this.canvasWidth &&
         star.y2d > 0 &&
-        star.y2d < canvasHeight
+        star.y2d < this.canvasHeight
       ) {
         this.setPixel(
           star.x2d | 0,
@@ -264,14 +269,14 @@ class Stars extends Component {
 
       scale = fov / (fov + star.z);
 
-      star.x2d = star.x * scale + center.x;
-      star.y2d = star.y * scale + center.y;
+      star.x2d = star.x * scale + this.center.x;
+      star.y2d = star.y * scale + this.center.y;
 
       if (
         star.x2d > 0 &&
-        star.x2d < canvasWidth &&
+        star.x2d < this.canvasWidth &&
         star.y2d > 0 &&
-        star.y2d < canvasHeight
+        star.y2d < this.canvasHeight
       ) {
         this.setPixelAdditive(
           star.x2d | 0,
@@ -288,10 +293,15 @@ class Stars extends Component {
 
         scale = fov / (fov + nz);
 
-        var x2d = star.x * scale + center.x;
-        var y2d = star.y * scale + center.y;
+        var x2d = star.x * scale + this.center.x;
+        var y2d = star.y * scale + this.center.y;
 
-        if (x2d > 0 && x2d < canvasWidth && y2d > 0 && y2d < canvasHeight) {
+        if (
+          x2d > 0 &&
+          x2d < this.canvasWidth &&
+          y2d > 0 &&
+          y2d < this.canvasHeight
+        ) {
           this.drawLine(
             star.x2d | 0,
             star.y2d | 0,

@@ -47,6 +47,14 @@ App.on("sendMessage", ({ message }) => {
         });
       });
   } else {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: messageClass.simulatorId,
+      station: messageClass.destination,
+      title: `New Message - ${messageClass.sender}`,
+      body: messageClass.content,
+      color: "info"
+    });
     pubsub.publish("widgetNotify", {
       widget: "messages",
       simulatorId: messageClass.simulatorId,
