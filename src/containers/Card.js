@@ -79,6 +79,7 @@ export default class CardFrame extends Component {
             widgets: [
               "keyboard",
               "composer",
+              "objectives",
               "calculator",
               "remote",
               "messages",
