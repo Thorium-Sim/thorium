@@ -19,7 +19,9 @@ export const aspectList = [
   "officerLogs",
   "exocomps",
   "libraryDatabase",
-  "softwarePanels"
+  "softwarePanels",
+  "surveyForms",
+  "objectives"
 ];
 
 function addAspects(template, sim) {

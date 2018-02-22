@@ -21,3 +21,5 @@ export { default as triggerAction } from "./triggerAction";
 export { default as signalJammerSignals } from "./signalJammerSignals";
 export { default as setTransporterTargets } from "./setTransporterTargets";
 export { default as navCourseResponse } from "./navCourseResponse";
+export { default as addObjective } from "./addObjective";
+export { default as completeObjective } from "./completeObjective";
