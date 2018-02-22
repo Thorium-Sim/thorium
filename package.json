@@ -29,7 +29,7 @@
     "inquirer-file-path": "^1.0.0",
     "inquirer-recursive": "0.0.5",
     "jest-localstorage-mock": "^2.2.0",
-    "lint-staged": "^6.1.1",
+    "lint-staged": "^7.0.0",
     "nodemon": "^1.15.1",
     "pkg": "^4.3.0",
     "plop": "^1.9.1",
