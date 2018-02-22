@@ -54,6 +54,7 @@ import Interception from "./CommInterception";
 import SoftwarePanels from "./SoftwarePanels";
 import DamageStepControl from "./DamageStepControl";
 import Roster from "./Roster";
+import Objectives from "./Objectives";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -102,6 +103,7 @@ import CodeCyphersCore from "./CodeCyphers/core";
 import InterceptionCore from "./CommInterception/core";
 import ShortRangeSignalsCore from "./CommShortRange/signalsCore";
 import AlertConditionCore from "./AlertCondition/core";
+import ObjectivesCore from "./Objectives/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -163,7 +165,8 @@ const Views = {
   Interception,
   SoftwarePanels,
   DamageStepControl,
-  Roster
+  Roster,
+  Objectives
 };
 
 export const Widgets = {
@@ -185,6 +188,12 @@ export const Widgets = {
     icon: "calculator",
     name: "Calculator",
     color: "rgb(255,200,100)"
+  },
+  objectives: {
+    widget: Objectives,
+    icon: "list-ul",
+    name: "Objectives",
+    color: "rgb(200,200,200)"
   },
   remote: {
     widget: RemoteWidget,
@@ -274,7 +283,8 @@ export const Cores = {
   InterceptionCore,
   ExocompsCore,
   ShortRangeSignalsCore,
-  AlertConditionCore
+  AlertConditionCore,
+  ObjectivesCore
 };
 
 export default Views;

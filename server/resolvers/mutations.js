@@ -1,3 +1,4 @@
+import App from "../app";
 import { EngineMutations } from "./engines";
 import { ShieldMutations } from "./shields";
 import { ClientMutations } from "./clients";
@@ -38,6 +39,8 @@ import { ExocompMutations } from "./exocomp";
 import { LibraryMutations } from "./library";
 import { SoftwarePanelsMutations } from "./softwarePanels";
 import { IssueTrackerMutations } from "./issueTracker";
+import { SurveyFormMutations } from "./surveyform.js";
+import { ObjectiveMutations } from "./objective.js";
 
 const mutationMap = Object.assign(
   {
@@ -84,7 +87,9 @@ const mutationMap = Object.assign(
   SignalJammerMutations,
   ExocompMutations,
   LibraryMutations,
-  SoftwarePanelsMutations
+  SoftwarePanelsMutations,
+  SurveyFormMutations,
+  ObjectiveMutations
 );
 
 export default mutationMap;

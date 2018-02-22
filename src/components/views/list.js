@@ -48,7 +48,8 @@ const viewList = [
   "CodeCyphers",
   "Interception",
   "DamageStepControl",
-  "Roster"
+  "Roster",
+  "Objectives"
 ];
 
 export default viewList;
