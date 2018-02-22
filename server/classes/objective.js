@@ -5,6 +5,7 @@ export default class Objective {
     this.id = params.id || uuid.v4();
     this.class = "Objective";
     this.simulatorId = params.simulatorId || null;
+    this.timestamp = params.timestamp || new Date().toString();
     this.station = params.station || null;
     this.title = params.title || "Objective";
     this.description = params.description || "";

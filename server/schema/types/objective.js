@@ -2,6 +2,7 @@ export default `
 type Objective{
   id: ID
   simulatorId: ID
+  timestamp: String
   station: String
   title: String
   description: String

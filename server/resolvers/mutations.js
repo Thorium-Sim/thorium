@@ -1,3 +1,4 @@
+import App from "../app";
 import { EngineMutations } from "./engines";
 import { ShieldMutations } from "./shields";
 import { ClientMutations } from "./clients";

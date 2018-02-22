@@ -1,0 +1,36 @@
+.objective-card,
+.objective-core {
+  display: block;
+  .card {
+    height: 60vh;
+    overflow-y: scroll;
+  }
+  .objective {
+    display: flex;
+    padding: 20px 0;
+    &:not(:last-child) {
+      border-bottom: solid 1px rgba(255, 255, 255, 0.5);
+    }
+  }
+  .completed-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .completed {
+    width: 40px;
+    height: 40px;
+    margin: 0 20px;
+    border: solid 4px white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    div {
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+      background-color: white;
+    }
+  }
+}

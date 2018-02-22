@@ -2,7 +2,8 @@ import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
 
-App.on("addObjective", ({ objective, simulatorId }) => {
+App.on("addObjective", args => {
+  const { objective, simulatorId } = args;
   const obj = new Classes.Objective(
     simulatorId ? Object.assign({}, objective, { simulatorId }) : objective
   );
