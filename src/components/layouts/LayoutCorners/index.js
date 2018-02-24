@@ -21,6 +21,7 @@ class LayoutCorners extends Component {
       clientObj,
       flight
     } = this.props;
+    const { hypercard } = clientObj;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     return (
       <ActionsMixin {...this.props}>
@@ -48,20 +49,24 @@ class LayoutCorners extends Component {
             <h2 className="station-name">{station.name}</h2>
             <h2 className="login-name">{clientObj.loginName}</h2>
           </div>
-          <CardSwitcher
-            className={alertClass}
-            clientObj={this.props.clientObj}
-            cards={station.cards}
-            currentCard={cardName}
-            changeCard={changeCard}
-            {...this.props}
-          />
-          <Settings
-            client={this.props.client}
-            clientObj={this.props.clientObj}
-            station={this.props.station}
-            className={alertClass}
-          />
+          {!hypercard && (
+            <CardSwitcher
+              className={alertClass}
+              clientObj={this.props.clientObj}
+              cards={station.cards}
+              currentCard={cardName}
+              changeCard={changeCard}
+              {...this.props}
+            />
+          )}
+          {!hypercard && (
+            <Settings
+              client={this.props.client}
+              clientObj={this.props.clientObj}
+              station={this.props.station}
+              className={alertClass}
+            />
+          )}
           <Widgets
             clientObj={this.props.clientObj}
             simulator={simulator}

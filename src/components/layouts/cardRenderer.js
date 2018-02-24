@@ -36,6 +36,12 @@ export default function renderCards(props) {
       variables
     });
   };
+  if (clientObj.hypercard && Views[clientObj.hypercard]) {
+    const Comp = Views[clientObj.hypercard];
+    return (
+      <CardHolder component={Comp} {...props} stopTraining={stopTraining} />
+    );
+  }
   return cards
     .concat({ name: "Login", component: "Login", icon: "Login" })
     .concat({

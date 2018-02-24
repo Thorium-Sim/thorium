@@ -79,6 +79,9 @@ export const ClientMutations = {
   },
   clientRemoveCache: (root, args, context) => {
     App.handleEvent(args, "clientRemoveCache", context);
+  },
+  setClientHypercard(root, args, context) {
+    App.handleEvent(args, "setClientHypercard", context);
   }
 };
 

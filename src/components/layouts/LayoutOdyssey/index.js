@@ -28,6 +28,7 @@ class LayoutOdyssey extends Component {
       ]
     } = station;
     const { changingCard } = this.state;
+    const { hypercard } = clientObj;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     return (
       <ActionsMixin {...this.props}>
@@ -53,12 +54,14 @@ class LayoutOdyssey extends Component {
             <div className="frame-text">
               <h1 className="simulator-name">{simulator.name}</h1>
               <h2 className="station-name">{stationName}</h2>
-              <h2
-                className="card-name card-switcher"
-                onClick={() => this.setState({ changingCard: !changingCard })}
-              >
-                {cardName} <span style={{ float: "right" }}>&#9660;</span>
-              </h2>
+              {!hypercard && (
+                <h2
+                  className="card-name card-switcher"
+                  onClick={() => this.setState({ changingCard: !changingCard })}
+                >
+                  {cardName} <span style={{ float: "right" }}>&#9660;</span>
+                </h2>
+              )}
             </div>
             <CardFrame simulator={simulator} />
             <Widgets

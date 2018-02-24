@@ -20,6 +20,7 @@ class LayoutGlass extends Component {
       clientObj,
       flight
     } = this.props;
+    const { hypercard } = clientObj;
     const { name: stationName } = station;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     return (
@@ -32,14 +33,16 @@ class LayoutGlass extends Component {
             <h2 className="station-name">{stationName}</h2>
             <h2 className="login-name">{clientObj.loginName}</h2>
           </div>
-          <CardSwitcher
-            className={alertClass}
-            clientObj={this.props.clientObj}
-            cards={station.cards}
-            currentCard={cardName}
-            changeCard={changeCard}
-            {...this.props}
-          />
+          {!hypercard && (
+            <CardSwitcher
+              className={alertClass}
+              clientObj={this.props.clientObj}
+              cards={station.cards}
+              currentCard={cardName}
+              changeCard={changeCard}
+              {...this.props}
+            />
+          )}
           <CardFrame simulator={simulator} />
           <Widgets
             clientObj={clientObj}

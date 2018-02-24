@@ -236,6 +236,7 @@ const CLIENT_SUB = gql`
       loginName
       loginState
       offlineState
+      hypercard
       training
       caches
     }
@@ -441,6 +442,7 @@ const ClientQuery = gql`
       loginName
       loginState
       offlineState
+      hypercard
       training
       caches
     }
