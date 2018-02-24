@@ -25,7 +25,18 @@ App.on("internalCommConnectOutgoing", ({ id }) => {
   );
 });
 App.on("internalCommConnectIncoming", ({ id }) => {
-  App.systems.find(s => s.id === id).connectIncoming();
+  const sys = App.systems.find(s => s.id === id);
+  sys.connectIncoming();
+  App.handleEvent(
+    {
+      simulatorId: sys.simulatorId,
+      title: `Internal Comm Connected`,
+      component: "InternalCommCore",
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "internalCommUpdate",
     App.systems.filter(s => s.type === "InternalComm")
@@ -39,21 +50,44 @@ App.on("internalCommCancelIncoming", ({ id }) => {
   );
 });
 App.on("internalCommCancelOutgoing", ({ id }) => {
-  App.systems.find(s => s.id === id).cancelOutgoingCall();
+  const sys = App.systems.find(s => s.id === id);
+  sys.cancelOutgoingCall();
+  App.handleEvent(
+    {
+      simulatorId: sys.simulatorId,
+      title: `Internal Comm Cancelled`,
+      component: "InternalCommCore",
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "internalCommUpdate",
     App.systems.filter(s => s.type === "InternalComm")
   );
 });
 App.on("internalCommCallIncoming", ({ id, incoming }) => {
-  App.systems.find(s => s.id === id).callIncoming(incoming);
+  const sys = App.systems.find(s => s.id === id);
+  sys.callIncoming(incoming);
   pubsub.publish(
     "internalCommUpdate",
     App.systems.filter(s => s.type === "InternalComm")
   );
 });
 App.on("internalCommCallOutgoing", ({ id, outgoing }) => {
-  App.systems.find(s => s.id === id).callOutgoing(outgoing);
+  const sys = App.systems.find(s => s.id === id);
+  sys.callOutgoing(outgoing);
+  App.handleEvent(
+    {
+      simulatorId: sys.simulatorId,
+      title: `New Internal Comm`,
+      component: "InternalCommCore",
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "internalCommUpdate",
     App.systems.filter(s => s.type === "InternalComm")

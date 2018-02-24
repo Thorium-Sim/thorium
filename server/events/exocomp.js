@@ -26,11 +26,31 @@ App.on("setSimulatorExocomps", ({ simulatorId, count }) => {
 App.on("deployExocomp", ({ exocomp }) => {
   const ex = App.exocomps.find(e => e.id === exocomp.id);
   ex.deploy(exocomp);
+  App.handleEvent(
+    {
+      simulatorId: ex.simulatorId,
+      title: `Exocomp Deployed`,
+      component: "ExocompsCore",
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish("exocompsUpdate", App.exocomps);
 });
 App.on("recallExocomp", ({ exocomp }) => {
   const ex = App.exocomps.find(e => e.id === exocomp);
   ex.recall();
+  App.handleEvent(
+    {
+      simulatorId: ex.simulatorId,
+      title: `Exocomp Recalled`,
+      component: "ExocompsCore",
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish("exocompsUpdate", App.exocomps);
 });
 App.on("updateExocompDifficulty", ({ exocomp, difficulty }) => {

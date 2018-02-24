@@ -38,6 +38,16 @@ App.on("reactorChangeOutput", ({ id, output }) => {
 App.on("reactorChangeEfficiency", ({ id, efficiency }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.changeEfficiency(efficiency);
+  App.handleEvent(
+    {
+      simulatorId: system.simulatorId,
+      title: `Reactor Efficiency Changed`,
+      component: "ReactorControlCore",
+      body: efficiency,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "reactorUpdate",
     App.systems.filter(s => s.type === "Reactor")

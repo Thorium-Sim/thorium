@@ -39,6 +39,16 @@ App.on("speedChange", param => {
       body: ``,
       color: "info"
     });
+    App.handleEvent(
+      {
+        simulatorId: system.simulatorId,
+        title: `Speed Change ${speed ? speed.text : "Full Stop"}`,
+        component: "EngineControlCore",
+        body: null,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
   }
   pubsub.publish("engineUpdate", system);
   // Now stop the other engines

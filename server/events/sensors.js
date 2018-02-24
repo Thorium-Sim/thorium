@@ -232,6 +232,16 @@ App.on("setSensorsHistory", ({ id, history }) => {
 
 App.on("newSensorScan", ({ id, scan }) => {
   const sensors = App.systems.find(sys => sys.id === id);
+  App.handleEvent(
+    {
+      simulatorId: sensors.simulatorId,
+      title: `New Sensor Scan`,
+      component: "SensorsCore",
+      body: scan.request,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   sensors.newScan(scan);
   pubsub.publish(
     "sensorsUpdate",
@@ -249,6 +259,16 @@ App.on("updateSensorScan", ({ id, scan }) => {
 App.on("cancelSensorScan", ({ id, scan }) => {
   const sensors = App.systems.find(sys => sys.id === id);
   sensors.cancelScan(scan);
+  App.handleEvent(
+    {
+      simulatorId: sensors.simulatorId,
+      title: `Sensor Scan Cancelled`,
+      component: "SensorsCore",
+      body: "",
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish(
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")

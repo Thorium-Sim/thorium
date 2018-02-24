@@ -47,6 +47,16 @@ App.on("updateProbeEquipment", ({ id, probeEquipment }) => {
 App.on("probeQuery", ({ id, probeId, query }) => {
   const sys = App.systems.find(s => s.id === id);
   sys.probeQuery(probeId, query);
+  App.handleEvent(
+    {
+      simulatorId: sys.simulatorId,
+      title: `Probe Query`,
+      component: "ProbeControlCore",
+      body: query,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
   pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
 });
 App.on("probeQueryResponse", ({ id, probeId, response }) => {
