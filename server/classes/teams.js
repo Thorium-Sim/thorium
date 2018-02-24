@@ -1,7 +1,7 @@
 import uuid from "uuid";
 
 export default class Team {
-  constructor(params) {
+  constructor(params = {}) {
     this.id = params.id || uuid.v4();
     this.class = "Team";
     this.simulatorId = params.simulatorId || null;

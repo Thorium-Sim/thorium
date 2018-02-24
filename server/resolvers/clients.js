@@ -79,6 +79,9 @@ export const ClientMutations = {
   },
   clientRemoveCache: (root, args, context) => {
     App.handleEvent(args, "clientRemoveCache", context);
+  },
+  setClientHypercard(root, args, context) {
+    App.handleEvent(args, "setClientHypercard", context);
   }
 };
 
@@ -110,7 +113,6 @@ export const ClientSubscriptions = {
       } else {
         output = payload.filter(c => c.connected).length > 0;
       }
-      console.log(client, flight, output);
       return output;
     },
     subscribe: withFilter(
@@ -124,7 +126,6 @@ export const ClientSubscriptions = {
         } else {
           output = rootValue.filter(c => c.connected).length > 0;
         }
-        console.log(client, flight, output);
         return output;
       }
     )

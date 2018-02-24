@@ -41,6 +41,7 @@ class Sensors extends Component {
         }
       });
     }
+    if (!nextProps.data.sensors) return;
     const nextSensors = nextProps.data.sensors[0];
     if (!nextProps.data.loading) {
       if (this.props.data.loading) {

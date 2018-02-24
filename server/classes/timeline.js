@@ -130,7 +130,7 @@ export class TimelineStep {
 }
 
 export class TimelineItem {
-  constructor(timelineItemId, params) {
+  constructor(timelineItemId, params = {}) {
     this.id = timelineItemId || uuid.v4();
     this.name = params.name || "Item";
     this.type = params.type || null;

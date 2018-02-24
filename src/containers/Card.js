@@ -40,6 +40,7 @@ export default class CardFrame extends Component {
       nextProps.client.loginState !== this.props.client.loginState ||
       nextProps.client.offlineState !== this.props.client.offlineState ||
       nextProps.client.training !== this.props.client.training ||
+      nextProps.client.hypercard !== this.props.client.hypercard ||
       nextProps.flight.id !== this.props.flight.id ||
       nextProps.simulator.id !== this.props.simulator.id ||
       nextProps.simulator.name !== this.props.simulator.name ||
@@ -72,7 +73,7 @@ export default class CardFrame extends Component {
             id: "test",
             name: "Test",
             alertLevel: "5",
-            layout: "LayoutCorners"
+            layout: "LayoutGlass"
           },
           station: {
             name: "Test",

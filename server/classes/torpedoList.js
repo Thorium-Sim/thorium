@@ -84,7 +84,7 @@ export default class Torpedo extends System {
 }
 
 class Warhead {
-  constructor(params) {
+  constructor(params = {}) {
     this.id = params.id || uuid.v4();
     this.type = params.type || "Photon";
     this.probe = params.probe || null;

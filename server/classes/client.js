@@ -14,6 +14,7 @@ export default class Client {
     this.ping = null;
     this.connected = params.connected || false;
     this.offlineState = params.offlineState || null;
+    this.hypercard = params.hypercard || null;
     this.training = params.training || false;
     this.caches = params.caches || [];
   }
@@ -52,6 +53,13 @@ export default class Client {
   }
   setTraining(training) {
     this.training = training;
+  }
+  setHypercard(card) {
+    if (!card) {
+      this.hypercard = null;
+      return;
+    }
+    this.hypercard = card;
   }
   setOfflineState(state) {
     // Allow one of null, 'blackout', 'offline', 'power', 'lockdown', and 'maintenance'

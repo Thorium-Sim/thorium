@@ -5,7 +5,12 @@
 #layout-odyssey {
   background-color: black;
   color: white;
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: white;
   }
   font-family: "Bank Gothic";
@@ -45,7 +50,7 @@
   }
   .cardContainer {
     position: absolute;
-    width: 92%;
+    width: 92% !important;
     left: 4%;
     height: 77%;
     top: 12%;
@@ -156,23 +161,23 @@
     @include gradient-bg($background);
     border-color: $border;
     @include box-shadow($btn-box-shadow);
-  
+
     @include hover {
       color: color-yiq($hover-background);
       @include gradient-bg($hover-background);
       border-color: $hover-border;
     }
-  
+
     &:focus,
     &.focus {
       // Avoid using mixin so we can pass custom focus shadow properly
       @if $enable-shadows {
-        box-shadow: $btn-box-shadow, 0 0 0 $btn-focus-width rgba($border, .5);
+        box-shadow: $btn-box-shadow, 0 0 0 $btn-focus-width rgba($border, 0.5);
       } @else {
-        box-shadow: 0 0 0 $btn-focus-width rgba($border, .5);
+        box-shadow: 0 0 0 $btn-focus-width rgba($border, 0.5);
       }
     }
-  
+
     // Disabled comes first so active can properly restyle
     &.disabled,
     &:disabled {
@@ -180,20 +185,21 @@
       background-color: $background;
       border-color: $border;
     }
-  
+
     &:not(:disabled):not(.disabled):active,
     &:not(:disabled):not(.disabled).active,
     .show > &.dropdown-toggle {
       color: color-yiq($active-background);
       background-color: $active-background;
       border-color: $active-border;
-  
+
       &:focus {
         // Avoid using mixin so we can pass custom focus shadow properly
         @if $enable-shadows {
-          box-shadow: $btn-active-box-shadow, 0 0 0 $btn-focus-width rgba($border, .5);
+          box-shadow: $btn-active-box-shadow,
+            0 0 0 $btn-focus-width rgba($border, 0.5);
         } @else {
-          box-shadow: 0 0 0 $btn-focus-width rgba($border, .5);
+          box-shadow: 0 0 0 $btn-focus-width rgba($border, 0.5);
         }
       }
     }

@@ -36,7 +36,6 @@ class MessageComposer extends Component {
     this.props.toggle();
   }
   render() {
-    console.log(this.props);
     return (
       <Container fluid>
         <Row className="remote-access">

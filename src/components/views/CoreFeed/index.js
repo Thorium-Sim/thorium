@@ -86,7 +86,7 @@ class CoreFeed extends Component {
         {coreFeed.length ? (
           coreFeed
             .filter(c => !c.ignored)
-            .filter((c, i) => (i < 10 ? true : false))
+            .filter((c, i) => (i < 50 ? true : false))
             .map(c => {
               if (components[c.id] && c.component && Cores[c.component]) {
                 const CoreComponent = Cores[c.component];
@@ -94,7 +94,12 @@ class CoreFeed extends Component {
                   <div key={c.id} className="core-feed-component">
                     {c.component.replace("Core", "")}
                     <CoreComponent {...this.props} />
-                    <Button color="info" block size="sm">
+                    <Button
+                      color="info"
+                      block
+                      size="sm"
+                      onClick={() => this.ignoreCoreFeed(c.id)}
+                    >
                       Ignore
                     </Button>
                   </div>

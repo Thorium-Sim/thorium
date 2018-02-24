@@ -11,5 +11,6 @@ type Client {
   offlineState: String
   training: Boolean
   caches: [String]
+  hypercard: String
 }
 `;

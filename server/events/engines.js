@@ -43,7 +43,7 @@ App.on("speedChange", param => {
   pubsub.publish("engineUpdate", system);
   // Now stop the other engines
   // If speed is -1 (full stop), stop them all
-  App.systems.forEach((engine, index) => {
+  App.systems.forEach((engine = {}, index) => {
     if (
       engine.simulatorId === App.systems[engineIndex].simulatorId &&
       engine.type === "Engine"

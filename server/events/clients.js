@@ -113,3 +113,13 @@ App.on("clientRemoveCache", ({ client, cacheItem }) => {
   clientObj.removeCache(cacheItem);
   pubsub.publish("clientChanged", App.clients);
 });
+
+App.on("setClientHypercard", ({ clientId, simulatorId, component }) => {
+  const clients = App.clients.filter(
+    c => c.id === clientId || c.simulatorId === simulatorId
+  );
+  clients.forEach(c => {
+    c.setHypercard(component);
+  });
+  pubsub.publish("clientChanged", App.clients);
+});

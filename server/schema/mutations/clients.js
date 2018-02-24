@@ -15,4 +15,5 @@ export default `
   clientSetTraining(client: ID!, training: Boolean!):String
   clientAddCache(client: ID, simulatorId: ID, viewscreen: Boolean cacheItem: String!):String
   clientRemoveCache(client: ID!, cacheItem: String!):String
+  setClientHypercard(clientId:ID, simulatorId: ID, component:String):String
 `;

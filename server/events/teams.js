@@ -3,7 +3,7 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import Team from "../classes/teams";
 import uuid from "uuid";
 
-App.on("createTeam", ({ team }) => {
+App.on("createTeam", ({ team = {} }) => {
   App.teams.push(new Team(team));
   pubsub.publish("notify", {
     id: uuid.v4(),
