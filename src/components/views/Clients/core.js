@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-
+import { Input } from "reactstrap";
+import { titleCase } from "change-case";
+import Views from "../index";
 import "./style.css";
 
 const TEMPLATE_SUB = gql`
@@ -11,6 +13,7 @@ const TEMPLATE_SUB = gql`
       station {
         name
       }
+      hypercard
       loginName
     }
   }
@@ -36,19 +39,72 @@ class Template extends Component {
   componentWillUnmount() {
     this.internalSub && this.internalSub();
   }
+  setHypercard = (clientId, component, simulatorId) => {
+    const mutation = gql`
+      mutation SetClientHypercard(
+        $clientId: ID
+        $simulatorId: ID
+        $component: String
+      ) {
+        setClientHypercard(
+          clientId: $clientId
+          component: $component
+          simulatorId: $simulatorId
+        )
+      }
+    `;
+    const variables = {
+      clientId,
+      component: component === "null" ? null : component,
+      simulatorId
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading) return null;
     const { clients } = this.props.data;
     if (!clients) return null;
     return (
       <div className="clients-card">
-        <ul>
-          {clients.map(c => (
-            <li key={c.id}>
-              {`${c.station ? c.station.name : ""} - ${c.loginName || ""}`}
-            </li>
-          ))}
-        </ul>
+        <Input
+          className="hypercard-picker"
+          value={"nothing"}
+          onChange={e =>
+            this.setHypercard(null, e.target.value, this.props.simulator.id)
+          }
+          type="select"
+        >
+          <option value="nothing" disabled>
+            Change all clients
+          </option>
+          <option value="null">No Hypercard</option>
+          {Object.keys(Views)
+            .concat()
+            .sort()
+            .map(v => <option value={v}>{titleCase(v)}</option>)}
+        </Input>
+        {clients.map(c => (
+          <div key={c.id}>
+            <span>{`${c.id} - ${
+              c.station ? c.station.name : ""
+            } - ${c.loginName || ""}`}</span>
+            <Input
+              className="hypercard-picker"
+              value={c.hypercard === null ? "null" : c.hypercard}
+              onChange={e => this.setHypercard(c.id, e.target.value)}
+              type="select"
+            >
+              <option value="null">No Hypercard</option>
+              {Object.keys(Views)
+                .concat()
+                .sort()
+                .map(v => <option value={v}>{titleCase(v)}</option>)}
+            </Input>
+          </div>
+        ))}
       </div>
     );
   }
@@ -61,6 +117,7 @@ const TEMPLATE_QUERY = gql`
       station {
         name
       }
+      hypercard
       loginName
     }
   }

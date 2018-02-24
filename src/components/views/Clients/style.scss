@@ -1,5 +1,13 @@
 .clients-card {
-  ul {
-    list-style: none;
+  div {
+    display: flex;
+  }
+  span {
+    flex: 1;
+  }
+  select.form-control.hypercard-picker {
+    height: 14px;
+    font-size: 14px;
+    flex: 1;
   }
 }
