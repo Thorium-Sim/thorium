@@ -1,3 +1,3 @@
 export default `
-surveyformUpdate(simulatorId: ID):[SurveyForm]
+surveyformUpdate(simulatorId: ID, active: Boolean):[SurveyForm]
 `;

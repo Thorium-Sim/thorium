@@ -55,6 +55,7 @@ import SoftwarePanels from "./SoftwarePanels";
 import DamageStepControl from "./DamageStepControl";
 import Roster from "./Roster";
 import Objectives from "./Objectives";
+import SurveyForm from "./SurveyForm";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -104,6 +105,7 @@ import InterceptionCore from "./CommInterception/core";
 import ShortRangeSignalsCore from "./CommShortRange/signalsCore";
 import AlertConditionCore from "./AlertCondition/core";
 import ObjectivesCore from "./Objectives/core";
+import SurveyFormCore from "./SurveyForm/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -166,7 +168,8 @@ const Views = {
   SoftwarePanels,
   DamageStepControl,
   Roster,
-  Objectives
+  Objectives,
+  SurveyForm
 };
 
 export const Widgets = {
@@ -284,7 +287,8 @@ export const Cores = {
   ExocompsCore,
   ShortRangeSignalsCore,
   AlertConditionCore,
-  ObjectivesCore
+  ObjectivesCore,
+  SurveyFormCore
 };
 
 export default Views;
