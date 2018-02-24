@@ -61,6 +61,10 @@ const creditList = [
     content: "Alex Anderson 🚀"
   },
   {
+    header: "Inspiration",
+    content: "Victor Williamson 🎓"
+  },
+  {
     header: "Conceptual Design",
     content: "Matt Ricks 🤔"
   },
@@ -79,6 +83,53 @@ const creditList = [
   {
     header: "Glass Frame Design",
     content: "Nathan King 👑"
+  },
+  {
+    header: "Testing & Debugging",
+    content: "Isaac Ostler 🚑"
+  },
+  {
+    header: "Donors",
+    content: (
+      <ul style={{ listStyle: "none" }}>
+        <li>
+          Thomas Delclite{" "}
+          <span role="img" aria-label="donor-tag">
+            🇧🇪
+          </span>
+        </li>
+        <li>
+          Chuck Smith{" "}
+          <span role="img" aria-label="donor-tag">
+            🇺🇸
+          </span>
+        </li>
+        <li>
+          The Lion's Gate Center{" "}
+          <span role="img" aria-label="donor-tag">
+            🦁
+          </span>
+        </li>
+        <li>
+          Brent Anderson{" "}
+          <span role="img" aria-label="donor-tag">
+            🇺🇸
+          </span>
+        </li>
+        <li>
+          Maeson Busk{" "}
+          <span role="img" aria-label="donor-tag">
+            🇺🇸
+          </span>
+        </li>
+        <li>
+          The Christa McAuliffe Space Education Center{" "}
+          <span role="img" aria-label="donor-tag">
+            🛰
+          </span>
+        </li>
+      </ul>
+    )
   },
   {
     header: "Docking Images (Endless Sky)",
