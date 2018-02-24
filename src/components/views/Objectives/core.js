@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Input, FormGroup } from "reactstrap";
+import { Container, Row, Col, Input, FormGroup, Button } from "reactstrap";
 import "./style.css";
 
 const OBJECTIVE_SUB = gql`
@@ -68,6 +68,37 @@ class Objectives extends Component {
       });
     }
   }
+  addObjective = () => {
+    const title = window.prompt("What is the title of the objective?");
+    if (!title) return;
+    const description = window.prompt(
+      "What is the description of the objective? (May be blank)"
+    );
+    const mutation = gql`
+      mutation CreateObjective(
+        $simulatorId: ID!
+        $title: String!
+        $description: String
+      ) {
+        addObjective(
+          objective: {
+            title: $title
+            description: $description
+            simulatorId: $simulatorId
+          }
+        )
+      }
+    `;
+    const variables = {
+      simulatorId: this.props.simulator.id,
+      title,
+      description
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   componentWillUnmount() {
     this.subscription && this.subscription();
   }
@@ -78,6 +109,9 @@ class Objectives extends Component {
       <Container className="objective-core">
         <Row>
           <Col sm={12}>
+            <Button color="success" size="sm" block onClick={this.addObjective}>
+              Add New Objective
+            </Button>
             {objective
               .concat()
               .reverse()
