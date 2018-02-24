@@ -22,6 +22,7 @@ function degreeToRadian(deg) {
 
 export default class SensorContact {
   constructor(params) {
+    if (!params) return;
     this.id = params.id || uuid.v4();
     this.sensorId = params.sensorId || null;
     this.class = "SensorContact";

@@ -48,7 +48,7 @@ class TacticalItem {
 }
 
 class TacticalLayer {
-  constructor(params) {
+  constructor(params = {}) {
     this.id = params.dup ? uuid.v4() : params.id || uuid.v4();
     this.name = params.name || "Layer";
     this.type = params.type || "grid";
