@@ -39,7 +39,7 @@ class Login extends Component {
     const training = [
       {
         selector: ".nothing-at-all",
-        content: `Welcome aboard the ${simName}. You are in charge of the ${name} station. This on-screen training will teach you how use all of the controls on your station. You should go through all of the training at the beginning of your mission, but you can always refer to it later.`
+        content: `Welcome aboard the ${simName}. You are in charge of the ${name} station. This on-screen training will teach you how to use all of the controls on your station. You should go through all of the training at the beginning of your mission, but you can always refer to it later.`
       },
       {
         selector: ".widgets",

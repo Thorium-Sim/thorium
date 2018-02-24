@@ -110,7 +110,6 @@ export const ClientSubscriptions = {
       } else {
         output = payload.filter(c => c.connected).length > 0;
       }
-      console.log(client, flight, output);
       return output;
     },
     subscribe: withFilter(
@@ -124,7 +123,6 @@ export const ClientSubscriptions = {
         } else {
           output = rootValue.filter(c => c.connected).length > 0;
         }
-        console.log(client, flight, output);
         return output;
       }
     )

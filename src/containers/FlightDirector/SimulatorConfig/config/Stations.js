@@ -385,7 +385,6 @@ const ConfigStationSet = props => {
       variables
     });
   };
-  console.log(simulator.panels);
   return (
     <div>
       <h5>Stations</h5>

@@ -17,7 +17,6 @@ function videoColor(al) {
 export default ({ simulator, viewscreen }) => {
   const al = simulator.alertlevel;
   const video = videoColor(al);
-  console.log(require(`./${video}.jpg`));
   return (
     <div>
       <link rel="preload" href={require("./blue.mp4")} as="video" />

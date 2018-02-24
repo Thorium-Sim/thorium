@@ -166,6 +166,7 @@ class Operations extends React.Component {
         {this.props.operations.map(operation => {
           return (
             <Button
+              key={operation}
               button={operation}
               _handleOper={this._handleOper.bind(this)}
             />
@@ -199,6 +200,7 @@ class Functions extends React.Component {
         {this.props.functions.map(funct => {
           return (
             <Button
+              key={funct}
               button={funct}
               _handleFunct={this._handleFunct.bind(this)}
             />
@@ -219,7 +221,11 @@ class Numbers extends React.Component {
       <div className="calc-numbers">
         {this.props.numbers.map(number => {
           return (
-            <Button button={number} _handleNum={this._handleNum.bind(this)} />
+            <Button
+              key={number}
+              button={number}
+              _handleNum={this._handleNum.bind(this)}
+            />
           );
         })}
       </div>
