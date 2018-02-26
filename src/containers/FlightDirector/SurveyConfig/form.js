@@ -25,7 +25,9 @@ class Form extends Component {
         type,
         title: `Form ${type}`,
         description: "",
-        options: [{ id: uuid.v4(), label: "Option 1" }]
+        options: [{ id: uuid.v4(), label: "Option 1" }],
+        min: 1,
+        max: 5
       }),
       edited: true
     });

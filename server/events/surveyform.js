@@ -21,11 +21,13 @@ App.on("updateSurveyForm", ({ id, form }) => {
 
 App.on("triggerSurvey", ({ simulatorId, id }) => {
   // Duplicate the form with the simualtor id
-  const form = Object.assign({}, App.surveyForms.find(s => s.id === id), {
-    simulatorId,
-    id: uuid.v4(),
-    active: true
-  });
+  const form = new Classes.SurveyForm(
+    Object.assign({}, App.surveyForms.find(s => s.id === id), {
+      simulatorId,
+      id: uuid.v4(),
+      active: true
+    })
+  );
   App.surveyForms.push(form);
   pubsub.publish("surveyformUpdate", App.surveyForms);
 
@@ -38,6 +40,7 @@ App.on("triggerSurvey", ({ simulatorId, id }) => {
 
 App.on("surveyFormResponse", ({ id, response }) => {
   const form = App.surveyForms.find(s => s.id === id);
+
   form.addResults(response);
   pubsub.publish("surveyformUpdate", App.surveyForms);
 });

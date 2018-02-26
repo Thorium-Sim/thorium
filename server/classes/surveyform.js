@@ -8,7 +8,7 @@ export default class SurveyForm {
     this.title = params.title || "Survey Form";
     this.form = params.form || [];
     this.results = params.results || [];
-    this.active = false;
+    this.active = params.active || false;
   }
   updateForm(form) {
     if (Array.isArray(form)) {

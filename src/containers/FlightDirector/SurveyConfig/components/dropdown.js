@@ -9,7 +9,8 @@ const Dropdown = ({
   required,
   disabled,
   updateForm,
-  id
+  id,
+  survey
 }) => {
   const updateLabel = (oId, uvalue) => {
     updateForm(
@@ -40,7 +41,7 @@ const Dropdown = ({
     <div>
       <Input
         type="select"
-        value={""}
+        value={value}
         onChange={e => updateValue(e.target.value)}
         required={required}
         disabled={disabled}
@@ -54,27 +55,30 @@ const Dropdown = ({
           </option>
         ))}
       </Input>
-      {options.map(o => (
-        <span key={`span-${o.id}`}>
-          <Input
-            type="text"
-            value={o.label}
-            onChange={e => updateLabel(o.id, e.target.value)}
-          />
-          <FontAwesome
-            name="ban"
-            className="text-danger"
-            onClick={() => removeOption(o.id)}
-          />
-        </span>
-      ))}
-      <div
-        class="text-primary"
-        style={{ cursor: "pointer" }}
-        onClick={addOption}
-      >
-        <FontAwesome name="plus" /> Add an option
-      </div>
+      {!survey &&
+        options.map(o => (
+          <span key={`span-${o.id}`}>
+            <Input
+              type="text"
+              value={o.label}
+              onChange={e => updateLabel(o.id, e.target.value)}
+            />
+            <FontAwesome
+              name="ban"
+              className="text-danger"
+              onClick={() => removeOption(o.id)}
+            />
+          </span>
+        ))}
+      {!survey && (
+        <div
+          class="text-primary"
+          style={{ cursor: "pointer" }}
+          onClick={addOption}
+        >
+          <FontAwesome name="plus" /> Add an option
+        </div>
+      )}
     </div>
   );
 };

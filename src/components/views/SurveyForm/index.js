@@ -83,6 +83,8 @@ class SurveyForm extends Component {
     return (
       <Form
         form={surveyform.find(s => s.id === selectedForm) || surveyform[0]}
+        clientId={this.props.clientObj.id}
+        client={this.props.client}
       />
     );
   };

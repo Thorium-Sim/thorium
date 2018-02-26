@@ -8,7 +8,8 @@ const Checkbox = ({
   options = [],
   disabled,
   updateForm,
-  id
+  id,
+  survey
 }) => {
   const updateLabel = (oId, uvalue) => {
     updateForm(
@@ -53,28 +54,34 @@ const Checkbox = ({
                 )
               }
             />
-            <span>
-              <Input
-                type="text"
-                value={o.label}
-                onChange={e => updateLabel(o.id, e.target.value)}
-              />
-              <FontAwesome
-                name="ban"
-                className="text-danger"
-                onClick={() => removeOption(o.id)}
-              />
-            </span>
+            {survey ? (
+              o.label
+            ) : (
+              <span>
+                <Input
+                  type="text"
+                  value={o.label}
+                  onChange={e => updateLabel(o.id, e.target.value)}
+                />
+                <FontAwesome
+                  name="ban"
+                  className="text-danger"
+                  onClick={() => removeOption(o.id)}
+                />
+              </span>
+            )}
           </Label>
         </FormGroup>
       ))}
-      <div
-        className="text-primary"
-        style={{ cursor: "pointer" }}
-        onClick={addOption}
-      >
-        <FontAwesome name="plus" /> Add an option
-      </div>
+      {!survey && (
+        <div
+          className="text-primary"
+          style={{ cursor: "pointer" }}
+          onClick={addOption}
+        >
+          <FontAwesome name="plus" /> Add an option
+        </div>
+      )}
     </div>
   );
 };

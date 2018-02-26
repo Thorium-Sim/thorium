@@ -8,7 +8,8 @@ const Multi = ({
   options = [],
   disabled,
   id,
-  updateForm
+  updateForm,
+  survey
 }) => {
   const updateLabel = (oId, uvalue) => {
     updateForm(
@@ -47,28 +48,34 @@ const Multi = ({
               onChange={() => updateValue(o.id)}
               disabled={disabled}
             />{" "}
-            <span>
-              <Input
-                type="text"
-                value={o.label}
-                onChange={e => updateLabel(o.id, e.target.value)}
-              />
-              <FontAwesome
-                name="ban"
-                className="text-danger"
-                onClick={() => removeOption(o.id)}
-              />
-            </span>
+            {survey ? (
+              o.label
+            ) : (
+              <span>
+                <Input
+                  type="text"
+                  value={o.label}
+                  onChange={e => updateLabel(o.id, e.target.value)}
+                />
+                <FontAwesome
+                  name="ban"
+                  className="text-danger"
+                  onClick={() => removeOption(o.id)}
+                />
+              </span>
+            )}
           </Label>
         </FormGroup>
       ))}
-      <div
-        class="text-primary"
-        style={{ cursor: "pointer" }}
-        onClick={addOption}
-      >
-        <FontAwesome name="plus" /> Add an option
-      </div>
+      {!survey && (
+        <div
+          class="text-primary"
+          style={{ cursor: "pointer" }}
+          onClick={addOption}
+        >
+          <FontAwesome name="plus" /> Add an option
+        </div>
+      )}
     </div>
   );
 };
