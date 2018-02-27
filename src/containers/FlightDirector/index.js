@@ -7,3 +7,4 @@ export { default as Welcome } from "./Welcome";
 export { default as ClientsLobby } from "./ClientsLobby";
 export { default as SetConfig } from "./SetConfig";
 export { default as SoftwarePanels } from "./SoftwarePanels";
+export { default as SurveyForms } from "./SurveyConfig";

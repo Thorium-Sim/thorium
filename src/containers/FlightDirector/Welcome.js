@@ -60,7 +60,7 @@ class Welcome extends Component {
             this.setState({ outdated: res[0].name });
           }
         })
-        .catch(err => {
+        .catch(() => {
           //Oh well.
         });
     }
@@ -193,6 +193,11 @@ class Welcome extends Component {
           <Col>
             <Button color="warning" block tag={Link} to="/softwarePanels">
               Software Panel Config
+            </Button>
+          </Col>
+          <Col>
+            <Button color="warning" block tag={Link} to="/surveyForms">
+              Survey Form Config
             </Button>
           </Col>
         </Row>
