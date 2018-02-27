@@ -88,8 +88,9 @@ class SetsPicker extends Component {
       this.props.data.loading ||
       !this.props.data.flights ||
       !this.props.data.sets
-    )
+    ) {
       return null;
+    }
     const { flights, sets } = this.props.data;
     const flight = flights && flights[0];
     return (
