@@ -4,6 +4,7 @@ import { withApollo, graphql } from "react-apollo";
 import gql from "graphql-tag";
 import IssueTracker from "../../components/admin/IssueTracker";
 import { publish } from "../views/helpers/pubsub";
+import Hotkey from "./hotkey";
 
 import {
   Button,
@@ -303,6 +304,14 @@ class CoreComponents extends Component {
             station={{ name: "Core" }}
           />
         )}
+        <Hotkey
+          {...this.props}
+          simulator={
+            simulators.find(s => s.id === this.state.simulator) || {
+              id: this.state.simulator
+            }
+          }
+        />
       </div>
     );
   }
