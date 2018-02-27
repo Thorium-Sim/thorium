@@ -3,21 +3,23 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
 export const SurveyFormQueries = {
-  surveyform(root, { simulatorId }) {
-    let returnVal = App.surveyForms;
+  surveyform(root, { simulatorId, active }) {
+    let returnVal = App.surveyForms.filter(
+      s => (active ? s.active === true : true)
+    );
     if (simulatorId) {
-      returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
+      return returnVal.filter(i => i.simulatorId === simulatorId);
     }
-    return returnVal;
+    return returnVal.filter(i => i.simulatorId === null);
   }
 };
 
 export const SurveyFormMutations = {
   createSurveyForm(root, args, context) {
-    App.handleEvent(args, "createForm", context);
+    App.handleEvent(args, "createSurveyForm", context);
   },
   removeSurveyForm(root, args, context) {
-    App.handleEvent(args, "removeForm", context);
+    App.handleEvent(args, "removeSurveyForm", context);
   },
   updateSurveyForm(root, args, context) {
     App.handleEvent(args, "updateSurveyForm", context);
@@ -32,15 +34,19 @@ export const SurveyFormMutations = {
 
 export const SurveyFormSubscriptions = {
   surveyformUpdate: {
-    resolve(rootValue, { simulatorId }) {
+    resolve(rootValue, { simulatorId, active }) {
       if (simulatorId) {
-        return rootValue.filter(s => s.simulatorId === simulatorId);
+        return rootValue
+          .filter(s => (active ? s.active === true : true))
+          .filter(s => s.simulatorId === simulatorId);
       }
-      return rootValue;
+      return rootValue
+        .filter(s => (active ? s.active === true : true))
+        .filter(s => s.simulatorId === null);
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("surveyformUpdate"),
-      rootValue => !!(rootValue && rootValue.length)
+      rootValue => !!rootValue
     )
   }
 };

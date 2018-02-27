@@ -1,3 +1,3 @@
 export default `
-surveyform(simulatorId: ID):[SurveyForm]
+surveyform(simulatorId: ID, active: Boolean):[SurveyForm]
 `;

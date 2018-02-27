@@ -3,6 +3,7 @@ type SurveyForm{
   id: ID
   simulatorId: ID
   title: String
+  active: Boolean
   form: [FormFields]
   results: [FormResults]
 }
@@ -21,6 +22,8 @@ type FormFields {
   description: String
   options: [FormOptions]
   value: String
+  max: Int
+  min: Int
 }
 
 type FormOptions {
@@ -39,6 +42,8 @@ input FormFieldsInput {
   description: String
   options: [FormOptionsInput]
   value: String
+  max: Int
+  min: Int
 }
 input FormOptionsInput {
   id: ID

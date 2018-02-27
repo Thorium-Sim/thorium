@@ -15,7 +15,8 @@ import {
   AssetConfig,
   Welcome,
   ClientsLobby,
-  SoftwarePanels
+  SoftwarePanels,
+  SurveyForms
 } from "./FlightDirector";
 
 const history = createHistory();
@@ -82,6 +83,10 @@ export default class App extends Component {
           <Route
             path="/softwarePanels"
             render={props => <SoftwarePanels {...props} history={history} />}
+          />
+          <Route
+            path="/surveyForms"
+            render={props => <SurveyForms {...props} history={history} />}
           />
           <Route path="/test/:component" component={TestCard} />
           <Route path="*" component={NoMatch} />

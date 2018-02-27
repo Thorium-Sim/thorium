@@ -4,14 +4,14 @@ import { graphql, withApollo } from "react-apollo";
 
 import "./style.css";
 
-const TEMPLATE_SUB = gql``;
+const SUB = gql``;
 
 class Template extends Component {
   subscription = null;
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
       this.subscription = nextProps.data.subscribeToMore({
-        document: TEMPLATE_SUB,
+        document: SUB,
         variables: {
           simulatorId: nextProps.simulator.id
         },
@@ -27,13 +27,14 @@ class Template extends Component {
     this.subscription && this.subscription();
   }
   render() {
-    if (this.props.data.loading || !this.props.data.template) return null;
+    const { data: { loading, template } } = this.props;
+    if (loading || !template) return null;
     return <div className="template-card">This is a template</div>;
   }
 }
 
-const TEMPLATE_QUERY = gql``;
-export default graphql(TEMPLATE_QUERY, {
+const QUERY = gql``;
+export default graphql(QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
 
