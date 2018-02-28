@@ -39,8 +39,8 @@
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.9",
     "apollo-client": "^2.2.5",
-    "apollo-link-ws": "^1.0.7",
     "apollo-link-http": "^1.5.2",
+    "apollo-link-ws": "^1.0.7",
     "appdirectory": "^0.1.0",
     "body-parser": "^1.18.2",
     "bodymovin": "^4.13.0",
@@ -91,6 +91,8 @@
     "semver": "^5.5.0",
     "sine-waves": "^0.3.0",
     "subscriptions-transport-ws": "^0.9.5",
+    "terminal-in-react": "^4.3.0",
+    "terminal-in-react-pseudo-file-system-plugin": "^3.0.0",
     "three": "^0.90.0",
     "three-obj-loader": "^1.1.3",
     "tinycolor2": "^1.4.1",
@@ -98,22 +100,18 @@
     "yazl": "^2.4.3"
   },
   "scripts": {
-    "start-server":
-      "nodemon ./server/server.js -e js,graphql --ignore snapshots/ --ignore src/ --exec babel-node",
+    "start-server": "nodemon ./server/server.js -e js,graphql --ignore snapshots/ --ignore src/ --exec babel-node",
     "start": "npm run start-server & npm run start-client",
     "start-js": "react-scripts start",
     "start-client": "npm-run-all -p watch-css start-js",
     "build-js": "GENERATE_SOURCEMAP=false react-scripts build",
     "build-client": "npm-run-all build-css build-js",
     "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css":
-      "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-    "build-server":
-      "rm -f ./node_modules/normalize.css/normalize.css && node ./config/build-server.js",
+    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+    "build-server": "rm -f ./node_modules/normalize.css/normalize.css && node ./config/build-server.js",
     "build": "npm run build-client && npm run build-server",
     "lint": "eslint .",
-    "cloc":
-      "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots,coverage,build --exclude-ext=css,json",
+    "cloc": "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots,coverage,build --exclude-ext=css,json",
     "test:client": "react-scripts test --env=jsdom",
     "test:server": "jest server/tests --env=node",
     "test": "npm run test:client & npm run test:server",
@@ -125,10 +123,16 @@
     "plop": "plop"
   },
   "lint-staged": {
-    "*.js": ["prettier --write", "git add"]
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "jest": {
-    "coverageReporters": ["lcov", "text-summary"]
+    "coverageReporters": [
+      "lcov",
+      "text-summary"
+    ]
   },
   "bin": "./app.js",
   "proxy": {

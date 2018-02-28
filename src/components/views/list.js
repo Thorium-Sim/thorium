@@ -50,7 +50,8 @@ const viewList = [
   "DamageStepControl",
   "Roster",
   "Objectives",
-  "SurveyForm"
+  "SurveyForm",
+  "Hacking"
 ];
 
 export default viewList;

@@ -56,6 +56,7 @@ import DamageStepControl from "./DamageStepControl";
 import Roster from "./Roster";
 import Objectives from "./Objectives";
 import SurveyForm from "./SurveyForm";
+import Hacking from "./Hacking";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -169,7 +170,8 @@ const Views = {
   DamageStepControl,
   Roster,
   Objectives,
-  SurveyForm
+  SurveyForm,
+  Hacking
 };
 
 export const Widgets = {

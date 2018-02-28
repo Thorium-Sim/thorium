@@ -1,0 +1,9 @@
+#layout-odyssey .terminal-base pre {
+  color: #0f0;
+}
+.terminal-base {
+  min-width: 100%;
+  & > div > div {
+    max-width: 100%;
+  }
+}
