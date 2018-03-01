@@ -33,7 +33,7 @@
     "nodemon": "^1.17.1",
     "pkg": "^4.3.0",
     "plop": "^1.9.1",
-    "prettier": "^1.11.0",
+    "prettier": "^1.11.1",
     "react-scripts": "1.1.1"
   },
   "dependencies": {
