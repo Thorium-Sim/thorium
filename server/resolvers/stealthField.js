@@ -47,3 +47,13 @@ export const StealthFieldSubscriptions = {
     )
   }
 };
+
+export const StealthFieldTypes = {
+  StealthField: {
+    locations(rootValue) {
+      return rootValue.locations.map(r =>
+        App.rooms.find(room => room.id === r)
+      );
+    }
+  }
+};

@@ -27,6 +27,7 @@ type Sensors implements SystemInterface{
   autoThrusters: Boolean
   interference: Float
   segments: [SensorsSegment]
+  locations: [Room]
 }
 type SensorScan {
   id: ID

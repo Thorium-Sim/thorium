@@ -56,3 +56,13 @@ export const PhaserSubscriptions = {
     )
   }
 };
+
+export const PhaserTypes = {
+  Phaser: {
+    locations(rootValue) {
+      return rootValue.locations.map(r =>
+        App.rooms.find(room => room.id === r)
+      );
+    }
+  }
+};

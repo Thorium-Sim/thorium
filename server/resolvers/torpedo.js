@@ -47,3 +47,13 @@ export const TorpedoSubscriptions = {
     )
   }
 };
+
+export const TorpedoTypes = {
+  Torpedo: {
+    locations(rootValue) {
+      return rootValue.locations.map(r =>
+        App.rooms.find(room => room.id === r)
+      );
+    }
+  }
+};

@@ -44,3 +44,13 @@ export const ReactorSubscriptions = {
     )
   }
 };
+
+export const ReactorTypes = {
+  Reactor: {
+    locations(rootValue) {
+      return rootValue.locations.map(r =>
+        App.rooms.find(room => room.id === r)
+      );
+    }
+  }
+};

@@ -83,6 +83,11 @@ export const EngineTypes = {
     velocity(rootValue) {
       const sim = App.simulators.find(s => s.id === rootValue.simulatorId);
       return sim ? sim.ship.speed : 0;
+    },
+    locations(rootValue) {
+      return rootValue.locations.map(r =>
+        App.rooms.find(room => room.id === r)
+      );
     }
   }
 };

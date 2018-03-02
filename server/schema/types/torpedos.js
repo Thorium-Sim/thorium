@@ -28,6 +28,7 @@ type Torpedo implements SystemInterface{
   #One of 'idle', 'loaded', 'fired'
   state: String
   stealthFactor: Float
+  locations: [Room]
 }
 
 type Warhead {

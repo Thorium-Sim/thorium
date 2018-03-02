@@ -11,6 +11,7 @@ type StealthField {
   charge: Boolean,
   state: Boolean,
   quadrants: StealthQuad
+  locations: [Room]
 }
 
 type StealthQuad {

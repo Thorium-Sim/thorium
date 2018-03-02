@@ -11,8 +11,8 @@ App.on("addCrewmember", ({ crew }) => {
   App.crew.push(new Classes.Crew(crew));
   pubsub.publish("crewUpdate", App.crew);
 });
-App.on("removeCrewmember", crew => {
-  App.crew = App.crew.filter(c => c.id !== crew);
+App.on("removeCrewmember", ({ id }) => {
+  App.crew = App.crew.filter(c => c.id !== id);
   pubsub.publish("crewUpdate", App.crew);
 });
 App.on("updateCrewmember", ({ crew }) => {

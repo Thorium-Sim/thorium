@@ -8,6 +8,7 @@ interface SystemInterface {
   damage: Damage
   power: Power
   stealthFactor: Float
+  locations: [Room]
 }
 
 interface HeatInterface {

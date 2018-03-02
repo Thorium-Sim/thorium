@@ -76,7 +76,7 @@ export class GenericSystemConfig extends Component {
       refetchQueries
     });
   };
-  addRoom = ({ id, locations }, room) => {
+  addRoom = ({ id, locations = [] }, room) => {
     const roomId = room || this.state.room;
     const variables = {
       id,
@@ -92,7 +92,7 @@ export class GenericSystemConfig extends Component {
       room: null
     });
   };
-  removeRoom = ({ id, locations }, roomId) => {
+  removeRoom = ({ id, locations = [] }, roomId) => {
     const variables = {
       id,
       locations: locations.filter(l => l.id !== roomId).map(l => l.id)

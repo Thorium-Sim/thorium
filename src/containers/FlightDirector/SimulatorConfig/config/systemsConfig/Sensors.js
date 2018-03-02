@@ -61,6 +61,13 @@ const SENSORS_QUERY = gql`
         power
         powerLevels
       }
+      locations {
+        id
+        name
+        deck {
+          number
+        }
+      }
       history
     }
   }

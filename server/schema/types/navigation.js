@@ -15,6 +15,7 @@ type Navigation {
   destinations: [String]
   presets: [NavPreset]
   thrusters: Boolean
+  locations: [Room]
 }
 
 type NavLoc {

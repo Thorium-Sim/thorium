@@ -14,7 +14,14 @@ import { IsochipsTypes } from "./isochips";
 import { TacticalMapTypes } from "./tacticalMap";
 import { ExocompTypes } from "./exocomp";
 import { LibraryTypes } from "./library";
-
+import { ShieldTypes } from "./shields";
+import { PhaserTypes } from "./phasers";
+import { ReactorTypes } from "./reactor";
+import { ShortRangeCommTypes } from "./shortRangeComm";
+import { TorpedoTypes } from "./torpedo";
+import { SignalJammerTypes } from "./signalJammer";
+import { NavigationTypes } from "./navigation";
+import { StealthFieldTypes } from "./stealthField";
 export default Object.assign(
   AssetsTypes,
   EngineTypes,
@@ -31,5 +38,13 @@ export default Object.assign(
   IsochipsTypes,
   TacticalMapTypes,
   ExocompTypes,
-  LibraryTypes
+  LibraryTypes,
+  ShieldTypes,
+  PhaserTypes,
+  ReactorTypes,
+  ShortRangeCommTypes,
+  SignalJammerTypes,
+  TorpedoTypes,
+  NavigationTypes,
+  StealthFieldTypes
 );

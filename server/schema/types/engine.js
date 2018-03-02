@@ -17,6 +17,7 @@ type Engine implements SystemInterface {
   damage: Damage
   on: Boolean
   coolant: Float
+  locations: [Room]
 }
 type Speed {
   text: String

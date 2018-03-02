@@ -130,6 +130,13 @@ const SYSTEM_QUERY = gql`
         power
         powerLevels
       }
+      locations {
+        id
+        name
+        deck {
+          number
+        }
+      }
       model
       powerOutput
     }

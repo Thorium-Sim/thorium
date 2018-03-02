@@ -16,6 +16,7 @@ type ShortRangeComm implements SystemInterface {
   state: String
   arrows:[CommArrow]
   signals: [CommSignal]
+  locations: [Room]
 }
 
 type ShortRangeCommExtended {

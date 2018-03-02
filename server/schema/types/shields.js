@@ -14,5 +14,6 @@ type Shield implements SystemInterface{
   state: Boolean 
   integrity: Float
   damage: Damage
+  locations: [Room]
 }
 `;
