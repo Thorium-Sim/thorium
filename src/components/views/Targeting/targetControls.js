@@ -1,25 +1,24 @@
 import React from "react";
-import { Row, Col, Media, Button } from "reactstrap";
+import { Row, Col, Media, Button, Input, Label, FormGroup } from "reactstrap";
 import { Asset } from "../../../helpers/assets";
 
 export default ({ targetedContact, untargetContact, targetSystem }) => {
   return (
     <Row>
       <Col sm={5}>
-        {targetedContact &&
+        {targetedContact && (
           <div>
             <h4>Targeted Contact</h4>
             <Media>
               <Media left href="#">
                 <Asset asset={targetedContact.picture}>
-                  {({ src }) =>
-                    <Media object src={src} alt="Targeted Contact Image" />}
+                  {({ src }) => (
+                    <Media object src={src} alt="Targeted Contact Image" />
+                  )}
                 </Asset>
               </Media>
               <Media body>
-                <Media heading>
-                  {targetedContact.name}
-                </Media>
+                <Media heading>{targetedContact.name}</Media>
               </Media>
             </Media>
             <Button
@@ -29,10 +28,11 @@ export default ({ targetedContact, untargetContact, targetSystem }) => {
             >
               Unlock Target
             </Button>
-          </div>}
+          </div>
+        )}
       </Col>
       <Col sm={7}>
-        {targetedContact &&
+        {targetedContact && (
           <Row>
             <Col sm={12}>
               <h4>Systems Targeting</h4>
@@ -48,20 +48,21 @@ export default ({ targetedContact, untargetContact, targetSystem }) => {
             ].map(s => {
               return (
                 <Col key={`system-${s}`} sm={6}>
-                  <label className="custom-control custom-radio">
-                    <input
-                      id="radio1"
-                      name="system"
-                      type="radio"
-                      onChange={() => targetSystem(targetedContact.id, s)}
-                      checked={targetedContact.system === s}
-                      className="custom-control-input"
-                    />
-                    <span className="custom-control-indicator" />
-                    <span className="custom-control-description">
+                  <FormGroup check>
+                    <Label
+                      check
+                      className={
+                        targetedContact.system === s ? "text-danger" : ""
+                      }
+                    >
+                      <Input
+                        type="radio"
+                        checked={targetedContact.system === s}
+                        onChange={() => targetSystem(targetedContact.id, s)}
+                      />
                       {s}
-                    </span>
-                  </label>
+                    </Label>
+                  </FormGroup>
                 </Col>
               );
             })}
@@ -73,7 +74,8 @@ export default ({ targetedContact, untargetContact, targetSystem }) => {
 <span className="custom-control-description"><Input size="sm" /></span>
 </label>
 </Col>*/}
-          </Row>}
+          </Row>
+        )}
       </Col>
     </Row>
   );
