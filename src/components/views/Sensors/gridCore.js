@@ -150,7 +150,8 @@ class GridCore extends Component {
     } = movingContact;
     if (!location) return;
     const distance = distance3d({ x: 0, y: 0, z: 0 }, location);
-    const maxDistance = type === "planet" ? 2 : 1.1;
+    // Max Distance should be the distance + the width of the contact
+    const maxDistance = type === "planet" ? 1 + size / 2 : 1.1;
     if (distance > maxDistance) {
       return;
     }
