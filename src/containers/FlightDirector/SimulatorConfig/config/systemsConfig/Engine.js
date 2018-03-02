@@ -288,6 +288,13 @@ const SYSTEM_QUERY = gql`
         power
         powerLevels
       }
+      locations {
+        id
+        name
+        deck {
+          number
+        }
+      }
       speeds {
         text
         number

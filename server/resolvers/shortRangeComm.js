@@ -70,3 +70,13 @@ export const ShortRangeCommSubscriptions = {
     )
   }
 };
+
+export const ShortRangeCommTypes = {
+  ShortRangeComm: {
+    locations(rootValue) {
+      return rootValue.locations.map(r =>
+        App.rooms.find(room => room.id === r)
+      );
+    }
+  }
+};

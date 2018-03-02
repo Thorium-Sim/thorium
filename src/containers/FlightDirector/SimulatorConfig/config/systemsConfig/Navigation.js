@@ -3,7 +3,8 @@ import { GenericSystemConfig } from "./Generic";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 
-const Navigation = ({ data, client, simulatorId, type }) => {
+const Navigation = props => {
+  const { data, client, simulatorId, type } = props;
   if (data.loading) return null;
   const { navigation, decks } = data;
   const [nav] = navigation;
@@ -85,6 +86,13 @@ const NAV_QUERY = gql`
       power {
         power
         powerLevels
+      }
+      locations {
+        id
+        name
+        deck {
+          number
+        }
       }
       calculate
       thrusters

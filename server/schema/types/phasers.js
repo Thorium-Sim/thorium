@@ -11,6 +11,7 @@ type Phaser implements SystemInterface {
   arc: Float
   coolant: Float
   beams: [PhaserBeam]
+  locations: [Room]
 }
 
 type PhaserBeam {

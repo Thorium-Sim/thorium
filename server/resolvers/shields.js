@@ -28,6 +28,16 @@ export const ShieldMutations = {
   }
 };
 
+export const ShieldTypes = {
+  Shield: {
+    locations(rootValue) {
+      return rootValue.locations.map(r =>
+        App.rooms.find(room => room.id === r)
+      );
+    }
+  }
+};
+
 export const ShieldSubscriptions = {
   shieldsUpdate: {
     resolve(rootValue, { simulatorId }) {

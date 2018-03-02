@@ -154,6 +154,13 @@ export const SensorsSubscriptions = {
 };
 
 export const SensorsTypes = {
+  Sensors: {
+    locations(rootValue) {
+      return rootValue.locations.map(r =>
+        App.rooms.find(room => room.id === r)
+      );
+    }
+  },
   SensorContact: {
     /*startTime() {
       return 0;

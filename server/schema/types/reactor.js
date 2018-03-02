@@ -19,6 +19,7 @@ type Reactor implements SystemInterface{
   efficiency: Float
   batteryChargeLevel: Float
   batteryChargeRate: Float
+  locations: [Room]
 }
 
 enum REACTOR_MODELS {

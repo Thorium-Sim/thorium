@@ -12,6 +12,7 @@ type SignalJammer implements SystemInterface {
   level: Float
   strength: Float
   signals: [Signal]
+  locations: [Room]
 }
 
 type Signal {
