@@ -66,7 +66,7 @@ export default class SensorContact {
   }
   nudge(coordinates, speed, yaw) {
     this.speed = speed;
-    const maxDistance = this.type === "planet" ? 2 : 1.1;
+    const maxDistance = this.type === "planet" ? 1 + this.size / 2 : 1.1;
     if (yaw) {
       // Rotate the contact about the center
       const destinationPoints = calculateRotatedPoint(this.destination, yaw);

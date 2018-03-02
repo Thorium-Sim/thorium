@@ -268,7 +268,8 @@ class GridDom extends Component {
     const distance = distance3d({ x: 0, y: 0, z: 0 }, destination);
     let mutation;
     const contact = contacts.find(c => c.id === movingContact);
-    const maxDistance = contact.type === "planet" ? 2 : 1.1;
+    const maxDistance = contact.type === "planet" ? 1 + contact.size / 2 : 1.1;
+    console.log(maxDistance, distance);
     if (distance > maxDistance) {
       // Delete the contact
       mutation = gql`
