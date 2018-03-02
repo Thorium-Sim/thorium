@@ -139,6 +139,21 @@ class CrewCore extends Component {
       variables
     });
   };
+  removeCrew = () => {
+    const id = this.state.selectedCrew;
+    const mutation = gql`
+      mutation RemoveCrew($id: ID!) {
+        removeCrewmember(id: $id)
+      }
+    `;
+    this.props.client.mutate({
+      mutation,
+      variables: { id }
+    });
+    this.setState({
+      selectedCrew: null
+    });
+  };
   killRandom = () => {
     const { data: { crew } } = this.props;
     const livingCrew = crew.filter(c => !c.killed);
@@ -242,27 +257,40 @@ class CrewCore extends Component {
           <Col sm={3}>
             {selectedCrewMember && (
               <div>
-                {editing && (
-                  <Button
-                    size="sm"
-                    block
-                    color="primary"
-                    onClick={() => this.setState({ editing: false })}
-                  >
-                    Finish
-                  </Button>
-                )}
-                {!editing && (
-                  <Button
-                    size="sm"
-                    block
-                    color="success"
-                    onClick={() => this.setState({ editing: true })}
-                  >
-                    Edit
-                  </Button>
-                )}
-
+                <Row>
+                  <Col sm={6}>
+                    {editing && (
+                      <Button
+                        size="sm"
+                        block
+                        color="primary"
+                        onClick={() => this.setState({ editing: false })}
+                      >
+                        Finish
+                      </Button>
+                    )}
+                    {!editing && (
+                      <Button
+                        size="sm"
+                        block
+                        color="success"
+                        onClick={() => this.setState({ editing: true })}
+                      >
+                        Edit
+                      </Button>
+                    )}
+                  </Col>
+                  <Col sm={6}>
+                    <Button
+                      size="sm"
+                      block
+                      color="danger"
+                      onClick={this.removeCrew}
+                    >
+                      Remove
+                    </Button>
+                  </Col>
+                </Row>
                 {!selectedCrewMember.killed && (
                   <Button
                     size="sm"
