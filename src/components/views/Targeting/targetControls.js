@@ -66,6 +66,7 @@ export default ({ targetedContact, untargetContact, targetSystem }) => {
                 </Col>
               );
             })}
+
             {/* Uncomment for other targeting
 <Col sm={6}>
 <label className="custom-control custom-radio">
