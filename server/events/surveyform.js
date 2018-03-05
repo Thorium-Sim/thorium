@@ -44,3 +44,5 @@ App.on("surveyFormResponse", ({ id, response }) => {
   form.addResults(response);
   pubsub.publish("surveyformUpdate", App.surveyForms);
 });
+
+App.on("endSurvey", ({ id }) => {});

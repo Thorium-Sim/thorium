@@ -15,7 +15,7 @@ import "./style.css";
 
 const SUB = gql`
   subscription SurveyFormsUpdate {
-    surveyformUpdate(simulatorId: null) {
+    surveyformUpdate(simulatorId: null, active: false) {
       id
       form {
         id
@@ -181,7 +181,7 @@ class Surveys extends Component {
 
 const QUERY = gql`
   query SurveyForms {
-    surveyform(simulatorId: null) {
+    surveyform(simulatorId: null, active: false) {
       id
       form {
         id
