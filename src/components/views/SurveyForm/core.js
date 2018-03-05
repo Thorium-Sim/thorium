@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Input } from "reactstrap";
+import { Container, Row, Col, Input, Button } from "reactstrap";
 import "./style.css";
 
 const SUB = gql`
   subscription SurveyFormsUpdate($simulatorId: ID) {
-    surveyformUpdate(simulatorId: $simulatorId, active: true) {
+    surveyformUpdate(simulatorId: $simulatorId) {
       id
       form {
         id
@@ -23,7 +23,13 @@ const SUB = gql`
       }
       title
       results {
+        name
         client
+        station
+        form {
+          id
+          value
+        }
       }
     }
   }
@@ -65,10 +71,52 @@ class SurveyCore extends Component {
       variables
     });
   };
+  downloadResults = s => {
+    // Map the results
+    const results = [];
+    results.push(
+      ["Name", "Station", "Client"].concat(s.form.map(f => f.title))
+    );
+    s.results
+      .map(r =>
+        [r.name, r.station, r.client].concat(
+          r.form.map(f => {
+            if (s.form.find(m => m.id === f.id)) {
+              const option = s.form
+                .find(m => m.id === f.id)
+                .options.find(o => o.id === f.value);
+              if (option) {
+                return option.label;
+              }
+            }
+            if (parseInt(f.value, 10)) {
+              return parseInt(f.value, 10);
+            }
+            return f.value;
+          })
+        )
+      )
+      .forEach(a => {
+        results.push(a);
+      });
+    let csvContent = "data:text/csv;charset=utf-8,";
+    results.forEach(function(rowArray) {
+      let row = rowArray.join(",");
+      csvContent += row + "\r\n";
+    });
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.classList.add("hidden");
+    link.setAttribute("download", `${s.title}.csv`);
+    document.body.appendChild(link);
+
+    link.click();
+  };
+  endSurvey = e => {};
   render() {
     const { data: { loading, surveyform, allForms } } = this.props;
     if (loading || !surveyform || !allForms) return null;
-    console.log(surveyform);
     return (
       <Container className="surveyForm-card">
         <Row>
@@ -86,7 +134,30 @@ class SurveyCore extends Component {
             <p>
               <strong>Running Surveys:</strong>
             </p>
-            {surveyform.map(s => <p key={`${s.id}-running`}>{s.title}</p>)}
+            {surveyform.map(s => (
+              <Row key={`${s.id}-running`}>
+                <Col>
+                  <p>{s.title}</p>
+                </Col>
+                <Col>
+                  <p>{s.results.length}</p>
+                </Col>
+                <Col>
+                  <Button
+                    size="sm"
+                    color="success"
+                    onClick={() => this.downloadResults(s)}
+                  >
+                    Results (CSV)
+                  </Button>
+                </Col>
+                {/* {<Col>
+                  <Button size="sm" color="danger">
+                    End
+                  </Button>
+                </Col>} */}
+              </Row>
+            ))}
           </Col>
         </Row>
       </Container>
@@ -100,11 +171,30 @@ const QUERY = gql`
       id
       title
     }
-    surveyform(simulatorId: $simulatorId, active: true) {
+    surveyform(simulatorId: $simulatorId) {
       id
+      form {
+        id
+        type
+        title
+        value
+        options {
+          id
+          label
+        }
+        description
+        min
+        max
+      }
       title
       results {
+        name
         client
+        station
+        form {
+          id
+          value
+        }
       }
     }
   }
