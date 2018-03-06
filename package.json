@@ -32,7 +32,7 @@
     "lint-staged": "^7.0.0",
     "nodemon": "^1.17.1",
     "pkg": "^4.3.0",
-    "plop": "^1.9.1",
+    "plop": "^2.0.0",
     "prettier": "^1.11.1",
     "react-scripts": "1.1.1"
   },
@@ -40,7 +40,7 @@
     "apollo-cache-inmemory": "^1.1.9",
     "apollo-client": "^2.2.5",
     "apollo-link-ws": "^1.0.7",
-    "apollo-link-http": "^1.5.2",
+    "apollo-link-http": "^1.5.3",
     "appdirectory": "^0.1.0",
     "body-parser": "^1.18.2",
     "bodymovin": "^4.13.0",
