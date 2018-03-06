@@ -6,17 +6,17 @@ import { Container, Row, Col, Label, Button } from "reactstrap";
 import "./style.css";
 
 const CREW_SUB = gql`
-  subscription CrewUpdate($simulatorId: ID) {
-    crewUpdate(simulatorId: $simulatorId, position: "security") {
+  subscription CrewUpdate($simulatorId: ID, $teamType: String!) {
+    crewUpdate(simulatorId: $simulatorId, position: $teamType) {
       id
       name
     }
   }
 `;
 
-const SECURITY_SUB = gql`
-  subscription SecurityTeamsUpdate($simulatorId: ID) {
-    teamsUpdate(simulatorId: $simulatorId, type: "security") {
+const TEAMS_SUB = gql`
+  subscription TeamsUpdate($simulatorId: ID, $teamType: String) {
+    teamsUpdate(simulatorId: $simulatorId, type: $teamType) {
       id
       name
       orders
@@ -37,13 +37,12 @@ const SECURITY_SUB = gql`
       officers {
         id
         name
-        killed
       }
     }
   }
 `;
 
-class SecurityTeams extends Component {
+class Teams extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -55,9 +54,10 @@ class SecurityTeams extends Component {
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
       this.subscription = nextProps.data.subscribeToMore({
-        document: SECURITY_SUB,
+        document: TEAMS_SUB,
         variables: {
-          simulatorId: nextProps.simulator.id
+          simulatorId: nextProps.simulator.id,
+          teamType: nextProps.teamType || "damage"
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
@@ -70,7 +70,8 @@ class SecurityTeams extends Component {
       this.crewSubscription = nextProps.data.subscribeToMore({
         document: CREW_SUB,
         variables: {
-          simulatorId: nextProps.simulator.id
+          simulatorId: nextProps.simulator.id,
+          teamType: nextProps.teamType || "damage"
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
@@ -101,33 +102,14 @@ class SecurityTeams extends Component {
       selectedTeam: null
     });
   };
-  killCrew = id => {
-    const variables = {
-      crew: { id, killed: true }
-    };
-    const mutation = gql`
-      mutation UpdateCrew($crew: CrewInput) {
-        updateCrewmember(crew: $crew)
-      }
-    `;
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-  };
   render() {
-    if (
-      this.props.data.loading ||
-      !this.props.data.teams ||
-      !this.props.data.crew ||
-      !this.props.data.decks
-    )
-      return null;
+    if (this.props.data.loading) return null;
     const { teams, crew, decks } = this.props.data;
+    if (!teams || !crew || !decks) return null;
     const { selectedTeam } = this.state;
     if (crew.length === 0) return <p>Need crew for teams</p>;
     return (
-      <Container fluid className="security-teams-core">
+      <Container fluid className="damage-teams-core">
         <Row>
           <Col sm={6} className="scroller">
             {teams.map(t => (
@@ -175,20 +157,7 @@ class SecurityTeams extends Component {
                   </div>
                   <div className="label-section">
                     <Label for="teamName">Assigned Officers</Label>
-                    {team.officers.map(c => (
-                      <p key={c.id} className={c.killed ? "text-danger" : ""}>
-                        {c.name}{" "}
-                        {!c.killed && (
-                          <Button
-                            color="warning"
-                            size="sm"
-                            onClick={() => this.killCrew(c.id)}
-                          >
-                            Kill
-                          </Button>
-                        )}
-                      </p>
-                    ))}
+                    {team.officers.map(c => <p key={c.id}>{c.name}</p>)}
                   </div>
                   <Button
                     size="sm"
@@ -208,13 +177,13 @@ class SecurityTeams extends Component {
   }
 }
 
-const SECURITY_QUERY = gql`
-  query SecurityTeams($simulatorId: ID, $simId: ID!) {
-    crew(simulatorId: $simulatorId, position: "security") {
+const TEAMS_QUERY = gql`
+  query Teams($simulatorId: ID, $simId: ID!, $teamType: String!) {
+    crew(simulatorId: $simulatorId, position: $teamType) {
       id
       name
     }
-    teams(simulatorId: $simulatorId, type: "security") {
+    teams(simulatorId: $simulatorId, type: $teamType) {
       id
       name
       orders
@@ -235,7 +204,6 @@ const SECURITY_QUERY = gql`
       officers {
         id
         name
-        killed
       }
     }
     decks(simulatorId: $simId) {
@@ -248,12 +216,13 @@ const SECURITY_QUERY = gql`
     }
   }
 `;
-export default graphql(SECURITY_QUERY, {
+export default graphql(TEAMS_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id,
-      simId: ownProps.simulator.id
+      simId: ownProps.simulator.id,
+      teamType: ownProps.teamType || "damage"
     }
   })
-})(withApollo(SecurityTeams));
+})(withApollo(Teams));
