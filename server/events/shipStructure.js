@@ -106,7 +106,12 @@ App.on("roomGas", ({ roomId, gas }) => {
   pubsub.publish("roomsUpdate", App.rooms);
   pubsub.publish("decksUpdate", App.decks);
 });
-
+App.on("updateRoomRoles", ({ roomId, roles }) => {
+  const room = App.rooms.find(r => r.id === roomId);
+  room.updateRoles(roles);
+  pubsub.publish("roomsUpdate", App.rooms);
+  pubsub.publish("decksUpdate", App.decks);
+});
 // Inventory
 App.on("addInventory", ({ inventory }) => {
   const { simulatorId, name, metadata, roomCount } = inventory;

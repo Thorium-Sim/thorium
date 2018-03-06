@@ -36,6 +36,7 @@ export class Room {
     this.gas = params.gas || false;
     this.svgPath = params.svgPath || "";
     this.metadata = params.metadata || {};
+    this.roles = [];
   }
   setGas(gas) {
     this.gas = gas;
@@ -49,6 +50,9 @@ export class Room {
   updateMetadata(metadata) {
     this.metadata = metadata;
   }
+  updateRoles(roles) {
+    this.roles = roles;
+  }
 }
 
 export class InventoryItem {
@@ -58,12 +62,20 @@ export class InventoryItem {
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || "Generic Cargo";
     this.roomCount = {};
+    this.teamCount = {};
     if (Array.isArray(params.roomCount)) {
       params.roomCount.forEach(r => {
         this.roomCount[r.room] = r.count;
       });
     } else {
       this.roomCount = params.roomCount || {};
+    }
+    if (Array.isArray(params.teamCount)) {
+      params.teamCount.forEach(r => {
+        this.teamCount[r.room] = r.count;
+      });
+    } else {
+      this.teamCount = params.teamCount || {};
     }
     this.metadata = params.metadata || {};
   }

@@ -193,6 +193,23 @@ class Inventory extends Component {
       selectedRoom: null
     });
   };
+  roomCountValue = r => {
+    if (this.state.inventoryItem.roomCount) {
+      if (
+        this.state.inventoryItem.roomCount.find(
+          c => (c.room.id || c.room) === r.id
+        )
+      ) {
+        return (
+          this.state.inventoryItem.roomCount.find(
+            c => (c.room.id || c.room) === r.id
+          ).count || 0
+        );
+      }
+      return 0;
+    }
+    return 0;
+  };
   render() {
     if (
       this.props.data.loading ||
@@ -356,16 +373,7 @@ class Inventory extends Component {
                           >
                             <input
                               type="text"
-                              value={
-                                this.state.inventoryItem.roomCount
-                                  ? this.state.inventoryItem.roomCount.find(
-                                      c => (c.room.id || c.room) === r.id
-                                    ) &&
-                                    this.state.inventoryItem.roomCount.find(
-                                      c => (c.room.id || c.room) === r.id
-                                    ).count
-                                  : 0
-                              }
+                              value={this.roomCountValue(r)}
                               onChange={evt => {
                                 let roomCount =
                                   this.state.inventoryItem.roomCount || [];

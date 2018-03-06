@@ -15,12 +15,20 @@ type Room {
   simulatorId: ID
   deck: Deck
   name: String
+  roles: [RoomRoles]
   gas: Boolean
   svgPath: String
   inventory: [InventoryItem]
   systems: [System]
 }
 
+enum RoomRoles {
+  probe
+  torpedo
+  damageTeam
+  securityTeam
+  medicalTeam
+}
 union Location = Deck | Room
 
 type InventoryItem {
@@ -32,6 +40,7 @@ type InventoryItem {
   count: Int
   metadata: InventoryMetadata
   roomCount: [RoomCount] 
+  teamCount: [TeamCount] 
 }
 
 input InventoryItemInput {
@@ -72,9 +81,16 @@ type RoomCount {
   room: Room
   count: Int
 }
-
+type TeamCount {
+  team: Team
+  count: Int
+}
 input RoomCountInput {
-  room: ID,
+  room: ID
+  count: Int
+}
+type TeamCountInput {
+  team: ID
   count: Int
 }
 `;
