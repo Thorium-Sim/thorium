@@ -16,14 +16,11 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const download = function(url, dest, cb) {
-  console.log("Downloading", url, dest);
   const file = fs.createWriteStream(dest);
   https
     .get(url, function(response) {
       response.pipe(file);
-      console.log("Piping");
       file.on("finish", function() {
-        console.log("Finished");
         file.close(cb); // close() is async, call cb after close completes.
       });
     })
