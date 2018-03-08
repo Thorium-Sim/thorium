@@ -20,73 +20,114 @@ import * as Config from "./config";
 
 import "./SimulatorConfig.css";
 
+const query = `id
+name
+layout
+exocomps
+panels
+requiredDamageSteps {
+  id
+  name
+  args {
+    end
+    cleanup
+    name
+    orders
+    room
+    preamble
+    type
+    message
+    code
+    inventory
+    destination
+    equipment
+    query
+    reactivate
+  }
+}
+optionalDamageSteps {
+  id
+  name
+  args {
+    end
+    cleanup
+    name
+    orders
+    room
+    preamble
+    type
+    message
+    code
+    inventory
+    destination
+    equipment
+    query
+    reactivate
+  }
+}
+systems {
+  id
+  type
+  name
+  requiredDamageSteps {
+    id
+    name
+    args {
+      end
+      cleanup
+      name
+      orders
+      room
+      preamble
+      type
+      message
+      code
+      inventory
+      destination
+      equipment
+      query
+      reactivate
+    }
+  }
+  optionalDamageSteps {
+    id
+    name
+    args {
+      end
+      cleanup
+      name
+      orders
+      room
+      preamble
+      type
+      message
+      code
+      inventory
+      destination
+      equipment
+      query
+      reactivate
+    }
+  }
+}
+stationSets {
+  id
+  name
+  stations {
+    name
+    login
+    messageGroups
+    widgets
+    cards {
+      name
+      component
+    }
+  }
+}`;
 const SIMULATOR_SUB = gql`
   subscription SimulatorsUpdate {
     simulatorsUpdate(template: true) {
-      id
-      name
-      layout
-      exocomps
-      panels
-      systems {
-        id
-        type
-        name
-        requiredDamageSteps {
-          id
-          name
-          args {
-            end
-            cleanup
-            name
-            orders
-            room
-            preamble
-            type
-            message
-            code
-            inventory
-            destination
-            equipment
-            query
-            reactivate
-          }
-        }
-        optionalDamageSteps {
-          id
-          name
-          args {
-            end
-            cleanup
-            name
-            orders
-            room
-            preamble
-            type
-            message
-            code
-            inventory
-            destination
-            equipment
-            query
-            reactivate
-          }
-        }
-      }
-      stationSets {
-        id
-        name
-        stations {
-          name
-          login
-          messageGroups
-          widgets
-          cards {
-            name
-            component
-          }
-        }
-      }
+      ${query}
     }
   }
 `;
@@ -356,110 +397,7 @@ class SimulatorConfig extends Component {
 const SIMULATOR_QUERY = gql`
   query Simulators {
     simulators(template: true) {
-      id
-      name
-      layout
-      exocomps
-      panels
-      requiredDamageSteps {
-        id
-        name
-        args {
-          end
-          cleanup
-          name
-          orders
-          room
-          preamble
-          type
-          message
-          code
-          inventory
-          destination
-          equipment
-          query
-          reactivate
-        }
-      }
-      optionalDamageSteps {
-        id
-        name
-        args {
-          end
-          cleanup
-          name
-          orders
-          room
-          preamble
-          type
-          message
-          code
-          inventory
-          destination
-          equipment
-          query
-          reactivate
-        }
-      }
-      systems {
-        id
-        type
-        name
-        requiredDamageSteps {
-          id
-          name
-          args {
-            end
-            cleanup
-            name
-            orders
-            room
-            preamble
-            type
-            message
-            code
-            inventory
-            destination
-            equipment
-            query
-            reactivate
-          }
-        }
-        optionalDamageSteps {
-          id
-          name
-          args {
-            end
-            cleanup
-            name
-            orders
-            room
-            preamble
-            type
-            message
-            code
-            inventory
-            destination
-            equipment
-            query
-            reactivate
-          }
-        }
-      }
-      stationSets {
-        id
-        name
-        stations {
-          name
-          login
-          messageGroups
-          widgets
-          cards {
-            name
-            component
-          }
-        }
-      }
+      ${query}
     }
   }
 `;

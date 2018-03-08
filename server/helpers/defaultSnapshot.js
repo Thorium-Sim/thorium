@@ -151,7 +151,72 @@ export default {
       class: "AssetFolder"
     }
   ],
-  assetContainers: [],
+  assetContainers: [
+    {
+      id: "5875f4b7-93d1-49aa-a334-ba4e5999c540",
+      folderPath: "/3D/Mesh",
+      fullPath: "/3D/Mesh/Simulator",
+      folderId: "95e90335-76de-4f82-bec6-51cc549f770d",
+      name: "Simulator",
+      class: "AssetContainer"
+    },
+    {
+      id: "04d1a4d4-49dd-4bbb-9a90-cc2638bf0240",
+      folderPath: "/3D/Texture",
+      fullPath: "/3D/Texture/Simulator",
+      folderId: "4f5b0718-f8d7-4874-ba55-5857d164f5bc",
+      name: "Simulator",
+      class: "AssetContainer"
+    },
+    {
+      id: "bbcc1500-7301-4e2f-8623-2ea2afed97b5",
+      folderPath: "/Misc",
+      fullPath: "/Misc/Login Logo",
+      folderId: "46bf2528-e498-43b8-864d-c0efac6e1e4f",
+      name: "Login Logo",
+      class: "AssetContainer"
+    },
+    {
+      id: "8a48e30d-2c03-419a-a18f-794e0bd2a815",
+      folderPath: "/Ship Views",
+      fullPath: "/Ship Views/Right",
+      folderId: "64d7fdc8-ce10-483d-a37a-de3a410899f7",
+      name: "Right",
+      class: "AssetContainer"
+    },
+    {
+      id: "7f74b781-c8cc-421e-9912-610e732ef7c3",
+      folderPath: "/Ship Views",
+      fullPath: "/Ship Views/Top",
+      folderId: "64d7fdc8-ce10-483d-a37a-de3a410899f7",
+      name: "Top",
+      class: "AssetContainer"
+    },
+    {
+      id: "2f3f13ab-56e7-48fc-86d6-ce46401590b4",
+      folderPath: "/Ship Views",
+      fullPath: "/Ship Views/Front",
+      folderId: "64d7fdc8-ce10-483d-a37a-de3a410899f7",
+      name: "Front",
+      class: "AssetContainer"
+    },
+    {
+      id: "cf7e524a-79cd-42da-8ef8-7dce4786cdcc",
+      folderPath: "/Ship Views",
+      fullPath: "/Ship Views/Back",
+      folderId: "64d7fdc8-ce10-483d-a37a-de3a410899f7",
+      name: "Back",
+      class: "AssetContainer"
+    },
+    {
+      id: "016007c1-7551-4643-94f6-e8ccad83eb4b",
+      folderPath: "/Ship Views",
+      fullPath: "/Ship Views/Left",
+      folderId: "64d7fdc8-ce10-483d-a37a-de3a410899f7",
+      name: "Left",
+      class: "AssetContainer"
+    }
+  ],
   assetObjects: [],
   viewscreens: [],
   messages: [],
