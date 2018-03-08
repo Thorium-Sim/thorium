@@ -1,16 +1,40 @@
 import fs from "fs";
+import https from "https";
+import path from "path";
 import jsonfile from "jsonfile";
 import { EventEmitter } from "events";
 import util from "util";
 import cloneDeep from "lodash/cloneDeep";
 import { writeFile } from "./helpers/json-format";
 import paths from "./helpers/paths";
+import importAssets from "./imports/asset/import";
 import * as Classes from "./classes";
 
 let snapshotDir = "./snapshots/";
 if (process.env.NODE_ENV === "production") {
   snapshotDir = paths.userData + "/";
 }
+
+const download = function(url, dest, cb) {
+  console.log("Downloading", url, dest);
+  const file = fs.createWriteStream(dest);
+  https
+    .get(url, function(response) {
+      response.pipe(file);
+      console.log("Piping");
+      file.on("finish", function() {
+        console.log("Finished");
+        file.close(cb); // close() is async, call cb after close completes.
+      });
+    })
+    .on("error", function(err) {
+      console.log("Error", err);
+      // Handle errors
+      fs.unlink(dest); // Delete the file async. (But we don't check the result)
+      if (cb) cb(err.message);
+    });
+};
+
 class Events extends EventEmitter {
   constructor(params) {
     super(params);
@@ -60,9 +84,27 @@ class Events extends EventEmitter {
       if (!fs.existsSync(snapshotDir + "snapshot.json")) {
         fs.writeFileSync(
           snapshotDir + "snapshot.json",
-          JSON.stringify(require("./helpers/defaultSnapshot.js"))
+          JSON.stringify(require("./helpers/defaultSnapshot.js").default)
         );
         this.merge(require("./helpers/defaultSnapshot.js").default);
+
+        // This was an initial load. We should download and install assets
+        console.log("First-time load. Downloading assets...");
+        const dest = path.resolve("temp/assets.aset");
+        download(
+          "https://s3.amazonaws.com/thoriumsim/assets.zip",
+          dest,
+          err => {
+            if (err) {
+              console.log(err);
+            }
+            importAssets(dest, () => {
+              fs.unlink(dest, error => {
+                if (err) console.log(error);
+              });
+            });
+          }
+        );
         setTimeout(() => this.autoSave(), 5000);
       }
     } else {
