@@ -45,27 +45,42 @@ const assetList = [
   }
 ];
 
-const Assets = ({ selectedSimulator: sim }) => {
-  return (
-    <Container className="assets">
-      <p>Assets</p>
-      <Row style={{ overflowY: "scroll", height: "80vh" }}>
-        {assetList.map(a => (
-          <Asset key={a.fullPath} asset={a.fullPath} simulatorId={sim.id}>
-            {({ src }) => <WrappedAssetDropdown src={src} sim={sim} {...a} />}
-          </Asset>
-        ))}
-      </Row>
-    </Container>
-  );
-};
+class Assets extends Component {
+  render() {
+    const { selectedSimulator: sim } = this.props;
+    return (
+      <Container className="assets">
+        <p>Assets</p>
+        <Row style={{ overflowY: "scroll", height: "80vh" }}>
+          {assetList.map(a => (
+            <Asset
+              key={a.fullPath}
+              fail
+              asset={a.fullPath}
+              simulatorId={sim.id}
+            >
+              {({ src }) => (
+                <WrappedAssetDropdown
+                  src={src}
+                  sim={sim}
+                  {...a}
+                  update={() => this.forceUpdate()}
+                />
+              )}
+            </Asset>
+          ))}
+        </Row>
+      </Container>
+    );
+  }
+}
 
 export default Assets;
 
 class AssetDropzone extends Component {
   state = {};
   onDrop = evt => {
-    const { folderPath, name, sim } = this.props;
+    const { folderPath, name, sim, update } = this.props;
     const data = new FormData();
     data.append("simulatorId", sim.id);
     data.append("containerName", name);
@@ -82,7 +97,9 @@ class AssetDropzone extends Component {
         method: "POST",
         body: data
       }
-    );
+    ).then(() => {
+      update();
+    });
   };
   render() {
     const { name, fullPath, src } = this.props;
@@ -96,10 +113,10 @@ class AssetDropzone extends Component {
             <img
               alt="Asset"
               style={{ width: "100%", maxHeight: "100%" }}
-              src={src}
+              src={src + `?${Date.now()}`}
             />
           ) : (
-            <p>Drop your file, or click to select files to upload.</p>
+            <p>Click to select files to upload.</p>
           )}
         </div>
       </Col>
