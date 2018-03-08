@@ -109,15 +109,11 @@ class AssetDropzone extends Component {
         <h4>{fullPath}</h4>
         <input type="file" onChange={this.onDrop} />
         <div>
-          {src ? (
-            <img
-              alt="Asset"
-              style={{ width: "100%", maxHeight: "100%" }}
-              src={src + `?${Date.now()}`}
-            />
-          ) : (
-            <p>Click to select files to upload.</p>
-          )}
+          <img
+            alt="Asset"
+            style={{ width: "100%", maxHeight: "100%" }}
+            src={src + `?${Date.now()}`}
+          />
         </div>
       </Col>
     );
