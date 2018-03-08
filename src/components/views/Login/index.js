@@ -83,12 +83,14 @@ class Login extends Component {
         <Col sm={{ size: 3, offset: 1 }}>
           <Asset asset="/Misc/Login Logo" simulatorId={this.props.simulator.id}>
             {({ src }) => (
-              <img
+              <div
                 alt="login logo"
                 role="presentation"
-                src={src}
-                className="img-fluid"
-              />
+                className="login-logo"
+                style={{ backgroundImage: `url('${src}')` }}
+              >
+                <div style={{ paddingTop: "100%" }} />
+              </div>
             )}
           </Asset>
           <h1>{simulatorName}</h1>
@@ -102,12 +104,15 @@ class Login extends Component {
             simulatorId={this.props.simulator.id}
           >
             {({ src }) => (
-              <img
+              <div
                 role="presentation"
                 alt="ship right"
-                src={src}
-                className="img-fluid"
-              />
+                style={{ backgroundImage: `url('${src}')` }}
+                className="ship-logo"
+              >
+                {" "}
+                <div style={{ paddingTop: "50%" }} />
+              </div>
             )}
           </Asset>
 
