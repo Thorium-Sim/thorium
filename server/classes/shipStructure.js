@@ -36,7 +36,7 @@ export class Room {
     this.gas = params.gas || false;
     this.svgPath = params.svgPath || "";
     this.metadata = params.metadata || {};
-    this.roles = [];
+    this.roles = params.roles || [];
   }
   setGas(gas) {
     this.gas = gas;

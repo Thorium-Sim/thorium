@@ -1,3 +1,15 @@
-.template-card {
+.armory-card {
   display: block;
+  .inventory-list {
+    height: 25vh;
+    overflow-y: scroll;
+  }
+  .armory-equipment {
+    margin: 0;
+    padding: 3px;
+    border-radius: 10px;
+    &:active {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+  }
 }

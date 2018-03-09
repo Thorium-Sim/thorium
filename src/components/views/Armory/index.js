@@ -1,7 +1,18 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Card, CardBlock } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  CardBody,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Button
+} from "reactstrap";
 import "./style.css";
 
 const CREW_SUB = gql`
@@ -49,6 +60,8 @@ const ROOMS_SUB = gql`
 `;
 
 class Armory extends Component {
+  state = { room: null, team: null };
+
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
       this.subscription = nextProps.data.subscribeToMore({
@@ -69,7 +82,7 @@ class Armory extends Component {
         document: CREW_SUB,
         variables: {
           simulatorId: nextProps.simulator.id,
-          teamType: nextProps.type || "damage"
+          teamType: nextProps.type || "security"
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
@@ -83,13 +96,23 @@ class Armory extends Component {
         document: ROOMS_SUB,
         variables: {
           simulatorId: nextProps.simulator.id,
-          roomRole: nextProps.teamType ? `${nextProps.type}Team` : "damageTeam"
+          roomRole: nextProps.type ? `${nextProps.type}Team` : "securityTeam"
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
             rooms: subscriptionData.data.roomsUpdate
           });
         }
+      });
+    }
+    if (
+      !nextProps.data.loading &&
+      nextProps.data.rooms &&
+      !this.state.room &&
+      nextProps.data.rooms[0]
+    ) {
+      this.setState({
+        room: nextProps.data.rooms[0].id
       });
     }
   }
@@ -100,16 +123,126 @@ class Armory extends Component {
   render() {
     const { data: { loading, crew, rooms, teams } } = this.props;
     if (loading || !crew || !rooms || !teams) return null;
+    const { room, team } = this.state;
+    const roomObj = rooms.find(r => r.id === room);
     return (
-      <Container className="armory-card">
+      <Container fluid className="armory-card">
         <Row>
-          <Col sm={4} />
+          <Col sm={3}>
+            <UncontrolledDropdown>
+              <DropdownToggle block caret>
+                {roomObj
+                  ? `${roomObj.name}, Deck ${roomObj.deck.number}`
+                  : "No Room Selected"}
+              </DropdownToggle>
+              <DropdownMenu style={{ maxHeight: "200px", overflowY: "scroll" }}>
+                {rooms
+                  .concat()
+                  .sort((a, b) => {
+                    if (a.deck.number < b.deck.number) return -1;
+                    if (b.deck.number < a.deck.number) return 1;
+                    return 0;
+                  })
+                  .map(r => (
+                    <DropdownItem
+                      key={r.id}
+                      onClick={() => this.setState({ room: r.id })}
+                    >{`${r.name}, Deck ${r.deck.number}`}</DropdownItem>
+                  ))}
+              </DropdownMenu>
+            </UncontrolledDropdown>
+            <h4>Equipment Hold Contents</h4>
+            <Card className="inventory-list">
+              <CardBody>
+                {roomObj &&
+                  roomObj.inventory
+                    .filter(i => i.count > 0)
+                    .map(i => (
+                      <p
+                        key={i.id}
+                        className="armory-equipment"
+                        onClick={() => {}}
+                      >{`${i.name} (${i.count})`}</p>
+                    ))}
+              </CardBody>
+            </Card>
+            <h4>Ready Equipment</h4>
+            <Card className="inventory-list">
+              <CardBody>
+                {roomObj &&
+                  roomObj.inventory
+                    .filter(i => i.count > 0)
+                    .map(i => (
+                      <p
+                        key={i.id}
+                        className="armory-equipment"
+                        onClick={() => {}}
+                      >{`${i.name} (${i.count})`}</p>
+                    ))}
+              </CardBody>
+            </Card>
+            <Button block>Transfer to Officer</Button>
+          </Col>
+          <Col sm={{ size: 7, offset: 2 }}>
+            <Row>
+              <Col sm={6}>
+                <h4>Teams</h4>
+                <UncontrolledDropdown>
+                  <DropdownToggle block caret>
+                    {team
+                      ? teams.find(t => t.id === team).name
+                      : "Unassigned Officers"}
+                  </DropdownToggle>
+                  <DropdownMenu
+                    style={{ maxHeight: "200px", overflowY: "scroll" }}
+                  >
+                    <DropdownItem onClick={() => this.setState({ team: null })}>
+                      Unassigned Officers
+                    </DropdownItem>
+                    {teams.map(t => (
+                      <DropdownItem
+                        key={t.id}
+                        onClick={() => this.setState({ team: t.id })}
+                      >
+                        {t.name}
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+                <Card className="inventory-list">
+                  <CardBody>
+                    <TeamList team={team} teams={teams} crew={crew} />
+                  </CardBody>
+                </Card>
+              </Col>
+              <Col sm={6}>
+                <h4>Officers</h4>
+                <Card className="inventory-list">
+                  <CardBody />
+                </Card>
+              </Col>
+            </Row>
+          </Col>
         </Row>
       </Container>
     );
   }
 }
 
+const TeamList = ({ team, teams, crew }) => {
+  if (team) {
+    return teams
+      .find(t => t.id === team)
+      .officers.map(o => crew.find(c => c.id === o.id))
+      .map(o => <p key={`crew-${o.name}`}>{o.name}</p>);
+  }
+  const officers = teams.reduce((prev, next) => {
+    return prev.concat(next.officers.map(o => o.id));
+  }, []);
+  return crew
+    .filter(c => officers.indexOf(c.id) === -1)
+    .map(o => <p key={`crew-${o.name}`}>{o.name}</p>);
+};
 const QUERY = gql`
   query Armory($simulatorId: ID!, $type: String!, $roomRole: RoomRoles!) {
     crew(simulatorId: $simulatorId, position: $type) {
@@ -149,8 +282,8 @@ export default graphql(QUERY, {
 
     variables: {
       simulatorId: ownProps.simulator.id,
-      type: ownProps.type || "damage",
-      roomRole: `${ownProps.type}Team` || "damageTeam"
+      type: ownProps.type || "security",
+      roomRole: ownProps.type ? `${ownProps.type}Team` : "securityTeam"
     }
   })
 })(withApollo(Armory));
