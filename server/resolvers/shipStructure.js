@@ -125,6 +125,12 @@ export const ShipStructureMutations = {
   },
   updateInventoryMetadata(root, args, context) {
     App.handleEvent(args, "updateInventoryMetadata", context);
+  },
+  updateCrewInventory(root, args, context) {
+    App.handleEvent(args, "updateCrewInventory", context);
+  },
+  removeCrewInventory(root, args, context) {
+    App.handleEvent(args, "removeCrewInventory", context);
   }
 };
 

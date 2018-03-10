@@ -155,3 +155,19 @@ App.on("updateInventoryMetadata", ({ id, metadata }) => {
   inv.updateMetadata(metadata);
   pubsub.publish("inventoryUpdate", App.inventory);
 });
+App.on("updateCrewInventory", ({ crewId, inventory, roomId }) => {
+  inventory.forEach(e => {
+    const inv = App.inventory.find(i => i.id === e.inventory);
+    inv.moveToCrew(roomId, crewId, e.count);
+  });
+  pubsub.publish("roomsUpdate", App.rooms);
+  pubsub.publish("crewUpdate", App.crew);
+});
+App.on("removeCrewInventory", ({ crewId, inventory, roomId }) => {
+  inventory.forEach(e => {
+    const inv = App.inventory.find(i => i.id === e.inventory);
+    inv.moveFromCrew(crewId, roomId, e.count);
+  });
+  pubsub.publish("roomsUpdate", App.rooms);
+  pubsub.publish("crewUpdate", App.crew);
+});

@@ -33,4 +33,6 @@ removeInventory(id: ID): String
 moveInventory(id: ID!, fromRoom: ID!, toRoom: ID!, count: Int!, toSimulator: ID): String
 updateInventoryCount(id: ID!, room: ID!, count: Int!): String
 updateInventoryMetadata(id: ID, metadata: InventoryMetadataInput): String
+updateCrewInventory(crewId:ID!, inventory:[InventoryCount]!, roomId:ID!):String
+removeCrewInventory(crewId:ID!, inventory:[InventoryCount]!, roomId:ID!):String
 `;

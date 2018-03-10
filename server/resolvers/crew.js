@@ -111,6 +111,14 @@ export const CrewTypes = {
   Crew: {
     name(crew) {
       return crew.firstName + " " + crew.lastName;
+    },
+    inventory(crew) {
+      return App.inventory
+        .filter(i => Object.keys(i.crewCount).indexOf(crew.id) > -1)
+        .map(i => {
+          i.count = i.crewCount[crew.id];
+          return i;
+        });
     }
   }
 };

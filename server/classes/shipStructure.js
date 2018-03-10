@@ -62,7 +62,7 @@ export class InventoryItem {
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || "Generic Cargo";
     this.roomCount = {};
-    this.teamCount = {};
+    this.crewCount = {};
     if (Array.isArray(params.roomCount)) {
       params.roomCount.forEach(r => {
         this.roomCount[r.room] = r.count;
@@ -70,12 +70,12 @@ export class InventoryItem {
     } else {
       this.roomCount = params.roomCount || {};
     }
-    if (Array.isArray(params.teamCount)) {
-      params.teamCount.forEach(r => {
-        this.teamCount[r.room] = r.count;
+    if (Array.isArray(params.crewCount)) {
+      params.crewCount.forEach(r => {
+        this.crewCount[r.crew] = r.count;
       });
     } else {
-      this.teamCount = params.teamCount || {};
+      this.crewCount = params.crewCount || {};
     }
     this.metadata = params.metadata || {};
   }
@@ -83,6 +83,20 @@ export class InventoryItem {
     if (this.roomCount[fromRoom] >= count) {
       if (!this.roomCount[toRoom]) this.roomCount[toRoom] = 0;
       this.roomCount[fromRoom] -= count;
+      this.roomCount[toRoom] += count;
+    }
+  }
+  moveToCrew(fromRoom, toCrew, count) {
+    if (this.roomCount[fromRoom] >= count) {
+      if (!this.crewCount[toCrew]) this.crewCount[toCrew] = 0;
+      this.roomCount[fromRoom] -= count;
+      this.crewCount[toCrew] += count;
+    }
+  }
+  moveFromCrew(fromCrew, toRoom, count) {
+    if (this.crewCount[fromCrew] >= count) {
+      if (!this.roomCount[toRoom]) this.roomCount[toRoom] = 0;
+      this.crewCount[fromCrew] -= count;
       this.roomCount[toRoom] += count;
     }
   }

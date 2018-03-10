@@ -60,7 +60,7 @@ const ROOMS_SUB = gql`
 `;
 
 class Armory extends Component {
-  state = { room: null, team: null };
+  state = { room: null, team: null, readyInventory: {} };
 
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
@@ -120,15 +120,103 @@ class Armory extends Component {
     this.subscription && this.subscription();
     this.crewSubscription && this.crewSubscription();
   }
+  addReady = id => {
+    this.setState(({ readyInventory }) => {
+      return {
+        readyInventory: {
+          ...readyInventory,
+          [id]: readyInventory[id] ? readyInventory[id] + 1 : 1
+        }
+      };
+    });
+  };
+  removeReady = id => {
+    this.setState(({ readyInventory }) => {
+      return {
+        readyInventory: {
+          ...readyInventory,
+          [id]: readyInventory[id] ? readyInventory[id] - 1 : 0
+        }
+      };
+    });
+  };
+  transferToOfficer = () => {
+    const mutation = gql`
+      mutation UpdateCrewInventory(
+        $crewId: ID!
+        $inventory: [InventoryCount]!
+        $roomId: ID!
+      ) {
+        updateCrewInventory(
+          crewId: $crewId
+          inventory: $inventory
+          roomId: $roomId
+        )
+      }
+    `;
+    const variables = {
+      crewId: this.state.selectedCrew,
+      roomId: this.state.room,
+      inventory: Object.keys(this.state.readyInventory).map(k => ({
+        inventory: k,
+        count: this.state.readyInventory[k]
+      }))
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+    this.setState({
+      readyInventory: {}
+    });
+  };
+  removeFromOfficer = () => {
+    const { data: { crew } } = this.props;
+    const crewPerson = crew.find(c => c.id === this.state.selectedCrew);
+    const readyInventory = crewPerson.inventory.reduce(
+      (prev, next) => ({ ...prev, [next.id]: next.count }),
+      {}
+    );
+    this.setState({
+      readyInventory
+    });
+    const mutation = gql`
+      mutation RemoveCrewInventory(
+        $crewId: ID!
+        $inventory: [InventoryCount]!
+        $roomId: ID!
+      ) {
+        removeCrewInventory(
+          crewId: $crewId
+          inventory: $inventory
+          roomId: $roomId
+        )
+      }
+    `;
+    const variables = {
+      crewId: this.state.selectedCrew,
+      roomId: this.state.room,
+      inventory: Object.keys(readyInventory).map(k => ({
+        inventory: k,
+        count: readyInventory[k]
+      }))
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     const { data: { loading, crew, rooms, teams } } = this.props;
     if (loading || !crew || !rooms || !teams) return null;
-    const { room, team } = this.state;
+    const { room, team, selectedCrew, readyInventory = {} } = this.state;
     const roomObj = rooms.find(r => r.id === room);
+    const crewObj = crew.find(c => c.id === selectedCrew);
     return (
-      <Container fluid className="armory-card">
+      <Container className="armory-card">
         <Row>
-          <Col sm={3}>
+          <Col sm={4}>
+            <h4>Equipment Hold Contents</h4>
             <UncontrolledDropdown>
               <DropdownToggle block caret>
                 {roomObj
@@ -146,22 +234,27 @@ class Armory extends Component {
                   .map(r => (
                     <DropdownItem
                       key={r.id}
-                      onClick={() => this.setState({ room: r.id })}
+                      onClick={() =>
+                        this.setState({ room: r.id, readyInventory: {} })
+                      }
                     >{`${r.name}, Deck ${r.deck.number}`}</DropdownItem>
                   ))}
               </DropdownMenu>
             </UncontrolledDropdown>
-            <h4>Equipment Hold Contents</h4>
             <Card className="inventory-list">
               <CardBody>
                 {roomObj &&
                   roomObj.inventory
+                    .map(i => ({
+                      ...i,
+                      count: i.count - (readyInventory[i.id] || 0)
+                    }))
                     .filter(i => i.count > 0)
                     .map(i => (
                       <p
                         key={i.id}
                         className="armory-equipment"
-                        onClick={() => {}}
+                        onClick={() => this.addReady(i.id)}
                       >{`${i.name} (${i.count})`}</p>
                     ))}
               </CardBody>
@@ -170,22 +263,38 @@ class Armory extends Component {
             <Card className="inventory-list">
               <CardBody>
                 {roomObj &&
-                  roomObj.inventory
+                  Object.keys(readyInventory)
+                    .map(r => ({
+                      ...roomObj.inventory.find(i => i.id === r),
+                      count: readyInventory[r]
+                    }))
                     .filter(i => i.count > 0)
                     .map(i => (
                       <p
                         key={i.id}
                         className="armory-equipment"
-                        onClick={() => {}}
+                        onClick={() => this.removeReady(i.id)}
                       >{`${i.name} (${i.count})`}</p>
                     ))}
               </CardBody>
             </Card>
-            <Button block>Transfer to Officer</Button>
+            <Button
+              block
+              disabled={
+                !selectedCrew ||
+                Object.values(readyInventory).reduce(
+                  (prev, next) => prev + next,
+                  0
+                ) === 0
+              }
+              onClick={this.transferToOfficer}
+            >
+              Transfer to Officer
+            </Button>
           </Col>
-          <Col sm={{ size: 7, offset: 2 }}>
+          <Col sm={{ size: 5, offset: 3 }}>
             <Row>
-              <Col sm={6}>
+              <Col sm={12}>
                 <h4>Teams</h4>
                 <UncontrolledDropdown>
                   <DropdownToggle block caret>
@@ -211,15 +320,38 @@ class Armory extends Component {
                 </UncontrolledDropdown>
                 <Card className="inventory-list">
                   <CardBody>
-                    <TeamList team={team} teams={teams} crew={crew} />
+                    <TeamList
+                      team={team}
+                      teams={teams}
+                      crew={crew}
+                      selectedCrew={selectedCrew}
+                      selectCrew={c => this.setState({ selectedCrew: c })}
+                    />
                   </CardBody>
                 </Card>
               </Col>
-              <Col sm={6}>
-                <h4>Officers</h4>
+              <Col sm={12}>
+                <h4>Equipment</h4>
                 <Card className="inventory-list">
-                  <CardBody />
+                  <CardBody>
+                    {crewObj &&
+                      crewObj.inventory
+                        .filter(i => i.count > 0)
+                        .map(i => (
+                          <p key={i.id} className="armory-equipment">{`${
+                            i.name
+                          } (${i.count})`}</p>
+                        ))}
+                  </CardBody>
                 </Card>
+                <Button
+                  block
+                  color="danger"
+                  disabled={!selectedCrew || !room}
+                  onClick={this.removeFromOfficer}
+                >
+                  Remove Inventory
+                </Button>
               </Col>
             </Row>
           </Col>
@@ -229,20 +361,42 @@ class Armory extends Component {
   }
 }
 
-const TeamList = ({ team, teams, crew }) => {
+const TeamList = ({ team, teams, crew, selectedCrew, selectCrew }) => {
   if (team) {
     return teams
       .find(t => t.id === team)
       .officers.map(o => crew.find(c => c.id === o.id))
-      .map(o => <p key={`crew-${o.name}`}>{o.name}</p>);
+      .map(o => (
+        <p
+          key={`crew-${o.id}`}
+          className={`crew-item ${selectedCrew === o.id ? "selected" : ""} ${
+            o.inventory.filter(i => i.count > 0).length > 0
+              ? "has-inventory"
+              : ""
+          }`}
+          onClick={() => selectCrew(o.id)}
+        >
+          {o.name}
+        </p>
+      ));
   }
+
   const officers = teams.reduce((prev, next) => {
     return prev.concat(next.officers.map(o => o.id));
   }, []);
-  return crew
-    .filter(c => officers.indexOf(c.id) === -1)
-    .map(o => <p key={`crew-${o.name}`}>{o.name}</p>);
+  return crew.filter(c => officers.indexOf(c.id) === -1).map(o => (
+    <p
+      key={`crew-${o.id}`}
+      className={`crew-item ${selectedCrew === o.id ? "selected" : ""} ${
+        o.inventory.filter(i => i.count > 0).length > 0 ? "has-inventory" : ""
+      }`}
+      onClick={() => selectCrew(o.id)}
+    >
+      {o.name}
+    </p>
+  ));
 };
+
 const QUERY = gql`
   query Armory($simulatorId: ID!, $type: String!, $roomRole: RoomRoles!) {
     crew(simulatorId: $simulatorId, position: $type) {

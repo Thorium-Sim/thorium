@@ -63,7 +63,10 @@ type InventoryMetadata {
 
 }
 
-
+input InventoryCount {
+  inventory: ID
+  count: Int
+}
 
 input InventoryMetadataInput {
   type: String
