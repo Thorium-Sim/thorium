@@ -136,6 +136,15 @@ const categories = [
       gridTemplateColumns: "400px 400px",
       gridTemplateAreas: `"TransporterCore StealthFieldCore" "TractorBeamCore ShuttlesCore"`
     }
+  },
+  {
+    name: "Medical",
+    components: ["MedicalTeamsCore"],
+    style: {
+      gridTemplateRows: "200px 200px",
+      gridTemplateColumns: "400px 400px",
+      gridTemplateAreas: `"MedicalTeamsCore Nothing" "MedicalTeamsCore Nothing"`
+    }
   }
 ];
 
