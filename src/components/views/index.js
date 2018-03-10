@@ -26,6 +26,7 @@ import TractorBeam from "./TractorBeam";
 
 import SecurityTeams from "./Teams/security";
 import DamageTeams from "./Teams";
+import MedicalTeams from "./Teams/medical";
 import AlertCondition from "./AlertCondition";
 import ProbeNetwork from "./ProbeNetwork";
 import SelfDestruct from "./SelfDestruct";
@@ -56,7 +57,9 @@ import DamageStepControl from "./DamageStepControl";
 import Roster from "./Roster";
 import Objectives from "./Objectives";
 import SurveyForm from "./SurveyForm";
-import Armory from "./Armory";
+import SecurityArmory from "./Armory";
+import MedicalArmory from "./Armory/medicalArmory";
+import DamageArmory from "./Armory/damageArmory";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -84,6 +87,7 @@ import TractorBeamCore from "./TractorBeam/core";
 import CrewCore from "./Crew/core";
 import SecurityTeamsCore from "./Teams/securityCore";
 import DamageTeamsCore from "./Teams/core";
+import MedicalTeamsCore from "./Teams/medicalCore";
 import ProbeNetworkCore from "./ProbeNetwork/core";
 import SelfDestructCore from "./SelfDestruct/core";
 import ProbeControlCore from "./ProbeControl/core";
@@ -171,7 +175,10 @@ const Views = {
   Roster,
   Objectives,
   SurveyForm,
-  Armory
+  SecurityArmory,
+  MedicalArmory,
+  DamageArmory,
+  MedicalTeams
 };
 
 export const Widgets = {
@@ -268,6 +275,7 @@ export const Cores = {
   CrewCore,
   SecurityTeamsCore,
   DamageTeamsCore,
+  MedicalTeamsCore,
   ProbeNetworkCore,
   SelfDestructCore,
   ProbeControlCore,

@@ -39,5 +39,6 @@ function getPosition(type, simulatorId) {
     .map(c => c.position);
   if (type === "damage") return randomFromList(damagePositions);
   if (type === "security") return "Security Officer";
+  if (type === "medical") return "Medical Officer";
   return randomFromList(positions.filter(p => simPositions.indexOf(p) === -1));
 }

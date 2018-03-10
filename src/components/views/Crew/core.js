@@ -337,6 +337,14 @@ class CrewCore extends Component {
             >
               New Security Crewmember
             </Button>
+            <Button
+              size="sm"
+              block
+              color="warning"
+              onClick={() => this.newRandom("medical")}
+            >
+              New Medical Crewmember
+            </Button>
             <Input
               size="sm"
               type="select"

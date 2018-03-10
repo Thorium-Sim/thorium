@@ -38,6 +38,11 @@ export const CrewQueries = {
         returnVal = returnVal.filter(
           c => damagePositions.indexOf(c.position) > -1
         );
+      } else if (position === "medical") {
+        const medicalPositions = ["Medical", "Nurse", "Doctor"];
+        returnVal = returnVal.filter(c =>
+          medicalPositions.find(p => c.position.indexOf(p) > -1)
+        );
       }
     }
     return returnVal;
@@ -95,6 +100,11 @@ export const CrewSubscriptions = {
           ];
           returnVal = returnVal.filter(
             c => damagePositions.indexOf(c.position) > -1
+          );
+        } else if (position === "medical") {
+          const medicalPositions = ["Medical", "Nurse", "Doctor"];
+          returnVal = returnVal.filter(c =>
+            medicalPositions.find(p => c.position.indexOf(p) > -1)
           );
         }
       }
