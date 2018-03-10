@@ -5,35 +5,28 @@ import CoreFeed from "../../../views/CoreFeed";
 import "./iifx.css";
 import "../sideCore.css";
 
-const exceptions = [
-  "EngineControlCore",
-  "SensorsGridCore",
-  "ShieldControlCore",
-  "DockingCore",
-  "NavigationCore",
-  "TargetingCore",
-  "PhaserCore",
-  "TorpedoCore",
-  "SelfDestructCore",
-  "TimelineCore",
-  "HeatCore",
-  "DecksCore",
-  "ShipCore",
-  "ReactivationCore",
-  "MessagingCore",
-  "ClientsCore",
-  "TractorBeamCore",
-  "TransporterCore",
-  "RemoteCore",
-  //"CargoCore",
-  "JrNavigationCore",
-  "ViewscreenCore",
-  "CodeCyphersCore",
-  "ExocompsCore",
-  "CoreFeed",
-  "ShortRangeSignalsCore"
+const allowed = [
+  "SensorsCore",
+  "DecodingCore",
+  "LRCommCore",
+  "InternalCommCore",
+  "SystemsCore",
+  "CommShortRangeCore",
+  "DamageReportsCore",
+  "StealthFieldCore",
+  "CargoCore",
+  "ActionsCore",
+  "ThrusterCore",
+  "CrewCore",
+  "SecurityTeamsCore",
+  "DamageTeamsCore",
+  "ProbeNetworkCore",
+  "ProbeControlCore",
+  "ReactorControlCore",
+  "ShuttlesCore",
+  "SecurityDecksCore",
+  "ExtrasCore"
 ];
-
 export default class CoreIIFX extends Component {
   state = {};
   render() {
@@ -50,7 +43,7 @@ export default class CoreIIFX extends Component {
       <div className="core">
         <div className="core-iifx">
           {Object.keys(Cores)
-            .filter(c => exceptions.indexOf(c) === -1)
+            .filter(c => allowed.indexOf(c) > -1)
             .map(c => {
               const Core = Cores[c];
               const label = c.replace("Core", "");

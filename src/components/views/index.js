@@ -24,8 +24,9 @@ import CargoControl from "./CargoControl";
 import CoolantControl from "./CoolantControl";
 import TractorBeam from "./TractorBeam";
 
-import SecurityTeams from "./SecurityTeams";
-import DamageTeams from "./DamageTeams";
+import SecurityTeams from "./Teams/security";
+import DamageTeams from "./Teams";
+import MedicalTeams from "./Teams/medical";
 import AlertCondition from "./AlertCondition";
 import ProbeNetwork from "./ProbeNetwork";
 import SelfDestruct from "./SelfDestruct";
@@ -56,6 +57,9 @@ import DamageStepControl from "./DamageStepControl";
 import Roster from "./Roster";
 import Objectives from "./Objectives";
 import SurveyForm from "./SurveyForm";
+import SecurityArmory from "./Armory";
+import MedicalArmory from "./Armory/medicalArmory";
+import DamageArmory from "./Armory/damageArmory";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -81,8 +85,9 @@ import ActionsCore from "./Actions/core";
 import ThrusterCore from "./Thrusters/core";
 import TractorBeamCore from "./TractorBeam/core";
 import CrewCore from "./Crew/core";
-import SecurityTeamsCore from "./SecurityTeams/core";
-import DamageTeamsCore from "./DamageTeams/core";
+import SecurityTeamsCore from "./Teams/securityCore";
+import DamageTeamsCore from "./Teams/core";
+import MedicalTeamsCore from "./Teams/medicalCore";
 import ProbeNetworkCore from "./ProbeNetwork/core";
 import SelfDestructCore from "./SelfDestruct/core";
 import ProbeControlCore from "./ProbeControl/core";
@@ -169,7 +174,11 @@ const Views = {
   DamageStepControl,
   Roster,
   Objectives,
-  SurveyForm
+  SurveyForm,
+  SecurityArmory,
+  MedicalArmory,
+  DamageArmory,
+  MedicalTeams
 };
 
 export const Widgets = {
@@ -266,6 +275,7 @@ export const Cores = {
   CrewCore,
   SecurityTeamsCore,
   DamageTeamsCore,
+  MedicalTeamsCore,
   ProbeNetworkCore,
   SelfDestructCore,
   ProbeControlCore,

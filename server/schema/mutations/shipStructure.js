@@ -23,6 +23,7 @@ addRoomsBulk(simulatorId: ID!,
   # }
   rooms: String!): String
 renameRoom(roomId: ID!, name: String!): String
+updateRoomRoles(roomId: ID!, roles: [RoomRoles]): String
 updateRoomSvg(roomId: ID!, svg: String!): String
 roomGas(roomId: ID!, gas: Boolean): String
 
@@ -32,4 +33,6 @@ removeInventory(id: ID): String
 moveInventory(id: ID!, fromRoom: ID!, toRoom: ID!, count: Int!, toSimulator: ID): String
 updateInventoryCount(id: ID!, room: ID!, count: Int!): String
 updateInventoryMetadata(id: ID, metadata: InventoryMetadataInput): String
+updateCrewInventory(crewId:ID!, inventory:[InventoryCount]!, roomId:ID!):String
+removeCrewInventory(crewId:ID!, inventory:[InventoryCount]!, roomId:ID!):String
 `;

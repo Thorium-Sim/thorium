@@ -20,7 +20,7 @@ App.on("createTeam", ({ team = {} }) => {
   App.handleEvent(
     {
       simulatorId: team.simulatorId,
-      componnet,
+      component,
       title: `New ${team.type} team`,
       body: null,
       color: "info"

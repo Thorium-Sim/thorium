@@ -23,7 +23,7 @@ const Offline = props => {
     maintenance: {
       title: "Maintenance",
       message:
-        "This station is down for maintenance. Please contact yoru system administrator for more information."
+        "This station is down for maintenance. Please contact your system administrator for more information."
     }
   };
   const message = props.message || messages[props.clientObj.offlineState] || {};

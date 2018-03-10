@@ -106,7 +106,12 @@ App.on("roomGas", ({ roomId, gas }) => {
   pubsub.publish("roomsUpdate", App.rooms);
   pubsub.publish("decksUpdate", App.decks);
 });
-
+App.on("updateRoomRoles", ({ roomId, roles }) => {
+  const room = App.rooms.find(r => r.id === roomId);
+  room.updateRoles(roles);
+  pubsub.publish("roomsUpdate", App.rooms);
+  pubsub.publish("decksUpdate", App.decks);
+});
 // Inventory
 App.on("addInventory", ({ inventory }) => {
   const { simulatorId, name, metadata, roomCount } = inventory;
@@ -149,4 +154,20 @@ App.on("updateInventoryMetadata", ({ id, metadata }) => {
   const inv = App.inventory.find(i => i.id === id);
   inv.updateMetadata(metadata);
   pubsub.publish("inventoryUpdate", App.inventory);
+});
+App.on("updateCrewInventory", ({ crewId, inventory, roomId }) => {
+  inventory.forEach(e => {
+    const inv = App.inventory.find(i => i.id === e.inventory);
+    inv.moveToCrew(roomId, crewId, e.count);
+  });
+  pubsub.publish("roomsUpdate", App.rooms);
+  pubsub.publish("crewUpdate", App.crew);
+});
+App.on("removeCrewInventory", ({ crewId, inventory, roomId }) => {
+  inventory.forEach(e => {
+    const inv = App.inventory.find(i => i.id === e.inventory);
+    inv.moveFromCrew(crewId, roomId, e.count);
+  });
+  pubsub.publish("roomsUpdate", App.rooms);
+  pubsub.publish("crewUpdate", App.crew);
 });

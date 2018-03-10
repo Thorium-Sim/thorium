@@ -51,6 +51,9 @@ const link = split(
 
 const cache = new InMemoryCache({
   dataIdFromObject: result => {
+    if (result.id && result.__typename && result.count) {
+      return result.__typename + result.id + result.count;
+    }
     if (result.id && result.__typename) {
       return result.__typename + result.id;
     }

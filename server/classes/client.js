@@ -32,6 +32,7 @@ export default class Client {
     const flight = App.flights.find(f => f.id === flightId);
     this.simulatorId = null;
     this.station = null;
+    this.hypercard = null;
     if (flight && flight.simulators.length === 1) {
       this.simulatorId = flight.simulators[0];
     }
