@@ -13,7 +13,7 @@ export const ShipStructureQueries = {
     }
     return decks;
   },
-  rooms(root, { simulatorId, deck, name }) {
+  rooms(root, { simulatorId, deck, name, role }) {
     let rooms = App.rooms;
     if (simulatorId) {
       rooms = rooms.filter(r => r.simulatorId === simulatorId);
@@ -23,6 +23,9 @@ export const ShipStructureQueries = {
     }
     if (name) {
       rooms = rooms.filter(r => r.name === name);
+    }
+    if (role) {
+      rooms = rooms.filter(r => r.roles.indexOf(role) > -1);
     }
     return rooms;
   },
@@ -104,7 +107,9 @@ export const ShipStructureMutations = {
   roomGas(root, args, context) {
     App.handleEvent(args, "roomGas", context);
   },
-
+  updateRoomRoles(root, args, context) {
+    App.handleEvent(args, "updateRoomRoles", context);
+  },
   // Inventory
   addInventory(root, args, context) {
     App.handleEvent(args, "addInventory", context);
@@ -120,6 +125,12 @@ export const ShipStructureMutations = {
   },
   updateInventoryMetadata(root, args, context) {
     App.handleEvent(args, "updateInventoryMetadata", context);
+  },
+  updateCrewInventory(root, args, context) {
+    App.handleEvent(args, "updateCrewInventory", context);
+  },
+  removeCrewInventory(root, args, context) {
+    App.handleEvent(args, "removeCrewInventory", context);
   }
 };
 
@@ -137,11 +148,15 @@ export const ShipStructureSubscriptions = {
     )
   },
   roomsUpdate: {
-    resolve(rootValue, { simulatorId }) {
+    resolve(rootValue, { simulatorId, role }) {
+      let returnValue = rootValue;
       if (simulatorId && rootValue) {
-        return rootValue.filter(r => r.simulatorId === simulatorId);
+        returnValue = returnValue.filter(r => r.simulatorId === simulatorId);
       }
-      return rootValue;
+      if (role) {
+        returnValue = returnValue.filter(r => r.roles.indexOf(role) > -1);
+      }
+      return returnValue;
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("roomsUpdate"),
@@ -192,6 +207,12 @@ export const ShipStructureTypes = {
             ? { id: "ready", name: "Ready Cargo" }
             : App.rooms.find(room => room.id === r),
         count: inventory.roomCount[r]
+      }));
+    },
+    teamCount(inventory) {
+      return Object.keys(inventory.teamCount).map(r => ({
+        room: App.teams.find(team => team.id === r),
+        count: inventory.teamCount[r]
       }));
     }
   },

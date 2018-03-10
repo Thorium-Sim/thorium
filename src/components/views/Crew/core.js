@@ -246,6 +246,10 @@ class CrewCore extends Component {
                       !c.killed && /security/gi.test(c.position)
                         ? "text-warning"
                         : ""
+                    } ${
+                      !c.killed && /medical/gi.test(c.position)
+                        ? "text-info"
+                        : ""
                     } ${selectedCrew === c.id ? "selected" : ""}`}
                     onClick={() => this.setState({ selectedCrew: c.id })}
                   >
@@ -336,6 +340,14 @@ class CrewCore extends Component {
               onClick={() => this.newRandom("security")}
             >
               New Security Crewmember
+            </Button>
+            <Button
+              size="sm"
+              block
+              color="info"
+              onClick={() => this.newRandom("medical")}
+            >
+              New Medical Crewmember
             </Button>
             <Input
               size="sm"

@@ -38,6 +38,11 @@ export const CrewQueries = {
         returnVal = returnVal.filter(
           c => damagePositions.indexOf(c.position) > -1
         );
+      } else if (position === "medical") {
+        const medicalPositions = ["Medical", "Nurse", "Doctor"];
+        returnVal = returnVal.filter(c =>
+          medicalPositions.find(p => c.position.indexOf(p) > -1)
+        );
       }
     }
     return returnVal;
@@ -96,6 +101,11 @@ export const CrewSubscriptions = {
           returnVal = returnVal.filter(
             c => damagePositions.indexOf(c.position) > -1
           );
+        } else if (position === "medical") {
+          const medicalPositions = ["Medical", "Nurse", "Doctor"];
+          returnVal = returnVal.filter(c =>
+            medicalPositions.find(p => c.position.indexOf(p) > -1)
+          );
         }
       }
       return returnVal;
@@ -111,6 +121,14 @@ export const CrewTypes = {
   Crew: {
     name(crew) {
       return crew.firstName + " " + crew.lastName;
+    },
+    inventory(crew) {
+      return App.inventory
+        .filter(i => Object.keys(i.crewCount).indexOf(crew.id) > -1)
+        .map(i => {
+          i.count = i.crewCount[crew.id];
+          return i;
+        });
     }
   }
 };

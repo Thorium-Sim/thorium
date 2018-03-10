@@ -5,53 +5,29 @@ import CoreFeed from "../../../views/CoreFeed";
 import "./default.css";
 import "../sideCore.css";
 
-const exceptions = [
-  "TractorBeamCore",
-  "TransporterCore",
-  "StealthFieldCore",
-  "CrewCore",
-  "DecksCore",
-  "TimelineCore",
-  "SecurityTeamsCore",
-  "DamageTeamsCore",
-  "CargoCore",
-  "ProbeControlCore",
-  "ProbeNetworkCore",
-  "SecurityDecksCore",
-  "SelfDestructCore",
-  "ShuttlesCore",
-  "ShipCore",
-  "ReactivationCore",
-  "MessagingCore",
-  "ClientsCore",
-  "JrNavigationCore",
-  "ViewscreenCore",
-  "RemoteCore",
-  "InterceptionCore",
-  "CodeCyphersCore",
-  "CoreFeed",
-  "ShortRangeSignalsCore"
-  /*  "EngineControlCore",
+const allowed = [
+  "EngineControlCore",
   "SensorsGridCore",
   "SensorsCore",
   "ShieldControlCore",
   "DecodingCore",
   "LRCommCore",
   "InternalCommCore",
-  //"SystemsCore",
+  "SystemsCore",
   "DockingCore",
   "NavigationCore",
   "CommShortRangeCore",
-  "RemoteCore",
-  //"DamageReportsCore",
+  "DamageReportsCore",
   "TargetingCore",
   "PhaserCore",
   "TorpedoCore",
   "ActionsCore",
   "ThrusterCore",
   "ReactorControlCore",
-  "ViewscreenCore",
-  "HeatCore"*/
+  "HeatCore",
+  "ExtrasCore",
+  "SignalJammerCore",
+  "ExocompCore"
 ];
 export default class CoreDefault extends Component {
   state = {};
@@ -69,7 +45,7 @@ export default class CoreDefault extends Component {
       <div className="core">
         <div className="core-default">
           {Object.keys(Cores)
-            .filter(c => exceptions.indexOf(c) === -1)
+            .filter(c => allowed.indexOf(c) > -1)
             .map(c => {
               const Core = Cores[c];
               const label = c.replace("Core", "");

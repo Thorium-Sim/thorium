@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { Container, Row, Col, Button, Input } from "reactstrap";
+import { Container, Row, Col, Button, Input, Label } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-
+import FontAwesome from "react-fontawesome";
 import "./style.css";
 
 const DECKS_SUB = gql`
@@ -13,6 +13,7 @@ const DECKS_SUB = gql`
       rooms {
         id
         name
+        roles
       }
     }
   }
@@ -191,6 +192,46 @@ class DecksCore extends Component {
     };
     e.target.files[0] && reader.readAsText(e.target.files[0]);
   };
+  addRole = role => {
+    const { decks } = this.props.data;
+    const { selectedDeck, selectedRoom } = this.state;
+    const roles = decks
+      .find(d => d.id === selectedDeck)
+      .rooms.find(r => r.id === selectedRoom).roles;
+    const mutation = gql`
+      mutation UpdateRoomRoles($roomId: ID!, $roles: [RoomRoles]) {
+        updateRoomRoles(roomId: $roomId, roles: $roles)
+      }
+    `;
+    const variables = {
+      roomId: selectedRoom,
+      roles: roles.concat(role).filter((r, i, a) => a.indexOf(r) === i)
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  removeRole = role => {
+    const { decks } = this.props.data;
+    const { selectedDeck, selectedRoom } = this.state;
+    const roles = decks
+      .find(d => d.id === selectedDeck)
+      .rooms.find(r => r.id === selectedRoom).roles;
+    const mutation = gql`
+      mutation UpdateRoomRoles($roomId: ID!, $roles: [RoomRoles]) {
+        updateRoomRoles(roomId: $roomId, roles: $roles)
+      }
+    `;
+    const variables = {
+      roomId: selectedRoom,
+      roles: roles.filter(r => r !== role)
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.decks) return null;
     const { decks } = this.props.data;
@@ -198,7 +239,7 @@ class DecksCore extends Component {
     return (
       <Container className="decks-core">
         <Row>
-          <Col sm="6" className="decks-columns">
+          <Col sm="4" className="decks-columns">
             <ul className="deckList">
               {decks
                 .concat()
@@ -252,7 +293,7 @@ class DecksCore extends Component {
               </label>
             </div>
           </Col>
-          <Col sm="6" className="decks-columns">
+          <Col sm="4" className="decks-columns">
             <ul className="roomList">
               {selectedDeck &&
                 decks
@@ -302,6 +343,50 @@ class DecksCore extends Component {
               </Button>
             </div>
           </Col>
+          <Col sm={4}>
+            <p>Config</p>
+            {selectedDeck &&
+              selectedRoom && (
+                <div>
+                  <Label>
+                    Roles
+                    <Input
+                      type="select"
+                      value="select"
+                      onChange={e => this.addRole(e.target.value)}
+                    >
+                      <option value="select" disabled>
+                        Select a role to add
+                      </option>
+                      {[
+                        "probe",
+                        "torpedo",
+                        "damageTeam",
+                        "securityTeam",
+                        "medicalTeam"
+                      ].map(r => (
+                        <option key={r} value={r}>
+                          {r}
+                        </option>
+                      ))}
+                    </Input>
+                  </Label>
+                  {decks
+                    .find(d => d.id === selectedDeck)
+                    .rooms.find(r => r.id === selectedRoom)
+                    .roles.map(r => (
+                      <p key={`${selectedRoom}-${r}`}>
+                        {r}{" "}
+                        <FontAwesome
+                          name="ban"
+                          className="text-warning"
+                          onClick={() => this.removeRole(r)}
+                        />
+                      </p>
+                    ))}
+                </div>
+              )}
+          </Col>
         </Row>
       </Container>
     );
@@ -316,6 +401,7 @@ const DECKS_QUERY = gql`
       rooms {
         id
         name
+        roles
       }
     }
   }

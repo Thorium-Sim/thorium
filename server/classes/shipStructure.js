@@ -36,6 +36,7 @@ export class Room {
     this.gas = params.gas || false;
     this.svgPath = params.svgPath || "";
     this.metadata = params.metadata || {};
+    this.roles = params.roles || [];
   }
   setGas(gas) {
     this.gas = gas;
@@ -49,6 +50,9 @@ export class Room {
   updateMetadata(metadata) {
     this.metadata = metadata;
   }
+  updateRoles(roles) {
+    this.roles = roles;
+  }
 }
 
 export class InventoryItem {
@@ -58,6 +62,7 @@ export class InventoryItem {
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || "Generic Cargo";
     this.roomCount = {};
+    this.crewCount = {};
     if (Array.isArray(params.roomCount)) {
       params.roomCount.forEach(r => {
         this.roomCount[r.room] = r.count;
@@ -65,12 +70,33 @@ export class InventoryItem {
     } else {
       this.roomCount = params.roomCount || {};
     }
+    if (Array.isArray(params.crewCount)) {
+      params.crewCount.forEach(r => {
+        this.crewCount[r.crew] = r.count;
+      });
+    } else {
+      this.crewCount = params.crewCount || {};
+    }
     this.metadata = params.metadata || {};
   }
   move(fromRoom, toRoom, count, toSimulator) {
     if (this.roomCount[fromRoom] >= count) {
       if (!this.roomCount[toRoom]) this.roomCount[toRoom] = 0;
       this.roomCount[fromRoom] -= count;
+      this.roomCount[toRoom] += count;
+    }
+  }
+  moveToCrew(fromRoom, toCrew, count) {
+    if (this.roomCount[fromRoom] >= count) {
+      if (!this.crewCount[toCrew]) this.crewCount[toCrew] = 0;
+      this.roomCount[fromRoom] -= count;
+      this.crewCount[toCrew] += count;
+    }
+  }
+  moveFromCrew(fromCrew, toRoom, count) {
+    if (this.crewCount[fromCrew] >= count) {
+      if (!this.roomCount[toRoom]) this.roomCount[toRoom] = 0;
+      this.crewCount[fromCrew] -= count;
       this.roomCount[toRoom] += count;
     }
   }
