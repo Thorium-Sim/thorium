@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css?family=Titillium+Web:200");
 
 $alert5: #233f7a;
-$alert4: #237A23;
+$alert4: #237a23;
 $alert3: #7a7a23;
 $alert2: #804d19;
 $alert1: #801919;
@@ -64,7 +64,7 @@ $color: $alert5;
   }
   .dropdown-menu {
     @include card-variant($background);
-    background: darken(rgba($background, 0.9),20%);
+    background: darken(rgba($background, 0.9), 20%);
     width: 100%;
     transition: all 0.5s ease;
     opacity: 0;
@@ -78,9 +78,9 @@ $color: $alert5;
       color: white;
       &:hover,
       &:focus {
-          background-color: rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.2);
       }
-  }
+    }
   }
 
   input,
@@ -192,7 +192,7 @@ $color: $alert5;
     top: 19vh;
     z-index: 100000;
   }
-  video {
+  video#frame-bg {
     mix-blend-mode: screen;
     top: 0;
     bottom: 0;
@@ -203,60 +203,60 @@ $color: $alert5;
     width: 100vw;
     height: 100vh;
   }
-  
-.simName-graphic {
-  background-image: url(./SimName.png);
-  position: fixed;
-  background-size: contain;
-  width: 32vw;
-  height: 8vh;
-  top: 4vh;
-  left: 2vw;
-}
-.cards-graphic {
-  background-image: url(./Cards.png);
-  position: fixed;
-  background-size: contain;
-  transform: rotate(270deg);
-  width: 47vw;
-  height: 13.5vh;
-  left: -18vw;
-  top: 54vh;
-}
-.color-image {
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  position: fixed;
-  mix-blend-mode: color;
-}
-.stationName-graphic {
-  background-image: url(./StationName.png);
-  position: fixed;
-  background-size: contain;
-  width: 32vw;
-  height: 7vh;
-  right: 2vw;
-  top: 4vh;
-}
-.widgets-graphic {
-  background-image: url(./Widgets.png);
-  position: fixed;
-  background-size: contain;
-  width: 36vw;
-  height: 5.5vh;
-  left: 36vw;
-  top: 5.5vh;
-}
-.username-graphic {
-  background-image: url(./Username.png);
-  position: fixed;
-  background-size: contain;
-  width: 27vw;
-  height: 6vh;
-  left: 2vw;
-  top: 12vh;
-}
+
+  .simName-graphic {
+    background-image: url(./SimName.png);
+    position: fixed;
+    background-size: contain;
+    width: 32vw;
+    height: 8vh;
+    top: 4vh;
+    left: 2vw;
+  }
+  .cards-graphic {
+    background-image: url(./Cards.png);
+    position: fixed;
+    background-size: contain;
+    transform: rotate(270deg);
+    width: 47vw;
+    height: 13.5vh;
+    left: -18vw;
+    top: 54vh;
+  }
+  .color-image {
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    position: fixed;
+    mix-blend-mode: color;
+  }
+  .stationName-graphic {
+    background-image: url(./StationName.png);
+    position: fixed;
+    background-size: contain;
+    width: 32vw;
+    height: 7vh;
+    right: 2vw;
+    top: 4vh;
+  }
+  .widgets-graphic {
+    background-image: url(./Widgets.png);
+    position: fixed;
+    background-size: contain;
+    width: 36vw;
+    height: 5.5vh;
+    left: 36vw;
+    top: 5.5vh;
+  }
+  .username-graphic {
+    background-image: url(./Username.png);
+    position: fixed;
+    background-size: contain;
+    width: 27vw;
+    height: 6vh;
+    left: 2vw;
+    top: 12vh;
+  }
   button {
     color: white;
     font-weight: 600;

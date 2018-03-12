@@ -19,7 +19,6 @@ const categories = [
     name: "Ship",
     components: [
       "ShipCore",
-      "DecksCore",
       "CargoCore",
       "CrewCore",
       "HeatCore",
@@ -28,7 +27,7 @@ const categories = [
     style: {
       gridTemplateRows: "200px 200px 400px",
       gridTemplateColumns: "400px 400px 400px",
-      gridTemplateAreas: `"CrewCore CrewCore SelfDestructCore" "HeatCore DecksCore CargoCore" "ShipCore DecksCore CargoCore"`
+      gridTemplateAreas: `"CrewCore CrewCore SelfDestructCore" "HeatCore Nothing CargoCore" "ShipCore Nothing CargoCore"`
     }
   },
   {
