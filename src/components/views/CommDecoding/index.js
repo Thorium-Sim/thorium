@@ -184,6 +184,7 @@ class Decoding extends Component {
   }
   _handleChangeComplete() {
     let { selectedMessage, a, f } = this.state;
+    if (!selectedMessage) return;
     const mutation = gql`
       mutation UpdateDecodedMessage(
         $id: ID!
