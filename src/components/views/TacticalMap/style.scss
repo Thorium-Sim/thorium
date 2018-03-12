@@ -3,6 +3,10 @@
   grid-template-columns: 70vw auto;
   grid-template-rows: (70vw * 9/16) auto;
   grid-template-areas: "preview sidebar" "bottom sidebar";
+  background-color: #111;
+  .list-group-item {
+    background-color: transparent;
+  }
 }
       /* selection container */
       .selection {
@@ -20,6 +24,7 @@
       }
 
 .tacticalmap-core, .tacticalmap-config{
+  height: 100%;
   .preview {
     grid-area: preview;
     width: 100vw;
@@ -32,6 +37,7 @@
   }
   .bottom-bar {
     grid-area: bottom;
+    align-self: end;
     height: 235px;
   }
   .layer-list,
@@ -81,6 +87,9 @@
     position: absolute;
     height: 100%;
     width: 100%;
+  }
+  .layer-grid, .layer-image {
+    pointer-events: none;
   }
   .tactical-grid {
     pointer-events: none;
