@@ -9,6 +9,17 @@ import "./layout.css";
 
 class LayoutOdyssey extends Component {
   state = {};
+  componentDidMount() {
+    const self = this;
+    window.addEventListener(
+      "touchstart",
+      function onFirstTouch() {
+        self.setState({ touch: true });
+        window.removeEventListener("touchstart", onFirstTouch);
+      },
+      false
+    );
+  }
   render() {
     let {
       simulator,
@@ -27,7 +38,7 @@ class LayoutOdyssey extends Component {
         }
       ]
     } = station;
-    const { changingCard } = this.state;
+    const { changingCard, touch } = this.state;
     const { hypercard } = clientObj;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     return (
@@ -69,6 +80,7 @@ class LayoutOdyssey extends Component {
               simulator={simulator}
               station={station}
               flight={flight}
+              touch={touch}
             />
             <Alerts
               ref="alert-widget"

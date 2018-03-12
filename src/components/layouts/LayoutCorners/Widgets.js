@@ -36,14 +36,6 @@ class WidgetsContainer extends Component {
           console.error("err", err);
         }
       });
-    window.addEventListener(
-      "touchstart",
-      function onFirstTouch() {
-        self.setState({ hasKeyboard: true });
-        window.removeEventListener("touchstart", onFirstTouch);
-      },
-      false
-    );
   }
   setNotify = (widget, state) => {
     this.setState({
@@ -53,15 +45,15 @@ class WidgetsContainer extends Component {
     });
   };
   render() {
-    const { simulator, clientObj, station, flight } = this.props;
-    const { widgetNotify, hasKeyboard } = this.state;
+    const { simulator, clientObj, station, flight, touch } = this.props;
+    const { widgetNotify } = this.state;
     return (
       <div
         className={`widgets ${clientObj.loginState} ${
           clientObj.offlineState ? "offline" : ""
         }`}
       >
-        {hasKeyboard && (
+        {touch && (
           <Widget
             simulator={simulator}
             station={station}
@@ -71,13 +63,14 @@ class WidgetsContainer extends Component {
             clientObj={clientObj}
             notify={widgetNotify.keyboard}
             setNotify={this.setNotify}
+            touch={touch}
           />
         )}
 
         {station.widgets &&
           station.widgets
             .concat()
-            .filter(w => (hasKeyboard ? w !== "keyboard" : true))
+            .filter(w => (touch ? w !== "keyboard" : true))
             .sort(w => {
               if (w === "keyboard") return 1;
               return -1;
@@ -95,6 +88,7 @@ class WidgetsContainer extends Component {
                   notify={widgetNotify[key]}
                   setNotify={this.setNotify}
                   key={key}
+                  touch={touch}
                 />
               );
             })}
@@ -162,7 +156,7 @@ export class Widget extends Component {
     });
   };
   render() {
-    const { widget, wkey, notify } = this.props;
+    const { widget, wkey, notify, touch } = this.props;
     const { position } = this.state;
     const Comp = widget.widget;
     return (
@@ -176,14 +170,16 @@ export class Widget extends Component {
           onClick={this.toggleModal}
           style={{ color: widget.color || "rgb(200,150,255)" }}
         />
-        <Tooltip
-          placement="bottom"
-          isOpen={this.state.tooltipOpen}
-          target={`widget-${wkey}`}
-          toggle={this.toggle}
-        >
-          {widget.name}
-        </Tooltip>
+        {!touch && (
+          <Tooltip
+            placement="bottom"
+            isOpen={this.state.tooltipOpen}
+            target={`widget-${wkey}`}
+            toggle={this.toggle}
+          >
+            {widget.name}
+          </Tooltip>
+        )}
         {this.state.modal && (
           <div
             className={`modal-themed widget-body widget-${widget.size} ${

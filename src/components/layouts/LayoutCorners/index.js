@@ -12,6 +12,17 @@ import "./layout.css";
 import "./theme.css";
 
 class LayoutCorners extends Component {
+  componentDidMount() {
+    const self = this;
+    window.addEventListener(
+      "touchstart",
+      function onFirstTouch() {
+        self.setState({ touch: true });
+        window.removeEventListener("touchstart", onFirstTouch);
+      },
+      false
+    );
+  }
   render() {
     let {
       simulator,
@@ -22,6 +33,7 @@ class LayoutCorners extends Component {
       flight
     } = this.props;
     const { hypercard } = clientObj;
+    const { touch } = this.state;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     return (
       <ActionsMixin {...this.props}>
@@ -72,6 +84,7 @@ class LayoutCorners extends Component {
             simulator={simulator}
             station={station}
             flight={flight}
+            touch={touch}
           />
           <Alerts ref="alert-widget" simulator={simulator} station={station} />
         </div>

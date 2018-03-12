@@ -36,14 +36,6 @@ class WidgetsContainer extends Component {
           console.error("err", err);
         }
       });
-    window.addEventListener(
-      "touchstart",
-      function onFirstTouch() {
-        self.setState({ hasKeyboard: true });
-        window.removeEventListener("touchstart", onFirstTouch);
-      },
-      false
-    );
   }
   setNotify = (widget, state) => {
     this.setState({
@@ -84,8 +76,8 @@ class WidgetsContainer extends Component {
     });
   };
   render() {
-    const { simulator, clientObj, station, flight } = this.props;
-    const { widgetNotify, hasKeyboard } = this.state;
+    const { simulator, clientObj, station, flight, touch } = this.props;
+    const { widgetNotify } = this.state;
     //if (clientObj.loginState === "logout" && station.login === false)
     // return null;
     return (
@@ -94,7 +86,7 @@ class WidgetsContainer extends Component {
           clientObj.offlineState ? "offline" : ""
         }`}
       >
-        {hasKeyboard && (
+        {touch && (
           <Widget
             simulator={simulator}
             station={station}
@@ -104,12 +96,13 @@ class WidgetsContainer extends Component {
             clientObj={clientObj}
             notify={widgetNotify.keyboard}
             setNotify={this.setNotify}
+            touch={touch}
           />
         )}
         {station.widgets &&
           station.widgets
             .concat()
-            .filter(w => (hasKeyboard ? w !== "keyboard" : true))
+            .filter(w => (touch ? w !== "keyboard" : true))
             .map(key => {
               const widget = Widgets[key];
               return (
@@ -123,6 +116,7 @@ class WidgetsContainer extends Component {
                   notify={widgetNotify[key]}
                   setNotify={this.setNotify}
                   key={key}
+                  touch={touch}
                 />
               );
             })}
@@ -132,12 +126,14 @@ class WidgetsContainer extends Component {
           className="help"
           color="#3363AA"
           onClick={this.startTraining}
+          touch={touch}
         />
         <StaticWidget
           icon={"sign-out"}
           name="Logout"
           color="#999"
           onClick={this.logout}
+          touch={touch}
         />
       </div>
     );
@@ -157,7 +153,8 @@ class StaticWidget extends Component {
       color,
       onClick = () => {},
       name,
-      className = ""
+      className = "",
+      touch
     } = this.props;
     return (
       <div className="widget-item">
@@ -170,14 +167,16 @@ class StaticWidget extends Component {
           id={`widget-${icon}`}
           style={{ color: color || "rgb(200,150,255)" }}
         />
-        <Tooltip
-          placement="bottom"
-          isOpen={this.state.tooltipOpen}
-          target={`widget-${icon}`}
-          toggle={this.toggle}
-        >
-          {name}
-        </Tooltip>
+        {!touch && (
+          <Tooltip
+            placement="bottom"
+            isOpen={this.state.tooltipOpen}
+            target={`widget-${icon}`}
+            toggle={this.toggle}
+          >
+            {name}
+          </Tooltip>
+        )}
       </div>
     );
   }
