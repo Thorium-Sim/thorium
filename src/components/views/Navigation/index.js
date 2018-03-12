@@ -201,19 +201,17 @@ class Navigation extends Component {
         z: ""
       };
     }
-    if (e.which) {
-    } else {
+    if (!e.which) {
       key = e.toString();
     }
-    if (
-      enteredCourse[selectedField] === null ||
-      enteredCourse[selectedField] === undefined
-    )
-      enteredCourse[selectedField] = "";
-    if (key === "." && enteredCourse[selectedField].indexOf(".") > -1) return;
-    enteredCourse[selectedField] += key;
+    let newValue = enteredCourse[selectedField];
+    if (newValue === null || newValue === undefined) {
+      newValue = "";
+    }
+    if (key === "." && newValue.indexOf(".") > -1) return;
+    newValue += key;
     this.setState({
-      enteredCourse,
+      enteredCourse: { ...enteredCourse, [selectedField]: newValue },
       selectedField
     });
   }

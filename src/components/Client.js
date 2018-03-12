@@ -375,6 +375,9 @@ class ClientView extends Component {
                   loginState,
                   offlineState,
                   station,
+                  hypercard,
+                  training,
+                  caches,
                   __typename
                 }) => ({
                   flight,
@@ -382,6 +385,9 @@ class ClientView extends Component {
                   loginName,
                   loginState,
                   offlineState,
+                  hypercard,
+                  training,
+                  caches,
                   station,
                   __typename,
                   simulator: {

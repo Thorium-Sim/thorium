@@ -90,8 +90,12 @@ class CoreFeed extends Component {
             .map(c => {
               if (components[c.id] && c.component && Cores[c.component]) {
                 const CoreComponent = Cores[c.component];
+
                 return (
-                  <div key={c.id} className="core-feed-component">
+                  <div
+                    key={`${c.id}-component`}
+                    className="core-feed-component"
+                  >
                     {c.component.replace("Core", "")}
                     <CoreComponent {...this.props} />
                     <Button
@@ -109,7 +113,7 @@ class CoreFeed extends Component {
                 <div>
                   <div
                     className={`alert alert-${c.color} alert-dismissible`}
-                    key={c.id}
+                    key={`${c.id}-alert`}
                     onClick={() => this.showComponent(c.id)}
                   >
                     <strong className="alert-heading">

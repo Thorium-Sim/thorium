@@ -29,22 +29,23 @@ export const ShipMutations = {
 
 export const ShipSubscriptions = {
   notify: {
-    resolve: (rootValue, { simulatorId, station, trigger }) => {
-      let returnVal = rootValue;
-      if (simulatorId) {
-        returnVal = returnVal.simulatorId === simulatorId && returnVal;
-      }
-      if (station) {
-        returnVal = returnVal.station === station && returnVal;
-      }
-      if (trigger) {
-        returnVal = returnVal.trigger === trigger && returnVal;
-      }
-      return returnVal;
+    resolve: rootValue => {
+      return rootValue;
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("notify"),
-      rootValue => !!rootValue
+      (rootValue, { simulatorId, station, trigger }) => {
+        if (simulatorId) {
+          if (rootValue.simulatorId !== simulatorId) return false;
+        }
+        if (station) {
+          if (rootValue.station !== station) return false;
+        }
+        if (trigger) {
+          if (rootValue.trigger !== trigger) return false;
+        }
+        return true;
+      }
     )
   },
   widgetNotify: {
