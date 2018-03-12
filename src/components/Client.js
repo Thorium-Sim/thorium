@@ -437,6 +437,11 @@ class ClientView extends Component {
       `,
       variables: { client: this.props.clientId }
     });
+    window.oncontextmenu = function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    };
   }
   render() {
     let flight;

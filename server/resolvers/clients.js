@@ -100,10 +100,10 @@ export const ClientSubscriptions = {
       () => pubsub.asyncIterator("clientChanged"),
       (payload, { client, simulatorId }) => {
         if (client) {
-          return payload.filter(c => c.id === client) > 0;
+          return payload.filter(c => c.id === client).length > 0;
         }
         if (simulatorId) {
-          return payload.filter(c => c.simulatorId === simulatorId) > 0;
+          return payload.filter(c => c.simulatorId === simulatorId).length > 0;
         }
         return true;
       }

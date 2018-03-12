@@ -342,7 +342,11 @@ class Targeting extends Component {
     document.addEventListener("mouseup", this.stopCoolant);
     document.addEventListener("touchend", this.stopCoolant);
   }
-  firePhasers(beamId) {
+  firePhasers = (beamId, e) => {
+    e.preventDefault && e.preventDefault();
+    e.stopPropagation && e.stopPropagation();
+    e.cancelBubble = true;
+    e.returnValue = false;
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
       mutation FirePhasers($id: ID!, $beamId: ID!) {
@@ -371,7 +375,8 @@ class Targeting extends Component {
     }, 3000);
     document.addEventListener("mouseup", this.mouseup);
     document.addEventListener("touchend", this.mouseup);
-  }
+    return false;
+  };
   render() {
     if (this.props.data.loading || !this.props.data.targeting) return null;
     const targeting = this.props.data.targeting && this.props.data.targeting[0];
