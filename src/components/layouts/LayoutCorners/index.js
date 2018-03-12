@@ -12,6 +12,7 @@ import "./layout.css";
 import "./theme.css";
 
 class LayoutCorners extends Component {
+  state = {};
   componentDidMount() {
     const self = this;
     window.addEventListener(

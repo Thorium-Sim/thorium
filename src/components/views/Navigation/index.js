@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col, Container } from "reactstrap";
 import gql from "graphql-tag";
-import { InputGroup, InputGroupButton, Button, Input } from "reactstrap";
+import { InputGroup, InputGroupAddon, Button, Input } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Keypad from "./keypad";
@@ -382,7 +382,7 @@ class Navigation extends Component {
                         onChange={this.updateDestination}
                         className="form-control no-keypad"
                       />
-                      <InputGroupButton>
+                      <InputGroupAddon addonType="append">
                         <Button
                           onClick={this.calc.bind(this)}
                           color="secondary"
@@ -390,7 +390,7 @@ class Navigation extends Component {
                         >
                           Calculate Coordinates
                         </Button>
-                      </InputGroupButton>
+                      </InputGroupAddon>
                     </InputGroup>
                   </Col>
                 )}

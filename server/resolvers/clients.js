@@ -87,7 +87,7 @@ export const ClientMutations = {
 
 export const ClientSubscriptions = {
   clientChanged: {
-    resolve(payload) {
+    resolve(payload, { client, simulatorId }) {
       if (client) {
         return payload.filter(c => c.id === client);
       }
@@ -105,7 +105,7 @@ export const ClientSubscriptions = {
         if (simulatorId) {
           return payload.filter(c => c.simulatorId === simulatorId) > 0;
         }
-        return payload.filter(c => c.connected).length > 0;
+        return true;
       }
     )
   },
