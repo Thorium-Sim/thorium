@@ -3,7 +3,7 @@ import { Col, Row, Container } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import moment from "moment";
-
+import FontAwesome from "react-fontawesome";
 const FLIGHTS_SUB = gql`
   subscription FlightsSub {
     flightsUpdate {
@@ -105,6 +105,20 @@ class Clients extends Component {
       variables: obj
     });
   }
+  removeClient = id => {
+    const mutation = gql`
+      mutation DisconnectClient($client: ID!) {
+        clientDisconnect(client: $client)
+      }
+    `;
+    const variables = {
+      client: id
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading) return null;
     if (
@@ -147,7 +161,14 @@ class Clients extends Component {
                     )
                     .map((p, index) => (
                       <tr key={`flight-${p.id}-${index}`}>
-                        <td>{`${p.id}`}</td>
+                        <td>
+                          <FontAwesome
+                            name="ban"
+                            className="text-danger"
+                            onClick={() => this.removeClient(p.id)}
+                          />{" "}
+                          {`${p.id}`}
+                        </td>
                         <td>
                           <select
                             value={(p.flight && p.flight.id) || ""}
