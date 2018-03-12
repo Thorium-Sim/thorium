@@ -87,7 +87,7 @@ export const ClientMutations = {
 
 export const ClientSubscriptions = {
   clientChanged: {
-    resolve(payload, { client, simulatorId }) {
+    resolve(payload) {
       if (client) {
         return payload.filter(c => c.id === client);
       }
@@ -98,23 +98,19 @@ export const ClientSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("clientChanged"),
-      rootValue => {
-        return !!rootValue.length;
+      (payload, { client, simulatorId }) => {
+        if (client) {
+          return payload.filter(c => c.id === client) > 0;
+        }
+        if (simulatorId) {
+          return payload.filter(c => c.simulatorId === simulatorId) > 0;
+        }
+        return payload.filter(c => c.connected).length > 0;
       }
     )
   },
   clearCache: {
-    resolve(payload, { client, flight }) {
-      let output = false;
-      if (client) {
-        output = payload.filter(c => c.id === client).length > 0;
-      } else if (flight) {
-        output = payload.filter(c => c.id === flight).length > 0;
-      } else {
-        output = payload.filter(c => c.connected).length > 0;
-      }
-      return output;
-    },
+    resolve: payload => payload,
     subscribe: withFilter(
       () => pubsub.asyncIterator("clearCache"),
       (rootValue, { client, flight }) => {
