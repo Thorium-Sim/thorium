@@ -178,7 +178,8 @@ export default class PanelCanvas extends Component {
     this.props.applyUpdate({
       components: components.filter(c => c.id !== id),
       connections: connections.filter(c => c.to !== id && c.from !== id),
-      cables: cables.filter(c => c.components.indexOf(id) === -1)
+      cables: cables.filter(c => c.components.indexOf(id) === -1),
+      selectedComponent: null
     });
   };
   render() {

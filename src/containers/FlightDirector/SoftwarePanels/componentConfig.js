@@ -17,6 +17,7 @@ class Config extends Component {
     const component = nextProps.components.find(
       s => s.id === nextProps.selectedComponent
     );
+    if (!component) return;
     this.setState({
       label: component.label,
       color: component.color
