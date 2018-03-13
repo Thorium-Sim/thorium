@@ -11,6 +11,17 @@ import "./layout.css";
 
 class LayoutGlass extends Component {
   state = {};
+  componentDidMount() {
+    const self = this;
+    window.addEventListener(
+      "touchstart",
+      function onFirstTouch() {
+        self.setState({ touch: true });
+        window.removeEventListener("touchstart", onFirstTouch);
+      },
+      false
+    );
+  }
   render() {
     let {
       simulator,
@@ -22,6 +33,7 @@ class LayoutGlass extends Component {
     } = this.props;
     const { hypercard } = clientObj;
     const { name: stationName } = station;
+    const { touch } = this.state;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     return (
       <ActionsMixin {...this.props}>
@@ -49,6 +61,7 @@ class LayoutGlass extends Component {
             simulator={simulator}
             station={station}
             flight={flight}
+            touch={touch}
           />
           <Alerts ref="alert-widget" simulator={simulator} station={station} />
         </div>

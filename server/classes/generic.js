@@ -59,7 +59,7 @@ export class System {
       ? Object.assign({}, params.power)
       : {
           power: 5,
-          powerLevels: [5]
+          powerLevels: params.extra ? [] : [5]
         };
     this.damage = params.damage
       ? Object.assign({}, params.damage)

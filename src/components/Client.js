@@ -375,6 +375,9 @@ class ClientView extends Component {
                   loginState,
                   offlineState,
                   station,
+                  hypercard,
+                  training,
+                  caches,
                   __typename
                 }) => ({
                   flight,
@@ -382,6 +385,9 @@ class ClientView extends Component {
                   loginName,
                   loginState,
                   offlineState,
+                  hypercard,
+                  training,
+                  caches,
                   station,
                   __typename,
                   simulator: {
@@ -431,6 +437,11 @@ class ClientView extends Component {
       `,
       variables: { client: this.props.clientId }
     });
+    window.oncontextmenu = function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    };
   }
   render() {
     let flight;

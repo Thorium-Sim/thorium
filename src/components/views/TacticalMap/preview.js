@@ -487,7 +487,7 @@ export default class TacticalMapPreview extends Component {
             return (
               <div
                 key={l.id}
-                className="tactical-map-layer"
+                className={`tactical-map-layer layer-${l.type}`}
                 onMouseDown={() => selectObject(null)}
               >
                 <Comp

@@ -235,7 +235,7 @@ class TargetingCore extends Component {
           <div>
             {targeting.targetedSensorContact ? (
               <div>
-                <h4>Targeted Contact</h4>
+                <p>Targeted Contact</p>
                 <Media>
                   <Media left href="#">
                     <Asset asset={targeting.targetedSensorContact.picture}>
@@ -244,11 +244,7 @@ class TargetingCore extends Component {
                       )}
                     </Asset>
                   </Media>
-                  <Media body>
-                    <Media heading>
-                      {targeting.targetedSensorContact.name}
-                    </Media>
-                  </Media>
+                  <Media body>{targeting.targetedSensorContact.name}</Media>
                 </Media>
                 <Button
                   block

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { InputGroup, InputGroupButton, Button, Input } from "reactstrap";
+import { InputGroup, InputGroupAddon, Button, Input } from "reactstrap";
 
 export default class InternalScanConfig extends Component {
   constructor(props) {
@@ -40,7 +40,8 @@ export default class InternalScanConfig extends Component {
                 JSON.stringify(
                   Object.assign({}, data, { reactive: evt.target.checked })
                 )
-              )}
+              )
+            }
           />{" "}
           Use simulator data
         </label>
@@ -49,22 +50,22 @@ export default class InternalScanConfig extends Component {
             value={this.state.scanRequest}
             onChange={evt => this.setState({ scanRequest: evt.target.value })}
           />
-          <InputGroupButton>
+          <InputGroupAddon addonType="append">
             <Button color="success" onClick={this.beginScan}>
               Begin Scan
             </Button>
-          </InputGroupButton>
+          </InputGroupAddon>
         </InputGroup>
         <InputGroup size="sm">
           <Input
             value={this.state.scanResults}
             onChange={evt => this.setState({ scanResults: evt.target.value })}
           />
-          <InputGroupButton>
+          <InputGroupAddon addonType="append">
             <Button color="info" onClick={this.answerScan}>
               Answer Scan
             </Button>
-          </InputGroupButton>
+          </InputGroupAddon>
         </InputGroup>
       </div>
     );

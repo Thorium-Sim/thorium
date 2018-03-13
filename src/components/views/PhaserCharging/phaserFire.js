@@ -21,8 +21,8 @@ const PhaserBeam = ({
         size="sm"
         color="danger"
         disabled={disabled}
-        onMouseDown={firePhasers.bind(this, id)}
-        onTouchStart={firePhasers.bind(this, id)}
+        onMouseDown={e => firePhasers(id, e)}
+        onTouchStart={e => firePhasers(id, e)}
       >
         Fire
       </Button>

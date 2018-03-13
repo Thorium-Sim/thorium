@@ -257,7 +257,7 @@ export const PhaserBeam = ({
               block
               color="danger"
               disabled={disabled}
-              onMouseDown={firePhasers.bind(this, id)}
+              onMouseDown={e => firePhasers(id, e)}
             >
               Fire Phasers
             </Button>

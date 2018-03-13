@@ -48,6 +48,7 @@ class Alerts extends Component {
         next({ data: { notify } }) {
           // ... call updateQuery to integrate the new comment
           // into the existing list of comments
+
           const alerts = self.state.alerts;
           if (notify && notify.id) {
             if (!self.props.disabled) {

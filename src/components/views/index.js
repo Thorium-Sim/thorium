@@ -79,7 +79,6 @@ import TargetingCore from "./Targeting/core";
 import PhaserCore from "./PhaserCharging/core";
 import TorpedoCore from "./TorpedoLoading/core";
 import StealthFieldCore from "./StealthField/core";
-import DecksCore from "./ShipStructure/core";
 import CargoCore from "./CargoControl/core";
 import ActionsCore from "./Actions/core";
 import ThrusterCore from "./Thrusters/core";
@@ -92,7 +91,6 @@ import ProbeNetworkCore from "./ProbeNetwork/core";
 import SelfDestructCore from "./SelfDestruct/core";
 import ProbeControlCore from "./ProbeControl/core";
 import ReactorControlCore from "./ReactorControl/core";
-import ViewscreenCore from "./Viewscreen/core";
 import TimelineCore from "./Timeline";
 import ShuttlesCore from "./Shuttles/core";
 import SecurityDecksCore from "./SecurityDecks/core";
@@ -267,7 +265,6 @@ export const Cores = {
   PhaserCore,
   TorpedoCore,
   StealthFieldCore,
-  DecksCore,
   CargoCore,
   ActionsCore,
   ThrusterCore,
@@ -280,7 +277,6 @@ export const Cores = {
   SelfDestructCore,
   ProbeControlCore,
   ReactorControlCore,
-  ViewscreenCore,
   TimelineCore,
   ShuttlesCore,
   SecurityDecksCore,

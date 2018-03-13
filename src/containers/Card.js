@@ -34,6 +34,7 @@ export default class CardFrame extends Component {
   }
   shouldComponentUpdate(nextProps, nextState) {
     // Check everything
+    if (this.props.test) return true;
     if (
       nextProps.client.id !== this.props.client.id ||
       nextProps.client.loginName !== this.props.client.loginName ||

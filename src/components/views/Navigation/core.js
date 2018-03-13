@@ -194,7 +194,9 @@ class NavigationCore extends Component {
         </Row>
         <Row>
           <Col sm="1">
-            <p style={{ textAlign: "right" }}>X</p>
+            <p style={{ textAlign: "right" }}>
+              {navigation.thrusters ? "Yaw" : "X"}
+            </p>
           </Col>
           <Col sm="3">
             <OutputField>{navigation.currentCourse.x}</OutputField>
@@ -223,6 +225,7 @@ class NavigationCore extends Component {
                   block
                   size="sm"
                   color="info"
+                  disabled={navigation.thrusters}
                 >
                   <FontAwesome name="random" />
                 </Button>
@@ -242,7 +245,9 @@ class NavigationCore extends Component {
         </Row>
         <Row>
           <Col sm="1">
-            <p style={{ textAlign: "right" }}>Y</p>
+            <p style={{ textAlign: "right" }}>
+              {navigation.thrusters ? "Pitch" : "Y"}
+            </p>
           </Col>
           <Col sm="3">
             <OutputField>{navigation.currentCourse.y}</OutputField>
@@ -276,7 +281,9 @@ class NavigationCore extends Component {
         </Row>
         <Row>
           <Col sm="1">
-            <p style={{ textAlign: "right" }}>Z</p>
+            <p style={{ textAlign: "right" }}>
+              {navigation.thrusters ? "Roll" : "Z"}
+            </p>
           </Col>
           <Col sm="3">
             <OutputField>{navigation.currentCourse.z}</OutputField>

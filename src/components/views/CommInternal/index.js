@@ -265,20 +265,29 @@ class InternalComm extends Component {
         </Row>
         <Row>
           <Col sm={{ size: 8, offset: 2 }}>
-            <Asset
-              asset="/Ship Views/Right"
-              simulatorId={this.props.simulator.id}
-            >
-              {({ src }) => (
-                <img
-                  alt="Right View"
-                  role="presentation"
-                  className="mw-100"
-                  draggable="false"
-                  src={src}
-                />
-              )}
-            </Asset>
+            <div style={{ position: "relative", width: "100%" }}>
+              <Asset
+                asset="/Ship Views/Right"
+                simulatorId={this.props.simulator.id}
+              >
+                {({ src }) => (
+                  <div
+                    alt="Right View"
+                    role="presentation"
+                    draggable="false"
+                    style={{
+                      backgroundImage: `url('${src}')`,
+                      position: "absolute",
+                      width: "100%",
+                      height: "100%",
+                      backgroundSize: "contain",
+                      backgroundRepeat: "no-repeat"
+                    }}
+                  />
+                )}
+              </Asset>
+              <div style={{ padding: "100%" }} />
+            </div>
           </Col>
         </Row>
         <Tour

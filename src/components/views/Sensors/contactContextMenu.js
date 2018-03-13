@@ -83,6 +83,8 @@ class ContactContextMenu extends Component {
                             width: "100%",
                             minHeight: "20px",
                             minWidth: "20px",
+                            maxHeight: "50px",
+                            maxWidth: "50px",
                             backgroundColor: "rgba(20,20,50,0.5)"
                           }}
                           src={src}
@@ -106,6 +108,8 @@ class ContactContextMenu extends Component {
                           style={{
                             width: "100%",
                             minHeight: "20px",
+                            maxHeight: "50px",
+                            maxWidth: "50px",
                             backgroundColor: "rgba(20,20,50,0.5)"
                           }}
                           src={src}

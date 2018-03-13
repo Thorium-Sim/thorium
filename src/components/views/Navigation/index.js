@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col, Container } from "reactstrap";
 import gql from "graphql-tag";
-import { InputGroup, InputGroupButton, Button, Input } from "reactstrap";
+import { InputGroup, InputGroupAddon, Button, Input } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Keypad from "./keypad";
@@ -201,19 +201,17 @@ class Navigation extends Component {
         z: ""
       };
     }
-    if (e.which) {
-    } else {
+    if (!e.which) {
       key = e.toString();
     }
-    if (
-      enteredCourse[selectedField] === null ||
-      enteredCourse[selectedField] === undefined
-    )
-      enteredCourse[selectedField] = "";
-    if (key === "." && enteredCourse[selectedField].indexOf(".") > -1) return;
-    enteredCourse[selectedField] += key;
+    let newValue = enteredCourse[selectedField];
+    if (newValue === null || newValue === undefined) {
+      newValue = "";
+    }
+    if (key === "." && newValue.indexOf(".") > -1) return;
+    newValue += key;
     this.setState({
-      enteredCourse,
+      enteredCourse: { ...enteredCourse, [selectedField]: newValue },
       selectedField
     });
   }
@@ -384,7 +382,7 @@ class Navigation extends Component {
                         onChange={this.updateDestination}
                         className="form-control no-keypad"
                       />
-                      <InputGroupButton>
+                      <InputGroupAddon addonType="append">
                         <Button
                           onClick={this.calc.bind(this)}
                           color="secondary"
@@ -392,7 +390,7 @@ class Navigation extends Component {
                         >
                           Calculate Coordinates
                         </Button>
-                      </InputGroupButton>
+                      </InputGroupAddon>
                     </InputGroup>
                   </Col>
                 )}
