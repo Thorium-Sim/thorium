@@ -20,7 +20,8 @@ const configs = {
                 max="36"
                 defaultValue={selectedLayer.gridCols}
                 onChange={evt =>
-                  updateLayer("gridCols", parseInt(evt.target.value, 10))}
+                  updateLayer("gridCols", parseInt(evt.target.value, 10))
+                }
               />
             </Label>
           </FormGroup>
@@ -33,7 +34,8 @@ const configs = {
                 max="25"
                 defaultValue={selectedLayer.gridRows}
                 onChange={evt =>
-                  updateLayer("gridRows", parseInt(evt.target.value, 10))}
+                  updateLayer("gridRows", parseInt(evt.target.value, 10))
+                }
               />
             </Label>
           </FormGroup>
@@ -54,9 +56,11 @@ const configs = {
             onChangeComplete={color =>
               updateLayer(
                 "color",
-                `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color
-                  .rgb.a})`
-              )}
+                `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${
+                  color.rgb.a
+                })`
+              )
+            }
           />
         </Col>
       </Row>
