@@ -13,6 +13,7 @@ const REACTOR_SUB = gql`
       type
       name
       heat
+      heatRate
       model
       coolant
       damage {
@@ -152,7 +153,24 @@ class ReactorControl extends Component {
     `;
     const variables = {
       id: reactor.id,
-      heat
+      heat: heat / 100
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  setHeatRate = value => {
+    const { reactors } = this.props.data;
+    const reactor = reactors.find(r => r.model === "reactor") || {};
+    const mutation = gql`
+      mutation SetHeatRate($id: ID!, $rate: Float!) {
+        setHeatRate(id: $id, rate: $rate)
+      }
+    `;
+    const variables = {
+      id: reactor.id,
+      rate: value
     };
     this.props.client.mutate({
       mutation,
@@ -218,6 +236,19 @@ class ReactorControl extends Component {
                 </option>
               ))}
             </Input>
+            <p>Heat Rate:</p>
+            <Input
+              size="sm"
+              type="select"
+              onChange={evt => this.setHeatRate(evt.target.value)}
+              value={reactor.heatRate}
+            >
+              <option value={1.5}>Fast</option>
+              <option value={1}>Normal</option>
+              <option value={0.5}>Slow</option>
+              <option value={0}>Stop</option>
+              <option value={-1}>Reverse</option>
+            </Input>
             <p>Reactor Heat:</p>
             <InputField
               prompt="What is the new reactor heat?"
@@ -253,6 +284,7 @@ const REACTOR_QUERY = gql`
       type
       name
       heat
+      heatRate
       model
       coolant
       damage {

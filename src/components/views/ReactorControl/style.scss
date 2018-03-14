@@ -23,11 +23,7 @@
             rgba(0, 0, 0, 0) 50%,
             rgba(0, 0, 0, 0.5) 100%
           ),
-          linear-gradient(
-            to top,
-            rgba(0, 0, 0, 0.75) 0%,
-            rgba(0, 0, 0, 0) 100%
-          );
+          linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
         background-size: 5px 3px, 100%;
         background-color: #0f0;
         border: solid 2px #333;
@@ -56,9 +52,12 @@
     display: flex;
     flex-wrap: wrap;
   }
-  .input-field, select {
+  .input-field,
+  select.form-control-sm:not([size]):not([multiple]) {
     width: 60%;
+    height: 18px;
   }
+
   p {
     width: 40%;
   }
