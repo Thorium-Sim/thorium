@@ -2,6 +2,34 @@ import uuid from "uuid";
 import Team from "./teams";
 import { DamageStep } from "./generic";
 
+class RemoteAccess {
+  constructor(params = {}) {
+    this.id = params.id || uuid.v4();
+    this.code = params.code || "";
+    this.state = params.state || "sent";
+    this.station = params.station || "";
+    this.timestamp = params.timestamp || new Date().toISOString();
+  }
+}
+// A separate object for vestigial parts of the ship
+class Ship {
+  constructor(params = {}) {
+    this.clamps = params.clamps || false; // Detached
+    this.ramps = params.ramps || false; // Retracted
+    this.airlock = params.airlock || false; // Closed
+    this.bridgeCrew = params.bridgeCrew || 14;
+    this.radiation = params.radiation || 0.1;
+    this.speed = params.speed || 0;
+    this.selfDestructTime = params.selfDestructTime || null;
+    this.selfDestructCode = params.selfDestructCode || null;
+    this.selfDestructAuto = params.selfDestructAuto || false; // Automatically black out stations when self destructed
+    this.remoteAccessCodes = [];
+    this.extraSystems = [];
+    const codes = params.remoteAccessCodes || [];
+    codes.forEach(c => this.remoteAccessCodes.push(new RemoteAccess(c)));
+  }
+}
+
 export default class Simulator {
   constructor(params) {
     this.id = params.id || uuid.v4();
@@ -25,6 +53,8 @@ export default class Simulator {
       params.teams.forEach(t => this.teams.push(new Team(t)));
     }
 
+    // Damage reports
+    this.stepDamage = params.stepDamage || true;
     this.requiredDamageSteps = [];
     this.optionalDamageSteps = [];
     params.requiredDamageSteps &&
@@ -112,34 +142,5 @@ export default class Simulator {
     this.optionalDamageSteps = this.optionalDamageSteps.filter(
       s => s.id !== stepId
     );
-  }
-}
-
-// A separate object for vestigial parts of the ship
-class Ship {
-  constructor(params = {}) {
-    this.clamps = params.clamps || false; // Detached
-    this.ramps = params.ramps || false; // Retracted
-    this.airlock = params.airlock || false; // Closed
-    this.bridgeCrew = params.bridgeCrew || 14;
-    this.radiation = params.radiation || 0.1;
-    this.speed = params.speed || 0;
-    this.selfDestructTime = params.selfDestructTime || null;
-    this.selfDestructCode = params.selfDestructCode || null;
-    this.selfDestructAuto = params.selfDestructAuto || false; // Automatically black out stations when self destructed
-    this.remoteAccessCodes = [];
-    this.extraSystems = [];
-    const codes = params.remoteAccessCodes || [];
-    codes.forEach(c => this.remoteAccessCodes.push(new RemoteAccess(c)));
-  }
-}
-
-class RemoteAccess {
-  constructor(params = {}) {
-    this.id = params.id || uuid.v4();
-    this.code = params.code || "";
-    this.state = params.state || "sent";
-    this.station = params.station || "";
-    this.timestamp = params.timestamp || new Date().toISOString();
   }
 }

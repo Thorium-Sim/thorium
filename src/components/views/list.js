@@ -47,7 +47,6 @@ const viewList = [
   "Library",
   "CodeCyphers",
   "Interception",
-  "DamageStepControl",
   "Roster",
   "Objectives",
   "SurveyForm",

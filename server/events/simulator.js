@@ -117,3 +117,8 @@ App.on("updateSimulatorPanels", ({ simulatorId, panels }) => {
   simulator.updatePanels(panels);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("setStepDamage", ({ simulatorId, stepDamage }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  simulator.stepDamage = stepDamage;
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});

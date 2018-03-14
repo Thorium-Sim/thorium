@@ -45,6 +45,7 @@ type Simulator {
   decks: [Deck]
   rooms: [Room]
   ship: Ship
+  stepDamage: Boolean
   requiredDamageSteps: [DamageStep]
   optionalDamageSteps: [DamageStep]
   exocomps: Int

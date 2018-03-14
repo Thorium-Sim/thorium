@@ -17,6 +17,7 @@ const SYSTEMS_SUB = gql`
         requested
         reactivationCode
         neededReactivationCode
+        currentStep
       }
       simulatorId
       type
@@ -140,13 +141,46 @@ class DamageControl extends Component {
       variables
     });
   };
+  setStep = step => {
+    const mutation = gql`
+      mutation SetDamageStep($systemId: ID!, $step: Int!) {
+        updateCurrentDamageStep(systemId: $systemId, step: $step)
+      }
+    `;
+    const variables = {
+      systemId: this.state.selectedSystem,
+      step
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  damageReportText = (system, steps, stepDamage) => {
+    if (system) {
+      if (stepDamage) {
+        return steps[system.damage.currentStep];
+      }
+      return system.damage.report;
+    }
+  };
   render() {
     if (this.props.data.loading) return null;
     const systems = this.props.data.systems;
-    if (!systems) return null;
+    const simulators = this.props.data.simulators;
+    if (!systems || !simulators) return null;
+    const { stepDamage } = simulators[0];
     const damagedSystem = systems.find(
       s => this.state.selectedSystem === s.id
     ) || { damage: {} };
+    const system =
+      this.state.selectedSystem && systems
+        ? systems.find(s => s.id === this.state.selectedSystem)
+        : null;
+    const report = system ? system.damage.report : "";
+    const steps = report
+      ? report.split(/Step [0-9]+:\n/gi).filter(s => s && s !== "\n")
+      : [];
     return (
       <Container fluid className="damage-control">
         <Row>
@@ -248,19 +282,56 @@ class DamageControl extends Component {
             )}
           </Col>
           <Col sm="9" className="damage-report">
-            <h4>Damage Report</h4>
-            <Card>
-              <CardBody>
-                <p className="damageReport-text">
-                  {this.state.selectedSystem && systems
-                    ? systems.find(s => s.id === this.state.selectedSystem)
-                        .damage.report
-                    : "No system selected."}
-                </p>
-              </CardBody>
-            </Card>
+            <Row>
+              <Col sm={12}>
+                <h4>Damage Report</h4>
+                <Card>
+                  <CardBody>
+                    <p
+                      className="damageReport-text"
+                      style={{ fontSize: "24px" }}
+                    >
+                      {this.damageReportText(system, steps, stepDamage)}
+                    </p>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+            {stepDamage && (
+              <Row>
+                <Col sm={3}>
+                  <Button
+                    disabled={!system || system.damage.currentStep === 0}
+                    block
+                    color="secondary"
+                    onClick={() => this.setStep(system.damage.currentStep - 1)}
+                  >
+                    Previous Step
+                  </Button>
+                </Col>
+                <Col sm={6}>
+                  <h3 className="text-center">
+                    {system ? system.damage.currentStep + 1 : 0} /{" "}
+                    {steps.length}
+                  </h3>
+                </Col>
+                <Col sm={3}>
+                  <Button
+                    disabled={
+                      !system || system.damage.currentStep === steps.length - 1
+                    }
+                    block
+                    color="secondary"
+                    onClick={() => this.setStep(system.damage.currentStep + 1)}
+                  >
+                    Next Step
+                  </Button>
+                </Col>
+              </Row>
+            )}
           </Col>
         </Row>
+
         <Tour
           steps={trainingSteps}
           isOpen={this.props.clientObj.training}
@@ -294,7 +365,11 @@ const trainingSteps = [
 ];
 
 const SYSTEMS_QUERY = gql`
-  query Systems($simulatorId: ID) {
+  query Systems($simulatorId: ID, $simId: String) {
+    simulators(id: $simId) {
+      id
+      stepDamage
+    }
     systems(simulatorId: $simulatorId, extra: true) {
       id
       name
@@ -304,6 +379,7 @@ const SYSTEMS_QUERY = gql`
         requested
         reactivationCode
         neededReactivationCode
+        currentStep
       }
       simulatorId
       type

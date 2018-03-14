@@ -53,7 +53,7 @@ import Library from "./Library";
 import CodeCyphers from "./CodeCyphers";
 import Interception from "./CommInterception";
 import SoftwarePanels from "./SoftwarePanels";
-import DamageStepControl from "./DamageStepControl";
+import DamageStepControl from "./DamageControl";
 import Roster from "./Roster";
 import Objectives from "./Objectives";
 import SurveyForm from "./SurveyForm";

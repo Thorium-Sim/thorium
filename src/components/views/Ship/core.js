@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { InputField } from "../../generic/core";
-import { Input, Button } from "reactstrap";
+import { Input, Button, Label } from "reactstrap";
 import LayoutList from "../../layouts/list";
 
 const layouts = LayoutList;
@@ -14,6 +14,7 @@ const SHIP_CORE_SUB = gql`
       name
       layout
       training
+      stepDamage
       ship {
         bridgeCrew
         radiation
@@ -123,10 +124,25 @@ class ShipCore extends Component {
       variables
     });
   };
+  setStepDamage = e => {
+    const mutation = gql`
+      mutation SetStepDamage($simulatorId: ID!, $stepDamage: Boolean!) {
+        setStepDamage(simulatorId: $simulatorId, stepDamage: $stepDamage)
+      }
+    `;
+    const variables = {
+      simulatorId: this.props.simulator.id,
+      stepDamage: e.target.checked
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.simulators) return null;
     const simulator = this.props.data.simulators[0];
-    const { name, layout, training } = simulator;
+    const { name, layout, training, stepDamage } = simulator;
     const { bridgeCrew, radiation } = simulator.ship;
     return (
       <div className="core-ship">
@@ -150,6 +166,15 @@ class ShipCore extends Component {
             </option>
           ))}
         </Input>
+        <div>
+          <Input
+            style={{ marginLeft: "10px", marginRight: "50px" }}
+            type="checkbox"
+            checked={stepDamage}
+            onChange={this.setStepDamage}
+          />
+          Step Damage Reports{" "}
+        </div>
         <p>Bridge Crew: </p>
         <InputField
           prompt={"What would you like to change the bridge crew to?"}
@@ -187,6 +212,7 @@ const SHIP_CORE_QUERY = gql`
       name
       layout
       training
+      stepDamage
       ship {
         bridgeCrew
         radiation
