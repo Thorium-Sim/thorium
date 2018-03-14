@@ -104,10 +104,16 @@ class TractorBeam extends Component {
         <Beam shown={tractorBeam.state} />
         <Asset asset="/Ship Views/Right" simulatorId={this.props.simulator.id}>
           {({ src }) => (
-            <img
-              alt="ship view"
+            <div
+              alt="ship"
+              style={{
+                height: "30vh",
+                backgroundImage: `url("${src}")`,
+                backgroundSize: "contain",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat"
+              }}
               className="ship-side"
-              src={src}
               draggable="false"
             />
           )}

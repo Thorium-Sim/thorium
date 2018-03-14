@@ -65,12 +65,18 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
               >
                 <Asset asset={"/Ship Views/Top"} simulatorId={simulator.id}>
                   {({ src }) => (
-                    <img
-                      alt="shield"
-                      role="presentation"
-                      className="mw-100 shieldImage"
+                    <div
+                      alt="ship"
+                      style={{
+                        width: "100%",
+                        height: "30vh",
+                        backgroundImage: `url("${src}")`,
+                        backgroundSize: "contain",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat"
+                      }}
+                      className="shieldImage"
                       draggable="false"
-                      src={src}
                     />
                   )}
                 </Asset>
@@ -85,12 +91,18 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
               >
                 <Asset asset={"/Ship Views/Right"} simulatorId={simulator.id}>
                   {({ src }) => (
-                    <img
-                      alt="shield"
-                      role="presentation"
-                      className="mw-100 shieldImage"
+                    <div
+                      alt="ship"
+                      style={{
+                        width: "100%",
+                        height: "20vh",
+                        backgroundImage: `url("${src}")`,
+                        backgroundSize: "contain",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat"
+                      }}
+                      className="shieldImage"
                       draggable="false"
-                      src={src}
                     />
                   )}
                 </Asset>

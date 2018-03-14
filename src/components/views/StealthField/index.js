@@ -163,10 +163,16 @@ class StealthField extends Component {
                     className="stealth"
                     style={{ transform: "rotate(360deg)" }}
                   >
-                    <img
+                    <div
                       alt="ship"
-                      style={{ width: "100%" }}
-                      src={src}
+                      style={{
+                        width: "100%",
+                        height: "30vh",
+                        backgroundImage: `url("${src}")`,
+                        backgroundSize: "contain",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat"
+                      }}
                       draggable="false"
                     />
                     <div

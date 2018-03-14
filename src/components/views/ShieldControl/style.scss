@@ -1,6 +1,6 @@
 .shields {
   height: 100%;
-  display: flex;
+  //display: flex;
   align-items: center;
   h1 {
     margin-bottom: 50px;
@@ -28,8 +28,8 @@
     text-align: center;
     width: 100%;
     height: 110%;
-    border: solid 1px rgba(255,255,255,0.5);
-    background-color: rgba(0,0,0,0.5);
+    border: solid 1px rgba(255, 255, 255, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     text-shadow: 5px 5px 5px black;
     h1 {
       color: red;

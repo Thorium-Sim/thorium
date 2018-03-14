@@ -15,13 +15,18 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
         <Col sm="7">
           <Asset asset={"/Ship Views/Top"} simulatorId={simulator.id}>
             {({ src }) => (
-              <img
-                alt="shield"
-                role="presentation"
-                className="mw-100 ccw-90 shieldImage"
-                style={{ filter: `drop-shadow(${color} 0px 0px 30px)` }}
+              <div
+                alt="ship"
+                style={{
+                  width: "100%",
+                  height: "70vh",
+                  backgroundImage: `url("${src}")`,
+                  backgroundSize: "contain",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                  filter: `drop-shadow(${color} 0px 0px 30px)`
+                }}
                 draggable="false"
-                src={src}
               />
             )}
           </Asset>

@@ -50,11 +50,19 @@ const Thrusters = props => {
               />
               <Asset asset="/Ship Views/Top" simulatorId={simulator.id}>
                 {({ src }) => (
-                  <img
+                  <div
                     alt="thruster"
                     draggable="false"
-                    src={src}
-                    style={{ width: "100%", transform: "rotate(-90deg)" }}
+                    style={{
+                      backgroundImage: `url('${src}')`,
+                      transform: "rotate(-90deg)",
+                      width: "200vw",
+                      height: "60vh",
+                      backgroundPosition: "center",
+                      backgroundSize: "contain",
+                      backgroundRepeat: "no-repeat",
+                      pointerEvents: "none"
+                    }}
                   />
                 )}
               </Asset>

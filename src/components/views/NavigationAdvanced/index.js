@@ -254,10 +254,16 @@ class AdvancedNavigation extends Component {
                   simulatorId={this.props.simulator.id}
                 >
                   {({ src }) => (
-                    <img
+                    <div
                       alt="ship"
-                      style={{ width: "100%" }}
-                      src={src}
+                      style={{
+                        width: "100%",
+                        height: "30vh",
+                        backgroundImage: `url("${src}")`,
+                        backgroundSize: "contain",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat"
+                      }}
                       draggable="false"
                     />
                   )}

@@ -435,18 +435,23 @@ class Scanning extends Component {
               <Row style={{ marginTop: "50px" }}>
                 <h4 className="text-center">Scan in progress...</h4>
                 {domain === "internal" ? (
-                  <Card className="scannerBox">
+                  <Card className="scannerBox" style={{ overflow: "hidden" }}>
                     <Asset
                       asset="/Ship Views/Right"
                       simulatorId={this.props.simulator.id}
                     >
                       {({ src }) => (
-                        <img
-                          alt="ship view"
-                          role="presentation"
-                          className="mw-100 ship-image"
+                        <div
+                          alt="ship"
+                          style={{
+                            width: "100%",
+                            height: "30vh",
+                            backgroundImage: `url("${src}")`,
+                            backgroundSize: "contain",
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat"
+                          }}
                           draggable="false"
-                          src={src}
                         />
                       )}
                     </Asset>
