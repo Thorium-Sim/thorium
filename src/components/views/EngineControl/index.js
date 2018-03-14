@@ -131,6 +131,7 @@ class EngineControl extends Component {
     this.setSpeedSubscription();
     this.systemSub();
   }
+  interactionTime = 0;
   speedBarStyle(array, speed, engineCount, index) {
     let width = speed / array.length * 100;
     if (engineCount - 1 === index) {
@@ -145,9 +146,11 @@ class EngineControl extends Component {
   setSpeed(engine, speed) {
     if (
       !engine.damage.damaged &&
-      engine.power.power >= engine.power.powerLevels[0]
+      engine.power.power >= engine.power.powerLevels[0] &&
+      Date.now() - this.interactionTime > 1000
     ) {
       this.props.setSpeed({ id: engine.id, speed: speed + 1, on: true });
+      this.interactionTime = Date.now();
     }
   }
   fullStop() {

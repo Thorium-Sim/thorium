@@ -8,29 +8,6 @@ export default class Satellites extends Component {
     this.state = {
       selectedSat: null
     };
-    this.sats = [
-      {
-        id: 1,
-        x: Math.random(),
-        y: Math.random(),
-        r: Math.random() * 360,
-        strength: Math.random()
-      },
-      {
-        id: 2,
-        x: Math.random(),
-        y: Math.random(),
-        r: Math.random() * 360,
-        strength: Math.random()
-      },
-      {
-        id: 3,
-        x: Math.random(),
-        y: Math.random(),
-        r: Math.random() * 360,
-        strength: Math.random()
-      }
-    ];
   }
   render() {
     const {
@@ -39,7 +16,9 @@ export default class Satellites extends Component {
       selectSat,
       selectedSat,
       messageLoc,
-      messageText
+      messageText,
+      satellites,
+      scanProgress
     } = this.props;
     //const [width, height] = [window.innerWidth / 2, window.innerHeight / 2.5];
     return (
@@ -54,6 +33,8 @@ export default class Satellites extends Component {
             style={{
               left: `calc(${width - 36} * ${messageLoc.x}px)`,
               top: `calc(${height - 36} * ${messageLoc.y}px)`,
+              transitionDuration: `${4 -
+                (selectedSat ? selectedSat.strength : 0) * 2}s`,
               opacity:
                 messageLoc.x === 0 ||
                 messageLoc.y === 0 ||
@@ -73,16 +54,25 @@ export default class Satellites extends Component {
               {messageText}
             </div>
           </div>
-          {this.sats.map(s => (
-            <Sat
-              {...s}
-              key={s.id}
-              width={width}
-              height={height}
-              selectSat={selectSat}
-              selectedSat={selectedSat}
-            />
-          ))}
+          <div
+            className="scanner-outer"
+            style={{ transform: `translateX(${(scanProgress - 0.05) * 105}%)` }}
+          >
+            <div className="scanner-bar" />
+          </div>
+          {satellites.map(
+            s =>
+              s.x <= scanProgress && (
+                <Sat
+                  {...s}
+                  key={s.id}
+                  width={width}
+                  height={height}
+                  selectSat={selectSat}
+                  selectedSat={selectedSat}
+                />
+              )
+          )}
         </div>
       </div>
     );

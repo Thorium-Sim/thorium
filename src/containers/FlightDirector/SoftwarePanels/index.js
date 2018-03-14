@@ -131,38 +131,45 @@ class App extends Component {
     const { components, connections, cables } = this.state;
     const calcedComps = {};
     const calcLevel = comp => {
-      if (calcedComps[comp.id] || calcedComps[comp.id] === 0)
-        return calcedComps[comp.id];
-      // Get the down-stream levels
-      const levels = connections
-        .filter(c => c.to === comp.id)
-        .map(c => c.from)
-        // Get the cables too.
-        .concat(
-          comp.component === "CableOutput"
-            ? cables
-                .filter(c => c.components.indexOf(comp.id) > -1)
-                .map(c => c.components.find(d => d !== comp.id))
-            : []
-        )
-        .map(c => components.find(d => d.id === c))
-        .map(
-          c =>
-            calcedComps[comp.id] || calcedComps[comp.id] === 0
-              ? calcedComps[comp.id]
-              : calcLevel(c)
-        )
-        .filter(c => (Array.isArray(c) ? c.length > 0 : c || c === 0))
-        .concat(topCompNames.indexOf(comp.component) > -1 ? [0] : [comp.level])
-        .sort(function(a, b) {
-          return b - a;
-        });
-      if (levels.length !== 1) {
-        levels.pop();
+      try {
+        if (calcedComps[comp.id] || calcedComps[comp.id] === 0) {
+          return calcedComps[comp.id];
+        } // Get the down-stream levels
+        const levels = connections
+          .filter(c => c.to === comp.id)
+          .map(c => c.from)
+          // Get the cables too.
+          .concat(
+            comp.component === "CableOutput"
+              ? cables
+                  .filter(c => c.components.indexOf(comp.id) > -1)
+                  .map(c => c.components.find(d => d !== comp.id))
+              : []
+          )
+          .map(c => components.find(d => d.id === c))
+          .map(
+            c =>
+              calcedComps[comp.id] || calcedComps[comp.id] === 0
+                ? calcedComps[comp.id]
+                : calcLevel(c)
+          )
+          .filter(c => (Array.isArray(c) ? c.length > 0 : c || c === 0))
+          .concat(
+            topCompNames.indexOf(comp.component) > -1 ? [0] : [comp.level]
+          )
+          .sort(function(a, b) {
+            return b - a;
+          });
+        if (levels.length !== 1) {
+          levels.pop();
+        }
+        const level = getComponentLevel(comp, levels);
+        calcedComps[comp.id] = level;
+        return level;
+      } catch (error) {
+        console.error(error);
+        return 0;
       }
-      const level = getComponentLevel(comp, levels);
-      calcedComps[comp.id] = level;
-      return level;
     };
 
     const topComponents = components.filter(
@@ -341,6 +348,7 @@ class App extends Component {
             components: panel.components,
             connections: panel.connections,
             cables: panel.cables,
+            selectedComponent: null,
             selectedPanel: id
           },
           () => this.reconcileComponents()

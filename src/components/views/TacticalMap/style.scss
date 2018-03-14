@@ -4,6 +4,7 @@
   grid-template-rows: (70vw * 9/16) auto;
   grid-template-areas: "preview sidebar" "bottom sidebar";
   background-color: #111;
+  color: white;
   .list-group-item {
     background-color: transparent;
   }

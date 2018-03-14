@@ -318,6 +318,7 @@ class TacticalIcon extends Component {
         mouseDown={this.mouseDown}
         location={location}
         movement={movement}
+        destination={destination}
         size={size}
         objectId={objectId}
         isSelected={isSelected}
@@ -338,7 +339,7 @@ const IconMarkup = ({
   mouseDown,
   location,
   destination,
-  movement,
+  movement = { x: 0, y: 0, z: 0 },
   size,
   objectId,
   id,
@@ -351,70 +352,88 @@ const IconMarkup = ({
   flashing,
   core,
   isSelected
-}) => [
-  location ? (
-    <div
-      className={"tactical-icon"}
-      key={`icon-location-${id}`}
-      style={{
-        transform: `translate(${location.x * 100}%, ${location.y * 100}%)`,
-        opacity: core ? 0.5 : 1
-      }}
-    >
+}) => {
+  return [
+    location ? (
       <div
-        className="image-holder"
-        onMouseDown={mouseDown}
+        className={"tactical-icon"}
+        key={`icon-location-${id}`}
         style={{
-          transform: `scale(${size})`,
-          opacity: flash && flashing ? 0 : 1
+          transform: `translate(${location.x * 100}%, ${location.y * 100}%)`,
+          opacity: core ? 0.5 : 1
         }}
       >
-        {src && <img alt="icon" draggable={false} src={src} />}
-        <pre
-          className="icon-label"
-          style={{ fontFamily: font, color: fontColor, fontSize }}
+        <div
+          className="image-holder"
+          onMouseDown={mouseDown}
+          style={{
+            transform: `scale(${size})`,
+            opacity: flash && flashing ? 0 : 1
+          }}
         >
-          {label}
-        </pre>
+          {src && <img alt="icon" draggable={false} src={src} />}
+          <pre
+            className="icon-label"
+            style={{ fontFamily: font, color: fontColor, fontSize }}
+          >
+            {label}
+          </pre>
+        </div>
       </div>
-    </div>
-  ) : null,
-  core ? (
-    <div
-      className={"tactical-icon"}
-      key={`icon-destination-${id}`}
-      style={{
-        transform: `translate(${(destination.x + movement.x) *
-          100}%, ${(destination.y + movement.y) * 100}%)`
-      }}
-    >
+    ) : null,
+    core ? (
       <div
-        className="image-holder"
-        onMouseDown={mouseDown}
+        className={"tactical-icon"}
+        key={`icon-destination-${id}`}
         style={{
-          transform: `scale(${size})`,
-          opacity: flash && flashing ? 0 : 1
+          transform: `translate(${(destination.x + movement.x) *
+            100}%, ${(destination.y + movement.y) * 100}%)`
         }}
       >
-        {(objectId === id || isSelected) && (
-          <div className="select-loc">
-            <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
-            <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
-            <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
-            <img alt="loc" draggable={false} src={require("./cornerLoc.svg")} />
-          </div>
-        )}
-        {src && <img alt="icon" draggable={false} src={src} />}
-        <pre
-          className="icon-label"
-          style={{ fontFamily: font, color: fontColor, fontSize }}
+        <div
+          className="image-holder"
+          onMouseDown={mouseDown}
+          style={{
+            transform: `scale(${size})`,
+            opacity: flash && flashing ? 0 : 1
+          }}
         >
-          {label}
-        </pre>
+          {(objectId === id || isSelected) && (
+            <div className="select-loc">
+              <img
+                alt="loc"
+                draggable={false}
+                src={require("./cornerLoc.svg")}
+              />
+              <img
+                alt="loc"
+                draggable={false}
+                src={require("./cornerLoc.svg")}
+              />
+              <img
+                alt="loc"
+                draggable={false}
+                src={require("./cornerLoc.svg")}
+              />
+              <img
+                alt="loc"
+                draggable={false}
+                src={require("./cornerLoc.svg")}
+              />
+            </div>
+          )}
+          {src && <img alt="icon" draggable={false} src={src} />}
+          <pre
+            className="icon-label"
+            style={{ fontFamily: font, color: fontColor, fontSize }}
+          >
+            {label}
+          </pre>
+        </div>
       </div>
-    </div>
-  ) : null
-];
+    ) : null
+  ];
+};
 export default class TacticalMapPreview extends Component {
   keypress = evt => {
     const distance = 0.005;

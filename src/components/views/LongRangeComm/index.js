@@ -98,9 +98,12 @@ class LongRangeComm extends Component {
       selectedMessage: null,
       selectedSat: null,
       messageLoc: messageLoc(),
-      messageText: null
+      messageText: null,
+      satellites: [],
+      scanProgress: 0
     };
   }
+  scanning = false;
   componentWillReceiveProps(nextProps) {
     if (!this.lrsub && !nextProps.data.loading) {
       this.lrsub = nextProps.data.subscribeToMore({
@@ -119,6 +122,7 @@ class LongRangeComm extends Component {
   }
   componentWillUnmount() {
     this.lrsub && this.lrsub();
+    this.scanning = false;
   }
   selectSat(sat) {
     this.setState({
@@ -175,12 +179,17 @@ class LongRangeComm extends Component {
         }
       );
     };
+    const { selectedSat } = this.state;
+    const timer = Math.round(
+      4000 -
+        this.state.satellites.find(s => s.id === selectedSat.id).strength * 2000
+    );
     const messageHide = () => {
       this.setState({
         messageText: null,
         messageLoc: messageLoc()
       });
-      setTimeout(sendMessage, 2000);
+      setTimeout(sendMessage, timer);
     };
     const messageShow = () => {
       const message = this.props.data.longRangeCommunications[0].messages.find(
@@ -190,15 +199,65 @@ class LongRangeComm extends Component {
         messageText: message.message
       });
 
-      setTimeout(messageHide, 2000);
+      setTimeout(messageHide, timer);
     };
-    setTimeout(messageShow, 2000);
+    setTimeout(messageShow, timer);
   }
+  scan = () => {
+    if (this.scanning) {
+      if (this.state.scanProgress >= 1) {
+        return this.setState({
+          scanProgress: 1
+        });
+      }
+      this.setState(
+        ({ scanProgress }) => ({
+          scanProgress: scanProgress + 0.003
+        }),
+        () => requestAnimationFrame(this.scan)
+      );
+    }
+  };
+  startScanning = () => {
+    this.setState(
+      {
+        satellites: [
+          {
+            id: 1,
+            x: Math.random(),
+            y: Math.random(),
+            r: Math.random() * 360,
+            strength: Math.random()
+          },
+          {
+            id: 2,
+            x: Math.random(),
+            y: Math.random(),
+            r: Math.random() * 360,
+            strength: Math.random()
+          },
+          {
+            id: 3,
+            x: Math.random(),
+            y: Math.random(),
+            r: Math.random() * 360,
+            strength: Math.random()
+          }
+        ],
+        scanProgress: 0
+      },
+      () => {
+        this.scanning = true;
+        this.scan();
+      }
+    );
+  };
   render() {
     if (this.props.data.loading || !this.props.data.longRangeCommunications)
       return null;
     const messages = this.props.data.longRangeCommunications[0].messages;
     const messageObj = messages.find(m => m.id === this.state.selectedMessage);
+    const { scanProgress, satellites } = this.state;
     return (
       <Row className="long-range-comm">
         <DamageOverlay
@@ -244,36 +303,62 @@ class LongRangeComm extends Component {
                       height={this.state.dimensions.height}
                       messageLoc={this.state.messageLoc}
                       messageText={this.state.messageText}
+                      satellites={satellites}
+                      scanProgress={scanProgress}
                     />
                   )}
                 </div>
               )}
             </Measure>
           </div>
-          <Row style={{ marginTop: "10px" }}>
-            <Col lg={{ size: 4, offset: 1 }} xl={{ size: 3, offset: 2 }}>
-              <Button
-                onClick={this.deleteMessage.bind(this)}
-                size="lg"
-                block
-                disabled={!messageObj}
-                color="danger"
-              >
-                Delete Message
-              </Button>
-            </Col>
-            <Col lg={{ size: 4, offset: 2 }} xl={{ size: 3, offset: 2 }}>
-              <Button
-                onClick={this.sendMessage.bind(this)}
-                disabled={!this.state.selectedSat || !messageObj}
-                size="lg"
-                block
-                color="success"
-              >
-                Send Message
-              </Button>
-            </Col>
-          </Row>
+          {scanProgress === 1 && (
+            <Row style={{ marginTop: "10px" }}>
+              <Col lg={{ size: 4, offset: 1 }} xl={{ size: 3, offset: 2 }}>
+                <Button
+                  onClick={this.deleteMessage.bind(this)}
+                  size="lg"
+                  block
+                  disabled={!messageObj}
+                  color="danger"
+                >
+                  Delete Message
+                </Button>
+              </Col>
+              <Col lg={{ size: 4, offset: 2 }} xl={{ size: 3, offset: 2 }}>
+                <Button
+                  onClick={this.sendMessage.bind(this)}
+                  disabled={!this.state.selectedSat || !messageObj}
+                  size="lg"
+                  block
+                  color="success"
+                >
+                  Send Message
+                </Button>
+              </Col>
+            </Row>
+          )}
+          {satellites.length === 0 && (
+            <Row style={{ marginTop: "10px" }}>
+              <Col sm={{ size: 10, offset: 1 }}>
+                <Button
+                  size="lg"
+                  block
+                  color="primary"
+                  onClick={this.startScanning}
+                >
+                  Scan for Satellites
+                </Button>
+              </Col>
+            </Row>
+          )}
+          {satellites.length > 0 &&
+            scanProgress < 1 && (
+              <Row style={{ marginTop: "10px" }}>
+                <Col sm={12} className="text-center">
+                  <h2>Scanning...</h2>
+                </Col>
+              </Row>
+            )}
           <MessageBox message={messageObj && messageObj.message} />
         </Col>
         <Tour

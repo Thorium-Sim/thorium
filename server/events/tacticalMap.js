@@ -79,31 +79,36 @@ App.on("removeTacticalMapItem", ({ mapId, layerId, itemId }) => {
   map.removeItemFromLayer(layerId, itemId);
   pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
 });
-App.on("showViewscreenTactical", ({ mapId, simulatorId, secondary }) => {
-  const flight = App.flights.find(f => f.simulators.indexOf(simulatorId) > -1);
-  const viewscreen = App.viewscreens.find(
-    v => v.simulatorId === simulatorId && v.secondary === secondary
-  );
-  if (!viewscreen) return;
-  const newid = uuid.v4();
-  const map = App.tacticalMaps.find(t => t.id === mapId);
-  App.tacticalMaps.push(
-    new Classes.TacticalMap(
-      Object.assign({}, map, {
-        id: newid,
-        dup: true,
-        flightId: flight.id,
-        template: false
-      })
-    )
-  );
+App.on(
+  "showViewscreenTactical",
+  ({ mapId, simulatorId, secondary = false }) => {
+    const flight = App.flights.find(
+      f => f.simulators.indexOf(simulatorId) > -1
+    );
+    const viewscreen = App.viewscreens.find(
+      v => v.simulatorId === simulatorId && v.secondary === secondary
+    );
+    if (!viewscreen) return;
+    const newid = uuid.v4();
+    const map = App.tacticalMaps.find(t => t.id === mapId);
+    App.tacticalMaps.push(
+      new Classes.TacticalMap(
+        Object.assign({}, map, {
+          id: newid,
+          dup: true,
+          flightId: flight.id,
+          template: false
+        })
+      )
+    );
 
-  // First de-auto the viewscreen, since we want to force this component;
-  viewscreen.updateAuto(false);
-  viewscreen.updateComponent(
-    "TacticalMap",
-    JSON.stringify({ tacticalMapId: newid })
-  );
-  pubsub.publish("viewscreensUpdate", App.viewscreens);
-  pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
-});
+    // First de-auto the viewscreen, since we want to force this component;
+    viewscreen.updateAuto(false);
+    viewscreen.updateComponent(
+      "TacticalMap",
+      JSON.stringify({ tacticalMapId: newid })
+    );
+    pubsub.publish("viewscreensUpdate", App.viewscreens);
+    pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+  }
+);

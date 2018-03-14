@@ -13,6 +13,9 @@ const INVENTORY_SUB = gql`
       name
       roomCount {
         room {
+          deck {
+            number
+          }
           name
           id
         }
@@ -98,57 +101,7 @@ class CargoControl extends Component {
     });
   }
   findInv(e) {
-    const variables = {
-      name: e.target.value,
-      simulatorId: this.props.simulator.id
-    };
-    const query = gql`
-      query InventorySearch($name: String, $simulatorId: ID) {
-        inventory(name: $name, simulatorId: $simulatorId) {
-          name
-          id
-          roomCount {
-            room {
-              deck {
-                number
-              }
-              id
-              name
-            }
-            count
-          }
-        }
-      }
-    `;
-    if (variables.name) {
-      this.props.client
-        .query({
-          query,
-          variables
-        })
-        .then(res => {
-          if (res.data && res.data.inventory) {
-            this.setState({
-              findInventory: res.data.inventory.map(i => ({
-                id: i.id,
-                name: i.name,
-                locations: i.roomCount
-                  .filter(rc => rc.count > 0)
-                  .map(
-                    rc =>
-                      `${rc.room.name}, Deck ${rc.room.deck.number} (${
-                        rc.count
-                      })`
-                  )
-              }))
-            });
-          }
-        });
-    } else {
-      this.setState({
-        findInventory: null
-      });
-    }
+    this.setState({ findInventory: e.target.value });
   }
   render() {
     if (this.props.data.loading) return null;
@@ -258,21 +211,32 @@ class CargoControl extends Component {
             <Input
               className="find-inventory"
               size="sm"
+              value={this.state.findInventory}
               onChange={this.findInv.bind(this)}
             />
             {this.state.findInventory && (
               <Card className="search-container">
                 <CardBody>
-                  {this.state.findInventory.map(i => (
-                    <div key={`find-${i.id}`}>
-                      {i.name}
-                      <ul>
-                        {i.locations.map((l, index) => (
-                          <li key={`loc-${index}`}>{l}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
+                  {inventory
+                    .filter(i =>
+                      i.name.match(new RegExp(this.state.findInventory, "gi"))
+                    )
+                    .map(i => (
+                      <div key={`find-${i.id}`}>
+                        {i.name}
+                        <ul>
+                          {i.roomCount
+                            .filter(r => r.count > 0)
+                            .map((r, index) => (
+                              <li key={`loc-${index}`}>
+                                {r.room.name}, Deck {r.room.deck.number} ({
+                                  r.count
+                                })
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    ))}
                 </CardBody>
               </Card>
             )}
@@ -326,6 +290,9 @@ const INVENTORY_QUERY = gql`
       name
       roomCount {
         room {
+          deck {
+            number
+          }
           name
           id
         }

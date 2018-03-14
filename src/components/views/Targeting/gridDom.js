@@ -153,6 +153,12 @@ class TargetingGridDom extends Component {
       return t;
     });
   };
+  _touchMove = id => {
+    // See if there is a target
+    if (!this.props.targets.find(t => t.targeted)) {
+      this.props.targetContact(id);
+    }
+  };
   render() {
     const lines = 15;
     const { targets } = this.state;
@@ -170,7 +176,12 @@ class TargetingGridDom extends Component {
         </div>
         <div className="icons">
           {targets.map(t => (
-            <Target key={t.id} mousemove={this._mouseMove} {...t} />
+            <Target
+              key={t.id}
+              mousemove={this._mouseMove}
+              touchmove={this._touchMove}
+              {...t}
+            />
           ))}
         </div>
       </div>
@@ -180,7 +191,17 @@ class TargetingGridDom extends Component {
 
 export default TargetingGridDom;
 
-const Target = ({ id, mousemove, icon, name, x, y, scale, targeted }) => {
+const Target = ({
+  id,
+  mousemove,
+  touchmove,
+  icon,
+  name,
+  x,
+  y,
+  scale,
+  targeted
+}) => {
   return (
     <Asset asset={icon}>
       {({ src }) => (
@@ -192,7 +213,7 @@ const Target = ({ id, mousemove, icon, name, x, y, scale, targeted }) => {
             className="target"
             src={src}
             onMouseMove={evt => mousemove(id, evt)}
-            onTouchMove={evt => mousemove(id, evt)}
+            onTouchMove={evt => touchmove(id, evt)}
             style={{
               transform: `translate(${x}px, ${y}px) scale(${scale})`
             }}
