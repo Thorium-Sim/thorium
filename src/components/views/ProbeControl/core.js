@@ -118,7 +118,18 @@ class ProbeControl extends Component {
             </div>
           </Col>
           {selectedProbe && (
-            <Col sm={9} style={{ height: "100%" }}>
+            <Col sm={3} style={{ height: "100%" }}>
+              {probes.probes
+                .find(p => p.id === selectedProbe)
+                .equipment.map(e => (
+                  <p key={e.id}>
+                    ({e.count}) {e.name}
+                  </p>
+                ))}
+            </Col>
+          )}
+          {selectedProbe && (
+            <Col sm={6} style={{ height: "100%" }}>
               <Row>
                 <Col sm={12}>
                   <OutputField
