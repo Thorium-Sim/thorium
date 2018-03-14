@@ -23,6 +23,7 @@ export { default as Video } from "./Video";
 export { default as Blackout } from "./blackout";
 export { default as TacticalMap } from "./TacticalMap";
 export { default as Faces } from "./Faces";
+export { default as DamageMonitoring } from "./DamageMonitoring";
 
 export { default as InformationConfig } from "./Information/config";
 export { default as InternalSensorsConfig } from "./InternalSensors/config";
