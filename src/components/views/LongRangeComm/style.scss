@@ -21,7 +21,7 @@
     height: 100%;
     overflow-y: scroll;
   }
-  pre:first-child{
+  pre:first-child {
     border-top: none;
   }
 }
@@ -30,7 +30,7 @@
     list-style: none;
     margin: 5px;
     padding: 2px;
-    &.active{
+    &.active {
       background-color: gray;
       border-radius: 5px;
     }
@@ -38,8 +38,8 @@
   pre {
     white-space: pre-wrap;
     border-radius: 10px;
-    background-color: rgba(0,0,0,0.5);
-    border: solid 1px rgba(255,255,255,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
+    border: solid 1px rgba(255, 255, 255, 0.5);
     padding: 20px;
     margin: 20px 0;
     height: 30vh;
@@ -54,19 +54,42 @@
 
   .starfield {
     background-color: #222;
-    border: solid 2px rgba(255,255,255,0.25);
+    border: solid 2px rgba(255, 255, 255, 0.25);
     position: relative;
     margin: 0 auto;
   }
   .gridlines {
     position: absolute;
     background-color: transparent;
-    background-image: linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .1) 25%, rgba(255, 255, 255, .1) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .1) 75%, rgba(255, 255, 255, .1) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .1) 25%, rgba(255, 255, 255, .1) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .1) 75%, rgba(255, 255, 255, .1) 76%, transparent 77%, transparent);
-    height:100%;
+    background-image: linear-gradient(
+        0deg,
+        transparent 24%,
+        rgba(255, 255, 255, 0.1) 25%,
+        rgba(255, 255, 255, 0.1) 26%,
+        transparent 27%,
+        transparent 74%,
+        rgba(255, 255, 255, 0.1) 75%,
+        rgba(255, 255, 255, 0.1) 76%,
+        transparent 77%,
+        transparent
+      ),
+      linear-gradient(
+        90deg,
+        transparent 24%,
+        rgba(255, 255, 255, 0.1) 25%,
+        rgba(255, 255, 255, 0.1) 26%,
+        transparent 27%,
+        transparent 74%,
+        rgba(255, 255, 255, 0.1) 75%,
+        rgba(255, 255, 255, 0.1) 76%,
+        transparent 77%,
+        transparent
+      );
+    height: 100%;
     width: 100%;
-    background-size:50px 50px;
+    background-size: 50px 50px;
   }
-  .sat{
+  .sat {
     position: absolute;
     width: 48px;
     height: 48px;
@@ -82,9 +105,9 @@
     background-color: white;
   }
   .message-ball {
-    width:1px;
+    width: 1px;
     height: 1px;
-    background-color: rgba(255,255,255,0.9);
+    background-color: rgba(255, 255, 255, 0.9);
     position: absolute;
     border-radius: 50%;
     box-shadow: 0px 0px 5px 10px white;
@@ -96,19 +119,35 @@
     white-space: pre-wrap;
     text-shadow: 1px 1px 1px black;
   }
+  .scanner-outer {
+    width: 100%;
+    height: 100%;
+  }
+  .scanner-bar {
+    width: 2%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+  }
 }
 @keyframes rotateSat {
-  from {transform: rotate(0deg);}
-  to {transform: rotate(360deg);}
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .comm-core {
   height: 100%;
   .comm-messages li {
     font-size: 16px;
+    line-height: 1.3;
+    padding-left: 5px;
   }
   pre {
     text-align: left;
-    font-size: 12px;
+    font-size: 16px;
+    line-height: 1.3;
   }
 }
