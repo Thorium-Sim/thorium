@@ -37,6 +37,11 @@ const TEAMS_SUB = gql`
       officers {
         id
         name
+        inventory {
+          id
+          name
+          count
+        }
       }
     }
   }
@@ -111,7 +116,7 @@ class Teams extends Component {
     return (
       <Container fluid className="damage-teams-core">
         <Row>
-          <Col sm={6} className="scroller">
+          <Col sm={4} className="scroller">
             {teams.map(t => (
               <p
                 key={t.id}
@@ -124,12 +129,12 @@ class Teams extends Component {
               </p>
             ))}
           </Col>
-          <Col sm={{ size: 6 }} className="scroller">
+          <Col sm={{ size: 8 }} className="scroller">
             {(() => {
               if (!selectedTeam) return null;
               const team = teams.find(t => t.id === selectedTeam);
-              let deck = {},
-                room = {};
+              let deck = {};
+              let room = {};
               if (team.location) {
                 deck = decks.find(d => d.id === team.location.id);
                 if (!deck) {
@@ -157,7 +162,18 @@ class Teams extends Component {
                   </div>
                   <div className="label-section">
                     <Label for="teamName">Assigned Officers</Label>
-                    {team.officers.map(c => <p key={c.id}>{c.name}</p>)}
+                    {team.officers.map(c => (
+                      <p key={c.id}>
+                        {c.name}
+                        <ul className="inventory">
+                          {c.inventory.map(i => (
+                            <li key={`${c.id}-${i.id}`}>
+                              ({i.count}) {i.name}
+                            </li>
+                          ))}
+                        </ul>
+                      </p>
+                    ))}
                   </div>
                   <Button
                     size="sm"
@@ -204,6 +220,11 @@ const TEAMS_QUERY = gql`
       officers {
         id
         name
+        inventory {
+          id
+          name
+          count
+        }
       }
     }
     decks(simulatorId: $simId) {

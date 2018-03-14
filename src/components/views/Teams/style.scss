@@ -11,10 +11,10 @@
       padding: 5px;
       border-radius: 5px;
       &:active {
-        background-color: rgba(255,255,255,0.4);
+        background-color: rgba(255, 255, 255, 0.4);
       }
       &.selected {
-        background-color: rgba(255,255,255,0.2);
+        background-color: rgba(255, 255, 255, 0.2);
       }
     }
   }
@@ -26,28 +26,29 @@
         border-radius: 5px;
         padding: 5px;
         &:active {
-          background-color: rgba(255,255,255,0.4);
+          background-color: rgba(255, 255, 255, 0.4);
         }
         &.selected {
-          background-color: rgba(255,255,255,0.2);
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+      }
+      p {
+        padding: 0;
+        &:active {
+          background-color: transparent;
+        }
+        &.selected {
+          background-color: transparent;
+        }
+      }
+      small {
+        display: block;
+        margin-top: -5px;
+      }
     }
   }
-  p {
-    padding: 0;
-    &:active {
-      background-color: transparent;
-    }
-    &.selected {
-      background-color: transparent;
-    }
-  }
-  small {
-   display: block;
-   margin-top: -5px;
- }
-}
-}
-  .location-label, .location-label label  {
+  .location-label,
+  .location-label label {
     margin-bottom: 0;
     padding-bottom: 0;
   }
@@ -58,7 +59,7 @@
     font-size: 14px;
   }
 }
-.damage-teams-core {
+.core .damage-teams-core {
   height: 100%;
   .row {
     height: 100%;
@@ -66,17 +67,27 @@
   label {
     display: block;
     margin: 0;
-    font-weight: 800;
+    padding: 0;
+    font-weight: 600;
   }
   .scroller {
     max-height: calc(100% - 20px);
     overflow-y: scroll;
   }
   .label-section {
-        margin-bottom: 5px;
+    margin-bottom: 5px;
+  }
+  .selected {
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.5);
   }
   p {
     margin: 0;
+    padding: 2px 5px;
     margin-bottom: 5px;
+  }
+  .inventory {
+    list-style: square;
+    margin-left: 20px;
   }
 }
