@@ -342,11 +342,12 @@ class Targeting extends Component {
     document.addEventListener("mouseup", this.stopCoolant);
     document.addEventListener("touchend", this.stopCoolant);
   }
+  interactionTime = 0;
   firePhasers = (beamId, e) => {
     e.preventDefault && e.preventDefault();
     e.stopPropagation && e.stopPropagation();
-    e.cancelBubble = true;
-    e.returnValue = false;
+    if (Date.now() - this.interactionTime < 2000) return;
+    this.interactionTime = Date.now();
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
       mutation FirePhasers($id: ID!, $beamId: ID!) {
