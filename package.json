@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.10",
-    "apollo-client": "^2.2.6",
+    "apollo-client": "^2.2.7",
     "apollo-link-ws": "^1.0.7",
     "apollo-link-http": "^1.5.3",
     "appdirectory": "^0.1.0",
