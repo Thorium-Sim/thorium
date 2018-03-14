@@ -149,35 +149,33 @@ class FileExplorer extends Component {
     }
     return (
       <div className="file-explorer">
-        {config && (
-          <div>
-            <h4>{currentDirectory}</h4>
-            <Button color="primary" onClick={this._createFolder}>
-              Create Folder <FontAwesome name="folder-open" />
-            </Button>
-            <Button color="warning" style={{ position: "relative" }}>
-              <div
-                style={{
-                  opacity: 0,
-                  position: "absolute",
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 0
-                }}
-              >
-                <input
-                  ref="massUpload"
-                  type="file"
-                  id="mass-upload-folder"
-                  multiple
-                  onChange={this._massUpload}
-                />
-              </div>
-              Upload Assets <FontAwesome name="upload" />
-            </Button>
-          </div>
-        )}
+        <div>
+          <h4>{currentDirectory}</h4>
+          <Button color="primary" onClick={this._createFolder}>
+            Create Folder <FontAwesome name="folder-open" />
+          </Button>
+          <Button color="warning" style={{ position: "relative" }}>
+            <div
+              style={{
+                opacity: 0,
+                position: "absolute",
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0
+              }}
+            >
+              <input
+                ref="massUpload"
+                type="file"
+                id="mass-upload-folder"
+                multiple
+                onChange={this._massUpload}
+              />
+            </div>
+            Upload Assets <FontAwesome name="upload" />
+          </Button>
+        </div>
         <div className="directory-container">
           {currentDirectory !== directory && (
             <div
