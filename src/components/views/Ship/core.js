@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { InputField } from "../../generic/core";
-import { Input, Button, Label } from "reactstrap";
+import { Input, Button } from "reactstrap";
 import LayoutList from "../../layouts/list";
 
 const layouts = LayoutList;

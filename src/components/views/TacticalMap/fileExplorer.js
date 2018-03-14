@@ -143,7 +143,7 @@ class FileExplorer extends Component {
     if (this.props.data.loading || !this.props.data.assetFolders) return null;
     const { assetFolders = [] } = this.props.data;
     let { currentDirectory } = this.state;
-    const { directory, selectedFiles = [], config } = this.props;
+    const { directory, selectedFiles = [] } = this.props;
     if (!assetFolders.find(a => a.fullPath === currentDirectory)) {
       currentDirectory = "/";
     }
