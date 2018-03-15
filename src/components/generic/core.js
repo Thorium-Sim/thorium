@@ -93,7 +93,7 @@ export const TypingField = ({
           onChange={onChange}
           onBlur={onBlur}
           style={compStyle}
-          value={value}
+          value={value || ""}
         />
       );
     }
@@ -105,7 +105,7 @@ export const TypingField = ({
         onChange={onChange}
         onBlur={onBlur}
         style={compStyle}
-        defaultValue={value}
+        defaultValue={value || ""}
       />
     );
   }
@@ -119,7 +119,7 @@ export const TypingField = ({
         onChange={onChange}
         onBlur={onBlur}
         style={compStyle}
-        value={value}
+        value={value || ""}
       />
     );
   }
@@ -131,7 +131,7 @@ export const TypingField = ({
       onChange={onChange}
       onBlur={onBlur}
       style={compStyle}
-      defaultValue={value}
+      defaultValue={value || ""}
     />
   );
 };
