@@ -205,6 +205,7 @@ class SensorsCore extends Component {
       height: 22
     };
     const { selectedScan } = this.state;
+    if (!sensor) return <p>No Sensors</p>;
     const scan = sensor.scans.find(s => s.id === selectedScan);
     if (this.props.data.loading) return <span>Loading...</span>;
     return (

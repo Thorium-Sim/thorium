@@ -67,6 +67,7 @@ class EngineCoreView extends Component {
   }
   getCurrentSpeed() {
     if (!this.props.data.engines) return;
+    if (!this.props.data.engines[0]) return;
     const velocity = this.props.data.engines[0].velocity;
     const speed = this.props.data.engines
       .reduce((prev, next) => {
@@ -123,6 +124,7 @@ class EngineCoreView extends Component {
             <p>Velocity</p>
             {this.getCurrentSpeed()} -{" "}
             {this.props.data.engines &&
+              this.props.data.engines[0] &&
               `${this.props.data.engines[0].velocity.toLocaleString()} km/s`}
           </Col>
         </Row>
