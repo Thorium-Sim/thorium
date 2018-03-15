@@ -59,6 +59,7 @@ class LongRangeComm extends Component {
     const { data: { loading, longRangeCommunications } } = this.props;
     if (loading || !longRangeCommunications) return null;
     const lrComm = longRangeCommunications[0];
+    if (!lrComm) return <p>No Long Range Comm</p>;
     const { interception, locked, decoded } = lrComm;
     return (
       <div>

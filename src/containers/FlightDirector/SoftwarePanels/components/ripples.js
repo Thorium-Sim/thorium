@@ -13,7 +13,7 @@ const PlasmaRipples = ({
   edit,
   color = "blue"
 }) => {
-  const alpha = level || inputs[0] || 0;
+  const alpha = level || (level === 0 ? 0 : inputs[0]) || 0;
   return (
     <div style={{ transform: `scale(${scale})` }}>
       {page &&
