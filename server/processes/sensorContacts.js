@@ -14,7 +14,31 @@ const moveSensorContactTimed = () => {
   const time = Date.now();
   let sendUpdate = false;
   App.systems.filter(sys => sys.type === "Sensors").forEach(sensors => {
+    const { movement } = sensors;
     sensors.contacts = sensors.contacts.map(contact => {
+      // To start out, update the position, location, and destination based
+      // on the sensors movement
+      if (
+        Math.abs(movement.x) > 0 &&
+        Math.abs(movement.y) > 0 &&
+        Math.abs(movement.z) > 0
+      ) {
+        contact.location = {
+          x: contact.location.x + movement.x,
+          y: contact.location.y + movement.y,
+          z: contact.location.z + movement.z
+        };
+        contact.position = {
+          x: contact.position.x + movement.x,
+          y: contact.position.y + movement.y,
+          z: contact.position.z + movement.z
+        };
+        contact.destination = {
+          x: contact.destination.x + movement.x,
+          y: contact.destination.y + movement.y,
+          z: contact.destination.z + movement.z
+        };
+      }
       if (contact.speed === 0) return contact;
       const {
         location,

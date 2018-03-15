@@ -306,3 +306,11 @@ App.on("setSensorsInterference", ({ id, interference }) => {
     App.systems.filter(s => s.type === "Sensors")
   );
 });
+App.on("setAutoMovement", ({ id, movement }) => {
+  const sensors = App.systems.find(sys => sys.id === id);
+  sensors.setMovement(movement);
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});

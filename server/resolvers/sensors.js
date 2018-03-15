@@ -118,6 +118,9 @@ export const SensorsMutations = {
   },
   setSensorsInterference(root, args, context) {
     App.handleEvent(args, "setSensorsInterference", context);
+  },
+  setAutoMovement(root, args, context) {
+    App.handleEvent(args, "setAutoMovement", context);
   }
 };
 

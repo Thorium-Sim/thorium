@@ -114,6 +114,7 @@ class GridDom extends Component {
     if (!this.props.data.loading) {
       const {
         data: { sensorContacts: contacts },
+        movement,
         pingTime,
         pings
       } = this.props;
@@ -125,7 +126,12 @@ class GridDom extends Component {
           speed = location.speed;
           destination = location.destination;
         }
-        const moveResult = this.moveContact(c, location.location, speed);
+        const moveResult = this.moveContact(
+          c,
+          location.location,
+          speed,
+          movement
+        );
         moveResult.destination = destination;
         if (pings) {
           moveResult.opacity = this.contactPing(c, Date.now() - pingTime);
@@ -140,7 +146,8 @@ class GridDom extends Component {
   moveContact = (
     { destination, location, startTime, endTime },
     position,
-    speed
+    speed,
+    { x, y, z }
   ) => {
     if (speed === 0) {
       return {

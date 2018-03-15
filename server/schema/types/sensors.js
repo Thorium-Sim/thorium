@@ -26,6 +26,7 @@ type Sensors implements SystemInterface{
   frozen: Boolean
   autoThrusters: Boolean
   interference: Float
+  movement: Coordinates
   segments: [SensorsSegment]
   locations: [Room]
 }

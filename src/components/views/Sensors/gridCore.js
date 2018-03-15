@@ -6,6 +6,7 @@ import { Row, Col, Container, Button, Input, ButtonGroup } from "reactstrap";
 import Grid from "./GridDom";
 import ExtraControls from "./extraControls";
 import ContactsList from "./contactsList";
+import MovementCore from "./movementCore";
 import "./gridCore.css";
 
 function distance3d(coord2, coord1) {
@@ -22,6 +23,11 @@ const SENSOR_SUB = gql`
       autoTarget
       autoThrusters
       interference
+      movement {
+        x
+        y
+        z
+      }
       segments {
         segment
         state
@@ -284,8 +290,8 @@ class GridCore extends Component {
                 color="success"
                 onClick={() => this.setState({ currentControl: "contacts" })}
               >
-                Contacts
-              </Button>{" "}
+                Icons
+              </Button>
               <Button
                 active={currentControl === "extras"}
                 size="sm"
@@ -293,6 +299,14 @@ class GridCore extends Component {
                 onClick={() => this.setState({ currentControl: "extras" })}
               >
                 Extras
+              </Button>
+              <Button
+                active={currentControl === "movement"}
+                size="sm"
+                color="primary"
+                onClick={() => this.setState({ currentControl: "movement" })}
+              >
+                Move
               </Button>
             </ButtonGroup>
             {currentControl === "extras" && (
@@ -312,6 +326,9 @@ class GridCore extends Component {
                 client={this.props.client}
               />
             )}
+            {currentControl === "movement" && (
+              <MovementCore sensors={sensors} client={this.props.client} />
+            )}
           </Col>
           <Col sm={7} style={{ height: "100%" }}>
             <div
@@ -330,6 +347,7 @@ class GridCore extends Component {
                 core
                 dimensions={this.state.dimensions}
                 sensor={sensors.id}
+                movement={sensors.movement}
                 moveSpeed={speed}
                 speeds={speeds}
                 askForSpeed={askForSpeed}
@@ -355,6 +373,11 @@ const GRID_QUERY = gql`
       autoTarget
       autoThrusters
       interference
+      movement {
+        x
+        y
+        z
+      }
       segments {
         segment
         state
