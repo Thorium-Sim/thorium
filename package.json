@@ -103,7 +103,7 @@
   "scripts": {
     "start-server":
       "nodemon ./server/server.js -e js,graphql --ignore snapshots/ --ignore src/ --exec babel-node",
-    "start": "npm run start-server & npm run start-client",
+    "start": "concurrently \"npm run start-server\" \"npm run start-client\"",
     "start-js": "react-scripts start",
     "start-client": "npm-run-all -p watch-css start-js",
     "build-js": "cross-env GENERATE_SOURCEMAP=false react-scripts build",
@@ -118,7 +118,7 @@
       "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots,coverage,build --exclude-ext=css,json",
     "test:client": "react-scripts test --env=jsdom",
     "test:server": "jest server/tests --env=node",
-    "test": "npm run test:client & npm run test:server",
+    "test": "concurrently \"npm run test:client\" \"npm run test:server\"",
     "flow": "flow",
     "precommit": "lint-staged",
     "add": "all-contributors add",
