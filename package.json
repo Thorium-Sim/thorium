@@ -24,6 +24,8 @@
     "babel-preset-stage-0": "^6.24.1",
     "chai": "^4.1.2",
     "chai-http": "^3.0.0",
+    "concurrently": "^3.5.1",
+    "cross-env": "^5.1.4",
     "husky": "^0.14.3",
     "inquirer-directory": "^2.1.0",
     "inquirer-file-path": "^1.0.0",
@@ -34,7 +36,8 @@
     "pkg": "^4.3.0",
     "plop": "^2.0.0",
     "prettier": "^1.11.1",
-    "react-scripts": "1.1.1"
+    "react-scripts": "1.1.1",
+    "wait-on": "^2.1.0"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.11",
@@ -100,23 +103,22 @@
   "scripts": {
     "start-server":
       "nodemon ./server/server.js -e js,graphql --ignore snapshots/ --ignore src/ --exec babel-node",
-    "start": "npm run start-server & npm run start-client",
+    "start": "concurrently \"npm run start-server\" \"npm run start-client\"",
     "start-js": "react-scripts start",
     "start-client": "npm-run-all -p watch-css start-js",
-    "build-js": "GENERATE_SOURCEMAP=false react-scripts build",
+    "build-js": "cross-env GENERATE_SOURCEMAP=false react-scripts build",
     "build-client": "npm-run-all build-css build-js",
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css":
-      "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-    "build-server":
-      "rm -f ./node_modules/normalize.css/normalize.css && node ./config/build-server.js",
-    "build": "npm run build-client && npm run build-server",
+      "concurrently \"npm run build-css\" \"node-sass-chokidar src/ -o src/ --watch --recursive\"",
+    "build-server": "node ./config/build-server.js",
+    "build": "concurrently \"npm run build-client\" \"npm run build-server\"",
     "lint": "eslint .",
     "cloc":
       "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots,coverage,build --exclude-ext=css,json",
     "test:client": "react-scripts test --env=jsdom",
     "test:server": "jest server/tests --env=node",
-    "test": "npm run test:client & npm run test:server",
+    "test": "concurrently \"npm run test:client\" \"npm run test:server\"",
     "flow": "flow",
     "precommit": "lint-staged",
     "add": "all-contributors add",
