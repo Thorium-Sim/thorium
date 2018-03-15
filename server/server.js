@@ -148,6 +148,7 @@ if (!process.env.NODE_ENV) {
 }
 
 export const websocketServerInstance = websocketServer.listen(WS_PORT, () => {
+  console.log(`Websocket server running at: ws://${ipaddress}:${WS_PORT}`);
   new SubscriptionServer(
     {
       execute,
