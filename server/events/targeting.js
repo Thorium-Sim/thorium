@@ -30,13 +30,24 @@ App.on("targetTargetingContact", ({ id, targetId }) => {
     },
     "addCoreFeed"
   );
+  // Send a sensors update too
+  const sensors = App.systems.find(
+    s => s.simulatorId === system.simulatorId && s.class === "Sensors"
+  );
+  pubsub.publish("sensorContactUpdate", sensors);
   pubsub.publish(
     "targetingUpdate",
     App.systems.filter(s => s.type === "Targeting")
   );
 });
 App.on("untargetTargetingContact", ({ id, targetId }) => {
-  App.systems.find(s => s.id === id).untargetTarget(targetId);
+  const system = App.systems.find(s => s.id === id);
+  system.untargetTarget(targetId);
+  // Send a sensors update too
+  const sensors = App.systems.find(
+    s => s.simulatorId === system.simulatorId && s.class === "Sensors"
+  );
+  pubsub.publish("sensorContactUpdate", sensors);
   pubsub.publish(
     "targetingUpdate",
     App.systems.filter(s => s.type === "Targeting")
@@ -50,7 +61,17 @@ App.on("targetSystem", ({ id, targetId, system }) => {
   );
 });
 App.on("removeTarget", ({ id, targetId }) => {
-  App.systems.find(s => s.id === id).removeTarget(targetId);
+  const system = App.systems.find(s => s.id === id);
+  const contact = system.contacts.find(c => c.id === targetId);
+  const classId = contact.class;
+  system.removeTarget(targetId);
+  // Send a sensors update too
+  const sensors = App.systems.find(
+    s => s.simulatorId === system.simulatorId && s.class === "Sensors"
+  );
+  // Remove the contact from Sensors
+  sensors.removeContact({ id: classId });
+  pubsub.publish("sensorContactUpdate", sensors);
   pubsub.publish(
     "targetingUpdate",
     App.systems.filter(s => s.type === "Targeting")
@@ -64,7 +85,13 @@ App.on("addTargetClass", ({ id, classInput }) => {
   );
 });
 App.on("removeTargetClass", ({ id, classId }) => {
-  App.systems.find(s => s.id === id).removeTargetClass(classId);
+  const system = App.systems.find(s => s.id === id);
+  system.removeTargetClass(classId);
+  // Send a sensors update too
+  const sensors = App.systems.find(
+    s => s.simulatorId === system.simulatorId && s.class === "Sensors"
+  );
+  pubsub.publish("sensorContactUpdate", sensors);
   pubsub.publish(
     "targetingUpdate",
     App.systems.filter(s => s.type === "Targeting")

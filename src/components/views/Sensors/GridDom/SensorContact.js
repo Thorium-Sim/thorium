@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Asset } from "../../../../helpers/assets";
 import tinycolor from "tinycolor2";
 
@@ -15,6 +15,8 @@ export default class SensorContact extends Component {
       type,
       color,
       rotation = 0,
+      targeted,
+      selected,
       mouseover = () => {},
       mousedown = () => {}
     } = this.props;
@@ -115,21 +117,39 @@ export default class SensorContact extends Component {
           )}
         </Asset>
         {core && (
-          <Asset asset={icon}>
-            {({ src }) => (
-              <img
-                alt="icon"
-                draggable="false"
-                onMouseDown={mousedown}
-                src={src}
+          <Fragment>
+            <Asset asset={icon}>
+              {({ src }) => (
+                <img
+                  alt="icon"
+                  draggable="false"
+                  onMouseDown={mousedown}
+                  src={src}
+                  style={{
+                    backgroundColor: selected ? "blue" : "",
+                    transform: `translate(${width / 2 * dx}px, ${width /
+                      2 *
+                      dy}px) scale(${size})`
+                  }}
+                />
+              )}
+            </Asset>
+            {targeted && (
+              <div
+                className="crosshairs"
                 style={{
                   transform: `translate(${width / 2 * dx}px, ${width /
                     2 *
                     dy}px) scale(${size})`
                 }}
-              />
+              >
+                <div className="tl" />
+                <div className="tr" />
+                <div className="bl" />
+                <div className="br" />
+              </div>
             )}
-          </Asset>
+          </Fragment>
         )}
       </div>
     );

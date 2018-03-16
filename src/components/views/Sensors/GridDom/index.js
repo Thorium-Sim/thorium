@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Segments from "./blackout";
 import Interference from "./interference";
+import Selection from "./select";
 
 import "./style.css";
 
@@ -50,6 +51,7 @@ const SENSORCONTACT_SUB = gql`
       cloaked
       destroyed
       forceUpdate
+      targeted
     }
   }
 `;
@@ -59,7 +61,8 @@ class GridDom extends Component {
     locations: {},
     movingContact: null,
     iconWidth: null,
-    iconHeight: null
+    iconHeight: null,
+    selectedContacts: []
   };
   interval = 1000 / 30;
   sensorContactsSubscription = null;
@@ -118,7 +121,6 @@ class GridDom extends Component {
         pingTime,
         pings
       } = this.props;
-
       this.props.client.writeQuery({
         query: CONTACTS_QUERY,
         data: {
@@ -364,7 +366,7 @@ class GridDom extends Component {
       sensor,
       interference = 0
     } = this.props;
-    const { locations, speedAsking } = this.state;
+    const { locations, speedAsking, selectedContacts } = this.state;
     const { sensorContacts: contacts } = data;
     if (!dimensions) return <div id="sensorGrid" />;
 
@@ -383,6 +385,32 @@ class GridDom extends Component {
           {interference > 0 && (
             <Interference width={width} interference={interference} />
           )}
+          <Selection
+            containerSelector=".grid"
+            onSelectionChange={(a, b) => {
+              if (!b) {
+                this.setState({ selectedContacts: [] });
+                return;
+              }
+              const bounds = {
+                x1: (b.left - width / 2) / width * 2,
+                x2: (b.width + b.left - width / 2) / width * 2,
+                y1: (b.top - width / 2) / width * 2,
+                y2: (b.height + b.top - width / 2) / width * 2
+              };
+              // Find selected contacts
+              const selected = contacts
+                .filter(
+                  c =>
+                    c.destination.x > bounds.x1 &&
+                    c.destination.x < bounds.x2 &&
+                    c.destination.y > bounds.y1 &&
+                    c.destination.y < bounds.y2
+                )
+                .map(c => c.id);
+              this.setState({ selectedContacts: selected });
+            }}
+          />
           <Segments segments={segments} sensors={sensor} />
           {Array(rings)
             .fill(0)
@@ -417,6 +445,7 @@ class GridDom extends Component {
                     width={width}
                     core={core}
                     {...contact}
+                    selected={selectedContacts.indexOf(contact.id) > -1}
                     mousedown={
                       core
                         ? e => this._downMouse(e, contact.id)
@@ -501,6 +530,7 @@ const CONTACTS_QUERY = gql`
       cloaked
       destroyed
       forceUpdate
+      targeted
     }
   }
 `;

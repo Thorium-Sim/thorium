@@ -24,6 +24,11 @@ const SENSOR_SUB = gql`
       pingMode
       interference
       timeSincePing
+      movement {
+        x
+        y
+        z
+      }
       segments {
         segment
         state
@@ -305,6 +310,7 @@ class Sensors extends Component {
                   sensor={sensors.id}
                   damaged={sensors.damage.damaged}
                   hoverContact={this._hoverContact.bind(this)}
+                  movement={sensors.movement}
                   ping={ping}
                   pings={pings}
                   pingTime={pingTime}
@@ -440,6 +446,11 @@ const SENSOR_QUERY = gql`
       pingMode
       interference
       timeSincePing
+      movement {
+        x
+        y
+        z
+      }
       segments {
         segment
         state

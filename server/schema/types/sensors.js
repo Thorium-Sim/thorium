@@ -70,6 +70,7 @@ type SensorContact {
   cloaked: Boolean
   destroyed: Boolean
   forceUpdate: Boolean
+  targeted: Boolean
 }
 type SensorsSegment {
   segment: String
