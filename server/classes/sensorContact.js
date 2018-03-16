@@ -96,13 +96,14 @@ export default class SensorContact {
       this.location = this.position;
       this.startTime = Date.now();
       const movementTime = Math.ceil(
-        distance3d(this.destination, this.location) / (this.speed / 10) * 1000
+        distance3d(this.destination, this.location) / (speed / 10) * 1000
       );
       this.endTime = this.startTime + movementTime;
     }
   }
   stop() {
-    this.destination = this.location;
+    this.destination = this.position;
+    this.location = this.position;
     this.speed = 0;
   }
   updateInfrared(tf) {

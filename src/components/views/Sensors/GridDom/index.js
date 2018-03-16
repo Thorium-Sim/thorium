@@ -80,14 +80,14 @@ class GridDom extends Component {
         nextProps.data.sensorContacts &&
           nextProps.data.sensorContacts.forEach(c => {
             let location = c.position;
-            if (c.forceUpdate) location = c.position;
+            //if (c.forceUpdate) location = c.location;
             if (this.props.ping === nextProps.ping) {
               locations[c.id] = {
                 location,
                 speed: c.speed,
-                opacity: nextProps.pings
+                /*opacity: nextProps.pings
                   ? this.contactPing(c, Date.now() - nextProps.pingTime)
-                  : 1,
+                  : 1,*/
                 destination:
                   this.state.movingContact === c.id
                     ? locations[c.id].destination
@@ -118,73 +118,77 @@ class GridDom extends Component {
         pingTime,
         pings
       } = this.props;
-      const locations = {};
-      contacts.forEach(c => {
-        const location = this.state.locations[c.id];
-        let { speed, destination } = Object.assign({}, c);
-        if (location) {
-          speed = location.speed;
-          destination = location.destination;
+
+      this.props.client.writeQuery({
+        query: CONTACTS_QUERY,
+        data: {
+          sensorContacts: contacts.map(c => {
+            // Update movement
+            const x = movement.x / 100;
+            const y = movement.y / 100;
+            const z = movement.z / 100;
+
+            const destination = {
+              ...c.destination,
+              x: c.destination.x + x,
+              y: c.destination.y + y,
+              z: c.destination.z + z
+            };
+            const location = {
+              ...c.location,
+              x: c.location.x + x,
+              y: c.location.y + y,
+              z: c.location.z + z
+            };
+            const position = {
+              ...c.position,
+              x: c.position.x + x,
+              y: c.position.y + y,
+              z: c.position.z + z
+            };
+            if (c.speed === 0) {
+              return { ...c, destination, position, location };
+            }
+            const time = Date.now();
+            if (c.speed > 100) {
+              return {
+                ...c,
+                destination,
+                location: destination,
+                position: destination
+              };
+            } else if (c.speed > 0) {
+              // Total movement time is the difference between the distance and location
+              // Divided by the speed times one second (1000 ms)
+              const currentTime = time - c.startTime;
+              // Location is a function of the current time and the end time.
+              const newLoc = {
+                ...location,
+                x:
+                  location.x +
+                  (destination.x - location.x) /
+                    (c.endTime - c.startTime) *
+                    currentTime,
+                y:
+                  location.y +
+                  (destination.y - location.y) /
+                    (c.endTime - c.startTime) *
+                    currentTime,
+                z: 0
+              };
+              if (distance3d(destination, newLoc) < 0.005) {
+                return {
+                  ...c,
+                  destination,
+                  position: destination,
+                  location: destination
+                };
+              }
+              return { ...c, destination, position: newLoc, location };
+            }
+          })
         }
-        const moveResult = this.moveContact(
-          c,
-          location.location,
-          speed,
-          movement
-        );
-        moveResult.destination = destination;
-        if (pings) {
-          moveResult.opacity = this.contactPing(c, Date.now() - pingTime);
-        } else {
-          moveResult.opacity = 1;
-        }
-        locations[c.id] = moveResult;
       });
-      this.setState({ locations });
-    }
-  };
-  moveContact = (
-    { destination, location, startTime, endTime },
-    position,
-    speed,
-    { x, y, z }
-  ) => {
-    if (speed === 0) {
-      return {
-        location: position,
-        speed
-      };
-    }
-    const time = Date.now();
-    if (speed > 100) {
-      return {
-        location: destination,
-        speed: 0
-      };
-    } else if (speed > 0) {
-      // Total movement time is the difference between the distance and location
-      // Divided by the speed times one second (1000 ms)
-      const currentTime = time - startTime;
-      // Location is a function of the current time and the end time.
-      const newLoc = {
-        x:
-          location.x +
-          (destination.x - location.x) / (endTime - startTime) * currentTime,
-        y:
-          location.y +
-          (destination.y - location.y) / (endTime - startTime) * currentTime,
-        z: 0
-      };
-      if (distance3d(destination, position) < 0.005) {
-        return {
-          speed: 0,
-          location: destination
-        };
-      }
-      return {
-        speed,
-        location: newLoc
-      };
     }
   };
   contactPing = ({ location }, delta) => {
@@ -276,7 +280,6 @@ class GridDom extends Component {
     let mutation;
     const contact = contacts.find(c => c.id === movingContact);
     const maxDistance = contact.type === "planet" ? 1 + contact.size / 2 : 1.1;
-    console.log(maxDistance, distance);
     if (distance > maxDistance) {
       // Delete the contact
       mutation = gql`
