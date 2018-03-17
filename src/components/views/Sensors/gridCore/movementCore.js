@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { DraggableCore } from "react-draggable";
 import { Button } from "reactstrap";
-import distance from "../../../helpers/distance";
-import { throttle } from "../../../helpers/debounce";
+import distance from "../../../../helpers/distance";
+import { throttle } from "../../../../helpers/debounce";
 import gql from "graphql-tag";
 
 export default class MovementCore extends Component {

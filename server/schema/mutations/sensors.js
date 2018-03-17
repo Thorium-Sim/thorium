@@ -43,4 +43,5 @@ toggleSensorsAutoThrusters(id: ID!, thrusters: Boolean!):String
 setSensorsInterference(id: ID!, interference: Float!):String
 setSensorsSegment(id: ID!, segment: String!, state: Boolean!): String
 setAutoMovement(id:ID!, movement:CoordinatesInput!):String
+updateSensorContacts(id:ID!, contacts:[SensorContactInput]!):String
 `;

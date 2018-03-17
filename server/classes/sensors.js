@@ -168,7 +168,7 @@ export default class Sensors extends System {
     newContact.sensorId = this.id;
     this.armyContacts.push(new SensorContact(newContact));
   }
-  updateContact({ id, icon, picture, size, name, infrared, color }) {
+  updateContact({ id, icon, picture, size, name, infrared, color, locked }) {
     const myContact = this.contacts.find(contact => contact.id === id);
     if (icon) myContact.updateIcon(icon);
     if (picture) myContact.updatePicture(picture);
@@ -176,8 +176,18 @@ export default class Sensors extends System {
     if (name) myContact.updateName(name);
     if (infrared) myContact.updateInfrared(infrared);
     if (color) myContact.updateColor(color);
+    if (locked || locked === false) myContact.updateLocked(locked);
   }
-  updateArmyContact({ id, icon, picture, size, name, infrared, color }) {
+  updateArmyContact({
+    id,
+    icon,
+    picture,
+    size,
+    name,
+    infrared,
+    color,
+    locked
+  }) {
     const myContact = this.armyContacts.find(contact => contact.id === id);
     if (icon) myContact.updateIcon(icon);
     if (picture) myContact.updatePicture(picture);
@@ -185,6 +195,7 @@ export default class Sensors extends System {
     if (name) myContact.updateName(name);
     if (infrared) myContact.updateInfrared(infrared);
     if (color) myContact.updateColor(color);
+    if (locked || locked === false) myContact.updateLocked(locked);
   }
   removeArmyContact(id) {
     const contactIndex = this.armyContacts.findIndex(

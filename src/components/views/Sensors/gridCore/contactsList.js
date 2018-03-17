@@ -3,7 +3,7 @@ import { Col, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";
 import ContactContextMenu from "./contactContextMenu";
-import { Asset } from "../../../helpers/assets";
+import { Asset } from "../../../../helpers/assets";
 
 const ADD_ARMY_CONTACT = gql`
   mutation(

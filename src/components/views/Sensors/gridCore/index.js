@@ -1,12 +1,13 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import ReactDOM from "react-dom";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Row, Col, Container, Button, Input, ButtonGroup } from "reactstrap";
-import Grid from "./GridDom";
+import Grid from "../GridDom";
 import ExtraControls from "./extraControls";
 import ContactsList from "./contactsList";
 import MovementCore from "./movementCore";
+import ContactSelect from "./contactSelect";
 import "./gridCore.css";
 
 function distance3d(coord2, coord1) {
@@ -42,6 +43,7 @@ const SENSOR_SUB = gql`
         infrared
         cloaked
         destroyed
+        locked
       }
     }
   }
@@ -51,14 +53,14 @@ class GridCore extends Component {
     super(props);
     this.state = {
       movingContact: {},
-      selectedContact: null,
       contextContact: null,
       speed: 0.6,
       askForSpeed:
         localStorage.getItem("thorium-core-sensors-askforspeed") === "yes"
           ? true
           : false,
-      currentControl: "contacts"
+      currentControl: "contacts",
+      selectedContacts: []
     };
     this.sensorsSubscription = null;
   }
@@ -152,7 +154,8 @@ class GridCore extends Component {
       color,
       picture,
       cloaked,
-      infrared
+      infrared,
+      locked
     } = movingContact;
     if (!location) return;
     const distance = distance3d({ x: 0, y: 0, z: 0 }, location);
@@ -178,6 +181,7 @@ class GridCore extends Component {
         cloaked,
         location,
         infrared,
+        locked,
         destination: location
       }
     };
@@ -222,21 +226,16 @@ class GridCore extends Component {
       speed: e.target.value
     });
   }
-  _setSelectedContact(selectedContact) {
-    this.setState({
-      selectedContact
-    });
-  }
   render() {
     if (this.props.data.loading) return <p>Loading...</p>;
     if (!this.props.data.sensors[0]) return <p>No Sensor Grid</p>;
     const sensors = this.props.data.sensors[0];
     const {
       speed,
-      selectedContact,
       movingContact,
       askForSpeed,
-      currentControl
+      currentControl,
+      selectedContacts
     } = this.state;
     const speeds = [
       { value: "1000", label: "Instant" },
@@ -283,51 +282,66 @@ class GridCore extends Component {
             >
               Stop
             </Button>
-            <ButtonGroup>
-              <Button
-                active={currentControl === "contacts"}
-                size="sm"
-                color="success"
-                onClick={() => this.setState({ currentControl: "contacts" })}
-              >
-                Icons
-              </Button>
-              <Button
-                active={currentControl === "extras"}
-                size="sm"
-                color="info"
-                onClick={() => this.setState({ currentControl: "extras" })}
-              >
-                Extras
-              </Button>
-              <Button
-                active={currentControl === "movement"}
-                size="sm"
-                color="primary"
-                onClick={() => this.setState({ currentControl: "movement" })}
-              >
-                Move
-              </Button>
-            </ButtonGroup>
-            {currentControl === "extras" && (
-              <ExtraControls
-                sensors={sensors}
-                askForSpeed={askForSpeed}
-                updateAskForSpeed={e => this.setState({ askForSpeed: e })}
-                client={this.props.client}
-                speed={speed}
-                dragStart={this.dragStart}
-              />
-            )}
-            {currentControl === "contacts" && (
-              <ContactsList
-                sensors={sensors}
-                dragStart={this.dragStart}
+            {selectedContacts.length > 0 ? (
+              <ContactSelect
+                id={sensors.id}
+                clearSelection={() => this.setState({ selectedContacts: [] })}
+                contacts={selectedContacts}
                 client={this.props.client}
               />
-            )}
-            {currentControl === "movement" && (
-              <MovementCore sensors={sensors} client={this.props.client} />
+            ) : (
+              <Fragment>
+                <ButtonGroup>
+                  <Button
+                    active={currentControl === "contacts"}
+                    size="sm"
+                    color="success"
+                    onClick={() =>
+                      this.setState({ currentControl: "contacts" })
+                    }
+                  >
+                    Icons
+                  </Button>
+                  <Button
+                    active={currentControl === "extras"}
+                    size="sm"
+                    color="info"
+                    onClick={() => this.setState({ currentControl: "extras" })}
+                  >
+                    Extras
+                  </Button>
+                  <Button
+                    active={currentControl === "movement"}
+                    size="sm"
+                    color="primary"
+                    onClick={() =>
+                      this.setState({ currentControl: "movement" })
+                    }
+                  >
+                    Move
+                  </Button>
+                </ButtonGroup>
+                {currentControl === "extras" && (
+                  <ExtraControls
+                    sensors={sensors}
+                    askForSpeed={askForSpeed}
+                    updateAskForSpeed={e => this.setState({ askForSpeed: e })}
+                    client={this.props.client}
+                    speed={speed}
+                    dragStart={this.dragStart}
+                  />
+                )}
+                {currentControl === "contacts" && (
+                  <ContactsList
+                    sensors={sensors}
+                    dragStart={this.dragStart}
+                    client={this.props.client}
+                  />
+                )}
+                {currentControl === "movement" && (
+                  <MovementCore sensors={sensors} client={this.props.client} />
+                )}
+              </Fragment>
             )}
           </Col>
           <Col sm={7} style={{ height: "100%" }}>
@@ -351,11 +365,13 @@ class GridCore extends Component {
                 moveSpeed={speed}
                 speeds={speeds}
                 askForSpeed={askForSpeed}
-                setSelectedContact={this._setSelectedContact.bind(this)}
-                selectedContact={selectedContact}
                 armyContacts={sensors.armyContacts}
                 movingContact={movingContact}
                 segments={sensors.segments}
+                selectedContacts={selectedContacts.map(c => c.id)}
+                updateSelectedContacts={contacts =>
+                  this.setState({ selectedContacts: contacts })
+                }
               />
             </div>
           </Col>
@@ -392,6 +408,7 @@ const GRID_QUERY = gql`
         infrared
         cloaked
         destroyed
+        locked
       }
     }
   }

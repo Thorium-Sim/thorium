@@ -52,6 +52,7 @@ const SENSORCONTACT_SUB = gql`
       destroyed
       forceUpdate
       targeted
+      locked
     }
   }
 `;
@@ -61,8 +62,7 @@ class GridDom extends Component {
     locations: {},
     movingContact: null,
     iconWidth: null,
-    iconHeight: null,
-    selectedContacts: []
+    iconHeight: null
   };
   interval = 1000 / 30;
   sensorContactsSubscription = null;
@@ -79,6 +79,21 @@ class GridDom extends Component {
       });
     }
     if (!nextProps.data.loading) {
+      if (nextProps.updateSelected !== this.props.updateSelected) {
+        // Re-update the selected contacts
+        if (
+          nextProps.data.sensorContacts &&
+          nextProps.selectedContacts.length > 0
+        ) {
+          const selectedIds = nextProps.selectedContacts.map(c => c.id);
+          nextProps.updateSelectedContacts(
+            nextProps.data.sensorContacts.filter(
+              c => selectedIds.indexOf(c) > -1
+            )
+          );
+        }
+      }
+      // Set the locations
       this.setState(({ locations }) => {
         nextProps.data.sensorContacts &&
           nextProps.data.sensorContacts.forEach(c => {
@@ -92,7 +107,9 @@ class GridDom extends Component {
                   ? this.contactPing(c, Date.now() - nextProps.pingTime)
                   : 1,*/
                 destination:
-                  this.state.movingContact === c.id
+                  this.state.movingContact === c.id ||
+                  (this.state.movingContact &&
+                    this.props.selectedContacts.indexOf(c.id) > -1)
                     ? locations[c.id].destination
                     : c.destination
               };
@@ -115,20 +132,15 @@ class GridDom extends Component {
       this.contactTimeout = setTimeout(this.contactLoop, this.interval);
     } else return;
     if (!this.props.data.loading) {
-      const {
-        data: { sensorContacts: contacts },
-        movement,
-        pingTime,
-        pings
-      } = this.props;
+      const { data: { sensorContacts: contacts }, movement } = this.props;
       this.props.client.writeQuery({
         query: CONTACTS_QUERY,
         data: {
           sensorContacts: contacts.map(c => {
             // Update movement
-            const x = movement.x / 100;
-            const y = movement.y / 100;
-            const z = movement.z / 100;
+            const x = c.locked ? 0 : movement.x / 100;
+            const y = c.locked ? 0 : movement.y / 100;
+            const z = c.locked ? 0 : movement.z / 100;
 
             const destination = {
               ...c.destination,
@@ -211,26 +223,37 @@ class GridDom extends Component {
     return 0;
   };
   _moveMouse = e => {
-    const { dimensions, core } = this.props;
-    const { movingContact, locations, iconWidth, iconHeight } = this.state;
-    if (!movingContact) return;
+    const { dimensions, core, selectedContacts } = this.props;
+    const { movingContact, locations } = this.state;
+    if (!movingContact && selectedContacts.length === 0) return;
     const { width: dimWidth, height: dimHeight } = dimensions;
     const padding = core ? 15 : 0;
     const width = Math.min(dimWidth, dimHeight) - padding;
-    const destination = {
-      x:
-        (e.clientX - dimensions.left - padding - iconWidth / 2 - width / 2) /
-        (width / 2),
-      y:
-        (e.clientY - dimensions.top - padding - iconHeight / 2 - width / 2) /
-        (width / 2),
+    const destinationDiff = {
+      x: e.movementX / width * 2,
+      y: e.movementY / width * 2,
       z: 0
     };
-
     const obj = {};
-    obj[movingContact] = locations[movingContact];
-    obj[movingContact].destination = destination;
-
+    if (selectedContacts.length === 0) {
+      const destination = locations[movingContact].destination;
+      obj[movingContact] = locations[movingContact];
+      obj[movingContact].destination = {
+        x: destination.x + destinationDiff.x,
+        y: destination.y + destinationDiff.y,
+        z: 0
+      };
+    } else {
+      selectedContacts.forEach(c => {
+        const destination = locations[c].destination;
+        obj[c] = locations[c];
+        obj[c].destination = {
+          x: destination.x + destinationDiff.x,
+          y: destination.y + destinationDiff.y,
+          z: 0
+        };
+      });
+    }
     this.setState({
       locations: Object.assign(locations, obj)
     });
@@ -268,50 +291,73 @@ class GridDom extends Component {
   }
   triggerUpdate = speed => {
     // Send the update to the server
+    const { selectedContacts } = this.props;
     const { sensorContacts: contacts } = this.props.data;
     const { movingContact, locations } = this.state;
-    if (!locations[movingContact]) return;
-    const { destination } = locations[movingContact];
-    this.setState({
-      movingContact: false,
-      iconWidth: null,
-      iconHeight: null,
-      speedAsking: null
-    });
-    const distance = distance3d({ x: 0, y: 0, z: 0 }, destination);
-    let mutation;
-    const contact = contacts.find(c => c.id === movingContact);
-    const maxDistance = contact.type === "planet" ? 1 + contact.size / 2 : 1.1;
-    if (distance > maxDistance) {
-      // Delete the contact
-      mutation = gql`
-        mutation DeleteContact($id: ID!, $contact: SensorContactInput!) {
-          removeSensorContact(id: $id, contact: $contact)
+    if (selectedContacts.length > 0) {
+      const contactUpdateData = selectedContacts.map(c => ({
+        id: c,
+        speed,
+        destination: locations[c].destination
+      }));
+      const mutation = gql`
+        mutation MoveSensorContact($id: ID!, $contacts: [SensorContactInput]!) {
+          updateSensorContacts(id: $id, contacts: $contacts)
         }
       `;
+      const variables = {
+        id: this.props.sensor,
+        contacts: contactUpdateData
+      };
+      this.props.client.mutate({
+        mutation,
+        variables
+      });
     } else {
-      mutation = gql`
-        mutation MoveSensorContact($id: ID!, $contact: SensorContactInput!) {
-          moveSensorContact(id: $id, contact: $contact)
-        }
-      `;
-    }
-    const variables = {
-      id: this.props.sensor,
-      contact: {
-        id: movingContact,
-        speed: speed,
-        destination: {
-          x: destination.x,
-          y: destination.y,
-          z: destination.z
-        }
+      if (!locations[movingContact]) return;
+      const { destination } = locations[movingContact];
+      this.setState({
+        movingContact: false,
+        iconWidth: null,
+        iconHeight: null,
+        speedAsking: null
+      });
+      const distance = distance3d({ x: 0, y: 0, z: 0 }, destination);
+      let mutation;
+      const contact = contacts.find(c => c.id === movingContact);
+      const maxDistance =
+        contact.type === "planet" ? 1 + contact.size / 2 : 1.1;
+      if (distance > maxDistance) {
+        // Delete the contact
+        mutation = gql`
+          mutation DeleteContact($id: ID!, $contact: SensorContactInput!) {
+            removeSensorContact(id: $id, contact: $contact)
+          }
+        `;
+      } else {
+        mutation = gql`
+          mutation MoveSensorContact($id: ID!, $contact: SensorContactInput!) {
+            moveSensorContact(id: $id, contact: $contact)
+          }
+        `;
       }
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
+      const variables = {
+        id: this.props.sensor,
+        contact: {
+          id: movingContact,
+          speed: speed,
+          destination: {
+            x: destination.x,
+            y: destination.y,
+            z: destination.z
+          }
+        }
+      };
+      this.props.client.mutate({
+        mutation,
+        variables
+      });
+    }
   };
   cancelMove = () => {
     const { movingContact: id, locations } = this.state;
@@ -364,9 +410,11 @@ class GridDom extends Component {
       segments,
       damaged,
       sensor,
-      interference = 0
+      interference = 0,
+      selectedContacts,
+      updateSelectedContacts
     } = this.props;
-    const { locations, speedAsking, selectedContacts } = this.state;
+    const { locations, speedAsking } = this.state;
     const { sensorContacts: contacts } = data;
     if (!dimensions) return <div id="sensorGrid" />;
 
@@ -385,32 +433,36 @@ class GridDom extends Component {
           {interference > 0 && (
             <Interference width={width} interference={interference} />
           )}
-          <Selection
-            containerSelector=".grid"
-            onSelectionChange={(a, b) => {
-              if (!b) {
-                this.setState({ selectedContacts: [] });
-                return;
-              }
-              const bounds = {
-                x1: (b.left - width / 2) / width * 2,
-                x2: (b.width + b.left - width / 2) / width * 2,
-                y1: (b.top - width / 2) / width * 2,
-                y2: (b.height + b.top - width / 2) / width * 2
-              };
-              // Find selected contacts
-              const selected = contacts
-                .filter(
-                  c =>
-                    c.destination.x > bounds.x1 &&
-                    c.destination.x < bounds.x2 &&
-                    c.destination.y > bounds.y1 &&
-                    c.destination.y < bounds.y2
-                )
-                .map(c => c.id);
-              this.setState({ selectedContacts: selected });
-            }}
-          />
+          {selectedContacts && (
+            <Selection
+              containerSelector=".grid"
+              onSelectionChange={(a, b) => {
+                if (!b) {
+                  this.setState({ selectedContacts: [] });
+                  return;
+                }
+                const bounds = {
+                  x1: (b.left - width / 2) / width * 2,
+                  x2: (b.width + b.left - width / 2) / width * 2,
+                  y1: (b.top - width / 2) / width * 2,
+                  y2: (b.height + b.top - width / 2) / width * 2
+                };
+                // Find selected contacts
+                const selected = contacts
+                  .filter(
+                    c =>
+                      c.destination.x > bounds.x1 &&
+                      c.destination.x < bounds.x2 &&
+                      c.destination.y > bounds.y1 &&
+                      c.destination.y < bounds.y2
+                  )
+                  .map(c => c.id);
+                updateSelectedContacts(
+                  contacts.filter(c => selected.indexOf(c.id) > -1)
+                );
+              }}
+            />
+          )}
           <Segments segments={segments} sensors={sensor} />
           {Array(rings)
             .fill(0)
@@ -445,7 +497,11 @@ class GridDom extends Component {
                     width={width}
                     core={core}
                     {...contact}
-                    selected={selectedContacts.indexOf(contact.id) > -1}
+                    selected={
+                      selectedContacts
+                        ? selectedContacts.indexOf(contact.id) > -1
+                        : false
+                    }
                     mousedown={
                       core
                         ? e => this._downMouse(e, contact.id)
@@ -531,6 +587,7 @@ const CONTACTS_QUERY = gql`
       destroyed
       forceUpdate
       targeted
+      locked
     }
   }
 `;

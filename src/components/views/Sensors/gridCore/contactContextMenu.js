@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 import { Input, Row, Col, FormGroup, Label, Button } from "reactstrap";
-import { Asset } from "../../../helpers/assets";
-import FileExplorer from "../TacticalMap/fileExplorer";
+import { Asset } from "../../../../helpers/assets";
+import FileExplorer from "../../TacticalMap/fileExplorer";
 
 const ICON_QUERY = gql`
   query AssetFolders($names: [String]) {
@@ -27,7 +27,6 @@ class ContactContextMenu extends Component {
     const { contact, closeMenu, updateArmyContact } = this.props;
     return (
       <div className="contextMenu">
-        <h5>Contact Config</h5>
         {pickingIcon && (
           <FileExplorer
             directory="/Sensor Contacts/Icons"
@@ -53,7 +52,7 @@ class ContactContextMenu extends Component {
             <div>
               <FormGroup>
                 <Row>
-                  <Col sm={2}>
+                  <Col sm={4}>
                     <Label for="iconSelect">Label</Label>
                   </Col>
                   <Col sm={10}>
@@ -71,10 +70,8 @@ class ContactContextMenu extends Component {
               </FormGroup>
               <FormGroup>
                 <Row>
-                  <Col sm={2}>
+                  <Col sm={6}>
                     <Label for="iconSelect">Icon</Label>
-                  </Col>
-                  <Col sm={2}>
                     <Asset fail asset={contact.icon}>
                       {({ src }) => (
                         <img
@@ -93,14 +90,8 @@ class ContactContextMenu extends Component {
                       )}
                     </Asset>
                   </Col>
-                </Row>
-              </FormGroup>
-              <FormGroup>
-                <Row>
-                  <Col sm={2}>
+                  <Col sm={6}>
                     <Label for="iconSelect">Picture</Label>
-                  </Col>
-                  <Col sm={2}>
                     <Asset fail asset={contact.picture}>
                       {({ src }) => (
                         <img
@@ -135,6 +126,19 @@ class ContactContextMenu extends Component {
                   step="0.1"
                   onChange={e => {
                     updateArmyContact(contact, "size", e.target.value);
+                  }}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="locked" sm={3}>
+                  Locked
+                </Label>
+                <input
+                  type="checkbox"
+                  id="locked"
+                  defaultChecked={contact.locked}
+                  onChange={e => {
+                    updateArmyContact(contact, "locked", e.target.checked);
                   }}
                 />
               </FormGroup>

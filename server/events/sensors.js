@@ -325,3 +325,14 @@ App.on("setAutoMovement", ({ id, movement }) => {
     App.systems.filter(s => s.type === "Sensors")
   );
 });
+App.on("updateSensorContacts", ({ id, contacts }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  contacts.forEach(contact => {
+    if (contact.destination) {
+      system.moveContact(contact);
+    } else {
+      system.updateContact(contact);
+    }
+  });
+  pubsub.publish("sensorContactUpdate", system);
+});

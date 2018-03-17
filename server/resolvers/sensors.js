@@ -121,6 +121,9 @@ export const SensorsMutations = {
   },
   setAutoMovement(root, args, context) {
     App.handleEvent(args, "setAutoMovement", context);
+  },
+  updateSensorContacts(root, args, context) {
+    App.handleEvent(args, "updateSensorContacts", context);
   }
 };
 

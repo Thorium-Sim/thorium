@@ -17,9 +17,9 @@ const moveSensorContactTimed = () => {
     sensors.contacts = sensors.contacts.map(c => {
       // To start out, update the position, location, and destination based
       // on the sensors movement
-      const x = movement.x / 100;
-      const y = movement.y / 100;
-      const z = movement.z / 100;
+      const x = c.locked ? 0 : movement.x / 100;
+      const y = c.locked ? 0 : movement.y / 100;
+      const z = c.locked ? 0 : movement.z / 100;
 
       const destination = {
         ...c.destination,
