@@ -131,7 +131,18 @@ App.on("updateSensorContactLocation", ({ id, contact }) => {
 });
 App.on("removeSensorContact", ({ id, contact }) => {
   const system = App.systems.find(sys => sys.id === id);
+  const classId = contact.id;
   system.removeContact(contact);
+
+  // Get rid of any targeting classes
+  const targeting = App.systems.find(
+    s => s.simulatorId === system.simulatorId && s.class === "Targeting"
+  );
+  targeting.removeTargetClass(classId);
+  pubsub.publish(
+    "targetingUpdate",
+    App.systems.filter(s => s.type === "Targeting")
+  );
   pubsub.publish("sensorContactUpdate", system);
 });
 App.on("removeAllSensorContacts", ({ id }) => {
@@ -305,4 +316,23 @@ App.on("setSensorsInterference", ({ id, interference }) => {
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")
   );
+});
+App.on("setAutoMovement", ({ id, movement }) => {
+  const sensors = App.systems.find(sys => sys.id === id);
+  sensors.setMovement(movement);
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});
+App.on("updateSensorContacts", ({ id, contacts }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  contacts.forEach(contact => {
+    if (contact.destination) {
+      system.moveContact(contact);
+    } else {
+      system.updateContact(contact);
+    }
+  });
+  pubsub.publish("sensorContactUpdate", system);
 });

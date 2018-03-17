@@ -11,38 +11,76 @@ function distance3d(coord2, coord1) {
 }
 
 const moveSensorContactTimed = () => {
-  const time = Date.now();
   let sendUpdate = false;
   App.systems.filter(sys => sys.type === "Sensors").forEach(sensors => {
-    sensors.contacts = sensors.contacts.map(contact => {
-      if (contact.speed === 0) return contact;
-      const {
-        location,
-        position,
-        destination,
-        speed,
-        startTime,
-        endTime
-      } = contact;
-      if (speed > 100) {
-        contact.position = Object.assign({}, contact.destination);
-        contact.location = Object.assign({}, contact.destination);
-        contact.speed = 0;
-      } else if (speed > 0) {
+    const { movement } = sensors;
+    sensors.contacts = sensors.contacts.map(c => {
+      // To start out, update the position, location, and destination based
+      // on the sensors movement
+      const x = c.locked ? 0 : movement.x / 100;
+      const y = c.locked ? 0 : movement.y / 100;
+      const z = c.locked ? 0 : movement.z / 100;
+
+      const destination = {
+        ...c.destination,
+        x: c.destination.x + x,
+        y: c.destination.y + y,
+        z: c.destination.z + z
+      };
+      const location = {
+        ...c.location,
+        x: c.location.x + x,
+        y: c.location.y + y,
+        z: c.location.z + z
+      };
+      const position = {
+        ...c.position,
+        x: c.position.x + x,
+        y: c.position.y + y,
+        z: c.position.z + z
+      };
+
+      if (c.speed === 0) {
+        c.destination = destination;
+        c.location = location;
+        c.position = position;
+        return c;
+      }
+      const time = Date.now();
+      if (c.speed > 100) {
+        c.destination = destination;
+        c.location = destination;
+        c.position = destination;
+        return c;
+      } else if (c.speed > 0) {
         // Total movement time is the difference between the distance and location
         // Divided by the speed times one second (1000 ms)
-        const currentTime = time - startTime;
+        const currentTime = time - c.startTime;
         // Location is a function of the current time and the end time.
         const newLoc = {
+          ...location,
           x:
             location.x +
-            (destination.x - location.x) / (endTime - startTime) * currentTime,
+            (destination.x - location.x) /
+              (c.endTime - c.startTime) *
+              currentTime,
           y:
             location.y +
-            (destination.y - location.y) / (endTime - startTime) * currentTime,
+            (destination.y - location.y) /
+              (c.endTime - c.startTime) *
+              currentTime,
           z: 0
         };
-        contact.position = newLoc;
+
+        if (distance3d(destination, newLoc) < 0.01) {
+          c.destination = destination;
+          c.location = destination;
+          c.position = destination;
+        } else {
+          c.destination = destination;
+          c.position = newLoc;
+          c.location = location;
+        }
 
         // Auto-target
         const targeting = App.systems.find(
@@ -50,25 +88,25 @@ const moveSensorContactTimed = () => {
         );
         if (sensors.autoTarget) {
           if (distance3d({ x: 0, y: 0, z: 0 }, newLoc) < 0.33) {
-            if (!targeting.classes.find(t => t.id === contact.id)) {
+            if (!targeting.classes.find(t => t.id === c.id)) {
               const target = {
-                id: contact.id,
-                name: contact.name,
-                size: contact.size,
-                icon: contact.icon,
-                picture: contact.picture,
-                speed: contact.speed || 1
+                id: c.id,
+                name: c.name,
+                size: c.size,
+                icon: c.icon,
+                picture: c.picture,
+                speed: c.speed || 1
               };
               targeting.addTargetClass(target);
-              targeting.createTarget(contact.id);
+              targeting.createTarget(c.id);
               pubsub.publish(
                 "targetingUpdate",
                 App.systems.filter(s => s.type === "Targeting")
               );
             }
           } else {
-            if (targeting.classes.find(t => t.id === contact.id)) {
-              targeting.removeTargetClass(contact.id);
+            if (targeting.classes.find(t => t.id === c.id)) {
+              targeting.removeTargetClass(c.id);
               pubsub.publish(
                 "targetingUpdate",
                 App.systems.filter(s => s.type === "Targeting")
@@ -77,15 +115,8 @@ const moveSensorContactTimed = () => {
           }
         }
 
-        // Reached Destination
-        if (distance3d(destination, position) < 0.01) {
-          contact.speed = 0;
-          contact.position = Object.assign({}, contact.destination);
-          contact.location = Object.assign({}, contact.destination);
-          sendUpdate = true;
-        }
+        return c;
       }
-      return contact;
     });
   });
   if (sendUpdate) {

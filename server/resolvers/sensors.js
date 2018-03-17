@@ -118,6 +118,12 @@ export const SensorsMutations = {
   },
   setSensorsInterference(root, args, context) {
     App.handleEvent(args, "setSensorsInterference", context);
+  },
+  setAutoMovement(root, args, context) {
+    App.handleEvent(args, "setAutoMovement", context);
+  },
+  updateSensorContacts(root, args, context) {
+    App.handleEvent(args, "updateSensorContacts", context);
   }
 };
 
@@ -170,6 +176,15 @@ export const SensorsTypes = {
     },*/
     movementTime({ startTime, endTime }) {
       return endTime - startTime;
+    },
+    targeted({ id, sensorId }) {
+      const sensor = App.systems.find(s => s.id === sensorId);
+      const targeting = App.systems.find(
+        s => s.simulatorId === sensor.simulatorId && s.class === "Targeting"
+      );
+      const targetedContact = targeting.contacts.find(t => t.targeted === true);
+      if (targetedContact && targetedContact.class === id) return true;
+      return false;
     }
   }
 };

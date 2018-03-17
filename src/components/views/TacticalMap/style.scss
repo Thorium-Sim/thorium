@@ -9,9 +9,12 @@
     background-color: transparent;
   }
 }
+
       /* selection container */
       .selection {
         height: 100%;
+        width: 100%;
+        position: absolute;
         //position: relative;
       }
       .select-box {

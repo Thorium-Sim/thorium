@@ -71,6 +71,7 @@ export default class Sensors extends System {
     this.frozen = params.frozen || false;
     this.autoThrusters = params.autoThrusters || false;
     this.interference = params.interference || 0;
+    this.movement = params.movement || { x: 0, y: 0, z: 0 };
 
     this.segments = params.segments || [
       { segment: "a1", state: false },
@@ -167,7 +168,7 @@ export default class Sensors extends System {
     newContact.sensorId = this.id;
     this.armyContacts.push(new SensorContact(newContact));
   }
-  updateContact({ id, icon, picture, size, name, infrared, color }) {
+  updateContact({ id, icon, picture, size, name, infrared, color, locked }) {
     const myContact = this.contacts.find(contact => contact.id === id);
     if (icon) myContact.updateIcon(icon);
     if (picture) myContact.updatePicture(picture);
@@ -175,8 +176,18 @@ export default class Sensors extends System {
     if (name) myContact.updateName(name);
     if (infrared) myContact.updateInfrared(infrared);
     if (color) myContact.updateColor(color);
+    if (locked || locked === false) myContact.updateLocked(locked);
   }
-  updateArmyContact({ id, icon, picture, size, name, infrared, color }) {
+  updateArmyContact({
+    id,
+    icon,
+    picture,
+    size,
+    name,
+    infrared,
+    color,
+    locked
+  }) {
     const myContact = this.armyContacts.find(contact => contact.id === id);
     if (icon) myContact.updateIcon(icon);
     if (picture) myContact.updatePicture(picture);
@@ -184,6 +195,7 @@ export default class Sensors extends System {
     if (name) myContact.updateName(name);
     if (infrared) myContact.updateInfrared(infrared);
     if (color) myContact.updateColor(color);
+    if (locked || locked === false) myContact.updateLocked(locked);
   }
   removeArmyContact(id) {
     const contactIndex = this.armyContacts.findIndex(
@@ -238,6 +250,9 @@ export default class Sensors extends System {
   }
   setInterference(i) {
     this.interference = i;
+  }
+  setMovement(m) {
+    this.movement = m;
   }
   setSegment(segment, state) {
     this.segments.find(s => s.segment === segment).state = state;

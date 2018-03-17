@@ -60,6 +60,11 @@ class Selection extends React.Component {
   _onMouseUp = e => {
     window.document.removeEventListener("mousemove", this._onMouseMove);
     window.document.removeEventListener("mouseup", this._onMouseUp);
+    this.props.onSelectionChange.call(
+      null,
+      this.state.selectedChildren,
+      this.state.selectionBox
+    );
     this.setState({
       mouseDown: false,
       startPoint: null,
@@ -67,7 +72,6 @@ class Selection extends React.Component {
       selectionBox: null,
       appendMode: false
     });
-    this.props.onSelectionChange.call(null, this.state.selectedChildren);
   };
 
   /**
@@ -83,13 +87,22 @@ class Selection extends React.Component {
       if (this.state.mouseDown && !isNull(this.state.selectionBox)) {
         this._updateCollidingChildren(this.state.selectionBox);
       }
-      this.setState({
-        endPoint: endPoint,
-        selectionBox: this._calculateSelectionBox(
-          this.state.startPoint,
-          endPoint
-        )
-      });
+      this.setState(
+        {
+          endPoint: endPoint,
+          selectionBox: this._calculateSelectionBox(
+            this.state.startPoint,
+            endPoint
+          )
+        },
+        () => {
+          this.props.onSelectionChange.call(
+            null,
+            this.state.selectedChildren,
+            this.state.selectionBox
+          );
+        }
+      );
     }
   };
 
@@ -240,23 +253,11 @@ class Selection extends React.Component {
     if (!this.state.mouseDown || isNull(endPoint) || isNull(startPoint)) {
       return null;
     }
-    debugger;
-    const bounds = document
-      .querySelector(this.props.containerSelector || ".tactical-map-view")
-      .getBoundingClientRect();
     // const parentNode = this.refs.selectionBox
-    const left =
-      Math.min(startPoint.x, endPoint.x) / (bounds.width / window.innerWidth) +
-      bounds.left;
-    const top =
-      Math.min(startPoint.y, endPoint.y) /
-        (bounds.height / window.innerHeight) -
-      bounds.top;
-    const width =
-      Math.abs(startPoint.x - endPoint.x) / (bounds.width / window.innerWidth);
-    const height =
-      Math.abs(startPoint.y - endPoint.y) /
-      (bounds.height / window.innerHeight);
+    const left = Math.min(startPoint.x, endPoint.x); // - bounds.left;
+    const top = Math.min(startPoint.y, endPoint.y); // - bounds.top;
+    const width = Math.abs(startPoint.x - endPoint.x);
+    const height = Math.abs(startPoint.y - endPoint.y);
     const box = this.selectionBox;
     const boxRect = box.getBoundingClientRect();
     return {

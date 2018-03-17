@@ -47,6 +47,7 @@ export default class SensorContact {
     this.position = params.position || this.location;
     this.infrared = params.infrared || false;
     this.cloaked = params.cloaked || false;
+    this.locked = params.locked || false;
     this.destroyed = false;
     this.startTime = 0;
     this.endTime = 0;
@@ -65,6 +66,8 @@ export default class SensorContact {
     this.endTime = this.startTime + movementTime;
   }
   nudge(coordinates, speed, yaw) {
+    if (this.locked) return;
+
     this.speed = speed;
     const maxDistance = this.type === "planet" ? 1 + this.size / 2 : 1.1;
     if (yaw) {
@@ -96,13 +99,14 @@ export default class SensorContact {
       this.location = this.position;
       this.startTime = Date.now();
       const movementTime = Math.ceil(
-        distance3d(this.destination, this.location) / (this.speed / 10) * 1000
+        distance3d(this.destination, this.location) / (speed / 10) * 1000
       );
       this.endTime = this.startTime + movementTime;
     }
   }
   stop() {
-    this.destination = this.location;
+    this.destination = this.position;
+    this.location = this.position;
     this.speed = 0;
   }
   updateInfrared(tf) {
@@ -122,5 +126,8 @@ export default class SensorContact {
   }
   updateColor(color) {
     this.color = color;
+  }
+  updateLocked(locked) {
+    this.locked = locked;
   }
 }
