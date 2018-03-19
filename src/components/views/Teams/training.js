@@ -11,7 +11,7 @@ export default {
         "This is the list of all assigned security teams. If you are just getting started, it should be empty."
     },
     {
-      selector: ".new-button",
+      selector: ".new-team",
       content: "Click this button to create a new team."
     },
     {

@@ -74,7 +74,7 @@ export default ({
             type="textarea"
             id="teamOrders"
             placeholder=""
-            rows={6}
+            rows={5}
             size="lg"
             value={team.orders || null}
           />

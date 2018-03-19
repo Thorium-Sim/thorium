@@ -197,13 +197,9 @@ class SensorsCore extends Component {
       display: "flex",
       flexDirection: "column",
       alignItems: "stretch",
-      height: "100%",
-      minHeight: "20vh"
+      height: "calc(100% - 40px)"
     };
-    const buttonStyle = {
-      display: "flex",
-      height: 22
-    };
+
     const { selectedScan } = this.state;
     if (!sensor) return <p>No Sensors</p>;
     const scan = sensor.scans.find(s => s.id === selectedScan);
@@ -238,30 +234,37 @@ class SensorsCore extends Component {
             History
           </label>
         </Row>
-        <Row style={{ height: "calc(100% - 100px)" }}>
-          {sensor.history && (
-            <Col sm={4}>
-              <div className="scan-list">
-                {sensor.scans
-                  .concat()
-                  .reverse()
-                  .map(s => (
-                    <p
-                      key={s.id}
-                      className={`${s.cancelled ? "text-danger" : ""} ${
-                        selectedScan === s.id ? "selected" : ""
-                      } ${!s.cancelled && !s.scanning ? "text-success" : ""}`}
-                      onClick={() => this.selectScan(s)}
-                    >
-                      {s.request.substr(0, 15)}...{" "}
-                      {s.scanning && <FontAwesome name="refresh" spin />}
-                    </p>
-                  ))}
-              </div>
-            </Col>
-          )}
-          <Col sm={sensor.history ? 8 : 12}>
-            <div style={fieldStyle}>
+        <div style={fieldStyle}>
+          <Row style={{ flex: 1 }}>
+            {sensor.history && (
+              <Col sm={4}>
+                <div className="scan-list">
+                  {sensor.scans
+                    .concat()
+                    .reverse()
+                    .map(s => (
+                      <p
+                        key={s.id}
+                        className={`${s.cancelled ? "text-danger" : ""} ${
+                          selectedScan === s.id ? "selected" : ""
+                        } ${!s.cancelled && !s.scanning ? "text-success" : ""}`}
+                        onClick={() => this.selectScan(s)}
+                      >
+                        {s.request.substr(0, 15)}...{" "}
+                        {s.scanning && <FontAwesome name="refresh" spin />}
+                      </p>
+                    ))}
+                </div>
+              </Col>
+            )}
+            <Col
+              sm={sensor.history ? 8 : 12}
+              style={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column"
+              }}
+            >
               <OutputField
                 style={{ flexGrow: 2 }}
                 alert={sensor.history ? scan && scan.scanning : sensor.scanning}
@@ -291,69 +294,69 @@ class SensorsCore extends Component {
                 }}
                 value={this.state.dataField}
               />
-            </div>
-          </Col>
-        </Row>
-        <Row style={buttonStyle}>
-          <Button
-            onClick={() => this.sendScanResult(sensor)}
-            style={{ flexGrow: 2 }}
-            size={"sm"}
-          >
-            Send
-          </Button>
-          {/*<Button
+            </Col>
+          </Row>
+          <div style={{ display: "flex" }}>
+            <Button
+              onClick={() => this.sendScanResult(sensor)}
+              style={{ flexGrow: 2 }}
+              size={"sm"}
+            >
+              Send
+            </Button>
+            {/*<Button
             onClick={this.flash.bind(this)}
             style={{ flexGrow: 1 }}
             size={"sm"}
           >
             Flash
           </Button>*/}
-          <select
-            value={"answers"}
-            onChange={this.scanPreset}
-            style={{ flexGrow: 4, maxWidth: 100 }}
-          >
-            <option value={"answers"} disabled>
-              Answers
-            </option>
-            {ScanPresets.map(p => (
-              <option key={p.label} value={p.value}>
-                {p.label}
+            <select
+              value={"answers"}
+              onChange={this.scanPreset}
+              style={{ flexGrow: 4, maxWidth: 100 }}
+            >
+              <option value={"answers"} disabled>
+                Answers
               </option>
-            ))}
-          </select>
-          <select
-            onChange={this.scanPreset}
-            value={"answers"}
-            style={{ flexGrow: 4, maxWidth: 50 }}
-          >
-            <option disabled value={"answers"}>
-              Info
-            </option>
-            {sensor.presetAnswers.map(p => (
-              <option key={`${p.label}-${p.value}`} value={p.value}>
-                {p.label}
+              {ScanPresets.map(p => (
+                <option key={p.label} value={p.value}>
+                  {p.label}
+                </option>
+              ))}
+            </select>
+            <select
+              onChange={this.scanPreset}
+              value={"answers"}
+              style={{ flexGrow: 4, maxWidth: 50 }}
+            >
+              <option disabled value={"answers"}>
+                Info
               </option>
-            ))}
-          </select>
-          <Button
-            onClick={this.sendProcessedData.bind(this, external)}
-            style={{ flexGrow: 4 }}
-            size={"sm"}
-          >
-            Data
-          </Button>
-        </Row>
-        <Row style={buttonStyle}>
-          <Button
-            onClick={() => this.probeData(probes)}
-            style={{ flexGrow: 2 }}
-            size={"sm"}
-          >
-            Probe Data
-          </Button>
-        </Row>
+              {sensor.presetAnswers.map(p => (
+                <option key={`${p.label}-${p.value}`} value={p.value}>
+                  {p.label}
+                </option>
+              ))}
+            </select>
+            <Button
+              onClick={this.sendProcessedData.bind(this, external)}
+              style={{ flexGrow: 4 }}
+              size={"sm"}
+            >
+              Data
+            </Button>
+          </div>
+          <div style={{ display: "flex" }}>
+            <Button
+              onClick={() => this.probeData(probes)}
+              style={{ flexGrow: 2 }}
+              size={"sm"}
+            >
+              Probe Data
+            </Button>
+          </div>
+        </div>
       </Container>
     );
   }

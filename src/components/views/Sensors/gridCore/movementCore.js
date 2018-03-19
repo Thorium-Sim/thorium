@@ -33,7 +33,6 @@ export default class MovementCore extends Component {
   }
   componentWillReceiveProps(nextProps) {
     const { movement: { x, y } } = nextProps.sensors;
-    console.log(x, y);
     this.setState({
       direction: {
         left: x,
@@ -117,7 +116,6 @@ export default class MovementCore extends Component {
               />
             </DraggableCore>
           </div>
-          <div className="spacer" />
         </div>
         <Button size="sm" color="warning" onClick={this.reset}>
           Reset
