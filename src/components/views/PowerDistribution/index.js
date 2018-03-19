@@ -179,27 +179,29 @@ class PowerDistribution extends Component {
       <Container fluid={!!battery} className="powerLevels">
         <Row className="powerlevel-row">
           <Col lg="12" xl={battery ? 8 : 12} className="powerlevel-containers">
-            {this.state.systems
-              .slice(0)
-              .sort((a, b) => {
-                if (a.type > b.type) return 1;
-                if (a.type < b.type) return -1;
-                return 0;
-              })
-              .filter(
-                sys =>
-                  (sys.power.power || sys.power.power === 0) &&
-                  sys.power.powerLevels.length
-              )
-              .map(sys => (
-                <SystemPower
-                  key={sys.id}
-                  {...sys}
-                  mouseDown={this.mouseDown}
-                  count={this.state.systems.length}
-                  height={window.innerHeight * 0.74}
-                />
-              ))}
+            <div className="systems-holder">
+              {this.state.systems
+                .slice(0)
+                .sort((a, b) => {
+                  if (a.type > b.type) return 1;
+                  if (a.type < b.type) return -1;
+                  return 0;
+                })
+                .filter(
+                  sys =>
+                    (sys.power.power || sys.power.power === 0) &&
+                    sys.power.powerLevels.length
+                )
+                .map(sys => (
+                  <SystemPower
+                    key={sys.id}
+                    {...sys}
+                    mouseDown={this.mouseDown}
+                    count={this.state.systems.length}
+                    height={window.innerHeight * 0.74}
+                  />
+                ))}
+            </div>
             <h4 className="totalPowerText">Total Power Used: {powerTotal}</h4>
             {reactor && (
               <h4>
