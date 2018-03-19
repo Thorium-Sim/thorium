@@ -120,11 +120,11 @@
       }
     }
   }
-  .spacer {
-    padding-top: calc(100% + 20px);
-  }
+
   .draggerHolder {
     position: relative;
+    padding-bottom: calc(100% - 3vw);
+    width: calc(100% - 3vw);
   }
   .draggerCircle {
     position: absolute;

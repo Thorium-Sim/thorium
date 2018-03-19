@@ -344,7 +344,7 @@ class GridCore extends Component {
               </Fragment>
             )}
           </Col>
-          <Col sm={7} style={{ height: "100%" }}>
+          <Col sm={7} style={{ height: "calc(100% - 50px)" }}>
             <div
               id="threeSensors"
               className="array"
