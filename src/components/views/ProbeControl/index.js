@@ -208,6 +208,7 @@ class ProbeControlWrapper extends Component {
         probeQuery(id: $id, probeId: $probeId, query: $query)
       }
     `;
+    if (!this.state.queryText) return;
     const variables = {
       id: this.props.probeId,
       probeId: this.props.id,
@@ -220,7 +221,7 @@ class ProbeControlWrapper extends Component {
   };
   cancelQuery = () => {
     const mutation = gql`
-      mutation ProbeQuery($id: ID!, $probeId: ID!, $query: String!) {
+      mutation ProbeQuery($id: ID!, $probeId: ID!, $query: String) {
         probeQuery(id: $id, probeId: $probeId, query: $query)
       }
     `;
