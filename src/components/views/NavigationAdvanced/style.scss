@@ -21,26 +21,27 @@
   input[type="range"] {
     -webkit-appearance: none;
     width: 70vh;
-    height:2px;
+    height: 2px;
     position: absolute;
     right: -20vh;
     top: 40vh;
     //margin: 40.65px 0;
     transform: rotate(270deg);
   }
-  input[type=range]:focus {
+  input[type="range"]:focus {
     outline: none;
   }
-  input[type=range]::-webkit-slider-runnable-track {
+  input[type="range"]::-webkit-slider-runnable-track {
     width: 100%;
     height: 18.7px;
     cursor: pointer;
-    box-shadow: 1px 1px 1.2px rgba(0, 0, 0, 0.47), 0px 0px 1px rgba(13, 13, 13, 0.47);
+    box-shadow: 1px 1px 1.2px rgba(0, 0, 0, 0.47),
+      0px 0px 1px rgba(13, 13, 13, 0.47);
     background: #bebebe;
     border-radius: 6px;
     border: 0.2px solid #000101;
   }
-  input[type=range]::-webkit-slider-thumb {
+  input[type="range"]::-webkit-slider-thumb {
     box-shadow: 2px 2px 7.2px #000000, 0px 0px 2px #0d0d0d;
     border: 1.6px solid #009e00;
     height: 100px;
@@ -51,7 +52,7 @@
     -webkit-appearance: none;
     margin-top: -40.85px;
   }
-  input[type=range].warp::-webkit-slider-thumb {
+  input[type="range"].warp::-webkit-slider-thumb {
     box-shadow: 2px 2px 7.2px #000000, 0px 0px 2px #0d0d0d;
     border: 1.6px solid #9e0000;
     height: 100px;
@@ -62,19 +63,20 @@
     -webkit-appearance: none;
     margin-top: -40.85px;
   }
-  input[type=range]:focus::-webkit-slider-runnable-track {
+  input[type="range"]:focus::-webkit-slider-runnable-track {
     background: #e4e4e4;
   }
-  input[type=range]::-moz-range-track {
+  input[type="range"]::-moz-range-track {
     width: 100%;
     height: 18.7px;
     cursor: pointer;
-    box-shadow: 1px 1px 1.2px rgba(0, 0, 0, 0.47), 0px 0px 1px rgba(13, 13, 13, 0.47);
+    box-shadow: 1px 1px 1.2px rgba(0, 0, 0, 0.47),
+      0px 0px 1px rgba(13, 13, 13, 0.47);
     background: #bebebe;
     border-radius: 6px;
     border: 0.2px solid #000101;
   }
-  input[type=range]::-moz-range-thumb {
+  input[type="range"]::-moz-range-thumb {
     box-shadow: 2px 2px 7.2px #000000, 0px 0px 2px #0d0d0d;
     border: 1.6px solid #009e00;
     height: 100px;
@@ -83,7 +85,7 @@
     background: #00be00;
     cursor: pointer;
   }
-  input[type=range].warp::-moz-range-thumb {
+  input[type="range"].warp::-moz-range-thumb {
     box-shadow: 2px 2px 7.2px #000000, 0px 0px 2px #0d0d0d;
     border: 1.6px solid #9e0000;
     height: 100px;
@@ -92,7 +94,7 @@
     background: #be0000;
     cursor: pointer;
   }
-  input[type=range]::-ms-track {
+  input[type="range"]::-ms-track {
     width: 100%;
     height: 18.7px;
     cursor: pointer;
@@ -100,19 +102,21 @@
     border-color: transparent;
     color: transparent;
   }
-  input[type=range]::-ms-fill-lower {
+  input[type="range"]::-ms-fill-lower {
     background: #989898;
     border: 0.2px solid #000101;
     border-radius: 12px;
-    box-shadow: 1px 1px 1.2px rgba(0, 0, 0, 0.47), 0px 0px 1px rgba(13, 13, 13, 0.47);
+    box-shadow: 1px 1px 1.2px rgba(0, 0, 0, 0.47),
+      0px 0px 1px rgba(13, 13, 13, 0.47);
   }
-  input[type=range]::-ms-fill-upper {
+  input[type="range"]::-ms-fill-upper {
     background: #bebebe;
     border: 0.2px solid #000101;
     border-radius: 12px;
-    box-shadow: 1px 1px 1.2px rgba(0, 0, 0, 0.47), 0px 0px 1px rgba(13, 13, 13, 0.47);
+    box-shadow: 1px 1px 1.2px rgba(0, 0, 0, 0.47),
+      0px 0px 1px rgba(13, 13, 13, 0.47);
   }
-  input[type=range]::-ms-thumb {
+  input[type="range"]::-ms-thumb {
     box-shadow: 2px 2px 7.2px #000000, 0px 0px 2px #0d0d0d;
     border: 1.6px solid #009e00;
     height: 100px;
@@ -122,11 +126,17 @@
     cursor: pointer;
     height: 18.7px;
   }
-  input[type=range]:focus::-ms-fill-lower {
+  input[type="range"]:focus::-ms-fill-lower {
     background: #bebebe;
   }
-  input[type=range]:focus::-ms-fill-upper {
+  input[type="range"]:focus::-ms-fill-upper {
     background: #e4e4e4;
+  }
+  @media (width: 1366px) {
+    .ship-image {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
   }
 }
 
@@ -134,8 +144,8 @@ $arrowSize: 15px;
 $circleRadius: 100px;
 .thruster-rotor {
   position: relative;
-  height: $circleRadius*2 + $arrowSize*4;
-  width: $circleRadius*2 + $arrowSize*2;
+  height: $circleRadius * 2 + $arrowSize * 4;
+  width: $circleRadius * 2 + $arrowSize * 2;
   label {
     pointer-events: none;
   }
@@ -156,8 +166,8 @@ $circleRadius: 100px;
   }
   .inner-circle {
     position: absolute;
-    width: $circleRadius*2;
-    height: $circleRadius*2;
+    width: $circleRadius * 2;
+    height: $circleRadius * 2;
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: 50%;
     margin: $arrowSize;

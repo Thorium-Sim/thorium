@@ -56,4 +56,9 @@
       font-size: 0.8rem;
     }
   }
+  @media (width: 1366px) {
+    .shieldControlBox {
+      margin-top: 0px;
+    }
+  }
 }
