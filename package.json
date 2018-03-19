@@ -42,8 +42,8 @@
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.11",
     "apollo-client": "^2.2.7",
-    "apollo-link-ws": "^1.0.7",
     "apollo-link-http": "^1.5.3",
+    "apollo-link-ws": "^1.0.7",
     "appdirectory": "^0.1.0",
     "body-parser": "^1.18.2",
     "bodymovin": "^4.13.0",
@@ -80,6 +80,7 @@
     "react-dom": "^16.0.0",
     "react-draggable": "^3.0.5",
     "react-fontawesome": "^1.6.1",
+    "react-konami": "^0.5.0",
     "react-measure": "^2.0.2",
     "react-mosaic-component": "^1.1.0",
     "react-popper": "^0.8.2",
@@ -101,21 +102,18 @@
     "yazl": "^2.4.3"
   },
   "scripts": {
-    "start-server":
-      "nodemon ./server/server.js -e js,graphql --ignore snapshots/ --ignore src/ --exec babel-node",
+    "start-server": "nodemon ./server/server.js -e js,graphql --ignore snapshots/ --ignore src/ --exec babel-node",
     "start": "concurrently \"npm run start-server\" \"npm run start-client\"",
     "start-js": "react-scripts start",
     "start-client": "npm-run-all -p watch-css start-js",
     "build-js": "cross-env GENERATE_SOURCEMAP=false react-scripts build",
     "build-client": "npm-run-all build-css build-js",
     "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css":
-      "concurrently \"npm run build-css\" \"node-sass-chokidar src/ -o src/ --watch --recursive\"",
+    "watch-css": "concurrently \"npm run build-css\" \"node-sass-chokidar src/ -o src/ --watch --recursive\"",
     "build-server": "node ./config/build-server.js",
     "build": "npm run build-client && npm run build-server",
     "lint": "eslint .",
-    "cloc":
-      "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots,coverage,build --exclude-ext=css,json",
+    "cloc": "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots,coverage,build --exclude-ext=css,json",
     "test:client": "react-scripts test --env=jsdom",
     "test:server": "jest server/tests --env=node",
     "test": "concurrently \"npm run test:client\" \"npm run test:server\"",
@@ -127,10 +125,16 @@
     "plop": "plop"
   },
   "lint-staged": {
-    "*.js": ["prettier --write", "git add"]
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "jest": {
-    "coverageReporters": ["lcov", "text-summary"]
+    "coverageReporters": [
+      "lcov",
+      "text-summary"
+    ]
   },
   "bin": "./app.js",
   "proxy": {
