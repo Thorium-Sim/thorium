@@ -55,6 +55,7 @@ export default class Simulator {
 
     // Damage reports
     this.stepDamage = params.stepDamage || true;
+    this.verifyStep = params.verifyStep || false;
     this.requiredDamageSteps = [];
     this.optionalDamageSteps = [];
     params.requiredDamageSteps &&

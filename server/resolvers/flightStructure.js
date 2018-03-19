@@ -118,6 +118,9 @@ export const FlightStructureMutations = {
   setStepDamage(rootValue, params, context) {
     App.handleEvent(params, "setStepDamage", context);
   },
+  setVerifyDamage(rootValue, params, context) {
+    App.handleEvent(params, "setVerifyDamage", context);
+  },
   // Timeline
   addTimelineStep(root, args, context) {
     App.handleEvent(

@@ -25,6 +25,8 @@ name
 layout
 exocomps
 panels
+stepDamage
+verifyStep
 requiredDamageSteps {
   id
   name

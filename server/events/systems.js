@@ -263,3 +263,72 @@ App.on("trainingMode", ({ simulatorId }) => {
   });
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("setDamageStepValidation", ({ id, validation }) => {
+  let sys = App.systems.find(s => s.id === id);
+  const sim = App.simulators.find(s => s.id === sys.simulatorId);
+  sys.damage.validate = validation;
+
+  if (validation === false) {
+    // Send an update to every station with the
+    // damage step widget and card
+    const stations = sim.stations
+      .filter(s => {
+        return s.cards.find(c => c.component === "DamageControl");
+      })
+      .concat(sim.stations.filter(s => s.widgets.indexOf("damageReport") > -1))
+      .map(s => s.name)
+      .filter((s, i, a) => a.indexOf(s) === i);
+    stations.forEach(s =>
+      pubsub.publish("notify", {
+        id: uuid.v4(),
+        simulatorId: sys.simulatorId,
+        station: s,
+        title: `Damage report step validation rejected`,
+        body: sys.name,
+        color: "danger"
+      })
+    );
+  } else {
+    // Add the core feed
+    App.handleEvent(
+      {
+        simulatorId: sys.simulatorId,
+        component: "DamageReportsCore",
+        title: `Damage Step Verify Request`,
+        body: sys.name,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+  }
+  sendUpdate(sys);
+});
+App.on("validateDamageStep", ({ id }) => {
+  // The step is good. Increase the current step.
+  let sys = App.systems.find(s => s.id === id);
+  const sim = App.simulators.find(s => s.id === sys.simulatorId);
+  console.log(sys.damage.currentStep);
+  sys.updateCurrentStep(sys.damage.currentStep + 1);
+  console.log(sys.damage.currentStep);
+  sys.damage.validate = false;
+  // Send an update to every station with the
+  // damage step widget and card
+  const stations = sim.stations
+    .filter(s => {
+      return s.cards.find(c => c.component === "DamageControl");
+    })
+    .concat(sim.stations.filter(s => s.widgets.indexOf("damageReport") > -1))
+    .map(s => s.name)
+    .filter((s, i, a) => a.indexOf(s) === i);
+  stations.forEach(s =>
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      station: s,
+      title: `Damage report step validation accepted`,
+      body: sys.name,
+      color: "success"
+    })
+  );
+  sendUpdate(sys);
+});

@@ -122,3 +122,8 @@ App.on("setStepDamage", ({ simulatorId, stepDamage }) => {
   simulator.stepDamage = stepDamage;
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("setVerifyDamage", ({ simulatorId, verifyStep }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  simulator.verifyStep = verifyStep;
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});

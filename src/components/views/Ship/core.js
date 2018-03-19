@@ -15,6 +15,7 @@ const SHIP_CORE_SUB = gql`
       layout
       training
       stepDamage
+      verifyStep
       ship {
         bridgeCrew
         radiation
@@ -139,10 +140,25 @@ class ShipCore extends Component {
       variables
     });
   };
+  setStepValidation = e => {
+    const mutation = gql`
+      mutation SetStepVerify($simulatorId: ID!, $verifyStep: Boolean!) {
+        setVerifyDamage(simulatorId: $simulatorId, verifyStep: $verifyStep)
+      }
+    `;
+    const variables = {
+      simulatorId: this.props.simulator.id,
+      verifyStep: e.target.checked
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.simulators) return null;
     const simulator = this.props.data.simulators[0];
-    const { name, layout, training, stepDamage } = simulator;
+    const { name, layout, training, stepDamage, verifyStep } = simulator;
     const { bridgeCrew, radiation } = simulator.ship;
     return (
       <div className="core-ship">
@@ -168,12 +184,29 @@ class ShipCore extends Component {
         </Input>
         <div>
           <Input
-            style={{ marginLeft: "10px", marginRight: "50px" }}
+            style={{
+              marginLeft: "10px",
+              marginRight: "10px",
+              position: "relative"
+            }}
             type="checkbox"
             checked={stepDamage}
             onChange={this.setStepDamage}
           />
           Step Damage Reports{" "}
+        </div>
+        <div>
+          <Input
+            style={{
+              marginLeft: "10px",
+              marginRight: "10px",
+              position: "relative"
+            }}
+            type="checkbox"
+            checked={verifyStep}
+            onChange={this.setStepValidation}
+          />
+          Verify Damage Steps
         </div>
         <p>Bridge Crew: </p>
         <InputField
@@ -213,6 +246,7 @@ const SHIP_CORE_QUERY = gql`
       layout
       training
       stepDamage
+      verifyStep
       ship {
         bridgeCrew
         radiation

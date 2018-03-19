@@ -24,4 +24,6 @@ breakSystem(simulatorId: ID!, type: String!, name: String): String
 #Macro: Fix system
 fixSystem(simulatorId: ID!, type: String!, name: String): String
 
+setDamageStepValidation(id:ID!, validation:Boolean!):String
+validateDamageStep(id:ID!):String
 `;

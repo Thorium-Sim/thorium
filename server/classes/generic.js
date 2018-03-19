@@ -71,7 +71,8 @@ export class System {
           reactivationCode: null,
           reactivationRequester: null,
           neededReactivationCode: null,
-          exocompParts: []
+          exocompParts: [],
+          validate: false
         };
     this.extra = params.extra || false;
     this.locations = params.locations || [];

@@ -26,6 +26,7 @@ export { default as Faces } from "./Faces";
 export { default as DamageMonitoring } from "./DamageMonitoring";
 export { default as Downloading } from "./Downloading";
 export { default as YellowAlert } from "./YellowAlert";
+export { default as CollisionAlert } from "./CollisionAlert";
 
 export { default as InformationConfig } from "./Information/config";
 export { default as InternalSensorsConfig } from "./InternalSensors/config";

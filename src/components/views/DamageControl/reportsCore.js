@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button, Input } from "reactstrap";
@@ -16,6 +16,7 @@ const SYSTEMS_SUB = gql`
         reactivationCode
         neededReactivationCode
         currentStep
+        validate
       }
       simulatorId
       type
@@ -227,12 +228,41 @@ class DamageReportCore extends Component {
         });
       });
   };
+  rejectStep = () => {
+    const mutation = gql`
+      mutation SetDamageStepValidation($id: ID!) {
+        setDamageStepValidation(id: $id, validation: false)
+      }
+    `;
+    const variables = {
+      id: this.state.selectedSystem
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  acceptStep = () => {
+    const mutation = gql`
+      mutation ValidateDamageStep($id: ID!) {
+        validateDamageStep(id: $id)
+      }
+    `;
+    const variables = {
+      id: this.state.selectedSystem
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading) return null;
     const systems = this.props.data.systems;
     if (!systems) return null;
     const { selectedReport, selectedSystem } = this.state;
     const selectedSystemObj = systems.find(s => s.id === selectedSystem);
+    console.log(selectedSystemObj);
     return (
       <Container fluid className="damageReport-core">
         <Row style={{ height: "100%" }}>
@@ -273,13 +303,14 @@ class DamageReportCore extends Component {
               <option value="">Add System</option>
             </Input>
           </Col>
-          <Col sm={8}>
+          <Col sm={8} style={{ display: "flex", flexDirection: "column" }}>
             <TypingField
               value={selectedReport}
               style={{
                 textAlign: "left",
                 height: "auto",
-                fontFamily: "monospace"
+                fontFamily: "monospace",
+                flex: 1
               }}
               rows={8}
               controlled={true}
@@ -329,54 +360,92 @@ class DamageReportCore extends Component {
                 </Row>
               </div>
             ) : (
-              <Row style={{ margin: 0 }}>
-                <Col sm={3}>
-                  <Button
-                    size={"sm"}
-                    block
-                    color="success"
-                    onClick={this.repairSystem}
-                  >
-                    Repair
-                  </Button>
-                </Col>
-                <Col sm={3}>
-                  <Input
-                    onChange={this.loadReport.bind(this)}
-                    style={{ position: "absolute", opacity: 0 }}
-                    type="file"
-                    name="file"
-                    id="exampleFile"
-                  />
-                  <Button size={"sm"} block color="info">
-                    Load Report
-                  </Button>
-                </Col>
-                <Col sm={3}>
-                  <select
-                    className="btn btn-warning btn-sm btn-block"
-                    onChange={evt =>
-                      this.generateReport(parseInt(evt.target.value, 10))
-                    }
-                    value={"select"}
-                  >
-                    <option value="select">Generate</option>
-                    <option value="5">Short</option>
-                    <option value="8">Medium</option>
-                    <option value="12">Long</option>
-                  </select>
-                </Col>
-                <Col sm={3}>
-                  <Button
-                    size={"sm"}
-                    block
-                    color="primary"
-                    onClick={this.sendReport}
-                  >
-                    Send
-                  </Button>
-                </Col>
-              </Row>
+              selectedSystem && (
+                <Fragment>
+                  <Row style={{ margin: 0 }}>
+                    <Col sm={4}>
+                      <Button
+                        size={"sm"}
+                        block
+                        color="success"
+                        onClick={this.repairSystem}
+                      >
+                        Repair
+                      </Button>
+                    </Col>
+                    <Col sm={4}>
+                      <Input
+                        onChange={this.loadReport.bind(this)}
+                        style={{ position: "absolute", opacity: 0 }}
+                        type="file"
+                        name="file"
+                        id="exampleFile"
+                      />
+                      <Button size={"sm"} block color="info">
+                        Load Report
+                      </Button>
+                    </Col>
+                    <Col sm={4}>
+                      <select
+                        className="btn btn-warning btn-sm btn-block"
+                        onChange={evt =>
+                          this.generateReport(parseInt(evt.target.value, 10))
+                        }
+                        value={"select"}
+                      >
+                        <option value="select">Generate</option>
+                        <option value="5">Short</option>
+                        <option value="8">Medium</option>
+                        <option value="12">Long</option>
+                      </select>
+                    </Col>
+                  </Row>
+                  <Row style={{ margin: 0 }}>
+                    {selectedSystemObj.damage.validate ? (
+                      <Fragment>
+                        <Col sm={4}>
+                          <p>
+                            Validate Step:{" "}
+                            {selectedSystemObj.damage.currentStep + 1}
+                          </p>
+                        </Col>
+                        <Col sm={2}>
+                          <Button
+                            size={"sm"}
+                            block
+                            color="secondary"
+                            onClick={this.acceptStep}
+                          >
+                            Accept Step
+                          </Button>
+                        </Col>
+                        <Col sm={2}>
+                          <Button
+                            size={"sm"}
+                            block
+                            color="danger"
+                            onClick={this.rejectStep}
+                          >
+                            Reject Step
+                          </Button>
+                        </Col>
+                      </Fragment>
+                    ) : (
+                      <Col sm={8} />
+                    )}
+                    <Col sm={4}>
+                      <Button
+                        size={"sm"}
+                        block
+                        color="primary"
+                        onClick={this.sendReport}
+                      >
+                        Send
+                      </Button>
+                    </Col>
+                  </Row>
+                </Fragment>
+              )
             )}
           </Col>
         </Row>
@@ -396,6 +465,7 @@ const SYSTEMS_QUERY = gql`
         reactivationCode
         neededReactivationCode
         currentStep
+        validate
       }
       simulatorId
       type
