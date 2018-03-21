@@ -20,17 +20,17 @@ if (!process.env.CI && process.env.NODE_ENV === "production") {
             name: "thorium-macos"
           },
           linux: {
-            url: "https://s3.amazonaws.com/thoriumsim/thorium-win.exe.zip",
-            name: "thorium-win.exe"
-          },
-          win32: {
             url: "https://s3.amazonaws.com/thoriumsim/thorium-linux.zip",
             name: "thorium-linux"
+          },
+          win32: {
+            url: "https://s3.amazonaws.com/thoriumsim/thorium-win.exe.zip",
+            name: "thorium-win.exe"
           }
         };
+
         const processPath = process.execPath;
         const tempPath = path.resolve(paths.userData + "/" + "temp");
-
         if (!fs.existsSync(tempPath)) {
           fs.mkdirSync(tempPath);
         }
@@ -38,6 +38,24 @@ if (!process.env.CI && process.env.NODE_ENV === "production") {
         request({ uri: platforms[process.platform].url })
           .pipe(unzip.Extract({ path: tempPath }))
           .on("close", function() {
+            if (process.platform === "win32") {
+              console.log("Moving new version into place");
+              fs.rename(
+                tempPath + "/" + platforms[process.platform].name,
+                processPath + "/../thorium-win-" + res[0].name + ".exe",
+                error => {
+                  if (error) {
+                    console.error(error);
+                  }
+                  console.log(
+                    `Download Complete. Close this window and open thorium-win-${
+                      res[0].name
+                    }.exe for the updated version.`
+                  );
+                }
+              );
+              return;
+            }
             console.log("Removing old version");
             fs.unlink(processPath, err => {
               if (err) {
