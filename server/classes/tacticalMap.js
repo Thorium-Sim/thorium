@@ -1,4 +1,26 @@
 import uuid from "uuid";
+class TacticalPath {
+  constructor(params) {
+    this.id = params.dup ? uuid.v4() : params.id || uuid.v4();
+    this.start = params.start || { x: 450, y: 50, z: 0 };
+    this.end = params.end || { x: 150, y: 450, z: 0 };
+    this.c1 = params.c1 || { x: 150, y: 100, z: 0 };
+    this.c2 = params.c2 || { x: 200, y: 250, z: 0 };
+    this.color = params.color || "white";
+    this.width = params.width || 5;
+    this.arrow = params.arrow || false;
+  }
+  update({ start, end, c1, c2, color, width, arrow }) {
+    if (start) this.start = start;
+    if (end) this.end = end;
+    if (c1) this.c1 = c1;
+    if (c2) this.c2 = c2;
+    if (color) this.color = color;
+    if (width) this.width = width;
+    if (arrow || arrow === false) this.arrow = arrow;
+  }
+}
+
 class TacticalItem {
   constructor(params) {
     this.id = params.dup ? uuid.v4() : params.id || uuid.v4();
@@ -13,8 +35,10 @@ class TacticalItem {
     this.velocity = params.velocity || { x: 0, y: 0, z: 0 };
     this.location = params.location || { x: 0, y: 0, z: 0 };
     this.destination = params.destination || { x: 0, y: 0, z: 0 };
+    this.rotation = params.rotation || 0;
     this.wasd = params.wasd || false;
     this.ijkl = params.ijkl || false;
+    this.thrusters = params.thrusters || false;
   }
   update({
     label,
@@ -28,8 +52,11 @@ class TacticalItem {
     velocity,
     location,
     destination,
+    rotation,
     wasd,
-    ijkl
+    ijkl,
+    thrusters,
+    rotationMatch
   }) {
     if (label || label === null || label === "") this.label = label;
     if (font) this.font = font;
@@ -42,8 +69,12 @@ class TacticalItem {
     if (velocity) this.velocity = velocity;
     if (location) this.location = location;
     if (destination) this.destination = destination;
+    if (rotation || rotation === 0) this.rotation = rotation;
     if (wasd || wasd === false) this.wasd = wasd;
     if (ijkl || ijkl === false) this.ijkl = ijkl;
+    if (thrusters || thrusters === false) this.thrusters = thrusters;
+    if (rotationMatch || rotationMatch === false)
+      this.rotationMatch = rotationMatch;
   }
 }
 
@@ -58,9 +89,15 @@ class TacticalLayer {
     this.gridCols = params.gridCols || 16;
     this.gridRows = params.gridRows || 9;
     this.items = [];
+    this.paths = [];
     (params.items || []).forEach(i =>
       this.items.push(
         new TacticalItem(Object.assign({}, i, { dup: params.dup }))
+      )
+    );
+    (params.paths || []).forEach(i =>
+      this.paths.push(
+        new TacticalPath(Object.assign({}, i, { dup: params.dup }))
       )
     );
   }
@@ -81,6 +118,17 @@ class TacticalLayer {
   }
   removeItem(itemId) {
     this.items = this.items.filter(i => i.id !== itemId);
+  }
+
+  addPath(path) {
+    this.paths.push(new TacticalPath(path));
+  }
+  updatePath(path) {
+    const pathObj = this.paths.find(i => i.id === path.id);
+    pathObj && pathObj.update(path);
+  }
+  removePath(pathId) {
+    this.paths = this.paths.filter(i => i.id !== pathId);
   }
 }
 export default class TacticalMap {
@@ -135,6 +183,16 @@ export default class TacticalMap {
   }
   removeItemFromLayer(layerId, itemId) {
     this.layers.find(l => l.id === layerId).removeItem(itemId);
+  }
+
+  addPathToLayer(layerId, path) {
+    this.layers.find(l => l.id === layerId).addPath(path);
+  }
+  updatePathInLayer(layerId, path) {
+    this.layers.find(l => l.id === layerId).updatePath(path);
+  }
+  removePathFromLayer(layerId, pathId) {
+    this.layers.find(l => l.id === layerId).removePath(pathId);
   }
   freeze(tf) {
     this.frozen = tf;

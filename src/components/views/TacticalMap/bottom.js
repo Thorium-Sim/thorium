@@ -1,10 +1,11 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Row, Col, Input, Label, FormGroup, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { ChromePicker } from "react-color";
 
 import ImageConfig from "./imageConfig";
 import ObjectConfig from "./objectConfig";
+import PathConfig from "./pathConfig";
 
 const configs = {
   gridConfig: ({ selectedLayer, updateLayer }) => {
@@ -67,7 +68,8 @@ const configs = {
     );
   },
   imageConfig: ImageConfig,
-  objectsConfig: ObjectConfig
+  objectsConfig: ObjectConfig,
+  pathConfig: PathConfig
 };
 
 export default class Bottom extends Component {
@@ -138,7 +140,9 @@ export default class Bottom extends Component {
       layerId,
       objectId,
       tacticalMaps,
-      updateObject
+      updateObject,
+      updateSpeed,
+      speed
     } = this.props;
     if (!tacticalMapId || !layerId) return null;
     const selectedMap = tacticalMaps.find(t => t.id === tacticalMapId);
@@ -156,11 +160,28 @@ export default class Bottom extends Component {
               <option value="grid">Grid</option>
               <option value="image">Image</option>
               <option value="objects">Objects</option>
+              <option value="path">Paths</option>
             </Input>
             {selectedLayer.type === "objects" && (
-              <Button size="sm" color="primary" onClick={this.addLabel}>
-                Add Label
-              </Button>
+              <Fragment>
+                <Button size="sm" color="primary" onClick={this.addLabel}>
+                  Add Label
+                </Button>
+                <Input
+                  type="select"
+                  size="sm"
+                  value={speed}
+                  onChange={evt => updateSpeed(evt.target.value)}
+                >
+                  <option value="1000">Instant</option>
+                  <option value="2">Warp</option>
+                  <option value="1">Very Fast</option>
+                  <option value="0.6">Fast</option>
+                  <option value="0.4">Moderate</option>
+                  <option value="0.1">Slow</option>
+                  <option value="0.05">Very Slow</option>
+                </Input>
+              </Fragment>
             )}
           </Col>
           <Col sm={9}>

@@ -44,9 +44,37 @@ const TACTICALMAP_SUB = gql`
             y
             z
           }
+          rotation
           flash
           ijkl
           wasd
+        }
+        paths {
+          id
+          layerId
+          start {
+            x
+            y
+            z
+          }
+          end {
+            x
+            y
+            z
+          }
+          c1 {
+            x
+            y
+            z
+          }
+          c2 {
+            x
+            y
+            z
+          }
+          color
+          width
+          arrow
         }
         image
         color
@@ -225,9 +253,37 @@ const TACTICALMAP_QUERY = gql`
             y
             z
           }
+          rotation
           flash
           ijkl
           wasd
+        }
+        paths {
+          id
+          layerId
+          start {
+            x
+            y
+            z
+          }
+          end {
+            x
+            y
+            z
+          }
+          c1 {
+            x
+            y
+            z
+          }
+          c2 {
+            x
+            y
+            z
+          }
+          color
+          width
+          arrow
         }
         image
         color
