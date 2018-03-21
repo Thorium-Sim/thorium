@@ -236,6 +236,7 @@ const layerComps = {
       if (evt === "cancel") {
         Object.keys(movements).forEach(m => {
           const item = items.find(i => i.id === m);
+          if (!item) return;
           let { x, y, z } = item.destination;
           const movement = movements[m];
           x = x + movement.x;
@@ -351,9 +352,6 @@ const layerComps = {
         paths
       } = this.props;
       const path = paths.find(p => p.id === movingPath);
-      const { left, top, bottom, right } = document
-        .querySelector(".tactical-map-view")
-        .getBoundingClientRect();
       if (
         (movingNode === "start" || movingNode === "end") &&
         (x > window.innerWidth || x < 0 || y > window.innerHeight || y < 0)
@@ -447,6 +445,7 @@ class TacticalIcon extends Component {
       this.props.moveMultiple("cancel");
     } else {
       const { x, y, z } = this.state.destination;
+      console.log(x, y);
       if (x > 1 || x < 0 || y > 1 || y < 0) {
         this.props.removeObject();
       } else {
@@ -467,11 +466,9 @@ class TacticalIcon extends Component {
     if (this.props.isSelected) {
       this.props.moveMultiple(evt, bounds);
     } else {
-      const { targetBounds } = this.state;
-      const x =
-        (evt.clientX - targetBounds.width / 4 - bounds.left) / bounds.width;
-      const y =
-        (evt.clientY - targetBounds.height / 4 - bounds.top) / bounds.height;
+      const { destination } = this.state;
+      const x = destination.x + evt.movementX / bounds.width;
+      const y = destination.y + evt.movementY / bounds.height;
       this.setState({
         destination: Object.assign({}, this.state.destination, { x, y })
       });

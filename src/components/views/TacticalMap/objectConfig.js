@@ -93,13 +93,30 @@ export default class ObjectConfig extends Component {
             draggable={false}
             src={draggingObject.url}
             style={{
-              transform: `translate(${draggingObject.x}px, ${draggingObject.y}px)`
+              transform: `translate(${draggingObject.x}px, ${
+                draggingObject.y
+              }px)`
             }}
           />
         )}
       </div>
     );
   }
+}
+
+function logslider(position, reverse) {
+  // position will be between 0 and 100
+  var minp = 0;
+  var maxp = 100;
+
+  // The result should be between 100 an 10000000
+  var minv = Math.log(0.1);
+  var maxv = Math.log(20);
+
+  // calculate adjustment factor
+  var scale = (maxv - minv) / (maxp - minp);
+  if (reverse) return (Math.log(position) - minv) / scale + minp;
+  return Math.exp(minv + scale * (position - minp));
 }
 
 const ObjectSettings = ({
@@ -122,11 +139,13 @@ const ObjectSettings = ({
             Size
             <Input
               type="range"
-              min="0.1"
-              max="10"
+              min="0"
+              max="100"
               step={0.1}
-              value={size}
-              onChange={evt => updateObject("size", evt.target.value)}
+              value={logslider(size, true)}
+              onChange={evt =>
+                updateObject("size", logslider(evt.target.value))
+              }
             />
           </Label>
         </FormGroup>
@@ -223,9 +242,11 @@ const ObjectSettings = ({
           onChangeComplete={color =>
             updateObject(
               "fontColor",
-              `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb
-                .a})`
-            )}
+              `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${
+                color.rgb.a
+              })`
+            )
+          }
         />
       </Col>
     </Row>
