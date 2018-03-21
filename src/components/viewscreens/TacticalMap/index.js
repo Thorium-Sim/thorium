@@ -44,6 +44,7 @@ const TACTICALMAP_SUB = gql`
             y
             z
           }
+          rotation
           flash
           ijkl
           wasd
@@ -252,6 +253,7 @@ const TACTICALMAP_QUERY = gql`
             y
             z
           }
+          rotation
           flash
           ijkl
           wasd

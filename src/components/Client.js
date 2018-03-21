@@ -128,6 +128,12 @@ const creditList = [
             🛰
           </span>
         </li>
+        <li>
+          Victor Williamson
+          <span role="img" aria-label="donor-tag">
+            👽
+          </span>
+        </li>
       </ul>
     )
   },

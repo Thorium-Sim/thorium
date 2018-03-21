@@ -72,6 +72,7 @@ export default class Sensors extends System {
     this.autoThrusters = params.autoThrusters || false;
     this.interference = params.interference || 0;
     this.movement = params.movement || { x: 0, y: 0, z: 0 };
+    this.thrusterMovement = params.thrusterMovement || { x: 0, y: 0, z: 0 };
 
     this.segments = params.segments || [
       { segment: "a1", state: false },
@@ -247,6 +248,9 @@ export default class Sensors extends System {
   }
   setAutoThrusters(t) {
     this.autoThrusters = t;
+    if (!t) {
+      this.thrusterMovement = { x: 0, y: 0, z: 0 };
+    }
   }
   setInterference(i) {
     this.interference = i;

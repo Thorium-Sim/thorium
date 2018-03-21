@@ -62,11 +62,12 @@ type TacticalItem {
   location: Coordinates
   locationJson: String
   destination: Coordinates
-
+  rotation: Float
   #Keyboard Control
   wasd: Boolean
   ijkl: Boolean
-
+  thrusters: Boolean
+  rotationMatch: Boolean
 }
 
 input TacticalItemInput {
@@ -88,10 +89,12 @@ input TacticalItemInput {
     velocity: CoordinatesInput
     location: CoordinatesInput
     destination: CoordinatesInput
-  
+    rotation: Float
     #Keyboard Control
     wasd: Boolean
     ijkl: Boolean
+    thrusters: Boolean
+    rotationMatch: Boolean
 }
 
 type TacticalPath {

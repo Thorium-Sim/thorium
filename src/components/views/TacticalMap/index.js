@@ -43,9 +43,12 @@ const TACTICALMAP_SUB = gql`
             y
             z
           }
+          rotation
           flash
           ijkl
           wasd
+          thrusters
+          rotationMatch
         }
         paths {
           id
@@ -303,9 +306,12 @@ const TACTICALMAP_QUERY = gql`
             y
             z
           }
+          rotation
           flash
           ijkl
           wasd
+          thrusters
+          rotationMatch
         }
         paths {
           id

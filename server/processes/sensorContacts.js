@@ -13,14 +13,13 @@ function distance3d(coord2, coord1) {
 const moveSensorContactTimed = () => {
   let sendUpdate = false;
   App.systems.filter(sys => sys.type === "Sensors").forEach(sensors => {
-    const { movement } = sensors;
+    const { movement, thrusterMovement } = sensors;
     sensors.contacts = sensors.contacts.map(c => {
       // To start out, update the position, location, and destination based
-      // on the sensors movement
-      const x = c.locked ? 0 : movement.x / 100;
-      const y = c.locked ? 0 : movement.y / 100;
-      const z = c.locked ? 0 : movement.z / 100;
-
+      // on the sensors movement. Include thrusters, if applicable
+      const x = c.locked ? 0 : (movement.x + thrusterMovement.x) / 100;
+      const y = c.locked ? 0 : (movement.y + thrusterMovement.y) / 100;
+      const z = c.locked ? 0 : (movement.z + thrusterMovement.z) / 100;
       const destination = {
         ...c.destination,
         x: c.destination.x + x,
@@ -192,7 +191,7 @@ const sensorsAutoThrusters = () => {
   });
   setTimeout(sensorsAutoThrusters, 500);
 };
-sensorsAutoThrusters();
+//sensorsAutoThrusters();
 moveSensorContactTimed();
 pingSensors();
 //updateSensors();

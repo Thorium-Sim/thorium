@@ -165,6 +165,13 @@ export const SensorsTypes = {
       return rootValue.locations.map(r =>
         App.rooms.find(room => room.id === r)
       );
+    },
+    movement(rootValue) {
+      return {
+        x: rootValue.movement.x + rootValue.thrusterMovement.x,
+        y: rootValue.movement.y + rootValue.thrusterMovement.y,
+        z: rootValue.movement.z + rootValue.thrusterMovement.z
+      };
     }
   },
   SensorContact: {

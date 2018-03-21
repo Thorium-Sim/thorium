@@ -35,8 +35,10 @@ class TacticalItem {
     this.velocity = params.velocity || { x: 0, y: 0, z: 0 };
     this.location = params.location || { x: 0, y: 0, z: 0 };
     this.destination = params.destination || { x: 0, y: 0, z: 0 };
+    this.rotation = params.rotation || 0;
     this.wasd = params.wasd || false;
     this.ijkl = params.ijkl || false;
+    this.thrusters = params.thrusters || false;
   }
   update({
     label,
@@ -50,8 +52,11 @@ class TacticalItem {
     velocity,
     location,
     destination,
+    rotation,
     wasd,
-    ijkl
+    ijkl,
+    thrusters,
+    rotationMatch
   }) {
     if (label || label === null || label === "") this.label = label;
     if (font) this.font = font;
@@ -64,8 +69,12 @@ class TacticalItem {
     if (velocity) this.velocity = velocity;
     if (location) this.location = location;
     if (destination) this.destination = destination;
+    if (rotation || rotation === 0) this.rotation = rotation;
     if (wasd || wasd === false) this.wasd = wasd;
     if (ijkl || ijkl === false) this.ijkl = ijkl;
+    if (thrusters || thrusters === false) this.thrusters = thrusters;
+    if (rotationMatch || rotationMatch === false)
+      this.rotationMatch = rotationMatch;
   }
 }
 
