@@ -79,6 +79,22 @@ App.on("removeTacticalMapItem", ({ mapId, layerId, itemId }) => {
   map.removeItemFromLayer(layerId, itemId);
   pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
 });
+
+App.on("addTacticalMapPath", ({ mapId, layerId, path }) => {
+  const map = App.tacticalMaps.find(t => t.id === mapId);
+  map.addPathToLayer(layerId, path);
+  pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+});
+App.on("updateTacticalMapPath", ({ mapId, layerId, path }) => {
+  const map = App.tacticalMaps.find(t => t.id === mapId);
+  map.updatePathInLayer(layerId, path);
+  pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+});
+App.on("removeTacticalMapPath", ({ mapId, layerId, pathId }) => {
+  const map = App.tacticalMaps.find(t => t.id === mapId);
+  map.removePathFromLayer(layerId, pathId);
+  pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+});
 App.on(
   "showViewscreenTactical",
   ({ mapId, simulatorId, secondary = false }) => {

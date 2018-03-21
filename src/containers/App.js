@@ -56,7 +56,7 @@ export default class App extends Component {
             path="/tacticalConfig"
             render={props => {
               return (
-                <div>
+                <div style={{ height: "100%" }}>
                   <h4>
                     Tactical Config{" "}
                     <small>

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Asset } from "../../../helpers/assets";
 import * as THREE from "three";
 import Selection from "./select";
@@ -8,6 +8,104 @@ function distance3d(coord2, coord1) {
   let { x: x2, y: y2, z: z2 } = coord2;
   return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
 }
+
+const PathLine = ({
+  id,
+  start,
+  end,
+  c1,
+  c2,
+  width = 5,
+  color = "white",
+  // arrow = true,
+  selected,
+  onMouseDown
+}) => {
+  const arrow = true;
+  return (
+    <g className="path-line">
+      <defs>
+        <marker
+          id={id}
+          viewBox="0 0 10 10"
+          refX="1"
+          refY="5"
+          markerWidth="6"
+          markerHeight="6"
+          orient="auto"
+        >
+          <path d="M 0 0 L 10 5 L 0 10 z" fill={color} />
+        </marker>
+      </defs>
+      <path
+        d={`M${start.x} ${start.y} C${c1.x} ${c1.y}, ${c2.x} ${c2.y}, ${
+          end.x
+        } ${end.y}`}
+        strokeWidth={width}
+        stroke={color}
+        fill="transparent"
+        markerEnd={arrow ? `url(#${id})` : null}
+      />
+
+      {selected && (
+        <Fragment>
+          <circle
+            cx={start.x}
+            cy={start.y}
+            r="10"
+            fill="rgba(255,255,255,0.25)"
+            stroke="rgba(255,255,255,0.4)"
+            strokeWidth="2"
+            onMouseDown={() => onMouseDown(id, "start")}
+          />
+          <circle
+            cx={end.x}
+            cy={end.y}
+            r="10"
+            fill="rgba(255,255,255,0.25)"
+            stroke="rgba(255,255,255,0.4)"
+            strokeWidth="2"
+            onMouseDown={() => onMouseDown(id, "end")}
+          />
+          <circle
+            cx={c1.x}
+            cy={c1.y}
+            r="10"
+            fill="rgba(255,255,255,0.25)"
+            stroke="rgba(255,255,255,0.4)"
+            strokeWidth="2"
+            onMouseDown={() => onMouseDown(id, "c1")}
+          />
+          <circle
+            cx={c2.x}
+            cy={c2.y}
+            r="10"
+            fill="rgba(255,255,255,0.25)"
+            stroke="rgba(255,255,255,0.4)"
+            strokeWidth="2"
+            onMouseDown={() => onMouseDown(id, "c2")}
+          />
+          <line
+            x1={start.x}
+            y1={start.y}
+            x2={c1.x}
+            y2={c1.y}
+            stroke="rgba(255,255,255,0.4)"
+            strokeWidth="2"
+          />
+          <line
+            x1={end.x}
+            y1={end.y}
+            x2={c2.x}
+            y2={c2.y}
+            stroke="rgba(255,255,255,0.4)"
+            strokeWidth="2"
+          />
+        </Fragment>
+      )}
+    </g>
+  );
+};
 
 const layerComps = {
   grid: ({ gridCols, gridRows, color, labels }) => {
@@ -201,6 +299,116 @@ const layerComps = {
             ))}
           </Selection>
         </div>
+      );
+    }
+  },
+  path: class Path extends Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        locations: props.paths.reduce((prev, next) => {
+          return {
+            ...prev,
+            [next.id]: {
+              start: next.start,
+              end: next.end,
+              c1: next.c1,
+              c2: next.c2
+            }
+          };
+        }, {})
+      };
+    }
+    componentWillReceiveProps(nextProps) {
+      this.setState({
+        locations: nextProps.paths.reduce((prev, next) => {
+          return {
+            ...prev,
+            [next.id]: {
+              start: next.start,
+              end: next.end,
+              c1: next.c1,
+              c2: next.c2
+            }
+          };
+        }, {})
+      });
+    }
+    mousedown = (id, which) => {
+      this.setState({
+        movingPath: id,
+        movingNode: which
+      });
+      document.addEventListener("mouseup", this.mouseup);
+      document.addEventListener("mousemove", this.mousemove);
+    };
+    mouseup = () => {
+      const { locations, movingPath, movingNode } = this.state;
+      const { x, y, z } = locations[movingPath][movingNode];
+      const {
+        updatePath = () => {},
+        removePath = () => {},
+        paths
+      } = this.props;
+      const path = paths.find(p => p.id === movingPath);
+      const { left, top, bottom, right } = document
+        .querySelector(".tactical-map-view")
+        .getBoundingClientRect();
+      if (
+        (movingNode === "start" || movingNode === "end") &&
+        (x > window.innerWidth || x < 0 || y > window.innerHeight || y < 0)
+      ) {
+        // Remove the path
+        removePath(movingPath);
+      } else {
+        updatePath(this.state.movingNode, { x, y, z }, path);
+      }
+      this.setState({
+        movingPath: null,
+        movingNode: null
+      });
+      document.removeEventListener("mouseup", this.mouseup);
+      document.removeEventListener("mousemove", this.mousemove);
+    };
+    mousemove = e => {
+      const { width, height } = document
+        .querySelector(".tactical-map-view")
+        .getBoundingClientRect();
+      const { movingPath, movingNode, locations } = this.state;
+      this.setState({
+        locations: {
+          ...locations,
+          [movingPath]: {
+            ...locations[movingPath],
+            [movingNode]: {
+              x:
+                locations[movingPath][movingNode].x +
+                e.movementX * (window.innerWidth / width),
+              y:
+                locations[movingPath][movingNode].y +
+                e.movementY * (window.innerHeight / height),
+              z: 0
+            }
+          }
+        }
+      });
+    };
+    render() {
+      const { locations } = this.state;
+      const { paths, layerId } = this.props;
+      if (!locations) return;
+      return (
+        <svg className="path-holder">
+          {paths.map(p => (
+            <PathLine
+              key={p.id}
+              {...p}
+              {...locations[p.id]}
+              selected={layerId}
+              onMouseDown={this.mousedown}
+            />
+          ))}
+        </svg>
       );
     }
   }
@@ -493,8 +701,11 @@ export default class TacticalMapPreview extends Component {
       layers,
       selectObject,
       objectId,
+      layerId,
       updateObject,
       removeObject,
+      updatePath,
+      removePath,
       core,
       frozen
     } = this.props;
@@ -515,8 +726,11 @@ export default class TacticalMapPreview extends Component {
                   frozen={frozen}
                   selectObject={selectObject}
                   objectId={objectId}
+                  layerId={layerId}
                   updateObject={updateObject}
                   removeObject={removeObject}
+                  updatePath={updatePath}
+                  removePath={removePath}
                 />
               </div>
             );

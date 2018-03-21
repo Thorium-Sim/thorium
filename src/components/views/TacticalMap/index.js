@@ -7,8 +7,8 @@ import Preview from "./preview";
 import "./style.css";
 
 const TACTICALMAP_SUB = gql`
-  subscription TacticalMapUpdate($flightId: ID) {
-    tacticalMapsUpdate(flightId: $flightId) {
+  subscription TacticalMapUpdate {
+    tacticalMapsUpdate {
       id
       name
       flight {
@@ -47,6 +47,33 @@ const TACTICALMAP_SUB = gql`
           ijkl
           wasd
         }
+        paths {
+          id
+          layerId
+          start {
+            x
+            y
+            z
+          }
+          end {
+            x
+            y
+            z
+          }
+          c1 {
+            x
+            y
+            z
+          }
+          c2 {
+            x
+            y
+            z
+          }
+          color
+          width
+          arrow
+        }
         image
         color
         labels
@@ -70,9 +97,6 @@ class TacticalMapCore extends Component {
     if (!this.sub && !nextProps.data.loading) {
       this.sub = nextProps.data.subscribeToMore({
         document: TACTICALMAP_SUB,
-        variables: {
-          flightId: nextProps.flightId
-        },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
             tacticalMaps: subscriptionData.data.tacticalMapsUpdate
@@ -139,11 +163,54 @@ class TacticalMapCore extends Component {
       variables
     });
   };
+  updatePath = (key, value, object) => {
+    const variables = {
+      mapId: this.state.tacticalMapId,
+      layerId: object ? object.layerId : this.state.layerId,
+      path: {
+        id: object ? object.id : this.state.objectId,
+        [key]: value
+      }
+    };
+    const mutation = gql`
+      mutation UpdateTacticalPath(
+        $mapId: ID!
+        $layerId: ID!
+        $path: TacticalPathInput!
+      ) {
+        updateTacticalMapPath(mapId: $mapId, layerId: $layerId, path: $path)
+      }
+    `;
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  removePath = pathId => {
+    const mutation = gql`
+      mutation RemoveTacticalPath($mapId: ID!, $layerId: ID!, $pathId: ID!) {
+        removeTacticalMapPath(mapId: $mapId, layerId: $layerId, pathId: $pathId)
+      }
+    `;
+    const variables = {
+      mapId: this.state.tacticalMapId,
+      layerId: this.state.layerId,
+      pathId: pathId
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.tacticalMaps) return null;
+    const { flightId } = this.props;
     const { tacticalMaps } = this.props.data;
     const selectedTactical = tacticalMaps.find(
       t => t.id === this.state.tacticalMapId
+    );
+    const filteredMaps = tacticalMaps.filter(
+      t => (flightId ? !t.flight || t.flight.id === flightId : !t.flight)
     );
     return (
       <div className="tacticalmap-core">
@@ -151,10 +218,13 @@ class TacticalMapCore extends Component {
           {selectedTactical && (
             <Preview
               layers={selectedTactical.layers}
+              layerId={this.state.layerId}
               selectObject={this.selectObject}
               objectId={this.state.objectId}
               updateObject={this.updateObject}
               removeObject={this.removeObject}
+              updatePath={this.updatePath}
+              removePath={this.removePath}
               core={true}
             />
           )}
@@ -163,7 +233,7 @@ class TacticalMapCore extends Component {
           <Sidebar
             tacticalMapId={this.state.tacticalMapId}
             layerId={this.state.layerId}
-            tacticalMaps={tacticalMaps}
+            tacticalMaps={filteredMaps}
             selectTactical={this.selectTactical}
             selectLayer={this.selectLayer}
             deselectTactical={() =>
@@ -179,7 +249,7 @@ class TacticalMapCore extends Component {
             tacticalMapId={this.state.tacticalMapId}
             layerId={this.state.layerId}
             objectId={this.state.objectId}
-            tacticalMaps={tacticalMaps}
+            tacticalMaps={filteredMaps}
             updateObject={this.updateObject}
             {...this.props}
           />
@@ -190,8 +260,8 @@ class TacticalMapCore extends Component {
 }
 
 const TACTICALMAP_QUERY = gql`
-  query TacticalMap($flightId: ID) {
-    tacticalMaps(flightId: $flightId) {
+  query TacticalMap {
+    tacticalMaps {
       id
       name
       flight {
@@ -230,6 +300,33 @@ const TACTICALMAP_QUERY = gql`
           ijkl
           wasd
         }
+        paths {
+          id
+          layerId
+          start {
+            x
+            y
+            z
+          }
+          end {
+            x
+            y
+            z
+          }
+          c1 {
+            x
+            y
+            z
+          }
+          c2 {
+            x
+            y
+            z
+          }
+          color
+          width
+          arrow
+        }
         image
         color
         labels
@@ -244,9 +341,6 @@ const TACTICALMAP_QUERY = gql`
 
 export default graphql(TACTICALMAP_QUERY, {
   options: ownProps => ({
-    fetchPolicy: "cache-and-network",
-    variables: {
-      flightId: ownProps.flightId
-    }
+    fetchPolicy: "cache-and-network"
   })
 })(withApollo(TacticalMapCore));

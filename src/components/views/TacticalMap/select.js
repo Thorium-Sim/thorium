@@ -240,7 +240,6 @@ class Selection extends React.Component {
     if (!this.state.mouseDown || isNull(endPoint) || isNull(startPoint)) {
       return null;
     }
-    debugger;
     const bounds = document
       .querySelector(this.props.containerSelector || ".tactical-map-view")
       .getBoundingClientRect();

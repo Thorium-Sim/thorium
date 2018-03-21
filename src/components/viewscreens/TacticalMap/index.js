@@ -48,6 +48,33 @@ const TACTICALMAP_SUB = gql`
           ijkl
           wasd
         }
+        paths {
+          id
+          layerId
+          start {
+            x
+            y
+            z
+          }
+          end {
+            x
+            y
+            z
+          }
+          c1 {
+            x
+            y
+            z
+          }
+          c2 {
+            x
+            y
+            z
+          }
+          color
+          width
+          arrow
+        }
         image
         color
         labels
@@ -228,6 +255,33 @@ const TACTICALMAP_QUERY = gql`
           flash
           ijkl
           wasd
+        }
+        paths {
+          id
+          layerId
+          start {
+            x
+            y
+            z
+          }
+          end {
+            x
+            y
+            z
+          }
+          c1 {
+            x
+            y
+            z
+          }
+          c2 {
+            x
+            y
+            z
+          }
+          color
+          width
+          arrow
         }
         image
         color

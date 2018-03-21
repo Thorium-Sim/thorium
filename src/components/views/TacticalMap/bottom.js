@@ -5,6 +5,7 @@ import { ChromePicker } from "react-color";
 
 import ImageConfig from "./imageConfig";
 import ObjectConfig from "./objectConfig";
+import PathConfig from "./pathConfig";
 
 const configs = {
   gridConfig: ({ selectedLayer, updateLayer }) => {
@@ -67,7 +68,8 @@ const configs = {
     );
   },
   imageConfig: ImageConfig,
-  objectsConfig: ObjectConfig
+  objectsConfig: ObjectConfig,
+  pathConfig: PathConfig
 };
 
 export default class Bottom extends Component {
@@ -156,6 +158,7 @@ export default class Bottom extends Component {
               <option value="grid">Grid</option>
               <option value="image">Image</option>
               <option value="objects">Objects</option>
+              <option value="path">Paths</option>
             </Input>
             {selectedLayer.type === "objects" && (
               <Button size="sm" color="primary" onClick={this.addLabel}>
