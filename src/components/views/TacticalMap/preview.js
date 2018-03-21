@@ -232,7 +232,7 @@ const layerComps = {
     };
     moveMultiple = (evt, bounds) => {
       const { selected, movements } = this.state;
-      const { items } = this.props;
+      const { items, speed } = this.props;
       if (evt === "cancel") {
         Object.keys(movements).forEach(m => {
           const item = items.find(i => i.id === m);
@@ -244,7 +244,7 @@ const layerComps = {
           if (x > 1 || x < 0 || y > 1 || y < 0) {
             this.props.removeObject();
           } else {
-            this.props.updateObject("destination", { x, y, z }, item);
+            this.props.updateObject("destination", { x, y, z }, item, speed);
           }
         });
         this.setState({
@@ -445,7 +445,6 @@ class TacticalIcon extends Component {
       this.props.moveMultiple("cancel");
     } else {
       const { x, y, z } = this.state.destination;
-      console.log(x, y);
       if (x > 1 || x < 0 || y > 1 || y < 0) {
         this.props.removeObject();
       } else {
@@ -704,7 +703,8 @@ export default class TacticalMapPreview extends Component {
       updatePath,
       removePath,
       core,
-      frozen
+      frozen,
+      speed
     } = this.props;
     return (
       <div className="tactical-map-view">
@@ -728,6 +728,7 @@ export default class TacticalMapPreview extends Component {
                   removeObject={removeObject}
                   updatePath={updatePath}
                   removePath={removePath}
+                  speed={speed}
                 />
               </div>
             );

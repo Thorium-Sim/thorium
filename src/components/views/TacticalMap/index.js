@@ -90,7 +90,8 @@ class TacticalMapCore extends Component {
   state = {
     tacticalMapId: null,
     layerId: null,
-    objectId: null
+    objectId: null,
+    speed: 1000
   };
   sub = null;
   componentWillReceiveProps(nextProps) {
@@ -121,7 +122,7 @@ class TacticalMapCore extends Component {
       this.setState({ objectId: null });
     }
   };
-  updateObject = (key, value, object) => {
+  updateObject = (key, value, object, speed) => {
     const variables = {
       mapId: this.state.tacticalMapId,
       layerId: object ? object.layerId : this.state.layerId,
@@ -130,6 +131,9 @@ class TacticalMapCore extends Component {
         [key]: value
       }
     };
+    if (speed) {
+      variables.item.speed = speed;
+    }
     const mutation = gql`
       mutation UpdateTacticalItem(
         $mapId: ID!
@@ -225,6 +229,7 @@ class TacticalMapCore extends Component {
               removeObject={this.removeObject}
               updatePath={this.updatePath}
               removePath={this.removePath}
+              speed={this.state.speed}
               core={true}
             />
           )}
@@ -246,6 +251,8 @@ class TacticalMapCore extends Component {
         </div>
         <div className="bottom-bar">
           <Bottom
+            speed={this.state.speed}
+            updateSpeed={s => this.setState({ speed: s })}
             tacticalMapId={this.state.tacticalMapId}
             layerId={this.state.layerId}
             objectId={this.state.objectId}
