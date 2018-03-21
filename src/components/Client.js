@@ -34,14 +34,18 @@ class ClientWrapper extends Component {
       `,
       variables: { id: oldClientId }
     });
-    this.props.client.mutate({
-      mutation: gql`
-        mutation RegisterClient($client: ID!) {
-          clientConnect(client: $client)
-        }
-      `,
-      variables: { client: clientId }
-    });
+    this.props.client
+      .mutate({
+        mutation: gql`
+          mutation RegisterClient($client: ID!) {
+            clientConnect(client: $client)
+          }
+        `,
+        variables: { client: clientId }
+      })
+      .then(() => {
+        window.location.reload;
+      });
   };
   render() {
     return (
