@@ -131,6 +131,7 @@ class ActionsCore extends Component {
             <option value="-" disabled>
               -
             </option>
+            <option value="reload">Reload Browser</option>
             <option value="shutdown">Shutdown</option>
             <option value="restart">Restart</option>
             <option value="sleep">Sleep</option>

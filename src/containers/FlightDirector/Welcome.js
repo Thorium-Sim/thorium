@@ -50,7 +50,7 @@ class Welcome extends Component {
   subscription = null;
   state = { issuesOpen: false };
   componentDidMount() {
-    if (process.env.CI) {
+    if (!process.env.CI) {
       fetch("https://api.github.com/repos/thorium-sim/thorium/tags")
         .then(res => res.json())
         .then(res => {
@@ -97,14 +97,14 @@ class Welcome extends Component {
               <Alert color="warning">
                 Your version of Thorium is outdated. Current version is{" "}
                 {this.state.outdated}. Your version is{" "}
-                {require("../../../package.json").version}.{" "}
-                <a
-                  href="http://thoriumsim.com/en/releases"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Click here to get the latest version.
-                </a>
+                {require("../../../package.json").version}.
+                <p>
+                  <small>
+                    The update is downloading in the background. Wait until the
+                    Thorium Server command line window says "Download Complete"
+                    before restarting Thorium Server
+                  </small>
+                </p>
               </Alert>
             )}
           </Col>
