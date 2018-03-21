@@ -26,6 +26,7 @@ import clientServer from "./helpers/client-server.js";
 import { uploadAsset } from "./resolvers/assets";
 import "./events";
 import "./processes";
+import "./helpers/autoupdate";
 
 const CLIENT_PORT =
   process.env.NODE_ENV === "production"
