@@ -44,7 +44,7 @@ class ClientWrapper extends Component {
         variables: { client: clientId }
       })
       .then(() => {
-        window.location.reload;
+        window.location.reload();
       });
   };
   render() {
