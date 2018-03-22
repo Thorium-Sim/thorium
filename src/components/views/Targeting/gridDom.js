@@ -133,21 +133,18 @@ class TargetingGridDom extends Component {
     });
   }
   _mouseMove = id => {
-    const { targets } = this.state;
-    if (targets.find(t => t.targeted === true)) {
-      this.setState({
-        targets: targets.map(t => {
-          t.hover = 0;
-          return t;
-        })
-      });
+    if (this.props.targets.find(t => t.targeted)) {
       return;
     }
+    const { targets } = this.state;
     targets.forEach(t => {
       if (t.id === id) {
         t.hover += 1;
         if (t.hover >= 100) {
           this.props.targetContact(t.id);
+          this.setState({
+            targets: targets.map(ta => ({ ...ta, hover: 0 }))
+          });
         }
       }
       return t;
@@ -155,9 +152,22 @@ class TargetingGridDom extends Component {
   };
   _touchMove = id => {
     // See if there is a target
-    if (!this.props.targets.find(t => t.targeted)) {
-      this.props.targetContact(id);
+    if (this.props.targets.find(t => t.targeted)) {
+      return;
     }
+    const { targets } = this.state;
+    targets.forEach(t => {
+      if (t.id === id) {
+        t.hover += 1;
+        if (t.hover >= 20) {
+          this.props.targetContact(t.id);
+          this.setState({
+            targets: targets.map(ta => ({ ...ta, hover: 0 }))
+          });
+        }
+      }
+      return t;
+    });
   };
   render() {
     const lines = 15;
@@ -225,6 +235,7 @@ const Target = ({
               style={{
                 transform: `translate(${x}px, ${y}px) scale(${scale * 1.1})`
               }}
+              draggable={false}
               src={require("./crosshair.svg")}
             />
           )}
