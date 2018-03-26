@@ -90,7 +90,7 @@
     "react-table": "^6.8.0",
     "react-transition-group": "^2.2.1",
     "reactour": "^1.6.5",
-    "reactstrap": "^5.0.0-beta.3",
+    "reactstrap": "^5.0.0",
     "request": "^2.85.0",
     "semver": "^5.5.0",
     "sine-waves": "^0.3.0",
