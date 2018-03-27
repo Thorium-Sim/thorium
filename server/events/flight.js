@@ -52,6 +52,10 @@ function addAspects(template, sim) {
         const newRoomCount = {};
         rooms.forEach(room => {
           const oldRoom = App.rooms.find(r => r.id === room);
+          if (!oldRoom) {
+            console.log("Failed to load room: ", room);
+            return;
+          }
           const oldDeck = App.decks.find(d => d.id === oldRoom.deckId);
           const deck = App.decks.find(
             d =>
