@@ -24,7 +24,7 @@ App.on("newRandomCrewmember", ({ simulatorId, type, position }) => {
     firstName: randomFromList(firstNames),
     lastName: randomFromList(lastNames),
     rank: randomFromList(ranks),
-    gender: randomFromList(["M", "F"]),
+    gender: randomFromList(["M", "F", "X"]),
     age: Math.round(Math.random() * 20 + 20),
     simulatorId,
     position: position || getPosition(type, simulatorId)
