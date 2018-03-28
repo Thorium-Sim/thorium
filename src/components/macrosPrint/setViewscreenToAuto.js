@@ -1,15 +1,13 @@
 import React from "react";
-import { FormGroup, Label, Input } from "reactstrap";
+import { FormGroup } from "reactstrap";
 
-export default ({ updateArgs, args = {}, client }) => {
+export default ({ args = {} }) => {
   return (
     <FormGroup className="macro-template">
-      <Label>Secondary Screen?</Label>
-      <Input
-        type="checkbox"
-        checked={args && args.secondary}
-        onChange={evt => updateArgs("secondary", evt.target.value)}
-      />
+      <span>
+        <strong>Secondary Screen? </strong>
+        {args && args.secondary ? "Yes" : "No"}
+      </span>
     </FormGroup>
   );
 };

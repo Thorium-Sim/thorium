@@ -1,18 +1,12 @@
 import React from "react";
-import { FormGroup, Label, Input } from "reactstrap";
+import { FormGroup } from "reactstrap";
 
-export default ({ updateArgs, args, client }) => {
+export default ({ args }) => {
   return (
     <div>
       <FormGroup className="macro-TransporterTargets">
-        <Label>Targets</Label>
-        <Input
-          type="number"
-          min="0"
-          max="10"
-          value={args.targets}
-          onChange={e => updateArgs("targets", e.target.value)}
-        />
+        <strong>Targets</strong>
+        <div>{args.targets}</div>
       </FormGroup>
     </div>
   );

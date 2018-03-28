@@ -12,7 +12,7 @@ export default ({ args }) => {
       </div>
       <div>
         <strong>Data </strong>
-        <p>{args.data}</p>
+        <pre>{args.data}</pre>
       </div>
     </FormGroup>
   );

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Label, Input } from "reactstrap";
 
 const TACTICALMAP_SUB = gql`
   subscription TacticalMapUpdate {
@@ -38,31 +37,18 @@ class TacticalMapConfig extends Component {
     updateArgs("mapId", mapId);
   };
   render() {
-    const { tacticalData, args, updateArgs } = this.props;
+    const { tacticalData, args } = this.props;
     if (tacticalData.loading || !tacticalData.tacticalMaps) return null;
     const { tacticalMaps } = this.props.tacticalData;
+    const map = tacticalMaps.find(t => t.id === args.mapId);
     return (
       <div className="tacticalmap-config">
-        <Label>Secondary Screen?</Label>
-
-        <Input
-          type="checkbox"
-          checked={args.secondary}
-          onChange={evt => updateArgs("secondary", evt.target.value)}
-        />
-
-        <p>Saved Maps</p>
-        <ul className="saved-list">
-          {tacticalMaps.filter(t => t.template).map(t => (
-            <li
-              key={t.id}
-              className={t.id === args.mapId ? "selected" : ""}
-              onClick={() => this.selectTactical(t.id)}
-            >
-              {t.name}
-            </li>
-          ))}
-        </ul>
+        <string>Secondary Screen? </string>
+        <span>{args.secondary ? "Yes" : "No"}</span>
+        <div>
+          <strong>Map Name</strong>
+        </div>
+        <div>{map ? map.name : ""}</div>
       </div>
     );
   }

@@ -1,28 +1,19 @@
 import React from "react";
-import { FormGroup, Label, Input } from "reactstrap";
+import { FormGroup } from "reactstrap";
 
-export default ({ updateArgs, args, client }) => {
+export default ({ args }) => {
   return (
     <div>
       <FormGroup className="macro-navCourse">
-        <Label>X</Label>
-        <Input
-          type="text"
-          value={args ? args.x : ""}
-          onChange={e => updateArgs("x", e.target.value)}
-        />
-        <Label>Y</Label>
-        <Input
-          type="text"
-          value={args ? args.y : ""}
-          onChange={e => updateArgs("y", e.target.value)}
-        />
-        <Label>Z</Label>
-        <Input
-          type="text"
-          value={args ? args.z : ""}
-          onChange={e => updateArgs("z", e.target.value)}
-        />
+        <div>
+          <strong>X</strong> {args ? args.x : ""}
+        </div>
+        <div>
+          <strong>Y</strong> {args ? args.y : ""}
+        </div>
+        <div>
+          <strong>Z</strong> {args ? args.z : ""}
+        </div>
       </FormGroup>
     </div>
   );

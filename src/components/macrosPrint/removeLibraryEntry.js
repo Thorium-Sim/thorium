@@ -1,22 +1,11 @@
 import React from "react";
-import { FormGroup, Label, Input } from "reactstrap";
+import { FormGroup } from "reactstrap";
 
-export default ({ updateArgs, args: { entry = {} }, client }) => {
+export default ({ args: { entry = {} } }) => {
   return (
     <FormGroup className="macro-addLibraryEntry">
-      <Label>
-        Slug <small>Use this identifier to remove the entry.</small>
-      </Label>
-      <Input
-        type="text"
-        defaultValue={entry.slug}
-        onBlur={evt =>
-          updateArgs(
-            "entry",
-            Object.assign({}, entry, { slug: evt.target.value })
-          )
-        }
-      />
+      <strong>Slug</strong>
+      <div>{entry.slug}</div>
     </FormGroup>
   );
 };

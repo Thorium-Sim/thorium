@@ -1,48 +1,27 @@
 import React from "react";
-import { FormGroup, Label, Input } from "reactstrap";
-import * as ViewscreenCards from "../viewscreens";
+import { FormGroup } from "reactstrap";
 
-const cards = Object.keys(ViewscreenCards)
-  .filter(c => c.indexOf("Config") === -1)
-  .sort();
-const configs = Object.keys(ViewscreenCards)
-  .filter(c => c.indexOf("Config") > -1)
-  .sort();
-export default ({ updateArgs, args, client }) => {
+export default ({ args }) => {
+  const data = JSON.parse(args.data || "{}");
   return (
     <FormGroup className="macro-template">
-      <Label>Secondary Screen?</Label>
-      <Input
-        type="checkbox"
-        checked={args.secondary}
-        onChange={evt => updateArgs("secondary", evt.target.value)}
-      />
-      <Label>Cards</Label>
-      <Input
-        type="select"
-        value={args.component}
-        onChange={evt => updateArgs("component", evt.target.value)}
-      >
-        {cards.map(c => (
-          <option key={c} value={c}>
-            {c}
-          </option>
+      <span>
+        <strong>Secondary Screen? </strong>
+        {args.secondary ? "Yes" : "No"}
+      </span>
+      <div>
+        <strong>Viewscreen Component</strong>
+      </div>
+      <div>{args.component}</div>
+      <strong>Config</strong>
+      <ul>
+        {Object.keys(data).map(k => (
+          <li key={k}>
+            <strong>{k}: </strong>
+            {data[k]}
+          </li>
         ))}
-      </Input>
-      <Label>
-        Config <small>Use #SIM for the name of the simulator</small>
-      </Label>
-      {(() => {
-        if (args.component && configs.indexOf(`${args.component}Config`) > -1) {
-          const ConfigComponent = ViewscreenCards[`${args.component}Config`];
-          return (
-            <ConfigComponent
-              data={args.data || "{}"}
-              updateData={data => updateArgs("data", data)}
-            />
-          );
-        }
-      })()}
+      </ul>
     </FormGroup>
   );
 };

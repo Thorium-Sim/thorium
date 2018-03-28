@@ -1,14 +1,11 @@
 import React from "react";
-import { FormGroup, Label, Input } from "reactstrap";
+import { FormGroup } from "reactstrap";
 
-export default ({ updateArgs, args, client }) => {
-  const updateLabel = e => {
-    updateArgs("label", e.target.value);
-  };
+export default ({ args }) => {
   return (
     <FormGroup className="macro-addTractorTarget">
-      <Label>Label</Label>
-      <Input type="text" value={args.label} onChange={updateLabel} />
+      <strong>Label</strong>
+      <div>{args.label}</div>
     </FormGroup>
   );
 };

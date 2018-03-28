@@ -1,59 +1,30 @@
 import React from "react";
-import { FormGroup, Label, Input } from "reactstrap";
+import { FormGroup, Label } from "reactstrap";
 
-export default ({ updateArgs = () => {}, args = {}, client, preview }) => {
+export default ({ args = {} }) => {
   let answers = args ? args.presetAnswers : [];
   answers = answers
     .map(a => `${a.label || ""}${a.value && ";" + a.value}`)
     .join("\n");
-
-  const processAnswers = text => {
-    const answers = text
-      .split("\n")
-      .map(a =>
-        a
-          .split(";")
-          .reduce(
-            (prev, next, index) =>
-              index === 0
-                ? Object.assign(prev, { label: next })
-                : Object.assign(prev, { value: next }),
-            {}
-          )
-      );
-    updateArgs("presetAnswers", answers);
-  };
   return (
     <FormGroup className="macro-setPresetAnswer">
-      <Label>Domain</Label>
-      <Input
-        type="select"
-        value={args ? args.domain : "External"}
-        onChange={evt => updateArgs("domain", evt.target.value)}
-      >
-        <option value={null}>Pick a Domain</option>
-        <option value="external">External</option>
-        <option value="internal">Internal</option>
-      </Input>
+      <strong>Domain</strong>
+      <div>{args ? args.domain : "External"}</div>
       <Label>
-        Answers <small>Separate labels from answers with a semicolon</small>{" "}
-        <small>Use #SIM in your message for the name of the simulator</small>
+        Answers{" "}
+        <small>Use of #SIM in the message is the name of simulator</small>
       </Label>
-      <Input
-        type="textarea"
-        placeholder="Short Label;Longer scan answer that goes in the box"
-        rows={8}
-        defaultValue={answers}
-        onBlur={evt => processAnswers(evt.target.value)}
-      />
-      <Label>Preview</Label>
-      <Input type="select">
-        {(args ? args.presetAnswers : []).map(a => (
-          <option key={a.value}>
-            {a.label} - {a.value}
-          </option>
-        ))}
-      </Input>
+      <pre>
+        {answers
+          .split("\n")
+          .map(a => a.split(";"))
+          .map(a => (
+            <p>
+              <strong>{a[0]}: </strong>
+              {a[1]}
+            </p>
+          ))}
+      </pre>
     </FormGroup>
   );
 };
