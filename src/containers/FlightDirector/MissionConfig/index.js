@@ -237,7 +237,8 @@ class MissionsConfig extends Component {
                 Export
               </Button>
               <Button
-                color="info"
+                color="warning"
+                block
                 onClick={() => this.exportMissionScript(mission)}
               >
                 Export Mission Script

@@ -36,7 +36,7 @@ const PrintMission = ({ mission }) => {
         <h4>
           Mission Printing{" "}
           <small>
-            <Link to="/">Return to Main</Link>
+            <Link to="/missionConfig">Go back</Link>
           </small>
           <div>
             <small>
