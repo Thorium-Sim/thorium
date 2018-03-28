@@ -1,0 +1,30 @@
+.printMission {
+  height: 100vh;
+  overflow-y: scroll;
+  .mission-item-holder {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .mission-item {
+    flex: 1;
+    margin: 0 20px;
+  }
+}
+
+@media print {
+  .printMission {
+    height: auto;
+    overflow-y: visible;
+  }
+  .mission-step {
+    page-break-inside: avoid;
+  }
+  body {
+    overflow: visible !important;
+    overflow-y: auto !important;
+    position: relative;
+    width: auto;
+    height: auto;
+    margin: 0;
+  }
+}
