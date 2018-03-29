@@ -88,7 +88,7 @@
     "react-router-dom": "^4.2.2",
     "react-sortable-hoc": "^0.6.8",
     "react-table": "^6.8.0",
-    "react-transition-group": "^2.2.1",
+    "react-transition-group": "^2.3.0",
     "reactour": "^1.6.5",
     "reactstrap": "^5.0.0",
     "request": "^2.85.0",
