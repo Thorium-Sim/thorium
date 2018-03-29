@@ -14,6 +14,7 @@ console.log(`Starting Thorium...
 `);
 
 let snapshotDir = "./snapshots/";
+console.log("snapshotdir is" + snapshotDir);
 if (process.env.NODE_ENV === "production") {
   snapshotDir = paths.userData + "/";
 }
