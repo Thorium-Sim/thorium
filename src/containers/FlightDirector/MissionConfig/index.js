@@ -14,6 +14,8 @@ import {
   FormText
 } from "reactstrap";
 import TimelineConfig from "./TimelineConfig";
+import PrintMission from "./PrintMission";
+
 import { Link } from "react-router-dom";
 import "./style.css";
 const MISSION_SUB = gql`
@@ -140,12 +142,17 @@ class MissionsConfig extends Component {
       });
     }
   };
-
+  exportMissionScript = mission => {
+    this.setState({
+      printingMission: mission
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.missions) return null;
     const { missions } = this.props.data;
-    const { selectedMission } = this.state;
+    const { selectedMission, printingMission } = this.state;
     const mission = missions.find(m => m.id === selectedMission);
+    if (printingMission) return <PrintMission mission={printingMission} />;
     return (
       <Container fluid className="missionConfig">
         <h4>
@@ -228,6 +235,13 @@ class MissionsConfig extends Component {
                 color="info"
               >
                 Export
+              </Button>
+              <Button
+                color="warning"
+                block
+                onClick={() => this.exportMissionScript(mission)}
+              >
+                Export Mission Script
               </Button>
             </Col>
           )}
