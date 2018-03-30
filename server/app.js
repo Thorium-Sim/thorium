@@ -71,11 +71,14 @@ class Events extends EventEmitter {
     setTimeout(this.init.bind(this), 0);
   }
   init() {
+    console.log("beginning init");
+    console.log("ENV is " + process.env.NODE_ENV);
     if (process.env.NODE_ENV) {
       if (fs.existsSync(snapshotDir + "snapshot.json")) {
         this.loadSnapshot();
       }
       if (!fs.existsSync(snapshotDir)) {
+        console.log("snapshot doesn't exist!");
         fs.mkdirSync(snapshotDir);
       }
       if (!fs.existsSync(snapshotDir + "snapshot.json")) {
@@ -105,11 +108,16 @@ class Events extends EventEmitter {
         setTimeout(() => this.autoSave(), 5000);
       }
     } else {
-      if (
-        !fs.existsSync(snapshotDir + "snapshot.json") &&
-        !fs.existsSync(snapshotDir)
-      ) {
+      console.log("Doing non-production run setup");
+      if (!fs.existsSync(snapshotDir)) {
+        console.log("No snapshots folder found. Creating.");
         fs.mkdirSync(snapshotDir);
+        if (fs.existsSync(snapshotDir)) {
+          console.log("Done!");
+        }
+      }
+      if (!fs.existsSync(snapshotDir + "snapshot.json")) {
+        console.log("No snapshot.json found. Creating.");
         fs.writeFileSync(
           snapshotDir + "snapshot.json",
           JSON.stringify(require("./helpers/defaultSnapshot.js"))
