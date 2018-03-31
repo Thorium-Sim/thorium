@@ -101,7 +101,7 @@ class ThreeView extends Component {
       })
     );
   };
-  componentWillMount() {
+  componentDidMount() {
     const query = gql`
       query GetAsset(
         $assetKey: String!

@@ -47,11 +47,9 @@ class ThreeView extends Component {
       this.animate();
     });
   }
-  componentWillMount() {
+  componentDidMount() {
     this.animating = true;
     this.animate();
-  }
-  componentDidMount() {
     document
       .getElementById("reactorMount")
       .appendChild(this.renderer.domElement);
