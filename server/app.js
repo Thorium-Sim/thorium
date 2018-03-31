@@ -99,6 +99,7 @@ class Events extends EventEmitter {
             importAssets(dest, () => {
               fs.unlink(dest, error => {
                 if (err) console.log(error);
+                console.log("Asset Download Complete");
               });
             });
           }
