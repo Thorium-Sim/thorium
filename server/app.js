@@ -71,8 +71,6 @@ class Events extends EventEmitter {
     setTimeout(this.init.bind(this), 0);
   }
   init() {
-    console.log("beginning init");
-    console.log("ENV is " + process.env.NODE_ENV);
     if (process.env.NODE_ENV) {
       if (fs.existsSync(snapshotDir + "snapshot.json")) {
         this.loadSnapshot();
@@ -108,7 +106,6 @@ class Events extends EventEmitter {
         setTimeout(() => this.autoSave(), 5000);
       }
     } else {
-      console.log("Doing non-production run setup");
       if (!fs.existsSync(snapshotDir)) {
         console.log("No snapshots folder found. Creating.");
         fs.mkdirSync(snapshotDir);
