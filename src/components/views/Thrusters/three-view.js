@@ -153,6 +153,11 @@ class ThreeView extends Component {
           this.objectGroup.add(obj);
         });
       });
+    document
+      .getElementById("thrustersMount")
+      .appendChild(this.renderer.domElement);
+    this.animating = true;
+    this.animate();
   }
   componentWillReceiveProps({ direction, rotation }) {
     const directions = [
@@ -181,13 +186,6 @@ class ThreeView extends Component {
       );
       this.objectGroup.rotation.setFromVector3(rot);
     }
-  }
-  componentDidMount() {
-    document
-      .getElementById("thrustersMount")
-      .appendChild(this.renderer.domElement);
-    this.animating = true;
-    this.animate();
   }
   componentWillUnmount() {
     this.animating = false;
