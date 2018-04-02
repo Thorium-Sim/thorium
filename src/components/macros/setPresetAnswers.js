@@ -2,13 +2,13 @@ import React from "react";
 import { FormGroup, Label, Input } from "reactstrap";
 
 export default ({ updateArgs = () => {}, args = {}, client, preview }) => {
-  let answers = args ? args.presetAnswers : [];
-  answers = answers
+  const answers = args ? args.presetAnswers || [] : [];
+  const mapAnswers = answers
     .map(a => `${a.label || ""}${a.value && ";" + a.value}`)
     .join("\n");
 
   const processAnswers = text => {
-    const answers = text
+    const results = text
       .split("\n")
       .map(a =>
         a
@@ -21,7 +21,7 @@ export default ({ updateArgs = () => {}, args = {}, client, preview }) => {
             {}
           )
       );
-    updateArgs("presetAnswers", answers);
+    updateArgs("presetAnswers", results);
   };
   return (
     <FormGroup className="macro-setPresetAnswer">
@@ -43,12 +43,12 @@ export default ({ updateArgs = () => {}, args = {}, client, preview }) => {
         type="textarea"
         placeholder="Short Label;Longer scan answer that goes in the box"
         rows={8}
-        defaultValue={answers}
+        defaultValue={mapAnswers}
         onBlur={evt => processAnswers(evt.target.value)}
       />
       <Label>Preview</Label>
       <Input type="select">
-        {(args ? args.presetAnswers : []).map(a => (
+        {answers.map(a => (
           <option key={a.value}>
             {a.label} - {a.value}
           </option>
