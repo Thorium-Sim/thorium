@@ -4,11 +4,17 @@
   }
   li {
     &.selected {
-      background-color: rgba(0,0,0,0.1);
+      background-color: rgba(0, 0, 0, 0.1);
     }
   }
+  .magic-container {
+    display: flex;
+  }
+  .magic-child {
+    margin: 0 20px;
+  }
   .loading {
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0, 0, 0, 0.7);
     position: fixed;
     top: 0;
     bottom: 0;
@@ -17,9 +23,10 @@
     display: flex;
     z-index: 1000;
     justify-content: center;
-    align-items:center;
+    align-items: center;
     flex-direction: column;
-    h1, h4 {
+    h1,
+    h4 {
       color: white;
     }
     svg {
@@ -28,13 +35,17 @@
       animation: spinloader 0.5s linear infinite;
     }
     svg path,
-svg rect{
-  fill: #FF6700;
-}
+    svg rect {
+      fill: #ff6700;
+    }
   }
 }
 
 @keyframes spinloader {
-  from {transform: rotate(0deg)}
-  to {transform: rotate(359deg)}
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
 }

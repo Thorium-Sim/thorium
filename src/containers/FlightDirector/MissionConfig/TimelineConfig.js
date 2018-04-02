@@ -472,7 +472,7 @@ export default class TimelineConfig extends Component {
                   <Label>Step Name</Label>
                   <Input
                     type="text"
-                    value={step.name}
+                    defaultValue={step.name}
                     onChange={this._updateStep.bind(this, "name")}
                   />
                 </FormGroup>
@@ -481,7 +481,7 @@ export default class TimelineConfig extends Component {
                   <Input
                     type="textarea"
                     rows={8}
-                    value={step.description}
+                    defaultValue={step.description}
                     placeholder="Here is where you would explain what is going on during this part of the mission. This serves as your script, explaining what actions should be taken and where the story goes next."
                     onChange={this._updateStep.bind(this, "description")}
                   />
