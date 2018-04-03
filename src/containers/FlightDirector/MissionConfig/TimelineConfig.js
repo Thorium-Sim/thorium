@@ -15,6 +15,7 @@ import gql from "graphql-tag";
 import FontAwesome from "react-fontawesome";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import EventPicker from "./EventPicker";
+import { macroNames } from "./PrintMission";
 
 const SortableItem = SortableElement(
   ({
@@ -250,7 +251,7 @@ export default class TimelineConfig extends Component {
       obj.simulatorId = this.props.object.id;
     }
     let timelineItem = {
-      name: e.target.value,
+      name: macroNames[e.target.value],
       type: "event",
       event: e.target.value
     };

@@ -15,7 +15,7 @@ export default ({ updateArgs, args, client }) => {
       <Input
         type="checkbox"
         checked={args.secondary}
-        onChange={evt => updateArgs("secondary", evt.target.value)}
+        onChange={evt => updateArgs("secondary", evt.target.checked)}
       />
       <Label>Cards</Label>
       <Input
