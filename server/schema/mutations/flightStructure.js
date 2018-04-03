@@ -19,6 +19,7 @@ addTimelineItemToTimelineStep(simulatorId: ID, missionId: ID, timelineStepId: ID
 removeTimelineStepItem(simulatorId: ID, missionId: ID, timelineStepId: ID!, timelineItemId: ID!): String
 updateTimelineStepItem(simulatorId: ID, missionId: ID, timelineStepId: ID!, timelineItemId: ID!, updateTimelineItem: TimelineitemInput!): String
 triggerMacros(simulatorId: ID!, macros: [MacroInput]!): String
+duplicateTimelineStep(missionId: ID!, timelineStepId: ID!):String
 
 createStationSet(name: String!, simulatorId: ID!):String
 removeStationSet(stationSetID: ID!):String

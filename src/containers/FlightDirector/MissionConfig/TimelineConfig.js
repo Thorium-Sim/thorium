@@ -335,6 +335,23 @@ export default class TimelineConfig extends Component {
       });
     }
   }
+  _duplicateTimelineStep = () => {
+    const { selectedTimelineStep: timelineStepId } = this.state;
+    const { id: missionId } = this.props.object;
+
+    const mutation = gql`
+      mutation DuplicateTimelineStep($missionId: ID!, $timelineStepId: ID!) {
+        duplicateTimelineStep(
+          missionId: $missionId
+          timelineStepId: $timelineStepId
+        )
+      }
+    `;
+    this.props.client.mutate({
+      mutation: mutation,
+      variables: { missionId, timelineStepId }
+    });
+  };
   onSortEnd({ oldIndex, newIndex }) {
     if (oldIndex === newIndex) {
       this.setState({
@@ -395,8 +412,17 @@ export default class TimelineConfig extends Component {
               size="sm"
               onClick={this._addTimelineStep.bind(this)}
             >
-              Add Step
+              Add
             </Button>
+            {this.state.selectedTimelineStep && (
+              <Button
+                color="info"
+                size="sm"
+                onClick={this._duplicateTimelineStep}
+              >
+                Duplicate
+              </Button>
+            )}
             {this.state.selectedTimelineStep && (
               <Button
                 color="danger"
@@ -406,7 +432,7 @@ export default class TimelineConfig extends Component {
                   this.state.selectedTimelineStep
                 )}
               >
-                Remove Step
+                Remove
               </Button>
             )}
           </ButtonGroup>

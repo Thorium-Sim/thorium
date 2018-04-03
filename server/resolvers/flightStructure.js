@@ -132,6 +132,9 @@ export const FlightStructureMutations = {
   removeTimelineStep(root, args, context) {
     App.handleEvent(args, "removeTimelineStep", context);
   },
+  duplicateTimelineStep(root, args, context) {
+    App.handleEvent(args, "duplicateTimelineStep", context);
+  },
   reorderTimelineStep(root, args, context) {
     App.handleEvent(args, "reorderTimelineStep", context);
   },
