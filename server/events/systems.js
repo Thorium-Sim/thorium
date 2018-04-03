@@ -239,7 +239,20 @@ App.on("breakSystem", ({ simulatorId, type, name }) => {
       (name ? s.name === name : true)
   );
   const sys = systems.find(s => s.damage.damaged === false);
-  sys && sys.break();
+  if (sys) {
+    sys.break();
+  } else if (name) {
+    // If the system doesn't exist and the name arg is set, create a new system
+    const args = {
+      simulatorId,
+      name,
+      extra: true,
+      damage: { damaged: true }
+    };
+    const ClassObj = Classes.System;
+    const obj = new ClassObj(args);
+    App.systems.push(obj);
+  }
   sendUpdate(sys);
 });
 App.on("fixSystem", ({ simulatorId, type, name }) => {
