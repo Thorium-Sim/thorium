@@ -77,7 +77,7 @@
     "react-animated-number": "^0.4.4",
     "react-apollo": "^2.1.2",
     "react-color": "^2.14.0",
-    "react-dom": "^16.3.0",
+    "react-dom": "^16.3.1",
     "react-draggable": "^3.0.5",
     "react-fontawesome": "^1.6.1",
     "react-konami": "^0.5.0",
