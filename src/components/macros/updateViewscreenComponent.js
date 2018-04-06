@@ -8,7 +8,7 @@ const cards = Object.keys(ViewscreenCards)
 const configs = Object.keys(ViewscreenCards)
   .filter(c => c.indexOf("Config") > -1)
   .sort();
-export default ({ updateArgs, args, client }) => {
+export default ({ updateArgs, args }) => {
   return (
     <FormGroup className="macro-template">
       <Label>Secondary Screen?</Label>
