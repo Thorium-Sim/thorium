@@ -288,6 +288,7 @@ class VideoPreview extends Component {
     );
   }
 }
+
 const AssetObject = ({ object, container, removeObject }) => {
   const ext1 = object.url.match(/\..*$/gi);
   const ext = ext1 ? ext1[0].replace(".", "").toLowerCase() : null;
