@@ -31,6 +31,10 @@ export class TimelineObject {
   removeTimelineStep(timelineStepId) {
     this.timeline = this.timeline.filter(t => t.id !== timelineStepId);
   }
+  duplicateTimelineStep(timelineStepId) {
+    const timelineStep = this.timeline.find(t => t.id === timelineStepId);
+    this.timeline.push(new TimelineStep(null, timelineStep));
+  }
   reorderTimelineStep(timelineStepId, newOrder) {
     function move(array, old_index, new_index) {
       if (new_index >= array.length) {

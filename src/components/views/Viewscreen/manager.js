@@ -134,7 +134,7 @@ class ViewscreenCore extends Component {
     `;
     const variables = {
       id,
-      secondary
+      secondary: !secondary
     };
     this.props.client.mutate({
       mutation,

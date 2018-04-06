@@ -8,7 +8,7 @@ export default ({ updateArgs, args = {}, client }) => {
       <Input
         type="checkbox"
         checked={args && args.secondary}
-        onChange={evt => updateArgs("secondary", evt.target.value)}
+        onChange={evt => updateArgs("secondary", evt.target.checked)}
       />
     </FormGroup>
   );

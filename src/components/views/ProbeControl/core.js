@@ -86,7 +86,7 @@ class ProbeControl extends Component {
       response: this.state.responseString
     };
     const mutation = gql`
-      mutation ProbeQueryResponse($id: ID!, $probeId: ID!, $response: String!) {
+      mutation ProbeQueryResponse($id: ID!, $probeId: ID!, $response: String) {
         probeQueryResponse(id: $id, probeId: $probeId, response: $response)
       }
     `;

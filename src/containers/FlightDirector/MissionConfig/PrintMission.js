@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import "./printStyle.css";
 
-const macroNames = {
+export const macroNames = {
   addTractorTarget: "Add Tractor Target",
   removeTractorTarget: "Remove Tractor Target",
   hitShields: "Hit Shields",

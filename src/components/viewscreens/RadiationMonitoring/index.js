@@ -55,6 +55,7 @@ class RadiationMonitor extends Component {
           />
           <path
             style={{
+              transform: "rotate(0deg)",
               fill: calcColor(width, false, "rainbow").rgbaString()
             }}
             id="bld"
@@ -62,14 +63,14 @@ class RadiationMonitor extends Component {
           />
           <path
             style={{
-              rotate: "120deg",
+              transform: "rotate(120deg)",
               fill: calcColor(width, false, "rainbow").rgbaString()
             }}
             d="M75,0 A 75,75 0 0,0 37.5,-64.952 L 125,-216.506 A 250,250 0 0,1 250,0 z"
           />
           <path
             style={{
-              rotate: "-120deg",
+              transform: "rotate(-120deg)",
               fill: calcColor(width, false, "rainbow").rgbaString()
             }}
             d="M75,0 A 75,75 0 0,0 37.5,-64.952 L 125,-216.506 A 250,250 0 0,1 250,0 z"

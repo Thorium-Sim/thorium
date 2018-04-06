@@ -8,10 +8,6 @@ export default class SetArmyContacts extends Component {
     const { armyContacts = [] } = args;
     return (
       <FormGroup className="macro-setArmyContacts">
-        <div>
-          <strong>Domain</strong>
-          <div>{args.domain}</div>
-        </div>
         <p>Contacts:</p>
         <div className="contact-scroll">
           {armyContacts.map(contact => {

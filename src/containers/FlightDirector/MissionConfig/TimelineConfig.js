@@ -15,6 +15,7 @@ import gql from "graphql-tag";
 import FontAwesome from "react-fontawesome";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import EventPicker from "./EventPicker";
+import { macroNames } from "./PrintMission";
 
 const SortableItem = SortableElement(
   ({
@@ -250,7 +251,7 @@ export default class TimelineConfig extends Component {
       obj.simulatorId = this.props.object.id;
     }
     let timelineItem = {
-      name: e.target.value,
+      name: macroNames[e.target.value],
       type: "event",
       event: e.target.value
     };
@@ -334,6 +335,23 @@ export default class TimelineConfig extends Component {
       });
     }
   }
+  _duplicateTimelineStep = () => {
+    const { selectedTimelineStep: timelineStepId } = this.state;
+    const { id: missionId } = this.props.object;
+
+    const mutation = gql`
+      mutation DuplicateTimelineStep($missionId: ID!, $timelineStepId: ID!) {
+        duplicateTimelineStep(
+          missionId: $missionId
+          timelineStepId: $timelineStepId
+        )
+      }
+    `;
+    this.props.client.mutate({
+      mutation: mutation,
+      variables: { missionId, timelineStepId }
+    });
+  };
   onSortEnd({ oldIndex, newIndex }) {
     if (oldIndex === newIndex) {
       this.setState({
@@ -394,8 +412,17 @@ export default class TimelineConfig extends Component {
               size="sm"
               onClick={this._addTimelineStep.bind(this)}
             >
-              Add Step
+              Add
             </Button>
+            {this.state.selectedTimelineStep && (
+              <Button
+                color="info"
+                size="sm"
+                onClick={this._duplicateTimelineStep}
+              >
+                Duplicate
+              </Button>
+            )}
             {this.state.selectedTimelineStep && (
               <Button
                 color="danger"
@@ -405,7 +432,7 @@ export default class TimelineConfig extends Component {
                   this.state.selectedTimelineStep
                 )}
               >
-                Remove Step
+                Remove
               </Button>
             )}
           </ButtonGroup>
@@ -472,7 +499,7 @@ export default class TimelineConfig extends Component {
                   <Label>Step Name</Label>
                   <Input
                     type="text"
-                    value={step.name}
+                    defaultValue={step.name}
                     onChange={this._updateStep.bind(this, "name")}
                   />
                 </FormGroup>
@@ -481,7 +508,7 @@ export default class TimelineConfig extends Component {
                   <Input
                     type="textarea"
                     rows={8}
-                    value={step.description}
+                    defaultValue={step.description}
                     placeholder="Here is where you would explain what is going on during this part of the mission. This serves as your script, explaining what actions should be taken and where the story goes next."
                     onChange={this._updateStep.bind(this, "description")}
                   />
@@ -496,7 +523,7 @@ export default class TimelineConfig extends Component {
               );
             if (!item) return null;
             return (
-              <Col sm="6">
+              <Col sm="6" key={item.id}>
                 <h4>{item.event}</h4>
                 <Card className="scroll" style={{ maxHeight: "60vh" }}>
                   <CardBody>

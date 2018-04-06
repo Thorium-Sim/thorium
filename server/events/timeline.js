@@ -24,6 +24,11 @@ App.on("removeTimelineStep", ({ simulatorId, missionId, timelineStepId }) => {
   pubsub.publish("missionsUpdate", App.missions);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("duplicateTimelineStep", ({ missionId, timelineStepId }) => {
+  const object = getTimelineObject(null, missionId);
+  object.duplicateTimelineStep(timelineStepId);
+  pubsub.publish("missionsUpdate", App.missions);
+});
 App.on(
   "reorderTimelineStep",
   ({ simulatorId, missionId, timelineStepId, order }) => {
