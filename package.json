@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "private": true,
   "description": "Node + React + GraphQL simulator controls",
   "repository": {
@@ -105,18 +105,21 @@
     "yazl": "^2.4.3"
   },
   "scripts": {
-    "start-server": "nodemon ./server/server.js -e js,graphql --ignore snapshots/ --ignore src/ --exec babel-node",
+    "start-server":
+      "nodemon ./server/server.js -e js,graphql --ignore snapshots/ --ignore src/ --exec babel-node",
     "start": "concurrently \"npm run start-server\" \"npm run start-client\"",
     "start-js": "react-scripts start",
     "start-client": "npm-run-all -p watch-css start-js",
     "build-js": "cross-env GENERATE_SOURCEMAP=false react-scripts build",
     "build-client": "npm-run-all build-css build-js",
     "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css": "concurrently \"npm run build-css\" \"node-sass-chokidar src/ -o src/ --watch --recursive\"",
+    "watch-css":
+      "concurrently \"npm run build-css\" \"node-sass-chokidar src/ -o src/ --watch --recursive\"",
     "build-server": "node ./config/build-server.js",
     "build": "npm run build-client && npm run build-server",
     "lint": "eslint .",
-    "cloc": "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots,coverage,build --exclude-ext=css,json",
+    "cloc":
+      "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots,coverage,build --exclude-ext=css,json",
     "test:client": "react-scripts test --env=jsdom",
     "test:server": "jest server/tests --env=node",
     "test": "concurrently \"npm run test:client\" \"npm run test:server\"",
@@ -128,16 +131,10 @@
     "plop": "plop"
   },
   "lint-staged": {
-    "*.js": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.js": ["prettier --write", "git add"]
   },
   "jest": {
-    "coverageReporters": [
-      "lcov",
-      "text-summary"
-    ]
+    "coverageReporters": ["lcov", "text-summary"]
   },
   "bin": "./app.js",
   "proxy": {
