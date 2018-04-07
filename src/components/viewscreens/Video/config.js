@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
+import { withApollo } from "react-apollo";
 import FileExplorer from "../../views/TacticalMap/fileExplorer";
 
 const ADD_CACHE_MUTATION = gql`
