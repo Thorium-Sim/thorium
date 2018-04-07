@@ -151,6 +151,22 @@ export default class Sidebar extends Component {
       });
     }
   };
+  freezeTactical = evt => {
+    const { tacticalMapId } = this.props;
+    const mutation = gql`
+      mutation FreezeTacticalMap($id: ID!, $freeze: Boolean!) {
+        freezeTacticalMap(id: $id, freeze: $freeze)
+      }
+    `;
+    const variables = {
+      id: tacticalMapId,
+      freeze: evt.target.checked
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     const {
       tacticalMapId,
@@ -243,6 +259,14 @@ export default class Sidebar extends Component {
             <Button color="danger" size="sm" onClick={this.clearTactical}>
               Clear Tactical
             </Button>
+            <label>
+              <input
+                type="checkbox"
+                checked={tacticalMaps.find(t => t.id === tacticalMapId).frozen}
+                onChange={this.freezeTactical}
+              />{" "}
+              Frozen
+            </label>
           </div>
         )}
       </div>

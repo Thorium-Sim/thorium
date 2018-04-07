@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormGroup, Label, Input, Col, Button } from "reactstrap";
+import { FormGroup, Col, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import ContactContextMenu from "../views/Sensors/gridCore/contactContextMenu";
 import uuid from "uuid";

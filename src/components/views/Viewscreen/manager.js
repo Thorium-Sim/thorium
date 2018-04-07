@@ -17,6 +17,7 @@ const VIEWSCREEN_SUB = gql`
       component
       data
       auto
+      secondary
     }
   }
 `;
@@ -122,10 +123,9 @@ class ViewscreenCore extends Component {
   toggleSecondary = () => {
     const { viewscreens } = this.props.data;
     const { selectedViewscreen } = this.state;
-    const secondary = !(
+    const secondary =
       viewscreens.find(v => v.id === selectedViewscreen) &&
-      viewscreens.find(v => v.id === selectedViewscreen).secondary
-    );
+      viewscreens.find(v => v.id === selectedViewscreen).secondary;
     const id = selectedViewscreen;
     const mutation = gql`
       mutation UpdateViewscreenSecondary($id: ID!, $secondary: Boolean!) {
@@ -208,10 +208,10 @@ class ViewscreenCore extends Component {
                   <input
                     type="checkbox"
                     checked={
-                      selectedViewscreen &&
-                      viewscreens.length &&
-                      viewscreens.find(v => v.id === selectedViewscreen)
-                        .secondary
+                      selectedViewscreen && viewscreens.length
+                        ? viewscreens.find(v => v.id === selectedViewscreen)
+                            .secondary
+                        : false
                     }
                     onChange={this.toggleSecondary}
                   />{" "}
@@ -333,6 +333,7 @@ const VIEWSCREEN_QUERY = gql`
       component
       data
       auto
+      secondary
     }
   }
 `;

@@ -265,6 +265,30 @@ class FileExplorer extends Component {
   }
 }
 
+class VideoPreview extends Component {
+  state = { loaded: false };
+  render() {
+    return (
+      <div>
+        <FontAwesome
+          size="5x"
+          name="file-video-o"
+          style={{ display: !this.state.loaded ? "block" : "none" }}
+        />
+        <video
+          alt="object"
+          src={this.props.src}
+          style={{
+            width: "100%",
+            display: this.state.loaded ? "block" : "none"
+          }}
+          onLoadedData={() => this.setState({ loaded: true })}
+        />
+      </div>
+    );
+  }
+}
+
 const AssetObject = ({ object, container, removeObject }) => {
   const ext1 = object.url.match(/\..*$/gi);
   const ext = ext1 ? ext1[0].replace(".", "").toLowerCase() : null;
@@ -283,10 +307,10 @@ const AssetObject = ({ object, container, removeObject }) => {
       </div>
     );
   }
-  if (["mov", "mp4", "ogv"].indexOf(ext) > -1) {
+  if (["mov", "mp4", "ogv", "m4v"].indexOf(ext) > -1) {
     return (
       <div>
-        <FontAwesome size="5x" name="file-video-o" />
+        <VideoPreview src={object.url} />
         <p>
           {container.name}{" "}
           <FontAwesome

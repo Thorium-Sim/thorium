@@ -3,8 +3,6 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import {
   Container,
-  Col,
-  Row,
   Card,
   Button,
   ButtonGroup,
