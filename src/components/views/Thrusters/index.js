@@ -8,6 +8,7 @@ import { Button, Row, Col } from "reactstrap";
 import ThrusterThree from "./three-view";
 import distance from "../../../helpers/distance";
 import Measure from "react-measure";
+import throttle from "../../../helpers/debounce";
 
 import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.css";
@@ -137,6 +138,19 @@ class Thrusters extends Component {
         top: 0
       }
     };
+    this.updateRotation = throttle(({ id, rotation, on }) => {
+      props.rotationUpdate({
+        id,
+        rotation,
+        on
+      });
+    }, 15);
+    this.updateDirection = throttle(({ id, direction }) => {
+      props.directionUpdate({
+        id,
+        direction
+      });
+    }, 15);
   }
   componentWillUnmount() {
     cancelAnimationFrame(this.state.request);
@@ -316,7 +330,7 @@ gamepadLoop(){
             case "rotation":
               rotation.pitch = newPosition.top;
               rotation.roll = newPosition.left;
-              this.props.rotationUpdate({
+              this.updateRotation({
                 id: id,
                 rotation: rotation,
                 on: true
@@ -324,7 +338,7 @@ gamepadLoop(){
               break;
             case "yaw":
               rotation.yaw = newPosition.left;
-              this.props.rotationUpdate({
+              this.updateRotation({
                 id: id,
                 rotation: rotation,
                 on: true
@@ -332,20 +346,20 @@ gamepadLoop(){
               break;
             case "directionFore":
               direction.z = newPosition.left;
-              this.props.directionUpdate({ id: id, direction: direction });
+              this.updateDirection({ id: id, direction: direction });
               break;
             case "direction":
               direction.x = newPosition.left;
               direction.y = newPosition.top;
-              this.props.directionUpdate({ id: id, direction: direction });
+              this.updateDirection({ id: id, direction: direction });
               break;
             default:
-              this.props.rotationUpdate({
+              this.props.updateRotation({
                 id: id,
                 rotation: rotation,
                 on: false
               });
-              this.props.directionUpdate({ id: id, direction: direction });
+              this.updateDirection({ id: id, direction: direction });
               break;
           }
           this.setState(obj);
