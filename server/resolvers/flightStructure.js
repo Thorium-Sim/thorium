@@ -164,7 +164,9 @@ export const FlightStructureMutations = {
       }, delay);
     });
   },
-
+  autoAdvance(root, args, context) {
+    App.handleEvent(args, "autoAdvance", context);
+  },
   // Station
   createStationSet(root, args, context) {
     App.handleEvent(args, "createStationSet", context);
