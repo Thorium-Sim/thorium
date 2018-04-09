@@ -339,6 +339,24 @@ class App extends Component {
       );
     }
   };
+  renamePanel = () => {
+    const name = window.prompt("What would you like to rename this panel?");
+    if (name) {
+      const variables = {
+        id: this.state.selectedPanel,
+        name
+      };
+      const mutation = gql`
+        mutation UpdateSoftwarePanel($id: ID!, $name: String) {
+          updateSoftwarePanel(panel: { id: $id, name: $name })
+        }
+      `;
+      this.props.client.mutate({
+        mutation,
+        variables
+      });
+    }
+  };
   selectPanel = id => {
     if (!this.props.data.loading && this.props.data.softwarePanels && id) {
       const panel = this.props.data.softwarePanels.find(s => s.id === id);
@@ -431,6 +449,11 @@ class App extends Component {
             <Button color="success" block onClick={this.createPanel}>
               Create Panel
             </Button>
+            {this.state.selectedPanel && (
+              <Button color="info" block onClick={this.renamePanel}>
+                Rename Panel
+              </Button>
+            )}
             {this.state.selectedPanel && (
               <Button color="danger" block onClick={this.removePanel}>
                 Remove Panel

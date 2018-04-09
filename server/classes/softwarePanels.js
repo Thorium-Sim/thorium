@@ -38,15 +38,23 @@ export default class SoftwarePanel {
     this.update(params);
   }
   update(panel) {
-    this.cables = [];
-    this.components = [];
-    this.connections = [];
-    (panel.cables || []).forEach(c => this.cables.push(new PanelCable(c)));
-    (panel.components || []).forEach(c =>
-      this.components.push(new PanelComponent(c))
-    );
-    (panel.connections || []).forEach(c =>
-      this.connections.push(new PanelConnection(c))
-    );
+    if (panel.name) this.name = panel.name;
+    if (panel.cables) {
+      this.cables = [];
+      (panel.cables || []).forEach(c => this.cables.push(new PanelCable(c)));
+    }
+    if (panel.components) {
+      this.components = [];
+      (panel.components || []).forEach(c =>
+        this.components.push(new PanelComponent(c))
+      );
+    }
+    if (panel.connections) {
+      this.connections = [];
+
+      (panel.connections || []).forEach(c =>
+        this.connections.push(new PanelConnection(c))
+      );
+    }
   }
 }
