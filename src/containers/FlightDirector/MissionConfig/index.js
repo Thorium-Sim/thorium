@@ -262,7 +262,13 @@ class MissionsConfig extends Component {
     const { missions } = this.props.data;
     const { selectedMission, printingMission } = this.state;
     const mission = missions.find(m => m.id === selectedMission);
-    if (printingMission) return <PrintMission mission={printingMission} />;
+    if (printingMission)
+      return (
+        <PrintMission
+          clearMission={() => this.setState({ printingMission: null })}
+          mission={printingMission}
+        />
+      );
     return (
       <Container fluid className="missionConfig">
         <h4>

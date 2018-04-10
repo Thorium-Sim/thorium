@@ -28,7 +28,7 @@ class VideoConfig extends Component {
     data = JSON.parse(data);
     return (
       <div>
-        <div>
+        <div style={{ float: "left", marginLeft: "5px" }}>
           <label>Video</label>
           <div style={{ maxHeight: "34vh", overflowY: "scroll" }}>
             <FileExplorer
@@ -44,7 +44,7 @@ class VideoConfig extends Component {
             />
           </div>
         </div>
-        <div>
+        <div style={{ float: "left", marginLeft: "5px" }}>
           <label>
             <input
               checked={data.autoplay}
@@ -60,7 +60,7 @@ class VideoConfig extends Component {
             Autoplay
           </label>
         </div>
-        <div>
+        <div style={{ float: "left", marginLeft: "5px" }}>
           <label>
             <input
               checked={data.loop}
@@ -90,6 +90,22 @@ class VideoConfig extends Component {
               }
             />{" "}
             Overlay
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              checked={data.advance}
+              type="checkbox"
+              onChange={evt =>
+                updateData(
+                  JSON.stringify(
+                    Object.assign({}, data, { advance: evt.target.checked })
+                  )
+                )
+              }
+            />{" "}
+            Auto-Advance Mission Timeline on Complete
           </label>
         </div>
       </div>

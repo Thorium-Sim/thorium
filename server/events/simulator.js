@@ -127,3 +127,19 @@ App.on("setVerifyDamage", ({ simulatorId, verifyStep }) => {
   simulator.verifyStep = verifyStep;
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+
+App.on("autoAdvance", ({ simulatorId }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  const { mission, currentTimelineStep } = sim;
+  const missionObj = App.missions.find(m => m.id === mission);
+  if (!missionObj) return;
+  const timelineStep = missionObj.timeline[currentTimelineStep];
+  if (!timelineStep) return;
+  timelineStep.timelineItems.forEach(({ event, args, delay = 0 }) => {
+    setTimeout(() => {
+      App.handleEvent(Object.assign({ simulatorId }, JSON.parse(args)), event);
+    }, delay);
+  });
+  sim.setTimelineStep(currentTimelineStep + 1);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});

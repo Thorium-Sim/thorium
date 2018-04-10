@@ -47,7 +47,7 @@ const updatePhasers = () => {
       }
       const charge = beam.charge + rate * 0.1;
       App.handleEvent(
-        { id: sys.id, beamId: beam.id, charge },
+        { id: sys.id, beamId: beam.id, charge, noUpdate: true },
         "setPhaserBeamCharge"
       );
     });
@@ -60,7 +60,12 @@ const phaserCool = () => {
   App.systems.filter(p => p.type === "Phasers").forEach(sys => {
     sys.beams.filter(b => b.heat > 0).forEach(beam => {
       App.handleEvent(
-        { id: sys.id, beamId: beam.id, heat: beam.heat - 0.005 },
+        {
+          id: sys.id,
+          beamId: beam.id,
+          heat: beam.heat - 0.005,
+          noUpdate: true
+        },
         "setPhaserBeamHeat"
       );
     });
