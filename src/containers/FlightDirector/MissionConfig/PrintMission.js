@@ -60,28 +60,35 @@ const PrintMission = ({ mission, clearMission }) => {
             </h2>
             <p className="description">{m.description}</p>
             <div className="mission-item-holder">
-              {m.timelineItems.map(i => (
-                <div key={i.id} className="mission-item">
-                  <h3>{macroNames[i.event]}</h3>
-                  {i.delay ? (
-                    <span>
-                      <strong>Delay: </strong>
-                      {i.delay}ms
-                    </span>
-                  ) : (
-                    ""
-                  )}
-                  {Macros[i.event] &&
-                    (() => {
-                      const MacroPreview = Macros[i.event];
-                      let args = i.args;
-                      if (typeof args === "string") {
-                        args = JSON.parse(args);
-                      }
-                      return <MacroPreview args={args} />;
-                    })()}
-                </div>
-              ))}
+              {m.timelineItems
+                .concat()
+                .sort((a, b) => {
+                  if (a.delay > b.delay) return 1;
+                  if (a.delay < b.delay) return -1;
+                  return 0;
+                })
+                .map(i => (
+                  <div key={i.id} className="mission-item">
+                    <h3>{macroNames[i.event]}</h3>
+                    {i.delay ? (
+                      <span>
+                        <strong>Delay: </strong>
+                        {i.delay}ms
+                      </span>
+                    ) : (
+                      ""
+                    )}
+                    {Macros[i.event] &&
+                      (() => {
+                        const MacroPreview = Macros[i.event];
+                        let args = i.args;
+                        if (typeof args === "string") {
+                          args = JSON.parse(args);
+                        }
+                        return <MacroPreview args={args} />;
+                      })()}
+                  </div>
+                ))}
             </div>
           </div>
         ))}
