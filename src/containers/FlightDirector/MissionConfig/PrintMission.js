@@ -29,14 +29,16 @@ export const macroNames = {
   addObjective: "Add Mission Objective",
   completeObjective: "Complete Mission Objective"
 };
-const PrintMission = ({ mission }) => {
+const PrintMission = ({ mission, clearMission }) => {
   return (
     <div className="printMission-holder">
       <div className="hider">
         <h4>
           Mission Printing{" "}
           <small>
-            <Link to="/missionConfig">Go back</Link>
+            <a href="#" onClick={clearMission}>
+              Go back
+            </a>
           </small>
           <div>
             <small>
