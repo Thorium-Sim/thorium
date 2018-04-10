@@ -155,7 +155,6 @@ export const FlightStructureMutations = {
     App.handleEvent(args, "updateTimelineStepItem", context);
   },
   triggerMacros(root, { simulatorId, macros }, context) {
-    console.log(macros);
     macros.forEach(({ event, args, delay = 0 }) => {
       setTimeout(() => {
         App.handleEvent(
