@@ -27,7 +27,9 @@ export const macroNames = {
   setTransporterTargets: "Set Transporter Targets",
   navCourseResponse: "Send Nav Course Response",
   addObjective: "Add Mission Objective",
-  completeObjective: "Complete Mission Objective"
+  completeObjective: "Complete Mission Objective",
+  autoAdvance: "Auto Advance Timeline",
+  syncTimer: "Set Core Timer"
 };
 const PrintMission = ({ mission, clearMission }) => {
   return (
