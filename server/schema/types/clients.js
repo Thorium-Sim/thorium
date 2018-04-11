@@ -13,4 +13,25 @@ type Client {
   caches: [String]
   hypercard: String
 }
+
+type Sound {
+  id: ID
+  clients: [String]
+  asset: String
+  url: String
+  volume: Float
+  playbackRate: Float
+  channel:[Int]
+  looping: Boolean
+}
+
+input SoundInput {
+  id: ID
+  clients: [String]
+  asset: String
+  volume: Float
+  playbackRate: Float
+  channel: [Int]
+  looping: Boolean
+}
 `;

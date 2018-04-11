@@ -315,6 +315,19 @@ const SIMULATOR_SUB = gql`
   }
 `;
 
+const SOUND_SUB = gql`
+  subscription SoundSub($clientId: ID!) {
+    soundSub(clientId: $clientId) {
+      id
+      url
+      volume
+      playbackRate
+      channel
+      looping
+    }
+  }
+`;
+
 class ClientView extends Component {
   constructor(props) {
     super(props);
@@ -437,6 +450,7 @@ class ClientView extends Component {
     this.clientSubscription && this.clientSubscription();
     this.simulatorSub && this.simulatorSub();
     this.cacheSub && this.cacheSub();
+    this.soundSub && this.soundSub();
   }
   componentDidMount() {
     this.props.client.mutate({
@@ -452,6 +466,23 @@ class ClientView extends Component {
       event.stopPropagation();
       return false;
     };
+
+    // Sound Subscription
+    this.soundSub = this.props.client
+      .subscribe({
+        query: SOUND_SUB,
+        variables: {
+          clientId: this.props.clientId
+        }
+      })
+      .subscribe({
+        next: ({ data: { soundSub } }) => {
+          this.props.playSound(soundSub);
+        },
+        error(err) {
+          console.error("Error playing sound", err);
+        }
+      });
   }
   render() {
     let flight;

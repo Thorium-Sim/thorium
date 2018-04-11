@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Row, Col, Button, Input } from "reactstrap";
 import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo, Query } from "react-apollo";
 import "./style.css";
 
 const STATION_CHANGE_QUERY = gql`
@@ -15,12 +15,26 @@ const STATION_CHANGE_QUERY = gql`
   }
 `;
 
+const SOUNDS_QUERY = gql`
+  query Sounds {
+    assetFolders(name: "Sounds") {
+      id
+      name
+      containers {
+        id
+        name
+        fullPath
+      }
+    }
+  }
+`;
 class ActionsCore extends Component {
   constructor(props) {
     super(props);
     this.state = {
       actionName: "flash",
-      actionDest: "all"
+      actionDest: "all",
+      selectedSound: "nothing"
     };
     this.subscription = null;
   }
@@ -83,7 +97,35 @@ class ActionsCore extends Component {
       variables
     });
   };
+  playSound = () => {
+    let { selectedSound, actionDest } = this.state;
+    if (actionDest === "random") {
+      const index = Math.floor(
+        Math.random() * this.props.data.simulators[0].stations
+      );
+      actionDest = this.props.data.simulators[0].stations[index].name;
+    }
+    const mutation = gql`
+      mutation PlaySound($asset: String!, $station: String, $simulatorId: ID) {
+        playSound(
+          sound: { asset: $asset }
+          station: $station
+          simulatorId: $simulatorId
+        )
+      }
+    `;
+    const variables = {
+      asset: selectedSound,
+      station: actionDest,
+      simulatorId: this.props.simulator.id
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
+    const { actionName, selectedSound } = this.state;
     return (
       <div className="core-action">
         <div className="flex-container">
@@ -91,9 +133,7 @@ class ActionsCore extends Component {
             <option value="flash">Flash</option>
             <option value="spark">Spark</option>
             <option value="freak">Freak</option>
-            <option value="sound" disabled>
-              Sound
-            </option>
+            <option value="sound">Sound</option>
             <option value="beep">Beep</option>
             <option value="speak" disabled>
               Speak
@@ -150,9 +190,46 @@ class ActionsCore extends Component {
               ))}
           </select>
         </div>
-        <Button block color="primary" size="sm" onClick={this.triggerAction}>
-          {this.state.actionName} {this.state.actionDest}
-        </Button>
+        {actionName === "sound" ? (
+          <Row>
+            <Col sm={8}>
+              <Query query={SOUNDS_QUERY}>
+                {({ loading, data: { assetFolders } }) =>
+                  loading ? (
+                    <p>Loading</p>
+                  ) : (
+                    <Input
+                      style={{ height: "20px" }}
+                      type="select"
+                      value={selectedSound}
+                      onChange={e =>
+                        this.setState({ selectedSound: e.target.value })
+                      }
+                    >
+                      <option value="nothing" disabled>
+                        Select a Sound
+                      </option>
+                      {assetFolders[0].containers.map(c => (
+                        <option key={c.id} value={c.fullPath}>
+                          {c.name}
+                        </option>
+                      ))}
+                    </Input>
+                  )
+                }
+              </Query>
+            </Col>
+            <Col sm={4}>
+              <Button block color="primary" size="sm" onClick={this.playSound}>
+                Play
+              </Button>
+            </Col>
+          </Row>
+        ) : (
+          <Button block color="primary" size="sm" onClick={this.triggerAction}>
+            {this.state.actionName} {this.state.actionDest}
+          </Button>
+        )}
       </div>
     );
   }
