@@ -1,3 +1,3 @@
 export default `
-keyboardUpdate(simulatorId: ID):[Keyboard]
+keyboardUpdate:[Keyboard]
 `;

@@ -1,9 +1,7 @@
 export default `
 type Keyboard{
   id: ID
-  simulatorId: ID
   name: String
-  default: Boolean
   keys: [KeyboardKey]
 }
 
@@ -14,7 +12,21 @@ type KeyboardKey {
   actions: [KeyActions]
 }
 
+type KeyboardKeyInput {
+  id: ID
+  key: String
+  meta: [String]
+  actions: [KeyActionInput]
+}
 type KeyActions {
+  id: ID
+  event: String
+  args: String
+  delay: Int
+}
+
+input KeyActionInput {
+  id: ID
   event: String
   args: String
   delay: Int

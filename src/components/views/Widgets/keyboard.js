@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./keyboard.css";
 
-const keys = [
+export const keys = [
   { name: "esc", char: "", modifier: true, escape: true, short: true },
   { name: "F1", short: true },
   { name: "F2", short: true },

@@ -11,14 +11,24 @@ export const KeyboardQueries = {
   }
 };
 
-export const KeyboardMutations = {};
+export const KeyboardMutations = {
+  addKeyboard(root, args, context) {
+    App.handleEvent(args, "addKeyboard", context);
+  },
+  removeKeyboard(root, args, context) {
+    App.handleEvent(args, "removeKeyboard", context);
+  },
+  renameKeyboard(root, args, context) {
+    App.handleEvent(args, "renameKeyboard", context);
+  },
+  updateKeyboardKey(root, args, context) {
+    App.handleEvent(args, "updateKeyboardKey", context);
+  }
+};
 
 export const KeyboardSubscriptions = {
   keyboardUpdate: {
-    resolve(rootValue, { simulatorId }) {
-      if (simulatorId) {
-        return rootValue.filter(s => s.simulatorId === simulatorId);
-      }
+    resolve(rootValue) {
       return rootValue;
     },
     subscribe: withFilter(
