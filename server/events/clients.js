@@ -1,5 +1,6 @@
 import App from "../app";
 import Client from "../classes/client";
+import Sound from "../classes/sound";
 import Viewscreen from "../classes/viewscreen";
 import { pubsub } from "../helpers/subscriptionManager.js";
 
@@ -122,4 +123,18 @@ App.on("setClientHypercard", ({ clientId, simulatorId, component }) => {
     c.setHypercard(component);
   });
   pubsub.publish("clientChanged", App.clients);
+});
+App.on("playSound", ({ sound, station, simulatorId, clientId }) => {
+  const stationObj = station || "all";
+  const clients = App.clients
+    .filter(
+      c =>
+        (c.simulatorId === simulatorId &&
+          (c.station === stationObj || stationObj === "all")) ||
+        c.id === clientId
+    )
+    .map(c => c.id);
+  const soundObj = new Sound(sound);
+  soundObj.clients = soundObj.clients.concat(clients);
+  pubsub.publish("soundSub", soundObj);
 });

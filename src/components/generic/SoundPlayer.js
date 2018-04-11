@@ -60,7 +60,7 @@ function downMixBuffer(buffer, channel) {
 
 function playSound(opts) {
   removeSound(opts.id);
-  opts.id = uuid.v4();
+  opts.id = opts.id || uuid.v4();
   const volume = opts.muted ? 0 : opts.volume || 1;
   const playbackRate = opts.paused ? 0 : opts.playbackRate || 1;
   const channel = opts.channel || [0, 1];
@@ -116,6 +116,11 @@ function removeSound(id) {
   }
 }
 
+function removeAllSounds() {
+  Object.keys(sounds).forEach(key => {
+    removeSound(key);
+  });
+}
 /*componentDidUpdate(prevProps) {
     const withSound = sound => {
       if (!sound) {
@@ -146,7 +151,15 @@ function removeSound(id) {
   }*/
 
 const withSound = Comp => {
-  return props => <Comp {...props} playSound={playSound} />;
+  return props => (
+    <Comp
+      {...props}
+      playSound={playSound}
+      removeSound={removeSound}
+      removeAllSounds={removeAllSounds}
+      sounds={sounds}
+    />
+  );
 };
 
 export default withSound;

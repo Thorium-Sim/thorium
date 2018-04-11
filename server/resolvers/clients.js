@@ -82,6 +82,9 @@ export const ClientMutations = {
   },
   setClientHypercard(root, args, context) {
     App.handleEvent(args, "setClientHypercard", context);
+  },
+  playSound(root, args, context) {
+    App.handleEvent(args, "playSound", context);
   }
 };
 
@@ -125,6 +128,21 @@ export const ClientSubscriptions = {
         return output;
       }
     )
+  },
+  soundSub: {
+    resolve: payload => payload,
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("soundSub"),
+      (rootValue, { clientId }) => {
+        console.log(
+          rootValue,
+          clientId,
+          rootValue.clients.indexOf(clientId) > -1
+        );
+        if (rootValue.clients.indexOf(clientId) > -1) return true;
+        return false;
+      }
+    )
   }
 };
 
@@ -165,6 +183,17 @@ export const ClientTypes = {
       if (simulator) {
         return simulator.stations.find(s => s.name === rootValue.station);
       }
+    }
+  },
+  Sound: {
+    url(rootValue) {
+      const assetContainer = App.assetContainers.find(
+        o => o.fullPath === rootValue.asset
+      );
+      const asset = App.assetObjects.find(
+        o => o.containerId === assetContainer.id && o.simulatorId === "default"
+      );
+      return asset ? asset.url : "";
     }
   }
 };
