@@ -39,6 +39,7 @@ import { LibrarySubscriptions } from "./library";
 import { SoftwarePanelsSubscriptions } from "./softwarePanels";
 import { SurveyFormSubscriptions } from "./surveyform.js";
 import { ObjectiveSubscriptions } from "./objective.js";
+import { KeyboardSubscriptions } from "./keyboard.js";
 
 const subscriptionMap = Object.assign(
   {},
@@ -82,7 +83,8 @@ const subscriptionMap = Object.assign(
   LibrarySubscriptions,
   SoftwarePanelsSubscriptions,
   SurveyFormSubscriptions,
-  ObjectiveSubscriptions
+  ObjectiveSubscriptions,
+  KeyboardSubscriptions
 );
 
 export default subscriptionMap;

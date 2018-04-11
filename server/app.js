@@ -63,6 +63,7 @@ class Events extends EventEmitter {
     this.softwarePanels = [];
     this.surveyForms = [];
     this.objectives = [];
+    this.keyboards = [];
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;

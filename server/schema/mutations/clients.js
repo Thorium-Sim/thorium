@@ -16,5 +16,7 @@ export default `
   clientAddCache(client: ID, simulatorId: ID, viewscreen: Boolean cacheItem: String!):String
   clientRemoveCache(client: ID!, cacheItem: String!):String
   setClientHypercard(clientId:ID, simulatorId: ID, component:String):String
+  
+  #Macro: Play a sound
   playSound(sound: SoundInput!, station: String, simulatorId: ID, clientId: String):String
 `;
