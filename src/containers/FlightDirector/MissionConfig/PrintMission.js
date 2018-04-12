@@ -1,6 +1,6 @@
 import React from "react";
 import * as Macros from "../../../components/macrosPrint";
-import { Link } from "react-router-dom";
+import { Button } from "reactstrap";
 
 import "./printStyle.css";
 
@@ -38,9 +38,9 @@ const PrintMission = ({ mission, clearMission }) => {
         <h4>
           Mission Printing{" "}
           <small>
-            <a href="#" onClick={clearMission}>
+            <Button color="link" onClick={clearMission}>
               Go back
-            </a>
+            </Button>
           </small>
           <div>
             <small>

@@ -12,7 +12,7 @@ type KeyboardKey {
   actions: [KeyActions]
 }
 
-type KeyboardKeyInput {
+input KeyboardKeyInput {
   id: ID
   key: String
   meta: [String]

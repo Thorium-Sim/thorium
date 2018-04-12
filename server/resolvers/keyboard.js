@@ -3,11 +3,8 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
 export const KeyboardQueries = {
-  keyboard(root, { simulatorId }) {
-    let returnVal = [];
-    if (simulatorId)
-      returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
-    return returnVal;
+  keyboard() {
+    return App.keyboards;
   }
 };
 
@@ -33,7 +30,7 @@ export const KeyboardSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("keyboardUpdate"),
-      rootValue => !!(rootValue && rootValue.length)
+      rootValue => !!rootValue
     )
   }
 };

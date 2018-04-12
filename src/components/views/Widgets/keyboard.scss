@@ -11,7 +11,7 @@ $color-dark-escape-keycap: darken($color-escape-keycap, 10%);
 $text-color: invert($color-base-keycap);
 $grid-gap: 5px;
 $base-border-radius: 5px;
-$keycap-height: 45px;
+$keycap-height: 100%;
 /* 60 column grid. */
 /* 1u key (standard keysize) = 4 columns */
 .keyboard {
@@ -38,6 +38,7 @@ $keycap-height: 45px;
     justify-content: center;
     position: relative;
     height: $keycap-height;
+    min-height: 45px;
     background-color: $color-base-keycap;
     background-image: linear-gradient(
       to bottom right,
@@ -53,20 +54,25 @@ $keycap-height: 45px;
     color: $text-color;
     white-space: nowrap;
     &:hover {
-      box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1)
+      box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
     }
     &:active {
-      box-shadow: inset 3px 3px 5px rgba(0,0,0,0.2)
+      box-shadow: inset 4px 4px 5px rgba(0, 0, 0, 0.4);
     }
   }
+
   .pressed {
-    background-color: $color-dark-modifier-keycap;
+    background-image: linear-gradient(
+      to bottom right,
+      $color-dark-base-keycap,
+      $color-dark-modifier-keycap
+    );
   }
   .blank {
     opacity: 0;
   }
   .short {
-     height: $keycap-height / 2;
+    height: $keycap-height / 2;
   }
   /* Keycap sizes */
   /* 1.25u key */
@@ -108,7 +114,7 @@ $keycap-height: 45px;
   .size-6-25u {
     grid-column: span 25;
   }
-  
+
   .size-7-25u {
     grid-column: span 30;
   }
@@ -145,6 +151,20 @@ $keycap-height: 45px;
       $color-dark-escape-keycap
     );
   }
+  .selected {
+    background-image: linear-gradient(
+      to bottom right,
+      lighten($color-dark-base-keycap, 30%),
+      lighten($color-dark-modifier-keycap, 30%)
+    );
+    &.escape {
+      background-color: lighten($color-escape-keycap, 15%);
+      background-image: linear-gradient(
+        to bottom right,
+        lighten($color-escape-keycap, 15%),
+        lighten($color-dark-escape-keycap, 15%)
+      );
+      color: #222;
+    }
+  }
 }
-
-
