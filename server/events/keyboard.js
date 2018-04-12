@@ -25,6 +25,7 @@ App.on("updateKeyboardKey", ({ id, key }) => {
 
 App.on("triggerKeyboardAction", ({ simulatorId, id, key, meta }) => {
   const keyboard = App.keyboards.find(k => k.id === id);
+  if (!keyboard) return;
   const keyObj = keyboard.keys.find(
     k =>
       k.key.toLowerCase() === key.toLowerCase() &&
