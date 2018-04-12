@@ -20,6 +20,9 @@ export const KeyboardMutations = {
   },
   updateKeyboardKey(root, args, context) {
     App.handleEvent(args, "updateKeyboardKey", context);
+  },
+  triggerKeyboardAction(root, args, context) {
+    App.handleEvent(args, "triggerKeyboardAction", context);
   }
 };
 

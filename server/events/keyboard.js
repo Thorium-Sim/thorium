@@ -22,3 +22,22 @@ App.on("updateKeyboardKey", ({ id, key }) => {
   keyboard && keyboard.updateKey(key);
   pubsub.publish("keyboardUpdate", App.keyboards);
 });
+
+App.on("triggerKeyboardAction", ({ simulatorId, id, key, meta }) => {
+  const keyboard = App.keyboards.find(k => k.id === id);
+  const keyObj = keyboard.keys.find(
+    k =>
+      k.key.toLowerCase() === key.toLowerCase() &&
+      JSON.stringify(meta.sort()) === JSON.stringify(k.meta.sort())
+  );
+  if (keyObj) {
+    keyObj.actions.forEach(({ event, args, delay = 0 }) => {
+      setTimeout(() => {
+        App.handleEvent(
+          Object.assign({ simulatorId }, JSON.parse(args)),
+          event
+        );
+      }, delay);
+    });
+  }
+});

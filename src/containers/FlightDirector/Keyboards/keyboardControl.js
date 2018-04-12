@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from "react";
-import { Row, Col, Card, FormGroup, Label } from "reactstrap";
+import { Row, Col, Card } from "reactstrap";
 import FontAwesome from "react-fontawesome";
-import { withApollo, Mutation } from "react-apollo";
+import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import { keys } from "../../../components/views/Widgets/keyboard";
 import EventPicker from "../MissionConfig/EventPicker";
+import MacroConfig from "./macroConfig";
 import { macroNames } from "../MissionConfig/PrintMission";
-import * as Macros from "../../../components/macros";
 
 const Key = ({
   label,
@@ -123,6 +123,27 @@ class KeyboardControl extends Component {
       }
     });
   };
+  updateAction = (action, updateKey) => {
+    const { keyboard: { id } } = this.props;
+    const { selectedKey, meta } = this.state;
+    const key = this.getKey();
+    const { actions = [] } = key;
+    updateKey({
+      variables: {
+        id,
+        key: selectedKey,
+        meta,
+        actions: actions
+          .map(a => {
+            let returnVal = a;
+            if (a.id === action.id) returnVal = action;
+            const { __typename, ...rest } = returnVal;
+            return rest;
+          })
+          .filter(a => a.id !== action)
+      }
+    });
+  };
   render() {
     const { selectedKey, meta, selectedAction } = this.state;
     const selectedKeyObj = this.getKey();
@@ -156,7 +177,7 @@ class KeyboardControl extends Component {
                   <Col sm={6}>
                     <Card className="scroll">
                       {selectedKeyObj &&
-                        selectedKeyObj.actions.map(e => {
+                        (selectedKeyObj.actions || []).map(e => {
                           return (
                             <li
                               key={e.id}
@@ -186,41 +207,13 @@ class KeyboardControl extends Component {
                     </Card>
                   </Col>
                   <Col sm={6}>
-                    {(() => {
-                      const { client } = this.props;
-                      if (!selectedAction) return null;
-                      const action = selectedKeyObj.actions.find(
-                        a => a.id === selectedAction
-                      );
-                      if (!action) return null;
-                      const args = JSON.parse(action.args);
-
-                      const EventMacro =
-                        Macros[action.event] ||
-                        (() => {
-                          return null;
-                        });
-                      return (
-                        <Row>
-                          <Col sm="12">
-                            <FormGroup>
-                              <Label>Item Event</Label>
-                              <EventPicker
-                                event={action.event}
-                                handleChange={() => {}}
-                              />
-                            </FormGroup>
-                            {EventMacro && (
-                              <EventMacro
-                                updateArgs={() => {}}
-                                args={args || {}}
-                                client={client}
-                              />
-                            )}
-                          </Col>
-                        </Row>
-                      );
-                    })()}
+                    <MacroConfig
+                      selectedAction={selectedAction}
+                      selectedKey={selectedKeyObj}
+                      updateAction={action =>
+                        this.updateAction(action, updateKey)
+                      }
+                    />
                   </Col>
                 </Row>
               </Fragment>
@@ -231,4 +224,4 @@ class KeyboardControl extends Component {
     );
   }
 }
-export default withApollo(KeyboardControl);
+export default KeyboardControl;

@@ -177,6 +177,20 @@ export const ClientTypes = {
           ]
         };
       }
+      if (
+        rootValue.station &&
+        rootValue.station.match(/keyboard:.{8}-.{4}-.{4}-.{4}-.{12}/gi)
+      ) {
+        return {
+          name: rootValue.station,
+          cards: [
+            {
+              name: "Keyboard",
+              component: "Keyboard"
+            }
+          ]
+        };
+      }
       const simulator = App.simulators.find(
         s => s.id === rootValue.simulatorId
       );
