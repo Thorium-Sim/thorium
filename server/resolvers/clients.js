@@ -191,6 +191,17 @@ export const ClientTypes = {
           ]
         };
       }
+      if (rootValue.station === "Sound") {
+        return {
+          name: "Sound",
+          cards: [
+            {
+              name: "SoundPlayer",
+              component: "SoundPlayer"
+            }
+          ]
+        };
+      }
       const simulator = App.simulators.find(
         s => s.id === rootValue.simulatorId
       );

@@ -10,9 +10,13 @@ if (!window.audioContext) {
 }
 
 function copyToChannel(destination, source, channelNumber) {
-  var nowBuffering = destination.getChannelData(channelNumber);
-  for (let i = 0; i < source.length; i++) {
-    nowBuffering[i] = source[i];
+  try {
+    const nowBuffering = destination.getChannelData(channelNumber);
+    for (let i = 0; i < source.length; i++) {
+      nowBuffering[i] = source[i];
+    }
+  } catch (error) {
+    console.error(error);
   }
   return destination;
 }

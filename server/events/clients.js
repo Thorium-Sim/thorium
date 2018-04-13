@@ -4,6 +4,13 @@ import Sound from "../classes/sound";
 import Viewscreen from "../classes/viewscreen";
 import { pubsub } from "../helpers/subscriptionManager.js";
 
+function randomFromList(list) {
+  if (!list) return;
+  const length = list.length;
+  const index = Math.floor(Math.random() * length);
+  return list[index];
+}
+
 App.on("clientConnect", ({ client }) => {
   const clientObj = App.clients.find(c => c.id === client);
   if (clientObj) {
@@ -125,15 +132,22 @@ App.on("setClientHypercard", ({ clientId, simulatorId, component }) => {
   pubsub.publish("clientChanged", App.clients);
 });
 App.on("playSound", ({ sound, station, simulatorId, clientId }) => {
-  const stationObj = station || "all";
-  const clients = App.clients
-    .filter(
-      c =>
-        (c.simulatorId === simulatorId &&
-          (c.station === stationObj || stationObj === "all")) ||
-        c.id === clientId
-    )
-    .map(c => c.id);
+  let clients;
+  let stationObj = station || "all";
+  console.log(station, stationObj, simulatorId, clientId);
+  if (station === "random") {
+    const sim = App.simulators.find(s => s.id === simulatorId);
+    if (sim) {
+      stationObj = randomFromList(sim.stations).name;
+    }
+  }
+  clients = App.clients.filter(
+    c =>
+      (c.simulatorId === simulatorId &&
+        (c.station === stationObj || stationObj === "all")) ||
+      c.id === clientId
+  );
+  clients = clients.map(c => c.id);
   const soundObj = new Sound(sound);
   soundObj.clients = soundObj.clients.concat(clients);
   pubsub.publish("soundSub", soundObj);

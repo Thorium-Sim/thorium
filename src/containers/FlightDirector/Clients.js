@@ -236,6 +236,7 @@ class Clients extends Component {
                             )}
                             <option disabled>──────────</option>
                             <option value={"Viewscreen"}>Viewscreen</option>
+                            <option value={"Sound"}>Sound</option>
                             <option value={"Blackout"}>Blackout</option>
                             <Query
                               query={gql`

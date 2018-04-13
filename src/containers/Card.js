@@ -118,6 +118,9 @@ export default class CardFrame extends Component {
         />
       );
     }
+    if (station.name === "Sound") {
+      return <div className="keyboard-holder">Sound Player</div>;
+    }
     return (
       <LayoutComponent
         clientObj={client}
