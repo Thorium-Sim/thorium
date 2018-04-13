@@ -43,7 +43,7 @@
     "apollo-cache-inmemory": "^1.1.12",
     "apollo-client": "^2.2.8",
     "apollo-link-http": "^1.5.4",
-    "apollo-link-ws": "^1.0.7",
+    "apollo-link-ws": "^1.0.8",
     "appdirectory": "^0.1.0",
     "body-parser": "^1.18.2",
     "bodymovin": "^4.13.0",
