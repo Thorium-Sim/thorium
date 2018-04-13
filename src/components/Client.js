@@ -328,6 +328,18 @@ const SOUND_SUB = gql`
   }
 `;
 
+const CANCEL_SOUNDS = gql`
+  subscription CancelSounds($clientId: ID!) {
+    cancelSound(clientId: $clientId)
+  }
+`;
+
+const CANCEL_ALL_SOUNDS = gql`
+  subscription CancelSounds($clientId: ID!) {
+    cancelAllSounds(clientId: $clientId)
+  }
+`;
+
 class ClientView extends Component {
   constructor(props) {
     super(props);
@@ -481,6 +493,31 @@ class ClientView extends Component {
         },
         error(err) {
           console.error("Error playing sound", err);
+        }
+      });
+    this.cancelSoundsSub = this.props.client
+      .subscribe({
+        query: CANCEL_SOUNDS,
+        variables: {
+          clientId: this.props.clientId
+        }
+      })
+      .subscribe({
+        next: ({ data: { cancelSound } }) => {
+          console.log(cancelSound);
+          this.props.removeSound(cancelSound);
+        }
+      });
+    this.cancelAllSoundsSub = this.props.client
+      .subscribe({
+        query: CANCEL_ALL_SOUNDS,
+        variables: {
+          clientId: this.props.clientId
+        }
+      })
+      .subscribe({
+        next: () => {
+          this.props.removeAllSounds();
         }
       });
   }

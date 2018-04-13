@@ -134,7 +134,6 @@ App.on("setClientHypercard", ({ clientId, simulatorId, component }) => {
 App.on("playSound", ({ sound, station, simulatorId, clientId }) => {
   let clients;
   let stationObj = station || "all";
-  console.log(station, stationObj, simulatorId, clientId);
   if (station === "random") {
     const sim = App.simulators.find(s => s.id === simulatorId);
     if (sim) {
@@ -150,5 +149,35 @@ App.on("playSound", ({ sound, station, simulatorId, clientId }) => {
   clients = clients.map(c => c.id);
   const soundObj = new Sound(sound);
   soundObj.clients = soundObj.clients.concat(clients);
+  if (soundObj.looping) {
+    // Check it with the sound list if it is looping
+    const loopingSound = App.sounds.find(s => {
+      // Check to see if the sound exists in the list
+      return (
+        s.looping &&
+        JSON.stringify(s.clients.sort()) ===
+          JSON.stringify(soundObj.clients.sort()) &&
+        s.asset === soundObj.asset &&
+        s.volume === soundObj.volume &&
+        s.playbackRate === soundObj.playbackRate &&
+        JSON.stringify(s.channel) === JSON.stringify(soundObj.channel)
+      );
+    });
+    if (loopingSound) {
+      App.sounds = App.sounds.filter(s => s.id !== loopingSound.id);
+      return pubsub.publish("cancelSound", loopingSound);
+    }
+    App.sounds.push(soundObj);
+  }
   pubsub.publish("soundSub", soundObj);
+});
+App.on("stopAllSounds", ({ simulatorId }) => {
+  const clients = App.clients.filter(s => s.simulatorId === simulatorId);
+  // Remove all of the sounds that have one of the clients
+  App.sounds = App.sounds.filter(s => {
+    const client = clients.find(c => s.clients.indexOf(c) > -1);
+    if (client) return true;
+    return false;
+  });
+  pubsub.publish("cancelAllSounds", clients);
 });

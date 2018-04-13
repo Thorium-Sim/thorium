@@ -85,6 +85,9 @@ export const ClientMutations = {
   },
   playSound(root, args, context) {
     App.handleEvent(args, "playSound", context);
+  },
+  stopAllSounds(root, args, context) {
+    App.handleEvent(args, "stopAllSounds", context);
   }
 };
 
@@ -134,13 +137,27 @@ export const ClientSubscriptions = {
     subscribe: withFilter(
       () => pubsub.asyncIterator("soundSub"),
       (rootValue, { clientId }) => {
-        console.log(
-          rootValue,
-          clientId,
-          rootValue.clients.indexOf(clientId) > -1
-        );
         if (rootValue.clients.indexOf(clientId) > -1) return true;
         return false;
+      }
+    )
+  },
+  cancelSound: {
+    resolve: payload => payload.id,
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("cancelSound"),
+      (rootValue, { clientId }) => {
+        if (rootValue.clients.indexOf(clientId) > -1) return true;
+        return false;
+      }
+    )
+  },
+  cancelAllSounds: {
+    resolve: payload => payload,
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("cancelAllSounds"),
+      (rootValue, { clientId }) => {
+        return !!rootValue.find(c => c.id === clientId);
       }
     )
   }

@@ -8,7 +8,9 @@ import "./style.css";
 class Keyboard extends Component {
   constructor(props) {
     super(props);
-    this.keydown = ({ keyCode, shiftKey, metaKey, altKey, ctrlKey }) => {
+    this.keydown = e => {
+      e.preventDefault();
+      const { keyCode, shiftKey, metaKey, altKey, ctrlKey } = e;
       const key = keycode(keyCode);
       const meta = [];
       if (shiftKey) meta.push("shift");

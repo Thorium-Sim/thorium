@@ -63,7 +63,7 @@ function downMixBuffer(buffer, channel) {
 }
 
 function playSound(opts) {
-  removeSound(opts.id);
+  removeSound(opts.id, true);
   opts.id = opts.id || uuid.v4();
   const volume = opts.muted ? 0 : opts.volume || 1;
   const playbackRate = opts.paused ? 0 : opts.playbackRate || 1;
@@ -112,17 +112,23 @@ function playSound(opts) {
   }
 }
 
-function removeSound(id) {
+function removeSound(id, force) {
   const sound = sounds[id];
   if (sound) {
-    sound.source.stop();
-    delete sounds[id];
+    if (!sound.looping || force) {
+      sound.source.stop();
+      delete sounds[id];
+    } else {
+      sound.looping = false;
+      sound.source.loop = false;
+      sound.source.onended = () => removeSound(id, true);
+    }
   }
 }
 
 function removeAllSounds() {
   Object.keys(sounds).forEach(key => {
-    removeSound(key);
+    removeSound(key, true);
   });
 }
 /*componentDidUpdate(prevProps) {

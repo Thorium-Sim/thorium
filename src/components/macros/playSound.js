@@ -99,7 +99,6 @@ export default ({ updateArgs, args }) => {
         <Label>Looping</Label>
         <Input
           type="checkbox"
-          disabled
           checked={sound.looping}
           onChange={e => updateSound("looping", e.target.checked)}
         />

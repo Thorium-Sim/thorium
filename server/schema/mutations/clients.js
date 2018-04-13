@@ -19,4 +19,7 @@ export default `
   
   #Macro: Play a sound
   playSound(sound: SoundInput!, station: String, simulatorId: ID, clientId: String):String
+  
+  #Macro: Cancel All Sounds
+  stopAllSounds(simulatorId:ID!):String
 `;
