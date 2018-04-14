@@ -2,6 +2,7 @@ import uuid from "uuid";
 export default class Sound {
   constructor(params) {
     this.id = params.id || uuid.v4();
+    this.class = "Sound";
     this.clients = params.clients || [];
     this.asset = params.asset || "";
     this.volume = params.volume || 1;

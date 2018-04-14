@@ -16,7 +16,8 @@ import {
   Welcome,
   ClientsLobby,
   SoftwarePanels,
-  SurveyForms
+  SurveyForms,
+  Keyboards
 } from "./FlightDirector";
 
 const history = createHistory();
@@ -87,6 +88,10 @@ export default class App extends Component {
           <Route
             path="/surveyForms"
             render={props => <SurveyForms {...props} history={history} />}
+          />
+          <Route
+            path="/keyboards"
+            render={props => <Keyboards {...props} history={history} />}
           />
           <Route path="/test/:component" component={TestCard} />
           <Route path="*" component={NoMatch} />

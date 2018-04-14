@@ -452,7 +452,7 @@ export default class TimelineConfig extends Component {
                   id: "step"
                 })}
                 className={`${
-                  "step" === this.state.selectedTimelineItem ? "selected" : ""
+                  this.state.selectedTimelineItem === "step" ? "selected" : ""
                 } list-group-item`}
               >
                 Edit Step

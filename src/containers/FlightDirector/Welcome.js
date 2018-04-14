@@ -200,6 +200,11 @@ class Welcome extends Component {
               Survey Form Config
             </Button>
           </Col>
+          <Col>
+            <Button color="warning" block tag={Link} to="/keyboards">
+              Keyboard Config
+            </Button>
+          </Col>
         </Row>
         <Modal isOpen={this.state.issuesOpen} toggle={this.toggleIssueTracker}>
           <ModalHeader toggle={this.toggleIssueTracker}>

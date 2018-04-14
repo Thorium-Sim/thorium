@@ -38,3 +38,4 @@ export { default as Library } from "./library";
 export { default as SoftwarePanel } from "./softwarePanels";
 export { default as SurveyForm } from "./surveyform.js";
 export { default as Objective } from "./objective.js";
+export { default as Keyboard } from "./keyboard.js";

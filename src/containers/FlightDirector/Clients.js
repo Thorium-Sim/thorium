@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Col, Row, Container } from "reactstrap";
 import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo, Query } from "react-apollo";
 import moment from "moment";
 import FontAwesome from "react-fontawesome";
 const FLIGHTS_SUB = gql`
@@ -234,8 +234,42 @@ class Clients extends Component {
                             ) : (
                               <option disabled>No Stations</option>
                             )}
+                            <option disabled>──────────</option>
                             <option value={"Viewscreen"}>Viewscreen</option>
+                            <option value={"Sound"}>Sound</option>
                             <option value={"Blackout"}>Blackout</option>
+                            <Query
+                              query={gql`
+                                query Keyboards {
+                                  keyboard {
+                                    id
+                                    name
+                                  }
+                                }
+                              `}
+                            >
+                              {({ loading, data: { keyboard } }) => {
+                                if (loading || keyboard.length === 0) {
+                                  return null;
+                                }
+                                return (
+                                  <Fragment>
+                                    <option disabled>──────────</option>
+                                    <optgroup label="Keyboards">
+                                      {keyboard.map(k => (
+                                        <option
+                                          key={k.id}
+                                          value={`keyboard:${k.id}`}
+                                        >
+                                          {k.name}
+                                        </option>
+                                      ))}
+                                      }}
+                                    </optgroup>
+                                  </Fragment>
+                                );
+                              }}
+                            </Query>
                           </select>
                         </td>
                       </tr>

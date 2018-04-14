@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Layouts from "../components/layouts";
+import Keyboard from "../components/views/Keyboard";
 
 const Blackout = () => {
   return (
@@ -108,6 +109,17 @@ export default class CardFrame extends Component {
     }
     if (client.offlineState === "blackout" || station.name === "Blackout") {
       return <Blackout />;
+    }
+    if (station.name.match(/keyboard:.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
+      return (
+        <Keyboard
+          keyboard={station.name.replace("keyboard:", "")}
+          simulator={simulator}
+        />
+      );
+    }
+    if (station.name === "Sound") {
+      return <div className="keyboard-holder">Sound Player</div>;
     }
     return (
       <LayoutComponent

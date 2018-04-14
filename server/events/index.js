@@ -42,3 +42,4 @@ import "./softwarePanels";
 import "./actions";
 import "./surveyform.js";
 import "./objective.js";
+import "./keyboard.js";
