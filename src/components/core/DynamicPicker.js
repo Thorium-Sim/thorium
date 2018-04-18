@@ -48,7 +48,10 @@ class DynamicPicker extends Component {
     }
   };
   onChange = value => {
-    const { data: { coreLayouts } } = this.props;
+    console.log("core layout changed!");
+    const {
+      data: { coreLayouts }
+    } = this.props;
     if (value === "new") {
       return this.add();
     }
@@ -57,7 +60,9 @@ class DynamicPicker extends Component {
     );
   };
   render() {
-    const { data: { loading, coreLayouts } } = this.props;
+    const {
+      data: { loading, coreLayouts }
+    } = this.props;
     if (loading || !coreLayouts) return null;
     return (
       <select
