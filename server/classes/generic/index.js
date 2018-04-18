@@ -1,53 +1,27 @@
 import uuid from "uuid";
-import App from "../app";
+import App from "../../app";
 import {
-  partsList,
   defaultOptionalSteps,
   damagePositions,
   randomFromList
-} from "../damageReports/constants";
-import * as damageStepFunctions from "../damageReports/functions";
+} from "./damageReports/constants";
+import * as damageStepFunctions from "./damageReports/functions";
+import processReport from "./processReport";
 
-export function HeatMixin(inheritClass) {
-  return class Heat extends inheritClass {
-    constructor(params) {
-      super(params);
-      this.heat = params.heat || this.heat || 0;
-      this.heatRate = params.heatRate || this.heatRate || 1;
-      this.coolant = params.coolant || this.coolant || 1;
-      this.cooling = params.cooling || false;
-    }
-    setHeat(heat) {
-      this.heat = Math.min(1, Math.max(0, heat));
-    }
-    setCoolant(coolant) {
-      this.coolant = Math.min(1, Math.max(0, coolant));
-    }
-    setRate(rate) {
-      this.heatRate = rate;
-    }
-    applyCoolant() {
-      this.coolant = this.coolant - 0.037;
-      this.heat = this.heat - 0.89;
-    }
-    cool(state = true) {
-      this.cooling = state;
-    }
-  };
-}
-
-export class DamageStep {
+class Damage {
   constructor(params = {}) {
-    this.id = params.id || uuid.v4();
-    this.name = params.name || "generic";
-    this.args = params.args || {};
-  }
-  update({ name, args }) {
-    if (name) this.name = name;
-    if (args) this.args = Object.assign({}, this.args, args);
+    this.damaged = params.damaged || false;
+    this.report = params.report || null;
+    this.reportSteps = params.reportSteps || null;
+    this.requested = params.requested || false;
+    this.currentStep = params.currentStep || 0;
+    this.reactivationCode = params.reactivationCode || null;
+    this.reactivationRequester = params.reactivationRequester || null;
+    this.neededReactivationCode = params.neededReactivationCode || null;
+    this.exocompParts = params.exocompParts || [];
+    this.validate = params.validate || false;
   }
 }
-
 export class System {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
@@ -61,19 +35,7 @@ export class System {
           power: 5,
           powerLevels: params.extra ? [] : [5]
         };
-    this.damage = params.damage
-      ? Object.assign({}, params.damage)
-      : {
-          damaged: false,
-          report: null,
-          requested: false,
-          currentStep: 0,
-          reactivationCode: null,
-          reactivationRequester: null,
-          neededReactivationCode: null,
-          exocompParts: [],
-          validate: false
-        };
+    this.damage = new Damage(params.damage || {});
     this.extra = params.extra || false;
     this.locations = params.locations || [];
     this.requiredDamageSteps = [];
@@ -108,7 +70,7 @@ export class System {
   }
   break(report) {
     this.damage.damaged = true;
-    this.damage.report = this.processReport(report);
+    this.damage.report = processReport(report, this);
     this.damage.requested = false;
     this.damage.currentStep = 0;
   }
@@ -298,24 +260,32 @@ export class System {
     const deck = room && App.decks.find(d => d.id === room.deckId);
     const location = room
       ? `${room.name}, Deck ${deck.number}`
-      : deck ? `Deck ${deck.number}` : `None`;
+      : deck
+        ? `Deck ${deck.number}`
+        : `None`;
     // First create our context object
     const context = Object.assign(
       { damageSteps, simulator: sim, stations, deck, room, location, crew },
       this
     );
-    const damageReport = damageSteps.reduce((prev, { name, args }, index) => {
-      return `${prev}
+    const damageReport = damageSteps
+      .map((d, index) => ({
+        ...d,
+        report: damageStepFunctions[d.name](d.args || {}, context, index)
+      }))
+      .filter(f => f.report)
+      .reduce((prev, { report }, index) => {
+        return `${prev}
 Step ${index + 1}:
-${damageStepFunctions[name](args || {}, context, index)}
+${report}
 
 `;
-    }, "");
+      }, "");
     return damageReport;
   }
 
   damageReport(report) {
-    this.damage.report = this.processReport(report);
+    this.damage.report = processReport(report, this);
     this.damage.requested = false;
   }
   repair() {
@@ -344,99 +314,4 @@ ${damageStepFunctions[name](args || {}, context, index)}
     // For now, lets repair the station when it is accepted
     if (response) this.repair();
   }
-  processReport(report) {
-    this.damage.neededReactivationCode = null;
-    if (!report) return;
-    let returnReport = report;
-    // #PART
-    this.damage.exocompParts = [];
-    const partMatches = report.match(/#PART/gi) || [];
-    partMatches.forEach(m => {
-      const index = returnReport.indexOf(m);
-      returnReport = returnReport.replace(m, "");
-      const part = randomFromList(partsList);
-      this.damage.exocompParts.push(part);
-      returnReport = splice(returnReport, index, 0, part);
-    });
-
-    // #COLOR
-    const colorMatches = report.match(/#COLOR/gi) || [];
-    colorMatches.forEach(m => {
-      const index = returnReport.indexOf(m);
-      returnReport = returnReport.replace(m, "");
-      returnReport = splice(
-        returnReport,
-        index,
-        0,
-        randomFromList(["red", "blue", "green", "yellow"])
-      );
-    });
-
-    // #[1 - 2]
-    const matches =
-      returnReport.match(/#\[ ?([0-9]+) ?- ?([0-9]+) ?\]/gi) || [];
-    matches.forEach(m => {
-      const index = returnReport.indexOf(m);
-      returnReport = returnReport.replace(m, "");
-      const numbers = m.replace(/[ [\]#]/gi, "").split("-");
-      const num = Math.round(Math.random() * numbers[1] + numbers[0]);
-      returnReport = splice(returnReport, index, 0, num);
-    });
-
-    // #["String1", "String2", "String3", etc.]
-    const stringMatches =
-      returnReport.match(/#\[ ?("|')[^\]]*("|') ?]/gi) || [];
-    stringMatches.forEach(m => {
-      const index = returnReport.indexOf(m);
-      returnReport = returnReport.replace(m, "");
-      const strings = m.match(/"(.*?)"/gi);
-      returnReport = splice(
-        returnReport,
-        index,
-        0,
-        randomFromList(strings).replace(/"/gi, "")
-      );
-    });
-
-    // #NUMBER
-    const numberMatches = returnReport.match(/#NUMBER/gi) || [];
-    const num = Math.round(Math.random() * 12 + 1);
-    numberMatches.forEach(m => {
-      const index = returnReport.indexOf(m);
-      returnReport = returnReport.replace(m, "");
-      returnReport = splice(returnReport, index, 0, num);
-    });
-
-    // #DECK
-    const deckMatches = returnReport.match(/#DECK/gi) || [];
-    const deck = Math.round(Math.random() * 14 + 1);
-    deckMatches.forEach(m => {
-      const index = returnReport.indexOf(m);
-      returnReport = returnReport.replace(m, "");
-      returnReport = splice(returnReport, index, 0, deck);
-    });
-
-    // #REACTIVATIONCODE
-    if (report.indexOf("#REACTIVATIONCODE") > -1) {
-      const reactivationCode = Array(8)
-        .fill("")
-        .map(() =>
-          randomFromList(["¥", "Ω", "∏", "-", "§", "∆", "£", "∑", "∂"])
-        )
-        .join("");
-      this.damage.neededReactivationCode = reactivationCode;
-      returnReport = returnReport.replace(
-        /#REACTIVATIONCODE/gi,
-        reactivationCode
-      );
-    }
-
-    return returnReport;
-  }
-}
-
-function splice(str, start, delCount, newSubStr) {
-  return (
-    str.slice(0, start) + newSubStr + str.slice(start + Math.abs(delCount))
-  );
 }

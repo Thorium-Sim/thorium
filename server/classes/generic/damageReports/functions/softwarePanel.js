@@ -1,4 +1,4 @@
-import App from "../../app";
+import App from "../../../../app";
 import { randomFromList } from "../constants";
 const allowedComponents = {
   CableInput: ["Connect a #COLOR cable from #LABEL to #CABLE2."],
@@ -69,6 +69,7 @@ export default ({ preamble }, { name, displayName = name, simulatorId }) => {
       );
     })
     .join("\n");
+  console.log("Returning!", messages);
   return `${preamble ||
     `Panel maintenance must be performed to repair the ${displayName} system.`} Go to the ${
     panel.name
