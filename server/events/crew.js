@@ -5,7 +5,10 @@ import firstNames from "../crew/firstNames.json";
 import lastNames from "../crew/lastNames.json";
 import positions from "../crew/positions.json";
 import ranks from "../crew/ranks.json";
-import { randomFromList, damagePositions } from "../damageReports/constants";
+import {
+  randomFromList,
+  damagePositions
+} from "../classes/generic/damageReports/constants";
 
 App.on("addCrewmember", ({ crew }) => {
   App.crew.push(new Classes.Crew(crew));
