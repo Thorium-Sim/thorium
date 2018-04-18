@@ -48,7 +48,6 @@ class DynamicPicker extends Component {
     }
   };
   onChange = value => {
-    console.log("core layout changed!");
     const {
       data: { coreLayouts }
     } = this.props;
