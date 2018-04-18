@@ -1,4 +1,4 @@
-import App from "../../app";
+import App from "../../../../app";
 import { randomFromList } from "../constants";
 export default (
   { inventory, room },
