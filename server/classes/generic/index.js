@@ -8,6 +8,20 @@ import {
 import * as damageStepFunctions from "./damageReports/functions";
 import processReport from "./processReport";
 
+class Damage {
+  constructor(params = {}) {
+    this.damaged = params.damaged || false;
+    this.report = params.report || null;
+    this.reportSteps = params.reportSteps || null;
+    this.requested = params.requested || false;
+    this.currentStep = params.currentStep || 0;
+    this.reactivationCode = params.reactivationCode || null;
+    this.reactivationRequester = params.reactivationRequester || null;
+    this.neededReactivationCode = params.neededReactivationCode || null;
+    this.exocompParts = params.exocompParts || [];
+    this.validate = params.validate || false;
+  }
+}
 export class System {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
@@ -21,20 +35,7 @@ export class System {
           power: 5,
           powerLevels: params.extra ? [] : [5]
         };
-    this.damage = params.damage
-      ? Object.assign({}, params.damage)
-      : {
-          damaged: false,
-          report: null,
-          reportSteps: null,
-          requested: false,
-          currentStep: 0,
-          reactivationCode: null,
-          reactivationRequester: null,
-          neededReactivationCode: null,
-          exocompParts: [],
-          validate: false
-        };
+    this.damage = new Damage(params.damage || {});
     this.extra = params.extra || false;
     this.locations = params.locations || [];
     this.requiredDamageSteps = [];

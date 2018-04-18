@@ -320,9 +320,9 @@ App.on("validateDamageStep", ({ id }) => {
   // The step is good. Increase the current step.
   let sys = App.systems.find(s => s.id === id);
   const sim = App.simulators.find(s => s.id === sys.simulatorId);
-  console.log(sys.damage.currentStep);
+  console.log(sys.name, sys.damage.currentStep);
   sys.updateCurrentStep(sys.damage.currentStep + 1);
-  console.log(sys.damage.currentStep);
+  console.log(sys.name, sys.damage.currentStep);
   sys.damage.validate = false;
   // Send an update to every station with the
   // damage step widget and card
