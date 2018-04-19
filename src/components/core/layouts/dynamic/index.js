@@ -122,7 +122,11 @@ class Dynamic extends Component {
               createNode={e => e}
             >
               {(() => {
-                if (id === "Picker") return <Picker />;
+                if (id === "Picker") {
+                  return (
+                    <Picker components={mosaicComponents(this.props.mosaic)} />
+                  );
+                }
                 const Comp = Cores[id];
                 return <Comp {...this.props} />;
               })()}

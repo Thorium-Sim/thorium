@@ -16,6 +16,7 @@ class Picker extends React.PureComponent {
     );
   };
   render() {
+    const { components } = this.props;
     return (
       <div className="core-picker">
         <h3>Pick a core:</h3>
@@ -25,7 +26,11 @@ class Picker extends React.PureComponent {
               <strong>{c.name}</strong>
               {c.components.map(n => (
                 <div key={n}>
-                  <Button size="sm" onClick={() => this.update(n)}>
+                  <Button
+                    disabled={components.indexOf(n) > -1}
+                    size="sm"
+                    onClick={() => this.update(n)}
+                  >
                     {titleCase(n.replace("Core", ""))}
                   </Button>
                 </div>
