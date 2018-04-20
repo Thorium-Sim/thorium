@@ -73,7 +73,7 @@
     "node-sass-chokidar": "1.2.2",
     "npm-run-all": "^4.1.2",
     "prop-types": "^15.6.1",
-    "random-words": "0.0.1",
+    "random-words": "1.1.0",
     "react": "^16.3.2",
     "react-addons-transition-group": "^15.6.2",
     "react-animated-number": "^0.4.4",
