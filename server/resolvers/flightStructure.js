@@ -4,6 +4,9 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
 export const FlightStructureQueries = {
+  events: () => {
+    return Object.keys(App._events);
+  },
   simulators: (root, { template, id }) => {
     let returnVal = App.simulators;
     if (id) returnVal = returnVal.filter(s => s.id === id);
