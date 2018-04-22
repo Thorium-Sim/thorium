@@ -71,9 +71,13 @@ class ProbeNetwork extends Component {
     const probes = this.props.data.probes[0];
     const { processedData, probes: network } = probes;
     return (
-      <Container className="probe-network" style={{ height: "100%" }}>
+      <Container fluid className="probe-network" style={{ height: "100%" }}>
         <Row style={{ height: "100%" }}>
-          <Col sm={8} style={{ height: "100%" }} className="network-grid">
+          <Col
+            sm={{ size: 6, offset: 1 }}
+            style={{ height: "100%" }}
+            className="network-grid"
+          >
             <Measure
               bounds
               onResize={contentRect => {
@@ -92,7 +96,7 @@ class ProbeNetwork extends Component {
               )}
             </Measure>
           </Col>
-          <Col sm={{ size: 3, offset: 1 }}>
+          <Col sm={{ size: 3, offset: 2 }}>
             <h3>Processed Data</h3>
             <Card className="processedData">
               <CardBody>
