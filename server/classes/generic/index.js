@@ -7,6 +7,7 @@ import {
 } from "./damageReports/constants";
 import * as damageStepFunctions from "./damageReports/functions";
 import processReport from "./processReport";
+import DamageStep from "./damageStep";
 
 class Damage {
   constructor(params = {}) {
