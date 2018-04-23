@@ -35,6 +35,9 @@ export default class SoftwarePanel {
     this.class = "SoftwarePanel";
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || "Panel";
+    this.cables = [];
+    this.components = [];
+    this.connections = [];
     this.update(params);
   }
   update(panel) {
