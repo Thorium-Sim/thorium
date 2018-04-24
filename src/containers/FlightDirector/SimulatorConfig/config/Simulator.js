@@ -41,7 +41,7 @@ class SimulatorConfigView extends Component {
   _handleChange = e => {
     const variables = {
       id: this.props.selectedSimulator.id,
-      value: e.target.checked !== undefined ? e.target.checked : e.target.value
+      value: e.target.value === "on" ? e.target.checked : e.target.value
     };
     const mutation = ops[e.target.name];
     this.props.client.mutate({
