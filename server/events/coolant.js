@@ -18,7 +18,7 @@ App.on("transferCoolant", ({ coolantId, systemId, which }) => {
 });
 App.on("cancelCoolantTransfer", ({ coolantId }) => {
   const coolant = App.systems.find(s => s.id === coolantId);
-  coolant.cancelTransfer();
+  coolant && coolant.cancelTransfer();
   pubsub.publish(
     "coolantUpdate",
     App.systems.filter(s => s.type === "Coolant")
