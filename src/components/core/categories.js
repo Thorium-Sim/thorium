@@ -21,6 +21,7 @@ const categories = [
       "ShipCore",
       "CargoCore",
       "CrewCore",
+      "ArmoryCore",
       "HeatCore",
       "SelfDestructCore"
     ],
