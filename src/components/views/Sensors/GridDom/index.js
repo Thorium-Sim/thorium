@@ -132,7 +132,10 @@ class GridDom extends Component {
       this.contactTimeout = setTimeout(this.contactLoop, this.interval);
     } else return;
     if (!this.props.data.loading) {
-      const { data: { sensorContacts: contacts }, movement } = this.props;
+      const {
+        data: { sensorContacts: contacts },
+        movement
+      } = this.props;
       this.props.client.writeQuery({
         query: CONTACTS_QUERY,
         data: {
@@ -176,21 +179,22 @@ class GridDom extends Component {
             // Divided by the speed times one second (1000 ms)
             const currentTime = time - c.startTime;
             // Location is a function of the current time and the end time.
+            const endTime = c.endTime || c.startTime + 1000;
             const newLoc = {
               ...location,
               x:
                 location.x +
                 (destination.x - location.x) /
-                  (c.endTime - c.startTime) *
+                  (endTime - c.startTime) *
                   currentTime,
               y:
                 location.y +
                 (destination.y - location.y) /
-                  (c.endTime - c.startTime) *
+                  (endTime - c.startTime) *
                   currentTime,
               z: 0
             };
-            if (distance3d(destination, newLoc) < 0.005) {
+            if (endTime < Date.now()) {
               return {
                 ...c,
                 destination,
@@ -259,6 +263,7 @@ class GridDom extends Component {
   };
   _downMouse(e, id) {
     const self = this;
+    this.downMouseTime = Date.now();
     if (!e.target) return;
     const width = e.target.getBoundingClientRect().width;
     const height = e.target.getBoundingClientRect().height;
@@ -274,8 +279,13 @@ class GridDom extends Component {
         contact.type === "planet" || contact.type === "border" ? 0 : height
     });
     function _upMouse(evt) {
+      const { updateSelectedContacts } = self.props;
       document.removeEventListener("mousemove", self._moveMouse);
       document.removeEventListener("mouseup", _upMouse);
+      const t = Date.now() - self.downMouseTime;
+      if (self.downMouseTime && t < 200) {
+        updateSelectedContacts(contacts.filter(c => c.id === id));
+      }
       if (self.props.askForSpeed) {
         self.setState({
           speedAsking: {
@@ -294,11 +304,14 @@ class GridDom extends Component {
     const { sensorContacts: contacts } = this.props.data;
     const { movingContact, locations } = this.state;
     if (selectedContacts.length > 0) {
-      const contactUpdateData = selectedContacts.map(c => ({
-        id: c,
-        speed,
-        destination: locations[c].destination
-      }));
+      const contactUpdateData = selectedContacts.map(c => {
+        const { __typename, ...destination } = locations[c].destination;
+        return {
+          id: c,
+          speed,
+          destination
+        };
+      });
       const mutation = gql`
         mutation MoveSensorContact($id: ID!, $contacts: [SensorContactInput]!) {
           updateSensorContacts(id: $id, contacts: $contacts)
@@ -513,8 +526,8 @@ class GridDom extends Component {
                     }
                     mouseover={e => {
                       if (
-                        hoverContact &&
-                        locations[contact.id].opacity > 0.25
+                        hoverContact
+                        // && locations[contact.id].opacity > 0.25
                       ) {
                         hoverContact(e);
                       }

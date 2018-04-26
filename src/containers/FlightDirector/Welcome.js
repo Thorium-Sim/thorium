@@ -17,6 +17,7 @@ import { graphql } from "react-apollo";
 import { Link } from "react-router-dom";
 import IssueTracker from "../../components/admin/IssueTracker";
 import semver from "semver";
+import Explosions from "../../helpers/explosions";
 import "./welcome.css";
 
 const FLIGHT_SUB = gql`
@@ -87,6 +88,8 @@ class Welcome extends Component {
     const flights = this.props.data.flights;
     return (
       <Container className="WelcomeView">
+        <Explosions />
+
         <Row>
           <Col sm={12} className="title-row">
             <h1 className="text-center">Thorium</h1>

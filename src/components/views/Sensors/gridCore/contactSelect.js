@@ -18,13 +18,30 @@ const ContactSelect = ({ id, clearSelection, contacts, client }) => {
       variables
     });
   };
+  const destroy = () => {
+    const mutation = gql`
+      mutation DestroySensorContact($id: ID!, $contacts: [ID]) {
+        destroySensorContact(id: $id, contacts: $contacts)
+      }
+    `;
+    const variables = {
+      id,
+      contacts: contacts.map(c => c.id)
+    };
+    client.mutate({
+      mutation,
+      variables
+    });
+    clearSelection();
+  };
   return (
-    <div>
-      <div style={{ position: "relative" }}>
+    <div style={{ height: "calc(100% - 84px)" }}>
+      <div style={{ position: "relative", height: "100%" }}>
         <ContactContextMenu
           closeMenu={clearSelection}
           updateArmyContact={updateContact}
           contact={mainContact}
+          destroy={destroy}
           x={0}
           y={0}
         />

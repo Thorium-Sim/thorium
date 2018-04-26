@@ -64,5 +64,6 @@ type TargetingContact {
   pictureUrl: String
   speed: Float
   quadrant: Int
+  destroyed: Boolean
 }
 `;

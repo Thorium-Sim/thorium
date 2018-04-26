@@ -218,8 +218,10 @@ export default class Sensors extends System {
   }
   destroyContact({ id }) {
     const myContact = this.contacts.find(contact => contact.id === id);
-    myContact.destroyed = true;
-    setTimeout(this.removeContact.bind(this, { id }), 1000);
+    if (myContact) {
+      myContact.destroyed = true;
+      setTimeout(this.removeContact.bind(this, { id }), 1000);
+    }
   }
   nudgeContacts(amount, speed, yaw) {
     this.contacts.forEach(c => c.nudge(amount, speed, yaw));
