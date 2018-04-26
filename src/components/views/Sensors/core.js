@@ -266,7 +266,7 @@ class SensorsCore extends Component {
               }}
             >
               <OutputField
-                style={{ flexGrow: 2 }}
+                style={{ flexGrow: 2, minHeight: "44px" }}
                 alert={sensor.history ? scan && scan.scanning : sensor.scanning}
               >
                 {(() => {
@@ -287,7 +287,7 @@ class SensorsCore extends Component {
                 })()}
               </OutputField>
               <TypingField
-                style={{ flexGrow: 6 }}
+                style={{ flexGrow: 6, minHeight: "44px" }}
                 controlled
                 onChange={e => {
                   this.setState({ dataField: e.target.value });
