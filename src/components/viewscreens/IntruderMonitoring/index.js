@@ -11,7 +11,10 @@ class IntruderMonitoring extends Component {
       <div className="intruder-monitoring">
         <h1>Intruder Monitor</h1>
         <div className="ship-view">
-          <Asset asset="/Ship Views/Left" simulatorId={this.props.simulator.id}>
+          <Asset
+            asset="/Ship Views/Right"
+            simulatorId={this.props.simulator.id}
+          >
             {({ src }) => {
               return (
                 <div

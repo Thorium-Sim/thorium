@@ -4,12 +4,12 @@ import { withApollo } from "react-apollo";
 import { Asset } from "../../../../helpers/assets";
 const assetList = [
   {
-    name: "Mesh",
+    name: "Simulator",
     fullPath: "/3D/Mesh/Simulator",
     folderPath: "/3D/Mesh"
   },
   {
-    name: "Texture",
+    name: "Simulator",
     fullPath: "/3D/Texture/Simulator",
     folderPath: "/3D/Texture"
   },
@@ -21,21 +21,6 @@ const assetList = [
   {
     name: "Top",
     fullPath: "/Ship Views/Top",
-    folderPath: "/Ship Views"
-  },
-  {
-    name: "Front",
-    fullPath: "/Ship Views/Front",
-    folderPath: "/Ship Views"
-  },
-  {
-    name: "Back",
-    fullPath: "/Ship Views/Back",
-    folderPath: "/Ship Views"
-  },
-  {
-    name: "Left",
-    fullPath: "/Ship Views/Left",
     folderPath: "/Ship Views"
   },
   {
@@ -81,6 +66,7 @@ class AssetDropzone extends Component {
   state = {};
   onDrop = evt => {
     const { folderPath, name, sim, update } = this.props;
+    console.log(folderPath, name, sim.id);
     const data = new FormData();
     data.append("simulatorId", sim.id);
     data.append("containerName", name);
