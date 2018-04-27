@@ -17,7 +17,6 @@ import { graphql } from "react-apollo";
 import { Link } from "react-router-dom";
 import IssueTracker from "../../components/admin/IssueTracker";
 import semver from "semver";
-import Explosions from "../../helpers/explosions";
 import "./welcome.css";
 
 const FLIGHT_SUB = gql`

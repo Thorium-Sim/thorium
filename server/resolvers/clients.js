@@ -88,6 +88,9 @@ export const ClientMutations = {
   },
   stopAllSounds(root, args, context) {
     App.handleEvent(args, "stopAllSounds", context);
+  },
+  applyClientSet(root, args, context) {
+    App.handleEvent(args, "applyClientSet", context);
   }
 };
 

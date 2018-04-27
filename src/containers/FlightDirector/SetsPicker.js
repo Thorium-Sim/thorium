@@ -5,28 +5,6 @@ import { graphql, withApollo } from "react-apollo";
 
 import "./setConfig.css";
 
-const ops = {
-  flight: gql`
-    mutation UpdateClient($client: ID!, $id: ID!) {
-      clientSetFlight(client: $client, flightId: $id)
-    }
-  `,
-  simulator: gql`
-    mutation UpdateClient($client: ID!, $id: ID!) {
-      clientSetSimulator(client: $client, simulatorId: $id)
-    }
-  `,
-  station: gql`
-    mutation UpdateClient($client: ID!, $id: ID!) {
-      clientSetStation(client: $client, stationName: $id)
-    }
-  `,
-  simName: gql`
-    mutation UpdateSimulatorName($id: ID!, $name: String!) {
-      renameSimulator(simulatorId: $id, name: $name)
-    }
-  `
-};
 class SetsPicker extends Component {
   constructor(props) {
     super(props);
@@ -48,39 +26,37 @@ class SetsPicker extends Component {
     }
   }
   applyClientSet = (
-    { clients, name },
+    { id },
     { id: simulatorId, templateId, stationSet: { id: stationSetId } },
     { id: flightId }
   ) => {
-    const applyClients = clients.filter(
-      c => c.simulator.id === templateId && c.stationSet.id === stationSetId
-    );
-    // Update the simulator name
-    this.props.client.mutate({
-      mutation: ops.simName,
-      variables: {
-        id: simulatorId,
-        name
+    const mutation = gql`
+      mutation ApplyClientSet(
+        $id: ID!
+        $flightId: ID!
+        $simulatorId: ID!
+        $templateId: ID!
+        $stationSetId: ID!
+      ) {
+        applyClientSet(
+          id: $id
+          flightId: $flightId
+          simulatorId: $simulatorId
+          templateId: $templateId
+          stationSetId: $stationSetId
+        )
       }
-    });
-    applyClients.forEach(c => {
-      const variables = { client: c.client.id };
-      // Apply the flight
-      variables.id = flightId;
-      this.props.client.mutate({
-        mutation: ops.flight,
-        variables
-      });
-      variables.id = simulatorId;
-      this.props.client.mutate({
-        mutation: ops.simulator,
-        variables
-      });
-      variables.id = c.station;
-      this.props.client.mutate({
-        mutation: ops.station,
-        variables
-      });
+    `;
+    const variables = {
+      id,
+      simulatorId,
+      templateId,
+      flightId,
+      stationSetId
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
     });
   };
   render() {
