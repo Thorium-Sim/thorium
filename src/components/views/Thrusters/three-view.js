@@ -141,8 +141,8 @@ class ThreeView extends Component {
           ""
         );
         const objLoader = new window.THREE.OBJLoader();
-        var texture = new THREE.TextureLoader().load(texSrc);
-        var material = new THREE.MeshBasicMaterial({ map: texture });
+        const texture = new THREE.TextureLoader().load(texSrc);
+        const material = new THREE.MeshBasicMaterial({ map: texture });
 
         this.scene.add(this.cube);
 

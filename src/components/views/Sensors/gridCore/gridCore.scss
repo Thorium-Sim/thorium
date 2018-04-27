@@ -71,6 +71,9 @@
     left: 0;
     .file-explorer {
       height: 80%;
+      .directory-container {
+        grid-template-columns: 1fr;
+      }
       .file-container {
         width: 100px;
         padding: 2px;

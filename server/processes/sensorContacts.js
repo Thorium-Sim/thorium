@@ -55,23 +55,24 @@ const moveSensorContactTimed = () => {
         // Total movement time is the difference between the distance and location
         // Divided by the speed times one second (1000 ms)
         const currentTime = time - c.startTime;
+        const endTime = c.endTime || c.startTime + 1000;
         // Location is a function of the current time and the end time.
         const newLoc = {
           ...location,
           x:
             location.x +
             (destination.x - location.x) /
-              (c.endTime - c.startTime) *
+              (endTime - c.startTime) *
               currentTime,
           y:
             location.y +
             (destination.y - location.y) /
-              (c.endTime - c.startTime) *
+              (endTime - c.startTime) *
               currentTime,
           z: 0
         };
 
-        if (distance3d(destination, newLoc) < 0.01) {
+        if (endTime < Date.now()) {
           c.destination = destination;
           c.location = destination;
           c.position = destination;

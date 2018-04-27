@@ -250,7 +250,7 @@ class AdvancedNavigation extends Component {
             <Row>
               <Col sm={{ size: 8, offset: 2 }} className="ship-image">
                 <Asset
-                  asset="/Ship Views/Left"
+                  asset="/Ship Views/Right"
                   simulatorId={this.props.simulator.id}
                 >
                   {({ src }) => (

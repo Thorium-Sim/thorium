@@ -169,7 +169,17 @@ export default class Sensors extends System {
     newContact.sensorId = this.id;
     this.armyContacts.push(new SensorContact(newContact));
   }
-  updateContact({ id, icon, picture, size, name, infrared, color, locked }) {
+  updateContact({
+    id,
+    icon,
+    picture,
+    size,
+    name,
+    infrared,
+    color,
+    locked,
+    disabled
+  }) {
     const myContact = this.contacts.find(contact => contact.id === id);
     if (icon) myContact.updateIcon(icon);
     if (picture) myContact.updatePicture(picture);
@@ -178,6 +188,7 @@ export default class Sensors extends System {
     if (infrared) myContact.updateInfrared(infrared);
     if (color) myContact.updateColor(color);
     if (locked || locked === false) myContact.updateLocked(locked);
+    if (disabled || disabled === false) myContact.updateDisabled(disabled);
   }
   updateArmyContact({
     id,
@@ -187,7 +198,8 @@ export default class Sensors extends System {
     name,
     infrared,
     color,
-    locked
+    locked,
+    disabled
   }) {
     const myContact = this.armyContacts.find(contact => contact.id === id);
     if (icon) myContact.updateIcon(icon);
@@ -197,6 +209,7 @@ export default class Sensors extends System {
     if (infrared) myContact.updateInfrared(infrared);
     if (color) myContact.updateColor(color);
     if (locked || locked === false) myContact.updateLocked(locked);
+    if (disabled || disabled === false) myContact.updateDisabled(disabled);
   }
   removeArmyContact(id) {
     const contactIndex = this.armyContacts.findIndex(
@@ -218,8 +231,10 @@ export default class Sensors extends System {
   }
   destroyContact({ id }) {
     const myContact = this.contacts.find(contact => contact.id === id);
-    myContact.destroyed = true;
-    setTimeout(this.removeContact.bind(this, { id }), 1000);
+    if (myContact) {
+      myContact.destroyed = true;
+      setTimeout(this.removeContact.bind(this, { id }), 1000);
+    }
   }
   nudgeContacts(amount, speed, yaw) {
     this.contacts.forEach(c => c.nudge(amount, speed, yaw));

@@ -48,6 +48,7 @@ export default class SensorContact {
     this.infrared = params.infrared || false;
     this.cloaked = params.cloaked || false;
     this.locked = params.locked || false;
+    this.disabled = params.disabled || false;
     this.destroyed = false;
     this.startTime = 0;
     this.endTime = 0;
@@ -129,5 +130,8 @@ export default class SensorContact {
   }
   updateLocked(locked) {
     this.locked = locked;
+  }
+  updateDisabled(disabled) {
+    this.disabled = disabled;
   }
 }

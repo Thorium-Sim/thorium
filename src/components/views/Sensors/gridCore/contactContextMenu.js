@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
-import { Input, Row, Col, FormGroup, Label, Button } from "reactstrap";
+import {
+  Input,
+  Row,
+  Col,
+  FormGroup,
+  Label,
+  Button,
+  ButtonGroup
+} from "reactstrap";
 import { Asset } from "../../../../helpers/assets";
 import FileExplorer from "../../TacticalMap/fileExplorer";
 
@@ -24,7 +32,7 @@ class ContactContextMenu extends Component {
   render() {
     //Get the position
     const { pickingIcon, pickingPicture } = this.state;
-    const { contact, closeMenu, updateArmyContact } = this.props;
+    const { contact, closeMenu, destroy, updateArmyContact } = this.props;
     return (
       <div className="contextMenu">
         {pickingIcon && (
@@ -142,11 +150,31 @@ class ContactContextMenu extends Component {
                   }}
                 />
               </FormGroup>
+              <FormGroup>
+                <Label for="disabled" sm={3}>
+                  Disabled
+                </Label>
+                <input
+                  type="checkbox"
+                  id="disabled"
+                  defaultChecked={contact.disabled}
+                  onChange={e => {
+                    updateArmyContact(contact, "disabled", e.target.checked);
+                  }}
+                />
+              </FormGroup>
             </div>
           )}
-        <Button color="info" size="sm" onClick={closeMenu}>
-          Close
-        </Button>
+        <ButtonGroup>
+          <Button color="info" size="sm" onClick={closeMenu}>
+            Close
+          </Button>
+          {destroy && (
+            <Button color="danger" size="sm" onClick={destroy}>
+              Destroy
+            </Button>
+          )}
+        </ButtonGroup>
       </div>
     );
   }

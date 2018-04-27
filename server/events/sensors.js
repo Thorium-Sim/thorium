@@ -157,9 +157,13 @@ App.on("stopAllSensorContacts", ({ id }) => {
   });
   pubsub.publish("sensorContactUpdate", system);
 });
-App.on("destroySensorContact", ({ id, contact }) => {
+App.on("destroySensorContact", ({ id, contact, contacts = [] }) => {
   const system = App.systems.find(sys => sys.id === id);
-  system.destroyContact(contact);
+  if (contact) {
+    system.destroyContact({ id: contact });
+  } else {
+    contacts.forEach(c => system.destroyContact({ id: c }));
+  }
   pubsub.publish("sensorContactUpdate", system);
 });
 App.on("updateSensorContact", ({ id, contact }) => {

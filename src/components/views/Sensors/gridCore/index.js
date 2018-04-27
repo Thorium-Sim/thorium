@@ -44,6 +44,7 @@ const SENSOR_SUB = gql`
         cloaked
         destroyed
         locked
+        disabled
       }
     }
   }
@@ -409,6 +410,7 @@ const GRID_QUERY = gql`
         cloaked
         destroyed
         locked
+        disabled
       }
     }
   }

@@ -64,14 +64,16 @@ App.on("removeTarget", ({ id, targetId }) => {
   const system = App.systems.find(s => s.id === id);
   const contact = system.contacts.find(c => c.id === targetId);
   const classId = contact.class;
-  system.removeTarget(targetId);
   // Send a sensors update too
   const sensors = App.systems.find(
     s => s.simulatorId === system.simulatorId && s.class === "Sensors"
   );
   // Remove the contact from Sensors
-  sensors.removeContact({ id: classId });
+  sensors.destroyContact({ id: classId });
   pubsub.publish("sensorContactUpdate", sensors);
+
+  system.destroyTarget(targetId);
+
   pubsub.publish(
     "targetingUpdate",
     App.systems.filter(s => s.type === "Targeting")

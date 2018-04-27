@@ -181,3 +181,41 @@ App.on("stopAllSounds", ({ simulatorId }) => {
   });
   pubsub.publish("cancelAllSounds", clients);
 });
+App.on(
+  "applyClientSet",
+  ({ id, flightId, simulatorId, templateId, stationSetId }) => {
+    const set = App.sets.find(s => s.id === id);
+    if (!set) return;
+    const { name, clients } = set;
+    // Rename the simulator
+    const simulator = App.simulators.find(s => s.id === simulatorId);
+    simulator.rename(name);
+
+    clients
+      .filter(
+        c => c.simulatorId === templateId && c.stationSet === stationSetId
+      )
+      .forEach(c => {
+        const client = App.clients.find(cl => c.clientId === cl.id);
+        client.setFlight(flightId);
+        client.setSimulator(simulatorId);
+        client.setStation(c.station);
+        // If the station name is 'Viewscreen', check for or create a viewscreen for the client
+        if (
+          c.station === "Viewscreen" &&
+          !App.viewscreens.find(
+            v => v.id === client.id && v.simulatorId === client.simulatorId
+          )
+        ) {
+          App.viewscreens.push(
+            new Viewscreen({
+              id: client.id,
+              simulatorId: client.simulatorId
+            })
+          );
+        }
+      });
+    pubsub.publish("viewscreensUpdate", App.viewscreens);
+    pubsub.publish("clientChanged", App.clients);
+  }
+);

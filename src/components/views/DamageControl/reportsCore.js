@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button, Input } from "reactstrap";
+import FontAwesome from "react-fontawesome";
 import { TypingField } from "../../generic/core";
 
 const SYSTEMS_SUB = gql`
@@ -262,7 +263,6 @@ class DamageReportCore extends Component {
     if (!systems) return null;
     const { selectedReport, selectedSystem } = this.state;
     const selectedSystemObj = systems.find(s => s.id === selectedSystem);
-    console.log(selectedSystemObj);
     return (
       <Container fluid className="damageReport-core">
         <Row style={{ height: "100%" }}>
@@ -271,12 +271,16 @@ class DamageReportCore extends Component {
               {systems.filter(s => s.damage.damaged).map(s => (
                 <p
                   key={s.id}
-                  className={`${selectedSystem === s.id ? "selected" : ""} 
-          ${s.damage.requested ? "requested" : ""}
-          ${s.damage.report ? "report" : ""}
-          ${s.damage.reactivationCode ? "reactivation" : ""}`}
+                  className={`${selectedSystem === s.id ? "selected" : ""}  ${
+                    s.damage.requested ? "requested" : ""
+                  } ${s.damage.report ? "report" : ""} ${
+                    s.damage.reactivationCode ? "reactivation" : ""
+                  } ${s.damage.validate ? "validate" : ""}`}
                   onClick={this.selectSystem.bind(this, s.id)}
                 >
+                  {s.damage.validate ? (
+                    <FontAwesome name="refresh" spin />
+                  ) : null}{" "}
                   {this.systemName(s)} - {s.damage.currentStep + 1} /{" "}
                   {s.damage.report
                     ? s.damage.report
