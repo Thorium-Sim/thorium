@@ -53,6 +53,7 @@ const SENSORCONTACT_SUB = gql`
       forceUpdate
       targeted
       locked
+      disabled
     }
   }
 `;
@@ -600,6 +601,7 @@ const CONTACTS_QUERY = gql`
       forceUpdate
       targeted
       locked
+      disabled
     }
   }
 `;

@@ -15,7 +15,12 @@
     background-color: #333;
     z-index: 1000;
   }
-
+  .contact-disabled {
+    -webkit-mask-image: url("./noise.png");
+    -webkit-mask-size: cover;
+    mask-image: url("./noise.png");
+    mask-size: cover;
+  }
   .sensors-interference {
     position: absolute;
     width: 100%;

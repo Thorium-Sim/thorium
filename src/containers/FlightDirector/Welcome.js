@@ -88,8 +88,6 @@ class Welcome extends Component {
     const flights = this.props.data.flights;
     return (
       <Container className="WelcomeView">
-        <Explosions />
-
         <Row>
           <Col sm={12} className="title-row">
             <h1 className="text-center">Thorium</h1>

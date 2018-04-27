@@ -150,6 +150,19 @@ class ContactContextMenu extends Component {
                   }}
                 />
               </FormGroup>
+              <FormGroup>
+                <Label for="disabled" sm={3}>
+                  Disabled
+                </Label>
+                <input
+                  type="checkbox"
+                  id="disabled"
+                  defaultChecked={contact.disabled}
+                  onChange={e => {
+                    updateArmyContact(contact, "disabled", e.target.checked);
+                  }}
+                />
+              </FormGroup>
             </div>
           )}
         <ButtonGroup>

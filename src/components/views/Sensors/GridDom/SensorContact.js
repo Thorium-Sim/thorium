@@ -19,6 +19,7 @@ export default class SensorContact extends Component {
       rotation = 0,
       targeted,
       selected,
+      disabled,
       mouseover = () => {},
       mousedown = () => {},
       removeContact = () => {}
@@ -123,6 +124,7 @@ export default class SensorContact extends Component {
               onMouseOut={() => mouseover({})}
               onMouseDown={() => mousedown(this.props)}
               src={src}
+              className={disabled ? "contact-disabled" : ""}
               style={{
                 opacity: core ? 0.5 : opacity,
                 transform: `translate(${width / 2 * x}px, ${width /
@@ -141,6 +143,7 @@ export default class SensorContact extends Component {
                   draggable="false"
                   onMouseDown={mousedown}
                   src={src}
+                  className={disabled ? "contact-disabled" : ""}
                   style={{
                     backgroundColor: selected ? "blue" : "",
                     transform: `translate(${width / 2 * dx}px, ${width /

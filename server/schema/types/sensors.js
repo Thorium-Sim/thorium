@@ -72,6 +72,7 @@ type SensorContact {
   forceUpdate: Boolean
   targeted: Boolean
   locked: Boolean
+  disabled: Boolean
 }
 type SensorsSegment {
   segment: String
@@ -106,7 +107,7 @@ input SensorContactInput {
   cloaked: Boolean
   destroyed: Boolean
   locked: Boolean
-
+  disabled: Boolean
 }
 enum PING_MODES {
   active
