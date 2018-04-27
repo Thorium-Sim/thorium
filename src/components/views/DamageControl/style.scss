@@ -19,6 +19,10 @@
       font-weight: bold;
       color: greenyellow;
     }
+    &.validate {
+      font-weight: bold;
+      color: lightseagreen;
+    }
   }
   .damageReport-text {
     white-space: pre-wrap;
