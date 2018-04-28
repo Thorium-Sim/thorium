@@ -109,6 +109,7 @@ import ShortRangeSignalsCore from "./CommShortRange/signalsCore";
 import AlertConditionCore from "./AlertCondition/core";
 import ObjectivesCore from "./Objectives/core";
 import SurveyFormCore from "./SurveyForm/core";
+import ArmoryCore from "./Armory/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -294,7 +295,8 @@ export const Cores = {
   ShortRangeSignalsCore,
   AlertConditionCore,
   ObjectivesCore,
-  SurveyFormCore
+  SurveyFormCore,
+  ArmoryCore
 };
 
 export default Views;
