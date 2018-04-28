@@ -87,6 +87,9 @@ export class InventoryItem {
     }
   }
   moveToCrew(fromRoom, toCrew, count) {
+    if (!fromRoom) {
+      this.crewCount[toCrew] = count;
+    }
     if (this.roomCount[fromRoom] >= count) {
       if (!this.crewCount[toCrew]) this.crewCount[toCrew] = 0;
       this.roomCount[fromRoom] -= count;
