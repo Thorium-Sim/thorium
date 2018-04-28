@@ -125,6 +125,8 @@ class EngineCoreView extends Component {
             {this.getCurrentSpeed()} -{" "}
             {this.props.data.engines &&
               this.props.data.engines[0] &&
+              this.props.data.engines[0].velocity &&
+              this.props.data.engines[0].velocity.toLocaleString &&
               `${this.props.data.engines[0].velocity.toLocaleString()} km/s`}
           </Col>
         </Row>
