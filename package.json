@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "0.2.22",
+  "version": "0.2.23",
   "private": true,
   "description": "Node + React + GraphQL simulator controls",
   "repository": {
@@ -117,7 +117,10 @@
     "watch-css":
       "concurrently \"npm run build-css\" \"node-sass-chokidar src/ -o src/ --watch --recursive\"",
     "build-server": "node ./config/build-server.js",
-    "build": "npm run build-client && npm run build-server",
+    "zip-server":
+      "zip -r thorium-macos.zip thorium-macos && zip -r thorium-win.exe.zip thorium-win.exe && zip -r thorium-linux.zip thorium-linux",
+    "build":
+      "npm run build-client && npm run build-server && npm run zip-server",
     "lint": "eslint .",
     "cloc":
       "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots,coverage,build --exclude-ext=css,json",

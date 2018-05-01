@@ -1,3 +1,5 @@
+import uuid from "uuid";
+
 export default class DamageStep {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
