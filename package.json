@@ -48,7 +48,7 @@
     "body-parser": "^1.18.2",
     "bodymovin": "^4.13.0",
     "bonjour": "^3.5.0",
-    "bootstrap": "^4.1.0",
+    "bootstrap": "^4.1.1",
     "capitalize": "^1.0.0",
     "chalk": "^2.4.0",
     "change-case": "^3.0.2",
