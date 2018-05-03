@@ -242,9 +242,9 @@ export default class Sensors extends System {
   setPingMode(mode) {
     this.pingMode = mode;
   }
-  break(report) {
+  break(report, destroyed) {
     this.scanCanceled();
-    super.break(report);
+    super.break(report, destroyed);
   }
   setPower(powerLevel) {
     if (

@@ -143,9 +143,9 @@ export default class Targeting extends System {
   setCoordinateTargeting(which) {
     this.coordinateTargeting = which;
   }
-  break(report) {
+  break(report, destroyed) {
     this.contacts.forEach(t => t.untarget());
-    super.break(report);
+    super.break(report, destroyed);
   }
   setPower(powerLevel) {
     if (

@@ -48,9 +48,9 @@ export default class StealthField extends System {
     this.quadrants.starboard = Math.round(Math.random() * 20) / 20;
     this.quadrants.port = Math.round(Math.random() * 20) / 20;
   }
-  break(report) {
+  break(report, destroyed) {
     this.deactivate();
-    super.break(report);
+    super.break(report, destroyed);
   }
   setPower(powerLevel) {
     if (

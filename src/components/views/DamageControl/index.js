@@ -14,6 +14,7 @@ const SYSTEMS_SUB = gql`
       name
       damage {
         damaged
+        destroyed
         report
         requested
         reactivationCode
@@ -251,8 +252,14 @@ class DamageControl extends Component {
                         this.state.selectedSystem === s.id ? "selected" : ""
                       } ${s.damage.requested ? "requested" : ""} ${
                         s.damage.report ? "report" : ""
-                      } ${s.damage.validate ? "validate" : ""}`}
-                      onClick={this.selectSystem.bind(this, s.id)}
+                      } ${s.damage.validate ? "validate" : ""} ${
+                        s.damage.destroyed ? "destroyed" : ""
+                      }`}
+                      onClick={
+                        s.damage.destroyed
+                          ? () => {}
+                          : this.selectSystem.bind(this, s.id)
+                      }
                     >
                       {s.damage.validate ? (
                         <FontAwesome name="refresh" spin />
@@ -415,6 +422,7 @@ const SYSTEMS_QUERY = gql`
       name
       damage {
         damaged
+        destroyed
         report
         requested
         reactivationCode

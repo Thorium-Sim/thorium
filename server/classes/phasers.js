@@ -61,9 +61,9 @@ export default class Phasers extends HeatMixin(System) {
   updateArc(arc) {
     this.arc = Math.min(1, Math.max(0, arc));
   }
-  break(report) {
+  break(report, destroyed) {
     this.beams.forEach(b => b.updateCharge(0));
-    super.break(report);
+    super.break(report, destroyed);
   }
   setPower(powerLevel) {
     if (

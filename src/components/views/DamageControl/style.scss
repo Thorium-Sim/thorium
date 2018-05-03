@@ -23,6 +23,9 @@
       font-weight: bold;
       color: lightseagreen;
     }
+    &.destroyed {
+      color: rgb(80, 80, 80);
+    }
   }
   .damageReport-text {
     white-space: pre-wrap;

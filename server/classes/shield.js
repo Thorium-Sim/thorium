@@ -18,9 +18,9 @@ export default class Shield extends System {
   get stealthFactor() {
     return this.state ? this.integrity : 0;
   }
-  break(report) {
+  break(report, destroyed) {
     this.state = false;
-    super.break(report);
+    super.break(report, destroyed);
   }
   setPower(powerLevel) {
     if (

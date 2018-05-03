@@ -1,6 +1,7 @@
 export default `
 type Damage {
   damaged: Boolean
+  destroyed: Boolean
   report: String
   reportSteps: [DamageReportStep]
   requested: Boolean

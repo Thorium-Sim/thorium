@@ -3,7 +3,7 @@ addSystemToSimulator(simulatorId: ID!, className: String!, params: String!): Str
 removeSystemFromSimulator(systemId: ID, simulatorId: ID, type: String): String
 updateSystemName(systemId: ID!, name: String, displayName: String): String
 
-damageSystem(systemId: ID!, report: String): String
+damageSystem(systemId: ID!, report: String, destroyed: Boolean): String
 damageReport(systemId: ID!, report: String!): String
 updateCurrentDamageStep(systemId: ID!, step: Int!):String
 repairSystem(systemId: ID!): String

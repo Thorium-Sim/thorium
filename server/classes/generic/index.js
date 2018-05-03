@@ -21,6 +21,7 @@ class Damage {
     this.neededReactivationCode = params.neededReactivationCode || null;
     this.exocompParts = params.exocompParts || [];
     this.validate = params.validate || false;
+    this.destroyed = params.destroyed || false;
   }
 }
 export class System {
@@ -69,8 +70,9 @@ export class System {
   setPowerLevels(levels) {
     this.power.powerLevels = levels;
   }
-  break(report) {
+  break(report, destroyed) {
     this.damage.damaged = true;
+    if (destroyed) this.damage.destroyed = true;
     this.damage.report = processReport(report, this);
     this.damage.requested = false;
     this.damage.currentStep = 0;
@@ -291,6 +293,7 @@ ${report}
   }
   repair() {
     this.damage.damaged = false;
+    this.damage.destroyed = false;
     this.damage.report = null;
     this.damage.requested = false;
     this.damage.neededReactivationCode = null;

@@ -16,6 +16,7 @@ const SYSTEMS_SUB = gql`
       damage {
         damaged
         report
+        destroyed
       }
       simulatorId
       type
@@ -61,6 +62,10 @@ class DamageControlCore extends Component {
     if (!sys.name) {
       obj.color = "purple";
     }
+    if (sys.damage.destroyed) {
+      obj.color = "black";
+      obj.textShadow = "0px 0px 1px rgba(255,255,255,1)";
+    }
     return obj;
   }
   systemName(sys) {
@@ -87,9 +92,11 @@ class DamageControlCore extends Component {
       variables
     });
   }
-  toggleDamage(system) {
+  toggleDamage = (e, system, destroyed = false) => {
+    e.preventDefault();
     const variables = {
-      systemId: system.id
+      systemId: system.id,
+      destroyed
     };
     let mutation;
     if (system.damage.damaged) {
@@ -102,8 +109,8 @@ class DamageControlCore extends Component {
     } else {
       // Break it
       mutation = gql`
-        mutation DamageSystem($systemId: ID!) {
-          damageSystem(systemId: $systemId)
+        mutation DamageSystem($systemId: ID!, $destroyed: Boolean) {
+          damageSystem(systemId: $systemId, destroyed: $destroyed)
         }
       `;
     }
@@ -111,7 +118,7 @@ class DamageControlCore extends Component {
       mutation,
       variables
     });
-  }
+  };
   render() {
     if (this.props.data.loading || !this.props.data.systems) return null;
     return (
@@ -128,7 +135,8 @@ class DamageControlCore extends Component {
           {this.props.data.systems.map(s => (
             <tr key={s.id}>
               <td
-                onClick={this.toggleDamage.bind(this, s)}
+                onClick={e => this.toggleDamage(e, s)}
+                onContextMenu={e => this.toggleDamage(e, s, true)}
                 style={this.systemStyle(s)}
               >
                 {this.systemName(s)}
@@ -164,6 +172,9 @@ class DamageControlCore extends Component {
             <td>/</td>
             <td />
           </tr>
+          <tr>
+            <td colSpan="4">Right-Click to destroy system</td>
+          </tr>
         </tbody>
       </Table>
     );
@@ -181,6 +192,7 @@ const SYSTEMS_QUERY = gql`
       damage {
         damaged
         report
+        destroyed
       }
       simulatorId
       type

@@ -94,12 +94,12 @@ App.on("updateSystemName", ({ systemId, name, displayName }) => {
   sys.updateName({ name, displayName });
   sendUpdate(sys);
 });
-App.on("damageSystem", ({ systemId, report }) => {
+App.on("damageSystem", ({ systemId, report, destroyed }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
     sys = App.dockingPorts.find(s => s.id === systemId);
   }
-  sys.break(report);
+  sys.break(report, destroyed);
   sendUpdate(sys);
 });
 App.on("damageReport", ({ systemId, report }) => {
