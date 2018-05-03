@@ -209,7 +209,8 @@ class ReactorControl extends Component {
         efficiency: 0
       },
       {
-        label: "External Power"
+        label: "External Power",
+        efficiency: 0
       }
     ];
     return (
@@ -234,7 +235,7 @@ class ReactorControl extends Component {
                 >
                   {efficiencies.map(e => (
                     <option key={e.label} value={e.efficiency}>
-                      {e.label}
+                      {e.label} - {e.efficiency * 100}%{" "}
                     </option>
                   ))}
                 </Input>
