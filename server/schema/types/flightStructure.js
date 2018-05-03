@@ -8,6 +8,7 @@ type Mission {
 }
 
 input MacroInput {
+  stepId: ID,
   event: String,
   args: String,
   delay: Int
@@ -40,6 +41,7 @@ type Simulator {
   stations: [Station]
   mission: Mission
   currentTimelineStep: Int
+  executedTimelineSteps: [ID]
   stationSets: [Stationset]
   stationSet: Stationset
   decks: [Deck]

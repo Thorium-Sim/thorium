@@ -157,8 +157,10 @@ export const FlightStructureMutations = {
   updateTimelineStepItem(root, args, context) {
     App.handleEvent(args, "updateTimelineStepItem", context);
   },
-  triggerMacros(root, { simulatorId, macros }, context) {
-    macros.forEach(({ event, args, delay = 0 }) => {
+  triggerMacros(root, { simulatorId, macros }) {
+    const simulator = App.simulators.find(s => s.id === simulatorId);
+    macros.forEach(({ stepId, event, args, delay = 0 }) => {
+      simulator.executeTimelineStep(stepId);
       setTimeout(() => {
         App.handleEvent(
           Object.assign({ simulatorId }, JSON.parse(args)),
@@ -166,6 +168,7 @@ export const FlightStructureMutations = {
         );
       }, delay);
     });
+    pubsub.publish("simulatorsUpdate", App.simulators);
   },
   autoAdvance(root, args, context) {
     App.handleEvent(args, "autoAdvance", context);
