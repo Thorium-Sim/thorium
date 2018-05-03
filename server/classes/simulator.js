@@ -1,6 +1,6 @@
 import uuid from "uuid";
 import Team from "./teams";
-import { DamageStep } from "./generic";
+import DamageStep from "./generic/damageStep";
 
 class RemoteAccess {
   constructor(params = {}) {
