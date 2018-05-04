@@ -72,7 +72,7 @@ class ReactorControl extends Component {
     });
   };
   setPowerLevel = e => {
-    if (!e || !parseFloat(e)) return;
+    if ((!e || !parseFloat(e)) && e !== "0") return;
     const { reactors } = this.props.data;
     const reactor = reactors.find(r => r.model === "reactor");
     const mutation = gql`
