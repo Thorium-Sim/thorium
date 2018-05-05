@@ -7,7 +7,6 @@ import {
   ListGroupItem,
   Button
 } from "reactstrap";
-import { Link } from "react-router-dom";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Form from "./form";

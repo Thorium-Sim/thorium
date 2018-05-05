@@ -1,6 +1,6 @@
 import React from "react";
 import SideNav from "./FlightDirector/sideNav";
-import { Route, Link } from "react-router-dom";
+import { Route } from "react-router-dom";
 import TacticalMapCore from "../components/views/TacticalMap";
 import DebugList from "./DebugList";
 import {

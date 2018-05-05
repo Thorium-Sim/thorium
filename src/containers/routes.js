@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { Router, Route, Switch, Link } from "react-router-dom";
 import CardContainer from "./Card";
 import Client from "../components/Client";
-import DebugList from "./DebugList";
 import { FlightConfig, FlightDirector, ClientsLobby } from "./FlightDirector";
 import Config from "./config";
 

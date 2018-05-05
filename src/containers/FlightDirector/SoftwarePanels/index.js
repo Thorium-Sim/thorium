@@ -12,7 +12,6 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import "bootstrap/dist/css/bootstrap.css";
 import "./style.css";
-import { Link } from "react-router-dom";
 import ComponentLibrary from "./componentLibrary";
 import Measure from "react-measure";
 import Canvas from "./canvas";

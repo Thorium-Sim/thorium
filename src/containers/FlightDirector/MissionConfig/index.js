@@ -1,22 +1,11 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
-import {
-  Container,
-  Card,
-  Button,
-  ButtonGroup,
-  FormGroup,
-  Label,
-  Input,
-  FormText
-} from "reactstrap";
-import MagicContainer from "react-magic-hat";
+import { withApollo, Query } from "react-apollo";
+import { Container } from "reactstrap";
 
 import TimelineConfig from "./TimelineConfig";
 import PrintMission from "./PrintMission";
 
-import { Link } from "react-router-dom";
 import "./style.css";
 const MISSION_SUB = gql`
   subscription MissionSubscription {
@@ -41,117 +30,6 @@ const MISSION_SUB = gql`
     }
   }
 `;
-
-const MissionList = ({
-  missions,
-  createMission,
-  removeMission,
-  setSelectedMission,
-  selectedMission,
-  importMission,
-  openFrame
-}) => {
-  return (
-    <Fragment>
-      <Card className="scroll">
-        {missions.map(e => {
-          return (
-            <li
-              key={e.id}
-              onClick={() => {
-                setSelectedMission(e);
-                openFrame();
-              }}
-              className={`${
-                e.id === selectedMission ? "selected" : ""
-              } list-group-item`}
-            >
-              {e.name}
-            </li>
-          );
-        })}
-      </Card>
-      <ButtonGroup>
-        <Button onClick={createMission} size="sm" color="success">
-          Add
-        </Button>
-        {selectedMission && (
-          <Button onClick={removeMission} size="sm" color="danger">
-            Remove
-          </Button>
-        )}
-      </ButtonGroup>
-      <FormGroup>
-        <Label for="importFile">Import Mission</Label>
-        <Input
-          type="file"
-          name="file"
-          id="importFile"
-          onChange={importMission}
-        />
-        <FormText color="muted">
-          Mission files will be in a ".misn" format.
-        </FormText>
-      </FormGroup>
-    </Fragment>
-  );
-};
-
-const MissionConfig = ({
-  mission,
-  updateMission,
-  exportMissionScript,
-  close
-}) => {
-  return (
-    <Fragment>
-      <Button size="sm" color="secondary" onClick={close}>
-        Go Back
-      </Button>
-      <h5>Mission Config</h5>
-      <FormGroup>
-        <Label>Mission Name</Label>
-        <Input
-          type="text"
-          defaultValue={mission.name}
-          onChange={e => updateMission("name", e)}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Label>Mission Description</Label>
-        <Input
-          type="textarea"
-          defaultValue={mission.description}
-          name="text"
-          onChange={e => updateMission("description", e)}
-        />
-      </FormGroup>
-      <a id="downloadAnchorElem" style={{ display: "none" }}>
-        Nothing here
-      </a>
-      <Button
-        tag="a"
-        href={`${window.location.protocol}//${
-          window.location.hostname
-        }:${parseInt(window.location.port, 10) + 1}/exportMission/${
-          mission.id
-        }`}
-        block
-        color="info"
-      >
-        Export
-      </Button>
-      <Button
-        color="warning"
-        block
-        onClick={() => exportMissionScript(mission)}
-      >
-        Export Mission Script
-      </Button>
-    </Fragment>
-  );
-};
-
 class MissionsConfig extends Component {
   state = {
     selectedMission: null,
@@ -189,7 +67,7 @@ class MissionsConfig extends Component {
     }
   };
   removeMission = () => {
-    let mission = this.state.selectedMission;
+    const { mission, history } = this.props;
     if (mission) {
       if (window.confirm("Are you sure you want to delete that mission?")) {
         this.props.client.mutate({
@@ -201,6 +79,7 @@ class MissionsConfig extends Component {
           variables: { id: mission }
         });
       }
+      history.push("/");
       this.setState({
         selectedMission: null,
         selectedSimulator: null
@@ -208,7 +87,8 @@ class MissionsConfig extends Component {
     }
   };
   updateMission = (type, e) => {
-    const missionId = this.state.selectedMission;
+    const { mission } = this.props;
+    const missionId = mission.id;
     const { value } = e.target;
     const obj = { missionId };
     obj[type] = value;
@@ -258,83 +138,28 @@ class MissionsConfig extends Component {
     });
   };
   render() {
-    if (this.props.data.loading || !this.props.data.missions) return null;
-    const { missions } = this.props.data;
-    const { selectedMission, printingMission } = this.state;
-    const mission = missions.find(m => m.id === selectedMission);
-    if (printingMission)
+    const { mission } = this.props;
+    const { printingMission } = this.state;
+    if (printingMission) {
       return (
         <PrintMission
           clearMission={() => this.setState({ printingMission: null })}
           mission={printingMission}
         />
       );
+    }
+    if (!mission) return null;
     return (
       <Container fluid className="missionConfig">
         <h4>Missions Config </h4>
-        <div className="magic-container">
-          <MagicContainer
-            renderFrame={({ id, page, activePage, actions }) => {
-              switch (id) {
-                case "mission-config":
-                  return (
-                    <div className="magic-child" style={{ flex: 1 }}>
-                      <MissionConfig
-                        mission={mission}
-                        updateMission={this.updateMission}
-                        exportMissionScript={this.exportMissionScript}
-                        close={() => {
-                          actions.closeNextFrame();
-                          actions.setFrame(page, "");
-                          this.setState({ selectedMission: null });
-                        }}
-                      />
-                    </div>
-                  );
-                case "timeline-config":
-                  return (
-                    <div className="magic-child" style={{ flex: 4 }}>
-                      <TimelineConfig
-                        type="mission"
-                        object={mission}
-                        config={this.props.config}
-                        client={this.props.client}
-                      />
-                    </div>
-                  );
-                default:
-                  return (
-                    <div className="magic-child">
-                      <MissionList
-                        missions={missions}
-                        createMission={this.createMission}
-                        removeMission={this.removeMission}
-                        setSelectedMission={this.setSelectedMission}
-                        selectedMission={selectedMission}
-                        importMission={this.importMission}
-                        openFrame={() => {
-                          actions.setFrame(page, "mission-config");
-                          actions.setNextFrame("timeline-config");
-                        }}
-                      />
-                    </div>
-                  );
-              }
-              // return (
-              //   <div
-              //     onClick={() =>
-              //       page === activePage
-              //         ? actions.setNextFrame("dummy")
-              //         : actions.closeFrame(activePage)
-              //     }
-              //   >
-              //     Hello
-              //   </div>
-              // );
-            }}
-            onEndAnimation={() => {}}
-          />
-        </div>
+        <TimelineConfig
+          type="mission"
+          object={mission}
+          client={this.props.client}
+          removeMission={this.removeMission}
+          updateMission={this.updateMission}
+          exportMissionScript={this.exportMissionScript}
+        />
         {this.state.loadingMission && (
           <div className="loading">
             <svg
@@ -365,8 +190,8 @@ class MissionsConfig extends Component {
 }
 
 const MissionsConfigQuery = gql`
-  query MissionsQuery {
-    missions {
+  query MissionsQuery($missionId: ID!) {
+    missions(id: $missionId) {
       id
       name
       description
@@ -387,4 +212,28 @@ const MissionsConfigQuery = gql`
     }
   }
 `;
-export default graphql(MissionsConfigQuery, {})(withApollo(MissionsConfig));
+
+const MissionsConfigData = withApollo(
+  ({
+    match: {
+      params: { missionId }
+    },
+    client,
+    history
+  }) => {
+    return (
+      <Query query={MissionsConfigQuery} variables={{ missionId }}>
+        {({ loading, data }) =>
+          loading || !data ? null : (
+            <MissionsConfig
+              history={history}
+              client={client}
+              mission={data.missions[0]}
+            />
+          )
+        }
+      </Query>
+    );
+  }
+);
+export default MissionsConfigData;

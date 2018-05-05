@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Container, Row, Col, Card, Button, Input } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Link } from "react-router-dom";
 
 import "./setConfig.css";
 

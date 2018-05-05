@@ -201,11 +201,15 @@ class SimulatorConfig extends Component {
   };
   renameSimulator = () => {
     const name = prompt("What is the simulator name? eg. Voyager");
-    const simulator = this.state.selectedSimulator;
-    if (name && simulator) {
+    const {
+      match: {
+        params: { simulatorId }
+      }
+    } = this.props;
+    if (name && simulatorId) {
       let variables = {
         name: name,
-        id: simulator
+        id: simulatorId
       };
       this.props.client.mutate({
         mutation: gql`
@@ -218,11 +222,15 @@ class SimulatorConfig extends Component {
     }
   };
   removeSimulator = () => {
-    const simulator = this.state.selectedSimulator;
-    if (simulator) {
+    const {
+      match: {
+        params: { simulatorId }
+      }
+    } = this.props;
+    if (simulatorId) {
       if (window.confirm("Are you sure you want to delete that simulator?")) {
         let obj = {
-          id: simulator
+          id: simulatorId
         };
         this.props.client.mutate({
           mutation: gql`
@@ -232,8 +240,8 @@ class SimulatorConfig extends Component {
           `,
           variables: obj
         });
+        this.props.history.push("/");
         this.setState({
-          selectedSimulator: null,
           selectedProperty: null
         });
       }
