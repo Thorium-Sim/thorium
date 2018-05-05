@@ -128,18 +128,36 @@ App.on("setVerifyDamage", ({ simulatorId, verifyStep }) => {
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
 
-App.on("autoAdvance", ({ simulatorId }) => {
+const allowedMacros = [
+  "updateViewscreenComponent",
+  "setViewscreenToAuto",
+  "showViewscreenTactical"
+];
+
+App.on("autoAdvance", ({ simulatorId, prev }) => {
   const sim = App.simulators.find(s => s.id === simulatorId);
-  const { mission, currentTimelineStep } = sim;
+  const { mission, currentTimelineStep, executedTimelineSteps } = sim;
   const missionObj = App.missions.find(m => m.id === mission);
   if (!missionObj) return;
-  const timelineStep = missionObj.timeline[currentTimelineStep];
+  if (prev && currentTimelineStep - 2 < 0) return;
+  const timelineStep =
+    missionObj.timeline[currentTimelineStep - (prev ? 2 : 0)];
   if (!timelineStep) return;
-  timelineStep.timelineItems.forEach(({ event, args, delay = 0 }) => {
-    setTimeout(() => {
-      App.handleEvent(Object.assign({ simulatorId }, JSON.parse(args)), event);
-    }, delay);
-  });
-  sim.setTimelineStep(currentTimelineStep + 1);
+  timelineStep.timelineItems
+    .filter(
+      t =>
+        executedTimelineSteps.indexOf(t.id) === -1 ||
+        allowedMacros.indexOf(t.event) > -1
+    )
+    .forEach(({ id, event, args, delay = 0 }) => {
+      sim.executeTimelineStep(id);
+      setTimeout(() => {
+        App.handleEvent(
+          Object.assign({ simulatorId }, JSON.parse(args)),
+          event
+        );
+      }, delay);
+    });
+  sim.setTimelineStep(currentTimelineStep + (prev ? -1 : 1));
   pubsub.publish("simulatorsUpdate", App.simulators);
 });

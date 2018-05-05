@@ -23,6 +23,7 @@ const TIMELINE_SUB = gql`
     simulatorsUpdate(simulatorId: $simulatorId) {
       id
       currentTimelineStep
+      executedTimelineSteps
       mission {
         id
         name
@@ -45,6 +46,12 @@ const TIMELINE_SUB = gql`
     }
   }
 `;
+
+const allowedMacros = [
+  "updateViewscreenComponent",
+  "setViewscreenToAuto",
+  "showViewscreenTactical"
+];
 
 class TimelineCore extends Component {
   constructor(props) {
@@ -76,11 +83,16 @@ class TimelineCore extends Component {
       if (oldStep !== newStep) {
         const mission = nextProps.data.simulators[0].mission;
         if (!mission) return;
+        const { executedTimelineSteps } = nextProps.data.simulators[0];
         const currentStep = mission.timeline[newStep];
         this.setState({
           steps: currentStep
             ? currentStep.timelineItems.reduce(
-                (prev, next) => Object.assign(prev, { [next.id]: true }),
+                (prev, next) =>
+                  executedTimelineSteps.indexOf(next.id) > -1 &&
+                  allowedMacros.indexOf(next.event) === -1
+                    ? prev
+                    : Object.assign(prev, { [next.id]: true }),
                 {}
               )
             : []
@@ -143,9 +155,12 @@ class TimelineCore extends Component {
     if (!currentStep) return;
     const variables = {
       simulatorId: this.props.simulator.id,
-      macros: currentStep.timelineItems
-        .filter(t => steps[t.id])
-        .map(t => ({ event: t.event, args: t.args, delay: t.delay }))
+      macros: currentStep.timelineItems.filter(t => steps[t.id]).map(t => ({
+        stepId: t.id,
+        event: t.event,
+        args: t.args,
+        delay: t.delay
+      }))
     };
     const mutation = gql`mutation ExecuteMacro($simulatorId: ID!, $macros: [MacroInput]!) {
       triggerMacros(simulatorId: $simulatorId, macros: $macros)
@@ -199,7 +214,11 @@ class TimelineCore extends Component {
   render() {
     if (this.props.data.loading || !this.props.data.simulators) return null;
     const { missions } = this.props.data;
-    const { mission, currentTimelineStep } = this.props.data.simulators[0];
+    const {
+      mission,
+      currentTimelineStep,
+      executedTimelineSteps
+    } = this.props.data.simulators[0];
     if (!mission) {
       return (
         <div>
@@ -282,7 +301,16 @@ class TimelineCore extends Component {
                       checked={steps[i.id]}
                       onChange={() => this.checkStep(i.id)}
                     />{" "}
-                    {i.name}
+                    <span
+                      className={
+                        executedTimelineSteps.indexOf(i.id) > -1 &&
+                        allowedMacros.indexOf(i.event) === -1
+                          ? "text-success"
+                          : ""
+                      }
+                    >
+                      {i.name}
+                    </span>
                     <details>
                       <summary>Details</summary>
                       <p>{i.event}</p>
@@ -355,6 +383,7 @@ const SUBSCRIPTIONS_QUERY = gql`
     simulators(id: $simulatorId) {
       id
       currentTimelineStep
+      executedTimelineSteps
       mission {
         id
         name
