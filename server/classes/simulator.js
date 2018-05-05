@@ -49,6 +49,7 @@ export default class Simulator {
     this.training = params.training || false;
     this.ship = new Ship(params.ship);
     this.panels = params.panels || [];
+
     // Set up the teams
     if (params.teams) {
       params.teams.forEach(t => this.teams.push(new Team(t)));

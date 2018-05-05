@@ -24,7 +24,7 @@ triggerMacros(simulatorId: ID!, macros: [MacroInput]!): String
 duplicateTimelineStep(missionId: ID!, timelineStepId: ID!):String
 
 #Macro: Auto-Advance Timeline Step (Use with Delay)
-autoAdvance(simulatorId: ID!): String
+autoAdvance(simulatorId: ID!, prev: Boolean): String
 
 createStationSet(name: String!, simulatorId: ID!):String
 removeStationSet(stationSetID: ID!):String

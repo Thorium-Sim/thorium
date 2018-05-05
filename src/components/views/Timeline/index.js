@@ -47,6 +47,12 @@ const TIMELINE_SUB = gql`
   }
 `;
 
+const allowedMacros = [
+  "updateViewscreenComponent",
+  "setViewscreenToAuto",
+  "showViewscreenTactical"
+];
+
 class TimelineCore extends Component {
   constructor(props) {
     super(props);
@@ -83,7 +89,8 @@ class TimelineCore extends Component {
           steps: currentStep
             ? currentStep.timelineItems.reduce(
                 (prev, next) =>
-                  executedTimelineSteps.indexOf(next.id) > -1
+                  executedTimelineSteps.indexOf(next.id) > -1 &&
+                  allowedMacros.indexOf(next.event) === -1
                     ? prev
                     : Object.assign(prev, { [next.id]: true }),
                 {}
@@ -296,7 +303,8 @@ class TimelineCore extends Component {
                     />{" "}
                     <span
                       className={
-                        executedTimelineSteps.indexOf(i.id) > -1
+                        executedTimelineSteps.indexOf(i.id) > -1 &&
+                        allowedMacros.indexOf(i.event) === -1
                           ? "text-success"
                           : ""
                       }
