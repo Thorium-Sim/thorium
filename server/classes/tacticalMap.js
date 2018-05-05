@@ -137,6 +137,7 @@ export default class TacticalMap {
     this.class = "TacticalMap";
     this.name = params.name || "Tactical Map";
     this.template = params.template || false;
+    this.templateId = params.templateId || null;
     this.flightId = params.flightId || null;
     this.frozen = params.frozen || false;
     this.layers = [];

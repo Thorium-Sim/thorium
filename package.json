@@ -40,8 +40,8 @@
     "wait-on": "^2.1.0"
   },
   "dependencies": {
-    "apollo-cache-inmemory": "^1.1.12",
-    "apollo-client": "^2.2.8",
+    "apollo-cache-inmemory": "^1.2.0",
+    "apollo-client": "^2.3.1",
     "apollo-link-http": "^1.5.4",
     "apollo-link-ws": "^1.0.8",
     "appdirectory": "^0.1.0",
@@ -77,7 +77,7 @@
     "react": "^16.3.2",
     "react-addons-transition-group": "^15.6.2",
     "react-animated-number": "^0.4.4",
-    "react-apollo": "^2.1.2",
+    "react-apollo": "^2.1.4",
     "react-color": "^2.14.1",
     "react-dom": "^16.3.2",
     "react-draggable": "^3.0.5",
