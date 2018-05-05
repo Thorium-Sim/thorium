@@ -163,12 +163,7 @@ class SetConfig extends Component {
     const { clients, simulators, sets } = data;
     return (
       <Container fluid className="set-config">
-        <h4>
-          Set Config{" "}
-          <small>
-            <Link to="/">Return to Main</Link>
-          </small>
-        </h4>
+        <h4>Set Config </h4>
         <small>
           Be sure to connect all of your clients before configuring this
         </small>

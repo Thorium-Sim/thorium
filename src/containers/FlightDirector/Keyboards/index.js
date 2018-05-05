@@ -67,7 +67,6 @@ class Keyboards extends Component {
             <Container fluid className="survey-forms">
               <Row>
                 <Col sm={3}>
-                  <Link to={"/"}>Go Back</Link>
                   <div
                     style={{
                       maxHeight: "60vh",

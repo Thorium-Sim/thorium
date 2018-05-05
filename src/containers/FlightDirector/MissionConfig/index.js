@@ -271,12 +271,7 @@ class MissionsConfig extends Component {
       );
     return (
       <Container fluid className="missionConfig">
-        <h4>
-          Missions Config{" "}
-          <small>
-            <Link to="/">Return to Main</Link>
-          </small>
-        </h4>
+        <h4>Missions Config </h4>
         <div className="magic-container">
           <MagicContainer
             renderFrame={({ id, page, activePage, actions }) => {

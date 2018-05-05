@@ -388,13 +388,14 @@ class App extends Component {
       selectedPanel,
       selectedComponent
     } = this.state;
-    const { data: { loading, softwarePanels } } = this.props;
+    const {
+      data: { loading, softwarePanels }
+    } = this.props;
     if (loading || !softwarePanels) return null;
     return (
       <Container fluid className="software-panels">
         <Row>
           <Col sm={3}>
-            <Link to={"/"}>Go Back</Link>
             {selectedPanel && (
               <div>
                 {edit && (

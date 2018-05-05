@@ -128,14 +128,15 @@ class Surveys extends Component {
     });
   };
   render() {
-    const { data: { loading, surveyform } } = this.props;
+    const {
+      data: { loading, surveyform }
+    } = this.props;
     const { selectedForm } = this.state;
     if (loading || !surveyform) return null;
     return (
       <Container fluid className="survey-forms">
         <Row>
           <Col sm={3}>
-            <Link to={"/"}>Go Back</Link>
             <div
               style={{
                 maxHeight: "60vh",

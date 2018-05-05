@@ -48,7 +48,6 @@ export default class App extends Component {
             exact
             render={props => <ClientsLobby {...props} history={history} />}
           />
-          <Route path="/debug" component={DebugList} />
           <Route path="/test" exact component={TestCard} />
 
           <Route path="/test/:component" component={TestCard} />

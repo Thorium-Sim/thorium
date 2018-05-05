@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import SideNav from "./FlightDirector/sideNav";
 import { Route, Link } from "react-router-dom";
 import TacticalMapCore from "../components/views/TacticalMap";
@@ -16,7 +16,7 @@ import {
 
 const Config = ({ history }) => {
   return (
-    <Fragment>
+    <div className="config-container">
       <SideNav />
       <div>
         <Route path="/" exact component={Welcome} />
@@ -31,12 +31,6 @@ const Config = ({ history }) => {
           render={props => {
             return (
               <div style={{ height: "100%" }}>
-                <h4>
-                  Tactical Config{" "}
-                  <small>
-                    <Link to="/">Return to Main</Link>
-                  </small>
-                </h4>
                 <TacticalMapCore dedicated={true} {...props} />
               </div>
             );
@@ -55,8 +49,9 @@ const Config = ({ history }) => {
           path="/config/keyboard"
           render={props => <Keyboards {...props} history={history} />}
         />
+        <Route path="/config/debug" component={DebugList} />
       </div>
-    </Fragment>
+    </div>
   );
 };
 
