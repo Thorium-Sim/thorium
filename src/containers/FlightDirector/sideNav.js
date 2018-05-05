@@ -14,6 +14,11 @@ const makeLinks = ({ simulators = [], missions = [] }) => {
       icon: "home"
     },
     {
+      link: "/client",
+      name: "Client",
+      icon: "desktop"
+    },
+    {
       name: "Simulator Config",
       icon: "space-shuttle",
       children: simulators
