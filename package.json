@@ -119,8 +119,7 @@
     "build-server": "node ./config/build-server.js",
     "zip-server":
       "zip -r thorium-macos.zip thorium-macos && zip -r thorium-win.exe.zip thorium-win.exe && zip -r thorium-linux.zip thorium-linux",
-    "build":
-      "npm run build-client && npm run build-server && npm run zip-server",
+    "build": "npm run build-client && npm run build-server",
     "lint": "eslint .",
     "cloc":
       "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots,coverage,build --exclude-ext=css,json",
