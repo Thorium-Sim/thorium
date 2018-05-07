@@ -36,17 +36,18 @@ class MissionsConfig extends Component {
     loadingMission: false
   };
   missionSubscription = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.missionSubscription && !nextProps.data.loading) {
-      this.missionSubscription = nextProps.data.subscribeToMore({
-        document: MISSION_SUB,
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            missions: subscriptionData.data.missionsUpdate
-          });
-        }
-      });
-    }
+  componentDidMount() {
+    this.sub = this.props.subscribe({
+      document: MISSION_SUB,
+      updateQuery: (previousResult, { subscriptionData }) => {
+        return Object.assign({}, previousResult, {
+          missions: subscriptionData.data.missionsUpdate
+        });
+      }
+    });
+  }
+  componentWillUnmount() {
+    this.sub && this.sub();
   }
   setSelectedMission = mission => {
     this.setState({
@@ -223,11 +224,12 @@ const MissionsConfigData = withApollo(
   }) => {
     return (
       <Query query={MissionsConfigQuery} variables={{ missionId }}>
-        {({ loading, data }) =>
+        {({ loading, data, subscribeToMore }) =>
           loading || !data ? null : (
             <MissionsConfig
               history={history}
               client={client}
+              subscribe={subscribeToMore}
               mission={data.missions[0]}
             />
           )
