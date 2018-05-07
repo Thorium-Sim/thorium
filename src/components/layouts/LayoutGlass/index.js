@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Alerts from "../../generic/Alerts";
-import ActionsMixin from "../../generic/Actions";
 import TransitionGroup from "react-addons-transition-group";
 import CardFrame from "./frame";
 import Widgets from "../LayoutOdyssey/widgets";
@@ -36,36 +35,34 @@ class LayoutGlass extends Component {
     const { touch } = this.state;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     return (
-      <ActionsMixin {...this.props}>
-        <div className={`layout-glass ${alertClass}`}>
-          <TransitionGroup>{renderCards(this.props)}</TransitionGroup>
+      <div className={`layout-glass ${alertClass}`}>
+        <TransitionGroup>{renderCards(this.props)}</TransitionGroup>
 
-          <div className="frame-text">
-            <h1 className="simulator-name">{simulator.name}</h1>
-            <h2 className="station-name">{stationName}</h2>
-            <h2 className="login-name">{clientObj.loginName}</h2>
-          </div>
-          {!hypercard && (
-            <CardSwitcher
-              className={alertClass}
-              clientObj={this.props.clientObj}
-              cards={station.cards}
-              currentCard={cardName}
-              changeCard={changeCard}
-              {...this.props}
-            />
-          )}
-          <CardFrame simulator={simulator} />
-          <Widgets
-            clientObj={clientObj}
-            simulator={simulator}
-            station={station}
-            flight={flight}
-            touch={touch}
-          />
-          <Alerts ref="alert-widget" simulator={simulator} station={station} />
+        <div className="frame-text">
+          <h1 className="simulator-name">{simulator.name}</h1>
+          <h2 className="station-name">{stationName}</h2>
+          <h2 className="login-name">{clientObj.loginName}</h2>
         </div>
-      </ActionsMixin>
+        {!hypercard && (
+          <CardSwitcher
+            className={alertClass}
+            clientObj={this.props.clientObj}
+            cards={station.cards}
+            currentCard={cardName}
+            changeCard={changeCard}
+            {...this.props}
+          />
+        )}
+        <CardFrame simulator={simulator} />
+        <Widgets
+          clientObj={clientObj}
+          simulator={simulator}
+          station={station}
+          flight={flight}
+          touch={touch}
+        />
+        <Alerts ref="alert-widget" simulator={simulator} station={station} />
+      </div>
     );
   }
 }
