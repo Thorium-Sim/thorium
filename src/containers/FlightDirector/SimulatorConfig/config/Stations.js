@@ -471,7 +471,8 @@ const ConfigStationSet = props => {
                             {!loading &&
                               simulator.panels.map(p => (
                                 <option key={p} value={p}>
-                                  {softwarePanels.find(s => s.id === p).name}
+                                  {softwarePanels.find(s => s.id === p) &&
+                                    softwarePanels.find(s => s.id === p).name}
                                 </option>
                               ))}
                           </Input>
@@ -505,7 +506,8 @@ const ConfigStationSet = props => {
                 {!loading &&
                   simulator.panels.map(p => (
                     <option key={p} value={p}>
-                      {softwarePanels.find(s => s.id === p).name}
+                      {softwarePanels.find(s => s.id === p) &&
+                        softwarePanels.find(s => s.id === p).name}
                     </option>
                   ))}
               </select>
