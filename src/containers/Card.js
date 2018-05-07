@@ -1,22 +1,25 @@
 import React, { Component } from "react";
 import Layouts from "../components/layouts";
 import Keyboard from "../components/views/Keyboard";
+import ActionsMixin from "../components/generic/Actions";
 
-const Blackout = () => {
+const Blackout = props => {
   return (
-    <div
-      style={{
-        width: "100vw",
-        height: "100vh",
-        position: "fixed",
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-        zIndex: 10000,
-        backgroundColor: "black"
-      }}
-    />
+    <ActionsMixin {...props}>
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          position: "fixed",
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+          zIndex: 10000,
+          backgroundColor: "black"
+        }}
+      />
+    </ActionsMixin>
   );
 };
 
@@ -108,7 +111,9 @@ export default class CardFrame extends Component {
       LayoutComponent = Layouts[layoutName + "Viewscreen"] || LayoutComponent;
     }
     if (client.offlineState === "blackout" || station.name === "Blackout") {
-      return <Blackout />;
+      return (
+        <Blackout clientObj={client} station={station} simulator={simulator} />
+      );
     }
     if (station.name.match(/keyboard:.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
       return (
