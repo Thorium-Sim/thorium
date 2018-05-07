@@ -13,5 +13,18 @@ App.on("updateSoftwarePanel", ({ panel }) => {
 });
 App.on("removeSoftwarePanel", ({ panel }) => {
   App.softwarePanels = App.softwarePanels.filter(s => s.id !== panel);
+
+  // Remove the panels from simulators
+  App.simulators.forEach(s =>
+    s.updatePanels(s.panels.filter(p => p !== panel))
+  );
+
+  // Remove from station sets
+  App.stationSets.forEach(s => {
+    s.stations.forEach(st => {
+      const card = st.cards.find(c => c.component === panel);
+      st.removeCard(card.name);
+    });
+  });
   pubsub.publish("softwarePanelsUpdate", App.softwarePanels);
 });

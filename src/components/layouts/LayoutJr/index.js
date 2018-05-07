@@ -1,6 +1,5 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Alerts from "../../generic/Alerts";
-import ActionsMixin from "../../generic/Actions";
 import renderCards from "../cardRenderer";
 import "./style.css";
 
@@ -8,7 +7,7 @@ export default props => {
   const { simulator, station } = props;
   let alertClass = `alertColor${simulator.alertlevel || 5}`;
   return (
-    <ActionsMixin {...props}>
+    <Fragment>
       <div className={`layout-jr card-area ${alertClass}`}>
         {renderCards(props)}
       </div>
@@ -18,6 +17,6 @@ export default props => {
         <h1 className="station-name">{station.name}</h1>
         <Alerts simulator={simulator} station={station} />
       </div>
-    </ActionsMixin>
+    </Fragment>
   );
 };
