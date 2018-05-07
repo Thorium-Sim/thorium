@@ -1,10 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import TransitionGroup from "react-addons-transition-group";
 import { withApollo } from "react-apollo";
 import CardSwitcher from "./CardSwitcher";
 import Widgets from "./Widgets";
 import Alerts from "../../generic/Alerts";
-import ActionsMixin from "../../generic/Actions";
 import renderCards from "../cardRenderer";
 import Settings from "./settings";
 
@@ -37,7 +36,7 @@ class LayoutCorners extends Component {
     const { touch } = this.state;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     return (
-      <ActionsMixin {...this.props}>
+      <Fragment>
         <div className={`layout-corners card-area ${alertClass}`}>
           <TransitionGroup>{renderCards(this.props)}</TransitionGroup>
         </div>
@@ -89,7 +88,7 @@ class LayoutCorners extends Component {
           />
           <Alerts ref="alert-widget" simulator={simulator} station={station} />
         </div>
-      </ActionsMixin>
+      </Fragment>
     );
   }
 }
