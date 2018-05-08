@@ -84,7 +84,9 @@ class Library extends Component {
     }
   };
   render() {
-    const { data: { loading, libraryEntries } } = this.props;
+    const {
+      data: { loading, libraryEntries }
+    } = this.props;
     const { categoryFilter = [], searchFilter, selectedEntry } = this.state;
     if (loading || !libraryEntries) return null;
     const sEntry = libraryEntries.find(l => l.id === selectedEntry);
@@ -205,7 +207,13 @@ class Library extends Component {
                       sEntry.seeAlso.map(s => (
                         <p
                           key={`seeAlso-${s.id}`}
-                          onClick={() => this.setState({ selectedEntry: s.id })}
+                          onClick={() =>
+                            this.setState({
+                              selectedEntry: libraryEntries.find(
+                                l => l.title === s.title
+                              ).id
+                            })
+                          }
                         >
                           {s.title}
                         </p>

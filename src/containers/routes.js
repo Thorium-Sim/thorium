@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Router, Route, Switch, Link } from "react-router-dom";
 import CardContainer from "./Card";
 import Client from "../components/Client";
-import { FlightDirector, ClientsLobby } from "./FlightDirector";
+import { FlightDirector } from "./FlightDirector";
 import Config from "./config";
 
 const history = createHistory();
