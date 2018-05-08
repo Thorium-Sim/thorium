@@ -3,9 +3,9 @@ import { Input } from "reactstrap";
 import * as Components from "./components";
 
 const style = {
-  border: "solid 1px #ccc",
+  border: "solid 1px #333",
   minHeight: "50px",
-  backgroundColor: "#fdfdfd",
+  backgroundColor: "#030303",
   padding: "20px",
   margin: "20px"
 };

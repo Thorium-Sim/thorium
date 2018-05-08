@@ -66,7 +66,7 @@ const makeLinks = () => {
     links.push({
       name: "Debug Core",
       icon: "bug",
-      link: "/flight/c/core"
+      link: "/config/flight/c/core"
     });
   }
 

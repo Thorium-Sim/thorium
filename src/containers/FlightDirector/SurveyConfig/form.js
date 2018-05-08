@@ -47,7 +47,7 @@ class Form extends Component {
     const { form, edited } = this.state;
     const { saveForm } = this.props;
     return (
-      <div>
+      <div style={{ height: "80vh", overflowY: "auto" }}>
         {form.map(f => (
           <FormContainer {...f} key={f.id} updateForm={this.updateForm} />
         ))}

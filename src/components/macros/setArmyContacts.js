@@ -107,24 +107,24 @@ export default class SetArmyContacts extends Component {
           />{" "}
           Remove
         </label>
-        <div
-          style={{
-            position: "fixed",
-            right: "40%",
-            bottom: "10%",
-            width: "25%",
-            height: "50%",
-            overflowY: "scroll"
-          }}
-        >
-          {selectedContact && (
+        {selectedContact && (
+          <div
+            style={{
+              position: "fixed",
+              right: "40%",
+              bottom: "10%",
+              width: "25%",
+              height: "50%",
+              overflowY: "scroll"
+            }}
+          >
             <ContactContextMenu
               contact={selectedContact}
               closeMenu={() => this.setState({ selectedContact: null })}
               updateArmyContact={this.updateArmyContact}
             />
-          )}
-        </div>
+          </div>
+        )}
       </FormGroup>
     );
   }

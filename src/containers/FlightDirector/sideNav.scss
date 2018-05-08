@@ -17,8 +17,8 @@
     z-index: 100;
     transition: transform 0.3s ease-out;
     transform: translate(-100%);
-    background-color: #f8f8f8;
-    border-right: solid 1px #e7e7e7;
+    background-color: #222;
+    border-right: solid 1px #rgba(255, 255, 255, 0.5);
     overflow-y: auto;
     height: 100%;
     display: inline-flex;
@@ -27,6 +27,7 @@
     }
     a {
       display: inline-block;
+      color: #ddd;
     }
   }
   .menu-button {

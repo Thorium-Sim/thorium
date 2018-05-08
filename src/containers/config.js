@@ -4,6 +4,7 @@ import { Route } from "react-router-dom";
 import TacticalMapCore from "../components/views/TacticalMap";
 import DebugList from "./DebugList";
 import {
+  FlightConfig,
   SetConfig,
   MissionConfig,
   SimulatorConfig,
@@ -11,7 +12,8 @@ import {
   Welcome,
   SoftwarePanels,
   SurveyForms,
-  Keyboards
+  Keyboards,
+  ClientsLobby
 } from "./FlightDirector";
 import MissionPicker from "./missionPicker";
 import SimulatorPicker from "./simulatorPicker";
@@ -23,6 +25,16 @@ const Config = ({ history }) => {
       <SideNav />
       <div>
         <Route path="/" exact component={Welcome} />
+        <Route
+          path="/config/flight"
+          exact
+          render={props => <FlightConfig {...props} history={history} />}
+        />
+        <Route
+          path="/config/flight/:flightId"
+          exact
+          render={props => <ClientsLobby {...props} history={history} />}
+        />
         <Route path="/config/assets" component={AssetConfig} />
         <Route path="/config/mission" exact component={MissionPicker} />
         <Route path="/config/simulator" exact component={SimulatorPicker} />

@@ -45,7 +45,7 @@ const Checkbox = ({
               disabled={disabled}
               type="checkbox"
               name={o.id}
-              checked={value.indexOf(o.id) > -1}
+              checked={value && value.indexOf(o.id) > -1}
               onChange={e =>
                 updateValue(
                   e.target.checked

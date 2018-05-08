@@ -80,7 +80,9 @@ class KeyboardControl extends Component {
     }
   };
   getKey = () => {
-    const { keyboard: { keys: keyboardKeys } } = this.props;
+    const {
+      keyboard: { keys: keyboardKeys }
+    } = this.props;
     const { selectedKey, meta } = this.state;
     const key =
       keyboardKeys.find(
@@ -91,7 +93,9 @@ class KeyboardControl extends Component {
     return key;
   };
   addAction = (e, updateKey) => {
-    const { keyboard: { id } } = this.props;
+    const {
+      keyboard: { id }
+    } = this.props;
     const { selectedKey, meta } = this.state;
     const key = this.getKey();
     const { actions = [] } = key;
@@ -108,7 +112,9 @@ class KeyboardControl extends Component {
     });
   };
   removeAction = (action, updateKey) => {
-    const { keyboard: { id } } = this.props;
+    const {
+      keyboard: { id }
+    } = this.props;
     const { selectedKey, meta } = this.state;
     const key = this.getKey();
     const { actions = [] } = key;
@@ -124,7 +130,9 @@ class KeyboardControl extends Component {
     });
   };
   updateAction = (action, updateKey) => {
-    const { keyboard: { id } } = this.props;
+    const {
+      keyboard: { id }
+    } = this.props;
     const { selectedKey, meta } = this.state;
     const key = this.getKey();
     const { actions = [] } = key;
@@ -206,7 +214,7 @@ class KeyboardControl extends Component {
                       />
                     </Card>
                   </Col>
-                  <Col sm={6}>
+                  <Col sm={6} style={{ maxHeight: "40vh", overflowY: "auto" }}>
                     <MacroConfig
                       selectedAction={selectedAction}
                       selectedKey={selectedKeyObj}

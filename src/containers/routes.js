@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Router, Route, Switch, Link } from "react-router-dom";
 import CardContainer from "./Card";
 import Client from "../components/Client";
-import { FlightConfig, FlightDirector, ClientsLobby } from "./FlightDirector";
+import { FlightDirector, ClientsLobby } from "./FlightDirector";
 import Config from "./config";
 
 const history = createHistory();
@@ -33,20 +33,12 @@ export default class App extends Component {
         <Switch>
           <Route exact path="/" component={Config} />
           <Route path="/client" component={Client} />
-          <Route path="/config/:comp" component={Config} />
           <Route
-            path="/flightConfig"
-            render={props => <FlightConfig {...props} history={history} />}
-          />
-          <Route
-            path="/flight/:flightId/core"
+            path="/config/flight/:flightId/core"
             render={props => <FlightDirector {...props} history={history} />}
           />
-          <Route
-            path="/flight/:flightId"
-            exact
-            render={props => <ClientsLobby {...props} history={history} />}
-          />
+          <Route path="/config/:comp" component={Config} />
+          <Route path="/config/flight" component={Config} />
           <Route path="/test" exact component={TestCard} />
 
           <Route path="/test/:component" component={TestCard} />
