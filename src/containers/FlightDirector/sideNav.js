@@ -1,7 +1,19 @@
 import React, { Component, Fragment } from "react";
 import FontAwesome from "react-fontawesome";
-import { Nav, NavItem, NavLink, Button } from "reactstrap";
+import {
+  Nav,
+  NavItem,
+  NavLink,
+  Button,
+  ButtonGroup,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
+} from "reactstrap";
 import { Link } from "react-router-dom";
+import IssueTracker from "../../components/admin/IssueTracker";
+
 import "./sideNav.css";
 
 const makeLinks = () => {
@@ -74,24 +86,56 @@ const makeLinks = () => {
 };
 class SideNav extends Component {
   state = { open: false };
+  toggleIssueTracker = () => {
+    this.setState({
+      issuesOpen: !this.state.issuesOpen
+    });
+  };
   render = () => (
     <Fragment>
       <div className="top-bar">
-        <Button
-          size="sm"
-          color="dark"
-          className="menu-button"
-          onClick={() => this.setState({ open: true })}
-        >
-          <FontAwesome name="bars" />
-        </Button>
-        <img
-          alt="Logo"
-          src={require("../../components/logo.png")}
-          draggable="false"
-          height="30px"
-        />
-        <h3>Thorium</h3>
+        <div className="left-side">
+          <Button
+            size="sm"
+            color="dark"
+            className="menu-button"
+            onClick={() => this.setState({ open: true })}
+          >
+            <FontAwesome name="bars" />
+          </Button>
+          <img
+            alt="Logo"
+            src={require("../../components/logo.png")}
+            draggable="false"
+            height="30px"
+          />
+          <h3>Thorium</h3>
+        </div>
+        <ButtonGroup className="pull-right">
+          <Button color="success" size="sm" onClick={this.props.startTraining}>
+            Help
+          </Button>
+          <Button
+            color="secondary"
+            size="sm"
+            onClick={() => this.setState({ issuesOpen: true })}
+          >
+            Bug Report
+          </Button>
+        </ButtonGroup>
+        <Modal isOpen={this.state.issuesOpen} toggle={this.toggleIssueTracker}>
+          <ModalHeader toggle={this.toggleIssueTracker}>
+            Submit a Feature/Bug Report
+          </ModalHeader>
+          <ModalBody>
+            <IssueTracker close={this.toggleIssueTracker} />
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.toggleIssueTracker}>
+              Close
+            </Button>
+          </ModalFooter>
+        </Modal>
       </div>
       <Nav vertical className={`sideNav ${this.state.open ? "open" : ""}`}>
         <SideNavLink
