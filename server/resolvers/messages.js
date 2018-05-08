@@ -23,6 +23,7 @@ export const MessagesQueries = {
       const teams = App.teams.filter(
         t =>
           t.simulatorId === simulatorId &&
+          stationObj &&
           stationObj.messageGroups.findIndex(
             m => teamMap[m] === t.type.toLowerCase()
           ) > -1

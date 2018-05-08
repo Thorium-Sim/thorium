@@ -71,7 +71,7 @@ It will permenantly erase all simulators running in this flight.`
           Reset Flight
         </Button>
         <h5 className="text-right">
-          <Link to={`/flight/${props.match.params.flightId}/core`}>
+          <Link to={`/config/flight/${props.match.params.flightId}/core`}>
             Go to Core
           </Link>
         </h5>

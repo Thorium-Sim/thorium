@@ -116,7 +116,7 @@ class Welcome extends Component {
               <CardBody>
                 {flights.map(f => (
                   <Link
-                    to={`/flight/${f.id}`}
+                    to={`/config/flight/${f.id}`}
                     key={f.id}
                     className="flight-picker"
                   >
@@ -134,7 +134,7 @@ class Welcome extends Component {
             <h3>Start a new Flight</h3>
             <Button
               tag={Link}
-              to="/flightConfig"
+              to="/config/flight"
               color="success"
               block
               size="lg"
@@ -142,69 +142,6 @@ class Welcome extends Component {
               New Flight
             </Button>
           </div>
-        </Row>
-        <Row className="config-row">
-          <Col>
-            <Button tag={Link} to="/simulatorConfig" color="info" block>
-              Configure Simulators
-            </Button>
-          </Col>
-          <Col>
-            <Button tag={Link} to="/assetConfig" color="info" block>
-              Configure Generic Assets
-            </Button>
-          </Col>
-
-          <Col>
-            <Button tag={Link} to="/missionConfig" color="info" block>
-              Configure Missions
-            </Button>
-          </Col>
-          <Col>
-            <Button tag={Link} to="/setConfig" color="info" block>
-              Configure Sets
-            </Button>
-          </Col>
-
-          <Col>
-            <Button tag={Link} to="/tacticalConfig" color="info" block>
-              Configure Tactical Maps
-            </Button>
-          </Col>
-          {process.env.NODE_ENV !== "production" && (
-            <Col>
-              <Button tag={Link} to="/debug" color="secondary" block>
-                Debug
-              </Button>
-            </Col>
-          )}
-          {process.env.NODE_ENV !== "production" && (
-            <Col>
-              <Button tag={Link} to="/flight/c/core" color="secondary" block>
-                Debug Core
-              </Button>
-            </Col>
-          )}
-          <Col>
-            <Button color="primary" block onClick={this.toggleIssueTracker}>
-              Bug Report/Feature Request
-            </Button>
-          </Col>
-          <Col>
-            <Button color="warning" block tag={Link} to="/softwarePanels">
-              Software Panel Config
-            </Button>
-          </Col>
-          <Col>
-            <Button color="warning" block tag={Link} to="/surveyForms">
-              Survey Form Config
-            </Button>
-          </Col>
-          <Col>
-            <Button color="warning" block tag={Link} to="/keyboards">
-              Keyboard Config
-            </Button>
-          </Col>
         </Row>
         <Modal isOpen={this.state.issuesOpen} toggle={this.toggleIssueTracker}>
           <ModalHeader toggle={this.toggleIssueTracker}>

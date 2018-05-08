@@ -54,6 +54,109 @@ const CLIENT_CHANGE_QUERY = gql`
   }
 `;
 
+const ClientRow = ({ p, index, removeClient, select, flights }) => {
+  return (
+    <tr key={`flight-${p.id}-${index}`}>
+      <td>
+        <FontAwesome
+          name="ban"
+          className="text-danger"
+          onClick={() => removeClient(p.id)}
+        />{" "}
+        {`${p.id}`}
+      </td>
+      <td>
+        <select
+          value={(p.flight && p.flight.id) || ""}
+          onChange={e => select(p, "flight", e)}
+          className="form-control-sm c-select"
+        >
+          <option value="">Select a flight</option>
+          {flights ? (
+            flights.map(f => {
+              return (
+                <option key={`flight-${p.id}-${f.id}`} value={f.id}>
+                  {`${f.name}: ${moment(f.date).format("MM/DD/YY hh:mma")}`}
+                </option>
+              );
+            })
+          ) : (
+            <option disabled>No Flights</option>
+          )}
+        </select>
+      </td>
+      <td>
+        <select
+          value={(p.simulator && p.simulator.id) || ""}
+          onChange={e => select(p, "simulator", e)}
+          className="form-control-sm c-select"
+        >
+          <option value="">Select a simulator</option>
+          {p.flight ? (
+            p.flight.simulators.map(s => (
+              <option key={`${p.id}-simulator-${s.id}`} value={s.id}>
+                {s.name}
+              </option>
+            ))
+          ) : (
+            <option disabled>No Simulators</option>
+          )}
+        </select>
+      </td>
+      <td>
+        <select
+          value={(p.station && p.station.name) || ""}
+          onChange={e => select(p, "station", e)}
+          className="form-control-sm c-select"
+        >
+          <option value="">Select a station</option>
+          {p.simulator ? (
+            p.simulator.stations.map(s => (
+              <option key={`${p.id}-station-${s.name}`} value={s.name}>
+                {s.name}
+              </option>
+            ))
+          ) : (
+            <option disabled>No Stations</option>
+          )}
+          <option disabled>──────────</option>
+          <option value={"Viewscreen"}>Viewscreen</option>
+          <option value={"Sound"}>Sound</option>
+          <option value={"Blackout"}>Blackout</option>
+          <Query
+            query={gql`
+              query Keyboards {
+                keyboard {
+                  id
+                  name
+                }
+              }
+            `}
+          >
+            {({ loading, data: { keyboard } }) => {
+              if (loading || keyboard.length === 0) {
+                return null;
+              }
+              return (
+                <Fragment>
+                  <option disabled>──────────</option>
+                  <optgroup label="Keyboards">
+                    {keyboard.map(k => (
+                      <option key={k.id} value={`keyboard:${k.id}`}>
+                        {k.name}
+                      </option>
+                    ))}
+                    }}
+                  </optgroup>
+                </Fragment>
+              );
+            }}
+          </Query>
+        </select>
+      </td>
+    </tr>
+  );
+};
 class Clients extends Component {
   constructor(props) {
     super(props);
@@ -82,7 +185,7 @@ class Clients extends Component {
       });
     }
   }
-  _select(p, type, e) {
+  select = (p, type, e) => {
     let m = null;
     if (type === "flight") {
       m = "clientSetFlight(client: $client, flightId: $id)";
@@ -104,7 +207,7 @@ class Clients extends Component {
       mutation: mutation,
       variables: obj
     });
-  }
+  };
   removeClient = id => {
     const mutation = gql`
       mutation DisconnectClient($client: ID!) {
@@ -151,129 +254,47 @@ class Clients extends Component {
               </thead>
               <tbody>
                 {!this.props.data.loading ? (
-                  this.props.data.clients &&
-                  this.props.data.clients
-                    .filter(
-                      p =>
-                        p.flight === "" ||
-                        p.flight === null ||
-                        p.flight.id === this.props.match.params.flightId
-                    )
-                    .map((p, index) => (
-                      <tr key={`flight-${p.id}-${index}`}>
-                        <td>
-                          <FontAwesome
-                            name="ban"
-                            className="text-danger"
-                            onClick={() => this.removeClient(p.id)}
-                          />{" "}
-                          {`${p.id}`}
-                        </td>
-                        <td>
-                          <select
-                            value={(p.flight && p.flight.id) || ""}
-                            onChange={this._select.bind(this, p, "flight")}
-                            className="form-control-sm c-select"
-                          >
-                            <option value="">Select a flight</option>
-                            {this.props.data.flights ? (
-                              this.props.data.flights.map(f => {
-                                return (
-                                  <option
-                                    key={`flight-${p.id}-${f.id}`}
-                                    value={f.id}
-                                  >
-                                    {`${f.name}: ${moment(f.date).format(
-                                      "MM/DD/YY hh:mma"
-                                    )}`}
-                                  </option>
-                                );
-                              })
-                            ) : (
-                              <option disabled>No Flights</option>
-                            )}
-                          </select>
-                        </td>
-                        <td>
-                          <select
-                            value={(p.simulator && p.simulator.id) || ""}
-                            onChange={this._select.bind(this, p, "simulator")}
-                            className="form-control-sm c-select"
-                          >
-                            <option value="">Select a simulator</option>
-                            {p.flight ? (
-                              p.flight.simulators.map(s => (
-                                <option
-                                  key={`${p.id}-simulator-${s.id}`}
-                                  value={s.id}
-                                >
-                                  {s.name}
-                                </option>
-                              ))
-                            ) : (
-                              <option disabled>No Simulators</option>
-                            )}
-                          </select>
-                        </td>
-                        <td>
-                          <select
-                            value={(p.station && p.station.name) || ""}
-                            onChange={this._select.bind(this, p, "station")}
-                            className="form-control-sm c-select"
-                          >
-                            <option value="">Select a station</option>
-                            {p.simulator ? (
-                              p.simulator.stations.map(s => (
-                                <option
-                                  key={`${p.id}-station-${s.name}`}
-                                  value={s.name}
-                                >
-                                  {s.name}
-                                </option>
-                              ))
-                            ) : (
-                              <option disabled>No Stations</option>
-                            )}
-                            <option disabled>──────────</option>
-                            <option value={"Viewscreen"}>Viewscreen</option>
-                            <option value={"Sound"}>Sound</option>
-                            <option value={"Blackout"}>Blackout</option>
-                            <Query
-                              query={gql`
-                                query Keyboards {
-                                  keyboard {
-                                    id
-                                    name
-                                  }
-                                }
-                              `}
-                            >
-                              {({ loading, data: { keyboard } }) => {
-                                if (loading || keyboard.length === 0) {
-                                  return null;
-                                }
-                                return (
-                                  <Fragment>
-                                    <option disabled>──────────</option>
-                                    <optgroup label="Keyboards">
-                                      {keyboard.map(k => (
-                                        <option
-                                          key={k.id}
-                                          value={`keyboard:${k.id}`}
-                                        >
-                                          {k.name}
-                                        </option>
-                                      ))}
-                                      }}
-                                    </optgroup>
-                                  </Fragment>
-                                );
-                              }}
-                            </Query>
-                          </select>
+                  this.props.data.clients && (
+                    <Fragment>
+                      {this.props.data.clients
+                        .filter(
+                          p =>
+                            p.flight === "" ||
+                            p.flight === null ||
+                            p.flight.id === this.props.match.params.flightId
+                        )
+                        .map((p, index) => (
+                          <ClientRow
+                            p={p}
+                            index={index}
+                            removeClient={this.removeClient}
+                            select={this.select}
+                            flights={this.props.data.flights}
+                          />
+                        ))}
+                      <tr>
+                        <td colSpan="4">
+                          <strong>Clients Assigned to Other Flights</strong>
                         </td>
                       </tr>
-                    ))
+                      {this.props.data.clients
+                        .filter(
+                          p =>
+                            p.flight !== "" &&
+                            p.flight !== null &&
+                            p.flight.id !== this.props.match.params.flightId
+                        )
+                        .map((p, index) => (
+                          <ClientRow
+                            p={p}
+                            index={index}
+                            removeClient={this.removeClient}
+                            select={this.select}
+                            flights={this.props.data.flights}
+                          />
+                        ))}
+                    </Fragment>
+                  )
                 ) : (
                   <tr />
                 )}

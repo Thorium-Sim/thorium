@@ -462,7 +462,7 @@ class ClientView extends Component {
     this.clientSubscription && this.clientSubscription();
     this.simulatorSub && this.simulatorSub();
     this.cacheSub && this.cacheSub();
-    this.soundSub && this.soundSub();
+    this.soundSub && this.soundSub._cleanup();
   }
   componentDidMount() {
     this.props.client.mutate({

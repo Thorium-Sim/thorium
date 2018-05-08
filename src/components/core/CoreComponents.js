@@ -145,7 +145,11 @@ class CoreComponents extends Component {
   render() {
     if (this.props.data.loading) return null;
 
-    const { data: { flights }, flightId, history } = this.props;
+    const {
+      data: { flights },
+      flightId,
+      history
+    } = this.props;
     if (
       !flights ||
       (flights.map(f => f.id).indexOf(flightId) === -1 && flightId !== "c")
@@ -162,7 +166,11 @@ class CoreComponents extends Component {
     const { notifications, speech, mosaic } = this.state;
     return (
       <div style={{ backgroundColor: "#333", color: "white" }}>
-        <Button tag={Link} size="sm" to={`/flight/${this.props.flightId}`}>
+        <Button
+          tag={Link}
+          size="sm"
+          to={`/config/flight/${this.props.flightId}`}
+        >
           {"<-"} Client Config
         </Button>
 

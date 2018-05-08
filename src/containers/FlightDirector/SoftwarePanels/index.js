@@ -12,7 +12,6 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import "bootstrap/dist/css/bootstrap.css";
 import "./style.css";
-import { Link } from "react-router-dom";
 import ComponentLibrary from "./componentLibrary";
 import Measure from "react-measure";
 import Canvas from "./canvas";
@@ -388,13 +387,15 @@ class App extends Component {
       selectedPanel,
       selectedComponent
     } = this.state;
-    const { data: { loading, softwarePanels } } = this.props;
+    const {
+      data: { loading, softwarePanels }
+    } = this.props;
     if (loading || !softwarePanels) return null;
     return (
       <Container fluid className="software-panels">
+        <h4>Software Panel Config </h4>
         <Row>
           <Col sm={3}>
-            <Link to={"/"}>Go Back</Link>
             {selectedPanel && (
               <div>
                 {edit && (

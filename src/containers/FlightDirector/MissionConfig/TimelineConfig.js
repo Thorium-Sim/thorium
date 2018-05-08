@@ -16,14 +16,13 @@ import FontAwesome from "react-fontawesome";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import EventPicker from "./EventPicker";
 import { macroNames } from "./PrintMission";
+import MissionConfig from "./MissionConfig";
 
-const SortableItem = SortableElement(
-  ({
-    item,
-    selectedTimelineStep,
-    setSelectedTimelineStep,
-    removeTimelineStep
-  }) => (
+const sortableElement = SortableElement;
+const sortableContainer = SortableContainer;
+
+const SortableItem = sortableElement(
+  ({ item, selectedTimelineStep, setSelectedTimelineStep }) => (
     <li
       key={`${item.id}-timelineStep`}
       onClick={setSelectedTimelineStep.bind(this, item)}
@@ -36,7 +35,7 @@ const SortableItem = SortableElement(
   )
 );
 
-const SortableList = SortableContainer(
+const SortableList = sortableContainer(
   ({
     items,
     setSelectedTimelineStep,
@@ -78,12 +77,12 @@ export default class TimelineConfig extends Component {
       });
     }
   }
-  _setSelectedTimelineStep(timeline) {
+  _setSelectedTimelineStep = timeline => {
     this.setState({
       selectedTimelineStep: timeline.id,
       selectedTimelineItem: null
     });
-  }
+  };
   _setSelectedTimelineItem(timelineStep) {
     this.setState({
       selectedTimelineItem: timelineStep.id
@@ -169,7 +168,7 @@ export default class TimelineConfig extends Component {
     timelineItem[type] = e.target.value;
     if (type === "event") {
       // Reset the args
-      timelineItem["args"] = JSON.stringify({});
+      timelineItem.args = JSON.stringify({});
     }
     obj.timelineItem = timelineItem;
 
@@ -389,7 +388,12 @@ export default class TimelineConfig extends Component {
     }
   }
   render() {
-    const { object } = this.props;
+    const {
+      object,
+      removeMission,
+      updateMission,
+      exportMissionScript
+    } = this.props;
     return (
       <Row>
         <Col sm="3">
@@ -398,11 +402,22 @@ export default class TimelineConfig extends Component {
             className="scroll"
             style={{ maxHeight: "60vh", overflowY: "scroll" }}
           >
+            <div
+              className="list-group-item"
+              onClick={() =>
+                this.setState({
+                  selectedTimelineStep: "mission",
+                  selectedTimelineItem: null
+                })
+              }
+            >
+              Mission Information
+            </div>
             <SortableList
               items={object.timeline}
               onSortEnd={this.onSortEnd.bind(this)}
               selectedTimelineStep={this.state.selectedTimelineStep}
-              setSelectedTimelineStep={this._setSelectedTimelineStep.bind(this)}
+              setSelectedTimelineStep={this._setSelectedTimelineStep}
               removeTimelineStep={this._removeTimelineStep.bind(this)}
             />
           </Card>
@@ -414,80 +429,93 @@ export default class TimelineConfig extends Component {
             >
               Add
             </Button>
-            {this.state.selectedTimelineStep && (
-              <Button
-                color="info"
-                size="sm"
-                onClick={this._duplicateTimelineStep}
-              >
-                Duplicate
-              </Button>
-            )}
-            {this.state.selectedTimelineStep && (
-              <Button
-                color="danger"
-                size="sm"
-                onClick={this._removeTimelineStep.bind(
-                  this,
-                  this.state.selectedTimelineStep
-                )}
-              >
-                Remove
-              </Button>
-            )}
+            {this.state.selectedTimelineStep &&
+              this.state.selectedTimelineStep !== "mission" && (
+                <Button
+                  color="info"
+                  size="sm"
+                  onClick={this._duplicateTimelineStep}
+                >
+                  Duplicate
+                </Button>
+              )}
+            {this.state.selectedTimelineStep &&
+              this.state.selectedTimelineStep !== "mission" && (
+                <Button
+                  color="danger"
+                  size="sm"
+                  onClick={this._removeTimelineStep.bind(
+                    this,
+                    this.state.selectedTimelineStep
+                  )}
+                >
+                  Remove
+                </Button>
+              )}
           </ButtonGroup>
         </Col>
-        {this.state.selectedTimelineStep && (
-          <Col sm="3" style={{ maxHeight: "27vh" }}>
-            <h4>
-              {
-                object.timeline.find(
-                  e => e.id === this.state.selectedTimelineStep
-                ).name
-              }
-            </h4>
-            <Card className="scroll">
-              <li
-                onClick={this._setSelectedTimelineItem.bind(this, {
-                  id: "step"
-                })}
-                className={`${
-                  this.state.selectedTimelineItem === "step" ? "selected" : ""
-                } list-group-item`}
-              >
-                Edit Step
-              </li>
-              {object.timeline
-                .find(e => e.id === this.state.selectedTimelineStep)
-                .timelineItems.map(e => {
-                  return (
-                    <li
-                      key={`${object.timeline.find(
-                        e => e.id === this.state.selectedTimelineStep
-                      )}-${e.id}`}
-                      onClick={this._setSelectedTimelineItem.bind(this, e)}
-                      className={`${
-                        e.id === this.state.selectedTimelineItem
-                          ? "selected"
-                          : ""
-                      } list-group-item`}
-                    >
-                      {e.name}{" "}
-                      <FontAwesome
-                        name="ban"
-                        className="text-danger pull-right"
-                        onClick={this._removeTimelineItem.bind(this, e)}
-                      />
-                    </li>
-                  );
-                })}
-              <EventPicker
-                className={"btn btn-sm btn-success"}
-                handleChange={e => this._addTimelineItem(e)}
-              />
-            </Card>
-          </Col>
+        {this.state.selectedTimelineStep === "mission" && (
+          <div>
+            <MissionConfig
+              mission={object}
+              removeMission={removeMission}
+              updateMission={updateMission}
+              exportMissionScript={exportMissionScript}
+            />
+          </div>
         )}
+        {this.state.selectedTimelineStep &&
+          this.state.selectedTimelineStep !== "mission" && (
+            <Col sm="3" style={{ maxHeight: "27vh" }}>
+              <h4>
+                {
+                  object.timeline.find(
+                    e => e.id === this.state.selectedTimelineStep
+                  ).name
+                }
+              </h4>
+              <Card className="scroll">
+                <li
+                  onClick={this._setSelectedTimelineItem.bind(this, {
+                    id: "step"
+                  })}
+                  className={`${
+                    this.state.selectedTimelineItem === "step" ? "selected" : ""
+                  } list-group-item`}
+                >
+                  Edit Step
+                </li>
+                {object.timeline
+                  .find(e => e.id === this.state.selectedTimelineStep)
+                  .timelineItems.map(e => {
+                    return (
+                      <li
+                        key={`${object.timeline.find(
+                          a => a.id === this.state.selectedTimelineStep
+                        )}-${e.id}`}
+                        onClick={this._setSelectedTimelineItem.bind(this, e)}
+                        className={`${
+                          e.id === this.state.selectedTimelineItem
+                            ? "selected"
+                            : ""
+                        } list-group-item`}
+                      >
+                        {e.name}{" "}
+                        <FontAwesome
+                          name="ban"
+                          className="text-danger pull-right"
+                          onClick={this._removeTimelineItem.bind(this, e)}
+                        />
+                      </li>
+                    );
+                  })}
+                <EventPicker
+                  className={"btn btn-sm btn-success"}
+                  handleChange={e => this._addTimelineItem(e)}
+                />
+              </Card>
+            </Col>
+          )}
         {(() => {
           if (this.state.selectedTimelineItem === "step") {
             const step = object.timeline.find(

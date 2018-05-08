@@ -26,7 +26,8 @@ export const FlightStructureQueries = {
   stations() {
     return App.stationSets;
   },
-  missions() {
+  missions(root, { id }) {
+    if (id) return App.missions.filter(m => m.id === id);
     return App.missions;
   }
 };

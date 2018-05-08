@@ -62,7 +62,7 @@ class FlightConfig extends Component {
       })
       .then(({ data: { startFlight: flightId } }) => {
         setTimeout(() => {
-          this.props.history.push(`/flight/${flightId}`);
+          this.props.history.push(`/config/flight/${flightId}`);
         }, 500);
       });
   };

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Container, Row, Col, Card, Button, Input } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Link } from "react-router-dom";
 
 import "./setConfig.css";
 
@@ -163,12 +162,7 @@ class SetConfig extends Component {
     const { clients, simulators, sets } = data;
     return (
       <Container fluid className="set-config">
-        <h4>
-          Set Config{" "}
-          <small>
-            <Link to="/">Return to Main</Link>
-          </small>
-        </h4>
+        <h4>Set Config </h4>
         <small>
           Be sure to connect all of your clients before configuring this
         </small>

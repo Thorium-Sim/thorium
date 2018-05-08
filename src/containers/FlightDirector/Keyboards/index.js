@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Container, Row, Col, ListGroup, Button } from "reactstrap";
-import { Link } from "react-router-dom";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import KeyboardList from "./keyboardList";
@@ -65,9 +64,10 @@ class Keyboards extends Component {
           if (loading) return null;
           return (
             <Container fluid className="survey-forms">
+              <h4>Keyboard Config </h4>
+
               <Row>
                 <Col sm={3}>
-                  <Link to={"/"}>Go Back</Link>
                   <div
                     style={{
                       maxHeight: "60vh",
