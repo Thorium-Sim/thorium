@@ -13,6 +13,9 @@ import {
   SurveyForms,
   Keyboards
 } from "./FlightDirector";
+import MissionPicker from "./missionPicker";
+import SimulatorPicker from "./simulatorPicker";
+import "./config.css";
 
 const Config = ({ history }) => {
   return (
@@ -21,6 +24,8 @@ const Config = ({ history }) => {
       <div>
         <Route path="/" exact component={Welcome} />
         <Route path="/config/assets" component={AssetConfig} />
+        <Route path="/config/mission" exact component={MissionPicker} />
+        <Route path="/config/simulator" exact component={SimulatorPicker} />
         <Route path="/config/mission/:missionId" component={MissionConfig} />
         <Route
           path="/config/simulator/:simulatorId"

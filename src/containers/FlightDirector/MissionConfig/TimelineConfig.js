@@ -429,27 +429,29 @@ export default class TimelineConfig extends Component {
             >
               Add
             </Button>
-            {this.state.selectedTimelineStep && (
-              <Button
-                color="info"
-                size="sm"
-                onClick={this._duplicateTimelineStep}
-              >
-                Duplicate
-              </Button>
-            )}
-            {this.state.selectedTimelineStep && (
-              <Button
-                color="danger"
-                size="sm"
-                onClick={this._removeTimelineStep.bind(
-                  this,
-                  this.state.selectedTimelineStep
-                )}
-              >
-                Remove
-              </Button>
-            )}
+            {this.state.selectedTimelineStep &&
+              this.state.selectedTimelineStep !== "mission" && (
+                <Button
+                  color="info"
+                  size="sm"
+                  onClick={this._duplicateTimelineStep}
+                >
+                  Duplicate
+                </Button>
+              )}
+            {this.state.selectedTimelineStep &&
+              this.state.selectedTimelineStep !== "mission" && (
+                <Button
+                  color="danger"
+                  size="sm"
+                  onClick={this._removeTimelineStep.bind(
+                    this,
+                    this.state.selectedTimelineStep
+                  )}
+                >
+                  Remove
+                </Button>
+              )}
           </ButtonGroup>
         </Col>
         {this.state.selectedTimelineStep === "mission" && (

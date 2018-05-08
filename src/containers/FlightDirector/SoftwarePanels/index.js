@@ -393,6 +393,7 @@ class App extends Component {
     if (loading || !softwarePanels) return null;
     return (
       <Container fluid className="software-panels">
+        <h4>Software Panel Config </h4>
         <Row>
           <Col sm={3}>
             {selectedPanel && (

@@ -13,6 +13,7 @@ export default class CoreFeed {
     this.body = params.body || "";
     this.color = params.color || "info";
   }
+
   ignore() {
     this.ignored = true;
   }

@@ -9,7 +9,7 @@ import {
   CardBody
 } from "reactstrap";
 import gql from "graphql-tag";
-import { Query } from "react-apollo";
+import { Query, withApollo } from "react-apollo";
 
 import SimulatorProperties from "./SimulatorProperties";
 import * as Config from "./config";
@@ -176,51 +176,6 @@ class SimulatorConfig extends Component {
       });
     }
   };
-  importSimulator = evt => {
-    if (evt.target.files[0]) {
-      const data = new FormData();
-      Array.from(evt.target.files).forEach((f, index) =>
-        data.append(`files[${index}]`, f)
-      );
-      this.setState({
-        loadingMission: true
-      });
-      fetch(
-        `${window.location.protocol}//${window.location.hostname}:${parseInt(
-          window.location.port,
-          10
-        ) + 1}/importSimulator`,
-        {
-          method: "POST",
-          body: data
-        }
-      ).then(() => {
-        window.location.reload();
-      });
-    }
-  };
-  renameSimulator = () => {
-    const name = prompt("What is the simulator name? eg. Voyager");
-    const {
-      match: {
-        params: { simulatorId }
-      }
-    } = this.props;
-    if (name && simulatorId) {
-      let variables = {
-        name: name,
-        id: simulatorId
-      };
-      this.props.client.mutate({
-        mutation: gql`
-          mutation RenameSimulator($id: ID!, $name: String!) {
-            renameSimulator(simulatorId: $id, name: $name)
-          }
-        `,
-        variables
-      });
-    }
-  };
   removeSimulator = () => {
     const {
       match: {
@@ -238,7 +193,19 @@ class SimulatorConfig extends Component {
               removeSimulator(simulatorId: $id)
             }
           `,
-          variables: obj
+          variables: obj,
+          refetchQueries: [
+            {
+              query: gql`
+                query SideNav {
+                  simulators(template: true) {
+                    id
+                    name
+                  }
+                }
+              `
+            }
+          ]
         });
         this.props.history.push("/");
         this.setState({
@@ -276,9 +243,6 @@ class SimulatorConfig extends Component {
               Export
             </Button>
             <ButtonGroup>
-              <Button onClick={this.renameSimulator} size="sm" color="warning">
-                Rename
-              </Button>
               <Button onClick={this.removeSimulator} size="sm" color="danger">
                 Remove
               </Button>
@@ -372,4 +336,4 @@ class ConfigComponentData extends React.PureComponent {
   }
 }
 
-export default SimulatorConfig;
+export default withApollo(SimulatorConfig);

@@ -2,11 +2,9 @@ import React, { Component, Fragment } from "react";
 import FontAwesome from "react-fontawesome";
 import { Nav, NavItem, NavLink, Button } from "reactstrap";
 import { Link } from "react-router-dom";
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
 import "./sideNav.css";
 
-const makeLinks = ({ simulators = [], missions = [] }) => {
+const makeLinks = () => {
   const links = [
     {
       link: "/",
@@ -21,26 +19,7 @@ const makeLinks = ({ simulators = [], missions = [] }) => {
     {
       name: "Simulator Config",
       icon: "space-shuttle",
-      children: simulators
-        .map(s => ({
-          ...s,
-          link: `/config/simulator/${s.id}`
-        }))
-        .concat([
-          {
-            name: "Create Simulator",
-            icon: "plus"
-          },
-          {
-            name: (
-              <span>
-                Import Simulator<br />
-                <small>.sim file extension</small>
-              </span>
-            ),
-            icon: "download"
-          }
-        ])
+      link: "/config/simulator"
     },
     {
       name: "Asset Config",
@@ -50,26 +29,7 @@ const makeLinks = ({ simulators = [], missions = [] }) => {
     {
       name: "Mission Config",
       icon: "user-secret",
-      children: missions
-        .map(s => ({
-          ...s,
-          link: `/config/mission/${s.id}`
-        }))
-        .concat([
-          {
-            name: "Create Mission",
-            icon: "plus"
-          },
-          {
-            name: (
-              <span>
-                Import Mission<br />
-                <small>.misn file extension</small>
-              </span>
-            ),
-            icon: "download"
-          }
-        ])
+      link: "/config/mission"
     },
     {
       name: "Tactical Map Config",
@@ -142,32 +102,16 @@ class SideNav extends Component {
             this.setState({ open: false });
           }}
         />
-        <Query
-          query={gql`
-            query SideNav {
-              simulators(template: true) {
-                id
-                name
-              }
-              missions {
-                id
-                name
-              }
-            }
-          `}
-        >
-          {({ data }) =>
-            makeLinks(data || {}).map(m => (
-              <SideNavLink
-                key={`sidemenu-${m.id || m.name}`}
-                onClick={() => {
-                  this.setState({ open: false });
-                }}
-                {...m}
-              />
-            ))
-          }
-        </Query>
+
+        {makeLinks().map(m => (
+          <SideNavLink
+            key={`sidemenu-${m.id || m.name}`}
+            onClick={() => {
+              this.setState({ open: false });
+            }}
+            {...m}
+          />
+        ))}
       </Nav>
     </Fragment>
   );
@@ -213,8 +157,4 @@ export class SideNavLink extends Component {
   }
 }
 
-const Welcome = () => {
-  return <SideNav />;
-};
-
-export default Welcome;
+export default SideNav;
