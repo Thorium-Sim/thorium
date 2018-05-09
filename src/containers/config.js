@@ -41,12 +41,24 @@ class Config extends Component {
           <Route
             path="/config/flight"
             exact
-            render={props => <FlightConfig {...props} history={history} />}
+            render={props => (
+              <FlightConfig
+                {...props}
+                {...this.trainingProps()}
+                history={history}
+              />
+            )}
           />
           <Route
             path="/config/flight/:flightId"
             exact
-            render={props => <ClientsLobby {...props} history={history} />}
+            render={props => (
+              <ClientsLobby
+                {...props}
+                history={history}
+                {...this.trainingProps()}
+              />
+            )}
           />
           <Route path="/config/assets" component={AssetConfig} />
           <Route path="/config/mission" exact component={MissionPicker} />

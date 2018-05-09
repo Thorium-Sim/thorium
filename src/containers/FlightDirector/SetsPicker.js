@@ -10,6 +10,19 @@ class SetsPicker extends Component {
     super(props);
     this.flightsSub = null;
   }
+  static trainingSteps = [
+    {
+      selector: ".set-picker",
+      content: (
+        <span>
+          This is the set picker. Sets connection stations to clients, making it
+          easy to immediately set all of the clients to the correct station for
+          the flight. Click on the simulator name for the set you want to
+          activate.
+        </span>
+      )
+    }
+  ];
   componentWillReceiveProps(nextProps) {
     if (!this.flightsSub && !nextProps.data.loading) {
       this.flightsSub = nextProps.data.subscribeToMore({

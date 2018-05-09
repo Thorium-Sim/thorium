@@ -60,7 +60,7 @@ const ClientRow = ({ p, index, removeClient, select, flights }) => {
       <td>
         <FontAwesome
           name="ban"
-          className="text-danger"
+          className="text-danger remove-client"
           onClick={() => removeClient(p.id)}
         />{" "}
         {`${p.id}`}
@@ -69,7 +69,7 @@ const ClientRow = ({ p, index, removeClient, select, flights }) => {
         <select
           value={(p.flight && p.flight.id) || ""}
           onChange={e => select(p, "flight", e)}
-          className="form-control-sm c-select"
+          className="form-control-sm c-select flight-picker"
         >
           <option value="">Select a flight</option>
           {flights ? (
@@ -89,7 +89,7 @@ const ClientRow = ({ p, index, removeClient, select, flights }) => {
         <select
           value={(p.simulator && p.simulator.id) || ""}
           onChange={e => select(p, "simulator", e)}
-          className="form-control-sm c-select"
+          className="form-control-sm c-select sim-picker"
         >
           <option value="">Select a simulator</option>
           {p.flight ? (
@@ -107,7 +107,7 @@ const ClientRow = ({ p, index, removeClient, select, flights }) => {
         <select
           value={(p.station && p.station.name) || ""}
           onChange={e => select(p, "station", e)}
-          className="form-control-sm c-select"
+          className="form-control-sm c-select station-picker"
         >
           <option value="">Select a station</option>
           {p.simulator ? (
@@ -119,39 +119,43 @@ const ClientRow = ({ p, index, removeClient, select, flights }) => {
           ) : (
             <option disabled>No Stations</option>
           )}
-          <option disabled>──────────</option>
-          <option value={"Viewscreen"}>Viewscreen</option>
-          <option value={"Sound"}>Sound</option>
-          <option value={"Blackout"}>Blackout</option>
-          <Query
-            query={gql`
-              query Keyboards {
-                keyboard {
-                  id
-                  name
-                }
-              }
-            `}
-          >
-            {({ loading, data: { keyboard } }) => {
-              if (loading || keyboard.length === 0) {
-                return null;
-              }
-              return (
-                <Fragment>
-                  <option disabled>──────────</option>
-                  <optgroup label="Keyboards">
-                    {keyboard.map(k => (
-                      <option key={k.id} value={`keyboard:${k.id}`}>
-                        {k.name}
-                      </option>
-                    ))}
-                    }}
-                  </optgroup>
-                </Fragment>
-              );
-            }}
-          </Query>
+          {p.simulator && (
+            <Fragment>
+              <option disabled>──────────</option>
+              <option value={"Viewscreen"}>Viewscreen</option>
+              <option value={"Sound"}>Sound</option>
+              <option value={"Blackout"}>Blackout</option>
+              <Query
+                query={gql`
+                  query Keyboards {
+                    keyboard {
+                      id
+                      name
+                    }
+                  }
+                `}
+              >
+                {({ loading, data: { keyboard } }) => {
+                  if (loading || keyboard.length === 0) {
+                    return null;
+                  }
+                  return (
+                    <Fragment>
+                      <option disabled>──────────</option>
+                      <optgroup label="Keyboards">
+                        {keyboard.map(k => (
+                          <option key={k.id} value={`keyboard:${k.id}`}>
+                            {k.name}
+                          </option>
+                        ))}
+                        }}
+                      </optgroup>
+                    </Fragment>
+                  );
+                }}
+              </Query>
+            </Fragment>
+          )}
         </select>
       </td>
     </tr>
@@ -163,6 +167,77 @@ class Clients extends Component {
     this.subscription = null;
     this.flightsSub = null;
   }
+  static trainingSteps = [
+    {
+      selector: ".client-table",
+      content: (
+        <span>
+          This is the client table. All currently connected clients appear here.
+          Clients that are either unassigned or assigned to this flight appear
+          at the top. Clients assigned to another flight appear at the bottom.
+          Be careful not to change clients assigned to other flights. That might
+          cause problems for whoever is using that client.
+        </span>
+      )
+    },
+    {
+      selector: ".remove-client",
+      content: (
+        <span>
+          Click this button to remove a client. The client will always come back
+          if it reconnects. To reconnect a client, just reopen the client or
+          navigate the web browser to the client page.
+        </span>
+      )
+    },
+    {
+      selector: ".flight-picker",
+      content: (
+        <span>
+          Choose the flight you want to assign this client to with this
+          dropdown. If the flight only has one simulator, the simulator dropdown
+          will automatically be filled.
+        </span>
+      )
+    },
+    {
+      selector: ".sim-picker",
+      content: (
+        <span>
+          Choose the simulator you want to assign this client to with this
+          dropdown.
+        </span>
+      )
+    },
+    {
+      selector: ".station-picker",
+      content: (
+        <span>
+          Choose the station you want to assign this client to with this
+          dropdown. It is populated with the stations in the current station set
+          of the selected simulator. It also has some special stations:{" "}
+          <ul>
+            <li>
+              <strong>Viewscreen</strong> creates a viewscreen for this
+              simulator.
+            </li>
+            <li>
+              <strong>Sound</strong> turns the station into a dedicated sound
+              player.
+            </li>
+            <li>
+              <strong>Blackout</strong> blacks out the station - useful for when
+              you don't want a client to be used during a flight.
+            </li>
+            <li>
+              <strong>Keyboards</strong> make the station's keyboard activate
+              keyboard macros.
+            </li>
+          </ul>
+        </span>
+      )
+    }
+  ];
   componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
       this.subscription = nextProps.data.subscribeToMore({
@@ -243,7 +318,7 @@ class Clients extends Component {
             }}
           >
             <h4>Clients</h4>
-            <table className="table table-striped table-hover table-sm">
+            <table className="table table-striped table-hover table-sm client-table">
               <thead>
                 <tr>
                   <th>Client Name</th>
