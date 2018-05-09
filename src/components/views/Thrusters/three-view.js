@@ -173,15 +173,15 @@ class ThreeView extends Component {
     });
     if (direction.x > 0.2) this.portArrow.visible = true;
     if (direction.x < -0.2) this.starboardArrow.visible = true;
-    if (direction.y > 0.2) this.downArrow.visible = true;
-    if (direction.y < -0.2) this.upArrow.visible = true;
-    if (direction.z > 0.2) this.foreArrow.visible = true;
-    if (direction.z < -0.2) this.reverseArrow.visible = true;
+    if (direction.z < -0.2) this.downArrow.visible = true;
+    if (direction.z > 0.2) this.upArrow.visible = true;
+    if (direction.y < -0.2) this.foreArrow.visible = true;
+    if (direction.y > 0.2) this.reverseArrow.visible = true;
 
     if (rotation) {
       const rot = new THREE.Euler(
-        degtorad(rotation.pitch),
-        degtorad(rotation.yaw * -1),
+        degtorad(rotation.pitch * -1),
+        degtorad(rotation.yaw * -1 + 180),
         degtorad(rotation.roll)
       );
       this.objectGroup.rotation.setFromVector3(rot);
