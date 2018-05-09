@@ -79,6 +79,7 @@ class TimelineCore extends Component {
       const oldSim =
         this.props.data.simulators && this.props.data.simulators[0];
       const oldStep = oldSim && oldSim.currentTimelineStep;
+      if (!nextProps.data.simulators[0]) return;
       const { currentTimelineStep: newStep } = nextProps.data.simulators[0];
       if (oldStep !== newStep) {
         const mission = nextProps.data.simulators[0].mission;
@@ -214,6 +215,7 @@ class TimelineCore extends Component {
   render() {
     if (this.props.data.loading || !this.props.data.simulators) return null;
     const { missions } = this.props.data;
+    if (!this.props.data.simulators[0]) return;
     const {
       mission,
       currentTimelineStep,

@@ -61,7 +61,12 @@ class DockingCore extends Component {
     });
   }
   render() {
-    if (this.props.data.loading || !this.props.data.simulators) return null;
+    if (
+      this.props.data.loading ||
+      !this.props.data.simulators ||
+      !this.props.data.simulators[0]
+    )
+      return null;
     const { ship } = this.props.data.simulators[0];
     return (
       <Container className="docking-core">

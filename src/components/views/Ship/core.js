@@ -158,6 +158,7 @@ class ShipCore extends Component {
   render() {
     if (this.props.data.loading || !this.props.data.simulators) return null;
     const simulator = this.props.data.simulators[0];
+    if (!simulator) return;
     const { name, layout, training, stepDamage, verifyStep } = simulator;
     const { bridgeCrew, radiation } = simulator.ship;
     return (
