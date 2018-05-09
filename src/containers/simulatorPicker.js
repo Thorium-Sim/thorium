@@ -6,11 +6,21 @@ import {
   ListGroup,
   ListGroupItem,
   Label,
-  Input
+  Input,
+  Button
 } from "reactstrap";
 import { Link } from "react-router-dom";
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
+
+const QUERY = gql`
+  query SideNav {
+    simulators(template: true) {
+      id
+      name
+    }
+  }
+`;
 
 const SimulatorPicker = () => {
   const importSimulator = evt => {
@@ -36,22 +46,20 @@ const SimulatorPicker = () => {
       });
     }
   };
+  const createSimulator = action => {
+    return () => {
+      const name = prompt("What class of simulator is this? eg. Jump Carrier");
+      if (name) {
+        action({ variables: { name }, refetchQueries: [{ query: QUERY }] });
+      }
+    };
+  };
   return (
     <Container>
       <Row>
         <Col sm={{ size: 4, offset: 4 }}>
           <h4>Simulator</h4>
-          <Query
-            query={gql`
-              query SideNav {
-                simulators(template: true) {
-                  id
-                  name
-                }
-              }
-            `}
-            fetchPolicy="cache-and-network"
-          >
+          <Query query={QUERY} fetchPolicy="cache-and-network">
             {({ data, loading }) =>
               loading ? null : (
                 <ListGroup>
@@ -68,6 +76,26 @@ const SimulatorPicker = () => {
               )
             }
           </Query>
+          <Label>
+            <Mutation
+              mutation={gql`
+                mutation AddSimulator($name: String!) {
+                  createSimulator(name: $name, template: true)
+                }
+              `}
+            >
+              {action => (
+                <Button
+                  size="sm"
+                  block
+                  color="success"
+                  onClick={createSimulator(action)}
+                >
+                  Create Simulator
+                </Button>
+              )}
+            </Mutation>
+          </Label>
           <Label>
             <h5>Import Simulator</h5>
             <Input type="file" onChange={importSimulator} />

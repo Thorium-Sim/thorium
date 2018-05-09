@@ -54,19 +54,6 @@ class MissionsConfig extends Component {
       selectedMission: mission.id
     });
   };
-  createMission = () => {
-    let name = prompt("What is the mission name?");
-    if (name) {
-      this.props.client.mutate({
-        mutation: gql`
-          mutation AddMission($name: String!) {
-            createMission(name: $name)
-          }
-        `,
-        variables: { name }
-      });
-    }
-  };
   removeMission = () => {
     const { mission, history } = this.props;
     if (mission) {

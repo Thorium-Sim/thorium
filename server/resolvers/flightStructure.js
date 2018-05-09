@@ -40,11 +40,9 @@ export const FlightStructureMutations = {
 
   // Mission
   createMission(root, args, context) {
-    App.handleEvent(
-      Object.assign(args, { id: uuid.v4() }),
-      "createMission",
-      context
-    );
+    const id = uuid.v4();
+    App.handleEvent(Object.assign(args, { id }), "createMission", context);
+    return id;
   },
   removeMission(root, args, context) {
     App.handleEvent(args, "removeMission", context);

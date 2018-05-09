@@ -159,23 +159,6 @@ class SimulatorConfig extends Component {
       selectedProperty: prop
     });
   };
-  createSimulator = () => {
-    const name = prompt("What is the simulator name? eg. Voyager");
-    if (name) {
-      const variables = {
-        name: name,
-        template: true
-      };
-      this.props.client.mutate({
-        mutation: gql`
-          mutation AddSimulator($name: String!, $template: Boolean) {
-            createSimulator(name: $name, template: $template)
-          }
-        `,
-        variables
-      });
-    }
-  };
   removeSimulator = () => {
     const {
       match: {

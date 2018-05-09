@@ -6,14 +6,31 @@ import {
   ListGroup,
   ListGroupItem,
   Label,
-  Input
+  Input,
+  Button
 } from "reactstrap";
 import { Link } from "react-router-dom";
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
+const QUERY = gql`
+  query SideNav {
+    missions {
+      id
+      name
+    }
+  }
+`;
 export default class MissionPicker extends Component {
   state = { loadingMission: false };
+  createMission = action => {
+    return () => {
+      let name = prompt("What is the mission name?");
+      if (name) {
+        action({ variables: { name }, refetchQueries: [{ query: QUERY }] });
+      }
+    };
+  };
   render() {
     const importMission = evt => {
       if (evt.target.files[0]) {
@@ -43,17 +60,7 @@ export default class MissionPicker extends Component {
         <Row>
           <Col sm={{ size: 4, offset: 4 }}>
             <h4>Missions</h4>
-            <Query
-              query={gql`
-                query SideNav {
-                  missions {
-                    id
-                    name
-                  }
-                }
-              `}
-              fetchPolicy="cache-and-network"
-            >
+            <Query query={QUERY} fetchPolicy="cache-and-network">
               {({ data, loading }) =>
                 loading ? null : (
                   <ListGroup>
@@ -70,6 +77,26 @@ export default class MissionPicker extends Component {
                 )
               }
             </Query>
+            <Label>
+              <Mutation
+                mutation={gql`
+                  mutation AddMission($name: String!) {
+                    createMission(name: $name)
+                  }
+                `}
+              >
+                {action => (
+                  <Button
+                    size="sm"
+                    block
+                    color="success"
+                    onClick={this.createMission(action)}
+                  >
+                    Create Mission
+                  </Button>
+                )}
+              </Mutation>
+            </Label>
             <Label>
               <h5>Import Mission</h5>
               <Input type="file" onChange={importMission} />
