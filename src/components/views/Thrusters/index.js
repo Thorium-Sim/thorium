@@ -125,7 +125,7 @@ class Thrusters extends Component {
         left: 0,
         top: 0
       },
-      directionFore: {
+      directionUp: {
         left: 0,
         top: 0
       },
@@ -344,13 +344,13 @@ gamepadLoop(){
                 on: true
               });
               break;
-            case "directionFore":
+            case "directionUp":
               direction.z = newPosition.left;
               this.updateDirection({ id: id, direction: direction });
               break;
             case "direction":
               direction.x = newPosition.left;
-              direction.y = newPosition.top;
+              direction.y = newPosition.top * -1;
               this.updateDirection({ id: id, direction: direction });
               break;
             default:
@@ -403,7 +403,7 @@ gamepadLoop(){
     const direction = {
       x: this.state.direction.left,
       y: this.state.direction.top,
-      z: this.state.directionFore.left
+      z: this.state.directionUp.left
     };
     if (!thruster) return <h1>No thruster system</h1>;
     return (
@@ -429,30 +429,30 @@ gamepadLoop(){
                   }}
                 />
               </DraggableCore>
-              <span className="label up">Up</span>
+              <span className="label up">Forward</span>
               <span className="label right">Starboard</span>
-              <span className="label down">Down</span>
+              <span className="label down">Reverse</span>
               <span className="label left">Port</span>
             </div>
             <div className="draggerBar">
               <DraggableCore
                 axis="x"
-                onStart={this.onDragHandler("onDragStart", "directionFore")}
-                onDrag={this.onDragHandler("onDrag", "directionFore")}
-                onStop={this.onDragHandler("onDragStop", "directionFore")}
+                onStart={this.onDragHandler("onDragStart", "directionUp")}
+                onDrag={this.onDragHandler("onDrag", "directionUp")}
+                onStop={this.onDragHandler("onDragStop", "directionUp")}
               >
                 <div
                   ref="foreDragger"
                   className="dragger fore alertBack"
                   style={{
-                    transform: `translate3d(${this.state.directionFore.left *
+                    transform: `translate3d(${this.state.directionUp.left *
                       (width - 40) /
                       2}px,0px,0px)`
                   }}
                 />
               </DraggableCore>
-              <span className="label right">Forward</span>
-              <span className="label left">Reverse</span>
+              <span className="label right">Up</span>
+              <span className="label left">Down</span>
             </div>
           </Col>
           <Col className="col-sm-6">

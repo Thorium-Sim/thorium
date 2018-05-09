@@ -158,7 +158,7 @@ class ThrusterCore extends Component {
           <ThrusterArrow
             name="arrow-up"
             value={
-              thrusters.direction.y < 0 ? Math.abs(thrusters.direction.y) : 0
+              thrusters.direction.y > 0 ? Math.abs(thrusters.direction.y) : 0
             }
           />
           <ThrusterArrow
@@ -176,7 +176,7 @@ class ThrusterCore extends Component {
           <ThrusterArrow
             name="arrow-down"
             value={
-              thrusters.direction.y > 0 ? Math.abs(thrusters.direction.y) : 0
+              thrusters.direction.y < 0 ? Math.abs(thrusters.direction.y) : 0
             }
           />
           <ThrusterArrow
