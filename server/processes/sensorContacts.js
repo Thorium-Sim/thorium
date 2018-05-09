@@ -12,6 +12,7 @@ function distance3d(coord2, coord1) {
 
 const moveSensorContactTimed = () => {
   let sendUpdate = false;
+  let targetingUpdate = false;
   App.systems.filter(sys => sys.type === "Sensors").forEach(sensors => {
     const { movement, thrusterMovement } = sensors;
     sensors.contacts = sensors.contacts.map(c => {
@@ -82,43 +83,44 @@ const moveSensorContactTimed = () => {
           c.location = location;
         }
 
-        // Auto-target
-        const targeting = App.systems.find(
-          s => s.simulatorId === sensors.simulatorId && s.class === "Targeting"
-        );
-        if (sensors.autoTarget) {
-          if (distance3d({ x: 0, y: 0, z: 0 }, newLoc) < 0.33) {
-            if (!targeting.classes.find(t => t.id === c.id)) {
-              const target = {
-                id: c.id,
-                name: c.name,
-                size: c.size,
-                icon: c.icon,
-                picture: c.picture,
-                speed: c.speed || 1
-              };
-              targeting.addTargetClass(target);
-              targeting.createTarget(c.id);
-              pubsub.publish(
-                "targetingUpdate",
-                App.systems.filter(s => s.type === "Targeting")
-              );
-            }
-          } else {
-            if (targeting.classes.find(t => t.id === c.id)) {
-              targeting.removeTargetClass(c.id);
-              pubsub.publish(
-                "targetingUpdate",
-                App.systems.filter(s => s.type === "Targeting")
-              );
-            }
-          }
-        }
-
         return c;
       }
     });
+    sensors.contacts.forEach(c => {
+      // Auto-target
+      const targeting = App.systems.find(
+        s => s.simulatorId === sensors.simulatorId && s.class === "Targeting"
+      );
+      if (sensors.autoTarget) {
+        if (distance3d({ x: 0, y: 0, z: 0 }, c.position) < 0.33) {
+          if (!targeting.classes.find(t => t.id === c.id)) {
+            const target = {
+              id: c.id,
+              name: c.name,
+              size: c.size,
+              icon: c.icon,
+              picture: c.picture,
+              speed: c.speed || 1
+            };
+            targeting.addTargetClass(target);
+            targeting.createTarget(c.id);
+            targetingUpdate = true;
+          }
+        } else {
+          if (targeting.classes.find(t => t.id === c.id)) {
+            targeting.removeTargetClass(c.id);
+            targetingUpdate = true;
+          }
+        }
+      }
+    });
   });
+  if (targetingUpdate) {
+    pubsub.publish(
+      "targetingUpdate",
+      App.systems.filter(s => s.type === "Targeting")
+    );
+  }
   if (sendUpdate) {
     App.systems.forEach(sys => {
       if (sys.type === "Sensors") {
