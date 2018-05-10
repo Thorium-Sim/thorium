@@ -50,6 +50,11 @@ import OfficerLog from "./OfficerLog";
 import SignalJammer from "./SignalJammer";
 import Exocomps from "./Exocomps";
 import Library from "./Library";
+import CommandLibrary from "./Library/CommandLibrary";
+import MedicalLibrary from "./Library/MedicalLibrary";
+import DamageLibrary from "./Library/DamageLibrary";
+import LegalLibrary from "./Library/LegalLibrary";
+import SecurityLibrary from "./Library/SecurityLibrary";
 import CodeCyphers from "./CodeCyphers";
 import Interception from "./CommInterception";
 import SoftwarePanels from "./SoftwarePanels";
@@ -167,6 +172,11 @@ const Views = {
   SignalJammer,
   Exocomps,
   Library,
+  CommandLibrary,
+  MedicalLibrary,
+  DamageLibrary,
+  LegalLibrary,
+  SecurityLibrary,
   CodeCyphers,
   Interception,
   SoftwarePanels,
