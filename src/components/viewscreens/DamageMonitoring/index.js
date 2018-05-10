@@ -71,7 +71,10 @@ class DamageMonitoring extends Component {
                   }}
                   draggable="false"
                 >
-                  <div className="scanner-mask">
+                  <div
+                    className="scanner-mask"
+                    style={{ WebkitMaskImage: `url("${src}")` }}
+                  >
                     <div className="scanner-holder">
                       <div className="scanner" />
                     </div>

@@ -40,10 +40,12 @@
     animation-iteration-count: infinite;
     .scanner-mask {
       height: 100%;
-      -webkit-mask-image: url(/assets/Ship%20Views/Left/default.png);
       -webkit-mask-position: center;
       -webkit-mask-size: 100%;
       -webkit-mask-repeat: no-repeat;
+      mask-position: center;
+      mask-size: 100%;
+      mask-repeat: no-repeat;
       mix-blend-mode: overlay;
     }
     .scanner-holder {
