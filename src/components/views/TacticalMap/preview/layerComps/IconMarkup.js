@@ -65,6 +65,7 @@ const IconMarkup = ({
       >
         <div
           className="image-holder"
+          id={`tactical-icon-${id}`}
           onMouseDown={mouseDown}
           style={{
             transform: `scale(${size})`,

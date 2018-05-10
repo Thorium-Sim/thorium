@@ -6,10 +6,8 @@ import Bottom from "./bottom";
 import Preview from "./preview";
 import "./style.css";
 
-const TACTICALMAP_SUB = gql`
-  subscription TacticalMapUpdate {
-    tacticalMapsUpdate {
-      id
+const TACTICAL_MAP_DATA = `
+id
       name
       flight {
         id
@@ -84,7 +82,11 @@ const TACTICALMAP_SUB = gql`
         gridRows
       }
       frozen
-      template
+      template`;
+const TACTICALMAP_SUB = gql`
+  subscription TacticalMapUpdate {
+    tacticalMapsUpdate {
+     ${TACTICAL_MAP_DATA}
     }
   }
 `;
@@ -151,7 +153,7 @@ class TacticalMapCore extends Component {
       variables
     });
   };
-  removeObject = objectId => {
+  removeObject = (objectId, layerId) => {
     const mutation = gql`
       mutation RemoveTacticalItem($mapId: ID!, $layerId: ID!, $itemId: ID!) {
         removeTacticalMapItem(mapId: $mapId, layerId: $layerId, itemId: $itemId)
@@ -159,7 +161,7 @@ class TacticalMapCore extends Component {
     `;
     const variables = {
       mapId: this.state.tacticalMapId,
-      layerId: this.state.layerId,
+      layerId: layerId || this.state.layerId,
       itemId: objectId || this.state.objectId
     };
     this.setState({
@@ -272,82 +274,7 @@ class TacticalMapCore extends Component {
 const TACTICALMAP_QUERY = gql`
   query TacticalMap {
     tacticalMaps {
-      id
-      name
-      flight {
-        id
-      }
-      layers {
-        id
-        name
-        type
-        items {
-          id
-          layerId
-          font
-          label
-          fontSize
-          fontColor
-          icon
-          size
-          speed
-          velocity {
-            x
-            y
-            z
-          }
-          location {
-            x
-            y
-            z
-          }
-          destination {
-            x
-            y
-            z
-          }
-          rotation
-          flash
-          ijkl
-          wasd
-          thrusters
-          rotationMatch
-        }
-        paths {
-          id
-          layerId
-          start {
-            x
-            y
-            z
-          }
-          end {
-            x
-            y
-            z
-          }
-          c1 {
-            x
-            y
-            z
-          }
-          c2 {
-            x
-            y
-            z
-          }
-          color
-          width
-          arrow
-        }
-        image
-        color
-        labels
-        gridCols
-        gridRows
-      }
-      frozen
-      template
+      ${TACTICAL_MAP_DATA}
     }
   }
 `;

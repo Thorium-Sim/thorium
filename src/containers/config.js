@@ -60,13 +60,37 @@ class Config extends Component {
               />
             )}
           />
-          <Route path="/config/assets" component={AssetConfig} />
-          <Route path="/config/mission" exact component={MissionPicker} />
-          <Route path="/config/simulator" exact component={SimulatorPicker} />
-          <Route path="/config/mission/:missionId" component={MissionConfig} />
+          <Route
+            path="/config/assets"
+            render={props => (
+              <AssetConfig {...props} {...this.trainingProps()} />
+            )}
+          />
+          <Route
+            path="/config/mission"
+            exact
+            render={props => (
+              <MissionPicker {...props} {...this.trainingProps()} />
+            )}
+          />
+          <Route
+            path="/config/simulator"
+            exact
+            render={props => (
+              <SimulatorPicker {...props} {...this.trainingProps()} />
+            )}
+          />
+          <Route
+            path="/config/mission/:missionId"
+            render={props => (
+              <MissionConfig {...props} {...this.trainingProps()} />
+            )}
+          />
           <Route
             path="/config/simulator/:simulatorId"
-            component={SimulatorConfig}
+            render={props => (
+              <SimulatorConfig {...props} {...this.trainingProps()} />
+            )}
           />
           <Route
             path="/config/tacticals"
@@ -78,7 +102,10 @@ class Config extends Component {
               );
             }}
           />
-          <Route path="/config/sets" component={SetConfig} />
+          <Route
+            path="/config/sets"
+            render={props => <SetConfig {...props} {...this.trainingProps()} />}
+          />
           <Route
             path="/config/panels"
             render={props => <SoftwarePanels {...props} history={history} />}
