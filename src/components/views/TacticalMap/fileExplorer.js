@@ -3,6 +3,8 @@ import { Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import FontAwesome from "react-fontawesome";
+import ObjPreview from "./3dObjPreview";
+
 import "./fileExplorer.css";
 
 const ASSET_FOLDER_SUB = gql`
@@ -295,7 +297,7 @@ const AssetObject = ({ object, container, removeObject }) => {
   if (ext === "obj") {
     return (
       <div>
-        <FontAwesome size="5x" name="file-code-o" />
+        <ObjPreview src={object.url} />
         <p>
           {container.name}{" "}
           <FontAwesome

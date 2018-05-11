@@ -30,6 +30,7 @@ export { default as CollisionAlert } from "./CollisionAlert";
 export { default as IntruderMonitoring } from "./IntruderMonitoring";
 export { default as RadiationMonitoring } from "./RadiationMonitoring";
 export { default as ShipStatus } from "./ShipStatus";
+export { default as ShipModel } from "./ShipModel";
 
 export { default as InformationConfig } from "./Information/config";
 export { default as InternalSensorsConfig } from "./InternalSensors/config";
@@ -40,3 +41,4 @@ export { default as ShipViewConfig } from "./ShipView/config";
 export { default as VideoConfig } from "./Video/config";
 export { default as TacticalMapConfig } from "./TacticalMap/config";
 export { default as FacesConfig } from "./Faces/config";
+export { default as ShipModelConfig } from "./ShipModel/config";
