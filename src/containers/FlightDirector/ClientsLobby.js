@@ -124,7 +124,7 @@ It will permenantly erase all simulators running in this flight.`
         </h5>
       </span>
       <SetsPicker {...props} />
-      <Clients {...props} />
+      <Clients {...props} flightId={props.match.params.flightId} />
       <Tour
         steps={trainingSteps()}
         isOpen={props.training}

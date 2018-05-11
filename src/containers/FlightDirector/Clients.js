@@ -54,7 +54,9 @@ const CLIENT_CHANGE_QUERY = gql`
   }
 `;
 
-const ClientRow = ({ p, index, removeClient, select, flights }) => {
+const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
+  const thisFlight = flights.find(f => f.id === flightId);
+  if (!thisFlight) return null;
   return (
     <tr key={`flight-${p.id}-${index}`}>
       <td>
@@ -72,17 +74,27 @@ const ClientRow = ({ p, index, removeClient, select, flights }) => {
           className="form-control-sm c-select flight-picker"
         >
           <option value="">Select a flight</option>
-          {flights ? (
-            flights.map(f => {
-              return (
-                <option key={`flight-${p.id}-${f.id}`} value={f.id}>
-                  {`${f.name}: ${moment(f.date).format("MM/DD/YY hh:mma")}`}
-                </option>
-              );
-            })
-          ) : (
-            <option disabled>No Flights</option>
+          {flights && (
+            <optgroup label="This Flight">
+              <option value={flightId}>
+                {thisFlight.name}:{" "}
+                {moment(thisFlight.date).format("MM/DD/YY hh:mma")}
+              </option>
+            </optgroup>
           )}
+          <optgroup label="Other Flights">
+            {flights ? (
+              flights.filter(f => f.id !== flightId).map(f => {
+                return (
+                  <option key={`flight-${p.id}-${f.id}`} value={f.id}>
+                    {`${f.name}: ${moment(f.date).format("MM/DD/YY hh:mma")}`}
+                  </option>
+                );
+              })
+            ) : (
+              <option disabled>No Flights</option>
+            )}
+          </optgroup>
         </select>
       </td>
       <td>
@@ -341,6 +353,8 @@ class Clients extends Component {
                         .map((p, index) => (
                           <ClientRow
                             p={p}
+                            key={p.id}
+                            flightId={this.props.flightId}
                             index={index}
                             removeClient={this.removeClient}
                             select={this.select}
