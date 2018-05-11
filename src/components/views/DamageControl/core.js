@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
-import { Table } from "reactstrap";
+import { graphql, withApollo, Mutation } from "react-apollo";
+import { Table, Button } from "reactstrap";
 import { InputField, OutputField } from "../../generic/core";
 
 const SYSTEMS_SUB = gql`
@@ -122,61 +122,120 @@ class DamageControlCore extends Component {
   render() {
     if (this.props.data.loading || !this.props.data.systems) return null;
     return (
-      <Table size="sm" hover>
-        <thead>
-          <tr>
-            <th>System</th>
-            <th>Set</th>
-            <th />
-            <th>Req</th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.props.data.systems.map(s => (
-            <tr key={s.id}>
-              <td
-                onClick={e => this.toggleDamage(e, s)}
-                onContextMenu={e => this.toggleDamage(e, s, true)}
-                style={this.systemStyle(s)}
-              >
-                {this.systemName(s)}
-              </td>
-              <td>
-                {(s.power.power || s.power.power === 0) && (
-                  <InputField
-                    prompt="What is the power?"
-                    onClick={this.setPower.bind(this, s)}
+      <Mutation
+        mutation={gql`
+          mutation FluxPower($id: ID, $all: Boolean, $simulatorId: ID) {
+            fluxSystemPower(id: $id, all: $all, simulatorId: $simulatorId)
+          }
+        `}
+        variables={{ simulatorId: this.props.simulator.id }}
+      >
+        {action => (
+          <Table size="sm" hover>
+            <thead>
+              <tr>
+                <th>System</th>
+                <th>Set</th>
+                <th />
+                <th>Req</th>
+                <th>Flux</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.props.data.systems.map(s => (
+                <tr key={s.id}>
+                  <td
+                    onClick={e => this.toggleDamage(e, s)}
+                    onContextMenu={e => this.toggleDamage(e, s, true)}
+                    style={this.systemStyle(s)}
                   >
-                    {s.power.power}
-                  </InputField>
-                )}
-              </td>
-              <td>/</td>
-              <td>
-                {(s.power.power || s.power.power === 0) && (
-                  <OutputField>{s.power.powerLevels[0]}</OutputField>
-                )}
-              </td>
-            </tr>
-          ))}
-          <tr>
-            <td>Total</td>
-            <td>
-              <OutputField>
-                {this.props.data.systems.reduce(
-                  (prev, next) => (next.power ? prev + next.power.power : prev),
-                  0
-                )}
-              </OutputField>
-            </td>
-            <td>/</td>
-            <td />
-          </tr>
-          <tr>
-            <td colSpan="4">Right-Click to destroy system</td>
-          </tr>
-        </tbody>
-      </Table>
+                    {this.systemName(s)}
+                  </td>
+                  <td>
+                    {(s.power.power || s.power.power === 0) && (
+                      <InputField
+                        prompt="What is the power?"
+                        onClick={this.setPower.bind(this, s)}
+                      >
+                        {s.power.power}
+                      </InputField>
+                    )}
+                  </td>
+                  <td>/</td>
+                  <td>
+                    {(s.power.power || s.power.power === 0) && (
+                      <OutputField>{s.power.powerLevels[0]}</OutputField>
+                    )}
+                  </td>
+                  <td>
+                    <Button
+                      size="sm"
+                      color="warning"
+                      title="Flux"
+                      style={{ height: "15px" }}
+                      onClick={() => action({ variables: { id: s.id } })}
+                    />
+                  </td>
+                </tr>
+              ))}
+              <tr>
+                <td>Total</td>
+                <td>
+                  <OutputField>
+                    {this.props.data.systems.reduce(
+                      (prev, next) =>
+                        next.power ? prev + next.power.power : prev,
+                      0
+                    )}
+                  </OutputField>
+                </td>
+                <td>/</td>
+                <td>
+                  <OutputField>
+                    {this.props.data.systems.reduce(
+                      (prev, next) =>
+                        next.power &&
+                        next.power.powerLevels &&
+                        next.power.powerLevels[0]
+                          ? prev + next.power.powerLevels[0]
+                          : prev,
+                      0
+                    )}
+                  </OutputField>
+                </td>
+                <td />
+              </tr>
+              <tr>
+                <td colSpan={5}>Right-Click to destroy system</td>
+              </tr>
+              <tr>
+                <td colSpan={1}>
+                  <Button block size="sm" color="warning" onClick={action}>
+                    Flux Random
+                  </Button>
+                </td>
+                <td colSpan={4}>
+                  <Button
+                    block
+                    size="sm"
+                    color="danger"
+                    onClick={() =>
+                      action({
+                        variables: {
+                          all: true,
+                          simulatorId: this.props.simulator.id
+                        }
+                      })
+                    }
+                  >
+                    Flux All
+                  </Button>
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+        )}
+      </Mutation>
     );
   }
 }

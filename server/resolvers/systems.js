@@ -94,6 +94,9 @@ export const SystemsMutations = {
   },
   changeSystemDefaultPowerLevel(root, args, context) {
     App.handleEvent(args, "changeSystemDefaultPowerLevel", context);
+  },
+  fluxSystemPower(root, args, context) {
+    App.handleEvent(args, "fluxSystemPower", context);
   }
 };
 
