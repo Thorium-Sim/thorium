@@ -18,7 +18,7 @@
     "babel-cli": "^6.26.0",
     "babel-plugin-inline-import": "^2.0.6",
     "babel-plugin-preval": "^1.6.4",
-    "babel-preset-env": "^1.6.1",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
