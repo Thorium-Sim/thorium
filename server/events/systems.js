@@ -345,3 +345,9 @@ App.on("validateDamageStep", ({ id }) => {
   );
   sendUpdate(sys);
 });
+
+App.on("changeSystemDefaultPowerLevel", ({ id, level }) => {
+  let sys = App.systems.find(s => s.id === id);
+  sys.setDefaultPowerLevel(level);
+  sendUpdate(sys);
+});

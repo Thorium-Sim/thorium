@@ -86,7 +86,11 @@ function addAspects(template, sim) {
           App.isochips.push(new Classes.Isochip(isochip));
         }
         if (newAspect.power && newAspect.power.powerLevels.length) {
-          newAspect.power.power = newAspect.power.powerLevels[0];
+          newAspect.power.power = newAspect.power.defaultLevel
+            ? newAspect.power.powerLevels[newAspect.power.defaultLevel]
+              ? newAspect.power.powerLevels[newAspect.power.defaultLevel]
+              : newAspect.power.powerLevels[0]
+            : newAspect.power.powerLevels[0];
         }
         if (newAspect.power && !newAspect.power.powerLevels.length) {
           newAspect.power.power = 0;

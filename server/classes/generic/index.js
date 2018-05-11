@@ -35,7 +35,8 @@ export class System {
       ? Object.assign({}, params.power)
       : {
           power: 5,
-          powerLevels: params.extra ? [] : [5]
+          powerLevels: params.extra ? [] : [5],
+          defaultLevel: 0
         };
     this.damage = new Damage(params.damage || {});
     this.extra = params.extra || false;
@@ -69,6 +70,12 @@ export class System {
   }
   setPowerLevels(levels) {
     this.power.powerLevels = levels;
+    if (this.power.defaultLevel >= levels.length) {
+      this.power.defaultLevel = levels.length - 1;
+    }
+  }
+  setDefaultPowerLevel(level) {
+    this.power.defaultLevel = level;
   }
   break(report, destroyed) {
     this.damage.damaged = true;
