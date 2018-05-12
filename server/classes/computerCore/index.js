@@ -1,5 +1,6 @@
 import uuid from "uuid";
 import { System } from "../generic";
+import * as defaults from "./defaults";
 
 class User {
   constructor(params) {
@@ -48,7 +49,6 @@ class Virus {
 // F - Functional
 // O - Offline
 // R - Restarting
-
 class Terminal {
   constructor(params) {
     this.id = params.id || uuid.v4();

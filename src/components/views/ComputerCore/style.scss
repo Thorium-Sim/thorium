@@ -1,0 +1,27 @@
+.card-computerCore {
+  .list-group {
+    .list-group-item {
+      &.selected {
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+    }
+  }
+  .terminal-list {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  .content-table {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 60vh;
+    max-height: 60vh;
+    overflow-y: auto;
+    tr.selected {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+    td {
+      vertical-align: middle;
+      text-align: center;
+    }
+  }
+}

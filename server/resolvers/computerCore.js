@@ -31,15 +31,18 @@ export const ComputerCoreMutations = {
 
 export const ComputerCoreSubscriptions = {
   computerCoreUpdate: {
-    resolve(rootValue, { simulatorId }) {
-      if (simulatorId) {
-        return rootValue.filter(s => s.simulatorId === simulatorId);
-      }
+    resolve(rootValue) {
       return rootValue;
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("computerCoreUpdate"),
-      rootValue => !!(rootValue && rootValue.length)
+      (rootValue, { simulatorId }) => {
+        let returnVal = rootValue;
+        if (simulatorId) {
+          returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
+        }
+        return returnVal.length > 0;
+      }
     )
   }
 };

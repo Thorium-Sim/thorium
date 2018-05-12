@@ -3,19 +3,25 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 
 function performAction(id, action) {
   const sys = App.systems.find(s => s.id === id);
+  console.log("GOt sys", sys);
   if (sys) {
     action(sys);
   }
+  console.log("PUblishing");
   pubsub.publish(
-    "updateComputerCore",
+    "computerCoreUpdate",
     App.systems.filter(s => s.class === "ComputerCore")
   );
 }
-App.on("addUser", ({ id, user }) => {
-  performAction(id, sys => sys.addUser(user));
+
+App.on("addComputerCoreUser", ({ id, user }) => {
+  performAction(id, sys => {
+    console.log("Adding user");
+    sys.addUser(user);
+  });
 });
 
-App.on("removeUser", ({ id, userId }) => {
+App.on("removeComputerCoreUser", ({ id, userId }) => {
   performAction(id, sys => sys.removeUser(userId));
 });
 
@@ -33,7 +39,7 @@ App.on("restoreComputerCoreFile", ({ id, fileId, level, all }) => {
         setTimeout(() => {
           sys.restoreFile(f.id);
           pubsub.publish(
-            "updateComputerCore",
+            "computerCoreUpdate",
             App.systems.filter(s => s.class === "ComputerCore")
           );
         }, 500 * i)
@@ -41,7 +47,7 @@ App.on("restoreComputerCoreFile", ({ id, fileId, level, all }) => {
     }
   }
   pubsub.publish(
-    "updateComputerCore",
+    "computerCoreUpdate",
     App.systems.filter(s => s.class === "ComputerCore")
   );
 });
@@ -56,7 +62,7 @@ App.on("restartComputerCoreTerminal", ({ id, terminalId }) => {
     setTimeout(() => {
       sys.updateTerminalStatus(terminalId, "F");
       pubsub.publish(
-        "updateComputerCore",
+        "computerCoreUpdate",
         App.systems.filter(s => s.class === "ComputerCore")
       );
     }, Math.round(Math.random() * 5 + 2) * 1000);

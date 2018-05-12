@@ -65,6 +65,7 @@ import SurveyForm from "./SurveyForm";
 import SecurityArmory from "./Armory";
 import MedicalArmory from "./Armory/medicalArmory";
 import DamageArmory from "./Armory/damageArmory";
+import ComputerCore from "./ComputerCore";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -187,7 +188,8 @@ const Views = {
   SecurityArmory,
   MedicalArmory,
   DamageArmory,
-  MedicalTeams
+  MedicalTeams,
+  ComputerCore
 };
 
 export const Widgets = {

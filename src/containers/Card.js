@@ -51,7 +51,8 @@ const CardRenderer = props => {
           ]
         },
         flight: { id: "test" },
-        client: { loginState: "login", loginName: "Test", id: "test" }
+        client: { loginState: "login", loginName: "Test", id: "test" },
+        card: "Test"
       }
     : props;
   const layoutName = station.layout || simulator.layout || "LayoutCorners";
