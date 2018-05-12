@@ -62,3 +62,7 @@ kiosks
 # unecessary CSS files
 src/**/*.css
 snapshot-*
+
+#tags
+.tags
+.tags1

@@ -12,7 +12,6 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import "bootstrap/dist/css/bootstrap.css";
 import "./style.css";
-import { Link } from "react-router-dom";
 import ComponentLibrary from "./componentLibrary";
 import Measure from "react-measure";
 import Canvas from "./canvas";
@@ -339,6 +338,24 @@ class App extends Component {
       );
     }
   };
+  renamePanel = () => {
+    const name = window.prompt("What would you like to rename this panel?");
+    if (name) {
+      const variables = {
+        id: this.state.selectedPanel,
+        name
+      };
+      const mutation = gql`
+        mutation UpdateSoftwarePanel($id: ID!, $name: String) {
+          updateSoftwarePanel(panel: { id: $id, name: $name })
+        }
+      `;
+      this.props.client.mutate({
+        mutation,
+        variables
+      });
+    }
+  };
   selectPanel = id => {
     if (!this.props.data.loading && this.props.data.softwarePanels && id) {
       const panel = this.props.data.softwarePanels.find(s => s.id === id);
@@ -370,13 +387,15 @@ class App extends Component {
       selectedPanel,
       selectedComponent
     } = this.state;
-    const { data: { loading, softwarePanels } } = this.props;
+    const {
+      data: { loading, softwarePanels }
+    } = this.props;
     if (loading || !softwarePanels) return null;
     return (
       <Container fluid className="software-panels">
+        <h4>Software Panel Config </h4>
         <Row>
           <Col sm={3}>
-            <Link to={"/"}>Go Back</Link>
             {selectedPanel && (
               <div>
                 {edit && (
@@ -431,6 +450,11 @@ class App extends Component {
             <Button color="success" block onClick={this.createPanel}>
               Create Panel
             </Button>
+            {this.state.selectedPanel && (
+              <Button color="info" block onClick={this.renamePanel}>
+                Rename Panel
+              </Button>
+            )}
             {this.state.selectedPanel && (
               <Button color="danger" block onClick={this.removePanel}>
                 Remove Panel

@@ -71,6 +71,8 @@ export default class Sensors extends System {
     this.frozen = params.frozen || false;
     this.autoThrusters = params.autoThrusters || false;
     this.interference = params.interference || 0;
+    this.movement = params.movement || { x: 0, y: 0, z: 0 };
+    this.thrusterMovement = params.thrusterMovement || { x: 0, y: 0, z: 0 };
 
     this.segments = params.segments || [
       { segment: "a1", state: false },
@@ -167,7 +169,17 @@ export default class Sensors extends System {
     newContact.sensorId = this.id;
     this.armyContacts.push(new SensorContact(newContact));
   }
-  updateContact({ id, icon, picture, size, name, infrared, color }) {
+  updateContact({
+    id,
+    icon,
+    picture,
+    size,
+    name,
+    infrared,
+    color,
+    locked,
+    disabled
+  }) {
     const myContact = this.contacts.find(contact => contact.id === id);
     if (icon) myContact.updateIcon(icon);
     if (picture) myContact.updatePicture(picture);
@@ -175,8 +187,20 @@ export default class Sensors extends System {
     if (name) myContact.updateName(name);
     if (infrared) myContact.updateInfrared(infrared);
     if (color) myContact.updateColor(color);
+    if (locked || locked === false) myContact.updateLocked(locked);
+    if (disabled || disabled === false) myContact.updateDisabled(disabled);
   }
-  updateArmyContact({ id, icon, picture, size, name, infrared, color }) {
+  updateArmyContact({
+    id,
+    icon,
+    picture,
+    size,
+    name,
+    infrared,
+    color,
+    locked,
+    disabled
+  }) {
     const myContact = this.armyContacts.find(contact => contact.id === id);
     if (icon) myContact.updateIcon(icon);
     if (picture) myContact.updatePicture(picture);
@@ -184,6 +208,8 @@ export default class Sensors extends System {
     if (name) myContact.updateName(name);
     if (infrared) myContact.updateInfrared(infrared);
     if (color) myContact.updateColor(color);
+    if (locked || locked === false) myContact.updateLocked(locked);
+    if (disabled || disabled === false) myContact.updateDisabled(disabled);
   }
   removeArmyContact(id) {
     const contactIndex = this.armyContacts.findIndex(
@@ -205,8 +231,10 @@ export default class Sensors extends System {
   }
   destroyContact({ id }) {
     const myContact = this.contacts.find(contact => contact.id === id);
-    myContact.destroyed = true;
-    setTimeout(this.removeContact.bind(this, { id }), 1000);
+    if (myContact) {
+      myContact.destroyed = true;
+      setTimeout(this.removeContact.bind(this, { id }), 1000);
+    }
   }
   nudgeContacts(amount, speed, yaw) {
     this.contacts.forEach(c => c.nudge(amount, speed, yaw));
@@ -214,9 +242,9 @@ export default class Sensors extends System {
   setPingMode(mode) {
     this.pingMode = mode;
   }
-  break(report) {
+  break(report, destroyed) {
     this.scanCanceled();
-    super.break(report);
+    super.break(report, destroyed);
   }
   setPower(powerLevel) {
     if (
@@ -235,9 +263,15 @@ export default class Sensors extends System {
   }
   setAutoThrusters(t) {
     this.autoThrusters = t;
+    if (!t) {
+      this.thrusterMovement = { x: 0, y: 0, z: 0 };
+    }
   }
   setInterference(i) {
     this.interference = i;
+  }
+  setMovement(m) {
+    this.movement = m;
   }
   setSegment(segment, state) {
     this.segments.find(s => s.segment === segment).state = state;

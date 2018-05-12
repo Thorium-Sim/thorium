@@ -13,7 +13,7 @@ const Exocomp = ({
   recall
 }) => {
   return (
-    <Card>
+    <Card className="exocomp-box">
       <CardBody>
         <span className="exocomp-title">#{number}</span>
         <p>Status: {titleCase(state)}</p>

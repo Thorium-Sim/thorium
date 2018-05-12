@@ -444,6 +444,7 @@ class CrewCore extends Component {
                   </option>
                   <option value={"M"}>M</option>
                   <option value={"F"}>F</option>
+                  <option value={"X"}>X</option>
                 </Input>
               </FormGroup>
             </Col>

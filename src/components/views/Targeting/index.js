@@ -78,6 +78,7 @@ const TARGETING_QUERY = gql`
         picture
         targeted
         pictureUrl
+        destroyed
       }
     }
     phasers(simulatorId: $simulatorId) {
@@ -147,6 +148,7 @@ const TARGETING_SUB = gql`
         picture
         targeted
         pictureUrl
+        destroyed
       }
     }
   }

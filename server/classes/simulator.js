@@ -1,6 +1,6 @@
 import uuid from "uuid";
 import Team from "./teams";
-import { DamageStep } from "./generic";
+import DamageStep from "./generic/damageStep";
 
 class RemoteAccess {
   constructor(params = {}) {
@@ -44,10 +44,12 @@ export default class Simulator {
     this.exocomps = params.exocomps || 0;
     this.mission = params.mission || null;
     this.currentTimelineStep = params.currentTimelineStep || 0;
+    this.executedTimelineSteps = params.executedTimelineSteps || [];
     this.teams = [];
     this.training = params.training || false;
     this.ship = new Ship(params.ship);
     this.panels = params.panels || [];
+
     // Set up the teams
     if (params.teams) {
       params.teams.forEach(t => this.teams.push(new Team(t)));
@@ -55,6 +57,7 @@ export default class Simulator {
 
     // Damage reports
     this.stepDamage = params.stepDamage || true;
+    this.verifyStep = params.verifyStep || false;
     this.requiredDamageSteps = [];
     this.optionalDamageSteps = [];
     params.requiredDamageSteps &&
@@ -85,6 +88,9 @@ export default class Simulator {
   }
   setTimelineStep(step) {
     this.currentTimelineStep = step;
+  }
+  executeTimelineStep(stepId) {
+    this.executedTimelineSteps.push(stepId);
   }
 
   // Ship

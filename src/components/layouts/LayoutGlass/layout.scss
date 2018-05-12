@@ -164,6 +164,7 @@ $color: $alert5;
     position: absolute;
     text-align: center;
     color: #aaa;
+    z-index: -40;
   }
   .simulator-name {
     top: 4.8vh;
@@ -193,7 +194,7 @@ $color: $alert5;
     z-index: 100000;
   }
   video#frame-bg {
-    mix-blend-mode: screen;
+    //mix-blend-mode: screen;
     top: 0;
     bottom: 0;
     left: 0;
@@ -202,6 +203,7 @@ $color: $alert5;
     position: fixed;
     width: 100vw;
     height: 100vh;
+    z-index: -100;
   }
 
   .simName-graphic {
@@ -212,6 +214,7 @@ $color: $alert5;
     height: 8vh;
     top: 4vh;
     left: 2vw;
+    z-index: -50;
   }
   .cards-graphic {
     background-image: url(./Cards.png);
@@ -222,13 +225,19 @@ $color: $alert5;
     height: 13.5vh;
     left: -18vw;
     top: 54vh;
+    z-index: -50;
   }
   .color-image {
     width: 100vw;
     height: 100vh;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     pointer-events: none;
     position: fixed;
-    mix-blend-mode: color;
+    mix-blend-mode: screen;
+    z-index: -10;
   }
   .stationName-graphic {
     background-image: url(./StationName.png);
@@ -238,6 +247,7 @@ $color: $alert5;
     height: 7vh;
     right: 2vw;
     top: 4vh;
+    z-index: -50;
   }
   .widgets-graphic {
     background-image: url(./Widgets.png);
@@ -247,6 +257,7 @@ $color: $alert5;
     height: 5.5vh;
     left: 36vw;
     top: 5.5vh;
+    z-index: -50;
   }
   .username-graphic {
     background-image: url(./Username.png);
@@ -256,6 +267,7 @@ $color: $alert5;
     height: 6vh;
     left: 2vw;
     top: 12vh;
+    z-index: -50;
   }
   button {
     color: white;

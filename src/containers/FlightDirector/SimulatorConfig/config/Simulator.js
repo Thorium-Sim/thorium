@@ -25,13 +25,23 @@ const ops = {
     mutation ChangeExocomps($id: ID!, $value: Int!) {
       changeSimulatorExocomps(simulatorId: $id, exocomps: $value)
     }
+  `,
+  stepDamage: gql`
+    mutation SetStepDamage($id: ID!, $value: Boolean!) {
+      setStepDamage(simulatorId: $id, stepDamage: $value)
+    }
+  `,
+  verifyStep: gql`
+    mutation SetVerify($id: ID!, $value: Boolean!) {
+      setVerifyDamage(simulatorId: $id, verifyStep: $value)
+    }
   `
 };
 class SimulatorConfigView extends Component {
   _handleChange = e => {
     const variables = {
       id: this.props.selectedSimulator.id,
-      value: e.target.value
+      value: e.target.value === "on" ? e.target.checked : e.target.value
     };
     const mutation = ops[e.target.name];
     this.props.client.mutate({
@@ -89,6 +99,27 @@ class SimulatorConfigView extends Component {
               <option value="2">1</option>
               <option value="p">P</option>
             </select>
+          </fieldset>
+          <fieldset className="form-group">
+            <label>Split damage reports into steps </label>
+            <input
+              type="checkbox"
+              defaultChecked={this.props.selectedSimulator.stepDamage}
+              name="stepDamage"
+              onChange={this._handleChange.bind(this)}
+            />
+          </fieldset>
+          <fieldset className="form-group">
+            <label>
+              Require damage report step validation (must use step damage
+              option)
+            </label>
+            <input
+              type="checkbox"
+              defaultChecked={this.props.selectedSimulator.verifyStep}
+              name="verifyStep"
+              onChange={this._handleChange.bind(this)}
+            />
           </fieldset>
           <fieldset className="form-group">
             <label>Exocomp Count</label>

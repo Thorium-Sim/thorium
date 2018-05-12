@@ -34,14 +34,18 @@ class ClientWrapper extends Component {
       `,
       variables: { id: oldClientId }
     });
-    this.props.client.mutate({
-      mutation: gql`
-        mutation RegisterClient($client: ID!) {
-          clientConnect(client: $client)
-        }
-      `,
-      variables: { client: clientId }
-    });
+    this.props.client
+      .mutate({
+        mutation: gql`
+          mutation RegisterClient($client: ID!) {
+            clientConnect(client: $client)
+          }
+        `,
+        variables: { client: clientId }
+      })
+      .then(() => {
+        window.location.reload();
+      });
   };
   render() {
     return (
@@ -128,6 +132,12 @@ const creditList = [
             🛰
           </span>
         </li>
+        <li>
+          Victor Williamson
+          <span role="img" aria-label="donor-tag">
+            👽
+          </span>
+        </li>
       </ul>
     )
   },
@@ -212,7 +222,7 @@ class Credits extends Component {
                 <li>
                   <a
                     download="Thorium.zip"
-                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v0.0.1/thorium-client-0.0.1-mac.zip"
+                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v1.0.2/thorium-client-1.0.2-mac.zip"
                   >
                     Mac
                   </a>
@@ -220,7 +230,7 @@ class Credits extends Component {
                 <li>
                   <a
                     download="Thorium.zip"
-                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v0.0.1/thorium-client-setup-0.0.1.exe"
+                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v1.0.2/thorium-client-setup-1.0.2.exe"
                   >
                     Windows
                   </a>
@@ -228,7 +238,7 @@ class Credits extends Component {
                 <li>
                   <a
                     download="Thorium.zip"
-                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v0.0.1/thorium-client-0.0.1-x86_64.AppImage"
+                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v1.0.2/thorium-client-1.0.2-x86_64.AppImage"
                   >
                     Linux
                   </a>
@@ -302,6 +312,31 @@ const SIMULATOR_SUB = gql`
       alertlevel
       layout
     }
+  }
+`;
+
+const SOUND_SUB = gql`
+  subscription SoundSub($clientId: ID!) {
+    soundSub(clientId: $clientId) {
+      id
+      url
+      volume
+      playbackRate
+      channel
+      looping
+    }
+  }
+`;
+
+const CANCEL_SOUNDS = gql`
+  subscription CancelSounds($clientId: ID!) {
+    cancelSound(clientId: $clientId)
+  }
+`;
+
+const CANCEL_ALL_SOUNDS = gql`
+  subscription CancelSounds($clientId: ID!) {
+    cancelAllSounds(clientId: $clientId)
   }
 `;
 
@@ -427,6 +462,7 @@ class ClientView extends Component {
     this.clientSubscription && this.clientSubscription();
     this.simulatorSub && this.simulatorSub();
     this.cacheSub && this.cacheSub();
+    this.soundSub && this.soundSub._cleanup();
   }
   componentDidMount() {
     this.props.client.mutate({
@@ -442,6 +478,48 @@ class ClientView extends Component {
       event.stopPropagation();
       return false;
     };
+
+    // Sound Subscription
+    this.soundSub = this.props.client
+      .subscribe({
+        query: SOUND_SUB,
+        variables: {
+          clientId: this.props.clientId
+        }
+      })
+      .subscribe({
+        next: ({ data: { soundSub } }) => {
+          this.props.playSound(soundSub);
+        },
+        error(err) {
+          console.error("Error playing sound", err);
+        }
+      });
+    this.cancelSoundsSub = this.props.client
+      .subscribe({
+        query: CANCEL_SOUNDS,
+        variables: {
+          clientId: this.props.clientId
+        }
+      })
+      .subscribe({
+        next: ({ data: { cancelSound } }) => {
+          console.log(cancelSound);
+          this.props.removeSound(cancelSound);
+        }
+      });
+    this.cancelAllSoundsSub = this.props.client
+      .subscribe({
+        query: CANCEL_ALL_SOUNDS,
+        variables: {
+          clientId: this.props.clientId
+        }
+      })
+      .subscribe({
+        next: () => {
+          this.props.removeAllSounds();
+        }
+      });
   }
   render() {
     let flight;

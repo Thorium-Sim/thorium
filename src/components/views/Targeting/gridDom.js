@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./style.css";
 import { Asset } from "../../../helpers/assets";
+import Explosion from "../../../helpers/explosions";
 
 const speedLimit = 20;
 const speedConstant1 = 2.5 / 200;
@@ -34,7 +35,8 @@ class TargetingGridDom extends Component {
         targets[index] = Object.assign(targets[index], {
           icon: t.icon,
           scale: t.size,
-          targeted: t.targeted
+          targeted: t.targeted,
+          destroyed: t.destroyed
         });
       } else {
         targets.push({
@@ -47,7 +49,8 @@ class TargetingGridDom extends Component {
           scale: t.size,
           hover: 0,
           name: t.name,
-          targeted: t.targeted
+          targeted: t.targeted,
+          destroyed: t.destroyed
         });
       }
     });
@@ -67,8 +70,20 @@ class TargetingGridDom extends Component {
     const height = width * 3 / 4;
     this.setState(({ targets }) => {
       const newTargets = targets.map(
-        ({ id, x, y, icon, name, speedX, speedY, scale, hover, targeted }) => {
-          const limit = { x: width - 32, y: height - 32 };
+        ({
+          id,
+          x,
+          y,
+          icon,
+          name,
+          speedX,
+          speedY,
+          scale,
+          hover,
+          targeted,
+          destroyed
+        }) => {
+          const limit = { x: width - 64, y: height - 64 };
           const speed = { x: speedX, y: speedY };
           const loc = { x, y };
           ["x", "y"].forEach(which => {
@@ -125,7 +140,8 @@ class TargetingGridDom extends Component {
             scale,
             hover,
             name,
-            targeted
+            targeted,
+            destroyed
           };
         }
       );
@@ -133,21 +149,18 @@ class TargetingGridDom extends Component {
     });
   }
   _mouseMove = id => {
-    const { targets } = this.state;
-    if (targets.find(t => t.targeted === true)) {
-      this.setState({
-        targets: targets.map(t => {
-          t.hover = 0;
-          return t;
-        })
-      });
+    if (this.props.targets.find(t => t.targeted)) {
       return;
     }
+    const { targets } = this.state;
     targets.forEach(t => {
       if (t.id === id) {
         t.hover += 1;
         if (t.hover >= 100) {
           this.props.targetContact(t.id);
+          this.setState({
+            targets: targets.map(ta => ({ ...ta, hover: 0 }))
+          });
         }
       }
       return t;
@@ -155,9 +168,22 @@ class TargetingGridDom extends Component {
   };
   _touchMove = id => {
     // See if there is a target
-    if (!this.props.targets.find(t => t.targeted)) {
-      this.props.targetContact(id);
+    if (this.props.targets.find(t => t.targeted)) {
+      return;
     }
+    const { targets } = this.state;
+    targets.forEach(t => {
+      if (t.id === id) {
+        t.hover += 1;
+        if (t.hover >= 20) {
+          this.props.targetContact(t.id);
+          this.setState({
+            targets: targets.map(ta => ({ ...ta, hover: 0 }))
+          });
+        }
+      }
+      return t;
+    });
   };
   render() {
     const lines = 15;
@@ -200,8 +226,19 @@ const Target = ({
   x,
   y,
   scale,
-  targeted
+  targeted,
+  destroyed
 }) => {
+  if (destroyed) {
+    return (
+      <Explosion
+        style={{
+          position: "absolute",
+          transform: `translate(${x - 10}px, ${y - 10}px) scale(${scale})`
+        }}
+      />
+    );
+  }
   return (
     <Asset asset={icon}>
       {({ src }) => (
@@ -225,6 +262,7 @@ const Target = ({
               style={{
                 transform: `translate(${x}px, ${y}px) scale(${scale * 1.1})`
               }}
+              draggable={false}
               src={require("./crosshair.svg")}
             />
           )}

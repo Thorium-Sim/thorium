@@ -39,6 +39,7 @@ import { LibraryQueries } from "./library";
 import { SoftwarePanelsQueries } from "./softwarePanels";
 import { SurveyFormQueries } from "./surveyform.js";
 import { ObjectiveQueries } from "./objective.js";
+import { KeyboardQueries } from "./keyboard.js";
 
 const queryMap = Object.assign(
   {},
@@ -82,7 +83,8 @@ const queryMap = Object.assign(
   LibraryQueries,
   SoftwarePanelsQueries,
   SurveyFormQueries,
-  ObjectiveQueries
+  ObjectiveQueries,
+  KeyboardQueries
 );
 
 export default queryMap;

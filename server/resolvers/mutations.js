@@ -41,6 +41,7 @@ import { SoftwarePanelsMutations } from "./softwarePanels";
 import { IssueTrackerMutations } from "./issueTracker";
 import { SurveyFormMutations } from "./surveyform.js";
 import { ObjectiveMutations } from "./objective.js";
+import { KeyboardMutations } from "./keyboard.js";
 
 const mutationMap = Object.assign(
   {
@@ -89,7 +90,8 @@ const mutationMap = Object.assign(
   LibraryMutations,
   SoftwarePanelsMutations,
   SurveyFormMutations,
-  ObjectiveMutations
+  ObjectiveMutations,
+  KeyboardMutations
 );
 
 export default mutationMap;

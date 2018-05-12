@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { FormGroup, Label, Input, Col, Button } from "reactstrap";
+import { FormGroup, Col, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
-import ContactContextMenu from "../views/Sensors/contactContextMenu";
+import ContactContextMenu from "../views/Sensors/gridCore/contactContextMenu";
 import uuid from "uuid";
 import { Asset } from "../../helpers/assets";
 
@@ -45,21 +45,11 @@ export default class SetArmyContacts extends Component {
     );
   };
   render() {
-    const { updateArgs = () => {}, args /*client*/ } = this.props;
+    const { args /*client*/ } = this.props;
     const { removeContacts, selectedContact } = this.state;
     const { armyContacts = [] } = args;
     return (
       <FormGroup className="macro-setArmyContacts">
-        <Label>Domain</Label>
-        <Input
-          type="select"
-          value={args.domain}
-          onChange={evt => updateArgs("domain", evt.target.value)}
-        >
-          <option value={null}>Pick a Domain</option>
-          <option value="external">External</option>
-          <option value="internal">Internal</option>
-        </Input>
         <p>Contacts:</p>
         <div className="contact-scroll">
           {armyContacts.map(contact => {
@@ -117,15 +107,24 @@ export default class SetArmyContacts extends Component {
           />{" "}
           Remove
         </label>
-        <div style={{ position: "fixed", right: "40%", bottom: "10%" }}>
-          {selectedContact && (
+        {selectedContact && (
+          <div
+            style={{
+              position: "fixed",
+              right: "40%",
+              bottom: "10%",
+              width: "25%",
+              height: "50%",
+              overflowY: "scroll"
+            }}
+          >
             <ContactContextMenu
               contact={selectedContact}
               closeMenu={() => this.setState({ selectedContact: null })}
               updateArmyContact={this.updateArmyContact}
             />
-          )}
-        </div>
+          </div>
+        )}
       </FormGroup>
     );
   }

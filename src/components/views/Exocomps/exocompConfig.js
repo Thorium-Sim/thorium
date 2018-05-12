@@ -40,7 +40,7 @@ class ExocompConfig extends Component {
       <Card>
         <CardBody>
           <h2>Exocomp Config: #{number}</h2>
-          <FormGroup>
+          <FormGroup className="destination">
             <div>
               <Label>Destination</Label>
             </div>
@@ -50,7 +50,7 @@ class ExocompConfig extends Component {
               select={dest => this.setState({ destination: dest })}
             />
           </FormGroup>
-          <FormGroup>
+          <FormGroup className="parts">
             <Label>Parts</Label>
             <div className="parts-holder">
               {Array(2)

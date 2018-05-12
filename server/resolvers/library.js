@@ -6,7 +6,9 @@ export const LibraryQueries = {
   libraryEntries(rootValue, { simulatorId, type, all }) {
     let returnValue = App.libraryDatabase;
     if (type) {
-      returnValue = returnValue.filter(s => s.type === type);
+      returnValue = returnValue.filter(
+        s => s.type === type || s.type === "general"
+      );
     }
     if (simulatorId) {
       returnValue = returnValue.filter(
@@ -37,7 +39,9 @@ export const LibrarySubscriptions = {
     resolve(rootValue, { simulatorId, type, all }) {
       let returnValue = rootValue;
       if (type) {
-        returnValue = returnValue.filter(s => s.type === type);
+        returnValue = returnValue.filter(
+          s => s.type === type || s.type === "general"
+        );
       }
       if (simulatorId) {
         returnValue = returnValue.filter(

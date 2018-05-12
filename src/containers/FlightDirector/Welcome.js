@@ -1,22 +1,11 @@
 import React, { Component } from "react";
-import {
-  Col,
-  Row,
-  Container,
-  Button,
-  Card,
-  CardBody,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Alert
-} from "reactstrap";
+import { Col, Row, Container, Button, Card, CardBody, Alert } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import { Link } from "react-router-dom";
-import IssueTracker from "../../components/admin/IssueTracker";
 import semver from "semver";
+import Tour from "reactour";
+
 import "./welcome.css";
 
 const FLIGHT_SUB = gql`
@@ -43,14 +32,18 @@ const quotes = [
   "If you listen carefully, the silence is beautiful.",
   "The man who has no imagination has no wings.",
   "Life before death. Strength before weakness. Journey before destination.",
-  "We are the ones we have been waiting for."
+  "We are the ones we have been waiting for.",
+  "I am burdened with glorious purpose."
 ];
 
 class Welcome extends Component {
   subscription = null;
-  state = { issuesOpen: false };
+  state = {
+    issuesOpen: false,
+    quote: quotes[Math.floor(Math.random() * quotes.length)]
+  };
   componentDidMount() {
-    if (process.env.CI) {
+    if (!process.env.CI) {
       fetch("https://api.github.com/repos/thorium-sim/thorium/tags")
         .then(res => res.json())
         .then(res => {
@@ -77,10 +70,29 @@ class Welcome extends Component {
       });
     }
   }
-  toggleIssueTracker = () => {
-    this.setState({
-      issuesOpen: !this.state.issuesOpen
-    });
+  trainingSteps = () => {
+    return [
+      {
+        selector: ".nothing",
+        content:
+          "Welcome to Thorium! This training is available to you on several screens and will walk you through the basics of how to set up and run a Thorium flight."
+      },
+      {
+        selector: ".menu-button",
+        content:
+          "Use this menu to go to the other config screens. These screens are used to import and edit simulators and missions, and add assets, sets, keyboards, and more. You should go through the help on each screen to become familiar with the features and how you would use them."
+      },
+      {
+        selector: ".running-flight",
+        content:
+          "This list shows all of the currently running flights. A flight is a single instance of a simulated experience, and can be paused and resumed at a later time."
+      },
+      {
+        selector: ".new-flight",
+        content:
+          "To do anything in a Thorium simulator, you have to start a flight. Click this button to do so."
+      }
+    ];
   };
   render() {
     if (this.props.data.loading || !this.props.data.flights) return null;
@@ -91,32 +103,32 @@ class Welcome extends Component {
           <Col sm={12} className="title-row">
             <h1 className="text-center">Thorium</h1>
             <h3 className="text-center">
-              <small>{quotes[Math.floor(Math.random() * quotes.length)]}</small>
+              <small>{this.state.quote}</small>
             </h3>
             {this.state.outdated && (
               <Alert color="warning">
                 Your version of Thorium is outdated. Current version is{" "}
                 {this.state.outdated}. Your version is{" "}
-                {require("../../../package.json").version}.{" "}
-                <a
-                  href="http://thoriumsim.com/en/releases"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Click here to get the latest version.
-                </a>
+                {require("../../../package.json").version}.
+                <p>
+                  <small>
+                    The update is downloading in the background. Wait until the
+                    Thorium Server command line window says "Download Complete"
+                    before restarting Thorium Server
+                  </small>
+                </p>
               </Alert>
             )}
           </Col>
         </Row>
         <Row className="content-row">
-          <div>
+          <div className="running-flight">
             <h3>Pick a running Flight</h3>
             <Card>
               <CardBody>
                 {flights.map(f => (
                   <Link
-                    to={`/flight/${f.id}`}
+                    to={`/config/flight/${f.id}`}
                     key={f.id}
                     className="flight-picker"
                   >
@@ -130,11 +142,11 @@ class Welcome extends Component {
           <div>
             <h4 className="text-center">or</h4>
           </div>
-          <div>
+          <div className="new-flight">
             <h3>Start a new Flight</h3>
             <Button
               tag={Link}
-              to="/flightConfig"
+              to="/config/flight"
               color="success"
               block
               size="lg"
@@ -143,77 +155,11 @@ class Welcome extends Component {
             </Button>
           </div>
         </Row>
-        <Row className="config-row">
-          <Col>
-            <Button tag={Link} to="/simulatorConfig" color="info" block>
-              Configure Simulators
-            </Button>
-          </Col>
-          <Col>
-            <Button tag={Link} to="/assetConfig" color="info" block>
-              Configure Generic Assets
-            </Button>
-          </Col>
-
-          <Col>
-            <Button tag={Link} to="/missionConfig" color="info" block>
-              Configure Missions
-            </Button>
-          </Col>
-          <Col>
-            <Button tag={Link} to="/setConfig" color="info" block>
-              Configure Sets
-            </Button>
-          </Col>
-
-          <Col>
-            <Button tag={Link} to="/tacticalConfig" color="info" block>
-              Configure Tactical Maps
-            </Button>
-          </Col>
-          {process.env.NODE_ENV !== "production" && (
-            <Col>
-              <Button tag={Link} to="/debug" color="secondary" block>
-                Debug
-              </Button>
-            </Col>
-          )}
-          {process.env.NODE_ENV !== "production" && (
-            <Col>
-              <Button tag={Link} to="/flight/c/core" color="secondary" block>
-                Debug Core
-              </Button>
-            </Col>
-          )}
-          <Col>
-            <Button color="primary" block onClick={this.toggleIssueTracker}>
-              Bug Report/Feature Request
-            </Button>
-          </Col>
-          <Col>
-            <Button color="warning" block tag={Link} to="/softwarePanels">
-              Software Panel Config
-            </Button>
-          </Col>
-          <Col>
-            <Button color="warning" block tag={Link} to="/surveyForms">
-              Survey Form Config
-            </Button>
-          </Col>
-        </Row>
-        <Modal isOpen={this.state.issuesOpen} toggle={this.toggleIssueTracker}>
-          <ModalHeader toggle={this.toggleIssueTracker}>
-            Submit a Feature/Bug Report
-          </ModalHeader>
-          <ModalBody>
-            <IssueTracker close={this.toggleIssueTracker} />
-          </ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={this.toggleIssueTracker}>
-              Close
-            </Button>
-          </ModalFooter>
-        </Modal>
+        <Tour
+          steps={this.trainingSteps()}
+          isOpen={this.props.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }

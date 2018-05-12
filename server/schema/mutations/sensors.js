@@ -16,7 +16,6 @@ moveSensorContact(id: ID!, contact: SensorContactInput!): String
 removeSensorContact(id: ID!, contact: SensorContactInput!): String
 removeAllSensorContacts(id: ID!): String
 stopAllSensorContacts(id: ID!): String
-destroySensorContact(id: ID!, contact: SensorContactInput!): String
 updateSensorContact(id: ID!, contact: SensorContactInput!): String
 
 #Macro: Sensor Contacts
@@ -42,4 +41,7 @@ toggleSensorsAutoTarget(id: ID!, target: Boolean!):String
 toggleSensorsAutoThrusters(id: ID!, thrusters: Boolean!):String
 setSensorsInterference(id: ID!, interference: Float!):String
 setSensorsSegment(id: ID!, segment: String!, state: Boolean!): String
+setAutoMovement(id:ID!, movement:CoordinatesInput!):String
+updateSensorContacts(id:ID!, contacts:[SensorContactInput]!):String
+destroySensorContact(id:ID!, contact:ID, contacts:[ID]):String
 `;

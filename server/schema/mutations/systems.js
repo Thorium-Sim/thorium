@@ -3,7 +3,7 @@ addSystemToSimulator(simulatorId: ID!, className: String!, params: String!): Str
 removeSystemFromSimulator(systemId: ID, simulatorId: ID, type: String): String
 updateSystemName(systemId: ID!, name: String, displayName: String): String
 
-damageSystem(systemId: ID!, report: String): String
+damageSystem(systemId: ID!, report: String, destroyed: Boolean): String
 damageReport(systemId: ID!, report: String!): String
 updateCurrentDamageStep(systemId: ID!, step: Int!):String
 repairSystem(systemId: ID!): String
@@ -24,4 +24,8 @@ breakSystem(simulatorId: ID!, type: String!, name: String): String
 #Macro: Fix system
 fixSystem(simulatorId: ID!, type: String!, name: String): String
 
+setDamageStepValidation(id:ID!, validation:Boolean!):String
+validateDamageStep(id:ID!):String
+changeSystemDefaultPowerLevel(id:ID!, level:Int!):String
+fluxSystemPower(id:ID, all:Boolean, simulatorId: ID):String
 `;

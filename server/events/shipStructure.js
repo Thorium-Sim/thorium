@@ -114,7 +114,8 @@ App.on("updateRoomRoles", ({ roomId, roles }) => {
 });
 // Inventory
 App.on("addInventory", ({ inventory }) => {
-  const { simulatorId, name, metadata, roomCount } = inventory;
+  console.log(inventory);
+  const { simulatorId, name, metadata, roomCount, crewCount } = inventory;
   // Check to see if an inventory item with the same name exists.
   const dupInventory = App.inventory.find(
     i => i.simulatorId === simulatorId && i.name === name
@@ -123,6 +124,9 @@ App.on("addInventory", ({ inventory }) => {
     roomCount.forEach(r => {
       dupInventory.updateCount(r.room, r.count);
     });
+    crewCount.forEach(c => {
+      dupInventory.updateCount(c.crew, c.count);
+    });
   } else {
     // Add a new inventory item
     App.inventory.push(
@@ -130,11 +134,14 @@ App.on("addInventory", ({ inventory }) => {
         simulatorId,
         name,
         roomCount,
+        crewCount,
         metadata
       })
     );
   }
   pubsub.publish("inventoryUpdate", App.inventory);
+  pubsub.publish("roomsUpdate", App.rooms);
+  pubsub.publish("crewUpdate", App.crew);
 });
 App.on("removeInventory", ({ id }) => {
   App.inventory = App.inventory.filter(i => i.id !== id);

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Input, FormGroup, Label, Col, Row, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";
-import { graphql } from "react-apollo";
+import { graphql, Mutation } from "react-apollo";
 import {
   DeckDropdown,
   RoomDropdown
@@ -200,7 +200,12 @@ export class GenericSystemConfig extends Component {
               </Button>
             </FormGroup>
             <FormGroup>
-              <Label>Required Power</Label>
+              <Label>
+                Required Power{" "}
+                <small>
+                  Click the green button to make a power level the default.
+                </small>
+              </Label>
               <FontAwesome
                 onClick={() => {
                   this.addPowerLevel(s);
@@ -219,7 +224,7 @@ export class GenericSystemConfig extends Component {
                 s.power.powerLevels.map((p, i) => (
                   <div
                     key={`system-power-${i}`}
-                    style={{ display: "inline-block" }}
+                    style={{ display: "inline-flex", flexDirection: "column" }}
                   >
                     <Input
                       style={{
@@ -234,6 +239,26 @@ export class GenericSystemConfig extends Component {
                         this.updatePowerLevel(s, i, e.target.value)
                       }
                     />
+                    {s.power.defaultLevel !== i && (
+                      <Mutation
+                        mutation={gql`
+                          mutation ChangeDefaultLevel($id: ID!, $level: Int!) {
+                            changeSystemDefaultPowerLevel(
+                              id: $id
+                              level: $level
+                            )
+                          }
+                        `}
+                        variables={{ id: s.id, level: i }}
+                        refetchQueries={refetchQueries}
+                      >
+                        {action => (
+                          <Button color="success" onClick={action}>
+                            {" "}
+                          </Button>
+                        )}
+                      </Mutation>
+                    )}
                   </div>
                 ))}
             </FormGroup>
@@ -256,6 +281,7 @@ const SYSTEM_QUERY = gql`
       power {
         power
         powerLevels
+        defaultLevel
       }
       damage {
         damaged

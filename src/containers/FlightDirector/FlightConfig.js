@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Link } from "react-router-dom";
@@ -13,7 +13,7 @@ import {
   Label,
   Input
 } from "reactstrap";
-
+import Tour from "reactour";
 import randomWords from "random-words";
 
 import "./flightConfig.css";
@@ -62,9 +62,84 @@ class FlightConfig extends Component {
       })
       .then(({ data: { startFlight: flightId } }) => {
         setTimeout(() => {
-          this.props.history.push(`/flight/${flightId}`);
+          this.props.history.push(`/config/flight/${flightId}`);
         }, 500);
       });
+  };
+  trainingSteps = () => {
+    return [
+      {
+        selector: ".nothing",
+        content: (
+          <span>
+            This is the screen where you configure your flight. A flight in
+            Thorium starts with a simulator and, optionally a mission. If you
+            haven't imported or created a simulator yet,{" "}
+            <Link to="/config/simulator">be sure to do that first</Link>.
+          </span>
+        )
+      },
+      {
+        selector: ".name-input",
+        content: (
+          <span>
+            You can choose a name for your flight, or use the three-word
+            default.
+          </span>
+        )
+      },
+      {
+        selector: ".simulator-pick",
+        content: (
+          <span>
+            You can see a list of available simulators here. Don't worry - this
+            isn't the name of your simulator. These are just template simulators
+            which will be stamped out to create the simulator you will use
+            during your mission. Click a simulator to add it to the flight
+            before moving on.
+          </span>
+        )
+      },
+      {
+        selector: ".stationset-pick",
+        content: (
+          <span>
+            If you chose a simulator, you should see the station sets here.
+            Station sets allow a simulator to have multiple station
+            configurations. For example, if I am running a flight with 7 people
+            on the simulator, I would want a different station set configuration
+            than if I were running with 14 people. This lets you choose a
+            different station sets for your flight. Choose a station set before
+            moving on.
+          </span>
+        )
+      },
+      {
+        selector: ".mission-pick",
+        content: (
+          <span>
+            If you chose a station set, you should see a list of missions here
+            here. Missions are a pre-defined list of timeline events which
+            happen during your flight. You can pick one or click 'Skip' to move
+            on. You can always choose a mission for your simulator later. Choose
+            a mission or 'Skip' before moving on.
+          </span>
+        )
+      },
+      {
+        selector: ".current-config",
+        content: (
+          <span>
+            Your current config will appear here. In most cases, you will start
+            the flight now. However, it is possible to add additional simulators
+            for a joint flight mission. Joint flights take advantage of
+            Thorium's shared database to share information between multiple
+            simulators. Click 'Start Flight' to initialize the simulator(s) and
+            move on.
+          </span>
+        )
+      }
+    ];
   };
   render() {
     if (
@@ -91,7 +166,7 @@ class FlightConfig extends Component {
             <Link to="/">Return to Main</Link>
           </small>
         </h4>
-        <FormGroup>
+        <FormGroup className="name-input">
           <Label>
             Name
             <Input
@@ -102,7 +177,7 @@ class FlightConfig extends Component {
           </Label>
         </FormGroup>
         <Row>
-          <Col sm={3}>
+          <Col sm={3} className="simulator-pick">
             <h5>Pick a simulator</h5>
             <Card className="scroll">
               {simulators.map(s => (
@@ -123,7 +198,7 @@ class FlightConfig extends Component {
               ))}
             </Card>
           </Col>
-          <Col sm={3}>
+          <Col sm={3} className="stationset-pick">
             {selectedSimulator && (
               <div>
                 <h5>Pick a station set</h5>
@@ -142,7 +217,7 @@ class FlightConfig extends Component {
               </div>
             )}
           </Col>
-          <Col sm={3}>
+          <Col sm={3} className="mission-pick">
             {selectedStation && (
               <div>
                 <h5>Pick a mission</h5>
@@ -180,44 +255,51 @@ class FlightConfig extends Component {
               </div>
             )}
           </Col>
-          {flightConfig.length > 0 && (
-            <Col sm={3}>
-              <h5>Current Config</h5>
-              <Card>
-                {flightConfig.map((f, i) => (
-                  <ul key={`flight-config-${i}`}>
-                    <li>
-                      <strong>Simulator</strong>:{" "}
-                      {simulators.find(s => s.id === f.simulatorId).name}
-                    </li>
-                    <li>
-                      <strong>Stations</strong>:{" "}
-                      {
-                        simulators
-                          .find(s => s.id === f.simulatorId)
-                          .stationSets.find(s => s.id === f.stationSet).name
-                      }
-                    </li>
-                    {f.missionId && (
+          <Col sm={3} className="current-config">
+            {flightConfig.length > 0 && (
+              <Fragment>
+                <h5>Current Config</h5>
+                <Card>
+                  {flightConfig.map((f, i) => (
+                    <ul key={`flight-config-${i}`}>
                       <li>
-                        <strong>Mission</strong>:{" "}
-                        {missions.find(m => m.id === f.missionId).name}
+                        <strong>Simulator</strong>:{" "}
+                        {simulators.find(s => s.id === f.simulatorId).name}
                       </li>
-                    )}
-                  </ul>
-                ))}
-              </Card>
-              <Button
-                size="lg"
-                block
-                color="success"
-                onClick={this.startFlight}
-              >
-                Start Flight
-              </Button>
-            </Col>
-          )}
+                      <li>
+                        <strong>Stations</strong>:{" "}
+                        {
+                          simulators
+                            .find(s => s.id === f.simulatorId)
+                            .stationSets.find(s => s.id === f.stationSet).name
+                        }
+                      </li>
+                      {f.missionId && (
+                        <li>
+                          <strong>Mission</strong>:{" "}
+                          {missions.find(m => m.id === f.missionId).name}
+                        </li>
+                      )}
+                    </ul>
+                  ))}
+                </Card>
+                <Button
+                  size="lg"
+                  block
+                  color="success"
+                  onClick={this.startFlight}
+                >
+                  Start Flight
+                </Button>
+              </Fragment>
+            )}
+          </Col>
         </Row>
+        <Tour
+          steps={this.trainingSteps()}
+          isOpen={this.props.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }

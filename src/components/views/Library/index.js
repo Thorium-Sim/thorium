@@ -8,8 +8,8 @@ import Tour from "reactour";
 import "./style.css";
 
 const SUB = gql`
-  subscription Library($simulatorId: ID) {
-    libraryEntriesUpdate(simulatorId: $simulatorId, all: true) {
+  subscription Library($simulatorId: ID, $type: String) {
+    libraryEntriesUpdate(simulatorId: $simulatorId, type: $type) {
       id
       simulatorId
       body
@@ -58,7 +58,8 @@ class Library extends Component {
       this.subscription = nextProps.data.subscribeToMore({
         document: SUB,
         variables: {
-          simulatorId: nextProps.simulator.id
+          simulatorId: nextProps.simulator.id,
+          type: nextProps.type || "general"
         },
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
@@ -84,7 +85,9 @@ class Library extends Component {
     }
   };
   render() {
-    const { data: { loading, libraryEntries } } = this.props;
+    const {
+      data: { loading, libraryEntries }
+    } = this.props;
     const { categoryFilter = [], searchFilter, selectedEntry } = this.state;
     if (loading || !libraryEntries) return null;
     const sEntry = libraryEntries.find(l => l.id === selectedEntry);
@@ -205,7 +208,13 @@ class Library extends Component {
                       sEntry.seeAlso.map(s => (
                         <p
                           key={`seeAlso-${s.id}`}
-                          onClick={() => this.setState({ selectedEntry: s.id })}
+                          onClick={() =>
+                            this.setState({
+                              selectedEntry: libraryEntries.find(
+                                l => l.title === s.title
+                              ).id
+                            })
+                          }
                         >
                           {s.title}
                         </p>
@@ -227,8 +236,8 @@ class Library extends Component {
 }
 
 const QUERY = gql`
-  query Library($simulatorId: ID) {
-    libraryEntries(simulatorId: $simulatorId, all: true) {
+  query Library($simulatorId: ID, $type: String) {
+    libraryEntries(simulatorId: $simulatorId, type: $type) {
       id
       simulatorId
       body
@@ -247,7 +256,8 @@ export default graphql(QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {
-      simulatorId: ownProps.simulator.id
+      simulatorId: ownProps.simulator.id,
+      type: ownProps.type || "general"
     }
   })
 })(withApollo(Library));

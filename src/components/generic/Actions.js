@@ -67,6 +67,9 @@ class ActionsMixin extends Component {
                 });
               }, duration);
               break;
+            case "reload":
+              window.location.reload();
+              break;
             case "shutdown":
             case "restart":
             case "sleep":

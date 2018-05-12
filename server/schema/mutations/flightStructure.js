@@ -4,6 +4,8 @@ removeMission(missionId: ID!):String
 editMission(missionId: ID!, name: String, description: String):String
 importMission(jsonString: String!):String
 
+
+
 startFlight(name: String, simulators: [SimulatorInput!]!):String
 createSimulator(name: String!,template: Boolean):String
 resetFlight(flightId: ID!): String
@@ -19,6 +21,10 @@ addTimelineItemToTimelineStep(simulatorId: ID, missionId: ID, timelineStepId: ID
 removeTimelineStepItem(simulatorId: ID, missionId: ID, timelineStepId: ID!, timelineItemId: ID!): String
 updateTimelineStepItem(simulatorId: ID, missionId: ID, timelineStepId: ID!, timelineItemId: ID!, updateTimelineItem: TimelineitemInput!): String
 triggerMacros(simulatorId: ID!, macros: [MacroInput]!): String
+duplicateTimelineStep(missionId: ID!, timelineStepId: ID!):String
+
+#Macro: Auto-Advance Timeline Step (Use with Delay)
+autoAdvance(simulatorId: ID!, prev: Boolean): String
 
 createStationSet(name: String!, simulatorId: ID!):String
 removeStationSet(stationSetID: ID!):String

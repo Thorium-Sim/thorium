@@ -48,6 +48,7 @@ input InventoryItemInput {
   name: String
   metadata: InventoryMetadataInput
   roomCount: [RoomCountInput] 
+  crewCount: [CrewCountInput]
 }
 
 type InventoryMetadata {
@@ -90,6 +91,10 @@ type TeamCount {
 }
 input RoomCountInput {
   room: ID
+  count: Int
+}
+input CrewCountInput {
+  crew: ID
   count: Int
 }
 type TeamCountInput {

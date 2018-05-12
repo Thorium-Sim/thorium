@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
+import { withApollo } from "react-apollo";
+import FileExplorer from "../../views/TacticalMap/fileExplorer";
 
 const ADD_CACHE_MUTATION = gql`
   mutation AddCache($clientId: ID!, $cacheItem: String!) {
@@ -12,7 +13,7 @@ class VideoConfig extends Component {
   componentWillReceiveProps(nextProps) {
     const data = JSON.parse(nextProps.data);
     const oldData = JSON.parse(this.props.data);
-    if (data.asset !== oldData.asset) {
+    if (data.asset !== oldData.asset && nextProps.selectedClient) {
       this.props.client.mutate({
         mutation: ADD_CACHE_MUTATION,
         variables: {
@@ -23,32 +24,27 @@ class VideoConfig extends Component {
     }
   }
   render() {
-    let { data, updateData, assetData } = this.props;
+    let { data, updateData } = this.props;
     data = JSON.parse(data);
     return (
       <div>
-        <div>
+        <div style={{ float: "left", marginLeft: "5px" }}>
           <label>Video</label>
-          {!assetData.loading && (
-            <select
-              value={data.asset}
-              onChange={evt =>
+          <div style={{ maxHeight: "34vh", overflowY: "scroll" }}>
+            <FileExplorer
+              directory="/Viewscreen/Videos"
+              selectedFiles={[data.asset]}
+              onClick={(evt, container) =>
                 updateData(
                   JSON.stringify(
-                    Object.assign({}, data, { asset: evt.target.value })
+                    Object.assign({}, data, { asset: container.fullPath })
                   )
                 )
               }
-            >
-              {assetData.assetFolders[0].containers.map(c => (
-                <option key={c.id} value={c.fullPath}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-          )}
+            />
+          </div>
         </div>
-        <div>
+        <div style={{ float: "left", marginLeft: "5px" }}>
           <label>
             <input
               checked={data.autoplay}
@@ -64,7 +60,7 @@ class VideoConfig extends Component {
             Autoplay
           </label>
         </div>
-        <div>
+        <div style={{ float: "left", marginLeft: "5px" }}>
           <label>
             <input
               checked={data.loop}
@@ -96,31 +92,25 @@ class VideoConfig extends Component {
             Overlay
           </label>
         </div>
+        <div>
+          <label>
+            <input
+              checked={data.advance}
+              type="checkbox"
+              onChange={evt =>
+                updateData(
+                  JSON.stringify(
+                    Object.assign({}, data, { advance: evt.target.checked })
+                  )
+                )
+              }
+            />{" "}
+            Auto-Advance Mission Timeline on Complete
+          </label>
+        </div>
       </div>
     );
   }
 }
 
-const ASSET_QUERY = gql`
-  query AssetFolders($names: [String]) {
-    assetFolders(names: $names) {
-      id
-      name
-      containers {
-        id
-        name
-        fullPath
-      }
-    }
-  }
-`;
-
-export default graphql(ASSET_QUERY, {
-  name: "assetData",
-  options: ownProps => ({
-    fetchPolicy: "cache-and-network",
-    variables: {
-      names: ["Videos"]
-    }
-  })
-})(withApollo(VideoConfig));
+export default withApollo(VideoConfig);

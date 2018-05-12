@@ -3,7 +3,7 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 import uuid from "uuid";
 export const TacticalMapQueries = {
-  tacticalMaps(rootValue, { flightId, template }, context) {
+  tacticalMaps(rootValue, { flightId, template }) {
     let returnVal = App.tacticalMaps;
     if (flightId) returnVal = returnVal.filter(m => m.flightId === flightId);
     if (template || template === false) {
@@ -61,6 +61,15 @@ export const TacticalMapMutations = {
   removeTacticalMapItem(rootValue, args, context) {
     App.handleEvent(args, "removeTacticalMapItem", context);
   },
+  addTacticalMapPath(rootValue, args, context) {
+    App.handleEvent(args, "addTacticalMapPath", context);
+  },
+  updateTacticalMapPath(rootValue, args, context) {
+    App.handleEvent(args, "updateTacticalMapPath", context);
+  },
+  removeTacticalMapPath(rootValue, args, context) {
+    App.handleEvent(args, "removeTacticalMapPath", context);
+  },
   showViewscreenTactical(rootValue, args, context) {
     App.handleEvent(args, "showViewscreenTactical", context);
   }
@@ -94,6 +103,13 @@ export const TacticalMapTypes = {
         Object.assign({}, i, {
           layerId: rootValue.id,
           locationJson: JSON.stringify(i.location)
+        })
+      );
+    },
+    paths(rootValue) {
+      return rootValue.paths.map(i =>
+        Object.assign({}, i, {
+          layerId: rootValue.id
         })
       );
     }

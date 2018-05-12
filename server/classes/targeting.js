@@ -1,5 +1,51 @@
 import { System } from "./generic";
 import uuid from "uuid";
+
+class TargetClass {
+  constructor(params, systemId) {
+    this.id = params.id || uuid.v4();
+    this.systemId = systemId || params.systemId || "";
+    this.name = params.name || "Target";
+    this.size = params.size || 1;
+    this.icon = params.icon || "Generic";
+    this.picture = params.picture || "Generic";
+    this.speed = params.speed || 1;
+    this.quadrant = params.quadrant || 1;
+  }
+  update({ name, size, system, icon, picture, speed, quadrant, count }) {
+    if (name) this.name = name;
+    if (size) this.size = size;
+    if (system) this.system = system;
+    if (icon) this.icon = icon;
+    if (picture) this.picture = picture;
+    if (speed) this.speed = speed;
+    if (quadrant) this.quadrant = quadrant;
+  }
+}
+
+class Target {
+  constructor(params, systemId) {
+    this.id = params.id || uuid.v4();
+    this.systemId = systemId || "";
+    this.targeted = params.targeted || false;
+    this.system = params.system || "General";
+    this.class = params.class || "";
+    this.destroyed = params.destroyed || false;
+  }
+  target() {
+    this.targeted = true;
+  }
+  untarget() {
+    this.targeted = false;
+  }
+  updateSystem(sys) {
+    this.system = sys;
+  }
+  destroy() {
+    this.destroyed = true;
+  }
+}
+
 export default class Targeting extends System {
   constructor(params) {
     super(params);
@@ -36,6 +82,13 @@ export default class Targeting extends System {
   }
   removeTarget(id) {
     this.contacts = this.contacts.filter(c => c.id !== id);
+  }
+  destroyTarget(id) {
+    this.contacts.find(c => c.id === id).destroy();
+    this.untargetTarget(id);
+    setTimeout(() => {
+      this.removeTarget(id);
+    }, 500);
   }
   setTargetClassCount(classId, count) {
     const classContacts = this.contacts.filter(c => c.class === classId);
@@ -90,9 +143,9 @@ export default class Targeting extends System {
   setCoordinateTargeting(which) {
     this.coordinateTargeting = which;
   }
-  break(report) {
+  break(report, destroyed) {
     this.contacts.forEach(t => t.untarget());
-    super.break(report);
+    super.break(report, destroyed);
   }
   setPower(powerLevel) {
     if (
@@ -102,46 +155,5 @@ export default class Targeting extends System {
       this.contacts.forEach(t => t.untarget());
     }
     super.setPower(powerLevel);
-  }
-}
-
-class TargetClass {
-  constructor(params, systemId) {
-    this.id = params.id || uuid.v4();
-    this.systemId = systemId || params.systemId || "";
-    this.name = params.name || "Target";
-    this.size = params.size || 1;
-    this.icon = params.icon || "Generic";
-    this.picture = params.picture || "Generic";
-    this.speed = params.speed || 1;
-    this.quadrant = params.quadrant || 1;
-  }
-  update({ name, size, system, icon, picture, speed, quadrant, count }) {
-    if (name) this.name = name;
-    if (size) this.size = size;
-    if (system) this.system = system;
-    if (icon) this.icon = icon;
-    if (picture) this.picture = picture;
-    if (speed) this.speed = speed;
-    if (quadrant) this.quadrant = quadrant;
-  }
-}
-
-class Target {
-  constructor(params, systemId) {
-    this.id = params.id || uuid.v4();
-    this.systemId = systemId || "";
-    this.targeted = params.targeted || false;
-    this.system = params.system || "General";
-    this.class = params.class || "";
-  }
-  target() {
-    this.targeted = true;
-  }
-  untarget() {
-    this.targeted = false;
-  }
-  updateSystem(sys) {
-    this.system = sys;
   }
 }

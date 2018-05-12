@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { Container, Row, Col, Button, Card, CardBody } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import Tour from "reactour";
+import FontAwesome from "react-fontawesome";
 
 import "./style.css";
 
@@ -13,11 +14,13 @@ const SYSTEMS_SUB = gql`
       name
       damage {
         damaged
+        destroyed
         report
         requested
         reactivationCode
         neededReactivationCode
         currentStep
+        validate
       }
       simulatorId
       type
@@ -149,7 +152,7 @@ class DamageControl extends Component {
     `;
     const variables = {
       systemId: this.state.selectedSystem,
-      step
+      step: Math.max(0, step)
     };
     this.props.client.mutate({
       mutation,
@@ -159,17 +162,31 @@ class DamageControl extends Component {
   damageReportText = (system, steps, stepDamage) => {
     if (system) {
       if (stepDamage) {
-        return steps[system.damage.currentStep];
+        return steps[system.damage.currentStep || 0];
       }
       return system.damage.report;
     }
+  };
+  verifyStep = () => {
+    const mutation = gql`
+      mutation SetDamageStepValidation($id: ID!) {
+        setDamageStepValidation(id: $id, validation: true)
+      }
+    `;
+    const variables = {
+      id: this.state.selectedSystem
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
   };
   render() {
     if (this.props.data.loading) return null;
     const systems = this.props.data.systems;
     const simulators = this.props.data.simulators;
     if (!systems || !simulators) return null;
-    const { stepDamage } = simulators[0];
+    const { stepDamage, verifyStep } = simulators[0];
     const damagedSystem = systems.find(
       s => this.state.selectedSystem === s.id
     ) || { damage: {} };
@@ -233,11 +250,20 @@ class DamageControl extends Component {
                       key={s.id}
                       className={`${
                         this.state.selectedSystem === s.id ? "selected" : ""
+                      } ${s.damage.requested ? "requested" : ""} ${
+                        s.damage.report ? "report" : ""
+                      } ${s.damage.validate ? "validate" : ""} ${
+                        s.damage.destroyed ? "destroyed" : ""
+                      }`}
+                      onClick={
+                        s.damage.destroyed
+                          ? () => {}
+                          : this.selectSystem.bind(this, s.id)
                       }
-          ${s.damage.requested ? "requested" : ""}
-          ${s.damage.report ? "report" : ""}`}
-                      onClick={this.selectSystem.bind(this, s.id)}
                     >
+                      {s.damage.validate ? (
+                        <FontAwesome name="refresh" spin />
+                      ) : null}{" "}
                       {this.systemName(s)}
                     </p>
                   ))
@@ -316,16 +342,36 @@ class DamageControl extends Component {
                   </h3>
                 </Col>
                 <Col sm={3}>
-                  <Button
-                    disabled={
-                      !system || system.damage.currentStep === steps.length - 1
-                    }
-                    block
-                    color="secondary"
-                    onClick={() => this.setStep(system.damage.currentStep + 1)}
-                  >
-                    Next Step
-                  </Button>
+                  {verifyStep ? (
+                    <Button
+                      disabled={
+                        !system ||
+                        system.damage.currentStep === steps.length - 1 ||
+                        system.damage.validate
+                      }
+                      block
+                      color="secondary"
+                      onClick={this.verifyStep}
+                    >
+                      {system && system.damage.validate
+                        ? "Validating Step"
+                        : "Verify Step"}
+                    </Button>
+                  ) : (
+                    <Button
+                      disabled={
+                        !system ||
+                        system.damage.currentStep === steps.length - 1
+                      }
+                      block
+                      color="secondary"
+                      onClick={() =>
+                        this.setStep(system.damage.currentStep + 1)
+                      }
+                    >
+                      Next Step
+                    </Button>
+                  )}
                 </Col>
               </Row>
             )}
@@ -369,17 +415,20 @@ const SYSTEMS_QUERY = gql`
     simulators(id: $simId) {
       id
       stepDamage
+      verifyStep
     }
     systems(simulatorId: $simulatorId, extra: true) {
       id
       name
       damage {
         damaged
+        destroyed
         report
         requested
         reactivationCode
         neededReactivationCode
         currentStep
+        validate
       }
       simulatorId
       type
@@ -390,6 +439,9 @@ const SYSTEMS_QUERY = gql`
 export default graphql(SYSTEMS_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
-    variables: { simulatorId: ownProps.simulator.id }
+    variables: {
+      simulatorId: ownProps.simulator.id,
+      simId: ownProps.simulator.id
+    }
   })
 })(withApollo(DamageControl));

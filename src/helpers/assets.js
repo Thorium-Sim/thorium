@@ -15,7 +15,7 @@ class AssetComponent extends Component {
     };
   }
   state = { src: "http://unsplash.it/300" };
-  componentWillMount() {
+  componentDidMount() {
     this.updateAsset(this.props);
   }
   componentWillReceiveProps(nextProps) {

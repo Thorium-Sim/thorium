@@ -1,4 +1,6 @@
-import { System, HeatMixin } from "./generic";
+import { System } from "./generic";
+import HeatMixin from "./generic/heatMixin";
+
 // It's easier to manage power if there is just one phaser system with multiple beams than
 // If there are multiple phaser systems
 export default class Phasers extends HeatMixin(System) {
@@ -59,9 +61,9 @@ export default class Phasers extends HeatMixin(System) {
   updateArc(arc) {
     this.arc = Math.min(1, Math.max(0, arc));
   }
-  break(report) {
+  break(report, destroyed) {
     this.beams.forEach(b => b.updateCharge(0));
-    super.break(report);
+    super.break(report, destroyed);
   }
   setPower(powerLevel) {
     if (

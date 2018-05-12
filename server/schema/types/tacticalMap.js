@@ -17,7 +17,7 @@ type TacticalLayer {
   
   #Item Options
   items: [TacticalItem]
-
+  
   #Image Options
   image: String
 
@@ -26,6 +26,9 @@ type TacticalLayer {
   labels: Boolean
   gridCols: Int
   gridRows: Int
+
+  #Path Options
+  paths: [TacticalPath]
 }
 
 input TacticalLayerInput {
@@ -59,11 +62,12 @@ type TacticalItem {
   location: Coordinates
   locationJson: String
   destination: Coordinates
-
+  rotation: Float
   #Keyboard Control
   wasd: Boolean
   ijkl: Boolean
-
+  thrusters: Boolean
+  rotationMatch: Boolean
 }
 
 input TacticalItemInput {
@@ -85,14 +89,40 @@ input TacticalItemInput {
     velocity: CoordinatesInput
     location: CoordinatesInput
     destination: CoordinatesInput
-  
+    rotation: Float
     #Keyboard Control
     wasd: Boolean
     ijkl: Boolean
+    thrusters: Boolean
+    rotationMatch: Boolean
+}
+
+type TacticalPath {
+  id: ID
+  layerId: ID
+  start: Coordinates
+  end: Coordinates
+  c1: Coordinates
+  c2: Coordinates
+  color: String
+  width: Float
+  arrow: Boolean
+}
+
+input TacticalPathInput {
+  id: ID
+  start: CoordinatesInput
+  end: CoordinatesInput
+  c1: CoordinatesInput
+  c2: CoordinatesInput
+  color: String
+  width: Float
+  arrow: Boolean
 }
 
 enum TACTICAL_TYPES {
  grid
  image
  objects 
+ path
 }`;

@@ -46,7 +46,7 @@ App.on("sensorScanResult", ({ id, result }) => {
     App.systems.filter(s => s.type === "Sensors")
   );
 });
-App.on("processedData", ({ id, simulatorId, domain, data }) => {
+App.on("processedData", ({ id, simulatorId, domain = "external", data }) => {
   let system;
   if (id) {
     system = App.systems.find(sys => sys.id === id);
@@ -131,7 +131,18 @@ App.on("updateSensorContactLocation", ({ id, contact }) => {
 });
 App.on("removeSensorContact", ({ id, contact }) => {
   const system = App.systems.find(sys => sys.id === id);
+  const classId = contact.id;
   system.removeContact(contact);
+
+  // Get rid of any targeting classes
+  const targeting = App.systems.find(
+    s => s.simulatorId === system.simulatorId && s.class === "Targeting"
+  );
+  targeting.removeTargetClass(classId);
+  pubsub.publish(
+    "targetingUpdate",
+    App.systems.filter(s => s.type === "Targeting")
+  );
   pubsub.publish("sensorContactUpdate", system);
 });
 App.on("removeAllSensorContacts", ({ id }) => {
@@ -146,9 +157,13 @@ App.on("stopAllSensorContacts", ({ id }) => {
   });
   pubsub.publish("sensorContactUpdate", system);
 });
-App.on("destroySensorContact", ({ id, contact }) => {
+App.on("destroySensorContact", ({ id, contact, contacts = [] }) => {
   const system = App.systems.find(sys => sys.id === id);
-  system.destroyContact(contact);
+  if (contact) {
+    system.destroyContact({ id: contact });
+  } else {
+    contacts.forEach(c => system.destroyContact({ id: c }));
+  }
   pubsub.publish("sensorContactUpdate", system);
 });
 App.on("updateSensorContact", ({ id, contact }) => {
@@ -158,16 +173,19 @@ App.on("updateSensorContact", ({ id, contact }) => {
 });
 
 // Army Contacts
-App.on("setArmyContacts", ({ simulatorId, domain, armyContacts }) => {
-  const system = App.systems.find(
-    sys => sys.simulatorId === simulatorId && sys.domain === domain
-  );
-  system && system.setArmyContacts(armyContacts);
-  pubsub.publish(
-    "sensorsUpdate",
-    App.systems.filter(s => s.type === "Sensors")
-  );
-});
+App.on(
+  "setArmyContacts",
+  ({ simulatorId, domain = "external", armyContacts }) => {
+    const system = App.systems.find(
+      sys => sys.simulatorId === simulatorId && sys.domain === domain
+    );
+    system && system.setArmyContacts(armyContacts);
+    pubsub.publish(
+      "sensorsUpdate",
+      App.systems.filter(s => s.type === "Sensors")
+    );
+  }
+);
 App.on("createSensorArmyContact", ({ id, contact }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.createArmyContact(contact);
@@ -305,4 +323,23 @@ App.on("setSensorsInterference", ({ id, interference }) => {
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")
   );
+});
+App.on("setAutoMovement", ({ id, movement }) => {
+  const sensors = App.systems.find(sys => sys.id === id);
+  sensors.setMovement(movement);
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});
+App.on("updateSensorContacts", ({ id, contacts }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  contacts.forEach(contact => {
+    if (contact.destination) {
+      system.moveContact(contact);
+    } else {
+      system.updateContact(contact);
+    }
+  });
+  pubsub.publish("sensorContactUpdate", system);
 });

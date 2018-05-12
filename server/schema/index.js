@@ -17,6 +17,7 @@ ${Object.keys(types)
 
 #Queries definition
 type Query {
+  events: [String]
   users(id: String, token: String, email: String): [user]
   ${Object.keys(queries).map(query => queries[query])}
 }

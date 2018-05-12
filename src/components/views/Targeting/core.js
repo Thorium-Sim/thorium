@@ -35,6 +35,7 @@ const TARGETING_SUB = gql`
         class
         targeted
         system
+        destroyed
       }
       classes {
         id
@@ -291,7 +292,7 @@ class TargetingCore extends Component {
             <div className="targets-container">
               {targeting.classes.map(t => {
                 const contactCount = targeting.contacts.filter(
-                  c => c.class === t.id
+                  c => c.class === t.id && !c.destroyed
                 ).length;
                 return (
                   <Row key={t.id}>
@@ -464,6 +465,7 @@ const TARGETING_QUERY = gql`
         class
         targeted
         system
+        destroyed
       }
       classes {
         id

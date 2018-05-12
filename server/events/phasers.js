@@ -31,16 +31,16 @@ App.on("firePhaserBeam", ({ id, beamId }) => {
     body: "",
     color: "info"
   });
-  App.handleEvent(
-    {
-      simulatorId: sys.simulatorId,
-      title: `Phasers Firing`,
-      component: "PhaserCore",
-      body: null,
-      color: "danger"
-    },
-    "addCoreFeed"
-  );
+  // App.handleEvent(
+  //   {
+  //     simulatorId: sys.simulatorId,
+  //     title: `Phasers Firing`,
+  //     component: "PhaserCore",
+  //     body: null,
+  //     color: "danger"
+  //   },
+  //   "addCoreFeed"
+  // );
   pubsub.publish(
     "phasersUpdate",
     App.systems.filter(s => s.type === "Phasers")
@@ -61,19 +61,23 @@ App.on("phaserArc", ({ id, beamId, arc }) => {
     App.systems.filter(s => s.type === "Phasers")
   );
 });
-App.on("setPhaserBeamCharge", ({ id, beamId, charge }) => {
+App.on("setPhaserBeamCharge", ({ id, beamId, charge, noUpdate }) => {
   App.systems.find(s => s.id === id).updateBeamCharge(beamId, charge);
-  pubsub.publish(
-    "phasersUpdate",
-    App.systems.filter(s => s.type === "Phasers")
-  );
+  if (!noUpdate || Date.now() % 5 === 0) {
+    pubsub.publish(
+      "phasersUpdate",
+      App.systems.filter(s => s.type === "Phasers")
+    );
+  }
 });
-App.on("setPhaserBeamHeat", ({ id, beamId, heat }) => {
+App.on("setPhaserBeamHeat", ({ id, beamId, heat, noUpdate }) => {
   App.systems.find(s => s.id === id).updateBeamHeat(beamId, heat);
-  pubsub.publish(
-    "phasersUpdate",
-    App.systems.filter(s => s.type === "Phasers")
-  );
+  if (!noUpdate || Date.now() % 2 === 0) {
+    pubsub.publish(
+      "phasersUpdate",
+      App.systems.filter(s => s.type === "Phasers")
+    );
+  }
 });
 App.on("coolPhaserBeam", ({ id, beamId }) => {
   const sys = App.systems.find(s => s.id === id);

@@ -82,6 +82,15 @@ export const ClientMutations = {
   },
   setClientHypercard(root, args, context) {
     App.handleEvent(args, "setClientHypercard", context);
+  },
+  playSound(root, args, context) {
+    App.handleEvent(args, "playSound", context);
+  },
+  stopAllSounds(root, args, context) {
+    App.handleEvent(args, "stopAllSounds", context);
+  },
+  applyClientSet(root, args, context) {
+    App.handleEvent(args, "applyClientSet", context);
   }
 };
 
@@ -125,6 +134,35 @@ export const ClientSubscriptions = {
         return output;
       }
     )
+  },
+  soundSub: {
+    resolve: payload => payload,
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("soundSub"),
+      (rootValue, { clientId }) => {
+        if (rootValue.clients.indexOf(clientId) > -1) return true;
+        return false;
+      }
+    )
+  },
+  cancelSound: {
+    resolve: payload => payload.id,
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("cancelSound"),
+      (rootValue, { clientId }) => {
+        if (rootValue.clients.indexOf(clientId) > -1) return true;
+        return false;
+      }
+    )
+  },
+  cancelAllSounds: {
+    resolve: payload => payload,
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("cancelAllSounds"),
+      (rootValue, { clientId }) => {
+        return !!rootValue.find(c => c.id === clientId);
+      }
+    )
   }
 };
 
@@ -159,12 +197,48 @@ export const ClientTypes = {
           ]
         };
       }
+      if (
+        rootValue.station &&
+        rootValue.station.match(/keyboard:.{8}-.{4}-.{4}-.{4}-.{12}/gi)
+      ) {
+        return {
+          name: rootValue.station,
+          cards: [
+            {
+              name: "Keyboard",
+              component: "Keyboard"
+            }
+          ]
+        };
+      }
+      if (rootValue.station === "Sound") {
+        return {
+          name: "Sound",
+          cards: [
+            {
+              name: "SoundPlayer",
+              component: "SoundPlayer"
+            }
+          ]
+        };
+      }
       const simulator = App.simulators.find(
         s => s.id === rootValue.simulatorId
       );
       if (simulator) {
         return simulator.stations.find(s => s.name === rootValue.station);
       }
+    }
+  },
+  Sound: {
+    url(rootValue) {
+      const assetContainer = App.assetContainers.find(
+        o => o.fullPath === rootValue.asset
+      );
+      const asset = App.assetObjects.find(
+        o => o.containerId === assetContainer.id && o.simulatorId === "default"
+      );
+      return asset ? asset.url : "";
     }
   }
 };

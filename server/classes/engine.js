@@ -1,4 +1,5 @@
-import { System, HeatMixin } from "./generic";
+import { System } from "./generic";
+import HeatMixin from "./generic/heatMixin";
 
 export default class Engine extends HeatMixin(System) {
   constructor(params = {}) {
@@ -26,10 +27,10 @@ export default class Engine extends HeatMixin(System) {
   setSpeeds(speeds) {
     this.speeds = speeds;
   }
-  break(report) {
+  break(report, destroyed) {
     this.on = false;
     this.speed = -1;
-    super.break(report);
+    super.break(report, destroyed);
   }
   setPower(powerLevel) {
     // Override set power to change speed when power is changed

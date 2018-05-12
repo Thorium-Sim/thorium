@@ -94,12 +94,12 @@ App.on("updateSystemName", ({ systemId, name, displayName }) => {
   sys.updateName({ name, displayName });
   sendUpdate(sys);
 });
-App.on("damageSystem", ({ systemId, report }) => {
+App.on("damageSystem", ({ systemId, report, destroyed }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
     sys = App.dockingPorts.find(s => s.id === systemId);
   }
-  sys.break(report);
+  sys.break(report, destroyed);
   sendUpdate(sys);
 });
 App.on("damageReport", ({ systemId, report }) => {
@@ -239,7 +239,20 @@ App.on("breakSystem", ({ simulatorId, type, name }) => {
       (name ? s.name === name : true)
   );
   const sys = systems.find(s => s.damage.damaged === false);
-  sys && sys.break();
+  if (sys) {
+    sys.break();
+  } else if (name) {
+    // If the system doesn't exist and the name arg is set, create a new system
+    const args = {
+      simulatorId,
+      name,
+      extra: true,
+      damage: { damaged: true }
+    };
+    const ClassObj = Classes.System;
+    const obj = new ClassObj(args);
+    App.systems.push(obj);
+  }
   sendUpdate(sys);
 });
 App.on("fixSystem", ({ simulatorId, type, name }) => {
@@ -262,4 +275,111 @@ App.on("trainingMode", ({ simulatorId }) => {
     sendUpdate(s);
   });
   pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("setDamageStepValidation", ({ id, validation }) => {
+  let sys = App.systems.find(s => s.id === id);
+  const sim = App.simulators.find(s => s.id === sys.simulatorId);
+  sys.damage.validate = validation;
+
+  if (validation === false) {
+    // Send an update to every station with the
+    // damage step widget and card
+    const stations = sim.stations
+      .filter(s => {
+        return s.cards.find(c => c.component === "DamageControl");
+      })
+      .concat(sim.stations.filter(s => s.widgets.indexOf("damageReport") > -1))
+      .map(s => s.name)
+      .filter((s, i, a) => a.indexOf(s) === i);
+    stations.forEach(s =>
+      pubsub.publish("notify", {
+        id: uuid.v4(),
+        simulatorId: sys.simulatorId,
+        station: s,
+        title: `Damage report step validation rejected`,
+        body: sys.name,
+        color: "danger"
+      })
+    );
+  } else {
+    // Add the core feed
+    App.handleEvent(
+      {
+        simulatorId: sys.simulatorId,
+        component: "DamageReportsCore",
+        title: `Damage Step Verify Request`,
+        body: sys.name,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+  }
+  sendUpdate(sys);
+});
+App.on("validateDamageStep", ({ id }) => {
+  // The step is good. Increase the current step.
+  let sys = App.systems.find(s => s.id === id);
+  const sim = App.simulators.find(s => s.id === sys.simulatorId);
+  console.log(sys.name, sys.damage.currentStep);
+  sys.updateCurrentStep(sys.damage.currentStep + 1);
+  console.log(sys.name, sys.damage.currentStep);
+  sys.damage.validate = false;
+  // Send an update to every station with the
+  // damage step widget and card
+  const stations = sim.stations
+    .filter(s => {
+      return s.cards.find(c => c.component === "DamageControl");
+    })
+    .concat(sim.stations.filter(s => s.widgets.indexOf("damageReport") > -1))
+    .map(s => s.name)
+    .filter((s, i, a) => a.indexOf(s) === i);
+  stations.forEach(s =>
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      station: s,
+      title: `Damage report step validation accepted`,
+      body: sys.name,
+      color: "success"
+    })
+  );
+  sendUpdate(sys);
+});
+App.on("changeSystemDefaultPowerLevel", ({ id, level }) => {
+  let sys = App.systems.find(s => s.id === id);
+  sys.setDefaultPowerLevel(level);
+  sendUpdate(sys);
+});
+App.on("fluxSystemPower", ({ id, simulatorId, all }) => {
+  function randomFromList(list) {
+    if (!list) return;
+    const length = list.length;
+    const index = Math.floor(Math.random() * length);
+    return list[index];
+  }
+  function fluxPower(sys, all) {
+    const level = Math.round(
+      (1 + Math.random()) * (Math.random() > 0.5 ? -1 : 1)
+    );
+
+    sys.setPower(Math.max(0, sys.power.power + level));
+    if (all) {
+      pubsub.publish("systemsUpdate", App.systems);
+    } else {
+      sendUpdate(sys);
+    }
+  }
+  if (id) {
+    // Get a number between -2 and 2
+    let sys = App.systems.find(s => s.id === id);
+    fluxPower(sys);
+  } else if (simulatorId) {
+    const systems = App.systems.filter(s => s.simulatorId === simulatorId);
+    if (!all) {
+      const sys = randomFromList(systems);
+      fluxPower(sys, true);
+    } else {
+      systems.forEach(s => fluxPower(s));
+    }
+  }
 });

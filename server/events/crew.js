@@ -5,7 +5,10 @@ import firstNames from "../crew/firstNames.json";
 import lastNames from "../crew/lastNames.json";
 import positions from "../crew/positions.json";
 import ranks from "../crew/ranks.json";
-import { randomFromList, damagePositions } from "../damageReports/constants";
+import {
+  randomFromList,
+  damagePositions
+} from "../classes/generic/damageReports/constants";
 
 App.on("addCrewmember", ({ crew }) => {
   App.crew.push(new Classes.Crew(crew));
@@ -24,7 +27,7 @@ App.on("newRandomCrewmember", ({ simulatorId, type, position }) => {
     firstName: randomFromList(firstNames),
     lastName: randomFromList(lastNames),
     rank: randomFromList(ranks),
-    gender: randomFromList(["M", "F"]),
+    gender: randomFromList(["M", "F", "X"]),
     age: Math.round(Math.random() * 20 + 20),
     simulatorId,
     position: position || getPosition(type, simulatorId)

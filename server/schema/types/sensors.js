@@ -26,6 +26,7 @@ type Sensors implements SystemInterface{
   frozen: Boolean
   autoThrusters: Boolean
   interference: Float
+  movement: Coordinates
   segments: [SensorsSegment]
   locations: [Room]
 }
@@ -69,6 +70,9 @@ type SensorContact {
   cloaked: Boolean
   destroyed: Boolean
   forceUpdate: Boolean
+  targeted: Boolean
+  locked: Boolean
+  disabled: Boolean
 }
 type SensorsSegment {
   segment: String
@@ -102,6 +106,8 @@ input SensorContactInput {
   infrared: Boolean
   cloaked: Boolean
   destroyed: Boolean
+  locked: Boolean
+  disabled: Boolean
 }
 enum PING_MODES {
   active

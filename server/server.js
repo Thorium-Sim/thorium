@@ -26,6 +26,7 @@ import clientServer from "./helpers/client-server.js";
 import { uploadAsset } from "./resolvers/assets";
 import "./events";
 import "./processes";
+import "./helpers/autoupdate";
 
 const CLIENT_PORT =
   process.env.NODE_ENV === "production"
@@ -148,6 +149,7 @@ if (!process.env.NODE_ENV) {
 }
 
 export const websocketServerInstance = websocketServer.listen(WS_PORT, () => {
+  console.log(`Websocket server running at: ws://${ipaddress}:${WS_PORT}`);
   new SubscriptionServer(
     {
       execute,

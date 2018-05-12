@@ -63,8 +63,8 @@ export const SensorsMutations = {
     App.handleEvent({ id }, "stopAllSensorContacts", context);
     return "";
   },
-  destroySensorContact(root, { id, contact }, context) {
-    App.handleEvent({ id, contact }, "destroyeSensorContact, context");
+  destroySensorContact(root, args, context) {
+    App.handleEvent(args, "destroySensorContact", context);
     return "";
   },
   updateSensorContact(root, { id, contact }, context) {
@@ -118,6 +118,12 @@ export const SensorsMutations = {
   },
   setSensorsInterference(root, args, context) {
     App.handleEvent(args, "setSensorsInterference", context);
+  },
+  setAutoMovement(root, args, context) {
+    App.handleEvent(args, "setAutoMovement", context);
+  },
+  updateSensorContacts(root, args, context) {
+    App.handleEvent(args, "updateSensorContacts", context);
   }
 };
 
@@ -159,6 +165,13 @@ export const SensorsTypes = {
       return rootValue.locations.map(r =>
         App.rooms.find(room => room.id === r)
       );
+    },
+    movement(rootValue) {
+      return {
+        x: rootValue.movement.x + rootValue.thrusterMovement.x,
+        y: rootValue.movement.y + rootValue.thrusterMovement.y,
+        z: rootValue.movement.z + rootValue.thrusterMovement.z
+      };
     }
   },
   SensorContact: {
@@ -170,6 +183,15 @@ export const SensorsTypes = {
     },*/
     movementTime({ startTime, endTime }) {
       return endTime - startTime;
+    },
+    targeted({ id, sensorId }) {
+      const sensor = App.systems.find(s => s.id === sensorId);
+      const targeting = App.systems.find(
+        s => s.simulatorId === sensor.simulatorId && s.class === "Targeting"
+      );
+      const targetedContact = targeting.contacts.find(t => t.targeted === true);
+      if (targetedContact && targetedContact.class === id) return true;
+      return false;
     }
   }
 };

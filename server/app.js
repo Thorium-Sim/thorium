@@ -63,6 +63,8 @@ class Events extends EventEmitter {
     this.softwarePanels = [];
     this.surveyForms = [];
     this.objectives = [];
+    this.keyboards = [];
+    this.sounds = [];
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;
@@ -71,59 +73,37 @@ class Events extends EventEmitter {
     setTimeout(this.init.bind(this), 0);
   }
   init() {
-    if (process.env.NODE_ENV) {
-      if (fs.existsSync(snapshotDir + "snapshot.json")) {
-        this.loadSnapshot();
-      }
-      if (!fs.existsSync(snapshotDir)) {
-        fs.mkdirSync(snapshotDir);
-      }
-      if (!fs.existsSync(snapshotDir + "snapshot.json")) {
-        fs.writeFileSync(
-          snapshotDir + "snapshot.json",
-          JSON.stringify(require("./helpers/defaultSnapshot.js").default)
-        );
-        this.merge(require("./helpers/defaultSnapshot.js").default);
+    // Ensure the snapshot directory exists
+    if (!fs.existsSync(snapshotDir)) {
+      console.log("Creating snapshot directory");
+      fs.mkdirSync(snapshotDir);
+    }
 
-        // This was an initial load. We should download and install assets
-        console.log("First-time load. Downloading assets...");
-        const dest = path.resolve("temp/assets.aset");
-        download(
-          "https://s3.amazonaws.com/thoriumsim/assets.zip",
-          dest,
-          err => {
-            if (err) {
-              console.log(err);
-            }
-            importAssets(dest, () => {
-              fs.unlink(dest, error => {
-                if (err) console.log(error);
-              });
-            });
-          }
-        );
-        setTimeout(() => this.autoSave(), 5000);
-      }
-    } else {
-      if (
-        !fs.existsSync(snapshotDir + "snapshot.json") &&
-        !fs.existsSync(snapshotDir)
-      ) {
-        fs.mkdirSync(snapshotDir);
-        fs.writeFileSync(
-          snapshotDir + "snapshot.json",
-          JSON.stringify(require("./helpers/defaultSnapshot.js"))
-        );
-        this.merge(require("./helpers/defaultSnapshot.js").default);
-      }
-      if (
-        !process.env.NODE_ENV &&
-        fs.existsSync(snapshotDir + "snapshot-dev.json")
-      ) {
-        this.loadSnapshot(true);
-      } else {
-        this.loadSnapshot();
-      }
+    const defaultSnapshot = require("./helpers/defaultSnapshot.js").default;
+    const snapshotFile = `${snapshotDir}snapshot${
+      process.env.NODE_ENV === "production" ? "" : "-dev"
+    }.json`;
+    if (!fs.existsSync(snapshotFile)) {
+      console.log("No snapshot.json found. Creating.");
+      fs.writeFileSync(snapshotFile, JSON.stringify(defaultSnapshot));
+      // This was an initial load. We should download and install assets
+      console.log("First-time load. Downloading assets...");
+      const dest = path.resolve("temp/assets.aset");
+      download("https://s3.amazonaws.com/thoriumsim/assets.zip", dest, err => {
+        if (err) {
+          console.log(err);
+        }
+        importAssets(dest, () => {
+          fs.unlink(dest, error => {
+            if (err) console.log(error);
+            console.log("Asset Download Complete");
+          });
+        });
+      });
+    }
+    this.loadSnapshot(process.env.NODE_ENV !== "production");
+    if (process.env.NODE_ENV === "production") {
+      setTimeout(() => this.autoSave(), 5000);
     }
   }
   loadSnapshot(dev) {
@@ -154,6 +134,7 @@ class Events extends EventEmitter {
             try {
               this[key].push(new Classes[obj.class](obj));
             } catch (err) {
+              console.error(err);
               throw new Error(
                 JSON.stringify({ message: "Undefined key in class", key, obj })
               );

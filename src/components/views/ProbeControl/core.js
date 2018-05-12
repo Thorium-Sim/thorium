@@ -86,7 +86,7 @@ class ProbeControl extends Component {
       response: this.state.responseString
     };
     const mutation = gql`
-      mutation ProbeQueryResponse($id: ID!, $probeId: ID!, $response: String!) {
+      mutation ProbeQueryResponse($id: ID!, $probeId: ID!, $response: String) {
         probeQueryResponse(id: $id, probeId: $probeId, response: $response)
       }
     `;
@@ -94,6 +94,18 @@ class ProbeControl extends Component {
       mutation,
       variables
     });
+  };
+  renderEquipment = () => {
+    if (this.props.data.loading || !this.props.data.probes) return null;
+    const probes = this.props.data.probes[0];
+    const { selectedProbe } = this.state;
+    const probe = probes.probes.find(p => p.id === selectedProbe);
+    if (!probe) return null;
+    return probe.equipment.map(e => (
+      <p key={e.id}>
+        ({e.count}) {e.name}
+      </p>
+    ));
   };
   render() {
     if (this.props.data.loading || !this.props.data.probes) return null;
@@ -119,13 +131,7 @@ class ProbeControl extends Component {
           </Col>
           {selectedProbe && (
             <Col sm={3} style={{ height: "100%" }}>
-              {probes.probes
-                .find(p => p.id === selectedProbe)
-                .equipment.map(e => (
-                  <p key={e.id}>
-                    ({e.count}) {e.name}
-                  </p>
-                ))}
+              {this.renderEquipment()}
             </Col>
           )}
           {selectedProbe && (

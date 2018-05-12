@@ -50,6 +50,11 @@ import OfficerLog from "./OfficerLog";
 import SignalJammer from "./SignalJammer";
 import Exocomps from "./Exocomps";
 import Library from "./Library";
+import CommandLibrary from "./Library/CommandLibrary";
+import MedicalLibrary from "./Library/MedicalLibrary";
+import DamageLibrary from "./Library/DamageLibrary";
+import LegalLibrary from "./Library/LegalLibrary";
+import SecurityLibrary from "./Library/SecurityLibrary";
 import CodeCyphers from "./CodeCyphers";
 import Interception from "./CommInterception";
 import SoftwarePanels from "./SoftwarePanels";
@@ -109,6 +114,7 @@ import ShortRangeSignalsCore from "./CommShortRange/signalsCore";
 import AlertConditionCore from "./AlertCondition/core";
 import ObjectivesCore from "./Objectives/core";
 import SurveyFormCore from "./SurveyForm/core";
+import ArmoryCore from "./Armory/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -166,6 +172,11 @@ const Views = {
   SignalJammer,
   Exocomps,
   Library,
+  CommandLibrary,
+  MedicalLibrary,
+  DamageLibrary,
+  LegalLibrary,
+  SecurityLibrary,
   CodeCyphers,
   Interception,
   SoftwarePanels,
@@ -294,7 +305,8 @@ export const Cores = {
   ShortRangeSignalsCore,
   AlertConditionCore,
   ObjectivesCore,
-  SurveyFormCore
+  SurveyFormCore,
+  ArmoryCore
 };
 
 export default Views;

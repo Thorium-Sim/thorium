@@ -6,14 +6,10 @@ import {
   Button,
   ButtonGroup,
   Card,
-  CardBody,
-  Label,
-  Input,
-  FormText
+  CardBody
 } from "reactstrap";
 import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
-import { Link } from "react-router-dom";
+import { Query, withApollo } from "react-apollo";
 
 import SimulatorProperties from "./SimulatorProperties";
 import * as Config from "./config";
@@ -25,6 +21,8 @@ name
 layout
 exocomps
 panels
+stepDamage
+verifyStep
 requiredDamageSteps {
   id
   name
@@ -155,119 +153,22 @@ const STATIONSET_SUB = gql`
 `;
 
 class SimulatorConfig extends Component {
-  subscription = null;
-  stationSetSub = null;
   state = {};
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: SIMULATOR_SUB,
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            simulators: subscriptionData.data.simulatorsUpdate
-          });
-        }
-      });
-    }
-    if (!this.stationSetSub && !nextProps.data.loading) {
-      this.stationSetSub = nextProps.data.subscribeToMore({
-        document: STATIONSET_SUB,
-        updateQuery: (previousResult, { subscriptionData }) => {
-          const stationSets = subscriptionData.data.stationSetUpdate;
-          return Object.assign({}, previousResult, {
-            simulators: previousResult.simulators.map(s => {
-              const returnSimulator = Object.assign({}, s);
-              returnSimulator.stationSets = [];
-              stationSets.forEach(ss => {
-                if (ss.simulator && returnSimulator.id === ss.simulator.id) {
-                  returnSimulator.stationSets.push({
-                    id: ss.id,
-                    name: ss.name,
-                    stations: ss.stations,
-                    __typename: ss.__typename
-                  });
-                }
-              });
-              return returnSimulator;
-            })
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-    this.stationSetSub && this.stationSetSub();
-  }
   selectProperty = prop => {
     this.setState({
       selectedProperty: prop
     });
   };
-  createSimulator = () => {
-    const name = prompt("What is the simulator name? eg. Voyager");
-    if (name) {
-      const variables = {
-        name: name,
-        template: true
-      };
-      this.props.client.mutate({
-        mutation: gql`
-          mutation AddSimulator($name: String!, $template: Boolean) {
-            createSimulator(name: $name, template: $template)
-          }
-        `,
-        variables
-      });
-    }
-  };
-  importSimulator = evt => {
-    if (evt.target.files[0]) {
-      const data = new FormData();
-      Array.from(evt.target.files).forEach((f, index) =>
-        data.append(`files[${index}]`, f)
-      );
-      this.setState({
-        loadingMission: true
-      });
-      fetch(
-        `${window.location.protocol}//${window.location.hostname}:${parseInt(
-          window.location.port,
-          10
-        ) + 1}/importSimulator`,
-        {
-          method: "POST",
-          body: data
-        }
-      ).then(() => {
-        window.location.reload();
-      });
-    }
-  };
-  renameSimulator = () => {
-    const name = prompt("What is the simulator name? eg. Voyager");
-    const simulator = this.state.selectedSimulator;
-    if (name && simulator) {
-      let variables = {
-        name: name,
-        id: simulator
-      };
-      this.props.client.mutate({
-        mutation: gql`
-          mutation RenameSimulator($id: ID!, $name: String!) {
-            renameSimulator(simulatorId: $id, name: $name)
-          }
-        `,
-        variables
-      });
-    }
-  };
   removeSimulator = () => {
-    const simulator = this.state.selectedSimulator;
-    if (simulator) {
+    const {
+      match: {
+        params: { simulatorId }
+      }
+    } = this.props;
+    if (simulatorId) {
       if (window.confirm("Are you sure you want to delete that simulator?")) {
         let obj = {
-          id: simulator
+          id: simulatorId
         };
         this.props.client.mutate({
           mutation: gql`
@@ -275,116 +176,68 @@ class SimulatorConfig extends Component {
               removeSimulator(simulatorId: $id)
             }
           `,
-          variables: obj
+          variables: obj,
+          refetchQueries: [
+            {
+              query: gql`
+                query SideNav {
+                  simulators(template: true) {
+                    id
+                    name
+                  }
+                }
+              `
+            }
+          ]
         });
+        this.props.history.push("/");
         this.setState({
-          selectedSimulator: null,
           selectedProperty: null
         });
       }
     }
   };
   render() {
-    const { data } = this.props;
-    const { selectedSimulator, selectedProperty } = this.state;
-    const ConfigComponent = Config[selectedProperty];
-    if (data.loading) return null;
-    const { simulators } = data;
-    if (!simulators) return null;
+    const {
+      match: {
+        params: { simulatorId }
+      }
+    } = this.props;
+    const { selectedProperty } = this.state;
     return (
       <Container fluid className="simulator-config">
-        <h4>
-          Simulator Config{" "}
-          <small>
-            <Link to="/">Return to Main</Link>
-          </small>
-        </h4>
+        <h4>Simulator Config </h4>
         <Row>
           <Col sm={2}>
-            <Card>
-              {simulators.map(s => (
-                <li
-                  key={s.id}
-                  className={`list-group-item simulator-item ${
-                    selectedSimulator && selectedSimulator === s.id
-                      ? "selected"
-                      : ""
-                  }`}
-                  onClick={() =>
-                    this.setState({
-                      selectedSimulator: s.id,
-                      selectedProperty: null
-                    })
-                  }
-                >
-                  {s.name}
-                </li>
-              ))}
-            </Card>
+            <SimulatorProperties
+              selectProperty={this.selectProperty}
+              selectedProperty={selectedProperty}
+            />
+            <Button
+              tag="a"
+              href={`${window.location.protocol}//${
+                window.location.hostname
+              }:${parseInt(window.location.port, 10) +
+                1}/exportSimulator/${simulatorId}`}
+              block
+              size="sm"
+              color="info"
+            >
+              Export
+            </Button>
             <ButtonGroup>
-              <Button onClick={this.createSimulator} size="sm" color="success">
-                Add
+              <Button onClick={this.removeSimulator} size="sm" color="danger">
+                Remove
               </Button>
             </ButtonGroup>
-            <ButtonGroup>
-              {selectedSimulator && (
-                <Button
-                  onClick={this.renameSimulator}
-                  size="sm"
-                  color="warning"
-                >
-                  Rename
-                </Button>
-              )}
-              {selectedSimulator && (
-                <Button onClick={this.removeSimulator} size="sm" color="danger">
-                  Remove
-                </Button>
-              )}
-            </ButtonGroup>
-            <Label>Import Simulator</Label>
-            <Input
-              type="file"
-              name="file"
-              id="importFile"
-              onChange={this.importSimulator}
-            />
-            <FormText color="muted">
-              Simulator files will be in a ".sim" format.
-            </FormText>
           </Col>
-          <Col sm={2}>
-            {selectedSimulator && (
-              <div>
-                <SimulatorProperties
-                  selectProperty={this.selectProperty}
-                  selectedProperty={selectedProperty}
-                />
-                <Button
-                  tag="a"
-                  href={`${window.location.protocol}//${
-                    window.location.hostname
-                  }:${parseInt(window.location.port, 10) +
-                    1}/exportSimulator/${selectedSimulator}`}
-                  block
-                  size="sm"
-                  color="info"
-                >
-                  Export
-                </Button>
-              </div>
-            )}
-          </Col>
-          <Col sm={8}>
+          <Col sm={10}>
             <Card>
               <CardBody>
-                {ConfigComponent && (
-                  <ConfigComponent
-                    selectedSimulator={simulators.find(
-                      s => s.id === selectedSimulator
-                    )}
-                  />
-                )}
+                <ConfigComponentData
+                  selectedProperty={selectedProperty}
+                  simulatorId={simulatorId}
+                />
               </CardBody>
             </Card>
           </Col>
@@ -395,11 +248,75 @@ class SimulatorConfig extends Component {
 }
 
 const SIMULATOR_QUERY = gql`
-  query Simulators {
-    simulators(template: true) {
+  query Simulators($simulatorId: String!) {
+    simulators(id: $simulatorId) {
       ${query}
     }
   }
 `;
 
-export default graphql(SIMULATOR_QUERY)(withApollo(SimulatorConfig));
+class ConfigComponent extends React.PureComponent {
+  componentDidMount() {
+    const { subscribe } = this.props;
+    this.simsub = subscribe({
+      document: SIMULATOR_SUB,
+      updateQuery: (previousResult, { subscriptionData }) => {
+        return Object.assign({}, previousResult, {
+          simulators: subscriptionData.data.simulatorsUpdate
+        });
+      }
+    });
+    this.stationsub = subscribe({
+      document: STATIONSET_SUB,
+      updateQuery: (previousResult, { subscriptionData }) => {
+        const stationSets = subscriptionData.data.stationSetUpdate;
+        return Object.assign({}, previousResult, {
+          simulators: previousResult.simulators.map(s => {
+            const returnSimulator = Object.assign({}, s);
+            returnSimulator.stationSets = [];
+            stationSets.forEach(ss => {
+              if (ss.simulator && returnSimulator.id === ss.simulator.id) {
+                returnSimulator.stationSets.push({
+                  id: ss.id,
+                  name: ss.name,
+                  stations: ss.stations,
+                  __typename: ss.__typename
+                });
+              }
+            });
+            return returnSimulator;
+          })
+        });
+      }
+    });
+  }
+  componentWillUnmount() {
+    this.simsub && this.simsub();
+  }
+  render() {
+    const { Comp, selectedSimulator } = this.props;
+    return <Comp selectedSimulator={selectedSimulator} />;
+  }
+}
+
+class ConfigComponentData extends React.PureComponent {
+  render() {
+    const { selectedProperty, simulatorId } = this.props;
+    const Comp = Config[selectedProperty];
+    return (
+      <Query query={SIMULATOR_QUERY} variables={{ simulatorId }}>
+        {({ loading, data, subscribeToMore }) =>
+          !loading && Comp ? (
+            <ConfigComponent
+              Comp={Comp}
+              subscribe={subscribeToMore}
+              selectedSimulator={data.simulators[0]}
+            />
+          ) : null
+        }
+      </Query>
+    );
+  }
+}
+
+export default withApollo(SimulatorConfig);

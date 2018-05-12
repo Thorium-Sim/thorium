@@ -4,6 +4,9 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
 export const FlightStructureQueries = {
+  events: () => {
+    return Object.keys(App._events);
+  },
   simulators: (root, { template, id }) => {
     let returnVal = App.simulators;
     if (id) returnVal = returnVal.filter(s => s.id === id);
@@ -23,7 +26,8 @@ export const FlightStructureQueries = {
   stations() {
     return App.stationSets;
   },
-  missions() {
+  missions(root, { id }) {
+    if (id) return App.missions.filter(m => m.id === id);
     return App.missions;
   }
 };
@@ -36,11 +40,9 @@ export const FlightStructureMutations = {
 
   // Mission
   createMission(root, args, context) {
-    App.handleEvent(
-      Object.assign(args, { id: uuid.v4() }),
-      "createMission",
-      context
-    );
+    const id = uuid.v4();
+    App.handleEvent(Object.assign(args, { id }), "createMission", context);
+    return id;
   },
   removeMission(root, args, context) {
     App.handleEvent(args, "removeMission", context);
@@ -118,6 +120,9 @@ export const FlightStructureMutations = {
   setStepDamage(rootValue, params, context) {
     App.handleEvent(params, "setStepDamage", context);
   },
+  setVerifyDamage(rootValue, params, context) {
+    App.handleEvent(params, "setVerifyDamage", context);
+  },
   // Timeline
   addTimelineStep(root, args, context) {
     App.handleEvent(
@@ -128,6 +133,9 @@ export const FlightStructureMutations = {
   },
   removeTimelineStep(root, args, context) {
     App.handleEvent(args, "removeTimelineStep", context);
+  },
+  duplicateTimelineStep(root, args, context) {
+    App.handleEvent(args, "duplicateTimelineStep", context);
   },
   reorderTimelineStep(root, args, context) {
     App.handleEvent(args, "reorderTimelineStep", context);
@@ -148,8 +156,10 @@ export const FlightStructureMutations = {
   updateTimelineStepItem(root, args, context) {
     App.handleEvent(args, "updateTimelineStepItem", context);
   },
-  triggerMacros(root, { simulatorId, macros }, context) {
-    macros.forEach(({ event, args, delay = 0 }) => {
+  triggerMacros(root, { simulatorId, macros }) {
+    const simulator = App.simulators.find(s => s.id === simulatorId);
+    macros.forEach(({ stepId, event, args, delay = 0 }) => {
+      simulator.executeTimelineStep(stepId);
       setTimeout(() => {
         App.handleEvent(
           Object.assign({ simulatorId }, JSON.parse(args)),
@@ -157,8 +167,11 @@ export const FlightStructureMutations = {
         );
       }, delay);
     });
+    pubsub.publish("simulatorsUpdate", App.simulators);
   },
-
+  autoAdvance(root, args, context) {
+    App.handleEvent(args, "autoAdvance", context);
+  },
   // Station
   createStationSet(root, args, context) {
     App.handleEvent(args, "createStationSet", context);

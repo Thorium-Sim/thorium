@@ -76,11 +76,11 @@ export default class ShortRangeComm extends System {
       connected: true
     });
   }
-  break(report) {
+  break(report, destroyed) {
     this.arrows.forEach(s => {
       this.disconnectArrow(s.id);
     });
-    super.break(report);
+    super.break(report, destroyed);
   }
   setPower(powerLevel) {
     if (

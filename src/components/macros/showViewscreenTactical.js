@@ -48,7 +48,7 @@ class TacticalMapConfig extends Component {
         <Input
           type="checkbox"
           checked={args.secondary}
-          onChange={evt => updateArgs("secondary", evt.target.value)}
+          onChange={evt => updateArgs("secondary", evt.target.checked)}
         />
 
         <p>Saved Maps</p>

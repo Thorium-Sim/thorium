@@ -19,7 +19,7 @@ const TEMPLATE_SUB = gql`
   }
 `;
 
-class Template extends Component {
+class ClientCore extends Component {
   sub = null;
   componentWillReceiveProps(nextProps) {
     if (!this.internalSub && !nextProps.data.loading) {
@@ -84,7 +84,11 @@ class Template extends Component {
           {Object.keys(Views)
             .concat()
             .sort()
-            .map(v => <option value={v}>{titleCase(v)}</option>)}
+            .map((v, i) => (
+              <option key={`${i}-${v}`} value={v}>
+                {titleCase(v)}
+              </option>
+            ))}
         </Input>
         {clients.map(c => (
           <div key={c.id}>
@@ -101,7 +105,11 @@ class Template extends Component {
               {Object.keys(Views)
                 .concat()
                 .sort()
-                .map(v => <option value={v}>{titleCase(v)}</option>)}
+                .map((v, i) => (
+                  <option key={`client-${i}-${v}`} value={v}>
+                    {titleCase(v)}
+                  </option>
+                ))}
             </Input>
           </div>
         ))}
@@ -129,4 +137,4 @@ export default graphql(TEMPLATE_QUERY, {
       simulatorId: ownProps.simulator.id
     }
   })
-})(withApollo(Template));
+})(withApollo(ClientCore));

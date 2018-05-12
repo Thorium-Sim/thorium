@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Layouts from "../components/layouts";
+import Keyboard from "../components/views/Keyboard";
+import ActionsMixin from "../components/generic/Actions";
 
 const Blackout = () => {
   return (
@@ -19,6 +21,72 @@ const Blackout = () => {
   );
 };
 
+const CardRenderer = props => {
+  const { simulator, station, flight, client, card, changeCard } = props.test
+    ? {
+        simulator: {
+          id: "test",
+          name: "Test",
+          alertLevel: "5",
+          layout: "LayoutCorners"
+        },
+        station: {
+          name: "Test",
+          widgets: [
+            "keyboard",
+            "composer",
+            "objectives",
+            "calculator",
+            "remote",
+            "messages",
+            "officerLog",
+            "damageReport"
+          ],
+          cards: [
+            {
+              id: "test",
+              name: "Test",
+              component: props.component || "Navigation"
+            }
+          ]
+        },
+        flight: { id: "test" },
+        client: { loginState: "login", loginName: "Test", id: "test" }
+      }
+    : props;
+  const layoutName = station.layout || simulator.layout || "LayoutCorners";
+
+  let LayoutComponent = Layouts[layoutName] || Layouts.LayoutDefault;
+  if (station.name === "Viewscreen") {
+    LayoutComponent = Layouts[layoutName + "Viewscreen"] || LayoutComponent;
+  }
+  if (client.offlineState === "blackout" || station.name === "Blackout") {
+    return (
+      <Blackout clientObj={client} station={station} simulator={simulator} />
+    );
+  }
+  if (station.name.match(/keyboard:.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
+    return (
+      <Keyboard
+        keyboard={station.name.replace("keyboard:", "")}
+        simulator={simulator}
+      />
+    );
+  }
+  if (station.name === "Sound") {
+    return <div className="keyboard-holder">Sound Player</div>;
+  }
+  return (
+    <LayoutComponent
+      clientObj={client}
+      flight={flight}
+      simulator={simulator}
+      station={station}
+      cardName={card}
+      changeCard={changeCard}
+    />
+  );
+};
 export default class CardFrame extends Component {
   constructor(props) {
     super(props);
@@ -62,62 +130,20 @@ export default class CardFrame extends Component {
       });
     }
   }
-  _changeCard(name) {
+  changeCard = name => {
     this.setState({
       card: name
     });
-  }
+  };
   render() {
-    const { simulator, station, flight, client } = this.props.test
-      ? {
-          simulator: {
-            id: "test",
-            name: "Test",
-            alertLevel: "5",
-            layout: "LayoutCorners"
-          },
-          station: {
-            name: "Test",
-            widgets: [
-              "keyboard",
-              "composer",
-              "objectives",
-              "calculator",
-              "remote",
-              "messages",
-              "officerLog",
-              "damageReport"
-            ],
-            cards: [
-              {
-                id: "test",
-                name: "Test",
-                component: this.props.component || "Navigation"
-              }
-            ]
-          },
-          flight: { id: "test" },
-          client: { loginState: "login", loginName: "Test", id: "test" }
-        }
-      : this.props;
-    const layoutName = station.layout || simulator.layout || "LayoutCorners";
-
-    let LayoutComponent = Layouts[layoutName] || Layouts.LayoutDefault;
-    if (station.name === "Viewscreen") {
-      LayoutComponent = Layouts[layoutName + "Viewscreen"] || LayoutComponent;
-    }
-    if (client.offlineState === "blackout" || station.name === "Blackout") {
-      return <Blackout />;
-    }
     return (
-      <LayoutComponent
-        clientObj={client}
-        flight={flight}
-        simulator={simulator}
-        station={station}
-        cardName={this.state.card}
-        changeCard={this._changeCard.bind(this)}
-      />
+      <ActionsMixin {...this.props}>
+        <CardRenderer
+          {...this.props}
+          card={this.state.card}
+          changeCard={this.changeCard}
+        />
+      </ActionsMixin>
     );
   }
 }

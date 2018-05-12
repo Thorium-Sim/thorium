@@ -210,7 +210,7 @@ class StealthField extends Component {
           <Col sm="3" />
           <Col sm="6">
             <Asset
-              asset="/Ship Views/Left"
+              asset="/Ship Views/Right"
               simulatorId={this.props.simulator.id}
             >
               {({ src }) => {

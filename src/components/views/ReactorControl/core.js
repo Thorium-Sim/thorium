@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import gql from "graphql-tag";
 import { InputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
@@ -72,7 +72,7 @@ class ReactorControl extends Component {
     });
   };
   setPowerLevel = e => {
-    if (!e || !parseFloat(e)) return;
+    if ((!e || !parseFloat(e)) && e !== "0") return;
     const { reactors } = this.props.data;
     const reactor = reactors.find(r => r.model === "reactor");
     const mutation = gql`
@@ -180,8 +180,8 @@ class ReactorControl extends Component {
   render() {
     if (this.props.data.loading || !this.props.data.reactors) return null;
     const { reactors } = this.props.data;
-    const reactor = reactors.find(r => r.model === "reactor") || {};
-    const battery = reactors.find(r => r.model === "battery") || {};
+    const reactor = reactors.find(r => r.model === "reactor");
+    const battery = reactors.find(r => r.model === "battery");
     if (!reactor) return <p>No Reactor</p>;
     const efficiencies = [
       {
@@ -209,67 +209,77 @@ class ReactorControl extends Component {
         efficiency: 0
       },
       {
-        label: "External Power"
+        label: "External Power",
+        efficiency: 0
       }
     ];
     return (
       <Container className="reactor-control-core">
         <Row>
           <Col sm={12}>
-            <p>Reactor Output:</p>
-            <InputField
-              prompt="What is the new power output?"
-              onClick={this.setPowerLevel}
-            >
-              {reactor.powerOutput}
-            </InputField>
-            <p>Reactor Efficiency:</p>
-            <Input
-              size="sm"
-              type="select"
-              onChange={evt => this.setEfficiency(evt.target.value)}
-              value={reactor.efficiency}
-            >
-              {efficiencies.map(e => (
-                <option key={e.label} value={e.efficiency}>
-                  {e.label}
-                </option>
-              ))}
-            </Input>
-            <p>Heat Rate:</p>
-            <Input
-              size="sm"
-              type="select"
-              onChange={evt => this.setHeatRate(evt.target.value)}
-              value={reactor.heatRate}
-            >
-              <option value={1.5}>Fast</option>
-              <option value={1}>Normal</option>
-              <option value={0.5}>Slow</option>
-              <option value={0}>Stop</option>
-              <option value={-1}>Reverse</option>
-            </Input>
-            <p>Reactor Heat:</p>
-            <InputField
-              prompt="What is the new reactor heat?"
-              onClick={this.updateHeat}
-            >
-              {Math.round(reactor.heat * 1000) / 10}%
-            </InputField>
-            <p>Battery Output:</p>
-            <InputField
-              prompt="What is the new battery charge level?"
-              onClick={this.setChargeLevel}
-            >
-              {Math.round(battery.batteryChargeLevel * 100)}%
-            </InputField>
-            <p>Battery Rate:</p>
-            <InputField
-              prompt="What is the new battery charge rate?"
-              onClick={this.setChargeRate}
-            >
-              {battery.batteryChargeRate * 100}
-            </InputField>
+            {reactor && (
+              <Fragment>
+                <p>Reactor Output:</p>
+                <InputField
+                  prompt="What is the new power output?"
+                  onClick={this.setPowerLevel}
+                >
+                  {reactor.powerOutput}
+                </InputField>
+                <p>Reactor Efficiency:</p>
+                <Input
+                  size="sm"
+                  type="select"
+                  onChange={evt => this.setEfficiency(evt.target.value)}
+                  value={reactor.efficiency}
+                >
+                  {efficiencies.map(e => (
+                    <option key={e.label} value={e.efficiency}>
+                      {e.label} - {e.efficiency * 100}%{" "}
+                    </option>
+                  ))}
+                </Input>
+                <p>Heat Rate:</p>
+                <Input
+                  size="sm"
+                  type="select"
+                  onChange={evt => this.setHeatRate(evt.target.value)}
+                  value={reactor.heatRate}
+                >
+                  <option value={1.5}>Fast</option>
+                  <option value={1}>Normal</option>
+                  <option value={0.5}>Slow</option>
+                  <option value={0}>Stop</option>
+                  <option value={-1}>Reverse</option>
+                </Input>
+                <p>Reactor Heat:</p>
+                <InputField
+                  prompt="What is the new reactor heat?"
+                  onClick={this.updateHeat}
+                >
+                  {Math.round(reactor.heat * 1000) / 10}%
+                </InputField>
+              </Fragment>
+            )}
+            {battery && (
+              <Fragment>
+                {" "}
+                <p>Battery Output:</p>
+                <InputField
+                  prompt="What is the new battery charge level?"
+                  onClick={this.setChargeLevel}
+                >
+                  {Math.round(battery.batteryChargeLevel * 100)}%
+                </InputField>
+                <p>Battery Rate:</p>
+                <InputField
+                  prompt="What is the new battery charge rate?"
+                  onClick={this.setChargeRate}
+                >
+                  {battery.batteryChargeRate * 100}
+                </InputField>
+              </Fragment>
+            )}
           </Col>
         </Row>
       </Container>

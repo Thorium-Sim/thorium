@@ -49,7 +49,7 @@ export default props => {
         </Col>
         <Col sm={3}>
           <Damaged {...props} />
-          <AlertCondition {...props} />
+          {!props.viewscreen && <AlertCondition {...props} />}
         </Col>
       </Row>
       <Tour

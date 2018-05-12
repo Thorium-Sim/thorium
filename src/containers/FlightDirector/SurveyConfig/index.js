@@ -7,7 +7,6 @@ import {
   ListGroupItem,
   Button
 } from "reactstrap";
-import { Link } from "react-router-dom";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Form from "./form";
@@ -128,14 +127,17 @@ class Surveys extends Component {
     });
   };
   render() {
-    const { data: { loading, surveyform } } = this.props;
+    const {
+      data: { loading, surveyform }
+    } = this.props;
     const { selectedForm } = this.state;
     if (loading || !surveyform) return null;
     return (
       <Container fluid className="survey-forms">
+        <h4>Survey Config </h4>
+
         <Row>
           <Col sm={3}>
-            <Link to={"/"}>Go Back</Link>
             <div
               style={{
                 maxHeight: "60vh",

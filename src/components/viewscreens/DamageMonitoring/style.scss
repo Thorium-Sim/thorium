@@ -1,0 +1,114 @@
+.damage-monitoring {
+  h1 {
+    margin-top: 100px;
+    text-align: center;
+    font-size: 50px;
+  }
+
+  .ship-view,
+  .damage-view {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+  .damage-list {
+    max-height: 40vh;
+    width: 60vw;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .damage-view {
+    animation-name: damageMonitorFadeDamage;
+    animation-duration: 10s;
+    animation-timing-function: ease;
+    animation-iteration-count: infinite;
+  }
+  .ship-view {
+    animation-name: damageMonitorFadeShip;
+    animation-duration: 10s;
+    animation-timing-function: ease;
+    animation-iteration-count: infinite;
+    .scanner-mask {
+      height: 100%;
+      -webkit-mask-position: center;
+      -webkit-mask-size: 100%;
+      -webkit-mask-repeat: no-repeat;
+      mask-position: center;
+      mask-size: 100%;
+      mask-repeat: no-repeat;
+      mix-blend-mode: overlay;
+    }
+    .scanner-holder {
+      height: 100%;
+      width: 100%;
+      animation-name: damageMonitorScan;
+      animation-duration: 10s;
+      animation-timing-function: ease;
+      animation-iteration-count: infinite;
+    }
+    .scanner {
+      width: 4%;
+      height: 100%;
+      background-color: yellow;
+      box-shadow: 0px 0px 20px 5px yellow;
+    }
+  }
+  .damage-view p {
+    font-size: 36px;
+    color: red;
+    text-shadow: 0px 0px 5px #440000;
+    margin: 30px;
+  }
+}
+@keyframes damageMonitorScan {
+  0% {
+    transform: translateX(-4%);
+  }
+  30% {
+    transform: translateX(104%);
+  }
+  100% {
+    transform: translateX(104%);
+  }
+}
+@keyframes damageMonitorFadeShip {
+  30% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes damageMonitorFadeDamage {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

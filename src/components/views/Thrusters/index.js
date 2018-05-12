@@ -8,6 +8,7 @@ import { Button, Row, Col } from "reactstrap";
 import ThrusterThree from "./three-view";
 import distance from "../../../helpers/distance";
 import Measure from "react-measure";
+import throttle from "../../../helpers/debounce";
 
 import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.css";
@@ -124,7 +125,7 @@ class Thrusters extends Component {
         left: 0,
         top: 0
       },
-      directionFore: {
+      directionUp: {
         left: 0,
         top: 0
       },
@@ -137,6 +138,19 @@ class Thrusters extends Component {
         top: 0
       }
     };
+    this.updateRotation = throttle(({ id, rotation, on }) => {
+      props.rotationUpdate({
+        id,
+        rotation,
+        on
+      });
+    }, 15);
+    this.updateDirection = throttle(({ id, direction }) => {
+      props.directionUpdate({
+        id,
+        direction
+      });
+    }, 15);
   }
   componentWillUnmount() {
     cancelAnimationFrame(this.state.request);
@@ -316,7 +330,7 @@ gamepadLoop(){
             case "rotation":
               rotation.pitch = newPosition.top;
               rotation.roll = newPosition.left;
-              this.props.rotationUpdate({
+              this.updateRotation({
                 id: id,
                 rotation: rotation,
                 on: true
@@ -324,28 +338,28 @@ gamepadLoop(){
               break;
             case "yaw":
               rotation.yaw = newPosition.left;
-              this.props.rotationUpdate({
+              this.updateRotation({
                 id: id,
                 rotation: rotation,
                 on: true
               });
               break;
-            case "directionFore":
+            case "directionUp":
               direction.z = newPosition.left;
-              this.props.directionUpdate({ id: id, direction: direction });
+              this.updateDirection({ id: id, direction: direction });
               break;
             case "direction":
               direction.x = newPosition.left;
-              direction.y = newPosition.top;
-              this.props.directionUpdate({ id: id, direction: direction });
+              direction.y = newPosition.top * -1;
+              this.updateDirection({ id: id, direction: direction });
               break;
             default:
-              this.props.rotationUpdate({
+              this.props.updateRotation({
                 id: id,
                 rotation: rotation,
                 on: false
               });
-              this.props.directionUpdate({ id: id, direction: direction });
+              this.updateDirection({ id: id, direction: direction });
               break;
           }
           this.setState(obj);
@@ -389,7 +403,7 @@ gamepadLoop(){
     const direction = {
       x: this.state.direction.left,
       y: this.state.direction.top,
-      z: this.state.directionFore.left
+      z: this.state.directionUp.left
     };
     if (!thruster) return <h1>No thruster system</h1>;
     return (
@@ -415,30 +429,30 @@ gamepadLoop(){
                   }}
                 />
               </DraggableCore>
-              <span className="label up">Up</span>
+              <span className="label up">Forward</span>
               <span className="label right">Starboard</span>
-              <span className="label down">Down</span>
+              <span className="label down">Reverse</span>
               <span className="label left">Port</span>
             </div>
             <div className="draggerBar">
               <DraggableCore
                 axis="x"
-                onStart={this.onDragHandler("onDragStart", "directionFore")}
-                onDrag={this.onDragHandler("onDrag", "directionFore")}
-                onStop={this.onDragHandler("onDragStop", "directionFore")}
+                onStart={this.onDragHandler("onDragStart", "directionUp")}
+                onDrag={this.onDragHandler("onDrag", "directionUp")}
+                onStop={this.onDragHandler("onDragStop", "directionUp")}
               >
                 <div
                   ref="foreDragger"
                   className="dragger fore alertBack"
                   style={{
-                    transform: `translate3d(${this.state.directionFore.left *
+                    transform: `translate3d(${this.state.directionUp.left *
                       (width - 40) /
                       2}px,0px,0px)`
                   }}
                 />
               </DraggableCore>
-              <span className="label right">Forward</span>
-              <span className="label left">Reverse</span>
+              <span className="label right">Up</span>
+              <span className="label left">Down</span>
             </div>
           </Col>
           <Col className="col-sm-6">
