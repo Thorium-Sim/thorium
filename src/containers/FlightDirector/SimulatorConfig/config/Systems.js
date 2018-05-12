@@ -21,7 +21,8 @@ const properties = [
   { name: "Targeting" },
   { name: "Phasers" },
   { name: "Torpedo", config: true },
-  { name: "Coolant" }
+  { name: "Coolant" },
+  { name: "ComputerCore" }
 ];
 
 const ops = {

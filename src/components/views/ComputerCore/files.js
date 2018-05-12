@@ -1,6 +1,60 @@
 import React, { Component, Fragment } from "react";
 import { Row, Col, Table, Button } from "reactstrap";
 import FileModal from "./addFileModal";
+
+function randomString(length, chars) {
+  var result = "";
+  for (let i = length; i > 0; --i) {
+    result += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return result;
+}
+class FileName extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: !props.corrupted
+        ? props.name
+        : randomString(
+            10,
+            "0123456789abcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_+-={}[]:\";'<>?,./|\\"
+          )
+    };
+  }
+  componentDidMount() {
+    this.looping = true;
+    this.loop();
+  }
+  componentWillUnmount() {
+    clearTimeout(this.looping);
+    this.looping = false;
+  }
+  loop = () => {
+    if (this.props.corrupted) {
+      this.setState({
+        name: randomString(
+          10,
+          "0123456789abcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_+-={}[]:\";'<>?,./|\\"
+        )
+      });
+    }
+    setTimeout(this.loop, Math.random() * 2000 + 500);
+  };
+  componentWillReceiveProps(nextProps) {
+    if (this.props.corrupted === nextProps.corrupted) return;
+    this.setState({
+      name: !nextProps.corrupted
+        ? nextProps.name
+        : randomString(
+            10,
+            "0123456789abcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_+-={}[]:\";'<>?,./|\\"
+          )
+    });
+  }
+  render() {
+    return this.state.name;
+  }
+}
 class Files extends Component {
   state = {};
   render() {
@@ -24,7 +78,9 @@ class Files extends Component {
                     className={selectedFile === u.id ? "selected" : ""}
                     onClick={() => this.setState({ selectedFile: u.id })}
                   >
-                    <td>{u.name}</td>
+                    <td>
+                      <FileName {...u} />
+                    </td>
                     <td>Level {u.level}</td>
                   </tr>
                 ))}

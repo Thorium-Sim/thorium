@@ -34,10 +34,10 @@ const computerCoreCycle = () => {
     });
   });
   pubsub.publish(
-    "updateComputerCore",
+    "computerCoreUpdate",
     App.systems.filter(s => s.class === "ComputerCore")
   );
-  setTimeout(computerCoreCycle, 1000 * 30);
+  setTimeout(computerCoreCycle, 1000);
 };
 
 computerCoreCycle();

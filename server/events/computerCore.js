@@ -3,11 +3,9 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 
 function performAction(id, action) {
   const sys = App.systems.find(s => s.id === id);
-  console.log("GOt sys", sys);
   if (sys) {
     action(sys);
   }
-  console.log("PUblishing");
   pubsub.publish(
     "computerCoreUpdate",
     App.systems.filter(s => s.class === "ComputerCore")
@@ -16,7 +14,6 @@ function performAction(id, action) {
 
 App.on("addComputerCoreUser", ({ id, user }) => {
   performAction(id, sys => {
-    console.log("Adding user");
     sys.addUser(user);
   });
 });

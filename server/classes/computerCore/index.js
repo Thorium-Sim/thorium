@@ -3,7 +3,7 @@ import { System } from "../generic";
 import * as defaults from "./defaults";
 
 class User {
-  constructor(params) {
+  constructor(params = {}) {
     this.id = params.id || uuid.v4();
     this.name = params.name || "Generic User";
     this.password = params.password || "rommel1942";
@@ -13,7 +13,7 @@ class User {
 }
 
 class File {
-  constructor(params) {
+  constructor(params = {}) {
     this.id = params.id || uuid.v4();
     this.name = params.name || `File ${Math.round(Math.random() * 998 + 1)}`;
     this.level = params.level || Math.round(Math.random() * 10 + 1);
@@ -36,12 +36,14 @@ function randomString(length, chars) {
 }
 
 class Virus {
-  constructor() {
+  constructor(params = {}) {
     this.id = params.id || uuid.v4();
-    this.name = randomString(
-      10,
-      "0123456789abcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_+-={}[]:\";'<>?,./|\\"
-    );
+    this.name =
+      params.name ||
+      randomString(
+        10,
+        "0123456789abcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_+-={}[]:\";'<>?,./|\\"
+      );
   }
 }
 
@@ -50,7 +52,7 @@ class Virus {
 // O - Offline
 // R - Restarting
 class Terminal {
-  constructor(params) {
+  constructor(params = {}) {
     this.id = params.id || uuid.v4();
     this.name =
       params.name ||
@@ -67,6 +69,9 @@ export default class ComputerCore extends System {
     super(params);
     this.id = params.id || uuid.v4();
     this.class = "ComputerCore";
+    this.type = "ComputerCore";
+    this.name = params.name || "Main Computer";
+    this.displayName = params.displayName || "Main Computer";
     this.simulatorId = params.simulatorId || null;
     this.users = []; // Hackers create virii
     this.virii = []; // Virii corrupt files
@@ -77,9 +82,12 @@ export default class ComputerCore extends System {
     (params.users || defaults.users).forEach(u => this.users.push(new User(u)));
     (params.files || defaults.files).forEach(f => this.files.push(new File(f)));
     (params.virii || []).forEach(v => this.virii.push(new Virus(v)));
-    (params.terminals || Array(200).fill({})).forEach(t =>
-      this.terminals.push(new Terminal(t))
-    );
+    (
+      params.terminals ||
+      Array(200)
+        .fill({})
+        .map((_, i) => ({ name: `Terminal ${i + 1}` }))
+    ).forEach(t => this.terminals.push(new Terminal(t)));
   }
   addUser(params) {
     this.history.unshift(`New User: ${params.name} (${params.level})`);
@@ -118,6 +126,8 @@ export default class ComputerCore extends System {
     this.virii = this.virii.filter(v => v.id !== id);
   }
   updateTerminalStatus(id, status) {
-    this.terminals.find(t => t.id === id).updateStatus(status);
+    const term = this.terminals.find(t => t.id === id);
+    this.history.unshift(`${term.name} updated: ${status}`);
+    term.updateStatus(status);
   }
 }

@@ -31,8 +31,12 @@ export const ComputerCoreMutations = {
 
 export const ComputerCoreSubscriptions = {
   computerCoreUpdate: {
-    resolve(rootValue) {
-      return rootValue;
+    resolve(rootValue, { simulatorId }) {
+      let returnVal = rootValue;
+      if (simulatorId) {
+        returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
+      }
+      return returnVal;
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("computerCoreUpdate"),

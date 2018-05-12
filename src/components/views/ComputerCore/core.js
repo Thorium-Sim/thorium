@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import ComputerCore from "./computerCore";
 import "./style.css";
 
 const queryData = `
 id
+history
 users {
   id
   name
@@ -43,6 +43,23 @@ ${queryData}
   }
 `;
 
+class Core extends Component {
+  componentDidMount() {
+    this.sub = this.props.subscribe();
+  }
+  componentWillUnmount() {
+    this.sub && this.sub();
+  }
+  render() {
+    const { history } = this.props;
+    return (
+      <div>
+        <ul>{history.map((h, i) => <li key={`history-${i}`}>{h}</li>)}</ul>
+      </div>
+    );
+  }
+}
+
 class ComputerCoreData extends Component {
   state = {};
   render() {
@@ -53,7 +70,7 @@ class ComputerCoreData extends Component {
           if (loading || !computerCore) return null;
           if (!computerCore[0]) return <div>No Computer Core</div>;
           return (
-            <ComputerCore
+            <Core
               {...this.props}
               {...computerCore[0]}
               subscribe={() =>
