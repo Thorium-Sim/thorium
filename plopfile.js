@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs");
+const { camelCase } = require("change-case");
 module.exports = function(plop) {
   // controller generator
   plop.addPrompt("filePath", require("inquirer-file-path"));
@@ -8,6 +9,9 @@ module.exports = function(plop) {
   });
   plop.addHelper("lowerCase", function(p) {
     return p.toLowerCase();
+  });
+  plop.addHelper("camelCase", function(p) {
+    return camelCase(p);
   });
   plop.addPrompt("recursive", require("inquirer-recursive"));
   plop.setGenerator("mutation", {
@@ -109,7 +113,7 @@ module.exports = function(plop) {
     actions: [
       {
         type: "add",
-        path: '{{absPath "server/schema/types"}}/{{lowerCase name}}.js',
+        path: '{{absPath "server/schema/types"}}/{{camelCase name}}.js',
         template: `export default \`
 type {{name}}{
   id: ID
@@ -120,36 +124,36 @@ type {{name}}{
       },
       {
         type: "add",
-        path: '{{absPath "server/schema/queries"}}/{{lowerCase name}}.js',
+        path: '{{absPath "server/schema/queries"}}/{{camelCase name}}.js',
         template: `export default \`
-{{lowerCase name}}(simulatorId: ID):[{{name}}]
+{{camelCase name}}(simulatorId: ID):[{{name}}]
 \`;
 `
       },
       {
         type: "add",
-        path: '{{absPath "server/schema/mutations"}}/{{lowerCase name}}.js',
+        path: '{{absPath "server/schema/mutations"}}/{{camelCase name}}.js',
         template: `export default \`
 \`;
 `
       },
       {
         type: "add",
-        path: '{{absPath "server/schema/subscriptions"}}/{{lowerCase name}}.js',
+        path: '{{absPath "server/schema/subscriptions"}}/{{camelCase name}}.js',
         template: `export default \`
-{{lowerCase name}}Update(simulatorId: ID):[{{name}}]
+{{camelCase name}}Update(simulatorId: ID):[{{name}}]
 \`;
 `
       },
       {
         type: "add",
-        path: '{{absPath "server/resolvers"}}/{{lowerCase name}}.js',
+        path: '{{absPath "server/resolvers"}}/{{camelCase name}}.js',
         template: `import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
 export const {{name}}Queries = {
-  {{lowerCase name}}(root, { simulatorId }) {
+  {{camelCase name}}(root, { simulatorId }) {
     let returnVal = [];
     if (simulatorId)
       returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
@@ -160,7 +164,7 @@ export const {{name}}Queries = {
 export const {{name}}Mutations = {};
 
 export const {{name}}Subscriptions = {
-  {{lowerCase name}}Update: {
+  {{camelCase name}}Update: {
     resolve(rootValue, { simulatorId }) {
       if (simulatorId) {
         return rootValue.filter(s => s.simulatorId === simulatorId);
@@ -168,7 +172,7 @@ export const {{name}}Subscriptions = {
       return rootValue;
     },
     subscribe: withFilter(
-      () => pubsub.asyncIterator("{{lowerCase name}}Update"),
+      () => pubsub.asyncIterator("{{camelCase name}}Update"),
       rootValue => !!(rootValue && rootValue.length)
     )
   }
@@ -178,7 +182,7 @@ export const {{name}}Subscriptions = {
       },
       {
         type: "add",
-        path: '{{absPath "server/events"}}/{{lowerCase name}}.js',
+        path: '{{absPath "server/events"}}/{{camelCase name}}.js',
         template: `import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
@@ -186,7 +190,7 @@ import * as Classes from "../classes";
       },
       {
         type: "add",
-        path: '{{absPath "server/classes"}}/{{lowerCase name}}.js',
+        path: '{{absPath "server/classes"}}/{{camelCase name}}.js',
         template: `import uuid from "uuid";
 
 export default class {{name}} {
@@ -202,56 +206,56 @@ export default class {{name}} {
         type: "modify",
         path: '{{absPath "server/classes"}}/index.js',
         pattern: /$(?![\r\n])/im,
-        template: `export {default as {{name}} } from "./{{lowerCase name}}.js";`
+        template: `export {default as {{name}} } from "./{{camelCase name}}";`
       },
       {
         type: "modify",
         path: '{{absPath "server/events"}}/index.js',
         pattern: /$(?![\r\n])/im,
-        template: `import "./{{lowerCase name}}.js";`
+        template: `import "./{{camelCase name}}.js";`
       },
       {
         type: "modify",
         path: '{{absPath "server/schema/mutations"}}/index.js',
         pattern: /$(?![\r\n])/im,
-        template: `export {default as {{name}} } from "./{{lowerCase name}}.js";`
+        template: `export {default as {{name}} } from "./{{camelCase name}}.js";`
       },
       {
         type: "modify",
         path: '{{absPath "server/schema/subscriptions"}}/index.js',
         pattern: /$(?![\r\n])/im,
-        template: `export {default as {{name}} } from "./{{lowerCase name}}.js";`
+        template: `export {default as {{name}} } from "./{{camelCase name}}.js";`
       },
       {
         type: "modify",
         path: '{{absPath "server/schema/queries"}}/index.js',
         pattern: /$(?![\r\n])/im,
-        template: `export {default as {{name}} } from "./{{lowerCase name}}.js";`
+        template: `export {default as {{name}} } from "./{{camelCase name}}.js";`
       },
       {
         type: "modify",
         path: '{{absPath "server/schema/types"}}/index.js',
         pattern: /$(?![\r\n])/im,
-        template: `export {default as {{name}} } from "./{{lowerCase name}}.js";`
+        template: `export {default as {{name}} } from "./{{camelCase name}}.js";`
       },
       // Imports
       {
         type: "modify",
         path: '{{absPath "server/resolvers"}}/queries.js',
         pattern: /(?!<=";\n)(.*)(?=\nconst queryMap)/im,
-        template: `import { {{name}}Queries } from "./{{lowerCase name}}.js";\n`
+        template: `import { {{name}}Queries } from "./{{camelCase name}}.js";\n`
       },
       {
         type: "modify",
         path: '{{absPath "server/resolvers"}}/mutations.js',
         pattern: /(?!<=";\n)(.*)(?=\nconst mutationMap)/im,
-        template: `import { {{name}}Mutations } from "./{{lowerCase name}}.js";\n`
+        template: `import { {{name}}Mutations } from "./{{camelCase name}}.js";\n`
       },
       {
         type: "modify",
         path: '{{absPath "server/resolvers"}}/subscriptions.js',
         pattern: /(?!<=";\n)(.*)(?=\nconst subscriptionMap)/im,
-        template: `import { {{name}}Subscriptions } from "./{{lowerCase name}}.js";\n`
+        template: `import { {{name}}Subscriptions } from "./{{camelCase name}}.js";\n`
       },
 
       // Exports

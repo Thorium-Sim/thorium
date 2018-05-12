@@ -43,3 +43,4 @@ import "./actions";
 import "./surveyform.js";
 import "./objective.js";
 import "./keyboard.js";
+import "./computerCore.js";
