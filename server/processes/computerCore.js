@@ -27,7 +27,7 @@ const computerCoreCycle = () => {
 
           // Each corrupted file gives a 10% chance of offline-ing a terminal
           const corrupted = c.files.filter(fi => fi.corrupted === true);
-          if (Math.random() * corrupted > 0.9) {
+          if (Math.random() * corrupted.length > 0.9) {
             c.updateTerminalStatus(randomFromList(c.terminals).id, "O");
           }
         });
@@ -37,7 +37,7 @@ const computerCoreCycle = () => {
     "computerCoreUpdate",
     App.systems.filter(s => s.class === "ComputerCore")
   );
-  setTimeout(computerCoreCycle, 1000);
+  setTimeout(computerCoreCycle, 1000 * 30);
 };
 
 computerCoreCycle();

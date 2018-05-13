@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Row, Col, Table, Button } from "reactstrap";
-import FileModal from "./addFileModal";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
 
 function randomString(length, chars) {
   var result = "";
@@ -13,12 +14,14 @@ class FileName extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: !props.corrupted
-        ? props.name
-        : randomString(
-            10,
-            "0123456789abcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_+-={}[]:\";'<>?,./|\\"
-          )
+      name: props.restoring
+        ? "Restoring..."
+        : !props.corrupted
+          ? props.name
+          : randomString(
+              10,
+              "0123456789abcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_+-={}[]:\";'<>?,./|\\"
+            )
     };
   }
   componentDidMount() {
@@ -41,24 +44,32 @@ class FileName extends Component {
     setTimeout(this.loop, Math.random() * 2000 + 500);
   };
   componentWillReceiveProps(nextProps) {
-    if (this.props.corrupted === nextProps.corrupted) return;
+    if (
+      this.props.corrupted === nextProps.corrupted &&
+      this.props.restoring === nextProps.restoring
+    )
+      return;
+    console.log(nextProps);
     this.setState({
-      name: !nextProps.corrupted
-        ? nextProps.name
-        : randomString(
-            10,
-            "0123456789abcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_+-={}[]:\";'<>?,./|\\"
-          )
+      name: nextProps.restoring
+        ? "Restoring..."
+        : !nextProps.corrupted
+          ? nextProps.name
+          : randomString(
+              10,
+              "0123456789abcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_+-={}[]:\";'<>?,./|\\"
+            )
     });
   }
   render() {
+    console.log(this.props);
     return this.state.name;
   }
 }
 class Files extends Component {
   state = {};
   render() {
-    const { selectedFile, modal } = this.state;
+    const { selectedFile } = this.state;
     const { files, selectedLevel, id } = this.props;
     return (
       <Fragment>
@@ -88,28 +99,42 @@ class Files extends Component {
             </Table>
           </Col>
         </Row>
-        <Row>
-          <Col sm={5}>
-            <Button
-              color="success"
-              block
-              disabled={!selectedFile}
-              onClick={() => this.setState({ modal: true })}
-            >
-              Restore File
-            </Button>
-          </Col>
-          <Col sm={{ size: 5, offset: 2 }}>
-            <Button color="warning" block disabled={!selectedLevel}>
-              Restore All Level {selectedLevel} Files
-            </Button>
-          </Col>
-        </Row>
-        <FileModal
-          id={id}
-          modal={modal}
-          toggle={() => this.setState({ modal: false })}
-        />
+        <Mutation
+          mutation={gql`
+            mutation RestoreFile($id: ID!, $fileId: ID, $level: Int) {
+              restoreComputerCoreFile(id: $id, fileId: $fileId, level: $level)
+            }
+          `}
+        >
+          {action => (
+            <Row>
+              <Col sm={5}>
+                <Button
+                  color="success"
+                  block
+                  disabled={!selectedFile}
+                  onClick={() =>
+                    action({ variables: { id, fileId: selectedFile } })
+                  }
+                >
+                  Restore File
+                </Button>
+              </Col>
+              <Col sm={{ size: 5, offset: 2 }}>
+                <Button
+                  color="warning"
+                  block
+                  disabled={!selectedLevel}
+                  onClick={() =>
+                    action({ variables: { id, level: selectedLevel } })
+                  }
+                >
+                  Restore All Level {selectedLevel} Files
+                </Button>
+              </Col>
+            </Row>
+          )}
+        </Mutation>
       </Fragment>
     );
   }

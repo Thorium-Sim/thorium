@@ -26,19 +26,38 @@ App.on("restoreComputerCoreFile", ({ id, fileId, level, all }) => {
   const sys = App.systems.find(s => s.id === id);
   if (sys) {
     if (fileId) {
-      sys.restoreFile(id);
+      sys.restoreFile(fileId);
+      pubsub.publish(
+        "computerCoreUpdate",
+        App.systems.filter(s => s.class === "ComputerCore")
+      );
+
+      setTimeout(() => {
+        sys.uncorruptFile(fileId);
+        pubsub.publish(
+          "computerCoreUpdate",
+          App.systems.filter(s => s.class === "ComputerCore")
+        );
+      }, 4000);
     }
     if (all) {
       sys.files.forEach(f => sys.restoreFile(f.id));
     }
     if (level) {
-      files.filter(f => f.level === level).forEach((f, i) =>
+      sys.files.filter(f => f.level === level).forEach((f, i) =>
         setTimeout(() => {
           sys.restoreFile(f.id);
           pubsub.publish(
             "computerCoreUpdate",
             App.systems.filter(s => s.class === "ComputerCore")
           );
+          setTimeout(() => {
+            sys.uncorruptFile(f.id);
+            pubsub.publish(
+              "computerCoreUpdate",
+              App.systems.filter(s => s.class === "ComputerCore")
+            );
+          }, 4000);
         }, 500 * i)
       );
     }

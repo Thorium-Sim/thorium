@@ -18,6 +18,7 @@ files {
   name
   level
   corrupted
+  restoring
 }
 virii {
   id

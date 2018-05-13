@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { Row, Col, Table, Button } from "reactstrap";
 import UserModal from "./addUserModal";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
 class Users extends Component {
   state = {};
   render() {
@@ -45,9 +47,25 @@ class Users extends Component {
             </Button>
           </Col>
           <Col sm={{ size: 5, offset: 2 }}>
-            <Button color="danger" block disabled={!selectedUser}>
-              Remove User
-            </Button>
+            <Mutation
+              mutation={gql`
+                mutation RemoveUser($id: ID!, $userId: ID!) {
+                  removeComputerCoreUser(id: $id, userId: $userId)
+                }
+              `}
+              variables={{ id, userId: selectedUser }}
+            >
+              {action => (
+                <Button
+                  color="danger"
+                  block
+                  disabled={!selectedUser}
+                  onClick={action}
+                >
+                  Remove User
+                </Button>
+              )}
+            </Mutation>
           </Col>
         </Row>
         <UserModal

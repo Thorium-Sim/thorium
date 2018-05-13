@@ -11,6 +11,7 @@ import {
 import Terminals from "./terminals";
 import Users from "./users";
 import Files from "./files";
+import VirusScanner from "./virusScanner";
 
 class ComputerCore extends Component {
   state = { currentView: "users" };
@@ -40,6 +41,7 @@ class ComputerCore extends Component {
                   </ListGroupItem>
                 ))}
             </ListGroup>
+            <VirusScanner {...this.props} />
           </Col>
           <Col sm={6}>
             <Row>

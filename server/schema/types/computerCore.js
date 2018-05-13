@@ -22,6 +22,7 @@ type ComputerCoreFile {
   name: String
   level: Int
   corrupted: Boolean
+  restoring: Boolean
 }
 
 type ComputerCoreVirus {

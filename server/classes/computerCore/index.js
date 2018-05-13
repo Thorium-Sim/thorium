@@ -18,11 +18,16 @@ class File {
     this.name = params.name || `File ${Math.round(Math.random() * 998 + 1)}`;
     this.level = params.level || Math.round(Math.random() * 10 + 1);
     this.corrupted = params.corrupted || false;
+    this.restoring = params.restoring || false;
   }
   corrupt() {
     this.corrupted = true;
   }
   restore() {
+    this.restoring = true;
+  }
+  uncorrupt() {
+    this.restoring = false;
     this.corrupted = false;
   }
 }
@@ -110,11 +115,17 @@ export default class ComputerCore extends System {
   restoreFile(id) {
     this.files.find(f => f.id === id).restore();
   }
+  uncorruptFile(id) {
+    const file = this.files.find(f => f.id === id);
+    this.history.unshift(`File Restored: ${file.name} (${file.level})`);
+    file.uncorrupt();
+  }
   corruptFile(id) {
     const file = this.files.find(f => f.id === id);
     this.history.unshift(`File Corrupted: ${file.name} (${file.level})`);
     file.corrupt();
   }
+
   createVirus() {
     const virus = new Virus();
     this.history.unshift(`Virus Created: ${virus.name}`);
