@@ -34,7 +34,7 @@ class ActionsMixin extends Component {
     setTimeout(this.flash.bind(this, duration - 1), 100);
   }
   componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
+    if (!this.subscription && !nextProps.data.loading && this.props.simulator) {
       this.subscription = nextProps.data.subscribeToMore({
         document: ACTIONS_SUB,
         variables: {

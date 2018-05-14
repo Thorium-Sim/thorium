@@ -65,6 +65,7 @@ import SurveyForm from "./SurveyForm";
 import SecurityArmory from "./Armory";
 import MedicalArmory from "./Armory/medicalArmory";
 import DamageArmory from "./Armory/damageArmory";
+import ComputerCore from "./ComputerCore";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -115,6 +116,7 @@ import AlertConditionCore from "./AlertCondition/core";
 import ObjectivesCore from "./Objectives/core";
 import SurveyFormCore from "./SurveyForm/core";
 import ArmoryCore from "./Armory/core";
+import ComputerCoreCore from "./ComputerCore/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -187,7 +189,8 @@ const Views = {
   SecurityArmory,
   MedicalArmory,
   DamageArmory,
-  MedicalTeams
+  MedicalTeams,
+  ComputerCore
 };
 
 export const Widgets = {
@@ -306,7 +309,8 @@ export const Cores = {
   AlertConditionCore,
   ObjectivesCore,
   SurveyFormCore,
-  ArmoryCore
+  ArmoryCore,
+  ComputerCoreCore
 };
 
 export default Views;

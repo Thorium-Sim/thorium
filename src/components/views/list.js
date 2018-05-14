@@ -53,7 +53,8 @@ const viewList = [
   "SecurityArmory",
   "MedicalArmory",
   "DamageArmory",
-  "MedicalTeams"
+  "MedicalTeams",
+  "ComputerCore"
 ];
 
 export default viewList;

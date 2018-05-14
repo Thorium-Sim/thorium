@@ -40,6 +40,7 @@ import { SoftwarePanelsQueries } from "./softwarePanels";
 import { SurveyFormQueries } from "./surveyform.js";
 import { ObjectiveQueries } from "./objective.js";
 import { KeyboardQueries } from "./keyboard.js";
+import { ComputerCoreQueries } from "./computerCore.js";
 
 const queryMap = Object.assign(
   {},
@@ -84,7 +85,8 @@ const queryMap = Object.assign(
   SoftwarePanelsQueries,
   SurveyFormQueries,
   ObjectiveQueries,
-  KeyboardQueries
+  KeyboardQueries,
+  ComputerCoreQueries
 );
 
 export default queryMap;
