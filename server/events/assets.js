@@ -10,6 +10,7 @@ App.on("removeAssetFolder", params => {
   App.assetFolders = App.assetFolders.filter(folder => {
     return folder.id !== params.id;
   });
+
   pubsub.publish("assetFolderChange", App.assetFolders);
 });
 App.on("addAssetContainer", params => {

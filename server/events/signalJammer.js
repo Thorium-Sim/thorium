@@ -1,9 +1,29 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
-
+import uuid from "uuid";
 App.on("updateSignalJammer", ({ jammer }) => {
   const sys = App.systems.find(s => s.id === jammer.id);
   sys.update(jammer);
+  if (jammer.active || jammer.active === false) {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      station: "Core",
+      title: `Signal Jammer ${jammer.active ? "Activated" : "Deactivated"}`,
+      body: "",
+      color: "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: sys.simulatorId,
+        title: `Signal Jammer ${jammer.active ? "Activated" : "Deactivated"}`,
+        component: "SignalJammerCore",
+        body: null,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+  }
   pubsub.publish(
     "signalJammersUpdate",
     App.systems.filter(s => s.type === "SignalJammer")
