@@ -138,7 +138,7 @@ export default class SensorContact extends Component {
           {!core &&
             selected && (
               <div
-                className="selection"
+                className="contact-selection"
                 style={{
                   transform: `translate(${width / 2 * dx}px, ${width /
                     2 *
