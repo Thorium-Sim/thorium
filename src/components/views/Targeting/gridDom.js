@@ -282,7 +282,7 @@ const Target = ({
           <div
             className="target-label"
             style={{
-              transform: `translate(${x}px, ${y + 30}px) scale(${scale})`
+              transform: `translate(${x}px, ${y + 50 * scale / 2}px)`
             }}
           >
             {name}
