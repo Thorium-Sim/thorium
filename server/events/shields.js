@@ -144,3 +144,11 @@ App.on("hitShields", ({ id, simulatorId }) => {
   }
   sendUpdate();
 });
+App.on("restoreShields", ({ simulatorId }) => {
+  if (simulatorId) {
+    App.systems
+      .filter(s => s.simulatorId === simulatorId && s.class === "Shield")
+      .forEach(s => s.setIntegrity(1));
+    sendUpdate();
+  }
+});

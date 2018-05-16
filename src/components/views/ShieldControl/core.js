@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Table, Button } from "reactstrap";
+import { Table, Button, ButtonGroup } from "reactstrap";
 import { InputField, OutputField } from "../../generic/core";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo, Mutation } from "react-apollo";
 
 import gql from "graphql-tag";
 
@@ -150,14 +150,29 @@ class ShieldsCore extends Component {
                 })}
               </tbody>
             </Table>
-            <Button
-              style={{ width: "50%" }}
-              size="sm"
-              color="danger"
-              onClick={this._hitShields.bind(this, "all")}
-            >
-              Hit All
-            </Button>
+            <ButtonGroup>
+              <Button
+                size="sm"
+                color="danger"
+                onClick={this._hitShields.bind(this, "all")}
+              >
+                Hit All
+              </Button>
+              <Mutation
+                mutation={gql`
+                  mutation RestoreShields($simulatorId: ID!) {
+                    restoreShields(simulatorId: $simulatorId)
+                  }
+                `}
+                variables={{ simulatorId: this.props.simulator.id }}
+              >
+                {action => (
+                  <Button size="sm" color="success" onClick={action}>
+                    Restore All
+                  </Button>
+                )}
+              </Mutation>
+            </ButtonGroup>
           </div>
         ) : (
           "No shields"
