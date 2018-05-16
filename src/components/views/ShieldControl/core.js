@@ -116,9 +116,33 @@ class ShieldsCore extends Component {
                     <tr key={s.id}>
                       <td>{s.name}</td>
                       <td>
-                        <OutputField>
-                          {s.state ? "Raised" : "Lowered"}
-                        </OutputField>
+                        <Mutation
+                          mutation={gql`
+                            mutation shieldLowered($id: ID!) {
+                              shieldLowered(id: $id)
+                            }
+                          `}
+                          variables={{ id: s.id }}
+                        >
+                          {lower => (
+                            <Mutation
+                              mutation={gql`
+                                mutation shieldRaised($id: ID!) {
+                                  shieldRaised(id: $id)
+                                }
+                              `}
+                              variables={{ id: s.id }}
+                            >
+                              {raise => (
+                                <OutputField
+                                  onDoubleClick={s.state ? lower : raise}
+                                >
+                                  {s.state ? "Raised" : "Lowered"}
+                                </OutputField>
+                              )}
+                            </Mutation>
+                          )}
+                        </Mutation>
                       </td>
                       <td>
                         <InputField
@@ -150,6 +174,9 @@ class ShieldsCore extends Component {
                 })}
               </tbody>
             </Table>
+            <div>
+              <small>Double click shield status to toggle state</small>
+            </div>
             <ButtonGroup>
               <Button
                 size="sm"

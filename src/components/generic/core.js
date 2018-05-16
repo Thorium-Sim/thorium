@@ -31,6 +31,7 @@ export const OutputField = ({
   children,
   alert,
   onClick,
+  onDoubleClick,
   title,
   id
 }) => {
@@ -54,6 +55,7 @@ export const OutputField = ({
       className="output-field"
       title={title}
       onClick={onClick}
+      onDoubleClick={onDoubleClick}
       style={compStyle}
     >
       {children}
