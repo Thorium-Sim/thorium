@@ -10,15 +10,27 @@ class TargetClass {
     this.icon = params.icon || "Generic";
     this.picture = params.picture || "Generic";
     this.speed = params.speed || 1;
+    this.moving = params.moving || true;
     this.quadrant = params.quadrant || 1;
   }
-  update({ name, size, system, icon, picture, speed, quadrant, count }) {
+  update({
+    name,
+    size,
+    system,
+    icon,
+    picture,
+    speed,
+    quadrant,
+    moving,
+    count
+  }) {
     if (name) this.name = name;
     if (size) this.size = size;
     if (system) this.system = system;
     if (icon) this.icon = icon;
     if (picture) this.picture = picture;
     if (speed) this.speed = speed;
+    if (moving || moving === false) this.moving = moving;
     if (quadrant) this.quadrant = quadrant;
   }
 }

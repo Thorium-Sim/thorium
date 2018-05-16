@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { Container, Row, Col, Button, Media } from "reactstrap";
-import { graphql, withApollo } from "react-apollo";
+import { Container, Row, Col, Button, Media, Input } from "reactstrap";
+import { graphql, withApollo, Mutation } from "react-apollo";
 import { InputField, OutputField } from "../../generic/core";
 
 import FontAwesome from "react-fontawesome";
@@ -45,6 +45,7 @@ const TARGETING_SUB = gql`
         speed
         picture
         quadrant
+        moving
       }
     }
   }
@@ -286,7 +287,8 @@ class TargetingCore extends Component {
               <Col sm={4}>Count</Col>
               <Col sm={1}>Icon</Col>
               <Col sm={1}>Pic</Col>
-              <Col sm={5}>Label</Col>
+              <Col sm={4}>Label</Col>
+              <Col sm={1}>No Move</Col>
               <Col sm={1} />
             </Row>
             <div className="targets-container">
@@ -391,7 +393,7 @@ class TargetingCore extends Component {
                         )}
                       </Asset>{" "}
                     </Col>
-                    <Col sm={5}>
+                    <Col sm={4}>
                       <InputField
                         style={{
                           lineHeight: "16px",
@@ -408,6 +410,19 @@ class TargetingCore extends Component {
                       >
                         {t.name}
                       </InputField>
+                    </Col>
+                    <Col sm={1}>
+                      <input
+                        type="checkbox"
+                        checked={t.moving}
+                        onChange={e =>
+                          this._updateTargetClass(
+                            t.id,
+                            "moving",
+                            e.target.checked
+                          )
+                        }
+                      />
                     </Col>
                     <Col sm={1}>
                       <FontAwesome
@@ -475,6 +490,7 @@ const TARGETING_QUERY = gql`
         speed
         picture
         quadrant
+        moving
       }
     }
     assetFolders(names: $names) {
