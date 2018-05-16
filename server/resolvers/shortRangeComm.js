@@ -53,6 +53,9 @@ export const ShortRangeCommMutations = {
   },
   removeShortRangeComm(root, args, context) {
     App.handleEvent(args, "removeShortRangeComm", context);
+  },
+  muteShortRangeComm(root, args, context) {
+    App.handleEvent(args, "muteShortRangeComm", context);
   }
 };
 

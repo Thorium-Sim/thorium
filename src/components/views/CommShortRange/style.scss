@@ -10,6 +10,9 @@
       background-color: darkgray;
     }
   }
+  .text-purple {
+    color: rebeccapurple !important;
+  }
 }
 
 .shortRangeComm {
@@ -17,8 +20,12 @@
     height: 100%;
   }
   .connected {
-    fill: darkgreen;
-    stroke: green;
+    stroke: rgb(0, 59, 0);
+    fill: green;
+  }
+  .muted {
+    fill: rebeccapurple;
+    stroke: rgb(50, 27, 73);
   }
   .commControls {
     padding: 5vh 0;

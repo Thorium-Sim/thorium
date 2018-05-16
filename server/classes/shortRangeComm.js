@@ -46,6 +46,9 @@ export default class ShortRangeComm extends System {
   disconnectArrow(arrowId) {
     this.arrows.find(a => a.id === arrowId).disconnect();
   }
+  muteArrow(arrowId, mute) {
+    this.arrows.find(a => a.id === arrowId).setMute(mute);
+  }
   updateComm({ state, frequency, amplitude }) {
     //Update state, frequency, and/or amplitude
     if (state) this.state = state;
@@ -118,6 +121,7 @@ class Arrow {
   constructor(params, signals) {
     this.id = params.id || uuid.v4();
     this.signal = params.signal || uuid.v4(); //Useless arrow
+    this.muted = params.muted || false;
     const signal = signals.find(s => s.id === params.signal);
     if (params.frequency) {
       this.frequency = params.frequency;
@@ -136,8 +140,13 @@ class Arrow {
   }
   connect() {
     this.connected = true;
+    this.muted = false;
   }
   disconnect() {
     this.connected = false;
+    this.muted = false;
+  }
+  setMute(mute) {
+    this.muted = mute;
   }
 }

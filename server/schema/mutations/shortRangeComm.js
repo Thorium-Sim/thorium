@@ -18,4 +18,5 @@ addShortRangeComm(simulatorId: ID!, frequency: Float, signalName: String): Strin
 #Macro: Short Range: Remove
 removeShortRangeComm(simulatorId: ID!, frequency: Float, signalName: String): String
 
+muteShortRangeComm(id:ID!, arrowId:ID!, mute:Boolean!):String
 `;
