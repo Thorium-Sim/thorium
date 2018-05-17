@@ -128,6 +128,18 @@ export default class Sensors extends System {
     return 0.1;
   }
 
+  trainingMode() {
+    this.training = true;
+
+    this.createContact({
+      name: "USS Voyager",
+      icon: "/Sensor Contacts/Icons/N",
+      picture: "/Sensor Contacts/Pictures/Astra Heavy Cruiser",
+      location: { x: -0.3, y: -0.19, z: 0 },
+      destination: { x: -0.3, y: -0.19, z: 0 }
+    });
+  }
+
   newScan(scan) {
     this.scans.push(new Scan(scan));
   }

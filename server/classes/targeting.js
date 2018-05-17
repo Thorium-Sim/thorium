@@ -78,6 +78,16 @@ export default class Targeting extends System {
     this.calculatedTarget = params.calculatedTarget || null;
     this.enteredTarget = params.enteredTarget || null;
   }
+  trainingMode() {
+    const id = uuid.v4();
+    this.addTargetClass({
+      id,
+      name: "Target",
+      icon: "/Sensor Contacts/Icons/N",
+      picture: "/Sensor Contacts/Pictures/Alotec Battleship"
+    });
+    this.setTargetClassCount(id, 2);
+  }
   createTarget(targetClass) {
     this.contacts.push(new Target({ class: targetClass }, this.id));
   }

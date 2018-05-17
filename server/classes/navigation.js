@@ -23,6 +23,9 @@ export default class Navigation extends System {
     this.presets = params.presets || [];
     this.thrusters = params.thrusters || false;
   }
+  trainingMode() {
+    this.training = true;
+  }
   toggleCalculate(which) {
     this.calculate = which;
   }

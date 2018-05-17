@@ -40,6 +40,15 @@ App.on("beginTransportScan", params => {
     color: "info"
   });
   pubsub.publish("transporterUpdate", transporter);
+  if (transporter.training) {
+    setTimeout(() => {
+      App.handleEvent(
+        { transporter: transporter.id, targets: 2 },
+        "setTransporterTargets",
+        { clientId: "training", simulatorId: transporter.simulatorId }
+      );
+    }, 5000);
+  }
 });
 App.on("cancelTransportScan", params => {
   const transporter = App.systems.find(sys => sys.id === params.transporter);
