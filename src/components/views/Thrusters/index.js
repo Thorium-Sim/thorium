@@ -296,8 +296,8 @@ gamepadLoop(){
           this.setState(obj);
           break;
         case "onDrag":
-          const clientX = e.clientX || e.touches[0].clientX;
-          const clientY = e.clientY || e.touches[0].clientY;
+          const clientX = e.clientX || e.clientX === 0 || e.touches[0].clientX;
+          const clientY = e.clientY || e.clientY === 0 || e.touches[0].clientY;
 
           if (!this.state[which]) {
             throw new Error("onDrag called before onDragStart.");
@@ -370,8 +370,17 @@ gamepadLoop(){
           }
           newPosition.left = this.state[which].left;
           newPosition.top = this.state[which].top;
-          this.props.rotationUpdate({ id: id, rotation: rotation, on: false });
-          this.props.directionUpdate({ id: id, direction: direction });
+          setTimeout(() => {
+            if (which === "yaw" || which === "rotation") {
+              this.props.rotationUpdate({
+                id: id,
+                rotation: rotation,
+                on: false
+              });
+            } else {
+              this.props.directionUpdate({ id: id, direction: direction });
+            }
+          }, 100);
           fromTo(this.state[which], 0.1, this.state[which], {
             left: 0,
             top: 0,
