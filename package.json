@@ -116,7 +116,8 @@
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css":
       "concurrently \"npm run build-css\" \"node-sass-chokidar src/ -o src/ --watch --recursive\"",
-    "build-server": "node ./config/build-server.js",
+    "build-server":
+      "NODE_ENV=production babel server -d build && cp -r server/crew build/crew && cp package.json build/package.json && pkg build/package.json",
     "zip-server":
       "zip -r thorium-macos.zip thorium-macos && zip -r thorium-win.exe.zip thorium-win.exe && zip -r thorium-linux.zip thorium-linux",
     "build": "npm run build-client && npm run build-server",
@@ -139,7 +140,7 @@
   "jest": {
     "coverageReporters": ["lcov", "text-summary"]
   },
-  "bin": "./app.js",
+  "bin": "./server.js",
   "proxy": {
     "/assets": {
       "target": "http://localhost:3001"

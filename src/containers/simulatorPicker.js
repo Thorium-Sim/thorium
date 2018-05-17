@@ -29,9 +29,6 @@ const SimulatorPicker = () => {
       Array.from(evt.target.files).forEach((f, index) =>
         data.append(`files[${index}]`, f)
       );
-      this.setState({
-        loadingMission: true
-      });
       fetch(
         `${window.location.protocol}//${window.location.hostname}:${parseInt(
           window.location.port,

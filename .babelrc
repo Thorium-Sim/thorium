@@ -1,16 +1,10 @@
 {
-  "env": {
-
-  },
+  "env": {},
   "passPerPreset": true,
-  "presets": [
-    "react",
-    "env",
-    "stage-0",
-    "flow"
-  ],
+  "presets": ["react", "env", "stage-0", "flow"],
   "plugins": [
     "babel-plugin-inline-import",
-    "babel-plugin-preval"
+    "babel-plugin-preval",
+    "transform-inline-environment-variables"
   ]
 }
