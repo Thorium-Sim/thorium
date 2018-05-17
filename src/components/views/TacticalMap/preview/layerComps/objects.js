@@ -24,7 +24,7 @@ class Objects extends Component {
     document.removeEventListener("keydown", this.deleteKey);
   }
   deleteKey = e => {
-    if (e.which === 8) {
+    if (e.which === 8 && e.target instanceof window.HTMLBodyElement) {
       e.preventDefault();
       const selected = this.state.selected || [];
       const objectId = this.props.objectId || null;
