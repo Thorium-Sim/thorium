@@ -35,6 +35,7 @@ class Objects extends Component {
         .forEach(c => this.props.removeObject(c, this.props.id));
     }
   };
+
   flashLoop = () => {
     if (!this.looping) return;
     this.setState({
