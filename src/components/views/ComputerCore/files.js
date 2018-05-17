@@ -49,7 +49,6 @@ class FileName extends Component {
       this.props.restoring === nextProps.restoring
     )
       return;
-    console.log(nextProps);
     this.setState({
       name: nextProps.restoring
         ? "Restoring..."
@@ -62,7 +61,6 @@ class FileName extends Component {
     });
   }
   render() {
-    console.log(this.props);
     return this.state.name;
   }
 }

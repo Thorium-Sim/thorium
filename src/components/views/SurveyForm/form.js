@@ -36,7 +36,6 @@ class Form extends Component {
   };
   render() {
     const { form } = this.props;
-    console.log(form);
     const { currentForm, responses, submitted } = this.state;
     const formItem = form.form[currentForm];
     const Comp = Components[formItem.type];

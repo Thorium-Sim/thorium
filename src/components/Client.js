@@ -506,7 +506,6 @@ class ClientView extends Component {
       })
       .subscribe({
         next: ({ data: { cancelSound } }) => {
-          console.log(cancelSound);
           this.props.removeSound(cancelSound);
         }
       });

@@ -274,6 +274,32 @@ App.on("trainingMode", ({ simulatorId }) => {
     s.trainingMode();
     sendUpdate(s);
   });
+  // Create a training system to damage
+  const ClassObj = Classes.System;
+  const obj = new ClassObj({
+    name: "Training",
+    extra: true,
+    simulatorId,
+    damage: { damaged: true }
+  });
+  obj.damageReport(`Step 1:
+This is a training damage report. There will be several steps which you must follow to repair systems on your ship.
+
+Go through the steps in this report to see what some of the things you will be expected to do are.
+
+
+Step 2:
+We should inform the closest starbase of our situation. You need to prepare a message using your long range message composer, or ask the Comm officer to send this message:
+
+Destination: Starbase 4
+Message: We have taken damage to our Training system. We might need assistance if the damage worsens. What ships are near our position?
+  
+
+Step 3:
+If you followed the steps properly, the system has been repaired. Enter the following reactivation code to reactivate the system: #REACTIVATIONCODE
+`);
+  App.systems.push(obj);
+  pubsub.publish("systemsUpdate", App.systems);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
 App.on("setDamageStepValidation", ({ id, validation }) => {

@@ -53,7 +53,6 @@ export default class LongRangeComm extends System {
     if (decoded || decoded === false) this.decoded = decoded;
   }
   createMessage(message, crew, decoded, sender) {
-    console.log(message, crew, decoded, sender);
     const params = { message, crew, sender, sent: false };
     if (decoded) {
       params.decodedMessage = message;

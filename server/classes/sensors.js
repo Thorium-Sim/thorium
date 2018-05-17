@@ -132,7 +132,7 @@ export default class Sensors extends System {
     this.training = true;
 
     this.createContact({
-      name: "USS Voyager",
+      name: "Training Contact",
       icon: "/Sensor Contacts/Icons/N",
       picture: "/Sensor Contacts/Pictures/Astra Heavy Cruiser",
       location: { x: -0.3, y: -0.19, z: 0 },
