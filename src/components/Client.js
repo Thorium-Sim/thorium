@@ -473,11 +473,13 @@ class ClientView extends Component {
       `,
       variables: { client: this.props.clientId }
     });
-    window.oncontextmenu = function(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      return false;
-    };
+    if (process.env.NODE_ENV === "production") {
+      window.oncontextmenu = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+      };
+    }
 
     // Sound Subscription
     this.soundSub = this.props.client
