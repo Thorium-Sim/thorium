@@ -15,6 +15,7 @@ const SHORTRANGE_SUB = gql`
         signal
         frequency
         connected
+        muted
       }
       signals {
         id
@@ -194,11 +195,12 @@ class CommShortRange extends Component {
                       this.setState({ selectedArrow: a.id });
                     }}
                     className={`${a.connected ? "text-success" : ""} ${
-                      a.id === selectedArrow ? "selected" : ""
-                    }`}
+                      a.muted ? "text-purple" : ""
+                    } ${a.id === selectedArrow ? "selected" : ""}`}
                   >
                     {signal && signal.name} -{" "}
-                    {Math.round(a.frequency * 37700 + 37700) / 100} MHz
+                    {Math.round(a.frequency * 37700 + 37700) / 100} MHz{a.muted &&
+                      ` - Muted`}
                   </p>
                 );
               })}
@@ -230,6 +232,7 @@ const SHORTRANGE_QUERY = gql`
         signal
         frequency
         connected
+        muted
       }
       signals {
         id

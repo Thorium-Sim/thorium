@@ -25,6 +25,9 @@ export const ShieldMutations = {
   },
   hitShields(root, args, context) {
     App.handleEvent(args, "hitShields", context);
+  },
+  restoreShields(root, args, context) {
+    App.handleEvent(args, "restoreShields", context);
   }
 };
 

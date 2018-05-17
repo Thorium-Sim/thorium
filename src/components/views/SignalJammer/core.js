@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import { InputField } from "../../generic/core";
+import { InputField, OutputField } from "../../generic/core";
 
 const SUB = gql`
   subscription SignalJammerUpdate($id: ID!) {
@@ -49,7 +49,9 @@ class SignalJammerCore extends Component {
     this.sub && this.sub();
   }
   setSignal = (type, signals) => {
-    const { data: { loading, signalJammers } } = this.props;
+    const {
+      data: { loading, signalJammers }
+    } = this.props;
     if (loading || !signalJammers) return;
     const signalJammer = signalJammers[0];
     if (!signalJammer) return;
@@ -70,12 +72,17 @@ class SignalJammerCore extends Component {
     });
   };
   render() {
-    const { data: { loading, signalJammers } } = this.props;
+    const {
+      data: { loading, signalJammers }
+    } = this.props;
     if (loading || !signalJammers) return null;
     const signalJammer = signalJammers[0];
     if (!signalJammer) return <p>No Signal Jammer</p>;
     return (
       <div className="core-signalJammer">
+        <OutputField alert={signalJammer.active}>
+          {signalJammer.active ? "Activated" : "Deactivated"}
+        </OutputField>
         <div style={{ display: "flex" }}>
           Comm{" "}
           <InputField

@@ -39,6 +39,7 @@ type CommArrow {
   signal: ID
   frequency: Float
   connected: Boolean
+  muted: Boolean
 }
 
 type CommSignal {

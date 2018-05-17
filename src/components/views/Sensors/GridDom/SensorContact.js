@@ -115,25 +115,43 @@ export default class SensorContact extends Component {
     }
     return (
       <div>
-        <Asset asset={icon}>
-          {({ src }) => (
-            <img
-              alt="contact"
-              draggable="false"
-              onMouseOver={() => mouseover(this.props)}
-              onMouseOut={() => mouseover({})}
-              onMouseDown={() => mousedown(this.props)}
-              src={src}
-              className={disabled ? "contact-disabled" : ""}
-              style={{
-                opacity: core ? 0.5 : opacity,
-                transform: `translate(${width / 2 * x}px, ${width /
-                  2 *
-                  y}px) scale(${size})`
-              }}
-            />
-          )}
-        </Asset>
+        <Fragment>
+          <Asset asset={icon}>
+            {({ src }) => (
+              <img
+                alt="contact"
+                draggable="false"
+                onMouseOver={() => mouseover(this.props)}
+                onMouseOut={selected ? null : () => mouseover({})}
+                onMouseDown={e => mousedown(this.props, e)}
+                src={src}
+                className={disabled ? "contact-disabled" : ""}
+                style={{
+                  opacity: core ? 0.5 : opacity,
+                  transform: `translate(${width / 2 * x}px, ${width /
+                    2 *
+                    y}px) scale(${size})`
+                }}
+              />
+            )}
+          </Asset>
+          {!core &&
+            selected && (
+              <div
+                className="contact-selection"
+                style={{
+                  transform: `translate(${width / 2 * dx}px, ${width /
+                    2 *
+                    dy}px) scale(${size})`
+                }}
+              >
+                <div className="tl" />
+                <div className="tr" />
+                <div className="bl" />
+                <div className="br" />
+              </div>
+            )}
+        </Fragment>
         {core && (
           <Fragment>
             <Asset asset={icon}>

@@ -383,7 +383,10 @@ class GridDom extends Component {
       speedAsking: null
     });
   };
-  _clickMouse = contact => {
+  _clickMouse = (contact, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState({ selectedContact: contact.id });
     const { x, y, z } = contact.location;
     const mutation = gql`
       mutation SetCalculatedTarget(
@@ -427,7 +430,7 @@ class GridDom extends Component {
       selectedContacts,
       updateSelectedContacts
     } = this.props;
-    const { locations, speedAsking } = this.state;
+    const { locations, speedAsking, selectedContact } = this.state;
     const { sensorContacts: contacts } = data;
     if (!dimensions) return <div id="sensorGrid" />;
 
@@ -440,7 +443,14 @@ class GridDom extends Component {
       borderWidth: core ? `${padding}px` : "4px"
     };
     return (
-      <div id="sensorGrid" style={gridStyle}>
+      <div
+        id="sensorGrid"
+        style={gridStyle}
+        onMouseDown={() => {
+          this.setState({ selectedContact: null });
+          if (hoverContact) hoverContact({});
+        }}
+      >
         <div className={`grid ${ping ? "ping" : ""}`}>
           {damaged && <div class="damaged-sensors" />}
           {interference > 0 && (
@@ -513,7 +523,7 @@ class GridDom extends Component {
                     selected={
                       selectedContacts
                         ? selectedContacts.indexOf(contact.id) > -1
-                        : false
+                        : contact.id === selectedContact
                     }
                     mousedown={
                       core

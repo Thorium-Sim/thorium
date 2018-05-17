@@ -209,3 +209,30 @@ App.on("removeShortRangeComm", ({ simulatorId, frequency, signalName }) => {
     App.systems.filter(s => s.type === "ShortRangeComm")
   );
 });
+
+App.on("muteShortRangeComm", ({ id, arrowId, mute }) => {
+  const system = App.systems.find(s => s.id === id);
+  system.muteArrow(arrowId, mute);
+  pubsub.publish("notify", {
+    id: uuid.v4(),
+    simulatorId: system.simulatorId,
+    station: "Core",
+    title: `Call ${mute ? "Muted" : "Unmuted"}`,
+    body: "",
+    color: "info"
+  });
+  App.handleEvent(
+    {
+      simulatorId: system.simulatorId,
+      title: `Call ${mute ? "Muted" : "Unmuted"}`,
+      component: "CommShortRangeCore",
+      body: null,
+      color: "info"
+    },
+    "addCoreFeed"
+  );
+  pubsub.publish(
+    "shortRangeCommUpdate",
+    App.systems.filter(s => s.type === "ShortRangeComm")
+  );
+});

@@ -160,6 +160,13 @@ export const TargetingTypes = {
       if (targetClass) {
         return targetClass.quadrant;
       }
+    },
+    moving(rootValue) {
+      const system = App.systems.find(s => s.id === rootValue.systemId);
+      const targetClass = system.classes.find(c => c.id === rootValue.class);
+      if (targetClass) {
+        return targetClass.moving;
+      }
     }
   }
 };
