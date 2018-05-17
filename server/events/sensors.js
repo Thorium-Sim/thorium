@@ -12,6 +12,7 @@ App.on("addSensorsArray", ({ simulatorId, domain }) => {
   );
 });
 App.on("removedSensorsArray", ({ id }) => {});
+
 App.on("sensorScanRequest", ({ id, request }) => {
   const system = App.systems.find(sys => sys.id === id);
   pubsub.publish("notify", {
@@ -32,11 +33,21 @@ App.on("sensorScanRequest", ({ id, request }) => {
     },
     "addCoreFeed"
   );
+
   system.scanRequested(request);
   pubsub.publish(
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")
   );
+  if (system.training) {
+    setTimeout(() => {
+      App.handleEvent(
+        { id, result: "None Detected (Training Mode)" },
+        "sensorScanResult",
+        { clientId: "training", simulatorId: system.simulatorId }
+      );
+    }, 5000);
+  }
 });
 App.on("sensorScanResult", ({ id, result }) => {
   const system = App.systems.find(sys => sys.id === id);

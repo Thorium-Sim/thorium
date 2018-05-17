@@ -23,6 +23,9 @@ export default class Transporters extends System {
     if (this.stealthCompromised) return 1;
     return 0;
   }
+  trainingMode() {
+    this.training = true;
+  }
   addTargets(number, icon = "Triangle", moving = false) {
     this.state = "Targeting";
     for (let i = 0; i < number; i++) {

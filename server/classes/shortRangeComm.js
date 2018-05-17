@@ -24,6 +24,9 @@ export default class ShortRangeComm extends System {
       return prev + (next.connected ? 0.1 : 0);
     }, 0);
   }
+  trainingMode() {
+    this.addArrow({});
+  }
   addCommSignal(commSignalInput) {
     this.signals.push(new Signal(commSignalInput));
   }

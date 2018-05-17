@@ -29,6 +29,20 @@ export default class LongRangeComm extends System {
     if (this.messageSent) return 0.4;
     return 0.1;
   }
+  trainingMode() {
+    this.createMessage(
+      `This is a test long range message for you to decode. Congratulations on decoding it!`,
+      true,
+      false,
+      `Training`
+    );
+    this.createMessage(
+      `This is a training message for you to send. Make sure messages are sent in a timely manner.`,
+      false,
+      true,
+      `Training`
+    );
+  }
   update({ interception, locked, decoded }) {
     if (interception || interception === false) {
       this.interception = interception;
