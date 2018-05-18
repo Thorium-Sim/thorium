@@ -180,11 +180,15 @@ export class System {
         if (step.name === "longRangeMessage") {
           return (
             widgets.indexOf("composer") > -1 &&
-            components.indexOf("LongRangeComm") > -1
+            components.indexOf("LongRangeComm") > -1 &&
+            this.class !== "LongRangeComm"
           );
         }
         if (step.name === "probeLaunch") {
-          return components.indexOf("ProbeConstruction") > -1;
+          return (
+            components.indexOf("ProbeConstruction") > -1 &&
+            this.class !== "Probes"
+          );
         }
         if (step.name === "generic") return true;
         if (step.name === "securityTeam") {
@@ -197,7 +201,11 @@ export class System {
           return components.indexOf("SecurityDecks") > -1 && decks.length > -1;
         }
         if (step.name === "internalCall") {
-          return components.indexOf("CommInternal") > -1 && decks.length > -1;
+          return (
+            components.indexOf("CommInternal") > -1 &&
+            decks.length > -1 &&
+            this.class !== "InternalComm"
+          );
         }
         if (step.name === "exocomps") {
           return (
