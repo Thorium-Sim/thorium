@@ -37,7 +37,7 @@ export default class GenericConfig extends Component {
         }
       }
     };
-    client.mutate({ mutation, variables });
+    client.mutate({ mutation, variables, refetchQueries: ["Simulators"] });
   };
   render() {
     return (

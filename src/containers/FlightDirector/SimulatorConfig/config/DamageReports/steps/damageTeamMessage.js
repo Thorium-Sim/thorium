@@ -37,7 +37,11 @@ export default class GenericConfig extends Component {
         }
       }
     };
-    client.mutate({ mutation, variables });
+    client.mutate({
+      mutation,
+      variables,
+      refetchQueries: ["Simulators"]
+    });
   };
   updateEnd = evt => {
     const { systemId, id, client } = this.props;

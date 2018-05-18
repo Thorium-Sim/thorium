@@ -37,12 +37,12 @@ export default class GenericConfig extends Component {
         }
       }
     };
-    client.mutate({ mutation, variables });
+    client.mutate({ mutation, variables, refetchQueries: ["Simulators"] });
   };
   render() {
     return (
       <div>
-        <div>Generic Config</div>
+        <div>Inventory Config</div>
         <small>
           You can use some hashtags to make your report dynamic:
           <ul>
