@@ -152,7 +152,7 @@ export class System {
       .forEach(step => damageSteps.push(step));
 
     // Add in a number of optional steps
-    const optionalSteps = defaultOptionalSteps
+    let optionalSteps = defaultOptionalSteps
       .concat(this.optionalDamageSteps)
       .concat(sim.optionalDamageSteps)
       .filter(step => {
@@ -229,6 +229,11 @@ export class System {
           !damageSteps.find(d => d.name === optionalSteps[stepIndex].name)
         ) {
           damageSteps.push(optionalSteps[stepIndex]);
+          if (optionalSteps[stepIndex].name !== "damageTeam") {
+            // We need to remove this optional step from the list so it is not repeated;
+            // Keep damage teams so we can get a cleanup team.
+            optionalSteps = optionalSteps.filter((_, i) => i !== stepIndex);
+          }
         } else if (
           optionalSteps[stepIndex].name === "damageTeam" &&
           damageSteps.filter(d => d.name === "damageTeam").length === 1
