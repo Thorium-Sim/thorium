@@ -129,9 +129,13 @@ class SetConfig extends Component {
           .find(s => s.id === selectedSet)
           .clients.find(
             c =>
+              c.simulator &&
               c.simulator.id === selectedSimulator &&
+              c.client &&
               c.client.id === clientId &&
+              c.stationSet &&
               c.stationSet.id === selectedStationSet &&
+              c.station &&
               c.station === selectedStation
           )) ||
       {}
