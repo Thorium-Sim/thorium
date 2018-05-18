@@ -150,13 +150,28 @@ class Events extends EventEmitter {
     this.snapshotVersion = this.version;
     const snap = cloneDeep(this, true);
     const snapshot = this.trimSnapshot(snap);
-    writeFile(
-      snapshotDir + (dev ? "snapshot-dev.json" : "snapshot.json"),
-      snapshot,
-      err => {
-        err && console.log(err);
-      }
-    );
+    writeFile(snapshotDir + "snapshot-save.json", snapshot, () => {
+      //Copy the current snapshot to a restore file
+      fs.copyFile(
+        snapshotDir + (dev ? "snapshot-dev.json" : "snapshot.json"),
+        snapshotDir + "snapshot-restore.json",
+        () => {
+          // Move the save into place
+          fs.unlink(
+            snapshotDir + (dev ? "snapshot-dev.json" : "snapshot.json"),
+            () => {
+              fs.copyFile(
+                snapshotDir + "snapshot-save.json",
+                snapshotDir + (dev ? "snapshot-dev.json" : "snapshot.json"),
+                () => {
+                  fs.unlinkSync(snapshotDir + "snapshot-save.json");
+                }
+              );
+            }
+          );
+        }
+      );
+    });
     return snapshot;
   }
   trimSnapshot(snapshot) {
