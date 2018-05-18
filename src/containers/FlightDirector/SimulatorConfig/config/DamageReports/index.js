@@ -8,7 +8,10 @@ import * as steps from "./steps";
 class DamageReportsConfig extends Component {
   state = {};
   addDamageStep = (evt, type) => {
-    const { selectedSimulator: { id }, client } = this.props;
+    const {
+      selectedSimulator: { id },
+      client
+    } = this.props;
     const { selectedSystem } = this.state;
     const mutation =
       selectedSystem === "simulator"
@@ -44,7 +47,10 @@ class DamageReportsConfig extends Component {
     });
   };
   removeDamageStep = stepId => {
-    const { selectedSimulator: { id }, client } = this.props;
+    const {
+      selectedSimulator: { id },
+      client
+    } = this.props;
     const { selectedSystem } = this.state;
     const mutation =
       selectedSystem === "simulator"
@@ -155,7 +161,7 @@ class DamageReportsConfig extends Component {
               <Card>
                 <Row>
                   <Col sm="4">
-                    <Card className="scroll">
+                    <Card className="scroll" style={{ maxHeight: "25vh" }}>
                       {requiredSteps.map(s => (
                         <li
                           key={s.id}
@@ -210,7 +216,7 @@ class DamageReportsConfig extends Component {
               <Card>
                 <Row>
                   <Col sm="4">
-                    <Card className="scroll">
+                    <Card className="scroll" style={{ maxHeight: "25vh" }}>
                       {optionalSteps.map(s => (
                         <li
                           key={s.id}
