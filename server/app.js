@@ -163,9 +163,7 @@ class Events extends EventEmitter {
               fs.copyFile(
                 snapshotDir + "snapshot-save.json",
                 snapshotDir + (dev ? "snapshot-dev.json" : "snapshot.json"),
-                () => {
-                  fs.unlinkSync(snapshotDir + "snapshot-save.json");
-                }
+                () => {}
               );
             }
           );
