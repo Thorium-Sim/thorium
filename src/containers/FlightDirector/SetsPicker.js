@@ -90,7 +90,7 @@ class SetsPicker extends Component {
             flight.simulators.map(s => (
               <Col key={s.id} sm={4}>
                 <h5>
-                  {s.name} - {s.stationSet.name}
+                  {s.name} - {s.stationSet && s.stationSet.name}
                 </h5>
                 <Card>
                   {sets.map(set => (

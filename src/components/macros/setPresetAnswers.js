@@ -36,8 +36,18 @@ export default ({ updateArgs = () => {}, args = {}, client, preview }) => {
         <option value="internal">Internal</option>
       </Input>
       <Label>
-        Answers <small>Separate labels from answers with a semicolon</small>{" "}
-        <small>Use #SIM in your message for the name of the simulator</small>
+        Answers{" "}
+        <div>
+          <small>
+            Place each scan answer on its own line. Separate labels from answers
+            with a semicolon.
+          </small>
+        </div>
+        <div>
+          <small>
+            Use #SIM in your scan answer for the name of the simulator
+          </small>
+        </div>
       </Label>
       <Input
         type="textarea"

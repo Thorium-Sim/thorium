@@ -8,7 +8,7 @@ export default ({ updateArgs, args, client }) => {
   return (
     <FormGroup className="macro-addTractorTarget">
       <Label>Label</Label>
-      <Input type="text" value={args.label} onChange={updateLabel} />
+      <Input type="text" value={args && args.label} onChange={updateLabel} />
     </FormGroup>
   );
 };

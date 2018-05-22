@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import {
@@ -18,6 +18,62 @@ import FontAwesome from "react-fontawesome";
 import * as Macros from "../../macros";
 import "./style.css";
 
+const allowedMacros = [
+  "updateViewscreenComponent",
+  "setViewscreenToAuto",
+  "showViewscreenTactical"
+];
+
+class TimelineItem extends Component {
+  state = {};
+  render() {
+    let {
+      id,
+      event,
+      name,
+      args,
+      executedTimelineSteps,
+      steps,
+      checkStep
+    } = this.props;
+    const { expanded } = this.state;
+    return (
+      <li>
+        <input
+          type="checkbox"
+          checked={steps[id]}
+          onChange={() => checkStep(id)}
+        />
+        <span
+          className={
+            executedTimelineSteps.indexOf(id) > -1 &&
+            allowedMacros.indexOf(event) === -1
+              ? "text-success"
+              : ""
+          }
+        >
+          {name}
+        </span>
+        <p onClick={() => this.setState({ expanded: !expanded })}>
+          <FontAwesome name={expanded ? "arrow-down" : "arrow-right"} /> Details
+        </p>
+        {expanded && (
+          <Fragment>
+            <p>{event}</p>
+            {Macros[event] &&
+              (() => {
+                const MacroPreview = Macros[event];
+                if (typeof args === "string") {
+                  args = JSON.parse(args);
+                }
+                return <MacroPreview args={args} />;
+              })()}
+          </Fragment>
+        )}
+      </li>
+    );
+  }
+}
 const TIMELINE_SUB = gql`
   subscription UpdateSimulator($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
@@ -46,12 +102,6 @@ const TIMELINE_SUB = gql`
     }
   }
 `;
-
-const allowedMacros = [
-  "updateViewscreenComponent",
-  "setViewscreenToAuto",
-  "showViewscreenTactical"
-];
 
 class TimelineCore extends Component {
   constructor(props) {
@@ -297,36 +347,13 @@ class TimelineCore extends Component {
               <p>{currentStep.description}</p>
               <ul className="timeline-list">
                 {currentStep.timelineItems.map(i => (
-                  <li key={i.id}>
-                    <input
-                      type="checkbox"
-                      checked={steps[i.id]}
-                      onChange={() => this.checkStep(i.id)}
-                    />{" "}
-                    <span
-                      className={
-                        executedTimelineSteps.indexOf(i.id) > -1 &&
-                        allowedMacros.indexOf(i.event) === -1
-                          ? "text-success"
-                          : ""
-                      }
-                    >
-                      {i.name}
-                    </span>
-                    <details>
-                      <summary>Details</summary>
-                      <p>{i.event}</p>
-                      {Macros[i.event] &&
-                        (() => {
-                          const MacroPreview = Macros[i.event];
-                          let args = i.args;
-                          if (typeof args === "string") {
-                            args = JSON.parse(args);
-                          }
-                          return <MacroPreview args={args} />;
-                        })()}
-                    </details>
-                  </li>
+                  <TimelineItem
+                    {...i}
+                    steps={steps}
+                    checkStep={this.checkStep}
+                    executedTimelineSteps={executedTimelineSteps}
+                    key={i.id}
+                  />
                 ))}
               </ul>
             </Col>
