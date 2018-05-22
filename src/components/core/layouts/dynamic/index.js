@@ -41,7 +41,7 @@ class UpdateSelect extends React.PureComponent {
         </option>
         {Object.keys(Cores).map(s => {
           return mosaicComponents(this.props.mosaic).indexOf(s) > -1 ? (
-            <option value={s} disabled>{`${s}${" - ✅"}`}</option>
+            <option key={s} value={s} disabled>{`${s}${" - ✅"}`}</option>
           ) : (
             <option key={s} value={s}>{`${s}`}</option>
           );

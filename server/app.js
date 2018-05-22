@@ -261,4 +261,10 @@ let date = Date().toString();
 
 const App = new Events();
 
+// Handle events for App
+App.on("error", function(err) {
+  console.log("here's an error!");
+  console.error(err);
+});
+
 export default App;

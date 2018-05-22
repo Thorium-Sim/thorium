@@ -1,4 +1,5 @@
 import path from "path";
+import fs from "fs";
 import paths from "../helpers/paths";
 import App from "../app";
 
@@ -11,7 +12,10 @@ if (process.env.NODE_ENV === "production") {
 const addAsset = (key, zip, prefix = "mission") => {
   if (!key) return;
   if (key.url) {
-    zip.addFile(`${assetDir}/${key.url}`, `${prefix}${key.url}`);
+    const fileLoc = `${assetDir}/${key.url}`.replace("//", "/");
+    if (fs.existsSync(fileLoc)) {
+      zip.addFile(fileLoc, `${prefix}${key.url}`);
+    }
   } else {
     const container = App.assetContainers.find(a => a.fullPath === key);
     if (container) {
@@ -19,7 +23,9 @@ const addAsset = (key, zip, prefix = "mission") => {
         a => a.containerId === container.id
       );
       objects.forEach(o => {
-        zip.addFile(`${assetDir}/${o.url}`, `${prefix}${o.url}`);
+        const objectLoc = `${assetDir}/${o.url}`.replace("//", "/");
+        if (!fs.existsSync(objectLoc)) return;
+        zip.addFile(objectLoc, `${prefix}${o.url}`);
       });
     }
   }
