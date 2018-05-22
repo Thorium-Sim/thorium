@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "0.2.30",
+  "version": "0.2.31",
   "private": true,
   "description": "Node + React + GraphQL simulator controls",
   "repository": {
