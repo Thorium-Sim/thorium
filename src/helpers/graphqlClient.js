@@ -7,6 +7,8 @@ import {
 } from "apollo-cache-inmemory";
 import { split } from "apollo-link";
 import { getMainDefinition } from "apollo-utilities";
+import { onError } from "apollo-link-error";
+import { ApolloLink } from "apollo-link";
 import { WebSocketLink } from "apollo-link-ws";
 import { MockLink } from "react-apollo/test-utils";
 import { FLIGHTS_QUERY } from "../containers/FlightDirector/Welcome";
@@ -27,7 +29,16 @@ const wsLink = new WebSocketLink({
   }
 });
 
-const httpLink =
+const httpLink = ApolloLink.from([
+  onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors)
+      graphQLErrors.map(({ message, locations, path }) =>
+        console.log(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        )
+      );
+    if (networkError) console.log(`[Network error]: ${networkError}`);
+  }),
   process.env.NODE_ENV === "test"
     ? new MockLink([{ request: { query: FLIGHTS_QUERY } }])
     : new HttpLink({
@@ -37,7 +48,8 @@ const httpLink =
         opts: {
           mode: "cors"
         }
-      });
+      })
+]);
 
 const link = split(
   // split based on operation type

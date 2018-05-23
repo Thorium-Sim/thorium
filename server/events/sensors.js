@@ -106,8 +106,17 @@ App.on("sensorScanCancel", ({ id }) => {
 });
 App.on("setPresetAnswers", ({ simulatorId, domain, presetAnswers }) => {
   const system = App.systems.find(
-    sys => sys.simulatorId === simulatorId && sys.domain === domain
+    sys =>
+      sys.simulatorId === simulatorId &&
+      sys.domain === domain &&
+      sys.class === "Sensors"
   );
+  if (!system) {
+    console.error(
+      "Invalid system. You probably forgot to add the domain to the sensors macro"
+    );
+    return;
+  }
   const simulator = App.simulators.find(s => s.id === system.simulatorId);
   system &&
     system.setPresetAnswers(
