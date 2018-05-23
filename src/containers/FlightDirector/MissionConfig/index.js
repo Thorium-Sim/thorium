@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { withApollo, Query } from "react-apollo";
-import { Container } from "reactstrap";
+import { Container, Button } from "reactstrap";
 
 import TimelineConfig from "./TimelineConfig";
 import PrintMission from "./PrintMission";
@@ -79,7 +79,7 @@ class MissionsConfig extends Component {
           ]
         });
       }
-      history.push("/");
+      history.push("/config/mission");
       this.setState({
         selectedMission: null,
         selectedSimulator: null
@@ -128,7 +128,12 @@ class MissionsConfig extends Component {
     if (!mission) return null;
     return (
       <Container fluid className="missionConfig">
-        <h4>Missions Config </h4>
+        <h4>
+          Missions Config{" "}
+          <Button color="danger" size="sm" onClick={this.removeMission}>
+            Remove Mission
+          </Button>
+        </h4>
         <TimelineConfig
           type="mission"
           object={mission}

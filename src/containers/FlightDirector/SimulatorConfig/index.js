@@ -190,7 +190,7 @@ class SimulatorConfig extends Component {
             }
           ]
         });
-        this.props.history.push("/");
+        this.props.history.push("/config/simulator");
         this.setState({
           selectedProperty: null
         });
