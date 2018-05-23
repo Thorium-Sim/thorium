@@ -248,6 +248,20 @@ class Core extends Component {
             <div>
               <Mutation
                 mutation={gql`
+                  mutation AddVirus($id: ID!) {
+                    addViriiToComputerCore(id: $id)
+                  }
+                `}
+                variables={{ id: id }}
+              >
+                {action => (
+                  <Button color="warning" size="sm" onClick={action}>
+                    Add Virus
+                  </Button>
+                )}
+              </Mutation>
+              <Mutation
+                mutation={gql`
                   mutation RemoveVirus($id: ID!, $virusId: ID!) {
                     deleteComputerCoreVirus(id: $id, virusId: $virusId)
                   }

@@ -84,3 +84,7 @@ App.on("restartComputerCoreTerminal", ({ id, terminalId }) => {
     }, Math.round(Math.random() * 5 + 2) * 1000);
   });
 });
+
+App.on("addViriiToComputerCore", ({ id }) => {
+  performAction(id, sys => sys.createVirus());
+});

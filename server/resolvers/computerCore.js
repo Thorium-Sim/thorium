@@ -26,6 +26,9 @@ export const ComputerCoreMutations = {
   },
   restartComputerCoreTerminal(root, args, context) {
     App.handleEvent(args, "restartComputerCoreTerminal", context);
+  },
+  addViriiToComputerCore(root, args, context) {
+    App.handleEvent(args, "addViriiToComputerCore", context);
   }
 };
 
