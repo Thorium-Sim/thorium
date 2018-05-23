@@ -339,6 +339,14 @@ App.on("setDamageStepValidation", ({ id, validation }) => {
       },
       "addCoreFeed"
     );
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      station: "Core",
+      title: `Damage Validation Request`,
+      body: sys.name,
+      color: "warning"
+    });
   }
   sendUpdate(sys);
 });
