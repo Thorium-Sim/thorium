@@ -16,6 +16,19 @@ function status(stat) {
   }
 }
 
+function statusColor(stat) {
+  switch (stat) {
+    case "F":
+      return "text-success";
+    case "O":
+      return "text-danger";
+    case "R":
+      return "text-warning";
+    default:
+      return "";
+  }
+}
+
 class Terminals extends Component {
   state = {};
   render() {
@@ -28,7 +41,9 @@ class Terminals extends Component {
           {terminals.map(t => (
             <ListGroupItem
               key={`terminal-${t.id}`}
-              className={selectedTerminal === t.id ? "selected" : ""}
+              className={`${statusColor(t.status)} ${
+                selectedTerminal === t.id ? "selected" : ""
+              }`}
               onClick={() => this.setState({ selectedTerminal: t.id })}
             >
               {t.name} - {status(t.status)}
