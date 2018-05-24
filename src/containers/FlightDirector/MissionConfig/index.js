@@ -8,8 +8,8 @@ import PrintMission from "./PrintMission";
 
 import "./style.css";
 const MISSION_SUB = gql`
-  subscription MissionSubscription {
-    missionsUpdate {
+  subscription MissionSubscription($missionId: ID!) {
+    missionsUpdate(missionId: $missionId) {
       id
       name
       description
@@ -39,6 +39,7 @@ class MissionsConfig extends Component {
   componentDidMount() {
     this.sub = this.props.subscribe({
       document: MISSION_SUB,
+      variables: { missionId: this.props.mission.id },
       updateQuery: (previousResult, { subscriptionData }) => {
         return Object.assign({}, previousResult, {
           missions: subscriptionData.data.missionsUpdate
@@ -125,6 +126,7 @@ class MissionsConfig extends Component {
         />
       );
     }
+    console.log(mission);
     if (!mission) return null;
     return (
       <Container fluid className="missionConfig">
@@ -181,16 +183,17 @@ const MissionsConfigData = withApollo(
   }) => {
     return (
       <Query query={MissionsConfigQuery} variables={{ missionId }}>
-        {({ loading, data, subscribeToMore }) =>
-          loading || !data ? null : (
+        {({ loading, data, subscribeToMore }) => {
+          console.log(missionId, data);
+          return loading || !data ? null : (
             <MissionsConfig
               history={history}
               client={client}
               subscribe={subscribeToMore}
               mission={data.missions[0]}
             />
-          )
-        }
+          );
+        }}
       </Query>
     );
   }

@@ -33,8 +33,8 @@ export default ({ updateArgs = () => {}, args, client }) => {
       </Label>
       <Input
         type="textarea"
-        value={args ? args.message : ""}
-        onChange={lrmText}
+        defaultValue={args ? args.message : ""}
+        onBlur={lrmText}
       />
     </FormGroup>
   );
