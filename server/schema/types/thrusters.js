@@ -11,6 +11,8 @@ type Thruster {
   manualThrusters: Boolean
   power: Power
   damage: Damage
+  rotationSpeed:Float
+  movementSpeed:Float
 }
 type Coordinates {
   x: Float

@@ -20,3 +20,15 @@ App.on("requiredRotationSet", ({ id, rotation }) => {
   sys.updateRequired(rotation);
   pubsub.publish("rotationChange", sys);
 });
+
+App.on("setThrusterRotationSpeed", ({ id, speed }) => {
+  const sys = App.systems.find(s => s.id === id);
+  sys.setRotationSpeed(speed);
+  pubsub.publish("rotationChange", sys);
+});
+
+App.on("setThrusterMovementSpeed", ({ id, speed }) => {
+  const sys = App.systems.find(s => s.id === id);
+  sys.setMovementSpeed(speed);
+  pubsub.publish("rotationChange", sys);
+});
