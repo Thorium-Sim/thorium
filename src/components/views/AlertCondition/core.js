@@ -52,14 +52,20 @@ class AlertConditionCore extends Component {
     });
   };
   render() {
-    const { data: { loading, simulators } } = this.props;
+    const {
+      data: { loading, simulators }
+    } = this.props;
     if (loading || !simulators) return null;
     const simulator = simulators[0];
     return (
       <div className="pull-right">
         {levels.map(l => (
           <Button
-            className={simulator.alertlevel === l.id.toString() ? "active" : ""}
+            className={
+              simulator && simulator.alertlevel === l.id.toString()
+                ? "active"
+                : ""
+            }
             key={`alert${l.id}`}
             color={l.color}
             onClick={() => this.setAlert(l.id)}

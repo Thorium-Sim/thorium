@@ -165,7 +165,10 @@ class CoreComponents extends Component {
     const LayoutComponent = Layouts[this.state.layout];
     const { notifications, speech, mosaic } = this.state;
     return (
-      <div style={{ backgroundColor: "#333", color: "white" }}>
+      <div
+        style={{ backgroundColor: "#333", color: "white" }}
+        className="core-container"
+      >
         <Button
           tag={Link}
           size="sm"

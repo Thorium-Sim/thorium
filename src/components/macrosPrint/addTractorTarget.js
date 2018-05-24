@@ -5,7 +5,7 @@ export default ({ args }) => {
   return (
     <FormGroup className="macro-addTractorTarget">
       <strong>Label</strong>
-      <div>{args.label}</div>
+      <div>{args && args.label}</div>
     </FormGroup>
   );
 };
