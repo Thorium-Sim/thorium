@@ -129,6 +129,7 @@ const SYSTEM_QUERY = gql`
       power {
         power
         powerLevels
+        defaultLevel
       }
       locations {
         id
