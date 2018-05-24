@@ -22,6 +22,12 @@ export const ThrustersMutations = {
   },
   requiredRotationSet(root, params, context) {
     App.handleEvent(params, "requiredRotationSet", context);
+  },
+  setThrusterRotationSpeed(root, args, context) {
+    App.handleEvent(args, "setThrusterRotationSpeed", context);
+  },
+  setThrusterMovementSpeed(root, args, context) {
+    App.handleEvent(args, "setThrusterMovementSpeed", context);
   }
 };
 

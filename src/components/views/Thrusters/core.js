@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col } from "reactstrap";
+import { Mutation, graphql, withApollo } from "react-apollo";
+import { Container, Row, Col, Input } from "reactstrap";
 import { InputField, OutputField } from "../../generic/core";
 
 import FontAwesome from "react-fontawesome";
@@ -31,6 +31,8 @@ const ROTATION_CHANGE_SUB = gql`
         roll
       }
       manualThrusters
+      rotationSpeed
+      movementSpeed
       damage {
         damaged
         report
@@ -186,6 +188,82 @@ class ThrusterCore extends Component {
             }
           />
         </Row>
+        <Row>
+          <Col sm={6}>
+            <label>Rotation Speed</label>
+            <Mutation
+              mutation={gql`
+                mutation UpdateThrusterRotation($id: ID!, $speed: Float!) {
+                  setThrusterRotationSpeed(id: $id, speed: $speed)
+                }
+              `}
+            >
+              {action => (
+                <Input
+                  type="select"
+                  style={{ height: "18px" }}
+                  value={thrusters.rotationSpeed}
+                  onChange={e => {
+                    action({
+                      variables: { id: thrusters.id, speed: e.target.value }
+                    });
+                  }}
+                >
+                  <option value={0}>0</option>
+                  <option value={0.2}>0.2</option>
+                  <option value={0.5}>0.5</option>
+                  <option value={1}>1</option>
+                  <option value={2}>2</option>
+                  <option value={3}>3</option>
+                  <option value={4}>4</option>
+                  <option value={5}>5</option>
+                  <option value={6}>6</option>
+                  <option value={7}>7</option>
+                  <option value={8}>8</option>
+                  <option value={9}>9</option>
+                  <option value={10}>10 - Fast</option>
+                </Input>
+              )}
+            </Mutation>
+          </Col>
+          <Col sm={6}>
+            <label>Movement Speed (Sensors Auto-thrusters)</label>
+            <Mutation
+              mutation={gql`
+                mutation UpdateThrusterMovement($id: ID!, $speed: Float!) {
+                  setThrusterMovementSpeed(id: $id, speed: $speed)
+                }
+              `}
+            >
+              {action => (
+                <Input
+                  type="select"
+                  style={{ height: "18px" }}
+                  value={thrusters.movementSpeed}
+                  onChange={e => {
+                    action({
+                      variables: { id: thrusters.id, speed: e.target.value }
+                    });
+                  }}
+                >
+                  <option value={0}>0</option>
+                  <option value={0.2}>0.2</option>
+                  <option value={0.5}>0.5</option>
+                  <option value={1}>1</option>
+                  <option value={2}>2</option>
+                  <option value={3}>3</option>
+                  <option value={4}>4</option>
+                  <option value={5}>5</option>
+                  <option value={6}>6</option>
+                  <option value={7}>7</option>
+                  <option value={8}>8</option>
+                  <option value={9}>9</option>
+                  <option value={10}>10 - Fast</option>
+                </Input>
+              )}
+            </Mutation>
+          </Col>
+        </Row>
       </Container>
     );
   }
@@ -231,6 +309,8 @@ const THRUSTER_QUERY = gql`
         roll
       }
       manualThrusters
+      rotationSpeed
+      movementSpeed
       damage {
         damaged
         report

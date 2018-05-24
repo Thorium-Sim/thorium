@@ -5,9 +5,9 @@ const updateThrusters = () => {
   App.systems.forEach(sys => {
     if (sys.type === "Thrusters" && sys.thrusting === true) {
       const rotationAdd = Object.assign({}, sys.rotation);
-      rotationAdd.yaw += sys.rotationDelta.yaw * 3;
-      rotationAdd.pitch += sys.rotationDelta.pitch * 3;
-      rotationAdd.roll += sys.rotationDelta.roll * 3;
+      rotationAdd.yaw += sys.rotationDelta.yaw * sys.rotationSpeed;
+      rotationAdd.pitch += sys.rotationDelta.pitch * sys.rotationSpeed;
+      rotationAdd.roll += sys.rotationDelta.roll * sys.rotationSpeed;
       if (rotationAdd.yaw >= 360) rotationAdd.yaw -= 360;
       if (rotationAdd.pitch >= 360) rotationAdd.pitch -= 360;
       if (rotationAdd.roll >= 360) rotationAdd.roll -= 360;
@@ -27,9 +27,9 @@ const updateThrusters = () => {
       );
       if (sensors) {
         const update = {
-          x: sys.direction.x / -2,
-          y: sys.direction.y / 2,
-          z: sys.direction.z / 2
+          x: sys.direction.x / -(10 / sys.movementSpeed),
+          y: sys.direction.y / (10 / sys.movementSpeed),
+          z: sys.direction.z / (10 / sys.movementSpeed)
         };
         if (
           sensors.thrusterMovement.x !== update.x ||

@@ -15,6 +15,8 @@ export default class Thrusters extends System {
     };
     this.manualThrusters = params.manualThrusters || false;
     this.thrusting = params.thrusting || false;
+    this.rotationSpeed = params.rotationSpeed || 3;
+    this.movementSpeed = params.movementSpeed || 5;
   }
   get stealthFactor() {
     if (this.thrusting) return 0.2;
@@ -35,5 +37,11 @@ export default class Thrusters extends System {
   }
   updateRequired(rotation) {
     this.rotationRequired = rotation;
+  }
+  setRotationSpeed(speed) {
+    this.rotationSpeed = speed;
+  }
+  setMovementSpeed(speed) {
+    this.movementSpeed = speed;
   }
 }
