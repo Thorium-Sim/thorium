@@ -125,8 +125,8 @@ export default class Coordinates extends Component {
   render() {
     const { enteredTarget, selectedField, calculatedTarget } = this.state;
     return (
-      <Row>
-        <Col>
+      <Row style={{ justifyContent: "space-around" }}>
+        <Col style={{ maxWidth: "20vw" }}>
           <h4>Keypad</h4>
           <Keypad
             margin
@@ -135,7 +135,7 @@ export default class Coordinates extends Component {
             enter={this.enter}
           />
         </Col>
-        <Col>
+        <Col style={{ maxWidth: "20vw" }}>
           <Row>
             <Col>
               <h4>Calculated Coordinates</h4>

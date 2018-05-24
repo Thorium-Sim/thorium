@@ -4,8 +4,8 @@ import { Asset } from "../../../helpers/assets";
 import Explosion from "../../../helpers/explosions";
 
 const speedLimit = 20;
-const speedConstant1 = 2.5 / 200;
-const speedConstant2 = 1.5 / 200;
+const speedConstant1 = 2.5 / 100;
+const speedConstant2 = 1.5 / 100;
 
 class TargetingGridDom extends Component {
   constructor(props) {
@@ -27,8 +27,11 @@ class TargetingGridDom extends Component {
   }
   refreshTargets(nextProps) {
     const targets = [].concat(this.state.targets);
-    const { width } = this.props.dimensions || { width: 400 };
-    const height = width * 3 / 4;
+    const { width, height } = this.props.dimensions || {
+      width: 400,
+      height: 400
+    };
+    //const height = width * 3 / 4;
     nextProps.targets.forEach(t => {
       const index = targets.findIndex(ta => ta.id === t.id);
       if (index > -1) {
@@ -67,9 +70,12 @@ class TargetingGridDom extends Component {
     this.frame = requestAnimationFrame(() => {
       this.loop();
     });
-    const { width } = this.props.dimensions || { width: 400 };
+    const { width, height } = this.props.dimensions || {
+      width: 400,
+      height: 400
+    };
     if (!width) return;
-    const height = width * 3 / 4;
+    //const height = width * 3 / 4;
     this.setState(({ targets }) => {
       const newTargets = targets.map(
         ({
