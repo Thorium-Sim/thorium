@@ -95,6 +95,9 @@ function addAspects(template, sim) {
         if (newAspect.power && !newAspect.power.powerLevels.length) {
           newAspect.power.power = 0;
         }
+        if (newAspect.heat) {
+          newAspect.heat = 0;
+        }
       }
       App[aspect].push(
         new Classes[newAspect.class](Object.assign({}, newAspect))
