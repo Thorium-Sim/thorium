@@ -35,6 +35,7 @@ App.on("updateDockingPort", ({ port = {} }) => {
     if (port.id) {
       return d.id === port.id;
     }
+
     let tf = true;
     if (port.simulatorId) {
       tf = port.simulatorId === d.simulatorId;
