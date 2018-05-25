@@ -184,7 +184,6 @@ const MissionsConfigData = withApollo(
     return (
       <Query query={MissionsConfigQuery} variables={{ missionId }}>
         {({ loading, data, subscribeToMore }) => {
-          console.log(missionId, data);
           return loading || !data ? null : (
             <MissionsConfig
               history={history}

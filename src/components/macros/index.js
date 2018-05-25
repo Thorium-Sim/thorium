@@ -25,3 +25,4 @@ export { default as addObjective } from "./addObjective";
 export { default as completeObjective } from "./completeObjective";
 export { default as syncTimer } from "./syncTimer";
 export { default as playSound } from "./playSound";
+export { default as sendMessage } from "./sendMessage";

@@ -12,7 +12,9 @@ App.on(
     pubsub.publish("stationSetUpdate", App.stationSets);
   }
 );
-App.on("sendMessage", ({ message }) => {
+App.on("sendMessage", args => {
+  let message = args;
+  if (args.message) message = args.message;
   const messageClass = new Classes.Message(message);
   App.messages.push(messageClass);
   pubsub.publish("sendMessage", messageClass);

@@ -29,7 +29,8 @@ export const macroNames = {
   addObjective: "Add Mission Objective",
   completeObjective: "Complete Mission Objective",
   autoAdvance: "Auto Advance Timeline",
-  syncTimer: "Set Core Timer"
+  syncTimer: "Set Core Timer",
+  sendMessage: "Send Inter-ship Message"
 };
 const PrintMission = ({ mission, clearMission }) => {
   return (
