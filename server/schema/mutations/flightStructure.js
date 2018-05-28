@@ -10,6 +10,8 @@ startFlight(name: String, simulators: [SimulatorInput!]!):String
 createSimulator(name: String!,template: Boolean):String
 resetFlight(flightId: ID!): String
 deleteFlight(flightId: ID!): String
+pauseFlight(flightId:ID!): String
+resumeFlight(flightId:ID!): String
 
 removeSimulator(simulatorId: ID!):String
 

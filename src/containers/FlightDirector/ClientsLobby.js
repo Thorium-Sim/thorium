@@ -2,11 +2,19 @@ import React from "react";
 import Clients from "./Clients";
 import SetsPicker from "./SetsPicker";
 import { Link } from "react-router-dom";
-import { Container, Button } from "reactstrap";
-import { withApollo } from "react-apollo";
+import { Container, Button, ButtonGroup } from "reactstrap";
+import { withApollo, Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import Tour from "reactour";
 
+const FlightQuery = gql`
+  query Flight($flightId: ID!) {
+    flights(id: $flightId) {
+      id
+      running
+    }
+  }
+`;
 const ClientLobby = props => {
   const resetFlight = () => {
     const flightId = props.match.params.flightId;
@@ -86,6 +94,16 @@ It will permenantly erase all simulators running in this flight.`
             after training mode.
           </span>
         )
+      },
+      {
+        selector: ".pause-flight",
+        content: (
+          <span>
+            Flights can be paused. This causes all of the background processes
+            for the flight, such as reactor and engine heat, to stop so things
+            don't overheat while the crew is taking a break.
+          </span>
+        )
       }
     ]
       .concat(SetsPicker.trainingSteps)
@@ -100,37 +118,112 @@ It will permenantly erase all simulators running in this flight.`
       });
   };
   return (
-    <Container className="flight-lobby">
-      <span>
-        <h4>
-          Flight Lobby{" "}
-          <small>
-            <Link to="/">Return to Main</Link>
-          </small>
-        </h4>
-        <Button className="delete-flight" color="danger" onClick={deleteFlight}>
-          Delete Flight
-        </Button>
-        <Button className="reset-flight" color="warning" onClick={resetFlight}>
-          Reset Flight
-        </Button>
-        <h5 className="text-right">
-          <Link
-            to={`/config/flight/${props.match.params.flightId}/core`}
-            className="move-on"
-          >
-            Go to Core
-          </Link>
-        </h5>
-      </span>
-      <SetsPicker {...props} />
-      <Clients {...props} flightId={props.match.params.flightId} />
-      <Tour
-        steps={trainingSteps()}
-        isOpen={props.training}
-        onRequestClose={props.stopTraining}
-      />
-    </Container>
+    <Query
+      query={FlightQuery}
+      variables={{ flightId: props.match.params.flightId }}
+    >
+      {({ loading, data }) =>
+        loading || data.flights.length === 0 ? null : (
+          <Container className="flight-lobby">
+            <span>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <h4>
+                  Flight Lobby{" "}
+                  <small>
+                    <Link to="/">Return to Main</Link>
+                  </small>
+                </h4>
+                {!data.flights[0].running && (
+                  <h3 className="text-warning text-center">Flight is paused</h3>
+                )}
+              </div>
+              <ButtonGroup>
+                <Button
+                  className="delete-flight"
+                  color="danger"
+                  onClick={deleteFlight}
+                >
+                  Delete Flight
+                </Button>
+                <Button
+                  className="reset-flight"
+                  color="warning"
+                  onClick={resetFlight}
+                >
+                  Reset Flight
+                </Button>
+                {data.flights[0].running ? (
+                  <Mutation
+                    mutation={gql`
+                      mutation PauseFlight($flightId: ID!) {
+                        pauseFlight(flightId: $flightId)
+                      }
+                    `}
+                    variables={{ flightId: data.flights[0].id }}
+                    refetchQueries={[
+                      {
+                        query: FlightQuery,
+                        variables: { flightId: props.match.params.flightId }
+                      }
+                    ]}
+                  >
+                    {action => (
+                      <Button
+                        className="pause-flight"
+                        color="info"
+                        onClick={action}
+                      >
+                        Pause Flight
+                      </Button>
+                    )}
+                  </Mutation>
+                ) : (
+                  <Mutation
+                    mutation={gql`
+                      mutation ResumeFlight($flightId: ID!) {
+                        resumeFlight(flightId: $flightId)
+                      }
+                    `}
+                    variables={{ flightId: data.flights[0].id }}
+                    refetchQueries={[
+                      {
+                        query: FlightQuery,
+                        variables: { flightId: props.match.params.flightId }
+                      }
+                    ]}
+                  >
+                    {action => (
+                      <Button
+                        className="pause-flight"
+                        color="success"
+                        onClick={action}
+                      >
+                        Resume Flight
+                      </Button>
+                    )}
+                  </Mutation>
+                )}
+              </ButtonGroup>
+              <h5 className="text-right">
+                <Link
+                  to={`/config/flight/${props.match.params.flightId}/core`}
+                  className="move-on"
+                >
+                  Go to Core
+                </Link>
+              </h5>
+            </span>
+            <SetsPicker {...props} />
+            <Clients {...props} flightId={props.match.params.flightId} />
+            <Tour
+              steps={trainingSteps()}
+              isOpen={props.training}
+              onRequestClose={props.stopTraining}
+            />
+          </Container>
+        )
+      }
+    </Query>
   );
 };
 

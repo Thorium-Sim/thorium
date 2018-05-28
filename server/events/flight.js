@@ -250,5 +250,13 @@ App.on("resetFlight", ({ flightId }) => {
     pubsub.publish("clearCache", App.flights.filter(f => f.id === flightId));
   });
 });
-App.on("pauseFlight", () => {});
-App.on("resumeFlight", () => {});
+App.on("pauseFlight", ({ flightId }) => {
+  const flight = App.flights.find(f => f.id === flightId);
+  flight.pause();
+  pubsub.publish("flightsUpdate", App.flights);
+});
+App.on("resumeFlight", ({ flightId }) => {
+  const flight = App.flights.find(f => f.id === flightId);
+  flight.resume();
+  pubsub.publish("flightsUpdate", App.flights);
+});

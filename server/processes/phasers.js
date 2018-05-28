@@ -1,6 +1,8 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 
+// These loops should continue happening, regardless of the flight
+// Paused status
 const updatePhasers = () => {
   //Loop through all of the simulators to isolate the systems
   const phaserChargeRate = 1 / 5;
