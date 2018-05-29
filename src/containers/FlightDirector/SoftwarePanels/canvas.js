@@ -229,20 +229,21 @@ export default class PanelCanvas extends Component {
                 loc={draggingCable.location}
               />
             )}
-          {cables.map(c => (
-            <DraggingLine
-              width={width}
-              height={height}
-              key={c.id}
-              id={c.id}
-              components={components}
-              connectingFrom={c.components[0]}
-              connectingTo={c.components[1]}
-              color={c.color}
-              onClick={this.removeCable}
-              stroke={4}
-            />
-          ))}
+          {cables &&
+            cables.map(c => (
+              <DraggingLine
+                width={width}
+                height={height}
+                key={c.id}
+                id={c.id}
+                components={components}
+                connectingFrom={c.components[0]}
+                connectingTo={c.components[1]}
+                color={c.color}
+                onClick={this.removeCable}
+                stroke={4}
+              />
+            ))}
           {edit &&
             connectingFrom && (
               <DraggingLine
@@ -254,6 +255,7 @@ export default class PanelCanvas extends Component {
               />
             )}
           {edit &&
+            connections &&
             connections.map(c => (
               <DraggingLine
                 width={width}
@@ -269,30 +271,31 @@ export default class PanelCanvas extends Component {
             ))}
         </svg>
 
-        {components.map(c => (
-          <PageComponent
-            key={c.id}
-            {...c}
-            width={width}
-            height={height}
-            left={left}
-            top={top}
-            edit={edit}
-            draggingCable={draggingCable}
-            components={components}
-            update={this.updateComponent}
-            remove={() => this.removeComponent(c.id)}
-            connecting={connectingFrom}
-            connections={connections
-              .filter(conn => conn.to === c.id)
-              .map(conn => components.find(comp => comp.id === conn.from))}
-            startConnecting={evt => this.startConnecting(evt, c.id)}
-            dragCable={this.dragCable}
-            selectComponent={selectComponent}
-            selected={selectedComponent === c.id}
-            snap={snap}
-          />
-        ))}
+        {components &&
+          components.map(c => (
+            <PageComponent
+              key={c.id}
+              {...c}
+              width={width}
+              height={height}
+              left={left}
+              top={top}
+              edit={edit}
+              draggingCable={draggingCable}
+              components={components}
+              update={this.updateComponent}
+              remove={() => this.removeComponent(c.id)}
+              connecting={connectingFrom}
+              connections={connections
+                .filter(conn => conn.to === c.id)
+                .map(conn => components.find(comp => comp.id === conn.from))}
+              startConnecting={evt => this.startConnecting(evt, c.id)}
+              dragCable={this.dragCable}
+              selectComponent={selectComponent}
+              selected={selectedComponent === c.id}
+              snap={snap}
+            />
+          ))}
 
         {draggingComponent &&
           (() => {
