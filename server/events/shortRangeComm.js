@@ -130,27 +130,29 @@ App.on("commHail", ({ id }) => {
     App.systems.filter(s => s.type === "ShortRangeComm")
   );
 });
-App.on("cancelHail", ({ id }) => {
+App.on("cancelHail", ({ id, core }) => {
   const system = App.systems.find(s => s.id === id);
   system.cancelHail();
-  pubsub.publish("notify", {
-    id: uuid.v4(),
-    simulatorId: system.simulatorId,
-    station: "Core",
-    title: `Hail Canceled`,
-    body: "",
-    color: "info"
-  });
-  App.handleEvent(
-    {
+  if (!core) {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
       simulatorId: system.simulatorId,
+      station: "Core",
       title: `Hail Canceled`,
-      component: "CommShortRangeCore",
-      body: null,
+      body: "",
       color: "info"
-    },
-    "addCoreFeed"
-  );
+    });
+    App.handleEvent(
+      {
+        simulatorId: system.simulatorId,
+        title: `Hail Canceled`,
+        component: "CommShortRangeCore",
+        body: null,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+  }
   pubsub.publish(
     "shortRangeCommUpdate",
     App.systems.filter(s => s.type === "ShortRangeComm")

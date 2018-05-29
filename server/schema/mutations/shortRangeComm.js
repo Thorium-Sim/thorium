@@ -9,7 +9,7 @@ commConnectArrow(id: ID!, arrowId: ID!):String
 commDisconnectArrow(id: ID!, arrowId: ID!):String
 commUpdate(id: ID!, commUpdateInput: CommUpdateInput!):String
 commHail(id: ID!):String
-cancelHail(id: ID!):String
+cancelHail(id: ID!, core: Boolean):String
 connectHail(id: ID!):String
 
 #Macro: Short Range: Add
