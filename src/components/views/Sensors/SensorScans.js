@@ -80,7 +80,7 @@ export default class SensorScans extends Component {
             <div className="scanEntry">
               {scanning ? (
                 <div>
-                  <video ref={"ReactVideo"} autoPlay loop>
+                  <video ref={"ReactVideo"} muted autoPlay loop>
                     <source src={require("./scansvid.mov")} type="video/mp4" />
                   </video>
                   <Button color="danger" block onClick={this.stopScan}>
@@ -96,7 +96,8 @@ export default class SensorScans extends Component {
                     onChange={evt =>
                       this.setState({
                         scanRequest: evt.target.value
-                      })}
+                      })
+                    }
                   />
                   <Button color="primary" block onClick={this.startScan}>
                     Begin Scan

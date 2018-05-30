@@ -463,6 +463,7 @@ class Scanning extends Component {
                       ref={"ReactVideo"}
                       autoPlay
                       loop
+                      muted
                       style={{ height: "100%", width: "100%" }}
                     >
                       <source
