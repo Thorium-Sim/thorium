@@ -19,6 +19,10 @@ class VideoConfig extends Component {
     const data = JSON.parse(this.props.viewscreen.data);
     if (this.player.current)
       this.player.current.playbackRate = parseFloat(data.speed) || 1;
+    setTimeout(() => {
+      if (this.player.current)
+        this.player.current.playbackRate = parseFloat(data.speed) || 1;
+    }, 300);
   }
   render() {
     const data = JSON.parse(this.props.viewscreen.data);
