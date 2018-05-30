@@ -14,6 +14,9 @@ export default class Crew {
     this.killed = params.killed || false;
     this.workRoom = params.workRoom || null;
     this.restRoom = params.restRoom || null;
+
+    // Used for Medical
+    this.notes = params.notes || "";
   }
   get fullName() {
     return `${this.firstName} ${this.lastName}`;
