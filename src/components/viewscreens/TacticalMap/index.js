@@ -206,6 +206,7 @@ class TacticalMapViewscreen extends Component {
       <div className="viewscreen-tacticalMap">
         {selectedTacticalMap && (
           <Preview
+            simulatorId={this.props.simulator.id}
             core={!this.props.cardName}
             frozen={selectedTacticalMap.frozen}
             layers={layers}

@@ -7,7 +7,6 @@ class Video extends Component {
   player = React.createRef();
   componentDidUpdate() {
     const { playbackSpeed = 1 } = this.props;
-    console.log(playbackSpeed);
     if (this.player.current) {
       this.player.current.playbackRate = parseFloat(playbackSpeed) || 1;
       setTimeout(() => {
@@ -16,26 +15,48 @@ class Video extends Component {
     }
   }
   componentDidMount() {
+    this.videoToggleSub = this.props.client
+      .subscribe({
+        query: gql`
+          subscription ToggleVideo($simulatorId: ID) {
+            viewscreenVideoToggle(simulatorId: $simulatorId)
+          }
+        `,
+        variables: { simulatorId: this.props.simulatorId }
+      })
+      .subscribe({
+        next: ({ data: { viewscreenVideoToggle } }) => {
+          this.player.current.paused === false
+            ? this.player.current.pause()
+            : this.player.current.play();
+        },
+        error(err) {
+          console.error("Error in subscription", err);
+        }
+      });
     const { playbackSpeed = 1 } = this.props;
     if (this.player.current)
       this.player.current.playbackRate = parseFloat(playbackSpeed) || 1;
-    console.log(this.props);
     setTimeout(() => {
       if (this.player.current)
         this.player.current.playbackRate = parseFloat(playbackSpeed) || 1;
     }, 300);
+  }
+  componentWillUnmount() {
+    this.videoToggleSub && this.videoToggleSub.unsubscribe();
   }
   render() {
     const {
       advance,
       loop,
       asset = "/Viewscreen/Videos/Ship Scans",
-      autoplay
+      autoplay,
+      simulatorId
     } = this.props;
     const videoEnd = () => {
       if (!advance) return;
       const variables = {
-        simulatorId: this.props.simulator.id
+        simulatorId
       };
       const mutation = gql`
         mutation AdvanceTimeline($simulatorId: ID!) {
@@ -47,7 +68,6 @@ class Video extends Component {
         variables
       });
     };
-
     return (
       <div className={`tactical-map-video`}>
         <Asset asset={asset}>
