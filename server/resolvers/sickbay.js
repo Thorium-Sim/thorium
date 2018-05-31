@@ -11,7 +11,35 @@ export const SickbayQueries = {
   }
 };
 
-export const SickbayMutations = {};
+export const SickbayMutations = {
+  setSickbayBunks(rootValue, args, context) {
+    App.handleEvent(args, "setSickbayBunks", context);
+  },
+  addSickbayCrew(root, args, context) {
+    App.handleEvent(args, "addSickbayCrew", context);
+  },
+  removeSickbayCrew(root, args, context) {
+    App.handleEvent(args, "removeSickbayCrew", context);
+  },
+  updateSickbayCrew(root, args, context) {
+    App.handleEvent(args, "updateSickbayCrew", context);
+  },
+  scanSickbayBunk(root, args, context) {
+    App.handleEvent(args, "scanSickbayBunk", context);
+  },
+  cancelSickbayBunkScan(root, args, context) {
+    App.handleEvent(args, "cancelSickbayBunkScan", context);
+  },
+  sickbayBunkScanResponse(root, args, context) {
+    App.handleEvent(args, "sickbayBunkScanResponse", context);
+  },
+  assignPatient(root, args, context) {
+    App.handleEvent(args, "assignPatient", context);
+  },
+  dischargePatient(root, args, context) {
+    App.handleEvent(args, "dischargePatient", context);
+  }
+};
 
 export const SickbaySubscriptions = {
   sickbayUpdate: {
