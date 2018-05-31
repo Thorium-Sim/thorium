@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "homepage": "https://thoriumsim.com",
   "devDependencies": {
-    "all-contributors-cli": "^4.11.1",
+    "all-contributors-cli": "^4.11.2",
     "babel-cli": "^6.26.0",
     "babel-plugin-inline-import": "^2.0.6",
     "babel-plugin-preval": "^1.6.4",
