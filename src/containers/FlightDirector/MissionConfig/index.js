@@ -126,7 +126,6 @@ class MissionsConfig extends Component {
         />
       );
     }
-    console.log(mission);
     if (!mission) return null;
     return (
       <Container fluid className="missionConfig">

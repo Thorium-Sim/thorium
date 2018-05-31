@@ -19,7 +19,9 @@ export default ({ args }) => {
           k =>
             k === "asset" ? (
               <Asset asset={data[k]}>
-                {({ src }) => <video style={{ width: "50%" }} src={src} />}
+                {({ src }) => (
+                  <video muted style={{ width: "50%" }} src={src} />
+                )}
               </Asset>
             ) : (
               <li key={k}>

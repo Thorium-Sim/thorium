@@ -34,7 +34,13 @@ export default ({ simulator, viewscreen }) => {
         className="color-image"
         style={{ backgroundImage: `url(${require(`./${video}.jpg`)})` }}
       />
-      <video id="frame-bg" autoPlay loop src={require(`./${video}.mp4`)} />
+      <video
+        id="frame-bg"
+        muted
+        autoPlay
+        loop
+        src={require(`./${video}.mp4`)}
+      />
     </div>
   );
 };

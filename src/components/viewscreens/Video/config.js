@@ -108,6 +108,34 @@ class VideoConfig extends Component {
             Auto-Advance Mission Timeline on Complete
           </label>
         </div>
+        <div>
+          <label>
+            Playback Speed
+            <select
+              value={data.speed || "1"}
+              type="select"
+              onChange={evt =>
+                updateData(
+                  JSON.stringify(
+                    Object.assign({}, data, { speed: evt.target.value })
+                  )
+                )
+              }
+            >
+              <option value="0.125">1/8 Speed</option>
+              <option value="0.25">1/4 Speed</option>
+              <option value="0.5">1/2 Speed</option>
+              <option value="0.75">3/4 Speed</option>
+              <option value="1">1 Speed</option>
+              <option value="1.25">1.25x Speed</option>
+              <option value="1.5">1.5x Speed</option>
+              <option value="2">2x Speed</option>
+              <option value="4">4x Speed</option>
+              <option value="8">8x Speed</option>
+              <option value="16">16x Speed</option>
+            </select>
+          </label>
+        </div>
       </div>
     );
   }

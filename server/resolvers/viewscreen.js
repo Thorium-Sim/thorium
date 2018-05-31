@@ -35,6 +35,9 @@ export const ViewscreenMutations = {
   },
   updateViewscreenSecondary(_, params, context) {
     App.handleEvent(params, "updateViewscreenSecondary", context);
+  },
+  toggleViewscreenVideo(root, args, context) {
+    App.handleEvent(args, "toggleViewscreenVideo", context);
   }
 };
 
@@ -53,6 +56,17 @@ export const ViewscreenSubscriptions = {
     subscribe: withFilter(
       () => pubsub.asyncIterator("viewscreensUpdate"),
       rootValue => !!(rootValue && rootValue.length)
+    )
+  },
+  viewscreenVideoToggle: {
+    resolve() {
+      return true;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("viewscreenVideoToggle"),
+      (rootValue, { simulatorId }) => {
+        return rootValue === simulatorId;
+      }
     )
   }
 };

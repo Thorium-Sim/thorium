@@ -1,22 +1,20 @@
 import React, { Component } from "react";
-import { Asset } from "../../../helpers/assets";
+import { Asset } from "../../../../../helpers/assets";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
-import "./style.css";
 
-class VideoConfig extends Component {
+class Video extends Component {
   player = React.createRef();
   componentDidUpdate() {
-    const data = JSON.parse(this.props.viewscreen.data);
+    const { playbackSpeed = 1 } = this.props;
     if (this.player.current) {
-      this.player.current.playbackRate = parseFloat(data.speed) || 1;
+      this.player.current.playbackRate = parseFloat(playbackSpeed) || 1;
       setTimeout(() => {
-        this.player.current.playbackRate = parseFloat(data.speed) || 1;
+        this.player.current.playbackRate = parseFloat(playbackSpeed) || 1;
       }, 50);
     }
   }
   componentDidMount() {
-    const data = JSON.parse(this.props.viewscreen.data);
     this.videoToggleSub = this.props.client
       .subscribe({
         query: gql`
@@ -24,10 +22,10 @@ class VideoConfig extends Component {
             viewscreenVideoToggle(simulatorId: $simulatorId)
           }
         `,
-        variables: { simulatorId: this.props.simulator.id }
+        variables: { simulatorId: this.props.simulatorId }
       })
       .subscribe({
-        next: () => {
+        next: ({ data: { viewscreenVideoToggle } }) => {
           this.player.current.paused === false
             ? this.player.current.pause()
             : this.player.current.play();
@@ -36,36 +34,29 @@ class VideoConfig extends Component {
           console.error("Error in subscription", err);
         }
       });
+    const { playbackSpeed = 1 } = this.props;
     if (this.player.current)
-      this.player.current.playbackRate = parseFloat(data.speed) || 1;
+      this.player.current.playbackRate = parseFloat(playbackSpeed) || 1;
     setTimeout(() => {
       if (this.player.current)
-        this.player.current.playbackRate = parseFloat(data.speed) || 1;
+        this.player.current.playbackRate = parseFloat(playbackSpeed) || 1;
     }, 300);
-    document.addEventListener("keydown", this.keypress);
   }
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.keypress);
     this.videoToggleSub && this.videoToggleSub.unsubscribe();
   }
-  keypress = evt => {
-    if (evt.code === "Space") {
-      this.props.client.mutate({
-        mutation: gql`
-          mutation ToggleVideo($simulatorId: ID!) {
-            toggleViewscreenVideo(simulatorId: $simulatorId)
-          }
-        `,
-        variables: { simulatorId: this.props.simulator.id }
-      });
-    }
-  };
   render() {
-    const data = JSON.parse(this.props.viewscreen.data);
+    const {
+      advance,
+      loop,
+      asset = "/Viewscreen/Videos/Ship Scans",
+      autoplay,
+      simulatorId
+    } = this.props;
     const videoEnd = () => {
-      if (!data.advance) return;
+      if (!advance) return;
       const variables = {
-        simulatorId: this.props.simulator.id
+        simulatorId
       };
       const mutation = gql`
         mutation AdvanceTimeline($simulatorId: ID!) {
@@ -77,17 +68,16 @@ class VideoConfig extends Component {
         variables
       });
     };
-
     return (
-      <div className={`viewscreen-video ${data.overlay ? "overlay" : ""}`}>
-        <Asset asset={data.asset || "/Viewscreen/Videos/Ship Scans"}>
+      <div className={`tactical-map-video`}>
+        <Asset asset={asset}>
           {({ src }) => (
             <video
               ref={this.player}
               src={`${window.location.origin}${src}`}
-              autoPlay={data.autoplay !== false || true}
+              autoPlay={autoplay !== false || true}
               muted
-              loop={data.loop}
+              loop={loop}
               onEnded={videoEnd}
             />
           )}
@@ -97,4 +87,4 @@ class VideoConfig extends Component {
   }
 }
 
-export default withApollo(VideoConfig);
+export default withApollo(Video);

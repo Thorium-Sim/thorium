@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Button } from "reactstrap";
+import { Container, Row, Col, Button, ButtonGroup } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import "./style.css";
@@ -121,6 +121,21 @@ class CommShortRange extends Component {
       variables
     });
   }
+  commReject = () => {
+    const mutation = gql`
+      mutation CancelHail($id: ID!) {
+        cancelHail(id: $id, core: true)
+      }
+    `;
+    const ShortRange = this.props.data.shortRangeComm[0];
+    const variables = {
+      id: ShortRange.id
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   getSignal() {
     const ShortRange = this.props.data.shortRangeComm[0];
     return ShortRange.signals.reduce((prev, next) => {
@@ -149,13 +164,18 @@ class CommShortRange extends Component {
             <div>
               External Call
               {ShortRange.state === "hailing" ? (
-                <Button
-                  onClick={this._commConnect.bind(this)}
-                  size="sm"
-                  color="info"
-                >
-                  Hailing - Connect
-                </Button>
+                <ButtonGroup>
+                  <Button
+                    onClick={this._commConnect.bind(this)}
+                    size="sm"
+                    color="info"
+                  >
+                    Hailing - Connect
+                  </Button>
+                  <Button onClick={this.commReject} size="sm" color="warning">
+                    Reject
+                  </Button>
+                </ButtonGroup>
               ) : null}
             </div>
             <select

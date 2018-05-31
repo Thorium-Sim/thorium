@@ -194,7 +194,6 @@ class Inventory extends Component {
     });
   };
   roomCountValue = r => {
-    console.log("Calcluating");
     if (this.state.inventoryItem.roomCount) {
       if (
         this.state.inventoryItem.roomCount.find(
