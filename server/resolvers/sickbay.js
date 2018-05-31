@@ -38,6 +38,21 @@ export const SickbayMutations = {
   },
   dischargePatient(root, args, context) {
     App.handleEvent(args, "dischargePatient", context);
+  },
+  startDeconProgram(root, args, context) {
+    App.handleEvent(args, "startDeconProgram", context);
+  },
+  updateDeconOffset(root, args, context) {
+    App.handleEvent(args, "updateDeconOffset", context);
+  },
+  cancelDeconProgram(root, args, context) {
+    App.handleEvent(args, "cancelDeconProgram", context);
+  },
+  completeDeconProgram(root, args, context) {
+    App.handleEvent(args, "completeDeconProgram", context);
+  },
+  setDeconAutoFinish(root, args, context) {
+    App.handleEvent(args, "setDeconAutoFinish", context);
   }
 };
 

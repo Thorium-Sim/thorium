@@ -47,3 +47,74 @@ App.on("assignPatient", ({ id, bunkId, crewId }) => {
 App.on("dischargePatient", ({ id, bunkId }) => {
   performAction(id, sys => sys.dischargeBunk(bunkId));
 });
+
+App.on("startDeconProgram", ({ id, program, location }) => {
+  performAction(id, sys => {
+    sys.startDeconProgram(program, location);
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      station: "Core",
+      title: `New Decon Program`,
+      body: `${program}: ${location}`,
+      color: "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: sys.simulatorId,
+        title: `New Decon Program`,
+        component: "DecontaminationCore",
+        body: `${program}: ${location}`,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+    setTimeout(() => {
+      if (sys.autoFinishDecon) {
+        App.handleEvent({ id }, "completeDeconProgram");
+      }
+    }, Math.round(Math.random() * 1000 * 15 + 15 * 1000));
+  });
+});
+
+App.on("updateDeconOffset", ({ id, offset }) => {
+  performAction(id, sys => sys.updateDeconOffset(offset));
+});
+
+App.on("cancelDeconProgram", ({ id }) => {
+  performAction(id, sys => {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      station: "Core",
+      title: `Decon Program Cancelled`,
+      body: `${sys.deconProgram}: ${sys.deconLocation}`,
+      color: "info"
+    });
+    sys.endDeconProgram();
+  });
+});
+
+App.on("completeDeconProgram", ({ id }) => {
+  performAction(id, sys => {
+    const sim = App.simulators.find(s => s.id === sys.simulatorId);
+    sim.stations
+      .filter(s => s.cards.find(c => c.component === "Decontamination"))
+      .map(s => s.name)
+      .forEach(s => {
+        pubsub.publish("notify", {
+          id: uuid.v4(),
+          simulatorId: sys.simulatorId,
+          station: s,
+          title: `Decon Program Complete`,
+          body: `${sys.deconProgram}: ${sys.deconLocation}`,
+          color: "success"
+        });
+      });
+    sys.endDeconProgram();
+  });
+});
+
+App.on("setDeconAutoFinish", ({ id, finish }) => {
+  performAction(id, sys => sys.setDeconAutoFinish(finish));
+});

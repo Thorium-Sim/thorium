@@ -35,6 +35,12 @@ export default class Sickbay extends System {
     this.id = params.id || uuid.v4();
     this.class = "Sickbay";
     this.simulatorId = params.simulatorId || null;
+    this.deconProgram = params.deconProgram || null;
+    this.deconLocation = params.deconLocation || null;
+    this.deconActive = params.deconActive || false;
+    this.deconOffset = params.deconOffset || 0;
+    this.autoFinishDecon = params.autoFinishDecon || false;
+
     this.sickbayRoster = [];
     (params.sickbayRoster || []).forEach(r =>
       this.sickbayRoster.push(new Crew(r))
@@ -42,6 +48,24 @@ export default class Sickbay extends System {
     this.bunks = [];
     (params.bunks || []).forEach(b => this.bunks.push(new Bunk(b)));
   }
+  startDeconProgram(program, location) {
+    this.deconActive = true;
+    this.deconProgram = program;
+    this.deconLocation = location;
+  }
+  updateDeconOffset(offset) {
+    this.deconOffset = offset;
+  }
+  endDeconProgram() {
+    this.deconActive = false;
+    this.deconProgram = null;
+    this.deconLocation = null;
+    this.deconOffset = 0;
+  }
+  setDeconAutoFinish(tf) {
+    this.autoFinishDecon = tf;
+  }
+
   addRoster(crew) {
     this.sickbayRoster.push(new Crew(crew));
   }

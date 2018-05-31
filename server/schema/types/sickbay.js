@@ -9,6 +9,13 @@ type Sickbay implements SystemInterface {
   power: Power
   stealthFactor: Float
   locations: [Room]
+  
+  deconProgram: String
+  deconLocation: String
+  deconActive: Boolean
+  deconOffset: Float
+  autoFinishDecon: Boolean
+
   sickbayRoster: [Crew]
   bunks: [SickbayBunk]
 }
