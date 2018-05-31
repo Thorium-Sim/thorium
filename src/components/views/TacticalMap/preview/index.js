@@ -8,6 +8,7 @@ export default class TacticalMapPreview extends Component {
     const wasd = ["KeyW", "KeyA", "KeyS", "KeyD"];
     const ijkl = ["KeyI", "KeyJ", "KeyK", "KeyL"];
     const movement = { x: 0, y: 0 };
+    console.log(evt.code);
     switch (evt.code) {
       case "KeyW":
       case "KeyI":
@@ -25,6 +26,9 @@ export default class TacticalMapPreview extends Component {
       case "KeyL":
         movement.x = distance;
         break;
+      case "Space":
+        console.log(this);
+        return;
       default:
         break;
     }

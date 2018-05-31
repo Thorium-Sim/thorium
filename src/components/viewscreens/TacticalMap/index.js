@@ -81,6 +81,11 @@ const TACTICALMAP_SUB = gql`
         labels
         gridCols
         gridRows
+        advance
+        asset
+        autoplay
+        loop
+        playbackSpeed
       }
       frozen
       template
@@ -290,6 +295,11 @@ const TACTICALMAP_QUERY = gql`
         labels
         gridCols
         gridRows
+        advance
+        asset
+        autoplay
+        loop
+        playbackSpeed
       }
       frozen
       template

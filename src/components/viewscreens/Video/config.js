@@ -122,7 +122,6 @@ class VideoConfig extends Component {
                 )
               }
             >
-              <option value="0.0.0625">1/16 Speed</option>
               <option value="0.125">1/8 Speed</option>
               <option value="0.25">1/4 Speed</option>
               <option value="0.5">1/2 Speed</option>

@@ -80,6 +80,11 @@ id
         labels
         gridCols
         gridRows
+        advance
+asset
+autoplay
+loop
+playbackSpeed
       }
       frozen
       template`;
