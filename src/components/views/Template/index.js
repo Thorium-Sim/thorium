@@ -1,45 +1,57 @@
 import React, { Component } from "react";
+import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import Template from "./template";
 import "./style.css";
 
-const SUB = gql``;
+const queryData = `
+`;
 
-class Template extends Component {
-  subscription = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            template: subscriptionData.data.templateUpdate
-          });
-        }
-      });
+const QUERY = gql`
+  query Template($simulatorId: ID!) {
+    template(simulatorId: $simulatorId) {
+${queryData}
     }
   }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
+`;
+const SUBSCRIPTION = gql`
+  subscription TemplateUpdate($simulatorId: ID!) {
+    templateUpdate(simulatorId: $simulatorId) {
+${queryData}
+    }
   }
+`;
+
+class TemplateData extends Component {
+  state = {};
   render() {
-    const { data: { loading, template } } = this.props;
-    if (loading || !template) return null;
-    return <div className="template-card">This is a template</div>;
+    return (
+      <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
+        {({ loading, data, subscribeToMore }) => {
+          const { template } = data;
+          if (loading || !template) return null;
+          if (!template[0]) return <div>No Template</div>;
+          return (
+            <SubscriptionHelper
+              subscribe={() =>
+                subscribeToMore({
+                  document: SUBSCRIPTION,
+                  variables: { simulatorId: this.props.simulator.id },
+                  updateQuery: (previousResult, { subscriptionData }) => {
+                    return Object.assign({}, previousResult, {
+                      computerCore: subscriptionData.data.templateUpdate
+                    });
+                  }
+                })
+              }
+            >
+              <Template {...this.props} {...template[0]} />
+            </SubscriptionHelper>
+          );
+        }}
+      </Query>
+    );
   }
 }
-
-const QUERY = gql``;
-export default graphql(QUERY, {
-  options: ownProps => ({
-    fetchPolicy: "cache-and-network",
-
-    variables: {
-      simulatorId: ownProps.simulator.id
-    }
-  })
-})(withApollo(Template));
+export default TemplateData;
