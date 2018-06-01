@@ -4,7 +4,7 @@ import { withFilter } from "graphql-subscriptions";
 
 export const SickbayQueries = {
   sickbay(root, { simulatorId }) {
-    let returnVal = [];
+    let returnVal = App.systems.filter(s => s.class === "Sickbay");
     if (simulatorId)
       returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
     return returnVal;

@@ -35,6 +35,9 @@ export default class Sickbay extends System {
     this.id = params.id || uuid.v4();
     this.class = "Sickbay";
     this.simulatorId = params.simulatorId || null;
+    this.name = params.name || "Sickbay";
+    this.type = "Sickbay";
+    this.displayName = params.displayName || "Sickbay";
     this.deconProgram = params.deconProgram || null;
     this.deconLocation = params.deconLocation || null;
     this.deconActive = params.deconActive || false;
