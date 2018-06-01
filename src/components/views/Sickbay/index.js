@@ -2,40 +2,36 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-import Sickbay from "./sickbay";
+import Template from "./template";
 import "./style.css";
 
 const queryData = `
-  id
-  deconActive
-  deconProgram
-  deconLocation
 `;
 
 const QUERY = gql`
-  query Sickbay($simulatorId: ID!) {
-    sickbay(simulatorId:$simulatorId) {
-      ${queryData}
+  query Template($simulatorId: ID!) {
+    template(simulatorId: $simulatorId) {
+${queryData}
     }
   }
 `;
 const SUBSCRIPTION = gql`
-  subscription SickbayUpdate($simulatorId: ID!) {
-    sickbayUpdate(simulatorId:$simulatorId) {
-      ${queryData}
+  subscription TemplateUpdate($simulatorId: ID!) {
+    templateUpdate(simulatorId: $simulatorId) {
+${queryData}
     }
   }
 `;
 
-class SickbayData extends Component {
+class TemplateData extends Component {
   state = {};
   render() {
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
-          const { sickbay } = data;
-          if (loading || !sickbay) return null;
-          if (!sickbay[0]) return <div>No Sickbay</div>;
+          const { template } = data;
+          if (loading || !template) return null;
+          if (!template[0]) return <div>No Template</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
@@ -44,13 +40,13 @@ class SickbayData extends Component {
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
                     return Object.assign({}, previousResult, {
-                      computerCore: subscriptionData.data.sickbayUpdate
+                      computerCore: subscriptionData.data.templateUpdate
                     });
                   }
                 })
               }
             >
-              <Sickbay {...this.props} {...template[0]} />
+              <Template {...this.props} {...template[0]} />
             </SubscriptionHelper>
           );
         }}
@@ -58,4 +54,4 @@ class SickbayData extends Component {
     );
   }
 }
-export default SickbayData;
+export default TemplateData;
