@@ -1,19 +1,22 @@
 import React, { Component } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
-import { Mutation } from "react-apollo";
+import { Mutation, withApollo } from "react-apollo";
 import gql from "graphql-tag";
+import Bars from "../TractorBeam/bars";
 class DeconProgram extends Component {
   state = {
-    mStream: 0,
-    aStream: 0,
+    mStream: Math.round(Math.random() * 100),
+    aStream: Math.round(Math.random() * 100),
     idealAStream: Math.round(Math.random() * 100),
     idealMStream: Math.round(Math.random() * 100)
   };
   componentDidMount() {
     this.idealStreamChange();
+    this.sendUpdate();
   }
   componentWillUnmount() {
     clearTimeout(this.timeout);
+    clearTimeout(this.timeout2);
   }
   calcStressLevel = () => {
     const { mStream, aStream, idealAStream, idealMStream } = this.state;
@@ -27,10 +30,10 @@ class DeconProgram extends Component {
     let { mStream, aStream, idealAStream, idealMStream } = this.state;
     const mStreamDif = idealMStream - parseInt(mStream, 10);
     const aStreamDif = idealAStream - parseInt(aStream, 10);
-    if (mStreamDif <= 0) idealMStream -= 1;
-    else idealMStream += 1;
-    if (aStreamDif <= 0) idealAStream -= 1;
-    else idealAStream += 1;
+    if (mStreamDif <= 0) idealMStream -= 0.1;
+    else idealMStream += 0.1;
+    if (aStreamDif <= 0) idealAStream -= 0.1;
+    else idealAStream += 0.1;
     if (idealMStream > 100 || idealMStream < 0)
       idealMStream = Math.round(Math.random() * 100);
     if (idealAStream > 100 || idealAStream < 0)
@@ -40,11 +43,27 @@ class DeconProgram extends Component {
       idealAStream,
       idealMStream
     });
-    this.timeout = setTimeout(this.idealStreamChange, 5 * 1000);
+    this.timeout = setTimeout(this.idealStreamChange, 300);
+  };
+  sendUpdate = () => {
+    const mutation = gql`
+      mutation DeconOffset($id: ID!, $offset: Float!) {
+        updateDeconOffset(id: $id, offset: $offset)
+      }
+    `;
+    const variables = {
+      id: this.props.id,
+      offset: this.calcStressLevel()
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+    this.timeout2 = setTimeout(this.sendUpdate, 1000 * 5);
   };
   render() {
     const { deconProgram, deconLocation, id } = this.props;
-    const { mStream, aStream, idealAStream, idealMStream } = this.state;
+    const { mStream, aStream } = this.state;
     return (
       <Container className="card-decon">
         <Row>
@@ -68,31 +87,33 @@ class DeconProgram extends Component {
             </Mutation>
           </Col>
           <Col sm={6}>
-            <div>
-              <input
-                min={0}
-                max={100}
-                step={1}
-                type="range"
-                value={mStream}
-                onChange={e => this.setState({ mStream: e.target.value })}
-              />{" "}
-              {mStream}/{idealMStream}
-              <input
-                min={0}
-                max={100}
-                step={1}
-                type="range"
-                value={aStream}
-                onChange={e => this.setState({ aStream: e.target.value })}
-              />{" "}
-              {aStream}/{idealAStream}
+            <div className="bars-holder">
+              <Bars
+                className="mBar"
+                arrow
+                flop
+                color={"blue"}
+                simulator={this.props.simulator}
+                level={mStream / 100}
+                noLevel
+                mouseUp={level => this.setState({ mStream: level * 100 })}
+                mouseMove={level => this.setState({ mStream: level * 100 })}
+              />
               <div className="stressHolder">
                 <div
                   className="stressBar"
                   style={{ height: `${this.calcStressLevel()}%` }}
                 />
               </div>
+              <Bars
+                className="aBar"
+                arrow
+                simulator={this.props.simulator}
+                level={aStream / 100}
+                noLevel
+                mouseUp={level => this.setState({ aStream: level * 100 })}
+                mouseMove={level => this.setState({ aStream: level * 100 })}
+              />
             </div>
           </Col>
         </Row>
@@ -101,4 +122,4 @@ class DeconProgram extends Component {
   }
 }
 
-export default DeconProgram;
+export default withApollo(DeconProgram);

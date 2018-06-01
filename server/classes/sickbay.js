@@ -82,10 +82,11 @@ export default class Sickbay extends System {
   setBunkCount(count) {
     if (this.bunks.length === count) return;
     if (this.bunks.length > count) {
-      this.bunks = this.bunks.filter((b, i) => i <= count);
+      this.bunks = this.bunks.filter((b, i) => i <= count - 1);
     }
-    if (this.bunks.length < count) {
-      for (let i = 0; i < count - this.bunks.length; i++) {
+    const length = this.bunks.length;
+    if (length < count) {
+      for (let i = 0; i < count - length; i++) {
         this.bunks.push(new Bunk({}));
       }
     }

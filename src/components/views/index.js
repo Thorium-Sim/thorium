@@ -119,6 +119,7 @@ import ObjectivesCore from "./Objectives/core";
 import SurveyFormCore from "./SurveyForm/core";
 import ArmoryCore from "./Armory/core";
 import ComputerCoreCore from "./ComputerCore/core";
+import DecontaminationCore from "./Decontamination/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -314,7 +315,8 @@ export const Cores = {
   ObjectivesCore,
   SurveyFormCore,
   ArmoryCore,
-  ComputerCoreCore
+  ComputerCoreCore,
+  DecontaminationCore
 };
 
 export default Views;

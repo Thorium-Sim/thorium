@@ -137,6 +137,19 @@ class TractorBeam extends Component {
           max={Math.abs(maxPower - 1)}
           level={Math.abs(Math.min(tractorBeam.strength, maxPower) - 1)}
           id={tractorBeam.id}
+          mouseUp={level =>
+            this.props.client.mutate({
+              mutation: gql`
+                mutation TractorBeamStrength($id: ID!, $strength: Float!) {
+                  setTractorBeamStrength(id: $id, strength: $strength)
+                }
+              `,
+              variables: {
+                id: tractorBeam.id,
+                strength: Math.abs(level - 1)
+              }
+            })
+          }
         />
         <Button
           size="lg"

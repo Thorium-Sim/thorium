@@ -14,6 +14,7 @@ import {
 } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import Tour from "reactour";
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
 
 const programs = {
@@ -26,9 +27,70 @@ const programs = {
   "Anti-Inflamation":
     "Uses electro-magnetic waves to decrease inflamation in organic life forms.",
   Exposure:
-    "Uses extreme heat and cold to kill all virii and bacteria in room. Evacuate room before use."
+    "Uses extreme heat and cold to kill all viruses and bacteria in room. Evacuate room before use."
 };
 
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content: (
+      <span>
+        This screen is used to perform decontamination programs. Decontamination
+        programs use electromagnetic radiation, heat, cold, chemicals, and other
+        means to eliminate viruses and bacteria. These programs can be run
+        inside of a deck or room on the ship, or on a sickbay bunk, if
+        available.
+      </span>
+    )
+  },
+  {
+    selector: ".program-select",
+    content: (
+      <span>
+        Use this dropdown to select the program you would like to run. Be sure
+        to check the description of the program to make sure it is the one you
+        want to use.
+      </span>
+    )
+  },
+  {
+    selector: ".location-select",
+    content: (
+      <span>
+        Use this to choose which location you would like to decontaminate. You
+        can also choose to decontaminate a bunk in the sickbay, if applicable.
+      </span>
+    )
+  },
+  {
+    selector: ".begin-button",
+    content: (
+      <span>Click this button to begin the decontamination program.</span>
+    )
+  }
+];
+const programTraining = [
+  {
+    selector: ".nothing",
+    content: (
+      <span>
+        You have to monitor the decontamination program to ensure it is running
+        smoothly and correctly. If the levels get out of balance, the
+        decontamination program could have harmful effects!
+      </span>
+    )
+  },
+  {
+    selector: ".bars-holder",
+    content: (
+      <span>
+        Drag the two arrows up and down to find the correct power level. You
+        will have to continually adjust the arrows to keep the level balanced.
+        Make sure that the red bar is as low as possible to avoid any problems.
+      </span>
+    )
+  }
+];
 class Sickbay extends Component {
   state = {};
   getLocation = () => {
@@ -46,14 +108,22 @@ class Sickbay extends Component {
     const { program, deck, room } = this.state;
     const { deconActive, decks, bunks, id } = this.props;
     if (deconActive) {
-      return <DeconProgram {...this.props} />;
+      return [
+        <DeconProgram key={"program"} {...this.props} />,
+        <Tour
+          key="program-tour"
+          steps={programTraining}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
+      ];
     }
     return (
       <Container className="card-decon">
         <h1>Decontamination</h1>
         <Row>
           <Col sm={5}>
-            <FormGroup>
+            <FormGroup className="program-select">
               <Label>Program</Label>
               <UncontrolledDropdown>
                 <DropdownToggle block caret>
@@ -75,7 +145,7 @@ class Sickbay extends Component {
             </FormGroup>
           </Col>
         </Row>
-        <Row>
+        <Row className="location-select">
           <Col sm={{ size: 2 }} className="room-select">
             <DeckDropdown
               selectedDeck={deck}
@@ -134,6 +204,7 @@ class Sickbay extends Component {
                   block
                   size="lg"
                   color="success"
+                  className="begin-button"
                   disabled={!program || !deck}
                   onClick={action}
                 >
@@ -143,6 +214,11 @@ class Sickbay extends Component {
             </Mutation>
           </Col>
         </Row>
+        <Tour
+          steps={trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
