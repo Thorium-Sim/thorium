@@ -16,7 +16,8 @@ const refetchQueries = [
   "Phasers",
   "Shields",
   "Torpedo",
-  "Navigation"
+  "Navigation",
+  "Sickbay"
 ];
 const ops = {
   updatePowerLevels: gql`
@@ -163,7 +164,7 @@ export class GenericSystemConfig extends Component {
                     l =>
                       l && (
                         <p key={l.id}>
-                          {l.name}, Deck {l.deck.number}{" "}
+                          {l.name}, Deck {l.deck && l.deck.number}{" "}
                           <FontAwesome
                             name="ban"
                             className="text-danger"
