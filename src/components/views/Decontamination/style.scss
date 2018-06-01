@@ -1,2 +1,20 @@
-.card-template {
+.card-decon {
+  display: flex;
+  flex-direction: column;
+  height: 50%;
+  justify-content: space-between;
+  .stressHolder {
+    width: 50px;
+    height: 200px;
+    border: solid 1px black;
+    margin: 5px;
+    position: relative;
+  }
+  .stressBar {
+    background-color: red;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 }

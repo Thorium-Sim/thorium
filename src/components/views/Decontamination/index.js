@@ -10,12 +10,23 @@ const queryData = `
   deconActive
   deconProgram
   deconLocation
+  bunks {
+    id
+  }
 `;
 
 const QUERY = gql`
   query Sickbay($simulatorId: ID!) {
     sickbay(simulatorId:$simulatorId) {
       ${queryData}
+    }
+    decks(simulatorId: $simulatorId) {
+      id
+      number
+      rooms {
+        id
+        name
+      }
     }
   }
 `;
@@ -33,7 +44,7 @@ class DeconData extends Component {
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
-          const { sickbay } = data;
+          const { sickbay, decks } = data;
           if (loading || !sickbay) return null;
           if (!sickbay[0]) return <div>No Sickbay</div>;
           return (
@@ -50,7 +61,7 @@ class DeconData extends Component {
                 })
               }
             >
-              <Decon {...this.props} {...sickbay[0]} />
+              <Decon {...this.props} {...sickbay[0]} decks={decks} />
             </SubscriptionHelper>
           );
         }}
