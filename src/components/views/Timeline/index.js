@@ -66,7 +66,7 @@ class TimelineItem extends Component {
                 if (typeof args === "string") {
                   args = JSON.parse(args);
                 }
-                return <MacroPreview args={args} />;
+                return <MacroPreview args={args} updateArgs={() => {}} />;
               })()}
           </Fragment>
         )}

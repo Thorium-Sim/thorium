@@ -19,12 +19,12 @@
     bottom: 0;
   }
   .damage-list {
-    max-height: 40vh;
-    width: 60vw;
+    max-height: 60vh;
+    width: 90vw;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
   }
   .damage-view {

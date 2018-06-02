@@ -1,4 +1,3 @@
-// @flow
 import { System } from "./generic";
 
 // Gotta have a place to store coolant for now
@@ -6,17 +5,7 @@ import { System } from "./generic";
 // Coolant Tank room
 
 export default class Coolant extends System {
-  class: string;
-  type: string;
-  coolant: number;
-  coolantRate: number;
-  transfer: ?mixed;
-  constructor(params: {
-    coolant: number,
-    coolantRate: number,
-    transfer: ?mixed
-  }) {
-    params = params || {};
+  constructor(params = {}) {
     super(params);
     this.name = params.name || "Coolant";
     this.class = "Coolant";
@@ -25,19 +14,19 @@ export default class Coolant extends System {
     this.coolantRate = params.coolantRate || 0.2; // Effectively 5 times as much coolant in the tank than in a system
     this.transfer = params.transfer || null;
   }
-  get power(): mixed {
+  get power() {
     return {};
   }
-  set power(a: mixed) {
+  set power(a) {
     return;
   }
-  setCoolant(coolant: number) {
+  setCoolant(coolant) {
     this.coolant = Math.min(1, Math.max(0, coolant));
   }
-  setCoolantRate(coolantRate: number) {
+  setCoolantRate(coolantRate) {
     this.coolantRate = coolantRate;
   }
-  transferCoolant(sysId: string, which: string) {
+  transferCoolant(sysId, which) {
     let sign = 1;
     if (which === "tank") {
       // Into the tank
