@@ -44,6 +44,7 @@ function addAspects(template, sim) {
             d.simulatorId === sim.id &&
             d.number === oldDeck.number
         );
+        if (!deck) return;
         newAspect.deckId = deck.id;
       }
       if (aspect === "inventory") {
