@@ -67,6 +67,7 @@ import MedicalArmory from "./Armory/medicalArmory";
 import DamageArmory from "./Armory/damageArmory";
 import ComputerCore from "./ComputerCore";
 import TargetingStandalone from "./Targeting/standalone";
+import Decontamination from "./Decontamination";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -118,6 +119,7 @@ import ObjectivesCore from "./Objectives/core";
 import SurveyFormCore from "./SurveyForm/core";
 import ArmoryCore from "./Armory/core";
 import ComputerCoreCore from "./ComputerCore/core";
+import DecontaminationCore from "./Decontamination/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -192,7 +194,8 @@ const Views = {
   DamageArmory,
   MedicalTeams,
   ComputerCore,
-  TargetingStandalone
+  TargetingStandalone,
+  Decontamination
 };
 
 export const Widgets = {
@@ -312,7 +315,8 @@ export const Cores = {
   ObjectivesCore,
   SurveyFormCore,
   ArmoryCore,
-  ComputerCoreCore
+  ComputerCoreCore,
+  DecontaminationCore
 };
 
 export default Views;

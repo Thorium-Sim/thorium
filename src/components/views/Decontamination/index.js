@@ -2,36 +2,51 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-import Template from "./template";
+import Decon from "./decon";
 import "./style.css";
 
 const queryData = `
+  id
+  deconActive
+  deconProgram
+  deconLocation
+  bunks {
+    id
+  }
 `;
 
 const QUERY = gql`
-  query Template($simulatorId: ID!) {
-    template(simulatorId: $simulatorId) {
-${queryData}
+  query Sickbay($simulatorId: ID!) {
+    sickbay(simulatorId:$simulatorId) {
+      ${queryData}
+    }
+    decks(simulatorId: $simulatorId) {
+      id
+      number
+      rooms {
+        id
+        name
+      }
     }
   }
 `;
 const SUBSCRIPTION = gql`
-  subscription TemplateUpdate($simulatorId: ID!) {
-    templateUpdate(simulatorId: $simulatorId) {
-${queryData}
+  subscription SickbayUpdate($simulatorId: ID!) {
+    sickbayUpdate(simulatorId:$simulatorId) {
+      ${queryData}
     }
   }
 `;
 
-class TemplateData extends Component {
+class DeconData extends Component {
   state = {};
   render() {
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
-          const { template } = data;
-          if (loading || !template) return null;
-          if (!template[0]) return <div>No Template</div>;
+          const { sickbay, decks } = data;
+          if (loading || !sickbay) return null;
+          if (!sickbay[0]) return <div>No Sickbay</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
@@ -40,13 +55,13 @@ class TemplateData extends Component {
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
                     return Object.assign({}, previousResult, {
-                      computerCore: subscriptionData.data.templateUpdate
+                      computerCore: subscriptionData.data.sickbayUpdate
                     });
                   }
                 })
               }
             >
-              <Template {...this.props} {...template[0]} />
+              <Decon {...this.props} {...sickbay[0]} decks={decks} />
             </SubscriptionHelper>
           );
         }}
@@ -54,4 +69,4 @@ class TemplateData extends Component {
     );
   }
 }
-export default TemplateData;
+export default DeconData;
