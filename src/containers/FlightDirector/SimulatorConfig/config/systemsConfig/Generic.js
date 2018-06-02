@@ -78,6 +78,7 @@ export class GenericSystemConfig extends Component {
   };
   addRoom = ({ id, locations = [] }, room) => {
     const roomId = room || this.state.room;
+    if (!roomId) return;
     const variables = {
       id,
       locations: locations.map(l => l.id).concat(roomId)
