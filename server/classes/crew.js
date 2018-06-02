@@ -24,7 +24,7 @@ export default class Crew {
   get officialName() {
     return `${this.lastName}, ${this.firstName}`;
   }
-  update({ firstName, lastName, gender, age, rank, position, killed }) {
+  update({ firstName, lastName, gender, age, rank, position, killed, notes }) {
     if (firstName || firstName === "" || firstName === 0) {
       this.firstName = firstName;
     }
@@ -34,5 +34,6 @@ export default class Crew {
     if (rank || rank === "" || rank === 0) this.rank = rank;
     if (position || position === "" || position === 0) this.position = position;
     if (killed || killed === false) this.killed = killed;
+    if (notes || notes === "") this.notes = notes;
   }
 }

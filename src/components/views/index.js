@@ -68,6 +68,7 @@ import DamageArmory from "./Armory/damageArmory";
 import ComputerCore from "./ComputerCore";
 import TargetingStandalone from "./Targeting/standalone";
 import Decontamination from "./Decontamination";
+import MedicalRoster from "./MedicalRoster";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -195,7 +196,8 @@ const Views = {
   MedicalTeams,
   ComputerCore,
   TargetingStandalone,
-  Decontamination
+  Decontamination,
+  MedicalRoster
 };
 
 export const Widgets = {

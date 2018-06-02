@@ -56,7 +56,8 @@ const viewList = [
   "MedicalTeams",
   "ComputerCore",
   "TargetingStandalone",
-  "Decontamination"
+  "Decontamination",
+  "MedicalRoster"
 ];
 
 export default viewList;
