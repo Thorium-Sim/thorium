@@ -113,6 +113,9 @@ class DecksCore extends Component {
       mutation,
       variables
     });
+    this.setState({
+      selectedRoom: null
+    });
   }
   _renameRoom() {
     const roomName = this.props.data.decks
