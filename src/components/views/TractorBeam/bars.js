@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import Arrow from "./arrow";
 import Measure from "react-measure";
-import gql from "graphql-tag";
-import { withApollo } from "react-apollo";
 
 class Bars extends Component {
   constructor(props) {
@@ -35,12 +33,14 @@ class Bars extends Component {
     );
   };
   mouseMove = e => {
-    const { max = 1 } = this.props;
+    const { max = 0 } = this.props;
     const pageY = e.pageY || e.touches[0].pageY;
     const { height, top } = this.state;
     this.setState({
       level: Math.max(Math.min((pageY - top) / height, 1), max)
     });
+    this.props.mouseMove &&
+      this.props.mouseMove(Math.max(Math.min((pageY - top) / height, 1), max));
   };
   mouseUp = e => {
     document.removeEventListener("mousemove", this.mouseMove);
@@ -49,20 +49,7 @@ class Bars extends Component {
     document.removeEventListener("touchend", this.mouseUp);
 
     // mutate to update
-    const { id } = this.props;
-    const mutation = gql`
-      mutation TractorBeamStrength($id: ID!, $strength: Float!) {
-        setTractorBeamStrength(id: $id, strength: $strength)
-      }
-    `;
-    const variables = {
-      id,
-      strength: Math.abs(this.state.level - 1)
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
+    this.props.mouseUp && this.props.mouseUp(this.state.level);
   };
   render() {
     const {
@@ -72,7 +59,8 @@ class Bars extends Component {
       flop,
       className,
       label,
-      active
+      active = true,
+      noLevel
     } = this.props;
     const { level } = this.state;
     return (
@@ -85,26 +73,33 @@ class Bars extends Component {
             }}
           >
             {({ measureRef }) => (
-              <div ref={measureRef} className="arrow-container">
+              <div
+                ref={measureRef}
+                className={`arrow-container ${flop ? "flop" : ""}`}
+              >
                 {this.state.dimensions && (
                   <Arrow
                     dimensions={this.state.dimensions}
                     alertLevel={simulator.alertLevel}
                     level={level}
                     mouseDown={this.mouseDown}
-                    flop={true}
+                    flop={flop}
                   />
                 )}
               </div>
             )}
           </Measure>
         )}
-        <p className="barLabel">
-          {label && label + ": "}
-          {Math.round(Math.abs(level - 1) * 100) + "%"}
-        </p>
+
+        {!noLevel && (
+          <p className="barLabel">
+            {label && label + ": "}
+            {Math.round(Math.abs(level - 1) * 100) + "%"}
+          </p>
+        )}
+
         <div className="bar-holder">
-          {Array(30)
+          {Array(40)
             .fill(0)
             .map((_, index, array) => {
               return (
@@ -131,4 +126,4 @@ class Bars extends Component {
     );
   }
 }
-export default withApollo(Bars);
+export default Bars;

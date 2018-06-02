@@ -41,6 +41,7 @@ import { SurveyFormSubscriptions } from "./surveyform.js";
 import { ObjectiveSubscriptions } from "./objective.js";
 import { KeyboardSubscriptions } from "./keyboard.js";
 import { ComputerCoreSubscriptions } from "./computerCore.js";
+import { SickbaySubscriptions } from "./sickbay.js";
 
 const subscriptionMap = Object.assign(
   {},
@@ -86,7 +87,8 @@ const subscriptionMap = Object.assign(
   SurveyFormSubscriptions,
   ObjectiveSubscriptions,
   KeyboardSubscriptions,
-  ComputerCoreSubscriptions
+  ComputerCoreSubscriptions,
+  SickbaySubscriptions
 );
 
 export default subscriptionMap;

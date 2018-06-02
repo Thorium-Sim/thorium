@@ -1,6 +1,6 @@
-import SensorContact from "./sensorContact";
-import { System } from "./generic";
 import uuid from "uuid";
+import { System } from "./generic";
+import SensorContact from "./sensorContact";
 class Scan {
   constructor(params) {
     this.id = params.id || uuid.v4();
