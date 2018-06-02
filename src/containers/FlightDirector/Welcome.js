@@ -167,7 +167,7 @@ class Welcome extends Component {
 
 export const FLIGHTS_QUERY = gql`
   query Flights {
-    flights(running: true) {
+    flights {
       id
       name
       date
