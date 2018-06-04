@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 //import Draggable from 'gsap/src/uncompressed/utils/Draggable';
-import * as gsap from "gsap";
 import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 import { DraggableCore } from "react-draggable";
@@ -14,7 +13,8 @@ import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.css";
 import Tour from "reactour";
 
-const { fromTo } = gsap.default;
+const { fromTo } = window.TweenMax;
+
 const trainingSteps = [
   {
     selector: ".direction-drag",

@@ -1,6 +1,6 @@
 import { Component } from "react";
-import { TweenMax } from "gsap";
 import { findDOMNode } from "react-dom";
+const TweenMax = window.TweenMax;
 
 export default class Transitioner extends Component {
   componentWillEnter(callback) {
