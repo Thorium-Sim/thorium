@@ -231,7 +231,9 @@ class TacticalMapCore extends Component {
         <div className="preview">
           {selectedTactical && (
             <Preview
-              simulatorId={this.props.simulator.id}
+              simulatorId={
+                this.props.simulator ? this.props.simulator.id : null
+              }
               tacticalMapId={this.state.tacticalMapId}
               layers={selectedTactical.layers}
               layerId={this.state.layerId}

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { fromTo } from "gsap";
 //import Draggable from 'gsap/src/uncompressed/utils/Draggable';
 import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
@@ -13,6 +12,8 @@ import throttle from "../../../helpers/debounce";
 import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.css";
 import Tour from "reactour";
+
+const { fromTo } = window.TweenMax;
 
 const trainingSteps = [
   {
@@ -303,9 +304,13 @@ gamepadLoop(){
             throw new Error("onDrag called before onDragStart.");
           }
           newPosition.left =
-            (parentRect.left + parentRect.width / 2 - clientX) / width * -1 * 2;
+            ((parentRect.left + parentRect.width / 2 - clientX) / width) *
+            -1 *
+            2;
           newPosition.top =
-            (parentRect.top + parentRect.height / 2 - clientY) / width * -1 * 2;
+            ((parentRect.top + parentRect.height / 2 - clientY) / width) *
+            -1 *
+            2;
           if (
             distance(undefined, { x: newPosition.left, y: newPosition.top }) > 1
           ) {
@@ -432,9 +437,9 @@ gamepadLoop(){
                   ref="directionDragger"
                   className="dragger direction alertBack"
                   style={{
-                    transform: `translate3d(${this.state.direction.left *
-                      width /
-                      2}px,${this.state.direction.top * height / 2}px,0px)`
+                    transform: `translate3d(${(this.state.direction.left *
+                      width) /
+                      2}px,${(this.state.direction.top * height) / 2}px,0px)`
                   }}
                 />
               </DraggableCore>
@@ -454,8 +459,8 @@ gamepadLoop(){
                   ref="foreDragger"
                   className="dragger fore alertBack"
                   style={{
-                    transform: `translate3d(${this.state.directionUp.left *
-                      (width - 40) /
+                    transform: `translate3d(${(this.state.directionUp.left *
+                      (width - 40)) /
                       2}px,0px,0px)`
                   }}
                 />
@@ -514,9 +519,9 @@ gamepadLoop(){
                   ref="rotationDragger"
                   className="dragger rotation alertBack"
                   style={{
-                    transform: `translate3d(${this.state.rotation.left *
-                      width /
-                      2}px,${this.state.rotation.top * height / 2}px,0px)`
+                    transform: `translate3d(${(this.state.rotation.left *
+                      width) /
+                      2}px,${(this.state.rotation.top * height) / 2}px,0px)`
                   }}
                 />
               </DraggableCore>
@@ -536,8 +541,8 @@ gamepadLoop(){
                   ref="yaw"
                   className="dragger yaw alertBack"
                   style={{
-                    transform: `translate3d(${this.state.yaw.left *
-                      (width - 40) /
+                    transform: `translate3d(${(this.state.yaw.left *
+                      (width - 40)) /
                       2}px,0px,0px)`
                   }}
                 />
