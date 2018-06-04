@@ -53,6 +53,9 @@ export const SickbayMutations = {
   },
   setDeconAutoFinish(root, args, context) {
     App.handleEvent(args, "setDeconAutoFinish", context);
+  },
+  updatePatientChart(root, args, context) {
+    App.handleEvent(args, "updatePatientChart", context);
   }
 };
 
