@@ -1,7 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
 import { Row, Col, FormGroup, Label, Input, Button } from "reactstrap";
-import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
 
 const RosterDetail = ({
   action,
