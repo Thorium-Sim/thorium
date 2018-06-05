@@ -212,7 +212,9 @@ $color: $alert5;
   }
   input[type="email"],
   input[type="text"],
+  input[type="number"],
   input[type="password"],
+  select,
   textarea {
     color: #fff;
     border: 0px solid rgba(255, 255, 255, 0.5);
@@ -225,10 +227,14 @@ $color: $alert5;
     margin: 0 0 10px 0;
     transition: all 0.5s ease;
   }
+  input[type="text"].focus,
   input[type="text"]:focus,
-  input[type="text"]:focus,
+  input[type="number"].focus,
+  input[type="number"]:focus,
+  input[type="password"].focus,
   input[type="password"]:focus,
-  input[type="password"]:focus,
+  select.focus,
+  select:focus,
   textarea:focus,
   textarea:focus {
     box-shadow: 0px 0px 5px $alert5, 5px 5px 10px rgba(0, 0, 0, 0.3);

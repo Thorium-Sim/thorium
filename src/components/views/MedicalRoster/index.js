@@ -14,12 +14,12 @@ rank
 name
 gender
 position
-notes
 `;
 
 const QUERY = gql`
   query Template($simulatorId: ID!) {
     sickbay(simulatorId: $simulatorId) {
+      id
       sickbayRoster {
         ${queryData}
       }
@@ -32,6 +32,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
 subscription Sickbay($simulatorId: ID!) {
   sickbayUpdate(simulatorId:$simulatorId) {
+    id
     sickbayRoster {
       ${queryData}
     }
@@ -52,9 +53,10 @@ class TemplateData extends Component {
   render() {
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
-        {({ loading, data, subscribeToMore }) => {
+        {({ loading, data = {}, subscribeToMore }) => {
           const { sickbay, crew } = data;
           if (loading || !sickbay) return null;
+
           if (!sickbay[0]) return <div>No sickbay</div>;
           return (
             <Fragment>

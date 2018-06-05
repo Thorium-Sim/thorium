@@ -13,7 +13,7 @@ type Crew {
   workRoom: Room
   restRoom: Room
   inventory: [InventoryItem]
-  notes: String
+  charts:[Chart]
 }
 
 input CrewInput {
@@ -28,7 +28,6 @@ input CrewInput {
   killed: Boolean
   workRoom: Int
   restRoom: Int
-  notes: String
 }
 `;
 

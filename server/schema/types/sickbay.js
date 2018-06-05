@@ -27,4 +27,30 @@ type SickbayBunk {
   scanning: Boolean
   patient: Crew
 }
+
+type Chart {
+  id: ID
+  admitTime: String
+  dischargeTime:String
+  bloodPressure:Float
+  heartRate:Float
+  temperature:Float
+  o2levels:Float
+  symptoms:[String]
+  diagnosis:String
+  treatment:String
+}
+
+input ChartInput {
+  id: ID
+  admitTime: String
+  dischargeTime:String
+  bloodPressure:Float
+  heartRate:Float
+  temperature:Float
+  o2levels:Float
+  symptoms:[String]
+  diagnosis:String
+  treatment:String
+}
 `;
