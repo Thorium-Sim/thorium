@@ -16,7 +16,7 @@
   "devDependencies": {
     "all-contributors-cli": "^4.11.2",
     "babel-cli": "^6.26.0",
-    "babel-plugin-inline-import": "^2.0.6",
+    "babel-plugin-inline-import": "^3.0.0",
     "babel-plugin-preval": "^1.6.4",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "babel-preset-env": "^1.7.0",
