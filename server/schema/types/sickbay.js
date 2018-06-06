@@ -22,6 +22,7 @@ type Sickbay implements SystemInterface {
 
 type SickbayBunk {
   id: ID
+  sickbayId: ID
   scanRequest: String
   scanResults: String
   scanning: Boolean

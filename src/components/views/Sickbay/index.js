@@ -58,16 +58,20 @@ ${queryData}
 `;
 
 const CREWSUB = gql`
-subscription CrewSub($simulatorId: ID!) {
-  crewUpdate(simulatorId:$simulatorId) {
-    ${queryData}
+  subscription CrewSub($simulatorId: ID!) {
+    crewUpdate(simulatorId: $simulatorId) {
+      id
+      name
+      position
+      firstName
+      lastName
+    }
   }
-}
 `;
 const SUBSCRIPTION = gql`
   subscription SickbayUpdate($simulatorId: ID!) {
     sickbayUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ${queryData}
     }
   }
 `;

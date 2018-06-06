@@ -73,3 +73,14 @@ export const SickbaySubscriptions = {
     )
   }
 };
+
+export const SickbayTypes = {
+  SickbayBunk: {
+    patient(bunk) {
+      const sickbay = App.systems.find(s => s.id === bunk.sickbayId);
+      return App.crew
+        .concat(sickbay ? sickbay.sickbayRoster : [])
+        .find(c => c.id === bunk.patient);
+    }
+  }
+};

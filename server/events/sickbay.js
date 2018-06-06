@@ -41,17 +41,21 @@ App.on("sickbayBunkScanResponse", ({ id, bunkId, response }) => {
 });
 
 App.on("assignPatient", ({ id, bunkId, crewId }) => {
-  performAction(id, sys => sys.assignBunk(bunkId, crewId));
-  const crew = App.crew.find(c => c.id === crewId);
-  crew.addChart();
-  pubsub.publish("crewUpdate", App.crew);
+  performAction(id, sys => {
+    sys.assignBunk(bunkId, crewId);
+    const crew = App.crew.concat(sys.sickbayRoster).find(c => c.id === crewId);
+    crew.addChart();
+    pubsub.publish("crewUpdate", App.crew);
+  });
 });
 
 App.on("dischargePatient", ({ id, bunkId }) => {
   performAction(id, sys => {
     const bunk = sys.bunks.find(b => b.id === bunkId);
     if (bunk) {
-      const crew = App.crew.find(c => c.id === bunk.patient);
+      const crew = App.crew
+        .concat(sys.sickbayRoster)
+        .find(c => c.id === bunk.patient);
       if (crew) {
         crew.dischargeChart();
         pubsub.publish("crewUpdate", App.crew);
@@ -62,7 +66,7 @@ App.on("dischargePatient", ({ id, bunkId }) => {
 });
 
 App.on("updatePatientChart", ({ crewId, chart }) => {
-  const crew = App.crew.find(c => c.id === crewId);
+  const crew = App.crew.concat(sys.sickbayRoster).find(c => c.id === crewId);
   crew && crew.updateChart(chart);
   pubsub.publish("crewUpdate", App.crew);
 });

@@ -1,8 +1,18 @@
 import React from "react";
 import { Row, Col, Card, Button, CardBody } from "reactstrap";
-import timeCared from "./timeCared";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
+import TimeCared from "./timeCared";
 
-const Bunk = ({ id, num, scanning, patient, openModal }) => {
+const Bunk = ({
+  sickbayId,
+  id,
+  num,
+  scanning,
+  patient,
+  openModal,
+  openBunk
+}) => {
   const chart =
     patient &&
     patient.charts.concat().sort((a, b) => {
@@ -17,15 +27,13 @@ const Bunk = ({ id, num, scanning, patient, openModal }) => {
           <Col sm={12}>
             <strong>Bunk {num}</strong>
           </Col>
-          <Col sm={6}>
-            <strong>Patient:</strong> {patient ? patient.name : "None"}
-          </Col>
-          <Col sm={6}>
+          <Col sm={12}>
+            <strong>Patient:</strong> {patient ? patient.name : "None"}{" "}
             <strong>Status:</strong> {scanning ? "Scanning" : "Idle"}
           </Col>
           <Col sm={12}>
             <strong>Time cared for:</strong>{" "}
-            {chart ? timeCared(chart.admitTime) : "N/a"}
+            {chart ? <TimeCared admitTime={chart.admitTime} /> : "N/a"}
           </Col>
         </Row>
         <p />
@@ -34,14 +42,25 @@ const Bunk = ({ id, num, scanning, patient, openModal }) => {
         {patient ? (
           <Row>
             <Col sm={6}>
-              <Button color="info" block>
+              <Button color="info" block onClick={openBunk}>
                 Status
               </Button>
             </Col>
             <Col sm={6}>
-              <Button color="danger" block>
-                Discharge
-              </Button>
+              <Mutation
+                mutation={gql`
+                  mutation Discharge($id: ID!, $bunkId: ID!) {
+                    dischargePatient(id: $id, bunkId: $bunkId)
+                  }
+                `}
+                variables={{ bunkId: id, id: sickbayId }}
+              >
+                {action => (
+                  <Button color="danger" block onClick={action}>
+                    Discharge
+                  </Button>
+                )}
+              </Mutation>
             </Col>
           </Row>
         ) : (

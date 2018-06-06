@@ -5,6 +5,7 @@ import Crew from "./crew";
 class Bunk {
   constructor(params) {
     this.id = params.id || uuid.v4();
+    this.sickbayId = params.sickbayId;
     this.scanRequest = params.scanRequest || "";
     this.scanResults = params.scanResults || "";
     this.scanning = params.scanning || false;
@@ -49,7 +50,9 @@ export default class Sickbay extends System {
       this.sickbayRoster.push(new Crew(r))
     );
     this.bunks = [];
-    (params.bunks || []).forEach(b => this.bunks.push(new Bunk(b)));
+    (params.bunks || []).forEach(b =>
+      this.bunks.push(new Bunk({ ...b, sickbayId: this.id }))
+    );
   }
   startDeconProgram(program, location) {
     this.deconActive = true;
@@ -87,7 +90,7 @@ export default class Sickbay extends System {
     const length = this.bunks.length;
     if (length < count) {
       for (let i = 0; i < count - length; i++) {
-        this.bunks.push(new Bunk({}));
+        this.bunks.push(new Bunk({ sickbayId: this.id }));
       }
     }
   }

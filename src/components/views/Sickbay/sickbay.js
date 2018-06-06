@@ -1,67 +1,70 @@
 import React, { Component } from "react";
-import {
-  Container,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button
-} from "reactstrap";
-import Bunk from "./bunk";
-import RosterList from "../MedicalRoster/rosterList";
+import { Container } from "reactstrap";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
 
-const AdmitModal = ({
-  modal,
-  toggle,
-  selectedCrew,
-  selectCrew,
-  crew,
-  sickbayRoster
-}) => {
-  return (
-    <Modal className="modal-themed" isOpen={modal} toggle={toggle}>
-      <ModalHeader toggle={toggle}>Admit Patient</ModalHeader>
-      <ModalBody>
-        <RosterList
-          selectedCrew={selectedCrew}
-          selectCrew={selectCrew}
-          crew={crew}
-          sickbayRoster={sickbayRoster}
-        />
-      </ModalBody>
-      <ModalFooter>
-        <Button color="primary" onClick={toggle}>
-          Do Something
-        </Button>{" "}
-        <Button color="secondary" onClick={toggle}>
-          Cancel
-        </Button>
-      </ModalFooter>
-    </Modal>
-  );
-};
+import Bunk from "./bunk";
+import AdmitModal from "./admitModal";
+
 class Sickbay extends Component {
   state = { modal: false };
+  admitPatient = action => {
+    return () => {
+      action().then(() => {
+        this.setState({
+          admitBunk: null,
+          selectedCrew: null,
+          modal: null,
+          selectedBunk: this.state.admitBunk
+        });
+      });
+    };
+  };
   render() {
     const { id, bunks, sickbayRoster, crew } = this.props;
-    const { modal, admitBunk, selectedCrew } = this.state;
+    const { modal, admitBunk, selectedCrew, selectedBunk } = this.state;
+    if (selectedBunk)
+      return (
+        <Container className="card-sickbay" fluid>
+          Hello!
+        </Container>
+      );
     return (
-      <Container fluid className="card-sickbay">
+      <Container className="card-sickbay">
         {bunks.map((b, i) => (
           <Bunk
             key={b.id}
             {...b}
             num={i + 1}
+            sickbayId={id}
+            openBunk={() => this.setState({ selectedBunk: b.id })}
             openModal={() => this.setState({ modal: true, admitBunk: b.id })}
           />
         ))}
-        <AdmitModal
-          modal={modal}
-          toggle={() => this.setState({ modal: false, admitBunk: null })}
-          selectCrew={c => this.setState({ selectedCrew: c })}
-          crew={crew}
-          sickbayRoster={sickbayRoster}
-        />
+        <Mutation
+          mutation={gql`
+            mutation AssignPatient($id: ID!, $bunkId: ID!, $crewId: ID!) {
+              assignPatient(id: $id, bunkId: $bunkId, crewId: $crewId)
+            }
+          `}
+          variables={{
+            id,
+            bunkId: admitBunk,
+            crewId: selectedCrew && selectedCrew.id
+          }}
+        >
+          {action => (
+            <AdmitModal
+              modal={modal}
+              toggle={() => this.setState({ modal: false, admitBunk: null })}
+              selectedCrew={selectedCrew}
+              selectCrew={c => this.setState({ selectedCrew: c })}
+              crew={crew}
+              sickbayRoster={sickbayRoster}
+              admitPatient={this.admitPatient(action)}
+            />
+          )}
+        </Mutation>
       </Container>
     );
   }
