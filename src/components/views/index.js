@@ -69,6 +69,7 @@ import ComputerCore from "./ComputerCore";
 import TargetingStandalone from "./Targeting/standalone";
 import Decontamination from "./Decontamination";
 import MedicalRoster from "./MedicalRoster";
+import Sickbay from "./Sickbay";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -197,7 +198,8 @@ const Views = {
   ComputerCore,
   TargetingStandalone,
   Decontamination,
-  MedicalRoster
+  MedicalRoster,
+  Sickbay
 };
 
 export const Widgets = {

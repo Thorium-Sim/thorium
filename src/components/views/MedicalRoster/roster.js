@@ -1,19 +1,9 @@
 import React, { Component } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  ListGroup,
-  ListGroupItem,
-  ListGroupItemHeading,
-  ListGroupItemText,
-  Input,
-  Button
-} from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 import RosterDetail from "./rosterDetail";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-
+import RosterList from "./rosterList";
 class Roster extends Component {
   state = { roster: "bridge", search: "", selectedCrew: { id: "newCrew" } };
   updateSelectedCrew = value => {
@@ -21,79 +11,18 @@ class Roster extends Component {
   };
   render() {
     const { id, crew, sickbayRoster, simulator } = this.props;
-    const { selectedCrew, roster, search } = this.state;
+    const { selectedCrew } = this.state;
     return (
       <Container fluid>
         <Row>
           <Col sm={3}>
-            <Row>
-              <Col sm={6}>
-                <Button
-                  color="secondary"
-                  block
-                  onClick={() => this.setState({ roster: "bridge" })}
-                  active={roster === "bridge"}
-                >
-                  Bridge Crew
-                </Button>
-              </Col>
-              <Col sm={6}>
-                <Button
-                  color="primary"
-                  block
-                  onClick={() => this.setState({ roster: "crew" })}
-                  active={roster === "crew"}
-                >
-                  Duty Crew
-                </Button>
-              </Col>
-            </Row>
-            <Input
-              style={{ marginTop: "20px" }}
-              type="text"
-              value={search}
-              onChange={e => this.setState({ search: e.target.value })}
-              placeholder="Search..."
+            <RosterList
+              selectedCrew={selectedCrew}
+              selectCrew={c => this.setState({ selectedCrew: c })}
+              crew={crew}
+              sickbayRoster={sickbayRoster}
+              add
             />
-            <ListGroup style={{ height: "60vh", overflowY: "auto" }}>
-              {roster === "bridge" &&
-                sickbayRoster.length === 0 && (
-                  <ListGroupItem>
-                    <ListGroupItemHeading>No bridge crew.</ListGroupItemHeading>
-                  </ListGroupItem>
-                )}
-              {(roster === "bridge" ? sickbayRoster : crew)
-                .filter(f => {
-                  if (search) {
-                    return (
-                      f.firstName.match(new RegExp(search, "gi")) ||
-                      f.lastName.match(new RegExp(search, "gi"))
-                    );
-                  }
-                  return true;
-                })
-                .map(c => (
-                  <ListGroupItem
-                    key={c.id}
-                    active={selectedCrew && selectedCrew.id === c.id}
-                    onClick={() => this.setState({ selectedCrew: c })}
-                  >
-                    <ListGroupItemHeading>
-                      {c.lastName}, {c.firstName}
-                    </ListGroupItemHeading>
-                    <ListGroupItemText>{c.position}</ListGroupItemText>
-                  </ListGroupItem>
-                ))}
-            </ListGroup>
-            {roster === "bridge" && (
-              <Button
-                color="success"
-                block
-                onClick={() => this.setState({ selectedCrew: {} })}
-              >
-                Add Bridge Crew
-              </Button>
-            )}
           </Col>
           <Col sm={9}>
             <Mutation
