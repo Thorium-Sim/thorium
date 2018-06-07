@@ -64,8 +64,11 @@ App.on("probeQueryResponse", ({ id, probeId, response }) => {
   sys.probeQueryResponse(probeId, response);
   pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
 });
-App.on("probeProcessedData", ({ id, data }) => {
-  const sys = App.systems.find(s => s.id === id);
-  sys.addProcessedData(data);
+App.on("probeProcessedData", ({ id, simulatorId, data = "" }) => {
+  const sys = App.systems.find(
+    s => s.id === id || (s.simulatorId === simulatorId && s.type === "Probes")
+  );
+  const simulator = App.simulators.find(s => s.id === sys.simulatorId);
+  sys && sys.addProcessedData(data.replace(/#SIM/gi, simulator.name));
   pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
 });
