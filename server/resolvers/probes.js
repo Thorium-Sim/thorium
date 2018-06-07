@@ -43,8 +43,9 @@ export const ProbesSubscriptions = {
   probesUpdate: {
     resolve(rootValue, { simulatorId }) {
       let returnRes = rootValue;
-      if (simulatorId)
+      if (simulatorId) {
         returnRes = returnRes.filter(s => s.simulatorId === simulatorId);
+      }
       return returnRes;
     },
     subscribe: withFilter(
@@ -69,7 +70,7 @@ export const ProbesTypes = {
     equipment(probe) {
       const parent = App.systems.find(s => s.id === probe.parentId);
       return probe.equipment.map(e => {
-        const eq = parent.equipment.find(eq => eq.id === e.id);
+        const eq = parent.equipment.find(eqi => eqi.id === e.id);
         return {
           id: e.id,
           name: eq.name,
@@ -85,7 +86,7 @@ export const ProbesTypes = {
       const parent = App.systems.find(s => s.id === probeType.parentId);
       return parent.equipment.filter(e => {
         if (e.availableProbes.length === 0) return true;
-        if (e.availableProbes.indexOf(probeType.id) > 0) return true;
+        if (e.availableProbes.indexOf(probeType.id) > -1) return true;
         return false;
       });
     }

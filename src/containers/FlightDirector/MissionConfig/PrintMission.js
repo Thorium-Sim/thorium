@@ -12,6 +12,7 @@ export const macroNames = {
   setArmyContacts: "Set Army Contacts",
   sendLongRangeMessage: "Send Long Range Message",
   processedData: "Send Processed Sensors Data",
+  probeProcessedData: "Send Processed Probe Network Data",
   updateViewscreenComponent: "Show On Viewscreen",
   showViewscreenTactical: "Show Tactical on Viewscreen",
   navSetPresets: "Set Navigation Presets",
