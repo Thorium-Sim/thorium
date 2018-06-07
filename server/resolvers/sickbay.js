@@ -1,6 +1,7 @@
 import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
+import { symptoms } from "../classes/medical/symptoms";
 
 export const SickbayQueries = {
   sickbay(root, { simulatorId }) {
@@ -8,6 +9,9 @@ export const SickbayQueries = {
     if (simulatorId)
       returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
     return returnVal;
+  },
+  symptoms() {
+    return symptoms;
   }
 };
 

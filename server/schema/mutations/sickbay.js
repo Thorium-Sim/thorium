@@ -13,5 +13,5 @@ updateDeconOffset(id:ID!, offset:Float!):String
 cancelDeconProgram(id:ID!):String
 completeDeconProgram(id:ID!):String
 setDeconAutoFinish(id:ID!, finish:Boolean!):String
-updatePatientChart(crewId:ID!, chart:ChartInput!):String
+updatePatientChart(simulatorId: ID, crewId:ID!, chart:ChartInput!):String
 `;

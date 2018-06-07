@@ -23,10 +23,15 @@ bunks {
       heartRate
       diagnosis
       treatment
+      treatmentRequest
       temperature
       bloodPressure
       admitTime
       dischargeTime
+      painPoints {
+        x,
+        y
+      }
     }
   }
   scanning

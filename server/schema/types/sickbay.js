@@ -33,25 +33,37 @@ type Chart {
   id: ID
   admitTime: String
   dischargeTime:String
-  bloodPressure:Float
+  bloodPressure:String
   heartRate:Float
   temperature:Float
   o2levels:Float
   symptoms:[String]
-  diagnosis:String
+  diagnosis:[String]
   treatment:String
+  treatmentRequest:Boolean
+  painPoints: [PainPoint]
+}
+
+type PainPoint {
+  x: Float
+  y: Float
+}
+input PainPointInput {
+  x: Float
+  y: Float
 }
 
 input ChartInput {
   id: ID
   admitTime: String
   dischargeTime:String
-  bloodPressure:Float
+  bloodPressure:String
   heartRate:Float
   temperature:Float
   o2levels:Float
   symptoms:[String]
-  diagnosis:String
   treatment:String
+  treatmentRequest:Boolean
+  painPoints: [PainPointInput]
 }
 `;

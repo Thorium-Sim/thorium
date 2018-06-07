@@ -60,6 +60,7 @@ $color: $alert5;
     //background-image: none;
   }
   &.disabled,
+  &[readonly],
   &[disabled],
   fieldset[disabled] & {
     &,
@@ -215,7 +216,8 @@ $color: $alert5;
   input[type="number"],
   input[type="password"],
   select,
-  textarea {
+  textarea,
+  textarea[readonly] {
     color: #fff;
     border: 0px solid rgba(255, 255, 255, 0.5);
     padding: 15px;

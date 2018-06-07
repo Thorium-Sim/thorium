@@ -13,7 +13,7 @@ class Bunk {
   }
   scan(request) {
     this.scanRequest = request;
-    this.scanning = false;
+    this.scanning = true;
   }
   cancelScan() {
     this.scanning = false;

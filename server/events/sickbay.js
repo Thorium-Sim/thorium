@@ -65,10 +65,19 @@ App.on("dischargePatient", ({ id, bunkId }) => {
   });
 });
 
-App.on("updatePatientChart", ({ crewId, chart }) => {
-  const crew = App.crew.concat(sys.sickbayRoster).find(c => c.id === crewId);
+App.on("updatePatientChart", ({ simulatorId, crewId, chart }) => {
+  const sys = App.systems.find(
+    s => s.simulatorId === simulatorId && s.class === "Sickbay"
+  );
+  const crew = App.crew
+    .concat(sys ? sys.sickbayRoster : [])
+    .find(c => c.id === crewId);
   crew && crew.updateChart(chart);
   pubsub.publish("crewUpdate", App.crew);
+  pubsub.publish(
+    "sickbayUpdate",
+    App.systems.filter(s => s.class === "Sickbay")
+  );
 });
 
 App.on("startDeconProgram", ({ id, program, location }) => {

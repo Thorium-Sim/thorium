@@ -19,7 +19,6 @@ export const symptoms = [
   "sores",
   "burns",
   "shallow breathing",
-  "coughing",
   "exhaustion",
   "discoloration"
 ];
@@ -83,7 +82,7 @@ export const diagnoses = {
     "sweating",
     "shallow breathing"
   ],
-  "allergic reaction": ["hives", "sneezing", "itching", "coughing"],
+  "allergic reaction": ["hives", "sneezing", "itching", "cough"],
   "blood clot": ["dementia", "fainting", "pain", "headache"],
   laceration: ["bleeding", "pain", "sweating", "chills"],
   exhaustion: ["fainting", "pain", "sweating", "headache"],
