@@ -52,6 +52,24 @@ App.on("sensorScanRequest", ({ id, request }) => {
 App.on("sensorScanResult", ({ id, result }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.scanResulted(result);
+  const simulator = App.simulators.find(s => s.id === system.simulatorId);
+  const stations = simulator.stations.filter(s =>
+    s.cards.find(
+      c =>
+        c.component ===
+        (system.domain === "external" ? "SensorScans" : "SecurityScans")
+    )
+  );
+  stations.forEach(s => {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: system.simulatorId,
+      station: s.name,
+      title: `Sensor Scan Answered`,
+      body: result,
+      color: "info"
+    });
+  });
   pubsub.publish(
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")
@@ -77,6 +95,19 @@ App.on("processedData", ({ id, simulatorId, domain = "external", data }) => {
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")
   );
+  const stations = simulator.stations.filter(s =>
+    s.cards.find(c => c.component === "Sensors")
+  );
+  stations.forEach(s => {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: system.simulatorId,
+      station: s.name,
+      title: `New Processed Data`,
+      body: data,
+      color: "info"
+    });
+  });
 });
 App.on("sensorScanCancel", ({ id }) => {
   const system = App.systems.find(sys => sys.id === id);
