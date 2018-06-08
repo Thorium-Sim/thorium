@@ -1,3 +1,5 @@
+import { Cores } from "../views";
+
 const categories = [
   {
     name: "Generic",
@@ -23,12 +25,13 @@ const categories = [
       "CrewCore",
       "ArmoryCore",
       "HeatCore",
-      "SelfDestructCore"
+      "SelfDestructCore",
+      "ObjectivesCore"
     ],
     style: {
       gridTemplateRows: "200px 200px 400px",
       gridTemplateColumns: "400px 400px 400px",
-      gridTemplateAreas: `"CrewCore CrewCore SelfDestructCore" "HeatCore Nothing CargoCore" "ShipCore Nothing CargoCore"`
+      gridTemplateAreas: `"CrewCore CrewCore SelfDestructCore" "HeatCore ObjectivesCore CargoCore" "ShipCore ObjectivesCore CargoCore"`
     }
   },
   {
@@ -129,23 +132,34 @@ const categories = [
       "TransporterCore",
       "StealthFieldCore",
       "TractorBeamCore",
-      "ShuttlesCore"
+      "ShuttlesCore",
+      "ComputerCoreCore"
     ],
     style: {
       gridTemplateRows: "200px 200px",
-      gridTemplateColumns: "400px 400px",
-      gridTemplateAreas: `"TransporterCore StealthFieldCore" "TractorBeamCore ShuttlesCore"`
+      gridTemplateColumns: "400px 400px 400px",
+      gridTemplateAreas: `"TransporterCore StealthFieldCore ComputerCoreCore" "TractorBeamCore ShuttlesCore ComputerCoreCore"`
     }
   },
   {
     name: "Medical",
-    components: ["MedicalTeamsCore"],
+    components: ["MedicalTeamsCore", "SickbayCore", "DecontaminationCore"],
     style: {
       gridTemplateRows: "200px 200px",
-      gridTemplateColumns: "400px 400px",
-      gridTemplateAreas: `"MedicalTeamsCore Nothing" "MedicalTeamsCore Nothing"`
+      gridTemplateColumns: "400px 400px 400px",
+      gridTemplateAreas: `"MedicalTeamsCore SickbayCore SickbayCore" "MedicalTeamsCore DecontaminationCore DecontaminationCore"`
     }
   }
 ];
 
-export default categories;
+const comps = categories.reduce(
+  (prev, next) => prev.concat(next.components),
+  []
+);
+
+const other = {
+  name: "Other",
+  components: Object.keys(Cores).filter(c => comps.indexOf(c) === -1)
+};
+
+export default categories.concat(other);

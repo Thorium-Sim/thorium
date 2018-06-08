@@ -39,13 +39,15 @@ class UpdateSelect extends React.PureComponent {
         <option value="select" disabled>
           Select a Core
         </option>
-        {Object.keys(Cores).map(s => {
-          return mosaicComponents(this.props.mosaic).indexOf(s) > -1 ? (
-            <option key={s} value={s} disabled>{`${s}${" - ✅"}`}</option>
-          ) : (
-            <option key={s} value={s}>{`${s}`}</option>
-          );
-        })}
+        {Object.keys(Cores)
+          .sort()
+          .map(s => {
+            return mosaicComponents(this.props.mosaic).indexOf(s) > -1 ? (
+              <option key={s} value={s} disabled>{`${s}${" - ✅"}`}</option>
+            ) : (
+              <option key={s} value={s}>{`${s}`}</option>
+            );
+          })}
       </select>
     );
   }
@@ -62,32 +64,12 @@ class Split extends React.PureComponent {
           "pt-icon-add-column-right",
           this.split
         )}
-        {/*<select
-          type="select"
-          style={{
-            width: "30px",
-            height: "30px",
-            left: 0,
-            position: "absolute",
-            zIndex: 5,
-            opacity: 0
-          }}
-          value="nothing"
-          onChange={this.split}
-        >
-          <option key="nothing">Select a core...</option>
-          {Object.keys(Cores).map(s => (
-            <option key={s}>{`${s}${
-              mosaicComponents(this.props.mosaic).indexOf(s) > -1 ? " - ✅" : ""
-            }`}</option>
-          ))}
-        </select>*/}
       </div>
     );
   }
 
   split = e => {
-    this.context.mosaicWindowActions.split("Picker");
+    this.context.mosaicWindowActions.split("Picker-" + Math.random());
   };
 }
 
@@ -123,7 +105,7 @@ class Dynamic extends Component {
               createNode={e => e}
             >
               {(() => {
-                if (id === "Picker") {
+                if (id.indexOf("Picker") > -1) {
                   return (
                     <Picker components={mosaicComponents(this.props.mosaic)} />
                   );
