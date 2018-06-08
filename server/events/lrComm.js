@@ -23,10 +23,10 @@ App.on(
         decoded,
         sender
       );
+
     if (crew === false) {
       // Find the station(s) which has long range message sending
-      const sim = App.simulators.find(s => s.id === system.simulatorId);
-      const stations = sim.stations.filter(s =>
+      const stations = simulator.stations.filter(s =>
         s.cards.find(c => c.component === "LongRangeComm")
       );
       stations.forEach(s => {
@@ -37,6 +37,22 @@ App.on(
             station: s.name,
             title: `New Long Range Message Queued`,
             body: `Message composed by ${sender}`,
+            color: "info"
+          });
+        }
+      });
+    } else {
+      const stations = simulator.stations.filter(s =>
+        s.cards.find(c => c.component === "CommDecoding")
+      );
+      stations.forEach(s => {
+        if (s.name !== sender) {
+          pubsub.publish("notify", {
+            id: uuid.v4(),
+            simulatorId: system.simulatorId,
+            station: s.name,
+            title: `New Long Range Message`,
+            body: `From ${sender}`,
             color: "info"
           });
         }
