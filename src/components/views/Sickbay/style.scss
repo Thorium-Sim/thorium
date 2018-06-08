@@ -1,6 +1,31 @@
-:root {
-  --mask-pos: 0%;
-  animation: thing 4s linear infinite alternate;
+.core .sickbay-core {
+  display: flex;
+  justify-content: space-between;
+  height: calc(100% - 44px);
+  .patient-controls {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .patient-control {
+    flex: 3;
+    height: 100%;
+  }
+  .bunks-container {
+    flex: 1;
+  }
+  .bunks-list {
+    height: 100%;
+    overflow-y: auto;
+    p {
+      padding: 3px;
+      margin: 0px;
+      border-radius: 5px;
+      &.active {
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+    }
+  }
 }
 
 .card-sickbay {

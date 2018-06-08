@@ -1,5 +1,6 @@
 import uuid from "uuid";
 import { diagnoses } from "./medical/symptoms";
+import processReport from "./generic/processReport";
 class Chart {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
@@ -47,7 +48,7 @@ class Chart {
     }
     if (diagnosis || diagnosis === "") this.diagnosis = diagnosis;
     if (treatment || treatment === "") {
-      this.treatment = treatment;
+      this.treatment = processReport(treatment);
       this.treatmentRequest = false;
     }
     if (treatmentRequest || treatmentRequest === false) {

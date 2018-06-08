@@ -122,6 +122,7 @@ import SurveyFormCore from "./SurveyForm/core";
 import ArmoryCore from "./Armory/core";
 import ComputerCoreCore from "./ComputerCore/core";
 import DecontaminationCore from "./Decontamination/core";
+import SickbayCore from "./Sickbay/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -320,7 +321,8 @@ export const Cores = {
   SurveyFormCore,
   ArmoryCore,
   ComputerCoreCore,
-  DecontaminationCore
+  DecontaminationCore,
+  SickbayCore
 };
 
 export default Views;
