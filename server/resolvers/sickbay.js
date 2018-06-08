@@ -1,6 +1,7 @@
 import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
+import { symptoms } from "../classes/medical/symptoms";
 
 export const SickbayQueries = {
   sickbay(root, { simulatorId }) {
@@ -8,6 +9,9 @@ export const SickbayQueries = {
     if (simulatorId)
       returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
     return returnVal;
+  },
+  symptoms() {
+    return symptoms;
   }
 };
 
@@ -53,6 +57,9 @@ export const SickbayMutations = {
   },
   setDeconAutoFinish(root, args, context) {
     App.handleEvent(args, "setDeconAutoFinish", context);
+  },
+  updatePatientChart(root, args, context) {
+    App.handleEvent(args, "updatePatientChart", context);
   }
 };
 
@@ -68,5 +75,16 @@ export const SickbaySubscriptions = {
       () => pubsub.asyncIterator("sickbayUpdate"),
       rootValue => !!(rootValue && rootValue.length)
     )
+  }
+};
+
+export const SickbayTypes = {
+  SickbayBunk: {
+    patient(bunk) {
+      const sickbay = App.systems.find(s => s.id === bunk.sickbayId);
+      return App.crew
+        .concat(sickbay ? sickbay.sickbayRoster : [])
+        .find(c => c.id === bunk.patient);
+    }
   }
 };

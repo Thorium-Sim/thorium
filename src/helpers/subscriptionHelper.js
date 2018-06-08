@@ -8,7 +8,7 @@ class SubscriptionHelper extends Component {
     this.sub && this.sub();
   }
   render() {
-    return this.props.children;
+    return this.props.children || null;
   }
 }
 

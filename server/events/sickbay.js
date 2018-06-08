@@ -29,7 +29,27 @@ App.on("updateSickbayCrew", ({ id, crewId, crew }) => {
 });
 
 App.on("scanSickbayBunk", ({ id, bunkId, request }) => {
-  performAction(id, sys => sys.scanBunk(bunkId, request));
+  performAction(id, sys => {
+    sys.scanBunk(bunkId, request);
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      station: "Core",
+      title: `Sickbay Bunk Scan`,
+      body: request,
+      color: "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: sys.simulatorId,
+        component: "SickbayCore",
+        title: `Sickbay Bunk Scan`,
+        body: request,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+  });
 });
 
 App.on("cancelSickbayBunkScan", ({ id, bunkId }) => {
@@ -41,11 +61,99 @@ App.on("sickbayBunkScanResponse", ({ id, bunkId, response }) => {
 });
 
 App.on("assignPatient", ({ id, bunkId, crewId }) => {
-  performAction(id, sys => sys.assignBunk(bunkId, crewId));
+  performAction(id, sys => {
+    sys.assignBunk(bunkId, crewId);
+    const crew = App.crew.concat(sys.sickbayRoster).find(c => c.id === crewId);
+    crew.addChart();
+    pubsub.publish("crewUpdate", App.crew);
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      station: "Core",
+      title: `New Sickbay Patient`,
+      body: `${crew.firstName} ${crew.lastName}`,
+      color: "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: sys.simulatorId,
+        component: "SickbayCore",
+        title: `New Sickbay Patient`,
+        body: `${crew.firstName} ${crew.lastName}`,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+  });
 });
 
 App.on("dischargePatient", ({ id, bunkId }) => {
-  performAction(id, sys => sys.dischargeBunk(bunkId));
+  performAction(id, sys => {
+    const bunk = sys.bunks.find(b => b.id === bunkId);
+    if (bunk) {
+      const crew = App.crew
+        .concat(sys.sickbayRoster)
+        .find(c => c.id === bunk.patient);
+      if (crew) {
+        crew.dischargeChart();
+        pubsub.publish("crewUpdate", App.crew);
+      }
+    }
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      station: "Core",
+      title: `Sickbay Patient Discharged`,
+      body: "",
+      color: "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: sys.simulatorId,
+        component: "SickbayCore",
+        title: `Sickbay Patient Discharged`,
+        body: ``,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+    sys.dischargeBunk(bunkId);
+  });
+});
+
+App.on("updatePatientChart", ({ simulatorId, crewId, chart }) => {
+  const sys = App.systems.find(
+    s => s.simulatorId === simulatorId && s.class === "Sickbay"
+  );
+  const crew = App.crew
+    .concat(sys ? sys.sickbayRoster : [])
+    .find(c => c.id === crewId);
+  crew && crew.updateChart(chart);
+  if (crew && chart.treatmentRequest) {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      station: "Core",
+      title: `Sickbay Treatment Request`,
+      body: `${crew.firstName} ${crew.lastName}`,
+      color: "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: sys.simulatorId,
+        component: "SickbayCore",
+        title: `Sickbay Treatment Request`,
+        body: `${crew.firstName} ${crew.lastName}`,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+  }
+  pubsub.publish("crewUpdate", App.crew);
+  pubsub.publish(
+    "sickbayUpdate",
+    App.systems.filter(s => s.class === "Sickbay")
+  );
 });
 
 App.on("startDeconProgram", ({ id, program, location }) => {

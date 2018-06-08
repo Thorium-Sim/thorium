@@ -325,17 +325,24 @@
     background-color: #4d1980;
   }
   input[type="text"],
+  input[type="number"],
   textarea {
     color: white;
   }
   .list-group-item {
-    background-color: transparent;
+    border: solid 1px transparent;
+    background-color: rgba(0, 0, 0, 0.1);
+    &.active {
+      background-color: rgba(255, 255, 255, 0.3);
+      border: solid 1px rgba(255, 255, 255, 0.5);
+    }
   }
   pre {
     color: white;
   }
   .card,
   input[type="text"].form-control,
+  input[type="number"].form-control,
   textarea {
     background-image: url("./lines.svg");
     background-size: 1px 4px;
@@ -347,6 +354,7 @@
   &.alertColor1 {
     .card,
     input[type="text"].form-control,
+    input[type="number"].form-control,
     textarea {
       background-color: #701919;
     }
@@ -354,6 +362,7 @@
   &.alertColor2 {
     .card,
     input[type="text"].form-control,
+    input[type="number"].form-control,
     textarea {
       background-color: #704419;
     }
@@ -361,6 +370,7 @@
   &.alertColor3 {
     .card,
     input[type="text"].form-control,
+    input[type="number"].form-control,
     textarea {
       background-color: #707019;
     }
@@ -368,6 +378,7 @@
   &.alertColor4 {
     .card,
     input[type="text"].form-control,
+    input[type="number"].form-control,
     textarea {
       background-color: #18236f;
     }
@@ -375,6 +386,7 @@
   &.alertColor5 {
     .card,
     input[type="text"].form-control,
+    input[type="number"].form-control,
     textarea {
       background-color: #18236f;
     }
@@ -382,6 +394,7 @@
   &.alertColorp {
     .card,
     input[type="text"].form-control,
+    input[type="number"].form-control,
     textarea {
       background-color: #441970;
     }

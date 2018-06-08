@@ -22,6 +22,7 @@ import { TorpedoTypes } from "./torpedo";
 import { SignalJammerTypes } from "./signalJammer";
 import { NavigationTypes } from "./navigation";
 import { StealthFieldTypes } from "./stealthField";
+import { SickbayTypes } from "./sickbay";
 export default Object.assign(
   AssetsTypes,
   EngineTypes,
@@ -46,5 +47,6 @@ export default Object.assign(
   SignalJammerTypes,
   TorpedoTypes,
   NavigationTypes,
-  StealthFieldTypes
+  StealthFieldTypes,
+  SickbayTypes
 );
