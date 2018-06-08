@@ -3,8 +3,14 @@ import { Row, Col, Card, Input } from "reactstrap";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";
-import * as steps from "./steps";
+import * as stepConfigs from "./steps";
 
+const steps = {
+  ...stepConfigs,
+  exocomps: null,
+  softwarePanel: null,
+  computerCore: null
+};
 class DamageReportsConfig extends Component {
   state = {};
   addDamageStep = (evt, type) => {
@@ -197,13 +203,15 @@ class DamageReportsConfig extends Component {
                     </Input>
                   </Col>
                   <Col sm="8">
-                    {RequiredConfig && (
+                    {RequiredConfig ? (
                       <RequiredConfig
                         {...requiredStep}
                         client={client}
                         systemId={selectedSystem}
                         simulatorId={selectedSimulator.id}
                       />
+                    ) : (
+                      <p>No Config</p>
                     )}
                   </Col>
                 </Row>
@@ -252,13 +260,15 @@ class DamageReportsConfig extends Component {
                     </Input>
                   </Col>
                   <Col sm="8">
-                    {OptionalConfig && (
+                    {OptionalConfig ? (
                       <OptionalConfig
                         {...optionalStep}
                         client={client}
                         systemId={selectedSystem}
                         simulatorId={selectedSimulator.id}
                       />
+                    ) : (
+                      <p>No config</p>
                     )}
                   </Col>
                 </Row>

@@ -13,3 +13,4 @@ export { default as index } from "./index";
 export { default as power } from "./power";
 export { default as securityEvac } from "./securityEvac";
 export { default as softwarePanel } from "./softwarePanel";
+export { default as computerCore } from "./computerCore";

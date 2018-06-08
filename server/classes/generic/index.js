@@ -216,6 +216,9 @@ export class System {
         if (step.name === "softwarePanel") {
           return App.softwarePanels.find(e => e.simulatorId === sim.id);
         }
+        if (step.name === "computerCore") {
+          return components.indexOf("ComputerCore") > -1;
+        }
         return false;
       });
 
