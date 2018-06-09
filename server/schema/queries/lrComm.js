@@ -1,3 +1,3 @@
 export default `
-  longRangeCommunications(simulatorId: ID, crew: Boolean, sent: Boolean): [LRCommunications]
+  longRangeCommunications(simulatorId: ID): [LRCommunications]
 `;

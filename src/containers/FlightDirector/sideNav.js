@@ -12,6 +12,9 @@ import {
   ModalFooter
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { withApollo } from "react-apollo";
+import gql from "graphql-tag";
+
 import IssueTracker from "../../components/admin/IssueTracker";
 
 import "./sideNav.css";
@@ -79,6 +82,20 @@ const makeLinks = () => {
       name: "Debug Core",
       icon: "bug",
       link: "/config/flight/c/core"
+    });
+    links.push({
+      name: "Snapshot",
+      icon: "camera",
+      onClick: (client, e) => {
+        e.preventDefault();
+        client.mutate({
+          mutation: gql`
+            mutation M {
+              snapshot
+            }
+          `
+        });
+      }
     });
   }
 
@@ -160,45 +177,57 @@ class SideNav extends Component {
     </Fragment>
   );
 }
-export class SideNavLink extends Component {
-  state = { open: false };
-  render() {
-    const m = this.props;
-    const { open } = this.state;
-    return (m.children && m.children.length > 0) || m.link || m.onClick ? (
-      <NavItem>
-        <NavLink
-          tag={Link}
-          to={m.link ? m.link : "#"}
-          onClick={m.link ? m.onClick : () => this.setState({ open: !open })}
-        >
-          {m.icon && <FontAwesome name={m.icon.replace("fa-", "")} />} {m.name}{" "}
+export const SideNavLink = withApollo(
+  class SideNavLinkComp extends Component {
+    state = { open: false };
+    render() {
+      const m = this.props;
+      console.log(m);
+      const { open } = this.state;
+      return (m.children && m.children.length > 0) || m.link || m.onClick ? (
+        <NavItem>
+          <NavLink
+            tag={Link}
+            to={m.link ? m.link : "#"}
+            onClick={
+              m.link
+                ? m.onClick
+                : e => {
+                    m.onClick && m.onClick(m.client, e);
+                    this.setState({ open: !open });
+                  }
+            }
+          >
+            {m.icon && <FontAwesome name={m.icon.replace("fa-", "")} />}{" "}
+            {m.name}{" "}
+            {m.children &&
+              m.children.length > 0 && (
+                <FontAwesome
+                  name={open ? "chevron-down" : "chevron-left"}
+                  className="pull-right"
+                />
+              )}
+          </NavLink>
           {m.children &&
-            m.children.length > 0 && (
-              <FontAwesome
-                name={open ? "chevron-down" : "chevron-left"}
-                className="pull-right"
-              />
-            )}
-        </NavLink>
-        {m.children &&
-          m.children.length > 0 &&
-          open && (
-            <Nav vertical style={{ marginLeft: "20px" }}>
-              {m.children
-                .concat()
-                .map(c => (
+            m.children.length > 0 &&
+            open && (
+              <Nav vertical style={{ marginLeft: "20px" }}>
+                {m.children.concat().map(c => (
                   <SideNavLink
                     key={`sidemenu-${c.id || c.name}`}
                     {...c}
-                    onClick={m.onClick}
+                    onClick={e => {
+                      c.onClick && c.onClick(m.client, e);
+                      m.onClick(e);
+                    }}
                   />
                 ))}
-            </Nav>
-          )}
-      </NavItem>
-    ) : null;
+              </Nav>
+            )}
+        </NavItem>
+      ) : null;
+    }
   }
-}
+);
 
 export default SideNav;
