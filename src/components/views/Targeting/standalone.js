@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { Container, Row, Col } from "reactstrap";
+import { Row, Col, Container } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
 import Tour from "reactour";
 
 import Grid from "./gridDom";
+import TorpedoLoading from "../TorpedoLoading";
+import { /*PhaserArc, */ PhaserBeam, PhaserFire } from "../PhaserCharging";
 import DamageOverlay from "../helpers/DamageOverlay";
 import TargetControls from "./targetControls";
 import Coordinates from "./coordinates";
@@ -20,6 +22,16 @@ const trainingSteps = [
     selector: ".targeting-area",
     content:
       "Use this area to lock onto a target. Once a target is locked on, you will be able to acurately fire your weapons at it."
+  },
+  {
+    selector: ".phaser-holder",
+    content:
+      "You can fire your phasers from this area. Phasers are energy weapons which you must first charge before you can fire them. Phasers are effective against shielding systems. Press and hold the fire button to fire your phasers. Keep an eye on the heat - if your phasers overheat, you won't be able to fire them until they cool down."
+  },
+  {
+    selector: ".torpedos",
+    content:
+      "Here you can fire your torpedos at the target. Torpedos are explosive projectile weapons and can deal more damage than phasers. However, you have a limited supply so use them wisely."
   }
 ];
 
@@ -69,6 +81,27 @@ const TARGETING_QUERY = gql`
         destroyed
         moving
       }
+    }
+    phasers(simulatorId: $simulatorId) {
+      id
+      simulatorId
+      power {
+        power
+        powerLevels
+      }
+      damage {
+        damaged
+        report
+      }
+      name
+      beams {
+        id
+        state
+        charge
+        heat
+      }
+      arc
+      coolant
     }
   }
 `;
@@ -123,8 +156,71 @@ const TARGETING_SUB = gql`
   }
 `;
 
-class TargetingStandalone extends Component {
-  state = {};
+const PHASERS_SUB = gql`
+  subscription PhasersUpdate($simulatorId: ID!) {
+    phasersUpdate(simulatorId: $simulatorId) {
+      id
+      simulatorId
+      power {
+        power
+        powerLevels
+      }
+      damage {
+        damaged
+        report
+      }
+      name
+      beams {
+        id
+        state
+        charge
+        heat
+      }
+      arc
+      coolant
+    }
+  }
+`;
+
+class Targeting extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { disabledPhasers: {} };
+    this.targetingSubscription = null;
+    this.phasersSubscription = null;
+    this.phaserLoopId = null;
+    this.mouseup = () => {
+      const phasers = this.props.data.phasers[0];
+      const mutation = gql`
+        mutation StopFiring($id: ID!) {
+          stopPhaserBeams(id: $id)
+        }
+      `;
+      const variables = {
+        id: phasers.id
+      };
+      this.props.client.mutate({
+        mutation,
+        variables
+      });
+    };
+    this.stopCoolant = () => {
+      const phasers = this.props.data.phasers[0];
+      const mutation = gql`
+        mutation PhaserCool($id: ID!, $beamId: ID) {
+          coolPhaserBeam(id: $id, beamId: $beamId)
+        }
+      `;
+      const variables = {
+        id: phasers.id,
+        beamId: null
+      };
+      this.props.client.mutate({
+        mutation,
+        variables
+      });
+    };
+  }
   componentWillReceiveProps(nextProps) {
     if (!this.targetingSubscription && !nextProps.data.loading) {
       this.targetingSubscription = nextProps.data.subscribeToMore({
@@ -133,6 +229,15 @@ class TargetingStandalone extends Component {
         updateQuery: (previousResult, { subscriptionData }) => {
           return Object.assign({}, previousResult, {
             targeting: subscriptionData.data.targetingUpdate
+          });
+        }
+      });
+      this.phasersSubscription = nextProps.data.subscribeToMore({
+        document: PHASERS_SUB,
+        variables: { simulatorId: nextProps.simulator.id },
+        updateQuery: (previousResult, { subscriptionData }) => {
+          return Object.assign({}, previousResult, {
+            phasers: subscriptionData.data.phasersUpdate
           });
         }
       });
@@ -191,24 +296,107 @@ class TargetingStandalone extends Component {
       variables
     });
   };
+  chargePhasers(beamId) {
+    const phasers = this.props.data.phasers[0];
+    const mutation = gql`
+      mutation ChargePhaserBeam($id: ID!, $beamId: ID!) {
+        chargePhaserBeam(id: $id, beamId: $beamId)
+      }
+    `;
+    const variables = {
+      id: phasers.id,
+      beamId
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  }
+  dischargePhasers(beamId) {
+    const phasers = this.props.data.phasers[0];
+    const mutation = gql`
+      mutation DischargePhaserBeam($id: ID!, $beamId: ID!) {
+        dischargePhaserBeam(id: $id, beamId: $beamId)
+      }
+    `;
+    const variables = {
+      id: phasers.id,
+      beamId
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  }
+  coolPhasers(beamId) {
+    const phasers = this.props.data.phasers[0];
+    const mutation = gql`
+      mutation PhaserCool($id: ID!, $beamId: ID) {
+        coolPhaserBeam(id: $id, beamId: $beamId)
+      }
+    `;
+    const variables = {
+      id: phasers.id,
+      beamId
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+    document.addEventListener("mouseup", this.stopCoolant);
+    document.addEventListener("touchend", this.stopCoolant);
+  }
+  interactionTime = 0;
+  firePhasers = (beamId, e) => {
+    e.preventDefault && e.preventDefault();
+    e.stopPropagation && e.stopPropagation();
+    if (Date.now() - this.interactionTime < 2000) return;
+    this.interactionTime = Date.now();
+    const phasers = this.props.data.phasers[0];
+    const mutation = gql`
+      mutation FirePhasers($id: ID!, $beamId: ID!) {
+        firePhaserBeam(id: $id, beamId: $beamId)
+      }
+    `;
+    const variables = {
+      id: phasers.id,
+      beamId
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+    this.setState({
+      disabledPhasers: Object.assign({}, this.state.disabledPhasers, {
+        [beamId]: true
+      })
+    });
+    setTimeout(() => {
+      this.setState({
+        disabledPhasers: Object.assign({}, this.state.disabledPhasers, {
+          [beamId]: false
+        })
+      });
+    }, 3000);
+    document.addEventListener("mouseup", this.mouseup);
+    document.addEventListener("touchend", this.mouseup);
+    return false;
+  };
   render() {
     if (this.props.data.loading || !this.props.data.targeting) return null;
     const targeting = this.props.data.targeting && this.props.data.targeting[0];
+    const phasers = this.props.data.phasers && this.props.data.phasers[0];
     if (!targeting) return <p>No Targeting</p>;
     const targetedContact = targeting.contacts.find(t => t.targeted);
-
     return (
-      <Container
-        fluid={!targeting.coordinateTargeting}
-        className="targeting-control"
-      >
+      <Container fluid className="targeting-control">
         <Row>
-          <Col sm={12}>
+          <Col sm="5" className="targeting-area">
             <DamageOverlay system={targeting} message="Targeting Offline" />
             {targeting.coordinateTargeting ? (
               <Coordinates targeting={targeting} client={this.props.client} />
             ) : (
-              <div style={{ height: "100%", minHeight: "60vh" }}>
+              <div style={{ height: "100%", minHeight: "40vh" }}>
                 <Measure
                   bounds
                   onResize={contentRect => {
@@ -218,16 +406,14 @@ class TargetingStandalone extends Component {
                   {({ measureRef }) => (
                     <div
                       ref={measureRef}
-                      style={{ height: "100%", minHeight: "60vh" }}
+                      style={{ height: "100%", minHeight: "40vh" }}
                     >
-                      {this.state.dimensions && (
-                        <Grid
-                          dimensions={this.state.dimensions}
-                          targetContact={this.targetContact.bind(this)}
-                          untargetContact={this.untargetContact.bind(this)}
-                          targets={targeting.contacts}
-                        />
-                      )}
+                      <Grid
+                        dimensions={this.state.dimensions}
+                        targetContact={this.targetContact.bind(this)}
+                        untargetContact={this.untargetContact.bind(this)}
+                        targets={targeting.contacts}
+                      />
                     </div>
                   )}
                 </Measure>
@@ -238,10 +424,30 @@ class TargetingStandalone extends Component {
               </div>
             )}
           </Col>
+          <Col sm="7">
+            <DamageOverlay system={phasers} message="Phasers Offline" />
+            <div className="phaser-holder">
+              {phasers.beams.map((p, i) => (
+                <PhaserFire
+                  key={p.id}
+                  {...p}
+                  disabled={this.state.disabledPhasers[p.id]}
+                  index={i + 1}
+                  firePhasers={this.firePhasers.bind(this)}
+                  coolPhasers={this.coolPhasers.bind(this)}
+                />
+              ))}
+            </div>
+            <Row>
+              <Col sm="8">
+                <PhaserCoolant coolant={phasers.coolant} />
+              </Col>
+            </Row>
+            {/*<PhaserArc client={this.props.client} phaserId={phasers.id} arc={phasers.arc} />*/}
+          </Col>
         </Row>
-        <div style={{ height: "30px" }} />
-        <Row>
-          <Col sm={8}>
+        <Row className="target-area">
+          <Col sm={7}>
             <TargetControls
               targetedContact={
                 targeting.coordinateTargeting
@@ -250,6 +456,13 @@ class TargetingStandalone extends Component {
               }
               untargetContact={this.untargetContact}
               targetSystem={this.targetSystem}
+            />
+          </Col>
+          <Col sm={4} className="torpedos">
+            <TorpedoLoading
+              simulator={this.props.simulator}
+              maxLaunchers={-200}
+              targeting={true}
             />
           </Col>
         </Row>
@@ -263,9 +476,19 @@ class TargetingStandalone extends Component {
   }
 }
 
+const PhaserCoolant = ({ coolant }) => {
+  return (
+    <div>
+      <p>Coolant</p>
+      <div className="chargeHolder coolantHolder">
+        <div className="coolant" style={{ width: `${coolant * 100}%` }} />
+      </div>
+    </div>
+  );
+};
 export default graphql(TARGETING_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: { simulatorId: ownProps.simulator.id }
   })
-})(withApollo(TargetingStandalone));
+})(withApollo(Targeting));
