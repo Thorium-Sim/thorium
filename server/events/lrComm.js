@@ -98,6 +98,20 @@ App.on("deleteLongRangeMessage", ({ id, message }) => {
     App.systems.filter(s => s.type === "LongRangeComm")
   );
 });
+App.on("approveLongRangeMessage", ({ id, message }) => {
+  App.systems.find(s => s.id === id).approveMessage(message);
+  pubsub.publish(
+    "longRangeCommunicationsUpdate",
+    App.systems.filter(s => s.type === "LongRangeComm")
+  );
+});
+App.on("encryptLongRangeMessage", ({ id, message }) => {
+  App.systems.find(s => s.id === id).encryptMessage(message);
+  pubsub.publish(
+    "longRangeCommunicationsUpdate",
+    App.systems.filter(s => s.type === "LongRangeComm")
+  );
+});
 App.on(
   "updateLongRangeDecodedMessage",
   ({ id, messageId, decodedMessage, a, f }) => {

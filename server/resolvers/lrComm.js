@@ -3,33 +3,33 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
 export const LRCommQueries = {
-  longRangeCommunications(root, { simulatorId, crew, sent }) {
+  longRangeCommunications(root, { simulatorId }) {
     let lrComm = App.systems.filter(s => s.type === "LongRangeComm");
-    if (simulatorId) lrComm = lrComm.filter(s => s.simulatorId === simulatorId);
-    if (typeof crew !== "undefined") {
-      lrComm = lrComm.map(s => {
-        const sys = Object.assign({}, s);
-        sys.messages = sys.messages.filter(m => m.crew === crew);
-        return sys;
-      });
-    }
-    if (typeof sent !== "undefined") {
-      lrComm = lrComm.map(s => {
-        const sys = Object.assign({}, s);
-        sys.messages = sys.messages.filter(m => m.sent === sent);
-        return sys;
-      });
-    }
-    if (typeof sent !== "undefined" && typeof crew !== "undefined") {
-      if (sent !== true && crew === false) {
-        lrComm = lrComm.map(s => {
-          const sys = Object.assign({}, s);
-          sys.messages = sys.messages.filter(m => m.deleted === false);
-          return sys;
-        });
-      }
-    }
+    if (simulatorId) return lrComm.filter(s => s.simulatorId === simulatorId);
     return lrComm;
+  }
+};
+
+export const LRCommTypes = {
+  LRCommunications: {
+    messages(sys, { crew, sent, approved }) {
+      let returnMessages = sys.messages;
+      if (crew) {
+        returnMessages = returnMessages.filter(m => m.crew === crew);
+      }
+      if (crew === false) {
+        returnMessages = returnMessages.filter(
+          m => m.crew === crew && m.deleted === false
+        );
+      }
+      if (sent || sent === false) {
+        returnMessages = returnMessages.filter(m => m.sent === sent);
+      }
+      if (approved || approved === false) {
+        returnMessages = returnMessages.filter(m => m.approved === approved);
+      }
+      return returnMessages;
+    }
   }
 };
 
@@ -48,36 +48,20 @@ export const LRCommMutations = {
   },
   updateLongRangeComm(root, args, context) {
     App.handleEvent(args, "updateLongRangeComm", context);
+  },
+  approveLongRangeMessage(root, args, context) {
+    App.handleEvent(args, "approveLongRangeMessage", context);
+  },
+  encryptLongRangeMessage(root, args, context) {
+    App.handleEvent(args, "encryptLongRangeMessage", context);
   }
 };
 
 export const LRCommSubscriptions = {
   longRangeCommunicationsUpdate: {
-    resolve(rootValue, { simulatorId, crew, sent }) {
-      if (simulatorId)
-        rootValue = rootValue.filter(s => s.simulatorId === simulatorId);
-      if (typeof crew !== "undefined") {
-        rootValue = rootValue.map(s =>
-          Object.assign({}, s, {
-            messages: s.messages.filter(m => m.crew === crew)
-          })
-        );
-      }
-      if (typeof sent !== "undefined") {
-        rootValue = rootValue.map(s =>
-          Object.assign({}, s, {
-            messages: s.messages.filter(m => m.sent === sent)
-          })
-        );
-      }
-      if (typeof sent !== "undefined" && typeof crew !== "undefined") {
-        if (sent !== true && crew === false) {
-          rootValue = rootValue.map(s =>
-            Object.assign({}, s, {
-              messages: s.messages.filter(m => m.deleted === false)
-            })
-          );
-        }
+    resolve(rootValue, { simulatorId }) {
+      if (simulatorId) {
+        return rootValue.filter(s => s.simulatorId === simulatorId);
       }
       return rootValue;
     },

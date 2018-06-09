@@ -9,22 +9,36 @@ import Tour from "reactour";
 
 import "./style.css";
 
+function feistelNet(input) {
+  var l = input & 0xff;
+  var r = input >> 8;
+  for (let i = 0; i < 8; i++) {
+    const nl = r;
+    const F = ((r * 11 + (r >> 5) + 7 * 127) ^ r) & 0xff;
+    r = l ^ F;
+    l = nl;
+  }
+  return ((r << 8) | l) & 0xffff;
+}
+
+function setCharAt(str, index, chr) {
+  if (index > str.length - 1) return str;
+  return str.substr(0, index) + chr + str.substr(index + 1);
+}
+
 const MESSAGES_SUB = gql`
   subscription LRQueueingSub($simulatorId: ID) {
-    longRangeCommunicationsUpdate(
-      simulatorId: $simulatorId
-      crew: false
-      sent: false
-    ) {
+    longRangeCommunicationsUpdate(simulatorId: $simulatorId) {
       id
       simulatorId
       name
-      messages {
+      messages(crew: false, sent: false, approved: true) {
         id
         sender
         message
         datestamp
         sent
+        encrypted
       }
       damage {
         damaged
@@ -252,6 +266,26 @@ class LongRangeComm extends Component {
       }
     );
   };
+  encrypt = ({ message, encrypted }) => {
+    if (encrypted) {
+      let messageText = message;
+      this.frame = 0;
+      this.processedPixels = [];
+      while (this.processedPixels.length < messageText.length) {
+        const fn = feistelNet(this.frame);
+        this.frame += 1;
+        const x = fn % messageText.length;
+        const y = Math.floor(fn / 100) + 30;
+        const char = String.fromCharCode(y);
+        if (messageText[x] === message[x]) {
+          messageText = setCharAt(messageText, x, char);
+          this.processedPixels.push(x);
+        }
+      }
+      return messageText;
+    }
+    return message;
+  };
   render() {
     if (this.props.data.loading || !this.props.data.longRangeCommunications)
       return null;
@@ -359,7 +393,7 @@ class LongRangeComm extends Component {
                 </Col>
               </Row>
             )}
-          <MessageBox message={messageObj && messageObj.message} />
+          <MessageBox message={messageObj && this.encrypt(messageObj)} />
         </Col>
         <Tour
           steps={trainingSteps}
@@ -391,20 +425,17 @@ const trainingSteps = [
 
 const QUEUING_QUERY = gql`
   query LRQueuing($simulatorId: ID) {
-    longRangeCommunications(
-      simulatorId: $simulatorId
-      crew: false
-      sent: false
-    ) {
+    longRangeCommunications(simulatorId: $simulatorId) {
       id
       simulatorId
       name
-      messages {
+      messages(crew: false, sent: false, approved: true) {
         id
         sender
         message
         datestamp
         sent
+        encrypted
       }
       damage {
         damaged
