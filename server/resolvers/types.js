@@ -10,6 +10,7 @@ import { ProbesTypes } from "./probes";
 import { CrewTypes } from "./crew";
 import { TeamsTypes } from "./teams";
 import { SetTypes } from "./set";
+import { LRCommTypes } from "./lrComm";
 import { IsochipsTypes } from "./isochips";
 import { TacticalMapTypes } from "./tacticalMap";
 import { ExocompTypes } from "./exocomp";
@@ -48,5 +49,6 @@ export default Object.assign(
   TorpedoTypes,
   NavigationTypes,
   StealthFieldTypes,
-  SickbayTypes
+  SickbayTypes,
+  LRCommTypes
 );

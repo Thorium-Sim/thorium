@@ -36,17 +36,17 @@ export default class FizzleFade extends Component {
   feistelNet(input) {
     var l = input & 0xff;
     var r = input >> 8;
-    for (var i = 0; i < 8; i++) {
-      var nl = r;
-      var F = ((r * 11 + (r >> 5) + 7 * 127) ^ r) & 0xff;
+    for (let i = 0; i < 8; i++) {
+      const nl = r;
+      const F = ((r * 11 + (r >> 5) + 7 * 127) ^ r) & 0xff;
       r = l ^ F;
       l = nl;
     }
     return ((r << 8) | l) & 0xffff;
   }
   setPixel(x, y) {
-    var color = this.props.on ? "255" : "0";
-    var offset = x * 4 + y * 4 * this.screen_width;
+    const color = this.props.on ? "255" : "0";
+    const offset = x * 4 + y * 4 * this.screen_width;
     this.pixels.data[offset + 3] = color;
     this.pixels.data[offset + 0] = 255;
     this.pixels.data[offset + 1] = 255;
@@ -57,9 +57,9 @@ export default class FizzleFade extends Component {
     if (this.frame < 65536) requestAnimationFrame(this.updatePixels);
     for (j = 0; j < 200; j++) {
       if (this.frame === 65536) break;
-      var fn = this.feistelNet(this.frame);
-      var x = fn % this.screen_width;
-      var y = Math.floor(fn / this.screen_width);
+      const fn = this.feistelNet(this.frame);
+      const x = fn % this.screen_width;
+      const y = Math.floor(fn / this.screen_width);
       if (x < this.screen_width && y < this.screen_height) {
         this.setPixel(x, y);
       }

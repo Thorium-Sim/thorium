@@ -6,7 +6,7 @@ type LRCommunications {
   power: Power
   name: String
   damage: Damage
-  messages: [LRMessage]
+  messages(crew: Boolean, sent: Boolean, approved:Boolean): [LRMessage]
 
   #Interception Properties
   interception: Boolean
@@ -21,6 +21,8 @@ type LRMessage {
   crew: Boolean
   sent: Boolean
   deleted: Boolean
+  encrypted: Boolean
+  approved: Boolean
   sender: String
   datestamp: String
   a: Int

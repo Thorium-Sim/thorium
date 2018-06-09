@@ -70,6 +70,7 @@ import TargetingStandalone from "./Targeting/standalone";
 import Decontamination from "./Decontamination";
 import MedicalRoster from "./MedicalRoster";
 import Sickbay from "./Sickbay";
+import CommReview from "./CommReview";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -200,7 +201,8 @@ const Views = {
   TargetingStandalone,
   Decontamination,
   MedicalRoster,
-  Sickbay
+  Sickbay,
+  CommReview
 };
 
 export const Widgets = {

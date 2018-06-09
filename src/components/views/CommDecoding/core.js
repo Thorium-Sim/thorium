@@ -134,7 +134,7 @@ class LRCommCore extends Component {
 
 const DECODING_QUERY = gql`
   query LRDecoding($simulatorId: ID) {
-    longRangeCommunications(simulatorId: $simulatorId, crew: true) {
+    longRangeCommunications(simulatorId: $simulatorId) {
       id
     }
   }
