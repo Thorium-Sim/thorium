@@ -7,7 +7,7 @@ import Tour from "reactour";
 
 import Grid from "./gridDom";
 import TorpedoLoading from "../TorpedoLoading";
-import { /*PhaserArc, */ PhaserBeam, PhaserFire } from "../PhaserCharging";
+import { PhaserFire } from "../PhaserCharging";
 import DamageOverlay from "../helpers/DamageOverlay";
 import TargetControls from "./targetControls";
 import Coordinates from "./coordinates";
