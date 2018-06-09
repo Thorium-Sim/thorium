@@ -43,6 +43,8 @@ import { SurveyFormMutations } from "./surveyform.js";
 import { ObjectiveMutations } from "./objective.js";
 import { KeyboardMutations } from "./keyboard.js";
 
+import { EnvironmentMutations } from "./environment.js";
+
 const mutationMap = Object.assign(
   {
     snapshot() {
@@ -91,7 +93,8 @@ const mutationMap = Object.assign(
   SoftwarePanelsMutations,
   SurveyFormMutations,
   ObjectiveMutations,
-  KeyboardMutations
+  KeyboardMutations,
+  EnvironmentMutations
 );
 
 export default mutationMap;

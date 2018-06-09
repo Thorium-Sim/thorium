@@ -8,6 +8,7 @@ type Deck {
   evac: Boolean
   rooms: [Room]
   hallway: String
+  environment: Environment
 }
 
 type Room {

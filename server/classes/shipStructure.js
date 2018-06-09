@@ -1,4 +1,5 @@
 import uuid from "uuid";
+import Environment from "./environment";
 
 export class Deck {
   constructor(params) {
@@ -10,6 +11,7 @@ export class Deck {
     this.doors = params.doors || false;
     this.evac = params.evac || false;
     this.hallway = params.hallway || "";
+    this.environment = new Environment(params.environment);
   }
   updateSvg(svg) {
     this.svgPath = svg;
