@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import FileExplorer from "../TacticalMap/fileExplorer";
-import { Row, Col, FormGroup, Label, Input, FormText } from "reactstrap";
+import { FormGroup, Label, Input, FormText } from "reactstrap";
 import Tour from "reactour";
 
 const Assets = props => {
@@ -69,7 +69,7 @@ const Assets = props => {
           config
           directory="/"
           selectedFiles={[]}
-          onClick={(e, container) => {}}
+          onClick={() => {}}
           admin
         />
       </div>
