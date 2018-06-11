@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import FileExplorer from "../TacticalMap/fileExplorer";
 import { Row, Col, FormGroup, Label, Input, FormText } from "reactstrap";
 import Tour from "reactour";
@@ -51,36 +51,34 @@ const Assets = props => {
     }
   };
   return (
-    <Row>
-      <Col sm={8} style={{ height: "80vh" }}>
-        <FormGroup className="import">
-          <Label for="importFile">Import Assets</Label>
-          <Input
-            type="file"
-            name="file"
-            id="importFile"
-            onChange={importAssets}
-          />
-          <FormText color="muted">
-            Asset files will be in a ".aset" format.
-          </FormText>
-        </FormGroup>
-        <div className="file-explorer-container">
-          <FileExplorer
-            config
-            directory="/"
-            selectedFiles={[]}
-            onClick={(e, container) => {}}
-            admin
-          />
-        </div>
-      </Col>
+    <Fragment>
+      <FormGroup className="import">
+        <Label for="importFile">Import Assets</Label>
+        <Input
+          type="file"
+          name="file"
+          id="importFile"
+          onChange={importAssets}
+        />
+        <FormText color="muted">
+          Asset files will be in a ".aset" format.
+        </FormText>
+      </FormGroup>
+      <div className="file-explorer-container" style={{ height: "70vh" }}>
+        <FileExplorer
+          config
+          directory="/"
+          selectedFiles={[]}
+          onClick={(e, container) => {}}
+          admin
+        />
+      </div>
       <Tour
         steps={trainingSteps()}
         isOpen={props.training}
         onRequestClose={props.stopTraining}
       />
-    </Row>
+    </Fragment>
   );
 };
 
