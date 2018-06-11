@@ -17,27 +17,29 @@ export const ActionsMutations = {
 
 export const ActionsSubscriptions = {
   actionsUpdate: {
-    resolve(rootQuery, { simulatorId, stationId, clientId }) {
-      const {
-        action,
-        simulatorId: toSimulator,
-        stationId: toStation,
-        clientId: toClient,
-        duration
-      } = rootQuery;
-      if (simulatorId !== toSimulator) return false;
-      if (
-        toStation === "all" ||
-        toClient === "all" ||
-        (toStation === stationId && toStation && stationId) ||
-        (toClient === clientId && toClient && clientId)
-      ) {
-        return { action, duration };
-      }
+    resolve(rootQuery) {
+      const { action, duration } = rootQuery;
+      return { action, duration };
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("actionsUpdate"),
-      rootValue => !!rootValue
+      (rootValue, { simulatorId, stationId, clientId }) => {
+        const {
+          simulatorId: toSimulator,
+          stationId: toStation,
+          clientId: toClient
+        } = rootValue;
+        if (simulatorId !== toSimulator) return false;
+        if (
+          toStation === "all" ||
+          toClient === "all" ||
+          (toStation === stationId && toStation && stationId) ||
+          (toClient === clientId && toClient && clientId)
+        ) {
+          return true;
+        }
+        return false;
+      }
     )
   }
 };

@@ -70,7 +70,7 @@ class ActionsCore extends Component {
     let { actionName, actionDest } = this.state;
     if (actionDest === "random") {
       const index = Math.floor(
-        Math.random() * this.props.data.simulators[0].stations
+        Math.random() * this.props.data.simulators[0].stations.length
       );
       actionDest = this.props.data.simulators[0].stations[index].name;
     }
