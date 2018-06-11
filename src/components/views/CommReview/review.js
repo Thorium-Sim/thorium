@@ -13,6 +13,7 @@ import {
 } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import Tour from "reactour";
 
 function feistelNet(input) {
   var l = input & 0xff;
@@ -33,6 +34,83 @@ function setCharAt(str, index, chr) {
 
 class Review extends Component {
   state = {};
+  trainingSteps = [
+    {
+      selector: ".nothing",
+      content: (
+        <span>
+          The message review screen allows you to see and review all messages
+          being sent out of the ship before they are sent. It's possible that
+          spies on the ship could send confidential information to our enemies.
+          It's also possible our crewmembers accidentally include something
+          secret in their messages.
+        </span>
+      )
+    },
+    {
+      selector: ".nothing",
+      content: (
+        <span>
+          You have to make sure nothing secret gets out of this ship into the
+          wrong hands. Use this screen to see what is being written, screen for
+          any sensitive or confidential information, and encrypt secret
+          information that is supposed to go out so enemies cannot read it.
+        </span>
+      )
+    },
+    {
+      selector: ".message-queue",
+      content: (
+        <span>
+          This is the list of messages which have been written. Some messages
+          have been written by your fellow crewmembers on the bridge, but some
+          could be written by other people on the ship.
+        </span>
+      )
+    },
+    {
+      selector: ".message-text",
+      content: (
+        <span>
+          This is where you can see the text of the message. Read the messages
+          carefully to ensure they don't have any secret information inside of
+          them. If the message is encrypted, you won't be able to read it at
+          all.
+        </span>
+      )
+    },
+    {
+      selector: ".delete-message",
+      content: (
+        <span>
+          If the information in the message is too secret, or if you don't know
+          who the message destination is, you can delete the message to make
+          sure it never gets off the ship.
+        </span>
+      )
+    },
+    {
+      selector: ".encrypt-message",
+      content: (
+        <span>
+          If there is secret information in the message, but you know who it is
+          being sent to, you can encrypt the message. That will make it so only
+          the person recieving it can read the message. Even if an enemy
+          intercepts the message, they won't be able to read it.
+        </span>
+      )
+    },
+    {
+      selector: ".approve-message",
+      content: (
+        <span>
+          If the message is safe to send, namely if the message doesn't have any
+          secrets in it or if it is encrypted, you can approve the message to be
+          sent.
+        </span>
+      )
+    }
+  ];
   componentDidUpdate(prevProps, prevState) {
     const { selectedMessage } = this.state;
     // Check to see if the message encryption has changed.
@@ -105,7 +183,7 @@ class Review extends Component {
     return (
       <Container>
         <Row>
-          <Col sm={4}>
+          <Col sm={4} className="message-queue">
             <h4>Message Queue</h4>
             <ListGroup>
               {messages.map(m => (
@@ -126,7 +204,10 @@ class Review extends Component {
             </ListGroup>
           </Col>
           <Col sm={8}>
-            <Card style={{ height: "50vh", overflowY: "auto" }}>
+            <Card
+              className="message-text"
+              style={{ height: "50vh", overflowY: "auto" }}
+            >
               <CardBody style={{ whiteSpace: "pre-wrap" }}>
                 {messageText}
               </CardBody>
@@ -146,6 +227,7 @@ class Review extends Component {
                       disabled={!selectedMessage || encrypting}
                       color="danger"
                       block
+                      className="delete-message"
                       onClick={() => {
                         action();
                         this.setState({
@@ -172,6 +254,7 @@ class Review extends Component {
                     <Button
                       color="info"
                       block
+                      className="encrypt-message"
                       disabled={!selectedMessage || message.encrypted}
                       onClick={action}
                     >
@@ -193,6 +276,7 @@ class Review extends Component {
                     <Button
                       color="success"
                       block
+                      className="approve-message"
                       disabled={!selectedMessage || encrypting}
                       onClick={() => {
                         action();
@@ -210,67 +294,13 @@ class Review extends Component {
             </Row>
           </Col>
         </Row>
+        <Tour
+          steps={this.trainingSteps}
+          isOpen={this.props.clientObj.training}
+          onRequestClose={this.props.stopTraining}
+        />
       </Container>
     );
   }
 }
 export default Review;
-
-/*function feistelNet(input) {
-  var l = input & 0xff;
-  var r = input >> 8;
-  for (let i = 0; i < 8; i++) {
-    const nl = r;
-    const F = ((r * 11 + (r >> 5) + 7 * 127) ^ r) & 0xff;
-    r = l ^ F;
-    l = nl;
-  }
-  return ((r << 8) | l) & 0xffff;
-}
-
-let string =
-  "Crystal is my favorite! I love her so much! She is such a wonderful, kind, considerate, amazing wife and I am #soblessed to have her in my life. Crystal is my favorite! I love her so much! She is such a wonderful, kind, considerate, amazing wife and I am #soblessed to have her in my life. Crystal is my favorite! I love her so much! She is such a wonderful, kind, considerate, amazing wife and I am #soblessed to have her in my life. Crystal is my favorite! I love her so much! She is such a wonderful, kind, considerate, amazing wife and I am #soblessed to have her in my life. Crystal is my favorite! I love her so much! She is such a wonderful, kind, considerate, amazing wife and I am #soblessed to have her in my life. Crystal is my favorite! I love her so much! She is such a wonderful, kind, considerate, amazing wife and I am #soblessed to have her in my life. Crystal is my favorite! I love her so much! She is such a wonderful, kind, considerate, amazing wife and I am #soblessed to have her in my life. ";
-
-document.getElementById("container").innerText = string;
-
-let frame = 0;
-let processedPixels = [];
-document.getElementById("myButton").addEventListener("click", () => {
-  frame = 0;
-  processedPixels = [];
-  processPixels();
-});
-
-document.getElementById("myButton2").addEventListener("click", () => {
-  frame = 0;
-  processedPixels = [];
-  processPixels(true);
-});
-
-function setCharAt(str, index, chr) {
-  if (index > str.length - 1) return str;
-  return str.substr(0, index) + chr + str.substr(index + 1);
-}
-
-function processPixels(immediate) {
-  const fn = feistelNet(frame);
-  frame += 1;
-  const x = fn % string.length;
-  const y = Math.floor(fn / 100) + 30;
-  if (processedPixels.indexOf(x) === -1) {
-    string = setCharAt(string, x, String.fromCharCode(y));
-    processedPixels.push(x);
-    if (frame < 65536 && processedPixels.length < string.length) {
-      if (immediate) {
-        processPixels(immediate);
-      } else {
-        requestAnimationFrame(processPixels);
-      }
-      return;
-    }
-  }
-
-  document.getElementById("container").innerText = string;
-  if (frame < 65536) processPixels(immediate);
-}
-*/
