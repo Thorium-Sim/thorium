@@ -47,6 +47,7 @@ class WidgetsContainer extends Component {
   render() {
     const { simulator, clientObj, station, flight, touch } = this.props;
     const { widgetNotify } = this.state;
+
     return (
       <div
         className={`widgets ${clientObj.loginState} ${
