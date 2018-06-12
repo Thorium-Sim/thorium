@@ -18,7 +18,7 @@ export const MessagesQueries = {
       // Get the station object
       const stationObj = App.simulators
         .find(s => s.id === simulatorId)
-        .stations.find(s => s.name === station);
+        .stations.find(s => s.name.trim() === station.trim());
       // Get teams
       const teams = App.teams.filter(
         t =>
@@ -32,8 +32,8 @@ export const MessagesQueries = {
       // And which are sent to the station
       returnValue = returnValue.filter(
         m =>
-          m.sender === station ||
-          m.destination === station ||
+          m.sender === station.trim() ||
+          m.destination === station.trim() ||
           stationObj.messageGroups.indexOf(m.sender) > -1 ||
           stationObj.messageGroups.indexOf(m.destination) > -1 ||
           !!teams.find(t => m.sender === t.name || m.destination === t.name)
@@ -67,13 +67,13 @@ export const MessagesSubscriptions = {
         // Get the station object
         const stationObj = App.simulators
           .find(s => s.id === simulatorId)
-          .stations.find(s => s.name === station);
+          .stations.find(s => s.name.trim() === station.trim());
         // Get all of the messages which the station sent
         // And which are sent to the station
         returnValue = returnValue.filter(
           m =>
-            m.sender === station ||
-            m.destination === station ||
+            m.sender === station.trim() ||
+            m.destination === station.trim() ||
             stationObj.messageGroups.indexOf(m.sender) > -1 ||
             stationObj.messageGroups.indexOf(m.destination) > -1
         );
@@ -97,7 +97,7 @@ export const MessagesSubscriptions = {
         // Get the station object
         const stationObj = App.simulators
           .find(s => s.id === simulatorId)
-          .stations.find(s => s.name === station);
+          .stations.find(s => s.name.trim() === station.trim());
         const teams = App.teams.filter(
           t =>
             t.simulatorId === simulatorId &&
@@ -105,11 +105,13 @@ export const MessagesSubscriptions = {
               m => teamMap[m] === t.type.toLowerCase()
             ) > -1
         );
+        console.log(`"${rootValue.destination}"`, `"${station}"`);
+
         // Get all of the messages which the station sent
         // And which are sent to the station
         if (
-          rootValue.sender !== station &&
-          rootValue.destination !== station &&
+          rootValue.sender !== station.trim() &&
+          rootValue.destination !== station.trim() &&
           stationObj.messageGroups.indexOf(rootValue.sender) === -1 &&
           stationObj.messageGroups.indexOf(rootValue.destination) === -1 &&
           !teams.find(

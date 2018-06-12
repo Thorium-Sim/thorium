@@ -39,7 +39,7 @@ export const ShipSubscriptions = {
           if (rootValue.simulatorId !== simulatorId) return false;
         }
         if (station) {
-          if (rootValue.station !== station) return false;
+          if (rootValue.station.trim() !== station.trim()) return false;
         }
         if (trigger) {
           if (rootValue.trigger !== trigger) return false;
@@ -55,7 +55,7 @@ export const ShipSubscriptions = {
         returnVal = returnVal.simulatorId === simulatorId && returnVal;
       }
       if (station) {
-        returnVal = returnVal.station === station && returnVal;
+        returnVal = returnVal.station.trim() === station.trim() && returnVal;
       }
       return returnVal.widget;
     },
