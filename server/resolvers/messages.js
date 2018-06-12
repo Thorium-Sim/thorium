@@ -105,7 +105,6 @@ export const MessagesSubscriptions = {
               m => teamMap[m] === t.type.toLowerCase()
             ) > -1
         );
-        console.log(`"${rootValue.destination}"`, `"${station}"`);
 
         // Get all of the messages which the station sent
         // And which are sent to the station
