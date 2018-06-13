@@ -21,11 +21,12 @@ export default class Thx extends System {
   constructor(params) {
     super(params);
     this.class = "Thx";
+    this.type = "Thx";
     this.name = params.name || "THX-1138";
     this.displayName = params.displayName || this.name;
     this.activated = params.activated || false;
     this.clients = [];
-    params.clients.forEach(c => this.clients.push(new ThxClient(c)));
+    (params.clients || []).forEach(c => this.clients.push(new ThxClient(c)));
   }
   activate() {
     this.activated = true;

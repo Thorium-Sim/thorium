@@ -2,36 +2,45 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-import Template from "./template";
+import Thx from "./thx";
 import "./style.css";
 
 const queryData = `
+id
+name
+clients {
+  id
+  lock
+  charge
+  station
+}
+activated
 `;
 
 const QUERY = gql`
-  query Template($simulatorId: ID!) {
-    template(simulatorId: $simulatorId) {
+  query Thx($simulatorId: ID!) {
+    thx(simulatorId: $simulatorId) {
 ${queryData}
     }
   }
 `;
 const SUBSCRIPTION = gql`
-  subscription TemplateUpdate($simulatorId: ID!) {
-    templateUpdate(simulatorId: $simulatorId) {
+  subscription ThxUpdate($simulatorId: ID!) {
+    thxUpdate(simulatorId: $simulatorId) {
 ${queryData}
     }
   }
 `;
 
-class TemplateData extends Component {
+class ThxData extends Component {
   state = {};
   render() {
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
-          const { template } = data;
-          if (loading || !template) return null;
-          if (!template[0]) return <div>No Template</div>;
+          const { thx } = data;
+          if (loading || !thx) return null;
+          if (!thx[0]) return <div>No Thx</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
@@ -40,13 +49,13 @@ class TemplateData extends Component {
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
                     return Object.assign({}, previousResult, {
-                      template: subscriptionData.data.templateUpdate
+                      thx: subscriptionData.data.thxUpdate
                     });
                   }
                 })
               }
             >
-              <Template {...this.props} {...template[0]} />
+              <Thx {...this.props} {...thx[0]} />
             </SubscriptionHelper>
           );
         }}
@@ -54,4 +63,4 @@ class TemplateData extends Component {
     );
   }
 }
-export default TemplateData;
+export default ThxData;

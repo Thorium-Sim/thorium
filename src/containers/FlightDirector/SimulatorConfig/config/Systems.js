@@ -23,7 +23,8 @@ const properties = [
   { name: "Torpedo", config: true },
   { name: "Coolant" },
   { name: "ComputerCore" },
-  { name: "Sickbay" }
+  { name: "Sickbay" },
+  { name: "Thx" }
 ];
 
 const ops = {

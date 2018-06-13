@@ -182,7 +182,6 @@ export const SideNavLink = withApollo(
     state = { open: false };
     render() {
       const m = this.props;
-      console.log(m);
       const { open } = this.state;
       return (m.children && m.children.length > 0) || m.link || m.onClick ? (
         <NavItem>

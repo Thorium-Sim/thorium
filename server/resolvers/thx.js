@@ -12,7 +12,7 @@ export const ThxTypes = {
         .filter(
           c =>
             c.simulatorId === thx.simulatorId &&
-            stations.indexOf(s.station) > -1
+            stations.indexOf(c.station) > -1
         )
         .map(c => {
           const client = thx.clients.find(cli => cli.id === c.id) || {
@@ -55,14 +55,14 @@ export const ThxMutations = {
 
 export const ThxSubscriptions = {
   thxUpdate: {
-    resolve(rootValue) {
-      return rootValue;
+    resolve(rootValue, { simulatorId }) {
+      return rootValue.filter(s => s.simulatorId === simulatorId);
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("thxUpdate"),
       (rootValue, { simulatorId }) => {
         if (simulatorId) {
-          return rootValue.find(s => s.simulatorId === simulatorId);
+          return !!rootValue.find(s => s.simulatorId === simulatorId);
         }
         return true;
       }

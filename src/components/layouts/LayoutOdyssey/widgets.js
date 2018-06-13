@@ -79,7 +79,6 @@ class WidgetsContainer extends Component {
   render() {
     const { simulator, clientObj, station, flight, touch } = this.props;
     const { widgetNotify } = this.state;
-    console.log("notify", widgetNotify);
     //if (clientObj.loginState === "logout" && station.login === false)
     // return null;
     return (
