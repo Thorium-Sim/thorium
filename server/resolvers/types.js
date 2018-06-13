@@ -24,6 +24,8 @@ import { SignalJammerTypes } from "./signalJammer";
 import { NavigationTypes } from "./navigation";
 import { StealthFieldTypes } from "./stealthField";
 import { SickbayTypes } from "./sickbay";
+import { ThxTypes } from "./thx";
+
 export default Object.assign(
   AssetsTypes,
   EngineTypes,
@@ -50,5 +52,6 @@ export default Object.assign(
   NavigationTypes,
   StealthFieldTypes,
   SickbayTypes,
-  LRCommTypes
+  LRCommTypes,
+  ThxTypes
 );

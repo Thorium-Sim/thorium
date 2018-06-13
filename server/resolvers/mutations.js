@@ -44,6 +44,7 @@ import { ObjectiveMutations } from "./objective.js";
 import { KeyboardMutations } from "./keyboard.js";
 import { ComputerCoreMutations } from "./computerCore.js";
 import { SickbayMutations } from "./sickbay.js";
+import { ThxMutations } from "./thx.js";
 
 const mutationMap = Object.assign(
   {
@@ -95,7 +96,8 @@ const mutationMap = Object.assign(
   ObjectiveMutations,
   KeyboardMutations,
   ComputerCoreMutations,
-  SickbayMutations
+  SickbayMutations,
+  ThxMutations
 );
 
 export default mutationMap;
