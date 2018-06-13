@@ -12,6 +12,9 @@ class ThxClient {
   lock() {
     this.lock = true;
   }
+  unlock() {
+    this.lock = false;
+  }
 }
 
 export default class Thx extends System {
@@ -46,6 +49,12 @@ export default class Thx extends System {
       this.activated = false;
     }
     super.setPower(powerLevel);
+  }
+  reset() {
+    this.clients.forEach(c => {
+      c.updateCharge(0);
+      c.unlock();
+    });
   }
   chargeClient(clientId, charge) {
     let client = this.clients.find(c => c.id === clientId);
