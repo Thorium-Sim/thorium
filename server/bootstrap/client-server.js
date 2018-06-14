@@ -1,8 +1,8 @@
 const express = require("express");
 const server = express();
 const path = require("path");
-const paths = require("./paths");
-const ipaddress = require("./ipaddress");
+const paths = require("../helpers/paths");
+const ipaddress = require("../helpers/ipaddress");
 
 const assetPath = path.dirname(process.argv[1]);
 const openBrowser = require("react-dev-utils/openBrowser");

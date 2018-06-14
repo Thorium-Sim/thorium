@@ -4,5 +4,8 @@ import resolvers from "./resolvers";
 
 export default makeExecutableSchema({
   typeDefs: schemaString,
-  resolvers
+  resolvers,
+  resolverValidationOptions: {
+    requireResolversForResolveType: false
+  }
 });

@@ -62,13 +62,11 @@ const moveSensorContactTimed = () => {
           ...location,
           x:
             location.x +
-            (destination.x - location.x) /
-              (endTime - c.startTime) *
+            ((destination.x - location.x) / (endTime - c.startTime)) *
               currentTime,
           y:
             location.y +
-            (destination.y - location.y) /
-              (endTime - c.startTime) *
+            ((destination.y - location.y) / (endTime - c.startTime)) *
               currentTime,
           z: 0
         };

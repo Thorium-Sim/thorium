@@ -3,7 +3,7 @@ import semver from "semver";
 const fs = require("fs");
 const request = require("request");
 const path = require("path");
-const paths = require("./paths");
+const paths = require("../helpers/paths");
 const unzip = require("unzip");
 const exec = require("child_process").exec;
 
