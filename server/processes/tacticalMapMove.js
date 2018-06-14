@@ -22,9 +22,9 @@ const moveContact = (dest, loc, speed, frozen, i) => {
     .normalize()
     .multiplyScalar(speed);
   const newLoc = {
-    x: loc.x + Math.round(v.x / (10000 / i) * 10000) / 10000,
-    y: loc.y + Math.round(v.y / (10000 / i) * 10000) / 10000,
-    z: loc.z + Math.round(v.z / (10000 / i) * 10000) / 10000
+    x: loc.x + Math.round((v.x / (10000 / i)) * 1000000) / 1000000,
+    y: loc.y + Math.round((v.y / (10000 / i)) * 1000000) / 1000000,
+    z: loc.z + Math.round((v.z / (10000 / i)) * 1000000) / 1000000
   };
   return newLoc;
 };
