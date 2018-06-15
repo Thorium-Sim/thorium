@@ -1,5 +1,4 @@
 import App from "../app.js";
-import getAsset from "../helpers/getAsset";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
@@ -90,20 +89,6 @@ export const TargetingTypes = {
       return null;
     }
   },
-  TargetingClass: {
-    iconUrl(targetClass) {
-      const system = App.systems.find(s => s.id === targetClass.systemId);
-      if (targetClass) {
-        return getAsset(targetClass.icon, system.simulatorId);
-      }
-    },
-    pictureUrl(targetClass) {
-      const system = App.systems.find(s => s.id === targetClass.systemId);
-      if (targetClass) {
-        return getAsset(targetClass.picture, system.simulatorId);
-      }
-    }
-  },
   TargetingContact: {
     name(rootValue) {
       const system = App.systems.find(s => s.id === rootValue.systemId);
@@ -126,25 +111,11 @@ export const TargetingTypes = {
         return targetClass.icon;
       }
     },
-    iconUrl(rootValue) {
-      const system = App.systems.find(s => s.id === rootValue.systemId);
-      const targetClass = system.classes.find(c => c.id === rootValue.class);
-      if (targetClass) {
-        return getAsset(targetClass.icon, system.simulatorId);
-      }
-    },
     picture(rootValue) {
       const system = App.systems.find(s => s.id === rootValue.systemId);
       const targetClass = system.classes.find(c => c.id === rootValue.class);
       if (targetClass) {
         return targetClass.picture;
-      }
-    },
-    pictureUrl(rootValue) {
-      const system = App.systems.find(s => s.id === rootValue.systemId);
-      const targetClass = system.classes.find(c => c.id === rootValue.class);
-      if (targetClass) {
-        return getAsset(targetClass.picture, system.simulatorId);
       }
     },
     speed(rootValue) {

@@ -74,10 +74,8 @@ const TARGETING_QUERY = gql`
         name
         speed
         system
-        iconUrl
         picture
         targeted
-        pictureUrl
         destroyed
         moving
       }
@@ -145,10 +143,8 @@ const TARGETING_SUB = gql`
         name
         speed
         system
-        iconUrl
         picture
         targeted
-        pictureUrl
         destroyed
         moving
       }

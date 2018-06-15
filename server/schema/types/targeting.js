@@ -33,8 +33,6 @@ type TargetingClass {
   size: Float
   icon: String
   picture: String
-  iconUrl: String
-  pictureUrl: String
   speed: Float
   quadrant: Int
   moving: Boolean
@@ -46,8 +44,6 @@ input TargetClassInput {
   size: Float
   icon: String
   picture: String
-  iconUrl: String
-  pictureUrl: String
   speed: Float
   quadrant: Int
   moving: Boolean
@@ -61,9 +57,7 @@ type TargetingContact {
   targeted: Boolean
   system: String
   icon: String
-  iconUrl: String
   picture: String
-  pictureUrl: String
   speed: Float
   quadrant: Int
   destroyed: Boolean
