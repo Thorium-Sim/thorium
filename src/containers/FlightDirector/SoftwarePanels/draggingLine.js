@@ -19,14 +19,15 @@ const DraggingLine = ({
     x = toComp.x * width;
     y = toComp.y * height;
   }
+  const offset = 5;
   return (
     <path
       className="drag-line"
       onClick={() => {
         onClick(id);
       }}
-      d={`M${comp.x * width + 10} ${comp.y * height + 10} L ${x + 10} ${y +
-        10}`}
+      d={`M${comp.x * width + offset} ${comp.y * height + offset} L ${x +
+        offset} ${y + offset}`}
       fill="transparent"
       stroke={color || "white"}
       strokeWidth={selected ? 7 : stroke || 3}

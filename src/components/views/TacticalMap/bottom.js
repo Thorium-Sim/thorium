@@ -178,11 +178,11 @@ export default class Bottom extends Component {
                 >
                   <option value="1000">Instant</option>
                   <option value="2">Warp</option>
-                  <option value="1">Very Fast</option>
-                  <option value="0.6">Fast</option>
-                  <option value="0.4">Moderate</option>
-                  <option value="0.1">Slow</option>
-                  <option value="0.05">Very Slow</option>
+                  <option value="0.5">Very Fast</option>
+                  <option value="0.1">Fast</option>
+                  <option value="0.03">Moderate</option>
+                  <option value="0.01">Slow</option>
+                  <option value="0.005">Very Slow</option>
                 </Input>
               </Fragment>
             )}

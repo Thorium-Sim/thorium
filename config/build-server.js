@@ -36,11 +36,9 @@ if (!fs.existsSync(path.resolve(__dirname + "/../build"))) {
   fs.mkdirSync(path.resolve(__dirname + "/../build"));
 }
 
-fs
-  .createReadStream("./package.json")
-  .pipe(
-    fs.createWriteStream(path.resolve(__dirname + "/../build/package.json"))
-  );
+fs.createReadStream("./package.json").pipe(
+  fs.createWriteStream(path.resolve(__dirname + "/../build/package.json"))
+);
 
 console.log("Creating an optimized production server build...");
 webpack(config).run((err, stats) => {

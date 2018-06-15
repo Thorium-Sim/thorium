@@ -23,7 +23,8 @@ if (!clientId) {
 const hostname = window.location.hostname;
 
 const wsLink = new WebSocketLink({
-  uri: `ws://${hostname}:${parseInt(window.location.port, 10) + 2}`,
+  uri: `ws://${hostname}:${parseInt(window.location.port, 10) +
+    2}/subscriptions`,
   options: {
     reconnect: true
   }
