@@ -116,7 +116,6 @@ class SoftwarePanels extends Component {
         calcedComps[comp.id] = level;
         return level;
       } catch (err) {
-        console.log(err);
         return 0;
       }
     };

@@ -13,8 +13,6 @@ import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.css";
 import Tour from "reactour";
 
-const { fromTo } = window.TweenMax;
-
 const trainingSteps = [
   {
     selector: ".direction-drag",
@@ -386,7 +384,7 @@ gamepadLoop(){
               this.props.directionUpdate({ id: id, direction: direction });
             }
           }, 100);
-          fromTo(this.state[which], 0.1, this.state[which], {
+          window.TweenMax.fromTo(this.state[which], 0.1, this.state[which], {
             left: 0,
             top: 0,
             onUpdate: function() {
