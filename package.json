@@ -151,7 +151,7 @@
     "reactour": "^1.8.0",
     "reactstrap": "^6.1.0",
     "request": "^2.87.0",
-    "resolve": "1.6.0",
+    "resolve": "1.7.1",
     "semver": "^5.5.0",
     "sine-waves": "^0.3.0",
     "style-loader": "0.21.0",
