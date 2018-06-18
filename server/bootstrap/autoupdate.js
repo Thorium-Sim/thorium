@@ -35,52 +35,38 @@ if (!process.env.CI && process.env.NODE_ENV === "production") {
           fs.mkdirSync(tempPath);
         }
         console.log("Downloading update...");
+        const exePath = path.resolve(
+          processPath +
+            `/../${platforms[process.platform].name.replace(".exe", "")}-${
+              res[0].name
+            }${process.platform === "win32" ? ".exe" : ""}`
+        );
         request({ uri: platforms[process.platform].url })
           .pipe(unzip.Extract({ path: tempPath }))
           .on("close", function() {
-            if (process.platform === "win32") {
-              console.log("Moving new version into place");
-              fs.rename(
-                tempPath + "/" + platforms[process.platform].name,
-                processPath + "/../thorium-win-" + res[0].name + ".exe",
-                error => {
-                  if (error) {
-                    console.error(error);
-                  }
-                  console.log(
-                    `Download Complete. Close this window and open thorium-win-${
-                      res[0].name
-                    }.exe for the updated version.`
-                  );
+            console.log("Moving new version into place");
+            fs.rename(
+              tempPath + "/" + platforms[process.platform].name,
+              exePath,
+              error => {
+                if (error) {
+                  console.error(error);
                 }
-              );
-              return;
-            }
-            console.log("Removing old version");
-            fs.unlink(processPath, err => {
-              if (err) {
-                console.error(err);
+                if (["linux", "darwin"].indexOf(process.platform) > -1) {
+                  const command = `chmod 777 ${exePath}`;
+                  console.log(command);
+                  exec(command);
+                }
+                console.log(
+                  `Download Complete. Close this window and open ${platforms[
+                    process.platform
+                  ].name.replace(".exe", "")}-${res[0].name}${
+                    process.platform === "win32" ? ".exe" : ""
+                  } for the updated version.`
+                );
               }
-              console.log("Moving new version into place");
-              fs.rename(
-                tempPath + "/" + platforms[process.platform].name,
-                processPath,
-                error => {
-                  if (error) {
-                    console.error(error);
-                  }
-                  //Make it executable
-                  if (["linux", "darwin"].indexOf(process.platform) > -1) {
-                    const command = `chmod u+x ${processPath}`;
-                    console.log(command);
-                    exec(command);
-                  }
-                  console.log(
-                    "Download Complete. Restart Thorium Server to apply changes."
-                  );
-                }
-              );
-            });
+            );
+            return;
           });
       }
     })

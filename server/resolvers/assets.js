@@ -5,18 +5,6 @@ import mkdirp from "mkdirp";
 import App from "../app";
 import * as Classes from "../classes";
 import { pubsub } from "../helpers/subscriptionManager.js";
-import paths from "../helpers/paths";
-
-let assetDir = path.resolve("./assets/");
-
-if (process.env.NODE_ENV === "production") {
-  assetDir = paths.userData + "/assets";
-}
-
-// Ensure the asset folder exists
-if (!fs.existsSync(assetDir)) {
-  fs.mkdirSync(assetDir);
-}
 
 export const AssetsQueries = {
   asset(root, { assetKey, simulatorId = "default" }) {

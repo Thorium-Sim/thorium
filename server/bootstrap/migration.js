@@ -19,8 +19,11 @@ Standby...`);
           console.log("Done!");
           resolve();
         });
+      } else {
+        resolve();
       }
+    } else {
+      resolve();
     }
-    resolve();
   });
 };
