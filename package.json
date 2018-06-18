@@ -86,7 +86,7 @@
     "apollo-server-express": "^2.0.0-beta.10",
     "appdirectory": "^0.1.0",
     "autoprefixer": "8.6.2",
-    "babel-core": "6.26.0",
+    "babel-core": "6.26.3",
     "babel-eslint": "8.2.3",
     "babel-jest": "20.0.3",
     "babel-loader": "7.1.2",
