@@ -45,6 +45,7 @@ class Events extends EventEmitter {
     this.objectives = [];
     this.keyboards = [];
     this.sounds = [];
+    this.autoUpdate = true;
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;

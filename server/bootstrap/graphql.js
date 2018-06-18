@@ -7,7 +7,6 @@ import ipaddress from "../helpers/ipaddress";
 // Load some other stuff
 import "../events";
 import "../processes";
-import "./autoupdate";
 
 export default (server, GRAPHQL_PORT, CLIENT_PORT) => {
   const GraphQLOptions = request => ({
