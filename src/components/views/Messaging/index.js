@@ -127,6 +127,7 @@ class Messaging extends Component {
     const { messages, simulators, teams } = this.props.data.loading
       ? { messages: [], teams: [], simulators: [{ stations: [] }] }
       : this.props.data;
+    const { bridgeOfficerMessaging } = this.props.simulator;
     if (!simulators | !messages | !teams) return null;
     const stations = simulators[0].stations.filter(
       s => s.name !== this.props.station.name
@@ -154,6 +155,7 @@ class Messaging extends Component {
         if (new Date(a.timestamp) < new Date(b.timestamp)) return 1;
         return 0;
       });
+    console.log(bridgeOfficerMessaging);
     return (
       <Container className="messages">
         <Row>
@@ -187,25 +189,27 @@ class Messaging extends Component {
               className="btn-block"
               isOpen={stationsShown}
               toggle={this.toggleStations}
-              dropup
+              direction="up"
             >
               <DropdownToggle caret size="lg" block color="primary">
                 New Message
               </DropdownToggle>
               <DropdownMenu className="messages-destinations">
-                {stations.map(s => (
-                  <DropdownItem
-                    key={s.name}
-                    onClick={() =>
-                      this.setState({ selectedConversation: s.name })
-                    }
-                  >
-                    {s.name}
-                  </DropdownItem>
-                ))}
-                {messageGroups && (
-                  <DropdownItem disabled>--------------</DropdownItem>
-                )}
+                {bridgeOfficerMessaging &&
+                  stations.map(s => (
+                    <DropdownItem
+                      key={s.name}
+                      onClick={() =>
+                        this.setState({ selectedConversation: s.name })
+                      }
+                    >
+                      {s.name}
+                    </DropdownItem>
+                  ))}
+                {messageGroups &&
+                  bridgeOfficerMessaging && (
+                    <DropdownItem disabled>--------------</DropdownItem>
+                  )}
                 {messageGroups &&
                   messageGroups.map(g => (
                     <DropdownItem
@@ -319,6 +323,7 @@ const MESSAGING_QUERY = gql`
       type
     }
     simulators(id: $simId) {
+      bridgeOfficerMessaging
       stations {
         name
         messageGroups
@@ -340,7 +345,7 @@ export default graphql(MESSAGING_QUERY, {
 function scrollTo(element, to, duration) {
   if (duration <= 0) return;
   let difference = to - element.scrollTop;
-  let perTick = difference / duration * 10;
+  let perTick = (difference / duration) * 10;
 
   setTimeout(function() {
     element.scrollTop = element.scrollTop + perTick;

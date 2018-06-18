@@ -16,6 +16,7 @@ const SHIP_CORE_SUB = gql`
       training
       stepDamage
       verifyStep
+      bridgeOfficerMessaging
       ship {
         bridgeCrew
         radiation
@@ -155,11 +156,33 @@ class ShipCore extends Component {
       variables
     });
   };
+  setBridgeOfficerMessaging = e => {
+    const mutation = gql`
+      mutation SetBridgeOfficerMessaging($id: ID!, $messaging: Boolean!) {
+        setBridgeMessaging(id: $id, messaging: $messaging)
+      }
+    `;
+    const variables = {
+      id: this.props.simulator.id,
+      messaging: e.target.checked
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.simulators) return null;
     const simulator = this.props.data.simulators[0];
     if (!simulator) return;
-    const { name, layout, training, stepDamage, verifyStep } = simulator;
+    const {
+      name,
+      layout,
+      training,
+      stepDamage,
+      verifyStep,
+      bridgeOfficerMessaging
+    } = simulator;
     const { bridgeCrew, radiation } = simulator.ship;
     return (
       <div className="core-ship">
@@ -184,30 +207,49 @@ class ShipCore extends Component {
           ))}
         </Input>
         <div>
-          <Input
-            style={{
-              marginLeft: "10px",
-              marginRight: "10px",
-              position: "relative"
-            }}
-            type="checkbox"
-            checked={stepDamage}
-            onChange={this.setStepDamage}
-          />
-          Step Damage Reports{" "}
+          <label>
+            <Input
+              style={{
+                marginLeft: "10px",
+                marginRight: "10px",
+                position: "relative"
+              }}
+              type="checkbox"
+              checked={stepDamage}
+              onChange={this.setStepDamage}
+            />
+            Step Damage Reports
+          </label>
         </div>
         <div>
-          <Input
-            style={{
-              marginLeft: "10px",
-              marginRight: "10px",
-              position: "relative"
-            }}
-            type="checkbox"
-            checked={verifyStep}
-            onChange={this.setStepValidation}
-          />
-          Verify Damage Steps
+          <label>
+            <Input
+              style={{
+                marginLeft: "10px",
+                marginRight: "10px",
+                position: "relative"
+              }}
+              type="checkbox"
+              checked={verifyStep}
+              onChange={this.setStepValidation}
+            />
+            Verify Damage Steps
+          </label>
+        </div>
+        <div>
+          <label>
+            <Input
+              style={{
+                marginLeft: "10px",
+                marginRight: "10px",
+                position: "relative"
+              }}
+              type="checkbox"
+              checked={bridgeOfficerMessaging}
+              onChange={this.setBridgeOfficerMessaging}
+            />
+            Bridge Officer Messaging
+          </label>
         </div>
         <p>Bridge Crew: </p>
         <InputField
@@ -248,6 +290,7 @@ const SHIP_CORE_QUERY = gql`
       training
       stepDamage
       verifyStep
+      bridgeOfficerMessaging
       ship {
         bridgeCrew
         radiation

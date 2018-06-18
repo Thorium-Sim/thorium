@@ -283,6 +283,7 @@ const CLIENT_SUB = gql`
         name
         alertlevel
         layout
+        bridgeOfficerMessaging
       }
       station {
         name
@@ -311,6 +312,7 @@ const SIMULATOR_SUB = gql`
       name
       alertlevel
       layout
+      bridgeOfficerMessaging
     }
   }
 `;
@@ -569,6 +571,7 @@ const ClientQuery = gql`
         name
         alertlevel
         layout
+        bridgeOfficerMessaging
       }
       station {
         name

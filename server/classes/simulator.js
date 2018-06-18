@@ -45,6 +45,7 @@ export default class Simulator {
     this.mission = params.mission || null;
     this.currentTimelineStep = params.currentTimelineStep || 0;
     this.executedTimelineSteps = params.executedTimelineSteps || [];
+    this.bridgeOfficerMessaging = params.bridgeOfficerMessaging || true;
     this.teams = [];
     this.training = params.training || false;
     this.ship = new Ship(params.ship);

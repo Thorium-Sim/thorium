@@ -23,6 +23,7 @@ exocomps
 panels
 stepDamage
 verifyStep
+bridgeOfficerMessaging
 requiredDamageSteps {
   id
   name
