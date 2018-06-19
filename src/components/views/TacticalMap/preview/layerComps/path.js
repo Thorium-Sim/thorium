@@ -87,10 +87,10 @@ class Path extends Component {
   };
   render() {
     const { locations } = this.state;
-    const { paths, layerId } = this.props;
+    const { paths, layerId, opacity } = this.props;
     if (!locations) return;
     return (
-      <svg className="path-holder">
+      <svg className="path-holder" style={{ opacity }}>
         {paths.map(p => (
           <PathLine
             key={p.id}

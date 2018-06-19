@@ -183,6 +183,7 @@ const ObjectSettings = ({
   flash,
   ijkl,
   wasd,
+  opacity,
   updateObject,
   //thrusters,
   rotation,
@@ -190,7 +191,7 @@ const ObjectSettings = ({
   duplicate
 }) => {
   return (
-    <Row>
+    <Row className="tactical-object-config">
       <Col>
         <FormGroup style={{ marginBottom: 0 }}>
           <Label>
@@ -220,6 +221,19 @@ const ObjectSettings = ({
             />
           </Label>
         </FormGroup>
+        <FormGroup style={{ marginBottom: 0 }}>
+          <Label>
+            Opacity <small>Can be fully transparent on viewscreen</small>
+            <Input
+              type="range"
+              min="0"
+              max="1"
+              step={0.01}
+              value={opacity}
+              onChange={evt => updateObject("opacity", evt.target.value)}
+            />
+          </Label>
+        </FormGroup>
         <FormGroup>
           <Label>
             Speed
@@ -230,12 +244,12 @@ const ObjectSettings = ({
               onChange={evt => updateObject("speed", evt.target.value)}
             >
               <option value="1000">Instant</option>
-              <option value="2">Warp</option>
-              <option value="0.5">Very Fast</option>
-              <option value="0.1">Fast</option>
+              <option value="1.5">Warp</option>
+              <option value="0.2">Very Fast</option>
+              <option value="0.08">Fast</option>
               <option value="0.05">Moderate</option>
-              <option value="0.01">Slow</option>
-              <option value="0.005">Very Slow</option>
+              <option value="0.02">Slow</option>
+              <option value="0.008">Very Slow</option>
             </Input>
           </Label>
         </FormGroup>
