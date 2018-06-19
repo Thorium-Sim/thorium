@@ -41,7 +41,7 @@
   .preview {
     grid-area: preview;
     width: 100vw;
-    height: 100vh;
+    height: 9 / 16 * 100vw;
     transform-origin: 0 0;
     transform: scale(0.7);
   }
@@ -111,11 +111,12 @@
     .rows,
     .label-cols,
     .label-rows {
+      font-size: 1.2vw;
       position: absolute;
       height: 100%;
       width: 100%;
       display: flex;
-      justify-content: space-evenly;
+      justify-content: space-between;
     }
     .cols {
       flex-direction: row;
@@ -138,14 +139,20 @@
         flex-direction: row;
         align-items: flex-end;
         div {
-          width: 3ch;
+          
+          flex: 1;
+          text-align: center;
         }
       }
       .label-rows {
         flex-direction: column;
         align-items: flex-start;
         div {
-          height: 2ch;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          flex: 1;
+          text-align: center;
         }
       }
     }

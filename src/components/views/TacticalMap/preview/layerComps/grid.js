@@ -19,12 +19,12 @@ const Grid = ({ gridCols, gridRows, color, labels }) => {
       {labels && (
         <div className="labels">
           <div className="label-cols">
-            {Array(gridCols + 1)
+            {Array(gridCols - 1)
               .fill(0)
               .map((_, i) => <div key={`grid-label-col-${i}`}>{i + 1}</div>)}
           </div>
           <div className="label-rows">
-            {Array(gridRows + 1)
+            {Array(gridRows - 1)
               .fill(0)
               .map((_, i) => (
                 <div key={`grid-label-row-${i}`}>
