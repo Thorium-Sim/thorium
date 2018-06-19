@@ -36,4 +36,5 @@ setSimulatorMission(simulatorId: ID!, missionId: ID!): String
 updateSimulatorPanels(simulatorId: ID!, panels: [ID]!):String
 setStepDamage(simulatorId:ID!, stepDamage:Boolean!):String
 setVerifyDamage(simulatorId:ID!, verifyStep:Boolean!):String
+setBridgeMessaging(id:ID!, messaging:Boolean!):String
 `;

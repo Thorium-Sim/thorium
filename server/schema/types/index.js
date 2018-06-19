@@ -64,3 +64,4 @@ export { default as Keyboard } from "./keyboard.js";
 export { default as ComputerCore } from "./computerCore.js";
 export { default as Sickbay } from "./sickbay.js";
 export { default as Thx } from "./thx.js";
+export { default as Thorium } from "./thorium.js";

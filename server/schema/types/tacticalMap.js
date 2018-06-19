@@ -14,7 +14,8 @@ type TacticalLayer {
   id: ID
   name: String
   type: TACTICAL_TYPES
-  
+  opacity: Float
+
   #Item Options
   items: [TacticalItem]
   
@@ -41,6 +42,7 @@ type TacticalLayer {
 input TacticalLayerInput {
   id: ID
   type: TACTICAL_TYPES
+  opacity: Float
   image: String
   color: String
   labels: Boolean
@@ -69,6 +71,7 @@ type TacticalItem {
   #Icon
   icon: String  
   size: Float
+  opacity: Float
 
   #Animation
   speed: Float
@@ -97,7 +100,8 @@ input TacticalItemInput {
     #Icon
     icon: String  
     size: Float
-  
+    opacity: Float
+
     #Animation
     speed: Float
     velocity: CoordinatesInput

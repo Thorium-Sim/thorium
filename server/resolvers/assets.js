@@ -13,11 +13,6 @@ if (process.env.NODE_ENV === "production") {
   assetDir = paths.userData + "/assets";
 }
 
-// Ensure the asset folder exists
-if (!fs.existsSync(assetDir)) {
-  fs.mkdirSync(assetDir);
-}
-
 export const AssetsQueries = {
   asset(root, { assetKey, simulatorId = "default" }) {
     const container = App.assetContainers.find(obj => {

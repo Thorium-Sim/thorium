@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Col, Row, Container, Button, Card, CardBody, Alert } from "reactstrap";
 import gql from "graphql-tag";
-import { graphql } from "react-apollo";
+import { graphql, Mutation } from "react-apollo";
 import { Link } from "react-router-dom";
 import semver from "semver";
 import Tour from "reactour";
@@ -98,6 +98,7 @@ class Welcome extends Component {
   render() {
     if (this.props.data.loading || !this.props.data.flights) return null;
     const flights = this.props.data.flights;
+    const { autoUpdate } = this.props.data.thorium;
     return (
       <Container className="WelcomeView">
         <Row>
@@ -106,20 +107,43 @@ class Welcome extends Component {
             <h3 className="text-center">
               <small>{this.state.quote}</small>
             </h3>
-            {this.state.outdated && (
-              <Alert color="warning">
-                Your version of Thorium is outdated. Current version is{" "}
-                {this.state.outdated}. Your version is{" "}
-                {require("../../../package.json").version}.
-                <p>
-                  <small>
-                    The update is downloading in the background. Wait until the
-                    Thorium Server command line window says "Download Complete"
-                    before restarting Thorium Server
-                  </small>
-                </p>
-              </Alert>
-            )}
+            {autoUpdate &&
+              this.state.outdated && (
+                <Alert color="warning">
+                  Your version of Thorium is outdated. Current version is{" "}
+                  {this.state.outdated}. Your version is{" "}
+                  {require("../../../package.json").version}.
+                  <p>
+                    <Mutation
+                      mutation={gql`
+                        mutation TriggerAutoUpdate {
+                          triggerAutoUpdate
+                        }
+                      `}
+                    >
+                      {action => (
+                        <Button
+                          style={{ marginLeft: "50px" }}
+                          className="pull-right"
+                          outline
+                          color="secondary"
+                          onClick={() => {
+                            action();
+                            this.setState({ outdated: false });
+                          }}
+                        >
+                          Download Update
+                        </Button>
+                      )}
+                    </Mutation>
+                    <small>
+                      The update is downloading in the background. Wait until
+                      the Thorium Server command line window says "Download
+                      Complete" before restarting Thorium Server
+                    </small>
+                  </p>
+                </Alert>
+              )}
           </Col>
         </Row>
         <Row className="content-row">
@@ -168,6 +192,9 @@ class Welcome extends Component {
 
 export const FLIGHTS_QUERY = gql`
   query Flights {
+    thorium {
+      autoUpdate
+    }
     flights {
       id
       name

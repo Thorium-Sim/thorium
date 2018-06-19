@@ -37,7 +37,6 @@ App.on("sendMessage", args => {
     "addCoreFeed"
   );
   if (messageGroups.indexOf(messageClass.sender) > -1) {
-    console.log(messageGroups, messageClass.sender);
     // Notify every station that has this class
     App.simulators
       .find(s => s.id === messageClass.simulatorId)

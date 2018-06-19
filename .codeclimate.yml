@@ -3,7 +3,7 @@ engines:
   csslint:
     enabled: true
   duplication:
-    enabled: false
+    enabled: true
   eslint:
     enabled: true
     channel: "eslint-3"

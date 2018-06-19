@@ -20,7 +20,7 @@ export default () => {
   });
 
   const server = express();
-  server.use(require("express-status-monitor")());
+  server.use(require("express-status-monitor")({}));
 
   server.use("*", cors());
 

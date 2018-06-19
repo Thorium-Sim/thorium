@@ -13,7 +13,8 @@ import {
   SoftwarePanels,
   SurveyForms,
   Keyboards,
-  ClientsLobby
+  ClientsLobby,
+  Settings
 } from "./FlightDirector";
 import MissionPicker from "./missionPicker";
 import SimulatorPicker from "./simulatorPicker";
@@ -117,6 +118,10 @@ class Config extends Component {
           <Route
             path="/config/keyboard"
             render={props => <Keyboards {...props} history={history} />}
+          />
+          <Route
+            path="/config/settings"
+            render={props => <Settings {...props} history={history} />}
           />
           <Route path="/config/debug" component={DebugList} />
         </div>

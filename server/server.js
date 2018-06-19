@@ -7,16 +7,16 @@ import graphql from "./bootstrap/graphql";
 import websockets from "./bootstrap/websockets";
 import broadcast from "./bootstrap/broadcast";
 import clientServer from "./bootstrap/client-server.js";
-import "./events";
-import "./processes";
-import "./bootstrap/autoupdate";
+import autoUpdate from "./bootstrap/autoupdate";
+
+import App from "./app";
 
 const CLIENT_PORT = process.env.NODE_ENV === "production" ? 1337 : 3000;
 const GRAPHQL_PORT = CLIENT_PORT + 1;
 const WS_PORT = CLIENT_PORT + 2;
 export const port = CLIENT_PORT;
-
-migrate()
+Promise.resolve()
+  .then(() => migrate())
   .then(() => init())
   .then(() => broadcast(CLIENT_PORT))
   .then(() => clientServer(CLIENT_PORT))
@@ -26,4 +26,7 @@ migrate()
       graphql(server, GRAPHQL_PORT, CLIENT_PORT)
     )
   )
+  .then(() => {
+    App.init();
+  })
   .catch(err => console.error(err));

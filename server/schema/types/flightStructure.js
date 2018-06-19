@@ -54,6 +54,7 @@ type Simulator {
   exocomps: Int
   training: Boolean
   panels:[ID]
+  bridgeOfficerMessaging: Boolean
 }
 
 type TemplateSimulator {

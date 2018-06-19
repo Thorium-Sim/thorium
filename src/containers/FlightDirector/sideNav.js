@@ -70,6 +70,11 @@ const makeLinks = () => {
       name: "Keyboard Config",
       icon: "keyboard-o",
       link: "/config/keyboard"
+    },
+    {
+      name: "Settings",
+      icon: "cog",
+      link: "/config/settings"
     }
   ];
   if (process.env.NODE_ENV !== "production") {

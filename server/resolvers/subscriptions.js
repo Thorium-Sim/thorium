@@ -43,6 +43,7 @@ import { KeyboardSubscriptions } from "./keyboard.js";
 import { ComputerCoreSubscriptions } from "./computerCore.js";
 import { SickbaySubscriptions } from "./sickbay.js";
 import { ThxSubscriptions } from "./thx.js";
+import { ThoriumSubscriptions } from "./thorium.js";
 
 const subscriptionMap = Object.assign(
   {},
@@ -90,7 +91,8 @@ const subscriptionMap = Object.assign(
   KeyboardSubscriptions,
   ComputerCoreSubscriptions,
   SickbaySubscriptions,
-  ThxSubscriptions
+  ThxSubscriptions,
+  ThoriumSubscriptions
 );
 
 export default subscriptionMap;

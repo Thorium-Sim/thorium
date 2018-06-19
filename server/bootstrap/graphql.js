@@ -4,6 +4,10 @@ import { graphqlExpress, graphiqlExpress } from "graphql-server-express";
 import vanity from "./vanity";
 import ipaddress from "../helpers/ipaddress";
 
+// Load some other stuff
+import "../events";
+import "../processes";
+
 export default (server, GRAPHQL_PORT, CLIENT_PORT) => {
   const GraphQLOptions = request => ({
     schema,

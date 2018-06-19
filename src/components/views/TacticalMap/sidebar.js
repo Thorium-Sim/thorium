@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Button } from "reactstrap";
 import gql from "graphql-tag";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
@@ -178,40 +178,42 @@ export default class Sidebar extends Component {
     const selectedTactical = tacticalMaps.find(t => t.id === tacticalMapId);
     return (
       <div>
-        <p>Saved Maps</p>
-        <ul className="saved-list">
-          {tacticalMaps.filter(t => t.template).map(t => (
-            <li
-              key={t.id}
-              className={t.id === tacticalMapId ? "selected" : ""}
-              onClick={() => selectTactical(t.id)}
-            >
-              {t.name}
-            </li>
-          ))}
-        </ul>
         {this.props.dedicated && (
-          <div>
-            <Button color="success" size="sm" onClick={this.addTactical}>
-              New Map
-            </Button>
-            <Button
-              color="info"
-              size="sm"
-              disabled={!tacticalMapId}
-              onClick={this.duplicateTactical}
-            >
-              Duplicate Map
-            </Button>
-            <Button
-              color="danger"
-              size="sm"
-              disabled={!tacticalMapId}
-              onClick={this.removeTactical}
-            >
-              Remove Map
-            </Button>
-          </div>
+          <Fragment>
+            <p>Saved Maps</p>
+            <ul className="saved-list">
+              {tacticalMaps.filter(t => t.template).map(t => (
+                <li
+                  key={t.id}
+                  className={t.id === tacticalMapId ? "selected" : ""}
+                  onClick={() => selectTactical(t.id)}
+                >
+                  {t.name}
+                </li>
+              ))}
+            </ul>
+            <div>
+              <Button color="success" size="sm" onClick={this.addTactical}>
+                New Map
+              </Button>
+              <Button
+                color="info"
+                size="sm"
+                disabled={!tacticalMapId}
+                onClick={this.duplicateTactical}
+              >
+                Duplicate Map
+              </Button>
+              <Button
+                color="danger"
+                size="sm"
+                disabled={!tacticalMapId}
+                onClick={this.removeTactical}
+              >
+                Remove Map
+              </Button>
+            </div>
+          </Fragment>
         )}
         {!this.props.dedicated && (
           <div>

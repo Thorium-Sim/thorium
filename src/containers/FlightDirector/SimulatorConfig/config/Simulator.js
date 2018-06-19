@@ -35,6 +35,11 @@ const ops = {
     mutation SetVerify($id: ID!, $value: Boolean!) {
       setVerifyDamage(simulatorId: $id, verifyStep: $value)
     }
+  `,
+  setBridgeMessaging: gql`
+    mutation SetBridgeOfficerMessaging($id: ID!, $value: Boolean!) {
+      setBridgeMessaging(id: $id, messaging: $value)
+    }
   `
 };
 class SimulatorConfigView extends Component {
@@ -118,6 +123,19 @@ class SimulatorConfigView extends Component {
               type="checkbox"
               defaultChecked={this.props.selectedSimulator.verifyStep}
               name="verifyStep"
+              onChange={this._handleChange.bind(this)}
+            />
+          </fieldset>
+          <fieldset className="form-group">
+            <label>
+              Bridge Station Messaging - Allow messaging between bridge stations
+            </label>
+            <input
+              type="checkbox"
+              defaultChecked={
+                this.props.selectedSimulator.bridgeOfficerMessaging
+              }
+              name="setBridgeMessaging"
               onChange={this._handleChange.bind(this)}
             />
           </fieldset>

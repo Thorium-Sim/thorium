@@ -1,36 +1,16 @@
 import fs from "fs";
-import https from "https";
-import path from "path";
 import jsonfile from "jsonfile";
 import { EventEmitter } from "events";
 import util from "util";
 import cloneDeep from "lodash/cloneDeep";
 import { writeFile } from "./helpers/json-format";
-import paths from "./helpers/paths";
-import importAssets from "./imports/asset/import";
 import * as Classes from "./classes";
+import paths from "./helpers/paths";
 
 let snapshotDir = "./snapshots/";
 if (process.env.NODE_ENV === "production") {
   snapshotDir = paths.userData + "/";
 }
-
-const download = function(url, dest, cb) {
-  const file = fs.createWriteStream(dest);
-  https
-    .get(url, function(response) {
-      response.pipe(file);
-      file.on("finish", function() {
-        file.close(cb); // close() is async, call cb after close completes.
-      });
-    })
-    .on("error", function(err) {
-      console.log("Error", err);
-      // Handle errors
-      fs.unlink(dest); // Delete the file async. (But we don't check the result)
-      if (cb) cb(err.message);
-    });
-};
 
 class Events extends EventEmitter {
   constructor(params) {
@@ -65,42 +45,14 @@ class Events extends EventEmitter {
     this.objectives = [];
     this.keyboards = [];
     this.sounds = [];
+    this.autoUpdate = true;
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;
     this.version = 0;
     this.timestamp = Date.now();
-    setTimeout(this.init.bind(this), 0);
   }
   init() {
-    // Ensure the snapshot directory exists
-    if (!fs.existsSync(snapshotDir)) {
-      console.log("Creating snapshot directory");
-      fs.mkdirSync(snapshotDir);
-    }
-
-    const defaultSnapshot = require("./helpers/defaultSnapshot.js").default;
-    const snapshotFile = `${snapshotDir}snapshot${
-      process.env.NODE_ENV === "production" ? "" : "-dev"
-    }.json`;
-    if (!fs.existsSync(snapshotFile)) {
-      console.log("No snapshot.json found. Creating.");
-      fs.writeFileSync(snapshotFile, JSON.stringify(defaultSnapshot));
-      // This was an initial load. We should download and install assets
-      console.log("First-time load. Downloading assets...");
-      const dest = path.resolve("temp/assets.aset");
-      download("https://s3.amazonaws.com/thoriumsim/assets.zip", dest, err => {
-        if (err) {
-          console.log(err);
-        }
-        importAssets(dest, () => {
-          fs.unlink(dest, error => {
-            if (err) console.log(error);
-            console.log("Asset Download Complete");
-          });
-        });
-      });
-    }
     this.loadSnapshot(process.env.NODE_ENV !== "production");
     if (process.env.NODE_ENV === "production") {
       setTimeout(() => this.autoSave(), 5000);

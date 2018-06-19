@@ -129,6 +129,9 @@ export const FlightStructureMutations = {
   setVerifyDamage(rootValue, params, context) {
     App.handleEvent(params, "setVerifyDamage", context);
   },
+  setBridgeMessaging(rootValue, params, context) {
+    App.handleEvent(params, "setBridgeMessaging", context);
+  },
   // Timeline
   addTimelineStep(root, args, context) {
     App.handleEvent(

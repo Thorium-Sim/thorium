@@ -161,3 +161,8 @@ App.on("autoAdvance", ({ simulatorId, prev }) => {
   sim.setTimelineStep(currentTimelineStep + (prev ? -1 : 1));
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("setBridgeMessaging", ({ id, messaging }) => {
+  const sim = App.simulators.find(s => s.id === id);
+  sim.bridgeOfficerMessaging = messaging;
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
