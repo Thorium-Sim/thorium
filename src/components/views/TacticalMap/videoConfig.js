@@ -4,7 +4,7 @@ import { Row, Col } from "reactstrap";
 
 export default ({ selectedLayer, updateLayer }) => (
   <Row>
-    <Col sm={9}>
+    <Col sm={9} style={{ height: "calc(100vh - 42.2vw)" }}>
       <FileExplorer
         directory="/Viewscreen/Videos"
         selectedFiles={[selectedLayer.asset]}

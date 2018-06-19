@@ -311,7 +311,9 @@ class ConfigComponentData extends React.PureComponent {
             <ConfigComponent
               Comp={Comp}
               subscribe={subscribeToMore}
-              selectedSimulator={data.simulators[0]}
+              selectedSimulator={data.simulators.find(
+                s => s.id === simulatorId
+              )}
             />
           ) : null
         }

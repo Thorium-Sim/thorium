@@ -51,6 +51,7 @@ class Video extends Component {
       loop,
       asset = "/Viewscreen/Videos/Ship Scans",
       autoplay,
+      opacity,
       simulatorId
     } = this.props;
     const videoEnd = () => {
@@ -69,7 +70,7 @@ class Video extends Component {
       });
     };
     return (
-      <div className={`tactical-map-video`}>
+      <div className={`tactical-map-video`} style={{ opacity }}>
         <Asset asset={asset}>
           {({ src }) => (
             <video
