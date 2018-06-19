@@ -186,6 +186,19 @@ export default class Bottom extends Component {
                 </Input>
               </Fragment>
             )}
+
+            <Fragment>
+              <Label>Opacity</Label>
+              <Input
+                type="range"
+                size="sm"
+                min={0}
+                max={1}
+                step={0.01}
+                value={selectedLayer.opacity}
+                onChange={evt => this.updateLayer("opacity", evt.target.value)}
+              />
+            </Fragment>
           </Col>
           <Col sm={9}>
             {(() => {

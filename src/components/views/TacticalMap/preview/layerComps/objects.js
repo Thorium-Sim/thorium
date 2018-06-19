@@ -164,6 +164,7 @@ class Objects extends Component {
       items,
       selectObject,
       objectId,
+      opacity,
       updateObject,
       removeObject,
       core
@@ -171,7 +172,11 @@ class Objects extends Component {
     const { flash, locations, selected = [], movements = {} } = this.state;
     if (!locations) return null;
     return (
-      <div className="tactical-objects" id={`tactical-objects-${id}`}>
+      <div
+        className="tactical-objects"
+        id={`tactical-objects-${id}`}
+        style={{ opacity }}
+      >
         <Selection onSelectionChange={this.selectionChange}>
           {items.map(i => (
             <TacticalIcon

@@ -35,6 +35,7 @@ class TacticalItem {
     this.velocity = params.velocity || { x: 0, y: 0, z: 0 };
     this.location = params.location || { x: 0, y: 0, z: 0 };
     this.destination = params.destination || { x: 0, y: 0, z: 0 };
+    this.opacity = params.opacity || 1;
     this.rotation = params.rotation || 0;
     this.wasd = params.wasd || false;
     this.ijkl = params.ijkl || false;
@@ -52,6 +53,7 @@ class TacticalItem {
     velocity,
     location,
     destination,
+    opacity,
     rotation,
     wasd,
     ijkl,
@@ -69,6 +71,7 @@ class TacticalItem {
     if (velocity) this.velocity = velocity;
     if (location) this.location = location;
     if (destination) this.destination = destination;
+    if (opacity || opacity === 0) this.opacity = opacity;
     if (rotation || rotation === 0) this.rotation = rotation;
     if (wasd || wasd === false) this.wasd = wasd;
     if (ijkl || ijkl === false) this.ijkl = ijkl;
@@ -93,6 +96,7 @@ class TacticalLayer {
     this.autoplay = params.autoplay || true;
     this.loop = params.loop || false;
     this.playbackSpeed = params.playbackSpeed || 1;
+    this.opacity = params.opacity || 1;
     this.items = [];
     this.paths = [];
     (params.items || []).forEach(i =>
@@ -117,7 +121,8 @@ class TacticalLayer {
     asset,
     autoplay,
     loop,
-    playbackSpeed
+    playbackSpeed,
+    opacity
   }) {
     if (type) this.type = type;
     if (image || image === null) this.image = image;
@@ -131,6 +136,7 @@ class TacticalLayer {
     if (loop || loop === false) this.loop = loop;
     if (playbackSpeed || playbackSpeed === 0)
       this.playbackSpeed = playbackSpeed;
+    if (opacity || opacity === 0) this.opacity = opacity;
   }
   addItem(item) {
     this.items.push(new TacticalItem(item));
@@ -195,9 +201,6 @@ export default class TacticalMap {
       this.layers.findIndex(t => t.id === layer),
       order
     );
-  }
-  removeLayer(layerId) {
-    this.layers = this.layers.filter(l => l.id !== layerId);
   }
   addItemToLayer(layerId, item) {
     this.layers.find(l => l.id === layerId).addItem(item);

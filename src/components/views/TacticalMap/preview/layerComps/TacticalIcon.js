@@ -42,13 +42,11 @@ export default class TacticalIcon extends Component {
       const el = document.getElementById(`tactical-icon-${this.props.id}`);
       const elBounds = el.getBoundingClientRect();
       const leftBound =
-        -1 *
-        (elBounds.width / this.props.size + canvasBounds.left) /
+        (-1 * (elBounds.width / this.props.size + canvasBounds.left)) /
         canvasBounds.width;
       const rightBound = 1 + 20 / canvasBounds.width;
       const topBound =
-        -1 *
-        (elBounds.height / this.props.size + canvasBounds.top) /
+        (-1 * (elBounds.height / this.props.size + canvasBounds.top)) /
         canvasBounds.height;
       const bottomBound = 1 + 20 / canvasBounds.height;
       if (x > rightBound || x < leftBound || y > bottomBound || y < topBound) {
@@ -95,6 +93,7 @@ export default class TacticalIcon extends Component {
       flashing,
       core,
       rotation,
+      opacity,
       movement = { x: 0, y: 0, z: 0 },
       isSelected
     } = this.props;
@@ -111,6 +110,7 @@ export default class TacticalIcon extends Component {
               objectId={objectId}
               isSelected={isSelected}
               rotation={rotation}
+              opacity={opacity}
               id={id}
               src={src}
               font={font}
@@ -135,6 +135,7 @@ export default class TacticalIcon extends Component {
         objectId={objectId}
         isSelected={isSelected}
         rotation={rotation}
+        opacity={opacity}
         id={id}
         font={font}
         flash={flash}

@@ -76,6 +76,12 @@
       max-width: 100px;
     }
   }
+
+}
+.tactical-object-config {
+  input[type="range"] {
+    padding: 0;
+  }
 }
 .tacticalmap-config {
   .layer-list,

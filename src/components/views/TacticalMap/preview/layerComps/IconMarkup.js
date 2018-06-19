@@ -16,9 +16,13 @@ const IconMarkup = ({
   flash,
   flashing,
   rotation,
+  opacity,
   core,
   isSelected
 }) => {
+  if (core) {
+    opacity = Math.max(0.5, opacity);
+  }
   return [
     location ? (
       <div
@@ -26,7 +30,7 @@ const IconMarkup = ({
         key={`icon-location-${id}`}
         style={{
           transform: `translate(${location.x * 100}%, ${location.y * 100}%)`,
-          opacity: core ? 0.5 : 1
+          opacity: core ? 0.5 : opacity
         }}
       >
         <div
@@ -34,7 +38,7 @@ const IconMarkup = ({
           onMouseDown={mouseDown}
           style={{
             transform: `scale(${size})`,
-            opacity: flash && flashing ? 0 : 1
+            opacity: flash && flashing ? 0 : opacity
           }}
         >
           {src && (
@@ -69,7 +73,7 @@ const IconMarkup = ({
           onMouseDown={mouseDown}
           style={{
             transform: `scale(${size})`,
-            opacity: flash && flashing ? 0 : 1
+            opacity: flash && flashing ? 0 : opacity
           }}
         >
           {(objectId === id || isSelected) && (

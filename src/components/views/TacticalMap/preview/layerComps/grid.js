@@ -1,7 +1,7 @@
 import React from "react";
-const Grid = ({ gridCols, gridRows, color, labels }) => {
+const Grid = ({ gridCols, gridRows, color, labels, opacity }) => {
   return (
-    <div className="tactical-grid">
+    <div className="tactical-grid" style={{ opacity }}>
       <div className="cols">
         {Array(gridCols)
           .fill(0)

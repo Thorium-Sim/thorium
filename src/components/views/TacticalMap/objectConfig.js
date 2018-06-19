@@ -183,6 +183,7 @@ const ObjectSettings = ({
   flash,
   ijkl,
   wasd,
+  opacity,
   updateObject,
   //thrusters,
   rotation,
@@ -190,7 +191,7 @@ const ObjectSettings = ({
   duplicate
 }) => {
   return (
-    <Row>
+    <Row className="tactical-object-config">
       <Col>
         <FormGroup style={{ marginBottom: 0 }}>
           <Label>
@@ -217,6 +218,19 @@ const ObjectSettings = ({
               step={0.1}
               value={rotation}
               onChange={evt => updateObject("rotation", evt.target.value)}
+            />
+          </Label>
+        </FormGroup>
+        <FormGroup style={{ marginBottom: 0 }}>
+          <Label>
+            Opacity <small>Can be fully transparent on viewscreen</small>
+            <Input
+              type="range"
+              min="0"
+              max="1"
+              step={0.01}
+              value={opacity}
+              onChange={evt => updateObject("opacity", evt.target.value)}
             />
           </Label>
         </FormGroup>
