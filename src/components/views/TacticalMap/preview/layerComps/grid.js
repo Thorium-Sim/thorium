@@ -1,7 +1,7 @@
 import React from "react";
-const Grid = ({ gridCols, gridRows, color, labels }) => {
+const Grid = ({ gridCols, gridRows, color, labels, opacity }) => {
   return (
-    <div className="tactical-grid">
+    <div className="tactical-grid" style={{ opacity }}>
       <div className="cols">
         {Array(gridCols)
           .fill(0)
@@ -19,12 +19,12 @@ const Grid = ({ gridCols, gridRows, color, labels }) => {
       {labels && (
         <div className="labels">
           <div className="label-cols">
-            {Array(gridCols + 1)
+            {Array(gridCols - 1)
               .fill(0)
               .map((_, i) => <div key={`grid-label-col-${i}`}>{i + 1}</div>)}
           </div>
           <div className="label-rows">
-            {Array(gridRows + 1)
+            {Array(gridRows - 1)
               .fill(0)
               .map((_, i) => (
                 <div key={`grid-label-row-${i}`}>

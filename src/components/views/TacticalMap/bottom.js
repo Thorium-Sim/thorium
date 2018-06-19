@@ -177,15 +177,28 @@ export default class Bottom extends Component {
                   onChange={evt => updateSpeed(evt.target.value)}
                 >
                   <option value="1000">Instant</option>
-                  <option value="2">Warp</option>
-                  <option value="0.5">Very Fast</option>
-                  <option value="0.1">Fast</option>
-                  <option value="0.03">Moderate</option>
-                  <option value="0.01">Slow</option>
-                  <option value="0.005">Very Slow</option>
+                  <option value="1.5">Warp</option>
+                  <option value="0.2">Very Fast</option>
+                  <option value="0.08">Fast</option>
+                  <option value="0.05">Moderate</option>
+                  <option value="0.02">Slow</option>
+                  <option value="0.008">Very Slow</option>
                 </Input>
               </Fragment>
             )}
+
+            <Fragment>
+              <Label>Opacity</Label>
+              <Input
+                type="range"
+                size="sm"
+                min={0}
+                max={1}
+                step={0.01}
+                value={selectedLayer.opacity}
+                onChange={evt => this.updateLayer("opacity", evt.target.value)}
+              />
+            </Fragment>
           </Col>
           <Col sm={9}>
             {(() => {

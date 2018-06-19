@@ -42,6 +42,7 @@ id
             z
           }
           rotation
+          opacity
           flash
           ijkl
           wasd
@@ -81,10 +82,11 @@ id
         gridCols
         gridRows
         advance
-asset
-autoplay
-loop
-playbackSpeed
+        asset
+        autoplay
+        loop
+        playbackSpeed
+        opacity
       }
       frozen
       template`;
