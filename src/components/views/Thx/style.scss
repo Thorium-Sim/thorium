@@ -1,2 +1,44 @@
-.card-template {
+.card-thx {
+  .ship-image {
+    width: 100%;
+    height: 30vh;
+    margin-bottom: 50px;
+    position: relative;
+  }
+  .power-bars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    div {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      background-color: rgba(255, 255, 0, 0.5);
+    }
+  }
+  .thx-bar-container {
+    width: 50%;
+    position: relative;
+    align-self: center;
+    border: solid 4px white;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.5) 0%,
+        rgba(0, 0, 0, 0) 50%,
+        rgba(0, 0, 0, 0.5) 100%
+      ),
+      linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
+    background-size: 5px 3px, 100%;
+    background-color: #ff0;
+    height: 60vh;
+  }
+  .thx-bar {
+    position: absolute;
+    width: 100%;
+    background-color: black;
+  }
 }
