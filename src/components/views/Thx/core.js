@@ -116,10 +116,9 @@ const THXCore = ({ simulator, activated, name, clients, id }) => (
     </ButtonGroup>
     {clients.map(c => (
       <Row key={`client-${c.id}`}>
-        <Col sm={3}>
+        <Col sm={6}>
           {c.id} ({c.station})
         </Col>
-        <Col sm={3} />
         <Col sm={6}>
           {c.executive ? (
             "Executive"
