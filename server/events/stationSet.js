@@ -77,6 +77,12 @@ App.on("setStationLogin", ({ stationSetID, stationName, login }) => {
     .setStationLogin(stationName, login);
   pubsub.publish("stationSetUpdate", App.stationSets);
 });
+App.on("setStationExecutive", ({ stationSetID, stationName, exec }) => {
+  App.stationSets
+    .find(s => s.id === stationSetID)
+    .setStationExecutive(stationName, exec);
+  pubsub.publish("stationSetUpdate", App.stationSets);
+});
 App.on(
   "toggleStationWidgets",
   ({ stationSetID, stationName, widget, state }) => {

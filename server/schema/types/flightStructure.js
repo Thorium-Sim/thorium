@@ -73,6 +73,7 @@ type Stationset {
 type Station {
   name: String
   login: Boolean
+  executive: Boolean
   messageGroups: [String]
   widgets: [String]
   cards: [Card]

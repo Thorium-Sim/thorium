@@ -92,6 +92,9 @@ export default class Simulator {
   }
   executeTimelineStep(stepId) {
     this.executedTimelineSteps.push(stepId);
+    this.executedTimelineSteps = this.executedTimelineSteps.filter(
+      (a, i, arr) => arr.indexOf(a) === i
+    );
   }
 
   // Ship

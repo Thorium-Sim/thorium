@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input, Button } from "reactstrap";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.css";
 
 const SUB = gql`
@@ -37,25 +38,6 @@ const SUB = gql`
 
 class SurveyCore extends Component {
   state = {};
-  subscription = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            surveyform: subscriptionData.data.surveyformUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
   startSurvey = e => {
     const mutation = gql`
       mutation TriggerSurvey($simulatorId: ID!, $id: ID!) {
@@ -115,10 +97,25 @@ class SurveyCore extends Component {
   };
   endSurvey = e => {};
   render() {
-    const { data: { loading, surveyform, allForms } } = this.props;
+    const {
+      data: { loading, surveyform, allForms }
+    } = this.props;
     if (loading || !surveyform || !allForms) return null;
     return (
       <Container className="surveyForm-card">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  surveyform: subscriptionData.data.surveyformUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={12}>
             <Input type="select" value="nothing" onChange={this.startSurvey}>

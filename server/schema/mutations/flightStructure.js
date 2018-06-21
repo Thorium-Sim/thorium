@@ -38,6 +38,7 @@ addCardToStation(stationSetID: ID!, stationName: String!, cardName: String!, car
 removeCardFromStation(stationSetID: ID!, stationName: String!, cardName: String!):String
 editCardInStationSet(stationSetID: ID!, stationName: String!, cardName: String!, newCardName: String, cardComponent: String, cardIcon: String):String
 setStationLogin(stationSetID: ID!, stationName: String!, login: Boolean!):String
+setStationExecutive(stationSetID: ID!, stationName: String!, exec: Boolean!):String
 toggleStationWidgets(stationSetID: ID!, stationName: String!, widget: String!, state: Boolean!): String
 trainingMode(simulatorId:ID!):String
 `;

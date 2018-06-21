@@ -212,6 +212,9 @@ export const FlightStructureMutations = {
   setStationLogin(root, args, context) {
     App.handleEvent(args, "setStationLogin", context);
   },
+  setStationExecutive(root, args, context) {
+    App.handleEvent(args, "setStationExecutive", context);
+  },
   toggleStationWidgets(root, args, context) {
     App.handleEvent(args, "toggleStationWidgets", context);
   },

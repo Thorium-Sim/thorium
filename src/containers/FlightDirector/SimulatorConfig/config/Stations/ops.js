@@ -108,6 +108,19 @@ const ops = {
       )
     }
   `,
+  toggleStationExec: gql`
+    mutation ToggleStationExec(
+      $stationSetID: ID!
+      $stationName: String!
+      $exec: Boolean!
+    ) {
+      setStationExecutive(
+        stationSetID: $stationSetID
+        stationName: $stationName
+        exec: $exec
+      )
+    }
+  `,
   toggleStationWidget: gql`
     mutation AddWidgetsToStation(
       $stationSetID: ID!

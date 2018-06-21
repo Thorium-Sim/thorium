@@ -42,6 +42,7 @@ import { ObjectiveQueries } from "./objective.js";
 import { KeyboardQueries } from "./keyboard.js";
 import { ComputerCoreQueries } from "./computerCore.js";
 import { SickbayQueries } from "./sickbay.js";
+import { ThxQueries } from "./thx.js";
 import { ThoriumQueries } from "./thorium.js";
 
 const queryMap = Object.assign(
@@ -90,6 +91,7 @@ const queryMap = Object.assign(
   KeyboardQueries,
   ComputerCoreQueries,
   SickbayQueries,
+  ThxQueries,
   ThoriumQueries
 );
 

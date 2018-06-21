@@ -5,7 +5,7 @@ import { graphql, Mutation } from "react-apollo";
 import { Link } from "react-router-dom";
 import semver from "semver";
 import Tour from "reactour";
-
+import SubscriptionHelper from "../../helpers/subscriptionHelper";
 import "./welcome.css";
 
 const FLIGHT_SUB = gql`
@@ -59,18 +59,6 @@ class Welcome extends Component {
         });
     }
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: FLIGHT_SUB,
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            flights: subscriptionData.data.flightsUpdate
-          });
-        }
-      });
-    }
-  }
   trainingSteps = () => {
     return [
       {
@@ -101,6 +89,18 @@ class Welcome extends Component {
     const { autoUpdate } = this.props.data.thorium;
     return (
       <Container className="WelcomeView">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: FLIGHT_SUB,
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  flights: subscriptionData.data.flightsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={12} className="title-row">
             <h1 className="text-center">Thorium</h1>

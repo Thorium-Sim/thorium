@@ -288,6 +288,7 @@ const CLIENT_SUB = gql`
       station {
         name
         login
+        executive
         messageGroups
         widgets
         cards {
@@ -576,6 +577,7 @@ const ClientQuery = gql`
       station {
         name
         login
+        executive
         messageGroups
         widgets
         cards {

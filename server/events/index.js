@@ -45,4 +45,5 @@ import "./objective.js";
 import "./keyboard.js";
 import "./computerCore.js";
 import "./sickbay.js";
+import "./thx.js";
 import "./thorium.js";

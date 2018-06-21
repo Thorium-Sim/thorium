@@ -93,6 +93,17 @@ const ConfigStation = props => {
       variables
     });
   };
+  const setStationExecutive = evt => {
+    const variables = {
+      stationSetID: selectedStationSet,
+      stationName: station.name,
+      exec: evt.target.checked
+    };
+    client.mutate({
+      mutation: ops.toggleStationExec,
+      variables
+    });
+  };
   return (
     <div>
       <h5>Stations</h5>
@@ -116,6 +127,15 @@ const ConfigStation = props => {
                         type="checkbox"
                       />{" "}
                       Auto-Login
+                    </label>{" "}
+                    |{" "}
+                    <label style={{ display: "inline" }}>
+                      <input
+                        checked={station.executive}
+                        onChange={setStationExecutive}
+                        type="checkbox"
+                      />{" "}
+                      Executive
                     </label>
                   </span>
                 </th>

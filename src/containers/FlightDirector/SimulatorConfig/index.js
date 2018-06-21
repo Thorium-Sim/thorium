@@ -115,6 +115,7 @@ stationSets {
   stations {
     name
     login
+    executive
     messageGroups
     widgets
     cards {
@@ -143,6 +144,7 @@ const STATIONSET_SUB = gql`
         name
         login
         messageGroups
+        executive
         widgets
         cards {
           name
