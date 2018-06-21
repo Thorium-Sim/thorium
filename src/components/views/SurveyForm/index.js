@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
 import Form from "./form";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.css";
 
 const SUB = gql`
@@ -31,26 +32,8 @@ const SUB = gql`
 `;
 
 class SurveyForm extends Component {
+  static hypercard = true;
   state = {};
-  subscription = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            surveyform: subscriptionData.data.surveyformUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
   renderSurvey = surveyform => {
     const { selectedForm } = this.state;
     if (surveyform.length === 0) {
@@ -89,10 +72,26 @@ class SurveyForm extends Component {
     );
   };
   render() {
-    const { data: { loading, surveyform }, clientObj } = this.props;
+    const {
+      data: { loading, surveyform },
+      clientObj
+    } = this.props;
     if (loading || !surveyform) return null;
     return (
       <Container className="surveyForm-card">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  surveyform: subscriptionData.data.surveyformUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={12}>
             {this.renderSurvey(

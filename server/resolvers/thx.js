@@ -19,7 +19,8 @@ export const ThxTypes = {
             charge: 0,
             lock: false
           };
-          return { ...client, ...c };
+          const station = simulator.stations.find(s => s.name === c.station);
+          return { ...station, ...client, ...c };
         });
     }
   }

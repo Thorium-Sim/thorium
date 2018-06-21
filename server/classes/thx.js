@@ -9,10 +9,10 @@ class ThxClient {
   updateCharge(charge) {
     this.charge = charge;
   }
-  lock() {
+  lockClient() {
     this.lock = true;
   }
-  unlock() {
+  unlockClient() {
     this.lock = false;
   }
 }
@@ -54,7 +54,7 @@ export default class Thx extends System {
   reset() {
     this.clients.forEach(c => {
       c.updateCharge(0);
-      c.unlock();
+      c.unlockClient();
     });
   }
   chargeClient(clientId, charge) {
@@ -71,6 +71,6 @@ export default class Thx extends System {
       this.clients.push(new ThxClient({ id: clientId }));
       client = this.clients.find(c => c.id === clientId);
     }
-    client && client.lock();
+    client && client.lockClient();
   }
 }

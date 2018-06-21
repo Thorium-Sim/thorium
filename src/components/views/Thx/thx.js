@@ -1,9 +1,18 @@
 import React, { Component, Fragment } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import { Asset } from "../../../helpers/assets";
-import { withApollo } from "react-apollo";
+import { withApollo, Mutation } from "react-apollo";
+
 import gql from "graphql-tag";
-const ShipImage = ({ simulatorId, view, clients, charge, index }) => {
+const ShipImage = ({
+  simulatorId,
+  view,
+  clients,
+  charge,
+  index,
+  executive
+}) => {
+  const clientList = clients.filter(c => !c.executive);
   return (
     <div className="ship-image">
       <Asset asset={view} simulatorId={simulatorId}>
@@ -26,13 +35,15 @@ const ShipImage = ({ simulatorId, view, clients, charge, index }) => {
                 WebkitMaskImage: `url('${src}')`
               }}
             >
-              {clients.map((c, i) => (
+              {clientList.map((c, i) => (
                 <div
                   style={{
-                    width: `${(1 / clients.length) * 100}%`,
-                    left: `${((i * 1) / clients.length) * 100}%`,
-
-                    opacity: index === i ? charge : 0
+                    width: `${(1 / clientList.length) * 100}%`,
+                    left: `${((i * 1) / clientList.length) * 100}%`,
+                    backgroundColor: c.lock
+                      ? "rgba(255,0,0,0.5)"
+                      : "rgba(255,255,0,0.5)",
+                    opacity: executive ? c.charge : index === i ? charge : 0
                   }}
                 />
               ))}
@@ -43,7 +54,7 @@ const ShipImage = ({ simulatorId, view, clients, charge, index }) => {
     </div>
   );
 };
-class Thx extends Component {
+class ThxRender extends Component {
   constructor(props) {
     super(props);
     const {
@@ -59,13 +70,11 @@ class Thx extends Component {
       charge: client.charge
     };
   }
-  mouseDown = () => {
-    document.addEventListener("mouseup", this.mouseUp);
-    this.frame = true;
-    this.timeout = true;
-    this.loop();
-    this.update();
-  };
+  componentDidMount() {
+    if (this.props.charging && !this.frame) {
+      this.mouseDown();
+    }
+  }
   update = () => {
     if (this.timeout) {
       this.timeout = setTimeout(this.update, 1000);
@@ -74,6 +83,7 @@ class Thx extends Component {
         clientObj: { id: clientId }
       } = this.props;
       const { charge } = this.state;
+
       this.props.client.mutate({
         mutation: gql`
           mutation ChargeTHX($id: ID!, $clientId: ID!, $charge: Float!) {
@@ -88,6 +98,14 @@ class Thx extends Component {
       });
     }
   };
+  mouseDown = () => {
+    document.addEventListener("mouseup", this.mouseUp);
+    this.frame = true;
+    this.timeout = true;
+    this.loop();
+    this.update(this.state.charge);
+    this.props.setCharging(true);
+  };
   loop = () => {
     if (this.frame) {
       this.frame = requestAnimationFrame(this.loop);
@@ -97,11 +115,13 @@ class Thx extends Component {
     }
   };
   mouseUp = () => {
+    this.props.setCharging(false);
     document.removeEventListener("mouseup", this.mouseUp);
     cancelAnimationFrame(this.frame);
     clearTimeout(this.timeout);
     this.timeout = null;
     this.frame = null;
+    this.update();
   };
   componentWillUnmount() {
     document.removeEventListener("mouseup", this.mouseUp);
@@ -109,26 +129,32 @@ class Thx extends Component {
     clearTimeout(this.timeout);
     this.timeout = null;
     this.frame = null;
+    this.update();
   }
   render() {
     const {
+      id,
       clients,
       clientObj: { id: clientId },
-      simulator: { id: simulatorId }
+      simulator: { id: simulatorId },
+      station: { executive },
+      name,
+      activated
     } = this.props;
     const { charge } = this.state;
-    const { lock } = clients.find(c => c.id === clientId) || { lock: false };
-    const index = clients.findIndex(c => c.id === clientId);
+    const clientList = clients.filter(c => !c.executive);
+    const index = clientList.findIndex(c => c.id === clientId);
     return (
       <Container className="card-thx">
         <Row>
-          <Col sm={8}>
+          <Col sm={{ size: 8, offset: executive ? 2 : 0 }}>
             <ShipImage
               view="/Ship Views/Top"
               simulatorId={simulatorId}
               clients={clients}
               index={index}
               charge={charge}
+              executive={executive}
             />
             <ShipImage
               view="/Ship Views/Right"
@@ -136,38 +162,125 @@ class Thx extends Component {
               clients={clients}
               index={index}
               charge={charge}
+              executive={executive}
             />
           </Col>
-          <Col
-            sm={{ size: 3, offset: 1 }}
-            style={{ display: "flex", flexDirection: "column" }}
-          >
-            <h2 className="text-center">Sector Charge</h2>
-            <div className="thx-bar-container">
-              <div
-                className="thx-bar"
-                style={{ height: `${100 - charge * 100}%` }}
-              />
-            </div>
-            <Button
-              color="warning"
-              block
-              size="lg"
-              disabled={charge === 1}
-              onMouseDown={this.mouseDown}
+          {!executive && (
+            <Col
+              sm={{ size: 3, offset: 1 }}
+              style={{ display: "flex", flexDirection: "column" }}
             >
-              Charge
-            </Button>
-          </Col>
+              <h2 className="text-center">Sector Charge</h2>
+              <div className="thx-bar-container">
+                <div
+                  className="thx-bar"
+                  style={{ height: `${100 - charge * 100}%` }}
+                />
+              </div>
+              <Button
+                color="warning"
+                block
+                size="lg"
+                disabled={charge === 1}
+                onMouseDown={this.mouseDown}
+              >
+                Charge
+              </Button>
+            </Col>
+          )}
         </Row>
         <Row>
           <Col sm={{ size: 4, offset: 4 }}>
-            <Button block size="lg" color="danger" disabled={charge !== 1}>
-              Lock Sector {index + 1}
-            </Button>
+            {executive ? (
+              <Mutation
+                mutation={gql`
+                  mutation ActivateTHX($id: ID!) {
+                    activateThx(id: $id)
+                  }
+                `}
+                variables={{ id }}
+              >
+                {activate => (
+                  <Mutation
+                    mutation={gql`
+                      mutation ActivateTHX($id: ID!) {
+                        deactivateThx(id: $id)
+                      }
+                    `}
+                    variables={{ id }}
+                  >
+                    {deactivate => (
+                      <Button
+                        block
+                        size="lg"
+                        color="danger"
+                        disabled={clientList.filter(c => c.lock).length === 0}
+                        onClick={activated ? deactivate : activate}
+                      >
+                        {activated ? "Deactivate" : "Activate"} {name}
+                      </Button>
+                    )}
+                  </Mutation>
+                )}
+              </Mutation>
+            ) : (
+              <Mutation
+                mutation={gql`
+                  mutation LockTHX($id: ID!, $clientId: ID!) {
+                    lockThx(id: $id, clientId: $clientId)
+                  }
+                `}
+                variables={{ clientId, id }}
+              >
+                {action => (
+                  <Button
+                    block
+                    size="lg"
+                    color="danger"
+                    disabled={charge !== 1}
+                    onClick={action}
+                  >
+                    Lock Sector {index + 1}
+                  </Button>
+                )}
+              </Mutation>
+            )}
           </Col>
         </Row>
       </Container>
+    );
+  }
+}
+
+class Thx extends Component {
+  state = {};
+
+  render() {
+    const {
+      name,
+      clients,
+      clientObj: { id: clientId }
+    } = this.props;
+    const { charging } = this.state;
+    const { lock, charge } = clients.find(c => c.id === clientId) || {
+      lock: false,
+      charge: 0
+    };
+    const index = clients.findIndex(c => c.id === clientId);
+
+    return lock ? (
+      <div className="thx-lock">
+        {name} locked for sector {index + 1}
+      </div>
+    ) : (
+      <ThxRender
+        {...this.props}
+        charging={charging}
+        key={charge}
+        setCharging={c => this.setState({ charging: c })}
+        charge={charge}
+        mouseDown={this.mouseDown}
+      />
     );
   }
 }

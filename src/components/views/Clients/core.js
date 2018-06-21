@@ -4,6 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Input } from "reactstrap";
 import { titleCase } from "change-case";
 import Views from "../index";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.css";
 
 const TEMPLATE_SUB = gql`
@@ -20,25 +21,6 @@ const TEMPLATE_SUB = gql`
 `;
 
 class ClientCore extends Component {
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.internalSub && !nextProps.data.loading) {
-      this.internalSub = nextProps.data.subscribeToMore({
-        document: TEMPLATE_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            clients: subscriptionData.data.clientChanged
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.internalSub && this.internalSub();
-  }
   setHypercard = (clientId, component, simulatorId) => {
     const mutation = gql`
       mutation SetClientHypercard(
@@ -67,8 +49,39 @@ class ClientCore extends Component {
     if (this.props.data.loading) return null;
     const { clients } = this.props.data;
     if (!clients) return null;
+    const viewList = Object.keys(Views)
+      .filter(v => !Views[v].hypercard)
+      .concat()
+      .sort()
+      .map((v, i) => (
+        <option key={`${i}-${v}`} value={v}>
+          {titleCase(v)}
+        </option>
+      ));
+    const hypercardList = Object.keys(Views)
+      .filter(v => Views[v].hypercard)
+      .concat()
+      .sort()
+      .map((v, i) => (
+        <option key={`${i}-${v}`} value={v}>
+          {titleCase(v)}
+        </option>
+      ));
     return (
       <div className="clients-card">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: TEMPLATE_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  clients: subscriptionData.data.clientChanged
+                });
+              }
+            })
+          }
+        />
         <Input
           className="hypercard-picker"
           value={"nothing"}
@@ -81,14 +94,8 @@ class ClientCore extends Component {
             Change all clients
           </option>
           <option value="null">No Hypercard</option>
-          {Object.keys(Views)
-            .concat()
-            .sort()
-            .map((v, i) => (
-              <option key={`${i}-${v}`} value={v}>
-                {titleCase(v)}
-              </option>
-            ))}
+          <optgroup label="Designed to be Hypercards">{hypercardList}</optgroup>
+          <optgroup label="Standard Cards">{viewList}</optgroup>
         </Input>
         {clients.map(c => (
           <div key={c.id}>
@@ -102,14 +109,10 @@ class ClientCore extends Component {
               type="select"
             >
               <option value="null">No Hypercard</option>
-              {Object.keys(Views)
-                .concat()
-                .sort()
-                .map((v, i) => (
-                  <option key={`client-${i}-${v}`} value={v}>
-                    {titleCase(v)}
-                  </option>
-                ))}
+              <optgroup label="Designed to be Hypercards">
+                {hypercardList}
+              </optgroup>
+              <optgroup label="Standard Cards">{viewList}</optgroup>
             </Input>
           </div>
         ))}

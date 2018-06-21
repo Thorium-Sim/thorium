@@ -14,6 +14,7 @@ clients {
   lock
   charge
   station
+  executive
 }
 activated
 `;
@@ -84,9 +85,17 @@ const THXCore = ({ activated, name, clients, id }) => (
         </Col>
         <Col sm={3} />
         <Col sm={6}>
-          <Progress value={c.charge} max={1}>
-            {Math.round(c.charge * 100)}%
-          </Progress>
+          {c.executive ? (
+            "Executive"
+          ) : (
+            <Progress
+              value={c.charge}
+              max={1}
+              color={c.lock ? "danger" : "primary"}
+            >
+              {Math.round(c.charge * 100)}%
+            </Progress>
+          )}
         </Col>
       </Row>
     ))}

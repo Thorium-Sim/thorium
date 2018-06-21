@@ -13,6 +13,7 @@ clients {
   lock
   charge
   station
+  executive
 }
 activated
 `;
@@ -33,6 +34,7 @@ ${queryData}
 `;
 
 class ThxData extends Component {
+  static hypercard = true;
   state = {};
   render() {
     return (
@@ -63,7 +65,7 @@ class ThxData extends Component {
                 })
               }
             >
-              <Thx key={charge} {...this.props} {...thx[0]} />
+              <Thx {...this.props} {...thx[0]} />
             </SubscriptionHelper>
           );
         }}

@@ -4,6 +4,7 @@ type ThxClient {
   charge: Float
   lock: Boolean
   station: String
+  executive: Boolean
 }
 
 type Thx{
