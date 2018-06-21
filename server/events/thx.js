@@ -1,5 +1,6 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
+import uuid from "uuid";
 
 function performAction(id, action) {
   const sys = App.systems.find(s => s.id === id);
@@ -22,11 +23,51 @@ App.on("lockThx", ({ id, clientId }) => {
 });
 
 App.on("activateThx", ({ id }) => {
-  performAction(id, sys => sys.activate());
+  performAction(id, sys => {
+    sys.activate();
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      station: "Core",
+      title: `${sys.name} Activated`,
+      body: "",
+      color: "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: sys.simulatorId,
+        title: `${sys.name} Activated`,
+        component: "ThxCore",
+        body: null,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+  });
 });
 
 App.on("deactivateThx", ({ id }) => {
-  performAction(id, sys => sys.deactivate());
+  performAction(id, sys => {
+    sys.deactivate();
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      station: "Core",
+      title: `${sys.name} Deactivated`,
+      body: "",
+      color: "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: sys.simulatorId,
+        title: `${sys.name} Deactivated`,
+        component: "ThxCore",
+        body: null,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+  });
 });
 
 App.on("resetThx", ({ id }) => {

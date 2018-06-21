@@ -43,14 +43,6 @@ class ThxData extends Component {
           const { thx } = data;
           if (loading || !thx) return null;
           if (!thx[0]) return <div>No Thx</div>;
-          const {
-            clientObj: { id: clientId }
-          } = this.props;
-          const { clients } = thx[0];
-          const { charge } = clients.find(c => c.id === clientId) || {
-            lock: false
-          };
-
           return (
             <SubscriptionHelper
               subscribe={() =>

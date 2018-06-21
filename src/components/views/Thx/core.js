@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Progress, Button } from "reactstrap";
+import { Row, Col, Progress, Button, ButtonGroup } from "reactstrap";
 import { OutputField } from "../../generic/core";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
@@ -34,7 +34,7 @@ ${queryData}
   }
 `;
 
-const THXCore = ({ activated, name, clients, id }) => (
+const THXCore = ({ simulator, activated, name, clients, id }) => (
   <div className="thx-core">
     <Mutation
       mutation={gql`
@@ -64,20 +64,56 @@ const THXCore = ({ activated, name, clients, id }) => (
         </Mutation>
       )}
     </Mutation>
-    <Mutation
-      mutation={gql`
-        mutation Reset($id: ID!) {
-          resetThx(id: $id)
-        }
-      `}
-      variables={{ id }}
-    >
-      {action => (
-        <Button block size="sm" color="warning" onClick={action}>
-          Reset {name}
-        </Button>
-      )}
-    </Mutation>
+    <ButtonGroup>
+      <Mutation
+        mutation={gql`
+          mutation Reset($id: ID!) {
+            resetThx(id: $id)
+          }
+        `}
+        variables={{ id }}
+      >
+        {action => (
+          <Button size="sm" color="warning" onClick={action}>
+            Reset {name}
+          </Button>
+        )}
+      </Mutation>
+      <Mutation
+        mutation={gql`
+          mutation SetClientHypercard($simulatorId: ID, $component: String) {
+            setClientHypercard(component: $component, simulatorId: $simulatorId)
+          }
+        `}
+        variables={{
+          component: "Thx",
+          simulatorId: simulator.id
+        }}
+      >
+        {action => (
+          <Button size="sm" color="danger" onClick={action}>
+            Engage THX Control
+          </Button>
+        )}
+      </Mutation>
+      <Mutation
+        mutation={gql`
+          mutation SetClientHypercard($simulatorId: ID, $component: String) {
+            setClientHypercard(component: $component, simulatorId: $simulatorId)
+          }
+        `}
+        variables={{
+          component: null,
+          simulatorId: simulator.id
+        }}
+      >
+        {action => (
+          <Button size="sm" color="info" onClick={action}>
+            Disengage THX Control
+          </Button>
+        )}
+      </Mutation>
+    </ButtonGroup>
     {clients.map(c => (
       <Row key={`client-${c.id}`}>
         <Col sm={3}>

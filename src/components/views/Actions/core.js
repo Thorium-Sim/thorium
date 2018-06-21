@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Row, Col, Button, Input } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo, Query } from "react-apollo";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.css";
 
 const STATION_CHANGE_QUERY = gql`
@@ -29,33 +30,11 @@ const SOUNDS_QUERY = gql`
   }
 `;
 class ActionsCore extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      actionName: "flash",
-      actionDest: "all",
-      selectedSound: "nothing"
-    };
-    this.subscription = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: STATION_CHANGE_QUERY,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            simulators: subscriptionData.data.simulatorsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
+  state = {
+    actionName: "flash",
+    actionDest: "all",
+    selectedSound: "nothing"
+  };
   handleNameChange = e => {
     this.setState({
       actionName: e.target.value
@@ -128,66 +107,73 @@ class ActionsCore extends Component {
     const { actionName, selectedSound } = this.state;
     return (
       <div className="core-action">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: STATION_CHANGE_QUERY,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  simulators: subscriptionData.data.simulatorsUpdate
+                });
+              }
+            })
+          }
+        />
         <div className="flex-container">
           <select onChange={this.handleNameChange} ref="actionName">
-            <option value="flash">Flash</option>
-            <option value="spark">Spark</option>
-            <option value="freak">Freak</option>
-            <option value="sound">Sound</option>
-            <option value="beep">Beep</option>
-            <option value="speak" disabled>
-              Speak
-            </option>
-            <option value="message" disabled>
-              Message
-            </option>
-            <option value="-" disabled>
-              -
-            </option>
-            <option value="blackout">Blackout</option>
-            <option value="-" disabled>
-              -
-            </option>
-            <option value="online">Online</option>
-            <option value="offline">Offline</option>
-            <option value="power">Power Loss</option>
-            <option value="lockdown">Lockdown</option>
-            <option value="maintenance">Maintenance</option>
-            <option value="borg" disabled>
-              Borg
-            </option>
-            <option value="soviet" disabled>
-              Soviet
-            </option>
-            <option value="-" disabled>
-              -
-            </option>
-            <option value="crm" disabled>
-              Crm
-            </option>
-            <option value="thx" disabled>
-              Thx
-            </option>
-            <option value="-" disabled>
-              -
-            </option>
-            <option value="reload">Reload Browser</option>
-            <option value="shutdown">Shutdown</option>
-            <option value="restart">Restart</option>
-            <option value="sleep">Sleep</option>
-            <option value="quit">Quit</option>
+            <optgroup>
+              <option value="flash">Flash</option>
+              <option value="spark">Spark</option>
+              <option value="freak">Freak</option>
+              <option value="sound">Sound</option>
+              <option value="beep">Beep</option>
+              <option value="speak" disabled>
+                Speak
+              </option>
+              <option value="message" disabled>
+                Message
+              </option>
+            </optgroup>
+            <optgroup>
+              <option value="blackout">Blackout</option>
+            </optgroup>
+            <optgroup>
+              <option value="online">Online</option>
+              <option value="offline">Offline</option>
+              <option value="power">Power Loss</option>
+              <option value="lockdown">Lockdown</option>
+              <option value="maintenance">Maintenance</option>
+              <option value="borg" disabled>
+                Borg
+              </option>
+              <option value="soviet" disabled>
+                Soviet
+              </option>
+            </optgroup>
+            <optgroup>
+              <option value="reload">Reload Browser</option>
+              <option value="shutdown">Shutdown</option>
+              <option value="restart">Restart</option>
+              <option value="sleep">Sleep</option>
+              <option value="quit">Quit</option>
+            </optgroup>
           </select>
           <select onChange={this.handleDestChange} ref="actionDest">
-            <option value="all">All Stations</option>
-            <option value="random">Random Station</option>
-            {!this.props.data.loading &&
-              this.props.data.simulators[0] &&
-              this.props.data.simulators[0].stations &&
-              this.props.data.simulators[0].stations.map(s => (
-                <option key={s.name} value={s.name}>
-                  {s.name}
-                </option>
-              ))}
+            <optgroup>
+              <option value="all">All Stations</option>
+              <option value="random">Random Station</option>
+            </optgroup>
+            <optgroup>
+              {!this.props.data.loading &&
+                this.props.data.simulators[0] &&
+                this.props.data.simulators[0].stations &&
+                this.props.data.simulators[0].stations.map(s => (
+                  <option key={s.name} value={s.name}>
+                    {s.name}
+                  </option>
+                ))}
+            </optgroup>
           </select>
         </div>
         {actionName === "sound" ? (
