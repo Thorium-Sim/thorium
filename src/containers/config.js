@@ -62,7 +62,7 @@ class Config extends Component {
             )}
           />
           <Route
-            path="/config/assets"
+            path="/config/assetConfig"
             render={props => (
               <AssetConfig {...props} {...this.trainingProps()} />
             )}

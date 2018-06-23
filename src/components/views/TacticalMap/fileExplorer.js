@@ -14,19 +14,11 @@ const ASSET_FOLDER_SUB = gql`
       fullPath
       id
       folderPath
-      containers {
+      objects {
         id
-        fullPath
-        folderPath
         name
-        objects {
-          id
-          containerId
-          containerPath
-          simulatorId
-          fullPath
-          url
-        }
+        fullPath
+        url
       }
     }
   }
@@ -43,14 +35,14 @@ const ADD_ASSET_FOLDER = gql`
 `;
 
 const REMOVE_ASSET_FOLDER = gql`
-  mutation RemoveAssetFolder($id: ID!) {
-    removeAssetFolder(id: $id)
+  mutation RemoveAssetFolder($fullPath: String!) {
+    removeAssetFolder(fullPath: $fullPath)
   }
 `;
 
 const REMOVE_ASSET_CONTAINER = gql`
-  mutation RemoveAssetContainer($id: ID!) {
-    removeAssetContainer(id: $id)
+  mutation RemoveAssetObject($fullPath: String!) {
+    removeAssetObject(fullPath: $fullPath)
   }
 `;
 
@@ -64,7 +56,7 @@ class FileExplorer extends Component {
   static defaultProps = {
     directory: "/"
   };
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.assetFolderSubscription && !nextProps.data.loading) {
       this.assetFolderSubscription = nextProps.data.subscribeToMore({
         document: ASSET_FOLDER_SUB,
@@ -93,21 +85,29 @@ class FileExplorer extends Component {
       this.props.client.mutate({ mutation, variables });
     }
   };
-  _removeFolder = (id, e) => {
+  _removeFolder = (fullPath, e) => {
     e.preventDefault();
-    if (window.confirm("Are you sure you want to remove this folder?")) {
+    if (
+      window.confirm(
+        "Are you sure you want to remove this folder? This will permenantly delete all of the files inside the folder."
+      )
+    ) {
       const mutation = REMOVE_ASSET_FOLDER;
       const variables = {
-        id
+        fullPath
       };
       this.props.client.mutate({ mutation, variables });
     }
   };
-  _removeObject = id => {
-    if (window.confirm("Are you sure you want to remove this asset?")) {
+  _removeObject = (fullPath, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (
+      window.confirm("Are you sure you want to permenantly remove this asset?")
+    ) {
       const mutation = REMOVE_ASSET_CONTAINER;
       const variables = {
-        id
+        fullPath
       };
       this.props.client.mutate({
         mutation,
@@ -119,14 +119,17 @@ class FileExplorer extends Component {
     const files = e.target.files;
     if (e.target.files.length === 0) return;
     if (e.target.files.length > 1) return this.doMassUplaod(files);
-    const name = prompt("What would you like to name the uploaded file?");
+    const fileName = files[0].name.slice(0, files[0].name.lastIndexOf("."));
+    const name = prompt(
+      "What would you like to name the uploaded file?",
+      fileName
+    );
     if (name) {
       this.doMassUplaod(files, name);
     }
   };
   doMassUplaod = (files, name) => {
     const data = new FormData();
-    data.append("simulatorId", "default");
     data.append("folderPath", this.state.currentDirectory);
     if (name) data.append("name", name);
     Array.from(files).forEach((f, index) => data.append(`files[${index}]`, f));
@@ -213,7 +216,7 @@ class FileExplorer extends Component {
                     <FontAwesome
                       name="ban"
                       className="text-danger"
-                      onClick={e => this._removeFolder(folder.id, e)}
+                      onClick={e => this._removeFolder(folder.fullPath, e)}
                     />{" "}
                   </p>
                 </div>
@@ -222,37 +225,32 @@ class FileExplorer extends Component {
           {this.props.data.assetFolders &&
             this.props.data.assetFolders.length &&
             this.props.data.assetFolders
+              .concat({ fullPath: "/", objects: [] })
               .find(folder => folder.fullPath === currentDirectory)
-              .containers.map(container => {
-                const object =
-                  container.objects.find(o => o.simulatorId === "default") ||
-                  container.objects[0];
-                if (!object) return null;
+              .objects.map(object => {
                 return (
                   <div
-                    key={container.id}
+                    key={object.id}
                     onClick={evt =>
-                      this.props.onClick && this.props.onClick(evt, container)
+                      this.props.onClick && this.props.onClick(evt, object)
                     }
                     onMouseDown={evt =>
                       this.props.onMouseDown &&
-                      this.props.onMouseDown(evt, container)
+                      this.props.onMouseDown(evt, object)
                     }
                     onMouseUp={evt =>
-                      this.props.onMouseUp &&
-                      this.props.onMouseUp(evt, container)
+                      this.props.onMouseUp && this.props.onMouseUp(evt, object)
                     }
                   >
                     <div
                       className={`file-container ${
-                        selectedFiles.indexOf(container.fullPath) > -1
+                        selectedFiles.indexOf(object.fullPath) > -1
                           ? "selected"
                           : ""
                       }`}
                     >
                       <AssetObject
                         object={object}
-                        container={container}
                         removeObject={
                           this.props.admin ? this._removeObject : null
                         }
@@ -292,7 +290,7 @@ class VideoPreview extends Component {
   }
 }
 
-const AssetObject = ({ object, container, removeObject }) => {
+const AssetObject = ({ object, removeObject }) => {
   const ext1 = object.url.match(/\..*$/gi);
   const ext = ext1 ? ext1[0].replace(".", "").toLowerCase() : null;
   if (ext === "obj") {
@@ -300,11 +298,11 @@ const AssetObject = ({ object, container, removeObject }) => {
       <div>
         <ObjPreview src={object.url} />
         <p>
-          {container.name}{" "}
+          {object.name}{" "}
           <FontAwesome
             name="ban"
             className="text-danger"
-            onClick={() => removeObject(container.id)}
+            onClick={e => removeObject(object.fullPath, e)}
           />
         </p>
       </div>
@@ -315,11 +313,11 @@ const AssetObject = ({ object, container, removeObject }) => {
       <div>
         <VideoPreview src={object.url} />
         <p>
-          {container.name}{" "}
+          {object.name}{" "}
           <FontAwesome
             name="ban"
             className="text-danger"
-            onClick={() => removeObject(container.id)}
+            onClick={e => removeObject(object.fullPath, e)}
           />
         </p>
       </div>
@@ -330,11 +328,11 @@ const AssetObject = ({ object, container, removeObject }) => {
       <div>
         <FontAwesome size="5x" name="file-audio-o" />
         <p>
-          {container.name}{" "}
+          {object.name}{" "}
           <FontAwesome
             name="ban"
             className="text-danger"
-            onClick={() => removeObject(container.id)}
+            onClick={e => removeObject(object.fullPath, e)}
           />
         </p>
       </div>
@@ -344,12 +342,12 @@ const AssetObject = ({ object, container, removeObject }) => {
     <div>
       <img alt="object" draggable="false" src={object.url} />
       <p>
-        {container.name}{" "}
+        {object.name}{" "}
         {removeObject && (
           <FontAwesome
             name="ban"
             className="text-danger"
-            onClick={() => removeObject(container.id)}
+            onClick={e => removeObject(object.fullPath, e)}
           />
         )}
       </p>
@@ -364,19 +362,11 @@ const ASSET_FOLDER_QUERY = gql`
       fullPath
       id
       folderPath
-      containers {
+      objects {
         id
-        fullPath
-        folderPath
         name
-        objects {
-          id
-          containerId
-          containerPath
-          simulatorId
-          fullPath
-          url
-        }
+        fullPath
+        url
       }
     }
   }

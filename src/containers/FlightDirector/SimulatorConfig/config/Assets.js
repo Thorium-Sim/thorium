@@ -67,8 +67,6 @@ class AssetDropzone extends Component {
   onDrop = evt => {
     const { folderPath, name, sim, update } = this.props;
     const data = new FormData();
-    data.append("simulatorId", sim.id);
-    data.append("containerName", name);
     data.append("folderPath", folderPath);
     Array.from(evt.target.files).forEach((f, index) =>
       data.append(`files[${index}]`, f)
