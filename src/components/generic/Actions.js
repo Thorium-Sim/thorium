@@ -3,6 +3,8 @@ import uuid from "uuid";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import Spark from "../views/Actions/spark";
+const synth = window.speechSynthesis;
+
 const ACTIONS_SUB = gql`
   subscription ActionsSub($simulatorId: ID!, $stationId: ID, $clientId: ID) {
     actionsUpdate(
@@ -12,6 +14,8 @@ const ACTIONS_SUB = gql`
     ) {
       action
       duration
+      message
+      voice
     }
   }
 `;
@@ -33,7 +37,7 @@ class ActionsMixin extends Component {
     this.setState({ flash: !this.state.flash });
     setTimeout(this.flash.bind(this, duration - 1), 100);
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading && this.props.simulator) {
       this.subscription = nextProps.data.subscribeToMore({
         document: ACTIONS_SUB,
@@ -42,7 +46,12 @@ class ActionsMixin extends Component {
           stationId: this.props.station.name
         },
         updateQuery: (previousResult, { subscriptionData }) => {
-          let { action, duration } = subscriptionData.data.actionsUpdate;
+          let {
+            action,
+            message,
+            voice,
+            duration
+          } = subscriptionData.data.actionsUpdate;
           switch (action) {
             case "flash":
               duration = duration || 10;
@@ -63,13 +72,18 @@ class ActionsMixin extends Component {
             case "reload":
               window.location.reload();
               break;
+            case "speak":
+              const voices = synth.getVoices();
+              const words = new SpeechSynthesisUtterance(message);
+              if (voice) words.voice = voices.find(v => v.name === voice);
+              synth.speak(words);
+              break;
             case "shutdown":
             case "restart":
             case "sleep":
             case "quit":
             case "beep":
             case "freak":
-            case "speak":
               window.thorium.sendMessage({ action });
               break;
             default:

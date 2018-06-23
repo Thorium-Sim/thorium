@@ -18,8 +18,8 @@ export const ActionsMutations = {
 export const ActionsSubscriptions = {
   actionsUpdate: {
     resolve(rootQuery) {
-      const { action, duration } = rootQuery;
-      return { action, duration };
+      const { action, duration, message, voice } = rootQuery;
+      return { action, duration, message, voice };
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("actionsUpdate"),

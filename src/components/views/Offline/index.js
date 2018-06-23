@@ -1,5 +1,6 @@
 import React from "react";
 import "./style.css";
+import Soviet from "./soviet";
 
 const Offline = props => {
   // Messages go here
@@ -27,6 +28,7 @@ const Offline = props => {
     }
   };
   const message = props.message || messages[props.clientObj.offlineState] || {};
+  if (props.clientObj.offlineState === "soviet") return <Soviet />;
   return (
     <div>
       {props.clientObj.offlineState === "blackout" && (

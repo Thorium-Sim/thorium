@@ -326,14 +326,18 @@ class DamageControl extends Component {
             {stepDamage && (
               <Row>
                 <Col sm={3}>
-                  <Button
-                    disabled={!system || system.damage.currentStep === 0}
-                    block
-                    color="secondary"
-                    onClick={() => this.setStep(system.damage.currentStep - 1)}
-                  >
-                    Previous Step
-                  </Button>
+                  {!verifyStep && (
+                    <Button
+                      disabled={!system || system.damage.currentStep === 0}
+                      block
+                      color="secondary"
+                      onClick={() =>
+                        this.setStep(system.damage.currentStep - 1)
+                      }
+                    >
+                      Previous Step
+                    </Button>
+                  )}
                 </Col>
                 <Col sm={6}>
                   <h3 className="text-center">

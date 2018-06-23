@@ -40,21 +40,7 @@ export default ({ updateArgs, args, client }) => {
           <option value="power">Power Loss</option>
           <option value="lockdown">Lockdown</option>
           <option value="maintenance">Maintenance</option>
-          <option value="borg" disabled>
-            Borg
-          </option>
-          <option value="soviet" disabled>
-            Soviet
-          </option>
-          <option value="-" disabled>
-            -
-          </option>
-          <option value="crm" disabled>
-            Crm
-          </option>
-          <option value="thx" disabled>
-            Thx
-          </option>
+          <option value="soviet">Soviet</option>
         </Input>
       </FormGroup>
     </div>

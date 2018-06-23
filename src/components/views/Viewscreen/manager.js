@@ -38,7 +38,7 @@ class ViewscreenCore extends Component {
   componentWillUnmount() {
     this.sub && this.sub();
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.sub && !nextProps.data.loading) {
       this.sub = nextProps.data.subscribeToMore({
         document: VIEWSCREEN_SUB,
@@ -151,9 +151,15 @@ class ViewscreenCore extends Component {
       configData
     } = this.state;
     if (!viewscreens) return <div>No Viewscreens</div>;
+    const scaleFactor = (window.innerWidth / 1920) * 0.45;
     return (
       <div className="viewscreen-core">
-        <div className="q1">
+        <div
+          className="q1"
+          style={{
+            transform: `scale(${scaleFactor})`
+          }}
+        >
           {selectedViewscreen && (
             <Preview
               simulator={this.props.simulator}
@@ -162,7 +168,12 @@ class ViewscreenCore extends Component {
             />
           )}
         </div>
-        <div className="q3">
+        <div
+          className="q3"
+          style={{
+            transform: `scale(${scaleFactor})`
+          }}
+        >
           {previewComponent && (
             <CardPreview
               simulator={this.props.simulator}

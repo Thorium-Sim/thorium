@@ -30,11 +30,17 @@ const SOUNDS_QUERY = gql`
   }
 `;
 class ActionsCore extends Component {
-  state = {
-    actionName: "flash",
-    actionDest: "all",
-    selectedSound: "nothing"
-  };
+  constructor(props) {
+    super(props);
+    this.voices = window.speechSynthesis.getVoices();
+
+    this.state = {
+      actionName: "flash",
+      actionDest: "all",
+      selectedSound: "nothing",
+      selectedVoice: this.voices[0].name
+    };
+  }
   handleNameChange = e => {
     this.setState({
       actionName: e.target.value
@@ -46,7 +52,12 @@ class ActionsCore extends Component {
     });
   };
   triggerAction = () => {
-    let { actionName, actionDest } = this.state;
+    let { actionName, actionDest, selectedVoice } = this.state;
+    let message;
+    if (actionName === "speak" || actionName === "message") {
+      message = prompt("What do you want to say?");
+      if (!message) return;
+    }
     if (actionDest === "random") {
       const index = Math.floor(
         Math.random() * this.props.data.simulators[0].stations.length
@@ -58,18 +69,24 @@ class ActionsCore extends Component {
         $action: String!
         $simulatorId: ID!
         $stationName: String
+        $message: String
+        $voice: String
       ) {
         triggerAction(
           action: $action
           simulatorId: $simulatorId
           stationId: $stationName
+          message: $message
+          voice: $voice
         )
       }
     `;
     const variables = {
       action: actionName,
       simulatorId: this.props.simulator.id,
-      stationName: actionDest
+      stationName: actionDest,
+      message,
+      voice: selectedVoice
     };
     this.props.client.mutate({
       mutation,
@@ -104,7 +121,7 @@ class ActionsCore extends Component {
     });
   };
   render() {
-    const { actionName, selectedSound } = this.state;
+    const { actionName, selectedSound, selectedVoice } = this.state;
     return (
       <div className="core-action">
         <SubscriptionHelper
@@ -128,12 +145,8 @@ class ActionsCore extends Component {
               <option value="freak">Freak</option>
               <option value="sound">Sound</option>
               <option value="beep">Beep</option>
-              <option value="speak" disabled>
-                Speak
-              </option>
-              <option value="message" disabled>
-                Message
-              </option>
+              <option value="speak">Speak</option>
+              <option value="message">Message</option>
             </optgroup>
             <optgroup>
               <option value="blackout">Blackout</option>
@@ -144,12 +157,7 @@ class ActionsCore extends Component {
               <option value="power">Power Loss</option>
               <option value="lockdown">Lockdown</option>
               <option value="maintenance">Maintenance</option>
-              <option value="borg" disabled>
-                Borg
-              </option>
-              <option value="soviet" disabled>
-                Soviet
-              </option>
+              <option value="soviet">Soviet</option>
             </optgroup>
             <optgroup>
               <option value="reload">Reload Browser</option>
@@ -217,6 +225,33 @@ class ActionsCore extends Component {
             <Col sm={4}>
               <Button block color="primary" size="sm" onClick={this.playSound}>
                 Play
+              </Button>
+            </Col>
+          </Row>
+        ) : actionName === "speak" ? (
+          <Row>
+            <Col sm={8}>
+              <Input
+                style={{ height: "20px" }}
+                type="select"
+                value={selectedVoice}
+                onChange={e => this.setState({ selectedVoice: e.target.value })}
+              >
+                {this.voices.map(c => (
+                  <option key={c.name} value={c.name}>
+                    {c.name}
+                  </option>
+                ))}
+              </Input>
+            </Col>
+            <Col sm={4}>
+              <Button
+                block
+                color="primary"
+                size="sm"
+                onClick={this.triggerAction}
+              >
+                Speak
               </Button>
             </Col>
           </Row>

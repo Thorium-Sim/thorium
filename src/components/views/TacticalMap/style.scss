@@ -90,7 +90,9 @@
   }
 }
 .viewscreen-tacticalMap {
-  height: 100%;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: top left;
 }
 .tactical-map-view {
   height: 100%;

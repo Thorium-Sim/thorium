@@ -204,7 +204,12 @@ class TacticalMapViewscreen extends Component {
     );
     const layers = this.state.layers[tacticalMapId];
     return (
-      <div className="viewscreen-tacticalMap">
+      <div
+        className="viewscreen-tacticalMap"
+        style={{
+          transform: `scale(${window.innerWidth / 1920})`
+        }}
+      >
         {selectedTacticalMap && (
           <Preview
             simulatorId={this.props.simulator.id}
