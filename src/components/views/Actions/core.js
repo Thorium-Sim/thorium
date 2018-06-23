@@ -157,7 +157,6 @@ class ActionsCore extends Component {
               <option value="power">Power Loss</option>
               <option value="lockdown">Lockdown</option>
               <option value="maintenance">Maintenance</option>
-              <option value="borg">Borg</option>
               <option value="soviet">Soviet</option>
             </optgroup>
             <optgroup>

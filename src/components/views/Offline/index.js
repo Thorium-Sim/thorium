@@ -1,7 +1,6 @@
 import React from "react";
 import "./style.css";
 import Soviet from "./soviet";
-import Borg from "./borg";
 
 const Offline = props => {
   // Messages go here
@@ -30,7 +29,6 @@ const Offline = props => {
   };
   const message = props.message || messages[props.clientObj.offlineState] || {};
   if (props.clientObj.offlineState === "soviet") return <Soviet />;
-  if (props.clientObj.offlineState === "borg") return <Borg />;
   return (
     <div>
       {props.clientObj.offlineState === "blackout" && (

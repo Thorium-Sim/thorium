@@ -22,7 +22,6 @@ App.on("triggerAction", args => {
     case "power":
     case "lockdown":
     case "maintenance":
-    case "borg":
     case "soviet":
       App.clients
         .filter(
