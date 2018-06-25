@@ -242,7 +242,7 @@ class ActionsCore extends Component {
                 value={selectedVoice}
                 onChange={e => this.setState({ selectedVoice: e.target.value })}
               >
-                {(this.voices ? this.voices : []).map(c => (
+                {this.voices.map(c => (
                   <option key={c.name} value={c.name}>
                     {c.name}
                   </option>
