@@ -40,7 +40,7 @@
     "all-contributors-cli": "^5.2.0",
     "babel-cli": "^6.26.0",
     "babel-plugin-inline-import": "^3.0.0",
-    "babel-plugin-preval": "^1.6.4",
+    "babel-plugin-preval": "^2.0.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "babel-preset-env": "^1.7.0",
     "babel-preset-flow": "^6.23.0",
