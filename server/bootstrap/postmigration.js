@@ -83,95 +83,120 @@ export default () => {
           // Migrate all of the simulator assets from being referential to being on the simulator object itself
           fs.mkdirSync(`${assetDir}/Simulator`);
           return Promise.all(
-            App.simulators.map(sim => {
-              console.log(
-                chalk.cyan(`Migrating assets for ${sim.name} simulator...`)
-              );
+            App.simulators
+              .concat({ id: "default", name: "default" })
+              .map(sim => {
+                console.log(
+                  chalk.cyan(`Migrating assets for ${sim.name} simulator...`)
+                );
 
-              const assetPaths = {
-                mesh: [
-                  "/3D/Mesh/Simulator",
-                  `/Simulator/${sim.name}/mesh`,
-                  "obj"
-                ],
-                texture: [
-                  "/3D/Texture/Simulator",
-                  `/Simulator/${sim.name}/texture`,
-                  "png"
-                ],
-                side: [
-                  "/Ship Views/Right",
-                  `/Simulator/${sim.name}/side`,
-                  "png"
-                ],
-                top: ["/Ship Views/Top", `/Simulator/${sim.name}/top`, "png"],
-                logo: ["/Misc/Login Logo", `/Simulator/${sim.name}/logo`, "svg"]
-              };
-              // Create the simulator folder
-              if (!fs.existsSync(`${assetDir}/Simulator/${sim.name}`)) {
-                fs.mkdirSync(`${assetDir}/Simulator/${sim.name}`);
-              }
+                const assetPaths = {
+                  mesh: [
+                    "/3D/Mesh/Simulator",
+                    `/Simulator/${sim.name}/mesh`,
+                    "obj"
+                  ],
+                  texture: [
+                    "/3D/Texture/Simulator",
+                    `/Simulator/${sim.name}/texture`,
+                    "png"
+                  ],
+                  side: [
+                    "/Ship Views/Right",
+                    `/Simulator/${sim.name}/side`,
+                    "png"
+                  ],
+                  top: ["/Ship Views/Top", `/Simulator/${sim.name}/top`, "png"],
+                  logo: [
+                    "/Misc/Login Logo",
+                    `/Simulator/${sim.name}/logo`,
+                    "svg"
+                  ]
+                };
+                // Create the simulator folder
+                if (!fs.existsSync(`${assetDir}/Simulator/${sim.name}`)) {
+                  fs.mkdirSync(`${assetDir}/Simulator/${sim.name}`);
+                }
+                // Update the asset references on the simulator object
 
-              // Look for assets with the simulator's ID
-              return Promise.all(
-                Object.keys(assetPaths).map(s => {
-                  return new Promise(resolve => {
-                    const [oldPath, newPath, oldExt] = assetPaths[s];
-                    const assetObject = getAssetObject(oldPath, sim.id);
-                    // Move it to the new location
-                    if (assetObject) {
-                      const assetLocation = `${assetDir}${assetObject.replace(
-                        "/assets",
-                        ""
-                      )}`;
+                // Look for assets with the simulator's ID
+                return Promise.all(
+                  Object.keys(assetPaths).map(s => {
+                    return new Promise(resolve => {
+                      const [oldPath, newPath, oldExt] = assetPaths[s];
+                      const assetObject = getAssetObject(oldPath, sim.id);
+                      // Move it to the new location
+                      if (assetObject) {
+                        const assetLocation = `${assetDir}${assetObject.replace(
+                          "/assets",
+                          ""
+                        )}`;
 
-                      if (fs.existsSync(assetLocation)) {
-                        const pathParts = assetLocation.match(regexPath);
+                        if (fs.existsSync(assetLocation)) {
+                          const pathParts = assetLocation.match(regexPath);
+                          console.log(
+                            "Moving",
+                            `${assetDir}${newPath}.${pathParts[1]}`
+                          );
+                          return ncp(
+                            assetLocation,
+                            `${assetDir}${newPath}.${pathParts[1]}`,
+                            err => {
+                              if (err) {
+                                console.error("Error!", err);
+                              }
+                              resolve({
+                                sim,
+                                s,
+                                path: `${newPath}.${pathParts[1]}`
+                              });
+                            }
+                          );
+                        }
+                      }
+                      // Move in the default objects
+                      if (
+                        fs.existsSync(`${assetDir}${oldPath}/default.${oldExt}`)
+                      ) {
                         console.log(
-                          "Moving",
-                          `${assetDir}${newPath}.${pathParts[1]}`
+                          "moving",
+                          `${assetDir}${newPath}.${oldExt}`
                         );
                         return ncp(
-                          assetLocation,
-                          `${assetDir}${newPath}.${pathParts[1]}`,
+                          `${assetDir}${oldPath}/default.${oldExt}`,
+                          `${assetDir}${newPath}.${oldExt}`,
                           err => {
                             if (err) {
                               console.error("Error!", err);
                             }
-                            resolve();
+                            resolve({
+                              sim,
+                              s,
+                              path: `${newPath}.${oldExt}`
+                            });
                           }
                         );
                       }
-                    }
-                    // Move in the default objects
-                    if (
-                      fs.existsSync(`${assetDir}${oldPath}/default.${oldExt}`)
-                    ) {
-                      console.log("moving", `${assetDir}${newPath}.${oldExt}`);
-                      return ncp(
-                        `${assetDir}${oldPath}/default.${oldExt}`,
-                        `${assetDir}${newPath}.${oldExt}`,
-                        err => {
-                          if (err) {
-                            console.error("Error!", err);
-                          }
-                          resolve();
-                        }
+                      console.error(
+                        chalk.red(
+                          `Error transferring asset for simulator ${
+                            sim.name
+                          }: ${oldPath} -> ${newPath}`
+                        )
                       );
-                    }
-                    console.error(
-                      chalk.red(
-                        `Error transferring asset for simulator ${
-                          sim.name
-                        }: ${oldPath} -> ${newPath}`
-                      )
-                    );
-                  });
-                })
-              );
-            })
+                    }).then(({ sim, s, path }) => {
+                      sim.setAssets &&
+                        sim.setAssets({
+                          ...sim.assets,
+                          [s]: path
+                        });
+                    });
+                  })
+                );
+              })
           );
         })
+
         .then(() => {
           console.log(chalk.cyan(`Migrating flight asset paths`));
           // Migrate all of the pictures and images currently stored in memory

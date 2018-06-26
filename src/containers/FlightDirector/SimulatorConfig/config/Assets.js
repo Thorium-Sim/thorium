@@ -5,27 +5,27 @@ import { Asset } from "../../../../helpers/assets";
 const assetList = [
   {
     name: "Simulator",
-    fullPath: "/3D/Mesh/Simulator",
+    fullPath: "mesh",
     folderPath: "/3D/Mesh"
   },
   {
     name: "Simulator",
-    fullPath: "/3D/Texture/Simulator",
+    fullPath: "texture",
     folderPath: "/3D/Texture"
   },
   {
     name: "Right",
-    fullPath: "/Ship Views/Right",
+    fullPath: "side",
     folderPath: "/Ship Views"
   },
   {
     name: "Top",
-    fullPath: "/Ship Views/Top",
+    fullPath: "top",
     folderPath: "/Ship Views"
   },
   {
     name: "Login Logo",
-    fullPath: "/Misc/Login Logo",
+    fullPath: "logo",
     folderPath: "/Misc"
   }
 ];
@@ -33,15 +33,16 @@ const assetList = [
 class Assets extends Component {
   render() {
     const { selectedSimulator: sim } = this.props;
+    const { assets } = sim;
     return (
       <Container className="assets">
         <p>Assets</p>
         <Row style={{ overflowY: "scroll", height: "80vh" }}>
           {assetList.map(a => (
             <Asset
-              key={a.fullPath}
+              key={assets[a.fullPath]}
               fail
-              asset={a.fullPath}
+              asset={assets[a.fullPath]}
               simulatorId={sim.id}
             >
               {({ src }) => (

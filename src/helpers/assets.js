@@ -25,16 +25,15 @@ class AssetComponent extends Component {
   }
   updateAsset(props) {
     const query = gql`
-      query GetAsset($assetKey: String!, $simulatorId: ID) {
-        asset(assetKey: $assetKey, simulatorId: $simulatorId) {
+      query GetAsset($assetKey: String!) {
+        asset(assetKey: $assetKey) {
           assetKey
           url
         }
       }
     `;
     const variables = {
-      assetKey: props.asset,
-      simulatorId: props.simulatorId
+      assetKey: props.asset
     };
     if (!props.asset) {
       return;

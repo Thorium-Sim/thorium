@@ -64,6 +64,13 @@ optionalDamageSteps {
     reactivate
   }
 }
+assets {
+  mesh
+  texture
+  side
+  top
+  logo
+}
 systems {
   id
   type

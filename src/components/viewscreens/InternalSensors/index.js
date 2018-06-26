@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Asset } from "../../../helpers/assets";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.css";
 
 const INTERNAL_SUB = gql`
@@ -18,28 +18,13 @@ const INTERNAL_SUB = gql`
 
 class InternalSensorsViewscreen extends Component {
   state = { scan: 0.5 };
-  sub = null;
   componentDidMount() {
     this.looping = true;
     this.loop();
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.sensorsSubscription && !nextProps.data.loading) {
-      this.sensorsSubscription = nextProps.data.subscribeToMore({
-        document: INTERNAL_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            sensors: subscriptionData.data.sensorsUpdate
-          });
-        }
-      });
-    }
-  }
   componentWillUnmount() {
     this.looping = false;
     cancelAnimationFrame(this.frame);
-    this.sensorsSubscription && this.sensorsSubscription();
   }
   loop = () => {
     if (!this.looping) return;
@@ -64,10 +49,26 @@ class InternalSensorsViewscreen extends Component {
       100 -
       5}%,rgba(246,223,27,1) ${scan * 100}%,rgba(246,223,30,0) ${scan * 100 +
       5}%,rgba(241,218,54,0) 100%)`;
+    const { assets } = this.props.simulator;
     return (
       <div className="viewscreen-internalSensors">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: INTERNAL_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  sensors: subscriptionData.data.sensorsUpdate
+                });
+              }
+            })
+          }
+        />
         <h1>Internal Scans</h1>
-        <Asset asset="/Ship Views/Right" simulatorId={this.props.simulator.id}>
+        <Asset asset={assets.side}>
           {({ src }) => (
             <div className="ship">
               {scanning && <div className="scanner" style={{ background }} />}

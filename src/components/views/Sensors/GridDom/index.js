@@ -185,13 +185,11 @@ class GridDom extends Component {
               ...location,
               x:
                 location.x +
-                (destination.x - location.x) /
-                  (endTime - c.startTime) *
+                ((destination.x - location.x) / (endTime - c.startTime)) *
                   currentTime,
               y:
                 location.y +
-                (destination.y - location.y) /
-                  (endTime - c.startTime) *
+                ((destination.y - location.y) / (endTime - c.startTime)) *
                   currentTime,
               z: 0
             };
@@ -234,8 +232,8 @@ class GridDom extends Component {
     const padding = core ? 15 : 0;
     const width = Math.min(dimWidth, dimHeight) - padding;
     const destinationDiff = {
-      x: e.movementX / width * 2,
-      y: e.movementY / width * 2,
+      x: (e.movementX / width) * 2,
+      y: (e.movementY / width) * 2,
       z: 0
     };
     const obj = {};
@@ -452,7 +450,7 @@ class GridDom extends Component {
         }}
       >
         <div className={`grid ${ping ? "ping" : ""}`}>
-          {damaged && <div class="damaged-sensors" />}
+          {damaged && <div className="damaged-sensors" />}
           {interference > 0 && (
             <Interference width={width} interference={interference} />
           )}
@@ -465,10 +463,10 @@ class GridDom extends Component {
                   return;
                 }
                 const bounds = {
-                  x1: (b.left - width / 2) / width * 2,
-                  x2: (b.width + b.left - width / 2) / width * 2,
-                  y1: (b.top - width / 2) / width * 2,
-                  y2: (b.height + b.top - width / 2) / width * 2
+                  x1: ((b.left - width / 2) / width) * 2,
+                  x2: ((b.width + b.left - width / 2) / width) * 2,
+                  y1: ((b.top - width / 2) / width) * 2,
+                  y2: ((b.height + b.top - width / 2) / width) * 2
                 };
                 // Find selected contacts
                 const selected = contacts
@@ -494,8 +492,8 @@ class GridDom extends Component {
                 key={`ring-${i}`}
                 className="ring"
                 style={{
-                  width: `${(i + 1) / array.length * 100}%`,
-                  height: `${(i + 1) / array.length * 100}%`
+                  width: `${((i + 1) / array.length) * 100}%`,
+                  height: `${((i + 1) / array.length) * 100}%`
                 }}
               />
             ))}
@@ -506,7 +504,7 @@ class GridDom extends Component {
                 key={`line-${i}`}
                 className="line"
                 style={{
-                  transform: `rotate(${(i + 0.5) / array.length * 360}deg)`
+                  transform: `rotate(${((i + 0.5) / array.length) * 360}deg)`
                 }}
               />
             ))}

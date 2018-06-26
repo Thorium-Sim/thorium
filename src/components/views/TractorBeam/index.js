@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Container, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import { Asset } from "../../../helpers/assets";
 import Beam from "./beam";
@@ -47,28 +48,6 @@ const TRACTORBEAM_SUB = gql`
 `;
 
 class TractorBeam extends Component {
-  constructor(props) {
-    super(props);
-    this.tractorBeamSub = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.tractorBeamSub && !nextProps.data.loading) {
-      this.tractorBeamSub = nextProps.data.subscribeToMore({
-        document: TRACTORBEAM_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            tractorBeam: subscriptionData.data.tractorBeamUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.tractorBeamSub && this.tractorBeamSub();
-  }
   toggleBeam = () => {
     const tractorBeam = this.props.data.tractorBeam[0];
     const mutation = gql`
@@ -98,11 +77,27 @@ class TractorBeam extends Component {
           tractorBeam.power.powerLevels[0] +
           1)
       : 1;
+    const { assets } = this.props.simulator;
     return (
       <Container className="tractor-beam">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: TRACTORBEAM_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  tractorBeam: subscriptionData.data.tractorBeamUpdate
+                });
+              }
+            })
+          }
+        />
         <DamageOverlay system={tractorBeam} message="Tractor Beam Offline" />
         <Beam shown={tractorBeam.state} />
-        <Asset asset="/Ship Views/Right" simulatorId={this.props.simulator.id}>
+        <Asset asset={assets.side}>
           {({ src }) => (
             <div
               alt="ship"

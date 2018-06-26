@@ -284,6 +284,13 @@ const CLIENT_SUB = gql`
         alertlevel
         layout
         bridgeOfficerMessaging
+        assets {
+          mesh
+          texture
+          side
+          top
+          logo
+        }
       }
       station {
         name
@@ -573,6 +580,13 @@ const ClientQuery = gql`
         alertlevel
         layout
         bridgeOfficerMessaging
+        assets {
+          mesh
+          texture
+          side
+          top
+          logo
+        }
       }
       station {
         name

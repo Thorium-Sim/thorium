@@ -69,7 +69,7 @@ const Multi = ({
       ))}
       {!survey && (
         <div
-          class="text-primary"
+          className="text-primary"
           style={{ cursor: "pointer" }}
           onClick={addOption}
         >
