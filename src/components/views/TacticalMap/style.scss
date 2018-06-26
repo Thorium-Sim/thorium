@@ -55,7 +55,8 @@
   }
   .layer-list,
   .saved-list {
-    min-height: 150px;
+    height: 100px;
+    overflow-y: auto;
     border: solid 1px rgba(128, 128, 128, 0.5);
     margin: 3px;
     padding: 0;
