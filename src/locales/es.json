@@ -1,0 +1,7 @@
+{
+  "flight-config": "Configuración de vuelo",
+  "return-to-main": "Volver al menú principal",
+  "thorium": "Torio",
+  "upgrade-warning":
+    "Tu versión de Torio está desactualizada. La versión actual es {newVersion}. Tu versión es {oldVersion}"
+}
