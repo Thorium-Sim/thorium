@@ -15,6 +15,7 @@ import {
 } from "reactstrap";
 import Tour from "reactour";
 import randomWords from "random-words";
+import { FormattedMessage } from "react-intl";
 
 import "./flightConfig.css";
 
@@ -161,9 +162,14 @@ class FlightConfig extends Component {
     return (
       <Container className="flight-config">
         <h4>
-          Flight Config{" "}
+          <FormattedMessage id="flight-config" defaultMessage="Flight Config" />{" "}
           <small>
-            <Link to="/">Return to Main</Link>
+            <Link to="/">
+              <FormattedMessage
+                id="return-to-main"
+                defaultMessage="Return to Main"
+              />
+            </Link>
           </small>
         </h4>
         <FormGroup className="name-input">

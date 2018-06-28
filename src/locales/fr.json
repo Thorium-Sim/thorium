@@ -1,0 +1,6 @@
+{
+  "flight-config": "Flight Config",
+  "return-to-main": "Return to Main",
+  "thorium": "Thorium",
+  "upgrade-warning": "Your version of Thorium is outdated. Current version is {newVersion}. Your version is {oldVersion}"
+}

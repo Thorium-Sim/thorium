@@ -202,12 +202,13 @@ class TacticalMapViewscreen extends Component {
     const selectedTacticalMap = this.props.data.tacticalMaps.find(
       t => t.id === tacticalMapId
     );
+    const { cardName } = this.props;
     const layers = this.state.layers[tacticalMapId];
     return (
       <div
         className="viewscreen-tacticalMap"
         style={{
-          transform: `scale(${window.innerWidth / 1920})`
+          transform: cardName ? `scale(${window.innerWidth / 1920})` : null
         }}
       >
         {selectedTacticalMap && (
