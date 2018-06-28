@@ -120,7 +120,7 @@ const ShortRangeComm = ({ data, client, simulatorId, type }) => {
   const { shortRangeComm, assetFolders, decks } = data;
   if (data.loading && !shortRangeComm) return null;
   const [folders] = assetFolders;
-  const { containers } = folders;
+  const { objects } = folders;
   return (
     <div className="shortRangeComm scroll">
       {shortRangeComm.map(e => (
@@ -181,7 +181,7 @@ const ShortRangeComm = ({ data, client, simulatorId, type }) => {
                         signalUpdate("image", s, e, evt.target.value)
                       }
                     >
-                      {containers.map(i => (
+                      {objects.map(i => (
                         <option key={i.id} value={i.name}>
                           {i.name}
                         </option>
@@ -293,7 +293,7 @@ const SYSTEM_QUERY = gql`
     assetFolders(names: ["Comm Images"]) {
       id
       name
-      containers {
+      objects {
         id
         name
         fullPath

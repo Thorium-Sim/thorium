@@ -6,7 +6,6 @@ import yauzl from "yauzl";
 import path from "path";
 import paths from "../../helpers/paths";
 import fs from "fs";
-import loadAsset from "../missions/import/loadAsset";
 let assetDir = path.resolve("./");
 
 if (process.env.NODE_ENV === "production") {
@@ -102,7 +101,6 @@ export default function ImportSimulator(filepath, cb) {
           mkdirp.sync(`${assetDir}/${directorypath}`);
           const output = fs.createWriteStream(`${assetDir}/${filename}`);
           readStream.pipe(output);
-          loadAsset(entry, /^simulator\/assets(\/.*)\/.*\..{3,}/gi);
         });
       } else if (/simulator\/simulator\.json/.test(entry.fileName)) {
         // Simulator

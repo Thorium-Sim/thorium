@@ -48,7 +48,7 @@ class PlanetaryScanConfig extends Component {
               }
             >
               {assetData.assetFolders &&
-                assetData.assetFolders[0].containers
+                assetData.assetFolders[0].objects
                   .filter(c => c.name.toLowerCase().indexOf("clouds") === -1)
                   .map(c => (
                     <option key={c.id} value={c.fullPath}>
@@ -73,7 +73,7 @@ class PlanetaryScanConfig extends Component {
             >
               <option value="">No Clouds</option>
               {assetData.assetFolders &&
-                assetData.assetFolders[0].containers
+                assetData.assetFolders[0].objects
                   .filter(c => c.name.toLowerCase().indexOf("clouds") > -1)
                   .map(c => (
                     <option key={c.id} value={c.fullPath}>
@@ -106,7 +106,7 @@ const ASSET_QUERY = gql`
     assetFolders(names: $names) {
       id
       name
-      containers {
+      objects {
         id
         name
         fullPath

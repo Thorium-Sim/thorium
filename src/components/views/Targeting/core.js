@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Container, Row, Col, Button, Media } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { InputField, OutputField } from "../../generic/core";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import FontAwesome from "react-fontawesome";
 import { Asset } from "../../../helpers/assets";
 
@@ -56,24 +56,6 @@ class TargetingCore extends Component {
     super(props);
     this.subscription = null;
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: TARGETING_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            navigation: subscriptionData.data.navigationUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
   _addTargetClass() {
     const targeting = this.props.data.targeting[0];
     const { assetFolders } = this.props.data;
@@ -89,11 +71,11 @@ class TargetingCore extends Component {
         size: 1,
         icon:
           assetFolders.find(a => a.name === "Icons") &&
-          assetFolders.find(a => a.name === "Icons").containers[0].fullPath,
+          assetFolders.find(a => a.name === "Icons").objects[0].fullPath,
         speed: 1,
         picture:
           assetFolders.find(a => a.name === "Pictures") &&
-          assetFolders.find(a => a.name === "Pictures").containers[0].fullPath,
+          assetFolders.find(a => a.name === "Pictures").objects[0].fullPath,
         quadrant: 1
       }
     };
@@ -220,6 +202,19 @@ class TargetingCore extends Component {
     }
     return (
       <Container className="targeting-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: TARGETING_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  targeting: subscriptionData.data.targetingUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={6}>Targeted System</Col>
           <Col sm={6}>
@@ -353,7 +348,7 @@ class TargetingCore extends Component {
                       >
                         {assetFolders
                           .find(a => a.name === "Icons")
-                          .containers.map(c => {
+                          .objects.map(c => {
                             return (
                               <option key={c.id} value={c.fullPath}>
                                 {c.name}
@@ -379,7 +374,7 @@ class TargetingCore extends Component {
                       >
                         {assetFolders
                           .find(a => a.name === "Pictures")
-                          .containers.map(c => {
+                          .objects.map(c => {
                             return (
                               <option key={c.id} value={c.fullPath}>
                                 {c.name}
@@ -496,7 +491,7 @@ const TARGETING_QUERY = gql`
     assetFolders(names: $names) {
       id
       name
-      containers {
+      objects {
         id
         name
         fullPath

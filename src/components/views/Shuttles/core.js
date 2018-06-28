@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { TypingField } from "../../generic/core";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.css";
 
 const SHUTTLE_SUB = gql`
@@ -23,25 +23,6 @@ const SHUTTLE_SUB = gql`
 `;
 
 class Shuttles extends Component {
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.internalSub && !nextProps.data.loading) {
-      this.internalSub = nextProps.data.subscribeToMore({
-        document: SHUTTLE_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            docking: subscriptionData.data.dockingUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.internalSub && this.internalSub();
-  }
   updateShuttle = (id, which, value) => {
     const mutation = gql`
       mutation UpdateShuttleBay($port: DockingPortInput!) {
@@ -63,6 +44,19 @@ class Shuttles extends Component {
     if (docking.length === 0) return <p>No Shuttlebays</p>;
     return (
       <div className="shuttles-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SHUTTLE_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  docking: subscriptionData.data.dockingUpdate
+                });
+              }
+            })
+          }
+        />
         <table>
           <thead>
             <tr>
@@ -132,7 +126,7 @@ class Shuttles extends Component {
                     }
                   >
                     <option disabled>Select an image</option>
-                    {this.props.data.assetFolders[0].containers.map(a => (
+                    {this.props.data.assetFolders[0].objects.map(a => (
                       <option key={a.id} value={a.fullPath}>
                         {a.name}
                       </option>
@@ -165,7 +159,7 @@ const SHUTTLE_QUERY = gql`
     assetFolders(names: $names) {
       id
       name
-      containers {
+      objects {
         id
         name
         fullPath

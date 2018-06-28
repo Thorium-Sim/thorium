@@ -22,7 +22,7 @@ class ShipViewsConfig extends Component {
               }
             >
               {assetData.assetFolders &&
-                assetData.assetFolders[0].containers.map(c => (
+                assetData.assetFolders[0].objects.map(c => (
                   <option key={c.id} value={c.fullPath}>
                     {c.name}
                   </option>
@@ -70,7 +70,7 @@ const ASSET_QUERY = gql`
     assetFolders(names: $names) {
       id
       name
-      containers {
+      objects {
         id
         name
         fullPath
