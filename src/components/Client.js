@@ -89,8 +89,27 @@ const creditList = [
     content: "Nathan King 👑"
   },
   {
-    header: "Testing & Debugging",
-    content: "Isaac Ostler 🚑"
+    header: "Bug Reports & Feature Suggestions",
+    content: (
+      <ul style={{ listStyle: "none" }}>
+        <li>Ryan Anderson</li>
+        <li>Alex DeBirk</li>
+        <li>Nathan King</li>
+        <li>Parriss King</li>
+        <li>Daniel Kirpatrick</li>
+        <li>Isaac Ostler</li>
+        <li>Matt Ricks</li>
+        <li>
+          <code>aBlueShadow</code>
+        </li>
+        <li>
+          <code>J-F1</code>
+        </li>
+        <li>
+          <code>kimballfrank</code>
+        </li>
+      </ul>
+    )
   },
   {
     header: "Donors",
@@ -136,6 +155,12 @@ const creditList = [
           Victor Williamson
           <span role="img" aria-label="donor-tag">
             👽
+          </span>
+        </li>
+        <li>
+          Ryan Anderson
+          <span role="img" aria-label="donor-tag">
+            🔭
           </span>
         </li>
       </ul>
