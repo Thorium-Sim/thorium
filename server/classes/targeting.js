@@ -83,8 +83,8 @@ export default class Targeting extends System {
     this.addTargetClass({
       id,
       name: "Target",
-      icon: "/Sensor Contacts/Icons/N",
-      picture: "/Sensor Contacts/Pictures/Alotec Battleship"
+      icon: "/Sensor Contacts/Icons/N.svg",
+      picture: "/Sensor Contacts/Pictures/Alotec Battleship.png"
     });
     this.setTargetClassCount(id, 2);
   }
