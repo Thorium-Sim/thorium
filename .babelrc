@@ -5,6 +5,13 @@
   "plugins": [
     "babel-plugin-inline-import",
     "babel-plugin-preval",
-    "transform-inline-environment-variables"
+    "transform-inline-environment-variables",
+    [
+      "react-intl",
+      {
+        "messagesDir": "./src/translations",
+        "enforceDescriptions": false
+      }
+    ]
   ]
 }

@@ -1,0 +1,10 @@
+[
+  {
+    "id": "thorium",
+    "defaultMessage": "Thorium"
+  },
+  {
+    "id": "upgrade-warning",
+    "defaultMessage": "Your version of Thorium is outdated. Current version is {newVersion}. Your version is {oldVersion}"
+  }
+]
