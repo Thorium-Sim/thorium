@@ -5,8 +5,9 @@ import es from "react-intl/locale-data/es";
 import fr from "react-intl/locale-data/fr";
 import it from "react-intl/locale-data/it";
 import nl from "react-intl/locale-data/nl";
+import de from "react-intl/locale-data/de";
 
-addLocaleData([...en, ...es, ...it, ...fr, ...nl]);
+addLocaleData([...en, ...es, ...it, ...fr, ...nl, ...de]);
 
 const languages = require("../../package.json").languages;
 
