@@ -21,22 +21,13 @@ const language =
 // Split locales with a region code
 const languageWithoutRegionCode = language.toLowerCase().split(/[_-]+/)[0];
 
-const localeData = new Promise(resolve => {
-  require.ensure([], () => {
-    resolve({
-      localeData: languages.reduce((prev, next) => {
-        return { ...prev, [next]: require(`../locales/${next}.json`) };
-      }, {})
-    });
-  });
-});
-
 class Provider extends Component {
   state = { localeData: null };
   componentDidMount() {
-    localeData.then(({ localeData }) => {
-      this.setState({ localeData });
-    });
+    const localeData = languages.reduce((prev, next) => {
+      return { ...prev, [next]: require(`../locales/${next}.json`) };
+    }, {});
+    this.setState({ localeData });
   }
   render() {
     const { localeData } = this.state;
