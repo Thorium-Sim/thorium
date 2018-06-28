@@ -5,6 +5,7 @@ import { graphql, Mutation } from "react-apollo";
 import { Link } from "react-router-dom";
 import semver from "semver";
 import Tour from "reactour";
+import { FormattedMessage } from "react-intl";
 import SubscriptionHelper from "../../helpers/subscriptionHelper";
 import "./welcome.css";
 
@@ -103,16 +104,24 @@ class Welcome extends Component {
         />
         <Row>
           <Col sm={12} className="title-row">
-            <h1 className="text-center">Thorium</h1>
+            <h1 className="text-center">
+              <FormattedMessage id="thorium" defaultMessage="Thorium" />
+            </h1>
             <h3 className="text-center">
               <small>{this.state.quote}</small>
             </h3>
             {autoUpdate &&
               this.state.outdated && (
                 <Alert color="warning">
-                  Your version of Thorium is outdated. Current version is{" "}
-                  {this.state.outdated}. Your version is{" "}
-                  {require("../../../package.json").version}.
+                  <FormattedMessage
+                    id="upgrade-warning"
+                    defaultMessage="Your version of Thorium is outdated. Current version is {newVersion}. Your version is {oldVersion}"
+                    values={{
+                      oldVersion: require("../../../package.json").version,
+                      newVersion: this.state.outdated
+                    }}
+                  />
+
                   <p>
                     <Mutation
                       mutation={gql`

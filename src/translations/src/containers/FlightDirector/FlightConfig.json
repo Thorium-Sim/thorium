@@ -1,0 +1,10 @@
+[
+  {
+    "id": "flight-config",
+    "defaultMessage": "Flight Config"
+  },
+  {
+    "id": "return-to-main",
+    "defaultMessage": "Return to Main"
+  }
+]

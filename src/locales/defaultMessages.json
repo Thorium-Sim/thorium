@@ -1,0 +1,28 @@
+[
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Flight Config",
+        "id": "flight-config"
+      },
+      {
+        "defaultMessage": "Return to Main",
+        "id": "return-to-main"
+      }
+    ],
+    "path": "src/containers/FlightDirector/FlightConfig.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Thorium",
+        "id": "thorium"
+      },
+      {
+        "defaultMessage": "Your version of Thorium is outdated. Current version is {newVersion}. Your version is {oldVersion}",
+        "id": "upgrade-warning"
+      }
+    ],
+    "path": "src/containers/FlightDirector/Welcome.json"
+  }
+]
