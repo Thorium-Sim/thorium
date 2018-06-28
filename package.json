@@ -59,7 +59,7 @@
     "chai-http": "^4.0.0",
     "concurrently": "^3.6.0",
     "cross-env": "^5.2.0",
-    "eslint": "4.19.1",
+    "eslint": "5.0.1",
     "eslint-config-react-app": "^2.1.0",
     "eslint-loader": "2.0.0",
     "eslint-plugin-flowtype": "2.49.3",
