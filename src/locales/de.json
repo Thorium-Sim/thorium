@@ -1,0 +1,6 @@
+{
+  "flight-config": "Flug zusammenstellen",
+  "return-to-main": "Zurück zur Übersicht",
+  "thorium": "Thorium",
+  "upgrade-warning": "Diese Version von Thorium ist veraltet. Die neueste Version ist {newVersion}. Diese Version: {oldVersion}"
+}
