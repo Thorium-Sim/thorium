@@ -149,7 +149,7 @@
     "react": "^16.4.1",
     "react-addons-transition-group": "^15.6.2",
     "react-animated-number": "^0.4.4",
-    "react-apollo": "^2.1.6",
+    "react-apollo": "^2.1.7",
     "react-color": "^2.14.1",
     "react-dom": "^16.4.1",
     "react-draggable": "^3.0.5",
