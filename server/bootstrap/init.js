@@ -1,5 +1,6 @@
 import paths from "../helpers/paths";
 import fs from "fs";
+import os from "os";
 import path from "path";
 import https from "https";
 import importAssets from "../imports/asset/import";
@@ -65,7 +66,7 @@ export default () => {
         // This was an initial load. We should download and install assets
         console.log("First-time load. Downloading assets...");
         console.log("Resolving asset directory...");
-        const dest = path.resolve("./temp/assets.aset");
+        const dest = path.resolve(`${os.tmpdir()}/assets.aset`);
         console.log("dest", dest);
         download(
           "https://s3.amazonaws.com/thoriumsim/assets.zip",
