@@ -104,9 +104,7 @@ class Welcome extends Component {
         />
         <Row>
           <Col sm={12} className="title-row">
-            <h1 className="text-center">
-              <FormattedMessage id="thorium" defaultMessage="Thorium" />
-            </h1>
+            <h1 className="text-center">Thorium</h1>
             <h3 className="text-center">
               <small>{this.state.quote}</small>
             </h3>
