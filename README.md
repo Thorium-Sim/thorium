@@ -12,8 +12,8 @@ _New here? Check out the [contributing document](CONTRIBUTING.md)_
 
 Want something to work on? Here's where
 [we need help](https://github.com/Thorium-Sim/thorium/labels/help%20wanted). Not
-sure how to work with Thorium? Guides are in the
-[wiki](https://github.com/Thorium-Sim/thorium/wiki). Thorium accepts
+sure what it is or how to work with Thorium? Guides are in the
+[docs website](https://thoriumsim.com/docs/overview.html). Thorium accepts
 [donations](https://thoriumsim.com/en/donate.html).
 
 ## What is Thorium
@@ -84,6 +84,10 @@ Translations are done with `react-intl`. A good example of how this can be used
 is the `/src/containers/FilghtDirector/Welcome.js` file.
 
 ## Open-source Assets
+
+When Thorium is started for the first time, in either development or production
+mode, it will automatically download assets from a remote server. These assets
+are regularly updated with content from the compunity.
 
 You can download open-source licensed assets to be used with Thorium
 [here](https://drive.google.com/open?id=0B-UK2-Zf7K9ycUJScHJlWW92MjQ).
