@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Draggable from "react-draggable";
 import { Button, Row, Col } from "reactstrap";
-import throttle from "lodash/throttle";
 import Measure from "react-measure";
+import { throttle } from "../../../helpers/debounce";
 
 const ChargeBar = props => {
   return (
@@ -75,7 +75,7 @@ export default class Target extends Component {
     if (this.state.selectedTarget) {
       this.setState({
         mouseCharge:
-          Math.round((height - (clientY - top)) / height * 1000) / 1000
+          Math.round(((height - (clientY - top)) / height) * 1000) / 1000
       });
     }
   }
@@ -86,8 +86,8 @@ export default class Target extends Component {
     this.props.targets.forEach(target => {
       const { x: objX, y: objY } = target.position;
       if (
-        Math.round((objX - x / width * 1.1) * 50) === 0 &&
-        Math.round((objY - y / height * 1.1) * 50) === 0
+        Math.round((objX - (x / width) * 1.1) * 50) === 0 &&
+        Math.round((objY - (y / height) * 1.1) * 50) === 0
       ) {
         // The crosshair is on top of a target
         selectedTarget = target;
