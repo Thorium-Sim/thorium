@@ -9,7 +9,6 @@ addons:
 before_install: sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
 install:
   - npm install
-  - npm run build-css
 script:
   - npm run test:client -- --coverage --forceExit
   - npm run test:server -- --coverage --forceExit
