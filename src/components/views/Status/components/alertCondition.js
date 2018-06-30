@@ -33,8 +33,12 @@ const alertLevels = [
 ];
 
 class AlertCondition extends Component {
-  state = {};
+  state = { cooldown: false };
   setAlert = number => {
+    this.setState({ cooldown: true });
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => this.setState({ cooldown: false }), 5000);
+    if (this.state.cooldown) return;
     const mutation = gql`
       mutation AlertLevel($id: ID!, $level: String!) {
         changeSimulatorAlertLevel(simulatorId: $id, alertLevel: $level)
@@ -49,6 +53,9 @@ class AlertCondition extends Component {
       variables
     });
   };
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
+  }
   toggle = which => {
     this.setState({
       [`alert${which}`]: !this.state[`alert${which}`]
