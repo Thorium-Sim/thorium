@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Asset } from "../../../helpers/assets";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
-import "./style.css";
+import "./style.scss";
 
 class VideoConfig extends Component {
   player = React.createRef();

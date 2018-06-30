@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Label, Button } from "reactstrap";
 
-import "./style.css";
+import "./style.scss";
 
 const CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID, $teamType: String!) {

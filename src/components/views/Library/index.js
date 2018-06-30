@@ -5,7 +5,7 @@ import { Container, Row, Col, Card, CardBody, Input, Button } from "reactstrap";
 import { Asset } from "../../../helpers/assets";
 import Tour from "reactour";
 
-import "./style.css";
+import "./style.scss";
 
 const SUB = gql`
   subscription Library($simulatorId: ID, $type: String) {

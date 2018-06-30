@@ -10,8 +10,7 @@ import {
 import uuid from "uuid";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import "bootstrap/dist/css/bootstrap.css";
-import "./style.css";
+import "./style.scss";
 import ComponentLibrary from "./componentLibrary";
 import Measure from "react-measure";
 import Canvas from "./canvas";
@@ -471,7 +470,7 @@ class App extends Component {
               >
                 {({ measureRef }) => (
                   <div className="componentCanvas" ref={measureRef}>
-                    <div style={{ paddingTop: `${9 / 16 * 100}%` }} />
+                    <div style={{ paddingTop: `${(9 / 16) * 100}%` }} />
                     {this.state.dimensions && (
                       <Canvas
                         edit={this.state.edit}

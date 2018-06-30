@@ -7,7 +7,7 @@ import Scan from "./transporterScan";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Tour from "reactour";
 
-import "./style.css";
+import "./style.scss";
 
 const TRANSPORTER_SUB = gql`
   subscription TransportersSub($simulatorId: ID) {

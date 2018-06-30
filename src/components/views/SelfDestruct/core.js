@@ -4,7 +4,7 @@ import { Container } from "reactstrap";
 import Moment from "moment";
 import { graphql, withApollo } from "react-apollo";
 import { InputField } from "../../generic/core";
-import "./style.css";
+import "./style.scss";
 
 function padDigits(number, digits) {
   return (

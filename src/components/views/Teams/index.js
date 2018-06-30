@@ -6,7 +6,7 @@ import Tour from "reactour";
 import { titleCase } from "change-case";
 import training from "./training";
 import TeamConfig from "./teamConfig";
-import "./style.css";
+import "./style.scss";
 
 const CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID, $teamType: String!) {

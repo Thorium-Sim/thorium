@@ -7,7 +7,7 @@ import semver from "semver";
 import Tour from "reactour";
 import { FormattedMessage } from "react-intl";
 import SubscriptionHelper from "../../helpers/subscriptionHelper";
-import "./welcome.css";
+import "./welcome.scss";
 
 const FLIGHT_SUB = gql`
   subscription FlightsChanged {

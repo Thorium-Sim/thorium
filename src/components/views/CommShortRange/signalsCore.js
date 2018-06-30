@@ -6,7 +6,7 @@ import { Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import FileExplorer from "../TacticalMap/fileExplorer";
-import "./signalsCore.css";
+import "./signalsCore.scss";
 
 function transparentColor(col) {
   var color = tinycolor(col);
@@ -100,7 +100,10 @@ class SignalsCore extends Component {
     document.addEventListener("mouseup", this.mouseup);
   };
   mousemove = e => {
-    const { resize: { id, which }, signals } = this.state;
+    const {
+      resize: { id, which },
+      signals
+    } = this.state;
     const { top, height } = ReactDOM.findDOMNode(this)
       .querySelector("#signalHolder")
       .getBoundingClientRect();

@@ -6,7 +6,7 @@ import Tour from "reactour";
 import Shield1 from "./shield-1";
 import Shield4 from "./shield-4";
 import Shield6 from "./shield-6";
-import "./style.css";
+import "./style.scss";
 
 const trainingSteps = [
   {

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Asset } from "../../../helpers/assets";
-import "./style.css";
+import "./style.scss";
 
 class IntruderMonitoring extends Component {
   render() {
@@ -48,7 +48,7 @@ class IntruderMonitoring extends Component {
                           <div
                             className="dot"
                             style={{
-                              animationDelay: `${i / 20 * 7 + 3}s`
+                              animationDelay: `${(i / 20) * 7 + 3}s`
                             }}
                           />
                         </div>

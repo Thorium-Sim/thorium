@@ -7,7 +7,7 @@ import TransitionGroup from "react-transition-group/TransitionGroup";
 import Transitioner from "../../views/helpers/transitioner";
 import { Asset } from "../../../helpers/assets";
 
-import "./style.css";
+import "./style.scss";
 
 class StealthBars extends Transitioner {
   systemName(sys) {

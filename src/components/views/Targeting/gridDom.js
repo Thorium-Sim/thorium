@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./style.css";
+import "./style.scss";
 import { Asset } from "../../../helpers/assets";
 import Explosion from "../../../helpers/explosions";
 
@@ -113,26 +113,22 @@ class TargetingGridDom extends Component {
               }
               if (Math.random() * limit[which] < loc[which]) {
                 speed[which] +=
-                  (speedLimit - Math.abs(speed[which])) /
-                  speedLimit *
+                  ((speedLimit - Math.abs(speed[which])) / speedLimit) *
                   -1 *
                   Math.random() *
                   speedConstant1;
                 speed[which] +=
-                  (limit[which] - Math.abs(loc[which])) /
-                  limit[which] *
+                  ((limit[which] - Math.abs(loc[which])) / limit[which]) *
                   -1 *
                   Math.random() *
                   speedConstant2;
               } else {
                 speed[which] +=
-                  (speedLimit - Math.abs(speed[which])) /
-                  speedLimit *
+                  ((speedLimit - Math.abs(speed[which])) / speedLimit) *
                   Math.random() *
                   speedConstant1;
                 speed[which] +=
-                  (width - Math.abs(loc[which])) /
-                  limit[which] *
+                  ((width - Math.abs(loc[which])) / limit[which]) *
                   Math.random() *
                   speedConstant2;
               }
@@ -209,7 +205,7 @@ class TargetingGridDom extends Component {
     return (
       <div className="targetArea targetingGrid-dom">
         <div className="lines-x">
-          {Array(Math.round(lines * 3 / 4))
+          {Array(Math.round((lines * 3) / 4))
             .fill(0)
             .map((y, i) => <div key={`line-x-${i}`} className="line-x" />)}
         </div>
@@ -288,7 +284,7 @@ const Target = ({
           <div
             className="target-label"
             style={{
-              transform: `translate(${x}px, ${y + 50 * scale / 2}px)`
+              transform: `translate(${x}px, ${y + (50 * scale) / 2}px)`
             }}
           >
             {name}

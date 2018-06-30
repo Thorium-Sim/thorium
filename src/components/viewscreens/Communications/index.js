@@ -7,7 +7,7 @@ import { graphql, withApollo } from "react-apollo";
 import tinycolor from "tinycolor2";
 import { Asset } from "../../../helpers/assets";
 
-import "./style.css";
+import "./style.scss";
 
 const SHORTRANGE_SUB = gql`
   subscription ShortRangeCommSub($simulatorId: ID!) {
@@ -209,7 +209,9 @@ class Communications extends Component {
                   <h3>
                     {c.connected
                       ? "Connected"
-                      : c.hailing ? "Hailing" : "Incoming Call"}
+                      : c.hailing
+                        ? "Hailing"
+                        : "Incoming Call"}
                   </h3>
                 </Col>
               ))

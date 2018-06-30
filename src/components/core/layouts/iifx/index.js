@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Cores } from "../../../views";
 import CoreFeed from "../../../views/CoreFeed";
 
-import "./iifx.css";
-import "../sideCore.css";
+import "./iifx.scss";
+import "../sideCore.scss";
 
 const allowed = [
   "SensorsCore",

@@ -19,7 +19,7 @@ import Alerts from "../generic/Alerts";
 import { Link } from "react-router-dom";
 import DynamicPicker from "./DynamicPicker";
 
-import "./CoreComponents.css";
+import "./CoreComponents.scss";
 
 const FLIGHTS_SUB = gql`
   subscription FlightsSub($id: ID) {

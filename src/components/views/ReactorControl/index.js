@@ -8,7 +8,7 @@ import AnimatedNumber from "react-animated-number";
 
 import HeatBar from "../EngineControl/heatbar";
 import ReactorModel from "./model";
-import "./style.css";
+import "./style.scss";
 
 const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {

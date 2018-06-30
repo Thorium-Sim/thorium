@@ -14,7 +14,7 @@ import { Query, withApollo } from "react-apollo";
 import SimulatorProperties from "./SimulatorProperties";
 import * as Config from "./config";
 
-import "./SimulatorConfig.css";
+import "./SimulatorConfig.scss";
 
 const query = `id
 name

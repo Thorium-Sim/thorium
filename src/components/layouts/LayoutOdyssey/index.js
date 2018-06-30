@@ -4,7 +4,7 @@ import CardFrame from "./frame";
 import Widgets from "./widgets";
 import { withApollo } from "react-apollo";
 import renderCards from "../cardRenderer";
-import "./layout.css";
+import "./layout.scss";
 
 class LayoutOdyssey extends Component {
   state = {};

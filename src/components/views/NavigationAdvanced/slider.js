@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 
-import "./slider.css";
+import "./slider.scss";
 export default class Slider extends Component {
   static defaultProps = {
     numbers: [4, 3, 2, 1, 0, -1, -2, -3, -4]

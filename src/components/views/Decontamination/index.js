@@ -3,7 +3,7 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import Decon from "./decon";
-import "./style.css";
+import "./style.scss";
 
 const queryData = `
   id

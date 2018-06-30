@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Button, Row, Col, Card, CardBody } from "reactstrap";
-import "./style.css";
+import "./style.scss";
 //var greekUtils = require("greek-utils");
 const greekUtils = {
   toGreek: a => a

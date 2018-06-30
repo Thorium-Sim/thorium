@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Cores } from "../../../views";
 //import CoreFeed from "../../views/CoreFeed";
-import "./jr.css";
+import "./jr.scss";
 const coreList = [
   "JrNavigationCore",
   "EngineControlCore",

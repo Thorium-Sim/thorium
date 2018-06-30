@@ -3,7 +3,7 @@ import keycode from "keycode";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag";
 
-import "./style.css";
+import "./style.scss";
 
 class Keyboard extends Component {
   constructor(props) {

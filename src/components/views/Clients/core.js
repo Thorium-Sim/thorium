@@ -5,7 +5,7 @@ import { Input } from "reactstrap";
 import { titleCase } from "change-case";
 import Views from "../index";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-import "./style.css";
+import "./style.scss";
 
 const TEMPLATE_SUB = gql`
   subscription ClientsUpdate($simulatorId: ID) {

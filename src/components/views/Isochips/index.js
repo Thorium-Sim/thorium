@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Container, Row, Col } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 
-import "./style.css";
+import "./style.scss";
 
 const ISOCHIPS_SUB = gql`
   subscription IsochipsUpdate($simulatorId: ID) {

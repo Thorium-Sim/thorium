@@ -16,7 +16,7 @@ import {
 
 import FontAwesome from "react-fontawesome";
 import * as Macros from "../../macros";
-import "./style.css";
+import "./style.scss";
 
 const allowedMacros = [
   "updateViewscreenComponent",

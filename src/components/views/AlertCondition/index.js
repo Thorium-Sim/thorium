@@ -4,7 +4,7 @@ import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
 import Tour from "reactour";
 
-import "./style.css";
+import "./style.scss";
 
 const trainingSteps = [
   {

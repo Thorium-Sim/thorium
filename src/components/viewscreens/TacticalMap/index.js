@@ -4,7 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import Preview from "../../views/TacticalMap/preview";
 //import { Asset } from "../../../helpers/assets";
 
-//import "./style.css";
+//import "./style.scss";
 
 const TACTICALMAP_SUB = gql`
   subscription UpdateTacticalMap($flightId: ID) {

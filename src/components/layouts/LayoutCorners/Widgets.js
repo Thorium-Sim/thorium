@@ -5,7 +5,7 @@ import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 import Tour from "reactour";
-import "./widgets.css";
+import "./widgets.scss";
 const WIDGET_NOTIFY = gql`
   subscription WidgetNotify($simulatorId: ID!, $station: String) {
     widgetNotify(simulatorId: $simulatorId, station: $station)

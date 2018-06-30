@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./keyboard.css";
+import "./keyboard.scss";
 
 export const keys = [
   { name: "esc", char: "", modifier: true, escape: true, short: true },

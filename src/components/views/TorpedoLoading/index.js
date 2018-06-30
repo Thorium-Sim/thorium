@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Tour from "reactour";
 
-import "./style.css";
+import "./style.scss";
 
 import TorpedoFire from "./torpedoFire";
 import TorpedoLoader from "./loader";

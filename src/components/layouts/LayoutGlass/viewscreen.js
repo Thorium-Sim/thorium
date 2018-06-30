@@ -3,7 +3,7 @@ import Views from "../../views";
 import CardFrame from "./frame";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag";
-import "./layout.css";
+import "./layout.scss";
 
 class LayoutGlass extends Component {
   state = {};

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 
-import "./style.css";
+import "./style.scss";
 
 const SUB = gql`
   subscription LRQueueingSub($simulatorId: ID) {
@@ -56,7 +56,9 @@ class LongRangeComm extends Component {
     });
   };
   render() {
-    const { data: { loading, longRangeCommunications } } = this.props;
+    const {
+      data: { loading, longRangeCommunications }
+    } = this.props;
     if (loading || !longRangeCommunications) return null;
     const lrComm = longRangeCommunications[0];
     if (!lrComm) return <p>No Long Range Comm</p>;

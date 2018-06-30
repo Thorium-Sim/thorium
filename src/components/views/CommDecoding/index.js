@@ -8,7 +8,7 @@ import "react-rangeslider/lib/index.css";
 import Tour from "reactour";
 import DecodingCanvas from "./decodingCanvas";
 
-import "./style.css";
+import "./style.scss";
 
 const DECODING_SUB = gql`
   subscription LRDecoding($simulatorId: ID!) {

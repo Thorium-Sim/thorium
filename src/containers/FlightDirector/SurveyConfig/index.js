@@ -10,7 +10,7 @@ import {
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Form from "./form";
-import "./style.css";
+import "./style.scss";
 
 const SUB = gql`
   subscription SurveyFormsUpdate {

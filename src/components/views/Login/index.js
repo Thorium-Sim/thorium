@@ -6,7 +6,7 @@ import gql from "graphql-tag";
 import { Asset } from "../../../helpers/assets";
 import Tour from "reactour";
 
-import "./login.css";
+import "./login.scss";
 
 class Login extends Component {
   constructor(props) {
@@ -35,7 +35,10 @@ class Login extends Component {
     }
   }
   generateTraining = () => {
-    const { simulator: { name: simName }, station: { name } } = this.props;
+    const {
+      simulator: { name: simName },
+      station: { name }
+    } = this.props;
     const training = [
       {
         selector: ".nothing-at-all",

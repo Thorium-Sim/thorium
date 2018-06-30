@@ -1,5 +1,5 @@
 import React from "react";
-import "./pushbutton.css";
+import "./pushbutton.scss";
 
 const PushButton = ({
   onMouseDown,

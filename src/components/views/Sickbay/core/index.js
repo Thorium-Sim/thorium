@@ -5,7 +5,7 @@ import { Container } from "reactstrap";
 import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
 import PatientControls from "./PatientControls";
 
-import "../style.css";
+import "../style.scss";
 
 const queryData = `
 id

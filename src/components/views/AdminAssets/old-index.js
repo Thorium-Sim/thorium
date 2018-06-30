@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button, Row, Col, Card } from "reactstrap";
 import "whatwg-fetch";
 import FontAwesome from "react-fontawesome";
-import "./style.css";
+import "./style.scss";
 import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 import ImageViewer from "./imageViewer";

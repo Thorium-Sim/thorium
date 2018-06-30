@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
-import "./cardSwitcher.css";
+import "./cardSwitcher.scss";
 
 const CardButton = props => {
   const cardName = props.component.match(/.{8}-.{4}-.{4}-.{4}-.{12}/gi)

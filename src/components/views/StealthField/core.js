@@ -4,7 +4,7 @@ import { Container, Row, Col, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { OutputField } from "../../generic/core";
 
-import "./style.css";
+import "./style.scss";
 
 const STEALTH_SUB = gql`
   subscription StealthFieldUpdate($simulatorId: ID!) {
