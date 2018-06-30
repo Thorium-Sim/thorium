@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input, Button } from "reactstrap";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-import "./style.css";
+import "./style.scss";
 
 const SUB = gql`
   subscription SurveyFormsUpdate($simulatorId: ID) {

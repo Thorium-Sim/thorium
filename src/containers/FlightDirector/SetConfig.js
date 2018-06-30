@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Button, Input } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 
-import "./setConfig.css";
+import "./setConfig.scss";
 
 /*const SIMULATOR_SUB = gql`subscription SimulatorsUpdate {
   simulatorsUpdate(template: true) {

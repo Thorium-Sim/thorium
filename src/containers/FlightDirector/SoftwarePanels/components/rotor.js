@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import "./rotor.css";
+import "./rotor.scss";
 
 function radToDeg(radians) {
-  return radians * 180 / Math.PI;
+  return (radians * 180) / Math.PI;
 }
 
 class Rotor extends Component {

@@ -5,7 +5,7 @@ import { Container, Row, Col, Button } from "reactstrap";
 import WaveMatch from "./waveMatch";
 import Tour from "reactour";
 
-import "./style.css";
+import "./style.scss";
 
 const SUB = gql`
   subscription LRQueueingSub($simulatorId: ID) {
@@ -69,7 +69,9 @@ class Interception extends Component {
     this.sub && this.sub();
   }
   renderInterception() {
-    const { data: { longRangeCommunications } } = this.props;
+    const {
+      data: { longRangeCommunications }
+    } = this.props;
     const { interception, decoded, locked } = longRangeCommunications[0];
     if (interception) {
       if (locked) {
@@ -114,7 +116,9 @@ class Interception extends Component {
     );
   }
   render() {
-    const { data: { loading, longRangeCommunications } } = this.props;
+    const {
+      data: { loading, longRangeCommunications }
+    } = this.props;
     if (loading || !longRangeCommunications) return null;
     return (
       <Container className="card-commInterception">

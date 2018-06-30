@@ -14,7 +14,7 @@ import Tour from "reactour";
 import gql from "graphql-tag";
 import { RoomDropdown } from "../helpers/shipStructure";
 
-import "./style.css";
+import "./style.scss";
 
 const trainingSteps = [
   {

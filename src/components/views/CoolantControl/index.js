@@ -8,7 +8,7 @@ import DamageOverlay from "../helpers/DamageOverlay";
 
 import Tank from "./tank";
 
-import "./style.css";
+import "./style.scss";
 
 const COOLANT_SUB = gql`
   subscription CoolantUpdate($simulatorId: ID!) {

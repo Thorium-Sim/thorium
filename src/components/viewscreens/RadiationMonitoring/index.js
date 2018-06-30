@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./style.css";
+import "./style.scss";
 import col from "color";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
@@ -16,7 +16,7 @@ const SUB = gql`
 `;
 
 function calcColor(i) {
-  return col().hsl(360 - (i * 255 + 110) % 360, 100, 50);
+  return col().hsl(360 - ((i * 255 + 110) % 360), 100, 50);
 }
 
 class RadiationMonitor extends Component {

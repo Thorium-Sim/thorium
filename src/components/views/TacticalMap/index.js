@@ -4,7 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import Sidebar from "./sidebar";
 import Bottom from "./bottom";
 import Preview from "./preview";
-import "./style.css";
+import "./style.scss";
 
 const TACTICAL_MAP_DATA = `
 id

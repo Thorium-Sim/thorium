@@ -9,7 +9,7 @@ import { Asset } from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Arrow from "./arrow";
 import FrequencySignals from "./frequency";
-import "./style.css";
+import "./style.scss";
 
 const SHORTRANGE_SUB = gql`
   subscription ShortRangeCommSub($simulatorId: ID!) {

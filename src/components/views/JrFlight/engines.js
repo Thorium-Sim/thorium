@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 
-import "./style.css";
+import "./style.scss";
 
 const SPEEDCHANGE_SUB = gql`
   subscription SpeedChanged($simulatorId: ID) {
@@ -192,14 +192,14 @@ class EngineControl extends Component {
     });
   };
   speedBarStyle(array, speed, engineCount, index) {
-    let width = speed / array.length * 100;
+    let width = (speed / array.length) * 100;
     if (engineCount - 1 === index) {
       return {
         width: `calc(${width}%)`
       };
     }
     return {
-      width: `calc(${width}% - ${40 / array.length * speed}px)`
+      width: `calc(${width}% - ${(40 / array.length) * speed}px)`
     };
   }
   setSpeed(engine, speed) {

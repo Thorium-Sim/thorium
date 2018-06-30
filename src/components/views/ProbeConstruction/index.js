@@ -18,10 +18,10 @@ import Transitioner from "../helpers/transitioner";
 import ProbeEquipment from "./probeEquipment";
 import Measure from "react-measure";
 import DamageOverlay from "../helpers/DamageOverlay";
-import "./style.css";
+import "./style.scss";
 
 function d2r(deg) {
-  return deg * Math.PI / 180;
+  return (deg * Math.PI) / 180;
 }
 
 const trainingSteps = [
@@ -219,8 +219,8 @@ class ProbeName extends Component {
                               key={`line-${i}`}
                               className="line"
                               style={{
-                                transform: `rotate(${(i + 0.5) /
-                                  array.length *
+                                transform: `rotate(${((i + 0.5) /
+                                  array.length) *
                                   360}deg)`
                               }}
                             />
@@ -232,8 +232,8 @@ class ProbeName extends Component {
                               key={`ring-${i}`}
                               className="ring"
                               style={{
-                                width: `${(i + 1) / array.length * 100}%`,
-                                height: `${(i + 1) / array.length * 100}%`,
+                                width: `${((i + 1) / array.length) * 100}%`,
+                                height: `${((i + 1) / array.length) * 100}%`,
                                 backgroundColor: i < 2 ? "black" : "transparent"
                               }}
                             />
@@ -250,14 +250,14 @@ class ProbeName extends Component {
                                     launchProbe(i + 1);
                                   }}
                                   style={{
-                                    transform: `translate(${Math.cos(
-                                      d2r((i - 2) / array.length * 360)
+                                    transform: `translate(${(Math.cos(
+                                      d2r(((i - 2) / array.length) * 360)
                                     ) *
-                                      this.state.dimensions.height /
-                                      2.5}px, ${Math.sin(
-                                      d2r((i - 2) / array.length * 360)
+                                      this.state.dimensions.height) /
+                                      2.5}px, ${(Math.sin(
+                                      d2r(((i - 2) / array.length) * 360)
                                     ) *
-                                      this.state.dimensions.height /
+                                      this.state.dimensions.height) /
                                       2.5}px)`
                                   }}
                                 >

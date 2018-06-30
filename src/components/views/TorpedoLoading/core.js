@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import { OutputField, InputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
 
-import "./style.css";
+import "./style.scss";
 
 const TORPEDO_SUB = gql`
   subscription TorpedosUpdate($simulatorId: ID!) {

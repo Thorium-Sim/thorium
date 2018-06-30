@@ -3,7 +3,7 @@ import { Row, Col, Button, Input } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo, Query } from "react-apollo";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-import "./style.css";
+import "./style.scss";
 
 const STATION_CHANGE_QUERY = gql`
   subscription StationsUpdate($simulatorId: ID) {

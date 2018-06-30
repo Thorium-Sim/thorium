@@ -4,7 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input } from "reactstrap";
 import * as ViewscreenCards from "../../viewscreens";
 
-import "./style.css";
+import "./style.scss";
 
 const VIEWSCREEN_SUB = gql`
   subscription ViewscreenSub($simulatorId: ID) {

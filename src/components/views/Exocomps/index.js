@@ -6,7 +6,7 @@ import Tour from "reactour";
 import Exocomp from "./exocomp";
 import ExocompConfig from "./exocompConfig";
 
-import "./style.css";
+import "./style.scss";
 
 const EXOCOMP_SUB = gql`
   subscription Exocomps($simulatorId: ID!) {

@@ -7,8 +7,8 @@ import Alerts from "../../generic/Alerts";
 import renderCards from "../cardRenderer";
 import Settings from "./settings";
 
-import "./layout.css";
-import "./theme.css";
+import "./layout.scss";
+import "./theme.scss";
 
 class LayoutCorners extends Component {
   state = {};

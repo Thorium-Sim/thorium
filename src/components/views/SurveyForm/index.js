@@ -4,7 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
 import Form from "./form";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-import "./style.css";
+import "./style.scss";
 
 const SUB = gql`
   subscription SurveyFormsUpdate($simulatorId: ID) {

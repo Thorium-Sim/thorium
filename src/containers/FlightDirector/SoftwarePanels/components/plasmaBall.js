@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { findDOMNode } from "react-dom";
-import "./plasmaBall.css";
+import "./plasmaBall.scss";
 
 class PlasmaBall extends Component {
   unmounted = true;

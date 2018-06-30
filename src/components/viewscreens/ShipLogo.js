@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import { Asset } from "../../helpers/assets";
-import "./ShipLogo.css";
+import "./ShipLogo.scss";
 
 export default ({ simulator }) => {
   return (

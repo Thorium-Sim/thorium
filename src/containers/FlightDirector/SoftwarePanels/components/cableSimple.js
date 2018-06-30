@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./cable.css";
+import "./cable.scss";
 // Output true if connected to another cable of any kind
 class CableSimple extends Component {
   constructor(props) {

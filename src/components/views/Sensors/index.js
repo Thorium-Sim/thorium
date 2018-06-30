@@ -5,7 +5,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Button, Row, Col, Card, CardBody } from "reactstrap";
 import Tour from "reactour";
 
-import "./style.css";
+import "./style.scss";
 import Grid from "./GridDom";
 import DamageOverlay from "../helpers/DamageOverlay";
 import SensorScans from "./SensorScans";

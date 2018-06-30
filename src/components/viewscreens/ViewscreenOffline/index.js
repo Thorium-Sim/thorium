@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./style.css";
+import "./style.scss";
 
 export default class ViewscreenOffline extends Component {
   state = { opacity: 1 };

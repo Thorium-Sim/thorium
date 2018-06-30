@@ -11,7 +11,7 @@ import {
 import gql from "graphql-tag";
 import { TypingField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
-import "./style.css";
+import "./style.scss";
 const damagePositions = [
   "Computer Specialist",
   "Custodian",
@@ -104,7 +104,9 @@ class CrewCore extends Component {
     files[0] && reader.readAsText(files[0]);
   };
   _exportCrewCSV = () => {
-    const { data: { crew } } = this.props;
+    const {
+      data: { crew }
+    } = this.props;
     const a = document.createElement("a");
     document.body.appendChild(a);
     a.style = "display: none";
@@ -155,7 +157,9 @@ class CrewCore extends Component {
     });
   };
   killRandom = () => {
-    const { data: { crew } } = this.props;
+    const {
+      data: { crew }
+    } = this.props;
     const livingCrew = crew.filter(c => !c.killed);
     const crewMember =
       livingCrew[Math.floor(Math.random() * livingCrew.length)];
@@ -186,7 +190,9 @@ class CrewCore extends Component {
     });
   };
   search = () => {
-    const { data: { crew } } = this.props;
+    const {
+      data: { crew }
+    } = this.props;
     const { search } = this.state;
     const regex = new RegExp(search, "gi");
     return crew.filter(
@@ -198,7 +204,9 @@ class CrewCore extends Component {
     );
   };
   render() {
-    const { data: { loading, crew } } = this.props;
+    const {
+      data: { loading, crew }
+    } = this.props;
     const { selectedCrew, editing, search } = this.state;
     if (loading || !crew) return null;
     const selectedCrewMember = crew.find(c => c.id === selectedCrew);

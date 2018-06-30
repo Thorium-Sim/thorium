@@ -7,7 +7,7 @@ import DamageOverlay from "../helpers/DamageOverlay";
 import Keypad from "./keypad";
 import Tour from "reactour";
 
-import "./style.css";
+import "./style.scss";
 
 const trainingSteps = [
   {

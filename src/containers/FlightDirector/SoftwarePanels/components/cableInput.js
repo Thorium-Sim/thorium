@@ -1,5 +1,5 @@
 import React from "react";
-import "./cable.css";
+import "./cable.scss";
 // Output true if connected to another cable of any kind
 const CableInput = ({
   connecting,

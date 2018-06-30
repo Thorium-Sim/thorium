@@ -7,7 +7,7 @@ import { Asset } from "../../../helpers/assets";
 import Decompress from "./Decompress";
 import Door from "./Door";
 import { Clamps } from "../Docking/graphics";
-import "./style.css";
+import "./style.scss";
 
 const SHUTTLE_SUB = gql`
   subscription ShuttlesUpdate($simulatorId: ID) {

@@ -7,7 +7,7 @@ import Satellites from "./Satellites";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Tour from "reactour";
 
-import "./style.css";
+import "./style.scss";
 
 function feistelNet(input) {
   var l = input & 0xff;

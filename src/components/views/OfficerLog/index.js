@@ -3,7 +3,7 @@ import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import { Container, Row, Col, Card, Input, Button } from "reactstrap";
 import uuid from "uuid";
-import "./style.css";
+import "./style.scss";
 
 const stardate = date => {
   var calculatedDate = new Date(date).getTime() / 1000 / 60 / 60 / 30 / 2;

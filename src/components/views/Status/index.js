@@ -14,7 +14,7 @@ import {
 } from "./components";
 import Tour from "reactour";
 
-import "./style.css";
+import "./style.scss";
 
 const trainingSteps = [
   {

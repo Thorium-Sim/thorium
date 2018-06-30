@@ -9,7 +9,7 @@ import { Asset } from "../../../helpers/assets";
 import StealthBoard from "./stealthBoard";
 import ChargeBar from "./chargeBar";
 
-import "./style.css";
+import "./style.scss";
 
 const STEALTH_SUB = gql`
   subscription StealthFieldUpdate($simulatorId: ID!) {

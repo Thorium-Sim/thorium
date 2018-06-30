@@ -8,7 +8,7 @@ import ExtraControls from "./extraControls";
 import ContactsList from "./contactsList";
 import MovementCore from "./movementCore";
 import ContactSelect from "./contactSelect";
-import "./gridCore.css";
+import "./gridCore.scss";
 
 function distance3d(coord2, coord1) {
   const { x: x1, y: y1, z: z1 } = coord1;

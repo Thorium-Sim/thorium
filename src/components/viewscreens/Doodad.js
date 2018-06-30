@@ -1,5 +1,5 @@
 import React from "react";
-import "./Doodad.css";
+import "./Doodad.scss";
 
 export default () => (
   <figure className="doodad">

@@ -5,7 +5,7 @@ import Routes from "./containers/routes";
 import ErrorBoundary from "./helpers/errorBoundary";
 import EasterEgg from "./helpers/easter-egg";
 import IntlProvider from "./helpers/intl";
-import "./app.css";
+import "./app.scss";
 
 const ApolloApp = () => (
   <ApolloProvider client={client}>

@@ -1,8 +1,8 @@
 import React from "react";
 import Views from "../../views";
 import { withApollo } from "react-apollo";
-import "./layout.css";
-import "./theme.css";
+import "./layout.scss";
+import "./theme.scss";
 
 const Viewscreen = withApollo(props => {
   let { simulator, station } = props;

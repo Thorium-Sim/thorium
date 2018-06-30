@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
-import "./style.css";
+import "./style.scss";
 
 const MESSAGES_SUB = gql`
   subscription LRDecoding($simulatorId: ID) {

@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { InputField } from "../../generic/core";
 
-import "./style.css";
+import "./style.scss";
 
 const TRACTORBEAM_SUB = gql`
   subscription TractorBeamUpdate($simulatorId: ID!) {

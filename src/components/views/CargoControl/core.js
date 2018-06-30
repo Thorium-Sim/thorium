@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { TypingField, InputField } from "../../generic/core";
 import { Button } from "reactstrap";
-import "./style.css";
+import "./style.scss";
 
 const INVENTORY_SUB = gql`
   subscription InventoryUpdate($simulatorId: ID!) {

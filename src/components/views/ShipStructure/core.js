@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Container, Row, Col, Button, Input, Label } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";
-import "./style.css";
+import "./style.scss";
 
 const DECKS_SUB = gql`
   subscription DecksSub($simulatorId: ID!) {

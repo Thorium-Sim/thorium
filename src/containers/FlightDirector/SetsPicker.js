@@ -3,7 +3,7 @@ import { Container, Row, Col, Card } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 
-import "./setConfig.css";
+import "./setConfig.scss";
 
 class SetsPicker extends Component {
   constructor(props) {

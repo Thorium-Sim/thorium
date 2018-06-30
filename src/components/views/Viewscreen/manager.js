@@ -5,7 +5,7 @@ import { Label, Row, Col, Input, Button, ButtonGroup } from "reactstrap";
 import Preview, { Viewscreen } from "./index";
 import * as ViewscreenCards from "../../viewscreens";
 
-import "./style.css";
+import "./style.scss";
 
 const CardPreview = Viewscreen;
 

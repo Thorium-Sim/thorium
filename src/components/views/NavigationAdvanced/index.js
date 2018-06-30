@@ -7,7 +7,7 @@ import { throttle } from "../../../helpers/debounce";
 import AnimatedNumber from "react-animated-number";
 import Slider from "./slider";
 import ThrusterRotor from "./thrusterRotor";
-import "./style.css";
+import "./style.scss";
 
 const sliderColors = [
   {

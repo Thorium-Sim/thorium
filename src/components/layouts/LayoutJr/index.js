@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import Alerts from "../../generic/Alerts";
 import renderCards from "../cardRenderer";
-import "./style.css";
+import "./style.scss";
 
 export default props => {
   const { simulator, station } = props;

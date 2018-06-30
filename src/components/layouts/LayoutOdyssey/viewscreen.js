@@ -4,7 +4,7 @@ import ErrorBoundary from "../../../helpers/errorBoundary";
 import CardFrame from "./frame";
 import { withApollo } from "react-apollo";
 import { Button } from "reactstrap";
-import "./layout.css";
+import "./layout.scss";
 
 class LayoutOdyssey extends Component {
   render() {

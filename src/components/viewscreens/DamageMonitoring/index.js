@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Asset } from "../../../helpers/assets";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import "./style.css";
+import "./style.scss";
 
 const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {

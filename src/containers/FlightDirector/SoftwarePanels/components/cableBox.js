@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./cableBox.css";
+import "./cableBox.scss";
 import { Button } from "reactstrap";
 
 export default class CableBox extends Component {

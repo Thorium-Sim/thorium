@@ -7,7 +7,7 @@ import { InputField, OutputField } from "../../generic/core";
 import FontAwesome from "react-fontawesome";
 import { Asset } from "../../../helpers/assets";
 
-import "./style.css";
+import "./style.scss";
 
 const TARGETING_SUB = gql`
   subscription TargetingUpdate($simulatorId: ID) {

@@ -4,7 +4,7 @@ import { Row, Col, Container, Card } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
 import Tour from "reactour";
-import "./style.css";
+import "./style.scss";
 /* TODO
 
 Some improvements:

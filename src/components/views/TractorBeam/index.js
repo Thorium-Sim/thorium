@@ -10,7 +10,7 @@ import Bars from "./bars";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Tour from "reactour";
 
-import "./style.css";
+import "./style.scss";
 
 const trainingSteps = [
   {

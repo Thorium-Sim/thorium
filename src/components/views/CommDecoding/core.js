@@ -3,7 +3,7 @@ import { Button } from "reactstrap";
 import { TypingField, InputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
-import "./style.css";
+import "./style.scss";
 
 class LRCommCore extends Component {
   constructor(props) {
