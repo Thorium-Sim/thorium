@@ -4,7 +4,7 @@ dist: trusty
 sudo: false
 language: node_js
 node_js:
-  - "8.11.3"
+  - "node"
 cache:
   directories:
     - node_modules
@@ -42,6 +42,8 @@ jobs:
         - codeclimate-test-reporter < coverage/lcov.info
 
     - stage: release
+      only:
+        - master
       before_install:
         # Clone the whole repository because we also need the develop branch for releasing (Travis only gives us the master by default)
         - git clone "https://github.com/$TRAVIS_REPO_SLUG.git" "$TRAVIS_REPO_SLUG";
