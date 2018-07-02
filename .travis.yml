@@ -29,6 +29,7 @@ stages:
 jobs:
   include:
     - stage: test
+      before_install: sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
       install:
         - npm install
       script:
@@ -42,6 +43,7 @@ jobs:
     - stage: release
       if: branch = master
       before_install:
+        - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
         # Clone the whole repository because we also need the develop branch for releasing (Travis only gives us the master by default)
         - git clone "https://github.com/$TRAVIS_REPO_SLUG.git" "$TRAVIS_REPO_SLUG";
         - cd "$TRAVIS_REPO_SLUG";
