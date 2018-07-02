@@ -47,14 +47,11 @@ jobs:
         # Clone the whole repository because we also need the develop branch for releasing (Travis only gives us the master by default)
         - git clone "https://github.com/$TRAVIS_REPO_SLUG.git" "$TRAVIS_REPO_SLUG";
         - cd "$TRAVIS_REPO_SLUG";
-        # - git checkout -qf "$TRAVIS_COMMIT";
-        #  Fix Travis CI issue of detached heads in git
-        - git checkout master
+        - git checkout -qf "$TRAVIS_COMMIT";
       install:
         - npm install
       script:
         - npm run build
-        - npm run zip
       before_deploy:
         # Login to Git to be able to make commits (required by automatic-release)
         - git config --global user.name "Alex Anderson";
@@ -63,8 +60,6 @@ jobs:
         - echo "https://$GH_TOKEN:@github.com" > .git/credentials;
         # Run itself ;)
         - npm run release
-        # Publish the dist folder
-        - cd zips
       deploy:
         provider: releases
         api_key:
