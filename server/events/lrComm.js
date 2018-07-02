@@ -5,7 +5,7 @@ import uuid from "uuid";
 //Creating a new long range message
 App.on(
   "sendLongRangeMessage",
-  ({ id, simulatorId, message, crew, decoded, sender }) => {
+  ({ id, simulatorId, message = "", crew, decoded, sender }) => {
     let system;
     if (id) {
       system = App.systems.find(s => s.id === id);
