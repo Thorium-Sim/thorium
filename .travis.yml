@@ -21,24 +21,24 @@ branches:
 
 # Build stages
 stages:
-  - name: test
+  # - name: test
   - name: release
     if: branch = master
 
 # Build jobs
 jobs:
   include:
-    - stage: test
-      before_install: sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
-      install:
-        - npm install
-      script:
-        - npm run test:client -- --coverage --forceExit
-        - npm run test:server -- --coverage --forceExit
-      after_success:
-        # Upload coverage if the tests are running green
-        - npm install -g codeclimate-test-reporter
-        - codeclimate-test-reporter < coverage/lcov.info
+    # - stage: test
+    #   before_install: sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
+    #   install:
+    #     - npm install
+    #   script:
+    #     - npm run test:client -- --coverage --forceExit
+    #     - npm run test:server -- --coverage --forceExit
+    #   after_success:
+    #     # Upload coverage if the tests are running green
+    #     - npm install -g codeclimate-test-reporter
+    #     - codeclimate-test-reporter < coverage/lcov.info
 
     - stage: release
       if: branch = master
