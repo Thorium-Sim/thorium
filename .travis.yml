@@ -29,7 +29,6 @@ stages:
 jobs:
   include:
     - stage: test
-      before_install: sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
       install:
         - npm install
       script:
@@ -40,38 +39,28 @@ jobs:
         - npm install -g codeclimate-test-reporter
         - codeclimate-test-reporter < coverage/lcov.info
 
-    # - stage: release
-    #   if: branch = master
-    #   before_install:
-    #     - sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
-    #     # Clone the whole repository because we also need the develop branch for releasing (Travis only gives us the master by default)
-    #     - git clone "https://github.com/$TRAVIS_REPO_SLUG.git" "$TRAVIS_REPO_SLUG";
-    #     - cd "$TRAVIS_REPO_SLUG";
-    #     - git checkout -qf develop;
-    #   install:
-    #     - npm install
-    #   script:
-    #     - npm run build
-    #   before_deploy:
-    #     # Login to Git to be able to make commits (required by automatic-release)
-    #     - git config --global user.name "Alex Anderson";
-    #     - git config --global user.email "alexanderson1993@gmail.com";
-    #     - git config credential.helper "store --file=.git/credentials";
-    #     - echo "https://$GH_TOKEN:@github.com" > .git/credentials;
-    #     # Run itself ;)
-    #     - npm run release
-    #   deploy:
-    #     provider: releases
-    #     api_key:
-    #       secure: "$GH_TOKEN"
-    #     file:
-    #       - "thorium-linux.zip"
-    #       - "thorium-macos.zip"
-    #       - "thorium-win.exe.zip"
-    #     skip_cleanup: true
-    #     on:
-    #       tags: true
-    #   after_deploy:
-    #     - cd ..
+    - stage: release
+      if: branch = master
+      install:
+        - npm install
+      script:
+        - npm run build
+      # before_deploy:
+      #   # Login to Git to be able to make commits (required by automatic-release)
+      #   - git config --global user.name "Alex Anderson";
+      #   - git config --global user.email "alexanderson1993@gmail.com";
+      #   - git config credential.helper "store --file=.git/credentials";
+      #   - echo "https://$GH_TOKEN:@github.com" > .git/credentials;
+      deploy:
+        provider: releases
+        api_key:
+          secure: "$GH_TOKEN"
+        file:
+          - "zips/thorium-linux.zip"
+          - "zips/thorium-macos.zip"
+          - "zips/thorium-win.exe.zip"
+        skip_cleanup: true
+        on:
+          tags: true
 
   
