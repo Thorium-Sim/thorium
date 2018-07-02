@@ -4,6 +4,11 @@ Also see the **[release page](git+https://github.com/Thorium-Sim/thorium.git/rel
 
 <br>
 
+## [0.2.52](https://github.com/Thorium-Sim/thorium/releases/tag/0.2.52) (2018-07-02)
+
+
+<br>
+
 ## [0.2.51](https://github.com/Thorium-Sim/thorium/releases/tag/0.2.51) (2018-07-02)
 
 
