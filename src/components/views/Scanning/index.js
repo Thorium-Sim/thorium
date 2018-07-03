@@ -436,10 +436,7 @@ class Scanning extends Component {
                 <h4 className="text-center">Scan in progress...</h4>
                 {domain === "internal" ? (
                   <Card className="scannerBox" style={{ overflow: "hidden" }}>
-                    <Asset
-                      asset="/Ship Views/Right"
-                      simulatorId={this.props.simulator.id}
-                    >
+                    <Asset asset={this.props.simulator.assets.side}>
                       {({ src }) => (
                         <div
                           alt="ship"
