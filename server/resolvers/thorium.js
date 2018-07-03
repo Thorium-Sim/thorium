@@ -8,6 +8,9 @@ export const ThoriumQueries = {
 };
 
 export const ThoriumMutations = {
+  snapshot() {
+    App.snapshot(true);
+  },
   toggleAutoUpdate(root, args, context) {
     App.handleEvent(args, "toggleAutoUpdate", context);
   },
