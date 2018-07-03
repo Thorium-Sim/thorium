@@ -48,11 +48,6 @@ import { ThxMutations } from "./thx.js";
 import { ThoriumMutations } from "./thorium.js";
 
 const mutationMap = Object.assign(
-  {
-    snapshot() {
-      App.snapshot(true);
-    }
-  },
   FlightStructureMutations,
   ClientMutations,
   ShieldMutations,
