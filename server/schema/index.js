@@ -4,8 +4,6 @@ import * as subscriptions from "./subscriptions";
 import * as types from "./types";
 
 export default `
-scalar UploadedFile
-
 #Types definition
 ${Object.keys(types)
   .map(type => {
