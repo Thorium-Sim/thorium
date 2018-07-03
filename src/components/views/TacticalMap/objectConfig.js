@@ -6,10 +6,7 @@ import FileExplorer from "./fileExplorer";
 
 export default class ObjectConfig extends Component {
   state = { draggingObject: null };
-  mouseDown = (evt, container) => {
-    const object =
-      container.objects.find(o => o.simulatorId === "default") ||
-      container.objects[0];
+  mouseDown = (evt, object) => {
     document.addEventListener("mouseup", this.mouseUp);
     document.addEventListener("mousemove", this.mouseMove);
     const bounds = evt.target.getBoundingClientRect();
@@ -20,7 +17,7 @@ export default class ObjectConfig extends Component {
         width: bounds.width,
         height: bounds.height,
         url: object.url,
-        fullPath: container.fullPath
+        fullPath: object.fullPath
       }
     });
   };
