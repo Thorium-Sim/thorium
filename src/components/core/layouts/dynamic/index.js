@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Cores } from "../../../views";
 import CoreFeed from "../../../views/CoreFeed";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 import {
   Mosaic,
   MosaicWindow,
@@ -14,6 +14,7 @@ import Picker from "./picker";
 import CoreError from "../coreError";
 import "react-mosaic-component/react-mosaic-component.css";
 import "./dynamic.scss";
+import { titleCase } from "change-case";
 
 Cores.CoreFeed = CoreFeed;
 
@@ -96,7 +97,13 @@ class Dynamic extends Component {
           return (
             <MosaicWindow
               path={path}
-              title={<UpdateSelect mosaic={this.props.mosaic} id={id} />}
+              title={
+                this.props.edit ? (
+                  <UpdateSelect mosaic={this.props.mosaic} id={id} />
+                ) : (
+                  titleCase(id)
+                )
+              }
               toolbarControls={[
                 <Split key="split-button" mosaic={this.props.mosaic} />,
                 <ExpandButton key="expand-button" />,
@@ -123,11 +130,24 @@ class Dynamic extends Component {
         zeroStateView={
           <Container>
             <Row>
-              <Col sm={12}>
-                <h1>No cores loaded</h1>
-                <h4>Add a core.</h4>
-                <UpdateSelect mosaic={this.props.mosaic} />
-              </Col>
+              {this.props.edit ? (
+                <Col sm={12}>
+                  <h1>No cores loaded</h1>
+                  <h4>Add a core.</h4>
+                  <UpdateSelect mosaic={this.props.mosaic} />
+                </Col>
+              ) : (
+                <Col sm={12}>
+                  <h1>No cores loaded</h1>
+                  <h4>
+                    Turn on{" "}
+                    <Button color="info" onClick={this.props.editMode}>
+                      Edit Mode
+                    </Button>{" "}
+                    to continue
+                  </h4>
+                </Col>
+              )}
             </Row>
           </Container>
         }
