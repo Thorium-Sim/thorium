@@ -136,26 +136,31 @@ class Welcome extends Component {
                     </strong>
                   )}
                   <p>
-                    <Mutation
-                      mutation={gql`
-                        mutation TriggerAutoUpdate {
-                          triggerAutoUpdate
-                        }
-                      `}
-                    >
-                      {action => (
-                        <Button
-                          outline
-                          color="secondary"
-                          onClick={() => {
-                            action();
-                            this.setState({ outdated: false, upgrading: true });
-                          }}
-                        >
-                          Download Update
-                        </Button>
-                      )}
-                    </Mutation>
+                    {!this.state.upgrading && (
+                      <Mutation
+                        mutation={gql`
+                          mutation TriggerAutoUpdate {
+                            triggerAutoUpdate
+                          }
+                        `}
+                      >
+                        {action => (
+                          <Button
+                            outline
+                            color="secondary"
+                            onClick={() => {
+                              action();
+                              this.setState({
+                                outdated: false,
+                                upgrading: true
+                              });
+                            }}
+                          >
+                            Download Update
+                          </Button>
+                        )}
+                      </Mutation>
+                    )}
                     {this.state.upgrading && (
                       <small>
                         <FormattedMessage
