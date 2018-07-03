@@ -178,7 +178,7 @@
     "unzip": "^0.1.11",
     "url-loader": "1.0.1",
     "whatwg-fetch": "2.0.4",
-    "yauzl": "^2.9.2",
+    "yauzl": "^2.10.0",
     "yazl": "^2.4.3"
   },
   "lint-staged": {
