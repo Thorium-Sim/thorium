@@ -1,15 +1,17 @@
 import React, { Component } from "react";
-import { Col, Row, Container } from "reactstrap";
-import { withApollo } from "react-apollo";
-import { Asset } from "../../../../helpers/assets";
+import { Col, Row, Container, ListGroup, ListGroupItem } from "reactstrap";
+import { Mutation } from "react-apollo";
+import FileExplorer from "../../../../components/views/TacticalMap/fileExplorer";
+import gql from "graphql-tag";
+
 const assetList = [
   {
-    name: "Simulator",
+    name: "Mesh",
     fullPath: "mesh",
     folderPath: "/3D/Mesh"
   },
   {
-    name: "Simulator",
+    name: "Texture",
     fullPath: "texture",
     folderPath: "/3D/Texture"
   },
@@ -31,30 +33,57 @@ const assetList = [
 ];
 
 class Assets extends Component {
+  state = {};
   render() {
+    const { selectedAsset } = this.state;
     const { selectedSimulator: sim } = this.props;
-    const { assets } = sim;
+    const { assets: assetData } = sim;
+    const { __typename, ...assets } = assetData;
     return (
       <Container className="assets">
         <p>Assets</p>
-        <Row style={{ overflowY: "scroll", height: "80vh" }}>
-          {assetList.map(a => (
-            <Asset
-              key={assets[a.fullPath]}
-              fail
-              asset={assets[a.fullPath]}
-              simulatorId={sim.id}
-            >
-              {({ src }) => (
-                <WrappedAssetDropdown
-                  src={src}
-                  sim={sim}
-                  {...a}
-                  update={() => this.forceUpdate()}
-                />
-              )}
-            </Asset>
-          ))}
+        <Row>
+          <Col sm={4}>
+            <ListGroup>
+              {assetList.map(a => (
+                <ListGroupItem
+                  key={a.fullPath}
+                  active={selectedAsset === a.fullPath}
+                  onClick={() => this.setState({ selectedAsset: a.fullPath })}
+                >
+                  {a.name}
+                </ListGroupItem>
+              ))}
+            </ListGroup>
+          </Col>
+          <Col sm={8} style={{ maxHeight: `80vh`, overflowY: "auto" }}>
+            {selectedAsset && (
+              <Mutation
+                mutation={gql`
+                  mutation SetAssets($id: ID!, $assets: SimulatorAssetsInput!) {
+                    setSimulatorAssets(id: $id, assets: $assets)
+                  }
+                `}
+              >
+                {action => (
+                  <FileExplorer
+                    selectedFiles={[assets[selectedAsset]]}
+                    onClick={(evt, container) => {
+                      action({
+                        variables: {
+                          id: sim.id,
+                          assets: {
+                            ...assets,
+                            [selectedAsset]: container.fullPath
+                          }
+                        }
+                      });
+                    }}
+                  />
+                )}
+              </Mutation>
+            )}
+          </Col>
         </Row>
       </Container>
     );
@@ -62,50 +91,3 @@ class Assets extends Component {
 }
 
 export default Assets;
-
-class AssetDropzone extends Component {
-  state = {};
-  onDrop = evt => {
-    const { folderPath, name, sim, update } = this.props;
-    const data = new FormData();
-    data.append("folderPath", folderPath);
-    Array.from(evt.target.files).forEach((f, index) =>
-      data.append(`files[${index}]`, f)
-    );
-    fetch(
-      `${window.location.protocol}//${window.location.hostname}:${parseInt(
-        window.location.port,
-        10
-      ) + 1}/upload`,
-      {
-        method: "POST",
-        body: data
-      }
-    ).then(() => {
-      update();
-    });
-  };
-  render() {
-    const { name, fullPath, src } = this.props;
-    return (
-      <Col sm={4}>
-        <h3>{name}</h3>
-        <h4>{fullPath}</h4>
-        <input type="file" onChange={this.onDrop} />
-        <div>
-          <img
-            alt="Asset"
-            style={{ width: "100%", maxHeight: "100%" }}
-            src={src + `?${Date.now()}`}
-          />
-        </div>
-      </Col>
-    );
-  }
-}
-
-const WrappedAssetDropdown = withApollo(AssetDropzone);
-/*
-
-
-*/

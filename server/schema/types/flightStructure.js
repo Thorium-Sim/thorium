@@ -36,6 +36,15 @@ type SimulatorAssets {
   top:String
   logo:String
 }
+
+input SimulatorAssetsInput {
+  mesh:String
+  texture:String
+  side:String
+  top:String
+  logo:String
+}
+
 type Simulator {
   id: ID
   name: String
