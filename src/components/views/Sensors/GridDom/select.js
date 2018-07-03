@@ -1,8 +1,10 @@
 import React from "react";
-import isNull from "lodash/isNull";
-import each from "lodash/each";
-import noop from "lodash/noop";
 import PropTypes from "prop-types";
+
+function isNull(value) {
+  return value === null;
+}
+function noop() {}
 
 class Selection extends React.Component {
   static propTypes = {
@@ -182,11 +184,12 @@ class Selection extends React.Component {
    */
   selectAll = () => {
     const selectedChildren = {};
-    each(this.refs, (ref, key) => {
-      if (key !== "selectionBox") {
-        selectedChildren[key] = true;
-      }
-    });
+    this.refs &&
+      this.refs.forEach((ref, key) => {
+        if (key !== "selectionBox") {
+          selectedChildren[key] = true;
+        }
+      });
     this.setState({
       selectedChildren
     });
@@ -222,28 +225,29 @@ class Selection extends React.Component {
    * collisions with selectionBox
    */
   _updateCollidingChildren(selectionBox) {
-    each(this.refs, (ref, key) => {
-      if (key !== "selectionBox") {
-        const location = ref.props.children.props.destination;
-        const selBox = {
-          left: selectionBox.left / window.innerWidth,
-          top: selectionBox.top / window.innerHeight,
-          width: selectionBox.width / window.innerWidth,
-          height: selectionBox.height / window.innerHeight
-        };
-        const tmpBox = {
-          left: location.x - 0.001,
-          top: location.y - 0.001,
-          width: 0.02,
-          height: 0.02
-        };
-        const selectedChildren = { ...this.state.selectedChildren };
-        selectedChildren[key] = this._boxIntersects(selBox, tmpBox);
-        this.setState({
-          selectedChildren
-        });
-      }
-    });
+    this.refs &&
+      this.refs.forEach((ref, key) => {
+        if (key !== "selectionBox") {
+          const location = ref.props.children.props.destination;
+          const selBox = {
+            left: selectionBox.left / window.innerWidth,
+            top: selectionBox.top / window.innerHeight,
+            width: selectionBox.width / window.innerWidth,
+            height: selectionBox.height / window.innerHeight
+          };
+          const tmpBox = {
+            left: location.x - 0.001,
+            top: location.y - 0.001,
+            width: 0.02,
+            height: 0.02
+          };
+          const selectedChildren = { ...this.state.selectedChildren };
+          selectedChildren[key] = this._boxIntersects(selBox, tmpBox);
+          this.setState({
+            selectedChildren
+          });
+        }
+      });
   }
 
   /**

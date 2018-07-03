@@ -5,7 +5,7 @@ import { Container, Row, Col, Card } from "reactstrap";
 import Measure from "react-measure";
 import Canvas from "../../../containers/FlightDirector/SoftwarePanels/canvas";
 import { getComponentLevel } from "../../../containers/FlightDirector/SoftwarePanels";
-import "./style.css";
+import "./style.scss";
 
 const SUB = gql`
   subscription SoftwarePanelsUpdate($simulatorId: ID) {

@@ -5,7 +5,7 @@ import { Cores } from "../";
 import { Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import moment from "moment";
-import "./style.css";
+import "./style.scss";
 
 const COREFEED_SUB = gql`
   subscription CoreFeedUpdate($simulatorId: ID) {

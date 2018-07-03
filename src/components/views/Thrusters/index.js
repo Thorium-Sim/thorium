@@ -10,7 +10,7 @@ import Measure from "react-measure";
 import throttle from "../../../helpers/debounce";
 
 import DamageOverlay from "../helpers/DamageOverlay";
-import "./style.css";
+import "./style.scss";
 import Tour from "reactour";
 
 const trainingSteps = [

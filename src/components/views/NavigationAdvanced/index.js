@@ -8,7 +8,7 @@ import AnimatedNumber from "react-animated-number";
 import Slider from "./slider";
 import ThrusterRotor from "./thrusterRotor";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-import "./style.css";
+import "./style.scss";
 
 const sliderColors = [
   {

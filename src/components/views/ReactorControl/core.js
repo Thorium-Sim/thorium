@@ -4,7 +4,7 @@ import { InputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input } from "reactstrap";
 
-import "./style.css";
+import "./style.scss";
 
 const REACTOR_SUB = gql`
   subscription ReactorsUpdate($simulatorId: ID!) {

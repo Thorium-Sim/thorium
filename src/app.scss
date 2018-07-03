@@ -1,12 +1,12 @@
 @import url("/css/font-awesome.min.css");
-@import url('/css/fonts.css');
+@import url("/css/fonts.css");
 
-.cardContainer{
+.cardContainer {
   max-width: 100%;
   height: 100%;
   width: 100%;
-  position:absolute;
-  align-self:center;
+  position: absolute;
+  align-self: center;
 }
 pre {
   background-color: transparent;
@@ -19,20 +19,18 @@ pre {
 }
 *:not(input) {
   user-select: none;
-
 }
 
 // Rotation Helpers
 
-.ccw-90{
+.ccw-90 {
   transform: rotate(270deg);
 }
 
-.cw-90{
-transform: rotate(90deg);
+.cw-90 {
+  transform: rotate(90deg);
 }
 
-.cw-180{
-transform: rotate(180deg);
-
+.cw-180 {
+  transform: rotate(180deg);
 }

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Input } from "reactstrap";
-import "./style.css";
+import "./style.scss";
 
 const MESSAGING_SUB = gql`
   subscription GotMessage($simulatorId: ID!) {

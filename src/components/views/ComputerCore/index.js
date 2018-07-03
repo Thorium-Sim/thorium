@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import ComputerCore from "./computerCore";
-import "./style.css";
+import "./style.scss";
 
 const queryData = `
 id

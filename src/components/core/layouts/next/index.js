@@ -3,7 +3,7 @@ import Dynamic from "../dynamic";
 import { Cores } from "../../../views";
 import CoreFeed from "../../../views/CoreFeed";
 import CoreError from "../coreError";
-import "./next.css";
+import "./next.scss";
 
 class Next extends Component {
   render() {

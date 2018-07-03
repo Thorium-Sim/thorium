@@ -15,7 +15,7 @@ import {
   InputGroup,
   InputGroupAddon
 } from "reactstrap";
-import "./style.css";
+import "./style.scss";
 
 const MESSAGING_SUB = gql`
   subscription GotMessage($simulatorId: ID!, $station: String) {

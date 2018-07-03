@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./style.css";
+import "./style.scss";
 import SatImage from "./Sat.svg";
 
 export default class Satellites extends Component {

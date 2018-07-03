@@ -8,7 +8,7 @@ import FontAwesome from "react-fontawesome";
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
 import { Asset } from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
-import "./style.css";
+import "./style.scss";
 
 const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID, $domain: String) {

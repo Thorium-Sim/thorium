@@ -5,7 +5,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Clamps, Ramps, Doors } from "./graphics";
 import Tour from "reactour";
 
-import "./style.css";
+import "./style.scss";
 
 const DOCKING_SUB = gql`
   subscription SimulatorSub($simulatorId: ID) {

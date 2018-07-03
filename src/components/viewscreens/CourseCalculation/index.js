@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import { NavigationScanner } from "../../views/Navigation";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
-import "./style.css";
+import "./style.scss";
 
 const NAV_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {

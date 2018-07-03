@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./style.css";
+import "./style.scss";
 
 const points = [
   {
@@ -406,13 +406,17 @@ export default class BatteryCharging extends Component {
       Math.round(
         (spark.x === dest.x
           ? dest.x
-          : spark.x < dest.x ? spark.x + speed : spark.x - speed) * 10000
+          : spark.x < dest.x
+            ? spark.x + speed
+            : spark.x - speed) * 10000
       ) / 10000;
     const nextY =
       Math.round(
         (spark.y === dest.y
           ? dest.y
-          : spark.y < dest.y ? spark.y + speed : spark.y - speed) * 10000
+          : spark.y < dest.y
+            ? spark.y + speed
+            : spark.y - speed) * 10000
       ) / 10000;
     this.setState({
       spark: { x: nextX, y: nextY, destination: spark.destination }

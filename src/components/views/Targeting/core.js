@@ -7,7 +7,7 @@ import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import FontAwesome from "react-fontawesome";
 import { Asset } from "../../../helpers/assets";
 
-import "./style.css";
+import "./style.scss";
 
 const TARGETING_SUB = gql`
   subscription TargetingUpdate($simulatorId: ID) {

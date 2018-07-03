@@ -1,8 +1,9 @@
 import React from "react";
-import isNull from "lodash/isNull";
-import each from "lodash/each";
-import noop from "lodash/noop";
 import PropTypes from "prop-types";
+function isNull(value) {
+  return value === null;
+}
+function noop() {}
 
 class Selection extends React.Component {
   static propTypes = {
@@ -169,11 +170,12 @@ class Selection extends React.Component {
    */
   selectAll = () => {
     const selectedChildren = {};
-    each(this.refs, (ref, key) => {
-      if (key !== "selectionBox") {
-        selectedChildren[key] = true;
-      }
-    });
+    this.refs &&
+      this.refs.forEach((ref, key) => {
+        if (key !== "selectionBox") {
+          selectedChildren[key] = true;
+        }
+      });
     this.setState({
       selectedChildren
     });
@@ -209,7 +211,7 @@ class Selection extends React.Component {
    * collisions with selectionBox
    */
   _updateCollidingChildren(selectionBox) {
-    each(this.refs, (ref, key) => {
+    this.refs.forEach((ref, key) => {
       if (key !== "selectionBox") {
         const location = ref.props.children.props.destination;
         const selBox = {

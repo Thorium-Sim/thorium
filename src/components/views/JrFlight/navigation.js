@@ -4,7 +4,7 @@ import { Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { NavigationScanner } from "../Navigation";
 
-import "./style.css";
+import "./style.scss";
 
 const NAVIGATION_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {

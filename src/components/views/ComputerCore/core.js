@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import { Button } from "reactstrap";
-import "./style.css";
+import "./style.scss";
 
 const queryData = `
 id

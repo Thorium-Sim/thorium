@@ -3,7 +3,7 @@ import React, { Component } from "react";
 ///import * as THREE from "three";
 import { Asset } from "../../../helpers/assets";
 
-import "./style.css";
+import "./style.scss";
 
 export default props => {
   const data = JSON.parse(props.viewscreen.data);

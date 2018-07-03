@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Measure from "react-measure";
 import ThreeView from "./three-view";
 import { Asset } from "../../../helpers/assets";
-import "./style.css";
+import "./style.scss";
 
 class ShipModel extends Component {
   state = {};

@@ -102,7 +102,7 @@
 }
 
 .damageReport-core {
-  height: 100%;
+  height: calc(100% - 24px);
   .left-side {
     height: 90%;
     display: flex;

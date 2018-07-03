@@ -6,7 +6,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Asset } from "../../../helpers/assets";
 import Grid from "../Sensors/GridDom";
 
-import "./style.css";
+import "./style.scss";
 
 const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {

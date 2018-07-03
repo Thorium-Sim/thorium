@@ -5,7 +5,7 @@ import gql from "graphql-tag";
 import FontAwesome from "react-fontawesome";
 import ObjPreview from "./3dObjPreview";
 
-import "./fileExplorer.css";
+import "./fileExplorer.scss";
 
 const ASSET_FOLDER_SUB = gql`
   subscription AssetFolderSubscription {

@@ -17,7 +17,7 @@ import Tour from "reactour";
 import randomWords from "random-words";
 import { FormattedMessage } from "react-intl";
 
-import "./flightConfig.css";
+import "./flightConfig.scss";
 
 class FlightConfig extends Component {
   state = {

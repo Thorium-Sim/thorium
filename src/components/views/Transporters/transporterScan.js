@@ -1,5 +1,5 @@
 import React from "react";
-import "./transporterScan.css";
+import "./transporterScan.scss";
 
 const TransporterScan = () => {
   return (

@@ -6,7 +6,7 @@ import Segments from "./blackout";
 import Interference from "./interference";
 import Selection from "./select";
 
-import "./style.css";
+import "./style.scss";
 
 function distance3d(coord2, coord1) {
   const { x: x1, y: y1, z: z1 } = coord1;

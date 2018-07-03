@@ -3,7 +3,7 @@ import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
 import { InputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
-import "./style.css";
+import "./style.scss";
 
 const PHASERS_SUB = gql`
   subscription PhasersUpdate($simulatorId: ID!) {

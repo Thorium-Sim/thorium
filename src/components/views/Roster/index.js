@@ -5,7 +5,7 @@ import { Container, Row, Col } from "reactstrap";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 
-import "./style.css";
+import "./style.scss";
 
 const columns = [
   {
@@ -64,7 +64,9 @@ class Template extends Component {
     this.subscription && this.subscription();
   }
   render() {
-    const { data: { loading, crew } } = this.props;
+    const {
+      data: { loading, crew }
+    } = this.props;
     if (loading || !crew) return null;
 
     return (

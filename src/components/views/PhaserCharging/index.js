@@ -5,7 +5,7 @@ import { graphql, withApollo } from "react-apollo";
 import Tour from "reactour";
 
 //import DamageOverlay from '../helpers/DamageOverlay';
-import "./style.css";
+import "./style.scss";
 export { default as PhaserFire } from "./phaserFire";
 
 const PHASERS_SUB = gql`

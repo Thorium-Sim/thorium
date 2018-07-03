@@ -3,8 +3,8 @@ import { Cores } from "../../../views";
 import CoreFeed from "../../../views/CoreFeed";
 import CoreError from "../coreError";
 
-import "./default.css";
-import "../sideCore.css";
+import "./default.scss";
+import "../sideCore.scss";
 
 const allowed = [
   "EngineControlCore",

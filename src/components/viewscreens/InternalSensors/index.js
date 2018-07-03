@@ -3,7 +3,8 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Asset } from "../../../helpers/assets";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-import "./style.css";
+
+import "./style.scss";
 
 const INTERNAL_SUB = gql`
   subscription InternalSensorsUpdate($simulatorId: ID) {

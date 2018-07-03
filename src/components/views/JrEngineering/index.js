@@ -5,7 +5,7 @@ import { graphql, withApollo } from "react-apollo";
 import Isochips from "./isochips";
 import Battery from "./batteryCharging";
 import Routing from "./powerRouting";
-import "./style.css";
+import "./style.scss";
 
 const Components = [Isochips, Battery, Routing];
 

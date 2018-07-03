@@ -7,7 +7,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Caching from "./caching";
 import playSound from "./generic/SoundPlayer";
-import "./client.css";
+import "./client.scss";
 
 class ClientWrapper extends Component {
   constructor(props) {

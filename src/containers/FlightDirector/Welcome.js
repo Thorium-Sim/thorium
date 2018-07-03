@@ -7,7 +7,7 @@ import semver from "semver";
 import Tour from "reactour";
 import { FormattedMessage } from "react-intl";
 import SubscriptionHelper from "../../helpers/subscriptionHelper";
-import "./welcome.css";
+import "./welcome.scss";
 
 const FLIGHT_SUB = gql`
   subscription FlightsChanged {
@@ -104,9 +104,7 @@ class Welcome extends Component {
         />
         <Row>
           <Col sm={12} className="title-row">
-            <h1 className="text-center">
-              <FormattedMessage id="thorium" defaultMessage="Thorium" />
-            </h1>
+            <h1 className="text-center">Thorium</h1>
             <h3 className="text-center">
               <small>{this.state.quote}</small>
             </h3>

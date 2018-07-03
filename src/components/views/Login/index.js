@@ -6,7 +6,7 @@ import gql from "graphql-tag";
 import { Asset } from "../../../helpers/assets";
 import Tour from "reactour";
 
-import "./login.css";
+import "./login.scss";
 
 class Login extends Component {
   constructor(props) {

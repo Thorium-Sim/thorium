@@ -13,7 +13,7 @@ import {
 import Picker from "./picker";
 import CoreError from "../coreError";
 import "react-mosaic-component/react-mosaic-component.css";
-import "./dynamic.css";
+import "./dynamic.scss";
 
 Cores.CoreFeed = CoreFeed;
 

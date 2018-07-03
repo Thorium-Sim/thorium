@@ -5,10 +5,10 @@ import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
 import Tour from "reactour";
 
-import "./style.css";
+import "./style.scss";
 
 function d2r(deg) {
-  return deg * Math.PI / 180;
+  return (deg * Math.PI) / 180;
 }
 
 const trainingSteps = [
@@ -146,7 +146,7 @@ class Grid extends Component {
       datagrams: Array(props.lines || 8)
         .fill(0)
         .map((_, i, array) => ({
-          angle: d2r(i / array.length * 360),
+          angle: d2r((i / array.length) * 360),
           x: 0,
           y: 0
         }))
@@ -206,7 +206,7 @@ class Grid extends Component {
               key={`line-${i}`}
               className="line"
               style={{
-                transform: `rotate(${(i + 0.5) / array.length * 360}deg)`
+                transform: `rotate(${((i + 0.5) / array.length) * 360}deg)`
               }}
             />
           ))}
@@ -217,8 +217,8 @@ class Grid extends Component {
               key={`ring-${i}`}
               className="ring"
               style={{
-                width: `${(i + 1) / array.length * 100}%`,
-                height: `${(i + 1) / array.length * 100}%`,
+                width: `${((i + 1) / array.length) * 100}%`,
+                height: `${((i + 1) / array.length) * 100}%`,
                 backgroundColor: i < 2 ? "black" : "transparent"
               }}
             />
@@ -230,10 +230,11 @@ class Grid extends Component {
               key={`box-${i}`}
               className="box"
               style={{
-                transform: `translate(${Math.cos(d2r(i / array.length * 360)) *
-                  radius /
-                  2}px, ${Math.sin(d2r(i / array.length * 360)) *
-                  radius /
+                transform: `translate(${(Math.cos(
+                  d2r((i / array.length) * 360)
+                ) *
+                  radius) /
+                  2}px, ${(Math.sin(d2r((i / array.length) * 360)) * radius) /
                   2}px)`
               }}
             />
@@ -247,12 +248,12 @@ class Grid extends Component {
                   key={`probe-${i}`}
                   className="probe"
                   style={{
-                    transform: `translate(${Math.cos(
-                      d2r((i - 3) / lines * 360)
+                    transform: `translate(${(Math.cos(
+                      d2r(((i - 3) / lines) * 360)
                     ) *
-                      radius /
-                      2}px, ${Math.sin(d2r((i - 3) / lines * 360)) *
-                      radius /
+                      radius) /
+                      2}px, ${(Math.sin(d2r(((i - 3) / lines) * 360)) *
+                      radius) /
                       2}px)`
                   }}
                 />
@@ -270,8 +271,8 @@ class Grid extends Component {
               src={datagramImage}
               style={{
                 transform: `translate(
-              ${d.x * radius / 2}px,
-              ${d.y * radius / 2}px)`
+              ${(d.x * radius) / 2}px,
+              ${(d.y * radius) / 2}px)`
               }}
             />
           ))}

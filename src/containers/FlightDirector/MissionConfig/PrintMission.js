@@ -2,7 +2,7 @@ import React from "react";
 import * as Macros from "../../../components/macrosPrint";
 import { Button } from "reactstrap";
 
-import "./printStyle.css";
+import "./printStyle.scss";
 
 export const macroNames = {
   addTractorTarget: "Add Tractor Target",

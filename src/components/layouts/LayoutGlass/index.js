@@ -6,7 +6,7 @@ import Widgets from "../LayoutOdyssey/widgets";
 import { withApollo } from "react-apollo";
 import CardSwitcher from "../LayoutCorners/CardSwitcher";
 import renderCards from "../cardRenderer";
-import "./layout.css";
+import "./layout.scss";
 
 class LayoutGlass extends Component {
   state = {};

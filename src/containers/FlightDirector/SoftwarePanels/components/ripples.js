@@ -1,5 +1,5 @@
 import React from "react";
-import "./ripples.css";
+import "./ripples.scss";
 
 const PlasmaRipples = ({
   level = 0,

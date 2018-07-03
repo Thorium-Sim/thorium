@@ -14,7 +14,7 @@ import Moment from "moment";
 import { graphql, withApollo } from "react-apollo";
 import Tour from "reactour";
 
-import "./style.css";
+import "./style.scss";
 
 function padDigits(number, digits) {
   return (

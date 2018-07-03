@@ -8,7 +8,7 @@ import Tour from "reactour";
 import SignalLines from "./signalLines";
 import "react-rangeslider/lib/index.css";
 
-import "./style.css";
+import "./style.scss";
 
 const SUB = gql`
   subscription SignalJammerUpdate($id: ID!) {
@@ -124,7 +124,9 @@ class SignalJammer extends Component {
     });
   };
   updateJammer = (which, value) => {
-    const { data: { loading, signalJammers } } = this.props;
+    const {
+      data: { loading, signalJammers }
+    } = this.props;
     if (loading || !signalJammers) return null;
     const signalJammer = signalJammers[0];
     if (!signalJammer) return;
@@ -145,7 +147,9 @@ class SignalJammer extends Component {
     });
   };
   render() {
-    const { data: { loading, signalJammers } } = this.props;
+    const {
+      data: { loading, signalJammers }
+    } = this.props;
     const { jammer } = this.state;
     if (loading || !signalJammers) return null;
     const signalJammer = signalJammers[0];

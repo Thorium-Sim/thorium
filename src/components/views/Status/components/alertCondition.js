@@ -3,38 +3,57 @@ import { Label } from "reactstrap";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 import { Tooltip } from "reactstrap";
+import { FormattedMessage } from "react-intl";
 
-const alertLevels = [
-  {
-    number: 5,
-    text:
-      "This alert condition is used when the ship is at normal running status. The crew is on standard duty and the ship is in no danger."
-  },
-  {
-    number: 4,
-    text:
-      "This alert condition is used when the station has a minor problem. All crew except damage control is on standard duty."
-  },
-  {
-    number: 3,
-    text:
-      "This alert condition is used when the ship needs to be ready for a crisis. All off duty personnel are put on stand by status."
-  },
-  {
-    number: 2,
-    text:
-      "This alert condition is used when the ship is in a dangerous situation, but is safe for the moment. All crew members are put on duty."
-  },
-  {
-    number: 1,
-    text:
-      "This alert condition is used when the ship is in danger or under attack. All crew members are put on duty at battle stations."
+const AlertMessage = ({ number }) => {
+  switch (number) {
+    case 1:
+      return (
+        <FormattedMessage
+          id="alert-level-description-1"
+          defaultMessage="This alert condition is used when the ship is in danger or under attack. All crew members are put on duty at battle stations."
+        />
+      );
+    case 2:
+      return (
+        <FormattedMessage
+          id="alert-level-description-2"
+          defaultMessage="This alert condition is used when the ship is in a dangerous situation, but is safe for the moment. All crew members are put on duty."
+        />
+      );
+    case 3:
+      return (
+        <FormattedMessage
+          id="alert-level-description-3"
+          defaultMessage="This alert condition is used when the ship needs to be ready for a crisis. All off duty personnel are put on stand by status."
+        />
+      );
+    case 4:
+      return (
+        <FormattedMessage
+          id="alert-level-description-4"
+          defaultMessage="This alert condition is used when the station has a minor problem. All crew except damage control is on standard duty."
+        />
+      );
+    case 5:
+      return (
+        <FormattedMessage
+          id="alert-level-description-5"
+          defaultMessage="This alert condition is used when the ship is at normal running status. The crew is on standard duty and the ship is in no danger."
+        />
+      );
+    default:
+      return "";
   }
-];
+};
 
 class AlertCondition extends Component {
-  state = {};
+  state = { cooldown: false };
   setAlert = number => {
+    this.setState({ cooldown: true });
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => this.setState({ cooldown: false }), 5000);
+    if (this.state.cooldown) return;
     const mutation = gql`
       mutation AlertLevel($id: ID!, $level: String!) {
         changeSimulatorAlertLevel(simulatorId: $id, alertLevel: $level)
@@ -49,6 +68,9 @@ class AlertCondition extends Component {
       variables
     });
   };
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
+  }
   toggle = which => {
     this.setState({
       [`alert${which}`]: !this.state[`alert${which}`]
@@ -57,24 +79,29 @@ class AlertCondition extends Component {
   render() {
     return (
       <div className="alert-condition">
-        <Label>Alert Condition</Label>
+        <Label>
+          <FormattedMessage
+            id="alert-condition"
+            defaultMessage="Alert Condition"
+          />
+        </Label>
         <div className="button-container">
-          {alertLevels.map(a => (
+          {[5, 4, 3, 2, 1].map(a => (
             <div
-              key={`alert-condition-${a.number}`}
-              className={`alert-button alert-${a.number}`}
-              id={`alert${a.number}`}
-              onClick={() => this.setAlert(a.number)}
+              key={`alert-condition-${a}`}
+              className={`alert-button alert-${a}`}
+              id={`alert${a}`}
+              onClick={() => this.setAlert(a)}
             >
-              {a.number}
+              {a}
               <Tooltip
                 placement="top"
-                isOpen={this.state[`alert${a.number}`]}
-                target={`alert${a.number}`}
-                toggle={() => this.toggle(a.number)}
+                isOpen={this.state[`alert${a}`]}
+                target={`alert${a}`}
+                toggle={() => this.toggle(a)}
                 delay={{ show: 0, hide: 0 }}
               >
-                {a.text}
+                <AlertMessage number={a} />
               </Tooltip>
             </div>
           ))}

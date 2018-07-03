@@ -6,7 +6,7 @@ import { Container, Button } from "reactstrap";
 import TimelineConfig from "./TimelineConfig";
 import PrintMission from "./PrintMission";
 
-import "./style.css";
+import "./style.scss";
 const MISSION_SUB = gql`
   subscription MissionSubscription($missionId: ID!) {
     missionsUpdate(missionId: $missionId) {

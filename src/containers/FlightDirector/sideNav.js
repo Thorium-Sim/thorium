@@ -17,7 +17,7 @@ import gql from "graphql-tag";
 
 import IssueTracker from "../../components/admin/IssueTracker";
 
-import "./sideNav.css";
+import "./sideNav.scss";
 
 const makeLinks = () => {
   const links = [

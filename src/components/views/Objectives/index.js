@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
-import "./style.css";
+import "./style.scss";
 
 const OBJECTIVE_SUB = gql`
   subscription ObjectivesUpdate($simulatorId: ID!) {
@@ -51,7 +51,9 @@ class Objectives extends Component {
     this.subscription && this.subscription();
   }
   render() {
-    const { data: { loading, objective } } = this.props;
+    const {
+      data: { loading, objective }
+    } = this.props;
     if (loading || !objective) return null;
     return (
       <Container className="objective-card">

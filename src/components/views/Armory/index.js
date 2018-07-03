@@ -13,7 +13,7 @@ import {
   DropdownItem,
   Button
 } from "reactstrap";
-import "./style.css";
+import "./style.scss";
 
 const CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID, $teamType: String!) {
@@ -171,7 +171,9 @@ class Armory extends Component {
     });
   };
   removeFromOfficer = () => {
-    const { data: { crew } } = this.props;
+    const {
+      data: { crew }
+    } = this.props;
     const crewPerson = crew.find(c => c.id === this.state.selectedCrew);
     const readyInventory = crewPerson.inventory.reduce(
       (prev, next) => ({ ...prev, [next.id]: next.count }),
@@ -207,7 +209,9 @@ class Armory extends Component {
     });
   };
   render() {
-    const { data: { loading, crew, rooms, teams } } = this.props;
+    const {
+      data: { loading, crew, rooms, teams }
+    } = this.props;
     if (loading || !crew || !rooms || !teams) return null;
     const { room, team, selectedCrew, readyInventory = {} } = this.state;
     const roomObj = rooms.find(r => r.id === room);

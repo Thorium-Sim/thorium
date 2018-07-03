@@ -5,7 +5,7 @@ import { graphql, withApollo } from "react-apollo";
 import Tour from "reactour";
 import FontAwesome from "react-fontawesome";
 
-import "./style.css";
+import "./style.scss";
 
 const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
