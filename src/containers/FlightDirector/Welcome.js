@@ -54,6 +54,14 @@ class Welcome extends Component {
           ) {
             this.setState({ outdated: res[0].name });
           }
+          if (
+            semver.minor(res[0].name) >
+              semver.minor(require("../../../package.json").version) ||
+            semver.major(res[0].name) >
+              semver.major(require("../../../package.json").version)
+          ) {
+            this.setState({ major: true });
+          }
         })
         .catch(() => {
           //Oh well.
@@ -109,8 +117,8 @@ class Welcome extends Component {
               <small>{this.state.quote}</small>
             </h3>
             {autoUpdate &&
-              this.state.outdated && (
-                <Alert color="warning">
+              (this.state.outdated || this.state.upgrading) && (
+                <Alert color={this.state.major ? "danger" : "warning"}>
                   <FormattedMessage
                     id="upgrade-warning"
                     defaultMessage="Your version of Thorium is outdated. Current version is {newVersion}. Your version is {oldVersion}"
@@ -118,8 +126,15 @@ class Welcome extends Component {
                       oldVersion: require("../../../package.json").version,
                       newVersion: this.state.outdated
                     }}
-                  />
-
+                  />{" "}
+                  {this.state.major && (
+                    <strong>
+                      <FormattedMessage
+                        id="major-upgrade-warning"
+                        defaultMessage="This is a major upgrade. Make sure you backup your Thorium data directory and program file before performing this upgrade."
+                      />
+                    </strong>
+                  )}
                   <p>
                     <Mutation
                       mutation={gql`
@@ -130,24 +145,25 @@ class Welcome extends Component {
                     >
                       {action => (
                         <Button
-                          style={{ marginLeft: "50px" }}
-                          className="pull-right"
                           outline
                           color="secondary"
                           onClick={() => {
                             action();
-                            this.setState({ outdated: false });
+                            this.setState({ outdated: false, upgrading: true });
                           }}
                         >
                           Download Update
                         </Button>
                       )}
                     </Mutation>
-                    <small>
-                      The update is downloading in the background. Wait until
-                      the Thorium Server command line window says "Download
-                      Complete" before restarting Thorium Server
-                    </small>
+                    {this.state.upgrading && (
+                      <small>
+                        <FormattedMessage
+                          id="upgrade-instructions"
+                          defaultMessage="The update is downloading in the background. Wait until the Thorium Server command line window says 'Download Complete' before restarting Thorium Server"
+                        />
+                      </small>
+                    )}
                   </p>
                 </Alert>
               )}
