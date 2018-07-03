@@ -79,8 +79,7 @@ export default function ImportSimulator(filepath, cb) {
     importZip.readEntry();
     importZip.on("entry", function(entry) {
       if (/^simulator\/assets/.test(entry.fileName)) {
-        // It's an asset. If it is called default, load it.
-        // Otherwise, rename it to the simid and load it.
+        // It's an asset. Load it into the correct location in the file system.
         importZip.openReadStream(entry, function(error, readStream) {
           if (error) throw error;
           readStream.on("end", function() {
@@ -88,19 +87,12 @@ export default function ImportSimulator(filepath, cb) {
           });
 
           let filename = entry.fileName.replace("simulator/", "");
-          const file = filename.split("/")[filename.split("/").length - 1];
-          if (file.indexOf("default") === -1) {
-            const extension = file.substr(file.lastIndexOf("."));
-            filename = filename.replace(file, `${simId}${extension}`);
-          }
-          entry.fileName = `simulator/${filename}`;
           const directorypath = filename
             .split("/")
             .splice(0, filename.split("/").length - 1)
             .join("/");
           mkdirp.sync(`${assetDir}/${directorypath}`);
-          const output = fs.createWriteStream(`${assetDir}/${filename}`);
-          readStream.pipe(output);
+          readStream.pipe(fs.createWriteStream(`${assetDir}/${filename}`));
         });
       } else if (/simulator\/simulator\.json/.test(entry.fileName)) {
         // Simulator
