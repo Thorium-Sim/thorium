@@ -114,8 +114,6 @@ class PowerDistribution extends Component {
         sysId: null
       });
     };
-    this.systemSub = null;
-    this.reactorSub = null;
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (!nextProps.data.loading && !this.state.sysId) {
@@ -123,10 +121,6 @@ class PowerDistribution extends Component {
         systems: nextProps.data.systems
       });
     }
-  }
-  componentWillUnmount() {
-    this.systemSub();
-    this.reactorSub();
   }
   mouseDown = (sysId, dimensions, e) => {
     e.persist();
