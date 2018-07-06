@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Button } from "reactstrap";
-import { graphql, withApollo } from "react-apollo";
+import { Mutation, graphql, withApollo } from "react-apollo";
 import { InputField, OutputField } from "../../generic/core";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const SUB = gql`
   subscription SignalJammerUpdate($id: ID!) {
@@ -29,25 +30,6 @@ const SUB = gql`
 `;
 
 class SignalJammerCore extends Component {
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: {
-          id: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            signalJammers: subscriptionData.data.signalJammersUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.sub && this.sub();
-  }
   setSignal = (type, signals) => {
     const {
       data: { loading, signalJammers }
@@ -80,9 +62,35 @@ class SignalJammerCore extends Component {
     if (!signalJammer) return <p>No Signal Jammer</p>;
     return (
       <div className="core-signalJammer">
-        <OutputField alert={signalJammer.active}>
-          {signalJammer.active ? "Activated" : "Deactivated"}
-        </OutputField>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              variables: {
+                id: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  signalJammers: subscriptionData.data.signalJammersUpdate
+                });
+              }
+            })
+          }
+        />
+        <Mutation
+          mutation={gql`
+            mutation UpdateSignalJammer($id: ID!, $active: Boolean) {
+              updateSignalJammer(jammer: { id: $id, active: $active })
+            }
+          `}
+          variables={{ id: signalJammer.id, active: !signalJammer.active }}
+        >
+          {action => (
+            <OutputField alert={signalJammer.active} onDoubleClick={action}>
+              {signalJammer.active ? "Activated" : "Deactivated"}
+            </OutputField>
+          )}
+        </Mutation>
         <div style={{ display: "flex" }}>
           Comm{" "}
           <InputField

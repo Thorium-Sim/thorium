@@ -61,7 +61,9 @@ class LRCommCore extends Component {
       variables
     });
     this.setState({
-      sent: true
+      sent: true,
+      sender: "",
+      message: ""
     });
     setTimeout(() => {
       this.setState({

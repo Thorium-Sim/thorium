@@ -8,13 +8,14 @@ const categories = [
       "ExtrasCore",
       "RemoteCore",
       "MessagingCore",
-      "ClientsCore"
+      "ClientsCore",
+      "CoreFeed"
     ],
     style: {
       gridTemplateRows: "100px 400px",
-      gridTemplateColumns: "400px 400px 400px",
-      gridTemplateAreas: `"ActionsCore ExtrasCore RemoteCore"
-"MessagingCore ClientsCore ClientsCore"`
+      gridTemplateColumns: "300px 300px 300px 300px",
+      gridTemplateAreas: `"ActionsCore ExtrasCore RemoteCore CoreFeed"
+"MessagingCore ClientsCore ClientsCore CoreFeed"`
     }
   },
   {

@@ -113,7 +113,7 @@ export default class SensorScans extends Component {
           </Col>
           <Col className="col-sm-12">
             <Card style={{ height: "200px" }}>
-              <CardBody>
+              <CardBody style={{ height: "100%", overflowY: "auto" }}>
                 <pre>{this.state.scanResults}</pre>
               </CardBody>
             </Card>

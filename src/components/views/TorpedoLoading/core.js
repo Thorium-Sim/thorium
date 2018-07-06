@@ -3,7 +3,7 @@ import { Container, Row, Col, Button, ButtonGroup } from "reactstrap";
 import gql from "graphql-tag";
 import { OutputField, InputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
-
+import { titleCase } from "change-case";
 import "./style.scss";
 
 const TORPEDO_SUB = gql`
@@ -30,7 +30,7 @@ class TorpedoLoadingCore extends Component {
     };
     this.subscription = null;
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
       this.subscription = nextProps.data.subscribeToMore({
         document: TORPEDO_SUB,
@@ -135,12 +135,12 @@ class TorpedoLoadingCore extends Component {
               </Button>
             ))}
           </ButtonGroup>
-          <OutputField alert={torpedos.state === "fired"}>
+          <OutputField alert={torpedo.state === "fired"}>
             {(() => {
-              if (torpedos.state === "idle") return "No Torpedos Loaded";
+              if (torpedo.state === "idle") return "No Torpedos Loaded";
 
-              return `${this.state.type} Torpedo ${
-                torpedos.state === "loaded" ? "Loaded" : "Fired"
+              return `${titleCase(this.state.type)} Torpedo ${
+                torpedo.state === "loaded" ? "Loaded" : "Fired"
               }`;
             })()}
           </OutputField>
