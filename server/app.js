@@ -2,7 +2,6 @@ import fs from "fs";
 import jsonfile from "jsonfile";
 import { EventEmitter } from "events";
 import util from "util";
-import { writeFile } from "./helpers/json-format";
 import * as Classes from "./classes";
 import paths from "./helpers/paths";
 
@@ -100,8 +99,8 @@ class Events extends EventEmitter {
       !process.env.NODE_ENV && fs.existsSync(snapshotDir + "snapshot-dev.json");
     this.snapshotVersion = this.version;
     const snap = { ...this };
-    const snapshot = this.trimSnapshot(snap);
-    writeFile(snapshotDir + "snapshot-save.json", snapshot, () => {
+    const snapshot = JSON.stringify(this.trimSnapshot(snap), null, "\t") + "\n";
+    fs.writeFile(snapshotDir + "snapshot-save.json", snapshot, () => {
       //Copy the current snapshot to a restore file
       fs.copyFile(
         snapshotDir + (dev ? "snapshot-dev.json" : "snapshot.json"),
@@ -217,5 +216,4 @@ App.on("error", function(err) {
   console.log("here's an error!");
   console.error(err);
 });
-
 export default App;

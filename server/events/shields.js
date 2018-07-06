@@ -130,7 +130,7 @@ App.on("shieldIntegritySet", ({ id, integrity }) => {
 });
 App.on("shieldFrequencySet", ({ id, frequency }) => {
   const system = App.systems.find(sys => sys.id === id);
-  system.setFrequency(frequency);
+  system && system.setFrequency(frequency);
   sendUpdate();
 });
 App.on("hitShields", ({ id, simulatorId }) => {
