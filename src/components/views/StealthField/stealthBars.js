@@ -29,9 +29,9 @@ export default class StealthBars extends Transitioner {
                   {this.systemName(s)}
                 </Col>
                 <Col sm="9">
-                  <div className="bar-container">
+                  <div className="stealth-bar-container">
                     <div
-                      className="bar"
+                      className="stealth-bar"
                       style={{
                         width: `${s.stealthFactor * 100}%`,
                         backgroundSize: `5px 3px, ${100 /
@@ -52,9 +52,9 @@ export default class StealthBars extends Transitioner {
                   {this.systemName(s)}
                 </Col>
                 <Col sm="9">
-                  <div className="bar-container">
+                  <div className="stealth-bar-container">
                     <div
-                      className="bar"
+                      className="stealth-bar"
                       style={{
                         width: `${s.stealthFactor * 100}%`,
                         backgroundSize: `5px 3px, ${100 /
