@@ -7,6 +7,7 @@ import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
 import Tour from "reactour";
 import DecodingCanvas from "./decodingCanvas";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -78,22 +79,7 @@ class Decoding extends Component {
     this.decodeSubscription = null;
     this.decodeTimeout = null;
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.decodeSubscription && !nextProps.data.loading) {
-      this.decodeSubscription = nextProps.data.subscribeToMore({
-        document: DECODING_SUB,
-        variables: { simulatorId: this.props.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            longRangeCommunications:
-              subscriptionData.data.longRangeCommunicationsUpdate
-          });
-        }
-      });
-    }
-  }
   componentWillUnmount() {
-    this.decodeSubscription && this.decodeSubscription();
     clearTimeout(this.decodeTimeout);
   }
   decode = () => {
@@ -224,6 +210,20 @@ class Decoding extends Component {
     }
     return (
       <Container fluid className="lrComm">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: DECODING_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  longRangeCommunications:
+                    subscriptionData.data.longRangeCommunicationsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={8}>
             <Card style={{ padding: 0 }}>
@@ -251,24 +251,29 @@ class Decoding extends Component {
                 )}
               </Measure>
             </Card>
-            <Button
-              className="decode-button"
-              disabled={!this.state.selectedMessage}
-              color="secondary"
-              onClick={() => {
-                this.setState(
-                  {
-                    decodedMessage: "",
-                    message: selectedMessage.message,
-                    ra: selectedMessage.ra,
-                    rf: selectedMessage.rf
-                  },
-                  this.decode.bind(this)
-                );
-              }}
-            >
-              Decode
-            </Button>
+            <Row>
+              <Col sm={{ size: 4, offset: 8 }}>
+                <Button
+                  className="decode-button"
+                  disabled={!this.state.selectedMessage}
+                  color="secondary"
+                  block
+                  onClick={() => {
+                    this.setState(
+                      {
+                        decodedMessage: "",
+                        message: selectedMessage.message,
+                        ra: selectedMessage.ra,
+                        rf: selectedMessage.rf
+                      },
+                      this.decode.bind(this)
+                    );
+                  }}
+                >
+                  Decode
+                </Button>
+              </Col>
+            </Row>
             <Row className="decode-sliders">
               <Col>
                 <Label>Frequency</Label>
