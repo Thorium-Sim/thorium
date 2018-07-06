@@ -64,8 +64,11 @@ class Timer extends Component {
   };
   setTimer = () => {
     const seconds = prompt("Enter the number of seconds:", 0);
+    if (!seconds && seconds !== 0) return;
     const minutes = prompt("Enter the number of minutes:", 0);
+    if (!minutes && minutes !== 0) return;
     const hours = prompt("Enter the number of hours:", 0);
+    if (!hours && hours !== 0) return;
 
     clearTimeout(this.timer);
     this.timer = null;
