@@ -185,6 +185,10 @@ class ReactorControl extends Component {
     if (!reactor) return <p>No Reactor</p>;
     const efficiencies = [
       {
+        label: "Overload",
+        efficiency: 1.25
+      },
+      {
         label: "Cruise",
         efficiency: 1
       },
