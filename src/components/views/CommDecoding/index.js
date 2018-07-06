@@ -64,10 +64,10 @@ class Decoding extends Component {
     super(props);
     this.state = {
       selectedMessage: null,
-      a: 20,
+      a: 10,
       f: 10,
       ra: 30,
-      rf: 20,
+      rf: 10,
       message:
         "This is my really long testing testing 123 test message. It represents a message" +
         " which might be given to the captain and crew during their flight and would be g" +
@@ -216,7 +216,7 @@ class Decoding extends Component {
     if (this.props.data.loading || !this.props.data.longRangeCommunications)
       return null;
     const sys = this.props.data.longRangeCommunications[0];
-    let selectedMessage = { a: 20, f: 20 };
+    let selectedMessage = { a: 10, f: 10 };
     if (this.state.selectedMessage) {
       selectedMessage = sys.messages.find(
         m => m.id === this.state.selectedMessage
@@ -293,7 +293,7 @@ class Decoding extends Component {
                   tooltip={false}
                   min={5}
                   step={5}
-                  max={100}
+                  max={50}
                 />
               </Col>
             </Row>
