@@ -8,7 +8,7 @@ export default function buildExport(zip, mission) {
       .filter(i => i.event === "updateViewscreenComponent")
       .forEach(i => {
         const args = JSON.parse(i.args);
-        if (viewscreens[args.component]) {
+        if (args && args.component && viewscreens[args.component]) {
           assets = assets.concat(
             viewscreens[args.component](JSON.parse(args.data))
           );
