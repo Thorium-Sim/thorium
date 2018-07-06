@@ -5,6 +5,8 @@ import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
 import Tour from "reactour";
 import "./style.scss";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+
 /* TODO
 
 Some improvements:
@@ -115,34 +117,10 @@ class PowerDistribution extends Component {
     this.systemSub = null;
     this.reactorSub = null;
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!nextProps.data.loading && !this.state.sysId) {
       this.setState({
         systems: nextProps.data.systems
-      });
-    }
-    if (!this.systemSub && !nextProps.data.loading) {
-      this.systemSub = nextProps.data.subscribeToMore({
-        document: SYSTEMS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            systems: subscriptionData.data.systemsUpdate
-          });
-        }
-      });
-      this.reactorSub = nextProps.data.subscribeToMore({
-        document: REACTOR_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            reactors: subscriptionData.data.reactorUpdate
-          });
-        }
       });
     }
   }
@@ -177,6 +155,36 @@ class PowerDistribution extends Component {
     }, 0);
     return (
       <Container fluid={!!battery} className="powerLevels">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SYSTEMS_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  systems: subscriptionData.data.systemsUpdate
+                });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: REACTOR_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  reactors: subscriptionData.data.reactorUpdate
+                });
+              }
+            })
+          }
+        />
         <Row className="powerlevel-row">
           <Col lg="12" xl={battery ? 8 : 12} className="powerlevel-containers">
             <div className="systems-holder">
@@ -185,6 +193,8 @@ class PowerDistribution extends Component {
                 .sort((a, b) => {
                   if (a.type > b.type) return 1;
                   if (a.type < b.type) return -1;
+                  if (a.name > b.name) return 1;
+                  if (a.name < b.name) return -1;
                   return 0;
                 })
                 .filter(
