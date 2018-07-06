@@ -4,7 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import FontAwesome from "react-fontawesome";
 import ObjPreview from "./3dObjPreview";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./fileExplorer.scss";
 
 const ASSET_FOLDER_SUB = gql`
@@ -56,18 +56,6 @@ class FileExplorer extends Component {
   static defaultProps = {
     directory: "/"
   };
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!this.assetFolderSubscription && !nextProps.data.loading) {
-      this.assetFolderSubscription = nextProps.data.subscribeToMore({
-        document: ASSET_FOLDER_SUB,
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            assetFolders: subscriptionData.data.assetFolderChange
-          });
-        }
-      });
-    }
-  }
   setDirectory = directory => {
     this.setState({ currentDirectory: directory });
   };
@@ -154,6 +142,18 @@ class FileExplorer extends Component {
     }
     return (
       <div className="file-explorer">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: ASSET_FOLDER_SUB,
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  assetFolders: subscriptionData.data.assetFolderChange
+                });
+              }
+            })
+          }
+        />
         <div>
           <h4>{currentDirectory}</h4>
           <Button color="primary" onClick={this._createFolder}>
