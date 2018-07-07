@@ -95,6 +95,8 @@
       position: absolute;
       left: 0%;
       height: 100%;
+      transition: width 0.3s linear;
+
       background: linear-gradient(
           to right,
           rgba(0, 0, 0, 0.5) 0%,

@@ -2,6 +2,19 @@ import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
 import uuid from "uuid";
+import throttle from "../helpers/throttle";
+
+const throttles = {};
+
+const sendUpdate = sys => {
+  if (!throttles[sys.id]) {
+    throttles[sys.id] = throttle(sys => {
+      pubsub.publish("heatChange", sys);
+      pubsub.publish("systemsUpdate", App.systems);
+    });
+  }
+  return throttles[sys.id];
+};
 
 App.on("createEngine", param => {
   const engine = new Classes.Engine(param);
@@ -73,16 +86,13 @@ App.on("speedChange", param => {
     });
   pubsub.publish("systemsUpdate", App.systems);
 });
-App.on("addHeat", ({ id, heat }) => {
+App.on("addHeat", ({ id, heat, force }) => {
   heat = Math.min(1, Math.max(0, heat));
   const sys = App.systems.find(s => s.id === id);
   if (sys && sys.heat !== heat) {
     sys.setHeat(heat);
   }
-  if (Date.now() % 100 === 1) {
-    pubsub.publish("heatChange", sys);
-    pubsub.publish("systemsUpdate", App.systems);
-  }
+  sendUpdate(sys)(sys);
 });
 App.on("setHeatRate", ({ id, rate }) => {
   const sys = App.systems.find(s => s.id === id);

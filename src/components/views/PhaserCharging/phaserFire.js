@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "reactstrap";
+import AnimatedNumber from "react-animated-number";
 
 const PhaserBeam = ({
   coolPhasers,
@@ -15,8 +16,22 @@ const PhaserBeam = ({
       <p>
         <strong>Bank {index}</strong>
       </p>
-      <p>Charge: {Math.round(charge * 100)}%</p>
-      <p className="text-danger">Heat: {Math.round(heat * 100)}%</p>
+      <p>
+        Charge:
+        <AnimatedNumber
+          value={charge}
+          duration={300}
+          formatValue={n => `${Math.round(n * 100)}%`}
+        />
+      </p>
+      <p className="text-danger">
+        Heat:{" "}
+        <AnimatedNumber
+          value={heat}
+          duration={300}
+          formatValue={n => `${Math.round(n * 100)}%`}
+        />
+      </p>
       <Button
         size="sm"
         color="danger"
