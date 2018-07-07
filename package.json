@@ -42,7 +42,9 @@
     "precommit": "lint-staged",
     "add-contributor": "all-contributors add",
     "generate-contributor": "all-contributors generate",
-    "plop": "plop"
+    "plop": "plop",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "devDependencies": {
     "all-contributors-cli": "^5.2.1",
@@ -183,7 +185,8 @@
     "url-loader": "1.0.1",
     "whatwg-fetch": "2.0.4",
     "yauzl": "^2.9.2",
-    "yazl": "^2.4.3"
+    "yazl": "^2.4.3",
+    "snyk": "^1.88.2"
   },
   "lint-staged": {
     "*.js": [
@@ -215,5 +218,6 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  }
+  },
+  "snyk": true
 }
