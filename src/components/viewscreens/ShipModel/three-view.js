@@ -39,27 +39,33 @@ class ThreeView extends Component {
     this.objLoader = new window.THREE.OBJLoader();
   }
   componentDidMount() {
-    const {
-      wireframe,
-      color = "#ffffff",
-      opacity,
-      texture,
-      src,
-      texSrc
-    } = this.props;
+    const { wireframe, color = "#ffffff", src, texSrc } = this.props;
     this.texture = new THREE.TextureLoader().load(texSrc);
-    this.material = new THREE.MeshBasicMaterial({
-      map: texture ? this.texture : null,
-      opacity,
-      wireframe,
-      color: texture
-        ? parseInt("ffffff", 16)
-        : parseInt(color.replace("#", ""), 16)
+    this.material = new THREE.MeshPhongMaterial({
+      color: parseInt(color.replace("#", ""), 16),
+      polygonOffset: true,
+      polygonOffsetFactor: 1, // positive value pushes polygon further away
+      polygonOffsetUnits: 1,
+      opacity: wireframe ? 0.3 : 1,
+      transparent: true
+    });
+    this.wireMat = new THREE.LineBasicMaterial({
+      color: 0xffffff,
+      linewidth: 4,
+      visible: wireframe ? true : false,
+      opacity: 0.7
     });
     this.objLoader.load(src, obj => {
       obj.scale.set(0.3, 0.3, 0.3);
-      obj.children[0].material = this.material;
+      // mesh
+      this.material = obj.children[0].material = this.material;
+
+      // wireframe
+      const geo = new THREE.EdgesGeometry(obj.children[0].geometry); // or WireframeGeometry
+      const wireframeMesh = new THREE.LineSegments(geo, this.wireMat);
+      wireframeMesh.scale.set(0.3, 0.3, 0.3);
       this.objectGroup.add(obj);
+      this.objectGroup.add(wireframeMesh);
     });
     document
       .getElementById("thrustersMount")
@@ -67,12 +73,10 @@ class ThreeView extends Component {
     this.animating = true;
     this.animate();
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const {
       wireframe,
       color = "#ffffff",
-      opacity,
-      texture,
       src,
       dimensions: { width, height }
     } = nextProps;
@@ -82,23 +86,30 @@ class ThreeView extends Component {
       this.camera.updateProjectionMatrix();
     }
     if (src !== this.props.src) {
-      if (this.objectGroup.children[0]) {
-        this.objectGroup.remove(this.objectGroup.children[0]);
+      while (this.objectGroup.children.length > 0) {
+        if (this.objectGroup.children[0]) {
+          this.objectGroup.remove(this.objectGroup.children[0]);
+        } else {
+          break;
+        }
       }
       this.objLoader.load(src, obj => {
         obj.scale.set(0.3, 0.3, 0.3);
         obj.children[0].material = this.material;
+        const geo = new THREE.EdgesGeometry(obj.children[0].geometry); // or WireframeGeometry
+        const wireframeMesh = new THREE.LineSegments(geo, this.wireMat);
+        wireframeMesh.scale.set(0.3, 0.3, 0.3);
         this.objectGroup.add(obj);
+        this.objectGroup.add(wireframeMesh);
       });
     }
 
-    this.material.color.setHex(
-      texture ? parseInt("ffffff", 16) : parseInt(color.replace("#", ""), 16)
-    );
-    this.material.opacity = opacity;
-    this.material.wireframe = wireframe;
-    this.material.map = texture ? this.texture : null;
+    this.material.color.setHex(parseInt(color.replace("#", ""), 16));
+    this.wireMat.color.setHex(parseInt(color.replace("#", ""), 16));
+    this.material.opacity = wireframe ? 0.3 : 1;
+    this.wireMat.visible = wireframe ? true : false;
     this.material.needsUpdate = true;
+    this.wireMat.needsUpdate = true;
   }
   componentWillUnmount() {
     this.animating = false;
