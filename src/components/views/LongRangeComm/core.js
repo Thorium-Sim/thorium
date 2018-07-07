@@ -3,6 +3,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
 import "./style.scss";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const MESSAGES_SUB = gql`
   subscription LRDecoding($simulatorId: ID) {
@@ -32,25 +33,6 @@ class LRCommCore extends Component {
       selectedMessage: null
     };
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.decodeSubscription && !nextProps.data.loading) {
-      this.decodeSubscription = nextProps.data.subscribeToMore({
-        document: MESSAGES_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            longRangeCommunications:
-              subscriptionData.data.longRangeCommunicationsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.decodeSubscription && this.decodeSubscription();
-  }
   render() {
     if (this.props.data.loading || !this.props.data.longRangeCommunications)
       return null;
@@ -64,10 +46,23 @@ class LRCommCore extends Component {
       <div className="comm-core">
         {this.props.data.longRangeCommunications.length > 0 ? (
           <Container style={{ height: "calc(100% - 16px)" }}>
-            <Row
-              className="comm-messages"
-              style={{ height: "100%", minHeight: "30vh" }}
-            >
+            <SubscriptionHelper
+              subscribe={() =>
+                this.props.data.subscribeToMore({
+                  document: MESSAGES_SUB,
+                  variables: {
+                    simulatorId: this.props.simulator.id
+                  },
+                  updateQuery: (previousResult, { subscriptionData }) => {
+                    return Object.assign({}, previousResult, {
+                      longRangeCommunications:
+                        subscriptionData.data.longRangeCommunicationsUpdate
+                    });
+                  }
+                })
+              }
+            />
+            <Row className="comm-messages" style={{ height: "100%" }}>
               <Col sm={3}>
                 <ul>
                   {this.props.data.longRangeCommunications[0].messages.map(

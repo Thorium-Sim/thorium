@@ -1,5 +1,7 @@
+import App from "../app";
 import { System } from "./generic";
 import HeatMixin from "./generic/heatMixin";
+import { pubsub } from "../helpers/subscriptionManager.js";
 
 export default class Engine extends HeatMixin(System) {
   constructor(params = {}) {
@@ -28,14 +30,34 @@ export default class Engine extends HeatMixin(System) {
     this.speeds = speeds;
   }
   break(report, destroyed) {
-    this.on = false;
-    this.speed = -1;
+    // Stop all of the engines
+    App.systems
+      .filter(s => s.simulatorId === this.simulatorId && s.class === "Engine")
+      .forEach(s => {
+        if (s.id === this.id || s.speed <= 0) {
+          s.setSpeed(); // By default it turns off engines
+          pubsub.publish("engineUpdate", s);
+        }
+      });
     super.break(report, destroyed);
   }
   setPower(powerLevel) {
     // Override set power to change speed when power is changed
     if (this.on && this.power.powerLevels[this.speed - 1] > powerLevel) {
       this.speed = this.power.powerLevels.findIndex(p => p === powerLevel) + 1;
+      if (this.speed === 0) {
+        // Stop all of the engines that aren't going.
+        App.systems
+          .filter(
+            s => s.simulatorId === this.simulatorId && s.class === "Engine"
+          )
+          .forEach(s => {
+            if (s.id === this.id || s.speed <= 0) {
+              s.setSpeed(); // By default it turns off engines
+              pubsub.publish("engineUpdate", s);
+            }
+          });
+      }
     }
     super.setPower(powerLevel);
   }

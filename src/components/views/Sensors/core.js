@@ -6,6 +6,7 @@ import gql from "graphql-tag";
 import FontAwesome from "react-fontawesome";
 import ScanPresets from "./ScanPresets";
 import { subscribe } from "../helpers/pubsub";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {
@@ -45,19 +46,6 @@ class SensorsCore extends Component {
       domain: localStorage.getItem("sensorCore-domain") || "external"
     };
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.sensorsSubscription && !nextProps.data.loading) {
-      this.sensorsSubscription = nextProps.data.subscribeToMore({
-        document: SENSOR_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            sensors: subscriptionData.data.sensorsUpdate
-          });
-        }
-      });
-    }
-  }
   componentDidMount() {
     document.addEventListener("keydown", this.keypress);
     this.sensorDataBox = subscribe("sensorData", data => {
@@ -68,7 +56,6 @@ class SensorsCore extends Component {
   }
   componentWillUnmount() {
     document.removeEventListener("keydown", this.keypress);
-    this.sensorsSubscription && this.sensorsSubscription();
     this.sensorDataBox && this.sensorDataBox();
   }
   keypress = evt => {
@@ -206,6 +193,19 @@ class SensorsCore extends Component {
     if (this.props.data.loading) return <span>Loading...</span>;
     return (
       <Container className="sensor-core" style={{ height: "100%" }}>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SENSOR_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  sensors: subscriptionData.data.sensorsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Button
             size="sm"
@@ -301,6 +301,7 @@ class SensorsCore extends Component {
               onClick={() => this.sendScanResult(sensor)}
               style={{ flexGrow: 2 }}
               size={"sm"}
+              color="primary"
             >
               Send
             </Button>
@@ -343,6 +344,7 @@ class SensorsCore extends Component {
               onClick={this.sendProcessedData.bind(this, external)}
               style={{ flexGrow: 4 }}
               size={"sm"}
+              color="success"
             >
               Data
             </Button>

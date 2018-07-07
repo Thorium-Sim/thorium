@@ -7,6 +7,7 @@ import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
 import Tour from "reactour";
 import DecodingCanvas from "./decodingCanvas";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -64,10 +65,10 @@ class Decoding extends Component {
     super(props);
     this.state = {
       selectedMessage: null,
-      a: 20,
+      a: 10,
       f: 10,
       ra: 30,
-      rf: 20,
+      rf: 10,
       message:
         "This is my really long testing testing 123 test message. It represents a message" +
         " which might be given to the captain and crew during their flight and would be g" +
@@ -78,22 +79,7 @@ class Decoding extends Component {
     this.decodeSubscription = null;
     this.decodeTimeout = null;
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.decodeSubscription && !nextProps.data.loading) {
-      this.decodeSubscription = nextProps.data.subscribeToMore({
-        document: DECODING_SUB,
-        variables: { simulatorId: this.props.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            longRangeCommunications:
-              subscriptionData.data.longRangeCommunicationsUpdate
-          });
-        }
-      });
-    }
-  }
   componentWillUnmount() {
-    this.decodeSubscription && this.decodeSubscription();
     clearTimeout(this.decodeTimeout);
   }
   decode = () => {
@@ -216,7 +202,7 @@ class Decoding extends Component {
     if (this.props.data.loading || !this.props.data.longRangeCommunications)
       return null;
     const sys = this.props.data.longRangeCommunications[0];
-    let selectedMessage = { a: 20, f: 20 };
+    let selectedMessage = { a: 10, f: 10 };
     if (this.state.selectedMessage) {
       selectedMessage = sys.messages.find(
         m => m.id === this.state.selectedMessage
@@ -224,6 +210,20 @@ class Decoding extends Component {
     }
     return (
       <Container fluid className="lrComm">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: DECODING_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  longRangeCommunications:
+                    subscriptionData.data.longRangeCommunicationsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={8}>
             <Card style={{ padding: 0 }}>
@@ -251,24 +251,29 @@ class Decoding extends Component {
                 )}
               </Measure>
             </Card>
-            <Button
-              className="decode-button"
-              disabled={!this.state.selectedMessage}
-              color="secondary"
-              onClick={() => {
-                this.setState(
-                  {
-                    decodedMessage: "",
-                    message: selectedMessage.message,
-                    ra: selectedMessage.ra,
-                    rf: selectedMessage.rf
-                  },
-                  this.decode.bind(this)
-                );
-              }}
-            >
-              Decode
-            </Button>
+            <Row>
+              <Col sm={{ size: 4, offset: 8 }}>
+                <Button
+                  className="decode-button"
+                  disabled={!this.state.selectedMessage}
+                  color="secondary"
+                  block
+                  onClick={() => {
+                    this.setState(
+                      {
+                        decodedMessage: "",
+                        message: selectedMessage.message,
+                        ra: selectedMessage.ra,
+                        rf: selectedMessage.rf
+                      },
+                      this.decode.bind(this)
+                    );
+                  }}
+                >
+                  Decode
+                </Button>
+              </Col>
+            </Row>
             <Row className="decode-sliders">
               <Col>
                 <Label>Frequency</Label>
@@ -293,7 +298,7 @@ class Decoding extends Component {
                   tooltip={false}
                   min={5}
                   step={5}
-                  max={100}
+                  max={50}
                 />
               </Col>
             </Row>

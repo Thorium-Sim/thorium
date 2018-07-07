@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { Mutation, graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input } from "reactstrap";
 import { InputField, OutputField } from "../../generic/core";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import FontAwesome from "react-fontawesome";
 
@@ -46,23 +47,6 @@ const ROTATION_CHANGE_SUB = gql`
 `;
 
 class ThrusterCore extends Component {
-  rotationSubscription = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.rotationSubscription && !nextProps.data.loading) {
-      this.rotationSubscription = nextProps.data.subscribeToMore({
-        document: ROTATION_CHANGE_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            thrusters: [subscriptionData.data.rotationChange]
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.rotationSubscription && this.rotationSubscription();
-  }
   toggleManualThrusters = () => {};
   setRequiredRotation = (which, value) => {
     const mutation = gql`
@@ -95,6 +79,19 @@ class ThrusterCore extends Component {
     if (!thrusters) return <p>No Thrusters</p>;
     return (
       <Container className="thrustersCore" fluid>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: ROTATION_CHANGE_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  thrusters: [subscriptionData.data.rotationChange]
+                });
+              }
+            })
+          }
+        />
         {/*<label><input type="checkbox" onClick={this.toggleManualThrusters} /> Manual Thrusters</label>*/}
         <Row>
           <Col sm={4}>Yaw</Col>
@@ -274,7 +271,9 @@ const ThrusterArrow = ({ name, value }) => {
     <Col sm={4} className="thruster-symbol">
       <FontAwesome
         name={name}
+        size="lg"
         style={{
+          margin: "2px",
           color: `rgb(${Math.round(value * 255)},${Math.round(
             value * 255
           )},${Math.round(value * 255)})`
