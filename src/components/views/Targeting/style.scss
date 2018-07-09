@@ -158,6 +158,7 @@
   }
 }
 .targeting-core {
+  height: 100%;
   img {
     width: 16px;
     height: 16px;
@@ -173,8 +174,13 @@
     line-height: 0px;
   }
   .targets-container {
-    height: calc(19px * 4);
+    flex: 1;
     overflow-y: scroll;
+  }
+  .contact-targeting {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 34px);
   }
   .media-object {
     width: 48px;

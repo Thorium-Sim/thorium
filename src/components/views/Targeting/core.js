@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Container, Row, Col, Button, Media } from "reactstrap";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo, Mutation } from "react-apollo";
 import { InputField, OutputField } from "../../generic/core";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
@@ -100,6 +100,7 @@ class TargetingCore extends Component {
     });
   }
   _updateTargetClass(targetId, key, valueArg) {
+    if (!valueArg) return;
     let value = valueArg;
     if (value.target) {
       value = value.target.value;
@@ -215,7 +216,23 @@ class TargetingCore extends Component {
           }
         />
         <Row>
-          <Col sm={6}>Targeted System</Col>
+          <Col sm={2}>Targeted System</Col>
+          <Col sm={2}>
+            <Mutation
+              mutation={gql`
+                mutation ClearAll($id: ID!) {
+                  clearAllContacts(id: $id)
+                }
+              `}
+              variables={{ id: targeting.id }}
+            >
+              {action => (
+                <Button color="secondary" size="sm" onClick={action}>
+                  Clear All
+                </Button>
+              )}
+            </Mutation>
+          </Col>
           <Col sm={6}>
             <label>
               <input
@@ -258,7 +275,7 @@ class TargetingCore extends Component {
             )}
           </div>
         ) : (
-          <div>
+          <div className="contact-targeting">
             <Row>
               <Col sm={8}>
                 <OutputField alert={targetedContact}>
