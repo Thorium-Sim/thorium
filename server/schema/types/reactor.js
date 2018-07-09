@@ -19,6 +19,13 @@ type Reactor implements SystemInterface{
   efficiency: Float
   batteryChargeLevel: Float
   batteryChargeRate: Float
+
+  # For Dilithium Stress
+  alphaLevel: Float
+  betaLevel: Float
+  alphaTarget: Float
+  betaTarget: Float
+
   locations: [Room]
 }
 

@@ -19,6 +19,12 @@ export default class Reactor extends HeatMixin(System) {
       this.coolant = null;
       this.heatRate = null;
     }
+
+    // For Dilithium Stress
+    this.alphaLevel = Math.round(Math.random() * 100);
+    this.betaLevel = Math.round(Math.random() * 100);
+    this.alphaTarget = Math.round(Math.random() * 100);
+    this.betaTarget = Math.round(Math.random() * 100);
   }
   get stealthFactor() {
     if (this.ejected) return 0;
