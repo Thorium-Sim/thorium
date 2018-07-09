@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Button, Input } from "reactstrap";
+import { Row, Col, Button, Input, ButtonGroup } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo, Query } from "react-apollo";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
@@ -257,6 +257,7 @@ class ActionsCore extends Component {
     );
   };
   render() {
+    const { actionName } = this.state;
     return (
       <div className="core-action">
         <SubscriptionHelper
@@ -272,8 +273,43 @@ class ActionsCore extends Component {
             })
           }
         />
+
         <div className="flex-container">
-          <select onChange={this.handleNameChange} ref="actionName">
+          <ButtonGroup>
+            <Button
+              size="sm"
+              color="warning"
+              onClick={() => this.setState({ actionName: "flash" })}
+            >
+              F
+            </Button>
+            <Button
+              size="sm"
+              color="info"
+              onClick={() => this.setState({ actionName: "spark" })}
+            >
+              S
+            </Button>
+            <Button
+              size="sm"
+              color="success"
+              onClick={() => this.setState({ actionName: "online" })}
+            >
+              O
+            </Button>
+            <Button
+              size="sm"
+              color="dark"
+              onClick={() => this.setState({ actionName: "blackout" })}
+            >
+              B
+            </Button>
+          </ButtonGroup>
+          <select
+            onChange={this.handleNameChange}
+            value={actionName}
+            ref="actionName"
+          >
             <optgroup>
               <option value="flash">Flash</option>
               <option value="spark">Spark</option>
