@@ -26,15 +26,41 @@
     margin-top: 41.5%;
     margin-left: 3%;
     padding-bottom: 100%;
-    -webkit-clip-path: polygon(0 100%, 100% 100%, 100% 0, 50% 0%, 40% 0%, 30% 1%, 20% 3%, 10% 7%, 5% 10%, 0 16%);
-    clip-path: polygon(0 100%, 100% 100%, 100% 16%, 95% 10%, 90% 7%, 80% 3%, 70% 1%, 60% 0%, 40% 0%, 30% 1%, 20% 3%, 10% 7%, 5% 10%, 0 16%);
+    -webkit-clip-path: polygon(
+      0 100%,
+      100% 100%,
+      100% 0,
+      50% 0%,
+      40% 0%,
+      30% 1%,
+      20% 3%,
+      10% 7%,
+      5% 10%,
+      0 16%
+    );
+    clip-path: polygon(
+      0 100%,
+      100% 100%,
+      100% 16%,
+      95% 10%,
+      90% 7%,
+      80% 3%,
+      70% 1%,
+      60% 0%,
+      40% 0%,
+      30% 1%,
+      20% 3%,
+      10% 7%,
+      5% 10%,
+      0 16%
+    );
   }
 
   .coolant-level {
     width: 100%;
     bottom: 0;
     position: absolute;
-    background: radial-gradient(ellipse at center, #0061B1 0%,#2072C9 100%);
+    background: radial-gradient(ellipse at center, #0061b1 0%, #2072c9 100%);
     background-position: center;
     transition: height 0.5s ease-out;
     animation: 2s ease-in-out 0s infinite coolant_glow;
@@ -56,11 +82,11 @@
     margin-top: 4px;
     position: absolute;
     animation: 2s ease-in-out 0s infinite coolant_glow;
-    background: radial-gradient(ellipse at center, #0061B1 0%,#2072C9 100%);
+    background: radial-gradient(ellipse at center, #0061b1 0%, #2072c9 100%);
     background-position: center;
     height: 89%;
     z-index: -1;
-    transition: width 0.2s ease-out;
+    transition: width 0.5s ease-out;
   }
   .coolant-bracket {
     height: 74px;
@@ -83,13 +109,13 @@
   }
   @keyframes coolant_glow {
     0% {
-      background-size: 150%
+      background-size: 150%;
     }
     50% {
-      background-size: 75%
+      background-size: 75%;
     }
     100% {
-      background-size: 150%
+      background-size: 150%;
     }
   }
 }

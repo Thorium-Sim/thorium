@@ -116,7 +116,6 @@
     }
     .coolant {
       animation: 2s ease-in-out 0s infinite coolant_glow;
-      transition: width 0.2s ease-out;
       background: radial-gradient(ellipse at center, #0061b1 0%, #2072c9 100%);
       background-position: center;
     }
