@@ -92,44 +92,40 @@ class LRCommCore extends Component {
         </div>
       );
     }
-    return (
-      <div className="comm-core">
-        {this.props.data.longRangeCommunications.length > 0 ? (
-          <div style={{ height: "calc(100% - 20px)" }}>
-            <InputField
-              prompt="What is the message sender? (eg. Starbase 74)"
-              onClick={this._updateSender.bind(this)}
-            >
-              {this.state.messageSender}
-            </InputField>
-            <TypingField
-              style={{ height: "calc(100% - 40px)", textAlign: "left" }}
-              controlled
-              value={this.state.message}
-              onChange={this._lrmText.bind(this)}
-            />
-            <span>
-              <Button size="sm" onClick={this._sendMessage.bind(this)}>
-                Send
-              </Button>
-              <Button size="sm" onClick={this._clearMessage}>
-                Clear
-              </Button>
-              <label>
-                <input
-                  type="checkbox"
-                  onClick={e => {
-                    this.setState({ decoded: e.target.checked });
-                  }}
-                />{" "}
-                Decoded
-              </label>
-            </span>
-          </div>
-        ) : (
-          "No Long Range Comm"
-        )}
+    return this.props.data.longRangeCommunications.length > 0 ? (
+      <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+        <InputField
+          prompt="What is the message sender? (eg. Starbase 74)"
+          onClick={this._updateSender.bind(this)}
+        >
+          {this.state.messageSender}
+        </InputField>
+        <TypingField
+          style={{ flex: 1, textAlign: "left" }}
+          controlled
+          value={this.state.message}
+          onChange={this._lrmText.bind(this)}
+        />
+        <span>
+          <Button size="sm" onClick={this._sendMessage.bind(this)}>
+            Send
+          </Button>
+          <Button size="sm" onClick={this._clearMessage}>
+            Clear
+          </Button>
+          <label>
+            <input
+              type="checkbox"
+              onClick={e => {
+                this.setState({ decoded: e.target.checked });
+              }}
+            />{" "}
+            Decoded
+          </label>
+        </span>
       </div>
+    ) : (
+      "No Long Range Comm"
     );
   }
 }

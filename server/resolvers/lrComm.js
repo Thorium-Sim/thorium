@@ -54,6 +54,9 @@ export const LRCommMutations = {
   },
   encryptLongRangeMessage(root, args, context) {
     App.handleEvent(args, "encryptLongRangeMessage", context);
+  },
+  setLongRangeSatellites(root, args, context) {
+    App.handleEvent(args, "setLongRangeSatellites", context);
   }
 };
 

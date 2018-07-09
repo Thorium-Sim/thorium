@@ -74,6 +74,7 @@ export default class LongRangeComm extends System {
     this.interception = params.interception || false;
     this.locked = params.locked || false;
     this.decoded = params.decoded || false;
+    this.satellites = params.satellites || 3;
   }
   get stealthFactor() {
     if (this.messageSent) return 0.4;
@@ -132,5 +133,8 @@ export default class LongRangeComm extends System {
   updateDecodedMessage(id, messageId, decodedMessage, a, f) {
     const m = this.messages.find(mm => mm.id === messageId);
     m.updateDecodedMessage(decodedMessage, a, f);
+  }
+  setSatellites(num) {
+    this.satellites = num;
   }
 }
