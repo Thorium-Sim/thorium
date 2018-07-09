@@ -109,36 +109,6 @@ const Thrusters = ({ client, simulatorId, type }) => {
       </Query>
     </GenericSystemConfig>
   );
-  // if (data.loading) return null;
-  // const { torpedos, decks } = data;
-  // return (
-  //   <div className="torpedo scroll">
-  //     {torpedos.map(e => (
-  //       <div key={e.id}>
-  //         <GenericSystemConfig
-  //           client={client}
-  //           simulatorId={simulatorId}
-  //           type={type}
-  //           data={{ systems: [e], decks }}
-  //         >
-  //           <div>
-  //             <Button
-  //               color="danger"
-  //               onClick={() => {
-  //                 removeTorpedo(e.id);
-  //               }}
-  //             >
-  //               Remove Torpedo Launcher
-  //             </Button>
-  //           </div>
-  //         </GenericSystemConfig>
-  //       </div>
-  //     ))}
-  //     <Button color="success" onClick={addTorpedo}>
-  //       Add Torpedo Launcher
-  //     </Button>
-  //   </div>
-  // );
 };
 
 export default Thrusters;

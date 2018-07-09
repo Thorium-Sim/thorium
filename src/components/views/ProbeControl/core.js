@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Container, Row, Col, Button } from "reactstrap";
 import { OutputField, TypingField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.scss";
 
 const PROBES_SUB = gql`
@@ -14,6 +14,7 @@ const PROBES_SUB = gql`
         id
         name
       }
+      torpedo
       probes {
         id
         type
@@ -21,6 +22,7 @@ const PROBES_SUB = gql`
         query
         querying
         response
+        launched
         equipment {
           id
           name
@@ -36,22 +38,6 @@ class ProbeControl extends Component {
   state = {
     selectedProbe: null
   };
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: PROBES_SUB,
-        variables: { simulatorId: this.props.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            probes: subscriptionData.data.probesUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
   destroyProbe = () => {
     const probes = this.props.data.probes[0];
     const { selectedProbe } = this.state;
@@ -114,28 +100,40 @@ class ProbeControl extends Component {
     if (!probes) return <p>No Probe Launcher</p>;
     return (
       <Container fluid className="probe-control-core">
-        <Row style={{ height: "100%" }}>
-          <Col sm={3} style={{ height: "100%" }}>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: PROBES_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  probes: subscriptionData.data.probesUpdate
+                });
+              }
+            })
+          }
+        />
+        <Row>
+          <Col sm={3}>
             <div className="scroll probelist">
               {probes.probes.map(p => (
                 <p
                   key={p.id}
                   className={`probe ${p.querying ? "querying" : ""}
-                  ${p.id === selectedProbe ? "selected" : ""}`}
+                  ${p.id === selectedProbe ? "selected" : ""} ${
+                    !p.launched ? "text-danger" : ""
+                  }`}
                   onClick={() => this.setState({ selectedProbe: p.id })}
                 >
                   {p.name}
+                  {!p.launched && " - Loaded"}
                 </p>
               ))}
             </div>
           </Col>
+          {selectedProbe && <Col sm={3}>{this.renderEquipment()}</Col>}
           {selectedProbe && (
-            <Col sm={3} style={{ height: "100%" }}>
-              {this.renderEquipment()}
-            </Col>
-          )}
-          {selectedProbe && (
-            <Col sm={6} style={{ height: "100%" }}>
+            <Col sm={6}>
               <div
                 style={{
                   height: "100%",
@@ -184,6 +182,7 @@ const PROBES_QUERY = gql`
         id
         name
       }
+      torpedo
       probes {
         id
         type
@@ -191,6 +190,7 @@ const PROBES_QUERY = gql`
         query
         querying
         response
+        launched
         equipment {
           id
           name

@@ -10,3 +10,4 @@ export { default as Sensors } from "./Sensors";
 export { default as StealthField } from "./StealthField";
 export { default as Sickbay } from "./Sickbay";
 export { default as Thrusters } from "./Thrusters";
+export { default as Probes } from "./Probes";

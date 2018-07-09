@@ -78,7 +78,6 @@ App.on("sensorScanResult", ({ id, result }) => {
 App.on(
   "processedData",
   ({ id, simulatorId, domain = "external", data, flash }) => {
-    console.log(flash);
     let system;
     if (id) {
       system = App.systems.find(sys => sys.id === id);

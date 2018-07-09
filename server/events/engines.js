@@ -71,7 +71,6 @@ App.on("speedChange", param => {
   App.systems
     .filter(s => s.simulatorId === system.simulatorId && s.type === "Engine")
     .forEach((engine, index) => {
-      console.log(param.speed, index, engineIndex, engine.name);
       if (index < engineIndex) {
         if (param.speed === -1) {
           engine.setSpeed();

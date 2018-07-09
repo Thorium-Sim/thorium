@@ -9,4 +9,5 @@ probeQueryResponse(id: ID!, probeId: ID!, response: String): String
 
 #Macro: Probe Processed Data
 probeProcessedData(id: ID!, data: String): String
+setProbeTorpedo(id:ID!, torpedo:Boolean!):String
 `;

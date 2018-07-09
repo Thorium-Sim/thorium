@@ -155,7 +155,6 @@ class Messaging extends Component {
         if (new Date(a.timestamp) < new Date(b.timestamp)) return 1;
         return 0;
       });
-    console.log(bridgeOfficerMessaging);
     return (
       <Container className="messages">
         <Row>
