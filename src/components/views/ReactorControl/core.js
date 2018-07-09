@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from "react";
 import gql from "graphql-tag";
-import { InputField } from "../../generic/core";
+import { InputField, OutputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input } from "reactstrap";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -30,29 +31,6 @@ const REACTOR_SUB = gql`
 `;
 
 class ReactorControl extends Component {
-  constructor(props) {
-    super(props);
-    this.internalSub = null;
-    this.systemSub = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.internalSub && !nextProps.data.loading) {
-      this.internalSub = nextProps.data.subscribeToMore({
-        document: REACTOR_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            reactors: subscriptionData.data.reactorUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.internalSub && this.internalSub();
-  }
   setEfficiency = e => {
     if (!e) return;
     const { reactors } = this.props.data;
@@ -136,7 +114,7 @@ class ReactorControl extends Component {
     `;
     const variables = {
       id: battery.id,
-      e: e / 100
+      e: e / 1000
     };
     this.props.client.mutate({
       mutation,
@@ -219,6 +197,21 @@ class ReactorControl extends Component {
     ];
     return (
       <Container className="reactor-control-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: REACTOR_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  reactors: subscriptionData.data.reactorUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={12}>
             {reactor && (
@@ -271,6 +264,7 @@ class ReactorControl extends Component {
                 <p>Battery Output:</p>
                 <InputField
                   prompt="What is the new battery charge level?"
+                  promptValue={battery.batteryChargeLevel * 100}
                   onClick={this.setChargeLevel}
                 >
                   {Math.round(battery.batteryChargeLevel * 100)}%
@@ -280,7 +274,7 @@ class ReactorControl extends Component {
                   prompt="What is the new battery charge rate?"
                   onClick={this.setChargeRate}
                 >
-                  {battery.batteryChargeRate * 100}
+                  {battery.batteryChargeRate * 1000}
                 </InputField>
               </Fragment>
             )}

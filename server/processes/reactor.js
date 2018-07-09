@@ -28,9 +28,9 @@ const updateReactor = () => {
         reactors.forEach(reactor => {
           const { efficiency, heatRate, heat } = reactor;
           const minute15 = 15 * 60;
-          const standardHeat = (Math.pow(efficiency, 2) * heatRate) / minute15;
+          const standardHeat = Math.pow(efficiency, 2) / minute15;
           const unblanaceHeat = Math.abs(Math.cbrt(level - oldLevel)) / 2000;
-          reactor.setHeat(heat + standardHeat + unblanaceHeat);
+          reactor.setHeat(heat + (standardHeat + unblanaceHeat) * heatRate);
         });
 
         //Reduce the batteries by the amount left over
@@ -43,10 +43,10 @@ const updateReactor = () => {
             1,
             Math.max(0, batt.batteryChargeLevel - charge)
           );
-          console.log(
-            "Estimated Time to Depletion:",
-            batt.batteryChargeLevel / charge
-          );
+          // console.log(
+          //   "Estimated Time to Depletion:",
+          //   batt.batteryChargeLevel / charge
+          // );
           //Trigger the event
           if (newLevel !== batt.batteryChargeLevel) {
             App.handleEvent(
