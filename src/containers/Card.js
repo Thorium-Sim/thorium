@@ -133,12 +133,14 @@ export default class CardFrame extends Component {
   }
   changeCard = name => {
     this.setState({
-      card: name
+      card: this.props.station.cards.find(c => c.name == name)
+        ? name
+        : this.props.station.cards[0].name
     });
   };
   render() {
     return (
-      <ActionsMixin {...this.props}>
+      <ActionsMixin {...this.props} changeCard={this.changeCard}>
         <CardRenderer
           {...this.props}
           card={this.state.card}

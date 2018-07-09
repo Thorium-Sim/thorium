@@ -2,6 +2,7 @@ import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import uuid from "uuid";
 App.on("triggerAction", args => {
+  console.log(args);
   args.stationId = args.stationId || "all";
   // In some cases, we need to change the client
   switch (args.action) {

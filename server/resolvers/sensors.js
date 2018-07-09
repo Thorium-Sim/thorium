@@ -30,8 +30,8 @@ export const SensorsMutations = {
     App.handleEvent({ id, result }, "sensorScanResult", context);
     return "";
   },
-  processedData(root, { id, data }, context) {
-    App.handleEvent({ id, data }, "processedData", context);
+  processedData(root, args, context) {
+    App.handleEvent(args, "processedData", context);
     return "";
   },
   sensorScanCancel(root, { id }, context) {
