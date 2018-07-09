@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from "react";
 import gql from "graphql-tag";
 import { InputField, OutputField } from "../../generic/core";
-import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Input } from "reactstrap";
+import { graphql, withApollo, Mutation } from "react-apollo";
+import { Container, Row, Col, Button, Input, Progress } from "reactstrap";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
@@ -26,6 +26,11 @@ const REACTOR_SUB = gql`
       powerOutput
       batteryChargeRate
       batteryChargeLevel
+      # For Dilithium Stress
+      alphaLevel
+      betaLevel
+      alphaTarget
+      betaTarget
     }
   }
 `;
@@ -155,6 +160,15 @@ class ReactorControl extends Component {
       variables
     });
   };
+  calcStressLevel = () => {
+    const { reactors } = this.props.data;
+    if (!reactors[0]) return;
+    const { alphaTarget, betaTarget, alphaLevel, betaLevel } = reactors[0];
+    const alphaDif = Math.abs(alphaTarget - alphaLevel);
+    const betaDif = Math.abs(betaTarget - betaLevel);
+    const stressLevel = alphaDif + betaDif > 100 ? 100 : alphaDif + betaDif;
+    return stressLevel;
+  };
   render() {
     if (this.props.data.loading || !this.props.data.reactors) return null;
     const { reactors } = this.props.data;
@@ -278,6 +292,33 @@ class ReactorControl extends Component {
                 </InputField>
               </Fragment>
             )}
+
+            {this.calcStressLevel() && (
+              <Fragment>
+                <p>Dilithium Stress:</p>
+                <div style={{ display: "flex" }}>
+                  <Progress style={{ flex: 1 }} value={this.calcStressLevel()}>
+                    {this.calcStressLevel()}%
+                  </Progress>
+                  <Mutation
+                    mutation={gql`
+                      mutation FluxDilithium($id: ID!) {
+                        fluxDilithiumStress(id: $id)
+                      }
+                    `}
+                    variables={{ id: reactors[0].id }}
+                  >
+                    {action => (
+                      <Button
+                        style={{ width: "20px" }}
+                        color="danger"
+                        onClick={action}
+                      />
+                    )}
+                  </Mutation>
+                </div>
+              </Fragment>
+            )}
           </Col>
         </Row>
       </Container>
@@ -304,6 +345,11 @@ const REACTOR_QUERY = gql`
       powerOutput
       batteryChargeRate
       batteryChargeLevel
+      # For Dilithium Stress
+      alphaLevel
+      betaLevel
+      alphaTarget
+      betaTarget
     }
   }
 `;

@@ -51,4 +51,10 @@ export default class Reactor extends HeatMixin(System) {
   changeBatteryChargeRate(rate) {
     this.batteryChargeRate = rate;
   }
+  updateDilithiumStress({ alphaLevel, betaLevel, alphaTarget, betaTarget }) {
+    if (alphaLevel || alphaLevel === 0) this.alphaLevel = alphaLevel;
+    if (betaLevel || betaLevel === 0) this.betaLevel = betaLevel;
+    if (alphaTarget || alphaTarget === 0) this.alphaTarget = alphaTarget;
+    if (betaTarget || betaTarget === 0) this.betaTarget = betaTarget;
+  }
 }
