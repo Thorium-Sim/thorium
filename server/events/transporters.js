@@ -105,6 +105,7 @@ App.on("completeTransport", params => {
     },
     "addCoreFeed"
   );
+  console.log(transporter);
   pubsub.publish("transporterUpdate", transporter);
 });
 App.on("setTransporterTargets", params => {
