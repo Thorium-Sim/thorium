@@ -31,11 +31,11 @@ const SOUNDS_QUERY = gql`
 `;
 
 const MOVIE_QUERY = gql`
-  query Sounds {
+  query Movies {
     assetFolders(name: "Movies") {
       id
       name
-      containers {
+      objects {
         id
         name
         fullPath
@@ -225,7 +225,7 @@ class ActionsCore extends Component {
                       Select a Movie
                     </option>
                     {assetFolders[0]
-                      ? assetFolders[0].containers
+                      ? assetFolders[0].objects
                           .concat()
                           .sort((a, b) => {
                             if (a.name > b.name) return 1;
