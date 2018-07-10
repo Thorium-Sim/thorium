@@ -127,6 +127,7 @@ import ComputerCoreCore from "./ComputerCore/core";
 import DecontaminationCore from "./Decontamination/core";
 import SickbayCore from "./Sickbay/core";
 import ThxCore from "./Thx/core";
+import CommConvoCore from "./CommDecoding/convoCore";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -330,7 +331,8 @@ export const Cores = {
   ComputerCoreCore,
   DecontaminationCore,
   SickbayCore,
-  ThxCore
+  ThxCore,
+  CommConvoCore
 };
 
 export default Views;

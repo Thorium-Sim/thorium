@@ -163,12 +163,12 @@ class Decoding extends Component {
           : ""
     });
   }
-  _handleOnChange(which, e) {
+  _handleOnChange = (which, e) => {
     const obj = {};
     obj[which] = e;
     this.setState(obj);
-  }
-  _handleChangeComplete() {
+  };
+  _handleChangeComplete = () => {
     let { selectedMessage, a, f } = this.state;
     if (!selectedMessage) return;
     const mutation = gql`
@@ -196,7 +196,7 @@ class Decoding extends Component {
       mutation,
       variables
     });
-  }
+  };
   render() {
     let alertClass = `alertColor${this.props.simulator.alertLevel || 5}`;
     if (this.props.data.loading || !this.props.data.longRangeCommunications)
@@ -208,6 +208,7 @@ class Decoding extends Component {
         m => m.id === this.state.selectedMessage
       );
     }
+    console.log(this.state.f, Math.abs(50 - this.state.f));
     return (
       <Container fluid className="lrComm">
         <SubscriptionHelper
@@ -279,22 +280,22 @@ class Decoding extends Component {
                 <Label>Frequency</Label>
                 <Slider
                   className={`frequency-slider ${alertClass}`}
-                  value={this.state.f}
+                  value={Math.abs(50 - this.state.f)}
                   orientation="horizontal"
-                  onChange={this._handleOnChange.bind(this, "f")}
-                  onChangeComplete={this._handleChangeComplete.bind(this, "f")}
+                  onChange={e => this._handleOnChange("f", Math.abs(50 - e))}
+                  onChangeComplete={this._handleChangeComplete}
                   tooltip={false}
-                  min={5}
+                  min={0}
                   step={5}
-                  max={50}
+                  max={45}
                 />
                 <Label>Amplitude</Label>
                 <Slider
                   className={`amplitude-slider ${alertClass}`}
                   value={this.state.a}
                   orientation="horizontal"
-                  onChange={this._handleOnChange.bind(this, "a")}
-                  onChangeComplete={this._handleChangeComplete.bind(this, "a")}
+                  onChange={e => this._handleOnChange("a", e)}
+                  onChangeComplete={this._handleChangeComplete}
                   tooltip={false}
                   min={5}
                   step={5}

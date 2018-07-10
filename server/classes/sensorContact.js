@@ -17,7 +17,7 @@ function calculateRotatedPoint({ x, y }, angle) {
 }
 
 function degreeToRadian(deg) {
-  return deg * Math.PI / 180;
+  return (deg * Math.PI) / 180;
 }
 
 export default class SensorContact {
@@ -32,7 +32,7 @@ export default class SensorContact {
     this.rotation = params.rotation || 0;
     this.icon = params.icon || "/Sensor Contacts/Icons/Default"; // Added to '/Sensor Contacts/'
     this.color = params.color || "#0f0";
-    this.picture = params.picture || "/Sensor Contacts/Pictures/Default"; // Added to '/Sensor Pictures/'
+    this.picture = params.picture || null;
     this.speed = params.speed || 0; // Float
     this.location = params.location || {
       x: 0,
@@ -62,7 +62,7 @@ export default class SensorContact {
     }
     this.startTime = Date.now();
     const movementTime = Math.ceil(
-      distance3d(this.destination, this.location) / (this.speed / 10) * 1000
+      (distance3d(this.destination, this.location) / (this.speed / 10)) * 1000
     );
     this.endTime = this.startTime + movementTime;
   }
@@ -100,7 +100,7 @@ export default class SensorContact {
       this.location = this.position;
       this.startTime = Date.now();
       const movementTime = Math.ceil(
-        distance3d(this.destination, this.location) / (speed / 10) * 1000
+        (distance3d(this.destination, this.location) / (speed / 10)) * 1000
       );
       this.endTime = this.startTime + movementTime;
     }
