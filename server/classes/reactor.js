@@ -21,10 +21,13 @@ export default class Reactor extends HeatMixin(System) {
     }
 
     // For Dilithium Stress
-    this.alphaLevel = Math.round(Math.random() * 100);
-    this.betaLevel = Math.round(Math.random() * 100);
-    this.alphaTarget = Math.round(Math.random() * 100);
-    this.betaTarget = Math.round(Math.random() * 100);
+    const alpha = Math.round(Math.random() * 100);
+    const beta = Math.round(Math.random() * 100);
+    this.alphaLevel = params.alphaLevel || alpha;
+    this.betaLevel = params.betaLevel || beta;
+    this.alphaTarget = params.alphaTarget || alpha;
+    this.betaTarget = params.betaTarget || beta;
+    this.alerted = params.alerted || false;
   }
   get stealthFactor() {
     if (this.ejected) return 0;

@@ -11,7 +11,7 @@ const sendUpdate = sys => {
     throttles[sys.id] = throttle(sys => {
       pubsub.publish("heatChange", sys);
       pubsub.publish("systemsUpdate", App.systems);
-    });
+    }, 300);
   }
   return throttles[sys.id];
 };

@@ -298,7 +298,7 @@ class ReactorControl extends Component {
                 <p>Dilithium Stress:</p>
                 <div style={{ display: "flex" }}>
                   <Progress style={{ flex: 1 }} value={this.calcStressLevel()}>
-                    {this.calcStressLevel()}%
+                    {Math.round(this.calcStressLevel())}%
                   </Progress>
                   <Mutation
                     mutation={gql`

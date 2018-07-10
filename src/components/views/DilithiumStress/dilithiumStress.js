@@ -54,8 +54,8 @@ class DilithiumStress extends Component {
                     action({
                       variables: {
                         id,
-                        alphaLevel: Math.round(this.state.alphaLevel),
-                        betaLevel: Math.round(this.state.betaLevel)
+                        alphaLevel: this.state.alphaLevel,
+                        betaLevel: this.state.betaLevel
                       }
                     });
                   })
@@ -79,8 +79,8 @@ class DilithiumStress extends Component {
                     action({
                       variables: {
                         id,
-                        alphaLevel: Math.round(this.state.alphaLevel),
-                        betaLevel: Math.round(this.state.betaLevel)
+                        alphaLevel: this.state.alphaLevel,
+                        betaLevel: this.state.betaLevel
                       }
                     });
                   })
