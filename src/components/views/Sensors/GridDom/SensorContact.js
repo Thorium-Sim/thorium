@@ -1,7 +1,59 @@
 import React, { Component, Fragment } from "react";
+import { Mutation } from "react-apollo";
 import { Asset } from "../../../../helpers/assets";
 import tinycolor from "tinycolor2";
 import Explosion from "../../../../helpers/explosions";
+import gql from "graphql-tag";
+
+class Ping extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { opacity: 1, size: props.id ? 0 : props.size };
+  }
+  componentDidMount() {
+    if (this.props.id) {
+      setTimeout(() => {
+        this.setState({ opacity: 0, size: this.props.size });
+      }, 50);
+    }
+  }
+  render() {
+    const { opacity, size } = this.state;
+    const { color, width, x, y, core } = this.props;
+    return (
+      <div className="sensors-ping-holder">
+        <div
+          className="sensor-ping-mover"
+          style={{
+            transform: `translate(${(width / 2) * x}px, ${(width / 2) * y}px)`
+          }}
+        >
+          <Mutation
+            mutation={gql`
+              mutation RemoveContact($id: ID!, $contact: ID!) {
+                removeSensorContact(id: $id, contact: { id: $contact })
+              }
+            `}
+            variables={{ id: this.props.sensorsId, contact: this.props.id }}
+          >
+            {action => (
+              <div
+                className="sensors-ping"
+                onTransitionEnd={core ? action : () => {}}
+                style={{
+                  opacity,
+                  borderColor: tinycolor(color).toString(),
+                  transform: `scale(${size})`,
+                  boxShadow: `inset 0px 0px 20px ${tinycolor(color).toString()}`
+                }}
+              />
+            )}
+          </Mutation>
+        </div>
+      </div>
+    );
+  }
+}
 export default class SensorContact extends Component {
   render() {
     const {
@@ -27,6 +79,9 @@ export default class SensorContact extends Component {
     if (!location) return null;
     const { x, y } = location;
     const { x: dx = 0, y: dy = 0 } = destination;
+    if (type === "ping") {
+      return <Ping {...this.props} {...location} />;
+    }
     if (type === "border") {
       return (
         <div className="sensors-border-holder">

@@ -518,6 +518,7 @@ class GridDom extends Component {
                     key={contact.id}
                     width={width}
                     core={core}
+                    sensorsId={this.props.sensor}
                     {...contact}
                     selected={
                       selectedContacts
@@ -549,6 +550,7 @@ class GridDom extends Component {
             <SensorContact
               width={width}
               core={core}
+              sensorsId={this.props.sensor}
               destination={movingContact.location}
               {...movingContact}
             />

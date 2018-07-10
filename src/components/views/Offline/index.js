@@ -4,7 +4,6 @@ import Soviet from "./soviet";
 import Movie from "./movie";
 
 const Offline = props => {
-  console.log(props);
   // Messages go here
   const messages = {
     blackout: { title: "", message: "" },

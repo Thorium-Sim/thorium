@@ -13,7 +13,9 @@ class ExtraControls extends Component {
     planetLabel: "",
     borderColor: "#663399",
     borderSize: 3,
-    borderLabel: ""
+    borderLabel: "",
+    pingColor: "#663399",
+    pingSize: 1
   };
   autoTarget = e => {
     const mutation = gql`
@@ -201,7 +203,44 @@ class ExtraControls extends Component {
           </Col>
         </Row>
         <hr />
-
+        <Row>
+          <Col sm={10}>
+            <label>Pings</label>
+            <input
+              type="range"
+              min={0.01}
+              max={2}
+              step={0.01}
+              value={this.state.pingSize}
+              onChange={e => this.setState({ pingSize: e.target.value })}
+            />
+            <SliderPicker
+              color={this.state.pingColor}
+              onChangeComplete={color =>
+                this.setState({ pingColor: color.hex })
+              }
+            />
+          </Col>
+          <Col sm={2}>
+            <div
+              className="pings-dragger"
+              onMouseDown={() =>
+                dragStart({
+                  color: this.state.pingColor,
+                  type: "ping",
+                  size: this.state.pingSize
+                })
+              }
+              style={{
+                borderColor: tinycolor(this.state.pingColor).toString(),
+                boxShadow: `inset 0px 0px 10px ${tinycolor(
+                  this.state.pingColor
+                ).toString()}`
+              }}
+            />
+          </Col>
+        </Row>
+        <hr />
         <Row>
           <Col sm={12}>
             <label>Interference</label>
