@@ -26,6 +26,7 @@ type LRMessage {
   approved: Boolean
   sender: String
   datestamp: String
+  timestamp:String
   a: Int
   f: Int
   ra: Int

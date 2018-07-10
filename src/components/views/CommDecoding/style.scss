@@ -1,98 +1,132 @@
-$alert5: #233F7A;
-$alert3: #4D4D16;
-$alert2: #804D19;
+$alert5: #233f7a;
+$alert3: #4d4d16;
+$alert2: #804d19;
 $alert1: #801919;
-$alertp: #4D1980;
+$alertp: #4d1980;
 .lrComm {
-    pre {
-        white-space: pre-wrap;
+  pre {
+    white-space: pre-wrap;
+  }
+  .message-field {
+    width: 100%;
+    height: 20vh;
+    margin-top: 25px;
+    white-space: pre;
+    overflow-y: scroll;
+  }
+  .card {
+    list-style: none;
+    li {
+      padding: 2px;
+      padding-left: 5px;
     }
-    .message-field {
-        width: 100%;
-        height: 20vh;
-        margin-top: 25px;
-        white-space: pre;
-        overflow-y: scroll;
+    .active {
+      background-color: rgba(255, 255, 255, 0.5);
+      border-radius: 5px;
     }
-    .card {
-        list-style: none;
-        li {
-            padding: 2px;
-            padding-left: 5px;
-        }
-        .active {
-            background-color: rgba(255, 255, 255, 0.5);
-            border-radius: 5px;
-        }
+  }
+  .decode-button {
+    margin: 20px 0;
+  }
+  .rangeslider {
+    margin: 2px 0px;
+    background-color: #333;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    .rangeslider__handle {
+      border: solid 1px #333;
     }
-    .decode-button {
-        margin: 20px 0;
+    &.alertColor5,
+    &.alertColor4 {
+      .rangeslider__handle {
+        background-color: $alert5;
+        &::after {
+          background-color: darken($alert5, 10%);
+        }
+      }
     }
-    .rangeslider {
-        margin: 2px 0px;
-        background-color: #333;
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
-        .rangeslider__handle {
-            border: solid 1px #333;
+    &.alertColor3 {
+      .rangeslider__handle {
+        background-color: $alert3;
+        &::after {
+          background-color: darken($alert3, 10%);
         }
-        &.alertColor5,
-        &.alertColor4 {
-            .rangeslider__handle {
-                background-color: $alert5;
-                &::after {
-                    background-color: darken($alert5, 10%);
-                }
-            }
-        }
-        &.alertColor3 {
-            .rangeslider__handle {
-                background-color: $alert3;
-                &::after {
-                    background-color: darken($alert3, 10%);
-                }
-            }
-        }
-        &.alertColor2 {
-            .rangeslider__handle {
-                background-color: $alert2;
-                &::after {
-                    background-color: darken($alert2, 10%);
-                }
-            }
-        }
-        &.alertColor1 {
-            .rangeslider__handle {
-                background-color: $alert1;
-                &::after {
-                    background-color: darken($alert1, 10%);
-                }
-            }
-        }
-        &.alertColorp {
-            .rangeslider__handle {
-                background-color: $alertp;
-                &::after {
-                    background-color: darken($alertp, 10%);
-                }
-            }
-        }
+      }
     }
-    .frequency-slider {
-        .rangeslider__fill {
-            background-color: #922110
+    &.alertColor2 {
+      .rangeslider__handle {
+        background-color: $alert2;
+        &::after {
+          background-color: darken($alert2, 10%);
         }
+      }
     }
+    &.alertColor1 {
+      .rangeslider__handle {
+        background-color: $alert1;
+        &::after {
+          background-color: darken($alert1, 10%);
+        }
+      }
+    }
+    &.alertColorp {
+      .rangeslider__handle {
+        background-color: $alertp;
+        &::after {
+          background-color: darken($alertp, 10%);
+        }
+      }
+    }
+  }
+  .frequency-slider {
+    .rangeslider__fill {
+      background-color: #922110;
+    }
+  }
 }
 
 .comm-core {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  textarea {
+    width: 100%;
+    text-align: left;
+    font-family: monospace;
+    font-size: 11px;
+    line-height: 1;
+  }
+}
+.comm-convo-core {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .upper-section {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+  }
+  .convo-list {
+    max-width: 30%;
+    flex: 1;
+    margin-right: 5px;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    textarea {
-        width: 100%;
-        text-align: left;
-        font-family: monospace;
-        font-size: 11px;
-        line-height: 1;
+    .list-group {
+      flex: 1;
+      overflow-y: auto;
     }
+  }
+  .convo-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+    border: solid 1px rgba(255, 255, 255, 0.2);
+  }
+  .content-area {
+    white-space: pre-wrap;
+    flex: 1;
+    overflow-y: auto;
+  }
 }

@@ -123,7 +123,7 @@ class ContactContextMenu extends Component {
               </FormGroup>
               <FormGroup>
                 <Label for="sizeRange" sm={2}>
-                  Size
+                  Size ({contact.size})
                 </Label>
                 <input
                   type="range"

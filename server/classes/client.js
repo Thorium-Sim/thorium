@@ -14,6 +14,7 @@ export default class Client {
     this.ping = null;
     this.connected = params.connected || false;
     this.offlineState = params.offlineState || null;
+    this.movie = params.move || null;
     this.hypercard = params.hypercard || null;
     this.training = params.training || false;
     this.caches = params.caches || [];
@@ -62,8 +63,14 @@ export default class Client {
     }
     this.hypercard = card;
   }
+  setMovie(movie) {
+    this.movie = movie;
+    this.offlineState = "movie";
+  }
   setOfflineState(state) {
-    // Allow one of null, 'blackout', 'offline', 'power', 'lockdown', and 'maintenance'
+    // Clear the movie
+    this.movie = null;
+    // Allow one of null, 'blackout', 'offline', 'power', 'lockdown', 'maintenance'
     this.offlineState = state;
   }
   addCache(cacheItem) {

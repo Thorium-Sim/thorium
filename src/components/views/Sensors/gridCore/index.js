@@ -8,6 +8,7 @@ import ExtraControls from "./extraControls";
 import ContactsList from "./contactsList";
 import MovementCore from "./movementCore";
 import ContactSelect from "./contactSelect";
+import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
 import "./gridCore.scss";
 
 function distance3d(coord2, coord1) {
@@ -63,25 +64,6 @@ class GridCore extends Component {
       currentControl: "contacts",
       selectedContacts: []
     };
-    this.sensorsSubscription = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.sensorsSubscription && !nextProps.data.loading) {
-      this.sensorsSubscription = nextProps.data.subscribeToMore({
-        document: SENSOR_SUB,
-        variables: {
-          id: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            sensors: subscriptionData.data.sensorsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.sensorsSubscription && this.sensorsSubscription();
   }
   componentDidMount() {
     if (!this.state.dimensions && ReactDOM.findDOMNode(this)) {
@@ -250,6 +232,21 @@ class GridCore extends Component {
 
     return (
       <Container className="sensorGridCore" fluid style={{ height: "100%" }}>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SENSOR_SUB,
+              variables: {
+                id: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  sensors: subscriptionData.data.sensorsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row style={{ height: "100%" }}>
           <Col sm={4}>
             <small>Speed</small>
