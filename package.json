@@ -85,7 +85,7 @@
     "sass-loader": "^7.0.3",
     "wait-on": "^2.1.0",
     "webpack": "^3.8.1",
-    "webpack-dev-server": "2.11.1",
+    "webpack-dev-server": "3.1.4",
     "webpack-manifest-plugin": "2.0.3"
   },
   "dependencies": {
