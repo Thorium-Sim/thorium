@@ -20,7 +20,7 @@ export const EngineMutations = {
   },
   // This mutation applies to all systems
   addHeat(root, { id, heat }, context) {
-    App.handleEvent({ id, heat }, "addHeat", context);
+    App.handleEvent({ id, heat, force: true }, "addHeat", context);
     return "";
   },
   setHeatRate(root, args, context) {

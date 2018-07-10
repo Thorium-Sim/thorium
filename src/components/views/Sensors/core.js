@@ -101,7 +101,7 @@ class SensorsCore extends Component {
       variables
     });
   };
-  sendProcessedData(sensors) {
+  sendProcessedData = sensors => {
     this.props.client.mutate({
       mutation: gql`
         mutation ProcessedData($id: ID, $data: String!) {
@@ -113,8 +113,20 @@ class SensorsCore extends Component {
         data: this.state.dataField
       }
     });
-  }
-  flash() {}
+  };
+  flash = sensors => {
+    this.props.client.mutate({
+      mutation: gql`
+        mutation ProcessedData($id: ID, $data: String!) {
+          processedData(id: $id, data: $data, flash: true)
+        }
+      `,
+      variables: {
+        id: sensors.id,
+        data: this.state.dataField
+      }
+    });
+  };
   scanPreset = evt => {
     let dataField = evt.target.value;
     if (dataField === "omnicourse") {
@@ -341,7 +353,15 @@ class SensorsCore extends Component {
               ))}
             </select>
             <Button
-              onClick={this.sendProcessedData.bind(this, external)}
+              onClick={() => this.flash(external)}
+              style={{ flexGrow: 2 }}
+              size={"sm"}
+              color="warning"
+            >
+              F&S
+            </Button>
+            <Button
+              onClick={() => this.sendProcessedData(external)}
               style={{ flexGrow: 4 }}
               size={"sm"}
               color="success"

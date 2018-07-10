@@ -160,7 +160,6 @@ class DamageControlCore extends Component {
                       a.power.powerLevels.length)
                   )
                     return -1;
-                  console.log("Made it here!", a.type, b.type);
                   if (a.type > b.type) return 1;
                   if (a.type < b.type) return -1;
                   if (a.name > b.name) return 1;

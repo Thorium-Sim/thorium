@@ -41,7 +41,7 @@ class StealthFieldCore extends Component {
     this.subscription = null;
     this.systemsSubscription = null;
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.subscription && !nextProps.data.loading) {
       this.subscription = nextProps.data.subscribeToMore({
         document: STEALTH_SUB,
@@ -167,6 +167,7 @@ class StealthFieldCore extends Component {
         }
         return s;
       });
+
     const sysStyle = {};
     if (highSystems.length > 0) {
       sysStyle.backgroundColor = "yellow";
@@ -217,11 +218,13 @@ class StealthFieldCore extends Component {
               alert={alertHigh}
               title={highSystemsText}
             >
-              {highSystems.length > 1
-                ? `${highSystems.length} Alert Systems`
-                : `${highSystems[0] && highSystems[0].name} (${Math.round(
-                    highSystems[0] ? highSystems[0].stealthFactor * 100 : 0
-                  )})`}
+              {highSystems.length === 0
+                ? "No Alert Systems"
+                : highSystems.length > 1
+                  ? `${highSystems.length} Alert Systems`
+                  : `${highSystems[0] && highSystems[0].name} (${Math.round(
+                      highSystems[0] ? highSystems[0].stealthFactor * 100 : 0
+                    )})`}
             </OutputField>
           </Col>
         </Row>
@@ -256,8 +259,6 @@ const STEALTH_QUERY = gql`
 
 export default graphql(STEALTH_QUERY, {
   options: ownProps => ({
-    fetchPolicy: "cache-and-network",
-
     variables: {
       simulatorId: ownProps.simulator.id,
       names: ["Icons", "Pictures"]

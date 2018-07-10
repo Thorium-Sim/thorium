@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-//import Draggable from 'gsap/src/uncompressed/utils/Draggable';
 import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 import { DraggableCore } from "react-draggable";

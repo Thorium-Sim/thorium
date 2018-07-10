@@ -48,6 +48,9 @@ export const TargetingMutations = {
   },
   setCoordinateTargeting(root, args, context) {
     App.handleEvent(args, "setCoordinateTargeting", context);
+  },
+  clearAllContacts(root, args, context) {
+    App.handleEvent(args, "clearAllContacts", context);
   }
 };
 

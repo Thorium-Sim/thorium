@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Button, Input } from "reactstrap";
+import { Row, Col, Button, Input, ButtonGroup } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo, Query } from "react-apollo";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
@@ -38,7 +38,8 @@ class ActionsCore extends Component {
       actionName: "flash",
       actionDest: "all",
       selectedSound: "nothing",
-      selectedVoice: null
+      selectedVoice: null,
+      selectedCard: null
     };
   }
   componentDidMount() {
@@ -53,16 +54,18 @@ class ActionsCore extends Component {
   };
   handleDestChange = e => {
     this.setState({
-      actionDest: e.target.value
+      actionDest: e.target.value,
+      selectedCard: null
     });
   };
   triggerAction = () => {
-    let { actionName, actionDest, selectedVoice } = this.state;
+    let { actionName, actionDest, selectedCard, selectedVoice } = this.state;
     let message;
     if (actionName === "speak" || actionName === "message") {
       message = prompt("What do you want to say?");
       if (!message) return;
     }
+    if (actionName === "changeCard") message = selectedCard;
     if (actionDest === "random") {
       const index = Math.floor(
         Math.random() * this.props.data.simulators[0].stations.length
@@ -125,8 +128,136 @@ class ActionsCore extends Component {
       variables
     });
   };
+  renderButtons = () => {
+    const {
+      actionName,
+      actionDest,
+      selectedSound,
+      selectedVoice,
+      selectedCard
+    } = this.state;
+    if (actionName === "sound")
+      return (
+        <Row>
+          <Col sm={8}>
+            <Query query={SOUNDS_QUERY}>
+              {({ loading, data: { assetFolders } }) =>
+                loading ? (
+                  <p>Loading</p>
+                ) : (
+                  <Input
+                    style={{ height: "20px" }}
+                    type="select"
+                    value={selectedSound}
+                    onChange={e =>
+                      this.setState({ selectedSound: e.target.value })
+                    }
+                  >
+                    <option value="nothing" disabled>
+                      Select a Sound
+                    </option>
+                    {assetFolders[0]
+                      ? assetFolders[0].containers
+                          .concat()
+                          .sort((a, b) => {
+                            if (a.name > b.name) return 1;
+                            if (a.name < b.name) return -1;
+                            return 0;
+                          })
+                          .map(c => (
+                            <option key={c.id} value={c.fullPath}>
+                              {c.name}
+                            </option>
+                          ))
+                      : null}
+                  </Input>
+                )
+              }
+            </Query>
+          </Col>
+          <Col sm={4}>
+            <Button block color="primary" size="sm" onClick={this.playSound}>
+              Play
+            </Button>
+          </Col>
+        </Row>
+      );
+    if (actionName === "speak")
+      return (
+        <Row>
+          <Col sm={8}>
+            <Input
+              style={{ height: "20px" }}
+              type="select"
+              value={selectedVoice}
+              onChange={e => this.setState({ selectedVoice: e.target.value })}
+            >
+              {this.voices.map(c => (
+                <option key={c.name} value={c.name}>
+                  {c.name}
+                </option>
+              ))}
+            </Input>
+          </Col>
+          <Col sm={4}>
+            <Button
+              block
+              color="primary"
+              size="sm"
+              onClick={this.triggerAction}
+            >
+              Speak
+            </Button>
+          </Col>
+        </Row>
+      );
+    if (actionName === "changeCard") {
+      const station = this.props.simulator.stations.find(
+        s => s.name === actionDest
+      );
+      return (
+        <Row>
+          <Col sm={8}>
+            <Input
+              disabled={!station}
+              style={{ height: "20px" }}
+              type="select"
+              value={selectedCard || "nothing"}
+              onChange={e => this.setState({ selectedCard: e.target.value })}
+            >
+              <option value="nothing" disabled>
+                Select a card
+              </option>
+              {station &&
+                station.cards.map(c => (
+                  <option key={c.name} value={c.name}>
+                    {c.name}
+                  </option>
+                ))}
+            </Input>
+          </Col>
+          <Col sm={4}>
+            <Button
+              block
+              color="primary"
+              size="sm"
+              disabled={!station}
+              onClick={this.triggerAction}
+            >
+              Change Card
+            </Button>
+          </Col>
+        </Row>
+      );
+    }
+    return (
+      <Button block color="primary" size="sm" onClick={this.triggerAction}>
+        {this.state.actionName} {this.state.actionDest}
+      </Button>
+    );
+  };
   render() {
-    const { actionName, selectedSound, selectedVoice } = this.state;
+    const { actionName } = this.state;
     return (
       <div className="core-action">
         <SubscriptionHelper
@@ -142,8 +273,43 @@ class ActionsCore extends Component {
             })
           }
         />
+
         <div className="flex-container">
-          <select onChange={this.handleNameChange} ref="actionName">
+          <ButtonGroup>
+            <Button
+              size="sm"
+              color="warning"
+              onClick={() => this.setState({ actionName: "flash" })}
+            >
+              F
+            </Button>
+            <Button
+              size="sm"
+              color="info"
+              onClick={() => this.setState({ actionName: "spark" })}
+            >
+              S
+            </Button>
+            <Button
+              size="sm"
+              color="success"
+              onClick={() => this.setState({ actionName: "online" })}
+            >
+              O
+            </Button>
+            <Button
+              size="sm"
+              color="dark"
+              onClick={() => this.setState({ actionName: "blackout" })}
+            >
+              B
+            </Button>
+          </ButtonGroup>
+          <select
+            onChange={this.handleNameChange}
+            value={actionName}
+            ref="actionName"
+          >
             <optgroup>
               <option value="flash">Flash</option>
               <option value="spark">Spark</option>
@@ -152,6 +318,7 @@ class ActionsCore extends Component {
               <option value="beep">Beep</option>
               <option value="speak">Speak</option>
               <option value="message">Message</option>
+              <option value="changeCard">Change Card</option>
             </optgroup>
             <optgroup>
               <option value="blackout">Blackout</option>
@@ -189,82 +356,7 @@ class ActionsCore extends Component {
             </optgroup>
           </select>
         </div>
-        {actionName === "sound" ? (
-          <Row>
-            <Col sm={8}>
-              <Query query={SOUNDS_QUERY}>
-                {({ loading, data: { assetFolders } }) =>
-                  loading ? (
-                    <p>Loading</p>
-                  ) : (
-                    <Input
-                      style={{ height: "20px" }}
-                      type="select"
-                      value={selectedSound}
-                      onChange={e =>
-                        this.setState({ selectedSound: e.target.value })
-                      }
-                    >
-                      <option value="nothing" disabled>
-                        Select a Sound
-                      </option>
-                      {assetFolders[0]
-                        ? assetFolders[0].containers
-                            .concat()
-                            .sort((a, b) => {
-                              if (a.name > b.name) return 1;
-                              if (a.name < b.name) return -1;
-                              return 0;
-                            })
-                            .map(c => (
-                              <option key={c.id} value={c.fullPath}>
-                                {c.name}
-                              </option>
-                            ))
-                        : null}
-                    </Input>
-                  )
-                }
-              </Query>
-            </Col>
-            <Col sm={4}>
-              <Button block color="primary" size="sm" onClick={this.playSound}>
-                Play
-              </Button>
-            </Col>
-          </Row>
-        ) : actionName === "speak" ? (
-          <Row>
-            <Col sm={8}>
-              <Input
-                style={{ height: "20px" }}
-                type="select"
-                value={selectedVoice}
-                onChange={e => this.setState({ selectedVoice: e.target.value })}
-              >
-                {this.voices.map(c => (
-                  <option key={c.name} value={c.name}>
-                    {c.name}
-                  </option>
-                ))}
-              </Input>
-            </Col>
-            <Col sm={4}>
-              <Button
-                block
-                color="primary"
-                size="sm"
-                onClick={this.triggerAction}
-              >
-                Speak
-              </Button>
-            </Col>
-          </Row>
-        ) : (
-          <Button block color="primary" size="sm" onClick={this.triggerAction}>
-            {this.state.actionName} {this.state.actionDest}
-          </Button>
-        )}
+        {this.renderButtons()}
       </div>
     );
   }

@@ -11,4 +11,5 @@ export default `
   setCoordinateTargeting(id: ID!, which: Boolean!): String
   setTargetingCalculatedTarget(id: ID, simulatorId: ID,  coordinates:CoordinatesInput, contactId: ID): String
   setTargetingEnteredTarget(id: ID!, coordinates:StringCoordinatesInput): String
+clearAllContacts(id:ID!):String
 `;

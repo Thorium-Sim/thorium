@@ -54,6 +54,9 @@ export default class Transporters extends System {
       );
       this.targets.splice(targetIndex, 1);
     }
+    if (this.targets.length > 0) {
+      this.state = "Targeting";
+    }
   }
   setRequestedTarget(target) {
     this.requestedTarget = target;

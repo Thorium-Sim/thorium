@@ -72,6 +72,7 @@ import MedicalRoster from "./MedicalRoster";
 import Sickbay from "./Sickbay";
 import CommReview from "./CommReview";
 import Thx from "./Thx";
+import DilithiumStress from "./DilithiumStress";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -205,7 +206,8 @@ const Views = {
   MedicalRoster,
   Sickbay,
   CommReview,
-  Thx
+  Thx,
+  DilithiumStress
 };
 
 export const Widgets = {
