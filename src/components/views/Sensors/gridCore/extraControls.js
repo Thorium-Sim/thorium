@@ -3,13 +3,17 @@ import { Col, Row } from "reactstrap";
 import { SliderPicker } from "react-color";
 import tinycolor from "tinycolor2";
 import gql from "graphql-tag";
+import { TypingField } from "../../../generic/core";
 import Nudge from "./nudge";
 
 class ExtraControls extends Component {
   state = {
     planetSize: 1,
     planetColor: "#663399",
-    borderColor: "#663399"
+    planetLabel: "",
+    borderColor: "#663399",
+    borderSize: 3,
+    borderLabel: ""
   };
   autoTarget = e => {
     const mutation = gql`
@@ -104,10 +108,16 @@ class ExtraControls extends Component {
             onClick={this.autoThrusters}
           />
         </label>
-        <small>Click grid segments to black out</small>
+        <small>Option-click grid segments to black out</small>
         <Row>
           <Col sm={10}>
             <label>Planet</label>
+            <TypingField
+              input
+              controlled
+              value={this.state.planetLabel}
+              onChange={e => this.setState({ planetLabel: e.target.value })}
+            />
             <input
               type="range"
               min={0.01}
@@ -116,6 +126,7 @@ class ExtraControls extends Component {
               value={this.state.planetSize}
               onChange={e => this.setState({ planetSize: e.target.value })}
             />
+
             <label>Color</label>
             <SliderPicker
               color={this.state.planetColor}
@@ -131,7 +142,8 @@ class ExtraControls extends Component {
                 dragStart({
                   color: this.state.planetColor,
                   type: "planet",
-                  size: this.state.planetSize
+                  size: this.state.planetSize,
+                  name: this.state.planetLabel
                 })
               }
               style={{
@@ -143,9 +155,24 @@ class ExtraControls extends Component {
             />
           </Col>
         </Row>
+        <hr />
         <Row>
           <Col sm={10}>
             <label>Border</label>
+            <TypingField
+              input
+              controlled
+              value={this.state.borderLabel}
+              onChange={e => this.setState({ borderLabel: e.target.value })}
+            />
+            <input
+              type="range"
+              min={0.01}
+              max={15}
+              step={0.01}
+              value={this.state.borderSize}
+              onChange={e => this.setState({ borderSize: e.target.value })}
+            />
             <SliderPicker
               color={this.state.borderColor}
               onChangeComplete={color =>
@@ -159,7 +186,9 @@ class ExtraControls extends Component {
               onMouseDown={() =>
                 dragStart({
                   color: this.state.borderColor,
-                  type: "border"
+                  type: "border",
+                  size: this.state.borderSize,
+                  name: this.state.borderLabel
                 })
               }
               style={{
@@ -171,6 +200,8 @@ class ExtraControls extends Component {
             />
           </Col>
         </Row>
+        <hr />
+
         <Row>
           <Col sm={12}>
             <label>Interference</label>

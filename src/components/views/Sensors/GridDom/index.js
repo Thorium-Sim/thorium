@@ -67,7 +67,7 @@ class GridDom extends Component {
   };
   interval = 1000 / 30;
   sensorContactsSubscription = null;
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.sensorsSubscription && !nextProps.data.loading) {
       this.sensorsSubscription = nextProps.data.subscribeToMore({
         document: SENSORCONTACT_SUB,
@@ -382,6 +382,7 @@ class GridDom extends Component {
     });
   };
   _clickMouse = (contact, e) => {
+    if (contact.preventDefault) return;
     e.preventDefault();
     e.stopPropagation();
     this.setState({ selectedContact: contact.id });

@@ -63,6 +63,7 @@
   .contextMenu {
     z-index: 100;
     position: absolute;
+    overflow-y: auto;
     // width: 300%;
     background-color: rgba(0, 0, 0, 0.8);
     top: 0;

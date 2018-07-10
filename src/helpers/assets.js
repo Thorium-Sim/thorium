@@ -8,7 +8,7 @@ export default (assetKey, simulatorId, extension, CORS) => {
 };
 
 class AssetComponent extends PureComponent {
-  state = { src: "http://unsplash.it/300" };
+  state = { src: null };
   componentDidMount() {
     const query = gql`
       query GetAsset($assetKey: String!, $simulatorId: ID) {
