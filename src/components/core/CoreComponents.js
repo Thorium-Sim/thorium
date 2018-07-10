@@ -34,6 +34,9 @@ const FLIGHTS_SUB = gql`
         layout
         stations {
           name
+          cards {
+            name
+          }
         }
         assets {
           mesh
@@ -68,7 +71,7 @@ class CoreComponents extends Component {
     };
     this.flightsSub = null;
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.flightsSub && !nextProps.data.loading) {
       this.flightsSub = nextProps.data.subscribeToMore({
         document: FLIGHTS_SUB,
@@ -352,6 +355,9 @@ const CORE_LAYOUT = gql`
         layout
         stations {
           name
+          cards {
+            name
+          }
         }
         assets {
           mesh

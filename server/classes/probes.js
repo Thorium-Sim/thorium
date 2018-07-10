@@ -59,7 +59,13 @@ export default class Probes extends System {
       probe.launched = false;
       //Create a new torpedo linked to this probe
       probe.id = uuid.v4();
-      App.handleEvent({ type: "probe", probe: probe.id }, "torpedoAddWarhead");
+      App.handleEvent(
+        {
+          simulatorId: this.simulatorId,
+          warhead: { type: "probe", probe: probe.id }
+        },
+        "torpedoAddWarhead"
+      );
     } else {
       probe.launched = true;
       this.stealthCompromised = true;
@@ -99,6 +105,9 @@ export default class Probes extends System {
   probeQueryResponse(probeId, response) {
     this.probes.find(p => p.id === probeId).setResponse(response);
   }
+  setTorpedo(tf) {
+    this.torpedo = tf;
+  }
 }
 
 class Probe {
@@ -107,7 +116,7 @@ class Probe {
     this.parentId = parentId;
     this.name = params.name || "";
     this.type = params.type || null;
-    this.launched = params.launched || true;
+    this.launched = params.launched || false;
     this.equipment = params.equipment || [];
     this.query = params.query || "";
     this.querying = params.querying || false;

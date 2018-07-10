@@ -36,6 +36,9 @@ export const ProbesMutations = {
   },
   probeProcessedData(rootValue, args, context) {
     App.handleEvent(args, "probeProcessedData", context);
+  },
+  setProbeTorpedo(root, args, context) {
+    App.handleEvent(args, "setProbeTorpedo", context);
   }
 };
 

@@ -12,7 +12,7 @@ import {
   ModalFooter
 } from "reactstrap";
 import Tour from "reactour";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import { graphql, withApollo } from "react-apollo";
 import Transitioner from "../helpers/transitioner";
 import ProbeEquipment from "./probeEquipment";
@@ -24,40 +24,13 @@ function d2r(deg) {
   return (deg * Math.PI) / 180;
 }
 
-const trainingSteps = [
-  {
-    selector: ".nothing",
-    content:
-      "Probes are small robots that you can launch into space to perform many functions. Probe functionality is extended by the equipment which you put on the probe. Different kinds of probes can take different equipment and different amounts. Be sure to use the right probe for the right job."
-  },
-  {
-    selector: ".probe-container",
-    content:
-      "These are the probes which are available. If you move your mouse over the probe you can see a brief description. Click on any probe type before continuing."
-  },
-  {
-    selector: ".equipmentList",
-    content:
-      "This is a list of the equipment available to your probe. You can see its name, its size, and how many you have on your ship in this table. Move your mouse over an equipment item to see a description of the equipment item. Click on the item to add it to your probe."
-  },
-  {
-    selector: ".probe-control-buttons",
-    content:
-      "Here you can see the amount of space available on your probe. You cannot put more equipment on a probe than what you have space for. Once you are done adding equipment to your probe, click the 'Prepare Probe' button. Then click the 'Launch' button to confirm the probe you created."
-  },
-  {
-    selector: ".nothing",
-    content:
-      "You will then have to type in the destination. If you equipped your probe with a probe network package, you will instead be shown a diagram of your probe network which will allow you to select where you want to place the probe."
-  }
-];
-
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
     probesUpdate(simulatorId: $simulatorId) {
       id
       simulatorId
       type
+      torpedo
       types {
         id
         name
@@ -152,12 +125,18 @@ class ProbeDescription extends Transitioner {
 
 class ProbeAction extends Transitioner {
   render() {
-    const { selectedProbeType, selectProbe, cancelProbe, toggle } = this.props;
+    const {
+      selectedProbeType,
+      selectProbe,
+      cancelProbe,
+      toggle,
+      probes
+    } = this.props;
     return (
       <Row className="probeAction">
         <Col sm={{ size: 4, offset: 4 }}>
           <Button block color="success" onClick={toggle}>
-            Launch Probe
+            {probes.torpedo ? "Load" : "Launch"} Probe
           </Button>
           <Button
             block
@@ -180,7 +159,14 @@ class ProbeName extends Component {
     name: ""
   };
   render() {
-    const { modal, toggle, launchProbe, equipment, network } = this.props;
+    const {
+      modal,
+      toggle,
+      probes,
+      launchProbe,
+      equipment,
+      network
+    } = this.props;
     const { name } = this.state;
     return (
       <Modal className="modal-themed probe-name" isOpen={modal} toggle={toggle}>
@@ -299,7 +285,7 @@ class ProbeName extends Component {
               color="primary"
               onClick={launchProbe.bind(this, this.state.name)}
             >
-              Launch Probe
+              {probes.torpedo ? "Load" : "Launch"} Probe
             </Button>
           </Col>
         </ModalFooter>
@@ -313,6 +299,7 @@ const PROBES_QUERY = gql`
       id
       simulatorId
       type
+      torpedo
       types {
         id
         name
@@ -349,33 +336,14 @@ const PROBES_QUERY = gql`
 `;
 
 class ProbeConstruction extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedProbeType: null,
-      launching: false,
-      description: null,
-      equipment: [],
-      modal: false
-    };
-    this.subscription = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: PROBES_SUB,
-        variables: { simulatorId: this.props.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            probes: subscriptionData.data.probesUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
+  state = {
+    selectedProbeType: null,
+    launching: false,
+    description: null,
+    equipment: [],
+    modal: false
+  };
+
   toggle = () => {
     this.setState({
       modal: !this.state.modal
@@ -424,6 +392,46 @@ class ProbeConstruction extends Component {
       modal: false
     });
   };
+  trainingSteps = () => {
+    const probes = this.props.data.probes && this.props.data.probes[0];
+    return [
+      {
+        selector: ".nothing",
+        content:
+          "Probes are small robots that you can launch into space to perform many functions. Probe functionality is extended by the equipment which you put on the probe. Different kinds of probes can take different equipment and different amounts. Be sure to use the right probe for the right job."
+      },
+      {
+        selector: ".probe-container",
+        content:
+          "These are the probes which are available. If you move your mouse over the probe you can see a brief description. Click on any probe type before continuing."
+      },
+      {
+        selector: ".equipmentList",
+        content:
+          "This is a list of the equipment available to your probe. You can see its name, its size, and how many you have on your ship in this table. Move your mouse over an equipment item to see a description of the equipment item. Click on the item to add it to your probe."
+      },
+      {
+        selector: ".probe-control-buttons",
+        content: (
+          <span>
+            Here you can see the amount of space available on your probe. You
+            cannot put more equipment on a probe than what you have space for.
+            Once you are done adding equipment to your probe, click the 'Prepare
+            Probe' button. Then click the '{probes.torpedo ? "Load" : "Launch"}'
+            button to confirm the probe you created.{" "}
+            {probes.torpedo
+              ? "The officer in charge of the torpedo launcher will have to launch the probe out of the torpedo tubes."
+              : ""}
+          </span>
+        )
+      },
+      {
+        selector: ".nothing",
+        content:
+          "You will then have to type in the destination. If you equipped your probe with a probe network package, you will instead be shown a diagram of your probe network which will allow you to select where you want to place the probe."
+      }
+    ];
+  };
   render() {
     if (this.props.data.loading || !this.props.data.probes) return null;
     const probes = this.props.data.probes && this.props.data.probes[0];
@@ -432,6 +440,19 @@ class ProbeConstruction extends Component {
     const comps = { ProbeDescription, ProbeEquipment, ProbeAction };
     return (
       <Container fluid className="probe-construction">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: PROBES_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  probes: subscriptionData.data.probesUpdate
+                });
+              }
+            })
+          }
+        />
         <DamageOverlay
           system={probes}
           message={"Probe Launcher Offline"}
@@ -477,6 +498,7 @@ class ProbeConstruction extends Component {
           })}
         {this.state.modal && (
           <ProbeName
+            probes={probes}
             network={probes.probes
               .filter(p =>
                 p.equipment.find(e => e.id === "probe-network-package")
@@ -489,7 +511,7 @@ class ProbeConstruction extends Component {
           />
         )}
         <Tour
-          steps={trainingSteps}
+          steps={this.trainingSteps()}
           isOpen={this.props.clientObj.training}
           onRequestClose={this.props.stopTraining}
         />

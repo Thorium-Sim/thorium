@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import DamageOverlay from "../helpers/DamageOverlay";
 import { Button } from "reactstrap";
-
+import { titleCase } from "change-case";
 class TorpedoFire extends Component {
   state = { enabled: true };
   fireTorpedo = () => {
@@ -46,8 +46,9 @@ class TorpedoFire extends Component {
         <h4 className="text-center">{torpedo.name}</h4>
         <p>
           Type:{" "}
-          {(torpedo.inventory.find(t => t.id === torpedo.loaded) || {}).type ||
-            "None"}
+          {titleCase(
+            (torpedo.inventory.find(t => t.id === torpedo.loaded) || {}).type
+          ) || "None"}
         </p>
         <Button
           block

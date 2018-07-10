@@ -2,6 +2,19 @@ import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
 import uuid from "uuid";
+import throttle from "../helpers/throttle";
+
+const throttles = {};
+
+const sendUpdate = sys => {
+  if (!throttles[sys.id]) {
+    throttles[sys.id] = throttle(sys => {
+      pubsub.publish("heatChange", sys);
+      pubsub.publish("systemsUpdate", App.systems);
+    }, 300);
+  }
+  return throttles[sys.id];
+};
 
 App.on("createEngine", param => {
   const engine = new Classes.Engine(param);
@@ -24,7 +37,9 @@ App.on("removeEngine", param => {
 });
 App.on("speedChange", param => {
   const system = App.systems.find(sys => sys.id === param.id);
-  const engineIndex = App.systems.findIndex(sys => sys.id === param.id) || -1;
+  const engineIndex = App.systems
+    .filter(s => s.simulatorId === system.simulatorId && s.type === "Engine")
+    .findIndex(sys => sys.id === param.id);
   const on = system.on;
   const oldSpeed = system.speed;
   system.setSpeed(param.speed, param.on);
@@ -53,37 +68,30 @@ App.on("speedChange", param => {
   pubsub.publish("engineUpdate", system);
   // Now stop the other engines
   // If speed is -1 (full stop), stop them all
-  App.systems.forEach((engine = {}, index) => {
-    if (
-      engine.simulatorId === App.systems[engineIndex].simulatorId &&
-      engine.type === "Engine"
-    ) {
+  App.systems
+    .filter(s => s.simulatorId === system.simulatorId && s.type === "Engine")
+    .forEach((engine, index) => {
       if (index < engineIndex) {
         if (param.speed === -1) {
-          engine.setSpeed(-1, false);
+          engine.setSpeed();
         } else {
           engine.setSpeed(engine.speeds.length, false);
         }
-        pubsub.publish("engineUpdate", engine);
       }
       if (index > engineIndex) {
         engine.setSpeed(-1, false);
-        pubsub.publish("engineUpdate", engine);
       }
-    }
-  });
+      pubsub.publish("engineUpdate", engine);
+    });
   pubsub.publish("systemsUpdate", App.systems);
 });
-App.on("addHeat", ({ id, heat }) => {
+App.on("addHeat", ({ id, heat, force }) => {
   heat = Math.min(1, Math.max(0, heat));
   const sys = App.systems.find(s => s.id === id);
   if (sys && sys.heat !== heat) {
     sys.setHeat(heat);
   }
-  if (Date.now() % 100 === 1) {
-    pubsub.publish("heatChange", sys);
-    pubsub.publish("systemsUpdate", App.systems);
-  }
+  sendUpdate(sys)(sys);
 });
 App.on("setHeatRate", ({ id, rate }) => {
   const sys = App.systems.find(s => s.id === id);

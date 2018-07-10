@@ -36,7 +36,10 @@
 }
 
 .probe-control-core {
-  height: 100%;
+  .row {
+    min-height: 200px;
+    height: 100%;
+  }
   .probelist {
     background-color: #eee;
     color: #333;

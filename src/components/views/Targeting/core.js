@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Container, Row, Col, Button, Media } from "reactstrap";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo, Mutation } from "react-apollo";
 import { InputField, OutputField } from "../../generic/core";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import FontAwesome from "react-fontawesome";
@@ -52,10 +52,6 @@ const TARGETING_SUB = gql`
 `;
 
 class TargetingCore extends Component {
-  constructor(props) {
-    super(props);
-    this.subscription = null;
-  }
   _addTargetClass() {
     const targeting = this.props.data.targeting[0];
     const { assetFolders } = this.props.data;
@@ -103,6 +99,7 @@ class TargetingCore extends Component {
     });
   }
   _updateTargetClass(targetId, key, valueArg) {
+    if (!valueArg) return;
     let value = valueArg;
     if (value.target) {
       value = value.target.value;
@@ -216,7 +213,23 @@ class TargetingCore extends Component {
           }
         />
         <Row>
-          <Col sm={6}>Targeted System</Col>
+          <Col sm={2}>Targeted System</Col>
+          <Col sm={2}>
+            <Mutation
+              mutation={gql`
+                mutation ClearAll($id: ID!) {
+                  clearAllContacts(id: $id)
+                }
+              `}
+              variables={{ id: targeting.id }}
+            >
+              {action => (
+                <Button color="secondary" size="sm" onClick={action}>
+                  Clear All
+                </Button>
+              )}
+            </Mutation>
+          </Col>
           <Col sm={6}>
             <label>
               <input
@@ -259,7 +272,7 @@ class TargetingCore extends Component {
             )}
           </div>
         ) : (
-          <div>
+          <div className="contact-targeting">
             <Row>
               <Col sm={8}>
                 <OutputField alert={targetedContact}>
@@ -283,7 +296,7 @@ class TargetingCore extends Component {
               <Col sm={1}>Icon</Col>
               <Col sm={1}>Pic</Col>
               <Col sm={4}>Label</Col>
-              <Col sm={1}>No Move</Col>
+              <Col sm={1}>Moving</Col>
               <Col sm={1} />
             </Row>
             <div className="targets-container">

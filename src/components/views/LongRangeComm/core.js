@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, Mutation, withApollo } from "react-apollo";
+import { InputField } from "../../generic/core";
 import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
 import "./style.scss";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const MESSAGES_SUB = gql`
   subscription LRDecoding($simulatorId: ID) {
@@ -10,6 +12,7 @@ const MESSAGES_SUB = gql`
       id
       simulatorId
       name
+      satellites
       messages(crew: false) {
         id
         sender
@@ -32,25 +35,6 @@ class LRCommCore extends Component {
       selectedMessage: null
     };
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.decodeSubscription && !nextProps.data.loading) {
-      this.decodeSubscription = nextProps.data.subscribeToMore({
-        document: MESSAGES_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            longRangeCommunications:
-              subscriptionData.data.longRangeCommunicationsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.decodeSubscription && this.decodeSubscription();
-  }
   render() {
     if (this.props.data.loading || !this.props.data.longRangeCommunications)
       return null;
@@ -63,11 +47,26 @@ class LRCommCore extends Component {
     return (
       <div className="comm-core">
         {this.props.data.longRangeCommunications.length > 0 ? (
-          <Container style={{ height: "calc(100% - 16px)" }}>
-            <Row
-              className="comm-messages"
-              style={{ height: "100%", minHeight: "30vh" }}
-            >
+          <Container
+            style={{ display: "flex", flexDirection: "column", height: "100%" }}
+          >
+            <SubscriptionHelper
+              subscribe={() =>
+                this.props.data.subscribeToMore({
+                  document: MESSAGES_SUB,
+                  variables: {
+                    simulatorId: this.props.simulator.id
+                  },
+                  updateQuery: (previousResult, { subscriptionData }) => {
+                    return Object.assign({}, previousResult, {
+                      longRangeCommunications:
+                        subscriptionData.data.longRangeCommunicationsUpdate
+                    });
+                  }
+                })
+              }
+            />
+            <Row className="comm-messages" style={{ flex: 1 }}>
               <Col sm={3}>
                 <ul>
                   {this.props.data.longRangeCommunications[0].messages.map(
@@ -101,6 +100,36 @@ ${selectedMessage.message}`}</pre>
                 )}
               </Col>
             </Row>
+            <div>
+              <label>Satellites:</label>
+              <Mutation
+                mutation={gql`
+                  mutation SetSatellites($id: ID!, $num: Int!) {
+                    setLongRangeSatellites(id: $id, num: $num)
+                  }
+                `}
+              >
+                {action => (
+                  <InputField
+                    prompt="How many satellites should they have?"
+                    onClick={a => {
+                      action({
+                        variables: {
+                          id: this.props.data.longRangeCommunications[0].id,
+                          num: a
+                        }
+                      });
+                    }}
+                    style={{
+                      display: "inline-block",
+                      padding: "2px 7px"
+                    }}
+                  >
+                    {this.props.data.longRangeCommunications[0].satellites}
+                  </InputField>
+                )}
+              </Mutation>
+            </div>
           </Container>
         ) : (
           "No Long Range Comm"
@@ -116,6 +145,7 @@ const MESSAGES_QUERY = gql`
       id
       simulatorId
       name
+      satellites
       messages(crew: false) {
         id
         sender

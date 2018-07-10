@@ -26,10 +26,29 @@ export default class Target extends Component {
   }
   componentWillUnmount() {
     this.ticking = false;
+    this.discharging = false;
     cancelAnimationFrame(this.frame);
+    cancelAnimationFrame(this.discharge);
   }
+  discharge = () => {
+    if (!this.discharging) return;
+    const { charge } = this.state;
+    let chargeNum = charge - 0.0075;
+    if (chargeNum < 0) {
+      this.discharging = false;
+      this.ticking = true;
+      window.requestAnimationFrame(this.tick);
+      this.props.setCharge(0);
+      return;
+    }
+    this.setState({
+      charge: Math.max(0, chargeNum)
+    });
+    this.frame = window.requestAnimationFrame(this.discharge);
+  };
   tick = () => {
     if (!this.ticking) return;
+    this.frame = window.requestAnimationFrame(this.tick);
     const { selectedTarget, mouseCharge, charge } = this.state;
     if (
       (selectedTarget && mouseCharge > charge && mouseCharge < charge + 0.08) ||
@@ -40,11 +59,19 @@ export default class Target extends Component {
       });
       if (charge > 1.5) {
         this.props.completeTransport(selectedTarget);
-        this.setState({
-          charge: 0.97,
-          mouseCharge: 0,
-          selectedTarget: null
-        });
+        this.ticking = false;
+        cancelAnimationFrame(this.frame);
+        this.setState(
+          {
+            charge: 0.97,
+            mouseCharge: 0,
+            selectedTarget: null
+          },
+          () => {
+            this.discharging = true;
+            this.discharge();
+          }
+        );
       }
     }
     if (
@@ -66,7 +93,6 @@ export default class Target extends Component {
         this.updateCharge(charge);
       }
     }
-    this.frame = window.requestAnimationFrame(this.tick);
   };
   powerUp(e) {
     const { clientHeight: height } = e.currentTarget;

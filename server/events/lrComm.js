@@ -152,3 +152,12 @@ App.on("updateLongRangeComm", ({ longRangeComm }) => {
     App.systems.filter(s => s.type === "LongRangeComm")
   );
 });
+
+App.on("setLongRangeSatellites", ({ id, num }) => {
+  const lr = App.systems.find(s => s.id === id);
+  lr.setSatellites(num);
+  pubsub.publish(
+    "longRangeCommunicationsUpdate",
+    App.systems.filter(s => s.type === "LongRangeComm")
+  );
+});

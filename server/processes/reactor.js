@@ -1,5 +1,48 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
+import throttle from "../helpers/throttle";
+import uuid from "uuid";
+
+const throttles = {};
+
+const triggerWarning = sys => {
+  if (!throttles[sys.id]) {
+    throttles[sys.id] = throttle(sys => {
+      pubsub.publish("notify", {
+        id: uuid.v4(),
+        simulatorId: sys.simulatorId,
+        station: "Core",
+        title: `Dilithium Crystal Stress`,
+        body: "",
+        color: "danger"
+      });
+      App.handleEvent(
+        {
+          simulatorId: sys.simulatorId,
+          component: "ReactorControlCore",
+          title: `Dilithium Crystal Stress`,
+          body: null,
+          color: "danger"
+        },
+        "addCoreFeed"
+      );
+    }, 10 * 1000);
+  }
+  return throttles[sys.id];
+};
+
+const calcStressLevel = ({
+  alphaTarget,
+  betaTarget,
+  alphaLevel,
+  betaLevel
+}) => {
+  const alphaDif = Math.abs(alphaTarget - alphaLevel);
+  const betaDif = Math.abs(betaTarget - betaLevel);
+  const stressLevel = alphaDif + betaDif > 100 ? 100 : alphaDif + betaDif;
+  return stressLevel;
+};
+
 const updateReactor = () => {
   //Loop through all of the simulators to isolate the systems
   App.flights.filter(f => f.running === true).forEach(f => {
@@ -27,22 +70,26 @@ const updateReactor = () => {
         //Adjust the reactors heat
         reactors.forEach(reactor => {
           const { efficiency, heatRate, heat } = reactor;
-          reactor.setHeat(
-            heat +
-              (efficiency * heatRate / (60 * 60) + level / (oldLevel * 1000))
-          );
+          const minute15 = 15 * 60;
+          const standardHeat = Math.pow(efficiency, 2) / minute15;
+          const unblanaceHeat = Math.abs(Math.cbrt(level - oldLevel)) / 2000;
+          reactor.setHeat(heat + (standardHeat + unblanaceHeat) * heatRate);
         });
 
         //Reduce the batteries by the amount left over
         //Each battery takes the remaining load evenly
         //If level is a negative number, charge the batteries
         batteries.forEach(batt => {
-          const charge = level * (batt.batteryChargeRate / 1000);
+          const charge = level * (batt.batteryChargeRate / 40);
+
           const newLevel = Math.min(
             1,
             Math.max(0, batt.batteryChargeLevel - charge)
           );
-          //console.log('Estimated Time to Depletion:', batt.batteryChargeLevel / charge);
+          // console.log(
+          //   "Estimated Time to Depletion:",
+          //   batt.batteryChargeLevel / charge
+          // );
           //Trigger the event
           if (newLevel !== batt.batteryChargeLevel) {
             App.handleEvent(
@@ -51,6 +98,36 @@ const updateReactor = () => {
             );
           }
         });
+
+        // Update the dilithium stress levels
+        const dilithiumSys = systems[0];
+        let { alphaLevel, betaLevel, alphaTarget, betaTarget } = dilithiumSys;
+        const alphaDif = alphaTarget - alphaLevel;
+        const betaDif = betaTarget - betaLevel;
+        if (alphaDif <= 0) alphaTarget -= 0.1;
+        else alphaTarget += 0.1;
+        if (betaDif <= 0) betaTarget -= 0.1;
+        else betaTarget += 0.1;
+        if (alphaTarget > 100 || alphaTarget < 0)
+          alphaTarget = Math.round(Math.random() * 100);
+        if (betaTarget > 100 || betaTarget < 0)
+          betaTarget = Math.round(Math.random() * 100);
+        dilithiumSys.updateDilithiumStress({ alphaTarget, betaTarget });
+        const stressLevel = calcStressLevel({
+          alphaLevel,
+          betaLevel,
+          alphaTarget,
+          betaTarget
+        });
+        if (stressLevel > 90 && !dilithiumSys.alerted) {
+          // It's too high of a stress level. Mark the alert and trigger a notification
+          // Use a throttle so the warning doesn't happen too often
+          triggerWarning(dilithiumSys)(dilithiumSys);
+          dilithiumSys.alerted = true;
+        }
+        if (stressLevel < 30) {
+          dilithiumSys.alerted = false;
+        }
       });
   });
   setTimeout(updateReactor, 1000);

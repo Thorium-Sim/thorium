@@ -8,31 +8,57 @@ App.on("destroyProbe", ({ id, probeId }) => {
 });
 App.on("launchProbe", ({ id, probe }) => {
   const sys = App.systems.find(s => s.id === id);
-  pubsub.publish("notify", {
-    id: uuid.v4(),
-    simulatorId: sys.simulatorId,
-    station: "Core",
-    title: `Probe Launched`,
-    body: probe.name,
-    color: "info"
-  });
-  App.handleEvent(
-    {
+  if (!sys.torpedo) {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
       simulatorId: sys.simulatorId,
+      station: "Core",
       title: `Probe Launched`,
-      component: "ProbeControlCore",
       body: probe.name,
       color: "info"
-    },
-    "addCoreFeed"
-  );
+    });
+    App.handleEvent(
+      {
+        simulatorId: sys.simulatorId,
+        title: `Probe Launched`,
+        component: "ProbeControlCore",
+        body: probe.name,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+  }
   sys.launchProbe(probe);
   pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
 });
 App.on("fireProbe", ({ id, probeId }) => {
   const sys = App.systems.find(s => s.id === id);
-  sys.fireProbe(probeId);
-  pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
+  const probe = sys.probes.find(p => p.id === probeId);
+  if (probe) {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      station: "Core",
+      title: `Probe Launched`,
+      body: probe.name,
+      color: "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: sys.simulatorId,
+        title: `Probe Launched`,
+        component: "ProbeControlCore",
+        body: probe.name,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+    sys.fireProbe(probeId);
+    pubsub.publish(
+      "probesUpdate",
+      App.systems.filter(s => s.type === "Probes")
+    );
+  }
 });
 App.on("updateProbeType", ({ id, probeType }) => {
   const sys = App.systems.find(s => s.id === id);
@@ -70,5 +96,11 @@ App.on("probeProcessedData", ({ id, simulatorId, data = "" }) => {
   );
   const simulator = App.simulators.find(s => s.id === sys.simulatorId);
   sys && sys.addProcessedData(data.replace(/#SIM/gi, simulator.name));
+  pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
+});
+
+App.on("setProbeTorpedo", ({ id, torpedo }) => {
+  const sys = App.systems.find(s => s.id === id);
+  sys.setTorpedo(torpedo);
   pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
 });

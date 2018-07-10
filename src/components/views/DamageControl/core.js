@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import { Table, Button } from "reactstrap";
 import { InputField, OutputField } from "../../generic/core";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
@@ -27,29 +28,10 @@ const SYSTEMS_SUB = gql`
 class DamageControlCore extends Component {
   constructor(props) {
     super(props);
-    this.systemSub = null;
     this.state = {
       deck: null,
       room: null
     };
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.systemSub && !nextProps.data.loading) {
-      this.systemSub = nextProps.data.subscribeToMore({
-        document: SYSTEMS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            systems: subscriptionData.data.systemsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.systemSub && this.systemSub();
   }
   systemStyle(sys) {
     const obj = {
@@ -132,6 +114,21 @@ class DamageControlCore extends Component {
       >
         {action => (
           <Table size="sm" hover>
+            <SubscriptionHelper
+              subscribe={() =>
+                this.props.data.subscribeToMore({
+                  document: SYSTEMS_SUB,
+                  variables: {
+                    simulatorId: this.props.simulator.id
+                  },
+                  updateQuery: (previousResult, { subscriptionData }) => {
+                    return Object.assign({}, previousResult, {
+                      systems: subscriptionData.data.systemsUpdate
+                    });
+                  }
+                })
+              }
+            />
             <thead>
               <tr>
                 <th>System</th>
@@ -142,42 +139,69 @@ class DamageControlCore extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.props.data.systems.map(s => (
-                <tr key={s.id}>
-                  <td
-                    onClick={e => this.toggleDamage(e, s)}
-                    onContextMenu={e => this.toggleDamage(e, s, true)}
-                    style={this.systemStyle(s)}
-                  >
-                    {this.systemName(s)}
-                  </td>
-                  <td>
-                    {(s.power.power || s.power.power === 0) && (
-                      <InputField
-                        prompt="What is the power?"
-                        onClick={this.setPower.bind(this, s)}
-                      >
-                        {s.power.power}
-                      </InputField>
-                    )}
-                  </td>
-                  <td>/</td>
-                  <td>
-                    {(s.power.power || s.power.power === 0) && (
-                      <OutputField>{s.power.powerLevels[0]}</OutputField>
-                    )}
-                  </td>
-                  <td>
-                    <Button
-                      size="sm"
-                      color="warning"
-                      title="Flux"
-                      style={{ height: "15px" }}
-                      onClick={() => action({ variables: { id: s.id } })}
-                    />
-                  </td>
-                </tr>
-              ))}
+              {this.props.data.systems
+                .concat()
+                .sort((a, b) => {
+                  if (
+                    !(
+                      (a.power.power || a.power.power === 0) &&
+                      a.power.powerLevels.length
+                    ) &&
+                    ((b.power.power || b.power.power === 0) &&
+                      b.power.powerLevels.length)
+                  )
+                    return 1;
+                  if (
+                    !(
+                      (b.power.power || b.power.power === 0) &&
+                      b.power.powerLevels.length
+                    ) &&
+                    ((a.power.power || a.power.power === 0) &&
+                      a.power.powerLevels.length)
+                  )
+                    return -1;
+                  if (a.type > b.type) return 1;
+                  if (a.type < b.type) return -1;
+                  if (a.name > b.name) return 1;
+                  if (a.name < b.name) return -1;
+                  return 0;
+                })
+                .map(s => (
+                  <tr key={s.id}>
+                    <td
+                      onClick={e => this.toggleDamage(e, s)}
+                      onContextMenu={e => this.toggleDamage(e, s, true)}
+                      style={this.systemStyle(s)}
+                    >
+                      {this.systemName(s)}
+                    </td>
+                    <td>
+                      {(s.power.power || s.power.power === 0) && (
+                        <InputField
+                          prompt="What is the power?"
+                          onClick={this.setPower.bind(this, s)}
+                        >
+                          {s.power.power}
+                        </InputField>
+                      )}
+                    </td>
+                    <td>/</td>
+                    <td>
+                      {(s.power.power || s.power.power === 0) && (
+                        <OutputField>{s.power.powerLevels[0]}</OutputField>
+                      )}
+                    </td>
+                    <td>
+                      <Button
+                        size="sm"
+                        color="warning"
+                        title="Flux"
+                        style={{ height: "15px" }}
+                        onClick={() => action({ variables: { id: s.id } })}
+                      />
+                    </td>
+                  </tr>
+                ))}
               <tr>
                 <td>Total</td>
                 <td>

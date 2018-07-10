@@ -27,6 +27,12 @@ export const ReactorMutations = {
   },
   reactorBatteryChargeRate(root, args, context) {
     App.handleEvent(args, "reactorBatteryChargeRate", context);
+  },
+  updateDilithiumStress(root, args, context) {
+    App.handleEvent(args, "updateDilithiumStress", context);
+  },
+  fluxDilithiumStress(root, args, context) {
+    App.handleEvent(args, "fluxDilithiumStress", context);
   }
 };
 

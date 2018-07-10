@@ -73,6 +73,21 @@ npm run build
 
 Builds the app for production and bundles it into a packaged terminal app.
 
+## Deploying
+
+If you have access to upload to the S3 bucket Thorium builds are stored in, you
+can run the `npm run deploy` command, which builds, bundles, and upload Thorium
+in one go. To use this command, you must have your AWS credentials configured in
+the `~/.aws/credentials` file, like so:
+
+```
+[default]
+aws_access_key_id = **Your key here**
+aws_secret_access_key = **Your secret here**
+```
+
+Automatic release notes are currently being developed.
+
 ## Translations
 
 Thorium is currently in the process of supporting i18n translations. Want to add

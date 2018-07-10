@@ -6,6 +6,7 @@ import Target from "./targeting";
 import Scan from "./transporterScan";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Tour from "reactour";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -87,30 +88,6 @@ const Scanning = props => {
 };
 
 class Transporters extends Component {
-  constructor(props) {
-    super(props);
-    this.transporterSubscription = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.transporterSubscription && !nextProps.data.loading) {
-      this.transporterSubscription = nextProps.data.subscribeToMore({
-        document: TRANSPORTER_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            transporters: previousResult.transporters.map(transporter => {
-              if (
-                transporter.id === subscriptionData.data.transporterUpdate.id
-              ) {
-                return subscriptionData.data.transporterUpdate;
-              }
-              return transporter;
-            })
-          });
-        }
-      });
-    }
-  }
   updateTarget(transporter, e) {
     this.props.client.mutate({
       mutation: gql`
@@ -205,15 +182,33 @@ class Transporters extends Component {
       }
     });
   }
-  componentWillUnmount() {
-    this.transporterSubscription && this.transporterSubscription();
-  }
   render() {
     // Assume that there is only one transporter
     if (this.props.data.loading || !this.props.data.transporters) return null;
     const transporter = this.props.data.transporters[0] || {};
     return (
       <div className="transporter-control">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: TRANSPORTER_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  transporters: previousResult.transporters.map(transporter => {
+                    if (
+                      transporter.id ===
+                      subscriptionData.data.transporterUpdate.id
+                    ) {
+                      return subscriptionData.data.transporterUpdate;
+                    }
+                    return transporter;
+                  })
+                });
+              }
+            })
+          }
+        />
         <DamageOverlay system={transporter} message="Transporters Offline" />
         {transporter.state === "Inactive" && (
           <TargetSelect
@@ -230,6 +225,7 @@ class Transporters extends Component {
         {(transporter.state === "Targeting" ||
           transporter.state === "Charging") && (
           <Target
+            charging={transporter.state === "Charging"}
             completeTransport={this.completeTransport.bind(this, transporter)}
             cancelTransport={this.cancelTransport.bind(this, transporter)}
             setCharge={this.setCharge.bind(this, transporter)}
