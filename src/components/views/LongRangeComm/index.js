@@ -6,7 +6,7 @@ import Measure from "react-measure";
 import Satellites from "./Satellites";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Tour from "reactour";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.scss";
 
 function feistelNet(input) {
@@ -32,6 +32,7 @@ const MESSAGES_SUB = gql`
       id
       simulatorId
       name
+      satellites
       messages(crew: false, sent: false, approved: true) {
         id
         sender
@@ -67,7 +68,7 @@ class MessageBox extends Component {
   componentWillUnmount() {
     clearTimeout(this.loopTimeout);
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.message !== this.props.message) {
       this.setState({
         typedMessage: "",
@@ -107,7 +108,6 @@ function messageLoc() {
 class LongRangeComm extends Component {
   constructor(props) {
     super(props);
-    this.lrsub = null;
     this.state = {
       selectedMessage: null,
       selectedSat: null,
@@ -118,24 +118,7 @@ class LongRangeComm extends Component {
     };
   }
   scanning = false;
-  componentWillReceiveProps(nextProps) {
-    if (!this.lrsub && !nextProps.data.loading) {
-      this.lrsub = nextProps.data.subscribeToMore({
-        document: MESSAGES_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            longRangeCommunications:
-              subscriptionData.data.longRangeCommunicationsUpdate
-          });
-        }
-      });
-    }
-  }
   componentWillUnmount() {
-    this.lrsub && this.lrsub();
     this.scanning = false;
   }
   selectSat(sat) {
@@ -233,31 +216,19 @@ class LongRangeComm extends Component {
     }
   };
   startScanning = () => {
+    const satCount = this.props.data.longRangeCommunications[0].satellites;
     this.setState(
       {
-        satellites: [
-          {
-            id: 1,
+        satellites: Array(satCount)
+          .fill(0)
+          .map((_, i) => ({
+            id: i,
             x: Math.random(),
             y: Math.random(),
             r: Math.random() * 360,
             strength: Math.random()
-          },
-          {
-            id: 2,
-            x: Math.random(),
-            y: Math.random(),
-            r: Math.random() * 360,
-            strength: Math.random()
-          },
-          {
-            id: 3,
-            x: Math.random(),
-            y: Math.random(),
-            r: Math.random() * 360,
-            strength: Math.random()
-          }
-        ],
+          })),
+
         scanProgress: 0
       },
       () => {
@@ -294,6 +265,22 @@ class LongRangeComm extends Component {
     const { scanProgress, satellites } = this.state;
     return (
       <Row className="long-range-comm">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: MESSAGES_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  longRangeCommunications:
+                    subscriptionData.data.longRangeCommunicationsUpdate
+                });
+              }
+            })
+          }
+        />
         <DamageOverlay
           system={this.props.data.longRangeCommunications[0]}
           message={"Long Range Communications Offline"}
@@ -345,48 +332,50 @@ class LongRangeComm extends Component {
               )}
             </Measure>
           </div>
-          {scanProgress === 1 && (
-            <Row style={{ marginTop: "10px" }}>
-              <Col lg={{ size: 4, offset: 1 }} xl={{ size: 3, offset: 2 }}>
-                <Button
-                  onClick={this.deleteMessage.bind(this)}
-                  size="lg"
-                  block
-                  disabled={!messageObj}
-                  color="danger"
-                >
-                  Delete Message
-                </Button>
-              </Col>
-              <Col lg={{ size: 4, offset: 2 }} xl={{ size: 3, offset: 2 }}>
-                <Button
-                  onClick={this.sendMessage.bind(this)}
-                  disabled={!this.state.selectedSat || !messageObj}
-                  size="lg"
-                  block
-                  color="success"
-                >
-                  Send Message
-                </Button>
-              </Col>
-            </Row>
-          )}
-          {satellites.length === 0 && (
-            <Row style={{ marginTop: "10px" }}>
-              <Col sm={{ size: 10, offset: 1 }}>
-                <Button
-                  size="lg"
-                  block
-                  color="primary"
-                  onClick={this.startScanning}
-                >
-                  Scan for Satellites
-                </Button>
-              </Col>
-            </Row>
-          )}
-          {satellites.length > 0 &&
-            scanProgress < 1 && (
+          {scanProgress === 1 &&
+            satellites.length > 0 && (
+              <Row style={{ marginTop: "10px" }}>
+                <Col lg={{ size: 4, offset: 1 }} xl={{ size: 3, offset: 2 }}>
+                  <Button
+                    onClick={this.deleteMessage.bind(this)}
+                    size="lg"
+                    block
+                    disabled={!messageObj}
+                    color="danger"
+                  >
+                    Delete Message
+                  </Button>
+                </Col>
+                <Col lg={{ size: 4, offset: 2 }} xl={{ size: 3, offset: 2 }}>
+                  <Button
+                    onClick={this.sendMessage.bind(this)}
+                    disabled={!this.state.selectedSat || !messageObj}
+                    size="lg"
+                    block
+                    color="success"
+                  >
+                    Send Message
+                  </Button>
+                </Col>
+              </Row>
+            )}
+          {satellites.length < 1 &&
+            (scanProgress === 1 || scanProgress === 0) && (
+              <Row style={{ marginTop: "10px" }}>
+                <Col sm={{ size: 10, offset: 1 }}>
+                  <Button
+                    size="lg"
+                    block
+                    color="primary"
+                    onClick={this.startScanning}
+                  >
+                    Scan for Satellites
+                  </Button>
+                </Col>
+              </Row>
+            )}
+          {scanProgress < 1 &&
+            scanProgress > 0 && (
               <Row style={{ marginTop: "10px" }}>
                 <Col sm={12} className="text-center">
                   <h2>Scanning...</h2>
@@ -429,6 +418,7 @@ const QUEUING_QUERY = gql`
       id
       simulatorId
       name
+      satellites
       messages(crew: false, sent: false, approved: true) {
         id
         sender

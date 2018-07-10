@@ -7,4 +7,5 @@ updateLongRangeDecodedMessage(id: ID!, messageId: ID!, decodedMessage: String, a
 updateLongRangeComm(longRangeComm: LongRangeCommInput!): String
 approveLongRangeMessage(id: ID!, message: ID!): String
 encryptLongRangeMessage(id: ID!, message: ID!): String
+setLongRangeSatellites(id:ID!, num:Int!):String
 `;

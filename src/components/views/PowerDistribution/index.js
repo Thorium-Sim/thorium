@@ -6,7 +6,7 @@ import Measure from "react-measure";
 import Tour from "reactour";
 import "./style.scss";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-
+import AnimatedNumber from "react-animated-number";
 /* TODO
 
 Some improvements:
@@ -337,7 +337,13 @@ const Battery = ({ level = 1 }) => {
   return (
     <div className="battery">
       <div className="battery-bar" style={{ height: `${level * 100}%` }} />
-      <div className="battery-level">{Math.round(level * 100)}</div>
+      <div className="battery-level">
+        <AnimatedNumber
+          value={level}
+          duration={1000}
+          formatValue={n => `${Math.round(n * 100)}`}
+        />
+      </div>
     </div>
   );
 };

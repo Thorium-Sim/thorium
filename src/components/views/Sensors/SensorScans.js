@@ -10,7 +10,7 @@ export default class SensorScans extends Component {
       scanResults: props.sensors.scanResults
     };
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const nextSensors = nextProps.sensors;
     if (!this.state.scanResults) {
       //First time load
@@ -92,7 +92,7 @@ export default class SensorScans extends Component {
                   <textarea
                     className="form-control btn-block"
                     rows="6"
-                    value={this.state.scanRequest}
+                    defaultValue={this.state.scanRequest}
                     onChange={evt =>
                       this.setState({
                         scanRequest: evt.target.value

@@ -14,6 +14,7 @@ import {
   NavItem,
   NavLink*/
 } from "reactstrap";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import { graphql, withApollo } from "react-apollo";
 import Tour from "reactour";
 
@@ -75,22 +76,6 @@ class ProbeControl extends Component {
   state = {
     selectedProbe: null
   };
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: PROBES_SUB,
-        variables: { simulatorId: this.props.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            probes: subscriptionData.data.probesUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
   render() {
     if (this.props.data.loading || !this.props.data.probes) return null;
     const probes = this.props.data.probes[0];
@@ -101,6 +86,19 @@ class ProbeControl extends Component {
       probes.probes.filter(p => /[1-8]/.test(p.name)).length === 8;
     return (
       <Container fluid className="probe-control">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: PROBES_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  probes: subscriptionData.data.probesUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={3}>
             <h3>Probes</h3>

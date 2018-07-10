@@ -36,7 +36,6 @@ export default function renderCards(props) {
       variables
     });
   };
-  console.log(clientObj);
   if (
     !clientObj.offlineState &&
     clientObj.hypercard &&

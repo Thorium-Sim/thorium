@@ -149,3 +149,18 @@ App.on("setCoordinateTargeting", ({ id, which }) => {
     App.systems.filter(s => s.type === "Targeting")
   );
 });
+
+App.on("clearAllContacts", ({ id }) => {
+  const system = App.systems.find(s => s.id === id);
+  system.contacts = [];
+  system.classes = [];
+  // Send a sensors update too
+  const sensors = App.systems.find(
+    s => s.simulatorId === system.simulatorId && s.class === "Sensors"
+  );
+  pubsub.publish("sensorContactUpdate", sensors);
+  pubsub.publish(
+    "targetingUpdate",
+    App.systems.filter(s => s.type === "Targeting")
+  );
+});

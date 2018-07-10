@@ -95,6 +95,8 @@
       position: absolute;
       left: 0%;
       height: 100%;
+      transition: width 0.3s linear;
+
       background: linear-gradient(
           to right,
           rgba(0, 0, 0, 0.5) 0%,
@@ -114,7 +116,6 @@
     }
     .coolant {
       animation: 2s ease-in-out 0s infinite coolant_glow;
-      transition: width 0.2s ease-out;
       background: radial-gradient(ellipse at center, #0061b1 0%, #2072c9 100%);
       background-position: center;
     }
@@ -157,6 +158,7 @@
   }
 }
 .targeting-core {
+  height: 100%;
   img {
     width: 16px;
     height: 16px;
@@ -172,8 +174,13 @@
     line-height: 0px;
   }
   .targets-container {
-    height: calc(19px * 4);
+    flex: 1;
     overflow-y: scroll;
+  }
+  .contact-targeting {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 34px);
   }
   .media-object {
     width: 48px;

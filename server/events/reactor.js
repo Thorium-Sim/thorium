@@ -69,3 +69,32 @@ App.on("reactorBatteryChargeRate", ({ id, rate }) => {
     App.systems.filter(s => s.type === "Reactor")
   );
 });
+
+App.on(
+  "updateDilithiumStress",
+  ({ id, alphaLevel, betaLevel, alphaTarget, betaTarget }) => {
+    const system = App.systems.find(sys => sys.id === id);
+    system.updateDilithiumStress({
+      alphaLevel,
+      betaLevel,
+      alphaTarget,
+      betaTarget
+    });
+    pubsub.publish(
+      "reactorUpdate",
+      App.systems.filter(s => s.type === "Reactor")
+    );
+  }
+);
+
+App.on("fluxDilithiumStress", ({ id }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  system.updateDilithiumStress({
+    alphaTarget: Math.round(Math.random() * 100),
+    betaTarget: Math.round(Math.random() * 100)
+  });
+  pubsub.publish(
+    "reactorUpdate",
+    App.systems.filter(s => s.type === "Reactor")
+  );
+});

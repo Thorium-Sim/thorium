@@ -86,6 +86,9 @@ class ActionsMixin extends Component {
             case "freak":
               window.thorium.sendMessage({ action });
               break;
+            case "changeCard":
+              this.props.changeCard(message);
+              break;
             default:
               return;
           }

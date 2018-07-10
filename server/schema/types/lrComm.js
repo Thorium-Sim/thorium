@@ -7,7 +7,8 @@ type LRCommunications {
   name: String
   damage: Damage
   messages(crew: Boolean, sent: Boolean, approved:Boolean): [LRMessage]
-
+  satellites: Int
+  
   #Interception Properties
   interception: Boolean
   locked: Boolean

@@ -75,40 +75,63 @@ App.on("sensorScanResult", ({ id, result }) => {
     App.systems.filter(s => s.type === "Sensors")
   );
 });
-App.on("processedData", ({ id, simulatorId, domain = "external", data }) => {
-  let system;
-  if (id) {
-    system = App.systems.find(sys => sys.id === id);
-  }
-  if (simulatorId && domain) {
-    system = App.systems.find(
-      sys => sys.simulatorId === simulatorId && sys.domain === domain
+App.on(
+  "processedData",
+  ({ id, simulatorId, domain = "external", data, flash }) => {
+    let system;
+    if (id) {
+      system = App.systems.find(sys => sys.id === id);
+    }
+    if (simulatorId && domain) {
+      system = App.systems.find(
+        sys => sys.simulatorId === simulatorId && sys.domain === domain
+      );
+    }
+    if (!system) {
+      console.log("Please specify the domain when sending this data: ", data);
+      return;
+    }
+    const simulator = App.simulators.find(s => s.id === system.simulatorId);
+    system && system.processedDatad(data.replace(/#SIM/gi, simulator.name));
+    pubsub.publish(
+      "sensorsUpdate",
+      App.systems.filter(s => s.type === "Sensors")
     );
-  }
-  if (!system) {
-    console.log("Please specify the domain when sending this data: ", data);
-    return;
-  }
-  const simulator = App.simulators.find(s => s.id === system.simulatorId);
-  system && system.processedDatad(data.replace(/#SIM/gi, simulator.name));
-  pubsub.publish(
-    "sensorsUpdate",
-    App.systems.filter(s => s.type === "Sensors")
-  );
-  const stations = simulator.stations.filter(s =>
-    s.cards.find(c => c.component === "Sensors")
-  );
-  stations.forEach(s => {
-    pubsub.publish("notify", {
-      id: uuid.v4(),
-      simulatorId: system.simulatorId,
-      station: s.name,
-      title: `New Processed Data`,
-      body: data,
-      color: "info"
+    const stations = simulator.stations.filter(s =>
+      s.cards.find(c => c.component === "Sensors")
+    );
+    stations.forEach(s => {
+      if (flash) {
+        const cardName = s.cards.find(c => c.component === "Sensors").name;
+        App.handleEvent(
+          {
+            action: "changeCard",
+            message: cardName,
+            simulatorId: system.simulatorId,
+            stationId: s.name
+          },
+          "triggerAction"
+        );
+        App.handleEvent(
+          {
+            action: "flash",
+            simulatorId: system.simulatorId,
+            stationId: s.name
+          },
+          "triggerAction"
+        );
+      }
+      pubsub.publish("notify", {
+        id: uuid.v4(),
+        simulatorId: system.simulatorId,
+        station: s.name,
+        title: `New Processed Data`,
+        body: data,
+        color: "info"
+      });
     });
-  });
-});
+  }
+);
 App.on("sensorScanCancel", ({ id }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.scanCanceled();

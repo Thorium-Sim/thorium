@@ -85,7 +85,7 @@ class VideoConfig extends Component {
             <video
               ref={this.player}
               src={`${window.location.origin}${src}`}
-              autoPlay={data.autoplay !== false || true}
+              autoPlay={data.autoplay}
               muted
               loop={data.loop}
               onEnded={videoEnd}
