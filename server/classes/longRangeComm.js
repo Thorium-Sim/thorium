@@ -16,6 +16,7 @@ class LRMessage {
     this.message = params.message || "";
     this.decodedMessage = params.decodedMessage || "";
     this.datestamp = params.datestamp || stardate();
+    this.timestamp = params.timestamp || new Date().toString();
     this.crew = params.crew || false;
     this.sender = params.sender || "";
     this.encrypted = params.encrypted || false;
@@ -33,7 +34,7 @@ class LRMessage {
     this.ra = params.ra || Math.round(Math.random() * 10 - 1) * 5 + 5;
     this.rf = params.rf || Math.round(Math.random() * 10 - 1) * 5 + 5;
     this.deleted = false;
-    this.sent = params.sent || false;
+    this.sent = params.sent || this.crew ? true : false;
     if (this.a === 0) this.a = 10;
     if (this.f === 0) this.f = 5;
     if (this.ra === 0) this.ra = 10;
