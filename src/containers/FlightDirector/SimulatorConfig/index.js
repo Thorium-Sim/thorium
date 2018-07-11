@@ -64,6 +64,13 @@ optionalDamageSteps {
     reactivate
   }
 }
+assets {
+  mesh
+  texture
+  side
+  top
+  logo
+}
 systems {
   id
   type
@@ -228,11 +235,14 @@ class SimulatorConfig extends Component {
             >
               Export
             </Button>
-            <ButtonGroup>
-              <Button onClick={this.removeSimulator} size="sm" color="danger">
-                Remove
-              </Button>
-            </ButtonGroup>
+            <Button
+              block
+              onClick={this.removeSimulator}
+              size="sm"
+              color="danger"
+            >
+              Remove Simulator
+            </Button>
           </Col>
           <Col sm={10}>
             <Card>

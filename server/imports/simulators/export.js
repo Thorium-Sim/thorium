@@ -29,23 +29,15 @@ export default function exportSimulator(simId, res) {
     }
   });
   // Add all of the files for Docking Ports and the simulator itself
-  App.assetObjects
-    .filter(a => a.simulatorId === sim.id)
-    .forEach(a => addAsset(a, zipfile, "simulator"));
+  Object.values(sim.assets).forEach(s => addAsset(s, zipfile, "simulator"));
 
   App.dockingPorts
     .filter(a => a.simulatorId === sim.id)
     .forEach(a => addAsset(a.image, zipfile, "simulator"));
 
-  App.libraryDatabase
-    .filter(a => a.simulatorId === sim.id)
-    .forEach(a =>
-      addAsset(
-        a.image && (a.image.substr(0, a.image.lastIndexOf(".")) || a.image),
-        zipfile,
-        "simulator"
-      )
-    );
+  App.libraryDatabase.filter(a => a.simulatorId === sim.id).forEach(a => {
+    addAsset(a.image, zipfile, "simulator");
+  });
   zipfile.end({}, function() {
     res.set({
       "Content-Disposition": `attachment; filename=${sim.name}.sim`,

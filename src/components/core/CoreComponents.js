@@ -38,6 +38,13 @@ const FLIGHTS_SUB = gql`
             name
           }
         }
+        assets {
+          mesh
+          texture
+          side
+          top
+          logo
+        }
       }
     }
   }
@@ -351,6 +358,13 @@ const CORE_LAYOUT = gql`
           cards {
             name
           }
+        }
+        assets {
+          mesh
+          texture
+          side
+          top
+          logo
         }
       }
     }

@@ -451,7 +451,7 @@ class GridDom extends Component {
         }}
       >
         <div className={`grid ${ping ? "ping" : ""}`}>
-          {damaged && <div class="damaged-sensors" />}
+          {damaged && <div className="damaged-sensors" />}
           {interference > 0 && (
             <Interference width={width} interference={interference} />
           )}

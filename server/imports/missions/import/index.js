@@ -1,5 +1,4 @@
 import yauzl from "yauzl";
-import loadAsset from "./loadAsset";
 import path from "path";
 import paths from "../../../helpers/paths";
 import fs from "fs";
@@ -45,9 +44,7 @@ export default function ImportMission(filepath, cb) {
             .splice(0, filename.split("/").length - 1)
             .join("/");
           mkdirp.sync(`${assetDir}/${directorypath}`);
-          const output = fs.createWriteStream(`${assetDir}/${filename}`);
-          readStream.pipe(output);
-          loadAsset(entry);
+          readStream.pipe(fs.createWriteStream(`${assetDir}/${filename}`));
         });
       }
       if (/^mission\/tacticals\.json/.test(entry.fileName)) {

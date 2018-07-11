@@ -133,8 +133,8 @@ export default class Sensors extends System {
 
     this.createContact({
       name: "Training Contact",
-      icon: "/Sensor Contacts/Icons/N",
-      picture: "/Sensor Contacts/Pictures/Astra Heavy Cruiser",
+      icon: "/Sensor Contacts/Icons/N.svg",
+      picture: "/Sensor Contacts/Pictures/Astra Heavy Cruiser.png",
       location: { x: -0.3, y: -0.19, z: 0 },
       destination: { x: -0.3, y: -0.19, z: 0 }
     });

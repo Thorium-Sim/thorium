@@ -11,16 +11,15 @@ class AssetComponent extends PureComponent {
   state = { src: null };
   componentDidMount() {
     const query = gql`
-      query GetAsset($assetKey: String!, $simulatorId: ID) {
-        asset(assetKey: $assetKey, simulatorId: $simulatorId) {
+      query GetAsset($assetKey: String!) {
+        asset(assetKey: $assetKey) {
           assetKey
           url
         }
       }
     `;
     const variables = {
-      assetKey: this.props.asset,
-      simulatorId: this.props.simulatorId
+      assetKey: props.asset
     };
     if (!this.props.asset) {
       return;

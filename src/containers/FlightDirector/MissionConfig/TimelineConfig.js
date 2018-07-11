@@ -69,14 +69,14 @@ export default class TimelineConfig extends Component {
       selectedTimelineItem: null
     };
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.object.id !== this.props.object.id) {
-      this.setState({
-        selectedTimelineStep: null,
-        selectedTimelineItem: null
-      });
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.object.id !== this.props.object.id) {
+  //     this.setState({
+  //       selectedTimelineStep: null,
+  //       selectedTimelineItem: null
+  //     });
+  //   }
+  // }
   _setSelectedTimelineStep = timeline => {
     this.setState({
       selectedTimelineStep: timeline.id,
@@ -427,7 +427,7 @@ export default class TimelineConfig extends Component {
               size="sm"
               onClick={this._addTimelineStep.bind(this)}
             >
-              Add
+              Add Timeline Step
             </Button>
             {this.state.selectedTimelineStep &&
               this.state.selectedTimelineStep !== "mission" && (
@@ -453,15 +453,35 @@ export default class TimelineConfig extends Component {
                 </Button>
               )}
           </ButtonGroup>
+
+          <Button
+            tag="a"
+            size="sm"
+            href={`${window.location.protocol}//${
+              window.location.hostname
+            }:${parseInt(window.location.port, 10) + 1}/exportMission/${
+              object.id
+            }`}
+            block
+            color="info"
+          >
+            Export Mission
+          </Button>
+          <Button
+            color="warning"
+            size="sm"
+            block
+            onClick={() => exportMissionScript(object)}
+          >
+            Export Mission Script
+          </Button>
+          <Button block onClick={removeMission} size="sm" color="danger">
+            Remove Mission
+          </Button>
         </Col>
         {this.state.selectedTimelineStep === "mission" && (
           <div>
-            <MissionConfig
-              mission={object}
-              removeMission={removeMission}
-              updateMission={updateMission}
-              exportMissionScript={exportMissionScript}
-            />
+            <MissionConfig mission={object} updateMission={updateMission} />
           </div>
         )}
         {this.state.selectedTimelineStep &&

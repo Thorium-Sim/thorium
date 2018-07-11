@@ -5,9 +5,10 @@ import { shieldColor } from "../../views/ShieldControl/shieldStyle";
 export default ({ simulator, shields }) => {
   const s = shields[0];
   const color = shieldColor(s);
+  const { assets } = simulator;
   return (
     <div className="shieldMonitoring">
-      <Asset asset={"/Ship Views/Top"} simulatorId={simulator.id}>
+      <Asset asset={assets.top}>
         {({ src }) => (
           <img
             alt="ship"

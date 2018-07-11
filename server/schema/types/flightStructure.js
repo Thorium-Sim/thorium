@@ -29,6 +29,22 @@ input SimulatorInput {
   missionId: ID
 }
 
+type SimulatorAssets {
+  mesh:String
+  texture:String
+  side:String
+  top:String
+  logo:String
+}
+
+input SimulatorAssetsInput {
+  mesh:String
+  texture:String
+  side:String
+  top:String
+  logo:String
+}
+
 type Simulator {
   id: ID
   name: String
@@ -55,6 +71,7 @@ type Simulator {
   training: Boolean
   panels:[ID]
   bridgeOfficerMessaging: Boolean
+  assets: SimulatorAssets
 }
 
 type TemplateSimulator {
