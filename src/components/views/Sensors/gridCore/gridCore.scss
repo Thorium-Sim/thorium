@@ -40,6 +40,13 @@
     border: solid 2px #999;
     cursor: pointer;
   }
+  .pings-dragger {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: solid 2px #999;
+    cursor: pointer;
+  }
   img.armyContact {
     height: 16px;
     width: 16px;
@@ -63,6 +70,7 @@
   .contextMenu {
     z-index: 100;
     position: absolute;
+    overflow-y: auto;
     // width: 300%;
     background-color: rgba(0, 0, 0, 0.8);
     top: 0;

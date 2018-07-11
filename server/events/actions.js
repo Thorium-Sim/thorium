@@ -37,6 +37,21 @@ App.on("triggerAction", args => {
           )
         );
       break;
+    case "movie":
+      App.clients
+        .filter(
+          c =>
+            (c.simulatorId === args.simulatorId &&
+              (c.station === args.stationId || args.stationId === "all")) ||
+            c.id === args.clientId
+        )
+        .forEach(c =>
+          App.handleEvent(
+            { client: c.id, movie: args.message },
+            "clientMovieState"
+          )
+        );
+      break;
     case "message":
       const stations = [];
       if (args.stationId !== "all") {
