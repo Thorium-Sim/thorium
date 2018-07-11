@@ -1,5 +1,5 @@
 export default `
-  asset(assetKey: String!, simulatorId: ID): Asset
-  assets(assetKeys: [String!]!, simulatorId: ID): [Asset]
+  asset(assetKey: String!): Asset
+  assets(assetKeys: [String!]!): [Asset]
   assetFolders(name: String, names: [String]): [AssetFolder]
 `;

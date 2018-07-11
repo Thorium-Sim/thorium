@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { PureComponent } from "react";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag";
 
@@ -7,39 +7,24 @@ export default (assetKey, simulatorId, extension, CORS) => {
   return `${assetPath}${assetKey}/${simulatorId}.${extension}`;
 };
 
-class AssetComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      src: null
-    };
-  }
-  state = { src: "http://unsplash.it/300" };
+class AssetComponent extends PureComponent {
+  state = { src: null };
   componentDidMount() {
-    this.updateAsset(this.props);
-  }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.asset !== this.props.asset) {
-      this.updateAsset(nextProps);
-    }
-  }
-  updateAsset(props) {
     const query = gql`
-      query GetAsset($assetKey: String!, $simulatorId: ID) {
-        asset(assetKey: $assetKey, simulatorId: $simulatorId) {
+      query GetAsset($assetKey: String!) {
+        asset(assetKey: $assetKey) {
           assetKey
           url
         }
       }
     `;
     const variables = {
-      assetKey: props.asset,
-      simulatorId: props.simulatorId
+      assetKey: props.asset
     };
-    if (!props.asset) {
+    if (!this.props.asset) {
       return;
     }
-    props.client
+    this.props.client
       .query({
         query,
         variables

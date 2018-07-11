@@ -4,12 +4,13 @@ import { Asset } from "../../helpers/assets";
 import "./ShipLogo.scss";
 
 export default ({ simulator }) => {
+  const { assets } = simulator;
   return (
     <Container fluid>
       <div className="ShipLogo">
         <Row>
           <Col sm={{ size: 4, offset: 4 }}>
-            <Asset asset="/Misc/Login Logo" simulatorId={simulator.id}>
+            <Asset asset={assets.logo}>
               {({ src }) => (
                 <img
                   alt="Ship Logo"

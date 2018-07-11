@@ -5,7 +5,7 @@ import { Container, Row, Col, Button } from "reactstrap";
 import { Asset } from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import Tour from "reactour";
 
 const INTERNAL_SUB = gql`
@@ -58,29 +58,10 @@ const trainingSteps = [
 class InternalComm extends Component {
   constructor(props) {
     super(props);
-    this.internalSub = null;
     this.state = {
       deck: null,
       room: null
     };
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.internalSub && !nextProps.data.loading) {
-      this.internalSub = nextProps.data.subscribeToMore({
-        document: INTERNAL_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            internalComm: subscriptionData.data.internalCommUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.internalSub && this.internalSub();
   }
   call(e, all) {
     const internalComm = this.props.data.internalComm[0];
@@ -144,6 +125,21 @@ class InternalComm extends Component {
     const buttonStyle = { width: "50%", margin: "0 auto" };
     return (
       <Container className="internal-comm">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: INTERNAL_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  internalComm: subscriptionData.data.internalCommUpdate
+                });
+              }
+            })
+          }
+        />
         <DamageOverlay
           message="Internal Communications Offline"
           system={internalComm}
@@ -266,10 +262,7 @@ class InternalComm extends Component {
         <Row>
           <Col sm={{ size: 8, offset: 2 }}>
             <div style={{ position: "relative", width: "100%" }}>
-              <Asset
-                asset="/Ship Views/Right"
-                simulatorId={this.props.simulator.id}
-              >
+              <Asset asset={this.props.simulator.assets.side}>
                 {({ src }) => (
                   <div
                     alt="Right View"

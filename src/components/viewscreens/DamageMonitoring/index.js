@@ -53,10 +53,7 @@ class DamageMonitoring extends Component {
       <div className="damage-monitoring">
         <h1>Damage Monitor</h1>
         <div className="ship-view">
-          <Asset
-            asset="/Ship Views/Right"
-            simulatorId={this.props.simulator.id}
-          >
+          <Asset asset={this.props.simulator.assets.side}>
             {({ src }) => {
               return (
                 <div

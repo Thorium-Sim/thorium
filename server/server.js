@@ -7,8 +7,7 @@ import graphql from "./bootstrap/graphql";
 import websockets from "./bootstrap/websockets";
 import broadcast from "./bootstrap/broadcast";
 import clientServer from "./bootstrap/client-server.js";
-import autoUpdate from "./bootstrap/autoupdate";
-
+import postMigration from "./bootstrap/postmigration";
 import App from "./app";
 
 const CLIENT_PORT = process.env.NODE_ENV === "production" ? 1337 : 3000;
@@ -29,4 +28,5 @@ Promise.resolve()
   .then(() => {
     App.init();
   })
+  .then(() => postMigration())
   .catch(err => console.error(err));

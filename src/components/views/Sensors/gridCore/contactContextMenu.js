@@ -13,21 +13,7 @@ import {
 import { Asset } from "../../../../helpers/assets";
 import FileExplorer from "../../TacticalMap/fileExplorer";
 
-const ICON_QUERY = gql`
-  query AssetFolders($names: [String]) {
-    assetFolders(names: $names) {
-      id
-      name
-      containers {
-        id
-        name
-        fullPath
-      }
-    }
-  }
-`;
-
-class ContactContextMenu extends Component {
+export default class ContactContextMenu extends Component {
   state = {};
   render() {
     //Get the position
@@ -123,7 +109,7 @@ class ContactContextMenu extends Component {
               </FormGroup>
               <FormGroup>
                 <Label for="sizeRange" sm={2}>
-                  Size
+                  Size ({contact.size})
                 </Label>
                 <input
                   type="range"
@@ -179,7 +165,3 @@ class ContactContextMenu extends Component {
     );
   }
 }
-
-export default graphql(ICON_QUERY, {
-  options: () => ({ variables: { names: ["Icons", "Pictures"] } })
-})(ContactContextMenu);

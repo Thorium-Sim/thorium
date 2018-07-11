@@ -1,7 +1,6 @@
 import path from "path";
 import fs from "fs";
 import paths from "../helpers/paths";
-import App from "../app";
 
 let assetDir = path.resolve("./");
 
@@ -17,17 +16,9 @@ const addAsset = (key, zip, prefix = "mission") => {
       zip.addFile(fileLoc, `${prefix}${key.url}`);
     }
   } else {
-    const container = App.assetContainers.find(a => a.fullPath === key);
-    if (container) {
-      const objects = App.assetObjects.filter(
-        a => a.containerId === container.id
-      );
-      objects.forEach(o => {
-        const objectLoc = `${assetDir}/${o.url}`.replace("//", "/");
-        if (!fs.existsSync(objectLoc)) return;
-        zip.addFile(objectLoc, `${prefix}${o.url}`);
-      });
-    }
+    const objectLoc = `${assetDir}/assets/${key}`.replace("//", "/");
+    if (!fs.existsSync(objectLoc)) return;
+    zip.addFile(objectLoc, `${prefix}/assets${key}`);
   }
 };
 

@@ -21,7 +21,21 @@ const SOUNDS_QUERY = gql`
     assetFolders(name: "Sounds") {
       id
       name
-      containers {
+      objects {
+        id
+        name
+        fullPath
+      }
+    }
+  }
+`;
+
+const MOVIE_QUERY = gql`
+  query Movies {
+    assetFolders(name: "Movies") {
+      id
+      name
+      objects {
         id
         name
         fullPath
@@ -59,13 +73,20 @@ class ActionsCore extends Component {
     });
   };
   triggerAction = () => {
-    let { actionName, actionDest, selectedCard, selectedVoice } = this.state;
+    let {
+      actionName,
+      actionDest,
+      selectedMovie,
+      selectedCard,
+      selectedVoice
+    } = this.state;
     let message;
     if (actionName === "speak" || actionName === "message") {
       message = prompt("What do you want to say?");
       if (!message) return;
     }
     if (actionName === "changeCard") message = selectedCard;
+    if (actionName === "movie") message = selectedMovie;
     if (actionDest === "random") {
       const index = Math.floor(
         Math.random() * this.props.data.simulators[0].stations.length
@@ -134,7 +155,8 @@ class ActionsCore extends Component {
       actionDest,
       selectedSound,
       selectedVoice,
-      selectedCard
+      selectedCard,
+      selectedMovie
     } = this.state;
     if (actionName === "sound")
       return (
@@ -157,7 +179,7 @@ class ActionsCore extends Component {
                       Select a Sound
                     </option>
                     {assetFolders[0]
-                      ? assetFolders[0].containers
+                      ? assetFolders[0].objects
                           .concat()
                           .sort((a, b) => {
                             if (a.name > b.name) return 1;
@@ -177,6 +199,58 @@ class ActionsCore extends Component {
           </Col>
           <Col sm={4}>
             <Button block color="primary" size="sm" onClick={this.playSound}>
+              Play
+            </Button>
+          </Col>
+        </Row>
+      );
+    if (actionName === "movie")
+      return (
+        <Row>
+          <Col sm={8}>
+            <Query query={MOVIE_QUERY}>
+              {({ loading, data: { assetFolders } }) =>
+                loading ? (
+                  <p>Loading</p>
+                ) : (
+                  <Input
+                    style={{ height: "20px" }}
+                    type="select"
+                    value={selectedMovie || "nothing"}
+                    onChange={e =>
+                      this.setState({ selectedMovie: e.target.value })
+                    }
+                  >
+                    <option value="nothing" disabled>
+                      Select a Movie
+                    </option>
+                    {assetFolders[0]
+                      ? assetFolders[0].objects
+                          .concat()
+                          .sort((a, b) => {
+                            if (a.name > b.name) return 1;
+                            if (a.name < b.name) return -1;
+                            return 0;
+                          })
+                          .map(c => (
+                            <option key={c.id} value={c.fullPath}>
+                              {c.name}
+                            </option>
+                          ))
+                      : null}
+                  </Input>
+                )
+              }
+            </Query>
+          </Col>
+          <Col sm={4}>
+            <Button
+              block
+              disabled={!selectedMovie}
+              color="primary"
+              size="sm"
+              onClick={this.triggerAction}
+            >
               Play
             </Button>
           </Col>
@@ -315,6 +389,7 @@ class ActionsCore extends Component {
               <option value="spark">Spark</option>
               <option value="freak">Freak</option>
               <option value="sound">Sound</option>
+              <option value="movie">Movie</option>
               <option value="beep">Beep</option>
               <option value="speak">Speak</option>
               <option value="message">Message</option>

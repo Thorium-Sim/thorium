@@ -47,8 +47,8 @@ class ContactsList extends Component {
     const templateContact = armyContacts[armyContacts.length - 1] || {
       name: "Contact",
       size: 1,
-      icon: "/Sensor Contacts/Icons/N",
-      picture: "/Sensor Contacts/Pictures/N",
+      icon: "/Sensor Contacts/Icons/N.svg",
+      picture: "/Sensor Contacts/Pictures/N.svg",
       infrared: false,
       cloaked: false
     };

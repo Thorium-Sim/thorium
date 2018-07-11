@@ -99,7 +99,8 @@
       transform: translate(-100%, 0);
     }
     .sensors-border-holder,
-    .sensors-planet-holder {
+    .sensors-planet-holder,
+    .sensors-ping-holder {
       z-index: 1;
       width: 100%;
       height: 100%;
@@ -113,7 +114,7 @@
       width: 200%;
       height: 3%;
       position: absolute;
-      border: solid 3px #417;
+      border: solid 1px #417;
       background-color: rebeccapurple;
       opacity: 0.7;
       pointer-events: all;
@@ -125,6 +126,20 @@
       pointer-events: all;
       border: solid 3px #417;
       border-radius: 50%;
+    }
+    .sensor-ping-mover {
+      width: 50%;
+      height: 50%;
+      position: absolute;
+      pointer-events: none;
+    }
+    .sensors-ping {
+      width: 100%;
+      height: 100%;
+      border: solid 3px #417;
+      background-color: transparent;
+      border-radius: 50%;
+      transition: transform 3s ease-out, opacity 3s linear;
     }
   }
   .grid-segments {

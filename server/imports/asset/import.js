@@ -1,6 +1,5 @@
 import path from "path";
 import paths from "../../helpers/paths";
-import loadAsset from "../missions/import/loadAsset";
 import yauzl from "yauzl";
 import mkdirp from "mkdirp";
 import fs from "fs";
@@ -39,7 +38,6 @@ export default function ImportAssets(filepath, cb) {
           mkdirp.sync(`${assetDir}/${directorypath}`);
           const output = fs.createWriteStream(`${assetDir}/${filename}`);
           readStream.pipe(output);
-          loadAsset(entry, /(\/.*)\/.*\..{3,}/gi);
         });
       } else {
         importZip.readEntry();

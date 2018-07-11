@@ -53,6 +53,7 @@ const ShieldData = ({ s, startLoop, state, _toggleShields }) => {
   );
 };
 export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
+  const { assets } = simulator;
   return (
     <Container fluid className="shields">
       <Row>
@@ -63,7 +64,7 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
                 className="shieldBubble"
                 style={{ boxShadow: shieldStyle(shields) }}
               >
-                <Asset asset={"/Ship Views/Top"} simulatorId={simulator.id}>
+                <Asset asset={assets.top}>
                   {({ src }) => (
                     <div
                       alt="ship"
@@ -89,7 +90,7 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
                 className="shieldBubble"
                 style={{ boxShadow: shieldStyle(shields, true) }}
               >
-                <Asset asset={"/Ship Views/Right"} simulatorId={simulator.id}>
+                <Asset asset={assets.side}>
                   {({ src }) => (
                     <div
                       alt="ship"

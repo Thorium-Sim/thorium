@@ -219,3 +219,8 @@ App.on(
     pubsub.publish("clientChanged", App.clients);
   }
 );
+App.on("clientMovieState", ({ client, movie }) => {
+  const c = App.clients.find(c => c.id === client);
+  c.setMovie(movie);
+  pubsub.publish("clientChanged", App.clients);
+});

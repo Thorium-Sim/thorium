@@ -309,6 +309,13 @@ const CLIENT_SUB = gql`
         alertlevel
         layout
         bridgeOfficerMessaging
+        assets {
+          mesh
+          texture
+          side
+          top
+          logo
+        }
       }
       station {
         name
@@ -325,6 +332,7 @@ const CLIENT_SUB = gql`
       loginState
       offlineState
       hypercard
+      movie
       training
       caches
     }
@@ -439,6 +447,7 @@ class ClientView extends Component {
                   offlineState,
                   station,
                   hypercard,
+                  movie,
                   training,
                   caches,
                   __typename
@@ -449,6 +458,7 @@ class ClientView extends Component {
                   loginState,
                   offlineState,
                   hypercard,
+                  movie,
                   training,
                   caches,
                   station,
@@ -598,6 +608,13 @@ const ClientQuery = gql`
         alertlevel
         layout
         bridgeOfficerMessaging
+        assets {
+          mesh
+          texture
+          side
+          top
+          logo
+        }
       }
       station {
         name
@@ -614,6 +631,7 @@ const ClientQuery = gql`
       loginState
       offlineState
       hypercard
+      movie
       training
       caches
     }

@@ -1,6 +1,7 @@
 import React from "react";
 import "./style.scss";
 import Soviet from "./soviet";
+import Movie from "./movie";
 
 const Offline = props => {
   // Messages go here
@@ -29,6 +30,8 @@ const Offline = props => {
   };
   const message = props.message || messages[props.clientObj.offlineState] || {};
   if (props.clientObj.offlineState === "soviet") return <Soviet />;
+  if (props.clientObj.offlineState === "movie")
+    return <Movie {...props.clientObj} />;
   return (
     <div>
       {props.clientObj.offlineState === "blackout" && (
