@@ -19,7 +19,7 @@ class AssetComponent extends PureComponent {
       }
     `;
     const variables = {
-      assetKey: props.asset
+      assetKey: this.props.asset
     };
     if (!this.props.asset) {
       return;
