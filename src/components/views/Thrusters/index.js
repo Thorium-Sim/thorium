@@ -478,6 +478,7 @@ gamepadLoop(){
                   {this.state.dimensions && (
                     <ThrusterThree
                       direction={direction}
+                      simulator={this.props.simulator}
                       simulatorId={this.props.simulator.id}
                       dimensions={this.state.dimensions}
                       rotation={thruster.rotation}

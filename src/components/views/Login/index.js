@@ -81,10 +81,11 @@ class Login extends Component {
   render() {
     let simulatorName;
     if (this.props.simulator) simulatorName = this.props.simulator.name;
+    const { assets } = this.props.simulator;
     return (
       <Row className="loginCard">
         <Col sm={{ size: 3, offset: 1 }}>
-          <Asset asset="/Misc/Login Logo" simulatorId={this.props.simulator.id}>
+          <Asset asset={assets.logo}>
             {({ src }) => (
               <div
                 alt="login logo"
@@ -102,10 +103,7 @@ class Login extends Component {
           </Button>
         </Col>
         <Col sm={{ size: 7, offset: 1 }}>
-          <Asset
-            asset="/Ship Views/Right"
-            simulatorId={this.props.simulator.id}
-          >
+          <Asset asset={assets.side}>
             {({ src }) => (
               <div
                 role="presentation"

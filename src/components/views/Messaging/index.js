@@ -322,6 +322,7 @@ const MESSAGING_QUERY = gql`
       type
     }
     simulators(id: $simId) {
+      id
       bridgeOfficerMessaging
       stations {
         name

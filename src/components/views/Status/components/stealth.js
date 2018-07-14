@@ -3,6 +3,7 @@ import { Asset } from "../../../../helpers/assets";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import shieldStyle from "../../ShieldControl/shieldStyle";
+import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
 
 const SUB = gql`
   subscription StealthUpdate($simulatorId: ID) {
@@ -27,34 +28,6 @@ const SHIELD_SUB = gql`
   }
 `;
 class Stealth extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            stealthField: subscriptionData.data.stealthFieldUpdate
-          });
-        }
-      });
-    }
-    if (!this.shieldSub && !nextProps.data.loading) {
-      this.shieldSub = nextProps.data.subscribeToMore({
-        document: SHIELD_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            shields: subscriptionData.data.shieldsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.shieldSub && this.shieldSub();
-    this.sub && this.sub();
-  }
   render() {
     const stealth =
       this.props.data.loading || !this.props.data.stealthField
@@ -64,8 +37,9 @@ class Stealth extends Component {
       this.props.data.loading || !this.props.data.shields
         ? []
         : this.props.data.shields;
+    const { assets } = this.props.simulator;
     return (
-      <Asset asset="/Ship Views/Top" simulatorId={this.props.simulator.id}>
+      <Asset asset={assets.top}>
         {({ src }) => (
           <div
             className="shieldBubble"
@@ -74,6 +48,36 @@ class Stealth extends Component {
               boxShadow: shieldStyle(shields)
             }}
           >
+            <SubscriptionHelper
+              subscribe={() =>
+                this.props.data.subscribeToMore({
+                  document: SUB,
+                  variables: {
+                    simulatorId: this.props.simulator.id
+                  },
+                  updateQuery: (previousResult, { subscriptionData }) => {
+                    return Object.assign({}, previousResult, {
+                      stealthField: subscriptionData.data.stealthFieldUpdate
+                    });
+                  }
+                })
+              }
+            />
+            <SubscriptionHelper
+              subscribe={() =>
+                this.props.data.subscribeToMore({
+                  document: SHIELD_SUB,
+                  variables: {
+                    simulatorId: this.props.simulator.id
+                  },
+                  updateQuery: (previousResult, { subscriptionData }) => {
+                    return Object.assign({}, previousResult, {
+                      shields: subscriptionData.data.shieldsUpdate
+                    });
+                  }
+                })
+              }
+            />
             <div className="stealth" style={{ transform: "rotate(360deg)" }}>
               <img
                 alt="ship"

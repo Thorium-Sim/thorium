@@ -1,35 +1,58 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
-import * as Classes from "../classes";
+import fs from "fs";
+import path from "path";
+import paths from "../helpers/paths";
+
+let assetDir = path.resolve("./assets/");
+
+if (process.env.NODE_ENV === "production") {
+  assetDir = paths.userData + "/assets";
+}
+
+function getFolders(dir, folderList = []) {
+  const folders = fs
+    .readdirSync(dir)
+    .filter(f => fs.lstatSync(dir + "/" + f).isDirectory());
+  folders.forEach(f => {
+    const fullPath = dir.replace(assetDir, "") + "/" + f;
+    const folderPath = fullPath.split("/");
+    folderList.push({
+      id: fullPath,
+      name: f,
+      fullPath,
+      folderPath: folderPath.slice(0, folderPath.length - 1).join("/") || "/"
+    });
+    getFolders(dir + "/" + f, folderList);
+  });
+  return folderList;
+}
+
+function deleteFolderRecursive(path) {
+  if (fs.existsSync(path)) {
+    fs.readdirSync(path).forEach(function(file, index) {
+      var curPath = path + "/" + file;
+      if (fs.lstatSync(curPath).isDirectory()) {
+        // recurse
+        deleteFolderRecursive(curPath);
+      } else {
+        // delete file
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(path);
+  }
+}
 
 App.on("addAssetFolder", params => {
-  App.assetFolders.push(new Classes.AssetFolder(params));
-  pubsub.publish("assetFolderChange", App.assetFolders);
+  fs.mkdirSync(`${assetDir}${params.fullPath}`);
+  pubsub.publish("assetFolderChange", getFolders(assetDir));
 });
 App.on("removeAssetFolder", params => {
-  App.assetFolders = App.assetFolders.filter(folder => {
-    return folder.id !== params.id;
-  });
-
-  pubsub.publish("assetFolderChange", App.assetFolders);
-});
-App.on("addAssetContainer", params => {
-  App.assetContainers.push(new Classes.AssetContainer(params));
-  pubsub.publish("assetFolderChange", App.assetFolders);
-});
-App.on("removeAssetContainer", params => {
-  App.assetContainers = App.assetContainers.filter(container => {
-    return container.id !== params.id;
-  });
-  pubsub.publish("assetFolderChange", App.assetFolders);
-});
-App.on("addAssetObject", params => {
-  App.assetObjects.push(new Classes.AssetObject(params));
-  pubsub.publish("assetFolderChange", App.assetFolders);
+  deleteFolderRecursive(`${assetDir}${params.fullPath}`);
+  pubsub.publish("assetFolderChange", getFolders(assetDir));
 });
 App.on("removeAssetObject", params => {
-  App.assetObjects = App.assetObjects.filter(object => {
-    return object.id !== params.id;
-  });
-  pubsub.publish("assetFolderChange", App.assetFolders);
+  fs.unlinkSync(`${assetDir}${params.fullPath}`);
+  pubsub.publish("assetFolderChange", getFolders(assetDir));
 });

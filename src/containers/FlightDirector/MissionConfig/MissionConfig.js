@@ -1,12 +1,7 @@
 import React, { Fragment } from "react";
-import { FormGroup, Label, Input, Button } from "reactstrap";
+import { FormGroup, Label, Input } from "reactstrap";
 
-const MissionConfig = ({
-  mission,
-  removeMission,
-  updateMission,
-  exportMissionScript
-}) => {
+const MissionConfig = ({ mission, updateMission }) => {
   return (
     <Fragment>
       <FormGroup>
@@ -26,33 +21,6 @@ const MissionConfig = ({
           onChange={e => updateMission("description", e)}
         />
       </FormGroup>
-      <a id="downloadAnchorElem" style={{ display: "none" }}>
-        Nothing here
-      </a>
-      <Button
-        tag="a"
-        size="sm"
-        href={`${window.location.protocol}//${
-          window.location.hostname
-        }:${parseInt(window.location.port, 10) + 1}/exportMission/${
-          mission.id
-        }`}
-        block
-        color="info"
-      >
-        Export
-      </Button>
-      <Button
-        color="warning"
-        size="sm"
-        block
-        onClick={() => exportMissionScript(mission)}
-      >
-        Export Mission Script
-      </Button>
-      <Button onClick={removeMission} size="sm" color="danger">
-        Remove
-      </Button>
     </Fragment>
   );
 };

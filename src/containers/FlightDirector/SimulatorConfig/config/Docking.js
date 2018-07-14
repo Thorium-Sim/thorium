@@ -93,7 +93,7 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
                     <option value="" disabled>
                       Select An Image
                     </option>
-                    {assetFolders[0].containers.map(a => (
+                    {assetFolders[0].objects.map(a => (
                       <option key={a.id} value={a.fullPath}>
                         {a.name}
                       </option>
@@ -139,7 +139,7 @@ const DOCKING_QUERY = gql`
     assetFolders(names: ["Docking Images"]) {
       id
       name
-      containers {
+      objects {
         id
         name
         fullPath
