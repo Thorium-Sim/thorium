@@ -2,7 +2,7 @@ import { System } from "./generic";
 import HeatMixin from "./generic/heatMixin";
 
 export default class Reactor extends HeatMixin(System) {
-  constructor(params) {
+  constructor(params = {}) {
     super(params);
     this.class = "Reactor";
     this.type = "Reactor";

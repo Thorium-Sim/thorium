@@ -101,6 +101,7 @@ const updateReactor = () => {
 
         // Update the dilithium stress levels
         const dilithiumSys = systems[0];
+        if (!dilithiumSys) return;
         let { alphaLevel, betaLevel, alphaTarget, betaTarget } = dilithiumSys;
         const alphaDif = alphaTarget - alphaLevel;
         const betaDif = betaTarget - betaLevel;
