@@ -97,7 +97,7 @@
     "apollo-server": "^2.0.0-rc.8",
     "apollo-server-express": "^2.0.0-rc.8",
     "appdirectory": "^0.1.0",
-    "autoprefixer": "8.6.3",
+    "autoprefixer": "9.0.0",
     "babel-core": "6.26.3",
     "babel-eslint": "8.2.5",
     "babel-jest": "23.4.0",
