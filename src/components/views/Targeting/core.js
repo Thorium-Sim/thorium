@@ -99,7 +99,7 @@ class TargetingCore extends Component {
     });
   }
   _updateTargetClass(targetId, key, valueArg) {
-    if (!valueArg) return;
+    if (!valueArg && valueArg !== false) return;
     let value = valueArg;
     if (value.target) {
       value = value.target.value;
@@ -423,7 +423,7 @@ class TargetingCore extends Component {
                       <input
                         type="checkbox"
                         checked={t.moving}
-                        onChange={e =>
+                        onClick={e =>
                           this._updateTargetClass(
                             t.id,
                             "moving",

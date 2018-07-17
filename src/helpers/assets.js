@@ -10,6 +10,9 @@ export default (assetKey, simulatorId, extension, CORS) => {
 class AssetComponent extends PureComponent {
   state = { src: null };
   componentDidMount() {
+    this.triggerUpdate();
+  }
+  triggerUpdate() {
     const query = gql`
       query GetAsset($assetKey: String!) {
         asset(assetKey: $assetKey) {
@@ -37,6 +40,11 @@ class AssetComponent extends PureComponent {
           )
         });
       });
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.asset !== prevProps.asset) {
+      this.triggerUpdate();
+    }
   }
   render() {
     const { children, fail } = this.props;

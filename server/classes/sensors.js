@@ -234,8 +234,7 @@ export default class Sensors extends System {
     myContact && myContact.move(destination, speed, stop);
   }
   removeContact({ id }) {
-    const contactIndex = this.contacts.findIndex(contact => contact.id === id);
-    this.contacts.splice(contactIndex, 1);
+    this.contacts = this.contacts.filter(c => c.id !== id);
   }
   stopContact({ id }) {
     const myContact = this.contacts.find(contact => contact.id === id);
