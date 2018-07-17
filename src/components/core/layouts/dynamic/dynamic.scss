@@ -1,3 +1,25 @@
+.non-editing {
+  .mosaic {
+    .mosaic-root {
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+    }
+    .mosaic-window-toolbar {
+      pointer-events: none;
+      height: 16px;
+    }
+    .mosaic-tile {
+      margin: 0;
+    }
+    .mosaic-window-controls,
+    .mosaic-split {
+      display: none;
+    }
+  }
+}
+
 .mosaic {
   font-family: "Gill Sans", sans-serif;
   font-size: 12;

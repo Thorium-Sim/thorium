@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
+import SubscriptionHelper from "../../helpers/subscriptionHelper";
 
 const SUB = gql`
   subscription CoreLayoutsUpdate {
@@ -13,22 +14,7 @@ const SUB = gql`
 `;
 
 class DynamicPicker extends Component {
-  subscription = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: SUB,
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            coreLayouts: subscriptionData.data.coreLayoutChange
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
+  state = { layout: "nothing" };
   add = () => {
     const name = prompt("What is the name of the new core layout?");
     if (name) {
@@ -47,6 +33,29 @@ class DynamicPicker extends Component {
       });
     }
   };
+  delete = () => {
+    const { layout: value } = this.state;
+    const {
+      data: { coreLayouts }
+    } = this.props;
+    const layout = coreLayouts.find(l => l.id === value);
+    console.log(layout);
+    if (
+      window.confirm(
+        `Are you sure you want to delete the '${layout.name}' layout?`
+      )
+    ) {
+      this.setState({ layout: "nothing" });
+      this.props.client.mutate({
+        mutation: gql`
+          mutation RemoveCoreLayout($id: ID!) {
+            removeCoreLayout(id: $id)
+          }
+        `,
+        variables: { id: layout.id }
+      });
+    }
+  };
   onChange = value => {
     const {
       data: { coreLayouts }
@@ -54,6 +63,10 @@ class DynamicPicker extends Component {
     if (value === "new") {
       return this.add();
     }
+    if (value === "delete") {
+      return this.delete();
+    }
+    this.setState({ layout: value });
     this.props.onChange(
       JSON.parse(coreLayouts.find(l => l.id === value).config)
     );
@@ -64,21 +77,38 @@ class DynamicPicker extends Component {
     } = this.props;
     if (loading || !coreLayouts) return null;
     return (
-      <select
-        value="nothing"
-        className="btn btn-warning btn-sm"
-        onChange={e => this.onChange(e.target.value)}
-      >
-        <option value={"nothing"} disabled>
-          Change Mosaic Layout
-        </option>
-        {coreLayouts.map(l => (
-          <option value={l.id} key={l.id}>
-            {l.name}
+      <Fragment>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  coreLayouts: subscriptionData.data.coreLayoutChange
+                });
+              }
+            })
+          }
+        />
+        <select
+          value={this.state.layout}
+          className="btn btn-warning btn-sm"
+          onChange={e => this.onChange(e.target.value)}
+        >
+          <option value={"nothing"} disabled>
+            Change Mosaic Layout
           </option>
-        ))}
-        <option value="new">Save Core Layout</option>
-      </select>
+          {coreLayouts.map(l => (
+            <option value={l.id} key={l.id}>
+              {l.name}
+            </option>
+          ))}
+          <option value="new">Save Core Layout</option>
+          <option disabled={this.state.layout === "nothing"} value="delete">
+            Delete Core Layout
+          </option>
+        </select>
+      </Fragment>
     );
   }
 }
