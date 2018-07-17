@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import * as Layouts from "./layouts";
 import { withApollo, graphql } from "react-apollo";
 import gql from "graphql-tag";
@@ -18,6 +18,7 @@ import {
 import Alerts from "../generic/Alerts";
 import { Link } from "react-router-dom";
 import DynamicPicker from "./DynamicPicker";
+import SubscriptionHelper from "../../helpers/subscriptionHelper";
 
 import "./CoreComponents.scss";
 
@@ -57,44 +58,20 @@ const CACHE_INVALID_SUB = gql`
 `;
 
 class CoreComponents extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      simulator: null,
-      layout: localStorage.getItem("thorium_coreLayout") || "defaultLayout",
-      mosaic: JSON.parse(localStorage.getItem("thorium_coreMosaic")) || null,
-      notifications:
-        localStorage.getItem("thorium_coreNotifications") === "true",
-      speech: localStorage.getItem("thorium_coreSpeech") === "true",
-      editable: false,
-      issuesOpen: false
-    };
-    this.flightsSub = null;
-  }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!this.flightsSub && !nextProps.data.loading) {
-      this.flightsSub = nextProps.data.subscribeToMore({
-        document: FLIGHTS_SUB,
-        variables: { id: this.props.flightId },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            flights: subscriptionData.data.flightsUpdate
-          });
-        }
-      });
-    }
-    if (!this.cacheSub && !nextProps.data.loading) {
-      this.cacheSub = nextProps.data.subscribeToMore({
-        document: CACHE_INVALID_SUB,
-        variables: { flight: this.props.flightId },
-        updateQuery: previousResult => {
-          window.location.reload();
-          return previousResult;
-        }
-      });
-    }
-    if (!nextProps.data.loading) {
-      const { flights } = nextProps.data;
+  state = {
+    simulator: null,
+    layout: localStorage.getItem("thorium_coreLayout") || "defaultLayout",
+    mosaic: JSON.parse(localStorage.getItem("thorium_coreMosaic")) || null,
+    notifications: localStorage.getItem("thorium_coreNotifications") === "true",
+    speech: localStorage.getItem("thorium_coreSpeech") === "true",
+    editable: false,
+    issuesOpen: false
+  };
+  componentDidUpdate() {
+    const { simulator } = this.state;
+    if (simulator) return;
+    if (!this.props.data.loading) {
+      const { flights } = this.props.data;
       if (flights) {
         const flight = this.props.flightId
           ? flights.find(f => f.id === this.props.flightId)
@@ -123,10 +100,6 @@ class CoreComponents extends Component {
         }
       }
     }
-  }
-  componentWillUnmount() {
-    this.flightsSub && this.flightsSub();
-    this.cacheSub && this.cacheSub();
   }
   pickSimulator = e => {
     const simulator = e.target.value;
@@ -179,6 +152,31 @@ class CoreComponents extends Component {
         style={{ backgroundColor: "#333", color: "white" }}
         className="core-container"
       >
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: FLIGHTS_SUB,
+              variables: { id: this.props.flightId },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  flights: subscriptionData.data.flightsUpdate
+                });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: CACHE_INVALID_SUB,
+              variables: { flight: this.props.flightId },
+              updateQuery: previousResult => {
+                window.location.reload();
+                return previousResult;
+              }
+            })
+          }
+        />
         <Button
           tag={Link}
           size="sm"
@@ -225,10 +223,20 @@ class CoreComponents extends Component {
             })}
         </select>
         {["Dynamic", "Next"].indexOf(this.state.layout) > -1 && (
-          <DynamicPicker
-            mosaic={mosaic}
-            onChange={m => this.setState({ mosaic: m })}
-          />
+          <Fragment>
+            <DynamicPicker
+              mosaic={mosaic}
+              onChange={m => this.setState({ mosaic: m })}
+            />
+            <label>
+              <input
+                type="checkbox"
+                checked={this.state.editable}
+                onChange={e => this.setState({ editable: e.target.checked })}
+              />{" "}
+              Edit
+            </label>
+          </Fragment>
         )}
         <Button
           size="sm"
@@ -272,6 +280,7 @@ class CoreComponents extends Component {
         </Button>
         <div
           id="core-layout"
+          className={!this.state.editable ? "non-editing" : ""}
           style={{
             display: this.state.simulator ? "block" : "none",
             height: "calc(100vh - 26px)"
@@ -281,6 +290,8 @@ class CoreComponents extends Component {
             this.state.simulator && (
               <LayoutComponent
                 {...this.props}
+                edit={this.state.editable}
+                editMode={() => this.setState({ editable: true })}
                 mosaic={mosaic}
                 updateMosaic={this.updateMosaic}
                 simulator={

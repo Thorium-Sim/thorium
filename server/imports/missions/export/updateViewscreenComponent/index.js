@@ -10,7 +10,7 @@ export default function buildExport(zip, mission) {
         const args = JSON.parse(i.args);
         if (args && args.component && viewscreens[args.component]) {
           assets = assets.concat(
-            viewscreens[args.component](JSON.parse(args.data))
+            viewscreens[args.component](JSON.parse(args.data || "{}"))
           );
         }
       })
