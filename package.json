@@ -45,7 +45,7 @@
     "plop": "plop"
   },
   "devDependencies": {
-    "all-contributors-cli": "^5.2.1",
+    "all-contributors-cli": "^5.3.0",
     "babel-cli": "^6.26.0",
     "babel-plugin-inline-import": "^3.0.0",
     "babel-plugin-preval": "^3.0.0",
