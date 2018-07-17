@@ -19,7 +19,7 @@ class Ping extends Component {
   }
   render() {
     const { opacity, size } = this.state;
-    const { color, width, x, y, core } = this.props;
+    const { sensorsId, id, color, width, x, y, core } = this.props;
     return (
       <div className="sensors-ping-holder">
         <div
@@ -34,7 +34,7 @@ class Ping extends Component {
                 removeSensorContact(id: $id, contact: { id: $contact })
               }
             `}
-            variables={{ id: this.props.sensorsId, contact: this.props.id }}
+            variables={{ id: sensorsId, contact: id }}
           >
             {action => (
               <div
