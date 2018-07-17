@@ -1,8 +1,8 @@
 import React from "react";
 import { FormGroup } from "reactstrap";
 import { Asset } from "../../helpers/assets";
-export default ({ args }) => {
-  const data = JSON.parse(args.data || "{}");
+export default ({ args = `{"data":{}}` }) => {
+  const data = args.data ? JSON.parse(args.data) : {};
   return (
     <FormGroup className="macro-template">
       <span>

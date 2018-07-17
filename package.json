@@ -64,7 +64,7 @@
     "eslint-loader": "2.0.0",
     "eslint-plugin-flowtype": "2.49.3",
     "eslint-plugin-import": "2.13.0",
-    "eslint-plugin-jsx-a11y": "6.1.1",
+    "eslint-plugin-jsx-a11y": "5.1.1",
     "eslint-plugin-react": "7.9.1",
     "glob": "^7.1.2",
     "husky": "^0.14.3",
@@ -84,7 +84,7 @@
     "react-intl-translations-manager": "^5.0.3",
     "sass-loader": "^7.0.3",
     "wait-on": "^2.1.0",
-    "webpack": "^4.16.1",
+    "webpack": "^3.8.1",
     "webpack-dev-server": "2.11.1",
     "webpack-manifest-plugin": "2.0.3"
   },
