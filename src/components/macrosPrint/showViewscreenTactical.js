@@ -40,6 +40,7 @@ class TacticalMapConfig extends Component {
     const { tacticalData, args } = this.props;
     if (tacticalData.loading || !tacticalData.tacticalMaps) return null;
     const { tacticalMaps } = this.props.tacticalData;
+    if (!args) return null;
     const map = tacticalMaps.find(t => t.id === args.mapId);
     return (
       <div className="tacticalmap-config">
