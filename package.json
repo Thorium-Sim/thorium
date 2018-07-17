@@ -94,7 +94,7 @@
     "apollo-link-error": "^1.1.0",
     "apollo-link-http": "^1.5.4",
     "apollo-link-ws": "^1.0.8",
-    "apollo-server": "^2.0.0-rc.2",
+    "apollo-server": "^2.0.0-rc.8",
     "apollo-server-express": "^2.0.0-rc.8",
     "appdirectory": "^0.1.0",
     "autoprefixer": "8.6.3",
