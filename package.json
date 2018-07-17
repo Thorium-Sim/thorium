@@ -99,7 +99,7 @@
     "appdirectory": "^0.1.0",
     "autoprefixer": "9.0.0",
     "babel-core": "6.26.3",
-    "babel-eslint": "8.2.5",
+    "babel-eslint": "8.2.6",
     "babel-jest": "23.4.0",
     "babel-loader": "7.1.5",
     "babel-preset-react-app": "^3.1.2",
