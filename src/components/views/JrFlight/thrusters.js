@@ -7,6 +7,7 @@ import gql from "graphql-tag";
 
 const Thrusters = props => {
   const { simulator, client, data } = props;
+  const { assets } = simulator;
   if (data.loading) return null;
   const thruster = data.thrusters[0];
   if (!thruster) return null;
@@ -48,7 +49,7 @@ const Thrusters = props => {
                 onMouseDown={() => thrust({ x: -1, y: 0 })}
                 onMouseUp={() => thrust({ x: 0, y: 0 })}
               />
-              <Asset asset="/Ship Views/Top" simulatorId={simulator.id}>
+              <Asset asset={assets.top}>
                 {({ src }) => (
                   <div
                     alt="thruster"

@@ -1,26 +1,26 @@
 .card-phaserCharging {
   .phaserLevels {
-    display:flex;
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     p {
       padding: 0px 5px;
       flex: 1 1 auto;
       width: 25%;
-      display:flex;
+      display: flex;
       flex-direction: row;
       justify-content: space-between;
       border-bottom: solid 1px white;
       border-left: solid 1px white;
-      &:first-child{
+      &:first-child {
         flex: 1 1 auto;
       }
-      &:last-child{
+      &:last-child {
         border-right: solid 1px white;
       }
     }
   }
-  
+
   .phaserBeam {
     margin-bottom: 10px;
   }
@@ -29,12 +29,19 @@
     width: 100%;
     height: 100%;
     position: relative;
-    .charge, .heat {
+    .charge,
+    .heat {
       position: absolute;
       left: 0%;
       height: 60%;
-      //transition: width 0.5s ease-in-out;
-      background: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 100%), linear-gradient(to right, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
+      transition: width 2s linear;
+      background: linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0.5) 0%,
+          rgba(0, 0, 0, 0) 50%,
+          rgba(0, 0, 0, 0.5) 100%
+        ),
+        linear-gradient(to right, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
       background-size: 5px 3px, 100%;
     }
     .charge {
@@ -49,22 +56,24 @@
 .phaser-fire {
   display: flex;
   justify-content: space-around;
-  flex-wrap: wrap;  
+  flex-wrap: wrap;
 }
 :root {
   --phaserArcRotate: -5deg;
 }
 
-$color1: rgb(195,195,31);
+$color1: rgb(195, 195, 31);
 $color2: rgb(212, 212, 69);
 $color3: rgb(102, 102, 0);
-$color4: rgb(236,236,20);
+$color4: rgb(236, 236, 20);
 $animationDuration: 0.2s;
 
 .phaserArc {
   margin-top: 20px;
   .lasers {
-    &.hidden {display: none;}
+    &.hidden {
+      display: none;
+    }
     position: relative;
     height: 100%;
     overflow: hidden;
@@ -104,8 +113,13 @@ $animationDuration: 0.2s;
   }
 }
 @-webkit-keyframes phaserlaser {
-  0%  { transform: rotate(var(--phaserArcRotate)); }
-  50% { transform: rotate(calc(var(--phaserArcRotate) * -1)); }
-  100% { transform: rotate(var(--phaserArcRotate)); }
+  0% {
+    transform: rotate(var(--phaserArcRotate));
+  }
+  50% {
+    transform: rotate(calc(var(--phaserArcRotate) * -1));
+  }
+  100% {
+    transform: rotate(var(--phaserArcRotate));
+  }
 }
-

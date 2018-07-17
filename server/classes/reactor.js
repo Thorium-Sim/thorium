@@ -2,7 +2,7 @@ import { System } from "./generic";
 import HeatMixin from "./generic/heatMixin";
 
 export default class Reactor extends HeatMixin(System) {
-  constructor(params) {
+  constructor(params = {}) {
     super(params);
     this.class = "Reactor";
     this.type = "Reactor";
@@ -19,6 +19,15 @@ export default class Reactor extends HeatMixin(System) {
       this.coolant = null;
       this.heatRate = null;
     }
+
+    // For Dilithium Stress
+    const alpha = Math.round(Math.random() * 100);
+    const beta = Math.round(Math.random() * 100);
+    this.alphaLevel = params.alphaLevel || alpha;
+    this.betaLevel = params.betaLevel || beta;
+    this.alphaTarget = params.alphaTarget || alpha;
+    this.betaTarget = params.betaTarget || beta;
+    this.alerted = params.alerted || false;
   }
   get stealthFactor() {
     if (this.ejected) return 0;
@@ -44,5 +53,11 @@ export default class Reactor extends HeatMixin(System) {
   }
   changeBatteryChargeRate(rate) {
     this.batteryChargeRate = rate;
+  }
+  updateDilithiumStress({ alphaLevel, betaLevel, alphaTarget, betaTarget }) {
+    if (alphaLevel || alphaLevel === 0) this.alphaLevel = alphaLevel;
+    if (betaLevel || betaLevel === 0) this.betaLevel = betaLevel;
+    if (alphaTarget || alphaTarget === 0) this.alphaTarget = alphaTarget;
+    if (betaTarget || betaTarget === 0) this.betaTarget = betaTarget;
   }
 }

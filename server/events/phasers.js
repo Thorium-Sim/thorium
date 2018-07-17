@@ -1,6 +1,14 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import uuid from "uuid";
+import throttle from "../helpers/throttle";
+
+const sendUpdate = throttle(() => {
+  pubsub.publish(
+    "phasersUpdate",
+    App.systems.filter(s => s.type === "Phasers")
+  );
+}, 300);
 
 App.on("chargePhaserBeam", ({ id, beamId }) => {
   const sys = App.systems.find(s => s.id === id);
@@ -63,21 +71,11 @@ App.on("phaserArc", ({ id, beamId, arc }) => {
 });
 App.on("setPhaserBeamCharge", ({ id, beamId, charge, noUpdate }) => {
   App.systems.find(s => s.id === id).updateBeamCharge(beamId, charge);
-  if (!noUpdate || Date.now() % 5 === 0) {
-    pubsub.publish(
-      "phasersUpdate",
-      App.systems.filter(s => s.type === "Phasers")
-    );
-  }
+  sendUpdate();
 });
 App.on("setPhaserBeamHeat", ({ id, beamId, heat, noUpdate }) => {
   App.systems.find(s => s.id === id).updateBeamHeat(beamId, heat);
-  if (!noUpdate || Date.now() % 2 === 0) {
-    pubsub.publish(
-      "phasersUpdate",
-      App.systems.filter(s => s.type === "Phasers")
-    );
-  }
+  sendUpdate();
 });
 App.on("coolPhaserBeam", ({ id, beamId }) => {
   const sys = App.systems.find(s => s.id === id);

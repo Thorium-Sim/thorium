@@ -4,7 +4,6 @@ var chalk = require("chalk");
 var config = require("../config/webpack.config.server");
 var fs = require("fs");
 const { exec } = require("pkg");
-const ncp = require("ncp").ncp;
 
 var deleteFolderRecursive = function(path) {
   if (fs.existsSync(path)) {

@@ -38,7 +38,7 @@ class DamageControl extends Component {
     };
     this.systemSub = null;
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.systemSub && !nextProps.data.loading) {
       this.systemSub = nextProps.data.subscribeToMore({
         document: SYSTEMS_SUB,
@@ -341,8 +341,10 @@ class DamageControl extends Component {
                 </Col>
                 <Col sm={6}>
                   <h3 className="text-center">
-                    {system ? system.damage.currentStep + 1 : 0} /{" "}
-                    {steps.length}
+                    {system && system.damage.damageReportText
+                      ? system.damage.currentStep + 1
+                      : 0}{" "}
+                    / {steps.length}
                   </h3>
                 </Col>
                 <Col sm={3}>
@@ -350,6 +352,7 @@ class DamageControl extends Component {
                     <Button
                       disabled={
                         !system ||
+                        steps.length === 0 ||
                         system.damage.currentStep === steps.length - 1 ||
                         system.damage.validate
                       }
@@ -365,6 +368,7 @@ class DamageControl extends Component {
                     <Button
                       disabled={
                         !system ||
+                        steps.length === 0 ||
                         system.damage.currentStep === steps.length - 1
                       }
                       block

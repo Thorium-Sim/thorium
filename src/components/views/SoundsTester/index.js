@@ -15,7 +15,7 @@ class SoundsTester extends Component {
   render() {
     if (this.props.data.loading || !this.props.data.assetFolders) return null;
     const { assetFolders } = this.props.data;
-    const sounds = assetFolders[0].containers;
+    const sounds = assetFolders[0].objects;
     return (
       <div>
         <h1>Sound Player</h1>
@@ -44,7 +44,7 @@ const SOUNDS_QUERY = gql`
     assetFolders(names: $names) {
       id
       name
-      containers {
+      objects {
         id
         name
         fullPath

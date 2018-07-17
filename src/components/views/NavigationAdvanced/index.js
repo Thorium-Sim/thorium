@@ -7,6 +7,7 @@ import { throttle } from "../../../helpers/debounce";
 import AnimatedNumber from "react-animated-number";
 import Slider from "./slider";
 import ThrusterRotor from "./thrusterRotor";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.scss";
 
 const sliderColors = [
@@ -87,47 +88,6 @@ const ENGINE_SUB = gql`
 
 class AdvancedNavigation extends Component {
   state = { velocity: 0, acceleration: 0 };
-  thrusterSub = null;
-  engineSub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.thrusterSub && !nextProps.data.loading) {
-      this.thrusterSub = nextProps.data.subscribeToMore({
-        document: THRUSTER_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            thrusters: [subscriptionData.data.rotationChange]
-          });
-        }
-      });
-    }
-    if (!this.engineSub && !nextProps.data.loading) {
-      this.engineSub = nextProps.data.subscribeToMore({
-        document: ENGINE_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            engines: previousResult.engines.map(e => {
-              if (e.id === subscriptionData.data.engineUpdate.id) {
-                return subscriptionData.data.engineUpdate;
-              }
-              return Object.assign({}, e, {
-                on: false,
-                velocity: subscriptionData.data.engineUpdate.velocity
-              });
-            })
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.thrusterSub && this.thrusterSub();
-  }
   changeThrusters = (which, rot) => {
     const thrusters = this.props.data.thrusters[0];
     const { yaw, pitch, roll } = thrusters.rotation;
@@ -205,8 +165,47 @@ class AdvancedNavigation extends Component {
       pitch: pitchr,
       roll: rollr
     } = thrusters.rotationRequired;
+    const { assets } = this.props.simulator;
     return (
       <Container fluid className="card-advanced-navigation">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: THRUSTER_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  thrusters: [subscriptionData.data.rotationChange]
+                });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: ENGINE_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  engines: previousResult.engines.map(e => {
+                    if (e.id === subscriptionData.data.engineUpdate.id) {
+                      return subscriptionData.data.engineUpdate;
+                    }
+                    return Object.assign({}, e, {
+                      on: false,
+                      velocity: subscriptionData.data.engineUpdate.velocity
+                    });
+                  })
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={8}>
             <Row>
@@ -249,10 +248,7 @@ class AdvancedNavigation extends Component {
             </Row>
             <Row>
               <Col sm={{ size: 8, offset: 2 }} className="ship-image">
-                <Asset
-                  asset="/Ship Views/Right"
-                  simulatorId={this.props.simulator.id}
-                >
+                <Asset asset={assets.side}>
                   {({ src }) => (
                     <div
                       alt="ship"

@@ -3,7 +3,7 @@ sensorScanRequest(id: ID!, request: String!): String
 sensorScanResult(id: ID!, result: String!): String
 
 #Macro: Processed Data
-processedData(id: ID, simulatorId: ID, domain: String, data: String!): String
+processedData(id: ID, simulatorId: ID, domain: String, data: String!, flash: Boolean): String
 
 sensorScanCancel(id: ID!): String
 

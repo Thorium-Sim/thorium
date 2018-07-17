@@ -153,10 +153,7 @@ class StealthField extends Component {
             )}
           </Col>
           <Col sm="6">
-            <Asset
-              asset="/Ship Views/Right"
-              simulatorId={this.props.simulator.id}
-            >
+            <Asset asset={this.props.simulator.assets.side}>
               {({ src }) => {
                 return (
                   <div
@@ -187,95 +184,95 @@ class StealthField extends Component {
                             : "none"
                       }}
                     >
-                      <div class="band band-1">
-                        <div class="color" />
+                      <div className="band band-1">
+                        <div className="color" />
                       </div>
-                      <div class="band band-2">
-                        <div class="color" />
+                      <div className="band band-2">
+                        <div className="color" />
                       </div>
-                      <div class="band band-3">
-                        <div class="color" />
+                      <div className="band band-3">
+                        <div className="color" />
                       </div>
-                      <div class="band band-4">
-                        <div class="color" />
+                      <div className="band band-4">
+                        <div className="color" />
                       </div>
-                      <div class="band band-5">
-                        <div class="color" />
+                      <div className="band band-5">
+                        <div className="color" />
                       </div>
-                      <div class="band band-6">
-                        <div class="color" />
+                      <div className="band band-6">
+                        <div className="color" />
                       </div>
-                      <div class="band band-7">
-                        <div class="color" />
+                      <div className="band band-7">
+                        <div className="color" />
                       </div>
-                      <div class="band band-8">
-                        <div class="color" />
+                      <div className="band band-8">
+                        <div className="color" />
                       </div>
-                      <div class="band band-9">
-                        <div class="color" />
+                      <div className="band band-9">
+                        <div className="color" />
                       </div>
-                      <div class="band band-10">
-                        <div class="color" />
+                      <div className="band band-10">
+                        <div className="color" />
                       </div>
-                      <div class="band band-11">
-                        <div class="color" />
+                      <div className="band band-11">
+                        <div className="color" />
                       </div>
-                      <div class="band band-12">
-                        <div class="color" />
+                      <div className="band band-12">
+                        <div className="color" />
                       </div>
-                      <div class="band band-13">
-                        <div class="color" />
+                      <div className="band band-13">
+                        <div className="color" />
                       </div>
-                      <div class="band band-14">
-                        <div class="color" />
+                      <div className="band band-14">
+                        <div className="color" />
                       </div>
-                      <div class="band band-15">
-                        <div class="color" />
+                      <div className="band band-15">
+                        <div className="color" />
                       </div>
-                      <div class="band band-16">
-                        <div class="color" />
+                      <div className="band band-16">
+                        <div className="color" />
                       </div>
-                      <div class="band band-17">
-                        <div class="color" />
+                      <div className="band band-17">
+                        <div className="color" />
                       </div>
-                      <div class="band band-18">
-                        <div class="color" />
+                      <div className="band band-18">
+                        <div className="color" />
                       </div>
-                      <div class="band band-19">
-                        <div class="color" />
+                      <div className="band band-19">
+                        <div className="color" />
                       </div>
-                      <div class="band band-20">
-                        <div class="color" />
+                      <div className="band band-20">
+                        <div className="color" />
                       </div>
-                      <div class="band band-21">
-                        <div class="color" />
+                      <div className="band band-21">
+                        <div className="color" />
                       </div>
-                      <div class="band band-22">
-                        <div class="color" />
+                      <div className="band band-22">
+                        <div className="color" />
                       </div>
-                      <div class="band band-23">
-                        <div class="color" />
+                      <div className="band band-23">
+                        <div className="color" />
                       </div>
-                      <div class="band band-24">
-                        <div class="color" />
+                      <div className="band band-24">
+                        <div className="color" />
                       </div>
-                      <div class="band band-25">
-                        <div class="color" />
+                      <div className="band band-25">
+                        <div className="color" />
                       </div>
-                      <div class="band band-26">
-                        <div class="color" />
+                      <div className="band band-26">
+                        <div className="color" />
                       </div>
-                      <div class="band band-27">
-                        <div class="color" />
+                      <div className="band band-27">
+                        <div className="color" />
                       </div>
-                      <div class="band band-28">
-                        <div class="color" />
+                      <div className="band band-28">
+                        <div className="color" />
                       </div>
-                      <div class="band band-29">
-                        <div class="color" />
+                      <div className="band band-29">
+                        <div className="color" />
                       </div>
-                      <div class="band band-30">
-                        <div class="color" />
+                      <div className="band band-30">
+                        <div className="color" />
                       </div>
                     </div>
                   </div>

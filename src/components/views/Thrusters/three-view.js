@@ -102,28 +102,22 @@ class ThreeView extends Component {
     );
   };
   componentDidMount() {
+    const { assets } = this.props.simulator;
     const query = gql`
-      query GetAsset(
-        $assetKey: String!
-        $textureAsset: String!
-        $simulatorId: ID
-      ) {
-        asset(assetKey: $assetKey, simulatorId: $simulatorId) {
+      query GetAsset($assetKey: String!, $textureAsset: String!) {
+        asset(assetKey: $assetKey) {
           assetKey
           url
         }
-        textureAsset: asset(
-          assetKey: $textureAsset
-          simulatorId: $simulatorId
-        ) {
+        textureAsset: asset(assetKey: $textureAsset) {
           assetKey
           url
         }
       }
     `;
     const variables = {
-      assetKey: "/3D/Mesh/Simulator",
-      textureAsset: "/3D/Texture/Simulator",
+      assetKey: assets.mesh,
+      textureAsset: assets.texture,
       simulatorId: this.props.simulatorId
     };
     this.props.client

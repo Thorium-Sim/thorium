@@ -39,7 +39,7 @@ const makeLinks = () => {
     {
       name: "Asset Config",
       icon: "picture-o",
-      link: "/config/assets"
+      link: "/config/assetConfig"
     },
     {
       name: "Mission Config",

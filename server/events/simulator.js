@@ -166,3 +166,8 @@ App.on("setBridgeMessaging", ({ id, messaging }) => {
   sim.bridgeOfficerMessaging = messaging;
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("setSimulatorAssets", ({ id, assets }) => {
+  const sim = App.simulators.find(s => s.id === id);
+  sim.setAssets(assets);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});

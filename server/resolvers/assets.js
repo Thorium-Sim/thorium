@@ -1,11 +1,9 @@
 import fs from "fs";
 import path from "path";
-import uuid from "uuid";
-import mkdirp from "mkdirp";
 import App from "../app";
-import * as Classes from "../classes";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import paths from "../helpers/paths";
+import { ncp } from "ncp";
 
 let assetDir = path.resolve("./assets/");
 
@@ -13,45 +11,36 @@ if (process.env.NODE_ENV === "production") {
   assetDir = paths.userData + "/assets";
 }
 
+function getFolders(dir, folderList = []) {
+  const folders = fs
+    .readdirSync(dir)
+    .filter(f => fs.lstatSync(dir + "/" + f).isDirectory());
+  folders.forEach(f => {
+    const fullPath = dir.replace(assetDir, "") + "/" + f;
+    const folderPath = fullPath.split("/");
+    folderList.push({
+      id: fullPath,
+      name: f,
+      fullPath,
+      folderPath: folderPath.slice(0, folderPath.length - 1).join("/") || "/"
+    });
+    getFolders(dir + "/" + f, folderList);
+  });
+  return folderList;
+}
+
 export const AssetsQueries = {
-  asset(root, { assetKey, simulatorId = "default" }) {
-    const container = App.assetContainers.find(obj => {
-      return obj.fullPath === assetKey;
-    });
-    if (!container) return {};
-    return (
-      App.assetObjects.find(
-        obj =>
-          obj.containerId === container.id && obj.simulatorId === simulatorId
-      ) ||
-      App.assetObjects.find(
-        obj => obj.containerId === container.id && obj.simulatorId === "default"
-      )
-    );
+  asset(root, { assetKey }) {
+    return { assetKey, url: `/assets${assetKey}` };
   },
-  assets(root, { assetKeys, simulatorId = "default" }) {
-    return assetKeys.map(key => {
-      const returnObj = App.assetObjects.find(obj => {
-        return obj.simulatorId === simulatorId && obj.fullPath === key;
-      });
-      if (returnObj) {
-        return { assetKey: key, url: returnObj.url };
-      }
-      return {};
-    });
+  assets(root, { assetKeys }) {
+    return assetKeys.map(a => ({ assetKey: a, url: `/assets${a}` }));
   },
   assetFolders(root, { name, names }) {
-    if (name) {
-      return App.assetFolders.filter(f => {
-        return f.name === name;
-      });
-    }
-    if (names) {
-      return App.assetFolders.filter(f => {
-        return names.indexOf(f.name) > -1;
-      });
-    }
-    return App.assetFolders;
+    const folders = getFolders(assetDir);
+    if (name) return folders.filter(f => f.name === name);
+    if (names) return folders.filter(f => names.indexOf(f.name) > -1);
+    return folders;
   }
 };
 
@@ -60,24 +49,12 @@ export const AssetsMutations = {
     App.handleEvent({ name, folderPath, fullPath }, "addAssetFolder", context);
     return "";
   },
-  removeAssetFolder(root, { id }, context) {
-    App.handleEvent({ id }, "removeAssetFolder", context);
+  removeAssetFolder(root, params, context) {
+    App.handleEvent(params, "removeAssetFolder", context);
     return "";
   },
-  addAssetContainer(root, { name, folderId, folderPath, fullPath }, context) {
-    App.handleEvent(
-      { name, folderId, folderPath, fullPath },
-      "addAssetContainer",
-      context
-    );
-    return "";
-  },
-  removeAssetContainer(root, { id }, context) {
-    App.handleEvent({ id }, "removeAssetContainer", context);
-    return "";
-  },
-  removeAssetObject(root, { id }, context) {
-    App.handleEvent({ id }, "removeAssetObject", context);
+  removeAssetObject(root, params, context) {
+    App.handleEvent(params, "removeAssetObject", context);
     // Get the object
     //const obj = App.assetObjects.find((object) => object.id === id);
     //const extension = obj.url.substr(obj.url.lastIndexOf('.'));
@@ -98,109 +75,42 @@ export const AssetsSubscriptions = {
 
 export const AssetsTypes = {
   AssetFolder: {
-    containers(rootValue) {
-      return App.assetContainers.filter(container => {
-        return container.folderId === rootValue.id;
-      });
-    }
-  },
-  AssetContainer: {
-    objects(rootValue) {
-      return App.assetObjects.filter(object => {
-        return object.containerId === rootValue.id;
-      });
+    objects({ name, fullPath }) {
+      return fs
+        .readdirSync(assetDir + fullPath)
+        .filter(
+          f =>
+            fs.lstatSync(assetDir + fullPath + "/" + f).isFile() && f[0] !== "."
+        )
+        .map(f => ({
+          url: `/assets${fullPath}/${f}`,
+          name: f,
+          fullPath: `${fullPath}/${f}`,
+          folderPath: fullPath,
+          id: `${fullPath}/${f}`
+        }));
     }
   }
 };
 
 export async function uploadAsset(root, args, context) {
-  let {
-    files,
-    name,
-    simulatorId,
-    containerId,
-    containerName,
-    folderPath: givenFolderPath
-  } = args;
-  let container = App.assetContainers.find(
-    container =>
-      containerId === container.id ||
-      (container.folderPath === folderPath && container.name === containerName)
-  );
-  let folderPath = givenFolderPath;
-  let fullPath;
-  if (container) {
-    folderPath = container.folderPath;
-    fullPath = container.fullPath;
-  }
-  files.forEach(file => {
-    // First, check to see if there is a container
-    let container = App.assetContainers.find(
-      container =>
-        containerId === container.id ||
-        (container.folderPath === folderPath &&
-          container.name === containerName)
-    );
-    if (container) {
-      fullPath = fullPath || container.fullPath;
-
-      containerId = containerId || container.id;
-    }
-    let clearContainer = false;
-    if (!container) {
-      //Lets make a container for this asset
-      const fileName = name || file.originalname.replace(/(\..{3})/gi, "");
-      const folder = App.assetFolders.find(f => f.fullPath === folderPath);
-      const folderId = folder && folder.id;
-
-      const containerFullPath = folderPath + "/" + fileName;
-      const params = {
-        name: fileName,
-        folderId,
-        folderPath,
-        fullPath: containerFullPath
-      };
-      App.assetContainers.push(new Classes.AssetContainer(params));
-      container = App.assetContainers.find(
-        container => container.fullPath === containerFullPath
+  let { files, name, folderPath } = args;
+  await Promise.all(
+    files.map(file => {
+      const extension = file.originalname.substr(
+        file.originalname.lastIndexOf(".")
       );
-      containerId = container.id;
-      folderPath = container.folderPath;
-      fullPath = container.fullPath;
+      const filePath = `${assetDir}${folderPath}/${name}${extension}`;
 
-      // Clear the container variable when we are done so it can be reused for future files
-      clearContainer = true;
-    }
-    const extension = file.originalname.substr(
-      file.originalname.lastIndexOf(".")
-    );
-    const key = `${fullPath.substr(1)}/${simulatorId + extension}`;
-    const filepath = path.resolve(assetDir + "/" + key);
-    const lastIndex =
-      filepath.lastIndexOf("/") > -1
-        ? filepath.lastIndexOf("/")
-        : filepath.lastIndexOf("\\");
-    const directorypath = filepath.substring(0, lastIndex);
-    mkdirp.sync(directorypath);
-    fs.writeFileSync(filepath, fs.readFileSync(file.path));
-
-    App.handleEvent(
-      {
-        id: uuid.v4(),
-        containerPath: folderPath,
-        containerId,
-        fullPath: `${fullPath}/${simulatorId + extension}`,
-        url: `/assets${fullPath}/${simulatorId + extension}`,
-        simulatorId
-      },
-      "addAssetObject",
-      context
-    );
-    if (clearContainer) {
-      container = {};
-      containerId = null;
-    }
-  });
-  pubsub.publish("assetFolderChange", App.assetFolders);
-  return "";
+      return new Promise(resolve =>
+        ncp(file.path, filePath, err => {
+          if (err) {
+            console.error("Error!", err);
+          }
+          resolve();
+        })
+      );
+    })
+  );
+  pubsub.publish("assetFolderChange", getFolders(assetDir));
 }

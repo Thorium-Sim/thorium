@@ -9,6 +9,7 @@ type Client {
   loginState: String
   ping: String
   offlineState: String
+  movie: String
   training: Boolean
   caches: [String]
   hypercard: String

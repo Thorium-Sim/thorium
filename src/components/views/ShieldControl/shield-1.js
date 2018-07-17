@@ -8,12 +8,13 @@ import { shieldColor } from "./shieldStyle";
 export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
   const s = shields[0];
   const color = shieldColor(s);
+  const { assets } = simulator;
   return (
     <Container className="shields">
       <DamageOverlay system={s} message={`${s.name} Shields Offline`} />
       <Row>
         <Col sm="7">
-          <Asset asset={"/Ship Views/Top"} simulatorId={simulator.id}>
+          <Asset asset={assets.top}>
             {({ src }) => (
               <div
                 alt="ship"

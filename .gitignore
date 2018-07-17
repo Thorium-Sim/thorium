@@ -52,7 +52,7 @@ node_modules
 
 secrets.js
 logs
-assets
+assets*
 *-rxdb-*
 temp
 thorium-server-*

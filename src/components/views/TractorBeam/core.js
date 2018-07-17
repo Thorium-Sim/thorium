@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Container } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { InputField } from "../../generic/core";
-
+import { InputField, OutputField } from "../../generic/core";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.scss";
 
 const TRACTORBEAM_SUB = gql`
@@ -21,39 +21,10 @@ const TRACTORBEAM_SUB = gql`
 `;
 
 class TractorBeamCore extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      stress: 0
-    };
-    this.tractorBeamSub = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.tractorBeamSub && !nextProps.data.loading) {
-      this.tractorBeamSub = nextProps.data.subscribeToMore({
-        document: TRACTORBEAM_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            tractorBeam: subscriptionData.data.tractorBeamUpdate
-          });
-        }
-      });
-    }
-    if (!nextProps.data.loading) {
-      const tractorBeam = nextProps.data.tractorBeam[0];
-      if (tractorBeam) {
-        this.setState({
-          stress: tractorBeam.stress
-        });
-      }
-    }
-  }
-  componentWillUnmount() {
-    this.tractorBeamSub && this.tractorBeamSub();
-  }
+  state = {
+    stress: 0
+  };
+
   targetLabel = label => {
     const tractorBeam = this.props.data.tractorBeam[0];
     const mutation = gql`
@@ -70,12 +41,12 @@ class TractorBeamCore extends Component {
       variables
     });
   };
-  toggleTractor = (which, evt) => {
+  toggleTractor = (which, state) => {
     const tractorBeam = this.props.data.tractorBeam[0];
     let mutation;
     const variables = {
       id: tractorBeam.id,
-      state: evt.target.checked
+      state
     };
     if (which === "target") {
       mutation = gql`
@@ -123,22 +94,36 @@ class TractorBeamCore extends Component {
     if (!tractorBeam) return <p>No Tractor Beam</p>;
     return (
       <Container className="tractor-beam-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: TRACTORBEAM_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  tractorBeam: subscriptionData.data.tractorBeamUpdate
+                });
+              }
+            })
+          }
+        />
+        <OutputField
+          alert={tractorBeam.state}
+          onDoubleClick={() => this.toggleTractor("state", !tractorBeam.state)}
+        >
+          {tractorBeam.state ? "Active" : "Deactivated"}
+        </OutputField>
         <label style={{ color: tractorBeam.scanning ? "red" : "white" }}>
           Target:{" "}
           <input
             type="checkbox"
-            onChange={evt => this.toggleTractor("target", evt)}
+            onChange={evt => this.toggleTractor("target", evt.target.checked)}
             checked={tractorBeam.target}
           />
         </label>
-        <label>
-          Active:{" "}
-          <input
-            type="checkbox"
-            onChange={evt => this.toggleTractor("state", evt)}
-            checked={tractorBeam.state}
-          />
-        </label>
+
         <div>
           <span>Target Label:</span>
           <InputField
@@ -150,12 +135,12 @@ class TractorBeamCore extends Component {
         </div>
         <label>Strength: {Math.round(tractorBeam.strength * 100)}</label>
         <label>
-          Stress: {Math.round(this.state.stress * 100)}{" "}
+          Stress: {Math.round(tractorBeam.stress * 100)}{" "}
           <input
             style={{ width: "50%", float: "right" }}
             onChange={this.setStress}
             onMouseUp={this.updateStress}
-            value={this.state.stress}
+            defaultValue={tractorBeam.stress}
             type="range"
             min="0"
             max="1"

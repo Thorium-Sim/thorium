@@ -30,6 +30,13 @@ const CardRenderer = props => {
           alertLevel: "5",
           layout: "LayoutCorners"
         },
+        assets: {
+          mesh: "/Simulator/default/mesh.obj",
+          texture: "/Simulator/default/texture.png",
+          side: "/Simulator/default/side.png",
+          top: "/Simulator/default/top.png",
+          logo: "/Simulator/default/logo.svg"
+        },
         station: {
           name: "Test",
           widgets: [
@@ -133,12 +140,14 @@ export default class CardFrame extends Component {
   }
   changeCard = name => {
     this.setState({
-      card: name
+      card: this.props.station.cards.find(c => c.name == name)
+        ? name
+        : this.props.station.cards[0].name
     });
   };
   render() {
     return (
-      <ActionsMixin {...this.props}>
+      <ActionsMixin {...this.props} changeCard={this.changeCard}>
         <CardRenderer
           {...this.props}
           card={this.state.card}

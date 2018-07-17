@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from "react";
 import gql from "graphql-tag";
-import { InputField } from "../../generic/core";
-import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Input } from "reactstrap";
+import { InputField, OutputField } from "../../generic/core";
+import { graphql, withApollo, Mutation } from "react-apollo";
+import { Container, Row, Col, Button, Input, Progress } from "reactstrap";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -25,34 +26,16 @@ const REACTOR_SUB = gql`
       powerOutput
       batteryChargeRate
       batteryChargeLevel
+      # For Dilithium Stress
+      alphaLevel
+      betaLevel
+      alphaTarget
+      betaTarget
     }
   }
 `;
 
 class ReactorControl extends Component {
-  constructor(props) {
-    super(props);
-    this.internalSub = null;
-    this.systemSub = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.internalSub && !nextProps.data.loading) {
-      this.internalSub = nextProps.data.subscribeToMore({
-        document: REACTOR_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            reactors: subscriptionData.data.reactorUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.internalSub && this.internalSub();
-  }
   setEfficiency = e => {
     if (!e) return;
     const { reactors } = this.props.data;
@@ -136,7 +119,7 @@ class ReactorControl extends Component {
     `;
     const variables = {
       id: battery.id,
-      e: e / 100
+      e: e / 1000
     };
     this.props.client.mutate({
       mutation,
@@ -177,6 +160,15 @@ class ReactorControl extends Component {
       variables
     });
   };
+  calcStressLevel = () => {
+    const { reactors } = this.props.data;
+    if (!reactors[0]) return;
+    const { alphaTarget, betaTarget, alphaLevel, betaLevel } = reactors[0];
+    const alphaDif = Math.abs(alphaTarget - alphaLevel);
+    const betaDif = Math.abs(betaTarget - betaLevel);
+    const stressLevel = alphaDif + betaDif > 100 ? 100 : alphaDif + betaDif;
+    return stressLevel;
+  };
   render() {
     if (this.props.data.loading || !this.props.data.reactors) return null;
     const { reactors } = this.props.data;
@@ -184,6 +176,10 @@ class ReactorControl extends Component {
     const battery = reactors.find(r => r.model === "battery");
     if (!reactor) return <p>No Reactor</p>;
     const efficiencies = [
+      {
+        label: "Overload",
+        efficiency: 1.25
+      },
       {
         label: "Cruise",
         efficiency: 1
@@ -215,6 +211,21 @@ class ReactorControl extends Component {
     ];
     return (
       <Container className="reactor-control-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: REACTOR_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  reactors: subscriptionData.data.reactorUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={12}>
             {reactor && (
@@ -267,6 +278,7 @@ class ReactorControl extends Component {
                 <p>Battery Output:</p>
                 <InputField
                   prompt="What is the new battery charge level?"
+                  promptValue={battery.batteryChargeLevel * 100}
                   onClick={this.setChargeLevel}
                 >
                   {Math.round(battery.batteryChargeLevel * 100)}%
@@ -276,8 +288,35 @@ class ReactorControl extends Component {
                   prompt="What is the new battery charge rate?"
                   onClick={this.setChargeRate}
                 >
-                  {battery.batteryChargeRate * 100}
+                  {battery.batteryChargeRate * 1000}
                 </InputField>
+              </Fragment>
+            )}
+
+            {this.calcStressLevel() && (
+              <Fragment>
+                <p>Dilithium Stress:</p>
+                <div style={{ display: "flex" }}>
+                  <Progress style={{ flex: 1 }} value={this.calcStressLevel()}>
+                    {Math.round(this.calcStressLevel())}%
+                  </Progress>
+                  <Mutation
+                    mutation={gql`
+                      mutation FluxDilithium($id: ID!) {
+                        fluxDilithiumStress(id: $id)
+                      }
+                    `}
+                    variables={{ id: reactors[0].id }}
+                  >
+                    {action => (
+                      <Button
+                        style={{ width: "20px" }}
+                        color="danger"
+                        onClick={action}
+                      />
+                    )}
+                  </Mutation>
+                </div>
               </Fragment>
             )}
           </Col>
@@ -306,6 +345,11 @@ const REACTOR_QUERY = gql`
       powerOutput
       batteryChargeRate
       batteryChargeLevel
+      # For Dilithium Stress
+      alphaLevel
+      betaLevel
+      alphaTarget
+      betaTarget
     }
   }
 `;

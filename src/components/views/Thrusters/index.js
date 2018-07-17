@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-//import Draggable from 'gsap/src/uncompressed/utils/Draggable';
 import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 import { DraggableCore } from "react-draggable";
@@ -479,6 +478,7 @@ gamepadLoop(){
                   {this.state.dimensions && (
                     <ThrusterThree
                       direction={direction}
+                      simulator={this.props.simulator}
                       simulatorId={this.props.simulator.id}
                       dimensions={this.state.dimensions}
                       rotation={thruster.rotation}

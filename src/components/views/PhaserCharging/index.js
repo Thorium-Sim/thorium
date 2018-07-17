@@ -209,11 +209,11 @@ class PhaserCharging extends Component {
             </Row>
           </Col>
         </Row>
-        <PhaserArc
+        {/* <PhaserArc
           client={this.props.client}
           phaserId={phasers.id}
           arc={phasers.arc}
-        />
+        /> */}
         <Tour
           steps={trainingSteps}
           isOpen={this.props.clientObj.training}

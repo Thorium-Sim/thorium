@@ -16,6 +16,7 @@ class LRMessage {
     this.message = params.message || "";
     this.decodedMessage = params.decodedMessage || "";
     this.datestamp = params.datestamp || stardate();
+    this.timestamp = params.timestamp || new Date().toString();
     this.crew = params.crew || false;
     this.sender = params.sender || "";
     this.encrypted = params.encrypted || false;
@@ -28,12 +29,12 @@ class LRMessage {
       );
     }
     this.approved = params.approved || station ? false : true;
-    this.a = params.a || 20;
+    this.a = params.a || 10;
     this.f = params.f || 10;
-    this.ra = params.ra || Math.round(Math.random() * 20 - 2) * 5 + 10;
+    this.ra = params.ra || Math.round(Math.random() * 10 - 1) * 5 + 5;
     this.rf = params.rf || Math.round(Math.random() * 10 - 1) * 5 + 5;
     this.deleted = false;
-    this.sent = params.sent || false;
+    this.sent = params.sent || this.crew ? true : false;
     if (this.a === 0) this.a = 10;
     if (this.f === 0) this.f = 5;
     if (this.ra === 0) this.ra = 10;
@@ -74,6 +75,7 @@ export default class LongRangeComm extends System {
     this.interception = params.interception || false;
     this.locked = params.locked || false;
     this.decoded = params.decoded || false;
+    this.satellites = params.satellites || 3;
   }
   get stealthFactor() {
     if (this.messageSent) return 0.4;
@@ -106,7 +108,7 @@ export default class LongRangeComm extends System {
     const params = { message, crew, sender, sent: false };
     if (decoded) {
       params.decodedMessage = message;
-      params.a = Math.round(Math.random() * 20 - 2) * 5 + 10;
+      params.a = Math.round(Math.random() * 10 - 1) * 5 + 5;
       params.f = Math.round(Math.random() * 10 - 1) * 5 + 5;
       if (params.a === 0) params.a = 10;
       if (params.f === 0) params.f = 5;
@@ -132,5 +134,8 @@ export default class LongRangeComm extends System {
   updateDecodedMessage(id, messageId, decodedMessage, a, f) {
     const m = this.messages.find(mm => mm.id === messageId);
     m.updateDecodedMessage(decodedMessage, a, f);
+  }
+  setSatellites(num) {
+    this.satellites = num;
   }
 }

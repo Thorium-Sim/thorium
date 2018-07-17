@@ -72,7 +72,7 @@ All pull requests and issues are welcome, with the following requirements:
   new feature for some period of time, let me know first. This helps me make
   sure I don't work on something which you are already working on. If an issue
   exists, comment on it saying that you are working on it. If an issue doesn't
-  exist, create one.
+  exist, create one and add a comment saying you intend to implement the change.
 - Any new pull requests will not be accepted unless a corresponding issue or
   pull request from [thorium-docs](https://github.com/Thorium-Sim/thorium-docs)
   is referenced, within reason. Some things don't need to be documented, but if

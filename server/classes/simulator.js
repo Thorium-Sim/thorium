@@ -30,6 +30,16 @@ class Ship {
   }
 }
 
+class Assets {
+  constructor(params = {}) {
+    this.mesh = params.mesh || "/Simulator/default/mesh.obj";
+    this.texture = params.texture || "/Simulator/default/texture.png";
+    this.side = params.side || "/Simulator/default/side.png";
+    this.top = params.top || "/Simulator/default/top.png";
+    this.logo = params.logo || "/Simulator/default/logo.svg";
+  }
+}
+
 export default class Simulator {
   constructor(params) {
     this.id = params.id || uuid.v4();
@@ -39,6 +49,7 @@ export default class Simulator {
     this.template = params.template || false;
     this.templateId = params.templateId || null;
     this.class = "Simulator";
+    this.assets = new Assets(params.assets);
     this.stationSet = params.stationSet || null;
     this.stations = params.stations || [];
     this.exocomps = params.exocomps || 0;
@@ -152,5 +163,8 @@ export default class Simulator {
     this.optionalDamageSteps = this.optionalDamageSteps.filter(
       s => s.id !== stepId
     );
+  }
+  setAssets(assets) {
+    this.assets = new Assets(assets);
   }
 }

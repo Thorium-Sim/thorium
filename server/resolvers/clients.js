@@ -91,6 +91,9 @@ export const ClientMutations = {
   },
   applyClientSet(root, args, context) {
     App.handleEvent(args, "applyClientSet", context);
+  },
+  clientMovieState(root, args, context) {
+    App.handleEvent(args, "clientMovieState", context);
   }
 };
 

@@ -67,7 +67,7 @@ class GridDom extends Component {
   };
   interval = 1000 / 30;
   sensorContactsSubscription = null;
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.sensorsSubscription && !nextProps.data.loading) {
       this.sensorsSubscription = nextProps.data.subscribeToMore({
         document: SENSORCONTACT_SUB,
@@ -382,6 +382,7 @@ class GridDom extends Component {
     });
   };
   _clickMouse = (contact, e) => {
+    if (contact.preventDefault) return;
     e.preventDefault();
     e.stopPropagation();
     this.setState({ selectedContact: contact.id });
@@ -450,7 +451,7 @@ class GridDom extends Component {
         }}
       >
         <div className={`grid ${ping ? "ping" : ""}`}>
-          {damaged && <div class="damaged-sensors" />}
+          {damaged && <div className="damaged-sensors" />}
           {interference > 0 && (
             <Interference width={width} interference={interference} />
           )}
@@ -517,6 +518,7 @@ class GridDom extends Component {
                     key={contact.id}
                     width={width}
                     core={core}
+                    sensorsId={this.props.sensor}
                     {...contact}
                     selected={
                       selectedContacts
@@ -548,6 +550,7 @@ class GridDom extends Component {
             <SensorContact
               width={width}
               core={core}
+              sensorsId={this.props.sensor}
               destination={movingContact.location}
               {...movingContact}
             />

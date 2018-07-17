@@ -35,6 +35,16 @@ const FLIGHTS_SUB = gql`
         layout
         stations {
           name
+          cards {
+            name
+          }
+        }
+        assets {
+          mesh
+          texture
+          side
+          top
+          logo
         }
       }
     }
@@ -356,6 +366,16 @@ const CORE_LAYOUT = gql`
         layout
         stations {
           name
+          cards {
+            name
+          }
+        }
+        assets {
+          mesh
+          texture
+          side
+          top
+          logo
         }
       }
     }

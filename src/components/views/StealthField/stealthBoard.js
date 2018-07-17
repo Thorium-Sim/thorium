@@ -21,16 +21,6 @@ export default class StealthBoard extends Component {
     cancelAnimationFrame(this.frame);
     this.looping = false;
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.systems && !this.state.systems) {
-      // We only need to initialize the state
-      this.setState({
-        systems: nextProps.systems.filter(
-          s => typeof s.stealthFactor === "number"
-        )
-      });
-    }
-  }
   loop(currentTime) {
     if (this.looping) {
       this.frame = window.requestAnimationFrame(this.loop);

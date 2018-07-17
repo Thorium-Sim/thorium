@@ -15,7 +15,7 @@ const ShipImage = ({
   const clientList = clients.filter(c => !c.executive);
   return (
     <div className="ship-image">
-      <Asset asset={view} simulatorId={simulatorId}>
+      <Asset asset={view}>
         {({ src }) => (
           <Fragment>
             <div
@@ -136,7 +136,7 @@ class ThxRender extends Component {
       id,
       clients,
       clientObj: { id: clientId },
-      simulator: { id: simulatorId },
+      simulator: { id: simulatorId, assets },
       station: { executive },
       name,
       activated
@@ -149,7 +149,7 @@ class ThxRender extends Component {
         <Row>
           <Col sm={{ size: 8, offset: executive ? 2 : 0 }}>
             <ShipImage
-              view="/Ship Views/Top"
+              view={assets.top}
               simulatorId={simulatorId}
               clients={clients}
               index={index}
@@ -157,7 +157,7 @@ class ThxRender extends Component {
               executive={executive}
             />
             <ShipImage
-              view="/Ship Views/Right"
+              view={assets.side}
               simulatorId={simulatorId}
               clients={clients}
               index={index}
