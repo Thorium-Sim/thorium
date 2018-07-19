@@ -352,7 +352,24 @@ class Library extends Component {
                       Cancel
                     </Button>
                   </Col>
-                  <Col sm={{ size: 4, offset: 4 }}>
+                  <Col sm={4}>
+                    <Button
+                      size="sm"
+                      color="info"
+                      block
+                      disabled={!this.state.entry.id}
+                      as="a"
+                      href={`${window.location.protocol}//${
+                        window.location.hostname
+                      }:${parseInt(window.location.port, 10) +
+                        1}/exportLibrary/${this.state.entry.simulatorId}/${
+                        this.state.entry.id
+                      }`}
+                    >
+                      Export
+                    </Button>
+                  </Col>
+                  <Col sm={4}>
                     <Button
                       size="sm"
                       color="success"

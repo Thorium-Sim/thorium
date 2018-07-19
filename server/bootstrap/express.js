@@ -8,6 +8,7 @@ import importMission from "../imports/missions/import";
 import exportSimulator from "../imports/simulators/export";
 import importSimulator from "../imports/simulators/import";
 import importAssets from "../imports/asset/import";
+import exportLibrary from "../imports/library/export";
 import { uploadAsset } from "../resolvers/assets";
 import schema from "../data";
 import path from "path";
@@ -40,6 +41,13 @@ export default () => {
 
   server.get("/exportSimulator/:simId", (req, res) => {
     exportSimulator(req.params.simId, res);
+  });
+
+  server.get("/exportLibrary/:simId", (req, res) => {
+    exportLibrary(req.params.simId, null, res);
+  });
+  server.get("/exportLibrary/:simId/:entryId", (req, res) => {
+    exportLibrary(req.params.simId, req.params.entryId, res);
   });
 
   server.post("/importSimulator", upload.any(), async (req, res) => {
