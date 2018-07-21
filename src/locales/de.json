@@ -8,6 +8,7 @@
   "flight-config": "Flug zusammenstellen",
   "major-upgrade-warning": "Dies ist ein Hauptversions-Update. Bitte sichere dein Thorium-Daten-Verzeichnis sowie die Programmdatei, bevor dieses Update ausgeführt wird.",
   "return-to-main": "Zurück zur Übersicht",
+  "sound-player": "Sound Player",
   "upgrade-instructions": "Das Update wird im Hintergrund heruntergeladen. Warte, bis das Kommandozeilenfenster für den Thorium-Server 'Download complete' anzeigt, bevor du den Server neu startest.",
   "upgrade-warning": "Diese Version von Thorium ist veraltet. Die neueste Version ist {newVersion}. Diese Version: {oldVersion}"
 }
