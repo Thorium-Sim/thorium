@@ -60,6 +60,10 @@ Follow the prompt and commit `.all-contributorsrc` and `README.md` in the PR. If
 you've already added yourself to the list and are making a new type of
 contribution, you can run it again and select the added contribution type.
 
+Once you are a contributor to Thorium, you'll be added to the Github
+organization. This will allow you to assign yourself to issues and merge
+requests and will give you the 'Thorium-Sim' badge on your Github Profile.
+
 ## Pull Request Guidelines
 
 All pull requests and issues are welcome, with the following requirements:
