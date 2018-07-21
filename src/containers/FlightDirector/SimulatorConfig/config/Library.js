@@ -76,23 +76,25 @@ class Library extends Component {
       this.setState({ entry: null });
     });
   };
-  importEntries = e => {
-    const self = this;
-    var reader = new FileReader();
-    reader.onload = function() {
-      const result = this.result;
-      const mutation = gql`
-        mutation ImportLibrary($simulatorId: ID!, $entries: String!) {
-          importLibraryEntry(simulatorId: $simulatorId, entries: $entries)
+  importEntries = evt => {
+    if (evt.target.files[0]) {
+      const data = new FormData();
+      Array.from(evt.target.files).forEach((f, index) =>
+        data.append(`files[${index}]`, f)
+      );
+      fetch(
+        `${window.location.protocol}//${window.location.hostname}:${parseInt(
+          window.location.port,
+          10
+        ) + 1}/importLibrary/${this.props.selectedSimulator.id}`,
+        {
+          method: "POST",
+          body: data
         }
-      `;
-      const variables = {
-        simulatorId: self.props.selectedSimulator.id,
-        entries: result
-      };
-      self.props.client.mutate({ mutation, variables });
-    };
-    e.target.files[0] && reader.readAsText(e.target.files[0]);
+      ).then(() => {
+        window.location.reload();
+      });
+    }
   };
   render() {
     const {
@@ -143,7 +145,7 @@ class Library extends Component {
               </CardBody>
             </Card>
             <Row>
-              <Col sm={6}>
+              <Col sm={12}>
                 <Button
                   color="success"
                   size="sm"
@@ -161,7 +163,8 @@ class Library extends Component {
                   Create
                 </Button>
               </Col>
-              <Col sm={6}>
+              <Col sm={12}>
+                <h6>Import Library Entries</h6>
                 <Input size="sm" type="file" onChange={this.importEntries} />
               </Col>
             </Row>
@@ -176,6 +179,19 @@ class Library extends Component {
                   Delete Entry
                 </Button>
               )}
+            <Button
+              color="info"
+              size="sm"
+              block
+              as="a"
+              href={`${window.location.protocol}//${
+                window.location.hostname
+              }:${parseInt(window.location.port, 10) + 1}/exportLibrary/${
+                this.props.selectedSimulator.id
+              }`}
+            >
+              Export Library
+            </Button>
           </Col>
           <Col sm={9}>
             {entry && (

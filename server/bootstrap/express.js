@@ -9,6 +9,7 @@ import exportSimulator from "../imports/simulators/export";
 import importSimulator from "../imports/simulators/import";
 import importAssets from "../imports/asset/import";
 import exportLibrary from "../imports/library/export";
+import importLibrary from "../imports/library/import";
 import { uploadAsset } from "../resolvers/assets";
 import schema from "../data";
 import path from "path";
@@ -49,13 +50,29 @@ export default () => {
   server.get("/exportLibrary/:simId/:entryId", (req, res) => {
     exportLibrary(req.params.simId, req.params.entryId, res);
   });
+  server.post("/importLibrary/:simId", upload.any(), async (req, res) => {
+    const { simId } = req.params;
+    if (req.files[0]) {
+      importLibrary(req.files[0].path, simId, () => {
+        fs.unlink(req.files[0].path, err => {
+          if (err) {
+            res.end("Error");
+            throw new Error(err);
+          }
+          res.end("Complete");
+        });
+      });
+    }
+  });
 
   server.post("/importSimulator", upload.any(), async (req, res) => {
     if (req.files[0]) {
       importSimulator(req.files[0].path, () => {
         fs.unlink(req.files[0].path, err => {
-          res.end("Error");
-          if (err) throw new Error(err);
+          if (err) {
+            res.end("Error");
+            throw new Error(err);
+          }
           res.end("Complete");
         });
       });
@@ -66,8 +83,10 @@ export default () => {
     if (req.files[0]) {
       importMission(req.files[0].path, () => {
         fs.unlink(req.files[0].path, err => {
-          res.end("Error");
-          if (err) throw new Error(err);
+          if (err) {
+            res.end("Error");
+            throw new Error(err);
+          }
           res.end("Complete");
         });
       });
@@ -78,8 +97,10 @@ export default () => {
     if (req.files[0]) {
       importAssets(req.files[0].path, () => {
         fs.unlink(req.files[0].path, err => {
-          res.end("Error");
-          if (err) throw new Error(err);
+          if (err) {
+            res.end("Error");
+            throw new Error(err);
+          }
           res.end("Complete");
         });
       });
