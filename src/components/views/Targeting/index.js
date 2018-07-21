@@ -423,35 +423,36 @@ class Targeting extends Component {
           <Col sm="7">
             <DamageOverlay system={phasers} message="Phasers Offline" />
             <div className="phaser-holder">
-              {phasers.beams.map(
-                (p, i, arr) =>
-                  arr.length > 2 ? (
-                    <PhaserFire
-                      key={p.id}
-                      {...p}
-                      disabled={this.state.disabledPhasers[p.id]}
-                      index={i + 1}
-                      firePhasers={this.firePhasers.bind(this)}
-                      coolPhasers={this.coolPhasers.bind(this)}
-                    />
-                  ) : (
-                    <PhaserBeam
-                      key={p.id}
-                      {...p}
-                      disabled={this.state.disabledPhasers[p.id]}
-                      index={i + 1}
-                      chargePhasers={this.chargePhasers.bind(this)}
-                      dischargePhasers={this.dischargePhasers.bind(this)}
-                      coolPhasers={this.coolPhasers.bind(this)}
-                      firePhasers={this.firePhasers.bind(this)}
-                      targeting={true}
-                    />
-                  )
-              )}
+              {phasers &&
+                phasers.beams.map(
+                  (p, i, arr) =>
+                    arr.length > 2 ? (
+                      <PhaserFire
+                        key={p.id}
+                        {...p}
+                        disabled={this.state.disabledPhasers[p.id]}
+                        index={i + 1}
+                        firePhasers={this.firePhasers.bind(this)}
+                        coolPhasers={this.coolPhasers.bind(this)}
+                      />
+                    ) : (
+                      <PhaserBeam
+                        key={p.id}
+                        {...p}
+                        disabled={this.state.disabledPhasers[p.id]}
+                        index={i + 1}
+                        chargePhasers={this.chargePhasers.bind(this)}
+                        dischargePhasers={this.dischargePhasers.bind(this)}
+                        coolPhasers={this.coolPhasers.bind(this)}
+                        firePhasers={this.firePhasers.bind(this)}
+                        targeting={true}
+                      />
+                    )
+                )}
             </div>
             <Row>
               <Col sm="8">
-                <PhaserCoolant coolant={phasers.coolant} />
+                {phasers && <PhaserCoolant coolant={phasers.coolant} />}
               </Col>
             </Row>
             {/*<PhaserArc client={this.props.client} phaserId={phasers.id} arc={phasers.arc} />*/}
