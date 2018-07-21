@@ -31,6 +31,15 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Sound Player",
+        "id": "sound-player"
+      }
+    ],
+    "path": "src/containers/Card.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Flight Config",
         "id": "flight-config"
       },

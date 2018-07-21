@@ -61,7 +61,6 @@ export default autoUpdate => {
                   }
                   if (["linux", "darwin"].indexOf(process.platform) > -1) {
                     const command = `chmod 777 ${exePath}`;
-                    console.log(command);
                     exec(command);
                   }
                   console.log(
