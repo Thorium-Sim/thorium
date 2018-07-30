@@ -79,7 +79,7 @@
     "nodemon": "^1.18.3",
     "pkg": "^4.3.3",
     "plop": "^2.0.0",
-    "prettier": "^1.13.5",
+    "prettier": "^1.14.0",
     "react-dev-utils": "^5.0.1",
     "react-intl-translations-manager": "^5.0.3",
     "sass-loader": "^7.0.3",
