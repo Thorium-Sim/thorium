@@ -166,7 +166,7 @@
     "react-table": "^6.8.6",
     "react-transition-group": "^2.3.1",
     "reactour": "^1.8.3",
-    "reactstrap": "^6.3.0",
+    "reactstrap": "^6.3.1",
     "request": "^2.87.0",
     "resolve": "1.8.1",
     "s3": "^4.4.0",
