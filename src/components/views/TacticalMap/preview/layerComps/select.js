@@ -213,6 +213,7 @@ class Selection extends React.Component {
    */
   _updateCollidingChildren(selectionBox) {
     Object.entries(this.refHolder).forEach(([key, { current: ref }]) => {
+      if (!ref) return;
       if (key !== "selectionBox") {
         const location = ref.props.children.props.destination;
         const selBox = {
