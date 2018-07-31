@@ -31,6 +31,8 @@ class Selection extends React.Component {
     selectedChildren: {}
   };
 
+  selectionBox = React.createRef();
+  refHolder = {};
   /**
    * On root element mouse down
    */
@@ -102,9 +104,7 @@ class Selection extends React.Component {
     return (
       <div
         className={className}
-        ref={ref => {
-          this.selectionBox = ref;
-        }}
+        ref={this.selectionBox}
         onMouseDown={this._onMouseDown}
       >
         {this.renderChildren()}
@@ -121,11 +121,13 @@ class Selection extends React.Component {
     // let tmpChild
     return React.Children.map(this.props.children, child => {
       const tmpKey = isNull(child.key) ? index++ : child.key;
+      const ref = this.refHolder[tmpKey] || React.createRef();
+      if (!this.refHolder[tmpKey]) this.refHolder[tmpKey] = ref;
       const isSelected = !!this.state.selectedChildren[tmpKey];
       return (
         <div className={"select-box " + (isSelected ? "selected" : "")}>
           <SelectionItem
-            ref={tmpKey}
+            ref={ref}
             selectionParent={this}
             isSelected={isSelected}
           >
@@ -170,12 +172,11 @@ class Selection extends React.Component {
    */
   selectAll = () => {
     const selectedChildren = {};
-    this.refs &&
-      this.refs.forEach((ref, key) => {
-        if (key !== "selectionBox") {
-          selectedChildren[key] = true;
-        }
-      });
+    Object.entries(this.refHolder).forEach(([key, { current: ref }]) => {
+      if (key !== "selectionBox") {
+        selectedChildren[key] = true;
+      }
+    });
     this.setState({
       selectedChildren
     });
@@ -211,7 +212,7 @@ class Selection extends React.Component {
    * collisions with selectionBox
    */
   _updateCollidingChildren(selectionBox) {
-    this.refs.forEach((ref, key) => {
+    Object.entries(this.refHolder).forEach(([key, { current: ref }]) => {
       if (key !== "selectionBox") {
         const location = ref.props.children.props.destination;
         const selBox = {
@@ -245,7 +246,6 @@ class Selection extends React.Component {
     const bounds = document
       .querySelector(this.props.containerSelector || ".tactical-map-view")
       .getBoundingClientRect();
-    // const parentNode = this.refs.selectionBox
     const left =
       Math.min(startPoint.x, endPoint.x) / (bounds.width / window.innerWidth) +
       bounds.left;
@@ -258,7 +258,7 @@ class Selection extends React.Component {
     const height =
       Math.abs(startPoint.y - endPoint.y) /
       (bounds.height / window.innerHeight);
-    const box = this.selectionBox;
+    const box = this.selectionBox.current;
     const boxRect = box.getBoundingClientRect();
     return {
       left: left - boxRect.left,
