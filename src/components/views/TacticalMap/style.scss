@@ -199,6 +199,9 @@
       flex-direction: column;
       justify-content: space-around;
       align-items: center;
+      img {
+        width: 100%;
+      }
     }
     .icon-label {
       text-align: center;

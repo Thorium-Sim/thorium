@@ -10,11 +10,16 @@ export default class TacticalIcon extends Component {
     };
     this.dragging = false;
   }
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate() {
     if (!this.dragging) {
-      this.setState({
-        destination: nextProps.destination
-      });
+      if (
+        this.state.destination.x !== this.props.destination.x ||
+        this.state.destination.y !== this.props.destination.y ||
+        this.state.destination.z !== this.props.destination.z
+      )
+        this.setState({
+          destination: this.props.destination
+        });
     }
   }
   mouseDown = evt => {
