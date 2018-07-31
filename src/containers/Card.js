@@ -3,6 +3,7 @@ import { FormattedMessage } from "react-intl";
 import Layouts from "../components/layouts";
 import Keyboard from "../components/views/Keyboard";
 import ActionsMixin from "../components/generic/Actions";
+import Alerts from "../components/generic/Alerts";
 
 const Blackout = () => {
   return (
@@ -157,6 +158,11 @@ export default class CardFrame extends Component {
           {...this.props}
           card={this.state.card}
           changeCard={this.changeCard}
+        />
+        <Alerts
+          ref="alert-widget"
+          simulator={this.props.simulator}
+          station={this.props.station}
         />
       </ActionsMixin>
     );

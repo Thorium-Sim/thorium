@@ -36,6 +36,7 @@ class Alerts extends Component {
       alerts: []
     };
     const self = this;
+    if (!this.props.simulator || !this.props.station) return;
     this.subscription = this.props.client
       .subscribe({
         query: NOTIFY_SUB,
