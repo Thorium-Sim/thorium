@@ -109,6 +109,10 @@
     position: absolute;
     height: 100%;
     width: 100%;
+    pointer-events: none;
+  }
+  .path-line circle {
+    pointer-events: all;
   }
   .layer-grid, .layer-image {
     pointer-events: none;
