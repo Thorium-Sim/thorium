@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, Label, Input } from "reactstrap";
+import { FormGroup, Label, Input, Button, ButtonGroup } from "reactstrap";
 
 export default ({ updateArgs = () => {}, args, client }) => {
   const lrmText = e => {
@@ -16,11 +16,29 @@ export default ({ updateArgs = () => {}, args, client }) => {
   const updateSender = e => {
     updateArgs("sender", e.target.value);
   };
-  if (!args || !args.crew) {
-    updateArgs("crew", true);
-  }
+  // if (!args || !args.crew) {
+  //   updateArgs("crew", true);
+  // }
+  console.log(args);
   return (
     <FormGroup className="macro-sendLongRangeMessage">
+      <Label>Inbound/Outbound</Label>
+      <div>
+        <ButtonGroup>
+          <Button
+            onClick={() => updateArgs("crew", true)}
+            active={args ? args.crew : true}
+          >
+            Inbound
+          </Button>
+          <Button
+            onClick={() => updateArgs("crew", false)}
+            active={args ? !args.crew : false}
+          >
+            Outbound
+          </Button>
+        </ButtonGroup>
+      </div>
       <Label>Sender</Label>
       <Input
         type="text"
@@ -30,8 +48,14 @@ export default ({ updateArgs = () => {}, args, client }) => {
       <Label>
         Message{" "}
         <small>Use #SIM in your message for the name of the simulator</small>
+        <br />
+        <small>
+          If message is outbound, be sure to include{" "}
+          {`"To: <message location>"`} at the top of the message.
+        </small>
       </Label>
       <Input
+        rows={4}
         type="textarea"
         defaultValue={args ? args.message : ""}
         onBlur={lrmText}

@@ -248,7 +248,14 @@ class GridCore extends Component {
           }
         />
         <Row style={{ height: "100%" }}>
-          <Col sm={4}>
+          <Col
+            sm={4}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexDirection: "column"
+            }}
+          >
             <small>Speed</small>
             <Input
               type="select"

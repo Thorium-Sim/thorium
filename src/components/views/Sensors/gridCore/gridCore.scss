@@ -63,8 +63,17 @@
     left: 0;
     height: 100%;
   }
+  .sensors-extras {
+    flex: 1;
+  }
+  .sensors-contact-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
   .contact-scroll {
-    max-height: calc(100% - 70px);
+    flex: 1;
     overflow-y: scroll;
   }
   .contextMenu {

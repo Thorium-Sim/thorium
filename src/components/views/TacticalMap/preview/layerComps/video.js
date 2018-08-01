@@ -10,7 +10,8 @@ class Video extends Component {
     if (this.player.current) {
       this.player.current.playbackRate = parseFloat(playbackSpeed) || 1;
       setTimeout(() => {
-        this.player.current.playbackRate = parseFloat(playbackSpeed) || 1;
+        if (this.player.current)
+          this.player.current.playbackRate = parseFloat(playbackSpeed) || 1;
       }, 50);
     }
   }

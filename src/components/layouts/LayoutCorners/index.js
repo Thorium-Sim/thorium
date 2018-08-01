@@ -3,7 +3,6 @@ import TransitionGroup from "react-addons-transition-group";
 import { withApollo } from "react-apollo";
 import CardSwitcher from "./CardSwitcher";
 import Widgets from "./Widgets";
-import Alerts from "../../generic/Alerts";
 import renderCards from "../cardRenderer";
 import Settings from "./settings";
 
@@ -86,7 +85,6 @@ class LayoutCorners extends Component {
             flight={flight}
             touch={touch}
           />
-          <Alerts ref="alert-widget" simulator={simulator} station={station} />
         </div>
       </Fragment>
     );
