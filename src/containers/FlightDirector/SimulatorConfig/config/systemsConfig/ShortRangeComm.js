@@ -1,9 +1,19 @@
 import React from "react";
 import { Button } from "reactstrap";
-import { GenericSystemConfig } from "./Generic";
+import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import { Input, FormGroup, Label } from "reactstrap";
+import SignalsCore from "../../../../../components/views/CommShortRange/signalsCore";
+
+const ShortRangeComm = props => {
+  return (
+    <GenericSystemConfig {...props}>
+      <SignalsCore simulator={{ id: props.simulatorId }} />
+    </GenericSystemConfig>
+  );
+};
+export default ShortRangeComm;
 
 const ops = {
   addSignal: gql`
@@ -22,7 +32,7 @@ const ops = {
     }
   `
 };
-
+/*
 const ShortRangeComm = ({ data, client, simulatorId, type }) => {
   const defaultSignals = (which, { id, signals }) => {
     // Remove all of the signals first
@@ -311,3 +321,4 @@ export default graphql(SYSTEM_QUERY, {
     }
   })
 })(ShortRangeComm);
+*/

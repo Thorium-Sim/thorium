@@ -9,6 +9,9 @@ export const NavigationQueries = {
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
     }
     return returnVal;
+  },
+  navigate(root, { id }) {
+    return App.systems.find(s => s.id === id);
   }
 };
 

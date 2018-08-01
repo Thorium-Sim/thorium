@@ -5,21 +5,22 @@ import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
 const PROBE_QUERY = gql`
-  query Probes($simulatorId: ID!) {
-    probes(simulatorId: $simulatorId) {
+  query Probes($id: ID!) {
+    probe(id: $id) {
       id
       torpedo
     }
   }
 `;
 
-const Probes = ({ client, simulatorId, type }) => {
+const Probes = props => {
+  const { id } = props;
   return (
-    <GenericSystemConfig client={client} simulatorId={simulatorId} type={type}>
-      <Query query={PROBE_QUERY} variables={{ simulatorId }}>
+    <GenericSystemConfig {...props}>
+      <Query query={PROBE_QUERY} variables={{ id }}>
         {({ data, loading }) => {
           if (loading) return null;
-          const probes = data.probes[0];
+          const probes = data.probe;
           return (
             <Row>
               <Col sm={6}>
@@ -30,9 +31,7 @@ const Probes = ({ client, simulatorId, type }) => {
                         setProbeTorpedo(id: $id, torpedo: $torpedo)
                       }
                     `}
-                    refetchQueries={[
-                      { query: PROBE_QUERY, variables: { simulatorId } }
-                    ]}
+                    refetchQueries={[{ query: PROBE_QUERY, variables: { id } }]}
                   >
                     {action => (
                       <Input

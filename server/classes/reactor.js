@@ -37,6 +37,9 @@ export default class Reactor extends HeatMixin(System) {
   eject(tf = true) {
     this.ejected = tf;
   }
+  changeModel(model) {
+    this.model = model;
+  }
   changeOutput(output) {
     this.powerOutput = output;
   }

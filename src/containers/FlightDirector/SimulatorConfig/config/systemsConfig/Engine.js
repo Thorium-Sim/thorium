@@ -1,9 +1,24 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Button } from "reactstrap";
-import { GenericSystemConfig } from "./Generic";
+import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag";
-import { graphql } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import { Input, FormGroup, Label } from "reactstrap";
+
+const ENGINE_QUERY = gql`
+  query Engine($id: ID!) {
+    engine(id: $id) {
+      id
+      speeds {
+        text
+        number
+        velocity
+      }
+      useAcceleration
+      speedFactor
+    }
+  }
+`;
 
 // Write out the warp equation in km/s
 function warpSpeed(n) {
@@ -16,301 +31,238 @@ function impulseSpeed(n) {
   // Assume full impulse is 75,000 km/s
   return 75000 * n;
 }
-const ops = {
-  addSystem: gql`
-    mutation AddSystemToSimulator($id: ID!) {
-      addSystemToSimulator(simulatorId: $id, className: "Engine", params: "{}")
+const defaultSpeeds = {
+  warp: [
+    { text: "Warp 1", number: 1, velocity: warpSpeed(1) },
+    { text: "Warp 2", number: 2, velocity: warpSpeed(2) },
+    { text: "Warp 3", number: 3, velocity: warpSpeed(3) },
+    { text: "Warp 4", number: 4, velocity: warpSpeed(4) },
+    { text: "Warp 5", number: 5, velocity: warpSpeed(5) },
+    { text: "Warp 6", number: 6, velocity: warpSpeed(6) },
+    { text: "Warp 7", number: 7, velocity: warpSpeed(7) },
+    { text: "Warp 8", number: 8, velocity: warpSpeed(8) },
+    { text: "Warp 9", number: 9, velocity: warpSpeed(9) },
+    { text: "Destructive Warp", number: 9.54, velocity: warpSpeed(9.54) }
+  ],
+  impulse: [
+    { text: "1/4 Impulse", number: 0.25, velocity: impulseSpeed(0.25) },
+    { text: "1/2 Impulse", number: 0.5, velocity: impulseSpeed(0.5) },
+    { text: "3/4 Impulse", number: 0.75, velocity: impulseSpeed(0.75) },
+    { text: "Full Impulse", number: 1, velocity: impulseSpeed(1) },
+    {
+      text: "Destructive Impulse",
+      number: 1.25,
+      velocity: impulseSpeed(1.25)
     }
-  `,
-  removeSystem: gql`
-    mutation RemoveSystem($id: ID) {
-      removeSystemFromSimulator(systemId: $id)
-    }
-  `,
-  updateSpeeds: gql`
-    mutation SetSpeeds($id: ID!, $speeds: [SpeedInput]!) {
-      setEngineSpeeds(id: $id, speeds: $speeds)
-    }
-  `,
-  updateSpeedFactor: gql`
-    mutation UpdateSpeedFactor($id: ID!, $speedFactor: Float!) {
-      setEngineSpeedFactor(id: $id, speedFactor: $speedFactor)
-    }
-  `,
-  updateUseAccelerate: gql`
-    mutation UpdateUseAccelerate($id: ID!, $useAccelerate: Boolean!) {
-      setEngineUseAcceleration(id: $id, useAcceleration: $useAccelerate)
-    }
-  `
+  ]
 };
 
-const Engine = ({ data, client, simulatorId, type }) => {
-  const performSpeedUpdate = (id, speeds) => {
-    const mutation = ops.updateSpeeds;
-    const variables = {
-      id,
-      speeds
-    };
-    client.mutate({
-      mutation,
-      variables,
-      refetchQueries: ["Engines"]
-    });
-  };
-  const addEngine = () => {
-    const mutation = ops.addSystem;
-    const variables = {
-      id: simulatorId
-    };
-    client.mutate({
-      mutation,
-      variables,
-      refetchQueries: ["Engines"]
-    });
-  };
-  const removeEngine = id => {
-    const mutation = ops.removeSystem;
-    const variables = {
-      id
-    };
-    client.mutate({
-      mutation,
-      variables,
-      refetchQueries: ["Engines"]
-    });
-  };
-  const removeSpeed = ({ id, speeds }, index) => {
-    const newSpeeds = speeds
-      .map(({ text, number }) => ({ text, number }))
-      .filter((s, i) => i !== index);
-    performSpeedUpdate(id, newSpeeds);
-  };
-  const addSpeed = ({ id, speeds }) => {
-    const newSpeeds = speeds
-      .map(({ text, number }) => ({ text, number }))
-      .concat({ text: "", number: 1 });
-    performSpeedUpdate(id, newSpeeds);
-  };
-  const updateSpeed = ({ id, speeds }, i, which, value) => {
-    const newSpeeds = speeds.map(({ text, number }, index) => {
-      const obj = { text, number };
-      if (index === i) obj[which] = value;
-      return obj;
-    });
-    performSpeedUpdate(id, newSpeeds);
-  };
-  const defaultSpeeds = (which, { id }) => {
-    const deSpeeds = {
-      warp: [
-        { text: "Warp 1", number: 1, velocity: warpSpeed(1) },
-        { text: "Warp 2", number: 2, velocity: warpSpeed(2) },
-        { text: "Warp 3", number: 3, velocity: warpSpeed(3) },
-        { text: "Warp 4", number: 4, velocity: warpSpeed(4) },
-        { text: "Warp 5", number: 5, velocity: warpSpeed(5) },
-        { text: "Warp 6", number: 6, velocity: warpSpeed(6) },
-        { text: "Warp 7", number: 7, velocity: warpSpeed(7) },
-        { text: "Warp 8", number: 8, velocity: warpSpeed(8) },
-        { text: "Warp 9", number: 9, velocity: warpSpeed(9) },
-        { text: "Destructive Warp", number: 9.54, velocity: warpSpeed(9.54) }
-      ],
-      impulse: [
-        { text: "1/4 Impulse", number: 0.25, velocity: impulseSpeed(0.25) },
-        { text: "1/2 Impulse", number: 0.5, velocity: impulseSpeed(0.5) },
-        { text: "3/4 Impulse", number: 0.75, velocity: impulseSpeed(0.75) },
-        { text: "Full Impulse", number: 1, velocity: impulseSpeed(1) },
-        {
-          text: "Destructive Impulse",
-          number: 1.25,
-          velocity: impulseSpeed(1.25)
-        }
-      ]
-    };
-    performSpeedUpdate(id, deSpeeds[which]);
-  };
-  const updateSpeedFactor = (evt, engine) => {
-    const mutation = ops.updateSpeedFactor;
-    const variables = {
-      id: engine.id,
-      speedFactor: evt.target.value
-    };
-    client.mutate({ mutation, variables, refetchQueries: ["Engines"] });
-  };
-  const updateUseAccelerate = (evt, engine) => {
-    const mutation = ops.updateUseAccelerate;
-    const variables = {
-      id: engine.id,
-      useAccelerate: evt.target.checked
-    };
-    client.mutate({
-      mutation,
-      variables,
-      refetchQueries: ["Engines"]
-    });
-  };
-  const { engines, decks } = data;
-  if (data.loading && !engines) return null;
+const Engine = props => {
+  const { id } = props;
   return (
-    <div className="engine scroll">
-      {engines.map(e => (
-        <div key={e.id}>
+    <Query query={ENGINE_QUERY} variables={{ id }}>
+      {({ loading, data }) => {
+        if (loading) return null;
+        const { engine } = data;
+        const { speedFactor, useAcceleration, speeds } = engine;
+        return (
           <GenericSystemConfig
-            client={client}
-            simulatorId={simulatorId}
-            type={type}
-            data={{ systems: [e], decks }}
+            {...props}
+            powerRender={() => (
+              <p>
+                <strong>
+                  <em>
+                    Engines must have as many power levels as they have speeds.
+                  </em>
+                </strong>
+              </p>
+            )}
           >
-            <p>
-              <strong>
-                <em>
-                  Engines must have as many power levels as they have speeds.
-                </em>
-              </strong>
-            </p>
             <FormGroup>
               <Label style={{ display: "inline-block" }}>
                 Speed Factor
-                <Input
-                  type="text"
-                  value={e.speedFactor || ""}
-                  onChange={evt => updateSpeedFactor(evt, e)}
-                />
+                <Mutation
+                  mutation={gql`
+                    mutation UpdateSpeedFactor($id: ID!, $speedFactor: Float!) {
+                      setEngineSpeedFactor(id: $id, speedFactor: $speedFactor)
+                    }
+                  `}
+                  refetchQueries={[{ query: ENGINE_QUERY, variables: { id } }]}
+                >
+                  {action => (
+                    <Input
+                      type="text"
+                      value={speedFactor || ""}
+                      onChange={evt =>
+                        action({
+                          variables: { id, speedFactor: evt.target.value }
+                        })
+                      }
+                    />
+                  )}
+                </Mutation>
               </Label>
               <Label style={{ display: "block" }}>
                 Use Acceleration
-                <Input
-                  style={{ position: "relative" }}
-                  type="checkbox"
-                  checked={e.useAcceleration}
-                  onChange={evt => updateUseAccelerate(evt, e)}
-                />
+                <Mutation
+                  mutation={gql`
+                    mutation UpdateUseAccelerate(
+                      $id: ID!
+                      $useAccelerate: Boolean!
+                    ) {
+                      setEngineUseAcceleration(
+                        id: $id
+                        useAcceleration: $useAccelerate
+                      )
+                    }
+                  `}
+                  refetchQueries={[{ query: ENGINE_QUERY, variables: { id } }]}
+                >
+                  {action => (
+                    <Input
+                      style={{ position: "relative" }}
+                      type="checkbox"
+                      checked={useAcceleration}
+                      onChange={evt =>
+                        action({
+                          variables: { id, useAccelerate: evt.target.checked }
+                        })
+                      }
+                    />
+                  )}
+                </Mutation>
               </Label>
             </FormGroup>
-            <Button
-              size="sm"
-              color="info"
-              onClick={() => defaultSpeeds("warp", e)}
+            <Mutation
+              mutation={gql`
+                mutation SetSpeeds($id: ID!, $speeds: [SpeedInput]!) {
+                  setEngineSpeeds(id: $id, speeds: $speeds)
+                }
+              `}
+              refetchQueries={[{ query: ENGINE_QUERY, variables: { id } }]}
             >
-              Default Warp
-            </Button>
-            <Button
-              size="sm"
-              color="info"
-              onClick={() => defaultSpeeds("impulse", e)}
-            >
-              Default Impulse
-            </Button>
-            {e.speeds.map((speed, index) => {
-              return (
-                <div key={`${e.id}-speed-${index}`}>
-                  <FormGroup className="speed">
-                    <Label style={{ display: "inline-block" }}>
-                      Speed Text
-                      <Input
-                        type="text"
-                        value={speed.text}
-                        onChange={evt => {
-                          updateSpeed(e, index, "text", evt.target.value);
-                        }}
-                      />
-                    </Label>
-                    <Label style={{ display: "inline-block" }}>
-                      Speed Number
-                      <Input
-                        type="number"
-                        value={speed.number}
-                        onChange={evt => {
-                          updateSpeed(e, index, "number", evt.target.value);
-                        }}
-                      />
-                    </Label>
-                    <Label style={{ display: "inline-block" }}>
-                      Velocity (km/s)
-                      <Input
-                        type="number"
-                        value={speed.velocity}
-                        onChange={evt => {
-                          updateSpeed(e, index, "velocity", evt.target.value);
-                        }}
-                      />
-                    </Label>
-                  </FormGroup>
+              {action => (
+                <Fragment>
                   <Button
-                    color="warning"
                     size="sm"
-                    onClick={() => removeSpeed(e, index)}
+                    color="info"
+                    onClick={() =>
+                      action({ variables: { id, speeds: defaultSpeeds.warp } })
+                    }
                   >
-                    Remove Speed
+                    Default Warp
                   </Button>
-                </div>
-              );
-            })}
-            <Button color="info" size="sm" onClick={() => addSpeed(e)}>
-              Add Speed
-            </Button>
-            <div>
-              <Button
-                color="danger"
-                onClick={() => {
-                  removeEngine(e.id);
-                }}
-              >
-                Remove Engine
-              </Button>
-            </div>
+                  <Button
+                    size="sm"
+                    color="info"
+                    onClick={() =>
+                      action({
+                        variables: { id, speeds: defaultSpeeds.impulse }
+                      })
+                    }
+                  >
+                    Default Impulse
+                  </Button>
+                  {speeds.map((speed, index) => {
+                    return (
+                      <div key={`speed-${index}`}>
+                        <FormGroup className="speed">
+                          <Label style={{ display: "inline-block" }}>
+                            Speed Text
+                            <Input
+                              type="text"
+                              value={speed.text}
+                              onChange={evt => {
+                                const newSpeeds = speeds.map(
+                                  ({ text, number }, i) => {
+                                    const obj = { text, number };
+                                    if (index === i)
+                                      obj.text = evt.target.value;
+                                    return obj;
+                                  }
+                                );
+                                action({
+                                  variables: { id, speeds: newSpeeds }
+                                });
+                              }}
+                            />
+                          </Label>
+                          <Label style={{ display: "inline-block" }}>
+                            Speed Number
+                            <Input
+                              type="number"
+                              value={speed.number}
+                              onChange={evt => {
+                                const newSpeeds = speeds.map(
+                                  ({ text, number }, i) => {
+                                    const obj = { text, number };
+                                    if (index === i)
+                                      obj.number = evt.target.value;
+                                    return obj;
+                                  }
+                                );
+                                action({
+                                  variables: { id, speeds: newSpeeds }
+                                });
+                              }}
+                            />
+                          </Label>
+                          <Label style={{ display: "inline-block" }}>
+                            Velocity (km/s)
+                            <Input
+                              type="number"
+                              value={speed.velocity}
+                              onChange={evt => {
+                                const newSpeeds = speeds.map(
+                                  ({ text, number }, i) => {
+                                    const obj = { text, number };
+                                    if (index === i)
+                                      obj.velocity = evt.target.value;
+                                    return obj;
+                                  }
+                                );
+                                action({
+                                  variables: { id, speeds: newSpeeds }
+                                });
+                              }}
+                            />
+                          </Label>
+                        </FormGroup>
+                        <Button
+                          color="warning"
+                          size="sm"
+                          onClick={() => {
+                            const newSpeeds = speeds
+                              .map(({ text, number }) => ({ text, number }))
+                              .filter((s, i) => i !== index);
+                            action({ variables: { id, speeds: newSpeeds } });
+                          }}
+                        >
+                          Remove Speed
+                        </Button>
+                      </div>
+                    );
+                  })}
+                  <Button
+                    color="info"
+                    size="sm"
+                    onClick={() => {
+                      const newSpeeds = speeds
+                        .map(({ text, number }) => ({ text, number }))
+                        .concat({ text: "", number: 1 });
+                      action({ variables: { id, speeds: newSpeeds } });
+                    }}
+                  >
+                    Add Speed
+                  </Button>
+                </Fragment>
+              )}
+            </Mutation>
           </GenericSystemConfig>
-        </div>
-      ))}
-      <Button color="success" onClick={addEngine}>
-        Add Engine
-      </Button>
-    </div>
+        );
+      }}
+    </Query>
   );
 };
 
-const SYSTEM_QUERY = gql`
-  query Engines($id: ID, $deckId: ID!) {
-    decks(simulatorId: $deckId) {
-      id
-      number
-      rooms {
-        id
-        name
-      }
-    }
-    engines(simulatorId: $id) {
-      id
-      name
-      displayName
-      type
-      useAcceleration
-      speedFactor
-      power {
-        power
-        powerLevels
-        defaultLevel
-      }
-      locations {
-        id
-        name
-        deck {
-          number
-        }
-      }
-      speeds {
-        text
-        number
-        velocity
-      }
-    }
-  }
-`;
-
-export default graphql(SYSTEM_QUERY, {
-  options: ownProps => ({
-    fetchPolicy: "cache-and-network",
-    variables: {
-      id: ownProps.simulatorId,
-      deckId: ownProps.simulatorId
-    }
-  })
-})(Engine);
+export default Engine;

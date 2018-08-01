@@ -1,6 +1,6 @@
 .missionConfig {
   .scroll {
-    overflow-y: scroll;
+    overflow-y: auto;
   }
   li {
     &.selected {
