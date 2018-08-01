@@ -23,7 +23,7 @@ const Power = ({ id, simulatorId, power, powerRender }) => {
         ]}
       >
         {action => (
-          <Fragment>
+          <div>
             <FontAwesome
               onClick={() => {
                 const lastLevel =
@@ -88,7 +88,7 @@ const Power = ({ id, simulatorId, power, powerRender }) => {
                 </div>
               ))}
             {powerRender && powerRender()}
-          </Fragment>
+          </div>
         )}
       </Mutation>
     </FormGroup>

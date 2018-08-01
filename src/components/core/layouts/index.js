@@ -7,3 +7,4 @@ export { default as Viewscreen } from "./viewscreen";
 export { default as TacticalMaps } from "./tacticalMap";
 export { default as Panels } from "./panels";
 export { default as Messaging } from "./messaging";
+export { default as Systems } from "./systems";
