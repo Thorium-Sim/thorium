@@ -58,7 +58,7 @@ const defaultSpeeds = {
 };
 
 const Engine = props => {
-  const { id, simulatorId } = props;
+  const { id } = props;
   return (
     <Query query={ENGINE_QUERY} variables={{ id }}>
       {({ loading, data }) => {

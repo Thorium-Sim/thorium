@@ -7,6 +7,9 @@ export const ThrustersQueries = {
     return App.systems.filter(system => {
       return system.type === "Thrusters" && system.simulatorId === simulatorId;
     });
+  },
+  thruster(root, { id }) {
+    return App.systems.find(s => s.id === id);
   }
 };
 

@@ -5,8 +5,8 @@ import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
 const THRUSTER_QUERY = gql`
-  query Thrusters($simulatorId: ID) {
-    thrusters(simulatorId: $simulatorId) {
+  query Thruster($id: ID!) {
+    thruster(id: $id) {
       id
       rotationSpeed
       movementSpeed
@@ -14,13 +14,14 @@ const THRUSTER_QUERY = gql`
   }
 `;
 
-const Thrusters = ({ client, simulatorId, type }) => {
+const Thrusters = props => {
+  const { id } = props;
   return (
-    <GenericSystemConfig client={client} simulatorId={simulatorId} type={type}>
-      <Query query={THRUSTER_QUERY} variables={{ simulatorId }}>
+    <GenericSystemConfig {...props}>
+      <Query query={THRUSTER_QUERY} variables={{ id }}>
         {({ data, loading }) => {
           if (loading) return null;
-          const thrusters = data.thrusters[0];
+          const thruster = data.thruster;
           return (
             <Row>
               <Col sm={6}>
@@ -32,17 +33,17 @@ const Thrusters = ({ client, simulatorId, type }) => {
                     }
                   `}
                   refetchQueries={[
-                    { query: THRUSTER_QUERY, variables: { simulatorId } }
+                    { query: THRUSTER_QUERY, variables: { id } }
                   ]}
                 >
                   {action => (
                     <Input
                       type="select"
                       style={{ height: "18px" }}
-                      value={thrusters.rotationSpeed}
+                      value={thruster.rotationSpeed}
                       onChange={e => {
                         action({
-                          variables: { id: thrusters.id, speed: e.target.value }
+                          variables: { id, speed: e.target.value }
                         });
                       }}
                     >
@@ -72,17 +73,17 @@ const Thrusters = ({ client, simulatorId, type }) => {
                     }
                   `}
                   refetchQueries={[
-                    { query: THRUSTER_QUERY, variables: { simulatorId } }
+                    { query: THRUSTER_QUERY, variables: { id } }
                   ]}
                 >
                   {action => (
                     <Input
                       type="select"
                       style={{ height: "18px" }}
-                      value={thrusters.movementSpeed}
+                      value={thruster.movementSpeed}
                       onChange={e => {
                         action({
-                          variables: { id: thrusters.id, speed: e.target.value }
+                          variables: { id, speed: e.target.value }
                         });
                       }}
                     >
