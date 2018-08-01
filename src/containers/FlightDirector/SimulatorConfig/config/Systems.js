@@ -84,9 +84,9 @@ class SystemsConfig extends Component {
   state = {};
   render() {
     const { id } = this.props.selectedSimulator;
-    const { addSystem, selectedSystem } = this.state;
-    const SystemConfig = selectedSystem
-      ? Configs[selectedSystem] || Configs.Generic
+    const { addSystem, selectedSystem, selectedType } = this.state;
+    const SystemConfig = selectedType
+      ? Configs[selectedType] || Configs.Generic
       : () => null;
     return (
       <Container fluid style={{ height: "90vh" }}>
@@ -144,7 +144,12 @@ class SystemsConfig extends Component {
                           key={s.id}
                           {...s}
                           selected={s.id === selectedSystem}
-                          click={() => this.setState({ selectedSystem: s.id })}
+                          click={() =>
+                            this.setState({
+                              selectedSystem: s.id,
+                              selectedType: s.type
+                            })
+                          }
                         />
                       ));
                     }}
@@ -155,7 +160,7 @@ class SystemsConfig extends Component {
           </Col>
           <Col sm={7}>
             {selectedSystem && (
-              <SystemConfig simulatorId={id} type={selectedSystem} />
+              <SystemConfig simulatorId={id} id={selectedSystem} />
             )}
           </Col>
         </Row>

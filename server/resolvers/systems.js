@@ -3,6 +3,9 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
 export const SystemsQueries = {
+  system(rootValue, { id }) {
+    return App.systems.find(s => s.id === id);
+  },
   systems(rootValue, { simulatorId, type, power, heat, extra = false }) {
     let returnSystems = App.systems;
     if (extra === false) {
