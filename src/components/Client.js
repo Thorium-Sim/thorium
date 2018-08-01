@@ -167,7 +167,7 @@ const creditList = [
     )
   },
   {
-    header: "Docking Images (Endless Sky)",
+    header: "Docking & System Images (Endless Sky)",
     content: (
       <div>
         <p>Maximilian Korber (CC-BY-SA-4.0)</p>

@@ -1,144 +1,161 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Card, Input } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  CardBody,
+  Button,
+  ButtonGroup
+} from "reactstrap";
+import { titleCase, camelCase } from "change-case";
+import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import { withApollo } from "react-apollo";
 import * as Configs from "./systemsConfig";
-const properties = [
-  { name: "LongRangeComm" },
-  { name: "InternalComm" },
-  { name: "ShortRangeComm" },
-  { name: "SignalJammer" },
-  { name: "Engine", config: true },
-  { name: "Thrusters" },
-  { name: "Navigation" },
-  { name: "Sensors" },
-  { name: "Probes" },
-  { name: "TractorBeam" },
-  { name: "Transporters" },
-  { name: "Reactor", config: true },
-  { name: "StealthField" },
-  { name: "Shield", config: true },
-  { name: "Targeting" },
-  { name: "Phasers" },
-  { name: "Torpedo", config: true },
-  { name: "Coolant" },
-  { name: "ComputerCore" },
-  { name: "Sickbay" },
-  { name: "Thx" }
+
+const systems = [
+  "computerCore",
+  "coolant",
+  "engine",
+  "internalComm",
+  "longRangeComm",
+  "navigation",
+  "phasers",
+  "probes",
+  "reactor",
+  "sensors",
+  "shield",
+  "shortRangeComm",
+  "sickbay",
+  "signalJammer",
+  "stealthField",
+  "targeting",
+  "thrusters",
+  "thx",
+  "torpedo",
+  "tractorBeam",
+  "transporters"
 ];
 
-const ops = {
-  addSystem: gql`
-    mutation AddSystemToSimulator(
-      $id: ID!
-      $type: String!
-      $params: String = "{}"
-    ) {
-      addSystemToSimulator(simulatorId: $id, className: $type, params: $params)
+const SYSTEM_QUERY = gql`
+  query Systems($simulatorId: ID!) {
+    systems(simulatorId: $simulatorId) {
+      id
+      name
+      type
+      displayName
     }
-  `,
-  removeSystem: gql`
-    mutation RemoveSystem($id: ID, $type: String) {
-      removeSystemFromSimulator(simulatorId: $id, type: $type)
-    }
-  `
+  }
+`;
+const System = ({ id, selected, type, displayName, name, click }) => {
+  return (
+    <Col
+      key={id}
+      sm={4}
+      onClick={click}
+      style={{
+        backgroundColor: selected ? "rgba(255,255,255,0.4)" : "transparent",
+        borderRadius: "10px"
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          backgroundImage: `url('/systems/${camelCase(type)}.png')`,
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center"
+        }}
+      >
+        <div style={{ paddingTop: "100%" }} />
+      </div>
+      <p style={{ textAlign: "center", marginBottom: 0 }}>
+        {displayName || name}
+      </p>
+      {type !== name && (
+        <p style={{ textAlign: "center" }}>
+          <small>{titleCase(type)}</small>
+        </p>
+      )}
+    </Col>
+  );
 };
-class Systems extends Component {
+class SystemsConfig extends Component {
   state = {};
-  selectProperty = name => {
-    this.setState({
-      selectedProperty: name
-    });
-  };
-  toggleSystem = (e, { name }) => {
-    const mutation = e.target.checked ? ops.addSystem : ops.removeSystem;
-    if (name === "Sensors") {
-      // Create both Internal and External sensors
-      const variables = {
-        id: this.props.selectedSimulator.id,
-        type: name
-      };
-      this.props.client.mutate({
-        mutation,
-        variables
-      });
-      variables.params = JSON.stringify({ domain: "internal" });
-      this.props.client.mutate({
-        mutation,
-        variables,
-        refetchQueries: [
-          "System",
-          "ShortRangeComm",
-          "Phasers",
-          "Reactor",
-          "Torpedo",
-          "Sickbay"
-        ]
-      });
-    } else {
-      const variables = {
-        id: this.props.selectedSimulator.id,
-        type: name
-      };
-      this.props.client.mutate({
-        mutation,
-        variables,
-        refetchQueries: [
-          "System",
-          "ShortRangeComm",
-          "Phasers",
-          "Reactor",
-          "Torpedo",
-          "Sickbay"
-        ]
-      });
-    }
-  };
   render() {
-    const { selectedProperty } = this.state;
-    const { selectedSimulator } = this.props;
-    const SystemConfig = selectedProperty
-      ? Configs[selectedProperty] || Configs.Generic
-      : () => {};
+    const { id } = this.props.selectedSimulator;
+    const { addSystem, selectedSystem } = this.state;
+    const SystemConfig = selectedSystem
+      ? Configs[selectedSystem] || Configs.Generic
+      : () => null;
     return (
-      <Container fluid>
-        <Row>
-          <Col sm={3}>
-            <Card className="scroll">
-              {properties.map(p => (
-                <li
-                  key={p.name}
-                  onClick={() => {
-                    this.selectProperty(p.name);
-                  }}
-                  className={`list-group-item ${
-                    selectedProperty === p.name ? "selected" : ""
-                  }`}
-                >
-                  {!p.config && (
-                    <Input
-                      type="checkbox"
-                      className="system-checkbox"
-                      defaultChecked={selectedSimulator.systems.find(
-                        sys => sys.type === p.name
-                      )}
-                      onChange={e => {
-                        this.toggleSystem(e, p);
-                      }}
+      <Container fluid style={{ height: "90vh" }}>
+        <Row style={{ height: "100%" }}>
+          <Col
+            sm={5}
+            style={{
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between"
+            }}
+          >
+            <h6>Available Systems</h6>
+            <Card
+              className="systems-container"
+              style={{ height: "40%", overflowY: "auto" }}
+            >
+              <CardBody>
+                <Row>
+                  {systems.map(s => (
+                    <System
+                      key={s.id}
+                      id={s}
+                      selected={s === addSystem}
+                      name={s}
+                      displayName={titleCase(s)}
+                      type={s}
+                      click={() => this.setState({ addSystem: s })}
                     />
-                  )}
-                  <label>{p.name}</label>
-                </li>
-              ))}
+                  ))}
+                </Row>
+              </CardBody>
+            </Card>
+            <ButtonGroup>
+              <Button size="sm" color="danger" disabled={!selectedSystem}>
+                Remove System
+              </Button>
+              <Button size="sm" color="success" disabled={!addSystem}>
+                Add System
+              </Button>
+            </ButtonGroup>
+            <h6>Installed Systems</h6>
+            <Card
+              className="systems-container"
+              style={{ height: "40%", overflowY: "auto" }}
+            >
+              <CardBody>
+                <Row>
+                  <Query query={SYSTEM_QUERY} variables={{ simulatorId: id }}>
+                    {({ data, loading }) => {
+                      if (loading) return null;
+                      return data.systems.map(s => (
+                        <System
+                          key={s.id}
+                          {...s}
+                          selected={s.id === selectedSystem}
+                          click={() => this.setState({ selectedSystem: s.id })}
+                        />
+                      ));
+                    }}
+                  </Query>
+                </Row>
+              </CardBody>
             </Card>
           </Col>
-          <Col sm={9}>
-            {selectedProperty && (
-              <SystemConfig
-                client={this.props.client}
-                simulatorId={selectedSimulator.id}
-                type={selectedProperty}
-              />
+          <Col sm={7}>
+            {selectedSystem && (
+              <SystemConfig simulatorId={id} type={selectedSystem} />
             )}
           </Col>
         </Row>
@@ -146,5 +163,4 @@ class Systems extends Component {
     );
   }
 }
-
-export default withApollo(Systems);
+export default SystemsConfig;

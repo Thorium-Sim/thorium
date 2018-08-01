@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-  Col,
-  Row,
-  Container,
-  Button,
-  ButtonGroup,
-  Card,
-  CardBody
-} from "reactstrap";
+import { Col, Row, Container, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { Query, withApollo } from "react-apollo";
 
@@ -163,7 +155,7 @@ const STATIONSET_SUB = gql`
 `;
 
 class SimulatorConfig extends Component {
-  state = {};
+  state = { selectedProperty: "Systems" };
   selectProperty = prop => {
     this.setState({
       selectedProperty: prop
@@ -245,14 +237,10 @@ class SimulatorConfig extends Component {
             </Button>
           </Col>
           <Col sm={10}>
-            <Card>
-              <CardBody>
-                <ConfigComponentData
-                  selectedProperty={selectedProperty}
-                  simulatorId={simulatorId}
-                />
-              </CardBody>
-            </Card>
+            <ConfigComponentData
+              selectedProperty={selectedProperty}
+              simulatorId={simulatorId}
+            />
           </Col>
         </Row>
       </Container>
