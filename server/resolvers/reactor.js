@@ -9,12 +9,18 @@ export const ReactorQueries = {
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
     }
     return returnVal;
+  },
+  reactor(root, { id }) {
+    return App.systems.find(s => s.id === id);
   }
 };
 
 export const ReactorMutations = {
   reactorEject(root, args, context) {
     App.handleEvent(args, "reactorEject", context);
+  },
+  reactorChangeModel(root, args, context) {
+    App.handleEvent(args, "reactorChangeModel", context);
   },
   reactorChangeOutput(root, args, context) {
     App.handleEvent(args, "reactorChangeOutput", context);

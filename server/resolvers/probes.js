@@ -9,6 +9,9 @@ export const ProbesQueries = {
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
     }
     return returnVal;
+  },
+  probe(root, { id }) {
+    return App.systems.find(s => s.id === id);
   }
 };
 

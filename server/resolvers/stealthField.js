@@ -9,6 +9,9 @@ export const StealthFieldQueries = {
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
     }
     return returnVal;
+  },
+  stealth(root, { id }) {
+    return App.systems.find(s => s.id === id);
   }
 };
 
