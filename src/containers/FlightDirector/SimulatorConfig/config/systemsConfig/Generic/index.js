@@ -86,7 +86,10 @@ class GenericConfig extends Component {
                   </Button>
                 )}
               </ButtonGroup>
-              <div className="scroll" style={{ minHeight: "80vh" }}>
+              <div
+                className="scroll"
+                style={{ minHeight: "80vh", height: "50px" }}
+              >
                 {selected === "Basic" && (
                   <Basic {...this.props} {...data.system} />
                 )}

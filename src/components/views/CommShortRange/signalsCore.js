@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import tinycolor from "tinycolor2";
-import { HuePicker } from "react-color";
+import { CompactPicker } from "react-color";
 import { Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
@@ -215,15 +215,17 @@ class SignalsCore extends Component {
             >
               Close
             </Button>
-            <HuePicker
-              color={signals.find(s => s.id === selectedSignal).color}
-              onChangeComplete={color =>
-                this.updateColor(
-                  selectedSignal,
-                  `rgb(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b})`
-                )
-              }
-            />
+            <div>
+              <CompactPicker
+                color={signals.find(s => s.id === selectedSignal).color}
+                onChangeComplete={color =>
+                  this.updateColor(
+                    selectedSignal,
+                    `rgb(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b})`
+                  )
+                }
+              />
+            </div>
             <FileExplorer
               directory="/Comm Images"
               selectedFiles={[
