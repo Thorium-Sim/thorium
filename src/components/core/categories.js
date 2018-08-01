@@ -32,7 +32,7 @@ const categories = [
     style: {
       gridTemplateRows: "200px 200px 400px",
       gridTemplateColumns: "400px 400px 400px",
-      gridTemplateAreas: `"CrewCore CrewCore SelfDestructCore" "HeatCore ObjectivesCore CargoCore" "ShipCore ObjectivesCore CargoCore"`
+      gridTemplateAreas: `"CrewCore CrewCore SelfDestructCore" "HeatCore ArmoryCore CargoCore" "ShipCore ObjectivesCore CargoCore"`
     }
   },
   {
@@ -113,7 +113,7 @@ const categories = [
     name: "Engineer",
     components: ["ReactorControlCore", "ExocompsCore"],
     style: {
-      gridTemplateRows: "200px",
+      gridTemplateRows: "400px",
       gridTemplateColumns: "400px 400px",
       gridTemplateAreas: `"ReactorControlCore ExocompsCore"`
     }

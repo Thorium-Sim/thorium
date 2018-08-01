@@ -61,7 +61,6 @@ class LayoutGlass extends Component {
           flight={flight}
           touch={touch}
         />
-        <Alerts ref="alert-widget" simulator={simulator} station={station} />
       </div>
     );
   }

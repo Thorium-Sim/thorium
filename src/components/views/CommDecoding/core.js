@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Row, Col, Button, ButtonGroup } from "reactstrap";
 import { TypingField, InputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
@@ -11,6 +11,7 @@ class LRCommCore extends Component {
     this.state = {
       messageSender: "",
       message: "",
+      messageType: "inbound",
       decoded: false,
       sent: false
     };
@@ -28,22 +29,18 @@ class LRCommCore extends Component {
       message: value
     });
   }
-  _updateSender(e) {
-    this.setState({
-      messageSender: e
-    });
-  }
   _sendMessage() {
     const mutation = gql`
       mutation sendLRM(
         $id: ID!
         $sender: String
+        $crew: Boolean!
         $message: String!
         $decoded: Boolean
       ) {
         sendLongRangeMessage(
           id: $id
-          crew: true
+          crew: $crew
           sender: $sender
           message: $message
           decoded: $decoded
@@ -53,7 +50,12 @@ class LRCommCore extends Component {
     const variables = {
       id: this.props.data.longRangeCommunications[0].id,
       sender: this.state.messageSender,
-      message: this.state.message,
+      crew: this.state.messageType === "inbound",
+      message: `${
+        this.state.messageType === "outbound"
+          ? `To: ${this.state.messageReceiver}`
+          : ""
+      }\n${this.state.message}`,
       decoded: this.state.decoded
     };
     this.props.client.mutate({
@@ -82,7 +84,8 @@ class LRCommCore extends Component {
   render() {
     if (this.props.data.loading || !this.props.data.longRangeCommunications)
       return null;
-    if (this.state.sent) {
+    const { sent, messageType } = this.state;
+    if (sent) {
       return (
         <div>
           <p>Message Sent</p>
@@ -94,12 +97,54 @@ class LRCommCore extends Component {
     }
     return this.props.data.longRangeCommunications.length > 0 ? (
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-        <InputField
-          prompt="What is the message sender? (eg. Starbase 74)"
-          onClick={this._updateSender.bind(this)}
-        >
-          {this.state.messageSender}
-        </InputField>
+        <ButtonGroup>
+          <Button
+            size="sm"
+            onClick={() => this.setState({ messageType: "inbound" })}
+            active={messageType === "inbound"}
+          >
+            Inbound
+          </Button>
+          <Button
+            size="sm"
+            onClick={() => this.setState({ messageType: "outbound" })}
+            active={messageType === "outbound"}
+          >
+            Outbound
+          </Button>
+        </ButtonGroup>
+        <Row>
+          <Col sm={messageType === "outbound" ? 6 : 12}>
+            <label>Sender</label>
+            <InputField
+              prompt={`What is the message sender? (eg. ${
+                messageType === "inbound" ? "Starbase 74" : "Lt. Carter"
+              })`}
+              onClick={e =>
+                this.setState({
+                  messageSender: e
+                })
+              }
+            >
+              {this.state.messageSender}
+            </InputField>
+          </Col>
+          {messageType === "outbound" && (
+            <Col sm={6}>
+              <label>Receiver</label>
+              <InputField
+                prompt="What is the message receiver? (eg. Starbase 74)"
+                onClick={e =>
+                  this.setState({
+                    messageReceiver: e
+                  })
+                }
+              >
+                {this.state.messageReceiver}
+              </InputField>
+            </Col>
+          )}
+        </Row>
         <TypingField
           style={{ flex: 1, textAlign: "left" }}
           controlled
