@@ -173,7 +173,7 @@
     "semver": "^5.5.0",
     "sine-waves": "^0.3.0",
     "style-loader": "0.21.0",
-    "subscriptions-transport-ws": "^0.9.13",
+    "subscriptions-transport-ws": "^0.9.14",
     "sw-precache-webpack-plugin": "0.11.5",
     "three": "^0.94.0",
     "three-obj-loader": "^1.1.3",
