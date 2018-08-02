@@ -155,7 +155,7 @@ const STATIONSET_SUB = gql`
 `;
 
 class SimulatorConfig extends Component {
-  state = { selectedProperty: "Systems" };
+  state = { selectedProperty: null };
   selectProperty = prop => {
     this.setState({
       selectedProperty: prop
