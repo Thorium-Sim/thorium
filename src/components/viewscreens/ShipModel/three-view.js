@@ -66,9 +66,9 @@ class ThreeView extends Component {
         const geo = new THREE.EdgesGeometry(child.geometry); // or WireframeGeometry
         const wireframeMesh = new THREE.LineSegments(geo, this.wireMat);
         wireframeMesh.scale.set(0.3, 0.3, 0.3);
-        this.objectGroup.add(obj);
         this.objectGroup.add(wireframeMesh);
       });
+      this.objectGroup.add(obj);
     });
     document
       .getElementById("thrustersMount")

@@ -30,7 +30,14 @@ const CardRenderer = props => {
           id: "test",
           name: "Test",
           alertLevel: "5",
-          layout: "LayoutCorners"
+          layout: "LayoutCorners",
+          assets: {
+            mesh: "/Simulator/default/mesh.obj",
+            texture: "/Simulator/default/texture.png",
+            side: "/Simulator/default/side.png",
+            top: "/Simulator/default/top.png",
+            logo: "/Simulator/default/logo.svg"
+          }
         },
         assets: {
           mesh: "/Simulator/default/mesh.obj",
