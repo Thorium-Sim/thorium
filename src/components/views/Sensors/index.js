@@ -4,13 +4,14 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Button, Row, Col, Card, CardBody } from "reactstrap";
 import Tour from "reactour";
-import Typing from "react-typing-animation";
+import { Typing } from "react-typing";
 
 import "./style.scss";
 import Grid from "./GridDom";
 import DamageOverlay from "../helpers/DamageOverlay";
 import SensorScans from "./SensorScans";
 import { Asset } from "../../../helpers/assets";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {
@@ -90,7 +91,6 @@ class Sensors extends Component {
     this.sensorsSubscription = null;
     this.pingSub = null;
     this.state = {
-      processedData: "",
       weaponsRangePulse: 0,
       hoverContact: { name: "", pictureUrl: "" }
     };
@@ -118,60 +118,6 @@ class Sensors extends Component {
       });
     }
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.sensorsSubscription && !nextProps.data.loading) {
-      this.sensorsSubscription = nextProps.data.subscribeToMore({
-        document: SENSOR_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            sensors: subscriptionData.data.sensorsUpdate
-          });
-        }
-      });
-    }
-    /* if (!this.pingSub && !nextProps.data.loading) {
-      this.pingSub = nextProps.data.subscribeToMore({
-        document: PING_SUB,
-        variables: { id: nextProps.data.sensors[0].id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          if (
-            previousResult.sensors.find(
-              s => s.id === subscriptionData.data.sensorsPing
-            )
-          ) {
-            this.ping();
-          }
-        }
-      });
-    }*/
-    const nextSensors = nextProps.data.sensors && nextProps.data.sensors[0];
-    if (!nextProps.data.loading && nextSensors) {
-      if (this.props.data.loading) {
-        //First time load
-        this.setState({
-          processedData: nextSensors.processedData,
-          pingTime: Date.now() - nextSensors.timeSincePing,
-          ping: false
-        });
-      } else {
-        //Every other load
-        if (nextSensors.processedData !== this.state.processedData) {
-          if (this.state.scanResults === undefined) {
-            this.setState({
-              processedData: nextSensors.processedData
-            });
-          } else {
-            this.typeIn(nextSensors.processedData, 0, "processedData");
-          }
-        }
-      }
-    }
-  }
-  componentWillUnmount() {
-    this.sensorsSubscription && this.sensorsSubscription();
-    this.pingSub && this.pingSub();
-  }
   showWeaponsRange() {
     this.setState({
       weaponsRangePulse: 1
@@ -183,16 +129,6 @@ class Sensors extends Component {
     }, 1000);
   }
 
-  typeIn(text, chars, stateProp) {
-    let currentState = this.state;
-    if (text) {
-      if (text.length >= chars) {
-        currentState[stateProp] = text.substring(chars, 0);
-        this.setState(currentState);
-        setTimeout(this.typeIn.bind(this, text, chars + 1, stateProp), 1);
-      }
-    }
-  }
   _hoverContact(contact = {}) {
     this.setState({
       hoverContact: contact
@@ -256,6 +192,19 @@ class Sensors extends Component {
     const { hoverContact, ping, pingTime } = this.state;
     return (
       <div className="cardSensors">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SENSOR_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  sensors: subscriptionData.data.sensorsUpdate
+                });
+              }
+            })
+          }
+        />
         <div>
           <Row>
             {needScans && (
@@ -358,9 +307,11 @@ class Sensors extends Component {
                 <Col className="col-sm-12">
                   <Card className="processedData">
                     <CardBody>
-                      <Typing>
-                        <pre>{sensors.processedData}</pre>
-                      </Typing>
+                      <pre>
+                        <Typing keyDelay={20} key={sensors.processedData}>
+                          {sensors.processedData}
+                        </Typing>
+                      </pre>
                     </CardBody>
                   </Card>
                 </Col>

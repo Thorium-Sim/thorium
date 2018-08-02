@@ -5,6 +5,8 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Asset } from "../../../helpers/assets";
 import Grid from "../Sensors/GridDom";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import { Typing } from "react-typing";
 
 import "./style.scss";
 
@@ -28,54 +30,6 @@ class Sensors extends Component {
     weaponsRangePulse: 0,
     hoverContact: { name: "", pictureUrl: "" }
   };
-  sensorsSubscription = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sensorsSubscription && !nextProps.data.loading) {
-      this.sensorsSubscription = nextProps.data.subscribeToMore({
-        document: SENSOR_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            sensors: subscriptionData.data.sensorsUpdate
-          });
-        }
-      });
-    }
-    if (!nextProps.data.sensors) return;
-    const nextSensors = nextProps.data.sensors[0];
-    if (!nextProps.data.loading) {
-      if (this.props.data.loading) {
-        //First time load
-        this.setState({
-          processedData: nextSensors.processedData
-        });
-      } else {
-        //Every other load
-        if (nextSensors.processedData !== this.state.processedData) {
-          if (this.state.scanResults === undefined) {
-            this.setState({
-              processedData: nextSensors.processedData
-            });
-          } else {
-            this.typeIn(nextSensors.processedData, 0, "processedData");
-          }
-        }
-      }
-    }
-  }
-  componentWillUnmount() {
-    this.sensorsSubscription && this.sensorsSubscription();
-  }
-  typeIn(text, chars, stateProp) {
-    let currentState = this.state;
-    if (text) {
-      if (text.length >= chars) {
-        currentState[stateProp] = text.substring(chars, 0);
-        this.setState(currentState);
-        setTimeout(this.typeIn.bind(this, text, chars + 1, stateProp), 1);
-      }
-    }
-  }
   _hoverContact(contact = {}) {
     this.setState({
       hoverContact: contact
@@ -88,6 +42,19 @@ class Sensors extends Component {
     const sensors = data.sensors[0];
     return (
       <Container style={{ height: "90vh" }} className="jr-sensors">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SENSOR_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  sensors: subscriptionData.data.sensorsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row style={{ height: "100%" }}>
           <Col sm={8} className="arrayContainer" style={{ height: "100%" }}>
             <div className="spacer" />
@@ -158,7 +125,11 @@ class Sensors extends Component {
               <Col className="col-sm-12">
                 <Card className="processedData">
                   <CardBody>
-                    <pre>{this.state.processedData}</pre>
+                    <pre>
+                      <Typing keyDelay={20} key={sensors.processedData}>
+                        {sensors.processedData}
+                      </Typing>
+                    </pre>
                   </CardBody>
                 </Card>
               </Col>
