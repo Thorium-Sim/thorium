@@ -369,10 +369,12 @@ export class PhaserArc extends Component {
     document.addEventListener("touchend", this.mouseUp);
     this.arcTimeout = setTimeout(() => this.changeArc(direction), 100);
   }
-  componentWillReceiveProps(newProps) {
-    this.setState({
-      arc: newProps.arc
-    });
+  componentDidUpdate() {
+    if (this.state.arc !== this.props.arc) {
+      this.setState({
+        arc: this.props.arc
+      });
+    }
   }
   render() {
     const { arc } = this.state;

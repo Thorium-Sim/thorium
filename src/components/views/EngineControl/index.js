@@ -5,7 +5,7 @@ import { graphql, compose } from "react-apollo";
 import Engine1 from "./engine-1";
 import Engine2 from "./engine-2";
 import Tour from "reactour";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.scss";
 
 const SPEEDCHANGE_SUB = gql`
@@ -62,75 +62,6 @@ const SYSTEMS_SUB = gql`
 `;
 
 class EngineControl extends Component {
-  constructor(props) {
-    super(props);
-    this.setSpeedSubscription = null;
-    this.heatChangeSubscription = null;
-    this.systemSub = null;
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!this.setSpeedSubscription && !nextProps.data.loading) {
-      this.setSpeedSubscription = nextProps.data.subscribeToMore({
-        document: SPEEDCHANGE_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          const engines = previousResult.engines.map(engine => {
-            if (engine.id === subscriptionData.data.engineUpdate.id) {
-              return Object.assign({}, engine, {
-                speed: subscriptionData.data.engineUpdate.speed,
-                on: subscriptionData.data.engineUpdate.on
-              });
-            }
-            return engine;
-          });
-          return Object.assign({}, previousResult, { engines });
-        }
-      });
-    }
-    if (!this.heatChangeSubscription && !nextProps.data.loading) {
-      this.heatChangeSubscription = nextProps.data.subscribeToMore({
-        document: HEATCHANGE_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          const engineIndex = previousResult.engines.findIndex(
-            e => e.id === subscriptionData.data.heatChange.id
-          );
-          if (engineIndex < 0) {
-            return previousResult;
-          }
-          return {
-            engines: previousResult.engines.map(
-              (e, i) =>
-                i === engineIndex
-                  ? Object.assign({}, e, {
-                      heat: subscriptionData.data.heatChange.heat,
-                      coolant: subscriptionData.data.heatChange.coolant
-                    })
-                  : e
-            )
-          };
-        }
-      });
-    }
-    if (!this.systemSub && !nextProps.data.loading) {
-      this.systemSub = nextProps.data.subscribeToMore({
-        document: SYSTEMS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id,
-          type: "Engine"
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          // Make this work again
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.heatChangeSubscription();
-    this.setSpeedSubscription();
-    this.systemSub();
-  }
   interactionTime = 0;
   speedBarStyle(array, speed, engineCount, index) {
     let width = (speed / array.length) * 100;
@@ -161,6 +92,53 @@ class EngineControl extends Component {
     const engines = this.props.data.engines || [];
     return (
       <Container fluid className="EngineControl">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SPEEDCHANGE_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                const engines = previousResult.engines.map(engine => {
+                  if (engine.id === subscriptionData.data.engineUpdate.id) {
+                    return Object.assign({}, engine, {
+                      speed: subscriptionData.data.engineUpdate.speed,
+                      on: subscriptionData.data.engineUpdate.on
+                    });
+                  }
+                  return engine;
+                });
+                return Object.assign({}, previousResult, { engines });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: HEATCHANGE_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                const engineIndex = previousResult.engines.findIndex(
+                  e => e.id === subscriptionData.data.heatChange.id
+                );
+                if (engineIndex < 0) {
+                  return previousResult;
+                }
+                return {
+                  engines: previousResult.engines.map(
+                    (e, i) =>
+                      i === engineIndex
+                        ? Object.assign({}, e, {
+                            heat: subscriptionData.data.heatChange.heat,
+                            coolant: subscriptionData.data.heatChange.coolant
+                          })
+                        : e
+                  )
+                };
+              }
+            })
+          }
+        />
         <Row>
           <Col className="col-sm-12 enginesBar">
             {(() => {

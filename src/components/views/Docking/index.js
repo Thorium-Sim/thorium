@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Clamps, Ramps, Doors } from "./graphics";
 import Tour from "reactour";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.scss";
 
 const DOCKING_SUB = gql`
@@ -32,25 +32,8 @@ class Docking extends Component {
     this.state = {
       graphic: null
     };
-    this.subscription = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: DOCKING_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            simulators: subscriptionData.data.simulatorsUpdate
-          });
-        }
-      });
-    }
   }
   componentWillUnmount() {
-    this.subscription && this.subscription();
     clearTimeout(this.timeout);
   }
   undisable = () => {
@@ -112,6 +95,21 @@ class Docking extends Component {
     const { clamps, ramps, airlock } = this.props.data.simulators[0].ship;
     return (
       <Container fluid className="docking">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: DOCKING_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  simulators: subscriptionData.data.simulatorsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={5}>
             <div className="flex">
