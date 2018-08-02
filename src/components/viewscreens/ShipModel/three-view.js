@@ -50,22 +50,25 @@ class ThreeView extends Component {
       transparent: true
     });
     this.wireMat = new THREE.LineBasicMaterial({
-      color: 0xffffff,
+      color: parseInt(color.replace("#", ""), 16),
       linewidth: 4,
       visible: wireframe ? true : false,
       opacity: 0.7
     });
     this.objLoader.load(src, obj => {
       obj.scale.set(0.3, 0.3, 0.3);
-      // mesh
-      this.material = obj.children[0].material = this.material;
 
-      // wireframe
-      const geo = new THREE.EdgesGeometry(obj.children[0].geometry); // or WireframeGeometry
-      const wireframeMesh = new THREE.LineSegments(geo, this.wireMat);
-      wireframeMesh.scale.set(0.3, 0.3, 0.3);
-      this.objectGroup.add(obj);
-      this.objectGroup.add(wireframeMesh);
+      obj.children.forEach(child => {
+        // mesh
+        this.material = child.material = this.material;
+
+        // wireframe
+        const geo = new THREE.EdgesGeometry(child.geometry); // or WireframeGeometry
+        const wireframeMesh = new THREE.LineSegments(geo, this.wireMat);
+        wireframeMesh.scale.set(0.3, 0.3, 0.3);
+        this.objectGroup.add(obj);
+        this.objectGroup.add(wireframeMesh);
+      });
     });
     document
       .getElementById("thrustersMount")
@@ -73,19 +76,19 @@ class ThreeView extends Component {
     this.animating = true;
     this.animate();
   }
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  componentDidUpdate(oldProps) {
     const {
       wireframe,
       color = "#ffffff",
       src,
       dimensions: { width, height }
-    } = nextProps;
-    if (width !== this.props.dimensions.width) {
+    } = this.props;
+    if (width !== oldProps.dimensions.width) {
       this.renderer.setSize(width, height);
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
     }
-    if (src !== this.props.src) {
+    if (src !== oldProps.src) {
       while (this.objectGroup.children.length > 0) {
         if (this.objectGroup.children[0]) {
           this.objectGroup.remove(this.objectGroup.children[0]);
@@ -95,12 +98,14 @@ class ThreeView extends Component {
       }
       this.objLoader.load(src, obj => {
         obj.scale.set(0.3, 0.3, 0.3);
-        obj.children[0].material = this.material;
-        const geo = new THREE.EdgesGeometry(obj.children[0].geometry); // or WireframeGeometry
-        const wireframeMesh = new THREE.LineSegments(geo, this.wireMat);
-        wireframeMesh.scale.set(0.3, 0.3, 0.3);
-        this.objectGroup.add(obj);
-        this.objectGroup.add(wireframeMesh);
+        obj.children.forEach(child => {
+          child.material = this.material;
+          const geo = new THREE.EdgesGeometry(child.geometry); // or WireframeGeometry
+          const wireframeMesh = new THREE.LineSegments(geo, this.wireMat);
+          wireframeMesh.scale.set(0.3, 0.3, 0.3);
+          this.objectGroup.add(obj);
+          this.objectGroup.add(wireframeMesh);
+        });
       });
     }
 
