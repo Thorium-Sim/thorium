@@ -9,6 +9,7 @@ import {
 } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import Form from "./form";
 import "./style.scss";
 
@@ -37,22 +38,6 @@ const SUB = gql`
 
 class Surveys extends Component {
   state = {};
-  subscription = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: SUB,
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            surveyform: subscriptionData.data.surveyformUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
   createForm = () => {
     const name = window.prompt("What is the title of the form?");
     if (!name) return;
@@ -134,6 +119,18 @@ class Surveys extends Component {
     if (loading || !surveyform) return null;
     return (
       <Container fluid className="survey-forms">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  surveyform: subscriptionData.data.surveyformUpdate
+                });
+              }
+            })
+          }
+        />
         <h4>Survey Config </h4>
 
         <Row>

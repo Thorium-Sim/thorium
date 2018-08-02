@@ -16,22 +16,6 @@ const TACTICALMAP_SUB = gql`
   }
 `;
 class TacticalMapConfig extends Component {
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.tacticalData.loading) {
-      this.sub = nextProps.tacticalData.subscribeToMore({
-        document: TACTICALMAP_SUB,
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            tacticalMaps: subscriptionData.data.tacticalMapsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.sub && this.sub();
-  }
   selectTactical = mapId => {
     let { updateArgs } = this.props;
     updateArgs("mapId", mapId);

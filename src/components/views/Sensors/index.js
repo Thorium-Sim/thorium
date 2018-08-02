@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Button, Row, Col, Card, CardBody } from "reactstrap";
 import Tour from "reactour";
+import Typing from "react-typing-animation";
 
 import "./style.scss";
 import Grid from "./GridDom";
@@ -357,7 +358,9 @@ class Sensors extends Component {
                 <Col className="col-sm-12">
                   <Card className="processedData">
                     <CardBody>
-                      <pre>{this.state.processedData}</pre>
+                      <Typing>
+                        <pre>{sensors.processedData}</pre>
+                      </Typing>
                     </CardBody>
                   </Card>
                 </Col>

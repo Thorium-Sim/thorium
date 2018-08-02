@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Label } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
-
+import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
 const DEST_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {
     navigationUpdate(simulatorId: $simulatorId) {
@@ -26,24 +26,6 @@ const DEST_SUB = gql`
 `;
 
 class Destination extends Component {
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: DEST_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            navigation: subscriptionData.data.navigationUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    // Cancel the subscription
-    this.sub && this.sub();
-  }
   render() {
     if (this.props.data.loading || !this.props.data.navigation) return null;
     const nav = this.props.data.navigation && this.props.data.navigation[0];
@@ -55,11 +37,26 @@ class Destination extends Component {
       nav.currentCourse.z === nav.calculatedCourse.z;
     return (
       <div>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: DEST_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  navigation: subscriptionData.data.navigationUpdate
+                });
+              }
+            })
+          }
+        />
         <Label>Destination</Label>
         <div className="status-field">
           {nav.scanning
             ? "Calculating Course..."
-            : onCourse ? nav.destination : "No Course"}
+            : onCourse
+              ? nav.destination
+              : "No Course"}
         </div>
       </div>
     );

@@ -31,11 +31,11 @@ export class NavigationScanner extends Component {
       this.scanning = setTimeout(this._scan, 100);
     }
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.scanning && nextProps.scanning) {
+  componentDidUpdate(oldProps) {
+    if (this.props.scanning && !oldProps.scanning) {
       this.scanning = setTimeout(this._scan, 100);
     }
-    if (!nextProps.scanning) {
+    if (!this.props.scanning) {
       clearTimeout(this.scanning);
       this.scanning = null;
     }

@@ -10,10 +10,10 @@ export default class ChargeBar extends Component {
       level: props.value
     };
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.state.dragging) {
+  componentDidUpdate() {
+    if (!this.state.dragging && this.state.level !== this.props.level) {
       this.setState({
-        level: nextProps.value
+        level: this.props.value
       });
     }
   }

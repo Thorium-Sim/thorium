@@ -5,7 +5,7 @@ import { graphql, withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import Tour from "reactour";
 import DamageOverlay from "../helpers/DamageOverlay";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import Tank from "./tank";
 
 import "./style.scss";
@@ -63,38 +63,6 @@ class CoolantControl extends Component {
       });
     };
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: COOLANT_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            coolant: subscriptionData.data.coolantUpdate
-          });
-        }
-      });
-    }
-    if (!this.coolantSystemSub && !nextProps.data.loading) {
-      this.coolantSystemSub = nextProps.data.subscribeToMore({
-        document: COOLANT_SYSTEM_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            systemCoolant: subscriptionData.data.coolantSystemUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-    this.coolantSystemSub && this.coolantSystemSub();
-  }
   transferCoolant(systemId, which) {
     const coolant = this.props.data.coolant[0];
     const variables = {
@@ -124,6 +92,36 @@ class CoolantControl extends Component {
     const { systemCoolant } = this.props.data;
     return (
       <Container fluid className="card-coolant">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: COOLANT_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  coolant: subscriptionData.data.coolantUpdate
+                });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: COOLANT_SYSTEM_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  systemCoolant: subscriptionData.data.coolantSystemUpdate
+                });
+              }
+            })
+          }
+        />
         <DamageOverlay system={coolant} message="Coolant Disabled" />
         <Row>
           <Tank {...coolant} />

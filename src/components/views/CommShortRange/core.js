@@ -3,6 +3,7 @@ import { Container, Row, Col, Button, ButtonGroup } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import "./style.scss";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const SHORTRANGE_SUB = gql`
   subscription ShortRangeCommSub($simulatorId: ID!) {
@@ -49,25 +50,6 @@ class CommShortRange extends Component {
       selectedCall: null,
       selectedArrow: null
     };
-    this.subscription = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: SHORTRANGE_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            shortRangeComm: subscriptionData.data.shortRangeCommUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
   }
   _commHail() {
     const ShortRange = this.props.data.shortRangeComm[0];
@@ -154,6 +136,21 @@ class CommShortRange extends Component {
     if (!ShortRange) return <p>No short range comm</p>;
     return (
       <Container fluid className="shortRangeComm-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SHORTRANGE_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  shortRangeComm: subscriptionData.data.shortRangeCommUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm="12" style={{ height: "100%" }}>
             <p>
@@ -219,8 +216,8 @@ class CommShortRange extends Component {
                     } ${a.id === selectedArrow ? "selected" : ""}`}
                   >
                     {signal && signal.name} -{" "}
-                    {Math.round(a.frequency * 37700 + 37700) / 100} MHz{a.muted &&
-                      ` - Muted`}
+                    {Math.round(a.frequency * 37700 + 37700) / 100} MHz
+                    {a.muted && ` - Muted`}
                   </p>
                 );
               })}

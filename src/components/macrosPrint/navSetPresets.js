@@ -16,39 +16,6 @@ export default class NavSetPresetConfig extends Component {
       presets: props.args && props.args.presets
     };
   }
-  componentWillReceiveProps(nextProps) {
-    if (JSON.stringify(nextProps.args) !== JSON.stringify(this.props.args)) {
-      this.setState({
-        presets: nextProps.args.presets
-      });
-    }
-  }
-  update = (evt, which) => {
-    const { presets = [], selectedPreset } = this.state;
-    this.setState({
-      presets: presets.map(p => {
-        if (p.name === selectedPreset) {
-          return Object.assign({}, p, {
-            course: Object.assign({}, p.course, { [which]: evt.target.value })
-          });
-        }
-        return p;
-      })
-    });
-  };
-  addPreset = () => {
-    const { presets = [] } = this.state;
-    const name = prompt("What is the name of the preset?");
-    if (name && !presets.find(p => p.name === name)) {
-      this.setState({
-        presets: presets.concat({ name, course: { x: "", y: "", z: "" } })
-      });
-    }
-  };
-  updateArgs = () => {
-    const { presets = [] } = this.state;
-    this.props.updateArgs("presets", presets);
-  };
   setSelected = preset => {
     this.setState({ selectedPreset: preset });
   };

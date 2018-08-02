@@ -9,6 +9,8 @@ import { Asset } from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Arrow from "./arrow";
 import FrequencySignals from "./frequency";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+
 import "./style.scss";
 
 const SHORTRANGE_SUB = gql`
@@ -88,31 +90,21 @@ class CommShortRange extends Component {
     };
     this.subscription = null;
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: SHORTRANGE_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            shortRangeComm: subscriptionData.data.shortRangeCommUpdate
-          });
-        }
-      });
-    }
+  componentDidUpdate(prevProps) {
     //Update the state based on the props
-    if (!nextProps.data.loading && nextProps.data.shortRangeComm) {
-      const ShortRange = nextProps.data.shortRangeComm[0];
-      this.setState({
-        frequency: ShortRange.frequency,
-        amplitude: ShortRange.amplitude
-      });
+    if (!this.props.data.loading && this.props.data.shortRangeComm) {
+      const ShortRange = this.props.data.shortRangeComm[0];
+      if (
+        ShortRange &&
+        (ShortRange.frequency !== this.state.frequency ||
+          ShortRange.amplitude !== this.state.amplitude)
+      ) {
+        this.setState({
+          frequency: ShortRange.frequency,
+          amplitude: ShortRange.amplitude
+        });
+      }
     }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
   }
   mouseDown(which, dimensions) {
     this.setState(
@@ -274,6 +266,21 @@ class CommShortRange extends Component {
 
     return (
       <Container fluid className="shortRangeComm">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SHORTRANGE_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  shortRangeComm: subscriptionData.data.shortRangeCommUpdate
+                });
+              }
+            })
+          }
+        />
         <DamageOverlay
           message="Short Range Communications Offline"
           system={ShortRange}

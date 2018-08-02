@@ -4,6 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import { TypingField, InputField } from "../../generic/core";
 import { Button } from "reactstrap";
 import "./style.scss";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const INVENTORY_SUB = gql`
   subscription InventoryUpdate($simulatorId: ID!) {
@@ -30,24 +31,6 @@ class CargoControlCore extends Component {
       deck: null,
       room: null
     };
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.inventorySub && !nextProps.data.loading) {
-      this.inventorySub = nextProps.data.subscribeToMore({
-        document: INVENTORY_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            inventory: subscriptionData.data.inventoryUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.inventorySub && this.inventorySub();
   }
   setSelected = (which, e) => {
     const { decks } = this.props.data;
@@ -168,6 +151,21 @@ class CargoControlCore extends Component {
     let { deck, room } = this.state;
     return (
       <div className="cargo-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: INVENTORY_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  inventory: subscriptionData.data.inventoryUpdate
+                });
+              }
+            })
+          }
+        />
         <TypingField
           placeholder="Search for Inventory"
           input

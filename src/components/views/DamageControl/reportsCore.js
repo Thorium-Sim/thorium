@@ -4,7 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button, Input } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import { TypingField } from "../../generic/core";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 const SYSTEMS_SUB = gql`
   subscription DamagedSystemsUpdate($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId, extra: true) {
@@ -58,24 +58,6 @@ class DamageReportCore extends Component {
       selectedSystem: null,
       selectedReport: ""
     };
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.systemSub && !nextProps.data.loading) {
-      this.systemSub = nextProps.data.subscribeToMore({
-        document: SYSTEMS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            systems: subscriptionData.data.systemsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.systemSub && this.systemSub();
   }
   selectSystem(id) {
     const systems = this.props.data.systems;
@@ -265,6 +247,21 @@ class DamageReportCore extends Component {
     const selectedSystemObj = systems.find(s => s.id === selectedSystem);
     return (
       <Container fluid className="damageReport-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SYSTEMS_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  systems: subscriptionData.data.systemsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row style={{ height: "100%" }}>
           <Col sm={4} className="left-side">
             <div className="system-list">

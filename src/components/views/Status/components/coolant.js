@@ -3,6 +3,7 @@ import { Label } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import Dots from "./dots";
+import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
 const SUB = gql`
   subscription Coolant($simulatorId: ID!) {
     coolantUpdate(simulatorId: $simulatorId) {
@@ -13,30 +14,25 @@ const SUB = gql`
 `;
 
 class Coolant extends Component {
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            coolant: subscriptionData.data.coolantUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    // Cancel the subscription
-    this.sub();
-  }
   render() {
     if (this.props.data.loading || !this.props.data.coolant) return null;
     const coolant = this.props.data.coolant && this.props.data.coolant[0];
     if (!coolant) return null;
     return (
       <div>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  coolant: subscriptionData.data.coolantUpdate
+                });
+              }
+            })
+          }
+        />
         <Label>Coolant</Label>
         <Dots level={coolant.coolant} color="rgb(40,60,255)" />
       </div>

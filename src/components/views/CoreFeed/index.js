@@ -5,6 +5,7 @@ import { Cores } from "../";
 import { Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import moment from "moment";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.scss";
 
 const COREFEED_SUB = gql`
@@ -23,26 +24,7 @@ const COREFEED_SUB = gql`
 `;
 
 class CoreFeed extends Component {
-  sub = null;
   state = { components: {} };
-  componentWillReceiveProps(nextProps) {
-    if (!this.internalSub && !nextProps.data.loading) {
-      this.internalSub = nextProps.data.subscribeToMore({
-        document: COREFEED_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            coreFeed: subscriptionData.data.coreFeedUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.internalSub && this.internalSub();
-  }
   ignoreCoreFeed = id => {
     const mutation = gql`
       mutation IgnoreCoreFeed($id: ID) {
@@ -78,6 +60,21 @@ class CoreFeed extends Component {
     const { components } = this.state;
     return (
       <div className="coreFeed-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: COREFEED_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  coreFeed: subscriptionData.data.coreFeedUpdate
+                });
+              }
+            })
+          }
+        />
         <p>Core Feed</p>
         <Button color="info" size="sm" block onClick={this.ignoreAll}>
           Ignore All

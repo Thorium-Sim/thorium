@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -16,26 +17,6 @@ const SUB = gql`
 `;
 
 class LongRangeComm extends Component {
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            longRangeCommunications:
-              subscriptionData.data.longRangeCommunicationsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.sub && this.sub();
-  }
   toggleInterception = e => {
     const { data } = this.props;
     const longRangeCommunications = data.longRangeCommunications[0];
@@ -65,6 +46,22 @@ class LongRangeComm extends Component {
     const { interception, locked, decoded } = lrComm;
     return (
       <div>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  longRangeCommunications:
+                    subscriptionData.data.longRangeCommunicationsUpdate
+                });
+              }
+            })
+          }
+        />
         <label>
           <input
             type="checkbox"

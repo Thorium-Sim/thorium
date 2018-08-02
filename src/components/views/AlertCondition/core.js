@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 const levels = [
   { id: 5, color: "info" },
   { id: 4, color: "success" },
@@ -20,22 +21,6 @@ const SUB = gql`
 `;
 
 class AlertConditionCore extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: { id: this.props.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            simulators: subscriptionData.data.simulatorsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.sub && this.sub();
-  }
   setAlert = number => {
     const mutation = gql`
       mutation AlertLevel($id: ID!, $level: String!) {
@@ -59,6 +44,19 @@ class AlertConditionCore extends Component {
     const simulator = simulators[0];
     return (
       <div className="pull-right">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              variables: { id: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  simulators: subscriptionData.data.simulatorsUpdate
+                });
+              }
+            })
+          }
+        />
         {levels.map(l => (
           <Button
             className={
