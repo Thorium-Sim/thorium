@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Asset } from "../../../../helpers/assets";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
-import shieldStyle from "../../ShieldControl/shieldStyle";
+import shieldStyle, { shieldColor } from "../../ShieldControl/shieldStyle";
 import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
 
 const SUB = gql`
@@ -38,6 +38,7 @@ class Stealth extends Component {
         ? []
         : this.props.data.shields;
     const { assets } = this.props.simulator;
+    console.log(shieldStyle(shields));
     return (
       <Asset asset={assets.top}>
         {({ src }) => (
@@ -45,7 +46,11 @@ class Stealth extends Component {
             className="shieldBubble"
             style={{
               transform: "rotate(270deg)",
-              boxShadow: shieldStyle(shields)
+              boxShadow: shields.length > 1 ? shieldStyle(shields) : null,
+              filter:
+                shields.length === 1
+                  ? `drop-shadow(${shieldColor(shields[0])} 0px 0px 30px)`
+                  : null
             }}
           >
             <SubscriptionHelper
