@@ -67,6 +67,7 @@ class Assets extends Component {
               >
                 {action => (
                   <FileExplorer
+                    key={assets[selectedAsset]}
                     selectedFiles={[assets[selectedAsset]]}
                     onClick={(evt, container) => {
                       action({
