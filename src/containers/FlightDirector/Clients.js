@@ -56,7 +56,6 @@ const CLIENT_CHANGE_QUERY = gql`
 
 const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
   const thisFlight = flights.find(f => f.id === flightId);
-  if (!thisFlight) return null;
   return (
     <tr key={`flight-${p.id}-${index}`}>
       <td>
@@ -367,18 +366,21 @@ class Clients extends Component {
                         </td>
                       </tr>
                       {this.props.data.clients
-                        .filter(
-                          p =>
+                        .filter(p => {
+                          return (
                             p.flight !== "" &&
                             p.flight !== null &&
                             p.flight.id !== this.props.match.params.flightId
-                        )
+                          );
+                        })
                         .map((p, index) => (
                           <ClientRow
                             p={p}
+                            key={p.id}
                             index={index}
                             removeClient={this.removeClient}
                             select={this.select}
+                            flightId={this.props.flightId}
                             flights={this.props.data.flights}
                           />
                         ))}
