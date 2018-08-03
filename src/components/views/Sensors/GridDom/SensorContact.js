@@ -56,7 +56,6 @@ class Ping extends Component {
   }
 }
 const ContactSelection = ({ width, x, y, size, contactDims }) => {
-  console.log(contactDims, x, y);
   const offsetX = contactDims.width / 2;
   const offsetY = contactDims.height / 2;
   return (

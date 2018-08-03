@@ -39,7 +39,6 @@ class DynamicPicker extends Component {
       data: { coreLayouts }
     } = this.props;
     const layout = coreLayouts.find(l => l.id === value);
-    console.log(layout);
     if (
       window.confirm(
         `Are you sure you want to delete the '${layout.name}' layout?`
