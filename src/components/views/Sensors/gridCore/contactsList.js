@@ -131,7 +131,7 @@ class ContactsList extends Component {
     const { sensors, dragStart } = this.props;
     const { contextContact, removeContacts } = this.state;
     return (
-      <div>
+      <div className="sensors-contact-list">
         <p>Contacts:</p>
         <div className="contact-scroll">
           {sensors.armyContacts.map(contact => {

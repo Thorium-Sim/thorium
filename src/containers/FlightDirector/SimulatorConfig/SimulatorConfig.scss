@@ -1,17 +1,17 @@
 .simulator-config {
   .selected {
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0, 0, 0, 0.2);
   }
-  .scroll{
+  .scroll {
     max-height: 70vh;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
   .decks {
     padding-bottom: 5rem;
   }
   .system-checkbox {
     position: static;
-    margin-top:0;
+    margin-top: 0;
     margin-right: 2px;
     margin-left: -0.75rem;
   }

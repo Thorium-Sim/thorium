@@ -23,10 +23,12 @@ type Speed {
   text: String
   number: Float
   velocity: Float
+  optimal: Boolean
 }
 input SpeedInput {
   text: String
   number: Float
   velocity: Float
+  optimal: Boolean
 }
 `;

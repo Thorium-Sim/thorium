@@ -1,111 +1,80 @@
-import React from "react";
-import { GenericSystemConfig } from "./Generic";
+import React, { Fragment } from "react";
+import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag";
-import { graphql } from "react-apollo";
-
-const Navigation = props => {
-  const { data, client, simulatorId, type } = props;
-  if (data.loading) return null;
-  const { navigation, decks } = data;
-  const [nav] = navigation;
-  const toggleThrusters = () => {
-    const mutation = gql`
-      mutation ToggleNavThrusters($id: ID!, $thrusters: Boolean) {
-        navSetThrusters(id: $id, thrusters: $thrusters)
-      }
-    `;
-    const variables = {
-      id: nav.id,
-      thrusters: !nav.thrusters
-    };
-    client.mutate({
-      mutation,
-      variables,
-      refetchQueries: ["Navigation"]
-    });
-  };
-  const toggleCalculate = e => {
-    const mutation = gql`
-      mutation ToggleCalculate($id: ID!, $which: Boolean!) {
-        navToggleCalculate(id: $id, which: $which)
-      }
-    `;
-    const variables = {
-      id: nav.id,
-      which: e.target.checked
-    };
-    client.mutate({
-      mutation,
-      variables,
-      refetchQueries: ["Navigation"]
-    });
-  };
-  return (
-    <GenericSystemConfig
-      client={client}
-      simulatorId={simulatorId}
-      type={type}
-      data={{ systems: [nav], decks }}
-    >
-      {" "}
-      <label>
-        <input
-          type="checkbox"
-          checked={nav.calculate}
-          onChange={toggleCalculate}
-        />
-        Calculate Course
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          checked={nav.thrusters}
-          onChange={toggleThrusters}
-        />
-        Thruster Navigation
-      </label>
-    </GenericSystemConfig>
-  );
-};
+import { Query, Mutation } from "react-apollo";
 
 const NAV_QUERY = gql`
-  query Navigation($id: ID, $deckId: ID!) {
-    decks(simulatorId: $deckId) {
+  query Navigation($id: ID!) {
+    navigate(id: $id) {
       id
-      number
-      rooms {
-        id
-        name
-      }
-    }
-    navigation(simulatorId: $id) {
-      id
-      name
-      displayName
-      type
-      power {
-        power
-        powerLevels
-        defaultLevel
-      }
-      locations {
-        id
-        name
-        deck {
-          number
-        }
-      }
       calculate
       thrusters
     }
   }
 `;
-export default graphql(NAV_QUERY, {
-  options: ownProps => ({
-    fetchPolicy: "cache-and-network",
-    variables: {
-      id: ownProps.simulatorId,
-      deckId: ownProps.simulatorId
-    }
-  })
-})(Navigation);
+const Navigation = props => {
+  const { id } = props;
+  return (
+    <GenericSystemConfig {...props}>
+      <Query query={NAV_QUERY} variables={{ id }}>
+        {({ loading, data }) => {
+          if (loading) return null;
+          const { navigate } = data;
+          const { calculate, thrusters } = navigate;
+          return (
+            <Fragment>
+              <label>
+                <Mutation
+                  mutation={gql`
+                    mutation ToggleCalculate($id: ID!, $which: Boolean!) {
+                      navToggleCalculate(id: $id, which: $which)
+                    }
+                  `}
+                  refetchQueries={[{ query: NAV_QUERY, variables: { id } }]}
+                >
+                  {action => (
+                    <input
+                      type="checkbox"
+                      checked={calculate}
+                      onChange={() =>
+                        action({
+                          variables: { id, which: !calculate }
+                        })
+                      }
+                    />
+                  )}
+                </Mutation>
+                Calculate Course
+              </label>
+              <label>
+                <Mutation
+                  mutation={gql`
+                    mutation ToggleNavThrusters($id: ID!, $thrusters: Boolean) {
+                      navSetThrusters(id: $id, thrusters: $thrusters)
+                    }
+                  `}
+                  refetchQueries={[{ query: NAV_QUERY, variables: { id } }]}
+                >
+                  {action => (
+                    <input
+                      type="checkbox"
+                      checked={thrusters}
+                      onChange={() =>
+                        action({
+                          variables: { id, thrusters: !thrusters }
+                        })
+                      }
+                    />
+                  )}
+                </Mutation>
+                Thruster Navigation
+              </label>
+            </Fragment>
+          );
+        }}
+      </Query>
+    </GenericSystemConfig>
+  );
+};
+
+export default Navigation;

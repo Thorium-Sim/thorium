@@ -1,14 +1,17 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { DraggableCore } from "react-draggable";
 import { Button } from "reactstrap";
 import distance from "../../../../helpers/distance";
 import { throttle } from "../../../../helpers/debounce";
 import gql from "graphql-tag";
 
-export default class MovementCore extends Component {
+export default class MovementCore extends PureComponent {
   constructor(props) {
     super(props);
-    const { movement: { x, y }, id } = props.sensors;
+    const {
+      movement: { x, y },
+      id
+    } = props.sensors;
     this.state = {
       direction: {
         left: x,
@@ -31,15 +34,6 @@ export default class MovementCore extends Component {
       });
     }, 300);
   }
-  componentWillReceiveProps(nextProps) {
-    const { movement: { x, y } } = nextProps.sensors;
-    this.setState({
-      direction: {
-        left: x,
-        top: y
-      }
-    });
-  }
   onDragHandler(handlerName) {
     return (e, { node }) => {
       const newPosition = { top: 0, left: 0 };
@@ -55,8 +49,8 @@ export default class MovementCore extends Component {
           const clientX = e.clientX || e.touches[0].clientX;
           const clientY = e.clientY || e.touches[0].clientY;
 
-          newPosition.left = (left + width / 2 - clientX) / width * -1 * 2;
-          newPosition.top = (top + height / 2 - clientY) / width * -1 * 2;
+          newPosition.left = ((left + width / 2 - clientX) / width) * -1 * 2;
+          newPosition.top = ((top + height / 2 - clientY) / width) * -1 * 2;
           if (
             distance(undefined, { x: newPosition.left, y: newPosition.top }) > 1
           ) {
@@ -99,9 +93,13 @@ export default class MovementCore extends Component {
     }
   }
   render() {
-    const { direction: { left, top }, width = 0, height = 0 } = this.state;
+    const {
+      direction: { left, top },
+      width = 0,
+      height = 0
+    } = this.state;
     return (
-      <div>
+      <div style={{ flex: 1 }}>
         <div className="draggerHolder">
           <div className="draggerCircle" ref="dirCirc">
             <DraggableCore onDrag={this.onDragHandler("onDrag")}>
@@ -109,8 +107,8 @@ export default class MovementCore extends Component {
                 ref="directionDragger"
                 className="dragger direction alertBack"
                 style={{
-                  transform: `translate3d(${left * width / 2}px,${top *
-                    height /
+                  transform: `translate3d(${(left * width) / 2}px,${(top *
+                    height) /
                     2}px,0px)`
                 }}
               />

@@ -10,6 +10,9 @@ export const SickbayQueries = {
       returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
     return returnVal;
   },
+  sickbaySingle(root, { id }) {
+    return App.systems.find(s => s.id === id);
+  },
   symptoms() {
     return symptoms;
   }

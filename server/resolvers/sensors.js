@@ -13,6 +13,9 @@ export const SensorsQueries = {
     }
     return returnVal;
   },
+  sensor(root, { id }) {
+    return App.systems.find(s => s.id === id);
+  },
   sensorContacts(root, { sensorsId }) {
     const sensors = App.systems.find(system => {
       return system.type === "Sensors" && system.id === sensorsId;

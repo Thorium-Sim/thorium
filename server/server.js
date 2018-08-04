@@ -1,5 +1,6 @@
 // Bootstrap things one step at a time with promises;
 import "babel-polyfill";
+import log from "./bootstrap/logs";
 import migrate from "./bootstrap/migration";
 import init from "./bootstrap/init";
 import express from "./bootstrap/express";
@@ -15,6 +16,7 @@ const GRAPHQL_PORT = CLIENT_PORT + 1;
 const WS_PORT = CLIENT_PORT + 2;
 export const port = CLIENT_PORT;
 Promise.resolve()
+  .then(() => log())
   .then(() => migrate())
   .then(() => init())
   .then(() => broadcast(CLIENT_PORT))

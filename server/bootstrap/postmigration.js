@@ -31,10 +31,12 @@ function walkSync(dir, filelist) {
   const files = fs.readdirSync(dir);
   filelist = filelist || [];
   files.forEach(function(file) {
-    if (fs.statSync(dir + file).isDirectory()) {
-      filelist = walkSync(dir + file + "/", filelist);
-    } else {
-      filelist.push(dir + file);
+    if (fs.existsSync(dir + file)) {
+      if (fs.statSync(dir + file).isDirectory()) {
+        filelist = walkSync(dir + file + "/", filelist);
+      } else {
+        filelist.push(dir + file);
+      }
     }
   });
   return filelist;
@@ -397,23 +399,28 @@ export default () => {
           // Move all of the assets into a flat file structure
           // Use a fancy recursive function
           const assets = walkSync(assetDir);
+          console.log(`Transferring ${assets.length} files...`);
+          return assets.reduce((promise, path) => {
+            if (path.includes(".DS_Store")) return promise;
+            if (!path.match(regexPath)) return promise;
+            if (path.includes("/Simulator/")) return promise;
 
-          return Promise.all(
-            assets.map(a => {
-              if (a.includes(".DS_Store")) return Promise.resolve();
-              if (!a.match(regexPath)) return Promise.resolve();
-              if (a.includes("/Simulator/")) return Promise.resolve();
-
-              const [path, ext] = a.match(regexPath);
-              const pathList = path.split("/");
-              const fileName =
-                pathList.slice(0, pathList.length - 1).join("/") + "." + ext;
+            const [__, ext] = path.match(regexPath);
+            const pathList = path.split("/");
+            const fileName =
+              pathList.slice(0, pathList.length - 1).join("/") + "." + ext;
+            return promise.then(() => {
               return new Promise(resolve => {
                 ncp(path, fileName, err => {
                   if (err) {
-                    console.error("Error!", err);
+                    console.error(
+                      chalk.red("Error moving file:"),
+                      chalk.yellow(path),
+                      err
+                    );
+                    return resolve();
                   }
-                  console.log(chalk.cyan(`Moved ${fileName}`));
+                  console.log(chalk.cyan(`Moved ${path} to ${fileName}`));
                   fs.unlinkSync(path);
                   const folderPath = path.split("/");
                   let folderContents = fs.readdirSync(
@@ -436,8 +443,12 @@ export default () => {
                   resolve();
                 });
               });
-            })
-          );
+            });
+          }, Promise.resolve());
+        })
+        .catch(err => {
+          console.error(chalk.red("There was an error!"));
+          console.log(err);
         })
         .then(() => {
           // With no more need for the asset structure in memory as it is known,

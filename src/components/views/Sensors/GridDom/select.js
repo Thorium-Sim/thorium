@@ -32,6 +32,7 @@ class Selection extends React.Component {
     selectedChildren: {}
   };
 
+  refHolder = {};
   /**
    * On root element mouse down
    */
@@ -135,6 +136,8 @@ class Selection extends React.Component {
     // let tmpChild
     return React.Children.map(this.props.children, child => {
       const tmpKey = isNull(child.key) ? index++ : child.key;
+      const ref = this.refHolder[tmpKey] || React.createRef();
+      if (!this.refHolder[tmpKey]) this.refHolder[tmpKey] = ref;
       const isSelected = !!this.state.selectedChildren[tmpKey];
       return (
         <div className={"select-box " + (isSelected ? "selected" : "")}>
@@ -184,12 +187,11 @@ class Selection extends React.Component {
    */
   selectAll = () => {
     const selectedChildren = {};
-    this.refs &&
-      this.refs.forEach((ref, key) => {
-        if (key !== "selectionBox") {
-          selectedChildren[key] = true;
-        }
-      });
+    Object.entries(this.refHolder).forEach(([key, { current: ref }]) => {
+      if (key !== "selectionBox") {
+        selectedChildren[key] = true;
+      }
+    });
     this.setState({
       selectedChildren
     });
@@ -225,29 +227,28 @@ class Selection extends React.Component {
    * collisions with selectionBox
    */
   _updateCollidingChildren(selectionBox) {
-    this.refs &&
-      this.refs.forEach((ref, key) => {
-        if (key !== "selectionBox") {
-          const location = ref.props.children.props.destination;
-          const selBox = {
-            left: selectionBox.left / window.innerWidth,
-            top: selectionBox.top / window.innerHeight,
-            width: selectionBox.width / window.innerWidth,
-            height: selectionBox.height / window.innerHeight
-          };
-          const tmpBox = {
-            left: location.x - 0.001,
-            top: location.y - 0.001,
-            width: 0.02,
-            height: 0.02
-          };
-          const selectedChildren = { ...this.state.selectedChildren };
-          selectedChildren[key] = this._boxIntersects(selBox, tmpBox);
-          this.setState({
-            selectedChildren
-          });
-        }
-      });
+    Object.entries(this.refHolder).forEach(([key, { current: ref }]) => {
+      if (key !== "selectionBox") {
+        const location = ref.props.children.props.destination;
+        const selBox = {
+          left: selectionBox.left / window.innerWidth,
+          top: selectionBox.top / window.innerHeight,
+          width: selectionBox.width / window.innerWidth,
+          height: selectionBox.height / window.innerHeight
+        };
+        const tmpBox = {
+          left: location.x - 0.001,
+          top: location.y - 0.001,
+          width: 0.02,
+          height: 0.02
+        };
+        const selectedChildren = { ...this.state.selectedChildren };
+        selectedChildren[key] = this._boxIntersects(selBox, tmpBox);
+        this.setState({
+          selectedChildren
+        });
+      }
+    });
   }
 
   /**
@@ -257,7 +258,6 @@ class Selection extends React.Component {
     if (!this.state.mouseDown || isNull(endPoint) || isNull(startPoint)) {
       return null;
     }
-    // const parentNode = this.refs.selectionBox
     const left = Math.min(startPoint.x, endPoint.x); // - bounds.left;
     const top = Math.min(startPoint.y, endPoint.y); // - bounds.top;
     const width = Math.abs(startPoint.x - endPoint.x);

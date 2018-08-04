@@ -7,6 +7,9 @@ export const EngineQueries = {
     return App.systems.filter(system => {
       return system.type === "Engine" && system.simulatorId === simulatorId;
     });
+  },
+  engine(root, { id }) {
+    return App.systems.find(s => s.id === id);
   }
 };
 

@@ -21,8 +21,10 @@ function streamToString(stream, cb) {
     cb(chunks.join(""));
   });
 }
+const regexPath = /[^\\]*\.(\w+)$/;
 
 export default function ImportMission(filepath, cb) {
+  console.log("Importing mission");
   yauzl.open(filepath, { lazyEntries: true }, function(err, importZip) {
     if (err) throw err;
     importZip.on("close", function() {
@@ -32,17 +34,29 @@ export default function ImportMission(filepath, cb) {
 
     importZip.on("entry", function(entry) {
       if (/^mission\/assets/.test(entry.fileName)) {
+        console.log("Copying file", entry.fileName);
         // It's an asset. Load it
         importZip.openReadStream(entry, function(error, readStream) {
           if (error) throw error;
           readStream.on("end", function() {
             importZip.readEntry();
           });
-          const filename = entry.fileName.replace("mission/", "");
+          let filename = entry.fileName.replace("mission/", "");
+          if (
+            filename
+              .split("/")
+              [filename.split("/").length - 1].indexOf("default") > -1
+          ) {
+            const [_, ext] = filename.match(regexPath);
+            const pathList = filename.split("/");
+            filename =
+              pathList.slice(0, pathList.length - 1).join("/") + "." + ext;
+          }
           const directorypath = filename
             .split("/")
             .splice(0, filename.split("/").length - 1)
             .join("/");
+
           mkdirp.sync(`${assetDir}/${directorypath}`);
           readStream.pipe(fs.createWriteStream(`${assetDir}/${filename}`));
         });

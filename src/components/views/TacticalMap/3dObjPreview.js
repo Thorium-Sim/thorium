@@ -51,7 +51,9 @@ class ObjPreview extends Component {
 
     objLoader.load(meshSrc, obj => {
       obj.scale.set(0.3, 0.3, 0.3);
-      obj.children[0].material = this.material;
+      obj.children.forEach(child => {
+        child.material = this.material;
+      });
 
       this.objectGroup.add(obj);
 

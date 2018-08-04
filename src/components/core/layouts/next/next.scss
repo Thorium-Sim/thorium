@@ -5,9 +5,9 @@
   height: 100%;
   display: grid;
   height: calc(100vh - 35px);
-  grid-gap: 10px;
+  grid-gap: 5px;
   grid-template-columns: 30vw 3fr 1fr;
-  grid-template-rows: 36vh auto 1fr;
+  grid-template-rows: 1fr auto 45vh;
   grid-template-areas:
     "sensors main timeline"
     "actions main timeline"

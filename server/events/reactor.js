@@ -12,6 +12,7 @@ App.on("reactorEject", ({ id, tf = true }) => {
     body: "",
     color: "info"
   });
+
   App.handleEvent(
     {
       simulatorId: system.simulatorId,
@@ -22,6 +23,14 @@ App.on("reactorEject", ({ id, tf = true }) => {
     "addCoreFeed"
   );
   system.eject(tf);
+  pubsub.publish(
+    "reactorUpdate",
+    App.systems.filter(s => s.type === "Reactor")
+  );
+});
+App.on("reactorChangeModel", ({ id, model }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  system && system.changeModel(model);
   pubsub.publish(
     "reactorUpdate",
     App.systems.filter(s => s.type === "Reactor")

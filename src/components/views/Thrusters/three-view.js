@@ -130,20 +130,40 @@ class ThreeView extends Component {
           /http(s|):\/\/.*:[0-9]{4}/gi,
           ""
         );
-        const texSrc = (res.data.textureAsset.url || "").replace(
-          /http(s|):\/\/.*:[0-9]{4}/gi,
-          ""
-        );
+        // const texSrc = (res.data.textureAsset.url || "").replace(
+        //   /http(s|):\/\/.*:[0-9]{4}/gi,
+        //   ""
+        // );
         const objLoader = new window.THREE.OBJLoader();
-        const texture = new THREE.TextureLoader().load(texSrc);
-        const material = new THREE.MeshBasicMaterial({ map: texture });
-
-        this.scene.add(this.cube);
+        //const texture = new THREE.TextureLoader().load(texSrc);
+        // const material = new THREE.MeshBasicMaterial({ map: texture });
+        const color = 0x71bbe9;
+        const material = new THREE.MeshPhongMaterial({
+          color,
+          polygonOffset: true,
+          polygonOffsetFactor: 1, // positive value pushes polygon further away
+          polygonOffsetUnits: 1,
+          opacity: 0.3,
+          transparent: true
+        });
+        const wireMat = new THREE.LineBasicMaterial({
+          color,
+          linewidth: 4,
+          visible: true,
+          opacity: 0.7
+          // transparent: true
+        });
 
         this.animate();
         objLoader.load(meshSrc, obj => {
           obj.scale.set(0.2, 0.2, 0.2);
-          obj.children[0].material = material;
+          obj.children.forEach(child => {
+            child.material = material;
+            const geo = new THREE.EdgesGeometry(child.geometry); // or WireframeGeometry
+            const wireframeMesh = new THREE.LineSegments(geo, wireMat);
+            wireframeMesh.scale.set(0.2, 0.2, 0.2);
+            this.objectGroup.add(wireframeMesh);
+          });
           this.objectGroup.add(obj);
         });
       });
@@ -153,7 +173,8 @@ class ThreeView extends Component {
     this.animating = true;
     this.animate();
   }
-  componentWillReceiveProps({ direction, rotation }) {
+  componentDidUpdate() {
+    const { direction, rotation } = this.props;
     const directions = [
       "starboardArrow",
       "portArrow",

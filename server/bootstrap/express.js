@@ -80,13 +80,17 @@ export default () => {
   });
 
   server.post("/importMission", upload.any(), async (req, res) => {
+    console.log("Uploading mission...");
     if (req.files[0]) {
+      console.log("Importing mission...");
       importMission(req.files[0].path, () => {
+        console.log("Imported. Deleting uploaded file");
         fs.unlink(req.files[0].path, err => {
           if (err) {
             res.end("Error");
             throw new Error(err);
           }
+          console.log("Completed importing mission.");
           res.end("Complete");
         });
       });

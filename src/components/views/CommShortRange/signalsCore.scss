@@ -11,7 +11,9 @@
     cursor: pointer;
   }
   .color-picker {
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.8);
+    height: 100%;
+    overflow-y: auto;
     position: absolute;
     z-index: 2;
   }
