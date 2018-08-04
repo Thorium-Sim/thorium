@@ -8,6 +8,7 @@ import Transitioner from "../../views/helpers/transitioner";
 import { Asset } from "../../../helpers/assets";
 
 import "./style.scss";
+import StealthAnimation from "../../views/StealthField/stealthAnimation";
 
 class StealthBars extends Transitioner {
   systemName(sys) {
@@ -86,6 +87,7 @@ const STEALTH_SUB = gql`
     stealthFieldUpdate(simulatorId: $simulatorId) {
       id
       name
+      displayName
       state
       charge
       activated
@@ -205,7 +207,7 @@ class StealthField extends Component {
           alignItems: "center"
         }}
       >
-        <h1>Stealth Field</h1>
+        <h1>{stealthField.displayName}</h1>
         <Row>
           <Col sm="3" />
           <Col sm="6">
@@ -222,17 +224,7 @@ class StealthField extends Component {
                       src={src}
                       draggable="false"
                     />
-                    <canvas
-                      id="stealth-canvas"
-                      style={{
-                        WebkitMaskImage: `url(${src})`,
-                        display:
-                          stealthField.id &&
-                          (!stealthField.activated || stealthField.state)
-                            ? "block"
-                            : "none"
-                      }}
-                    />
+                    <StealthAnimation stealthField={stealthField} src={src} />
                   </div>
                 );
               }}
@@ -242,9 +234,9 @@ class StealthField extends Component {
         </Row>
         <Row className="stealth-board">
           <TransitionGroup>
-            {[StealthBars]
-              .filter(s => s.state)
-              .map(Comp => <Comp key={Comp.name} systems={systems} />)}
+            {[StealthBars].filter(s => s.state).map(Comp => (
+              <Comp key={Comp.name} systems={systems} />
+            ))}
           </TransitionGroup>
         </Row>
       </Container>
@@ -257,6 +249,7 @@ const STEALTH_QUERY = gql`
     stealthField(simulatorId: $simulatorId) {
       id
       name
+      displayName
       state
       charge
       activated

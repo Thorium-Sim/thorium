@@ -208,7 +208,6 @@ class Decoding extends Component {
         m => m.id === this.state.selectedMessage
       );
     }
-    console.log(this.state.f, Math.abs(50 - this.state.f));
     return (
       <Container fluid className="lrComm">
         <SubscriptionHelper

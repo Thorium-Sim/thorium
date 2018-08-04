@@ -49,8 +49,16 @@ const REMOVE_ASSET_CONTAINER = gql`
 class FileExplorer extends Component {
   constructor(props) {
     super(props);
+    const { selectedFiles } = props;
+    let currentDirectory = props.directory || "/";
+    if (selectedFiles && selectedFiles[0]) {
+      currentDirectory = selectedFiles[0]
+        .split("/")
+        .slice(0, -1)
+        .join("/");
+    }
     this.state = {
-      currentDirectory: props.directory || "/"
+      currentDirectory
     };
   }
   static defaultProps = {
