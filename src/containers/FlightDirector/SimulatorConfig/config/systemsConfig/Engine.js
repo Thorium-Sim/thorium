@@ -13,6 +13,7 @@ const ENGINE_QUERY = gql`
         text
         number
         velocity
+        optimal
       }
       useAcceleration
       speedFactor
@@ -38,7 +39,7 @@ const defaultSpeeds = {
     { text: "Warp 3", number: 3, velocity: warpSpeed(3) },
     { text: "Warp 4", number: 4, velocity: warpSpeed(4) },
     { text: "Warp 5", number: 5, velocity: warpSpeed(5) },
-    { text: "Warp 6", number: 6, velocity: warpSpeed(6) },
+    { text: "Warp 6", number: 6, velocity: warpSpeed(6), optimal: true },
     { text: "Warp 7", number: 7, velocity: warpSpeed(7) },
     { text: "Warp 8", number: 8, velocity: warpSpeed(8) },
     { text: "Warp 9", number: 9, velocity: warpSpeed(9) },
@@ -48,7 +49,12 @@ const defaultSpeeds = {
     { text: "1/4 Impulse", number: 0.25, velocity: impulseSpeed(0.25) },
     { text: "1/2 Impulse", number: 0.5, velocity: impulseSpeed(0.5) },
     { text: "3/4 Impulse", number: 0.75, velocity: impulseSpeed(0.75) },
-    { text: "Full Impulse", number: 1, velocity: impulseSpeed(1) },
+    {
+      text: "Full Impulse",
+      number: 1,
+      velocity: impulseSpeed(1),
+      optimal: true
+    },
     {
       text: "Destructive Impulse",
       number: 1.25,
@@ -57,6 +63,102 @@ const defaultSpeeds = {
   ]
 };
 
+const Speed = ({ index, speed, speeds, action, id }) => {
+  return (
+    <div>
+      <FormGroup className="speed">
+        <Label style={{ display: "inline-block" }}>
+          Speed Text
+          <Input
+            type="text"
+            value={speed.text}
+            onChange={evt => {
+              const newSpeeds = speeds.map(({ text, number }, i) => {
+                const obj = { text, number };
+                if (index === i) obj.text = evt.target.value;
+                return obj;
+              });
+              action({
+                variables: { id, speeds: newSpeeds }
+              });
+            }}
+          />
+        </Label>
+        <Label style={{ display: "inline-block" }}>
+          Speed Number
+          <Input
+            type="number"
+            value={speed.number}
+            onChange={evt => {
+              const newSpeeds = speeds.map(({ text, number }, i) => {
+                const obj = { text, number };
+                if (index === i) obj.number = evt.target.value;
+                return obj;
+              });
+              action({
+                variables: { id, speeds: newSpeeds }
+              });
+            }}
+          />
+        </Label>
+        <Label style={{ display: "inline-block" }}>
+          Velocity (km/s)
+          <Input
+            type="number"
+            value={speed.velocity}
+            onChange={evt => {
+              const newSpeeds = speeds.map(({ text, number }, i) => {
+                const obj = { text, number };
+                if (index === i) obj.velocity = evt.target.value;
+                return obj;
+              });
+              action({
+                variables: { id, speeds: newSpeeds }
+              });
+            }}
+          />
+        </Label>
+
+        <Label style={{ display: "inline-block" }}>
+          Optimal Speed <small>(for Stealth)</small>
+          <Input
+            type="checkbox"
+            style={{ marginLeft: "20px" }}
+            checked={speed.optimal}
+            onChange={evt => {
+              const newSpeeds = speeds.map(
+                ({ text, number, velocity, optimal }, i) => {
+                  const obj = { text, number, velocity, optimal };
+                  if (index === i) {
+                    obj.optimal = evt.target.checked;
+                  } else {
+                    obj.optimal = false;
+                  }
+                  return obj;
+                }
+              );
+              action({
+                variables: { id, speeds: newSpeeds }
+              });
+            }}
+          />
+        </Label>
+      </FormGroup>
+      <Button
+        color="warning"
+        size="sm"
+        onClick={() => {
+          const newSpeeds = speeds
+            .map(({ text, number }) => ({ text, number }))
+            .filter((s, i) => i !== index);
+          action({ variables: { id, speeds: newSpeeds } });
+        }}
+      >
+        Remove Speed
+      </Button>
+    </div>
+  );
+};
 const Engine = props => {
   const { id } = props;
   return (
@@ -165,82 +267,14 @@ const Engine = props => {
                   </Button>
                   {speeds.map((speed, index) => {
                     return (
-                      <div key={`speed-${index}`}>
-                        <FormGroup className="speed">
-                          <Label style={{ display: "inline-block" }}>
-                            Speed Text
-                            <Input
-                              type="text"
-                              value={speed.text}
-                              onChange={evt => {
-                                const newSpeeds = speeds.map(
-                                  ({ text, number }, i) => {
-                                    const obj = { text, number };
-                                    if (index === i)
-                                      obj.text = evt.target.value;
-                                    return obj;
-                                  }
-                                );
-                                action({
-                                  variables: { id, speeds: newSpeeds }
-                                });
-                              }}
-                            />
-                          </Label>
-                          <Label style={{ display: "inline-block" }}>
-                            Speed Number
-                            <Input
-                              type="number"
-                              value={speed.number}
-                              onChange={evt => {
-                                const newSpeeds = speeds.map(
-                                  ({ text, number }, i) => {
-                                    const obj = { text, number };
-                                    if (index === i)
-                                      obj.number = evt.target.value;
-                                    return obj;
-                                  }
-                                );
-                                action({
-                                  variables: { id, speeds: newSpeeds }
-                                });
-                              }}
-                            />
-                          </Label>
-                          <Label style={{ display: "inline-block" }}>
-                            Velocity (km/s)
-                            <Input
-                              type="number"
-                              value={speed.velocity}
-                              onChange={evt => {
-                                const newSpeeds = speeds.map(
-                                  ({ text, number }, i) => {
-                                    const obj = { text, number };
-                                    if (index === i)
-                                      obj.velocity = evt.target.value;
-                                    return obj;
-                                  }
-                                );
-                                action({
-                                  variables: { id, speeds: newSpeeds }
-                                });
-                              }}
-                            />
-                          </Label>
-                        </FormGroup>
-                        <Button
-                          color="warning"
-                          size="sm"
-                          onClick={() => {
-                            const newSpeeds = speeds
-                              .map(({ text, number }) => ({ text, number }))
-                              .filter((s, i) => i !== index);
-                            action({ variables: { id, speeds: newSpeeds } });
-                          }}
-                        >
-                          Remove Speed
-                        </Button>
-                      </div>
+                      <Speed
+                        key={`speed-${index}`}
+                        index={index}
+                        speed={speed}
+                        speeds={speeds}
+                        action={action}
+                        id={id}
+                      />
                     );
                   })}
                   <Button

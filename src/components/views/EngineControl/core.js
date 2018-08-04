@@ -17,6 +17,7 @@ const SPEEDCHANGE_SUB = gql`
       heat
       speed
       on
+      stealthFactor
     }
   }
 `;
@@ -119,6 +120,11 @@ class EngineCoreView extends Component {
             )}
           </Col>
         </Row>
+        {this.props.data.engines.map(e => (
+          <div>
+            {e.name}: {e.stealthFactor}
+          </div>
+        ))}
         <Row>
           <Col>
             <p>Velocity</p>
@@ -149,6 +155,7 @@ const ENGINE_QUERY = gql`
       heat
       speed
       on
+      stealthFactor
     }
   }
 `;
