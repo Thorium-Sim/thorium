@@ -172,6 +172,7 @@ export const FlightStructureMutations = {
     const simulator = App.simulators.find(s => s.id === simulatorId);
     macros.forEach(({ stepId, event, args, delay = 0 }) => {
       simulator.executeTimelineStep(stepId);
+      console.log(delay, stepId, event, args);
       setTimeout(() => {
         App.handleEvent(
           Object.assign({ simulatorId }, JSON.parse(args)),
