@@ -3,6 +3,8 @@ import gql from "graphql-tag";
 import { Container, Row, Col, Button, Input, Label } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+
 import "./style.scss";
 
 const DECKS_SUB = gql`
@@ -20,32 +22,11 @@ const DECKS_SUB = gql`
 `;
 
 class DecksCore extends Component {
-  constructor(props) {
-    super(props);
-    this.subscription = null;
-    this.state = {
-      selectedDeck: null,
-      selectedRoom: null
-    };
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: DECKS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            decks: subscriptionData.data.decksUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
+  state = {
+    selectedDeck: null,
+    selectedRoom: null
+  };
+
   _addDeck() {
     const number = window.prompt(
       "What is the deck number? ('6', not 'Deck 6')"
@@ -245,6 +226,21 @@ class DecksCore extends Component {
     const { selectedDeck, selectedRoom } = this.state;
     return (
       <Container className="decks-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: DECKS_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  decks: subscriptionData.data.decksUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm="4" className="decks-columns">
             <ul className="deckList">

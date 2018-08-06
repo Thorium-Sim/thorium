@@ -6,6 +6,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import tinycolor from "tinycolor2";
 import { Asset } from "../../../helpers/assets";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -112,23 +113,10 @@ class Communications extends Component {
       }
     });
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: SHORTRANGE_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            shortRangeComm: subscriptionData.data.shortRangeCommUpdate
-          });
-        }
-      });
-    }
+  static getDerivedStateFromProps(props) {
     //Update the state based on the props
-    if (!nextProps.data.loading) {
-      const ShortRange = nextProps.data.shortRangeComm[0];
+    if (!props.data.loading) {
+      const ShortRange = props.data.shortRangeComm[0];
       if (!ShortRange) return;
       let comms = ShortRange.arrows.map(a => {
         const signal = ShortRange.signals.find(s => s.id === a.signal) || {};
@@ -158,11 +146,15 @@ class Communications extends Component {
           image: signal.image
         });
       }
-      this.changeGradient(comms);
-      this.setState({
+      return {
         comms
-      });
+      };
     }
+    return null;
+  }
+  componentDidUpdate() {
+    const { comms } = this.state;
+    this.changeGradient(comms);
   }
   componentWillUnmount() {
     this.subscription && this.subscription();
@@ -195,6 +187,21 @@ class Communications extends Component {
     const { comms } = this.state;
     return (
       <div className="viewscreen-communications">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SHORTRANGE_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  shortRangeComm: subscriptionData.data.shortRangeCommUpdate
+                });
+              }
+            })
+          }
+        />
         <Container>
           <Row className="justify-content-center">
             {comms.length > 0 ? (
@@ -204,7 +211,8 @@ class Communications extends Component {
                     {({ src }) => <img alt="comm" src={src} />}
                   </Asset>
                   <h2>
-                    {c.name} - {Math.round(c.frequency * 37700 + 37700) / 100}MHz
+                    {c.name} - {Math.round(c.frequency * 37700 + 37700) / 100}
+                    MHz
                   </h2>
                   <h3>
                     {c.connected

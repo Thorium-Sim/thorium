@@ -5,6 +5,7 @@ import { Container, Row, Col, Button, Card } from "reactstrap";
 import Measure from "react-measure";
 import Tour from "reactour";
 import AnimatedNumber from "react-animated-number";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import HeatBar from "../EngineControl/heatbar";
 import ReactorModel from "./model";
@@ -67,42 +68,7 @@ const trainingSteps = [
   }
 ];
 class ReactorControl extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.internalSub = null;
-    this.systemSub = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.internalSub && !nextProps.data.loading) {
-      this.internalSub = nextProps.data.subscribeToMore({
-        document: REACTOR_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            reactors: subscriptionData.data.reactorUpdate
-          });
-        }
-      });
-      this.systemSub = nextProps.data.subscribeToMore({
-        document: SYSTEMS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            systems: subscriptionData.data.systemsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.internalSub && this.internalSub();
-    this.systemSub && this.systemSub();
-  }
+  state = {};
   setEfficiency(e) {
     const { reactors } = this.props.data;
     const reactor = reactors.find(r => r.model === "reactor");
@@ -217,6 +183,36 @@ class ReactorControl extends Component {
     ];
     return (
       <Container fluid className="reactor-control">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: REACTOR_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  reactors: subscriptionData.data.reactorUpdate
+                });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SYSTEMS_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  systems: subscriptionData.data.systemsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={5}>
             <Row>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import "./style.scss";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const DECK_SUB = gql`
   subscription DeckSubscribe($simulatorId: ID!) {
@@ -25,20 +26,6 @@ class SecurityTeams extends Component {
       selectedDeck: null,
       selectedRoom: null
     };
-    this.deckSubscription = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.deckSubscription && !nextProps.data.loading) {
-      this.deckSubscription = nextProps.data.subscribeToMore({
-        document: DECK_SUB,
-        variables: {
-          simulatorId: this.props.simulator.id
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.deckSubscription && this.deckSubscription();
   }
   _toggleDoors = (deckId, doors) => {
     const mutation = gql`
@@ -93,6 +80,16 @@ class SecurityTeams extends Component {
     const decks = this.props.data.decks;
     return (
       <div className="core-securityDecks">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: DECK_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              }
+            })
+          }
+        />
         <table>
           <thead>
             <tr>
@@ -150,7 +147,9 @@ const TranzineSelect = ({ deck }) => {
       <option value="tranzine" disabled>
         {tRooms.length === 0 ? "No Gas" : "Tranzine Active"}
       </option>
-      {tRooms.map(r => <option key={r.id}>{r.name}</option>)}
+      {tRooms.map(r => (
+        <option key={r.id}>{r.name}</option>
+      ))}
     </select>
   );
 };

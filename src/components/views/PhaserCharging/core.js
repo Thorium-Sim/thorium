@@ -3,6 +3,8 @@ import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
 import { InputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+
 import "./style.scss";
 
 const PHASERS_SUB = gql`
@@ -22,29 +24,7 @@ const PHASERS_SUB = gql`
 `;
 
 class PhaserChargingCore extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.subscription = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: PHASERS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            phasers: subscriptionData.data.phasersUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
+  state = {};
   changeArc(value) {
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
@@ -84,6 +64,21 @@ class PhaserChargingCore extends Component {
     if (!phasers) return <p>No phasers</p>;
     return (
       <Container fluid className="phasers-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: PHASERS_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  phasers: subscriptionData.data.phasersUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={4}>Arc:</Col>
           <Col sm={8}>

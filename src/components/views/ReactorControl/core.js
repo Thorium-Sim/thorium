@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import gql from "graphql-tag";
-import { InputField, OutputField } from "../../generic/core";
+import { InputField } from "../../generic/core";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import { Container, Row, Col, Button, Input, Progress } from "reactstrap";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";

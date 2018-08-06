@@ -3,6 +3,7 @@ import { Row, Col, Container, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Tour from "reactour";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 //import DamageOverlay from '../helpers/DamageOverlay';
 import "./style.scss";
@@ -62,23 +63,6 @@ class PhaserCharging extends Component {
       selectedBank: null,
       arc: 0.5
     };
-    this.subscription = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: PHASERS_SUB,
-        variables: { simulatorId: this.props.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            phasers: subscriptionData.data.phasersUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
   }
   selectPhaserBank(id) {
     this.setState({
@@ -142,6 +126,19 @@ class PhaserCharging extends Component {
     if (!phasers) return <p>No Phaser System</p>;
     return (
       <Container fluid className="card-phaserCharging">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: PHASERS_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  phasers: subscriptionData.data.phasersUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm="2">
             <p>Phaser Banks</p>

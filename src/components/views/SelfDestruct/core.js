@@ -4,6 +4,8 @@ import { Container } from "reactstrap";
 import Moment from "moment";
 import { graphql, withApollo } from "react-apollo";
 import { InputField } from "../../generic/core";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+
 import "./style.scss";
 
 function padDigits(number, digits) {
@@ -26,25 +28,6 @@ const SELF_DESTRUCT_SUB = gql`
 `;
 
 class SelfDestructCore extends Component {
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: SELF_DESTRUCT_SUB,
-        variables: {
-          id: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            simulators: subscriptionData.data.simulatorsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.sub && this.sub();
-  }
   activate = time => {
     if (time) {
       const duration = Moment.duration(time);
@@ -111,6 +94,21 @@ class SelfDestructCore extends Component {
     const duration = Moment.duration(selfDestructTime);
     return (
       <Container className="self-destruct">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SELF_DESTRUCT_SUB,
+              variables: {
+                id: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  simulators: subscriptionData.data.simulatorsUpdate
+                });
+              }
+            })
+          }
+        />
         <div>
           <label>
             Auto:{" "}

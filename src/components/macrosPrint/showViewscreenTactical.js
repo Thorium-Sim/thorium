@@ -2,19 +2,6 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 
-const TACTICALMAP_SUB = gql`
-  subscription TacticalMapUpdate {
-    tacticalMapsUpdate {
-      id
-      name
-      flight {
-        id
-      }
-      frozen
-      template
-    }
-  }
-`;
 class TacticalMapConfig extends Component {
   selectTactical = mapId => {
     let { updateArgs } = this.props;

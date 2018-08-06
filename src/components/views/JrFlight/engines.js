@@ -15,24 +15,6 @@ const SPEEDCHANGE_SUB = gql`
   }
 `;
 
-const SYSTEMS_SUB = gql`
-  subscription SystemsUpdate($simulatorId: ID, $type: String) {
-    systemsUpdate(simulatorId: $simulatorId, type: $type) {
-      id
-      coolant
-      heat
-      power {
-        power
-        powerLevels
-      }
-      damage {
-        damaged
-        report
-      }
-    }
-  }
-`;
-
 class EngineControl extends Component {
   constructor(props) {
     super(props);

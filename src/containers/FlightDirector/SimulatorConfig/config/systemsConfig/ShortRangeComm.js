@@ -1,9 +1,5 @@
 import React from "react";
-import { Button } from "reactstrap";
 import GenericSystemConfig from "./Generic";
-import gql from "graphql-tag";
-import { graphql } from "react-apollo";
-import { Input, FormGroup, Label } from "reactstrap";
 import SignalsCore from "../../../../../components/views/CommShortRange/signalsCore";
 
 const ShortRangeComm = props => {
@@ -14,24 +10,6 @@ const ShortRangeComm = props => {
   );
 };
 export default ShortRangeComm;
-
-const ops = {
-  addSignal: gql`
-    mutation AddCommSignal($id: ID!, $signal: CommSignalInput!) {
-      commAddSignal(id: $id, commSignalInput: $signal)
-    }
-  `,
-  removeSignal: gql`
-    mutation RemoveCommSignal($id: ID!, $signalId: ID!) {
-      commRemoveSignal(id: $id, signalId: $signalId)
-    }
-  `,
-  updateSignal: gql`
-    mutation CommSignalUpdate($id: ID!, $signal: CommSignalInput!) {
-      commUpdateSignal(id: $id, commSignalInput: $signal)
-    }
-  `
-};
 /*
 const ShortRangeComm = ({ data, client, simulatorId, type }) => {
   const defaultSignals = (which, { id, signals }) => {

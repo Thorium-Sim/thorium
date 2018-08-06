@@ -13,6 +13,7 @@ import {
   ModalFooter,
   Input
 } from "reactstrap";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import FontAwesome from "react-fontawesome";
 import * as Macros from "../../macros";
@@ -104,57 +105,37 @@ const TIMELINE_SUB = gql`
 `;
 
 class TimelineCore extends Component {
-  constructor(props) {
-    super(props);
-    this.sub = null;
-    this.state = { steps: {} };
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      const { simulator } = nextProps;
-      this.internalSub = nextProps.data.subscribeToMore({
-        document: TIMELINE_SUB,
-        variables: {
-          simulatorId: simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            simulators: subscriptionData.data.simulatorsUpdate
+  state = { steps: {} };
+  componentDidUpdate(prevProps, prevState) {
+    // Update the state
+    if (!this.props.data.loading) {
+      const oldSim = prevProps.data.simulators && prevProps.data.simulators[0];
+      const oldStep = oldSim && oldSim.currentTimelineStep;
+      if (!this.props.data.simulators[0]) return;
+      const { currentTimelineStep: newStep } = this.props.data.simulators[0];
+      if (oldStep !== newStep) {
+        const mission = this.props.data.simulators[0].mission;
+        if (!mission) return;
+        const { executedTimelineSteps } = this.props.data.simulators[0];
+        const currentStep = mission.timeline[newStep];
+        const steps = currentStep
+          ? currentStep.timelineItems.reduce(
+              (prev, next) =>
+                executedTimelineSteps.indexOf(next.id) > -1 &&
+                allowedMacros.indexOf(next.event) === -1
+                  ? prev
+                  : Object.assign(prev, { [next.id]: true }),
+              {}
+            )
+          : [];
+        if (JSON.stringify(steps) !== this.state.steps) {
+          this.setState({
+            steps
           });
         }
-      });
-    }
-    // Update the state based on the timeline step
-    if (!nextProps.data.loading) {
-      const oldSim =
-        this.props.data.simulators && this.props.data.simulators[0];
-      const oldStep = oldSim && oldSim.currentTimelineStep;
-      if (!nextProps.data.simulators[0]) return;
-      const { currentTimelineStep: newStep } = nextProps.data.simulators[0];
-      if (oldStep !== newStep) {
-        const mission = nextProps.data.simulators[0].mission;
-        if (!mission) return;
-        const { executedTimelineSteps } = nextProps.data.simulators[0];
-        const currentStep = mission.timeline[newStep];
-        this.setState({
-          steps: currentStep
-            ? currentStep.timelineItems.reduce(
-                (prev, next) =>
-                  executedTimelineSteps.indexOf(next.id) > -1 &&
-                  allowedMacros.indexOf(next.event) === -1
-                    ? prev
-                    : Object.assign(prev, { [next.id]: true }),
-                {}
-              )
-            : []
-        });
       }
     }
-  }
-  componentWillUnmount() {
-    this.internalSub && this.internalSub();
-  }
-  componentDidUpdate(prevProps, prevState) {
+    // Update the cache, if necessary
     if (this.props.data.loading) return;
     const { mission, currentTimelineStep } = this.props.data.simulators[0];
     if (!mission) return;
@@ -274,6 +255,21 @@ class TimelineCore extends Component {
     if (!mission) {
       return (
         <div>
+          <SubscriptionHelper
+            subscribe={() =>
+              this.props.data.subscribeToMore({
+                document: TIMELINE_SUB,
+                variables: {
+                  simulatorId: this.props.simulator.id
+                },
+                updateQuery: (previousResult, { subscriptionData }) => {
+                  return Object.assign({}, previousResult, {
+                    simulators: subscriptionData.data.simulatorsUpdate
+                  });
+                }
+              })
+            }
+          />
           <select value={"nothing"} onChange={this.updateMission}>
             <option disabled value="nothing">
               Select a mission

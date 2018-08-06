@@ -10,14 +10,14 @@ const ADD_CACHE_MUTATION = gql`
 `;
 
 class VideoConfig extends Component {
-  componentWillReceiveProps(nextProps) {
-    const data = JSON.parse(nextProps.data);
-    const oldData = JSON.parse(this.props.data);
-    if (data.asset !== oldData.asset && nextProps.selectedClient) {
+  componentDidUpdate(prevProps) {
+    const oldData = JSON.parse(prevProps.data);
+    const data = JSON.parse(this.props.data);
+    if (data.asset !== oldData.asset && this.props.selectedClient) {
       this.props.client.mutate({
         mutation: ADD_CACHE_MUTATION,
         variables: {
-          clientId: nextProps.selectedClient,
+          clientId: this.props.selectedClient,
           cacheItem: data.asset
         }
       });

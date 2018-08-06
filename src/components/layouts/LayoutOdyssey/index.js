@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Alerts from "../../generic/Alerts";
 import CardFrame from "./frame";
 import Widgets from "./widgets";
 import { withApollo } from "react-apollo";

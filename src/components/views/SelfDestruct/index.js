@@ -13,6 +13,7 @@ import {
 import Moment from "moment";
 import { graphql, withApollo } from "react-apollo";
 import Tour from "reactour";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -47,28 +48,9 @@ const trainingSteps = [
   }
 ];
 class SelfDestruct extends Component {
-  sub = null;
   state = {
     modal: false
   };
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: SELF_DESTRUCT_SUB,
-        variables: {
-          id: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            simulators: subscriptionData.data.simulatorsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.sub && this.sub();
-  }
   toggle = () => {
     this.setState({
       modal: !this.state.modal,
@@ -125,6 +107,21 @@ class SelfDestruct extends Component {
     const duration = Moment.duration(selfDestructTime);
     return (
       <Container className="self-destruct">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SELF_DESTRUCT_SUB,
+              variables: {
+                id: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  simulators: subscriptionData.data.simulatorsUpdate
+                });
+              }
+            })
+          }
+        />
         <div className={`holder  ${selfDestructTime ? "on" : ""}`}>
           <div
             className="self-destruct-button"

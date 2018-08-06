@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Button } from "reactstrap";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+
 const TACTICALMAP_SUB = gql`
   subscription TacticalMapUpdate {
     tacticalMapsUpdate {
@@ -19,22 +21,6 @@ class TacticalMapConfig extends Component {
   state = {
     tacticalMapId: null
   };
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.tacticalData.loading) {
-      this.sub = nextProps.tacticalData.subscribeToMore({
-        document: TACTICALMAP_SUB,
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            tacticalMaps: subscriptionData.data.tacticalMapsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.sub && this.sub();
-  }
   selectTactical = tacticalMapId => {
     this.setState({ tacticalMapId });
   };
@@ -86,6 +72,18 @@ class TacticalMapConfig extends Component {
     const flightTacticalId = data.tacticalMapId;
     return (
       <div className="tacticalmap-config">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: TACTICALMAP_SUB,
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  tacticalMaps: subscriptionData.data.tacticalMapsUpdate
+                });
+              }
+            })
+          }
+        />
         <p>Saved Maps</p>
         <ul className="saved-list">
           {tacticalMaps.filter(t => t.template).map(t => (

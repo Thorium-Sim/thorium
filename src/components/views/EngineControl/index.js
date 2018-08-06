@@ -43,24 +43,6 @@ const HEATCHANGE_SUB = gql`
   }
 `;
 
-const SYSTEMS_SUB = gql`
-  subscription SystemsUpdate($simulatorId: ID, $type: String) {
-    systemsUpdate(simulatorId: $simulatorId, type: $type) {
-      id
-      coolant
-      heat
-      power {
-        power
-        powerLevels
-      }
-      damage {
-        damaged
-        report
-      }
-    }
-  }
-`;
-
 class EngineControl extends Component {
   interactionTime = 0;
   speedBarStyle(array, speed, engineCount, index) {

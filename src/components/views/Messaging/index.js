@@ -16,6 +16,7 @@ import {
   InputGroupAddon
 } from "reactstrap";
 import "./style.scss";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const MESSAGING_SUB = gql`
   subscription GotMessage($simulatorId: ID!, $station: String) {
@@ -41,55 +42,16 @@ const TEAMS_SUB = gql`
 `;
 
 class Messaging extends Component {
-  subscription = null;
-  teamSub = null;
   state = {
     messageInput: "",
     stationsShown: false,
     selectedConversation: null
   };
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: MESSAGING_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id,
-          station: nextProps.station.name
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          if (!subscriptionData.data.sendMessage) return previousResult;
-          setTimeout(this.scrollElement, 100);
-          return Object.assign({}, previousResult, {
-            messages: previousResult.messages.concat(
-              subscriptionData.data.sendMessage
-            )
-          });
-        }
-      });
-    }
-    if (!this.teamSub && !nextProps.data.loading) {
-      this.teamSub = nextProps.data.subscribeToMore({
-        document: TEAMS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            teams: subscriptionData.data.teamsUpdate
-          });
-        }
-      });
-    }
-  }
   componentDidUpdate() {
     const el = this.refs.messageHolder;
     if (el) {
       el.scrollTop = el.scrollHeight;
     }
-  }
-  componentWillUnmount() {
-    this.subscription();
-    this.teamSub();
   }
   sendMessage = () => {
     const mutation = gql`
@@ -157,6 +119,41 @@ class Messaging extends Component {
       });
     return (
       <Container className="messages">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: MESSAGING_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id,
+                station: this.props.station.name
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                if (!subscriptionData.data.sendMessage) return previousResult;
+                setTimeout(this.scrollElement, 100);
+                return Object.assign({}, previousResult, {
+                  messages: previousResult.messages.concat(
+                    subscriptionData.data.sendMessage
+                  )
+                });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: TEAMS_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  teams: subscriptionData.data.teamsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={3}>
             <h4>Conversations</h4>

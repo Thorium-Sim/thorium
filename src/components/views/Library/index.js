@@ -4,6 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card, CardBody, Input, Button } from "reactstrap";
 import { Asset } from "../../../helpers/assets";
 import Tour from "reactour";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -51,27 +52,7 @@ const trainingSteps = [
   }
 ];
 class Library extends Component {
-  subscription = null;
   state = {};
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id,
-          type: nextProps.type || "general"
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            libraryEntries: subscriptionData.data.libraryEntriesUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
   setCategory = category => {
     const { categoryFilter = [] } = this.state;
     if (categoryFilter.indexOf(category) > -1) {
@@ -93,6 +74,22 @@ class Library extends Component {
     const sEntry = libraryEntries.find(l => l.id === selectedEntry);
     return (
       <Container fluid className="library-card">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              variables: {
+                simulatorId: this.props.simulator.id,
+                type: this.props.type || "general"
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  libraryEntries: subscriptionData.data.libraryEntriesUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={3}>
             <h4>Entries</h4>

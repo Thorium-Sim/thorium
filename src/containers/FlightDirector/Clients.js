@@ -4,6 +4,8 @@ import gql from "graphql-tag";
 import { graphql, withApollo, Query } from "react-apollo";
 import moment from "moment";
 import FontAwesome from "react-fontawesome";
+import SubscriptionHelper from "../../helpers/subscriptionHelper";
+
 const FLIGHTS_SUB = gql`
   subscription FlightsSub {
     flightsUpdate {
@@ -249,28 +251,6 @@ class Clients extends Component {
       )
     }
   ];
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: CLIENT_CHANGE_QUERY,
-        updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Object.assign({}, previousResult);
-          returnResult.clients = subscriptionData.data.clientChanged;
-          return returnResult;
-        }
-      });
-    }
-    if (!this.flightsSub && !nextProps.data.loading) {
-      this.flightsSub = nextProps.data.subscribeToMore({
-        document: FLIGHTS_SUB,
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            flights: subscriptionData.data.flightsUpdate
-          });
-        }
-      });
-    }
-  }
   select = (p, type, e) => {
     let m = null;
     if (type === "flight") {
@@ -320,6 +300,30 @@ class Clients extends Component {
     }
     return (
       <Container>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: CLIENT_CHANGE_QUERY,
+              updateQuery: (previousResult, { subscriptionData }) => {
+                const returnResult = Object.assign({}, previousResult);
+                returnResult.clients = subscriptionData.data.clientChanged;
+                return returnResult;
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: FLIGHTS_SUB,
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  flights: subscriptionData.data.flightsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row className="justify-content-md-center">
           <Col
             xs="12"

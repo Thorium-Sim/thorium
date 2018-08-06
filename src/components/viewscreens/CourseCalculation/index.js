@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import { NavigationScanner } from "../../views/Navigation";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.scss";
 
 const NAV_SUB = gql`
@@ -22,25 +23,15 @@ const NAV_SUB = gql`
 
 class CourseCalculationViewscreen extends Component {
   state = {};
-  componentWillReceiveProps(nextProps) {
-    const data = JSON.parse(nextProps.viewscreen.data);
-    if (!this.sensorsSubscription && !nextProps.data.loading) {
-      this.sensorsSubscription = nextProps.data.subscribeToMore({
-        document: NAV_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            navigation: subscriptionData.data.navigationUpdate
-          });
-        }
-      });
-    }
-    if (!nextProps.data.loading && nextProps.data.navigation) {
+  componentDidUpdate(prevProps) {
+    const data = JSON.parse(this.props.viewscreen.data);
+    const scanning = data.reactive
+      ? this.props.data.navigation && this.props.data.navigation[0].scanning
+      : data.scanning;
+    if (scanning !== this.state.scanning) {
       this.setState(
         {
-          scanning: data.reactive
-            ? nextProps.data.navigation[0].scanning
-            : data.scanning
+          scanning
         },
         () => {
           cancelAnimationFrame(this.looping);
@@ -50,7 +41,6 @@ class CourseCalculationViewscreen extends Component {
     }
   }
   componentWillUnmount() {
-    this.sensorsSubscription && this.sensorsSubscription();
     cancelAnimationFrame(this.looping);
   }
   loop = () => {
@@ -73,8 +63,24 @@ class CourseCalculationViewscreen extends Component {
     const { scanning, x, y, z } = this.state;
     return (
       <div className="viewscreen-courseCalculation">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: NAV_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  navigation: subscriptionData.data.navigationUpdate
+                });
+              }
+            })
+          }
+        />
         <Container>
-          <h1>Course Calculation{destination ? `: ${destination}` : ""}</h1>
+          <h1>
+            Course Calculation
+            {destination ? `: ${destination}` : ""}
+          </h1>
           <Row>
             <Col sm={6}>
               <NavigationScanner scanning={scanning} />
@@ -84,7 +90,8 @@ class CourseCalculationViewscreen extends Component {
                 {!data.reactive && data.thrusters ? (
                   <CardBody>
                     <div>
-                      Yaw:{"  "}
+                      Yaw:
+                      {"  "}
                       <span className="thruster-text">
                         {scanning ? Math.floor(x * 360) : calculatedCourse.x}˚
                       </span>
@@ -96,7 +103,8 @@ class CourseCalculationViewscreen extends Component {
                       </span>
                     </div>
                     <div>
-                      Roll:{"  "}
+                      Roll:
+                      {"  "}
                       <span className="thruster-text">
                         {scanning ? Math.floor(z * 360) : calculatedCourse.z}˚
                       </span>

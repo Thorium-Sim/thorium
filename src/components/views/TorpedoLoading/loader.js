@@ -27,11 +27,11 @@ export default class TorpedoLoader extends Component {
       screen: "TorpedoTube"
     };
   }
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(props, state) {
     // Update the state based on the props
-    let torpedo = nextProps.torpedo;
+    let torpedo = props.torpedo;
     let torpState = torpedo.state;
-    let type = this.state.torpedoType;
+    let type = state.torpedoType;
     if (torpedo.loaded !== "false") {
       const loadedTorp = torpedo.inventory.find(t => t.id === torpedo.loaded);
       if (loadedTorp) {
@@ -41,10 +41,10 @@ export default class TorpedoLoader extends Component {
         torpState = false;
       }
     }
-    this.setState({
+    return {
       torpedoState: torpState,
       torpedoType: type
-    });
+    };
   }
 
   updateScreen(screen) {

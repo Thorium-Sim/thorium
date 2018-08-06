@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { Container, Row, Col, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import "./style.scss";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const PROBES_SUB = gql`
   subscription ProbesSub($simulatorId: ID!) {
@@ -19,25 +20,6 @@ const PROBES_SUB = gql`
 `;
 
 class ProbeNetworkCore extends Component {
-  subscription = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: PROBES_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            probes: subscriptionData.data.probesUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
   destroyProbe = probe => {
     if (
       window.confirm(`Are you sure you want to destroy this probe: ${probe}`)
@@ -90,6 +72,21 @@ class ProbeNetworkCore extends Component {
     probes.forEach(p => (network[p.name] = p.launched));
     return (
       <Container className="probe-network-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: PROBES_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  probes: subscriptionData.data.probesUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={{ size: 2, offset: 5 }}>
             <p
