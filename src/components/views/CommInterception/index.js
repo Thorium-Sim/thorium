@@ -48,6 +48,7 @@ const trainingSteps = [
 ];
 
 class Interception extends Component {
+  state = {};
   renderInterception() {
     const {
       data: { longRangeCommunications }

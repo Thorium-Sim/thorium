@@ -107,20 +107,19 @@ class OfficerLog extends Component {
             </Button>
           </Col>
           {logText !== null && (
-            <Col sm={8}>
+            <Col sm={8} style={{ display: "flex", flexDirection: "column" }}>
+              <div className="log-header">
+                <h4>Log of Officer: {this.props.clientObj.loginName}</h4>
+                <h4>Stardate: {stardate(timestamp || new Date())}</h4>
+              </div>
+              <Input
+                style={{ flex: 1 }}
+                type="textarea"
+                value={logText || ""}
+                disabled={selectedLog}
+                onChange={e => this.setState({ logText: e.target.value })}
+              />
               <Row>
-                <Col sm={12}>
-                  <div className="log-header">
-                    <h4>Log of Officer: {this.props.clientObj.loginName}</h4>
-                    <h4>Stardate: {stardate(timestamp || new Date())}</h4>
-                  </div>
-                  <Input
-                    type="textarea"
-                    value={logText || ""}
-                    disabled={selectedLog}
-                    onChange={e => this.setState({ logText: e.target.value })}
-                  />
-                </Col>
                 <Col sm={6}>
                   <Button
                     color="danger"

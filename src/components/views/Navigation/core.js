@@ -54,13 +54,8 @@ class NavigationCore extends Component {
     };
   }
   componentDidUpdate(prevProps) {
-    if (this.props.data.loading || !this.props.data.navigation) return;
-    const navigation = this.props.data.navigation[0];
-    if (
-      navigation.calculatedCourse.x !== this.state.calculatedCourse.x ||
-      navigation.calculatedCourse.y !== this.state.calculatedCourse.y ||
-      navigation.calculatedCourse.z !== this.state.calculatedCourse.z
-    ) {
+    if (!this.props.data.loading && prevProps.data.loading) {
+      const navigation = this.props.data.navigation[0];
       this.setState({
         calculatedCourse: navigation.calculatedCourse
       });

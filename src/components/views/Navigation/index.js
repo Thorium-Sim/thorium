@@ -148,19 +148,46 @@ class Navigation extends Component {
         clearTimeout(this.scanning);
         this.scanning = null;
       }
-      const { destination, calculatedCourse, enteredCourse } = this.state;
+      const oldNavigation = prevProps.data.loading
+        ? {}
+        : prevProps.data.navigation[0];
+      let { destination, calculatedCourse, enteredCourse } = this.state;
+      const {
+        destination: newDestination = {},
+        calculatedCourse: newCalculatedCourse = {},
+        currentCourse: newCurrentCourse = {}
+      } = navigation;
+      const {
+        destination: oldDestination = {},
+        calculatedCourse: oldCalculatedCourse = {},
+        currentCourse: oldCurrentCourse = {}
+      } = oldNavigation;
+      let update = false;
+      if (newDestination !== oldDestination) {
+        update = true;
+        destination = newDestination;
+      }
       if (
-        JSON.stringify({ destination, calculatedCourse, enteredCourse }) !==
-        JSON.stringify({
-          destination: navigation.destination,
-          calculatedCourse: navigation.calculatedCourse,
-          enteredCourse: navigation.currentCourse
-        })
+        newCalculatedCourse.x !== oldCalculatedCourse.x ||
+        newCalculatedCourse.y !== oldCalculatedCourse.y ||
+        newCalculatedCourse.z !== oldCalculatedCourse.z
       ) {
+        update = true;
+        calculatedCourse = newCalculatedCourse;
+      }
+      if (
+        newCurrentCourse.x !== oldCurrentCourse.x ||
+        newCurrentCourse.y !== oldCurrentCourse.y ||
+        newCurrentCourse.z !== oldCurrentCourse.z
+      ) {
+        update = true;
+        enteredCourse = newCurrentCourse;
+      }
+      if (update) {
         this.setState({
-          destination: navigation.destination,
-          calculatedCourse: navigation.calculatedCourse,
-          enteredCourse: navigation.currentCourse
+          destination,
+          calculatedCourse,
+          enteredCourse
         });
       }
     }
