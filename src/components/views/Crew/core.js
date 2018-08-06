@@ -11,6 +11,7 @@ import {
 import gql from "graphql-tag";
 import { TypingField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.scss";
 const damagePositions = [
   "Computer Specialist",
@@ -45,25 +46,6 @@ const INTERNAL_SUB = gql`
 `;
 class CrewCore extends Component {
   state = {};
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: INTERNAL_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            crew: subscriptionData.data.crewUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.sub && this.sub();
-  }
   _importCrew = evt => {
     const self = this;
     const simulatorId = this.props.simulator.id;
@@ -212,6 +194,21 @@ class CrewCore extends Component {
     const selectedCrewMember = crew.find(c => c.id === selectedCrew);
     return (
       <Container className="crew-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: INTERNAL_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  crew: subscriptionData.data.crewUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={3}>
             <Row style={{ height: "20px", overflow: "hidden" }}>

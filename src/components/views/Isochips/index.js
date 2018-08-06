@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Container, Row, Col } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.scss";
 
 const ISOCHIPS_SUB = gql`
@@ -21,30 +21,26 @@ const ISOCHIPS_SUB = gql`
 `;
 
 class Isochips extends Component {
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: ISOCHIPS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            template: subscriptionData.data.templateUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.sub && this.sub();
-  }
   render() {
     if (this.props.data.loading || !this.props.data.isochips) return null;
     const { isochips } = this.props.data;
     return (
       <Container className="isochips">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: ISOCHIPS_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  template: subscriptionData.data.templateUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           {isochips.map(i => (
             <Col key={i.id} sm={2}>

@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Table } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { InputField } from "../../generic/core";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 const HEAT_SUB = gql`
   subscription SystemHeatUpdate($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId, heat: true) {
@@ -16,25 +16,6 @@ const HEAT_SUB = gql`
 `;
 
 class HeatCore extends Component {
-  subscription = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: HEAT_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            systems: subscriptionData.data.systemsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
   updateHeat = (id, heat) => {
     const mutation = gql`
       mutation SystemHeat($id: ID!, $heat: Float) {
@@ -70,6 +51,21 @@ class HeatCore extends Component {
     const { systems } = this.props.data;
     return (
       <div className="core-heat">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: HEAT_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  systems: subscriptionData.data.systemsUpdate
+                });
+              }
+            })
+          }
+        />
         <Table size="sm">
           <thead>
             <tr>

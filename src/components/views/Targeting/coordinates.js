@@ -12,11 +12,18 @@ export default class Coordinates extends Component {
       enteredTarget: props.targeting.enteredTarget || {}
     };
   }
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      calculatedTarget: nextProps.targeting.calculatedTarget || {},
-      enteredTarget: nextProps.targeting.enteredTarget || {}
-    });
+  componentDidUpdate() {
+    if (
+      JSON.stringify(this.props.targeting.calculatedTarget) !==
+        JSON.stringify(this.state.calculatedTarget) ||
+      JSON.stringify(this.props.targeting.enteredTarget) !==
+        this.state.enteredTarget
+    ) {
+      this.setState({
+        calculatedTarget: this.props.targeting.calculatedTarget || {},
+        enteredTarget: this.props.targeting.enteredTarget || {}
+      });
+    }
   }
   keydown = e => {
     let key;

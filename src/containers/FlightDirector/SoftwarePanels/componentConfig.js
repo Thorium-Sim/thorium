@@ -13,15 +13,20 @@ class Config extends Component {
       color: component.color
     };
   }
-  componentWillReceiveProps(nextProps) {
-    const component = nextProps.components.find(
-      s => s.id === nextProps.selectedComponent
+  componentDidUpdate() {
+    const component = this.props.components.find(
+      s => s.id === this.props.selectedComponent
     );
     if (!component) return;
-    this.setState({
-      label: component.label,
-      color: component.color
-    });
+    if (
+      this.state.label !== component.label ||
+      this.state.color !== component.color
+    ) {
+      this.setState({
+        label: component.label,
+        color: component.color
+      });
+    }
   }
   render() {
     const {

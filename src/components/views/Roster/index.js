@@ -4,6 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col } from "reactstrap";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -43,26 +44,7 @@ const SUB = gql`
   }
 `;
 
-class Template extends Component {
-  subscription = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            crew: subscriptionData.data.crewUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
+class Roster extends Component {
   render() {
     const {
       data: { loading, crew }
@@ -71,6 +53,21 @@ class Template extends Component {
 
     return (
       <Container className="roster-card" style={{ height: "100%" }}>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  crew: subscriptionData.data.crewUpdate
+                });
+              }
+            })
+          }
+        />
         <Row style={{ height: "100%" }}>
           <Col sm={12} style={{ height: "100%" }}>
             <ReactTable
@@ -109,4 +106,4 @@ export default graphql(QUERY, {
       simulatorId: ownProps.simulator.id
     }
   })
-})(withApollo(Template));
+})(withApollo(Roster));

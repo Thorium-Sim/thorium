@@ -5,6 +5,7 @@ import { Container, Row, Col, Button, Input } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { OutputField, TypingField } from "../../generic/core";
 import "./style.scss";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const NAVIGATION_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {
@@ -52,31 +53,13 @@ class NavigationCore extends Component {
       calculatedCourse: {}
     };
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: NAVIGATION_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            navigation: subscriptionData.data.navigationUpdate
-          });
-        }
+  componentDidUpdate(prevProps) {
+    if (!this.props.data.loading && prevProps.data.loading) {
+      const navigation = this.props.data.navigation[0];
+      this.setState({
+        calculatedCourse: navigation.calculatedCourse
       });
     }
-    if (!nextProps.data.loading && nextProps.data.navigation) {
-      const navigation = nextProps.data.navigation[0];
-      if (navigation) {
-        this.setState({
-          calculatedCourse: navigation.calculatedCourse
-        });
-      }
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
   }
   randomNums() {
     this.setState({
@@ -170,6 +153,21 @@ class NavigationCore extends Component {
     if (!navigation) return <p>No Navigation Systems</p>;
     return (
       <Container className="docking-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: NAVIGATION_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  navigation: subscriptionData.data.navigationUpdate
+                });
+              }
+            })
+          }
+        />
         <label>
           <input
             type="checkbox"

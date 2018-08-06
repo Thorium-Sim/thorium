@@ -4,6 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import { InputField } from "../../generic/core";
 import { Input, Button } from "reactstrap";
 import LayoutList from "../../layouts/list";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const layouts = LayoutList;
 
@@ -26,25 +27,6 @@ const SHIP_CORE_SUB = gql`
 `;
 
 class ShipCore extends Component {
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.internalSub && !nextProps.data.loading) {
-      this.internalSub = nextProps.data.subscribeToMore({
-        document: SHIP_CORE_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            simulators: subscriptionData.data.simulatorsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.internalSub && this.internalSub();
-  }
   renameSimulator = name => {
     if (name) {
       const mutation = gql`
@@ -186,6 +168,21 @@ class ShipCore extends Component {
     const { bridgeCrew, radiation } = simulator.ship;
     return (
       <div className="core-ship">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SHIP_CORE_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  simulators: subscriptionData.data.simulatorsUpdate
+                });
+              }
+            })
+          }
+        />
         <p>Simulator Name: </p>
         <InputField
           prompt={"What would you like to change the simulator name to?"}

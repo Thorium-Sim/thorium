@@ -4,7 +4,7 @@ import { Container, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { OutputField, TypingField } from "../../generic/core";
 import "./style.scss";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 const NAVIGATION_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {
     navigationUpdate(simulatorId: $simulatorId) {
@@ -24,20 +24,7 @@ class NavigationCore extends Component {
       destinations: []
     };
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: NAVIGATION_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            navigation: subscriptionData.data.navigationUpdate
-          });
-        }
-      });
-    }
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (
       !nextProps.data.loading &&
       this.props.data.loading &&
@@ -76,6 +63,21 @@ class NavigationCore extends Component {
     if (!navigation) return <p>No Navigation Systems</p>;
     return (
       <Container className="jr-navigation-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: NAVIGATION_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  navigation: subscriptionData.data.navigationUpdate
+                });
+              }
+            })
+          }
+        />
         <p>Destinations</p>
         <TypingField
           className="destinations"

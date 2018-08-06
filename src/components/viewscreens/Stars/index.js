@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import ReactDOM from "react-dom";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const backgroundColor = { r: 0, g: 0, b: 0, a: 0 };
 
@@ -30,28 +31,10 @@ class Stars extends Component {
   canvasWidth = window.innerWidth;
   canvasHeight = window.innerHeight;
   center = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-  componentWillReceiveProps(nextProps) {
-    if (!this.setSpeedSubscription && !nextProps.data.loading) {
-      this.setSpeedSubscription = nextProps.data.subscribeToMore({
-        document: SPEEDCHANGE_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          const engines = previousResult.engines.map(engine => {
-            if (engine.id === subscriptionData.data.engineUpdate.id) {
-              return Object.assign({}, engine, {
-                speed: subscriptionData.data.engineUpdate.speed,
-                on: subscriptionData.data.engineUpdate.on
-              });
-            }
-            return engine;
-          });
-          return Object.assign({}, previousResult, { engines });
-        }
-      });
-    }
+  componentDidUpdate(prevProps) {
     // Only load the canvas if we have the data
-    if (!nextProps.data.loading) {
-      const { engines } = nextProps.data;
+    if (!this.props.data.loading) {
+      const { engines } = this.props.data;
       if (!engines) return;
       const engine = engines.find(e => e.on === true);
       if (!engine) {
@@ -59,18 +42,18 @@ class Stars extends Component {
       }
       // First set of engines (impulse) sets the speed between 1 and 25
       if (engines.findIndex(e => e.on === true) === 0) {
-        this.currentSpeed = engine.speed / engine.speeds.length * 25;
+        this.currentSpeed = (engine.speed / engine.speeds.length) * 25;
       }
 
       // Second set of engines (warp) sets the speed between 26 and 100
       if (engines.findIndex(e => e.on === true) === 1) {
-        this.currentSpeed = engine.speed / engine.speeds.length * 75 + 25;
+        this.currentSpeed = (engine.speed / engine.speeds.length) * 75 + 25;
       }
       if (this.starSpeed === null) {
         this.starSpeed = this.currentSpeed;
       }
     }
-    if (this.props.data.loading && !nextProps.data.loading) {
+    if (prevProps.data.loading && !this.props.data.loading) {
       this.canvas = ReactDOM.findDOMNode(this);
       this.canvas.setAttribute("width", this.canvasWidth);
       this.canvas.setAttribute("height", this.canvasHeight);
@@ -320,9 +303,31 @@ class Stars extends Component {
   };
   render() {
     return (
-      <canvas
-        style={{ backgroundColor: "black", zIndex: 1, position: "absolute" }}
-      />
+      <Fragment>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SPEEDCHANGE_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                const engines = previousResult.engines.map(engine => {
+                  if (engine.id === subscriptionData.data.engineUpdate.id) {
+                    return Object.assign({}, engine, {
+                      speed: subscriptionData.data.engineUpdate.speed,
+                      on: subscriptionData.data.engineUpdate.on
+                    });
+                  }
+                  return engine;
+                });
+                return Object.assign({}, previousResult, { engines });
+              }
+            })
+          }
+        />
+        <canvas
+          style={{ backgroundColor: "black", zIndex: 1, position: "absolute" }}
+        />
+      </Fragment>
     );
   }
 }

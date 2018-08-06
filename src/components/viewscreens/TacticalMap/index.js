@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Preview from "../../views/TacticalMap/preview";
 //import { Asset } from "../../../helpers/assets";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 //import "./style.scss";
 
@@ -101,42 +102,23 @@ class TacticalMapViewscreen extends Component {
     objectId: null,
     layers: {}
   };
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: TACTICALMAP_SUB,
-        variables: {
-          flightId:
-            nextProps.flightId || (nextProps.flight && nextProps.flight.id)
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            tacticalMaps: subscriptionData.data.tacticalMapsUpdate
-          });
+  componentDidUpdate(prevProps) {
+    if (!this.props.data.loading && this.props.data.tacticalMaps) {
+      const layers = this.props.data.tacticalMaps.reduce((prev, next) => {
+        // If the tactical map is frozen, use the previous tactical map's layers
+        if (prevProps.cardName && next.frozen && this.state.layers[next.id]) {
+          prev[next.id] = this.state.layers[next.id];
+        } else {
+          prev[next.id] = next.layers;
         }
-      });
+        return prev;
+      }, {});
+      if (JSON.stringify(layers) !== JSON.stringify(this.state.layers)) {
+        this.setState({
+          layers
+        });
+      }
     }
-    if (!nextProps.data.loading && nextProps.data.tacticalMaps) {
-      this.setState({
-        layers: nextProps.data.tacticalMaps.reduce((prev, next) => {
-          // If the tactical map is frozen, use the previous tactical map's layers
-          if (
-            this.props.cardName &&
-            next.frozen &&
-            this.state.layers[next.id]
-          ) {
-            prev[next.id] = this.state.layers[next.id];
-          } else {
-            prev[next.id] = next.layers;
-          }
-          return prev;
-        }, {})
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.sub && this.sub();
   }
   selectLayer = layerId => {
     this.setState({ layerId, objectId: null });
@@ -211,6 +193,23 @@ class TacticalMapViewscreen extends Component {
           transform: cardName ? `scale(${window.innerWidth / 1920})` : null
         }}
       >
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: TACTICALMAP_SUB,
+              variables: {
+                flightId:
+                  this.props.flightId ||
+                  (this.props.flight && this.props.flight.id)
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  tacticalMaps: subscriptionData.data.tacticalMapsUpdate
+                });
+              }
+            })
+          }
+        />
         {selectedTacticalMap && (
           <Preview
             simulatorId={this.props.simulator.id}

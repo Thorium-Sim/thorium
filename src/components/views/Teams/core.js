@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Label, Button } from "reactstrap";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -48,48 +49,9 @@ const TEAMS_SUB = gql`
 `;
 
 class Teams extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedTeam: null
-    };
-    this.subscription = null;
-    this.crewSubscription = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: TEAMS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id,
-          teamType: nextProps.teamType || "damage"
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            teams: subscriptionData.data.teamsUpdate
-          });
-        }
-      });
-    }
-    if (!this.crewSubscription && !nextProps.data.loading) {
-      this.crewSubscription = nextProps.data.subscribeToMore({
-        document: CREW_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id,
-          teamType: nextProps.teamType || "damage"
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            crew: subscriptionData.data.crewUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-    this.crewSubscription && this.crewSubscription();
-  }
+  state = {
+    selectedTeam: null
+  };
   removeTeam = teamId => {
     const mutation = gql`
       mutation RemoveTeam($teamId: ID!) {
@@ -115,6 +77,38 @@ class Teams extends Component {
     if (crew.length === 0) return <p>Need crew for teams</p>;
     return (
       <Container fluid className="damage-teams-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: CREW_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id,
+                teamType: this.props.teamType || "damage"
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  crew: subscriptionData.data.crewUpdate
+                });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: TEAMS_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id,
+                teamType: this.props.teamType || "damage"
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  teams: subscriptionData.data.teamsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={4} className="scroller">
             {teams.map(t => (

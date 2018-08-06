@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Label } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
-
+import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
 const POP_SUB = gql`
   subscription Population($simulatorId: ID) {
     crewUpdate(simulatorId: $simulatorId, killed: false) {
@@ -23,36 +23,6 @@ const SIM_SUB = gql`
 `;
 
 class Population extends Component {
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: POP_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            crew: subscriptionData.data.crewUpdate
-          });
-        }
-      });
-    }
-    if (!this.shipsub && !nextProps.data.loading) {
-      this.shipsub = nextProps.data.subscribeToMore({
-        document: SIM_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            simulators: subscriptionData.data.simulatorsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    // Cancel the subscription
-    this.sub && this.sub();
-    this.shipsub && this.shipsub();
-  }
   render() {
     if (this.props.data.loading || !this.props.data.crew) return null;
     const crew = this.props.data.crew;
@@ -61,6 +31,32 @@ class Population extends Component {
     if (!ship || !crew || crew.length === 0) return null;
     return (
       <div>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SIM_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  simulators: subscriptionData.data.simulatorsUpdate
+                });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: POP_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  crew: subscriptionData.data.crewUpdate
+                });
+              }
+            })
+          }
+        />
         <Label>Crew Population</Label>
         <div className="status-field">
           {crew.length + (ship.bridgeCrew ? ship.bridgeCrew : 0)}

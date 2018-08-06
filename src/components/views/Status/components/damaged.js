@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Label } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
-
+import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
 const SUB = gql`
   subscription DamagedSub($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId, extra: true) {
@@ -17,29 +17,24 @@ const SUB = gql`
 `;
 
 class Damage extends Component {
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            systems: subscriptionData.data.systemsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    // Cancel the subscription
-    this.sub();
-  }
   render() {
     if (this.props.data.loading || !this.props.data.systems) return null;
     const { systems } = this.props.data;
     return (
       <div>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  systems: subscriptionData.data.systemsUpdate
+                });
+              }
+            })
+          }
+        />
         <Label>Damaged Systems</Label>
         <div className="status-field damage-list">
           {systems &&

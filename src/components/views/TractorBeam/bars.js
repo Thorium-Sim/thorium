@@ -12,10 +12,12 @@ class Bars extends Component {
       level: props.level
     };
   }
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      level: nextProps.level
-    });
+  componentDidUpdate() {
+    if (this.state.level !== this.props.level) {
+      this.setState({
+        level: this.props.level
+      });
+    }
   }
   mouseDown = (dimensions, evt) => {
     this.setState(
@@ -110,10 +112,10 @@ class Bars extends Component {
                     opacity: index / array.length >= level ? 1 : 0.3,
                     backgroundColor: color || null,
                     width:
-                      array.length / (index + 2) * (100 / array.length) + "%",
+                      (array.length / (index + 2)) * (100 / array.length) + "%",
                     marginLeft: flop
                       ? Math.abs(
-                          array.length / (index + 2) * (100 / array.length) -
+                          (array.length / (index + 2)) * (100 / array.length) -
                             100
                         ) + "%"
                       : 0

@@ -9,6 +9,7 @@ import { Asset } from "../../../helpers/assets";
 
 import "./style.scss";
 import StealthAnimation from "../../views/StealthField/stealthAnimation";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 class StealthBars extends Transitioner {
   systemName(sys) {
@@ -130,26 +131,12 @@ class StealthField extends Component {
   componentWillUnmount() {
     this.looping = false;
     this.props.data.stopPolling();
-    this.subscription && this.subscription();
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: STEALTH_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            stealthField: subscriptionData.data.stealthFieldUpdate
-          });
-        }
-      });
-    }
-    if (nextProps.data.systems && !this.state.systems) {
+  componentDidUpdate() {
+    if (!this.state.systems && this.props.data.systems) {
       // We only need to initialize the state
       this.setState({
-        systems: nextProps.data.systems.filter(
+        systems: this.props.data.systems.filter(
           s => typeof s.stealthFactor === "number"
         )
       });
@@ -207,6 +194,21 @@ class StealthField extends Component {
           alignItems: "center"
         }}
       >
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: STEALTH_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  stealthField: subscriptionData.data.stealthFieldUpdate
+                });
+              }
+            })
+          }
+        />
         <h1>{stealthField.displayName}</h1>
         <Row>
           <Col sm="3" />

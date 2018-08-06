@@ -94,10 +94,12 @@ class DilithiumStress extends Component {
           )}
         </Mutation>
         <img alt="Dilithium" src={require("./dilithiumCrystal.svg")} />
-        <video src={require("./reactor.ogv")} autoPlay loop />
-        <Platform className="antimatter" />
-        <Platform className="matter" color="#4953DF" />
-        <Platform className="plasma" color="#51AE41" />
+        <div className="dilithium-effects">
+          <video src={require("./reactor.ogv")} autoPlay loop />
+          <Platform className="antimatter" />
+          <Platform className="matter" color="#4953DF" />
+          <Platform className="plasma" color="#51AE41" />
+        </div>
       </Container>
     );
   }

@@ -2,14 +2,11 @@ import React, { Component } from "react";
 import { Container, Row, Col, Card } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
+import SubscriptionHelper from "../../helpers/subscriptionHelper";
 
 import "./setConfig.scss";
 
 class SetsPicker extends Component {
-  constructor(props) {
-    super(props);
-    this.flightsSub = null;
-  }
   static trainingSteps = [
     {
       selector: ".set-picker",
@@ -23,21 +20,6 @@ class SetsPicker extends Component {
       )
     }
   ];
-  componentWillReceiveProps(nextProps) {
-    if (!this.flightsSub && !nextProps.data.loading) {
-      this.flightsSub = nextProps.data.subscribeToMore({
-        document: FLIGHTS_SUB,
-        variables: {
-          flightId: nextProps.match.params.flightId
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            flights: subscriptionData.data.flightsUpdate
-          });
-        }
-      });
-    }
-  }
   applyClientSet = (
     { id },
     { id: simulatorId, templateId, stationSet: { id: stationSetId } },
@@ -84,6 +66,21 @@ class SetsPicker extends Component {
     const flight = flights && flights[0];
     return (
       <Container className="set-picker">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: FLIGHTS_SUB,
+              variables: {
+                flightId: this.props.match.params.flightId
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  flights: subscriptionData.data.flightsUpdate
+                });
+              }
+            })
+          }
+        />
         <h4>Sets</h4>
         <Row className="justify-content-md-center">
           {flight &&

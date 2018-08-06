@@ -165,6 +165,7 @@
     "react-sortable-hoc": "^0.8.3",
     "react-table": "^6.8.6",
     "react-transition-group": "^2.3.1",
+    "react-typing": "^1.0.0",
     "reactour": "^1.8.3",
     "reactstrap": "^6.3.1",
     "request": "^2.87.0",

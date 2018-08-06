@@ -6,6 +6,7 @@ import { graphql, withApollo } from "react-apollo";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Keypad from "./keypad";
 import Tour from "reactour";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -31,11 +32,11 @@ export class NavigationScanner extends Component {
       this.scanning = setTimeout(this._scan, 100);
     }
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.scanning && nextProps.scanning) {
+  componentDidUpdate(oldProps) {
+    if (this.props.scanning && !oldProps.scanning) {
       this.scanning = setTimeout(this._scan, 100);
     }
-    if (!nextProps.scanning) {
+    if (!this.props.scanning) {
       clearTimeout(this.scanning);
       this.scanning = null;
     }
@@ -136,32 +137,57 @@ class Navigation extends Component {
     this.scanning = null;
     this.subscription && this.subscription();
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: NAVIGATION_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            navigation: subscriptionData.data.navigationUpdate
-          });
-        }
-      });
-    }
-    if (!nextProps.data.loading && nextProps.data.navigation) {
-      const navigation = nextProps.data.navigation[0];
-      if (navigation) {
-        if (navigation.scanning) {
-          this.scanning = setTimeout(this._randomCourse, 60);
-        }
-        if (!navigation.scanning) {
-          clearTimeout(this.scanning);
-          this.scanning = null;
-        }
+  componentDidUpdate(prevProps) {
+    if (this.props.data.loading || !this.props.data.navigation) return;
+    const navigation = this.props.data.navigation[0];
+    if (navigation) {
+      if (navigation.scanning) {
+        this.scanning = setTimeout(this._randomCourse, 60);
+      }
+      if (!navigation.scanning) {
+        clearTimeout(this.scanning);
+        this.scanning = null;
+      }
+      const oldNavigation = prevProps.data.loading
+        ? {}
+        : prevProps.data.navigation[0];
+      let { destination, calculatedCourse, enteredCourse } = this.state;
+      const {
+        destination: newDestination = {},
+        calculatedCourse: newCalculatedCourse = {},
+        currentCourse: newCurrentCourse = {}
+      } = navigation;
+      const {
+        destination: oldDestination = {},
+        calculatedCourse: oldCalculatedCourse = {},
+        currentCourse: oldCurrentCourse = {}
+      } = oldNavigation;
+      let update = false;
+      if (newDestination !== oldDestination) {
+        update = true;
+        destination = newDestination;
+      }
+      if (
+        newCalculatedCourse.x !== oldCalculatedCourse.x ||
+        newCalculatedCourse.y !== oldCalculatedCourse.y ||
+        newCalculatedCourse.z !== oldCalculatedCourse.z
+      ) {
+        update = true;
+        calculatedCourse = newCalculatedCourse;
+      }
+      if (
+        newCurrentCourse.x !== oldCurrentCourse.x ||
+        newCurrentCourse.y !== oldCurrentCourse.y ||
+        newCurrentCourse.z !== oldCurrentCourse.z
+      ) {
+        update = true;
+        enteredCourse = newCurrentCourse;
+      }
+      if (update) {
         this.setState({
-          destination: navigation.destination,
-          calculatedCourse: navigation.calculatedCourse,
-          enteredCourse: navigation.currentCourse
+          destination,
+          calculatedCourse,
+          enteredCourse
         });
       }
     }
@@ -349,6 +375,19 @@ class Navigation extends Component {
     if (!navigation) return <p>No Navigation System</p>;
     return (
       <Container fluid className="cardNavigation">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: NAVIGATION_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  navigation: subscriptionData.data.navigationUpdate
+                });
+              }
+            })
+          }
+        />
         <DamageOverlay
           system={navigation}
           message={`Navigation System Offline`}

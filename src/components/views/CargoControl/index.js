@@ -5,6 +5,7 @@ import { Container, Row, Col, Input, Card, CardBody } from "reactstrap";
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
 import Tour from "reactour";
 import "./style.scss";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const INVENTORY_SUB = gql`
   subscription InventoryUpdate($simulatorId: ID!) {
@@ -35,24 +36,6 @@ class CargoControl extends Component {
       toRoom: null,
       fromRoom: null
     };
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.internalSub && !nextProps.data.loading) {
-      this.inventorySub = nextProps.data.subscribeToMore({
-        document: INVENTORY_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            inventory: subscriptionData.data.inventoryUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.internalSub && this.internalSub();
   }
   setSelected(which, { deck, room }) {
     deck = deck || this.state[which + "Deck"];
@@ -115,6 +98,21 @@ class CargoControl extends Component {
     }
     return (
       <Container className="cargo-control">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: INVENTORY_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  inventory: subscriptionData.data.inventoryUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           {decks.length > 1 && (
             <Col sm="2">
@@ -229,9 +227,8 @@ class CargoControl extends Component {
                             .filter(r => r.count > 0)
                             .map((r, index) => (
                               <li key={`loc-${index}`}>
-                                {r.room.name}, Deck {r.room.deck.number} ({
-                                  r.count
-                                })
+                                {r.room.name}, Deck {r.room.deck.number} (
+                                {r.count})
                               </li>
                             ))}
                         </ul>

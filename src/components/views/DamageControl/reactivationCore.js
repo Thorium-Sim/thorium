@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Row, Col, Button } from "reactstrap";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 const SYSTEMS_SUB = gql`
   subscription DamagedSystemsUpdate($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId) {
@@ -32,24 +32,6 @@ class ReactivationCore extends Component {
       selectedReport: ""
     };
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.systemSub && !nextProps.data.loading) {
-      this.systemSub = nextProps.data.subscribeToMore({
-        document: SYSTEMS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            systems: subscriptionData.data.systemsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.systemSub && this.systemSub();
-  }
   reactivationCodeResponse = (response, id) => {
     const mutation = gql`
       mutation ReactivationCodeResponse($systemId: ID!, $response: Boolean!) {
@@ -70,6 +52,21 @@ class ReactivationCore extends Component {
     const { systems } = this.props.data;
     return (
       <div>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SYSTEMS_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  systems: subscriptionData.data.systemsUpdate
+                });
+              }
+            })
+          }
+        />
         {systems &&
           systems.filter(s => s.damage.reactivationCode).map(s => (
             <div key={s.id}>

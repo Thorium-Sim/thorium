@@ -4,6 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button } from "reactstrap";
 import WaveMatch from "./waveMatch";
 import Tour from "reactour";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -47,27 +48,7 @@ const trainingSteps = [
 ];
 
 class Interception extends Component {
-  sub = null;
-  state = { intercepting: false };
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            longRangeCommunications:
-              subscriptionData.data.longRangeCommunicationsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.sub && this.sub();
-  }
+  state = {};
   renderInterception() {
     const {
       data: { longRangeCommunications }
@@ -122,6 +103,22 @@ class Interception extends Component {
     if (loading || !longRangeCommunications) return null;
     return (
       <Container className="card-commInterception">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  longRangeCommunications:
+                    subscriptionData.data.longRangeCommunicationsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={12}>{this.renderInterception()}</Col>
         </Row>

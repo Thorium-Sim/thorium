@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input } from "reactstrap";
 import * as ViewscreenCards from "../../viewscreens";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -17,28 +18,9 @@ const VIEWSCREEN_SUB = gql`
 `;
 
 class Viewscreen extends Component {
-  sub = null;
   state = {
     selectedViewscreen: null
   };
-  componentWillUnmount() {
-    this.sub && this.sub();
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.internalSub = nextProps.data.subscribeToMore({
-        document: VIEWSCREEN_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            viewscreens: subscriptionData.data.viewscreensUpdate
-          });
-        }
-      });
-    }
-  }
   updateCard = evt => {
     const mutation = gql`
       mutation UpdateViewscreen($id: ID!, $component: String!) {
@@ -61,6 +43,21 @@ class Viewscreen extends Component {
     if (!viewscreens) return <div>No Viewscreens</div>;
     return (
       <Container className="viewscreen-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: VIEWSCREEN_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  viewscreens: subscriptionData.data.viewscreensUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={6}>
             <Input

@@ -14,6 +14,7 @@ import {
   Button
 } from "reactstrap";
 import "./style.scss";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID, $teamType: String!) {
@@ -62,63 +63,17 @@ const ROOMS_SUB = gql`
 class Armory extends Component {
   state = { room: null, team: null, readyInventory: {} };
 
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: TEAM_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id,
-          teamType: nextProps.type || "damage"
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            teams: subscriptionData.data.teamsUpdate
-          });
-        }
-      });
-    }
-    if (!this.crewSubscription && !nextProps.data.loading) {
-      this.crewSubscription = nextProps.data.subscribeToMore({
-        document: CREW_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id,
-          teamType: nextProps.type || "security"
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            crew: subscriptionData.data.crewUpdate
-          });
-        }
-      });
-    }
-    if (!this.roomSubscription && !nextProps.data.loading) {
-      this.roomSubscription = nextProps.data.subscribeToMore({
-        document: ROOMS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id,
-          roomRole: nextProps.type ? `${nextProps.type}Team` : "securityTeam"
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            rooms: subscriptionData.data.roomsUpdate
-          });
-        }
-      });
-    }
+  componentDidUpdate(prevProps) {
     if (
-      !nextProps.data.loading &&
-      nextProps.data.rooms &&
+      !this.props.data.loading &&
+      this.props.data.rooms &&
       !this.state.room &&
-      nextProps.data.rooms[0]
+      this.props.data.rooms[0]
     ) {
       this.setState({
-        room: nextProps.data.rooms[0].id
+        room: this.props.data.rooms[0].id
       });
     }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-    this.crewSubscription && this.crewSubscription();
   }
   addReady = id => {
     this.setState(({ readyInventory }) => {
@@ -218,6 +173,56 @@ class Armory extends Component {
     const crewObj = crew.find(c => c.id === selectedCrew);
     return (
       <Container className="armory-card">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: TEAM_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id,
+                teamType: this.props.type || "damage"
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  teams: subscriptionData.data.teamsUpdate
+                });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: CREW_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id,
+                teamType: this.props.type || "security"
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  crew: subscriptionData.data.crewUpdate
+                });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: ROOMS_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id,
+                roomRole: this.props.type
+                  ? `${this.props.type}Team`
+                  : "securityTeam"
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  rooms: subscriptionData.data.roomsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={4}>
             <h4>Equipment Hold Contents</h4>

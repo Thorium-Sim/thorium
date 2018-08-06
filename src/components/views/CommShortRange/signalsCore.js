@@ -6,6 +6,8 @@ import { Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import FileExplorer from "../TacticalMap/fileExplorer";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+
 import "./signalsCore.scss";
 
 function transparentColor(col) {
@@ -63,34 +65,20 @@ class SignalsCore extends Component {
       }
     ]
   };
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: SHORTRANGE_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            shortRangeComm: subscriptionData.data.shortRangeCommUpdate
-          });
-        }
-      });
-    }
+  componentDidUpdate(prevProps) {
     if (
-      !nextProps.data.loading &&
-      nextProps.data.shortRangeComm &&
+      !this.props.data.loading &&
+      this.props.data.shortRangeComm &&
       !this.state.editing
     ) {
-      const comm = nextProps.data.shortRangeComm[0];
+      const comm = this.props.data.shortRangeComm[0];
       if (!comm) return;
-      this.setState({
-        signals: comm.signals
-      });
+      if (JSON.stringify(comm.signals) !== JSON.stringify(this.state.signals)) {
+        this.setState({
+          signals: comm.signals
+        });
+      }
     }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
   }
   resize = (id, which) => {
     this.setState({
@@ -206,6 +194,21 @@ class SignalsCore extends Component {
     const { signals, editing, selectedSignal } = this.state;
     return (
       <div className="core-shortRangeSignals">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SHORTRANGE_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  shortRangeComm: subscriptionData.data.shortRangeCommUpdate
+                });
+              }
+            })
+          }
+        />
         {selectedSignal && (
           <div className="color-picker">
             <Button

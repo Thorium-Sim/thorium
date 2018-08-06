@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+
 import "./style.scss";
 
 const OBJECTIVE_SUB = gql`
@@ -31,25 +33,6 @@ const Objective = ({ title, description, completed }) => {
 };
 
 class Objectives extends Component {
-  subscription = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: OBJECTIVE_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            objective: subscriptionData.data.objectiveUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
   render() {
     const {
       data: { loading, objective }
@@ -57,6 +40,21 @@ class Objectives extends Component {
     if (loading || !objective) return null;
     return (
       <Container className="objective-card">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: OBJECTIVE_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  objective: subscriptionData.data.objectiveUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={12}>
             <h1>Mission Objectives</h1>
@@ -65,7 +63,9 @@ class Objectives extends Component {
                 {objective
                   .concat()
                   .reverse()
-                  .map(o => <Objective key={o.id} {...o} />)}
+                  .map(o => (
+                    <Objective key={o.id} {...o} />
+                  ))}
               </CardBody>
             </Card>
           </Col>

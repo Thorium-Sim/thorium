@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Container, Row, Col, Button, Input, Label } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-
+import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
 const INVENTORY_SUB = gql`
   subscription InventoryUpdate($simulatorId: ID!) {
     inventoryUpdate(simulatorId: $simulatorId) {
@@ -99,24 +99,6 @@ class Inventory extends Component {
       selectedRoom: null,
       inventoryItem: null
     };
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: INVENTORY_SUB,
-        variables: {
-          simulatorId: nextProps.selectedSimulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            inventory: subscriptionData.data.inventoryUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
   }
   addInventory = () => {
     this.setState({
@@ -221,6 +203,21 @@ class Inventory extends Component {
     const { selectedDeck, selectedRoom, inventoryItem } = this.state;
     return (
       <Container className="decks-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: INVENTORY_SUB,
+              variables: {
+                simulatorId: this.props.selectedSimulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  inventory: subscriptionData.data.inventoryUpdate
+                });
+              }
+            })
+          }
+        />
         <p>
           Make sure you configure decks and rooms before configuring inventory
         </p>

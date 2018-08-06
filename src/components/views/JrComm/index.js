@@ -5,6 +5,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button } from "reactstrap";
 import tinycolor from "tinycolor2";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const SHORTRANGE_SUB = gql`
   subscription ShortRangeCommSub($simulatorId: ID!) {
@@ -126,20 +127,7 @@ class CommShortRange extends Component {
       }
     });
   };
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: SHORTRANGE_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            shortRangeComm: subscriptionData.data.shortRangeCommUpdate
-          });
-        }
-      });
-    }
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!nextProps.data.loading) {
       if (nextProps.data.shortRangeComm && nextProps.data.shortRangeComm[0]) {
         if (!this.waves) {
@@ -282,6 +270,21 @@ class CommShortRange extends Component {
     if (!ShortRange) return <p>No short range comm</p>;
     return (
       <Container className="shortRangeComm">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SHORTRANGE_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  shortRangeComm: subscriptionData.data.shortRangeCommUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={{ size: 6, offset: 3 }}>
             <h1>Status: {status}</h1>

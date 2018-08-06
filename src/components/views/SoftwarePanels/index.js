@@ -5,6 +5,8 @@ import { Container, Row, Col, Card } from "reactstrap";
 import Measure from "react-measure";
 import Canvas from "../../../containers/FlightDirector/SoftwarePanels/canvas";
 import { getComponentLevel } from "../../../containers/FlightDirector/SoftwarePanels";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+
 import "./style.scss";
 
 const SUB = gql`
@@ -38,20 +40,7 @@ const SUB = gql`
 class SoftwarePanels extends Component {
   subscription = null;
   state = {};
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            softwarePanels: subscriptionData.data.softwarePanelsUpdate
-          });
-        }
-      });
-    }
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!nextProps.data.loading && nextProps.data.softwarePanels) {
       const shownPanel = this.props.panel || this.state.selectedPanel;
       if (shownPanel) {
@@ -214,6 +203,21 @@ class SoftwarePanels extends Component {
         fluid={panel ? false : true}
         className="softwarePanels-card software-panels"
       >
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  softwarePanels: subscriptionData.data.softwarePanelsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           {!panel && (
             <Col sm={3}>

@@ -5,7 +5,7 @@ import { graphql, withApollo } from "react-apollo";
 import Tour from "reactour";
 import Exocomp from "./exocomp";
 import ExocompConfig from "./exocompConfig";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.scss";
 
 const EXOCOMP_SUB = gql`
@@ -78,24 +78,6 @@ const trainingSteps = [
 ];
 class Exocomps extends Component {
   state = { selectedExocomp: null };
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: EXOCOMP_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            exocomps: subscriptionData.data.exocompsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
   deploy = (id, destination, parts) => {
     const mutation = gql`
       mutation DeployExocomp($exocomp: ExocompInput!) {
@@ -141,6 +123,21 @@ class Exocomps extends Component {
     const exocompNum = exocomps.findIndex(e => e.id === selectedExocomp) + 1;
     return (
       <Container className="card-exocomps">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: EXOCOMP_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  exocomps: subscriptionData.data.exocompsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={5}>
             <h2>Exocomps</h2>

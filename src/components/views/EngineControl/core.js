@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 import { Container, Col, Row } from "reactstrap";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 const SPEEDCHANGE_SUB = gql`
   subscription SpeedChanged($simulatorId: ID) {
     engineUpdate(simulatorId: $simulatorId) {
@@ -23,35 +23,6 @@ const SPEEDCHANGE_SUB = gql`
 `;
 
 class EngineCoreView extends Component {
-  constructor(props) {
-    super(props);
-    this.setSpeedSubscription = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.setSpeedSubscription && !nextProps.data.loading) {
-      this.setSpeedSubscription = nextProps.data.subscribeToMore({
-        document: SPEEDCHANGE_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            engines: previousResult.engines.map(engine => {
-              if (engine.id === subscriptionData.data.engineUpdate.id) {
-                return Object.assign(
-                  {},
-                  engine,
-                  subscriptionData.data.engineUpdate
-                );
-              }
-              return engine;
-            })
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.setSpeedSubscription && this.setSpeedSubscription();
-  }
   updateSpeed(e) {
     const id = e.target.value.split("$")[0];
     const speed = parseInt(e.target.value.split("$")[1], 10) + 1;
@@ -98,6 +69,28 @@ class EngineCoreView extends Component {
       <span>"Loading..."</span>
     ) : (
       <Container>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SPEEDCHANGE_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  engines: previousResult.engines.map(engine => {
+                    if (engine.id === subscriptionData.data.engineUpdate.id) {
+                      return Object.assign(
+                        {},
+                        engine,
+                        subscriptionData.data.engineUpdate
+                      );
+                    }
+                    return engine;
+                  })
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={6}>
             {speedList.length > 0 ? (

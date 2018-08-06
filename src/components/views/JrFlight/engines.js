@@ -15,24 +15,6 @@ const SPEEDCHANGE_SUB = gql`
   }
 `;
 
-const SYSTEMS_SUB = gql`
-  subscription SystemsUpdate($simulatorId: ID, $type: String) {
-    systemsUpdate(simulatorId: $simulatorId, type: $type) {
-      id
-      coolant
-      heat
-      power {
-        power
-        powerLevels
-      }
-      damage {
-        damaged
-        report
-      }
-    }
-  }
-`;
-
 class EngineControl extends Component {
   constructor(props) {
     super(props);
@@ -40,7 +22,7 @@ class EngineControl extends Component {
     this.systemSub = null;
   }
   state = { arrowPos: 0 };
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.setSpeedSubscription && !nextProps.data.loading) {
       this.setSpeedSubscription = nextProps.data.subscribeToMore({
         document: SPEEDCHANGE_SUB,
@@ -59,18 +41,7 @@ class EngineControl extends Component {
         }
       });
     }
-    if (!this.systemSub && !nextProps.data.loading) {
-      this.systemSub = nextProps.data.subscribeToMore({
-        document: SYSTEMS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id,
-          type: "Engine"
-        },
-        updateQuery: (/*previousResult, { subscriptionData }*/) => {
-          // Make this work again
-        }
-      });
-    }
+
     if (!nextProps.data.loading) {
       const engines = nextProps.data.engines || [];
       const speeds = [{ text: "Full Stop", number: -1 }].concat(

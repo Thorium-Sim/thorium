@@ -18,20 +18,23 @@ class Path extends Component {
       }, {})
     };
   }
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      locations: nextProps.paths.reduce((prev, next) => {
-        return {
-          ...prev,
-          [next.id]: {
-            start: next.start,
-            end: next.end,
-            c1: next.c1,
-            c2: next.c2
-          }
-        };
-      }, {})
-    });
+  componentDidUpdate(prevProps) {
+    const locations = this.props.paths.reduce((prev, next) => {
+      return {
+        ...prev,
+        [next.id]: {
+          start: next.start,
+          end: next.end,
+          c1: next.c1,
+          c2: next.c2
+        }
+      };
+    }, {});
+    if (JSON.stringify(this.props.paths) !== JSON.stringify(prevProps.paths)) {
+      this.setState({
+        locations
+      });
+    }
   }
   mousedown = (id, which) => {
     this.setState({

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Alerts from "../../generic/Alerts";
 import TransitionGroup from "react-addons-transition-group";
 import CardFrame from "./frame";
 import Widgets from "../LayoutOdyssey/widgets";

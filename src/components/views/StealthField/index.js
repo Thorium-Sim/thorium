@@ -8,6 +8,7 @@ import DamageOverlay from "../helpers/DamageOverlay";
 import { Asset } from "../../../helpers/assets";
 import StealthBoard from "./stealthBoard";
 import ChargeBar from "./chargeBar";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 import StealthAnimation from "./stealthAnimation";
@@ -63,33 +64,12 @@ const SYSTEMS_SUB = gql`
   }
 `;*/
 class StealthField extends Component {
-  constructor(props) {
-    super(props);
-    this.subscription = null;
-    this.systemsSubscription = null;
-  }
   scene = null;
   componentDidMount() {
     this.props.data.startPolling(1000);
   }
   componentWillUnmount() {
     this.props.data.stopPolling();
-    this.subscription && this.subscription();
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: STEALTH_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            stealthField: subscriptionData.data.stealthFieldUpdate
-          });
-        }
-      });
-    }
   }
   _activate() {
     const { id } = this.props.data.stealthField[0];
@@ -124,6 +104,21 @@ class StealthField extends Component {
     if (!stealthField) return <p>No Stealth Field</p>;
     return (
       <Container fluid className="card-stealthField">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: STEALTH_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  stealthField: subscriptionData.data.stealthFieldUpdate
+                });
+              }
+            })
+          }
+        />
         <DamageOverlay
           system={stealthField}
           message={`${stealthField.name} Offline`}

@@ -11,6 +11,7 @@ import { PhaserFire } from "../PhaserCharging";
 import DamageOverlay from "../helpers/DamageOverlay";
 import TargetControls from "./targetControls";
 import Coordinates from "./coordinates";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const trainingSteps = [
   {
@@ -217,32 +218,6 @@ class Targeting extends Component {
       });
     };
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.targetingSubscription && !nextProps.data.loading) {
-      this.targetingSubscription = nextProps.data.subscribeToMore({
-        document: TARGETING_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            targeting: subscriptionData.data.targetingUpdate
-          });
-        }
-      });
-      this.phasersSubscription = nextProps.data.subscribeToMore({
-        document: PHASERS_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            phasers: subscriptionData.data.phasersUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.phasersSubscription && this.phasersSubscription();
-    this.targetingSubscription && this.targetingSubscription();
-  }
   targetContact(targetId) {
     const targeting = this.props.data.targeting[0];
     const mutation = gql`
@@ -386,6 +361,32 @@ class Targeting extends Component {
     const targetedContact = targeting.contacts.find(t => t.targeted);
     return (
       <Container fluid className="targeting-control">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: TARGETING_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  targeting: subscriptionData.data.targetingUpdate
+                });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: PHASERS_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  phasers: subscriptionData.data.phasersUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm="5" className="targeting-area">
             <DamageOverlay system={targeting} message="Targeting Offline" />

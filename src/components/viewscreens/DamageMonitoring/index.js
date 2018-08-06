@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Asset } from "../../../helpers/assets";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+
 import "./style.scss";
 
 const SYSTEMS_SUB = gql`
@@ -18,24 +20,6 @@ const SYSTEMS_SUB = gql`
 `;
 
 class DamageMonitoring extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (!this.systemSub && !nextProps.data.loading) {
-      this.systemSub = nextProps.data.subscribeToMore({
-        document: SYSTEMS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            systems: subscriptionData.data.systemsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.systemSub && this.systemSub();
-  }
   systemName(sys) {
     if (sys.type === "Shield") {
       return `${sys.name} Shields`;
@@ -51,6 +35,21 @@ class DamageMonitoring extends Component {
     const damagedSystems = systems.filter(s => s.damage.damaged === true);
     return (
       <div className="damage-monitoring">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SYSTEMS_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  systems: subscriptionData.data.systemsUpdate
+                });
+              }
+            })
+          }
+        />
         <h1>Damage Monitor</h1>
         <div className="ship-view">
           <Asset asset={this.props.simulator.assets.side}>

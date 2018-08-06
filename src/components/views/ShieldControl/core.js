@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Table, Button, ButtonGroup } from "reactstrap";
 import { InputField, OutputField } from "../../generic/core";
 import { graphql, withApollo, Mutation } from "react-apollo";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import gql from "graphql-tag";
 
@@ -20,28 +21,6 @@ const SHIELD_SUB = gql`
 `;
 
 class ShieldsCore extends Component {
-  constructor(props) {
-    super(props);
-    this.shieldSub = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.shieldSub && !nextProps.data.loading) {
-      this.shieldSub = nextProps.data.subscribeToMore({
-        document: SHIELD_SUB,
-        variables: {
-          id: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            shields: subscriptionData.data.shieldsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.shieldSub && this.shieldSub();
-  }
   setFrequency(shields, freq) {
     if (freq < 100 || freq > 350) return;
     const mutation = gql`
@@ -99,6 +78,21 @@ class ShieldsCore extends Component {
     if (this.props.data.loading || !this.props.data.shields) return null;
     return (
       <div>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SHIELD_SUB,
+              variables: {
+                id: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  shields: subscriptionData.data.shieldsUpdate
+                });
+              }
+            })
+          }
+        />
         {this.props.data.shields.length > 0 ? (
           <div>
             <Table responsive size="sm">

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input, Button } from "reactstrap";
 import gql from "graphql-tag";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 const INTERNAL_SUB = gql`
   subscription InternalCommUpdate($simulatorId: ID!) {
     internalCommUpdate(simulatorId: $simulatorId) {
@@ -18,29 +18,10 @@ const INTERNAL_SUB = gql`
 class InternalCommCore extends Component {
   constructor(props) {
     super(props);
-    this.internalSub = null;
     this.state = {
       deck: null,
       room: null
     };
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.internalSub && !nextProps.data.loading) {
-      this.internalSub = nextProps.data.subscribeToMore({
-        document: INTERNAL_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            internalComm: subscriptionData.data.internalCommUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.internalSub && this.internalSub();
   }
   call(e) {
     const internalComm = this.props.data.internalComm[0];
@@ -105,6 +86,21 @@ class InternalCommCore extends Component {
     const inputStyle = { height: "22px" };
     return (
       <div className="internal-comm-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: INTERNAL_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  internalComm: subscriptionData.data.internalCommUpdate
+                });
+              }
+            })
+          }
+        />
         {this.props.data.internalComm.length > 0 ? (
           <Container>
             <Row>
