@@ -151,6 +151,7 @@ App.on("autoAdvance", ({ simulatorId, prev }) => {
     )
     .forEach(({ id, event, args, delay = 0 }) => {
       sim.executeTimelineStep(id);
+
       setTimeout(() => {
         App.handleEvent(
           Object.assign({ simulatorId }, JSON.parse(args)),

@@ -19,7 +19,6 @@ export default ({ updateArgs = () => {}, args, client }) => {
   // if (!args || !args.crew) {
   //   updateArgs("crew", true);
   // }
-  console.log(args);
   return (
     <FormGroup className="macro-sendLongRangeMessage">
       <Label>Inbound/Outbound</Label>

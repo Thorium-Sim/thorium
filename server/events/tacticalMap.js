@@ -98,42 +98,40 @@ App.on("removeTacticalMapPath", ({ mapId, layerId, pathId }) => {
 
 App.on(
   "showViewscreenTactical",
-  ({ mapId, simulatorId, secondary = false }) => {
+  ({ viewscreenId, mapId, simulatorId, secondary = false }) => {
     const flight = App.flights.find(
       f => f.simulators.indexOf(simulatorId) > -1
     );
-    const viewscreen = App.viewscreens.find(
-      v => v.simulatorId === simulatorId && v.secondary === secondary
+    let flightMap = App.tacticalMaps.find(t => t.templateId === mapId);
+    if (!flightMap) {
+      const newid = uuid.v4();
+      const map = App.tacticalMaps.find(t => t.id === mapId);
+      flightMap = new Classes.TacticalMap(
+        Object.assign({}, map, {
+          id: newid,
+          dup: true,
+          flightId: flight.id,
+          template: false,
+          templateId: mapId
+        })
+      );
+      App.tacticalMaps.push(flightMap);
+    }
+    const viewscreens = App.viewscreens.filter(
+      v =>
+        (v.id === viewscreenId || v.simulatorId === simulatorId) &&
+        v.secondary === secondary
     );
-    if (!viewscreen) return;
-    // First de-auto the viewscreen, since we want to force this component;
-    viewscreen.updateAuto(false);
 
-    const flightMap = App.tacticalMaps.find(t => t.templateId === mapId);
-    if (flightMap) {
-      viewscreen.updateComponent(
+    if (viewscreens.length === 0) return;
+    // First de-auto the viewscreen, since we want to force this component;
+    viewscreens.forEach(v => {
+      v.updateAuto(false);
+      v.updateComponent(
         "TacticalMap",
         JSON.stringify({ tacticalMapId: flightMap.id })
       );
-    } else {
-      const newid = uuid.v4();
-      const map = App.tacticalMaps.find(t => t.id === mapId);
-      App.tacticalMaps.push(
-        new Classes.TacticalMap(
-          Object.assign({}, map, {
-            id: newid,
-            dup: true,
-            flightId: flight.id,
-            template: false,
-            templateId: mapId
-          })
-        )
-      );
-      viewscreen.updateComponent(
-        "TacticalMap",
-        JSON.stringify({ tacticalMapId: newid })
-      );
-    }
+    });
 
     pubsub.publish("viewscreensUpdate", App.viewscreens);
     pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);

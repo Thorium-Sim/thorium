@@ -4,6 +4,8 @@ import { Widgets } from "../../views";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
+import Measure from "react-measure";
+
 import Tour from "reactour";
 import "./widgets.scss";
 const WIDGET_NOTIFY = gql`
@@ -140,10 +142,28 @@ export class Widget extends Component {
   mouseMove = evt => {
     this.setState({
       position: {
-        x: this.state.position.x + evt.movementX,
-        y: this.state.position.y + evt.movementY
+        x: Math.max(
+          0,
+          Math.min(
+            window.innerWidth - this.state.dimensions.width,
+            this.state.position.x + evt.movementX
+          )
+        ),
+        y: Math.max(
+          0,
+          Math.min(
+            window.innerHeight - this.state.dimensions.height,
+            this.state.position.y + evt.movementY
+          )
+        )
       }
     });
+  };
+  setDimensions = contentRect => {
+    // Set the position based on the dimensions
+    const { width } = contentRect.bounds;
+    const position = { x: window.innerWidth / 2 - width / Math.E, y: 50 };
+    this.setState({ dimensions: contentRect.bounds, position });
   };
   toggle = () => {
     this.setState({
@@ -182,39 +202,46 @@ export class Widget extends Component {
           </Tooltip>
         )}
         {this.state.modal && (
-          <div
-            className={`modal-themed widget-body widget-${widget.size} ${
-              this.state.modal ? "open" : ""
-            }`}
-            style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
-          >
-            <div
-              className="widget-name"
-              onMouseDown={this.mouseDown}
-              onTouchStart={this.mouseDown}
-            >
-              {widget.name}
-              {widget.training && (
-                <FontAwesome
-                  className="pull-right"
-                  name="question-circle-o"
-                  onClick={() => this.setState({ training: true })}
-                />
-              )}
-            </div>
-            <div className="widget-container">
-              <Comp
-                toggle={this.toggleModal}
-                simulator={this.props.simulator}
-                station={this.props.station}
-                clientObj={this.props.clientObj}
-                flight={this.props.flight}
-              />
-            </div>
-            <Button onClick={this.toggleModal} style={{ width: "200px" }}>
-              Close
-            </Button>
-          </div>
+          <Measure bounds onResize={this.setDimensions}>
+            {({ measureRef }) => (
+              <div
+                ref={measureRef}
+                className={`modal-themed widget-body widget-${widget.size} ${
+                  this.state.modal ? "open" : ""
+                }`}
+                style={{
+                  transform: `translate(${position.x}px, ${position.y}px)`
+                }}
+              >
+                <div
+                  className="widget-name"
+                  onMouseDown={this.mouseDown}
+                  onTouchStart={this.mouseDown}
+                >
+                  {widget.name}
+                  {widget.training && (
+                    <FontAwesome
+                      className="pull-right"
+                      name="question-circle-o"
+                      onClick={() => this.setState({ training: true })}
+                    />
+                  )}
+                </div>
+                <div className="widget-container">
+                  <Comp
+                    toggle={this.toggleModal}
+                    simulator={this.props.simulator}
+                    station={this.props.station}
+                    clientObj={this.props.clientObj}
+                    flight={this.props.flight}
+                  />
+                </div>
+                <Button onClick={this.toggleModal} style={{ width: "200px" }}>
+                  Close
+                </Button>
+              </div>
+            )}
+          </Measure>
         )}
         <Tour
           steps={widget.training}

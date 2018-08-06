@@ -18,12 +18,25 @@ export default class Engine extends HeatMixin(System) {
     this.displayName = params.displayName || this.name + " Engine";
   }
   get stealthFactor() {
+    const optimalSpeed = this.speeds.find(s => s.optimal);
+    const optimalNumber = optimalSpeed ? optimalSpeed.number : 0;
     const topSpeed = this.speeds.reduce((prev, next) => {
       return next.number > prev ? next.number : prev;
     }, 0);
-    const currentSpeed = this.speeds[this.speed]
-      ? this.speeds[this.speed].number
+    const currentSpeed = this.speeds[this.speed - 1]
+      ? this.speeds[this.speed - 1].number
       : 0;
+    if (currentSpeed === optimalNumber) return 0;
+    if (currentSpeed > optimalNumber || optimalNumber === 0) {
+      return (currentSpeed - optimalNumber) / (topSpeed - optimalNumber);
+    }
+    if (currentSpeed < optimalNumber) {
+      // A parabola peaking at 0.74, but at 0 at the optimal number
+      return (
+        (-1 / (optimalNumber * 2)) * Math.pow(currentSpeed, 2) +
+        currentSpeed / 2
+      );
+    }
     return currentSpeed / topSpeed;
   }
   setSpeeds(speeds) {

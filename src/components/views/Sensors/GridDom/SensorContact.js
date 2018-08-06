@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Mutation } from "react-apollo";
+import Measure from "react-measure";
 import { Asset } from "../../../../helpers/assets";
 import tinycolor from "tinycolor2";
 import Explosion from "../../../../helpers/explosions";
@@ -54,7 +55,48 @@ class Ping extends Component {
     );
   }
 }
+const ContactSelection = ({ width, x, y, size, contactDims }) => {
+  const offsetX = contactDims.width / 2;
+  const offsetY = contactDims.height / 2;
+  return (
+    <div
+      className="contact-selection"
+      style={{
+        position: "absolute",
+        transform: `translate(${(width / 2) * x +
+          contactDims.width / Math.E / size}px, ${(width / 2) * y +
+          contactDims.height / Math.E / size}px)`
+      }}
+    >
+      <div
+        className="tl"
+        style={{
+          transform: `translate(${-offsetX}px, ${-offsetY}px) scale(${size})`
+        }}
+      />
+      <div
+        className="tr"
+        style={{
+          transform: `translate(${offsetX}px, ${-offsetY}px) scale(${size})`
+        }}
+      />
+      <div
+        className="bl"
+        style={{
+          transform: `translate(${-offsetX}px, ${offsetY}px) scale(${size})`
+        }}
+      />
+      <div
+        className="br"
+        style={{
+          transform: `translate(${offsetX}px, ${offsetY}px) scale(${size})`
+        }}
+      />
+    </div>
+  );
+};
 export default class SensorContact extends Component {
+  state = {};
   render() {
     const {
       id,
@@ -176,36 +218,43 @@ export default class SensorContact extends Component {
         <Fragment>
           <Asset asset={icon}>
             {({ src }) => (
-              <img
-                alt="contact"
-                draggable="false"
-                onMouseOver={() => mouseover(this.props)}
-                onMouseOut={selected ? null : () => mouseover({})}
-                onMouseDown={e => mousedown(this.props, e)}
-                src={src}
-                className={disabled ? "contact-disabled" : ""}
-                style={{
-                  opacity: core ? 0.5 : opacity,
-                  transform: `translate(${(width / 2) * x}px, ${(width / 2) *
-                    y}px) scale(${size})`
+              <Measure
+                bounds
+                onResize={contentRect => {
+                  this.setState({ dimensions: contentRect.bounds });
                 }}
-              />
+              >
+                {({ measureRef }) => (
+                  <img
+                    ref={measureRef}
+                    alt="contact"
+                    draggable="false"
+                    onMouseOver={() => mouseover(this.props)}
+                    onMouseOut={selected ? null : () => mouseover({})}
+                    onMouseDown={e => mousedown(this.props, e)}
+                    src={src}
+                    className={disabled ? "contact-disabled" : ""}
+                    style={{
+                      opacity: core ? 0.5 : opacity,
+                      transform: `translate(${(width / 2) * x}px, ${(width /
+                        2) *
+                        y}px) scale(${size})`
+                    }}
+                  />
+                )}
+              </Measure>
             )}
           </Asset>
           {!core &&
+            this.state.dimensions &&
             selected && (
-              <div
-                className="contact-selection"
-                style={{
-                  transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
-                    dy}px) scale(${size})`
-                }}
-              >
-                <div className="tl" />
-                <div className="tr" />
-                <div className="bl" />
-                <div className="br" />
-              </div>
+              <ContactSelection
+                contactDims={this.state.dimensions}
+                width={width}
+                x={x}
+                y={y}
+                size={size}
+              />
             )}
         </Fragment>
         {core && (

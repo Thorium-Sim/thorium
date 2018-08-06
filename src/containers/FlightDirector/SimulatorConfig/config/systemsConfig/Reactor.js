@@ -20,7 +20,6 @@ const Reactor = props => {
       <Query query={REACTOR_QUERY} variables={{ id }}>
         {({ data, loading }) => {
           if (loading) return null;
-          console.log(data);
           const { reactor } = data;
           return (
             <div>

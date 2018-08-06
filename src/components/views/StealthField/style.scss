@@ -82,40 +82,40 @@
       height: 100%;
     }
   }
+}
 
-  .stealth-animation {
+.stealth-animation {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  mix-blend-mode: multiply;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  .band {
     position: absolute;
     top: 0;
-    bottom: 0;
     left: 0;
-    right: 0;
-    mix-blend-mode: multiply;
-    -webkit-mask-position: center;
-    -webkit-mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    mask-position: center;
-    mask-size: contain;
-    mask-repeat: no-repeat;
-    .band {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      animation-name: stealthAnimation;
-      animation-iteration-count: infinite;
-      animation-direction: alternate;
+    height: 100%;
+    width: 100%;
+    animation-name: stealthAnimation;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
 
-      @for $i from 1 to 31 {
-        $val: $i;
-        &:nth-child(#{$i}) {
-          animation-duration: random() * 4s + 1s;
-          animation-delay: random() * 4s * -1;
-          .color {
-            background-color: rgba(0, 0, 0, 0.4);
-            width: random() * 40%;
-            height: 100%;
-          }
+    @for $i from 1 to 31 {
+      $val: $i;
+      &:nth-child(#{$i}) {
+        animation-duration: random() * 4s + 1s;
+        animation-delay: random() * 4s * -1;
+        .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: random() * 40%;
+          height: 100%;
         }
       }
     }
