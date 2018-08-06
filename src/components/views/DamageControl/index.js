@@ -341,7 +341,16 @@ class DamageControl extends Component {
                 </Col>
                 <Col sm={6}>
                   <h3 className="text-center">
-                    {system && system.damage.damageReportText
+                    {(() => {
+                      system &&
+                        console.log(
+                          system.damage,
+                          system.damage.damageReportText,
+                          system.damage.currentStep
+                        );
+                    })()}
+                    {system &&
+                    (system.damage.damageReportText || system.damage.report)
                       ? system.damage.currentStep + 1
                       : 0}{" "}
                     / {steps.length}
