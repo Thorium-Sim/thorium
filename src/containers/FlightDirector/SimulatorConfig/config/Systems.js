@@ -36,7 +36,8 @@ const systems = [
   "Thx",
   "Torpedo",
   "TractorBeam",
-  "Transporters"
+  "Transporters",
+  "Generic"
 ];
 
 const SYSTEM_QUERY = gql`
@@ -136,6 +137,14 @@ class SystemsConfig extends Component {
         }
       });
       return;
+    } else if (addSystem === "Generic") {
+      return action({
+        variables: {
+          id,
+          type: "System",
+          params: JSON.stringify({ name: "Generic" })
+        }
+      });
     } else {
       return action({ variables: { id, type: addSystem } });
     }
