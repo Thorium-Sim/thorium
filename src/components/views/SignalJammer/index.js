@@ -78,22 +78,29 @@ const trainingSteps = [
 class SignalJammer extends Component {
   state = { jammer: { level: 0.5, power: 0.1 } };
   componentDidUpdate(prevProps) {
-    if (
-      this.props.data.signalJammers &&
-      this.props.data.signalJammers.length > 0
-    ) {
-      const signalJammer = this.props.data.signalJammers[0];
-      if (
-        signalJammer.strength !== this.state.jammer.power ||
-        signalJammer.level !== this.state.jammer.level
-      ) {
-        this.setState({
-          jammer: {
-            power: signalJammer.strength,
-            level: signalJammer.level
-          }
-        });
-      }
+    const prevSignalJammer = prevProps.data.signalJammers
+      ? prevProps.data.signalJammers[0]
+      : {};
+    const signalJammer = this.props.data.signalJammers
+      ? this.props.data.signalJammers[0]
+      : {};
+    let { power, level } = this.state.jammer;
+    let update = false;
+    if (prevSignalJammer.strength !== signalJammer.strength) {
+      update = true;
+      power = signalJammer.strength;
+    }
+    if (prevSignalJammer.level !== signalJammer.level) {
+      update = true;
+      level = signalJammer.level;
+    }
+    if (update) {
+      this.setState({
+        jammer: {
+          power,
+          level
+        }
+      });
     }
   }
   changePower = value => {

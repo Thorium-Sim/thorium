@@ -12,8 +12,8 @@ class Bars extends Component {
       level: props.level
     };
   }
-  componentDidUpdate() {
-    if (this.state.level !== this.props.level) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.level !== this.props.level) {
       this.setState({
         level: this.props.level
       });
