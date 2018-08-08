@@ -137,17 +137,9 @@ export const SystemsSubscriptions = {
       }
       if (damageWhich) {
         returnSystems = returnSystems.filter(s => {
-          console.log(
-            s.name.padEnd(30),
-            s.damage.damaged,
-            s.damage.which,
-            damageWhich,
-            s.damage.which === damageWhich
-          );
           return s.damage.which === damageWhich;
         });
       }
-      console.log(returnSystems.map(s => s.name));
       return returnSystems;
     },
     subscribe: withFilter(
