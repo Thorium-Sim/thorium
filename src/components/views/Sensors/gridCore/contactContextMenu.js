@@ -21,6 +21,7 @@ export default class ContactContextMenu extends Component {
       <div className="contextMenu">
         {pickingIcon && (
           <FileExplorer
+            simple
             directory="/Sensor Contacts/Icons"
             selectedFiles={[contact.icon]}
             onClick={(e, container) => {
@@ -31,6 +32,7 @@ export default class ContactContextMenu extends Component {
         )}
         {pickingPicture && (
           <FileExplorer
+            simple
             directory="/Sensor Contacts/Pictures"
             selectedFiles={[contact.picture]}
             onClick={(e, container) => {

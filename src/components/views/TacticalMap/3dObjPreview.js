@@ -65,7 +65,7 @@ class ObjPreview extends Component {
     this.myRef.current.appendChild(this.renderer.domElement);
   }
   render() {
-    return <div ref={this.myRef} style={{ height: 80, width: 80 }} />;
+    return <div ref={this.myRef} style={{ height: "100px", width: "100%" }} />;
   }
 }
 

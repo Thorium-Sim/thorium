@@ -1,11 +1,13 @@
 import React from "react";
-import { ChromePicker } from "react-color";
 import FileExplorer from "../../views/TacticalMap/fileExplorer";
-export default ({ data, updateData }) => (
+import ColorPicker from "../../../helpers/colorPicker";
+
+export default ({ data, updateData, simple }) => (
   <div
     style={{
-      height: "45vh",
-      overflow: "auto"
+      display: "flex",
+      flexDirection: "column",
+      height: "100%"
     }}
   >
     <label>Title</label>
@@ -52,7 +54,8 @@ export default ({ data, updateData }) => (
       }
       checked={JSON.parse(data).texture}
     /> */}
-    <ChromePicker
+    <label>Color</label>
+    <ColorPicker
       color={JSON.parse(data).color}
       onChangeComplete={color => {
         updateData(
@@ -67,16 +70,24 @@ export default ({ data, updateData }) => (
     <label>
       Mesh <small>Will use a texture of the same name</small>
     </label>
-    <FileExplorer
-      directory="/3D/Mesh"
-      selectedFiles={[JSON.parse(data).mesh]}
-      onClick={(evt, container) =>
-        updateData(
-          JSON.stringify(
-            Object.assign({}, JSON.parse(data), { mesh: container.fullPath })
+    <div
+      style={{
+        flex: 1,
+        overflow: "auto"
+      }}
+    >
+      <FileExplorer
+        simple={simple}
+        directory="/3D/Mesh"
+        selectedFiles={[JSON.parse(data).mesh]}
+        onClick={(evt, container) =>
+          updateData(
+            JSON.stringify(
+              Object.assign({}, JSON.parse(data), { mesh: container.fullPath })
+            )
           )
-        )
-      }
-    />
+        }
+      />
+    </div>
   </div>
 );

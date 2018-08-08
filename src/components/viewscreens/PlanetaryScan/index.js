@@ -1,42 +1,11 @@
 import React, { Component } from "react";
-//import React3 from "react-three-renderer";
-///import * as THREE from "three";
-import { Asset } from "../../../helpers/assets";
-
+import ThreeView from "./threeView";
+import Measure from "react-measure";
 import "./style.scss";
 
 export default props => {
   const data = JSON.parse(props.viewscreen.data);
-  if (!data.clouds) {
-    return (
-      <Asset asset={data.planet || "/3D/Texture/Planets/Alpine"}>
-        {({ src }) => (
-          <RenderSphere
-            src={src}
-            clouds={null}
-            wireframe={data.wireframe}
-            text={data.text}
-          />
-        )}
-      </Asset>
-    );
-  }
-  return (
-    <Asset asset={data.clouds || "/3D/Texture/Planets/Clouds1"}>
-      {({ src: clouds }) => (
-        <Asset asset={data.planet || "/3D/Texture/Planets/Alpine"}>
-          {({ src }) => (
-            <RenderSphere
-              src={src}
-              clouds={clouds}
-              wireframe={data.wireframe}
-              text={data.text}
-            />
-          )}
-        </Asset>
-      )}
-    </Asset>
-  );
+  return <RenderSphere {...data} />;
 };
 
 class RenderSphere extends Component {
@@ -48,12 +17,25 @@ class RenderSphere extends Component {
   };
   render() {
     //const cameraPosition = new THREE.Vector3(0, 2, 4);
-    const { /*src, clouds, wireframe,*/ text } = this.props;
+    const { text } = this.props;
+    const { dimensions } = this.state;
     return (
       <div className="planetary-scan">
-        <div className="scannerBox">
-          <div className="scannerBar" />
-        </div>
+        <Measure
+          bounds
+          onResize={contentRect => {
+            this.setState({ dimensions: contentRect.bounds });
+          }}
+        >
+          {({ measureRef }) => (
+            <div className="scannerBox" ref={measureRef}>
+              <div className="scannerBar" />
+              {dimensions && (
+                <ThreeView {...this.props} dimensions={dimensions} />
+              )}
+            </div>
+          )}
+        </Measure>
         <div className="text-box">{text}</div>
         {/*<React3
           alpha

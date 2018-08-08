@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Label, Row, Col, Input, Button, ButtonGroup } from "reactstrap";
 import Preview, { Viewscreen } from "./index";
+import ViewscreenCardList from "./viewscreenCardList";
 import * as ViewscreenCards from "../../viewscreens";
 
 import "./style.scss";
@@ -24,9 +25,6 @@ const VIEWSCREEN_SUB = gql`
 
 class ViewscreenCore extends Component {
   sub = null;
-  cards = Object.keys(ViewscreenCards)
-    .filter(c => c.indexOf("Config") === -1)
-    .sort();
   configs = Object.keys(ViewscreenCards)
     .filter(c => c.indexOf("Config") > -1)
     .sort();
@@ -185,7 +183,7 @@ class ViewscreenCore extends Component {
         </div>
         <div className="core" style={{ height: "100%" }}>
           <div className="q2">
-            <Row>
+            <Row style={{ height: "100%" }}>
               <Col sm={6}>
                 <Label>Viewscreen</Label>
                 <Input
@@ -229,35 +227,20 @@ class ViewscreenCore extends Component {
                   Secondary Screen?
                 </Label>
               </Col>
-              <Col sm={6}>
+              <Col sm={6} style={{ display: "flex", flexDirection: "column" }}>
                 <Label>Cards</Label>
-                <div className="card-list">
-                  {this.cards.map(c => (
-                    <div
-                      key={c}
-                      className={`viewscreen-card ${
-                        selectedViewscreen &&
-                        viewscreens.find(v => v.id === selectedViewscreen) &&
-                        viewscreens.find(v => v.id === selectedViewscreen)
-                          .component === c
-                          ? "previewing"
-                          : ""
-                      } ${previewComponent === c ? "selected" : ""}`}
-                      onClick={() =>
-                        preview
-                          ? this.setState({ previewComponent: c })
-                          : this.updateCard(c)
-                      }
-                    >
-                      <img
-                        alt={`Viewscreen Preview ${c}`}
-                        src={`/viewscreen/${c}.jpg`}
-                        draggable="false"
-                      />
-                      <p>{c}</p>
-                    </div>
-                  ))}
-                </div>
+                <ViewscreenCardList
+                  previewComponent={previewComponent}
+                  viewscreen={
+                    selectedViewscreen &&
+                    viewscreens.find(v => v.id === selectedViewscreen)
+                  }
+                  update={c =>
+                    preview
+                      ? this.setState({ previewComponent: c })
+                      : this.updateCard(c)
+                  }
+                />
                 <ButtonGroup>
                   <Button
                     color="primary"
@@ -285,7 +268,7 @@ class ViewscreenCore extends Component {
           </div>
           <div className="q4">
             <Label>Config</Label>
-            <Row>
+            <Row style={{ height: "90%" }}>
               <Col sm={6}>
                 <Label>Current Viewscreen</Label>
                 {(() => {

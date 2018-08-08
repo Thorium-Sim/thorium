@@ -1,6 +1,6 @@
 import React from "react";
 
-export default ({ data, updateData }) =>
+export default ({ data, updateData }) => (
   <div>
     <label>
       Type your information in here. If you are previewing, the information will
@@ -8,9 +8,10 @@ export default ({ data, updateData }) =>
       the information will type on in realtime.
     </label>
     <textarea
-      rows="10"
+      rows="5"
       style={{ width: "100%" }}
       onChange={evt => updateData(JSON.stringify({ text: evt.target.value }))}
       value={JSON.parse(data).text}
     />
-  </div>;
+  </div>
+);

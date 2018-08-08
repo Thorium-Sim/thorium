@@ -1,10 +1,11 @@
-import React, { Component } from "react";
-import { Button } from "reactstrap";
+import React, { Fragment, Component } from "react";
+import { Button, ButtonGroup } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import FontAwesome from "react-fontawesome";
 import ObjPreview from "./3dObjPreview";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import Measure from "react-measure";
 import "./fileExplorer.scss";
 
 const ASSET_FOLDER_SUB = gql`
@@ -143,11 +144,12 @@ class FileExplorer extends Component {
   render() {
     if (this.props.data.loading || !this.props.data.assetFolders) return null;
     const { assetFolders = [] } = this.props.data;
-    let { currentDirectory } = this.state;
-    const { directory, selectedFiles = [] } = this.props;
+    let { currentDirectory, dimensions } = this.state;
+    const { directory, selectedFiles = [], simple } = this.props;
     if (!assetFolders.find(a => a.fullPath === currentDirectory)) {
       currentDirectory = "/";
     }
+    const widthFactor = 0.25;
     return (
       <div className="file-explorer">
         <SubscriptionHelper
@@ -163,111 +165,141 @@ class FileExplorer extends Component {
           }
         />
         <div>
-          <h4>{currentDirectory}</h4>
-          <Button color="primary" onClick={this._createFolder}>
-            Create Folder <FontAwesome name="folder-open" />
-          </Button>
-          <Button color="warning" style={{ position: "relative" }}>
-            <div
-              style={{
-                opacity: 0,
-                position: "absolute",
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0
-              }}
-            >
-              <input
-                ref="massUpload"
-                type="file"
-                id="mass-upload-folder"
-                multiple
-                onChange={this._massUpload}
-              />
-            </div>
-            Upload Assets <FontAwesome name="upload" />
-          </Button>
+          {simple ? (
+            <strong>{currentDirectory}</strong>
+          ) : (
+            <h4>{currentDirectory}</h4>
+          )}
+          {!simple && (
+            <ButtonGroup>
+              <Button color="primary" onClick={this._createFolder}>
+                Create Folder <FontAwesome name="folder-open" />
+              </Button>
+              <Button color="warning" style={{ position: "relative" }}>
+                <div
+                  style={{
+                    opacity: 0,
+                    position: "absolute",
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0
+                  }}
+                >
+                  <input
+                    ref="massUpload"
+                    type="file"
+                    id="mass-upload-folder"
+                    multiple
+                    onChange={this._massUpload}
+                  />
+                </div>
+                Upload Assets <FontAwesome name="upload" />
+              </Button>
+            </ButtonGroup>
+          )}
         </div>
-        <div className="directory-container">
-          {currentDirectory !== directory && (
-            <div
-              onClick={() => {
-                //Get the current directory's folder
-                let dir = this.props.data.assetFolders.filter(folder => {
-                  return folder.fullPath === currentDirectory;
-                })[0];
-                this.setState({
-                  currentDirectory: dir.folderPath
-                });
-              }}
-            >
-              <div className="file-container">
-                <FontAwesome flip="horizontal" size="5x" name="share" />
-                <p>Back</p>
-              </div>
+        <Measure
+          bounds
+          onResize={contentRect => {
+            this.setState({ dimensions: contentRect.bounds });
+          }}
+        >
+          {({ measureRef }) => (
+            <div ref={measureRef}>
+              {dimensions && (
+                <div className="directory-container">
+                  {currentDirectory !== directory && (
+                    <div
+                      style={{ maxWidth: dimensions.width * widthFactor }}
+                      onClick={() => {
+                        //Get the current directory's folder
+                        let dir = this.props.data.assetFolders.filter(
+                          folder => {
+                            return folder.fullPath === currentDirectory;
+                          }
+                        )[0];
+                        this.setState({
+                          currentDirectory: dir.folderPath
+                        });
+                      }}
+                    >
+                      <div className="file-container">
+                        <FontAwesome flip="horizontal" size="3x" name="share" />
+                        <p>Back</p>
+                      </div>
+                    </div>
+                  )}
+                  {assetFolders
+                    .filter(folder => {
+                      return folder.folderPath === currentDirectory;
+                    })
+                    .map(folder => (
+                      <div
+                        style={{ maxWidth: dimensions.width * widthFactor }}
+                        key={folder.id}
+                        onClick={() => this.setDirectory(folder.fullPath)}
+                      >
+                        <div className="file-container">
+                          <FontAwesome size="3x" name="folder" />
+                          <p>
+                            {folder.name}{" "}
+                            <FontAwesome
+                              name="ban"
+                              className="text-danger"
+                              onClick={e =>
+                                this._removeFolder(folder.fullPath, e)
+                              }
+                            />{" "}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  {this.props.data.assetFolders &&
+                    this.props.data.assetFolders.length &&
+                    this.props.data.assetFolders
+                      .concat({ fullPath: "/", objects: [] })
+                      .find(folder => folder.fullPath === currentDirectory)
+                      .objects.map(object => {
+                        return (
+                          <div
+                            style={{ maxWidth: dimensions.width * widthFactor }}
+                            key={object.id}
+                            onClick={evt =>
+                              this.props.onClick &&
+                              this.props.onClick(evt, object)
+                            }
+                            onMouseDown={evt =>
+                              this.props.onMouseDown &&
+                              this.props.onMouseDown(evt, object)
+                            }
+                            onMouseUp={evt =>
+                              this.props.onMouseUp &&
+                              this.props.onMouseUp(evt, object)
+                            }
+                          >
+                            <div
+                              className={`file-container ${
+                                selectedFiles.indexOf(object.fullPath) > -1
+                                  ? "selected"
+                                  : ""
+                              }`}
+                            >
+                              <AssetObject
+                                object={object}
+                                removeObject={
+                                  this.props.admin ? this._removeObject : null
+                                }
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                </div>
+              )}
             </div>
           )}
-          {assetFolders
-            .filter(folder => {
-              return folder.folderPath === currentDirectory;
-            })
-            .map(folder => (
-              <div
-                key={folder.id}
-                onClick={() => this.setDirectory(folder.fullPath)}
-              >
-                <div className="file-container">
-                  <FontAwesome size="5x" name="folder" />
-                  <p>
-                    {folder.name}{" "}
-                    <FontAwesome
-                      name="ban"
-                      className="text-danger"
-                      onClick={e => this._removeFolder(folder.fullPath, e)}
-                    />{" "}
-                  </p>
-                </div>
-              </div>
-            ))}
-          {this.props.data.assetFolders &&
-            this.props.data.assetFolders.length &&
-            this.props.data.assetFolders
-              .concat({ fullPath: "/", objects: [] })
-              .find(folder => folder.fullPath === currentDirectory)
-              .objects.map(object => {
-                return (
-                  <div
-                    key={object.id}
-                    onClick={evt =>
-                      this.props.onClick && this.props.onClick(evt, object)
-                    }
-                    onMouseDown={evt =>
-                      this.props.onMouseDown &&
-                      this.props.onMouseDown(evt, object)
-                    }
-                    onMouseUp={evt =>
-                      this.props.onMouseUp && this.props.onMouseUp(evt, object)
-                    }
-                  >
-                    <div
-                      className={`file-container ${
-                        selectedFiles.indexOf(object.fullPath) > -1
-                          ? "selected"
-                          : ""
-                      }`}
-                    >
-                      <AssetObject
-                        object={object}
-                        removeObject={
-                          this.props.admin ? this._removeObject : null
-                        }
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-        </div>
+        </Measure>
       </div>
     );
   }
@@ -279,7 +311,7 @@ class VideoPreview extends Component {
     return (
       <div>
         <FontAwesome
-          size="5x"
+          size="3x"
           name="file-video-o"
           style={{ display: !this.state.loaded ? "block" : "none" }}
         />
@@ -331,10 +363,10 @@ const AssetObject = ({ object, removeObject }) => {
       </div>
     );
   }
-  if (["m4a", "wav", "mp3", "aiff", "aif"].indexOf(ext) > -1) {
+  if (["m4a", "wav", "mp3", "ogg", "aiff", "aif"].indexOf(ext) > -1) {
     return (
       <div>
-        <FontAwesome size="5x" name="file-audio-o" />
+        <FontAwesome size="3x" name="file-audio-o" />
         <p>
           {object.name}{" "}
           <FontAwesome
