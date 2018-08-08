@@ -44,6 +44,7 @@ import { ComputerCoreQueries } from "./computerCore.js";
 import { SickbayQueries } from "./sickbay.js";
 import { ThxQueries } from "./thx.js";
 import { ThoriumQueries } from "./thorium.js";
+import { UniverseQueries } from "./universe.js";
 
 const queryMap = Object.assign(
   {},
@@ -92,7 +93,8 @@ const queryMap = Object.assign(
   ComputerCoreQueries,
   SickbayQueries,
   ThxQueries,
-  ThoriumQueries
+  ThoriumQueries,
+  UniverseQueries
 );
 
 export default queryMap;
