@@ -1,7 +1,7 @@
 .file-explorer {
   //padding: 10px;
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   .fa {
     color: #555;
@@ -10,9 +10,12 @@
     display: flex;
     flex-wrap: wrap;
     & > div {
+      margin: 2px;
+      width: 20%;
       min-width: 100px;
-      flex: 0 1;
-      margin: 5px;
+      p {
+        margin-bottom: 2px;
+      }
     }
   }
   .file-container {
@@ -21,7 +24,6 @@
     border-radius: 5px;
     text-align: center;
     height: 100%;
-    max-width: 150px;
     flex-basis: auto;
     &.selected {
       background-color: rgba(128, 128, 128, 0.2);

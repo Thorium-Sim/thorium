@@ -1,21 +1,45 @@
-import React, { Component } from "react";
-import gql from "graphql-tag";
-import { graphql } from "react-apollo";
+import React, { Fragment, Component } from "react";
+import { Input } from "reactstrap";
+import { titleCase } from "change-case";
+import FileExplorer from "../../views/TacticalMap/fileExplorer";
+import ColorPicker from "../../../helpers/colorPicker";
 
 class PlanetaryScanConfig extends Component {
-  constructor(props) {
-    super(props);
-    const data = JSON.parse(props.data);
-
-    this.state = {
-      startOutput: parseFloat(data.startOutput),
-      endOutput: parseFloat(data.endOutput),
-      duration: parseFloat(data.duration)
-    };
-  }
+  state = {};
   render() {
-    let { data, updateData, assetData } = this.props;
+    const { config } = this.state;
+    let { data, updateData, simple } = this.props;
     data = JSON.parse(data);
+    const { planet, wireframe, clouds = null, color } = data;
+    if (!planet) {
+      updateData(
+        JSON.stringify(
+          Object.assign({}, data, { planet: "/3D/Texture/Planets/Alpine.png" })
+        )
+      );
+    }
+    if (config) {
+      return (
+        <div
+          style={{ display: "flex", flexDirection: "column", height: "100%" }}
+        >
+          <strong>Config {titleCase(config)}</strong>
+          <FileExplorer
+            simple={simple}
+            directory="/3D/Texture/Planets"
+            selectedFiles={[data[config]]}
+            onClick={(evt, container) => {
+              updateData(
+                JSON.stringify(
+                  Object.assign({}, data, { [config]: container.fullPath })
+                )
+              );
+              this.setState({ config: null });
+            }}
+          />
+        </div>
+      );
+    }
     return (
       <div>
         <div>
@@ -23,7 +47,7 @@ class PlanetaryScanConfig extends Component {
             Wireframe{" "}
             <input
               type="checkbox"
-              value={data.wireframe}
+              checked={wireframe}
               onClick={evt =>
                 updateData(
                   JSON.stringify(
@@ -34,58 +58,70 @@ class PlanetaryScanConfig extends Component {
             />
           </label>
         </div>
-        <div>
-          <label>Planet Texture</label>
-          {!assetData.loading && (
-            <select
-              value={data.planet}
-              onChange={evt =>
+        {wireframe ? (
+          <Fragment>
+            <label>Color</label>
+            <ColorPicker
+              color={color}
+              onChangeComplete={color => {
                 updateData(
-                  JSON.stringify(
-                    Object.assign({}, data, { planet: evt.target.value })
-                  )
-                )
-              }
-            >
-              {assetData.assetFolders &&
-                assetData.assetFolders[0].objects
-                  .filter(c => c.name.toLowerCase().indexOf("clouds") === -1)
-                  .map(c => (
-                    <option key={c.id} value={c.fullPath}>
-                      {c.name}
-                    </option>
-                  ))}
-            </select>
-          )}
-        </div>
-        <div>
-          <label>Cloud Texture</label>
-          {!assetData.loading && (
-            <select
-              value={data.clouds}
-              onChange={evt =>
-                updateData(
-                  JSON.stringify(
-                    Object.assign({}, data, { clouds: evt.target.value })
-                  )
-                )
-              }
-            >
-              <option value="">No Clouds</option>
-              {assetData.assetFolders &&
-                assetData.assetFolders[0].objects
-                  .filter(c => c.name.toLowerCase().indexOf("clouds") > -1)
-                  .map(c => (
-                    <option key={c.id} value={c.fullPath}>
-                      {c.name}
-                    </option>
-                  ))}
-            </select>
-          )}
-        </div>
+                  JSON.stringify({
+                    ...data,
+                    color: color.hex
+                  })
+                );
+              }}
+            />
+          </Fragment>
+        ) : (
+          <Fragment>
+            <div>
+              <label>Planet Texture</label>
+              <img
+                src={`/assets/${planet}`}
+                alt="Planet"
+                style={{ cursor: "pointer", width: "100%", maxWidth: "150px" }}
+                draggable={false}
+                onClick={() => this.setState({ config: "planet" })}
+              />
+            </div>
+            <div>
+              <label>Cloud Texture</label>
+              {clouds ? (
+                <img
+                  src={`/assets/${clouds}`}
+                  alt="Planet"
+                  style={{
+                    cursor: "pointer",
+                    width: "100%",
+                    maxWidth: "150px"
+                  }}
+                  draggable={false}
+                  onClick={() => this.setState({ config: "clouds" })}
+                />
+              ) : (
+                <div
+                  style={{
+                    cursor: "pointer",
+                    width: "100%",
+                    maxWidth: "150px",
+                    fontSize: "24px",
+                    border: "solid 1px white",
+                    textAlign: "center",
+                    padding: "5px"
+                  }}
+                  onClick={() => this.setState({ config: "clouds" })}
+                >
+                  No Clouds
+                </div>
+              )}
+            </div>
+          </Fragment>
+        )}
         <div>
           <label>Text</label>
-          <textarea
+          <Input
+            type="textarea"
             onChange={evt =>
               updateData(
                 JSON.stringify(
@@ -93,34 +129,11 @@ class PlanetaryScanConfig extends Component {
                 )
               )
             }
-            rows={10}
+            rows={5}
           />
         </div>
       </div>
     );
   }
 }
-
-const ASSET_QUERY = gql`
-  query AssetFolders($names: [String]) {
-    assetFolders(names: $names) {
-      id
-      name
-      objects {
-        id
-        name
-        fullPath
-      }
-    }
-  }
-`;
-
-export default graphql(ASSET_QUERY, {
-  name: "assetData",
-  options: ownProps => ({
-    fetchPolicy: "cache-and-network",
-    variables: {
-      names: ["Planets"]
-    }
-  })
-})(PlanetaryScanConfig);
+export default PlanetaryScanConfig;

@@ -400,7 +400,7 @@ export default class TimelineConfig extends Component {
           <h4>Timeline</h4>
           <Card
             className="scroll"
-            style={{ maxHeight: "60vh", overflowY: "scroll" }}
+            style={{ maxHeight: "75vh", overflowY: "auto" }}
           >
             <div
               className="list-group-item"
@@ -573,7 +573,7 @@ export default class TimelineConfig extends Component {
             return (
               <Col sm="6" key={item.id}>
                 <h4>{item.event}</h4>
-                <Card className="scroll" style={{ maxHeight: "60vh" }}>
+                <Card className="scroll" style={{ maxHeight: "75vh" }}>
                   <CardBody>
                     <FormGroup>
                       <Label>Item Name</Label>
