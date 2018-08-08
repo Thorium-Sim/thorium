@@ -259,7 +259,6 @@ class Scanning extends Component {
     }
     if (history && selectedScan) {
       const scan = scans.find(s => s.id === selectedScan);
-      console.log(scan);
       if (scan) {
         scanning = scan.scanning;
         scanResults = scan.response;

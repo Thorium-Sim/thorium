@@ -42,7 +42,7 @@ export default class Engine extends HeatMixin(System) {
   setSpeeds(speeds) {
     this.speeds = speeds;
   }
-  break(report, destroyed) {
+  break(report, destroyed, which) {
     // Stop all of the engines
     App.systems
       .filter(s => s.simulatorId === this.simulatorId && s.class === "Engine")
@@ -52,7 +52,7 @@ export default class Engine extends HeatMixin(System) {
           pubsub.publish("engineUpdate", s);
         }
       });
-    super.break(report, destroyed);
+    super.break(report, destroyed, which);
   }
   setPower(powerLevel) {
     // Override set power to change speed when power is changed
