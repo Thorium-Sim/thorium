@@ -73,6 +73,8 @@ import Sickbay from "./Sickbay";
 import CommReview from "./CommReview";
 import Thx from "./Thx";
 import DilithiumStress from "./DilithiumStress";
+import EngineeringReports from "./DamageControl/engineering";
+import RnDReports from "./DamageControl/rnd";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -208,7 +210,9 @@ const Views = {
   Sickbay,
   CommReview,
   Thx,
-  DilithiumStress
+  DilithiumStress,
+  EngineeringReports,
+  RnDReports
 };
 
 export const Widgets = {

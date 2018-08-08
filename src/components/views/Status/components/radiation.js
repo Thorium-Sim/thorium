@@ -3,7 +3,7 @@ import { Label } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import Dot from "./dots";
-
+import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
 const SUB = gql`
   subscription ShipUpdate($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
@@ -16,30 +16,25 @@ const SUB = gql`
 `;
 
 class Radiation extends Component {
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            simulators: subscriptionData.data.simulatorsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    // Cancel the subscription
-    this.sub && this.sub();
-  }
   render() {
     if (this.props.data.loading || !this.props.data.simulators) return null;
     if (!this.props.data.simulators) return null;
     const { ship } = this.props.data.simulators[0];
     return (
       <div>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  simulators: subscriptionData.data.simulatorsUpdate
+                });
+              }
+            })
+          }
+        />
         <Label>Radiation</Label>
         <Dot level={ship.radiation} />
       </div>

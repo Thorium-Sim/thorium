@@ -6,7 +6,7 @@ import Isochips from "./isochips";
 import Battery from "./batteryCharging";
 import Routing from "./powerRouting";
 import "./style.scss";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 const Components = [Isochips, Battery, Routing];
 
 const SYSTEMS_SUB = gql`
@@ -33,28 +33,16 @@ class JrEng extends Component {
     };
     this.systemSub = null;
   }
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.data.loading && !this.state.sysId) {
+  componentDidUpdate(prevProps) {
+    if (
+      !this.props.data.loading &&
+      JSON.stringify(prevProps.data.systems) !==
+        JSON.stringify(this.props.data.systems)
+    ) {
       this.setState({
-        systems: nextProps.data.systems
+        systems: this.props.data.systems
       });
     }
-    if (!this.systemSub && !nextProps.data.loading) {
-      this.systemSub = nextProps.data.subscribeToMore({
-        document: SYSTEMS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            systems: subscriptionData.data.systemsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.systemSub();
   }
   selectSystem = system => {
     this.setState({
@@ -106,6 +94,21 @@ class JrEng extends Component {
     }
     return (
       <Container className="jr-eng" style={{ height: "100%" }}>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SYSTEMS_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  systems: subscriptionData.data.systemsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row style={{ height: "100%" }}>
           {this.state.systems
             .slice(0)

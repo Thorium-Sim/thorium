@@ -4,6 +4,8 @@ import { Row, Col, Button, Input, Card, CardBody } from "reactstrap";
 import gql from "graphql-tag";
 import Tour from "reactour";
 import FontAwesome from "react-fontawesome";
+import { Typing } from "react-typing";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
 import { Asset } from "../../../helpers/assets";
@@ -96,59 +98,6 @@ class Scanning extends Component {
       }
     );
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.sensorsSubscription && !nextProps.data.loading) {
-      this.sensorsSubscription = nextProps.data.subscribeToMore({
-        document: SENSOR_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id,
-          domain: nextProps.domain || "internal"
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            sensors: subscriptionData.data.sensorsUpdate
-          });
-        }
-      });
-    }
-    if (!nextProps.data.loading && nextProps.data.sensors) {
-      if (nextProps.data.sensors[0].history) {
-        if (this.state.selectedScan) {
-          this.selectScan(
-            nextProps.data.sensors[0].scans.find(
-              s => s.id === this.state.selectedScan
-            )
-          );
-        }
-      } else {
-        const nextSensors = nextProps.data.sensors[0];
-        if (this.props.data.loading) {
-          //First time load
-          //Remove the first line of metadata;
-          const request = nextSensors.scanRequest.split("\n");
-          request.shift();
-          this.setState({
-            scanResults: nextSensors.scanResults,
-            scanRequest: request.join("\n")
-          });
-        } else {
-          //Every other load
-          if (nextSensors.scanResults !== this.state.scanResults) {
-            if (this.state.scanResults === undefined) {
-              this.setState({
-                scanResults: nextSensors.scanResults
-              });
-            } else {
-              this.typeIn(nextSensors.scanResults, 0, "scanResults");
-            }
-          }
-        }
-      }
-    }
-  }
-  componentWillUnmount() {
-    this.sensorsSubscription && this.sensorsSubscription();
-  }
   _scanRequest() {
     // For now, include the location in the scan request string, not separately.
     if (this.state.scanRequest.trim().length === 0) return;
@@ -196,16 +145,6 @@ class Scanning extends Component {
       `,
       variables: obj
     });
-  }
-  typeIn(text, chars, stateProp) {
-    let currentState = this.state;
-    if (text) {
-      if (text.length >= chars) {
-        currentState[stateProp] = text.substring(chars, 0);
-        this.setState(currentState);
-        setTimeout(this.typeIn.bind(this, text, chars + 1, stateProp), 1);
-      }
-    }
   }
   _selectDeck(e) {
     this.setState({
@@ -313,14 +252,37 @@ class Scanning extends Component {
   render() {
     if (this.props.data.loading || !this.props.data.sensors) return null;
     const { domain } = this.props;
-    let { scanning, history, scans } = this.props.data.sensors[0];
+    let { scanning, history, scans, scanResults } = this.props.data.sensors[0];
     const { selectedScan } = this.state;
+    if (history) {
+      scanResults = "";
+    }
     if (history && selectedScan) {
-      scanning = scans.find(s => s.id === selectedScan).scanning;
+      const scan = scans.find(s => s.id === selectedScan);
+      if (scan) {
+        scanning = scan.scanning;
+        scanResults = scan.response;
+      }
     }
     const decks = this.props.data.decks;
     return (
       <Row className="scanning">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SENSOR_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id,
+                domain: this.props.domain || "internal"
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  sensors: subscriptionData.data.sensorsUpdate
+                });
+              }
+            })
+          }
+        />
         <DamageOverlay
           message="Scanning Offline"
           system={this.props.data.sensors[0]}
@@ -511,7 +473,11 @@ class Scanning extends Component {
                 <Col>
                   <Card className="results">
                     <CardBody>
-                      <p>{this.state.scanResults}</p>
+                      <p>
+                        <Typing keyDelay={20} key={scanResults}>
+                          {scanResults}
+                        </Typing>
+                      </p>
                     </CardBody>
                   </Card>
                 </Col>

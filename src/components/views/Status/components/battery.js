@@ -3,7 +3,7 @@ import { Label } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import Dot from "./dots";
-
+import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
 const SUB = gql`
   subscription Battery($simulatorId: ID) {
     reactorUpdate(simulatorId: $simulatorId) {
@@ -16,24 +16,6 @@ const SUB = gql`
 `;
 
 class Battery extends Component {
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            reactors: subscriptionData.data.reactorUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    // Cancel the subscription
-    this.sub && this.sub();
-  }
   render() {
     if (this.props.data.loading || !this.props.data.reactors) return null;
     const { reactors } = this.props.data;
@@ -42,6 +24,19 @@ class Battery extends Component {
     if (!battery) return null;
     return (
       <div>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  reactors: subscriptionData.data.reactorUpdate
+                });
+              }
+            })
+          }
+        />
         <Label>Battery</Label>
         <Dot color="goldenrod" level={battery.batteryChargeLevel} />
       </div>

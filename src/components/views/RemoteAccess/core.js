@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Container, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const REMOTE_ACCESS_SUB = gql`
   subscription SimulatorSub($simulatorId: ID) {
@@ -31,28 +32,6 @@ const mutation = gql`
 `;
 
 class RemoteAccessCore extends Component {
-  constructor(props) {
-    super(props);
-    this.subscription = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: REMOTE_ACCESS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            simulators: subscriptionData.data.simulatorsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
   respond(codeId, state) {
     const variables = {
       simulatorId: this.props.simulator.id,
@@ -69,6 +48,21 @@ class RemoteAccessCore extends Component {
     const { ship } = this.props.data.simulators[0];
     return (
       <Container className="remote-access-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: REMOTE_ACCESS_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  simulators: subscriptionData.data.simulatorsUpdate
+                });
+              }
+            })
+          }
+        />
         <div style={{ overflowY: "scroll", height: "calc(100% - 16px)" }}>
           {ship.remoteAccessCodes
             .slice()

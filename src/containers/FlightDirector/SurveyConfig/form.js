@@ -12,11 +12,13 @@ class Form extends Component {
       edited: false
     };
   }
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      form: nextProps.form,
-      edited: false
-    });
+  componentDidUpdate(prevProps) {
+    if (JSON.stringify(prevProps.form) !== JSON.stringify(this.props.form)) {
+      this.setState({
+        form: this.props.form,
+        edited: false
+      });
+    }
   }
   addForm = type => {
     this.setState({

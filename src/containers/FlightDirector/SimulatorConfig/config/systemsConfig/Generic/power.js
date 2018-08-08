@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { FormGroup, Input, Label, Button } from "reactstrap";
 import { Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";

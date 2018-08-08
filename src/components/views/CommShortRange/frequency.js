@@ -22,26 +22,21 @@ export default class FrequencySignals extends Component {
   render() {
     const { dimensions, frequency, amplitude } = this.props;
     if (dimensions.width === 0) return <div />;
+    const points = sinPoints({
+      frequency: Math.pow(10, 1 - frequency) + 2,
+      amplitude: (amplitude * dimensions.width) / 3 + 10,
+      height: dimensions.height,
+      width: dimensions.width
+    }).reduce(
+      (prev, next, index) => prev + ` ${index % 2 === 0 ? "L" : ""} ${next}`,
+      `M ${dimensions.width / 2} 0`
+    );
     return (
       <svg
         key={"short-range-line"}
         style={{ height: "100%", width: dimensions.width }}
       >
-        <path
-          d={sinPoints({
-            frequency: Math.pow(10, 1 - frequency) + 2,
-            amplitude: amplitude * dimensions.width / 3 + 10,
-            height: dimensions.height,
-            width: dimensions.width
-          }).reduce(
-            (prev, next, index) =>
-              prev + `${index % 2 === 0 ? "L" : ""} ${next} `,
-            `M ${dimensions.width / 2} 0 `
-          )}
-          fill="transparent"
-          stroke="green"
-          strokeWidth={2}
-        />
+        <path d={points} fill="transparent" stroke="green" strokeWidth={2} />
       </svg>
     );
   }

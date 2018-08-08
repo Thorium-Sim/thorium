@@ -6,7 +6,10 @@ export const SystemsQueries = {
   system(rootValue, { id }) {
     return App.systems.find(s => s.id === id);
   },
-  systems(rootValue, { simulatorId, type, power, heat, extra = false }) {
+  systems(
+    rootValue,
+    { simulatorId, type, power, heat, extra = false, damageWhich }
+  ) {
     let returnSystems = App.systems;
     if (extra === false) {
       returnSystems = returnSystems.filter(s => s.extra === false);
@@ -24,6 +27,9 @@ export const SystemsQueries = {
     }
     if (heat) {
       returnSystems = returnSystems.filter(s => s.heat || s.heat === 0);
+    }
+    if (damageWhich) {
+      returnSystems = returnSystems.filter(s => s.damage.which === damageWhich);
     }
     return returnSystems;
   }
@@ -105,7 +111,10 @@ export const SystemsMutations = {
 
 export const SystemsSubscriptions = {
   systemsUpdate: {
-    resolve(rootValue, { simulatorId, type, power, heat, extra = false }) {
+    resolve(
+      rootValue,
+      { simulatorId, type, power, heat, extra = false, damageWhich }
+    ) {
       let returnSystems = rootValue;
       if (extra === false) {
         returnSystems = returnSystems.filter(s => s.extra === false);
@@ -125,6 +134,11 @@ export const SystemsSubscriptions = {
       }
       if (heat) {
         returnSystems = returnSystems.filter(s => s.heat || s.heat === 0);
+      }
+      if (damageWhich) {
+        returnSystems = returnSystems.filter(s => {
+          return s.damage.which === damageWhich;
+        });
       }
       return returnSystems;
     },

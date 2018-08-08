@@ -7,8 +7,10 @@ export default class InternalCallConfig extends Component {
     super(props);
     this.state = props.args;
   }
-  componentWillReceiveProps(nextProps) {
-    this.setState(nextProps.args);
+  componentDidUpdate() {
+    if (JSON.stringify(this.state) !== JSON.stringify(this.props.args)) {
+      this.setState(this.props.args);
+    }
   }
   update = (evt, which) => {
     const { simulatorId, systemId, id, client } = this.props;

@@ -5,6 +5,7 @@ import Sidebar from "./sidebar";
 import Bottom from "./bottom";
 import Preview from "./preview";
 import "./style.scss";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const TACTICAL_MAP_DATA = `
 id
@@ -105,22 +106,6 @@ class TacticalMapCore extends Component {
     objectId: null,
     speed: 1000
   };
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: TACTICALMAP_SUB,
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            tacticalMaps: subscriptionData.data.tacticalMapsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.sub && this.sub();
-  }
   selectTactical = tacticalMapId => {
     this.setState({ tacticalMapId, layerId: null, objectId: null });
   };
@@ -230,6 +215,18 @@ class TacticalMapCore extends Component {
     );
     return (
       <div className="tacticalmap-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: TACTICALMAP_SUB,
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  tacticalMaps: subscriptionData.data.tacticalMapsUpdate
+                });
+              }
+            })
+          }
+        />
         <div className="preview">
           {selectedTactical && (
             <Preview

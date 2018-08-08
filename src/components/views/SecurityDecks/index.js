@@ -10,6 +10,7 @@ import {
   CardBody
 } from "reactstrap";
 import Tour from "reactour";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import gql from "graphql-tag";
 import { RoomDropdown } from "../helpers/shipStructure";
@@ -65,20 +66,6 @@ class SecurityDecks extends Component {
       selectedDeck: null,
       selectedRoom: null
     };
-    this.deckSubscription = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.deckSubscription && !nextProps.data.loading) {
-      this.deckSubscription = nextProps.data.subscribeToMore({
-        document: DECK_SUB,
-        variables: {
-          simulatorId: this.props.simulator.id
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.deckSubscription && this.deckSubscription();
   }
   _selectDeck(deck) {
     this.setState({
@@ -154,6 +141,16 @@ class SecurityDecks extends Component {
     }
     return (
       <Row className="security-decks">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: DECK_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              }
+            })
+          }
+        />
         <Col sm={3} className="deck-list">
           <h4>Decks</h4>
           <ListGroup>

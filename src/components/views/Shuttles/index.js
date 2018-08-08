@@ -8,6 +8,7 @@ import Decompress from "./Decompress";
 import Door from "./Door";
 import { Clamps } from "../Docking/graphics";
 import "./style.scss";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const SHUTTLE_SUB = gql`
   subscription ShuttlesUpdate($simulatorId: ID) {
@@ -53,31 +54,27 @@ const trainingSteps = [
   }
 ];
 class Shuttles extends Component {
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.internalSub && !nextProps.data.loading) {
-      this.internalSub = nextProps.data.subscribeToMore({
-        document: SHUTTLE_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            docking: subscriptionData.data.dockingUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.internalSub && this.internalSub();
-  }
   render() {
     if (this.props.data.loading || !this.props.data.docking) return null;
     const { docking } = this.props.data;
     if (!docking) return null;
     return (
       <Container fluid className="shuttles-card">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SHUTTLE_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  docking: subscriptionData.data.dockingUpdate
+                });
+              }
+            })
+          }
+        />
         {
           <Row>
             {docking.map((d, i) => (

@@ -38,9 +38,9 @@ export default class Thx extends System {
     if (this.activated) return 0.9;
     return 0.1;
   }
-  break(report, destroyed) {
+  break(report, destroyed, which) {
     this.activated = false;
-    super.break(report, destroyed);
+    super.break(report, destroyed, which);
   }
   setPower(powerLevel) {
     if (

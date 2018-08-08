@@ -7,6 +7,7 @@ import ThrusterThree from "./three-view";
 import distance from "../../../helpers/distance";
 import Measure from "react-measure";
 import throttle from "../../../helpers/debounce";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.scss";
@@ -152,44 +153,6 @@ class Thrusters extends Component {
   }
   componentWillUnmount() {
     cancelAnimationFrame(this.state.request);
-    this.rotationSubscription && this.rotationSubscription();
-    this.thrusterSub && this.thrusterSub();
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.rotationSubscription && !nextProps.data.loading) {
-      this.rotationSubscription = nextProps.data.subscribeToMore({
-        document: ROTATION_CHANGE_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            thrusters: [subscriptionData.data.rotationChange]
-          });
-        }
-      });
-    }
-    if (!this.thrusterSub && !nextProps.data.loading) {
-      this.thrusterSub = nextProps.data.subscribeToMore({
-        document: THRUSTER_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            thrusters: previousResult.thrusters.map(t => {
-              const updateT = subscriptionData.data.systemsUpdate.find(
-                s => s.id === t.id
-              );
-              if (updateT) {
-                return Object.assign({}, t, updateT);
-              }
-              return t;
-            })
-          });
-        }
-      });
-    }
   }
 
   /*
@@ -419,6 +382,44 @@ gamepadLoop(){
     if (!thruster) return <h1>No thruster system</h1>;
     return (
       <div className="cardThrusters">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: ROTATION_CHANGE_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  thrusters: [subscriptionData.data.rotationChange]
+                });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: THRUSTER_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  thrusters: previousResult.thrusters.map(t => {
+                    const updateT = subscriptionData.data.systemsUpdate.find(
+                      s => s.id === t.id
+                    );
+                    if (updateT) {
+                      return Object.assign({}, t, updateT);
+                    }
+                    return t;
+                  })
+                });
+              }
+            })
+          }
+        />
         <DamageOverlay message={"Thrusters Offline"} system={thruster} />
         <Row>
           <Col className="col-sm-3 draggerContainer direction-drag">

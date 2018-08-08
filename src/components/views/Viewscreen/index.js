@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import * as ViewscreenCards from "../../viewscreens";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -46,24 +47,8 @@ export class Viewscreen extends Component {
   }
   componentWillUnmount() {
     document.removeEventListener("keydown", this.keydown);
-    this.sub && this.sub();
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.data && !this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: VIEWSCREEN_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            viewscreens: subscriptionData.data.viewscreensUpdate
-          });
-        }
-      });
-    }
-  }
-  render() {
+  renderComponent() {
     if (this.props.component) {
       const ViewscreenComponent = ViewscreenCards[this.props.component];
       return <ViewscreenComponent {...this.props} />;
@@ -82,6 +67,29 @@ export class Viewscreen extends Component {
     if (!viewscreen) {
       return <div>No Viewscreen Component for {viewscreen.component}</div>;
     }
+  }
+  render() {
+    if (!this.props.data) return null;
+    return (
+      <Fragment>
+        <SubscriptionHelper
+          subscribe={() => {
+            return this.props.data.subscribeToMore({
+              document: VIEWSCREEN_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  viewscreens: subscriptionData.data.viewscreensUpdate
+                });
+              }
+            });
+          }}
+        />
+        {this.renderComponent()}
+      </Fragment>
+    );
   }
 }
 

@@ -7,6 +7,7 @@ import Slider from "react-rangeslider";
 import Tour from "reactour";
 import SignalLines from "./signalLines";
 import "react-rangeslider/lib/index.css";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -76,36 +77,31 @@ const trainingSteps = [
 
 class SignalJammer extends Component {
   state = { jammer: { level: 0.5, power: 0.1 } };
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: {
-          id: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            signalJammers: subscriptionData.data.signalJammersUpdate
-          });
-        }
-      });
+  componentDidUpdate(prevProps) {
+    const prevSignalJammer = prevProps.data.signalJammers
+      ? prevProps.data.signalJammers[0]
+      : {};
+    const signalJammer = this.props.data.signalJammers
+      ? this.props.data.signalJammers[0]
+      : {};
+    let { power, level } = this.state.jammer;
+    let update = false;
+    if (prevSignalJammer.strength !== signalJammer.strength) {
+      update = true;
+      power = signalJammer.strength;
     }
-    if (
-      nextProps.data.signalJammers &&
-      nextProps.data.signalJammers.length > 0
-    ) {
-      const signalJammer = nextProps.data.signalJammers[0];
+    if (prevSignalJammer.level !== signalJammer.level) {
+      update = true;
+      level = signalJammer.level;
+    }
+    if (update) {
       this.setState({
         jammer: {
-          power: signalJammer.strength,
-          level: signalJammer.level
+          power,
+          level
         }
       });
     }
-  }
-  componentWillUnmount() {
-    this.sub && this.sub();
   }
   changePower = value => {
     const { jammer } = this.state;
@@ -157,6 +153,21 @@ class SignalJammer extends Component {
     let alertClass = `alertColor${this.props.simulator.alertLevel || 5}`;
     return (
       <Container className="card-signalJammer">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              variables: {
+                id: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  signalJammers: subscriptionData.data.signalJammersUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={9}>
             <div className="captions">

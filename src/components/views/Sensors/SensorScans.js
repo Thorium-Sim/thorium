@@ -1,45 +1,15 @@
 import React, { Component } from "react";
 import { Button, Row, Col, Card, CardBody } from "reactstrap";
 import gql from "graphql-tag";
+import { Typing } from "react-typing";
 
 export default class SensorScans extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scanRequest: props.sensors.scanRequest,
-      scanResults: props.sensors.scanResults
+      scanRequest: props.sensors.scanRequest
     };
   }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const nextSensors = nextProps.sensors;
-    if (!this.state.scanResults) {
-      //First time load
-      this.setState({
-        scanResults: nextSensors.scanResults,
-        scanRequest: nextSensors.scanRequest
-      });
-    } else {
-      if (nextSensors.scanResults !== this.state.scanResults) {
-        if (this.state.scanResults === undefined) {
-          this.setState({
-            scanResults: nextSensors.scanResults
-          });
-        } else {
-          this.typeIn(nextSensors.scanResults, 0, "scanResults");
-        }
-      }
-    }
-  }
-  typeIn = (text, chars, stateProp) => {
-    let currentState = this.state;
-    if (text) {
-      if (text.length >= chars) {
-        currentState[stateProp] = text.substring(chars, 0);
-        this.setState(currentState);
-        setTimeout(this.typeIn.bind(this, text, chars + 1, stateProp), 1);
-      }
-    }
-  };
   startScan = () => {
     let obj = {
       id: this.props.sensors.id,
@@ -114,7 +84,11 @@ export default class SensorScans extends Component {
           <Col className="col-sm-12">
             <Card style={{ height: "200px" }}>
               <CardBody style={{ height: "100%", overflowY: "auto" }}>
-                <pre>{this.state.scanResults}</pre>
+                <pre>
+                  <Typing keyDelay={20} key={sensors.scanResults}>
+                    {this.props.sensors.scanResults}
+                  </Typing>
+                </pre>
               </CardBody>
             </Card>
           </Col>

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Button, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 const TRANSPORTER_SUB = gql`
   subscription TransportersSub($simulatorId: ID) {
     transporterUpdate(simulatorId: $simulatorId) {
@@ -47,26 +47,8 @@ class Transporters extends Component {
     super(props);
     this.mouseMove = this.mouseMove.bind(this);
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.transporterSubscription && !nextProps.data.loading) {
-      this.transporterSubscription = nextProps.data.subscribeToMore({
-        document: TRANSPORTER_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            transporters: previousResult.transporters.map(transporter => {
-              if (
-                transporter.id === subscriptionData.data.transporterUpdate.id
-              ) {
-                return subscriptionData.data.transporterUpdate;
-              }
-              return transporter;
-            })
-          });
-        }
-      });
-      this.loop();
-    }
+  componentDidMount() {
+    this.loop();
   }
   componentWillUnmount() {
     this.transporterSubscription && this.transporterSubscription();
@@ -186,6 +168,27 @@ class Transporters extends Component {
     if (!transporter) return <h1>No transporter system</h1>;
     return (
       <Row className="transporters">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: TRANSPORTER_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  transporters: previousResult.transporters.map(transporter => {
+                    if (
+                      transporter.id ===
+                      subscriptionData.data.transporterUpdate.id
+                    ) {
+                      return subscriptionData.data.transporterUpdate;
+                    }
+                    return transporter;
+                  })
+                });
+              }
+            })
+          }
+        />
         <Col sm={12}>
           <h1>Transporter Relay</h1>
         </Col>

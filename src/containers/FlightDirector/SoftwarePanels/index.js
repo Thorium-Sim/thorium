@@ -15,7 +15,7 @@ import ComponentLibrary from "./componentLibrary";
 import Measure from "react-measure";
 import Canvas from "./canvas";
 import Config from "./componentConfig";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 const SUB = gql`
   subscription SoftwarePanelsUpdate {
     softwarePanelsUpdate {
@@ -91,24 +91,19 @@ class App extends Component {
     connectingFrom: null,
     connectingLocation: { x: 0, y: 0 }
   };
-  subscription = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: SUB,
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            softwarePanels: subscriptionData.data.softwarePanelsUpdate
-          });
-        }
-      });
-    }
-    if (!nextProps.data.loading && nextProps.data.softwarePanels) {
+  componentDidUpdate(prevProps, prevState) {
+    if (!this.props.data.loading && this.props.data.softwarePanels) {
       if (this.state.selectedPanel) {
-        const panel = nextProps.data.softwarePanels.find(
+        const panel = this.props.data.softwarePanels.find(
           s => s.id === this.state.selectedPanel
         );
-        if (panel) {
+        const oldPanel = prevProps.data.softwarePanels.find(
+          s => s.id === this.state.selectedPanel
+        );
+        if (
+          !oldPanel ||
+          (panel && JSON.stringify(panel) !== JSON.stringify(oldPanel))
+        ) {
           this.setState(
             {
               components: panel.components,
@@ -120,9 +115,6 @@ class App extends Component {
         }
       }
     }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
   }
   reconcileComponents = () => {
     const topCompNames = ["Light", "PlasmaChannel"];
@@ -392,6 +384,18 @@ class App extends Component {
     if (loading || !softwarePanels) return null;
     return (
       <Container fluid className="software-panels">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  softwarePanels: subscriptionData.data.softwarePanelsUpdate
+                });
+              }
+            })
+          }
+        />
         <h4>Software Panel Config </h4>
         <Row>
           <Col sm={3}>

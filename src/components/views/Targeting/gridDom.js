@@ -13,11 +13,11 @@ class TargetingGridDom extends Component {
     this.state = { targets: [], dimensions: {} };
     this.looping = true;
   }
-  componentWillReceiveProps(nextProps) {
-    this.refreshTargets(nextProps);
+  static getDerivedStateFromProps(props, state) {
+    return TargetingGridDom.refreshTargets(props, state);
   }
   componentDidMount() {
-    this.refreshTargets(this.props);
+    this.setState(TargetingGridDom.refreshTargets(this.props, this.state));
     this.looping = true;
     this.loop();
   }
@@ -25,14 +25,14 @@ class TargetingGridDom extends Component {
     this.looping = false;
     cancelAnimationFrame(this.frame);
   }
-  refreshTargets(nextProps) {
-    const targets = [].concat(this.state.targets);
-    const { width, height } = this.props.dimensions || {
+  static refreshTargets(props, state) {
+    const targets = [].concat(state.targets);
+    const { width, height } = props.dimensions || {
       width: 400,
       height: 400
     };
     //const height = width * 3 / 4;
-    nextProps.targets.forEach(t => {
+    props.targets.forEach(t => {
       const index = targets.findIndex(ta => ta.id === t.id);
       if (index > -1) {
         targets[index] = Object.assign(targets[index], {
@@ -40,7 +40,8 @@ class TargetingGridDom extends Component {
           scale: t.size,
           targeted: t.targeted,
           destroyed: t.destroyed,
-          moving: t.moving
+          moving: t.moving,
+          name: t.name
         });
       } else {
         targets.push({
@@ -59,10 +60,10 @@ class TargetingGridDom extends Component {
         });
       }
     });
-    this.setState({
+    return {
       // Clear out targets that have been removed.
-      targets: targets.filter(t => nextProps.targets.find(ta => ta.id === t.id))
-    });
+      targets: targets.filter(t => props.targets.find(ta => ta.id === t.id))
+    };
   }
   loop() {
     if (!this.looping) return false;
@@ -207,12 +208,16 @@ class TargetingGridDom extends Component {
         <div className="lines-x">
           {Array(Math.round((lines * 3) / 4))
             .fill(0)
-            .map((y, i) => <div key={`line-x-${i}`} className="line-x" />)}
+            .map((y, i) => (
+              <div key={`line-x-${i}`} className="line-x" />
+            ))}
         </div>
         <div className="lines-y">
           {Array(lines)
             .fill(0)
-            .map((y, i) => <div key={`line-y-${i}`} className="line-y" />)}
+            .map((y, i) => (
+              <div key={`line-y-${i}`} className="line-y" />
+            ))}
         </div>
         <div className="icons">
           {targets.map(t => (

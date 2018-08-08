@@ -43,17 +43,17 @@ class FileName extends Component {
     }
     setTimeout(this.loop, Math.random() * 2000 + 500);
   };
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     if (
-      this.props.corrupted === nextProps.corrupted &&
-      this.props.restoring === nextProps.restoring
+      this.props.corrupted === prevProps.corrupted &&
+      this.props.restoring === prevProps.restoring
     )
       return;
     this.setState({
-      name: nextProps.restoring
+      name: this.props.restoring
         ? "Restoring..."
-        : !nextProps.corrupted
-          ? nextProps.name
+        : !this.props.corrupted
+          ? this.props.name
           : randomString(
               10,
               "0123456789abcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_+-={}[]:\";'<>?,./|\\"

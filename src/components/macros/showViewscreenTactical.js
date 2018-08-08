@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Label, Input } from "reactstrap";
-
+import SubscriptionHelper from "../../helpers/subscriptionHelper";
 const TACTICALMAP_SUB = gql`
   subscription TacticalMapUpdate {
     tacticalMapsUpdate {
@@ -17,22 +17,6 @@ const TACTICALMAP_SUB = gql`
   }
 `;
 class TacticalMapConfig extends Component {
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.tacticalData.loading) {
-      this.sub = nextProps.tacticalData.subscribeToMore({
-        document: TACTICALMAP_SUB,
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            tacticalMaps: subscriptionData.data.tacticalMapsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.sub && this.sub();
-  }
   selectTactical = mapId => {
     let { updateArgs } = this.props;
     updateArgs("mapId", mapId);
@@ -43,6 +27,18 @@ class TacticalMapConfig extends Component {
     const { tacticalMaps } = this.props.tacticalData;
     return (
       <div className="tacticalmap-config">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: TACTICALMAP_SUB,
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  tacticalMaps: subscriptionData.data.tacticalMapsUpdate
+                });
+              }
+            })
+          }
+        />
         <Label>Secondary Screen?</Label>
 
         <Input

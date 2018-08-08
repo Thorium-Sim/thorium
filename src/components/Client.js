@@ -394,7 +394,7 @@ class ClientView extends Component {
       return null;
     };
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.data.loading) return;
     if (this.props.clientId !== nextProps.clientId) {
       this.clientSubscription && this.clientSubscription();

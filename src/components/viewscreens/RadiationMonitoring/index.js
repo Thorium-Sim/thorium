@@ -3,6 +3,7 @@ import "./style.scss";
 import col from "color";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const SUB = gql`
   subscription ShipUpdate($simulatorId: ID) {
@@ -20,30 +21,25 @@ function calcColor(i) {
 }
 
 class RadiationMonitor extends Component {
-  sub = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.sub && !nextProps.data.loading) {
-      this.sub = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            simulators: subscriptionData.data.simulatorsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    // Cancel the subscription
-    this.sub && this.sub();
-  }
   render() {
     const { loading, simulators } = this.props.data;
     if (loading || !simulators) return null;
     const width = simulators[0].ship.radiation;
     return (
       <div className="radiation-monitoring">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  simulators: subscriptionData.data.simulatorsUpdate
+                });
+              }
+            })
+          }
+        />
         <h1>Radiation Monitor</h1>
 
         <svg height="600" width="600" viewBox="-300 -300 600 600">

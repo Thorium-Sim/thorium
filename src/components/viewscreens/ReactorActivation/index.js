@@ -13,18 +13,23 @@ export default class ReactorActivation extends Component {
       output: parseFloat(data.startOutput) || 0
     };
   }
-  componentWillReceiveProps(nextProps) {
-    const data = JSON.parse(nextProps.viewscreen.data);
-    this.looping = false;
-    cancelAnimationFrame(this.frame);
-    this.frame = false;
-    this.setState(
-      state => ({ output: parseFloat(data.startOutput) }),
-      () => {
-        this.looping = true;
-        this.loop();
-      }
-    );
+  componentDidUpdate(prevProps) {
+    const data = JSON.parse(this.props.viewscreen.data);
+    const oldData = prevProps.viewscreen.data
+      ? JSON.parse(prevProps.viewscreen.data)
+      : {};
+    if (data.startOutput !== oldData.startOutput) {
+      this.looping = false;
+      cancelAnimationFrame(this.frame);
+      this.frame = false;
+      this.setState(
+        state => ({ output: parseFloat(data.startOutput) }),
+        () => {
+          this.looping = true;
+          this.loop();
+        }
+      );
+    }
   }
   componentWillUnmount() {
     this.looping = false;

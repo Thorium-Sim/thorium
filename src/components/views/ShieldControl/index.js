@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Tour from "reactour";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import Shield1 from "./shield-1";
 import Shield4 from "./shield-4";
@@ -64,20 +65,7 @@ class ShieldControl extends Component {
     this.shieldSub = null;
     this.freqLoop = null;
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.shieldSub && !nextProps.data.loading) {
-      this.shieldSub = nextProps.data.subscribeToMore({
-        document: SHIELD_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            shields: subscriptionData.data.shieldsUpdate
-          });
-        }
-      });
-    }
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.data.shields) {
       if (nextProps.data.shields) {
         const freq = this.state.frequency;
@@ -208,6 +196,21 @@ class ShieldControl extends Component {
     if (!shields) return null;
     return (
       <div>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SHIELD_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  shields: subscriptionData.data.shieldsUpdate
+                });
+              }
+            })
+          }
+        />
         {(() => {
           if (shields.length === 1) {
             return (

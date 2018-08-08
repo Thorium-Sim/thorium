@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input, FormGroup, Button } from "reactstrap";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+
 import "./style.scss";
 
 const OBJECTIVE_SUB = gql`
@@ -52,22 +54,6 @@ const Objective = ({ id, title, description, completed, client }) => {
 };
 
 class Objectives extends Component {
-  subscription = null;
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: OBJECTIVE_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            objective: subscriptionData.data.objectiveUpdate
-          });
-        }
-      });
-    }
-  }
   addObjective = () => {
     const title = window.prompt("What is the title of the objective?");
     if (!title) return;
@@ -99,9 +85,6 @@ class Objectives extends Component {
       variables
     });
   };
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
   render() {
     const {
       data: { loading, objective },
@@ -110,6 +93,21 @@ class Objectives extends Component {
     if (loading || !objective) return null;
     return (
       <Container className="objective-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: OBJECTIVE_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  objective: subscriptionData.data.objectiveUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={12}>
             <Button color="success" size="sm" block onClick={this.addObjective}>
@@ -118,7 +116,9 @@ class Objectives extends Component {
             {objective
               .concat()
               .reverse()
-              .map(o => <Objective key={o.id} {...o} client={client} />)}
+              .map(o => (
+                <Objective key={o.id} {...o} client={client} />
+              ))}
           </Col>
         </Row>
       </Container>

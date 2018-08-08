@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Table } from "reactstrap";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 const EXOCOMP_SUB = gql`
   subscription Exocomps($simulatorId: ID!) {
     exocompsUpdate(simulatorId: $simulatorId) {
@@ -19,24 +19,6 @@ const EXOCOMP_SUB = gql`
 `;
 
 class ExocompsCore extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: EXOCOMP_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            exocomps: subscriptionData.data.exocompsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
   updateDifficulty = (id, diff) => {
     const mutation = gql`
       mutation ExocompDiff($id: ID!, $diff: Float!) {
@@ -53,11 +35,28 @@ class ExocompsCore extends Component {
     });
   };
   render() {
-    const { data: { loading, exocomps } } = this.props;
+    const {
+      data: { loading, exocomps }
+    } = this.props;
     if (loading || !exocomps) return null;
     if (exocomps.length === 0) return <p>No Exocomps</p>;
     return (
       <div className="core-exocomps">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: EXOCOMP_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  exocomps: subscriptionData.data.exocompsUpdate
+                });
+              }
+            })
+          }
+        />
         <Table striped hover size="sm">
           <thead>
             <tr>

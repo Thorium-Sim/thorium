@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { NavigationScanner } from "../Navigation";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.scss";
 
 const NAVIGATION_SUB = gql`
@@ -28,23 +28,6 @@ class Navigation extends Component {
       scanning: false,
       selectedDest: ""
     };
-    this.subscription = null;
-  }
-  componentWillUnmount() {
-    this.subscription();
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: NAVIGATION_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            navigation: subscriptionData.data.navigationUpdate
-          });
-        }
-      });
-    }
   }
   setCourse = () => {
     if (!this.state.selectedDest) return;
@@ -84,6 +67,19 @@ class Navigation extends Component {
     if (!navigation) return <p>No Navigation System</p>;
     return (
       <div className="jr-navigation">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: NAVIGATION_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  navigation: subscriptionData.data.navigationUpdate
+                });
+              }
+            })
+          }
+        />
         <h1>Current Course: {navigation.destination}</h1>
         <Button block color="info" onClick={this.calcCourses}>
           Calculate Courses

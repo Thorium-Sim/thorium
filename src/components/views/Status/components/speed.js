@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import { Label } from "reactstrap";
-
+import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
 const SPEEDCHANGE_SUB = gql`
   subscription SpeedChanged {
     engineUpdate {
@@ -14,30 +14,6 @@ const SPEEDCHANGE_SUB = gql`
 `;
 
 class EngineCoreView extends Component {
-  constructor(props) {
-    super(props);
-    this.setSpeedSubscription = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.setSpeedSubscription && !nextProps.data.loading) {
-      this.setSpeedSubscription = nextProps.data.subscribeToMore({
-        document: SPEEDCHANGE_SUB,
-        updateQuery: (previousResult, { subscriptionData }) => {
-          previousResult.engines = previousResult.engines.map(engine => {
-            if (engine.id === subscriptionData.data.engineUpdate.id) {
-              engine.speed = subscriptionData.data.engineUpdate.speed;
-              engine.on = subscriptionData.data.engineUpdate.on;
-            }
-            return engine;
-          });
-          return previousResult;
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.setSpeedSubscription && this.setSpeedSubscription();
-  }
   render() {
     if (this.props.data.loading || !this.props.data.engines) return null;
     const { engines } = this.props.data;
@@ -49,6 +25,23 @@ class EngineCoreView extends Component {
         onEngine.speeds[onEngine.speed - 1].text;
     return (
       <div>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SPEEDCHANGE_SUB,
+              updateQuery: (previousResult, { subscriptionData }) => {
+                previousResult.engines = previousResult.engines.map(engine => {
+                  if (engine.id === subscriptionData.data.engineUpdate.id) {
+                    engine.speed = subscriptionData.data.engineUpdate.speed;
+                    engine.on = subscriptionData.data.engineUpdate.on;
+                  }
+                  return engine;
+                });
+                return previousResult;
+              }
+            })
+          }
+        />
         <Label>Speed</Label>
         <div className="status-field">{speed}</div>
       </div>

@@ -3,6 +3,8 @@ import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import { Container, Row, Col, Card, Input, Button } from "reactstrap";
 import uuid from "uuid";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+
 import "./style.scss";
 
 const stardate = date => {
@@ -27,23 +29,6 @@ class OfficerLog extends Component {
   componentWillUnmount() {
     clearTimeout(this.scanning);
     this.scanning = null;
-    this.subscription();
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: SUB,
-        variables: {
-          clientId: nextProps.clientObj.id,
-          flightId: nextProps.flight.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            officerLogs: subscriptionData.data.officerLogsUpdate
-          });
-        }
-      });
-    }
   }
   startLog = () => {
     this.setState({ logText: "", selectedLog: null });
@@ -80,6 +65,22 @@ class OfficerLog extends Component {
       officerLogs.find(l => l.id === selectedLog).timestamp;
     return (
       <Container className="officer-log">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUB,
+              variables: {
+                clientId: this.props.clientObj.id,
+                flightId: this.props.flight.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  officerLogs: subscriptionData.data.officerLogsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={4}>
             <Card>
@@ -106,20 +107,19 @@ class OfficerLog extends Component {
             </Button>
           </Col>
           {logText !== null && (
-            <Col sm={8}>
+            <Col sm={8} style={{ display: "flex", flexDirection: "column" }}>
+              <div className="log-header">
+                <h4>Log of Officer: {this.props.clientObj.loginName}</h4>
+                <h4>Stardate: {stardate(timestamp || new Date())}</h4>
+              </div>
+              <Input
+                style={{ flex: 1 }}
+                type="textarea"
+                value={logText || ""}
+                disabled={selectedLog}
+                onChange={e => this.setState({ logText: e.target.value })}
+              />
               <Row>
-                <Col sm={12}>
-                  <div className="log-header">
-                    <h4>Log of Officer: {this.props.clientObj.loginName}</h4>
-                    <h4>Stardate: {stardate(timestamp || new Date())}</h4>
-                  </div>
-                  <Input
-                    type="textarea"
-                    value={logText || ""}
-                    disabled={selectedLog}
-                    onChange={e => this.setState({ logText: e.target.value })}
-                  />
-                </Col>
                 <Col sm={6}>
                   <Button
                     color="danger"

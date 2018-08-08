@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Tour from "reactour";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -50,28 +51,25 @@ const TORPEDO_SUB = gql`
 `;
 
 class TorpedoLoading extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: TORPEDO_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            torpedos: subscriptionData.data.torpedosUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
   render() {
     if (this.props.data.loading || !this.props.data.torpedos) return null;
     const torpedos = this.props.data.torpedos;
     if (!torpedos) return null;
     return (
       <div className="torpedo-loading">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: TORPEDO_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  torpedos: subscriptionData.data.torpedosUpdate
+                });
+              }
+            })
+          }
+        />
         {torpedos.map(t => {
           if (torpedos.length > (this.props.maxLaunchers || Infinity)) {
             return (

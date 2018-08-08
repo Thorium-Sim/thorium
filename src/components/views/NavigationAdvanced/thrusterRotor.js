@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 function radToDeg(radians) {
-  return radians * 180 / Math.PI;
+  return (radians * 180) / Math.PI;
 }
 
 export default class ThrusterRotor extends Component {
@@ -40,10 +40,10 @@ export default class ThrusterRotor extends Component {
       rotation
     });
   };
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.rotation !== this.props.rotation) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.rotation !== this.props.rotation) {
       this.setState({
-        rotation: nextProps.rotation
+        rotation: this.props.rotation
       });
     }
   }

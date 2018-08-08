@@ -16,10 +16,10 @@ export default class NavSetPresetConfig extends Component {
       presets: props.args ? props.args.presets : []
     };
   }
-  componentWillReceiveProps(nextProps) {
-    if (JSON.stringify(nextProps.args) !== JSON.stringify(this.props.args)) {
+  componentDidUpdate(oldProps) {
+    if (JSON.stringify(oldProps.args) !== JSON.stringify(this.props.args)) {
       this.setState({
-        presets: nextProps.args.presets
+        presets: this.props.args.presets
       });
     }
   }

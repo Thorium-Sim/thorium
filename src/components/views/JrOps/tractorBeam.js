@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Button, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 const TRACTORBEAM_SUB = gql`
   subscription TractorBeamUpdate($simulatorId: ID!) {
     tractorBeamUpdate(simulatorId: $simulatorId) {
@@ -38,29 +38,10 @@ class TractorBeam extends Component {
     super(props);
     this.mouseMove = this.mouseMove.bind(this);
   }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: TRACTORBEAM_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            tractorBeam: previousResult.tractorBeam.map(tractorBeam => {
-              if (
-                tractorBeam.id === subscriptionData.data.tractorBeamUpdate.id
-              ) {
-                return subscriptionData.data.tractorBeamUpdate;
-              }
-              return tractorBeam;
-            })
-          });
-        }
-      });
-      this.loop();
-    }
+  componentDidMount() {
+    this.loop();
   }
   componentWillUnmount() {
-    this.subscription && this.subscription();
     clearTimeout(this.looping);
   }
   mouseDown = () => {
@@ -193,6 +174,27 @@ class TractorBeam extends Component {
     if (!tractorBeam) return <h1>No Tractor Beam system</h1>;
     return (
       <Row className="jr-tractor-beam">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: TRACTORBEAM_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  tractorBeam: previousResult.tractorBeam.map(tractorBeam => {
+                    if (
+                      tractorBeam.id ===
+                      subscriptionData.data.tractorBeamUpdate.id
+                    ) {
+                      return subscriptionData.data.tractorBeamUpdate;
+                    }
+                    return tractorBeam;
+                  })
+                });
+              }
+            })
+          }
+        />
         <Col sm={12}>
           <h1>Tractor Beam</h1>
         </Col>

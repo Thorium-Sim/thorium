@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Container, Row, Col, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import "./style.scss";
-
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 const DOCKING_SUB = gql`
   subscription SimulatorSub($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
@@ -29,25 +29,6 @@ class DockingCore extends Component {
     this.state = {
       graphic: null
     };
-    this.subscription = null;
-  }
-  componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: DOCKING_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            simulators: subscriptionData.data.simulatorsUpdate
-          });
-        }
-      });
-    }
-  }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
   }
   toggle(which) {
     const variables = {
@@ -70,6 +51,21 @@ class DockingCore extends Component {
     const { ship } = this.props.data.simulators[0];
     return (
       <Container className="docking-core">
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: DOCKING_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  simulators: subscriptionData.data.simulatorsUpdate
+                });
+              }
+            })
+          }
+        />
         <Row>
           <Col sm={4}>
             <Button

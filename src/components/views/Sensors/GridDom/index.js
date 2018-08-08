@@ -135,7 +135,7 @@ class GridDom extends Component {
     if (!this.props.data.loading) {
       const {
         data: { sensorContacts: contacts },
-        movement
+        movement = { x: 0, y: 0, z: 0 }
       } = this.props;
       this.props.client.writeQuery({
         query: CONTACTS_QUERY,

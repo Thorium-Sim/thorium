@@ -41,9 +41,9 @@ export default class Transporters extends System {
       });
     }
   }
-  break(report, destroyed) {
+  break(report, destroyed, which) {
     this.clearTargets();
-    super.break(report, destroyed);
+    super.break(report, destroyed, which);
   }
   removeTargets(number) {
     // Remove targets at random

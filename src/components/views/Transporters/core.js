@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { InputField, OutputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
+import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 const TRANSPORTER_SUB = gql`
   subscription TransportersSub($simulatorId: ID) {
@@ -27,42 +28,22 @@ const TRANSPORTER_SUB = gql`
 `;
 
 class TransporterCore extends Component {
-  constructor(props) {
-    super(props);
-    this.transporterSubscription = null;
-  }
   state = {};
-  componentWillReceiveProps(nextProps) {
-    if (!this.transporterSubscription && !nextProps.data.loading) {
-      this.transporterSubscription = nextProps.data.subscribeToMore({
-        document: TRANSPORTER_SUB,
-        variables: { simulatorId: nextProps.simulator.id },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          const transporters = previousResult.transporters.map(transporter => {
-            if (transporter.id === subscriptionData.data.transporterUpdate.id) {
-              transporter = subscriptionData.data.transporterUpdate;
-            }
-            return transporter;
-          });
-          return Object.assign({}, previousResult, { transporters });
-        }
-      });
-    }
-    if (this.props.data.transporters && this.props.data.transporters[0]) {
+  componentDidUpdate(prevProps) {
+    if (this.props.transporters && this.props.transporters[0]) {
       if (
-        this.props.data.transporters[0].state === "Charging" &&
-        (nextProps.data.transporters[0].state === "Targeting" ||
-          nextProps.data.transporters[0].state === "Inactive")
+        prevProps.transporters[0].state === "Charging" &&
+        (this.props.data.transporters[0].state === "Targeting" ||
+          this.props.data.transporters[0].state === "Inactive")
       ) {
-        this.setState({
-          transported: true
-        });
-        setTimeout(() => this.setState({ transported: false }), 4000);
+        if (this.state.transported !== true) {
+          this.setState({
+            transported: true
+          });
+          setTimeout(() => this.setState({ transported: false }), 4000);
+        }
       }
     }
-  }
-  componentWillUnmount() {
-    this.transporterSubscription && this.transporterSubscription();
   }
   targets(transporter, result) {
     this.props.client.mutate({
@@ -83,6 +64,28 @@ class TransporterCore extends Component {
       : this.props.data.transporters[0];
     return (
       <div>
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: TRANSPORTER_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                const transporters = previousResult.transporters.map(
+                  transporter => {
+                    if (
+                      transporter.id ===
+                      subscriptionData.data.transporterUpdate.id
+                    ) {
+                      transporter = subscriptionData.data.transporterUpdate;
+                    }
+                    return transporter;
+                  }
+                );
+                return Object.assign({}, previousResult, { transporters });
+              }
+            })
+          }
+        />
         {this.props.data.loading ? (
           <span>Loading...</span>
         ) : this.props.data.transporters.length > 0 ? (

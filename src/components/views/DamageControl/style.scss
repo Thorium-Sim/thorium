@@ -7,6 +7,12 @@
   p {
     margin: 0;
     padding: 4px;
+    &.rnd {
+      color: orange;
+    }
+    &.engineering {
+      color: rgb(0, 128, 255);
+    }
     &.selected {
       background-color: rgba(128, 128, 128, 0.5);
       border-radius: 5px;
@@ -58,6 +64,22 @@
   }
   button {
     font-size: 0.9rem;
+  }
+}
+.systems-context {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 5px;
+  background-color: black;
+  border: solid 1px rgba(255, 255, 255, 1);
+  p {
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: 5px;
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
   }
 }
 
