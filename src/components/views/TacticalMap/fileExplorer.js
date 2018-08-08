@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from "react";
+import React, { Component } from "react";
 import { Button, ButtonGroup } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
