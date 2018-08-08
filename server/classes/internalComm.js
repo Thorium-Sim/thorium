@@ -11,9 +11,9 @@ export default class InternalComm extends System {
     this.outgoing = params.outgoing || null;
     this.incoming = params.incoming || null;
   }
-  break(report, destroyed) {
+  break(report, destroyed, which) {
     this.state = "idle";
-    super.break(report, destroyed);
+    super.break(report, destroyed, which);
   }
   connectOutgoing() {
     this.state = "connected";

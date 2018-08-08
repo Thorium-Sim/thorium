@@ -9,6 +9,13 @@ type Damage {
   neededReactivationCode: String 
   currentStep: Int
   validate: Boolean
+  which: DAMAGE_TYPES
+}
+
+enum DAMAGE_TYPES {
+  default
+  rnd
+  engineering
 }
 
 type DamageStep {

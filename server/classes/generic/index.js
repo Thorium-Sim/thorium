@@ -22,6 +22,7 @@ class Damage {
     this.exocompParts = params.exocompParts || [];
     this.validate = params.validate || false;
     this.destroyed = params.destroyed || false;
+    this.which = params.which || "default";
   }
 }
 export class System {
@@ -78,12 +79,13 @@ export class System {
   setDefaultPowerLevel(level) {
     this.power.defaultLevel = level;
   }
-  break(report, destroyed) {
+  break(report, destroyed, which) {
     this.damage.damaged = true;
     if (destroyed) this.damage.destroyed = true;
     this.damage.report = processReport(report, this);
     this.damage.requested = false;
     this.damage.currentStep = 0;
+    this.damage.which = which;
   }
   addDamageStep({ name, args, type }) {
     this[`${type}DamageSteps`].push(new DamageStep({ name, args }));
@@ -325,6 +327,7 @@ ${report}
     this.damage.reactivationRequester = null;
     this.damage.exocompParts = [];
     this.damage.currentStep = 0;
+    this.damage.which = null;
   }
   updateCurrentStep(step) {
     this.damage.currentStep = step;

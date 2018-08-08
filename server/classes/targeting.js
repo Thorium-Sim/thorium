@@ -165,9 +165,9 @@ export default class Targeting extends System {
   setCoordinateTargeting(which) {
     this.coordinateTargeting = which;
   }
-  break(report, destroyed) {
+  break(report, destroyed, which) {
     this.contacts.forEach(t => t.untarget());
-    super.break(report, destroyed);
+    super.break(report, destroyed, which);
   }
   setPower(powerLevel) {
     if (

@@ -21,9 +21,9 @@ export default class TractorBeam extends System {
     this.setTargetLabel("Training Target");
   }
 
-  break(report, destroyed) {
+  break(report, destroyed, which) {
     this.state = false;
-    super.break(report, destroyed);
+    super.break(report, destroyed, which);
   }
   setPower(powerLevel) {
     if (
