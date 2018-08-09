@@ -124,20 +124,22 @@ class ProbeControl extends Component {
                     <small />
                   </div>
                 )}
-                {probes.probes.filter(p => !/[1-8]/.test(p.name)).map(p => (
-                  <div
-                    key={p.id}
-                    onClick={() => this.setState({ selectedProbe: p.id })}
-                    className={`probe-list ${
-                      selectedProbe === p.id ? "selected" : ""
-                    }`}
-                  >
-                    <p className="probe-name">{p.name}</p>
-                    <small>
-                      {probes.types.find(t => t.id === p.type).name}
-                    </small>
-                  </div>
-                ))}
+                {probes.probes
+                  .filter(p => !/^[1-8]{1}$/.test(p.name))
+                  .map(p => (
+                    <div
+                      key={p.id}
+                      onClick={() => this.setState({ selectedProbe: p.id })}
+                      className={`probe-list ${
+                        selectedProbe === p.id ? "selected" : ""
+                      }`}
+                    >
+                      <p className="probe-name">{p.name}</p>
+                      <small>
+                        {probes.types.find(t => t.id === p.type).name}
+                      </small>
+                    </div>
+                  ))}
               </CardBody>
             </Card>
           </Col>
@@ -245,7 +247,9 @@ class ProbeControlWrapper extends Component {
             <h3>Equipment</h3>
             <Card className="equipment">
               <CardBody>
-                {equipment.map(e => <p key={e.id}>{e.name}</p>)}
+                {equipment.map(e => (
+                  <p key={e.id}>{e.name}</p>
+                ))}
               </CardBody>
             </Card>
           </Col>
