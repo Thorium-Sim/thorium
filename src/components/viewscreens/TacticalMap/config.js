@@ -74,7 +74,7 @@ class TacticalMapConfig extends Component {
       <div className="tacticalmap-config">
         <SubscriptionHelper
           subscribe={() =>
-            this.props.data.subscribeToMore({
+            this.props.tacticalData.subscribeToMore({
               document: TACTICALMAP_SUB,
               updateQuery: (previousResult, { subscriptionData }) => {
                 return Object.assign({}, previousResult, {

@@ -28,6 +28,14 @@
 }
 
 @media print {
+  #root .config-container {
+    color: black;
+    background: white;
+    background-image: none;
+    .top-bar {
+      display: none;
+    }
+  }
   .printMission {
     height: auto;
     overflow-y: visible;

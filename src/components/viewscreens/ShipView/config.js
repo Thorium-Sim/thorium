@@ -1,38 +1,15 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
-import { graphql } from "react-apollo";
+import { Input } from "reactstrap";
+import FileExplorer from "../../views/TacticalMap/fileExplorer";
 
 class ShipViewsConfig extends Component {
   render() {
-    let { data, updateData, assetData } = this.props;
-    data = JSON.parse(data);
+    let { data, updateData, simple } = this.props;
     return (
-      <div>
-        <div>
-          <label>Ship Image</label>
-          {!assetData.loading && (
-            <select
-              value={data.ship}
-              onChange={evt =>
-                updateData(
-                  JSON.stringify(
-                    Object.assign({}, data, { ship: evt.target.value })
-                  )
-                )
-              }
-            >
-              {assetData.assetFolders &&
-                assetData.assetFolders[0].objects.map(c => (
-                  <option key={c.id} value={c.fullPath}>
-                    {c.name}
-                  </option>
-                ))}
-            </select>
-          )}
-        </div>
+      <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
         <div>
           <label>Name</label>
-          <input
+          <Input
             value={data.name}
             onChange={evt =>
               updateData(
@@ -41,14 +18,14 @@ class ShipViewsConfig extends Component {
                 )
               )
             }
-            rows={10}
           />
         </div>
         <div>
           <label>Text</label>
         </div>
         <div>
-          <textarea
+          <input
+            type="textarea"
             value={data.text}
             onChange={evt =>
               updateData(
@@ -57,7 +34,29 @@ class ShipViewsConfig extends Component {
                 )
               )
             }
-            rows={10}
+            rows={5}
+          />
+        </div>
+        <label>Ship Image</label>
+        <div
+          style={{
+            flex: 1,
+            overflow: "auto"
+          }}
+        >
+          <FileExplorer
+            simple={simple}
+            directory="/Sensor Contacts/Pictures"
+            selectedFiles={[JSON.parse(data).ship]}
+            onClick={(evt, container) =>
+              updateData(
+                JSON.stringify(
+                  Object.assign({}, JSON.parse(data), {
+                    ship: container.fullPath
+                  })
+                )
+              )
+            }
           />
         </div>
       </div>
@@ -65,26 +64,4 @@ class ShipViewsConfig extends Component {
   }
 }
 
-const ASSET_QUERY = gql`
-  query AssetFolders($names: [String]) {
-    assetFolders(names: $names) {
-      id
-      name
-      objects {
-        id
-        name
-        fullPath
-      }
-    }
-  }
-`;
-
-export default graphql(ASSET_QUERY, {
-  name: "assetData",
-  options: ownProps => ({
-    fetchPolicy: "cache-and-network",
-    variables: {
-      names: ["Pictures"]
-    }
-  })
-})(ShipViewsConfig);
+export default ShipViewsConfig;
