@@ -23,7 +23,14 @@ const COOLANT_SUB = gql`
     }
   }
 `;
-
+const COOLANT_SYSTEM_SUB = gql`
+  subscription CoolanSystemUpdate($simulatorId: ID!) {
+    coolantSystemUpdate(simulatorId: $simulatorId) {
+      systemId
+      coolant
+    }
+  }
+`;
 class HeatCore extends Component {
   updateHeat = (id, heat) => {
     const mutation = gql`
@@ -106,6 +113,26 @@ class HeatCore extends Component {
               updateQuery: (previousResult, { subscriptionData }) => {
                 return Object.assign({}, previousResult, {
                   coolant: subscriptionData.data.coolantUpdate
+                });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: COOLANT_SYSTEM_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  systems: previousResult.systems.map(s => ({
+                    ...s,
+                    coolant: subscriptionData.data.coolantSystemUpdate.find(
+                      sys => sys.systemId === s.id
+                    ).coolant
+                  }))
                 });
               }
             })
