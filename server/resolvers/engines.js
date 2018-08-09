@@ -26,6 +26,10 @@ export const EngineMutations = {
     App.handleEvent({ id, heat, force: true }, "addHeat", context);
     return "";
   },
+  addCoolant(root, { id, coolant }, context) {
+    App.handleEvent({ id, coolant }, "addCoolant", context);
+    return "";
+  },
   setHeatRate(root, args, context) {
     App.handleEvent(args, "setHeatRate", context);
   },

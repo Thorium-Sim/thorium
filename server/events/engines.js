@@ -93,6 +93,14 @@ App.on("addHeat", ({ id, heat, force }) => {
   }
   sendUpdate(sys)(sys);
 });
+App.on("addCoolant", ({ id, coolant }) => {
+  coolant = Math.min(1, Math.max(0, coolant));
+  const sys = App.systems.find(s => s.id === id);
+  if (sys && sys.coolant !== coolant) {
+    sys.setCoolant(coolant);
+  }
+  sendUpdate(sys)(sys);
+});
 App.on("setHeatRate", ({ id, rate }) => {
   const sys = App.systems.find(s => s.id === id);
   if (sys && sys.rate !== rate) {
