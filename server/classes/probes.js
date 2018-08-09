@@ -199,7 +199,7 @@ const probesTypes = [
     name: "Defensive Probe",
     description:
       "This weapon-like probe has access to additional equipment. You can use it to defend your ship. It holds 20 units of equipment.",
-    size: 4,
+    size: 20,
     count: 20
   },
   {
