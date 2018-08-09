@@ -70,9 +70,9 @@ const updateReactor = () => {
         //Adjust the reactors heat
         reactors.forEach(reactor => {
           const { efficiency, heatRate, heat } = reactor;
-          const minute15 = 15 * 60;
-          const standardHeat = Math.pow(efficiency, 2) / minute15;
-          const unblanaceHeat = Math.abs(Math.cbrt(level - oldLevel)) / 2000;
+          const minute30 = 30 * 60;
+          const standardHeat = Math.pow(efficiency, 2) / minute30;
+          const unblanaceHeat = Math.abs(Math.cbrt(level - oldLevel)) / 5000;
           reactor.setHeat(heat + (standardHeat + unblanaceHeat) * heatRate);
         });
 
@@ -133,16 +133,18 @@ const updateReactor = () => {
   });
   setTimeout(updateReactor, 1000);
 };
-
+let count = 0;
 // This one is for cooling - not affected by flight paused status
 function reactorHeat() {
   const reactors = App.systems.filter(
     s => s.type === "Reactor" && s.model === "reactor" && s.cooling === true
   );
   reactors.forEach(r => {
-    r.setCoolant(Math.min(1, Math.max(0, r.coolant - 0.005)));
-    r.setHeat(Math.min(1, Math.max(0, r.heat - 0.01)));
     if ((r.coolant === 0 || r.heat === 0) && r.cool) r.cool(false);
+    else {
+      r.setCoolant(Math.min(1, Math.max(0, r.coolant - 0.005)));
+      r.setHeat(Math.min(1, Math.max(0, r.heat - 0.01)));
+    }
     pubsub.publish(
       "coolantSystemUpdate",
       App.systems
@@ -157,11 +159,14 @@ function reactorHeat() {
         })
     );
   });
-  reactors.length > 0 &&
+  if (reactors.length > 0 || count > 30) {
+    count = 0;
     pubsub.publish(
       "reactorUpdate",
       App.systems.filter(s => s.type === "Reactor")
     );
+  }
+  count++;
   setTimeout(reactorHeat, 1000 / 30);
 }
 updateReactor();

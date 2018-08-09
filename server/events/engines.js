@@ -116,10 +116,14 @@ App.on("setEngineSpeeds", ({ id, speeds }) => {
   App.systems.find(s => s.id === id).setSpeeds(speeds);
 });
 App.on("applyCoolant", ({ id }) => {
+  console.log("Applying coolant");
   const sys = App.systems.find(s => s.id === id);
-  sys.setCoolant(Math.min(1, Math.max(0, sys.coolant - 0.005)));
-  sys.setHeat(Math.min(1, Math.max(0, sys.heat - 0.01)));
   if ((sys.coolant === 0 || sys.heat === 0) && sys.cool) sys.cool(false);
+  else {
+    console.log("APplied coolant");
+    sys.setCoolant(Math.min(1, Math.max(0, sys.coolant - 0.005)));
+    sys.setHeat(Math.min(1, Math.max(0, sys.heat - 0.01)));
+  }
   pubsub.publish("heatChange", sys);
 });
 App.on("setEngineAcceleration", ({ id, acceleration }) => {
