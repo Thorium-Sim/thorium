@@ -81,8 +81,15 @@ class LRCommCore extends Component {
                           m.approved === true && !m.sent && !m.deleted
                             ? "text-warning"
                             : ""
-                        } `}
+                        }`}
                         onClick={() => this.setState({ selectedMessage: m.id })}
+                        title={`${m.sent === true ? "Sent" : ""} ${
+                          m.deleted === true ? "Deleted" : ""
+                        } ${
+                          m.approved === true && !m.sent && !m.deleted
+                            ? "Approved"
+                            : ""
+                        }`}
                       >
                         {m.datestamp} - {m.sender}
                       </li>
