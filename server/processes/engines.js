@@ -13,7 +13,6 @@ const updateHeat = () => {
             Math.max(0, sys.heat + (speedVal * sys.heatRate * 1) / 50000)
           );
           if (sys.cooling) {
-            console.log("Cooling");
             App.handleEvent({ id: sys.id }, "applyCoolant");
             pubsub.publish(
               "coolantSystemUpdate",

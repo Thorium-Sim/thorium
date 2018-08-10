@@ -14,7 +14,6 @@ class CourseNumber extends Component {
     }
   }
   randomCourse = () => {
-    console.log("Random1");
     this.setState({
       calculatedCourse: {
         x: this.courseCoordinate(),
