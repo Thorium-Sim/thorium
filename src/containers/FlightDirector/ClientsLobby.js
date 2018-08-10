@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Container, Button, ButtonGroup } from "reactstrap";
 import { withApollo, Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import Tour from "reactour";
+import Tour from "../../helpers/tourHelper";
 
 const FlightQuery = gql`
   query Flight($flightId: ID!) {
@@ -217,7 +217,7 @@ It will permenantly erase all simulators running in this flight.`
             <Clients {...props} flightId={props.match.params.flightId} />
             <Tour
               steps={trainingSteps()}
-              isOpen={props.training}
+              training={props.training}
               onRequestClose={props.stopTraining}
             />
           </Container>

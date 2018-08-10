@@ -9,7 +9,7 @@ import {
   Card,
   CardBody
 } from "reactstrap";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import gql from "graphql-tag";
@@ -236,11 +236,7 @@ class SecurityDecks extends Component {
             </Col>
           </Row>
         </Col>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Row>
     );
   }

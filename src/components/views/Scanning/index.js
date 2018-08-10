@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
 import { Row, Col, Button, Input, Card, CardBody } from "reactstrap";
 import gql from "graphql-tag";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import FontAwesome from "react-fontawesome";
 import { Typing } from "react-typing";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
@@ -499,11 +499,7 @@ class Scanning extends Component {
             </Button>
           ))}
         </Col>
-        <Tour
-          steps={this.trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={this.trainingSteps} client={this.props.clientObj} />
       </Row>
     );
   }

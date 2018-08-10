@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import FileExplorer from "../TacticalMap/fileExplorer";
 import { FormGroup, Label, Input, FormText } from "reactstrap";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 
 const Assets = props => {
   const trainingSteps = () => {
@@ -75,7 +75,7 @@ const Assets = props => {
       </div>
       <Tour
         steps={trainingSteps()}
-        isOpen={props.training}
+        training={props.training}
         onRequestClose={props.stopTraining}
       />
     </Fragment>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
@@ -86,11 +86,7 @@ class TorpedoLoading extends Component {
           );
         })}
         {this.props.clientObj && (
-          <Tour
-            steps={trainingSteps}
-            isOpen={this.props.clientObj.training}
-            onRequestClose={this.props.stopTraining}
-          />
+          <Tour steps={trainingSteps} client={this.props.clientObj} />
         )}
       </div>
     );

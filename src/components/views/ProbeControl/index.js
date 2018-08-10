@@ -16,7 +16,7 @@ import {
 } from "reactstrap";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import { graphql, withApollo } from "react-apollo";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 
 import "./style.scss";
 
@@ -151,11 +151,7 @@ class ProbeControl extends Component {
             />
           </Col>
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

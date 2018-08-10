@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Button, Row, Col, Card, CardBody } from "reactstrap";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import { Typing } from "react-typing";
 
 import "./style.scss";
@@ -328,11 +328,7 @@ class Sensors extends Component {
             </Col>
           </Row>
         </div>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </div>
     );
   }

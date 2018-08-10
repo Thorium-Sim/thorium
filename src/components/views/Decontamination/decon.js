@@ -14,7 +14,7 @@ import {
 } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
 
 const programs = {
@@ -113,8 +113,7 @@ class Sickbay extends Component {
         <Tour
           key="program-tour"
           steps={programTraining}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
+          client={this.props.clientObj}
         />
       ];
     }
@@ -214,11 +213,7 @@ class Sickbay extends Component {
             </Mutation>
           </Col>
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

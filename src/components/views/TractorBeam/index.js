@@ -9,7 +9,7 @@ import Beam from "./beam";
 import Target from "./target";
 import Bars from "./bars";
 import DamageOverlay from "../helpers/DamageOverlay";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 
 import "./style.scss";
 
@@ -154,11 +154,7 @@ class TractorBeam extends Component {
         >
           {tractorBeam.state ? "Deactivate" : "Activate"} Tractor Beam
         </Button>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

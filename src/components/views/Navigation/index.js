@@ -5,7 +5,7 @@ import { InputGroup, InputGroupAddon, Button, Input } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Keypad from "./keypad";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import NavigationScanner from "./NavigationScanner";
 
@@ -419,11 +419,7 @@ class Navigation extends Component {
             </Col>
           )}
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

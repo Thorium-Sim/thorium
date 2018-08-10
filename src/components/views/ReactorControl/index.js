@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button, Card } from "reactstrap";
 import Measure from "react-measure";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import AnimatedNumber from "react-animated-number";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
@@ -331,11 +331,7 @@ class ReactorControl extends Component {
             </Row>
           </Col>
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

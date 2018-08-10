@@ -6,7 +6,7 @@ import { Asset } from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 
 const INTERNAL_SUB = gql`
   subscription InternalCommUpdate($simulatorId: ID!) {
@@ -283,11 +283,7 @@ class InternalComm extends Component {
             </div>
           </Col>
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

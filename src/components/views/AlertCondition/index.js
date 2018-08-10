@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withApollo } from "react-apollo";
 import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 
 import "./style.scss";
 
@@ -89,11 +89,7 @@ class AlertCondition extends Component {
             </div>
           </Col>
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

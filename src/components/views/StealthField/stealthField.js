@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import DamageOverlay from "../helpers/DamageOverlay";
 import StealthBoard from "./stealthBoard";
 import ChargeBar from "./chargeBar";
@@ -36,8 +36,7 @@ export default class StealthField extends Component {
       systems,
       quadrants,
       simulator,
-      clientObj,
-      stopTraining
+      clientObj
     } = this.props;
     return (
       <Container fluid className="card-stealthField">
@@ -157,11 +156,7 @@ export default class StealthField extends Component {
           </Col>
         </Row>
         <StealthBoard systems={systems} state={state} />
-        <Tour
-          steps={trainingSteps}
-          isOpen={clientObj.training}
-          onRequestClose={stopTraining}
-        />
+        <Tour steps={trainingSteps} client={clientObj} />
       </Container>
     );
   }

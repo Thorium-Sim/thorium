@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import Tour from "reactour";
+import Tour from "../../../../helpers/tourHelper";
 
 import Info from "./info";
 import Vitals from "./vitals";
@@ -72,8 +72,7 @@ class BunkDetail extends Component {
       scanning,
       patient,
       backToMain,
-      clientObj,
-      stopTraining
+      clientObj
     } = this.props;
     const { id: crewId, charts } = patient;
     const chart = charts.concat().sort((a, b) => {
@@ -218,8 +217,7 @@ class BunkDetail extends Component {
                         )
                       }
                 )}
-                isOpen={clientObj.training}
-                onRequestClose={stopTraining}
+                client={clientObj}
               />
             </Container>
           );

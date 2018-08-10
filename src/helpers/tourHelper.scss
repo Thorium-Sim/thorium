@@ -1,0 +1,9 @@
+.tour-speaker {
+  padding: 0 10px;
+  border-radius: 20px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+}
