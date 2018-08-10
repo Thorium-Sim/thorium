@@ -1,8 +1,8 @@
 $alert5: #2ba1cb;
-$alert4: #237a23;
+$alert4: #36c236;
 $alert3: #acac34;
-$alert2: #804d19;
-$alert1: #801919;
+$alert2: #cc7926;
+$alert1: #ca2a2a;
 $alertp: #4d1980;
 
 .layout-line {
@@ -17,9 +17,11 @@ $alertp: #4d1980;
   .simulator-name,
   .station-name,
   .card-name {
+    z-index: 11;
     position: absolute;
     font-family: "Battlefield";
     line-height: 0;
+    text-shadow: 0px 0px 10px black;
   }
   .simulator-name {
     left: 20px;
@@ -34,6 +36,7 @@ $alertp: #4d1980;
     left: 20px;
   }
   .frame-container {
+    z-index: 11;
     width: calc(100% - 40px);
     height: calc(100% - 40px);
     left: 20px;
@@ -61,6 +64,16 @@ $alertp: #4d1980;
     height: calc(100% - 180px);
     position: relative;
   }
+  &.viewscreen {
+    .card-area {
+      z-index: 1;
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      left: 0;
+      top: 0;
+    }
+  }
   .widgets {
     right: 60px;
     bottom: 20px;
@@ -87,6 +100,14 @@ $alertp: #4d1980;
     }
   }
   @mixin colors($color) {
+    & {
+      background: linear-gradient(
+        35deg,
+        #000000 22%,
+        darken($color, 35%) 53%,
+        #000000 80%
+      );
+    }
     .frame-container {
       filter: drop-shadow(0px 0px 5px $color);
     }

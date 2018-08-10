@@ -9,7 +9,7 @@ class LayoutGlass extends Component {
     let { simulator } = this.props;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     return (
-      <div className={`layout-line ${alertClass}`}>
+      <div className={`layout-line viewscreen ${alertClass}`}>
         <CardFrame {...this.props} viewscreen>
           <Views.Viewscreen {...this.props} />
         </CardFrame>

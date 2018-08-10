@@ -5,7 +5,12 @@ function calculateOffset(number, dimension) {
   if (number < dimension / 2) return number + 2;
   return number - 2;
 }
-function calculatePath({ width, height }, bottomLength, topLength, cardLength) {
+function calculatePath(
+  { width, height },
+  bottomLength,
+  topLength,
+  cardLength = 0
+) {
   const offset = 50;
   const values = [
     [0, offset],
