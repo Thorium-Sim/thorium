@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Label, Input } from "reactstrap";
 import SubscriptionHelper from "../../helpers/subscriptionHelper";
+
 const TACTICALMAP_SUB = gql`
   subscription TacticalMapUpdate {
     tacticalMapsUpdate {
@@ -16,6 +17,7 @@ const TACTICALMAP_SUB = gql`
     }
   }
 `;
+
 class TacticalMapConfig extends Component {
   selectTactical = mapId => {
     let { updateArgs } = this.props;
@@ -29,7 +31,7 @@ class TacticalMapConfig extends Component {
       <div className="tacticalmap-config">
         <SubscriptionHelper
           subscribe={() =>
-            this.props.data.subscribeToMore({
+            this.props.tacticalData.subscribeToMore({
               document: TACTICALMAP_SUB,
               updateQuery: (previousResult, { subscriptionData }) => {
                 return Object.assign({}, previousResult, {

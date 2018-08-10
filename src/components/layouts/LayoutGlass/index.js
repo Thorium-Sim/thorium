@@ -27,7 +27,8 @@ class LayoutGlass extends Component {
       cardName,
       changeCard,
       clientObj,
-      flight
+      flight,
+      lite
     } = this.props;
     const { hypercard } = clientObj;
     const { name: stationName } = station;
@@ -52,7 +53,7 @@ class LayoutGlass extends Component {
             {...this.props}
           />
         )}
-        <CardFrame simulator={simulator} />
+        <CardFrame simulator={simulator} lite={lite} />
         <Widgets
           clientObj={clientObj}
           simulator={simulator}

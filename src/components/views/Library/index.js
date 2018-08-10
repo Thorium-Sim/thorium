@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card, CardBody, Input, Button } from "reactstrap";
 import { Asset } from "../../../helpers/assets";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
@@ -222,11 +222,7 @@ class Library extends Component {
             </Row>
           </Col>
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
 import Slider from "react-rangeslider";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import SignalLines from "./signalLines";
 import "react-rangeslider/lib/index.css";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
@@ -275,11 +275,7 @@ class SignalJammer extends Component {
             </div>
           </Col>
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

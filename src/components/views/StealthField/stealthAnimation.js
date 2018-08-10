@@ -1,16 +1,13 @@
 import React from "react";
 
-const StealthAnimation = ({ src, stealthField }) => {
+const StealthAnimation = ({ src, activated, id, state }) => {
   return (
     <div
       className="stealth-animation"
       style={{
         WebkitMaskImage: `url('${src}')`,
         maskImage: `url('${src}')`,
-        display:
-          stealthField.id && (!stealthField.activated || stealthField.state)
-            ? "block"
-            : "none"
+        display: id && (!activated || state) ? "block" : "none"
       }}
     >
       <div className="band band-1">

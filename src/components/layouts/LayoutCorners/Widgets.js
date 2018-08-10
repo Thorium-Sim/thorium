@@ -6,7 +6,7 @@ import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 import Measure from "react-measure";
 
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import "./widgets.scss";
 const WIDGET_NOTIFY = gql`
   subscription WidgetNotify($simulatorId: ID!, $station: String) {
@@ -245,7 +245,7 @@ export class Widget extends Component {
         )}
         <Tour
           steps={widget.training}
-          isOpen={this.state.training}
+          training={this.state.training}
           onRequestClose={() => this.setState({ training: false })}
         />
       </div>

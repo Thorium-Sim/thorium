@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Clamps, Ramps, Doors } from "./graphics";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.scss";
 
@@ -151,11 +151,7 @@ class Docking extends Component {
             {graphic === "doors" && <Doors transform={airlock} />}
           </Col>
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

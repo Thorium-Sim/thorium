@@ -3,5 +3,7 @@ export default [
   "LayoutDefault",
   "LayoutJr",
   "LayoutOdyssey",
-  "LayoutGlass"
+  "LayoutGlass",
+  "LayoutGlassLite",
+  "LayoutLine"
 ];

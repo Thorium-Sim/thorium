@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
-import { NavigationScanner } from "../../views/Navigation";
+import NavigationScanner from "../../views/Navigation/NavigationScanner";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.scss";

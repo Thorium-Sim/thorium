@@ -124,15 +124,11 @@ class DamageControlCore extends Component {
   };
   setContext = (e, s) => {
     e.preventDefault();
-    const {
-      left,
-      top
-    } = e.target.parentElement.parentElement.parentElement.getBoundingClientRect();
     this.setState({
       context: {
         system: s,
-        x: e.clientX - left,
-        y: e.clientY - top
+        x: e.clientX,
+        y: e.clientY
       }
     });
     //this.toggleDamage(e, s, true)
@@ -319,7 +315,7 @@ class DamageControlCore extends Component {
                   </p>
                 ))}
               </div>
-            )}{" "}
+            )}
           </div>
         )}
       </Mutation>

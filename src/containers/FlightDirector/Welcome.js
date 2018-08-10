@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import { graphql, Mutation } from "react-apollo";
 import { Link } from "react-router-dom";
 import semver from "semver";
-import Tour from "reactour";
+import Tour from "../../helpers/tourHelper";
 import { FormattedMessage } from "react-intl";
 import SubscriptionHelper from "../../helpers/subscriptionHelper";
 import "./welcome.scss";
@@ -210,7 +210,7 @@ class Welcome extends Component {
         </Row>
         <Tour
           steps={this.trainingSteps()}
-          isOpen={this.props.training}
+          training={this.props.training}
           onRequestClose={this.props.stopTraining}
         />
       </Container>

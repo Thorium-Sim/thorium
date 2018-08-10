@@ -174,7 +174,7 @@ class ReactorControl extends Component {
     const { reactors } = this.props.data;
     const reactor = reactors.find(r => r.model === "reactor");
     const battery = reactors.find(r => r.model === "battery");
-    if (!reactor) return <p>No Reactor</p>;
+    if (!reactor && !battery) return <p>No Reactor</p>;
     const efficiencies = [
       {
         label: "Overload",
@@ -293,7 +293,7 @@ class ReactorControl extends Component {
               </Fragment>
             )}
 
-            {this.calcStressLevel() && (
+            {this.calcStressLevel() ? (
               <Fragment>
                 <p>Dilithium Stress:</p>
                 <div style={{ display: "flex" }}>
@@ -318,7 +318,7 @@ class ReactorControl extends Component {
                   </Mutation>
                 </div>
               </Fragment>
-            )}
+            ) : null}
           </Col>
         </Row>
       </Container>

@@ -13,7 +13,7 @@ import {
   Label,
   Input
 } from "reactstrap";
-import Tour from "reactour";
+import Tour from "../../helpers/tourHelper";
 import randomWords from "random-words";
 import { FormattedMessage } from "react-intl";
 
@@ -303,7 +303,7 @@ class FlightConfig extends Component {
         </Row>
         <Tour
           steps={this.trainingSteps()}
-          isOpen={this.props.training}
+          training={this.props.training}
           onRequestClose={this.props.stopTraining}
         />
       </Container>

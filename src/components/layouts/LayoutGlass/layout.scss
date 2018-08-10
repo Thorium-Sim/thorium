@@ -240,6 +240,7 @@ $color: $alert5;
     position: fixed;
     mix-blend-mode: screen;
     z-index: -10;
+    background-size: cover;
   }
   .stationName-graphic {
     background-image: url(./StationName.png);

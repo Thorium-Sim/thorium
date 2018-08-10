@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Row, Col, Container, Card } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import "./style.scss";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import AnimatedNumber from "react-animated-number";
@@ -248,11 +248,7 @@ class PowerDistribution extends Component {
             </Col>
           )}
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

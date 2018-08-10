@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Container, Row, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import DamageOverlay from "../helpers/DamageOverlay";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import Tank from "./tank";
@@ -142,11 +142,7 @@ class CoolantControl extends Component {
               ))}
           </div>
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

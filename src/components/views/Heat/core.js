@@ -11,10 +11,26 @@ const HEAT_SUB = gql`
       name
       heat
       heatRate
+      coolant
     }
   }
 `;
-
+const COOLANT_SUB = gql`
+  subscription Coolant($simulatorId: ID!) {
+    coolantUpdate(simulatorId: $simulatorId) {
+      id
+      coolant
+    }
+  }
+`;
+const COOLANT_SYSTEM_SUB = gql`
+  subscription CoolanSystemUpdate($simulatorId: ID!) {
+    coolantSystemUpdate(simulatorId: $simulatorId) {
+      systemId
+      coolant
+    }
+  }
+`;
 class HeatCore extends Component {
   updateHeat = (id, heat) => {
     const mutation = gql`
@@ -46,9 +62,30 @@ class HeatCore extends Component {
       variables
     });
   };
+  updateCoolant = (id, coolant) => {
+    const mutation = gql`
+      mutation AddCoolant($id: ID!, $coolant: Float!) {
+        addCoolant(id: $id, coolant: $coolant)
+      }
+    `;
+    const variables = { id, coolant };
+    this.props.client.mutate({ mutation, variables });
+  };
+  updateTank = coolant => {
+    if (!this.props.data.coolant[0]) return;
+    const { id } = this.props.data.coolant[0];
+    const mutation = gql`
+      mutation Coolant($id: ID!, $coolant: Float!) {
+        setCoolantTank(id: $id, coolant: $coolant)
+      }
+    `;
+    const variables = { id, coolant };
+    this.props.client.mutate({ mutation, variables });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.systems) return null;
     const { systems } = this.props.data;
+    const coolant = this.props.data.coolant[0];
     return (
       <div className="core-heat">
         <SubscriptionHelper
@@ -66,12 +103,48 @@ class HeatCore extends Component {
             })
           }
         />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: COOLANT_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  coolant: subscriptionData.data.coolantUpdate
+                });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: COOLANT_SYSTEM_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  systems: previousResult.systems.map(s => ({
+                    ...s,
+                    coolant: subscriptionData.data.coolantSystemUpdate.find(
+                      sys => sys.systemId === s.id
+                    ).coolant
+                  }))
+                });
+              }
+            })
+          }
+        />
         <Table size="sm">
           <thead>
             <tr>
               <th>Name</th>
               <th>Heat</th>
               <th>Rate</th>
+              <th>Coolant</th>
             </tr>
           </thead>
           <tbody>
@@ -98,8 +171,35 @@ class HeatCore extends Component {
                     {s.heatRate}
                   </InputField>
                 </td>
+                <td>
+                  <InputField
+                    prompt={`What do you want to change the coolant of ${
+                      s.name
+                    } to?`}
+                    onClick={value => this.updateCoolant(s.id, value / 100)}
+                  >
+                    {Math.round(s.coolant * 100)}
+                  </InputField>
+                </td>
               </tr>
             ))}
+            {coolant && (
+              <tr>
+                <td>Coolant Tank</td>
+                <td>
+                  <InputField
+                    prompt={`What do you want to change the coolant tank to?`}
+                    onClick={value =>
+                      this.updateCoolant(coolant.id, value / 100)
+                    }
+                  >
+                    {Math.round(coolant.coolant * 100)}
+                  </InputField>
+                </td>
+                <td />
+                <td />
+              </tr>
+            )}
           </tbody>
         </Table>
       </div>
@@ -108,12 +208,17 @@ class HeatCore extends Component {
 }
 
 const HEAT_QUERY = gql`
-  query SystemHeat($simulatorId: ID) {
+  query SystemHeat($simulatorId: ID!) {
     systems(simulatorId: $simulatorId, heat: true) {
       id
       name
       heat
       heatRate
+      coolant
+    }
+    coolant(simulatorId: $simulatorId) {
+      id
+      coolant
     }
   }
 `;

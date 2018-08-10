@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 function videoColor(al) {
   if (al === "5") {
@@ -14,16 +14,20 @@ function videoColor(al) {
   }
   return "blue";
 }
-export default ({ simulator, viewscreen }) => {
+export default ({ simulator, lite, viewscreen }) => {
   const al = simulator.alertlevel;
   const video = videoColor(al);
   return (
     <div>
-      <link rel="preload" href={require("./blue.mp4")} as="video" />
-      <link rel="preload" href={require("./green.mp4")} as="video" />
-      <link rel="preload" href={require("./yellow.mp4")} as="video" />
-      <link rel="preload" href={require("./orange.mp4")} as="video" />
-      <link rel="preload" href={require("./red.mp4")} as="video" />
+      {!lite && (
+        <Fragment>
+          <link rel="preload" href={require("./blue.mp4")} as="video" />
+          <link rel="preload" href={require("./green.mp4")} as="video" />
+          <link rel="preload" href={require("./yellow.mp4")} as="video" />
+          <link rel="preload" href={require("./orange.mp4")} as="video" />
+          <link rel="preload" href={require("./red.mp4")} as="video" />
+        </Fragment>
+      )}
 
       <div className="simName-graphic" />
       {!viewscreen && <div className="cards-graphic" />}
@@ -34,13 +38,15 @@ export default ({ simulator, viewscreen }) => {
         className="color-image"
         style={{ backgroundImage: `url(${require(`./${video}.jpg`)})` }}
       />
-      <video
-        id="frame-bg"
-        muted
-        autoPlay
-        loop
-        src={require(`./${video}.mp4`)}
-      />
+      {!lite && (
+        <video
+          id="frame-bg"
+          muted
+          autoPlay
+          loop
+          src={require(`./${video}.mp4`)}
+        />
+      )}
     </div>
   );
 };

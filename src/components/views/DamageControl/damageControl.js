@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Row, Col, Button, Card, CardBody } from "reactstrap";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import FontAwesome from "react-fontawesome";
 import { Mutation, withApollo } from "react-apollo";
 import gql from "graphql-tag";
@@ -472,11 +472,7 @@ class DamageControl extends Component {
           </Col>
         </Row>
 
-        <Tour
-          steps={this.trainingSteps()}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={this.trainingSteps()} client={this.props.clientObj} />
       </Container>
     );
   }

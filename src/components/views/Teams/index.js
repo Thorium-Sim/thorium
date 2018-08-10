@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import { titleCase } from "change-case";
 import training from "./training";
 import TeamConfig from "./teamConfig";
@@ -258,11 +258,7 @@ class Teams extends Component {
             />
           </Col>
         </Row>
-        <Tour
-          steps={training[teamType]}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={training[teamType]} client={this.props.clientObj} />
       </Container>
     );
   }

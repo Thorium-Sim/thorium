@@ -48,7 +48,7 @@ export default class CoreIIFX extends Component {
               const Core = Cores[c];
               const label = c.replace("Core", "");
               return (
-                <div key={c} className={c}>
+                <div key={c} className={`inner-core-area ${c}`}>
                   <p>{label}</p>
                   <Core {...props} />
                 </div>

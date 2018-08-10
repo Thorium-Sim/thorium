@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 
 function feistelNet(input) {
   var l = input & 0xff;
@@ -294,11 +294,7 @@ class Review extends Component {
             </Row>
           </Col>
         </Row>
-        <Tour
-          steps={this.trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={this.trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }
