@@ -293,7 +293,7 @@ class ReactorControl extends Component {
               </Fragment>
             )}
 
-            {this.calcStressLevel() && (
+            {this.calcStressLevel() ? (
               <Fragment>
                 <p>Dilithium Stress:</p>
                 <div style={{ display: "flex" }}>
@@ -318,7 +318,7 @@ class ReactorControl extends Component {
                   </Mutation>
                 </div>
               </Fragment>
-            )}
+            ) : null}
           </Col>
         </Row>
       </Container>

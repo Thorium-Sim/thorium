@@ -113,11 +113,6 @@ class EngineCoreView extends Component {
             )}
           </Col>
         </Row>
-        {this.props.data.engines.map(e => (
-          <div>
-            {e.name}: {e.stealthFactor}
-          </div>
-        ))}
         <Row>
           <Col>
             <p>Velocity</p>
