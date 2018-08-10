@@ -18,6 +18,7 @@ export default class Engine extends HeatMixin(System) {
     this.displayName = params.displayName || this.name + " Engine";
   }
   get stealthFactor() {
+    if (!this.on) return 0;
     const optimalSpeed = this.speeds.find(s => s.optimal);
     const optimalNumber = optimalSpeed ? optimalSpeed.number : 0;
     const topSpeed = this.speeds.reduce((prev, next) => {
