@@ -37,6 +37,7 @@ $alertp: #4d1980;
   }
   .frame-container {
     z-index: 11;
+    pointer-events: none;
     width: calc(100% - 40px);
     height: calc(100% - 40px);
     left: 20px;
