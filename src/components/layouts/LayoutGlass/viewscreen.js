@@ -7,7 +7,7 @@ import "./layout.scss";
 class LayoutGlass extends Component {
   state = {};
   render() {
-    let { simulator, station } = this.props;
+    let { simulator, station, lite } = this.props;
     const { name: stationName } = station;
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     return (
@@ -17,7 +17,7 @@ class LayoutGlass extends Component {
           <h1 className="simulator-name">{simulator.name}</h1>
           <h2 className="station-name">{stationName}</h2>
         </div>
-        <CardFrame simulator={simulator} viewscreen />
+        <CardFrame simulator={simulator} viewscreen lite={lite} />
       </div>
     );
   }

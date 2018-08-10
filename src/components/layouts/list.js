@@ -4,5 +4,6 @@ export default [
   "LayoutJr",
   "LayoutOdyssey",
   "LayoutGlass",
+  "LayoutGlassLite",
   "LayoutLine"
 ];
