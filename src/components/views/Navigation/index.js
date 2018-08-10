@@ -334,6 +334,7 @@ class Navigation extends Component {
                       <Input
                         id="destination"
                         type="text"
+                        style={{ height: "55px" }}
                         value={this.state.destination}
                         onChange={this.updateDestination}
                         className="form-control no-keypad"

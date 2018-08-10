@@ -2,27 +2,10 @@ import React, { Component } from "react";
 import Views from "../../views";
 import CardFrame from "./frame";
 import { withApollo } from "react-apollo";
-import gql from "graphql-tag";
 import "./layout.scss";
 
 class LayoutGlass extends Component {
   state = {};
-  stopTraining = () => {
-    const client = this.props.clientObj.id;
-    const variables = {
-      client,
-      training: false
-    };
-    const mutation = gql`
-      mutation ClientSetTraining($client: ID!, $training: Boolean!) {
-        clientSetTraining(client: $client, training: $training)
-      }
-    `;
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-  };
   render() {
     let { simulator, station } = this.props;
     const { name: stationName } = station;
