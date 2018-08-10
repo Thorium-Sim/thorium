@@ -4,6 +4,7 @@ import { EventEmitter } from "events";
 import util from "util";
 import * as Classes from "./classes";
 import paths from "./helpers/paths";
+import storage from "node-persist";
 
 let snapshotDir = "./snapshots/";
 if (process.env.NODE_ENV === "production") {
@@ -50,7 +51,19 @@ class Events extends EventEmitter {
     this.version = 0;
     this.timestamp = Date.now();
   }
-  init() {
+  async init() {
+    await storage.init({
+      dir: "storage",
+      logging: true, // can also be custom logging function
+      expiredInterval: 2 * 60 * 1000, // every 2 minutes the process will clean-up the expired cache
+      forgiveParseErrors: false
+    });
+    await storage.setItem("fibonacci", JSON.stringify([0, 1, 1, 2, 3, 5, 8]));
+    await storage.setItem(
+      "42",
+      "the answer to life, the universe, and everything."
+    );
+
     this.loadSnapshot(process.env.NODE_ENV !== "production");
     if (process.env.NODE_ENV === "production") {
       setTimeout(() => this.autoSave(), 5000);
@@ -94,7 +107,7 @@ class Events extends EventEmitter {
       }
     });
   }
-  snapshot() {
+  async snapshot() {
     const dev =
       !process.env.NODE_ENV && fs.existsSync(snapshotDir + "snapshot-dev.json");
     this.snapshotVersion = this.version;
@@ -122,15 +135,16 @@ class Events extends EventEmitter {
     });
     return snapshot;
   }
-  trimSnapshot(snapshot) {
-    delete snapshot.eventsToEmit;
-    delete snapshot.newEvents;
-    delete snapshot.replaying;
-    delete snapshot._events;
-    delete snapshot._maxListeners;
-    delete snapshot.domain;
-    // Clear events out of the snapshot.
-    delete snapshot.events;
+  trimSnapshot({
+    eventsToEmit,
+    newEvents,
+    replaying,
+    _events,
+    _maxListeners,
+    domain,
+    events,
+    ...snapshot
+  }) {
     return snapshot;
   }
   handleEvent(param, pres, context = {}) {
