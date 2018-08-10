@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag";
 import { Query, Mutation } from "react-apollo";
@@ -7,6 +7,7 @@ const SENSORS_QUERY = gql`
     sensor(id: $id) {
       id
       history
+      autoTarget
     }
   }
 `;
