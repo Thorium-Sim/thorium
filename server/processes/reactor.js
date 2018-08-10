@@ -100,34 +100,42 @@ const updateReactor = () => {
         });
 
         // Update the dilithium stress levels
-        const dilithiumSys = systems[0];
-        if (!dilithiumSys) return;
-        let { alphaLevel, betaLevel, alphaTarget, betaTarget } = dilithiumSys;
-        const alphaDif = alphaTarget - alphaLevel;
-        const betaDif = betaTarget - betaLevel;
-        if (alphaDif <= 0) alphaTarget -= 0.1;
-        else alphaTarget += 0.1;
-        if (betaDif <= 0) betaTarget -= 0.1;
-        else betaTarget += 0.1;
-        if (alphaTarget > 100 || alphaTarget < 0)
-          alphaTarget = Math.round(Math.random() * 100);
-        if (betaTarget > 100 || betaTarget < 0)
-          betaTarget = Math.round(Math.random() * 100);
-        dilithiumSys.updateDilithiumStress({ alphaTarget, betaTarget });
-        const stressLevel = calcStressLevel({
-          alphaLevel,
-          betaLevel,
-          alphaTarget,
-          betaTarget
-        });
-        if (stressLevel > 90 && !dilithiumSys.alerted) {
-          // It's too high of a stress level. Mark the alert and trigger a notification
-          // Use a throttle so the warning doesn't happen too often
-          triggerWarning(dilithiumSys)(dilithiumSys);
-          dilithiumSys.alerted = true;
-        }
-        if (stressLevel < 30) {
-          dilithiumSys.alerted = false;
+        // See if we have the dilithium stress card
+
+        if (
+          sim.stations.find(s =>
+            s.cards.find(c => c.component === "DilithiumStress")
+          )
+        ) {
+          const dilithiumSys = systems[0];
+          if (!dilithiumSys) return;
+          let { alphaLevel, betaLevel, alphaTarget, betaTarget } = dilithiumSys;
+          const alphaDif = alphaTarget - alphaLevel;
+          const betaDif = betaTarget - betaLevel;
+          if (alphaDif <= 0) alphaTarget -= 0.1;
+          else alphaTarget += 0.1;
+          if (betaDif <= 0) betaTarget -= 0.1;
+          else betaTarget += 0.1;
+          if (alphaTarget > 100 || alphaTarget < 0)
+            alphaTarget = Math.round(Math.random() * 100);
+          if (betaTarget > 100 || betaTarget < 0)
+            betaTarget = Math.round(Math.random() * 100);
+          dilithiumSys.updateDilithiumStress({ alphaTarget, betaTarget });
+          const stressLevel = calcStressLevel({
+            alphaLevel,
+            betaLevel,
+            alphaTarget,
+            betaTarget
+          });
+          if (stressLevel > 90 && !dilithiumSys.alerted) {
+            // It's too high of a stress level. Mark the alert and trigger a notification
+            // Use a throttle so the warning doesn't happen too often
+            triggerWarning(dilithiumSys)(dilithiumSys);
+            dilithiumSys.alerted = true;
+          }
+          if (stressLevel < 30) {
+            dilithiumSys.alerted = false;
+          }
         }
       });
   });
