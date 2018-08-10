@@ -115,6 +115,7 @@ export default () => {
 
     // If we're in production, the last thing we want is for the server to crash
     // Print all server errors, but don't terminate the process
+    setInterval(function() {}, Number.MAX_VALUE);
     process.on("uncaughtException", err => {
       console.log(chalk.red(`Caught exception: ${err}\n`));
       console.log(err);

@@ -1,14 +1,25 @@
 import fs from "fs";
-import jsonfile from "jsonfile";
 import { EventEmitter } from "events";
 import util from "util";
 import * as Classes from "./classes";
 import paths from "./helpers/paths";
+import Store from "./helpers/data-store";
 
 let snapshotDir = "./snapshots/";
+
 if (process.env.NODE_ENV === "production") {
   snapshotDir = paths.userData + "/";
 }
+const snapshotName =
+  !process.env.NODE_ENV && fs.existsSync(snapshotDir + "snapshot-dev.json")
+    ? "snapshot-dev.json"
+    : "snapshot.json";
+
+const store = new Store({
+  name: "Thorium",
+  path: `${snapshotDir}${snapshotName}`,
+  debounce: 1000 * 2
+});
 
 class Events extends EventEmitter {
   constructor(params) {
@@ -50,21 +61,9 @@ class Events extends EventEmitter {
     this.version = 0;
     this.timestamp = Date.now();
   }
+
   init() {
-    this.loadSnapshot(process.env.NODE_ENV !== "production");
-    if (process.env.NODE_ENV === "production") {
-      setTimeout(() => this.autoSave(), 5000);
-    }
-  }
-  loadSnapshot(dev) {
-    const snapshot = jsonfile.readFileSync(
-      snapshotDir + (dev ? "snapshot-dev.json" : "snapshot.json")
-    );
-    this.merge(snapshot);
-    if (process.env.NODE_ENV === "production") {
-      // Only auto save in the built version
-      setTimeout(() => this.autoSave(), 5000);
-    }
+    this.merge(store.data);
   }
   merge(snapshot) {
     // Initialize the snapshot with the object constructors
@@ -95,32 +94,9 @@ class Events extends EventEmitter {
     });
   }
   snapshot() {
-    const dev =
-      !process.env.NODE_ENV && fs.existsSync(snapshotDir + "snapshot-dev.json");
     this.snapshotVersion = this.version;
-    const snap = { ...this };
-    const snapshot = JSON.stringify(this.trimSnapshot(snap), null, "\t") + "\n";
-    fs.writeFile(snapshotDir + "snapshot-save.json", snapshot, () => {
-      //Copy the current snapshot to a restore file
-      fs.copyFile(
-        snapshotDir + (dev ? "snapshot-dev.json" : "snapshot.json"),
-        snapshotDir + "snapshot-restore.json",
-        () => {
-          // Move the save into place
-          fs.unlink(
-            snapshotDir + (dev ? "snapshot-dev.json" : "snapshot.json"),
-            () => {
-              fs.copyFile(
-                snapshotDir + "snapshot-save.json",
-                snapshotDir + (dev ? "snapshot-dev.json" : "snapshot.json"),
-                () => {}
-              );
-            }
-          );
-        }
-      );
-    });
-    return snapshot;
+    const snap = this.trimSnapshot({ ...this });
+    store.set(snap);
   }
   trimSnapshot({
     eventsToEmit,
@@ -134,19 +110,9 @@ class Events extends EventEmitter {
   }) {
     return snapshot;
   }
-  handleEvent(param, pres, context = {}) {
-    if (process.env.DEBUG) {
-      eventCount += 1;
-      if (Date().toString() !== date) {
-        console.log("Event Count:", eventCount);
-        eventCount = 0;
-        date = Date().toString();
-      }
-    }
+  handleEvent(param, eventName, context = {}) {
     const { clientId } = context;
-    //const { events } = collections;
-    // We need to fire the events directly
-    // Because the database isn't triggering them
+
     this.timestamp = new Date();
     this.version = this.version + 1;
     if (clientId) {
@@ -157,16 +123,17 @@ class Events extends EventEmitter {
         flightId = client.flightId;
       }
       const event = {
-        event: pres,
+        event: eventName,
         params: param,
         clientId: clientId,
         flightId: flightId,
         timestamp: new Date()
       };
-      //events.insert(event);
       this.events.push(event);
     }
-    this.emit(pres, param);
+    this.emit(eventName, param);
+    // process.env.NODE_ENV === "production" &&
+    this.snapshot();
   }
   test(param) {
     if (param.key) {
@@ -174,41 +141,8 @@ class Events extends EventEmitter {
     } else {
       console.log(util.inspect(this, false, null));
     }
-    /*const keys = [
-      "stationSets",
-      "systems",
-      "decks",
-      "rooms",
-      "crew",
-      "teams",
-      "inventory",
-      "isochips",
-      "coreFeed",
-      "viewscreens",
-      "messages"
-    ];
-    keys.forEach(
-      k =>
-        (App[k] = App[k].filter(s =>
-          App.simulators.find(sim => sim.id === s.simulatorId)
-        ))
-    );
-    App.systems = App.systems.map(s => {
-      s.damage.report = null;
-      return s;
-    });*/
-    //this.handleEvent(param, 'test', 'tested');
-  }
-  // TODO: This is JANKY! Make this better by using actual event sourcing.
-  autoSave() {
-    const self = this;
-    this.snapshot();
-    setTimeout(() => self.autoSave(), 10 * 1000);
   }
 }
-
-let eventCount = 0;
-let date = Date().toString();
 
 const App = new Events();
 
@@ -217,4 +151,5 @@ App.on("error", function(err) {
   console.log("here's an error!");
   console.error(err);
 });
+
 export default App;
