@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Input } from "reactstrap";
+import { Container, Row, Col, Input, Card, Button } from "reactstrap";
 import "./style.scss";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
@@ -30,9 +30,7 @@ const TEAMS_SUB = gql`
 
 class Messaging extends Component {
   state = {
-    messageInput: "",
-    stationsShown: false,
-    selectedConversation: "SecurityTeams"
+    messageInput: ""
   };
   sendMessage = () => {
     const mutation = gql`
@@ -40,12 +38,12 @@ class Messaging extends Component {
         sendMessage(message: $message)
       }
     `;
-    const { messageInput, selectedConversation } = this.state;
+    const { messageInput, selectedDestination, selectedSender } = this.state;
     const variables = {
       message: {
         simulatorId: this.props.simulator.id,
-        destination: selectedConversation,
-        sender: selectedConversation,
+        destination: selectedDestination,
+        sender: selectedSender,
         content: messageInput
       }
     };
@@ -55,19 +53,45 @@ class Messaging extends Component {
     });
     this.setState({ messageInput: "" });
   };
-  toggleStations = () => {
-    this.setState({
-      stationsShown: !this.state.stationsShown
-    });
+  newMessage = () => {
+    const selectedSender = prompt("What do you want the sender to be?");
+    if (selectedSender) {
+      this.setState({
+        selectedSender
+      });
+    }
   };
   render() {
     if (this.props.data.loading || !this.props.data.messages) return null;
     const { messages, teams } = this.props.data;
-    const { messageInput, selectedConversation } = this.state;
-
+    const { messageInput, selectedDestination, selectedSender } = this.state;
     const messageGroups = ["SecurityTeams", "DamageTeams", "MedicalTeams"];
+    let senders = this.props.simulator.stations
+      .map(s => s.name)
+      .concat(messageGroups);
+    messages.forEach(m => {
+      senders.push(m.sender);
+    });
+    senders = senders
+      .concat(selectedSender)
+      .filter((s, i, a) => a.indexOf(s) === i);
+    const destinations = []
+      .concat(this.props.simulator.stations.map(s => s.name))
+      .concat(messageGroups)
+      .concat(senders)
+      .concat(messages.map(m => m.destination))
+      .filter((s, i, a) => a.indexOf(s) === i);
+    const senderDestinations = selectedSender
+      ? messages
+          .reduce((prev, next) => {
+            if (next.sender === selectedSender)
+              return prev.concat(next.destination);
+            return prev;
+          }, [])
+          .filter((s, i, a) => a.indexOf(s) === i)
+      : [];
     return (
-      <div className="core-messaging">
+      <Container fluid className="core core-messaging">
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
@@ -102,65 +126,108 @@ class Messaging extends Component {
             })
           }
         />
-        <Input
-          size="sm"
-          type="select"
-          onChange={evt =>
-            this.setState({ selectedConversation: evt.target.value })
-          }
-          value={selectedConversation}
-        >
-          {messageGroups.map(g => (
-            <option key={g} value={g}>
-              {g}
-            </option>
-          ))}
-          <option disabled>-------------</option>
-          {teams &&
-            teams
-              .filter(
-                t =>
-                  messageGroups.findIndex(
-                    m => m.toLowerCase().indexOf(t.type.toLowerCase()) > -1
-                  ) > -1
-              )
-              .map(g => (
-                <option key={g.name} value={g.name}>
-                  {g.name} - {g.type}
-                </option>
+        <Row>
+          <Col sm={4} className="vertical-row">
+            <Button block size="sm" color="primary" onClick={this.newMessage}>
+              New Sender
+            </Button>
+            <strong>Senders</strong>
+            <Card>
+              {senders.map(
+                s =>
+                  s && (
+                    <p
+                      key={`sender-${s}`}
+                      onClick={() => this.setState({ selectedSender: s })}
+                      className={`${s === selectedSender ? "selected" : ""} ${
+                        messages.find(m => m.sender === s) ? "bold" : ""
+                      }`}
+                    >
+                      {s}
+                    </p>
+                  )
+              )}
+            </Card>
+            <strong>Destinations</strong>
+            <Card>
+              {destinations.map(g => (
+                <p
+                  className={`${
+                    senderDestinations.indexOf(g) > -1 ? "bold" : ""
+                  } ${g === selectedDestination ? "selected" : ""}`}
+                  onClick={() => this.setState({ selectedDestination: g })}
+                  key={g}
+                >
+                  {g}
+                </p>
               ))}
-        </Input>
-        <div className="message-list">
-          {messages
-            .filter(
-              m =>
-                m.sender === selectedConversation ||
-                m.destination === selectedConversation
-            )
-            .reverse()
-            .map(m => (
-              <p
-                key={m.id}
-                className={m.sender === selectedConversation ? "sender" : ""}
-              >
-                {m.sender === selectedConversation ? m.destination : m.sender} -{" "}
-                {m.content}
-              </p>
-            ))}
-        </div>
-        <form
-          // eslint-disable-next-line
-          action={"javascript:void(0);"}
-          onSubmit={this.sendMessage}
-        >
-          <Input
-            size="sm"
-            type="text"
-            value={messageInput}
-            onChange={evt => this.setState({ messageInput: evt.target.value })}
-          />
-        </form>
-      </div>
+              {teams &&
+                teams
+                  .filter(
+                    t =>
+                      messageGroups.findIndex(
+                        m => m.toLowerCase().indexOf(t.type.toLowerCase()) > -1
+                      ) > -1
+                  )
+                  .map(g => (
+                    <p
+                      className={`${
+                        senderDestinations.indexOf(g.name) > -1 ? "bold" : ""
+                      } ${g.name === selectedDestination ? "selected" : ""}`}
+                      onClick={() =>
+                        this.setState({ selectedDestination: g.name })
+                      }
+                      key={g.name}
+                    >
+                      {g.name} - {g.type}
+                    </p>
+                  ))}
+            </Card>
+          </Col>
+          {selectedDestination &&
+            selectedSender && (
+              <Col sm={8} className="vertical-row">
+                <h4>Messages</h4>
+                <Card className="full">
+                  {messages
+                    .filter(
+                      m =>
+                        (m.sender === selectedSender &&
+                          m.destination === selectedDestination) ||
+                        (m.sender === selectedDestination &&
+                          m.destination === selectedSender)
+                    )
+                    .concat()
+                    .sort((a, b) => {
+                      if (a.timestamp > b.timestamp) return 1;
+                      if (a.timestamp < b.timestamp) return -1;
+                      return 0;
+                    })
+                    .reverse()
+                    .map(m => (
+                      <p key={m.id}>
+                        <strong>{m.sender}</strong>: {m.content}
+                      </p>
+                    ))}
+                </Card>
+                <form
+                  // eslint-disable-next-line
+                  action={"javascript:void(0);"}
+                  onSubmit={this.sendMessage}
+                >
+                  <Input
+                    size="sm"
+                    type="text"
+                    value={messageInput}
+                    onChange={evt =>
+                      this.setState({ messageInput: evt.target.value })
+                    }
+                  />
+                </form>
+              </Col>
+            )}
+        </Row>
+      </Container>
     );
   }
 }
