@@ -171,7 +171,10 @@ class Navigation extends Component {
       });
       return;
     }
-    enteredCourse[selectedField] = "";
+    enteredCourse[selectedField] = enteredCourse[selectedField].slice(
+      0,
+      enteredCourse[selectedField].length - 1
+    );
     this.setState({
       enteredCourse
     });
@@ -211,7 +214,7 @@ class Navigation extends Component {
       return;
     }
   }
-  calc() {
+  calc = () => {
     const navigation = this.props.data.navigation[0];
     const mutation = gql`
       mutation CalculateCourse($id: ID!, $destination: String!) {
@@ -226,7 +229,7 @@ class Navigation extends Component {
       mutation,
       variables
     });
-  }
+  };
   cancelCalc() {
     const navigation = this.props.data.navigation[0];
     const mutation = gql`
@@ -288,8 +291,8 @@ class Navigation extends Component {
     if (this.props.data.loading || !this.props.data.navigation) return null;
     const { enteredCourse, selectedField } = this.state;
     const navigation = this.props.data.navigation[0];
-    const scanning = this.state.scanning || navigation.scanning;
     if (!navigation) return <p>No Navigation System</p>;
+    const scanning = this.state.scanning || navigation.scanning;
     return (
       <Container fluid className="cardNavigation">
         <SubscriptionHelper
@@ -330,25 +333,31 @@ class Navigation extends Component {
                     <label htmlFor="destination">
                       <h3>Desired Destination:</h3>
                     </label>
-                    <InputGroup>
-                      <Input
-                        id="destination"
-                        type="text"
-                        style={{ height: "55px" }}
-                        value={this.state.destination}
-                        onChange={this.updateDestination}
-                        className="form-control no-keypad"
-                      />
-                      <InputGroupAddon addonType="append">
-                        <Button
-                          onClick={this.calc.bind(this)}
-                          color="secondary"
-                          style={{ marginTop: "-1px", height: "56px" }}
-                        >
-                          Calculate Coordinates
-                        </Button>
-                      </InputGroupAddon>
-                    </InputGroup>
+                    <form
+                      // eslint-disable-next-line
+                      action={"javascript:void(0);"}
+                      onSubmit={this.calc}
+                    >
+                      <InputGroup>
+                        <Input
+                          id="destination"
+                          type="text"
+                          style={{ height: "55px" }}
+                          value={this.state.destination}
+                          onChange={this.updateDestination}
+                          className="form-control no-keypad"
+                        />
+                        <InputGroupAddon addonType="append">
+                          <Button
+                            onClick={this.calc}
+                            color="secondary"
+                            style={{ marginTop: "-1px", height: "56px" }}
+                          >
+                            Calculate Coordinates
+                          </Button>
+                        </InputGroupAddon>
+                      </InputGroup>
+                    </form>
                   </Col>
                 )}
               </Row>

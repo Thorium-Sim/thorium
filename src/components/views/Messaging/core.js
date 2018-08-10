@@ -66,6 +66,7 @@ class Messaging extends Component {
     const { messages, teams } = this.props.data;
     const { messageInput, selectedDestination, selectedSender } = this.state;
     const messageGroups = ["SecurityTeams", "DamageTeams", "MedicalTeams"];
+    if (!this.props.simulator.stations) return <div>No Stations</div>;
     let senders = this.props.simulator.stations
       .map(s => s.name)
       .concat(messageGroups);
