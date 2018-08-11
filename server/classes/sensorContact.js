@@ -101,11 +101,9 @@ export default class SensorContact {
       };
       this.location = this.position;
       this.startTime = Date.now();
-      console.log(speed, distance3d(this.destination, this.location));
       const movementTime = Math.ceil(
         (distance3d(this.destination, this.location) / (speed / 10)) * 1000
       );
-      console.log(movementTime);
       this.endTime = this.startTime + movementTime;
     }
   }
