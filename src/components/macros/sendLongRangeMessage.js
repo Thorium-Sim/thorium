@@ -16,6 +16,9 @@ export default ({ updateArgs = () => {}, args, client }) => {
   const updateSender = e => {
     updateArgs("sender", e.target.value);
   };
+  const updateDecoded = e => {
+    updateArgs("decoded", e.target.checked);
+  };
   // if (!args || !args.crew) {
   //   updateArgs("crew", true);
   // }
@@ -59,6 +62,15 @@ export default ({ updateArgs = () => {}, args, client }) => {
         defaultValue={args ? args.message : ""}
         onBlur={lrmText}
       />
+      <Label>
+        Decoded
+        <Input
+          type="checkbox"
+          style={{ marginLeft: "20px" }}
+          checked={args ? args.decoded : false}
+          onChange={updateDecoded}
+        />
+      </Label>
     </FormGroup>
   );
 };

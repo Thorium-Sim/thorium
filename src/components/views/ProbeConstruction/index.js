@@ -11,7 +11,7 @@ import {
   ModalBody,
   ModalFooter
 } from "reactstrap";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import { graphql, withApollo } from "react-apollo";
 import Transitioner from "../helpers/transitioner";
@@ -510,11 +510,7 @@ class ProbeConstruction extends Component {
             launchProbe={this.launchProbe}
           />
         )}
-        <Tour
-          steps={this.trainingSteps()}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={this.trainingSteps()} client={this.props.clientObj} />
       </Container>
     );
   }

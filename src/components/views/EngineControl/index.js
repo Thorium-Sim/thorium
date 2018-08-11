@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 import Engine1 from "./engine-1";
 import Engine2 from "./engine-2";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.scss";
 
@@ -188,11 +188,7 @@ class EngineControl extends Component {
             )}
           </Col>
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

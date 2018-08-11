@@ -56,9 +56,11 @@ class NavigationCore extends Component {
   componentDidUpdate(prevProps) {
     if (!this.props.data.loading && prevProps.data.loading) {
       const navigation = this.props.data.navigation[0];
-      this.setState({
-        calculatedCourse: navigation.calculatedCourse
-      });
+      if (navigation) {
+        this.setState({
+          calculatedCourse: navigation.calculatedCourse
+        });
+      }
     }
   }
   randomNums() {

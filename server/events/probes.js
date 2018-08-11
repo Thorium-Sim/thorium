@@ -73,6 +73,14 @@ App.on("updateProbeEquipment", ({ id, probeEquipment }) => {
 App.on("probeQuery", ({ id, probeId, query }) => {
   const sys = App.systems.find(s => s.id === id);
   sys.probeQuery(probeId, query);
+  pubsub.publish("notify", {
+    id: uuid.v4(),
+    simulatorId: sys.simulatorId,
+    station: "Core",
+    title: `Probe Query`,
+    body: query,
+    color: "info"
+  });
   App.handleEvent(
     {
       simulatorId: sys.simulatorId,

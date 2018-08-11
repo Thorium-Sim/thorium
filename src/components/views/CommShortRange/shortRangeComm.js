@@ -3,7 +3,7 @@ import { Card, CardBody, Container, Row, Col, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { withApollo, Mutation } from "react-apollo";
 import Measure from "react-measure";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import { Asset } from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
 import FrequencySignals from "./frequency";
@@ -262,11 +262,7 @@ class CommShortRange extends Component {
             </Card>
           </Col>
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

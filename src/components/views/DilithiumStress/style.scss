@@ -3,6 +3,13 @@
   flex-direction: column;
   height: 50%;
   justify-content: space-between;
+  .dilithium-effects {
+    width: 70vh;
+    height: 70vh;
+    position: absolute;
+    bottom: 8%;
+    left: 27%;
+  }
   .stressHolder {
     position: absolute;
     right: 24%;
@@ -56,19 +63,19 @@
     pointer-events: none;
   }
   .matter-label {
-    font-size: 3rem;
+    font-size: 3vw;
     position: absolute;
     left: 15%;
     top: 15%;
   }
   .antimatter-label {
-    font-size: 3rem;
+    font-size: 3vw;
     position: absolute;
     left: 15%;
     bottom: 15%;
   }
   .stress-label {
-    font-size: 3rem;
+    font-size: 3vw;
     position: absolute;
     right: 27%;
     top: 15%;
@@ -77,8 +84,8 @@
   .antimatter,
   .matter,
   .plasma {
-    width: 15%;
-    left: 38.5%;
+    width: 24%;
+    left: 30.5%;
     position: absolute;
   }
   .antimatter {
@@ -89,7 +96,7 @@
     top: -1%;
   }
   .plasma {
-    left: 3%;
+    left: -37%;
     transform: rotate(90deg);
     top: 47%;
   }

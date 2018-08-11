@@ -23,6 +23,8 @@
     flex-direction: column;
     & > div {
       flex: 1;
+      max-height: calc(100% - 16px);
+      overflow-y: auto;
     }
   }
   .TransporterCore {

@@ -45,7 +45,7 @@ function walkSync(dir, filelist) {
 const regexPath = /[^\\]*\.(\w+)$/;
 
 export default () => {
-  return new Promise(resolve => {
+  return new Promise(done => {
     if (!fs.existsSync(`${assetDir}/Simulator`)) {
       console.log(chalk.cyan("Migrating assets to filesystem..."));
       return Promise.resolve()
@@ -469,7 +469,9 @@ export default () => {
               "Success! Assets have been migrated to the file system."
             )
           );
+          done();
         });
     }
+    done();
   });
 };

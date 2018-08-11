@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import { titleCase } from "change-case";
 import training from "./training";
 import TeamConfig from "./teamConfig";
@@ -55,6 +55,23 @@ class Teams extends Component {
   state = {
     selectedTeam: {}
   };
+  componentDidUpdate(prevProps) {
+    const {
+      data: { teams }
+    } = this.props;
+    const { selectedTeam } = this.state;
+    if (
+      selectedTeam &&
+      selectedTeam.id &&
+      teams &&
+      selectedTeam.id !== "newTeam" &&
+      !teams.find(t => t.id === selectedTeam.id)
+    ) {
+      this.setState({
+        selectedTeam: {}
+      });
+    }
+  }
   createTeam = () => {
     const mutation = gql`
       mutation CreateTeam($team: TeamInput!) {
@@ -244,6 +261,7 @@ class Teams extends Component {
           </Col>
           <Col sm={{ size: 8, offset: 1 }} className="damage-team-entry">
             <TeamConfig
+              key={selectedTeam ? selectedTeam.id : "no-team"}
               selectedTeam={selectedTeam}
               decks={decks}
               teamType={teamType}
@@ -258,11 +276,7 @@ class Teams extends Component {
             />
           </Col>
         </Row>
-        <Tour
-          steps={training[teamType]}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={training[teamType]} client={this.props.clientObj} />
       </Container>
     );
   }

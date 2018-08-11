@@ -11,7 +11,7 @@ import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.scss";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 
 const trainingSteps = [
   {
@@ -584,11 +584,7 @@ gamepadLoop(){
               </Col>
             )}
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </div>
     );
   }

@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input, Card, CardBody } from "reactstrap";
 import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import "./style.scss";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
@@ -239,11 +239,7 @@ class CargoControl extends Component {
             )}
           </Col>
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

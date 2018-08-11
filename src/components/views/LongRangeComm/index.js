@@ -5,7 +5,7 @@ import { Row, Col, Card, Button } from "reactstrap";
 import Measure from "react-measure";
 import Satellites from "./Satellites";
 import DamageOverlay from "../helpers/DamageOverlay";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import "./style.scss";
 
@@ -384,11 +384,7 @@ class LongRangeComm extends Component {
             )}
           <MessageBox message={messageObj && this.encrypt(messageObj)} />
         </Col>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Row>
     );
   }

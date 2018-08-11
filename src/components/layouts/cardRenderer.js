@@ -1,6 +1,4 @@
 import React from "react";
-import gql from "graphql-tag";
-
 import Views from "../views";
 import CardHolder from "./CardHolder";
 
@@ -20,31 +18,13 @@ export default function renderCards(props) {
   if (clientObj.offlineState) {
     cardName = "Offline";
   }
-  const stopTraining = () => {
-    const client = props.clientObj.id;
-    const variables = {
-      client,
-      training: false
-    };
-    const mutation = gql`
-      mutation ClientSetTraining($client: ID!, $training: Boolean!) {
-        clientSetTraining(client: $client, training: $training)
-      }
-    `;
-    props.client.mutate({
-      mutation,
-      variables
-    });
-  };
   if (
     !clientObj.offlineState &&
     clientObj.hypercard &&
     Views[clientObj.hypercard]
   ) {
     const Comp = Views[clientObj.hypercard];
-    return (
-      <CardHolder component={Comp} {...props} stopTraining={stopTraining} />
-    );
+    return <CardHolder component={Comp} {...props} />;
   }
   return cards
     .concat({ name: "Login", component: "Login", icon: "Login" })
@@ -63,19 +43,11 @@ export default function renderCards(props) {
               component={Views.SoftwarePanels}
               panel={card.component}
               {...props}
-              stopTraining={stopTraining}
               key={card.name}
             />
           );
         }
-        return (
-          <CardHolder
-            component={component}
-            {...props}
-            stopTraining={stopTraining}
-            key={card.name}
-          />
-        );
+        return <CardHolder component={component} {...props} key={card.name} />;
       }
       return null;
     })

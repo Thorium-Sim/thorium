@@ -70,9 +70,9 @@ const updateReactor = () => {
         //Adjust the reactors heat
         reactors.forEach(reactor => {
           const { efficiency, heatRate, heat } = reactor;
-          const minute15 = 15 * 60;
-          const standardHeat = Math.pow(efficiency, 2) / minute15;
-          const unblanaceHeat = Math.abs(Math.cbrt(level - oldLevel)) / 2000;
+          const minute30 = 30 * 60;
+          const standardHeat = Math.pow(efficiency, 2) / minute30;
+          const unblanaceHeat = Math.abs(Math.cbrt(level - oldLevel)) / 5000;
           reactor.setHeat(heat + (standardHeat + unblanaceHeat) * heatRate);
         });
 
@@ -100,49 +100,59 @@ const updateReactor = () => {
         });
 
         // Update the dilithium stress levels
-        const dilithiumSys = systems[0];
-        if (!dilithiumSys) return;
-        let { alphaLevel, betaLevel, alphaTarget, betaTarget } = dilithiumSys;
-        const alphaDif = alphaTarget - alphaLevel;
-        const betaDif = betaTarget - betaLevel;
-        if (alphaDif <= 0) alphaTarget -= 0.1;
-        else alphaTarget += 0.1;
-        if (betaDif <= 0) betaTarget -= 0.1;
-        else betaTarget += 0.1;
-        if (alphaTarget > 100 || alphaTarget < 0)
-          alphaTarget = Math.round(Math.random() * 100);
-        if (betaTarget > 100 || betaTarget < 0)
-          betaTarget = Math.round(Math.random() * 100);
-        dilithiumSys.updateDilithiumStress({ alphaTarget, betaTarget });
-        const stressLevel = calcStressLevel({
-          alphaLevel,
-          betaLevel,
-          alphaTarget,
-          betaTarget
-        });
-        if (stressLevel > 90 && !dilithiumSys.alerted) {
-          // It's too high of a stress level. Mark the alert and trigger a notification
-          // Use a throttle so the warning doesn't happen too often
-          triggerWarning(dilithiumSys)(dilithiumSys);
-          dilithiumSys.alerted = true;
-        }
-        if (stressLevel < 30) {
-          dilithiumSys.alerted = false;
+        // See if we have the dilithium stress card
+
+        if (
+          sim.stations.find(s =>
+            s.cards.find(c => c.component === "DilithiumStress")
+          )
+        ) {
+          const dilithiumSys = systems[0];
+          if (!dilithiumSys) return;
+          let { alphaLevel, betaLevel, alphaTarget, betaTarget } = dilithiumSys;
+          const alphaDif = alphaTarget - alphaLevel;
+          const betaDif = betaTarget - betaLevel;
+          if (alphaDif <= 0) alphaTarget -= 0.1;
+          else alphaTarget += 0.1;
+          if (betaDif <= 0) betaTarget -= 0.1;
+          else betaTarget += 0.1;
+          if (alphaTarget > 100 || alphaTarget < 0)
+            alphaTarget = Math.round(Math.random() * 100);
+          if (betaTarget > 100 || betaTarget < 0)
+            betaTarget = Math.round(Math.random() * 100);
+          dilithiumSys.updateDilithiumStress({ alphaTarget, betaTarget });
+          const stressLevel = calcStressLevel({
+            alphaLevel,
+            betaLevel,
+            alphaTarget,
+            betaTarget
+          });
+          if (stressLevel > 90 && !dilithiumSys.alerted) {
+            // It's too high of a stress level. Mark the alert and trigger a notification
+            // Use a throttle so the warning doesn't happen too often
+            triggerWarning(dilithiumSys)(dilithiumSys);
+            dilithiumSys.alerted = true;
+          }
+          if (stressLevel < 30) {
+            dilithiumSys.alerted = false;
+          }
         }
       });
   });
   setTimeout(updateReactor, 1000);
 };
-
+let count = 0;
 // This one is for cooling - not affected by flight paused status
 function reactorHeat() {
   const reactors = App.systems.filter(
     s => s.type === "Reactor" && s.model === "reactor" && s.cooling === true
   );
   reactors.forEach(r => {
-    r.setCoolant(Math.min(1, Math.max(0, r.coolant - 0.005)));
-    r.setHeat(Math.min(1, Math.max(0, r.heat - 0.01)));
     if ((r.coolant === 0 || r.heat === 0) && r.cool) r.cool(false);
+    else {
+      r.setCoolant(Math.min(1, Math.max(0, r.coolant - 0.005)));
+      r.setHeat(Math.min(1, Math.max(0, r.heat - 0.01)));
+    }
     pubsub.publish(
       "coolantSystemUpdate",
       App.systems
@@ -157,11 +167,14 @@ function reactorHeat() {
         })
     );
   });
-  reactors.length > 0 &&
+  if (reactors.length > 0 || count > 30) {
+    count = 0;
     pubsub.publish(
       "reactorUpdate",
       App.systems.filter(s => s.type === "Reactor")
     );
+  }
+  count++;
   setTimeout(reactorHeat, 1000 / 30);
 }
 updateReactor();

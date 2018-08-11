@@ -68,11 +68,13 @@ class Users extends Component {
             </Mutation>
           </Col>
         </Row>
-        <UserModal
-          id={id}
-          modal={modal}
-          toggle={() => this.setState({ modal: false })}
-        />
+        {modal && (
+          <UserModal
+            id={id}
+            modal={modal}
+            toggle={() => this.setState({ modal: false })}
+          />
+        )}
       </Fragment>
     );
   }

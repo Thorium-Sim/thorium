@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Row, Col, Container, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 //import DamageOverlay from '../helpers/DamageOverlay';
@@ -211,11 +211,7 @@ class PhaserCharging extends Component {
           phaserId={phasers.id}
           arc={phasers.arc}
         /> */}
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

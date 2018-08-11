@@ -262,8 +262,8 @@ class SensorsCore extends Component {
                         } ${!s.cancelled && !s.scanning ? "text-success" : ""}`}
                         onClick={() => this.selectScan(s)}
                       >
-                        {s.request.substr(0, 15)}...{" "}
-                        {s.scanning && <FontAwesome name="refresh" spin />}
+                        {s.request.substr(0, 15)}
+                        ... {s.scanning && <FontAwesome name="refresh" spin />}
                       </p>
                     ))}
                 </div>

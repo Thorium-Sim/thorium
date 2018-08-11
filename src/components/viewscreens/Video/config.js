@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 import FileExplorer from "../../views/TacticalMap/fileExplorer";
-
+import { Button } from "reactstrap";
 const ADD_CACHE_MUTATION = gql`
   mutation AddCache($clientId: ID!, $cacheItem: String!) {
     clientAddCache(client: $clientId, cacheItem: $cacheItem)
@@ -23,11 +23,24 @@ class VideoConfig extends Component {
       });
     }
   }
+  togglePause = () => {
+    this.props.client.mutate({
+      mutation: gql`
+        mutation ToggleVideo($simulatorId: ID!) {
+          toggleViewscreenVideo(simulatorId: $simulatorId)
+        }
+      `,
+      variables: { simulatorId: this.props.simulator.id }
+    });
+  };
   render() {
     let { data, updateData, simple } = this.props;
     data = JSON.parse(data);
     return (
       <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+        <Button size="sm" color="info" onClick={this.togglePause}>
+          Toggle Video Paused
+        </Button>
         <div>
           <div style={{ float: "left", marginLeft: "5px" }}>
             <label>

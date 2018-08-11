@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import Exocomp from "./exocomp";
 import ExocompConfig from "./exocompConfig";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
@@ -194,11 +194,7 @@ class Exocomps extends Component {
             )}
           </Col>
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

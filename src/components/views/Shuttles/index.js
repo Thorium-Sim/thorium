@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import { Asset } from "../../../helpers/assets";
 import Decompress from "./Decompress";
 import Door from "./Door";
@@ -89,11 +89,7 @@ class Shuttles extends Component {
             ))}
           </Row>
         }
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

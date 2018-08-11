@@ -69,6 +69,7 @@ export class Viewscreen extends Component {
     }
   }
   render() {
+    if (this.props.component) return this.renderComponent();
     if (!this.props.data) return null;
     return (
       <Fragment>

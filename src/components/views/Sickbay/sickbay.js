@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 
 import Bunk from "./bunk";
 import AdmitModal from "./admitModal";
@@ -76,14 +76,7 @@ class Sickbay extends Component {
     };
   };
   render() {
-    const {
-      id,
-      bunks,
-      sickbayRoster,
-      crew,
-      clientObj,
-      stopTraining
-    } = this.props;
+    const { id, bunks, sickbayRoster, crew, clientObj } = this.props;
     const { modal, admitBunk, selectedCrew, selectedBunk } = this.state;
     if (selectedBunk) {
       return (
@@ -133,8 +126,7 @@ class Sickbay extends Component {
         </Mutation>
         <Tour
           steps={modal ? this.modalTraining : this.trainingSteps}
-          isOpen={clientObj.training}
-          onRequestClose={stopTraining}
+          client={clientObj}
         />
       </Container>
     );

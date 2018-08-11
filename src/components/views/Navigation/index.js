@@ -5,10 +5,12 @@ import { InputGroup, InputGroupAddon, Button, Input } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Keypad from "./keypad";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import NavigationScanner from "./NavigationScanner";
 
 import "./style.scss";
+import CourseNumber from "./courseNumbers";
 
 const trainingSteps = [
   {
@@ -17,74 +19,6 @@ const trainingSteps = [
       "Using the number pad, input the calculated course coordinates in the Current Course fields to set your course."
   }
 ];
-
-export class NavigationScanner extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      lineX: 50,
-      lineY: 50,
-      backX: 0,
-      backY: 0
-    };
-    this.scanning = null;
-    if (props.scanning) {
-      this.scanning = setTimeout(this._scan, 100);
-    }
-  }
-  componentDidUpdate(oldProps) {
-    if (this.props.scanning && !oldProps.scanning) {
-      this.scanning = setTimeout(this._scan, 100);
-    }
-    if (!this.props.scanning) {
-      clearTimeout(this.scanning);
-      this.scanning = null;
-    }
-  }
-  componentWillUnmount() {
-    clearTimeout(this.scanning);
-    this.scanning = null;
-  }
-  _scan = () => {
-    if (this.props.scanning && this.scanning) {
-      this.setState({
-        lineX: Math.random() * 100,
-        lineY: Math.random() * 100,
-        backX: (Math.random() - 0.5) * 1000,
-        backY: (Math.random() - 0.5) * 1000
-      });
-      this.scanning = setTimeout(
-        this._scan.bind(this),
-        Math.random(5000) + 2000
-      );
-    }
-  };
-  render() {
-    return (
-      <div
-        className="starsBox"
-        style={{
-          backgroundPosition: `${this.state.backX}px ${this.state.backY}px`
-        }}
-      >
-        <div className="barVert" style={{ left: `${this.state.lineX}%` }} />
-        <div className="barHoriz" style={{ top: `${this.state.lineY}%` }} />
-        <div
-          className="crosshair"
-          style={{
-            left: `calc(${this.state.lineX}% - 18px)`,
-            top: `calc(${this.state.lineY}% - 18px)`
-          }}
-        >
-          <div />
-          <div />
-          <div />
-          <div />
-        </div>
-      </div>
-    );
-  }
-}
 
 const NAVIGATION_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {
@@ -135,7 +69,6 @@ class Navigation extends Component {
   componentWillUnmount() {
     clearTimeout(this.scanning);
     this.scanning = null;
-    this.subscription && this.subscription();
   }
   componentDidUpdate(prevProps) {
     if (this.props.data.loading || !this.props.data.navigation) return;
@@ -192,23 +125,7 @@ class Navigation extends Component {
       }
     }
   }
-  courseCoordinate = () => {
-    const navigation = this.props.data.navigation[0];
-    if (navigation.thrusters) return `${Math.round(Math.random() * 360)}˚`;
-    return Math.round(Math.random() * 100000) / 100;
-  };
-  _randomCourse = () => {
-    this.setState({
-      calculatedCourse: {
-        x: this.courseCoordinate(),
-        y: this.courseCoordinate(),
-        z: this.courseCoordinate()
-      }
-    });
-    if (this.scanning) {
-      this.scanning = setTimeout(this._randomCourse, 60);
-    }
-  };
+
   updateDestination = e => {
     e.preventDefault();
     this.setState({
@@ -254,7 +171,10 @@ class Navigation extends Component {
       });
       return;
     }
-    enteredCourse[selectedField] = "";
+    enteredCourse[selectedField] = enteredCourse[selectedField].slice(
+      0,
+      enteredCourse[selectedField].length - 1
+    );
     this.setState({
       enteredCourse
     });
@@ -294,7 +214,7 @@ class Navigation extends Component {
       return;
     }
   }
-  calc() {
+  calc = () => {
     const navigation = this.props.data.navigation[0];
     const mutation = gql`
       mutation CalculateCourse($id: ID!, $destination: String!) {
@@ -309,7 +229,7 @@ class Navigation extends Component {
       mutation,
       variables
     });
-  }
+  };
   cancelCalc() {
     const navigation = this.props.data.navigation[0];
     const mutation = gql`
@@ -369,10 +289,10 @@ class Navigation extends Component {
   }
   render() {
     if (this.props.data.loading || !this.props.data.navigation) return null;
-    const { calculatedCourse, enteredCourse, selectedField } = this.state;
+    const { enteredCourse, selectedField } = this.state;
     const navigation = this.props.data.navigation[0];
-    const scanning = this.state.scanning || navigation.scanning;
     if (!navigation) return <p>No Navigation System</p>;
+    const scanning = this.state.scanning || navigation.scanning;
     return (
       <Container fluid className="cardNavigation">
         <SubscriptionHelper
@@ -413,24 +333,31 @@ class Navigation extends Component {
                     <label htmlFor="destination">
                       <h3>Desired Destination:</h3>
                     </label>
-                    <InputGroup>
-                      <Input
-                        id="destination"
-                        type="text"
-                        value={this.state.destination}
-                        onChange={this.updateDestination}
-                        className="form-control no-keypad"
-                      />
-                      <InputGroupAddon addonType="append">
-                        <Button
-                          onClick={this.calc.bind(this)}
-                          color="secondary"
-                          style={{ marginTop: "-1px", height: "56px" }}
-                        >
-                          Calculate Coordinates
-                        </Button>
-                      </InputGroupAddon>
-                    </InputGroup>
+                    <form
+                      // eslint-disable-next-line
+                      action={"javascript:void(0);"}
+                      onSubmit={this.calc}
+                    >
+                      <InputGroup>
+                        <Input
+                          id="destination"
+                          type="text"
+                          style={{ height: "55px" }}
+                          value={this.state.destination}
+                          onChange={this.updateDestination}
+                          className="form-control no-keypad"
+                        />
+                        <InputGroupAddon addonType="append">
+                          <Button
+                            onClick={this.calc}
+                            color="secondary"
+                            style={{ marginTop: "-1px", height: "56px" }}
+                          >
+                            Calculate Coordinates
+                          </Button>
+                        </InputGroupAddon>
+                      </InputGroup>
+                    </form>
                   </Col>
                 )}
               </Row>
@@ -442,33 +369,7 @@ class Navigation extends Component {
             </Row>
           </Col>
           <Col className="course-numbers">
-            {navigation.calculate && (
-              <div
-                className={`calculated card ${
-                  navigation.thrusters ? "thrusters" : ""
-                }`}
-              >
-                <label>Calculated Course</label>
-                <Row>
-                  <Col className="col-sm-4">
-                    {navigation.thrusters ? "Yaw" : "X"}:
-                  </Col>
-                  <Col className="col-sm-7 numBox">{calculatedCourse.x}</Col>
-                </Row>
-                <Row>
-                  <Col className="col-sm-4">
-                    {navigation.thrusters ? "Pitch" : "Y"}:
-                  </Col>
-                  <Col className="col-sm-7 numBox">{calculatedCourse.y}</Col>
-                </Row>
-                <Row>
-                  <Col className="col-sm-4">
-                    {navigation.thrusters ? "Roll" : "Z"}:
-                  </Col>
-                  <Col className="col-sm-7 numBox">{calculatedCourse.z}</Col>
-                </Row>
-              </div>
-            )}
+            {navigation.calculate && <CourseNumber {...navigation} />}
             {!navigation.thrusters && (
               <div className="currentCourse card">
                 <label>Current Course</label>
@@ -518,11 +419,7 @@ class Navigation extends Component {
             </Col>
           )}
         </Row>
-        <Tour
-          steps={trainingSteps}
-          isOpen={this.props.clientObj.training}
-          onRequestClose={this.props.stopTraining}
-        />
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

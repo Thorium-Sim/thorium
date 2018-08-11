@@ -12,7 +12,7 @@ import {
   Stealth,
   Radiation
 } from "./components";
-import Tour from "reactour";
+import Tour from "../../../helpers/tourHelper";
 
 import "./style.scss";
 
@@ -52,11 +52,7 @@ export default props => {
           {!props.viewscreen && <AlertCondition {...props} />}
         </Col>
       </Row>
-      <Tour
-        steps={trainingSteps}
-        isOpen={props.clientObj.training}
-        onRequestClose={props.stopTraining}
-      />
+      <Tour steps={trainingSteps} client={props.clientObj} />
     </Container>
   );
 };
