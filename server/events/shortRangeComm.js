@@ -19,6 +19,11 @@ App.on("commUpdateSignal", ({ id, commSignalInput }) => {
 App.on("commUpdateSignals", ({ id, signals }) => {
   const sys = App.systems.find(s => s.id === id);
   signals.forEach(s => sys.updateCommSignal(s));
+  // Remove any signals
+  sys.signals
+    .map(s => s.id)
+    .filter(id => !signals.find(sig => sig.id === id))
+    .forEach(s => sys.removeCommSignal(s));
   pubsub.publish(
     "shortRangeCommUpdate",
     App.systems.filter(s => s.type === "ShortRangeComm")
