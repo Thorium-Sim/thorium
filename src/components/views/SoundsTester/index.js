@@ -19,7 +19,15 @@ class SoundsTester extends Component {
     return (
       <div>
         <h1>Sound Player</h1>
-        <ul>
+        <ul
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            flexDirection: "column",
+            height: "70vh",
+            overflowX: "auto"
+          }}
+        >
           {sounds.map(s => (
             <Asset asset={s.fullPath} key={s.id}>
               {({ src }) => (

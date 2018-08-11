@@ -9,13 +9,13 @@ export default class DockingPort extends System {
       this.clamps = params.clamps || true;
       this.compress = params.compress || true;
       this.doors = params.doors || true; // Doors are closed
-      this.image = params.image || "/Docking Images/Default";
+      this.image = params.image || "/Docking Images/Default.png";
       this.docked = params.docked || true;
     } else {
       this.clamps = params.clamps || false;
       this.compress = params.compress || false;
       this.doors = params.doors || false; // Doors are closed
-      this.image = params.image || "/Docking Images/Default";
+      this.image = params.image || "/Docking Images/Default.png";
       this.docked = params.docked || false;
     }
   }
