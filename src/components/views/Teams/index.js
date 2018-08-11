@@ -64,6 +64,7 @@ class Teams extends Component {
       selectedTeam &&
       selectedTeam.id &&
       teams &&
+      selectedTeam.id !== "newTeam" &&
       !teams.find(t => t.id === selectedTeam.id)
     ) {
       this.setState({

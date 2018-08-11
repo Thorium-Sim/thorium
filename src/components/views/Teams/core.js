@@ -38,6 +38,7 @@ const TEAMS_SUB = gql`
       officers {
         id
         name
+        position
         inventory {
           id
           name
@@ -158,7 +159,7 @@ class Teams extends Component {
                     <Label for="teamName">Assigned Officers</Label>
                     {team.officers.map(c => (
                       <p key={c.id}>
-                        {c.name}
+                        {c.name} - <em>{c.position}</em>
                         <ul className="inventory">
                           {c.inventory.map(i => (
                             <li key={`${c.id}-${i.id}`}>
@@ -214,6 +215,7 @@ const TEAMS_QUERY = gql`
       officers {
         id
         name
+        position
         inventory {
           id
           name
