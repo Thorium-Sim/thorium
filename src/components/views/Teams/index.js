@@ -55,6 +55,23 @@ class Teams extends Component {
   state = {
     selectedTeam: {}
   };
+  componentDidUpdate(prevProps) {
+    const {
+      data: { teams }
+    } = this.props;
+    const { selectedTeam } = this.state;
+    if (
+      selectedTeam &&
+      selectedTeam.id &&
+      teams &&
+      selectedTeam.id !== "newTeam" &&
+      !teams.find(t => t.id === selectedTeam.id)
+    ) {
+      this.setState({
+        selectedTeam: {}
+      });
+    }
+  }
   createTeam = () => {
     const mutation = gql`
       mutation CreateTeam($team: TeamInput!) {
@@ -244,6 +261,7 @@ class Teams extends Component {
           </Col>
           <Col sm={{ size: 8, offset: 1 }} className="damage-team-entry">
             <TeamConfig
+              key={selectedTeam ? selectedTeam.id : "no-team"}
               selectedTeam={selectedTeam}
               decks={decks}
               teamType={teamType}

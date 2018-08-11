@@ -12,7 +12,7 @@ import {
 import { titleCase } from "change-case";
 import Priority from "./priority";
 import Location from "./location";
-export default ({
+const TeamConfig = ({
   selectedTeam,
   decks,
   teamType,
@@ -193,3 +193,5 @@ export default ({
     </Row>
   );
 };
+
+export default TeamConfig;

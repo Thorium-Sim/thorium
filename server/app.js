@@ -132,8 +132,7 @@ class Events extends EventEmitter {
       this.events.push(event);
     }
     this.emit(eventName, param);
-    // process.env.NODE_ENV === "production" &&
-    this.snapshot();
+    process.env.NODE_ENV === "production" && this.snapshot();
   }
   test(param) {
     if (param.key) {

@@ -85,18 +85,20 @@ export default class SensorContact {
       this.position.y = positionPoints.y;
       this.rotation += yaw;
     } else {
-      this.destination.x = Math.max(
-        -1 * maxDistance,
-        Math.min(maxDistance, this.destination.x + coordinates.x)
-      );
-      this.destination.y = Math.max(
-        -1 * maxDistance,
-        Math.min(maxDistance, this.destination.y + coordinates.y)
-      );
-      this.destination.z = Math.max(
-        -1 * maxDistance,
-        Math.min(maxDistance, this.destination.z + coordinates.z)
-      );
+      this.destination = {
+        x: Math.max(
+          -1 * maxDistance,
+          Math.min(maxDistance, this.destination.x + coordinates.x)
+        ),
+        y: Math.max(
+          -1 * maxDistance,
+          Math.min(maxDistance, this.destination.y + coordinates.y)
+        ),
+        z: Math.max(
+          -1 * maxDistance,
+          Math.min(maxDistance, this.destination.z + coordinates.z)
+        )
+      };
       this.location = this.position;
       this.startTime = Date.now();
       const movementTime = Math.ceil(

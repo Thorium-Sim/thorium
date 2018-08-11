@@ -49,7 +49,7 @@ export const TeamsSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("teamsUpdate"),
-      rootValue => !!(rootValue && rootValue.length)
+      (rootValue, { simulatorId, type }) => true
     )
   }
 };
