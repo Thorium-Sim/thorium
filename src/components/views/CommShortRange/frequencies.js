@@ -47,10 +47,8 @@ class Frequencies extends Component {
     }
     const { height, top } = this.state;
     const obj = {};
-    const value = Math.max(
-      Math.min(((e.pageY || e.touches[0].pageY) - top) / height, 1),
-      0
-    );
+    const y = e.pageY ? e.pageY : e.touches ? e.touches[0].pageY : 0;
+    const value = Math.max(Math.min((y - top) / height, 1), 0);
     obj[this.state.which] = value;
     this.setState(obj);
     this.props.update("frequency", value);

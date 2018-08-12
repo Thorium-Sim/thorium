@@ -7,7 +7,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import FileExplorer from "../TacticalMap/fileExplorer";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-
+import uuid from "uuid";
 import "./signalsCore.scss";
 
 function transparentColor(col) {
@@ -47,33 +47,18 @@ const SHORTRANGE_SUB = gql`
 
 class SignalsCore extends Component {
   state = {
-    editing: false,
-    signals: [
-      {
-        id: 1,
-        name: "Federation",
-        range: { lower: 0.5, upper: 0.6 },
-        color: "blue",
-        image: "Starfleet"
-      },
-      {
-        id: 2,
-        name: "Klingon",
-        range: { lower: 0.6, upper: 0.75 },
-        color: "red",
-        image: "Klingon"
-      }
-    ]
+    signals: []
   };
   componentDidUpdate(prevProps) {
-    if (
-      !this.props.data.loading &&
-      this.props.data.shortRangeComm &&
-      !this.state.editing
-    ) {
+    if (!this.props.data.loading && this.props.data.shortRangeComm) {
       const comm = this.props.data.shortRangeComm[0];
+      const prevComm =
+        prevProps.data.shortRangeComm && prevProps.data.shortRangeComm[0];
       if (!comm) return;
-      if (JSON.stringify(comm.signals) !== JSON.stringify(this.state.signals)) {
+      if (
+        !prevComm ||
+        JSON.stringify(comm.signals) !== JSON.stringify(prevComm.signals)
+      ) {
         this.setState({
           signals: comm.signals
         });
@@ -108,46 +93,55 @@ class SignalsCore extends Component {
     });
   };
   mouseup = () => {
-    this.setState({
-      resize: null
-    });
+    this.setState(
+      {
+        resize: null
+      },
+      this.saveSignals
+    );
     document.removeEventListener("mousemove", this.mousemove);
     document.removeEventListener("mouseup", this.mouseup);
   };
   removeSignal = id => {
-    this.setState({
-      signals: this.state.signals.filter(s => s.id !== id)
-    });
+    this.setState(
+      {
+        signals: this.state.signals.filter(s => s.id !== id)
+      },
+      this.saveSignals
+    );
   };
   addSignal = () => {
     const name = prompt("What is the name of the signal?");
     if (!name) return;
-    this.setState({
-      signals: this.state.signals.concat({
-        id: Math.random(),
-        name,
-        range: { lower: Math.random() / 2, upper: Math.random() / 2 + 0.5 },
-        color: "rebeccapurple"
-      })
-    });
+    const random = Math.random() / 2;
+    this.setState(
+      {
+        signals: this.state.signals.concat({
+          id: uuid.v4(),
+          name,
+          range: { lower: random, upper: random + 0.1 },
+          color: "rebeccapurple"
+        })
+      },
+      this.saveSignals
+    );
   };
   renameSignal = id => {
     const name = prompt("What is the name of the signal?");
     if (!name) return;
-    this.setState({
-      signals: this.state.signals.map(s => {
-        if (s.id === id) {
-          return Object.assign({}, s, { name });
-        }
-        return s;
-      })
-    });
+    this.setState(
+      {
+        signals: this.state.signals.map(s => {
+          if (s.id === id) {
+            return Object.assign({}, s, { name });
+          }
+          return s;
+        })
+      },
+      this.saveSignals
+    );
   };
   saveSignals = () => {
-    this.setState({
-      editing: false,
-      selectedSignal: false
-    });
     const mutation = gql`
       mutation UpdateSignals($id: ID!, $signals: [CommSignalInput]!) {
         commUpdateSignals(id: $id, signals: $signals)
@@ -171,27 +165,33 @@ class SignalsCore extends Component {
     });
   };
   updateColor = (id, color) => {
-    this.setState({
-      signals: this.state.signals.map(s => {
-        if (s.id === id) {
-          return Object.assign({}, s, { color });
-        }
-        return s;
-      })
-    });
+    this.setState(
+      {
+        signals: this.state.signals.map(s => {
+          if (s.id === id) {
+            return Object.assign({}, s, { color });
+          }
+          return s;
+        })
+      },
+      this.saveSignals
+    );
   };
   updateImage = (id, image) => {
-    this.setState({
-      signals: this.state.signals.map(s => {
-        if (s.id === id) {
-          return Object.assign({}, s, { image });
-        }
-        return s;
-      })
-    });
+    this.setState(
+      {
+        signals: this.state.signals.map(s => {
+          if (s.id === id) {
+            return Object.assign({}, s, { image });
+          }
+          return s;
+        })
+      },
+      this.saveSignals
+    );
   };
   render() {
-    const { signals, editing, selectedSignal } = this.state;
+    const { signals, selectedSignal } = this.state;
     return (
       <div className="core-shortRangeSignals">
         <SubscriptionHelper
@@ -230,13 +230,11 @@ class SignalsCore extends Component {
               />
             </div>
             <FileExplorer
+              simple
               directory="/Comm Images"
-              selectedFiles={[
-                "/Comm Images/" +
-                  signals.find(s => s.id === selectedSignal).image
-              ]}
+              selectedFiles={[signals.find(s => s.id === selectedSignal).image]}
               onClick={(evt, container) =>
-                this.updateImage(selectedSignal, container.name)
+                this.updateImage(selectedSignal, container.fullPath)
               }
             />
           </div>
@@ -260,68 +258,41 @@ class SignalsCore extends Component {
                 top: `${s.range.lower * 100}%`
               }}
             >
-              {editing && (
-                <div
-                  onMouseDown={() => this.resize(s.id, "lower")}
-                  className="handle handle-top"
+              <div
+                onMouseDown={() => this.resize(s.id, "lower")}
+                className="handle handle-top"
+              />
+              <label
+                className="signal-label"
+                onDoubleClick={() => this.renameSignal(s.id)}
+              >
+                <Button
+                  color="warning"
+                  size="sm"
+                  onClick={() =>
+                    this.setState({
+                      selectedSignal: s.id
+                    })
+                  }
+                >
+                  Color
+                </Button>
+                <span>{s.name}</span>
+                <i
+                  className="fa fa-ban text-danger hover"
+                  onClick={() => this.removeSignal(s.id)}
                 />
-              )}
-              <label onDoubleClick={() => this.renameSignal(s.id)}>
-                {editing && (
-                  <Button
-                    color="warning"
-                    size="sm"
-                    onClick={() =>
-                      this.setState({
-                        selectedSignal: s.id
-                      })
-                    }
-                  >
-                    Color
-                  </Button>
-                )}
-                {s.name}
-                {editing && (
-                  <i
-                    className="fa fa-ban text-danger hover"
-                    onClick={() => this.removeSignal(s.id)}
-                  />
-                )}
               </label>
-              {editing && (
-                <div
-                  onMouseDown={() => this.resize(s.id, "upper")}
-                  className="handle handle-bottom"
-                />
-              )}
+              <div
+                onMouseDown={() => this.resize(s.id, "upper")}
+                className="handle handle-bottom"
+              />
             </div>
           ))}
         </div>
-        {editing && (
-          <div>
-            <Button color="success" size="sm" onClick={this.addSignal}>
-              Add Signal
-            </Button>
-            <Button color="info" size="sm" onClick={this.saveSignals}>
-              Save
-            </Button>
-          </div>
-        )}
-        {!editing && (
-          <div>
-            <Button
-              color="secondary"
-              size="sm"
-              onClick={() =>
-                this.setState({
-                  editing: true
-                })
-              }
-            >
-              Edit
-            </Button>
-          </div>
-        )}
+        <Button color="success" size="sm" onClick={this.addSignal}>
+          Add Signal
+        </Button>
       </div>
     );
   }
