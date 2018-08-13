@@ -1,6 +1,6 @@
 var os = require("os");
 var ifaces = os.networkInterfaces();
-var ipAddress = null;
+var ipAddress = "localhost";
 Object.keys(ifaces).forEach(function(ifname) {
   var alias = 0;
 
