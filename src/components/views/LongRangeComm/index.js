@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
-import { Row, Col, Card, Button } from "reactstrap";
+import { Row, Col, ListGroup, ListGroupItem, Button } from "reactstrap";
 import Measure from "react-measure";
 import Satellites from "./Satellites";
 import DamageOverlay from "../helpers/DamageOverlay";
@@ -93,7 +93,7 @@ class MessageBox extends Component {
   };
   render() {
     return (
-      <div className="message-box">
+      <div className="message-box flex-max">
         <pre>{this.state.typedMessage}</pre>
       </div>
     );
@@ -286,52 +286,47 @@ class LongRangeComm extends Component {
           message={"Long Range Communications Offline"}
           style={{ minHeight: "400px", height: "calc(100% + 40px)" }}
         />
-        <Col sm={3} className="message-queue">
+        <Col sm={3} className="message-queue flex-column">
           <h4>Message Queue</h4>
-          <Card style={{ minHeight: "60px" }}>
+          <ListGroup className="flex-max auto-scroll">
             {messages.map(m => (
-              <li
+              <ListGroupItem
                 onClick={() => {
                   this.setState({ selectedMessage: m.id, selectedSat: null });
                 }}
-                className={`message-list ${
-                  m.id === this.state.selectedMessage ? "active" : ""
-                }`}
+                active={m.id === this.state.selectedMessage}
                 key={m.id}
               >
                 {`${m.datestamp}: ${m.sender}`}
-              </li>
+              </ListGroupItem>
             ))}
-          </Card>
+          </ListGroup>
         </Col>
-        <Col sm={9}>
-          <div className="sat-container">
-            <Measure
-              bounds
-              onResize={contentRect => {
-                this.setState({ dimensions: contentRect.bounds });
-              }}
-            >
-              {({ measureRef }) => (
-                <div ref={measureRef}>
-                  {this.state.dimensions && (
-                    <Satellites
-                      selectSat={
-                        messageObj ? this.selectSat.bind(this) : () => {}
-                      }
-                      selectedSat={this.state.selectedSat}
-                      width={this.state.dimensions.width}
-                      height={this.state.dimensions.height}
-                      messageLoc={this.state.messageLoc}
-                      messageText={this.state.messageText}
-                      satellites={satellites}
-                      scanProgress={scanProgress}
-                    />
-                  )}
-                </div>
-              )}
-            </Measure>
-          </div>
+        <Col sm={9} className="flex-column">
+          <Measure
+            bounds
+            onResize={contentRect => {
+              this.setState({ dimensions: contentRect.bounds });
+            }}
+          >
+            {({ measureRef }) => (
+              <div ref={measureRef} className="sat-container flex-max">
+                {this.state.dimensions && (
+                  <Satellites
+                    selectSat={
+                      messageObj ? this.selectSat.bind(this) : () => {}
+                    }
+                    selectedSat={this.state.selectedSat}
+                    messageLoc={this.state.messageLoc}
+                    messageText={this.state.messageText}
+                    satellites={satellites}
+                    scanProgress={scanProgress}
+                    {...this.state.dimensions}
+                  />
+                )}
+              </div>
+            )}
+          </Measure>
           {scanProgress === 1 &&
             satellites.length > 0 && (
               <Row style={{ marginTop: "10px" }}>

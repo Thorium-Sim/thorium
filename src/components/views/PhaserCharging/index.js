@@ -153,7 +153,7 @@ class PhaserCharging extends Component {
             </p>
           </Col>
         </Row>
-        <div className="flex-max auto-scroll">
+        <div className="flex-max auto-scroll" style={{ padding: "10px" }}>
           {phasers.beams.map((p, i) => (
             <PhaserBeam
               key={p.id}
@@ -165,7 +165,7 @@ class PhaserCharging extends Component {
           ))}
         </div>
         <Row>
-          <Col sm={{ size: 6, offset: 3 }}>
+          <Col sm={{ size: 8, offset: 2 }}>
             <Row className="phaserButtons">
               <Col sm={6}>
                 <Button

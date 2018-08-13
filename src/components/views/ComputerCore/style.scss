@@ -1,4 +1,8 @@
 .card-computerCore {
+  height: 100%;
+  & > .row {
+    height: 100%;
+  }
   .list-group {
     .list-group-item {
       &.selected {

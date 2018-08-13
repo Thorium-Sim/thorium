@@ -181,11 +181,11 @@ class Review extends Component {
     const { selectedMessage, encrypting, messageText } = this.state;
     const message = messages.find(m => m.id === selectedMessage) || {};
     return (
-      <Container>
-        <Row>
-          <Col sm={4} className="message-queue">
+      <Container style={{ height: "100%" }}>
+        <Row style={{ height: "100%" }}>
+          <Col sm={4} className="message-queue flex-column">
             <h4>Message Queue</h4>
-            <ListGroup>
+            <ListGroup className="flex-max auto-scroll">
               {messages.map(m => (
                 <ListGroupItem
                   key={m.id}
@@ -203,11 +203,8 @@ class Review extends Component {
               ))}
             </ListGroup>
           </Col>
-          <Col sm={8}>
-            <Card
-              className="message-text"
-              style={{ height: "50vh", overflowY: "auto" }}
-            >
+          <Col sm={8} className="flex-column">
+            <Card className="message-text flex-max auto-scroll">
               <CardBody style={{ whiteSpace: "pre-wrap" }}>
                 {messageText}
               </CardBody>

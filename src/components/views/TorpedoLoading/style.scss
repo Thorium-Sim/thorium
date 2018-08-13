@@ -59,24 +59,6 @@
       }
     }
   }
-  @media (width: 1024px) {
-    .torpedoImage {
-      margin-top: 60px;
-    }
-    .torpedoHolder {
-      width: 48px;
-      overflow: hidden;
-      height: 100px;
-      position: absolute;
-      left: 27px;
-      top: 61px;
-      .torpedo {
-        width: 42px;
-        height: 14px;
-        position: absolute;
-      }
-    }
-  }
 }
 
 ::-webkit-scrollbar {

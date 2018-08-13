@@ -1,13 +1,12 @@
 import React from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
-import { Asset } from "../../../helpers/assets";
 import shieldStyle from "./shieldStyle";
 import DamageOverlay from "../helpers/DamageOverlay";
 
 const ShieldData = ({ shields, startLoop, state, _toggleShields }) => {
   return (
-    <Col sm="6" key={shields.id} className="shieldControlBox">
+    <Col key={shields.id} className="shieldControlBox">
       <DamageOverlay
         system={shields}
         message={`${shields.name} Shields Offline`}
@@ -74,7 +73,7 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
             />
           </div>
         </Col>
-        <Col style={{ marginTop: "50px" }} sm={{ size: 5, offset: 1 }}>
+        <Col sm={{ size: 5, offset: 1 }} className="flex-column">
           <Row>
             {shields.map(s => {
               return (
@@ -87,28 +86,28 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
                 />
               );
             })}
-            <Row style={{ marginTop: "20px" }} className="shield-activate">
-              <Col sm={{ size: 6 }}>
-                <Button
-                  color="success"
-                  block
-                  disabled={state.disabledButton.down}
-                  onClick={_toggleShields.bind(this, "down")}
-                >
-                  Lower All Shields
-                </Button>
-              </Col>
-              <Col sm={{ size: 6 }}>
-                <Button
-                  color="success"
-                  block
-                  disabled={state.disabledButton.up}
-                  onClick={_toggleShields.bind(this, "up")}
-                >
-                  Raise All Shields
-                </Button>
-              </Col>
-            </Row>
+          </Row>
+          <Row style={{ marginTop: "20px" }} className="shield-activate">
+            <Col sm={{ size: 6 }}>
+              <Button
+                color="success"
+                block
+                disabled={state.disabledButton.down}
+                onClick={_toggleShields.bind(this, "down")}
+              >
+                Lower All Shields
+              </Button>
+            </Col>
+            <Col sm={{ size: 6 }}>
+              <Button
+                color="success"
+                block
+                disabled={state.disabledButton.up}
+                onClick={_toggleShields.bind(this, "up")}
+              >
+                Raise All Shields
+              </Button>
+            </Col>
           </Row>
         </Col>
       </Row>

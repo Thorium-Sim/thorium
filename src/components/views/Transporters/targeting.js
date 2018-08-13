@@ -125,7 +125,7 @@ export default class Target extends Component {
   };
   render() {
     return (
-      <div>
+      <div className="flex-column">
         <Row>
           <h2
             style={{
@@ -138,7 +138,7 @@ export default class Target extends Component {
             Transport Possible
           </h2>
         </Row>
-        <Row>
+        <Row className="flex-max">
           <Col
             className="targetBox"
             lg={{ size: 6 }}

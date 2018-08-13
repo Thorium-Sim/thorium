@@ -145,21 +145,11 @@ class InternalComm extends Component {
           system={internalComm}
         />
         <Row>
-          <Col sm={{ size: 2, offset: 1 }}>
-            <Button
-              block
-              disabled={
-                (internalComm.state !== "connected" &&
-                  !!internalComm.outgoing) ||
-                internalComm.state === "connected"
-              }
-              onClick={this.call.bind(this, true)}
-              className="all-decks"
-            >
-              All Decks
-            </Button>
-          </Col>
-          <Col sm={{ size: 2 }} className="room-select">
+          <Col
+            sm={{ size: 4 }}
+            xl={{ size: 2, offset: 1 }}
+            className="room-select"
+          >
             <DeckDropdown
               selectedDeck={deck}
               decks={decks}
@@ -173,7 +163,7 @@ class InternalComm extends Component {
               }
             />
           </Col>
-          <Col sm={{ size: 3 }}>
+          <Col sm={{ size: 8 }} xl={{ size: 3 }}>
             <RoomDropdown
               selectedDeck={deck}
               selectedRoom={room}
@@ -186,7 +176,21 @@ class InternalComm extends Component {
               setSelected={({ room: roomD }) => this.setState({ room: roomD })}
             />
           </Col>
-          <Col sm={{ size: 2 }}>
+          <Col sm={{ size: 6 }} xl={{ size: 2 }}>
+            <Button
+              block
+              disabled={
+                (internalComm.state !== "connected" &&
+                  !!internalComm.outgoing) ||
+                internalComm.state === "connected"
+              }
+              onClick={this.call.bind(this, true)}
+              className="all-decks"
+            >
+              All Decks
+            </Button>
+          </Col>
+          <Col sm={{ size: 6 }} xl={{ size: 3 }}>
             <Button
               color="success"
               className="call"

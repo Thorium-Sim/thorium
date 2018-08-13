@@ -215,7 +215,7 @@ class CommShortRange extends Component {
               )}
             </Mutation>
           </Col>
-          <Col lg={{ size: 4, offset: 1 }}>
+          <Col xl={{ size: 4, offset: 1 }} sm={{ size: 5 }}>
             <Frequencies
               {...this.props}
               frequency={frequency}

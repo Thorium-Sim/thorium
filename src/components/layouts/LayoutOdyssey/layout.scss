@@ -265,13 +265,12 @@
     $active-background: darken($background, 20%),
     $active-border: darken($border, 22.5%)
   ) {
-    color: color-yiq($background);
+    color: white;
     @include gradient-bg($background);
     border-color: $border;
     @include box-shadow($btn-box-shadow);
 
     @include hover {
-      color: color-yiq($hover-background);
       @include gradient-bg($hover-background);
       border-color: $hover-border;
     }
@@ -289,7 +288,6 @@
     // Disabled comes first so active can properly restyle
     &.disabled,
     &:disabled {
-      color: color-yiq($background);
       background-color: $background;
       border-color: $border;
     }
@@ -297,7 +295,6 @@
     &:not(:disabled):not(.disabled):active,
     &:not(:disabled):not(.disabled).active,
     .show > &.dropdown-toggle {
-      color: color-yiq($active-background);
       background-color: $active-background;
       border-color: $active-border;
 
@@ -341,6 +338,7 @@
     color: white;
   }
   .card,
+  .list-group,
   input[type="text"].form-control,
   input[type="number"].form-control,
   textarea {
@@ -353,6 +351,7 @@
 
   &.alertColor1 {
     .card,
+    .list-group,
     input[type="text"].form-control,
     input[type="number"].form-control,
     textarea {
@@ -361,6 +360,7 @@
   }
   &.alertColor2 {
     .card,
+    .list-group,
     input[type="text"].form-control,
     input[type="number"].form-control,
     textarea {
@@ -369,6 +369,7 @@
   }
   &.alertColor3 {
     .card,
+    .list-group,
     input[type="text"].form-control,
     input[type="number"].form-control,
     textarea {
@@ -377,6 +378,7 @@
   }
   &.alertColor4 {
     .card,
+    .list-group,
     input[type="text"].form-control,
     input[type="number"].form-control,
     textarea {
@@ -385,6 +387,7 @@
   }
   &.alertColor5 {
     .card,
+    .list-group,
     input[type="text"].form-control,
     input[type="number"].form-control,
     textarea {
@@ -393,6 +396,7 @@
   }
   &.alertColorp {
     .card,
+    .list-group,
     input[type="text"].form-control,
     input[type="number"].form-control,
     textarea {
@@ -431,17 +435,12 @@
     background-color: black;
   }
   .cardSensors {
-    width: 90%;
-    margin: 0 auto;
     .list-group-item {
       padding: 0.2rem 1.25rem;
     }
   }
   .probe-construction .probeEquipment .card {
     max-height: 31vh;
-  }
-  .probe-network {
-    width: 73%;
   }
   .long-range-comm pre {
     height: 28vh;

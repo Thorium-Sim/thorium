@@ -26,9 +26,9 @@ class ComputerCore extends Component {
     return (
       <Container fluid className="card-computerCore">
         <Row>
-          <Col sm={2}>
+          <Col sm={2} className="flex-column">
             <h4>Access Levels</h4>
-            <ListGroup>
+            <ListGroup className="flex-max auto-scroll">
               {Array(10)
                 .fill(0)
                 .map((_, i) => (
