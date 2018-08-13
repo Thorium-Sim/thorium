@@ -22,58 +22,53 @@ export default class Satellites extends Component {
     } = this.props;
     //const [width, height] = [window.innerWidth / 2, window.innerHeight / 2.5];
     return (
-      <div className="sat-container">
+      <div className="starfield">
+        <div className="gridlines" />
         <div
-          className="starfield"
-          style={{ height: `${height}px`, width: `${width}px` }}
+          className="message-ball "
+          style={{
+            left: `calc(${width - 36} * ${messageLoc.x}px)`,
+            top: `calc(${height - 36} * ${messageLoc.y}px)`,
+            transitionDuration: `${4 -
+              (selectedSat ? selectedSat.strength : 0) * 2}s`,
+            opacity:
+              messageLoc.x === 0 ||
+              messageLoc.y === 0 ||
+              messageLoc.x === 1 ||
+              messageLoc.y === 1
+                ? 0
+                : 1
+          }}
         >
-          <div className="gridlines" />
           <div
-            className="message-ball "
+            className="message-text"
             style={{
               left: `calc(${width - 36} * ${messageLoc.x}px)`,
-              top: `calc(${height - 36} * ${messageLoc.y}px)`,
-              transitionDuration: `${4 -
-                (selectedSat ? selectedSat.strength : 0) * 2}s`,
-              opacity:
-                messageLoc.x === 0 ||
-                messageLoc.y === 0 ||
-                messageLoc.x === 1 ||
-                messageLoc.y === 1
-                  ? 0
-                  : 1
+              top: `calc(${height - 36} * ${messageLoc.y}px)`
             }}
           >
-            <div
-              className="message-text"
-              style={{
-                left: `calc(${width - 36} * ${messageLoc.x}px)`,
-                top: `calc(${height - 36} * ${messageLoc.y}px)`
-              }}
-            >
-              {messageText}
-            </div>
+            {messageText}
           </div>
-          <div
-            className="scanner-outer"
-            style={{ transform: `translateX(${(scanProgress - 0.05) * 105}%)` }}
-          >
-            <div className="scanner-bar" />
-          </div>
-          {satellites.map(
-            s =>
-              s.x <= scanProgress && (
-                <Sat
-                  {...s}
-                  key={s.id}
-                  width={width}
-                  height={height}
-                  selectSat={selectSat}
-                  selectedSat={selectedSat}
-                />
-              )
-          )}
         </div>
+        <div
+          className="scanner-outer"
+          style={{ transform: `translateX(${(scanProgress - 0.05) * 105}%)` }}
+        >
+          <div className="scanner-bar" />
+        </div>
+        {satellites.map(
+          s =>
+            s.x <= scanProgress && (
+              <Sat
+                {...s}
+                key={s.id}
+                width={width}
+                height={height}
+                selectSat={selectSat}
+                selectedSat={selectedSat}
+              />
+            )
+        )}
       </div>
     );
   }

@@ -1,12 +1,25 @@
 .card-stealthField {
   height: 100%;
 
+  .stealth-columns {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 2fr;
+    grid-gap: 2px;
+    align-items: center;
+    overflow-y: auto;
+  }
   .stealthBars {
-    margin-top: 50px;
+    margin-top: 20px;
+    flex: 1;
+    text-align: right;
+    .stealth-bar-text {
+      flex: 1;
+    }
     .stealth-bar-container {
       position: relative;
       height: 22px;
       width: 100%;
+      flex: 3;
     }
     .stealth-bar {
       background: linear-gradient(

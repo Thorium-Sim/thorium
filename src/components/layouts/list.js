@@ -5,5 +5,6 @@ export default [
   "LayoutOdyssey",
   "LayoutGlass",
   "LayoutGlassLite",
-  "LayoutLine"
+  "LayoutLine",
+  "LayoutPhoenix"
 ];

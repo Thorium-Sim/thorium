@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Tour from "../../../helpers/tourHelper";
@@ -195,7 +195,7 @@ class ShieldControl extends Component {
     const shields = this.props.data.shields;
     if (!shields) return null;
     return (
-      <div>
+      <Fragment>
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
@@ -248,7 +248,7 @@ class ShieldControl extends Component {
           return "Invalid Shield Configuration";
         })()}
         <Tour steps={trainingSteps} client={this.props.clientObj} />
-      </div>
+      </Fragment>
     );
   }
 }
