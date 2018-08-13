@@ -1,302 +1,90 @@
 import React from "react";
 import GenericSystemConfig from "./Generic";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
+import { Button } from "reactstrap";
 import SignalsCore from "../../../../../components/views/CommShortRange/signalsCore";
+import uuid from "uuid";
 
 const ShortRangeComm = props => {
-  return (
-    <GenericSystemConfig {...props}>
-      <SignalsCore simulator={{ id: props.simulatorId }} />
-    </GenericSystemConfig>
-  );
-};
-export default ShortRangeComm;
-/*
-const ShortRangeComm = ({ data, client, simulatorId, type }) => {
-  const defaultSignals = (which, { id, signals }) => {
-    // Remove all of the signals first
-    signals.forEach(s => removeSignal(id, s.id));
-    // Add the new signals
+  const { id, simulatorId } = props;
+  const defaultSignals = action => which => {
     const defaultSignals = {
       trek: [
         {
-          image: "Romulan",
+          id: uuid.v4(),
+          image: "/Comm Images/Romulan.png",
           name: "Romulan",
           color: "#00ff00",
           range: { upper: 1, lower: 0.85 }
         },
         {
-          image: "Cardassian",
+          id: uuid.v4(),
+          image: "/Comm Images/Cardassian.png",
           name: "Cardassian",
           color: "#ffaa00",
           range: { upper: 0.85, lower: 0.75 }
         },
         {
-          image: "General Use",
+          id: uuid.v4(),
+          image: "/Comm Images/General Use.png",
           name: "General Use",
           color: "#ffffff",
           range: { upper: 0.75, lower: 0.58 }
         },
         {
-          image: "Starfleet",
+          id: uuid.v4(),
+          image: "/Comm Images/Starfleet.png",
           name: "Starfleet",
           color: "#0088ff",
           range: { upper: 0.58, lower: 0.4 }
         },
         {
-          image: "Klingon",
+          id: uuid.v4(),
+          image: "/Comm Images/Klingon.png",
           name: "Klingon",
           color: "#ff0000",
           range: { upper: 0.4, lower: 0.3 }
         },
         {
-          image: "Orion",
+          id: uuid.v4(),
+          image: "/Comm Images/Orion.png",
           name: "Orion",
           color: "#888888",
           range: { upper: 0.3, lower: 0.22 }
         },
         {
-          image: "Ferengi",
+          id: uuid.v4(),
+          image: "/Comm Images/Ferengi.png",
           name: "Ferengi",
           color: "#ffff00",
           range: { upper: 0.22, lower: 0 }
         }
       ]
     };
-    defaultSignals[which].forEach(s => addSignal({ id }, s));
+    action({ variables: { id, signals: defaultSignals[which] } });
   };
-  const addSignal = ({ id }, signal = {}) => {
-    const variables = {
-      id,
-      signal
-    };
-    client.mutate({
-      mutation: ops.addSignal,
-      variables,
-      refetchQueries: ["ShortRangeComm"]
-    });
-  };
-  const removeSignal = (id, signalId) => {
-    const variables = {
-      id,
-      signalId
-    };
-    client.mutate({
-      mutation: ops.removeSignal,
-      variables,
-      refetchQueries: ["ShortRangeComm"]
-    });
-  };
-  const signalUpdate = (which, { id: signalId, range }, { id }, value) => {
-    const signal = { id: signalId };
-    if (which === "range-lower") {
-      signal.range = { lower: parseFloat(value), upper: range.upper };
-    } else if (which === "range-upper") {
-      signal.range = { lower: range.lower, upper: parseFloat(value) };
-    } else {
-      signal[which] = value;
-    }
-    const variables = {
-      id,
-      signal
-    };
-    client.mutate({
-      mutation: ops.updateSignal,
-      variables,
-      refetchQueries: ["ShortRangeComm"]
-    });
-  };
-  const { shortRangeComm, assetFolders, decks } = data;
-  if (data.loading && !shortRangeComm) return null;
-  const [folders] = assetFolders;
-  const { objects } = folders;
+
   return (
-    <div className="shortRangeComm scroll">
-      {shortRangeComm.map(e => (
-        <div key={e.id}>
-          <GenericSystemConfig
-            client={client}
-            simulatorId={simulatorId}
-            type={type}
-            data={{ systems: [e], decks }}
-          >
-            <Button
-              size="sm"
-              color="info"
-              onClick={() => defaultSignals("trek", e)}
-            >
-              Default Star Trek
-            </Button>
-            {e.signals.map(s => (
-              <div key={s.id} style={{ border: "solid 1px rgba(0,0,0,0.25)" }}>
-                <FormGroup>
-                  <Label
-                    style={{ display: "inline-block", marginRight: "5px" }}
-                  >
-                    Name
-                    <Input
-                      type="text"
-                      value={s.name}
-                      onChange={evt => {
-                        signalUpdate("name", s, e, evt.target.value);
-                      }}
-                    />
-                  </Label>
-                  <Label
-                    style={{ display: "inline-block", marginRight: "5px" }}
-                  >
-                    Color
-                    <Input
-                      style={{
-                        height: "30px",
-                        paddingTop: "0px",
-                        paddingBottom: "0px"
-                      }}
-                      type="color"
-                      value={s.color}
-                      onChange={evt => {
-                        signalUpdate("color", s, e, evt.target.value);
-                      }}
-                    />
-                  </Label>
-                  <Label
-                    style={{ display: "inline-block", marginRight: "5px" }}
-                  >
-                    Image
-                    <Input
-                      type="select"
-                      value={s.image}
-                      onChange={evt =>
-                        signalUpdate("image", s, e, evt.target.value)
-                      }
-                    >
-                      {objects.map(i => (
-                        <option key={i.id} value={i.name}>
-                          {i.name}
-                        </option>
-                      ))}
-                    </Input>
-                  </Label>
-                  <Button
-                    size="sm"
-                    color="danger"
-                    onClick={() => removeSignal(e.id, s.id)}
-                  >
-                    Remove Signal
-                  </Button>
-                </FormGroup>
-                <FormGroup>
-                  <Label
-                    style={{ display: "inline-block", marginRight: "5px" }}
-                  >
-                    Range Lower
-                    <Input
-                      type="range"
-                      min="0"
-                      max="100"
-                      step="1"
-                      defaultValue={s.range.lower * 100}
-                      onMouseUp={evt => {
-                        signalUpdate(
-                          "range-lower",
-                          s,
-                          e,
-                          evt.target.value / 100
-                        );
-                      }}
-                    />
-                    {s.range.lower}
-                  </Label>
-                  <Label
-                    style={{ display: "inline-block", marginRight: "5px" }}
-                  >
-                    Range Upper
-                    <Input
-                      type="range"
-                      min="0"
-                      max="100"
-                      step="1"
-                      defaultValue={s.range.upper * 100}
-                      onMouseUp={evt => {
-                        signalUpdate(
-                          "range-upper",
-                          s,
-                          e,
-                          evt.target.value / 100
-                        );
-                      }}
-                    />
-                    {s.range.upper}
-                  </Label>
-                </FormGroup>
-              </div>
-            ))}
-            <Button size="sm" color="success" onClick={() => addSignal(e)}>
-              Add Signal
-            </Button>
-          </GenericSystemConfig>
-        </div>
-      ))}
-    </div>
+    <GenericSystemConfig {...props}>
+      <div>Default Comm Signals</div>
+      <Mutation
+        mutation={gql`
+          mutation UpdateSignals($id: ID!, $signals: [CommSignalInput]!) {
+            commUpdateSignals(id: $id, signals: $signals)
+          }
+        `}
+      >
+        {action => (
+          <Button size="sm" onClick={() => defaultSignals(action)("trek")}>
+            Star Trek
+          </Button>
+        )}
+      </Mutation>
+      <div style={{ height: `calc(100% - 60px)` }}>
+        <SignalsCore simulator={{ id: simulatorId }} />
+      </div>
+    </GenericSystemConfig>
   );
 };
-
-const SYSTEM_QUERY = gql`
-  query ShortRangeComm($id: ID!) {
-    shortRangeComm(simulatorId: $id) {
-      id
-      name
-      displayName
-      type
-      power {
-        power
-        powerLevels
-        defaultLevel
-      }
-      locations {
-        id
-        name
-        deck {
-          number
-        }
-      }
-      signals {
-        id
-        name
-        image
-        range {
-          lower
-          upper
-        }
-        color
-      }
-    }
-    decks(simulatorId: $id) {
-      id
-      number
-      rooms {
-        id
-        name
-      }
-    }
-    assetFolders(names: ["Comm Images"]) {
-      id
-      name
-      objects {
-        id
-        name
-        fullPath
-      }
-    }
-  }
-`;
-
-export default graphql(SYSTEM_QUERY, {
-  options: ownProps => ({
-    fetchPolicy: "cache-and-network",
-
-    variables: {
-      id: ownProps.simulatorId
-    }
-  })
-})(ShortRangeComm);
-*/
+export default ShortRangeComm;

@@ -127,7 +127,10 @@ class AdvancedNavigation extends Component {
     });
   }, 250);
   getCurrentSpeed() {
-    const velocity = this.props.data.engines[0].velocity;
+    const velocity =
+      this.props.data.engines && this.props.data.engines.length > 0
+        ? this.props.data.engines[0].velocity
+        : 0;
     const speed = this.props.data.engines
       .reduce((prev, next) => {
         return prev.concat(next.speeds);
@@ -148,7 +151,7 @@ class AdvancedNavigation extends Component {
   };
   velocity = () => {
     const engines = this.props.data.engines;
-    return engines[0].velocity;
+    return engines[0] ? engines[0].velocity : 0;
   };
   getInitialValue = ({ speeds, velocity }) => {
     const speedIndex = speeds.findIndex(s => s.velocity === velocity);

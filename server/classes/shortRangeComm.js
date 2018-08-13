@@ -34,7 +34,13 @@ export default class ShortRangeComm extends System {
     this.signals = this.signals.filter(s => s.id !== signalId);
   }
   updateCommSignal(commSignalInput) {
-    this.signals.find(s => s.id === commSignalInput.id).update(commSignalInput);
+    console.log(commSignalInput);
+    const signal = this.signals.find(s => s.id === commSignalInput.id);
+    if (!signal) {
+      this.addCommSignal(commSignalInput);
+    } else {
+      signal.update(commSignalInput);
+    }
   }
   addArrow(commArrowInput) {
     this.arrows.push(new Arrow(commArrowInput, this.signals));

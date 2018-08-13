@@ -55,6 +55,7 @@ class Events extends EventEmitter {
     this.keyboards = [];
     this.sounds = [];
     this.autoUpdate = true;
+    this.migrations = { assets: true };
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;
@@ -76,6 +77,9 @@ class Events extends EventEmitter {
         key === "_eventsCount"
       ) {
         return;
+      }
+      if (key === "autoUpdate" || key === "migrations") {
+        this[key] = snapshot[key];
       }
       if (snapshot[key] instanceof Array) {
         snapshot[key].forEach(obj => {

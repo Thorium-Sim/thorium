@@ -33,7 +33,7 @@ class Ship {
 class Assets {
   constructor(params = {}) {
     this.mesh = params.mesh || "/Simulator/default/mesh.obj";
-    this.texture = params.texture || "/Simulator/default/texture.png";
+    this.texture = params.texture || "/Simulator/default/texture.jpg";
     this.side = params.side || "/Simulator/default/side.png";
     this.top = params.top || "/Simulator/default/top.png";
     this.logo = params.logo || "/Simulator/default/logo.svg";

@@ -13,9 +13,19 @@
   .color-picker {
     background-color: rgba(0, 0, 0, 0.8);
     height: 100%;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
     position: absolute;
     z-index: 2;
+  }
+  .signal-label {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    span {
+      pointer-events: none;
+    }
   }
   .signal {
     position: absolute;
@@ -33,7 +43,7 @@
       border: solid 2px #fff;
       border-radius: 50%;
       cursor: pointer;
-      z-index: -1;
+      z-index: 1;
     }
     .handle-top {
       top: 0;

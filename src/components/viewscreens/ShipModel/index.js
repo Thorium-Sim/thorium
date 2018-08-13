@@ -39,7 +39,7 @@ class ShipModel extends Component {
                     <ThreeView
                       {...data}
                       src={src}
-                      texSrc={"/3D/Texture/Simulator/default.png"}
+                      texSrc={"/3D/Texture/Simulator/default.jpg"}
                       simulatorId={this.props.simulator.id}
                       dimensions={this.state.dimensions}
                     />
