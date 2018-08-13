@@ -2,7 +2,7 @@
   margin-top: 5vh;
   display: flex;
   align-items: center;
-  flex-direction:column;
+  flex-direction: column;
   h1 {
     padding-bottom: 40px;
     font-size: 50px;
@@ -22,11 +22,10 @@
     width: 100%;
     position: absolute;
     mix-blend-mode: overlay;
-    //-webkit-mask-image: url(http://localhost:3000/assets/Ship%20Views/Right/default.png);
     -webkit-mask-position: center;
     -webkit-mask-size: cover;
     -webkit-mask-repeat: no-repeat;
-    }
+  }
   img {
     width: 100%;
   }

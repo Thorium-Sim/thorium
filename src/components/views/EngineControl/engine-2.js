@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Row, Button, Col } from "reactstrap";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag";
@@ -40,7 +40,7 @@ export default withApollo(props => {
     });
   };
   return (
-    <Row>
+    <Fragment>
       <Col>
         {engines[0].speeds.map((speed, speedIndex) => {
           let speedWord = speed;
@@ -67,8 +67,8 @@ export default withApollo(props => {
           message={`${engines[0].name} Engines Offline`}
         />
       </Col>
-      <Col sm={2}>
-        <Row>
+      <Col sm={2} className="flex-column">
+        <Row className="flex-max">
           <Col sm={6} className="heat">
             <HeatBar
               label="Heat"
@@ -99,8 +99,8 @@ export default withApollo(props => {
         </Row>
       </Col>
       <Col />
-      <Col sm={2}>
-        <Row>
+      <Col sm={2} className="flex-column">
+        <Row className="flex-max">
           <Col sm={6}>
             <HeatBar
               label="Heat"
@@ -129,7 +129,7 @@ export default withApollo(props => {
           </Col>
         </Row>
       </Col>
-      <Col>
+      <Col className="flex-column auto-scroll">
         {engines[1].speeds.map((speed, speedIndex) => {
           let speedWord = speed;
           if (typeof speed === "object") {
@@ -155,6 +155,6 @@ export default withApollo(props => {
           message={`${engines[1].name} Engines Offline`}
         />
       </Col>
-    </Row>
+    </Fragment>
   );
 });

@@ -3,7 +3,9 @@ import LayoutList from "../../../../components/layouts";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 
-const Layouts = Object.keys(LayoutList);
+const Layouts = Object.keys(LayoutList).filter(
+  s => s.indexOf("Viewscreen") === -1
+);
 
 const ops = {
   name: gql`

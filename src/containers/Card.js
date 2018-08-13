@@ -30,10 +30,10 @@ const CardRenderer = props => {
           id: "test",
           name: "Test",
           alertLevel: "5",
-          layout: "LayoutLine",
+          layout: "LayoutPhoenix",
           assets: {
             mesh: "/Simulator/default/mesh.obj",
-            texture: "/Simulator/default/texture.png",
+            texture: "/Simulator/default/texture.jpg",
             side: "/Simulator/default/side.png",
             top: "/Simulator/default/top.png",
             logo: "/Simulator/default/logo.svg"
@@ -41,7 +41,7 @@ const CardRenderer = props => {
         },
         assets: {
           mesh: "/Simulator/default/mesh.obj",
-          texture: "/Simulator/default/texture.png",
+          texture: "/Simulator/default/texture.jpg",
           side: "/Simulator/default/side.png",
           top: "/Simulator/default/top.png",
           logo: "/Simulator/default/logo.svg"

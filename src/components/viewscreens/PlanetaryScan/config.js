@@ -14,7 +14,7 @@ class PlanetaryScanConfig extends Component {
     if (!planet) {
       updateData(
         JSON.stringify(
-          Object.assign({}, data, { planet: "/3D/Texture/Planets/Alpine.png" })
+          Object.assign({}, data, { planet: "/3D/Texture/Planets/Alpine.jpg" })
         )
       );
     }

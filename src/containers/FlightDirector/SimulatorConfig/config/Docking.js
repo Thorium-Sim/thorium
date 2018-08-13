@@ -56,8 +56,8 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
     });
   }
 
-  if (data.loading) return null;
   const { docking, assetFolders } = data;
+  if (!docking) return null;
   return (
     <div className="docking-config">
       <fieldset className="form-group">
@@ -76,7 +76,7 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
               <tr key={d.id}>
                 <td>
                   <Input
-                    value={d.name || ""}
+                    defaultValue={d.name || ""}
                     onChange={evt =>
                       updateShuttle(d.id, "name", evt.target.value)
                     }

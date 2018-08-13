@@ -97,7 +97,7 @@ class CargoControl extends Component {
       fromDeck = decks[0].id;
     }
     return (
-      <Container className="cargo-control">
+      <Container className="cargo-control flex-column">
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
@@ -152,7 +152,7 @@ class CargoControl extends Component {
             />
           </Col>
         </Row>
-        <Row className="inventoryRow">
+        <Row className="inventoryRow flex-max">
           <Col sm={4} className="to-cargo">
             <Card>
               <CardBody>

@@ -5,7 +5,6 @@ import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import tinycolor from "tinycolor2";
-import { Asset } from "../../../helpers/assets";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 
 import "./style.scss";
@@ -202,14 +201,19 @@ class Communications extends Component {
             })
           }
         />
-        <Container>
+        <Container fluid>
           <Row className="justify-content-center">
             {comms.length > 0 ? (
               comms.map(c => (
                 <Col key={c.id} className="comm-container">
-                  <Asset asset={`/Comm Images/${c.image}`}>
-                    {({ src }) => <img alt="comm" src={src} />}
-                  </Asset>
+                  <img
+                    alt="comm"
+                    src={`/assets${
+                      c.image.indexOf("Comm Images") === -1
+                        ? "/Comm Images/"
+                        : ""
+                    }${c.image}`}
+                  />
                   <h2>
                     {c.name} - {Math.round(c.frequency * 37700 + 37700) / 100}
                     MHz

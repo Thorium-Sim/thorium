@@ -1,5 +1,15 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Card, CardBody, Button, Label } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  CardBody,
+  Button,
+  Label,
+  ListGroup,
+  ListGroupItem
+} from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
@@ -225,8 +235,8 @@ class Decoding extends Component {
           }
         />
         <Row>
-          <Col sm={8}>
-            <Card style={{ padding: 0 }}>
+          <Col sm={8} className="flex-column">
+            <Card style={{ padding: 0 }} className="flex-max">
               <Measure
                 bounds
                 onResize={contentRect => {
@@ -302,7 +312,7 @@ class Decoding extends Component {
                 />
               </Col>
             </Row>
-            <Row>
+            <Row className="flex-max">
               <Card className="message-field">
                 <CardBody>
                   <pre>{this.state.decodedMessage}</pre>
@@ -310,21 +320,22 @@ class Decoding extends Component {
               </Card>
             </Row>
           </Col>
-          <Col sm={4} className="incoming-messages">
+          <Col sm={4} className="incoming-messages flex-column">
             <h3>Incoming Messages</h3>
-            <Card style={{ minHeight: "40px" }}>
+            <ListGroup
+              style={{ minHeight: "40px" }}
+              className="flex-max auto-scroll"
+            >
               {sys.messages.map(m => (
-                <li
+                <ListGroupItem
                   key={m.id}
                   onClick={this._selectMessage.bind(this, m)}
-                  className={`${
-                    m.id === this.state.selectedMessage ? "active" : ""
-                  } list-group-item`}
+                  active={m.id === this.state.selectedMessage}
                 >
                   {m.datestamp} - {m.sender}
-                </li>
+                </ListGroupItem>
               ))}
-            </Card>
+            </ListGroup>
           </Col>
         </Row>
         <Tour steps={trainingSteps} client={this.props.clientObj} />

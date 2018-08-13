@@ -58,12 +58,6 @@ export default class StealthBoard extends Component {
   render() {
     const { state } = this.props;
     const { systems } = this.state;
-    return (
-      <div className="stealth-board">
-        {[StealthBars].filter(() => state).map(Comp => (
-          <Comp key={Comp.name} systems={systems} />
-        ))}
-      </div>
-    );
+    return state && <StealthBars systems={systems} />;
   }
 }

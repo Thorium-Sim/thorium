@@ -31,6 +31,7 @@ export default {
   keyboards: [],
   sounds: [],
   autoUpdate: true,
+  migrations: {},
   events: [],
   replaying: false,
   snapshotVersion: 0,

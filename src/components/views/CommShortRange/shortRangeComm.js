@@ -4,7 +4,6 @@ import gql from "graphql-tag";
 import { withApollo, Mutation } from "react-apollo";
 import Measure from "react-measure";
 import Tour from "../../../helpers/tourHelper";
-import { Asset } from "../../../helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
 import FrequencySignals from "./frequency";
 import Frequencies from "./frequencies";
@@ -153,21 +152,21 @@ class CommShortRange extends Component {
             <Card>
               <div className="spacer" />
               {signals.map(s => (
-                <Asset asset={`/Comm Images/${s.image}`}>
-                  {({ src }) => (
-                    <div
-                      key={s.id}
-                      className={`img-container ${
-                        s.id === this.getSignal().id ? "selected" : ""
-                      }`}
-                      style={{
-                        backgroundImage: `url('${src}')`
-                      }}
-                    >
-                      <div className="spacer" />
-                    </div>
-                  )}
-                </Asset>
+                <div
+                  key={s.id}
+                  className={`img-container ${
+                    s.id === this.getSignal().id ? "selected" : ""
+                  }`}
+                  style={{
+                    backgroundImage: `url('/assets/${
+                      s.image.indexOf("Comm Images") === -1
+                        ? "/Comm Images/"
+                        : ""
+                    }${s.image}')`
+                  }}
+                >
+                  <div className="spacer" />
+                </div>
               ))}
               <CardBody>
                 <div>
@@ -216,7 +215,7 @@ class CommShortRange extends Component {
               )}
             </Mutation>
           </Col>
-          <Col lg={{ size: 4, offset: 1 }}>
+          <Col xl={{ size: 4, offset: 1 }} sm={{ size: 5 }}>
             <Frequencies
               {...this.props}
               frequency={frequency}

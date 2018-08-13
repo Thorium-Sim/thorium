@@ -46,7 +46,7 @@ const regexPath = /[^\\]*\.(\w+)$/;
 
 export default () => {
   return new Promise(done => {
-    if (!fs.existsSync(`${assetDir}/Simulator`)) {
+    if (!App.migrations.assets) {
       console.log(chalk.cyan("Migrating assets to filesystem..."));
       return Promise.resolve()
         .then(() => {

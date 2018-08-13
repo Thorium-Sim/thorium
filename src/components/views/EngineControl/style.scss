@@ -1,4 +1,5 @@
 .EngineControl {
+  height: 100%;
   .enginesBar {
     display: flex;
     justify-content: space-between;
@@ -82,22 +83,12 @@
 }
 .heatBox {
   width: 100%;
-  height: 55vh;
+  height: calc(100% - 34px);
   position: relative;
   border: solid 1px white;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   background-color: rgba(0, 0, 0, 0.25);
-}
-@media (width: 1366px) {
-  .heatBox {
-    height: 50vh;
-  }
-}
-@media (width: 1024px) {
-  .heatBox {
-    height: 45vh;
-  }
 }
 .heatBox-Label {
   width: 100%;
@@ -110,4 +101,20 @@
   left: 0px;
   background-size: 5px 3px;
   transition: height 0.5s ease-out;
+}
+
+.flex-column {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.flex-max {
+  flex: 1;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.auto-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
 }

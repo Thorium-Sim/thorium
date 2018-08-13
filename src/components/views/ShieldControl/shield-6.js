@@ -1,7 +1,6 @@
 import React from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
-import { Asset } from "../../../helpers/assets";
 import shieldStyle from "./shieldStyle";
 import DamageOverlay from "../helpers/DamageOverlay";
 
@@ -57,62 +56,54 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
   return (
     <Container fluid className="shields">
       <Row>
-        <Col sm="5">
+        <Col sm="5" className="flex-column">
           <Row>
-            <Col sm={{ size: 9, offset: 2 }} style={{ maxHeight: "50vh" }}>
+            <Col sm={{ size: 9, offset: 2 }}>
               <div
                 className="shieldBubble"
                 style={{ boxShadow: shieldStyle(shields) }}
               >
-                <Asset asset={assets.top}>
-                  {({ src }) => (
-                    <div
-                      alt="ship"
-                      style={{
-                        width: "100%",
-                        height: "30vh",
-                        backgroundImage: `url("${src}")`,
-                        backgroundSize: "contain",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat"
-                      }}
-                      className="shieldImage"
-                      draggable="false"
-                    />
-                  )}
-                </Asset>
+                <div
+                  alt="ship"
+                  style={{
+                    width: "100%",
+                    height: "30vh",
+                    backgroundImage: `url("/assets${assets.top}")`,
+                    backgroundSize: "contain",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat"
+                  }}
+                  className="shieldImage"
+                  draggable="false"
+                />
               </div>
             </Col>
           </Row>
           <Row>
-            <Col sm={{ size: 10, offset: 2 }} style={{ marginTop: "50px" }}>
+            <Col sm={{ size: 10, offset: 2 }} style={{ marginTop: "20px" }}>
               <div
                 className="shieldBubble"
                 style={{ boxShadow: shieldStyle(shields, true) }}
               >
-                <Asset asset={assets.side}>
-                  {({ src }) => (
-                    <div
-                      alt="ship"
-                      style={{
-                        width: "100%",
-                        height: "20vh",
-                        backgroundImage: `url("${src}")`,
-                        backgroundSize: "contain",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat"
-                      }}
-                      className="shieldImage"
-                      draggable="false"
-                    />
-                  )}
-                </Asset>
+                <div
+                  alt="ship"
+                  style={{
+                    width: "100%",
+                    height: "20vh",
+                    backgroundImage: `url("/assets/${assets.side}")`,
+                    backgroundSize: "contain",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat"
+                  }}
+                  className="shieldImage"
+                  draggable="false"
+                />
               </div>
             </Col>
           </Row>
         </Col>
-        <Col style={{ marginTop: "10px" }} sm={{ size: 5, offset: 1 }}>
-          <Row>
+        <Col sm={{ size: 5, offset: 1 }} className="flex-column">
+          <Row className="flex-max auto-scroll">
             {shields.map(s => {
               return (
                 <ShieldData

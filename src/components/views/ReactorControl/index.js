@@ -182,7 +182,7 @@ class ReactorControl extends Component {
       }
     ];
     return (
-      <Container fluid className="reactor-control">
+      <Container fluid className="reactor-control flex-column">
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
@@ -214,51 +214,27 @@ class ReactorControl extends Component {
           }
         />
         <Row>
-          <Col sm={5}>
-            <Row>
-              <Col sm={12}>
-                <Measure
-                  bounds
-                  onResize={contentRect => {
-                    this.setState({ dimensions: contentRect.bounds });
-                  }}
+          <Col sm={5} style={{ height: "100%" }}>
+            <Measure
+              bounds
+              onResize={contentRect => {
+                this.setState({ dimensions: contentRect.bounds });
+              }}
+            >
+              {({ measureRef }) => (
+                <div
+                  ref={measureRef}
+                  style={{ height: "100%", minHeight: "45vh" }}
                 >
-                  {({ measureRef }) => (
-                    <div ref={measureRef} style={{ height: "500px" }}>
-                      {this.state.dimensions && (
-                        <ReactorModel dimensions={this.state.dimensions} />
-                      )}
-                    </div>
+                  {this.state.dimensions && (
+                    <ReactorModel dimensions={this.state.dimensions} />
                   )}
-                </Measure>
-              </Col>
-            </Row>
-            <Row className="reactor-info">
-              <Col sm={12}>
-                <h1>
-                  Reactor Efficiency:{" "}
-                  <AnimatedNumber
-                    stepPrecision={3}
-                    value={reactor.efficiency}
-                    duration={800}
-                    formatValue={n => `${Math.round(n * 100)}%`}
-                  />
-                </h1>
-                <h2>
-                  Reactor Output:{" "}
-                  <AnimatedNumber
-                    stepPrecision={3}
-                    value={reactor.efficiency * reactor.powerOutput}
-                    duration={800}
-                    formatValue={n => `${Math.round(n)}`}
-                  />
-                </h2>
-                <h2>Power Used: {powerTotal}</h2>
-              </Col>
-            </Row>
+                </div>
+              )}
+            </Measure>
           </Col>
-          <Col sm={2}>
-            <Row>
+          <Col sm={2} className="flex-column" style={{ minHeight: "45vh" }}>
+            <Row className="flex-max">
               <Col sm={6}>
                 <HeatBar
                   label="Heat"
@@ -277,42 +253,64 @@ class ReactorControl extends Component {
                   }
                 />
               </Col>
-              <Col sm={12}>
-                <Button
-                  color="info"
-                  block
-                  onMouseDown={this.applyCoolant}
-                  onTouchStart={this.applyCoolant}
-                >
-                  Coolant
-                </Button>
-              </Col>
             </Row>
+            <Button
+              color="info"
+              block
+              onMouseDown={this.applyCoolant}
+              onTouchStart={this.applyCoolant}
+            >
+              Coolant
+            </Button>
           </Col>
-          <Col sm={{ size: 5 }}>
+          <Col sm={5}>
             {battery && (
-              <Row className="batteries">
-                <Col sm={{ size: 10, offset: 1 }}>
-                  <Card>
-                    <div className="battery-container">
-                      <Battery
-                        level={Math.min(1, Math.max(0, (charge - 0.75) * 4))}
-                      />
-                      <Battery
-                        level={Math.min(1, Math.max(0, (charge - 0.5) * 4))}
-                      />
-                      <Battery
-                        level={Math.min(1, Math.max(0, (charge - 0.25) * 4))}
-                      />
-                      <Battery level={Math.min(1, Math.max(0, charge * 4))} />
-                    </div>
-                  </Card>
-                </Col>
-              </Row>
+              <Card className="batteries">
+                <div className="battery-container">
+                  <Battery
+                    level={Math.min(1, Math.max(0, (charge - 0.75) * 4))}
+                  />
+                  <Battery
+                    level={Math.min(1, Math.max(0, (charge - 0.5) * 4))}
+                  />
+                  <Battery
+                    level={Math.min(1, Math.max(0, (charge - 0.25) * 4))}
+                  />
+                  <Battery level={Math.min(1, Math.max(0, charge * 4))} />
+                </div>
+              </Card>
             )}
-            <Row className="reactor-buttons">
+          </Col>
+        </Row>
+        <Row className="flex-max">
+          <Col sm={7}>
+            <div className="reactor-info">
+              <h1>
+                Reactor Efficiency:{" "}
+                <AnimatedNumber
+                  stepPrecision={3}
+                  value={reactor.efficiency}
+                  duration={800}
+                  formatValue={n => `${Math.round(n * 100)}%`}
+                />
+              </h1>
+              <h2>
+                Reactor Output:{" "}
+                <AnimatedNumber
+                  stepPrecision={3}
+                  value={reactor.efficiency * reactor.powerOutput}
+                  duration={800}
+                  formatValue={n => `${Math.round(n)}`}
+                />
+              </h2>
+              <h2>Power Used: {powerTotal}</h2>
+            </div>
+          </Col>
+
+          <Col sm={{ size: 5 }} className="flex-column">
+            <Row className="reactor-buttons flex-max auto-scroll">
               {efficiencies.map(e => (
-                <Col sm={6} key={e.label}>
+                <Col xl={6} key={e.label}>
                   <Button
                     block
                     className={

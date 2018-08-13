@@ -35,3 +35,43 @@ pre {
 .cw-180 {
   transform: rotate(180deg);
 }
+
+@media screen and (max-width: 1024px) {
+  .btn {
+    overflow: hidden;
+  }
+  label.col-form-label-lg {
+    padding: 0;
+  }
+  #root {
+    h1 {
+      font-size: 2rem;
+    }
+    h2 {
+      font-size: 1.75rem;
+    }
+    h5 {
+      font-size: 1rem;
+    }
+    button {
+      font-size: 0.8rem;
+    }
+
+    button.btn:not(.dropdown-toggle) {
+      white-space: pre-wrap;
+    }
+    .card-icon-item {
+      button.btn {
+        white-space: nowrap;
+      }
+    }
+  }
+
+  div.form-group {
+    margin-bottom: 0.5rem;
+  }
+
+  .shuttles-card .shuttleBay {
+    max-width: 50%;
+  }
+}
