@@ -125,7 +125,7 @@ class PhaserCharging extends Component {
     const { selectedBank } = this.state;
     if (!phasers) return <p>No Phaser System</p>;
     return (
-      <Container fluid className="card-phaserCharging">
+      <Container fluid className="card-phaserCharging flex-column">
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
@@ -153,15 +153,17 @@ class PhaserCharging extends Component {
             </p>
           </Col>
         </Row>
-        {phasers.beams.map((p, i) => (
-          <PhaserBeam
-            key={p.id}
-            {...p}
-            index={i + 1}
-            selectedBank={selectedBank}
-            selectPhaserBank={this.selectPhaserBank.bind(this, p.id)}
-          />
-        ))}
+        <div className="flex-max auto-scroll">
+          {phasers.beams.map((p, i) => (
+            <PhaserBeam
+              key={p.id}
+              {...p}
+              index={i + 1}
+              selectedBank={selectedBank}
+              selectPhaserBank={this.selectPhaserBank.bind(this, p.id)}
+            />
+          ))}
+        </div>
         <Row>
           <Col sm={{ size: 6, offset: 3 }}>
             <Row className="phaserButtons">

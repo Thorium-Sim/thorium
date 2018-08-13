@@ -73,7 +73,7 @@ class EngineControl extends Component {
   render() {
     const engines = this.props.data.engines || [];
     return (
-      <Container fluid className="EngineControl">
+      <Container fluid className="EngineControl flex-column">
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
@@ -178,15 +178,13 @@ class EngineControl extends Component {
             </Button>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            {engines.length === 1 && (
-              <Engine1 engines={engines} setSpeed={this.setSpeed.bind(this)} />
-            )}
-            {engines.length === 2 && (
-              <Engine2 engines={engines} setSpeed={this.setSpeed.bind(this)} />
-            )}
-          </Col>
+        <Row className="flex-max">
+          {engines.length === 1 && (
+            <Engine1 engines={engines} setSpeed={this.setSpeed.bind(this)} />
+          )}
+          {engines.length === 2 && (
+            <Engine2 engines={engines} setSpeed={this.setSpeed.bind(this)} />
+          )}
         </Row>
         <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>

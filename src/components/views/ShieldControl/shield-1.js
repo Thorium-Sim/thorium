@@ -14,23 +14,15 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
       <DamageOverlay system={s} message={`${s.name} Shields Offline`} />
       <Row>
         <Col sm="7">
-          <Asset asset={assets.top}>
-            {({ src }) => (
-              <div
-                alt="ship"
-                style={{
-                  width: "100%",
-                  height: "70vh",
-                  backgroundImage: `url("${src}")`,
-                  backgroundSize: "contain",
-                  backgroundPosition: "center",
-                  backgroundRepeat: "no-repeat",
-                  filter: `drop-shadow(${color} 0px 0px 30px)`
-                }}
-                draggable="false"
-              />
-            )}
-          </Asset>
+          <div
+            alt="ship"
+            className="shield-ship-image"
+            style={{
+              backgroundImage: `url("/assets${assets.top}")`,
+              filter: `drop-shadow(${color} 0px 0px 30px)`
+            }}
+            draggable="false"
+          />
         </Col>
         <Col style={{ marginTop: "100px" }} sm={{ size: 4, offset: 1 }}>
           <h2>Integrity:</h2>

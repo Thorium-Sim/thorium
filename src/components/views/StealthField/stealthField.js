@@ -39,7 +39,7 @@ export default class StealthField extends Component {
       clientObj
     } = this.props;
     return (
-      <Container fluid className="card-stealthField">
+      <Container fluid className="card-stealthField flex-column">
         <DamageOverlay system={this.props} message={`${name} Offline`} />
         <Row className="stealth-row">
           <Col sm="3">

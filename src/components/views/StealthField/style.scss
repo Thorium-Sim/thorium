@@ -1,6 +1,13 @@
 .card-stealthField {
   height: 100%;
-
+  .stealth-columns {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
+  }
+  .stealth-system-row {
+    width: 50%;
+  }
   .stealthBars {
     margin-top: 50px;
     .stealth-bar-container {

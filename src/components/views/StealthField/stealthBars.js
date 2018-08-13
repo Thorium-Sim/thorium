@@ -21,6 +21,31 @@ export default class StealthBars extends Transitioner {
     const group2 = stealthSystems.slice(stealthSystems.length / 2);
     return (
       <Row className="stealthBars">
+        <Col className="stealth-columns">
+          {stealthSystems.map(s => (
+            <Row key={s.id} className="stealth-system-row">
+              <Col sm="3" className="text-right">
+                {this.systemName(s)}
+              </Col>
+              <Col sm="9">
+                <div className="stealth-bar-container">
+                  <div
+                    className="stealth-bar"
+                    style={{
+                      width: `${s.stealthFactor * 100}%`,
+                      backgroundSize: `5px 3px, ${100 /
+                        s.stealthFactor}%, ${100 / s.stealthFactor}%`
+                    }}
+                  />
+                </div>
+              </Col>
+            </Row>
+          ))}
+        </Col>
+      </Row>
+    );
+    return (
+      <Row className="stealthBars">
         <Col sm={6}>
           {group1.map(s => {
             return (

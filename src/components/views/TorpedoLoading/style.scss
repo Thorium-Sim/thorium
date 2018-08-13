@@ -1,6 +1,9 @@
 .torpedo-loading {
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
+  height: 100%;
+  overflow-y: auto;
   .torpedoButton {
     position: absolute;
     right: 10%;
@@ -24,6 +27,7 @@
   .torpedo-loader {
     width: 500px;
     height: 200px;
+    margin: 20px;
     position: relative;
     &.fire {
       margin: 0 40px;

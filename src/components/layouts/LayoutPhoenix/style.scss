@@ -36,7 +36,7 @@ $alertp: #4d1980;
     filter: drop-shadow(5px 5px 5px black);
   }
 
-  .alert-condition {
+  .alert-condition-box {
     position: absolute;
     color: black;
     width: $alertWidth;
@@ -87,7 +87,7 @@ $alertp: #4d1980;
   }
   .navigation {
     position: absolute;
-    z-index: 100;
+    z-index: 1000000;
     width: 100vw;
     top: 0;
     left: 0;
@@ -222,7 +222,7 @@ $alertp: #4d1980;
     .navigator {
       background-color: $color;
     }
-    .alert-condition {
+    .alert-condition-box {
       background-color: $alertColor;
     }
   }
