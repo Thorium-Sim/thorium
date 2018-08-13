@@ -5,6 +5,7 @@ import LayoutJr from "./LayoutJr";
 import LayoutOdyssey from "./LayoutOdyssey";
 import LayoutLine from "./LayoutLine";
 import LayoutGlassLite from "./LayoutGlass/lite";
+import LayoutPhoenix from "./LayoutPhoenix";
 import LayoutCornersViewscreen from "./LayoutCorners/Viewscreen";
 import LayoutDefaultViewscreen from "./LayoutDefault/Viewscreen";
 import LayoutOdysseyViewscreen from "./LayoutOdyssey/viewscreen";
@@ -21,6 +22,7 @@ const Layouts = {
   LayoutOdyssey,
   LayoutLine,
   LayoutGlassLite,
+  LayoutPhoenix,
   LayoutCornersViewscreen,
   LayoutDefaultViewscreen,
   LayoutOdysseyViewscreen,
