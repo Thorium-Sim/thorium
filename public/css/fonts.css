@@ -199,7 +199,13 @@
   font-weight: normal;
   font-style: normal;
 }
-
+@font-face {
+  font-family: "Battlefield";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/BATTLE3.woff") format("woff"),
+    url("../fonts/BATTLE3.TTF") format("truetype");
+}
 @font-face {
   font-family: "Bank Gothic";
   font-style: normal;
