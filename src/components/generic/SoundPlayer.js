@@ -68,7 +68,7 @@ function playSound(opts) {
   const volume = opts.muted ? 0 : opts.volume || 1;
   const playbackRate = opts.paused ? 0 : opts.playbackRate || 1;
   const channel = opts.channel || [0, 1];
-  const asset = opts.url;
+  const asset = opts.url || `/assets${opts.asset}`;
   if (!asset) return;
   try {
     fetch(asset)

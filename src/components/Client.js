@@ -356,6 +356,7 @@ const SOUND_SUB = gql`
     soundSub(clientId: $clientId) {
       id
       url
+      asset
       volume
       playbackRate
       channel
