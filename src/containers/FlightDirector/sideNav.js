@@ -127,7 +127,7 @@ class SideNav extends Component {
           </Button>
           <img
             alt="Logo"
-            src={require("../../components/logo.png")}
+            src={require("../../components/client/logo.png")}
             draggable="false"
             height="30px"
           />

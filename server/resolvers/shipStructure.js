@@ -110,6 +110,9 @@ export const ShipStructureMutations = {
   updateRoomRoles(root, args, context) {
     App.handleEvent(args, "updateRoomRoles", context);
   },
+  importRooms(root, args, context) {
+    App.handleEvent(args, "importRooms", context);
+  },
   // Inventory
   addInventory(root, args, context) {
     App.handleEvent(args, "addInventory", context);

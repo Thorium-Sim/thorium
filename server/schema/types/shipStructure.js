@@ -22,6 +22,12 @@ type Room {
   systems: [System]
 }
 
+input RoomInput {
+  name:String
+  deck:Int
+  roles:[RoomRoles]
+}
+
 enum RoomRoles {
   probe
   torpedo

@@ -61,6 +61,12 @@ export const CrewMutations = {
   },
   newRandomCrewmember(rootValue, params, context) {
     App.handleEvent(params, "newRandomCrewmember", context);
+  },
+  removeAllCrew(root, args, context) {
+    App.handleEvent(args, "removeAllCrew", context);
+  },
+  crewImport(root, args, context) {
+    App.handleEvent(args, "crewImport", context);
   }
 };
 

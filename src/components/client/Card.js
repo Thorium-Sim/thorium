@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { FormattedMessage } from "react-intl";
-import Layouts from "../components/layouts";
-import Keyboard from "../components/views/Keyboard";
-import ActionsMixin from "../components/generic/Actions";
-import Alerts from "../components/generic/Alerts";
+import Layouts from "../layouts";
+import Keyboard from "../views/Keyboard";
+import ActionsMixin from "../generic/Actions";
+import Alerts from "../generic/Alerts";
+import Reset from "./reset";
 
 const Blackout = () => {
   return (
@@ -108,6 +109,7 @@ const CardRenderer = props => {
     />
   );
 };
+
 export default class CardFrame extends Component {
   constructor(props) {
     super(props);
@@ -165,6 +167,12 @@ export default class CardFrame extends Component {
           {...this.props}
           card={this.state.card}
           changeCard={this.changeCard}
+        />
+        <Reset
+          clientId={this.props.client.id}
+          reset={() =>
+            this.setState({ card: this.props.station.cards[0].name })
+          }
         />
         <Alerts
           key={`alerts-${

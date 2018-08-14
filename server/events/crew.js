@@ -18,6 +18,10 @@ App.on("removeCrewmember", ({ id }) => {
   App.crew = App.crew.filter(c => c.id !== id);
   pubsub.publish("crewUpdate", App.crew);
 });
+App.on("removeAllCrew", ({ simulatorId }) => {
+  App.crew = App.crew.filter(c => c.simulatorId !== simulatorId);
+  pubsub.publish("crewUpdate", App.crew);
+});
 App.on("updateCrewmember", ({ crew }) => {
   App.crew.find(c => c.id === crew.id).update(crew);
   pubsub.publish("crewUpdate", App.crew);
@@ -45,3 +49,10 @@ function getPosition(type, simulatorId) {
   if (type === "medical") return "Medical Officer";
   return randomFromList(positions.filter(p => simPositions.indexOf(p) === -1));
 }
+
+App.on("crewImport", ({ simulatorId, crew }) => {
+  crew.forEach(c => {
+    App.crew.push(new Classes.Crew({ ...c, simulatorId }));
+  });
+  pubsub.publish("crewUpdate", App.crew);
+});

@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import createHistory from "history/createBrowserHistory";
 import PropTypes from "prop-types";
 import { Router, Route, Switch, Link } from "react-router-dom";
-import CardContainer from "./Card";
-import Client from "../components/Client";
+import CardContainer from "../components/client/Card";
+import Client from "../components/client";
 import { FlightDirector } from "./FlightDirector";
 import Config from "./config";
 
