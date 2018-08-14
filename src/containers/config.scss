@@ -14,7 +14,8 @@
     background-color: rgba(0, 0, 0, 0.8);
   }
   input,
-  .form-control {
+  .form-control,
+  .form-control:read-only {
     background-color: rgba(0, 0, 0, 0.7);
     border: solid 1px rgba(255, 255, 255, 0.2);
     color: white;

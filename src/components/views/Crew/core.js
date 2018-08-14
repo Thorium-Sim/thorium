@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import {
   Container,
   Row,
@@ -12,6 +12,8 @@ import gql from "graphql-tag";
 import { TypingField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import { parse } from "papaparse";
+
 import "./style.scss";
 const damagePositions = [
   "Computer Specialist",
@@ -44,46 +46,38 @@ const INTERNAL_SUB = gql`
     }
   }
 `;
+const fields = ["firstName", "lastName", "gender", "age", "rank", "position"];
 class CrewCore extends Component {
   state = {};
   _importCrew = evt => {
-    const self = this;
     const simulatorId = this.props.simulator.id;
-    const files = evt.target.files;
-    const reader = new FileReader();
-    reader.onload = function() {
-      const csv = this.result.split("\n");
-      if (csv[0] !== "firstName,lastName,gender,age,rank,position") {
-        alert("Invalid CSV file.");
-        return;
-      }
-      const crew = csv.slice(1).map(c => {
-        const obj = c.split(",");
-        return {
-          simulatorId,
-          firstName: obj[0],
-          lastName: obj[1],
-          gender: obj[2],
-          age: parseInt(obj[3], 10),
-          rank: obj[4],
-          position: obj[5]
-        };
-      });
-      const mutation = gql`
-        mutation AddCrew($crew: CrewInput) {
-          addCrewmember(crew: $crew)
+    const [file] = evt.target.files;
+    parse(file, {
+      header: true,
+      complete: results => {
+        const { data, meta, errors } = results;
+        if (JSON.stringify(meta.fields) !== JSON.stringify(fields)) {
+          alert(
+            `Header row mismatch. Make sure you have the correct headers in the correct order.`
+          );
+          return;
         }
-      `;
-      crew.forEach(c => {
-        self.props.client.mutate({
-          mutation,
+        errors.forEach(err => {
+          console.error(err);
+        });
+        this.props.client.mutate({
+          mutation: gql`
+            mutation ImportCrew($simulatorId: ID!, $crew: [CrewInput]!) {
+              crewImport(simulatorId: $simulatorId, crew: $crew)
+            }
+          `,
           variables: {
-            crew: c
+            simulatorId,
+            crew: data.filter(c => c && c.firstName)
           }
         });
-      });
-    };
-    files[0] && reader.readAsText(files[0]);
+      }
+    });
   };
   _exportCrewCSV = () => {
     const {
@@ -133,6 +127,20 @@ class CrewCore extends Component {
     this.props.client.mutate({
       mutation,
       variables: { id }
+    });
+    this.setState({
+      selectedCrew: null
+    });
+  };
+  removeAll = () => {
+    const mutation = gql`
+      mutation RemoveAllCrew($simulatorId: ID!) {
+        removeAllCrew(simulatorId: $simulatorId)
+      }
+    `;
+    this.props.client.mutate({
+      mutation,
+      variables: { simulatorId: this.props.simulator.id }
     });
     this.setState({
       selectedCrew: null
@@ -190,6 +198,7 @@ class CrewCore extends Component {
       data: { loading, crew }
     } = this.props;
     const { selectedCrew, editing, search } = this.state;
+    console.log(selectedCrew);
     if (loading || !crew) return null;
     const selectedCrewMember = crew.find(c => c.id === selectedCrew);
     return (
@@ -211,7 +220,7 @@ class CrewCore extends Component {
         />
         <Row>
           <Col sm={3}>
-            <Row style={{ height: "20px", overflow: "hidden" }}>
+            <Row style={{ height: "31px", overflow: "hidden" }}>
               <Col sm={6}>
                 <Button
                   size="sm"
@@ -223,12 +232,22 @@ class CrewCore extends Component {
                 </Button>
               </Col>
               <Col sm={6}>
-                <Input type="file" onChange={this._importCrew} />
+                <label>
+                  <div className="btn btn-sm btn-info btn-block">Import</div>
+                  <input
+                    type="file"
+                    accept="text/csv"
+                    hidden
+                    onChange={this._importCrew}
+                  />
+                </label>
               </Col>
             </Row>
             <TypingField
               input
               controlled
+              placeholder="Search..."
+              style={{ height: "32px" }}
               value={search}
               onChange={e => this.setState({ search: e.target.value })}
             />
@@ -262,6 +281,10 @@ class CrewCore extends Component {
                   </p>
                 ))}
             </div>
+            Total Crew: {this.props.data.crew.length}
+            <Button block color="danger" size="sm" onClick={this.removeAll}>
+              Remove All
+            </Button>
           </Col>
           <Col sm={3}>
             {selectedCrewMember && (
@@ -380,79 +403,80 @@ class CrewCore extends Component {
             </Input>
           </Col>
           {selectedCrewMember && (
-            <Col sm={3}>
-              <FormGroup>
-                <Label>First Name</Label>
-                <Input
-                  readOnly={!editing}
-                  size="sm"
-                  type="text"
-                  value={selectedCrewMember.firstName}
-                  onChange={e => this.updateCrew("firstName", e.target.value)}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label>Last Name</Label>
-                <Input
-                  readOnly={!editing}
-                  size="sm"
-                  type="text"
-                  value={selectedCrewMember.lastName}
-                  onChange={e => this.updateCrew("lastName", e.target.value)}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label>Age</Label>
-                <Input
-                  readOnly={!editing}
-                  size="sm"
-                  type="text"
-                  value={selectedCrewMember.age}
-                  onChange={e => this.updateCrew("age", e.target.value)}
-                />
-              </FormGroup>
-            </Col>
-          )}
-          {selectedCrewMember && (
-            <Col sm={3}>
-              <FormGroup>
-                <Label>Position</Label>
-                <Input
-                  readOnly={!editing}
-                  size="sm"
-                  type="text"
-                  value={selectedCrewMember.position}
-                  onChange={e => this.updateCrew("position", e.target.value)}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label>Rank</Label>
-                <Input
-                  readOnly={!editing}
-                  size="sm"
-                  type="text"
-                  value={selectedCrewMember.rank}
-                  onChange={e => this.updateCrew("rank", e.target.value)}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label>Gender</Label>
-                <Input
-                  disabled={!editing}
-                  size="sm"
-                  type="select"
-                  value={selectedCrewMember.gender || "nothing"}
-                  onChange={e => this.updateCrew("gender", e.target.value)}
-                >
-                  <option value={"nothing"} disabled>
-                    Select a gender
-                  </option>
-                  <option value={"M"}>M</option>
-                  <option value={"F"}>F</option>
-                  <option value={"X"}>X</option>
-                </Input>
-              </FormGroup>
-            </Col>
+            <Fragment key={selectedCrew}>
+              <Col sm={3}>
+                <FormGroup>
+                  <Label>First Name</Label>
+                  <Input
+                    readOnly={!editing}
+                    size="sm"
+                    type="text"
+                    defaultValue={selectedCrewMember.firstName}
+                    onChange={e => this.updateCrew("firstName", e.target.value)}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label>Last Name</Label>
+                  <Input
+                    readOnly={!editing}
+                    size="sm"
+                    type="text"
+                    defaultValue={selectedCrewMember.lastName}
+                    onChange={e => this.updateCrew("lastName", e.target.value)}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label>Age</Label>
+                  <Input
+                    readOnly={!editing}
+                    size="sm"
+                    type="text"
+                    defaultValue={selectedCrewMember.age}
+                    onChange={e => this.updateCrew("age", e.target.value)}
+                  />
+                </FormGroup>
+              </Col>
+
+              <Col sm={3}>
+                <FormGroup>
+                  <Label>Position</Label>
+                  <Input
+                    readOnly={!editing}
+                    size="sm"
+                    type="text"
+                    defaultValue={selectedCrewMember.position}
+                    onChange={e => this.updateCrew("position", e.target.value)}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label>Rank</Label>
+                  <Input
+                    readOnly={!editing}
+                    size="sm"
+                    type="text"
+                    defaultValue={selectedCrewMember.rank}
+                    onChange={e => this.updateCrew("rank", e.target.value)}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label>Gender</Label>
+                  <Input
+                    disabled={!editing}
+                    size="sm"
+                    type="select"
+                    defaultValue={selectedCrewMember.gender || "nothing"}
+                    onChange={e => this.updateCrew("gender", e.target.value)}
+                  >
+                    <option value={"nothing"} disabled>
+                      Select a gender
+                    </option>
+                    <option value={"M"}>M</option>
+                    <option value={"F"}>F</option>
+                    <option value={"X"}>X</option>
+                  </Input>
+                </FormGroup>
+              </Col>
+            </Fragment>
           )}
         </Row>
       </Container>
