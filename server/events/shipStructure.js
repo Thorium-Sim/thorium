@@ -112,6 +112,49 @@ App.on("updateRoomRoles", ({ roomId, roles }) => {
   pubsub.publish("roomsUpdate", App.rooms);
   pubsub.publish("decksUpdate", App.decks);
 });
+App.on("importRooms", ({ simulatorId, rooms }) => {
+  const deckSet = new Set();
+  rooms.forEach(d => deckSet.add(d.deck));
+  const deckNums = [...deckSet].map(d => parseInt(d, 10));
+  const decks = {};
+  deckNums.forEach(d => {
+    let deck = App.decks.find(
+      deckSearch =>
+        deckSearch.number === d && deckSearch.simulatorId === simulatorId
+    );
+    if (deck) {
+      decks[d] = deck.id;
+    } else {
+      const newDeck = new Classes.Deck({ simulatorId, number: d });
+      App.decks.push(newDeck);
+      decks[d] = newDeck.id;
+    }
+  });
+  rooms.forEach(r => {
+    const room = App.rooms.find(roomSearch => {
+      const deck = App.decks.find(d => d.id === roomSearch.deckId);
+      if (!deck) return;
+      return (
+        roomSearch.simulatorId === simulatorId &&
+        r.deck === deck.number &&
+        roomSearch.name === r.name
+      );
+    });
+    if (!room) {
+      const newRoom = new Classes.Room({
+        simulatorId,
+        deckId: decks[r.deck],
+        name: r.name,
+        roles: r.roles
+      });
+      App.rooms.push(newRoom);
+    }
+  });
+
+  pubsub.publish("decksUpdate", App.decks);
+  pubsub.publish("roomsUpdate", App.rooms);
+});
+
 // Inventory
 App.on("addInventory", ({ inventory }) => {
   const {

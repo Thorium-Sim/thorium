@@ -4,7 +4,7 @@ import { Container, Row, Col, Button, Input, Label } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-
+import { parse, unparse } from "papaparse";
 import "./style.scss";
 
 const DECKS_SUB = gql`
@@ -124,61 +124,57 @@ class DecksCore extends Component {
     var a = document.createElement("a");
     document.body.appendChild(a);
     a.style = "display: none";
-    const json = JSON.stringify(
-      this.props.data.decks.map(d => {
-        return {
-          number: d.number,
-          rooms: d.rooms.map(r => ({ name: r.name }))
-        };
-      })
+    const json = this.props.data.decks.reduce(
+      (prev, next) =>
+        prev.concat(
+          next.rooms.map(({ id, __typename, ...r }) => ({
+            deck: next.number,
+            ...r
+          }))
+        ),
+      []
     );
-    const blob = new Blob([json], { type: "octet/stream" });
+
+    const blob = new Blob([unparse(json)], { type: "octet/stream" });
     const url = window.URL.createObjectURL(blob);
     a.href = url;
-    a.download = "deckExport.json";
+    a.download = "deckExport.csv";
     a.click();
     window.URL.revokeObjectURL(url);
   };
   _importDecks = e => {
-    const deckAdd = gql`
-      mutation AddDeck($simulatorId: ID!, $number: Int!) {
-        addDeck(simulatorId: $simulatorId, number: $number)
-      }
-    `;
-    const roomAdd = gql`
-      mutation AddRoom($simulatorId: ID!, $deckNum: Int, $name: String!) {
-        addRoom(simulatorId: $simulatorId, deckNumber: $deckNum, name: $name)
-      }
-    `;
-    var reader = new FileReader();
-    const self = this;
-    reader.onload = function() {
-      const result = JSON.parse(this.result);
-      result.forEach(d => {
-        const variables = {
-          simulatorId: self.props.simulator.id,
-          number: d.number
-        };
-        self.props.client.mutate({
-          mutation: deckAdd,
-          variables
+    const simulatorId = this.props.simulator.id;
+    const [file] = e.target.files;
+    const fields = ["deck", "name", "roles"];
+    parse(file, {
+      header: true,
+      complete: results => {
+        const { data, meta, errors } = results;
+        if (JSON.stringify(meta.fields) !== JSON.stringify(fields)) {
+          alert(
+            `Header row mismatch. Make sure you have the correct headers in the correct order.`
+          );
+          return;
+        }
+        errors.forEach(err => {
+          console.error(err);
         });
-        setTimeout(() => {
-          d.rooms.forEach(r => {
-            const variables = {
-              simulatorId: self.props.simulator.id,
-              deckNum: d.number,
-              name: r.name
-            };
-            self.props.client.mutate({
-              mutation: roomAdd,
-              variables
-            });
-          });
-        }, 1000);
-      });
-    };
-    e.target.files[0] && reader.readAsText(e.target.files[0]);
+        console.log(data);
+        const mutation = gql`
+          mutation ImportRooms($simulatorId: ID!, $rooms: [RoomInput]!) {
+            importRooms(simulatorId: $simulatorId, rooms: $rooms)
+          }
+        `;
+        const variables = {
+          simulatorId,
+          rooms: data.map(d => ({
+            ...d,
+            roles: d.roles.split(",").filter(r => r)
+          }))
+        };
+        this.props.client.mutate({ mutation, variables });
+      }
+    });
   };
   addRole = role => {
     const { decks } = this.props.data;
@@ -287,12 +283,19 @@ class DecksCore extends Component {
                 color="primary"
                 onClick={this._exportDecks}
               >
-                Export
+                Export Decks
               </Button>
               <label>
-                {" "}
-                Import:
-                <Input type="file" onChange={this._importDecks} />
+                <div className="btn btn-info btn-block btn-sm">
+                  Import Decks
+                </div>
+                <input
+                  accept="text/csv"
+                  hidden
+                  value={""}
+                  type="file"
+                  onChange={this._importDecks}
+                />
               </label>
             </div>
           </Col>

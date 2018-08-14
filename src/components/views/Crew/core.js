@@ -238,6 +238,7 @@ class CrewCore extends Component {
                     type="file"
                     accept="text/csv"
                     hidden
+                    value={""}
                     onChange={this._importCrew}
                   />
                 </label>
