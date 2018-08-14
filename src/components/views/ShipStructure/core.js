@@ -159,7 +159,6 @@ class DecksCore extends Component {
         errors.forEach(err => {
           console.error(err);
         });
-        console.log(data);
         const mutation = gql`
           mutation ImportRooms($simulatorId: ID!, $rooms: [RoomInput]!) {
             importRooms(simulatorId: $simulatorId, rooms: $rooms)

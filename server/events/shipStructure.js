@@ -133,7 +133,7 @@ App.on("importRooms", ({ simulatorId, rooms }) => {
   rooms.forEach(r => {
     const room = App.rooms.find(roomSearch => {
       const deck = App.decks.find(d => d.id === roomSearch.deckId);
-      if (!deck) return;
+      if (!deck) return false;
       return (
         roomSearch.simulatorId === simulatorId &&
         r.deck === deck.number &&
