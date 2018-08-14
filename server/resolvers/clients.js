@@ -100,6 +100,7 @@ export const ClientMutations = {
 export const ClientSubscriptions = {
   clientChanged: {
     resolve(payload, { client, simulatorId }) {
+      if (!payload) return [];
       if (client) {
         return payload.filter(c => c.id === client);
       }

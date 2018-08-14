@@ -87,9 +87,9 @@ function playSound(opts) {
             sound.source.buffer = downMixBuffer(buffer, channel);
             sound.source.loop = opts.looping || false;
             sound.source.playbackRate.setValueAtTime(playbackRate, 0);
-            sound.volume = window.audioContext.createGain();
-            sound.volume.gain.setValueAtTime(volume, 0);
-            sound.source.connect(sound.volume);
+            sound.gain = window.audioContext.createGain();
+            sound.gain.gain.setValueAtTime(volume, 0);
+            sound.source.connect(sound.gain);
 
             sound.source.onended = () => {
               removeSound(opts.id);

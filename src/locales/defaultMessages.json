@@ -2,6 +2,15 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Sound Player",
+        "id": "sound-player"
+      }
+    ],
+    "path": "src/components/client/Card.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "At certain times during the mission, you may be able to complete Research and Development reports. These reports allow you to upgrade, improve, and activate ship systems.",
         "id": "damage-report-rnd-training-1"
       },
