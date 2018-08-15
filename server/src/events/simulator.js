@@ -46,6 +46,7 @@ App.on("changeSimulatorAlertLevel", ({ simulatorId, alertLevel }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: simulator.id,
+      type: "Alert Condition",
       station: "Core",
       title: `Alert Level ${alertLevel}`,
       body: "",
@@ -55,6 +56,7 @@ App.on("changeSimulatorAlertLevel", ({ simulatorId, alertLevel }) => {
       {
         simulatorId: simulator.id,
         title: `Alert Level ${alertLevel}`,
+        component: "AlertConditionCore",
         body: null,
         color: "info"
       },

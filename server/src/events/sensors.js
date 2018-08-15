@@ -1,6 +1,7 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
+import { titleCase } from "change-case";
 import uuid from "uuid";
 // id always represents the ID of the sensor system
 App.on("addSensorsArray", ({ simulatorId, domain }) => {
@@ -18,8 +19,9 @@ App.on("sensorScanRequest", ({ id, request }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: system.simulatorId,
+    type: `${titleCase(system.domain)} Sensors`,
     station: "Core",
-    title: `${system.domain} Scan`,
+    title: `${titleCase(system.domain)} Scan`,
     body: request,
     color: "info"
   });
@@ -27,7 +29,7 @@ App.on("sensorScanRequest", ({ id, request }) => {
     {
       simulatorId: system.simulatorId,
       component: "SensorsCore",
-      title: `${system.domain} Scan`,
+      title: `${titleCase(system.domain)} Scan`,
       body: request,
       color: "info"
     },
@@ -138,8 +140,9 @@ App.on("sensorScanCancel", ({ id }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: system.simulatorId,
+    type: `${titleCase(system.domain)} Sensors`,
     station: "Core",
-    title: `${system.domain} Scan Cancelled`,
+    title: `${titleCase(system.domain)} Scan Cancelled`,
     body: "",
     color: "info"
   });

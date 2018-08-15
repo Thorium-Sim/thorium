@@ -62,6 +62,7 @@ App.on("torpedoFire", ({ id }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: sys.simulatorId,
+    type: "Torpedos",
     station: "Core",
     title: `${torpedo.type} Torpedo Fired`,
     body: "",

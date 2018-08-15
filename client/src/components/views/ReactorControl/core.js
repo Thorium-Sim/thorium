@@ -1,12 +1,31 @@
 import React, { Component, Fragment } from "react";
 import gql from "graphql-tag";
-import { InputField } from "../../generic/core";
+import { InputField, OutputField } from "../../generic/core";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import { Container, Row, Col, Button, Input, Progress } from "reactstrap";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import { Duration } from "luxon";
+import { titleCase } from "change-case";
 
 import "./style.scss";
 
+function parseDepletion(time) {
+  return Object.entries(
+    Duration.fromObject({
+      months: 0,
+      weeks: 0,
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: Math.round(time)
+    })
+      .normalize()
+      .toObject()
+  )
+    .filter(t => t[1] !== 0)
+    .map(t => `${t[1]} ${titleCase(t[0])}`)
+    .join(", ");
+}
 const REACTOR_SUB = gql`
   subscription ReactorsUpdate($simulatorId: ID!) {
     reactorUpdate(simulatorId: $simulatorId) {
@@ -26,6 +45,7 @@ const REACTOR_SUB = gql`
       powerOutput
       batteryChargeRate
       batteryChargeLevel
+      depletion
       # For Dilithium Stress
       alphaLevel
       betaLevel
@@ -290,6 +310,8 @@ class ReactorControl extends Component {
                 >
                   {battery.batteryChargeRate * 1000}
                 </InputField>
+                <p>Battery Depletion Time:</p>
+                <OutputField>{parseDepletion(battery.depletion)}</OutputField>
               </Fragment>
             )}
 
@@ -345,6 +367,7 @@ const REACTOR_QUERY = gql`
       powerOutput
       batteryChargeRate
       batteryChargeLevel
+      depletion
       # For Dilithium Stress
       alphaLevel
       betaLevel

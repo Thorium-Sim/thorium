@@ -35,6 +35,7 @@ App.on("firePhaserBeam", ({ id, beamId }) => {
     id: uuid.v4(),
     simulatorId: sys.simulatorId,
     station: "Core",
+    type: "Phasers",
     title: `Phasers Firing`,
     body: "",
     color: "info"

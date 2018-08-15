@@ -23,7 +23,9 @@ App.on("removeSoftwarePanel", ({ panel }) => {
   App.stationSets.forEach(s => {
     s.stations.forEach(st => {
       const card = st.cards.find(c => c.component === panel);
-      st.removeCard(card.name);
+      if (card) {
+        st.removeCard(card.name);
+      }
     });
   });
   pubsub.publish("softwarePanelsUpdate", App.softwarePanels);

@@ -28,6 +28,7 @@ App.on("activateThx", ({ id }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: sys.simulatorId,
+      type: "THX",
       station: "Core",
       title: `${sys.name} Activated`,
       body: "",
@@ -52,6 +53,7 @@ App.on("deactivateThx", ({ id }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: sys.simulatorId,
+      type: "THX",
       station: "Core",
       title: `${sys.name} Deactivated`,
       body: "",

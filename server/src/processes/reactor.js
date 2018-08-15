@@ -11,6 +11,7 @@ const triggerWarning = sys => {
       pubsub.publish("notify", {
         id: uuid.v4(),
         simulatorId: sys.simulatorId,
+        type: "Reactor",
         station: "Core",
         title: `Dilithium Crystal Stress`,
         body: "",
@@ -86,10 +87,7 @@ const updateReactor = () => {
             1,
             Math.max(0, batt.batteryChargeLevel - charge)
           );
-          // console.log(
-          //   "Estimated Time to Depletion:",
-          //   batt.batteryChargeLevel / charge
-          // );
+          batt.setDepletion(batt.batteryChargeLevel / charge);
           //Trigger the event
           if (newLevel !== batt.batteryChargeLevel) {
             App.handleEvent(

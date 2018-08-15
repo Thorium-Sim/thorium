@@ -13,11 +13,13 @@ import {
   ModalBody,
   ModalFooter,
   ListGroup,
-  ListGroupItem
+  ListGroupItem,
+  ButtonGroup
 } from "reactstrap";
 import Alerts from "../generic/Alerts";
 import { Link } from "react-router-dom";
 import DynamicPicker from "./DynamicPicker";
+import NotificationConfig from "./notificationConfig";
 import SubscriptionHelper from "../../helpers/subscriptionHelper";
 
 import "./CoreComponents.scss";
@@ -125,6 +127,9 @@ class CoreComponents extends Component {
       issuesOpen: !this.state.issuesOpen
     });
   };
+  toggle = () => {
+    this.setState({ config: !this.state.config });
+  };
   render() {
     if (this.props.data.loading) return null;
 
@@ -141,6 +146,7 @@ class CoreComponents extends Component {
       return null;
     }
     if (!flights) return null;
+    const { config } = this.state;
     const flight = this.props.flightId
       ? flights.find(f => f.id === this.props.flightId)
       : {};
@@ -243,7 +249,7 @@ class CoreComponents extends Component {
           onClick={this.toggleIssueTracker}
           style={{ marginLeft: "20px" }}
         >
-          Bug Report/Issue Tracker
+          Issue Tracker
         </Button>
         <label>
           Notifications{" "}
@@ -270,14 +276,18 @@ class CoreComponents extends Component {
             }}
           />
         </label>
-        <Button
-          onClick={() => publish("clearNotifications")}
-          size="sm"
-          color="info"
-          style={{ float: "right", marginRight: "50px" }}
-        >
-          Clear all notifications
-        </Button>
+        <ButtonGroup style={{ float: "right", marginRight: "50px" }}>
+          <Button
+            onClick={() => publish("clearNotifications")}
+            size="sm"
+            color="info"
+          >
+            Clear all notifications
+          </Button>
+          <Button onClick={this.toggle} size="sm" color="warning">
+            Configure
+          </Button>
+        </ButtonGroup>
         <div
           id="core-layout"
           className={!this.state.editable ? "non-editing" : ""}
@@ -348,6 +358,7 @@ class CoreComponents extends Component {
             }
           }
         />
+        <NotificationConfig modal={config} toggle={this.toggle} />
       </div>
     );
   }

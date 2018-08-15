@@ -18,17 +18,13 @@ const NOTIFY_SUB = gql`
       id
       title
       body
+      type
       color
       duration
     }
   }
 `;
-/*
-   title: String
-  body: String
-  color: String
-  trigger: String
-  */
+
 class Alerts extends Component {
   constructor(props) {
     super(props);
@@ -49,9 +45,11 @@ class Alerts extends Component {
         next({ data: { notify } }) {
           // ... call updateQuery to integrate the new comment
           // into the existing list of comments
-
+          const storedAllowed = localStorage.getItem("allowed_notifications");
+          const allowed = storedAllowed ? JSON.parse(storedAllowed) : {};
           const alerts = self.state.alerts;
           if (notify && notify.id) {
+            if (allowed[notify.type] === false) return;
             if (!self.props.disabled) {
               alerts.push(Object.assign(notify, { visible: true }));
               self.setState({

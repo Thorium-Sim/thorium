@@ -5,9 +5,16 @@ import uuid from "uuid";
 
 App.on("createTeam", ({ team = {} }) => {
   App.teams.push(new Team(team));
+  const type =
+    team.type === "damage"
+      ? "Damage Teams"
+      : team.type === "security"
+        ? "Security Teams"
+        : "Medical Teams";
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: team.simulatorId,
+    type,
     station: "Core",
     title: `New ${team.type} team`,
     body: team.name,

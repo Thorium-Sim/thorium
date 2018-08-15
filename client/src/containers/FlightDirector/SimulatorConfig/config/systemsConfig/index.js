@@ -9,3 +9,4 @@ export { default as StealthField } from "./StealthField";
 export { default as Sickbay } from "./Sickbay";
 export { default as Thrusters } from "./Thrusters";
 export { default as Probes } from "./Probes";
+export { default as Torpedo } from "./Torpedo";

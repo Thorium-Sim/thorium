@@ -12,6 +12,7 @@ App.on("launchProbe", ({ id, probe }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: sys.simulatorId,
+      type: "Probes",
       station: "Core",
       title: `Probe Launched`,
       body: probe.name,
@@ -38,6 +39,7 @@ App.on("fireProbe", ({ id, probeId }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: sys.simulatorId,
+      type: "Probes",
       station: "Core",
       title: `Probe Launched`,
       body: probe.name,
@@ -76,6 +78,7 @@ App.on("probeQuery", ({ id, probeId, query }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: sys.simulatorId,
+    type: "Probes",
     station: "Core",
     title: `Probe Query`,
     body: query,

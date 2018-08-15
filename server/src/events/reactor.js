@@ -7,6 +7,7 @@ App.on("reactorEject", ({ id, tf = true }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: system.simulatorId,
+    type: "Reactor",
     station: "Core",
     title: `Reactor Ejected`,
     body: "",
@@ -17,6 +18,7 @@ App.on("reactorEject", ({ id, tf = true }) => {
     {
       simulatorId: system.simulatorId,
       title: `Reactor Ejected`,
+      component: "ReactorControlCore",
       body: null,
       color: "danger"
     },

@@ -33,7 +33,7 @@ export const SoftwarePanelsSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("softwarePanelsUpdate"),
-      rootValue => !!(rootValue && rootValue.length)
+      rootValue => true
     )
   }
 };

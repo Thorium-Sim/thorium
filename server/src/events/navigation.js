@@ -27,6 +27,7 @@ App.on("navCalculateCourse", ({ id, destination }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: system.simulatorId,
+    type: "Navigation",
     station: "Core",
     title: `Calculating Course`,
     body: destination,
@@ -43,6 +44,7 @@ App.on("navCancelCalculation", ({ id }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: system.simulatorId,
+    type: "Navigation",
     station: "Core",
     title: `Course Calculation Canceled`,
     body: "",
@@ -96,6 +98,7 @@ App.on("navCourseEntry", ({ id, x, y, z }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: system.simulatorId,
+    type: "Navigation",
     station: "Core",
     title: `Course Entered`,
     body: "",

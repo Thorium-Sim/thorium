@@ -34,6 +34,7 @@ App.on("scanSickbayBunk", ({ id, bunkId, request }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: sys.simulatorId,
+      type: "Sickbay",
       station: "Core",
       title: `Sickbay Bunk Scan`,
       body: request,
@@ -69,6 +70,7 @@ App.on("assignPatient", ({ id, bunkId, crewId }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: sys.simulatorId,
+      type: "Sickbay",
       station: "Core",
       title: `New Sickbay Patient`,
       body: `${crew.firstName} ${crew.lastName}`,
@@ -102,6 +104,7 @@ App.on("dischargePatient", ({ id, bunkId }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: sys.simulatorId,
+      type: "Sickbay",
       station: "Core",
       title: `Sickbay Patient Discharged`,
       body: "",
@@ -133,6 +136,7 @@ App.on("updatePatientChart", ({ simulatorId, crewId, chart }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: sys.simulatorId,
+      type: "Sickbay",
       station: "Core",
       title: `Sickbay Treatment Request`,
       body: `${crew.firstName} ${crew.lastName}`,
@@ -162,6 +166,7 @@ App.on("startDeconProgram", ({ id, program, location }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: sys.simulatorId,
+      type: "Decontamination",
       station: "Core",
       title: `New Decon Program`,
       body: `${program}: ${location}`,
@@ -194,6 +199,7 @@ App.on("cancelDeconProgram", ({ id }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: sys.simulatorId,
+      type: "Decontamination",
       station: "Core",
       title: `Decon Program Cancelled`,
       body: `${sys.deconProgram}: ${sys.deconLocation}`,
@@ -213,6 +219,7 @@ App.on("completeDeconProgram", ({ id }) => {
         pubsub.publish("notify", {
           id: uuid.v4(),
           simulatorId: sys.simulatorId,
+          type: "Decontamination",
           station: s,
           title: `Decon Program Complete`,
           body: `${sys.deconProgram}: ${sys.deconLocation}`,

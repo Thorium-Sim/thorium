@@ -34,6 +34,7 @@ App.on("beginTransportScan", params => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: transporter.simulatorId,
+    type: "Transporter",
     station: "Core",
     title: `Transporter Scan`,
     body: "",
@@ -57,6 +58,7 @@ App.on("cancelTransportScan", params => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: transporter.simulatorId,
+    type: "Transporter",
     station: "Core",
     title: `Transporter Scan Canceled`,
     body: "",
@@ -90,6 +92,7 @@ App.on("completeTransport", params => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: transporter.simulatorId,
+    type: "Transporter",
     station: "Core",
     title: `Transported`,
     body: "",

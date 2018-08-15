@@ -106,6 +106,7 @@ type Notification {
   title: String
   body: String
   color: String
+  type: String
   trigger: String
   duration: Int
 }

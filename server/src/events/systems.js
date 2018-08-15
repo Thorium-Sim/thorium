@@ -140,6 +140,7 @@ App.on("systemReactivationCode", ({ systemId, station, code }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: sys.simulatorId,
+    type: "Reactivation Code",
     station: "Core",
     title: `Reactivation Code`,
     body: sys.name,
@@ -186,6 +187,7 @@ App.on("requestDamageReport", ({ systemId }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: sys.simulatorId,
+    type: "Damage Reports",
     station: "Core",
     title: `Damage Report Request`,
     body: sys.name,
@@ -348,6 +350,7 @@ App.on("setDamageStepValidation", ({ id, validation }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: sys.simulatorId,
+      type: "Damage Reports",
       station: "Core",
       title: `Damage Validation Request`,
       body: sys.name,

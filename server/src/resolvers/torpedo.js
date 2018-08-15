@@ -9,6 +9,9 @@ export const TorpedoQueries = {
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
     }
     return returnVal;
+  },
+  torpedo(root, { id }) {
+    return App.systems.find(s => s.id === id);
   }
 };
 

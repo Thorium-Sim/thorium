@@ -15,6 +15,7 @@ App.on("targetTargetingContact", ({ id, targetId }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: system.simulatorId,
+    type: "Targeting",
     station: "Core",
     title: `Targeted`,
     body: "",

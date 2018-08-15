@@ -50,6 +50,7 @@ App.on("speedChange", param => {
       id: uuid.v4(),
       simulatorId: system.simulatorId,
       station: "Core",
+      type: "Engines",
       title: `Speed Change ${speed ? speed.text : "Full Stop"}`,
       body: ``,
       color: "info"
