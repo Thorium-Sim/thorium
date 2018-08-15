@@ -9,6 +9,7 @@ const REACTOR_QUERY = gql`
     reactor(id: $id) {
       model
       powerOutput
+      batteryChargeRate
     }
   }
 `;
@@ -47,7 +48,7 @@ const Reactor = props => {
                   )}
                 </Mutation>
               </FormGroup>
-              {reactor.model === "reactor" && (
+              {reactor.model === "reactor" ? (
                 <FormGroup>
                   <Label>
                     Reactor Output
@@ -64,10 +65,43 @@ const Reactor = props => {
                       {action => (
                         <Input
                           type="number"
-                          value={reactor.powerOutput}
+                          defaultValue={reactor.powerOutput}
                           onChange={evt =>
                             action({
                               variables: { id, output: evt.target.value }
+                            })
+                          }
+                        />
+                      )}
+                    </Mutation>
+                  </Label>
+                </FormGroup>
+              ) : (
+                <FormGroup>
+                  <Label>
+                    Battery Charge Rate
+                    <small
+                    >{` Numbers < 1 are slow, > 1 are fast, < 0 are reverse`}</small>
+                    <Mutation
+                      mutation={gql`
+                        mutation BatteryChargeRate($id: ID!, $rate: Float!) {
+                          reactorBatteryChargeRate(id: $id, rate: $rate)
+                        }
+                      `}
+                      refetchQueries={[
+                        { query: REACTOR_QUERY, variables: { id } }
+                      ]}
+                    >
+                      {action => (
+                        <Input
+                          type="number"
+                          defaultValue={reactor.batteryChargeRate * 1000}
+                          onChange={evt =>
+                            action({
+                              variables: {
+                                id,
+                                rate: (parseFloat(evt.target.value) || 0) / 1000
+                              }
                             })
                           }
                         />
