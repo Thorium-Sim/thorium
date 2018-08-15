@@ -14,6 +14,7 @@ export default class Reactor extends HeatMixin(System) {
     this.externalPower = params.externalPower || true;
     this.batteryChargeLevel = params.batteryChargeLevel || 1;
     this.batteryChargeRate = params.batteryChargeRate || 1 / 1000;
+    this.depletion = params.depletion || 0;
     if (this.model === "battery") {
       this.heat = null;
       this.coolant = null;
@@ -56,6 +57,9 @@ export default class Reactor extends HeatMixin(System) {
   }
   changeBatteryChargeRate(rate) {
     this.batteryChargeRate = rate;
+  }
+  setDepletion(value) {
+    this.depletion = value;
   }
   updateDilithiumStress({ alphaLevel, betaLevel, alphaTarget, betaTarget }) {
     if (alphaLevel || alphaLevel === 0) this.alphaLevel = alphaLevel;

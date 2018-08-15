@@ -86,10 +86,7 @@ const updateReactor = () => {
             1,
             Math.max(0, batt.batteryChargeLevel - charge)
           );
-          // console.log(
-          //   "Estimated Time to Depletion:",
-          //   batt.batteryChargeLevel / charge
-          // );
+          batt.setDepletion(batt.batteryChargeLevel / charge);
           //Trigger the event
           if (newLevel !== batt.batteryChargeLevel) {
             App.handleEvent(

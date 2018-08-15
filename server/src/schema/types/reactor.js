@@ -19,7 +19,7 @@ type Reactor implements SystemInterface{
   efficiency: Float
   batteryChargeLevel: Float
   batteryChargeRate: Float
-
+  depletion: Float
   # For Dilithium Stress
   alphaLevel: Float
   betaLevel: Float
