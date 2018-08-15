@@ -11,6 +11,7 @@ export default class Engine extends HeatMixin(System) {
     this.on = params.on || false;
     this.speeds = params.speeds || [];
     this.speed = params.speed || -1;
+    this.previousSpeed = params.speed || 0;
     this.useAcceleration = params.useAcceleration || false; // useAcceleration requires negative speed to stop.
     this.speedFactor = params.speedFactor || 1250;
     this.acceleration = params.acceleration || 0;
@@ -77,6 +78,7 @@ export default class Engine extends HeatMixin(System) {
   }
   setSpeed(speed = -1, on = false) {
     // Check power
+    this.previousSpeed = this.speed;
     if (on && this.power.power < this.power.powerLevels[speed - 1]) {
       this.speed =
         this.power.powerLevels.findIndex(p => p === this.power.power) + 1;

@@ -11,7 +11,7 @@ import ContactSelect from "./contactSelect";
 import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
 import "./gridCore.scss";
 
-const SENSORS_OFFSET = 30;
+const SENSORS_OFFSET = 45;
 function distance3d(coord2, coord1) {
   const { x: x1, y: y1, z: z1 } = coord1;
   let { x: x2, y: y2, z: z2 } = coord2;
@@ -51,6 +51,8 @@ const SENSOR_SUB = gql`
     }
   }
 `;
+const padding = 0;
+
 class GridCore extends Component {
   constructor(props) {
     super(props);
@@ -121,13 +123,12 @@ class GridCore extends Component {
     const { dimensions } = this.state;
     const { movingContact = {} } = this.state;
     const { width: dimWidth, height: dimHeight } = dimensions;
-    const padding = 15;
     const width = Math.min(dimWidth, dimHeight) - padding;
     const destination = {
       x:
         (evt.clientX -
           dimensions.left +
-          SENSORS_OFFSET -
+          SENSORS_OFFSET / 2 -
           padding / 2 -
           width / 2) /
           (width / 2) -
@@ -135,7 +136,7 @@ class GridCore extends Component {
       y:
         (evt.clientY -
           dimensions.top +
-          SENSORS_OFFSET -
+          SENSORS_OFFSET / 2 -
           padding / 2 -
           width / 2) /
           (width / 2) -
@@ -373,21 +374,12 @@ class GridCore extends Component {
             )}
           </Col>
           <Col sm={8}>
-            <div
-              id="threeSensors"
-              className="array"
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0
-              }}
-            >
+            <div id="threeSensors" className="array">
               <Grid
                 mouseover={this.props.hoverContact}
                 core
                 dimensions={this.state.dimensions}
+                offset={SENSORS_OFFSET}
                 sensor={sensors.id}
                 movement={sensors.movement}
                 moveSpeed={speed}

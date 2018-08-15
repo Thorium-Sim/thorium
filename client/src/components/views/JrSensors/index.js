@@ -65,20 +65,7 @@ class Sensors extends Component {
               }}
             >
               {({ measureRef }) => (
-                <div
-                  id="threeSensors"
-                  className="array"
-                  ref={measureRef}
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    display: "flex",
-                    justifyContent: "center"
-                  }}
-                >
+                <div id="threeSensors" className="array" ref={measureRef}>
                   {this.state.dimensions && (
                     <Grid
                       dimensions={this.state.dimensions}

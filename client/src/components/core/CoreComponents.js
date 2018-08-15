@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import * as Layouts from "./layouts";
-import { withApollo, graphql } from "react-apollo";
+import { withApollo, graphql, Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import IssueTracker from "../../components/admin/IssueTracker";
 import { publish } from "../views/helpers/pubsub";
@@ -276,6 +276,30 @@ class CoreComponents extends Component {
             }}
           />
         </label>
+        {!flight.running && (
+          <Fragment>
+            <strong className="text-warning">Flight is paused</strong>
+            <Mutation
+              mutation={gql`
+                mutation ResumeFlight($flightId: ID!) {
+                  resumeFlight(flightId: $flightId)
+                }
+              `}
+              variables={{ flightId: flight.id }}
+            >
+              {action => (
+                <Button
+                  className="pause-flight"
+                  color="success"
+                  size="sm"
+                  onClick={action}
+                >
+                  Resume Flight
+                </Button>
+              )}
+            </Mutation>
+          </Fragment>
+        )}
         <ButtonGroup style={{ float: "right", marginRight: "50px" }}>
           <Button
             onClick={() => publish("clearNotifications")}

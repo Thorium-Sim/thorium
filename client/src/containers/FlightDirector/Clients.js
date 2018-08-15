@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Col, Row, Container } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo, Query } from "react-apollo";
-import moment from "moment";
+import { DateTime } from "luxon";
 import FontAwesome from "react-fontawesome";
 import SubscriptionHelper from "../../helpers/subscriptionHelper";
 
@@ -79,7 +79,9 @@ const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
             <optgroup label="This Flight">
               <option value={flightId}>
                 {thisFlight.name}:{" "}
-                {moment(thisFlight.date).format("MM/DD/YY hh:mma")}
+                {DateTime.fromJSDate(new Date(thisFlight.date)).toFormat(
+                  "M/d/y hh:mma"
+                )}
               </option>
             </optgroup>
           )}
@@ -88,7 +90,9 @@ const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
               flights.filter(f => f.id !== flightId).map(f => {
                 return (
                   <option key={`flight-${p.id}-${f.id}`} value={f.id}>
-                    {`${f.name}: ${moment(f.date).format("MM/DD/YY hh:mma")}`}
+                    {`${f.name}: ${DateTime.fromJSDate(
+                      new Date(f.date)
+                    ).toFormat("M/d/y hh:mma")}`}
                   </option>
                 );
               })
