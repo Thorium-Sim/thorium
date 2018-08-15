@@ -3,7 +3,7 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
 export const ClientQueries = {
-  clients: (root, { clientId, simulatorId, stationName }) => {
+  clients: (root, { clientId, simulatorId, stationName, flightId }) => {
     let returnVal = App.clients;
     if (clientId) {
       returnVal = returnVal.filter(c => c.id === clientId);
@@ -13,6 +13,9 @@ export const ClientQueries = {
     }
     if (stationName) {
       returnVal = returnVal.filter(c => c.station === stationName);
+    }
+    if (flightId) {
+      returnVal = returnVal.filter(c => c.flightId === flightId);
     }
     return returnVal.filter(c => c.connected);
   }
@@ -99,7 +102,7 @@ export const ClientMutations = {
 
 export const ClientSubscriptions = {
   clientChanged: {
-    resolve(payload, { client, simulatorId }) {
+    resolve(payload, { client, simulatorId, flightId }) {
       if (!payload) return [];
       if (client) {
         return payload.filter(c => c.id === client);
@@ -107,16 +110,22 @@ export const ClientSubscriptions = {
       if (simulatorId) {
         return payload.filter(c => c.simulatorId === simulatorId);
       }
+      if (flightId) {
+        return payload.filter(c => c.flightId === flightId);
+      }
       return payload.filter(c => c.connected);
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("clientChanged"),
-      (payload, { client, simulatorId }) => {
+      (payload, { client, simulatorId, flightId }) => {
         if (client) {
           return payload.filter(c => c.id === client).length > 0;
         }
         if (simulatorId) {
           return payload.filter(c => c.simulatorId === simulatorId).length > 0;
+        }
+        if (flightId) {
+          return payload.filter(c => c.flightId === flightId).length > 0;
         }
         return true;
       }
