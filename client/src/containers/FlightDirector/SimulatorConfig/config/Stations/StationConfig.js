@@ -18,6 +18,16 @@ const ConfigStation = props => {
     station,
     data: { loading, softwarePanels }
   } = props;
+  const inSim = comp => {
+    const stationSet = simulator.stationSets.find(
+      s => s.id === selectedStationSet
+    );
+    const cards = stationSet.stations.reduce(
+      (prev, next) => prev.concat(next.cards.map(c => c.component)),
+      []
+    );
+    return cards.indexOf(comp) > -1;
+  };
   const updateStationCard = (type, card, e) => {
     const variables = {
       stationSetId: selectedStationSet,
@@ -196,11 +206,16 @@ const ConfigStation = props => {
             </tbody>
           </table>
           <label>Select a component to add a card</label>
-          <select className="c-select form-control" onChange={e => addCard(e)}>
-            <option>Please Select A Card</option>
+          <select
+            className="c-select form-control"
+            value="nothing"
+            onChange={e => addCard(e)}
+          >
+            <option value="nothing">Please Select A Card</option>
             {viewList.map(e => {
               return (
                 <option key={e} value={e}>
+                  {inSim(e) && "✅ "}
                   {e}
                 </option>
               );
