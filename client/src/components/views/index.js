@@ -3,7 +3,6 @@ import EngineControl from "./EngineControl";
 import Thrusters from "./Thrusters";
 import Navigation from "./Navigation";
 import Sensors from "./Sensors";
-import AdminAssets from "./AdminAssets";
 import ShieldControl from "./ShieldControl";
 import Transporters from "./Transporters";
 import Login from "./Login";
@@ -140,7 +139,6 @@ import Keyboard from "./Widgets/keyboard";
 const Views = {
   Login,
   LongRangeComm,
-  AdminAssets,
   Thrusters,
   EngineControl,
   Navigation,
