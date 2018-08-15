@@ -1,4 +1,7 @@
 .sensorGridCore {
+  #threeSensors {
+    overflow: hidden;
+  }
   .col-sm-3 {
     position: relative;
     z-index: 1000;

@@ -11,6 +11,7 @@ import ContactSelect from "./contactSelect";
 import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
 import "./gridCore.scss";
 
+const SENSORS_OFFSET = 30;
 function distance3d(coord2, coord1) {
   const { x: x1, y: y1, z: z1 } = coord1;
   let { x: x2, y: y2, z: z2 } = coord2;
@@ -69,8 +70,14 @@ class GridCore extends Component {
     if (!this.state.dimensions && ReactDOM.findDOMNode(this)) {
       const domNode = ReactDOM.findDOMNode(this).querySelector("#threeSensors");
       if (domNode) {
+        const { width, height, left, top } = domNode.getBoundingClientRect();
         this.setState({
-          dimensions: domNode.getBoundingClientRect()
+          dimensions: {
+            width: width - SENSORS_OFFSET,
+            height: height - SENSORS_OFFSET,
+            left: left + SENSORS_OFFSET,
+            top: top + SENSORS_OFFSET
+          }
         });
       }
     }
@@ -81,10 +88,17 @@ class GridCore extends Component {
     if (!domNode) return;
     if (
       !this.state.dimensions ||
-      this.state.dimensions.width !== domNode.getBoundingClientRect().width
+      this.state.dimensions.width !==
+        domNode.getBoundingClientRect().width - SENSORS_OFFSET
     ) {
+      const { width, height, left, top } = domNode.getBoundingClientRect();
       this.setState({
-        dimensions: domNode.getBoundingClientRect()
+        dimensions: {
+          width: width - SENSORS_OFFSET,
+          height: height - SENSORS_OFFSET,
+          left: left + SENSORS_OFFSET,
+          top: top + SENSORS_OFFSET
+        }
       });
     }
   }
@@ -111,11 +125,20 @@ class GridCore extends Component {
     const width = Math.min(dimWidth, dimHeight) - padding;
     const destination = {
       x:
-        (evt.clientX - dimensions.left - padding / 2 - width / 2) /
+        (evt.clientX -
+          dimensions.left +
+          SENSORS_OFFSET -
+          padding / 2 -
+          width / 2) /
           (width / 2) -
         0.08,
       y:
-        (evt.clientY - dimensions.top - padding / 2 - width / 2) / (width / 2) -
+        (evt.clientY -
+          dimensions.top +
+          SENSORS_OFFSET -
+          padding / 2 -
+          width / 2) /
+          (width / 2) -
         0.08,
       z: 0
     };
@@ -349,7 +372,7 @@ class GridCore extends Component {
               </Fragment>
             )}
           </Col>
-          <Col sm={7} style={{ height: "calc(100% - 50px)" }}>
+          <Col sm={8}>
             <div
               id="threeSensors"
               className="array"
