@@ -1,9 +1,9 @@
 import React from "react";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag";
-import { Query, Mutation } from "react-apollo";
-import { Input, FormGroup, Label } from "reactstrap";
+import { Query } from "react-apollo";
 import TorpedoInventory from "../../../../../components/views/TorpedoLoading/inventory";
+
 const TORPEDO_QUERY = gql`
   query Torpedo($id: ID!) {
     torpedo(id: $id) {

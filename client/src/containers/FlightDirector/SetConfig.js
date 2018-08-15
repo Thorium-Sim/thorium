@@ -1,46 +1,13 @@
 import React, { Component } from "react";
 import { Container, Row, Col, Card, Button, Input } from "reactstrap";
 import gql from "graphql-tag";
-import { graphql, Mutation, withApollo } from "react-apollo";
+import { graphql, withApollo } from "react-apollo";
 
 import "./setConfig.scss";
-
-/*const SIMULATOR_SUB = gql`subscription SimulatorsUpdate {
-  simulatorsUpdate(template: true) {
-    id
-    name
-    layout
-    systems {
-      id
-      type
-    }
-    stationSets {
-      id
-      name
-      stations {
-        name
-        cards {
-          name
-          component
-        }
-      }
-    }
-  }
-}`;*/
 
 class SetConfig extends Component {
   subscription = null;
   state = {};
-  /* componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: SIMULATOR_SUB,
-        updateQuery: (previousResult, {subscriptionData}) => {
-          return Object.assign({}, previousResult, {simulators: subscriptionData.data.simulatorsUpdate});
-        },
-      });
-    }
-  }*/
   addSet = () => {
     const name = prompt("What is the name of the set?");
     if (name) {
