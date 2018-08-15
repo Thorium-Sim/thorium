@@ -8,5 +8,5 @@ App.on("toggleAutoUpdate", ({ autoUpdate }) => {
 });
 
 App.on("triggerAutoUpdate", () => {
-  autoUpdate();
+  autoUpdate(true);
 });
