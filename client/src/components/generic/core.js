@@ -5,7 +5,9 @@ export const InputField = props => {
     {
       backgroundColor: "#FBFE3D",
       border: "solid 1px #D2CB43",
+      color: "black",
       height: "16px",
+      fontSize: "12px",
       whiteSpace: "pre",
       textAlign: "center"
     },
@@ -43,6 +45,8 @@ export const OutputField = ({
       backgroundColor: "#188EFB",
       border: "solid 1px #2586D8",
       height: "16px",
+      color: "black",
+      fontSize: "12px",
       whiteSpace: "pre",
       textAlign: "center"
     },
