@@ -34,6 +34,7 @@ App.on(
           pubsub.publish("notify", {
             id: uuid.v4(),
             simulatorId: system.simulatorId,
+            type: "Long Range Comm",
             station: s.name,
             title: `New Long Range Message Queued`,
             body: `Message composed by ${sender}`,
@@ -50,6 +51,7 @@ App.on(
           pubsub.publish("notify", {
             id: uuid.v4(),
             simulatorId: system.simulatorId,
+            type: "Long Range Comm",
             station: s.name,
             title: `New Long Range Message`,
             body: `From ${sender}`,
@@ -71,6 +73,7 @@ App.on("longRangeMessageSend", ({ id, message }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: sys.simulatorId,
+    type: "Long Range Comm",
     station: "Core",
     title: `New Long Range Message`,
     body: ``,
@@ -131,6 +134,7 @@ App.on("updateLongRangeComm", ({ longRangeComm }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: lr.simulatorId,
+      type: "Interception",
       station: "Core",
       title: `Interception Signal Locked`,
       body: ``,

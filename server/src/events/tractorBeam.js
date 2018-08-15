@@ -9,6 +9,7 @@ App.on("setTractorBeamState", ({ id, state }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: system.simulatorId,
+    type: "Tractor Beam",
     station: "Core",
     title: `Tractor Beam ${state ? "Activated" : "Deactivated"}`,
     body: "",

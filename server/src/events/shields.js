@@ -21,6 +21,7 @@ App.on("shieldRaised", ({ id }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: system.simulatorId,
+      type: "Shields",
       station: "Core",
       title: `Shields Raised`,
       body: `${shieldNames[system.position]}`,
@@ -50,6 +51,7 @@ App.on("shieldRaised", ({ id }) => {
       pubsub.publish("notify", {
         id: uuid.v4(),
         simulatorId: id,
+        type: "Shields",
         station: "Core",
         title: `Shields Raised`,
         body: `All`,
@@ -75,6 +77,7 @@ App.on("shieldLowered", ({ id }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: system.simulatorId,
+      type: "Shields",
       station: "Core",
       title: `Shields Lowered`,
       body: `${shieldNames[system.position]}`,
@@ -104,6 +107,7 @@ App.on("shieldLowered", ({ id }) => {
       pubsub.publish("notify", {
         id: uuid.v4(),
         simulatorId: id,
+        type: "Shields",
         station: "Core",
         title: `Shields Lowered`,
         body: `All`,

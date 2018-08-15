@@ -51,6 +51,7 @@ App.on("updateDockingPort", ({ port = {} }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: dockingPort.simulatorId,
+    type: "Docking",
     station: "Core",
     title: `${titleCase(dockingPort.type)} ${dockingPort.name} ${whichEvent(
       port

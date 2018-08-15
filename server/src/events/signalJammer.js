@@ -8,6 +8,7 @@ App.on("updateSignalJammer", ({ jammer }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: sys.simulatorId,
+      type: "Signal Jammer",
       station: "Core",
       title: `Signal Jammer ${jammer.active ? "Activated" : "Deactivated"}`,
       body: "",

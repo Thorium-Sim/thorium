@@ -9,6 +9,7 @@ App.on("shipDockingChange", ({ simulatorId, which, state }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: simulatorId,
+      type: "Docking",
       station: "Core",
       title: which,
       body:
@@ -55,6 +56,7 @@ App.on("remoteAccessSendCode", ({ simulatorId, code, station }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: simulatorId,
+      type: "Remote Access",
       station: "Core",
       title: "Remote Access Code",
       body: `Code from: ${station}
@@ -88,6 +90,7 @@ App.on("setSelfDestructTime", ({ simulatorId, time }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: simulatorId,
+    type: "Self Destruct",
     station: "Core",
     title: `Self Destruct ${time ? "Activated" : "Deactivated"}`,
     body: ``,

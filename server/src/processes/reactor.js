@@ -11,6 +11,7 @@ const triggerWarning = sys => {
       pubsub.publish("notify", {
         id: uuid.v4(),
         simulatorId: sys.simulatorId,
+        type: "Reactor",
         station: "Core",
         title: `Dilithium Crystal Stress`,
         body: "",

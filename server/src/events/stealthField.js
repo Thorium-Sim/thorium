@@ -22,6 +22,7 @@ App.on("activateStealth", ({ id }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: system.simulatorId,
+    type: "Stealth Field",
     station: "Core",
     title: `Stealth Activated`,
     body: "",
@@ -48,6 +49,7 @@ App.on("deactivateStealth", ({ id }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: system.simulatorId,
+    type: "Stealth Field",
     station: "Core",
     title: `Stealth Deactivated`,
     body: "",

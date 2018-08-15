@@ -56,6 +56,7 @@ App.on("commConnectArrow", ({ id, arrowId }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: system.simulatorId,
+    type: "Short Range Comm",
     station: "Core",
     title: `Call Connected`,
     body: "",
@@ -82,6 +83,7 @@ App.on("commDisconnectArrow", ({ id, arrowId }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: system.simulatorId,
+    type: "Short Range Comm",
     station: "Core",
     title: `Call Disconnected`,
     body: "",
@@ -115,6 +117,7 @@ App.on("commHail", ({ id }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: system.simulatorId,
+    type: "Short Range Comm",
     station: "Core",
     title: `New Hail`,
     body: "",
@@ -142,6 +145,7 @@ App.on("cancelHail", ({ id, core }) => {
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: system.simulatorId,
+      type: "Short Range Comm",
       station: "Core",
       title: `Hail Canceled`,
       body: "",
@@ -223,6 +227,7 @@ App.on("muteShortRangeComm", ({ id, arrowId, mute }) => {
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: system.simulatorId,
+    type: "Short Range Comm",
     station: "Core",
     title: `Call ${mute ? "Muted" : "Unmuted"}`,
     body: "",
