@@ -17,6 +17,7 @@ App.on("reactorEject", ({ id, tf = true }) => {
     {
       simulatorId: system.simulatorId,
       title: `Reactor Ejected`,
+      component: "ReactorControlCore",
       body: null,
       color: "danger"
     },

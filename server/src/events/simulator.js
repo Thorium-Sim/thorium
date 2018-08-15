@@ -55,6 +55,7 @@ App.on("changeSimulatorAlertLevel", ({ simulatorId, alertLevel }) => {
       {
         simulatorId: simulator.id,
         title: `Alert Level ${alertLevel}`,
+        component: "AlertConditionCore",
         body: null,
         color: "info"
       },

@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Cores } from "../";
-import { Button } from "reactstrap";
+import { Button, ButtonGroup } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import moment from "moment";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import CoreFeedConfig from "./config";
+
 import "./style.scss";
 
 const COREFEED_SUB = gql`
@@ -24,7 +26,12 @@ const COREFEED_SUB = gql`
 `;
 
 class CoreFeed extends Component {
-  state = { components: {} };
+  constructor(props) {
+    super(props);
+    const storedAllowed = localStorage.getItem("allowed_coreFeed");
+    const allowed = storedAllowed ? JSON.parse(storedAllowed) : {};
+    this.state = { components: {}, allowed };
+  }
   ignoreCoreFeed = id => {
     const mutation = gql`
       mutation IgnoreCoreFeed($id: ID) {
@@ -54,10 +61,15 @@ class CoreFeed extends Component {
       components: Object.assign({}, this.state.components, { [id]: true })
     });
   };
+  toggle = () => {
+    const storedAllowed = localStorage.getItem("allowed_coreFeed");
+    const allowed = storedAllowed ? JSON.parse(storedAllowed) : {};
+    this.setState({ config: !this.state.config, allowed });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.coreFeed) return null;
     const coreFeed = this.props.data.coreFeed.concat().reverse();
-    const { components } = this.state;
+    const { components, config, allowed } = this.state;
     return (
       <div className="coreFeed-core">
         <SubscriptionHelper
@@ -76,13 +88,18 @@ class CoreFeed extends Component {
           }
         />
         <p>Core Feed</p>
-        <Button color="info" size="sm" block onClick={this.ignoreAll}>
-          Ignore All
-        </Button>
+        <ButtonGroup>
+          <Button color="warning" size="sm" onClick={this.toggle}>
+            Configure
+          </Button>
+          <Button color="info" size="sm" onClick={this.ignoreAll}>
+            Ignore All
+          </Button>
+        </ButtonGroup>
         <p>Click on core feed notification for contextual component.</p>
         {coreFeed.length ? (
           coreFeed
-            .filter(c => !c.ignored)
+            .filter(c => !c.ignored && allowed[c.component] !== false)
             .filter((c, i) => (i < 50 ? true : false))
             .map(c => {
               if (components[c.id] && c.component && Cores[c.component]) {
@@ -131,6 +148,7 @@ class CoreFeed extends Component {
         ) : (
           <p>No feed items...</p>
         )}
+        <CoreFeedConfig modal={config} toggle={this.toggle} />
       </div>
     );
   }
