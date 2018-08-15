@@ -40,9 +40,6 @@ class Events extends EventEmitter {
     this.dockingPorts = [];
     this.coreLayouts = [];
     this.coreFeed = [];
-    this.assetFolders = [];
-    this.assetContainers = [];
-    this.assetObjects = [];
     this.viewscreens = [];
     this.messages = [];
     this.tacticalMaps = [];
@@ -78,6 +75,7 @@ class Events extends EventEmitter {
       ) {
         return;
       }
+      if (key.indexOf("asset") > -1) return;
       if (key === "autoUpdate" || key === "migrations") {
         this[key] = snapshot[key];
       }
