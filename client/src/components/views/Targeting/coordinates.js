@@ -3,6 +3,12 @@ import { Row, Col } from "reactstrap";
 import Keypad from "../Navigation/keypad";
 import gql from "graphql-tag";
 
+function compareCoord(coord1 = {}, coord2 = {}) {
+  const { x, y, z } = coord1 || {};
+  const { x: x1, y: y1, z: z1 } = coord2 || {};
+  if (x !== x1 || y !== y1 || z !== z1) return true;
+  return false;
+}
 export default class Coordinates extends Component {
   constructor(props) {
     super(props);
@@ -12,12 +18,16 @@ export default class Coordinates extends Component {
       enteredTarget: props.targeting.enteredTarget || {}
     };
   }
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     if (
-      JSON.stringify(this.props.targeting.calculatedTarget) !==
-        JSON.stringify(this.state.calculatedTarget) ||
-      JSON.stringify(this.props.targeting.enteredTarget) !==
-        this.state.enteredTarget
+      compareCoord(
+        this.props.targeting.calculatedTarget,
+        prevProps.targeting.calculatedTarget
+      ) ||
+      compareCoord(
+        this.props.targeting.enteredTarget,
+        prevProps.targeting.enteredTarget
+      )
     ) {
       this.setState({
         calculatedTarget: this.props.targeting.calculatedTarget || {},
@@ -66,7 +76,10 @@ export default class Coordinates extends Component {
       });
       return;
     }
-    enteredTarget[selectedField] = "";
+    enteredTarget[selectedField] = enteredTarget[selectedField].slice(
+      0,
+      enteredTarget[selectedField].length - 1
+    );
     this.setState({
       enteredTarget
     });
