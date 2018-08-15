@@ -4,10 +4,9 @@ import { graphql, withApollo } from "react-apollo";
 import { Cores } from "../";
 import { Button, ButtonGroup } from "reactstrap";
 import FontAwesome from "react-fontawesome";
-import moment from "moment";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import CoreFeedConfig from "./config";
-
+import { DateTime } from "luxon";
 import "./style.scss";
 
 const COREFEED_SUB = gql`
@@ -129,7 +128,10 @@ class CoreFeed extends Component {
                     onClick={() => this.showComponent(c.id)}
                   >
                     <strong className="alert-heading">
-                      {moment(c.timestamp).format("H:mm:ssa")} - {c.title}
+                      {DateTime.fromJSDate(new Date(c.timestamp)).toFormat(
+                        "h:mm:ssa"
+                      )}{" "}
+                      - {c.title}
                     </strong>
                     {c.body && <p>{c.body}</p>}
                     <FontAwesome

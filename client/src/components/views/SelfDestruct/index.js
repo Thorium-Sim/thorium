@@ -10,7 +10,7 @@ import {
   Button,
   Input
 } from "reactstrap";
-import Moment from "moment";
+import { Duration } from "luxon";
 import { graphql, withApollo } from "react-apollo";
 import Tour from "../../../helpers/tourHelper";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
@@ -104,7 +104,12 @@ class SelfDestruct extends Component {
       selfDestructTime,
       selfDestructCode
     } = this.props.data.simulators[0].ship;
-    const duration = Moment.duration(selfDestructTime);
+    const duration = Duration.fromObject({
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: selfDestructTime
+    }).normalize();
     return (
       <Container className="self-destruct">
         <SubscriptionHelper
@@ -132,10 +137,10 @@ class SelfDestruct extends Component {
         </div>
         {selfDestructTime && selfDestructTime > 0 ? (
           <div className="counter">
-            {`${padDigits(duration.hours(), 2)}:${padDigits(
-              duration.minutes(),
+            {`${padDigits(duration.hours, 2)}:${padDigits(
+              duration.minutes,
               2
-            )}:${padDigits(duration.seconds(), 2)}`}
+            )}:${padDigits(duration.seconds, 2)}`}
           </div>
         ) : (
           <div className="set-code">

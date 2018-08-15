@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import moment from "moment";
 import { Button } from "reactstrap";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
+import { Duration } from "luxon";
 import { publish } from "../helpers/pubsub";
 
 const TIMESYNC_SUB = gql`
@@ -55,10 +55,17 @@ class Timer extends Component {
     ) {
       return;
     }
-    const dur = moment.duration(this.state.timer);
-    dur.subtract(1, "second");
+    const [hours, minutes, seconds] = this.state.timer.split(":");
+    const dur = Duration.fromObject({
+      hours: parseInt(hours),
+      minutes: parseInt(minutes),
+      seconds: parseInt(seconds)
+    })
+      .minus(1000)
+      .normalize()
+      .toFormat("hh:mm:ss");
     this.setState({
-      timer: moment.utc(dur.as("milliseconds")).format("HH:mm:ss")
+      timer: dur
     });
     this.timer = setTimeout(this.updateTimer, 1000);
   };
@@ -127,12 +134,17 @@ class Timer extends Component {
       });
   };
   sendToSensors = () => {
-    const dur = moment.duration(this.state.timer);
+    const [hours, minutes, seconds] = this.state.timer.split(":");
+    const dur = Duration.fromObject({
+      hours: parseInt(hours),
+      minutes: parseInt(minutes),
+      seconds: parseInt(seconds)
+    }).normalize();
     const data = `Estimated time to arrival calculated: Approximately ${
-      dur.hours() > 0 ? `${dur.hours()} hours, ` : ""
-    }${
-      dur.minutes() > 0 ? `${dur.minutes()} minutes, ` : ""
-    }${dur.seconds()} seconds at current speed.`;
+      dur.hours > 0 ? `${dur.hours} hours, ` : ""
+    }${dur.minutes > 0 ? `${dur.minutes} minutes, ` : ""}${
+      dur.seconds
+    } seconds at current speed.`;
     publish("sensorData", data);
   };
   render() {
