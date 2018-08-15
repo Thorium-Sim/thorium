@@ -31,6 +31,10 @@ export const SetMutations = {
   updateSetClient(rootValue, { id, client }, context) {
     App.sets.find(s => s.id === id).updateClient(client);
     pubsub.publish("setsUpdate", App.sets);
+  },
+  renameSet(root, { id, name }, context) {
+    App.sets.find(s => s.id === id).rename(name);
+    pubsub.publish("setsUpdate", App.sets);
   }
 };
 

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container, Row, Col, Card, Button, Input } from "reactstrap";
 import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, Mutation, withApollo } from "react-apollo";
 
 import "./setConfig.scss";
 
@@ -59,6 +59,7 @@ class SetConfig extends Component {
       });
     }
   };
+
   removeSet = () => {
     const mutation = gql`
       mutation RemoveSet($id: ID!) {
@@ -71,6 +72,27 @@ class SetConfig extends Component {
     this.setState({
       selectedSet: null
     });
+    this.props.client.mutate({
+      mutation,
+      variables,
+      refetchQueries: ["Sets"]
+    });
+  };
+  renameSet = () => {
+    const { data } = this.props;
+    const { selectedSet } = this.state;
+    const { sets } = data;
+    const set = sets.find(s => s.id === selectedSet);
+    const name = prompt("What is the name of the new set?", set.name);
+    const mutation = gql`
+      mutation RenameSet($id: ID!, $name: String!) {
+        renameSet(id: $id, name: $name)
+      }
+    `;
+    const variables = {
+      id: this.state.selectedSet,
+      name
+    };
     this.props.client.mutate({
       mutation,
       variables,
@@ -193,23 +215,27 @@ class SetConfig extends Component {
                 </li>
               ))}
             </Card>
-            <Row>
-              <Col sm={6}>
-                <Button block color="primary" onClick={this.addSet}>
-                  Add Set
-                </Button>
-              </Col>
-              <Col sm={6}>
-                <Button
-                  block
-                  color="danger"
-                  onClick={this.removeSet}
-                  disabled={!selectedSet}
-                >
-                  Remove Set
-                </Button>
-              </Col>
-            </Row>
+            <Button block size="sm" color="primary" onClick={this.addSet}>
+              Add Set
+            </Button>
+            <Button
+              block
+              size="sm"
+              color="warning"
+              onClick={this.renameSet}
+              disabled={!selectedSet}
+            >
+              Rename Set
+            </Button>
+            <Button
+              block
+              size="sm"
+              color="danger"
+              onClick={this.removeSet}
+              disabled={!selectedSet}
+            >
+              Remove Set
+            </Button>
           </Col>
           <Col>
             <h5>Simulators</h5>

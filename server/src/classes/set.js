@@ -14,6 +14,9 @@ export default class Set {
   removeClient(id) {
     this.clients = this.clients.filter(c => c.id !== id);
   }
+  rename(name) {
+    this.name = name;
+  }
   updateClient(setClientInput) {
     this.clients.find(c => c.id === setClientInput.id).update(setClientInput);
   }
