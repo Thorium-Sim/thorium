@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Mutation } from "react-apollo";
 import Measure from "react-measure";
-import { Asset } from "../../../../helpers/assets";
 import tinycolor from "tinycolor2";
 import Explosion from "../../../../helpers/explosions";
 import gql from "graphql-tag";
@@ -146,6 +145,7 @@ export default class SensorContact extends Component {
           />
           {core && (
             <div
+              id={`contact-${id}`}
               className="sensors-border"
               onMouseDown={mousedown}
               style={{
@@ -185,6 +185,7 @@ export default class SensorContact extends Component {
           />
           {core && (
             <div
+              id={`contact-${id}`}
               className="sensors-planet"
               onMouseDown={mousedown}
               style={{
@@ -216,35 +217,30 @@ export default class SensorContact extends Component {
     return (
       <div>
         <Fragment>
-          <Asset asset={icon}>
-            {({ src }) => (
-              <Measure
-                bounds
-                onResize={contentRect => {
-                  this.setState({ dimensions: contentRect.bounds });
+          <Measure
+            bounds
+            onResize={contentRect => {
+              this.setState({ dimensions: contentRect.bounds });
+            }}
+          >
+            {({ measureRef }) => (
+              <img
+                ref={measureRef}
+                alt="contact"
+                draggable="false"
+                onMouseOver={() => mouseover(this.props)}
+                onMouseOut={selected ? null : () => mouseover({})}
+                onMouseDown={e => mousedown(this.props, e)}
+                src={`/assets${icon}`}
+                className={disabled ? "contact-disabled" : ""}
+                style={{
+                  opacity: core ? 0.5 : opacity,
+                  transform: `translate(${(width / 2) * x}px, ${(width / 2) *
+                    y}px) scale(${size})`
                 }}
-              >
-                {({ measureRef }) => (
-                  <img
-                    ref={measureRef}
-                    alt="contact"
-                    draggable="false"
-                    onMouseOver={() => mouseover(this.props)}
-                    onMouseOut={selected ? null : () => mouseover({})}
-                    onMouseDown={e => mousedown(this.props, e)}
-                    src={src}
-                    className={disabled ? "contact-disabled" : ""}
-                    style={{
-                      opacity: core ? 0.5 : opacity,
-                      transform: `translate(${(width / 2) * x}px, ${(width /
-                        2) *
-                        y}px) scale(${size})`
-                    }}
-                  />
-                )}
-              </Measure>
+              />
             )}
-          </Asset>
+          </Measure>
           {!core &&
             this.state.dimensions &&
             selected && (
@@ -259,22 +255,19 @@ export default class SensorContact extends Component {
         </Fragment>
         {core && (
           <Fragment>
-            <Asset asset={icon}>
-              {({ src }) => (
-                <img
-                  alt="icon"
-                  draggable="false"
-                  onMouseDown={mousedown}
-                  src={src}
-                  className={disabled ? "contact-disabled" : ""}
-                  style={{
-                    backgroundColor: selected ? "blue" : "",
-                    transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
-                      dy}px) scale(${size})`
-                  }}
-                />
-              )}
-            </Asset>
+            <img
+              id={`contact-${id}`}
+              alt="icon"
+              draggable="false"
+              onMouseDown={mousedown}
+              src={`/assets${icon}`}
+              className={disabled ? "contact-disabled" : ""}
+              style={{
+                backgroundColor: selected ? "blue" : "",
+                transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
+                  dy}px) scale(${size})`
+              }}
+            />
             {targeted && (
               <div
                 className="crosshairs"

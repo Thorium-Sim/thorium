@@ -1,6 +1,14 @@
 .sensorGridCore {
   #threeSensors {
     overflow: hidden;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .col-sm-3 {
     position: relative;
