@@ -35,10 +35,11 @@ ratings:
   - "**.css"
   - "**.js"
 exclude_paths:
-- "build/"
-- "build-server/"
-- node_modules/
+- "**/build/"
+- "**/build-server/"
+- "**/node_modules/",
 - "**/reports/**/*"
+- "**/coverage/**/*"
 - "**/test/**/*"
 - "**/config/**/*"
 - "**/scripts/**/*"

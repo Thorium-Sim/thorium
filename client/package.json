@@ -1,0 +1,99 @@
+{
+  "name": "thorium-client",
+  "version": "0.4.0",
+  "description": "Starship Simulator Controls built with React",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Thorium-Sim/thorium.git"
+  },
+  "author": "Alex Anderson <alexanderson1993@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/Thorium-Sim/thorium/issues"
+  },
+  "license": "Apache-2.0",
+  "homepage": "https://thoriumsim.com",
+  "private": true,
+  "languages": [
+    "es",
+    "fr",
+    "it",
+    "nl",
+    "de"
+  ],
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "clean": "rm -rf node_modules",
+    "clean-build": "rm -rf build"
+  },
+  "dependencies": {
+    "apollo-cache-inmemory": "^1.2.7",
+    "apollo-client": "^2.3.8",
+    "apollo-link": "^1.2.2",
+    "apollo-link-error": "^1.1.0",
+    "apollo-link-http": "^1.5.4",
+    "apollo-link-ws": "^1.0.8",
+    "apollo-utilities": "^1.0.18",
+    "appdirectory": "^0.1.0",
+    "bodymovin": "^4.13.0",
+    "bootstrap": "^4.1.3",
+    "change-case": "^3.0.2",
+    "color": "^3.0.0",
+    "graphql": "^0.13.2",
+    "graphql-tag": "^2.9.2",
+    "keycode": "^2.2.0",
+    "luxon": "^1.3.3",
+    "moment": "^2.22.2",
+    "papaparse": "^4.6.0",
+    "random-words": "^1.1.0",
+    "react": "^16.4.2",
+    "react-addons-transition-group": "^15.6.2",
+    "react-animated-number": "^0.4.4",
+    "react-apollo": "^2.1.11",
+    "react-color": "^2.14.1",
+    "react-dom": "^16.4.2",
+    "react-draggable": "^3.0.5",
+    "react-fontawesome": "^1.6.1",
+    "react-intl": "^2.4.0",
+    "react-konami": "^0.5.0",
+    "react-measure": "^2.1.0",
+    "react-mosaic-component": "^1.1.1",
+    "react-rangeslider": "^2.2.0",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "^2.0.0-next.3e165448",
+    "react-sortable-hoc": "^0.8.3",
+    "react-table": "^6.8.6",
+    "react-typing": "^1.0.0",
+    "reactour": "^1.8.4",
+    "reactstrap": "^6.3.1",
+    "sine-waves": "^0.3.0",
+    "subscriptions-transport-ws": "^0.9.14",
+    "three": "^0.95.0",
+    "three-obj-loader": "^1.1.3",
+    "tinycolor2": "^1.4.1",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "jest-localstorage-mock": "^2.2.0",
+    "node-sass-chokidar": "^1.3.3"
+  },
+  "browserslist": {
+    "development": [
+      "last 2 chrome versions",
+      "last 2 firefox versions",
+      "last 2 edge versions"
+    ],
+    "production": [
+      ">0.25%",
+      "not op_mini all",
+      "ie 11"
+    ]
+  },
+  "proxy": {
+    "/assets": {
+      "target": "http://localhost:3001"
+    }
+  }
+}
