@@ -106,38 +106,38 @@ class StealthFieldCore extends Component {
       variables
     });
   };
-  updateActivated(e) {
-    const { id } = this.props.data.stealthField[0];
-    const mutation = gql`
-      mutation ToggleActivated($id: ID!, $state: Boolean!) {
-        setStealthActivated(id: $id, state: $state)
-      }
-    `;
-    const variables = {
-      id,
-      state: e.target.checked
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-  }
-  updateCharge(e) {
-    const { id } = this.props.data.stealthField[0];
-    const mutation = gql`
-      mutation ToggleCharge($id: ID!, $state: Boolean!) {
-        setStealthCharge(id: $id, state: $state)
-      }
-    `;
-    const variables = {
-      id,
-      state: e.target.checked
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-  }
+  // updateActivated(e) {
+  //   const { id } = this.props.data.stealthField[0];
+  //   const mutation = gql`
+  //     mutation ToggleActivated($id: ID!, $state: Boolean!) {
+  //       setStealthActivated(id: $id, state: $state)
+  //     }
+  //   `;
+  //   const variables = {
+  //     id,
+  //     state: e.target.checked
+  //   };
+  //   this.props.client.mutate({
+  //     mutation,
+  //     variables
+  //   });
+  // }
+  // updateCharge(e) {
+  //   const { id } = this.props.data.stealthField[0];
+  //   const mutation = gql`
+  //     mutation ToggleCharge($id: ID!, $state: Boolean!) {
+  //       setStealthCharge(id: $id, state: $state)
+  //     }
+  //   `;
+  //   const variables = {
+  //     id,
+  //     state: e.target.checked
+  //   };
+  //   this.props.client.mutate({
+  //     mutation,
+  //     variables
+  //   });
+  // }
   fluxCharge = () => {
     const mutation = gql`
       mutation FluxStealth($id: ID) {
@@ -182,7 +182,7 @@ class StealthFieldCore extends Component {
     }, "");
     return (
       <Container className="targeting-core">
-        <label>
+        {/* <label>
           {" "}
           Activate{" "}
           <input
@@ -198,7 +198,7 @@ class StealthFieldCore extends Component {
             onChange={this.updateCharge.bind(this)}
             type="checkbox"
           />
-        </label>
+        </label> */}
         <Button color="warning" size="sm" onClick={this.fluxCharge}>
           Flux
         </Button>

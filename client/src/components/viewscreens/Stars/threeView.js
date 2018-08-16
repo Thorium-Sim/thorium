@@ -4,7 +4,7 @@ import TWEEN from "@tweenjs/tween.js";
 class ThreeView extends Component {
   constructor(props) {
     super(props);
-    const { velocity, trailing, width, height } = props;
+    const { velocity, width, height } = props;
     this.state = { velocity };
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
