@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Dynamic from "../dynamic";
 import { Cores } from "../../../views";
 import CoreFeed from "../../../views/CoreFeed";
+import Lighting from "../../../views/Lighting";
 import CoreError from "../coreError";
 import "./next.scss";
 
@@ -26,6 +27,9 @@ class Next extends Component {
             <Cores.AlertConditionCore {...props} />
           </CoreError>
         </div>
+        <CoreError>
+          <Lighting {...props} />
+        </CoreError>
         <div className="next-coreFeed">
           <CoreError>
             <CoreFeed {...props} />
