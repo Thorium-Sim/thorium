@@ -55,17 +55,18 @@ const StationPicker = ({
     <Fragment>
       <h4>Stations</h4>
       <Card className="scroll">
-        {stationSet.stations.map(s => (
-          <li
-            key={s.name}
-            className={`list-group-item ${
-              selectedStation === s.id ? "selected" : ""
-            }`}
-            onClick={() => selectStation(s.name)}
-          >
-            {s.name}
-          </li>
-        ))}
+        {stationSet &&
+          stationSet.stations.map(s => (
+            <li
+              key={s.name}
+              className={`list-group-item ${
+                selectedStation === s.id ? "selected" : ""
+              }`}
+              onClick={() => selectStation(s.name)}
+            >
+              {s.name}
+            </li>
+          ))}
       </Card>
       <Button size="sm" color="success" onClick={addStation}>
         Add Station

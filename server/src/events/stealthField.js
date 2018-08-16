@@ -3,11 +3,13 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import uuid from "uuid";
 
 App.on("setStealthActivated", ({ id, state }) => {
-  App.systems.find(s => s.id === id).setActivated(state);
+  const sys = App.systems.find(s => s.id === id);
+  sys.setActivated(state);
   pubsub.publish(
     "stealthFieldUpdate",
     App.systems.filter(s => s.type === "StealthField")
   );
+  if (sys.changeAlert) pubsub.publish("simulatorsUpdate", App.simulators);
 });
 App.on("setStealthCharge", ({ id, state }) => {
   App.systems.find(s => s.id === id).setCharge(state);
@@ -42,6 +44,7 @@ App.on("activateStealth", ({ id }) => {
     "stealthFieldUpdate",
     App.systems.filter(s => s.type === "StealthField")
   );
+  if (system.changeAlert) pubsub.publish("simulatorsUpdate", App.simulators);
 });
 App.on("deactivateStealth", ({ id }) => {
   const system = App.systems.find(s => s.id === id);
@@ -69,6 +72,7 @@ App.on("deactivateStealth", ({ id }) => {
     "stealthFieldUpdate",
     App.systems.filter(s => s.type === "StealthField")
   );
+  if (system.changeAlert) pubsub.publish("simulatorsUpdate", App.simulators);
 });
 App.on("setStealthQuadrant", ({ id, which, value }) => {
   App.systems.find(s => s.id === id).setQuadrant(which, value);
@@ -79,6 +83,14 @@ App.on("setStealthQuadrant", ({ id, which, value }) => {
 });
 App.on("fluxStealthQuadrants", ({ id }) => {
   App.systems.find(s => s.id === id).fluxQuadrants();
+  pubsub.publish(
+    "stealthFieldUpdate",
+    App.systems.filter(s => s.type === "StealthField")
+  );
+});
+
+App.on("stealthChangeAlert", ({ id, change }) => {
+  App.systems.find(s => s.id === id).setChangeAlert(change);
   pubsub.publish(
     "stealthFieldUpdate",
     App.systems.filter(s => s.type === "StealthField")

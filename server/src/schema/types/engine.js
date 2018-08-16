@@ -9,6 +9,7 @@ type Engine implements SystemInterface {
   stealthFactor: Float
   speeds: [Speed]
   speed: Int
+  previousSpeed: Int
   velocity: Float
   speedFactor: Float
   acceleration: Float

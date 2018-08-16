@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import SensorContact from "./SensorContact";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
@@ -229,7 +230,7 @@ class GridDom extends Component {
     const { movingContact, locations } = this.state;
     if (!movingContact && selectedContacts.length === 0) return;
     const { width: dimWidth, height: dimHeight } = dimensions;
-    const padding = core ? 15 : 0;
+    const padding = core ? 0 : 0;
     const width = Math.min(dimWidth, dimHeight) - padding;
     const destinationDiff = {
       x: (e.movementX / width) * 2,
@@ -299,10 +300,10 @@ class GridDom extends Component {
   }
   triggerUpdate = speed => {
     // Send the update to the server
-    const { selectedContacts } = this.props;
+    const { selectedContacts, dimensions, offset = 0 } = this.props;
     const { sensorContacts: contacts } = this.props.data;
     const { movingContact, locations } = this.state;
-    if (selectedContacts.length > 0) {
+    if (selectedContacts.length > 1) {
       const contactUpdateData = selectedContacts.map(c => {
         const { __typename, ...destination } = locations[c].destination;
         return {
@@ -333,12 +334,29 @@ class GridDom extends Component {
         iconHeight: null,
         speedAsking: null
       });
-      const distance = distance3d({ x: 0, y: 0, z: 0 }, destination);
       let mutation;
-      const contact = contacts.find(c => c.id === movingContact);
-      const maxDistance =
-        contact.type === "planet" ? 1 + contact.size / 2 : 1.1;
-      if (distance > maxDistance) {
+      let deleteContact = false;
+      const contactEl = ReactDOM.findDOMNode(this).querySelector(
+        `#contact-${movingContact}`
+      );
+      if (contactEl) {
+        const { top, bottom, left, right } = contactEl.getBoundingClientRect();
+        if (
+          bottom < dimensions.top - offset ||
+          top > dimensions.top + dimensions.height ||
+          left > dimensions.left + dimensions.width ||
+          right < dimensions.left - offset
+        ) {
+          deleteContact = true;
+        }
+      } else {
+        const distance = distance3d({ x: 0, y: 0, z: 0 }, destination);
+        const contact = contacts.find(c => c.id === movingContact);
+        const maxDistance =
+          contact.type === "planet" ? 1 + contact.size / 2 : 1.1;
+        deleteContact = distance > maxDistance;
+      }
+      if (deleteContact) {
         // Delete the contact
         mutation = gql`
           mutation DeleteContact($id: ID!, $contact: SensorContactInput!) {
@@ -434,7 +452,7 @@ class GridDom extends Component {
     if (!dimensions) return <div id="sensorGrid" />;
 
     const { width: dimWidth, height: dimHeight } = dimensions;
-    const padding = core ? 15 : 0;
+    const padding = core ? 0 : 0;
     const width = Math.min(dimWidth, dimHeight) - padding;
     const gridStyle = {
       width: `${width}px`,

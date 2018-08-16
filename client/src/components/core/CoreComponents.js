@@ -1,106 +1,53 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import * as Layouts from "./layouts";
-import { withApollo, graphql } from "react-apollo";
-import gql from "graphql-tag";
-import IssueTracker from "../../components/admin/IssueTracker";
-import { publish } from "../views/helpers/pubsub";
 import Hotkey from "./hotkey";
 
-import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  ListGroup,
-  ListGroupItem,
-  ButtonGroup
-} from "reactstrap";
+import { ListGroup, ListGroupItem } from "reactstrap";
 import Alerts from "../generic/Alerts";
-import { Link } from "react-router-dom";
-import DynamicPicker from "./DynamicPicker";
-import NotificationConfig from "./notificationConfig";
-import SubscriptionHelper from "../../helpers/subscriptionHelper";
 
 import "./CoreComponents.scss";
-
-const FLIGHTS_SUB = gql`
-  subscription FlightsSub($id: ID) {
-    flightsUpdate(id: $id) {
-      id
-      name
-      date
-      running
-      simulators {
-        id
-        name
-        layout
-        stations {
-          name
-          cards {
-            name
-          }
-        }
-        assets {
-          mesh
-          texture
-          side
-          top
-          logo
-        }
-      }
-    }
-  }
-`;
-
-const CACHE_INVALID_SUB = gql`
-  subscription ClearCache($flight: ID!) {
-    clearCache(flight: $flight)
-  }
-`;
+import Menubar from "./menubar";
 
 class CoreComponents extends Component {
   state = {
     simulator: null,
-    layout: localStorage.getItem("thorium_coreLayout") || "defaultLayout",
+    layout: localStorage.getItem("thorium_coreLayout") || "Next",
     mosaic: JSON.parse(localStorage.getItem("thorium_coreMosaic")) || null,
     notifications: localStorage.getItem("thorium_coreNotifications") === "true",
     speech: localStorage.getItem("thorium_coreSpeech") === "true",
     editable: false,
     issuesOpen: false
   };
+  componentDidMount() {
+    this.calculateSimulator();
+  }
   componentDidUpdate() {
+    this.calculateSimulator();
+  }
+  calculateSimulator() {
     const { simulator } = this.state;
+    const { simulators } = this.props;
     if (simulator) return;
-    if (!this.props.data.loading) {
-      const { flights } = this.props.data;
-      if (flights) {
-        const flight = this.props.flightId
-          ? flights.find(f => f.id === this.props.flightId)
-          : {};
-        const simulators = flight && flight.id ? flight.simulators : [];
-        if (simulators.length === 1) {
-          this.setState({
-            simulator: simulators[0].id
-          });
-          localStorage.setItem("thorium_coreSimulator", simulators[0].id);
-        }
-        if (
-          simulators.indexOf(
-            s => s.id === localStorage.getItem("thorium_coreSimulator")
-          ) > -1
-        ) {
-          this.setState({
-            simulator: localStorage.getItem("thorium_coreSimulator")
-          });
-          return;
-        }
-        if (simulators.length === 0) {
-          this.setState({
-            simulator: "test"
-          });
-        }
-      }
+    if (simulators.length === 1) {
+      this.setState({
+        simulator: simulators[0].id
+      });
+      localStorage.setItem("thorium_coreSimulator", simulators[0].id);
+    }
+    if (
+      simulators.indexOf(
+        s => s.id === localStorage.getItem("thorium_coreSimulator")
+      ) > -1
+    ) {
+      this.setState({
+        simulator: localStorage.getItem("thorium_coreSimulator")
+      });
+      return;
+    }
+    if (simulators.length === 0) {
+      this.setState({
+        simulator: "test"
+      });
     }
   }
   pickSimulator = e => {
@@ -114,6 +61,7 @@ class CoreComponents extends Component {
     this.setState({
       layout: e.target.value
     });
+    console.log(e.target.value);
     localStorage.setItem("thorium_coreLayout", e.target.value);
   };
   updateMosaic = mosaic => {
@@ -122,197 +70,72 @@ class CoreComponents extends Component {
     });
     localStorage.setItem("thorium_coreMosaic", JSON.stringify(mosaic));
   };
-  toggleIssueTracker = () => {
-    this.setState({
-      issuesOpen: !this.state.issuesOpen
-    });
+  setNotifications = e => {
+    this.setState({ notifications: e.target.checked });
+    localStorage.setItem("thorium_coreNotifications", e.target.checked);
   };
-  toggle = () => {
-    this.setState({ config: !this.state.config });
+  setSpeech = e => {
+    this.setState({ speech: e.target.checked });
+    localStorage.setItem("thorium_coreSpeech", e.target.checked);
   };
   render() {
-    if (this.props.data.loading) return null;
-
+    const { flight, simulators } = this.props;
     const {
-      data: { flights },
-      flightId,
-      history
-    } = this.props;
-    if (
-      !flights ||
-      (flights.map(f => f.id).indexOf(flightId) === -1 && flightId !== "c")
-    ) {
-      history.push("/");
-      return null;
-    }
-    if (!flights) return null;
-    const { config } = this.state;
-    const flight = this.props.flightId
-      ? flights.find(f => f.id === this.props.flightId)
-      : {};
-    const simulators = flight && flight.id ? flight.simulators : [];
-    const LayoutComponent = Layouts[this.state.layout];
-    const { notifications, speech, mosaic } = this.state;
+      notifications,
+      simulator,
+      speech,
+      mosaic,
+      layout,
+      editable
+    } = this.state;
+    const LayoutComponent = Layouts[layout];
     return (
       <div
         style={{ backgroundColor: "#333", color: "white" }}
         className="core-container"
       >
-        <SubscriptionHelper
-          subscribe={() =>
-            this.props.data.subscribeToMore({
-              document: FLIGHTS_SUB,
-              variables: { id: this.props.flightId },
-              updateQuery: (previousResult, { subscriptionData }) => {
-                return Object.assign({}, previousResult, {
-                  flights: subscriptionData.data.flightsUpdate
-                });
-              }
-            })
-          }
+        <Menubar
+          flight={flight}
+          simulators={simulators}
+          simulator={simulator}
+          pickSimulator={this.pickSimulator}
+          pickLayout={this.pickLayout}
+          layout={layout}
+          mosaic={mosaic}
+          setMosaic={m => this.setState({ mosaic: m })}
+          editable={editable}
+          setEdit={e => this.setState({ editable: e })}
+          notifications={notifications}
+          speech={speech}
+          setNotifications={this.setNotifications}
+          setSpeech={this.setSpeech}
         />
-        <SubscriptionHelper
-          subscribe={() =>
-            this.props.data.subscribeToMore({
-              document: CACHE_INVALID_SUB,
-              variables: { flight: this.props.flightId },
-              updateQuery: previousResult => {
-                window.location.reload();
-                return previousResult;
-              }
-            })
-          }
-        />
-        <Button
-          tag={Link}
-          size="sm"
-          to={`/config/flight/${this.props.flightId}`}
-        >
-          {"<-"} Client Config
-        </Button>
-
-        {simulators.length > 1 && (
-          <select
-            className="btn btn-info btn-sm"
-            onChange={this.pickSimulator.bind(this)}
-            value={this.state.simulator || ""}
-          >
-            <option>Pick a simulator</option>
-            <option disabled />
-            {process.env.NODE_ENV !== "production" && (
-              <option value="test">Test</option>
-            )}
-            {simulators.map(s => (
-              <option key={s.id} value={s.id}>
-                {s.name}
-              </option>
-            ))}
-          </select>
-        )}
-        <select
-          className="btn btn-primary btn-sm"
-          onChange={this.pickLayout}
-          value={this.state.layout}
-        >
-          <option>Pick a layout</option>
-          <option disabled />
-          {Object.keys(Layouts)
-            .filter(function(item, index, a) {
-              return a.indexOf(item) === index;
-            })
-            .map(l => {
-              return (
-                <option key={l} value={l}>
-                  {l}
-                </option>
-              );
-            })}
-        </select>
-        {["Dynamic", "Next"].indexOf(this.state.layout) > -1 && (
-          <Fragment>
-            <DynamicPicker
-              mosaic={mosaic}
-              onChange={m => this.setState({ mosaic: m })}
-            />
-            <label>
-              <input
-                type="checkbox"
-                checked={this.state.editable}
-                onChange={e => this.setState({ editable: e.target.checked })}
-              />{" "}
-              Edit
-            </label>
-          </Fragment>
-        )}
-        <Button
-          size="sm"
-          onClick={this.toggleIssueTracker}
-          style={{ marginLeft: "20px" }}
-        >
-          Issue Tracker
-        </Button>
-        <label>
-          Notifications{" "}
-          <input
-            type="checkbox"
-            checked={notifications}
-            onChange={e => {
-              this.setState({ notifications: e.target.checked });
-              localStorage.setItem(
-                "thorium_coreNotifications",
-                e.target.checked
-              );
-            }}
-          />
-        </label>
-        <label>
-          Speech{" "}
-          <input
-            type="checkbox"
-            checked={speech}
-            onChange={e => {
-              this.setState({ speech: e.target.checked });
-              localStorage.setItem("thorium_coreSpeech", e.target.checked);
-            }}
-          />
-        </label>
-        <ButtonGroup style={{ float: "right", marginRight: "50px" }}>
-          <Button
-            onClick={() => publish("clearNotifications")}
-            size="sm"
-            color="info"
-          >
-            Clear all notifications
-          </Button>
-          <Button onClick={this.toggle} size="sm" color="warning">
-            Configure
-          </Button>
-        </ButtonGroup>
         <div
           id="core-layout"
-          className={!this.state.editable ? "non-editing" : ""}
+          className={!editable ? "non-editing" : ""}
           style={{
-            display: this.state.simulator ? "block" : "none",
-            height: "calc(100vh - 26px)"
+            display: simulator ? "block" : "none",
+            height: "calc(100vh - 26px)",
+            backgroundColor: "#333"
           }}
         >
           {LayoutComponent &&
-            this.state.simulator && (
+            simulator && (
               <LayoutComponent
                 {...this.props}
-                edit={this.state.editable}
+                edit={editable}
                 editMode={() => this.setState({ editable: true })}
                 mosaic={mosaic}
                 updateMosaic={this.updateMosaic}
                 simulator={
-                  simulators.find(s => s.id === this.state.simulator) || {
-                    id: this.state.simulator
+                  simulators.find(s => s.id === simulator) || {
+                    id: simulator
                   }
                 }
               />
             )}
         </div>
-        {!this.state.simulator && (
+        {!simulator && (
           <ListGroup style={{ maxWidth: "500px" }}>
             {simulators.map(s => (
               <ListGroupItem
@@ -328,20 +151,8 @@ class CoreComponents extends Component {
             ))}
           </ListGroup>
         )}
-        <Modal isOpen={this.state.issuesOpen} toggle={this.toggleIssueTracker}>
-          <ModalHeader toggle={this.toggleIssueTracker}>
-            Submit a Feature/Bug Report
-          </ModalHeader>
-          <ModalBody>
-            <IssueTracker close={this.toggleIssueTracker} />
-          </ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={this.toggleIssueTracker}>
-              Close
-            </Button>
-          </ModalFooter>
-        </Modal>
-        {this.state.simulator && (
+
+        {simulator && (
           <Alerts
             ref="alert-widget"
             disabled={!notifications}
@@ -353,51 +164,14 @@ class CoreComponents extends Component {
         <Hotkey
           {...this.props}
           simulator={
-            simulators.find(s => s.id === this.state.simulator) || {
-              id: this.state.simulator
+            simulators.find(s => s.id === simulator) || {
+              id: simulator
             }
           }
         />
-        <NotificationConfig modal={config} toggle={this.toggle} />
       </div>
     );
   }
 }
 
-const CORE_LAYOUT = gql`
-  query Flights($id: ID) {
-    flights(id: $id) {
-      id
-      name
-      date
-      running
-      simulators {
-        id
-        name
-        layout
-        stations {
-          name
-          cards {
-            name
-          }
-        }
-        assets {
-          mesh
-          texture
-          side
-          top
-          logo
-        }
-      }
-    }
-  }
-`;
-export default graphql(CORE_LAYOUT, {
-  options: ownProps => ({
-    fetchPolicy: "cache-and-network",
-
-    variables: {
-      id: ownProps.flightId
-    }
-  })
-})(withApollo(CoreComponents));
+export default CoreComponents;

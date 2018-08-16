@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Container } from "reactstrap";
-import Moment from "moment";
 import { graphql, withApollo } from "react-apollo";
 import { InputField } from "../../generic/core";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-
+import { Duration } from "luxon";
 import "./style.scss";
 
 function padDigits(number, digits) {
@@ -29,14 +28,14 @@ const SELF_DESTRUCT_SUB = gql`
 
 class SelfDestructCore extends Component {
   activate = time => {
-    if (time) {
-      const duration = Moment.duration(time);
-      time =
-        duration.hours() * 1000 * 60 * 60 +
-        duration.minutes() * 1000 * 60 +
-        duration.seconds() * 1000;
-      if (time === 0) time = null;
-    }
+    if (!time && time !== 0) return;
+    const [hours, minutes, seconds] = time.split(":").map(t => parseInt(t, 10));
+    const duration = Duration.fromObject({
+      hours,
+      minutes,
+      seconds
+    }).shiftTo("milliseconds").milliseconds;
+    if (!duration && duration !== 0) return;
     const mutation = gql`
       mutation ActivateSelfDestruct($id: ID!, $time: Float) {
         setSelfDestructTime(simulatorId: $id, time: $time)
@@ -45,7 +44,7 @@ class SelfDestructCore extends Component {
     const sim = this.props.data.simulators[0];
     const variables = {
       id: sim.id,
-      time: sim.ship.selfDestructTime ? null : time
+      time: duration
     };
     this.props.client.mutate({
       mutation,
@@ -91,7 +90,12 @@ class SelfDestructCore extends Component {
       selfDestructCode,
       selfDestructAuto
     } = this.props.data.simulators[0].ship;
-    const duration = Moment.duration(selfDestructTime);
+    const duration = Duration.fromObject({
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: selfDestructTime
+    }).normalize();
     return (
       <Container className="self-destruct">
         <SubscriptionHelper
@@ -133,10 +137,10 @@ class SelfDestructCore extends Component {
           prompt="What is the time in &quot;hh:mm:ss&quot; format?"
           alert={selfDestructTime && selfDestructTime > 0}
           onClick={this.activate}
-        >{`${padDigits(duration.hours(), 2)}:${padDigits(
-          duration.minutes(),
+        >{`${padDigits(duration.hours, 2)}:${padDigits(
+          duration.minutes,
           2
-        )}:${padDigits(duration.seconds(), 2)}`}</InputField>
+        )}:${padDigits(duration.seconds, 2)}`}</InputField>
       </Container>
     );
   }

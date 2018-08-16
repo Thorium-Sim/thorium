@@ -242,19 +242,7 @@ class Sensors extends Component {
               className="arrayContainer"
             >
               <div className="spacer" />
-              <div
-                id="threeSensors"
-                className="array"
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  display: "flex",
-                  justifyContent: "center"
-                }}
-              >
+              <div id="threeSensors" className="array">
                 <Grid
                   dimensions={this.state.dimensions}
                   sensor={sensors.id}

@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
 import semver from "semver";
 import App from "../app";
+import ProgressBar from "progress";
 
 const fs = require("fs");
 const request = require("request");
@@ -48,7 +49,22 @@ export default autoUpdate => {
                 res[0].name
               }${process.platform === "win32" ? ".exe" : ""}`
           );
+          let bar;
           request({ uri: platforms[process.platform].url })
+            .on("response", function(data) {
+              bar = new ProgressBar(
+                `Downloading: [:bar] :percent Elapsed: :elapseds ETA: :etas`,
+                {
+                  total: parseInt(data.headers["content-length"], 10),
+                  complete: "=",
+                  incomplete: " ",
+                  width: 20
+                }
+              );
+            })
+            .on("data", function(chunk) {
+              bar.tick(chunk.length);
+            })
             .pipe(unzip.Extract({ path: tempPath }))
             .on("close", function() {
               console.log("Moving new version into place");

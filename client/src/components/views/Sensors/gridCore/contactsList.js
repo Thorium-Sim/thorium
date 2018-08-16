@@ -3,7 +3,6 @@ import { Col, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";
 import ContactContextMenu from "./contactContextMenu";
-import { Asset } from "../../../../helpers/assets";
 
 const ADD_ARMY_CONTACT = gql`
   mutation(
@@ -137,19 +136,15 @@ class ContactsList extends Component {
           {sensors.armyContacts.map(contact => {
             return (
               <Col key={contact.id} className={"flex-container"} sm={12}>
-                <Asset asset={contact.icon}>
-                  {({ src }) => (
-                    <img
-                      alt="contact"
-                      onMouseDown={() => dragStart(contact)}
-                      onContextMenu={e => this.contextMenu(contact, e)}
-                      draggable="false"
-                      role="presentation"
-                      className="armyContact"
-                      src={src}
-                    />
-                  )}
-                </Asset>
+                <img
+                  alt="contact"
+                  onMouseDown={() => dragStart(contact)}
+                  onContextMenu={e => this.contextMenu(contact, e)}
+                  draggable="false"
+                  role="presentation"
+                  className="armyContact"
+                  src={`/assets${contact.icon}`}
+                />
                 <label onContextMenu={e => this.contextMenu(contact, e)}>
                   {contact.name}
                 </label>

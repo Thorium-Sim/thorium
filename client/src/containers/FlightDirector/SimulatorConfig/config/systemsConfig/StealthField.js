@@ -9,6 +9,7 @@ const STEALTH_QUERY = gql`
       id
       charge
       activated
+      changeAlert
     }
   }
 `;
@@ -67,6 +68,29 @@ const StealthField = props => {
                   )}
                 </Mutation>
                 Always activated
+              </label>
+              <label>
+                <Mutation
+                  mutation={gql`
+                    mutation ToggleChangeAlert($id: ID!, $change: Boolean!) {
+                      stealthChangeAlert(id: $id, change: $change)
+                    }
+                  `}
+                  refetchQueries={[{ query: STEALTH_QUERY, variables: { id } }]}
+                >
+                  {action => (
+                    <input
+                      type="checkbox"
+                      checked={stealth.changeAlert}
+                      onChange={() =>
+                        action({
+                          variables: { id, change: !stealth.changeAlert }
+                        })
+                      }
+                    />
+                  )}
+                </Mutation>
+                Change simulator alert color when stealthed
               </label>
             </div>
           );

@@ -9,6 +9,7 @@ type StealthField {
   displayName:String  
   activated: Boolean,
   charge: Boolean,
+  changeAlert: Boolean
   state: Boolean,
   quadrants: StealthQuad
   locations: [Room]
