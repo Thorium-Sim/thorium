@@ -81,7 +81,7 @@ const StealthField = props => {
                   {action => (
                     <input
                       type="checkbox"
-                      checked={!stealth.changeAlert}
+                      checked={stealth.changeAlert}
                       onChange={() =>
                         action({
                           variables: { id, change: !stealth.changeAlert }
