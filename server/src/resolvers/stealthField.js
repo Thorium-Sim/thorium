@@ -33,6 +33,9 @@ export const StealthFieldMutations = {
   },
   fluxStealthQuadrants(rootValue, args, context) {
     App.handleEvent(args, "fluxStealthQuadrants", context);
+  },
+  stealthChangeAlert(root, args, context) {
+    App.handleEvent(args, "stealthChangeAlert", context);
   }
 };
 

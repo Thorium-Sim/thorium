@@ -1,4 +1,5 @@
 import uuid from "uuid";
+import App from "../app";
 import Team from "./teams";
 import DamageStep from "./generic/damageStep";
 
@@ -45,7 +46,7 @@ export default class Simulator {
     this.id = params.id || uuid.v4();
     this.name = params.name || "Simulator";
     this.layout = params.layout || "LayoutDefault";
-    this.alertlevel = params.alertlevel || "5";
+    this.alertLevel = params.alertlevel || "5";
     this.template = params.template || false;
     this.templateId = params.templateId || null;
     this.class = "Simulator";
@@ -80,6 +81,21 @@ export default class Simulator {
       params.optionalDamageSteps.forEach(s =>
         this.optionalDamageSteps.push(new DamageStep(s))
       );
+  }
+  get alertlevel() {
+    const stealthField = App.systems.find(
+      s => s.simulatorId === this.id && s.type === "StealthField"
+    );
+    if (
+      stealthField.changeAlert &&
+      !stealthField.activated &&
+      stealthField.state
+    )
+      return "p";
+    return this.alertLevel;
+  }
+  set alertlevel(level) {
+    this.alertLevel = level;
   }
   trainingMode(tf) {
     this.training = tf;

@@ -10,7 +10,9 @@ class CardFrame extends Component {
           <h1 className="simulator-name">{simulator.name}</h1>
           <h1 className="station-name">{station.name}</h1>
         </div>
-        <div className="alert-condition-box">{alertLevel}</div>
+        <div className="alert-condition-box">
+          {alertLevel === "p" ? "C" : alertLevel}
+        </div>
         <div className="inner-frame" />
       </div>
     );

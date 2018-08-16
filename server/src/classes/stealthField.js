@@ -9,6 +9,7 @@ export default class StealthField extends System {
     this.charge = params.charge || false;
     this.activated = params.activated || true;
     this.state = params.state || !this.activated;
+    this.changeAlert = params.changeAlert || false;
     this.quadrants = params.quadrants || {
       fore: 0,
       aft: 0,
@@ -22,6 +23,9 @@ export default class StealthField extends System {
   }
   setCharge(tf) {
     this.charge = tf;
+  }
+  setChangeAlert(tf) {
+    this.changeAlert = tf;
   }
   activate() {
     if (this.charge) {
