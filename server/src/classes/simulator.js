@@ -3,6 +3,19 @@ import App from "../app";
 import Team from "./teams";
 import DamageStep from "./generic/damageStep";
 
+class Lighting {
+  constructor(params = {}) {
+    this.intensity = params.intensity || 0;
+
+    // One of 'normal', 'shake', 'strobe', 'oscillate'
+    this.action = params.action || "normal";
+    this.actionStrength = params.actionStrength || 1;
+    this.transitionDuration = params.transitionDuration || 1000;
+
+    // If it's null, use the alert color
+    this.color = params.color || null;
+  }
+}
 class RemoteAccess {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
@@ -62,7 +75,7 @@ export default class Simulator {
     this.training = params.training || false;
     this.ship = new Ship(params.ship);
     this.panels = params.panels || [];
-
+    this.lighting = new Lighting(params.lighting);
     // Set up the teams
     if (params.teams) {
       params.teams.forEach(t => this.teams.push(new Team(t)));

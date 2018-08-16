@@ -74,6 +74,21 @@ type Simulator {
   assets: SimulatorAssets
 }
 
+type Lighting {
+  intensity: Float
+  action: LIGHTING_ACTION
+  actionStrength: Float
+  transitionDuration: Int
+  color: String
+}
+
+enum LIGHTING_ACTION {
+  normal
+  shake
+  strobe
+  oscillate
+}
+
 type TemplateSimulator {
   id: ID
   name: String
