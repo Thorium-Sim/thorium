@@ -141,6 +141,18 @@
       background-color: #555;
     }
   }
+  .target-area {
+    .torpedo-loading {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      overflow-y: hidden;
+      .torpedo-loader {
+        width: auto;
+        height: auto;
+      }
+    }
+  }
 }
 
 @keyframes coolant_glow {
