@@ -39,7 +39,10 @@ function viewscreenMachine() {
     // Loop through the shields and check to see if they are raised.
     // If one of the shields is suddenly raised or lowered, spike the priority.
     shields.forEach(shield => {
-      if (!cache.ShieldMonitoring[shield.id]) {
+      if (
+        !cache.ShieldMonitoring[shield.id] &&
+        cache.ShieldMonitoring[shield.id] !== false
+      ) {
         cache.ShieldMonitoring.priority = 0;
       } else if (shield.state !== cache.ShieldMonitoring[shield.id]) {
         cache.ShieldMonitoring.priority = 0.75;
@@ -53,14 +56,19 @@ function viewscreenMachine() {
       s => s.simulatorId === viewscreen.simulatorId && s.type === "StealthField"
     );
     cache.StealthMonitoring = cache.StealthMonitoring || {};
+
     stealth.forEach(s => {
-      if (!cache.StealthMonitoring[s.id]) {
+      if (
+        !cache.StealthMonitoring[s.id] &&
+        cache.StealthMonitoring[s.id] !== false
+      ) {
         cache.StealthMonitoring.priority = 0;
       } else if (s.state !== cache.StealthMonitoring[s.id]) {
         cache.StealthMonitoring.priority = 0.75;
       }
       cache.StealthMonitoring[s.id] = s.state;
     });
+
     // Course Calculation
     const nav = App.systems.filter(
       s => s.simulatorId === viewscreen.simulatorId && s.type === "Navigation"
@@ -87,6 +95,7 @@ function viewscreenMachine() {
         cache.Communications.priority = 0.76;
       }
     });
+
     // Stars
     cache.Stars = cache.Stars || {};
     cache.Stars = {

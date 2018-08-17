@@ -360,7 +360,7 @@ class Targeting extends Component {
     if (!targeting) return <p>No Targeting</p>;
     const targetedContact = targeting.contacts.find(t => t.targeted);
     return (
-      <Container fluid className="targeting-control">
+      <Container fluid className="targeting-control flex-column">
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
@@ -459,7 +459,7 @@ class Targeting extends Component {
             {/*<PhaserArc client={this.props.client} phaserId={phasers.id} arc={phasers.arc} />*/}
           </Col>
         </Row>
-        <Row className="target-area">
+        <Row className="target-area flex-max">
           <Col sm={7}>
             <TargetControls
               targetedContact={
@@ -471,7 +471,7 @@ class Targeting extends Component {
               targetSystem={this.targetSystem}
             />
           </Col>
-          <Col sm={4} className="torpedos">
+          <Col sm={5} className="torpedos">
             <TorpedoLoading
               simulator={this.props.simulator}
               maxLaunchers={1}
