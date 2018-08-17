@@ -130,7 +130,13 @@ export default class TorpedoLoader extends Component {
     const components = { TorpedoTube, TorpedoPick };
     const torpedo = this.props.torpedo;
     return (
-      <div className="torpedo-loader">
+      <div
+        className="torpedo-loader"
+        style={{
+          gridColumn: `1/ span 2`,
+          gridRow: `1/ span 2`
+        }}
+      >
         <DamageOverlay
           system={torpedo}
           message={`${torpedo.name} Offline`}
