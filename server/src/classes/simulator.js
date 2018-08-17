@@ -87,7 +87,6 @@ export default class Simulator {
       s => s.simulatorId === this.id && s.type === "StealthField"
     );
     if (!stealthField) return this.alertLevel;
-    console.log(stealthField);
     if (
       stealthField.changeAlert &&
       stealthField.activated &&
