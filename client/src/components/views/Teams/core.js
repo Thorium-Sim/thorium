@@ -126,8 +126,8 @@ class Teams extends Component {
           </Col>
           <Col sm={{ size: 8 }} className="scroller">
             {(() => {
-              if (!selectedTeam) return null;
               const team = teams.find(t => t.id === selectedTeam);
+              if (!selectedTeam || !team) return null;
               let deck = {};
               let room = {};
               if (team.location) {

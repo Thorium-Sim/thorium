@@ -360,7 +360,7 @@ class CrewCore extends Component {
               color="secondary"
               onClick={() => this.newRandom()}
             >
-              New Random Crewmember
+              New Random Crew
             </Button>
             <Button
               size="sm"
@@ -368,7 +368,7 @@ class CrewCore extends Component {
               color="warning"
               onClick={() => this.newRandom("security")}
             >
-              New Security Crewmember
+              New Security Crew
             </Button>
             <Button
               size="sm"
@@ -376,7 +376,7 @@ class CrewCore extends Component {
               color="info"
               onClick={() => this.newRandom("medical")}
             >
-              New Medical Crewmember
+              New Medical Crew
             </Button>
             <Input
               size="sm"
@@ -386,7 +386,7 @@ class CrewCore extends Component {
               onChange={evt => this.newRandom(null, evt.target.value)}
             >
               <option value="select" disabled>
-                New Damage Crewmember
+                New Damage Crew
               </option>
               <option>Computer Specialist</option>
               <option>Custodian</option>
