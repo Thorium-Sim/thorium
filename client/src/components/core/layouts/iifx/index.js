@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Cores } from "../../../views";
 import CoreFeed from "../../../views/CoreFeed";
+import CoreError from "../coreError";
 
 import "./iifx.scss";
 import "../sideCore.scss";
@@ -50,7 +51,9 @@ export default class CoreIIFX extends Component {
               return (
                 <div key={c} className={`inner-core-area ${c}`}>
                   <p>{label}</p>
-                  <Core {...props} />
+                  <CoreError>
+                    <Core {...props} />
+                  </CoreError>
                 </div>
               );
             })}
@@ -64,7 +67,9 @@ export default class CoreIIFX extends Component {
           >
             Timeline
           </div>
-          <Cores.TimelineCore {...props} />
+          <CoreError>
+            <Cores.TimelineCore {...props} />
+          </CoreError>
         </div>
         <div className={`side-core tract-core ${tractOpen ? "open" : ""}`}>
           <div
@@ -75,9 +80,13 @@ export default class CoreIIFX extends Component {
           </div>
           <div className="inner-cores">
             <p>Tractor Beam</p>
-            <Cores.TractorBeamCore {...props} />
+            <CoreError>
+              <Cores.TractorBeamCore {...props} />
+            </CoreError>
             <p>Transporters</p>
-            <Cores.TransporterCore {...props} />
+            <CoreError>
+              <Cores.TransporterCore {...props} />
+            </CoreError>
           </div>
         </div>
         <div className={`side-core ship-core ${shipOpen ? "open" : ""}`}>
@@ -88,7 +97,9 @@ export default class CoreIIFX extends Component {
             Ship
           </div>
           <div className="inner-cores">
-            <Cores.ShipCore {...props} />
+            <CoreError>
+              <Cores.ShipCore {...props} />
+            </CoreError>
           </div>
         </div>
         <div
@@ -101,7 +112,9 @@ export default class CoreIIFX extends Component {
             Core Feed
           </div>
           <div className="inner-cores">
-            <CoreFeed {...props} />
+            <CoreError>
+              <CoreFeed {...props} />
+            </CoreError>
           </div>
         </div>
         <div
@@ -116,7 +129,9 @@ export default class CoreIIFX extends Component {
             Messaging
           </div>
           <div className="inner-cores">
-            <Cores.MessagingCore {...props} />
+            <CoreError>
+              <Cores.MessagingCore {...props} />
+            </CoreError>
           </div>
         </div>
         <div className={`side-core clients-core ${clientsOpen ? "open" : ""}`}>
@@ -127,7 +142,9 @@ export default class CoreIIFX extends Component {
             Login Names
           </div>
           <div className="inner-cores">
-            <Cores.ClientsCore {...props} />
+            <CoreError>
+              <Cores.ClientsCore {...props} />
+            </CoreError>
           </div>
         </div>
       </div>
