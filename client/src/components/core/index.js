@@ -36,6 +36,9 @@ ${queryData}
     }
     clients(flightId:$id) {
     id
+    simulator {
+      id
+    }
   }
   }
 `;
@@ -55,6 +58,9 @@ const CLIENT_SUB = gql`
   subscription ClientsUpdate($flightId: ID!) {
     clientChanged(flightId: $flightId) {
       id
+      simulator {
+        id
+      }
     }
   }
 `;

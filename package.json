@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "0.4.0",
+  "version": "0.4.3",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -44,6 +44,7 @@
     "copy-package": "cp package.json build/package.json",
     "pkg": "NODE_ENV=production  pkg build/package.json",
     "zip": "mkdir -p zips && zip -r zips/thorium-macos.zip thorium-macos && zip -r zips/thorium-win.exe.zip thorium-win.exe && zip -r zips/thorium-linux.zip thorium-linux",
+    "bump": "node ./scripts/bumpVersion.js",
     "cloc": "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots,coverage,build --exclude-ext=css,json",
     "translate": "babel-node scripts/manageTranslations.js",
     "upload": "node scripts/uploadTos3.js",

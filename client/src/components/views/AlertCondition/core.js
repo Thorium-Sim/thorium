@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
 import gql from "graphql-tag";
-import { graphql } from "react-apollo";
+import { graphql, Mutation } from "react-apollo";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 const levels = [
   { id: 5, color: "info" },
   { id: 4, color: "success" },
-  { id: 3, color: "warning" },
-  { id: 2, color: "warning" },
+  { id: 3, color: { background: "#B1B100", color: "white" } },
+  { id: 2, color: { background: "orange", color: "white" } },
   { id: 1, color: "danger" }
 ];
 
@@ -21,21 +21,6 @@ const SUB = gql`
 `;
 
 class AlertConditionCore extends Component {
-  setAlert = number => {
-    const mutation = gql`
-      mutation AlertLevel($id: ID!, $level: String!) {
-        changeSimulatorAlertLevel(simulatorId: $id, alertLevel: $level)
-      }
-    `;
-    const variables = {
-      id: this.props.simulator.id,
-      level: number
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-  };
   render() {
     const {
       data: { loading, simulators }
@@ -57,20 +42,35 @@ class AlertConditionCore extends Component {
             })
           }
         />
-        {levels.map(l => (
-          <Button
-            className={
-              simulator && simulator.alertlevel === l.id.toString()
-                ? "active"
-                : ""
+        <Mutation
+          mutation={gql`
+            mutation AlertLevel($id: ID!, $level: String!) {
+              changeSimulatorAlertLevel(simulatorId: $id, alertLevel: $level)
             }
-            key={`alert${l.id}`}
-            color={l.color}
-            onClick={() => this.setAlert(l.id)}
-          >
-            {l.id}
-          </Button>
-        ))}
+          `}
+        >
+          {action =>
+            levels.map(l => (
+              <Button
+                className={
+                  simulator && simulator.alertlevel === l.id.toString()
+                    ? "active"
+                    : ""
+                }
+                key={`alert${l.id}`}
+                color={typeof l.color === "string" ? l.color : null}
+                style={typeof l.color === "object" ? l.color : null}
+                onClick={() =>
+                  action({
+                    variables: { id: this.props.simulator.id, level: l.id }
+                  })
+                }
+              >
+                {l.id}
+              </Button>
+            ))
+          }
+        </Mutation>
       </div>
     );
   }

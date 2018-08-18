@@ -150,12 +150,12 @@ class Timer extends Component {
   render() {
     const { timer, stopped } = this.state;
     return (
-      <div>
+      <div style={{ display: "flex" }}>
         <div
           style={{
             color: "black",
             float: "left",
-            width: "50%",
+            flex: 1,
             backgroundColor: "rgb(251, 254, 61)",
             border: "1px solid rgb(210, 203, 67)",
             height: "16px",
@@ -169,7 +169,7 @@ class Timer extends Component {
         <Button
           color={stopped ? "primary" : "danger"}
           size="sm"
-          style={{ height: "16px", float: "left" }}
+          style={{ height: "16px", float: "left", lineHeight: "12px" }}
           onClick={this.toggleTimer}
         >
           {stopped ? "Start" : "Stop"}
@@ -177,7 +177,7 @@ class Timer extends Component {
         <Button
           color={"success"}
           size="sm"
-          style={{ height: "16px" }}
+          style={{ height: "16px", lineHeight: "12px" }}
           onClick={this.sendToSensors}
         >
           Send to Sensors

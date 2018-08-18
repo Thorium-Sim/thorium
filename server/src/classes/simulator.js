@@ -59,7 +59,7 @@ export default class Simulator {
     this.id = params.id || uuid.v4();
     this.name = params.name || "Simulator";
     this.layout = params.layout || "LayoutDefault";
-    this.alertLevel = params.alertlevel || "5";
+    this.alertLevel = params.alertLevel || "5";
     this.template = params.template || false;
     this.templateId = params.templateId || null;
     this.class = "Simulator";
@@ -99,9 +99,10 @@ export default class Simulator {
     const stealthField = App.systems.find(
       s => s.simulatorId === this.id && s.type === "StealthField"
     );
+    if (!stealthField) return this.alertLevel;
     if (
       stealthField.changeAlert &&
-      !stealthField.activated &&
+      stealthField.activated &&
       stealthField.state
     )
       return "p";

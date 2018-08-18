@@ -244,13 +244,15 @@ class FileExplorer extends Component {
                           <FontAwesome size="3x" name="folder" />
                           <p>
                             {folder.name}{" "}
-                            <FontAwesome
-                              name="ban"
-                              className="text-danger"
-                              onClick={e =>
-                                this._removeFolder(folder.fullPath, e)
-                              }
-                            />{" "}
+                            {this.props.admin && (
+                              <FontAwesome
+                                name="ban"
+                                className="text-danger"
+                                onClick={e =>
+                                  this._removeFolder(folder.fullPath, e)
+                                }
+                              />
+                            )}{" "}
                           </p>
                         </div>
                       </div>
@@ -339,11 +341,13 @@ const AssetObject = ({ object, removeObject }) => {
         <ObjPreview src={object.url} />
         <p>
           {object.name}{" "}
-          <FontAwesome
-            name="ban"
-            className="text-danger"
-            onClick={e => removeObject(object.fullPath, e)}
-          />
+          {removeObject && (
+            <FontAwesome
+              name="ban"
+              className="text-danger"
+              onClick={e => removeObject(object.fullPath, e)}
+            />
+          )}
         </p>
       </div>
     );
@@ -354,11 +358,13 @@ const AssetObject = ({ object, removeObject }) => {
         <VideoPreview src={object.url} />
         <p>
           {object.name}{" "}
-          <FontAwesome
-            name="ban"
-            className="text-danger"
-            onClick={e => removeObject(object.fullPath, e)}
-          />
+          {removeObject && (
+            <FontAwesome
+              name="ban"
+              className="text-danger"
+              onClick={e => removeObject(object.fullPath, e)}
+            />
+          )}
         </p>
       </div>
     );
@@ -369,11 +375,13 @@ const AssetObject = ({ object, removeObject }) => {
         <FontAwesome size="3x" name="file-audio-o" />
         <p>
           {object.name}{" "}
-          <FontAwesome
-            name="ban"
-            className="text-danger"
-            onClick={e => removeObject(object.fullPath, e)}
-          />
+          {removeObject && (
+            <FontAwesome
+              name="ban"
+              className="text-danger"
+              onClick={e => removeObject(object.fullPath, e)}
+            />
+          )}
         </p>
       </div>
     );
