@@ -19,6 +19,8 @@ export default function logger() {
       .toLocaleString()
       .split(" ")
       .join("-")
+      .split("/")
+      .join("-")
       .split(":")
       .join("-")}.log`,
     { flags: "a" }
@@ -27,6 +29,8 @@ export default function logger() {
     `${logDir}/error.${new Date()
       .toLocaleString()
       .split(" ")
+      .join("-")
+      .split("/")
       .join("-")
       .split(":")
       .join("-")}.log`,
