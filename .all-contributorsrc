@@ -112,6 +112,16 @@
         "ideas",
         "translation"
       ]
+    },
+    {
+      "login": "jrobe",
+      "name": "John Robe",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1224343?v=4",
+      "profile": "http://jrobe.me",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ],
   "repoType": "github"
