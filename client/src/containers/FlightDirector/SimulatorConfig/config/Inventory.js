@@ -86,9 +86,7 @@ const inventoryConfig = {
         <Input type="checkbox" /> Defense
       </Label>
     </div>
-  ),
-  coolant: props => <div />,
-  torpedo: props => <div />
+  )
 };
 class Inventory extends Component {
   constructor(props) {
@@ -282,6 +280,7 @@ class Inventory extends Component {
                     }
                   >
                     <option value="">Pick a type</option>
+                    <option value="repair">Repair</option>
                     <option value="probe">Probe</option>
                     <option value="probeEquipment">Probe Equipment</option>
                     <option value="coolant">Coolant</option>
@@ -292,6 +291,7 @@ class Inventory extends Component {
                     (() => {
                       const ConfigComp =
                         inventoryConfig[this.state.inventoryItem.metadata.type];
+                      if (!ConfigComp) return null;
                       return (
                         <ConfigComp
                           {...this.props}
