@@ -17,8 +17,12 @@ export default function logger() {
   const access = fs.createWriteStream(
     `${logDir}/access.${new Date()
       .toLocaleString()
-      .split(" ")
+      .split("/")
       .join("-")
+      .split(", ")
+      .join("_")
+      .split(" ")
+      .join("_")
       .split(":")
       .join("-")}.log`,
     { flags: "a" }
@@ -26,8 +30,12 @@ export default function logger() {
   const error = fs.createWriteStream(
     `${logDir}/error.${new Date()
       .toLocaleString()
-      .split(" ")
+      .split("/")
       .join("-")
+      .split(", ")
+      .join("_")
+      .split(" ")
+      .join("_")
       .split(":")
       .join("-")}.log`,
     { flags: "a" }
