@@ -13,13 +13,18 @@ export default (
     
 Location: ${room || location}
 Cargo: ${inventory ||
-    (App.inventory.filter(i => i.simulatorId === simulatorId).length &&
+    (App.inventory.filter(
+      i => i.simulatorId === simulatorId && i.metadata.type === "repair"
+    ).length &&
       Array(Math.floor(Math.random() * 3 + 1))
         .fill(0)
         .map(
           () =>
             randomFromList(
-              App.inventory.filter(i => i.simulatorId === simulatorId)
+              App.inventory.filter(
+                i =>
+                  i.simulatorId === simulatorId && i.metadata.type === "repair"
+              )
             ).name
         )
         .filter((c, i, a) => a.indexOf(c) === i)

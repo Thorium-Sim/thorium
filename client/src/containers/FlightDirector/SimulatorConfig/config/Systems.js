@@ -207,7 +207,7 @@ class SystemsConfig extends Component {
                       <Row>
                         {systems.map(s => (
                           <System
-                            key={s.id}
+                            key={s}
                             id={s}
                             selected={s === addSystem}
                             added={this.getAdded(s, data.systems)}
