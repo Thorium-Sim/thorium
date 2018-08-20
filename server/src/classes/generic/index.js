@@ -176,7 +176,8 @@ export class System {
           return (
             App.inventory.filter(
               i =>
-                i.simulatorId === this.simulatorId && i.metadata.repair === true
+                i.simulatorId === this.simulatorId &&
+                i.metadata.type === "repair"
             ).length > 0
           );
         }
@@ -287,11 +288,19 @@ export class System {
     const randomRoom = randomFromList(this.locations || []);
     const room = rooms.find(r => r.id === randomRoom);
     const deck = room && App.decks.find(d => d.id === room.deckId);
+    const randomLocation = randomFromList(
+      App.rooms.filter(r => r.simulatorId === this.simulatorId)
+    );
+    const randomLocationDeck = randomLocation
+      ? App.decks.find(d => d.id === randomLocation.deckId)
+      : {};
     const location = room
       ? `${room.name}, Deck ${deck.number}`
       : deck
         ? `Deck ${deck.number}`
-        : `None`;
+        : randomLocation
+          ? `${randomLocation.name}, Deck ${randomLocationDeck.number}`
+          : "None";
     // First create our context object
     const context = Object.assign(
       { damageSteps, simulator: sim, stations, deck, room, location, crew },
