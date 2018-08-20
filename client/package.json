@@ -1,6 +1,6 @@
 {
   "name": "thorium-client",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Starship Simulator Controls built with React",
   "repository": {
     "type": "git",
