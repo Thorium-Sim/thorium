@@ -169,6 +169,7 @@ App.on("addInventory", ({ inventory }) => {
     i => i.simulatorId === simulatorId && i.name === name
   );
   if (dupInventory) {
+    dupInventory.updateMetadata(metadata);
     roomCount.forEach(r => {
       dupInventory.updateCount(r.room, r.count);
     });

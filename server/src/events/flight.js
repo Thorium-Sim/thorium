@@ -27,6 +27,7 @@ export const aspectList = [
 function addAspects(template, sim) {
   // Duplicate all of the other stuff attached to the simulator too.
   aspectList.forEach(aspect => {
+    if (aspect === "softwarePanels") return;
     const filterAspect = App[aspect].filter(
       a => a.simulatorId === template.simulatorId
     );
@@ -109,14 +110,17 @@ function addAspects(template, sim) {
   const panels =
     App.simulators.find(s => s.id === template.simulatorId).panels || [];
   panels.forEach(p => {
-    const panel = App.softwarePanels.find(s => s.id === p);
-    if (!panel) return;
+    const panelData = App.softwarePanels.find(s => s.id === p);
+    if (!panelData) return;
+    const panel = { ...panelData };
     const id = uuid.v4();
-    sim.stations.forEach(s => {
-      s.cards.forEach(c => {
-        if (c.component === p) c.component = id;
-      });
-    });
+    sim.stations = sim.stations.map(s => ({
+      ...s,
+      cards: s.cards.map(c => ({
+        ...c,
+        component: c.component === p ? id : c.component
+      }))
+    }));
     App.softwarePanels.push(
       new Classes.SoftwarePanel({
         id,
@@ -143,7 +147,7 @@ App.on("startFlight", ({ id, name, simulators }) => {
     sim.templateId = s.simulatorId;
     sim.mission = s.missionId;
     const stationSet = App.stationSets.find(ss => ss.id === s.stationSet);
-    sim.stations = stationSet.stations;
+    sim.stations = [...stationSet.stations];
     sim.stationSet = stationSet.id;
     App.simulators.push(sim);
     addAspects(s, sim);

@@ -57,7 +57,9 @@ class SignalsCore extends Component {
       if (!comm) return;
       if (
         !prevComm ||
-        JSON.stringify(comm.signals) !== JSON.stringify(prevComm.signals)
+        JSON.stringify(comm.signals) !== JSON.stringify(prevComm.signals) ||
+        (this.state.signals.length === 0 &&
+          comm.signals.length > this.state.signals.length)
       ) {
         this.setState({
           signals: comm.signals

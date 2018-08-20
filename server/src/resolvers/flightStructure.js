@@ -135,6 +135,9 @@ export const FlightStructureMutations = {
   setSimulatorAssets(rootValue, params, context) {
     App.handleEvent(params, "setSimulatorAssets", context);
   },
+  updateSimulatorLighting(rootValue, params, context) {
+    App.handleEvent(params, "updateSimulatorLighting", context);
+  },
   // Timeline
   addTimelineStep(root, args, context) {
     App.handleEvent(
@@ -282,6 +285,25 @@ export const FlightStructureSubscriptions = {
   }
 };
 
+function colorFunc(alertlevel) {
+  switch (alertlevel) {
+    case "1":
+      return "#f00";
+    case "2":
+      return "#f80";
+    case "3":
+      return "#ff0";
+    case "4":
+      return "#0f0";
+    case "5":
+      return "#08f";
+    case "p":
+      return "rebeccapurple";
+    default:
+      return "white";
+  }
+}
+
 export const FlightStructureTypes = {
   Simulator: {
     decks(rootValue) {
@@ -298,6 +320,12 @@ export const FlightStructureTypes = {
     },
     stationSet(rootValue) {
       return App.stationSets.find(s => s.id === rootValue.stationSet);
+    },
+    lighting(rootValue) {
+      return {
+        ...rootValue.lighting,
+        color: rootValue.lighting.color || colorFunc(rootValue.alertLevel)
+      };
     }
   },
   Stationset: {

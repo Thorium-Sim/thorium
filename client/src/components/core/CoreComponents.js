@@ -61,7 +61,6 @@ class CoreComponents extends Component {
     this.setState({
       layout: e.target.value
     });
-    console.log(e.target.value);
     localStorage.setItem("thorium_coreLayout", e.target.value);
   };
   updateMosaic = mosaic => {
