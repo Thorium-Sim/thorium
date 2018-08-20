@@ -174,3 +174,8 @@ App.on("setSimulatorAssets", ({ id, assets }) => {
   sim.setAssets(assets);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("updateSimulatorLighting", ({ id, lighting }) => {
+  const sim = App.simulators.find(s => s.id === id);
+  sim.updateLighting(lighting);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});

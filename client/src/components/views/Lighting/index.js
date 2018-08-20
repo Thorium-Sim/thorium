@@ -41,12 +41,24 @@ const LightingCore = ({ clients, simulator: { id } }) => {
         } = simulator.lighting;
         return (
           <Container fluid className="lighting">
-            <div>Lighting</div>
+            <div
+              style={{
+                right: "10px",
+                position: "absolute"
+              }}
+            >
+              Lighting
+            </div>
 
             <Row>
               <Col sm={4}>
                 <div>Mode</div>
-                <Input type="select" bsSize="sm" value={action}>
+                <Input
+                  type="select"
+                  bsSize="sm"
+                  value={action}
+                  style={{ height: "18px" }}
+                >
                   {["normal", "oscillate", "strobe", "shake"].map(s => (
                     <option key={s} value={s}>
                       {titleCase(s)}
@@ -55,7 +67,11 @@ const LightingCore = ({ clients, simulator: { id } }) => {
                 </Input>
                 <label>
                   Alert Color{" "}
-                  <Input type="checkbox" checked={color === "null"} />
+                  <Input
+                    type="checkbox"
+                    checked={color === "null"}
+                    style={{ position: "relative", margin: 0 }}
+                  />
                 </label>
               </Col>
               <Col sm={4}>

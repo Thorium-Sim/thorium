@@ -83,6 +83,14 @@ type Lighting {
   color: String
 }
 
+input LightingInput {
+  intensity: Float
+  action: LIGHTING_ACTION
+  actionStrength: Float
+  transitionDuration: Int
+  color: String
+}
+
 enum LIGHTING_ACTION {
   normal
   shake

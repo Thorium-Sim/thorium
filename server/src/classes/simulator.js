@@ -15,6 +15,15 @@ class Lighting {
     // If it's null, use the alert color
     this.color = params.color || null;
   }
+  update({ intensity, action, actionStrength, transitionDuration, color }) {
+    if (intensity || intensity === 0) this.intensity = intensity;
+    if (action) this.action = action;
+    if (actionStrength || actionStrength === 0)
+      this.actionStrength = actionStrength;
+    if (transitionDuration || transitionDuration === 0)
+      this.transitionDuration = transitionDuration;
+    if (color || color === null) this.color = color;
+  }
 }
 
 class RemoteAccess {
@@ -137,6 +146,9 @@ export default class Simulator {
     this.executedTimelineSteps = this.executedTimelineSteps.filter(
       (a, i, arr) => arr.indexOf(a) === i
     );
+  }
+  updateLighting(lighting) {
+    this.lighting.update(lighting);
   }
 
   // Ship
