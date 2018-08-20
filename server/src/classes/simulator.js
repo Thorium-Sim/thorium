@@ -7,12 +7,13 @@ class Lighting {
   constructor(params = {}) {
     this.intensity = params.intensity || 0;
 
-    // One of 'normal', 'shake', 'strobe', 'oscillate'
+    // One of 'normal', 'fade', 'shake', 'strobe', 'oscillate'
     this.action = params.action || "normal";
     this.actionStrength = params.actionStrength || 1;
     this.transitionDuration = params.transitionDuration || 1000;
 
     // If it's null, use the alert color
+    this.useAlertColor = params.useAlertColor || true;
     this.color = params.color || null;
   }
   update({ intensity, action, actionStrength, transitionDuration, color }) {
@@ -22,7 +23,10 @@ class Lighting {
       this.actionStrength = actionStrength;
     if (transitionDuration || transitionDuration === 0)
       this.transitionDuration = transitionDuration;
-    if (color || color === null) this.color = color;
+    if (color || color === null) {
+      this.color = color;
+      this.useAlertColor = color === null;
+    }
   }
 }
 

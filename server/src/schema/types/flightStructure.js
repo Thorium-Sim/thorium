@@ -80,6 +80,7 @@ type Lighting {
   action: LIGHTING_ACTION
   actionStrength: Float
   transitionDuration: Int
+  useAlertColor: Boolean
   color: String
 }
 
@@ -88,11 +89,13 @@ input LightingInput {
   action: LIGHTING_ACTION
   actionStrength: Float
   transitionDuration: Int
+  useAlertColor: Boolean
   color: String
 }
 
 enum LIGHTING_ACTION {
   normal
+  fade
   shake
   strobe
   oscillate
