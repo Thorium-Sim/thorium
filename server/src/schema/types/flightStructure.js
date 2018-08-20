@@ -72,6 +72,33 @@ type Simulator {
   panels:[ID]
   bridgeOfficerMessaging: Boolean
   assets: SimulatorAssets
+  lighting:Lighting
+}
+
+type Lighting {
+  intensity: Float
+  action: LIGHTING_ACTION
+  actionStrength: Float
+  transitionDuration: Int
+  useAlertColor: Boolean
+  color: String
+}
+
+input LightingInput {
+  intensity: Float
+  action: LIGHTING_ACTION
+  actionStrength: Float
+  transitionDuration: Int
+  useAlertColor: Boolean
+  color: String
+}
+
+enum LIGHTING_ACTION {
+  normal
+  fade
+  shake
+  strobe
+  oscillate
 }
 
 type TemplateSimulator {
