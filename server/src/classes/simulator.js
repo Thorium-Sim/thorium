@@ -3,6 +3,33 @@ import App from "../app";
 import Team from "./teams";
 import DamageStep from "./generic/damageStep";
 
+class Lighting {
+  constructor(params = {}) {
+    this.intensity = params.intensity || 0;
+
+    // One of 'normal', 'fade', 'shake', 'strobe', 'oscillate'
+    this.action = params.action || "normal";
+    this.actionStrength = params.actionStrength || 1;
+    this.transitionDuration = params.transitionDuration || 1000;
+
+    // If it's null, use the alert color
+    this.useAlertColor = params.useAlertColor || true;
+    this.color = params.color || null;
+  }
+  update({ intensity, action, actionStrength, transitionDuration, color }) {
+    if (intensity || intensity === 0) this.intensity = intensity;
+    if (action) this.action = action;
+    if (actionStrength || actionStrength === 0)
+      this.actionStrength = actionStrength;
+    if (transitionDuration || transitionDuration === 0)
+      this.transitionDuration = transitionDuration;
+    if (color || color === null) {
+      this.color = color;
+      this.useAlertColor = color === null;
+    }
+  }
+}
+
 class RemoteAccess {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
@@ -62,7 +89,7 @@ export default class Simulator {
     this.training = params.training || false;
     this.ship = new Ship(params.ship);
     this.panels = params.panels || [];
-
+    this.lighting = new Lighting(params.lighting);
     // Set up the teams
     if (params.teams) {
       params.teams.forEach(t => this.teams.push(new Team(t)));
@@ -123,6 +150,9 @@ export default class Simulator {
     this.executedTimelineSteps = this.executedTimelineSteps.filter(
       (a, i, arr) => arr.indexOf(a) === i
     );
+  }
+  updateLighting(lighting) {
+    this.lighting.update(lighting);
   }
 
   // Ship

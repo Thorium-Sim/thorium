@@ -174,3 +174,24 @@ App.on("setSimulatorAssets", ({ id, assets }) => {
   sim.setAssets(assets);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+const lightingTimeouts = {};
+App.on("updateSimulatorLighting", ({ id, lighting }) => {
+  const sim = App.simulators.find(s => s.id === id);
+  sim.updateLighting(lighting);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+  if (
+    (lighting.action === "shake" && lighting.transitionDuration) ||
+    (lighting.action === "fade" &&
+      (lighting.intensity || lighting.intensity === 0))
+  ) {
+    // It was a shake or fade button press. Wait for the duration,
+    // then trigger an update to cancel the shake
+    clearTimeout(lightingTimeouts[id]);
+    const duration =
+      lighting.transitionDuration || sim.lighting.transitionDuration;
+    lightingTimeouts[id] = setTimeout(() => {
+      sim.updateLighting({ action: "normal" });
+      pubsub.publish("simulatorsUpdate", App.simulators);
+    }, duration);
+  }
+});
