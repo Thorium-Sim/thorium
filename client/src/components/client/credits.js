@@ -3,7 +3,7 @@ import { Container, Button } from "reactstrap";
 
 const creditList = [
   {
-    header: "Created By:",
+    header: "Created By",
     content: "Alex Anderson 🚀"
   },
   {
@@ -31,6 +31,28 @@ const creditList = [
     content: "Nathan King 👑"
   },
   {
+    header: "Code Contributors",
+    content: (
+      <ul style={{ listStyle: "none" }}>
+        <li>
+          <code>G33kX</code>
+        </li>
+        <li>
+          <code>emrix</code>
+        </li>
+        <li>
+          <code>aBlueShadow</code>
+        </li>
+        <li>
+          <code>jrobe</code>
+        </li>
+        <li>
+          <code>J-F1</code>
+        </li>
+      </ul>
+    )
+  },
+  {
     header: "Bug Reports & Feature Suggestions",
     content: (
       <ul style={{ listStyle: "none" }}>
@@ -41,12 +63,6 @@ const creditList = [
         <li>Daniel Kirpatrick</li>
         <li>Isaac Ostler</li>
         <li>Matt Ricks</li>
-        <li>
-          <code>aBlueShadow</code>
-        </li>
-        <li>
-          <code>J-F1</code>
-        </li>
         <li>
           <code>kimballfrank</code>
         </li>
