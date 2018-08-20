@@ -72,6 +72,7 @@ type Simulator {
   panels:[ID]
   bridgeOfficerMessaging: Boolean
   assets: SimulatorAssets
+  lighting:Lighting
 }
 
 type Lighting {

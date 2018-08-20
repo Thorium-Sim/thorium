@@ -16,6 +16,7 @@ class Lighting {
     this.color = params.color || null;
   }
 }
+
 class RemoteAccess {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
