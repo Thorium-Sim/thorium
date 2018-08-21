@@ -39,4 +39,5 @@ setVerifyDamage(simulatorId:ID!, verifyStep:Boolean!):String
 setBridgeMessaging(id:ID!, messaging:Boolean!):String
 setSimulatorAssets(id:ID!, assets:SimulatorAssetsInput!):String
 updateSimulatorLighting(id:ID!, lighting: LightingInput!):String
+updateSimulatorAmbiance(id: ID!, ambiance: AmbianceInput!):String
 `;

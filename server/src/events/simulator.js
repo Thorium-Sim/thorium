@@ -195,3 +195,8 @@ App.on("updateSimulatorLighting", ({ id, lighting }) => {
     }, duration);
   }
 });
+App.on("updateSimulatorAmbiance", ({ id, ambiance }) => {
+  const sim = App.simulators.find(s => s.id === id);
+  sim.updateAmbiance(ambiance);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});

@@ -3,8 +3,25 @@ import App from "../app";
 import Team from "./teams";
 import DamageStep from "./generic/damageStep";
 
+class Ambiance {
+  constructor(params = {}) {
+    this.id = params.id || uuid.v4();
+    this.class = "Ambiance";
+    this.asset = params.asset || "/Sounds/ambiance.ogg";
+    this.volume = params.volume || 1;
+    this.channel = params.channel || [0, 1];
+    this.playbackRate = params.playbackRate || 1;
+  }
+  update({ asset, volume, channel, playbackRate }) {
+    if (asset || asset === "") this.asset = asset;
+    if (volume || volume === 0) this.volume = volume;
+    if (channel || channel === 0) this.channel = channel;
+    if (playbackRate || playbackRate === 0) this.playbackRate = playbackRate;
+  }
+}
 class Lighting {
   constructor(params = {}) {
+    this.class = "Lighting";
     this.intensity = params.intensity || 0;
 
     // One of 'normal', 'fade', 'shake', 'strobe', 'oscillate'
@@ -89,7 +106,12 @@ export default class Simulator {
     this.training = params.training || false;
     this.ship = new Ship(params.ship);
     this.panels = params.panels || [];
+
+    // Effects Control
     this.lighting = new Lighting(params.lighting);
+    this.ambiance = [];
+    if (params.ambiance)
+      params.ambiance.forEach(a => this.ambiance.push(new Ambiance(a)));
     // Set up the teams
     if (params.teams) {
       params.teams.forEach(t => this.teams.push(new Team(t)));
@@ -154,7 +176,9 @@ export default class Simulator {
   updateLighting(lighting) {
     this.lighting.update(lighting);
   }
-
+  updateAmbiance(ambiance) {
+    this.ambiance.find(a => a.id === ambiance.id).update(ambiance);
+  }
   // Ship
   clamps(tf) {
     this.ship.clamps = tf;
