@@ -31,7 +31,7 @@ class ResetCache extends Component {
       });
   }
   componentWillUnmount() {
-    this.cacheSub && this.cacheSub._cleanup();
+    this.cacheSub && this.cacheSub.unsubscribe();
   }
   render() {
     return null;
