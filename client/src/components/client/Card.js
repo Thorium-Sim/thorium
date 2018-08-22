@@ -164,13 +164,15 @@ export default class CardFrame extends Component {
           card={this.state.card}
           changeCard={this.changeCard}
         />
-        <Reset
-          station={this.props.station}
-          clientId={this.props.client.id}
-          reset={() =>
-            this.setState({ card: this.props.station.cards[0].name })
-          }
-        />
+        {this.props.client && (
+          <Reset
+            station={this.props.station}
+            clientId={this.props.client.id}
+            reset={() =>
+              this.setState({ card: this.props.station.cards[0].name })
+            }
+          />
+        )}
         <Alerts
           key={`alerts-${
             this.props.simulator ? this.props.simulator.id : "simulator"

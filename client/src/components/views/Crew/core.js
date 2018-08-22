@@ -198,7 +198,6 @@ class CrewCore extends Component {
       data: { loading, crew }
     } = this.props;
     const { selectedCrew, editing, search } = this.state;
-    console.log(selectedCrew);
     if (loading || !crew) return null;
     const selectedCrewMember = crew.find(c => c.id === selectedCrew);
     return (

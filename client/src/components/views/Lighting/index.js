@@ -50,7 +50,6 @@ const LightingCore = ({ clients, simulator: { id } }) => {
           useAlertColor,
           color
         } = simulator.lighting;
-        console.log(useAlertColor, color);
         return (
           <Mutation
             mutation={gql`
