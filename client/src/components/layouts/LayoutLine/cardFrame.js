@@ -38,7 +38,7 @@ function calculatePath(
 class CardFrame extends Component {
   state = {};
   render() {
-    let { simulator, station, children, cardName } = this.props;
+    let { simulator, station, children, cardName, viewscreen } = this.props;
     const { dimensions } = this.state;
     const { name: stationName } = station;
     return (
@@ -46,7 +46,6 @@ class CardFrame extends Component {
         <h1 className="simulator-name">{simulator.name}</h1>
         <h2 className="station-name">{stationName}</h2>
         <h2 className="card-name">{cardName}</h2>
-
         <Measure
           bounds
           onResize={contentRect => {
@@ -71,7 +70,9 @@ class CardFrame extends Component {
             </div>
           )}
         </Measure>
-        <div className="card-area">{children}</div>
+        <div className="card-area" style={{ zIndex: viewscreen ? 1000 : 1 }}>
+          {children}
+        </div>
       </div>
     );
   }
