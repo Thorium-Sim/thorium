@@ -25,3 +25,6 @@ export { default as setTransporterTargets } from "./setTransporterTargets";
 export { default as navCourseResponse } from "./navCourseResponse";
 export { default as addObjective } from "./addObjective";
 export { default as completeObjective } from "./completeObjective";
+export {
+  default as changeSimulatorAlertLevel
+} from "./changeSimulatorAlertLevel";
