@@ -6,6 +6,24 @@ App.on("shipDockingChange", ({ simulatorId, which, state }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   if (simulator) {
     simulator[which](state);
+    // Turn off external power if clamps are false
+    if (which === "clamps" && !state) {
+      const reactors = App.systems.filter(
+        s =>
+          s.class === "Reactor" &&
+          s.simulatorId === simulator.id &&
+          s.model === "reactor"
+      );
+      reactors.forEach(r => {
+        if (r.externalPower) {
+          r.changeEfficiency(1);
+        }
+      });
+      pubsub.publish(
+        "reactorUpdate",
+        App.systems.filter(s => s.type === "Reactor")
+      );
+    }
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: simulatorId,

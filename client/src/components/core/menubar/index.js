@@ -25,11 +25,7 @@ const Menubar = ({
   setSpeech
 }) => (
   <Fragment>
-    <Button
-      tag={Link}
-      size="sm"
-      to={`/config/flight/${flight && flight.flightId}`}
-    >
+    <Button tag={Link} size="sm" to={`/config/flight/${flight && flight.id}`}>
       {"<-"} Client Config
     </Button>
     <SimulatorPicker
