@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import SideNav from "./FlightDirector/sideNav";
 import { Route } from "react-router-dom";
+import uuid from "uuid";
 import TacticalMapCore from "../components/views/TacticalMap";
 import DebugList from "./DebugList";
 import {
@@ -18,10 +19,35 @@ import {
 } from "./FlightDirector";
 import MissionPicker from "./missionPicker";
 import SimulatorPicker from "./simulatorPicker";
+import { AlertsHolder } from "../components/generic/Alerts";
 import "./config.scss";
 
 class Config extends Component {
-  state = { training: false };
+  state = { training: false, alerts: [] };
+  onDismiss = id => {
+    this.setState(state => ({
+      alerts: state.alerts.map(a => {
+        if (a.id === id) a.visible = false;
+        return a;
+      })
+    }));
+    setTimeout(() => {
+      this.setState(state => ({
+        alerts: state.alerts.filter(a => a.id !== id)
+      }));
+    }, 2000);
+  };
+  trigger = ({ title, body, color, duration, id = uuid.v4() }) => {
+    this.setState(state => ({
+      alerts: state.alerts.concat(
+        Object.assign({ title, body, color, id }, { visible: true })
+      )
+    }));
+    const timeoutDuration = duration ? duration : 5000;
+    setTimeout(() => {
+      this.onDismiss(id);
+    }, timeoutDuration);
+  };
   trainingProps = () => {
     return {
       training: this.state.training,
@@ -71,14 +97,22 @@ class Config extends Component {
             path="/config/mission"
             exact
             render={props => (
-              <MissionPicker {...props} {...this.trainingProps()} />
+              <MissionPicker
+                {...props}
+                triggerAlert={this.trigger}
+                {...this.trainingProps()}
+              />
             )}
           />
           <Route
             path="/config/simulator"
             exact
             render={props => (
-              <SimulatorPicker {...props} {...this.trainingProps()} />
+              <SimulatorPicker
+                {...props}
+                triggerAlert={this.trigger}
+                {...this.trainingProps()}
+              />
             )}
           />
           <Route
@@ -125,6 +159,7 @@ class Config extends Component {
           />
           <Route path="/config/debug" component={DebugList} />
         </div>
+        <AlertsHolder alerts={this.state.alerts} dismiss={this.onDismiss} />
       </div>
     );
   }
