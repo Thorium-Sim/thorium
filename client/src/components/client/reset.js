@@ -8,6 +8,7 @@ const CACHE_INVALID_SUB = gql`
     clearCache(client: $client)
   }
 `;
+const excludedStations = ["Sound", "Blackout", "Viewscreen", "Keyboard"];
 
 class ResetCache extends Component {
   componentDidMount() {
@@ -21,6 +22,13 @@ class ResetCache extends Component {
       .subscribe({
         next: ({ loading }) => {
           if (!loading) {
+            if (
+              excludedStations.indexOf(this.props.station.name) > -1 ||
+              this.props.station.cards.find(
+                c => excludedStations.indexOf(c.component) > -1
+              )
+            )
+              return;
             this.props.playSound({ url: "/sciences.ogg" });
             this.props.reset && this.props.reset();
           }

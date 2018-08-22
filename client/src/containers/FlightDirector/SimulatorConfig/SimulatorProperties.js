@@ -12,11 +12,12 @@ const properties = [
   "Docking",
   "DamageReports",
   "Library",
-  "Panels"
+  "Panels",
+  "Ambiance"
 ];
 export default ({ selectProperty, selectedProperty }) => {
   return (
-    <Card>
+    <Card className="flex-max auto-scroll">
       {properties.map(p => (
         <li
           key={p}

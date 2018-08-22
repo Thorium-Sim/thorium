@@ -195,3 +195,18 @@ App.on("updateSimulatorLighting", ({ id, lighting }) => {
     }, duration);
   }
 });
+App.on("updateSimulatorAmbiance", ({ id, ambiance }) => {
+  const sim = App.simulators.find(s => s.id === id);
+  sim.updateAmbiance(ambiance);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("addSimulatorAmbiance", ({ id, name }) => {
+  const sim = App.simulators.find(s => s.id === id);
+  sim.addAmbiance({ name });
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("removeSimulatorAmbiance", ({ id, ambianceId }) => {
+  const sim = App.simulators.find(s => s.id === id);
+  sim.removeAmbiance(ambianceId);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});

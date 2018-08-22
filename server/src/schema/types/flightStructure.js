@@ -73,6 +73,7 @@ type Simulator {
   bridgeOfficerMessaging: Boolean
   assets: SimulatorAssets
   lighting:Lighting
+  ambiance:[Ambiance]
 }
 
 type Lighting {
@@ -99,6 +100,23 @@ enum LIGHTING_ACTION {
   shake
   strobe
   oscillate
+}
+
+type Ambiance {
+  id:ID
+  name: String
+  asset:String
+  volume:Float
+  channel:[Int]
+  playbackRate:Float
+}
+input AmbianceInput {
+  id:ID
+  name: String
+  asset:String
+  volume:Float
+  channel:[Int]
+  playbackRate:Float
 }
 
 type TemplateSimulator {
