@@ -141,6 +141,12 @@ export const FlightStructureMutations = {
   updateSimulatorAmbiance(rootValue, params, context) {
     App.handleEvent(params, "updateSimulatorAmbiance", context);
   },
+  addSimulatorAmbiance(rootValue, params, context) {
+    App.handleEvent(params, "addSimulatorAmbiance", context);
+  },
+  removeSimulatorAmbiance(rootValue, params, context) {
+    App.handleEvent(params, "removeSimulatorAmbiance", context);
+  },
   // Timeline
   addTimelineStep(root, args, context) {
     App.handleEvent(

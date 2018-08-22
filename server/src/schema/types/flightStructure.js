@@ -104,6 +104,7 @@ enum LIGHTING_ACTION {
 
 type Ambiance {
   id:ID
+  name: String
   asset:String
   volume:Float
   channel:[Int]
@@ -111,6 +112,7 @@ type Ambiance {
 }
 input AmbianceInput {
   id:ID
+  name: String
   asset:String
   volume:Float
   channel:[Int]

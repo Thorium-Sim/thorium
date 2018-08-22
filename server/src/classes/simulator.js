@@ -7,12 +7,14 @@ class Ambiance {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
     this.class = "Ambiance";
+    this.name = params.name || "Ambiance";
     this.asset = params.asset || "/Sounds/ambiance.ogg";
     this.volume = params.volume || 1;
     this.channel = params.channel || [0, 1];
     this.playbackRate = params.playbackRate || 1;
   }
-  update({ asset, volume, channel, playbackRate }) {
+  update({ name, asset, volume, channel, playbackRate }) {
+    if (name) this.name = name;
     if (asset || asset === "") this.asset = asset;
     if (volume || volume === 0) this.volume = volume;
     if (channel || channel === 0) this.channel = channel;
@@ -178,6 +180,12 @@ export default class Simulator {
   }
   updateAmbiance(ambiance) {
     this.ambiance.find(a => a.id === ambiance.id).update(ambiance);
+  }
+  addAmbiance(ambiance) {
+    this.ambiance.push(new Ambiance(ambiance));
+  }
+  removeAmbiance(id) {
+    this.ambiance = this.ambiance.filter(a => a.id !== id);
   }
   // Ship
   clamps(tf) {

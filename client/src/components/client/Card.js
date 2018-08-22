@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { FormattedMessage } from "react-intl";
 import Layouts from "../layouts";
 import Keyboard from "../views/Keyboard";
 import ActionsMixin from "../generic/Actions";
 import Alerts from "../generic/Alerts";
+import SoundPlayer from "./soundPlayer";
 import Reset from "./reset";
 
 const Blackout = () => {
@@ -92,11 +92,7 @@ const CardRenderer = props => {
     );
   }
   if (station.name === "Sound") {
-    return (
-      <div className="keyboard-holder">
-        <FormattedMessage id="sound-player" defaultMessage="Sound Player" />
-      </div>
-    );
+    return <SoundPlayer simulator={simulator} />;
   }
   return (
     <LayoutComponent

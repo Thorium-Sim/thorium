@@ -81,7 +81,7 @@ function playSound(opts) {
         window.audioContext.decodeAudioData(
           arrayBuffer,
           buffer => {
-            const sound = opts || {};
+            const sound = { ...opts } || {};
             //Create a new buffer and set it to the specified channel.
             sound.source = window.audioContext.createBufferSource();
             sound.source.buffer = downMixBuffer(buffer, channel);
@@ -112,9 +112,10 @@ function playSound(opts) {
   }
 }
 
-function removeSound(id, force) {
+function removeSound(id, force, ambiance) {
   const sound = sounds[id];
   if (sound) {
+    if (sound.ambiance && !ambiance) return;
     if (!sound.looping || force) {
       sound.source.stop();
       delete sounds[id];
@@ -126,39 +127,11 @@ function removeSound(id, force) {
   }
 }
 
-function removeAllSounds() {
+function removeAllSounds(ambiance) {
   Object.keys(sounds).forEach(key => {
-    removeSound(key, true);
+    removeSound(key, true, ambiance);
   });
 }
-/*componentDidUpdate(prevProps) {
-    const withSound = sound => {
-      if (!sound) {
-        return;
-      }
-
-      if (this.props.playStatus === playStatuses.PLAYING) {
-        sound.start();
-      } else if (this.props.playStatus === playStatuses.STOPPED) {
-        sound.stop();
-      }
-
-      if (this.props.volume !== prevProps.volume) {
-        sound.setVolume(this.props.volume);
-      }
-      if (this.props.looping !== prevProps.looping) {
-        sound.loop = this.props.looping;
-      }
-      if (this.props.playrate !== prevProps.playrate) {
-        sound.playrate.value = this.props.playrate;
-      }
-    };
-    if (this.props.url !== prevProps.url) {
-      this.playSound(this.props);
-    } else {
-      withSound(this.sound);
-    }
-  }*/
 
 const withSound = Comp => {
   return props => (
