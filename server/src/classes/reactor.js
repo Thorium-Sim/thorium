@@ -1,6 +1,48 @@
 import { System } from "./generic";
 import HeatMixin from "./generic/heatMixin";
 
+const efficiencies = [
+  {
+    label: "Overload",
+    color: "danger",
+    efficiency: 1.25
+  },
+  {
+    label: "Cruise",
+    color: "primary",
+    efficiency: 1
+  },
+  {
+    label: "Silent Running",
+    color: "cloak",
+    efficiency: 0.87
+  },
+  {
+    label: "Reduced",
+    color: "default",
+    efficiency: 0.5
+  },
+  {
+    label: "Auxilliary",
+    color: "info",
+    efficiency: 0.38
+  },
+  {
+    label: "Minimal",
+    color: "warning",
+    efficiency: 0.27
+  },
+  {
+    label: "Power Down",
+    color: "danger",
+    efficiency: 0
+  },
+  {
+    label: "External Power",
+    color: "success"
+  }
+];
+
 export default class Reactor extends HeatMixin(System) {
   constructor(params = {}) {
     super(params);
@@ -14,6 +56,7 @@ export default class Reactor extends HeatMixin(System) {
     this.externalPower = params.externalPower || true;
     this.batteryChargeLevel = params.batteryChargeLevel || 1;
     this.batteryChargeRate = params.batteryChargeRate || 1 / 1000;
+    this.efficiencies = params.efficiencies || [...efficiencies];
     this.depletion = params.depletion || 0;
     if (this.model === "battery") {
       this.heat = null;
@@ -44,11 +87,15 @@ export default class Reactor extends HeatMixin(System) {
   changeOutput(output) {
     this.powerOutput = output;
   }
+  updateEfficiencies(e) {
+    this.efficiencies = e;
+  }
   changeEfficiency(efficiency) {
     if (!efficiency && efficiency !== 0) {
       this.externalPower = true;
       this.efficiency = 1.5;
     } else {
+      this.externalPower = false;
       this.efficiency = efficiency;
     }
   }

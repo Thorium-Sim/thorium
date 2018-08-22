@@ -28,3 +28,6 @@ export { default as completeObjective } from "./completeObjective";
 export { default as syncTimer } from "./syncTimer";
 export { default as playSound } from "./playSound";
 export { default as sendMessage } from "./sendMessage";
+export {
+  default as changeSimulatorAlertLevel
+} from "./changeSimulatorAlertLevel";

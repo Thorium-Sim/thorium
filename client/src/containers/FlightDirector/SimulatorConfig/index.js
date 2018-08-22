@@ -210,7 +210,7 @@ class SimulatorConfig extends Component {
       <Container fluid className="simulator-config">
         <h4>Simulator Config </h4>
         <Row>
-          <Col sm={2}>
+          <Col sm={2} className="property-list">
             <SimulatorProperties
               selectProperty={this.selectProperty}
               selectedProperty={selectedProperty}

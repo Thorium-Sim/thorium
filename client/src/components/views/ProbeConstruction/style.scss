@@ -1,47 +1,53 @@
 .probe-construction {
   .probe-container {
-    display: flex;
-    justify-content: space-between;
     height: 40vh;
-    .placeholder {
-      flex-grow: 0;
-      transition: flex-grow 0.5s ease-in-out;
-    }
+    position: relative;
+
     &.probeSelected {
       .probe-type {
         opacity: 0;
-        transition: opacity 0.5s ease-in-out, flex-grow 0.5s ease-in-out 0.5s;
-      }
-      .placeholder {
-        flex-grow: 100;
-        transition: flex-grow 0.5s ease-in-out 0.5s;
+        transition: opacity 0.5s ease-in-out;
       }
     }
+    .probe-holder {
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      transition: transform 0.5s ease-in-out;
+    }
     .probe-type {
-      flex: 1 1 0px;
       height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      transition: opacity 0.5s ease-in-out 0.5s, flex-grow 0.5s ease-in-out;
+      transition: opacity 0.5s ease-in-out;
+      div {
+        pointer-events: all;
+        height: 100%;
+      }
       img {
-        transition: transform 0.5s ease-in-out 0.5s;
+        height: calc(100% - 24px);
+        width: 100%;
+
+        transition: transform 0.5s ease-in-out;
       }
       &.selected {
         opacity: 1;
-        flex-grow: 100;
         p {
           opacity: 0;
         }
         img {
-          transform: rotate(90deg) scale(1.5);
+          transform: scale(1.5);
         }
       }
     }
   }
   .probeAction,
   .probeDescription {
-    position: relative;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
     .col {
       position: absolute;
       top: 50px;
@@ -60,11 +66,15 @@
   }
   .probeEquipment {
     .card {
-      max-height: 40vh;
+      max-height: 30vh;
     }
     .equipmentList {
       padding-top: 0;
-      overflow-y: scroll;
+      overflow-y: auto;
+      p {
+        padding: 5px;
+        cursor: pointer;
+      }
     }
     .equipmentItem:nth-child(odd) {
       background-color: rgba(255, 255, 255, 0.1);
@@ -75,6 +85,9 @@
     }
     p.description {
       font-size: 1.6rem;
+      padding: 10px;
+      background-color: rgba(0, 0, 0, 0.9);
+      box-shadow: 0px 0px 10px black;
     }
   }
   @media (width: 1024px) {

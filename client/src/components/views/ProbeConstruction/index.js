@@ -24,6 +24,11 @@ function d2r(deg) {
   return (deg * Math.PI) / 180;
 }
 
+const probeTypes = ["class-i", "class-ii", "class-iii", "defense", "science"];
+const probeImages = probeTypes.reduce((prev, next) => {
+  prev[next] = require(`./probes/${next}.svg`);
+  return prev;
+}, {});
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
     probesUpdate(simulatorId: $simulatorId) {
@@ -70,42 +75,56 @@ const ProbeSelector = ({
   types,
   selectedProbeType,
   selectProbe,
-  setDescription
+  setDescription,
+  launching
 }) => {
   return (
-    <Row>
+    <Row
+      style={{
+        position: "absolute",
+        width: "100%"
+      }}
+    >
       <Col
         sm={12}
         className={`probe-container  ${
           selectedProbeType ? "probeSelected" : ""
         }`}
       >
-        <div className="placeholder" />
-        {types.map(t => {
-          const probeImage = require(`./probes/${t.id}.svg`);
+        {types.map((t, i, arr) => {
+          const selected = selectedProbeType === t.id ? "selected" : "";
           return (
             <div
               key={t.id}
-              onMouseOut={setDescription.bind(this, null)}
-              onMouseOver={setDescription.bind(this, t.description)}
-              className={`probe-type ${
-                selectedProbeType === t.id ? "selected" : ""
-              }`}
-              onClick={selectProbe.bind(this, t.id)}
+              className={`probe-holder`}
+              style={{
+                transform: launching
+                  ? ``
+                  : selected
+                    ? `translate(30%, 60%)`
+                    : `translateX(${(i * 80) / arr.length - 35}%)`
+              }}
             >
-              <p>
-                {t.name}: {t.count}
-              </p>
-              <img
-                alt="probe"
-                draggable="false"
-                src={probeImage}
-                role="presentation"
-              />
+              <div className={`probe-type ${selected}`}>
+                <div
+                  onMouseOut={setDescription.bind(this, null)}
+                  onMouseOver={setDescription.bind(this, t.description)}
+                  onClick={selectProbe.bind(this, t.id)}
+                >
+                  <p>
+                    {t.name}: {t.count}
+                  </p>
+                  <img
+                    alt="probe"
+                    draggable="false"
+                    src={probeImages[t.id]}
+                    role="presentation"
+                  />
+                </div>
+              </div>
             </div>
           );
         })}
-        <div className="placeholder" />
       </Col>
     </Row>
   );
@@ -115,7 +134,7 @@ class ProbeDescription extends Transitioner {
   render() {
     return (
       <Row className="probeDescription">
-        <Col sm={{ size: 4, offset: 4 }}>
+        <Col sm={{ size: 6, offset: 3 }}>
           <p>{this.props.description}</p>
         </Col>
       </Row>
@@ -463,6 +482,7 @@ class ProbeConstruction extends Component {
           selectedProbeType={selectedProbeType}
           setDescription={e => this.setState({ description: e })}
           selectProbe={this.selectProbe.bind(this)}
+          launching={launching}
         />
         {Object.keys(comps)
           .filter(compName => {

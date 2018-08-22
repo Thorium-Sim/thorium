@@ -81,6 +81,7 @@ class Alerts extends Component {
   }
   componentWillUnmount() {
     this.sub && this.sub();
+    this.subscription && this.subscription.unsubscribe();
   }
   trigger({ title, body, color, duration, id }) {
     const alerts = this.state.alerts;
@@ -108,19 +109,21 @@ class Alerts extends Component {
     }, 2000);
   };
   render() {
-    return (
-      <div style={holderStyle} className="alertsHolder">
-        {this.state.alerts.filter(a => a.visible).map(a => (
-          <AlertItem key={a.id} notify={a} dismiss={this.onDismiss} />
-        ))}
-      </div>
-    );
+    return <AlertsHolder alerts={this.state.alerts} dismiss={this.onDismiss} />;
   }
 }
 
+export const AlertsHolder = ({ alerts, dismiss }) => (
+  <div style={holderStyle} className="alertsHolder">
+    {alerts.filter(a => a.visible).map(a => (
+      <AlertItem key={a.id} notify={a} dismiss={dismiss} />
+    ))}
+  </div>
+);
+
 const AlertItem = ({ dismiss, notify }) => {
   return (
-    <div onClick={dismiss.bind(this, notify.id)}>
+    <div onClick={() => dismiss(notify.id)}>
       <div className={`alert alert-${notify.color}`}>
         <h5 className="alert-heading">
           {notify.title}{" "}

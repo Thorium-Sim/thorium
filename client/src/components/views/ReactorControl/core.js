@@ -40,7 +40,13 @@ const REACTOR_SUB = gql`
         damaged
       }
       ejected
+      externalPower
       efficiency
+      efficiencies {
+        label
+        color
+        efficiency
+      }
       displayName
       powerOutput
       batteryChargeRate
@@ -57,9 +63,17 @@ const REACTOR_SUB = gql`
 
 class ReactorControl extends Component {
   setEfficiency = e => {
-    if (!e) return;
     const { reactors } = this.props.data;
     const reactor = reactors.find(r => r.model === "reactor");
+    if (parseFloat(e) === reactor.efficiency) {
+      e = parseFloat(
+        window.prompt(
+          "What would you like the reactor efficiency to be?",
+          reactor.efficiency
+        )
+      );
+      if (!e && e !== 0) return;
+    }
     const mutation = gql`
       mutation SetReactorEfficiency($id: ID!, $e: Float) {
         reactorChangeEfficiency(id: $id, efficiency: $e)
@@ -67,7 +81,7 @@ class ReactorControl extends Component {
     `;
     const variables = {
       id: reactor.id,
-      e
+      e: e === "external" ? null : e
     };
     this.props.client.mutate({
       mutation,
@@ -92,24 +106,7 @@ class ReactorControl extends Component {
       variables
     });
   };
-  setHeat = e => {
-    return;
-    /*const { reactors } = this.props.data;
-    const reactor = reactors.find(r => r.model === "reactor");
-    const mutation = gql`
-      mutation SetReactorEfficiency($id: ID!, $e: Float) {
-        reactorChangeEfficiency(id: $id, efficiency: $e)
-      }
-    `;
-    const variables = {
-      id: reactor.id,
-      e
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });*/
-  };
+
   setChargeLevel = e => {
     if (!e) return;
     const { reactors } = this.props.data;
@@ -195,40 +192,13 @@ class ReactorControl extends Component {
     const reactor = reactors.find(r => r.model === "reactor");
     const battery = reactors.find(r => r.model === "battery");
     if (!reactor && !battery) return <p>No Reactor</p>;
-    const efficiencies = [
-      {
-        label: "Overload",
-        efficiency: 1.25
-      },
-      {
-        label: "Cruise",
-        efficiency: 1
-      },
-      {
-        label: "Silent Running",
-        efficiency: 0.87
-      },
-      {
-        label: "Reduced",
-        efficiency: 0.5
-      },
-      {
-        label: "Auxilliary",
-        efficiency: 0.38
-      },
-      {
-        label: "Minimal",
-        efficiency: 0.27
-      },
-      {
-        label: "Power Down",
-        efficiency: 0
-      },
-      {
-        label: "External Power",
-        efficiency: 0
-      }
-    ];
+    const efficiencies = reactor
+      ? reactor.efficiencies.concat().sort((a, b) => {
+          if (a.efficiency > b.efficiency) return -1;
+          if (a.efficiency < b.efficiency) return 1;
+          return 0;
+        })
+      : [];
     return (
       <Container className="reactor-control-core">
         <SubscriptionHelper
@@ -262,13 +232,28 @@ class ReactorControl extends Component {
                   size="sm"
                   type="select"
                   onChange={evt => this.setEfficiency(evt.target.value)}
-                  value={reactor.efficiency}
+                  value={
+                    reactor.externalPower ? "external" : reactor.efficiency
+                  }
                 >
                   {efficiencies.map(e => (
-                    <option key={e.label} value={e.efficiency}>
-                      {e.label} - {e.efficiency * 100}%{" "}
+                    <option
+                      key={e.label}
+                      value={
+                        e.efficiency || e.efficiency === 0
+                          ? e.efficiency
+                          : "external"
+                      }
+                    >
+                      {e.label}{" "}
+                      {(e.efficiency || e.efficiency === 0) &&
+                        `- ${e.efficiency * 100}%`}
                     </option>
                   ))}
+                  <option disabled>----------</option>
+                  <option value={reactor.efficiency}>
+                    Force - {reactor.efficiency * 100}%
+                  </option>
                 </Input>
                 <p>Heat Rate:</p>
                 <Input
@@ -361,8 +346,14 @@ const REACTOR_QUERY = gql`
       damage {
         damaged
       }
+      externalPower
       ejected
       efficiency
+      efficiencies {
+        label
+        color
+        efficiency
+      }
       displayName
       powerOutput
       batteryChargeRate

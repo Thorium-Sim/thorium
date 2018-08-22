@@ -35,9 +35,17 @@ ${queryData}
   }
 `;
 
+const excludedStations = ["Sound", "Blackout", "Viewscreen", "Keyboard"];
 class SimulatorData extends Component {
   state = {};
   componentDidMount() {
+    if (
+      excludedStations.indexOf(this.props.station.name) > -1 ||
+      this.props.station.cards.find(
+        c => excludedStations.indexOf(c.component) > -1
+      )
+    )
+      return;
     this.props.playSound({ url: "/sciences.ogg" });
   }
   render() {
@@ -55,7 +63,7 @@ class SimulatorData extends Component {
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
                     return Object.assign({}, previousResult, {
-                      simulator: subscriptionData.data.simulatorsUpdate
+                      simulators: subscriptionData.data.simulatorsUpdate
                     });
                   }
                 })

@@ -9,7 +9,6 @@ import NotifyConfig from "./notifyConfig";
 import FeedbackModal from "./feedbackModal";
 
 const Menubar = ({
-  flight: { id: flightId },
   flight,
   simulators,
   simulator,
@@ -26,7 +25,7 @@ const Menubar = ({
   setSpeech
 }) => (
   <Fragment>
-    <Button tag={Link} size="sm" to={`/config/flight/${flightId}`}>
+    <Button tag={Link} size="sm" to={`/config/flight/${flight && flight.id}`}>
       {"<-"} Client Config
     </Button>
     <SimulatorPicker

@@ -70,7 +70,8 @@ const updateReactor = () => {
 
         //Adjust the reactors heat
         reactors.forEach(reactor => {
-          const { efficiency, heatRate, heat } = reactor;
+          const { efficiency, externalPower, heatRate, heat } = reactor;
+          if (externalPower) return reactor.setHeat(heat - 0.005);
           const minute30 = 30 * 60;
           const standardHeat = Math.pow(efficiency, 2) / minute30;
           const unblanaceHeat = Math.abs(Math.cbrt(level - oldLevel)) / 5000;

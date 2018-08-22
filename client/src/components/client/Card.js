@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { FormattedMessage } from "react-intl";
 import Layouts from "../layouts";
 import Keyboard from "../views/Keyboard";
 import ActionsMixin from "../generic/Actions";
 import Alerts from "../generic/Alerts";
+import SoundPlayer from "./soundPlayer";
 import Reset from "./reset";
 
 const Blackout = () => {
@@ -92,11 +92,7 @@ const CardRenderer = props => {
     );
   }
   if (station.name === "Sound") {
-    return (
-      <div className="keyboard-holder">
-        <FormattedMessage id="sound-player" defaultMessage="Sound Player" />
-      </div>
-    );
+    return <SoundPlayer simulator={simulator} />;
   }
   return (
     <LayoutComponent
@@ -168,12 +164,15 @@ export default class CardFrame extends Component {
           card={this.state.card}
           changeCard={this.changeCard}
         />
-        <Reset
-          clientId={this.props.client.id}
-          reset={() =>
-            this.setState({ card: this.props.station.cards[0].name })
-          }
-        />
+        {this.props.client && (
+          <Reset
+            station={this.props.station}
+            clientId={this.props.client.id}
+            reset={() =>
+              this.setState({ card: this.props.station.cards[0].name })
+            }
+          />
+        )}
         <Alerts
           key={`alerts-${
             this.props.simulator ? this.props.simulator.id : "simulator"

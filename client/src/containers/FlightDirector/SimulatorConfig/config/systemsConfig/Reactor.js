@@ -2,20 +2,71 @@ import React from "react";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag";
 import { Query, Mutation } from "react-apollo";
-import { Input, FormGroup, Label } from "reactstrap";
+import { Input, FormGroup, Label, Row, Col, Button } from "reactstrap";
+import FontAwesome from "react-fontawesome";
 
 const REACTOR_QUERY = gql`
   query Reactor($id: ID!) {
     reactor(id: $id) {
+      id
       model
       powerOutput
       batteryChargeRate
+      efficiencies {
+        label
+        color
+        efficiency
+      }
     }
   }
 `;
 
+const colors = [
+  { label: "Blue", value: "primary" },
+  { label: "Purple", value: "cloak" },
+  { label: "Gray", value: "default" },
+  { label: "Light Blue", value: "info" },
+  { label: "Yellow", value: "warning" },
+  { label: "Red", value: "danger" },
+  { label: "Green", value: "success" }
+];
 const Reactor = props => {
   const { id } = props;
+  const updateEfficiencies = (action, reactor, i, key) => evt => {
+    action({
+      variables: {
+        id: reactor.id,
+        efficiencies: reactor.efficiencies.map(
+          ({ __typename, ...e }, ind) =>
+            ind === i ? { ...e, [key]: evt.target.value } : e
+        )
+      }
+    });
+  };
+  const removeEfficiency = (action, reactor, i) => () => {
+    action({
+      variables: {
+        id: reactor.id,
+        efficiencies: reactor.efficiencies
+          .map(({ __typename, ...e }) => e)
+          .filter((_, ind) => ind !== i)
+      }
+    });
+  };
+  const addEfficiency = (action, reactor) => () => {
+    action({
+      variables: {
+        id: reactor.id,
+        efficiencies: reactor.efficiencies
+          .map(({ __typename, ...e }) => e)
+          .concat({
+            label: "Efficiency",
+            color: "default",
+            efficiency: 0.5
+          })
+      }
+    });
+  };
   return (
     <GenericSystemConfig {...props}>
       <Query query={REACTOR_QUERY} variables={{ id }}>
@@ -75,6 +126,95 @@ const Reactor = props => {
                       )}
                     </Mutation>
                   </Label>
+                  <Mutation
+                    mutation={gql`
+                      mutation UpdateEfficiencies(
+                        $id: ID!
+                        $efficiencies: [ReactorEfficiencyInput]!
+                      ) {
+                        setReactorEffciciencies(
+                          id: $id
+                          efficiencies: $efficiencies
+                        )
+                      }
+                    `}
+                    refetchQueries={[
+                      { query: REACTOR_QUERY, variables: { id } }
+                    ]}
+                  >
+                    {action => (
+                      <div>
+                        <Label>Efficiencies</Label>
+                        <Row>
+                          <Col sm="4">Name</Col>
+                          <Col sm="4">Color</Col>
+                          <Col sm="4">
+                            Efficiency (0 - 1), Blank for external power
+                          </Col>
+                        </Row>
+                        {reactor.efficiencies.map((e, i) => (
+                          <Row key={`${reactor.id}-${i}`}>
+                            <Col sm={4}>
+                              <Input
+                                type="text"
+                                defaultValue={e.label}
+                                onChange={updateEfficiencies(
+                                  action,
+                                  reactor,
+                                  i,
+                                  "label"
+                                )}
+                              />
+                            </Col>
+                            <Col sm={3}>
+                              <Input
+                                type="select"
+                                defaultValue={e.color}
+                                onChange={updateEfficiencies(
+                                  action,
+                                  reactor,
+                                  i,
+                                  "color"
+                                )}
+                              >
+                                {colors.map(c => (
+                                  <option key={c.value} value={c.value}>
+                                    {c.label}
+                                  </option>
+                                ))}
+                              </Input>
+                            </Col>
+                            <Col sm={4}>
+                              <Input
+                                type="number"
+                                defaultValue={e.efficiency}
+                                onChange={updateEfficiencies(
+                                  action,
+                                  reactor,
+                                  i,
+                                  "efficiency"
+                                )}
+                              />
+                            </Col>
+                            <Col sm={1}>
+                              <FontAwesome
+                                name="ban"
+                                className="text-danger"
+                                style={{ cursor: "pointer" }}
+                                onClick={removeEfficiency(action, reactor, i)}
+                              />
+                            </Col>
+                          </Row>
+                        ))}
+                        <Button
+                          color="success"
+                          onClick={addEfficiency(action, reactor)}
+                        >
+                          Add Efficiency
+                        </Button>
+                      </div>
+                    )}
+                  </Mutation>
                 </FormGroup>
               ) : (
                 <FormGroup>
