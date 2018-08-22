@@ -171,9 +171,16 @@
 }
 .targeting-core {
   height: 100%;
-  img {
+  .contact-image {
     width: 16px;
     height: 16px;
+    cursor: pointer;
+  }
+  .icon-picker {
+    z-index: 10;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.9);
+    top: 0;
   }
   .pictureSelect {
     position: absolute;
