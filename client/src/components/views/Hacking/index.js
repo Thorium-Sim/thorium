@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Terminal from "./terminal";
 import Connection from "./connection";
-import "./style.css";
+import "./style.scss";
 
 export default class Hacking extends Component {
   state = {};

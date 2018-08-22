@@ -70,6 +70,8 @@
     "reactstrap": "^6.3.1",
     "sine-waves": "^0.3.0",
     "subscriptions-transport-ws": "^0.9.14",
+    "terminal-in-react": "^4.3.0",
+    "terminal-in-react-pseudo-file-system-plugin": "^3.0.0",
     "three": "^0.95.0",
     "three-obj-loader": "^1.1.3",
     "tinycolor2": "^1.4.1",

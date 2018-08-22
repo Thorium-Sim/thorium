@@ -74,6 +74,7 @@ import Thx from "./Thx";
 import DilithiumStress from "./DilithiumStress";
 import EngineeringReports from "./DamageControl/engineering";
 import RnDReports from "./DamageControl/rnd";
+import Hacking from "./Hacking";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -211,7 +212,8 @@ const Views = {
   Thx,
   DilithiumStress,
   EngineeringReports,
-  RnDReports
+  RnDReports,
+  Hacking
 };
 
 export const Widgets = {

@@ -31,7 +31,7 @@ monitor deactivate - Deactivate the security monitors`;
               Math.random() * 255
             )}.${Math.floor(
               Math.random() * 255
-            )} - Percent complete: ${Math.round(i / a.length * 100)}%`
+            )} - Percent complete: ${Math.round((i / a.length) * 100)}%`
           );
           if (i === a.length - 1) {
             this.api.releaseControl();
