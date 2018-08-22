@@ -1,0 +1,253 @@
+#sensorGrid {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: content-box;
+  border-radius: 50%;
+  border: solid rgba(255, 255, 255, 0.4);
+  border-width: 4px;
+  .damaged-sensors {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: #333;
+    z-index: 1000;
+  }
+  .contact-disabled {
+    -webkit-mask-image: url("./noise.png");
+    -webkit-mask-size: cover;
+    mask-image: url("./noise.png");
+    mask-size: cover;
+  }
+  .sensors-interference {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    background-color: white;
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .grid {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.6);
+
+    //Ping Stuff
+    // background: radial-gradient(
+    //   ellipse at center,
+    //   rgba(30, 87, 153, 0) 0%,
+    //   rgba(31, 91, 158, 0) 21%,
+    //   rgba(41, 137, 216, 0.24) 50%,
+    //   rgba(34, 107, 178, 0.8) 61%,
+    //   rgba(30, 88, 154, 0) 70%
+    // );
+    // background-color: rgba(0, 0, 0, 0.6);
+    // background-position: center;
+    // background-repeat: no-repeat;
+    // background-size: 0%;
+    // transition: background-size 0s linear;
+    // &.ping {
+    //   transition: background-size 10s ease;
+    //   background-size: 600%;
+    // }
+    /*.ping-ring {
+      width: 100%;
+      height: 100%;
+      border: solid 4px rgba(0,128,255,0.7);
+      border-radius: 50%;
+      position: absolute;
+      transition: transform 0s ease-out;
+      transform: scale(0);
+      box-shadow: 0px 0px 10px rgba(0,128,255,0.7), inset 0px 0px 20px 10px rgba(0,128,255,0.7);
+      opacity: 1;
+    }
+    &.ping .ping-ring {
+      transition: transform 2s ease-out, opacity 3s linear;
+      transform: scale(1.01);
+      opacity: 0;
+    }*/
+    .ring {
+      z-index: 11;
+      pointer-events: none;
+      border: solid 1px rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      position: absolute;
+    }
+    .line {
+      z-index: 11;
+      pointer-events: none;
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    img {
+      z-index: 1;
+      width: 5%;
+      height: 5%;
+      position: absolute;
+      transform: translate(-100%, 0);
+    }
+    .sensors-border-holder,
+    .sensors-planet-holder,
+    .sensors-ping-holder {
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      pointer-events: none;
+    }
+    .sensors-border {
+      width: 200%;
+      height: 3%;
+      position: absolute;
+      border: solid 1px #417;
+      background-color: rebeccapurple;
+      opacity: 0.7;
+      pointer-events: all;
+    }
+    .sensors-planet {
+      width: 50%;
+      height: 50%;
+      position: absolute;
+      pointer-events: all;
+      border: solid 3px #417;
+      border-radius: 50%;
+    }
+    .sensor-ping-mover {
+      width: 50%;
+      height: 50%;
+      position: absolute;
+      pointer-events: none;
+    }
+    .sensors-ping {
+      width: 100%;
+      height: 100%;
+      border: solid 3px #417;
+      background-color: transparent;
+      border-radius: 50%;
+      transition: transform 3s ease-out, opacity 3s linear;
+    }
+  }
+  .grid-segments {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    path {
+      fill: black;
+    }
+    .active {
+      opacity: 1;
+    }
+    .hidden {
+      opacity: 0;
+    }
+  }
+  .speed-container {
+    z-index: 1000;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    font-size: 8px;
+    background-color: gainsboro;
+    border: solid 1px gray;
+    p {
+      border-top: solid 1px gray;
+      color: black;
+      line-height: 0.7;
+      padding: 0px 3px;
+      cursor: pointer;
+      &:hover {
+        background-color: #555;
+      }
+    }
+  }
+  .crosshairs {
+    position: relative;
+    div {
+      width: 4px;
+      height: 4px;
+      position: absolute;
+    }
+    .tl {
+      border-bottom: 1px solid red;
+      border-right: 1px solid red;
+      left: -3px;
+      top: -3px;
+    }
+    .tr {
+      border-bottom: 1px solid red;
+      border-left: 1px solid red;
+      right: -17px;
+      top: -3px;
+    }
+    .bl {
+      border-top: 1px solid red;
+      border-right: 1px solid red;
+      left: -3px;
+      bottom: -17px;
+    }
+    .br {
+      border-top: 1px solid red;
+      border-left: 1px solid red;
+      right: -17px;
+      bottom: -17px;
+    }
+  }
+  .contact-selection {
+    position: relative;
+    div {
+      width: 8px;
+      height: 8px;
+      position: absolute;
+    }
+    .tl {
+      border-top: 2px solid rgb(0, 128, 255);
+      border-left: 2px solid rgb(0, 128, 255);
+      // left: -3px;
+      // top: -3px;
+    }
+    .tr {
+      border-top: 2px solid rgb(0, 128, 255);
+      border-right: 2px solid rgb(0, 128, 255);
+      // right: -34px;
+      // top: -3px;
+    }
+    .bl {
+      border-bottom: 2px solid rgb(0, 128, 255);
+      border-left: 2px solid rgb(0, 128, 255);
+      // left: -3px;
+      // bottom: -34px;
+    }
+    .br {
+      border-bottom: 2px solid rgb(0, 128, 255);
+      border-right: 2px solid rgb(0, 128, 255);
+      // right: -34px;
+      // bottom: -34px;
+    }
+  }
+}
+
+.grid-segments {
+  pointer-events: none;
+  z-index: 10;
+}
+.sensorGridCore {
+  .grid-segments {
+    pointer-events: auto;
+    z-index: 0;
+  }
+}

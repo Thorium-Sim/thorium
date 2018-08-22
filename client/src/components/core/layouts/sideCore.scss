@@ -1,0 +1,86 @@
+.side-core {
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  background: rgba(0, 0, 0, 0.75);
+  width: 230px;
+  right: 0;
+  border-left: solid 1px rgba(255, 255, 255, 0.25);
+  transform: translate(230px);
+  transition: transform 0.3s ease-out;
+  &.open {
+    transform: translate(0px);
+    z-index: 100;
+  }
+  .side-label {
+    padding: 3px 10px;
+    font-size: 18px;
+    text-align: center;
+    transform: rotate(-90deg);
+    left: -54px;
+    position: absolute;
+  }
+}
+.timeline-core {
+  top: 0px;
+  bottom: 0px;
+  width: 230px;
+  .timeline-label {
+    background-color: #2d73ff;
+    top: 24px;
+  }
+}
+.tract-core {
+  top: 70px;
+  bottom: auto;
+  height: 208px;
+  .tract-label {
+    background-color: #c32dff;
+    left: -122px;
+    top: 106px;
+  }
+}
+.ship-core {
+  top: 226px;
+  bottom: auto;
+  .ship-label {
+    background-color: #ff2d6c;
+    left: -37px;
+    top: 86px;
+  }
+}
+.coreFeeds-core {
+  width: 350px;
+  transform: translate(350px);
+  .coreFeed-label {
+    background-color: goldenrod;
+    left: -61px;
+    top: 388px;
+  }
+}
+.coreMessaging-core {
+  width: 500px;
+  transform: translate(500px);
+  height: 45vh;
+  top: 360px;
+  .coreMessaging-label {
+    background-color: green;
+    left: -58px;
+    top: 125px;
+  }
+}
+.clients-core {
+  top: 455px;
+  height: auto;
+  bottom: auto;
+  min-height: 200px;
+  .clients-label {
+    background-color: cadetblue;
+    left: -69px;
+    top: 136px;
+  }
+}
+.inner-cores {
+  padding: 4px;
+  height: 100%;
+}

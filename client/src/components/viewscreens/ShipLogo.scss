@@ -1,0 +1,30 @@
+.ShipLogo {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .shadow {
+    width: 50%;
+    height: 5px;
+    border-radius: 75%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    box-shadow: 0 25px 20px 5px rgba(0, 0, 0, 1);
+  }
+  h1 {
+    font-size: 50px;
+  }
+  .logo {
+    animation: spin 4s linear infinite;
+    max-height: 70%;
+    width: 100%;
+  }
+}
+@keyframes spin {
+  0% {
+    transform: perspective(100vh) rotateY(-90deg);
+  }
+  100% {
+    transform: perspective(100vh) rotateY(90deg);
+  }
+}

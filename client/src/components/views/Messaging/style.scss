@@ -1,0 +1,104 @@
+.messages {
+  .message-holder {
+    overflow: hidden;
+    overflow-y: auto;
+    height: 100%;
+    flex: 1 1 auto;
+    padding: 1.25rem;
+  }
+  .list-group-item {
+    &.selected {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    div {
+      width: 100%;
+    }
+  }
+  .card {
+    height: 60vh;
+  }
+  .convoList {
+    display: block;
+    overflow-y: auto;
+  }
+  .convoHeader {
+    margin: -1.25rem;
+    margin-bottom: 1.25rem;
+    padding: 1.25rem;
+    text-align: center;
+    border-bottom: solid 1px rgba(255, 255, 255, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .message {
+    padding: 10px;
+    margin: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    width: fit-content;
+    max-width: 70%;
+    border-radius: 5px;
+    clear: both;
+    &.sent {
+      background-color: rgba(150, 190, 255, 0.3);
+      float: right;
+    }
+  }
+  .messages-destinations {
+    max-height: 600px;
+    overflow-y: auto;
+  }
+}
+.core.core-messaging {
+  & > .row {
+    height: 100%;
+  }
+  .vertical-row {
+    display: flex;
+    flex-direction: column;
+    & > .card {
+      flex: 1;
+      height: 0;
+    }
+  }
+  strong {
+    margin-top: 10px;
+  }
+  .card {
+    width: 100%;
+    overflow-y: auto;
+  }
+  .card.full {
+    overflow-y: auto;
+  }
+  p {
+    &.bold {
+      font-weight: 700;
+      color: goldenrod;
+    }
+    font-size: 16px;
+    padding: 5px;
+    &.selected {
+      border-radius: 5px;
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+.core-messaging {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .message-list {
+    flex: 1;
+    max-height: calc(100% - 50px);
+    overflow-y: auto;
+    p {
+      font-size: 18px;
+      margin-bottom: 10px;
+      line-height: 1;
+    }
+    .sender {
+      text-align: right;
+    }
+  }
+}

@@ -1,0 +1,122 @@
+.card-coolant {
+  @media (width: 1024px) {
+    margin-top: 50px;
+  }
+  .coolant-containers {
+    width: 70%;
+    height: 70vh;
+    margin-left: -2.5%;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .damageOverlay {
+    height: calc(100% + 50px);
+  }
+  @media (width: 1024px) {
+    .coolant-containers {
+      height: 60vh;
+    }
+  }
+  .coolant-level-holder {
+    width: 73.5%;
+    height: 100%;
+    position: absolute;
+    margin-top: 41.5%;
+    margin-left: 3%;
+    padding-bottom: 100%;
+    -webkit-clip-path: polygon(
+      0 100%,
+      100% 100%,
+      100% 0,
+      50% 0%,
+      40% 0%,
+      30% 1%,
+      20% 3%,
+      10% 7%,
+      5% 10%,
+      0 16%
+    );
+    clip-path: polygon(
+      0 100%,
+      100% 100%,
+      100% 16%,
+      95% 10%,
+      90% 7%,
+      80% 3%,
+      70% 1%,
+      60% 0%,
+      40% 0%,
+      30% 1%,
+      20% 3%,
+      10% 7%,
+      5% 10%,
+      0 16%
+    );
+  }
+
+  .coolant-level {
+    width: 100%;
+    bottom: 0;
+    position: absolute;
+    background: radial-gradient(ellipse at center, #0061b1 0%, #2072c9 100%);
+    background-position: center;
+    transition: height 0.5s ease-out;
+    animation: 2s ease-in-out 0s infinite coolant_glow;
+  }
+  .coolant-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    p {
+      position: absolute;
+      top: -24px;
+      left: 18px;
+    }
+  }
+  .coolant-fill {
+    width: 100%;
+    margin-left: 12px;
+    margin-top: 4px;
+    position: absolute;
+    animation: 2s ease-in-out 0s infinite coolant_glow;
+    background: radial-gradient(ellipse at center, #0061b1 0%, #2072c9 100%);
+    background-position: center;
+    height: 89%;
+    z-index: -1;
+    transition: width 0.5s ease-out;
+  }
+  .coolant-bracket {
+    height: 74px;
+    width: 14px;
+    &.right {
+      margin-left: -10px;
+    }
+    &.center {
+      width: 100%;
+      flex: 1 0 0px;
+      background-image: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" viewBox="0 0 1 37" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;"><path d="M0,34l0,1l1,0l0,-1l-1,0ZM1,32l-1,0l0,1l1,0l0,-1ZM1,28l-1,0l0,1l1,0l0,-1ZM1,22l-1,0l0,1l1,0l0,-1ZM1,14l-1,0l0,1l1,0l0,-1ZM1,8l-1,0l0,1l1,0l0,-1ZM1,4l-1,0l0,1l1,0l0,-1ZM1,2l-1,0l0,1l1,0l0,-1Z" style="fill:#484848;"/></svg>');
+    }
+  }
+  .coolant-control-button {
+    display: flex;
+    justify-content: flex-end;
+    button {
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+  }
+  @keyframes coolant_glow {
+    0% {
+      background-size: 150%;
+    }
+    50% {
+      background-size: 75%;
+    }
+    100% {
+      background-size: 150%;
+    }
+  }
+}

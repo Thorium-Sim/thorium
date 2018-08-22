@@ -1,0 +1,40 @@
+.cargo-control {
+  .card {
+    margin-top: 10px;
+    height: 100%;
+    &.search-container {
+      height: calc(100% - 72px);
+      overflow-y: auto;
+    }
+    p {
+      padding: 0.25rem;
+      margin: 0px;
+      border-radius: 2px;
+      &:active {
+        background-color: rgba(255, 255, 255, 0.25);
+      }
+    }
+  }
+  .readyCargo {
+    height: 300px;
+  }
+  .card-block {
+    height: 100%;
+    overflow-y: scroll;
+  }
+  .inventoryRow .card {
+    overflow-y: scroll;
+  }
+}
+
+.cargo-core {
+  position: relative;
+  height: 100%;
+  .find-overlay {
+    background-color: black;
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 40px);
+    list-style: disk;
+  }
+}

@@ -1,0 +1,120 @@
+.EngineControl {
+  height: 100%;
+  .enginesBar {
+    display: flex;
+    justify-content: space-between;
+    min-height: 136px;
+  }
+  .center-button {
+    margin: 0 auto;
+  }
+  .engineGroup {
+    list-style: none;
+    color: white;
+    flex: 1;
+    &:not(:last-child) ul.engine {
+      margin-right: 40px;
+    }
+  }
+  ul.engine {
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+  }
+  li.speedNums {
+    list-style: none;
+    color: white;
+    position: relative;
+    width: 100%;
+    border-left: solid 1px white;
+    border-right: solid 1px white;
+    box-sizing: content-box;
+    margin-left: -1px;
+    text-align: center;
+    cursor: pointer;
+    z-index: 3;
+    &.powered:before {
+      content: "";
+      width: 100%;
+      height: 24px;
+      display: block;
+      background-color: darkgreen;
+      position: absolute;
+      z-index: -1;
+    }
+    &:after {
+      content: "";
+      width: 100%;
+      height: 30px;
+      display: block;
+      border: solid 1px white;
+      border-right: none;
+      border-left: none;
+      cursor: pointer;
+    }
+    /*&:before{
+			content: "";
+			position: absolute;
+			z-index: 1;
+			bottom: 1px;
+			width: 100%;
+			height: 30px;
+			display: block;
+			-webkit-backdrop-filter: blur(10px);
+			backdrop-filter: blur(10px);
+			background-color: rgba(0, 0, 0, 0.25);
+		}*/
+  }
+  .speedBar {
+    transition: width 0.2s ease-out;
+    height: 30px;
+    background-color: yellow;
+    background: linear-gradient(
+      to bottom,
+      #444400 0%,
+      #ffff00 50%,
+      #444400 100%
+    );
+    background-size: 5px 3px;
+    position: relative;
+    top: -47px;
+    z-index: 2;
+  }
+}
+.heatBox {
+  width: 100%;
+  height: calc(100% - 34px);
+  position: relative;
+  border: solid 1px white;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.25);
+}
+.heatBox-Label {
+  width: 100%;
+  text-align: center;
+}
+.heatBar {
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  background-size: 5px 3px;
+  transition: height 0.5s ease-out;
+}
+
+.flex-column {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.flex-max {
+  flex: 1;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.auto-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
