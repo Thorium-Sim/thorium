@@ -7,8 +7,8 @@ class TargetClass {
     this.systemId = systemId || params.systemId || "";
     this.name = params.name || "Target";
     this.size = params.size || 1;
-    this.icon = params.icon || "Generic";
-    this.picture = params.picture || "Generic";
+    this.icon = params.icon || "/Sensor Contacts/Icons/Default.svg";
+    this.picture = params.picture || "/Sensor Contacts/Pictures/Default.png";
     this.speed = params.speed || 1;
     this.moving = params.moving || true;
     this.quadrant = params.quadrant || 1;

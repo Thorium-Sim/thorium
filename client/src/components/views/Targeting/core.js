@@ -61,7 +61,6 @@ const TARGETING_QUERY = gql`
 class TargetingCore extends Component {
   _addTargetClass() {
     const targeting = this.props.data.targeting[0];
-    const { assetFolders } = this.props.data;
     const mutation = gql`
       mutation AddTargetClass($id: ID!, $classInput: TargetClassInput!) {
         addTargetClass(id: $id, classInput: $classInput)
@@ -72,13 +71,7 @@ class TargetingCore extends Component {
       classInput: {
         name: "Target",
         size: 1,
-        icon:
-          assetFolders.find(a => a.name === "Icons") &&
-          assetFolders.find(a => a.name === "Icons").objects[0].fullPath,
         speed: 1,
-        picture:
-          assetFolders.find(a => a.name === "Pictures") &&
-          assetFolders.find(a => a.name === "Pictures").objects[0].fullPath,
         quadrant: 1
       }
     };
@@ -139,7 +132,6 @@ class TargetingCore extends Component {
     if (this.props.data.loading || !this.props.data.targeting) return null;
     const targeting = this.props.data.targeting[0];
     if (!targeting) return <p>No Targeting Systems</p>;
-    const { assetFolders } = this.props.data;
     const targetedContact = targeting.contacts.find(t => t.targeted);
     let contactClass;
     let contactId;
