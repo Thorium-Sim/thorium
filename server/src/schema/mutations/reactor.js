@@ -7,4 +7,5 @@ reactorBatteryChargeLevel(id: ID!, level: Float!): String
 reactorBatteryChargeRate(id: ID!, rate: Float!): String
 updateDilithiumStress(id:ID!, alphaLevel:Float, betaLevel:Float, alphaTarget:Float, betaTarget:Float):String
 fluxDilithiumStress(id:ID!):String
+setReactorEffciciencies(id:ID!, efficiencies:[ReactorEfficiencyInput]!):String
 `;

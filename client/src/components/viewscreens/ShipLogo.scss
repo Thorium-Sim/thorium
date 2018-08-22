@@ -18,6 +18,7 @@
     animation: spin 4s linear infinite;
     max-height: 70%;
     width: 100%;
+    object-fit: contain;
   }
 }
 @keyframes spin {

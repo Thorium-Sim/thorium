@@ -17,6 +17,7 @@ type Reactor implements SystemInterface{
   externalPower: Boolean
   powerOutput: Int
   efficiency: Float
+  efficiencies: [ReactorEfficiency]
   batteryChargeLevel: Float
   batteryChargeRate: Float
   depletion: Float
@@ -33,4 +34,17 @@ enum REACTOR_MODELS {
   reactor
   battery
 }
+
+type ReactorEfficiency {
+  label:String
+  color:String
+  efficiency:Float
+}
+
+input ReactorEfficiencyInput {
+  label:String
+  color:String
+  efficiency:Float
+}
+
 `;

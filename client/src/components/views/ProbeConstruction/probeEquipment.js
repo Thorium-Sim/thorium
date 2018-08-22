@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Button, Row, Col, Card, CardBody } from "reactstrap";
 import Transitioner from "../helpers/transitioner";
 
@@ -60,118 +60,135 @@ export default class ProbeEquipment extends Transitioner {
       return prev + next.count * next.size;
     }, 0);
     return (
-      <Row className="probeEquipment">
-        <Col sm="4">
-          <p>Available Equipment:</p>
-          <Card>
-            <CardBody>
-              <Row>
-                <Col sm="8">
-                  <strong>Name</strong>
-                </Col>
-                <Col sm="2">
-                  <strong>Size</strong>
-                </Col>
-                <Col sm="2">
-                  <strong>Qty</strong>
-                </Col>
-              </Row>
-            </CardBody>
-            <CardBody
-              onMouseOut={() => {
-                this.setState({ shownDescription: null });
-              }}
-              className="equipmentList"
-            >
-              {type.availableEquipment.map(e => {
-                const used = equipment.find(eq => eq.id === e.id) || {
-                  count: 0
-                };
-                return (
-                  <Row
-                    key={e.id}
-                    onClick={this.addToProbe.bind(this, e)}
-                    onMouseOver={() => {
-                      this.setState({ shownDescription: e.description });
+      <Fragment>
+        <Row className="probeEquipment">
+          <Col sm={8}>
+            <Row>
+              <Col sm="12">
+                <h2>Available Equipment:</h2>
+                <Card>
+                  <CardBody>
+                    <Row>
+                      <Col sm="8">
+                        <strong>Name</strong>
+                      </Col>
+                      <Col sm="2">
+                        <strong>Size</strong>
+                      </Col>
+                      <Col sm="2">
+                        <strong>Qty</strong>
+                      </Col>
+                    </Row>
+                  </CardBody>
+                  <CardBody
+                    onMouseOut={() => {
+                      this.setState({ shownDescription: null });
                     }}
-                    className="equipmentItem"
+                    className="equipmentList"
                   >
-                    <Col sm="8">
-                      <p>{e.name}</p>
-                    </Col>
-                    <Col sm="2">
-                      <p>{e.size}</p>
-                    </Col>
-                    <Col sm="2">
-                      <p>{e.count - used.count}</p>
-                    </Col>
-                  </Row>
-                );
-              })}
-            </CardBody>
-          </Card>
-        </Col>
-        <Col sm="4" className="probe-control-buttons">
-          <p>Total Space: {type.size}</p>
-          <p>Space Used: {used}</p>
-          <p>Space Remaining: {type.size - used}</p>
-          <Button
-            block
-            color="primary"
-            onClick={prepareProbe.bind(this, equipment)}
-          >
-            Prepare Probe
-          </Button>
-          <Button block color="danger" onClick={cancelProbe}>
-            Cancel Probe
-          </Button>
-          <p className="description">{shownDescription}</p>
-        </Col>
-        <Col sm="4">
-          <p>Loaded Equipment:</p>
-          <Card>
-            <CardBody>
-              <Row>
-                <Col sm="6">
-                  <strong>Name</strong>
-                </Col>
-                <Col sm="3">
-                  <strong>Size</strong>
-                </Col>
-                <Col sm="3">
-                  <strong>Qty</strong>
-                </Col>
-              </Row>
-            </CardBody>
-            <CardBody
-              onMouseOut={() => {
-                this.setState({ shownDescription: null });
-              }}
-              className="equipmentList"
+                    {type.availableEquipment.map(e => {
+                      const used = equipment.find(eq => eq.id === e.id) || {
+                        count: 0
+                      };
+                      return (
+                        <Row
+                          key={e.id}
+                          onClick={this.addToProbe.bind(this, e)}
+                          onMouseOver={() => {
+                            this.setState({ shownDescription: e.description });
+                          }}
+                          className="equipmentItem"
+                        >
+                          <Col sm="8">
+                            <p>{e.name}</p>
+                          </Col>
+                          <Col sm="2">
+                            <p>{e.size}</p>
+                          </Col>
+                          <Col sm="2">
+                            <p>{e.count - used.count}</p>
+                          </Col>
+                        </Row>
+                      );
+                    })}
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+            <Row style={{ marginTop: "40px" }}>
+              <Col sm="12">
+                <h2>Loaded Equipment:</h2>
+                <Card>
+                  <CardBody>
+                    <Row>
+                      <Col sm="6">
+                        <strong>Name</strong>
+                      </Col>
+                      <Col sm="3">
+                        <strong>Size</strong>
+                      </Col>
+                      <Col sm="3">
+                        <strong>Qty</strong>
+                      </Col>
+                    </Row>
+                  </CardBody>
+                  <CardBody
+                    onMouseOut={() => {
+                      this.setState({ shownDescription: null });
+                    }}
+                    className="equipmentList"
+                  >
+                    {equipment.map(e => (
+                      <Row
+                        key={e.id}
+                        onClick={this.removeFromProbe.bind(this, e)}
+                        onMouseOver={() => {
+                          this.setState({ shownDescription: e.description });
+                        }}
+                        className="equipmentItem"
+                      >
+                        <Col sm="8">
+                          <p>{e.name}</p>
+                        </Col>
+                        <Col sm="2">
+                          <p>{e.size}</p>
+                        </Col>
+                        <Col sm="2">
+                          <p>{e.count}</p>
+                        </Col>
+                      </Row>
+                    ))}
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Col>
+          <Col sm="4" className="probe-control-buttons">
+            <p>
+              <strong>Total Space: {type.size}</strong>
+            </p>
+            <p>
+              <strong>Space Used: {used}</strong>
+            </p>
+            <p>
+              <strong>Space Remaining: {type.size - used}</strong>
+            </p>
+            <Button
+              block
+              color="primary"
+              onClick={prepareProbe.bind(this, equipment)}
             >
-              {equipment.map(e => (
-                <Row
-                  onClick={this.removeFromProbe.bind(this, e)}
-                  onMouseOver={() => {
-                    this.setState({ shownDescription: e.description });
-                  }}
-                  className="equipmentItem"
-                >
-                  <Col sm="8">
-                    <p>{e.name}</p>
-                  </Col>
-                  <Col sm="2">
-                    <p>{e.size}</p>
-                  </Col>
-                  <Col sm="2">
-                    <p>{e.count}</p>
-                  </Col>
-                </Row>
-              ))}
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+              Prepare Probe
+            </Button>
+            <Button block color="danger" onClick={cancelProbe}>
+              Cancel Probe
+            </Button>
+            {shownDescription && (
+              <p className="description">{shownDescription}</p>
+            )}
+          </Col>
+        </Row>
+      </Fragment>
     );
   }
 }

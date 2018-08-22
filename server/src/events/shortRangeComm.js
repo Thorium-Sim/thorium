@@ -204,6 +204,7 @@ App.on("removeShortRangeComm", ({ simulatorId, frequency, signalName }) => {
   if (!system) return;
   if (signalName) {
     const signal = system.signals.find(s => s.name === signalName);
+    if (!signal) return;
     const arrow = system.arrows.find(s => s.signal === signal.id);
     if (arrow) {
       system.arrows = system.arrows.filter(s => s.id !== arrow.id);

@@ -109,3 +109,12 @@ App.on("fluxDilithiumStress", ({ id }) => {
     App.systems.filter(s => s.type === "Reactor")
   );
 });
+
+App.on("setReactorEffciciencies", ({ id, efficiencies }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  system.updateEfficiencies(efficiencies);
+  pubsub.publish(
+    "reactorUpdate",
+    App.systems.filter(s => s.type === "Reactor")
+  );
+});

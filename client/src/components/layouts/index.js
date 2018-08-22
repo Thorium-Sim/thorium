@@ -13,6 +13,7 @@ import LayoutGlassViewscreen from "./LayoutGlass/viewscreen";
 import LayoutJrViewscreen from "./LayoutJr";
 import LayoutLineViewscreen from "./LayoutLine/viewscreen";
 import { LayoutGlassLiteViewscreen } from "./LayoutGlass/lite";
+import LayoutPhoenixViewscreen from "./LayoutPhoenix/viewscreen";
 
 const Layouts = {
   LayoutDefault,
@@ -29,6 +30,7 @@ const Layouts = {
   LayoutGlassViewscreen,
   LayoutJrViewscreen,
   LayoutLineViewscreen,
-  LayoutGlassLiteViewscreen
+  LayoutGlassLiteViewscreen,
+  LayoutPhoenixViewscreen
 };
 export default Layouts;

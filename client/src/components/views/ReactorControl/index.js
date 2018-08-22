@@ -41,6 +41,23 @@ const REACTOR_SUB = gql`
       powerOutput
       batteryChargeRate
       batteryChargeLevel
+      efficiencies {
+        label
+        color
+        efficiency
+      }
+    }
+  }
+`;
+const DOCKING_SUB = gql`
+  subscription SimulatorSub($simulatorId: ID) {
+    simulatorsUpdate(simulatorId: $simulatorId) {
+      id
+      ship {
+        clamps
+        ramps
+        airlock
+      }
     }
   }
 `;
@@ -67,6 +84,7 @@ const trainingSteps = [
       "These are the ship’s batteries, if it has any. They show how much power is remaining in the batteries. If you use more power than is being outputted by your reactor, power will draw from the batteries. If they run out of power, you will have to balance your power, and the batteries will need to be recharged. You can recharge batteries from your reactor by using less power than the current reactor output. Don’t let these run out in the middle of space. That would be...problematic."
   }
 ];
+
 class ReactorControl extends Component {
   state = {};
   setEfficiency(e) {
@@ -131,7 +149,7 @@ class ReactorControl extends Component {
       !this.props.data.systems
     )
       return null;
-    const { reactors, systems } = this.props.data;
+    const { reactors, systems, simulators } = this.props.data;
     if (!reactors) return null;
     const reactor = reactors.find(r => r.model === "reactor");
     const battery = reactors.find(r => r.model === "battery");
@@ -140,47 +158,14 @@ class ReactorControl extends Component {
     const powerTotal = systems.reduce((prev, next) => {
       return next.power.power + prev;
     }, 0);
-    const efficiencies = [
-      {
-        label: "Overload",
-        color: "danger",
-        efficiency: 1.25
-      },
-      {
-        label: "Cruise",
-        color: "primary",
-        efficiency: 1
-      },
-      {
-        label: "Silent Running",
-        color: "cloak",
-        efficiency: 0.87
-      },
-      {
-        label: "Reduced",
-        color: "default",
-        efficiency: 0.5
-      },
-      {
-        label: "Auxilliary",
-        color: "info",
-        efficiency: 0.38
-      },
-      {
-        label: "Minimal",
-        color: "warning",
-        efficiency: 0.27
-      },
-      {
-        label: "Power Down",
-        color: "danger",
-        efficiency: 0
-      },
-      {
-        label: "External Power",
-        color: "success"
-      }
-    ];
+    const efficiencies = reactor
+      ? reactor.efficiencies.concat().sort((a, b) => {
+          if (a.efficiency > b.efficiency) return -1;
+          if (a.efficiency < b.efficiency) return 1;
+          return 0;
+        })
+      : [];
+    const { ship = {} } = simulators[0] ? simulators[0] : {};
     return (
       <Container fluid className="reactor-control flex-column">
         <SubscriptionHelper
@@ -208,6 +193,21 @@ class ReactorControl extends Component {
               updateQuery: (previousResult, { subscriptionData }) => {
                 return Object.assign({}, previousResult, {
                   systems: subscriptionData.data.systemsUpdate
+                });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: DOCKING_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  simulators: subscriptionData.data.simulatorsUpdate
                 });
               }
             })
@@ -318,6 +318,9 @@ class ReactorControl extends Component {
                     }
                     onClick={() => this.setEfficiency(e.efficiency)}
                     size="lg"
+                    disabled={
+                      !e.efficiency && e.efficiency !== 0 && !ship.clamps
+                    }
                     color={e.color}
                   >
                     {e.label}
@@ -336,7 +339,7 @@ class ReactorControl extends Component {
 }
 
 const REACTOR_QUERY = gql`
-  query Reactors($simulatorId: ID!) {
+  query Reactors($simulatorId: ID!, $simId: String!) {
     reactors(simulatorId: $simulatorId) {
       id
       type
@@ -353,6 +356,19 @@ const REACTOR_QUERY = gql`
       powerOutput
       batteryChargeRate
       batteryChargeLevel
+      efficiencies {
+        label
+        color
+        efficiency
+      }
+    }
+    simulators(id: $simId) {
+      id
+      ship {
+        clamps
+        ramps
+        airlock
+      }
     }
     systems(simulatorId: $simulatorId, power: true) {
       id
@@ -367,7 +383,8 @@ export default graphql(REACTOR_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {
-      simulatorId: ownProps.simulator.id
+      simulatorId: ownProps.simulator.id,
+      simId: ownProps.simulator.id
     }
   })
 })(withApollo(ReactorControl));

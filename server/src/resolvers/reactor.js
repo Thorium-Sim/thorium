@@ -39,6 +39,9 @@ export const ReactorMutations = {
   },
   fluxDilithiumStress(root, args, context) {
     App.handleEvent(args, "fluxDilithiumStress", context);
+  },
+  setReactorEffciciencies(root, args, context) {
+    App.handleEvent(args, "setReactorEffciciencies", context);
   }
 };
 

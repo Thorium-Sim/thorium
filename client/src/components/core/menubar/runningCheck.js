@@ -4,7 +4,7 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
 const RunningCheck = ({ flight }) =>
-  !flight.running && (
+  flight && !flight.running ? (
     <Fragment>
       <strong className="text-warning">Flight is paused</strong>
       <Mutation
@@ -27,5 +27,5 @@ const RunningCheck = ({ flight }) =>
         )}
       </Mutation>
     </Fragment>
-  );
+  ) : null;
 export default RunningCheck;
