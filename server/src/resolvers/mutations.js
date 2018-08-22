@@ -46,6 +46,7 @@ import { ComputerCoreMutations } from "./computerCore.js";
 import { SickbayMutations } from "./sickbay.js";
 import { ThxMutations } from "./thx.js";
 import { ThoriumMutations } from "./thorium.js";
+import { ExternalsMutations } from "./externals";
 
 const mutationMap = Object.assign(
   FlightStructureMutations,
@@ -94,7 +95,8 @@ const mutationMap = Object.assign(
   ComputerCoreMutations,
   SickbayMutations,
   ThxMutations,
-  ThoriumMutations
+  ThoriumMutations,
+  ExternalsMutations
 );
 
 export default mutationMap;
