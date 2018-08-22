@@ -140,6 +140,7 @@ export default class ProbeEquipment extends Transitioner {
                   >
                     {equipment.map(e => (
                       <Row
+                        key={e.id}
                         onClick={this.removeFromProbe.bind(this, e)}
                         onMouseOver={() => {
                           this.setState({ shownDescription: e.description });

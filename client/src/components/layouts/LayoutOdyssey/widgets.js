@@ -37,7 +37,6 @@ class WidgetsContainer extends Component {
           console.error("err", err);
         }
       });
-    console.dir(this.subscription);
   }
   componentWillUnmount() {
     this.subscription && this.subscription.unsubscribe();
