@@ -39,6 +39,9 @@ class WidgetsContainer extends Component {
         }
       });
   }
+  componentWillUnmount() {
+    this.subscription && this.subscription.unsubscribe();
+  }
   setNotify = (widget, state) => {
     this.setState({
       widgetNotify: Object.assign({}, this.state.widgetNotify, {

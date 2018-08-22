@@ -81,6 +81,7 @@ class Alerts extends Component {
   }
   componentWillUnmount() {
     this.sub && this.sub();
+    this.subscription && this.subscription.unsubscribe();
   }
   trigger({ title, body, color, duration, id }) {
     const alerts = this.state.alerts;
