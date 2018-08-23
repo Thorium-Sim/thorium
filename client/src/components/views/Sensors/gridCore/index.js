@@ -123,23 +123,24 @@ class GridCore extends Component {
     const { dimensions } = this.state;
     const { movingContact = {} } = this.state;
     const { width: dimWidth, height: dimHeight } = dimensions;
-    const width = Math.min(dimWidth, dimHeight) - padding;
+    const width = Math.min(dimWidth, dimHeight);
+    console.log(
+      (evt.clientY -
+        dimensions.top +
+        SENSORS_OFFSET / 2 -
+        dimensions.height / 2) /
+        (dimensions.width / 2),
+      dimensions.top,
+      dimensions.height
+    );
     const destination = {
       x:
-        (evt.clientX -
-          dimensions.left +
-          SENSORS_OFFSET / 2 -
-          padding / 2 -
-          width / 2) /
-          (width / 2) -
+        (evt.clientX - dimensions.left + SENSORS_OFFSET / 2 - width / 2) /
+          (dimensions.width / 2) -
         0.08,
       y:
-        (evt.clientY -
-          dimensions.top +
-          SENSORS_OFFSET / 2 -
-          padding / 2 -
-          width / 2) /
-          (width / 2) -
+        (evt.clientY - dimensions.top + SENSORS_OFFSET / 2 - width / 2) /
+          (dimensions.height / 2) -
         0.08,
       z: 0
     };
