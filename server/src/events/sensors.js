@@ -420,3 +420,28 @@ App.on("updateSensorContacts", ({ id, contacts }) => {
   });
   pubsub.publish("sensorContactUpdate", system);
 });
+
+App.on(
+  "sensorsFireProjectile",
+  ({ simulatorId, contactId, speed, hitpoints }) => {
+    const system = App.systems.find(
+      sys =>
+        sys.simulatorId === simulatorId &&
+        sys.domain === "external" &&
+        sys.class === "Sensors"
+    );
+    if (!system) return;
+    const contact = system.contacts.find(c => c.id === contactId);
+    if (!contact) return;
+    const { id, ...rest } = contact;
+    const projectile = new Classes.SensorContact({
+      ...rest,
+      hitpoints,
+      hostile: false,
+      type: "projectile"
+    });
+    projectile.move({ x: -0.02, y: -0.02, z: 0 }, speed);
+    system.contacts.push(projectile);
+    pubsub.publish("sensorContactUpdate", system);
+  }
+);

@@ -124,15 +124,6 @@ class GridCore extends Component {
     const { movingContact = {} } = this.state;
     const { width: dimWidth, height: dimHeight } = dimensions;
     const width = Math.min(dimWidth, dimHeight);
-    console.log(
-      (evt.clientY -
-        dimensions.top +
-        SENSORS_OFFSET / 2 -
-        dimensions.height / 2) /
-        (dimensions.width / 2),
-      dimensions.top,
-      dimensions.height
-    );
     const destination = {
       x:
         (evt.clientX - dimensions.left + SENSORS_OFFSET / 2 - width / 2) /

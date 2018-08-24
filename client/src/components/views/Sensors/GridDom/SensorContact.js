@@ -4,7 +4,7 @@ import Measure from "react-measure";
 import tinycolor from "tinycolor2";
 import Explosion from "../../../../helpers/explosions";
 import gql from "graphql-tag";
-
+import { subscribe } from "../../helpers/pubsub";
 class Ping extends Component {
   constructor(props) {
     super(props);
@@ -96,6 +96,26 @@ const ContactSelection = ({ width, x, y, size, contactDims }) => {
 };
 export default class SensorContact extends Component {
   state = {};
+  componentDidMount() {
+    const { id: contactId } = this.props;
+    this.subscription1 = subscribe(
+      "battle-contact-hover",
+      ({ id }) => id === contactId && this.setState({ hilite: true })
+    );
+    this.subscription2 = subscribe(
+      "battle-contact-leave",
+      ({ id }) => id === contactId && this.setState({ hilite: false })
+    );
+  }
+  componentWillUnmount() {
+    this.subscription1 && this.subscription1();
+    this.subscription2 && this.subscription2();
+  }
+  bgColor(selected, hilite) {
+    if (hilite) return "#0f0";
+    if (selected) return "blue";
+    return null;
+  }
   render() {
     const {
       id,
@@ -118,6 +138,7 @@ export default class SensorContact extends Component {
       mousedown = () => {},
       removeContact = () => {}
     } = this.props;
+    const { hilite } = this.state;
     if (!location) return null;
     const { x, y } = location;
     const { x: dx = 0, y: dy = 0 } = destination;
@@ -215,6 +236,22 @@ export default class SensorContact extends Component {
         />
       );
     }
+    if (type === "projectile") {
+      return (
+        <div>
+          <div
+            style={{
+              position: "absolute",
+              backgroundColor: "white",
+              borderRadius: "50%",
+              width: "1%",
+              height: "1%",
+              transform: `translate(${(width / 2) * x}px, ${(width / 2) * y}px)`
+            }}
+          />
+        </div>
+      );
+    }
     return (
       <div>
         <Fragment>
@@ -265,7 +302,7 @@ export default class SensorContact extends Component {
               className={disabled ? "contact-disabled" : ""}
               style={{
                 boxShadow: hostile ? "2px 2px 2px rgba(255,0,0,0.5)" : null,
-                backgroundColor: selected ? "blue" : "",
+                backgroundColor: this.bgColor(selected, hilite),
                 transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
                   dy}px) scale(${size})`
               }}

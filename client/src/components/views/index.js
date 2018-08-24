@@ -130,6 +130,7 @@ import SickbayCore from "./Sickbay/core";
 import ThxCore from "./Thx/core";
 import CommConvoCore from "./CommDecoding/convoCore";
 import ViewscreenCore from "./Viewscreen/core";
+import BattleCore from "./Battle";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -336,7 +337,8 @@ export const Cores = {
   SickbayCore,
   ThxCore,
   CommConvoCore,
-  ViewscreenCore
+  ViewscreenCore,
+  BattleCore
 };
 
 export default Views;

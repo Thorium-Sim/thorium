@@ -75,6 +75,12 @@ const moveSensorContactTimed = () => {
           c.destination = destination;
           c.location = destination;
           c.position = destination;
+
+          // Projectile destruction
+          if (c.type === "projectile" && !c.destroyed) {
+            sensors.destroyContact({ id: c.id });
+            sendUpdate = true;
+          }
         } else {
           c.destination = destination;
           c.position = newLoc;
@@ -121,9 +127,8 @@ const moveSensorContactTimed = () => {
   }
   if (sendUpdate) {
     App.systems.forEach(sys => {
-      if (sys.type === "Sensors") {
-        const sensors = sys;
-        pubsub.publish("sensorContactUpdate", sensors);
+      if (sys.type === "Sensors" && sys.domain === "external") {
+        pubsub.publish("sensorContactUpdate", sys);
       }
     });
   }
