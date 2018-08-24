@@ -359,6 +359,11 @@ class Targeting extends Component {
     const phasers = this.props.data.phasers && this.props.data.phasers[0];
     if (!targeting) return <p>No Targeting</p>;
     const targetedContact = targeting.contacts.find(t => t.targeted);
+    const damaged =
+      (targeting.power &&
+        targeting.power.powerLevels &&
+        targeting.power.power < targeting.power.powerLevels[0]) ||
+      (targeting.damage && targeting.damage.damaged);
     return (
       <Container fluid className="targeting-control flex-column">
         <SubscriptionHelper
@@ -409,7 +414,7 @@ class Targeting extends Component {
                         dimensions={this.state.dimensions}
                         targetContact={this.targetContact.bind(this)}
                         untargetContact={this.untargetContact.bind(this)}
-                        targets={targeting.contacts}
+                        targets={damaged ? [] : targeting.contacts}
                       />
                     </div>
                   )}

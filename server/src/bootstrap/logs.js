@@ -3,7 +3,11 @@ import fs from "fs";
 import mkdirp from "mkdirp";
 
 // Check to see if we are in development mode or not.
-if (process.argv0.split("/").indexOf("node") === -1) {
+if (
+  process.argv0.split("/").indexOf("node") === -1 &&
+  process.argv0.split("/").indexOf("node.exe") === -1 &&
+  process.argv0.split("\\").indexOf("node.exe") === -1
+) {
   process.env.NODE_ENV = "production";
 }
 

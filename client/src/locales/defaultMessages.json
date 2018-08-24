@@ -6,7 +6,7 @@
         "id": "sound-player"
       }
     ],
-    "path": "src/components/client/Card.json"
+    "path": "src/components/client/soundPlayer.json"
   },
   {
     "descriptors": [
