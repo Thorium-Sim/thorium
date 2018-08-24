@@ -210,3 +210,63 @@ App.on("removeSimulatorAmbiance", ({ id, ambianceId }) => {
   sim.removeAmbiance(ambianceId);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on(
+  "addSimulatorStationCard",
+  ({ simulatorId, station, cardName, cardComponent }) => {
+    const sim = App.simulators.find(s => s.id === simulatorId);
+    const stat = sim.stations.find(s => s.name === station);
+    stat.addCard({
+      name: cardName,
+      component: cardComponent
+    });
+    pubsub.publish("simulatorsUpdate", App.simulators);
+  }
+);
+App.on("removeSimulatorStationCard", ({ simulatorId, station, cardName }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  const stat = sim.stations.find(s => s.name === station);
+  stat.removeCard(cardName);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on(
+  "editSimulatorStationCard",
+  ({ simulatorId, station, cardName, newCardName, cardComponent }) => {
+    const sim = App.simulators.find(s => s.id === simulatorId);
+    const stat = sim.stations.find(s => s.name === station);
+    stat.updateCard(cardName, {
+      name: newCardName,
+      component: cardComponent
+    });
+    pubsub.publish("simulatorsUpdate", App.simulators);
+  }
+);
+App.on(
+  "setSimulatorStationMessageGroup",
+  ({ simulatorId, station, group, state }) => {
+    const sim = App.simulators.find(s => s.id === simulatorId);
+    const stat = sim.stations.find(s => s.name === station);
+    stat.setMessageGroup(group, state);
+    pubsub.publish("simulatorsUpdate", App.simulators);
+  }
+);
+App.on("setSimulatorStationLogin", ({ simulatorId, station, login }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  const stat = sim.stations.find(s => s.name === station);
+  stat.setLogin(login);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("setSimulatorStationExecutive", ({ simulatorId, station, exec }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  const stat = sim.stations.find(s => s.name === station);
+  stat.setExec(exec);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on(
+  "setSimulatorStationWidget",
+  ({ simulatorId, station, widget, state }) => {
+    const sim = App.simulators.find(s => s.id === simulatorId);
+    const stat = sim.stations.find(s => s.name === station);
+    stat.setWidgets(widget, state);
+    pubsub.publish("simulatorsUpdate", App.simulators);
+  }
+);
