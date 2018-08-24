@@ -103,7 +103,34 @@ class BattleCore extends Component {
               </Mutation>
               <Label check>
                 Auto-fire
-                <Input style={{ margin: "0 2px" }} type="checkbox" />
+                <Mutation
+                  mutation={gql`
+                    mutation SensorContact(
+                      $simulatorId: ID!
+                      $id: ID!
+                      $autoFire: Boolean!
+                    ) {
+                      updateSensorContact(
+                        simulatorId: $simulatorId
+                        contact: { id: $id, autoFire: $autoFire }
+                      )
+                    }
+                  `}
+                  variables={{
+                    simulatorId: simulator.id,
+                    id: c.id,
+                    autoFire: !c.autoFire
+                  }}
+                >
+                  {action => (
+                    <Input
+                      checked={c.autoFire}
+                      onChange={action}
+                      style={{ margin: "0 2px" }}
+                      type="checkbox"
+                    />
+                  )}
+                </Mutation>
               </Label>
             </div>
           ))}

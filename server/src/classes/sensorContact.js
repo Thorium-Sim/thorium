@@ -56,6 +56,7 @@ export default class SensorContact {
     // For Railguns
     this.hitpoints = params.hitpoints || 5;
     this.hostile = params.hostile || false;
+    this.autoFire = params.autoFire || false;
   }
   move(coordinates, speed, stop) {
     this.speed = stop ? 0 : speed;
@@ -146,5 +147,8 @@ export default class SensorContact {
   }
   updateHostile(h) {
     this.hostile = h;
+  }
+  updateAutofire(tf) {
+    this.autoFire = tf;
   }
 }

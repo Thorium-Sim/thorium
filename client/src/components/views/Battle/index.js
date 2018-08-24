@@ -9,6 +9,7 @@ id
 name
 icon
 hostile
+autoFire
 `;
 
 const QUERY = gql`

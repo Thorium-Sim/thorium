@@ -91,6 +91,28 @@ const moveSensorContactTimed = () => {
       }
     });
     sensors.contacts.forEach(c => {
+      // Auto fire
+      if (c.hostile && c.autoFire) {
+        if (!c.fireTimeTarget) {
+          c.fireTimeTarget = Math.round(Math.random() * 300 + 500);
+          c.fireTime = 0;
+        }
+        c.fireTime += 1;
+        if (c.fireTime >= c.fireTimeTarget) {
+          App.handleEvent(
+            {
+              simulatorId: sensors.simulatorId,
+              contactId: c.id,
+              speed: c.speed,
+              hitpoints: 5
+            },
+            "sensorsFireProjectile"
+          );
+          c.fireTime = 0;
+          c.fireTimeTarget = 0;
+        }
+      }
+
       // Auto-target
       const targeting = App.systems.find(
         s => s.simulatorId === sensors.simulatorId && s.class === "Targeting"

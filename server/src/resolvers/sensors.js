@@ -80,8 +80,8 @@ export const SensorsMutations = {
     App.handleEvent(args, "destroySensorContact", context);
     return "";
   },
-  updateSensorContact(root, { id, contact }, context) {
-    App.handleEvent({ id, contact }, "updateSensorContact", context);
+  updateSensorContact(root, args, context) {
+    App.handleEvent(args, "updateSensorContact", context);
     return "";
   },
   setArmyContacts(root, params, context) {
@@ -172,7 +172,6 @@ export const SensorsSubscriptions = {
         let returnVal = false;
         if (sensorId) returnVal = rootValue.id === sensorId;
         if (simulatorId) returnVal = rootValue.simulatorId === simulatorId;
-        console.log(returnVal, sensorId, simulatorId);
         return returnVal;
       }
     )

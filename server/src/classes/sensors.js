@@ -192,7 +192,8 @@ export default class Sensors extends System {
     locked,
     disabled,
     hitpoints,
-    hostile
+    hostile,
+    autoFire
   }) {
     const myContact = this.contacts.find(contact => contact.id === id);
     if (icon) myContact.updateIcon(icon);
@@ -205,6 +206,7 @@ export default class Sensors extends System {
     if (disabled || disabled === false) myContact.updateDisabled(disabled);
     if (hitpoints || hitpoints === false) myContact.updateHitpoints(hitpoints);
     if (hostile || hostile === false) myContact.updateHostile(hostile);
+    if (autoFire || autoFire === false) myContact.updateAutofire(autoFire);
   }
   updateArmyContact({
     id,

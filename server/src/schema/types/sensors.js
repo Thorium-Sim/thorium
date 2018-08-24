@@ -75,6 +75,7 @@ type SensorContact {
   disabled: Boolean
   hostile: Boolean
   hitpoints: Int
+  autoFire: Boolean
 }
 type SensorsSegment {
   segment: String
@@ -112,6 +113,7 @@ input SensorContactInput {
   disabled: Boolean
   hostile: Boolean
   hitpoints: Int
+  autoFire: Boolean
 }
 enum PING_MODES {
   active
