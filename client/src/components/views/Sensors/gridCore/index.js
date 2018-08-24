@@ -47,6 +47,7 @@ const SENSOR_SUB = gql`
         destroyed
         locked
         disabled
+        hostile
       }
     }
   }
@@ -162,7 +163,9 @@ class GridCore extends Component {
       picture,
       cloaked,
       infrared,
-      locked
+      locked,
+      disabled,
+      hostile
     } = movingContact;
     if (!location) return;
     const distance = distance3d({ x: 0, y: 0, z: 0 }, location);
@@ -189,6 +192,8 @@ class GridCore extends Component {
         location,
         infrared,
         locked,
+        disabled,
+        hostile,
         destination: location
       }
     };
@@ -430,6 +435,7 @@ const GRID_QUERY = gql`
         destroyed
         locked
         disabled
+        hostile
       }
     }
   }

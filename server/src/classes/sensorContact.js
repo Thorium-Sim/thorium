@@ -52,6 +52,10 @@ export default class SensorContact {
     this.destroyed = false;
     this.startTime = 0;
     this.endTime = 0;
+
+    // For Railguns
+    this.hitpoints = params.hitpoints || 5;
+    this.hostile = params.hostile || false;
   }
   move(coordinates, speed, stop) {
     this.speed = stop ? 0 : speed;
@@ -135,5 +139,12 @@ export default class SensorContact {
   }
   updateDisabled(disabled) {
     this.disabled = disabled;
+  }
+  updateHitpoints(hit) {
+    if (hit) this.hitpoints = hit;
+    else this.hitpoints = this.hitpoints - 1;
+  }
+  updateHostile(h) {
+    this.hostile = h;
   }
 }

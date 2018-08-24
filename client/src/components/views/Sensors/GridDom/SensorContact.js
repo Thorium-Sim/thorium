@@ -108,6 +108,7 @@ export default class SensorContact extends Component {
       opacity,
       type,
       color,
+      hostile,
       destroyed,
       rotation = 0,
       targeted,
@@ -263,6 +264,7 @@ export default class SensorContact extends Component {
               src={`/assets${icon}`}
               className={disabled ? "contact-disabled" : ""}
               style={{
+                boxShadow: hostile ? "2px 2px 2px rgba(255,0,0,0.5)" : null,
                 backgroundColor: selected ? "blue" : "",
                 transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
                   dy}px) scale(${size})`

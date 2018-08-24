@@ -55,6 +55,7 @@ const SENSORCONTACT_SUB = gql`
       targeted
       locked
       disabled
+      hostile
     }
   }
 `;
@@ -631,6 +632,7 @@ const CONTACTS_QUERY = gql`
       targeted
       locked
       disabled
+      hostile
     }
   }
 `;

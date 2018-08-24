@@ -190,7 +190,9 @@ export default class Sensors extends System {
     infrared,
     color,
     locked,
-    disabled
+    disabled,
+    hitpoints,
+    hostile
   }) {
     const myContact = this.contacts.find(contact => contact.id === id);
     if (icon) myContact.updateIcon(icon);
@@ -201,6 +203,8 @@ export default class Sensors extends System {
     if (color) myContact.updateColor(color);
     if (locked || locked === false) myContact.updateLocked(locked);
     if (disabled || disabled === false) myContact.updateDisabled(disabled);
+    if (hitpoints || hitpoints === false) myContact.updateHitpoints(hitpoints);
+    if (hostile || hostile === false) myContact.updateHostile(hostile);
   }
   updateArmyContact({
     id,
@@ -211,7 +215,9 @@ export default class Sensors extends System {
     infrared,
     color,
     locked,
-    disabled
+    disabled,
+    hitpoints,
+    hostile
   }) {
     const myContact = this.armyContacts.find(contact => contact.id === id);
     if (icon) myContact.updateIcon(icon);
@@ -222,6 +228,8 @@ export default class Sensors extends System {
     if (color) myContact.updateColor(color);
     if (locked || locked === false) myContact.updateLocked(locked);
     if (disabled || disabled === false) myContact.updateDisabled(disabled);
+    if (hitpoints || hitpoints === false) myContact.updateHitpoints(hitpoints);
+    if (hostile || hostile === false) myContact.updateHostile(hostile);
   }
   removeArmyContact(id) {
     const contactIndex = this.armyContacts.findIndex(
