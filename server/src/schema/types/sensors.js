@@ -29,6 +29,9 @@ type Sensors implements SystemInterface{
   movement: Coordinates
   segments: [SensorsSegment]
   locations: [Room]
+
+  defaultHitpoints: Int
+  defaultSpeed: Float
 }
 type SensorScan {
   id: ID

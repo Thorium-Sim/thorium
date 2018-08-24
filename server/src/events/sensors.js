@@ -432,7 +432,6 @@ App.on("updateSensorContacts", ({ id, contacts }) => {
 App.on(
   "sensorsFireProjectile",
   ({ simulatorId, contactId, speed, hitpoints }) => {
-    console.log(simulatorId, contactId, speed, hitpoints);
     const system = App.systems.find(
       sys =>
         sys.simulatorId === simulatorId &&
@@ -456,3 +455,33 @@ App.on(
     pubsub.publish("sensorContactUpdate", system);
   }
 );
+
+App.on("setSensorsDefaultHitpoints", ({ id, simulatorId, hp }) => {
+  const system = App.systems.find(
+    sys =>
+      sys.id === id ||
+      (sys.simulatorId === simulatorId &&
+        sys.domain === "external" &&
+        sys.class === "Sensors")
+  );
+  system.setDefaultHitpoints(hp);
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});
+
+App.on("setSensorsDefaultSpeed", ({ id, simulatorId, speed }) => {
+  const system = App.systems.find(
+    sys =>
+      sys.id === id ||
+      (sys.simulatorId === simulatorId &&
+        sys.domain === "external" &&
+        sys.class === "Sensors")
+  );
+  system.setDefaultSpeed(speed);
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});

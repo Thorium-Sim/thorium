@@ -140,6 +140,12 @@ export const SensorsMutations = {
   },
   sensorsFireProjectile(root, args, context) {
     App.handleEvent(args, "sensorsFireProjectile", context);
+  },
+  setSensorsDefaultHitpoints(root, args, context) {
+    App.handleEvent(args, "setSensorsDefaultHitpoints", context);
+  },
+  setSensorsDefaultSpeed(root, args, context) {
+    App.handleEvent(args, "setSensorsDefaultSpeed", context);
   }
 };
 

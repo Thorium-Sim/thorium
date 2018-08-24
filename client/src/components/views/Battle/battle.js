@@ -17,38 +17,74 @@ const speeds = [
 ];
 
 class BattleCore extends Component {
-  state = { speed: "0.4", hp: 5 };
+  updateSpeed = action => e => {
+    const { sensors } = this.props;
+    action({
+      variables: {
+        id: sensors.id,
+        speed: e.target.value
+      }
+    });
+  };
+  updateHitpoints = action => e => {
+    const { sensors } = this.props;
+    action({
+      variables: {
+        id: sensors.id,
+        hitpoints: e.target.value
+      }
+    });
+  };
   render() {
-    const { contacts, simulator } = this.props;
-    const { speed, hp } = this.state;
+    const { contacts, simulator, sensors } = this.props;
     return (
       <div className="battle-core">
         <div className="flex-row flex-start">
           Speed:
-          <Input
-            type="select"
-            name="select"
-            onChange={e => this.setState({ speed: e.target.value })}
-            defaultValue={speed}
+          <Mutation
+            mutation={gql`
+              mutation UpdateSpeed($id: ID!, $speed: Float!) {
+                setSensorsDefaultSpeed(id: $id, speed: $speed)
+              }
+            `}
           >
-            {speeds.map(s => (
-              <option key={s.value} value={s.value}>
-                {s.label}
-              </option>
-            ))}
-          </Input>
+            {action => (
+              <Input
+                type="select"
+                name="select"
+                onChange={this.updateSpeed(action)}
+                defaultValue={sensors.defaultSpeed}
+              >
+                {speeds.map(s => (
+                  <option key={s.value} value={s.value}>
+                    {s.label}
+                  </option>
+                ))}
+              </Input>
+            )}
+          </Mutation>
         </div>
         <div className="flex-row ">
           <span>Default</span>
           <span> Hitpoints:</span>
-          <span>({hp})</span>
-          <Input
-            type="range"
-            min="1"
-            max="10"
-            value={hp}
-            onChange={e => this.setState({ hp: e.target.value })}
-          />
+          <span>({sensors.defaultHitpoints})</span>
+          <Mutation
+            mutation={gql`
+              mutation UpdateHP($id: ID!, $hitpoints: Int!) {
+                setSensorsDefaultHitpoints(id: $id, hp: $hitpoints)
+              }
+            `}
+          >
+            {action => (
+              <Input
+                type="range"
+                min="1"
+                max="10"
+                defaultValue={sensors.defaultHitpoints}
+                onChange={this.updateHitpoints(action)}
+              />
+            )}
+          </Mutation>
         </div>
         <div className="flex-max">
           {contacts.map(c => (
@@ -91,8 +127,8 @@ class BattleCore extends Component {
                         variables: {
                           simulatorId: simulator.id,
                           contactId: c.id,
-                          speed,
-                          hitpoints: hp
+                          speed: sensors.defaultSpeed,
+                          hitpoints: sensors.defaultHitpoints
                         }
                       });
                     }}

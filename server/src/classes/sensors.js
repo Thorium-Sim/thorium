@@ -49,6 +49,8 @@ export default class Sensors extends System {
     this.autoTarget = params.autoTarget || false;
     this.history = params.history || false;
     this.scans = [];
+    this.defaultSpeed = params.defaultSpeed || 0.4;
+    this.defaultHitpoints = params.defaultHitpoints || 5;
 
     if (params.scans) {
       params.scans.forEach(scan => {
@@ -296,5 +298,11 @@ export default class Sensors extends System {
   }
   setSegment(segment, state) {
     this.segments.find(s => s.segment === segment).state = state;
+  }
+  setDefaultSpeed(speed) {
+    this.defaultSpeed = speed;
+  }
+  setDefaultHitpoints(hp) {
+    this.defaultHitpoints = hp;
   }
 }

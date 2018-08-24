@@ -103,8 +103,8 @@ const moveSensorContactTimed = () => {
             {
               simulatorId: sensors.simulatorId,
               contactId: c.id,
-              speed: c.speed,
-              hitpoints: 5
+              speed: sensors.defaultSpeed,
+              hitpoints: sensors.defaultHitpoints
             },
             "sensorsFireProjectile"
           );

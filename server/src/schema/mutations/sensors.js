@@ -45,4 +45,6 @@ setAutoMovement(id:ID!, movement:CoordinatesInput!):String
 updateSensorContacts(id:ID!, contacts:[SensorContactInput]!):String
 destroySensorContact(id:ID!, contact:ID, contacts:[ID]):String
 sensorsFireProjectile(simulatorId:ID!, contactId:ID!, speed:Float!, hitpoints:Int!):String
+setSensorsDefaultHitpoints(id:ID, simulatorId:ID, hp:Int!):String
+setSensorsDefaultSpeed(id:ID, simulatorId:ID, speed:Float!):String
 `;

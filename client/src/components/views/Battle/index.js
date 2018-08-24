@@ -17,6 +17,11 @@ const QUERY = gql`
     sensorContacts(simulatorId: $simulatorId, hostile:true) {
 ${queryData}
     }
+    sensors(simulatorId:$simulatorId, domain:"external") {
+    id
+    defaultSpeed
+    defaultHitpoints
+  }
   }
 `;
 const SUBSCRIPTION = gql`
@@ -27,14 +32,24 @@ ${queryData}
   }
 `;
 
+const SENSORS_SUB = gql`
+  subscription SensorsSub($simulatorId: ID!) {
+    sensorsUpdate(simulatorId: $simulatorId, domain: "external") {
+      id
+      defaultSpeed
+      defaultHitpoints
+    }
+  }
+`;
+
 class TemplateData extends Component {
   state = {};
   render() {
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
-          const { sensorContacts } = data;
-          if (loading || !sensorContacts) return null;
+          const { sensorContacts, sensors } = data;
+          if (loading || !sensorContacts || !sensors) return null;
           return (
             <SubscriptionHelper
               subscribe={() =>
@@ -42,7 +57,6 @@ class TemplateData extends Component {
                   document: SUBSCRIPTION,
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
-                    console.log(previousResult, { subscriptionData });
                     return Object.assign({}, previousResult, {
                       sensorContacts: subscriptionData.data.sensorContactUpdate
                     });
@@ -50,7 +64,24 @@ class TemplateData extends Component {
                 })
               }
             >
-              <BattleCore {...this.props} contacts={sensorContacts} />
+              <SubscriptionHelper
+                subscribe={() =>
+                  subscribeToMore({
+                    document: SENSORS_SUB,
+                    variables: { simulatorId: this.props.simulator.id },
+                    updateQuery: (previousResult, { subscriptionData }) => {
+                      return Object.assign({}, previousResult, {
+                        sensors: subscriptionData.data.sensorsUpdate
+                      });
+                    }
+                  })
+                }
+              />
+              <BattleCore
+                {...this.props}
+                contacts={sensorContacts}
+                sensors={sensors[0]}
+              />
             </SubscriptionHelper>
           );
         }}
