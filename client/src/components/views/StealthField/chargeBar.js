@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import { withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import Arrow from "./arrow";
 
-export default class ChargeBar extends Component {
+class ChargeBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,7 +12,7 @@ export default class ChargeBar extends Component {
     };
   }
   componentDidUpdate() {
-    if (!this.state.dragging && this.state.level !== this.props.level) {
+    if (!this.state.dragging && this.state.level !== this.props.value) {
       this.setState({
         level: this.props.value
       });
@@ -27,9 +28,6 @@ export default class ChargeBar extends Component {
     document.addEventListener("touchend", this.mouseUp);
   };
   mouseUp = () => {
-    this.setState({
-      dragging: false
-    });
     const mutation = gql`
       mutation StealthQuadrant($id: ID, $which: String, $value: Float) {
         setStealthQuadrant(id: $id, which: $which, value: $value)
@@ -40,10 +38,16 @@ export default class ChargeBar extends Component {
       which: this.props.label.toLowerCase(),
       value: Math.round(this.state.level * 20) / 20
     };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
+    this.props.client
+      .mutate({
+        mutation,
+        variables
+      })
+      .then(() => {
+        this.setState({
+          dragging: false
+        });
+      });
     document.removeEventListener("mousemove", this.mouseMove);
     document.removeEventListener("mouseup", this.mouseUp);
     document.removeEventListener("touchmove", this.mouseMove);
@@ -85,3 +89,5 @@ export default class ChargeBar extends Component {
     );
   }
 }
+
+export default withApollo(ChargeBar);

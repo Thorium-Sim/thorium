@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -68,7 +68,7 @@
     "ncp": "^2.0.0",
     "node-fetch": "^2.2.0",
     "random-words": "^1.1.0",
-    "react-dev-utils": "^5.0.1",
+    "react-dev-utils": "^5.0.2",
     "subscriptions-transport-ws": "^0.9.14",
     "three": "^0.95.0",
     "unzip": "^0.1.11",

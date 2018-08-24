@@ -195,7 +195,7 @@ class Credits extends Component {
                 <li>
                   <a
                     download="Thorium.zip"
-                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v1.0.2/thorium-client-1.0.2-mac.zip"
+                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v1.0.2/thorium-client-1.0.3-mac.zip"
                   >
                     Mac
                   </a>
@@ -203,7 +203,7 @@ class Credits extends Component {
                 <li>
                   <a
                     download="Thorium.zip"
-                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v1.0.2/thorium-client-setup-1.0.2.exe"
+                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v1.0.2/thorium-client-setup-1.0.3.exe"
                   >
                     Windows
                   </a>
@@ -211,7 +211,7 @@ class Credits extends Component {
                 <li>
                   <a
                     download="Thorium.zip"
-                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v1.0.2/thorium-client-1.0.2-x86_64.AppImage"
+                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v1.0.2/thorium-client-1.0.3-x86_64.AppImage"
                   >
                     Linux
                   </a>
