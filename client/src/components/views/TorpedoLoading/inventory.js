@@ -39,7 +39,7 @@ const TorpedoInventory = ({ id, inventory, refetchQueries = [] }) => {
                 <InputField
                   prompt="What is the new value for photon torpedos?"
                   onClick={count =>
-                    parseInt(count, 10) &&
+                    (parseInt(count, 10) || parseInt(count, 10) === 0) &&
                     updateCount({ variables: { id, type: "photon", count } })
                   }
                 >
@@ -51,7 +51,7 @@ const TorpedoInventory = ({ id, inventory, refetchQueries = [] }) => {
                 <InputField
                   prompt="What is the new value for quantum torpedos?"
                   onClick={count =>
-                    parseInt(count, 10) &&
+                    (parseInt(count, 10) || parseInt(count, 10) === 0) &&
                     updateCount({ variables: { id, type: "quantum", count } })
                   }
                 >
@@ -108,7 +108,7 @@ const TorpedoInventory = ({ id, inventory, refetchQueries = [] }) => {
                       <InputField
                         prompt={`What is the new value for ${t} torpedos?`}
                         onClick={count =>
-                          parseInt(count, 10) &&
+                          (parseInt(count, 10) || parseInt(count, 10) === 0) &&
                           updateCount({ variables: { id, type: t, count } })
                         }
                       >
