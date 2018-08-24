@@ -51,7 +51,6 @@ const SENSOR_SUB = gql`
     }
   }
 `;
-const padding = 0;
 
 class GridCore extends Component {
   constructor(props) {
