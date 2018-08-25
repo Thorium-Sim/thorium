@@ -172,7 +172,9 @@ export const ShipStructureSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("inventoryUpdate"),
-      rootValue => !!(rootValue && rootValue.length)
+      rootValue => {
+        return !!(rootValue && rootValue.length);
+      }
     )
   }
 };

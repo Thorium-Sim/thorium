@@ -1,5 +1,6 @@
 import "./helpers/init";
 //Run init before anything else. Make sure all our files are in place before they are needed by other things
+import "babel-polyfill";
 import express from "express";
 import path from "path";
 import fs from "fs";
@@ -28,10 +29,7 @@ import "./events";
 import "./processes";
 import "./helpers/autoupdate";
 
-const CLIENT_PORT =
-  process.env.NODE_ENV === "production"
-    ? 1337 //Math.round(Math.random() * (9999 - 1024)) + 1024
-    : 3000;
+const CLIENT_PORT = process.env.NODE_ENV === "production" ? 1337 : 3000;
 const GRAPHQL_PORT = CLIENT_PORT + 1;
 const WS_PORT = CLIENT_PORT + 2;
 export const port = CLIENT_PORT;

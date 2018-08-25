@@ -13,7 +13,7 @@ export default class NavSetPresetConfig extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      presets: props.args.presets
+      presets: props.args && props.args.presets
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -54,7 +54,8 @@ export default class NavSetPresetConfig extends Component {
   };
   render() {
     const { presets = [], selectedPreset } = this.state;
-    const preset = presets.find(p => p.name === selectedPreset);
+    if (!presets) return null;
+    const preset = presets && presets.find(p => p.name === selectedPreset);
     return (
       <Container>
         <Row>

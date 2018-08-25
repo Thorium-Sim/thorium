@@ -209,18 +209,20 @@ class ActionsCore extends Component {
                       <option value="nothing" disabled>
                         Select a Sound
                       </option>
-                      {assetFolders[0].containers
-                        .concat()
-                        .sort((a, b) => {
-                          if (a.name > b.name) return 1;
-                          if (a.name < b.name) return -1;
-                          return 0;
-                        })
-                        .map(c => (
-                          <option key={c.id} value={c.fullPath}>
-                            {c.name}
-                          </option>
-                        ))}
+                      {assetFolders[0]
+                        ? assetFolders[0].containers
+                            .concat()
+                            .sort((a, b) => {
+                              if (a.name > b.name) return 1;
+                              if (a.name < b.name) return -1;
+                              return 0;
+                            })
+                            .map(c => (
+                              <option key={c.id} value={c.fullPath}>
+                                {c.name}
+                              </option>
+                            ))
+                        : null}
                     </Input>
                   )
                 }

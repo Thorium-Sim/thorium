@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { findDOMNode } from "react-dom";
 import { Button } from "reactstrap";
-import { TweenMax } from "gsap";
 import ErrorBoundary from "../../helpers/errorBoundary";
 
+const TweenMax = window.TweenMax;
 export default class CardHolder extends Component {
   componentWillEnter(callback) {
     const el = findDOMNode(this);

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import uuid from "uuid";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import Spark from "../views/Actions/spark";
@@ -20,9 +21,8 @@ class ActionsMixin extends Component {
     super(props);
     this.subscription = null;
     this.state = {
-      flash: false,
-      spark: false,
-      canvas: false
+      sparks: [],
+      flash: false
     };
   }
   flash(duration) {
@@ -34,7 +34,7 @@ class ActionsMixin extends Component {
     setTimeout(this.flash.bind(this, duration - 1), 100);
   }
   componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
+    if (!this.subscription && !nextProps.data.loading && this.props.simulator) {
       this.subscription = nextProps.data.subscribeToMore({
         document: ACTIONS_SUB,
         variables: {
@@ -50,21 +50,14 @@ class ActionsMixin extends Component {
               break;
             case "spark":
               duration = duration || 5000;
-              this.setState(
-                {
-                  canvas: true
-                },
-                () => {
-                  this.setState({
-                    spark: true
-                  });
-                }
-              );
+              const id = uuid.v4();
+              this.setState({
+                sparks: [...this.state.sparks, id]
+              });
               setTimeout(() => {
-                this.setState({
-                  spark: false,
-                  canvas: false
-                });
+                this.setState(oldState => ({
+                  sparks: oldState.sparks.filter(s => s !== id)
+                }));
               }, duration);
               break;
             case "reload":
@@ -90,18 +83,7 @@ class ActionsMixin extends Component {
     return (
       <div className={`actionsContainer ${this.state.flash ? "flash" : ""}`}>
         {this.props.children}
-        {this.state.canvas && (
-          <canvas
-            id="c"
-            style={{
-              zIndex: 10000,
-              position: "fixed",
-              top: "0px",
-              left: "0px"
-            }}
-          />
-        )}
-        {this.state.spark && <Spark />}
+        {this.state.sparks.map(s => <Spark key={s} />)}
       </div>
     );
   }

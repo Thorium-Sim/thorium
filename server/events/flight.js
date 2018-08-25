@@ -44,6 +44,7 @@ function addAspects(template, sim) {
             d.simulatorId === sim.id &&
             d.number === oldDeck.number
         );
+        if (!deck) return;
         newAspect.deckId = deck.id;
       }
       if (aspect === "inventory") {
@@ -94,6 +95,9 @@ function addAspects(template, sim) {
         }
         if (newAspect.power && !newAspect.power.powerLevels.length) {
           newAspect.power.power = 0;
+        }
+        if (newAspect.heat) {
+          newAspect.heat = 0;
         }
       }
       App[aspect].push(
@@ -247,5 +251,13 @@ App.on("resetFlight", ({ flightId }) => {
     pubsub.publish("clearCache", App.flights.filter(f => f.id === flightId));
   });
 });
-App.on("pauseFlight", () => {});
-App.on("resumeFlight", () => {});
+App.on("pauseFlight", ({ flightId }) => {
+  const flight = App.flights.find(f => f.id === flightId);
+  flight.pause();
+  pubsub.publish("flightsUpdate", App.flights);
+});
+App.on("resumeFlight", ({ flightId }) => {
+  const flight = App.flights.find(f => f.id === flightId);
+  flight.resume();
+  pubsub.publish("flightsUpdate", App.flights);
+});

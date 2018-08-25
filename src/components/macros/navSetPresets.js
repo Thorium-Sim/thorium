@@ -13,7 +13,7 @@ export default class NavSetPresetConfig extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      presets: props.args.presets
+      presets: props.args ? props.args.presets : []
     };
   }
   componentWillReceiveProps(nextProps) {

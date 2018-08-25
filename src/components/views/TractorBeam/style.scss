@@ -5,18 +5,21 @@
     right: 10%;
     bottom: 54%;
     width: 60%;
-
   }
-  #tractorEffect{
+  #tractorEffect {
     position: absolute;
     top: 43%;
     right: 56%;
     -webkit-transition: opacity 1s ease-in-out;
     -webkit-mask-size: 400px 400px;
-    -webkit-mask-image: -webkit-gradient(linear, left bottom, right top, 
-      color-stop(0.40,  rgba(0,0,0,0)),
-      color-stop(0.60, rgba(0,0,0,1)),
-      color-stop(1.00,  rgba(0,0,0,1)));
+    -webkit-mask-image: -webkit-gradient(
+      linear,
+      left bottom,
+      right top,
+      color-stop(0.4, rgba(0, 0, 0, 0)),
+      color-stop(0.6, rgba(0, 0, 0, 1)),
+      color-stop(1, rgba(0, 0, 0, 1))
+    );
     opacity: 0;
     &.shown {
       opacity: 1;
@@ -43,29 +46,6 @@
     position: absolute;
     width: 30%;
     top: 80%;
-  }
-  .bar-container {
-    position: relative;
-    opacity: 0;
-    -webkit-transition: opacity 1s ease-in-out;
-    &.shown {
-      opacity: 1
-    }
-  }
-  .bar-holder {
-    width: 300px;
-    position: relative;
-    left: 50px;
-  }
-  .arrow-container {
-    position: absolute;
-    height: 100%;
-  }
-  .bar {
-    background-color: red;
-    height: 4px;
-    border-radius: 50px;
-    margin: 3px;
   }
   .stressBar {
     position: absolute;
@@ -99,4 +79,32 @@
     float: left;
     width: 100%;
   }
+}
+
+.bar-container {
+  position: relative;
+  opacity: 0;
+  -webkit-transition: opacity 1s ease-in-out;
+  &.shown {
+    opacity: 1;
+  }
+}
+.bar-holder {
+  width: 300px;
+  position: relative;
+}
+.arrow-container {
+  position: absolute;
+  height: 100%;
+  left: -50px;
+}
+.arrow-container.flop {
+  right: -50px;
+  left: auto;
+}
+.bar {
+  background-color: red;
+  height: 4px;
+  border-radius: 50px;
+  margin: 3px;
 }

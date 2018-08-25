@@ -192,6 +192,38 @@
       bottom: -17px;
     }
   }
+  .contact-selection {
+    position: relative;
+    div {
+      width: 8px;
+      height: 8px;
+      position: absolute;
+    }
+    .tl {
+      border-top: 2px solid rgb(0, 128, 255);
+      border-left: 2px solid rgb(0, 128, 255);
+      left: -3px;
+      top: -3px;
+    }
+    .tr {
+      border-top: 2px solid rgb(0, 128, 255);
+      border-right: 2px solid rgb(0, 128, 255);
+      right: -34px;
+      top: -3px;
+    }
+    .bl {
+      border-bottom: 2px solid rgb(0, 128, 255);
+      border-left: 2px solid rgb(0, 128, 255);
+      left: -3px;
+      bottom: -34px;
+    }
+    .br {
+      border-bottom: 2px solid rgb(0, 128, 255);
+      border-right: 2px solid rgb(0, 128, 255);
+      right: -34px;
+      bottom: -34px;
+    }
+  }
 }
 
 .grid-segments {

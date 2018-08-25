@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { Row, Col, Input, Label, FormGroup } from "reactstrap";
+import { Row, Col, Input, Label, FormGroup, Button } from "reactstrap";
 import { ChromePicker } from "react-color";
 import FileExplorer from "./fileExplorer";
 
@@ -79,7 +79,61 @@ export default class ObjectConfig extends Component {
     return (
       <div className="tactical-object">
         {objectId ? (
-          <ObjectSettings {...selectedObject} updateObject={updateObject} />
+          <ObjectSettings
+            {...selectedObject}
+            updateObject={updateObject}
+            duplicate={() => {
+              const {
+                id,
+                layerId,
+                __typename,
+                location,
+                destination,
+                velocity: { x, y, z },
+                ...object
+              } = selectedObject;
+              const item = {
+                ...object,
+                velocity: {
+                  x,
+                  y,
+                  z
+                },
+                location: {
+                  x: location.x + 0.05,
+                  y: location.y + 0.05,
+                  z: location.z + 0.05
+                },
+                destination: {
+                  x: destination.x + 0.05,
+                  y: destination.y + 0.05,
+                  z: destination.z + 0.05
+                }
+              };
+              const mutation = gql`
+                mutation AddTacticalItem(
+                  $mapId: ID!
+                  $layerId: ID!
+                  $item: TacticalItemInput!
+                ) {
+                  addTacticalMapItem(
+                    mapId: $mapId
+                    layerId: $layerId
+                    item: $item
+                  )
+                }
+              `;
+              const variables = {
+                mapId: this.props.tacticalMapId,
+                layerId: this.props.layerId,
+                item
+              };
+              this.props.client.mutate({
+                mutation,
+                variables
+              });
+            }}
+          />
         ) : (
           <FileExplorer
             onMouseDown={this.mouseDown}
@@ -131,8 +185,9 @@ const ObjectSettings = ({
   wasd,
   updateObject,
   //thrusters,
-  rotation
+  rotation,
   //rotationMatch
+  duplicate
 }) => {
   return (
     <Row>
@@ -273,6 +328,11 @@ const ObjectSettings = ({
               onChange={evt => updateObject("fontSize", evt.target.value)}
             />
           </Label>
+        </FormGroup>
+        <FormGroup>
+          <Button color="success" onClick={duplicate}>
+            Duplicate
+          </Button>
         </FormGroup>
       </Col>
       <Col>

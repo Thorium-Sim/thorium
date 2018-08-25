@@ -80,6 +80,11 @@ id
         labels
         gridCols
         gridRows
+        advance
+asset
+autoplay
+loop
+playbackSpeed
       }
       frozen
       template`;
@@ -226,6 +231,10 @@ class TacticalMapCore extends Component {
         <div className="preview">
           {selectedTactical && (
             <Preview
+              simulatorId={
+                this.props.simulator ? this.props.simulator.id : null
+              }
+              tacticalMapId={this.state.tacticalMapId}
               layers={selectedTactical.layers}
               layerId={this.state.layerId}
               selectObject={this.selectObject}

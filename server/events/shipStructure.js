@@ -114,8 +114,13 @@ App.on("updateRoomRoles", ({ roomId, roles }) => {
 });
 // Inventory
 App.on("addInventory", ({ inventory }) => {
-  console.log(inventory);
-  const { simulatorId, name, metadata, roomCount, crewCount } = inventory;
+  const {
+    simulatorId,
+    name,
+    metadata,
+    roomCount = [],
+    crewCount = []
+  } = inventory;
   // Check to see if an inventory item with the same name exists.
   const dupInventory = App.inventory.find(
     i => i.simulatorId === simulatorId && i.name === name

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Card, CardBody, Container, Row, Col, Button } from "reactstrap";
 import gql from "graphql-tag";
 import tinycolor from "tinycolor2";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo, Mutation } from "react-apollo";
 import Measure from "react-measure";
 import Tour from "reactour";
 import { Asset } from "../../../helpers/assets";
@@ -22,6 +22,7 @@ const SHORTRANGE_SUB = gql`
         signal
         frequency
         connected
+        muted
       }
       signals {
         id
@@ -171,6 +172,7 @@ class CommShortRange extends Component {
         return {
           id: next.id,
           connected: next.connected,
+          muted: next.muted,
           name: signal ? signal.name : "",
           image: signal && signal.image
         };
@@ -251,24 +253,25 @@ class CommShortRange extends Component {
       variables
     });
   }
-  render() {
-    const getHailLabel = () => {
-      const pointerArrow = this.getPointerArrow();
-      const ShortRange = this.props.data.shortRangeComm[0];
-      if (pointerArrow.id) {
-        if (pointerArrow.connected) {
-          return `Disconnect ${pointerArrow.name}`;
-        }
-        return `Connect ${pointerArrow.name}`;
-      } else if (ShortRange.state === "hailing") {
-        return `Cancel Hail`;
+  getHailLabel = () => {
+    const pointerArrow = this.getPointerArrow();
+    const ShortRange = this.props.data.shortRangeComm[0];
+    if (pointerArrow.id) {
+      if (pointerArrow.connected) {
+        return `Disconnect ${pointerArrow.name}`;
       }
-      return `Hail ${this.getSignal().name || ""}`;
-    };
+      return `Connect ${pointerArrow.name}`;
+    } else if (ShortRange.state === "hailing") {
+      return `Cancel Hail`;
+    }
+    return `Hail ${this.getSignal().name || ""}`;
+  };
+  render() {
     if (this.props.data.loading || !this.props.data.shortRangeComm) return null;
     const ShortRange =
       this.props.data.shortRangeComm && this.props.data.shortRangeComm[0];
     if (!ShortRange) return <p>No short range comm</p>;
+
     return (
       <Container fluid className="shortRangeComm">
         <DamageOverlay
@@ -314,8 +317,35 @@ class CommShortRange extends Component {
               block
               color="primary"
             >
-              {getHailLabel()}
+              {this.getHailLabel()}
             </Button>
+            <Mutation
+              mutation={gql`
+                mutation MuteComm($id: ID!, $arrowId: ID!, $mute: Boolean!) {
+                  muteShortRangeComm(id: $id, arrowId: $arrowId, mute: $mute)
+                }
+              `}
+              variables={{
+                id: ShortRange.id,
+                arrowId: this.getPointerArrow().id,
+                mute: !this.getPointerArrow().muted
+              }}
+            >
+              {action => (
+                <Button
+                  size="lg"
+                  block
+                  color="info"
+                  disabled={
+                    !this.getPointerArrow().id ||
+                    !this.getPointerArrow().connected
+                  }
+                  onClick={action}
+                >
+                  {this.getPointerArrow().muted ? "Unmute" : "Mute"} Call
+                </Button>
+              )}
+            </Mutation>
           </Col>
           <Col lg={{ size: 4, offset: 1 }}>
             <Card className="frequencyContainer">
@@ -342,6 +372,7 @@ class CommShortRange extends Component {
                     level={a.frequency}
                     flop={true}
                     connected={a.connected}
+                    muted={a.muted}
                   />
                 ))}
               </div>
@@ -427,6 +458,7 @@ const SHORTRANGE_QUERY = gql`
         signal
         frequency
         connected
+        muted
       }
       signals {
         id

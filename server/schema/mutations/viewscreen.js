@@ -9,4 +9,5 @@ export default `
   #Macro: Viewscreen Auto
   setViewscreenToAuto(id: ID!, secondary: Boolean): String  
   updateViewscreenAuto(id: ID!, auto: Boolean!):String
+  toggleViewscreenVideo(simulatorId:ID!):String
 `;

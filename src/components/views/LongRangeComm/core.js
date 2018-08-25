@@ -6,17 +6,19 @@ import "./style.css";
 
 const MESSAGES_SUB = gql`
   subscription LRDecoding($simulatorId: ID) {
-    longRangeCommunicationsUpdate(simulatorId: $simulatorId, crew: false) {
+    longRangeCommunicationsUpdate(simulatorId: $simulatorId) {
       id
       simulatorId
       name
-      messages {
+      messages(crew: false) {
         id
         sender
         sent
         deleted
         message
         datestamp
+        encrypted
+        approved
       }
     }
   }
@@ -76,7 +78,11 @@ class LRCommCore extends Component {
                           this.state.selectedMessage === m.id ? "active" : ""
                         } ${m.sent === true ? "text-success" : ""} ${
                           m.deleted === true ? "text-danger" : ""
-                        }`}
+                        } ${
+                          m.approved === true && !m.sent && !m.deleted
+                            ? "text-warning"
+                            : ""
+                        } `}
                         onClick={() => this.setState({ selectedMessage: m.id })}
                       >
                         {m.datestamp} - {m.sender}
@@ -87,7 +93,9 @@ class LRCommCore extends Component {
               </Col>
               <Col sm={9}>
                 {selectedMessage && (
-                  <pre>{`${selectedMessage.datestamp}
+                  <pre>{`${selectedMessage.datestamp}${
+                    selectedMessage.encrypted ? ` - Encrypted` : ""
+                  }${selectedMessage.approved ? ` - Approved` : ""}
 From: ${selectedMessage.sender}
 ${selectedMessage.message}`}</pre>
                 )}
@@ -104,17 +112,19 @@ ${selectedMessage.message}`}</pre>
 
 const MESSAGES_QUERY = gql`
   query LRDecoding($simulatorId: ID) {
-    longRangeCommunications(simulatorId: $simulatorId, crew: false) {
+    longRangeCommunications(simulatorId: $simulatorId) {
       id
       simulatorId
       name
-      messages {
+      messages(crew: false) {
         id
         sender
         message
         sent
         deleted
         datestamp
+        encrypted
+        approved
       }
     }
   }

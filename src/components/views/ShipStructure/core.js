@@ -47,8 +47,12 @@ class DecksCore extends Component {
     this.subscription && this.subscription();
   }
   _addDeck() {
-    const number = window.prompt("What is the deck number?");
+    const number = window.prompt(
+      "What is the deck number? ('6', not 'Deck 6')"
+    );
     if (!number) return;
+    if (isNaN(parseInt(number, 10)))
+      window.alert("Deck number must be a number.");
     if (this.props.data.decks.find(d => d.number === number)) return;
     const mutation = gql`
       mutation AddDeck($simulatorId: ID!, $number: Int!) {
@@ -112,6 +116,9 @@ class DecksCore extends Component {
     this.props.client.mutate({
       mutation,
       variables
+    });
+    this.setState({
+      selectedRoom: null
     });
   }
   _renameRoom() {

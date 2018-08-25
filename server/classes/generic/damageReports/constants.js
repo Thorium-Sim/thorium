@@ -35,7 +35,8 @@ export const defaultOptionalSteps = [
   { name: "longRangeMessage", args: {} },
   //{ name: "probeLaunch", args: {} },
   { name: "exocomps", args: {} },
-  { name: "softwarePanel", args: {} }
+  { name: "softwarePanel", args: {} },
+  { name: "computerCore", args: {} }
 ];
 
 export const damagePositions = [

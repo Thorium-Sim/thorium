@@ -3,6 +3,10 @@
   height: 100%;
   
 }
+.tactical-map-video, .tactical-map-video video {
+  width: 100%;
+  height: 100%;
+}
 .tacticalmap-core {
   display: grid;
   grid-template-columns: 70vw auto;

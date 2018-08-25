@@ -6,6 +6,7 @@ import { ChromePicker } from "react-color";
 import ImageConfig from "./imageConfig";
 import ObjectConfig from "./objectConfig";
 import PathConfig from "./pathConfig";
+import VideoConfig from "./videoConfig";
 
 const configs = {
   gridConfig: ({ selectedLayer, updateLayer }) => {
@@ -69,7 +70,8 @@ const configs = {
   },
   imageConfig: ImageConfig,
   objectsConfig: ObjectConfig,
-  pathConfig: PathConfig
+  pathConfig: PathConfig,
+  videoConfig: VideoConfig
 };
 
 export default class Bottom extends Component {
@@ -161,6 +163,7 @@ export default class Bottom extends Component {
               <option value="image">Image</option>
               <option value="objects">Objects</option>
               <option value="path">Paths</option>
+              <option value="video">Video</option>
             </Input>
             {selectedLayer.type === "objects" && (
               <Fragment>

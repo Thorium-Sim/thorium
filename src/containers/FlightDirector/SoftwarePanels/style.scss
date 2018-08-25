@@ -24,7 +24,7 @@
     left: 0;
     border-right: solid 1px #eee;
     transform: translateX(-100%);
-    background-color: white;
+    background-color: rgba(0, 0, 0, 0.9);
     transition: transform 0.5s ease;
     z-index: 3;
   }

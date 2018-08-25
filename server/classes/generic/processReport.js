@@ -1,17 +1,17 @@
 import { partsList, randomFromList } from "./damageReports/constants";
 
 export default function processReport(report, system) {
-  system.damage.neededReactivationCode = null;
+  if (system) system.damage.neededReactivationCode = null;
   if (!report) return;
   let returnReport = report;
   // #PART
-  system.damage.exocompParts = [];
+  if (system) system.damage.exocompParts = [];
   const partMatches = report.match(/#PART/gi) || [];
   partMatches.forEach(m => {
     const index = returnReport.indexOf(m);
     returnReport = returnReport.replace(m, "");
     const part = randomFromList(partsList);
-    system.damage.exocompParts.push(part);
+    if (system) system.damage.exocompParts.push(part);
     returnReport = splice(returnReport, index, 0, part);
   });
 
@@ -76,7 +76,7 @@ export default function processReport(report, system) {
       .fill("")
       .map(() => randomFromList(["¥", "Ω", "∏", "-", "§", "∆", "£", "∑", "∂"]))
       .join("");
-    system.damage.neededReactivationCode = reactivationCode;
+    if (system) system.damage.neededReactivationCode = reactivationCode;
     returnReport = returnReport.replace(
       /#REACTIVATIONCODE/gi,
       reactivationCode

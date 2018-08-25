@@ -1,6 +1,7 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 
+// No need for this to be a flight-specific loop.
 const updateCoolant = () => {
   //Loop through all of the simulators to isolate the systems
   App.systems

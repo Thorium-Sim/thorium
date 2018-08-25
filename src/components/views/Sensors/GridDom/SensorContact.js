@@ -40,8 +40,7 @@ export default class SensorContact extends Component {
                 .darken(10)
                 .toString(),
               backgroundColor: tinycolor(color).toString(),
-              transform: `translate(${width / 2 * x}px, ${width /
-                2 *
+              transform: `translate(${(width / 2) * x}px, ${(width / 2) *
                 y}px) rotate(${rotation}deg)`
             }}
           />
@@ -56,8 +55,7 @@ export default class SensorContact extends Component {
                   .toString(),
 
                 backgroundColor: tinycolor(color).toString(),
-                transform: `translate(${width / 2 * dx}px, ${width /
-                  2 *
+                transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
                   dy}px) rotate(${rotation}deg)`
               }}
             />
@@ -77,8 +75,7 @@ export default class SensorContact extends Component {
                 .darken(10)
                 .toString(),
               backgroundColor: tinycolor(color).toString(),
-              transform: `translate(${width / 2 * x}px, ${width /
-                2 *
+              transform: `translate(${(width / 2) * x}px, ${(width / 2) *
                 y}px) scale(${size})`
             }}
           />
@@ -91,8 +88,7 @@ export default class SensorContact extends Component {
                   .darken(10)
                   .toString(),
                 backgroundColor: tinycolor(color).toString(),
-                transform: `translate(${width / 2 * dx}px, ${width /
-                  2 *
+                transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
                   dy}px) scale(${size})`
               }}
             />
@@ -106,7 +102,7 @@ export default class SensorContact extends Component {
           style={{
             width: "10%",
             height: "10%",
-            transform: `translate(${width / 2 * x + 5}px, ${width / 2 * y +
+            transform: `translate(${(width / 2) * x + 5}px, ${(width / 2) * y +
               5}px) scale(${size})`
           }}
           onComplete={() => removeContact(id)}
@@ -115,25 +111,41 @@ export default class SensorContact extends Component {
     }
     return (
       <div>
-        <Asset asset={icon}>
-          {({ src }) => (
-            <img
-              alt="contact"
-              draggable="false"
-              onMouseOver={() => mouseover(this.props)}
-              onMouseOut={() => mouseover({})}
-              onMouseDown={() => mousedown(this.props)}
-              src={src}
-              className={disabled ? "contact-disabled" : ""}
-              style={{
-                opacity: core ? 0.5 : opacity,
-                transform: `translate(${width / 2 * x}px, ${width /
-                  2 *
-                  y}px) scale(${size})`
-              }}
-            />
-          )}
-        </Asset>
+        <Fragment>
+          <Asset asset={icon}>
+            {({ src }) => (
+              <img
+                alt="contact"
+                draggable="false"
+                onMouseOver={() => mouseover(this.props)}
+                onMouseOut={selected ? null : () => mouseover({})}
+                onMouseDown={e => mousedown(this.props, e)}
+                src={src}
+                className={disabled ? "contact-disabled" : ""}
+                style={{
+                  opacity: core ? 0.5 : opacity,
+                  transform: `translate(${(width / 2) * x}px, ${(width / 2) *
+                    y}px) scale(${size})`
+                }}
+              />
+            )}
+          </Asset>
+          {!core &&
+            selected && (
+              <div
+                className="contact-selection"
+                style={{
+                  transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
+                    dy}px) scale(${size})`
+                }}
+              >
+                <div className="tl" />
+                <div className="tr" />
+                <div className="bl" />
+                <div className="br" />
+              </div>
+            )}
+        </Fragment>
         {core && (
           <Fragment>
             <Asset asset={icon}>
@@ -146,8 +158,7 @@ export default class SensorContact extends Component {
                   className={disabled ? "contact-disabled" : ""}
                   style={{
                     backgroundColor: selected ? "blue" : "",
-                    transform: `translate(${width / 2 * dx}px, ${width /
-                      2 *
+                    transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
                       dy}px) scale(${size})`
                   }}
                 />
@@ -157,8 +168,7 @@ export default class SensorContact extends Component {
               <div
                 className="crosshairs"
                 style={{
-                  transform: `translate(${width / 2 * dx}px, ${width /
-                    2 *
+                  transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
                     dy}px) scale(${size})`
                 }}
               >

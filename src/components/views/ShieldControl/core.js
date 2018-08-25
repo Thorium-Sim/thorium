@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Table, Button } from "reactstrap";
+import { Table, Button, ButtonGroup } from "reactstrap";
 import { InputField, OutputField } from "../../generic/core";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo, Mutation } from "react-apollo";
 
 import gql from "graphql-tag";
 
@@ -116,9 +116,33 @@ class ShieldsCore extends Component {
                     <tr key={s.id}>
                       <td>{s.name}</td>
                       <td>
-                        <OutputField>
-                          {s.state ? "Raised" : "Lowered"}
-                        </OutputField>
+                        <Mutation
+                          mutation={gql`
+                            mutation shieldLowered($id: ID!) {
+                              shieldLowered(id: $id)
+                            }
+                          `}
+                          variables={{ id: s.id }}
+                        >
+                          {lower => (
+                            <Mutation
+                              mutation={gql`
+                                mutation shieldRaised($id: ID!) {
+                                  shieldRaised(id: $id)
+                                }
+                              `}
+                              variables={{ id: s.id }}
+                            >
+                              {raise => (
+                                <OutputField
+                                  onDoubleClick={s.state ? lower : raise}
+                                >
+                                  {s.state ? "Raised" : "Lowered"}
+                                </OutputField>
+                              )}
+                            </Mutation>
+                          )}
+                        </Mutation>
                       </td>
                       <td>
                         <InputField
@@ -150,14 +174,32 @@ class ShieldsCore extends Component {
                 })}
               </tbody>
             </Table>
-            <Button
-              style={{ width: "50%" }}
-              size="sm"
-              color="danger"
-              onClick={this._hitShields.bind(this, "all")}
-            >
-              Hit All
-            </Button>
+            <div>
+              <small>Double click shield status to toggle state</small>
+            </div>
+            <ButtonGroup>
+              <Button
+                size="sm"
+                color="danger"
+                onClick={this._hitShields.bind(this, "all")}
+              >
+                Hit All
+              </Button>
+              <Mutation
+                mutation={gql`
+                  mutation RestoreShields($simulatorId: ID!) {
+                    restoreShields(simulatorId: $simulatorId)
+                  }
+                `}
+                variables={{ simulatorId: this.props.simulator.id }}
+              >
+                {action => (
+                  <Button size="sm" color="success" onClick={action}>
+                    Restore All
+                  </Button>
+                )}
+              </Mutation>
+            </ButtonGroup>
           </div>
         ) : (
           "No shields"

@@ -12,6 +12,7 @@ export const macroNames = {
   setArmyContacts: "Set Army Contacts",
   sendLongRangeMessage: "Send Long Range Message",
   processedData: "Send Processed Sensors Data",
+  probeProcessedData: "Send Processed Probe Network Data",
   updateViewscreenComponent: "Show On Viewscreen",
   showViewscreenTactical: "Show Tactical on Viewscreen",
   navSetPresets: "Set Navigation Presets",
@@ -29,7 +30,8 @@ export const macroNames = {
   addObjective: "Add Mission Objective",
   completeObjective: "Complete Mission Objective",
   autoAdvance: "Auto Advance Timeline",
-  syncTimer: "Set Core Timer"
+  syncTimer: "Set Core Timer",
+  sendMessage: "Send Inter-ship Message"
 };
 const PrintMission = ({ mission, clearMission }) => {
   return (

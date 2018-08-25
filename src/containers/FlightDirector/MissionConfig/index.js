@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { withApollo, Query } from "react-apollo";
-import { Container } from "reactstrap";
+import { Container, Button } from "reactstrap";
 
 import TimelineConfig from "./TimelineConfig";
 import PrintMission from "./PrintMission";
 
 import "./style.css";
 const MISSION_SUB = gql`
-  subscription MissionSubscription {
-    missionsUpdate {
+  subscription MissionSubscription($missionId: ID!) {
+    missionsUpdate(missionId: $missionId) {
       id
       name
       description
@@ -39,6 +39,7 @@ class MissionsConfig extends Component {
   componentDidMount() {
     this.sub = this.props.subscribe({
       document: MISSION_SUB,
+      variables: { missionId: this.props.mission.id },
       updateQuery: (previousResult, { subscriptionData }) => {
         return Object.assign({}, previousResult, {
           missions: subscriptionData.data.missionsUpdate
@@ -79,7 +80,7 @@ class MissionsConfig extends Component {
           ]
         });
       }
-      history.push("/");
+      history.push("/config/mission");
       this.setState({
         selectedMission: null,
         selectedSimulator: null
@@ -128,7 +129,12 @@ class MissionsConfig extends Component {
     if (!mission) return null;
     return (
       <Container fluid className="missionConfig">
-        <h4>Missions Config </h4>
+        <h4>
+          Missions Config{" "}
+          <Button color="danger" size="sm" onClick={this.removeMission}>
+            Remove Mission
+          </Button>
+        </h4>
         <TimelineConfig
           type="mission"
           object={mission}
@@ -176,16 +182,16 @@ const MissionsConfigData = withApollo(
   }) => {
     return (
       <Query query={MissionsConfigQuery} variables={{ missionId }}>
-        {({ loading, data, subscribeToMore }) =>
-          loading || !data ? null : (
+        {({ loading, data, subscribeToMore }) => {
+          return loading || !data ? null : (
             <MissionsConfig
               history={history}
               client={client}
               subscribe={subscribeToMore}
               mission={data.missions[0]}
             />
-          )
-        }
+          );
+        }}
       </Query>
     );
   }

@@ -347,16 +347,20 @@ function randint(max, min) {
 // Initialize
 
 export default class Spark extends Component {
+  constructor(props) {
+    super(props);
+    this.myRef = React.createRef();
+  }
   // Vars
   counter = 0;
   componentDidMount() {
     // Event Listeners
-    this.canvas = document.getElementById("c");
+    this.canvas = this.myRef.current;
 
     if (this.canvas) {
       this.canvas.width = window.innerWidth;
       this.canvas.height = window.innerHeight;
-      this.context = this.canvas.getContext("2d");
+      this.canvasContext = this.canvas.getContext("2d");
 
       this.lightning = new Lightning();
 
@@ -383,10 +387,10 @@ export default class Spark extends Component {
     this.loop();
   }
   loop = () => {
-    if (!this.animating) return;
-    this.context.save();
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.context.restore();
+    if (!this.animating || !this.canvasContext.save) return;
+    this.canvasContext.save();
+    this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.canvasContext.restore();
 
     this.lightning.startPoint.set(this.points[0]);
     this.lightning.endPoint.set(this.points[1]);
@@ -394,7 +398,7 @@ export default class Spark extends Component {
     if (this.lightning.step < 5) this.lightning.step = 5;
 
     this.lightning.update();
-    this.lightning.draw(this.context);
+    this.lightning.draw(this.canvasContext);
 
     if (this.counter > Math.random() * 200) {
       this.counter = 0;
@@ -420,6 +424,16 @@ export default class Spark extends Component {
     cancelAnimationFrame(this.frame);
   }
   render() {
-    return <div />;
+    return (
+      <canvas
+        ref={this.myRef}
+        style={{
+          zIndex: 10000,
+          position: "fixed",
+          top: "0px",
+          left: "0px"
+        }}
+      />
+    );
   }
 }

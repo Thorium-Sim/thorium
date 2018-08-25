@@ -21,7 +21,9 @@ const properties = [
   { name: "Targeting" },
   { name: "Phasers" },
   { name: "Torpedo", config: true },
-  { name: "Coolant" }
+  { name: "Coolant" },
+  { name: "ComputerCore" },
+  { name: "Sickbay" }
 ];
 
 const ops = {
@@ -68,7 +70,8 @@ class Systems extends Component {
           "ShortRangeComm",
           "Phasers",
           "Reactor",
-          "Torpedo"
+          "Torpedo",
+          "Sickbay"
         ]
       });
     } else {
@@ -84,7 +87,8 @@ class Systems extends Component {
           "ShortRangeComm",
           "Phasers",
           "Reactor",
-          "Torpedo"
+          "Torpedo",
+          "Sickbay"
         ]
       });
     }

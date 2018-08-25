@@ -53,6 +53,7 @@ export const FlightStructureMutations = {
   importMission(root, args, context) {
     App.handleEvent(args, "importMission", context);
   },
+
   // Flight
   startFlight(root, args, context) {
     const flightId = uuid.v4();
@@ -69,7 +70,12 @@ export const FlightStructureMutations = {
   deleteFlight(root, args, context) {
     App.handleEvent(args, "deleteFlight", context);
   },
-
+  pauseFlight(root, args, context) {
+    App.handleEvent(args, "pauseFlight", context);
+  },
+  resumeFlight(root, args, context) {
+    App.handleEvent(args, "resumeFlight", context);
+  },
   // Simulator
   createSimulator(root, args, context = {}) {
     App.handleEvent(

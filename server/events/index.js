@@ -44,3 +44,5 @@ import "./surveyform.js";
 import "./objective.js";
 import "./keyboard.js";
 import "./environment.js";
+import "./computerCore.js";
+import "./sickbay.js";

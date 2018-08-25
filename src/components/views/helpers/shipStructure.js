@@ -6,23 +6,30 @@ import {
   DropdownItem
 } from "reactstrap";
 
+const deckLabel = (selectedDeck, decks) => {
+  if (selectedDeck) {
+    if (decks.find(d => d.id === selectedDeck)) {
+      return `Deck ${decks.find(d => d.id === selectedDeck).number}`;
+    }
+    return selectedDeck;
+  }
+  return "Select Deck";
+};
+
 export const DeckDropdown = ({
   allDecks,
   selectedDeck,
   decks,
   setSelected,
-  disabled
+  disabled,
+  children
 }) => {
   return (
     <UncontrolledDropdown>
       <DropdownToggle block caret disabled={disabled}>
-        {selectedDeck
-          ? decks.find(d => d.id === selectedDeck)
-            ? `Deck ${decks.find(d => d.id === selectedDeck).number}`
-            : "All Decks"
-          : "Select Deck"}
+        {deckLabel(selectedDeck, decks)}
       </DropdownToggle>
-      <DropdownMenu style={{ maxHeight: "200px", overflowY: "scroll" }}>
+      <DropdownMenu style={{ maxHeight: "200px", overflowY: "auto" }}>
         {allDecks && (
           <DropdownItem
             onClick={() => {
@@ -45,6 +52,8 @@ export const DeckDropdown = ({
               }}
             >{`Deck ${d.number}`}</DropdownItem>
           ))}
+        {children && <DropdownItem divider />}
+        {children}
       </DropdownMenu>
     </UncontrolledDropdown>
   );
@@ -68,7 +77,7 @@ export const RoomDropdown = ({
           : "Select Room"}
       </DropdownToggle>
       {selectedDeck && (
-        <DropdownMenu style={{ maxHeight: "200px", overflowY: "scroll" }}>
+        <DropdownMenu style={{ maxHeight: "200px", overflowY: "auto" }}>
           <DropdownItem header>
             {decks.find(d => d.id === selectedDeck)
               ? `Deck ${decks.find(d => d.id === selectedDeck).number}`

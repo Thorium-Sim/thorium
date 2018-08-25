@@ -4,9 +4,6 @@ import "./style.css";
 
 class IntruderMonitoring extends Component {
   render() {
-    console.log(
-      `${Math.round(Math.random() * 100)}%, ${Math.round(Math.random() * 100)}%`
-    );
     return (
       <div className="intruder-monitoring">
         <h1>Intruder Monitor</h1>
@@ -51,7 +48,7 @@ class IntruderMonitoring extends Component {
                           <div
                             className="dot"
                             style={{
-                              animationDelay: `${i / 20 * 7 + 3}s`
+                              animationDelay: `${(i / 20) * 7 + 3}s`
                             }}
                           />
                         </div>

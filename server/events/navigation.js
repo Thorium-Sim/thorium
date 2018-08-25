@@ -5,6 +5,15 @@ import uuid from "uuid";
 App.on("navCalculateCourse", ({ id, destination }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.calculateCourse(destination);
+  if (system.training) {
+    setTimeout(() => {
+      App.handleEvent(
+        { id, x: "123.45", y: "456.78", z: "624.58" },
+        "navCourseResponse",
+        { clientId: "training", simulatorId: system.simulatorId }
+      );
+    }, 5000);
+  }
   App.handleEvent(
     {
       simulatorId: system.simulatorId,

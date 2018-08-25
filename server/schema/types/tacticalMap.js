@@ -29,6 +29,13 @@ type TacticalLayer {
 
   #Path Options
   paths: [TacticalPath]
+
+  #Video Options
+  advance:Boolean
+  asset:String
+  autoplay:Boolean
+  loop:Boolean
+  playbackSpeed:Float
 }
 
 input TacticalLayerInput {
@@ -39,6 +46,13 @@ input TacticalLayerInput {
   labels: Boolean
   gridCols: Int
   gridRows: Int
+
+  # Video Config
+  advance:Boolean
+  asset:String
+  autoplay:Boolean
+  loop:Boolean
+  playbackSpeed:Float
 }
 
 type TacticalItem {
@@ -125,4 +139,5 @@ enum TACTICAL_TYPES {
  image
  objects 
  path
+ video
 }`;

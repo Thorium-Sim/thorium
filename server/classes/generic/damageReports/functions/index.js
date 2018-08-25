@@ -9,7 +9,7 @@ export { default as longRangeMessage } from "./longRangeMessage";
 export { default as remoteAccess } from "./remoteAccess";
 export { default as sendInventory } from "./sendInventory";
 export { default as exocomps } from "./exocomps";
-export { default as index } from "./index";
 export { default as power } from "./power";
 export { default as securityEvac } from "./securityEvac";
 export { default as softwarePanel } from "./softwarePanel";
+export { default as computerCore } from "./computerCore";

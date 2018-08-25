@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import layerComps from "./layerComps";
-
-export default class TacticalMapPreview extends Component {
+import { withApollo } from "react-apollo";
+import gql from "graphql-tag";
+class TacticalMapPreview extends Component {
   keypress = evt => {
     const distance = 0.005;
     const ratio = 16 / 9;
@@ -25,6 +26,9 @@ export default class TacticalMapPreview extends Component {
       case "KeyL":
         movement.x = distance;
         break;
+      case "Space":
+        this.toggleVideo();
+        return;
       default:
         break;
     }
@@ -55,8 +59,20 @@ export default class TacticalMapPreview extends Component {
   componentWillUnmount() {
     document.removeEventListener("keydown", this.keypress);
   }
+  toggleVideo = () => {
+    this.props.client.mutate({
+      mutation: gql`
+        mutation ToggleVideo($simulatorId: ID!) {
+          toggleViewscreenVideo(simulatorId: $simulatorId)
+        }
+      `,
+      variables: { simulatorId: this.props.simulatorId }
+    });
+  };
   render() {
     const {
+      tacticalMapId,
+      simulatorId,
       layers,
       selectObject,
       objectId,
@@ -82,9 +98,11 @@ export default class TacticalMapPreview extends Component {
               >
                 <Comp
                   {...l}
+                  simulatorId={simulatorId}
                   core={core}
                   frozen={frozen}
                   selectObject={selectObject}
+                  tacticalMapId={tacticalMapId}
                   objectId={objectId}
                   layerId={layerId}
                   updateObject={updateObject}
@@ -100,3 +118,5 @@ export default class TacticalMapPreview extends Component {
     );
   }
 }
+
+export default withApollo(TacticalMapPreview);

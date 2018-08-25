@@ -1,6 +1,6 @@
-import SensorContact from "./sensorContact";
-import { System } from "./generic";
 import uuid from "uuid";
+import { System } from "./generic";
+import SensorContact from "./sensorContact";
 class Scan {
   constructor(params) {
     this.id = params.id || uuid.v4();
@@ -126,6 +126,18 @@ export default class Sensors extends System {
     }
     if (this.scanning) return 0.5;
     return 0.1;
+  }
+
+  trainingMode() {
+    this.training = true;
+
+    this.createContact({
+      name: "Training Contact",
+      icon: "/Sensor Contacts/Icons/N",
+      picture: "/Sensor Contacts/Pictures/Astra Heavy Cruiser",
+      location: { x: -0.3, y: -0.19, z: 0 },
+      destination: { x: -0.3, y: -0.19, z: 0 }
+    });
   }
 
   newScan(scan) {

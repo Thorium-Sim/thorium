@@ -6,7 +6,8 @@ const Arrow = ({
   mouseDown = () => {},
   dimensions,
   flop,
-  connected
+  connected,
+  muted
 }) => {
   return (
     <div
@@ -29,13 +30,13 @@ const Arrow = ({
         <polygon
           className={`alertFill-${alertLevel || "5"} ${
             connected ? "connected" : ""
-          }`}
+          } ${muted ? "muted" : ""}`}
           points="45,11 45,20 10,20 0,11 "
         />
         <polygon
           className={`alertFill-${alertLevel || "5"} ${
             connected ? "connected" : ""
-          }`}
+          } ${muted ? "muted" : ""}`}
           points="0,9 10,0 45,0 45,9 "
         />
       </svg>

@@ -42,3 +42,5 @@ export { default as SurveyForm } from "./surveyform.js";
 export { default as Objective } from "./objective.js";
 export { default as Keyboard } from "./keyboard.js";
 export { default as Environment } from "./environment.js";
+export { default as ComputerCore } from "./computerCore.js";
+export { default as Sickbay } from "./sickbay.js";

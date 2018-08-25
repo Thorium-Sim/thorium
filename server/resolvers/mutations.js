@@ -42,7 +42,8 @@ import { IssueTrackerMutations } from "./issueTracker";
 import { SurveyFormMutations } from "./surveyform.js";
 import { ObjectiveMutations } from "./objective.js";
 import { KeyboardMutations } from "./keyboard.js";
-
+import { ComputerCoreMutations } from "./computerCore.js";
+import { SickbayMutations } from "./sickbay.js";
 import { EnvironmentMutations } from "./environment.js";
 
 const mutationMap = Object.assign(
@@ -94,7 +95,9 @@ const mutationMap = Object.assign(
   SurveyFormMutations,
   ObjectiveMutations,
   KeyboardMutations,
-  EnvironmentMutations
+  EnvironmentMutations,
+  ComputerCoreMutations,
+  SickbayMutations
 );
 
 export default mutationMap;

@@ -42,21 +42,7 @@ class LayoutOdyssey extends Component {
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     return (
       <div id="layout-odyssey" className={alertClass}>
-        <div
-          className="backdrop"
-          onClick={() => this.setState({ changingCard: false })}
-        >
-          {cards.map(c => (
-            <div
-              className="cardName"
-              key={c.name}
-              onClick={() => changeCard(c.name)}
-            >
-              {c.name}
-            </div>
-          ))}
-        </div>
-        <div className={`perspectiveContainer ${changingCard ? "active" : ""}`}>
+        <div className={`perspectiveContainer`}>
           {renderCards(this.props)}
           <div className="frame-text">
             <h1 className="simulator-name">{simulator.name}</h1>
@@ -69,6 +55,24 @@ class LayoutOdyssey extends Component {
                 {cardName} <span style={{ float: "right" }}>&#9660;</span>
               </h2>
             )}
+            <div className={`card-holder ${changingCard ? "active" : ""}`}>
+              {cards.map(c => (
+                <div
+                  className="cardName"
+                  key={c.name}
+                  onClick={() => {
+                    changeCard(c.name);
+                    this.setState({ changingCard: false });
+                  }}
+                >
+                  {c.name}
+                </div>
+              ))}
+              <div
+                className="backdrop"
+                onClick={() => this.setState({ changingCard: false })}
+              />
+            </div>
           </div>
           <CardFrame simulator={simulator} />
           <Widgets

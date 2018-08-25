@@ -4,6 +4,7 @@ import { aspectList } from "../../events/flight";
 import addAsset from "../addAsset";
 
 aspectList.push("stationSets");
+
 export default function exportSimulator(simId, res) {
   const sim = App.simulators.find(s => s.id === simId);
   if (!sim) {
@@ -15,7 +16,6 @@ export default function exportSimulator(simId, res) {
     mtime: new Date(),
     mode: parseInt("0100664", 8) // -rw-rw-r--
   });
-
   // Add all of the systems and other stuff.
   aspectList.forEach(a => {
     if (a === "assetObjects") return;
@@ -28,14 +28,15 @@ export default function exportSimulator(simId, res) {
       });
     }
   });
-
   // Add all of the files for Docking Ports and the simulator itself
   App.assetObjects
     .filter(a => a.simulatorId === sim.id)
     .forEach(a => addAsset(a, zipfile, "simulator"));
+
   App.dockingPorts
     .filter(a => a.simulatorId === sim.id)
     .forEach(a => addAsset(a.image, zipfile, "simulator"));
+
   App.libraryDatabase
     .filter(a => a.simulatorId === sim.id)
     .forEach(a =>

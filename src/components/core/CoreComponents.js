@@ -165,7 +165,10 @@ class CoreComponents extends Component {
     const LayoutComponent = Layouts[this.state.layout];
     const { notifications, speech, mosaic } = this.state;
     return (
-      <div style={{ backgroundColor: "#333", color: "white" }}>
+      <div
+        style={{ backgroundColor: "#333", color: "white" }}
+        className="core-container"
+      >
         <Button
           tag={Link}
           size="sm"
@@ -174,27 +177,31 @@ class CoreComponents extends Component {
           {"<-"} Client Config
         </Button>
 
-        <select
-          className="btn btn-info btn-sm"
-          onChange={this.pickSimulator.bind(this)}
-          value={this.state.simulator || ""}
-        >
-          <option>Pick a simulator</option>
-          <option disabled>⸺⸺⸺⸺⸺</option>
-          <option value="test">Test</option>
-          {simulators.map(s => (
-            <option key={s.id} value={s.id}>
-              {s.name}
-            </option>
-          ))}
-        </select>
+        {simulators.length > 1 && (
+          <select
+            className="btn btn-info btn-sm"
+            onChange={this.pickSimulator.bind(this)}
+            value={this.state.simulator || ""}
+          >
+            <option>Pick a simulator</option>
+            <option disabled />
+            {process.env.NODE_ENV !== "production" && (
+              <option value="test">Test</option>
+            )}
+            {simulators.map(s => (
+              <option key={s.id} value={s.id}>
+                {s.name}
+              </option>
+            ))}
+          </select>
+        )}
         <select
           className="btn btn-primary btn-sm"
           onChange={this.pickLayout}
           value={this.state.layout}
         >
           <option>Pick a layout</option>
-          <option disabled>⸺⸺⸺⸺⸺</option>
+          <option disabled />
           {Object.keys(Layouts)
             .filter(function(item, index, a) {
               return a.indexOf(item) === index;

@@ -24,7 +24,7 @@ class Objects extends Component {
     document.removeEventListener("keydown", this.deleteKey);
   }
   deleteKey = e => {
-    if (e.which === 8) {
+    if (e.which === 8 && e.target instanceof window.HTMLBodyElement) {
       e.preventDefault();
       const selected = this.state.selected || [];
       const objectId = this.props.objectId || null;
@@ -35,6 +35,7 @@ class Objects extends Component {
         .forEach(c => this.props.removeObject(c, this.props.id));
     }
   };
+
   flashLoop = () => {
     if (!this.looping) return;
     this.setState({
@@ -87,9 +88,9 @@ class Objects extends Component {
       .normalize()
       .multiplyScalar(speed);
     const newLoc = {
-      x: loc.x + Math.round(v.x / (10000 / i) * 10000) / 10000,
-      y: loc.y + Math.round(v.y / (10000 / i) * 10000) / 10000,
-      z: loc.z + Math.round(v.z / (10000 / i) * 10000) / 10000
+      x: loc.x + Math.round((v.x / (10000 / i)) * 10000) / 10000,
+      y: loc.y + Math.round((v.y / (10000 / i)) * 10000) / 10000,
+      z: loc.z + Math.round((v.z / (10000 / i)) * 10000) / 10000
     };
     return newLoc;
   };
@@ -117,13 +118,11 @@ class Objects extends Component {
         const el = document.getElementById(`tactical-icon-${item.id}`);
         const elBounds = el.getBoundingClientRect();
         const leftBound =
-          -1 *
-          (elBounds.width / item.size + canvasBounds.left) /
+          (-1 * (elBounds.width / item.size + canvasBounds.left)) /
           canvasBounds.width;
         const rightBound = 1 + 20 / canvasBounds.width;
         const topBound =
-          -1 *
-          (elBounds.height / item.size + canvasBounds.top) /
+          (-1 * (elBounds.height / item.size + canvasBounds.top)) /
           canvasBounds.height;
         const bottomBound = 1 + 20 / canvasBounds.height;
         if (

@@ -3,12 +3,21 @@ import { Row, Col, Card, Input } from "reactstrap";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";
-import * as steps from "./steps";
+import * as stepConfigs from "./steps";
 
+const steps = {
+  ...stepConfigs,
+  exocomps: null,
+  softwarePanel: null,
+  computerCore: null
+};
 class DamageReportsConfig extends Component {
   state = {};
   addDamageStep = (evt, type) => {
-    const { selectedSimulator: { id }, client } = this.props;
+    const {
+      selectedSimulator: { id },
+      client
+    } = this.props;
     const { selectedSystem } = this.state;
     const mutation =
       selectedSystem === "simulator"
@@ -44,7 +53,10 @@ class DamageReportsConfig extends Component {
     });
   };
   removeDamageStep = stepId => {
-    const { selectedSimulator: { id }, client } = this.props;
+    const {
+      selectedSimulator: { id },
+      client
+    } = this.props;
     const { selectedSystem } = this.state;
     const mutation =
       selectedSystem === "simulator"
@@ -155,7 +167,7 @@ class DamageReportsConfig extends Component {
               <Card>
                 <Row>
                   <Col sm="4">
-                    <Card className="scroll">
+                    <Card className="scroll" style={{ maxHeight: "25vh" }}>
                       {requiredSteps.map(s => (
                         <li
                           key={s.id}
@@ -191,13 +203,15 @@ class DamageReportsConfig extends Component {
                     </Input>
                   </Col>
                   <Col sm="8">
-                    {RequiredConfig && (
+                    {RequiredConfig ? (
                       <RequiredConfig
                         {...requiredStep}
                         client={client}
                         systemId={selectedSystem}
                         simulatorId={selectedSimulator.id}
                       />
+                    ) : (
+                      <p>No Config</p>
                     )}
                   </Col>
                 </Row>
@@ -210,7 +224,7 @@ class DamageReportsConfig extends Component {
               <Card>
                 <Row>
                   <Col sm="4">
-                    <Card className="scroll">
+                    <Card className="scroll" style={{ maxHeight: "25vh" }}>
                       {optionalSteps.map(s => (
                         <li
                           key={s.id}
@@ -246,13 +260,15 @@ class DamageReportsConfig extends Component {
                     </Input>
                   </Col>
                   <Col sm="8">
-                    {OptionalConfig && (
+                    {OptionalConfig ? (
                       <OptionalConfig
                         {...optionalStep}
                         client={client}
                         systemId={selectedSystem}
                         simulatorId={selectedSimulator.id}
                       />
+                    ) : (
+                      <p>No config</p>
                     )}
                   </Col>
                 </Row>

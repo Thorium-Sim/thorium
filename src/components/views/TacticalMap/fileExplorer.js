@@ -279,6 +279,7 @@ class VideoPreview extends Component {
         />
         <video
           alt="object"
+          muted
           src={this.props.src}
           style={{
             width: "100%",

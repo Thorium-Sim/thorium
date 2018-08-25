@@ -178,7 +178,8 @@ class StealthField extends Component {
                     <div
                       className="stealth-animation"
                       style={{
-                        WebkitMaskImage: `url(${src})`,
+                        WebkitMaskImage: `url('${src}')`,
+                        maskImage: `url('${src}')`,
                         display:
                           stealthField.id &&
                           (!stealthField.activated || stealthField.state)

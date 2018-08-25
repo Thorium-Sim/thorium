@@ -15,7 +15,7 @@ const Arrow = ({
       style={{
         height: "100%",
         transform: `translateY(calc(${level * 100}% - 10px)) ${
-          flop ? "scaleX(-1)" : ""
+          flop ? "" : "scaleX(-1)"
         }`
       }}
     >

@@ -66,7 +66,6 @@ class AssetDropzone extends Component {
   state = {};
   onDrop = evt => {
     const { folderPath, name, sim, update } = this.props;
-    console.log(folderPath, name, sim.id);
     const data = new FormData();
     data.append("simulatorId", sim.id);
     data.append("containerName", name);

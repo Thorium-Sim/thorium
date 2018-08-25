@@ -9,7 +9,7 @@ const CardButton = props => {
   return (
     <div className="card-icon-item">
       <div
-        onClick={props.changeCard.bind(this, props.name)}
+        onClick={props.changeCard && props.changeCard.bind(this, props.name)}
         className={props.name === props.currentCard ? "active" : ""}
       >
         <div className="card-button-mask">

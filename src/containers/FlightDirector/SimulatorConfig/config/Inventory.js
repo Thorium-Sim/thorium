@@ -232,7 +232,9 @@ class Inventory extends Component {
                   key={i.id}
                   onClick={() =>
                     this.setState({
-                      inventoryItem: i
+                      inventoryItem: i,
+                      selectedDeck: null,
+                      selectedRoom: null
                     })
                   }
                   className={
@@ -253,7 +255,7 @@ class Inventory extends Component {
                 <Col sm={5}>
                   <Label>Name</Label>
                   <Input
-                    autofocus="autofocus"
+                    autoFocus="autofocus"
                     type="text"
                     value={inventoryItem.name || ""}
                     onChange={evt =>
@@ -270,7 +272,7 @@ class Inventory extends Component {
                     type="select"
                     value={
                       this.state.inventoryItem.metadata
-                        ? this.state.inventoryItem.metadata.type
+                        ? this.state.inventoryItem.metadata.type || ""
                         : ""
                     }
                     onChange={evt =>
@@ -373,12 +375,12 @@ class Inventory extends Component {
                           >
                             <input
                               type="text"
-                              value={this.roomCountValue(r)}
+                              defaultValue={this.roomCountValue(r)}
                               onChange={evt => {
                                 let roomCount =
                                   this.state.inventoryItem.roomCount || [];
                                 const room = roomCount.find(
-                                  room => (room.room.id || room.room) === r.id
+                                  ro => (ro.room.id || ro.room) === r.id
                                 );
                                 if (room) {
                                   roomCount = roomCount.map(room => {

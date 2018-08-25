@@ -65,6 +65,13 @@ import SurveyForm from "./SurveyForm";
 import SecurityArmory from "./Armory";
 import MedicalArmory from "./Armory/medicalArmory";
 import DamageArmory from "./Armory/damageArmory";
+import ComputerCore from "./ComputerCore";
+import TargetingStandalone from "./Targeting/standalone";
+import Decontamination from "./Decontamination";
+import MedicalRoster from "./MedicalRoster";
+import Sickbay from "./Sickbay";
+import CommReview from "./CommReview";
+import Environment from "./Environment";
 
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -115,6 +122,9 @@ import AlertConditionCore from "./AlertCondition/core";
 import ObjectivesCore from "./Objectives/core";
 import SurveyFormCore from "./SurveyForm/core";
 import ArmoryCore from "./Armory/core";
+import ComputerCoreCore from "./ComputerCore/core";
+import DecontaminationCore from "./Decontamination/core";
+import SickbayCore from "./Sickbay/core";
 
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -187,7 +197,14 @@ const Views = {
   SecurityArmory,
   MedicalArmory,
   DamageArmory,
-  MedicalTeams
+  MedicalTeams,
+  ComputerCore,
+  TargetingStandalone,
+  Decontamination,
+  MedicalRoster,
+  Sickbay,
+  CommReview,
+  Environment
 };
 
 export const Widgets = {
@@ -306,7 +323,10 @@ export const Cores = {
   AlertConditionCore,
   ObjectivesCore,
   SurveyFormCore,
-  ArmoryCore
+  ArmoryCore,
+  ComputerCoreCore,
+  DecontaminationCore,
+  SickbayCore
 };
 
 export default Views;

@@ -12,6 +12,7 @@ App.on("addSensorsArray", ({ simulatorId, domain }) => {
   );
 });
 App.on("removedSensorsArray", ({ id }) => {});
+
 App.on("sensorScanRequest", ({ id, request }) => {
   const system = App.systems.find(sys => sys.id === id);
   pubsub.publish("notify", {
@@ -32,15 +33,43 @@ App.on("sensorScanRequest", ({ id, request }) => {
     },
     "addCoreFeed"
   );
+
   system.scanRequested(request);
   pubsub.publish(
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")
   );
+  if (system.training) {
+    setTimeout(() => {
+      App.handleEvent(
+        { id, result: "None Detected (Training Mode)" },
+        "sensorScanResult",
+        { clientId: "training", simulatorId: system.simulatorId }
+      );
+    }, 5000);
+  }
 });
 App.on("sensorScanResult", ({ id, result }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.scanResulted(result);
+  const simulator = App.simulators.find(s => s.id === system.simulatorId);
+  const stations = simulator.stations.filter(s =>
+    s.cards.find(
+      c =>
+        c.component ===
+        (system.domain === "external" ? "SensorScans" : "SecurityScans")
+    )
+  );
+  stations.forEach(s => {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: system.simulatorId,
+      station: s.name,
+      title: `Sensor Scan Answered`,
+      body: result,
+      color: "info"
+    });
+  });
   pubsub.publish(
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")
@@ -66,6 +95,19 @@ App.on("processedData", ({ id, simulatorId, domain = "external", data }) => {
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")
   );
+  const stations = simulator.stations.filter(s =>
+    s.cards.find(c => c.component === "Sensors")
+  );
+  stations.forEach(s => {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: system.simulatorId,
+      station: s.name,
+      title: `New Processed Data`,
+      body: data,
+      color: "info"
+    });
+  });
 });
 App.on("sensorScanCancel", ({ id }) => {
   const system = App.systems.find(sys => sys.id === id);
@@ -95,8 +137,17 @@ App.on("sensorScanCancel", ({ id }) => {
 });
 App.on("setPresetAnswers", ({ simulatorId, domain, presetAnswers }) => {
   const system = App.systems.find(
-    sys => sys.simulatorId === simulatorId && sys.domain === domain
+    sys =>
+      sys.simulatorId === simulatorId &&
+      sys.domain === domain &&
+      sys.class === "Sensors"
   );
+  if (!system) {
+    console.error(
+      "Invalid system. You probably forgot to add the domain to the sensors macro"
+    );
+    return;
+  }
   const simulator = App.simulators.find(s => s.id === system.simulatorId);
   system &&
     system.setPresetAnswers(

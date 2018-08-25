@@ -12,11 +12,11 @@ import "./style.css";
 
 const DECODING_SUB = gql`
   subscription LRDecoding($simulatorId: ID!) {
-    longRangeCommunicationsUpdate(simulatorId: $simulatorId, crew: true) {
+    longRangeCommunicationsUpdate(simulatorId: $simulatorId) {
       id
       simulatorId
       name
-      messages {
+      messages(crew: true) {
         id
         a
         f
@@ -118,9 +118,9 @@ class Decoding extends Component {
       // 126 Get the adjuster
       decodedMessage = decodedMessage.split();
       const adjuster =
-        (Math.round(Math.sin(decodeProgress * a + f) * ra + rf) +
+        ((Math.round(Math.sin(decodeProgress * a + f) * ra + rf) +
           message.length) %
-          94 +
+          94) +
         32;
       if (a === ra && f === rf) {
         decodedMessage[decodeProgress] = message[decodeProgress - 1];
@@ -334,11 +334,11 @@ class Decoding extends Component {
 
 const DECODING_QUERY = gql`
   query LRDecoding($simulatorId: ID) {
-    longRangeCommunications(simulatorId: $simulatorId, crew: true) {
+    longRangeCommunications(simulatorId: $simulatorId) {
       id
       simulatorId
       name
-      messages {
+      messages(crew: true) {
         id
         a
         f

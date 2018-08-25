@@ -6,7 +6,7 @@ export default class Flight {
     this.id = params.id || uuid.v4();
     this.name = params.name || randomWords(3).join("-");
     this.date = params.date || Date.now();
-    this.running = params.running || true;
+    this.running = params.running || false;
     this.simulators = params.simulators || [];
   }
   addSimulator(simulator) {
@@ -17,5 +17,11 @@ export default class Flight {
   }
   stopFlight() {
     this.running = false;
+  }
+  pause() {
+    this.running = false;
+  }
+  resume() {
+    this.running = true;
   }
 }

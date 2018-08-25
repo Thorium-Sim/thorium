@@ -70,21 +70,31 @@ class TorpedoLoading extends Component {
     if (this.props.data.loading || !this.props.data.torpedos) return null;
     const torpedos = this.props.data.torpedos;
     if (!torpedos) return null;
+    console.log(
+      torpedos.length,
+      this.props.maxLaunchers,
+      torpedos.length > (this.props.maxLaunchers || Infinity)
+    );
     return (
       <div className="torpedo-loading">
-        {torpedos.map(
-          t =>
-            torpedos.length > (this.props.maxLaunchers || Infinity) ? (
+        {torpedos.map(t => {
+          if (torpedos.length > (this.props.maxLaunchers || Infinity)) {
+            console.log("Firign");
+            return (
               <TorpedoFire key={t.id} torpedo={t} client={this.props.client} />
-            ) : (
+            );
+          } else {
+            console.log("Loading");
+            return (
               <TorpedoLoader
                 key={t.id}
                 torpedo={t}
                 targeting={this.props.targeting}
                 client={this.props.client}
               />
-            )
-        )}
+            );
+          }
+        })}
         {this.props.clientObj && (
           <Tour
             steps={trainingSteps}

@@ -28,6 +28,9 @@ export default class SignalJammer extends System {
   get stealthFactor() {
     return this.strength;
   }
+  trainingMode() {
+    this.addSignal({});
+  }
   update({ level, strength, active }) {
     if (level && level >= 0) this.level = level;
     if (strength && strength >= 0) this.strength = strength;
