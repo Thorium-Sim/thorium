@@ -20,14 +20,6 @@ simulator {
 }
 station {
   name
-  login
-  executive
-  messageGroups
-  widgets
-  cards {
-    name
-    component
-  }
 }
 loginName
 loginState

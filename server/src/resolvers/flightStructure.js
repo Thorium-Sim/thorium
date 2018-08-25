@@ -13,6 +13,13 @@ export const FlightStructureQueries = {
     if (template) returnVal = returnVal.filter(s => s.template);
     return returnVal;
   },
+  station: (root, { simulatorId, station }) => {
+    const sim = App.simulators.find(s => s.id === simulatorId);
+    if (!sim) return null;
+    const { stations } = sim;
+    if (!stations) return null;
+    return stations.find(s => s.name === station);
+  },
   flights(root, { running, id }) {
     let returnRes = App.flights;
     if (running) {
@@ -146,6 +153,27 @@ export const FlightStructureMutations = {
   },
   removeSimulatorAmbiance(rootValue, params, context) {
     App.handleEvent(params, "removeSimulatorAmbiance", context);
+  },
+  addSimulatorStationCard(rootValue, params, context) {
+    App.handleEvent(params, "addSimulatorStationCard", context);
+  },
+  removeSimulatorStationCard(rootValue, params, context) {
+    App.handleEvent(params, "removeSimulatorStationCard", context);
+  },
+  editSimulatorStationCard(rootValue, params, context) {
+    App.handleEvent(params, "editSimulatorStationCard", context);
+  },
+  setSimulatorStationMessageGroup(rootValue, params, context) {
+    App.handleEvent(params, "setSimulatorStationMessageGroup", context);
+  },
+  setSimulatorStationLogin(rootValue, params, context) {
+    App.handleEvent(params, "setSimulatorStationLogin", context);
+  },
+  setSimulatorStationExecutive(rootValue, params, context) {
+    App.handleEvent(params, "setSimulatorStationExecutive", context);
+  },
+  setSimulatorStationWidget(rootValue, params, context) {
+    App.handleEvent(params, "setSimulatorStationWidget", context);
   },
   // Timeline
   addTimelineStep(root, args, context) {

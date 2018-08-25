@@ -18,6 +18,17 @@ assets {
   top
   logo
 }
+stations {
+  name
+  login
+  executive
+  messageGroups
+  widgets
+  cards {
+    name
+    component
+  }
+}
 `;
 
 const QUERY = gql`
@@ -35,26 +46,20 @@ ${queryData}
   }
 `;
 
-const excludedStations = ["Sound", "Blackout", "Viewscreen", "Keyboard"];
 class SimulatorData extends Component {
   state = {};
-  componentDidMount() {
-    if (
-      excludedStations.indexOf(this.props.station.name) > -1 ||
-      this.props.station.cards.find(
-        c => excludedStations.indexOf(c.component) > -1
-      )
-    )
-      return;
-    this.props.playSound({ url: "/sciences.ogg" });
-  }
   render() {
+    const {
+      station: { name },
+      simulator
+    } = this.props;
     return (
-      <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
+      <Query query={QUERY} variables={{ simulatorId: simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
           const { simulators } = data;
           if (loading || !simulators) return null;
           if (!simulators[0]) return <div>No Simulator</div>;
+          const station = simulators[0].stations.find(s => s.name === name);
           return (
             <SubscriptionHelper
               subscribe={() =>
@@ -69,7 +74,13 @@ class SimulatorData extends Component {
                 })
               }
             >
-              <Client {...this.props} simulator={simulators[0]} />
+              {
+                <Client
+                  {...this.props}
+                  simulator={simulators[0]}
+                  station={station || this.props.station}
+                />
+              }
             </SubscriptionHelper>
           );
         }}

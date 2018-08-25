@@ -115,37 +115,38 @@ export default class CardFrame extends Component {
       };
     } else {
       this.state = {
-        card: this.props.station.cards[0].name
+        card: this.props.station.cards && this.props.station.cards[0].name
       };
     }
   }
-  shouldComponentUpdate(nextProps, nextState) {
-    // Check everything
-    if (this.props.test) return true;
-    if (
-      nextProps.client.id !== this.props.client.id ||
-      nextProps.client.loginName !== this.props.client.loginName ||
-      nextProps.client.loginState !== this.props.client.loginState ||
-      nextProps.client.offlineState !== this.props.client.offlineState ||
-      nextProps.client.training !== this.props.client.training ||
-      nextProps.client.hypercard !== this.props.client.hypercard ||
-      nextProps.flight.id !== this.props.flight.id ||
-      nextProps.simulator.id !== this.props.simulator.id ||
-      nextProps.simulator.name !== this.props.simulator.name ||
-      nextProps.simulator.alertlevel !== this.props.simulator.alertlevel ||
-      nextProps.simulator.layout !== this.props.simulator.layout ||
-      nextProps.station.name !== this.props.station.name ||
-      nextProps.station.login !== this.props.station.login ||
-      nextState.card !== this.state.card
-    ) {
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   // Check everything
+  //   console.log("Updating");
+  //   if (this.props.test) return true;
+  //   if (
+  //     nextProps.client.id !== this.props.client.id ||
+  //     nextProps.client.loginName !== this.props.client.loginName ||
+  //     nextProps.client.loginState !== this.props.client.loginState ||
+  //     nextProps.client.offlineState !== this.props.client.offlineState ||
+  //     nextProps.client.training !== this.props.client.training ||
+  //     nextProps.client.hypercard !== this.props.client.hypercard ||
+  //     nextProps.flight.id !== this.props.flight.id ||
+  //     nextProps.simulator.id !== this.props.simulator.id ||
+  //     nextProps.simulator.name !== this.props.simulator.name ||
+  //     nextProps.simulator.alertlevel !== this.props.simulator.alertlevel ||
+  //     nextProps.simulator.layout !== this.props.simulator.layout ||
+  //     nextProps.station.name !== this.props.station.name ||
+  //     nextProps.station.login !== this.props.station.login ||
+  //     nextState.card !== this.state.card
+  //   ) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
   componentDidUpdate(prevProps) {
     if (prevProps.station.name !== this.props.station.name) {
       this.setState({
-        card: this.props.station.cards[0].name
+        card: this.props.station.cards && this.props.station.cards[0].name
       });
     }
   }
@@ -153,7 +154,7 @@ export default class CardFrame extends Component {
     this.setState({
       card: this.props.station.cards.find(c => c.name === name)
         ? name
-        : this.props.station.cards[0].name
+        : this.props.station.cards && this.props.station.cards[0].name
     });
   };
   render() {

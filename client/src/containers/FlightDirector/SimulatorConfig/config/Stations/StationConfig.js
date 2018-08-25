@@ -1,5 +1,5 @@
 import React from "react";
-import { Input } from "reactstrap";
+import { Input, Container, Row, Col } from "reactstrap";
 import ops from "./ops";
 import FontAwesome from "react-fontawesome";
 import Views, { Widgets } from "../../../../../components/views/index";
@@ -115,7 +115,7 @@ const ConfigStation = props => {
     });
   };
   return (
-    <div>
+    <Container fluid>
       <h5>Stations</h5>
       <div className="scroll">
         <div
@@ -230,36 +230,44 @@ const ConfigStation = props => {
               ))}
           </select>
           <label>Message Groups:</label>
-          {["SecurityTeams", "DamageTeams", "MedicalTeams"].map(group => (
-            <label
-              key={`messageGroup-${group}`}
-              style={{ display: "inline-block" }}
-            >
-              <input
-                type="checkbox"
-                checked={station.messageGroups.indexOf(group) > -1}
-                onChange={evt => toggleStationMessageGroup(evt, group)}
-              />{" "}
-              {group}
-            </label>
-          ))}
+          <Row>
+            {["SecurityTeams", "DamageTeams", "MedicalTeams"].map(group => (
+              <Col sm={4}>
+                <label
+                  key={`messageGroup-${group}`}
+                  style={{ display: "inline-block" }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={station.messageGroups.indexOf(group) > -1}
+                    onChange={evt => toggleStationMessageGroup(evt, group)}
+                  />{" "}
+                  {titleCase(group)}
+                </label>
+              </Col>
+            ))}
+          </Row>
           <label>Widgets:</label>
-          {Object.keys(Widgets).map(widget => (
-            <label
-              key={`widgets-${widget}`}
-              style={{ display: "inline-block" }}
-            >
-              <input
-                type="checkbox"
-                checked={station.widgets.indexOf(widget) > -1}
-                onChange={evt => toggleStationWidget(evt, widget)}
-              />{" "}
-              {widget}
-            </label>
-          ))}
+          <Row>
+            {Object.keys(Widgets).map(widget => (
+              <Col sm={4}>
+                <label
+                  key={`widgets-${widget}`}
+                  style={{ display: "inline-block" }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={station.widgets.indexOf(widget) > -1}
+                    onChange={evt => toggleStationWidget(evt, widget)}
+                  />{" "}
+                  {titleCase(widget)}
+                </label>
+              </Col>
+            ))}
+          </Row>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 
