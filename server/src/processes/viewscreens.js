@@ -1,5 +1,6 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
+import { Duration } from "luxon";
 
 const viewscreenCache = [];
 function viewscreenMachine() {
@@ -127,4 +128,26 @@ function viewscreenMachine() {
   setTimeout(viewscreenMachine, 500);
 }
 
+function viewscreenTimer() {
+  App.viewscreens.forEach(viewscreen => {
+    if (viewscreen.component === "Timer");
+    const { data = "{}" } = viewscreen;
+    const { timer, stopped } = JSON.parse(data);
+    if (stopped || timer === "00:00:00" || timer === "0:0:0" || !timer) {
+      return;
+    }
+    const [hours, minutes, seconds] = timer.split(":");
+    const dur = Duration.fromObject({
+      hours: parseInt(hours, 10),
+      minutes: parseInt(minutes, 10),
+      seconds: parseInt(seconds, 10)
+    })
+      .minus(1000)
+      .normalize()
+      .toFormat("hh:mm:ss");
+    viewscreen.updateData({ ...JSON.parse(data), timer: dur });
+  });
+  setTimeout(viewscreenTimer, 1000);
+}
 viewscreenMachine();
+viewscreenTimer();
