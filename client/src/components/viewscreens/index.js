@@ -31,6 +31,7 @@ export { default as IntruderMonitoring } from "./IntruderMonitoring";
 export { default as RadiationMonitoring } from "./RadiationMonitoring";
 export { default as ShipStatus } from "./ShipStatus";
 export { default as ShipModel } from "./ShipModel";
+export { default as Timer } from "./Timer";
 
 export { default as InformationConfig } from "./Information/config";
 export { default as InternalSensorsConfig } from "./InternalSensors/config";
@@ -42,3 +43,4 @@ export { default as VideoConfig } from "./Video/config";
 export { default as TacticalMapConfig } from "./TacticalMap/config";
 export { default as FacesConfig } from "./Faces/config";
 export { default as ShipModelConfig } from "./ShipModel/config";
+export { default as TimerConfig } from "./Timer/config";
