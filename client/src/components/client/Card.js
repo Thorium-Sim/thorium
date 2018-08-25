@@ -115,7 +115,7 @@ export default class CardFrame extends Component {
       };
     } else {
       this.state = {
-        card: this.props.station.cards[0].name
+        card: this.props.station.cards && this.props.station.cards[0].name
       };
     }
   }
@@ -146,7 +146,7 @@ export default class CardFrame extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.station.name !== this.props.station.name) {
       this.setState({
-        card: this.props.station.cards[0].name
+        card: this.props.station.cards && this.props.station.cards[0].name
       });
     }
   }
@@ -154,7 +154,7 @@ export default class CardFrame extends Component {
     this.setState({
       card: this.props.station.cards.find(c => c.name === name)
         ? name
-        : this.props.station.cards[0].name
+        : this.props.station.cards && this.props.station.cards[0].name
     });
   };
   render() {

@@ -60,7 +60,6 @@ class SimulatorData extends Component {
           if (loading || !simulators) return null;
           if (!simulators[0]) return <div>No Simulator</div>;
           const station = simulators[0].stations.find(s => s.name === name);
-          console.log(simulators[0], this.props, station);
           return (
             <SubscriptionHelper
               subscribe={() =>
@@ -79,7 +78,7 @@ class SimulatorData extends Component {
                 <Client
                   {...this.props}
                   simulator={simulators[0]}
-                  station={station}
+                  station={station || this.props.station}
                 />
               }
             </SubscriptionHelper>

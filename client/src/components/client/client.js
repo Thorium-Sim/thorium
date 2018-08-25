@@ -9,6 +9,7 @@ const excludedStations = ["Sound", "Blackout", "Viewscreen", "Keyboard"];
 class Client extends Component {
   componentDidMount() {
     if (
+      !this.props.station ||
       excludedStations.indexOf(this.props.station.name) > -1 ||
       this.props.station.cards.find(
         c => excludedStations.indexOf(c.component) > -1
