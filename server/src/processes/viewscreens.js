@@ -130,7 +130,6 @@ function viewscreenMachine() {
 
 function viewscreenTimer() {
   App.viewscreens.forEach(viewscreen => {
-    console.log(viewscreen);
     if (viewscreen.component === "Timer");
     const { data = "{}" } = viewscreen;
     const { timer, stopped } = JSON.parse(data);

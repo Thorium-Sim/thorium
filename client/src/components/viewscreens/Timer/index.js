@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 class TimerViewscreen extends Component {
   render() {
-    console.log(this.props);
     const {
       viewscreen: { data = "{}" }
     } = this.props;
