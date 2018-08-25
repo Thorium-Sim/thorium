@@ -2,7 +2,7 @@ import uuid from "uuid";
 import App from "../app";
 import Team from "./teams";
 import DamageStep from "./generic/damageStep";
-
+import { Station } from "./stationSet";
 class Ambiance {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
@@ -98,7 +98,7 @@ export default class Simulator {
     this.class = "Simulator";
     this.assets = new Assets(params.assets);
     this.stationSet = params.stationSet || null;
-    this.stations = params.stations || [];
+    this.stations = [];
     this.exocomps = params.exocomps || 0;
     this.mission = params.mission || null;
     this.currentTimelineStep = params.currentTimelineStep || 0;
@@ -108,7 +108,8 @@ export default class Simulator {
     this.training = params.training || false;
     this.ship = new Ship(params.ship);
     this.panels = params.panels || [];
-
+    params.stations &&
+      params.stations.forEach(s => this.stations.push(new Station(s)));
     // Effects Control
     this.lighting = new Lighting(params.lighting);
     this.ambiance = [];
@@ -187,6 +188,7 @@ export default class Simulator {
   removeAmbiance(id) {
     this.ambiance = this.ambiance.filter(a => a.id !== id);
   }
+
   // Ship
   clamps(tf) {
     this.ship.clamps = tf;

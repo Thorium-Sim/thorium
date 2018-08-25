@@ -42,4 +42,13 @@ updateSimulatorLighting(id:ID!, lighting: LightingInput!):String
 addSimulatorAmbiance(id: ID!, name: String!):String
 updateSimulatorAmbiance(id: ID!, ambiance: AmbianceInput!):String
 removeSimulatorAmbiance(id: ID!, ambianceId: ID!):String
+
+## Stations
+addSimulatorStationCard(simulatorId: ID!, station: String!, cardName: String!, cardComponent: String!):String
+removeSimulatorStationCard(simulatorId: ID!, station: String!, cardName: String!):String
+editSimulatorStationCard(simulatorId: ID!, station: String!, cardName: String!, newCardName: String, cardComponent: String):String
+setSimulatorStationMessageGroup(simulatorId: ID!, station: String!,group: MESSAGE_GROUP!, state: Boolean!):String
+setSimulatorStationLogin(simulatorId: ID!, station: String!, login: Boolean!):String
+setSimulatorStationExecutive(simulatorId: ID!, station: String!, exec: Boolean!):String
+setSimulatorStationWidget(simulatorId: ID!, station: String!, widget: String!, state: Boolean!):String
 `;
