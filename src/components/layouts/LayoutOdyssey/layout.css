@@ -1,0 +1,452 @@
+#layout-odyssey {
+  background-color: black;
+  color: white;
+  font-family: "Bank Gothic";
+  perspective: 900px; }
+  #layout-odyssey h1,
+  #layout-odyssey h2,
+  #layout-odyssey h3,
+  #layout-odyssey h4,
+  #layout-odyssey h5,
+  #layout-odyssey h6 {
+    color: white; }
+  #layout-odyssey .perspectiveContainer {
+    background-color: black;
+    transition: transform 0.3s ease; }
+  #layout-odyssey .perspectiveContainer.active {
+    transform: translateZ(-208px) translateY(-800px) rotatex(-33deg); }
+  #layout-odyssey svg {
+    top: 0;
+    z-index: 10; }
+  #layout-odyssey .cardContainer {
+    position: absolute;
+    width: 92% !important;
+    left: 4%;
+    height: 77%;
+    top: 12%;
+    padding: 16px;
+    position: absolute;
+    align-self: center;
+    overflow: hidden; }
+  #layout-odyssey .cardName {
+    font-family: "Gamecuben";
+    text-transform: uppercase;
+    font-size: 30px;
+    margin: 30px; }
+    #layout-odyssey .cardName:hover {
+      color: #c79c40; }
+  #layout-odyssey .card-holder {
+    z-index: 1001;
+    top: 0;
+    position: fixed;
+    pointer-events: none; }
+    #layout-odyssey .card-holder .backdrop {
+      top: 0;
+      opacity: 0;
+      pointer-events: none;
+      background: rgba(0, 0, 0, 0.7);
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      padding: 20%;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      transition: opacity 0.5s ease !important; }
+    #layout-odyssey .card-holder .cardName {
+      opacity: 0;
+      line-height: 3;
+      position: relative; }
+      #layout-odyssey .card-holder .cardName:hover {
+        color: #c79c40; }
+      #layout-odyssey .card-holder .cardName:nth-child(1) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease; }
+      #layout-odyssey .card-holder .cardName:nth-child(2) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease; }
+      #layout-odyssey .card-holder .cardName:nth-child(3) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease; }
+      #layout-odyssey .card-holder .cardName:nth-child(4) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease; }
+      #layout-odyssey .card-holder .cardName:nth-child(5) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease; }
+      #layout-odyssey .card-holder .cardName:nth-child(6) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease; }
+      #layout-odyssey .card-holder .cardName:nth-child(7) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease; }
+      #layout-odyssey .card-holder .cardName:nth-child(8) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease; }
+      #layout-odyssey .card-holder .cardName:nth-child(9) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease; }
+    #layout-odyssey .card-holder.active {
+      pointer-events: all; }
+      #layout-odyssey .card-holder.active .cardName {
+        opacity: 1;
+        line-height: 1;
+        z-index: 1001; }
+        #layout-odyssey .card-holder.active .cardName:nth-child(1) {
+          transition: opacity 0.3s ease 0s, line-height 0.3s ease 0s, color 0.2s ease; }
+        #layout-odyssey .card-holder.active .cardName:nth-child(2) {
+          transition: opacity 0.3s ease 0.1s, line-height 0.3s 0.1s ease, color 0.2s ease; }
+        #layout-odyssey .card-holder.active .cardName:nth-child(3) {
+          transition: opacity 0.3s ease 0.2s, line-height 0.3s 0.2s ease, color 0.2s ease; }
+        #layout-odyssey .card-holder.active .cardName:nth-child(4) {
+          transition: opacity 0.3s ease 0.3s, line-height 0.3s 0.3s ease, color 0.2s ease; }
+        #layout-odyssey .card-holder.active .cardName:nth-child(5) {
+          transition: opacity 0.3s ease 0.4s, line-height 0.3s 0.4s ease, color 0.2s ease; }
+        #layout-odyssey .card-holder.active .cardName:nth-child(6) {
+          transition: opacity 0.3s ease 0.5s, line-height 0.3s 0.5s ease, color 0.2s ease; }
+        #layout-odyssey .card-holder.active .cardName:nth-child(7) {
+          transition: opacity 0.3s ease 0.6s, line-height 0.3s 0.6s ease, color 0.2s ease; }
+        #layout-odyssey .card-holder.active .cardName:nth-child(8) {
+          transition: opacity 0.3s ease 0.7s, line-height 0.3s 0.7s ease, color 0.2s ease; }
+        #layout-odyssey .card-holder.active .cardName:nth-child(9) {
+          transition: opacity 0.3s ease 0.8s, line-height 0.3s 0.8s ease, color 0.2s ease; }
+      #layout-odyssey .card-holder.active .backdrop {
+        opacity: 1;
+        pointer-events: all; }
+  #layout-odyssey .frame-text {
+    position: absolute;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    font-family: "Gamecuben";
+    text-transform: uppercase; }
+  #layout-odyssey .simulator-name {
+    position: absolute;
+    bottom: 10px;
+    left: 10px; }
+  #layout-odyssey .station-name {
+    position: absolute;
+    top: 10px;
+    right: 10px; }
+  #layout-odyssey .card-name {
+    min-width: 400px;
+    box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.2), inset 3px 3px 5px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 3px 10px;
+    border-radius: 20px;
+    position: absolute;
+    font-size: 25px;
+    top: 7px;
+    left: 10px;
+    transition: background-color 0.3s ease;
+    pointer-events: all; }
+  #layout-odyssey .card-name:hover {
+    background-color: rgba(255, 255, 255, 0.4); }
+  #layout-odyssey .btn {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    font-family: "Bank Gothic";
+    color: white;
+    text-transform: uppercase;
+    background-image: url("./lines.svg");
+    background-size: 1px 4px;
+    border: solid 2px rgba(255, 255, 255, 0.5);
+    box-shadow: 0px 0px 3px 1px white, inset 0px 0px 3px 1px rgba(255, 255, 255, 0.5);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; }
+    @media screen and (prefers-reduced-motion: reduce) {
+      #layout-odyssey .btn {
+        transition: none; } }
+    #layout-odyssey .btn:hover, #layout-odyssey .btn:focus {
+      text-decoration: none; }
+    #layout-odyssey .btn:focus, #layout-odyssey .btn.focus {
+      outline: 0;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }
+    #layout-odyssey .btn.disabled, #layout-odyssey .btn:disabled {
+      opacity: 0.65; }
+    #layout-odyssey .btn:not(:disabled):not(.disabled) {
+      cursor: pointer; }
+  #layout-odyssey a.btn.disabled,
+  #layout-odyssey fieldset:disabled a.btn {
+    pointer-events: none; }
+  #layout-odyssey .btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff; }
+    #layout-odyssey .btn-primary:hover {
+      color: #fff;
+      background-color: #0061c9;
+      border-color: #0059b8; }
+    #layout-odyssey .btn-primary:focus, #layout-odyssey .btn-primary.focus {
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); }
+    #layout-odyssey .btn-primary.disabled, #layout-odyssey .btn-primary:disabled {
+      color: #fff;
+      background-color: #007bff;
+      border-color: #007bff; }
+    #layout-odyssey .btn-primary:not(:disabled):not(.disabled):active, #layout-odyssey .btn-primary:not(:disabled):not(.disabled).active,
+    .show > #layout-odyssey .btn-primary.dropdown-toggle {
+      color: #fff;
+      background-color: #004a99;
+      border-color: #00448c; }
+      #layout-odyssey .btn-primary:not(:disabled):not(.disabled):active:focus, #layout-odyssey .btn-primary:not(:disabled):not(.disabled).active:focus,
+      .show > #layout-odyssey .btn-primary.dropdown-toggle:focus {
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); }
+  #layout-odyssey .btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d; }
+    #layout-odyssey .btn-secondary:hover {
+      color: #fff;
+      background-color: #535a60;
+      border-color: #4b5157; }
+    #layout-odyssey .btn-secondary:focus, #layout-odyssey .btn-secondary.focus {
+      box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5); }
+    #layout-odyssey .btn-secondary.disabled, #layout-odyssey .btn-secondary:disabled {
+      color: #fff;
+      background-color: #6c757d;
+      border-color: #6c757d; }
+    #layout-odyssey .btn-secondary:not(:disabled):not(.disabled):active, #layout-odyssey .btn-secondary:not(:disabled):not(.disabled).active,
+    .show > #layout-odyssey .btn-secondary.dropdown-toggle {
+      color: #fff;
+      background-color: #3d4246;
+      border-color: #373b3f; }
+      #layout-odyssey .btn-secondary:not(:disabled):not(.disabled):active:focus, #layout-odyssey .btn-secondary:not(:disabled):not(.disabled).active:focus,
+      .show > #layout-odyssey .btn-secondary.dropdown-toggle:focus {
+        box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5); }
+  #layout-odyssey .btn-success {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745; }
+    #layout-odyssey .btn-success:hover {
+      color: #fff;
+      background-color: #1e7c33;
+      border-color: #1a6d2d; }
+    #layout-odyssey .btn-success:focus, #layout-odyssey .btn-success.focus {
+      box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5); }
+    #layout-odyssey .btn-success.disabled, #layout-odyssey .btn-success:disabled {
+      color: #fff;
+      background-color: #28a745;
+      border-color: #28a745; }
+    #layout-odyssey .btn-success:not(:disabled):not(.disabled):active, #layout-odyssey .btn-success:not(:disabled):not(.disabled).active,
+    .show > #layout-odyssey .btn-success.dropdown-toggle {
+      color: #fff;
+      background-color: #145523;
+      border-color: #124a1f; }
+      #layout-odyssey .btn-success:not(:disabled):not(.disabled):active:focus, #layout-odyssey .btn-success:not(:disabled):not(.disabled).active:focus,
+      .show > #layout-odyssey .btn-success.dropdown-toggle:focus {
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5); }
+  #layout-odyssey .btn-info {
+    color: #fff;
+    background-color: #17a2b8;
+    border-color: #17a2b8; }
+    #layout-odyssey .btn-info:hover {
+      color: #fff;
+      background-color: #117888;
+      border-color: #0f6a79; }
+    #layout-odyssey .btn-info:focus, #layout-odyssey .btn-info.focus {
+      box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.5); }
+    #layout-odyssey .btn-info.disabled, #layout-odyssey .btn-info:disabled {
+      color: #fff;
+      background-color: #17a2b8;
+      border-color: #17a2b8; }
+    #layout-odyssey .btn-info:not(:disabled):not(.disabled):active, #layout-odyssey .btn-info:not(:disabled):not(.disabled).active,
+    .show > #layout-odyssey .btn-info.dropdown-toggle {
+      color: #fff;
+      background-color: #0c525d;
+      border-color: #0a4852; }
+      #layout-odyssey .btn-info:not(:disabled):not(.disabled):active:focus, #layout-odyssey .btn-info:not(:disabled):not(.disabled).active:focus,
+      .show > #layout-odyssey .btn-info.dropdown-toggle:focus {
+        box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.5); }
+  #layout-odyssey .btn-warning {
+    color: #212529;
+    background-color: #ffc107;
+    border-color: #ffc107; }
+    #layout-odyssey .btn-warning:hover {
+      color: #212529;
+      background-color: #d09c00;
+      border-color: #bf8f00; }
+    #layout-odyssey .btn-warning:focus, #layout-odyssey .btn-warning.focus {
+      box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5); }
+    #layout-odyssey .btn-warning.disabled, #layout-odyssey .btn-warning:disabled {
+      color: #212529;
+      background-color: #ffc107;
+      border-color: #ffc107; }
+    #layout-odyssey .btn-warning:not(:disabled):not(.disabled):active, #layout-odyssey .btn-warning:not(:disabled):not(.disabled).active,
+    .show > #layout-odyssey .btn-warning.dropdown-toggle {
+      color: #fff;
+      background-color: #a07800;
+      border-color: #936e00; }
+      #layout-odyssey .btn-warning:not(:disabled):not(.disabled):active:focus, #layout-odyssey .btn-warning:not(:disabled):not(.disabled).active:focus,
+      .show > #layout-odyssey .btn-warning.dropdown-toggle:focus {
+        box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5); }
+  #layout-odyssey .btn-danger {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545; }
+    #layout-odyssey .btn-danger:hover {
+      color: #fff;
+      background-color: #bb202f;
+      border-color: #ac1e2b; }
+    #layout-odyssey .btn-danger:focus, #layout-odyssey .btn-danger.focus {
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5); }
+    #layout-odyssey .btn-danger.disabled, #layout-odyssey .btn-danger:disabled {
+      color: #fff;
+      background-color: #dc3545;
+      border-color: #dc3545; }
+    #layout-odyssey .btn-danger:not(:disabled):not(.disabled):active, #layout-odyssey .btn-danger:not(:disabled):not(.disabled).active,
+    .show > #layout-odyssey .btn-danger.dropdown-toggle {
+      color: #fff;
+      background-color: #921925;
+      border-color: #871722; }
+      #layout-odyssey .btn-danger:not(:disabled):not(.disabled):active:focus, #layout-odyssey .btn-danger:not(:disabled):not(.disabled).active:focus,
+      .show > #layout-odyssey .btn-danger.dropdown-toggle:focus {
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5); }
+  #layout-odyssey .btn-light {
+    color: #212529;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa; }
+    #layout-odyssey .btn-light:hover {
+      color: #212529;
+      background-color: #d9dee4;
+      border-color: #ced5dc; }
+    #layout-odyssey .btn-light:focus, #layout-odyssey .btn-light.focus {
+      box-shadow: 0 0 0 0.2rem rgba(248, 249, 250, 0.5); }
+    #layout-odyssey .btn-light.disabled, #layout-odyssey .btn-light:disabled {
+      color: #212529;
+      background-color: #f8f9fa;
+      border-color: #f8f9fa; }
+    #layout-odyssey .btn-light:not(:disabled):not(.disabled):active, #layout-odyssey .btn-light:not(:disabled):not(.disabled).active,
+    .show > #layout-odyssey .btn-light.dropdown-toggle {
+      color: #212529;
+      background-color: #bdc6d0;
+      border-color: #b5c0ca; }
+      #layout-odyssey .btn-light:not(:disabled):not(.disabled):active:focus, #layout-odyssey .btn-light:not(:disabled):not(.disabled).active:focus,
+      .show > #layout-odyssey .btn-light.dropdown-toggle:focus {
+        box-shadow: 0 0 0 0.2rem rgba(248, 249, 250, 0.5); }
+  #layout-odyssey .btn-dark {
+    color: #fff;
+    background-color: #343a40;
+    border-color: #343a40; }
+    #layout-odyssey .btn-dark:hover {
+      color: #fff;
+      background-color: #1c1f22;
+      border-color: #141619; }
+    #layout-odyssey .btn-dark:focus, #layout-odyssey .btn-dark.focus {
+      box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5); }
+    #layout-odyssey .btn-dark.disabled, #layout-odyssey .btn-dark:disabled {
+      color: #fff;
+      background-color: #343a40;
+      border-color: #343a40; }
+    #layout-odyssey .btn-dark:not(:disabled):not(.disabled):active, #layout-odyssey .btn-dark:not(:disabled):not(.disabled).active,
+    .show > #layout-odyssey .btn-dark.dropdown-toggle {
+      color: #fff;
+      background-color: #060708;
+      border-color: #010101; }
+      #layout-odyssey .btn-dark:not(:disabled):not(.disabled):active:focus, #layout-odyssey .btn-dark:not(:disabled):not(.disabled).active:focus,
+      .show > #layout-odyssey .btn-dark.dropdown-toggle:focus {
+        box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5); }
+  #layout-odyssey .btn-default {
+    background-color: rgba(255, 255, 255, 0.5); }
+  #layout-odyssey .btn-cloak {
+    background-color: #4d1980; }
+  #layout-odyssey input[type="text"],
+  #layout-odyssey input[type="number"],
+  #layout-odyssey textarea {
+    color: white; }
+  #layout-odyssey .list-group-item {
+    border: solid 1px transparent;
+    background-color: rgba(0, 0, 0, 0.1); }
+    #layout-odyssey .list-group-item.active {
+      background-color: rgba(255, 255, 255, 0.3);
+      border: solid 1px rgba(255, 255, 255, 0.5); }
+  #layout-odyssey pre {
+    color: white; }
+  #layout-odyssey .card,
+  #layout-odyssey input[type="text"].form-control,
+  #layout-odyssey input[type="number"].form-control,
+  #layout-odyssey textarea {
+    background-image: url("./lines.svg");
+    background-size: 1px 4px;
+    border: solid 2px rgba(255, 255, 255, 0.5);
+    box-shadow: 0px 0px 3px 1px white, inset 0px 0px 3px 1px rgba(255, 255, 255, 0.5); }
+  #layout-odyssey.alertColor1 .card,
+  #layout-odyssey.alertColor1 input[type="text"].form-control,
+  #layout-odyssey.alertColor1 input[type="number"].form-control,
+  #layout-odyssey.alertColor1 textarea {
+    background-color: #701919; }
+  #layout-odyssey.alertColor2 .card,
+  #layout-odyssey.alertColor2 input[type="text"].form-control,
+  #layout-odyssey.alertColor2 input[type="number"].form-control,
+  #layout-odyssey.alertColor2 textarea {
+    background-color: #704419; }
+  #layout-odyssey.alertColor3 .card,
+  #layout-odyssey.alertColor3 input[type="text"].form-control,
+  #layout-odyssey.alertColor3 input[type="number"].form-control,
+  #layout-odyssey.alertColor3 textarea {
+    background-color: #707019; }
+  #layout-odyssey.alertColor4 .card,
+  #layout-odyssey.alertColor4 input[type="text"].form-control,
+  #layout-odyssey.alertColor4 input[type="number"].form-control,
+  #layout-odyssey.alertColor4 textarea {
+    background-color: #18236f; }
+  #layout-odyssey.alertColor5 .card,
+  #layout-odyssey.alertColor5 input[type="text"].form-control,
+  #layout-odyssey.alertColor5 input[type="number"].form-control,
+  #layout-odyssey.alertColor5 textarea {
+    background-color: #18236f; }
+  #layout-odyssey.alertColorp .card,
+  #layout-odyssey.alertColorp input[type="text"].form-control,
+  #layout-odyssey.alertColorp input[type="number"].form-control,
+  #layout-odyssey.alertColorp textarea {
+    background-color: #441970; }
+  #layout-odyssey .dropdown-toggle {
+    overflow: hidden; }
+  #layout-odyssey .dropdown-menu {
+    background-color: rgba(0, 0, 0, 0.8); }
+    #layout-odyssey .dropdown-menu button {
+      color: white; }
+      #layout-odyssey .dropdown-menu button:hover {
+        background-color: rgba(255, 255, 255, 0.2); }
+      #layout-odyssey .dropdown-menu button:active, #layout-odyssey .dropdown-menu button:focus {
+        background-color: rgba(255, 255, 255, 0.4); }
+  #layout-odyssey .widgets {
+    bottom: 25px;
+    right: 30px;
+    left: unset; }
+  #layout-odyssey .shields .shieldControlBox {
+    margin-top: 20px; }
+  #layout-odyssey .frequencyContainer.card {
+    background-color: black; }
+  #layout-odyssey .cardSensors {
+    width: 90%;
+    margin: 0 auto; }
+    #layout-odyssey .cardSensors .list-group-item {
+      padding: 0.2rem 1.25rem; }
+  #layout-odyssey .probe-construction .probeEquipment .card {
+    max-height: 31vh; }
+  #layout-odyssey .probe-network {
+    width: 73%; }
+  #layout-odyssey .long-range-comm pre {
+    height: 28vh; }
+  #layout-odyssey .EngineControl .heatBox {
+    height: 48vh; }
+  #layout-odyssey .cardThrusters .draggerContainer {
+    margin-top: 10px; }
+  #layout-odyssey .cardThrusters .draggerContainer .spacer {
+    margin-top: calc(100% + 100px); }
+  #layout-odyssey .cardThrusters .draggerCircle {
+    margin-top: 60px;
+    margin-bottom: 60px; }
+  #layout-odyssey .cardThrusters .draggerBar {
+    margin-top: 0; }
+  #layout-odyssey .cardThrusters .indicatorCircles {
+    margin-top: -100px; }
+  #layout-odyssey .powerlevel-containers h5 {
+    line-height: 0; }
+
+.viewscreen #layout-odyssey .cardContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  .viewscreen #layout-odyssey .cardContainer div {
+    width: 100%; }

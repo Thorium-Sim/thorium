@@ -1,0 +1,983 @@
+.modal {
+  z-index: 5000; }
+
+.layout-corners,
+.modal-themed,
+#curve-frame {
+  color: white; }
+  .layout-corners .modal-content,
+  .modal-themed .modal-content,
+  #curve-frame .modal-content {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: solid 1px rgba(255, 255, 255, 0.5);
+    color: white; }
+    .layout-corners .modal-content .close,
+    .modal-themed .modal-content .close,
+    #curve-frame .modal-content .close {
+      color: white; }
+  .layout-corners .card,
+  .modal-themed .card,
+  #curve-frame .card {
+    border: 1px solid #9c9da0;
+    background-color: rgba(0, 0, 0, 0.2);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+    color: white; }
+  .layout-corners .list-group,
+  .modal-themed .list-group,
+  #curve-frame .list-group {
+    min-height: 50px;
+    border: solid 1px rgba(255, 255, 255, 0.75);
+    margin-right: 4px;
+    border-radius: 5px;
+    backdrop-filter: blur(5px);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); }
+    .layout-corners .list-group .list-group-item,
+    .modal-themed .list-group .list-group-item,
+    #curve-frame .list-group .list-group-item {
+      border: solid 1px transparent;
+      background-color: rgba(0, 0, 0, 0.1); }
+      .layout-corners .list-group .list-group-item.active,
+      .modal-themed .list-group .list-group-item.active,
+      #curve-frame .list-group .list-group-item.active {
+        background-color: rgba(255, 255, 255, 0.3);
+        border: solid 1px rgba(255, 255, 255, 0.5); }
+  .layout-corners .well,
+  .modal-themed .well,
+  #curve-frame .well {
+    border: 1px solid #9c9da0;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #999;
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3); }
+  .layout-corners .table,
+  .modal-themed .table,
+  #curve-frame .table {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: solid 1px #888;
+    border-radius: 15px;
+    color: #fff; }
+    .layout-corners .table.table-striped > tbody > tr:nth-child(odd),
+    .modal-themed .table.table-striped > tbody > tr:nth-child(odd),
+    #curve-frame .table.table-striped > tbody > tr:nth-child(odd) {
+      background-color: rgba(255, 255, 255, 0.1); }
+    .layout-corners .table.table-hover > tbody > tr:hover,
+    .modal-themed .table.table-hover > tbody > tr:hover,
+    #curve-frame .table.table-hover > tbody > tr:hover {
+      background-color: rgba(255, 255, 255, 0.2); }
+  .layout-corners .btn,
+  .modal-themed .btn,
+  #curve-frame .btn {
+    position: relative;
+    z-index: 1;
+    text-transform: capitalize;
+    font-weight: 700;
+    overflow: none;
+    color: #111;
+    margin-top: 5px;
+    background: linear-gradient(to bottom, #1b366e 0%, #1e3c7a 50%, #1b366e 100%);
+    border: solid 1px #949495;
+    border-radius: 15px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3); }
+    .layout-corners .btn .btn-block,
+    .modal-themed .btn .btn-block,
+    #curve-frame .btn .btn-block {
+      width: calc(100% - 20px); }
+    .layout-corners .btn:before,
+    .modal-themed .btn:before,
+    #curve-frame .btn:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: calc(100% + 20px);
+      margin-left: -10px;
+      top: 10%;
+      height: 80%;
+      z-index: -20;
+      border: solid 1px #777;
+      background: radial-gradient(ellipse at center, #888888 0%, #aaaaaa 50%, #bbbbbb 100%);
+      border-radius: 15px; }
+    .layout-corners .btn.btn-default,
+    .modal-themed .btn.btn-default,
+    #curve-frame .btn.btn-default {
+      background: linear-gradient(to bottom, #414348 0%, #484b50 50%, #414348 100%);
+      border-color: #474747; }
+      .layout-corners .btn.btn-default:focus, .layout-corners .btn.btn-default.focus,
+      .modal-themed .btn.btn-default:focus,
+      .modal-themed .btn.btn-default.focus,
+      #curve-frame .btn.btn-default:focus,
+      #curve-frame .btn.btn-default.focus {
+        background: linear-gradient(to bottom, #323438 0%, #3e4145 50%, #323438 100%);
+        border: solid 1px #949495;
+        background-color: #353535;
+        border-color: #0f0f0f; }
+      .layout-corners .btn.btn-default:hover,
+      .modal-themed .btn.btn-default:hover,
+      #curve-frame .btn.btn-default:hover {
+        background: linear-gradient(to bottom, #323438 0%, #3e4145 50%, #323438 100%);
+        border-color: #303030; }
+      .layout-corners .btn.btn-default:active, .layout-corners .btn.btn-default.active,
+      .layout-corners .btn.btn-default .open > .dropdown-toggle,
+      .modal-themed .btn.btn-default:active,
+      .modal-themed .btn.btn-default.active,
+      .modal-themed .btn.btn-default .open > .dropdown-toggle,
+      #curve-frame .btn.btn-default:active,
+      #curve-frame .btn.btn-default.active,
+      #curve-frame .btn.btn-default .open > .dropdown-toggle {
+        background: linear-gradient(to bottom, #63666d 0%, #575a60 50%, #63666d 100%);
+        border-color: #6d6d6d; }
+      .layout-corners .btn.btn-default.disabled, .layout-corners .btn.btn-default.disabled:hover, .layout-corners .btn.btn-default.disabled:focus, .layout-corners .btn.btn-default.disabled.focus, .layout-corners .btn.btn-default.disabled:active, .layout-corners .btn.btn-default.disabled.active, .layout-corners .btn.btn-default[readonly], .layout-corners .btn.btn-default[readonly]:hover, .layout-corners .btn.btn-default[readonly]:focus, .layout-corners .btn.btn-default[readonly].focus, .layout-corners .btn.btn-default[readonly]:active, .layout-corners .btn.btn-default[readonly].active, .layout-corners .btn.btn-default[disabled], .layout-corners .btn.btn-default[disabled]:hover, .layout-corners .btn.btn-default[disabled]:focus, .layout-corners .btn.btn-default[disabled].focus, .layout-corners .btn.btn-default[disabled]:active, .layout-corners .btn.btn-default[disabled].active,
+      fieldset[disabled] .layout-corners .btn.btn-default,
+      fieldset[disabled] .layout-corners .btn.btn-default:hover,
+      fieldset[disabled] .layout-corners .btn.btn-default:focus,
+      fieldset[disabled] .layout-corners .btn.btn-default.focus,
+      fieldset[disabled] .layout-corners .btn.btn-default:active,
+      fieldset[disabled] .layout-corners .btn.btn-default.active,
+      .modal-themed .btn.btn-default.disabled,
+      .modal-themed .btn.btn-default.disabled:hover,
+      .modal-themed .btn.btn-default.disabled:focus,
+      .modal-themed .btn.btn-default.disabled.focus,
+      .modal-themed .btn.btn-default.disabled:active,
+      .modal-themed .btn.btn-default.disabled.active,
+      .modal-themed .btn.btn-default[readonly],
+      .modal-themed .btn.btn-default[readonly]:hover,
+      .modal-themed .btn.btn-default[readonly]:focus,
+      .modal-themed .btn.btn-default[readonly].focus,
+      .modal-themed .btn.btn-default[readonly]:active,
+      .modal-themed .btn.btn-default[readonly].active,
+      .modal-themed .btn.btn-default[disabled],
+      .modal-themed .btn.btn-default[disabled]:hover,
+      .modal-themed .btn.btn-default[disabled]:focus,
+      .modal-themed .btn.btn-default[disabled].focus,
+      .modal-themed .btn.btn-default[disabled]:active,
+      .modal-themed .btn.btn-default[disabled].active,
+      fieldset[disabled]
+      .modal-themed .btn.btn-default,
+      fieldset[disabled]
+      .modal-themed .btn.btn-default:hover,
+      fieldset[disabled]
+      .modal-themed .btn.btn-default:focus,
+      fieldset[disabled]
+      .modal-themed .btn.btn-default.focus,
+      fieldset[disabled]
+      .modal-themed .btn.btn-default:active,
+      fieldset[disabled]
+      .modal-themed .btn.btn-default.active,
+      #curve-frame .btn.btn-default.disabled,
+      #curve-frame .btn.btn-default.disabled:hover,
+      #curve-frame .btn.btn-default.disabled:focus,
+      #curve-frame .btn.btn-default.disabled.focus,
+      #curve-frame .btn.btn-default.disabled:active,
+      #curve-frame .btn.btn-default.disabled.active,
+      #curve-frame .btn.btn-default[readonly],
+      #curve-frame .btn.btn-default[readonly]:hover,
+      #curve-frame .btn.btn-default[readonly]:focus,
+      #curve-frame .btn.btn-default[readonly].focus,
+      #curve-frame .btn.btn-default[readonly]:active,
+      #curve-frame .btn.btn-default[readonly].active,
+      #curve-frame .btn.btn-default[disabled],
+      #curve-frame .btn.btn-default[disabled]:hover,
+      #curve-frame .btn.btn-default[disabled]:focus,
+      #curve-frame .btn.btn-default[disabled].focus,
+      #curve-frame .btn.btn-default[disabled]:active,
+      #curve-frame .btn.btn-default[disabled].active,
+      fieldset[disabled]
+      #curve-frame .btn.btn-default,
+      fieldset[disabled]
+      #curve-frame .btn.btn-default:hover,
+      fieldset[disabled]
+      #curve-frame .btn.btn-default:focus,
+      fieldset[disabled]
+      #curve-frame .btn.btn-default.focus,
+      fieldset[disabled]
+      #curve-frame .btn.btn-default:active,
+      fieldset[disabled]
+      #curve-frame .btn.btn-default.active {
+        background: linear-gradient(to bottom, #414348 0%, #484b50 50%, #414348 100%);
+        border-color: #4f4f4f; }
+    .layout-corners .btn.btn-primary,
+    .modal-themed .btn.btn-primary,
+    #curve-frame .btn.btn-primary {
+      background: linear-gradient(to bottom, #1b366e 0%, #1e3c7a 50%, #1b366e 100%);
+      border-color: #20396e; }
+      .layout-corners .btn.btn-primary:focus, .layout-corners .btn.btn-primary.focus,
+      .modal-themed .btn.btn-primary:focus,
+      .modal-themed .btn.btn-primary.focus,
+      #curve-frame .btn.btn-primary:focus,
+      #curve-frame .btn.btn-primary.focus {
+        background: linear-gradient(to bottom, #152a55 0%, #1a3469 50%, #152a55 100%);
+        border: solid 1px #949495;
+        background-color: #182b52;
+        border-color: #070c17; }
+      .layout-corners .btn.btn-primary:hover,
+      .modal-themed .btn.btn-primary:hover,
+      #curve-frame .btn.btn-primary:hover {
+        background: linear-gradient(to bottom, #152a55 0%, #1a3469 50%, #152a55 100%);
+        border-color: #15264a; }
+      .layout-corners .btn.btn-primary:active, .layout-corners .btn.btn-primary.active,
+      .layout-corners .btn.btn-primary .open > .dropdown-toggle,
+      .modal-themed .btn.btn-primary:active,
+      .modal-themed .btn.btn-primary.active,
+      .modal-themed .btn.btn-primary .open > .dropdown-toggle,
+      #curve-frame .btn.btn-primary:active,
+      #curve-frame .btn.btn-primary.active,
+      #curve-frame .btn.btn-primary .open > .dropdown-toggle {
+        background: linear-gradient(to bottom, #2952a7 0%, #244892 50%, #2952a7 100%);
+        border-color: #3158aa; }
+      .layout-corners .btn.btn-primary.disabled, .layout-corners .btn.btn-primary.disabled:hover, .layout-corners .btn.btn-primary.disabled:focus, .layout-corners .btn.btn-primary.disabled.focus, .layout-corners .btn.btn-primary.disabled:active, .layout-corners .btn.btn-primary.disabled.active, .layout-corners .btn.btn-primary[readonly], .layout-corners .btn.btn-primary[readonly]:hover, .layout-corners .btn.btn-primary[readonly]:focus, .layout-corners .btn.btn-primary[readonly].focus, .layout-corners .btn.btn-primary[readonly]:active, .layout-corners .btn.btn-primary[readonly].active, .layout-corners .btn.btn-primary[disabled], .layout-corners .btn.btn-primary[disabled]:hover, .layout-corners .btn.btn-primary[disabled]:focus, .layout-corners .btn.btn-primary[disabled].focus, .layout-corners .btn.btn-primary[disabled]:active, .layout-corners .btn.btn-primary[disabled].active,
+      fieldset[disabled] .layout-corners .btn.btn-primary,
+      fieldset[disabled] .layout-corners .btn.btn-primary:hover,
+      fieldset[disabled] .layout-corners .btn.btn-primary:focus,
+      fieldset[disabled] .layout-corners .btn.btn-primary.focus,
+      fieldset[disabled] .layout-corners .btn.btn-primary:active,
+      fieldset[disabled] .layout-corners .btn.btn-primary.active,
+      .modal-themed .btn.btn-primary.disabled,
+      .modal-themed .btn.btn-primary.disabled:hover,
+      .modal-themed .btn.btn-primary.disabled:focus,
+      .modal-themed .btn.btn-primary.disabled.focus,
+      .modal-themed .btn.btn-primary.disabled:active,
+      .modal-themed .btn.btn-primary.disabled.active,
+      .modal-themed .btn.btn-primary[readonly],
+      .modal-themed .btn.btn-primary[readonly]:hover,
+      .modal-themed .btn.btn-primary[readonly]:focus,
+      .modal-themed .btn.btn-primary[readonly].focus,
+      .modal-themed .btn.btn-primary[readonly]:active,
+      .modal-themed .btn.btn-primary[readonly].active,
+      .modal-themed .btn.btn-primary[disabled],
+      .modal-themed .btn.btn-primary[disabled]:hover,
+      .modal-themed .btn.btn-primary[disabled]:focus,
+      .modal-themed .btn.btn-primary[disabled].focus,
+      .modal-themed .btn.btn-primary[disabled]:active,
+      .modal-themed .btn.btn-primary[disabled].active,
+      fieldset[disabled]
+      .modal-themed .btn.btn-primary,
+      fieldset[disabled]
+      .modal-themed .btn.btn-primary:hover,
+      fieldset[disabled]
+      .modal-themed .btn.btn-primary:focus,
+      fieldset[disabled]
+      .modal-themed .btn.btn-primary.focus,
+      fieldset[disabled]
+      .modal-themed .btn.btn-primary:active,
+      fieldset[disabled]
+      .modal-themed .btn.btn-primary.active,
+      #curve-frame .btn.btn-primary.disabled,
+      #curve-frame .btn.btn-primary.disabled:hover,
+      #curve-frame .btn.btn-primary.disabled:focus,
+      #curve-frame .btn.btn-primary.disabled.focus,
+      #curve-frame .btn.btn-primary.disabled:active,
+      #curve-frame .btn.btn-primary.disabled.active,
+      #curve-frame .btn.btn-primary[readonly],
+      #curve-frame .btn.btn-primary[readonly]:hover,
+      #curve-frame .btn.btn-primary[readonly]:focus,
+      #curve-frame .btn.btn-primary[readonly].focus,
+      #curve-frame .btn.btn-primary[readonly]:active,
+      #curve-frame .btn.btn-primary[readonly].active,
+      #curve-frame .btn.btn-primary[disabled],
+      #curve-frame .btn.btn-primary[disabled]:hover,
+      #curve-frame .btn.btn-primary[disabled]:focus,
+      #curve-frame .btn.btn-primary[disabled].focus,
+      #curve-frame .btn.btn-primary[disabled]:active,
+      #curve-frame .btn.btn-primary[disabled].active,
+      fieldset[disabled]
+      #curve-frame .btn.btn-primary,
+      fieldset[disabled]
+      #curve-frame .btn.btn-primary:hover,
+      fieldset[disabled]
+      #curve-frame .btn.btn-primary:focus,
+      fieldset[disabled]
+      #curve-frame .btn.btn-primary.focus,
+      fieldset[disabled]
+      #curve-frame .btn.btn-primary:active,
+      fieldset[disabled]
+      #curve-frame .btn.btn-primary.active {
+        background: linear-gradient(to bottom, #1b366e 0%, #1e3c7a 50%, #1b366e 100%);
+        border-color: #233f7a; }
+    .layout-corners .btn.btn-success,
+    .modal-themed .btn.btn-success,
+    #curve-frame .btn.btn-success {
+      background: linear-gradient(to bottom, #127212 0%, #147f14 50%, #127212 100%);
+      border-color: #177317; }
+      .layout-corners .btn.btn-success:focus, .layout-corners .btn.btn-success.focus,
+      .modal-themed .btn.btn-success:focus,
+      .modal-themed .btn.btn-success.focus,
+      #curve-frame .btn.btn-success:focus,
+      #curve-frame .btn.btn-success.focus {
+        background: linear-gradient(to bottom, #0e580e 0%, #126e12 50%, #0e580e 100%);
+        border: solid 1px #949495;
+        background-color: #115511;
+        border-color: #041504; }
+      .layout-corners .btn.btn-success:hover,
+      .modal-themed .btn.btn-success:hover,
+      #curve-frame .btn.btn-success:hover {
+        background: linear-gradient(to bottom, #0e580e 0%, #126e12 50%, #0e580e 100%);
+        border-color: #0f4d0f; }
+      .layout-corners .btn.btn-success:active, .layout-corners .btn.btn-success.active,
+      .layout-corners .btn.btn-success .open > .dropdown-toggle,
+      .modal-themed .btn.btn-success:active,
+      .modal-themed .btn.btn-success.active,
+      .modal-themed .btn.btn-success .open > .dropdown-toggle,
+      #curve-frame .btn.btn-success:active,
+      #curve-frame .btn.btn-success.active,
+      #curve-frame .btn.btn-success .open > .dropdown-toggle {
+        background: linear-gradient(to bottom, #1cb01c 0%, #199a19 50%, #1cb01c 100%);
+        border-color: #23b323; }
+      .layout-corners .btn.btn-success.disabled, .layout-corners .btn.btn-success.disabled:hover, .layout-corners .btn.btn-success.disabled:focus, .layout-corners .btn.btn-success.disabled.focus, .layout-corners .btn.btn-success.disabled:active, .layout-corners .btn.btn-success.disabled.active, .layout-corners .btn.btn-success[readonly], .layout-corners .btn.btn-success[readonly]:hover, .layout-corners .btn.btn-success[readonly]:focus, .layout-corners .btn.btn-success[readonly].focus, .layout-corners .btn.btn-success[readonly]:active, .layout-corners .btn.btn-success[readonly].active, .layout-corners .btn.btn-success[disabled], .layout-corners .btn.btn-success[disabled]:hover, .layout-corners .btn.btn-success[disabled]:focus, .layout-corners .btn.btn-success[disabled].focus, .layout-corners .btn.btn-success[disabled]:active, .layout-corners .btn.btn-success[disabled].active,
+      fieldset[disabled] .layout-corners .btn.btn-success,
+      fieldset[disabled] .layout-corners .btn.btn-success:hover,
+      fieldset[disabled] .layout-corners .btn.btn-success:focus,
+      fieldset[disabled] .layout-corners .btn.btn-success.focus,
+      fieldset[disabled] .layout-corners .btn.btn-success:active,
+      fieldset[disabled] .layout-corners .btn.btn-success.active,
+      .modal-themed .btn.btn-success.disabled,
+      .modal-themed .btn.btn-success.disabled:hover,
+      .modal-themed .btn.btn-success.disabled:focus,
+      .modal-themed .btn.btn-success.disabled.focus,
+      .modal-themed .btn.btn-success.disabled:active,
+      .modal-themed .btn.btn-success.disabled.active,
+      .modal-themed .btn.btn-success[readonly],
+      .modal-themed .btn.btn-success[readonly]:hover,
+      .modal-themed .btn.btn-success[readonly]:focus,
+      .modal-themed .btn.btn-success[readonly].focus,
+      .modal-themed .btn.btn-success[readonly]:active,
+      .modal-themed .btn.btn-success[readonly].active,
+      .modal-themed .btn.btn-success[disabled],
+      .modal-themed .btn.btn-success[disabled]:hover,
+      .modal-themed .btn.btn-success[disabled]:focus,
+      .modal-themed .btn.btn-success[disabled].focus,
+      .modal-themed .btn.btn-success[disabled]:active,
+      .modal-themed .btn.btn-success[disabled].active,
+      fieldset[disabled]
+      .modal-themed .btn.btn-success,
+      fieldset[disabled]
+      .modal-themed .btn.btn-success:hover,
+      fieldset[disabled]
+      .modal-themed .btn.btn-success:focus,
+      fieldset[disabled]
+      .modal-themed .btn.btn-success.focus,
+      fieldset[disabled]
+      .modal-themed .btn.btn-success:active,
+      fieldset[disabled]
+      .modal-themed .btn.btn-success.active,
+      #curve-frame .btn.btn-success.disabled,
+      #curve-frame .btn.btn-success.disabled:hover,
+      #curve-frame .btn.btn-success.disabled:focus,
+      #curve-frame .btn.btn-success.disabled.focus,
+      #curve-frame .btn.btn-success.disabled:active,
+      #curve-frame .btn.btn-success.disabled.active,
+      #curve-frame .btn.btn-success[readonly],
+      #curve-frame .btn.btn-success[readonly]:hover,
+      #curve-frame .btn.btn-success[readonly]:focus,
+      #curve-frame .btn.btn-success[readonly].focus,
+      #curve-frame .btn.btn-success[readonly]:active,
+      #curve-frame .btn.btn-success[readonly].active,
+      #curve-frame .btn.btn-success[disabled],
+      #curve-frame .btn.btn-success[disabled]:hover,
+      #curve-frame .btn.btn-success[disabled]:focus,
+      #curve-frame .btn.btn-success[disabled].focus,
+      #curve-frame .btn.btn-success[disabled]:active,
+      #curve-frame .btn.btn-success[disabled].active,
+      fieldset[disabled]
+      #curve-frame .btn.btn-success,
+      fieldset[disabled]
+      #curve-frame .btn.btn-success:hover,
+      fieldset[disabled]
+      #curve-frame .btn.btn-success:focus,
+      fieldset[disabled]
+      #curve-frame .btn.btn-success.focus,
+      fieldset[disabled]
+      #curve-frame .btn.btn-success:active,
+      fieldset[disabled]
+      #curve-frame .btn.btn-success.active {
+        background: linear-gradient(to bottom, #127212 0%, #147f14 50%, #127212 100%);
+        border-color: #198019; }
+    .layout-corners .btn.btn-info,
+    .modal-themed .btn.btn-info,
+    #curve-frame .btn.btn-info {
+      background: linear-gradient(to bottom, #127272 0%, #147f7f 50%, #127272 100%);
+      border-color: #177373; }
+      .layout-corners .btn.btn-info:focus, .layout-corners .btn.btn-info.focus,
+      .modal-themed .btn.btn-info:focus,
+      .modal-themed .btn.btn-info.focus,
+      #curve-frame .btn.btn-info:focus,
+      #curve-frame .btn.btn-info.focus {
+        background: linear-gradient(to bottom, #0e5858 0%, #126e6e 50%, #0e5858 100%);
+        border: solid 1px #949495;
+        background-color: #115555;
+        border-color: #041515; }
+      .layout-corners .btn.btn-info:hover,
+      .modal-themed .btn.btn-info:hover,
+      #curve-frame .btn.btn-info:hover {
+        background: linear-gradient(to bottom, #0e5858 0%, #126e6e 50%, #0e5858 100%);
+        border-color: #0f4d4d; }
+      .layout-corners .btn.btn-info:active, .layout-corners .btn.btn-info.active,
+      .layout-corners .btn.btn-info .open > .dropdown-toggle,
+      .modal-themed .btn.btn-info:active,
+      .modal-themed .btn.btn-info.active,
+      .modal-themed .btn.btn-info .open > .dropdown-toggle,
+      #curve-frame .btn.btn-info:active,
+      #curve-frame .btn.btn-info.active,
+      #curve-frame .btn.btn-info .open > .dropdown-toggle {
+        background: linear-gradient(to bottom, #1cb0b0 0%, #199a9a 50%, #1cb0b0 100%);
+        border-color: #23b3b3; }
+      .layout-corners .btn.btn-info.disabled, .layout-corners .btn.btn-info.disabled:hover, .layout-corners .btn.btn-info.disabled:focus, .layout-corners .btn.btn-info.disabled.focus, .layout-corners .btn.btn-info.disabled:active, .layout-corners .btn.btn-info.disabled.active, .layout-corners .btn.btn-info[readonly], .layout-corners .btn.btn-info[readonly]:hover, .layout-corners .btn.btn-info[readonly]:focus, .layout-corners .btn.btn-info[readonly].focus, .layout-corners .btn.btn-info[readonly]:active, .layout-corners .btn.btn-info[readonly].active, .layout-corners .btn.btn-info[disabled], .layout-corners .btn.btn-info[disabled]:hover, .layout-corners .btn.btn-info[disabled]:focus, .layout-corners .btn.btn-info[disabled].focus, .layout-corners .btn.btn-info[disabled]:active, .layout-corners .btn.btn-info[disabled].active,
+      fieldset[disabled] .layout-corners .btn.btn-info,
+      fieldset[disabled] .layout-corners .btn.btn-info:hover,
+      fieldset[disabled] .layout-corners .btn.btn-info:focus,
+      fieldset[disabled] .layout-corners .btn.btn-info.focus,
+      fieldset[disabled] .layout-corners .btn.btn-info:active,
+      fieldset[disabled] .layout-corners .btn.btn-info.active,
+      .modal-themed .btn.btn-info.disabled,
+      .modal-themed .btn.btn-info.disabled:hover,
+      .modal-themed .btn.btn-info.disabled:focus,
+      .modal-themed .btn.btn-info.disabled.focus,
+      .modal-themed .btn.btn-info.disabled:active,
+      .modal-themed .btn.btn-info.disabled.active,
+      .modal-themed .btn.btn-info[readonly],
+      .modal-themed .btn.btn-info[readonly]:hover,
+      .modal-themed .btn.btn-info[readonly]:focus,
+      .modal-themed .btn.btn-info[readonly].focus,
+      .modal-themed .btn.btn-info[readonly]:active,
+      .modal-themed .btn.btn-info[readonly].active,
+      .modal-themed .btn.btn-info[disabled],
+      .modal-themed .btn.btn-info[disabled]:hover,
+      .modal-themed .btn.btn-info[disabled]:focus,
+      .modal-themed .btn.btn-info[disabled].focus,
+      .modal-themed .btn.btn-info[disabled]:active,
+      .modal-themed .btn.btn-info[disabled].active,
+      fieldset[disabled]
+      .modal-themed .btn.btn-info,
+      fieldset[disabled]
+      .modal-themed .btn.btn-info:hover,
+      fieldset[disabled]
+      .modal-themed .btn.btn-info:focus,
+      fieldset[disabled]
+      .modal-themed .btn.btn-info.focus,
+      fieldset[disabled]
+      .modal-themed .btn.btn-info:active,
+      fieldset[disabled]
+      .modal-themed .btn.btn-info.active,
+      #curve-frame .btn.btn-info.disabled,
+      #curve-frame .btn.btn-info.disabled:hover,
+      #curve-frame .btn.btn-info.disabled:focus,
+      #curve-frame .btn.btn-info.disabled.focus,
+      #curve-frame .btn.btn-info.disabled:active,
+      #curve-frame .btn.btn-info.disabled.active,
+      #curve-frame .btn.btn-info[readonly],
+      #curve-frame .btn.btn-info[readonly]:hover,
+      #curve-frame .btn.btn-info[readonly]:focus,
+      #curve-frame .btn.btn-info[readonly].focus,
+      #curve-frame .btn.btn-info[readonly]:active,
+      #curve-frame .btn.btn-info[readonly].active,
+      #curve-frame .btn.btn-info[disabled],
+      #curve-frame .btn.btn-info[disabled]:hover,
+      #curve-frame .btn.btn-info[disabled]:focus,
+      #curve-frame .btn.btn-info[disabled].focus,
+      #curve-frame .btn.btn-info[disabled]:active,
+      #curve-frame .btn.btn-info[disabled].active,
+      fieldset[disabled]
+      #curve-frame .btn.btn-info,
+      fieldset[disabled]
+      #curve-frame .btn.btn-info:hover,
+      fieldset[disabled]
+      #curve-frame .btn.btn-info:focus,
+      fieldset[disabled]
+      #curve-frame .btn.btn-info.focus,
+      fieldset[disabled]
+      #curve-frame .btn.btn-info:active,
+      fieldset[disabled]
+      #curve-frame .btn.btn-info.active {
+        background: linear-gradient(to bottom, #127272 0%, #147f7f 50%, #127272 100%);
+        border-color: #198080; }
+    .layout-corners .btn.btn-warning,
+    .modal-themed .btn.btn-warning,
+    #curve-frame .btn.btn-warning {
+      background: linear-gradient(to bottom, #724312 0%, #7f4a14 50%, #724312 100%);
+      border-color: #734517; }
+      .layout-corners .btn.btn-warning:focus, .layout-corners .btn.btn-warning.focus,
+      .modal-themed .btn.btn-warning:focus,
+      .modal-themed .btn.btn-warning.focus,
+      #curve-frame .btn.btn-warning:focus,
+      #curve-frame .btn.btn-warning.focus {
+        background: linear-gradient(to bottom, #58330e 0%, #6e4012 50%, #58330e 100%);
+        border: solid 1px #949495;
+        background-color: #553311;
+        border-color: #150d04; }
+      .layout-corners .btn.btn-warning:hover,
+      .modal-themed .btn.btn-warning:hover,
+      #curve-frame .btn.btn-warning:hover {
+        background: linear-gradient(to bottom, #58330e 0%, #6e4012 50%, #58330e 100%);
+        border-color: #4d2e0f; }
+      .layout-corners .btn.btn-warning:active, .layout-corners .btn.btn-warning.active,
+      .layout-corners .btn.btn-warning .open > .dropdown-toggle,
+      .modal-themed .btn.btn-warning:active,
+      .modal-themed .btn.btn-warning.active,
+      .modal-themed .btn.btn-warning .open > .dropdown-toggle,
+      #curve-frame .btn.btn-warning:active,
+      #curve-frame .btn.btn-warning.active,
+      #curve-frame .btn.btn-warning .open > .dropdown-toggle {
+        background: linear-gradient(to bottom, #b0671c 0%, #9a5a19 50%, #b0671c 100%);
+        border-color: #b36c23; }
+      .layout-corners .btn.btn-warning.disabled, .layout-corners .btn.btn-warning.disabled:hover, .layout-corners .btn.btn-warning.disabled:focus, .layout-corners .btn.btn-warning.disabled.focus, .layout-corners .btn.btn-warning.disabled:active, .layout-corners .btn.btn-warning.disabled.active, .layout-corners .btn.btn-warning[readonly], .layout-corners .btn.btn-warning[readonly]:hover, .layout-corners .btn.btn-warning[readonly]:focus, .layout-corners .btn.btn-warning[readonly].focus, .layout-corners .btn.btn-warning[readonly]:active, .layout-corners .btn.btn-warning[readonly].active, .layout-corners .btn.btn-warning[disabled], .layout-corners .btn.btn-warning[disabled]:hover, .layout-corners .btn.btn-warning[disabled]:focus, .layout-corners .btn.btn-warning[disabled].focus, .layout-corners .btn.btn-warning[disabled]:active, .layout-corners .btn.btn-warning[disabled].active,
+      fieldset[disabled] .layout-corners .btn.btn-warning,
+      fieldset[disabled] .layout-corners .btn.btn-warning:hover,
+      fieldset[disabled] .layout-corners .btn.btn-warning:focus,
+      fieldset[disabled] .layout-corners .btn.btn-warning.focus,
+      fieldset[disabled] .layout-corners .btn.btn-warning:active,
+      fieldset[disabled] .layout-corners .btn.btn-warning.active,
+      .modal-themed .btn.btn-warning.disabled,
+      .modal-themed .btn.btn-warning.disabled:hover,
+      .modal-themed .btn.btn-warning.disabled:focus,
+      .modal-themed .btn.btn-warning.disabled.focus,
+      .modal-themed .btn.btn-warning.disabled:active,
+      .modal-themed .btn.btn-warning.disabled.active,
+      .modal-themed .btn.btn-warning[readonly],
+      .modal-themed .btn.btn-warning[readonly]:hover,
+      .modal-themed .btn.btn-warning[readonly]:focus,
+      .modal-themed .btn.btn-warning[readonly].focus,
+      .modal-themed .btn.btn-warning[readonly]:active,
+      .modal-themed .btn.btn-warning[readonly].active,
+      .modal-themed .btn.btn-warning[disabled],
+      .modal-themed .btn.btn-warning[disabled]:hover,
+      .modal-themed .btn.btn-warning[disabled]:focus,
+      .modal-themed .btn.btn-warning[disabled].focus,
+      .modal-themed .btn.btn-warning[disabled]:active,
+      .modal-themed .btn.btn-warning[disabled].active,
+      fieldset[disabled]
+      .modal-themed .btn.btn-warning,
+      fieldset[disabled]
+      .modal-themed .btn.btn-warning:hover,
+      fieldset[disabled]
+      .modal-themed .btn.btn-warning:focus,
+      fieldset[disabled]
+      .modal-themed .btn.btn-warning.focus,
+      fieldset[disabled]
+      .modal-themed .btn.btn-warning:active,
+      fieldset[disabled]
+      .modal-themed .btn.btn-warning.active,
+      #curve-frame .btn.btn-warning.disabled,
+      #curve-frame .btn.btn-warning.disabled:hover,
+      #curve-frame .btn.btn-warning.disabled:focus,
+      #curve-frame .btn.btn-warning.disabled.focus,
+      #curve-frame .btn.btn-warning.disabled:active,
+      #curve-frame .btn.btn-warning.disabled.active,
+      #curve-frame .btn.btn-warning[readonly],
+      #curve-frame .btn.btn-warning[readonly]:hover,
+      #curve-frame .btn.btn-warning[readonly]:focus,
+      #curve-frame .btn.btn-warning[readonly].focus,
+      #curve-frame .btn.btn-warning[readonly]:active,
+      #curve-frame .btn.btn-warning[readonly].active,
+      #curve-frame .btn.btn-warning[disabled],
+      #curve-frame .btn.btn-warning[disabled]:hover,
+      #curve-frame .btn.btn-warning[disabled]:focus,
+      #curve-frame .btn.btn-warning[disabled].focus,
+      #curve-frame .btn.btn-warning[disabled]:active,
+      #curve-frame .btn.btn-warning[disabled].active,
+      fieldset[disabled]
+      #curve-frame .btn.btn-warning,
+      fieldset[disabled]
+      #curve-frame .btn.btn-warning:hover,
+      fieldset[disabled]
+      #curve-frame .btn.btn-warning:focus,
+      fieldset[disabled]
+      #curve-frame .btn.btn-warning.focus,
+      fieldset[disabled]
+      #curve-frame .btn.btn-warning:active,
+      fieldset[disabled]
+      #curve-frame .btn.btn-warning.active {
+        background: linear-gradient(to bottom, #724312 0%, #7f4a14 50%, #724312 100%);
+        border-color: #804d19; }
+    .layout-corners .btn.btn-cloak,
+    .modal-themed .btn.btn-cloak,
+    #curve-frame .btn.btn-cloak {
+      background: linear-gradient(to bottom, #431272 0%, #4a147f 50%, #431272 100%);
+      border-color: #451773; }
+      .layout-corners .btn.btn-cloak:focus, .layout-corners .btn.btn-cloak.focus,
+      .modal-themed .btn.btn-cloak:focus,
+      .modal-themed .btn.btn-cloak.focus,
+      #curve-frame .btn.btn-cloak:focus,
+      #curve-frame .btn.btn-cloak.focus {
+        background: linear-gradient(to bottom, #330e58 0%, #40126e 50%, #330e58 100%);
+        border: solid 1px #949495;
+        background-color: #331155;
+        border-color: #0d0415; }
+      .layout-corners .btn.btn-cloak:hover,
+      .modal-themed .btn.btn-cloak:hover,
+      #curve-frame .btn.btn-cloak:hover {
+        background: linear-gradient(to bottom, #330e58 0%, #40126e 50%, #330e58 100%);
+        border-color: #2e0f4d; }
+      .layout-corners .btn.btn-cloak:active, .layout-corners .btn.btn-cloak.active,
+      .layout-corners .btn.btn-cloak .open > .dropdown-toggle,
+      .modal-themed .btn.btn-cloak:active,
+      .modal-themed .btn.btn-cloak.active,
+      .modal-themed .btn.btn-cloak .open > .dropdown-toggle,
+      #curve-frame .btn.btn-cloak:active,
+      #curve-frame .btn.btn-cloak.active,
+      #curve-frame .btn.btn-cloak .open > .dropdown-toggle {
+        background: linear-gradient(to bottom, #671cb0 0%, #5a199a 50%, #671cb0 100%);
+        border-color: #6c23b3; }
+      .layout-corners .btn.btn-cloak.disabled, .layout-corners .btn.btn-cloak.disabled:hover, .layout-corners .btn.btn-cloak.disabled:focus, .layout-corners .btn.btn-cloak.disabled.focus, .layout-corners .btn.btn-cloak.disabled:active, .layout-corners .btn.btn-cloak.disabled.active, .layout-corners .btn.btn-cloak[readonly], .layout-corners .btn.btn-cloak[readonly]:hover, .layout-corners .btn.btn-cloak[readonly]:focus, .layout-corners .btn.btn-cloak[readonly].focus, .layout-corners .btn.btn-cloak[readonly]:active, .layout-corners .btn.btn-cloak[readonly].active, .layout-corners .btn.btn-cloak[disabled], .layout-corners .btn.btn-cloak[disabled]:hover, .layout-corners .btn.btn-cloak[disabled]:focus, .layout-corners .btn.btn-cloak[disabled].focus, .layout-corners .btn.btn-cloak[disabled]:active, .layout-corners .btn.btn-cloak[disabled].active,
+      fieldset[disabled] .layout-corners .btn.btn-cloak,
+      fieldset[disabled] .layout-corners .btn.btn-cloak:hover,
+      fieldset[disabled] .layout-corners .btn.btn-cloak:focus,
+      fieldset[disabled] .layout-corners .btn.btn-cloak.focus,
+      fieldset[disabled] .layout-corners .btn.btn-cloak:active,
+      fieldset[disabled] .layout-corners .btn.btn-cloak.active,
+      .modal-themed .btn.btn-cloak.disabled,
+      .modal-themed .btn.btn-cloak.disabled:hover,
+      .modal-themed .btn.btn-cloak.disabled:focus,
+      .modal-themed .btn.btn-cloak.disabled.focus,
+      .modal-themed .btn.btn-cloak.disabled:active,
+      .modal-themed .btn.btn-cloak.disabled.active,
+      .modal-themed .btn.btn-cloak[readonly],
+      .modal-themed .btn.btn-cloak[readonly]:hover,
+      .modal-themed .btn.btn-cloak[readonly]:focus,
+      .modal-themed .btn.btn-cloak[readonly].focus,
+      .modal-themed .btn.btn-cloak[readonly]:active,
+      .modal-themed .btn.btn-cloak[readonly].active,
+      .modal-themed .btn.btn-cloak[disabled],
+      .modal-themed .btn.btn-cloak[disabled]:hover,
+      .modal-themed .btn.btn-cloak[disabled]:focus,
+      .modal-themed .btn.btn-cloak[disabled].focus,
+      .modal-themed .btn.btn-cloak[disabled]:active,
+      .modal-themed .btn.btn-cloak[disabled].active,
+      fieldset[disabled]
+      .modal-themed .btn.btn-cloak,
+      fieldset[disabled]
+      .modal-themed .btn.btn-cloak:hover,
+      fieldset[disabled]
+      .modal-themed .btn.btn-cloak:focus,
+      fieldset[disabled]
+      .modal-themed .btn.btn-cloak.focus,
+      fieldset[disabled]
+      .modal-themed .btn.btn-cloak:active,
+      fieldset[disabled]
+      .modal-themed .btn.btn-cloak.active,
+      #curve-frame .btn.btn-cloak.disabled,
+      #curve-frame .btn.btn-cloak.disabled:hover,
+      #curve-frame .btn.btn-cloak.disabled:focus,
+      #curve-frame .btn.btn-cloak.disabled.focus,
+      #curve-frame .btn.btn-cloak.disabled:active,
+      #curve-frame .btn.btn-cloak.disabled.active,
+      #curve-frame .btn.btn-cloak[readonly],
+      #curve-frame .btn.btn-cloak[readonly]:hover,
+      #curve-frame .btn.btn-cloak[readonly]:focus,
+      #curve-frame .btn.btn-cloak[readonly].focus,
+      #curve-frame .btn.btn-cloak[readonly]:active,
+      #curve-frame .btn.btn-cloak[readonly].active,
+      #curve-frame .btn.btn-cloak[disabled],
+      #curve-frame .btn.btn-cloak[disabled]:hover,
+      #curve-frame .btn.btn-cloak[disabled]:focus,
+      #curve-frame .btn.btn-cloak[disabled].focus,
+      #curve-frame .btn.btn-cloak[disabled]:active,
+      #curve-frame .btn.btn-cloak[disabled].active,
+      fieldset[disabled]
+      #curve-frame .btn.btn-cloak,
+      fieldset[disabled]
+      #curve-frame .btn.btn-cloak:hover,
+      fieldset[disabled]
+      #curve-frame .btn.btn-cloak:focus,
+      fieldset[disabled]
+      #curve-frame .btn.btn-cloak.focus,
+      fieldset[disabled]
+      #curve-frame .btn.btn-cloak:active,
+      fieldset[disabled]
+      #curve-frame .btn.btn-cloak.active {
+        background: linear-gradient(to bottom, #431272 0%, #4a147f 50%, #431272 100%);
+        border-color: #4d1980; }
+    .layout-corners .btn.btn-danger,
+    .modal-themed .btn.btn-danger,
+    #curve-frame .btn.btn-danger {
+      background: linear-gradient(to bottom, #721212 0%, #7f1414 50%, #721212 100%);
+      border-color: #731717; }
+      .layout-corners .btn.btn-danger:focus, .layout-corners .btn.btn-danger.focus,
+      .modal-themed .btn.btn-danger:focus,
+      .modal-themed .btn.btn-danger.focus,
+      #curve-frame .btn.btn-danger:focus,
+      #curve-frame .btn.btn-danger.focus {
+        background: linear-gradient(to bottom, #580e0e 0%, #6e1212 50%, #580e0e 100%);
+        border: solid 1px #949495;
+        background-color: #551111;
+        border-color: #150404; }
+      .layout-corners .btn.btn-danger:hover,
+      .modal-themed .btn.btn-danger:hover,
+      #curve-frame .btn.btn-danger:hover {
+        background: linear-gradient(to bottom, #580e0e 0%, #6e1212 50%, #580e0e 100%);
+        border-color: #4d0f0f; }
+      .layout-corners .btn.btn-danger:active, .layout-corners .btn.btn-danger.active,
+      .layout-corners .btn.btn-danger .open > .dropdown-toggle,
+      .modal-themed .btn.btn-danger:active,
+      .modal-themed .btn.btn-danger.active,
+      .modal-themed .btn.btn-danger .open > .dropdown-toggle,
+      #curve-frame .btn.btn-danger:active,
+      #curve-frame .btn.btn-danger.active,
+      #curve-frame .btn.btn-danger .open > .dropdown-toggle {
+        background: linear-gradient(to bottom, #b01c1c 0%, #9a1919 50%, #b01c1c 100%);
+        border-color: #b32323; }
+      .layout-corners .btn.btn-danger.disabled, .layout-corners .btn.btn-danger.disabled:hover, .layout-corners .btn.btn-danger.disabled:focus, .layout-corners .btn.btn-danger.disabled.focus, .layout-corners .btn.btn-danger.disabled:active, .layout-corners .btn.btn-danger.disabled.active, .layout-corners .btn.btn-danger[readonly], .layout-corners .btn.btn-danger[readonly]:hover, .layout-corners .btn.btn-danger[readonly]:focus, .layout-corners .btn.btn-danger[readonly].focus, .layout-corners .btn.btn-danger[readonly]:active, .layout-corners .btn.btn-danger[readonly].active, .layout-corners .btn.btn-danger[disabled], .layout-corners .btn.btn-danger[disabled]:hover, .layout-corners .btn.btn-danger[disabled]:focus, .layout-corners .btn.btn-danger[disabled].focus, .layout-corners .btn.btn-danger[disabled]:active, .layout-corners .btn.btn-danger[disabled].active,
+      fieldset[disabled] .layout-corners .btn.btn-danger,
+      fieldset[disabled] .layout-corners .btn.btn-danger:hover,
+      fieldset[disabled] .layout-corners .btn.btn-danger:focus,
+      fieldset[disabled] .layout-corners .btn.btn-danger.focus,
+      fieldset[disabled] .layout-corners .btn.btn-danger:active,
+      fieldset[disabled] .layout-corners .btn.btn-danger.active,
+      .modal-themed .btn.btn-danger.disabled,
+      .modal-themed .btn.btn-danger.disabled:hover,
+      .modal-themed .btn.btn-danger.disabled:focus,
+      .modal-themed .btn.btn-danger.disabled.focus,
+      .modal-themed .btn.btn-danger.disabled:active,
+      .modal-themed .btn.btn-danger.disabled.active,
+      .modal-themed .btn.btn-danger[readonly],
+      .modal-themed .btn.btn-danger[readonly]:hover,
+      .modal-themed .btn.btn-danger[readonly]:focus,
+      .modal-themed .btn.btn-danger[readonly].focus,
+      .modal-themed .btn.btn-danger[readonly]:active,
+      .modal-themed .btn.btn-danger[readonly].active,
+      .modal-themed .btn.btn-danger[disabled],
+      .modal-themed .btn.btn-danger[disabled]:hover,
+      .modal-themed .btn.btn-danger[disabled]:focus,
+      .modal-themed .btn.btn-danger[disabled].focus,
+      .modal-themed .btn.btn-danger[disabled]:active,
+      .modal-themed .btn.btn-danger[disabled].active,
+      fieldset[disabled]
+      .modal-themed .btn.btn-danger,
+      fieldset[disabled]
+      .modal-themed .btn.btn-danger:hover,
+      fieldset[disabled]
+      .modal-themed .btn.btn-danger:focus,
+      fieldset[disabled]
+      .modal-themed .btn.btn-danger.focus,
+      fieldset[disabled]
+      .modal-themed .btn.btn-danger:active,
+      fieldset[disabled]
+      .modal-themed .btn.btn-danger.active,
+      #curve-frame .btn.btn-danger.disabled,
+      #curve-frame .btn.btn-danger.disabled:hover,
+      #curve-frame .btn.btn-danger.disabled:focus,
+      #curve-frame .btn.btn-danger.disabled.focus,
+      #curve-frame .btn.btn-danger.disabled:active,
+      #curve-frame .btn.btn-danger.disabled.active,
+      #curve-frame .btn.btn-danger[readonly],
+      #curve-frame .btn.btn-danger[readonly]:hover,
+      #curve-frame .btn.btn-danger[readonly]:focus,
+      #curve-frame .btn.btn-danger[readonly].focus,
+      #curve-frame .btn.btn-danger[readonly]:active,
+      #curve-frame .btn.btn-danger[readonly].active,
+      #curve-frame .btn.btn-danger[disabled],
+      #curve-frame .btn.btn-danger[disabled]:hover,
+      #curve-frame .btn.btn-danger[disabled]:focus,
+      #curve-frame .btn.btn-danger[disabled].focus,
+      #curve-frame .btn.btn-danger[disabled]:active,
+      #curve-frame .btn.btn-danger[disabled].active,
+      fieldset[disabled]
+      #curve-frame .btn.btn-danger,
+      fieldset[disabled]
+      #curve-frame .btn.btn-danger:hover,
+      fieldset[disabled]
+      #curve-frame .btn.btn-danger:focus,
+      fieldset[disabled]
+      #curve-frame .btn.btn-danger.focus,
+      fieldset[disabled]
+      #curve-frame .btn.btn-danger:active,
+      fieldset[disabled]
+      #curve-frame .btn.btn-danger.active {
+        background: linear-gradient(to bottom, #721212 0%, #7f1414 50%, #721212 100%);
+        border-color: #801919; }
+  .layout-corners .input-group-btn .btn,
+  .modal-themed .input-group-btn .btn,
+  #curve-frame .input-group-btn .btn {
+    margin-top: -10px;
+    top: 0px;
+    flex: none;
+    height: 50px;
+    border-left: none; }
+    .layout-corners .input-group-btn .btn:before,
+    .modal-themed .input-group-btn .btn:before,
+    #curve-frame .input-group-btn .btn:before {
+      border-left: none;
+      border-radius: 0px 15px 15px 0px;
+      width: calc(100% + 10px);
+      margin-left: 0px; }
+  .layout-corners input[type="email"],
+  .layout-corners input[type="text"],
+  .layout-corners input[type="number"],
+  .layout-corners input[type="password"],
+  .layout-corners select,
+  .layout-corners textarea,
+  .layout-corners textarea[readonly],
+  .modal-themed input[type="email"],
+  .modal-themed input[type="text"],
+  .modal-themed input[type="number"],
+  .modal-themed input[type="password"],
+  .modal-themed select,
+  .modal-themed textarea,
+  .modal-themed textarea[readonly],
+  #curve-frame input[type="email"],
+  #curve-frame input[type="text"],
+  #curve-frame input[type="number"],
+  #curve-frame input[type="password"],
+  #curve-frame select,
+  #curve-frame textarea,
+  #curve-frame textarea[readonly] {
+    color: #fff;
+    border: 0px solid rgba(255, 255, 255, 0.5);
+    padding: 15px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.75), 5px 5px 10px rgba(0, 0, 0, 0.3);
+    margin: 0 0 10px 0;
+    transition: all 0.5s ease; }
+  .layout-corners input[type="text"].focus,
+  .layout-corners input[type="text"]:focus,
+  .layout-corners input[type="number"].focus,
+  .layout-corners input[type="number"]:focus,
+  .layout-corners input[type="password"].focus,
+  .layout-corners input[type="password"]:focus,
+  .layout-corners select.focus,
+  .layout-corners select:focus,
+  .layout-corners textarea:focus,
+  .layout-corners textarea:focus,
+  .modal-themed input[type="text"].focus,
+  .modal-themed input[type="text"]:focus,
+  .modal-themed input[type="number"].focus,
+  .modal-themed input[type="number"]:focus,
+  .modal-themed input[type="password"].focus,
+  .modal-themed input[type="password"]:focus,
+  .modal-themed select.focus,
+  .modal-themed select:focus,
+  .modal-themed textarea:focus,
+  .modal-themed textarea:focus,
+  #curve-frame input[type="text"].focus,
+  #curve-frame input[type="text"]:focus,
+  #curve-frame input[type="number"].focus,
+  #curve-frame input[type="number"]:focus,
+  #curve-frame input[type="password"].focus,
+  #curve-frame input[type="password"]:focus,
+  #curve-frame select.focus,
+  #curve-frame select:focus,
+  #curve-frame textarea:focus,
+  #curve-frame textarea:focus {
+    box-shadow: 0px 0px 5px #233f7a, 5px 5px 10px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    border: 0px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.05);
+    transition: all 0.5s ease;
+    outline: none; }
+  .layout-corners pre,
+  .modal-themed pre,
+  #curve-frame pre {
+    color: white;
+    font-size: 16px;
+    font-family: monospace; }
+  .layout-corners .btn,
+  .modal-themed .btn,
+  #curve-frame .btn {
+    outline: none; }
+  .layout-corners .textbox,
+  .modal-themed .textbox,
+  #curve-frame .textbox {
+    box-shadow: rgba(255, 255, 255, 0.74902) 0px 0px 5px 0px, 5px 5px 10px rgba(0, 0, 0, 0.3);
+    background-attachment: scroll;
+    -webkit-backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.0980392);
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    box-sizing: border-box;
+    color: white;
+    display: inline-block;
+    font-size: 14px;
+    margin-bottom: 10px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    overflow-x: auto;
+    overflow-y: auto;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 15px; }
+  .layout-corners div.form-control,
+  .modal-themed div.form-control,
+  #curve-frame div.form-control {
+    color: #fff;
+    border: 0px solid rgba(255, 255, 255, 0.5);
+    padding: 15px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.75), 5px 5px 10px rgba(0, 0, 0, 0.3);
+    margin: 0 0 10px 0; }
+    .layout-corners div.form-control:disabled, .layout-corners div.form-control.disabled,
+    .modal-themed div.form-control:disabled,
+    .modal-themed div.form-control.disabled,
+    #curve-frame div.form-control:disabled,
+    #curve-frame div.form-control.disabled {
+      background-color: rgba(255, 255, 255, 0.1); }
+  .layout-corners .form-control:disabled,
+  .modal-themed .form-control:disabled,
+  #curve-frame .form-control:disabled {
+    background-color: rgba(255, 255, 255, 0.1); }
+  .layout-corners .border-left,
+  .modal-themed .border-left,
+  #curve-frame .border-left {
+    border-left: solid 1px rgba(255, 255, 255, 0.1); }
+  .layout-corners .border-right,
+  .modal-themed .border-right,
+  #curve-frame .border-right {
+    border-right: solid 1px rgba(255, 255, 255, 0.1); }
+  .layout-corners .border-top,
+  .modal-themed .border-top,
+  #curve-frame .border-top {
+    border-top: solid 1px rgba(255, 255, 255, 0.1); }
+  .layout-corners .border-bottom,
+  .modal-themed .border-bottom,
+  #curve-frame .border-bottom {
+    border-bottom: solid 1px rgba(255, 255, 255, 0.1); }
+  .layout-corners .c-select,
+  .modal-themed .c-select,
+  #curve-frame .c-select {
+    border: 1px solid #9c9da0;
+    background-color: rgba(0, 0, 0, 0.2);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+    color: white;
+    border-radius: 4px; }
+  .layout-corners .dropdown-menu,
+  .modal-themed .dropdown-menu,
+  #curve-frame .dropdown-menu {
+    background-color: rgba(0, 0, 0, 0.8);
+    border: solid 1px rgba(255, 255, 255, 0.5); }
+    .layout-corners .dropdown-menu .dropdown-item,
+    .modal-themed .dropdown-menu .dropdown-item,
+    #curve-frame .dropdown-menu .dropdown-item {
+      color: white; }
+      .layout-corners .dropdown-menu .dropdown-item:hover, .layout-corners .dropdown-menu .dropdown-item:focus,
+      .modal-themed .dropdown-menu .dropdown-item:hover,
+      .modal-themed .dropdown-menu .dropdown-item:focus,
+      #curve-frame .dropdown-menu .dropdown-item:hover,
+      #curve-frame .dropdown-menu .dropdown-item:focus {
+        background-color: rgba(255, 255, 255, 0.2); }
+  .layout-corners .list-group-item,
+  .modal-themed .list-group-item,
+  #curve-frame .list-group-item {
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.125); }
+  .layout-corners .nav-tabs .nav-link.active,
+  .modal-themed .nav-tabs .nav-link.active,
+  #curve-frame .nav-tabs .nav-link.active {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.5); }
+
+@media (width: 1366px) {
+  .form-group {
+    margin-bottom: 0; }
+  label,
+  .col-form-label-lg {
+    padding-top: 0; } }

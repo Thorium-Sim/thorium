@@ -1,0 +1,68 @@
+.collision img {
+  position: absolute;
+  width: 75vh;
+  height: 75vh;
+  left: 0;
+  right: 0;
+  margin: 0 auto; }
+
+.collision .rotor {
+  animation-name: collisionRotor;
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  z-index: 1; }
+
+.collision .outer {
+  animation-name: collisionOuter;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  z-index: 2; }
+
+.collision .inner {
+  animation-name: collisionInner;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  z-index: 2; }
+
+.collision .base {
+  z-index: 2; }
+
+.collision p {
+  position: absolute;
+  font-size: 60px;
+  bottom: 5vh;
+  width: 100%;
+  text-align: center; }
+
+@keyframes collisionOuter {
+  0% {
+    opacity: 0.5; }
+  45% {
+    opacity: 0.5; }
+  50% {
+    opacity: 1; }
+  95% {
+    opacity: 1; }
+  100% {
+    opacity: 0.5; } }
+
+@keyframes collisionInner {
+  0% {
+    opacity: 1; }
+  45% {
+    opacity: 1; }
+  50% {
+    opacity: 0.5; }
+  95% {
+    opacity: 0.5; }
+  100% {
+    opacity: 1; } }
+
+@keyframes collisionRotor {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }

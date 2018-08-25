@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css?family=Sarpanch:700");
+.viewscreen-offline {
+  z-index: 10000;
+  position: absolute; }
+  .viewscreen-offline .text {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%; }
+  .viewscreen-offline h1 {
+    color: red;
+    font-family: Impact;
+    text-shadow: 2px 2px 5px darkred;
+    font-size: 120px;
+    font-family: 'Sarpanch';
+    width: 70%;
+    text-align: center; }
+  .viewscreen-offline #canvas {
+    background: radial-gradient(#fff, #666); }

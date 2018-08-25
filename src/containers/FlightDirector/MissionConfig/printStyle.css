@@ -1,0 +1,38 @@
+.printMission {
+  height: 100vh;
+  padding: 50px;
+  overflow-y: scroll;
+  user-select: text; }
+  .printMission * {
+    user-select: text; }
+  .printMission .mission-step {
+    margin-bottom: 50px; }
+  .printMission .mission-item-holder {
+    display: flex;
+    flex-wrap: wrap; }
+  .printMission .description {
+    font-size: 22px; }
+  .printMission .mission-item {
+    flex: 1;
+    margin: 0 20px;
+    min-width: 30%;
+    max-width: 50%; }
+  .printMission h3 {
+    font-size: 23px; }
+
+@media print {
+  .printMission {
+    height: auto;
+    overflow-y: visible;
+    padding: 0; }
+  .hider {
+    display: none; }
+  .mission-step {
+    page-break-inside: avoid; }
+  body {
+    overflow: visible !important;
+    overflow-y: auto !important;
+    position: relative;
+    width: auto;
+    height: auto;
+    margin: 0; } }

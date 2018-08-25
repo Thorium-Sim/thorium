@@ -1,0 +1,18 @@
+.viewscreen-communications {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%; }
+  .viewscreen-communications #comm-waves {
+    opacity: 1;
+    transition: opacity 1s ease;
+    width: 100%;
+    height: 25vh; }
+    .viewscreen-communications #comm-waves.hide-comm {
+      opacity: 0; }
+  .viewscreen-communications img {
+    height: 30vh; }
+  .viewscreen-communications .comm-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; }

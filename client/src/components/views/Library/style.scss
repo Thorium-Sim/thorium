@@ -1,0 +1,48 @@
+.library-card {
+  .entry-list {
+    height: 35vh;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+  }
+  .category-list {
+    height: 22vh;
+    overflow-y: scroll;
+  }
+  p {
+    font-size: 20px;
+    margin: 2px;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .entry-main {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .entry-main.active {
+    opacity: 1;
+  }
+  .entry-body {
+    height: 69vh;
+    white-space: pre-wrap;
+    overflow-y: scroll;
+    font-size: 20px;
+    line-height: 1.5;
+  }
+  .entry-image {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    background-size: contain;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-color: black;
+    border: solid 1px rgba(255, 255, 255, 0.5);
+  }
+  .selected {
+    background-color: rgba(255,255,255,0.4);
+  }
+  .entry-seeAlso {
+    height: 21vh;
+    overflow-y: scroll;
+  }
+}

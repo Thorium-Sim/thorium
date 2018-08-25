@@ -1,0 +1,64 @@
+.card-exocomps p {
+  line-height: 0.5;
+  font-size: 18px;
+  margin-left: 10px; }
+
+.card-exocomps .exocomp-list {
+  max-height: 80vh;
+  overflow-y: scroll; }
+
+.card-exocomps .card {
+  margin-bottom: 20px; }
+
+.card-exocomps .exocomp-title {
+  font-size: 30px;
+  float: left;
+  margin-bottom: 10px;
+  margin-right: 20px; }
+
+.card-exocomps .exocomp-list .parts-holder {
+  float: left; }
+
+.card-exocomps .parts-holder {
+  display: flex; }
+
+.card-exocomps .exocomp-part {
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+  background-color: black;
+  border: solid 2px white;
+  background-size: cover; }
+
+.card-exocomps .parts-container {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(4, 1fr);
+  height: 30vh;
+  border: solid 1px rgba(255, 255, 255, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
+  margin-top: 20px;
+  padding: 10px;
+  overflow-y: scroll; }
+  .card-exocomps .parts-container .exocomp-part {
+    cursor: pointer; }
+  .card-exocomps .parts-container .part-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center; }
+  .card-exocomps .parts-container p {
+    text-align: center;
+    line-height: 1; }
+
+.card-exocomps .dropdown-menu {
+  height: 50vh;
+  overflow-y: scroll; }
+
+.card-exocomps .exocomp-information {
+  height: 40vh;
+  overflow-y: scroll; }
+  .card-exocomps .exocomp-information p {
+    line-height: 1; }
+
+.card-exocomps button {
+  float: right; }

@@ -1,0 +1,314 @@
+.transporterScan {
+  height: 60vh;
+  position: relative;
+  width: 100%; }
+  .transporterScan .ring_1 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.05s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -1.25vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 2.5vh;
+    height: 2.5vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_2 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.1s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -2.5vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 5vh;
+    height: 5vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_3 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.15s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -3.75vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 7.5vh;
+    height: 7.5vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_4 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.2s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -5vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 10vh;
+    height: 10vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_5 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.25s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -6.25vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 12.5vh;
+    height: 12.5vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_6 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.3s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -7.5vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 15vh;
+    height: 15vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_7 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.35s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -8.75vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 17.5vh;
+    height: 17.5vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_8 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.4s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -10vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 20vh;
+    height: 20vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_9 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.45s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -11.25vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 22.5vh;
+    height: 22.5vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_10 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.5s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -12.5vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 25vh;
+    height: 25vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_11 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.55s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -13.75vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 27.5vh;
+    height: 27.5vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_12 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.6s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -15vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 30vh;
+    height: 30vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_13 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.65s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -16.25vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 32.5vh;
+    height: 32.5vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_14 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.7s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -17.5vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 35vh;
+    height: 35vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_15 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.75s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -18.75vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 37.5vh;
+    height: 37.5vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_16 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.8s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -20vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 40vh;
+    height: 40vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_17 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.85s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -21.25vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 42.5vh;
+    height: 42.5vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_18 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.9s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -22.5vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 45vh;
+    height: 45vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_19 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 0.95s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -23.75vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 47.5vh;
+    height: 47.5vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+  .transporterScan .ring_20 {
+    animation: transporter_spin infinite 3.5s linear, rainbow infinite 7s linear;
+    animation-delay: 1s;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -25vh;
+    border-top: 1px solid transparent;
+    border-width: 4px;
+    border-radius: 100%;
+    width: 50vh;
+    height: 50vh;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.25); }
+
+@keyframes rainbow {
+  16.66667% {
+    border-color: #00ccff; }
+  33.33333% {
+    border-color: #0044cc; }
+  50% {
+    border-color: #00aaff; }
+  66.66667% {
+    border-color: blue; }
+  83.33333% {
+    border-color: indigo; }
+  100% {
+    border-color: rebeccapurple; }
+  100% {
+    border-color: transparent; } }
+
+@-webkit-keyframes rainbow {
+  16.66667% {
+    border-color: #00ccff; }
+  33.33333% {
+    border-color: #0044cc; }
+  50% {
+    border-color: #00aaff; }
+  66.66667% {
+    border-color: blue; }
+  83.33333% {
+    border-color: indigo; }
+  100% {
+    border-color: rebeccapurple; }
+  100% {
+    border-color: transparent; } }
+
+@keyframes transporter_spin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
+
+@-webkit-keyframes transporter_spin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
+
+body {
+  background-color: #0c0c0c;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden; }

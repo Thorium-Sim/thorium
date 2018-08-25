@@ -1,0 +1,105 @@
+.damage-control .card,
+.damageReport-core .card {
+  height: 60vh;
+  overflow-y: scroll; }
+
+.damage-control p,
+.damageReport-core p {
+  margin: 0;
+  padding: 4px; }
+  .damage-control p.selected,
+  .damageReport-core p.selected {
+    background-color: rgba(128, 128, 128, 0.5);
+    border-radius: 5px; }
+  .damage-control p.requested,
+  .damageReport-core p.requested {
+    font-style: italic;
+    color: lightsalmon; }
+  .damage-control p.report,
+  .damageReport-core p.report {
+    font-weight: bold;
+    color: greenyellow; }
+  .damage-control p.validate,
+  .damageReport-core p.validate {
+    font-weight: bold;
+    color: lightseagreen; }
+  .damage-control p.destroyed,
+  .damageReport-core p.destroyed {
+    color: #505050; }
+
+.damage-control .damageReport-text,
+.damageReport-core .damageReport-text {
+  white-space: pre-wrap;
+  font-family: monospace;
+  font-size: 18px; }
+
+.damage-control .reactivation-code .card,
+.damageReport-core .reactivation-code .card {
+  height: 45vh; }
+
+.damage-control .reactivation-code .reactivation-code-entry.card,
+.damageReport-core .reactivation-code .reactivation-code-entry.card {
+  margin-top: 5px;
+  height: 10vh;
+  cursor: pointer; }
+  .damage-control .reactivation-code .reactivation-code-entry.card p,
+  .damageReport-core .reactivation-code .reactivation-code-entry.card p {
+    font-size: 20px; }
+  .damage-control .reactivation-code .reactivation-code-entry.card p.code-entry,
+  .damageReport-core .reactivation-code .reactivation-code-entry.card p.code-entry {
+    font-size: 29px;
+    letter-spacing: 11px;
+    text-align: center; }
+
+.damage-control h4,
+.damageReport-core h4 {
+  font-size: 1.4rem; }
+
+.damage-control button,
+.damageReport-core button {
+  font-size: 0.9rem; }
+
+.reactivation-modal .modal-body {
+  padding: 0;
+  margin: 0; }
+
+.reactivation-modal .flex-boxes {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap; }
+  .reactivation-modal .flex-boxes li {
+    background-color: rgba(255, 255, 255, 0.3);
+    border: solid 1px rgba(255, 255, 255, 0.5);
+    font-size: 36px;
+    list-style: none;
+    display: inline-block;
+    flex: auto;
+    text-align: center;
+    flex-wrap: wrap;
+    padding: 10%;
+    width: 30%; }
+    .reactivation-modal .flex-boxes li:hover {
+      background-color: rgba(255, 255, 255, 0.1); }
+    .reactivation-modal .flex-boxes li:active {
+      background-color: rgba(255, 255, 255, 0.4); }
+
+.reactivation-modal .code-entry {
+  font-size: 30px;
+  padding-left: 20%;
+  padding-top: 20px;
+  height: 85px;
+  background-color: black;
+  letter-spacing: 20px; }
+
+.damageReport-core {
+  height: 100%; }
+  .damageReport-core .left-side {
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; }
+  .damageReport-core .system-list {
+    flex: 1;
+    overflow-y: scroll; }

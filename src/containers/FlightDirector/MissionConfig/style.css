@@ -1,0 +1,17 @@
+.missionConfig .scroll {
+  overflow-y: scroll; }
+
+.missionConfig li.selected {
+  background-color: rgba(0, 0, 0, 0.1); }
+
+.missionConfig .magic-container {
+  display: flex; }
+
+.missionConfig .magic-child {
+  margin: 0 20px; }
+
+@keyframes spinloader {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(359deg); } }

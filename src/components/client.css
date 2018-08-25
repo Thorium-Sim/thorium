@@ -1,0 +1,55 @@
+.credit-bg,
+.error-boundary {
+  height: 100vh;
+  width: 100%;
+  background-image: url("./credit-bg.jpg");
+  background-size: cover; }
+  .credit-bg .container,
+  .error-boundary .container {
+    height: 100%;
+    overflow-y: hidden;
+    padding: 50px;
+    text-align: center;
+    color: white; }
+    .credit-bg .container .scroll,
+    .error-boundary .container .scroll {
+      height: calc(100vh - 323px);
+      overflow: hidden; }
+      .credit-bg .container .scroll .scroller,
+      .error-boundary .container .scroll .scroller {
+        animation-name: credits-scroll;
+        animation-duration: 80s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite; }
+      .credit-bg .container .scroll .creditSection,
+      .error-boundary .container .scroll .creditSection {
+        margin-top: 40px; }
+    .credit-bg .container img,
+    .error-boundary .container img {
+      width: 20%;
+      -webkit-filter: drop-shadow(16px 16px 20px black);
+      filter: drop-shadow(16px 16px 20px black); }
+    .credit-bg .container h1,
+    .credit-bg .container h2,
+    .credit-bg .container h3,
+    .credit-bg .container h4,
+    .credit-bg .container h5,
+    .credit-bg .container h6,
+    .credit-bg .container p,
+    .error-boundary .container h1,
+    .error-boundary .container h2,
+    .error-boundary .container h3,
+    .error-boundary .container h4,
+    .error-boundary .container h5,
+    .error-boundary .container h6,
+    .error-boundary .container p {
+      color: #fff; }
+    .credit-bg .container h1,
+    .error-boundary .container h1 {
+      font-size: 48px; }
+
+@keyframes credits-scroll {
+  from {
+    transform: translateY(calc(100vh - 325px)); }
+  to {
+    transform: translateY(-105%); } }

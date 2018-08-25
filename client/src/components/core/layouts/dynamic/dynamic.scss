@@ -1,0 +1,83 @@
+.non-editing {
+  .mosaic {
+    .mosaic-root {
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+    }
+    .mosaic-window-toolbar {
+      pointer-events: none;
+      height: 16px;
+    }
+    .mosaic-tile {
+      margin: 0;
+    }
+    .mosaic-window-controls,
+    .mosaic-split {
+      display: none;
+    }
+  }
+}
+
+.mosaic {
+  font-family: "Gill Sans", sans-serif;
+  font-size: 12;
+  line-height: 1;
+  .mosaic-window-body {
+    overflow-y: scroll;
+  }
+  .pt-button {
+    color: #a7b6c2;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    box-shadow: none;
+    background: none;
+    padding: 0;
+    flex: 0 0 auto;
+    position: relative;
+    z-index: 4;
+    vertical-align: middle;
+    font-size: 14px;
+    min-width: 30px;
+    min-height: 30px;
+    line-height: 30px;
+    display: inline-block;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  .pt-button[class*="pt-icon-"]::before {
+    line-height: 1;
+    font: normal normal normal 14px/1 FontAwesome;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    margin-right: 7px;
+    color: #5c7080;
+  }
+  .pt-icon-cross::before {
+    content: "\f00d";
+  }
+  .pt-icon-maximize::before {
+    content: "\f2d0";
+  }
+  .pt-icon-add-column-right::before {
+    content: "\f0db";
+  }
+  .btn {
+    line-height: 1;
+  }
+}
+
+.core-picker {
+  height: 100%;
+  overflow-y: scroll;
+  .categories {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .category {
+    margin: 10px;
+  }
+}

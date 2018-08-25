@@ -1,0 +1,13 @@
+.viewscreen-shipview {
+  display: flex;
+  height: 100%;
+  align-items: center; }
+  .viewscreen-shipview h1 {
+    white-space: pre-line;
+    font-size: 60px; }
+  .viewscreen-shipview h2 {
+    white-space: pre-line;
+    font-size: 45px; }
+  .viewscreen-shipview img {
+    width: 100%;
+    margin: 50px; }

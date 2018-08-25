@@ -1,0 +1,18 @@
+.isochips .col {
+  margin-top: 40px; }
+
+.isochips .isochip-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column; }
+  .isochips .isochip-container .state {
+    border: solid 1px white;
+    width: 20px;
+    height: 120px;
+    background-color: black; }
+    .isochips .isochip-container .state.nominal {
+      background-color: green; }
+    .isochips .isochip-container .state.diagnostic {
+      background-color: rebeccapurple; }
+    .isochips .isochip-container .state.invalid {
+      background-color: red; }

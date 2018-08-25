@@ -1,0 +1,11 @@
+.surveyForm-card {
+  height: 100%; }
+  .surveyForm-card .row,
+  .surveyForm-card .col {
+    height: 100%; }
+  .surveyForm-card .center-all {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%; }

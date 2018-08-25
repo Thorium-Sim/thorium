@@ -1,0 +1,10 @@
+.clients-card div {
+  display: flex; }
+
+.clients-card span {
+  flex: 1; }
+
+.clients-card select.form-control.hypercard-picker {
+  height: 14px;
+  font-size: 14px;
+  flex: 1; }

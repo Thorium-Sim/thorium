@@ -1,0 +1,81 @@
+.powerLevels {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column; }
+  .powerLevels h5 {
+    float: left;
+    font-size: 18px;
+    padding-top: 12px;
+    width: 100%;
+    text-align: right; }
+  .powerLevels h4,
+  .powerLevels h5,
+  .powerLevels h6 {
+    margin-bottom: 1px; }
+  .powerLevels .systems-holder {
+    max-height: 68vh;
+    overflow-y: scroll;
+    overflow-x: hidden; }
+  .powerLevels .totalPowerText {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: solid 1px rgba(255, 255, 255, 0.5); }
+  .powerLevels .powerLine {
+    margin: 10px;
+    height: 20px;
+    position: relative;
+    display: flex; }
+    .powerLevels .powerLine .powerLevel {
+      height: 100%;
+      width: 3px;
+      position: absolute;
+      background-color: yellow;
+      border-radius: 50px; }
+    .powerLevels .powerLine .powerBox {
+      margin-right: 4px;
+      height: 100%;
+      width: 10px;
+      border: solid 2px #0b0;
+      background-color: green; }
+      .powerLevels .powerLine .powerBox.zero {
+        background-color: gray;
+        border-color: darkgray; }
+      .powerLevels .powerLine .powerBox.hidden {
+        display: none; }
+  .powerLevels .powerlevel-containers {
+    height: 74vh; }
+  .powerLevels .battery-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; }
+    .powerLevels .battery-container .battery {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      height: 70vh;
+      width: 100%;
+      margin: 15px;
+      margin-bottom: 25px; }
+      .powerLevels .battery-container .battery .battery-bar {
+        width: 100%;
+        border-radius: 10px;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 100%), linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
+        background-size: 5px 3px, 100%;
+        background-color: #0f0;
+        border: solid 2px #333; }
+      .powerLevels .battery-container .battery .battery-level {
+        text-align: center; }
+  @media (width: 1024px) {
+    .powerLevels h5 {
+      float: left;
+      font-size: 14px;
+      padding-top: 0px; }
+    .powerLevels .powerLine {
+      margin: 0px; }
+    .powerLevels .battery-holder {
+      position: absolute;
+      top: 10vh;
+      right: 0; }
+    .powerLevels .battery-container .battery {
+      height: 60vh; } }

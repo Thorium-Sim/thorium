@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;">
+    <g id="Template">
+        <g id="AlertCondition">
+            <path d="M128,0L128,128L0,128L0,0L128,0ZM32.406,95.838L36.15,100.108L49.096,107.482L57.085,99.698L53.334,95.767L63.652,85.65L74.496,95.632L70.637,99.875L77.809,107.368L90.95,100.28L95.579,95.556L63.81,63.676L32.406,95.838ZM39.118,33.88L39.118,25.257L55.058,20.692L61.874,20.518L61.88,60.06L28.564,92.799L24.115,87.464L17.004,75.519L24.66,67.44L28.802,71.46L44.902,55.225L44.902,33.88L39.118,33.88ZM88.882,33.88L88.882,25.257L72.942,20.692L66.126,20.518L66.12,60.06L99.436,92.799L103.885,87.464L110.996,75.519L103.34,67.44L99.198,71.46L83.098,55.225L83.098,33.88L88.882,33.88Z"/>
+        </g>
+    </g>
+</svg>

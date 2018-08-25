@@ -1,0 +1,26 @@
+.viewscreen-internalSensors {
+  margin-top: 5vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column; }
+  .viewscreen-internalSensors h1 {
+    padding-bottom: 40px;
+    font-size: 50px; }
+  .viewscreen-internalSensors h2 {
+    padding-top: 40px;
+    font-size: 60px;
+    white-space: pre-wrap;
+    max-width: 80%; }
+  .viewscreen-internalSensors .ship {
+    width: 50%;
+    position: relative; }
+  .viewscreen-internalSensors .scanner {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    mix-blend-mode: overlay;
+    -webkit-mask-position: center;
+    -webkit-mask-size: cover;
+    -webkit-mask-repeat: no-repeat; }
+  .viewscreen-internalSensors img {
+    width: 100%; }

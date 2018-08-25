@@ -1,0 +1,137 @@
+.sensorGridCore .col-sm-3 {
+  position: relative;
+  z-index: 1000;
+  pointer-events: none; }
+  .sensorGridCore .col-sm-3 * {
+    pointer-events: all; }
+
+.sensorGridCore .sensorGridHolder {
+  background-color: #ccc;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0; }
+
+.sensorGridCore .heightPlaceholder {
+  margin-top: 100%; }
+
+.sensorGridCore .core .react-grid-item .sensorGridCore div {
+  height: initial; }
+
+.sensorGridCore .slider-picker > div:nth-child(1) {
+  margin-bottom: -15px; }
+
+.sensorGridCore .planet-dragger {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border: solid 2px #999;
+  border-radius: 50%;
+  cursor: pointer; }
+
+.sensorGridCore .border-dragger {
+  width: 20px;
+  height: 15px;
+  background-color: white;
+  border: solid 2px #999;
+  cursor: pointer; }
+
+.sensorGridCore img.armyContact {
+  height: 16px;
+  width: 16px; }
+
+.sensorGridCore .flex-container {
+  display: flex; }
+
+.sensorGridCore select.form-control:not([size]):not([multiple]),
+.sensorGridCore input[type="text"] {
+  height: calc(1.25rem - 2px); }
+
+.sensorGridCore .contacts-container {
+  left: 0;
+  height: 100%; }
+
+.sensorGridCore .contact-scroll {
+  max-height: calc(100% - 70px);
+  overflow-y: scroll; }
+
+.sensorGridCore .contextMenu {
+  z-index: 100;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0; }
+  .sensorGridCore .contextMenu .file-explorer {
+    height: 80%; }
+    .sensorGridCore .contextMenu .file-explorer .directory-container {
+      grid-template-columns: 1fr; }
+    .sensorGridCore .contextMenu .file-explorer .file-container {
+      width: 100px;
+      padding: 2px;
+      margin: 2px; }
+  .sensorGridCore .contextMenu .form-group {
+    margin-bottom: 0; }
+  .sensorGridCore .contextMenu label {
+    padding: 0; }
+  .sensorGridCore .contextMenu .row {
+    margin-bottom: 2px; }
+  .sensorGridCore .contextMenu select.form-control:not([size]):not([multiple]) {
+    height: calc(1.25rem - 2px); }
+  .sensorGridCore .contextMenu .form-check {
+    padding-left: 20px; }
+  .sensorGridCore .contextMenu .card-block {
+    padding: 4px;
+    padding-top: 0;
+    padding-bottom: 0; }
+
+.sensorGridCore .nudge {
+  width: 100%; }
+  .sensorGridCore .nudge select {
+    width: 60%;
+    float: left; }
+  .sensorGridCore .nudge .buttons {
+    width: 40%;
+    float: left; }
+    .sensorGridCore .nudge .buttons span {
+      text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      width: 33%; }
+      .sensorGridCore .nudge .buttons span.up {
+        width: 100%; }
+      .sensorGridCore .nudge .buttons span:active {
+        color: white; }
+
+.sensorGridCore .draggerHolder {
+  position: relative;
+  padding-bottom: calc(100% - 3vw);
+  width: calc(100% - 3vw); }
+
+.sensorGridCore .draggerCircle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 50%;
+  border: 2px solid #9c9da0;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 100%), linear-gradient(165deg, #000000 0%, rgba(0, 0, 0, 0) 50%, #000000 100%); }
+
+.sensorGridCore .dragger {
+  width: 14%;
+  height: 14%;
+  position: absolute;
+  left: calc(50% - 7%);
+  top: calc(50% - 7%);
+  border: 2px solid #9c9da0;
+  border-radius: 50%;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3), inset 0px 0px 30px 10px rgba(0, 0, 0, 0.5);
+  cursor: pointer; }
+
+.sensorGridCore .draggerBar .dragger {
+  height: 100%;
+  top: 0; }

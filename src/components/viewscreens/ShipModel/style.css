@@ -1,0 +1,9 @@
+.ship-model-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around; }
+  .ship-model-container .three-container {
+    width: 100vw;
+    height: 100vh; }
+  .ship-model-container.has-text .three-container {
+    width: 40vw; }

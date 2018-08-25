@@ -1,0 +1,72 @@
+.jr-flight {
+  height: 100%; }
+  .jr-flight .row, .jr-flight .col {
+    height: 100%; }
+  .jr-flight .engines-slider {
+    height: 90%;
+    margin: 20px;
+    display: flex;
+    justify-content: center; }
+    .jr-flight .engines-slider .line {
+      height: 100%;
+      width: 5px;
+      background-color: gray;
+      margin: 0 20px; }
+    .jr-flight .engines-slider .engines-list {
+      height: 100%;
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: space-between; }
+      .jr-flight .engines-slider .engines-list p {
+        margin: 0;
+        padding: 0;
+        font-size: 24px; }
+    .jr-flight .engines-slider .engine-arrow-holder {
+      height: 96%;
+      transform: translateY(100%);
+      transition: transform 0.2s ease; }
+    .jr-flight .engines-slider .engine-arrow {
+      border-top: solid transparent 15px;
+      border-bottom: solid transparent 15px;
+      border-left: solid orange 20px;
+      height: 0px;
+      width: 0px;
+      background-color: transparent;
+      cursor: pointer; }
+  .jr-flight .jr-thruster {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; }
+    .jr-flight .jr-thruster .center-area {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      margin: 30px; }
+    .jr-flight .jr-thruster .fa {
+      width: 100%;
+      text-align: center;
+      cursor: pointer; }
+      .jr-flight .jr-thruster .fa:hover {
+        color: #ddd; }
+      .jr-flight .jr-thruster .fa:active {
+        color: #aaa; }
+  .jr-flight .jr-navigation .course-list {
+    height: 30vh;
+    border: solid 3px blue;
+    margin: 10px 0;
+    overflow-y: scroll;
+    font-size: 30px; }
+    .jr-flight .jr-navigation .course-list p {
+      padding: 5px;
+      margin: 5px;
+      border-radius: 5px; }
+      .jr-flight .jr-navigation .course-list p.selected {
+        background-color: gray; }
+  .jr-flight .jr-navigation .starsBox {
+    height: 30vh; }
+
+.jr-navigation-core .destinations {
+  height: 80%;
+  overflow-y: scroll; }

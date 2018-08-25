@@ -1,0 +1,29 @@
+.viewscreen-shieldMonitoring {
+  margin-top: 10vh;
+  h1 {
+    font-size: 60px;
+    text-align: center;
+  }
+.shieldMonitoring {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  img {
+    max-height: 50vh;
+  }
+  .shieldImage {
+    transition: filter 2s ease-in-out;
+  }
+  .shieldBubble {
+    max-width: 40%;
+    padding: 50px;
+    margin: 10px;
+    border-radius: 50%;
+    transition: box-shadow 2s ease-in-out;
+    img {
+      width: 100%;
+    }
+  }
+}
+}

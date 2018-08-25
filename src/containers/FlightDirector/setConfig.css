@@ -1,0 +1,6 @@
+.set-config .list-group-item.selected {
+  background-color: rgba(255, 255, 255, 0.2); }
+
+.set-picker .card:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.05); }

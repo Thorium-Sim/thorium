@@ -1,0 +1,21 @@
+.jr-sensors pre {
+  color: white; }
+
+.jr-sensors .grid {
+  overflow: hidden; }
+
+.jr-sensors .contactPictureContainer {
+  height: 17vh;
+  margin-bottom: 10px; }
+
+.jr-sensors .contactPicture {
+  height: 100%;
+  background-size: cover; }
+
+.jr-sensors .contactName {
+  padding-left: 10px;
+  font-size: 20px;
+  height: 58px; }
+
+.jr-sensors .processedData {
+  height: 40vh; }

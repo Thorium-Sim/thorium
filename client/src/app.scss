@@ -1,0 +1,77 @@
+@import url("/css/font-awesome.min.css");
+@import url("/css/fonts.css");
+
+.cardContainer {
+  max-width: 100%;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  align-self: center;
+}
+pre {
+  background-color: transparent;
+  padding: 0;
+  word-break: break-word;
+  white-space: pre-wrap;
+  user-select: text !important;
+}
+.clickable:hover {
+  cursor: pointer;
+}
+*:not(input) {
+  user-select: none;
+}
+
+// Rotation Helpers
+
+.ccw-90 {
+  transform: rotate(270deg);
+}
+
+.cw-90 {
+  transform: rotate(90deg);
+}
+
+.cw-180 {
+  transform: rotate(180deg);
+}
+
+@media screen and (max-width: 1024px) {
+  .btn {
+    overflow: hidden;
+  }
+  label.col-form-label-lg {
+    padding: 0;
+  }
+  #root {
+    h1 {
+      font-size: 2rem;
+    }
+    h2 {
+      font-size: 1.75rem;
+    }
+    h5 {
+      font-size: 1rem;
+    }
+    button {
+      font-size: 0.8rem;
+    }
+
+    button.btn:not(.dropdown-toggle) {
+      white-space: pre-wrap;
+    }
+    .card-icon-item {
+      button.btn {
+        white-space: nowrap;
+      }
+    }
+  }
+
+  div.form-group {
+    margin-bottom: 0.5rem;
+  }
+
+  .shuttles-card .shuttleBay {
+    max-width: 50%;
+  }
+}

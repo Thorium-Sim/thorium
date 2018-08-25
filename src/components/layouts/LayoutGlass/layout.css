@@ -1,0 +1,641 @@
+@import url("https://fonts.googleapis.com/css?family=Saira");
+@import url("https://fonts.googleapis.com/css?family=Titillium+Web:200");
+.layout-glass {
+  background-color: black;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-family: "Saira", sans-serif;
+  color: #eee; }
+  .layout-glass .frame-text h1,
+  .layout-glass .frame-text h2 {
+    font-family: "Bebas Neue";
+    font-weight: 300; }
+  .layout-glass .widgets {
+    top: 6vh;
+    left: 39vw;
+    width: 23vw;
+    display: flex;
+    justify-content: space-between; }
+  .layout-glass .card-icon-container {
+    top: 33vh;
+    left: 3vw; }
+    .layout-glass .card-icon-container .card-icon-item {
+      margin-bottom: 97px; }
+    .layout-glass .card-icon-container .card-icon {
+      opacity: 0.8; }
+    .layout-glass .card-icon-container .card-icon-background {
+      background-color: transparent !important; }
+    .layout-glass .card-icon-container .card-button-mask {
+      top: 10px; }
+    .layout-glass .card-icon-container .btn {
+      width: 0;
+      overflow: hidden;
+      transition: width 0.5s ease, padding 0.5s ease;
+      padding-left: 0px;
+      padding-right: 0;
+      font-size: 24px; }
+    .layout-glass .card-icon-container:hover .btn {
+      width: 100%;
+      padding-left: 30px;
+      padding-right: 20px; }
+  .layout-glass .simulator-name,
+  .layout-glass .station-name,
+  .layout-glass .login-name {
+    text-shadow: 0px 0px 4px #3c69c7;
+    position: absolute;
+    text-align: center;
+    color: #aaa;
+    z-index: -40; }
+  .layout-glass .simulator-name {
+    top: 4.8vh;
+    left: 5vh;
+    font-size: 6vh;
+    width: 30vw; }
+  .layout-glass .station-name {
+    top: 4.8vh;
+    right: 5vh;
+    font-size: 6vh;
+    width: 30vw; }
+  .layout-glass .login-name {
+    top: 13vh;
+    left: 5vh;
+    font-size: 4vh;
+    width: 26vw; }
+  .layout-glass .cardContainer {
+    max-width: 88vw;
+    height: 75vh;
+    width: 100%;
+    position: absolute;
+    left: 10vw;
+    top: 19vh;
+    z-index: 100000; }
+  .layout-glass video#frame-bg {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: -100; }
+  .layout-glass .simName-graphic {
+    background-image: url(./SimName.png);
+    position: fixed;
+    background-size: contain;
+    width: 32vw;
+    height: 8vh;
+    top: 4vh;
+    left: 2vw;
+    z-index: -50; }
+  .layout-glass .cards-graphic {
+    background-image: url(./Cards.png);
+    position: fixed;
+    background-size: contain;
+    transform: rotate(270deg);
+    width: 47vw;
+    height: 13.5vh;
+    left: -18vw;
+    top: 54vh;
+    z-index: -50; }
+  .layout-glass .color-image {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    position: fixed;
+    mix-blend-mode: screen;
+    z-index: -10; }
+  .layout-glass .stationName-graphic {
+    background-image: url(./StationName.png);
+    position: fixed;
+    background-size: contain;
+    width: 32vw;
+    height: 7vh;
+    right: 2vw;
+    top: 4vh;
+    z-index: -50; }
+  .layout-glass .widgets-graphic {
+    background-image: url(./Widgets.png);
+    position: fixed;
+    background-size: contain;
+    width: 36vw;
+    height: 5.5vh;
+    left: 36vw;
+    top: 5.5vh;
+    z-index: -50; }
+  .layout-glass .username-graphic {
+    background-image: url(./Username.png);
+    position: fixed;
+    background-size: contain;
+    width: 27vw;
+    height: 6vh;
+    left: 2vw;
+    top: 12vh;
+    z-index: -50; }
+  .layout-glass button {
+    color: white;
+    font-weight: 600;
+    font-family: "Saira", sans-serif;
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 5px;
+    transition: all 0.1s ease; }
+    .layout-glass button.btn-default {
+      background-color: transparent;
+      background: rgba(104, 104, 104, 0.1);
+      border: solid 1px #686868;
+      box-shadow: inset 0px 0px 20px -5px rgba(94, 100, 114, 0.5), 0px 0px 15px -2px #5e6472; }
+      .layout-glass button.btn-default:hover:not([disabled]) {
+        color: white;
+        background: rgba(104, 104, 104, 0.5);
+        box-shadow: inset 0px 0px 20px 0px #5e6472, 0px 0px 10px -2px #5e6472; }
+      .layout-glass button.btn-default:focus {
+        box-shadow: inset 0px 0px 20px 0px #5e6472, 0px 0px 10px -2px #5e6472; }
+      .layout-glass button.btn-default:active, .layout-glass button.btn-default.active {
+        background: rgba(104, 104, 104, 0.3);
+        box-shadow: inset 0px 0px 20px 0px #30333a, 0px 0px 10px -2px #5e6472; }
+    .layout-glass button.btn-primary {
+      background-color: transparent;
+      background: rgba(67, 91, 141, 0.1);
+      border: solid 1px #435b8d;
+      box-shadow: inset 0px 0px 20px -5px rgba(57, 87, 151, 0.5), 0px 0px 15px -2px #395797; }
+      .layout-glass button.btn-primary:hover:not([disabled]) {
+        color: white;
+        background: rgba(67, 91, 141, 0.5);
+        box-shadow: inset 0px 0px 20px 0px #395797, 0px 0px 10px -2px #395797; }
+      .layout-glass button.btn-primary:focus {
+        box-shadow: inset 0px 0px 20px 0px #395797, 0px 0px 10px -2px #395797; }
+      .layout-glass button.btn-primary:active, .layout-glass button.btn-primary.active {
+        background: rgba(67, 91, 141, 0.3);
+        box-shadow: inset 0px 0px 20px 0px #1d2c4d, 0px 0px 10px -2px #395797; }
+    .layout-glass button.btn-secondary {
+      background-color: transparent;
+      background: rgba(150, 102, 54, 0.1);
+      border: solid 1px #966636;
+      box-shadow: inset 0px 0px 20px -5px rgba(160, 103, 44, 0.5), 0px 0px 15px -2px #a0672c; }
+      .layout-glass button.btn-secondary:hover:not([disabled]) {
+        color: white;
+        background: rgba(150, 102, 54, 0.5);
+        box-shadow: inset 0px 0px 20px 0px #a0672c, 0px 0px 10px -2px #a0672c; }
+      .layout-glass button.btn-secondary:focus {
+        box-shadow: inset 0px 0px 20px 0px #a0672c, 0px 0px 10px -2px #a0672c; }
+      .layout-glass button.btn-secondary:active, .layout-glass button.btn-secondary.active {
+        background: rgba(150, 102, 54, 0.3);
+        box-shadow: inset 0px 0px 20px 0px #503316, 0px 0px 10px -2px #a0672c; }
+    .layout-glass button.btn-success {
+      background-color: transparent;
+      background: rgba(54, 150, 54, 0.1);
+      border: solid 1px #369636;
+      box-shadow: inset 0px 0px 20px -5px rgba(44, 160, 44, 0.5), 0px 0px 15px -2px #2ca02c; }
+      .layout-glass button.btn-success:hover:not([disabled]) {
+        color: white;
+        background: rgba(54, 150, 54, 0.5);
+        box-shadow: inset 0px 0px 20px 0px #2ca02c, 0px 0px 10px -2px #2ca02c; }
+      .layout-glass button.btn-success:focus {
+        box-shadow: inset 0px 0px 20px 0px #2ca02c, 0px 0px 10px -2px #2ca02c; }
+      .layout-glass button.btn-success:active, .layout-glass button.btn-success.active {
+        background: rgba(54, 150, 54, 0.3);
+        box-shadow: inset 0px 0px 20px 0px #165016, 0px 0px 10px -2px #2ca02c; }
+    .layout-glass button.btn-info {
+      background-color: transparent;
+      background: rgba(54, 150, 150, 0.1);
+      border: solid 1px #369696;
+      box-shadow: inset 0px 0px 20px -5px rgba(44, 160, 160, 0.5), 0px 0px 15px -2px #2ca0a0; }
+      .layout-glass button.btn-info:hover:not([disabled]) {
+        color: white;
+        background: rgba(54, 150, 150, 0.5);
+        box-shadow: inset 0px 0px 20px 0px #2ca0a0, 0px 0px 10px -2px #2ca0a0; }
+      .layout-glass button.btn-info:focus {
+        box-shadow: inset 0px 0px 20px 0px #2ca0a0, 0px 0px 10px -2px #2ca0a0; }
+      .layout-glass button.btn-info:active, .layout-glass button.btn-info.active {
+        background: rgba(54, 150, 150, 0.3);
+        box-shadow: inset 0px 0px 20px 0px #165050, 0px 0px 10px -2px #2ca0a0; }
+    .layout-glass button.btn-warning {
+      background-color: transparent;
+      background: rgba(150, 102, 54, 0.1);
+      border: solid 1px #966636;
+      box-shadow: inset 0px 0px 20px -5px rgba(160, 103, 44, 0.5), 0px 0px 15px -2px #a0672c; }
+      .layout-glass button.btn-warning:hover:not([disabled]) {
+        color: white;
+        background: rgba(150, 102, 54, 0.5);
+        box-shadow: inset 0px 0px 20px 0px #a0672c, 0px 0px 10px -2px #a0672c; }
+      .layout-glass button.btn-warning:focus {
+        box-shadow: inset 0px 0px 20px 0px #a0672c, 0px 0px 10px -2px #a0672c; }
+      .layout-glass button.btn-warning:active, .layout-glass button.btn-warning.active {
+        background: rgba(150, 102, 54, 0.3);
+        box-shadow: inset 0px 0px 20px 0px #503316, 0px 0px 10px -2px #a0672c; }
+    .layout-glass button.btn-cloak {
+      background-color: transparent;
+      background: rgba(102, 54, 150, 0.1);
+      border: solid 1px #663696;
+      box-shadow: inset 0px 0px 20px -5px rgba(103, 44, 160, 0.5), 0px 0px 15px -2px #672ca0; }
+      .layout-glass button.btn-cloak:hover:not([disabled]) {
+        color: white;
+        background: rgba(102, 54, 150, 0.5);
+        box-shadow: inset 0px 0px 20px 0px #672ca0, 0px 0px 10px -2px #672ca0; }
+      .layout-glass button.btn-cloak:focus {
+        box-shadow: inset 0px 0px 20px 0px #672ca0, 0px 0px 10px -2px #672ca0; }
+      .layout-glass button.btn-cloak:active, .layout-glass button.btn-cloak.active {
+        background: rgba(102, 54, 150, 0.3);
+        box-shadow: inset 0px 0px 20px 0px #331650, 0px 0px 10px -2px #672ca0; }
+    .layout-glass button.btn-danger {
+      background-color: transparent;
+      background: rgba(150, 54, 54, 0.1);
+      border: solid 1px #963636;
+      box-shadow: inset 0px 0px 20px -5px rgba(160, 44, 44, 0.5), 0px 0px 15px -2px #a02c2c; }
+      .layout-glass button.btn-danger:hover:not([disabled]) {
+        color: white;
+        background: rgba(150, 54, 54, 0.5);
+        box-shadow: inset 0px 0px 20px 0px #a02c2c, 0px 0px 10px -2px #a02c2c; }
+      .layout-glass button.btn-danger:focus {
+        box-shadow: inset 0px 0px 20px 0px #a02c2c, 0px 0px 10px -2px #a02c2c; }
+      .layout-glass button.btn-danger:active, .layout-glass button.btn-danger.active {
+        background: rgba(150, 54, 54, 0.3);
+        box-shadow: inset 0px 0px 20px 0px #501616, 0px 0px 10px -2px #a02c2c; }
+  .layout-glass .list-group-item {
+    border: solid 1px transparent;
+    background-color: rgba(0, 0, 0, 0.1); }
+    .layout-glass .list-group-item.active {
+      background-color: rgba(255, 255, 255, 0.3);
+      border: solid 1px rgba(255, 255, 255, 0.5); }
+  .layout-glass pre {
+    color: white; }
+  .layout-glass.alertColor5 .card {
+    background: rgba(67, 91, 141, 0.1);
+    border: solid 1px #435b8d;
+    box-shadow: inset 0px 0px 20px -5px rgba(57, 87, 151, 0.5), 0px 0px 15px -2px #395797; }
+  .layout-glass.alertColor5 .dropdown-menu {
+    background: rgba(67, 91, 141, 0.1);
+    border: solid 1px #435b8d;
+    box-shadow: inset 0px 0px 20px -5px rgba(57, 87, 151, 0.5), 0px 0px 15px -2px #395797;
+    background: rgba(12, 22, 43, 0.9);
+    width: 100%;
+    transition: all 0.5s ease;
+    opacity: 0;
+    display: block;
+    pointer-events: none; }
+    .layout-glass.alertColor5 .dropdown-menu.show {
+      pointer-events: all;
+      opacity: 1; }
+    .layout-glass.alertColor5 .dropdown-menu .dropdown-item {
+      color: white; }
+      .layout-glass.alertColor5 .dropdown-menu .dropdown-item:hover, .layout-glass.alertColor5 .dropdown-menu .dropdown-item:focus {
+        background-color: rgba(255, 255, 255, 0.2); }
+  .layout-glass.alertColor5 input,
+  .layout-glass.alertColor5 textarea {
+    color: white;
+    background: rgba(88, 98, 120, 0.1);
+    border: solid 1px #586278;
+    box-shadow: inset 0px 0px 20px -5px rgba(88, 98, 120, 0.5), 0px 0px 15px -2px #586278; }
+    .layout-glass.alertColor5 input:hover,
+    .layout-glass.alertColor5 textarea:hover {
+      box-shadow: inset 0px 0px 20px 0px #395797, 0px 0px 10px -2px #435b8d; }
+    .layout-glass.alertColor5 input:focus,
+    .layout-glass.alertColor5 textarea:focus {
+      box-shadow: inset 0px 0px 20px 0px #395797, 0px 0px 10px -2px #395797; }
+  .layout-glass.alertColor5 .list-group {
+    margin-right: 4px;
+    border-radius: 5px;
+    background: rgba(67, 91, 141, 0.1);
+    border: solid 1px #435b8d;
+    box-shadow: inset 0px 0px 20px -5px rgba(57, 87, 151, 0.5), 0px 0px 15px -2px #395797; }
+  .layout-glass.alertColor5 .keypadButtons .keypad,
+  .layout-glass.alertColor5 .keypadButtons .enter {
+    background-color: transparent;
+    background: rgba(67, 91, 141, 0.1);
+    border: solid 1px #435b8d;
+    box-shadow: inset 0px 0px 20px -5px rgba(57, 87, 151, 0.5), 0px 0px 15px -2px #395797; }
+    .layout-glass.alertColor5 .keypadButtons .keypad:hover:not([disabled]),
+    .layout-glass.alertColor5 .keypadButtons .enter:hover:not([disabled]) {
+      color: white;
+      background: rgba(67, 91, 141, 0.5);
+      box-shadow: inset 0px 0px 20px 0px #395797, 0px 0px 10px -2px #395797; }
+    .layout-glass.alertColor5 .keypadButtons .keypad:focus,
+    .layout-glass.alertColor5 .keypadButtons .enter:focus {
+      box-shadow: inset 0px 0px 20px 0px #395797, 0px 0px 10px -2px #395797; }
+    .layout-glass.alertColor5 .keypadButtons .keypad:active, .layout-glass.alertColor5 .keypadButtons .keypad.active,
+    .layout-glass.alertColor5 .keypadButtons .enter:active,
+    .layout-glass.alertColor5 .keypadButtons .enter.active {
+      background: rgba(67, 91, 141, 0.3);
+      box-shadow: inset 0px 0px 20px 0px #1d2c4d, 0px 0px 10px -2px #395797; }
+  .layout-glass.alertColor5 .card-icon-container .card-icon {
+    background: rgba(67, 91, 141, 0.1);
+    border: solid 1px #435b8d;
+    box-shadow: inset 0px 0px 20px -5px rgba(57, 87, 151, 0.5), 0px 0px 15px -2px #395797; }
+  .layout-glass.alertColor4 .card {
+    background: rgba(67, 141, 67, 0.1);
+    border: solid 1px #438d43;
+    box-shadow: inset 0px 0px 20px -5px rgba(57, 151, 57, 0.5), 0px 0px 15px -2px #399739; }
+  .layout-glass.alertColor4 .dropdown-menu {
+    background: rgba(67, 141, 67, 0.1);
+    border: solid 1px #438d43;
+    box-shadow: inset 0px 0px 20px -5px rgba(57, 151, 57, 0.5), 0px 0px 15px -2px #399739;
+    background: rgba(12, 43, 12, 0.9);
+    width: 100%;
+    transition: all 0.5s ease;
+    opacity: 0;
+    display: block;
+    pointer-events: none; }
+    .layout-glass.alertColor4 .dropdown-menu.show {
+      pointer-events: all;
+      opacity: 1; }
+    .layout-glass.alertColor4 .dropdown-menu .dropdown-item {
+      color: white; }
+      .layout-glass.alertColor4 .dropdown-menu .dropdown-item:hover, .layout-glass.alertColor4 .dropdown-menu .dropdown-item:focus {
+        background-color: rgba(255, 255, 255, 0.2); }
+  .layout-glass.alertColor4 input,
+  .layout-glass.alertColor4 textarea {
+    color: white;
+    background: rgba(88, 120, 88, 0.1);
+    border: solid 1px #587858;
+    box-shadow: inset 0px 0px 20px -5px rgba(88, 120, 88, 0.5), 0px 0px 15px -2px #587858; }
+    .layout-glass.alertColor4 input:hover,
+    .layout-glass.alertColor4 textarea:hover {
+      box-shadow: inset 0px 0px 20px 0px #399739, 0px 0px 10px -2px #438d43; }
+    .layout-glass.alertColor4 input:focus,
+    .layout-glass.alertColor4 textarea:focus {
+      box-shadow: inset 0px 0px 20px 0px #399739, 0px 0px 10px -2px #399739; }
+  .layout-glass.alertColor4 .list-group {
+    margin-right: 4px;
+    border-radius: 5px;
+    background: rgba(67, 141, 67, 0.1);
+    border: solid 1px #438d43;
+    box-shadow: inset 0px 0px 20px -5px rgba(57, 151, 57, 0.5), 0px 0px 15px -2px #399739; }
+  .layout-glass.alertColor4 .keypadButtons .keypad,
+  .layout-glass.alertColor4 .keypadButtons .enter {
+    background-color: transparent;
+    background: rgba(67, 141, 67, 0.1);
+    border: solid 1px #438d43;
+    box-shadow: inset 0px 0px 20px -5px rgba(57, 151, 57, 0.5), 0px 0px 15px -2px #399739; }
+    .layout-glass.alertColor4 .keypadButtons .keypad:hover:not([disabled]),
+    .layout-glass.alertColor4 .keypadButtons .enter:hover:not([disabled]) {
+      color: white;
+      background: rgba(67, 141, 67, 0.5);
+      box-shadow: inset 0px 0px 20px 0px #399739, 0px 0px 10px -2px #399739; }
+    .layout-glass.alertColor4 .keypadButtons .keypad:focus,
+    .layout-glass.alertColor4 .keypadButtons .enter:focus {
+      box-shadow: inset 0px 0px 20px 0px #399739, 0px 0px 10px -2px #399739; }
+    .layout-glass.alertColor4 .keypadButtons .keypad:active, .layout-glass.alertColor4 .keypadButtons .keypad.active,
+    .layout-glass.alertColor4 .keypadButtons .enter:active,
+    .layout-glass.alertColor4 .keypadButtons .enter.active {
+      background: rgba(67, 141, 67, 0.3);
+      box-shadow: inset 0px 0px 20px 0px #1d4d1d, 0px 0px 10px -2px #399739; }
+  .layout-glass.alertColor4 .card-icon-container .card-icon {
+    background: rgba(67, 141, 67, 0.1);
+    border: solid 1px #438d43;
+    box-shadow: inset 0px 0px 20px -5px rgba(57, 151, 57, 0.5), 0px 0px 15px -2px #399739; }
+  .layout-glass.alertColor3 .card {
+    background: rgba(141, 141, 67, 0.1);
+    border: solid 1px #8d8d43;
+    box-shadow: inset 0px 0px 20px -5px rgba(151, 151, 57, 0.5), 0px 0px 15px -2px #979739; }
+  .layout-glass.alertColor3 .dropdown-menu {
+    background: rgba(141, 141, 67, 0.1);
+    border: solid 1px #8d8d43;
+    box-shadow: inset 0px 0px 20px -5px rgba(151, 151, 57, 0.5), 0px 0px 15px -2px #979739;
+    background: rgba(43, 43, 12, 0.9);
+    width: 100%;
+    transition: all 0.5s ease;
+    opacity: 0;
+    display: block;
+    pointer-events: none; }
+    .layout-glass.alertColor3 .dropdown-menu.show {
+      pointer-events: all;
+      opacity: 1; }
+    .layout-glass.alertColor3 .dropdown-menu .dropdown-item {
+      color: white; }
+      .layout-glass.alertColor3 .dropdown-menu .dropdown-item:hover, .layout-glass.alertColor3 .dropdown-menu .dropdown-item:focus {
+        background-color: rgba(255, 255, 255, 0.2); }
+  .layout-glass.alertColor3 input,
+  .layout-glass.alertColor3 textarea {
+    color: white;
+    background: rgba(120, 120, 88, 0.1);
+    border: solid 1px #787858;
+    box-shadow: inset 0px 0px 20px -5px rgba(120, 120, 88, 0.5), 0px 0px 15px -2px #787858; }
+    .layout-glass.alertColor3 input:hover,
+    .layout-glass.alertColor3 textarea:hover {
+      box-shadow: inset 0px 0px 20px 0px #979739, 0px 0px 10px -2px #8d8d43; }
+    .layout-glass.alertColor3 input:focus,
+    .layout-glass.alertColor3 textarea:focus {
+      box-shadow: inset 0px 0px 20px 0px #979739, 0px 0px 10px -2px #979739; }
+  .layout-glass.alertColor3 .list-group {
+    margin-right: 4px;
+    border-radius: 5px;
+    background: rgba(141, 141, 67, 0.1);
+    border: solid 1px #8d8d43;
+    box-shadow: inset 0px 0px 20px -5px rgba(151, 151, 57, 0.5), 0px 0px 15px -2px #979739; }
+  .layout-glass.alertColor3 .keypadButtons .keypad,
+  .layout-glass.alertColor3 .keypadButtons .enter {
+    background-color: transparent;
+    background: rgba(141, 141, 67, 0.1);
+    border: solid 1px #8d8d43;
+    box-shadow: inset 0px 0px 20px -5px rgba(151, 151, 57, 0.5), 0px 0px 15px -2px #979739; }
+    .layout-glass.alertColor3 .keypadButtons .keypad:hover:not([disabled]),
+    .layout-glass.alertColor3 .keypadButtons .enter:hover:not([disabled]) {
+      color: white;
+      background: rgba(141, 141, 67, 0.5);
+      box-shadow: inset 0px 0px 20px 0px #979739, 0px 0px 10px -2px #979739; }
+    .layout-glass.alertColor3 .keypadButtons .keypad:focus,
+    .layout-glass.alertColor3 .keypadButtons .enter:focus {
+      box-shadow: inset 0px 0px 20px 0px #979739, 0px 0px 10px -2px #979739; }
+    .layout-glass.alertColor3 .keypadButtons .keypad:active, .layout-glass.alertColor3 .keypadButtons .keypad.active,
+    .layout-glass.alertColor3 .keypadButtons .enter:active,
+    .layout-glass.alertColor3 .keypadButtons .enter.active {
+      background: rgba(141, 141, 67, 0.3);
+      box-shadow: inset 0px 0px 20px 0px #4d4d1d, 0px 0px 10px -2px #979739; }
+  .layout-glass.alertColor3 .card-icon-container .card-icon {
+    background: rgba(141, 141, 67, 0.1);
+    border: solid 1px #8d8d43;
+    box-shadow: inset 0px 0px 20px -5px rgba(151, 151, 57, 0.5), 0px 0px 15px -2px #979739; }
+  .layout-glass.alertColor2 .card {
+    background: rgba(150, 102, 54, 0.1);
+    border: solid 1px #966636;
+    box-shadow: inset 0px 0px 20px -5px rgba(160, 103, 44, 0.5), 0px 0px 15px -2px #a0672c; }
+  .layout-glass.alertColor2 .dropdown-menu {
+    background: rgba(150, 102, 54, 0.1);
+    border: solid 1px #966636;
+    box-shadow: inset 0px 0px 20px -5px rgba(160, 103, 44, 0.5), 0px 0px 15px -2px #a0672c;
+    background: rgba(43, 26, 8, 0.9);
+    width: 100%;
+    transition: all 0.5s ease;
+    opacity: 0;
+    display: block;
+    pointer-events: none; }
+    .layout-glass.alertColor2 .dropdown-menu.show {
+      pointer-events: all;
+      opacity: 1; }
+    .layout-glass.alertColor2 .dropdown-menu .dropdown-item {
+      color: white; }
+      .layout-glass.alertColor2 .dropdown-menu .dropdown-item:hover, .layout-glass.alertColor2 .dropdown-menu .dropdown-item:focus {
+        background-color: rgba(255, 255, 255, 0.2); }
+  .layout-glass.alertColor2 input,
+  .layout-glass.alertColor2 textarea {
+    color: white;
+    background: rgba(130, 102, 74, 0.1);
+    border: solid 1px #82664a;
+    box-shadow: inset 0px 0px 20px -5px rgba(130, 102, 74, 0.5), 0px 0px 15px -2px #82664a; }
+    .layout-glass.alertColor2 input:hover,
+    .layout-glass.alertColor2 textarea:hover {
+      box-shadow: inset 0px 0px 20px 0px #a0672c, 0px 0px 10px -2px #966636; }
+    .layout-glass.alertColor2 input:focus,
+    .layout-glass.alertColor2 textarea:focus {
+      box-shadow: inset 0px 0px 20px 0px #a0672c, 0px 0px 10px -2px #a0672c; }
+  .layout-glass.alertColor2 .list-group {
+    margin-right: 4px;
+    border-radius: 5px;
+    background: rgba(150, 102, 54, 0.1);
+    border: solid 1px #966636;
+    box-shadow: inset 0px 0px 20px -5px rgba(160, 103, 44, 0.5), 0px 0px 15px -2px #a0672c; }
+  .layout-glass.alertColor2 .keypadButtons .keypad,
+  .layout-glass.alertColor2 .keypadButtons .enter {
+    background-color: transparent;
+    background: rgba(150, 102, 54, 0.1);
+    border: solid 1px #966636;
+    box-shadow: inset 0px 0px 20px -5px rgba(160, 103, 44, 0.5), 0px 0px 15px -2px #a0672c; }
+    .layout-glass.alertColor2 .keypadButtons .keypad:hover:not([disabled]),
+    .layout-glass.alertColor2 .keypadButtons .enter:hover:not([disabled]) {
+      color: white;
+      background: rgba(150, 102, 54, 0.5);
+      box-shadow: inset 0px 0px 20px 0px #a0672c, 0px 0px 10px -2px #a0672c; }
+    .layout-glass.alertColor2 .keypadButtons .keypad:focus,
+    .layout-glass.alertColor2 .keypadButtons .enter:focus {
+      box-shadow: inset 0px 0px 20px 0px #a0672c, 0px 0px 10px -2px #a0672c; }
+    .layout-glass.alertColor2 .keypadButtons .keypad:active, .layout-glass.alertColor2 .keypadButtons .keypad.active,
+    .layout-glass.alertColor2 .keypadButtons .enter:active,
+    .layout-glass.alertColor2 .keypadButtons .enter.active {
+      background: rgba(150, 102, 54, 0.3);
+      box-shadow: inset 0px 0px 20px 0px #503316, 0px 0px 10px -2px #a0672c; }
+  .layout-glass.alertColor2 .card-icon-container .card-icon {
+    background: rgba(150, 102, 54, 0.1);
+    border: solid 1px #966636;
+    box-shadow: inset 0px 0px 20px -5px rgba(160, 103, 44, 0.5), 0px 0px 15px -2px #a0672c; }
+  .layout-glass.alertColor1 .card {
+    background: rgba(150, 54, 54, 0.1);
+    border: solid 1px #963636;
+    box-shadow: inset 0px 0px 20px -5px rgba(160, 44, 44, 0.5), 0px 0px 15px -2px #a02c2c; }
+  .layout-glass.alertColor1 .dropdown-menu {
+    background: rgba(150, 54, 54, 0.1);
+    border: solid 1px #963636;
+    box-shadow: inset 0px 0px 20px -5px rgba(160, 44, 44, 0.5), 0px 0px 15px -2px #a02c2c;
+    background: rgba(43, 8, 8, 0.9);
+    width: 100%;
+    transition: all 0.5s ease;
+    opacity: 0;
+    display: block;
+    pointer-events: none; }
+    .layout-glass.alertColor1 .dropdown-menu.show {
+      pointer-events: all;
+      opacity: 1; }
+    .layout-glass.alertColor1 .dropdown-menu .dropdown-item {
+      color: white; }
+      .layout-glass.alertColor1 .dropdown-menu .dropdown-item:hover, .layout-glass.alertColor1 .dropdown-menu .dropdown-item:focus {
+        background-color: rgba(255, 255, 255, 0.2); }
+  .layout-glass.alertColor1 input,
+  .layout-glass.alertColor1 textarea {
+    color: white;
+    background: rgba(130, 74, 74, 0.1);
+    border: solid 1px #824a4a;
+    box-shadow: inset 0px 0px 20px -5px rgba(130, 74, 74, 0.5), 0px 0px 15px -2px #824a4a; }
+    .layout-glass.alertColor1 input:hover,
+    .layout-glass.alertColor1 textarea:hover {
+      box-shadow: inset 0px 0px 20px 0px #a02c2c, 0px 0px 10px -2px #963636; }
+    .layout-glass.alertColor1 input:focus,
+    .layout-glass.alertColor1 textarea:focus {
+      box-shadow: inset 0px 0px 20px 0px #a02c2c, 0px 0px 10px -2px #a02c2c; }
+  .layout-glass.alertColor1 .list-group {
+    margin-right: 4px;
+    border-radius: 5px;
+    background: rgba(150, 54, 54, 0.1);
+    border: solid 1px #963636;
+    box-shadow: inset 0px 0px 20px -5px rgba(160, 44, 44, 0.5), 0px 0px 15px -2px #a02c2c; }
+  .layout-glass.alertColor1 .keypadButtons .keypad,
+  .layout-glass.alertColor1 .keypadButtons .enter {
+    background-color: transparent;
+    background: rgba(150, 54, 54, 0.1);
+    border: solid 1px #963636;
+    box-shadow: inset 0px 0px 20px -5px rgba(160, 44, 44, 0.5), 0px 0px 15px -2px #a02c2c; }
+    .layout-glass.alertColor1 .keypadButtons .keypad:hover:not([disabled]),
+    .layout-glass.alertColor1 .keypadButtons .enter:hover:not([disabled]) {
+      color: white;
+      background: rgba(150, 54, 54, 0.5);
+      box-shadow: inset 0px 0px 20px 0px #a02c2c, 0px 0px 10px -2px #a02c2c; }
+    .layout-glass.alertColor1 .keypadButtons .keypad:focus,
+    .layout-glass.alertColor1 .keypadButtons .enter:focus {
+      box-shadow: inset 0px 0px 20px 0px #a02c2c, 0px 0px 10px -2px #a02c2c; }
+    .layout-glass.alertColor1 .keypadButtons .keypad:active, .layout-glass.alertColor1 .keypadButtons .keypad.active,
+    .layout-glass.alertColor1 .keypadButtons .enter:active,
+    .layout-glass.alertColor1 .keypadButtons .enter.active {
+      background: rgba(150, 54, 54, 0.3);
+      box-shadow: inset 0px 0px 20px 0px #501616, 0px 0px 10px -2px #a02c2c; }
+  .layout-glass.alertColor1 .card-icon-container .card-icon {
+    background: rgba(150, 54, 54, 0.1);
+    border: solid 1px #963636;
+    box-shadow: inset 0px 0px 20px -5px rgba(160, 44, 44, 0.5), 0px 0px 15px -2px #a02c2c; }
+  .layout-glass.alertColorp .card {
+    background: rgba(102, 54, 150, 0.1);
+    border: solid 1px #663696;
+    box-shadow: inset 0px 0px 20px -5px rgba(103, 44, 160, 0.5), 0px 0px 15px -2px #672ca0; }
+  .layout-glass.alertColorp .dropdown-menu {
+    background: rgba(102, 54, 150, 0.1);
+    border: solid 1px #663696;
+    box-shadow: inset 0px 0px 20px -5px rgba(103, 44, 160, 0.5), 0px 0px 15px -2px #672ca0;
+    background: rgba(26, 8, 43, 0.9);
+    width: 100%;
+    transition: all 0.5s ease;
+    opacity: 0;
+    display: block;
+    pointer-events: none; }
+    .layout-glass.alertColorp .dropdown-menu.show {
+      pointer-events: all;
+      opacity: 1; }
+    .layout-glass.alertColorp .dropdown-menu .dropdown-item {
+      color: white; }
+      .layout-glass.alertColorp .dropdown-menu .dropdown-item:hover, .layout-glass.alertColorp .dropdown-menu .dropdown-item:focus {
+        background-color: rgba(255, 255, 255, 0.2); }
+  .layout-glass.alertColorp input,
+  .layout-glass.alertColorp textarea {
+    color: white;
+    background: rgba(102, 74, 130, 0.1);
+    border: solid 1px #664a82;
+    box-shadow: inset 0px 0px 20px -5px rgba(102, 74, 130, 0.5), 0px 0px 15px -2px #664a82; }
+    .layout-glass.alertColorp input:hover,
+    .layout-glass.alertColorp textarea:hover {
+      box-shadow: inset 0px 0px 20px 0px #672ca0, 0px 0px 10px -2px #663696; }
+    .layout-glass.alertColorp input:focus,
+    .layout-glass.alertColorp textarea:focus {
+      box-shadow: inset 0px 0px 20px 0px #672ca0, 0px 0px 10px -2px #672ca0; }
+  .layout-glass.alertColorp .list-group {
+    margin-right: 4px;
+    border-radius: 5px;
+    background: rgba(102, 54, 150, 0.1);
+    border: solid 1px #663696;
+    box-shadow: inset 0px 0px 20px -5px rgba(103, 44, 160, 0.5), 0px 0px 15px -2px #672ca0; }
+  .layout-glass.alertColorp .keypadButtons .keypad,
+  .layout-glass.alertColorp .keypadButtons .enter {
+    background-color: transparent;
+    background: rgba(102, 54, 150, 0.1);
+    border: solid 1px #663696;
+    box-shadow: inset 0px 0px 20px -5px rgba(103, 44, 160, 0.5), 0px 0px 15px -2px #672ca0; }
+    .layout-glass.alertColorp .keypadButtons .keypad:hover:not([disabled]),
+    .layout-glass.alertColorp .keypadButtons .enter:hover:not([disabled]) {
+      color: white;
+      background: rgba(102, 54, 150, 0.5);
+      box-shadow: inset 0px 0px 20px 0px #672ca0, 0px 0px 10px -2px #672ca0; }
+    .layout-glass.alertColorp .keypadButtons .keypad:focus,
+    .layout-glass.alertColorp .keypadButtons .enter:focus {
+      box-shadow: inset 0px 0px 20px 0px #672ca0, 0px 0px 10px -2px #672ca0; }
+    .layout-glass.alertColorp .keypadButtons .keypad:active, .layout-glass.alertColorp .keypadButtons .keypad.active,
+    .layout-glass.alertColorp .keypadButtons .enter:active,
+    .layout-glass.alertColorp .keypadButtons .enter.active {
+      background: rgba(102, 54, 150, 0.3);
+      box-shadow: inset 0px 0px 20px 0px #331650, 0px 0px 10px -2px #672ca0; }
+  .layout-glass.alertColorp .card-icon-container .card-icon {
+    background: rgba(102, 54, 150, 0.1);
+    border: solid 1px #663696;
+    box-shadow: inset 0px 0px 20px -5px rgba(103, 44, 160, 0.5), 0px 0px 15px -2px #672ca0; }

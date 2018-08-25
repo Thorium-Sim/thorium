@@ -1,0 +1,57 @@
+.core-default {
+  margin-right: 20px;
+  display: grid;
+  height: calc(100vh - 26px);
+  grid-template-columns: 120px 60px 180px 1fr 1fr 300px 15%;
+  grid-template-rows: 80px 60px 40px 220px 1fr 100px 100px 120px;
+  grid-template-areas: "engineControl engineControl  navigation     sensors       sensors     shortRange            systems" "thrusters     thrusters      navigation     sensors       sensors     shortRange            systems" "thrusters thrusters          docking     sensors       sensors     shortRange            systems" "targeting     targeting      targeting      sensors       sensors     longRange             systems" "phaser        torpedo        torpedo        sensorScans   messageSending     internalComm         systems" "shields       shields        shields        sensorScans   messageSending   damageReports   damageReports" "shields       shields        shields        extras   remote   damageReports   damageReports" "reactor       reactor        heat   actions   remote   damageReports   damageReports"; }
+  .core-default > div {
+    overflow: hidden;
+    border: solid 1px rgba(255, 255, 255, 0.2);
+    background-color: #333; }
+  .core-default .EngineControlCore {
+    grid-area: engineControl; }
+  .core-default .ThrusterCore {
+    grid-area: thrusters; }
+  .core-default .NavigationCore {
+    grid-area: navigation; }
+  .core-default .DockingCore {
+    grid-area: docking; }
+  .core-default .SensorsGridCore {
+    grid-area: sensors; }
+  .core-default .SensorsCore {
+    grid-area: sensorScans; }
+  .core-default .SystemsCore {
+    grid-area: systems; }
+  .core-default .PhaserCore {
+    grid-area: phaser; }
+  .core-default .TorpedoCore {
+    grid-area: torpedo; }
+  .core-default .TargetingCore {
+    grid-area: targeting; }
+  .core-default .ShieldControlCore {
+    grid-area: shields; }
+  .core-default .DamageReportsCore {
+    grid-area: damageReports; }
+  .core-default .InternalCommCore {
+    grid-area: internalComm; }
+  .core-default .CommShortRangeCore {
+    grid-area: shortRange; }
+  .core-default .LRCommCore {
+    grid-area: longRange; }
+  .core-default .ReactorControlCore {
+    grid-area: reactor; }
+  .core-default .HeatCore {
+    grid-area: heat; }
+  .core-default .ActionsCore {
+    grid-area: actions; }
+  .core-default .DecodingCore {
+    grid-area: messageSending; }
+  .core-default .ViewscreenCore {
+    grid-area: viewscreen; }
+  .core-default .RemoteCore {
+    grid-area: remoteAccess; }
+  .core-default .ProbeNetworkCore {
+    grid-area: probeNetwork; }
+  .core-default .ExtrasCore {
+    grid-area: extras; }

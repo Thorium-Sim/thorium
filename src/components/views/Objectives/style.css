@@ -1,0 +1,35 @@
+.objective-card,
+.objective-core {
+  display: block; }
+  .objective-card .card,
+  .objective-core .card {
+    height: 60vh;
+    overflow-y: scroll; }
+  .objective-card .objective,
+  .objective-core .objective {
+    display: flex;
+    padding: 20px 0; }
+    .objective-card .objective:not(:last-child),
+    .objective-core .objective:not(:last-child) {
+      border-bottom: solid 1px rgba(255, 255, 255, 0.5); }
+  .objective-card .completed-container,
+  .objective-core .completed-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+  .objective-card .completed,
+  .objective-core .completed {
+    width: 40px;
+    height: 40px;
+    margin: 0 20px;
+    border: solid 4px white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+    .objective-card .completed div,
+    .objective-core .completed div {
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+      background-color: white; }

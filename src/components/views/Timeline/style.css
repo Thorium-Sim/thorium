@@ -1,0 +1,8 @@
+.core-timeline pre {
+  white-space: pre-line;
+  color: white; }
+
+.core-timeline .timeline-list {
+  height: calc(100vh - 120px);
+  display: block;
+  overflow-y: scroll; }

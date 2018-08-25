@@ -1,0 +1,24 @@
+.security-decks .list-group {
+  max-height: 70vh;
+  overflow-y: scroll; }
+  .security-decks .list-group .list-group-item {
+    cursor: pointer; }
+    .security-decks .list-group .list-group-item.selected {
+      background-color: rgba(255, 255, 255, 0.1); }
+    .security-decks .list-group .list-group-item.assigned {
+      color: #ffff00;
+      font-style: italic; }
+
+.security-decks .card {
+  margin-top: 25px; }
+  .security-decks .card .card-block select, .security-decks .card .card-block button, .security-decks .card .card-block p {
+    margin-top: 25px; }
+
+.core-securityDecks {
+  height: 100%;
+  overflow-y: scroll; }
+  .core-securityDecks td {
+    padding: 0; }
+  .core-securityDecks select {
+    height: 16px;
+    width: 75px; }

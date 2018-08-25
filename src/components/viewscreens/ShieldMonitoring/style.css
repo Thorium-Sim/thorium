@@ -1,0 +1,22 @@
+.viewscreen-shieldMonitoring {
+  margin-top: 10vh; }
+  .viewscreen-shieldMonitoring h1 {
+    font-size: 60px;
+    text-align: center; }
+  .viewscreen-shieldMonitoring .shieldMonitoring {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around; }
+    .viewscreen-shieldMonitoring .shieldMonitoring img {
+      max-height: 50vh; }
+    .viewscreen-shieldMonitoring .shieldMonitoring .shieldImage {
+      transition: filter 2s ease-in-out; }
+    .viewscreen-shieldMonitoring .shieldMonitoring .shieldBubble {
+      max-width: 40%;
+      padding: 50px;
+      margin: 10px;
+      border-radius: 50%;
+      transition: box-shadow 2s ease-in-out; }
+      .viewscreen-shieldMonitoring .shieldMonitoring .shieldBubble img {
+        width: 100%; }

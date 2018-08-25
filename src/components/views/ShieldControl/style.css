@@ -1,0 +1,47 @@
+.shields {
+  height: 100%;
+  align-items: center; }
+  .shields h1 {
+    margin-bottom: 50px; }
+  .shields .shieldImage {
+    transition: filter 2s ease-in-out; }
+  .shields .shieldControlBox {
+    margin-top: 50px; }
+  .shields .shieldBubble {
+    padding: 50px;
+    margin: 10px;
+    border-radius: 50%;
+    transition: box-shadow 2s ease-in-out; }
+  .shields .damageOverlay {
+    z-index: 10000;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: -5%;
+    left: 0px;
+    text-align: center;
+    width: 100%;
+    height: 110%;
+    border: solid 1px rgba(255, 255, 255, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
+    text-shadow: 5px 5px 5px black; }
+    .shields .damageOverlay h1 {
+      color: red; }
+  @media (width: 1024px) {
+    .shields h1 {
+      font-size: 2rem; }
+    .shields h2 {
+      font-size: 1.75rem; }
+    .shields h5 {
+      font-size: 1rem; }
+    .shields h4.arrow {
+      font-size: 1.1rem;
+      line-height: 2rem; }
+    .shields .shieldControlBox {
+      margin-top: 20px; }
+    .shields button {
+      font-size: 0.8rem; } }
+  @media (width: 1366px) {
+    .shields .shieldControlBox {
+      margin-top: 0px; } }

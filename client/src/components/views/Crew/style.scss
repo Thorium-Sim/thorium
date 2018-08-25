@@ -1,0 +1,21 @@
+.crew-core, .crew-core .row, .crew-core .col {
+  height: 100%;
+}
+
+.crew-core {
+  .crew-list {
+    height: 60%;
+    max-height: 80vh;
+    overflow-y: scroll;
+    .selected {
+      background-color: rgba(128,128,128,0.4);
+      border-radius: 2px;
+    }
+    .killed {
+      color: red;
+    }
+  }
+  .form-group {
+    margin-bottom: 0.1rem;
+  }
+}

@@ -1,0 +1,75 @@
+.core .sickbay-core {
+  display: flex;
+  justify-content: space-between;
+  height: calc(100% - 44px); }
+  .core .sickbay-core .patient-controls {
+    height: 100%;
+    display: flex;
+    flex-direction: column; }
+  .core .sickbay-core .patient-control {
+    flex: 3;
+    height: 100%; }
+  .core .sickbay-core .bunks-container {
+    flex: 1; }
+  .core .sickbay-core .bunks-list {
+    height: 100%;
+    overflow-y: auto; }
+    .core .sickbay-core .bunks-list p {
+      padding: 3px;
+      margin: 0px;
+      border-radius: 5px; }
+      .core .sickbay-core .bunks-list p.active {
+        background-color: rgba(255, 255, 255, 0.5); }
+
+.card-sickbay {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  overflow-y: auto; }
+  .card-sickbay .bunk {
+    width: 30%;
+    margin: 1%; }
+
+.card-sickbay-bunk .body-container {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  max-height: 70vh;
+  position: relative; }
+  .card-sickbay-bunk .body-container img,
+  .card-sickbay-bunk .body-container svg {
+    position: absolute;
+    top: 0;
+    height: 100%; }
+
+.card-sickbay-bunk textarea {
+  resize: none; }
+
+.card-sickbay-bunk .painPoint-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  pointer-events: none; }
+
+.card-sickbay-bunk .painPoint {
+  width: 1px;
+  height: 1px;
+  background-color: rgba(255, 0, 0, 0.5);
+  box-shadow: 0px 0px 20px 7px red; }
+
+.card-sickbay-bunk .sideActions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; }
+  .card-sickbay-bunk .sideActions .action-container {
+    flex: 1; }
+    .card-sickbay-bunk .sideActions .action-container h4 {
+      margin-top: 20px; }
+
+@keyframes thing {
+  0% {
+    --mask-pos: -15%; }
+  100% {
+    --mask-pos: 115%; } }

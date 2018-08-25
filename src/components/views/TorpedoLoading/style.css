@@ -1,0 +1,70 @@
+.torpedo-loading {
+  display: flex;
+  justify-content: space-around; }
+  .torpedo-loading .torpedoButton {
+    position: absolute;
+    right: 10%;
+    top: 10%;
+    width: 50%; }
+  .torpedo-loading .torpedoPickScroll {
+    width: 100%;
+    overflow-x: scroll;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #fff 5%, #fff 95%, transparent 100%); }
+  .torpedo-loading .torpedoImage {
+    width: 468px; }
+  .torpedo-loading .torpedo-loader {
+    width: 500px;
+    height: 200px;
+    position: relative; }
+    .torpedo-loading .torpedo-loader.fire {
+      margin: 0 40px; }
+  .torpedo-loading .torpedoHolder {
+    width: 66px;
+    overflow: hidden;
+    height: 157px;
+    position: absolute;
+    left: 46px; }
+    .torpedo-loading .torpedoHolder .torpedo {
+      width: 60px;
+      height: 20px;
+      position: absolute; }
+  .torpedo-loading .torpedoPicker {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end; }
+    .torpedo-loading .torpedoPicker .torpedoPick {
+      display: flex;
+      flex-direction: column;
+      align-items: center; }
+      .torpedo-loading .torpedoPicker .torpedoPick img {
+        width: 50%; }
+  @media (width: 1024px) {
+    .torpedo-loading .torpedoImage {
+      margin-top: 60px; }
+    .torpedo-loading .torpedoHolder {
+      width: 48px;
+      overflow: hidden;
+      height: 100px;
+      position: absolute;
+      left: 27px;
+      top: 61px; }
+      .torpedo-loading .torpedoHolder .torpedo {
+        width: 42px;
+        height: 14px;
+        position: absolute; } }
+
+::-webkit-scrollbar {
+  width: 12px; }
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px; }
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5); }
+
+.core ::-webkit-scrollbar {
+  width: 6px; }

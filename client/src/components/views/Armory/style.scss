@@ -1,0 +1,35 @@
+.armory-card {
+  display: block;
+  .inventory-list {
+    height: 25vh;
+    overflow-y: scroll;
+  }
+  .armory-equipment {
+    margin: 0;
+    padding: 3px;
+    border-radius: 10px;
+    &:active {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+  }
+  .has-inventory {
+    font-style: italic;
+    color: #ff2222;
+  }
+  .crew-item {
+    margin: 0;
+    padding: 3px;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+    border-radius: 10px;
+    &.selected {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+.list-group-item {
+  &.selected {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}

@@ -1,0 +1,24 @@
+.file-explorer {
+  padding: 10px;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden; }
+  .file-explorer .fa {
+    color: #555; }
+  .file-explorer .directory-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    grid-gap: 5px; }
+  .file-explorer .file-container {
+    padding: 10px;
+    border: solid 1px rgba(128, 128, 128, 0.5);
+    border-radius: 5px;
+    text-align: center;
+    height: 100%;
+    max-width: 100px;
+    flex-basis: auto; }
+    .file-explorer .file-container.selected {
+      background-color: rgba(128, 128, 128, 0.2); }
+    .file-explorer .file-container img {
+      width: 80%; }

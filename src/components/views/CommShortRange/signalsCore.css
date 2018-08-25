@@ -1,0 +1,35 @@
+.core-shortRangeSignals {
+  position: relative;
+  height: 100%; }
+  .core-shortRangeSignals #signalHolder {
+    height: calc(100% - 40px);
+    border-top: 2px white solid;
+    border-bottom: 2px white solid;
+    position: relative; }
+  .core-shortRangeSignals .hover {
+    cursor: pointer; }
+  .core-shortRangeSignals .color-picker {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    z-index: 2; }
+  .core-shortRangeSignals .signal {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1;
+    user-select: none; }
+    .core-shortRangeSignals .signal .handle {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #bbb;
+      border: solid 2px #fff;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: -1; }
+    .core-shortRangeSignals .signal .handle-top {
+      top: 0; }
+    .core-shortRangeSignals .signal .handle-bottom {
+      bottom: 0; }

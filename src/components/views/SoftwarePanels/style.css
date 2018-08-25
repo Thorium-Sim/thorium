@@ -1,0 +1,7 @@
+.softwarePanels-card p {
+  margin: 0;
+  padding: 10px;
+  border-radius: 5px; }
+
+.softwarePanels-card p.selected {
+  background-color: rgba(255, 255, 255, 0.5); }

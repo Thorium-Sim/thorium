@@ -1,0 +1,63 @@
+.core-iifx {
+  display: grid;
+  margin-right: 20px;
+  height: calc(100vh - 26px);
+  grid-template-columns: 120px 60px 180px 1fr 1fr 300px 15%;
+  grid-template-rows: 40px 100px 40px 180px 1fr 100px 100px 120px;
+  grid-template-areas: "engineControl engineControl  securityDoors      securityTeams      damageTeams     shortRange            systems" "thrusters     thrusters      securityDoors      securityTeams      damageTeams     shortRange            systems" "thrusters     thrusters      securityDoors        securityTeams    damageTeams     shortRange            systems" "stealthField  stealthField   securityDoors     crew             crew         messageSending        systems" "probeControl       probeControl        probeControl            sensorScans          longRange      internalComm         systems" "cargo  cargo   cargo    sensorScans         longRange      damageReports   damageReports" "cargo  cargo   cargo    extras         shuttles         damageReports   damageReports" "reactor       reactor        probeNetwork    actions         shuttles     damageReports   damageReports"; }
+  .core-iifx > div {
+    overflow: hidden;
+    border: solid 1px rgba(0, 0, 0, 0.2);
+    background-color: #333; }
+  .core-iifx .TransporterCore {
+    grid-area: transporters; }
+  .core-iifx .SensorsCore {
+    grid-area: sensorScans; }
+  .core-iifx .DecodingCore {
+    grid-area: longRange; }
+  .core-iifx .LRCommCore {
+    grid-area: messageSending; }
+  .core-iifx .InternalCommCore {
+    grid-area: internalComm; }
+  .core-iifx .SystemsCore {
+    grid-area: systems; }
+  .core-iifx .CommShortRangeCore {
+    grid-area: shortRange; }
+  .core-iifx .RemoteCore {
+    grid-area: remoteAccess; }
+  .core-iifx .DamageReportsCore {
+    grid-area: damageReports; }
+  .core-iifx .DecksCore {
+    grid-area: nothing; }
+  .core-iifx .CargoCore {
+    grid-area: cargo; }
+  .core-iifx .ActionsCore {
+    grid-area: actions; }
+  .core-iifx .ThrusterCore {
+    grid-area: thrusters; }
+  .core-iifx .StealthFieldCore {
+    grid-area: stealthField; }
+  .core-iifx .TractorBeamCore {
+    grid-area: tractorBeam; }
+  .core-iifx .CrewCore {
+    grid-area: crew; }
+  .core-iifx .SecurityTeamsCore {
+    grid-area: securityTeams; }
+  .core-iifx .DamageTeamsCore {
+    grid-area: damageTeams; }
+  .core-iifx .ProbeNetworkCore {
+    grid-area: probeNetwork; }
+  .core-iifx .ProbeControlCore {
+    grid-area: probeControl; }
+  .core-iifx .ReactorControlCore {
+    grid-area: reactor; }
+  .core-iifx .ViewscreenCore {
+    grid-area: viewscreen; }
+  .core-iifx .TimelineCore {
+    grid-area: timeline; }
+  .core-iifx .ShuttlesCore {
+    grid-area: shuttles; }
+  .core-iifx .SecurityDecksCore {
+    grid-area: securityDoors; }
+  .core-iifx .ExtrasCore {
+    grid-area: extras; }

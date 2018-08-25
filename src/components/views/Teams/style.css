@@ -1,0 +1,71 @@
+.damage-teams textarea {
+  resize: none; }
+
+.damage-teams .card {
+  max-height: 60vh;
+  overflow-y: scroll; }
+  .damage-teams .card p {
+    cursor: pointer;
+    margin: 0;
+    padding: 5px;
+    border-radius: 5px; }
+    .damage-teams .card p:active {
+      background-color: rgba(255, 255, 255, 0.4); }
+    .damage-teams .card p.selected {
+      background-color: rgba(255, 255, 255, 0.2); }
+
+.damage-teams .officers .card {
+  height: 25vh;
+  overflow-y: scroll; }
+  .damage-teams .officers .card .officer {
+    border-radius: 5px;
+    padding: 5px; }
+    .damage-teams .officers .card .officer:active {
+      background-color: rgba(255, 255, 255, 0.4); }
+    .damage-teams .officers .card .officer.selected {
+      background-color: rgba(255, 255, 255, 0.2); }
+  .damage-teams .officers .card p {
+    padding: 0; }
+    .damage-teams .officers .card p:active {
+      background-color: transparent; }
+    .damage-teams .officers .card p.selected {
+      background-color: transparent; }
+  .damage-teams .officers .card small {
+    display: block;
+    margin-top: -5px; }
+
+.damage-teams .location-label,
+.damage-teams .location-label label {
+  margin-bottom: 0;
+  padding-bottom: 0; }
+
+.damage-teams .row .recall-button {
+  margin-top: 50px; }
+
+.damage-teams .form-control-lg {
+  font-size: 14px; }
+
+.core .damage-teams-core {
+  height: 100%; }
+  .core .damage-teams-core .row {
+    height: 100%; }
+  .core .damage-teams-core label {
+    display: block;
+    margin: 0;
+    padding: 0;
+    font-weight: 600; }
+  .core .damage-teams-core .scroller {
+    max-height: calc(100% - 20px);
+    overflow-y: scroll; }
+  .core .damage-teams-core .label-section {
+    margin-bottom: 5px; }
+  .core .damage-teams-core .selected {
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.5); }
+  .core .damage-teams-core p {
+    margin: 0;
+    padding: 2px 5px;
+    margin-bottom: 5px; }
+  .core .damage-teams-core .inventory {
+    list-style: square;
+    margin-left: 20px; }

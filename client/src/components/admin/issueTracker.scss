@@ -1,0 +1,17 @@
+#issues-tracker {
+  .issues-body {
+      background-color: #eee;
+      border: solid 1px #ddd;
+    border-radius: 0 5px 0 0;
+    padding: 5px;
+    .form-group {
+      margin-bottom: 4px;
+      label {
+        margin-bottom: 1px;
+      }
+    }
+    .submit-button {
+      margin-top: 10px;
+    }
+  }
+}

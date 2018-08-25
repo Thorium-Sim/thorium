@@ -1,0 +1,113 @@
+.software-panels .light {
+  width: 20px;
+  height: 20px;
+  background-color: #eee;
+  border: solid 2px #aaa;
+  border-radius: 50%; }
+
+.software-panels .label {
+  z-index: 500; }
+
+.software-panels .connectors {
+  pointer-events: none; }
+  .software-panels .connectors .drag-line {
+    pointer-events: all; }
+
+.software-panels .componentLibrary {
+  height: 100vh;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-right: solid 1px #eee;
+  transform: translateX(-100%);
+  background-color: rgba(0, 0, 0, 0.9);
+  transition: transform 0.5s ease;
+  z-index: 3; }
+
+.software-panels .componentLibrary.shown {
+  transform: translateX(0); }
+
+.software-panels .componentLibrary .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 90px;
+  border: solid 1px #ddd;
+  border-radius: 5px;
+  margin: 2px; }
+
+.software-panels .drag-line:hover {
+  opacity: 0.5; }
+
+.software-panels .componentHolder {
+  padding: 10px;
+  margin: 10px;
+  background-color: #ccc;
+  border-radius: 10px;
+  cursor: pointer; }
+
+.software-panels .componentCanvas {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  right: 0;
+  top: 0;
+  background-color: #666; }
+
+.software-panels.softwarePanels-card .componentCanvas {
+  background-color: transparent; }
+
+.software-panels .componentInstance {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none; }
+
+.software-panels .componentInstance div {
+  pointer-events: all;
+  display: inline-block; }
+
+.software-panels .output {
+  width: 15px;
+  height: 15px;
+  border-radius: 2px;
+  background-color: #19be24;
+  cursor: pointer; }
+
+.software-panels .output:hover {
+  background-color: #2dd238; }
+
+.software-panels .input {
+  width: 15px;
+  height: 15px;
+  border-radius: 2px;
+  background-color: #be1924;
+  cursor: pointer; }
+
+.software-panels .input:hover {
+  background-color: #d22d38; }
+
+.software-panels .connectors {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute; }
+
+.software-panels .and {
+  padding: 3px;
+  background-color: #333;
+  display: inline-block;
+  border-radius: 5px;
+  color: white; }
+
+.software-panels .scale {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  cursor: pointer;
+  background: linear-gradient(135deg, rgba(0, 130, 229, 0) 0%, rgba(0, 85, 194, 0) 50%, #0054c1 51%, #004fbd 56%, rgba(0, 78, 188, 0) 57%, rgba(0, 70, 182, 0) 66%, #0045b5 67%, #0040b2 72%, rgba(0, 63, 177, 0) 73%, rgba(0, 54, 170, 0) 83%, #0035a9 84%, #0031a6 89%, rgba(0, 47, 165, 0) 91%, rgba(0, 39, 158, 0) 100%); }

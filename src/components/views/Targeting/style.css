@@ -1,0 +1,145 @@
+.targeting-control .targetArea {
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); }
+
+.targeting-control .phaser-holder {
+  max-height: 37vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start; }
+  .targeting-control .phaser-holder div {
+    width: 100%; }
+
+.targeting-control .targetingGrid-dom {
+  border: solid 1px rgba(0, 255, 0, 0.5);
+  position: relative; }
+  .targeting-control .targetingGrid-dom span {
+    position: absolute; }
+  .targeting-control .targetingGrid-dom .lines-x,
+  .targeting-control .targetingGrid-dom .lines-y {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between; }
+  .targeting-control .targetingGrid-dom .lines-x {
+    flex-direction: column; }
+  .targeting-control .targetingGrid-dom .lines-y {
+    flex-direction: row; }
+  .targeting-control .targetingGrid-dom .line-x {
+    border-bottom: dashed 1px rgba(0, 255, 0, 0.5);
+    height: 0;
+    width: 100%; }
+  .targeting-control .targetingGrid-dom .line-y {
+    height: 100%;
+    border-right: dashed 1px rgba(0, 255, 0, 0.5);
+    width: 0; }
+  .targeting-control .targetingGrid-dom .target {
+    position: absolute;
+    width: 32px;
+    height: 32px; }
+  .targeting-control .targetingGrid-dom .crosshair {
+    position: absolute;
+    width: 32px;
+    height: 32px; }
+
+.targeting-control .media-object {
+  width: 72px;
+  margin-right: 20px; }
+
+.targeting-control p {
+  margin-top: 1rem;
+  margin-bottom: 0; }
+
+.targeting-control .target-area {
+  height: 100%;
+  margin-top: 50px; }
+
+.targeting-control .crosshair,
+.targeting-control .target-label {
+  pointer-events: none; }
+
+.targeting-control .phaserText {
+  display: flex;
+  width: 100%;
+  justify-content: space-between; }
+
+.targeting-control .btn[disabled] {
+  pointer-events: none; }
+
+.targeting-control .coolantHolder {
+  margin-bottom: 20px; }
+
+.targeting-control .chargeHolder {
+  background-color: black;
+  border: solid 1px white;
+  height: 30px;
+  position: relative; }
+  .targeting-control .chargeHolder .charge,
+  .targeting-control .chargeHolder .heat,
+  .targeting-control .chargeHolder .coolant {
+    position: absolute;
+    left: 0%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 100%), linear-gradient(to right, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
+    background-size: 5px 3px, 100%; }
+  .targeting-control .chargeHolder .charge {
+    background-color: #ffff00; }
+  .targeting-control .chargeHolder .heat {
+    background-color: #ff0000; }
+  .targeting-control .chargeHolder .coolant {
+    animation: 2s ease-in-out 0s infinite coolant_glow;
+    transition: width 0.2s ease-out;
+    background: radial-gradient(ellipse at center, #0061b1 0%, #2072c9 100%);
+    background-position: center; }
+
+.targeting-control .current-coordinates {
+  margin-top: 20px; }
+
+.targeting-control .coordinate-box {
+  font-size: 20px;
+  display: flex;
+  align-items: center; }
+
+.targeting-control .coordinate-box div {
+  background-color: #333;
+  border: solid 1px #ccc;
+  margin: 5px;
+  padding: 3px;
+  flex: 1;
+  display: inline-block;
+  min-height: 38px; }
+  .targeting-control .coordinate-box div.selected {
+    background-color: #555; }
+
+@keyframes coolant_glow {
+  0% {
+    box-shadow: inset 0 0 50px #3ff, inset 20px 0 160px #30f, inset -20px 0 160px #0ff; }
+  50% {
+    box-shadow: inset 0 0 30px #9ff, inset 20px 0 160px #30f, inset -20px 0 160px #0ff; }
+  100% {
+    box-shadow: inset 0 0 50px #3ff, inset 20px 0 160px #30f, inset -20px 0 160px #0ff; } }
+
+.targeting-core img {
+  width: 16px;
+  height: 16px; }
+
+.targeting-core .pictureSelect {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  opacity: 0; }
+
+.targeting-core .input-group-btn button {
+  height: 16px;
+  line-height: 0px; }
+
+.targeting-core .targets-container {
+  height: calc(19px * 4);
+  overflow-y: scroll; }
+
+.targeting-core .media-object {
+  width: 48px;
+  height: 48px; }

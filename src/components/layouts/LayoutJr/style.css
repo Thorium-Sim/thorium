@@ -1,0 +1,43 @@
+.layout-jr {
+  background-color: black;
+  position: absolute;
+  height: calc(100vh - 80px);
+  top: 80px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 10;
+  color: white; }
+  .layout-jr .card {
+    color: white;
+    background-color: black;
+    border-radius: 0px;
+    border: solid 3px blue; }
+  .layout-jr .targeting-control {
+    height: 90vh;
+    width: 80vw; }
+
+#jr-frame {
+  height: 100vh;
+  background-color: black;
+  position: relative;
+  color: white; }
+  #jr-frame .title-bar {
+    height: 60px;
+    border-radius: 60px;
+    background-color: blue; }
+  #jr-frame .simulator-name,
+  #jr-frame .station-name,
+  #jr-frame .login-name {
+    font-family: 'Sarpanch', sans-serif;
+    background-color: black;
+    text-transform: uppercase;
+    position: absolute;
+    font-size: 60px;
+    line-height: 1;
+    top: 0; }
+  #jr-frame .simulator-name {
+    left: 50px; }
+  #jr-frame .station-name {
+    right: 50px; }

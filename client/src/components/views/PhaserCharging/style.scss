@@ -1,0 +1,125 @@
+.card-phaserCharging {
+  .phaserLevels {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    p {
+      padding: 0px 5px;
+      flex: 1 1 auto;
+      width: 25%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      border-bottom: solid 1px white;
+      border-left: solid 1px white;
+      &:first-child {
+        flex: 1 1 auto;
+      }
+      &:last-child {
+        border-right: solid 1px white;
+      }
+    }
+  }
+
+  .phaserBeam {
+    margin-bottom: 10px;
+  }
+
+  .chargeHolder {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    .charge,
+    .heat {
+      position: absolute;
+      left: 0%;
+      height: 60%;
+      transition: width 2s linear;
+      background: linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0.5) 0%,
+          rgba(0, 0, 0, 0) 50%,
+          rgba(0, 0, 0, 0.5) 100%
+        ),
+        linear-gradient(to right, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
+      background-size: 5px 3px, 100%;
+    }
+    .charge {
+      background-color: #ffff00;
+    }
+    .heat {
+      background-color: #ff0000;
+    }
+  }
+}
+
+.phaser-fire {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+:root {
+  --phaserArcRotate: -5deg;
+}
+
+$color1: rgb(195, 195, 31);
+$color2: rgb(212, 212, 69);
+$color3: rgb(102, 102, 0);
+$color4: rgb(236, 236, 20);
+$animationDuration: 0.2s;
+
+.phaserArc {
+  margin-top: 20px;
+  .lasers {
+    &.hidden {
+      display: none;
+    }
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 500px;
+    .laser-beam {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      height: 3px;
+      width: 100%;
+      background: rgba($color1, 0.6);
+      box-shadow: 0px 0px 15px 0px $color1;
+      transform-origin: 0 100%;
+      animation: phaserlaser $animationDuration linear infinite;
+      transform: rotate(calc(var(--phaserArcRotate) * 0.5));
+      &.red {
+        animation: phaserlaser $animationDuration 0.15s linear infinite;
+        background: rgba($color2, 0.6);
+        box-shadow: 0px 0px 15px 0px $color2;
+        transform: rotate(var(--phaserArcRotate));
+      }
+
+      &.purple {
+        animation: phaserlaser $animationDuration 0.1s linear infinite;
+        background: rgba($color3, 0.6);
+        box-shadow: 0px 0px 15px 0px $color3;
+        transform: rotate(calc(var(--phaserArcRotate) * -0.5));
+      }
+
+      &.green {
+        animation: phaserlaser $animationDuration 0.05s linear infinite;
+        background: rgba($color4, 0.6);
+        box-shadow: 0px 0px 15px 0px $color4;
+        transform: rotate(calc(var(--phaserArcRotate) * -1));
+      }
+    }
+  }
+}
+@-webkit-keyframes phaserlaser {
+  0% {
+    transform: rotate(var(--phaserArcRotate));
+  }
+  50% {
+    transform: rotate(calc(var(--phaserArcRotate) * -1));
+  }
+  100% {
+    transform: rotate(var(--phaserArcRotate));
+  }
+}

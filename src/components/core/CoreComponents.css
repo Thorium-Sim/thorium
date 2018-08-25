@@ -1,0 +1,139 @@
+.core {
+  font-family: "Gill Sans", sans-serif;
+  line-height: 16px;
+  font-size: 12px;
+  color: white; }
+  .core .input-field,
+  .core .output-field,
+  .core .typing-field {
+    color: #000; }
+  .core .col-xs,
+  .core .col-xs-1,
+  .core .col-xs-2,
+  .core .col-xs-3,
+  .core .col-xs-4,
+  .core .col-xs-5,
+  .core .col-xs-6,
+  .core .col-xs-7,
+  .core .col-xs-8,
+  .core .col-xs-9,
+  .core .col-xs-10,
+  .core .col-xs-11,
+  .core .col-xs-12,
+  .core .col-sm,
+  .core .col-sm-1,
+  .core .col-sm-2,
+  .core .col-sm-3,
+  .core .col-sm-4,
+  .core .col-sm-5,
+  .core .col-sm-6,
+  .core .col-sm-7,
+  .core .col-sm-8,
+  .core .col-sm-9,
+  .core .col-sm-10,
+  .core .col-sm-11,
+  .core .col-sm-12,
+  .core .col-md,
+  .core .col-md-1,
+  .core .col-md-2,
+  .core .col-md-3,
+  .core .col-md-4,
+  .core .col-md-5,
+  .core .col-md-6,
+  .core .col-md-7,
+  .core .col-md-8,
+  .core .col-md-9,
+  .core .col-md-10,
+  .core .col-md-11,
+  .core .col-md-12,
+  .core .col-lg,
+  .core .col-lg-1,
+  .core .col-lg-2,
+  .core .col-lg-3,
+  .core .col-lg-4,
+  .core .col-lg-5,
+  .core .col-lg-6,
+  .core .col-lg-7,
+  .core .col-lg-8,
+  .core .col-lg-9,
+  .core .col-lg-10,
+  .core .col-lg-11,
+  .core .col-lg-12,
+  .core .col-xl,
+  .core .col-xl-1,
+  .core .col-xl-2,
+  .core .col-xl-3,
+  .core .col-xl-4,
+  .core .col-xl-5,
+  .core .col-xl-6,
+  .core .col-xl-7,
+  .core .col-xl-8,
+  .core .col-xl-9,
+  .core .col-xl-10,
+  .core .col-xl-11,
+  .core .col-xl-12 {
+    padding-right: 2px;
+    padding-left: 2px; }
+  .core .container,
+  .core .container-fluid {
+    margin: 0;
+    padding: 0; }
+  .core .row {
+    margin: 0; }
+  .core input:not([type="checkbox"]) {
+    width: 100%; }
+  .core .btn-sm {
+    padding: 0rem 0.5rem; }
+  .core ul {
+    margin: 0;
+    padding: 0; }
+  .core label {
+    margin: 0px 5px; }
+  .core .table-sm th,
+  .core .table-sm td {
+    padding: 0; }
+  .core .btn-block + .btn-block {
+    margin-top: 0; }
+  .core p {
+    font-size: 12px;
+    margin: 0;
+    padding: 0; }
+  .core .card {
+    background-color: rgba(0, 0, 0, 0.5); }
+
+.hotkey-core {
+  background-color: rgba(0, 0, 0, 0.75);
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.5);
+  border-radius: 50px;
+  box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.75); }
+  .hotkey-core.showing {
+    pointer-events: all;
+    transform: scale(1);
+    border-radius: 0px;
+    opacity: 1; }
+  .hotkey-core .hotkey-core-cores {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
+    height: 100%; }
+  .hotkey-core .hotkey-core-comp {
+    margin: 10px;
+    padding: 10px;
+    border: solid 2px rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; }

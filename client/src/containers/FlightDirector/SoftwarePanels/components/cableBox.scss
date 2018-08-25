@@ -1,0 +1,72 @@
+.software-panels {
+  .cable-box-container {
+    position: relative;
+    display: inline-flex !important;
+    justify-content: center;
+    align-items: center;
+  }
+  .cable-box {
+    width: 400px;
+    height: 100px;
+    position: absolute;
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex !important;
+    border-radius: 10px;
+    border: solid 2px rgba(255, 255, 255, 0.5);
+    justify-content: space-around;
+    align-items: center;
+    transition: all 0.2s ease;
+    transform: scale(0);
+    opacity: 0;
+    z-index: 100000;
+  }
+  .cable-box-opener {
+    position: absolute;
+  }
+  .cable-box.open {
+    transform: scale(1);
+    opacity: 1;
+  }
+  .ready-cable {
+    background: radial-gradient(
+      ellipse at center,
+      rgba(0, 0, 0, 0.5) 0%,
+      rgba(0, 0, 0, 0) 10%,
+      rgba(0, 0, 0, 0.5) 20%,
+      rgba(0, 0, 0, 0) 30%,
+      rgba(0, 0, 0, 0.5) 40%,
+      rgba(0, 0, 0, 0) 50%,
+      rgba(0, 0, 0, 0.5) 60%,
+      rgba(0, 0, 0, 0) 70%,
+      rgba(0, 0, 0, 0.5) 80%,
+      rgba(0, 0, 0, 0) 90%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+  .red {
+    background-color: red;
+  }
+  .blue {
+    background-color: blue;
+  }
+  .green {
+    background-color: green;
+  }
+  .yellow {
+    background-color: yellow;
+  }
+  .dragger {
+    pointer-events: none;
+    touch-action: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    z-index: 50;
+  }
+}

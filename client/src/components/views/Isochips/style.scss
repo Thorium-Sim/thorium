@@ -1,0 +1,25 @@
+.isochips {
+  .col {
+    margin-top: 40px;
+  }
+  .isochip-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    .state {
+      border: solid 1px white;
+      width: 20px;
+      height: 120px;
+      background-color: black;
+      &.nominal {
+        background-color: green;
+      }
+      &.diagnostic {
+        background-color: rebeccapurple;
+      }
+      &.invalid {
+        background-color: red;
+      }
+    }
+  }
+}

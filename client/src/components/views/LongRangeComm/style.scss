@@ -1,0 +1,146 @@
+.comm-core {
+  height: calc(100% - 16px);
+}
+
+.comm-messages {
+  background-color: darkgray;
+  font-size: 10px;
+  ul {
+    height: 100%;
+    overflow-y: scroll;
+    background-color: lightgray;
+    .active {
+      background-color: white;
+      border-radius: 5px;
+      padding-left: 5px;
+    }
+  }
+  pre {
+    white-space: pre-wrap;
+    border-top: solid 0.5px gray;
+    height: 100%;
+    overflow-y: scroll;
+  }
+  pre:first-child {
+    border-top: none;
+  }
+}
+.long-range-comm {
+  height: 100%;
+  pre {
+    white-space: pre-wrap;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: solid 1px rgba(255, 255, 255, 0.5);
+    padding: 20px;
+    margin: 20px 0;
+    overflow-y: scroll;
+  }
+  .sat-container {
+    width: 100%;
+    padding: 1px;
+    overflow: hidden;
+  }
+
+  .starfield {
+    background-color: #222;
+    border: solid 2px rgba(255, 255, 255, 0.25);
+    position: relative;
+    margin: 0 auto;
+    height: 100%;
+    width: 100%;
+  }
+  .gridlines {
+    position: absolute;
+    background-color: transparent;
+    background-image: linear-gradient(
+        0deg,
+        transparent 24%,
+        rgba(255, 255, 255, 0.1) 25%,
+        rgba(255, 255, 255, 0.1) 26%,
+        transparent 27%,
+        transparent 74%,
+        rgba(255, 255, 255, 0.1) 75%,
+        rgba(255, 255, 255, 0.1) 76%,
+        transparent 77%,
+        transparent
+      ),
+      linear-gradient(
+        90deg,
+        transparent 24%,
+        rgba(255, 255, 255, 0.1) 25%,
+        rgba(255, 255, 255, 0.1) 26%,
+        transparent 27%,
+        transparent 74%,
+        rgba(255, 255, 255, 0.1) 75%,
+        rgba(255, 255, 255, 0.1) 76%,
+        transparent 77%,
+        transparent
+      );
+    height: 100%;
+    width: 100%;
+    background-size: 50px 50px;
+  }
+  .sat {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    .rotate-container {
+      animation-name: rotateSat;
+      animation-duration: 60s;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+    }
+  }
+  .strength {
+    height: 2px;
+    background-color: white;
+  }
+  .message-ball {
+    width: 1px;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.9);
+    position: absolute;
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px 10px white;
+    transition: left 2s ease-in-out, top 2s ease-in-out, opacity 2s linear;
+  }
+  .message-text {
+    font-size: 6px;
+    width: 100px;
+    white-space: pre-wrap;
+    text-shadow: 1px 1px 1px black;
+  }
+  .scanner-outer {
+    width: 100%;
+    height: 100%;
+  }
+  .scanner-bar {
+    width: 2%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+}
+@keyframes rotateSat {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.comm-core {
+  height: 100%;
+  .comm-messages li {
+    color: #222;
+    font-size: 16px;
+    line-height: 1.3;
+    padding-left: 5px;
+  }
+  pre {
+    text-align: left;
+    font-size: 16px;
+    line-height: 1.3;
+  }
+}

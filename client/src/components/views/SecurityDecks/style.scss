@@ -1,0 +1,35 @@
+.security-decks {
+  .list-group {
+    max-height: 70vh;
+    overflow-y: scroll;
+    .list-group-item {
+      cursor: pointer;
+      &.selected {
+        background-color: rgba(255,255,255,0.1);
+      }
+      &.assigned {
+        color: #ffff00;
+        font-style: italic;
+      }
+    }
+  }
+  .card {
+    margin-top: 25px;
+    .card-block {
+      select, button, p{
+      margin-top: 25px;
+      }
+    }
+  }
+}
+.core-securityDecks {
+  height: 100%;
+  overflow-y:scroll;
+  td {
+    padding: 0;
+  }
+  select {
+    height: 16px;
+    width: 75px;
+  }
+}

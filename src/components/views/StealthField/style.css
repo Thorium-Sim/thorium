@@ -1,0 +1,288 @@
+.card-stealthField {
+  height: 100%; }
+  .card-stealthField .stealthBars {
+    margin-top: 50px; }
+    .card-stealthField .stealthBars .bar-container {
+      position: relative;
+      height: 22px;
+      width: 100%; }
+    .card-stealthField .stealthBars .bar {
+      background: linear-gradient(to left, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 100%), linear-gradient(to right, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(270deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8);
+      height: 100%;
+      position: absolute; }
+  .card-stealthField .stealth-board span {
+    display: block;
+    width: 100%; }
+  .card-stealthField #stealth-canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: gray;
+    position: absolute;
+    mix-blend-mode: multiply;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat; }
+  .card-stealthField .charge-row,
+  .card-stealthField .charge-row .col {
+    height: 100%; }
+  .card-stealthField .chargeBar {
+    height: 100%;
+    display: flex;
+    flex-direction: column; }
+    .card-stealthField .chargeBar .bar-holder {
+      margin-top: 20px;
+      height: 80%;
+      position: relative;
+      margin-bottom: 20px; }
+    .card-stealthField .chargeBar .bar {
+      background: linear-gradient(to bottom, lime 0%, green 49%, yellow 50%, #007f00 51%, #002400 100%);
+      height: 100%;
+      width: 20px;
+      position: absolute; }
+    .card-stealthField .chargeBar .arrow {
+      margin-top: -10px;
+      margin-left: 20px;
+      height: 100%; }
+  .card-stealthField .stealth-animation {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    mix-blend-mode: multiply;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+    mask-repeat: no-repeat; }
+    .card-stealthField .stealth-animation .band {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      animation-name: stealthAnimation;
+      animation-iteration-count: infinite;
+      animation-direction: alternate; }
+      .card-stealthField .stealth-animation .band:nth-child(1) {
+        animation-duration: 4.92927s;
+        animation-delay: -1.33821s; }
+        .card-stealthField .stealth-animation .band:nth-child(1) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 0.71174%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(2) {
+        animation-duration: 2.05754s;
+        animation-delay: -3.32436s; }
+        .card-stealthField .stealth-animation .band:nth-child(2) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 38.74528%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(3) {
+        animation-duration: 1.94748s;
+        animation-delay: -1.96915s; }
+        .card-stealthField .stealth-animation .band:nth-child(3) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 38.33374%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(4) {
+        animation-duration: 2.12737s;
+        animation-delay: -0.4137s; }
+        .card-stealthField .stealth-animation .band:nth-child(4) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 37.74445%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(5) {
+        animation-duration: 2.39167s;
+        animation-delay: -1.89695s; }
+        .card-stealthField .stealth-animation .band:nth-child(5) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 25.21563%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(6) {
+        animation-duration: 2.03787s;
+        animation-delay: -2.19998s; }
+        .card-stealthField .stealth-animation .band:nth-child(6) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 32.5817%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(7) {
+        animation-duration: 3.47254s;
+        animation-delay: -1.63916s; }
+        .card-stealthField .stealth-animation .band:nth-child(7) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 13.90033%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(8) {
+        animation-duration: 4.0157s;
+        animation-delay: -0.27236s; }
+        .card-stealthField .stealth-animation .band:nth-child(8) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 34.47877%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(9) {
+        animation-duration: 2.25051s;
+        animation-delay: -1.49917s; }
+        .card-stealthField .stealth-animation .band:nth-child(9) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 14.90363%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(10) {
+        animation-duration: 2.05547s;
+        animation-delay: -1.59702s; }
+        .card-stealthField .stealth-animation .band:nth-child(10) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 7.24219%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(11) {
+        animation-duration: 3.96609s;
+        animation-delay: -1.28859s; }
+        .card-stealthField .stealth-animation .band:nth-child(11) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 23.42226%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(12) {
+        animation-duration: 4.41309s;
+        animation-delay: -2.5109s; }
+        .card-stealthField .stealth-animation .band:nth-child(12) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 21.21473%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(13) {
+        animation-duration: 3.1313s;
+        animation-delay: -3.56577s; }
+        .card-stealthField .stealth-animation .band:nth-child(13) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 3.14445%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(14) {
+        animation-duration: 1.6625s;
+        animation-delay: -1.9846s; }
+        .card-stealthField .stealth-animation .band:nth-child(14) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 34.77507%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(15) {
+        animation-duration: 2.37649s;
+        animation-delay: -0.84342s; }
+        .card-stealthField .stealth-animation .band:nth-child(15) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 39.33994%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(16) {
+        animation-duration: 2.40043s;
+        animation-delay: -3.91874s; }
+        .card-stealthField .stealth-animation .band:nth-child(16) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 22.47938%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(17) {
+        animation-duration: 3.20443s;
+        animation-delay: -2.97665s; }
+        .card-stealthField .stealth-animation .band:nth-child(17) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 21.73218%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(18) {
+        animation-duration: 4.59s;
+        animation-delay: -1.67675s; }
+        .card-stealthField .stealth-animation .band:nth-child(18) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 32.78741%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(19) {
+        animation-duration: 3.99383s;
+        animation-delay: -0.29683s; }
+        .card-stealthField .stealth-animation .band:nth-child(19) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 3.37706%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(20) {
+        animation-duration: 2.67966s;
+        animation-delay: -3.57745s; }
+        .card-stealthField .stealth-animation .band:nth-child(20) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 17.25158%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(21) {
+        animation-duration: 1.75788s;
+        animation-delay: -0.67382s; }
+        .card-stealthField .stealth-animation .band:nth-child(21) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 9.08398%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(22) {
+        animation-duration: 4.61737s;
+        animation-delay: -1.74511s; }
+        .card-stealthField .stealth-animation .band:nth-child(22) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 4.91888%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(23) {
+        animation-duration: 3.82467s;
+        animation-delay: -0.47932s; }
+        .card-stealthField .stealth-animation .band:nth-child(23) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 7.63034%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(24) {
+        animation-duration: 1.15134s;
+        animation-delay: -2.8957s; }
+        .card-stealthField .stealth-animation .band:nth-child(24) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 8.58604%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(25) {
+        animation-duration: 3.69502s;
+        animation-delay: -0.19474s; }
+        .card-stealthField .stealth-animation .band:nth-child(25) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 19.85001%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(26) {
+        animation-duration: 1.67988s;
+        animation-delay: -3.15683s; }
+        .card-stealthField .stealth-animation .band:nth-child(26) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 23.70464%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(27) {
+        animation-duration: 1.984s;
+        animation-delay: -0.44005s; }
+        .card-stealthField .stealth-animation .band:nth-child(27) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 13.09177%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(28) {
+        animation-duration: 2.57395s;
+        animation-delay: -0.70552s; }
+        .card-stealthField .stealth-animation .band:nth-child(28) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 3.55688%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(29) {
+        animation-duration: 2.70608s;
+        animation-delay: -2.42425s; }
+        .card-stealthField .stealth-animation .band:nth-child(29) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 29.52485%;
+          height: 100%; }
+      .card-stealthField .stealth-animation .band:nth-child(30) {
+        animation-duration: 3.21075s;
+        animation-delay: -3.33343s; }
+        .card-stealthField .stealth-animation .band:nth-child(30) .color {
+          background-color: rgba(0, 0, 0, 0.4);
+          width: 31.42482%;
+          height: 100%; }
+
+@keyframes stealthAnimation {
+  from {
+    transform: translateX(0%); }
+  to {
+    transform: translateX(100%); } }

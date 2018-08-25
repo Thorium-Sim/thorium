@@ -1,0 +1,4 @@
+.core-action .flex-container {
+  display: flex; }
+  .core-action .flex-container select {
+    flex: auto; }

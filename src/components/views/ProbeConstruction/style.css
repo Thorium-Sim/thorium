@@ -1,0 +1,92 @@
+.probe-construction .probe-container {
+  display: flex;
+  justify-content: space-between;
+  height: 40vh; }
+  .probe-construction .probe-container .placeholder {
+    flex-grow: 0;
+    transition: flex-grow 0.5s ease-in-out; }
+  .probe-construction .probe-container.probeSelected .probe-type {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, flex-grow 0.5s ease-in-out 0.5s; }
+  .probe-construction .probe-container.probeSelected .placeholder {
+    flex-grow: 100;
+    transition: flex-grow 0.5s ease-in-out 0.5s; }
+  .probe-construction .probe-container .probe-type {
+    flex: 1 1 0px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity 0.5s ease-in-out 0.5s, flex-grow 0.5s ease-in-out; }
+    .probe-construction .probe-container .probe-type img {
+      transition: transform 0.5s ease-in-out 0.5s; }
+    .probe-construction .probe-container .probe-type.selected {
+      opacity: 1;
+      flex-grow: 100; }
+      .probe-construction .probe-container .probe-type.selected p {
+        opacity: 0; }
+      .probe-construction .probe-container .probe-type.selected img {
+        transform: rotate(90deg) scale(1.5); }
+
+.probe-construction .probeAction,
+.probe-construction .probeDescription {
+  position: relative; }
+  .probe-construction .probeAction .col,
+  .probe-construction .probeDescription .col {
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto; }
+  .probe-construction .probeAction p,
+  .probe-construction .probeDescription p {
+    font-size: 28px; }
+  @media (width: 1024px) {
+    .probe-construction .probeAction p,
+    .probe-construction .probeDescription p {
+      font-size: 1.2rem; } }
+
+.probe-construction .probeEquipment .card {
+  max-height: 40vh; }
+
+.probe-construction .probeEquipment .equipmentList {
+  padding-top: 0;
+  overflow-y: scroll; }
+
+.probe-construction .probeEquipment .equipmentItem:nth-child(odd) {
+  background-color: rgba(255, 255, 255, 0.1); }
+
+.probe-construction .probeEquipment p {
+  margin: 0;
+  font-size: 1rem; }
+
+.probe-construction .probeEquipment p.description {
+  font-size: 1.6rem; }
+
+@media (width: 1024px) {
+  .probe-construction button {
+    font-size: 0.8rem; } }
+
+.probe-name .grid {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.6); }
+  .probe-name .grid .ring {
+    border: solid 1px rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    position: absolute; }
+  .probe-name .grid .line {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.1); }
+  .probe-name .grid .label {
+    position: absolute;
+    font-size: 36px;
+    width: 3ch;
+    text-align: center; }

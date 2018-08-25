@@ -1,0 +1,94 @@
+.jr-flight {
+  height: 100%;
+  .row, .col {
+    height: 100%;
+  }
+  .engines-slider {
+    height: 90%;
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    .line {
+      height: 100%;
+      width: 5px;
+      background-color: gray;
+      margin: 0 20px;
+    }
+    .engines-list {
+      height: 100%;
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: space-between;
+      p {
+        margin: 0;
+        padding: 0;
+        font-size: 24px;
+      }
+    }
+    .engine-arrow-holder {
+      height: 96%;
+      transform: translateY(100%);
+      transition: transform 0.2s ease;
+    }
+    .engine-arrow {
+      border-top: solid transparent 15px;
+      border-bottom: solid transparent 15px;
+      border-left: solid orange 20px;
+      height: 0px;
+      width: 0px;
+      background-color: transparent;
+      cursor: pointer;
+    }
+  }
+  .jr-thruster {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .center-area {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      margin: 30px;
+    }
+    .fa {
+      width: 100%;
+      text-align: center;
+      cursor: pointer;
+      &:hover {
+        color: #ddd;
+      }
+      &:active {
+        color: #aaa;
+      }
+    }
+  }
+  .jr-navigation {
+    .course-list {
+      height: 30vh;
+      border: solid 3px blue;
+      margin: 10px 0;
+      overflow-y: scroll;
+      font-size: 30px;
+      p {
+        padding: 5px;
+        margin: 5px;
+        border-radius: 5px;
+        &.selected {
+
+          background-color: gray;
+        }
+      }
+    }
+    .starsBox {
+      height: 30vh;
+    }
+  }
+}
+.jr-navigation-core {
+  .destinations {
+    height: 80%;
+    overflow-y: scroll;
+  }
+}

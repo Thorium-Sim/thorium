@@ -1,0 +1,56 @@
+.card-signalJammer .signal-strength {
+  position: absolute;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around; }
+
+.card-signalJammer .captions {
+  display: flex;
+  justify-content: space-between; }
+  .card-signalJammer .captions h4 {
+    flex: 1; }
+
+.card-signalJammer .signal-container {
+  height: 50vh; }
+  .card-signalJammer .signal-container div {
+    height: 100%; }
+
+.card-signalJammer .signal-lines {
+  width: 100%;
+  height: 100%;
+  background-color: black; }
+
+.card-signalJammer .rangeslider {
+  background-color: #333;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); }
+  .card-signalJammer .rangeslider .rangeslider__handle {
+    border: solid 1px #333; }
+  .card-signalJammer .rangeslider.alertColor5 .rangeslider__handle, .card-signalJammer .rangeslider.alertColor4 .rangeslider__handle {
+    background-color: #233f7a; }
+    .card-signalJammer .rangeslider.alertColor5 .rangeslider__handle::after, .card-signalJammer .rangeslider.alertColor4 .rangeslider__handle::after {
+      background-color: #182b52; }
+  .card-signalJammer .rangeslider.alertColor3 .rangeslider__handle {
+    background-color: #4d4d16; }
+    .card-signalJammer .rangeslider.alertColor3 .rangeslider__handle::after {
+      background-color: #25250b; }
+  .card-signalJammer .rangeslider.alertColor2 .rangeslider__handle {
+    background-color: #804d19; }
+    .card-signalJammer .rangeslider.alertColor2 .rangeslider__handle::after {
+      background-color: #553311; }
+  .card-signalJammer .rangeslider.alertColor1 .rangeslider__handle {
+    background-color: #801919; }
+    .card-signalJammer .rangeslider.alertColor1 .rangeslider__handle::after {
+      background-color: #551111; }
+  .card-signalJammer .rangeslider.alertColorp .rangeslider__handle {
+    background-color: #4d1980; }
+    .card-signalJammer .rangeslider.alertColorp .rangeslider__handle::after {
+      background-color: #331155; }
+
+.card-signalJammer .signal-power {
+  height: 100%; }
+
+.card-signalJammer .power-slider {
+  height: 100%; }
+  .card-signalJammer .power-slider .rangeslider__fill {
+    background-color: #922110; }

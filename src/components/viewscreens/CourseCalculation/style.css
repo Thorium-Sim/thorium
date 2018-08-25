@@ -1,0 +1,17 @@
+.viewscreen-courseCalculation {
+  margin-top: 10vh; }
+  .viewscreen-courseCalculation h1 {
+    font-size: 60px; }
+  .viewscreen-courseCalculation .card {
+    margin-top: 30px;
+    font-size: 50px; }
+  .viewscreen-courseCalculation .course-text, .viewscreen-courseCalculation .thruster-text {
+    display: inline-block;
+    width: calc(100% - 140px);
+    margin: 30px;
+    padding-left: 20px;
+    border: solid 2px gray;
+    background-color: #333;
+    border-radius: 10px; }
+  .viewscreen-courseCalculation .thruster-text {
+    width: calc(100% - 200px); }

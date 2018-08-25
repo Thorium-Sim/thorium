@@ -1,0 +1,25 @@
+.armory-card {
+  display: block; }
+  .armory-card .inventory-list {
+    height: 25vh;
+    overflow-y: scroll; }
+  .armory-card .armory-equipment {
+    margin: 0;
+    padding: 3px;
+    border-radius: 10px; }
+    .armory-card .armory-equipment:active {
+      background-color: rgba(255, 255, 255, 0.5); }
+  .armory-card .has-inventory {
+    font-style: italic;
+    color: #ff2222; }
+  .armory-card .crew-item {
+    margin: 0;
+    padding: 3px;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+    border-radius: 10px; }
+    .armory-card .crew-item.selected {
+      background-color: rgba(255, 255, 255, 0.5); }
+
+.list-group-item.selected {
+  background-color: rgba(0, 0, 0, 0.2); }

@@ -1,0 +1,195 @@
+.card-codeCyphers .code-list,
+.core-codeCyphers .code-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(13, 1fr);
+  grid-auto-flow: column;
+  max-height: 80vh;
+  font-size: 28px;
+  width: 100% !important; }
+  .card-codeCyphers .code-list div,
+  .core-codeCyphers .code-list div {
+    line-height: 1.5;
+    margin: 0 30px;
+    text-align: center; }
+
+.card-codeCyphers .card,
+.core-codeCyphers .card {
+  max-height: 70vh;
+  overflow-y: scroll; }
+
+.card-codeCyphers .cypherList,
+.core-codeCyphers .cypherList {
+  margin: 2px;
+  padding: 5px;
+  border-radius: 5px; }
+  .card-codeCyphers .cypherList.selected,
+  .core-codeCyphers .cypherList.selected {
+    background-color: rgba(255, 255, 255, 0.5); }
+
+.card-codeCyphers .Andorian,
+.core-codeCyphers .Andorian {
+  font-family: "Andorian"; }
+
+.card-codeCyphers .Decepticon,
+.core-codeCyphers .Decepticon {
+  font-family: "Decepticon"; }
+
+.card-codeCyphers .Preservers,
+.core-codeCyphers .Preservers {
+  font-family: "Preservers"; }
+
+.card-codeCyphers .Tengwar,
+.core-codeCyphers .Tengwar {
+  font-family: "Tengwar"; }
+
+.card-codeCyphers .Aurabesh,
+.core-codeCyphers .Aurabesh {
+  font-family: "Aurabesh"; }
+
+.card-codeCyphers .Dethek,
+.core-codeCyphers .Dethek {
+  font-family: "Dethek"; }
+
+.card-codeCyphers .Rihannsu,
+.core-codeCyphers .Rihannsu {
+  font-family: "Rihannsu"; }
+
+.card-codeCyphers .Trill,
+.core-codeCyphers .Trill {
+  font-family: "Trill"; }
+
+.card-codeCyphers .Borg,
+.core-codeCyphers .Borg {
+  font-family: "Borg";
+  font-size: 60px;
+  line-height: 0; }
+
+.card-codeCyphers .DwarfSpiritas,
+.core-codeCyphers .DwarfSpiritas {
+  font-family: "DwarfSpiritas"; }
+
+.card-codeCyphers .Shadow,
+.core-codeCyphers .Shadow {
+  font-family: "Shadow"; }
+
+.card-codeCyphers .Visitor,
+.core-codeCyphers .Visitor {
+  font-family: "Visitor"; }
+
+.card-codeCyphers .Cardassian,
+.core-codeCyphers .Cardassian {
+  font-family: "Cardassian"; }
+
+.card-codeCyphers .Fabrini,
+.core-codeCyphers .Fabrini {
+  font-family: "Fabrini"; }
+
+.card-codeCyphers .Skaven,
+.core-codeCyphers .Skaven {
+  font-family: "Skaven"; }
+
+.card-codeCyphers .Voth,
+.core-codeCyphers .Voth {
+  font-family: "Voth"; }
+
+.card-codeCyphers .DarkArts,
+.core-codeCyphers .DarkArts {
+  font-family: "DarkArts"; }
+
+.card-codeCyphers .Klingon,
+.core-codeCyphers .Klingon {
+  font-family: "Klingon"; }
+
+.card-codeCyphers .Symbol,
+.core-codeCyphers .Symbol {
+  font-family: "Symbol"; }
+
+.card-codeCyphers .printable,
+.core-codeCyphers .printable {
+  display: none; }
+
+@media print {
+  .core-container *:not(.printable) {
+    visibility: hidden;
+    width: 0 !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important; }
+  .core-container .card-codeCyphers *:not(.printable),
+  .core-container .core-codeCyphers *:not(.printable) {
+    visibility: hidden;
+    width: 0 !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important; }
+  .core-container .card-codeCyphers .printable,
+  .core-container .core-codeCyphers .printable {
+    width: 100vw;
+    height: 90vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    visibility: visible;
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    color: black; }
+    .core-container .card-codeCyphers .printable *,
+    .core-container .core-codeCyphers .printable * {
+      visibility: visible;
+      width: auto !important;
+      height: auto !important; }
+    .core-container .card-codeCyphers .printable .code-list,
+    .core-container .core-codeCyphers .printable .code-list {
+      font-size: 38px;
+      max-height: 90vh;
+      display: flex;
+      height: 100%;
+      max-height: 90vh;
+      flex-direction: column;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100% !important; }
+      .core-container .card-codeCyphers .printable .code-list div,
+      .core-container .core-codeCyphers .printable .code-list div {
+        line-height: 1.5;
+        margin: 0 30px;
+        text-align: center; }
+    .core-container .card-codeCyphers .printable pre,
+    .core-container .core-codeCyphers .printable pre {
+      color: black;
+      background-color: transparent;
+      border: none;
+      font-size: 30px;
+      line-height: 2;
+      text-transform: lowercase; }
+    .core-container .card-codeCyphers .printable h1,
+    .core-container .card-codeCyphers .printable h2,
+    .core-container .card-codeCyphers .printable h3,
+    .core-container .card-codeCyphers .printable h4,
+    .core-container .card-codeCyphers .printable h5,
+    .core-container .card-codeCyphers .printable h6,
+    .core-container .card-codeCyphers .printable p,
+    .core-container .card-codeCyphers .printable span,
+    .core-container .core-codeCyphers .printable h1,
+    .core-container .core-codeCyphers .printable h2,
+    .core-container .core-codeCyphers .printable h3,
+    .core-container .core-codeCyphers .printable h4,
+    .core-container .core-codeCyphers .printable h5,
+    .core-container .core-codeCyphers .printable h6,
+    .core-container .core-codeCyphers .printable p,
+    .core-container .core-codeCyphers .printable span {
+      font-family: "Gill Sans", "Helvetica", sans-serif;
+      color: black; } }

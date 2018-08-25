@@ -1,0 +1,106 @@
+$alert5: #3a6dda;
+$alert4: #36c236;
+$alert3: #acac34;
+$alert2: #cc7926;
+$alert1: #ca2a2a;
+$alertp: #4d1980;
+
+.phoenix-frame {
+  // Buttons
+
+  @mixin hover {
+    &:hover {
+      @content;
+    }
+  }
+
+  @mixin hover-focus {
+    &:hover,
+    &:focus {
+      @content;
+    }
+  }
+  $yiq-contrasted-threshold: 150 !default;
+  $yiq-text-dark: #212529 !default;
+  $yiq-text-light: white !default;
+  @function color-yiq($color) {
+    $r: red($color);
+    $g: green($color);
+    $b: blue($color);
+
+    $yiq: (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+
+    @if ($yiq >= $yiq-contrasted-threshold) {
+      @return $yiq-text-dark;
+    } @else {
+      @return $yiq-text-light;
+    }
+  }
+  @mixin button-variant(
+    $background,
+    $border,
+    $hover-background: darken($background, 7.5%),
+    $hover-border: darken($border, 10%),
+    $active-background: darken($background, 10%),
+    $active-border: lighten($border, 30%)
+  ) {
+    border-width: 3px;
+    color: color-yiq($background);
+    border-color: $border;
+    background-color: $background;
+
+    @include hover {
+      color: color-yiq($hover-background);
+      background-color: $hover-background;
+      border-color: $hover-border;
+    }
+
+    &:focus,
+    &.focus {
+      // Avoid using mixin so we can pass custom focus shadow properly
+      box-shadow: 0 0 0 0.2rem rgba($border, 0.5);
+    }
+
+    // Disabled comes first so active can properly restyle
+    &.disabled,
+    &:disabled {
+      color: color-yiq($background);
+      background-color: $background;
+      border-color: $border;
+    }
+
+    &:not(:disabled):not(.disabled):active,
+    &:not(:disabled):not(.disabled).active,
+    .show > &.dropdown-toggle {
+      color: color-yiq($active-background);
+      background-color: $active-background;
+      border-color: $active-border;
+      &:focus {
+        // Avoid using mixin so we can pass custom focus shadow properly
+        box-shadow: 0 0 0 0.2rem rgba($border, 0.5);
+      }
+    }
+  }
+  $theme-colors: () !default;
+  $theme-colors: map-merge(
+    (
+      "primary": $alert5,
+      "secondary": lighten(#2e2e2e, 20%),
+      "success": $alert4,
+      "info": #2ba1cb,
+      "warning": $alert2,
+      "danger": $alert1,
+      "light": lighten(#2e2e2e, 40%),
+      "dark": #2e2e2e,
+      "default": #2e2e2e,
+      "cloak": rebeccapurple
+    ),
+    $theme-colors
+  );
+
+  @each $color, $value in $theme-colors {
+    .btn-#{$color} {
+      @include button-variant($value, $value);
+    }
+  }
+}

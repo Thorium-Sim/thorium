@@ -1,0 +1,185 @@
+#sensorGrid {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: content-box;
+  border-radius: 50%;
+  border: solid rgba(255, 255, 255, 0.4);
+  border-width: 4px; }
+  #sensorGrid .damaged-sensors {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: #333;
+    z-index: 1000; }
+  #sensorGrid .contact-disabled {
+    -webkit-mask-image: url("./noise.png");
+    -webkit-mask-size: cover;
+    mask-image: url("./noise.png");
+    mask-size: cover; }
+  #sensorGrid .sensors-interference {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    background-color: white; }
+    #sensorGrid .sensors-interference canvas {
+      width: 100%;
+      height: 100%; }
+  #sensorGrid .grid {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.6);
+    /*.ping-ring {
+      width: 100%;
+      height: 100%;
+      border: solid 4px rgba(0,128,255,0.7);
+      border-radius: 50%;
+      position: absolute;
+      transition: transform 0s ease-out;
+      transform: scale(0);
+      box-shadow: 0px 0px 10px rgba(0,128,255,0.7), inset 0px 0px 20px 10px rgba(0,128,255,0.7);
+      opacity: 1;
+    }
+    &.ping .ping-ring {
+      transition: transform 2s ease-out, opacity 3s linear;
+      transform: scale(1.01);
+      opacity: 0;
+    }*/ }
+    #sensorGrid .grid .ring {
+      z-index: 11;
+      pointer-events: none;
+      border: solid 1px rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      position: absolute; }
+    #sensorGrid .grid .line {
+      z-index: 11;
+      pointer-events: none;
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background-color: rgba(255, 255, 255, 0.1); }
+    #sensorGrid .grid img {
+      z-index: 1;
+      width: 5%;
+      height: 5%;
+      position: absolute;
+      transform: translate(-100%, 0); }
+    #sensorGrid .grid .sensors-border-holder,
+    #sensorGrid .grid .sensors-planet-holder {
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      pointer-events: none; }
+    #sensorGrid .grid .sensors-border {
+      width: 200%;
+      height: 3%;
+      position: absolute;
+      border: solid 3px #417;
+      background-color: rebeccapurple;
+      opacity: 0.7;
+      pointer-events: all; }
+    #sensorGrid .grid .sensors-planet {
+      width: 50%;
+      height: 50%;
+      position: absolute;
+      pointer-events: all;
+      border: solid 3px #417;
+      border-radius: 50%; }
+  #sensorGrid .grid-segments {
+    width: 100%;
+    height: 100%;
+    position: absolute; }
+    #sensorGrid .grid-segments path {
+      fill: black; }
+    #sensorGrid .grid-segments .active {
+      opacity: 1; }
+    #sensorGrid .grid-segments .hidden {
+      opacity: 0; }
+  #sensorGrid .speed-container {
+    z-index: 1000;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    font-size: 8px;
+    background-color: gainsboro;
+    border: solid 1px gray; }
+    #sensorGrid .speed-container p {
+      border-top: solid 1px gray;
+      color: black;
+      line-height: 0.7;
+      padding: 0px 3px;
+      cursor: pointer; }
+      #sensorGrid .speed-container p:hover {
+        background-color: #555; }
+  #sensorGrid .crosshairs {
+    position: relative; }
+    #sensorGrid .crosshairs div {
+      width: 4px;
+      height: 4px;
+      position: absolute; }
+    #sensorGrid .crosshairs .tl {
+      border-bottom: 1px solid red;
+      border-right: 1px solid red;
+      left: -3px;
+      top: -3px; }
+    #sensorGrid .crosshairs .tr {
+      border-bottom: 1px solid red;
+      border-left: 1px solid red;
+      right: -17px;
+      top: -3px; }
+    #sensorGrid .crosshairs .bl {
+      border-top: 1px solid red;
+      border-right: 1px solid red;
+      left: -3px;
+      bottom: -17px; }
+    #sensorGrid .crosshairs .br {
+      border-top: 1px solid red;
+      border-left: 1px solid red;
+      right: -17px;
+      bottom: -17px; }
+  #sensorGrid .contact-selection {
+    position: relative; }
+    #sensorGrid .contact-selection div {
+      width: 8px;
+      height: 8px;
+      position: absolute; }
+    #sensorGrid .contact-selection .tl {
+      border-top: 2px solid #0080ff;
+      border-left: 2px solid #0080ff;
+      left: -3px;
+      top: -3px; }
+    #sensorGrid .contact-selection .tr {
+      border-top: 2px solid #0080ff;
+      border-right: 2px solid #0080ff;
+      right: -34px;
+      top: -3px; }
+    #sensorGrid .contact-selection .bl {
+      border-bottom: 2px solid #0080ff;
+      border-left: 2px solid #0080ff;
+      left: -3px;
+      bottom: -34px; }
+    #sensorGrid .contact-selection .br {
+      border-bottom: 2px solid #0080ff;
+      border-right: 2px solid #0080ff;
+      right: -34px;
+      bottom: -34px; }
+
+.grid-segments {
+  pointer-events: none;
+  z-index: 10; }
+
+.sensorGridCore .grid-segments {
+  pointer-events: auto;
+  z-index: 0; }

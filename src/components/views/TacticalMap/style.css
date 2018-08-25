@@ -1,0 +1,182 @@
+#root {
+  height: 100%; }
+
+.tactical-map-video, .tactical-map-video video {
+  width: 100%;
+  height: 100%; }
+
+.tacticalmap-core {
+  display: grid;
+  grid-template-columns: 70vw auto;
+  grid-template-rows: 39.375vw calc(100vh - 41vw);
+  grid-template-areas: "preview sidebar" "bottom sidebar";
+  background-color: #111;
+  color: white; }
+  .tacticalmap-core .list-group-item {
+    background-color: transparent; }
+
+/* selection container */
+.selection {
+  height: 100%;
+  width: 100%;
+  position: absolute; }
+
+.select-box {
+  background-color: rgba(255, 0, 0, 0.5); }
+
+/* selection box */
+.selection-border {
+  background: rgba(0, 162, 255, 0.4);
+  position: absolute;
+  z-index: 99; }
+
+.tacticalmap-core, .tacticalmap-config {
+  height: 100%; }
+  .tacticalmap-core .preview, .tacticalmap-config .preview {
+    grid-area: preview;
+    width: 100vw;
+    height: 100vh;
+    transform-origin: 0 0;
+    transform: scale(0.7); }
+  .tacticalmap-core .right-sidebar, .tacticalmap-config .right-sidebar {
+    grid-area: sidebar; }
+  .tacticalmap-core .bottom-bar, .tacticalmap-config .bottom-bar {
+    grid-area: bottom;
+    align-self: end;
+    height: 100%; }
+  .tacticalmap-core .layer-list,
+  .tacticalmap-core .saved-list, .tacticalmap-config .layer-list,
+  .tacticalmap-config .saved-list {
+    min-height: 150px;
+    border: solid 1px rgba(128, 128, 128, 0.5);
+    margin: 3px;
+    padding: 0;
+    list-style: none; }
+    .tacticalmap-core .layer-list li,
+    .tacticalmap-core .saved-list li, .tacticalmap-config .layer-list li,
+    .tacticalmap-config .saved-list li {
+      padding: 2px; }
+    .tacticalmap-core .layer-list .selected,
+    .tacticalmap-core .saved-list .selected, .tacticalmap-config .layer-list .selected,
+    .tacticalmap-config .saved-list .selected {
+      background-color: rgba(128, 128, 128, 0.5); }
+  .tacticalmap-core .tactical-object, .tacticalmap-config .tactical-object {
+    height: 100%; }
+    .tacticalmap-core .tactical-object .dragging-img, .tacticalmap-config .tactical-object .dragging-img {
+      position: fixed;
+      left: 0;
+      top: 0;
+      max-width: 100px; }
+
+.tacticalmap-config .layer-list,
+.tacticalmap-config .saved-list {
+  min-height: 100px; }
+
+.viewscreen-tacticalMap {
+  height: 100%; }
+
+.tactical-map-view {
+  height: 100%;
+  background-color: black;
+  position: relative; }
+  .tactical-map-view pre {
+    box-shadow: none;
+    background: transparent;
+    padding: 0;
+    margin: 0; }
+  .tactical-map-view .tactical-map-layer {
+    position: absolute;
+    height: 100%;
+    width: 100%; }
+  .tactical-map-view .layer-grid, .tactical-map-view .layer-image {
+    pointer-events: none; }
+  .tactical-map-view .tactical-grid {
+    pointer-events: none;
+    height: 100%; }
+    .tactical-map-view .tactical-grid .cols,
+    .tactical-map-view .tactical-grid .rows,
+    .tactical-map-view .tactical-grid .label-cols,
+    .tactical-map-view .tactical-grid .label-rows {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: space-evenly; }
+    .tactical-map-view .tactical-grid .cols {
+      flex-direction: row; }
+      .tactical-map-view .tactical-grid .cols div {
+        width: 1px;
+        height: 100%; }
+    .tactical-map-view .tactical-grid .rows {
+      flex-direction: column; }
+      .tactical-map-view .tactical-grid .rows div {
+        width: 100%;
+        height: 1px; }
+    .tactical-map-view .tactical-grid .labels {
+      color: white;
+      text-align: center; }
+      .tactical-map-view .tactical-grid .labels .label-cols {
+        flex-direction: row;
+        align-items: flex-end; }
+        .tactical-map-view .tactical-grid .labels .label-cols div {
+          width: 3ch; }
+      .tactical-map-view .tactical-grid .labels .label-rows {
+        flex-direction: column;
+        align-items: flex-start; }
+        .tactical-map-view .tactical-grid .labels .label-rows div {
+          height: 2ch; }
+  .tactical-map-view .tactical-image {
+    pointer-events: none;
+    width: 100%;
+    height: 100%; }
+    .tactical-map-view .tactical-image img {
+      width: 100%;
+      height: 100%;
+      pointer-events: none; }
+  .tactical-map-view .tactical-objects {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden; }
+    .tactical-map-view .tactical-objects .tactical-icon {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      pointer-events: none; }
+    .tactical-map-view .tactical-objects .image-holder {
+      pointer-events: all;
+      position: absolute;
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center; }
+    .tactical-map-view .tactical-objects .icon-label {
+      text-align: center; }
+    .tactical-map-view .tactical-objects .select-loc {
+      width: 100%;
+      height: 100%;
+      position: absolute; }
+      .tactical-map-view .tactical-objects .select-loc img {
+        position: absolute;
+        width: 15px;
+        height: 15px; }
+      .tactical-map-view .tactical-objects .select-loc img:nth-child(1) {
+        left: -5px;
+        top: -5px; }
+      .tactical-map-view .tactical-objects .select-loc img:nth-child(2) {
+        right: -5px;
+        top: -5px;
+        transform: rotate(90deg); }
+      .tactical-map-view .tactical-objects .select-loc img:nth-child(3) {
+        left: -5px;
+        bottom: -5px;
+        transform: rotate(-90deg); }
+      .tactical-map-view .tactical-objects .select-loc img:nth-child(4) {
+        right: -5px;
+        bottom: -5px;
+        transform: rotate(180deg); }
+  .tactical-map-view svg.path-holder {
+    width: 100%;
+    height: 100%; }
+  .tactical-map-view .path-line circle {
+    cursor: pointer; }

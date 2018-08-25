@@ -1,0 +1,371 @@
+.docking .flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 60vh;
+  margin-top: 10vh; }
+
+.docking-graphic {
+  width: 600px;
+  height: 600px;
+  background-color: black;
+  border: solid 1px rgba(255, 255, 255, 0.5);
+  overflow: hidden; }
+  @media (width: 1024px) {
+    .docking-graphic {
+      width: 300px;
+      height: 300px; } }
+  .docking-graphic .clamps {
+    position: relative;
+    width: 100%;
+    height: 100%; }
+    .docking-graphic .clamps .xtransform {
+      top: 0;
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      transform: translateX(-6%);
+      transition: transform 1s ease-in-out; }
+    .docking-graphic .clamps .clamp {
+      transition: transform 2s ease-in-out 1s;
+      transform: translateY(-60%);
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      right: 36%;
+      top: 0px; }
+      .docking-graphic .clamps .clamp div {
+        position: absolute;
+        background-color: gray; }
+      .docking-graphic .clamps .clamp .stem {
+        height: 80%;
+        width: 7%;
+        top: 0;
+        right: 0; }
+      .docking-graphic .clamps .clamp .branch {
+        height: 7%;
+        width: 15%;
+        top: 73%;
+        right: -15%; }
+      .docking-graphic .clamps .clamp .hook {
+        width: 7%;
+        height: 7%;
+        right: -15%;
+        top: 67%; }
+    .docking-graphic .clamps .leftClamp {
+      height: 100%;
+      transform: scaleX(-1); }
+    .docking-graphic .clamps .bracket {
+      width: 100%;
+      height: 100%; }
+      .docking-graphic .clamps .bracket div {
+        position: absolute;
+        background-color: gray; }
+      .docking-graphic .clamps .bracket .bottom {
+        width: 90%;
+        height: 10%;
+        bottom: 5%;
+        left: 5%; }
+      .docking-graphic .clamps .bracket .left,
+      .docking-graphic .clamps .bracket .right {
+        width: 10%;
+        height: 30%;
+        bottom: 15%; }
+      .docking-graphic .clamps .bracket .left {
+        left: 5%; }
+      .docking-graphic .clamps .bracket .right {
+        right: 5%; }
+      .docking-graphic .clamps .bracket .left-brack,
+      .docking-graphic .clamps .bracket .right-brack {
+        width: 20%;
+        height: 10%;
+        bottom: 35%; }
+      .docking-graphic .clamps .bracket .left-brack {
+        left: 5%; }
+      .docking-graphic .clamps .bracket .right-brack {
+        right: 5%; }
+    .docking-graphic .clamps.on .xtransform {
+      transform: translateX(2%);
+      transition: transform 1s ease-in-out 2s; }
+    .docking-graphic .clamps.on .clamp {
+      transform: translateY(1%);
+      transition: transform 2s ease-in-out; }
+  .docking-graphic .ramps {
+    position: relative;
+    height: 100%; }
+    .docking-graphic .ramps .background {
+      position: absolute;
+      background-color: #555;
+      height: 100%;
+      width: 60%;
+      left: 20%;
+      border-radius: 1000px 1000px 0 0; }
+    .docking-graphic .ramps .floor {
+      position: absolute;
+      background-color: #333;
+      height: 20%;
+      width: 60%;
+      left: 20%;
+      bottom: 0%; }
+    .docking-graphic .ramps .ramp {
+      position: absolute;
+      width: 100%;
+      z-index: 100;
+      border-bottom: 100px solid #484848;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      top: 100%;
+      transition: transform 1s ease-in-out; }
+      @media (width: 1024px) {
+        .docking-graphic .ramps .ramp {
+          border-bottom: 60px solid #484848; } }
+    .docking-graphic .ramps .left-door {
+      position: absolute;
+      height: 100%;
+      width: 30%;
+      left: 15%;
+      background-color: gray;
+      border-radius: 1000px 0 0 0;
+      border: solid 5px #444;
+      transition: transform 1s ease-in-out;
+      transform: translateX(16%); }
+    .docking-graphic .ramps .right-door {
+      position: absolute;
+      height: 100%;
+      width: 30%;
+      right: 15%;
+      background-color: gray;
+      border-radius: 0 1000px 0 0;
+      border: solid 5px #444;
+      transition: transform 1s ease-in-out;
+      transform: translateX(-16%); }
+      .docking-graphic .ramps .right-door .handle1 {
+        position: absolute;
+        width: 50%;
+        height: 20%;
+        top: 20%;
+        left: 20%;
+        border: solid 7px #333;
+        border-radius: 0 15px 15px 0; }
+      .docking-graphic .ramps .right-door .handle2 {
+        position: absolute;
+        width: 50%;
+        height: 20%;
+        top: 50%;
+        left: 20%;
+        border: solid 7px #333;
+        border-radius: 0 15px 15px 0; }
+    .docking-graphic .ramps.on .left-door {
+      transform: translateX(-80%); }
+    .docking-graphic .ramps.on .right-door {
+      transform: translateX(80%); }
+    .docking-graphic .ramps.on .ramp {
+      transform: translateY(-100%); }
+  .docking-graphic .airlock {
+    position: relative;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #222; }
+    .docking-graphic .airlock div.tri-1 {
+      position: absolute;
+      left: 0%;
+      top: 50%;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(to right, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+      transform-origin: top right;
+      transition: all 2s ease-in-out;
+      -webkit-clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      transform: rotate(30deg); }
+      @media (width: 1024px) {
+        .docking-graphic .airlock div.tri-1 {
+          width: 150px;
+          height: 150px; } }
+    .docking-graphic .airlock div.tri-2 {
+      position: absolute;
+      left: 0%;
+      top: 50%;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(to right, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+      transform-origin: top right;
+      transition: all 2s ease-in-out;
+      -webkit-clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      transform: rotate(60deg); }
+      @media (width: 1024px) {
+        .docking-graphic .airlock div.tri-2 {
+          width: 150px;
+          height: 150px; } }
+    .docking-graphic .airlock div.tri-3 {
+      position: absolute;
+      left: 0%;
+      top: 50%;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(to right, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+      transform-origin: top right;
+      transition: all 2s ease-in-out;
+      -webkit-clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      transform: rotate(90deg); }
+      @media (width: 1024px) {
+        .docking-graphic .airlock div.tri-3 {
+          width: 150px;
+          height: 150px; } }
+    .docking-graphic .airlock div.tri-4 {
+      position: absolute;
+      left: 0%;
+      top: 50%;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(to right, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+      transform-origin: top right;
+      transition: all 2s ease-in-out;
+      -webkit-clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      transform: rotate(120deg); }
+      @media (width: 1024px) {
+        .docking-graphic .airlock div.tri-4 {
+          width: 150px;
+          height: 150px; } }
+    .docking-graphic .airlock div.tri-5 {
+      position: absolute;
+      left: 0%;
+      top: 50%;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(to right, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+      transform-origin: top right;
+      transition: all 2s ease-in-out;
+      -webkit-clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      transform: rotate(150deg); }
+      @media (width: 1024px) {
+        .docking-graphic .airlock div.tri-5 {
+          width: 150px;
+          height: 150px; } }
+    .docking-graphic .airlock div.tri-6 {
+      position: absolute;
+      left: 0%;
+      top: 50%;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(to right, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+      transform-origin: top right;
+      transition: all 2s ease-in-out;
+      -webkit-clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      transform: rotate(180deg); }
+      @media (width: 1024px) {
+        .docking-graphic .airlock div.tri-6 {
+          width: 150px;
+          height: 150px; } }
+    .docking-graphic .airlock div.tri-7 {
+      position: absolute;
+      left: 0%;
+      top: 50%;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(to right, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+      transform-origin: top right;
+      transition: all 2s ease-in-out;
+      -webkit-clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      transform: rotate(210deg); }
+      @media (width: 1024px) {
+        .docking-graphic .airlock div.tri-7 {
+          width: 150px;
+          height: 150px; } }
+    .docking-graphic .airlock div.tri-8 {
+      position: absolute;
+      left: 0%;
+      top: 50%;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(to right, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+      transform-origin: top right;
+      transition: all 2s ease-in-out;
+      -webkit-clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      transform: rotate(240deg); }
+      @media (width: 1024px) {
+        .docking-graphic .airlock div.tri-8 {
+          width: 150px;
+          height: 150px; } }
+    .docking-graphic .airlock div.tri-9 {
+      position: absolute;
+      left: 0%;
+      top: 50%;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(to right, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+      transform-origin: top right;
+      transition: all 2s ease-in-out;
+      -webkit-clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      transform: rotate(270deg); }
+      @media (width: 1024px) {
+        .docking-graphic .airlock div.tri-9 {
+          width: 150px;
+          height: 150px; } }
+    .docking-graphic .airlock div.tri-10 {
+      position: absolute;
+      left: 0%;
+      top: 50%;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(to right, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+      transform-origin: top right;
+      transition: all 2s ease-in-out;
+      -webkit-clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      transform: rotate(300deg); }
+      @media (width: 1024px) {
+        .docking-graphic .airlock div.tri-10 {
+          width: 150px;
+          height: 150px; } }
+    .docking-graphic .airlock div.tri-11 {
+      position: absolute;
+      left: 0%;
+      top: 50%;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(to right, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+      transform-origin: top right;
+      transition: all 2s ease-in-out;
+      -webkit-clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      transform: rotate(330deg); }
+      @media (width: 1024px) {
+        .docking-graphic .airlock div.tri-11 {
+          width: 150px;
+          height: 150px; } }
+    .docking-graphic .airlock div.tri-12 {
+      position: absolute;
+      left: 0%;
+      top: 50%;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(to right, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
+      transform-origin: top right;
+      transition: all 2s ease-in-out;
+      -webkit-clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      clip-path: polygon(0% 25%, 100% 0%, 25% 75%);
+      transform: rotate(360deg); }
+      @media (width: 1024px) {
+        .docking-graphic .airlock div.tri-12 {
+          width: 150px;
+          height: 150px; } }
+    .docking-graphic .airlock.on div {
+      -webkit-clip-path: polygon(0% 25%, 100% 100%, 25% 75%);
+      clip-path: polygon(0% 25%, 100% 100%, 25% 75%); }
+
+.graphics {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  height: 80vh; }

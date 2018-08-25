@@ -1,0 +1,10 @@
+.coreFeed-core {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll; }
+  .coreFeed-core .core-feed-component {
+    margin-bottom: 20px; }
+  .coreFeed-core .alert {
+    margin: 2px;
+    padding: 4px; }

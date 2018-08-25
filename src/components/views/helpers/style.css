@@ -1,0 +1,22 @@
+.damageOverlay {
+  width: 100%;
+  height: 100%;
+  top: -11px;
+  left: 0px;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.75);
+  border: solid 1px rgba(255, 255, 255, 0.5);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  transition: opacity 2s ease-in-out;
+  white-space: pre-wrap;
+  font-size: 44px; }
+  .damageOverlay h1 {
+    color: red;
+    width: 100%;
+    font-size: inherit;
+    text-align: center;
+    text-shadow: 5px 5px 5px black; }

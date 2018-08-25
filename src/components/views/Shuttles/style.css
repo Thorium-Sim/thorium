@@ -1,0 +1,47 @@
+.shuttles-card .spacer {
+  margin-top: 103%; }
+
+.shuttles-card .row {
+  justify-content: space-around; }
+
+.shuttles-card .shuttleBay {
+  padding-right: 15px;
+  padding-left: 15px;
+  flex: 1 0 50%;
+  max-width: 33%;
+  margin-top: 15px;
+  margin-bottom: 15px; }
+
+.shuttles-card .shuttle {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat; }
+  .shuttles-card .shuttle h2 {
+    align-self: center; }
+
+.shuttles-card .docking-graphic {
+  width: 100%;
+  height: 100%;
+  margin-bottom: 100%; }
+
+.shuttles-card .door {
+  background-color: #222;
+  border: solid 2px white;
+  overflow: hidden; }
+  .shuttles-card .door .door-container {
+    background: url("./stars.svg");
+    clip-path: polygon(1% 94%, 99% 94%, 99% 25%, 78% 4%, 22% 4%, 1% 25%); }
+  .shuttles-card .door svg {
+    transition: transform 2s ease; }
+    .shuttles-card .door svg.open {
+      transform: translateY(-90%); }
+
+.shuttles-card .fizzlefade {
+  width: 100%; }
+  .shuttles-card .fizzlefade canvas {
+    width: 100%;
+    padding: 4px;
+    border: solid 2px white; }

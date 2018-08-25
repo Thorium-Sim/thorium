@@ -1,0 +1,23 @@
+.jr-eng h1 {
+  cursor: pointer; }
+
+.jr-eng svg {
+  height: 100%;
+  width: 100%; }
+
+svg.battery-charging {
+  width: 100%;
+  height: 100%; }
+  svg.battery-charging .spark {
+    transition: transform 0.1s linear; }
+  svg.battery-charging .arrow {
+    cursor: pointer;
+    transition: transform 0.5s ease; }
+    svg.battery-charging .arrow.n {
+      transform: rotate(270deg); }
+    svg.battery-charging .arrow.s {
+      transform: rotate(90deg); }
+    svg.battery-charging .arrow.e {
+      transform: rotate(0deg); }
+    svg.battery-charging .arrow.w {
+      transform: rotate(180deg); }

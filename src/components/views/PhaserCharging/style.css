@@ -1,0 +1,87 @@
+.card-phaserCharging .phaserLevels {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; }
+  .card-phaserCharging .phaserLevels p {
+    padding: 0px 5px;
+    flex: 1 1 auto;
+    width: 25%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: solid 1px white;
+    border-left: solid 1px white; }
+    .card-phaserCharging .phaserLevels p:first-child {
+      flex: 1 1 auto; }
+    .card-phaserCharging .phaserLevels p:last-child {
+      border-right: solid 1px white; }
+
+.card-phaserCharging .phaserBeam {
+  margin-bottom: 10px; }
+
+.card-phaserCharging .chargeHolder {
+  width: 100%;
+  height: 100%;
+  position: relative; }
+  .card-phaserCharging .chargeHolder .charge, .card-phaserCharging .chargeHolder .heat {
+    position: absolute;
+    left: 0%;
+    height: 60%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 100%), linear-gradient(to right, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
+    background-size: 5px 3px, 100%; }
+  .card-phaserCharging .chargeHolder .charge {
+    background-color: #ffff00; }
+  .card-phaserCharging .chargeHolder .heat {
+    background-color: #ff0000; }
+
+.phaser-fire {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap; }
+
+:root {
+  --phaserArcRotate: -5deg; }
+
+.phaserArc {
+  margin-top: 20px; }
+  .phaserArc .lasers {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 500px; }
+    .phaserArc .lasers.hidden {
+      display: none; }
+    .phaserArc .lasers .laser-beam {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      height: 3px;
+      width: 100%;
+      background: rgba(195, 195, 31, 0.6);
+      box-shadow: 0px 0px 15px 0px #c3c31f;
+      transform-origin: 0 100%;
+      animation: phaserlaser 0.2s linear infinite;
+      transform: rotate(calc(var(--phaserArcRotate) * 0.5)); }
+      .phaserArc .lasers .laser-beam.red {
+        animation: phaserlaser 0.2s 0.15s linear infinite;
+        background: rgba(212, 212, 69, 0.6);
+        box-shadow: 0px 0px 15px 0px #d4d445;
+        transform: rotate(var(--phaserArcRotate)); }
+      .phaserArc .lasers .laser-beam.purple {
+        animation: phaserlaser 0.2s 0.1s linear infinite;
+        background: rgba(102, 102, 0, 0.6);
+        box-shadow: 0px 0px 15px 0px #666600;
+        transform: rotate(calc(var(--phaserArcRotate) * -0.5)); }
+      .phaserArc .lasers .laser-beam.green {
+        animation: phaserlaser 0.2s 0.05s linear infinite;
+        background: rgba(236, 236, 20, 0.6);
+        box-shadow: 0px 0px 15px 0px #ecec14;
+        transform: rotate(calc(var(--phaserArcRotate) * -1)); }
+
+@-webkit-keyframes phaserlaser {
+  0% {
+    transform: rotate(var(--phaserArcRotate)); }
+  50% {
+    transform: rotate(calc(var(--phaserArcRotate) * -1)); }
+  100% {
+    transform: rotate(var(--phaserArcRotate)); } }
