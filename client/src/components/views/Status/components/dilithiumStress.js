@@ -29,10 +29,6 @@ class DilithiumStress extends Component {
     return stressLevel;
   }
 
-  // Not sure if this is the best way to get this card. Perhaps the parent react
-  // node should decide if this component should render or not since it contains
-  // the props necessary to decide whether or not it would be appropriate to
-  // render this? ¯\_(ツ)_/¯
   getDilithiumStressCard = (station) => {
     if (!station) return null;
     return station.cards.find(card => card.component === 'DilithiumStress');
@@ -42,7 +38,6 @@ class DilithiumStress extends Component {
     if (this.props.data.loading || !this.props.data.reactors) return null;
     const dilithiumStressCard = this.getDilithiumStressCard(this.props.station)
     if (!dilithiumStressCard) return null;
-    // I'm assuming this is the way to get the reactor info.
     const reactor = this.props.data.reactors && this.props.data.reactors[0];
     if (!reactor) return null;
     const stressLevel = this.calcStressLevel(reactor) / 100
