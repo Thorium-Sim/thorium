@@ -3,10 +3,13 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
 export const ReactorQueries = {
-  reactors(root, { simulatorId }) {
+  reactors(root, { simulatorId, model }) {
     let returnVal = App.systems.filter(s => s.type === "Reactor");
     if (simulatorId) {
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
+    }
+    if (model) {
+      returnVal = returnVal.filter(s => s.model === model);
     }
     return returnVal;
   },
