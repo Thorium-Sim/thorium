@@ -61,7 +61,7 @@ $alertp: #4d1980;
       rgba(0, 0, 0, 0.85) 100%
     );
     transition: background-color 0.5s ease;
-    -webkit-clip-path: polygon(
+    clip-path: polygon(
       /* Top */ 0% 50px,
       88% 50px,
       97% 10px,
@@ -156,12 +156,7 @@ $alertp: #4d1980;
         rgba(0, 0, 0, 0) 0%,
         rgba(0, 0, 0, 0.35) 100%
       );
-      -webkit-clip-path: polygon(
-        0 0,
-        $navigatorWidth - 20px 0,
-        100% 100%,
-        0% 100%
-      );
+      clip-path: polygon(0 0, $navigatorWidth - 20px 0, 100% 100%, 0% 100%);
       cursor: pointer;
       transition: transform 0.5s ease;
     }
