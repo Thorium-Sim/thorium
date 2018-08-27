@@ -185,7 +185,7 @@ class FlightConfig extends Component {
         <Row>
           <Col sm={3} className="simulator-pick">
             <h5>Pick a simulator</h5>
-            <Card className="scroll">
+            <Card style={{ overflowY: "auto", maxHeight: "50vh" }}>
               {simulators.map(s => (
                 <li
                   key={s.id}
@@ -208,7 +208,7 @@ class FlightConfig extends Component {
             {selectedSimulator && (
               <div>
                 <h5>Pick a station set</h5>
-                <Card className="scroll">
+                <Card style={{ overflowY: "auto", maxHeight: "50vh" }}>
                   {selectedSimObj.stationSets.map(s => (
                     <TooltipList
                       onClick={() => this.setState({ selectedStation: s.id })}
@@ -227,7 +227,7 @@ class FlightConfig extends Component {
             {selectedStation && (
               <div>
                 <h5>Pick a mission</h5>
-                <Card className="scroll">
+                <Card style={{ overflowY: "auto", maxHeight: "50vh" }}>
                   {missions.map(m => (
                     <TooltipList
                       onClick={() => this.setState({ selectedMission: m.id })}
