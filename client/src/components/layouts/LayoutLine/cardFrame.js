@@ -69,6 +69,12 @@ class CardFrame extends Component {
                       simulator.name.length,
                       stationName.length,
                       cardName.length
+                    ),
+                    clipPath: calculatePath(
+                      dimensions,
+                      simulator.name.length,
+                      stationName.length,
+                      cardName.length
                     )
                   }}
                 />
