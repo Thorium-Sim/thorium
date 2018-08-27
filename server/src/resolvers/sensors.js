@@ -16,7 +16,7 @@ export const SensorsQueries = {
   sensor(root, { id }) {
     return App.systems.find(s => s.id === id);
   },
-  sensorContacts(root, { simulatorId, sensorsId, hostile }) {
+  sensorContacts(root, { simulatorId, sensorsId, hostile, type }) {
     let contacts = [];
     if (sensorsId) {
       const sensors = App.systems.find(system => {
@@ -32,6 +32,9 @@ export const SensorsQueries = {
     }
     if (hostile || hostile === false)
       contacts = contacts.filter(c => c.hostile === hostile);
+    if (type) {
+      contacts = contacts.filter(c => c.type === type);
+    }
     return contacts;
   }
 };

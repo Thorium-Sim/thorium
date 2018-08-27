@@ -74,7 +74,9 @@ import Thx from "./Thx";
 import DilithiumStress from "./DilithiumStress";
 import EngineeringReports from "./DamageControl/engineering";
 import RnDReports from "./DamageControl/rnd";
+import Railgun from "./Railgun";
 
+// Cores
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
 import SensorsGridCore from "./Sensors/gridCore";
@@ -131,7 +133,9 @@ import ThxCore from "./Thx/core";
 import CommConvoCore from "./CommDecoding/convoCore";
 import ViewscreenCore from "./Viewscreen/core";
 import BattleCore from "./Battle";
+import RailgunCore from "./Railgun/core";
 
+// Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
 import RemoteWidget from "./RemoteAccess/widget";
@@ -212,7 +216,8 @@ const Views = {
   Thx,
   DilithiumStress,
   EngineeringReports,
-  RnDReports
+  RnDReports,
+  Railgun
 };
 
 export const Widgets = {
@@ -338,7 +343,8 @@ export const Cores = {
   ThxCore,
   CommConvoCore,
   ViewscreenCore,
-  BattleCore
+  BattleCore,
+  RailgunCore
 };
 
 export default Views;
