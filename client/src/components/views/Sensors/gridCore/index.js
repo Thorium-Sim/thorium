@@ -256,11 +256,11 @@ class GridCore extends Component {
     document.removeEventListener("mousemove", this.mouseMove);
     document.removeEventListener("mouseup", this.mouseUp);
     const t = Date.now() - this.downMouseTime;
-    // if (this.downMouseTime && t < 200) {
-    //   this.setState({
-    //     selectedContacts: draggingContacts
-    //   });
-    // }
+    if (this.downMouseTime && t < 200) {
+      this.setState({
+        selectedContacts: draggingContacts
+      });
+    }
 
     if (askForSpeed) {
       this.setState({
@@ -297,13 +297,7 @@ class GridCore extends Component {
     const sensors = this.props.data.sensors[0];
     const { client } = this.props;
     const { draggingContacts, dimensions } = this.state;
-    // Only need to update the dragging contacts.
-    this.setState({
-      draggingContacts: null,
-      iconWidth: null,
-      iconHeight: null,
-      speedAsking: null
-    });
+
     // Delete any dragging contacts that are out of bounds
     const contacts = draggingContacts
       .map(c => {
@@ -348,12 +342,14 @@ class GridCore extends Component {
       })
       // Now that the ones that need to be deleted are gone,
       // Update the rest
-      .map(c => ({
-        id: c.id,
-        speed,
-        destination: c.destination
-      }));
-    console.log(contacts);
+      .map(c => {
+        const { x = 0, y = 0, z = 0 } = c.destination;
+        return {
+          id: c.id,
+          speed,
+          destination: { x, y, z }
+        };
+      });
     const mutation = gql`
       mutation MoveSensorContact($id: ID!, $contacts: [SensorContactInput]!) {
         updateSensorContacts(id: $id, contacts: $contacts)
@@ -363,10 +359,19 @@ class GridCore extends Component {
       id: sensors.id,
       contacts
     };
-    client.mutate({
-      mutation,
-      variables
-    });
+    client
+      .mutate({
+        mutation,
+        variables
+      })
+      .then(() => {
+        this.setState({
+          draggingContacts: null,
+          iconWidth: null,
+          iconHeight: null,
+          speedAsking: null
+        });
+      });
   };
   _freezeContacts() {}
   _changeSpeed(e) {
@@ -397,7 +402,7 @@ class GridCore extends Component {
       { value: "0.05", label: "Very Slow" }
     ];
     const extraContacts = []
-      .concat(movingContact && movingContact.icon ? movingContact : null)
+      .concat(movingContact && movingContact.location ? movingContact : null)
       .concat(draggingContacts)
       .filter(Boolean);
     return (

@@ -4,7 +4,6 @@ import SensorContact from "./SensorContact";
 import Segments from "./blackout";
 import Interference from "./interference";
 import Selection from "./select";
-import { QUERY } from "./";
 
 function distance3d(coord2, coord1) {
   const { x: x1, y: y1, z: z1 } = coord1;
@@ -13,7 +12,7 @@ function distance3d(coord2, coord1) {
 }
 
 class InnerGrid extends Component {
-  state = {};
+  state = { sContacts: {} };
   interval = 1000 / 30;
   componentDidMount() {
     this.contactTimeout = setTimeout(this.contactLoop, this.interval);
@@ -23,14 +22,13 @@ class InnerGrid extends Component {
   }
   contactLoop = () => {
     this.contactTimeout = setTimeout(this.contactLoop, this.interval);
-
-    const { updateContacts, client, contacts } = this.props;
+    const { updateContacts, contacts } = this.props;
     if (updateContacts) return updateContacts();
-    client.writeQuery({
-      query: QUERY,
-      data: {
-        sensorContacts: contacts.map(this.updateContact)
-      }
+    this.setState({
+      sContacts: contacts.map(this.updateContact).reduce((prev, next) => {
+        prev[next.id] = next;
+        return prev;
+      }, {})
     });
   };
   updateContact = c => {
@@ -169,7 +167,6 @@ class InnerGrid extends Component {
       </Fragment>
     );
   };
-  cancelMove = () => {};
   renderContacts = () => {
     const {
       contacts,
@@ -185,35 +182,41 @@ class InnerGrid extends Component {
     const { width: dimWidth, height: dimHeight } = dimensions;
     const width = Math.min(dimWidth, dimHeight);
 
-    const { selectedContact } = this.state;
+    const { selectedContact, sContacts } = this.state;
     if (renderContacts) return renderContacts(this.props, this.state);
-    console.log(contacts, extraContacts);
     const contactOutput = []
-      .concat(contacts.filter(c => !extraContacts.find(e => e.id === c.id)))
-      .concat(extraContacts)
+      .concat(contacts)
+      .concat(extraContacts.filter(c => !contacts.find(e => e.id === c.id)))
       .filter(Boolean);
-    return contactOutput.map(contact => (
-      <SensorContact
-        key={contact.id}
-        width={width}
-        core={core}
-        sensorsId={sensor}
-        {...contact}
-        selected={
-          selectedContacts
-            ? selectedContacts.indexOf(contact.id) > -1
-            : contact.id === selectedContact
-        }
-        mousedown={(e, contact) =>
-          mouseDown(e, contact, contact =>
-            this.setState({
-              selectedContact: contact.id ? contact.id : contact
-            })
-          )
-        }
-        mouseover={hoverContact}
-      />
-    ));
+    return contactOutput.map(contact => {
+      const extraContact = extraContacts.find(e => e.id === contact.id);
+      const { position, location, destination } =
+        sContacts[contact.id] || contact;
+      return (
+        <SensorContact
+          key={contact.id}
+          width={width}
+          core={core}
+          sensorsId={sensor}
+          {...contact}
+          location={position || location}
+          destination={extraContact ? extraContact.destination : destination}
+          selected={
+            selectedContacts
+              ? selectedContacts.indexOf(contact.id) > -1
+              : contact.id === selectedContact
+          }
+          mousedown={(e, contact) =>
+            mouseDown(e, contact, contact =>
+              this.setState({
+                selectedContact: contact.id ? contact.id : contact
+              })
+            )
+          }
+          mouseover={hoverContact}
+        />
+      );
+    });
   };
   render() {
     const {

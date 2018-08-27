@@ -3,8 +3,8 @@ import uuid from "uuid";
 // Ex: Ship has crew count, weapons, etc.
 
 function distance3d(coord2, coord1) {
-  const { x: x1, y: y1, z: z1 } = coord1;
-  let { x: x2, y: y2, z: z2 } = coord2;
+  const { x: x1 = 0, y: y1 = 0, z: z1 = 0 } = coord1;
+  let { x: x2 = 0, y: y2 = 0, z: z2 = 0 } = coord2;
   return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
 }
 
@@ -69,6 +69,7 @@ export default class SensorContact {
     const movementTime = Math.ceil(
       (distance3d(this.destination, this.location) / (this.speed / 10)) * 1000
     );
+    console.log("move", this.destination);
     this.endTime = this.startTime + movementTime;
   }
   nudge(coordinates, speed, yaw) {
@@ -104,6 +105,7 @@ export default class SensorContact {
           Math.min(maxDistance, this.destination.z + coordinates.z)
         )
       };
+      console.log("nudge", this.destination, coordinates);
       this.location = this.position;
       this.startTime = Date.now();
       const movementTime = Math.ceil(
