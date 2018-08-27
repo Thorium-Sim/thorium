@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
+import { Mutation, graphql, withApollo } from "react-apollo";
 import { Button, Row, Col, Card, CardBody } from "reactstrap";
 import Tour from "../../../helpers/tourHelper";
 import { Typing } from "react-typing";
-
 import "./style.scss";
 import Grid from "./GridDom";
 import DamageOverlay from "../helpers/DamageOverlay";
@@ -180,6 +179,20 @@ class Sensors extends Component {
       variables
     });
   };
+  clickContact = action => (e, contact, selectContact) => {
+    console.log(e, contact, selectContact);
+    e.preventDefault();
+    e.stopPropagation();
+    selectContact(contact);
+    const { x, y, z } = contact.location;
+    action({
+      variables: {
+        simulatorId: this.props.simulator.id,
+        coordinates: { x: Math.abs(x), y: Math.abs(y), z: Math.abs(z) },
+        contactId: contact.id
+      }
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.sensors)
       return <p>Loading...</p>;
@@ -243,19 +256,38 @@ class Sensors extends Component {
             >
               <div className="spacer" />
               <div id="threeSensors" className="array">
-                <Grid
-                  dimensions={this.state.dimensions}
-                  sensor={sensors.id}
-                  damaged={sensors.damage.damaged}
-                  hoverContact={this._hoverContact.bind(this)}
-                  movement={sensors.movement}
-                  ping={ping}
-                  pings={pings}
-                  pingTime={pingTime}
-                  simulatorId={this.props.simulator.id}
-                  segments={sensors.segments}
-                  interference={sensors.interference}
-                />
+                <Mutation
+                  mutation={gql`
+                    mutation SetCalculatedTarget(
+                      $simulatorId: ID
+                      $coordinates: CoordinatesInput!
+                      $contactId: ID
+                    ) {
+                      setTargetingCalculatedTarget(
+                        simulatorId: $simulatorId
+                        coordinates: $coordinates
+                        contactId: $contactId
+                      )
+                    }
+                  `}
+                >
+                  {action => (
+                    <Grid
+                      dimensions={this.state.dimensions}
+                      sensor={sensors.id}
+                      damaged={sensors.damage.damaged}
+                      hoverContact={this._hoverContact.bind(this)}
+                      movement={sensors.movement}
+                      ping={ping}
+                      pings={pings}
+                      pingTime={pingTime}
+                      simulatorId={this.props.simulator.id}
+                      segments={sensors.segments}
+                      interference={sensors.interference}
+                      mouseDown={this.clickContact(action)}
+                    />
+                  )}
+                </Mutation>
               </div>
               <DamageOverlay
                 message="External Sensors Offline"

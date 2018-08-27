@@ -36,30 +36,7 @@
   pre {
     white-space: pre-wrap;
   }
-  .array {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    //border-radius:50%;
-    //overflow: hidden;
-    //background:radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%,rgba(0,0,0,.9) 100%), linear-gradient(165deg, #000000 0%, rgba(0, 0, 0, 0.4) 50%, #000000 100%);
-    /*&:after{
-			content: '';
-			display: block;
-			position: absolute;
-			left: 0;
-			right: 0;
-			top: 0;
-			bottom: 0;
-			border: 6px solid #545555;
-			box-shadow: inset 0px 0px 30px 10px rgba(0, 0, 0, 1);
-			border-radius: 50%;
-		}*/
-  }
   #sensorGrid {
-    border-radius: 50%;
     overflow: hidden;
   }
   .arrayContainer {
