@@ -11,12 +11,15 @@ const configs = Object.keys(ViewscreenCards)
 export default ({ updateArgs, args }) => {
   return (
     <FormGroup className="macro-template">
-      <Label>Secondary Screen?</Label>
-      <Input
-        type="checkbox"
-        checked={args.secondary}
-        onChange={evt => updateArgs("secondary", evt.target.checked)}
-      />
+      <Label>
+        <Input
+          type="checkbox"
+          checked={args.secondary}
+          onChange={evt => updateArgs("secondary", evt.target.checked)}
+        />
+        Secondary Screen?
+      </Label>
+
       <Label>Cards</Label>
       <Input
         type="select"

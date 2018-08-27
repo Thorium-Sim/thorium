@@ -41,13 +41,14 @@ class TacticalMapConfig extends Component {
             })
           }
         />
-        <Label>Secondary Screen?</Label>
-
-        <Input
-          type="checkbox"
-          checked={args.secondary}
-          onChange={evt => updateArgs("secondary", evt.target.checked)}
-        />
+        <Label>
+          <Input
+            type="checkbox"
+            checked={args.secondary}
+            onChange={evt => updateArgs("secondary", evt.target.checked)}
+          />{" "}
+          Secondary Screen?
+        </Label>
 
         <p>Saved Maps</p>
         <ul className="saved-list">
