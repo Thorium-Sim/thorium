@@ -4,7 +4,6 @@ import * as Classes from "../classes";
 import uuid from "uuid";
 
 export const aspectList = [
-  "assetObjects",
   "systems",
   "decks",
   "rooms",
