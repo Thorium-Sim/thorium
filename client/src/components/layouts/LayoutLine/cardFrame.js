@@ -38,9 +38,15 @@ function calculatePath(
 class CardFrame extends Component {
   state = {};
   render() {
-    let { simulator, station, children, cardName, viewscreen } = this.props;
+    let {
+      simulator,
+      station,
+      children,
+      cardName = "",
+      viewscreen
+    } = this.props;
     const { dimensions } = this.state;
-    const { name: stationName } = station;
+    const { name: stationName = "" } = station;
     return (
       <div className="card-frame">
         <h1 className="simulator-name">{simulator.name}</h1>
