@@ -43,7 +43,8 @@ class CardFrame extends Component {
       station,
       children,
       cardName = "",
-      viewscreen
+      viewscreen,
+      clientObj
     } = this.props;
     const { dimensions } = this.state;
     const { name: stationName = "" } = station;
@@ -64,12 +65,6 @@ class CardFrame extends Component {
                 <div
                   className="frame-outer"
                   style={{
-                    WebkitClipPath: calculatePath(
-                      dimensions,
-                      simulator.name.length,
-                      stationName.length,
-                      cardName.length
-                    ),
                     clipPath: calculatePath(
                       dimensions,
                       simulator.name.length,
@@ -82,7 +77,10 @@ class CardFrame extends Component {
             </div>
           )}
         </Measure>
-        <div className="card-area" style={{ zIndex: viewscreen ? 1000 : 1 }}>
+        <div
+          className="card-area"
+          style={{ zIndex: viewscreen && !clientObj.overlay ? 1000 : 1 }}
+        >
           {children}
         </div>
       </div>

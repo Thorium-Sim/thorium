@@ -49,6 +49,8 @@ export default class Sensors extends System {
     this.autoTarget = params.autoTarget || false;
     this.history = params.history || false;
     this.scans = [];
+    this.defaultSpeed = params.defaultSpeed || 0.4;
+    this.defaultHitpoints = params.defaultHitpoints || 5;
 
     if (params.scans) {
       params.scans.forEach(scan => {
@@ -190,7 +192,10 @@ export default class Sensors extends System {
     infrared,
     color,
     locked,
-    disabled
+    disabled,
+    hitpoints,
+    hostile,
+    autoFire
   }) {
     const myContact = this.contacts.find(contact => contact.id === id);
     if (icon) myContact.updateIcon(icon);
@@ -201,6 +206,9 @@ export default class Sensors extends System {
     if (color) myContact.updateColor(color);
     if (locked || locked === false) myContact.updateLocked(locked);
     if (disabled || disabled === false) myContact.updateDisabled(disabled);
+    if (hitpoints || hitpoints === false) myContact.updateHitpoints(hitpoints);
+    if (hostile || hostile === false) myContact.updateHostile(hostile);
+    if (autoFire || autoFire === false) myContact.updateAutofire(autoFire);
   }
   updateArmyContact({
     id,
@@ -211,7 +219,9 @@ export default class Sensors extends System {
     infrared,
     color,
     locked,
-    disabled
+    disabled,
+    hitpoints,
+    hostile
   }) {
     const myContact = this.armyContacts.find(contact => contact.id === id);
     if (icon) myContact.updateIcon(icon);
@@ -222,6 +232,8 @@ export default class Sensors extends System {
     if (color) myContact.updateColor(color);
     if (locked || locked === false) myContact.updateLocked(locked);
     if (disabled || disabled === false) myContact.updateDisabled(disabled);
+    if (hitpoints || hitpoints === false) myContact.updateHitpoints(hitpoints);
+    if (hostile || hostile === false) myContact.updateHostile(hostile);
   }
   removeArmyContact(id) {
     const contactIndex = this.armyContacts.findIndex(
@@ -286,5 +298,11 @@ export default class Sensors extends System {
   }
   setSegment(segment, state) {
     this.segments.find(s => s.segment === segment).state = state;
+  }
+  setDefaultSpeed(speed) {
+    this.defaultSpeed = speed;
+  }
+  setDefaultHitpoints(hp) {
+    this.defaultHitpoints = hp;
   }
 }

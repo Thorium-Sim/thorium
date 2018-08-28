@@ -72,6 +72,9 @@ const sendUpdate = sys => {
       "stealthFieldUpdate",
       App.systems.filter(s => s.type === "StealthField")
     );
+  if (sys.type === "Railgun")
+    pubsub.publish("railgunUpdate", App.systems.filter(s => s.id === sys.id));
+
   if (sys.class === "DockingPort")
     pubsub.publish("dockingUpdate", App.dockingPorts);
   pubsub.publish("systemsUpdate", App.systems);

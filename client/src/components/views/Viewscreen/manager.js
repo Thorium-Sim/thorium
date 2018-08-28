@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo, Mutation } from "react-apollo";
 import { Label, Row, Col, Input, Button, ButtonGroup } from "reactstrap";
 import Preview, { Viewscreen } from "./index";
 import ViewscreenCardList from "./viewscreenCardList";
@@ -10,20 +10,23 @@ import "./style.scss";
 
 const CardPreview = Viewscreen;
 
+const queryData = `
+id
+name
+component
+data
+auto
+secondary
+overlay`;
 const VIEWSCREEN_SUB = gql`
   subscription ViewscreenSub($simulatorId: ID) {
     viewscreensUpdate(simulatorId: $simulatorId) {
-      id
-      name
-      component
-      data
-      auto
-      secondary
+${queryData}
     }
   }
 `;
 
-class ViewscreenCore extends Component {
+class ViewscreenManager extends Component {
   sub = null;
   configs = Object.keys(ViewscreenCards)
     .filter(c => c.indexOf("Config") > -1)
@@ -163,6 +166,7 @@ class ViewscreenCore extends Component {
               simulator={this.props.simulator}
               flightId={this.props.flightId}
               clientObj={{ id: selectedViewscreen }}
+              core
             />
           )}
         </div>
@@ -178,6 +182,7 @@ class ViewscreenCore extends Component {
               component={previewComponent}
               flightId={this.props.flightId}
               viewscreen={{ data: configData }}
+              core
             />
           )}
         </div>
@@ -226,6 +231,41 @@ class ViewscreenCore extends Component {
                   />{" "}
                   Secondary Screen?
                 </Label>
+                <label>
+                  <Mutation
+                    mutation={gql`
+                      mutation SetOverlay($id: ID!, $overlay: Boolean!) {
+                        setClientOverlay(id: $id, overlay: $overlay)
+                      }
+                    `}
+                  >
+                    {action => (
+                      <input
+                        type="checkbox"
+                        checked={
+                          selectedViewscreen &&
+                          viewscreens.length &&
+                          viewscreens.find(v => v.id === selectedViewscreen)
+                            .overlay
+                        }
+                        onChange={e =>
+                          action({
+                            variables: {
+                              id:
+                                selectedViewscreen &&
+                                viewscreens.length &&
+                                viewscreens.find(
+                                  v => v.id === selectedViewscreen
+                                ).id,
+                              overlay: e.target.checked
+                            }
+                          })
+                        }
+                      />
+                    )}
+                  </Mutation>{" "}
+                  Show card overlay
+                </label>
               </Col>
               <Col sm={6} style={{ display: "flex", flexDirection: "column" }}>
                 <Label>Cards</Label>
@@ -322,12 +362,7 @@ class ViewscreenCore extends Component {
 const VIEWSCREEN_QUERY = gql`
   query Viewscreens($simulatorId: ID) {
     viewscreens(simulatorId: $simulatorId) {
-      id
-      name
-      component
-      data
-      auto
-      secondary
+      ${queryData}
     }
   }
 `;
@@ -338,4 +373,4 @@ export default graphql(VIEWSCREEN_QUERY, {
       simulatorId: ownProps.simulator.id
     }
   })
-})(withApollo(ViewscreenCore));
+})(withApollo(ViewscreenManager));

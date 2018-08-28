@@ -17,6 +17,7 @@ export default class Client {
     this.movie = params.move || null;
     this.hypercard = params.hypercard || null;
     this.training = params.training || false;
+    this.overlay = params.overlay || false;
     this.caches = params.caches || [];
   }
   connect() {
@@ -92,6 +93,9 @@ export default class Client {
   }
   removeCache(cacheItem) {
     this.caches = this.caches.filter(c => c !== cacheItem);
+  }
+  setOverlay(overlay) {
+    this.overlay = overlay;
   }
   diagnostic() {}
   reset() {}

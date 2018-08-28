@@ -1,10 +1,40 @@
-#sensorGrid {
-  position: absolute;
-  z-index: 1;
+.sensors-holder {
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   box-sizing: content-box;
+}
+.array {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.speed-container {
+  z-index: 1000;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  font-size: 8px;
+  background-color: gainsboro;
+  border: solid 1px gray;
+  p {
+    border-top: solid 1px gray;
+    color: black;
+    line-height: 1;
+    padding: 0px 5px !important;
+    cursor: pointer;
+    &:hover {
+      background-color: #555;
+    }
+  }
+}
+#sensorGrid {
+  position: absolute;
+  z-index: 1;
   border-radius: 50%;
   border: solid rgba(255, 255, 255, 0.4);
   border-width: 4px;
@@ -156,25 +186,7 @@
       opacity: 0;
     }
   }
-  .speed-container {
-    z-index: 1000;
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    font-size: 8px;
-    background-color: gainsboro;
-    border: solid 1px gray;
-    p {
-      border-top: solid 1px gray;
-      color: black;
-      line-height: 0.7;
-      padding: 0px 3px;
-      cursor: pointer;
-      &:hover {
-        background-color: #555;
-      }
-    }
-  }
+
   .crosshairs {
     position: relative;
     div {

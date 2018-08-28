@@ -97,6 +97,9 @@ export const ClientMutations = {
   },
   clientMovieState(root, args, context) {
     App.handleEvent(args, "clientMovieState", context);
+  },
+  setClientOverlay(root, args, context) {
+    App.handleEvent(args, "setClientOverlay", context);
   }
 };
 

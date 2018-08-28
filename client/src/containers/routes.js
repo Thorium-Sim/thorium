@@ -6,6 +6,7 @@ import CardContainer from "../components/client/Card";
 import Client from "../components/client";
 import { FlightDirector } from "./FlightDirector";
 import Config from "./config";
+import Releases from "./FlightDirector/releases";
 
 const history = createHistory();
 
@@ -32,6 +33,8 @@ export default class App extends Component {
       <Router history={history}>
         <Switch>
           <Route exact path="/" component={Config} />
+          <Route path="/releases" exact render={() => <Releases />} />
+
           <Route path="/client" component={Client} />
           <Route
             path="/config/flight/:flightId/core"

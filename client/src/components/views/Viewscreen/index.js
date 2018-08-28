@@ -28,13 +28,13 @@ export class Viewscreen extends Component {
         autoAdvance(simulatorId: $simulatorId, prev: $prev)
       }
     `;
-    if (e.which === 39) {
+    if (e.which === 39 || e.which === 33) {
       this.props.client.mutate({
         mutation,
         variables
       });
     }
-    if (e.which === 37) {
+    if (e.which === 37 || e.which === 34) {
       variables.prev = true;
       this.props.client.mutate({
         mutation,

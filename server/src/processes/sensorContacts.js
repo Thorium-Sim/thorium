@@ -75,6 +75,12 @@ const moveSensorContactTimed = () => {
           c.destination = destination;
           c.location = destination;
           c.position = destination;
+
+          // Projectile destruction
+          if (c.type === "projectile" && !c.destroyed) {
+            sensors.destroyContact({ id: c.id });
+            sendUpdate = true;
+          }
         } else {
           c.destination = destination;
           c.position = newLoc;
@@ -85,6 +91,28 @@ const moveSensorContactTimed = () => {
       }
     });
     sensors.contacts.forEach(c => {
+      // Auto fire
+      if (c.hostile && c.autoFire) {
+        if (!c.fireTimeTarget) {
+          c.fireTimeTarget = Math.round(Math.random() * 300 + 500);
+          c.fireTime = 0;
+        }
+        c.fireTime += 1;
+        if (c.fireTime >= c.fireTimeTarget) {
+          App.handleEvent(
+            {
+              simulatorId: sensors.simulatorId,
+              contactId: c.id,
+              speed: sensors.defaultSpeed,
+              hitpoints: sensors.defaultHitpoints
+            },
+            "sensorsFireProjectile"
+          );
+          c.fireTime = 0;
+          c.fireTimeTarget = 0;
+        }
+      }
+
       // Auto-target
       const targeting = App.systems.find(
         s => s.simulatorId === sensors.simulatorId && s.class === "Targeting"
@@ -121,9 +149,8 @@ const moveSensorContactTimed = () => {
   }
   if (sendUpdate) {
     App.systems.forEach(sys => {
-      if (sys.type === "Sensors") {
-        const sensors = sys;
-        pubsub.publish("sensorContactUpdate", sensors);
+      if (sys.type === "Sensors" && sys.domain === "external") {
+        pubsub.publish("sensorContactUpdate", sys);
       }
     });
   }

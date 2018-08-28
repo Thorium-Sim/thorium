@@ -12,6 +12,7 @@ data
 auto
 component
 secondary
+overlay
 `;
 
 const QUERY = gql`

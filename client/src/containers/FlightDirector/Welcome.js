@@ -113,6 +113,17 @@ class Welcome extends Component {
         <Row>
           <Col sm={12} className="title-row">
             <h1 className="text-center">Thorium</h1>
+            <h6 className="text-center">
+              <Link to="/releases">
+                <FormattedMessage
+                  id="version-number"
+                  defaultMessage="Version {version}"
+                  values={{
+                    version: require("../../../package.json").version
+                  }}
+                />
+              </Link>
+            </h6>
             <h3 className="text-center">
               <small>{this.state.quote}</small>
             </h3>

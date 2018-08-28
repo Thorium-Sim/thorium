@@ -4,19 +4,24 @@ import FileExplorer from "../../views/TacticalMap/fileExplorer";
 
 class ShipViewsConfig extends Component {
   render() {
-    let { data, updateData, simple } = this.props;
+    let { data: inputData, updateData, simple } = this.props;
+    const data = JSON.parse(inputData);
     return (
-      <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+      <div
+        style={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          overflowY: "auto"
+        }}
+      >
         <div>
           <label>Name</label>
           <Input
-            value={data.name}
+            bsSize="sm"
+            defaultValue={data.name}
             onChange={evt =>
-              updateData(
-                JSON.stringify(
-                  Object.assign({}, data, { name: evt.target.value })
-                )
-              )
+              updateData(JSON.stringify({ ...data, name: evt.target.value }))
             }
           />
         </div>
@@ -24,7 +29,8 @@ class ShipViewsConfig extends Component {
           <label>Text</label>
         </div>
         <div>
-          <input
+          <Input
+            bsSize="sm"
             type="textarea"
             value={data.text}
             onChange={evt =>
@@ -34,7 +40,7 @@ class ShipViewsConfig extends Component {
                 )
               )
             }
-            rows={5}
+            rows={2}
           />
         </div>
         <label>Ship Image</label>
@@ -47,14 +53,13 @@ class ShipViewsConfig extends Component {
           <FileExplorer
             simple={simple}
             directory="/Sensor Contacts/Pictures"
-            selectedFiles={[JSON.parse(data).ship]}
+            selectedFiles={[data.ship]}
             onClick={(evt, container) =>
               updateData(
-                JSON.stringify(
-                  Object.assign({}, JSON.parse(data), {
-                    ship: container.fullPath
-                  })
-                )
+                JSON.stringify({
+                  ...data,
+                  ship: container.fullPath
+                })
               )
             }
           />

@@ -4,7 +4,7 @@ import Measure from "react-measure";
 import tinycolor from "tinycolor2";
 import Explosion from "../../../../helpers/explosions";
 import gql from "graphql-tag";
-
+import { subscribe } from "../../helpers/pubsub";
 class Ping extends Component {
   constructor(props) {
     super(props);
@@ -96,6 +96,26 @@ const ContactSelection = ({ width, x, y, size, contactDims }) => {
 };
 export default class SensorContact extends Component {
   state = {};
+  componentDidMount() {
+    const { id: contactId } = this.props;
+    this.subscription1 = subscribe(
+      "battle-contact-hover",
+      ({ id }) => id === contactId && this.setState({ hilite: true })
+    );
+    this.subscription2 = subscribe(
+      "battle-contact-leave",
+      ({ id }) => id === contactId && this.setState({ hilite: false })
+    );
+  }
+  componentWillUnmount() {
+    this.subscription1 && this.subscription1();
+    this.subscription2 && this.subscription2();
+  }
+  bgColor(selected, hilite) {
+    if (hilite) return "#0f0";
+    if (selected) return "blue";
+    return null;
+  }
   render() {
     const {
       id,
@@ -103,11 +123,12 @@ export default class SensorContact extends Component {
       destination = {},
       icon,
       width,
-      size,
+      size = 1,
       core,
-      opacity,
+      opacity = 1,
       type,
       color,
+      hostile,
       destroyed,
       rotation = 0,
       targeted,
@@ -117,6 +138,7 @@ export default class SensorContact extends Component {
       mousedown = () => {},
       removeContact = () => {}
     } = this.props;
+    const { hilite } = this.state;
     if (!location) return null;
     const { x, y } = location;
     const { x: dx = 0, y: dy = 0 } = destination;
@@ -130,7 +152,7 @@ export default class SensorContact extends Component {
             className="sensors-border"
             onMouseOver={() => mouseover(this.props)}
             onMouseOut={selected ? null : () => mouseover({})}
-            onMouseDown={e => mousedown(this.props, e)}
+            onMouseDown={e => mousedown(e, this.props)}
             style={{
               opacity: core ? 0.5 : opacity * 0.7,
               width: core ? "150%" : "500%",
@@ -147,7 +169,7 @@ export default class SensorContact extends Component {
             <div
               id={`contact-${id}`}
               className="sensors-border"
-              onMouseDown={mousedown}
+              onMouseDown={e => mousedown(e, this.props)}
               style={{
                 width: core ? "150%" : "500%",
                 height: `${size}%`,
@@ -172,7 +194,7 @@ export default class SensorContact extends Component {
             className="sensors-planet"
             onMouseOver={() => mouseover(this.props)}
             onMouseOut={selected ? null : () => mouseover({})}
-            onMouseDown={e => mousedown(this.props, e)}
+            onMouseDown={e => mousedown(e, this.props)}
             style={{
               opacity: core ? 0.5 : opacity * 0.7,
               borderColor: tinycolor(color)
@@ -187,7 +209,7 @@ export default class SensorContact extends Component {
             <div
               id={`contact-${id}`}
               className="sensors-planet"
-              onMouseDown={mousedown}
+              onMouseDown={e => mousedown(e, this.props)}
               style={{
                 borderColor: tinycolor(color)
                   .darken(10)
@@ -214,6 +236,22 @@ export default class SensorContact extends Component {
         />
       );
     }
+    if (type === "projectile") {
+      return (
+        <div>
+          <div
+            style={{
+              position: "absolute",
+              backgroundColor: "white",
+              borderRadius: "50%",
+              width: "1%",
+              height: "1%",
+              transform: `translate(${(width / 2) * x}px, ${(width / 2) * y}px)`
+            }}
+          />
+        </div>
+      );
+    }
     return (
       <div>
         <Fragment>
@@ -230,7 +268,7 @@ export default class SensorContact extends Component {
                 draggable="false"
                 onMouseOver={() => mouseover(this.props)}
                 onMouseOut={selected ? null : () => mouseover({})}
-                onMouseDown={e => mousedown(this.props, e)}
+                onMouseDown={e => mousedown(e, this.props)}
                 src={`/assets${icon}`}
                 className={disabled ? "contact-disabled" : ""}
                 style={{
@@ -259,11 +297,12 @@ export default class SensorContact extends Component {
               id={`contact-${id}`}
               alt="icon"
               draggable="false"
-              onMouseDown={mousedown}
+              onMouseDown={e => mousedown(e, this.props)}
               src={`/assets${icon}`}
               className={disabled ? "contact-disabled" : ""}
               style={{
-                backgroundColor: selected ? "blue" : "",
+                boxShadow: hostile ? "2px 2px 2px rgba(255,0,0,0.5)" : null,
+                backgroundColor: this.bgColor(selected, hilite),
                 transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
                   dy}px) scale(${size})`
               }}

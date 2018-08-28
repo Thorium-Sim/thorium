@@ -26,7 +26,8 @@ export default class SetArmyContacts extends Component {
       color: "#0f0",
       infrared: false,
       cloaked: false,
-      destroyed: false
+      destroyed: false,
+      hostile: false
     };
     this.props.updateArgs(
       "armyContacts",

@@ -66,7 +66,7 @@ class VideoViewscreenCore extends Component {
                   disabled={!viewscreen}
                   onClick={this.updateViewscreen(action)}
                 >
-                  Update Viewscreen
+                  Update
                 </Button>
               )}
             </Mutation>
@@ -84,11 +84,41 @@ class VideoViewscreenCore extends Component {
                   disabled={!viewscreen}
                   onClick={this.viewscreenAuto(action)}
                 >
-                  Auto-Viewscreen
+                  Auto
                 </Button>
               )}
             </Mutation>
           </ButtonGroup>
+          <label>
+            <Mutation
+              mutation={gql`
+                mutation SetOverlay($id: ID!, $overlay: Boolean!) {
+                  setClientOverlay(id: $id, overlay: $overlay)
+                }
+              `}
+            >
+              {action => (
+                <input
+                  type="checkbox"
+                  checked={
+                    viewscreen &&
+                    viewscreens.find(v => v.id === viewscreen).overlay
+                  }
+                  onChange={e =>
+                    action({
+                      variables: {
+                        id:
+                          viewscreen &&
+                          viewscreens.find(v => v.id === viewscreen).id,
+                        overlay: e.target.checked
+                      }
+                    })
+                  }
+                />
+              )}
+            </Mutation>{" "}
+            Show card overlay
+          </label>
         </div>
         <div className="lower">
           <ViewscreenCardList

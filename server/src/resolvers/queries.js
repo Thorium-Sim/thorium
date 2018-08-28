@@ -45,6 +45,8 @@ import { SickbayQueries } from "./sickbay.js";
 import { ThxQueries } from "./thx.js";
 import { ThoriumQueries } from "./thorium.js";
 import { ExternalsQueries } from "./externals";
+import { RailgunQueries } from "./railgun.js";
+
 const queryMap = Object.assign(
   {},
   FlightStructureQueries,
@@ -93,7 +95,8 @@ const queryMap = Object.assign(
   SickbayQueries,
   ThxQueries,
   ThoriumQueries,
-  ExternalsQueries
+  ExternalsQueries,
+  RailgunQueries
 );
 
 export default queryMap;

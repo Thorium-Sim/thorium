@@ -70,3 +70,12 @@ export const ViewscreenSubscriptions = {
     )
   }
 };
+
+export const ViewscreenTypes = {
+  Viewscreen: {
+    overlay(v) {
+      const client = App.clients.find(c => c.id === v.id);
+      return client.overlay;
+    }
+  }
+};
