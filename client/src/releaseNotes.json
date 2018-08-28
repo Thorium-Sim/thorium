@@ -18,7 +18,8 @@
       "Cleaned up places where checkboxes overlay.",
       "Fixed an issue with the curve frame card switcher.",
       "Fixed the Begin Training button on the login screen.",
-      "Fixed an issue where the faces viewscreen didn't show any images."
+      "Fixed an issue where the faces viewscreen didn't show any images.",
+      "Fixed a minor issue with dilithium stress that caused the viewscreen to break."
     ]
   }
 }
