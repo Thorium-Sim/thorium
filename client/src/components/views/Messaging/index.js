@@ -17,7 +17,7 @@ import {
 } from "reactstrap";
 import "./style.scss";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-
+import { titleCase } from "change-case";
 const MESSAGING_SUB = gql`
   subscription GotMessage($simulatorId: ID!, $station: String) {
     sendMessage(simulatorId: $simulatorId, station: $station) {
@@ -86,13 +86,17 @@ class Messaging extends Component {
     });
   };
   render() {
+    const { simulator } = this.props;
     const { messages, simulators, teams } = this.props.data.loading
       ? { messages: [], teams: [], simulators: [{ stations: [] }] }
       : this.props.data;
     const { bridgeOfficerMessaging } = this.props.simulator;
     if (!simulators | !messages | !teams) return null;
-    const stations = simulators[0].stations.filter(
-      s => s.name !== this.props.station.name
+    const stations = simulator.stations.filter(
+      s =>
+        s.name !== this.props.station.name &&
+        (s.cards.find(c => c.component.name === "Messaging") ||
+          s.widgets.indexOf("messages") > -1)
     );
     const messageGroups = this.props.station.messageGroups;
     const { messageInput, stationsShown, selectedConversation } = this.state;
@@ -117,6 +121,7 @@ class Messaging extends Component {
         if (new Date(a.timestamp) < new Date(b.timestamp)) return 1;
         return 0;
       });
+    console.log(stations);
     return (
       <Container className="messages">
         <SubscriptionHelper
@@ -212,7 +217,7 @@ class Messaging extends Component {
                       key={g}
                       onClick={() => this.setState({ selectedConversation: g })}
                     >
-                      {g}
+                      {titleCase(g)}
                     </DropdownItem>
                   ))}
                 {teams &&
@@ -221,7 +226,9 @@ class Messaging extends Component {
                       messageGroups.findIndex(
                         m => m.toLowerCase().indexOf(t.type.toLowerCase()) > -1
                       ) > -1
-                  ) && <DropdownItem disabled>--------------</DropdownItem>}
+                  ).length > 0 && (
+                    <DropdownItem disabled>--------------</DropdownItem>
+                  )}
                 {teams &&
                   teams
                     .filter(
@@ -321,10 +328,6 @@ const MESSAGING_QUERY = gql`
     simulators(id: $simId) {
       id
       bridgeOfficerMessaging
-      stations {
-        name
-        messageGroups
-      }
     }
   }
 `;
