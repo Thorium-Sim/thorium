@@ -26,7 +26,7 @@ ${queryData}
   }
 `;
 
-class ViewscreenCore extends Component {
+class ViewscreenManager extends Component {
   sub = null;
   configs = Object.keys(ViewscreenCards)
     .filter(c => c.indexOf("Config") > -1)
@@ -166,6 +166,7 @@ class ViewscreenCore extends Component {
               simulator={this.props.simulator}
               flightId={this.props.flightId}
               clientObj={{ id: selectedViewscreen }}
+              core
             />
           )}
         </div>
@@ -181,6 +182,7 @@ class ViewscreenCore extends Component {
               component={previewComponent}
               flightId={this.props.flightId}
               viewscreen={{ data: configData }}
+              core
             />
           )}
         </div>
@@ -371,4 +373,4 @@ export default graphql(VIEWSCREEN_QUERY, {
       simulatorId: ownProps.simulator.id
     }
   })
-})(withApollo(ViewscreenCore));
+})(withApollo(ViewscreenManager));
