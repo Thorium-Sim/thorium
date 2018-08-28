@@ -209,27 +209,32 @@ class FileExplorer extends Component {
             <div ref={measureRef}>
               {dimensions && (
                 <div className="directory-container">
-                  {currentDirectory !== directory && (
-                    <div
-                      style={{ maxWidth: dimensions.width * widthFactor }}
-                      onClick={() => {
-                        //Get the current directory's folder
-                        let dir = this.props.data.assetFolders.filter(
-                          folder => {
-                            return folder.fullPath === currentDirectory;
-                          }
-                        )[0];
-                        this.setState({
-                          currentDirectory: dir.folderPath
-                        });
-                      }}
-                    >
-                      <div className="file-container">
-                        <FontAwesome flip="horizontal" size="3x" name="share" />
-                        <p>Back</p>
+                  {currentDirectory !== directory &&
+                    currentDirectory !== "/" && (
+                      <div
+                        style={{ maxWidth: dimensions.width * widthFactor }}
+                        onClick={() => {
+                          //Get the current directory's folder
+                          let dir = this.props.data.assetFolders.filter(
+                            folder => {
+                              return folder.fullPath === currentDirectory;
+                            }
+                          )[0];
+                          this.setState({
+                            currentDirectory: dir ? dir.folderPath : "/"
+                          });
+                        }}
+                      >
+                        <div className="file-container">
+                          <FontAwesome
+                            flip="horizontal"
+                            size="3x"
+                            name="share"
+                          />
+                          <p>Back</p>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                   {assetFolders
                     .filter(folder => {
                       return folder.folderPath === currentDirectory;

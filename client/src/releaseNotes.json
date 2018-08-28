@@ -17,7 +17,8 @@
       "Fixed an issue that could happen when making new flights.",
       "Cleaned up places where checkboxes overlay.",
       "Fixed an issue with the curve frame card switcher.",
-      "Fixed the Begin Training button on the login screen."
+      "Fixed the Begin Training button on the login screen.",
+      "Fixed an issue where the faces viewscreen didn't show any images."
     ]
   }
 }
