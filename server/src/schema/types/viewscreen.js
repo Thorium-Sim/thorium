@@ -8,5 +8,6 @@ type Viewscreen {
   data: String
   auto: Boolean
   secondary: Boolean
+  overlay: Boolean
 }
 `;

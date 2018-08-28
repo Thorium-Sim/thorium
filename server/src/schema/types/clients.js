@@ -13,6 +13,7 @@ type Client {
   training: Boolean
   caches: [String]
   hypercard: String
+  overlay: Boolean
 }
 
 type Sound {

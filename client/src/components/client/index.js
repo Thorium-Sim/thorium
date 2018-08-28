@@ -28,6 +28,7 @@ hypercard
 movie
 training
 caches
+overlay
 `;
 
 const QUERY = gql`

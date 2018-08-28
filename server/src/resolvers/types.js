@@ -26,6 +26,7 @@ import { StealthFieldTypes } from "./stealthField";
 import { SickbayTypes } from "./sickbay";
 import { ThxTypes } from "./thx";
 import { ExternalsTypes } from "./externals";
+import { ViewscreenTypes } from "./viewscreen";
 
 export default Object.assign(
   AssetsTypes,
@@ -55,5 +56,6 @@ export default Object.assign(
   SickbayTypes,
   LRCommTypes,
   ThxTypes,
-  ExternalsTypes
+  ExternalsTypes,
+  ViewscreenTypes
 );

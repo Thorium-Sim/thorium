@@ -224,3 +224,9 @@ App.on("clientMovieState", ({ client, movie }) => {
   c.setMovie(movie);
   pubsub.publish("clientChanged", App.clients);
 });
+
+App.on("setClientOverlay", ({ id, overlay }) => {
+  const c = App.clients.find(c => c.id === id);
+  c.setOverlay(overlay);
+  pubsub.publish("clientChanged", App.clients);
+});

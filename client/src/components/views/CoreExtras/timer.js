@@ -186,7 +186,7 @@ class Timer extends Component {
           <input
             type="checkbox"
             checked={this.state.sync}
-            onClick={e => {
+            onChange={e => {
               this.setState({ sync: e.target.checked });
               window.localStorage.setItem("thorium_syncTime", e.target.checked);
             }}
