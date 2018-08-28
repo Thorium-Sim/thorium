@@ -108,6 +108,63 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "The railgun is a point-defense weapon designed to destroy incoming projectiles. This screen is where you load bolts into the railgun.",
+        "id": "railgun-loader-training-1"
+      },
+      {
+        "defaultMessage": "Here you can see the number of bolts loaded. Make sure you don't run out of railgun bolts!",
+        "id": "railgun-loader-training-2"
+      },
+      {
+        "defaultMessage": "Load Railgun",
+        "description": "A button which adds one bolt of ammunition to the railgun.",
+        "id": "railgun-load"
+      },
+      {
+        "defaultMessage": "Loaded Ammunition: {ammo}",
+        "description": "How much ammunition has been loaded into the railgun.",
+        "id": "railgun-loaded-ammo"
+      },
+      {
+        "defaultMessage": "Available Ammunition: {availableAmmo}",
+        "description": "How much ammunition is available to be loaded into the railgun.",
+        "id": "railgun-available-ammo"
+      },
+      {
+        "defaultMessage": "Click this button to load a bolt into the railgun.",
+        "id": "railgun-loader-training-3"
+      }
+    ],
+    "path": "src/components/views/Railgun/loader.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "The railgun is a point-defense weapon designed to destroy incoming projectiles. You can use it to defend your ship from attackers.",
+        "id": "railgun-training-1"
+      },
+      {
+        "defaultMessage": "This basic sensors grid shows the location of any incoming projectiles relative to this ship, shown at the center of the grid.",
+        "id": "railgun-training-2"
+      },
+      {
+        "defaultMessage": "To fire the railgun, click with your mouse on the sensor grid. A red dot will indicate where the railgun bolt will hit. You must fire very close to an incoming projectile for the bolt to hit its target.",
+        "id": "railgun-training-3"
+      },
+      {
+        "defaultMessage": "Once an incoming projectile has been destroyed, you will see it explode and disappear.",
+        "id": "railgun-training-4"
+      },
+      {
+        "defaultMessage": "Here you can see the number of bolts loaded. Make sure you don't run out of railgun bolts!",
+        "id": "railgun-loader-training-2"
+      }
+    ],
+    "path": "src/components/views/Railgun/railgun.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "This alert condition is used when the ship is in danger or under attack. All crew members are put on duty at battle stations.",
         "id": "alert-level-description-1"
       },
@@ -149,6 +206,10 @@
   },
   {
     "descriptors": [
+      {
+        "defaultMessage": "Version {version}",
+        "id": "version-number"
+      },
       {
         "defaultMessage": "Your version of Thorium is outdated. Current version is {newVersion}. Your version is {oldVersion}",
         "id": "upgrade-warning"
