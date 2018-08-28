@@ -141,7 +141,7 @@ export default withApollo(
               <input
                 type="checkbox"
                 checked={sync}
-                onClick={e => this.updateData({ sync: e.target.checked })}
+                onChange={e => this.updateData({ sync: e.target.checked })}
               />
               Sync Cores
             </label>
