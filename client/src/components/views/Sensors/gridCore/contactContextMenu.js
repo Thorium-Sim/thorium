@@ -149,6 +149,19 @@ export default class ContactContextMenu extends Component {
                   }}
                 />
               </FormGroup>
+              <FormGroup>
+                <Label for="hostile" sm={3}>
+                  Hostile
+                </Label>
+                <input
+                  type="checkbox"
+                  id="hostile"
+                  defaultChecked={contact.hostile}
+                  onChange={e => {
+                    updateArmyContact(contact, "hostile", e.target.checked);
+                  }}
+                />
+              </FormGroup>
             </div>
           )}
         <ButtonGroup>

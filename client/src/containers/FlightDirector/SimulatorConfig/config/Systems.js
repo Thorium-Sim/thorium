@@ -22,6 +22,7 @@ const systems = [
   "Navigation",
   "Phasers",
   "Probes",
+  "Railgun",
   "Reactor",
   "Sensors",
   "Shield1",

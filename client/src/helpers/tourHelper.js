@@ -4,6 +4,7 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import Tour from "reactour";
 import FontAwesome from "react-fontawesome";
+import IntlProvider from "./intl";
 import "./tourHelper.scss";
 const synth = window.speechSynthesis;
 
@@ -18,8 +19,11 @@ const TourHelper = ({
     const step = steps[stepNum - 1];
     const div = document.createElement("div");
     // Process the training, in case it's a react element.
-    ReactDOM.render(step.content, div);
-    synth.speak(new SpeechSynthesisUtterance(div.innerText));
+    ReactDOM.render(<IntlProvider>{step.content}</IntlProvider>, div);
+    setTimeout(
+      () => synth.speak(new SpeechSynthesisUtterance(div.innerText)),
+      100
+    );
   };
   let { training, id } = client;
   if (!training) training = propsTraining;

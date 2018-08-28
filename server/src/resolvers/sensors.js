@@ -16,11 +16,26 @@ export const SensorsQueries = {
   sensor(root, { id }) {
     return App.systems.find(s => s.id === id);
   },
-  sensorContacts(root, { sensorsId }) {
-    const sensors = App.systems.find(system => {
-      return system.type === "Sensors" && system.id === sensorsId;
-    });
-    return sensors ? sensors.contacts : [];
+  sensorContacts(root, { simulatorId, sensorsId, hostile, type }) {
+    let contacts = [];
+    if (sensorsId) {
+      const sensors = App.systems.find(system => {
+        return system.type === "Sensors" && system.id === sensorsId;
+      });
+      contacts = sensors ? sensors.contacts : [];
+    }
+    if (simulatorId) {
+      const sensors = App.systems.filter(system => {
+        return system.type === "Sensors" && system.simulatorId === simulatorId;
+      });
+      contacts = sensors.reduce((prev, next) => prev.concat(next.contacts), []);
+    }
+    if (hostile || hostile === false)
+      contacts = contacts.filter(c => c.hostile === hostile);
+    if (type) {
+      contacts = contacts.filter(c => c.type === type);
+    }
+    return contacts;
   }
 };
 
@@ -68,8 +83,8 @@ export const SensorsMutations = {
     App.handleEvent(args, "destroySensorContact", context);
     return "";
   },
-  updateSensorContact(root, { id, contact }, context) {
-    App.handleEvent({ id, contact }, "updateSensorContact", context);
+  updateSensorContact(root, args, context) {
+    App.handleEvent(args, "updateSensorContact", context);
     return "";
   },
   setArmyContacts(root, params, context) {
@@ -125,6 +140,15 @@ export const SensorsMutations = {
   },
   updateSensorContacts(root, args, context) {
     App.handleEvent(args, "updateSensorContacts", context);
+  },
+  sensorsFireProjectile(root, args, context) {
+    App.handleEvent(args, "sensorsFireProjectile", context);
+  },
+  setSensorsDefaultHitpoints(root, args, context) {
+    App.handleEvent(args, "setSensorsDefaultHitpoints", context);
+  },
+  setSensorsDefaultSpeed(root, args, context) {
+    App.handleEvent(args, "setSensorsDefaultSpeed", context);
   }
 };
 
@@ -143,13 +167,25 @@ export const SensorsSubscriptions = {
     )
   },
   sensorContactUpdate: {
-    resolve(root, { sensorId }) {
-      if (root.id !== sensorId) return null;
-      return root.contacts.filter(contact => contact.sensorId === sensorId);
+    resolve(root, { simulatorId, sensorId, hostile, type }) {
+      if (root.id !== sensorId && root.simulatorId !== simulatorId) return null;
+      let contacts = root.contacts;
+
+      if (hostile || hostile === false)
+        contacts = root.contacts.filter(c => c.hostile === hostile);
+      if (type) {
+        contacts = contacts.filter(c => c.type === type);
+      }
+      return contacts;
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("sensorContactUpdate"),
-      (rootValue, { sensorId }) => rootValue.id === sensorId
+      (rootValue, { simulatorId, sensorId }) => {
+        let returnVal = false;
+        if (sensorId) returnVal = rootValue.id === sensorId;
+        if (simulatorId) returnVal = rootValue.simulatorId === simulatorId;
+        return returnVal;
+      }
     )
   },
   sensorsPing: {

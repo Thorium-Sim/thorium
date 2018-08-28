@@ -29,6 +29,9 @@ type Sensors implements SystemInterface{
   movement: Coordinates
   segments: [SensorsSegment]
   locations: [Room]
+
+  defaultHitpoints: Int
+  defaultSpeed: Float
 }
 type SensorScan {
   id: ID
@@ -73,6 +76,9 @@ type SensorContact {
   targeted: Boolean
   locked: Boolean
   disabled: Boolean
+  hostile: Boolean
+  hitpoints: Int
+  autoFire: Boolean
 }
 type SensorsSegment {
   segment: String
@@ -108,6 +114,9 @@ input SensorContactInput {
   destroyed: Boolean
   locked: Boolean
   disabled: Boolean
+  hostile: Boolean
+  hitpoints: Int
+  autoFire: Boolean
 }
 enum PING_MODES {
   active

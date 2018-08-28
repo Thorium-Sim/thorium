@@ -3,8 +3,8 @@ import uuid from "uuid";
 // Ex: Ship has crew count, weapons, etc.
 
 function distance3d(coord2, coord1) {
-  const { x: x1, y: y1, z: z1 } = coord1;
-  let { x: x2, y: y2, z: z2 } = coord2;
+  const { x: x1 = 0, y: y1 = 0, z: z1 = 0 } = coord1;
+  let { x: x2 = 0, y: y2 = 0, z: z2 = 0 } = coord2;
   return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
 }
 
@@ -52,6 +52,11 @@ export default class SensorContact {
     this.destroyed = false;
     this.startTime = 0;
     this.endTime = 0;
+
+    // For Railguns
+    this.hitpoints = params.hitpoints || 5;
+    this.hostile = params.hostile || false;
+    this.autoFire = params.autoFire || false;
   }
   move(coordinates, speed, stop) {
     this.speed = stop ? 0 : speed;
@@ -135,5 +140,15 @@ export default class SensorContact {
   }
   updateDisabled(disabled) {
     this.disabled = disabled;
+  }
+  updateHitpoints(hit) {
+    if (hit) this.hitpoints = hit;
+    else this.hitpoints = this.hitpoints - 1;
+  }
+  updateHostile(h) {
+    this.hostile = h;
+  }
+  updateAutofire(tf) {
+    this.autoFire = tf;
   }
 }

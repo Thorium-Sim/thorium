@@ -1,0 +1,22 @@
+.battle-core {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  .flex-row {
+    display: flex;
+    & > * {
+      margin: 0 3px;
+    }
+  }
+  .flex-start {
+    justify-content: flex-start;
+  }
+  img {
+    height: 16px;
+    width: 16px;
+  }
+  select {
+    height: calc(1.25rem - 2px);
+  }
+}

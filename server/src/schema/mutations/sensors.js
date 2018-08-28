@@ -16,7 +16,7 @@ moveSensorContact(id: ID!, contact: SensorContactInput!): String
 removeSensorContact(id: ID!, contact: SensorContactInput!): String
 removeAllSensorContacts(id: ID!): String
 stopAllSensorContacts(id: ID!): String
-updateSensorContact(id: ID!, contact: SensorContactInput!): String
+updateSensorContact(id: ID, simulatorId: ID, contact: SensorContactInput!): String
 
 #Macro: Sensor Contacts
 setArmyContacts(simulatorId: ID!, domain: String!, armyContacts: [SensorContactInput]!):String
@@ -44,4 +44,7 @@ setSensorsSegment(id: ID!, segment: String!, state: Boolean!): String
 setAutoMovement(id:ID!, movement:CoordinatesInput!):String
 updateSensorContacts(id:ID!, contacts:[SensorContactInput]!):String
 destroySensorContact(id:ID!, contact:ID, contacts:[ID]):String
+sensorsFireProjectile(simulatorId:ID!, contactId:ID!, speed:Float!, hitpoints:Int!):String
+setSensorsDefaultHitpoints(id:ID, simulatorId:ID, hp:Int!):String
+setSensorsDefaultSpeed(id:ID, simulatorId:ID, speed:Float!):String
 `;

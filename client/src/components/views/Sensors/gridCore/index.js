@@ -8,6 +8,7 @@ import ExtraControls from "./extraControls";
 import ContactsList from "./contactsList";
 import MovementCore from "./movementCore";
 import ContactSelect from "./contactSelect";
+import SpeedAsker from "./speedAsker";
 import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
 import "./gridCore.scss";
 
@@ -18,36 +19,46 @@ function distance3d(coord2, coord1) {
   return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
 }
 
+const queryData = `
+id
+type
+autoTarget
+autoThrusters
+interference
+movement {
+  x
+  y
+  z
+}
+segments {
+  segment
+  state
+}
+armyContacts {
+  id
+  name
+  size
+  icon
+  picture
+  color
+  infrared
+  cloaked
+  destroyed
+  locked
+  disabled
+  hostile
+}`;
+const GRID_QUERY = gql`
+  query GetSensors($simulatorId: ID) {
+    sensors(simulatorId: $simulatorId, domain: "external") {
+      ${queryData}
+    }
+  }
+`;
 const SENSOR_SUB = gql`
   subscription SensorsChanged($id: ID) {
     sensorsUpdate(simulatorId: $id, domain: "external") {
-      id
-      type
-      autoTarget
-      autoThrusters
-      interference
-      movement {
-        x
-        y
-        z
-      }
-      segments {
-        segment
-        state
-      }
-      armyContacts {
-        id
-        name
-        size
-        icon
-        picture
-        color
-        infrared
-        cloaked
-        destroyed
-        locked
-        disabled
-      }
+${queryData}
     }
   }
 `;
@@ -123,15 +134,6 @@ class GridCore extends Component {
     const { movingContact = {} } = this.state;
     const { width: dimWidth, height: dimHeight } = dimensions;
     const width = Math.min(dimWidth, dimHeight);
-    console.log(
-      (evt.clientY -
-        dimensions.top +
-        SENSORS_OFFSET / 2 -
-        dimensions.height / 2) /
-        (dimensions.width / 2),
-      dimensions.top,
-      dimensions.height
-    );
     const destination = {
       x:
         (evt.clientX - dimensions.left + SENSORS_OFFSET / 2 - width / 2) /
@@ -144,7 +146,10 @@ class GridCore extends Component {
       z: 0
     };
     this.setState({
-      movingContact: Object.assign({}, movingContact, { location: destination })
+      movingContact: Object.assign({}, movingContact, {
+        location: destination,
+        destination
+      })
     });
   };
   dragStop = () => {
@@ -162,7 +167,9 @@ class GridCore extends Component {
       picture,
       cloaked,
       infrared,
-      locked
+      locked,
+      disabled,
+      hostile
     } = movingContact;
     if (!location) return;
     const distance = distance3d({ x: 0, y: 0, z: 0 }, location);
@@ -189,6 +196,8 @@ class GridCore extends Component {
         location,
         infrared,
         locked,
+        disabled,
+        hostile,
         destination: location
       }
     };
@@ -227,6 +236,143 @@ class GridCore extends Component {
       variables
     });
   }
+  mouseDown = (e, contact) => {
+    const { selectedContacts = [] } = this.state;
+    this.downMouseTime = Date.now();
+    document.addEventListener("mousemove", this.mouseMove);
+    document.addEventListener("mouseup", this.mouseUp);
+    const width = e.target.getBoundingClientRect().width;
+    const height = e.target.getBoundingClientRect().height;
+    this.setState({
+      draggingContacts: selectedContacts.concat(contact),
+      iconWidth:
+        contact.type === "planet" || contact.type === "border" ? 0 : width,
+      iconHeight:
+        contact.type === "planet" || contact.type === "border" ? 0 : height
+    });
+  };
+  mouseUp = evt => {
+    const { draggingContacts, askForSpeed, speed } = this.state;
+    document.removeEventListener("mousemove", this.mouseMove);
+    document.removeEventListener("mouseup", this.mouseUp);
+    const t = Date.now() - this.downMouseTime;
+    if (this.downMouseTime && t < 200) {
+      this.setState({
+        selectedContacts: draggingContacts
+      });
+    }
+
+    if (askForSpeed) {
+      this.setState({
+        speedAsking: {
+          x: evt.clientX,
+          y: evt.clientY
+        }
+      });
+    } else {
+      this.triggerUpdate(speed);
+    }
+  };
+  mouseMove = e => {
+    const { dimensions, draggingContacts } = this.state;
+    if (!draggingContacts || draggingContacts.length === 0) return;
+    const { width: dimWidth, height: dimHeight } = dimensions;
+    const width = Math.min(dimWidth, dimHeight);
+    const destinationDiff = {
+      x: (e.movementX / width) * 2,
+      y: (e.movementY / width) * 2,
+      z: 0
+    };
+    this.setState(state => ({
+      draggingContacts: state.draggingContacts.map(contact => ({
+        ...contact,
+        destination: {
+          x: contact.destination.x + destinationDiff.x,
+          y: contact.destination.y + destinationDiff.y
+        }
+      }))
+    }));
+  };
+  triggerUpdate = speed => {
+    const sensors = this.props.data.sensors[0];
+    const { client } = this.props;
+    const { draggingContacts, dimensions } = this.state;
+
+    // Delete any dragging contacts that are out of bounds
+    const contacts = draggingContacts
+      .map(c => {
+        const contactEl = ReactDOM.findDOMNode(this).querySelector(
+          `#contact-${c.id}`
+        );
+        if (contactEl) {
+          const {
+            top,
+            bottom,
+            left,
+            right
+          } = contactEl.getBoundingClientRect();
+          if (
+            bottom < dimensions.top - SENSORS_OFFSET ||
+            top > dimensions.top + dimensions.height ||
+            left > dimensions.left + dimensions.width ||
+            right < dimensions.left - SENSORS_OFFSET
+          ) {
+            return { ...c, delete: true };
+          }
+        } else {
+          const distance = distance3d({ x: 0, y: 0, z: 0 }, c.destination);
+          const maxDistance = c.type === "planet" ? 1 + c.size / 2 : 1.1;
+          return { ...c, delete: distance > maxDistance };
+        }
+        return c;
+      })
+      .filter(c => {
+        if (c.delete) {
+          client.mutate({
+            mutation: gql`
+              mutation DeleteContact($id: ID!, $contact: SensorContactInput!) {
+                removeSensorContact(id: $id, contact: $contact)
+              }
+            `,
+            variables: { id: sensors.id, contact: { id: c.id } }
+          });
+          return false;
+        }
+        return true;
+      })
+      // Now that the ones that need to be deleted are gone,
+      // Update the rest
+      .map(c => {
+        const { x = 0, y = 0, z = 0 } = c.destination;
+        return {
+          id: c.id,
+          speed,
+          destination: { x, y, z }
+        };
+      });
+    const mutation = gql`
+      mutation MoveSensorContact($id: ID!, $contacts: [SensorContactInput]!) {
+        updateSensorContacts(id: $id, contacts: $contacts)
+      }
+    `;
+    const variables = {
+      id: sensors.id,
+      contacts
+    };
+    client
+      .mutate({
+        mutation,
+        variables
+      })
+      .then(() => {
+        this.setState({
+          draggingContacts: null,
+          iconWidth: null,
+          iconHeight: null,
+          speedAsking: null
+        });
+      });
+  };
   _freezeContacts() {}
   _changeSpeed(e) {
     this.setState({
@@ -241,8 +387,10 @@ class GridCore extends Component {
       speed,
       movingContact,
       askForSpeed,
+      speedAsking,
       currentControl,
-      selectedContacts
+      selectedContacts,
+      draggingContacts
     } = this.state;
     const speeds = [
       { value: "1000", label: "Instant" },
@@ -253,7 +401,10 @@ class GridCore extends Component {
       { value: "0.2", label: "Slow" },
       { value: "0.05", label: "Very Slow" }
     ];
-
+    const extraContacts = []
+      .concat(movingContact && movingContact.location ? movingContact : null)
+      .concat(draggingContacts)
+      .filter(Boolean);
     return (
       <Container className="sensorGridCore" fluid style={{ height: "100%" }}>
         <SubscriptionHelper
@@ -376,23 +527,31 @@ class GridCore extends Component {
           <Col sm={8}>
             <div id="threeSensors" className="array">
               <Grid
-                mouseover={this.props.hoverContact}
                 core
                 dimensions={this.state.dimensions}
                 offset={SENSORS_OFFSET}
                 sensor={sensors.id}
                 movement={sensors.movement}
-                moveSpeed={speed}
                 speeds={speeds}
                 askForSpeed={askForSpeed}
-                armyContacts={sensors.armyContacts}
-                movingContact={movingContact}
+                extraContacts={extraContacts}
                 segments={sensors.segments}
                 selectedContacts={selectedContacts.map(c => c.id)}
                 updateSelectedContacts={contacts =>
                   this.setState({ selectedContacts: contacts })
                 }
+                mouseDown={this.mouseDown}
               />
+              {speedAsking && (
+                <SpeedAsker
+                  speeds={speeds}
+                  triggerUpdate={this.triggerUpdate}
+                  speedAsking={speedAsking}
+                  cancelMove={() =>
+                    this.setState({ draggingContacts: null, speedAsking: null })
+                  }
+                />
+              )}
             </div>
           </Col>
         </Row>
@@ -400,40 +559,6 @@ class GridCore extends Component {
     );
   }
 }
-
-const GRID_QUERY = gql`
-  query GetSensors($simulatorId: ID) {
-    sensors(simulatorId: $simulatorId, domain: "external") {
-      id
-      type
-      autoTarget
-      autoThrusters
-      interference
-      movement {
-        x
-        y
-        z
-      }
-      segments {
-        segment
-        state
-      }
-      armyContacts {
-        id
-        name
-        size
-        icon
-        picture
-        color
-        infrared
-        cloaked
-        destroyed
-        locked
-        disabled
-      }
-    }
-  }
-`;
 
 export default graphql(GRID_QUERY, {
   options: ownProps => ({
