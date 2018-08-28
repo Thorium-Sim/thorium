@@ -1,0 +1,22 @@
+{
+  "0.4.9": {
+    "features": [
+      "Added this release notes page!",
+      "Added the ability to tag sensor contacts as hostile.",
+      "Added the battle core. Hostile sensor contacts appear in this core, and can be instructed to fire on the simulator. When they fire, small projectiles appear on the sensor grid.",
+      "Added a railgun, which can be used to destroy incoming projectiles."
+    ],
+    "fixes": []
+  },
+  "0.4.8": {
+    "features": ["Added the dilithium stress status to the status card."],
+    "fixes": [
+      "Fixed an issue with the line layout.",
+      "Added scrolling to the simulator and mission lists.",
+      "Fixed an issue that could happen when making new flights.",
+      "Cleaned up places where checkboxes overlay.",
+      "Fixed an issue with the curve frame card switcher.",
+      "Fixed the Begin Training button on the login screen."
+    ]
+  }
+}
