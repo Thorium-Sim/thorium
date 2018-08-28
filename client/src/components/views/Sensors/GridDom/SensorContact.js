@@ -123,7 +123,7 @@ export default class SensorContact extends Component {
       destination = {},
       icon,
       width,
-      size,
+      size = 1,
       core,
       opacity = 1,
       type,

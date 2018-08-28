@@ -21,6 +21,11 @@ export default class Railgun extends HeatMixin(System) {
   setAvailableAmmo(ammo) {
     this.availableAmmo = ammo;
   }
+  load() {
+    if (this.ammo === this.maxAmmo || this.availableAmmo - 1 < 0) return;
+    this.ammo = this.ammo + 1;
+    this.availableAmmo = this.availableAmmo - 1;
+  }
   fire() {
     if (this.ammo <= 0) {
       this.ammo = 0;

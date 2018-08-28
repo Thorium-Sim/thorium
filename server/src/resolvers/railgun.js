@@ -4,7 +4,7 @@ import { withFilter } from "graphql-subscriptions";
 
 export const RailgunQueries = {
   railgun(root, { simulatorId }) {
-    let returnVal = [];
+    let returnVal = App.systems.filter(s => s.type === "Railgun");
     if (simulatorId)
       returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
     return returnVal;
@@ -23,6 +23,9 @@ export const RailgunMutations = {
   },
   fireRailgun(root, args, context) {
     App.handleEvent(args, "fireRailgun", context);
+  },
+  loadRailgun(root, args, context) {
+    App.handleEvent(args, "loadRailgun", context);
   }
 };
 

@@ -22,14 +22,16 @@ class InnerGrid extends Component {
   }
   contactLoop = () => {
     this.contactTimeout = setTimeout(this.contactLoop, this.interval);
-    const { updateContacts, contacts } = this.props;
+    const { updateContacts, locationChange, contacts = [] } = this.props;
     if (updateContacts) return updateContacts();
+    const sContacts = contacts.map(this.updateContact).reduce((prev, next) => {
+      prev[next.id] = next;
+      return prev;
+    }, {});
     this.setState({
-      sContacts: contacts.map(this.updateContact).reduce((prev, next) => {
-        prev[next.id] = next;
-        return prev;
-      }, {})
+      sContacts
     });
+    locationChange && locationChange(sContacts);
   };
   updateContact = c => {
     const { movement = { x: 0, y: 0, z: 0 } } = this.props;
@@ -207,6 +209,7 @@ class InnerGrid extends Component {
               : contact.id === selectedContact
           }
           mousedown={(e, contact) =>
+            mouseDown &&
             mouseDown(e, contact, contact =>
               this.setState({
                 selectedContact: contact.id ? contact.id : contact
@@ -228,7 +231,8 @@ class InnerGrid extends Component {
       interference = 0,
       selectedContacts,
       segments,
-      sensor
+      sensor,
+      gridMouseDown
     } = this.props;
 
     const { width: dimWidth, height: dimHeight } = dimensions;
@@ -243,9 +247,10 @@ class InnerGrid extends Component {
       <div
         id="sensorGrid"
         style={gridStyle}
-        onMouseDown={() => {
+        onMouseDown={e => {
           this.setState({ selectedContact: null });
           if (hoverContact) hoverContact({});
+          gridMouseDown && gridMouseDown(e);
         }}
       >
         <div className={`grid ${ping ? "ping" : ""}`}>
@@ -259,7 +264,7 @@ class InnerGrid extends Component {
               onSelectionChange={this.selectionChange}
             />
           )}
-          <Segments segments={segments} sensors={sensor} />
+          {segments && <Segments segments={segments} sensors={sensor} />}{" "}
           {this.renderLines()}
           <div className="ping-ring" />
           {this.renderContacts()}
@@ -282,7 +287,9 @@ class OuterGrid extends Component {
       >
         {({ measureRef }) => (
           <div ref={measureRef} className="sensors-holder">
-            <InnerGrid dimensions={dimensions} {...this.props} />
+            {dimensions && (
+              <InnerGrid dimensions={dimensions} {...this.props} />
+            )}
           </div>
         )}
       </Measure>

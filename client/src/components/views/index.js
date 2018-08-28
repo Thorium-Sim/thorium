@@ -75,6 +75,7 @@ import DilithiumStress from "./DilithiumStress";
 import EngineeringReports from "./DamageControl/engineering";
 import RnDReports from "./DamageControl/rnd";
 import Railgun from "./Railgun";
+import RailgunLoading from "./Railgun/loadingCard";
 
 // Cores
 import EngineControlCore from "./EngineControl/core";
@@ -217,7 +218,8 @@ const Views = {
   DilithiumStress,
   EngineeringReports,
   RnDReports,
-  Railgun
+  Railgun,
+  RailgunLoading
 };
 
 export const Widgets = {

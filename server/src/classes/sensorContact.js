@@ -69,7 +69,6 @@ export default class SensorContact {
     const movementTime = Math.ceil(
       (distance3d(this.destination, this.location) / (this.speed / 10)) * 1000
     );
-    console.log("move", this.destination);
     this.endTime = this.startTime + movementTime;
   }
   nudge(coordinates, speed, yaw) {
@@ -105,7 +104,6 @@ export default class SensorContact {
           Math.min(maxDistance, this.destination.z + coordinates.z)
         )
       };
-      console.log("nudge", this.destination, coordinates);
       this.location = this.position;
       this.startTime = Date.now();
       const movementTime = Math.ceil(

@@ -167,12 +167,15 @@ export const SensorsSubscriptions = {
     )
   },
   sensorContactUpdate: {
-    resolve(root, { simulatorId, sensorId, hostile }) {
+    resolve(root, { simulatorId, sensorId, hostile, type }) {
       if (root.id !== sensorId && root.simulatorId !== simulatorId) return null;
       let contacts = root.contacts;
 
       if (hostile || hostile === false)
         contacts = root.contacts.filter(c => c.hostile === hostile);
+      if (type) {
+        contacts = contacts.filter(c => c.type === type);
+      }
       return contacts;
     },
     subscribe: withFilter(

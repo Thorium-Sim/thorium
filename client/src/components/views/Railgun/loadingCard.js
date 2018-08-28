@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
+import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-import Railgun from "./railgun";
+import Loader from "./loader";
 import "./style.scss";
 
 const queryData = `
@@ -20,37 +21,10 @@ maxAmmo
 availableAmmo
 `;
 
-const contactsData = `
-id
-location {
-  x
-  y
-  z
-}
-destination {
-  x
-  y
-  z
-}
-position {
-  x
-  y
-  z
-}
-type
-hitpoints
-destroyed
-startTime
-endTime
-speed
-`;
 const QUERY = gql`
   query Railgun($simulatorId: ID!) {
     railgun(simulatorId: $simulatorId) {
 ${queryData}
-    }
-    sensorContacts(simulatorId:$simulatorId, type:"projectile") {
-      ${contactsData}
     }
   }
 `;
@@ -62,20 +36,13 @@ ${queryData}
   }
 `;
 
-const CONTACTS_SUB = gql`
-  subscription SensorContactsChanged($simulatorId: ID) {
-    sensorContactUpdate(simulatorId: $simulatorId, type: "projectile") {
-      ${contactsData}
-    }
-  }
-`;
 class RailgunData extends Component {
   state = {};
   render() {
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
-          const { railgun, sensorContacts = [] } = data;
+          const { railgun } = data;
           if (loading || !railgun) return null;
           if (!railgun[0]) return <div>No Railgun</div>;
           return (
@@ -92,25 +59,13 @@ class RailgunData extends Component {
                 })
               }
             >
-              <SubscriptionHelper
-                subscribe={() =>
-                  subscribeToMore({
-                    document: CONTACTS_SUB,
-                    variables: { simulatorId: this.props.simulator.id },
-                    updateQuery: (previousResult, { subscriptionData }) => {
-                      return Object.assign({}, previousResult, {
-                        sensorContacts:
-                          subscriptionData.data.sensorContactUpdate
-                      });
-                    }
-                  })
-                }
-              />
-              <Railgun
-                {...this.props}
-                {...railgun[0]}
-                contacts={sensorContacts}
-              />
+              <Container>
+                <Row>
+                  <Col sm={7}>
+                    <Loader {...this.props} {...railgun[0]} />
+                  </Col>
+                </Row>
+              </Container>
             </SubscriptionHelper>
           );
         }}
