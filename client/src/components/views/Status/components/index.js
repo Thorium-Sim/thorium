@@ -3,6 +3,7 @@ export { default as Destination } from "./destination";
 export { default as Speed } from "./speed";
 export { default as Population } from "./population";
 export { default as Coolant } from "./coolant";
+export { default as DilithiumStress } from "./dilithiumStress";
 export { default as Targeted } from "./targeted";
 export { default as Battery } from "./battery";
 export { default as Damaged } from "./damaged";

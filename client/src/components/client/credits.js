@@ -44,6 +44,9 @@ const creditList = [
           <code>aBlueShadow</code>
         </li>
         <li>
+          <code>ksmithut</code>
+        </li>
+        <li>
           <code>jrobe</code>
         </li>
         <li>
@@ -58,11 +61,15 @@ const creditList = [
       <ul style={{ listStyle: "none" }}>
         <li>Ryan Anderson</li>
         <li>Alex DeBirk</li>
+        <li>James Porter</li>
         <li>Nathan King</li>
         <li>Parriss King</li>
         <li>Daniel Kirpatrick</li>
         <li>Isaac Ostler</li>
         <li>Matt Ricks</li>
+        <li>Natalie Anderson</li>
+        <li>Tabitha Long</li>
+        <li>Bracken Funk</li>
         <li>
           <code>kimballfrank</code>
         </li>

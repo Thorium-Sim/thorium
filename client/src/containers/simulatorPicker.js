@@ -66,7 +66,7 @@ const SimulatorPicker = ({ triggerAlert }) => {
               <Col sm="4">
                 <h2>Simulators</h2>
 
-                <ListGroup>
+                <ListGroup style={{ overflowY: "auto", maxHeight: "80vh" }}>
                   {data.simulators.map(s => (
                     <ListGroupItem
                       key={s.id}

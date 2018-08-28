@@ -1,4 +1,4 @@
 export default `
-reactors(simulatorId: ID): [Reactor]
+reactors(simulatorId: ID, model: String): [Reactor]
 reactor(id:ID!): Reactor
 `;
