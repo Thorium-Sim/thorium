@@ -4,7 +4,8 @@
       "Added this release notes page!",
       "Added the ability to tag sensor contacts as hostile.",
       "Added the battle core. Hostile sensor contacts appear in this core, and can be instructed to fire on the simulator. When they fire, small projectiles appear on the sensor grid.",
-      "Added a railgun, which can be used to destroy incoming projectiles."
+      "Added a railgun, which can be used to destroy incoming projectiles.",
+      "Added a 'Overlay' button to the viewscree core. This makes the layout overlay on top of viewscreen in all cases. This currently only applies to the Line layout."
     ],
     "fixes": []
   },
