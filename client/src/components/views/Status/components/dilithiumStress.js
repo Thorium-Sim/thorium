@@ -20,27 +20,32 @@ const SUB = gql`
 
 class DilithiumStress extends Component {
   // This calculation came from client/src/components/views/DilithiumStress/dilithiumStress.js
-  calcStressLevel = (reactor) => {
+  calcStressLevel = reactor => {
     const { alphaTarget, betaTarget } = reactor;
     const { alphaLevel, betaLevel } = reactor;
     const alphaDif = Math.abs(alphaTarget - alphaLevel);
     const betaDif = Math.abs(betaTarget - betaLevel);
     const stressLevel = alphaDif + betaDif > 100 ? 100 : alphaDif + betaDif;
     return stressLevel;
-  }
+  };
 
-  getDilithiumStressCard = (station) => {
-    if (!station) return null;
-    return station.cards.find(card => card.component === 'DilithiumStress');
-  }
+  getDilithiumStressCard = stations => {
+    if (!stations) return null;
+    return stations
+      .map(s => s.cards.find(card => card.component === "DilithiumStress"))
+      .filter(Boolean)[0];
+  };
 
   render() {
     if (this.props.data.loading || !this.props.data.reactors) return null;
-    const dilithiumStressCard = this.getDilithiumStressCard(this.props.station)
+    console.log(this.props);
+    const dilithiumStressCard = this.getDilithiumStressCard(
+      this.props.simulator.stations
+    );
     if (!dilithiumStressCard) return null;
     const reactor = this.props.data.reactors && this.props.data.reactors[0];
     if (!reactor) return null;
-    const stressLevel = this.calcStressLevel(reactor) / 100
+    const stressLevel = this.calcStressLevel(reactor) / 100;
     return (
       <div>
         <SubscriptionHelper
