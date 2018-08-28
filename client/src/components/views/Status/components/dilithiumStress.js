@@ -38,7 +38,6 @@ class DilithiumStress extends Component {
 
   render() {
     if (this.props.data.loading || !this.props.data.reactors) return null;
-    console.log(this.props);
     const dilithiumStressCard = this.getDilithiumStressCard(
       this.props.simulator.stations
     );
