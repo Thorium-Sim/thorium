@@ -69,7 +69,7 @@ export default class MissionPicker extends Component {
                 <Col sm={4}>
                   <h2>Missions</h2>
 
-                  <ListGroup>
+                  <ListGroup style={{ overflowY: "auto", maxHeight: "80vh" }}>
                     {data.missions.map(m => (
                       <ListGroupItem
                         key={m.id}

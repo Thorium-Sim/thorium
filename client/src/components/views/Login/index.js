@@ -139,8 +139,9 @@ class Login extends Component {
           </Col>
         </Col>
         <Tour
+          client={{}}
           steps={this.generateTraining()}
-          isOpen={this.state.training}
+          training={this.state.training}
           onRequestClose={() => this.setState({ training: false })}
         />
       </Row>

@@ -5,6 +5,7 @@ import {
   Speed,
   Population,
   Coolant,
+  DilithiumStress,
   Targeted,
   Battery,
   Damaged,
@@ -29,7 +30,7 @@ const trainingSteps = [
   }
 ];
 
-export default props => {
+const Status = props => {
   return (
     <Container fluid className="status-card">
       <Row>
@@ -43,6 +44,7 @@ export default props => {
           <Dots level={0.5} color={"rgb(0,128,255)"} />*/}
           <Battery {...props} />
           <Coolant {...props} />
+          <DilithiumStress {...props} />
         </Col>
         <Col sm={6}>
           <Stealth {...props} />
@@ -56,3 +58,5 @@ export default props => {
     </Container>
   );
 };
+
+export default Status
