@@ -1,7 +1,9 @@
 {
-  "0.4.10":{
-    "features":[
-      "Added the ShipStation layout."
+  "0.4.10": {
+    "features": [
+      "Added the ShipStation layout.",
+      "Add support for dynamic message groups. In addition to Security, Damage, and Medical teams, you can set up specific preset groups on specific stations.",
+      "Refactored the sensors grid to support any configuration of rings, lines, and alignment."
     ]
   },
   "0.4.9": {
