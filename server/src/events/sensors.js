@@ -385,9 +385,9 @@ App.on("toggleSensorsAutoTarget", ({ id, target }) => {
     App.systems.filter(s => s.type === "Sensors")
   );
 });
-App.on("setSensorsSegment", ({ id, segment, state }) => {
+App.on("setSensorsSegment", ({ id, ring, line, state }) => {
   const sensors = App.systems.find(sys => sys.id === id);
-  sensors.setSegment(segment, state);
+  sensors.setSegment(ring, line, state);
   pubsub.publish(
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")

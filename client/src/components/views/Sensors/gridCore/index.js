@@ -31,7 +31,8 @@ movement {
   z
 }
 segments {
-  segment
+  ring
+  line
   state
 }
 armyContacts {

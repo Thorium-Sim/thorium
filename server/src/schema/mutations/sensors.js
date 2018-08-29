@@ -40,7 +40,7 @@ cancelSensorScan(id: ID!, scan: ID!):String
 toggleSensorsAutoTarget(id: ID!, target: Boolean!):String
 toggleSensorsAutoThrusters(id: ID!, thrusters: Boolean!):String
 setSensorsInterference(id: ID!, interference: Float!):String
-setSensorsSegment(id: ID!, segment: String!, state: Boolean!): String
+setSensorsSegment(id: ID!, ring: Int!, line: Int! state: Boolean!): String
 setAutoMovement(id:ID!, movement:CoordinatesInput!):String
 updateSensorContacts(id:ID!, contacts:[SensorContactInput]!):String
 destroySensorContact(id:ID!, contact:ID, contacts:[ID]):String

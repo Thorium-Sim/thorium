@@ -31,7 +31,8 @@ const SENSOR_SUB = gql`
         z
       }
       segments {
-        segment
+        ring
+        line
         state
       }
       damage {
@@ -422,7 +423,8 @@ const SENSOR_QUERY = gql`
         z
       }
       segments {
-        segment
+        ring
+        line
         state
       }
       damage {

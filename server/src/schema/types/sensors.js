@@ -81,7 +81,8 @@ type SensorContact {
   autoFire: Boolean
 }
 type SensorsSegment {
-  segment: String
+  ring: Int
+  line: Int
   state: Boolean
 }
 type PresetAnswer {
