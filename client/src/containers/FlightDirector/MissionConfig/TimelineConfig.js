@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import {
   Col,
   Row,
@@ -193,7 +193,7 @@ export default class TimelineConfig extends Component {
       variables: obj
     });
   }
-  _addTimelineStep() {
+  _addTimelineStep = async inserted => {
     const name = prompt("What is the name of the timeline step?");
     const mutation = gql`
       mutation AddTimelineStep(
@@ -219,12 +219,49 @@ export default class TimelineConfig extends Component {
       } else {
         obj.simulatorId = this.props.object.id;
       }
-      this.props.client.mutate({
+      const res = await this.props.client.mutate({
         mutation: mutation,
         variables: obj
       });
+      if (!res) return;
+      const stepId = res.data.addTimelineStep;
+      if (!inserted) {
+        this.setState({ selectedTimelineStep: stepId });
+      }
+      return stepId;
     }
-  }
+  };
+  insertTimelineStep = async () => {
+    const stepId = await this._addTimelineStep(true);
+    if (!stepId) return;
+    const newIndex =
+      this.props.object.timeline.findIndex(
+        s => s.id === this.state.selectedTimelineStep
+      ) + 1;
+    const obj = {
+      missionId: this.props.object.id,
+      timelineStepId: stepId,
+      order: newIndex
+    };
+    const mutation = gql`
+      mutation ReorderTimelineStep(
+        $missionId: ID
+        $timelineStepId: ID!
+        $order: Int!
+      ) {
+        reorderTimelineStep(
+          missionId: $missionId
+          timelineStepId: $timelineStepId
+          order: $order
+        )
+      }
+    `;
+    this.props.client.mutate({
+      mutation: mutation,
+      variables: obj
+    });
+    this.setState({ selectedTimelineStep: stepId });
+  };
   _addTimelineItem = e => {
     const mutation = gql`
       mutation AddTimelineItem(
@@ -400,7 +437,7 @@ export default class TimelineConfig extends Component {
           <h4>Timeline</h4>
           <Card
             className="scroll"
-            style={{ maxHeight: "75vh", overflowY: "auto" }}
+            style={{ maxHeight: "60vh", overflowY: "auto" }}
           >
             <div
               className="list-group-item"
@@ -422,35 +459,38 @@ export default class TimelineConfig extends Component {
             />
           </Card>
           <ButtonGroup>
-            <Button
-              color="success"
-              size="sm"
-              onClick={this._addTimelineStep.bind(this)}
-            >
-              Add Timeline Step
+            <Button color="success" size="sm" onClick={this._addTimelineStep}>
+              Add Step
             </Button>
+
             {this.state.selectedTimelineStep &&
               this.state.selectedTimelineStep !== "mission" && (
-                <Button
-                  color="info"
-                  size="sm"
-                  onClick={this._duplicateTimelineStep}
-                >
-                  Duplicate
-                </Button>
-              )}
-            {this.state.selectedTimelineStep &&
-              this.state.selectedTimelineStep !== "mission" && (
-                <Button
-                  color="danger"
-                  size="sm"
-                  onClick={this._removeTimelineStep.bind(
-                    this,
-                    this.state.selectedTimelineStep
-                  )}
-                >
-                  Remove
-                </Button>
+                <Fragment>
+                  <Button
+                    color="warning"
+                    size="sm"
+                    onClick={this.insertTimelineStep}
+                  >
+                    Insert Step
+                  </Button>
+                  <Button
+                    color="info"
+                    size="sm"
+                    onClick={this._duplicateTimelineStep}
+                  >
+                    Duplicate
+                  </Button>
+                  <Button
+                    color="danger"
+                    size="sm"
+                    onClick={this._removeTimelineStep.bind(
+                      this,
+                      this.state.selectedTimelineStep
+                    )}
+                  >
+                    Remove
+                  </Button>
+                </Fragment>
               )}
           </ButtonGroup>
 
