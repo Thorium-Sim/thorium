@@ -3,10 +3,13 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
 export const TargetingQueries = {
-  targeting(root, { simulatorId }) {
+  targeting(root, { id, simulatorId }) {
     let returnVal = App.systems.filter(s => s.type === "Targeting");
     if (simulatorId) {
       returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
+    }
+    if (id) {
+      returnVal = returnVal.filter(s => s.id === id);
     }
     return returnVal;
   }
@@ -51,6 +54,9 @@ export const TargetingMutations = {
   },
   clearAllContacts(root, args, context) {
     App.handleEvent(args, "clearAllContacts", context);
+  },
+  setTargetingRange(root, args, context) {
+    App.handleEvent(args, "setTargetingRange", context);
   }
 };
 
