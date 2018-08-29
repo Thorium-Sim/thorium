@@ -5,7 +5,7 @@ import { graphql, withApollo, Mutation } from "react-apollo";
 import { OutputField } from "../../generic/core";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import TargetingContact from "./coreTargetingContact";
-
+import { publish } from "../helpers/pubsub";
 import "./style.scss";
 
 const queryData = `id
@@ -33,6 +33,7 @@ contacts {
   system
   destroyed
 }
+range
 classes {
   id
   name
@@ -128,6 +129,22 @@ class TargetingCore extends Component {
       variables
     });
   };
+  startRange = () => {
+    const targeting = this.props.data.targeting[0];
+    publish("setTargetingRange", targeting.range);
+    document.addEventListener("mouseup", this.endRange);
+  };
+  endRange = () => {
+    publish("setTargetingRange", null);
+    document.removeEventListener("mouseup", this.endRange);
+  };
+  changeRange = action => e => {
+    const targeting = this.props.data.targeting[0];
+    publish("setTargetingRange", parseFloat(e.target.value));
+    action({
+      variables: { id: targeting.id, range: parseFloat(e.target.value) }
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.targeting) return null;
     const targeting = this.props.data.targeting[0];
@@ -155,8 +172,8 @@ class TargetingCore extends Component {
           }
         />
         <Row>
-          <Col sm={2}>Targeted System</Col>
-          <Col sm={2}>
+          <Col sm={3}>Targeted System</Col>
+          <Col sm={3}>
             <Mutation
               mutation={gql`
                 mutation ClearAll($id: ID!) {
@@ -172,7 +189,7 @@ class TargetingCore extends Component {
               )}
             </Mutation>
           </Col>
-          <Col sm={6}>
+          <Col sm={3}>
             <label>
               <input
                 type="checkbox"
@@ -181,6 +198,33 @@ class TargetingCore extends Component {
               />{" "}
               Coordinate Targeting
             </label>
+          </Col>
+          <Col sm={3}>
+            <div style={{ display: "flex" }}>
+              <div style={{ flex: 2 }}>
+                Range: {Math.round(targeting.range * 100)}%{" "}
+              </div>
+              <Mutation
+                mutation={gql`
+                  mutation SetRange($id: ID!, $range: Float!) {
+                    setTargetingRange(id: $id, range: $range)
+                  }
+                `}
+              >
+                {action => (
+                  <input
+                    style={{ flex: 3 }}
+                    type="range"
+                    defaultValue={targeting.range}
+                    onMouseDown={this.startRange}
+                    onChange={this.changeRange(action)}
+                    min="0"
+                    max="1"
+                    step="0.01"
+                  />
+                )}
+              </Mutation>
+            </div>
           </Col>
         </Row>
         {targeting.coordinateTargeting ? (

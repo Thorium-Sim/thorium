@@ -71,6 +71,7 @@ export default class Targeting extends System {
     const classes = params.classes || [];
     contacts.forEach(c => this.contacts.push(new Target(c, this.id)));
     classes.forEach(c => this.classes.push(new TargetClass(c, this.id)));
+    this.range = params.range || 0.33;
 
     // Sensor-grid based targeting
     this.coordinateTargeting = params.coordinates || false;
@@ -177,5 +178,8 @@ export default class Targeting extends System {
       this.contacts.forEach(t => t.untarget());
     }
     super.setPower(powerLevel);
+  }
+  setRange(range) {
+    this.range = range;
   }
 }
