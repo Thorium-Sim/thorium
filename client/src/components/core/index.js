@@ -18,6 +18,7 @@ simulators {
     cards {
       name
     }
+    messageGroups
   }
   assets {
     mesh
@@ -64,7 +65,7 @@ const CLIENT_SUB = gql`
     }
   }
 `;
-class TemplateData extends Component {
+class CoreData extends Component {
   state = {};
   render() {
     const { flightId, history } = this.props;
@@ -136,4 +137,4 @@ class TemplateData extends Component {
     );
   }
 }
-export default TemplateData;
+export default CoreData;

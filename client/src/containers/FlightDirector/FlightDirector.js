@@ -1,7 +1,7 @@
 import React from "react";
 import Core from "../../components/core";
 
-export default ({
+const FlightDirector = ({
   history,
   match: {
     params: { flightId }
@@ -9,3 +9,5 @@ export default ({
 }) => {
   return <Core flightId={flightId} history={history} />;
 };
+
+export default FlightDirector;

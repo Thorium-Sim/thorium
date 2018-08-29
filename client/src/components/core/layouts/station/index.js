@@ -14,13 +14,14 @@ import {
 import FontAwesome from "react-fontawesome";
 import Views, { Widgets } from "../../../views/index";
 import { titleCase } from "change-case";
+import ExtraMessageGroups from "./messageGroups";
 
 const viewList = Object.keys(Views)
   .filter(v => {
     return v !== "Offline" && v !== "Login" && v !== "Viewscreen";
   })
   .sort();
-const STATION_QUERY = gql`
+export const STATION_QUERY = gql`
   query Station($simulatorId: ID!, $simId: String!, $station: String!) {
     station(simulatorId: $simulatorId, station: $station) {
       name
@@ -419,7 +420,7 @@ const Station = ({ stations, simulatorId, station: stationName }) => {
                         mutation MessageGroups(
                           $simulatorId: ID!
                           $station: String!
-                          $group: MESSAGE_GROUP!
+                          $group: String!
                           $state: Boolean!
                         ) {
                           setSimulatorStationMessageGroup(
@@ -452,6 +453,11 @@ const Station = ({ stations, simulatorId, station: stationName }) => {
                   </label>
                 </Col>
               ))}
+              <ExtraMessageGroups
+                simulatorId={simulatorId}
+                station={stationName}
+                messageGroups={station.messageGroups}
+              />
             </Row>
             <label>Widgets:</label>
             <Row>

@@ -84,7 +84,7 @@ const ops = {
     mutation ToggleMessageGroup(
       $stationSetId: ID!
       $station: String!
-      $group: MESSAGE_GROUP!
+      $group: String!
       $state: Boolean!
     ) {
       toggleStationMessageGroup(

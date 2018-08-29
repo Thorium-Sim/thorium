@@ -3,6 +3,7 @@ import { Input, Container, Row, Col } from "reactstrap";
 import ops from "./ops";
 import FontAwesome from "react-fontawesome";
 import Views, { Widgets } from "../../../../../components/views/index";
+import ExtraMessageGroups from "./messageGroups";
 import { titleCase } from "change-case";
 const viewList = Object.keys(Views)
   .filter(v => {
@@ -247,6 +248,11 @@ const ConfigStation = props => {
               </Col>
             ))}
           </Row>
+          <ExtraMessageGroups
+            stationSetId={selectedStationSet}
+            station={station.name}
+            messageGroups={station.messageGroups}
+          />
           <label>Widgets:</label>
           <Row>
             {Object.keys(Widgets).map(widget => (
