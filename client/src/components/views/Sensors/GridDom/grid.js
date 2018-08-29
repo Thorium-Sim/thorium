@@ -234,7 +234,8 @@ class InnerGrid extends Component {
       selectedContacts,
       segments,
       sensor,
-      gridMouseDown
+      gridMouseDown,
+      range
     } = this.props;
 
     const { width: dimWidth, height: dimHeight } = dimensions;
@@ -272,6 +273,15 @@ class InnerGrid extends Component {
           {this.renderLines()}
           <div className="ping-ring" />
           {this.renderContacts()}
+          {range && (
+            <div
+              className="sensor-range"
+              style={{
+                backgroundColor: range.color,
+                transform: `scale(${range.size})`
+              }}
+            />
+          )}
         </div>
       </div>
     );

@@ -10,6 +10,7 @@ type Targeting {
   contacts: [TargetingContact]
   classes: [TargetingClass]
   quadrants: Boolean
+  range: Float
   coordinateTargeting: Boolean
   targetedSensorContact: SensorContact
   calculatedTarget:StringCoordinates

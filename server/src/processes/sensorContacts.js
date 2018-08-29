@@ -118,7 +118,7 @@ const moveSensorContactTimed = () => {
         s => s.simulatorId === sensors.simulatorId && s.class === "Targeting"
       );
       if (sensors.autoTarget) {
-        if (distance3d({ x: 0, y: 0, z: 0 }, c.position) < 0.33) {
+        if (distance3d({ x: 0, y: 0, z: 0 }, c.position) < targeting.range) {
           if (!targeting.classes.find(t => t.id === c.id)) {
             const target = {
               id: c.id,

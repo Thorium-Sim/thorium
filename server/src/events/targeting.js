@@ -165,3 +165,12 @@ App.on("clearAllContacts", ({ id }) => {
     App.systems.filter(s => s.type === "Targeting")
   );
 });
+
+App.on("setTargetingRange", ({ id, range }) => {
+  const system = App.systems.find(s => s.id === id);
+  system.setRange(range);
+  pubsub.publish(
+    "targetingUpdate",
+    App.systems.filter(s => s.type === "Targeting")
+  );
+});
