@@ -244,7 +244,7 @@ class CargoControlCore extends Component {
             })
             .filter(i => i)
             .map(i => (
-              <p key={`to-${i.id}`}>
+              <div key={`to-${i.id}`}>
                 {i.name}{" "}
                 <InputField
                   style={{
@@ -256,7 +256,7 @@ class CargoControlCore extends Component {
                 >
                   {i.count}
                 </InputField>
-              </p>
+              </div>
             ))}
       </div>
     );
