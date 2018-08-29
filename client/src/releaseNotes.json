@@ -4,7 +4,12 @@
       "Added the ShipStation layout.",
       "Add support for dynamic message groups. In addition to Security, Damage, and Medical teams, you can set up specific preset groups on specific stations.",
       "Refactored the sensors grid to support any configuration of rings, lines, and alignment.",
-      "Added the ability to change targeting/weapons range."
+      "Added the ability to change targeting/weapons range.",
+      "Added the ability to insert timeline items after the currently selected timeline item."
+    ],
+    "fixes": [
+      "Viewscreens are now filtered by whether they are connected or not.",
+      "Target icon selection should now stay within the bounds of the component."
     ]
   },
   "0.4.9": {
