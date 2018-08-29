@@ -62,14 +62,16 @@ class Messaging extends Component {
     }
   };
   render() {
-    if (this.props.data.loading || !this.props.data.messages) return null;
-    const { messages, teams } = this.props.data;
+    const { data, simulator } = this.props;
+    if (data.loading || !data.messages) return null;
+    const { messages, teams } = data;
     const { messageInput, selectedDestination, selectedSender } = this.state;
-    const messageGroups = ["SecurityTeams", "DamageTeams", "MedicalTeams"];
-    if (!this.props.simulator.stations) return <div>No Stations</div>;
-    let senders = this.props.simulator.stations
-      .map(s => s.name)
-      .concat(messageGroups);
+
+    if (!simulator.stations) return <div>No Stations</div>;
+    const messageGroups = simulator.stations
+      .reduce((prev, next) => prev.concat(next.messageGroups), [])
+      .filter((a, i, arr) => arr.indexOf(a) === i);
+    let senders = simulator.stations.map(s => s.name).concat(messageGroups);
     messages.forEach(m => {
       senders.push(m.sender);
     });
@@ -77,11 +79,11 @@ class Messaging extends Component {
       .concat(selectedSender)
       .filter((s, i, a) => a.indexOf(s) === i);
     const destinations = []
-      .concat(this.props.simulator.stations.map(s => s.name))
+      .concat(simulator.stations.map(s => s.name))
       .concat(messageGroups)
       .concat(senders)
       .concat(messages.map(m => m.destination))
-      .filter((s, i, a) => a.indexOf(s) === i);
+      .filter((s, i, a) => a.indexOf(s) === i && s);
     const senderDestinations = selectedSender
       ? messages
           .reduce((prev, next) => {

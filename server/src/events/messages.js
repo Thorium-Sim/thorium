@@ -18,7 +18,6 @@ App.on("sendMessage", args => {
   const messageClass = new Classes.Message(message);
   App.messages.push(messageClass);
   pubsub.publish("sendMessage", messageClass);
-  const messageGroups = ["SecurityTeams", "DamageTeams", "MedicalTeams"];
   const wordSplit = messageClass.content
     .split(" ")
     .slice(0, 30)
@@ -37,11 +36,15 @@ App.on("sendMessage", args => {
     },
     "addCoreFeed"
   );
+  const simulator = App.simulators.find(s => s.id === messageClass.simulatorId);
+  const messageGroups = simulator.stations
+    .reduce((prev, next) => prev.concat(next.messageGroups), [])
+    .filter((a, i, arr) => arr.indexOf(a) === i && a);
   if (messageGroups.indexOf(messageClass.sender) > -1) {
     // Notify every station that has this class
-    App.simulators
-      .find(s => s.id === messageClass.simulatorId)
-      .stations.filter(s => s.messageGroups.indexOf(messageClass.sender) > -1)
+
+    simulator.stations
+      .filter(s => s.messageGroups.indexOf(messageClass.sender) > -1)
       .forEach(s => {
         pubsub.publish("notify", {
           id: uuid.v4(),

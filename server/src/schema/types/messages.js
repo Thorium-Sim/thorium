@@ -8,12 +8,6 @@ type Message {
   content: String
 }
 
-enum MESSAGE_GROUP {
-  SecurityTeams
-  DamageTeams
-  MedicalTeams
-}
-
 input MessageInput {
   simulatorId: ID
   destination: String
