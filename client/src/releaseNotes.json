@@ -1,4 +1,9 @@
 {
+  "0.4.10":{
+    "features":[
+      "Added the ShipStation layout."
+    ]
+  },
   "0.4.9": {
     "features": [
       "Added this release notes page!",

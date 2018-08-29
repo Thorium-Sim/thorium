@@ -5,6 +5,63 @@ $alert2: #cc7926;
 $alert1: #ca2a2a;
 $alertp: #7a24cf;
 
+.layout-line,
+.layout-ship-station {
+  .card-switcher-holder {
+    z-index: 100;
+    position: absolute;
+    top: 30px;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .card-switcher {
+    display: flex;
+    align-items: flex-start;
+    img {
+      margin: 0 20px;
+      width: 40px;
+      border-radius: 50%;
+      box-sizing: content-box;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+  }
+  @mixin cardSwitcherColors($color) {
+    .card-switcher {
+      img {
+        background-color: $color;
+        border: solid 2px $color;
+        &:hover {
+          background-color: darken($color, 20%);
+          border: solid 2px darken($color, 20%);
+        }
+        &.active {
+          background-color: lighten($color, 20%);
+          border: solid 2px lighten($color, 20%);
+        }
+      }
+    }
+  }
+  &.alertColor5 {
+    @include cardSwitcherColors($alert5);
+  }
+  &.alertColor4 {
+    @include cardSwitcherColors($alert4);
+  }
+  &.alertColor3 {
+    @include cardSwitcherColors($alert3);
+  }
+  &.alertColor2 {
+    @include cardSwitcherColors($alert2);
+  }
+  &.alertColor1 {
+    @include cardSwitcherColors($alert1);
+  }
+  &.alertColorp {
+    @include cardSwitcherColors($alertp);
+  }
+}
 .layout-line {
   color: white;
   background-color: black;
@@ -80,26 +137,7 @@ $alertp: #7a24cf;
     bottom: 20px;
     left: auto;
   }
-  .card-switcher-holder {
-    z-index: 100;
-    position: absolute;
-    top: 30px;
-    width: 100%;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-  }
-  .card-switcher {
-    display: flex;
-    align-items: flex-start;
-    img {
-      margin: 0 20px;
-      width: 40px;
-      border-radius: 50%;
-      box-sizing: content-box;
-      transition: background-color 0.2s ease, border-color 0.2s ease;
-    }
-  }
+
   @mixin colors($color) {
     & {
       background: linear-gradient(
@@ -110,24 +148,10 @@ $alertp: #7a24cf;
       );
     }
     .frame-container {
-      filter: drop-shadow(0px 0px 5px $color);
+      filter: drop-shadow(0px 0px 5px $color) drop-shadow(0px 0px 10px $color) drop-shadow(0px 0px 2px $color);
     }
     .frame-outer {
       background-color: $color;
-    }
-    .card-switcher {
-      img {
-        background-color: $color;
-        border: solid 2px $color;
-        &:hover {
-          background-color: darken($color, 20%);
-          border: solid 2px darken($color, 20%);
-        }
-        &.active {
-          background-color: lighten($color, 20%);
-          border: solid 2px lighten($color, 20%);
-        }
-      }
     }
   }
 

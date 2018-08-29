@@ -31,7 +31,7 @@ const CardRenderer = props => {
           id: "test",
           name: "Test",
           alertLevel: "5",
-          layout: "LayoutPhoenix",
+          layout: "LayoutShipStation",
           assets: {
             mesh: "/Simulator/default/mesh.obj",
             texture: "/Simulator/default/texture.jpg",
