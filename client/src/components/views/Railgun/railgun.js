@@ -93,10 +93,7 @@ class Railgun extends Component {
     }, 300);
   };
   mouseDown = e => {
-    this.mouse = {
-      x: e.clientX - 5,
-      y: e.clientY - 5
-    };
+    this.mouseMove(e);
     this.loop();
     document.addEventListener("mouseup", this.mouseUp);
     document.addEventListener("mousemove", this.mouseMove);

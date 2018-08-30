@@ -115,6 +115,7 @@ const ConfigStation = props => {
       variables
     });
   };
+  if (!station) return "Error - Station not found.";
   return (
     <Container fluid>
       <h5>Stations</h5>

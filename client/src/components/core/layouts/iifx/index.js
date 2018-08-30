@@ -143,7 +143,7 @@ export default class CoreIIFX extends Component {
           </div>
           <div className="inner-cores">
             <CoreError>
-              <Cores.ClientsCore {...props} />
+              <Cores.LoginNameCore {...props} />
             </CoreError>
           </div>
         </div>

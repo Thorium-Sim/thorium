@@ -1,4 +1,14 @@
 {
+  "1.0.1": {
+    "features": [
+      "Add notifications for when railgun projectiles hit and when they are destroyed by the railgun."
+    ],
+    "fixes": [
+      "A minor fix to chaging station and station set names.",
+      "Improvements to the hotkey cores.",
+      "Renamed the 'Client Core' to 'Login Name Core' for more clarity. Split it's functionality into the 'Hypercard Core'."
+    ]
+  },
   "1.0.0": {
     "features": [
       "First major release! Yay! 🎉",

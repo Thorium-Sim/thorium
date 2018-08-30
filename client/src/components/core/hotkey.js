@@ -44,7 +44,9 @@ export default class Hotkey extends Component {
       <div className={`hotkey-core core ${showing ? "showing" : ""}`}>
         {showing && (
           <div
-            className="hotkey-core-cores"
+            className={`hotkey-core-cores hotkey-core-${
+              categories.find(c => c.name === showing).name
+            }`}
             style={categories.find(c => c.name === showing).style}
           >
             {categories.find(c => c.name === showing).components.map(c => {

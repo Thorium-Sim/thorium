@@ -105,7 +105,8 @@ export const ClientMutations = {
 
 export const ClientSubscriptions = {
   clientChanged: {
-    resolve(payload, { client, simulatorId, flightId }) {
+    resolve(data, { client, simulatorId, flightId }) {
+      const payload = data.filter(c => c.connected);
       if (!payload) return [];
       if (client) {
         return payload.filter(c => c.id === client);
@@ -120,7 +121,8 @@ export const ClientSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("clientChanged"),
-      (payload, { client, simulatorId, flightId }) => {
+      (data, { client, simulatorId, flightId }) => {
+        const payload = data.filter(c => c.connected);
         if (client) {
           return payload.filter(c => c.id === client).length > 0;
         }

@@ -115,7 +115,7 @@ import HeatCore from "./Heat/core";
 import ShipCore from "./Ship/core";
 import ReactivationCore from "./DamageControl/reactivationCore";
 import MessagingCore from "./Messaging/core";
-import ClientsCore from "./Clients/core";
+import LoginNameCore from "./Clients/core";
 import JrNavigationCore from "./JrFlight/navigationCore";
 import ExtrasCore from "./CoreExtras";
 import SignalJammerCore from "./SignalJammer/core";
@@ -135,6 +135,7 @@ import CommConvoCore from "./CommDecoding/convoCore";
 import ViewscreenCore from "./Viewscreen/core";
 import BattleCore from "./Battle";
 import RailgunCore from "./Railgun/core";
+import HypercardCore from "./Clients/hypercardCore";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -327,7 +328,6 @@ export const Cores = {
   ShipCore,
   ReactivationCore,
   MessagingCore,
-  ClientsCore,
   JrNavigationCore,
   ExtrasCore,
   SignalJammerCore,
@@ -346,7 +346,9 @@ export const Cores = {
   CommConvoCore,
   ViewscreenCore,
   BattleCore,
-  RailgunCore
+  RailgunCore,
+  LoginNameCore,
+  HypercardCore
 };
 
 export default Views;
