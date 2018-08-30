@@ -138,7 +138,7 @@ class InnerGrid extends Component {
     updateSelectedContacts(contacts.filter(c => selected.indexOf(c.id) > -1));
   };
   renderLines = () => {
-    const { renderLines, rings = 3, lines = 12 } = this.props;
+    const { renderLines, rings = 3, lines = 12, aligned = false } = this.props;
 
     if (renderLines) return renderLines(this.props);
     return (
@@ -162,7 +162,9 @@ class InnerGrid extends Component {
               key={`line-${i}`}
               className="line"
               style={{
-                transform: `rotate(${((i + 0.5) / array.length) * 360}deg)`
+                transform: `rotate(${((i + (aligned ? 0 : 0.5)) /
+                  array.length) *
+                  360}deg)`
               }}
             />
           ))}
@@ -232,7 +234,8 @@ class InnerGrid extends Component {
       selectedContacts,
       segments,
       sensor,
-      gridMouseDown
+      gridMouseDown,
+      range
     } = this.props;
 
     const { width: dimWidth, height: dimHeight } = dimensions;
@@ -264,10 +267,21 @@ class InnerGrid extends Component {
               onSelectionChange={this.selectionChange}
             />
           )}
-          {segments && <Segments segments={segments} sensors={sensor} />}{" "}
+          {segments && (
+            <Segments segments={segments} {...this.props} sensors={sensor} />
+          )}{" "}
           {this.renderLines()}
           <div className="ping-ring" />
           {this.renderContacts()}
+          {range && (
+            <div
+              className="sensor-range"
+              style={{
+                backgroundColor: range.color,
+                transform: `scale(${range.size})`
+              }}
+            />
+          )}
         </div>
       </div>
     );

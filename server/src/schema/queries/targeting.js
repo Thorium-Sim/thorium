@@ -1,3 +1,3 @@
 export default `
-  targeting(simulatorId: ID): [Targeting]
+  targeting(id: ID, simulatorId: ID): [Targeting]
 `;

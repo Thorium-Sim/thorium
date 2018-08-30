@@ -10,6 +10,8 @@ import MovementCore from "./movementCore";
 import ContactSelect from "./contactSelect";
 import SpeedAsker from "./speedAsker";
 import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
+import { subscribe } from "../../helpers/pubsub";
+
 import "./gridCore.scss";
 
 const SENSORS_OFFSET = 45;
@@ -31,7 +33,8 @@ movement {
   z
 }
 segments {
-  segment
+  ring
+  line
   state
 }
 armyContacts {
@@ -93,6 +96,12 @@ class GridCore extends Component {
         });
       }
     }
+    this.targetingSubscription = subscribe("setTargetingRange", range => {
+      this.setState({ targetingRange: range });
+    });
+  }
+  componentWillUnmount() {
+    this.targetingSubscription && this.targetingSubscription();
   }
   componentDidUpdate() {
     if (!ReactDOM.findDOMNode(this)) return;
@@ -390,7 +399,8 @@ class GridCore extends Component {
       speedAsking,
       currentControl,
       selectedContacts,
-      draggingContacts
+      draggingContacts,
+      targetingRange
     } = this.state;
     const speeds = [
       { value: "1000", label: "Instant" },
@@ -539,6 +549,14 @@ class GridCore extends Component {
                 selectedContacts={selectedContacts.map(c => c.id)}
                 updateSelectedContacts={contacts =>
                   this.setState({ selectedContacts: contacts })
+                }
+                range={
+                  targetingRange
+                    ? {
+                        size: targetingRange,
+                        color: "rgba(255,0,0,0.5)"
+                      }
+                    : null
                 }
                 mouseDown={this.mouseDown}
               />

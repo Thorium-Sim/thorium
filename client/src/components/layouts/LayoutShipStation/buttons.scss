@@ -1,0 +1,143 @@
+$alert5: #2ba1cb;
+$alert4: #36c236;
+$alert3: #acac34;
+$alert2: #cc7926;
+$alert1: #ca2a2a;
+$alertp: #7a24cf;
+
+.layout-ship-station {
+  // Buttons
+
+  @mixin hover {
+    &:hover {
+      @content;
+    }
+  }
+
+  @mixin hover-focus {
+    &:hover,
+    &:focus {
+      @content;
+    }
+  }
+  $yiq-contrasted-threshold: 150 !default;
+  $yiq-text-dark: #212529 !default;
+  $yiq-text-light: white !default;
+  @function color-yiq($color) {
+    $r: red($color);
+    $g: green($color);
+    $b: blue($color);
+
+    $yiq: (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+
+    @if ($yiq >= $yiq-contrasted-threshold) {
+      @return $yiq-text-dark;
+    } @else {
+      @return $yiq-text-light;
+    }
+  }
+  @mixin button-variant(
+    $name,
+    $background,
+    $border,
+    $hover-background: darken($background, 7.5%),
+    $hover-border: darken($border, 10%),
+    $active-background: darken($background, 10%),
+    $active-border: lighten($border, 30%)
+  ) {
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      border: solid;
+      border-width: 18px;
+      border-image: url("./images/"+$name+"Border.svg") 12 19;
+    }
+    &:before {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      clip-path: polygon(
+        6% 0%,
+        0% 43%,
+        0% 84%,
+        20% 84%,
+        26% 100%,
+        92% 100%,
+        100% 62%,
+        99% 10%,
+        80% 2%
+      );
+      background-image: url("../LayoutOdyssey/lines.svg");
+      background-size: 1px 4px;
+      background-color: darken($background, 30%);
+      z-index: -1;
+    }
+    position: relative;
+    color: color-yiq($background);
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-sizing: border-box;
+
+    @include hover {
+      color: color-yiq($hover-background);
+      background-color: $hover-background;
+    }
+
+    &:focus,
+    &.focus {
+      // Avoid using mixin so we can pass custom focus shadow properly
+      filter: drop-shadow(0px 0px 5px rgba($border, 0.5));
+      box-shadow: none;
+    }
+
+    // Disabled comes first so active can properly restyle
+    &.disabled,
+    &:disabled {
+      color: color-yiq($background);
+      background-color: $background;
+    }
+
+    &:not(:disabled):not(.disabled):active,
+    &:not(:disabled):not(.disabled).active,
+    .show > &.dropdown-toggle {
+      color: color-yiq($active-background);
+      background-color: $active-background;
+      &:focus {
+        // Avoid using mixin so we can pass custom focus shadow properly
+        filter: drop-shadow(0px 0px 5px rgba($border, 0.5));
+        box-shadow: none;
+      }
+    }
+  }
+  $theme-colors: () !default;
+  $theme-colors: map-merge(
+    (
+      "primary": $alert5,
+      "secondary": lighten(#2e2e2e, 20%),
+      "success": $alert4,
+      "info": #2ba1cb,
+      "warning": $alert2,
+      "danger": $alert1,
+      "light": lighten(#2e2e2e, 40%),
+      "dark": #2e2e2e,
+      "default": #2e2e2e,
+      "cloak": rebeccapurple
+    ),
+    $theme-colors
+  );
+
+  @each $color, $value in $theme-colors {
+    .btn-#{$color} {
+      @include button-variant($color, $value, $value);
+    }
+  }
+}

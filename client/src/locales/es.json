@@ -27,8 +27,19 @@
   "damage-report-verifying": "Verifying Step",
   "flight-config": "Flight Config",
   "major-upgrade-warning": "This is a major upgrade. Make sure you backup your Thorium data directory and program file before performing this upgrade.",
+  "railgun-available-ammo": "Available Ammunition: {availableAmmo}",
+  "railgun-load": "Load Railgun",
+  "railgun-loaded-ammo": "Loaded Ammunition: {ammo}",
+  "railgun-loader-training-1": "The railgun is a point-defense weapon designed to destroy incoming projectiles. This screen is where you load bolts into the railgun.",
+  "railgun-loader-training-2": "Here you can see the number of bolts loaded. Make sure you don't run out of railgun bolts!",
+  "railgun-loader-training-3": "Click this button to load a bolt into the railgun.",
+  "railgun-training-1": "The railgun is a point-defense weapon designed to destroy incoming projectiles. You can use it to defend your ship from attackers.",
+  "railgun-training-2": "This basic sensors grid shows the location of any incoming projectiles relative to this ship, shown at the center of the grid.",
+  "railgun-training-3": "To fire the railgun, click with your mouse on the sensor grid. A red dot will indicate where the railgun bolt will hit. You must fire very close to an incoming projectile for the bolt to hit its target.",
+  "railgun-training-4": "Once an incoming projectile has been destroyed, you will see it explode and disappear.",
   "return-to-main": "Return to Main",
   "sound-player": "Sound Player",
   "upgrade-instructions": "The update is downloading in the background. Wait until the Thorium Server command line window says 'Download Complete' before restarting Thorium Server",
-  "upgrade-warning": "Your version of Thorium is outdated. Current version is {newVersion}. Your version is {oldVersion}"
+  "upgrade-warning": "Your version of Thorium is outdated. Current version is {newVersion}. Your version is {oldVersion}",
+  "version-number": "Version {version}"
 }

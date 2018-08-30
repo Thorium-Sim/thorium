@@ -15,7 +15,7 @@ resumeFlight(flightId:ID!): String
 
 removeSimulator(simulatorId: ID!):String
 
-addTimelineStep(simulatorId: ID, missionId: ID, name: String!, description: String):String
+addTimelineStep(simulatorId: ID, missionId: ID, name: String!, description: String):ID
 removeTimelineStep(simulatorId: ID, missionId: ID, timelineStepId: ID!):String
 reorderTimelineStep(simulatorId: ID, missionId: ID, timelineStepId: ID!, order: Int!):String
 updateTimelineStep(simulatorId: ID, missionId: ID, timelineStepId: ID!, name: String, description: String):String

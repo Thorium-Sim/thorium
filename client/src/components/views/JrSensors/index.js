@@ -17,7 +17,8 @@ const SENSOR_SUB = gql`
       simulatorId
       processedData
       segments {
-        segment
+        ring
+        line
         state
       }
     }
@@ -135,7 +136,8 @@ const SENSOR_QUERY = gql`
       simulatorId
       processedData
       segments {
-        segment
+        ring
+        line
         state
       }
     }

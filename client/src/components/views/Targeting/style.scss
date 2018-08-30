@@ -1,4 +1,5 @@
 .targeting-control {
+  position: relative;
   .targetArea {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
@@ -195,6 +196,7 @@
   .targets-container {
     flex: 1;
     overflow-y: scroll;
+    position: relative;
   }
   .contact-targeting {
     display: flex;

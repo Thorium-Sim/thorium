@@ -31,7 +31,8 @@ const SENSOR_SUB = gql`
         z
       }
       segments {
-        segment
+        ring
+        line
         state
       }
       damage {
@@ -90,7 +91,6 @@ class Sensors extends Component {
     this.sensorsSubscription = null;
     this.pingSub = null;
     this.state = {
-      weaponsRangePulse: 0,
       hoverContact: { name: "", pictureUrl: "" }
     };
   }
@@ -117,16 +117,32 @@ class Sensors extends Component {
       });
     }
   }
-  showWeaponsRange() {
-    this.setState({
-      weaponsRangePulse: 1
-    });
-    setTimeout(() => {
-      this.setState({
-        weaponsRangePulse: 0
+  showWeaponsRange = () => {
+    this.props.client
+      .query({
+        query: gql`
+          query Targeting($id: ID!) {
+            targeting(simulatorId: $id) {
+              id
+              range
+            }
+          }
+        `,
+        variables: { id: this.props.simulator.id }
+      })
+      .then(({ data: { targeting } }) => {
+        const target = targeting[0];
+        if (!target) return;
+        this.setState({
+          weaponsRange: target.range
+        });
+        setTimeout(() => {
+          this.setState({
+            weaponsRange: null
+          });
+        }, 1000);
       });
-    }, 1000);
-  }
+  };
 
   _hoverContact(contact = {}) {
     this.setState({
@@ -202,7 +218,7 @@ class Sensors extends Component {
     const sensors = this.props.data.sensors[0];
     const { pingMode } = sensors;
     const pings = false;
-    const { hoverContact, ping, pingTime } = this.state;
+    const { hoverContact, ping, pingTime, weaponsRange } = this.state;
     return (
       <div className="cardSensors">
         <SubscriptionHelper
@@ -235,6 +251,9 @@ class Sensors extends Component {
                     triggerPing={this.triggerPing}
                   />
                 )}
+                <Button onClick={this.showWeaponsRange.bind(this)} block>
+                  Show Weapons Range
+                </Button>
                 {/*<Row>
 			<Col className="col-sm-12">
 			<h4>Contact Coordinates</h4>
@@ -247,7 +266,7 @@ class Sensors extends Component {
 			</Card>
 			</Col>
 			</Row>
-		<Button onClick={this.showWeaponsRange.bind(this)} block>Show Weapons Range</Button>*/}
+		*/}
               </Col>
             )}
             <Col
@@ -285,6 +304,12 @@ class Sensors extends Component {
                       segments={sensors.segments}
                       interference={sensors.interference}
                       mouseDown={this.clickContact(action)}
+                      range={
+                        weaponsRange && {
+                          size: weaponsRange,
+                          color: "rgba(255, 0, 0, 0.5)"
+                        }
+                      }
                     />
                   )}
                 </Mutation>
@@ -345,6 +370,11 @@ class Sensors extends Component {
                     triggerPing={this.triggerPing}
                   />
                 )}
+              {!needScans && (
+                <Button onClick={this.showWeaponsRange} block>
+                  Show Weapons Range
+                </Button>
+              )}
             </Col>
           </Row>
         </div>
@@ -422,7 +452,8 @@ const SENSOR_QUERY = gql`
         z
       }
       segments {
-        segment
+        ring
+        line
         state
       }
       damage {

@@ -175,13 +175,16 @@ export const FlightStructureMutations = {
   setSimulatorStationWidget(rootValue, params, context) {
     App.handleEvent(params, "setSimulatorStationWidget", context);
   },
+
   // Timeline
   addTimelineStep(root, args, context) {
+    const id = uuid.v4();
     App.handleEvent(
-      Object.assign(args, { timelineStepId: uuid.v4() }),
+      Object.assign(args, { timelineStepId: id }),
       "addTimelineStep",
       context
     );
+    return id;
   },
   removeTimelineStep(root, args, context) {
     App.handleEvent(args, "removeTimelineStep", context);
