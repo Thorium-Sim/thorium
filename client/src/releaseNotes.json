@@ -1,4 +1,7 @@
 {
+  "1.0.1": {
+    "fixes": ["A minor fix to chaging station and station set names."]
+  },
   "1.0.0": {
     "features": [
       "First major release! Yay! 🎉",
