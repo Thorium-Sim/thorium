@@ -31,25 +31,18 @@ App.on("dischargePhaserBeam", ({ id, beamId }) => {
 App.on("firePhaserBeam", ({ id, beamId }) => {
   const sys = App.systems.find(s => s.id === id);
   sys.fireBeam(beamId);
-  pubsub.publish("notify", {
-    id: uuid.v4(),
-    simulatorId: sys.simulatorId,
-    station: "Core",
-    type: "Phasers",
-    title: `Phasers Firing`,
-    body: "",
-    color: "info"
-  });
-  // App.handleEvent(
-  //   {
-  //     simulatorId: sys.simulatorId,
-  //     title: `Phasers Firing`,
-  //     component: "PhaserCore",
-  //     body: null,
-  //     color: "danger"
-  //   },
-  //   "addCoreFeed"
-  // );
+  const beam = sys.beams.find(b => b.id === beamId);
+  if (beam.charge > 0) {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      station: "Core",
+      type: "Phasers",
+      title: `Phasers Firing`,
+      body: "",
+      color: "info"
+    });
+  }
   pubsub.publish(
     "phasersUpdate",
     App.systems.filter(s => s.type === "Phasers")
