@@ -166,9 +166,7 @@ console.log(
 );
 const other = {
   name: "Other",
-  components: Object.keys(Cores)
-    .filter(c => comps.indexOf(c) === -1)
-    .filter(c => c !== "ViewscreenCore")
+  components: Object.keys(Cores).filter(c => comps.indexOf(c) === -1)
 };
 
 export default categories.concat(other);
