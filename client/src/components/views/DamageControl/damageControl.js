@@ -338,11 +338,19 @@ class DamageControl extends Component {
                     onClick={action}
                     color="primary"
                   >
-                    <FormattedMessage
-                      id="damage-report-request"
-                      description="A button to request a repair report for a damaged system"
-                      defaultMessage="Request Damage Report"
-                    />
+                    {which === "rnd" ? (
+                      <FormattedMessage
+                        id="rnd-report-request"
+                        description="A button to request a report for a system"
+                        defaultMessage="Request Report"
+                      />
+                    ) : (
+                      <FormattedMessage
+                        id="damage-report-request"
+                        description="A button to request a repair report for a damaged system"
+                        defaultMessage="Request Damage Report"
+                      />
+                    )}
                   </Button>
                 )}
               </Mutation>
