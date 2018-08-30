@@ -34,6 +34,7 @@ const components = [
   "Shields",
   "Short Range Comm",
   "Sickbay",
+  "Signal Jammer",
   "Stealth Field",
   "THX",
   "Targeting",
