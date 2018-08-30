@@ -314,7 +314,7 @@ class DamageReportCore extends Component {
               type="select"
               value={"top"}
               size="sm"
-              className="btn-primary"
+              className="btn-warning"
               style={{ height: "20px" }}
               onChange={evt => this.createExtraSystem(evt.target.value, "rnd")}
             >
@@ -332,7 +332,7 @@ class DamageReportCore extends Component {
               type="select"
               value={"top"}
               size="sm"
-              className="btn-warning"
+              className="btn-primary"
               style={{ height: "20px" }}
               onChange={evt =>
                 this.createExtraSystem(evt.target.value, "engineering")
