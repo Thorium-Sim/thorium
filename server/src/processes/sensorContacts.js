@@ -1,5 +1,6 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
+import uuid from "uuid";
 
 const interval = 1000 / 30; // 1/30 of a second
 const pingInterval = 100;
@@ -79,6 +80,15 @@ const moveSensorContactTimed = () => {
           // Projectile destruction
           if (c.type === "projectile" && !c.destroyed) {
             sensors.destroyContact({ id: c.id });
+            pubsub.publish("notify", {
+              id: uuid.v4(),
+              simulatorId: sensors.simulatorId,
+              type: "Railgun",
+              station: "Core",
+              title: `Projectile Hit`,
+              body: "",
+              color: "danger"
+            });
             sendUpdate = true;
           }
         } else {

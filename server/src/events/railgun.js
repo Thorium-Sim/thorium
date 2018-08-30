@@ -1,4 +1,5 @@
 import App from "../app";
+import uuid from "uuid";
 import { pubsub } from "../helpers/subscriptionManager.js";
 
 function action(id, cb) {
@@ -31,6 +32,15 @@ App.on("fireRailgun", ({ id, simulatorId, contactId }) => {
     contact.updateHitpoints();
     if (contact.hitpoints <= 0) {
       sensors.destroyContact(contact);
+      pubsub.publish("notify", {
+        id: uuid.v4(),
+        simulatorId: simulatorId,
+        type: "Railgun",
+        station: "Core",
+        title: `Projectile Destroyed`,
+        body: "",
+        color: "warning"
+      });
     }
     pubsub.publish("sensorContactUpdate", sensors);
   }

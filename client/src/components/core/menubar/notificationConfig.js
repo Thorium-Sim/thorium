@@ -25,6 +25,7 @@ const components = [
   "Navigation",
   "Phasers",
   "Probes",
+  "Railgun",
   "Reactivation Code",
   "Reactor",
   "Remote Access",
