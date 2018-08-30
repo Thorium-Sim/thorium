@@ -8,14 +8,14 @@ const categories = [
       "ExtrasCore",
       "RemoteCore",
       "MessagingCore",
-      "ClientsCore",
+      "LoginNameCore",
       "CoreFeed"
     ],
     style: {
       gridTemplateRows: "100px 400px",
       gridTemplateColumns: "300px 300px 300px 300px",
       gridTemplateAreas: `"ActionsCore ExtrasCore RemoteCore CoreFeed"
-"MessagingCore ClientsCore ClientsCore CoreFeed"`
+"MessagingCore LoginNameCore LoginNameCore CoreFeed"`
     }
   },
   {
@@ -159,14 +159,16 @@ const comps = categories.reduce(
   []
 );
 
-console.log(
-  Object.keys(Cores)
-    .filter(c => comps.indexOf(c) === -1)
-    .filter(c => c !== "ViewscreenCore")
-);
+const filterList = ["DecodingCore", "LRCommCore"];
 const other = {
   name: "Other",
-  components: Object.keys(Cores).filter(c => comps.indexOf(c) === -1)
+  style: {
+    gridTemplateRows: "40% 40%",
+    gridTemplateColumns: "20% 20% 20% 20% 20%"
+  },
+  components: Object.keys(Cores)
+    .filter(c => comps.indexOf(c) === -1)
+    .filter(c => filterList.indexOf(c) === -1)
 };
 
 export default categories.concat(other);

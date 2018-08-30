@@ -175,5 +175,9 @@
     height: 100%;
 
     overflow: hidden;
+    overflow-y: auto;
+  }
+  .hotkey-core-Other > .hotkey-core-comp {
+    grid-area: unset !important;
   }
 }
