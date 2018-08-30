@@ -134,7 +134,7 @@ class DamageReportCore extends Component {
       variables
     });
   };
-  createExtraSystem = sysName => {
+  createExtraSystem = (sysName, which) => {
     const name = sysName || prompt("What is the name of the system?");
     const systems = this.props.data.systems;
     if (systems.find(s => s.name === name)) {
@@ -155,7 +155,7 @@ class DamageReportCore extends Component {
       params: JSON.stringify({
         name,
         extra: true,
-        damage: { damaged: true }
+        damage: { damaged: true, which }
       })
     };
     this.props.client.mutate({
@@ -264,8 +264,12 @@ class DamageReportCore extends Component {
           }
         />
         <Row style={{ height: "100%" }}>
-          <Col sm={4} className="left-side">
-            <div className="system-list">
+          <Col
+            sm={4}
+            className="left-side"
+            style={{ display: "flex", flexDirection: "column" }}
+          >
+            <div className="system-list flex-max">
               {systems.filter(s => s.damage.damaged).map(s => (
                 <p
                   key={s.id}
@@ -288,14 +292,54 @@ class DamageReportCore extends Component {
                 </p>
               ))}
             </div>
+
             <Input
               type="select"
               value={"top"}
               size="sm"
+              style={{ height: "20px" }}
               onChange={evt => this.createExtraSystem(evt.target.value)}
             >
               <option disabled value="top">
                 Extra Damage
+              </option>
+              {extra.map(e => (
+                <option key={e} value={e}>
+                  {e}
+                </option>
+              ))}
+              <option value="">Add System</option>
+            </Input>
+            <Input
+              type="select"
+              value={"top"}
+              size="sm"
+              className="btn-primary"
+              style={{ height: "20px" }}
+              onChange={evt => this.createExtraSystem(evt.target.value, "rnd")}
+            >
+              <option disabled value="top">
+                Extra {"R&D"}
+              </option>
+              {extra.map(e => (
+                <option key={e} value={e}>
+                  {e}
+                </option>
+              ))}
+              <option value="">Add System</option>
+            </Input>
+            <Input
+              type="select"
+              value={"top"}
+              size="sm"
+              className="btn-warning"
+              style={{ height: "20px" }}
+              onChange={evt =>
+                this.createExtraSystem(evt.target.value, "engineering")
+              }
+            >
+              <option disabled value="top">
+                Extra Engineering
               </option>
               {extra.map(e => (
                 <option key={e} value={e}>
