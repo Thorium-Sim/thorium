@@ -48,6 +48,12 @@ const ClientCore = ({ clients }) => (
               c.station.name.indexOf("keyboard") === -1 &&
               excludedStations.indexOf(c.station.name) === -1
           )
+          .concat()
+          .sort((a, b) => {
+            if (a.station.name > b.station.name) return 1;
+            if (a.station.name < b.station.name) return -1;
+            return 0;
+          })
           .map(c => (
             <tr key={c.id}>
               <td>{c.loginName}</td>
