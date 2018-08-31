@@ -44,7 +44,6 @@ const updateJumpdrive = () => {
           s => s.simulatorId === simId && s.class === "JumpDrive"
         );
         jumpDrives.forEach(j => {
-          if (!j.activated) return;
           sendUpdate = true;
           // Increase sectors that are at too low of a power level
           // Decrease sectors that are at too high of a power level
@@ -52,7 +51,7 @@ const updateJumpdrive = () => {
           ["fore", "aft", "starboard", "port"].forEach(sector => {
             const diff = Math.abs(j.sectors[sector].level - envLevel);
             // Quadratic incrase, linear decrease. Because I'm a meany.
-            if (j.sectors[sector].level < envLevel)
+            if (j.sectors[sector].level < envLevel && j.activated)
               j.addSectorOffset(sector, Math.pow(diff, 2) / 100);
             if (j.sectors[sector].level > envLevel)
               j.addSectorOffset(sector, (-1 * diff) / 100);

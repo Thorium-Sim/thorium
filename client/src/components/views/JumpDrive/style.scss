@@ -1,0 +1,92 @@
+.card-jumpDrive {
+  height: 100%;
+  & > .row,
+  & > .col {
+    height: 100%;
+  }
+  img {
+    transform: rotate(270deg);
+    width: 80%;
+  }
+  .ship-holder {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    border-radius: 50%;
+  }
+  .ship-image {
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    height:100%;
+    width:100%;
+    top:0;
+    left:0;
+    transform: rotate(270deg) scale(0.75);
+  }
+  .spacer {
+    margin-top: 75%;
+  }
+  .slider-bar .numbers {
+    justify-content: space-between;
+  }
+  .stress-container {
+    width: 25%;
+    align-self: center;
+    border: solid 1px;
+    background-color: black;
+    height: 60%;
+    position: relative;
+  }
+  .stress-cover {
+    top: 0;
+    width:100%;
+    left:0;
+    background-color: black;
+    position: absolute;
+    z-index:10;
+  }
+  .stress-bar {
+    position: absolute;
+    height: calc(100% - 2px);
+    width: calc(100% - 2px);
+    top:1px;
+    left:1px;
+    background: linear-gradient(0deg, #2b1de8,     #1ddde8, #1de840,#e3e81d,#e8b71d,#e81d1d,#ff2400);
+  }
+}
+
+.power-bar-dragger {
+  display: flex;
+  .power-bar-holder {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    margin-bottom: 4px;
+  }
+  .power-line-holder {
+    position: absolute;
+  }
+  .power-level {
+    height: 100%;
+    width: 3px;
+    position: absolute;
+    background-color: yellow;
+    border-radius: 50px;
+  }
+  .power-box {
+    flex: 1;
+    margin-left: 4px;
+    height: 100%;
+    border: solid 2px #0b0;
+    background-color: green;
+    &.zero {
+      background-color: gray;
+      border-color: darkgray;
+    }
+    &.hidden {
+      display: none;
+    }
+  }
+}

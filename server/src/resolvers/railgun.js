@@ -41,7 +41,9 @@ export const RailgunSubscriptions = {
       () => pubsub.asyncIterator("railgunUpdate"),
       (rootValue, { simulatorId }) => {
         if (simulatorId) {
-          return rootValue.filter(s => s.simulatorId === simulatorId).length;
+          return (
+            rootValue.filter(s => s.simulatorId === simulatorId).length > 0
+          );
         }
         return rootValue.length;
       }

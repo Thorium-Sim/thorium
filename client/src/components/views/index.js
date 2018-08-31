@@ -76,6 +76,7 @@ import EngineeringReports from "./DamageControl/engineering";
 import RnDReports from "./DamageControl/rnd";
 import Railgun from "./Railgun";
 import RailgunLoading from "./Railgun/loadingCard";
+import JumpDrive from "./JumpDrive";
 
 // Cores
 import EngineControlCore from "./EngineControl/core";
@@ -220,7 +221,8 @@ const Views = {
   EngineeringReports,
   RnDReports,
   Railgun,
-  RailgunLoading
+  RailgunLoading,
+  JumpDrive
 };
 
 export const Widgets = {

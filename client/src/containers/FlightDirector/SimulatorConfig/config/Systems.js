@@ -18,6 +18,7 @@ const systems = [
   "Coolant",
   "Engine",
   "InternalComm",
+  "JumpDrive",
   "LongRangeComm",
   "Navigation",
   "Phasers",
