@@ -1,13 +1,18 @@
 import React from "react";
 
-const StealthAnimation = ({ src, activated, id, state }) => {
+const StealthAnimation = ({ src, activated, status, id, state }) => {
+  const getDisplay = () => {
+    if (!id) return "none";
+    if (status && !activated) return "none";
+    if (state || !activated) return "block";
+  };
   return (
     <div
       className="stealth-animation"
       style={{
         WebkitMaskImage: `url('${src}')`,
         maskImage: `url('${src}')`,
-        display: id && (!activated || state) ? "block" : "none"
+        display: getDisplay()
       }}
     >
       <div className="band band-1">

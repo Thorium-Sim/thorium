@@ -8,14 +8,14 @@ const categories = [
       "ExtrasCore",
       "RemoteCore",
       "MessagingCore",
-      "ClientsCore",
+      "LoginNameCore",
       "CoreFeed"
     ],
     style: {
       gridTemplateRows: "100px 400px",
       gridTemplateColumns: "300px 300px 300px 300px",
       gridTemplateAreas: `"ActionsCore ExtrasCore RemoteCore CoreFeed"
-"MessagingCore ClientsCore ClientsCore CoreFeed"`
+"MessagingCore LoginNameCore LoginNameCore CoreFeed"`
     }
   },
   {
@@ -56,12 +56,14 @@ const categories = [
       "TargetingCore",
       "PhaserCore",
       "TorpedoCore",
+      "RailgunCore",
+      "BattleCore",
       "ShieldControlCore"
     ],
     style: {
-      gridTemplateRows: "200px 200px",
+      gridTemplateRows: "300px 300px",
       gridTemplateColumns: "400px 400px 400px",
-      gridTemplateAreas: `"TargetingCore PhaserCore ShieldControlCore" "TargetingCore TorpedoCore ShieldControlCore"`
+      gridTemplateAreas: `"TargetingCore PhaserCore ShieldControlCore" "RailgunCore TorpedoCore BattleCore"`
     }
   },
   {
@@ -90,9 +92,8 @@ const categories = [
   {
     name: "Comm",
     components: [
+      "CommConvoCore",
       "CommShortRangeCore",
-      "DecodingCore",
-      "LRCommCore",
       "InternalCommCore",
       "SignalJammerCore",
       "CodeCyphersCore",
@@ -102,10 +103,10 @@ const categories = [
     style: {
       gridTemplateRows: "150px 100px 100px 100px 200px",
       gridTemplateColumns: "400px 400px 400px",
-      gridTemplateAreas: `"CommShortRangeCore DecodingCore LRCommCore"
-      "CommShortRangeCore DecodingCore LRCommCore"
-      "InternalCommCore CodeCyphersCore ShortRangeSignalsCore"
-      "InterceptionCore CodeCyphersCore ShortRangeSignalsCore"
+      gridTemplateAreas: `"CommShortRangeCore CommConvoCore CodeCyphersCore"
+      "CommShortRangeCore CommConvoCore CodeCyphersCore"
+      "InternalCommCore CommConvoCore ShortRangeSignalsCore"
+      "InterceptionCore CommConvoCore ShortRangeSignalsCore"
       "SignalJammerCore Nothing ShortRangeSignalsCore"`
     }
   },
@@ -158,9 +159,16 @@ const comps = categories.reduce(
   []
 );
 
+const filterList = ["DecodingCore", "LRCommCore"];
 const other = {
   name: "Other",
-  components: Object.keys(Cores).filter(c => comps.indexOf(c) === -1)
+  style: {
+    gridTemplateRows: "40% 40%",
+    gridTemplateColumns: "20% 20% 20% 20% 20%"
+  },
+  components: Object.keys(Cores)
+    .filter(c => comps.indexOf(c) === -1)
+    .filter(c => filterList.indexOf(c) === -1)
 };
 
 export default categories.concat(other);

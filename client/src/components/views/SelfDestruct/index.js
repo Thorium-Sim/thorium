@@ -211,7 +211,8 @@ class SelfDestructModal extends Component {
             <div>
               <h3>Enter Self-Destruct Code:</h3>
               <Input
-                type="password"
+                type="text"
+                className="txtPassword"
                 value={inputCode}
                 disabled={inputCode === code}
                 onChange={evt => this.setState({ inputCode: evt.target.value })}

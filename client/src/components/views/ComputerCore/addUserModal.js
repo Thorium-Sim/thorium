@@ -31,7 +31,8 @@ class AddUserModal extends Component {
           <FormGroup>
             <Label>Password</Label>
             <Input
-              type="password"
+              type="text"
+              className="txtPassword"
               value={password}
               onChange={e => this.setState({ password: e.target.value })}
             />
