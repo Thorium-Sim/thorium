@@ -68,6 +68,11 @@
         "id": "damage-report-reactivate"
       },
       {
+        "defaultMessage": "Request Report",
+        "description": "A button to request a report for a system",
+        "id": "rnd-report-request"
+      },
+      {
         "defaultMessage": "Request Damage Report",
         "description": "A button to request a repair report for a damaged system",
         "id": "damage-report-request"
