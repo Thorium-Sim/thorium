@@ -60,7 +60,7 @@
     "cors": "^2.8.4",
     "express": "^4.16.3",
     "express-status-monitor": "^1.1.5",
-    "graphql": "^0.13.2",
+    "graphql": "^14.0.0",
     "graphql-server-express": "^1.4.0",
     "graphql-subscriptions": "^0.5.8",
     "graphql-tools": "^3.1.1",
