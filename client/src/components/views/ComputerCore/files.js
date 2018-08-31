@@ -72,7 +72,7 @@ class Files extends Component {
     return (
       <Fragment>
         <Row>
-          <Col sm={12} className="content-table">
+          <Col sm={12} className="content-table files-table">
             <Table bordered>
               <thead>
                 <tr>
@@ -105,7 +105,7 @@ class Files extends Component {
           `}
         >
           {action => (
-            <Row>
+            <Row className="restore-buttons">
               <Col sm={5}>
                 <Button
                   color="success"

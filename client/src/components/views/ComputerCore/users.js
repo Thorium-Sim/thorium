@@ -11,7 +11,7 @@ class Users extends Component {
     return (
       <Fragment>
         <Row>
-          <Col sm={12} className="content-table">
+          <Col sm={12} className="content-table users-table">
             <Table bordered>
               <thead>
                 <tr>
@@ -36,7 +36,7 @@ class Users extends Component {
             </Table>
           </Col>
         </Row>
-        <Row>
+        <Row className="control-buttons">
           <Col sm={5}>
             <Button
               color="success"

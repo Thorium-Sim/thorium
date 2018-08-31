@@ -61,6 +61,7 @@ class Terminals extends Component {
           {action => (
             <Button
               color="danger"
+              className="restart-terminal"
               disabled={!selectedTerminal}
               onClick={() => {
                 action();
