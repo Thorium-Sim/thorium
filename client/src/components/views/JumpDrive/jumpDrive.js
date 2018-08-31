@@ -19,6 +19,28 @@ class JumpDrive extends Component {
       this.setState({ env: this.props.env });
     }
   }
+  updatePowerLevel = (action, sector, level) => {
+    const {
+      id,
+      sectors,
+      power: { power }
+    } = this.props;
+    const powerUsed = ["fore", "aft", "port", "starboard"]
+      .filter(s => s !== sector)
+      .reduce((prev, next) => prev + sectors[next].level, 0);
+    if (powerUsed + level > power && sectors[sector].level < level) return;
+    action({ variables: { id, sector, level } });
+  };
+  calculateTopPower = sector => {
+    const {
+      sectors,
+      power: { power }
+    } = this.props;
+    const powerUsed = ["fore", "aft", "port", "starboard"]
+      .filter(s => s !== sector)
+      .reduce((prev, next) => prev + sectors[next].level, 0);
+    return power - powerUsed;
+  };
   render() {
     const {
       id,
@@ -141,10 +163,9 @@ class JumpDrive extends Component {
                         powerLevels={[12]}
                         maxPower={12}
                         onChange={value =>
-                          action({
-                            variables: { id, sector: "aft", level: value }
-                          })
+                          this.updatePowerLevel(action, "aft", value)
                         }
+                        topPower={this.calculateTopPower("aft")}
                         label={
                           <FormattedMessage
                             defaultMessage="Aft"
@@ -157,10 +178,9 @@ class JumpDrive extends Component {
                         powerLevels={[12]}
                         maxPower={12}
                         onChange={value =>
-                          action({
-                            variables: { id, sector: "port", level: value }
-                          })
+                          this.updatePowerLevel(action, "port", value)
                         }
+                        topPower={this.calculateTopPower("port")}
                         label={
                           <FormattedMessage
                             defaultMessage="Port"
@@ -175,10 +195,9 @@ class JumpDrive extends Component {
                         powerLevels={[12]}
                         maxPower={12}
                         onChange={value =>
-                          action({
-                            variables: { id, sector: "fore", level: value }
-                          })
+                          this.updatePowerLevel(action, "fore", value)
                         }
+                        topPower={this.calculateTopPower("fore")}
                         label={
                           <FormattedMessage
                             defaultMessage="Fore"
@@ -191,10 +210,9 @@ class JumpDrive extends Component {
                         powerLevels={[12]}
                         maxPower={12}
                         onChange={value =>
-                          action({
-                            variables: { id, sector: "starboard", level: value }
-                          })
+                          this.updatePowerLevel(action, "starboard", value)
                         }
+                        topPower={this.calculateTopPower("starboard")}
                         label={
                           <FormattedMessage
                             defaultMessage="Starboard"
@@ -211,7 +229,6 @@ class JumpDrive extends Component {
           </Col>
           <Col sm={3} className="flex-column">
             <h3 className="text-center">
-              {" "}
               <FormattedMessage
                 defaultMessage="Envelope Stress"
                 id="jump-drive-sector-envelope-stress"

@@ -33,14 +33,16 @@ class PowerLine extends Component {
     this.props.onChange && this.props.onChange(this.state.power);
   };
   mouseMove = e => {
-    const { maxPower } = this.props;
+    const { maxPower, topPower } = this.props;
     const {
       dimensions: { left, width }
     } = this.state;
     const mouseX = e.pageX || e.touches[0].pageX;
     const boxWidth = width / (maxPower - 1) - 4;
+    const newPower = Math.floor((mouseX - left) / boxWidth) - 1;
+    if (newPower > topPower) return;
     this.setState({
-      power: Math.floor((mouseX - left) / boxWidth) - 1
+      power: newPower
     });
   };
   render() {
