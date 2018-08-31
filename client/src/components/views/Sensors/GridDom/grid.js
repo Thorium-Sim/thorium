@@ -10,7 +10,9 @@ function distance3d(coord2, coord1) {
   let { x: x2, y: y2, z: z2 } = coord2;
   return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
 }
-
+function compareLocs(loc1, loc2) {
+  return loc1.x === loc2.x && loc1.y === loc2.y && loc1.z === loc2.z;
+}
 class InnerGrid extends Component {
   state = { sContacts: {} };
   interval = 1000 / 30;
@@ -19,6 +21,32 @@ class InnerGrid extends Component {
   }
   componentWillUnmount() {
     clearTimeout(this.contactTimeout);
+  }
+  componentDidUpdate(prevProps) {
+    // Grab the contacts props and update the locations as necessary
+    const { contacts = [] } = this.props;
+    const { contacts: prevContacts = [] } = prevProps;
+    const { sContacts } = this.state;
+    const newContacts = Object.keys(sContacts)
+      .map(c => contacts.find(cc => cc.id === c))
+      .filter(Boolean)
+      .filter(c => {
+        const p = prevContacts.find(p => p.id === c.id);
+        if (!p) return false;
+        return (
+          !compareLocs(p.destination, c.destination) ||
+          !compareLocs(p.location, c.location) ||
+          !compareLocs(p.position, c.position)
+        );
+      });
+    if (newContacts.length === 0) return;
+    const updateContacts = newContacts.reduce((prev, next) => {
+      prev[next.id] = next;
+      return prev;
+    }, {});
+    this.setState(state => ({
+      sContacts: { ...state.sContacts, ...updateContacts }
+    }));
   }
   contactLoop = () => {
     this.contactTimeout = setTimeout(this.contactLoop, this.interval);
