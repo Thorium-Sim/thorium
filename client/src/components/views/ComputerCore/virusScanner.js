@@ -83,7 +83,12 @@ class VirusScanner extends Component {
       );
     }
     return (
-      <Button block color="warning" onClick={this.scan}>
+      <Button
+        block
+        color="warning"
+        className="virus-scanner"
+        onClick={this.scan}
+      >
         Scan for Viruses
       </Button>
     );

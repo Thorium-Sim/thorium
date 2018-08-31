@@ -1,4 +1,10 @@
 {
+  "1.0.2": {
+    "features":[
+      "Add Computer Core training"
+    ],
+    "fixes":[]
+  },
   "1.0.1": {
     "features": [
       "Add notifications for when railgun projectiles hit and when they are destroyed by the railgun.",
