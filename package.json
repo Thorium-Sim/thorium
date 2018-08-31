@@ -71,7 +71,7 @@
     "random-words": "^1.1.0",
     "react-dev-utils": "^5.0.2",
     "subscriptions-transport-ws": "^0.9.14",
-    "three": "^0.95.0",
+    "three": "^0.96.0",
     "unzip": "^0.1.11",
     "yauzl": "^2.10.0",
     "yazl": "^2.4.3"
