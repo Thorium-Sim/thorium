@@ -105,7 +105,7 @@ export default class StealthField extends Component {
                       block
                       onClick={action}
                     >
-                      Deactivate Stealth Field
+                      Deactivate {name}
                     </Button>
                   )}
                 </Mutation>
@@ -126,7 +126,7 @@ export default class StealthField extends Component {
                       block
                       onClick={action}
                     >
-                      Activate Stealth Field
+                      Activate {name}
                     </Button>
                   )}
                 </Mutation>

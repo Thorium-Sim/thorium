@@ -23,38 +23,42 @@ class InnerGrid extends Component {
   contactLoop = () => {
     this.contactTimeout = setTimeout(this.contactLoop, this.interval);
     const { updateContacts, locationChange, contacts = [] } = this.props;
+    const { sContacts } = this.state;
     if (updateContacts) return updateContacts();
-    const sContacts = contacts.map(this.updateContact).reduce((prev, next) => {
-      prev[next.id] = next;
-      return prev;
-    }, {});
+    const newSContacts = contacts
+      .map(this.updateContact(sContacts))
+      .reduce((prev, next) => {
+        prev[next.id] = next;
+        return prev;
+      }, {});
     this.setState({
-      sContacts
+      sContacts: newSContacts
     });
     locationChange && locationChange(sContacts);
   };
-  updateContact = c => {
+  updateContact = sContacts => c => {
+    const sContact = sContacts[c.id] || c;
     const { movement = { x: 0, y: 0, z: 0 } } = this.props;
     const x = c.locked ? 0 : movement.x / 100;
     const y = c.locked ? 0 : movement.y / 100;
     const z = c.locked ? 0 : movement.z / 100;
     const destination = {
       ...c.destination,
-      x: c.destination.x + x,
-      y: c.destination.y + y,
-      z: c.destination.z + z
+      x: sContact.destination.x + x,
+      y: sContact.destination.y + y,
+      z: sContact.destination.z + z
     };
     const location = {
       ...c.location,
-      x: c.location.x + x,
-      y: c.location.y + y,
-      z: c.location.z + z
+      x: sContact.location.x + x,
+      y: sContact.location.y + y,
+      z: sContact.location.z + z
     };
     const position = {
       ...c.position,
-      x: c.position.x + x,
-      y: c.position.y + y,
-      z: c.position.z + z
+      x: sContact.position.x + x,
+      y: sContact.position.y + y,
+      z: sContact.position.z + z
     };
     if (c.speed === 0) {
       return { ...c, destination, position, location };

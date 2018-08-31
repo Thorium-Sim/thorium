@@ -23,8 +23,8 @@ class DestinationSelect extends Component {
           {systems
             .concat()
             .sort((a, b) => {
-              if (a.type > b.type) return 1;
-              if (a.type < b.type) return -1;
+              if (a.displayName > b.displayName) return 1;
+              if (a.displayName < b.displayName) return -1;
               return 0;
             })
             .map(s => (

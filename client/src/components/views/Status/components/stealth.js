@@ -91,7 +91,7 @@ class Stealth extends Component {
                   src={src}
                   draggable="false"
                 />
-                <StealthAnimation stealthField={stealth} src={src} />
+                <StealthAnimation status {...stealth} src={src} />
               </div>
             </div>
           )}
