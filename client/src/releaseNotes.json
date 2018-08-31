@@ -1,12 +1,21 @@
 {
   "1.0.1": {
     "features": [
-      "Add notifications for when railgun projectiles hit and when they are destroyed by the railgun."
+      "Add notifications for when railgun projectiles hit and when they are destroyed by the railgun.",
+      "Added the ability to create extra system reports for R&D and Engineering"
     ],
     "fixes": [
       "A minor fix to chaging station and station set names.",
       "Improvements to the hotkey cores.",
-      "Renamed the 'Client Core' to 'Login Name Core' for more clarity. Split it's functionality into the 'Hypercard Core'."
+      "Renamed the 'Client Core' to 'Login Name Core' for more clarity. Split it's functionality into the 'Hypercard Core'.",
+      "Fixed an issue with styling on the navigation keypad.",
+      "Fixed an issue where phasers would send notifications when they are fired but they aren't charged.",
+      "Fixed how the probes are refered to on the torpedo loading and firing screen.",
+      "Stealth Field screen now shows the name of the system, so you can name it 'Cloaking Device', or whatever.",
+      "The stealth field won't appear as activated on the status screen if it's always on.",
+      "Fix the auto-movement on sensors.",
+      "When systems are R&D or Engineering 'damaged', they don't appear in the status screen list",
+      "Planets, borders, and pings won't appear as targeting contacts anymore."
     ]
   },
   "1.0.0": {
