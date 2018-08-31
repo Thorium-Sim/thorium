@@ -38,6 +38,7 @@
   "railgun-training-3": "To fire the railgun, click with your mouse on the sensor grid. A red dot will indicate where the railgun bolt will hit. You must fire very close to an incoming projectile for the bolt to hit its target.",
   "railgun-training-4": "Once an incoming projectile has been destroyed, you will see it explode and disappear.",
   "return-to-main": "Zurück zur Übersicht",
+  "rnd-report-request": "Request Report",
   "sound-player": "Sound Player",
   "upgrade-instructions": "Das Update wird im Hintergrund heruntergeladen. Warte, bis das Kommandozeilenfenster für den Thorium-Server 'Download complete' anzeigt, bevor du den Server neu startest.",
   "upgrade-warning": "Diese Version von Thorium ist veraltet. Die neueste Version ist {newVersion}. Diese Version: {oldVersion}",
