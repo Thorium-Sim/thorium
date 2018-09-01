@@ -81,14 +81,18 @@ export const ExternalsMutations = {
 export const ExternalsTypes = {
   Externals: {
     simulators() {
-      return fetch("https://thoriumsim.com/api/simulators").then(res =>
-        res.json()
-      );
+      return fetch("https://thoriumsim.com/api/simulators")
+        .then(res => res.json())
+        .catch(() => {
+          return [];
+        });
     },
     missions() {
-      return fetch("https://thoriumsim.com/api/missions").then(res =>
-        res.json()
-      );
+      return fetch("https://thoriumsim.com/api/missions")
+        .then(res => res.json())
+        .catch(() => {
+          return [];
+        });
     }
   }
 };
