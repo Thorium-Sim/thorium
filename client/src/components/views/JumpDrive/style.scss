@@ -13,15 +13,16 @@
     justify-content: center;
     position: relative;
     border-radius: 50%;
+    transition: box-shadow 0.5s ease, background-color 0.5s linear;
   }
   .ship-image {
     background-repeat: no-repeat;
     background-position: center;
     position: absolute;
-    height:100%;
-    width:100%;
-    top:0;
-    left:0;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
     transform: rotate(270deg) scale(0.75);
   }
   .spacer {
@@ -40,19 +41,29 @@
   }
   .stress-cover {
     top: 0;
-    width:100%;
-    left:0;
+    width: 100%;
+    left: 0;
     background-color: black;
     position: absolute;
-    z-index:10;
+    z-index: 10;
+    transition: height 0.5s linear;
   }
   .stress-bar {
     position: absolute;
     height: calc(100% - 2px);
     width: calc(100% - 2px);
-    top:1px;
-    left:1px;
-    background: linear-gradient(0deg, #2b1de8,     #1ddde8, #1de840,#e3e81d,#e8b71d,#e81d1d,#ff2400);
+    top: 1px;
+    left: 1px;
+    background: linear-gradient(
+      0deg,
+      #2b1de8,
+      #1ddde8,
+      #1de840,
+      #e3e81d,
+      #e8b71d,
+      #e81d1d,
+      #ff2400
+    );
   }
 }
 

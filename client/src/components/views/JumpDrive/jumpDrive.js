@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import { FormattedMessage } from "react-intl";
 import { Mutation } from "react-apollo";
@@ -41,6 +41,15 @@ class JumpDrive extends Component {
       .reduce((prev, next) => prev + sectors[next].level, 0);
     return power - powerUsed;
   };
+  canActivate = () => {
+    const { sectors } = this.props;
+    return (
+      sectors.fore.level > 0 &&
+      sectors.aft.level > 0 &&
+      sectors.starboard.level > 0 &&
+      sectors.port.level > 0
+    );
+  };
   render() {
     const {
       id,
@@ -53,7 +62,7 @@ class JumpDrive extends Component {
     const { env } = this.state;
     const sectorStates = ["fore", "aft", "port", "starboard"].map((s, i) => ({
       position: i + 1,
-      state: true,
+      state: activated,
       integrity: 1 - sectors[s].offset
     }));
     return (
@@ -81,31 +90,50 @@ class JumpDrive extends Component {
                 />
               )}
             </Mutation>
-            {activated ? (
-              <Button
-                style={{ marginTop: "50px" }}
-                block
-                size="lg"
-                color="warning"
-              >
-                <FormattedMessage
-                  defaultMessage="Deactivate"
-                  id="jump-drive-sector-deactivate"
-                />
-              </Button>
-            ) : (
-              <Button
-                style={{ marginTop: "50px" }}
-                block
-                size="lg"
-                color="warning"
-              >
-                <FormattedMessage
-                  defaultMessage="Activate"
-                  id="jump-drive-sector-activate"
-                />
-              </Button>
-            )}
+            <Mutation
+              mutation={gql`
+                mutation ActivateJumpdrive($id: ID!, $activated: Boolean!) {
+                  setJumpdriveActivated(id: $id, activated: $activated)
+                }
+              `}
+            >
+              {action => (
+                <Fragment>
+                  {activated ? (
+                    <Button
+                      style={{ marginTop: "50px" }}
+                      block
+                      size="lg"
+                      color="warning"
+                      onClick={() =>
+                        action({ variables: { id, activated: false } })
+                      }
+                    >
+                      <FormattedMessage
+                        defaultMessage="Deactivate"
+                        id="jump-drive-sector-deactivate"
+                      />
+                    </Button>
+                  ) : (
+                    <Button
+                      style={{ marginTop: "50px" }}
+                      block
+                      size="lg"
+                      disabled={!this.canActivate()}
+                      color="warning"
+                      onClick={() =>
+                        action({ variables: { id, activated: true } })
+                      }
+                    >
+                      <FormattedMessage
+                        defaultMessage="Activate"
+                        id="jump-drive-sector-activate"
+                      />
+                    </Button>
+                  )}
+                </Fragment>
+              )}
+            </Mutation>
           </Col>
           <Col sm={6}>
             <div className="flex-column">

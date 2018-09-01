@@ -47,15 +47,19 @@ const updateJumpdrive = () => {
           sendUpdate = true;
           // Increase sectors that are at too low of a power level
           // Decrease sectors that are at too high of a power level
-          const envLevel = Math.floor(j.power.powerLevels[j.env - 1] / 4);
+          const envLevel = j.activated
+            ? Math.floor(j.power.powerLevels[Math.floor(j.env) - 1] / 4)
+            : 0;
           ["fore", "aft", "starboard", "port"].forEach(sector => {
             const diff = Math.abs(j.sectors[sector].level - envLevel);
             // Quadratic incrase, linear decrease. Because I'm a meany.
-            if (j.sectors[sector].level < envLevel && j.activated)
-              j.addSectorOffset(sector, Math.pow(diff, 2) / 100);
+            if (j.sectors[sector].level < envLevel && j.activated) {
+              j.addSectorOffset(sector, Math.pow(diff, 2) / 1000);
+            }
             if (j.sectors[sector].level > envLevel)
               j.addSectorOffset(sector, (-1 * diff) / 100);
           });
+          console.log(j.sectors);
         });
       });
   });

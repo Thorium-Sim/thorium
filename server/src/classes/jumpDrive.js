@@ -9,7 +9,7 @@ class Sector {
     this.level = level;
   }
   setOffset(offset) {
-    this.offset = offset;
+    this.offset = Math.min(1, Math.max(0, offset));
   }
 }
 
@@ -56,7 +56,9 @@ export default class JumpDrive extends System {
   get stress() {
     // Get the difference between the desired levels and levels of each of the sectors.
     const sectors = ["fore", "aft", "starboard", "port"];
-    return sectors.reduce((prev, next) => prev + next.offset, 0) / 4;
+    return (
+      sectors.reduce((prev, next) => prev + this.sectors[next].offset, 0) / 4
+    );
   }
   setEnv(env) {
     this.env = env;

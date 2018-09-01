@@ -10,3 +10,4 @@ import "./engineVelocity";
 import "./tacticalMapMove";
 import "./exocomps";
 import "./computerCore";
+import "./jumpDrive";

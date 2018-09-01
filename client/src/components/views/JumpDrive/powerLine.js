@@ -39,8 +39,9 @@ class PowerLine extends Component {
     } = this.state;
     const mouseX = e.pageX || e.touches[0].pageX;
     const boxWidth = width / (maxPower - 1) - 4;
-    const newPower = Math.floor((mouseX - left) / boxWidth) - 1;
+    let newPower = Math.floor((mouseX - left) / boxWidth) - 1;
     if (newPower > topPower) return;
+    if (newPower < 0) newPower = 0;
     this.setState({
       power: newPower
     });
