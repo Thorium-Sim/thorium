@@ -86,7 +86,12 @@ export const TacticalMapSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("tacticalMapsUpdate"),
-      rootValue => !!(rootValue && rootValue.length)
+      (rootValue, { flightId }) => {
+        if (flightId) {
+          return rootValue.filter(s => s.flightId === flightId).length > 0;
+        }
+        return !!(rootValue && rootValue.length);
+      }
     )
   }
 };
