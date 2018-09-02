@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Asset } from "../../../../../helpers/assets";
 import IconMarkup from "./IconMarkup";
 
 export default class TacticalIcon extends Component {
@@ -104,30 +103,26 @@ export default class TacticalIcon extends Component {
     } = this.props;
     if (icon) {
       return (
-        <Asset asset={icon}>
-          {({ src }) => (
-            <IconMarkup
-              mouseDown={this.mouseDown}
-              destination={destination}
-              location={location}
-              movement={movement}
-              size={size}
-              objectId={objectId}
-              isSelected={isSelected}
-              rotation={rotation}
-              opacity={opacity}
-              id={id}
-              src={src}
-              font={font}
-              flash={flash}
-              flashing={flashing}
-              fontColor={fontColor}
-              fontSize={fontSize}
-              label={label}
-              core={core}
-            />
-          )}
-        </Asset>
+        <IconMarkup
+          mouseDown={this.mouseDown}
+          destination={destination}
+          location={location}
+          movement={movement}
+          size={size}
+          objectId={objectId}
+          isSelected={isSelected}
+          rotation={rotation}
+          opacity={opacity}
+          id={id}
+          src={`/assets${icon}`}
+          font={font}
+          flash={flash}
+          flashing={flashing}
+          fontColor={fontColor}
+          fontSize={fontSize}
+          label={label}
+          core={core}
+        />
       );
     }
     return (

@@ -1,9 +1,7 @@
 {
   "1.0.2": {
-    "features":[
-      "Add Computer Core training"
-    ],
-    "fixes":[]
+    "features": ["Add Computer Core training"],
+    "fixes": ["Fixes a major issue with sensor contacts not being draggable."]
   },
   "1.0.1": {
     "features": [
