@@ -46,3 +46,4 @@ export { default as ComputerCore } from "./computerCore";
 export { default as Sickbay } from "./sickbay";
 export { default as Thx } from "./thx";
 export { default as Railgun } from "./railgun";
+export { default as JumpDrive } from "./jumpDrive";

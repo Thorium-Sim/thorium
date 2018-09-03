@@ -45,6 +45,7 @@ import { SickbaySubscriptions } from "./sickbay.js";
 import { ThxSubscriptions } from "./thx.js";
 import { ThoriumSubscriptions } from "./thorium.js";
 import { RailgunSubscriptions } from "./railgun.js";
+import { JumpDriveSubscriptions } from "./jumpDrive.js";
 
 const subscriptionMap = Object.assign(
   {},
@@ -94,7 +95,8 @@ const subscriptionMap = Object.assign(
   SickbaySubscriptions,
   ThxSubscriptions,
   ThoriumSubscriptions,
-  RailgunSubscriptions
+  RailgunSubscriptions,
+  JumpDriveSubscriptions
 );
 
 export default subscriptionMap;

@@ -167,7 +167,10 @@ export class System {
           );
         }
         if (step.name === "damageTeamMessage") {
-          return widgets.indexOf("messages") > -1 && damageTeamCrew.length > 0;
+          return (
+            (components.indexOf("Messaging") || widgets.indexOf("messages")) >
+              -1 && damageTeamCrew.length > 0
+          );
         }
         if (step.name === "remoteAccess") {
           return widgets.indexOf("remote") > -1;

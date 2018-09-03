@@ -48,6 +48,7 @@ import { ThxMutations } from "./thx.js";
 import { ThoriumMutations } from "./thorium.js";
 import { ExternalsMutations } from "./externals";
 import { RailgunMutations } from "./railgun.js";
+import { JumpDriveMutations } from "./jumpDrive.js";
 
 const mutationMap = Object.assign(
   FlightStructureMutations,
@@ -98,7 +99,8 @@ const mutationMap = Object.assign(
   ThxMutations,
   ThoriumMutations,
   ExternalsMutations,
-  RailgunMutations
+  RailgunMutations,
+  JumpDriveMutations
 );
 
 export default mutationMap;
