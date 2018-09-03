@@ -23,17 +23,6 @@ const STEALTH_SUB = gql`
     }
   }
 `;
-/*
-const SYSTEMS_SUB = gql`
-  subscription SystemsUpdate($simulatorId: ID, $type: String) {
-    systemsUpdate(simulatorId: $simulatorId, type: $type) {
-      id
-      name
-      type
-      stealthFactor
-    }
-  }
-`;*/
 
 class StealthFieldCore extends Component {
   constructor(props) {
@@ -57,18 +46,6 @@ class StealthFieldCore extends Component {
     }
     if (!this.systemsSubscription && !nextProps.data.loading) {
       this.props.data.startPolling(1000);
-      /*this.systemsSubscription = nextProps.data.subscribeToMore({
-        document: SYSTEMS_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          const returnResult = Immutable.Map(previousResult);
-          return returnResult
-            .merge({ systems: subscriptionData.data.systemsUpdate })
-            .toJS();
-        }
-      });*/
     }
   }
   componentWillUnmount() {
@@ -106,38 +83,6 @@ class StealthFieldCore extends Component {
       variables
     });
   };
-  // updateActivated(e) {
-  //   const { id } = this.props.data.stealthField[0];
-  //   const mutation = gql`
-  //     mutation ToggleActivated($id: ID!, $state: Boolean!) {
-  //       setStealthActivated(id: $id, state: $state)
-  //     }
-  //   `;
-  //   const variables = {
-  //     id,
-  //     state: e.target.checked
-  //   };
-  //   this.props.client.mutate({
-  //     mutation,
-  //     variables
-  //   });
-  // }
-  // updateCharge(e) {
-  //   const { id } = this.props.data.stealthField[0];
-  //   const mutation = gql`
-  //     mutation ToggleCharge($id: ID!, $state: Boolean!) {
-  //       setStealthCharge(id: $id, state: $state)
-  //     }
-  //   `;
-  //   const variables = {
-  //     id,
-  //     state: e.target.checked
-  //   };
-  //   this.props.client.mutate({
-  //     mutation,
-  //     variables
-  //   });
-  // }
   fluxCharge = () => {
     const mutation = gql`
       mutation FluxStealth($id: ID) {
@@ -182,23 +127,6 @@ class StealthFieldCore extends Component {
     }, "");
     return (
       <Container className="targeting-core">
-        {/* <label>
-          {" "}
-          Activate{" "}
-          <input
-            checked={stealthField.activated}
-            onChange={this.updateActivated.bind(this)}
-            type="checkbox"
-          />
-        </label>
-        <label>
-          Charge{" "}
-          <input
-            checked={stealthField.charge}
-            onChange={this.updateCharge.bind(this)}
-            type="checkbox"
-          />
-        </label> */}
         <Button color="warning" size="sm" onClick={this.fluxCharge}>
           Flux
         </Button>

@@ -137,6 +137,8 @@ import ViewscreenCore from "./Viewscreen/core";
 import BattleCore from "./Battle";
 import RailgunCore from "./Railgun/core";
 import HypercardCore from "./Clients/hypercardCore";
+import ClientsCore from "./Clients/core";
+import JumpDriveCore from "./JumpDrive/core";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -350,7 +352,9 @@ export const Cores = {
   BattleCore,
   RailgunCore,
   LoginNameCore,
-  HypercardCore
+  HypercardCore,
+  JumpDriveCore,
+  ClientsCore
 };
 
 export default Views;
