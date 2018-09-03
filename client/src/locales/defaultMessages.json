@@ -170,6 +170,68 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "The {systemName} is a system which creates an envelope of spacetime around your ship. This envelope serves two purposes: 1) increasing momentum by moving the space around you; 2) decreasing time dilation effects of high velocities. In short, it helps your ship to move faster than the speed of light, getting you to your destination in shorter periods of time.",
+        "id": "jump-drive-training-1"
+      },
+      {
+        "defaultMessage": "This is where you can change the envelope size surrounding your ship. A larger envelope requires more power to maintain, but gives you room for other ships to follow you in your envelope. Make sure you have sufficient power in your system before using a higher envelope size. Click the button below to activate the {systemName}.",
+        "id": "jump-drive-training-2"
+      },
+      {
+        "defaultMessage": "There are four emitters that create your envelope, one for each side of your ship. You must ensure that each has sufficient power to operate as you travel at high speeds. As you travel at high speeds, the emitters will become stressed with the continual warping of spacetime around your ship. If they have enough power supplied, the emitters will be able to compensate for the additional stress.",
+        "id": "jump-drive-training-3"
+      },
+      {
+        "defaultMessage": "Here you can see the current size of your envelope, along with the current stress levels, represented with color. The circle background color shows the overall stress level, with blue meaning everything is fine and red meaning you are in danger of envelope collapse. Once activated, graphical representations of the individual emitter stress levels will appear, allowing you to keep track of which emitters are doing well and which need more power.",
+        "id": "jump-drive-training-4"
+      },
+      {
+        "defaultMessage": "You can also see the overall stress of the emitters here. Make sure this stays low. If the envelope collapses without being deactivated first, it could be very dangerous for you and your crew.",
+        "id": "jump-drive-training-5"
+      },
+      {
+        "defaultMessage": "Deactivate",
+        "id": "jump-drive-sector-deactivate"
+      },
+      {
+        "defaultMessage": "Activate",
+        "id": "jump-drive-sector-activate"
+      },
+      {
+        "defaultMessage": "Sector Power Adjustment",
+        "id": "jump-drive-sector-power"
+      },
+      {
+        "defaultMessage": "Power Available: {power}",
+        "id": "jump-drive-power-available"
+      },
+      {
+        "defaultMessage": "Aft",
+        "id": "jump-drive-sector-aft"
+      },
+      {
+        "defaultMessage": "Port",
+        "id": "jump-drive-sector-port"
+      },
+      {
+        "defaultMessage": "Fore",
+        "id": "jump-drive-sector-fore"
+      },
+      {
+        "defaultMessage": "Starboard",
+        "id": "jump-drive-sector-starboard"
+      },
+      {
+        "defaultMessage": "Envelope Stress",
+        "description": "The jump drive warp envelope surrounds the ship to keep it safe from subspace. This is an energy wrapper, not a stationery sender.",
+        "id": "jump-drive-sector-envelope-stress"
+      }
+    ],
+    "path": "src/components/views/JumpDrive/jumpDrive.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "The railgun is a point-defense weapon designed to destroy incoming projectiles. This screen is where you load bolts into the railgun.",
         "id": "railgun-loader-training-1"
       },
