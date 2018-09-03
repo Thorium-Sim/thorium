@@ -48,3 +48,4 @@ import "./sickbay.js";
 import "./thx.js";
 import "./thorium.js";
 import "./railgun.js";
+import "./jumpDrive.js";

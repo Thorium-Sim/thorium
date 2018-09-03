@@ -37,6 +37,7 @@ class BattleCore extends Component {
   };
   render() {
     const { contacts, simulator, sensors } = this.props;
+    if (!sensors) return <p>No Sensors</p>;
     return (
       <div className="battle-core">
         <div className="flex-row flex-start">

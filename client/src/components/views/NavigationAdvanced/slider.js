@@ -46,14 +46,9 @@ export default class Slider extends Component {
   };
   mouseMove = evt => {
     const bounds = ReactDOM.findDOMNode(this).getBoundingClientRect();
+    const y = evt.clientY || (evt.touches ? evt.touches[0].clientY : 0);
     const level = Math.abs(
-      Math.min(
-        1,
-        Math.max(
-          0,
-          ((evt.clientY || evt.touches[0].clientY) - bounds.top) / bounds.height
-        )
-      ) - 1
+      Math.min(1, Math.max(0, (y - bounds.top) / bounds.height)) - 1
     );
     this.setState({ level: Math.max(0, level) });
     this.triggerChange(level);
