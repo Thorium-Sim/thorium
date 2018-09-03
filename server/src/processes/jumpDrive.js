@@ -59,7 +59,6 @@ const updateJumpdrive = () => {
             if (j.sectors[sector].level > envLevel)
               j.addSectorOffset(sector, (-1 * diff) / 100);
           });
-          console.log(j.sectors);
         });
       });
   });

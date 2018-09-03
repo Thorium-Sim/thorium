@@ -3,8 +3,10 @@ import { Container, Row, Col, Button } from "reactstrap";
 import { FormattedMessage } from "react-intl";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import Tour from "../../../helpers/tourHelper";
 import Slider from "../NavigationAdvanced/slider.js";
 import PowerLine from "./powerLine";
+import DamageOverlay from "../helpers/DamageOverlay";
 import { throttle } from "../../../helpers/debounce";
 import shieldStyle from "../ShieldControl/shieldStyle";
 
@@ -14,6 +16,58 @@ const throttleUpdate = throttle(
 );
 class JumpDrive extends Component {
   state = { env: this.props.env };
+  trainingSteps = () => {
+    const { displayName } = this.props;
+    return [
+      {
+        selector: ".nothing",
+        content: (
+          <FormattedMessage
+            id="jump-drive-training-1"
+            defaultMessage="The {systemName} is a system which creates an envelope of spacetime around your ship. This envelope serves two purposes: 1) increasing momentum by moving the space around you; 2) decreasing time dilation effects of high velocities. In short, it helps your ship to move faster than the speed of light, getting you to your destination in shorter periods of time."
+            values={{ systemName: displayName }}
+          />
+        )
+      },
+      {
+        selector: ".slider-bar",
+        content: (
+          <FormattedMessage
+            id="jump-drive-training-2"
+            defaultMessage="This is where you can change the envelope size surrounding your ship. A larger envelope requires more power to maintain, but gives you room for other ships to follow you in your envelope. Make sure you have sufficient power in your system before using a higher envelope size. Click the button below to activate the {systemName}."
+            values={{ systemName: displayName }}
+          />
+        )
+      },
+      {
+        selector: ".power-adjustments",
+        content: (
+          <FormattedMessage
+            id="jump-drive-training-3"
+            defaultMessage="There are four emitters that create your envelope, one for each side of your ship. You must ensure that each has sufficient power to operate as you travel at high speeds. As you travel at high speeds, the emitters will become stressed with the continual warping of spacetime around your ship. If they have enough power supplied, the emitters will be able to compensate for the additional stress."
+          />
+        )
+      },
+      {
+        selector: ".ship-holder",
+        content: (
+          <FormattedMessage
+            id="jump-drive-training-4"
+            defaultMessage="Here you can see the current size of your envelope, along with the current stress levels, represented with color. The circle background color shows the overall stress level, with blue meaning everything is fine and red meaning you are in danger of envelope collapse. Once activated, graphical representations of the individual emitter stress levels will appear, allowing you to keep track of which emitters are doing well and which need more power."
+          />
+        )
+      },
+      {
+        selector: ".stress-container",
+        content: (
+          <FormattedMessage
+            id="jump-drive-training-5"
+            defaultMessage="You can also see the overall stress of the emitters here. Make sure this stays low. If the envelope collapses without being deactivated first, it could be very dangerous for you and your crew."
+          />
+        )
+      }
+    ];
+  };
   componentDidUpdate(prevProps) {
     if (prevProps.env !== this.props.env) {
       this.setState({ env: this.props.env });
@@ -57,7 +111,8 @@ class JumpDrive extends Component {
       sectors,
       stress,
       activated,
-      power: { power }
+      damage,
+      power: { power, powerLevels }
     } = this.props;
     const { env } = this.state;
     const sectorStates = ["fore", "aft", "port", "starboard"].map((s, i) => ({
@@ -67,6 +122,10 @@ class JumpDrive extends Component {
     }));
     return (
       <Container fluid className="card-jumpDrive">
+        <DamageOverlay
+          system={{ damage, power: { power, powerLevels } }}
+          message={`Jump Drive Offline`}
+        />
         <Row>
           <Col sm={3} style={{ height: "80%" }}>
             <Mutation
@@ -185,7 +244,7 @@ class JumpDrive extends Component {
                 `}
               >
                 {action => (
-                  <Row>
+                  <Row className="power-adjustments">
                     <Col sm={6}>
                       <PowerLine
                         powerLevels={[12]}
@@ -272,6 +331,7 @@ class JumpDrive extends Component {
             </div>
           </Col>
         </Row>
+        <Tour steps={this.trainingSteps()} client={this.props.clientObj} />
       </Container>
     );
   }

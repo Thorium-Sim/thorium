@@ -11,6 +11,7 @@ name
 displayName
 power {
   power
+  powerLevels
 }
 damage {
   damaged
