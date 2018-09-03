@@ -263,6 +263,7 @@ class LongRangeComm extends Component {
     const messages = this.props.data.longRangeCommunications[0].messages;
     const messageObj = messages.find(m => m.id === this.state.selectedMessage);
     const { scanProgress, satellites } = this.state;
+    const messageText = messageObj && this.encrypt(messageObj);
     return (
       <Row className="long-range-comm">
         <SubscriptionHelper
@@ -318,7 +319,7 @@ class LongRangeComm extends Component {
                     }
                     selectedSat={this.state.selectedSat}
                     messageLoc={this.state.messageLoc}
-                    messageText={this.state.messageText}
+                    messageText={messageText}
                     satellites={satellites}
                     scanProgress={scanProgress}
                     {...this.state.dimensions}
@@ -377,7 +378,7 @@ class LongRangeComm extends Component {
                 </Col>
               </Row>
             )}
-          <MessageBox message={messageObj && this.encrypt(messageObj)} />
+          <MessageBox message={messageText} />
         </Col>
         <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Row>
