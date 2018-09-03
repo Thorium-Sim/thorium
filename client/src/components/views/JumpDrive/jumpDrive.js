@@ -24,7 +24,7 @@ class JumpDrive extends Component {
         content: (
           <FormattedMessage
             id="jump-drive-training-1"
-            defaultMessage="The {systemName} is a system which creates an envelope of spacetime around your ship. This envelope serves two purposes: 1) increasing momentum by moving the space around you; 2) decreasing time dilation effects of high velocities. In short, it helps your ship to move faster than the speed of light, getting you to your destination in shorter periods of time."
+            defaultMessage="The {systemName} is a system which creates an envelope of spacetime around your ship. This envelope serves two purposes: 1) increasing momentum by moving the space around you; 2) decreasing time dilation effects of high velocities. In short, it helps your ship to move faster than the speed of light, getting you to your destination in shorter periods of time. Note that you must use your conventional engines in conjunction with the {systemName}. The {systemName} does not provide propulsion to your ship."
             values={{ systemName: displayName }}
           />
         )

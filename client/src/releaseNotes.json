@@ -1,4 +1,16 @@
 {
+  "1.0.3": {
+    "features": [
+      "Added additional German translations (Thanks aBlueShadow!)",
+      "Added the Jump Drive, a supplement to regular engines."
+    ],
+    "fixes": [
+      "Tactical map icons should start animating movement immediately and shouldn't snap to their end position so quickly.",
+      "Fixed the broken Phoenix viewscreen layout.",
+      "Fixed issues with the scaling of tactical maps on viewscreens.",
+      "Long Range Messages now show as encrypted on the animation when sent through Long Range Messages"
+    ]
+  },
   "1.0.2": {
     "features": ["Add Computer Core training"],
     "fixes": ["Fixes a major issue with sensor contacts not being draggable."]
