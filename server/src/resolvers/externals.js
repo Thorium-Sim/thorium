@@ -83,16 +83,12 @@ export const ExternalsTypes = {
     simulators() {
       return fetch("https://thoriumsim.com/api/simulators")
         .then(res => res.json())
-        .catch(() => {
-          return [];
-        });
+        .catch(() => []);
     },
     missions() {
       return fetch("https://thoriumsim.com/api/missions")
         .then(res => res.json())
-        .catch(() => {
-          return [];
-        });
+        .catch(() => []);
     }
   }
 };
