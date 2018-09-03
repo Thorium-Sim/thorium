@@ -12,7 +12,7 @@ function distance3d(coord2, coord1) {
 const moveContact = (dest, loc, speed, frozen, i) => {
   if (speed > 100) return dest;
   if (speed === 0 || frozen) return loc;
-  if (distance3d(dest, loc) < 0.005) {
+  if (distance3d(dest, loc) < 0.001) {
     return dest;
   }
   const locVec = new THREE.Vector3(loc.x, loc.y, loc.z);
