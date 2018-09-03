@@ -22,6 +22,10 @@ export default class Shield extends System {
     this.state = false;
     super.break(report, destroyed, which);
   }
+  repair() {
+    super.repair();
+    this.integrity = 1;
+  }
   setPower(powerLevel) {
     if (
       this.power.powerLevels.length &&
@@ -39,7 +43,7 @@ export default class Shield extends System {
   setIntegrity(integrity) {
     this.integrity = Math.min(1, Math.max(0, integrity));
     if (this.integrity === 0) {
-      this.state = false;
+      this.break();
     }
   }
   setFrequency(frequency) {
