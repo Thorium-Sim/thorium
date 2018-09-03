@@ -228,12 +228,7 @@ export class System {
         }
         return false;
       });
-    console.log(
-      defaultOptionalSteps
-        .concat(this.optionalDamageSteps)
-        .concat(sim.optionalDamageSteps)
-    );
-    console.log(optionalSteps);
+
     let stepIteration = 0;
 
     // Start with a damage team, if possible
