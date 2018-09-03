@@ -1,4 +1,7 @@
 {
+  "1.0.4": {
+    "fixes": "You can no longer request damage reports that have already been requested."
+  },
   "1.0.3": {
     "features": [
       "Added additional German translations (Thanks aBlueShadow!)",
