@@ -8,6 +8,7 @@ const SICKBAY_QUERY = gql`
   query Sickbay($id: ID!) {
     sickbaySingle(id: $id) {
       id
+      autoFinishDecon
       bunks {
         id
       }
@@ -54,6 +55,27 @@ const Sickbay = props => {
                   </Mutation>
                 </Label>
               </FormGroup>
+              <label>
+                <Mutation
+                  mutation={gql`
+                    mutation AutoDecon($id: ID!, $finish: Boolean!) {
+                      setDeconAutoFinish(id: $id, finish: $finish)
+                    }
+                  `}
+                  refetchQueries={[{ query: SICKBAY_QUERY, variables: { id } }]}
+                >
+                  {action => (
+                    <input
+                      type="checkbox"
+                      checked={sickbay.autoFinishDecon}
+                      onChange={e =>
+                        action({ variables: { id, finish: e.target.checked } })
+                      }
+                    />
+                  )}
+                </Mutation>{" "}
+                Auto-finish Decon Program
+              </label>
             </div>
           );
         }}
