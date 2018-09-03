@@ -167,7 +167,10 @@ export class System {
           );
         }
         if (step.name === "damageTeamMessage") {
-          return widgets.indexOf("messages") > -1 && damageTeamCrew.length > 0;
+          return (
+            (components.indexOf("Messaging") || widgets.indexOf("messages")) >
+              -1 && damageTeamCrew.length > 0
+          );
         }
         if (step.name === "remoteAccess") {
           return widgets.indexOf("remote") > -1;
@@ -225,7 +228,12 @@ export class System {
         }
         return false;
       });
-
+    console.log(
+      defaultOptionalSteps
+        .concat(this.optionalDamageSteps)
+        .concat(sim.optionalDamageSteps)
+    );
+    console.log(optionalSteps);
     let stepIteration = 0;
 
     // Start with a damage team, if possible
