@@ -151,7 +151,7 @@ App.on("setCoordinateTargeting", ({ id, which }) => {
   );
 });
 
-App.on("clearAllContacts", ({ id }) => {
+App.on("clearAllTargetingContacts", ({ id }) => {
   const system = App.systems.find(s => s.id === id);
   system.contacts = [];
   system.classes = [];
@@ -169,6 +169,15 @@ App.on("clearAllContacts", ({ id }) => {
 App.on("setTargetingRange", ({ id, range }) => {
   const system = App.systems.find(s => s.id === id);
   system.setRange(range);
+  pubsub.publish(
+    "targetingUpdate",
+    App.systems.filter(s => s.type === "Targeting")
+  );
+});
+
+App.on("setTargetingClasses", ({ id, classInput }) => {
+  const system = App.systems.find(s => s.id === id);
+  classInput.forEach(c => system.addTargetClass(c));
   pubsub.publish(
     "targetingUpdate",
     App.systems.filter(s => s.type === "Targeting")

@@ -4,7 +4,7 @@ import { Container, Row, Col, Button, Media } from "reactstrap";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import { OutputField } from "../../generic/core";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-import TargetingContact from "./coreTargetingContact";
+import CoreTargets from "./coreTargets";
 import { publish } from "../helpers/pubsub";
 import "./style.scss";
 
@@ -60,7 +60,7 @@ const TARGETING_QUERY = gql`
 `;
 
 class TargetingCore extends Component {
-  _addTargetClass() {
+  _addTargetClass = () => {
     const targeting = this.props.data.targeting[0];
     const mutation = gql`
       mutation AddTargetClass($id: ID!, $classInput: TargetClassInput!) {
@@ -80,8 +80,8 @@ class TargetingCore extends Component {
       mutation,
       variables
     });
-  }
-  _removeTargetedContact(targetId) {
+  };
+  _removeTargetedContact = targetId => {
     const targeting = this.props.data.targeting[0];
     const mutation = gql`
       mutation RemoveTarget($id: ID!, $targetId: ID!) {
@@ -96,7 +96,7 @@ class TargetingCore extends Component {
       mutation,
       variables
     });
-  }
+  };
   _setCoordinateTargeting = evt => {
     const targeting = this.props.data.targeting[0];
     const mutation = gql`
@@ -150,12 +150,6 @@ class TargetingCore extends Component {
     const targeting = this.props.data.targeting[0];
     if (!targeting) return <p>No Targeting Systems</p>;
     const targetedContact = targeting.contacts.find(t => t.targeted);
-    let contactClass;
-    let contactId;
-    if (targetedContact) {
-      contactClass = targetedContact.class;
-      contactId = targetedContact.id;
-    }
     return (
       <Container className="targeting-core">
         <SubscriptionHelper
@@ -177,7 +171,7 @@ class TargetingCore extends Component {
             <Mutation
               mutation={gql`
                 mutation ClearAll($id: ID!) {
-                  clearAllContacts(id: $id)
+                  clearAllTargetingContacts(id: $id)
                 }
               `}
               variables={{ id: targeting.id }}
@@ -258,57 +252,12 @@ class TargetingCore extends Component {
             )}
           </div>
         ) : (
-          <div className="contact-targeting">
-            <Row>
-              <Col sm={8}>
-                <OutputField alert={targetedContact}>
-                  {targetedContact && targetedContact.system}
-                </OutputField>
-              </Col>
-              <Col sm={4}>
-                <Button
-                  color="danger"
-                  disabled={!targetedContact}
-                  size="sm"
-                  block
-                  onClick={this._removeTargetedContact.bind(this, contactId)}
-                >
-                  Destroy
-                </Button>
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={4}>Count</Col>
-              <Col sm={1}>Icon</Col>
-              <Col sm={1}>Pic</Col>
-              <Col sm={4}>Label</Col>
-              <Col sm={1}>Moving</Col>
-              <Col sm={1} />
-            </Row>
-            <div className="targets-container">
-              {targeting.classes.map(t => (
-                <TargetingContact
-                  key={t.id}
-                  {...t}
-                  targetingId={targeting.id}
-                  contacts={targeting.contacts}
-                  contactClass={contactClass}
-                />
-              ))}
-            </div>
-            <Row>
-              <Col sm={12}>
-                <Button
-                  size={"sm"}
-                  block
-                  color="success"
-                  onClick={this._addTargetClass.bind(this)}
-                >
-                  Add Targets
-                </Button>
-              </Col>
-            </Row>
-          </div>
+          <CoreTargets
+            targetedContact={targetedContact}
+            removeTargetedContact={this._removeTargetedContact}
+            addTargetClass={this._addTargetClass}
+            targeting={targeting}
+          />
         )}
       </Container>
     );
