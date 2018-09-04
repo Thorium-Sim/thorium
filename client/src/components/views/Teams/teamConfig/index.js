@@ -95,7 +95,14 @@ const TeamConfig = ({
               size="lg"
               color="success"
               className="create-button recall-button"
-              disabled={!team.id || team.officers.length === 0}
+              disabled={
+                !team.id ||
+                team.officers.length === 0 ||
+                !team.name ||
+                !team.location ||
+                !team.orders ||
+                !team.priority
+              }
               onClick={() => {
                 createTeam(team);
               }}
@@ -121,7 +128,14 @@ const TeamConfig = ({
               block
               size="lg"
               color="success"
-              disabled={!team.id || team.officers.length === 0}
+              disabled={
+                !team.id ||
+                team.officers.length === 0 ||
+                !team.name ||
+                !team.location ||
+                !team.orders ||
+                !team.priority
+              }
               className="create-button recall-button"
               onClick={() => {
                 commitTeam(team);

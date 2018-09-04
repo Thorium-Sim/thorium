@@ -23,7 +23,7 @@ export const ActionsSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("actionsUpdate"),
-      (rootValue, { simulatorId, stationId, clientId }) => {
+      (rootValue, { simulatorId, stationId, clientId, clients, stations }) => {
         const {
           simulatorId: toSimulator,
           stationId: toStation,
@@ -33,11 +33,15 @@ export const ActionsSubscriptions = {
         if (
           toStation === "all" ||
           toClient === "all" ||
-          (toStation === stationId && toStation && stationId) ||
-          (toClient === clientId && toClient && clientId)
+          stations.indexOf(toStation) > -1 ||
+          clients.indexOf(toClient)
         ) {
+          console.log(toStation, toClient, stationId, clientId);
+          console.log("Triggering!");
           return true;
         }
+        console.log("NOT Triggering!");
+
         return false;
       }
     )

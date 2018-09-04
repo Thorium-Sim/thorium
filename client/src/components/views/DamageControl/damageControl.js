@@ -334,7 +334,7 @@ class DamageControl extends Component {
                   <Button
                     block
                     className="request-report"
-                    disabled={!selectedSystem}
+                    disabled={!selectedSystem || damagedSystem.damage.requested}
                     onClick={action}
                     color="primary"
                   >
