@@ -46,7 +46,9 @@ const MOVIE_QUERY = gql`
 class ActionsCore extends Component {
   constructor(props) {
     super(props);
-    this.voices = window.speechSynthesis.getVoices() || [];
+    this.voices = window.speechSynthesis
+      ? window.speechSynthesis.getVoices()
+      : [];
 
     this.state = {
       actionName: "flash",

@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import { FormGroup, Label, Input } from "reactstrap";
-const voices = window.speechSynthesis.getVoices() || [];
+const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
 
 const SOUNDS_QUERY = gql`
   query Sounds {
