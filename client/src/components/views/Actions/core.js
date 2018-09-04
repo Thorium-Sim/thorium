@@ -417,6 +417,7 @@ class ActionsCore extends Component {
           <select onChange={this.handleDestChange} ref="actionDest">
             <optgroup>
               <option value="all">All Stations</option>
+              <option value="bridge">Bridge Stations</option>
               <option value="random">Random Station</option>
             </optgroup>
             <optgroup>
@@ -428,6 +429,9 @@ class ActionsCore extends Component {
                     {s.name}
                   </option>
                 ))}
+            </optgroup>
+            <optgroup>
+              <option value="Viewscreen">Viewscreen</option>
             </optgroup>
           </select>
         </div>

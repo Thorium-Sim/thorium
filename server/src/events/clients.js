@@ -131,22 +131,24 @@ App.on("setClientHypercard", ({ clientId, simulatorId, component }) => {
   });
   pubsub.publish("clientChanged", App.clients);
 });
-App.on("playSound", ({ sound, station, simulatorId, clientId }) => {
-  let clients;
-  let stationObj = station || "all";
-  if (station === "random") {
-    const sim = App.simulators.find(s => s.id === simulatorId);
-    if (sim) {
-      stationObj = randomFromList(sim.stations).name;
+App.on("playSound", ({ sound, station, simulatorId, clientId, clients }) => {
+  if (!clients) {
+    let stationObj = station || "all";
+    if (station === "random") {
+      const sim = App.simulators.find(s => s.id === simulatorId);
+      if (sim) {
+        stationObj = randomFromList(sim.stations).name;
+      }
     }
+    clients = App.clients.filter(
+      c =>
+        (c.simulatorId === simulatorId &&
+          (c.station === stationObj || stationObj === "all")) ||
+        c.id === clientId
+    );
+    clients = clients.map(c => c.id);
   }
-  clients = App.clients.filter(
-    c =>
-      (c.simulatorId === simulatorId &&
-        (c.station === stationObj || stationObj === "all")) ||
-      c.id === clientId
-  );
-  clients = clients.map(c => c.id);
+  console.log(station, clients, sound);
   const soundObj = new Sound(sound);
   soundObj.clients = soundObj.clients.concat(clients);
   if (soundObj.looping) {
