@@ -148,7 +148,6 @@ App.on("playSound", ({ sound, station, simulatorId, clientId, clients }) => {
     );
     clients = clients.map(c => c.id);
   }
-  console.log(station, clients, sound);
   const soundObj = new Sound(sound);
   soundObj.clients = soundObj.clients.concat(clients);
   if (soundObj.looping) {

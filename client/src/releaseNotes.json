@@ -1,6 +1,10 @@
 {
   "1.0.4": {
-    "fixes": "You can no longer request damage reports that have already been requested."
+    "features": [],
+    "fixes": [
+      "You can no longer request damage reports that have already been requested.",
+      "Improved the actions macro to support more destinations and actions."
+    ]
   },
   "1.0.3": {
     "features": [

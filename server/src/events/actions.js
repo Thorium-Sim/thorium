@@ -6,7 +6,6 @@ App.on("triggerAction", args => {
   args.stationId = args.stationId || "all";
   let clients = [];
   let stations = [];
-  console.log(args);
   const bridgeStations = App.simulators
     .find(s => s.id === args.simulatorId)
     .stations.map(s => s.name);
