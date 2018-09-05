@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container, Row, Col, Card } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import SubscriptionHelper from "../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./setConfig.scss";
 

@@ -4,7 +4,7 @@ import { InputField } from "../../generic/core";
 import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
 import "./style.scss";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const MESSAGES_SUB = gql`
   subscription LRDecoding($simulatorId: ID) {

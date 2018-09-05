@@ -1,5 +1,5 @@
 import React from "react";
-import Views from "../views";
+import Views from "components/views";
 import CardHolder from "./CardHolder";
 
 export default function renderCards(props) {

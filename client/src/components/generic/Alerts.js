@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
-import { subscribe } from "../views/helpers/pubsub";
+import { subscribe } from "helpers/pubsub";
 // Speech Handling
 const synth = window.speechSynthesis;
 const holderStyle = {

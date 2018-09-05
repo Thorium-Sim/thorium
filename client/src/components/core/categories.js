@@ -1,4 +1,4 @@
-import { Cores } from "../views";
+import { Cores } from "components/views";
 
 const categories = [
   {

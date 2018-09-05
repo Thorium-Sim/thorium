@@ -3,9 +3,9 @@ import gql from "graphql-tag";
 import { Container, Row, Col, Button, Media } from "reactstrap";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import { OutputField } from "../../generic/core";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import TargetingContact from "./coreTargetingContact";
-import { publish } from "../helpers/pubsub";
+import { publish } from "helpers/pubsub";
 import "./style.scss";
 
 const queryData = `id

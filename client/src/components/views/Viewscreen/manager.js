@@ -4,7 +4,7 @@ import { graphql, withApollo, Mutation } from "react-apollo";
 import { Label, Row, Col, Input, Button, ButtonGroup } from "reactstrap";
 import Preview, { Viewscreen } from "./index";
 import ViewscreenCardList from "./viewscreenCardList";
-import * as ViewscreenCards from "../../viewscreens";
+import * as ViewscreenCards from "components/viewscreens";
 
 import "./style.scss";
 

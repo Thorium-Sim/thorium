@@ -1,6 +1,6 @@
 import React from "react";
 import { Input } from "reactstrap";
-import FileExplorer from "../../views/TacticalMap/fileExplorer";
+import FileExplorer from "components/views/TacticalMap/fileExplorer";
 export default ({ data, updateData, simple }) => (
   <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
     <label>Name</label>

@@ -8,7 +8,6 @@ import {
   Button,
   ButtonGroup
 } from "reactstrap";
-import { Asset } from "../../../../helpers/assets";
 import FileExplorer from "../../TacticalMap/fileExplorer";
 
 export default class ContactContextMenu extends Component {
@@ -66,44 +65,35 @@ export default class ContactContextMenu extends Component {
                 <Row>
                   <Col sm={6}>
                     <Label for="iconSelect">Icon</Label>
-                    <Asset fail asset={contact.icon}>
-                      {({ src }) => (
-                        <img
-                          alt={"Contact"}
-                          style={{
-                            width: "100%",
-                            minHeight: "20px",
-                            minWidth: "20px",
-                            maxHeight: "50px",
-                            maxWidth: "50px",
-                            backgroundColor: "rgba(20,20,50,0.5)"
-                          }}
-                          src={src}
-                          onClick={() => this.setState({ pickingIcon: true })}
-                        />
-                      )}
-                    </Asset>
+
+                    <img
+                      alt={"Contact"}
+                      style={{
+                        width: "100%",
+                        minHeight: "20px",
+                        minWidth: "20px",
+                        maxHeight: "50px",
+                        maxWidth: "50px",
+                        backgroundColor: "rgba(20,20,50,0.5)"
+                      }}
+                      src={`/assets${contact.icon}`}
+                      onClick={() => this.setState({ pickingIcon: true })}
+                    />
                   </Col>
                   <Col sm={6}>
                     <Label for="iconSelect">Picture</Label>
-                    <Asset fail asset={contact.picture}>
-                      {({ src }) => (
-                        <img
-                          alt={"Contact"}
-                          style={{
-                            width: "100%",
-                            minHeight: "20px",
-                            maxHeight: "50px",
-                            maxWidth: "50px",
-                            backgroundColor: "rgba(20,20,50,0.5)"
-                          }}
-                          src={src}
-                          onClick={() =>
-                            this.setState({ pickingPicture: true })
-                          }
-                        />
-                      )}
-                    </Asset>
+                    <img
+                      alt={"Contact"}
+                      style={{
+                        width: "100%",
+                        minHeight: "20px",
+                        maxHeight: "50px",
+                        maxWidth: "50px",
+                        backgroundColor: "rgba(20,20,50,0.5)"
+                      }}
+                      src={`/assets${contact.picture}`}
+                      onClick={() => this.setState({ pickingPicture: true })}
+                    />
                   </Col>
                 </Row>
               </FormGroup>

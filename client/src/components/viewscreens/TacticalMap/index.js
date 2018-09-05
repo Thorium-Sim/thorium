@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Preview from "../../views/TacticalMap/preview";
-//import { Asset } from "../../../helpers/assets";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import Preview from "components/views/TacticalMap/preview";
+//import { Asset } from "helpers/assets";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 //import "./style.scss";
 

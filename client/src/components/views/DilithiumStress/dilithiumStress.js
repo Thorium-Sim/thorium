@@ -4,7 +4,7 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import Bars from "../TractorBeam/bars";
 import Platform from "./platform";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 class DilithiumStress extends Component {
   constructor(props) {
     super(props);

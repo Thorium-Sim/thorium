@@ -1,5 +1,5 @@
 import React from "react";
-import Crew from "../../../../components/views/Crew/core";
+import Crew from "components/views/Crew/core";
 
 const CrewWrapped = ({ selectedSimulator: sim }) => {
   return (

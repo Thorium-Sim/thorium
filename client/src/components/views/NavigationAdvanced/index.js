@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card } from "reactstrap";
-import { Asset } from "../../../helpers/assets";
-import { throttle } from "../../../helpers/debounce";
+import { Asset } from "helpers/assets";
+import { throttle } from "helpers/debounce";
 import AnimatedNumber from "react-animated-number";
 import Slider from "./slider";
 import ThrusterRotor from "./thrusterRotor";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const sliderColors = [

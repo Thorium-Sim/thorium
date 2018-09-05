@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { Tooltip, Button } from "reactstrap";
-import { Widgets } from "../../views";
+import { Widgets } from "components/views";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 import Measure from "react-measure";
 
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 import "./widgets.scss";
 const WIDGET_NOTIFY = gql`
   subscription WidgetNotify($simulatorId: ID!, $station: String) {

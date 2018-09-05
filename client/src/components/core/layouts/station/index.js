@@ -12,7 +12,7 @@ import {
   Input
 } from "reactstrap";
 import FontAwesome from "react-fontawesome";
-import Views, { Widgets } from "../../../views/index";
+import Views, { Widgets } from "components/views/index";
 import { titleCase } from "change-case";
 import ExtraMessageGroups from "./messageGroups";
 

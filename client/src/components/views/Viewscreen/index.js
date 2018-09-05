@@ -1,8 +1,8 @@
 import React, { Fragment, Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import * as ViewscreenCards from "../../viewscreens";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import * as ViewscreenCards from "components/viewscreens";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 

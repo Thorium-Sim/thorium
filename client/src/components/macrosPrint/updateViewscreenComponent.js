@@ -1,6 +1,6 @@
 import React from "react";
 import { FormGroup } from "reactstrap";
-import { Asset } from "../../helpers/assets";
+
 export default ({ args = `{"data":{}}` }) => {
   const data = args.data ? JSON.parse(args.data) : {};
   return (
@@ -18,11 +18,7 @@ export default ({ args = `{"data":{}}` }) => {
         {Object.keys(data).map(
           k =>
             k === "asset" ? (
-              <Asset asset={data[k]}>
-                {({ src }) => (
-                  <video muted style={{ width: "50%" }} src={src} />
-                )}
-              </Asset>
+              <video muted style={{ width: "50%" }} src={`/assets${data[k]}`} />
             ) : (
               <li key={k}>
                 <strong>{k}: </strong>

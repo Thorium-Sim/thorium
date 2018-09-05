@@ -5,7 +5,7 @@ import { Container, Row, Col, Button, Input } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { OutputField, TypingField } from "../../generic/core";
 import "./style.scss";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const NAVIGATION_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {

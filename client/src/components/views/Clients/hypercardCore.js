@@ -5,7 +5,7 @@ import gql from "graphql-tag";
 import { Input } from "reactstrap";
 import { titleCase } from "change-case";
 import Views from "../index";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const queryData = `

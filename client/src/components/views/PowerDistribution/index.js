@@ -3,9 +3,9 @@ import gql from "graphql-tag";
 import { Row, Col, Container, Card } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 import "./style.scss";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import AnimatedNumber from "react-animated-number";
 /* TODO
 

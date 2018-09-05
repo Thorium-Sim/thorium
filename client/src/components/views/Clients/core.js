@@ -2,7 +2,7 @@ import React from "react";
 import { Table } from "reactstrap";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const queryData = `

@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
-import Tour from "../../../helpers/tourHelper";
-import { Asset } from "../../../helpers/assets";
+import Tour from "helpers/tourHelper";
+import { Asset } from "helpers/assets";
 import Decompress from "./Decompress";
 import Door from "./Door";
 import { Clamps } from "../Docking/graphics";
 import "./style.scss";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const SHUTTLE_SUB = gql`
   subscription ShuttlesUpdate($simulatorId: ID) {

@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input, Card, CardBody } from "reactstrap";
-import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
-import Tour from "../../../helpers/tourHelper";
+import { DeckDropdown, RoomDropdown } from "helpers/shipStructure";
+import Tour from "helpers/tourHelper";
 import "./style.scss";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const INVENTORY_SUB = gql`
   subscription InventoryUpdate($simulatorId: ID!) {

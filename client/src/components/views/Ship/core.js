@@ -4,7 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import { InputField } from "../../generic/core";
 import { Input, Button } from "reactstrap";
 import LayoutList from "../../layouts/list";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const layouts = LayoutList;
 

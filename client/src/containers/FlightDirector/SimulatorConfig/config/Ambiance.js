@@ -14,8 +14,8 @@ import {
 import gql from "graphql-tag";
 import { Query, Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";
-import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
-import playSound from "../../../../components/generic/SoundPlayer";
+import SubscriptionHelper from "helpers/subscriptionHelper";
+import playSound from "components/generic/SoundPlayer";
 const queryData = `
 id
 ambiance {

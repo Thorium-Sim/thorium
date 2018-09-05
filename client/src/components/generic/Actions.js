@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import uuid from "uuid";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
-import Spark from "../views/Actions/spark";
+import Spark from "components/views/Actions/spark";
 const synth = window.speechSynthesis;
 
 const ACTIONS_SUB = gql`

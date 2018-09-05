@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { FormGroup, Col, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
-import ContactContextMenu from "../views/Sensors/gridCore/contactContextMenu";
+import ContactContextMenu from "components/views/Sensors/gridCore/contactContextMenu";
 import uuid from "uuid";
-import { Asset } from "../../helpers/assets";
 
 export default class SetArmyContacts extends Component {
   state = { removeContacts: false };
@@ -56,32 +55,24 @@ export default class SetArmyContacts extends Component {
           {armyContacts.map(contact => {
             return (
               <Col key={contact.id} className={"flex-container"}>
-                <Asset asset={contact.icon}>
-                  {({ src }) => (
-                    <img
-                      alt="armyContact"
-                      onClick={() => this.selectContact(contact)}
-                      draggable="false"
-                      role="presentation"
-                      style={{ width: "30px" }}
-                      className="armyContact"
-                      src={src}
-                    />
-                  )}
-                </Asset>
-                <Asset asset={contact.picture}>
-                  {({ src }) => (
-                    <img
-                      alt="armyContactPicture"
-                      onClick={() => this.selectContact(contact)}
-                      draggable="false"
-                      role="presentation"
-                      style={{ width: "30px" }}
-                      className="armyContact"
-                      src={src}
-                    />
-                  )}
-                </Asset>
+                <img
+                  alt="armyContact"
+                  onClick={() => this.selectContact(contact)}
+                  draggable="false"
+                  role="presentation"
+                  style={{ width: "30px" }}
+                  className="armyContact"
+                  src={`/assets${contact.icon}`}
+                />
+                <img
+                  alt="armyContactPicture"
+                  onClick={() => this.selectContact(contact)}
+                  draggable="false"
+                  role="presentation"
+                  style={{ width: "30px" }}
+                  className="armyContact"
+                  src={`/assets${contact.picture}`}
+                />
                 <label onClick={() => this.selectContact(contact)}>
                   {contact.name}
                 </label>

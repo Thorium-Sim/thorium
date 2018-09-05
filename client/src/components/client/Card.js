@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Layouts from "../layouts";
-import Keyboard from "../views/Keyboard";
+import Keyboard from "components/views/Keyboard";
 import ActionsMixin from "../generic/Actions";
 import Alerts from "../generic/Alerts";
 import SoundPlayer from "./soundPlayer";

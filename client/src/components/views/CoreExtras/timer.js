@@ -3,7 +3,7 @@ import { Button } from "reactstrap";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 import { Duration } from "luxon";
-import { publish } from "../helpers/pubsub";
+import { publish } from "helpers/pubsub";
 
 const TIMESYNC_SUB = gql`
   subscription SyncTime($simulatorId: ID!) {

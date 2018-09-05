@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Row, Col, Button, Input, ButtonGroup } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo, Query } from "react-apollo";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const STATION_CHANGE_QUERY = gql`

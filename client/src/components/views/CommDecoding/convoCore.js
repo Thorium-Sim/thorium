@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import { ListGroup, ListGroupItem, Button } from "reactstrap";
 import { InputField } from "../../generic/core";
 import DecodingCore from "../CommDecoding/core";

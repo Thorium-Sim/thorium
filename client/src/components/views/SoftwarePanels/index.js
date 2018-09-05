@@ -5,7 +5,7 @@ import { Container, Row, Col, Card } from "reactstrap";
 import Measure from "react-measure";
 import Canvas from "../../../containers/FlightDirector/SoftwarePanels/canvas";
 import { getComponentLevel } from "../../../containers/FlightDirector/SoftwarePanels";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 

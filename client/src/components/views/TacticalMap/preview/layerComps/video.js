@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Asset } from "../../../../../helpers/assets";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
 
@@ -72,18 +71,14 @@ class Video extends Component {
     };
     return (
       <div className={`tactical-map-video`} style={{ opacity }}>
-        <Asset asset={asset}>
-          {({ src }) => (
-            <video
-              ref={this.player}
-              src={`${window.location.origin}${src}`}
-              autoPlay={autoplay !== false || true}
-              muted
-              loop={loop}
-              onEnded={videoEnd}
-            />
-          )}
-        </Asset>
+        <video
+          ref={this.player}
+          src={`/assets${asset}`}
+          autoPlay={autoplay !== false || true}
+          muted
+          loop={loop}
+          onEnded={videoEnd}
+        />
       </div>
     );
   }
