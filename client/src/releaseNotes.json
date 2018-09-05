@@ -1,9 +1,15 @@
 {
   "1.0.4": {
-    "features": [],
+    "features": [
+      "Added an 'Auto-Complete' toggle to the sickbay config for decontamination"
+    ],
     "fixes": [
       "You can no longer request damage reports that have already been requested.",
-      "Improved the actions macro to support more destinations and actions."
+      "Improved the actions macro to support more destinations and actions.",
+      "Deleting cards on the station config should work now.",
+      "Teams must now have a name, orders, location, priority, and officers assigned before being created",
+      "Refactored relative imports to make developer's lives easeier.",
+      "Fixed an error when generating damage team damage report steps."
     ]
   },
   "1.0.3": {
