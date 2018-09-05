@@ -64,13 +64,6 @@ export default class JumpDrive extends System {
     this.env = env;
   }
   setActivated(activated) {
-    if (activated) {
-      const envLevel = this.power.powerLevels.reduce((prev, next, i) => {
-        if (next <= this.power.power) return i + 1;
-        return prev;
-      }, 1);
-      if (this.env < envLevel) return;
-    }
     this.activated = activated;
   }
   setSectorLevel(sector, level) {
