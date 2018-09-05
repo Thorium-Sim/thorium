@@ -153,23 +153,26 @@ export class System {
       .concat(sim.requiredDamageSteps)
       .filter(step => step.args.end !== true)
       .forEach(step => damageSteps.push(step));
-
+    let hasDamageTeam = false;
     // Add in a number of optional steps
     let optionalSteps = defaultOptionalSteps
       .concat(this.optionalDamageSteps)
       .concat(sim.optionalDamageSteps)
       .filter(step => {
         if (step.name === "damageTeam") {
-          return (
+          const output =
             damageTeamCrew.length > 0 &&
             this.locations.length > 0 &&
-            components.indexOf("DamageTeams") > -1
-          );
+            components.indexOf("DamageTeams") > -1;
+          hasDamageTeam = output;
+          return output;
         }
         if (step.name === "damageTeamMessage") {
           return (
-            (components.indexOf("Messaging") || widgets.indexOf("messages")) >
-              -1 && damageTeamCrew.length > 0
+            (components.indexOf("Messaging") > -1 ||
+              widgets.indexOf("messages") > -1) &&
+            damageTeamCrew.length > 0 &&
+            hasDamageTeam
           );
         }
         if (step.name === "remoteAccess") {
