@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 
 import Bunk from "./bunk";
 import AdmitModal from "./admitModal";

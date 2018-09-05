@@ -15,7 +15,7 @@ import ComponentLibrary from "./componentLibrary";
 import Measure from "react-measure";
 import Canvas from "./canvas";
 import Config from "./componentConfig";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 const SUB = gql`
   subscription SoftwarePanelsUpdate {
     softwarePanelsUpdate {

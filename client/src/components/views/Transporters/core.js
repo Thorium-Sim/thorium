@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { InputField, OutputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const TRANSPORTER_SUB = gql`
   subscription TransportersSub($simulatorId: ID) {

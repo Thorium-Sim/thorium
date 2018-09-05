@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input, Button } from "reactstrap";
 import gql from "graphql-tag";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 const INTERNAL_SUB = gql`
   subscription InternalCommUpdate($simulatorId: ID!) {
     internalCommUpdate(simulatorId: $simulatorId) {

@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button } from "reactstrap";
-import { Asset } from "../../../helpers/assets";
+import { Asset } from "helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
-import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-import Tour from "../../../helpers/tourHelper";
+import { DeckDropdown, RoomDropdown } from "helpers/shipStructure";
+import SubscriptionHelper from "helpers/subscriptionHelper";
+import Tour from "helpers/tourHelper";
 
 const INTERNAL_SUB = gql`
   subscription InternalCommUpdate($simulatorId: ID!) {

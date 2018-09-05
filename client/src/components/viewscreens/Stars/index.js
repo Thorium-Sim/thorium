@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import Stars from "./stars";
 
 const queryData = `

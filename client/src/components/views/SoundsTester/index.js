@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import uuid from "uuid";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Asset } from "../../../helpers/assets.js";
+import { Asset } from "helpers/assets.js";
 
 import withSound from "../../generic/SoundPlayer";
 class SoundsTester extends Component {

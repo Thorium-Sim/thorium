@@ -1,5 +1,5 @@
 import React from "react";
-import * as ViewscreenCards from "../../viewscreens";
+import * as ViewscreenCards from "components/viewscreens";
 const cards = Object.keys(ViewscreenCards)
   .filter(c => c.indexOf("Config") === -1)
   .sort();

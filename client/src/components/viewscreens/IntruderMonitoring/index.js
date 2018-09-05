@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Asset } from "../../../helpers/assets";
+import { Asset } from "helpers/assets";
 import "./style.scss";
 
 class IntruderMonitoring extends Component {

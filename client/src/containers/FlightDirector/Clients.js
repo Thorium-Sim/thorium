@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo, Query } from "react-apollo";
 import { DateTime } from "luxon";
 import FontAwesome from "react-fontawesome";
-import SubscriptionHelper from "../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const FLIGHTS_SUB = gql`
   subscription FlightsSub {

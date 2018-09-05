@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from "react";
-import { Asset } from "../../../../helpers/assets";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import shieldStyle, { shieldColor } from "../../ShieldControl/shieldStyle";
-import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import StealthAnimation from "../../StealthField/stealthAnimation";
 
 const SUB = gql`
@@ -71,31 +70,32 @@ class Stealth extends Component {
             })
           }
         />
-        <Asset asset={assets.top}>
-          {({ src }) => (
-            <div
-              className="shieldBubble"
-              style={{
-                transform: "rotate(270deg)",
-                boxShadow: shields.length > 1 ? shieldStyle(shields) : null,
-                filter:
-                  shields.length === 1
-                    ? `drop-shadow(${shieldColor(shields[0])} 0px 0px 30px)`
-                    : null
-              }}
-            >
-              <div className="stealth" style={{ transform: "rotate(360deg)" }}>
-                <img
-                  alt="ship"
-                  className="status-ship"
-                  src={src}
-                  draggable="false"
-                />
-                <StealthAnimation status {...stealth} src={src} />
-              </div>
-            </div>
-          )}
-        </Asset>
+
+        <div
+          className="shieldBubble"
+          style={{
+            transform: "rotate(270deg)",
+            boxShadow: shields.length > 1 ? shieldStyle(shields) : null,
+            filter:
+              shields.length === 1
+                ? `drop-shadow(${shieldColor(shields[0])} 0px 0px 30px)`
+                : null
+          }}
+        >
+          <div className="stealth" style={{ transform: "rotate(360deg)" }}>
+            <img
+              alt="ship"
+              className="status-ship"
+              src={`/assets${assets.top}`}
+              draggable="false"
+            />
+            <StealthAnimation
+              status
+              {...stealth}
+              src={`/assets${assets.top}`}
+            />
+          </div>
+        </div>
       </Fragment>
     );
   }

@@ -11,8 +11,8 @@ import {
   ModalBody,
   ModalFooter
 } from "reactstrap";
-import Tour from "../../../helpers/tourHelper";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import Tour from "helpers/tourHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import { graphql, withApollo } from "react-apollo";
 import Transitioner from "../helpers/transitioner";
 import ProbeEquipment from "./probeEquipment";

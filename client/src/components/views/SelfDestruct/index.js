@@ -12,8 +12,8 @@ import {
 } from "reactstrap";
 import { Duration } from "luxon";
 import { graphql, withApollo } from "react-apollo";
-import Tour from "../../../helpers/tourHelper";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import Tour from "helpers/tourHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 

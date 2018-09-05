@@ -15,9 +15,9 @@ import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 import DecodingCanvas from "./decodingCanvas";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 

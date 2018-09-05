@@ -3,11 +3,11 @@ import { Container, Row, Col, Button } from "reactstrap";
 import { FormattedMessage } from "react-intl";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 import Slider from "../NavigationAdvanced/slider.js";
 import PowerLine from "./powerLine";
 import DamageOverlay from "../helpers/DamageOverlay";
-import { throttle } from "../../../helpers/debounce";
+import { throttle } from "helpers/debounce";
 import shieldStyle from "../ShieldControl/shieldStyle";
 
 const throttleUpdate = throttle(

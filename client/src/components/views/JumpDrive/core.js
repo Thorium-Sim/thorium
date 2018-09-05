@@ -2,7 +2,7 @@ import React from "react";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import { Table } from "reactstrap";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import { OutputField, InputField } from "../../generic/core";
 import { titleCase } from "change-case";
 import "./style.scss";

@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Row, Col, Container, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Tour from "../../../helpers/tourHelper";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import Tour from "helpers/tourHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 //import DamageOverlay from '../helpers/DamageOverlay';
 import "./style.scss";

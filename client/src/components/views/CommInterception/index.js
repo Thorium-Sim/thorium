@@ -3,8 +3,8 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button } from "reactstrap";
 import WaveMatch from "./waveMatch";
-import Tour from "../../../helpers/tourHelper";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import Tour from "helpers/tourHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import Decks from "../../../../components/views/ShipStructure/core";
+import Decks from "components/views/ShipStructure/core";
 
 const DecksWrapped = ({ selectedSimulator: sim }) => {
   return (

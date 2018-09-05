@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
-import { Asset } from "../../../helpers/assets";
+import { Asset } from "helpers/assets";
 import { withApollo, Mutation } from "react-apollo";
 
 import gql from "graphql-tag";

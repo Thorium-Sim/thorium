@@ -13,7 +13,7 @@ import {
   Label,
   Input
 } from "reactstrap";
-import Tour from "../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 import randomWords from "random-words";
 import { FormattedMessage } from "react-intl";
 

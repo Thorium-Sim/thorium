@@ -2,7 +2,7 @@ import React from "react";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import { InputField } from "../../generic/core";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const queryData = `

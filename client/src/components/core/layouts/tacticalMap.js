@@ -1,5 +1,5 @@
 import React from "react";
-import TacticalMapCore from "../../views/TacticalMap";
+import TacticalMapCore from "components/views/TacticalMap";
 
 export default props => {
   return <TacticalMapCore {...props} />;

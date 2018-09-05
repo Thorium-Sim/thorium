@@ -4,7 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button, Input } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import { TypingField } from "../../generic/core";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 const SYSTEMS_SUB = gql`
   subscription DamagedSystemsUpdate($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId, extra: true) {

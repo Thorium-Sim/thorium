@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Container, Row, Col, Button, Input, Label } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 const INVENTORY_SUB = gql`
   subscription InventoryUpdate($simulatorId: ID!) {
     inventoryUpdate(simulatorId: $simulatorId) {

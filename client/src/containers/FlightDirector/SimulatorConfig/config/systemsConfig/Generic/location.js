@@ -4,10 +4,7 @@ import { Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";
 import { GENERIC_QUERY } from "./index";
-import {
-  DeckDropdown,
-  RoomDropdown
-} from "../../../../../../components/views/helpers/shipStructure";
+import { DeckDropdown, RoomDropdown } from "helpers/shipStructure";
 
 const UPDATE_LOCATION = gql`
   mutation UpdateSystemLocations($id: ID!, $locations: [ID]) {

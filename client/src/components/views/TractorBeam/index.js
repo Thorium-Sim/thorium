@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import { Container, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
-import { Asset } from "../../../helpers/assets";
+import { Asset } from "helpers/assets";
 import Beam from "./beam";
 import Target from "./target";
 import Bars from "./bars";
 import DamageOverlay from "../helpers/DamageOverlay";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 
 import "./style.scss";
 

@@ -3,7 +3,7 @@ import { Label } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import Dot from "./dots";
-import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 const SUB = gql`
   subscription Battery($simulatorId: ID) {
     reactorUpdate(simulatorId: $simulatorId) {

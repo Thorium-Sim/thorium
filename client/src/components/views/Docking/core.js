@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Container, Row, Col, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import "./style.scss";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 const DOCKING_SUB = gql`
   subscription SimulatorSub($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {

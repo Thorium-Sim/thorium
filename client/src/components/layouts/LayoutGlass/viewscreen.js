@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Views from "../../views";
+import Views from "components/views";
 import CardFrame from "./frame";
 import { withApollo } from "react-apollo";
 import "./layout.scss";

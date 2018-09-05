@@ -2,9 +2,9 @@ import React, { Component, Fragment } from "react";
 import { Mutation } from "react-apollo";
 import Measure from "react-measure";
 import tinycolor from "tinycolor2";
-import Explosion from "../../../../helpers/explosions";
+import Explosion from "helpers/explosions";
 import gql from "graphql-tag";
-import { subscribe } from "../../helpers/pubsub";
+import { subscribe } from "helpers/pubsub";
 class Ping extends Component {
   constructor(props) {
     super(props);

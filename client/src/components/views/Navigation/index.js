@@ -5,8 +5,8 @@ import { InputGroup, InputGroupAddon, Button, Input } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Keypad from "./keypad";
-import Tour from "../../../helpers/tourHelper";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import Tour from "helpers/tourHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import NavigationScanner from "./NavigationScanner";
 
 import "./style.scss";

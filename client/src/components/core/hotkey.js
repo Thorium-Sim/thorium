@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Cores } from "../views";
+import { Cores } from "components/views";
 import categories from "./categories";
 import { titleCase } from "change-case";
 const fkeys = categories.reduce((prev, next, i) => {

@@ -3,8 +3,8 @@ import { Button, Row, Col, Input } from "reactstrap";
 import { withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";
-import { Asset } from "../../../helpers/assets";
-import Tour from "../../../helpers/tourHelper";
+import { Asset } from "helpers/assets";
+import Tour from "helpers/tourHelper";
 
 import "./login.scss";
 

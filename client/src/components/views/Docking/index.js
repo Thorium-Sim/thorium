@@ -3,8 +3,8 @@ import { Container, Row, Col, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Clamps, Ramps, Doors } from "./graphics";
-import Tour from "../../../helpers/tourHelper";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import Tour from "helpers/tourHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const DOCKING_SUB = gql`

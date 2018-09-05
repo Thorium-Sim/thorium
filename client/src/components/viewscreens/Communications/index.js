@@ -5,7 +5,7 @@ import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import tinycolor from "tinycolor2";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 

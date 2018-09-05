@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import { Container } from "reactstrap";
-import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import PatientControls from "./PatientControls";
 
 import "../style.scss";

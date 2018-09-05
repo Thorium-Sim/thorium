@@ -1,6 +1,6 @@
 import React from "react";
-import { Asset } from "../../../helpers/assets";
-import shieldStyle from "../../views/ShieldControl/shieldStyle";
+import { Asset } from "helpers/assets";
+import shieldStyle from "components/views/ShieldControl/shieldStyle";
 
 export default ({ simulator, shields }) => {
   const { assets } = simulator;

@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
 import { Row, Col, Button, Input, Card, CardBody } from "reactstrap";
 import gql from "graphql-tag";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 import FontAwesome from "react-fontawesome";
 import { Typing } from "react-typing";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
-import { DeckDropdown, RoomDropdown } from "../helpers/shipStructure";
-import { Asset } from "../../../helpers/assets";
+import { DeckDropdown, RoomDropdown } from "helpers/shipStructure";
+import { Asset } from "helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.scss";
 

@@ -4,12 +4,12 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 
 import TransitionGroup from "react-transition-group/TransitionGroup";
-import Transitioner from "../../views/helpers/transitioner";
-import { Asset } from "../../../helpers/assets";
+import Transitioner from "components/views/helpers/transitioner";
+import { Asset } from "helpers/assets";
 
 import "./style.scss";
-import StealthAnimation from "../../views/StealthField/stealthAnimation";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import StealthAnimation from "components/views/StealthField/stealthAnimation";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 class StealthBars extends Transitioner {
   systemName(sys) {

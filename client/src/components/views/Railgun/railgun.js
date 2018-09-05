@@ -5,9 +5,9 @@ import gql from "graphql-tag";
 import { FormattedMessage } from "react-intl";
 import { Container, Row, Col } from "reactstrap";
 import SensorGrid from "../Sensors/GridDom/grid";
-import { throttle } from "../../../helpers/debounce";
+import { throttle } from "helpers/debounce";
 import RailgunLoader from "./loader";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 
 function distance(x1, y1, x2, y2) {
   const a = x1 - x2;

@@ -4,7 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col } from "reactstrap";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 

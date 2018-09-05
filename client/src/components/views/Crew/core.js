@@ -11,7 +11,7 @@ import {
 import gql from "graphql-tag";
 import { TypingField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import { parse } from "papaparse";
 
 import "./style.scss";

@@ -14,7 +14,7 @@ import {
   Button
 } from "reactstrap";
 import "./style.scss";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID, $teamType: String!) {

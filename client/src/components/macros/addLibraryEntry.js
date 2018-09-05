@@ -2,7 +2,7 @@ import React from "react";
 import { FormGroup, Label, Input } from "reactstrap";
 import { paramCase } from "change-case";
 import FontAwesome from "react-fontawesome";
-import FileExplorer from "../views/TacticalMap/fileExplorer";
+import FileExplorer from "components/views/TacticalMap/fileExplorer";
 
 export default ({ updateArgs, args: { entry = {} }, client }) => {
   return (

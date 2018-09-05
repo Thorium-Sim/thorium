@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import Roster from "./roster";
 import "./style.scss";
 

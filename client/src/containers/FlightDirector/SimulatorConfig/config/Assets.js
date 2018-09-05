@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Col, Row, Container, ListGroup, ListGroupItem } from "reactstrap";
 import { Mutation } from "react-apollo";
-import FileExplorer from "../../../../components/views/TacticalMap/fileExplorer";
+import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import gql from "graphql-tag";
 
 const assetList = [

@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import NavigationScanner from "../Navigation/NavigationScanner";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const NAVIGATION_SUB = gql`

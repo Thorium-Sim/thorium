@@ -3,7 +3,7 @@ import { Card, CardBody, Container, Row, Col, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { withApollo, Mutation } from "react-apollo";
 import Measure from "react-measure";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 import DamageOverlay from "../helpers/DamageOverlay";
 import FrequencySignals from "./frequency";
 import Frequencies from "./frequencies";

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Button, ButtonGroup } from "reactstrap";
-import { publish } from "../../views/helpers/pubsub";
+import { publish } from "helpers/pubsub";
 import NotificationConfig from "./notificationConfig";
 
 class NotifyConfig extends Component {

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Label } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
-import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 const DEST_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {
     navigationUpdate(simulatorId: $simulatorId) {

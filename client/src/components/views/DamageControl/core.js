@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import { Table, Button } from "reactstrap";
 import { InputField, OutputField } from "../../generic/core";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
