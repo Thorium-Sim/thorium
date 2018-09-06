@@ -70,7 +70,7 @@ export default ({ preamble }, { name, displayName = name, simulatorId }) => {
     })
     .join("\n");
   return `${preamble ||
-    `Panel maintenance must be performed to repair the ${displayName} system.`} Go to the ${
+    `Panel maintenance must be performed on the ${displayName} system.`} Go to the ${
     panel.name
   } software panel and perform the following operations:
   
