@@ -1,6 +1,6 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
-
+import uuid from "uuid";
 function performAction(id, action) {
   const sys = App.systems.find(s => s.id === id);
   if (sys) {
@@ -13,7 +13,28 @@ function performAction(id, action) {
 }
 
 App.on("setJumpdriveActivated", ({ id, activated }) => {
-  performAction(id, sys => sys.setActivated(activated));
+  performAction(id, sys => {
+    sys.setActivated(activated);
+    App.handleEvent(
+      {
+        simulatorId: sys.simulatorId,
+        title: `Jump Drive ${activated ? "Activated" : "Deactivated"}`,
+        component: "JumpDriveCore",
+        body: null,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      type: "Jump Drive",
+      station: "Core",
+      title: `Jump Drive ${activated ? "Activated" : "Deactivated"}`,
+      body: ``,
+      color: "info"
+    });
+  });
 });
 
 App.on("setJumpdriveEnvs", ({ id, envs }) => {

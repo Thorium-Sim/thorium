@@ -34,8 +34,9 @@ Orders: Clean up the mess left from repairing the ${displayName} system.
   }
   const teamType = type
     ? type
-    : randomFromList(damagePositions.filter(p => p.position !== "Custodian"));
+    : randomFromList(damagePositions.filter(p => p !== "Custodian"));
   const damageText = randomFromList(damageTexts[teamType]);
+  console.log(teamType, damageText);
   return `${preamble ||
     damageText.preamble.replace(
       "%SYSTEM%",

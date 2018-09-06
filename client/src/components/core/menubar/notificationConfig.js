@@ -20,6 +20,7 @@ const components = [
   "External Sensors",
   "Interception",
   "Internal Sensors",
+  "Jump Drive",
   "Long Range Comm",
   "Medical Teams",
   "Navigation",

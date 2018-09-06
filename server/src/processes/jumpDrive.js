@@ -3,34 +3,34 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import throttle from "../helpers/throttle";
 import uuid from "uuid";
 
-// const throttles = {};
+const throttles = {};
 
-// const triggerWarning = sys => {
-//   if (!throttles[sys.id]) {
-//     throttles[sys.id] = throttle(sys => {
-//       pubsub.publish("notify", {
-//         id: uuid.v4(),
-//         simulatorId: sys.simulatorId,
-//         type: "Reactor",
-//         station: "Core",
-//         title: `Dilithium Crystal Stress`,
-//         body: "",
-//         color: "danger"
-//       });
-//       App.handleEvent(
-//         {
-//           simulatorId: sys.simulatorId,
-//           component: "ReactorControlCore",
-//           title: `Dilithium Crystal Stress`,
-//           body: null,
-//           color: "danger"
-//         },
-//         "addCoreFeed"
-//       );
-//     }, 10 * 1000);
-//   }
-//   return throttles[sys.id];
-// };
+const triggerWarning = sys => {
+  if (!throttles[sys.id]) {
+    throttles[sys.id] = throttle(sys => {
+      App.handleEvent(
+        {
+          simulatorId: sys.simulatorId,
+          title: `Jump Drive Sector Stress`,
+          component: "JumpDriveCore",
+          body: null,
+          color: "danger"
+        },
+        "addCoreFeed"
+      );
+      pubsub.publish("notify", {
+        id: uuid.v4(),
+        simulatorId: sys.simulatorId,
+        type: "Jump Drive",
+        station: "Core",
+        title: `Jump Drive Sector Stress`,
+        body: ``,
+        color: "danger"
+      });
+    }, 10 * 1000);
+  }
+  return throttles[sys.id];
+};
 
 const updateJumpdrive = () => {
   //Loop through all of the simulators to isolate the systems
@@ -56,8 +56,12 @@ const updateJumpdrive = () => {
             if (j.sectors[sector].level < envLevel && j.activated) {
               j.addSectorOffset(sector, Math.pow(diff, 2) / 1000);
             }
-            if (j.sectors[sector].level > envLevel)
+            if (j.sectors[sector].level > envLevel) {
               j.addSectorOffset(sector, (-1 * diff) / 100);
+            }
+            if (j.activated && j.sectors[sector].offset > 0.75) {
+              triggerWarning(j)(j);
+            }
           });
         });
       });

@@ -206,14 +206,7 @@ class Communications extends Component {
             {comms.length > 0 ? (
               comms.map(c => (
                 <Col key={c.id} className="comm-container">
-                  <img
-                    alt="comm"
-                    src={`/assets${
-                      c.image.indexOf("Comm Images") === -1
-                        ? "/Comm Images/"
-                        : ""
-                    }${c.image}`}
-                  />
+                  <img alt="comm" src={`/assets${c.image}`} />
                   <h2>
                     {c.name} - {Math.round(c.frequency * 37700 + 37700) / 100}
                     MHz

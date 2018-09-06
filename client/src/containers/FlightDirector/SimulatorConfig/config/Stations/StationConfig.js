@@ -164,7 +164,11 @@ const ConfigStation = props => {
             <tbody>
               {station.cards.map((card, index) => {
                 return (
-                  <tr key={`${selectedStationSet.id}-${station.name}-${index}`}>
+                  <tr
+                    key={`${selectedStationSet.id}-${station.name}-${
+                      card.name
+                    }`}
+                  >
                     <td>
                       <Input
                         type="text"
@@ -214,14 +218,11 @@ const ConfigStation = props => {
             onChange={e => addCard(e)}
           >
             <option value="nothing">Please Select A Card</option>
-            {viewList.map(e => {
-              return (
-                <option key={e} value={e}>
-                  {inSim(e) && "✅ "}
-                  {e}
-                </option>
-              );
-            })}
+            {viewList.map(e => (
+              <option key={`card-select-${e}`} value={e}>
+                {`${inSim(e) && "✅ "}${e}`}
+              </option>
+            ))}
             <option disabled>-----------</option>
             {!loading &&
               simulator.panels.map(p => (
@@ -234,11 +235,8 @@ const ConfigStation = props => {
           <label>Message Groups:</label>
           <Row>
             {["SecurityTeams", "DamageTeams", "MedicalTeams"].map(group => (
-              <Col sm={4}>
-                <label
-                  key={`messageGroup-${group}`}
-                  style={{ display: "inline-block" }}
-                >
+              <Col sm={4} key={`messageGroup-list-${group}`}>
+                <label style={{ display: "inline-block" }}>
                   <input
                     type="checkbox"
                     checked={station.messageGroups.indexOf(group) > -1}
@@ -257,11 +255,8 @@ const ConfigStation = props => {
           <label>Widgets:</label>
           <Row>
             {Object.keys(Widgets).map(widget => (
-              <Col sm={4}>
-                <label
-                  key={`widgets-${widget}`}
-                  style={{ display: "inline-block" }}
-                >
+              <Col sm={4} key={`widgets-${widget}`}>
+                <label style={{ display: "inline-block" }}>
                   <input
                     type="checkbox"
                     checked={station.widgets.indexOf(widget) > -1}
