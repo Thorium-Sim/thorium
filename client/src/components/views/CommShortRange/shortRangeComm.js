@@ -158,11 +158,7 @@ class CommShortRange extends Component {
                     s.id === this.getSignal().id ? "selected" : ""
                   }`}
                   style={{
-                    backgroundImage: `url('/assets/${
-                      s.image.indexOf("Comm Images") === -1
-                        ? "/Comm Images/"
-                        : ""
-                    }${s.image}')`
+                    backgroundImage: `url('/assets${s.image}')`
                   }}
                 >
                   <div className="spacer" />
