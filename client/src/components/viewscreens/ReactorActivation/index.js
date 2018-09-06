@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container, Row, Col } from "reactstrap";
 import Measure from "react-measure";
 
-import ReactorModel from "../../views/ReactorControl/model";
+import ReactorModel from "components/views/ReactorControl/model";
 
 export default class ReactorActivation extends Component {
   constructor(props) {

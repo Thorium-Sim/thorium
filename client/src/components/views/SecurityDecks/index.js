@@ -9,11 +9,11 @@ import {
   Card,
   CardBody
 } from "reactstrap";
-import Tour from "../../../helpers/tourHelper";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import Tour from "helpers/tourHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import gql from "graphql-tag";
-import { RoomDropdown } from "../helpers/shipStructure";
+import { RoomDropdown } from "helpers/shipStructure";
 
 import "./style.scss";
 

@@ -13,7 +13,7 @@ import {
   Stealth,
   Radiation
 } from "./components";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 
 import "./style.scss";
 
@@ -59,4 +59,4 @@ const Status = props => {
   );
 };
 
-export default Status
+export default Status;

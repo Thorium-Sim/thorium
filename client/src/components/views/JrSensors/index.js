@@ -3,9 +3,9 @@ import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import Measure from "react-measure";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Asset } from "../../../helpers/assets";
+import { Asset } from "helpers/assets";
 import Grid from "../Sensors/GridDom";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import { Typing } from "react-typing";
 
 import "./style.scss";

@@ -1,6 +1,6 @@
 import React from "react";
-import FileExplorer from "../../views/TacticalMap/fileExplorer";
-import ColorPicker from "../../../helpers/colorPicker";
+import FileExplorer from "components/views/TacticalMap/fileExplorer";
+import ColorPicker from "helpers/colorPicker";
 
 export default ({ data, updateData, simple }) => (
   <div

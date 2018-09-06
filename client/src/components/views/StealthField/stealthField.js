@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 import DamageOverlay from "../helpers/DamageOverlay";
 import StealthBoard from "./stealthBoard";
 import ChargeBar from "./chargeBar";

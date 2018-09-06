@@ -3,7 +3,7 @@ import { Row, Col, Progress, Button, ButtonGroup } from "reactstrap";
 import { OutputField } from "../../generic/core";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const queryData = `

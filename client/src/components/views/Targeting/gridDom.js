@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./style.scss";
-import { Asset } from "../../../helpers/assets";
-import Explosion from "../../../helpers/explosions";
+import { Asset } from "helpers/assets";
+import Explosion from "helpers/explosions";
 
 const speedLimit = 20;
 const speedConstant1 = 2.5 / 100;

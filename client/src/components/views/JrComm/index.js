@@ -5,7 +5,7 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button } from "reactstrap";
 import tinycolor from "tinycolor2";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const SHORTRANGE_SUB = gql`
   subscription ShortRangeCommSub($simulatorId: ID!) {

@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Button } from "reactstrap";
 import { Mutation, graphql, withApollo } from "react-apollo";
 import { InputField, OutputField } from "../../generic/core";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const SUB = gql`
   subscription SignalJammerUpdate($id: ID!) {

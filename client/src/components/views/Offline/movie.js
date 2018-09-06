@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { Asset } from "../../../helpers/assets";
+import { Asset } from "helpers/assets";
 
 class Movie extends PureComponent {
   state = { error: false };

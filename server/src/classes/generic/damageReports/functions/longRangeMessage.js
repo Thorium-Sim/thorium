@@ -1,6 +1,6 @@
 import { randomFromList } from "../constants";
 export default (
-  { message, destination },
+  { message, destination, preamble },
   { name, stations, displayName = name }
 ) => {
   // Find the station with the cargo control
@@ -15,7 +15,8 @@ export default (
     `Due to damage to our ${displayName} we will need additional supplies when we return to starbase. Please ensure the necessary supplies are ready.`
   ];
 
-  return `We should inform the closest starbase of our situation. You need to prepare a message using your long range message composer, or ask the ${stationName} officer to send this message:
+  return `${preamble ||
+    "We should inform the closest starbase of our situation."} You need to prepare a message using your long range message composer, or ask the ${stationName} officer to send this message:
 
 Destination: ${destination || randomFromList(destinations)}
 Message: ${message || randomFromList(messages)}

@@ -6,7 +6,7 @@ import Isochips from "./isochips";
 import Battery from "./batteryCharging";
 import Routing from "./powerRouting";
 import "./style.scss";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 const Components = [Isochips, Battery, Routing];
 
 const SYSTEMS_SUB = gql`

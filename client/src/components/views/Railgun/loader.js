@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import { Button } from "reactstrap";
 import { FormattedMessage } from "react-intl";
 import { CSSTransitionGroup } from "react-transition-group";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 import DamageOverlay from "../helpers/DamageOverlay";
 
 const initialSteps = [

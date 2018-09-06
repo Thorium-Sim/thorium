@@ -14,8 +14,8 @@ import {
 } from "reactstrap";
 import { paramCase } from "change-case";
 import FontAwesome from "react-fontawesome";
-import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
-import FileExplorer from "../../../../components/views/TacticalMap/fileExplorer";
+import SubscriptionHelper from "helpers/subscriptionHelper";
+import FileExplorer from "components/views/TacticalMap/fileExplorer";
 const SUB = gql`
   subscription Library {
     libraryEntriesUpdate {

@@ -5,8 +5,8 @@ import { Row, Col, ListGroup, ListGroupItem, Button } from "reactstrap";
 import Measure from "react-measure";
 import Satellites from "./Satellites";
 import DamageOverlay from "../helpers/DamageOverlay";
-import Tour from "../../../helpers/tourHelper";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import Tour from "helpers/tourHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 function feistelNet(input) {

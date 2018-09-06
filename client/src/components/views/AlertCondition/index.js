@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withApollo } from "react-apollo";
 import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 
 import "./style.scss";
 

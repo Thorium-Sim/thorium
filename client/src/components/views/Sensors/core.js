@@ -5,8 +5,8 @@ import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import FontAwesome from "react-fontawesome";
 import ScanPresets from "./ScanPresets";
-import { subscribe } from "../helpers/pubsub";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import { subscribe } from "helpers/pubsub";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {

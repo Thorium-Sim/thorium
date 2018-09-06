@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Draggable from "react-draggable";
 import { Button, Row, Col } from "reactstrap";
 import Measure from "react-measure";
-import { throttle } from "../../../helpers/debounce";
+import { throttle } from "helpers/debounce";
 
 const ChargeBar = props => {
   return (

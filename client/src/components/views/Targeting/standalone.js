@@ -3,7 +3,7 @@ import { Row, Col, Container } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 
 import Grid from "./gridDom";
 import TorpedoLoading from "../TorpedoLoading";
@@ -11,7 +11,7 @@ import { PhaserFire } from "../PhaserCharging";
 import DamageOverlay from "../helpers/DamageOverlay";
 import TargetControls from "./targetControls";
 import Coordinates from "./coordinates";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const trainingSteps = [
   {

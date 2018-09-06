@@ -14,9 +14,9 @@ import {
   NavItem,
   NavLink*/
 } from "reactstrap";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import { graphql, withApollo } from "react-apollo";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 
 import "./style.scss";
 

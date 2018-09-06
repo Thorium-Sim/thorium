@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
-import { Asset } from "../../../helpers/assets";
+import { Asset } from "helpers/assets";
 
 import "./style.scss";
 

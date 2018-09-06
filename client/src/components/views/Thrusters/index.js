@@ -4,14 +4,14 @@ import { graphql, compose } from "react-apollo";
 import { DraggableCore } from "react-draggable";
 import { Button, Row, Col } from "reactstrap";
 import ThrusterThree from "./three-view";
-import distance from "../../../helpers/distance";
+import distance from "helpers/distance";
 import Measure from "react-measure";
-import throttle from "../../../helpers/debounce";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import throttle from "helpers/debounce";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.scss";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 
 const trainingSteps = [
   {

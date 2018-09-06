@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import "./style.scss";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const DECK_SUB = gql`
   subscription DeckSubscribe($simulatorId: ID!) {

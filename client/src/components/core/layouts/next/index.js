@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Dynamic from "../dynamic";
-import { Cores } from "../../../views";
-import CoreFeed from "../../../views/CoreFeed";
-import Lighting from "../../../views/Lighting";
+import { Cores } from "components/views";
+import CoreFeed from "components/views/CoreFeed";
+import Lighting from "components/views/Lighting";
 import CoreError from "../coreError";
 import "./next.scss";
 

@@ -5,7 +5,7 @@ import Sidebar from "./sidebar";
 import Bottom from "./bottom";
 import Preview from "./preview";
 import "./style.scss";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const TACTICAL_MAP_DATA = `
 id

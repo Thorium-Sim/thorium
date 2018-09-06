@@ -4,8 +4,8 @@ import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 import Engine1 from "./engine-1";
 import Engine2 from "./engine-2";
-import Tour from "../../../helpers/tourHelper";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import Tour from "helpers/tourHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const SPEEDCHANGE_SUB = gql`

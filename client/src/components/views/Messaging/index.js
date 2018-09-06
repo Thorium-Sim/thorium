@@ -16,7 +16,7 @@ import {
   InputGroupAddon
 } from "reactstrap";
 import "./style.scss";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import { titleCase } from "change-case";
 const MESSAGING_SUB = gql`
   subscription GotMessage($simulatorId: ID!, $station: String) {

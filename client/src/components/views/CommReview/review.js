@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 
 function feistelNet(input) {
   var l = input & 0xff;

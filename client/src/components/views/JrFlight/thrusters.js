@@ -1,6 +1,6 @@
 import React from "react";
 import { Row, Col } from "reactstrap";
-import { Asset } from "../../../helpers/assets";
+import { Asset } from "helpers/assets";
 import { graphql, withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";

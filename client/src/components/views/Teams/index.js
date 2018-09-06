@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 import { titleCase } from "change-case";
 import training from "./training";
 import TeamConfig from "./teamConfig";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 

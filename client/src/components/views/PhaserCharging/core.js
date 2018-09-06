@@ -3,7 +3,7 @@ import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
 import { InputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 

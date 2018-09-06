@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 import Exocomp from "./exocomp";
 import ExocompConfig from "./exocompConfig";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const EXOCOMP_SUB = gql`

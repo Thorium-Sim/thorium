@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Cores } from "../../../views";
-import CoreFeed from "../../../views/CoreFeed";
+import { Cores } from "components/views";
+import CoreFeed from "components/views/CoreFeed";
 import CoreError from "../coreError";
 
 import "./default.scss";

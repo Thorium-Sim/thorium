@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Asset } from "../../../helpers/assets";
+import { Asset } from "helpers/assets";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 

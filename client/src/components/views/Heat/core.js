@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { Table } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { InputField } from "../../generic/core";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 const HEAT_SUB = gql`
   subscription SystemHeatUpdate($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId, heat: true) {

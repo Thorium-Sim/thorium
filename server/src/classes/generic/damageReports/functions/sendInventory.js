@@ -1,7 +1,7 @@
 import App from "../../../../app";
 import { randomFromList } from "../constants";
 export default (
-  { inventory, room },
+  { inventory, room, preamble },
   { location, name, displayName = name, stations, simulatorId }
 ) => {
   // Find the station with the cargo control
@@ -9,7 +9,8 @@ export default (
     s.cards.find(c => c.component === "CargoControl")
   );
   const stationName = station ? station.name : "Cargo Control";
-  return `Supplies will be needed to repair the ${displayName} system. Ask the ${stationName} officer to send the following cargo:
+  return `${preamble ||
+    `Supplies will be needed to repair the ${displayName} system.`} Ask the ${stationName} officer to send the following cargo:
     
 Location: ${room || location}
 Cargo: ${inventory ||

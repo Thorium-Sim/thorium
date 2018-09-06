@@ -3,9 +3,9 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button, Card } from "reactstrap";
 import Measure from "react-measure";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 import AnimatedNumber from "react-animated-number";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import HeatBar from "../EngineControl/heatbar";
 import ReactorModel from "./model";

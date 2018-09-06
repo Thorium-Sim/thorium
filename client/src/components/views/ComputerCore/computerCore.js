@@ -12,7 +12,7 @@ import Terminals from "./terminals";
 import Users from "./users";
 import Files from "./files";
 import VirusScanner from "./virusScanner";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 import { FormattedMessage } from "react-intl";
 
 const trainingSteps = [

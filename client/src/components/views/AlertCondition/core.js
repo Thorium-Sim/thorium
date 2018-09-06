@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, Mutation } from "react-apollo";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 const levels = [
   { id: 5, color: "info" },
   { id: 4, color: "success" },

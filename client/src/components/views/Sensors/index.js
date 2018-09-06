@@ -3,14 +3,14 @@ import ReactDOM from "react-dom";
 import gql from "graphql-tag";
 import { Mutation, graphql, withApollo } from "react-apollo";
 import { Button, Row, Col, Card, CardBody } from "reactstrap";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 import { Typing } from "react-typing";
 import "./style.scss";
 import Grid from "./GridDom";
 import DamageOverlay from "../helpers/DamageOverlay";
 import SensorScans from "./SensorScans";
-import { Asset } from "../../../helpers/assets";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import { Asset } from "helpers/assets";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {

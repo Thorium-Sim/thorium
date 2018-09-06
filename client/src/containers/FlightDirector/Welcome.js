@@ -4,9 +4,9 @@ import gql from "graphql-tag";
 import { graphql, Mutation } from "react-apollo";
 import { Link } from "react-router-dom";
 import semver from "semver";
-import Tour from "../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 import { FormattedMessage } from "react-intl";
-import SubscriptionHelper from "../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./welcome.scss";
 
 const FLIGHT_SUB = gql`

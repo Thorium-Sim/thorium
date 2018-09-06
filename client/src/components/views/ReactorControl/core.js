@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { InputField, OutputField } from "../../generic/core";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import { Container, Row, Col, Button, Input, Progress } from "reactstrap";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import { Duration } from "luxon";
 import { titleCase } from "change-case";
 

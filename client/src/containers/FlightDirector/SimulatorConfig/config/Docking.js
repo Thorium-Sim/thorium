@@ -2,7 +2,7 @@ import React from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Table, Button, Input } from "reactstrap";
-import { Asset } from "../../../../helpers/assets";
+
 const DockingConfig = ({ data, selectedSimulator, client }) => {
   function addShuttle() {
     const mutation = gql`
@@ -101,9 +101,7 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
                   </Input>
                 </td>
                 <td>
-                  <Asset asset={d.image}>
-                    {({ src }) => <img alt="Shuttle" src={src} width="40" />}
-                  </Asset>
+                  <img alt="Shuttle" src={`/assets${d.image}`} width="40" />
                 </td>
                 <td>
                   <Button

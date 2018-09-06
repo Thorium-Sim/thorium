@@ -4,7 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import FontAwesome from "react-fontawesome";
 import ObjPreview from "./3dObjPreview";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import Measure from "react-measure";
 import "./fileExplorer.scss";
 

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Query, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import randomWords from "random-words";
-import SubscriptionHelper from "../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import SimulatorData from "./simulatorData";
 import Credits from "./credits";
 import "./client.scss";

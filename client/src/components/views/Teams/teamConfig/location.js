@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { FormGroup, Label, Row, Col } from "reactstrap";
-import { DeckDropdown, RoomDropdown } from "../../helpers/shipStructure";
+import { DeckDropdown, RoomDropdown } from "helpers/shipStructure";
 
 const Location = ({ decks, deck, room, team = {}, update }) => {
   return (

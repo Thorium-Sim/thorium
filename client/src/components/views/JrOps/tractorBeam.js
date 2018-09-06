@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Button, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 const TRACTORBEAM_SUB = gql`
   subscription TractorBeamUpdate($simulatorId: ID!) {
     tractorBeamUpdate(simulatorId: $simulatorId) {

@@ -3,7 +3,7 @@ import { Card, CardBody, Container, Row, Col, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { withApollo, Mutation } from "react-apollo";
 import Measure from "react-measure";
-import Tour from "../../../helpers/tourHelper";
+import Tour from "helpers/tourHelper";
 import DamageOverlay from "../helpers/DamageOverlay";
 import FrequencySignals from "./frequency";
 import Frequencies from "./frequencies";
@@ -158,11 +158,7 @@ class CommShortRange extends Component {
                     s.id === this.getSignal().id ? "selected" : ""
                   }`}
                   style={{
-                    backgroundImage: `url('/assets/${
-                      s.image.indexOf("Comm Images") === -1
-                        ? "/Comm Images/"
-                        : ""
-                    }${s.image}')`
+                    backgroundImage: `url('/assets${s.image}')`
                   }}
                 >
                   <div className="spacer" />

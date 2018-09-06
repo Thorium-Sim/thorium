@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Table } from "reactstrap";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 const EXOCOMP_SUB = gql`
   subscription Exocomps($simulatorId: ID!) {
     exocompsUpdate(simulatorId: $simulatorId) {

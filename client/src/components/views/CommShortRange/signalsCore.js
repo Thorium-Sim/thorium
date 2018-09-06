@@ -6,7 +6,7 @@ import { Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import FileExplorer from "../TacticalMap/fileExplorer";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import uuid from "uuid";
 import "./signalsCore.scss";
 

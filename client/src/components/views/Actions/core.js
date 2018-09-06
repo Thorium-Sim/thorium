@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Row, Col, Button, Input, ButtonGroup } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo, Query } from "react-apollo";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const STATION_CHANGE_QUERY = gql`
@@ -46,7 +46,9 @@ const MOVIE_QUERY = gql`
 class ActionsCore extends Component {
   constructor(props) {
     super(props);
-    this.voices = window.speechSynthesis.getVoices() || [];
+    this.voices = window.speechSynthesis
+      ? window.speechSynthesis.getVoices()
+      : [];
 
     this.state = {
       actionName: "flash",
@@ -417,6 +419,7 @@ class ActionsCore extends Component {
           <select onChange={this.handleDestChange} ref="actionDest">
             <optgroup>
               <option value="all">All Stations</option>
+              <option value="bridge">Bridge Stations</option>
               <option value="random">Random Station</option>
             </optgroup>
             <optgroup>
@@ -428,6 +431,9 @@ class ActionsCore extends Component {
                     {s.name}
                   </option>
                 ))}
+            </optgroup>
+            <optgroup>
+              <option value="Viewscreen">Viewscreen</option>
             </optgroup>
           </select>
         </div>

@@ -3,7 +3,7 @@ import GenericSystemConfig from "./Generic";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import { Button } from "reactstrap";
-import SignalsCore from "../../../../../components/views/CommShortRange/signalsCore";
+import SignalsCore from "components/views/CommShortRange/signalsCore";
 import uuid from "uuid";
 
 const ShortRangeComm = props => {

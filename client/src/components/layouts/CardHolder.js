@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { findDOMNode } from "react-dom";
 import { Button } from "reactstrap";
-import ErrorBoundary from "../../helpers/errorBoundary";
+import ErrorBoundary from "helpers/errorBoundary";
 
 const TweenMax = window.TweenMax;
 export default class CardHolder extends Component {

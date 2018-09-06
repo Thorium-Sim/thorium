@@ -4,7 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button, Input } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import { TypingField } from "../../generic/core";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 const SYSTEMS_SUB = gql`
   subscription DamagedSystemsUpdate($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId, extra: true) {
@@ -60,10 +60,11 @@ class DamageReportCore extends Component {
       selectedReport: ""
     };
   }
-  selectSystem(id) {
+  selectSystem(id, sent) {
     const systems = this.props.data.systems;
     const selectedSystem = systems.find(s => s.id === id);
     this.setState({
+      sent: sent ? true : false,
       selectedSystem: id,
       selectedReport: selectedSystem.damage.report || ""
     });
@@ -96,12 +97,14 @@ class DamageReportCore extends Component {
     reader.onload = function() {
       const result = this.result;
       self.setState({
+        sent: false,
         selectedReport: result
       });
     };
     e.target.files[0] && reader.readAsText(e.target.files[0]);
   }
   sendReport = () => {
+    this.setState({ sent: true });
     const mutation = gql`
       mutation DamageReport($systemId: ID!, $report: String!) {
         damageReport(systemId: $systemId, report: $report)
@@ -116,7 +119,7 @@ class DamageReportCore extends Component {
       variables
     });
     setTimeout(() => {
-      this.selectSystem(this.state.selectedSystem);
+      this.selectSystem(this.state.selectedSystem, true);
     }, 500);
   };
   reactivationCodeResponse = response => {
@@ -208,6 +211,7 @@ class DamageReportCore extends Component {
       })
       .then(res => {
         this.setState({
+          sent: false,
           selectedReport: res.data.generateDamageReport
         });
       });
@@ -244,7 +248,7 @@ class DamageReportCore extends Component {
     if (this.props.data.loading) return null;
     const systems = this.props.data.systems;
     if (!systems) return null;
-    const { selectedReport, selectedSystem } = this.state;
+    const { selectedReport, selectedSystem, sent } = this.state;
     const selectedSystemObj = systems.find(s => s.id === selectedSystem);
     return (
       <Container fluid className="damageReport-core">
@@ -362,6 +366,7 @@ class DamageReportCore extends Component {
               controlled={true}
               onChange={e => {
                 this.setState({
+                  sent: false,
                   selectedReport: e.target.value
                 });
               }}
@@ -484,6 +489,7 @@ class DamageReportCore extends Component {
                         size={"sm"}
                         block
                         color="primary"
+                        disabled={sent}
                         onClick={this.sendReport}
                       >
                         Send

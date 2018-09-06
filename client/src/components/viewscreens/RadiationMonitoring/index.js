@@ -3,7 +3,7 @@ import "./style.scss";
 import col from "color";
 import gql from "graphql-tag";
 import { graphql } from "react-apollo";
-import SubscriptionHelper from "../../../helpers/subscriptionHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const SUB = gql`
   subscription ShipUpdate($simulatorId: ID) {

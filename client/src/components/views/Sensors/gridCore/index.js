@@ -9,8 +9,8 @@ import ContactsList from "./contactsList";
 import MovementCore from "./movementCore";
 import ContactSelect from "./contactSelect";
 import SpeedAsker from "./speedAsker";
-import SubscriptionHelper from "../../../../helpers/subscriptionHelper";
-import { subscribe } from "../../helpers/pubsub";
+import SubscriptionHelper from "helpers/subscriptionHelper";
+import { subscribe } from "helpers/pubsub";
 
 import "./gridCore.scss";
 
