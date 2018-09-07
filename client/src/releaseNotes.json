@@ -1,4 +1,7 @@
 {
+  "1.0.5": {
+    "fixes": ["Fixed the rotation of the jump drive colored circles."]
+  },
   "1.0.4": {
     "features": [
       "Added an 'Auto-Complete' toggle to the sickbay config for decontamination.",
@@ -10,7 +13,8 @@
       "Deleting cards on the station config should work now.",
       "Teams must now have a name, orders, location, priority, and officers assigned before being created.",
       "Refactored relative imports to make developer's lives easeier.",
-      "Fixed an error when generating damage team damage report steps."
+      "Fixed an error when generating damage team damage report steps.",
+      "Fixed an issue with communication images not rendering when they don't appear in the 'Comm Images' folder. WARNING: This might require you to redo your comm images in the short range comm system config of your simulator config."
     ]
   },
   "1.0.3": {
