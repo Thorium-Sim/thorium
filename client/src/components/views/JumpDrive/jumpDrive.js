@@ -115,7 +115,7 @@ class JumpDrive extends Component {
       power: { power, powerLevels }
     } = this.props;
     const { env } = this.state;
-    const sectorStates = ["fore", "aft", "port", "starboard"].map((s, i) => ({
+    const sectorStates = ["starboard", "port", "fore", "aft"].map((s, i) => ({
       position: i + 1,
       state: activated,
       integrity: 1 - sectors[s].offset
