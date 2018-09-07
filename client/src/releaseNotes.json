@@ -1,6 +1,9 @@
 {
   "1.0.5": {
-    "fixes": ["Fixed the rotation of the jump drive colored circles."]
+    "fixes": [
+      "Fixed the rotation of the jump drive colored circles.",
+      "Fixes an issue where sound effect volume levels couldn't be adjusted."
+    ]
   },
   "1.0.4": {
     "features": [
