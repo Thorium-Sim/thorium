@@ -88,14 +88,15 @@ function playSound(opts) {
             sound.source.loop = opts.looping || false;
             sound.source.playbackRate.setValueAtTime(playbackRate, 0);
             sound.gain = window.audioContext.createGain();
-            sound.gain.gain.setValueAtTime(volume, 0);
+            // Use an x * x curve, since linear isn't super great with volume.
+            sound.gain.gain.setValueAtTime(volume * volume, 0);
             sound.source.connect(sound.gain);
 
             sound.source.onended = () => {
               removeSound(opts.id);
               opts.onFinishedPlaying && opts.onFinishedPlaying();
             };
-            sound.source.connect(window.audioContext.destination);
+            sound.gain.connect(window.audioContext.destination);
             sound.source.start();
             sounds[opts.id] = sound;
           },
