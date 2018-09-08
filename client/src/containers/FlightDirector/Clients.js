@@ -165,7 +165,6 @@ const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
                             {k.name}
                           </option>
                         ))}
-                        }}
                       </optgroup>
                     </Fragment>
                   );

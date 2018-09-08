@@ -16,6 +16,8 @@ import { Query, Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import playSound from "components/generic/SoundPlayer";
+import SoundPicker from "helpers/soundPicker";
+
 const queryData = `
 id
 ambiance {
@@ -40,20 +42,6 @@ subscription AmbianceUpdate($id:ID!) {
     ${queryData}
   }
 }
-`;
-
-const SOUNDS_QUERY = gql`
-  query Sounds {
-    assetFolders(name: "Sounds") {
-      id
-      name
-      objects {
-        id
-        name
-        fullPath
-      }
-    }
-  }
 `;
 
 const AmbianceConfig = ({
@@ -82,43 +70,18 @@ const AmbianceConfig = ({
               style={{ display: "flex", alignItems: "center" }}
               className="flex-row"
             >
-              <Query query={SOUNDS_QUERY}>
-                {({ loading, data: { assetFolders } }) =>
-                  loading ? (
-                    <p>Loading</p>
-                  ) : (
-                    <Input
-                      type="select"
-                      value={asset || "nothing"}
-                      onChange={e =>
-                        action({
-                          variables: {
-                            id: simulatorId,
-                            ambiance: { id, asset: e.target.value }
-                          }
-                        })
-                      }
-                    >
-                      <option value="nothing" disabled>
-                        Select a Sound
-                      </option>
-                      {assetFolders[0] &&
-                        assetFolders[0].objects
-                          .concat()
-                          .sort((a, b) => {
-                            if (a.name > b.name) return 1;
-                            if (a.name < b.name) return -1;
-                            return 0;
-                          })
-                          .map(c => (
-                            <option key={c.id} value={c.fullPath}>
-                              {c.name}
-                            </option>
-                          ))}
-                    </Input>
-                  )
+              <SoundPicker
+                selectedSound={asset || "nothing"}
+                setSound={sound =>
+                  action({
+                    variables: {
+                      id: simulatorId,
+                      ambiance: { id, asset: sound }
+                    }
+                  })
                 }
-              </Query>
+              />
+
               <FontAwesome
                 style={{ margin: "10px", cursor: "pointer" }}
                 name="volume-up"

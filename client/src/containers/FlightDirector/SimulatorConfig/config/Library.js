@@ -120,7 +120,7 @@ class Library extends Component {
         <Row>
           <Col sm={3}>
             <Card
-              style={{ padding: 0, maxHeight: "75vh", overflowY: "scroll" }}
+              style={{ padding: 0, maxHeight: "60vh", overflowY: "scroll" }}
             >
               <CardBody>
                 {libraryEntries
@@ -134,7 +134,9 @@ class Library extends Component {
                       onClick={() => {
                         this.setState({
                           entry: Object.assign({}, l, {
-                            seeAlso: l.seeAlso.map(s => s.id)
+                            seeAlso: l.seeAlso
+                              .map(s => s && s.id)
+                              .filter(Boolean)
                           })
                         });
                       }}
@@ -144,30 +146,28 @@ class Library extends Component {
                   ))}
               </CardBody>
             </Card>
-            <Row>
-              <Col sm={12}>
-                <Button
-                  color="success"
-                  size="sm"
-                  block
-                  onClick={() =>
-                    this.setState({
-                      entry: {
-                        seeAlso: [],
-                        categories: [],
-                        simulatorId: this.props.selectedSimulator.id
-                      }
-                    })
+            <Button
+              color="success"
+              size="sm"
+              block
+              onClick={() =>
+                this.setState({
+                  entry: {
+                    seeAlso: [],
+                    categories: [],
+                    simulatorId: this.props.selectedSimulator.id
                   }
-                >
-                  Create
-                </Button>
-              </Col>
-              <Col sm={12}>
-                <h6>Import Library Entries</h6>
-                <Input size="sm" type="file" onChange={this.importEntries} />
-              </Col>
-            </Row>
+                })
+              }
+            >
+              Create
+            </Button>
+            <Label className=" btn-block ">
+              <div className="btn btn-sm btn-info btn-block">
+                Import Library Entries
+              </div>
+              <Input hidden type="file" onChange={this.importEntries} />
+            </Label>
             {entry &&
               entry.id && (
                 <Button
@@ -180,7 +180,6 @@ class Library extends Component {
                 </Button>
               )}
             <Button
-              color="info"
               size="sm"
               block
               as="a"
