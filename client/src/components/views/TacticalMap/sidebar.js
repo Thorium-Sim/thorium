@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Button } from "reactstrap";
+import { Button, Label, Input } from "reactstrap";
 import gql from "graphql-tag";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 
@@ -11,6 +11,27 @@ const SortableItem = SortableElement(({ item, selectedLayer, selectLayer }) => (
     {item.name}
   </li>
 ));
+
+const importTacticalMap = evt => {
+  if (evt.target.files[0]) {
+    const data = new FormData();
+    Array.from(evt.target.files).forEach((f, index) =>
+      data.append(`files[${index}]`, f)
+    );
+    fetch(
+      `${window.location.protocol}//${window.location.hostname}:${parseInt(
+        window.location.port,
+        10
+      ) + 1}/importTacticalMap`,
+      {
+        method: "POST",
+        body: data
+      }
+    ).then(() => {
+      window.location.reload();
+    });
+  }
+};
 
 const SortableList = SortableContainer(
   ({ items, selectedLayer, selectLayer }) => {
@@ -194,7 +215,7 @@ export default class Sidebar extends Component {
             </ul>
             <div>
               <Button color="success" size="sm" onClick={this.addTactical}>
-                New Map
+                New
               </Button>
               <Button
                 color="info"
@@ -202,7 +223,7 @@ export default class Sidebar extends Component {
                 disabled={!tacticalMapId}
                 onClick={this.duplicateTactical}
               >
-                Duplicate Map
+                Duplicate
               </Button>
               <Button
                 color="danger"
@@ -210,8 +231,23 @@ export default class Sidebar extends Component {
                 disabled={!tacticalMapId}
                 onClick={this.removeTactical}
               >
-                Remove Map
+                Remove
               </Button>
+              <Button
+                as="a"
+                size="sm"
+                disabled={!tacticalMapId}
+                href={`${window.location.protocol}//${
+                  window.location.hostname
+                }:${parseInt(window.location.port, 10) +
+                  1}/exportTacticalMap/${tacticalMapId}`}
+              >
+                Export
+              </Button>
+              <Label>
+                <div className="btn btn-sm btn-info btn-block">Import</div>
+                <Input hidden type="file" onChange={importTacticalMap} />
+              </Label>
             </div>
           </Fragment>
         )}

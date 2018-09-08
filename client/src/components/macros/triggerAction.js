@@ -2,21 +2,9 @@ import React, { Fragment } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import { FormGroup, Label, Input } from "reactstrap";
-const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+import SoundPicker from "helpers/soundPicker";
 
-const SOUNDS_QUERY = gql`
-  query Sounds {
-    assetFolders(name: "Sounds") {
-      id
-      name
-      objects {
-        id
-        name
-        fullPath
-      }
-    }
-  }
-`;
+const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
 
 const MOVIE_QUERY = gql`
   query Movies {
@@ -39,37 +27,10 @@ const renderButtons = ({
 }) => {
   if (action === "sound")
     return (
-      <Query query={SOUNDS_QUERY}>
-        {({ loading, data: { assetFolders } }) =>
-          loading ? (
-            <p>Loading</p>
-          ) : (
-            <Input
-              type="select"
-              value={asset || "nothing"}
-              onChange={e => updateArgs("asset", e.target.value)}
-            >
-              <option value="nothing" disabled>
-                Select a Sound
-              </option>
-              {assetFolders[0]
-                ? assetFolders[0].objects
-                    .concat()
-                    .sort((a, b) => {
-                      if (a.name > b.name) return 1;
-                      if (a.name < b.name) return -1;
-                      return 0;
-                    })
-                    .map(c => (
-                      <option key={c.id} value={c.fullPath}>
-                        {c.name}
-                      </option>
-                    ))
-                : null}
-            </Input>
-          )
-        }
-      </Query>
+      <SoundPicker
+        selectedSound={asset || "nothing"}
+        setSound={sound => updateArgs("asset", sound)}
+      />
     );
   if (action === "movie")
     return (

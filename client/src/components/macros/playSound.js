@@ -1,21 +1,6 @@
 import React from "react";
-import { Query } from "react-apollo";
 import { FormGroup, Label, Input } from "reactstrap";
-import gql from "graphql-tag";
-
-const SOUNDS_QUERY = gql`
-  query Sounds {
-    assetFolders(name: "Sounds") {
-      id
-      name
-      objects {
-        id
-        name
-        fullPath
-      }
-    }
-  }
-`;
+import SoundPicker from "helpers/soundPicker";
 
 export default ({ updateArgs, args }) => {
   const sound = args.sound || {};
@@ -29,36 +14,11 @@ export default ({ updateArgs, args }) => {
     <div>
       <FormGroup className="macro-PlaySound">
         <Label>Sound</Label>
-        <Query query={SOUNDS_QUERY}>
-          {({ loading, data: { assetFolders } }) =>
-            loading ? (
-              <p>Loading</p>
-            ) : (
-              <Input
-                type="select"
-                value={sound.asset || "nothing"}
-                onChange={e => updateSound("asset", e.target.value)}
-              >
-                <option value="nothing" disabled>
-                  Select a Sound
-                </option>
-                {assetFolders[0] &&
-                  assetFolders[0].objects
-                    .concat()
-                    .sort((a, b) => {
-                      if (a.name > b.name) return 1;
-                      if (a.name < b.name) return -1;
-                      return 0;
-                    })
-                    .map(c => (
-                      <option key={c.id} value={c.fullPath}>
-                        {c.name}
-                      </option>
-                    ))}
-              </Input>
-            )
-          }
-        </Query>
+        <SoundPicker
+          selectedSound={sound.asset || "nothing"}
+          setSound={sound => updateSound("asset", sound)}
+        />
+
         <Label>Sound Player</Label>
         <Input
           type="select"

@@ -1,21 +1,17 @@
 import * as viewscreens from "./viewscreens";
 import addAsset from "../../../addAsset";
 
-export default function buildExport(zip, mission) {
+export default function buildExport(zip, i, type) {
   let assets = [];
-  mission.timeline.forEach(t =>
-    t.timelineItems
-      .filter(i => i.event === "updateViewscreenComponent")
-      .forEach(i => {
-        const args = JSON.parse(i.args);
-        if (args && args.component && viewscreens[args.component]) {
-          assets = assets.concat(
-            viewscreens[args.component](JSON.parse(args.data || "{}"))
-          );
-        }
-      })
-  );
+  if (i.event === "updateViewscreenComponent") {
+    const args = JSON.parse(i.args);
+    if (args && args.component && viewscreens[args.component]) {
+      assets = assets.concat(
+        viewscreens[args.component](JSON.parse(args.data || "{}"))
+      );
+    }
+  }
   assets.forEach(key => {
-    addAsset(key, zip);
+    addAsset(key, zip, type);
   });
 }
