@@ -11,7 +11,8 @@
       "Fixes for the stealth field animation.",
       "Fixes for damage report configurations not being editable.",
       "Fixes an issue where the library buttons for importing, exporting, and deleting were hidden.",
-      "Fix an issue where certain actions aren't working properly."
+      "Fixes an issue where certain actions aren't working properly.",
+      "Fixes an issue where changing the mosaic layout to a saved layout isn't persisted when navigating away from the core."
     ]
   },
   "1.0.5": {
