@@ -1,7 +1,8 @@
 {
   "1.0.6": {
     "features": [
-      "Added a special sound picker which allows for nested folders. This allows you to add folders to your sounds folder and pick from any sound within any of those folders."
+      "Added a special sound picker which allows for nested folders. This allows you to add folders to your sounds folder and pick from any sound within any of those folders.",
+      "Add the ability to export keyboards and tactical maps."
     ],
     "fixes": [
       "Fix an issue with the viewscreen not properly showing up, particularly with the timer viewscreen.",
