@@ -99,6 +99,7 @@ App.on("clientUnlockScreen", ({ client }) => {
 });
 App.on("clientOfflineState", ({ client, state }) => {
   const clientObj = App.clients.find(c => c.id === client);
+  console.log(client);
   clientObj.setOfflineState(state);
   pubsub.publish("clientChanged", App.clients);
 });

@@ -101,7 +101,7 @@ class CoreComponents extends Component {
           pickLayout={this.pickLayout}
           layout={layout}
           mosaic={mosaic}
-          setMosaic={m => this.setState({ mosaic: m })}
+          setMosaic={this.updateMosaic}
           editable={editable}
           setEdit={e => this.setState({ editable: e })}
           notifications={notifications}

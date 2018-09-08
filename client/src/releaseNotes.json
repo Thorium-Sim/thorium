@@ -10,7 +10,8 @@
       "Fixes for issues with configuring the software panels.",
       "Fixes for the stealth field animation.",
       "Fixes for damage report configurations not being editable.",
-      "Fixes an issue where the library buttons for importing, exporting, and deleting were hidden."
+      "Fixes an issue where the library buttons for importing, exporting, and deleting were hidden.",
+      "Fix an issue where certain actions aren't working properly."
     ]
   },
   "1.0.5": {
