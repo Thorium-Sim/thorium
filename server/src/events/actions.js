@@ -73,7 +73,7 @@ App.on("triggerAction", args => {
   switch (args.action) {
     case "online":
       clients.forEach(c =>
-        App.handleEvent({ client: c.id, state: null }, "clientOfflineState")
+        App.handleEvent({ client: c, state: null }, "clientOfflineState")
       );
       break;
     case "blackout":
@@ -83,10 +83,7 @@ App.on("triggerAction", args => {
     case "maintenance":
     case "soviet":
       clients.forEach(c =>
-        App.handleEvent(
-          { client: c.id, state: args.action },
-          "clientOfflineState"
-        )
+        App.handleEvent({ client: c, state: args.action }, "clientOfflineState")
       );
       break;
     case "sound":
@@ -102,10 +99,7 @@ App.on("triggerAction", args => {
       break;
     case "movie":
       clients.forEach(c =>
-        App.handleEvent(
-          { client: c.id, movie: args.message },
-          "clientMovieState"
-        )
+        App.handleEvent({ client: c, movie: args.message }, "clientMovieState")
       );
       break;
     case "message":
