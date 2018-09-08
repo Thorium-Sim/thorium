@@ -1,10 +1,12 @@
 import React from "react";
 
 const StealthAnimation = ({ src, activated, status, id, state }) => {
+  console.log(activated, status, state);
   const getDisplay = () => {
     if (!id) return "none";
     if (status && !activated) return "none";
     if (state || !activated) return "block";
+    return "none";
   };
   return (
     <div
