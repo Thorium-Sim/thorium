@@ -38,12 +38,14 @@ export default ({ updateArgs, args, client }) => {
           value={seconds}
           onChange={e => updateTime(e.target.value, "seconds")}
         />
-        <Label>Activate Timer</Label>
-        <Input
-          type="checkbox"
-          checked={args.active}
-          onChange={e => updateArgs("active", e.target.checked)}
-        />
+        <Label>
+          <Input
+            type="checkbox"
+            checked={args.active}
+            onChange={e => updateArgs("active", e.target.checked)}
+          />
+          Activate Timer
+        </Label>
       </FormGroup>
     </div>
   );
