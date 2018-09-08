@@ -3,6 +3,8 @@ import { FormGroup } from "reactstrap";
 
 export default ({ args = `{"data":{}}` }) => {
   const data = args.data ? JSON.parse(args.data) : {};
+  console.log(data);
+
   return (
     <FormGroup className="macro-template">
       <span>
@@ -22,7 +24,7 @@ export default ({ args = `{"data":{}}` }) => {
             ) : (
               <li key={k}>
                 <strong>{k}: </strong>
-                {data[k]}
+                {JSON.stringify(data[k])}
               </li>
             )
         )}

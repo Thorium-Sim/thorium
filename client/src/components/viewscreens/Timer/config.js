@@ -15,28 +15,30 @@ const TIMESYNC_SUB = gql`
 export default withApollo(
   class TimerConfig extends Component {
     componentDidMount() {
-      this.subscription = this.props.client
-        .subscribe({
-          query: TIMESYNC_SUB,
-          variables: {
-            simulatorId: this.props.simulator.id
-          }
-        })
-        .subscribe({
-          next: ({ data: { syncTime } }) => {
-            const { data = "{}" } = this.props;
-            const { sync } = JSON.parse(data);
-            sync &&
-              this.updateData({
-                timer: syncTime.time,
-                stopped: !syncTime.active
-              });
-            clearTimeout(this.timer);
-          },
-          error(err) {
-            console.error("err", err);
-          }
-        });
+      if (this.props.simulator) {
+        this.subscription = this.props.client
+          .subscribe({
+            query: TIMESYNC_SUB,
+            variables: {
+              simulatorId: this.props.simulator.id
+            }
+          })
+          .subscribe({
+            next: ({ data: { syncTime } }) => {
+              const { data = "{}" } = this.props;
+              const { sync } = JSON.parse(data);
+              sync &&
+                this.updateData({
+                  timer: syncTime.time,
+                  stopped: !syncTime.active
+                });
+              clearTimeout(this.timer);
+            },
+            error(err) {
+              console.error("err", err);
+            }
+          });
+      }
     }
     componentWillUnmount() {
       this.subscription && this.subscription.unsubscribe();

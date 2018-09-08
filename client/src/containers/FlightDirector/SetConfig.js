@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import { Container, Row, Col, Card, Button, Input } from "reactstrap";
 import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo, Query } from "react-apollo";
 
 import "./setConfig.scss";
 
@@ -204,10 +204,10 @@ class SetConfig extends Component {
               Remove Set
             </Button>
           </Col>
-          <Col>
+          <Col className="flex-column">
             <h5>Simulators</h5>
             {selectedSet && (
-              <Card>
+              <Card className="flex-max auto-scroll">
                 {simulators.map(s => (
                   <li
                     key={s.id}
@@ -228,10 +228,10 @@ class SetConfig extends Component {
               </Card>
             )}
           </Col>
-          <Col>
+          <Col className="flex-column">
             <h5>Station Sets</h5>
             {selectedSimulator && (
-              <Card>
+              <Card className="flex-max auto-scroll">
                 {simulators
                   .find(s => s.id === selectedSimulator)
                   .stationSets.map(s => (
@@ -253,11 +253,11 @@ class SetConfig extends Component {
               </Card>
             )}
           </Col>
-          <Col>
+          <Col className="flex-column">
             <h5>Station</h5>
             {selectedSimulator &&
               selectedStationSet && (
-                <Card>
+                <Card className="flex-max auto-scroll">
                   {simulators
                     .find(s => s.id === selectedSimulator)
                     .stationSets.find(s => s.id === selectedStationSet)
@@ -286,6 +286,14 @@ class SetConfig extends Component {
                     Viewscreen
                   </li>
                   <li
+                    className={`list-group-item ${
+                      selectedStation === "Sound" ? "selected" : ""
+                    }`}
+                    onClick={() => this.setState({ selectedStation: "Sound" })}
+                  >
+                    Sound Player
+                  </li>
+                  <li
                     key={`station-blackout`}
                     className={`list-group-item ${
                       selectedStation === "Blackout" ? "selected" : ""
@@ -296,15 +304,53 @@ class SetConfig extends Component {
                   >
                     Blackout
                   </li>
+                  <Query
+                    query={gql`
+                      query Keyboards {
+                        keyboard {
+                          id
+                          name
+                        }
+                      }
+                    `}
+                  >
+                    {({ loading, data: { keyboard } }) => {
+                      if (loading || keyboard.length === 0) {
+                        return null;
+                      }
+                      return (
+                        <Fragment>
+                          <li>Keyboards</li>
+                          {keyboard.map(k => (
+                            <li
+                              key={k.id}
+                              className={`list-group-item ${
+                                selectedStation === `keyboard:${k.id}`
+                                  ? "selected"
+                                  : ""
+                              }`}
+                              onClick={() =>
+                                this.setState({
+                                  selectedStation: `keyboard:${k.id}`
+                                })
+                              }
+                            >
+                              {k.name}
+                            </li>
+                          ))}
+                        </Fragment>
+                      );
+                    }}
+                  </Query>
                 </Card>
               )}
           </Col>
-          <Col>
+          <Col className="flex-column">
             <h5>Clients</h5>
             {selectedSimulator &&
               selectedStationSet &&
               selectedStation && (
-                <Card style={{ maxHeight: "60vh", overflowY: "scroll" }}>
+                <Card className="flex-max auto-scroll">
                   <ul style={{ padding: 0 }}>
                     {clients.map(s => (
                       <li key={s.id} className={`list-group-item`}>

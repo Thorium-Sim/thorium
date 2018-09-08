@@ -13,14 +13,18 @@ class Config extends Component {
       color: component.color
     };
   }
-  componentDidUpdate() {
+  componentDidUpdate(oldProps) {
     const component = this.props.components.find(
       s => s.id === this.props.selectedComponent
     );
-    if (!component) return;
+    const oldComponent = oldProps.components.find(
+      s => s.id === this.props.selectedComponent
+    );
+
+    if (!component || !oldComponent) return;
     if (
-      this.state.label !== component.label ||
-      this.state.color !== component.color
+      oldComponent.label !== component.label ||
+      oldComponent.color !== component.color
     ) {
       this.setState({
         label: component.label,

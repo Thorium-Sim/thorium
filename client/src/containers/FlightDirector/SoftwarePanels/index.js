@@ -504,6 +504,7 @@ class App extends Component {
           <Col sm={12}>
             {selectedComponent && (
               <Config
+                key={selectedComponent}
                 applyUpdate={this.applyUpdate}
                 selectedComponent={selectedComponent}
                 components={components}

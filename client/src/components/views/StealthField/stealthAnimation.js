@@ -5,6 +5,7 @@ const StealthAnimation = ({ src, activated, status, id, state }) => {
     if (!id) return "none";
     if (status && !activated) return "none";
     if (state || !activated) return "block";
+    return "none";
   };
   return (
     <div
