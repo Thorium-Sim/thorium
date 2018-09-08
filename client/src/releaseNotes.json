@@ -1,4 +1,16 @@
 {
+  "1.0.6": {
+    "features": [
+      "Added a special sound picker which allows for nested folders. This allows you to add folders to your sounds folder and pick from any sound within any of those folders."
+    ],
+    "fixes": [
+      "Fix an issue with the viewscreen not properly showing up, particularly with the timer viewscreen.",
+      "Fix scrolling on the sets control. Also adds sound player and keyboards to the station options when configuring a set.",
+      "Fixes for issues with configuring the software panels.",
+      "Fixes for the stealth field animation.",
+      "Fixes for damage report configurations not being editable. "
+    ]
+  },
   "1.0.5": {
     "fixes": [
       "Fixed the rotation of the jump drive colored circles.",
