@@ -2,7 +2,12 @@ import express from "express";
 import multer from "multer";
 import fs from "fs";
 import cors from "cors";
+import path from "path";
+import chalk from "chalk";
 import { printSchema } from "graphql/utilities/schemaPrinter";
+import schema from "../data";
+import { uploadAsset } from "../resolvers/assets";
+
 import exportMission from "../imports/missions/export";
 import importMission from "../imports/missions/import";
 import exportSimulator from "../imports/simulators/export";
@@ -12,11 +17,8 @@ import exportLibrary from "../imports/library/export";
 import importLibrary from "../imports/library/import";
 import exportKeyboard from "../imports/keyboards/export";
 import importKeyboard from "../imports/keyboards/import";
-
-import { uploadAsset } from "../resolvers/assets";
-import schema from "../data";
-import path from "path";
-import chalk from "chalk";
+import exportTacticalMap from "../imports/tacticalMaps/export";
+import ImportTacticalMap from "../imports/tacticalMaps/import";
 
 export default () => {
   let appDir = "./";
@@ -50,7 +52,9 @@ export default () => {
   server.get("/exportKeyboard/:keyboardId", (req, res) => {
     exportKeyboard(req.params.keyboardId, res);
   });
-
+  server.get("/exportTacticalMap/:mapId", (req, res) => {
+    exportTacticalMap(req.params.mapId, res);
+  });
   server.get("/exportLibrary/:simId", (req, res) => {
     exportLibrary(req.params.simId, null, res);
   });
@@ -105,17 +109,29 @@ export default () => {
   });
 
   server.post("/importKeyboard", upload.any(), async (req, res) => {
-    console.log("Uploading keyboard...");
     if (req.files[0]) {
-      console.log("Importing keyboard...");
       importKeyboard(req.files[0].path, () => {
-        console.log("Imported. Deleting uploaded file");
         fs.unlink(req.files[0].path, err => {
           if (err) {
             res.end("Error");
             throw new Error(err);
           }
           console.log("Completed importing keyboard.");
+          res.end("Complete");
+        });
+      });
+    }
+  });
+
+  server.post("/importTacticalMap", upload.any(), async (req, res) => {
+    if (req.files[0]) {
+      ImportTacticalMap(req.files[0].path, () => {
+        fs.unlink(req.files[0].path, err => {
+          if (err) {
+            res.end("Error");
+            throw new Error(err);
+          }
+          console.log("Completed importing tactical map.");
           res.end("Complete");
         });
       });
