@@ -1,3 +1,9 @@
+.rc-menu-vertical,
+.rc-menu-vertical-left,
+.rc-menu-vertical-right,
+.rc-menu-inline {
+  padding: unset;
+}
 .rc-menu-vertical > .rc-menu-item,
 .rc-menu-vertical-left > .rc-menu-item,
 .rc-menu-vertical-right > .rc-menu-item,

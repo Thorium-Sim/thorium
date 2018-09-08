@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Row, Col, Button, Input, ButtonGroup } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo, Query } from "react-apollo";
-import Menu, { SubMenu, MenuItem } from "rc-menu";
-import "rc-menu/assets/index.css";
 import SoundPicker from "helpers/soundPicker";
 
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -41,7 +39,7 @@ class ActionsCore extends Component {
       : [];
 
     this.state = {
-      actionName: "sound",
+      actionName: "flash",
       actionDest: "all",
       selectedSound: "nothing",
       selectedVoice: null,
