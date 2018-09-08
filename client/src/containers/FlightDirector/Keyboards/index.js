@@ -1,5 +1,13 @@
-import React, { Component } from "react";
-import { Container, Row, Col, ListGroup, Button } from "reactstrap";
+import React, { Fragment, Component } from "react";
+import {
+  Container,
+  Row,
+  Col,
+  ListGroup,
+  Button,
+  Label,
+  Input
+} from "reactstrap";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import KeyboardList from "./keyboardList";
@@ -57,6 +65,26 @@ class Keyboards extends Component {
     selectedKeyboard: null
   };
   render() {
+    const importKeyboard = evt => {
+      if (evt.target.files[0]) {
+        const data = new FormData();
+        Array.from(evt.target.files).forEach((f, index) =>
+          data.append(`files[${index}]`, f)
+        );
+        fetch(
+          `${window.location.protocol}//${window.location.hostname}:${parseInt(
+            window.location.port,
+            10
+          ) + 1}/importKeyboard`,
+          {
+            method: "POST",
+            body: data
+          }
+        ).then(() => {
+          window.location.reload();
+        });
+      }
+    };
     const { selectedKeyboard } = this.state;
     return (
       <Query query={KEYBOARD_QUERY}>
@@ -100,6 +128,7 @@ class Keyboards extends Component {
                       <Button
                         color="success"
                         block
+                        size="sm"
                         onClick={() => {
                           const name = prompt(
                             "What is the name of the keyboard?"
@@ -113,23 +142,43 @@ class Keyboards extends Component {
                   </Mutation>
 
                   {selectedKeyboard && (
-                    <Mutation mutation={REMOVE_KEYBOARD}>
-                      {removeKeyboard => (
-                        <Button
-                          color="danger"
-                          block
-                          onClick={() => {
-                            removeKeyboard({
-                              variables: { id: selectedKeyboard }
-                            });
-                            this.setState({ selectedKeyboard: null });
-                          }}
-                        >
-                          Remove Form
-                        </Button>
-                      )}
-                    </Mutation>
+                    <Fragment>
+                      <Mutation mutation={REMOVE_KEYBOARD}>
+                        {removeKeyboard => (
+                          <Button
+                            size="sm"
+                            color="danger"
+                            block
+                            onClick={() => {
+                              removeKeyboard({
+                                variables: { id: selectedKeyboard }
+                              });
+                              this.setState({ selectedKeyboard: null });
+                            }}
+                          >
+                            Remove Keyboard
+                          </Button>
+                        )}
+                      </Mutation>
+                      <Button
+                        as="a"
+                        block
+                        size="sm"
+                        href={`${window.location.protocol}//${
+                          window.location.hostname
+                        }:${parseInt(window.location.port, 10) +
+                          1}/exportKeyboard/${selectedKeyboard}`}
+                      >
+                        Export Keyboard
+                      </Button>
+                    </Fragment>
                   )}
+                  <Label className=" btn-block ">
+                    <div className="btn btn-sm btn-info btn-block">
+                      Import Keyboard
+                    </div>
+                    <Input hidden type="file" onChange={importKeyboard} />
+                  </Label>
                 </Col>
                 <Col sm={9}>
                   {selectedKeyboard && (

@@ -10,6 +10,9 @@ import importSimulator from "../imports/simulators/import";
 import importAssets from "../imports/asset/import";
 import exportLibrary from "../imports/library/export";
 import importLibrary from "../imports/library/import";
+import exportKeyboard from "../imports/keyboards/export";
+import importKeyboard from "../imports/keyboards/import";
+
 import { uploadAsset } from "../resolvers/assets";
 import schema from "../data";
 import path from "path";
@@ -42,6 +45,10 @@ export default () => {
 
   server.get("/exportSimulator/:simId", (req, res) => {
     exportSimulator(req.params.simId, res);
+  });
+
+  server.get("/exportKeyboard/:keyboardId", (req, res) => {
+    exportKeyboard(req.params.keyboardId, res);
   });
 
   server.get("/exportLibrary/:simId", (req, res) => {
@@ -91,6 +98,24 @@ export default () => {
             throw new Error(err);
           }
           console.log("Completed importing mission.");
+          res.end("Complete");
+        });
+      });
+    }
+  });
+
+  server.post("/importKeyboard", upload.any(), async (req, res) => {
+    console.log("Uploading keyboard...");
+    if (req.files[0]) {
+      console.log("Importing keyboard...");
+      importKeyboard(req.files[0].path, () => {
+        console.log("Imported. Deleting uploaded file");
+        fs.unlink(req.files[0].path, err => {
+          if (err) {
+            res.end("Error");
+            throw new Error(err);
+          }
+          console.log("Completed importing keyboard.");
           res.end("Complete");
         });
       });

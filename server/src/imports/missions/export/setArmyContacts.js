@@ -1,13 +1,11 @@
 import addAsset from "../../addAsset";
 
-export default function buildExport(zip, mission) {
-  mission.timeline.forEach(t =>
-    t.timelineItems.filter(i => i.event === "setArmyContacts").forEach(i => {
-      const args = JSON.parse(i.args);
-      args.armyContacts.forEach(c => {
-        addAsset(c.icon, zip);
-        addAsset(c.picture, zip);
-      });
-    })
-  );
+export default function buildExport(zip, i, type) {
+  if (i.event === "setArmyContacts") {
+    const args = JSON.parse(i.args);
+    args.armyContacts.forEach(c => {
+      addAsset(c.icon, zip, type);
+      addAsset(c.picture, zip, type);
+    });
+  }
 }
