@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import { Row, Col, Button, Input, ButtonGroup } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo, Query } from "react-apollo";
+import Menu, { SubMenu, MenuItem } from "rc-menu";
+import "rc-menu/assets/index.css";
+import SoundPicker from "helpers/soundPicker";
+
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
@@ -11,20 +15,6 @@ const STATION_CHANGE_QUERY = gql`
       id
       stations {
         name
-      }
-    }
-  }
-`;
-
-const SOUNDS_QUERY = gql`
-  query Sounds {
-    assetFolders(name: "Sounds") {
-      id
-      name
-      objects {
-        id
-        name
-        fullPath
       }
     }
   }
@@ -51,7 +41,7 @@ class ActionsCore extends Component {
       : [];
 
     this.state = {
-      actionName: "flash",
+      actionName: "sound",
       actionDest: "all",
       selectedSound: "nothing",
       selectedVoice: null,
@@ -164,40 +154,10 @@ class ActionsCore extends Component {
       return (
         <Row>
           <Col sm={8}>
-            <Query query={SOUNDS_QUERY}>
-              {({ loading, data: { assetFolders } }) =>
-                loading ? (
-                  <p>Loading</p>
-                ) : (
-                  <Input
-                    style={{ height: "20px" }}
-                    type="select"
-                    value={selectedSound}
-                    onChange={e =>
-                      this.setState({ selectedSound: e.target.value })
-                    }
-                  >
-                    <option value="nothing" disabled>
-                      Select a Sound
-                    </option>
-                    {assetFolders[0]
-                      ? assetFolders[0].objects
-                          .concat()
-                          .sort((a, b) => {
-                            if (a.name > b.name) return 1;
-                            if (a.name < b.name) return -1;
-                            return 0;
-                          })
-                          .map(c => (
-                            <option key={c.id} value={c.fullPath}>
-                              {c.name}
-                            </option>
-                          ))
-                      : null}
-                  </Input>
-                )
-              }
-            </Query>
+            <SoundPicker
+              selectedSound={selectedSound}
+              setSound={sound => this.setState({ selectedSound: sound })}
+            />
           </Col>
           <Col sm={4}>
             <Button block color="primary" size="sm" onClick={this.playSound}>

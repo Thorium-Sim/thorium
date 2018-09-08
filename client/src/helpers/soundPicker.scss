@@ -1,0 +1,32 @@
+.rc-menu-vertical > .rc-menu-item,
+.rc-menu-vertical-left > .rc-menu-item,
+.rc-menu-vertical-right > .rc-menu-item,
+.rc-menu-inline > .rc-menu-item,
+.rc-menu-vertical > .rc-menu-submenu > .rc-menu-submenu-title,
+.rc-menu-vertical-left > .rc-menu-submenu > .rc-menu-submenu-title,
+.rc-menu-vertical-right > .rc-menu-submenu > .rc-menu-submenu-title,
+.rc-menu-inline > .rc-menu-submenu > .rc-menu-submenu-title {
+  padding: 2px 5px;
+  background-color: transparent;
+  border-bottom: solid 1px rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.9);
+  overflow-x: hidden;
+  color: white;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+}
+.rc-menu-submenu.rc-menu-submenu-popup.rc-menu-submenu-placement-rightTop {
+  z-index: 10 !important;
+}
+.rc-menu-vertical.rc-menu-sub,
+.rc-menu-vertical-left.rc-menu-sub,
+.rc-menu-vertical-right.rc-menu-sub {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+  max-height: 300px;
+  max-width: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 2px 5px;
+}
