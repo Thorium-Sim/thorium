@@ -7,8 +7,8 @@ export default class GenericConfig extends Component {
     super(props);
     this.state = props.args;
   }
-  componentDidUpdate() {
-    if (JSON.stringify(this.state) !== JSON.stringify(this.props.args)) {
+  componentDidUpdate(oldProps) {
+    if (JSON.stringify(oldProps.args) !== JSON.stringify(this.props.args)) {
       this.setState(this.props.args);
     }
   }
