@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Col, Row, FormGroup, Label } from "reactstrap";
+import { Col, Row } from "reactstrap";
 import { withApollo } from "react-apollo";
 import * as Macros from "../../../components/macros";
-import EventPicker from "./EventPicker";
 class MacroConfig extends Component {
   _handleChange = e => {
     this.props.updateMacro("event", e.target.value);
