@@ -270,3 +270,8 @@ App.on(
     pubsub.publish("simulatorsUpdate", App.simulators);
   }
 );
+App.on("setAlertConditionLock", ({ simulatorId, lock }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  sim.setAlertLevelLock(lock);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});

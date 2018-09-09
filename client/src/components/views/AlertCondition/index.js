@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { withApollo } from "react-apollo";
+import { withApollo, Query } from "react-apollo";
 import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag";
 import Tour from "helpers/tourHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -18,6 +19,12 @@ const trainingSteps = [
       "Click on one of these alert conditions to change it. You can move your mouse over the condition to see a description of when the condition is applicable."
   }
 ];
+
+const queryData = `
+id
+alertlevel
+alertLevelLock`;
+
 class AlertCondition extends Component {
   state = { hoverAlert: null };
   setAlert(number) {
@@ -64,33 +71,73 @@ class AlertCondition extends Component {
       }
     ];
     return (
-      <Container fluid className="alert-condition">
-        <Row>
-          <Col sm={8} className="alerts">
-            <ul>
-              {alertLevels.map(l => (
-                <li
-                  key={`alert-${l.number}`}
-                  className={`alert${l.number}`}
-                  onMouseLeave={() => this.setState({ hoverAlert: null })}
-                  onMouseEnter={() => this.setState({ hoverAlert: l.number })}
-                  onClick={() => this.setAlert(l.number)}
-                >
-                  Alert Condition {l.number}
-                </li>
-              ))}
-            </ul>
-            <div className="alertDescriptions">
-              <p className="alertInfo">
-                {this.state.hoverAlert &&
-                  alertLevels.find(l => l.number === this.state.hoverAlert)
-                    .text}
-              </p>
-            </div>
-          </Col>
-        </Row>
-        <Tour steps={trainingSteps} client={this.props.clientObj} />
-      </Container>
+      <Query
+        query={gql`
+          query simulators($id: String) {
+            simulators(id: $id) {
+              ${queryData}
+            }
+          }
+        `}
+        variables={{ id: this.props.simulator.id }}
+      >
+        {({ loading, data, subscribeToMore }) =>
+          loading ? null : (
+            <Container fluid className="alert-condition">
+              <SubscriptionHelper
+                subscribe={() =>
+                  subscribeToMore({
+                    document: gql`
+              subscription SimulatorsSub($id: ID) {
+    simulatorsUpdate(simulatorId: $id) {
+      ${queryData}
+    }
+  }`,
+                    variables: { id: this.props.simulator.id },
+                    updateQuery: (previousResult, { subscriptionData }) => {
+                      return Object.assign({}, previousResult, {
+                        simulators: subscriptionData.data.simulatorsUpdate
+                      });
+                    }
+                  })
+                }
+              />
+              <Row>
+                <Col sm={8} className="alerts">
+                  <ul>
+                    {alertLevels.map(l => (
+                      <li
+                        key={`alert-${l.number}`}
+                        className={`alert${l.number}`}
+                        onMouseLeave={() => this.setState({ hoverAlert: null })}
+                        onMouseEnter={() =>
+                          this.setState({ hoverAlert: l.number })
+                        }
+                        onClick={
+                          data.simulators[0].alertLevelLock
+                            ? () => {}
+                            : () => this.setAlert(l.number)
+                        }
+                      >
+                        Alert Condition {l.number}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="alertDescriptions">
+                    <p className="alertInfo">
+                      {this.state.hoverAlert &&
+                        alertLevels.find(
+                          l => l.number === this.state.hoverAlert
+                        ).text}
+                    </p>
+                  </div>
+                </Col>
+              </Row>
+              <Tour steps={trainingSteps} client={this.props.clientObj} />
+            </Container>
+          )
+        }
+      </Query>
     );
   }
 }
