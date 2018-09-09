@@ -2,7 +2,9 @@ import React from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 
+const memo = {};
 const EventName = ({ id, label }) => {
+  if (memo[id]) return memo[id];
   return (
     <Query
       query={gql`
@@ -29,9 +31,11 @@ const EventName = ({ id, label }) => {
     >
       {({ loading, data }) => {
         if (loading) return label || id;
-        return data.__schema.mutationType.fields
+        const name = data.__schema.mutationType.fields
           .find(f => f.name === id)
           .description.replace("Macro: ", "");
+        memo[id] = name;
+        return name;
       }}
     </Query>
   );

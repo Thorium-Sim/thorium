@@ -3,8 +3,13 @@ import * as Macros from "../../macrosPrint";
 import FontAwesome from "react-fontawesome";
 import allowedMacros from "./allowedMacros";
 import EventName from "../../../containers/FlightDirector/MissionConfig/EventName";
-
 class TimelineItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      expanded: props.showDescription
+    };
+  }
   state = {};
   render() {
     let {
