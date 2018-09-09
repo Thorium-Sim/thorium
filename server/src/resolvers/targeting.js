@@ -52,11 +52,14 @@ export const TargetingMutations = {
   setCoordinateTargeting(root, args, context) {
     App.handleEvent(args, "setCoordinateTargeting", context);
   },
-  clearAllContacts(root, args, context) {
-    App.handleEvent(args, "clearAllContacts", context);
+  clearAllTargetingContacts(root, args, context) {
+    App.handleEvent(args, "clearAllTargetingContacts", context);
   },
   setTargetingRange(root, args, context) {
     App.handleEvent(args, "setTargetingRange", context);
+  },
+  setTargetingClasses(root, args, context) {
+    App.handleEvent(args, "setTargetingClasses", context);
   }
 };
 
