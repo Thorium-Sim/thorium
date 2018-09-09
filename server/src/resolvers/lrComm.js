@@ -57,6 +57,12 @@ export const LRCommMutations = {
   },
   setLongRangeSatellites(root, args, context) {
     App.handleEvent(args, "setLongRangeSatellites", context);
+  },
+  addInterceptionSignal(root, args, context) {
+    App.handleEvent(args, "addInterceptionSignal", context);
+  },
+  removeInterceptionSignal(root, args, context) {
+    App.handleEvent(args, "removeInterceptionSignal", context);
   }
 };
 

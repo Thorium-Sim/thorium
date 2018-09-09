@@ -1,4 +1,5 @@
 import React, { Fragment, Component } from "react";
+import { Label, Input } from "reactstrap";
 import TimelineControl from "./timelineControl";
 import TimelineStep from "./timelineStep";
 import allowedMacros from "./allowedMacros";
@@ -9,6 +10,8 @@ class Mission extends Component {
     const { executedTimelineSteps, timeline, currentTimelineStep } = props;
     const currentStep = timeline[currentTimelineStep];
     this.state = {
+      showDescriptions:
+        window.localStorage.getItem("thorium_coreShowDetails") === "true",
       actions: currentStep
         ? currentStep.timelineItems.reduce(
             (prev, next) =>
@@ -21,7 +24,6 @@ class Mission extends Component {
         : {}
     };
   }
-  state = { actions: {} };
   componentDidUpdate(prevProps) {
     const { executedTimelineSteps, timeline, currentTimelineStep } = this.props;
     if (currentTimelineStep !== prevProps.currentTimelineStep) {
@@ -47,7 +49,7 @@ class Mission extends Component {
       currentTimelineStep,
       timeline
     } = this.props;
-    const { actions } = this.state;
+    const { actions, showDescriptions } = this.state;
     return (
       <Fragment>
         <h4>{name}</h4>
@@ -57,6 +59,21 @@ class Mission extends Component {
           currentTimelineStep={currentTimelineStep}
           actions={actions}
         />
+        <Label check>
+          Expand Details
+          <Input
+            type="checkbox"
+            checked={showDescriptions}
+            onChange={e => {
+              this.setState({ showDescriptions: e.target.checked });
+              window.localStorage.setItem(
+                "thorium_coreShowDetails",
+                e.target.checked
+              );
+            }}
+            style={{ margin: 0 }}
+          />
+        </Label>
         <TimelineStep
           actions={actions}
           checkAction={step =>
@@ -67,6 +84,7 @@ class Mission extends Component {
           timeline={timeline}
           executedTimelineSteps={executedTimelineSteps}
           currentTimelineStep={currentTimelineStep}
+          showDescription={showDescriptions}
         />
       </Fragment>
     );

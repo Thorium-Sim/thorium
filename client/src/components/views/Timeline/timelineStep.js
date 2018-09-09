@@ -6,7 +6,8 @@ const TimelineStep = ({
   timeline,
   executedTimelineSteps,
   currentTimelineStep,
-  checkAction
+  checkAction,
+  showDescription
 }) => {
   const currentStep = timeline[currentTimelineStep];
 
@@ -19,6 +20,7 @@ const TimelineStep = ({
           {currentStep.timelineItems.map(i => (
             <TimelineItem
               {...i}
+              showDescription={showDescription}
               actions={actions}
               checkAction={checkAction}
               executedTimelineSteps={executedTimelineSteps}

@@ -1,9 +1,15 @@
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import * as Macros from "../../macrosPrint";
 import FontAwesome from "react-fontawesome";
 import allowedMacros from "./allowedMacros";
-
+import EventName from "../../../containers/FlightDirector/MissionConfig/EventName";
 class TimelineItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      expanded: props.showDescription
+    };
+  }
   state = {};
   render() {
     let {
@@ -16,6 +22,7 @@ class TimelineItem extends Component {
       checkAction
     } = this.props;
     const { expanded } = this.state;
+
     return (
       <li>
         <input
@@ -31,22 +38,28 @@ class TimelineItem extends Component {
               : ""
           }
         >
-          {name}
+          <EventName id={event} label={name} />
         </span>
-        <p onClick={() => this.setState({ expanded: !expanded })}>
-          <FontAwesome name={expanded ? "arrow-down" : "arrow-right"} /> Details
-        </p>
-        {expanded && (
-          <div className="timeline-item">
-            {Macros[event] &&
-              (() => {
-                const MacroPreview = Macros[event];
-                if (typeof args === "string") {
-                  args = JSON.parse(args);
-                }
-                return <MacroPreview args={args} updateArgs={() => {}} />;
-              })()}
-          </div>
+
+        {args && (
+          <Fragment>
+            <p onClick={() => this.setState({ expanded: !expanded })}>
+              <FontAwesome name={expanded ? "arrow-down" : "arrow-right"} />{" "}
+              Details
+            </p>
+            {expanded && (
+              <div className="timeline-item">
+                {Macros[event] &&
+                  (() => {
+                    const MacroPreview = Macros[event];
+                    if (typeof args === "string") {
+                      args = JSON.parse(args);
+                    }
+                    return <MacroPreview args={args} updateArgs={() => {}} />;
+                  })()}
+              </div>
+            )}
+          </Fragment>
         )}
       </li>
     );

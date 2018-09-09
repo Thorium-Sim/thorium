@@ -1,9 +1,15 @@
 import React, { Component } from "react";
 import { Label } from "reactstrap";
 import gql from "graphql-tag";
-import { withApollo } from "react-apollo";
+import { withApollo, Query } from "react-apollo";
 import { Tooltip } from "reactstrap";
 import { FormattedMessage } from "react-intl";
+import SubscriptionHelper from "helpers/subscriptionHelper";
+
+const queryData = `
+id
+alertlevel
+alertLevelLock`;
 
 const AlertMessage = ({ number }) => {
   switch (number) {
@@ -78,35 +84,72 @@ class AlertCondition extends Component {
   };
   render() {
     return (
-      <div className="alert-condition">
-        <Label>
-          <FormattedMessage
-            id="alert-condition"
-            defaultMessage="Alert Condition"
-          />
-        </Label>
-        <div className="button-container">
-          {[5, 4, 3, 2, 1].map(a => (
-            <div
-              key={`alert-condition-${a}`}
-              className={`alert-button alert-${a}`}
-              id={`alert${a}`}
-              onClick={() => this.setAlert(a)}
-            >
-              {a}
-              <Tooltip
-                placement="top"
-                isOpen={this.state[`alert${a}`]}
-                target={`alert${a}`}
-                toggle={() => this.toggle(a)}
-                delay={{ show: 0, hide: 0 }}
-              >
-                <AlertMessage number={a} />
-              </Tooltip>
+      <Query
+        query={gql`
+        query simulators($id: String) {
+          simulators(id: $id) {
+            ${queryData}
+          }
+        }
+      `}
+        variables={{ id: this.props.simulator.id }}
+      >
+        {({ loading, data, subscribeToMore }) =>
+          loading ? null : (
+            <div className="alert-condition">
+              <SubscriptionHelper
+                subscribe={() =>
+                  subscribeToMore({
+                    document: gql`
+                      subscription SimulatorsSub($id: ID) {
+                        simulatorsUpdate(simulatorId: $id) {
+                          ${queryData}
+                        }
+                      }`,
+                    variables: { id: this.props.simulator.id },
+                    updateQuery: (previousResult, { subscriptionData }) => {
+                      return Object.assign({}, previousResult, {
+                        simulators: subscriptionData.data.simulatorsUpdate
+                      });
+                    }
+                  })
+                }
+              />
+              <Label>
+                <FormattedMessage
+                  id="alert-condition"
+                  defaultMessage="Alert Condition"
+                />
+              </Label>
+              <div className="button-container">
+                {[5, 4, 3, 2, 1].map(a => (
+                  <div
+                    key={`alert-condition-${a}`}
+                    className={`alert-button alert-${a}`}
+                    id={`alert${a}`}
+                    onClick={
+                      data.simulators[0].alertLevelLock
+                        ? () => {}
+                        : () => this.setAlert(a)
+                    }
+                  >
+                    {a}
+                    <Tooltip
+                      placement="top"
+                      isOpen={this.state[`alert${a}`]}
+                      target={`alert${a}`}
+                      toggle={() => this.toggle(a)}
+                      delay={{ show: 0, hide: 0 }}
+                    >
+                      <AlertMessage number={a} />
+                    </Tooltip>
+                  </div>
+                ))}
+              </div>
             </div>
-          ))}
-        </div>
-      </div>
+          )
+        }
+      </Query>
     );
   }
 }

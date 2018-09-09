@@ -93,6 +93,7 @@ export default class Simulator {
     this.name = params.name || "Simulator";
     this.layout = params.layout || "LayoutDefault";
     this.alertLevel = params.alertLevel || "5";
+    this.alertLevelLock = params.alertLevelLock || false;
     this.template = params.template || false;
     this.templateId = params.templateId || null;
     this.class = "Simulator";
@@ -163,6 +164,9 @@ export default class Simulator {
       );
     }
     this.alertlevel = alertlevel;
+  }
+  setAlertLevelLock(lock) {
+    this.alertLevelLock = lock;
   }
   setLayout(layout) {
     this.layout = layout;

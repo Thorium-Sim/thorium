@@ -17,6 +17,7 @@ import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import EventPicker from "./EventPicker";
 import { macroNames } from "./PrintMission";
 import MissionConfig from "./MissionConfig";
+import EventName from "./EventName";
 
 const sortableElement = SortableElement;
 const sortableContainer = SortableContainer;
@@ -560,7 +561,7 @@ export default class TimelineConfig extends Component {
                             : ""
                         } list-group-item`}
                       >
-                        {e.name}{" "}
+                        <EventName id={e.event} />{" "}
                         <FontAwesome
                           name="ban"
                           className="text-danger pull-right"
@@ -612,13 +613,9 @@ export default class TimelineConfig extends Component {
             if (!item) return null;
             return (
               <Col sm="6" key={item.id}>
-                <h4>{item.event}</h4>
+                <EventName id={item.event} />{" "}
                 <Card className="scroll" style={{ maxHeight: "75vh" }}>
                   <CardBody>
-                    <FormGroup>
-                      <Label>Item Name</Label>
-                      <Input type="text" value={item.event} readOnly />
-                    </FormGroup>
                     <FormGroup>
                       <Label>Item Delay (in milliseconds)</Label>
                       <Input

@@ -190,8 +190,10 @@ App.on("deleteFlight", ({ flightId }) => {
   pubsub.publish("clientChanged", App.clients);
 });
 
-App.on("resetFlight", ({ flightId }) => {
-  const flight = App.flights.find(f => f.id === flightId);
+App.on("resetFlight", ({ flightId, simulatorId }) => {
+  const flight = App.flights.find(
+    f => f.id === flightId || f.simulators.indexOf(simulatorId) > -1
+  );
 
   // Log out the clients
   App.clients
