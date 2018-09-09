@@ -151,8 +151,11 @@ App.on("setCoordinateTargeting", ({ id, which }) => {
   );
 });
 
-App.on("clearAllTargetingContacts", ({ id }) => {
-  const system = App.systems.find(s => s.id === id);
+App.on("clearAllTargetingContacts", ({ id, simulatorId }) => {
+  const system = App.systems.find(
+    s =>
+      s.id === id || (s.simulatorId === simulatorId && s.type === "Targeting")
+  );
   system.contacts = [];
   system.classes = [];
   // Send a sensors update too
@@ -175,8 +178,12 @@ App.on("setTargetingRange", ({ id, range }) => {
   );
 });
 
-App.on("setTargetingClasses", ({ id, classInput }) => {
-  const system = App.systems.find(s => s.id === id);
+App.on("setTargetingClasses", ({ id, simulatorId, classInput }) => {
+  console.log(classInput);
+  const system = App.systems.find(
+    s =>
+      s.id === id || (s.simulatorId === simulatorId && s.type === "Targeting")
+  );
   classInput.forEach(c => system.addTargetClass(c));
   pubsub.publish(
     "targetingUpdate",

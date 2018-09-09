@@ -7,32 +7,37 @@ const Targets = ({
   targetedContact,
   removeTargetedContact,
   addTargetClass,
-  targeting
+  targeting,
+  macro,
+  updateClass,
+  removeClass
 }) => {
   return (
     <div className="contact-targeting">
-      <Row>
-        <Col sm={8}>
-          <OutputField alert={targetedContact}>
-            {targetedContact && targetedContact.system}
-          </OutputField>
-        </Col>
-        <Col sm={4}>
-          <Button
-            color="danger"
-            disabled={!targetedContact}
-            size="sm"
-            block
-            onClick={
-              targetedContact
-                ? () => removeTargetedContact(targetedContact.id)
-                : () => {}
-            }
-          >
-            Destroy
-          </Button>
-        </Col>
-      </Row>
+      {!macro && (
+        <Row>
+          <Col sm={8}>
+            <OutputField alert={targetedContact}>
+              {targetedContact && targetedContact.system}
+            </OutputField>
+          </Col>
+          <Col sm={4}>
+            <Button
+              color="danger"
+              disabled={!targetedContact}
+              size="sm"
+              block
+              onClick={
+                targetedContact
+                  ? () => removeTargetedContact(targetedContact.id)
+                  : () => {}
+              }
+            >
+              Destroy
+            </Button>
+          </Col>
+        </Row>
+      )}
       <Row>
         <Col sm={4}>Count</Col>
         <Col sm={1}>Icon</Col>
@@ -46,20 +51,18 @@ const Targets = ({
           <TargetingContact
             key={t.id}
             {...t}
+            macro={macro}
             targetingId={targeting.id}
             contacts={targeting.contacts}
             contactClass={targetedContact && targetedContact.class}
+            updateClass={updateClass}
+            removeClass={removeClass}
           />
         ))}
       </div>
       <Row>
         <Col sm={12}>
-          <Button
-            size={"sm"}
-            block
-            color="success"
-            onClick={this._addTargetClass.bind(this)}
-          >
+          <Button size={"sm"} block color="success" onClick={addTargetClass}>
             Add Targets
           </Button>
         </Col>

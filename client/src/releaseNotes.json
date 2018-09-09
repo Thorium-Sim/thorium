@@ -1,7 +1,11 @@
 {
-  "1.0.7": {"features":[
-    "Added timeline events for adding and removing interception signals."
-  ]]},
+  "1.0.7": {
+    "features": [
+      "Added timeline events for adding and removing interception signals.",
+      "Added timeline events for adding and removing targeting target classes."
+    ],
+    "fixes": ["Improved how timeline event names display."]
+  },
   "1.0.6": {
     "features": [
       "Added a special sound picker which allows for nested folders. This allows you to add folders to your sounds folder and pick from any sound within any of those folders.",
