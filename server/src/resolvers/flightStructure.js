@@ -176,6 +176,9 @@ export const FlightStructureMutations = {
     App.handleEvent(params, "setSimulatorStationWidget", context);
   },
 
+  setAlertConditionLock(rootValue, params, context) {
+    App.handleEvent(params, "setAlertConditionLock", context);
+  },
   // Timeline
   addTimelineStep(root, args, context) {
     const id = uuid.v4();

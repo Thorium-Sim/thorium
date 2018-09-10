@@ -31,3 +31,5 @@ export { default as sendMessage } from "./sendMessage";
 export {
   default as changeSimulatorAlertLevel
 } from "./changeSimulatorAlertLevel";
+export { default as setTargetingClasses } from "./setTargetingClasses";
+export { default as setAlertConditionLock } from "./setAlertConditionLock";

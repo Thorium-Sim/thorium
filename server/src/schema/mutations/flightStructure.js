@@ -8,6 +8,7 @@ importMission(jsonString: String!):String
 
 startFlight(name: String, simulators: [SimulatorInput!]!):String
 createSimulator(name: String!,template: Boolean):String
+#Macro: Reset Flight
 resetFlight(flightId: ID!): String
 deleteFlight(flightId: ID!): String
 pauseFlight(flightId:ID!): String
@@ -40,5 +41,9 @@ editCardInStationSet(stationSetID: ID!, stationName: String!, cardName: String!,
 setStationLogin(stationSetID: ID!, stationName: String!, login: Boolean!):String
 setStationExecutive(stationSetID: ID!, stationName: String!, exec: Boolean!):String
 toggleStationWidgets(stationSetID: ID!, stationName: String!, widget: String!, state: Boolean!): String
+#Macro: Start Training Mode
 trainingMode(simulatorId:ID!):String
+
+#Macro: Set Alert Condition Lock
+setAlertConditionLock(simulatorId: ID!, lock:Boolean!):String
 `;

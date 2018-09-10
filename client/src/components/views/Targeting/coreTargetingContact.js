@@ -84,7 +84,10 @@ class TargetingContact extends Component {
       moving,
       targetingId,
       contacts,
-      contactClass
+      macro,
+      contactClass,
+      removeClass,
+      updateClass
     } = this.props;
     const contactCount = contacts.filter(c => c.class === id && !c.destroyed)
       .length;
@@ -110,27 +113,37 @@ class TargetingContact extends Component {
                   selectedFiles={[iconEdit ? icon : picture]}
                   onClick={(e, container) => {
                     this.setState({ iconEdit: false, pictureEdit: false });
-                    action({
-                      variables: {
-                        id: targetingId,
-                        classInput: {
+                    updateClass
+                      ? updateClass(
                           id,
-                          [iconEdit ? "icon" : "picture"]: container.fullPath
-                        }
-                      }
-                    });
+                          iconEdit ? "icon" : "picture",
+                          container.fullPath
+                        )
+                      : action({
+                          variables: {
+                            id: targetingId,
+                            classInput: {
+                              id,
+                              [iconEdit
+                                ? "icon"
+                                : "picture"]: container.fullPath
+                            }
+                          }
+                        });
                   }}
                 />
               </div>
             )}
             <Row>
-              <Col sm={4}>
-                <TargetCount
-                  targetingId={targetingId}
-                  id={id}
-                  contactCount={contactCount}
-                />
-              </Col>
+              {!macro && (
+                <Col sm={4}>
+                  <TargetCount
+                    targetingId={targetingId}
+                    id={id}
+                    contactCount={contactCount}
+                  />
+                </Col>
+              )}
               <Col sm={1}>
                 <img
                   alt="pic"
@@ -159,12 +172,14 @@ class TargetingContact extends Component {
                   prompt={"New target label?"}
                   alert={contactClass === id}
                   onClick={value =>
-                    action({
-                      variables: {
-                        id: targetingId,
-                        classInput: { id, name: value }
-                      }
-                    })
+                    updateClass
+                      ? updateClass(id, "name", value)
+                      : action({
+                          variables: {
+                            id: targetingId,
+                            classInput: { id, name: value }
+                          }
+                        })
                   }
                 >
                   {name}
@@ -175,12 +190,14 @@ class TargetingContact extends Component {
                   type="checkbox"
                   checked={moving}
                   onChange={e =>
-                    action({
-                      variables: {
-                        id: targetingId,
-                        classInput: { id, moving: e.target.checked }
-                      }
-                    })
+                    updateClass
+                      ? updateClass(id, "moving", e.target.checked)
+                      : action({
+                          variables: {
+                            id: targetingId,
+                            classInput: { id, moving: e.target.checked }
+                          }
+                        })
                   }
                 />
               </Col>
@@ -197,7 +214,7 @@ class TargetingContact extends Component {
                     <FontAwesome
                       name="ban"
                       className="text-danger"
-                      onClick={action}
+                      onClick={removeClass ? () => removeClass(id) : action}
                     />
                   )}
                 </Mutation>

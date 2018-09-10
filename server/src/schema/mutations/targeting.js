@@ -11,6 +11,10 @@ export default `
   setCoordinateTargeting(id: ID!, which: Boolean!): String
   setTargetingCalculatedTarget(id: ID, simulatorId: ID,  coordinates:CoordinatesInput, contactId: ID): String
   setTargetingEnteredTarget(id: ID!, coordinates:StringCoordinatesInput): String
-clearAllContacts(id:ID!):String
-setTargetingRange(id:ID!, range:Float!):String
+  #Macro: Targeting: Clear Targeting Classes
+  clearAllTargetingContacts(id:ID!):String
+  setTargetingRange(id:ID!, range:Float!):String
+
+  #Macro: Targeting: Set Targeting Classes
+  setTargetingClasses(id:ID!, classInput:[TargetClassInput]!):String
 `;

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Button, Input, Label } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, Mutation } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -16,6 +16,7 @@ const SUB = gql`
     simulatorsUpdate(simulatorId: $id) {
       id
       alertlevel
+      alertLevelLock
     }
   }
 `;
@@ -42,6 +43,31 @@ class AlertConditionCore extends Component {
             })
           }
         />
+        <Mutation
+          mutation={gql`
+            mutation LockAlertLevel($id: ID!, $lock: Boolean!) {
+              setAlertConditionLock(simulatorId: $id, lock: $lock)
+            }
+          `}
+        >
+          {action => (
+            <Label>
+              <Input
+                type="checkbox"
+                checked={simulator.alertLevelLock}
+                onChange={() =>
+                  action({
+                    variables: {
+                      id: simulator.id,
+                      lock: !simulator.alertLevelLock
+                    }
+                  })
+                }
+              />{" "}
+              Locked
+            </Label>
+          )}
+        </Mutation>
         <Mutation
           mutation={gql`
             mutation AlertLevel($id: ID!, $level: String!) {
@@ -80,6 +106,7 @@ const QUERY = gql`
     simulators(id: $id) {
       id
       alertlevel
+      alertLevelLock
     }
   }
 `;

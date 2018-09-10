@@ -49,6 +49,7 @@ type Simulator {
   id: ID
   name: String
   alertlevel: String
+  alertLevelLock: Boolean
   layout: String
   template: Boolean
   templateId: ID

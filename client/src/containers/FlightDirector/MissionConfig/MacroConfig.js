@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Col, Row, FormGroup, Label } from "reactstrap";
+import { Col, Row } from "reactstrap";
 import { withApollo } from "react-apollo";
 import * as Macros from "../../../components/macros";
-import EventPicker from "./EventPicker";
 class MacroConfig extends Component {
   _handleChange = e => {
     this.props.updateMacro("event", e.target.value);
@@ -25,10 +24,10 @@ class MacroConfig extends Component {
     return (
       <Row>
         <Col sm="12">
-          <FormGroup>
+          {/* <FormGroup>
             <Label>Item Event</Label>
             <EventPicker event={event} handleChange={this._handleChange} />
-          </FormGroup>
+          </FormGroup> */}
           {EventMacro && (
             <EventMacro
               updateArgs={this._handleArg}

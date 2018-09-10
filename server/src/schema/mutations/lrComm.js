@@ -8,4 +8,10 @@ updateLongRangeComm(longRangeComm: LongRangeCommInput!): String
 approveLongRangeMessage(id: ID!, message: ID!): String
 encryptLongRangeMessage(id: ID!, message: ID!): String
 setLongRangeSatellites(id:ID!, num:Int!):String
+
+#Macro: Add Interception Signal
+addInterceptionSignal(id:ID!):String
+
+#Macro: Remove Interception Signal
+removeInterceptionSignal(id:ID!):String
 `;
