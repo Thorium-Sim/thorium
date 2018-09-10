@@ -42,13 +42,14 @@ App.on("updateViewscreenAuto", ({ id, simulatorId, auto }) => {
   pubsub.publish("viewscreensUpdate", App.viewscreens);
 });
 App.on("setViewscreenToAuto", ({ id, simulatorId, secondary = false }) => {
-  const viewscreen = App.viewscreens.find(
+  const viewscreen = App.viewscreens.filter(
     v =>
       (v.id === id || v.simulatorId === simulatorId) &&
       v.secondary === secondary
   );
-  if (!viewscreen) return;
-  viewscreen.updateAuto(true);
+  viewscreen.forEach(v => {
+    v.updateAuto(true);
+  });
   pubsub.publish("viewscreensUpdate", App.viewscreens);
 });
 App.on("updateViewscreenSecondary", ({ id, secondary }) => {

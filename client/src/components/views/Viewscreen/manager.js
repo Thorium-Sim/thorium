@@ -4,6 +4,7 @@ import { graphql, withApollo, Mutation } from "react-apollo";
 import { Label, Row, Col, Input, Button, ButtonGroup } from "reactstrap";
 import Preview, { Viewscreen } from "./index";
 import ViewscreenCardList from "./viewscreenCardList";
+import ViewscreenHotkeysConfig from "./hotkeysConfig";
 import * as ViewscreenCards from "components/viewscreens";
 
 import "./style.scss";
@@ -149,7 +150,8 @@ class ViewscreenManager extends Component {
       selectedViewscreen = null,
       preview,
       previewComponent,
-      configData
+      configData,
+      config
     } = this.state;
     if (!viewscreens) return <div>No Viewscreens</div>;
     const scaleFactor = (window.innerWidth / 1920) * 0.45;
@@ -231,6 +233,7 @@ class ViewscreenManager extends Component {
                   />{" "}
                   Secondary Screen?
                 </Label>
+
                 <label>
                   <Mutation
                     mutation={gql`
@@ -266,6 +269,18 @@ class ViewscreenManager extends Component {
                   </Mutation>{" "}
                   Show card overlay
                 </label>
+                <div>
+                  <Button
+                    size="sm"
+                    onClick={() => this.setState({ config: true })}
+                  >
+                    Configure Hotkeys
+                  </Button>
+                </div>
+                <small>
+                  Viewscreen Hotkeys are available on any core by pressing
+                  'Option' + 'Shift'
+                </small>
               </Col>
               <Col sm={6} style={{ display: "flex", flexDirection: "column" }}>
                 <Label>Cards</Label>
@@ -354,6 +369,10 @@ class ViewscreenManager extends Component {
             </Row>
           </div>
         </div>
+        <ViewscreenHotkeysConfig
+          modal={config}
+          toggle={() => this.setState({ config: false })}
+        />
       </div>
     );
   }

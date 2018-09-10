@@ -149,6 +149,15 @@
   //transition: all 0.2s ease;
   border-radius: 50px;
   box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.75);
+  &.viewscreen {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    h3 {
+      margin: 30px;
+    }
+  }
   &.showing {
     pointer-events: all;
     transform: scale(1);
