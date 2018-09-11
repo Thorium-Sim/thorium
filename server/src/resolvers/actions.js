@@ -23,11 +23,13 @@ export const ActionsSubscriptions = {
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("actionsUpdate"),
-      (rootValue, { simulatorId, stationId, clientId, clients, stations }) => {
+      (rootValue, { simulatorId, stationId, clientId }) => {
         const {
           simulatorId: toSimulator,
           stationId: toStation,
-          clientId: toClient
+          clientId: toClient,
+          clients,
+          stations
         } = rootValue;
         if (simulatorId !== toSimulator) return false;
         if (
@@ -36,12 +38,8 @@ export const ActionsSubscriptions = {
           stations.indexOf(toStation) > -1 ||
           clients.indexOf(toClient)
         ) {
-          console.log(toStation, toClient, stationId, clientId);
-          console.log("Triggering!");
           return true;
         }
-        console.log("NOT Triggering!");
-
         return false;
       }
     )

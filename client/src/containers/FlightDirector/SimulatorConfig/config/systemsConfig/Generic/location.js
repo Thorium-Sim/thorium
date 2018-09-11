@@ -88,7 +88,10 @@ class Location extends Component {
                 if (!roomId) return;
                 const variables = {
                   id,
-                  locations: locations.map(l => l.id).concat(roomId)
+                  locations: locations
+                    .filter(Boolean)
+                    .map(l => l.id)
+                    .concat(roomId)
                 };
                 action({ variables });
                 this.setState({
