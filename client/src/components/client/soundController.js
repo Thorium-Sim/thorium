@@ -30,6 +30,10 @@ const CANCEL_ALL_SOUNDS = gql`
 `;
 
 class SoundController extends Component {
+  shouldComponentUpdate(prevProps) {
+    if (prevProps.clientId !== this.props.clientId) return true;
+    return false;
+  }
   render() {
     const { clientId } = this.props;
     return (

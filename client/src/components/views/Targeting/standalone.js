@@ -455,7 +455,7 @@ class Targeting extends Component {
               targetSystem={this.targetSystem}
             />
           </Col>
-          <Col sm={4} className="torpedos">
+          <Col sm={5} className="torpedos">
             <TorpedoLoading
               simulator={this.props.simulator}
               maxLaunchers={-200}

@@ -172,8 +172,8 @@ const ConfigStation = props => {
                     <td>
                       <Input
                         type="text"
-                        value={card.name}
-                        onChange={e => updateStationCard("name", card, e)}
+                        defaultValue={card.name}
+                        onBlur={e => updateStationCard("name", card, e)}
                       />
                     </td>
                     <td>

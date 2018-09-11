@@ -27,11 +27,8 @@
   .torpedo-loader {
     width: 500px;
     height: 200px;
-    margin: 20px;
+    // margin: 20px;
     position: relative;
-    &.fire {
-      margin: 0 40px;
-    }
   }
   .torpedoHolder {
     width: 66px;
