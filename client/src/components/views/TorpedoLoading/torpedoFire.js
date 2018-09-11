@@ -38,9 +38,7 @@ class TorpedoFire extends Component {
           system={torpedo}
           message={`${torpedo.name} Offline`}
           style={{
-            fontSize: "20px",
-            width: "120%",
-            marginLeft: "-10%"
+            fontSize: "20px"
           }}
         />
         <h4 className="text-center">{torpedo.name}</h4>
