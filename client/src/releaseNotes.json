@@ -1,4 +1,10 @@
 {
+  "1.0.8": {
+    "fixes": [
+      "Fixed an issue with the layout of torpedo launchers on the Targeting screen.",
+      "Fixed an issue where sound effects play again when the simulator changes."
+    ]
+  },
   "1.0.7": {
     "features": [
       "Added timeline events for adding and removing interception signals.",
