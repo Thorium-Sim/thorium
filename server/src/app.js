@@ -76,6 +76,7 @@ class Events extends EventEmitter {
         return;
       }
       if (key.indexOf("asset") > -1) return;
+      if (key === "sounds") return;
       if (key === "autoUpdate" || key === "migrations") {
         this[key] = snapshot[key];
       }

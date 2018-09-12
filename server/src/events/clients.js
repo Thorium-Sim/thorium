@@ -3,6 +3,9 @@ import Client from "../classes/client";
 import Sound from "../classes/sound";
 import Viewscreen from "../classes/viewscreen";
 import { pubsub } from "../helpers/subscriptionManager.js";
+import path from "path";
+import paths from "../helpers/paths";
+import fs from "fs";
 
 function randomFromList(list) {
   if (!list) return;
@@ -132,47 +135,70 @@ App.on("setClientHypercard", ({ clientId, simulatorId, component }) => {
   });
   pubsub.publish("clientChanged", App.clients);
 });
-App.on("playSound", ({ sound, station, simulatorId, clientId, clients }) => {
-  if (!clients) {
-    let stationObj = station || "all";
-    if (station === "random") {
-      const sim = App.simulators.find(s => s.id === simulatorId);
-      if (sim) {
-        stationObj = randomFromList(sim.stations).name;
+App.on(
+  "playSound",
+  ({ sound, type, station, simulatorId, clientId, clients }) => {
+    if (type === "random") {
+      // Get a random sound from that folder.
+      const soundExts = ["m4a", "wav", "mp3", "ogg", "aiff", "aif"];
+      let assetDir = path.resolve("./assets/");
+      if (process.env.NODE_ENV === "production") {
+        assetDir = paths.userData + "/assets";
+      }
+      const sounds = fs
+        .readdirSync(assetDir + sound.asset)
+        .filter(
+          f =>
+            fs.lstatSync(assetDir + sound.asset + "/" + f).isFile() &&
+            f[0] !== "." &&
+            soundExts.find(s => f.indexOf(`.${s}`) > -1)
+        )
+        .map(f => `${sound.asset}/${f}`);
+      if (sounds.length > -1) {
+        sound.asset = randomFromList(sounds);
       }
     }
-    clients = App.clients.filter(
-      c =>
-        (c.simulatorId === simulatorId &&
-          (c.station === stationObj || stationObj === "all")) ||
-        c.id === clientId
-    );
-    clients = clients.map(c => c.id);
-  }
-  const soundObj = new Sound(sound);
-  soundObj.clients = soundObj.clients.concat(clients);
-  if (soundObj.looping) {
-    // Check it with the sound list if it is looping
-    const loopingSound = App.sounds.find(s => {
-      // Check to see if the sound exists in the list
-      return (
-        s.looping &&
-        JSON.stringify(s.clients.sort()) ===
-          JSON.stringify(soundObj.clients.sort()) &&
-        s.asset === soundObj.asset &&
-        s.volume === soundObj.volume &&
-        s.playbackRate === soundObj.playbackRate &&
-        JSON.stringify(s.channel) === JSON.stringify(soundObj.channel)
+    if (!clients) {
+      let stationObj = station || "all";
+      if (station === "random") {
+        const sim = App.simulators.find(s => s.id === simulatorId);
+        if (sim) {
+          stationObj = randomFromList(sim.stations).name;
+        }
+      }
+      clients = App.clients.filter(
+        c =>
+          (c.simulatorId === simulatorId &&
+            (c.station === stationObj || stationObj === "all")) ||
+          c.id === clientId
       );
-    });
-    if (loopingSound) {
-      App.sounds = App.sounds.filter(s => s.id !== loopingSound.id);
-      return pubsub.publish("cancelSound", loopingSound);
+      clients = clients.map(c => c.id);
     }
-    App.sounds.push(soundObj);
+    const soundObj = new Sound(sound);
+    soundObj.clients = soundObj.clients.concat(clients);
+    if (soundObj.looping) {
+      // Check it with the sound list if it is looping
+      const loopingSound = App.sounds.find(s => {
+        // Check to see if the sound exists in the list
+        return (
+          s.looping &&
+          JSON.stringify(s.clients.sort()) ===
+            JSON.stringify(soundObj.clients.sort()) &&
+          s.asset === soundObj.asset &&
+          s.volume === soundObj.volume &&
+          s.playbackRate === soundObj.playbackRate &&
+          JSON.stringify(s.channel) === JSON.stringify(soundObj.channel)
+        );
+      });
+      if (loopingSound) {
+        App.sounds = App.sounds.filter(s => s.id !== loopingSound.id);
+        return pubsub.publish("cancelSound", loopingSound);
+      }
+      App.sounds.push(soundObj);
+    }
+    pubsub.publish("soundSub", soundObj);
   }
-  pubsub.publish("soundSub", soundObj);
-});
+);
 App.on("stopAllSounds", ({ simulatorId }) => {
   const clients = App.clients.filter(s => s.simulatorId === simulatorId);
   // Remove all of the sounds that have one of the clients

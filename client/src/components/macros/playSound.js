@@ -13,8 +13,18 @@ export default ({ updateArgs, args }) => {
   return (
     <div>
       <FormGroup className="macro-PlaySound">
+        <Label>Sound type</Label>
+        <Input
+          type="select"
+          value={args.type}
+          onChange={e => updateArgs("type", e.target.value)}
+        >
+          <option value="standard">Standard</option>
+          <option value="random">Random From Folder</option>
+        </Input>
         <Label>Sound</Label>
         <SoundPicker
+          pickFolder={args.type === "random"}
           selectedSound={sound.asset || "nothing"}
           setSound={sound => updateSound("asset", sound)}
         />

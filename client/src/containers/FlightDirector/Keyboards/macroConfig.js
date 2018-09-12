@@ -19,7 +19,7 @@ const MacroConfig = ({ client, selectedAction, selectedKey, updateAction }) => {
   return (
     <Row>
       <Col sm="12">
-        <FormGroup>
+        {/* <FormGroup>
           <Label>Item Event</Label>
           <EventPicker
             event={action.event}
@@ -27,7 +27,7 @@ const MacroConfig = ({ client, selectedAction, selectedKey, updateAction }) => {
               updateAction({ ...action, event: e.target.value });
             }}
           />
-        </FormGroup>
+        </FormGroup> */}
         {EventMacro && (
           <EventMacro
             updateArgs={(argName, value) => {
