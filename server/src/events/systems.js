@@ -421,7 +421,12 @@ App.on("fluxSystemPower", ({ id, simulatorId, all }) => {
     let sys = App.systems.find(s => s.id === id);
     fluxPower(sys);
   } else if (simulatorId) {
-    const systems = App.systems.filter(s => s.simulatorId === simulatorId);
+    const systems = App.systems.filter(
+      s =>
+        s.simulatorId === simulatorId &&
+        s.power.powerLevels &&
+        s.power.powerLevels.length > 0
+    );
     if (!all) {
       const sys = randomFromList(systems);
       fluxPower(sys, true);
