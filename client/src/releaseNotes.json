@@ -1,8 +1,12 @@
 {
   "1.0.9": {
+    "features": [
+      "Added the ability to play random sounds from within a folder in the sound player macro."
+    ],
     "fixes": [
       "Fixed an issue with sending action commands.",
-      "Fixed an issue with adding locations to systems."
+      "Fixed an issue with adding locations to systems.",
+      "Fluxing power to all systems will no longer adjust systems with no power levels."
     ]
   },
   "1.0.8": {
