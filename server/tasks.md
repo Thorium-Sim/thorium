@@ -21,7 +21,6 @@ All methods take a single argument which is an object of the following:
 
 ```
 {
-  system - the system or object in question (in the case of docking ports and crew)
   stations
   simulator
 }

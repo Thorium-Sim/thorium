@@ -1,5 +1,6 @@
 import App from "../app";
 import { System } from "./generic";
+import { randomFromList } from "./generic/damageReports/constants";
 
 export default class DockingPort extends System {
   constructor(params) {
@@ -23,7 +24,9 @@ export default class DockingPort extends System {
   static tasks = [
     {
       name: "Undock Shuttle",
-      active({ system, stations }) {
+      active({ requiredValues, stations }) {
+        const { id } = requiredValues.shuttle;
+        const system = App.systems.find(s => s.id === id);
         // Check cards
         return (
           system.type === "shuttlebay" &&
@@ -31,6 +34,14 @@ export default class DockingPort extends System {
           system.docked === true &&
           (system.clamps || system.compress || system.doors)
         );
+      },
+      values: {
+        shuttle: ({ simulator }) =>
+          randomFromList(
+            App.dockingPorts.filter(
+              s => s.simulatorId === simulator.id && s.type === "shuttlebay"
+            )
+          )
       },
       verify({ system }) {
         system.docked = false;
@@ -38,7 +49,9 @@ export default class DockingPort extends System {
     },
     {
       name: "Dock Shuttle",
-      active({ system, stations }) {
+      active({ requiredValues, stations }) {
+        const { id } = requiredValues.shuttle;
+        const system = App.systems.find(s => s.id === id);
         // Check cards
         return (
           system.type === "shuttlebay" &&
@@ -47,16 +60,23 @@ export default class DockingPort extends System {
           (system.clamps || system.compress || system.doors)
         );
       },
+      values: {
+        shuttle: ({ simulator }) =>
+          randomFromList(
+            App.dockingPorts.filter(
+              s => s.simulatorId === simulator.id && s.type === "shuttlebay"
+            )
+          )
+      },
       verify({ system }) {
         system.docked = false;
       }
     },
     {
       name: "Undock All Shuttles",
-      active({ system, stations }) {
-        return (
-          system.type === "shuttlebay" &&
-          stations.find(s => s.cards.find(c => c.component === "Shuttles"))
+      active({ stations }) {
+        return stations.find(s =>
+          s.cards.find(c => c.component === "Shuttles")
         );
       },
       verify({ simulator }) {
@@ -68,10 +88,9 @@ export default class DockingPort extends System {
     },
     {
       name: "Dock All Shuttles",
-      active({ system, stations }) {
-        return (
-          system.type === "shuttlebay" &&
-          stations.find(s => s.cards.find(c => c.component === "Shuttles"))
+      active({ stations }) {
+        return stations.find(s =>
+          s.cards.find(c => c.component === "Shuttles")
         );
       },
       verify({ simulator }) {

@@ -15,6 +15,26 @@ export default class Exocomp {
     this.logs = params.logs || [];
     this.difficulty = params.difficulty || 0.05;
   }
+  static tasks = [
+    // {
+    //   name: "Send Exocomp",
+    //   active({ simulator, stations }) {
+    //     // Check cards
+    //     return (
+    //       stations.find(s => s.cards.find(c => c.component === "Exocomps")) &&
+    //       App.exocomps.filter(e => e.simulatorId === simulator.id).length > 0
+    //     );
+    //   },
+    //   verify({ simulator }) {
+    //     return !App.systems.find(
+    //       s =>
+    //         s.simulatorId === simulator.id &&
+    //         s.type === "Engine" &&
+    //         s.on === true
+    //     );
+    //   }
+    // }
+  ];
   updateState(state) {
     this.state = state;
     const system = App.systems.find(s => s.id === this.destination) || {};

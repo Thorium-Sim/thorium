@@ -1,5 +1,6 @@
 import App from "../app";
 import { System } from "./generic";
+import { randomFromList } from "./generic/damageReports/constants";
 
 export default class Shield extends System {
   constructor(params) {
@@ -47,43 +48,75 @@ export default class Shield extends System {
     },
     {
       name: "Raise Shield",
-      active({ system, stations }) {
-        // Check cards
+      active({ requiredValues, stations }) {
+        // Check cards and system
+        const { id } = requiredValues.shield;
+        const system = App.systems.find(s => s.id === id);
         return (
           system.state !== true &&
           stations.find(s => s.cards.find(c => c.component === "ShieldControl"))
         );
       },
-      verify({ system }) {
-        system.state = true;
+      values: {
+        shield: ({ simulator }) =>
+          randomFromList(
+            App.systems.filter(
+              s => s.simulatorId === simulator.id && s.type === "Shield"
+            )
+          )
+      },
+      verify({ requiredValues }) {
+        const { id } = requiredValues.shield;
+        const system = App.systems.find(s => s.id === id);
+        return system.state === false;
       }
     },
     {
       name: "Lower Shield",
-      active({ system, stations }) {
+      active({ requiredValues, stations }) {
         // Check cards
+        const { id } = requiredValues.shield;
+        const system = App.systems.find(s => s.id === id);
         return (
           system.state !== false &&
           stations.find(s => s.cards.find(c => c.component === "ShieldControl"))
         );
       },
-      verify({ system }) {
-        system.state = false;
+      values: {
+        shield: ({ simulator }) =>
+          randomFromList(
+            App.systems.filter(
+              s => s.simulatorId === simulator.id && s.type === "Shield"
+            )
+          )
+      },
+      verify({ requiredValues }) {
+        const { id } = requiredValues.shield;
+        const system = App.systems.find(s => s.id === id);
+        return system.state === false;
       }
     },
     {
       name: "Set Shield Frequency",
-      active({ system, stations }) {
+      active({ stations }) {
         // Check cards
         return stations.find(s =>
           s.cards.find(c => c.component === "ShieldControl")
         );
       },
       values: {
+        shield: ({ simulator }) =>
+          randomFromList(
+            App.systems.filter(
+              s => s.simulatorId === simulator.id && s.type === "Shield"
+            )
+          ),
         frequency: () => Math.round(Math.random() * 250 * 10) / 10 + 100
       },
-      verify({ system, requiredValues }) {
-        system.frequency = requiredValues.frequency;
+      verify({ requiredValues }) {
+        const { id } = requiredValues.shield;
+        const system = App.systems.find(s => s.id === id);
+        return system.id === requiredValues.frequency;
       }
     }
   ];

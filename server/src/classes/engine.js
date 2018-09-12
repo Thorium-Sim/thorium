@@ -41,6 +41,30 @@ export default class Engine extends HeatMixin(System) {
     }
     return currentSpeed / topSpeed;
   }
+  static tasks = [
+    {
+      name: "Deactivate Engines",
+      active({ simulator, stations }) {
+        // Check cards
+        return (
+          stations.find(s =>
+            s.cards.find(c => c.component === "EngineControl")
+          ) &&
+          App.systems.find(
+            s => s.simulatorId === simulator.id && s.type === "Engine"
+          )
+        );
+      },
+      verify({ simulator }) {
+        return !App.systems.find(
+          s =>
+            s.simulatorId === simulator.id &&
+            s.type === "Engine" &&
+            s.on === true
+        );
+      }
+    }
+  ];
   setSpeeds(speeds) {
     this.speeds = speeds;
   }
