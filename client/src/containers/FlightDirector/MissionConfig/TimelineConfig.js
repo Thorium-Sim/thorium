@@ -432,6 +432,9 @@ export default class TimelineConfig extends Component {
       updateMission,
       exportMissionScript
     } = this.props;
+    const selectedStep = object.timeline.find(
+      e => e.id === this.state.selectedTimelineStep
+    );
     return (
       <Row>
         <Col sm="3">
@@ -526,15 +529,10 @@ export default class TimelineConfig extends Component {
           </div>
         )}
         {this.state.selectedTimelineStep &&
-          this.state.selectedTimelineStep !== "mission" && (
+          this.state.selectedTimelineStep !== "mission" &&
+          selectedStep && (
             <Col sm="3" style={{ maxHeight: "27vh" }}>
-              <h4>
-                {
-                  object.timeline.find(
-                    e => e.id === this.state.selectedTimelineStep
-                  ).name
-                }
-              </h4>
+              <h4>{selectedStep.name}</h4>
               <Card className="scroll">
                 <li
                   onClick={this._setSelectedTimelineItem.bind(this, {
@@ -546,30 +544,26 @@ export default class TimelineConfig extends Component {
                 >
                   Edit Step
                 </li>
-                {object.timeline
-                  .find(e => e.id === this.state.selectedTimelineStep)
-                  .timelineItems.map(e => {
-                    return (
-                      <li
-                        key={`${object.timeline.find(
-                          a => a.id === this.state.selectedTimelineStep
-                        )}-${e.id}`}
-                        onClick={this._setSelectedTimelineItem.bind(this, e)}
-                        className={`${
-                          e.id === this.state.selectedTimelineItem
-                            ? "selected"
-                            : ""
-                        } list-group-item`}
-                      >
-                        <EventName id={e.event} />{" "}
-                        <FontAwesome
-                          name="ban"
-                          className="text-danger pull-right"
-                          onClick={this._removeTimelineItem.bind(this, e)}
-                        />
-                      </li>
-                    );
-                  })}
+                {selectedStep.timelineItems.map(e => {
+                  return (
+                    <li
+                      key={`${selectedStep.id}-${e.id}`}
+                      onClick={this._setSelectedTimelineItem.bind(this, e)}
+                      className={`${
+                        e.id === this.state.selectedTimelineItem
+                          ? "selected"
+                          : ""
+                      } list-group-item`}
+                    >
+                      <EventName id={e.event} />{" "}
+                      <FontAwesome
+                        name="ban"
+                        className="text-danger pull-right"
+                        onClick={this._removeTimelineItem.bind(this, e)}
+                      />
+                    </li>
+                  );
+                })}
                 <EventPicker
                   className={"btn btn-sm btn-success"}
                   handleChange={e => this._addTimelineItem(e)}
