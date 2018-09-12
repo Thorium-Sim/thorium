@@ -234,13 +234,18 @@ class DamageControlCore extends Component {
                         )}
                       </td>
                       <td>
-                        <Button
-                          size="sm"
-                          color="warning"
-                          title="Flux"
-                          style={{ height: "15px" }}
-                          onClick={() => action({ variables: { id: s.id } })}
-                        />
+                        {s.power.powerLevels &&
+                          s.power.powerLevels.length > 0 && (
+                            <Button
+                              size="sm"
+                              color="warning"
+                              title="Flux"
+                              style={{ height: "15px" }}
+                              onClick={() =>
+                                action({ variables: { id: s.id } })
+                              }
+                            />
+                          )}
                       </td>
                     </tr>
                   ))}
