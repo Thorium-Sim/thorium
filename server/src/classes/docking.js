@@ -1,3 +1,4 @@
+import App from "../app";
 import { System } from "./generic";
 
 export default class DockingPort extends System {
@@ -19,6 +20,68 @@ export default class DockingPort extends System {
       this.docked = params.docked || false;
     }
   }
+  static tasks = [
+    {
+      name: "Undock Shuttle",
+      active({ system, stations }) {
+        // Check cards
+        return (
+          system.type === "shuttlebay" &&
+          stations.find(s => s.cards.find(c => c.component === "Shuttles")) &&
+          system.docked === true &&
+          (system.clamps || system.compress || system.doors)
+        );
+      },
+      verify({ system }) {
+        system.docked = false;
+      }
+    },
+    {
+      name: "Dock Shuttle",
+      active({ system, stations }) {
+        // Check cards
+        return (
+          system.type === "shuttlebay" &&
+          stations.find(s => s.cards.find(c => c.component === "Shuttles")) &&
+          system.docked === true &&
+          (system.clamps || system.compress || system.doors)
+        );
+      },
+      verify({ system }) {
+        system.docked = false;
+      }
+    },
+    {
+      name: "Undock All Shuttles",
+      active({ system, stations }) {
+        return (
+          system.type === "shuttlebay" &&
+          stations.find(s => s.cards.find(c => c.component === "Shuttles"))
+        );
+      },
+      verify({ simulator }) {
+        const shuttles = App.dockingPorts.filter(
+          d => d.simulatorId === simulator.id && d.type === "shuttlebay"
+        );
+        return !shuttles.find(s => s.clamps || s.compress || s.doors);
+      }
+    },
+    {
+      name: "Dock All Shuttles",
+      active({ system, stations }) {
+        return (
+          system.type === "shuttlebay" &&
+          stations.find(s => s.cards.find(c => c.component === "Shuttles"))
+        );
+      },
+      verify({ simulator }) {
+        const shuttles = App.dockingPorts.filter(
+          d => d.simulatorId === simulator.id && d.type === "shuttlebay"
+        );
+        return !shuttles.find(s => !s.clamps || !s.compress || !s.doors);
+      }
+    }
+  ];
   updateDockingPort({ name, type, clamps, compress, doors, image, docked }) {
     if (name || name === "") {
       this.name = name;
