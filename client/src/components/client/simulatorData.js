@@ -17,6 +17,7 @@ assets {
   side
   top
   logo
+  bridge
 }
 stations {
   name

@@ -3,6 +3,7 @@ import { Row, Col, Button, Input, ButtonGroup } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo, Query } from "react-apollo";
 import SoundPicker from "helpers/soundPicker";
+import { titleCase } from "change-case";
 
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
@@ -31,6 +32,56 @@ const MOVIE_QUERY = gql`
     }
   }
 `;
+
+export const triggerAction = ({
+  actionName,
+  actionDest,
+  selectedMovie,
+  selectedCard,
+  selectedVoice,
+  simulator,
+  client
+}) => {
+  let message;
+  if (actionName === "speak" || actionName === "message") {
+    message = prompt("What do you want to say?");
+    if (!message) return;
+  }
+  if (actionName === "changeCard") message = selectedCard;
+  if (actionName === "movie") message = selectedMovie;
+  if (actionDest === "random") {
+    const index = Math.floor(Math.random() * simulator.stations.length);
+    actionDest = simulator.stations[index].name;
+  }
+  const mutation = gql`
+    mutation TriggerAction(
+      $action: String!
+      $simulatorId: ID!
+      $stationName: String
+      $message: String
+      $voice: String
+    ) {
+      triggerAction(
+        action: $action
+        simulatorId: $simulatorId
+        stationId: $stationName
+        message: $message
+        voice: $voice
+      )
+    }
+  `;
+  const variables = {
+    action: actionName,
+    simulatorId: simulator.id,
+    stationName: actionDest,
+    message,
+    voice: selectedVoice
+  };
+  client.mutate({
+    mutation,
+    variables
+  });
+};
 class ActionsCore extends Component {
   constructor(props) {
     super(props);
@@ -53,63 +104,14 @@ class ActionsCore extends Component {
   }
   handleNameChange = e => {
     this.setState({
-      actionName: e.target.value
+      actionName: e
     });
+    this.props.onChangeAction && this.props.onChangeAction(e);
   };
   handleDestChange = e => {
     this.setState({
       actionDest: e.target.value,
       selectedCard: null
-    });
-  };
-  triggerAction = () => {
-    let {
-      actionName,
-      actionDest,
-      selectedMovie,
-      selectedCard,
-      selectedVoice
-    } = this.state;
-    let message;
-    if (actionName === "speak" || actionName === "message") {
-      message = prompt("What do you want to say?");
-      if (!message) return;
-    }
-    if (actionName === "changeCard") message = selectedCard;
-    if (actionName === "movie") message = selectedMovie;
-    if (actionDest === "random") {
-      const index = Math.floor(
-        Math.random() * this.props.data.simulators[0].stations.length
-      );
-      actionDest = this.props.data.simulators[0].stations[index].name;
-    }
-    const mutation = gql`
-      mutation TriggerAction(
-        $action: String!
-        $simulatorId: ID!
-        $stationName: String
-        $message: String
-        $voice: String
-      ) {
-        triggerAction(
-          action: $action
-          simulatorId: $simulatorId
-          stationId: $stationName
-          message: $message
-          voice: $voice
-        )
-      }
-    `;
-    const variables = {
-      action: actionName,
-      simulatorId: this.props.simulator.id,
-      stationName: actionDest,
-      message,
-      voice: selectedVoice
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
     });
   };
   playSound = () => {
@@ -139,7 +141,7 @@ class ActionsCore extends Component {
       variables
     });
   };
-  renderButtons = () => {
+  renderButtons = bridgeMap => {
     const {
       actionName,
       actionDest,
@@ -151,23 +153,28 @@ class ActionsCore extends Component {
     if (actionName === "sound")
       return (
         <Row>
-          <Col sm={8}>
+          <Col sm={bridgeMap ? 12 : 8}>
             <SoundPicker
               selectedSound={selectedSound}
-              setSound={sound => this.setState({ selectedSound: sound })}
+              setSound={sound => {
+                this.setState({ selectedSound: sound });
+                this.props.onChangeSound && this.props.onChangeSound(sound);
+              }}
             />
           </Col>
-          <Col sm={4}>
-            <Button block color="primary" size="sm" onClick={this.playSound}>
-              Play
-            </Button>
-          </Col>
+          {!bridgeMap && (
+            <Col sm={4}>
+              <Button block color="primary" size="sm" onClick={this.playSound}>
+                Play
+              </Button>
+            </Col>
+          )}
         </Row>
       );
     if (actionName === "movie")
       return (
         <Row>
-          <Col sm={8}>
+          <Col sm={bridgeMap ? 12 : 8}>
             <Query query={MOVIE_QUERY}>
               {({ loading, data: { assetFolders } }) =>
                 loading ? (
@@ -177,9 +184,11 @@ class ActionsCore extends Component {
                     style={{ height: "20px" }}
                     type="select"
                     value={selectedMovie || "nothing"}
-                    onChange={e =>
-                      this.setState({ selectedMovie: e.target.value })
-                    }
+                    onChange={e => {
+                      this.setState({ selectedMovie: e.target.value });
+                      this.props.onChangeMovie &&
+                        this.props.onChangeMovie(e.target.value);
+                    }}
                   >
                     <option value="nothing" disabled>
                       Select a Movie
@@ -203,28 +212,40 @@ class ActionsCore extends Component {
               }
             </Query>
           </Col>
-          <Col sm={4}>
-            <Button
-              block
-              disabled={!selectedMovie}
-              color="primary"
-              size="sm"
-              onClick={this.triggerAction}
-            >
-              Play
-            </Button>
-          </Col>
+          {!bridgeMap && (
+            <Col sm={4}>
+              <Button
+                block
+                disabled={!selectedMovie}
+                color="primary"
+                size="sm"
+                onClick={() =>
+                  triggerAction({
+                    ...this.state,
+                    simulator: this.props.data.simulators[0],
+                    client: this.props.client
+                  })
+                }
+              >
+                Play
+              </Button>
+            </Col>
+          )}
         </Row>
       );
     if (actionName === "speak")
       return (
         <Row>
-          <Col sm={8}>
+          <Col sm={bridgeMap ? 12 : 8}>
             <Input
               style={{ height: "20px" }}
               type="select"
               value={selectedVoice}
-              onChange={e => this.setState({ selectedVoice: e.target.value })}
+              onChange={e => {
+                this.setState({ selectedVoice: e.target.value });
+                this.props.onChangeVoice &&
+                  this.props.onChangeVoice(e.target.value);
+              }}
             >
               {this.voices.map(c => (
                 <option key={c.name} value={c.name}>
@@ -233,16 +254,24 @@ class ActionsCore extends Component {
               ))}
             </Input>
           </Col>
-          <Col sm={4}>
-            <Button
-              block
-              color="primary"
-              size="sm"
-              onClick={this.triggerAction}
-            >
-              Speak
-            </Button>
-          </Col>
+          {!bridgeMap && (
+            <Col sm={4}>
+              <Button
+                block
+                color="primary"
+                size="sm"
+                onClick={() =>
+                  triggerAction({
+                    ...this.state,
+                    simulator: this.props.data.simulators[0],
+                    client: this.props.client
+                  })
+                }
+              >
+                Speak
+              </Button>
+            </Col>
+          )}
         </Row>
       );
     if (actionName === "changeCard") {
@@ -276,7 +305,13 @@ class ActionsCore extends Component {
               color="primary"
               size="sm"
               disabled={!station}
-              onClick={this.triggerAction}
+              onClick={() =>
+                triggerAction({
+                  ...this.state,
+                  simulator: this.props.data.simulators[0],
+                  client: this.props.client
+                })
+              }
             >
               Change Card
             </Button>
@@ -284,13 +319,26 @@ class ActionsCore extends Component {
         </Row>
       );
     }
+    if (bridgeMap) return null;
     return (
-      <Button block color="primary" size="sm" onClick={this.triggerAction}>
-        {this.state.actionName} {this.state.actionDest}
+      <Button
+        block
+        color="primary"
+        size="sm"
+        onClick={() =>
+          triggerAction({
+            ...this.state,
+            simulator: this.props.data.simulators[0],
+            client: this.props.client
+          })
+        }
+      >
+        {titleCase(this.state.actionName)} {this.state.actionDest}
       </Button>
     );
   };
   render() {
+    const { bridgeMap } = this.props;
     const { actionName } = this.state;
     return (
       <div className="core-action">
@@ -313,34 +361,34 @@ class ActionsCore extends Component {
             <Button
               size="sm"
               color="warning"
-              onClick={() => this.setState({ actionName: "flash" })}
+              onClick={() => this.handleNameChange("flash")}
             >
               F
             </Button>
             <Button
               size="sm"
               color="info"
-              onClick={() => this.setState({ actionName: "spark" })}
+              onClick={() => this.handleNameChange("spark")}
             >
               S
             </Button>
             <Button
               size="sm"
               color="success"
-              onClick={() => this.setState({ actionName: "online" })}
+              onClick={() => this.handleNameChange("online")}
             >
               O
             </Button>
             <Button
               size="sm"
               color="dark"
-              onClick={() => this.setState({ actionName: "blackout" })}
+              onClick={() => this.handleNameChange("blackout")}
             >
               B
             </Button>
           </ButtonGroup>
           <select
-            onChange={this.handleNameChange}
+            onChange={e => this.handleNameChange(e.target.value)}
             value={actionName}
             ref="actionName"
           >
@@ -353,7 +401,7 @@ class ActionsCore extends Component {
               <option value="beep">Beep</option>
               <option value="speak">Speak</option>
               <option value="message">Message</option>
-              <option value="changeCard">Change Card</option>
+              {!bridgeMap && <option value="changeCard">Change Card</option>}
             </optgroup>
             <optgroup>
               <option value="blackout">Blackout</option>
@@ -374,28 +422,30 @@ class ActionsCore extends Component {
               <option value="quit">Quit</option>
             </optgroup>
           </select>
-          <select onChange={this.handleDestChange} ref="actionDest">
-            <optgroup>
-              <option value="all">All Stations</option>
-              <option value="bridge">Bridge Stations</option>
-              <option value="random">Random Station</option>
-            </optgroup>
-            <optgroup>
-              {!this.props.data.loading &&
-                this.props.data.simulators[0] &&
-                this.props.data.simulators[0].stations &&
-                this.props.data.simulators[0].stations.map(s => (
-                  <option key={s.name} value={s.name}>
-                    {s.name}
-                  </option>
-                ))}
-            </optgroup>
-            <optgroup>
-              <option value="Viewscreen">Viewscreen</option>
-            </optgroup>
-          </select>
+          {!bridgeMap && (
+            <select onChange={this.handleDestChange} ref="actionDest">
+              <optgroup>
+                <option value="all">All Stations</option>
+                <option value="bridge">Bridge Stations</option>
+                <option value="random">Random Station</option>
+              </optgroup>
+              <optgroup>
+                {!this.props.data.loading &&
+                  this.props.data.simulators[0] &&
+                  this.props.data.simulators[0].stations &&
+                  this.props.data.simulators[0].stations.map(s => (
+                    <option key={s.name} value={s.name}>
+                      {s.name}
+                    </option>
+                  ))}
+              </optgroup>
+              <optgroup>
+                <option value="Viewscreen">Viewscreen</option>
+              </optgroup>
+            </select>
+          )}
         </div>
-        {this.renderButtons()}
+        {this.renderButtons(bridgeMap)}
       </div>
     );
   }

@@ -26,6 +26,7 @@ simulators {
     side
     top
     logo
+    bridge
   }
 }
 `;
@@ -36,11 +37,14 @@ const QUERY = gql`
 ${queryData}
     }
     clients(flightId:$id) {
-    id
-    simulator {
       id
+      simulator {
+        id
+      }
+      station {
+        name
+      }
     }
-  }
   }
 `;
 const SUBSCRIPTION = gql`
@@ -61,6 +65,9 @@ const CLIENT_SUB = gql`
       id
       simulator {
         id
+      }
+      station {
+        name
       }
     }
   }

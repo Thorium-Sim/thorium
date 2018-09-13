@@ -56,17 +56,23 @@ App.on("triggerAction", args => {
       stations = ["Viewscreen"];
       break;
     default:
+      const client = App.clients.find(c => c.id === args.stationId);
+      console.log({ client });
       clients = App.clients
         .filter(
           c =>
             (c.simulatorId === args.simulatorId &&
               c.station === args.stationId) ||
-            c.id === args.clientId
+            c.id === args.clientId ||
+            c.id === args.stationId
         )
         .map(c => c.id);
       stations = App.simulators
         .find(s => s.id === args.simulatorId)
-        .stations.filter(s => s.name === args.stationId)
+        .stations.filter(
+          s =>
+            s.name === args.stationId || (client && client.station === s.name)
+        )
         .map(s => s.name);
       break;
   }

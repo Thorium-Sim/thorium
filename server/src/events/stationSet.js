@@ -92,3 +92,12 @@ App.on(
     pubsub.publish("stationSetUpdate", App.stationSets);
   }
 );
+App.on(
+  "setStationDescription",
+  ({ stationSetID, stationName, description }) => {
+    App.stationSets
+      .find(s => s.id === stationSetID)
+      .setDescription(stationName, description);
+    pubsub.publish("stationSetUpdate", App.stationSets);
+  }
+);

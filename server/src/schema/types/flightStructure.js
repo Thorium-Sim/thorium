@@ -35,6 +35,7 @@ type SimulatorAssets {
   side:String
   top:String
   logo:String
+  bridge: String
 }
 
 input SimulatorAssetsInput {
@@ -43,6 +44,7 @@ input SimulatorAssetsInput {
   side:String
   top:String
   logo:String
+  bridge: String
 }
 
 type Simulator {
@@ -135,6 +137,7 @@ type Stationset {
 
 type Station {
   name: String
+  description: String
   login: Boolean
   executive: Boolean
   messageGroups: [String]
