@@ -139,6 +139,7 @@ import RailgunCore from "./Railgun/core";
 import HypercardCore from "./Clients/hypercardCore";
 import ClientsCore from "./Clients/core";
 import JumpDriveCore from "./JumpDrive/core";
+import BridgeMapCore from "./BridgeMap/core";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -354,7 +355,8 @@ export const Cores = {
   LoginNameCore,
   HypercardCore,
   JumpDriveCore,
-  ClientsCore
+  ClientsCore,
+  BridgeMapCore
 };
 
 export default Views;

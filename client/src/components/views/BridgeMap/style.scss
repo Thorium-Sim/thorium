@@ -1,0 +1,36 @@
+.bridgeMap-core {
+  position: relative;
+  height: 100%;
+  .svg-holder {
+    position: relative;
+    height: 100%;
+    svg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      path,
+      rect {
+        fill: rgba(255, 255, 255, 0.5);
+        stroke: black;
+        &:hover {
+          fill: rgba(255, 255, 255, 0.8);
+        }
+        &:active {
+          fill: rgba(255, 255, 150, 1);
+        }
+      }
+    }
+  }
+}
+.bridge-map-client-label {
+  padding: 2px;
+  background-color: black;
+  border: solid 1px rgba(255, 255, 255, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 100;
+}

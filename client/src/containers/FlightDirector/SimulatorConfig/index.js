@@ -62,6 +62,7 @@ assets {
   side
   top
   logo
+  bridge
 }
 systems {
   id
