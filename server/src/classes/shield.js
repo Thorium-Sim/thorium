@@ -58,15 +58,25 @@ export default class Shield extends System {
         );
       },
       values: {
-        shield: ({ simulator }) =>
-          randomFromList(
-            App.systems.filter(
-              s => s.simulatorId === simulator.id && s.type === "Shield"
+        shield: {
+          input: ({ simulator }) =>
+            App.systems
+              .filter(
+                s => s.simulatorId === simulator.id && s.type === "Shield"
+              )
+              .map(s => ({ value: s.id, label: s.displayName || s.name })),
+          value: ({ simulator }) =>
+            randomFromList(
+              App.systems
+                .filter(
+                  s => s.simulatorId === simulator.id && s.type === "Shield"
+                )
+                .map(s => s.id)
             )
-          )
+        }
       },
       verify({ requiredValues }) {
-        const { id } = requiredValues.shield;
+        const id = requiredValues.shield;
         const system = App.systems.find(s => s.id === id);
         return system.state === false;
       }
@@ -83,15 +93,25 @@ export default class Shield extends System {
         );
       },
       values: {
-        shield: ({ simulator }) =>
-          randomFromList(
-            App.systems.filter(
-              s => s.simulatorId === simulator.id && s.type === "Shield"
+        shield: {
+          input: ({ simulator }) =>
+            App.systems
+              .filter(
+                s => s.simulatorId === simulator.id && s.type === "Shield"
+              )
+              .map(s => ({ value: s.id, label: s.displayName || s.name })),
+          value: ({ simulator }) =>
+            randomFromList(
+              App.systems
+                .filter(
+                  s => s.simulatorId === simulator.id && s.type === "Shield"
+                )
+                .map(s => s.id)
             )
-          )
+        }
       },
       verify({ requiredValues }) {
-        const { id } = requiredValues.shield;
+        const id = requiredValues.shield;
         const system = App.systems.find(s => s.id === id);
         return system.state === false;
       }
@@ -105,18 +125,31 @@ export default class Shield extends System {
         );
       },
       values: {
-        shield: ({ simulator }) =>
-          randomFromList(
-            App.systems.filter(
-              s => s.simulatorId === simulator.id && s.type === "Shield"
+        shield: {
+          input: ({ simulator }) =>
+            App.systems
+              .filter(
+                s => s.simulatorId === simulator.id && s.type === "Shield"
+              )
+              .map(s => ({ value: s.id, label: s.displayName || s.name })),
+          value: ({ simulator }) =>
+            randomFromList(
+              App.systems
+                .filter(
+                  s => s.simulatorId === simulator.id && s.type === "Shield"
+                )
+                .map(s => s.id)
             )
-          ),
-        frequency: () => Math.round(Math.random() * 250 * 10) / 10 + 100
+        },
+        frequency: {
+          input: { type: "number", min: 100, max: 350 },
+          value: () => Math.round(Math.random() * 250 * 10) / 10 + 100
+        }
       },
       verify({ requiredValues }) {
-        const { id } = requiredValues.shield;
+        const id = requiredValues.shield;
         const system = App.systems.find(s => s.id === id);
-        return system.id === requiredValues.frequency;
+        return system.frequency === requiredValues.frequency;
       }
     }
   ];

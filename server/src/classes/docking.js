@@ -35,15 +35,23 @@ export default class DockingPort extends System {
           (system.clamps || system.compress || system.doors)
         );
       },
-      values: {
-        shuttle: ({ simulator }) =>
+      shuttle: {
+        input: ({ simulator }) =>
+          App.dockingPorts
+            .filter(
+              s => s.simulatorId === simulator.id && s.type === "shuttlebay"
+            )
+            .map(s => ({ label: s.displayName || s.name, value: s.id })),
+        value: ({ simulator }) =>
           randomFromList(
             App.dockingPorts.filter(
               s => s.simulatorId === simulator.id && s.type === "shuttlebay"
             )
           )
       },
-      verify({ system }) {
+      verify({ requiredValues }) {
+        const id = requiredValues.shuttle;
+        const system = App.dockingPorts.find(s => s.id === id);
         system.docked = false;
       }
     },
@@ -61,15 +69,27 @@ export default class DockingPort extends System {
         );
       },
       values: {
-        shuttle: ({ simulator }) =>
-          randomFromList(
-            App.dockingPorts.filter(
-              s => s.simulatorId === simulator.id && s.type === "shuttlebay"
+        shuttle: {
+          input: ({ simulator }) =>
+            App.dockingPorts
+              .filter(
+                s => s.simulatorId === simulator.id && s.type === "shuttlebay"
+              )
+              .map(s => ({ label: s.displayName || s.name, value: s.id })),
+          value: ({ simulator }) =>
+            randomFromList(
+              App.dockingPorts
+                .filter(
+                  s => s.simulatorId === simulator.id && s.type === "shuttlebay"
+                )
+                .map(s => s.id)
             )
-          )
+        }
       },
-      verify({ system }) {
-        system.docked = false;
+      verify({ requiredValues }) {
+        const id = requiredValues.shuttle;
+        const system = App.dockingPorts.find(s => s.id === id);
+        return system.clamps && system.compress && system.doors;
       }
     },
     {

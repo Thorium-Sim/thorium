@@ -1,5 +1,6 @@
 import uuid from "uuid";
 import App from "../app";
+import { randomFromList } from "./generic/damageReports/constants";
 
 export default class Exocomp {
   constructor(params) {
@@ -16,24 +17,36 @@ export default class Exocomp {
     this.difficulty = params.difficulty || 0.05;
   }
   static tasks = [
-    // {
-    //   name: "Send Exocomp",
-    //   active({ simulator, stations }) {
-    //     // Check cards
-    //     return (
-    //       stations.find(s => s.cards.find(c => c.component === "Exocomps")) &&
-    //       App.exocomps.filter(e => e.simulatorId === simulator.id).length > 0
-    //     );
-    //   },
-    //   verify({ simulator }) {
-    //     return !App.systems.find(
-    //       s =>
-    //         s.simulatorId === simulator.id &&
-    //         s.type === "Engine" &&
-    //         s.on === true
-    //     );
-    //   }
-    // }
+    {
+      name: "Send Exocomp",
+      active({ simulator, stations }) {
+        // Check cards
+        return (
+          stations.find(s => s.cards.find(c => c.component === "Exocomps")) &&
+          App.exocomps.filter(e => e.simulatorId === simulator.id).length > 0
+        );
+      },
+      values: {
+        destination: {
+          input: ({ simulator }) =>
+            simulator
+              ? App.systems
+                  .filter(s => s.simulatorId === simulator.id)
+                  .map(s => ({ key: s.id, label: s.displayName || s.name }))
+              : "text",
+          value: ({ simulator }) =>
+            randomFromList(
+              App.systems
+                .filter(s => s.simulatorId === simulator.id)
+                .map(s => s.displayName || s.name)
+            )
+        }
+      },
+      verify({ simulator }) {
+        // TODO: Figure out a way to verify that the exocomp was deployed properly
+        return false;
+      }
+    }
   ];
   updateState(state) {
     this.state = state;
