@@ -1,4 +1,7 @@
 {
+  "1.0.10": {
+    "fixes": ["Fixes an issue with inserting timeline events."]
+  },
   "1.0.9": {
     "features": [
       "Added the ability to play random sounds from within a folder in the sound player macro."
