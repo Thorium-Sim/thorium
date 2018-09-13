@@ -2,36 +2,40 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import Template from "./template";
+import BridgeMap from "./bridgeMap";
 import "./style.scss";
 
 const queryData = `
+id
+station {
+  name
+  description
+}
 `;
 
 const QUERY = gql`
-  query Template($simulatorId: ID!) {
-    template(simulatorId: $simulatorId) {
+query Clients($simulatorId: ID!){
+  clients(simulatorId:$simulatorId){
 ${queryData}
     }
   }
 `;
 const SUBSCRIPTION = gql`
-  subscription TemplateUpdate($simulatorId: ID!) {
-    templateUpdate(simulatorId: $simulatorId) {
+subscription ClientsUpdate($simulatorId:ID!) {
+  clientChanged(simulatorId:$simulatorId) {
 ${queryData}
     }
   }
 `;
 
-class TemplateData extends Component {
+class BridgeMapData extends Component {
   state = {};
   render() {
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
-          const { template } = data;
-          if (loading || !template) return null;
-          if (!template[0]) return <div>No Template</div>;
+          const { clients } = data;
+          if (loading || !clients) return null;
           return (
             <SubscriptionHelper
               subscribe={() =>
@@ -40,13 +44,13 @@ class TemplateData extends Component {
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
                     return Object.assign({}, previousResult, {
-                      template: subscriptionData.data.templateUpdate
+                      clients: subscriptionData.data.clientChanged
                     });
                   }
                 })
               }
             >
-              <Template {...this.props} {...template[0]} />
+              <BridgeMap {...this.props} clients={clients} />
             </SubscriptionHelper>
           );
         }}
@@ -54,4 +58,4 @@ class TemplateData extends Component {
     );
   }
 }
-export default TemplateData;
+export default BridgeMapData;

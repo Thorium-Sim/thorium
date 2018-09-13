@@ -77,7 +77,7 @@ import RnDReports from "./DamageControl/rnd";
 import Railgun from "./Railgun";
 import RailgunLoading from "./Railgun/loadingCard";
 import JumpDrive from "./JumpDrive";
-
+import BridgeMap from "./BridgeMap";
 // Cores
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -225,7 +225,8 @@ const Views = {
   RnDReports,
   Railgun,
   RailgunLoading,
-  JumpDrive
+  JumpDrive,
+  BridgeMap
 };
 
 export const Widgets = {

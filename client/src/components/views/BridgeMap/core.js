@@ -53,9 +53,20 @@ class BridgeMapCore extends Component {
     const { svg, client, x, y } = this.state;
     const { clients } = this.props;
     const clientObj = clients.find(c => c.id === client);
-    if (!svg) return null;
+    if (!svg)
+      return (
+        <div>
+          No bridge map has been specified or the bridge map is not parsable.
+          Make sure you configure a bridge map in your simulator assets
+          configuration. See the{" "}
+          <a href="https://thoriumsim.com/docs/bridge-map/" target="_blank">
+            Bridge Map Documentation
+          </a>{" "}
+          to learn how to configure your bridge map SVG.
+        </div>
+      );
     return (
-      <div className="bridgeMap-core">
+      <div className="bridgeMap">
         <Actions
           {...this.props}
           bridgeMap

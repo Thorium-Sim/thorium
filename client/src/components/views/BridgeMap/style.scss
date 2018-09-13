@@ -1,6 +1,10 @@
-.bridgeMap-core {
+.bridgeMap {
   position: relative;
   height: 100%;
+  .row,
+  .col {
+    height: 100%;
+  }
   .svg-holder {
     position: relative;
     height: 100%;
