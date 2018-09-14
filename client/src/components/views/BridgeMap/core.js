@@ -59,7 +59,11 @@ class BridgeMapCore extends Component {
           No bridge map has been specified or the bridge map is not parsable.
           Make sure you configure a bridge map in your simulator assets
           configuration. See the{" "}
-          <a href="https://thoriumsim.com/docs/bridge-map/" target="_blank">
+          <a
+            href="https://thoriumsim.com/docs/bridge-map/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Bridge Map Documentation
           </a>{" "}
           to learn how to configure your bridge map SVG.
