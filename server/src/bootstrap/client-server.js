@@ -2,11 +2,9 @@ const express = require("express");
 const server = express();
 const path = require("path");
 const paths = require("../helpers/paths");
-const ipaddress = require("../helpers/ipaddress");
 
-const assetPath = path.dirname(process.argv[1]);
-const openBrowser = require("react-dev-utils/openBrowser");
-
+const assetPath = path.dirname(__dirname);
+console.log(process.env.NODE_ENV);
 export default function(port = 3000) {
   if (process.env.NODE_ENV === "production") {
     server.use(express.static(assetPath));
@@ -25,8 +23,6 @@ export default function(port = 3000) {
       });
     });
 
-    server.listen(port, () => {
-      openBrowser(`http://${ipaddress.default}:${port}`);
-    });
+    server.listen(port, () => {});
   }
 }

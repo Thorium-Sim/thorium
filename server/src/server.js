@@ -10,12 +10,14 @@ import broadcast from "./bootstrap/broadcast";
 import clientServer from "./bootstrap/client-server.js";
 import postMigration from "./bootstrap/postmigration";
 import cleanUp from "./bootstrap/cleanup";
+import launchWindow from "./bootstrap/launchWindow";
 import App from "./app";
 
 const CLIENT_PORT = process.env.NODE_ENV === "production" ? 1337 : 3000;
 const GRAPHQL_PORT = CLIENT_PORT + 1;
 const WS_PORT = CLIENT_PORT + 2;
 export const port = CLIENT_PORT;
+
 Promise.resolve()
   .then(() => log())
   .then(() => migrate())
@@ -33,4 +35,5 @@ Promise.resolve()
   })
   .then(() => postMigration())
   .then(() => cleanUp())
-  .catch(err => console.error(err));
+  .catch(err => console.error(err))
+  .then(() => launchWindow(CLIENT_PORT));
