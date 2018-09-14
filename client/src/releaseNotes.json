@@ -6,7 +6,9 @@
     "fixes": [
       "Fixes an issue with inserting timeline events.",
       "If traveling at a speed, the stars viewscreen will now properly show the speed instead of ramping up from stopped every time.",
-      "When configuring sensor contacts in mission configurations, the contact information will now update."
+      "When configuring sensor contacts in mission configurations, the contact information will now update.",
+      "Bridge officer messaging settings will now properly transfer from the template simulator.",
+      "Fixes an issue where alert conditions don't reset with the flight."
     ]
   },
   "1.0.9": {

@@ -254,6 +254,7 @@ App.on("resetFlight", ({ flightId, simulatorId }) => {
       App.clients.filter(c => c.flightId === flightId)
     );
     pubsub.publish("clearCache", App.flights.filter(f => f.id === flightId));
+    pubsub.publish("simulatorsUpdate", App.simulators);
   });
 });
 App.on("pauseFlight", ({ flightId }) => {
