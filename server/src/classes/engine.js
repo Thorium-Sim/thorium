@@ -91,6 +91,9 @@ export default class Engine extends HeatMixin(System) {
     }
     this.speed = speed;
     this.on = on;
+    setTimeout(() => {
+      this.previousSpeed = this.speed;
+    }, 1000);
   }
   setAcceleration(num) {
     this.acceleration = num;
