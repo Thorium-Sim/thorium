@@ -1,7 +1,6 @@
 import React from "react";
-import { Row, Col, FormGroup, Label } from "reactstrap";
+import { Row, Col } from "reactstrap";
 import { withApollo } from "react-apollo";
-import EventPicker from "../MissionConfig/EventPicker";
 
 import * as Macros from "../../../components/macros";
 

@@ -84,6 +84,7 @@ class Assets {
     this.side = params.side || "/Simulator/default/side.png";
     this.top = params.top || "/Simulator/default/top.png";
     this.logo = params.logo || "/Simulator/default/logo.svg";
+    this.bridge = params.bridge || "/Simulator/default/bridge.svg";
   }
 }
 
@@ -104,7 +105,8 @@ export default class Simulator {
     this.mission = params.mission || null;
     this.currentTimelineStep = params.currentTimelineStep || 0;
     this.executedTimelineSteps = params.executedTimelineSteps || [];
-    this.bridgeOfficerMessaging = params.bridgeOfficerMessaging || true;
+    this.bridgeOfficerMessaging =
+      params.bridgeOfficerMessaging === false ? false : true;
     this.teams = [];
     this.training = params.training || false;
     this.ship = new Ship(params.ship);

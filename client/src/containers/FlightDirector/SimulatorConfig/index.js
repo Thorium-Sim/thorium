@@ -62,6 +62,7 @@ assets {
   side
   top
   logo
+  bridge
 }
 systems {
   id
@@ -113,6 +114,7 @@ stationSets {
   name
   stations {
     name
+    description
     login
     executive
     messageGroups
@@ -141,6 +143,7 @@ const STATIONSET_SUB = gql`
       }
       stations {
         name
+        description
         login
         messageGroups
         executive

@@ -1,4 +1,18 @@
 {
+  "1.0.10": {
+    "features": [
+      "Add a bridge map card and core for running actions on specific clients. Note that this requires a specially configured SVG to work properly. Please see https://thoriumsim.com/docs/bridge-map/ for more information."
+    ],
+    "fixes": [
+      "Fixes an issue with inserting timeline events.",
+      "If traveling at a speed, the stars viewscreen will now properly show the speed instead of ramping up from stopped every time.",
+      "When configuring sensor contacts in mission configurations, the contact information will now update.",
+      "Bridge officer messaging settings will now properly transfer from the template simulator.",
+      "Fixes an issue where alert conditions don't reset with the flight.",
+      "Fixes an issue with the initialization of reactors.",
+      "Fixes an issue with saving velocities on engines."
+    ]
+  },
   "1.0.9": {
     "features": [
       "Added the ability to play random sounds from within a folder in the sound player macro."

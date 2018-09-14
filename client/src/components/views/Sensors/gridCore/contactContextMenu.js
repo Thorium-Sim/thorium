@@ -98,7 +98,7 @@ export default class ContactContextMenu extends Component {
                 </Row>
               </FormGroup>
               <FormGroup>
-                <Label for="sizeRange" sm={2}>
+                <Label for="sizeRange" sm={4}>
                   Size ({contact.size})
                 </Label>
                 <input
