@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Thorium</title>
+  <style>
+    body {
+      background: url(bg.jpg);
+      background-size: 100vw 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 40px;
+      color: white;
+      font-size: 18px;
+      font-family: sans-serif;
+      text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    #loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 36px;
+    }
+
+    img {
+      width: 100px;
+      filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.5));
+    }
+
+    .header {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      align-self: flex-start;
+    }
+
+
+
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 10vw;
+
+    }
+
+    .main h2 {
+      width: 100%;
+      text-align: center;
+    }
+
+    button {
+      color: #fff;
+      background-color: #007bff;
+      border-color: #007bff;
+      -webkit-appearance: button;
+      cursor: pointer;
+      display: block;
+      font-weight: 400;
+      text-align: center;
+      white-space: nowrap;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      border: 1px solid transparent;
+      padding: .375rem .75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      border-radius: .25rem;
+      transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+      text-transform: none;
+      margin: 0;
+      font-family: inherit;
+    }
+
+    #loading.hidden,
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <img src="logo.png" draggable="false" />
+    <h1>Thorium</h1>
+  </div>
+  <div class="main">
+    <div class="server">
+      <h2>Server</h2>
+      <button onclick="startServer()">Start Server</button>
+    </div>
+    <div class="client">
+      <h2>Client</h2>
+
+      <div id="ready" class="hidden">
+        <p>New version available. Click here to update.</p>
+        <button style="margin: 0 auto;" onclick="window.thorium.runUpdate()">Update</button>
+      </div>
+      <div id="loading">
+        <svg class="lds-spinner" width="55px" height="55px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" style="background-image: none; background-position: initial initial; background-repeat: initial initial;">
+          <g transform="rotate(0 50 50)">
+            <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#d672ff">
+              <animate attributeName="opacity" values="1;0" times="0;1" dur="1s" begin="-0.9166666666666666s" repeatCount="indefinite"></animate>
+            </rect>
+          </g>
+          <g transform="rotate(30 50 50)">
+            <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#d672ff">
+              <animate attributeName="opacity" values="1;0" times="0;1" dur="1s" begin="-0.8333333333333334s" repeatCount="indefinite"></animate>
+            </rect>
+          </g>
+          <g transform="rotate(60 50 50)">
+            <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#d672ff">
+              <animate attributeName="opacity" values="1;0" times="0;1" dur="1s" begin="-0.75s" repeatCount="indefinite"></animate>
+            </rect>
+          </g>
+          <g transform="rotate(90 50 50)">
+            <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#d672ff">
+              <animate attributeName="opacity" values="1;0" times="0;1" dur="1s" begin="-0.6666666666666666s" repeatCount="indefinite"></animate>
+            </rect>
+          </g>
+          <g transform="rotate(120 50 50)">
+            <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#d672ff">
+              <animate attributeName="opacity" values="1;0" times="0;1" dur="1s" begin="-0.5833333333333334s" repeatCount="indefinite"></animate>
+            </rect>
+          </g>
+          <g transform="rotate(150 50 50)">
+            <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#d672ff">
+              <animate attributeName="opacity" values="1;0" times="0;1" dur="1s" begin="-0.5s" repeatCount="indefinite"></animate>
+            </rect>
+          </g>
+          <g transform="rotate(180 50 50)">
+            <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#d672ff">
+              <animate attributeName="opacity" values="1;0" times="0;1" dur="1s" begin="-0.4166666666666667s" repeatCount="indefinite"></animate>
+            </rect>
+          </g>
+          <g transform="rotate(210 50 50)">
+            <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#d672ff">
+              <animate attributeName="opacity" values="1;0" times="0;1" dur="1s" begin="-0.3333333333333333s" repeatCount="indefinite"></animate>
+            </rect>
+          </g>
+          <g transform="rotate(240 50 50)">
+            <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#d672ff">
+              <animate attributeName="opacity" values="1;0" times="0;1" dur="1s" begin="-0.25s" repeatCount="indefinite"></animate>
+            </rect>
+          </g>
+          <g transform="rotate(270 50 50)">
+            <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#d672ff">
+              <animate attributeName="opacity" values="1;0" times="0;1" dur="1s" begin="-0.16666666666666666s" repeatCount="indefinite"></animate>
+            </rect>
+          </g>
+          <g transform="rotate(300 50 50)">
+            <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#d672ff">
+              <animate attributeName="opacity" values="1;0" times="0;1" dur="1s" begin="-0.08333333333333333s" repeatCount="indefinite"></animate>
+            </rect>
+          </g>
+          <g transform="rotate(330 50 50)">
+            <rect x="47" y="24" rx="9.4" ry="4.8" width="6" height="12" fill="#d672ff">
+              <animate attributeName="opacity" values="1;0" times="0;1" dur="1s" begin="0s" repeatCount="indefinite"></animate>
+            </rect>
+          </g>
+        </svg>
+        <p>Searching for Thorium Server...</p>
+      </div>
+      <div id="servers" class="hidden">
+        <h4>Select a server:</h4>
+        <div id="serverList">
+
+        </div>
+      </div>
+      <p>
+        <em>
+          <strong>⌘ + D</strong>
+        </em> to enter server address</p>
+    </div>
+  </div>
+</body>
+
+</html>
