@@ -14,9 +14,7 @@ module.exports = mainWindow => {
     // Do nothing.
   });
 
-  globalShortcut.register("CommandOrControl+R", function() {
-    // Do nothing.
-  });
+  globalShortcut.register("CommandOrControl+R", function() {});
 
   globalShortcut.register("CommandOrControl+Alt+I", function() {
     mainWindow.webContents.openDevTools();

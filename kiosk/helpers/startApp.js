@@ -1,4 +1,5 @@
 const electron = require("electron");
+const globalShortcut = electron.globalShortcut;
 const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const url = require("url");
@@ -31,6 +32,20 @@ module.exports = () => {
           slashes: true
         })
       );
+
+      globalShortcut.register("CommandOrControl+R", function() {
+        mainWindow.reload();
+      });
+
+      globalShortcut.register("CommandOrControl+Alt+I", function() {
+        mainWindow.webContents.openDevTools();
+      });
+      // Capture console messages
+      const old_console_log = global.console.log;
+      global.console.log = function log() {
+        old_console_log(...arguments);
+        mainWindow.webContents.send("info", arguments[0]);
+      };
 
       // Start the Thorium server
       bootstrap();

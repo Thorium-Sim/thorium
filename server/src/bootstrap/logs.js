@@ -1,6 +1,9 @@
 import paths from "../helpers/paths";
 import fs from "fs";
 import mkdirp from "mkdirp";
+import { EventEmitter } from "events";
+
+export const logEvents = new EventEmitter();
 
 // Check to see if we are in development mode or not.
 if (

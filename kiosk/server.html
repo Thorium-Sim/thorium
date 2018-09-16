@@ -6,6 +6,7 @@
   <title>Thorium Server</title>
   <style>
     body {
+      overflow: hidden;
       background: url(background.jpg);
       background-size: 100vw 100vh;
       display: flex;
@@ -35,30 +36,33 @@
       align-self: flex-start;
     }
 
-
-
     .main {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-gap: 10vw;
-
+      flex: 1;
+      width: 100%;
     }
 
-    .main h2 {
+    iframe {
       width: 100%;
-      text-align: center;
+      height: 50vh;
+      background-color: rgba(255, 255, 255, 0.7);
+    }
+
+    .console {
+      height: 35vh;
+      border: solid 1px rgba(255, 255, 255, 0.5);
+      overflow-y: auto;
     }
   </style>
 </head>
 
 <body>
-  <div class="header">
-    <img src="logo.png" draggable="false" />
-    <h1>Thorium</h1>
-  </div>
   <div class="main">
+    <iframe src="http://localhost:1338/status"></iframe>
+    <div id="console" class="console">
 
+    </div>
   </div>
+
 </body>
 
 </html>

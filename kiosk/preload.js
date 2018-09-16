@@ -19,6 +19,12 @@ ipcRenderer.on("updateReady", function() {
   var container = document.getElementById("ready");
   container.classList.remove("hidden");
 });
+ipcRenderer.on("info", function(event, data) {
+  const output = document.getElementById("console");
+  if (output) {
+    output.innerText = `${data}\n${output.innerText}`;
+  }
+});
 
 const thorium = {
   sendMessage: function(arg) {
@@ -31,17 +37,19 @@ ipcRenderer.on("clearUrl", function() {
 });
 
 ipcRenderer.on("updateServers", function updateServers(e, servers) {
-  if (servers.length === 0) {
-    document.getElementById("loading").classList.remove("hidden");
-    document.getElementById("servers").classList.add("hidden");
-  } else {
-    document.getElementById("loading").classList.add("hidden");
-    document.getElementById("servers").classList.remove("hidden");
+  if (document.getElementById("loading")) {
+    if (servers.length === 0) {
+      document.getElementById("loading").classList.remove("hidden");
+      document.getElementById("servers").classList.add("hidden");
+    } else {
+      document.getElementById("loading").classList.add("hidden");
+      document.getElementById("servers").classList.remove("hidden");
+    }
+    const markup = servers.map(
+      s => `<button onclick="loadPage('${s.url}')">${s.name}</button>`
+    );
+    document.getElementById("serverList").innerHTML = markup;
   }
-  const markup = servers.map(
-    s => `<button onclick="loadPage('${s.url}')">${s.name}</button>`
-  );
-  document.getElementById("serverList").innerHTML = markup;
 });
 
 window.thorium = thorium;
