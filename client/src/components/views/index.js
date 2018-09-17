@@ -78,6 +78,8 @@ import Railgun from "./Railgun";
 import RailgunLoading from "./Railgun/loadingCard";
 import JumpDrive from "./JumpDrive";
 import BridgeMap from "./BridgeMap";
+import ThrustersLite from "./Thrusters/lite";
+
 // Cores
 import EngineControlCore from "./EngineControl/core";
 import TransporterCore from "./Transporters/core";
@@ -226,7 +228,8 @@ const Views = {
   Railgun,
   RailgunLoading,
   JumpDrive,
-  BridgeMap
+  BridgeMap,
+  ThrustersLite
 };
 
 export const Widgets = {

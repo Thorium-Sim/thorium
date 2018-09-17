@@ -135,7 +135,7 @@ class CommShortRange extends Component {
         }
         const ShortRange = nextProps.data.shortRangeComm[0];
         let comms = ShortRange.arrows.map(a => {
-          const signal = ShortRange.signals.find(s => s.id === a.signal);
+          const signal = ShortRange.signals.find(s => s.id === a.signal) || {};
           return {
             id: a.id,
             connected: a.connected,
