@@ -138,6 +138,7 @@ type Stationset {
 type Station {
   name: String
   description: String
+  training: String
   login: Boolean
   executive: Boolean
   messageGroups: [String]

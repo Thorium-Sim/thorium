@@ -11,6 +11,7 @@ name
 alertlevel
 layout
 bridgeOfficerMessaging
+training
 assets {
   mesh
   texture
@@ -22,6 +23,7 @@ assets {
 stations {
   name
   login
+  training
   executive
   messageGroups
   widgets

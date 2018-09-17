@@ -35,7 +35,8 @@ const quotes = [
   "Life before death. Strength before weakness. Journey before destination.",
   "We are the ones we have been waiting for.",
   "I am burdened with glorious purpose.",
-  "While you live, shine; have no grief at all. Life exists only for a short while and Time demands his due."
+  "While you live, shine; have no grief at all. Life exists only for a short while and Time demands his due.",
+  "The hardest choices require the strongest wills."
 ];
 
 class Welcome extends Component {

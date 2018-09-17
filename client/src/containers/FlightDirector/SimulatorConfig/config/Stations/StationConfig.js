@@ -5,6 +5,7 @@ import gql from "graphql-tag";
 import ops from "./ops";
 import FontAwesome from "react-fontawesome";
 import Views, { Widgets } from "components/views/index";
+import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import ExtraMessageGroups from "./messageGroups";
 import { titleCase } from "change-case";
 const viewList = Object.keys(Views)
@@ -310,6 +311,38 @@ const ConfigStation = props => {
               </Col>
             ))}
           </Row>
+          <label>Training:</label>
+          <Mutation
+            mutation={gql`
+              mutation SetTraining(
+                $stationSetID: ID!
+                $stationName: String!
+                $training: String!
+              ) {
+                setStationTraining(
+                  stationSetID: $stationSetID
+                  stationName: $stationName
+                  training: $training
+                )
+              }
+            `}
+          >
+            {action => (
+              <FileExplorer
+                directory="/Training"
+                selectedFiles={[station.training]}
+                onClick={(evt, container) =>
+                  action({
+                    variables: {
+                      stationSetID: selectedStationSet,
+                      stationName: station.name,
+                      training: container.fullPath
+                    }
+                  })
+                }
+              />
+            )}
+          </Mutation>
         </div>
       </div>
     </Container>
