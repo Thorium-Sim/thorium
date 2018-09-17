@@ -6,6 +6,8 @@ import Tour from "reactour";
 import FontAwesome from "react-fontawesome";
 import IntlProvider from "./intl";
 import "./tourHelper.scss";
+import MediaPlayer from "./trainingPlayer";
+
 const synth = window.speechSynthesis;
 
 const TourHelper = ({
@@ -27,6 +29,7 @@ const TourHelper = ({
   };
   let { training, id } = client;
   if (!training) training = propsTraining;
+
   return (
     <Mutation
       mutation={gql`
