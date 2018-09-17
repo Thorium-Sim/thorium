@@ -19,9 +19,13 @@ import exportKeyboard from "../imports/keyboards/export";
 import importKeyboard from "../imports/keyboards/import";
 import exportTacticalMap from "../imports/tacticalMaps/export";
 import ImportTacticalMap from "../imports/tacticalMaps/import";
+const paths = require("../helpers/paths");
 
 export default () => {
   let appDir = "./";
+  if (process.env.NODE_ENV === "production") {
+    appDir = paths.userData;
+  }
   const upload = multer({
     dest: appDir + "temp"
   });

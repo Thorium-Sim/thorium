@@ -98,6 +98,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "electron": "^2.0.9",
+    "electron-packager": "^12.1.2",
     "eslint": "^5.4.0",
     "eslint-config-react-app": "^2.1.0",
     "eslint-plugin-flowtype": "^2.50.0",

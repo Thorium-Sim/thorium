@@ -1,18 +1,36 @@
 const ipcRenderer = require("electron").ipcRenderer;
-var webFrame = require("electron").webFrame;
+const webFrame = require("electron").webFrame;
+const ipAddress = require("../helpers/ipAddress").default;
+
 webFrame.setVisualZoomLevelLimits(1, 1);
 webFrame.setLayoutZoomLevelLimits(0, 0);
 
 localStorage.setItem("thorium_clientId", require("os").hostname());
 
 window.loadPage = function loadPage(url) {
-  ipcRenderer.send("loadPage", url);
+  let auto = false;
+  if (document.getElementById("remember-client").checked) auto = true;
+  ipcRenderer.send("loadPage", { url, auto });
   return;
 };
 window.startServer = function startServer() {
-  console.log("Starting server...");
-  ipcRenderer.send("startServer");
+  let auto = false;
+  if (document.getElementById("remember-server").checked) auto = true;
+  ipcRenderer.send("startServer", auto);
   return;
+};
+window.openBrowser = function openBrowser() {
+  ipcRenderer.send("openBrowser");
+  return;
+};
+window.serverAddress = function serverAddress() {
+  let url = document
+    .getElementById("server-address")
+    .value.replace("/client", "");
+  if (url.indexOf(":") === -1) url = url + ":1337";
+  let auto = false;
+  if (document.getElementById("remember-client").checked) auto = true;
+  ipcRenderer.send("loadPage", { url, auto });
 };
 ipcRenderer.on("updateReady", function() {
   // changes the text of the button
@@ -29,7 +47,8 @@ ipcRenderer.on("info", function(event, data) {
 const thorium = {
   sendMessage: function(arg) {
     return ipcRenderer.sendSync("synchronous-message", arg);
-  }
+  },
+  ipAddress: ipAddress
 };
 
 ipcRenderer.on("clearUrl", function() {

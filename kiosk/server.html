@@ -51,6 +51,44 @@
       height: 35vh;
       border: solid 1px rgba(255, 255, 255, 0.5);
       overflow-y: auto;
+      flex: 3;
+    }
+
+    .bottom-section {
+      display: flex;
+    }
+
+    .buttons {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+
+    button {
+      color: #fff;
+      background-color: #007bff;
+      border-color: #007bff;
+      -webkit-appearance: button;
+      cursor: pointer;
+      display: block;
+      font-weight: 400;
+      text-align: center;
+      white-space: nowrap;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      border: 1px solid transparent;
+      padding: .375rem .75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      border-radius: .25rem;
+      transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+      text-transform: none;
+      margin: 0;
+      font-family: inherit;
     }
   </style>
 </head>
@@ -58,11 +96,20 @@
 <body>
   <div class="main">
     <iframe src="http://localhost:1338/status"></iframe>
-    <div id="console" class="console">
-
+    <div class="bottom-section">
+      <pre id="console" class="console"></pre>
+      <div class="buttons">
+        <button id="open-in-browser" onclick="openBrowser()">Open in Browser</button>
+        <div id="ipAddress"></div>
+      </div>
     </div>
   </div>
-
+  <script>
+    document.getElementById("ipAddress").innerHTML = `
+<p>Server Address: http://${window.thorium.ipAddress}:1337</p>
+<p>Client Address: http://${window.thorium.ipAddress}:1337/client</p>
+`
+  </script>
 </body>
 
 </html>

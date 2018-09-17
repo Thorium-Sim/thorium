@@ -1,54 +1,76 @@
-const electron = require("electron");
-const globalShortcut = electron.globalShortcut;
-const BrowserWindow = electron.BrowserWindow;
+const {
+  app,
+  globalShortcut,
+  BrowserWindow,
+  Menu,
+  ipcMain
+} = require("electron");
 const path = require("path");
 const url = require("url");
 const loadPage = require("./loadPage");
 const startBonjour = require("./bonjour");
 const settings = require("electron-settings");
 const bootstrap = require("../../bootstrap").default;
-const app = electron.app;
+const templateFunc = require("./menuTemplate");
 
 let mainWindow;
 let browser;
 
 module.exports = () => {
-  app.on("ready", function() {
-    const ipcMain = electron.ipcMain;
-    ipcMain.on("loadPage", function(evt, uri) {
-      loadPage(uri, mainWindow);
+  function startServer() {
+    console.log("Starting server - main");
+    // Stop the bonjour browser
+    browser && browser.stop();
+
+    // Change to the server page
+    mainWindow.loadURL(
+      url.format({
+        pathname: path.join(__dirname, "../server.html"),
+        protocol: "file:",
+        slashes: true
+      })
+    );
+    ipcMain.on("openBrowser", function() {
+      var ipaddress = require("../../helpers/ipaddress");
+      var openBrowser = require("react-dev-utils/openBrowser");
+      openBrowser(`http://${ipaddress.default}:1337`);
     });
 
-    ipcMain.on("startServer", function() {
-      console.log("Starting server - main");
-      // Stop the bonjour browser
-      browser && browser.stop();
+    globalShortcut.register("CommandOrControl+R", function() {
+      mainWindow.reload();
+    });
 
-      // Change to the server page
-      mainWindow.loadURL(
-        url.format({
-          pathname: path.join(__dirname, "../server.html"),
-          protocol: "file:",
-          slashes: true
-        })
-      );
+    globalShortcut.register("CommandOrControl+Alt+I", function() {
+      mainWindow.webContents.openDevTools();
+    });
+    // Capture console messages
+    const old_console_log = global.console.log;
+    global.console.log = function log() {
+      old_console_log(...arguments);
+      mainWindow.webContents.send("info", arguments[0]);
+    };
 
-      globalShortcut.register("CommandOrControl+R", function() {
-        mainWindow.reload();
+    // Start the Thorium server
+    bootstrap().then(() =>
+      setTimeout(() => console.log("Thorium Started"), 1000)
+    );
+  }
+  app.on("ready", function() {
+    ipcMain.on("loadPage", function(evt, { url, auto }) {
+      if (auto) {
+        settings.set("autostart", url);
+      }
+      loadPage(url, mainWindow).catch(() => {
+        settings.set("autostart", null);
+        browser = startBonjour(mainWindow);
       });
+    });
 
-      globalShortcut.register("CommandOrControl+Alt+I", function() {
-        mainWindow.webContents.openDevTools();
-      });
-      // Capture console messages
-      const old_console_log = global.console.log;
-      global.console.log = function log() {
-        old_console_log(...arguments);
-        mainWindow.webContents.send("info", arguments[0]);
-      };
-
-      // Start the Thorium server
-      bootstrap();
+    ipcMain.on("startServer", function(evt, auto) {
+      if (auto) {
+        settings.set("autostart", "server");
+      }
+      startServer();
     });
     mainWindow = new BrowserWindow({
       backgroundColor: "#2e2c29",
@@ -60,13 +82,6 @@ module.exports = () => {
         preload: path.resolve(__dirname + "/../preload.js")
       }
     });
-    browser = startBonjour(mainWindow);
-    //const savedURL = settings.get("url");
-    // if (savedURL) {
-    //   setTimeout(() => {
-    //     loadPage(savedURL, mainWindow);
-    //   }, 5000);
-    // }
     mainWindow.loadURL(
       url.format({
         pathname: path.join(__dirname, "../index.html"),
@@ -74,21 +89,21 @@ module.exports = () => {
         slashes: true
       })
     );
-    // mainWindow.webContents.on("did-fail-load", () => {
-    //   // Load the default page
-    //   mainWindow &&
-    //     mainWindow.loadURL(
-    //       url.format({
-    //         pathname: path.join(__dirname, "../index.html"),
-    //         protocol: "file:",
-    //         slashes: true
-    //       })
-    //     );
-    //   settings.deleteAll();
-    //   setTimeout(() => {
-    //     mainWindow.setKiosk(false);
-    //   }, 1000);
-    // });
+    if (settings.get("autostart") === "server") {
+      startServer();
+    } else if (settings.get("autostart")) {
+      // Check to see if the page will work.
+      const url = settings.get("autostart");
+      // Do a fetch
+      loadPage(url, mainWindow).catch(() => {
+        settings.set("autostart", null);
+        browser = startBonjour(mainWindow);
+      });
+    } else {
+      browser = startBonjour(mainWindow);
+    }
+    const template = templateFunc(mainWindow);
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
   });
 };
 

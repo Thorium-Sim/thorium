@@ -197,33 +197,6 @@ class Credits extends Component {
               <h5>Flight: {flight ? flight.name : "Not Assigned"}</h5>
               <h5>Simulator: {simulator ? simulator.name : "Not Assigned"}</h5>
               <h5>Station: {station ? station.name : "Not Assigned"}</h5>
-              <h5>Download the client app: </h5>
-              <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-                <li>
-                  <a
-                    download="Thorium.zip"
-                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v1.0.3/thorium-client-1.0.3-mac.zip"
-                  >
-                    Mac
-                  </a>
-                </li>
-                <li>
-                  <a
-                    download="Thorium.zip"
-                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v1.0.3/thorium-client-setup-1.0.3.exe"
-                  >
-                    Windows
-                  </a>
-                </li>
-                <li>
-                  <a
-                    download="Thorium.zip"
-                    href="https://github.com/Thorium-Sim/thorium-kiosk/releases/download/v1.0.3/thorium-client-1.0.3-x86_64.AppImage"
-                  >
-                    Linux
-                  </a>
-                </li>
-              </ul>
             </div>
           ) : (
             <div ref="scroll" className="scroll">

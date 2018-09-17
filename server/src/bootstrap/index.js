@@ -17,7 +17,7 @@ const WS_PORT = CLIENT_PORT + 2;
 
 // Bootstrap things one step at a time with promises;
 export default function bootstrap() {
-  Promise.resolve()
+  return Promise.resolve()
     .then(() => log())
     .then(() => migrate())
     .then(() => init())
