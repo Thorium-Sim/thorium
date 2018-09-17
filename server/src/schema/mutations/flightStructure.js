@@ -42,6 +42,7 @@ setStationLogin(stationSetID: ID!, stationName: String!, login: Boolean!):String
 setStationExecutive(stationSetID: ID!, stationName: String!, exec: Boolean!):String
 toggleStationWidgets(stationSetID: ID!, stationName: String!, widget: String!, state: Boolean!): String
 setStationDescription(stationSetID: ID!, stationName: String!, description: String!):String
+setStationTraining(stationSetID: ID!, stationName: String!, training: String!):String
 
 #Macro: Start Training Mode
 trainingMode(simulatorId:ID!):String

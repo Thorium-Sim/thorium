@@ -160,14 +160,20 @@ export default class MediaPlayer extends Component {
   };
   setDimensions = contentRect => {
     // Set the position based on the dimensions
+    let { position } = this.state;
     const { width } = contentRect.bounds;
-    const position = { x: window.innerWidth / 2 - width / Math.E, y: 50 };
+    position = {
+      x: position.x === 0 ? window.innerWidth / 2 - width / Math.E : position.x,
+      y: position.y === 0 ? 100 : position.y
+    };
     this.setState({ dimensions: contentRect.bounds, position });
   };
   render() {
     const { src = "/sciences.ogg", close } = this.props;
     const { position } = this.state;
-
+    const ext1 = src.match(/\..*$/gi);
+    const ext = ext1 ? ext1[0].replace(".", "").toLowerCase() : null;
+    const isMovie = ["mov", "mp4", "ogv", "webm", "m4v"].indexOf(ext) > -1;
     return (
       <Measure bounds onResize={this.setDimensions}>
         {({ measureRef }) => (
@@ -181,22 +187,28 @@ export default class MediaPlayer extends Component {
             }}
           >
             <Media>
-              <div className="media">
-                <div className="media-player">
-                  <Player src={src} />
+              {({ isFullscreen, playPause }) => (
+                <div className="media">
+                  <div
+                    className="media-player"
+                    style={{ display: isMovie ? "block" : "none" }}
+                  >
+                    <Player src={src} onClick={() => playPause()} />
+                  </div>
+                  <div className="media-controls">
+                    <PlayPause className="media-control media-control--play-pause" />
+                    <CurrentTime className="media-control media-control--current-time" />
+                    <SeekBar className="media-control media-control--volume-range" />
+                    <Duration className="media-control media-control--duration" />
+                    <MuteUnmute className="media-control media-control--mute-unmute" />
+                    <Volume className="media-control media-control--volume" />
+
+                    {close && (
+                      <FontAwesome name="times-circle-o" onClick={close} />
+                    )}
+                  </div>
                 </div>
-                <div className="media-controls">
-                  <PlayPause className="media-control media-control--play-pause" />
-                  <CurrentTime className="media-control media-control--current-time" />
-                  <SeekBar className="media-control media-control--volume-range" />
-                  <Duration className="media-control media-control--duration" />
-                  <MuteUnmute className="media-control media-control--mute-unmute" />
-                  <Volume className="media-control media-control--volume" />
-                  {close && (
-                    <FontAwesome name="times-circle-o" onClick={close} />
-                  )}
-                </div>
-              </div>
+              )}
             </Media>
           </div>
         )}

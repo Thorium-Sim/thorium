@@ -5,228 +5,230 @@
   top: 0;
   left: 0;
   cursor: -webkit-grab;
+  z-index: 10000;
   &:active {
     cursor: -webkit-grabbing;
   }
-}
-.fa.fa-times-circle-o {
-  position: relative;
-  top: -15px;
-}
 
-.media-player-wrapper {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 640px;
-  margin-bottom: 24px;
-}
-
-.media-player {
-  display: none;
-  // hide native controls
-  video::-webkit-media-controls {
-    display: none !important;
+  .fa.fa-times-circle-o {
+    position: relative;
+    top: -15px;
   }
-}
 
-.media-player-element {
-  max-width: 100%;
-  height: 0;
-  padding-bottom: 56.25%; // 16:9
-  position: relative;
-  overflow: hidden;
-  background-color: #d4d4d4;
-
-  video,
-  iframe,
-  object,
-  embed {
+  .media {
     display: block;
+  }
+  .media-player {
     width: 100%;
-    height: 300%;
-    border: 0;
-    position: absolute;
-    top: -100%;
-    left: 0;
-    pointer-events: none;
-  }
-}
-
-.media-controls {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  background-color: #282f31;
-  color: #fff;
-  svg {
-    width: 80px;
-  }
-  svg,
-  path,
-  polygon {
-    transform-origin: 50% 50%;
+    max-width: 80vw;
+    position: relative;
+    video {
+      width: 100%;
+    }
+    // hide native controls
+    video::-webkit-media-controls {
+      display: none !important;
+    }
   }
 
-  .media-player--fullscreen & {
+  .media-player-element {
+    max-width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; // 16:9
+    position: relative;
+    overflow: hidden;
+    background-color: #d4d4d4;
+
+    video,
+    iframe,
+    object,
+    embed {
+      display: block;
+      width: 100%;
+      height: 300%;
+      border: 0;
+      position: absolute;
+      top: -100%;
+      left: 0;
+      pointer-events: none;
+    }
+  }
+
+  .media-controls {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background-color: #282f31;
+    color: #fff;
+    svg {
+      width: 80px;
+    }
+    svg,
+    path,
+    polygon {
+      transform-origin: 50% 50%;
+    }
+
+    .media-player--fullscreen & {
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+
+      // push controls above fullscreen video
+      z-index: 2147483647;
+    }
+  }
+
+  .media-controls--full {
+    flex-direction: column;
+
+    .media-control-group--seek {
+      width: 100%;
+      margin: 12px 0;
+    }
+  }
+
+  .media-row {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-
-    // push controls above fullscreen video
-    z-index: 2147483647;
   }
-}
 
-.media-controls--full {
-  flex-direction: column;
+  .media-control-group {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
 
   .media-control-group--seek {
-    width: 100%;
-    margin: 12px 0;
+    flex: 1;
   }
-}
 
-.media-row {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
+  .media-control {
+    margin: 0 12px;
+  }
 
-.media-control-group {
-  display: flex;
-  align-items: center;
-  position: relative;
-}
+  .media-control--progress {
+    -webkit-appearance: none;
+    width: calc(100% - 24px);
+    height: 3px;
+    margin: 0 12px;
+    border: 0;
+    position: absolute;
+    top: 7px;
+    left: 12px;
 
-.media-control-group--seek {
-  flex: 1;
-}
-
-.media-control {
-  margin: 0 12px;
-}
-
-.media-control--progress {
-  -webkit-appearance: none;
-  width: calc(100% - 24px);
-  height: 3px;
-  margin: 0 12px;
-  border: 0;
-  position: absolute;
-  top: 7px;
-  left: 12px;
-
-  // bar
-  background-color: #373d3f;
-  &::-webkit-progress-bar {
+    // bar
     background-color: #373d3f;
-  }
+    &::-webkit-progress-bar {
+      background-color: #373d3f;
+    }
 
-  // progress
-  color: lighten(#373d3f, 5%); // IE
-  &::-moz-progress-bar {
-    background-color: lighten(#373d3f, 5%);
-  }
-  &::-webkit-progress-value {
-    background-color: lighten(#373d3f, 5%);
-  }
-}
-
-.media-control--seekbar {
-  position: relative;
-  z-index: 5;
-
-  @include -range-track(webkit, moz, ms) {
-    background-color: transparent !important;
-  }
-}
-
-.media-control--volume {
-  max-width: 120px;
-}
-
-.media-control--prev-track {
-  margin-right: 6px;
-}
-
-.media-control--next-track {
-  margin-left: 6px;
-}
-
-input[type="range"] {
-  // reset inputs to a plain state
-  @include -range__reset(webkit, moz, ms);
-
-  $track-height: 3px;
-  $track-lower-color: #86b350;
-  $track-upper-color: #373d3f;
-
-  $thumb-height: 8px;
-  $thumb-width: 8px;
-  $thumb-color: #cdd7db;
-
-  width: 100%;
-  height: 12px;
-  padding: 0 12px;
-  margin: 0;
-  background-color: transparent;
-
-  &:hover,
-  &:active {
-    @include -range-thumb(webkit, moz, ms) {
-      transform: scale(1.25);
+    // progress
+    color: lighten(#373d3f, 5%); // IE
+    &::-moz-progress-bar {
+      background-color: lighten(#373d3f, 5%);
+    }
+    &::-webkit-progress-value {
+      background-color: lighten(#373d3f, 5%);
     }
   }
 
-  @include -range-track(webkit, moz, ms) {
-    width: 100%;
-    height: $track-height;
-    border: 0;
-    cursor: pointer;
-    background-color: $track-upper-color;
-
-    &:active {
-      cursor: grabbing;
-    }
-  }
-
-  // so we can style the lower progress
-  &::-webkit-slider-container {
-    background-size: inherit;
-  }
-
-  @include -range-track(webkit) {
-    background: {
-      image: linear-gradient($track-lower-color, $track-lower-color);
-      size: inherit;
-      repeat: no-repeat;
-    }
-  }
-
-  @include -range-fill-lower(webkit, moz, ms) {
-    background-color: $track-lower-color;
-  }
-
-  @include -range-thumb(webkit, moz, ms) {
-    width: $thumb-width;
-    height: $thumb-height;
-    border: 0;
-    border-radius: 50%;
-    background-color: $thumb-color;
-    cursor: grab;
-    transform: scale(1);
-    transform-origin: 50% 50%;
-    transition: transform 150ms ease-out;
-
-    &:active {
-      cursor: grabbing;
-    }
-  }
-
-  @include -range-thumb(webkit) {
+  .media-control--seekbar {
     position: relative;
-    top: -2.5px;
+    z-index: 5;
+
+    @include -range-track(webkit, moz, ms) {
+      background-color: transparent !important;
+    }
+  }
+
+  .media-control--volume {
+    max-width: 120px;
+  }
+
+  .media-control--prev-track {
+    margin-right: 6px;
+  }
+
+  .media-control--next-track {
+    margin-left: 6px;
+  }
+
+  input[type="range"] {
+    // reset inputs to a plain state
+    @include -range__reset(webkit, moz, ms);
+
+    $track-height: 3px;
+    $track-lower-color: #86b350;
+    $track-upper-color: #373d3f;
+
+    $thumb-height: 8px;
+    $thumb-width: 8px;
+    $thumb-color: #cdd7db;
+
+    width: 100%;
+    height: 12px;
+    padding: 0 12px;
+    margin: 0;
+    background-color: transparent;
+
+    &:hover,
+    &:active {
+      @include -range-thumb(webkit, moz, ms) {
+        transform: scale(1.25);
+      }
+    }
+
+    @include -range-track(webkit, moz, ms) {
+      width: 100%;
+      height: $track-height;
+      border: 0;
+      cursor: pointer;
+      background-color: $track-upper-color;
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
+
+    // so we can style the lower progress
+    &::-webkit-slider-container {
+      background-size: inherit;
+    }
+
+    @include -range-track(webkit) {
+      background: {
+        image: linear-gradient($track-lower-color, $track-lower-color);
+        size: inherit;
+        repeat: no-repeat;
+      }
+    }
+
+    @include -range-fill-lower(webkit, moz, ms) {
+      background-color: $track-lower-color;
+    }
+
+    @include -range-thumb(webkit, moz, ms) {
+      width: $thumb-width;
+      height: $thumb-height;
+      border: 0;
+      border-radius: 50%;
+      background-color: $thumb-color;
+      cursor: grab;
+      transform: scale(1);
+      transform-origin: 50% 50%;
+      transition: transform 150ms ease-out;
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
+
+    @include -range-thumb(webkit) {
+      position: relative;
+      top: -2.5px;
+    }
   }
 }
