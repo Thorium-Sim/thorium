@@ -38,3 +38,5 @@ kiosks
 # unecessary CSS files
 client/src/**/*.css
 snapshot-*
+*.provisionprofile
+entitlements.*
