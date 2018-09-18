@@ -101,3 +101,9 @@ App.on(
     pubsub.publish("stationSetUpdate", App.stationSets);
   }
 );
+App.on("setStationTraining", ({ stationSetID, stationName, training }) => {
+  App.stationSets
+    .find(s => s.id === stationSetID)
+    .setTraining(stationName, training);
+  pubsub.publish("stationSetUpdate", App.stationSets);
+});
