@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "1.0.10",
+  "version": "1.1.0-beta",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -26,7 +26,7 @@
     "clean-client": "npm run clean --prefix client",
     "clean-server": "npm run clean --prefix server",
     "clean-build": "npm-run-all --parallel clean-build-main clean-build-client clean-build-server",
-    "clean-build-main": "rm -rf build && rm -rf zip",
+    "clean-build-main": "rm -rf build && rm -rf zip && rm -rf packages",
     "clean-build-client": "npm run clean-build --prefix client",
     "clean-build-server": "npm run clean-build --prefix server",
     "test": "npm-run-all --parallel test-client test-server",
@@ -38,6 +38,7 @@
     "build-js": "npm run build --prefix client",
     "build-server": "npm run build --prefix server",
     "mk-build": "mkdir -p build",
+    "ship": "electron-builder -mwl -p always",
     "copy-files": "npm-run-all --parallel copy-server copy-client copy-package copy-kiosk copy-index",
     "copy-server": "cp -R ./server/build/. build",
     "copy-client": "cp -R ./client/build/. build",
@@ -50,7 +51,7 @@
     "cloc": "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots,coverage,build --exclude-ext=css,json",
     "translate": "babel-node scripts/manageTranslations.js",
     "upload": "node scripts/uploadTos3.js",
-    "deploy": "npm-run-all build zip upload clean-build",
+    "deploy": "npm-run-all build ship clean-build",
     "precommit": "lint-staged",
     "add-contributor": "all-contributors add",
     "generate-contributor": "all-contributors generate",
@@ -65,6 +66,7 @@
     "change-case": "^3.0.2",
     "cors": "^2.8.4",
     "electron-settings": "^3.2.0",
+    "electron-updater": "^3.1.2",
     "express": "^4.16.3",
     "express-status-monitor": "^1.1.5",
     "graphql": "^0.13.2",
@@ -98,6 +100,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "electron": "^2.0.9",
+    "electron-builder": "^20.28.4",
     "electron-packager": "^12.1.2",
     "eslint": "^5.4.0",
     "eslint-config-react-app": "^2.1.0",
@@ -141,6 +144,31 @@
       "sciences.ogg",
       "favicon.ico"
     ]
+  },
+  "main": "./build/index.js",
+  "build": {
+    "appId": "us.fyreworks.thorium",
+    "productName": "Thorium",
+    "asar": false,
+    "directories": {
+      "output": "./packages"
+    },
+    "publish": {
+      "provider": "github"
+    },
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.entertainment",
+      "icon": "./server/icon.icns",
+      "entitlements": "./entitlements.mac.plist",
+      "provisioningProfile": "./Thorium_Distribution.provisionprofile"
+    },
+    "win": {
+      "icon": "./server/icon.ico"
+    }
   },
   "eslintConfig": {
     "extends": "react-app",

@@ -14,7 +14,7 @@ switch (arg) {
     version = semver(version).inc("major").version;
     break;
   case "--minor":
-  case "-M":
+  case "-m":
     version = semver(version).inc("minor").version;
     break;
   default:

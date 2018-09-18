@@ -5,6 +5,8 @@ const {
   Menu,
   ipcMain
 } = require("electron");
+const { autoUpdater } = require("electron-updater");
+
 const path = require("path");
 const url = require("url");
 const loadPage = require("./loadPage");
@@ -56,6 +58,7 @@ module.exports = () => {
     );
   }
   app.on("ready", function() {
+    autoUpdater.checkForUpdatesAndNotify();
     ipcMain.on("loadPage", function(evt, { url, auto }) {
       if (auto) {
         settings.set("autostart", url);
