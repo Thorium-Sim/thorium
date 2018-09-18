@@ -145,6 +145,7 @@ App.on("startFlight", ({ id, name, simulators }) => {
     sim.template = false;
     sim.templateId = s.simulatorId;
     sim.mission = s.missionId;
+    sim.executedTimelineSteps = [];
     const stationSet = App.stationSets.find(ss => ss.id === s.stationSet);
     sim.stations = [...stationSet.stations];
     sim.stationSet = stationSet.id;
@@ -229,6 +230,8 @@ App.on("resetFlight", ({ flightId, simulatorId }) => {
     newSim.templateId = tempId;
     newSim.mission = sim.missionId;
     newSim.stations = sim.stations;
+    newSim.executedTimelineSteps = [];
+
     newSim.stationSet = sim.stationSet;
     viewscreens.forEach(v =>
       App.viewscreens.push(
