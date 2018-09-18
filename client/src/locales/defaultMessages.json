@@ -11,6 +11,15 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "This screen shows a map of the bridge. You can use it to see what each station on the bridge does. Hover your mouse over or tap on a station to see a description on the right side of the screen.",
+        "id": "bridge-map-training-1"
+      }
+    ],
+    "path": "src/components/views/BridgeMap/bridgeMap.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "The computer core is the brains of your ship. Controls for all of the stations on the bridge and throughout the ship are managed by the computer core. It runs a sophisticated operating system which mostly takes care of itself.",
         "id": "computer-core-training-1"
       },
