@@ -91,7 +91,7 @@ class InnerGrid extends Component {
     if (c.speed === 0) {
       return { ...c, destination, position, location };
     }
-    const time = Date.now();
+    const time = Date.now() + window.thorium.clockSync;
     if (c.speed > 100) {
       return {
         ...c,
@@ -115,7 +115,7 @@ class InnerGrid extends Component {
         ((destination.y - location.y) / (endTime - c.startTime)) * currentTime,
       z: 0
     };
-    if (endTime < Date.now()) {
+    if (endTime < time) {
       return {
         ...c,
         destination,

@@ -1,4 +1,11 @@
 {
+  "1.0.12": {
+    "features": ["Add a thrusters adjustment viewscreen card."],
+    "fixes": [
+      "Add clock syncing between the server and the client. This will match sensors and the railgun up a bit more.",
+      "Fixed the layout of the software panels."
+    ]
+  },
   "1.0.11": {
     "features": [
       "Add a Thrusters Lite card that removes the 3d view from the center of the screen.",

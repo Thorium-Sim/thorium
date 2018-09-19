@@ -199,10 +199,7 @@ class SoftwarePanels extends Component {
     const shownPanel = panel || selectedPanel;
     if (loading) return null;
     return (
-      <Container
-        fluid={panel ? false : true}
-        className="softwarePanels-card software-panels"
-      >
+      <Container className="softwarePanels-card software-panels">
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
