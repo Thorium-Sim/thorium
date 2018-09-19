@@ -51,7 +51,8 @@ class Welcome extends Component {
         .then(res => res.json())
         .then(res => {
           if (
-            semver.gt(res[0].name, require("../../../package.json").version)
+            semver.gt(res[0].name, require("../../../package.json").version) &&
+            semver(res[0].name).prerelease.length === 0
           ) {
             this.setState({ outdated: res[0].name });
           }

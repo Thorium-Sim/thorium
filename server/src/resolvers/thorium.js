@@ -25,5 +25,11 @@ export const ThoriumSubscriptions = {
       return rootValue;
     },
     subscribe: () => pubsub.asyncIterator("thoriumUpdate")
+  },
+  clockSync: {
+    resolve() {
+      return new Date();
+    },
+    subscribe: () => pubsub.asyncIterator("clockSync")
   }
 };

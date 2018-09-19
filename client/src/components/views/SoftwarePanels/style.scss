@@ -1,4 +1,8 @@
 .softwarePanels-card {
+  .card {
+    max-width: 960px;
+    align-self: center;
+  }
   p {
     margin: 0;
     padding: 10px;

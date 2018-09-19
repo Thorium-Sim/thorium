@@ -7,6 +7,8 @@ import Client from "../components/client";
 import { FlightDirector } from "./FlightDirector";
 import Config from "./config";
 import Releases from "./FlightDirector/releases";
+import { withApollo } from "react-apollo";
+import gql from "graphql-tag";
 
 const history = createHistory();
 
@@ -27,7 +29,31 @@ class NoMatch extends Component {
   }
 }
 
-export default class App extends Component {
+const CLOCK_SYNC = gql`
+  subscription ClockSync {
+    clockSync
+  }
+`;
+
+class App extends Component {
+  componentDidMount() {
+    this.clockSync = this.props.client
+      .subscribe({
+        query: CLOCK_SYNC
+      })
+      .subscribe({
+        next: ({ loading, data: { clockSync } }) => {
+          // This magic number is the round-trip offset. Could be better, but this works for now.
+          window.thorium.clockSync = new Date(clockSync) - new Date() + 400;
+        },
+        error(err) {
+          console.error("Error resetting cache", err);
+        }
+      });
+  }
+  componentWillUnmount() {
+    this.clockSync && this.clockSync.unsubscribe();
+  }
   render() {
     return (
       <Router history={history}>
@@ -51,3 +77,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default withApollo(App);
