@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 import { DraggableCore } from "react-draggable";
@@ -363,6 +363,7 @@ gamepadLoop(){
     };
   }
   render() {
+    const { viewscreen } = this.props;
     if (this.props.data.loading || !this.props.data.thrusters) return null;
     const gamepad = navigator.getGamepads()[0];
     let thruster = {};
@@ -382,208 +383,221 @@ gamepadLoop(){
     if (!thruster) return <h1>No thruster system</h1>;
     return (
       <div className="cardThrusters">
-        <SubscriptionHelper
-          subscribe={() =>
-            this.props.data.subscribeToMore({
-              document: ROTATION_CHANGE_SUB,
-              variables: {
-                simulatorId: this.props.simulator.id
-              },
-              updateQuery: (previousResult, { subscriptionData }) => {
-                return Object.assign({}, previousResult, {
-                  thrusters: [subscriptionData.data.rotationChange]
-                });
-              }
-            })
-          }
-        />
-        <SubscriptionHelper
-          subscribe={() =>
-            this.props.data.subscribeToMore({
-              document: THRUSTER_SUB,
-              variables: {
-                simulatorId: this.props.simulator.id
-              },
-              updateQuery: (previousResult, { subscriptionData }) => {
-                return Object.assign({}, previousResult, {
-                  thrusters: previousResult.thrusters.map(t => {
-                    const updateT = subscriptionData.data.systemsUpdate.find(
-                      s => s.id === t.id
-                    );
-                    if (updateT) {
-                      return Object.assign({}, t, updateT);
-                    }
-                    return t;
-                  })
-                });
-              }
-            })
-          }
-        />
-        <DamageOverlay message={"Thrusters Offline"} system={thruster} />
-        <Row>
-          <Col className="col-sm-3 draggerContainer direction-drag">
-            <label>Direction</label>
-            <div className="spacer" />
-            <div className="draggerCircle" ref="dirCirc">
-              <DraggableCore
-                onStart={this.onDragHandler("onDragStart", "direction")}
-                onDrag={this.onDragHandler("onDrag", "direction")}
-                onStop={this.onDragHandler("onDragStop", "direction")}
-              >
-                <div
-                  ref="directionDragger"
-                  className="dragger direction alertBack"
-                  style={{
-                    transform: `translate3d(${(this.state.direction.left *
-                      width) /
-                      2}px,${(this.state.direction.top * height) / 2}px,0px)`
-                  }}
-                />
-              </DraggableCore>
-              <span className="label up">Forward</span>
-              <span className="label right">Starboard</span>
-              <span className="label down">Reverse</span>
-              <span className="label left">Port</span>
-            </div>
-            <div className="draggerBar">
-              <DraggableCore
-                axis="x"
-                onStart={this.onDragHandler("onDragStart", "directionUp")}
-                onDrag={this.onDragHandler("onDrag", "directionUp")}
-                onStop={this.onDragHandler("onDragStop", "directionUp")}
-              >
-                <div
-                  ref="foreDragger"
-                  className="dragger fore alertBack"
-                  style={{
-                    transform: `translate3d(${(this.state.directionUp.left *
-                      (width - 40)) /
-                      2}px,0px,0px)`
-                  }}
-                />
-              </DraggableCore>
-              <span className="label right">Up</span>
-              <span className="label left">Down</span>
-            </div>
-          </Col>
-          <Col className="col-sm-6">
-            <Measure
-              bounds
-              onResize={contentRect => {
-                this.setState({ dimensions: contentRect.bounds });
-              }}
-            >
-              {({ measureRef }) => (
-                <div ref={measureRef} style={{ height: "100%" }}>
-                  {this.state.dimensions && (
-                    <ThrusterThree
-                      direction={direction}
-                      simulator={this.props.simulator}
-                      simulatorId={this.props.simulator.id}
-                      dimensions={this.state.dimensions}
-                      rotation={thruster.rotation}
-                    />
-                  )}
-                </div>
+        <div>
+          <SubscriptionHelper
+            subscribe={() =>
+              this.props.data.subscribeToMore({
+                document: ROTATION_CHANGE_SUB,
+                variables: {
+                  simulatorId: this.props.simulator.id
+                },
+                updateQuery: (previousResult, { subscriptionData }) => {
+                  return Object.assign({}, previousResult, {
+                    thrusters: [subscriptionData.data.rotationChange]
+                  });
+                }
+              })
+            }
+          />
+          <SubscriptionHelper
+            subscribe={() =>
+              this.props.data.subscribeToMore({
+                document: THRUSTER_SUB,
+                variables: {
+                  simulatorId: this.props.simulator.id
+                },
+                updateQuery: (previousResult, { subscriptionData }) => {
+                  return Object.assign({}, previousResult, {
+                    thrusters: previousResult.thrusters.map(t => {
+                      const updateT = subscriptionData.data.systemsUpdate.find(
+                        s => s.id === t.id
+                      );
+                      if (updateT) {
+                        return Object.assign({}, t, updateT);
+                      }
+                      return t;
+                    })
+                  });
+                }
+              })
+            }
+          />
+          <DamageOverlay message={"Thrusters Offline"} system={thruster} />
+          <Row>
+            <Col className="col-sm-3 draggerContainer direction-drag">
+              {!viewscreen && (
+                <Fragment>
+                  <label>Direction</label>
+                  <div className="spacer" />
+                  <div className="draggerCircle" ref="dirCirc">
+                    <DraggableCore
+                      onStart={this.onDragHandler("onDragStart", "direction")}
+                      onDrag={this.onDragHandler("onDrag", "direction")}
+                      onStop={this.onDragHandler("onDragStop", "direction")}
+                    >
+                      <div
+                        ref="directionDragger"
+                        className="dragger direction alertBack"
+                        style={{
+                          transform: `translate3d(${(this.state.direction.left *
+                            width) /
+                            2}px,${(this.state.direction.top * height) /
+                            2}px,0px)`
+                        }}
+                      />
+                    </DraggableCore>
+                    <span className="label up">Forward</span>
+                    <span className="label right">Starboard</span>
+                    <span className="label down">Reverse</span>
+                    <span className="label left">Port</span>
+                  </div>
+                  <div className="draggerBar">
+                    <DraggableCore
+                      axis="x"
+                      onStart={this.onDragHandler("onDragStart", "directionUp")}
+                      onDrag={this.onDragHandler("onDrag", "directionUp")}
+                      onStop={this.onDragHandler("onDragStop", "directionUp")}
+                    >
+                      <div
+                        ref="foreDragger"
+                        className="dragger fore alertBack"
+                        style={{
+                          transform: `translate3d(${(this.state.directionUp
+                            .left *
+                            (width - 40)) /
+                            2}px,0px,0px)`
+                        }}
+                      />
+                    </DraggableCore>
+                    <span className="label right">Up</span>
+                    <span className="label left">Down</span>
+                  </div>
+                </Fragment>
               )}
-            </Measure>
-            {gamepad ? (
-              <Row>
-                <Col className="col-sm-6 col-sm-offset-3">
-                  <Button
-                    type="primary"
-                    className="btn-block"
-                    onClick={this.gamepadControl.bind(this)}
-                    label={`${
-                      this.state.control ? "Deactivate" : "Activate"
-                    } Manual Control`}
-                  />
-                </Col>
-              </Row>
-            ) : (
-              <div />
-            )}
-          </Col>
-          <Col className="col-sm-3 draggerContainer rotation-drag">
-            <label>Rotation</label>
-            <div className="spacer" />
-            <div className="draggerCircle">
-              <DraggableCore
-                onStart={this.onDragHandler("onDragStart", "rotation")}
-                onDrag={this.onDragHandler("onDrag", "rotation")}
-                onStop={this.onDragHandler("onDragStop", "rotation")}
+            </Col>
+            <Col className="col-sm-6" style={{ minHeight: "50vh" }}>
+              <Measure
+                bounds
+                onResize={contentRect => {
+                  this.setState({ dimensions: contentRect.bounds });
+                }}
               >
-                <div
-                  ref="rotationDragger"
-                  className="dragger rotation alertBack"
-                  style={{
-                    transform: `translate3d(${(this.state.rotation.left *
-                      width) /
-                      2}px,${(this.state.rotation.top * height) / 2}px,0px)`
-                  }}
-                />
-              </DraggableCore>
-              <span className="label up">Pitch Up</span>
-              <span className="label right">Roll Right</span>
-              <span className="label down">Pitch Down</span>
-              <span className="label left">Roll Left</span>
-            </div>
-            <div className="draggerBar">
-              <DraggableCore
-                axis="x"
-                onStart={this.onDragHandler("onDragStart", "yaw")}
-                onDrag={this.onDragHandler("onDrag", "yaw")}
-                onStop={this.onDragHandler("onDragStop", "yaw")}
-              >
-                <div
-                  ref="yaw"
-                  className="dragger yaw alertBack"
-                  style={{
-                    transform: `translate3d(${(this.state.yaw.left *
-                      (width - 40)) /
-                      2}px,0px,0px)`
-                  }}
-                />
-              </DraggableCore>
-              <span className="label right">Yaw Starboard</span>
-              <span className="label left">Yaw Port</span>
-            </div>
-          </Col>
-        </Row>
-        <Row className="indicatorCircles">
-          {!this.props.data.loading &&
-            thruster.rotation && (
-              <Col lg={{ size: 6, offset: 3 }}>
+                {({ measureRef }) => (
+                  <div ref={measureRef} style={{ height: "100%" }}>
+                    {this.state.dimensions && (
+                      <ThrusterThree
+                        direction={direction}
+                        simulator={this.props.simulator}
+                        simulatorId={this.props.simulator.id}
+                        dimensions={this.state.dimensions}
+                        rotation={thruster.rotation}
+                      />
+                    )}
+                  </div>
+                )}
+              </Measure>
+              {gamepad ? (
                 <Row>
-                  <IndicatorCircle
-                    name={`Yaw: ${Math.min(
-                      359,
-                      Math.max(0, Math.round(thruster.rotation.yaw))
-                    )}`}
-                    required={thruster.rotationRequired.yaw}
-                    current={thruster.rotation.yaw}
-                  />
-                  <IndicatorCircle
-                    name={`Pitch: ${Math.min(
-                      359,
-                      Math.max(0, Math.round(thruster.rotation.pitch))
-                    )}`}
-                    required={thruster.rotationRequired.pitch}
-                    current={thruster.rotation.pitch}
-                  />
-                  <IndicatorCircle
-                    name={`Roll: ${Math.min(
-                      359,
-                      Math.max(0, Math.round(thruster.rotation.roll))
-                    )}`}
-                    required={thruster.rotationRequired.roll}
-                    current={thruster.rotation.roll}
-                  />
+                  <Col className="col-sm-6 col-sm-offset-3">
+                    <Button
+                      type="primary"
+                      className="btn-block"
+                      onClick={this.gamepadControl.bind(this)}
+                      label={`${
+                        this.state.control ? "Deactivate" : "Activate"
+                      } Manual Control`}
+                    />
+                  </Col>
                 </Row>
-              </Col>
-            )}
-        </Row>
+              ) : (
+                <div />
+              )}
+            </Col>
+            <Col className="col-sm-3 draggerContainer rotation-drag">
+              {!viewscreen && (
+                <Fragment>
+                  <label>Rotation</label>
+                  <div className="spacer" />
+                  <div className="draggerCircle">
+                    <DraggableCore
+                      onStart={this.onDragHandler("onDragStart", "rotation")}
+                      onDrag={this.onDragHandler("onDrag", "rotation")}
+                      onStop={this.onDragHandler("onDragStop", "rotation")}
+                    >
+                      <div
+                        ref="rotationDragger"
+                        className="dragger rotation alertBack"
+                        style={{
+                          transform: `translate3d(${(this.state.rotation.left *
+                            width) /
+                            2}px,${(this.state.rotation.top * height) /
+                            2}px,0px)`
+                        }}
+                      />
+                    </DraggableCore>
+                    <span className="label up">Pitch Up</span>
+                    <span className="label right">Roll Right</span>
+                    <span className="label down">Pitch Down</span>
+                    <span className="label left">Roll Left</span>
+                  </div>
+                  <div className="draggerBar">
+                    <DraggableCore
+                      axis="x"
+                      onStart={this.onDragHandler("onDragStart", "yaw")}
+                      onDrag={this.onDragHandler("onDrag", "yaw")}
+                      onStop={this.onDragHandler("onDragStop", "yaw")}
+                    >
+                      <div
+                        ref="yaw"
+                        className="dragger yaw alertBack"
+                        style={{
+                          transform: `translate3d(${(this.state.yaw.left *
+                            (width - 40)) /
+                            2}px,0px,0px)`
+                        }}
+                      />
+                    </DraggableCore>
+                    <span className="label right">Yaw Starboard</span>
+                    <span className="label left">Yaw Port</span>
+                  </div>
+                </Fragment>
+              )}
+            </Col>
+          </Row>
+          <Row className="indicatorCircles">
+            {!this.props.data.loading &&
+              thruster.rotation && (
+                <Col lg={{ size: 6, offset: 3 }}>
+                  <Row>
+                    <IndicatorCircle
+                      name={`Yaw: ${Math.min(
+                        359,
+                        Math.max(0, Math.round(thruster.rotation.yaw))
+                      )}`}
+                      required={thruster.rotationRequired.yaw}
+                      current={thruster.rotation.yaw}
+                    />
+                    <IndicatorCircle
+                      name={`Pitch: ${Math.min(
+                        359,
+                        Math.max(0, Math.round(thruster.rotation.pitch))
+                      )}`}
+                      required={thruster.rotationRequired.pitch}
+                      current={thruster.rotation.pitch}
+                    />
+                    <IndicatorCircle
+                      name={`Roll: ${Math.min(
+                        359,
+                        Math.max(0, Math.round(thruster.rotation.roll))
+                      )}`}
+                      required={thruster.rotationRequired.roll}
+                      current={thruster.rotation.roll}
+                    />
+                  </Row>
+                </Col>
+              )}
+          </Row>
+        </div>
         <Tour steps={trainingSteps} client={this.props.clientObj} />
       </div>
     );
