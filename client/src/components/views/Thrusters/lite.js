@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 import { DraggableCore } from "react-draggable";
-import { Button, Row, Col } from "reactstrap";
+import { Row, Col } from "reactstrap";
 import distance from "helpers/distance";
-import Measure from "react-measure";
 import throttle from "helpers/debounce";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
@@ -363,7 +362,6 @@ gamepadLoop(){
   }
   render() {
     if (this.props.data.loading || !this.props.data.thrusters) return null;
-    const gamepad = navigator.getGamepads()[0];
     let thruster = {};
     if (this.props.data.thrusters) {
       thruster = this.props.data.thrusters[0]; //Only allow one thruster - no need for multiple.
@@ -373,11 +371,6 @@ gamepadLoop(){
       width = this.refs.dirCirc.getBoundingClientRect().width;
       height = this.refs.dirCirc.getBoundingClientRect().height;
     }
-    const direction = {
-      x: this.state.direction.left,
-      y: this.state.direction.top,
-      z: this.state.directionUp.left
-    };
     if (!thruster) return <h1>No thruster system</h1>;
     return (
       <div className="cardThrusters">
