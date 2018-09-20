@@ -121,7 +121,6 @@ class Messaging extends Component {
         if (new Date(a.timestamp) < new Date(b.timestamp)) return 1;
         return 0;
       });
-    console.log(stations);
     return (
       <Container className="messages">
         <SubscriptionHelper
