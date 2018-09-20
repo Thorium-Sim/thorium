@@ -46,24 +46,29 @@ class Alerts extends Component {
           // ... call updateQuery to integrate the new comment
           // into the existing list of comments
           const storedAllowed = localStorage.getItem("allowed_notifications");
+          const storedSpeech = localStorage.getItem("allowed_speech");
           const allowed = storedAllowed ? JSON.parse(storedAllowed) : {};
+          const speech = storedSpeech ? JSON.parse(storedSpeech) : {};
           const alerts = self.state.alerts;
           if (notify && notify.id) {
-            if (allowed[notify.type] === false) return;
-            if (!self.props.disabled) {
-              alerts.push(Object.assign(notify, { visible: true }));
-              self.setState({
-                alerts
-              });
+            if (!allowed[notify.type] === false) {
+              if (!self.props.disabled) {
+                alerts.push(Object.assign(notify, { visible: true }));
+                self.setState({
+                  alerts
+                });
 
-              const duration = notify.duration ? notify.duration : 5000;
-              setTimeout(() => {
-                self.onDismiss(notify.id);
-              }, duration);
+                const duration = notify.duration ? notify.duration : 5000;
+                setTimeout(() => {
+                  self.onDismiss(notify.id);
+                }, duration);
+              }
             }
-            if (self.props.station.name === "Core" && self.props.speech) {
-              synth.cancel();
-              synth.speak(new SpeechSynthesisUtterance(notify.title));
+            if (!speech[notify.type] === false) {
+              if (self.props.station.name === "Core" && self.props.speech) {
+                synth.cancel();
+                synth.speak(new SpeechSynthesisUtterance(notify.title));
+              }
             }
           }
         },
