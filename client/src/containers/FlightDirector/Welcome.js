@@ -46,31 +46,31 @@ class Welcome extends Component {
     issuesOpen: false,
     quote: quotes[Math.floor(Math.random() * quotes.length)]
   };
-  componentDidMount() {
-    if (!process.env.CI) {
-      fetch("https://api.github.com/repos/thorium-sim/thorium/tags")
-        .then(res => res.json())
-        .then(res => {
-          if (
-            semver.gt(res[0].name, require("../../../package.json").version) &&
-            semver(res[0].name).prerelease.length === 0
-          ) {
-            this.setState({ outdated: res[0].name });
-          }
-          if (
-            semver.minor(res[0].name) >
-              semver.minor(require("../../../package.json").version) ||
-            semver.major(res[0].name) >
-              semver.major(require("../../../package.json").version)
-          ) {
-            this.setState({ major: true });
-          }
-        })
-        .catch(() => {
-          //Oh well.
-        });
-    }
-  }
+  // componentDidMount() {
+  //   if (!process.env.CI) {
+  //     fetch("https://api.github.com/repos/thorium-sim/thorium/tags")
+  //       .then(res => res.json())
+  //       .then(res => {
+  //         if (
+  //           semver.gt(res[0].name, require("../../../package.json").version) &&
+  //           semver(res[0].name).prerelease.length === 0
+  //         ) {
+  //           this.setState({ outdated: res[0].name });
+  //         }
+  //         if (
+  //           semver.minor(res[0].name) >
+  //             semver.minor(require("../../../package.json").version) ||
+  //           semver.major(res[0].name) >
+  //             semver.major(require("../../../package.json").version)
+  //         ) {
+  //           this.setState({ major: true });
+  //         }
+  //       })
+  //       .catch(() => {
+  //         //Oh well.
+  //       });
+  //   }
+  // }
   trainingSteps = () => {
     return [
       {

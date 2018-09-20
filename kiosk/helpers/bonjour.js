@@ -1,3 +1,4 @@
+const { ipcMain } = require("electron");
 const bonjour = require("bonjour")();
 
 module.exports = function startBonjour(mainWindow) {
@@ -18,16 +19,8 @@ module.exports = function startBonjour(mainWindow) {
       });
     }
   }
-  function sendUpdate() {
-    if (
-      mainWindow &&
-      mainWindow.webContents &&
-      mainWindow.webContents.getURL().indexOf("client") === -1
-    ) {
-      mainWindow.webContents.send("updateServers", servers);
-    }
-    setTimeout(sendUpdate, 1000);
-  }
-  sendUpdate();
+  ipcMain.on("getServers", function(event) {
+    event.sender.send("updateServers", servers);
+  });
   return browser;
 };

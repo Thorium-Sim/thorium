@@ -23,6 +23,9 @@ window.openBrowser = function openBrowser() {
   ipcRenderer.send("openBrowser");
   return;
 };
+window.getServers = function() {
+  ipcRenderer.send("getServers");
+};
 window.serverAddress = function serverAddress() {
   let url = document
     .getElementById("server-address")

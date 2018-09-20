@@ -9,10 +9,10 @@ module.exports = function loadPage(uri, mainWindow) {
       .replace("/client", "");
     http
       .get(`http://${url}/client`, res => {
-        if (res.statusCode !== "200") {
+        if (res.statusCode !== 200) {
           return reject();
         } else {
-          mainWindow && mainWindow.loadURL(uri);
+          mainWindow && mainWindow.loadURL(`http://${url}/client`);
           triggerWindow(mainWindow);
           return resolve();
         }

@@ -33,8 +33,11 @@ module.exports = () => {
       })
     );
     ipcMain.on("openBrowser", function() {
+      console.log("open in browser");
       var ipaddress = require("../../helpers/ipaddress");
+      console.log(ipaddress);
       var openBrowser = require("react-dev-utils/openBrowser");
+      console.log(`http://${ipaddress.default}:1337`);
       openBrowser(`http://${ipaddress.default}:1337`);
     });
 
@@ -85,6 +88,13 @@ module.exports = () => {
         preload: path.resolve(__dirname + "/../preload.js")
       }
     });
+    mainWindow.on("closed", function() {
+      // Dereference the window object, usually you would store windows
+      // in an array if your app supports multi windows, this is the time
+      // when you should delete the corresponding element.
+      browser && browser.stop();
+      mainWindow = null;
+    });
     mainWindow.loadURL(
       url.format({
         pathname: path.join(__dirname, "../index.html"),
@@ -107,6 +117,12 @@ module.exports = () => {
     }
     const template = templateFunc(mainWindow);
     Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+
+    app.on("window-all-closed", function() {
+      // On OS X it is common for applications and their menu bar
+      // to stay active until the user quits explicitly with Cmd + Q
+      app.quit();
+    });
   });
 };
 

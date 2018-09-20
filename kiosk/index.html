@@ -196,7 +196,7 @@
         <label>
           <input type="checkbox" id="remember-client" /> Auto-connect to server on Open</label>
         <div>
-          <small>Make sure you're server is on before starting the client.</small>
+          <small>Make sure your server is on before starting the client.</small>
         </div>
       </div>
       <p>
@@ -207,6 +207,9 @@
 
     </div>
   </div>
+  <script>
+    setInterval(window.getServers, 1000);
+  </script>
 </body>
 
 </html>
