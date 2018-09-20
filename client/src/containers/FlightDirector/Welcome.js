@@ -36,7 +36,8 @@ const quotes = [
   "We are the ones we have been waiting for.",
   "I am burdened with glorious purpose.",
   "While you live, shine; have no grief at all. Life exists only for a short while and Time demands his due.",
-  "The hardest choices require the strongest wills."
+  "The hardest choices require the strongest wills.",
+  "Like a snowflake in a blizzard..."
 ];
 
 class Welcome extends Component {
