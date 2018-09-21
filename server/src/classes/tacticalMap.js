@@ -97,7 +97,6 @@ class TacticalLayer {
     this.loop = params.loop || false;
     this.playbackSpeed = params.playbackSpeed || 1;
     this.opacity = params.opacity === 0 ? 0 : params.opacity || 1;
-    console.log(params, this);
     this.items = [];
     this.paths = [];
     (params.items || []).forEach(i =>
