@@ -5,7 +5,9 @@ import {
   Row,
   Col,
   ListGroup,
-  ListGroupItem
+  ListGroupItem,
+  Label,
+  Input
 } from "reactstrap";
 import uuid from "uuid";
 import gql from "graphql-tag";
@@ -116,6 +118,26 @@ class App extends Component {
       }
     }
   }
+  importPanel = evt => {
+    if (evt.target.files[0]) {
+      const data = new FormData();
+      Array.from(evt.target.files).forEach((f, index) =>
+        data.append(`files[${index}]`, f)
+      );
+      fetch(
+        `${window.location.protocol}//${window.location.hostname}:${parseInt(
+          window.location.port,
+          10
+        ) + 1}/importSoftwarePanel`,
+        {
+          method: "POST",
+          body: data
+        }
+      ).then(() => {
+        window.location.reload();
+      });
+    }
+  };
   reconcileComponents = () => {
     const topCompNames = ["Light", "PlasmaChannel"];
     const { components, connections, cables } = this.state;
@@ -463,6 +485,23 @@ class App extends Component {
                 Remove Panel
               </Button>
             )}
+            {this.state.selectedPanel && (
+              <Button
+                tag="a"
+                color="warning"
+                block
+                href={`${window.location.protocol}//${
+                  window.location.hostname
+                }:${parseInt(window.location.port, 10) +
+                  1}/exportSoftwarePanel/${this.state.selectedPanel}`}
+              >
+                Export Panel
+              </Button>
+            )}
+            <Label className="btn-block">
+              <div className="btn btn-sm btn-info btn-block">Import Panel</div>
+              <Input hidden type="file" onChange={this.importPanel} />
+            </Label>
           </Col>
           <Col sm={9}>
             {selectedPanel && (

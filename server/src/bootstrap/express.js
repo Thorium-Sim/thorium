@@ -18,8 +18,27 @@ import importLibrary from "../imports/library/import";
 import exportKeyboard from "../imports/keyboards/export";
 import importKeyboard from "../imports/keyboards/import";
 import exportTacticalMap from "../imports/tacticalMaps/export";
-import ImportTacticalMap from "../imports/tacticalMaps/import";
+import importTacticalMap from "../imports/tacticalMaps/import";
+import exportSoftwarePanel from "../imports/softwarePanels/export";
+import importSoftwarePanel from "../imports/softwarePanels/import";
 
+const exports = {
+  exportMission: exportMission,
+  exportSimulator: exportSimulator,
+  exportKeyboard: exportKeyboard,
+  exportTacticalMap: exportTacticalMap,
+  exportLibrary: exportLibrary,
+  exportSoftwarePanel: exportSoftwarePanel
+};
+
+const imports = {
+  importSimulator: importSimulator,
+  importMission: importMission,
+  importKeyboard: importKeyboard,
+  importTacticalMap: importTacticalMap,
+  importAssets: importAssets,
+  importSoftwarePanel: importSoftwarePanel
+};
 export default () => {
   let appDir = "./";
   const upload = multer({
@@ -41,25 +60,31 @@ export default () => {
     res.end(JSON.stringify("success!"));
   });
 
-  server.get("/exportMission/:missionId", (req, res) => {
-    exportMission(req.params.missionId, res);
+  // Dynamic object exports
+  Object.entries(exports).forEach(([key, func]) => {
+    server.get(`/${key}/:id`, (req, res) => {
+      func(req.params.id, res);
+    });
   });
 
-  server.get("/exportSimulator/:simId", (req, res) => {
-    exportSimulator(req.params.simId, res);
-  });
-
-  server.get("/exportKeyboard/:keyboardId", (req, res) => {
-    exportKeyboard(req.params.keyboardId, res);
-  });
-  server.get("/exportTacticalMap/:mapId", (req, res) => {
-    exportTacticalMap(req.params.mapId, res);
-  });
-  server.get("/exportLibrary/:simId", (req, res) => {
-    exportLibrary(req.params.simId, null, res);
-  });
   server.get("/exportLibrary/:simId/:entryId", (req, res) => {
     exportLibrary(req.params.simId, req.params.entryId, res);
+  });
+
+  Object.entries(imports).forEach(([key, func]) => {
+    server.post(`/${key}`, upload.any(), async (req, res) => {
+      if (req.files[0]) {
+        func(req.files[0].path, () => {
+          fs.unlink(req.files[0].path, err => {
+            if (err) {
+              res.end("Error");
+              throw new Error(err);
+            }
+            res.end("Complete");
+          });
+        });
+      }
+    });
   });
   server.post("/importLibrary/:simId", upload.any(), async (req, res) => {
     const { simId } = req.params;
@@ -76,81 +101,6 @@ export default () => {
     }
   });
 
-  server.post("/importSimulator", upload.any(), async (req, res) => {
-    if (req.files[0]) {
-      importSimulator(req.files[0].path, () => {
-        fs.unlink(req.files[0].path, err => {
-          if (err) {
-            res.end("Error");
-            throw new Error(err);
-          }
-          res.end("Complete");
-        });
-      });
-    }
-  });
-
-  server.post("/importMission", upload.any(), async (req, res) => {
-    console.log("Uploading mission...");
-    if (req.files[0]) {
-      console.log("Importing mission...");
-      importMission(req.files[0].path, () => {
-        console.log("Imported. Deleting uploaded file");
-        fs.unlink(req.files[0].path, err => {
-          if (err) {
-            res.end("Error");
-            throw new Error(err);
-          }
-          console.log("Completed importing mission.");
-          res.end("Complete");
-        });
-      });
-    }
-  });
-
-  server.post("/importKeyboard", upload.any(), async (req, res) => {
-    if (req.files[0]) {
-      importKeyboard(req.files[0].path, () => {
-        fs.unlink(req.files[0].path, err => {
-          if (err) {
-            res.end("Error");
-            throw new Error(err);
-          }
-          console.log("Completed importing keyboard.");
-          res.end("Complete");
-        });
-      });
-    }
-  });
-
-  server.post("/importTacticalMap", upload.any(), async (req, res) => {
-    if (req.files[0]) {
-      ImportTacticalMap(req.files[0].path, () => {
-        fs.unlink(req.files[0].path, err => {
-          if (err) {
-            res.end("Error");
-            throw new Error(err);
-          }
-          console.log("Completed importing tactical map.");
-          res.end("Complete");
-        });
-      });
-    }
-  });
-
-  server.post("/importAssets", upload.any(), async (req, res) => {
-    if (req.files[0]) {
-      importAssets(req.files[0].path, () => {
-        fs.unlink(req.files[0].path, err => {
-          if (err) {
-            res.end("Error");
-            throw new Error(err);
-          }
-          res.end("Complete");
-        });
-      });
-    }
-  });
   if (!process.env.NODE_ENV) {
     server.use("/assets/", express.static(path.resolve("./assets")));
 

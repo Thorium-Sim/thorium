@@ -8,8 +8,11 @@ import {
   Button,
   FormGroup,
   Input,
-  Label
+  Label,
+  Col,
+  Row
 } from "reactstrap";
+
 const components = [
   "Alert Condition",
   "Damage Reports",
@@ -48,21 +51,29 @@ class NotificationConfig extends Component {
   constructor(props) {
     super(props);
     const storedAllowed = localStorage.getItem("allowed_notifications");
+    const storedSpeech = localStorage.getItem("allowed_speech");
     const allowed = storedAllowed
       ? JSON.parse(storedAllowed)
       : components.reduce((prev, next) => {
           prev[next] = true;
           return prev;
         }, {});
+    const speech = storedSpeech
+      ? JSON.parse(storedSpeech)
+      : components.reduce((prev, next) => {
+          prev[next] = true;
+          return prev;
+        }, {});
     this.state = {
-      allowed
+      allowed,
+      speech
     };
   }
   render() {
     const { modal, toggle } = this.props;
-    const { allowed } = this.state;
+    const { allowed, speech } = this.state;
     return (
-      <Modal isOpen={modal} toggle={toggle}>
+      <Modal isOpen={modal} toggle={toggle} size="lg">
         <ModalHeader toggle={toggle}>
           <div>Notification Config</div>
           <small>
@@ -71,78 +82,164 @@ class NotificationConfig extends Component {
         </ModalHeader>
 
         <ModalBody>
-          <ButtonGroup>
-            <Button
-              size="sm"
-              color="danger"
-              onClick={() =>
-                this.setState(
-                  state => ({
-                    allowed: components.reduce((prev, next) => {
-                      prev[next] = false;
-                      return prev;
-                    }, {})
-                  }),
-                  () => {
-                    localStorage.setItem(
-                      "allowed_notifications",
-                      JSON.stringify(this.state.allowed)
-                    );
+          <Row>
+            <Col sm={6}>
+              <h3>Text Notifications</h3>
+              <ButtonGroup>
+                <Button
+                  size="sm"
+                  color="danger"
+                  onClick={() =>
+                    this.setState(
+                      state => ({
+                        allowed: components.reduce((prev, next) => {
+                          prev[next] = false;
+                          return prev;
+                        }, {})
+                      }),
+                      () => {
+                        localStorage.setItem(
+                          "allowed_notifications",
+                          JSON.stringify(this.state.allowed)
+                        );
+                      }
+                    )
                   }
-                )
-              }
-            >
-              Uncheck All
-            </Button>
-            <Button
-              size="sm"
-              color="success"
-              onClick={() =>
-                this.setState(
-                  state => ({
-                    allowed: components.reduce((prev, next) => {
-                      prev[next] = true;
-                      return prev;
-                    }, {})
-                  }),
-                  () => {
-                    localStorage.setItem(
-                      "allowed_notifications",
-                      JSON.stringify(this.state.allowed)
-                    );
+                >
+                  Uncheck All
+                </Button>
+                <Button
+                  size="sm"
+                  color="success"
+                  onClick={() =>
+                    this.setState(
+                      state => ({
+                        allowed: components.reduce((prev, next) => {
+                          prev[next] = true;
+                          return prev;
+                        }, {})
+                      }),
+                      () => {
+                        localStorage.setItem(
+                          "allowed_notifications",
+                          JSON.stringify(this.state.allowed)
+                        );
+                      }
+                    )
                   }
-                )
-              }
-            >
-              Check All
-            </Button>
-          </ButtonGroup>
-          <div className="flex-row flex-wrap" style={{ display: "flex" }}>
-            {components.map(c => (
-              <FormGroup key={c} check style={{ width: "50%" }}>
-                <Label check>
-                  <Input
-                    type="checkbox"
-                    checked={allowed[c] || false}
-                    onChange={() =>
-                      this.setState(
-                        state => ({
-                          allowed: { ...state.allowed, [c]: !state.allowed[c] }
-                        }),
-                        () => {
-                          localStorage.setItem(
-                            "allowed_notifications",
-                            JSON.stringify(this.state.allowed)
-                          );
+                >
+                  Check All
+                </Button>
+              </ButtonGroup>
+              <div className="flex-row flex-wrap" style={{ display: "flex" }}>
+                {components.map(c => (
+                  <FormGroup key={c} check style={{ width: "50%" }}>
+                    <Label check>
+                      <Input
+                        type="checkbox"
+                        checked={allowed[c] || false}
+                        onChange={() =>
+                          this.setState(
+                            state => ({
+                              allowed: {
+                                ...state.allowed,
+                                [c]: !state.allowed[c]
+                              }
+                            }),
+                            () => {
+                              localStorage.setItem(
+                                "allowed_notifications",
+                                JSON.stringify(this.state.allowed)
+                              );
+                            }
+                          )
                         }
-                      )
-                    }
-                  />{" "}
-                  {c}
-                </Label>
-              </FormGroup>
-            ))}
-          </div>
+                      />{" "}
+                      {c}
+                    </Label>
+                  </FormGroup>
+                ))}
+              </div>
+            </Col>
+            <Col sm={6}>
+              <h3>Speech Notifications</h3>
+              <ButtonGroup>
+                <Button
+                  size="sm"
+                  color="danger"
+                  onClick={() =>
+                    this.setState(
+                      state => ({
+                        speech: components.reduce((prev, next) => {
+                          prev[next] = false;
+                          return prev;
+                        }, {})
+                      }),
+                      () => {
+                        localStorage.setItem(
+                          "allowed_speech",
+                          JSON.stringify(this.state.speech)
+                        );
+                      }
+                    )
+                  }
+                >
+                  Uncheck All
+                </Button>
+                <Button
+                  size="sm"
+                  color="success"
+                  onClick={() =>
+                    this.setState(
+                      state => ({
+                        speech: components.reduce((prev, next) => {
+                          prev[next] = true;
+                          return prev;
+                        }, {})
+                      }),
+                      () => {
+                        localStorage.setItem(
+                          "allowed_speech",
+                          JSON.stringify(this.state.speech)
+                        );
+                      }
+                    )
+                  }
+                >
+                  Check All
+                </Button>
+              </ButtonGroup>
+              <div className="flex-row flex-wrap" style={{ display: "flex" }}>
+                {components.map(c => (
+                  <FormGroup key={c} check style={{ width: "50%" }}>
+                    <Label check>
+                      <Input
+                        type="checkbox"
+                        checked={speech[c] || false}
+                        onChange={() =>
+                          this.setState(
+                            state => ({
+                              speech: {
+                                ...state.speech,
+                                [c]: !state.speech[c]
+                              }
+                            }),
+                            () => {
+                              localStorage.setItem(
+                                "allowed_speech",
+                                JSON.stringify(this.state.speech)
+                              );
+                            }
+                          )
+                        }
+                      />{" "}
+                      {c}
+                    </Label>
+                  </FormGroup>
+                ))}
+              </div>
+            </Col>
+          </Row>
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={toggle}>

@@ -50,7 +50,6 @@ class HotkeysConfig extends Component {
                   <select
                     value={this.state.allowed[i]}
                     onChange={e => {
-                      console.log(e.target.value);
                       const value = e.target.value;
                       this.setState(
                         state => ({

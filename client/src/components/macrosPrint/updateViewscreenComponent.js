@@ -3,7 +3,6 @@ import { FormGroup } from "reactstrap";
 
 export default ({ args = `{"data":{}}` }) => {
   const data = args.data ? JSON.parse(args.data) : {};
-  console.log(data);
 
   return (
     <FormGroup className="macro-template">

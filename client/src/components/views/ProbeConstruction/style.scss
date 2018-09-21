@@ -1,4 +1,5 @@
 .probe-construction {
+  height: 100%;
   .probe-container {
     height: 40vh;
     position: relative;
@@ -43,7 +44,6 @@
       }
     }
   }
-  .probeAction,
   .probeDescription {
     position: absolute;
     width: 100%;
@@ -98,10 +98,11 @@
 }
 
 .probe-name {
+  flex: 1;
   .grid {
     height: 100%;
     width: 100%;
-    position: absolute;
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
