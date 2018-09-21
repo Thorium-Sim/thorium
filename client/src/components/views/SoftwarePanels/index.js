@@ -39,31 +39,33 @@ const SUB = gql`
 `;
 class SoftwarePanels extends Component {
   subscription = null;
-  state = {};
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!nextProps.data.loading && nextProps.data.softwarePanels) {
-      const shownPanel = this.props.panel || this.state.selectedPanel;
-      if (shownPanel) {
-        const panel = nextProps.data.softwarePanels.find(
-          s => s.id === shownPanel
-        );
-        if (panel) {
-          this.setState(
-            {
-              components: panel.components,
-              connections: panel.connections,
-              cables: panel.cables
-            },
-            () => this.reconcileComponents()
-          );
-        }
-      }
+  state = { selectedPanel: this.props.panel };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.selectedPanel !== this.state.selectedPanel ||
+      (prevProps.data.loading &&
+        !this.props.data.loading &&
+        this.props.data.softwarePanels)
+    ) {
+      this.refreshPanel();
     }
   }
-
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
+  refreshPanel = () => {
+    const panel = this.props.data.softwarePanels.find(
+      s => s.id === this.state.selectedPanel
+    );
+    if (panel) {
+      this.setState(
+        {
+          components: panel.components,
+          connections: panel.connections,
+          cables: panel.cables
+        },
+        () => this.reconcileComponents()
+      );
+    }
+  };
   reconcileComponents = () => {
     const topCompNames = ["Light", "PlasmaChannel"];
     const { components, connections, cables } = this.state;
@@ -208,6 +210,9 @@ class SoftwarePanels extends Component {
                 simulatorId: this.props.simulator.id
               },
               updateQuery: (previousResult, { subscriptionData }) => {
+                setTimeout(() => {
+                  this.refreshPanel();
+                }, 0);
                 return Object.assign({}, previousResult, {
                   softwarePanels: subscriptionData.data.softwarePanelsUpdate
                 });
