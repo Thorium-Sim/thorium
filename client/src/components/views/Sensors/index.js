@@ -196,7 +196,6 @@ class Sensors extends Component {
     });
   };
   clickContact = action => (e, contact, selectContact) => {
-    console.log(e, contact, selectContact);
     e.preventDefault();
     e.stopPropagation();
     selectContact(contact);
