@@ -14,7 +14,6 @@ export default class TorpedoTube extends Transitioner {
       enabled,
       targeting
     } = this.props;
-    console.log(torpedoType);
     return (
       <div style={{ position: "absolute", width: "100%", height: "100%" }}>
         <div className="torpedoButton">
