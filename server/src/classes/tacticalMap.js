@@ -35,7 +35,7 @@ class TacticalItem {
     this.velocity = params.velocity || { x: 0, y: 0, z: 0 };
     this.location = params.location || { x: 0, y: 0, z: 0 };
     this.destination = params.destination || { x: 0, y: 0, z: 0 };
-    this.opacity = params.opacity || 1;
+    this.opacity = params.opacity === 0 ? 0 : params.opacity || 1;
     this.rotation = params.rotation || 0;
     this.wasd = params.wasd || false;
     this.ijkl = params.ijkl || false;
@@ -96,7 +96,8 @@ class TacticalLayer {
     this.autoplay = params.autoplay || true;
     this.loop = params.loop || false;
     this.playbackSpeed = params.playbackSpeed || 1;
-    this.opacity = params.opacity || 1;
+    this.opacity = params.opacity === 0 ? 0 : params.opacity || 1;
+    console.log(params, this);
     this.items = [];
     this.paths = [];
     (params.items || []).forEach(i =>

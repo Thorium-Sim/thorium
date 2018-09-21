@@ -1,4 +1,9 @@
 {
+  "1.0.13": {
+    "fixes": [
+      "Fixes an issue with tactical map icons not being totally transparent when loaded."
+    ]
+  },
   "1.0.12": {
     "features": ["Add a thrusters adjustment viewscreen card."],
     "fixes": [
