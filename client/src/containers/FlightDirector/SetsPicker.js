@@ -89,16 +89,24 @@ class SetsPicker extends Component {
                 <h5>
                   {s.name} - {s.stationSet && s.stationSet.name}
                 </h5>
-                <Card>
-                  {sets.map(set => (
-                    <li
-                      className="list-group-item"
-                      onClick={() => this.applyClientSet(set, s, flight)}
-                      key={`${s.id}-${set.id}}`}
-                    >
-                      {set.name}
-                    </li>
-                  ))}
+                <Card style={{ maxHeight: "10vh", overflowY: "auto" }}>
+                  {sets
+                    .filter(se =>
+                      se.clients.find(
+                        c =>
+                          c.simulatorId === s.simulatorId &&
+                          c.stationSet.id === s.stationSet.id
+                      )
+                    )
+                    .map(set => (
+                      <li
+                        className="list-group-item"
+                        onClick={() => this.applyClientSet(set, s, flight)}
+                        key={`${s.id}-${set.id}}`}
+                      >
+                        {set.name}
+                      </li>
+                    ))}
                 </Card>
               </Col>
             ))}

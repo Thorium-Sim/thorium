@@ -50,16 +50,28 @@ class NavigationCore extends Component {
     super(props);
     this.subscription = null;
     this.state = {
-      calculatedCourse: {}
+      calculatedCourse: null
     };
   }
   componentDidUpdate(prevProps) {
-    if (!this.props.data.loading && prevProps.data.loading) {
+    if (!this.props.data.loading) {
       const navigation = this.props.data.navigation[0];
-      if (navigation) {
-        this.setState({
+      if (!this.state.calculatedCourse && navigation) {
+        return this.setState({
           calculatedCourse: navigation.calculatedCourse
         });
+      }
+      const oldNavigation = prevProps.data.navigation[0];
+      if (navigation && oldNavigation) {
+        if (
+          navigation.calculatedCourse.x !== oldNavigation.calculatedCourse.x ||
+          navigation.calculatedCourse.y !== oldNavigation.calculatedCourse.y ||
+          navigation.calculatedCourse.z !== oldNavigation.calculatedCourse.z
+        ) {
+          this.setState({
+            calculatedCourse: navigation.calculatedCourse
+          });
+        }
       }
     }
   }
@@ -153,6 +165,7 @@ class NavigationCore extends Component {
     if (this.props.data.loading || !this.props.data.navigation) return null;
     const navigation = this.props.data.navigation[0];
     if (!navigation) return <p>No Navigation Systems</p>;
+    const calculatedCourse = this.state.calculatedCourse || {};
     return (
       <Container className="docking-core">
         <SubscriptionHelper
@@ -205,7 +218,7 @@ class NavigationCore extends Component {
             <TypingField
               input
               controlled
-              value={this.state.calculatedCourse.x}
+              value={calculatedCourse.x}
               onChange={evt =>
                 this.setState({
                   calculatedCourse: Object.assign(
@@ -256,7 +269,7 @@ class NavigationCore extends Component {
             <TypingField
               input
               controlled
-              value={this.state.calculatedCourse.y}
+              value={calculatedCourse.y}
               onChange={evt =>
                 this.setState({
                   calculatedCourse: Object.assign(
@@ -292,7 +305,7 @@ class NavigationCore extends Component {
             <TypingField
               input
               controlled
-              value={this.state.calculatedCourse.z}
+              value={calculatedCourse.z}
               onChange={evt =>
                 this.setState({
                   calculatedCourse: Object.assign(
