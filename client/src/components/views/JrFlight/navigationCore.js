@@ -38,9 +38,6 @@ class NavigationCore extends Component {
       }
     }
   }
-  componentWillUnmount() {
-    this.subscription && this.subscription();
-  }
   sendDestinations = () => {
     const navigation = this.props.data.navigation[0];
     const mutation = gql`
