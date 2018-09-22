@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "1.1.0-beta3",
+  "version": "1.1.0-beta4",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -38,7 +38,7 @@
     "build-js": "npm run build --prefix client",
     "build-server": "npm run build --prefix server",
     "mk-build": "mkdir -p build",
-    "bundle": "npm run copy-files && electron-builder -l",
+    "bundle": "npm run copy-files && electron-builder -mwl",
     "ship": "electron-builder -mwl -p always",
     "copy-files": "npm-run-all --parallel copy-server copy-client copy-package copy-kiosk copy-index",
     "copy-server": "cp -R ./server/build/. build",

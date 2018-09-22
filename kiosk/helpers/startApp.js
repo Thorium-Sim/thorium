@@ -1,9 +1,4 @@
-const {
-  app,
-  globalShortcut,
-  BrowserWindow,
-  ipcMain
-} = require("electron");
+const { app, globalShortcut, BrowserWindow, ipcMain } = require("electron");
 const { autoUpdater } = require("electron-updater");
 
 const path = require("path");
@@ -12,8 +7,8 @@ const loadPage = require("./loadPage");
 const startBonjour = require("./bonjour");
 const settings = require("electron-settings");
 const bootstrap = require("../../bootstrap").default;
-const {setMenubar} = require("./setMenubar");
-const hotkeys = require('./hotkeys');
+const { setMenubar } = require("./setMenubar");
+const hotkeys = require("./hotkeys");
 let mainWindow;
 let browser;
 
@@ -33,7 +28,7 @@ module.exports = () => {
     );
     ipcMain.on("openBrowser", function() {
       console.log("open in browser");
-      var ipaddress = require("./helpers/ipaddress");
+      var ipaddress = require("./ipaddress");
       var openBrowser = require("react-dev-utils/openBrowser");
       console.log(`http://${ipaddress}:1337`);
       openBrowser(`http://${ipaddress}:1337`);
