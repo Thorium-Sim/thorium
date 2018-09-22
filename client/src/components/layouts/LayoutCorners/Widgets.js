@@ -209,7 +209,7 @@ export class Widget extends Component {
             {({ measureRef }) => (
               <div
                 ref={measureRef}
-                className={`modal-themed widget-body widget-${widget.size} ${
+                className={`widget-body widget-${widget.size} ${
                   this.state.modal ? "open" : ""
                 }`}
                 style={{

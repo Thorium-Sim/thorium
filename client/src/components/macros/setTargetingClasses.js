@@ -17,7 +17,6 @@ const SetTargetingClasses = ({ updateArgs = () => {}, args = {} }) => {
           updateArgs("classInput", args.classInput.filter(c => c.id !== id))
         }
         updateClass={(id, key, value) => {
-          console.log(id, key);
           updateArgs(
             "classInput",
             args.classInput.map(c => {
