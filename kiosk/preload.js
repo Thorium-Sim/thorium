@@ -1,6 +1,6 @@
 const ipcRenderer = require("electron").ipcRenderer;
 const webFrame = require("electron").webFrame;
-const ipAddress = require("../helpers/ipAddress").default;
+const ipAddress = require("./helpers/ipaddress");
 
 webFrame.setVisualZoomLevelLimits(1, 1);
 webFrame.setLayoutZoomLevelLimits(0, 0);

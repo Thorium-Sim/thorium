@@ -2,7 +2,6 @@ const {
   app,
   globalShortcut,
   BrowserWindow,
-  Menu,
   ipcMain
 } = require("electron");
 const { autoUpdater } = require("electron-updater");
@@ -13,8 +12,8 @@ const loadPage = require("./loadPage");
 const startBonjour = require("./bonjour");
 const settings = require("electron-settings");
 const bootstrap = require("../../bootstrap").default;
-const templateFunc = require("./menuTemplate");
-
+const {setMenubar} = require("./setMenubar");
+const hotkeys = require('./hotkeys');
 let mainWindow;
 let browser;
 
@@ -34,20 +33,13 @@ module.exports = () => {
     );
     ipcMain.on("openBrowser", function() {
       console.log("open in browser");
-      var ipaddress = require("../../helpers/ipaddress");
-      console.log(ipaddress);
+      var ipaddress = require("./helpers/ipaddress");
       var openBrowser = require("react-dev-utils/openBrowser");
-      console.log(`http://${ipaddress.default}:1337`);
-      openBrowser(`http://${ipaddress.default}:1337`);
+      console.log(`http://${ipaddress}:1337`);
+      openBrowser(`http://${ipaddress}:1337`);
     });
+    hotkeys(mainWindow);
 
-    globalShortcut.register("CommandOrControl+R", function() {
-      mainWindow.reload();
-    });
-
-    globalShortcut.register("CommandOrControl+Alt+I", function() {
-      mainWindow.webContents.openDevTools();
-    });
     // Capture console messages
     const old_console_log = global.console.log;
     global.console.log = function log() {
@@ -115,9 +107,7 @@ module.exports = () => {
     } else {
       browser = startBonjour(mainWindow);
     }
-    const template = templateFunc(mainWindow);
-    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
-
+    setMenubar(mainWindow);
     app.on("window-all-closed", function() {
       // On OS X it is common for applications and their menu bar
       // to stay active until the user quits explicitly with Cmd + Q
