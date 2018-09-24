@@ -3,7 +3,8 @@
     "fixes": [
       "Fixes an issue with tactical map icons not being totally transparent when loaded.",
       "Fixes an issue where sending a course through mission presets doesn't send the course.",
-      "Set's station names are now properly renamed when a station is renamed."
+      "Set's station names are now properly renamed when a station is renamed.",
+      "Fixes saving inventory in certain circumstances."
     ]
   },
   "1.0.12": {
