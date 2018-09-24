@@ -1,6 +1,6 @@
 import uuid from "uuid";
 import App from "../app";
-import { randomFromList } from "./generic/damageReports/constants";
+import { randomFromList, partsList } from "./generic/damageReports/constants";
 
 export default class Exocomp {
   constructor(params) {
@@ -38,13 +38,26 @@ export default class Exocomp {
             randomFromList(
               App.systems
                 .filter(s => s.simulatorId === simulator.id)
-                .map(s => s.displayName || s.name)
+                .map(s => s.id)
             )
+        },
+        parts: {
+          input: () => {},
+          value: () =>
+            Array(Math.round(Math.random() * 3 + 1))
+              .fill(0)
+              .map(() => randomFromList(partsList))
         }
       },
-      verify({ simulator }) {
-        // TODO: Figure out a way to verify that the exocomp was deployed properly
-        return false;
+      verify({ simulator, requiredValues }) {
+        const exocomps = App.exocomps.filter(s => s.id === simulator.id);
+        return exocomps.find(e => {
+          if (e.destination !== requiredValues.destination) return false;
+          // Figuring out parts is hard, especially when a system needs to have multiple parts
+          // provided. There probably needs to be a property added to the system to collect parts.
+          //if (requiredValues.filter(v => ).length > 0) return false;
+          return true;
+        });
       }
     }
   ];

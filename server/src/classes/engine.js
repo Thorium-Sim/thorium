@@ -2,6 +2,7 @@ import App from "../app";
 import { System } from "./generic";
 import HeatMixin from "./generic/heatMixin";
 import { pubsub } from "../helpers/subscriptionManager.js";
+import { randomFromList } from "./generic/damageReports/constants";
 
 export default class Engine extends HeatMixin(System) {
   constructor(params = {}) {
@@ -62,6 +63,48 @@ export default class Engine extends HeatMixin(System) {
             s.type === "Engine" &&
             s.on === true
         );
+      }
+    },
+    {
+      name: "Cool Engine",
+      active({ simulator, stations }) {
+        const systems = App.systems.find(
+          s => s.simulatorId === simulator.id && s.type === "Engine"
+        );
+        return (
+          stations.find(s =>
+            s.cards.find(c => c.component === "EngineControl")
+          ) &&
+          systems.length > 0 &&
+          systems.filter(s => s.heat > 0.75).length > 0
+        );
+      },
+      values: {
+        engine: {
+          input: ({ simulator }) =>
+            simulator
+              ? App.systems
+                  .filter(
+                    s => s.simulatorId === simulator.id && s.type === "Engine"
+                  )
+                  .map(s => ({ key: s.id, label: s.displayName || s.name }))
+              : "text",
+          value: ({ simulator }) =>
+            randomFromList(
+              App.systems
+                .filter(
+                  s =>
+                    s.simulatorId === simulator.id &&
+                    s.type === "Engine" &&
+                    s.heat > 0.75
+                )
+                .map(s => s.id)
+            )
+        }
+      },
+      verify({ simulator, requiredValues }) {
+        const engine = App.systems.find(s => s.id === requiredValues.engine);
+        return engine.heat <= 0.1;
       }
     }
   ];
