@@ -77,6 +77,8 @@ import RnDReports from "./DamageControl/rnd";
 import Railgun from "./Railgun";
 import RailgunLoading from "./Railgun/loadingCard";
 import JumpDrive from "./JumpDrive";
+import BridgeMap from "./BridgeMap";
+import ThrustersLite from "./Thrusters/lite";
 
 // Cores
 import EngineControlCore from "./EngineControl/core";
@@ -139,6 +141,7 @@ import RailgunCore from "./Railgun/core";
 import HypercardCore from "./Clients/hypercardCore";
 import ClientsCore from "./Clients/core";
 import JumpDriveCore from "./JumpDrive/core";
+import BridgeMapCore from "./BridgeMap/core";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -224,7 +227,9 @@ const Views = {
   RnDReports,
   Railgun,
   RailgunLoading,
-  JumpDrive
+  JumpDrive,
+  BridgeMap,
+  ThrustersLite
 };
 
 export const Widgets = {
@@ -354,7 +359,8 @@ export const Cores = {
   LoginNameCore,
   HypercardCore,
   JumpDriveCore,
-  ClientsCore
+  ClientsCore,
+  BridgeMapCore
 };
 
 export default Views;

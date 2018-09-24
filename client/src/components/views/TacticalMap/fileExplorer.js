@@ -357,7 +357,7 @@ const AssetObject = ({ object, removeObject }) => {
       </div>
     );
   }
-  if (["mov", "mp4", "ogv", "m4v"].indexOf(ext) > -1) {
+  if (["mov", "mp4", "ogv", "webm", "m4v"].indexOf(ext) > -1) {
     return (
       <div>
         <VideoPreview src={object.url} />

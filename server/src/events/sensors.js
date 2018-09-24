@@ -100,11 +100,15 @@ App.on(
       App.systems.filter(s => s.type === "Sensors")
     );
     const stations = simulator.stations.filter(s =>
-      s.cards.find(c => c.component === "Sensors")
+      s.cards.find(
+        c => c.component === "Sensors" || c.component === "JrSensors"
+      )
     );
     stations.forEach(s => {
       if (flash) {
-        const cardName = s.cards.find(c => c.component === "Sensors").name;
+        const cardName = s.cards.find(
+          c => c.component === "Sensors" || c.component === "JrSensors"
+        ).name;
         App.handleEvent(
           {
             action: "changeCard",

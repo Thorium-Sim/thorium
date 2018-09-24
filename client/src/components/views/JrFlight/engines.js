@@ -86,8 +86,8 @@ class EngineControl extends Component {
     }
   }
   componentWillUnmount() {
-    this.setSpeedSubscription();
-    this.systemSub();
+    this.setSpeedSubscription && this.setSpeedSubscription();
+    this.systemSub && this.systemSub();
   }
   mouseDown = () => {
     document.addEventListener("mouseup", this.mouseUp);

@@ -1,16 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import {
-  Container,
-  Button,
-  Input,
-  Row,
-  Col,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter
-} from "reactstrap";
+import { Container, Button, Input, Row, Col } from "reactstrap";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { graphql, withApollo } from "react-apollo";
@@ -99,7 +89,7 @@ const ProbeSelector = ({
               className={`probe-holder`}
               style={{
                 transform: launching
-                  ? ``
+                  ? `translate(20%,30%)`
                   : selected
                     ? `translate(30%, 60%)`
                     : `translateX(${(i * 80) / arr.length - 35}%)`
@@ -148,15 +138,23 @@ class ProbeAction extends Transitioner {
       selectedProbeType,
       selectProbe,
       cancelProbe,
-      toggle,
-      probes
+      probes,
+      equipment,
+      launchProbe
     } = this.props;
     return (
-      <Row className="probeAction">
-        <Col sm={{ size: 4, offset: 4 }}>
-          <Button block color="success" onClick={toggle}>
-            {probes.torpedo ? "Load" : "Launch"} Probe
-          </Button>
+      <Col sm={{ size: 4 }} className="flex-column probeAction">
+        <ProbeName
+          probes={probes}
+          network={probes.probes
+            .filter(p =>
+              p.equipment.find(e => e.id === "probe-network-package")
+            )
+            .map(p => parseInt(p.name, 10))}
+          equipment={equipment}
+          launchProbe={launchProbe}
+        />
+        <div>
           <Button
             block
             color="warning"
@@ -167,8 +165,8 @@ class ProbeAction extends Transitioner {
           <Button block color="danger" onClick={cancelProbe}>
             Cancel Probe
           </Button>
-        </Col>
-      </Row>
+        </div>
+      </Col>
     );
   }
 }
@@ -178,23 +176,14 @@ class ProbeName extends Component {
     name: ""
   };
   render() {
-    const {
-      modal,
-      toggle,
-      probes,
-      launchProbe,
-      equipment,
-      network
-    } = this.props;
+    const { probes, launchProbe, equipment, network } = this.props;
     const { name } = this.state;
     return (
-      <Modal className="modal-themed probe-name" isOpen={modal} toggle={toggle}>
+      <div className="probe-name">
         {equipment.find(e => e.id === "probe-network-package") ? (
           <div>
-            <ModalHeader toggle={toggle}>
-              Please select a destination for the probe
-            </ModalHeader>
-            <ModalBody>
+            <h2>Please select a destination for the probe</h2>
+            <div>
               <Measure
                 bounds
                 onResize={contentRect => {
@@ -275,40 +264,29 @@ class ProbeName extends Component {
                   </div>
                 )}
               </Measure>
-            </ModalBody>
+            </div>
           </div>
         ) : (
           <div>
-            <ModalHeader toggle={toggle}>
-              Please enter a name for the probe
-            </ModalHeader>
-            <ModalBody>
+            <h2>Please enter a name for the probe</h2>
+            <div>
               <Input
                 type="text"
                 value={name}
                 onChange={e => this.setState({ name: e.target.value })}
               />
-            </ModalBody>
-          </div>
-        )}
-        <ModalFooter>
-          <Col sm="3">
-            <Button block color="danger" onClick={toggle}>
-              Cancel
-            </Button>
-          </Col>
-          <Col sm="5">
+            </div>
             <Button
               block
               disabled={!name}
               color="primary"
-              onClick={launchProbe.bind(this, this.state.name)}
+              onClick={() => launchProbe(this.state.name)}
             >
               {probes.torpedo ? "Load" : "Launch"} Probe
             </Button>
-          </Col>
-        </ModalFooter>
-      </Modal>
+          </div>
+        )}
+      </div>
     );
   }
 }
@@ -363,11 +341,6 @@ class ProbeConstruction extends Component {
     modal: false
   };
 
-  toggle = () => {
-    this.setState({
-      modal: !this.state.modal
-    });
-  };
   selectProbe(id) {
     this.setState({
       selectedProbeType: id,
@@ -511,25 +484,11 @@ class ProbeConstruction extends Component {
                 prepareProbe={this.prepareProbe.bind(this)}
                 selectProbe={this.selectProbe.bind(this)}
                 equipment={this.state.equipment}
-                toggle={this.toggle.bind(this)}
+                launchProbe={this.launchProbe}
                 probes={probes}
               />
             );
           })}
-        {this.state.modal && (
-          <ProbeName
-            probes={probes}
-            network={probes.probes
-              .filter(p =>
-                p.equipment.find(e => e.id === "probe-network-package")
-              )
-              .map(p => parseInt(p.name, 10))}
-            modal={this.state.modal}
-            toggle={() => this.toggle()}
-            equipment={this.state.equipment}
-            launchProbe={this.launchProbe}
-          />
-        )}
         <Tour steps={this.trainingSteps()} client={this.props.clientObj} />
       </Container>
     );

@@ -1,8 +1,11 @@
 import React from "react";
-import { Input, Container, Row, Col } from "reactstrap";
+import { Input, Container, Row, Col, Label } from "reactstrap";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
 import ops from "./ops";
 import FontAwesome from "react-fontawesome";
 import Views, { Widgets } from "components/views/index";
+import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import ExtraMessageGroups from "./messageGroups";
 import { titleCase } from "change-case";
 const viewList = Object.keys(Views)
@@ -154,6 +157,47 @@ const ConfigStation = props => {
                 <th />
               </tr>
             </thead>
+            <tbody>
+              <tr>
+                <th colSpan="3">
+                  <Label>
+                    Description
+                    <Mutation
+                      mutation={gql`
+                        mutation SetDescription(
+                          $stationSetID: ID!
+                          $stationName: String!
+                          $description: String!
+                        ) {
+                          setStationDescription(
+                            stationSetID: $stationSetID
+                            stationName: $stationName
+                            description: $description
+                          )
+                        }
+                      `}
+                    >
+                      {action => (
+                        <Input
+                          key={station.name}
+                          type="textarea"
+                          defaultValue={station.description}
+                          onBlur={e =>
+                            action({
+                              variables: {
+                                stationSetID: selectedStationSet,
+                                stationName: station.name,
+                                description: e.target.value
+                              }
+                            })
+                          }
+                        />
+                      )}
+                    </Mutation>
+                  </Label>
+                </th>
+              </tr>
+            </tbody>
             <thead>
               <tr>
                 <th>Name</th>
@@ -220,7 +264,7 @@ const ConfigStation = props => {
             <option value="nothing">Please Select A Card</option>
             {viewList.map(e => (
               <option key={`card-select-${e}`} value={e}>
-                {`${inSim(e) && "✅ "}${e}`}
+                {`${inSim(e) ? "✅ " : ""}${e}`}
               </option>
             ))}
             <option disabled>-----------</option>
@@ -267,6 +311,38 @@ const ConfigStation = props => {
               </Col>
             ))}
           </Row>
+          <label>Training:</label>
+          <Mutation
+            mutation={gql`
+              mutation SetTraining(
+                $stationSetID: ID!
+                $stationName: String!
+                $training: String!
+              ) {
+                setStationTraining(
+                  stationSetID: $stationSetID
+                  stationName: $stationName
+                  training: $training
+                )
+              }
+            `}
+          >
+            {action => (
+              <FileExplorer
+                directory="/Training"
+                selectedFiles={[station.training]}
+                onClick={(evt, container) =>
+                  action({
+                    variables: {
+                      stationSetID: selectedStationSet,
+                      stationName: station.name,
+                      training: container.fullPath
+                    }
+                  })
+                }
+              />
+            )}
+          </Mutation>
         </div>
       </div>
     </Container>

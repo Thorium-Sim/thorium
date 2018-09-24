@@ -5,6 +5,7 @@ import ActionsMixin from "../generic/Actions";
 import Alerts from "../generic/Alerts";
 import SoundPlayer from "./soundPlayer";
 import Reset from "./reset";
+import TrainingPlayer from "helpers/trainingPlayer";
 
 const Blackout = () => {
   return (
@@ -119,30 +120,6 @@ export default class CardFrame extends Component {
       };
     }
   }
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   // Check everything
-  //   console.log("Updating");
-  //   if (this.props.test) return true;
-  //   if (
-  //     nextProps.client.id !== this.props.client.id ||
-  //     nextProps.client.loginName !== this.props.client.loginName ||
-  //     nextProps.client.loginState !== this.props.client.loginState ||
-  //     nextProps.client.offlineState !== this.props.client.offlineState ||
-  //     nextProps.client.training !== this.props.client.training ||
-  //     nextProps.client.hypercard !== this.props.client.hypercard ||
-  //     nextProps.flight.id !== this.props.flight.id ||
-  //     nextProps.simulator.id !== this.props.simulator.id ||
-  //     nextProps.simulator.name !== this.props.simulator.name ||
-  //     nextProps.simulator.alertlevel !== this.props.simulator.alertlevel ||
-  //     nextProps.simulator.layout !== this.props.simulator.layout ||
-  //     nextProps.station.name !== this.props.station.name ||
-  //     nextProps.station.login !== this.props.station.login ||
-  //     nextState.card !== this.state.card
-  //   ) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
   componentDidUpdate(prevProps) {
     if (prevProps.station.name !== this.props.station.name) {
       this.setState({
@@ -158,12 +135,21 @@ export default class CardFrame extends Component {
     });
   };
   render() {
+    const {
+      station: { training: stationTraining },
+      simulator: { training: simTraining },
+      client
+    } = this.props;
     return (
       <ActionsMixin {...this.props} changeCard={this.changeCard}>
         <CardRenderer
           {...this.props}
           card={this.state.card}
           changeCard={this.changeCard}
+          client={{
+            ...client,
+            training: simTraining && stationTraining ? false : client.training
+          }}
         />
         {this.props.client && (
           <Reset
@@ -174,6 +160,10 @@ export default class CardFrame extends Component {
             }
           />
         )}
+        {simTraining &&
+          stationTraining && (
+            <TrainingPlayer src={`/assets${stationTraining}`} />
+          )}
         <Alerts
           key={`alerts-${
             this.props.simulator ? this.props.simulator.id : "simulator"

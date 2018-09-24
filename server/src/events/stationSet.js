@@ -31,7 +31,21 @@ App.on(
   "editStationInStationSet",
   ({ stationSetID, stationName, newStationName }) => {
     const stationSet = App.stationSets.find(ss => ss.id === stationSetID);
+
     stationSet.renameStation(stationName, newStationName);
+    console.log("station renamed");
+    // Update any sets as well.
+    App.sets = App.sets.map(s => {
+      return {
+        ...s,
+        clients: s.clients.map(c => {
+          if (c.stationSet === stationSet.id && c.station === stationName) {
+            return { ...c, station: newStationName };
+          }
+          return c;
+        })
+      };
+    });
     pubsub.publish("stationSetUpdate", App.stationSets);
   }
 );
@@ -92,3 +106,18 @@ App.on(
     pubsub.publish("stationSetUpdate", App.stationSets);
   }
 );
+App.on(
+  "setStationDescription",
+  ({ stationSetID, stationName, description }) => {
+    App.stationSets
+      .find(s => s.id === stationSetID)
+      .setDescription(stationName, description);
+    pubsub.publish("stationSetUpdate", App.stationSets);
+  }
+);
+App.on("setStationTraining", ({ stationSetID, stationName, training }) => {
+  App.stationSets
+    .find(s => s.id === stationSetID)
+    .setTraining(stationName, training);
+  pubsub.publish("stationSetUpdate", App.stationSets);
+});

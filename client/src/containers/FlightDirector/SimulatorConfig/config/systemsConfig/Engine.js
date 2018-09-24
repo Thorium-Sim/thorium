@@ -73,11 +73,13 @@ const Speed = ({ index, speed, speeds, action, id }) => {
             type="text"
             value={speed.text}
             onChange={evt => {
-              const newSpeeds = speeds.map(({ text, number }, i) => {
-                const obj = { text, number };
-                if (index === i) obj.text = evt.target.value;
-                return obj;
-              });
+              const newSpeeds = speeds.map(
+                ({ text, number, velocity, optimal }, i) => {
+                  const obj = { text, number, velocity, optimal };
+                  if (index === i) obj.text = evt.target.value;
+                  return obj;
+                }
+              );
               action({
                 variables: { id, speeds: newSpeeds }
               });
@@ -90,11 +92,13 @@ const Speed = ({ index, speed, speeds, action, id }) => {
             type="number"
             value={speed.number}
             onChange={evt => {
-              const newSpeeds = speeds.map(({ text, number }, i) => {
-                const obj = { text, number };
-                if (index === i) obj.number = evt.target.value;
-                return obj;
-              });
+              const newSpeeds = speeds.map(
+                ({ text, number, velocity, optimal }, i) => {
+                  const obj = { text, number, velocity, optimal };
+                  if (index === i) obj.number = evt.target.value;
+                  return obj;
+                }
+              );
               action({
                 variables: { id, speeds: newSpeeds }
               });
@@ -107,11 +111,13 @@ const Speed = ({ index, speed, speeds, action, id }) => {
             type="number"
             value={speed.velocity}
             onChange={evt => {
-              const newSpeeds = speeds.map(({ text, number }, i) => {
-                const obj = { text, number };
-                if (index === i) obj.velocity = evt.target.value;
-                return obj;
-              });
+              const newSpeeds = speeds.map(
+                ({ text, number, velocity, optimal }, i) => {
+                  const obj = { text, number, velocity, optimal };
+                  if (index === i) obj.velocity = evt.target.value;
+                  return obj;
+                }
+              );
               action({
                 variables: { id, speeds: newSpeeds }
               });

@@ -1,4 +1,39 @@
 {
+  "1.0.13": {
+    "fixes": [
+      "Fixes an issue with tactical map icons not being totally transparent when loaded.",
+      "Fixes an issue where sending a course through mission presets doesn't send the course.",
+      "Set's station names are now properly renamed when a station is renamed."
+    ]
+  },
+  "1.0.12": {
+    "features": ["Add a thrusters adjustment viewscreen card."],
+    "fixes": [
+      "Add clock syncing between the server and the client. This will match sensors and the railgun up a bit more.",
+      "Fixed the layout of the software panels."
+    ]
+  },
+  "1.0.11": {
+    "features": [
+      "Add a Thrusters Lite card that removes the 3d view from the center of the screen.",
+      "Added the ability to assign training recordings to individual stations. These recordings will appear when training mode is on for the simulator. The recordings can be either videos or audio and will persist between card changes."
+    ],
+    "fixes": ["Add icons for all of the junior cards."]
+  },
+  "1.0.10": {
+    "features": [
+      "Add a bridge map card and core for running actions on specific clients. Note that this requires a specially configured SVG to work properly. Please see https://thoriumsim.com/docs/bridge-map/ for more information."
+    ],
+    "fixes": [
+      "Fixes an issue with inserting timeline events.",
+      "If traveling at a speed, the stars viewscreen will now properly show the speed instead of ramping up from stopped every time.",
+      "When configuring sensor contacts in mission configurations, the contact information will now update.",
+      "Bridge officer messaging settings will now properly transfer from the template simulator.",
+      "Fixes an issue where alert conditions don't reset with the flight.",
+      "Fixes an issue with the initialization of reactors.",
+      "Fixes an issue with saving velocities on engines."
+    ]
+  },
   "1.0.9": {
     "features": [
       "Added the ability to play random sounds from within a folder in the sound player macro."

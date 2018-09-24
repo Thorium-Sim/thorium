@@ -48,6 +48,7 @@ export default class SetArmyContacts extends Component {
     const { args /*client*/ } = this.props;
     const { removeContacts, selectedContact } = this.state;
     const { armyContacts = [] } = args;
+    const contactObj = armyContacts.find(c => c.id === selectedContact);
     return (
       <FormGroup className="macro-setArmyContacts">
         <p>Contacts:</p>
@@ -57,7 +58,7 @@ export default class SetArmyContacts extends Component {
               <Col key={contact.id} className={"flex-container"}>
                 <img
                   alt="armyContact"
-                  onClick={() => this.selectContact(contact)}
+                  onClick={() => this.selectContact(contact.id)}
                   draggable="false"
                   role="presentation"
                   style={{ width: "30px" }}
@@ -99,7 +100,7 @@ export default class SetArmyContacts extends Component {
           />{" "}
           Remove
         </label>
-        {selectedContact && (
+        {contactObj && (
           <div
             style={{
               position: "fixed",
@@ -111,7 +112,7 @@ export default class SetArmyContacts extends Component {
             }}
           >
             <ContactContextMenu
-              contact={selectedContact}
+              contact={contactObj}
               closeMenu={() => this.setState({ selectedContact: null })}
               updateArmyContact={this.updateArmyContact}
             />
