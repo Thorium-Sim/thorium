@@ -31,7 +31,21 @@ App.on(
   "editStationInStationSet",
   ({ stationSetID, stationName, newStationName }) => {
     const stationSet = App.stationSets.find(ss => ss.id === stationSetID);
+
     stationSet.renameStation(stationName, newStationName);
+    console.log("station renamed");
+    // Update any sets as well.
+    App.sets = App.sets.map(s => {
+      return {
+        ...s,
+        clients: s.clients.map(c => {
+          if (c.stationSet === stationSet.id && c.station === stationName) {
+            return { ...c, station: newStationName };
+          }
+          return c;
+        })
+      };
+    });
     pubsub.publish("stationSetUpdate", App.stationSets);
   }
 );
