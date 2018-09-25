@@ -5,7 +5,9 @@
     ],
     "fixes": [
       "Fix some issues with the short range comm core.",
-      "Fixes issues with uploading assets on Firefox. Also fixes issues with multiple uploads."
+      "Fixes issues with uploading assets on Firefox. Also fixes issues with multiple uploads.",
+      "Makes probe queries easier to recognize on core by changing the text to red.",
+      "Make damage report status more clear on the damage reports core. Reactivation code requests come through as purple."
     ]
   },
   "1.0.13": {

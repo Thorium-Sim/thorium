@@ -282,6 +282,13 @@ class DamageReportCore extends Component {
                   } ${s.damage.report ? "report" : ""} ${
                     s.damage.reactivationCode ? "reactivation" : ""
                   } ${s.damage.validate ? "validate" : ""} ${s.damage.which}`}
+                  title={`${s.damage.requested ? "Report Requested : " : ""}${
+                    s.damage.report ? "Report Sent : " : ""
+                  }${
+                    s.damage.reactivationCode
+                      ? "Reactivation Code Requested : "
+                      : ""
+                  }${s.damage.validate ? "Validation Requested : " : ""}`}
                   onClick={this.selectSystem.bind(this, s.id)}
                 >
                   {s.damage.validate ? (
