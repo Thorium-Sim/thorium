@@ -1,5 +1,8 @@
 {
   "1.0.15": {
+    "features": [
+      "Add options to remove and destroy sensor contacts from the 'Ask for Speed' popover"
+    ],
     "fixes": ["Fix some issues with the short range comm core."]
   },
   "1.0.13": {

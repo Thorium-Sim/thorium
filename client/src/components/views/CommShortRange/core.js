@@ -57,7 +57,6 @@ ${queryData}
 const ShortRangeCommCoreData = props => (
   <Query query={QUERY} variables={{ simulatorId: props.simulator.id }}>
     {({ loading, data, subscribeToMore }) => {
-      console.log(loading, data);
       const { shortRangeComm } = data;
       if (loading || !shortRangeComm) return null;
       if (!shortRangeComm[0]) return <div>No ShortRangeComm</div>;
