@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Button, ButtonGroup } from "reactstrap";
+import React, { Fragment, Component } from "react";
+import { Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import FontAwesome from "react-fontawesome";
@@ -171,32 +171,24 @@ class FileExplorer extends Component {
             <h4>{currentDirectory}</h4>
           )}
           {!simple && (
-            <ButtonGroup>
+            <Fragment>
               <Button color="primary" onClick={this._createFolder}>
                 Create Folder <FontAwesome name="folder-open" />
               </Button>
-              <Button color="warning" style={{ position: "relative" }}>
-                <div
-                  style={{
-                    opacity: 0,
-                    position: "absolute",
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0
-                  }}
-                >
-                  <input
-                    ref="massUpload"
-                    type="file"
-                    id="mass-upload-folder"
-                    multiple
-                    onChange={this._massUpload}
-                  />
+              <label>
+                <input
+                  ref="massUpload"
+                  type="file"
+                  id="mass-upload-folder"
+                  multiple
+                  hidden
+                  onChange={this._massUpload}
+                />
+                <div className="btn btn-warning">
+                  Upload Assets <FontAwesome name="upload" />
                 </div>
-                Upload Assets <FontAwesome name="upload" />
-              </Button>
-            </ButtonGroup>
+              </label>
+            </Fragment>
           )}
         </div>
         <Measure
