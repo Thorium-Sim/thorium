@@ -66,11 +66,10 @@ const ShortRangeCommCoreData = props => (
             subscribeToMore({
               document: SUBSCRIPTION,
               variables: { simulatorId: props.simulator.id },
-              updateQuery: (previousResult, { subscriptionData }) => {
-                return Object.assign({}, previousResult, {
+              updateQuery: (previousResult, { subscriptionData }) =>
+                Object.assign({}, previousResult, {
                   shortRangeComm: subscriptionData.data.shortRangeCommUpdate
-                });
-              }
+                })
             })
           }
         >

@@ -67,9 +67,9 @@ export default class TacticalIcon extends Component {
     document.removeEventListener("mousemove", this.mouseMove);
   };
   mouseMove = evt => {
-    const bounds = document
-      .querySelector(".tactical-map-view")
-      .getBoundingClientRect();
+    const doc = document.querySelector(".tactical-map-view");
+    if (!doc) return;
+    const bounds = doc.getBoundingClientRect();
     if (this.props.isSelected) {
       this.props.moveMultiple(evt, bounds);
     } else {
