@@ -1,6 +1,10 @@
 import uuid from "uuid";
 import { System } from "./generic";
 import App from "../app";
+import {
+  longRangeDestinations,
+  randomFromList
+} from "./generic/damageReports/constants";
 // TODO: Make it so the stardate is stored separate from the timestamp
 
 const stardate = () => {
@@ -77,6 +81,36 @@ export default class LongRangeComm extends System {
     this.decoded = params.decoded || false;
     this.satellites = params.satellites || 3;
   }
+  static tasks = [
+    {
+      name: "Compose Message",
+      active({ simulator, stations }) {
+        const systems = App.systems.find(
+          s => s.simulatorId === simulator.id && s.type === "LongRangeComm"
+        );
+        return (
+          stations.find(s => s.widgets.indexOf("composer") > -1) &&
+          systems.length > 0
+        );
+      },
+      values: {
+        destination: {
+          input: () => "text",
+          value: () => randomFromList(longRangeDestinations)
+        },
+        message: {
+          input: () => "text",
+          value: () => ""
+        }
+      },
+      verify({ simulator, requiredValues }) {
+        // Since this requires typing in the
+        // exact value, it might be better
+        // to manually verify.
+        return false;
+      }
+    }
+  ];
   get stealthFactor() {
     if (this.messageSent) return 0.4;
     return 0.1;

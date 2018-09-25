@@ -1,5 +1,5 @@
 import { System } from "./generic";
-
+import App from "../app";
 class Sector {
   constructor(params, powerLevel = 0) {
     this.level = params.level || Math.floor(powerLevel / 4);
@@ -50,6 +50,50 @@ export default class JumpDrive extends System {
     this.env = params.env || 0;
     this.activated = params.activated || false;
   }
+  static tasks = [
+    {
+      name: "Activate Jump Drive",
+      active({ simulator, stations }) {
+        // Check cards
+        return (
+          stations.find(s => s.cards.find(c => c.component === "JumpDrive")) &&
+          App.systems.find(
+            s => s.simulatorId === simulator.id && s.type === "JumpDrive"
+          )
+        );
+      },
+      verify({ simulator }) {
+        return App.systems.find(
+          s =>
+            s.simulatorId === simulator.id &&
+            s.type === "JumpDrive" &&
+            s.activated === true
+        );
+      }
+    },
+    {
+      name: "Stabilize Jump Drive",
+      active({ simulator, stations }) {
+        // Check cards
+        const system = App.systems.find(
+          s => s.simulatorId === simulator.id && s.type === "JumpDrive"
+        );
+        return (
+          stations.find(s => s.cards.find(c => c.component === "JumpDrive")) &&
+          system &&
+          system.stress > 0.5
+        );
+      },
+      verify({ simulator }) {
+        return !App.systems.find(
+          s =>
+            s.simulatorId === simulator.id &&
+            s.type === "Engine" &&
+            s.stress < 0.1
+        );
+      }
+    }
+  ];
   get stealthFactor() {
     return this.activated ? Math.min(1, this.stress) : 0;
   }
