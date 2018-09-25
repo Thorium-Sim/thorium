@@ -167,16 +167,13 @@ App.on("setLongRangeSatellites", ({ id, num }) => {
 });
 
 App.on("addInterceptionSignal", ({ id, simulatorId }) => {
-  console.log("Tada!", id, simulatorId);
   const lr = App.systems.find(
     s =>
       s.id === id ||
       (s.simulatorId === simulatorId && s.type === "LongRangeComm")
   );
-  console.log(lr);
   if (!lr) return;
   lr.update({ interception: true });
-  console.log(lr);
   pubsub.publish(
     "longRangeCommunicationsUpdate",
     App.systems.filter(s => s.type === "LongRangeComm")

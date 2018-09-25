@@ -256,7 +256,6 @@ App.on("updateSensorContact", args => {
         sys.class === "Sensors" &&
         sys.domain === "external")
   );
-  console.log(args);
   system.updateContact(contact);
   pubsub.publish("sensorContactUpdate", system);
 });
