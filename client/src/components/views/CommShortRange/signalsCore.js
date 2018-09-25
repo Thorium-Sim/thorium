@@ -27,6 +27,7 @@ const SHORTRANGE_SUB = gql`
         signal
         frequency
         connected
+        muted
       }
       signals {
         id
@@ -41,6 +42,14 @@ const SHORTRANGE_SUB = gql`
       state
       frequency
       amplitude
+      power {
+        power
+        powerLevels
+      }
+      damage {
+        damaged
+        report
+      }
     }
   }
 `;
@@ -311,6 +320,7 @@ const SHORTRANGE_QUERY = gql`
         signal
         frequency
         connected
+        muted
       }
       signals {
         id
@@ -325,6 +335,14 @@ const SHORTRANGE_QUERY = gql`
       state
       frequency
       amplitude
+      power {
+        power
+        powerLevels
+      }
+      damage {
+        damaged
+        report
+      }
     }
   }
 `;
