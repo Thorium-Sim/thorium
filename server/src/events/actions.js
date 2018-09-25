@@ -57,7 +57,6 @@ App.on("triggerAction", args => {
       break;
     default:
       const client = App.clients.find(c => c.id === args.stationId);
-      console.log({ client });
       clients = App.clients
         .filter(
           c =>

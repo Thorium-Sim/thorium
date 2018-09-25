@@ -33,7 +33,6 @@ App.on(
     const stationSet = App.stationSets.find(ss => ss.id === stationSetID);
 
     stationSet.renameStation(stationName, newStationName);
-    console.log("station renamed");
     // Update any sets as well.
     App.sets = App.sets.map(s => {
       return {

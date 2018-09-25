@@ -32,14 +32,6 @@ export const ActionsSubscriptions = {
           stations
         } = rootValue;
         if (simulatorId !== toSimulator) return false;
-        console.log({
-          toClient,
-          toStation,
-          clients,
-          stations,
-          stationId,
-          clientId
-        });
         if (
           toStation === "all" ||
           toClient === "all" ||

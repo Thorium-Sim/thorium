@@ -179,7 +179,6 @@ App.on("setTargetingRange", ({ id, range }) => {
 });
 
 App.on("setTargetingClasses", ({ id, simulatorId, classInput }) => {
-  console.log(classInput);
   const system = App.systems.find(
     s =>
       s.id === id || (s.simulatorId === simulatorId && s.type === "Targeting")

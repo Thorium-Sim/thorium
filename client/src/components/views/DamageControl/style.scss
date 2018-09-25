@@ -29,6 +29,10 @@
       font-weight: bold;
       color: lightseagreen;
     }
+    &.reactivation {
+      font-weight: bold;
+      color: rgb(226, 82, 255);
+    }
     &.destroyed {
       color: rgb(80, 80, 80);
     }

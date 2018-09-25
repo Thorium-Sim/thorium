@@ -562,11 +562,17 @@ class GridCore extends Component {
               />
               {speedAsking && (
                 <SpeedAsker
+                  sensorsId={sensors.id}
                   speeds={speeds}
+                  draggingContacts={draggingContacts}
                   triggerUpdate={this.triggerUpdate}
                   speedAsking={speedAsking}
                   cancelMove={() =>
-                    this.setState({ draggingContacts: null, speedAsking: null })
+                    this.setState({
+                      draggingContacts: null,
+                      selectedContacts: [],
+                      speedAsking: null
+                    })
                   }
                 />
               )}
