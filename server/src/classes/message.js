@@ -11,4 +11,31 @@ export default class Message {
     this.timestamp = new Date().toString();
     this.content = params.content || null;
   }
+  static tasks = [
+    {
+      name: "Compose Intership Message",
+      active({ simulator, stations }) {
+        return (
+          stations.find(s => s.cards.find(c => c.component === "Messages")) ||
+          stations.find(s => s.widgets.indexOf("messages") > -1)
+        );
+      },
+      values: {
+        destination: {
+          input: () => "text",
+          value: () => ""
+        },
+        message: {
+          input: () => "text",
+          value: () => ""
+        }
+      },
+      verify({ simulator, requiredValues }) {
+        // Since this requires typing in the
+        // exact value, it might be better
+        // to manually verify.
+        return false;
+      }
+    }
+  ];
 }

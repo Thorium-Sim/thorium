@@ -83,7 +83,7 @@ export default class LongRangeComm extends System {
   }
   static tasks = [
     {
-      name: "Compose Message",
+      name: "Compose Long Range Message",
       active({ simulator, stations }) {
         const systems = App.systems.find(
           s => s.simulatorId === simulator.id && s.type === "LongRangeComm"
