@@ -55,6 +55,7 @@
     "plop": "plop"
   },
   "dependencies": {
+    "apollo-cache-hermes": "^0.6.3",
     "appdirectory": "^0.1.0",
     "bonjour": "^3.5.0",
     "cors": "^2.8.4",
