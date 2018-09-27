@@ -1,4 +1,10 @@
 {
+  "1.0.16": {
+    "fixes": [
+      "Update dependency package versions.",
+      "Improve the speed of messages from the server by replacing the caching package."
+    ]
+  },
   "1.0.15": {
     "features": [
       "Add options to remove and destroy sensor contacts from the 'Ask for Speed' popover"
