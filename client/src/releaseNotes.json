@@ -1,7 +1,8 @@
 {
   "1.0.16": {
     "features": [
-      "Add a compose button to the long range communications card so you don't need the widget."
+      "Add a compose button to the long range communications card so you don't need the widget.",
+      "Add a preview for intership message timeline items."
     ]
   },
   "1.0.15": {
