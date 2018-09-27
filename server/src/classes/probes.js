@@ -3,7 +3,7 @@ import uuid from "uuid";
 import App from "../app.js";
 
 export default class Probes extends System {
-  constructor(params) {
+  constructor(params, init) {
     super(params);
     this.class = "Probes";
     this.type = "Probes";
@@ -17,9 +17,11 @@ export default class Probes extends System {
     this.stealthCompromised = false;
     this.processedData = params.processedData || "";
     // Load the probes
-    params.probes = params.probes || [];
-    params.types = params.types || probesTypes;
-    params.equipment = params.equipment || probesEquipment;
+    params.probes = init ? [] : params.probes || [];
+    params.types = init ? probesTypes : params.types || probesTypes;
+    params.equipment = init
+      ? probesEquipment
+      : params.equipment || probesEquipment;
 
     params.probes.forEach(p => this.probes.push(new Probe(p, this.id)));
     params.types.forEach(p => this.types.push(new ProbeType(p, this.id)));
