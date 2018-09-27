@@ -599,7 +599,6 @@ export default class TimelineConfig extends Component {
             if (!item) return null;
             return (
               <Col sm="6" key={item.id}>
-                {item.id}
                 <EventName id={item.event} />{" "}
                 <Card className="scroll" style={{ maxHeight: "75vh" }}>
                   <CardBody>
