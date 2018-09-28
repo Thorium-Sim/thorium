@@ -54,7 +54,6 @@ function addAspects(template, sim) {
         rooms.forEach(room => {
           const oldRoom = App.rooms.find(r => r.id === room);
           if (!oldRoom) {
-            console.log("Failed to load room: ", room);
             return;
           }
           const oldDeck = App.decks.find(d => d.id === oldRoom.deckId);
@@ -101,7 +100,7 @@ function addAspects(template, sim) {
         }
       }
       App[aspect].push(
-        new Classes[newAspect.class](Object.assign({}, newAspect))
+        new Classes[newAspect.class](Object.assign({}, newAspect), true)
       );
     });
   });
