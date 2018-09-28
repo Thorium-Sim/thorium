@@ -3,9 +3,8 @@ import React, { Component } from "react";
 export default class PowerRouting extends Component {
   constructor(props) {
     super(props);
-    this.state = { connections: [] };
+    this.state = { connections: [], colors: this.generateColors() };
     this.generateColors = this.generateColors.bind(this);
-    this.colors = this.generateColors();
   }
   generateColors() {
     const colorList = ["red", "green", "blue", "yellow"];
@@ -50,9 +49,9 @@ export default class PowerRouting extends Component {
     const oldColor =
       (this.state.selectedCol || this.state.selectedCol === 0) &&
       (this.state.selectedRow || this.state.selectedRow === 0)
-        ? this.colors[this.state.selectedCol][this.state.selectedRow]
+        ? this.state.colors[this.state.selectedCol][this.state.selectedRow]
         : null;
-    const selectedColor = this.colors[col][row];
+    const selectedColor = this.state.colors[col][row];
     if (
       selectedColor.color !== "gray" &&
       (col === 0 ||
@@ -85,9 +84,14 @@ export default class PowerRouting extends Component {
   }
 
   render() {
-    const { selectedCol, selectedRow, connections } = this.state;
+    const {
+      selectedCol,
+      selectedRow,
+      connections,
+      colors: stateColors
+    } = this.state;
     return (
-      <svg viewBox="0 0 1600 900">
+      <svg viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}>
         {connections.map(c => (
           <path
             d={`M ${c.fromcol} ${c.fromrow} L ${c.tocol} ${c.torow}`}
@@ -95,7 +99,7 @@ export default class PowerRouting extends Component {
             strokeWidth={3}
           />
         ))}
-        {this.colors.map((colors, i, colorArr) =>
+        {stateColors.map((colors, i, colorArr) =>
           colors.map((color, j) => (
             <circle
               cx={color.x}
