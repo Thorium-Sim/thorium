@@ -53,15 +53,17 @@ class InnerGrid extends Component {
     const { updateContacts, locationChange, contacts = [] } = this.props;
     const { sContacts } = this.state;
     if (updateContacts) return updateContacts();
-    const newSContacts = contacts
-      .map(this.updateContact(sContacts))
-      .reduce((prev, next) => {
-        prev[next.id] = next;
-        return prev;
-      }, {});
-    this.setState({
-      sContacts: newSContacts
-    });
+    if (contacts.length > 0) {
+      const newSContacts = contacts
+        .map(this.updateContact(sContacts))
+        .reduce((prev, next) => {
+          prev[next.id] = next;
+          return prev;
+        }, {});
+      this.setState({
+        sContacts: newSContacts
+      });
+    }
     locationChange && locationChange(sContacts);
   };
   updateContact = sContacts => c => {

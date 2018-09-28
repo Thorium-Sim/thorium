@@ -12,6 +12,11 @@
     position: relative;
     margin-top: 80px;
   }
+  &.lite {
+    .draggerContainer {
+      margin-top: 0px;
+    }
+  }
   .spacer {
     margin-top: calc(100% + 20px);
   }

@@ -132,7 +132,7 @@ function addAspects(template, sim) {
   });
 }
 // Flight
-App.on("startFlight", ({ id, name, simulators }) => {
+App.on("startFlight", ({ id, name, simulators, context }) => {
   // Loop through all of the simulators
   const simIds = simulators.map(s => {
     const template = Object.assign(
@@ -160,6 +160,7 @@ App.on("startFlight", ({ id, name, simulators }) => {
   });
   App.flights.push(new Classes.Flight({ id, name, simulators: simIds }));
   pubsub.publish("flightsUpdate", App.flights);
+  context.callback && context.callback();
 });
 
 App.on("deleteFlight", ({ flightId }) => {

@@ -2,10 +2,16 @@
   "1.0.16": {
     "features": [
       "Add a compose button to the long range communications card so you don't need the widget.",
-      "Add a preview for intership message timeline items."
+      "Add a preview for intership message timeline items.",
+      "Team officers are now sorted by position, making it easier to find a specific position.",
+      "Allow for selecting timeline item info from the preview. "
     ],
     "fixes": [
-      "Probes will now be completely overwritten with the default probe and equipment on a new flight."
+      "Update dependency package versions.",
+      "Improve the speed of messages from the server by replacing the caching package.",
+      "Probes will now be completely overwritten with the default probe and equipment on a new flight.",
+      "All button text on Layout Glass should be white, improving legibility.",
+      "Improve the layout of the power routing screen for JR engineering."
     ]
   },
   "1.0.15": {

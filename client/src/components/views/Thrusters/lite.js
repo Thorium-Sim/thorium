@@ -373,7 +373,7 @@ gamepadLoop(){
     }
     if (!thruster) return <h1>No thruster system</h1>;
     return (
-      <div className="cardThrusters">
+      <div className="cardThrusters lite">
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
@@ -459,7 +459,34 @@ gamepadLoop(){
               <span className="label left">Down</span>
             </div>
           </Col>
-          <Col className="col-sm-6" />
+          <Col className="col-sm-6">
+            <Row>
+              <IndicatorCircle
+                name={`Yaw: ${Math.min(
+                  359,
+                  Math.max(0, Math.round(thruster.rotation.yaw))
+                )}`}
+                required={thruster.rotationRequired.yaw}
+                current={thruster.rotation.yaw}
+              />
+              <IndicatorCircle
+                name={`Pitch: ${Math.min(
+                  359,
+                  Math.max(0, Math.round(thruster.rotation.pitch))
+                )}`}
+                required={thruster.rotationRequired.pitch}
+                current={thruster.rotation.pitch}
+              />
+              <IndicatorCircle
+                name={`Roll: ${Math.min(
+                  359,
+                  Math.max(0, Math.round(thruster.rotation.roll))
+                )}`}
+                required={thruster.rotationRequired.roll}
+                current={thruster.rotation.roll}
+              />
+            </Row>
+          </Col>
           <Col className="col-sm-3 draggerContainer rotation-drag">
             <label>Rotation</label>
             <div className="spacer" />
@@ -505,39 +532,6 @@ gamepadLoop(){
               <span className="label left">Yaw Port</span>
             </div>
           </Col>
-        </Row>
-        <Row className="indicatorCircles">
-          {!this.props.data.loading &&
-            thruster.rotation && (
-              <Col lg={{ size: 6, offset: 3 }}>
-                <Row>
-                  <IndicatorCircle
-                    name={`Yaw: ${Math.min(
-                      359,
-                      Math.max(0, Math.round(thruster.rotation.yaw))
-                    )}`}
-                    required={thruster.rotationRequired.yaw}
-                    current={thruster.rotation.yaw}
-                  />
-                  <IndicatorCircle
-                    name={`Pitch: ${Math.min(
-                      359,
-                      Math.max(0, Math.round(thruster.rotation.pitch))
-                    )}`}
-                    required={thruster.rotationRequired.pitch}
-                    current={thruster.rotation.pitch}
-                  />
-                  <IndicatorCircle
-                    name={`Roll: ${Math.min(
-                      359,
-                      Math.max(0, Math.round(thruster.rotation.roll))
-                    )}`}
-                    required={thruster.rotationRequired.roll}
-                    current={thruster.rotation.roll}
-                  />
-                </Row>
-              </Col>
-            )}
         </Row>
         <Tour steps={trainingSteps} client={this.props.clientObj} />
       </div>
