@@ -5,6 +5,7 @@ import { Container, Button } from "reactstrap";
 
 import TimelineConfig from "./TimelineConfig";
 import PrintMission from "./PrintMission";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 const MISSION_SUB = gql`
@@ -35,21 +36,6 @@ class MissionsConfig extends Component {
     selectedMission: null,
     loadingMission: false
   };
-  missionSubscription = null;
-  componentDidMount() {
-    this.sub = this.props.subscribe({
-      document: MISSION_SUB,
-      variables: { missionId: this.props.mission.id },
-      updateQuery: (previousResult, { subscriptionData }) => {
-        return Object.assign({}, previousResult, {
-          missions: subscriptionData.data.missionsUpdate
-        });
-      }
-    });
-  }
-  componentWillUnmount() {
-    this.sub && this.sub();
-  }
   setSelectedMission = mission => {
     this.setState({
       selectedMission: mission.id
@@ -183,13 +169,28 @@ const MissionsConfigData = withApollo(
     return (
       <Query query={MissionsConfigQuery} variables={{ missionId }}>
         {({ loading, data, subscribeToMore }) => {
+          if (loading || !data) return null;
+          const mission = data.missions[0];
           return loading || !data ? null : (
-            <MissionsConfig
-              history={history}
-              client={client}
-              subscribe={subscribeToMore}
-              mission={data.missions[0]}
-            />
+            <SubscriptionHelper
+              subscribe={() =>
+                subscribeToMore({
+                  document: MISSION_SUB,
+                  variables: { missionId: mission.id },
+                  updateQuery: (previousResult, { subscriptionData }) => {
+                    return Object.assign({}, previousResult, {
+                      missions: subscriptionData.data.missionsUpdate
+                    });
+                  }
+                })
+              }
+            >
+              <MissionsConfig
+                history={history}
+                client={client}
+                mission={mission}
+              />
+            </SubscriptionHelper>
           );
         }}
       </Query>

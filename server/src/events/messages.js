@@ -18,7 +18,8 @@ App.on("sendMessage", args => {
   const messageClass = new Classes.Message(message);
   App.messages.push(messageClass);
   pubsub.publish("sendMessage", messageClass);
-  const wordSplit = messageClass.content
+  const content = messageClass.content || "";
+  const wordSplit = content
     .split(" ")
     .slice(0, 30)
     .join(" ");

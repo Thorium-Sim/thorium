@@ -1,8 +1,13 @@
 {
   "1.0.16": {
+    "features": [
+      "Add a compose button to the long range communications card so you don't need the widget.",
+      "Add a preview for intership message timeline items."
+    ],
     "fixes": [
       "Update dependency package versions.",
-      "Improve the speed of messages from the server by replacing the caching package."
+      "Improve the speed of messages from the server by replacing the caching package.",
+      "Probes will now be completely overwritten with the default probe and equipment on a new flight."
     ]
   },
   "1.0.15": {
