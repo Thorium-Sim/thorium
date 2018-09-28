@@ -10,10 +10,16 @@ App.on("addObjective", args => {
   App.objectives.push(obj);
   pubsub.publish("objectiveUpdate", App.objectives);
 });
-App.on("completeObjective", ({ id, title, simulatorId }) => {
+App.on("completeObjective", ({ id, title, cancel, simulatorId, state }) => {
   const obj = App.objectives.find(
     o => o.id === id || (o.title === title && o.simulatorId === simulatorId)
   );
-  obj && obj.complete();
+  if (cancel) {
+    obj.cancel();
+  } else if (state === false) {
+    obj.uncomplete();
+  } else {
+    obj && obj.complete();
+  }
   pubsub.publish("objectiveUpdate", App.objectives);
 });

@@ -17,18 +17,21 @@ const OBJECTIVE_SUB = gql`
       description
       station
       completed
+      cancelled
     }
   }
 `;
 
-const Objective = ({ title, description, completed }) => {
+const Objective = ({ title, description, completed, cancelled }) => {
   return (
     <div className="objective">
       <div>
         <div className="completed">{completed && <div />}</div>
       </div>
       <div>
-        <h3>{title}</h3>
+        <h3 style={{ textDecoration: cancelled ? "line-through" : "" }}>
+          {title}
+        </h3>
         <p>{description}</p>
       </div>
     </div>
@@ -50,7 +53,7 @@ const trainingSteps = [
     content: (
       <FormattedMessage
         id="objectives-training-2"
-        defaultMessage="When an objective is completed, the circle next to it will be filled. Check back often to remember your objectives so you can work toward their completion."
+        defaultMessage="When an objective is completed, the circle next to it will be filled. When an objective is changed, a line will strike through the title of the objective. Check back often to remember your objectives so you can work toward their completion."
       />
     )
   }
@@ -113,6 +116,7 @@ const OBJECTIVE_QUERY = gql`
       description
       station
       completed
+      cancelled
     }
   }
 `;
