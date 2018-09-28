@@ -62,9 +62,7 @@ class FlightConfig extends Component {
         variables
       })
       .then(({ data: { startFlight: flightId } }) => {
-        setTimeout(() => {
-          this.props.history.push(`/config/flight/${flightId}`);
-        }, 500);
+        this.props.history.push(`/config/flight/${flightId}`);
       });
   };
   trainingSteps = () => {
