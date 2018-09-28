@@ -34,7 +34,7 @@
     "test-client": "npm t --prefix client",
     "build": "NODE_ENV=production npm-run-all build-code build-server mk-build copy-files pkg",
     "build-code": "npm-run-all --parallel build-client build-server",
-    "build-client": "npm-run-all translate build-js",
+    "build-client": "npm-run-all build-js",
     "build-js": "npm run build --prefix client",
     "build-server": "npm run build --prefix server",
     "mk-build": "mkdir -p build",
