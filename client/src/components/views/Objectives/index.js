@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
+import { FormattedMessage } from "react-intl";
+
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import Tour from "helpers/tourHelper";
 
 import "./style.scss";
 
@@ -32,6 +35,27 @@ const Objective = ({ title, description, completed }) => {
   );
 };
 
+const trainingSteps = [
+  {
+    selector: ".objective-card",
+    content: (
+      <FormattedMessage
+        id="objectives-training-1"
+        defaultMessage="During your mission you will have different objectives or goals you need to complete.  Objectives will appear with a title, and a description."
+      />
+    )
+  },
+  {
+    selector: ".objective-card",
+    content: (
+      <FormattedMessage
+        id="objectives-training-2"
+        defaultMessage="When an objective is completed, the circle next to it will be filled. Check back often to remember your objectives so you can work toward their completion."
+      />
+    )
+  }
+];
+
 class Objectives extends Component {
   render() {
     const {
@@ -57,7 +81,12 @@ class Objectives extends Component {
         />
         <Row>
           <Col sm={12}>
-            <h1>Mission Objectives</h1>
+            <h1>
+              <FormattedMessage
+                id="mission-objectives"
+                defaultMessage="Mission Objectives"
+              />
+            </h1>
             <Card>
               <CardBody>
                 {objective
@@ -70,6 +99,7 @@ class Objectives extends Component {
             </Card>
           </Col>
         </Row>
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }
