@@ -6,7 +6,9 @@
       "Add a compose button to the long range communications card so you don't need the widget.",
       "Add a preview for intership message timeline items.",
       "Team officers are now sorted by position, making it easier to find a specific position.",
-      "Allow for selecting timeline item info from the preview. "
+      "Allow for selecting timeline item info from the preview.",
+      "Add alerts for engines and reactor overheating.",
+      "Add a 'Finish Decontamination' button to core."
     ],
     "fixes": [
       "Update dependency package versions.",
