@@ -9,7 +9,8 @@
       "Allow for selecting timeline item info from the preview.",
       "Add alerts for engines and reactor overheating.",
       "Add a 'Finish Decontamination' button to core.",
-      "Add the ability to change how fast the transporters can be charged."
+      "Add the ability to change how fast the transporters can be charged.",
+      "Change the login screen to say 'Officer' instead of 'Agent'."
     ],
     "fixes": [
       "Update dependency package versions.",
