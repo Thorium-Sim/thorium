@@ -6,6 +6,34 @@ import throttle from "../helpers/throttle";
 
 const throttles = {};
 
+const heatThrottles = {};
+const triggerHeatWarning = sys => {
+  if (!heatThrottles[sys.id]) {
+    heatThrottles[sys.id] = throttle(sys => {
+      pubsub.publish("notify", {
+        id: uuid.v4(),
+        simulatorId: sys.simulatorId,
+        type: "Engines",
+        station: "Core",
+        title: `${sys.displayName || sys.name} Overheating`,
+        body: "",
+        color: "danger"
+      });
+      App.handleEvent(
+        {
+          simulatorId: sys.simulatorId,
+          component: "HeatCore",
+          title: `${sys.displayName || sys.name} Overheating`,
+          body: null,
+          color: "danger"
+        },
+        "addCoreFeed"
+      );
+    }, 15 * 1000);
+  }
+  return heatThrottles[sys.id];
+};
+
 const sendUpdate = sys => {
   if (!throttles[sys.id]) {
     throttles[sys.id] = throttle(sys => {
@@ -91,6 +119,16 @@ App.on("addHeat", ({ id, heat, force }) => {
   const sys = App.systems.find(s => s.id === id);
   if (sys && sys.heat !== heat) {
     sys.setHeat(heat);
+  }
+  if (sys.heat > 0.9 && !sys.heatAlerted) {
+    // It's too high of a stress level. Mark the alert and trigger a notification
+    // Use a throttle so the warning doesn't happen too often
+    triggerHeatWarning(sys)(sys);
+
+    sys.heatAlerted = true;
+  }
+  if (sys.heat < 0.3) {
+    sys.heatAlerted = false;
   }
   sendUpdate(sys)(sys);
 });
