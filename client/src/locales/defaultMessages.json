@@ -11,6 +11,39 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Officers will sometimes need equipment to complete whatever tasks they have been assigned. You can use this screen to see the available equipment and assign it to members of your crew.",
+        "id": "armory-training-1"
+      },
+      {
+        "defaultMessage": "This button will allow you to change between the officers you have assigned to specific teams, and unassigned crew members without current orders.",
+        "id": "armory-training-2"
+      },
+      {
+        "defaultMessage": "This list shows you the officers on the team you selected above, or any unassigned officers. Officers whose names are white have not been assigned any equipment.  Those highlighted in red are carrying items.",
+        "id": "armory-training-3"
+      },
+      {
+        "defaultMessage": "You are authorized to access equipment from the rooms listed in this area.  Click to select different rooms from a drop down list.",
+        "id": "armory-training-4"
+      },
+      {
+        "defaultMessage": "When you select a room the equipment within will be displayed in this area.  The number in parentheses represents how many there are of that item. By clicking on an item you will transfer it to the ready area.",
+        "id": "armory-training-5"
+      },
+      {
+        "defaultMessage": "This is the ready area.  Once you have selected all of the equipment you need to assign you can select the name of the officer from the area on the right and click “Transfer to Officer.”  If you need to return an item to a room click on the item and it will return to the room it came from.",
+        "id": "armory-training-6"
+      },
+      {
+        "defaultMessage": "Officer items will be displayed in the Equipment field. Pressing the “Remove Inventory” button will transfer all items to the ready area.",
+        "id": "armory-training-7"
+      }
+    ],
+    "path": "src/components/views/Armory/index.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "This screen shows a map of the bridge. You can use it to see what each station on the bridge does. Hover your mouse over or tap on a station to see a description on the right side of the screen.",
         "id": "bridge-map-training-1"
       }
@@ -241,6 +274,23 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "During your mission you will have different objectives or goals you need to complete.  Objectives will appear with a title, and a description.",
+        "id": "objectives-training-1"
+      },
+      {
+        "defaultMessage": "When an objective is completed, the circle next to it will be filled. Check back often to remember your objectives so you can work toward their completion.",
+        "id": "objectives-training-2"
+      },
+      {
+        "defaultMessage": "Mission Objectives",
+        "id": "mission-objectives"
+      }
+    ],
+    "path": "src/components/views/Objectives/index.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "The railgun is a point-defense weapon designed to destroy incoming projectiles. This screen is where you load bolts into the railgun.",
         "id": "railgun-loader-training-1"
       },
@@ -294,6 +344,23 @@
       }
     ],
     "path": "src/components/views/Railgun/railgun.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "On this screen you will see a list of the officers that are on the ship. You can see their name, age, gender, position, and rank. Understanding this information will help you to know what skills are available to you and who you are responsible for as a bridge officer.",
+        "id": "roster-training-1"
+      },
+      {
+        "defaultMessage": "To find officers faster you can sort the crew by clicking on the description above each column.",
+        "id": "roster-training-2"
+      },
+      {
+        "defaultMessage": "Use the next or previous button to scroll through multiple pages.",
+        "id": "roster-training-3"
+      }
+    ],
+    "path": "src/components/views/Roster/index.json"
   },
   {
     "descriptors": [

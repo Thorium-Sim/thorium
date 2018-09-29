@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button } from "reactstrap";
-import { Asset } from "helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
 import { DeckDropdown, RoomDropdown } from "helpers/shipStructure";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -266,24 +265,28 @@ class InternalComm extends Component {
         <Row>
           <Col sm={{ size: 8, offset: 2 }}>
             <div style={{ position: "relative", width: "100%" }}>
-              <Asset asset={this.props.simulator.assets.side}>
-                {({ src }) => (
-                  <div
-                    alt="Right View"
-                    role="presentation"
-                    draggable="false"
-                    style={{
-                      backgroundImage: `url('${src}')`,
-                      position: "absolute",
-                      width: "100%",
-                      height: "100%",
-                      backgroundSize: "contain",
-                      backgroundRepeat: "no-repeat"
-                    }}
-                  />
-                )}
-              </Asset>
-              <div style={{ padding: "100%" }} />
+              <div
+                alt="Right View"
+                role="presentation"
+                draggable="false"
+                style={{
+                  backgroundImage: `url('/assets${
+                    this.props.simulator.assets.side
+                  }')`,
+                  position: "absolute",
+                  width: "100%",
+                  height: "100%",
+                  backgroundSize: "contain",
+                  backgroundRepeat: "no-repeat"
+                }}
+              />
+
+              <div
+                style={{
+                  padding: "100%",
+                  pointerEvents: "none"
+                }}
+              />
             </div>
           </Col>
         </Row>

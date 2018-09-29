@@ -118,7 +118,7 @@ class Login extends Component {
           </Asset>
 
           <Col className="loginBlock" sm={{ size: 8, offset: 2 }}>
-            <h2>Agent Login</h2>
+            <h2>Officer Login</h2>
             <Input
               onKeyDown={e => {
                 if (e.which === 13) {

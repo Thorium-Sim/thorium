@@ -24,10 +24,6 @@ class MacroConfig extends Component {
     return (
       <Row>
         <Col sm="12">
-          {/* <FormGroup>
-            <Label>Item Event</Label>
-            <EventPicker event={event} handleChange={this._handleChange} />
-          </FormGroup> */}
           {EventMacro && (
             <EventMacro
               updateArgs={this._handleArg}

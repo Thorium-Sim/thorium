@@ -100,8 +100,8 @@ export async function uploadAsset(root, args, context) {
       const extension = file.originalname.substr(
         file.originalname.lastIndexOf(".")
       );
-      const filePath = `${assetDir}${folderPath}/${name}${extension}`;
-
+      const fileName = name ? `${name}${extension}` : file.originalname;
+      const filePath = `${assetDir}${folderPath}/${fileName}`;
       return new Promise(resolve =>
         ncp(file.path, filePath, err => {
           if (err) {

@@ -28,3 +28,4 @@ export { default as completeObjective } from "./completeObjective";
 export {
   default as changeSimulatorAlertLevel
 } from "./changeSimulatorAlertLevel";
+export { default as sendMessage } from "./sendMessage";

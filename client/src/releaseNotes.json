@@ -1,4 +1,36 @@
 {
+  "1.0.16": {
+    "features": [
+      "Added the ability to un-complete a mission objective from the core.",
+      "Added the ability to mark a mission objective as cancelled.",
+      "Add a compose button to the long range communications card so you don't need the widget.",
+      "Add a preview for intership message timeline items.",
+      "Team officers are now sorted by position, making it easier to find a specific position.",
+      "Allow for selecting timeline item info from the preview.",
+      "Add alerts for engines and reactor overheating.",
+      "Add a 'Finish Decontamination' button to core.",
+      "Add the ability to change how fast the transporters can be charged.",
+      "Change the login screen to say 'Officer' instead of 'Agent'."
+    ],
+    "fixes": [
+      "Update dependency package versions.",
+      "Improve the speed of messages from the server by replacing the caching package.",
+      "Probes will now be completely overwritten with the default probe and equipment on a new flight.",
+      "All button text on Layout Glass should be white, improving legibility.",
+      "Improve the layout of the power routing screen for JR engineering."
+    ]
+  },
+  "1.0.15": {
+    "features": [
+      "Add options to remove and destroy sensor contacts from the 'Ask for Speed' popover"
+    ],
+    "fixes": [
+      "Fix some issues with the short range comm core.",
+      "Fixes issues with uploading assets on Firefox. Also fixes issues with multiple uploads.",
+      "Makes probe queries easier to recognize on core by changing the text to red.",
+      "Make damage report status more clear on the damage reports core. Reactivation code requests come through as purple."
+    ]
+  },
   "1.0.13": {
     "fixes": [
       "Fixes an issue with tactical map icons not being totally transparent when loaded.",

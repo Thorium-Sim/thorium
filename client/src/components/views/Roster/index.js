@@ -3,6 +3,9 @@ import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col } from "reactstrap";
 import ReactTable from "react-table";
+import Tour from "helpers/tourHelper";
+import { FormattedMessage } from "react-intl";
+
 import "react-table/react-table.css";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
@@ -43,7 +46,35 @@ const SUB = gql`
     }
   }
 `;
-
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content: (
+      <FormattedMessage
+        id="roster-training-1"
+        defaultMessage="On this screen you will see a list of the officers that are on the ship. You can see their name, age, gender, position, and rank. Understanding this information will help you to know what skills are available to you and who you are responsible for as a bridge officer."
+      />
+    )
+  },
+  {
+    selector: ".rt-thead",
+    content: (
+      <FormattedMessage
+        id="roster-training-2"
+        defaultMessage="To find officers faster you can sort the crew by clicking on the description above each column."
+      />
+    )
+  },
+  {
+    selector: ".pagination-bottom",
+    content: (
+      <FormattedMessage
+        id="roster-training-3"
+        defaultMessage="Use the next or previous button to scroll through multiple pages."
+      />
+    )
+  }
+];
 class Roster extends Component {
   render() {
     const {
@@ -80,6 +111,7 @@ class Roster extends Component {
             />
           </Col>
         </Row>
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

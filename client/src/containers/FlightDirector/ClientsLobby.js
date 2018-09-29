@@ -8,13 +8,14 @@ import gql from "graphql-tag";
 import Tour from "helpers/tourHelper";
 
 const FlightQuery = gql`
-  query Flight($flightId: ID!) {
-    flights(id: $flightId) {
+  query Flight {
+    flights {
       id
       running
     }
   }
 `;
+
 const ClientLobby = props => {
   const resetFlight = () => {
     const flightId = props.match.params.flightId;
@@ -122,8 +123,13 @@ It will permenantly erase all simulators running in this flight.`
       query={FlightQuery}
       variables={{ flightId: props.match.params.flightId }}
     >
-      {({ loading, data }) =>
-        loading || data.flights.length === 0 ? null : (
+      {({ loading, data }) => {
+        if (loading) return null;
+        const flight = data.flights.find(
+          f => f.id === props.match.params.flightId
+        );
+        if (!flight) return <div>Error loading flight...</div>;
+        return (
           <Container className="flight-lobby">
             <span>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -133,7 +139,7 @@ It will permenantly erase all simulators running in this flight.`
                     <Link to="/">Return to Main</Link>
                   </small>
                 </h4>
-                {!data.flights[0].running && (
+                {!flight.running && (
                   <h3 className="text-warning text-center">Flight is paused</h3>
                 )}
               </div>
@@ -152,18 +158,17 @@ It will permenantly erase all simulators running in this flight.`
                 >
                   Reset Flight
                 </Button>
-                {data.flights[0].running ? (
+                {flight.running ? (
                   <Mutation
                     mutation={gql`
                       mutation PauseFlight($flightId: ID!) {
                         pauseFlight(flightId: $flightId)
                       }
                     `}
-                    variables={{ flightId: data.flights[0].id }}
+                    variables={{ flightId: flight.id }}
                     refetchQueries={[
                       {
-                        query: FlightQuery,
-                        variables: { flightId: props.match.params.flightId }
+                        query: FlightQuery
                       }
                     ]}
                   >
@@ -184,11 +189,10 @@ It will permenantly erase all simulators running in this flight.`
                         resumeFlight(flightId: $flightId)
                       }
                     `}
-                    variables={{ flightId: data.flights[0].id }}
+                    variables={{ flightId: flight.id }}
                     refetchQueries={[
                       {
-                        query: FlightQuery,
-                        variables: { flightId: props.match.params.flightId }
+                        query: FlightQuery
                       }
                     ]}
                   >
@@ -221,8 +225,8 @@ It will permenantly erase all simulators running in this flight.`
               onRequestClose={props.stopTraining}
             />
           </Container>
-        )
-      }
+        );
+      }}
     </Query>
   );
 };

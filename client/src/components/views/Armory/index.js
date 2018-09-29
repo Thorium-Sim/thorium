@@ -14,8 +14,75 @@ import {
   Button
 } from "reactstrap";
 import "./style.scss";
+import { FormattedMessage } from "react-intl";
+import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content: (
+      <FormattedMessage
+        id="armory-training-1"
+        defaultMessage="Officers will sometimes need equipment to complete whatever tasks they have been assigned. You can use this screen to see the available equipment and assign it to members of your crew."
+      />
+    )
+  },
+  {
+    selector: ".officer-selector",
+    content: (
+      <FormattedMessage
+        id="armory-training-2"
+        defaultMessage="This button will allow you to change between the officers you have assigned to specific teams, and unassigned crew members without current orders."
+      />
+    )
+  },
+  {
+    selector: ".officer-list",
+    content: (
+      <FormattedMessage
+        id="armory-training-3"
+        defaultMessage="This list shows you the officers on the team you selected above, or any unassigned officers. Officers whose names are white have not been assigned any equipment.  Those highlighted in red are carrying items."
+      />
+    )
+  },
+  {
+    selector: ".deck-selector",
+    content: (
+      <FormattedMessage
+        id="armory-training-4"
+        defaultMessage="You are authorized to access equipment from the rooms listed in this area.  Click to select different rooms from a drop down list."
+      />
+    )
+  },
+  {
+    selector: ".room-inventory",
+    content: (
+      <FormattedMessage
+        id="armory-training-5"
+        defaultMessage="When you select a room the equipment within will be displayed in this area.  The number in parentheses represents how many there are of that item. By clicking on an item you will transfer it to the ready area."
+      />
+    )
+  },
+  {
+    selector: ".ready-inventory",
+    content: (
+      <FormattedMessage
+        id="armory-training-6"
+        defaultMessage="This is the ready area.  Once you have selected all of the equipment you need to assign you can select the name of the officer from the area on the right and click “Transfer to Officer.”  If you need to return an item to a room click on the item and it will return to the room it came from."
+      />
+    )
+  },
+  {
+    selector: ".officer-inventory",
+    content: (
+      <FormattedMessage
+        id="armory-training-7"
+        defaultMessage="Officer items will be displayed in the Equipment field. Pressing the “Remove Inventory” button will transfer all items to the ready area."
+      />
+    )
+  }
+];
 const CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID, $teamType: String!) {
     crewUpdate(simulatorId: $simulatorId, position: $teamType, killed: false) {
@@ -227,7 +294,7 @@ class Armory extends Component {
           <Col sm={4}>
             <h4>Equipment Hold Contents</h4>
             <UncontrolledDropdown>
-              <DropdownToggle block caret>
+              <DropdownToggle block caret className="deck-selector">
                 {roomObj
                   ? `${roomObj.name}, Deck ${roomObj.deck.number}`
                   : "No Room Selected"}
@@ -250,7 +317,7 @@ class Armory extends Component {
                   ))}
               </DropdownMenu>
             </UncontrolledDropdown>
-            <Card className="inventory-list">
+            <Card className="inventory-list room-inventory">
               <CardBody>
                 {roomObj &&
                   roomObj.inventory
@@ -269,7 +336,7 @@ class Armory extends Component {
               </CardBody>
             </Card>
             <h4>Ready Equipment</h4>
-            <Card className="inventory-list">
+            <Card className="inventory-list ready-inventory">
               <CardBody>
                 {roomObj &&
                   Object.keys(readyInventory)
@@ -289,6 +356,7 @@ class Armory extends Component {
             </Card>
             <Button
               block
+              className="transfer-to-officer"
               disabled={
                 !selectedCrew ||
                 Object.values(readyInventory).reduce(
@@ -306,7 +374,7 @@ class Armory extends Component {
               <Col sm={12}>
                 <h4>Teams</h4>
                 <UncontrolledDropdown>
-                  <DropdownToggle block caret>
+                  <DropdownToggle block caret className="officer-selector">
                     {team
                       ? teams.find(t => t.id === team).name
                       : "Unassigned Officers"}
@@ -327,7 +395,7 @@ class Armory extends Component {
                     ))}
                   </DropdownMenu>
                 </UncontrolledDropdown>
-                <Card className="inventory-list">
+                <Card className="inventory-list officer-list">
                   <CardBody>
                     <TeamList
                       team={team}
@@ -341,7 +409,7 @@ class Armory extends Component {
               </Col>
               <Col sm={12}>
                 <h4>Equipment</h4>
-                <Card className="inventory-list">
+                <Card className="inventory-list officer-inventory">
                   <CardBody>
                     {crewObj &&
                       crewObj.inventory
@@ -365,6 +433,7 @@ class Armory extends Component {
             </Row>
           </Col>
         </Row>
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

@@ -50,12 +50,13 @@ export default class Target extends Component {
     if (!this.ticking) return;
     this.frame = window.requestAnimationFrame(this.tick);
     const { selectedTarget, mouseCharge, charge } = this.state;
+    const { chargeSpeed = 0.0025 } = this.props;
     if (
       (selectedTarget && mouseCharge > charge && mouseCharge < charge + 0.08) ||
       charge > 0.98
     ) {
       this.setState({
-        charge: charge + 0.0025
+        charge: charge + chargeSpeed
       });
       if (charge > 1.5) {
         this.props.completeTransport(selectedTarget);

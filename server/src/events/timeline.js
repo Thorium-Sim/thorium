@@ -2,10 +2,9 @@ import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 
 function getTimelineObject(simulatorId, missionId) {
-  let object;
-  if (simulatorId) object = App.simulators.find(s => s.id === simulatorId);
-  if (missionId) object = App.missions.find(m => m.id === missionId);
-  return object;
+  if (simulatorId) return App.simulators.find(s => s.id === simulatorId);
+  if (missionId) return App.missions.find(m => m.id === missionId);
+  return {};
 }
 
 // Timeline

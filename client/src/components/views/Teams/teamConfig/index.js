@@ -187,20 +187,27 @@ const TeamConfig = ({
           <CardBody>
             {team &&
               team.officers &&
-              team.officers.map(c => (
-                <div
-                  key={c.id}
-                  onClick={() => {
-                    if (team) {
-                      removeOfficer(c);
-                    }
-                  }}
-                  className={`officer ${c.killed ? "text-danger" : ""}`}
-                >
-                  <p>{c.name}</p>
-                  <small>{c.position}</small>
-                </div>
-              ))}
+              team.officers
+                .concat()
+                .sort((a, b) => {
+                  if (a.position > b.position) return 1;
+                  if (a.position < b.position) return -1;
+                  return 0;
+                })
+                .map(c => (
+                  <div
+                    key={c.id}
+                    onClick={() => {
+                      if (team) {
+                        removeOfficer(c);
+                      }
+                    }}
+                    className={`officer ${c.killed ? "text-danger" : ""}`}
+                  >
+                    <p>{c.name}</p>
+                    <small>{c.position}</small>
+                  </div>
+                ))}
           </CardBody>
         </Card>
       </Col>
