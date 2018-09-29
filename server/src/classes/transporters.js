@@ -11,6 +11,7 @@ export default class Transporters extends System {
     this.requestedTarget = params.requestedTarget || null;
     this.destination = params.destination || null;
     this.charge = params.charge || 0;
+    this.chargeSpeed = params.chargeSpeed || 0.0025;
     // One of 'Inactive', 'Scanning', 'Targeting', 'Charging'
     this.state = params.state || "Inactive";
     this.stealthCompromised = false;
@@ -98,5 +99,8 @@ export default class Transporters extends System {
     }
     this.stealthCompromised = true;
     setTimeout(() => (this.stealthCompromised = false), 4 * 1000);
+  }
+  setChargeSpeed(chargeSpeed) {
+    this.chargeSpeed = chargeSpeed;
   }
 }

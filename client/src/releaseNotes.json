@@ -8,7 +8,8 @@
       "Team officers are now sorted by position, making it easier to find a specific position.",
       "Allow for selecting timeline item info from the preview.",
       "Add alerts for engines and reactor overheating.",
-      "Add a 'Finish Decontamination' button to core."
+      "Add a 'Finish Decontamination' button to core.",
+      "Add the ability to change how fast the transporters can be charged."
     ],
     "fixes": [
       "Update dependency package versions.",
