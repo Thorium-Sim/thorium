@@ -111,6 +111,7 @@ export class TimelineStep {
     this.timelineItems = [];
     if (params.timelineItems) {
       params.timelineItems.forEach(t => {
+        if (!timelineStepId) t.id = uuid.v4();
         this.timelineItems.push(new TimelineItem(t.id, t));
       });
     }

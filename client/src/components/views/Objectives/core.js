@@ -14,19 +14,30 @@ const OBJECTIVE_SUB = gql`
       description
       station
       completed
+      cancelled
     }
   }
 `;
 
-const Objective = ({ id, title, description, completed, client }) => {
-  const complete = () => {
+const Objective = ({
+  id,
+  title,
+  description,
+  completed,
+  cancelled,
+  client
+}) => {
+  const complete = (e, cancel) => {
+    const completed = e.target ? e.target.checked : e;
     const mutation = gql`
-      mutation CompleteObjective($id: ID!) {
-        completeObjective(id: $id)
+      mutation CompleteObjective($id: ID!, $state: Boolean, $cancel: Boolean) {
+        completeObjective(id: $id, state: $state, cancel: $cancel)
       }
     `;
     const variables = {
-      id
+      id,
+      state: completed,
+      cancel: cancel === true
     };
     client.mutate({
       mutation,
@@ -34,22 +45,25 @@ const Objective = ({ id, title, description, completed, client }) => {
     });
   };
   return (
-    <Row className="objective">
-      <Col sm={2}>
-        <FormGroup check>
-          <Input
-            type="checkbox"
-            checked={completed}
-            disabled={completed}
-            onClick={complete}
-          />
-        </FormGroup>
-      </Col>
-      <Col sm={10}>
-        <strong>{title}</strong>
+    <div className="objective">
+      <FormGroup check>
+        <Input type="checkbox" checked={completed} onClick={complete} />
+      </FormGroup>
+      <Button
+        disabled={completed}
+        size="sm"
+        color="warning"
+        onClick={() => complete(true, true)}
+      >
+        Cancel
+      </Button>
+      <div style={{ flex: 1, marginLeft: "20px" }}>
+        <strong style={{ textDecoration: cancelled ? "line-through" : "" }}>
+          {title}
+        </strong>
         <p>{description}</p>
-      </Col>
-    </Row>
+      </div>
+    </div>
   );
 };
 
@@ -134,6 +148,7 @@ const OBJECTIVE_QUERY = gql`
       description
       station
       completed
+      cancelled
     }
   }
 `;

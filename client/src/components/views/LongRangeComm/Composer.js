@@ -21,7 +21,7 @@ class MessageComposer extends Component {
       message: e.target.value
     });
   }
-  sendMessage() {
+  sendMessage = () => {
     const mutation = gql`
       mutation SendLRMessage($id: ID, $message: String!, $sender: String) {
         sendLongRangeMessage(
@@ -47,8 +47,10 @@ ${this.state.message}`,
       to: "",
       message: ""
     });
-  }
+    this.props.cancel && this.props.cancel();
+  };
   render() {
+    const { cancel } = this.props;
     return (
       <Container fluid>
         <Row>
@@ -61,7 +63,8 @@ ${this.state.message}`,
         </Row>
         <Row>
           <Col sm={12}>
-            <textarea
+            <Input
+              type="textarea"
               style={{
                 width: "100%",
                 height: "20vw",
@@ -74,17 +77,23 @@ ${this.state.message}`,
         </Row>
         <Row>
           <Col sm={{ size: 6 }}>
-            <Button
-              color="danger"
-              onClick={() => this.setState({ to: "", message: "" })}
-              block
-            >
-              Clear
-            </Button>
+            {cancel ? (
+              <Button color="danger" onClick={cancel} block>
+                Cancel
+              </Button>
+            ) : (
+              <Button
+                color="danger"
+                onClick={() => this.setState({ to: "", message: "" })}
+                block
+              >
+                Clear
+              </Button>
+            )}
           </Col>
           <Col sm={6}>
             <Button
-              onClick={this.sendMessage.bind(this)}
+              onClick={this.sendMessage}
               disabled={
                 this.state.message.length === 0 || this.state.to.length === 0
               }

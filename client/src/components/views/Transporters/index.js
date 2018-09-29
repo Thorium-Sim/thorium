@@ -27,6 +27,7 @@ const TRANSPORTER_SUB = gql`
           y
         }
       }
+      chargeSpeed
       requestedTarget
       destination
       damage {
@@ -229,6 +230,7 @@ class Transporters extends Component {
             completeTransport={this.completeTransport.bind(this, transporter)}
             cancelTransport={this.cancelTransport.bind(this, transporter)}
             setCharge={this.setCharge.bind(this, transporter)}
+            chargeSpeed={transporter.chargeSpeed}
             targets={transporter.targets}
           />
         )}
@@ -283,6 +285,7 @@ const TRANSPORTERS_QUERY = gql`
           y
         }
       }
+      chargeSpeed
       requestedTarget
       destination
       damage {

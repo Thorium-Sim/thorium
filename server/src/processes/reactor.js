@@ -4,7 +4,7 @@ import throttle from "../helpers/throttle";
 import uuid from "uuid";
 
 const throttles = {};
-
+const heatThrottles = {};
 const triggerWarning = sys => {
   if (!throttles[sys.id]) {
     throttles[sys.id] = throttle(sys => {
@@ -27,11 +27,37 @@ const triggerWarning = sys => {
         },
         "addCoreFeed"
       );
-    }, 10 * 1000);
+    }, 15 * 1000);
   }
   return throttles[sys.id];
 };
 
+const triggerHeatWarning = sys => {
+  if (!heatThrottles[sys.id]) {
+    heatThrottles[sys.id] = throttle(sys => {
+      pubsub.publish("notify", {
+        id: uuid.v4(),
+        simulatorId: sys.simulatorId,
+        type: "Reactor",
+        station: "Core",
+        title: `Reactor Overheating`,
+        body: "",
+        color: "danger"
+      });
+      App.handleEvent(
+        {
+          simulatorId: sys.simulatorId,
+          component: "HeatCore",
+          title: `Reactor Overheating`,
+          body: null,
+          color: "danger"
+        },
+        "addCoreFeed"
+      );
+    }, 15 * 1000);
+  }
+  return heatThrottles[sys.id];
+};
 const calcStressLevel = ({
   alphaTarget,
   betaTarget,
@@ -76,6 +102,16 @@ const updateReactor = () => {
           const standardHeat = Math.pow(efficiency, 2) / minute30;
           const unblanaceHeat = Math.abs(Math.cbrt(level - oldLevel)) / 5000;
           reactor.setHeat(heat + (standardHeat + unblanaceHeat) * heatRate);
+          if (reactor.heat > 0.9 && !reactor.heatAlerted) {
+            // It's too high of a stress level. Mark the alert and trigger a notification
+            // Use a throttle so the warning doesn't happen too often
+            triggerHeatWarning(reactor)(reactor);
+
+            reactor.heatAlerted = true;
+          }
+          if (reactor.heat < 0.3) {
+            reactor.heatAlerted = false;
+          }
         });
 
         //Reduce the batteries by the amount left over

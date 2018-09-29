@@ -156,6 +156,7 @@ class HeatCore extends Component {
                     prompt={`What do you want to change the heat of ${
                       s.name
                     } to?`}
+                    alert={s.heat > 0.9}
                     onClick={value => this.updateHeat(s.id, value / 100)}
                   >
                     {Math.round(s.heat * 100)}

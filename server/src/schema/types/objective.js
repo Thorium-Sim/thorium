@@ -7,6 +7,7 @@ type Objective{
   title: String
   description: String
   completed: Boolean
+  cancelled: Boolean
 }
 input ObjectiveInput{
   id: ID
@@ -15,5 +16,6 @@ input ObjectiveInput{
   title: String
   description: String
   completed: Boolean
+  cancelled: Boolean
 }
 `;

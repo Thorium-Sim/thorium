@@ -59,7 +59,9 @@ class ExocompConfig extends Component {
                   <div
                     key={`part-config-${id}-${i}`}
                     className="exocomp-part"
-                    style={{ backgroundImage: `url('/parts/${parts[i]}.svg')` }}
+                    style={{
+                      backgroundImage: `url('/parts/${parts[i]}.svg')`
+                    }}
                     onClick={() =>
                       this.setState({
                         parts: parts.filter((__, idx) => idx !== i)

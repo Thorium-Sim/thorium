@@ -64,12 +64,18 @@ export const FlightStructureMutations = {
   // Flight
   startFlight(root, args, context) {
     const flightId = uuid.v4();
-    App.handleEvent(
-      Object.assign(args, { id: flightId }),
-      "startFlight",
-      context
-    );
-    return flightId;
+    return new Promise(resolve => {
+      return App.handleEvent(
+        Object.assign(args, { id: flightId }),
+        "startFlight",
+        {
+          ...context,
+          callback: () => {
+            return resolve(flightId);
+          }
+        }
+      );
+    });
   },
   resetFlight(root, args, context) {
     App.handleEvent(args, "resetFlight", context);

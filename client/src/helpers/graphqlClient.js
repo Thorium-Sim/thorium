@@ -1,16 +1,13 @@
 import randomWords from "random-words";
 import { ApolloClient } from "apollo-client";
 import { HttpLink } from "apollo-link-http";
-import {
-  InMemoryCache,
-  IntrospectionFragmentMatcher
-} from "apollo-cache-inmemory";
 import { split } from "apollo-link";
 import { getMainDefinition } from "apollo-utilities";
 import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
 import { WebSocketLink } from "apollo-link-ws";
 import { MockLink } from "react-apollo/test-utils";
+import { Hermes } from "apollo-cache-hermes";
 import { FLIGHTS_QUERY } from "../containers/FlightDirector/Welcome";
 // Set a clientId for the client
 let clientId = localStorage.getItem("thorium_clientId");
@@ -62,39 +59,7 @@ const link = split(
   httpLink
 );
 
-const cache = new InMemoryCache({
-  dataIdFromObject: result => {
-    if (result.id && result.__typename && result.count) {
-      return result.__typename + result.id + result.count;
-    }
-    if (result.id && result.__typename) {
-      return result.__typename + result.id;
-    }
-    return null;
-  },
-  addTypename: true,
-  //cacheResolvers: {},
-  fragmentMatcher: new IntrospectionFragmentMatcher({
-    introspectionQueryResultData: {
-      __schema: {
-        types: [
-          {
-            kind: "UNION",
-            name: "Location",
-            possibleTypes: [
-              {
-                name: "Deck"
-              },
-              {
-                name: "Room"
-              }
-            ]
-          }
-        ]
-      }
-    }
-  })
-});
+const cache = new Hermes();
 
 const client = new ApolloClient({
   link,

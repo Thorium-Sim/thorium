@@ -54,7 +54,6 @@ function addAspects(template, sim) {
         rooms.forEach(room => {
           const oldRoom = App.rooms.find(r => r.id === room);
           if (!oldRoom) {
-            console.log("Failed to load room: ", room);
             return;
           }
           const oldDeck = App.decks.find(d => d.id === oldRoom.deckId);
@@ -101,7 +100,7 @@ function addAspects(template, sim) {
         }
       }
       App[aspect].push(
-        new Classes[newAspect.class](Object.assign({}, newAspect))
+        new Classes[newAspect.class](Object.assign({}, newAspect), true)
       );
     });
   });
@@ -133,7 +132,7 @@ function addAspects(template, sim) {
   });
 }
 // Flight
-App.on("startFlight", ({ id, name, simulators }) => {
+App.on("startFlight", ({ id, name, simulators, context }) => {
   // Loop through all of the simulators
   const simIds = simulators.map(s => {
     const template = Object.assign(
@@ -161,6 +160,7 @@ App.on("startFlight", ({ id, name, simulators }) => {
   });
   App.flights.push(new Classes.Flight({ id, name, simulators: simIds }));
   pubsub.publish("flightsUpdate", App.flights);
+  context.callback && context.callback();
 });
 
 App.on("deleteFlight", ({ flightId }) => {

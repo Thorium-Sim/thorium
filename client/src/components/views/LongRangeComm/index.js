@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import { Row, Col, ListGroup, ListGroupItem, Button } from "reactstrap";
 import Measure from "react-measure";
 import Satellites from "./Satellites";
+import Composer from "./Composer";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -262,7 +263,7 @@ class LongRangeComm extends Component {
       return null;
     const messages = this.props.data.longRangeCommunications[0].messages;
     const messageObj = messages.find(m => m.id === this.state.selectedMessage);
-    const { scanProgress, satellites } = this.state;
+    const { scanProgress, satellites, composing } = this.state;
     const messageText = messageObj && this.encrypt(messageObj);
     return (
       <Row className="long-range-comm">
@@ -302,83 +303,105 @@ class LongRangeComm extends Component {
               </ListGroupItem>
             ))}
           </ListGroup>
+          <Button
+            block
+            color="success"
+            onClick={() => this.setState({ composing: true })}
+          >
+            Compose Message
+          </Button>
         </Col>
         <Col sm={9} className="flex-column">
-          <Measure
-            bounds
-            onResize={contentRect => {
-              this.setState({ dimensions: contentRect.bounds });
-            }}
-          >
-            {({ measureRef }) => (
-              <div ref={measureRef} className="sat-container flex-max">
-                {this.state.dimensions && (
-                  <Satellites
-                    selectSat={
-                      messageObj ? this.selectSat.bind(this) : () => {}
-                    }
-                    selectedSat={this.state.selectedSat}
-                    messageLoc={this.state.messageLoc}
-                    messageText={messageText}
-                    satellites={satellites}
-                    scanProgress={scanProgress}
-                    {...this.state.dimensions}
-                  />
+          {composing ? (
+            <Composer
+              {...this.props}
+              cancel={() => this.setState({ composing: false })}
+            />
+          ) : (
+            <Fragment>
+              <Measure
+                bounds
+                onResize={contentRect => {
+                  this.setState({ dimensions: contentRect.bounds });
+                }}
+              >
+                {({ measureRef }) => (
+                  <div ref={measureRef} className="sat-container flex-max">
+                    {this.state.dimensions && (
+                      <Satellites
+                        selectSat={
+                          messageObj ? this.selectSat.bind(this) : () => {}
+                        }
+                        selectedSat={this.state.selectedSat}
+                        messageLoc={this.state.messageLoc}
+                        messageText={messageText}
+                        satellites={satellites}
+                        scanProgress={scanProgress}
+                        {...this.state.dimensions}
+                      />
+                    )}
+                  </div>
                 )}
-              </div>
-            )}
-          </Measure>
-          {scanProgress === 1 &&
-            satellites.length > 0 && (
-              <Row style={{ marginTop: "10px" }}>
-                <Col lg={{ size: 4, offset: 1 }} xl={{ size: 3, offset: 2 }}>
-                  <Button
-                    onClick={this.deleteMessage.bind(this)}
-                    size="lg"
-                    block
-                    disabled={!messageObj}
-                    color="danger"
-                  >
-                    Delete Message
-                  </Button>
-                </Col>
-                <Col lg={{ size: 4, offset: 2 }} xl={{ size: 3, offset: 2 }}>
-                  <Button
-                    onClick={this.sendMessage.bind(this)}
-                    disabled={!this.state.selectedSat || !messageObj}
-                    size="lg"
-                    block
-                    color="success"
-                  >
-                    Send Message
-                  </Button>
-                </Col>
-              </Row>
-            )}
-          {satellites.length < 1 &&
-            (scanProgress === 1 || scanProgress === 0) && (
-              <Row style={{ marginTop: "10px" }}>
-                <Col sm={{ size: 10, offset: 1 }}>
-                  <Button
-                    size="lg"
-                    block
-                    color="primary"
-                    onClick={this.startScanning}
-                  >
-                    Scan for Satellites
-                  </Button>
-                </Col>
-              </Row>
-            )}
-          {scanProgress < 1 &&
-            scanProgress > 0 && (
-              <Row style={{ marginTop: "10px" }}>
-                <Col sm={12} className="text-center">
-                  <h2>Scanning...</h2>
-                </Col>
-              </Row>
-            )}
-          <MessageBox message={messageText} />
+              </Measure>
+              {scanProgress === 1 &&
+                satellites.length > 0 && (
+                  <Row style={{ marginTop: "10px" }}>
+                    <Col
+                      lg={{ size: 4, offset: 1 }}
+                      xl={{ size: 3, offset: 2 }}
+                    >
+                      <Button
+                        onClick={this.deleteMessage.bind(this)}
+                        size="lg"
+                        block
+                        disabled={!messageObj}
+                        color="danger"
+                      >
+                        Delete Message
+                      </Button>
+                    </Col>
+                    <Col
+                      lg={{ size: 4, offset: 2 }}
+                      xl={{ size: 3, offset: 2 }}
+                    >
+                      <Button
+                        onClick={this.sendMessage.bind(this)}
+                        disabled={!this.state.selectedSat || !messageObj}
+                        size="lg"
+                        block
+                        color="success"
+                      >
+                        Send Message
+                      </Button>
+                    </Col>
+                  </Row>
+                )}
+              {satellites.length < 1 &&
+                (scanProgress === 1 || scanProgress === 0) && (
+                  <Row style={{ marginTop: "10px" }}>
+                    <Col sm={{ size: 10, offset: 1 }}>
+                      <Button
+                        size="lg"
+                        block
+                        color="primary"
+                        onClick={this.startScanning}
+                      >
+                        Scan for Satellites
+                      </Button>
+                    </Col>
+                  </Row>
+                )}
+              {scanProgress < 1 &&
+                scanProgress > 0 && (
+                  <Row style={{ marginTop: "10px" }}>
+                    <Col sm={12} className="text-center">
+                      <h2>Scanning...</h2>
+                    </Col>
+                  </Row>
+                )}
+              <MessageBox message={messageText} />
+            </Fragment>
+          )}
         </Col>
         <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Row>
