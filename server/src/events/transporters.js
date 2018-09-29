@@ -128,3 +128,13 @@ App.on("setTransporterTargets", params => {
 
   pubsub.publish("transporterUpdate", transporter);
 });
+
+App.on("setTransporterChargeSpeed", ({ id, simulatorId, chargeSpeed }) => {
+  const transporter = App.systems.find(
+    sys =>
+      sys.id === id ||
+      (sys.simulatorId === simulatorId && sys.type === "Transporters")
+  );
+  transporter.setChargeSpeed(chargeSpeed);
+  pubsub.publish("transporterUpdate", transporter);
+});

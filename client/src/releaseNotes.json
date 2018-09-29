@@ -1,10 +1,16 @@
 {
   "1.0.16": {
     "features": [
+      "Added the ability to un-complete a mission objective from the core.",
+      "Added the ability to mark a mission objective as cancelled.",
       "Add a compose button to the long range communications card so you don't need the widget.",
       "Add a preview for intership message timeline items.",
       "Team officers are now sorted by position, making it easier to find a specific position.",
-      "Allow for selecting timeline item info from the preview. "
+      "Allow for selecting timeline item info from the preview.",
+      "Add alerts for engines and reactor overheating.",
+      "Add a 'Finish Decontamination' button to core.",
+      "Add the ability to change how fast the transporters can be charged.",
+      "Change the login screen to say 'Officer' instead of 'Agent'."
     ],
     "fixes": [
       "Update dependency package versions.",

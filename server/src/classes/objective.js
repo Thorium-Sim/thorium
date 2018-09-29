@@ -10,8 +10,17 @@ export default class Objective {
     this.title = params.title || "Objective";
     this.description = params.description || "";
     this.completed = params.completed || false;
+    this.cancelled = params.cancelled || false;
   }
   complete() {
     this.completed = true;
+  }
+  uncomplete() {
+    this.completed = false;
+    this.cancelled = false;
+  }
+  cancel() {
+    this.completed = true;
+    this.cancelled = true;
   }
 }

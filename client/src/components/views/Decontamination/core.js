@@ -1,6 +1,7 @@
 import React from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
+import { Button } from "reactstrap";
 import { Mutation } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
@@ -64,6 +65,20 @@ const DecontaminationCore = ({
         <p>Program: {deconProgram}</p>
         <p>Location: {deconLocation}</p>
         <p>Offset: {Math.round(deconOffset)}%</p>
+        <Mutation
+          mutation={gql`
+            mutation FinishProgram($id: ID!) {
+              completeDeconProgram(id: $id)
+            }
+          `}
+          variables={{ id }}
+        >
+          {action => (
+            <Button size="sm" color="warning" onClick={action}>
+              Finish Program
+            </Button>
+          )}
+        </Mutation>
       </div>
     ) : (
       <p>No active decon program</p>

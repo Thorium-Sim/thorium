@@ -51,7 +51,7 @@ class Alerts extends Component {
           const speech = storedSpeech ? JSON.parse(storedSpeech) : {};
           const alerts = self.state.alerts;
           if (notify && notify.id) {
-            if (!allowed[notify.type] === false) {
+            if (allowed[notify.type] !== false) {
               if (!self.props.disabled) {
                 alerts.push(Object.assign(notify, { visible: true }));
                 self.setState({
@@ -64,7 +64,7 @@ class Alerts extends Component {
                 }, duration);
               }
             }
-            if (!speech[notify.type] === false) {
+            if (speech[notify.type] !== false) {
               if (self.props.station.name === "Core" && self.props.speech) {
                 synth.cancel();
                 synth.speak(new SpeechSynthesisUtterance(notify.title));

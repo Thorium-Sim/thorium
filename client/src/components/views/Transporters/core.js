@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { InputField, OutputField } from "../../generic/core";
-import { graphql, withApollo } from "react-apollo";
+import { Input } from "reactstrap";
+import { graphql, withApollo, Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
@@ -14,15 +15,10 @@ const TRANSPORTER_SUB = gql`
       simulatorId
       targets {
         id
-        icon
-        moving
-        position {
-          x
-          y
-        }
       }
       requestedTarget
       destination
+      chargeSpeed
     }
   }
 `;
@@ -101,6 +97,36 @@ class TransporterCore extends Component {
                       : ""
                   } `}
             </OutputField>
+            <Mutation
+              mutation={gql`
+                mutation SetChargeSpeed($id: ID!, $chargeSpeed: Float!) {
+                  setTransporterChargeSpeed(id: $id, chargeSpeed: $chargeSpeed)
+                }
+              `}
+            >
+              {action => (
+                <Input
+                  type="select"
+                  style={{ height: "20px" }}
+                  bsSize="sm"
+                  value={console.log(transporter) || transporter.chargeSpeed}
+                  onChange={e =>
+                    action({
+                      variables: {
+                        id: transporter.id,
+                        chargeSpeed: e.target.value
+                      }
+                    })
+                  }
+                >
+                  <option value={0.009}>Very Fast</option>
+                  <option value={0.005}>Fast</option>
+                  <option value={0.0025}>Normal</option>
+                  <option value={0.001}>Slow</option>
+                  <option value={0.0005}>Very Slow</option>
+                </Input>
+              )}
+            </Mutation>
             <OutputField>{transporter.requestedTarget}</OutputField>
             <OutputField>{transporter.destination}</OutputField>
             <InputField
@@ -130,6 +156,7 @@ const TRANSPORTERS_QUERY = gql`
       }
       requestedTarget
       destination
+      chargeSpeed
     }
   }
 `;

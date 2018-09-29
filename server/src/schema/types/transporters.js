@@ -11,6 +11,7 @@ type Transporter {
   state: String
   power: Power
   damage: Damage
+  chargeSpeed: Float
 }
 type TransporterTarget {
   id: ID

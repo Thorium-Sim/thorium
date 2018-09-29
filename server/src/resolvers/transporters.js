@@ -46,6 +46,9 @@ export const TransporterMutations = {
   setTransporterTargets(_, { transporter, targets }, context) {
     App.handleEvent({ transporter, targets }, "setTransporterTargets", context);
     return "";
+  },
+  setTransporterChargeSpeed(root, args, context) {
+    App.handleEvent(args, "setTransporterChargeSpeed", context);
   }
 };
 
