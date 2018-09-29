@@ -67,6 +67,7 @@ const CrewChoice = ({ crew, teams, selectedCrew, updateSelectedCrew }) => {
     .map(t => t.id);
   const sorter = (a, b) => {
     if (a.inventory.length > b.inventory.length) return -1;
+    if (a.inventory.length < b.inventory.length) return 1;
     if (a.name > b.name) return 1;
     if (a.name < b.name) return -1;
     return 0;
