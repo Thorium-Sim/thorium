@@ -17,7 +17,7 @@ class Task {
     // methods for the task
     this.generator = params.generator || "Generic";
 
-    // The template
+    // The task template
     this.taskTemplate = params.taskTemplate || "";
 
     // Task parameters
