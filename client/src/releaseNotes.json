@@ -1,4 +1,7 @@
 {
+  "1.0.17": {
+    "fixes": ["Update the dilithium stress animation to be prettier."]
+  },
   "1.0.16": {
     "features": [
       "Added the ability to un-complete a mission objective from the core.",
