@@ -208,11 +208,11 @@ class PhaserCharging extends Component {
             </Row>
           </Col>
         </Row>
-        {/* <PhaserArc
+        <PhaserArc
           client={this.props.client}
           phaserId={phasers.id}
           arc={phasers.arc}
-        /> */}
+        />
         <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
@@ -343,16 +343,12 @@ export class PhaserArc extends Component {
     });
   }
   changeArc = direction => {
-    let { arc } = this.state;
-    if (direction === "up") {
-      arc += 0.04;
-    } else {
-      arc -= 0.04;
-    }
-    arc = Math.min(1, Math.max(0, arc));
-    this.setState({
-      arc
-    });
+    this.setState(state => ({
+      arc: Math.min(
+        1,
+        Math.max(0, direction === "up" ? state.arc + 0.04 : state.arc - 0.04)
+      )
+    }));
     if (this.arcTimeout) {
       this.arcTimeout = setTimeout(() => this.changeArc(direction), 100);
     } else {
@@ -364,8 +360,8 @@ export class PhaserArc extends Component {
     document.addEventListener("touchend", this.mouseUp);
     this.arcTimeout = setTimeout(() => this.changeArc(direction), 100);
   }
-  componentDidUpdate() {
-    if (this.state.arc !== this.props.arc) {
+  componentDidUpdate(oldProps) {
+    if (oldProps.arc !== this.props.arc) {
       this.setState({
         arc: this.props.arc
       });
@@ -388,16 +384,16 @@ export class PhaserArc extends Component {
       <Row style={{ height: "200px" }} className="phaserArc">
         <Col sm={{ size: 4 }} style={{ marginTop: "50px" }}>
           <Button
-            onMouseDown={this.updateArc.bind(this, "up")}
-            onTouchStart={this.updateArc.bind(this, "up")}
+            onMouseDown={() => this.updateArc("up")}
+            onTouchStart={() => this.updateArc("up")}
             block
             color="warning"
           >
             Widen Arc
           </Button>
           <Button
-            onMouseDown={this.updateArc.bind(this, "down")}
-            onTouchStart={this.updateArc.bind(this, "down")}
+            onMouseDown={() => this.updateArc("down")}
+            onTouchStart={() => this.updateArc("down")}
             block
             color="warning"
           >
