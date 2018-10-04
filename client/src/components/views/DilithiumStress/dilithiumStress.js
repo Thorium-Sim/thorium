@@ -5,6 +5,42 @@ import gql from "graphql-tag";
 import Bars from "../TractorBeam/bars";
 import Platform from "./platform";
 import Tour from "helpers/tourHelper";
+
+const frames = Array(20)
+  .fill(0)
+  .map((_, i) => require(`./frames/frame${i}.png`));
+class Animation extends Component {
+  state = { frame: 0, dir: 1 };
+  componentDidMount() {
+    this.looping = true;
+    this.loop();
+  }
+  componentWillUnmount() {
+    clearTimeout(this.looping);
+    this.looping = false;
+  }
+  loop = () => {
+    const { frame, dir } = this.state;
+    if (!this.looping) return;
+    this.setState({
+      frame: frame + dir === 19 ? 0 : frame + dir
+    });
+    this.looping = setTimeout(this.loop, 50);
+  };
+  render() {
+    const { style = {} } = this.props;
+    const { frame } = this.state;
+    return (
+      <img
+        alt="Reaction"
+        className="reaction"
+        draggable={false}
+        style={style}
+        src={frames[frame]}
+      />
+    );
+  }
+}
 class DilithiumStress extends Component {
   constructor(props) {
     super(props);
@@ -147,7 +183,7 @@ class DilithiumStress extends Component {
         </Mutation>
         <img alt="Dilithium" src={require("./dilithiumCrystal.svg")} />
         <div className="dilithium-effects">
-          <video src={require("./reactor.ogv")} autoPlay loop />
+          <Animation />
           <Platform className="antimatter" />
           <Platform className="matter" color="#4953DF" />
           <Platform className="plasma" color="#51AE41" />
