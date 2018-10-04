@@ -78,6 +78,9 @@ class Objects extends Component {
   moveContact = (dest, loc, speed, frozen, i) => {
     if (speed > 100) return dest;
     if (speed === 0 || frozen) return loc;
+    if (distance3d(dest, loc) < 0.01) {
+      speed = 0.5;
+    }
     if (distance3d(dest, loc) < 0.001) {
       return dest;
     }

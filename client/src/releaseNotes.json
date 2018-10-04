@@ -1,6 +1,12 @@
 {
   "1.0.17": {
-    "fixes": ["Update the dilithium stress animation to be prettier."]
+    "fixes": [
+      "Add phaser arc back to the phaser charging screen.",
+      "Make it so thrusters don't show erronious numbers, like 360˚.",
+      "Shield frequencies are now properly limited to below 350 MHz",
+      "Tactical map objects will no longer shake when traveling at high speeds.",
+      "Update the dilithium stress animation to be prettier."
+    ]
   },
   "1.0.16": {
     "features": [
