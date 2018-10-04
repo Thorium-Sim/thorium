@@ -193,28 +193,6 @@ export const ClientTypes = {
       return App.simulators.find(s => s.id === rootValue.simulatorId);
     },
     station(rootValue) {
-      if (rootValue.station === "Viewscreen") {
-        return {
-          name: "Viewscreen",
-          cards: [
-            {
-              name: "Viewscreen",
-              component: "Viewscreen"
-            }
-          ]
-        };
-      }
-      if (rootValue.station === "Blackout") {
-        return {
-          name: "Blackout",
-          cards: [
-            {
-              name: "Blackout",
-              component: "Blackout"
-            }
-          ]
-        };
-      }
       if (
         rootValue.station &&
         rootValue.station.match(/keyboard:.{8}-.{4}-.{4}-.{4}-.{12}/gi)
@@ -244,7 +222,23 @@ export const ClientTypes = {
         s => s.id === rootValue.simulatorId
       );
       if (simulator) {
-        return simulator.stations.find(s => s.name === rootValue.station);
+        const station = simulator.stations.find(
+          s => s.name === rootValue.station
+        );
+        if (station) return station;
+        // Fallback for Viewscreen, Blackout, and Mobile
+        if (rootValue.station) {
+          return {
+            name: rootValue.station,
+            cards: [
+              {
+                name: rootValue.station,
+                component: rootValue.station
+              }
+            ]
+          };
+        }
+        return null;
       }
     }
   },

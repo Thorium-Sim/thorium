@@ -1,5 +1,5 @@
 export default `
-  clientConnect(client: ID!):String
+  clientConnect(client: ID!, mobile:Boolean, cards:[String]):String
   clientDisconnect(client: ID!):String
   clientPing(client: ID!, ping: String!):String
   clientSetFlight(client: ID!, flightId: ID!):String

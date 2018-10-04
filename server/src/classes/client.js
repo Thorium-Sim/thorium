@@ -19,9 +19,15 @@ export default class Client {
     this.training = params.training || false;
     this.overlay = params.overlay || false;
     this.caches = params.caches || [];
+
+    // For the mobile app
+    this.mobile = params.mobile || false;
+    this.cards = params.cards || [];
   }
-  connect() {
+  connect({ mobile, cards }) {
     this.connected = true;
+    this.mobile = mobile;
+    this.cards = cards || [];
   }
   disconnect() {
     this.connected = false;

@@ -14,15 +14,20 @@ function randomFromList(list) {
   return list[index];
 }
 
-App.on("clientConnect", ({ client }) => {
+App.on("clientConnect", ({ client, mobile, cards }) => {
   const clientObj = App.clients.find(c => c.id === client);
   if (clientObj) {
     // There is a client alread in the database
     // Just make sure it is connected
-    clientObj.connect();
+    clientObj.connect({ mobile, cards });
   } else {
     // Add it to the server
-    const newClient = new Client({ id: client, connected: true });
+    const newClient = new Client({
+      id: client,
+      connected: true,
+      mobile,
+      cards
+    });
     App.clients.push(newClient);
   }
   pubsub.publish("clientChanged", App.clients);

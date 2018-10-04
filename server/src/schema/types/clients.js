@@ -14,6 +14,9 @@ type Client {
   caches: [String]
   hypercard: String
   overlay: Boolean
+
+  mobile: Boolean
+  cards: [String]
 }
 
 type Sound {
