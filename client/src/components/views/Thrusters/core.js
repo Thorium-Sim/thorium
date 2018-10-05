@@ -98,13 +98,13 @@ class ThrusterCore extends Component {
           <Col sm={4}>Pitch</Col>
           <Col sm={4}>Roll</Col>
           <Col sm={4}>
-            <OutputField>{Math.round(thrusters.rotation.yaw)}</OutputField>
+            <OutputField>{Math.floor(thrusters.rotation.yaw)}</OutputField>
           </Col>
           <Col sm={4}>
-            <OutputField>{Math.round(thrusters.rotation.pitch)}</OutputField>
+            <OutputField>{Math.floor(thrusters.rotation.pitch)}</OutputField>
           </Col>
           <Col sm={4}>
-            <OutputField>{Math.round(thrusters.rotation.roll)}</OutputField>
+            <OutputField>{Math.floor(thrusters.rotation.roll)}</OutputField>
           </Col>
           <Col sm={4}>
             <InputField
@@ -114,7 +114,10 @@ class ThrusterCore extends Component {
               }
               prompt="What is the required yaw?"
               onClick={value => {
-                this.setRequiredRotation("yaw", value);
+                this.setRequiredRotation(
+                  "yaw",
+                  Math.min(359, Math.max(0, value))
+                );
               }}
             >
               {Math.round(thrusters.rotationRequired.yaw)}
@@ -128,7 +131,10 @@ class ThrusterCore extends Component {
               }
               prompt="What is the required pitch?"
               onClick={value => {
-                this.setRequiredRotation("pitch", value);
+                this.setRequiredRotation(
+                  "pitch",
+                  Math.min(359, Math.max(0, value))
+                );
               }}
             >
               {Math.round(thrusters.rotationRequired.pitch)}
@@ -142,7 +148,10 @@ class ThrusterCore extends Component {
               }
               prompt="What is the required roll?"
               onClick={value => {
-                this.setRequiredRotation("roll", value);
+                this.setRequiredRotation(
+                  "roll",
+                  Math.min(359, Math.max(0, value))
+                );
               }}
             >
               {Math.round(thrusters.rotationRequired.roll)}

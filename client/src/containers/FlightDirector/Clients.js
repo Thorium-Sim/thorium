@@ -3,6 +3,7 @@ import { Col, Row, Container } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo, Query } from "react-apollo";
 import { DateTime } from "luxon";
+import { titleCase } from "change-case";
 import FontAwesome from "react-fontawesome";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
@@ -28,6 +29,8 @@ const CLIENT_CHANGE_QUERY = gql`
   subscription ClientChanged {
     clientChanged {
       id
+      mobile
+      cards
       flight {
         id
         name
@@ -121,58 +124,73 @@ const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
         </select>
       </td>
       <td>
-        <select
-          value={(p.station && p.station.name) || ""}
-          onChange={e => select(p, "station", e)}
-          className="form-control-sm c-select station-picker"
-        >
-          <option value="">Select a station</option>
-          {p.simulator ? (
-            p.simulator.stations.map(s => (
-              <option key={`${p.id}-station-${s.name}`} value={s.name}>
-                {s.name}
+        {p.mobile ? (
+          <select
+            value={p.station && p.station.name}
+            onChange={e => select(p, "station", e)}
+            className="form-control-sm c-select station-picker"
+          >
+            <option value="">Select a screen</option>
+            {p.cards.map(c => (
+              <option key={`${p.id}-station-${c}`} value={c}>
+                {titleCase(c)}
               </option>
-            ))
-          ) : (
-            <option disabled>No Stations</option>
-          )}
-          {p.simulator && (
-            <Fragment>
-              <option disabled>──────────</option>
-              <option value={"Viewscreen"}>Viewscreen</option>
-              <option value={"Sound"}>Sound</option>
-              <option value={"Blackout"}>Blackout</option>
-              <Query
-                query={gql`
-                  query Keyboards {
-                    keyboard {
-                      id
-                      name
+            ))}
+          </select>
+        ) : (
+          <select
+            value={(p.station && p.station.name) || ""}
+            onChange={e => select(p, "station", e)}
+            className="form-control-sm c-select station-picker"
+          >
+            <option value="">Select a station</option>
+            {p.simulator ? (
+              p.simulator.stations.map(s => (
+                <option key={`${p.id}-station-${s.name}`} value={s.name}>
+                  {s.name}
+                </option>
+              ))
+            ) : (
+              <option disabled>No Stations</option>
+            )}
+            {p.simulator && (
+              <Fragment>
+                <option disabled>──────────</option>
+                <option value={"Viewscreen"}>Viewscreen</option>
+                <option value={"Sound"}>Sound</option>
+                <option value={"Blackout"}>Blackout</option>
+                <Query
+                  query={gql`
+                    query Keyboards {
+                      keyboard {
+                        id
+                        name
+                      }
                     }
-                  }
-                `}
-              >
-                {({ loading, data: { keyboard } }) => {
-                  if (loading || keyboard.length === 0) {
-                    return null;
-                  }
-                  return (
-                    <Fragment>
-                      <option disabled>──────────</option>
-                      <optgroup label="Keyboards">
-                        {keyboard.map(k => (
-                          <option key={k.id} value={`keyboard:${k.id}`}>
-                            {k.name}
-                          </option>
-                        ))}
-                      </optgroup>
-                    </Fragment>
-                  );
-                }}
-              </Query>
-            </Fragment>
-          )}
-        </select>
+                  `}
+                >
+                  {({ loading, data: { keyboard } }) => {
+                    if (loading || keyboard.length === 0) {
+                      return null;
+                    }
+                    return (
+                      <Fragment>
+                        <option disabled>──────────</option>
+                        <optgroup label="Keyboards">
+                          {keyboard.map(k => (
+                            <option key={k.id} value={`keyboard:${k.id}`}>
+                              {k.name}
+                            </option>
+                          ))}
+                        </optgroup>
+                      </Fragment>
+                    );
+                  }}
+                </Query>
+              </Fragment>
+            )}
+          </select>
+        )}
       </td>
     </tr>
   );
@@ -409,6 +427,8 @@ const CLIENTS_QUERY = gql`
   query Clients {
     clients {
       id
+      mobile
+      cards
       flight {
         id
         name

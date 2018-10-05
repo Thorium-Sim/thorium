@@ -18,6 +18,15 @@ export const ClientQueries = {
       returnVal = returnVal.filter(c => c.flightId === flightId);
     }
     return returnVal.filter(c => c.connected);
+  },
+  keypad: (root, { client }) => {
+    const c = App.clients.find(c => c.id === client);
+    return c ? c.keypad : null;
+  },
+  keypads: (root, { simulatorId }) => {
+    return App.clients
+      .filter(c => c.simulatorId === simulatorId)
+      .map(c => c.keypad);
   }
 };
 
@@ -100,6 +109,27 @@ export const ClientMutations = {
   },
   setClientOverlay(root, args, context) {
     App.handleEvent(args, "setClientOverlay", context);
+  },
+  setKeypadCode(root, args, context) {
+    App.handleEvent(args, "setKeypadCode", context);
+  },
+  setKeypadEnteredCode(root, args, context) {
+    App.handleEvent(args, "setKeypadEnteredCode", context);
+  },
+  setKeypadHint(root, args, context) {
+    App.handleEvent(args, "setKeypadHint", context);
+  },
+  setKeypadLocked(root, args, context) {
+    App.handleEvent(args, "setKeypadLocked", context);
+  },
+  resetKeypad(root, args, context) {
+    App.handleEvent(args, "resetKeypad", context);
+  },
+  setCodeLength(root, args, context) {
+    App.handleEvent(args, "setCodeLength", context);
+  },
+  setKeypadAllowedAttempts(root, args, context) {
+    App.handleEvent(args, "setKeypadAllowedAttempts", context);
   }
 };
 
@@ -133,6 +163,25 @@ export const ClientSubscriptions = {
           return payload.filter(c => c.flightId === flightId).length > 0;
         }
         return true;
+      }
+    )
+  },
+  keypadUpdate: {
+    resolve: payload => payload,
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("keypadUpdate"),
+      (data, { client }) => {
+        return data.id === client;
+      }
+    )
+  },
+  keypadsUpdate: {
+    resolve: (payload, { simulatorId }) =>
+      payload.filter(c => c.simulatorId === simulatorId).map(c => c.keypad),
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("keypadsUpdate"),
+      (data, { simulatorId }) => {
+        return data.filter(c => c.simulatorId === simulatorId).length > 0;
       }
     )
   },
@@ -193,28 +242,6 @@ export const ClientTypes = {
       return App.simulators.find(s => s.id === rootValue.simulatorId);
     },
     station(rootValue) {
-      if (rootValue.station === "Viewscreen") {
-        return {
-          name: "Viewscreen",
-          cards: [
-            {
-              name: "Viewscreen",
-              component: "Viewscreen"
-            }
-          ]
-        };
-      }
-      if (rootValue.station === "Blackout") {
-        return {
-          name: "Blackout",
-          cards: [
-            {
-              name: "Blackout",
-              component: "Blackout"
-            }
-          ]
-        };
-      }
       if (
         rootValue.station &&
         rootValue.station.match(/keyboard:.{8}-.{4}-.{4}-.{4}-.{12}/gi)
@@ -244,7 +271,23 @@ export const ClientTypes = {
         s => s.id === rootValue.simulatorId
       );
       if (simulator) {
-        return simulator.stations.find(s => s.name === rootValue.station);
+        const station = simulator.stations.find(
+          s => s.name === rootValue.station
+        );
+        if (station) return station;
+        // Fallback for Viewscreen, Blackout, and Mobile
+        if (rootValue.station) {
+          return {
+            name: rootValue.station,
+            cards: [
+              {
+                name: rootValue.station,
+                component: rootValue.station
+              }
+            ]
+          };
+        }
+        return null;
       }
     }
   },

@@ -62,6 +62,12 @@
     right: 50%;
     pointer-events: none;
   }
+  .reaction {
+    height: 100%;
+    pointer-events: none;
+    right: -14%;
+    left: unset;
+  }
   .matter-label {
     font-size: 3vw;
     position: absolute;
@@ -98,6 +104,6 @@
   .plasma {
     left: -37%;
     transform: rotate(90deg);
-    top: 47%;
+    top: 52%;
   }
 }
