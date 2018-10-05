@@ -142,6 +142,7 @@ import HypercardCore from "./Clients/hypercardCore";
 import ClientsCore from "./Clients/core";
 import JumpDriveCore from "./JumpDrive/core";
 import BridgeMapCore from "./BridgeMap/core";
+import KeypadCore from "./Keypad/core";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -360,7 +361,8 @@ export const Cores = {
   HypercardCore,
   JumpDriveCore,
   ClientsCore,
-  BridgeMapCore
+  BridgeMapCore,
+  KeypadCore
 };
 
 export default Views;

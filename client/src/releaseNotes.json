@@ -6,6 +6,10 @@
       "Shield frequencies are now properly limited to below 350 MHz",
       "Tactical map objects will no longer shake when traveling at high speeds.",
       "Update the dilithium stress animation to be prettier."
+    ],
+    "features": [
+      "Add support for Thorium Mobile, a companion mobile app. Check https://thoriumsim.com/download for information about downloading the mobile apps.",
+      "Add a keypad core for the keypad screen on the mobile application."
     ]
   },
   "1.0.16": {
