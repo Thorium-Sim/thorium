@@ -1,6 +1,58 @@
 import uuid from "uuid";
 import App from "../app";
 
+class Keypad {
+  constructor(params = {}, clientId) {
+    this.id = clientId;
+    this.code =
+      params.code ||
+      Array(4)
+        .fill(0)
+        .map(() => Math.floor(Math.random() * 10));
+    this.enteredCode = params.enteredCode || [];
+    this.codeLength = params.codeLength || 4;
+    this.giveHints = params.giveHints || true;
+    this.allowedAttempts = params.allowedAttempts || 0; // Default - infinte
+    this.attempts = params.attempts || 0;
+    this.locked = params.locked || false;
+  }
+  setCode(code) {
+    if (code && code.length > 0) {
+      const codeArr = code.slice(0, 8);
+      this.code = codeArr;
+    } else {
+      this.code = Array(this.codeLength)
+        .fill(0)
+        .map(() => Math.floor(Math.random() * 10));
+    }
+  }
+  setEnteredCode(code) {
+    this.attempts += 1;
+    if (this.attempts <= this.allowedAttempts || this.allowedAttempts === 0) {
+      this.enteredCode = code || [];
+    } else {
+      this.locked = true;
+    }
+  }
+  reset() {
+    this.enteredCode = [];
+    this.attempts = 0;
+    this.locked = false;
+  }
+  setHint(hint) {
+    this.giveHints = hint;
+  }
+  setCodeLength(length) {
+    this.codeLength = Math.min(8, Math.max(1, length));
+  }
+  setAllowedAttempts(a) {
+    this.allowedAttempts = Math.max(0, a);
+  }
+  setLocked(locked) {
+    this.locked = locked;
+  }
+}
+
 export default class Client {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
@@ -23,6 +75,9 @@ export default class Client {
     // For the mobile app
     this.mobile = params.mobile || false;
     this.cards = params.cards || [];
+
+    // Keypad
+    this.keypad = new Keypad(params.keypad, this.id);
   }
   connect({ mobile, cards }) {
     this.connected = true;

@@ -23,6 +23,15 @@ export default `
   
   #Macro: Cancel All Sounds
   stopAllSounds(simulatorId:ID!):String
-applyClientSet(id:ID!, flightId:ID!, simulatorId:ID!, templateId:ID!, stationSetId:ID!):String
-setClientOverlay(id:ID!, overlay:Boolean!):String
+  applyClientSet(id:ID!, flightId:ID!, simulatorId:ID!, templateId:ID!, stationSetId:ID!):String
+  setClientOverlay(id:ID!, overlay:Boolean!):String
+
+
+  setKeypadCode(id:ID!, code:[Int]):String
+  setKeypadEnteredCode(id:ID!, code:[Int!]):String
+  setKeypadHint(id:ID!, hint:Boolean!):String
+  setKeypadLocked(id:ID!, locked:Boolean!):String
+  resetKeypad(id:ID!):String
+  setCodeLength(id:ID!, len:Int!):String
+  setKeypadAllowedAttempts(id:ID!, attempts:Int!):String
 `;

@@ -14,6 +14,18 @@ function randomFromList(list) {
   return list[index];
 }
 
+function performKeypadAction(id, action) {
+  const clientObj = App.clients.find(c => c.id === id);
+  if (clientObj) {
+    action(clientObj.keypad);
+    pubsub.publish("keypadUpdate", clientObj.keypad);
+    pubsub.publish(
+      "keypadsUpdate",
+      App.clients.filter(c => c.simulatorId === clientObj.simulatorId)
+    );
+  }
+}
+
 App.on("clientConnect", ({ client, mobile, cards }) => {
   const clientObj = App.clients.find(c => c.id === client);
   if (clientObj) {
@@ -261,4 +273,46 @@ App.on("setClientOverlay", ({ id, overlay }) => {
   const c = App.clients.find(c => c.id === id);
   c.setOverlay(overlay);
   pubsub.publish("clientChanged", App.clients);
+});
+
+App.on("setKeypadCode", ({ id, code }) => {
+  performKeypadAction(id, client => {
+    client.setCode(code);
+  });
+});
+
+App.on("setKeypadEnteredCode", ({ id, code }) => {
+  performKeypadAction(id, client => {
+    client.setEnteredCode(code);
+  });
+});
+
+App.on("setKeypadHint", ({ id, hint }) => {
+  performKeypadAction(id, client => {
+    client.setHint(hint);
+  });
+});
+
+App.on("setKeypadLocked", ({ id, locked }) => {
+  performKeypadAction(id, client => {
+    client.setLocked(locked);
+  });
+});
+
+App.on("resetKeypad", ({ id }) => {
+  performKeypadAction(id, client => {
+    client.reset();
+  });
+});
+
+App.on("setCodeLength", ({ id, len }) => {
+  performKeypadAction(id, client => {
+    client.setCodeLength(len);
+  });
+});
+
+App.on("setKeypadAllowedAttempts", ({ id, attempts }) => {
+  performKeypadAction(id, client => {
+    client.setAllowedAttempts(attempts);
+  });
 });

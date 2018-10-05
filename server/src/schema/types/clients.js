@@ -17,6 +17,18 @@ type Client {
 
   mobile: Boolean
   cards: [String]
+  keypad: Keypad
+}
+
+type Keypad {
+  id: ID
+  code:[Int]
+  enteredCode:[Int]
+  codeLength:Int
+  giveHints:Boolean
+  allowedAttempts:Int
+  attempts:Int
+  locked:Boolean
 }
 
 type Sound {
