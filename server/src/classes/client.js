@@ -28,9 +28,8 @@ class Keypad {
   }
   setEnteredCode(code) {
     this.attempts += 1;
-    if (this.attempts <= this.allowedAttempts || this.allowedAttempts === 0) {
-      this.enteredCode = code || [];
-    } else {
+    this.enteredCode = code || [];
+    if (this.attempts >= this.allowedAttempts && this.allowedAttempts !== 0) {
       this.locked = true;
     }
   }
