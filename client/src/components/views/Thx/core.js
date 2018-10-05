@@ -13,7 +13,9 @@ clients {
   id
   lock
   charge
-  station
+  station {
+    name
+  }
   executive
 }
 activated
@@ -117,7 +119,7 @@ const THXCore = ({ simulator, activated, name, clients, id }) => (
     {clients.map(c => (
       <Row key={`client-${c.id}`}>
         <Col sm={6}>
-          {c.id} ({c.station})
+          {c.id} ({c.station.name})
         </Col>
         <Col sm={6}>
           {c.executive ? (

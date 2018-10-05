@@ -3,7 +3,7 @@ type ThxClient {
   id: ID
   charge: Float
   lock: Boolean
-  station: String
+  station: Station
   executive: Boolean
 }
 

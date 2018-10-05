@@ -37,6 +37,7 @@ const ShipImage = ({
             >
               {clientList.map((c, i) => (
                 <div
+                  key={`client-${c.id}`}
                   style={{
                     width: `${(1 / clientList.length) * 100}%`,
                     left: `${((i * 1) / clientList.length) * 100}%`,
