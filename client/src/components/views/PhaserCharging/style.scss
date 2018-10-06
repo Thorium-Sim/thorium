@@ -112,7 +112,7 @@ $animationDuration: 0.2s;
     }
   }
 }
-@-webkit-keyframes phaserlaser {
+@keyframes phaserlaser {
   0% {
     transform: rotate(var(--phaserArcRotate));
   }

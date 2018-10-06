@@ -138,20 +138,17 @@ class ShieldControl extends Component {
     if (which === "down") {
       frequencyAdder *= -1;
     }
-    if (frequencySpeed > 10) {
+    if (frequencySpeed > 5) {
       frequencySpeed -= 7;
     }
-    frequency[shields.id] += frequencyAdder;
-    if (frequency[shields.id] <= 100) {
-      frequency[shields.id] = 100;
-    } else if (frequency >= 350) {
-      frequency[shields.id] = 350;
-    } else {
-      this.freqLoop = setTimeout(
-        this._loop.bind(this, which, shields),
-        this.state.frequencySpeed
-      );
-    }
+    frequency[shields.id] = Math.min(
+      350,
+      Math.max(100, frequency[shields.id] + frequencyAdder)
+    );
+    this.freqLoop = setTimeout(
+      this._loop.bind(this, which, shields),
+      this.state.frequencySpeed
+    );
     this.setState({
       frequency,
       frequencySpeed

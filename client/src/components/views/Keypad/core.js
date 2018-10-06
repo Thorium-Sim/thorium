@@ -2,49 +2,43 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import Thx from "./thx";
+import KeypadCore from "./keypadCore";
 import "./style.scss";
 
 const queryData = `
 id
-name
-clients {
-  id
-  lock
-  charge
-  station {
-    name
-  }
-  executive
-}
-activated
+code
+enteredCode
+codeLength
+giveHints
+allowedAttempts
+attempts
+locked
 `;
 
 const QUERY = gql`
-  query Thx($simulatorId: ID!) {
-    thx(simulatorId: $simulatorId) {
+  query Keypad($simulatorId: ID!) {
+    keypads(simulatorId: $simulatorId) {
 ${queryData}
     }
   }
 `;
 const SUBSCRIPTION = gql`
-  subscription ThxUpdate($simulatorId: ID!) {
-    thxUpdate(simulatorId: $simulatorId) {
+  subscription KeypadUpdate($simulatorId: ID!) {
+    keypadsUpdate(simulatorId: $simulatorId) {
 ${queryData}
     }
   }
 `;
 
-class ThxData extends Component {
-  static hypercard = true;
+class KeypadData extends Component {
   state = {};
   render() {
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
-          const { thx } = data;
-          if (loading || !thx) return null;
-          if (!thx[0]) return <div>No Thx</div>;
+          const { keypads } = data;
+          if (loading || !keypads) return null;
           return (
             <SubscriptionHelper
               subscribe={() =>
@@ -53,13 +47,13 @@ class ThxData extends Component {
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
                     return Object.assign({}, previousResult, {
-                      thx: subscriptionData.data.thxUpdate
+                      keypad: subscriptionData.data.keypadUpdate
                     });
                   }
                 })
               }
             >
-              <Thx {...this.props} {...thx[0]} />
+              <KeypadCore {...this.props} keypads={keypads} />
             </SubscriptionHelper>
           );
         }}
@@ -67,4 +61,4 @@ class ThxData extends Component {
     );
   }
 }
-export default ThxData;
+export default KeypadData;

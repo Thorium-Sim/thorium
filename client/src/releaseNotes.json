@@ -1,4 +1,17 @@
 {
+  "1.0.17": {
+    "fixes": [
+      "Add phaser arc back to the phaser charging screen.",
+      "Make it so thrusters don't show erronious numbers, like 360˚.",
+      "Shield frequencies are now properly limited to below 350 MHz",
+      "Tactical map objects will no longer shake when traveling at high speeds.",
+      "Update the dilithium stress animation to be prettier."
+    ],
+    "features": [
+      "Add support for Thorium Mobile, a companion mobile app. Check https://thoriumsim.com/download for information about downloading the mobile apps.",
+      "Add a keypad core for the keypad screen on the mobile application."
+    ]
+  },
   "1.0.16": {
     "features": [
       "Added the ability to un-complete a mission objective from the core.",

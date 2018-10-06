@@ -1,6 +1,7 @@
 import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
+import { StationResolver } from "./clients.js";
 
 export const ThxTypes = {
   Thx: {
@@ -23,6 +24,9 @@ export const ThxTypes = {
           return { ...station, ...client, ...c };
         });
     }
+  },
+  ThxClient: {
+    station: StationResolver
   }
 };
 
