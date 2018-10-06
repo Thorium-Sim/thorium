@@ -38,7 +38,6 @@ export default class Task {
     this.definition = params.definition || "Generic";
 
     // The values from the task template are stamped onto the task when it is created.
-    this.taskTemplate = params.taskTemplate || "";
 
     // Get the random values provided by the task definition
     const simulator = App.simulators.find(s => s.id === this.simulatorId);
