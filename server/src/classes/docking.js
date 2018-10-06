@@ -35,19 +35,28 @@ export default class DockingPort extends System {
           (system.clamps || system.compress || system.doors)
         );
       },
-      shuttle: {
-        input: ({ simulator }) =>
-          App.dockingPorts
-            .filter(
-              s => s.simulatorId === simulator.id && s.type === "shuttlebay"
+      values: {
+        shuttle: {
+          input: ({ simulator }) =>
+            simulator
+              ? App.dockingPorts
+                  .filter(
+                    s =>
+                      s.simulatorId === simulator.id && s.type === "shuttlebay"
+                  )
+                  .map(s => ({ label: s.displayName || s.name, value: s.id }))
+              : {
+                  type: "number",
+                  min: 0,
+                  placeholder: "The index of the shuttlebay. Starts at 0"
+                },
+          value: ({ simulator }) =>
+            randomFromList(
+              App.dockingPorts.filter(
+                s => s.simulatorId === simulator.id && s.type === "shuttlebay"
+              )
             )
-            .map(s => ({ label: s.displayName || s.name, value: s.id })),
-        value: ({ simulator }) =>
-          randomFromList(
-            App.dockingPorts.filter(
-              s => s.simulatorId === simulator.id && s.type === "shuttlebay"
-            )
-          )
+        }
       },
       verify({ requiredValues }) {
         const id = requiredValues.shuttle;
@@ -71,11 +80,18 @@ export default class DockingPort extends System {
       values: {
         shuttle: {
           input: ({ simulator }) =>
-            App.dockingPorts
-              .filter(
-                s => s.simulatorId === simulator.id && s.type === "shuttlebay"
-              )
-              .map(s => ({ label: s.displayName || s.name, value: s.id })),
+            simulator
+              ? App.dockingPorts
+                  .filter(
+                    s =>
+                      s.simulatorId === simulator.id && s.type === "shuttlebay"
+                  )
+                  .map(s => ({ label: s.displayName || s.name, value: s.id }))
+              : {
+                  type: "number",
+                  min: 0,
+                  placeholder: "The index of the shuttlebay. Starts at 0"
+                },
           value: ({ simulator }) =>
             randomFromList(
               App.dockingPorts
