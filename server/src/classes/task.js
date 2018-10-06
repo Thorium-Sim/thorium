@@ -15,6 +15,15 @@ export default class Task {
       active() {
         return true;
       },
+      values: {
+        message: {
+          input: () => "text",
+          value: () => "This is a generic task."
+        }
+      },
+      instructions({ requiredValues: { message } }) {
+        return message;
+      },
       verify() {
         return false;
       }
@@ -26,6 +35,8 @@ export default class Task {
 
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId || "";
+    this.station = params.station || "";
+
     // For damage reports
     this.systemId = params.systemId || "";
 

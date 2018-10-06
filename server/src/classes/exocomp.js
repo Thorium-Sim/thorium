@@ -27,12 +27,16 @@ export default class Exocomp {
         );
       },
       values: {
+        preamble: {
+          input: () => "text",
+          value: () => "An expocomp must be sent to operate on a system."
+        },
         destination: {
           input: ({ simulator }) =>
             simulator
               ? App.systems
                   .filter(s => s.simulatorId === simulator.id)
-                  .map(s => ({ key: s.id, label: s.displayName || s.name }))
+                  .map(s => ({ value: s.id, label: s.displayName || s.name }))
               : "text",
           value: ({ simulator }) =>
             randomFromList(
@@ -42,12 +46,27 @@ export default class Exocomp {
             )
         },
         parts: {
-          input: () => {},
+          input: () => "text",
           value: () =>
             Array(Math.round(Math.random() * 3 + 1))
               .fill(0)
               .map(() => randomFromList(partsList))
         }
+      },
+      instructions({
+        simulator,
+        requiredValues: { preamble, destination, parts }
+      }) {
+        const station = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "Exocomps")
+        );
+        const system = App.systems.find(s => s.id === destination);
+        return `${preamble} Ask the ${
+          station ? `${station.name} Officer` : "person in charge of exocomps"
+        } to send an exocomp to the ${system.displayName ||
+          system.name} with the following parts: ${parts.join(", ")}.`;
+        // TODO: Make it so it knows if the task is assigned to the station
+        // performing the task, or if it needs to be delegated to another station
       },
       verify({ simulator, requiredValues }) {
         const exocomps = App.exocomps.filter(s => s.id === simulator.id);

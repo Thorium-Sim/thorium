@@ -62,6 +62,30 @@ export default class JumpDrive extends System {
           )
         );
       },
+      values: {
+        preamble: {
+          input: () => "text",
+          value: () => "The #SYSTEMNAME should be activated."
+        }
+      },
+      instructions({ simulator, requiredValues: { preamble } }) {
+        const station = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "JumpDrive")
+        );
+        const system = App.systems.find(
+          s => s.simulatorId === simulator.id && s.type === "JumpDrive"
+        );
+        return `${preamble.replace(
+          "#SYSTEMNAME",
+          system.displayName || system.name
+        )} Ask the ${
+          station
+            ? `${station.name} Officer`
+            : `person in charge of the ${system.displayName || system.name}`
+        } to activate the ${system.displayName || system.name}.`;
+        // TODO: Make it so it knows if the task is assigned to the station
+        // performing the task, or if it needs to be delegated to another station
+      },
       verify({ simulator }) {
         return App.systems.find(
           s =>
@@ -83,6 +107,30 @@ export default class JumpDrive extends System {
           system &&
           system.stress > 0.5
         );
+      },
+      values: {
+        preamble: {
+          input: () => "text",
+          value: () => "The #SYSTEMNAME is dangerously unstable."
+        }
+      },
+      instructions({ simulator, requiredValues: { preamble } }) {
+        const station = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "JumpDrive")
+        );
+        const system = App.systems.find(
+          s => s.simulatorId === simulator.id && s.type === "JumpDrive"
+        );
+        return `${preamble.replace(
+          "#SYSTEMNAME",
+          system.displayName || system.name
+        )} Ask the ${
+          station
+            ? `${station.name} Officer`
+            : `person in charge of the ${system.displayName || system.name}`
+        } to stabilize the ${system.displayName || system.name}.`;
+        // TODO: Make it so it knows if the task is assigned to the station
+        // performing the task, or if it needs to be delegated to another station
       },
       verify({ simulator }) {
         return !App.systems.find(

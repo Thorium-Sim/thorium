@@ -94,14 +94,36 @@ export default class LongRangeComm extends System {
         );
       },
       values: {
+        preamble: {
+          input: () => "text",
+          value: () => "A long range message needs to be composed."
+        },
         destination: {
           input: () => "text",
           value: () => randomFromList(longRangeDestinations)
         },
         message: {
           input: () => "text",
-          value: () => ""
+          value: () =>
+            "We are sending a message to check in. Do you have any information relevant to our mission?"
         }
+      },
+      instructions({
+        simulator,
+        requiredValues: { preamble, destination, message }
+      }) {
+        const station = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "LongRangeComm")
+        );
+        return `${preamble} Ask the ${
+          station
+            ? `${station.name} Officer`
+            : "person in charge of long range messages"
+        } to send the following message:
+Destination: ${destination}
+Message: ${message}`;
+        // TODO: Make it so it knows if the task is assigned to the station
+        // performing the task, or if it needs to be delegated to another station
       },
       verify({ simulator, requiredValues }) {
         // Since this requires typing in the

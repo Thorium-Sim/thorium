@@ -21,6 +21,10 @@ export default class Message {
         );
       },
       values: {
+        preamble: {
+          input: () => "text",
+          value: () => "A message should be sent inside the ship."
+        },
         destination: {
           input: () => "text",
           value: () => ""
@@ -29,6 +33,16 @@ export default class Message {
           input: () => "text",
           value: () => ""
         }
+      },
+      instructions({
+        simulator,
+        requiredValues: { preamble, destination, message }
+      }) {
+        return `${preamble} Send the following message:
+Destination: ${destination}
+Message: ${message}`;
+        // TODO: Make it so it knows if the task is assigned to the station
+        // performing the task, or if it needs to be delegated to another station
       },
       verify({ simulator, requiredValues }) {
         // Since this requires typing in the

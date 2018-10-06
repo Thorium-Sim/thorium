@@ -46,7 +46,8 @@ All methods take a single argument which is an object of the following:
 
 Possible inputs for the `values` function:
 
-- An array of objects with the shape: {key:"", label:""} -> Select menu
+- An array of objects with the shape: {value:"", label:""} -> Select menu;
+  returns the value option
 - The string "text" -> Text input
 - The string "textarea" -> Textarea input
 - An object, which maps to input props: { type: "number", min: 100, max: 350 }

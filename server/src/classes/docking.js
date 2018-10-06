@@ -35,7 +35,29 @@ export default class DockingPort extends System {
           (system.clamps || system.compress || system.doors)
         );
       },
+      instructions({ simulator, requiredValues: { shuttle, preamble } }) {
+        // This method takes the requiredValues and apply them to create
+        // the human readable instructions
+        // First, get some values
+        const shuttleBay = isNaN(parseInt(shuttle, 10))
+          ? App.dockingPorts.find(s => s.id === shuttle)
+          : App.dockingPorts.filter(s => s.simulatorId === simulator.id)[
+              shuttle
+            ];
+        const station = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "Shuttles")
+        );
+        return `${preamble} Ask the ${
+          station ? `${station.name} Officer` : "person in charge of shuttles"
+        } to undock the shuttle in shuttlebay ${shuttleBay.name}.`;
+        // TODO: Make it so it knows if the task is assigned to the station
+        // performing the task, or if it needs to be delegated to another station
+      },
       values: {
+        preamble: {
+          input: () => "text",
+          value: () => "A shuttle needs to be undocked."
+        },
         shuttle: {
           input: ({ simulator }) =>
             simulator
@@ -50,12 +72,14 @@ export default class DockingPort extends System {
                   min: 0,
                   placeholder: "The index of the shuttlebay. Starts at 0"
                 },
-          value: ({ simulator }) =>
-            randomFromList(
+          value: ({ simulator }) => {
+            const shuttleBay = randomFromList(
               App.dockingPorts.filter(
                 s => s.simulatorId === simulator.id && s.type === "shuttlebay"
               )
-            )
+            );
+            if (shuttleBay) return shuttleBay.id;
+          }
         }
       },
       verify({ requiredValues }) {
@@ -77,7 +101,27 @@ export default class DockingPort extends System {
           (system.clamps || system.compress || system.doors)
         );
       },
+      instructions({ simulator, requiredValues: { shuttle, preamble } }) {
+        // First, get some values
+        const shuttleBay = isNaN(parseInt(shuttle, 10))
+          ? App.dockingPorts.find(s => s.id === shuttle)
+          : App.dockingPorts.filter(s => s.simulatorId === simulator.id)[
+              shuttle
+            ];
+        const station = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "Shuttles")
+        );
+        return `${preamble} Ask the ${
+          station ? `${station.name} Officer` : "person in charge of shuttles"
+        } to dock the shuttle in shuttlebay ${shuttleBay.name}.`;
+        // TODO: Make it so it knows if the task is assigned to the station
+        // performing the task, or if it needs to be delegated to another station
+      },
       values: {
+        preamble: {
+          input: () => "text",
+          value: () => "A shuttle needs to be docked."
+        },
         shuttle: {
           input: ({ simulator }) =>
             simulator
@@ -115,6 +159,22 @@ export default class DockingPort extends System {
           s.cards.find(c => c.component === "Shuttles")
         );
       },
+      instructions({ simulator, requiredValues: { preamble } }) {
+        const station = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "Shuttles")
+        );
+        return `${preamble} Ask the ${
+          station ? `${station.name} Officer` : "person in charge of shuttles"
+        } to undock all of the shuttles in shuttlebay.`;
+        // TODO: Make it so it knows if the task is assigned to the station
+        // performing the task, or if it needs to be delegated to another station
+      },
+      values: {
+        preamble: {
+          input: () => "text",
+          value: () => "All shuttles needs to be undocked."
+        }
+      },
       verify({ simulator }) {
         const shuttles = App.dockingPorts.filter(
           d => d.simulatorId === simulator.id && d.type === "shuttlebay"
@@ -128,6 +188,22 @@ export default class DockingPort extends System {
         return stations.find(s =>
           s.cards.find(c => c.component === "Shuttles")
         );
+      },
+      instructions({ simulator, requiredValues: { preamble } }) {
+        const station = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "Shuttles")
+        );
+        return `${preamble} Ask the ${
+          station ? `${station.name} Officer` : "person in charge of shuttles"
+        } to dock all of the shuttles in shuttlebay.`;
+        // TODO: Make it so it knows if the task is assigned to the station
+        // performing the task, or if it needs to be delegated to another station
+      },
+      values: {
+        preamble: {
+          input: () => "text",
+          value: () => "All shuttles needs to be docked."
+        }
       },
       verify({ simulator }) {
         const shuttles = App.dockingPorts.filter(

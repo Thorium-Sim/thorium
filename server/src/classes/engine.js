@@ -45,16 +45,34 @@ export default class Engine extends HeatMixin(System) {
   static tasks = [
     {
       name: "Deactivate Engines",
-      active({ simulator, stations }) {
+      active({ simulator }) {
         // Check cards
         return (
-          stations.find(s =>
+          simulator.stations.find(s =>
             s.cards.find(c => c.component === "EngineControl")
           ) &&
           App.systems.find(
             s => s.simulatorId === simulator.id && s.type === "Engine"
           )
         );
+      },
+      values: {
+        preamble: {
+          input: () => "text",
+          value: () => "The engines need to be deactivated."
+        }
+      },
+      instructions({ simulator, requiredValues: { preamble } }) {
+        const station = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "EngineControl")
+        );
+        return `${preamble} Ask the ${
+          station
+            ? `${station.name} Officer`
+            : "person in charge of the engines"
+        } to deactivate the engines.`;
+        // TODO: Make it so it knows if the task is assigned to the station
+        // performing the task, or if it needs to be delegated to another station
       },
       verify({ simulator }) {
         return !App.systems.find(
@@ -67,12 +85,12 @@ export default class Engine extends HeatMixin(System) {
     },
     {
       name: "Cool Engine",
-      active({ simulator, stations }) {
+      active({ simulator }) {
         const systems = App.systems.find(
           s => s.simulatorId === simulator.id && s.type === "Engine"
         );
         return (
-          stations.find(s =>
+          simulator.stations.find(s =>
             s.cards.find(c => c.component === "EngineControl")
           ) &&
           systems.length > 0 &&
@@ -87,7 +105,7 @@ export default class Engine extends HeatMixin(System) {
                   .filter(
                     s => s.simulatorId === simulator.id && s.type === "Engine"
                   )
-                  .map(s => ({ key: s.id, label: s.displayName || s.name }))
+                  .map(s => ({ value: s.id, label: s.displayName || s.name }))
               : "text",
           value: ({ simulator }) =>
             randomFromList(
@@ -100,7 +118,24 @@ export default class Engine extends HeatMixin(System) {
                 )
                 .map(s => s.id)
             )
+        },
+        preamble: {
+          input: () => "text",
+          value: () => "An engine is overheating."
         }
+      },
+      instructions({ simulator, requiredValues: { preamble, engine: id } }) {
+        const station = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "EngineControl")
+        );
+        const engine = App.systems.find(s => s.id === id);
+        return `${preamble} Ask the ${
+          station
+            ? `${station.name} Officer`
+            : "person in charge of the engines"
+        } to cool the ${engine.displayName || engine.name}.`;
+        // TODO: Make it so it knows if the task is assigned to the station
+        // performing the task, or if it needs to be delegated to another station
       },
       verify({ simulator, requiredValues }) {
         const engine = App.systems.find(s => s.id === requiredValues.engine);

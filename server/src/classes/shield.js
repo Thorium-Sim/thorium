@@ -25,6 +25,22 @@ export default class Shield extends System {
           s.cards.find(c => c.component === "ShieldControl")
         );
       },
+      values: {
+        preamble: {
+          input: () => "text",
+          value: () => "The shields need to be raised."
+        }
+      },
+      instructions({ simulator, requiredValues: { preamble } }) {
+        const station = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "ShieldControl")
+        );
+        return `${preamble} Ask the ${
+          station ? `${station.name} Officer` : "person in charge of shields"
+        } to raise all shields`;
+        // TODO: Make it so it knows if the task is assigned to the station
+        // performing the task, or if it needs to be delegated to another station
+      },
       verify({ simulator }) {
         const shields = App.systems.filter(
           s => s.simulatorId === simulator.id && s.type === "Shields"
@@ -38,6 +54,22 @@ export default class Shield extends System {
         return stations.find(s =>
           s.cards.find(c => c.component === "ShieldControl")
         );
+      },
+      values: {
+        preamble: {
+          input: () => "text",
+          value: () => "The shields need to be lowered."
+        }
+      },
+      instructions({ simulator, requiredValues: { preamble } }) {
+        const station = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "ShieldControl")
+        );
+        return `${preamble} Ask the ${
+          station ? `${station.name} Officer` : "person in charge of shields"
+        } to lower all shields`;
+        // TODO: Make it so it knows if the task is assigned to the station
+        // performing the task, or if it needs to be delegated to another station
       },
       verify({ simulator }) {
         const shields = App.systems.filter(
@@ -58,6 +90,10 @@ export default class Shield extends System {
         );
       },
       values: {
+        preamble: {
+          input: () => "text",
+          value: () => "The #SYSTEMNAME need to be raised."
+        },
         shield: {
           input: ({ simulator }) =>
             simulator
@@ -76,6 +112,25 @@ export default class Shield extends System {
                 .map(s => s.id)
             )
         }
+      },
+      instructions({ simulator, requiredValues: { preamble, shield } }) {
+        const station = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "ShieldControl")
+        );
+        const system = App.systems.find(
+          s =>
+            s.id === shield ||
+            (s.name === shield && s.simulatorId === simulator.id) ||
+            (s.displayName === shield && s.simulatorId === simulator.id)
+        );
+        return `${preamble.replace(
+          "#SYSTEMNAME",
+          system.displayName || system.name
+        )} Ask the ${
+          station ? `${station.name} Officer` : "person in charge of shields"
+        } to raise the ${system.displayName || system.name}.`;
+        // TODO: Make it so it knows if the task is assigned to the station
+        // performing the task, or if it needs to be delegated to another station
       },
       verify({ requiredValues }) {
         const id = requiredValues.shield;
@@ -95,6 +150,10 @@ export default class Shield extends System {
         );
       },
       values: {
+        preamble: {
+          input: () => "text",
+          value: () => "The #SYSTEMNAME need to be lowered."
+        },
         shield: {
           input: ({ simulator }) =>
             simulator
@@ -114,6 +173,25 @@ export default class Shield extends System {
             )
         }
       },
+      instructions({ simulator, requiredValues: { preamble, shield } }) {
+        const station = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "ShieldControl")
+        );
+        const system = App.systems.find(
+          s =>
+            s.id === shield ||
+            (s.name === shield && s.simulatorId === simulator.id) ||
+            (s.displayName === shield && s.simulatorId === simulator.id)
+        );
+        return `${preamble.replace(
+          "#SYSTEMNAME",
+          system.displayName || system.name
+        )} Ask the ${
+          station ? `${station.name} Officer` : "person in charge of shields"
+        } to lower the ${system.displayName || system.name}.`;
+        // TODO: Make it so it knows if the task is assigned to the station
+        // performing the task, or if it needs to be delegated to another station
+      },
       verify({ requiredValues }) {
         const id = requiredValues.shield;
         const system = App.systems.find(s => s.id === id);
@@ -129,6 +207,10 @@ export default class Shield extends System {
         );
       },
       values: {
+        preamble: {
+          input: () => "text",
+          value: () => "The frequency of the #SYSTEMNAME needs to be changed."
+        },
         shield: {
           input: ({ simulator }) =>
             simulator
@@ -151,6 +233,29 @@ export default class Shield extends System {
           input: { type: "number", min: 100, max: 350 },
           value: () => Math.round(Math.random() * 250 * 10) / 10 + 100
         }
+      },
+      instructions({
+        simulator,
+        requiredValues: { preamble, shield, frequency }
+      }) {
+        const station = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "ShieldControl")
+        );
+        const system = App.systems.find(
+          s =>
+            s.id === shield ||
+            (s.name === shield && s.simulatorId === simulator.id) ||
+            (s.displayName === shield && s.simulatorId === simulator.id)
+        );
+        return `${preamble.replace(
+          "#SYSTEMNAME",
+          system.displayName || system.name
+        )} Ask the ${
+          station ? `${station.name} Officer` : "person in charge of shields"
+        } to set the frequency of the ${system.displayName ||
+          system.name} to ${frequency} MHZ.`;
+        // TODO: Make it so it knows if the task is assigned to the station
+        // performing the task, or if it needs to be delegated to another station
       },
       verify({ requiredValues }) {
         const id = requiredValues.shield;

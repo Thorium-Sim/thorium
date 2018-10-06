@@ -1,6 +1,9 @@
 import App from "../app";
 import { System } from "./generic";
-import { randomFromList } from "./generic/damageReports/constants";
+import {
+  randomFromList,
+  greekLetters
+} from "./generic/damageReports/constants";
 
 export default class InternalComm extends System {
   constructor(params = {}) {
@@ -29,6 +32,10 @@ export default class InternalComm extends System {
         );
       },
       values: {
+        preamble: {
+          input: () => "text",
+          value: () => "A call must be made within the ship."
+        },
         room: {
           input: ({ simulator }) => (simulator ? "roomPicker" : "text"),
           value: ({ simulator }) =>
@@ -37,7 +44,47 @@ export default class InternalComm extends System {
                 .filter(r => r.simulatorId === simulator.id)
                 .map(r => r.id)
             )
+        },
+        message: {
+          input: () => "textarea",
+          value: () => {
+            const messageList = [
+              `Run a level ${Math.floor(Math.random() * 5)} diagnostic.`,
+              `Activate the ${randomFromList(greekLetters)} protocol.`,
+              `Ensure there is no residual power flow in the junction capacitors.`
+            ];
+            return randomFromList(messageList);
+          }
         }
+      },
+      instructions({
+        simulator,
+        requiredValues: { preamble, room: roomId, message }
+      }) {
+        const station = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "CommInternal")
+        );
+        const room = App.rooms.find(r => r.id === roomId);
+        const deck = App.decks.find(
+          d => d.id === (room ? room.deckId : roomId)
+        );
+        return `${preamble} Ask the ${
+          station
+            ? `${station.name} Officer`
+            : "person in charge of internal communication"
+        } to make the following internal call:
+        
+Location: ${
+          !room && !deck
+            ? "All Decks"
+            : room
+              ? `${room.name}, Deck ${deck.number}`
+              : `Deck ${deck.number}`
+        }
+Message: ${message}
+        `;
+        // TODO: Make it so it knows if the task is assigned to the station
+        // performing the task, or if it needs to be delegated to another station
       },
       verify({ requiredValues, simulator }) {
         const system = App.systems.find(
