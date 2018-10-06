@@ -60,11 +60,13 @@ export default class Shield extends System {
       values: {
         shield: {
           input: ({ simulator }) =>
-            App.systems
-              .filter(
-                s => s.simulatorId === simulator.id && s.type === "Shield"
-              )
-              .map(s => ({ value: s.id, label: s.displayName || s.name })),
+            simulator
+              ? App.systems
+                  .filter(
+                    s => s.simulatorId === simulator.id && s.type === "Shield"
+                  )
+                  .map(s => ({ value: s.id, label: s.displayName || s.name }))
+              : "text",
           value: ({ simulator }) =>
             randomFromList(
               App.systems
@@ -95,11 +97,13 @@ export default class Shield extends System {
       values: {
         shield: {
           input: ({ simulator }) =>
-            App.systems
-              .filter(
-                s => s.simulatorId === simulator.id && s.type === "Shield"
-              )
-              .map(s => ({ value: s.id, label: s.displayName || s.name })),
+            simulator
+              ? App.systems
+                  .filter(
+                    s => s.simulatorId === simulator.id && s.type === "Shield"
+                  )
+                  .map(s => ({ value: s.id, label: s.displayName || s.name }))
+              : "text",
           value: ({ simulator }) =>
             randomFromList(
               App.systems
@@ -127,11 +131,13 @@ export default class Shield extends System {
       values: {
         shield: {
           input: ({ simulator }) =>
-            App.systems
-              .filter(
-                s => s.simulatorId === simulator.id && s.type === "Shield"
-              )
-              .map(s => ({ value: s.id, label: s.displayName || s.name })),
+            simulator
+              ? App.systems
+                  .filter(
+                    s => s.simulatorId === simulator.id && s.type === "Shield"
+                  )
+                  .map(s => ({ value: s.id, label: s.displayName || s.name }))
+              : "text",
           value: ({ simulator }) =>
             randomFromList(
               App.systems
