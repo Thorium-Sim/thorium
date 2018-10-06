@@ -5,7 +5,6 @@ const taskDefinitions = Object.values(classes)
   .reduce((prev, c) => prev.concat(c.tasks), [])
   .filter(Boolean);
 
-console.log(taskDefinitions);
 export default class TaskTemplate {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();

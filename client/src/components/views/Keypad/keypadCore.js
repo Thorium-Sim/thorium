@@ -15,7 +15,6 @@ import { InputField } from "../../generic/core";
 class KeypadCore extends Component {
   state = {};
   render() {
-    console.log(this.props);
     const { keypads } = this.props;
     const { selectedKeypad } = this.state;
     const clients = this.props.clients
