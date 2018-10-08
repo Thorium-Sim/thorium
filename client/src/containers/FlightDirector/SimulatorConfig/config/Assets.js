@@ -29,6 +29,11 @@ const assetList = [
     name: "Login Logo",
     fullPath: "logo",
     folderPath: "/Misc"
+  },
+  {
+    name: "Bridge Map",
+    fullPath: "bridge",
+    folderPath: "/Misc"
   }
 ];
 

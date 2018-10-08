@@ -1,4 +1,8 @@
 {
+  "1.0.18": {
+    "features": ["Add interference to the targeting grid."],
+    "fixes": ["Adds the bridge map asset item to the simulator config."]
+  },
   "1.0.17": {
     "fixes": [
       "Add phaser arc back to the phaser charging screen.",
