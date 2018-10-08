@@ -143,7 +143,7 @@ import ClientsCore from "./Clients/core";
 import JumpDriveCore from "./JumpDrive/core";
 import BridgeMapCore from "./BridgeMap/core";
 import KeypadCore from "./Keypad/core";
-import AssetsCore from "./Assets/core";
+import AssetsCore from "./AssetsCore/core";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
