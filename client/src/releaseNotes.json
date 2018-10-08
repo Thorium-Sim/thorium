@@ -2,7 +2,8 @@
   "1.0.18": {
     "features": [
       "Add interference to the targeting grid.",
-      "Add training for the code cyphers screen."
+      "Add training for the code cyphers screen.",
+      "Add an assets core for dynamically changing simulator assets."
     ],
     "fixes": [
       "Adds the bridge map asset item to the simulator config.",

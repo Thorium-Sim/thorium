@@ -83,6 +83,8 @@ class Assets extends Component {
                             [selectedAsset]: container.fullPath
                           }
                         }
+                      }).then(() => {
+                        this.props.update && this.props.update();
                       });
                     }}
                   />
