@@ -12,7 +12,9 @@ clients {
   id
   lock
   charge
-  station
+  station {
+    name
+  }
   executive
 }
 activated

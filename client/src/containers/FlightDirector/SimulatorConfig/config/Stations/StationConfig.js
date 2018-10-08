@@ -1,5 +1,5 @@
-import React from "react";
-import { Input, Container, Row, Col, Label } from "reactstrap";
+import React, { Fragment } from "react";
+import { Input, Button, Container, Row, Col, Label } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import ops from "./ops";
@@ -328,19 +328,36 @@ const ConfigStation = props => {
             `}
           >
             {action => (
-              <FileExplorer
-                directory="/Training"
-                selectedFiles={[station.training]}
-                onClick={(evt, container) =>
-                  action({
-                    variables: {
-                      stationSetID: selectedStationSet,
-                      stationName: station.name,
-                      training: container.fullPath
-                    }
-                  })
-                }
-              />
+              <Fragment>
+                <Button
+                  size="sm"
+                  color="warning"
+                  onClick={() =>
+                    action({
+                      variables: {
+                        stationSetID: selectedStationSet,
+                        stationName: station.name,
+                        training: ""
+                      }
+                    })
+                  }
+                >
+                  Clear Training
+                </Button>
+                <FileExplorer
+                  directory="/Training"
+                  selectedFiles={[station.training]}
+                  onClick={(evt, container) =>
+                    action({
+                      variables: {
+                        stationSetID: selectedStationSet,
+                        stationName: station.name,
+                        training: container.fullPath
+                      }
+                    })
+                  }
+                />
+              </Fragment>
             )}
           </Mutation>
         </div>
