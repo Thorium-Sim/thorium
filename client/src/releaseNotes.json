@@ -1,7 +1,11 @@
 {
   "1.0.18": {
-    "features": ["Add interference to the targeting grid."],
-    "fixes": ["Adds the bridge map asset item to the simulator config."]
+    "features": ["Add interference to the targeting grid.",
+    "Add training for the code cyphers screen."],
+    "fixes": [
+      "Adds the bridge map asset item to the simulator config.",
+      "Adds the ability to clear station-specfic training."
+    ]
   },
   "1.0.17": {
     "fixes": [
