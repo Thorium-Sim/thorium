@@ -3,12 +3,15 @@
     "features": [
       "Add interference to the targeting grid.",
       "Add training for the code cyphers screen.",
-      "Add an assets core for dynamically changing simulator assets."
+      "Add an assets core for dynamically changing simulator assets.",
+      "Add colors to hilite the deck colors based on evac, doors, or tranzine status on the security decks screen.",
+      "Add the ability to rename keyboards."
     ],
     "fixes": [
       "Adds the bridge map asset item to the simulator config.",
       "Adds the ability to clear station-specfic training.",
-      "Fix an issue with card switchers on certain layouts."
+      "Fix an issue with card switchers on certain layouts.",
+      "Fixes the color of the hilite on the computer core screen for better contrast."
     ]
   },
   "1.0.17": {
