@@ -6,7 +6,8 @@
   .list-group {
     .list-group-item {
       &.selected {
-        background-color: rgba(255, 255, 255, 0.5);
+        background-color: rgba(255, 255, 255, 0.3);
+        font-weight: 800;
       }
     }
   }
@@ -21,7 +22,7 @@
     max-height: 60vh;
     overflow-y: auto;
     tr.selected {
-      background-color: rgba(255, 255, 255, 0.5);
+      background-color: rgba(255, 255, 255, 0.3);
     }
     td {
       vertical-align: middle;
