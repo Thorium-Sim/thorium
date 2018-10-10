@@ -60,6 +60,12 @@ const REMOVE_KEYBOARD = gql`
     removeKeyboard(id: $id)
   }
 `;
+const RENAME_KEYBOARD = gql`
+  mutation Keybaord($id: ID!, $name: String!) {
+    renameKeyboard(id: $id, name: $name)
+  }
+`;
+
 class Keyboards extends Component {
   state = {
     selectedKeyboard: null
@@ -143,6 +149,26 @@ class Keyboards extends Component {
 
                   {selectedKeyboard && (
                     <Fragment>
+                      <Mutation mutation={RENAME_KEYBOARD}>
+                        {renameKeyboard => (
+                          <Button
+                            color="warning"
+                            block
+                            size="sm"
+                            onClick={() => {
+                              const name = prompt(
+                                "What is the new name of the keyboard?"
+                              );
+                              name &&
+                                renameKeyboard({
+                                  variables: { id: selectedKeyboard, name }
+                                });
+                            }}
+                          >
+                            Rename Keyboard
+                          </Button>
+                        )}
+                      </Mutation>
                       <Mutation mutation={REMOVE_KEYBOARD}>
                         {removeKeyboard => (
                           <Button

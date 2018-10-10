@@ -14,6 +14,7 @@ App.on("removeKeyboard", ({ id }) => {
 });
 App.on("renameKeyboard", ({ id, name }) => {
   const keyboard = App.keyboards.find(k => k.id === id);
+  console.log(name);
   keyboard && keyboard.rename(name);
   pubsub.publish("keyboardUpdate", App.keyboards);
 });
