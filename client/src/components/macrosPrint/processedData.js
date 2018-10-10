@@ -6,7 +6,7 @@ export default ({ args }) => {
     <FormGroup className="macro-setPresetAnswer">
       <div>
         <strong>Data </strong>
-        <pre>{args.data}</pre>
+        <pre>{args && args.data}</pre>
       </div>
     </FormGroup>
   );

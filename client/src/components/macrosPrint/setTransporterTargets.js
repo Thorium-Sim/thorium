@@ -2,6 +2,7 @@ import React from "react";
 import { FormGroup } from "reactstrap";
 
 export default ({ args }) => {
+  args = args || {};
   return (
     <div>
       <FormGroup className="macro-TransporterTargets">
