@@ -4,7 +4,9 @@ import { withFilter } from "graphql-subscriptions";
 
 export const SystemsQueries = {
   system(rootValue, { id }) {
-    return App.systems.find(s => s.id === id);
+    const sys = App.systems.find(s => s.id === id);
+    if (!sys) return App.dockingPorts.find(s => s.id === id);
+    return sys;
   },
   systems(
     rootValue,
