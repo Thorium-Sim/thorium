@@ -1,4 +1,11 @@
 {
+  "1.0.19": {
+    "features": ["Add a low power viewscreen."],
+    "fixes": [
+      "Fixed an issue with the targeting grid interference not showing up on the standalone targeting screen.",
+      "The reset timeline event will no longer reset the timeline for the simulator."
+    ]
+  },
   "1.0.18": {
     "features": [
       "Add interference to the targeting grid.",
