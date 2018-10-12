@@ -26,7 +26,20 @@ export default class SignalJammer extends System {
     this.signals = (params.signals || []).map(s => new Signal(s));
   }
   get stealthFactor() {
-    return this.strength;
+    return this.active ? this.strength : 0.1;
+  }
+  break(report, destroyed, which) {
+    this.active = false;
+    super.break(report, destroyed, which);
+  }
+  setPower(powerLevel) {
+    if (
+      this.power.powerLevels.length &&
+      powerLevel < this.power.powerLevels[0]
+    ) {
+      this.active = false;
+    }
+    super.setPower(powerLevel);
   }
   trainingMode() {
     this.addSignal({});

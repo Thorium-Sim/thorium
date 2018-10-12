@@ -10,11 +10,14 @@ import "react-rangeslider/lib/index.css";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
+import DamageOverlay from "../helpers/DamageOverlay";
 
 const SUB = gql`
   subscription SignalJammerUpdate($id: ID!) {
     signalJammersUpdate(simulatorId: $id) {
       id
+      name
+      displayName
       damage {
         damaged
       }
@@ -168,6 +171,10 @@ class SignalJammer extends Component {
             })
           }
         />
+        <DamageOverlay
+          system={signalJammer}
+          message={`${signalJammer.displayName || signalJammer.name} Offline`}
+        />
         <Row>
           <Col sm={9}>
             <div className="captions">
@@ -285,6 +292,8 @@ const QUERY = gql`
   query SignalJammer($id: ID!) {
     signalJammers(simulatorId: $id) {
       id
+      name
+      displayName
       damage {
         damaged
       }

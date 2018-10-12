@@ -38,6 +38,7 @@
     max-width: 70%;
     border-radius: 5px;
     clear: both;
+    white-space: pre-wrap;
     &.sent {
       background-color: rgba(150, 190, 255, 0.3);
       float: right;

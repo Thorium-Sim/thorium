@@ -79,7 +79,9 @@ export const TypingField = ({
   rows,
   input,
   controlled,
-  placeholder
+  placeholder,
+  alert,
+  onDoubleClick
 }) => {
   const compStyle = Object.assign(
     {
@@ -92,6 +94,10 @@ export const TypingField = ({
     },
     style
   );
+  if (alert) {
+    compStyle.backgroundColor = "#f00";
+    compStyle.borderColor = "#a00";
+  }
   if (input) {
     if (controlled) {
       return (
@@ -103,6 +109,7 @@ export const TypingField = ({
           onBlur={onBlur}
           style={compStyle}
           value={value || ""}
+          onDoubleClick={onDoubleClick}
         />
       );
     }
@@ -115,6 +122,7 @@ export const TypingField = ({
         onBlur={onBlur}
         style={compStyle}
         defaultValue={value || ""}
+        onDoubleClick={onDoubleClick}
       />
     );
   }

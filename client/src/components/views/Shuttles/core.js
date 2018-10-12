@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo, Mutation } from "react-apollo";
 import { TypingField } from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
@@ -72,14 +72,35 @@ class Shuttles extends Component {
             {docking.map(d => (
               <tr key={d.id}>
                 <td>
-                  <TypingField
-                    input
-                    controlled
-                    value={d.name}
-                    onBlur={evt =>
-                      this.updateShuttle(d.id, "name", evt.target.value)
+                  <Mutation
+                    mutation={
+                      d.damage.damaged
+                        ? gql`
+                            mutation FixSystem($id: ID!) {
+                              repairSystem(systemId: $id)
+                            }
+                          `
+                        : gql`
+                            mutation DamageDockingPort($id: ID!) {
+                              damageSystem(systemId: $id)
+                            }
+                          `
                     }
-                  />
+                    variables={{ id: d.id }}
+                  >
+                    {action => (
+                      <TypingField
+                        input
+                        controlled
+                        value={d.name}
+                        alert={d.damage.damaged}
+                        onBlur={evt =>
+                          this.updateShuttle(d.id, "name", evt.target.value)
+                        }
+                        onDoubleClick={action}
+                      />
+                    )}
+                  </Mutation>
                 </td>
                 <td>
                   <input
@@ -137,6 +158,7 @@ class Shuttles extends Component {
             ))}
           </tbody>
         </table>
+        <small>Double click name to damage/repair</small>
       </div>
     );
   }
