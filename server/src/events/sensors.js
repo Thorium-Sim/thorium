@@ -411,6 +411,10 @@ App.on("setSensorsInterference", ({ id, interference }) => {
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")
   );
+  pubsub.publish(
+    "targetingUpdate",
+    App.systems.filter(s => s.type === "Targeting")
+  );
 });
 App.on("setAutoMovement", ({ id, movement }) => {
   const sensors = App.systems.find(sys => sys.id === id);

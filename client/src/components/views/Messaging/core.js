@@ -208,7 +208,7 @@ class Messaging extends Component {
                     })
                     .reverse()
                     .map(m => (
-                      <p key={m.id}>
+                      <p key={m.id} style={{ whiteSpace: "pre-wrap" }}>
                         <strong>{m.sender}</strong>: {m.content}
                       </p>
                     ))}

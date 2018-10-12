@@ -32,6 +32,17 @@
     }
   }
 }
+.sensors-interference {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  background-color: white;
+  canvas {
+    width: 100%;
+    height: 100%;
+  }
+}
 #sensorGrid {
   position: absolute;
   z-index: 1;
@@ -50,17 +61,6 @@
     -webkit-mask-size: cover;
     mask-image: url("./noise.png");
     mask-size: cover;
-  }
-  .sensors-interference {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 10000;
-    background-color: white;
-    canvas {
-      width: 100%;
-      height: 100%;
-    }
   }
   .grid {
     height: 100%;

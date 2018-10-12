@@ -13,23 +13,12 @@ import Tour from "helpers/tourHelper";
 
 import "./style.scss";
 
-const trainingSteps = [
-  {
-    selector: ".activate",
-    content:
-      "The tractor beam pulls objects to you with zero-point energy. Once a target it in sight, it will appear below the ship. Press this button to activate the tractor beam."
-  },
-  {
-    selector: ".strengthBar",
-    content:
-      "The size and speed of the object will impact the stress on the tractor beam. If the object is large, fast, or dense, it will put more stress on our ship, and we will need to strengthen the tractor beam in order to pull in the object. If we pull it in too fast, the object may collide with our ship and cause damage. Use this tool to match the strength of the tractor beam to the stress being put on it."
-  }
-];
-
 const TRACTORBEAM_SUB = gql`
   subscription TractorBeamUpdate($simulatorId: ID!) {
     tractorBeamUpdate(simulatorId: $simulatorId) {
       id
+      name
+      displayName
       state
       target
       targetLabel
@@ -64,6 +53,21 @@ class TractorBeam extends Component {
       variables
     });
   };
+  trainingSteps = tractorBeam => [
+    {
+      selector: ".activate",
+      content: `The ${tractorBeam.displayName ||
+        tractorBeam.name} pulls objects to you with zero-point energy. Once a target it in sight, it will appear below the ship. Press this button to activate the ${tractorBeam.displayName ||
+        tractorBeam.name}.`
+    },
+    {
+      selector: ".strengthBar",
+      content: `The size and speed of the object will impact the stress on the ${tractorBeam.displayName ||
+        tractorBeam.name}. If the object is large, fast, or dense, it will put more stress on our ship, and we will need to strengthen the ${tractorBeam.displayName ||
+        tractorBeam.name} in order to pull in the object. If we pull it in too fast, the object may collide with our ship and cause damage. Use this tool to match the strength of the ${tractorBeam.displayName ||
+        tractorBeam.name} to the stress being put on it.`
+    }
+  ];
   render() {
     if (this.props.data.loading || !this.props.data.tractorBeam) return null;
     const tractorBeam =
@@ -95,7 +99,10 @@ class TractorBeam extends Component {
             })
           }
         />
-        <DamageOverlay system={tractorBeam} message="Tractor Beam Offline" />
+        <DamageOverlay
+          system={tractorBeam}
+          message={`${tractorBeam.displayName || tractorBeam.name} Offline`}
+        />
         <Beam shown={tractorBeam.state} />
         <Asset asset={assets.side}>
           {({ src }) => (
@@ -152,9 +159,13 @@ class TractorBeam extends Component {
           className="activate"
           disabled={!tractorBeam.target}
         >
-          {tractorBeam.state ? "Deactivate" : "Activate"} Tractor Beam
+          {tractorBeam.state ? "Deactivate" : "Activate"}{" "}
+          {tractorBeam.displayName || tractorBeam.name}
         </Button>
-        <Tour steps={trainingSteps} client={this.props.clientObj} />
+        <Tour
+          steps={this.trainingSteps(tractorBeam)}
+          client={this.props.clientObj}
+        />
       </Container>
     );
   }
@@ -164,6 +175,8 @@ const TRACTORBEAM_QUERY = gql`
   query TractorBeamInfo($simulatorId: ID!) {
     tractorBeam(simulatorId: $simulatorId) {
       id
+      name
+      displayName
       state
       target
       targetLabel

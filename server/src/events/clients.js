@@ -6,7 +6,7 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import path from "path";
 import paths from "../helpers/paths";
 import fs from "fs";
-
+import uuid from "uuid";
 function randomFromList(list) {
   if (!list) return;
   const length = list.length;
@@ -17,7 +17,7 @@ function randomFromList(list) {
 function performKeypadAction(id, action) {
   const clientObj = App.clients.find(c => c.id === id);
   if (clientObj) {
-    action(clientObj.keypad);
+    action(clientObj.keypad, clientObj);
     pubsub.publish("keypadUpdate", clientObj.keypad);
     pubsub.publish(
       "keypadsUpdate",
@@ -282,8 +282,28 @@ App.on("setKeypadCode", ({ id, code }) => {
 });
 
 App.on("setKeypadEnteredCode", ({ id, code }) => {
-  performKeypadAction(id, client => {
-    client.setEnteredCode(code);
+  performKeypadAction(id, (keypad, client) => {
+    keypad.setEnteredCode(code);
+    const match = keypad.code.join("") === keypad.enteredCode.join("");
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: client.simulatorId,
+      type: "Keypad",
+      station: "Core",
+      title: match ? `Keypad Code Accepted` : `Keypad Code Entered`,
+      body: `${keypad.id} - ${code}`,
+      color: match ? "success" : "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: client.simulatorId,
+        title: match ? `Keypad Code Accepted` : `Keypad Code Entered`,
+        component: "KeypadCore",
+        body: `${keypad.id} - ${code}`,
+        color: match ? "success" : "info"
+      },
+      "addCoreFeed"
+    );
   });
 });
 

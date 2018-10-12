@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./style.scss";
 import Explosion from "helpers/explosions";
+import Interference from "../Sensors/GridDom/interference";
 
 const speedLimit = 20;
 const speedConstant1 = 2.5 / 100;
@@ -202,6 +203,7 @@ class TargetingGridDom extends Component {
     });
   };
   render() {
+    console.log(this.props);
     const lines = 15;
     const { targets } = this.state;
     return (
@@ -230,6 +232,12 @@ class TargetingGridDom extends Component {
             />
           ))}
         </div>
+        {this.props.dimensions && (
+          <Interference
+            width={this.props.dimensions.width}
+            interference={this.props.interference}
+          />
+        )}{" "}
       </div>
     );
   }

@@ -168,6 +168,8 @@ class SecurityDecks extends Component {
                     onClick={this._selectDeck.bind(this, d.id)}
                     className={`${
                       this.state.selectedDeck === d.id ? "selected" : ""
+                    } ${d.doors ? "doors" : ""} ${d.evac ? "evac" : ""} ${
+                      d.rooms.find(r => r.gas) ? "tranzine" : ""
                     }`}
                   >
                     Deck {d.number}

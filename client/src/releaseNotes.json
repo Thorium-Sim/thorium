@@ -1,4 +1,27 @@
 {
+  "1.0.18": {
+    "features": [
+      "Add interference to the targeting grid.",
+      "Add training for the code cyphers screen.",
+      "Add an assets core for dynamically changing simulator assets.",
+      "Add colors to hilite the deck colors based on evac, doors, or tranzine status on the security decks screen.",
+      "Add the ability to rename keyboards.",
+      "Make it possible to damage shuttlebays.",
+      "Add additional sensors scan answer presets.",
+      "Add better notifications for the keypad core."
+    ],
+    "fixes": [
+      "Adds the bridge map asset item to the simulator config.",
+      "Adds the ability to clear station-specfic training.",
+      "Fix an issue with card switchers on certain layouts.",
+      "Fixes the color of the hilite on the computer core screen for better contrast.",
+      "Multiple lines now work for intership messages.",
+      "Allow the tractor beam to be properly renamed on the tractor beam card.",
+      "Make it possible to properly break the signal jammer.",
+      "Signal jammer stealth factor is now dependant on whether the system is active or not.",
+      "Fix an issue with exporting keyboards."
+    ]
+  },
   "1.0.17": {
     "fixes": [
       "Add phaser arc back to the phaser charging screen.",

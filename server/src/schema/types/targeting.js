@@ -12,6 +12,7 @@ type Targeting {
   quadrants: Boolean
   range: Float
   coordinateTargeting: Boolean
+  interference: Float
   targetedSensorContact: SensorContact
   calculatedTarget:StringCoordinates
   enteredTarget:StringCoordinates
