@@ -31,6 +31,13 @@ type Keypad {
   locked:Boolean
 }
 
+type Scanner {
+  id:ID
+  scanRequest: String
+  scanResults: String
+  scanning: Boolean
+}
+
 type Sound {
   id: ID
   clients: [String]

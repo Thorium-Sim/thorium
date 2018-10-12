@@ -2,43 +2,39 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import KeypadCore from "./keypadCore";
+import ScannerCore from "./scannerCore";
 import "./style.scss";
 
 const queryData = `
 id
-code
-enteredCode
-codeLength
-giveHints
-allowedAttempts
-attempts
-locked
+scanRequest
+scanResults
+scanning
 `;
 
 const QUERY = gql`
-  query Keypad($simulatorId: ID!) {
-    keypads(simulatorId: $simulatorId) {
+  query Scanner($simulatorId: ID!) {
+    scanners(simulatorId: $simulatorId) {
 ${queryData}
     }
   }
 `;
 const SUBSCRIPTION = gql`
-  subscription KeypadUpdate($simulatorId: ID!) {
-    keypadsUpdate(simulatorId: $simulatorId) {
+  subscription ScannerUpdate($simulatorId: ID!) {
+    scannersUpdate(simulatorId: $simulatorId) {
 ${queryData}
     }
   }
 `;
 
-class KeypadData extends Component {
+class ScannerData extends Component {
   state = {};
   render() {
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
-          const { keypads } = data;
-          if (loading || !keypads) return null;
+          const { scanners } = data;
+          if (loading || !scanners) return null;
           return (
             <SubscriptionHelper
               subscribe={() =>
@@ -47,13 +43,13 @@ class KeypadData extends Component {
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
                     return Object.assign({}, previousResult, {
-                      keypads: subscriptionData.data.keypadsUpdate
+                      scanners: subscriptionData.data.scannersUpdate
                     });
                   }
                 })
               }
             >
-              <KeypadCore {...this.props} keypads={keypads} />
+              <ScannerCore {...this.props} scanners={scanners} />
             </SubscriptionHelper>
           );
         }}
@@ -61,4 +57,4 @@ class KeypadData extends Component {
     );
   }
 }
-export default KeypadData;
+export default ScannerData;

@@ -52,6 +52,26 @@ class Keypad {
   }
 }
 
+class Scanner {
+  constructor(params = {}, clientId) {
+    this.id = clientId;
+    this.scanRequest = params.scanRequest || "";
+    this.scanResults = params.scanResults || "";
+    this.scanning = params.scanning || false;
+  }
+  scan(request) {
+    this.scanRequest = request;
+    this.scanning = true;
+  }
+  cancelScan() {
+    this.scanning = false;
+  }
+  scanResponse(response) {
+    this.scanning = false;
+    this.scanResults = response;
+  }
+}
+
 export default class Client {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
@@ -77,6 +97,7 @@ export default class Client {
 
     // Keypad
     this.keypad = new Keypad(params.keypad, this.id);
+    this.scanner = new Scanner(params.scanner, this.id);
   }
   connect({ mobile, cards }) {
     this.connected = true;
