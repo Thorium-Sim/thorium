@@ -13,11 +13,33 @@ import gql from "graphql-tag";
 import { InputField } from "../../generic/core";
 
 class KeypadCore extends Component {
-  state = {};
-  render() {
-    console.log(this.props);
+  state = { changed: {} };
+  componentDidUpdate(prevProps) {
     const { keypads } = this.props;
-    const { selectedKeypad } = this.state;
+    const { keypads: oldKeypads } = prevProps;
+    const clients = this.props.clients
+      .filter(c => c.station && c.station.name === "RemoteAccess")
+      .map(c => keypads.find(k => k.id === c.id));
+    const oldClients = prevProps.clients
+      .filter(c => c.station && c.station.name === "RemoteAccess")
+      .map(c => oldKeypads.find(k => k.id === c.id));
+    // If the entered field is different, trigger an update
+    const diffs = {};
+    clients.forEach(c => {
+      const oldClient = oldClients.find(o => c.id === o.id);
+      if (oldClient.enteredCode.join("") !== c.enteredCode.join("")) {
+        diffs[c.id] = true;
+      }
+    });
+    if (Object.keys(diffs).length > 0) {
+      this.setState(state => ({
+        changed: { ...state.changed, ...diffs }
+      }));
+    }
+  }
+  render() {
+    const { keypads } = this.props;
+    const { selectedKeypad, changed } = this.state;
     const clients = this.props.clients
       .filter(c => c.station && c.station.name === "RemoteAccess")
       .map(c => keypads.find(k => k.id === c.id));
@@ -31,7 +53,17 @@ class KeypadCore extends Component {
                 <ListGroupItem
                   key={c.id}
                   active={c.id === selectedKeypad}
-                  onClick={() => this.setState({ selectedKeypad: c.id })}
+                  onClick={() =>
+                    this.setState(state => ({
+                      selectedKeypad: c.id,
+                      changed: { ...state.changed, [c.id]: false }
+                    }))
+                  }
+                  style={{
+                    backgroundColor: changed[c.id]
+                      ? `rgba(255, 0, 0, 0.3)`
+                      : null
+                  }}
                 >
                   {c.id}
                 </ListGroupItem>
@@ -43,7 +75,7 @@ class KeypadCore extends Component {
               <p>
                 <strong>Name:</strong> {keypad.id}
               </p>
-              <p>
+              <div>
                 <strong>Req. Code:</strong>
                 <Mutation
                   mutation={gql`
@@ -71,11 +103,11 @@ class KeypadCore extends Component {
                     </InputField>
                   )}
                 </Mutation>
-              </p>
+              </div>
               <p>
                 <strong>Entered Code:</strong> {keypad.enteredCode.join("")}
               </p>
-              <p>
+              <div>
                 <strong>Allowed Attempts:</strong>
                 <Mutation
                   mutation={gql`
@@ -102,8 +134,8 @@ class KeypadCore extends Component {
                     </InputField>
                   )}
                 </Mutation>
-              </p>
-              <p>
+              </div>
+              <div>
                 <strong title="For randomly generated codes.">
                   Code Length:
                 </strong>
@@ -132,11 +164,11 @@ class KeypadCore extends Component {
                     </InputField>
                   )}
                 </Mutation>
-              </p>
+              </div>
               <p>
                 <strong>Attempts:</strong> {keypad.attempts}
               </p>
-              <p>
+              <div>
                 <strong>Hints:</strong>{" "}
                 <Mutation
                   mutation={gql`
@@ -158,7 +190,7 @@ class KeypadCore extends Component {
                     />
                   )}
                 </Mutation>
-              </p>
+              </div>
               <p>
                 <strong>Locked:</strong>{" "}
                 <Mutation
@@ -181,10 +213,6 @@ class KeypadCore extends Component {
                     />
                   )}
                 </Mutation>
-              </p>
-              <p>
-                <strong>Remote Access:</strong>{" "}
-                <Input type="checkbox" disabled style={{ margin: 0 }} />
               </p>
               <Mutation
                 mutation={gql`

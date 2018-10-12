@@ -23,6 +23,7 @@ const components = [
   "InterceptionCore",
   "InternalCommCore",
   "JumpDriveCore",
+  "KeypadCore",
   "LRCommCore",
   "MedicalTeamsCore",
   "MessagingCore",
