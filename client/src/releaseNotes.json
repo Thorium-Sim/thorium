@@ -15,7 +15,8 @@
       "Fix an issue with card switchers on certain layouts.",
       "Fixes the color of the hilite on the computer core screen for better contrast.",
       "Multiple lines now work for intership messages.",
-      "Allow the tractor beam to be properly renamed on the tractor beam card."
+      "Allow the tractor beam to be properly renamed on the tractor beam card.",
+      "Make it possible to properly break the signal jammer."
     ]
   },
   "1.0.17": {
