@@ -1,6 +1,39 @@
 import React, { Component } from "react";
 import { Container, Button, Row, Col, Card, CardBody } from "reactstrap";
+import Tour from "helpers/tourHelper";
+import { FormattedMessage } from "react-intl";
+
 import "./style.scss";
+
+const trainingSteps = [
+  {
+    selector: ".nothing",
+    content: (
+      <FormattedMessage
+        id="cypher-training-1"
+        defaultMessage="Cyphers are used to decode messages on paper. You can see the cypher characters on your screen and match them with the characters on your printed encoded message."
+      />
+    )
+  },
+  {
+    selector: ".cypher-list",
+    content: (
+      <FormattedMessage
+        id="cypher-training-2"
+        defaultMessage="This is a list of the available cyphers. Click to choose a cypher."
+      />
+    )
+  },
+  {
+    selector: ".cypher-area",
+    content: (
+      <FormattedMessage
+        id="cypher-training-3"
+        defaultMessage="Here you can see the cypher characters, and the Roman character which it represents."
+      />
+    )
+  }
+];
 //var greekUtils = require("greek-utils");
 const greekUtils = {
   toGreek: a => a
@@ -16,7 +49,7 @@ export const cypherMap = {
   "GTCH-456": "Trill",
   "GJSB-313": "Borg",
   "HKPY-771": "DwarfSpiritas",
-  "GFYN-182": "Shadow",
+  // "GFYN-182": "Shadow",
   "ZXFD-719": "Visitor",
   //"KCUB-610": "Cardassian",
   "XHSI-225": "Fabrini",
@@ -36,7 +69,7 @@ class Codes extends Component {
     return (
       <Container className="card-codeCyphers">
         <Row>
-          <Col sm={8}>
+          <Col sm={8} className="cypher-area">
             <Card>
               <CardBody>
                 {selectedCypher && (
@@ -45,7 +78,7 @@ class Codes extends Component {
               </CardBody>
             </Card>
           </Col>
-          <Col sm={4}>
+          <Col sm={4} className="cypher-list">
             <Card>
               <CardBody>
                 {Object.keys(cypherMap).map(c => (
@@ -70,6 +103,7 @@ class Codes extends Component {
           <h1>=== Code Cypher ===</h1>
           {selectedCypher && <CodeList font={cypherMap[selectedCypher]} />}
         </div>
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

@@ -19,7 +19,7 @@ class CardSwitcher extends Component {
             className="cards-holder"
             style={{ transform: shown ? null : `translateY(-110%)` }}
           >
-            {cards.map(c => (
+            {(cards || []).map(c => (
               <div
                 key={`card-${c.name}`}
                 className="navigation-card"

@@ -46,7 +46,7 @@ const CardSwitcher = ({ cards, changeCard, currentCard }) => {
   return (
     <div className="card-switcher-holder">
       <div className="card-switcher">
-        {cards.map((card, index) => (
+        {(cards || []).map((card, index) => (
           <CardButton
             key={`${card.name}-${index}`}
             cardNum={index}

@@ -23,7 +23,7 @@ export default [
   },
   {
     label: "Destination",
-    value: "Now approaching destination. Recommend Full Stop."
+    value: "Now approaching destination. Recommend slowing to Full Stop."
   },
   { label: "Detected.", value: "Detected." },
   {
@@ -41,7 +41,7 @@ export default [
   },
   {
     label: "Not in range",
-    value: "Unable to complete scan. Uss ***** is not within range."
+    value: "Unable to complete scan. USS ***** is not within range."
   },
   {
     label: "Radiation from nebula",
@@ -59,5 +59,24 @@ export default [
   {
     label: "Which contact.",
     value: "Please specify which contact you wish to scan."
+  },
+  {
+    label: "Thruster Dodge",
+    value: "thrusterdodge"
+  },
+  {
+    label: "Undocking Instructions",
+    value:
+      "This vessel is currently docked. The Boarding Ramps and the Docking Clamps must be retracted before the Thrusters can be used to undock."
+  },
+  {
+    label: "Undocking Completed",
+    value:
+      "This vessel has successfully undocked. It is recommended to calculate a course to our destination."
+  },
+  {
+    label: "Asteroids",
+    value:
+      "Asteroids detected in the area. It is recommended that Thrusters be used to dodge asteroids. The weapon systems can be used to destroy incoming projectiles before impact."
   }
 ];

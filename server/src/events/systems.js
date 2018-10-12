@@ -110,6 +110,7 @@ App.on("damageSystem", ({ systemId, report, destroyed, which = "default" }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
     sys = App.dockingPorts.find(s => s.id === systemId);
+    if (!sys) return;
   }
   sys.break(report, destroyed, which);
   sendUpdate(sys);

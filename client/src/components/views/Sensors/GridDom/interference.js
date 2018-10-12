@@ -12,6 +12,7 @@ class Interference extends Component {
   }
   componentWillUnmount() {
     this.toggle = false;
+    clearTimeout(this.loop);
   }
   loop = () => {
     if (this.toggle) {
@@ -23,6 +24,7 @@ class Interference extends Component {
   noise(ctx) {
     const w = ctx.canvas.width;
     const h = ctx.canvas.height;
+    if (w === 0 || h === 0) return;
     const idata = ctx.createImageData(w, h);
     const buffer32 = new Uint32Array(idata.data.buffer);
     const len = buffer32.length;

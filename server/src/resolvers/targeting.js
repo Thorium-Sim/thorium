@@ -99,6 +99,15 @@ export const TargetingTypes = {
           : null;
       }
       return null;
+    },
+    interference(targeting) {
+      const sensors = App.systems.find(
+        s =>
+          s.simulatorId === targeting.simulatorId &&
+          s.type === "Sensors" &&
+          s.domain === "external"
+      );
+      return sensors ? sensors.interference : 0;
     }
   },
   TargetingContact: {

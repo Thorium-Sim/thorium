@@ -29,6 +29,11 @@ const assetList = [
     name: "Login Logo",
     fullPath: "logo",
     folderPath: "/Misc"
+  },
+  {
+    name: "Bridge Map",
+    fullPath: "bridge",
+    folderPath: "/Misc"
   }
 ];
 
@@ -78,6 +83,8 @@ class Assets extends Component {
                             [selectedAsset]: container.fullPath
                           }
                         }
+                      }).then(() => {
+                        this.props.update && this.props.update();
                       });
                     }}
                   />

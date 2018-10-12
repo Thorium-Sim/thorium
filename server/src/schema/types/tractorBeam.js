@@ -6,6 +6,7 @@ type TractorBeam {
   power: Power
   damage: Damage
   name: String
+  displayName: String
   state: Boolean
   target: Boolean
   targetLabel: String

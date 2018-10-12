@@ -24,6 +24,7 @@ const components = [
   "Interception",
   "Internal Sensors",
   "Jump Drive",
+  "Keypad",
   "Long Range Comm",
   "Medical Teams",
   "Navigation",

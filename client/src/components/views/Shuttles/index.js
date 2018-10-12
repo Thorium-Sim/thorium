@@ -9,6 +9,7 @@ import Door from "./Door";
 import { Clamps } from "../Docking/graphics";
 import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import DamageOverlay from "../helpers/DamageOverlay";
 
 const SHUTTLE_SUB = gql`
   subscription ShuttlesUpdate($simulatorId: ID) {
@@ -128,11 +129,13 @@ class ShuttleBay extends Component {
       id,
       clamps,
       compress,
-      doors
+      doors,
+      damage
     } = this.props;
     const { animating } = this.state;
     return (
       <Card>
+        <DamageOverlay system={{ damage }} message={`${name} Offline`} />
         <CardBody>
           <h3 className="text-center">{name}</h3>
           <Row>

@@ -1,8 +1,9 @@
 import React from "react";
 import { FormGroup } from "reactstrap";
 
-export default ({ args = `{"data":{}}` }) => {
-  const data = args.data ? JSON.parse(args.data) : {};
+export default ({ args }) => {
+  args = args || {};
+  const data = args && args.data ? JSON.parse(args.data) : {};
 
   return (
     <FormGroup className="macro-template">
