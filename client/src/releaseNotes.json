@@ -1,6 +1,9 @@
 {
   "1.0.19": {
-    "features": ["Add a low power viewscreen."],
+    "features": [
+      "Add a low power viewscreen.",
+      "Add a core for handheld scanners. To be used with the Thorium Mobile app."
+    ],
     "fixes": [
       "Fixed an issue with the targeting grid interference not showing up on the standalone targeting screen.",
       "The reset timeline event will no longer reset the timeline for the simulator."
