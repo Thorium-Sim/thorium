@@ -9,7 +9,7 @@ importMission(jsonString: String!):String
 startFlight(name: String, simulators: [SimulatorInput!]!):String
 createSimulator(name: String!,template: Boolean):String
 #Macro: Reset Flight
-resetFlight(flightId: ID!): String
+resetFlight(flightId: ID!, full: Boolean): String
 deleteFlight(flightId: ID!): String
 pauseFlight(flightId:ID!): String
 resumeFlight(flightId:ID!): String

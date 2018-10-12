@@ -43,6 +43,7 @@ const TARGETING_QUERY = gql`
       type
       name
       quadrants
+      interference
       coordinateTargeting
       calculatedTarget {
         x
@@ -112,6 +113,7 @@ const TARGETING_SUB = gql`
       type
       name
       quadrants
+      interference
       coordinateTargeting
       calculatedTarget {
         x
@@ -410,6 +412,7 @@ class Targeting extends Component {
                         targetContact={this.targetContact.bind(this)}
                         untargetContact={this.untargetContact.bind(this)}
                         targets={targeting.contacts}
+                        interference={targeting.interference}
                       />
                     </div>
                   )}

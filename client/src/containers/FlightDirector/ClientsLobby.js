@@ -27,7 +27,7 @@ All information in all simulators in this flight will be reset.`
     ) {
       const mutation = gql`
         mutation ResetFlight($flightId: ID!) {
-          resetFlight(flightId: $flightId)
+          resetFlight(flightId: $flightId, full: true)
         }
       `;
       const variables = {

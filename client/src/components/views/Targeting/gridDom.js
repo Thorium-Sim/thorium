@@ -203,7 +203,6 @@ class TargetingGridDom extends Component {
     });
   };
   render() {
-    console.log(this.props);
     const lines = 15;
     const { targets } = this.state;
     return (
