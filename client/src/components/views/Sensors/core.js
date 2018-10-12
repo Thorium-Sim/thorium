@@ -8,6 +8,13 @@ import ScanPresets from "./ScanPresets";
 import { subscribe } from "helpers/pubsub";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
+function randomFromList(list) {
+  if (!list) return;
+  const length = list.length;
+  const index = Math.floor(Math.random() * length);
+  return list[index];
+}
+
 const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {
     sensorsUpdate(simulatorId: $simulatorId) {
@@ -134,6 +141,11 @@ class SensorsCore extends Component {
       X: ${Math.round(Math.random() * 100000) / 100}
       Y: ${Math.round(Math.random() * 100000) / 100}
       Z: ${Math.round(Math.random() * 100000) / 100}`;
+    }
+    if (dataField === "thrusterdodge") {
+      dataField = `Incoming weapons detected. Recommend firing ${randomFromList(
+        ["port", "starboard", "forward", "reverse", "up", "down"]
+      )} thrusters to dodge.`;
     }
     this.setState({
       dataField

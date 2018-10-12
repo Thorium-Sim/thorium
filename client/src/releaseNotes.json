@@ -5,7 +5,9 @@
       "Add training for the code cyphers screen.",
       "Add an assets core for dynamically changing simulator assets.",
       "Add colors to hilite the deck colors based on evac, doors, or tranzine status on the security decks screen.",
-      "Add the ability to rename keyboards."
+      "Add the ability to rename keyboards.",
+      "Make it possible to damage shuttlebays.",
+      "Add additional sensors scan answer presets."
     ],
     "fixes": [
       "Adds the bridge map asset item to the simulator config.",
