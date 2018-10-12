@@ -259,7 +259,8 @@
   font-family: "Rihannsu";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/cyphers/Rihannsu.woff") format("woff");
+  src: url("../fonts/cyphers/Rihannsu.woff") format("woff"),
+    url("../fonts/cyphers/Romulan.ttf") format("truetype");
 }
 @font-face {
   font-family: "Trill";
@@ -283,7 +284,8 @@
   font-family: "Shadow";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/cyphers/Shadow.woff") format("woff");
+  src: url("../fonts/cyphers/Shadow.woff") format("woff"),
+    url("../fonts/cyphers/Centauri.ttf") format("truetype");
 }
 @font-face {
   font-family: "Visitor";

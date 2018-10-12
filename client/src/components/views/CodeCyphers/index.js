@@ -49,7 +49,7 @@ export const cypherMap = {
   "GTCH-456": "Trill",
   "GJSB-313": "Borg",
   "HKPY-771": "DwarfSpiritas",
-  "GFYN-182": "Shadow",
+  // "GFYN-182": "Shadow",
   "ZXFD-719": "Visitor",
   //"KCUB-610": "Cardassian",
   "XHSI-225": "Fabrini",
