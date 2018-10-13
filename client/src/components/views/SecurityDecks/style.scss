@@ -23,6 +23,10 @@
       }
     }
   }
+  #Left-Door,
+  #Right-Door {
+    transition: transform 5s ease;
+  }
   .doors {
     color: violet;
   }

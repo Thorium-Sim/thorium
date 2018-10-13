@@ -10,6 +10,7 @@ const DECK_SUB = gql`
       id
       evac
       doors
+      crewCount
       rooms {
         name
         id
@@ -97,6 +98,7 @@ class SecurityTeams extends Component {
               <th title="Evacuation">Evac</th>
               <th title="Doors">Door</th>
               <th title="Tranzine">Tranzine</th>
+              <th title="Crew Count">Crew Count</th>
             </tr>
           </thead>
           <tbody>
@@ -131,6 +133,7 @@ class SecurityTeams extends Component {
                   <td>
                     <TranzineSelect deck={d} />
                   </td>
+                  <td style={{ textAlign: "center" }}>{d.crewCount}</td>
                 </tr>
               ))}
           </tbody>
@@ -161,6 +164,7 @@ const DECK_QUERY = gql`
       number
       evac
       doors
+      crewCount
       rooms {
         id
         name

@@ -12,3 +12,4 @@ import "./exocomps";
 import "./computerCore";
 import "./jumpDrive";
 import "./thorium";
+import "./crew";
