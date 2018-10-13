@@ -186,6 +186,9 @@ export const ShipStructureTypes = {
   Deck: {
     rooms(deck) {
       return App.rooms.filter(r => r.deckId === deck.id);
+    },
+    crewCount(deck) {
+      return App.crew.filter(c => c.location === deck.id).length;
     }
   },
   Room: {

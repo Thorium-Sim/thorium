@@ -10,6 +10,7 @@ type Crew {
   rank: String
   position: String
   killed: Boolean
+  location: Deck
   workRoom: Room
   restRoom: Room
   inventory: [InventoryItem]
