@@ -44,7 +44,9 @@ class KeypadCore extends Component {
       .filter(c => c.station && c.station.name === "RemoteAccess")
       .map(c => keypads.find(k => k.id === c.id));
     const keypad = keypads.find(k => k.id === selectedKeypad);
-    return (
+    return clients.length === 0 ? (
+      <p>No keypads. Use the Thorium Mobile app to use this core.</p>
+    ) : (
       <Container>
         <Row>
           <Col sm={4}>
