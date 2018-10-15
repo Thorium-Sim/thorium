@@ -525,7 +525,10 @@ export default class TimelineConfig extends Component {
           selectedStep && (
             <Col sm="3" style={{ maxHeight: "27vh" }}>
               <h4>{selectedStep.name}</h4>
-              <Card className="scroll">
+              <Card
+                className="scroll"
+                style={{ maxHeight: "60vh", overflowY: "auto" }}
+              >
                 <li
                   onClick={this._setSelectedTimelineItem.bind(this, {
                     id: "step"
@@ -556,11 +559,11 @@ export default class TimelineConfig extends Component {
                     </li>
                   );
                 })}
-                <EventPicker
-                  className={"btn btn-sm btn-success"}
-                  handleChange={e => this._addTimelineItem(e)}
-                />
               </Card>
+              <EventPicker
+                className={"btn btn-sm btn-success"}
+                handleChange={e => this._addTimelineItem(e)}
+              />
             </Col>
           )}
         {(() => {
