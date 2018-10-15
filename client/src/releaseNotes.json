@@ -6,7 +6,8 @@
       "Add some visuals to the security decks screen.",
       "Crew deck location is now tracked. Crew will move to the appropriate deck when on a team and will evacuate a deck when it is evacuated. Crew will also obey if the bulkhead doors are closed.",
       "Add some long range message presets.",
-      "Adjust probe construction to make it more friendly for touchscreens."
+      "Adjust probe construction to make it more friendly for touchscreens.",
+      "Add setting the self destruct code back in. Self destruct now requires the code to turn it on and off. Better support for touchscreens too."
     ],
     "fixes": [
       "Fixed an issue with the targeting grid interference not showing up on the standalone targeting screen.",
