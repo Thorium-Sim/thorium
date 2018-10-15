@@ -9,6 +9,12 @@ export class Deck {
     this.svgPath = params.svgPath || "";
     this.doors = params.doors || false;
     this.evac = params.evac || false;
+
+    // There needs to be a delay before
+    // crew start evacuating. That's what
+    // this value is
+    this.actualEvac = params.actualEvac || false;
+
     this.hallway = params.hallway || "";
   }
   updateSvg(svg) {
@@ -19,6 +25,9 @@ export class Deck {
   }
   setEvac(evac) {
     this.evac = evac;
+    setTimeout(() => {
+      this.actualEvac = evac;
+    }, 5000);
   }
   updateHallwaySvg(hallway) {
     this.hallway = hallway;

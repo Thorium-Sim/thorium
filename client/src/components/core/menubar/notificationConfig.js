@@ -21,6 +21,7 @@ const components = [
   "Docking",
   "Engines",
   "External Sensors",
+  "Handheld Scanner",
   "Interception",
   "Internal Sensors",
   "Jump Drive",

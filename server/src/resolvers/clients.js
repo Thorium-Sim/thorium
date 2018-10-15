@@ -27,6 +27,15 @@ export const ClientQueries = {
     return App.clients
       .filter(c => c.simulatorId === simulatorId)
       .map(c => c.keypad);
+  },
+  scanner: (root, { client }) => {
+    const c = App.clients.find(c => c.id === client);
+    return c ? c.scanner : null;
+  },
+  scanners: (root, { simulatorId }) => {
+    return App.clients
+      .filter(c => c.simulatorId === simulatorId)
+      .map(c => c.scanner);
   }
 };
 
@@ -130,6 +139,15 @@ export const ClientMutations = {
   },
   setKeypadAllowedAttempts(root, args, context) {
     App.handleEvent(args, "setKeypadAllowedAttempts", context);
+  },
+  handheldScannerScan(root, args, context) {
+    App.handleEvent(args, "handheldScannerScan", context);
+  },
+  handheldScannerCancel(root, args, context) {
+    App.handleEvent(args, "handheldScannerCancel", context);
+  },
+  handheldScannerResponse(root, args, context) {
+    App.handleEvent(args, "handheldScannerResponse", context);
   }
 };
 
@@ -180,6 +198,25 @@ export const ClientSubscriptions = {
       payload.filter(c => c.simulatorId === simulatorId).map(c => c.keypad),
     subscribe: withFilter(
       () => pubsub.asyncIterator("keypadsUpdate"),
+      (data, { simulatorId }) => {
+        return data.filter(c => c.simulatorId === simulatorId).length > 0;
+      }
+    )
+  },
+  scannerUpdate: {
+    resolve: payload => payload,
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("scannerUpdate"),
+      (data, { client }) => {
+        return data.id === client;
+      }
+    )
+  },
+  scannersUpdate: {
+    resolve: (payload, { simulatorId }) =>
+      payload.filter(c => c.simulatorId === simulatorId).map(c => c.scanner),
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("scannersUpdate"),
       (data, { simulatorId }) => {
         return data.filter(c => c.simulatorId === simulatorId).length > 0;
       }

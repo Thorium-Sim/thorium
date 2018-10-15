@@ -69,6 +69,10 @@ export default class Crew {
     this.age = params.age || 27;
     this.rank = params.rank || "Ensign";
     this.position = params.position || "Crewmember";
+
+    // A deck ID
+    this.location = params.location || null;
+
     this.killed = params.killed || false;
     this.workRoom = params.workRoom || null;
     this.restRoom = params.restRoom || null;

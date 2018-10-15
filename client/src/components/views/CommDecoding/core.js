@@ -5,6 +5,29 @@ import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import "./style.scss";
 
+const MessagePresets = [
+  {
+    label: "Send Updates",
+    messageSender: "Starbase 74",
+    message: `To: #SIM
+From: Starbase 74
+
+We want to be informed about any developments during your mission. Make sure you send us a message every 10 minutes.
+
+Starbase 74 out`
+  },
+  {
+    label: "What is your status?",
+    messageSender: "Starbase 74",
+    message: `To: #SIM
+From: Starbase 74
+
+#SIM, we haven't heard from you in a while. What is your status?
+
+Starbase 74 out`
+  }
+];
+
 class LRCommCore extends Component {
   constructor(props) {
     super(props);
@@ -151,7 +174,7 @@ class LRCommCore extends Component {
           value={this.state.message}
           onChange={this._lrmText.bind(this)}
         />
-        <span>
+        <span style={{ display: "flex", alignItems: "flex-start" }}>
           <Button size="sm" onClick={this._sendMessage.bind(this)}>
             Send
           </Button>
@@ -167,6 +190,29 @@ class LRCommCore extends Component {
             />{" "}
             Decoded
           </label>
+          <select
+            style={{ height: "18px" }}
+            value={"nothing"}
+            onChange={e => {
+              const { message, messageSender } = MessagePresets.find(
+                m => m.label === e.target.value
+              );
+
+              this.setState({
+                message: message.replace(/#SIM/gi, this.props.simulator.name),
+                messageSender
+              });
+            }}
+          >
+            <option value="nothing" disabled>
+              Select a Message
+            </option>
+            {MessagePresets.map(p => (
+              <option key={p.label} value={p.label}>
+                {p.label}
+              </option>
+            ))}
+          </select>
         </span>
       </div>
     ) : (

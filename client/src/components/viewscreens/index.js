@@ -33,6 +33,7 @@ export { default as ShipStatus } from "./ShipStatus";
 export { default as ShipModel } from "./ShipModel";
 export { default as Timer } from "./Timer";
 export { default as Thrusters } from "../views/Thrusters/viewscreen";
+export { default as LowPower } from "./LowPower";
 
 export { default as InformationConfig } from "./Information/config";
 export { default as InternalSensorsConfig } from "./InternalSensors/config";

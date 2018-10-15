@@ -20,6 +20,7 @@ const components = [
   "DockingCore",
   "EngineControlCore",
   "ExocompsCore",
+  "HandheldScannerCore",
   "InterceptionCore",
   "InternalCommCore",
   "JumpDriveCore",
