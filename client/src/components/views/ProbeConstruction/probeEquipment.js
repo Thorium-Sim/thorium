@@ -10,8 +10,8 @@ export default class ProbeEquipment extends Transitioner {
       equipment: props.equipment || []
     };
   }
-  addToProbe(e) {
-    let { equipment } = this.state;
+  addToProbe = () => {
+    let { equipment, selectedEquipment: e } = this.state;
     equipment = equipment.slice(0);
     const { selectedProbeType, probes } = this.props;
     const type = probes.types.find(p => p.id === selectedProbeType);
@@ -40,9 +40,9 @@ export default class ProbeEquipment extends Transitioner {
     this.setState({
       equipment
     });
-  }
-  removeFromProbe(e) {
-    let { equipment } = this.state;
+  };
+  removeFromProbe = () => {
+    let { equipment, selectedLoadedEquipment: e } = this.state;
     let eq = equipment.find(eq => eq.id === e.id);
     if (eq) {
       //Update the equipment
@@ -51,7 +51,7 @@ export default class ProbeEquipment extends Transitioner {
     this.setState({
       equipment: equipment.filter(eq => eq.count > 0)
     });
-  }
+  };
   render() {
     const { selectedProbeType, probes, cancelProbe, prepareProbe } = this.props;
     const { shownDescription, equipment } = this.state;
@@ -80,12 +80,7 @@ export default class ProbeEquipment extends Transitioner {
                       </Col>
                     </Row>
                   </CardBody>
-                  <CardBody
-                    onMouseOut={() => {
-                      this.setState({ shownDescription: null });
-                    }}
-                    className="equipmentList"
-                  >
+                  <CardBody className="equipmentList">
                     {type.availableEquipment.map(e => {
                       const used = equipment.find(eq => eq.id === e.id) || {
                         count: 0
@@ -93,11 +88,20 @@ export default class ProbeEquipment extends Transitioner {
                       return (
                         <Row
                           key={e.id}
-                          onClick={this.addToProbe.bind(this, e)}
-                          onMouseOver={() => {
-                            this.setState({ shownDescription: e.description });
-                          }}
+                          onClick={() =>
+                            this.setState({
+                              selectedEquipment: e,
+                              shownDescription: e.description
+                            })
+                          }
                           className="equipmentItem"
+                          style={{
+                            backgroundColor:
+                              this.state.selectedEquipment &&
+                              e.id === this.state.selectedEquipment.id
+                                ? "rgba(255,255,0,0.3)"
+                                : null
+                          }}
                         >
                           <Col sm="8">
                             <p>{e.name}</p>
@@ -115,7 +119,29 @@ export default class ProbeEquipment extends Transitioner {
                 </Card>
               </Col>
             </Row>
-            <Row style={{ marginTop: "40px" }}>
+            <Row style={{ marginTop: "10px" }}>
+              <Col sm={6}>
+                <Button
+                  color="danger"
+                  block
+                  disabled={!this.state.selectedLoadedEquipment}
+                  onClick={this.removeFromProbe}
+                >
+                  Remove Equipment
+                </Button>
+              </Col>
+              <Col sm={6}>
+                <Button
+                  color="success"
+                  block
+                  disabled={!this.state.selectedEquipment}
+                  onClick={this.addToProbe}
+                >
+                  Add Equipment
+                </Button>
+              </Col>
+            </Row>
+            <Row style={{ marginTop: "20px" }}>
               <Col sm="12">
                 <h2>Loaded Equipment:</h2>
                 <Card>
@@ -132,20 +158,24 @@ export default class ProbeEquipment extends Transitioner {
                       </Col>
                     </Row>
                   </CardBody>
-                  <CardBody
-                    onMouseOut={() => {
-                      this.setState({ shownDescription: null });
-                    }}
-                    className="equipmentList"
-                  >
+                  <CardBody className="equipmentList">
                     {equipment.map(e => (
                       <Row
                         key={e.id}
-                        onClick={this.removeFromProbe.bind(this, e)}
-                        onMouseOver={() => {
-                          this.setState({ shownDescription: e.description });
-                        }}
+                        onClick={() =>
+                          this.setState({
+                            selectedLoadedEquipment: e,
+                            shownDescription: e.description
+                          })
+                        }
                         className="equipmentItem"
+                        style={{
+                          backgroundColor:
+                            this.state.selectedLoadedEquipment &&
+                            e.id === this.state.selectedLoadedEquipment.id
+                              ? "rgba(255,255,0,0.3)"
+                              : null
+                        }}
                       >
                         <Col sm="8">
                           <p>{e.name}</p>

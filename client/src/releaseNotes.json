@@ -5,7 +5,8 @@
       "Add a core for handheld scanners. To be used with the Thorium Mobile app.",
       "Add some visuals to the security decks screen.",
       "Crew deck location is now tracked. Crew will move to the appropriate deck when on a team and will evacuate a deck when it is evacuated. Crew will also obey if the bulkhead doors are closed.",
-      "Add some long range message presets."
+      "Add some long range message presets.",
+      "Adjust probe construction to make it more friendly for touchscreens."
     ],
     "fixes": [
       "Fixed an issue with the targeting grid interference not showing up on the standalone targeting screen.",
