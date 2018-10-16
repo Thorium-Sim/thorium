@@ -448,6 +448,7 @@ class Targeting extends Component {
                       <PhaserBeam
                         key={p.id}
                         {...p}
+                        name={phasers.displayName || phasers.name}
                         disabled={this.state.disabledPhasers[p.id]}
                         index={i + 1}
                         chargePhasers={this.chargePhasers.bind(this)}
