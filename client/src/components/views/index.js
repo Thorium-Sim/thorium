@@ -145,6 +145,7 @@ import BridgeMapCore from "./BridgeMap/core";
 import KeypadCore from "./Keypad/core";
 import AssetsCore from "./AssetsCore/core";
 import HandheldScannerCore from "./HandheldScanner/core";
+import NewMessagingCore from "./Messaging/newCore";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -366,7 +367,8 @@ export const Cores = {
   BridgeMapCore,
   KeypadCore,
   AssetsCore,
-  HandheldScannerCore
+  HandheldScannerCore,
+  NewMessagingCore
 };
 
 export default Views;

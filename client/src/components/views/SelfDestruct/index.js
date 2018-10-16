@@ -1,16 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import {
-  Container,
-  Row,
-  Col,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Input
-} from "reactstrap";
+import { Container, Row, Col, Button, Input } from "reactstrap";
 import { Duration } from "luxon";
 import { graphql, withApollo } from "react-apollo";
 import Tour from "helpers/tourHelper";

@@ -34,28 +34,6 @@ const PHASERS_SUB = gql`
   }
 `;
 
-const trainingSteps = [
-  {
-    selector: ".card-phaserCharging",
-    content:
-      "Phasers are energy weapons which must be charged before they can be fired. Use this screen to charge them."
-  },
-  {
-    selector: ".phaserBeam",
-    content:
-      "Click the phaser button on the left to select that phaser. You can also see the phaser's charge here."
-  },
-  {
-    selector: ".phaserButtons",
-    content:
-      "Click on these buttons to charge and discharge an individual phaser beam or all of the phaser beams at once."
-  },
-  {
-    selector: ".phaserArc",
-    content:
-      "You can control the phaser arc here. A wide phaser arc will be more accurate, but will cause less damage because the phaser beam is spread out. A narrow phaser arc will do higher, more precise damage but a fast moving ship could avoid the beam. Use an arc that is appropriate for a specific situation."
-  }
-];
 class PhaserCharging extends Component {
   constructor(props) {
     super(props);
@@ -119,11 +97,30 @@ class PhaserCharging extends Component {
       }
     });
   }
+  trainingSteps = name => [
+    {
+      selector: ".card-phaserCharging",
+      content: `The ${name} are energy weapons which must be charged before they can be fired. Use this screen to charge them.`
+    },
+    {
+      selector: ".phaserBeam",
+      content: `Click the ${name} button on the left to select that beam. You can also see the charge here.`
+    },
+    {
+      selector: ".phaserButtons",
+      content: `Click on these buttons to charge and discharge an individual beam or all of the beams at once.`
+    },
+    {
+      selector: ".phaserArc",
+      content: `You can control the ${name} arc here. A wide arc will be more accurate, but will cause less damage because the beam is spread out. A narrow arc will do higher, more precise damage but a fast moving ship could avoid the beam. Use an arc that is appropriate for a specific situation.`
+    }
+  ];
   render() {
     if (this.props.data.loading || !this.props.data.phasers) return null;
     const phasers = this.props.data.phasers && this.props.data.phasers[0];
     const { selectedBank } = this.state;
     if (!phasers) return <p>No Phaser System</p>;
+    const name = phasers.displayName || phasers.name;
     return (
       <Container fluid className="card-phaserCharging flex-column">
         <SubscriptionHelper
@@ -141,7 +138,7 @@ class PhaserCharging extends Component {
         />
         <Row>
           <Col sm="2">
-            <p>Phaser Banks</p>
+            <p>{name} Banks</p>
           </Col>
           <Col sm="10" className="phaserLevels">
             <p>0%</p>
@@ -158,6 +155,7 @@ class PhaserCharging extends Component {
             <PhaserBeam
               key={p.id}
               {...p}
+              name={name}
               index={i + 1}
               selectedBank={selectedBank}
               selectPhaserBank={this.selectPhaserBank.bind(this, p.id)}
@@ -174,7 +172,7 @@ class PhaserCharging extends Component {
                   block
                   onClick={this.dischargePhasers.bind(this, selectedBank)}
                 >
-                  Discharge Phaser Bank
+                  Discharge Bank
                 </Button>
               </Col>
               <Col sm={6}>
@@ -184,7 +182,7 @@ class PhaserCharging extends Component {
                   block
                   onClick={this.chargePhasers.bind(this, selectedBank)}
                 >
-                  Charge Phaser Bank
+                  Charge Bank
                 </Button>
               </Col>
               <Col sm={6}>
@@ -193,7 +191,7 @@ class PhaserCharging extends Component {
                   onClick={this.dischargeAll.bind(this)}
                   block
                 >
-                  Discharge All Phaser Banks
+                  Discharge All Banks
                 </Button>
               </Col>
               <Col sm={6}>
@@ -202,7 +200,7 @@ class PhaserCharging extends Component {
                   onClick={this.chargeAll.bind(this)}
                   block
                 >
-                  Charge All Phaser Banks
+                  Charge All Banks
                 </Button>
               </Col>
             </Row>
@@ -213,7 +211,7 @@ class PhaserCharging extends Component {
           phaserId={phasers.id}
           arc={phasers.arc}
         />
-        <Tour steps={trainingSteps} client={this.props.clientObj} />
+        <Tour steps={this.trainingSteps(name)} client={this.props.clientObj} />
       </Container>
     );
   }
@@ -232,6 +230,7 @@ export const PhaserBeam = ({
   state,
   selectedBank = null,
   disabled,
+  name,
   selectPhaserBank = () => {}
 }) => {
   if (targeting) {
@@ -240,7 +239,9 @@ export const PhaserBeam = ({
         <Row className="phaserBeam">
           <Col sm="8">
             <div className="phaserText">
-              <p>Phaser Bank {index}</p>
+              <p>
+                {name} Bank {index}
+              </p>
               <p>Charge: {Math.round(charge * 100)}%</p>
             </div>
             <div className="chargeHolder">
@@ -254,7 +255,7 @@ export const PhaserBeam = ({
               disabled={disabled}
               onMouseDown={e => firePhasers(id, e)}
             >
-              Fire Phasers
+              Fire {name}
             </Button>
           </Col>
         </Row>
@@ -302,7 +303,7 @@ export const PhaserBeam = ({
           onClick={selectPhaserBank}
           block
         >
-          Phaser Bank {index}
+          {name} Bank {index}
         </Button>
       </Col>
       <Col sm="10">
