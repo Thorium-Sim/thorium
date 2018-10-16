@@ -2,7 +2,8 @@
   "1.0.20": {
     "features": [
       "Add a 'New Messaging' Core. This hopefully will make intership messaging easier and more straightforward.",
-      "Add flash option to the processed data macro."
+      "Add flash option to the processed data macro.",
+      "Phasers now properly support different names for the system."
     ],
     "fixes": ["Fixes an issue where messages are duplicated on the core."]
   },
