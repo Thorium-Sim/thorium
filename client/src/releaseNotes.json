@@ -1,4 +1,8 @@
 {
+  "1.0.20": {
+    "features": [],
+    "fixes": ["Fixes an issue where messages are duplicated on the core."]
+  },
   "1.0.19": {
     "features": [
       "Add a low power viewscreen.",

@@ -104,12 +104,18 @@ class Messaging extends Component {
               },
               updateQuery: (previousResult, { subscriptionData }) => {
                 if (!subscriptionData.data.sendMessage) return previousResult;
+
                 setTimeout(this.scrollElement, 100);
-                return Object.assign({}, previousResult, {
-                  messages: previousResult.messages.concat(
-                    subscriptionData.data.sendMessage
+                const data = Object.assign({}, previousResult, {
+                  messages: previousResult.messages.find(
+                    m => m.id === subscriptionData.data.sendMessage.id
                   )
+                    ? previousResult.messages
+                    : previousResult.messages.concat(
+                        subscriptionData.data.sendMessage
+                      )
                 });
+                return data;
               }
             })
           }
