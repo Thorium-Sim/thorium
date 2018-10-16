@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup } from "reactstrap";
+import { FormGroup, Input, Label } from "reactstrap";
 
 export default ({ args }) => {
   return (
@@ -7,6 +7,10 @@ export default ({ args }) => {
       <div>
         <strong>Data </strong>
         <pre>{args && args.data}</pre>
+        <Label>
+          <Input type="checkbox" checked={args && args.flash} />
+          Flash
+        </Label>
       </div>
     </FormGroup>
   );
