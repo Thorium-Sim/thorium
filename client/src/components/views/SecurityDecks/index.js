@@ -16,6 +16,7 @@ import gql from "graphql-tag";
 import { RoomDropdown } from "helpers/shipStructure";
 
 import "./style.scss";
+import BulkheadDoors from "./bulkheadDoors";
 
 const trainingSteps = [
   {
@@ -50,6 +51,7 @@ const DECK_SUB = gql`
       id
       evac
       doors
+      crewCount
       rooms {
         name
         id
@@ -177,10 +179,30 @@ class SecurityDecks extends Component {
                 ))}
           </ListGroup>
         </Col>
-        <Col sm={{ size: 6, offset: 1 }}>
-          <h1>Deck {deck && deck.number} Status:</h1>
-          <h2>Bulkhead Doors: {deck && deck.doors ? "Closed" : "Open"}</h2>
-          <h2>Crew Status: {deck && deck.evac ? "Evacuated" : "On Duty"}</h2>
+        <Col sm={{ size: 7, offset: 1 }}>
+          <Row>
+            <Col sm={7}>
+              <h1>Deck {deck && deck.number} Status:</h1>
+              <h2>Bulkhead Doors: {deck && deck.doors ? "Closed" : "Open"}</h2>
+              <h2>
+                Crew Status:{" "}
+                {deck && deck.evac
+                  ? deck.crewCount > 0
+                    ? "Evacuating..."
+                    : "Evacuated"
+                  : "On Duty"}
+              </h2>
+              <h2>Crew Count: {deck && deck.crewCount}</h2>
+            </Col>
+            <Col sm={5}>
+              <div
+                key={deck && deck.id}
+                style={{ margin: "20px", border: "solid 2px black" }}
+              >
+                <BulkheadDoors open={deck && !deck.doors} />
+              </div>
+            </Col>
+          </Row>
           <Row>
             <Col sm={6}>
               <Button
@@ -251,6 +273,7 @@ const DECK_QUERY = gql`
       number
       evac
       doors
+      crewCount
       rooms {
         id
         name

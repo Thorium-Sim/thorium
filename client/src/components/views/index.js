@@ -144,6 +144,8 @@ import JumpDriveCore from "./JumpDrive/core";
 import BridgeMapCore from "./BridgeMap/core";
 import KeypadCore from "./Keypad/core";
 import AssetsCore from "./AssetsCore/core";
+import HandheldScannerCore from "./HandheldScanner/core";
+import NewMessagingCore from "./Messaging/newCore";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -364,7 +366,9 @@ export const Cores = {
   ClientsCore,
   BridgeMapCore,
   KeypadCore,
-  AssetsCore
+  AssetsCore,
+  HandheldScannerCore,
+  NewMessagingCore
 };
 
 export default Views;

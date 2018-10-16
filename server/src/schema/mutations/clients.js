@@ -34,4 +34,7 @@ export default `
   resetKeypad(id:ID!):String
   setCodeLength(id:ID!, len:Int!):String
   setKeypadAllowedAttempts(id:ID!, attempts:Int!):String
+handheldScannerScan(id:ID!, request:String!):String
+handheldScannerCancel(id:ID!):String
+handheldScannerResponse(id:ID!, response:String!):String
 `;

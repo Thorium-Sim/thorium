@@ -191,7 +191,7 @@ App.on("deleteFlight", ({ flightId }) => {
   pubsub.publish("clientChanged", App.clients);
 });
 
-App.on("resetFlight", ({ flightId, simulatorId }) => {
+App.on("resetFlight", ({ flightId, simulatorId, full }) => {
   const flight = App.flights.find(
     f => f.id === flightId || f.simulators.indexOf(simulatorId) > -1
   );
@@ -233,6 +233,13 @@ App.on("resetFlight", ({ flightId, simulatorId }) => {
     newSim.executedTimelineSteps = [];
 
     newSim.stationSet = sim.stationSet;
+
+    // If this isn't a full reset, transfer over the mission information too
+    if (!full) {
+      newSim.mission = sim.mission;
+      newSim.currentTimelineStep = sim.currentTimelineStep;
+      newSim.executedTimelineSteps = sim.executedTimelineSteps;
+    }
     viewscreens.forEach(v =>
       App.viewscreens.push(
         new Classes.Viewscreen({

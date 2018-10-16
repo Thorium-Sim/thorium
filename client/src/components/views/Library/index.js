@@ -17,10 +17,6 @@ const SUB = gql`
       type
       title
       image
-      seeAlso {
-        id
-        title
-      }
       categories
     }
   }
@@ -198,7 +194,7 @@ class Library extends Component {
                     )}
                   </Asset>
                 )}
-                <h4>See Also</h4>
+                {/* <h4>See Also</h4>
                 <Card className="entry-seeAlso">
                   <CardBody>
                     {sEntry &&
@@ -217,7 +213,7 @@ class Library extends Component {
                         </p>
                       ))}
                   </CardBody>
-                </Card>
+                </Card> */}
               </Col>
             </Row>
           </Col>
@@ -237,10 +233,6 @@ const QUERY = gql`
       type
       title
       image
-      seeAlso {
-        id
-        title
-      }
       categories
     }
   }

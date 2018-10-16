@@ -25,6 +25,17 @@ function performKeypadAction(id, action) {
     );
   }
 }
+function performScannerAction(id, action) {
+  const clientObj = App.clients.find(c => c.id === id);
+  if (clientObj) {
+    action(clientObj.scanner, clientObj);
+    pubsub.publish("scannerUpdate", clientObj.scanner);
+    pubsub.publish(
+      "scannersUpdate",
+      App.clients.filter(c => c.simulatorId === clientObj.simulatorId)
+    );
+  }
+}
 
 App.on("clientConnect", ({ client, mobile, cards }) => {
   const clientObj = App.clients.find(c => c.id === client);
@@ -334,5 +345,61 @@ App.on("setCodeLength", ({ id, len }) => {
 App.on("setKeypadAllowedAttempts", ({ id, attempts }) => {
   performKeypadAction(id, client => {
     client.setAllowedAttempts(attempts);
+  });
+});
+
+App.on("handheldScannerScan", ({ id, request }) => {
+  performScannerAction(id, (scanner, client) => {
+    scanner.scan(request);
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: client.simulatorId,
+      type: "Handheld Scanner",
+      station: "Core",
+      title: `New Handheld Scan`,
+      body: request,
+      color: "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: client.simulatorId,
+        title: "New Handheld Scan",
+        component: "HandheldScannerCore",
+        body: request,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+  });
+});
+
+App.on("handheldScannerCancel", ({ id }) => {
+  performScannerAction(id, (scanner, client) => {
+    scanner.cancelScan();
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: client.simulatorId,
+      type: "Handheld Scanner",
+      station: "Core",
+      title: `Handheld Scan Cancelled`,
+      body: "",
+      color: "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: client.simulatorId,
+        title: "Handheld Scan Cancelled",
+        component: "HandheldScannerCore",
+        body: "",
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+  });
+});
+
+App.on("handheldScannerResponse", ({ id, response }) => {
+  performScannerAction(id, scanner => {
+    scanner.scanResponse(response);
   });
 });

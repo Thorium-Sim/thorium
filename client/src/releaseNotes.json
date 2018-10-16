@@ -1,4 +1,28 @@
 {
+  "1.0.20": {
+    "features": [
+      "Add a 'New Messaging' Core. This hopefully will make intership messaging easier and more straightforward.",
+      "Add flash option to the processed data macro.",
+      "Phasers now properly support different names for the system."
+    ],
+    "fixes": ["Fixes an issue where messages are duplicated on the core."]
+  },
+  "1.0.19": {
+    "features": [
+      "Add a low power viewscreen.",
+      "Add a core for handheld scanners. To be used with the Thorium Mobile app.",
+      "Add some visuals to the security decks screen.",
+      "Crew deck location is now tracked. Crew will move to the appropriate deck when on a team and will evacuate a deck when it is evacuated. Crew will also obey if the bulkhead doors are closed.",
+      "Add some long range message presets.",
+      "Adjust probe construction to make it more friendly for touchscreens.",
+      "Add setting the self destruct code back in. Self destruct now requires the code to turn it on and off. Better support for touchscreens too."
+    ],
+    "fixes": [
+      "Fixed an issue with the targeting grid interference not showing up on the standalone targeting screen.",
+      "The reset timeline event will no longer reset the timeline for the simulator.",
+      "Add proper scrolling to the step list when making mission timelines. "
+    ]
+  },
   "1.0.18": {
     "features": [
       "Add interference to the targeting grid.",
