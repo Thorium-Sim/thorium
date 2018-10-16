@@ -1,6 +1,8 @@
 {
   "1.0.20": {
-    "features": [],
+    "features": [
+      "Add a 'New Messaging' Core. This hopefully will make intership messaging easier and more straightforward."
+    ],
     "fixes": ["Fixes an issue where messages are duplicated on the core."]
   },
   "1.0.19": {
