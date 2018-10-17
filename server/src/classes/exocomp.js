@@ -39,11 +39,13 @@ export default class Exocomp {
                   .map(s => ({ value: s.id, label: s.displayName || s.name }))
               : "text",
           value: ({ simulator }) =>
-            randomFromList(
-              App.systems
-                .filter(s => s.simulatorId === simulator.id)
-                .map(s => s.id)
-            )
+            simulator
+              ? randomFromList(
+                  App.systems
+                    .filter(s => s.simulatorId === simulator.id)
+                    .map(s => s.id)
+                )
+              : ""
         },
         parts: {
           input: () => "text",

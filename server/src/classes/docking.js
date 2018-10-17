@@ -73,6 +73,7 @@ export default class DockingPort extends System {
                   placeholder: "The index of the shuttlebay. Starts at 0"
                 },
           value: ({ simulator }) => {
+            if (!simulator) return "";
             const shuttleBay = randomFromList(
               App.dockingPorts.filter(
                 s => s.simulatorId === simulator.id && s.type === "shuttlebay"
@@ -137,13 +138,17 @@ export default class DockingPort extends System {
                   placeholder: "The index of the shuttlebay. Starts at 0"
                 },
           value: ({ simulator }) =>
-            randomFromList(
-              App.dockingPorts
-                .filter(
-                  s => s.simulatorId === simulator.id && s.type === "shuttlebay"
+            simulator
+              ? randomFromList(
+                  App.dockingPorts
+                    .filter(
+                      s =>
+                        s.simulatorId === simulator.id &&
+                        s.type === "shuttlebay"
+                    )
+                    .map(s => s.id)
                 )
-                .map(s => s.id)
-            )
+              : ""
         }
       },
       verify({ requiredValues }) {

@@ -27,6 +27,7 @@ import { SickbayTypes } from "./sickbay";
 import { ThxTypes } from "./thx";
 import { ExternalsTypes } from "./externals";
 import { ViewscreenTypes } from "./viewscreen";
+import { TaskTypes } from "./tasks";
 
 export default Object.assign(
   AssetsTypes,
@@ -57,5 +58,6 @@ export default Object.assign(
   LRCommTypes,
   ThxTypes,
   ExternalsTypes,
-  ViewscreenTypes
+  ViewscreenTypes,
+  TaskTypes
 );

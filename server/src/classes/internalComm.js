@@ -39,11 +39,13 @@ export default class InternalComm extends System {
         room: {
           input: ({ simulator }) => (simulator ? "roomPicker" : "text"),
           value: ({ simulator }) =>
-            randomFromList(
-              App.rooms
-                .filter(r => r.simulatorId === simulator.id)
-                .map(r => r.id)
-            )
+            simulator
+              ? randomFromList(
+                  App.rooms
+                    .filter(r => r.simulatorId === simulator.id)
+                    .map(r => r.id)
+                )
+              : ""
         },
         message: {
           input: () => "textarea",

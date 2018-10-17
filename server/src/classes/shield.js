@@ -104,13 +104,15 @@ export default class Shield extends System {
                   .map(s => ({ value: s.id, label: s.displayName || s.name }))
               : "text",
           value: ({ simulator }) =>
-            randomFromList(
-              App.systems
-                .filter(
-                  s => s.simulatorId === simulator.id && s.type === "Shield"
+            simulator
+              ? randomFromList(
+                  App.systems
+                    .filter(
+                      s => s.simulatorId === simulator.id && s.type === "Shield"
+                    )
+                    .map(s => s.id)
                 )
-                .map(s => s.id)
-            )
+              : ""
         }
       },
       instructions({ simulator, requiredValues: { preamble, shield } }) {
@@ -164,13 +166,15 @@ export default class Shield extends System {
                   .map(s => ({ value: s.id, label: s.displayName || s.name }))
               : "text",
           value: ({ simulator }) =>
-            randomFromList(
-              App.systems
-                .filter(
-                  s => s.simulatorId === simulator.id && s.type === "Shield"
+            simulator
+              ? randomFromList(
+                  App.systems
+                    .filter(
+                      s => s.simulatorId === simulator.id && s.type === "Shield"
+                    )
+                    .map(s => s.id)
                 )
-                .map(s => s.id)
-            )
+              : ""
         }
       },
       instructions({ simulator, requiredValues: { preamble, shield } }) {
@@ -221,16 +225,18 @@ export default class Shield extends System {
                   .map(s => ({ value: s.id, label: s.displayName || s.name }))
               : "text",
           value: ({ simulator }) =>
-            randomFromList(
-              App.systems
-                .filter(
-                  s => s.simulatorId === simulator.id && s.type === "Shield"
+            simulator
+              ? randomFromList(
+                  App.systems
+                    .filter(
+                      s => s.simulatorId === simulator.id && s.type === "Shield"
+                    )
+                    .map(s => s.id)
                 )
-                .map(s => s.id)
-            )
+              : ""
         },
         frequency: {
-          input: { type: "number", min: 100, max: 350 },
+          input: () => ({ type: "number", min: 100, max: 350 }),
           value: () => Math.round(Math.random() * 250 * 10) / 10 + 100
         }
       },

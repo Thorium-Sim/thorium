@@ -108,16 +108,18 @@ export default class Engine extends HeatMixin(System) {
                   .map(s => ({ value: s.id, label: s.displayName || s.name }))
               : "text",
           value: ({ simulator }) =>
-            randomFromList(
-              App.systems
-                .filter(
-                  s =>
-                    s.simulatorId === simulator.id &&
-                    s.type === "Engine" &&
-                    s.heat > 0.75
+            simulator
+              ? randomFromList(
+                  App.systems
+                    .filter(
+                      s =>
+                        s.simulatorId === simulator.id &&
+                        s.type === "Engine" &&
+                        s.heat > 0.75
+                    )
+                    .map(s => s.id)
                 )
-                .map(s => s.id)
-            )
+              : ""
         },
         preamble: {
           input: () => "text",

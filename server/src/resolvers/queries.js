@@ -47,6 +47,7 @@ import { ThoriumQueries } from "./thorium.js";
 import { ExternalsQueries } from "./externals";
 import { RailgunQueries } from "./railgun.js";
 import { JumpDriveQueries } from "./jumpDrive.js";
+import { TaskQueries } from "./tasks";
 
 const queryMap = Object.assign(
   {},
@@ -98,7 +99,8 @@ const queryMap = Object.assign(
   ThoriumQueries,
   ExternalsQueries,
   RailgunQueries,
-  JumpDriveQueries
+  JumpDriveQueries,
+  TaskQueries
 );
 
 export default queryMap;

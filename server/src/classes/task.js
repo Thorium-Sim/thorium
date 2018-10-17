@@ -36,6 +36,7 @@ export default class Task {
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId || "";
     this.station = params.station || "";
+    this.taskTemplate = params.taskTemplate || "";
 
     // For damage reports
     this.systemId = params.systemId || "";
