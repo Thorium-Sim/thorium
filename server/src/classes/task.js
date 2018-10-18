@@ -81,5 +81,14 @@ export default class Task {
 
     // Task parameters
     this.verified = params.verified || false;
+    this.dismissed = params.dismissed || false;
+  }
+  static tasks = tasks;
+  verify(dismiss) {
+    this.verified = true;
+    if (dismiss) this.dismissed = true;
+  }
+  dismiss() {
+    this.dismissed = true;
   }
 }

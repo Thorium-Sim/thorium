@@ -3,40 +3,15 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 import * as Classes from "../classes";
 
-const taskDefinitions = Object.values(Classes)
-  .reduce(
-    (prev, c) =>
-      c.tasks
-        ? prev.concat(
-            c.tasks.map(t => ({
-              ...t,
-              id: t.name,
-              class: c.name
-            }))
-          )
-        : prev,
-    []
-  )
-  .filter(Boolean);
-
-export const TaskQueries = {
-  tasks() {
-    return App.tasks;
+export const TasksTypes = {
+  Task: {
+    instructions(task) {
+      const { simulatorId, values, definition } = task;
+      const simulator = App.simulators.find(s => s.id === simulatorId);
+      const taskDef = taskDefinitions.find(d => d.id === definition);
+      return taskDef.instructions({ simulator, requiredValues: values, task });
+    }
   },
-  taskTemplates() {
-    return App.taskTemplates;
-  },
-  taskDefinitions(rootValue, { simulatorId }) {
-    return taskDefinitions.map(t => ({ ...t, simulatorId }));
-  },
-  taskInstructions(_, { simulatorId, definition, requiredValues, task }) {
-    const simulator = App.simulators.find(s => s.id === simulatorId);
-    const taskDef = taskDefinitions.find(d => d.id === definition);
-    return taskDef.instructions({ simulator, requiredValues, task });
-  }
-};
-
-export const TaskTypes = {
   TaskDefinition: {
     active({ active, simulatorId }) {
       if (!simulatorId) return false;
@@ -76,5 +51,68 @@ export const TaskTypes = {
         return {};
       }
     }
+  }
+};
+
+const taskDefinitions = Object.values(Classes)
+  .reduce(
+    (prev, c) =>
+      c.tasks
+        ? prev.concat(
+            c.tasks.map(t => ({
+              ...t,
+              id: t.name,
+              class: c.name
+            }))
+          )
+        : prev,
+    []
+  )
+  .filter(Boolean);
+
+export const TasksQueries = {
+  tasks() {
+    return App.tasks;
+  },
+  taskTemplates() {
+    return App.taskTemplates;
+  },
+  taskDefinitions(rootValue, { simulatorId }) {
+    return taskDefinitions.map(t => ({ ...t, simulatorId }));
+  },
+  taskInstructions(_, { simulatorId, definition, requiredValues, task }) {
+    const simulator = App.simulators.find(s => s.id === simulatorId);
+    const taskDef = taskDefinitions.find(d => d.id === definition);
+    return taskDef.instructions({ simulator, requiredValues, task });
+  }
+};
+
+export const TasksMutations = {
+  addTask(root, args, context) {
+    App.handleEvent(args, "addTask", context);
+  },
+  verifyTask(root, args, context) {
+    App.handleEvent(args, "verifyTask", context);
+  },
+  dismissVerifiedTasks(root, args, context) {
+    App.handleEvent(args, "dismissVerifiedTasks", context);
+  }
+};
+
+export const TasksSubscriptions = {
+  tasksUpdate: {
+    resolve(rootValue) {
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("tasksUpdate"),
+      (rootValue, { simulatorId, station }) => {
+        const simTasks = App.tasks.filter(s => s.simulatorId === simulatorId);
+        if (rootValue.length === 0 && simTasks.length === 0) return true;
+        if (rootValue.filter(s => s.simulatorId === simulatorId).length > 0)
+          return true;
+        return false;
+      }
+    )
   }
 };

@@ -8,11 +8,15 @@ type Task {
   room: Room
   definition: String
   verified: Boolean
+  dismissed: Boolean
   values: JSON
   instructions: String
 }
 
 input TaskInput {
+  simulatorId: ID
+  definition: String
+  values: JSON
   station: String
 }
 

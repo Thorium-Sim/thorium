@@ -61,3 +61,11 @@ unverified. Tasks can be manually verified by the flight director.
 
 The text of tasks is defined by the values provided and the instructions
 function.
+
+Tasks can have multiple steps. This is done by simply adding a parentId to a
+step that must be completed before the step in question can be done. This
+creates a chain of steps which must be completed one at a time.
+
+The data structure for this is an array of arrays of tasks, like so:
+
+[[First Task], [Second Task 1, Second Task 2], [Third Task]]
