@@ -1,6 +1,7 @@
 import uuid from "uuid";
 import App from "../app";
 import * as classes from "./";
+import reportReplace from "../helpers/reportReplacer";
 
 const taskDefinitions = Object.values(classes)
   .reduce((prev, c) => prev.concat(c.tasks), [])
@@ -17,12 +18,12 @@ export default class Task {
       },
       values: {
         message: {
-          input: () => "text",
+          input: () => "textarea",
           value: () => "This is a generic task."
         }
       },
-      instructions({ requiredValues: { message } }) {
-        return message;
+      instructions({ simulator, requiredValues: { message } }) {
+        return reportReplace(message, { simulator });
       },
       verify() {
         return false;

@@ -12,6 +12,10 @@ type Task {
   instructions: String
 }
 
+input TaskInput {
+  station: String
+}
+
 type TaskTemplate {
   id: ID
   values: JSON
@@ -21,6 +25,8 @@ type TaskTemplate {
 type TaskDefinition {
   id: ID
   name: String
+  class: String
+  stations: [Station]
   active: Boolean
   valuesInput: JSON
   valuesValue: JSON

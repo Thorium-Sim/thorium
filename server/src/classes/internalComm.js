@@ -4,6 +4,7 @@ import {
   randomFromList,
   greekLetters
 } from "./generic/damageReports/constants";
+import reportReplace from "../helpers/reportReplacer";
 
 export default class InternalComm extends System {
   constructor(params = {}) {
@@ -19,21 +20,29 @@ export default class InternalComm extends System {
   static tasks = [
     {
       name: "Internal Call",
-      active({ simulator, stations }) {
+      active({ simulator }) {
         // Check cards and system
         const decks = App.decks.filter(d => d.simulatorId === simulator.id);
         const rooms = App.rooms.filter(r => r.simulatorId === simulator.id);
         return (
-          stations.find(s =>
+          simulator.stations.find(s =>
             s.cards.find(c => c.component === "CommInternal")
           ) &&
           decks.length > 0 &&
           rooms.length > 0
         );
       },
+      stations({ simulator }) {
+        return (
+          simulator &&
+          simulator.stations.filter(s =>
+            s.cards.find(c => c.component === "CommInternal")
+          )
+        );
+      },
       values: {
         preamble: {
-          input: () => "text",
+          input: () => "textarea",
           value: () => "A call must be made within the ship."
         },
         room: {
@@ -61,7 +70,8 @@ export default class InternalComm extends System {
       },
       instructions({
         simulator,
-        requiredValues: { preamble, room: roomId, message }
+        requiredValues: { preamble, room: roomId, message },
+        task = {}
       }) {
         const station = simulator.stations.find(s =>
           s.cards.find(c => c.component === "CommInternal")
@@ -70,23 +80,33 @@ export default class InternalComm extends System {
         const deck = App.decks.find(
           d => d.id === (room ? room.deckId : roomId)
         );
-        return `${preamble} Ask the ${
-          station
-            ? `${station.name} Officer`
-            : "person in charge of internal communication"
-        } to make the following internal call:
-        
-Location: ${
+        const location =
           !room && !deck
             ? "All Decks"
             : room
               ? `${room.name}, Deck ${deck.number}`
-              : `Deck ${deck.number}`
-        }
+              : `Deck ${deck.number}`;
+        if (station && task.station === station.name)
+          return reportReplace(
+            `${preamble} Make the following internal call:
+          
+  Location: ${location}
+  Message: ${message}
+          `,
+            { simulator }
+          );
+        return reportReplace(
+          `${preamble} Ask the ${
+            station
+              ? `${station.name} Officer`
+              : "person in charge of internal communication"
+          } to make the following internal call:
+        
+Location: ${location}
 Message: ${message}
-        `;
-        // TODO: Make it so it knows if the task is assigned to the station
-        // performing the task, or if it needs to be delegated to another station
+        `,
+          { simulator }
+        );
       },
       verify({ requiredValues, simulator }) {
         const system = App.systems.find(

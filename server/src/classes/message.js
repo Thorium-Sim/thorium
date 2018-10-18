@@ -1,4 +1,5 @@
 import uuid from "uuid";
+import reportReplace from "../helpers/reportReplacer";
 
 export default class Message {
   constructor(params = {}) {
@@ -14,15 +15,25 @@ export default class Message {
   static tasks = [
     {
       name: "Compose Intership Message",
-      active({ simulator, stations }) {
+      active({ simulator }) {
+        return simulator.stations.find(
+          s =>
+            s.cards.find(c => c.component === "Messages") ||
+            s.widgets.indexOf("messages") > -1
+        );
+      },
+      stations({ simulator }) {
         return (
-          stations.find(s => s.cards.find(c => c.component === "Messages")) ||
-          stations.find(s => s.widgets.indexOf("messages") > -1)
+          simulator &&
+          simulator.stations.filter(s => s =>
+            s.cards.find(c => c.component === "Messages") ||
+            s.widgets.indexOf("messages") > -1
+          )
         );
       },
       values: {
         preamble: {
-          input: () => "text",
+          input: () => "textarea",
           value: () => "A message should be sent inside the ship."
         },
         destination: {
@@ -30,7 +41,7 @@ export default class Message {
           value: () => ""
         },
         message: {
-          input: () => "text",
+          input: () => "textarea",
           value: () => ""
         }
       },
@@ -38,11 +49,12 @@ export default class Message {
         simulator,
         requiredValues: { preamble, destination, message }
       }) {
-        return `${preamble} Send the following message:
+        return reportReplace(
+          `${preamble} Send the following message:
 Destination: ${destination}
-Message: ${message}`;
-        // TODO: Make it so it knows if the task is assigned to the station
-        // performing the task, or if it needs to be delegated to another station
+Message: ${message}`,
+          { simulator }
+        );
       },
       verify({ simulator, requiredValues }) {
         // Since this requires typing in the

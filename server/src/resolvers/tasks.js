@@ -1,7 +1,23 @@
 import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
-import * as Classes from "../Classes";
+import * as Classes from "../classes";
+
+const taskDefinitions = Object.values(Classes)
+  .reduce(
+    (prev, c) =>
+      c.tasks
+        ? prev.concat(
+            c.tasks.map(t => ({
+              ...t,
+              id: t.name,
+              class: c.name
+            }))
+          )
+        : prev,
+    []
+  )
+  .filter(Boolean);
 
 export const TaskQueries = {
   tasks() {
@@ -11,17 +27,28 @@ export const TaskQueries = {
     return App.taskTemplates;
   },
   taskDefinitions(rootValue, { simulatorId }) {
-    return Object.values(Classes)
-      .reduce((prev, c) => prev.concat(c.tasks), [])
-      .filter(Boolean)
-      .map(c => ({ ...c, id: c.name, simulatorId }));
+    return taskDefinitions.map(t => ({ ...t, simulatorId }));
+  },
+  taskInstructions(_, { simulatorId, definition, requiredValues, task }) {
+    const simulator = App.simulators.find(s => s.id === simulatorId);
+    const taskDef = taskDefinitions.find(d => d.id === definition);
+    return taskDef.instructions({ simulator, requiredValues, task });
   }
 };
 
 export const TaskTypes = {
   TaskDefinition: {
-    active({ simulatorId }) {
+    active({ active, simulatorId }) {
       if (!simulatorId) return false;
+      const simulator = App.simulators.find(s => s.id === simulatorId);
+      return active({
+        simulator
+      });
+    },
+    stations({ stations, simulatorId }) {
+      if (!simulatorId) return null;
+      const simulator = App.simulators.find(s => s.id === simulatorId);
+      return stations ? stations({ simulator }) : simulator.stations;
     },
     valuesInput({ name, values, simulatorId }) {
       try {

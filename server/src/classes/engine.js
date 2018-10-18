@@ -3,6 +3,7 @@ import { System } from "./generic";
 import HeatMixin from "./generic/heatMixin";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import { randomFromList } from "./generic/damageReports/constants";
+import reportReplace from "../helpers/reportReplacer";
 
 export default class Engine extends HeatMixin(System) {
   constructor(params = {}) {
@@ -46,6 +47,7 @@ export default class Engine extends HeatMixin(System) {
     {
       name: "Deactivate Engines",
       active({ simulator }) {
+        if (!simulator) return false;
         // Check cards
         return (
           simulator.stations.find(s =>
@@ -56,23 +58,36 @@ export default class Engine extends HeatMixin(System) {
           )
         );
       },
+      stations({ simulator }) {
+        return (
+          simulator &&
+          simulator.stations.filter(s =>
+            s.cards.find(c => c.component === "EngineControl")
+          )
+        );
+      },
       values: {
         preamble: {
-          input: () => "text",
+          input: () => "textarea",
           value: () => "The engines need to be deactivated."
         }
       },
-      instructions({ simulator, requiredValues: { preamble } }) {
+      instructions({ simulator, requiredValues: { preamble }, task = {} }) {
         const station = simulator.stations.find(s =>
           s.cards.find(c => c.component === "EngineControl")
         );
-        return `${preamble} Ask the ${
-          station
-            ? `${station.name} Officer`
-            : "person in charge of the engines"
-        } to deactivate the engines.`;
-        // TODO: Make it so it knows if the task is assigned to the station
-        // performing the task, or if it needs to be delegated to another station
+        if (station && task.station === station.name)
+          return reportReplace(`${preamble} Deactivate the engines.`, {
+            simulator
+          });
+        return reportReplace(
+          `${preamble} Ask the ${
+            station
+              ? `${station.name} Officer`
+              : "person in charge of the engines"
+          } to deactivate the engines.`,
+          { simulator }
+        );
       },
       verify({ simulator }) {
         return !App.systems.find(
@@ -86,7 +101,7 @@ export default class Engine extends HeatMixin(System) {
     {
       name: "Cool Engine",
       active({ simulator }) {
-        const systems = App.systems.find(
+        const systems = App.systems.filter(
           s => s.simulatorId === simulator.id && s.type === "Engine"
         );
         return (
@@ -95,6 +110,14 @@ export default class Engine extends HeatMixin(System) {
           ) &&
           systems.length > 0 &&
           systems.filter(s => s.heat > 0.75).length > 0
+        );
+      },
+      stations({ simulator }) {
+        return (
+          simulator &&
+          simulator.stations.filter(s =>
+            s.cards.find(c => c.component === "EngineControl")
+          )
         );
       },
       values: {
@@ -122,22 +145,36 @@ export default class Engine extends HeatMixin(System) {
               : ""
         },
         preamble: {
-          input: () => "text",
+          input: () => "textarea",
           value: () => "An engine is overheating."
         }
       },
-      instructions({ simulator, requiredValues: { preamble, engine: id } }) {
+      instructions({
+        simulator,
+        requiredValues: { preamble, engine: id },
+        task = {}
+      }) {
         const station = simulator.stations.find(s =>
           s.cards.find(c => c.component === "EngineControl")
         );
         const engine = App.systems.find(s => s.id === id);
-        return `${preamble} Ask the ${
-          station
-            ? `${station.name} Officer`
-            : "person in charge of the engines"
-        } to cool the ${engine.displayName || engine.name}.`;
-        // TODO: Make it so it knows if the task is assigned to the station
-        // performing the task, or if it needs to be delegated to another station
+        if (station && task.station === station.name)
+          return reportReplace(
+            `${preamble} Cool the ${
+              engine ? engine.displayName || engine.name : "engines"
+            }.`,
+            { simulator, system: engine }
+          );
+        return reportReplace(
+          `${preamble} Ask the ${
+            station
+              ? `${station.name} Officer`
+              : "person in charge of the engines"
+          } to cool the ${
+            engine ? engine.displayName || engine.name : "engines"
+          }.`,
+          { simulator, system: engine }
+        );
       },
       verify({ simulator, requiredValues }) {
         const engine = App.systems.find(s => s.id === requiredValues.engine);

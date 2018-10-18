@@ -1,6 +1,7 @@
 import uuid from "uuid";
 import App from "../app";
 import { randomFromList, partsList } from "./generic/damageReports/constants";
+import reportReplace from "../helpers/reportReplacer";
 
 export default class Exocomp {
   constructor(params) {
@@ -19,16 +20,27 @@ export default class Exocomp {
   static tasks = [
     {
       name: "Send Exocomp",
-      active({ simulator, stations }) {
+      active({ simulator }) {
+        if (!simulator) return false;
         // Check cards
         return (
-          stations.find(s => s.cards.find(c => c.component === "Exocomps")) &&
+          simulator.stations.find(s =>
+            s.cards.find(c => c.component === "Exocomps")
+          ) &&
           App.exocomps.filter(e => e.simulatorId === simulator.id).length > 0
+        );
+      },
+      stations({ simulator }) {
+        return (
+          simulator &&
+          simulator.stations.filter(s =>
+            s.cards.find(c => c.component === "Exocomps")
+          )
         );
       },
       values: {
         preamble: {
-          input: () => "text",
+          input: () => "textarea",
           value: () => "An expocomp must be sent to operate on a system."
         },
         destination: {
@@ -48,7 +60,7 @@ export default class Exocomp {
               : ""
         },
         parts: {
-          input: () => "text",
+          input: () => "partsPicker",
           value: () =>
             Array(Math.round(Math.random() * 3 + 1))
               .fill(0)
@@ -57,18 +69,28 @@ export default class Exocomp {
       },
       instructions({
         simulator,
-        requiredValues: { preamble, destination, parts }
+        requiredValues: { preamble, destination, parts },
+        task = {}
       }) {
         const station = simulator.stations.find(s =>
           s.cards.find(c => c.component === "Exocomps")
         );
         const system = App.systems.find(s => s.id === destination);
-        return `${preamble} Ask the ${
-          station ? `${station.name} Officer` : "person in charge of exocomps"
-        } to send an exocomp to the ${system.displayName ||
-          system.name} with the following parts: ${parts.join(", ")}.`;
-        // TODO: Make it so it knows if the task is assigned to the station
-        // performing the task, or if it needs to be delegated to another station
+        if (station && task.station === station.name)
+          return reportReplace(
+            `${preamble} Send an exocomp to the #SYSTEMNAME with the following parts: ${parts.join(
+              ", "
+            )}.`,
+            { system, simulator }
+          );
+        return reportReplace(
+          `${preamble} Ask the ${
+            station ? `${station.name} Officer` : "person in charge of exocomps"
+          } to send an exocomp to the #SYSTEMNAME with the following parts: ${parts.join(
+            ", "
+          )}.`,
+          { system, simulator }
+        );
       },
       verify({ simulator, requiredValues }) {
         const exocomps = App.exocomps.filter(s => s.id === simulator.id);

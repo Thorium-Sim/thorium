@@ -10,6 +10,8 @@ and methods:
   Should check the station for the cards and widgets that can perform the task
   and for if the task is even relevant. For example, raising shields when the
   shields are raised is redundant.
+- `station`: A method that gives a list of stations which this task can be
+  assigned to.
 - `instructions`: A method that composes the values together into a message. It
   should take into account both tasks assigned to individual crew members and
   tasks that are included in a damage report which are destined for other

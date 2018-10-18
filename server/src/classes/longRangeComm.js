@@ -5,6 +5,7 @@ import {
   longRangeDestinations,
   randomFromList
 } from "./generic/damageReports/constants";
+import reportReplace from "../helpers/reportReplacer";
 // TODO: Make it so the stardate is stored separate from the timestamp
 
 const stardate = () => {
@@ -84,18 +85,31 @@ export default class LongRangeComm extends System {
   static tasks = [
     {
       name: "Compose Long Range Message",
-      active({ simulator, stations }) {
-        const systems = App.systems.find(
+      active({ simulator }) {
+        const system = App.systems.find(
           s => s.simulatorId === simulator.id && s.type === "LongRangeComm"
         );
         return (
-          stations.find(s => s.widgets.indexOf("composer") > -1) &&
-          systems.length > 0
+          simulator.stations.find(
+            s =>
+              s.widgets.indexOf("composer") > -1 ||
+              s.cards.find(c => c.component === "LongRangeComm")
+          ) && system
+        );
+      },
+      stations({ simulator }) {
+        return (
+          simulator &&
+          simulator.stations.filter(
+            s =>
+              s.widgets.indexOf("composer") > -1 ||
+              s.cards.find(c => c.component === "LongRangeComm")
+          )
         );
       },
       values: {
         preamble: {
-          input: () => "text",
+          input: () => "textarea",
           value: () => "A long range message needs to be composed."
         },
         destination: {
@@ -103,27 +117,36 @@ export default class LongRangeComm extends System {
           value: () => randomFromList(longRangeDestinations)
         },
         message: {
-          input: () => "text",
+          input: () => "textarea",
           value: () =>
             "We are sending a message to check in. Do you have any information relevant to our mission?"
         }
       },
       instructions({
         simulator,
-        requiredValues: { preamble, destination, message }
+        requiredValues: { preamble, destination, message },
+        task = {}
       }) {
         const station = simulator.stations.find(s =>
           s.cards.find(c => c.component === "LongRangeComm")
         );
-        return `${preamble} Ask the ${
-          station
-            ? `${station.name} Officer`
-            : "person in charge of long range messages"
-        } to send the following message:
+        if (station && station.name === task.station)
+          return reportReplace(
+            `${preamble} Send the following message:
 Destination: ${destination}
-Message: ${message}`;
-        // TODO: Make it so it knows if the task is assigned to the station
-        // performing the task, or if it needs to be delegated to another station
+Message: ${message}`,
+            { simulator }
+          );
+        return reportReplace(
+          `${preamble} Ask the ${
+            station
+              ? `${station.name} Officer`
+              : "person in charge of long range messages"
+          } to send the following message:
+Destination: ${destination}
+Message: ${message}`,
+          { simulator }
+        );
       },
       verify({ simulator, requiredValues }) {
         // Since this requires typing in the
