@@ -22,11 +22,12 @@ export const DeckDropdown = ({
   decks,
   setSelected,
   disabled,
-  children
+  children,
+  size
 }) => {
   return (
     <UncontrolledDropdown>
-      <DropdownToggle block caret disabled={disabled}>
+      <DropdownToggle block caret disabled={disabled} size={size}>
         {deckLabel(selectedDeck, decks)}
       </DropdownToggle>
       <DropdownMenu style={{ maxHeight: "200px", overflowY: "auto" }}>
@@ -65,11 +66,12 @@ export const RoomDropdown = ({
   selectedRoom,
   decks,
   setSelected,
-  disabled
+  disabled,
+  size
 }) => {
   return (
     <UncontrolledDropdown>
-      <DropdownToggle block caret disabled={disabled}>
+      <DropdownToggle block caret disabled={disabled} size={size}>
         {selectedRoom
           ? decks
               .find(d => d.id === selectedDeck)

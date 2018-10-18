@@ -3,33 +3,35 @@ import App from "../app";
 import * as classes from "./";
 import reportReplace from "../helpers/reportReplacer";
 
+const tasks = [
+  // Simple, generic task definition.
+  // Always available, must be manually verified
+  {
+    name: "Generic",
+    active() {
+      return true;
+    },
+    values: {
+      message: {
+        input: () => "textarea",
+        value: () => "This is a generic task."
+      }
+    },
+    instructions({ simulator, requiredValues: { message } }) {
+      return reportReplace(message, { simulator });
+    },
+    verify() {
+      return false;
+    }
+  }
+];
+
 const taskDefinitions = Object.values(classes)
   .reduce((prev, c) => prev.concat(c.tasks), [])
-  .filter(Boolean);
+  .filter(Boolean)
+  .concat(tasks);
 
 export default class Task {
-  static tasks = [
-    // Simple, generic task definition.
-    // Always available, must be manually verified
-    {
-      name: "Generic",
-      active() {
-        return true;
-      },
-      values: {
-        message: {
-          input: () => "textarea",
-          value: () => "This is a generic task."
-        }
-      },
-      instructions({ simulator, requiredValues: { message } }) {
-        return reportReplace(message, { simulator });
-      },
-      verify() {
-        return false;
-      }
-    }
-  ];
   constructor(params = {}) {
     // The check to see if the task is relevant was already handled
     // before this task was instantiated
@@ -60,6 +62,7 @@ export default class Task {
     const defintionValues = definitionObject.values
       ? Object.entries(definitionObject.values).reduce((prev, [key, value]) => {
           prev[key] = value.value({ simulator, stations: simulator.stations });
+          return prev;
         }, {})
       : {};
 

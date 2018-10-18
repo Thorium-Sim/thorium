@@ -247,14 +247,14 @@ export default class Shield extends System {
             (s.displayName === shield && s.simulatorId === simulator.id)
         );
         if (station && task.station === station.name)
-          return reportReplace(`${preamble} Raise the #SYSTEMNAME.`, {
+          return reportReplace(`${preamble} Lower the #SYSTEMNAME.`, {
             system,
             simulator
           });
         return reportReplace(
           `${preamble} Ask the ${
             station ? `${station.name} Officer` : "person in charge of shields"
-          } to raise the #SYSTEMNAME.`,
+          } to lower the #SYSTEMNAME.`,
           { system, simulator }
         );
       },

@@ -11,7 +11,6 @@ function splice(str, start, delCount, newSubStr) {
 }
 
 export default function reportReplace(report = "", { system, simulator }) {
-  console.log("Lets do this!");
   let returnReport = report;
   // #PART
   if (system) system.damage.exocompParts = [];
@@ -127,9 +126,10 @@ export default function reportReplace(report = "", { system, simulator }) {
 
   // #SYSTEMNAME
   if (system && report.indexOf("#SYSTEMNAME")) {
-    returnReport = returnReport
-      .replace(/#SYSTEMNAME/, system.displayName || system.name || "system")
-      .replace();
+    returnReport = returnReport.replace(
+      /#SYSTEMNAME/gi,
+      system.displayName || system.name || "system"
+    );
   }
   return returnReport;
 }

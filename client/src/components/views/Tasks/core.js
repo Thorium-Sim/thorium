@@ -3,6 +3,7 @@ import { Query } from "react-apollo";
 import { Container, Row, Col, Input } from "reactstrap";
 import gql from "graphql-tag";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import { DeckDropdown, RoomDropdown } from "helpers/shipStructure";
 import { titleCase } from "change-case";
 import "./style.scss";
 
@@ -32,7 +33,72 @@ const QUERY = gql`
 //   }
 // `;
 
-const ValueInput = ({ label, type, value, onBlur }) => {
+const DeckSelect = props => {
+  const { simulatorId, onChange, value } = props;
+  return (
+    <Query
+      query={gql`
+        query Decks($simulatorId: ID!) {
+          decks(simulatorId: $simulatorId) {
+            id
+            number
+            rooms {
+              id
+              name
+            }
+          }
+        }
+      `}
+      variables={{
+        simulatorId
+      }}
+    >
+      {({ loading, data }) => {
+        if (loading) return <p>Loading...</p>;
+        let deck = null;
+        const room = data.decks.reduce((prev, next) => {
+          if (prev) return prev;
+          if (deck) return prev;
+          if (next.id === value) {
+            deck = next.id;
+            return null;
+          }
+          const foundRoom = next.rooms.find(r => r.id === value);
+          if (foundRoom) {
+            deck = next.id;
+            return foundRoom.id;
+          }
+          return null;
+        }, null);
+        return (
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap"
+            }}
+          >
+            <DeckDropdown
+              allDecks
+              selectedDeck={deck}
+              decks={data.decks}
+              size="sm"
+              setSelected={a => onChange(a.deck)}
+            />
+            <RoomDropdown
+              selectedDeck={deck}
+              selectedRoom={room}
+              size="sm"
+              decks={data.decks}
+              disabled={!deck}
+              setSelected={a => onChange(a.room)}
+            />
+          </div>
+        );
+      }}
+    </Query>
+  );
+};
+const ValueInput = ({ label, type, value, onBlur, simulatorId }) => {
   return (
     <div>
       {(() => {
@@ -59,8 +125,18 @@ const ValueInput = ({ label, type, value, onBlur }) => {
               />
             </label>
           );
-        if (type === "roomPicker")
-          return <label>{titleCase(label)} - Room Picker</label>;
+        if (type === "roomPicker") {
+          return (
+            <label>
+              {titleCase(label)}
+              <DeckSelect
+                simulatorId={simulatorId}
+                value={value}
+                onChange={onBlur}
+              />
+            </label>
+          );
+        }
         if (typeof type === "object" && type.length > 0)
           return (
             <label>
@@ -190,6 +266,7 @@ class TasksCore extends Component {
                   label={v}
                   type={definition.valuesInput[v]}
                   value={definition.valuesValue[v]}
+                  simulatorId={simulator.id}
                   onBlur={value =>
                     this.setState(state => ({
                       requiredValues: { ...state.requiredValues, [v]: value }
