@@ -146,7 +146,7 @@ import KeypadCore from "./Keypad/core";
 import AssetsCore from "./AssetsCore/core";
 import HandheldScannerCore from "./HandheldScanner/core";
 import NewMessagingCore from "./Messaging/newCore";
-
+import AlternateSensorsCore from "./ParticleDetector/core";
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -368,7 +368,8 @@ export const Cores = {
   KeypadCore,
   AssetsCore,
   HandheldScannerCore,
-  NewMessagingCore
+  NewMessagingCore,
+  AlternateSensorsCore
 };
 
 export default Views;

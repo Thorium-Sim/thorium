@@ -79,6 +79,14 @@ type SensorContact {
   hostile: Boolean
   hitpoints: Int
   autoFire: Boolean
+  particle: ParticleTypes
+}
+enum ParticleTypes {
+  Dilithium
+  Tachyon
+  Neutrino
+  AntiMatter
+  Anomaly
 }
 type SensorsSegment {
   ring: Int
@@ -118,7 +126,9 @@ input SensorContactInput {
   hostile: Boolean
   hitpoints: Int
   autoFire: Boolean
+  particle: ParticleTypes
 }
+
 enum PING_MODES {
   active
   passive
