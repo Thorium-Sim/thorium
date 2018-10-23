@@ -53,6 +53,7 @@ type Simulator {
   alertlevel: String
   alertLevelLock: Boolean
   layout: String
+  caps: Boolean
   template: Boolean
   templateId: ID
   systems: [System]

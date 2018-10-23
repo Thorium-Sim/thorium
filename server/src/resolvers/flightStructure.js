@@ -106,6 +106,9 @@ export const FlightStructureMutations = {
   changeSimulatorLayout(root, args, context) {
     App.handleEvent(args, "changeSimulatorLayout", context);
   },
+  changeSimulatorCaps(root, args, context) {
+    App.handleEvent(args, "changeSimulatorCaps", context);
+  },
   changeSimulatorAlertLevel(root, args, context) {
     App.handleEvent(args, "changeSimulatorAlertLevel", context);
   },

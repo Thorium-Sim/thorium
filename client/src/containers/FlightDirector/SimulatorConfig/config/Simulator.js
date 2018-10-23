@@ -42,6 +42,11 @@ const ops = {
     mutation SetBridgeOfficerMessaging($id: ID!, $value: Boolean!) {
       setBridgeMessaging(id: $id, messaging: $value)
     }
+  `,
+  changeCaps: gql`
+    mutation SetCaps($id: ID!, $value: Boolean!) {
+      changeSimulatorCaps(simulatorId: $id, caps: $value)
+    }
   `
 };
 class SimulatorConfigView extends Component {
@@ -90,6 +95,15 @@ class SimulatorConfigView extends Component {
                 );
               })}
             </select>
+          </fieldset>
+          <fieldset className="form-group">
+            <label>Make all text uppercase (including typed-in text)</label>
+            <input
+              type="checkbox"
+              defaultChecked={this.props.selectedSimulator.caps}
+              name="changeCaps"
+              onChange={this._handleChange.bind(this)}
+            />
           </fieldset>
           <fieldset className="form-group">
             <label>Alert Level</label>
