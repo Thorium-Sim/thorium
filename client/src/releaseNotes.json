@@ -1,4 +1,11 @@
 {
+  "1.0.21": {
+    "features": [
+      "Added the particle detector, Magellan 2012 style. It has a fixed set of icons and types, but those can be expanded through code if necessary.",
+      "Added the 'Alertnate Sensors Core', for sensors grid-type things that aren't relevant to the main sensors grid. This includes the particle detector, science probes burst, and defense probes."
+    ],
+    "fixes":[]
+  },
   "1.0.20": {
     "features": [
       "Add a 'New Messaging' Core. This hopefully will make intership messaging easier and more straightforward.",

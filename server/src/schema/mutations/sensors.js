@@ -12,9 +12,10 @@ setPresetAnswers(simulatorId: ID!, domain: String!, presetAnswers: [PresetAnswer
 
 # Sensor Contacts
 createSensorContact(id: ID!, contact: SensorContactInput!): String
+createSensorContacts(id: ID!, contacts: [SensorContactInput!]!): String
 moveSensorContact(id: ID!, contact: SensorContactInput!): String
 removeSensorContact(id: ID!, contact: SensorContactInput!): String
-removeAllSensorContacts(id: ID!): String
+removeAllSensorContacts(id: ID!, type: [String]): String
 stopAllSensorContacts(id: ID!): String
 updateSensorContact(id: ID, simulatorId: ID, contact: SensorContactInput!): String
 

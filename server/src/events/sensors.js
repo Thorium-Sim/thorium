@@ -200,6 +200,13 @@ App.on("createSensorContact", ({ id, contact }) => {
   system.createContact(contact);
   pubsub.publish("sensorContactUpdate", system);
 });
+App.on("createSensorContacts", ({ id, contacts }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  contacts.forEach(c => {
+    system.createContact(c);
+  });
+  pubsub.publish("sensorContactUpdate", system);
+});
 App.on("moveSensorContact", ({ id, contact }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.moveContact(contact);
@@ -226,8 +233,11 @@ App.on("removeSensorContact", ({ id, contact }) => {
   );
   pubsub.publish("sensorContactUpdate", system);
 });
-App.on("removeAllSensorContacts", ({ id }) => {
+App.on("removeAllSensorContacts", ({ id, type }) => {
   const system = App.systems.find(sys => sys.id === id);
+  if (type) {
+    system.contacts = system.contacts.filter(c => type.indexOf(c.type) === -1);
+  }
   system.contacts = [];
   pubsub.publish("sensorContactUpdate", system);
 });
