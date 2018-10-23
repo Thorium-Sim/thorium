@@ -2,36 +2,62 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import Template from "./template";
+import ParticleDetector from "./particleDetector";
 import "./style.scss";
 
-const queryData = `
+const contactsData = `
+id
+location {
+  x
+  y
+  z
+}
+destination {
+  x
+  y
+  z
+}
+position {
+  x
+  y
+  z
+}
+icon
+type
+destroyed
+startTime
+endTime
+speed
+particle
 `;
 
 const QUERY = gql`
-  query Template($simulatorId: ID!) {
-    template(simulatorId: $simulatorId) {
-${queryData}
+  query Particles($simulatorId: ID!) {
+    sensorContacts(simulatorId:$simulatorId, type:"particle") {
+      ${contactsData}
+    }
+    sensors(simulatorId:$simulatorId, domain:"external") {
+      id
     }
   }
 `;
 const SUBSCRIPTION = gql`
-  subscription TemplateUpdate($simulatorId: ID!) {
-    templateUpdate(simulatorId: $simulatorId) {
-${queryData}
+  subscription SensorContactsChanged($simulatorId: ID) {
+    sensorContactUpdate(simulatorId: $simulatorId, type: "particle") {
+      ${contactsData}
     }
   }
 `;
 
-class TemplateData extends Component {
+class ParticleDetectorData extends Component {
   state = {};
   render() {
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
-          const { template } = data;
-          if (loading || !template) return null;
-          if (!template[0]) return <div>No Template</div>;
+          const { sensorContacts, sensors } = data;
+          if (loading || !sensorContacts) return null;
+          if (!sensors[0]) return <div>No Sensors</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
@@ -40,13 +66,17 @@ class TemplateData extends Component {
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
                     return Object.assign({}, previousResult, {
-                      template: subscriptionData.data.templateUpdate
+                      sensorContacts: subscriptionData.data.sensorContactUpdate
                     });
                   }
                 })
               }
             >
-              <Template {...this.props} {...template[0]} />
+              <ParticleDetector
+                {...this.props}
+                sensors={sensors[0]}
+                contacts={sensorContacts}
+              />
             </SubscriptionHelper>
           );
         }}
@@ -54,4 +84,4 @@ class TemplateData extends Component {
     );
   }
 }
-export default TemplateData;
+export default ParticleDetectorData;

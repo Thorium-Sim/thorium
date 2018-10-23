@@ -5,7 +5,8 @@ import gql from "graphql-tag";
 import { Container, Row, Col, Button } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Grid from "../Sensors/GridDom/grid";
-import SpeedAsker from "../Sensors/gridCore/speedAsker";
+// import SpeedAsker from "../Sensors/gridCore/speedAsker";
+import { particleIcons, particleTypes } from "./particleConstants";
 import "./style.scss";
 
 function randomFromList(list) {
@@ -14,26 +15,6 @@ function randomFromList(list) {
   const index = Math.floor(Math.random() * length);
   return list[index];
 }
-
-const particleIcons = [
-  "Anomaly",
-  "Asteroid",
-  "Asteroids",
-  "Asteroids 2",
-  "Black Hole",
-  "Cross",
-  "Debris",
-  "Particles",
-  "Singularity",
-  "Wreckage"
-];
-const particleTypes = {
-  Dilithium: "#1683FB",
-  Tachyon: "#FFFD38",
-  Neutrino: "#19A97C",
-  AntiMatter: "#FA28FC",
-  Anomaly: "#FD8023"
-};
 
 const SENSORS_OFFSET = 45;
 function distance3d(coord2, coord1) {
@@ -183,9 +164,16 @@ class ParticleDetectorCore extends Component {
   state = {};
   componentDidMount() {
     setTimeout(() => {
-      const dimensions = ReactDOM.findDOMNode(this)
-        .querySelector("#threeSensors #sensorGrid")
-        .getBoundingClientRect();
+      let dimensions = false;
+      while (!dimensions) {
+        const el = ReactDOM.findDOMNode(this);
+        if (el) {
+          const el2 = el.querySelector("#threeSensors #sensorGrid");
+          if (el2) {
+            dimensions = el2.getBoundingClientRect();
+          }
+        }
+      }
       this.setState({ dimensions });
     }, 500);
   }

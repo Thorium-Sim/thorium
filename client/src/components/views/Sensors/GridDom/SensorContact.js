@@ -5,14 +5,7 @@ import tinycolor from "tinycolor2";
 import Explosion from "helpers/explosions";
 import gql from "graphql-tag";
 import { subscribe } from "helpers/pubsub";
-
-const particleTypes = {
-  Dilithium: "#1683FB",
-  Tachyon: "#FFFD38",
-  Neutrino: "#19A97C",
-  AntiMatter: "#FA28FC",
-  Anomaly: "#FD8023"
-};
+import { particleTypes } from "../../ParticleDetector/particleConstants";
 
 class Ping extends Component {
   constructor(props) {
@@ -154,7 +147,7 @@ export default class SensorContact extends Component {
     const { x, y } = location;
     const { x: dx = 0, y: dy = 0 } = destination;
     if (type === "particle" && !particles) return null;
-    if (type !== "particle" && particles) return null;
+    if (type !== "particle" && particles && !particle) return null;
     if (type === "ping") {
       return <Ping {...this.props} {...location} />;
     }
@@ -266,7 +259,6 @@ export default class SensorContact extends Component {
       );
     }
     if (type === "particle") {
-      console.log(this.props);
       const particleIcon = require(`../../ParticleDetector/icons/${icon}.svg`);
       return (
         <div>
