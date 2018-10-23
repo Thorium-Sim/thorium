@@ -49,6 +49,7 @@ export default class SensorContact {
     this.cloaked = params.cloaked || false;
     this.locked = params.locked || false;
     this.disabled = params.disabled || false;
+    this.particle = params.particle || "AntiMatter";
     this.destroyed = false;
     this.startTime = 0;
     this.endTime = 0;

@@ -5,6 +5,15 @@ import tinycolor from "tinycolor2";
 import Explosion from "helpers/explosions";
 import gql from "graphql-tag";
 import { subscribe } from "helpers/pubsub";
+
+const particleTypes = {
+  Dilithium: "#1683FB",
+  Tachyon: "#FFFD38",
+  Neutrino: "#19A97C",
+  AntiMatter: "#FA28FC",
+  Anomaly: "#FD8023"
+};
+
 class Ping extends Component {
   constructor(props) {
     super(props);
@@ -134,6 +143,8 @@ export default class SensorContact extends Component {
       targeted,
       selected,
       disabled,
+      particles,
+      particle,
       mouseover = () => {},
       mousedown = () => {},
       removeContact = () => {}
@@ -142,6 +153,8 @@ export default class SensorContact extends Component {
     if (!location) return null;
     const { x, y } = location;
     const { x: dx = 0, y: dy = 0 } = destination;
+    if (type === "particle" && !particles) return null;
+    if (type !== "particle" && particles) return null;
     if (type === "ping") {
       return <Ping {...this.props} {...location} />;
     }
@@ -249,6 +262,81 @@ export default class SensorContact extends Component {
               transform: `translate(${(width / 2) * x}px, ${(width / 2) * y}px)`
             }}
           />
+        </div>
+      );
+    }
+    if (type === "particle") {
+      console.log(this.props);
+      const particleIcon = require(`../../ParticleDetector/icons/${icon}.svg`);
+      return (
+        <div>
+          <Fragment>
+            <Measure
+              bounds
+              onResize={contentRect => {
+                this.setState({ dimensions: contentRect.bounds });
+              }}
+            >
+              {({ measureRef }) => (
+                <div
+                  ref={measureRef}
+                  alt="contact"
+                  draggable="false"
+                  onMouseOver={() => mouseover(this.props)}
+                  onMouseOut={selected ? null : () => mouseover({})}
+                  onMouseDown={e => mousedown(e, this.props)}
+                  src={particleIcon}
+                  className={disabled ? "contact-disabled" : ""}
+                  style={{
+                    position: "absolute",
+                    zIndex: 1000,
+                    width: 24,
+                    height: 24,
+                    backgroundColor: particleTypes[particle],
+                    maskImage: `url('${particleIcon}')`,
+                    WebkitMaskImage: `url('${particleIcon}')`,
+                    opacity: core ? 0.5 : opacity,
+                    transform: `translate(${(width / 2) * x}px, ${(width / 2) *
+                      y}px) scale(${size})`
+                  }}
+                />
+              )}
+            </Measure>
+            {!core &&
+              this.state.dimensions &&
+              selected && (
+                <ContactSelection
+                  contactDims={this.state.dimensions}
+                  width={width}
+                  x={x}
+                  y={y}
+                  size={size}
+                />
+              )}
+          </Fragment>
+          {core && (
+            <Fragment>
+              <div
+                id={`contact-${id}`}
+                alt="icon"
+                draggable="false"
+                onMouseDown={e => mousedown(e, this.props)}
+                src={particleIcon}
+                className={disabled ? "contact-disabled" : ""}
+                style={{
+                  position: "absolute",
+                  zIndex: 1000,
+                  width: 24,
+                  height: 24,
+                  backgroundColor: particleTypes[particle],
+                  maskImage: `url('${particleIcon}')`,
+                  WebkitMaskImage: `url('${particleIcon}')`,
+                  transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
+                    dy}px) scale(${size})`
+                }}
+              />
+            </Fragment>
+          )}
         </div>
       );
     }
