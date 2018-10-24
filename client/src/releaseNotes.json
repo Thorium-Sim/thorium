@@ -3,7 +3,8 @@
     "features": [
       "Added the particle detector, Magellan 2012 style. It has a fixed set of icons and types, but those can be expanded through code if necessary.",
       "Added the 'Alertnate Sensors Core', for sensors grid-type things that aren't relevant to the main sensors grid. This includes the particle detector, science probes burst, and defense probes.",
-      "Adds an option to make the controls uppercase text when configuring the simulator."
+      "Adds an option to make the controls uppercase text when configuring the simulator.",
+      "Provide alternate labels for engineering report screen."
     ],
     "fixes": [
       "Fixes a bug that made it impossible to change shuttle names from the core.",
