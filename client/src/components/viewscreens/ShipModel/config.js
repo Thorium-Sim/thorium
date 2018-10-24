@@ -44,6 +44,22 @@ export default ({ data, updateData, simple }) => (
       }
       checked={JSON.parse(data).wireframe}
     />
+    <label>Rotation Speed ({JSON.parse(data).speed || 2} RPM)</label>
+    <input
+      type="range"
+      min={0.1}
+      max={10}
+      step={0.01}
+      onChange={evt =>
+        updateData(
+          JSON.stringify({
+            ...JSON.parse(data),
+            speed: parseFloat(evt.target.value)
+          })
+        )
+      }
+      checked={JSON.parse(data).speed || 2}
+    />
     {/* <label>Texture</label>
     <input
       type="checkbox"

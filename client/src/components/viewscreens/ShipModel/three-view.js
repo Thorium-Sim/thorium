@@ -128,7 +128,8 @@ class ThreeView extends Component {
       degtorad(this.rotation * -1),
       degtorad(0)
     );
-    this.rotation += 0.05;
+    const rotationAmount = (1000 / 60 / 60) * this.props.speed;
+    this.rotation += rotationAmount;
     this.objectGroup.rotation.setFromVector3(rot);
     this.renderer.render(this.scene, this.camera);
     this.frame = requestAnimationFrame(this.animate);
