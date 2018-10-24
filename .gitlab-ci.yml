@@ -1,10 +1,10 @@
 image: node:8
 test-client:
   script:
-    - npm run install
+    - npm install
     - npm run test-client -- --forceExit
 
 test-server:
   script:
-    - npm run install
+    - npm install
     - npm run test-server -- --forceExit
