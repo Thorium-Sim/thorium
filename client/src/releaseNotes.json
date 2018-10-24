@@ -2,9 +2,16 @@
   "1.0.21": {
     "features": [
       "Added the particle detector, Magellan 2012 style. It has a fixed set of icons and types, but those can be expanded through code if necessary.",
-      "Added the 'Alertnate Sensors Core', for sensors grid-type things that aren't relevant to the main sensors grid. This includes the particle detector, science probes burst, and defense probes."
+      "Added the 'Alertnate Sensors Core', for sensors grid-type things that aren't relevant to the main sensors grid. This includes the particle detector, science probes burst, and defense probes.",
+      "Adds an option to make the controls uppercase text when configuring the simulator.",
+      "Provide alternate labels for engineering report screen.",
+      "Add ability to adjust rotation speed of the ship model viewscreen."
     ],
-    "fixes":[]
+    "fixes": [
+      "Fixes a bug that made it impossible to change shuttle names from the core.",
+      "Fixes a minor bug with transporters.",
+      "Minor change that improves the status screen."
+    ]
   },
   "1.0.20": {
     "features": [

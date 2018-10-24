@@ -137,42 +137,44 @@ export default class CardFrame extends Component {
   render() {
     const {
       station: { training: stationTraining },
-      simulator: { training: simTraining },
+      simulator: { caps, training: simTraining },
       client
     } = this.props;
     return (
-      <ActionsMixin {...this.props} changeCard={this.changeCard}>
-        <CardRenderer
-          {...this.props}
-          card={this.state.card}
-          changeCard={this.changeCard}
-          client={{
-            ...client,
-            training: simTraining && stationTraining ? false : client.training
-          }}
-        />
-        {this.props.client && (
-          <Reset
-            station={this.props.station}
-            clientId={this.props.client.id}
-            reset={() =>
-              this.setState({ card: this.props.station.cards[0].name })
-            }
+      <div className={caps ? "all-caps" : ""}>
+        <ActionsMixin {...this.props} changeCard={this.changeCard}>
+          <CardRenderer
+            {...this.props}
+            card={this.state.card}
+            changeCard={this.changeCard}
+            client={{
+              ...client,
+              training: simTraining && stationTraining ? false : client.training
+            }}
           />
-        )}
-        {simTraining &&
-          stationTraining && (
-            <TrainingPlayer src={`/assets${stationTraining}`} />
+          {this.props.client && (
+            <Reset
+              station={this.props.station}
+              clientId={this.props.client.id}
+              reset={() =>
+                this.setState({ card: this.props.station.cards[0].name })
+              }
+            />
           )}
-        <Alerts
-          key={`alerts-${
-            this.props.simulator ? this.props.simulator.id : "simulator"
-          }-${this.props.station ? this.props.station.name : "station"}`}
-          ref="alert-widget"
-          simulator={this.props.simulator}
-          station={this.props.station}
-        />
-      </ActionsMixin>
+          {simTraining &&
+            stationTraining && (
+              <TrainingPlayer src={`/assets${stationTraining}`} />
+            )}
+          <Alerts
+            key={`alerts-${
+              this.props.simulator ? this.props.simulator.id : "simulator"
+            }-${this.props.station ? this.props.station.name : "station"}`}
+            ref="alert-widget"
+            simulator={this.props.simulator}
+            station={this.props.station}
+          />
+        </ActionsMixin>
+      </div>
     );
   }
 }
