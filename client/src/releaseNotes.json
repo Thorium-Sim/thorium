@@ -7,7 +7,8 @@
     ],
     "fixes": [
       "Fixes a bug that made it impossible to change shuttle names from the core.",
-      "Fixes a minor bug with transporters."
+      "Fixes a minor bug with transporters.",
+      "Minor change that improves the status screen."
     ]
   },
   "1.0.20": {

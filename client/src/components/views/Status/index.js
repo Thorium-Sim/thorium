@@ -34,7 +34,7 @@ const Status = props => {
   return (
     <Container fluid className="status-card">
       <Row>
-        <Col sm={3}>
+        <Col sm={3} style={{ pointerEvents: "none" }}>
           <Destination {...props} />
           <Speed {...props} />
           <Targeted {...props} />
@@ -46,7 +46,7 @@ const Status = props => {
           <Coolant {...props} />
           <DilithiumStress {...props} />
         </Col>
-        <Col sm={6}>
+        <Col sm={6} style={{ pointerEvents: "none" }}>
           <Stealth {...props} />
         </Col>
         <Col sm={3}>
