@@ -74,9 +74,11 @@ export default class Transporters extends System {
   }
   beginScan() {
     this.state = "Scanning";
+    this.targets = [];
   }
   cancelScan() {
     this.state = "Inactive";
+    this.targets = [];
   }
   setCharge(charge) {
     if (charge > 0 && this.targets.length > 0) {

@@ -6,7 +6,8 @@
       "Adds an option to make the controls uppercase text when configuring the simulator."
     ],
     "fixes": [
-      "Fixes a bug that made it impossible to change shuttle names from the core."
+      "Fixes a bug that made it impossible to change shuttle names from the core.",
+      "Fixes a minor bug with transporters."
     ]
   },
   "1.0.20": {
