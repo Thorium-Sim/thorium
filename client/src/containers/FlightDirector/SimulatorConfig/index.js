@@ -11,6 +11,7 @@ import "./SimulatorConfig.scss";
 const query = `id
 name
 layout
+caps
 exocomps
 panels
 stepDamage

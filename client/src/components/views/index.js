@@ -79,6 +79,7 @@ import RailgunLoading from "./Railgun/loadingCard";
 import JumpDrive from "./JumpDrive";
 import BridgeMap from "./BridgeMap";
 import ThrustersLite from "./Thrusters/lite";
+import ParticleDetector from "./ParticleDetector";
 
 // Cores
 import EngineControlCore from "./EngineControl/core";
@@ -146,7 +147,7 @@ import KeypadCore from "./Keypad/core";
 import AssetsCore from "./AssetsCore/core";
 import HandheldScannerCore from "./HandheldScanner/core";
 import NewMessagingCore from "./Messaging/newCore";
-
+import AlternateSensorsCore from "./ParticleDetector/core";
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
@@ -233,7 +234,8 @@ const Views = {
   RailgunLoading,
   JumpDrive,
   BridgeMap,
-  ThrustersLite
+  ThrustersLite,
+  ParticleDetector
 };
 
 export const Widgets = {
@@ -368,7 +370,8 @@ export const Cores = {
   KeypadCore,
   AssetsCore,
   HandheldScannerCore,
-  NewMessagingCore
+  NewMessagingCore,
+  AlternateSensorsCore
 };
 
 export default Views;

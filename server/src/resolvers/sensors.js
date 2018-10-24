@@ -33,6 +33,7 @@ export const SensorsQueries = {
     if (hostile || hostile === false)
       contacts = contacts.filter(c => c.hostile === hostile);
     if (type) {
+      console.log(contacts);
       contacts = contacts.filter(c => c.type === type);
     }
     return contacts;
@@ -63,6 +64,10 @@ export const SensorsMutations = {
     App.handleEvent({ id, contact }, "createSensorContact", context);
     return "";
   },
+  createSensorContacts(root, args, context) {
+    App.handleEvent(args, "createSensorContacts", context);
+    return "";
+  },
   moveSensorContact(root, { id, contact }, context) {
     App.handleEvent({ id, contact }, "moveSensorContact", context);
     return "";
@@ -71,8 +76,8 @@ export const SensorsMutations = {
     App.handleEvent({ id, contact }, "removeSensorContact", context);
     return "";
   },
-  removeAllSensorContacts(root, { id }, context) {
-    App.handleEvent({ id }, "removeAllSensorContacts", context);
+  removeAllSensorContacts(root, args, context) {
+    App.handleEvent(args, "removeAllSensorContacts", context);
     return "";
   },
   stopAllSensorContacts(root, { id }, context) {

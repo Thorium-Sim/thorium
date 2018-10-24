@@ -39,6 +39,13 @@ App.on("changeSimulatorLayout", ({ simulatorId, layout }) => {
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("changeSimulatorCaps", ({ simulatorId, caps }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  if (simulator) {
+    simulator.caps = caps;
+  }
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 App.on("changeSimulatorAlertLevel", ({ simulatorId, alertLevel }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   if (simulator && alertLevel !== simulator.alertlevel) {

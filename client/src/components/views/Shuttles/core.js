@@ -91,7 +91,6 @@ class Shuttles extends Component {
                     {action => (
                       <TypingField
                         input
-                        controlled
                         value={d.name}
                         alert={d.damage.damaged}
                         onBlur={evt =>

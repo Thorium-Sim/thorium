@@ -43,6 +43,11 @@
   }
 }
 
+.all-caps {
+  * {
+    text-transform: uppercase;
+  }
+}
 @keyframes credits-scroll {
   from {
     transform: translateY(calc(100vh - 325px));

@@ -8,6 +8,7 @@ import playSound from "../generic/SoundPlayer";
 const queryData = `
 id
 name
+caps
 alertlevel
 layout
 bridgeOfficerMessaging
