@@ -12,6 +12,10 @@ const tasks = [
       return true;
     },
     values: {
+      name: {
+        input: () => "text",
+        value: () => "Task"
+      },
       message: {
         input: () => "textarea",
         value: () => "This is a generic task."
