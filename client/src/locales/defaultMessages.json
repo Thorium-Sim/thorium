@@ -53,6 +53,23 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Cyphers are used to decode messages on paper. You can see the cypher characters on your screen and match them with the characters on your printed encoded message.",
+        "id": "cypher-training-1"
+      },
+      {
+        "defaultMessage": "This is a list of the available cyphers. Click to choose a cypher.",
+        "id": "cypher-training-2"
+      },
+      {
+        "defaultMessage": "Here you can see the cypher characters, and the Roman character which it represents.",
+        "id": "cypher-training-3"
+      }
+    ],
+    "path": "src/components/views/CodeCyphers/index.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "The computer core is the brains of your ship. Controls for all of the stations on the bridge and throughout the ship are managed by the computer core. It runs a sophisticated operating system which mostly takes care of itself.",
         "id": "computer-core-training-1"
       },
@@ -147,6 +164,11 @@
         "id": "damage-report-rnd"
       },
       {
+        "defaultMessage": "Engineering Bypass",
+        "description": "Below this header is a list of engineering reports",
+        "id": "damage-report-engineering"
+      },
+      {
         "defaultMessage": "Damaged Systems",
         "description": "Below this header is a list of damaged system repair reports",
         "id": "damage-report-systems"
@@ -172,6 +194,11 @@
         "id": "rnd-report-request"
       },
       {
+        "defaultMessage": "Request Engineering Report",
+        "description": "A button to request a report for a system",
+        "id": "engineering-report-request"
+      },
+      {
         "defaultMessage": "Request Damage Report",
         "description": "A button to request a repair report for a damaged system",
         "id": "damage-report-request"
@@ -180,6 +207,11 @@
         "defaultMessage": "R&D Report",
         "description": "A header for the research & development report readout",
         "id": "damage-report-rnd-report"
+      },
+      {
+        "defaultMessage": "Engineering Report",
+        "description": "A header for the engineering report readout",
+        "id": "engineering-report-report"
       },
       {
         "defaultMessage": "Damage Report",
@@ -278,7 +310,7 @@
         "id": "objectives-training-1"
       },
       {
-        "defaultMessage": "When an objective is completed, the circle next to it will be filled. Check back often to remember your objectives so you can work toward their completion.",
+        "defaultMessage": "When an objective is completed, the circle next to it will be filled. When an objective is changed, a line will strike through the title of the objective. Check back often to remember your objectives so you can work toward their completion.",
         "id": "objectives-training-2"
       },
       {
@@ -287,6 +319,28 @@
       }
     ],
     "path": "src/components/views/Objectives/index.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Particle Types",
+        "description": "The particle detector detects different particles outside in space. This is a header for a list of the possible particles that can be detected",
+        "id": "particle-types"
+      },
+      {
+        "defaultMessage": "The particle detector is an extension to your external sensors. It allows you to focus your sensors at a specific place around your ship to detect different types of particles.",
+        "id": "particle-detector-training-1"
+      },
+      {
+        "defaultMessage": "This is the list of all the types of particles you can detect. Click on one to begin detecting particles.",
+        "id": "particle-detector-training-2"
+      },
+      {
+        "defaultMessage": "Click anywhere on the grid to detect particles. You can only detect a specific type of particle within a small area at any time, so you might have to click in several areas to see where all the particles are. Be sure to switch between the different types to detect any other particles.",
+        "id": "particle-detector-training-3"
+      }
+    ],
+    "path": "src/components/views/ParticleDetector/particleDetector.json"
   },
   {
     "descriptors": [
