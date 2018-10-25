@@ -9,7 +9,11 @@ import {
   CardBlock,
   Button
 } from "reactstrap";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
 import { FormattedMessage } from "react-intl";
+import FontAwesome from "react-fontawesome";
+
 class Tasks extends Component {
   state = {};
   render() {
@@ -27,20 +31,36 @@ class Tasks extends Component {
               {tasks.length === 0 ? (
                 <ListGroupItem>No Tasks</ListGroupItem>
               ) : (
-                tasks.map(t => (
-                  <ListGroupItem
-                    key={t.id}
-                    active={selectedTask === t.id}
-                    onClick={() => this.setState({ selectedTask: t.id })}
-                  >
-                    <div>
-                      <strong>{t.values.name || t.definition}</strong>
-                    </div>
-                    <div className="truncated-instructions">
-                      {t.instructions}
-                    </div>
-                  </ListGroupItem>
-                ))
+                tasks
+                  .concat()
+                  .sort((a, b) => {
+                    if (a.verified > b.verified) return 1;
+                    if (b.verified > a.verified) return -1;
+                    return 0;
+                  })
+                  .map(t => (
+                    <ListGroupItem
+                      key={t.id}
+                      active={selectedTask === t.id}
+                      onClick={() => this.setState({ selectedTask: t.id })}
+                    >
+                      <div>
+                        <strong
+                          className={`${t.verifyRequested ? "text-info" : ""} ${
+                            t.verified ? "text-success" : ""
+                          }`}
+                        >
+                          {t.values.name || t.definition}
+                        </strong>{" "}
+                        {t.verifyRequested && (
+                          <FontAwesome spin name="refresh" />
+                        )}
+                      </div>
+                      <div className="truncated-instructions">
+                        {t.instructions}
+                      </div>
+                    </ListGroupItem>
+                  ))
               )}
             </ListGroup>
           </Col>
@@ -55,12 +75,49 @@ class Tasks extends Component {
               <CardBlock>{task && task.instructions}</CardBlock>
             </Card>
             <div>
-              <Button size="lg" color="success" disabled={!task}>
-                <FormattedMessage
-                  id="tasks-verify-button"
-                  defaultMessage="Verify Task Completion"
-                />
-              </Button>
+              <Mutation
+                mutation={gql`
+                  mutation RequestVerify($id: ID!) {
+                    requestTaskVerify(id: $id)
+                  }
+                `}
+                variables={{ id: task && task.id }}
+              >
+                {action => (
+                  <Button
+                    size="lg"
+                    color="success"
+                    disabled={
+                      !task || (task && (task.verifyRequested || task.verified))
+                    }
+                    onClick={action}
+                  >
+                    {task ? (
+                      task.verifyRequested ? (
+                        <FormattedMessage
+                          id="tasks-verify-in-progress"
+                          defaultMessage="Verification In Progress..."
+                        />
+                      ) : task.verified ? (
+                        <FormattedMessage
+                          id="tasks-completed"
+                          defaultMessage="Task Completed"
+                        />
+                      ) : (
+                        <FormattedMessage
+                          id="tasks-verify-button"
+                          defaultMessage="Verify Task Completion"
+                        />
+                      )
+                    ) : (
+                      <FormattedMessage
+                        id="tasks-verify-button"
+                        defaultMessage="Verify Task Completion"
+                      />
+                    )}
+                  </Button>
+                )}
+              </Mutation>
             </div>
           </Col>
         </Row>

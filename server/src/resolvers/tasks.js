@@ -98,13 +98,21 @@ export const TasksMutations = {
   },
   dismissVerifiedTasks(root, args, context) {
     App.handleEvent(args, "dismissVerifiedTasks", context);
+  },
+  requestTaskVerify(root, args, context) {
+    App.handleEvent(args, "requestTaskVerify", context);
+  },
+  denyTaskVerify(root, args, context) {
+    App.handleEvent(args, "denyTaskVerify", context);
   }
 };
 
 export const TasksSubscriptions = {
   tasksUpdate: {
-    resolve(rootValue) {
-      return rootValue;
+    resolve(rootValue, { simulatorId, station }) {
+      let tasks = rootValue.filter(s => s.simulatorId === simulatorId);
+      if (station) tasks = tasks.filter(s => s.station === station);
+      return tasks;
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("tasksUpdate"),

@@ -14,6 +14,7 @@ dismissed
 instructions
 station
 definition
+verifyRequested
 `;
 
 const QUERY = gql`

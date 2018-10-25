@@ -21,9 +21,20 @@ class TasksManager extends Component {
         <div style={{ display: "flex", flex: 1 }}>
           <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
             <p>Tasks</p>
-            <Button size="sm" color="info" block>
-              Dismiss Verified
-            </Button>
+            <Mutation
+              mutation={gql`
+                mutation DismissVerified($simulatorId: ID!) {
+                  dismissVerifiedTasks(simulatorId: $simulatorId)
+                }
+              `}
+              variables={{ simulatorId: this.props.simulator.id }}
+            >
+              {action => (
+                <Button size="sm" color="info" block onClick={action}>
+                  Dismiss Verified
+                </Button>
+              )}
+            </Mutation>
             <p>
               <label>
                 Show Dismissed:{" "}
@@ -40,16 +51,25 @@ class TasksManager extends Component {
               {Object.entries(taskGroup).map(([key, value]) => (
                 <Fragment key={key}>
                   <ListGroupItem disabled>{key}</ListGroupItem>
-                  {value.map(t => (
-                    <ListGroupItem
-                      key={t.id}
-                      active={t.id === selectedTask}
-                      onClick={() => this.setState({ selectedTask: t.id })}
-                      className={`${t.verified ? "text-success" : ""}`}
-                    >
-                      {t.definition}
-                    </ListGroupItem>
-                  ))}
+                  {value
+                    .concat()
+                    .sort((a, b) => {
+                      if (a.verified > b.verified) return 1;
+                      if (b.verified > a.verified) return -1;
+                      return 0;
+                    })
+                    .map(t => (
+                      <ListGroupItem
+                        key={t.id}
+                        active={t.id === selectedTask}
+                        onClick={() => this.setState({ selectedTask: t.id })}
+                        className={`${t.verifyRequested ? "text-info" : ""} ${
+                          t.verified ? "text-success" : ""
+                        }`}
+                      >
+                        {t.definition}
+                      </ListGroupItem>
+                    ))}
                 </Fragment>
               ))}
             </ListGroup>
@@ -68,27 +88,50 @@ class TasksManager extends Component {
                   {task.instructions}
                 </Card>
                 {!task.verified && (
-                  <Mutation
-                    mutation={gql`
-                      mutation VerifyTask($taskId: ID!) {
-                        verifyTask(taskId: $taskId, dismiss: true)
-                      }
-                    `}
-                    variables={{ taskId: task.id }}
-                  >
-                    {action => (
-                      <Button
-                        size="sm"
-                        color="success"
-                        onClick={() => {
-                          action();
-                          this.setState({ selectedTask: null });
-                        }}
-                      >
-                        Verify {"&"} Dismiss
-                      </Button>
-                    )}
-                  </Mutation>
+                  <Fragment>
+                    <Mutation
+                      mutation={gql`
+                        mutation VerifyTask($taskId: ID!) {
+                          verifyTask(taskId: $taskId)
+                        }
+                      `}
+                      variables={{ taskId: task.id }}
+                    >
+                      {action => (
+                        <Button
+                          size="sm"
+                          color="success"
+                          onClick={() => {
+                            action();
+                            this.setState({ selectedTask: null });
+                          }}
+                        >
+                          Verify
+                        </Button>
+                      )}
+                    </Mutation>
+                    <Mutation
+                      mutation={gql`
+                        mutation VerifyTask($taskId: ID!) {
+                          verifyTask(taskId: $taskId, dismiss: true)
+                        }
+                      `}
+                      variables={{ taskId: task.id }}
+                    >
+                      {action => (
+                        <Button
+                          size="sm"
+                          color="success"
+                          onClick={() => {
+                            action();
+                            this.setState({ selectedTask: null });
+                          }}
+                        >
+                          Verify {"&"} Dismiss
+                        </Button>
+                      )}
+                    </Mutation>
+                  </Fragment>
                 )}
               </Fragment>
             )}

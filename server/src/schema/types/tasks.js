@@ -8,6 +8,7 @@ type Task {
   room: Room
   definition: String
   verified: Boolean
+  verifyRequested: Boolean
   dismissed: Boolean
   values: JSON
   instructions: String

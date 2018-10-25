@@ -12,6 +12,7 @@ verified
 dismissed
 values
 definition
+verifyRequested
 `;
 
 const QUERY = gql`
