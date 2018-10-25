@@ -215,7 +215,8 @@ class InnerGrid extends Component {
       selectedContacts,
       hoverContact,
       mouseDown,
-      extraContacts = []
+      extraContacts = [],
+      particles
     } = this.props;
     const { width: dimWidth, height: dimHeight } = dimensions;
     const width = Math.min(dimWidth, dimHeight);
@@ -253,6 +254,7 @@ class InnerGrid extends Component {
             )
           }
           mouseover={hoverContact}
+          particles={particles}
         />
       );
     });

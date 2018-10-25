@@ -9,6 +9,8 @@ changeSimulatorLayout(
 simulatorId: ID!, 
 layout: String!): String
 
+changeSimulatorCaps(simulatorId: ID!, caps: Boolean!):String
+
 #Macro: Alert Level
 changeSimulatorAlertLevel(
 simulatorId: ID!, 

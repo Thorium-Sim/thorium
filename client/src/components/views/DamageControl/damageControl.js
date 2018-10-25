@@ -229,6 +229,12 @@ class DamageControl extends Component {
                   description="Below this header is a list of available research and development reports"
                   defaultMessage="Available R&D Reports"
                 />
+              ) : which === "engineering" ? (
+                <FormattedMessage
+                  id="damage-report-engineering"
+                  description="Below this header is a list of engineering reports"
+                  defaultMessage="Engineering Bypass"
+                />
               ) : (
                 <FormattedMessage
                   id="damage-report-systems"
@@ -344,6 +350,12 @@ class DamageControl extends Component {
                         description="A button to request a report for a system"
                         defaultMessage="Request Report"
                       />
+                    ) : which === "engineering" ? (
+                      <FormattedMessage
+                        id="engineering-report-request"
+                        description="A button to request a report for a system"
+                        defaultMessage="Request Engineering Report"
+                      />
                     ) : (
                       <FormattedMessage
                         id="damage-report-request"
@@ -377,6 +389,12 @@ class DamageControl extends Component {
                       id="damage-report-rnd-report"
                       description="A header for the research & development report readout"
                       defaultMessage="R&D Report"
+                    />
+                  ) : which === "engineering" ? (
+                    <FormattedMessage
+                      id="engineering-report-report"
+                      description="A header for the engineering report readout"
+                      defaultMessage="Engineering Report"
                     />
                   ) : (
                     <FormattedMessage
